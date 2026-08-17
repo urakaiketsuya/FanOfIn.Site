@@ -43,6 +43,7 @@ export default function CardDetail() {
   const { slug = "" } = useParams<{ slug: string }>();
   const { card, loading } = useCard(slug);
   const [editionIndex, setEditionIndex] = useState(0);
+  const [editionsExpanded, setEditionsExpanded] = useState(false);
   const options = useQuery({ queryKey: ["option-definitions"], queryFn: gatcgApi.getOptionDefinitions });
   const rarityDisplay = (rarity: number) =>
     options.data?.rarity.find((r) => r.value === String(rarity))?.display ?? String(rarity);
@@ -138,6 +139,43 @@ export default function CardDetail() {
           ) : (
             <div className="flex aspect-[5/7] items-center justify-center rounded-lg border border-ctp-surface1 bg-ctp-mantle text-ctp-subtext0">
               No image
+            </div>
+          )}
+
+          {card.editions.length > 1 && (
+            <div className="mt-3">
+              <button
+                type="button"
+                onClick={() => setEditionsExpanded((v) => !v)}
+                className="flex w-full items-center justify-between text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide hover:text-ctp-text"
+              >
+                <span>Editions ({card.editions.length})</span>
+                <span>{editionsExpanded ? "▲" : "▼"}</span>
+              </button>
+              {editionsExpanded && (
+                <div className="mt-2 grid grid-cols-3 gap-2">
+                  {card.editions.map((ed, i) => (
+                    <button
+                      key={ed.uuid}
+                      type="button"
+                      onClick={() => setEditionIndex(i)}
+                      className={`rounded-md border p-1 text-left ${
+                        i === editionIndex ? "border-ctp-blue" : "border-ctp-surface1"
+                      }`}
+                    >
+                      <CardImage
+                        image={ed.image}
+                        alt={`${card.name} — ${ed.set.name}`}
+                        className="aspect-[5/7] w-full rounded object-cover"
+                      />
+                      <p className="mt-1 truncate text-[10px] text-ctp-subtext1">{ed.set.name}</p>
+                      <p className="truncate text-[10px] text-ctp-subtext0">
+                        #{ed.collector_number} · {rarityDisplay(ed.rarity)}
+                      </p>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -317,32 +355,6 @@ export default function CardDetail() {
           <div className="mt-2 space-y-2">
             {uniqueDecks.map((d) => (
               <UniqueDeckRow key={`${d.eventId}:${d.player}`} score={d} playerName={playerName(d.player)} />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {card.editions.length > 1 && (
-        <div className="mt-8">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
-            Editions ({card.editions.length})
-          </h2>
-          <div className="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6">
-            {card.editions.map((ed, i) => (
-              <button
-                key={ed.uuid}
-                type="button"
-                onClick={() => setEditionIndex(i)}
-                className={`rounded-md border p-1 text-left ${
-                  i === editionIndex ? "border-ctp-blue" : "border-ctp-surface1"
-                }`}
-              >
-                <CardImage image={ed.image} alt={`${card.name} — ${ed.set.name}`} className="aspect-[5/7] w-full rounded object-cover" />
-                <p className="mt-1 truncate text-[10px] text-ctp-subtext1">{ed.set.name}</p>
-                <p className="truncate text-[10px] text-ctp-subtext0">
-                  #{ed.collector_number} · {rarityDisplay(ed.rarity)}
-                </p>
-              </button>
             ))}
           </div>
         </div>

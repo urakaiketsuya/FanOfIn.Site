@@ -92,7 +92,7 @@ export default function TournamentsIndex() {
         </form>
       </div>
 
-      <div className="mt-4 flex items-center gap-2 text-sm">
+      <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Type:</span>
         <button
           onClick={() => setCategory(null)}
@@ -115,7 +115,7 @@ export default function TournamentsIndex() {
         ))}
       </div>
 
-      <div className="mt-2 flex items-center gap-2 text-sm">
+      <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Season:</span>
         <select
           value={seasonId ?? ""}
@@ -131,7 +131,7 @@ export default function TournamentsIndex() {
         </select>
       </div>
 
-      <div className="mt-2 flex items-center gap-2 text-sm">
+      <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Min players:</span>
         {MIN_PLAYERS_OPTIONS.map((n) => (
           <button
@@ -146,7 +146,7 @@ export default function TournamentsIndex() {
         ))}
       </div>
 
-      <div className="mt-2 flex items-center gap-2 text-sm">
+      <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Sort by:</span>
         {(["date", "type"] as const).map((mode) => (
           <button

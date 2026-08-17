@@ -7,6 +7,7 @@ import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
 import { formatUsd } from "../../lib/format";
 import { computeSectionPrice } from "../../lib/deckPrice";
 import { computeDeckIdentity } from "../../lib/deckIdentity";
+import { buildTcgplayerMassEntryUrl } from "../../lib/tcgplayerMassEntry";
 
 function DeckSection({
   title,
@@ -97,6 +98,12 @@ export default function DecklistView({
     [decklist, cardsByName],
   );
 
+  const allLines = useMemo(() => [...decklist.main, ...decklist.material, ...decklist.sideboard], [decklist]);
+  const massEntryUrl = useMemo(
+    () => buildTcgplayerMassEntryUrl(allLines.map((l) => ({ name: l.card, quantity: l.quantity }))),
+    [allLines],
+  );
+
   return (
     <div>
       {(identity.classes.length > 0 || identity.elements.length > 0) && (
@@ -105,14 +112,30 @@ export default function DecklistView({
           {identity.elements.length > 0 && <span>Elements: {identity.elements.join("/")}</span>}
         </div>
       )}
-      {deckPrice.total > 0 && (
-        <div className="mb-3 flex items-baseline gap-2 text-sm">
-          <span className="font-semibold text-ctp-text">Deck price: {formatUsd(deckPrice.total)}</span>
-          {sideboardPrice.total > 0 && (
-            <span className="text-ctp-subtext1">+ {formatUsd(sideboardPrice.total)} sideboard</span>
+      {(deckPrice.total > 0 || allLines.length > 0) && (
+        <div className="mb-3 flex flex-wrap items-center gap-2 text-sm">
+          {deckPrice.total > 0 && (
+            <>
+              <span className="font-semibold text-ctp-text">Deck price: {formatUsd(deckPrice.total)}</span>
+              {sideboardPrice.total > 0 && (
+                <span className="text-ctp-subtext1">+ {formatUsd(sideboardPrice.total)} sideboard</span>
+              )}
+              {missingCount > 0 && (
+                <span className="text-xs text-ctp-subtext0">
+                  ({missingCount} card{missingCount === 1 ? "" : "s"} missing price data)
+                </span>
+              )}
+            </>
           )}
-          {missingCount > 0 && (
-            <span className="text-xs text-ctp-subtext0">({missingCount} card{missingCount === 1 ? "" : "s"} missing price data)</span>
+          {allLines.length > 0 && (
+            <a
+              href={massEntryUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="ml-auto shrink-0 rounded-md border border-ctp-blue px-2 py-1 text-xs text-ctp-blue hover:bg-ctp-surface0"
+            >
+              Buy on TCGplayer &rarr;
+            </a>
           )}
         </div>
       )}

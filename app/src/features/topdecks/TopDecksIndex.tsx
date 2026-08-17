@@ -93,7 +93,7 @@ export default function TopDecksIndex() {
         Every public decklist across ingested events, filterable by event type, season, Champion, and outcome.
       </p>
 
-      <div className="mt-4 flex items-center gap-2 text-sm">
+      <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Type:</span>
         <button
           onClick={() => setCategory(null)}
@@ -146,7 +146,7 @@ export default function TopDecksIndex() {
         </select>
       </div>
 
-      <div className="mt-2 flex items-center gap-2 text-sm">
+      <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Outcome:</span>
         {(Object.keys(OUTCOME_LABELS) as Outcome[]).map((o) => (
           <button
@@ -161,7 +161,7 @@ export default function TopDecksIndex() {
         ))}
       </div>
 
-      <div className="mt-2 flex items-center gap-2 text-sm">
+      <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Sort by:</span>
         {(["best", "date", "placement", "duplicated"] as const).map((mode) => (
           <button

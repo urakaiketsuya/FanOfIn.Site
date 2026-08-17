@@ -97,7 +97,7 @@ export default function PopularDecksIndex() {
         </select>
       </div>
 
-      <div className="mt-2 flex items-center gap-2 text-sm">
+      <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Sort by:</span>
         {(Object.keys(SORT_LABELS) as SortMode[]).map((mode) => (
           <button

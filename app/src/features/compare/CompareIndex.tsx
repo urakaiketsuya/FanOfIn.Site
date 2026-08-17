@@ -40,7 +40,7 @@ export default function CompareIndex() {
         Add any number of decks, then see exactly where they overlap and diverge.
       </p>
 
-      <div className="mt-4 flex items-center gap-2 text-sm">
+      <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
         {(Object.keys(TAB_LABELS) as SourceTab[]).map((t) => (
           <button
             key={t}

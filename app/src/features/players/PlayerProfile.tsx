@@ -1,7 +1,9 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER } from "@gatcg/shared";
 import { useOmnidexIndex, useOmnidexJudges, useOmnidexPlayers } from "../tournaments/data";
 import { useEloData, useHipsterData, usePlayerDecksData } from "./data";
+import { useDeckSightingsData } from "../topdecks/data";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useChampionCardImages } from "./useChampionCardImages";
 import PlayerEventDecklistRow from "./PlayerEventDecklistRow";
@@ -20,6 +22,7 @@ export default function PlayerProfile() {
   const hipsterData = useHipsterData();
   const playerDecksData = usePlayerDecksData();
   const index = useOmnidexIndex();
+  const sightingsData = useDeckSightingsData();
 
   const player = playersData?.players.find((p) => p.id === playerId);
   const judge = judgesData?.judges.find((j) => j.id === playerId);
@@ -30,13 +33,48 @@ export default function PlayerProfile() {
     () => eloData?.upsets.filter((u) => u.winnerId === playerId || u.loserId === playerId) ?? [],
     [eloData, playerId],
   );
-  const events = useMemo(
+  const allEvents = useMemo(
     () =>
       (player && index ? index.events.filter((e) => player.eventIds.includes(e.id)) : []).sort((a, b) =>
         b.date.localeCompare(a.date),
       ),
     [player, index],
   );
+
+  // A player's champion for a given event only exists if that event had a public decklist —
+  // sourced from deck-sightings (already keyed by player+event) rather than lazily fetching every
+  // event's full decklist bundle just to build a filter list.
+  const championByEventId = useMemo(() => {
+    const map = new Map<number, string>();
+    if (!sightingsData) return map;
+    for (const s of sightingsData.sightings) {
+      if (s.player === playerId && s.championName) map.set(s.eventId, s.championName);
+    }
+    return map;
+  }, [sightingsData, playerId]);
+
+  const [eventCategory, setEventCategory] = useState<string | null>(null);
+  const [eventChampion, setEventChampion] = useState<string | null>(null);
+
+  const categoriesPresent = useMemo(() => {
+    const present = new Set(allEvents.map((e) => e.category));
+    return EVENT_CATEGORY_ORDER.filter((c) => present.has(c));
+  }, [allEvents]);
+
+  const championsPresent = useMemo(
+    () => Array.from(new Set(allEvents.map((e) => championByEventId.get(e.id)).filter((n): n is string => !!n))).sort(),
+    [allEvents, championByEventId],
+  );
+
+  const events = useMemo(
+    () =>
+      allEvents.filter(
+        (e) =>
+          (!eventCategory || e.category === eventCategory) && (!eventChampion || championByEventId.get(e.id) === eventChampion),
+      ),
+    [allEvents, eventCategory, eventChampion, championByEventId],
+  );
+
   const judgedEvents = useMemo(
     () =>
       (judge && index ? index.events.filter((e) => judge.eventIds.includes(e.id)) : []).sort((a, b) =>
@@ -166,7 +204,51 @@ export default function PlayerProfile() {
 
       {player && (
         <div className="mt-6">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Events ({events.length})</h2>
+          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
+            Events ({events.length}
+            {events.length !== allEvents.length && ` of ${allEvents.length}`})
+          </h2>
+
+          {(categoriesPresent.length > 1 || championsPresent.length > 1) && (
+            <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
+              {categoriesPresent.length > 1 && (
+                <>
+                  <span className="text-ctp-subtext0">Type:</span>
+                  <select
+                    value={eventCategory ?? ""}
+                    onChange={(e) => setEventCategory(e.target.value || null)}
+                    className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+                  >
+                    <option value="">All types</option>
+                    {categoriesPresent.map((c) => (
+                      <option key={c} value={c}>
+                        {EVENT_CATEGORY_LABELS[c] ?? c}
+                      </option>
+                    ))}
+                  </select>
+                </>
+              )}
+
+              {championsPresent.length > 1 && (
+                <>
+                  <span className="ml-2 text-ctp-subtext0">Champion:</span>
+                  <select
+                    value={eventChampion ?? ""}
+                    onChange={(e) => setEventChampion(e.target.value || null)}
+                    className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+                  >
+                    <option value="">All champions</option>
+                    {championsPresent.map((name) => (
+                      <option key={name} value={name}>
+                        {name}
+                      </option>
+                    ))}
+                  </select>
+                </>
+              )}
+            </div>
+          )}
+
           <div className="mt-2 space-y-2">
             {events.map((event) => (
               <PlayerEventDecklistRow key={event.id} event={event} playerId={playerId} />

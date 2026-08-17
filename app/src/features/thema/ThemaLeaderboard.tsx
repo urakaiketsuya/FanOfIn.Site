@@ -23,7 +23,7 @@ export default function ThemaLeaderboard() {
       <h1 className="text-2xl font-bold text-ctp-blue">Thema Rankings</h1>
       <p className="mt-1 text-sm text-ctp-subtext1">Dynamic thema price-tier leaderboard, updated regularly.</p>
 
-      <div className="mt-4 flex items-center gap-2 text-sm">
+      <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
         {(["FOIL", "NONFOIL"] as const).map((k) => (
           <button
             key={k}

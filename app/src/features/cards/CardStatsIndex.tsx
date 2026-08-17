@@ -138,7 +138,7 @@ export default function CardStatsIndex() {
         className="mt-4 w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
       />
 
-      <div className="mt-4 flex items-center gap-2 text-sm">
+      <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Type:</span>
         <button
           onClick={() => setCategory(null)}
@@ -161,7 +161,7 @@ export default function CardStatsIndex() {
         ))}
       </div>
 
-      <div className="mt-2 flex items-center gap-2 text-sm">
+      <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Sort by:</span>
         {(Object.keys(SORT_LABELS) as SortMode[]).map((mode) => (
           <button
@@ -176,7 +176,7 @@ export default function CardStatsIndex() {
         ))}
       </div>
 
-      <div className="mt-2 flex items-center gap-2 text-sm">
+      <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Min decks:</span>
         {MIN_DECKS_OPTIONS.map((n) => (
           <button
