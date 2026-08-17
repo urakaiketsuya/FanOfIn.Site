@@ -8,6 +8,16 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Counterpart to public/404.html's redirect — restores the real deep-linked path (encoded
+      // as ?redirect=...) before React Router mounts, so a hard refresh or shared link works on
+      // GitHub Pages despite it having no server-side rewrite support.
+      (function () {
+        var params = new URLSearchParams(location.search);
+        var redirect = params.get("redirect");
+        if (redirect) history.replaceState(null, "", redirect);
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

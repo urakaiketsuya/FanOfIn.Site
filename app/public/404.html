@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Grand Archive TCG Explorer</title>
+    <script>
+      // GitHub Pages is a static host with no server-side rewrite for client-side routes — it
+      // serves this file (with a 404 status, but this content) for any path that isn't a real
+      // file. Redirect back to index.html with the original path encoded in a query param, so
+      // index.html's own script can restore it via history.replaceState before React mounts.
+      var path = location.pathname + location.search + location.hash;
+      location.replace(location.origin + "/?redirect=" + encodeURIComponent(path));
+    </script>
+  </head>
+  <body></body>
+</html>

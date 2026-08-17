@@ -1,0 +1,58 @@
+name: Weekly data refresh
+
+on:
+  schedule:
+    # Monday 06:00 UTC — after weekend store championships have had time to get marked complete.
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Don't let a slow run overlap with next week's — later one waits instead of racing it.
+concurrency:
+  group: data-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    # Omnidex has no bulk-listing endpoint (see pipeline/src/omnidex/bounds.ts) — an incremental
+    # scan plus per-event deep-fetches, each politely rate-limited, can run long.
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Restore pipeline fetch/similarity cache
+        uses: actions/cache@v4
+        with:
+          path: pipeline/.cache
+          # Always save a fresh entry (keyed by run id) and restore the most recent prior one —
+          # this cache is genuinely incremental state (maxKnownId, per-event fetch cache, scored
+          # similarity pairs), not a derived/reproducible build cache, so losing it would mean the
+          # next run re-scans from scratch instead of just picking up what's new since last week.
+          key: pipeline-cache-${{ github.run_id }}
+          restore-keys: |
+            pipeline-cache-
+
+      - name: Run pipeline (incremental)
+        run: npm run pipeline
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then
+            echo "No data changes this run"
+          else
+            git commit -m "chore: weekly data refresh $(date -u +%Y-%m-%d)"
+            git push
+          fi
