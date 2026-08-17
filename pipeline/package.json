@@ -1,0 +1,17 @@
+{
+  "name": "@gatcg/pipeline",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@gatcg/shared": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "tsx": "^4.19.2",
+    "typescript": "~6.0.2"
+  }
+}
