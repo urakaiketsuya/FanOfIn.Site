@@ -14,11 +14,13 @@ import {
   computeAllyPower,
   computeDamageComposition,
   computeDeckComposition,
+  computeDeckRating,
   computeFloatingMemory,
   computeKeywordComposition,
   computeMemoryCostCurve,
   computeRarityBreakdown,
   computeReserveCostCurve,
+  type RatingPillar,
 } from "../../lib/deckIdentity";
 import { shortHash } from "../../lib/hash";
 import { formatUsd } from "../../lib/format";
@@ -60,6 +62,11 @@ export default function DeckDetail() {
   const floatingMemory = useMemo(() => {
     if (!deck) return null;
     return computeFloatingMemory([...deck.main, ...deck.material], cardsByName, deck.championName, deck.classes);
+  }, [deck, cardsByName]);
+
+  const rating = useMemo(() => {
+    if (!deck) return null;
+    return computeDeckRating([...deck.main, ...deck.material], cardsByName, deck.championName, deck.classes);
   }, [deck, cardsByName]);
 
   const allyPower = useMemo(() => {
@@ -235,6 +242,29 @@ export default function DeckDetail() {
           </p>
         </div>
       </div>
+
+      {rating && (
+        <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Power Rating</h2>
+            <span className="text-2xl font-bold text-ctp-blue">{rating.composite.toFixed(2)}</span>
+          </div>
+          <div className="mt-3 space-y-2">
+            {(["aggro", "consistency", "interaction", "resilience"] as RatingPillar[]).map((pillar) => (
+              <div key={pillar} className="flex items-center gap-2 text-sm">
+                <span className="w-24 shrink-0 capitalize text-ctp-subtext1">{pillar}</span>
+                <div className="h-2 flex-1 rounded-full bg-ctp-surface0">
+                  <div
+                    className="h-2 rounded-full bg-ctp-blue"
+                    style={{ width: `${(rating.scores[pillar] / 10) * 100}%` }}
+                  />
+                </div>
+                <span className="w-6 shrink-0 text-right text-ctp-subtext0">{rating.scores[pillar]}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="mt-6">
         <DecklistView decklist={decklist} cardsByName={cardsByName} showThumbnails />

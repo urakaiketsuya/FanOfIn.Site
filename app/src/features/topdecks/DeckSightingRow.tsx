@@ -72,6 +72,14 @@ export default function DeckSightingRow({
                 Netdecked ({sighting.duplicateCount} other{sighting.duplicateCount === 1 ? "" : "s"})
               </span>
             )}
+            {sighting.underplaced && (
+              <span
+                className="rounded-full border border-ctp-peach px-1.5 text-[10px] text-ctp-peach"
+                title="Strong match record, but still finished outside the top 30% of the field — likely tiebreakers, not a bad build."
+              >
+                Tough finish
+              </span>
+            )}
           </div>
           <div className="mt-0.5 text-xs text-ctp-subtext0">
             <Link to={`/events/${sighting.eventId}`} className="hover:text-ctp-blue hover:underline">

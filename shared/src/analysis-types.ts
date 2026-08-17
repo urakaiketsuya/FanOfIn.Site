@@ -222,6 +222,14 @@ export interface DeckSighting {
   eventTierWeight: number;
   /** `eventTierWeight * (1 - placementPercentile)`, or 0 when percentile is unavailable — the single sortable "how good was this finish" number, comparable across events of any size or tier. */
   weightedScore: number;
+  /**
+   * A strong match record (winRate >= 0.6, at least 3 wins) that still finished outside the top
+   * 30% of the field — Swiss tiebreakers (opponents' win %) can badly punish a good record against
+   * a weak schedule, so this isn't a data error, just bad luck. Threshold chosen against the real
+   * dataset: ~4% of sightings qualify, including several literal 3-0/4-0 records that still landed
+   * in the bottom half. Requires a known placementPercentile.
+   */
+  underplaced: boolean;
 }
 
 export interface DeckSightingsData {

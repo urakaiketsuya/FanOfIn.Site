@@ -83,6 +83,7 @@ export function computeDeckSightings(bundles: OmnidexEventBundle[], cardIndex: M
         placementPercentile,
         eventTierWeight,
         weightedScore,
+        underplaced: winRate >= 0.6 && standing.statsWins >= 3 && placementPercentile !== null && placementPercentile > 0.3,
         signature: cardSignature,
       });
     }
