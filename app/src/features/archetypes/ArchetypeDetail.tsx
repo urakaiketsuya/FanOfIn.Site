@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useArchetypeTaxonomyData } from "./data";
 import { useDeckSightingsData } from "../topdecks/data";
@@ -9,6 +9,7 @@ import DecklistView from "../events/DecklistView";
 import TopDecksList from "../../components/TopDecksList";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import { buildCompareLink } from "../compare/deepLink";
 
 export default function ArchetypeDetail() {
   const { id = "" } = useParams<{ id: string }>();
@@ -42,6 +43,17 @@ export default function ArchetypeDetail() {
       .filter((s) => deckIdSet.has(s.deckId))
       .sort((a, b) => b.weightedScore - a.weightedScore);
   }, [cluster, sightingsData]);
+
+  const [selectedDeckIds, setSelectedDeckIds] = useState<Set<string>>(new Set());
+  function toggleSelect(s: { deckId: string }) {
+    setSelectedDeckIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(s.deckId)) next.delete(s.deckId);
+      else next.add(s.deckId);
+      return next;
+    });
+  }
+  const selectedInstances = instances.filter((s) => selectedDeckIds.has(s.deckId));
 
   const definingCardNames = useMemo(() => cluster?.definingCards.map((c) => c.name) ?? [], [cluster]);
   const allSampleCardNames = useMemo(() => {
@@ -141,9 +153,25 @@ export default function ArchetypeDetail() {
 
           {instances.length > 0 && (
             <div className="mt-6">
-              <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Played by ({instances.length})</h2>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Played by ({instances.length})</h2>
+                {selectedInstances.length > 0 && (
+                  <Link
+                    to={buildCompareLink(selectedInstances.map((s) => ({ eventId: s.eventId, player: s.player })))}
+                    className="rounded-md border border-ctp-blue px-2 py-1 text-xs text-ctp-blue hover:bg-ctp-surface0"
+                  >
+                    Compare {selectedInstances.length} selected &rarr;
+                  </Link>
+                )}
+              </div>
+              <p className="mt-1 text-xs text-ctp-subtext0">Check any of these instances to compare their decklists side by side.</p>
               <div className="mt-2">
-                <TopDecksList decks={instances} playerName={playerName} />
+                <TopDecksList
+                  decks={instances}
+                  playerName={playerName}
+                  onToggleSelect={toggleSelect}
+                  isSelected={(s) => selectedDeckIds.has(s.deckId)}
+                />
               </div>
             </div>
           )}
