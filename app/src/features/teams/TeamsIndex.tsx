@@ -2,7 +2,11 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER } from "@gatcg/shared";
 import { useOmnidexTeams, useOmnidexPlayers } from "../tournaments/data";
+import { usePlayerDecksData } from "../players/data";
+import { useChampionCardImages } from "../players/useChampionCardImages";
 import PlayerLink from "../players/PlayerLink";
+import CardImage from "../../components/CardImage";
+import CardHoverPreview from "../../components/CardHoverPreview";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 export default function TeamsIndex() {
@@ -12,6 +16,7 @@ export default function TeamsIndex() {
   );
   const teamsData = useOmnidexTeams();
   const playersData = useOmnidexPlayers();
+  const playerDecksData = usePlayerDecksData();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string | null>(null);
   const [seasonId, setSeasonId] = useState<number | null>(null);
@@ -21,6 +26,16 @@ export default function TeamsIndex() {
     for (const p of playersData?.players ?? []) map.set(p.id, p.username);
     return map;
   }, [playersData]);
+
+  const topChampionById = useMemo(() => {
+    const map = new Map<number, string>();
+    for (const p of playerDecksData?.players ?? []) {
+      const top = p.topChampions[0];
+      if (top) map.set(p.playerId, top.name);
+    }
+    return map;
+  }, [playerDecksData]);
+  const championImages = useChampionCardImages([...new Set(topChampionById.values())]);
 
   function playerName(id: number): string {
     return usernameById.get(id) ?? `Player #${id}`;
@@ -132,13 +147,29 @@ export default function TeamsIndex() {
                 {EVENT_CATEGORY_LABELS[t.eventCategory] ?? t.eventCategory} · {new Date(t.eventDate).toLocaleDateString()}
               </span>
             </div>
-            <div className="mt-1 text-ctp-subtext1">
-              {t.players.map((p, j) => (
-                <span key={p.id}>
-                  {j > 0 && ", "}
-                  <PlayerLink id={p.id} username={playerName(p.id)} className="hover:text-ctp-blue" />
-                </span>
-              ))}
+            <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-ctp-subtext1">
+              {t.players.map((p) => {
+                const topChampion = topChampionById.get(p.id);
+                const card = topChampion ? championImages.get(topChampion) : undefined;
+                return (
+                  <span key={p.id} className="inline-flex items-center gap-1.5">
+                    {topChampion && (
+                      <CardHoverPreview image={card?.editions[0]?.image} alt={topChampion}>
+                        <div className="h-6 w-6 shrink-0 overflow-hidden rounded-full bg-ctp-surface0">
+                          {card?.editions[0] && (
+                            <CardImage
+                              image={card.editions[0].image}
+                              alt={topChampion}
+                              className="h-full w-full origin-[50%_20%] scale-[3] object-cover object-top"
+                            />
+                          )}
+                        </div>
+                      </CardHoverPreview>
+                    )}
+                    <PlayerLink id={p.id} username={playerName(p.id)} className="hover:text-ctp-blue" />
+                  </span>
+                );
+              })}
             </div>
           </div>
         ))}
