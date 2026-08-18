@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useOmnidexPlayers } from "../tournaments/data";
 import { useEloData, usePlayerDecksData } from "./data";
@@ -7,12 +7,15 @@ import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
+const PAGE_SIZE = 50;
+
 export default function PlayersIndex() {
   useDocumentTitle("Players", "Grand Archive TCG player rankings by Elo rating across ingested tournaments.");
   const playersData = useOmnidexPlayers();
   const eloData = useEloData();
   const playerDecksData = usePlayerDecksData();
   const [search, setSearch] = useState("");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const topChampionById = useMemo(() => {
     const map = new Map<number, string>();
@@ -22,7 +25,6 @@ export default function PlayersIndex() {
     }
     return map;
   }, [playerDecksData]);
-  const championImages = useChampionCardImages([...new Set(topChampionById.values())]);
 
   const ranked = useMemo(() => {
     if (!playersData || !eloData) return [];
@@ -39,6 +41,15 @@ export default function PlayersIndex() {
     if (!needle) return ranked;
     return ranked.filter((r) => r.player.username.toLowerCase().includes(needle));
   }, [ranked, search]);
+
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [search]);
+
+  const visible = rows.slice(0, visibleCount);
+  const championImages = useChampionCardImages(
+    Array.from(new Set(visible.map((r) => topChampionById.get(r.player.id)).filter((n): n is string => n !== undefined))),
+  );
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -59,6 +70,11 @@ export default function PlayersIndex() {
       {playersData && eloData && rows.length === 0 && (
         <p className="mt-6 text-ctp-subtext1">No rated players match "{search}".</p>
       )}
+      {playersData && eloData && rows.length > 0 && (
+        <p className="mt-4 text-xs text-ctp-subtext0">
+          {rows.length} rated player{rows.length === 1 ? "" : "s"}
+        </p>
+      )}
 
       <div className="mt-6 overflow-x-auto">
         <table className="w-max min-w-full text-sm">
@@ -71,7 +87,7 @@ export default function PlayersIndex() {
             </tr>
           </thead>
           <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-            {rows.map(({ player, rating, rank }) => {
+            {visible.map(({ player, rating, rank }) => {
               const topChampion = topChampionById.get(player.id);
               const card = topChampion ? championImages.get(topChampion) : undefined;
               return (
@@ -105,6 +121,15 @@ export default function PlayersIndex() {
           </tbody>
         </table>
       </div>
+
+      {visibleCount < rows.length && (
+        <button
+          onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
+          className="mt-4 w-full rounded-md border border-ctp-surface1 py-2 text-sm text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text"
+        >
+          Load more ({rows.length - visibleCount} remaining)
+        </button>
+      )}
     </div>
   );
 }
