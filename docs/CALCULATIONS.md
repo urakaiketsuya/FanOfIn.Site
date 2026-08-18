@@ -119,6 +119,52 @@ by hand found 60-80% carryover most transitions, but one genuine meta shake-up (
 Abyssal Heaven, only 1 of 5 carried over) and several one-season-only breakouts (e.g. Diao Chan) —
 confirming season-level trend tracking surfaces real signal, not noise.
 
+## Archetype taxonomy (`pipeline/src/analysis/archetypeTaxonomy.ts`)
+
+Data-derived named builds within each Champion (e.g. "Water Guo Jia") — distinct from
+`archetypes.json`'s `ArchetypeSummary` (the older, coarser per-Champion rollup, still published
+unchanged since Battle Chart reads it for its matchup matrix). Reference point was Fractal of
+Insight's `/deck/` page (~51 named archetypes like "Crux Lorraine"), but their system —
+re-read directly from `fractal/archetypes.py` — is a **hand-curated rule engine**
+(`require`/`exclude` card lists, `require_combos`, `require_element`, ~51 definitions authored by
+a human) under AGPL-3.0. Copying their curated archetype-to-card mappings would carry that
+license's obligations, so this is independently derived from our own decklists via clustering, not
+curation — same general *shape* (named builds defined by discriminating cards), different origin.
+
+**Method**:
+1. Group a Champion's decks by exact main+material signature (same convention as
+   `useDeckPopularity.ts`'s `canonicalSignature`) — keep only signatures with ≥2 distinct players
+   (same bar as Popular Decks; a one-off brew isn't a "build").
+2. **Greedy nearest-seed clustering**, not union-find/single-linkage: sort build-groups by player
+   count descending; each group joins the best-scoring *existing cluster seed* (weighted Jaccard,
+   reused from `similarity.ts`) if ≥ `CLUSTER_THRESHOLD` (0.45), else seeds a new cluster.
+   Single-linkage was tried first and rejected — verified live against Guo Jia (our largest
+   Champion, 7,154 decks → 238 multi-player build-groups) that union-find on any pairwise edge
+   ≥ threshold **chains into 3-4 giant blobs at every threshold from 0.35-0.6** (a resembles-b,
+   b resembles-c doesn't mean a resembles-c, but single-linkage merges them anyway). Greedy
+   nearest-seed avoids this — at 0.45, Guo Jia produces a clean 10-cluster split whose top clusters
+   separate by element (Water/Wind/Fire), confirmed by inspecting each cluster's defining cards.
+3. Clusters need ≥5 total players (`config.minBattleChartSampleSize`) to publish.
+4. **Defining cards**: present in ≥80% of the cluster's player-weighted decks (`DEFINING_MIN_IN_CLUSTER`)
+   *and* present in <85% of the Champion's other decks (`DEFINING_MAX_CHAMPION_WIDE`) — the second
+   condition is what keeps a cluster's defining-card list from just being the Champion's universal
+   staples. Both are initial values chosen from inspecting real output, same status as `MIN_SCORE`
+   or the trend ±2pp band elsewhere in this doc — tunable, not final.
+5. **Naming**: dominant non-colorless element among the defining cards (via the card catalog's
+   `elements` field), formatted `"{Element} {Champion}"`. No element signal → falls back to
+   `"{Champion} — {top defining card}"`. When two of a Champion's clusters land on the same name,
+   the smaller one gets `(card name)` appended — walking its own defining-card list in order for
+   the first name not already claimed by an earlier disambiguation in the same collision group
+   (not just its #1 card — a real bug during development: three-plus same-named clusters can share
+   the same top *generic* defining card, e.g. "Dungeon Guide", and collide again after a naive
+   single-card disambiguation).
+
+**Scope**: per-Champion only, not cross-Champion the way Fractal's "Slimes" or "Cats" can span
+multiple Champions — matches this project's framing (a Champion can have multiple distinct builds)
+and avoids a bigger, riskier generalization. Live run: 128 named builds across 20 Champions,
+zero duplicate names, Guo Jia's top 3 (Water/Wind/Fire, ~120-170 players each) matching hand
+inspection exactly.
+
 ## Deck similarity (`pipeline/src/analysis/similarity.ts`)
 
 **Base metric**: weighted Jaccard, a.k.a. Ruzicka similarity, over each deck's card-copy multiset

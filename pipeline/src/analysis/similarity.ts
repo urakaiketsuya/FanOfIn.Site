@@ -50,7 +50,7 @@ interface DeckRef {
  * union every call — that allocation was pure overhead paid millions of times across a champion
  * group, and this does the identical math without it.
  */
-function weightedJaccard(a: Map<string, number>, b: Map<string, number>): number {
+export function weightedJaccard(a: Map<string, number>, b: Map<string, number>): number {
   const [small, large] = a.size <= b.size ? [a, b] : [b, a];
   let intersection = 0;
   for (const [key, smallValue] of small) {

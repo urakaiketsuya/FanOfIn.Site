@@ -314,3 +314,31 @@ export interface DeckCardIndexData {
 export function decodeCardLines(lines: EncodedCardLine[], cardNames: string[]): DeckCardIndexLine[] {
   return lines.map(([nameIndex, quantity]) => ({ name: cardNames[nameIndex], quantity }));
 }
+
+/**
+ * A data-derived named "build" within a single Champion — e.g. "Water Guo Jia" — distinct from
+ * `ArchetypeSummary` (the older, coarser class+element/Champion rollup that `archetypes.json`
+ * still publishes for the Battle Chart). Clusters are found by grouping exact main+material
+ * decklists and greedily merging similar groups; see `pipeline/src/analysis/archetypeTaxonomy.ts`
+ * and docs/CALCULATIONS.md for the full method and why it was chosen over simpler alternatives.
+ */
+export interface ArchetypeCluster {
+  /** Stable across regenerations as long as the defining cards don't change — djb2 hash of championName + sorted defining card names, same scheme as `shortHash`. */
+  id: string;
+  championName: string;
+  /** e.g. "Water Guo Jia", or "Fire Guo Jia (Vermilion Decree)" when a second cluster shares the dominant element. */
+  name: string;
+  deckCount: number;
+  playerCount: number;
+  eventCount: number;
+  avgWinRate: number;
+  /** Cards present in most of this cluster's decks but not most of the Champion's other decks — what actually distinguishes this build. Sorted by prevalence descending. */
+  definingCards: { name: string; prevalence: number }[];
+  /** Every member deck's id, joinable against DeckSightingsData — same pattern as PopularDeck.deckIds. */
+  deckIds: string[];
+}
+
+export interface ArchetypeTaxonomyData {
+  generatedAt: string;
+  clusters: ArchetypeCluster[];
+}

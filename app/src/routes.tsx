@@ -57,7 +57,7 @@ export default function AppRoutes() {
         <Route path="/players/:id" element={<PlayerProfile />} />
         <Route path="/judges" element={<JudgesIndex />} />
         <Route path="/archetypes" element={<ArchetypesIndex />} />
-        <Route path="/archetypes/:signature" element={<ArchetypeDetail />} />
+        <Route path="/archetypes/:id" element={<ArchetypeDetail />} />
         <Route path="/battle-chart" element={<BattleChart />} />
         <Route path="/top-decks" element={<TopDecksIndex />} />
         <Route path="/champions" element={<ChampionsIndex />} />

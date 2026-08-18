@@ -1,25 +1,56 @@
 import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useArchetypeTaxonomyData } from "./data";
+import { useDeckSightingsData } from "../topdecks/data";
 import { useOmnidexPlayers } from "../tournaments/data";
-import { useArchetypeData } from "./data";
+import { useSightingDecklist } from "../topdecks/useSightingDecklist";
+import { useCardsByNames } from "../events/useCardsByNames";
+import DecklistView from "../events/DecklistView";
+import TopDecksList from "../../components/TopDecksList";
+import CardHoverPreview from "../../components/CardHoverPreview";
 
 export default function ArchetypeDetail() {
-  const { signature: encoded = "" } = useParams<{ signature: string }>();
-  const signature = decodeURIComponent(encoded);
+  const { id = "" } = useParams<{ id: string }>();
 
-  const data = useArchetypeData();
+  const data = useArchetypeTaxonomyData();
+  const sightingsData = useDeckSightingsData();
   const playersData = useOmnidexPlayers();
 
-  const archetype = data?.archetypes.find((a) => a.signature === signature);
-  const matchups = useMemo(
-    () => data?.battleChart.filter((b) => b.a === signature || b.b === signature) ?? [],
-    [data, signature],
-  );
+  const cluster = data?.clusters.find((c) => c.id === id);
 
-  if (data && !archetype) {
+  const [sampleEventId, samplePlayer] = useMemo(() => {
+    const first = cluster?.deckIds[0];
+    if (!first) return [0, 0];
+    const [eventId, player] = first.split(":").map(Number);
+    return [eventId, player];
+  }, [cluster]);
+  const sample = useSightingDecklist(sampleEventId, samplePlayer, !!cluster);
+
+  const instances = useMemo(() => {
+    if (!cluster || !sightingsData) return [];
+    const deckIdSet = new Set(cluster.deckIds);
+    return sightingsData.sightings
+      .filter((s) => deckIdSet.has(s.deckId))
+      .sort((a, b) => b.weightedScore - a.weightedScore);
+  }, [cluster, sightingsData]);
+
+  const definingCardNames = useMemo(() => cluster?.definingCards.map((c) => c.name) ?? [], [cluster]);
+  const allSampleCardNames = useMemo(() => {
+    if (!sample.decklist) return definingCardNames;
+    return [...definingCardNames, ...sample.decklist.main, ...sample.decklist.material, ...sample.decklist.sideboard].map(
+      (c) => (typeof c === "string" ? c : c.card),
+    );
+  }, [sample.decklist, definingCardNames]);
+  const cardImages = useCardsByNames(allSampleCardNames);
+
+  function playerName(pid: number): string {
+    return playersData?.players.find((p) => p.id === pid)?.username ?? `Player #${pid}`;
+  }
+
+  if (data && !cluster) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-10">
-        <p className="text-ctp-red">Archetype "{signature}" hasn't cleared the sample-size threshold (or doesn't exist).</p>
+        <p className="text-ctp-red">This build isn't in the ingested data (or hasn't cleared the sample-size threshold).</p>
         <Link to="/archetypes" className="mt-2 inline-block text-ctp-blue hover:underline">
           &larr; All archetypes
         </Link>
@@ -33,56 +64,62 @@ export default function ArchetypeDetail() {
         &larr; All archetypes
       </Link>
 
-      {archetype && (
+      {cluster && (
         <>
-          <h1 className="mt-2 text-2xl font-bold text-ctp-blue">{archetype.signature}</h1>
+          <h1 className="mt-2 text-2xl font-bold text-ctp-blue">{cluster.name}</h1>
           <p className="mt-1 text-sm text-ctp-subtext1">
-            {archetype.classes.join("/")} · {archetype.elements.join("/")} · {archetype.deckCount} decks across{" "}
-            {archetype.eventCount} events · {(archetype.avgWinRate * 100).toFixed(0)}% avg win rate
+            <Link to={`/champions/${encodeURIComponent(cluster.championName)}`} className="text-ctp-blue hover:underline">
+              {cluster.championName}
+            </Link>{" "}
+            · {cluster.playerCount} player{cluster.playerCount === 1 ? "" : "s"} · {cluster.deckCount} deck
+            {cluster.deckCount === 1 ? "" : "s"} across {cluster.eventCount} event{cluster.eventCount === 1 ? "" : "s"} ·{" "}
+            {(cluster.avgWinRate * 100).toFixed(0)}% avg win rate
           </p>
 
-          {matchups.length > 0 && (
+          <div className="mt-6">
+            <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Defining cards</h2>
+            <p className="mt-1 text-xs text-ctp-subtext0">
+              Cards common in this build but not typical of other {cluster.championName} decks — what actually
+              distinguishes it.
+            </p>
+            <div className="mt-2 flex flex-wrap gap-2 text-sm">
+              {cluster.definingCards.map((dc) => {
+                const card = cardImages.get(dc.name);
+                return (
+                  <CardHoverPreview key={dc.name} image={card?.editions[0]?.image} alt={dc.name}>
+                    {card ? (
+                      <Link
+                        to={`/cards/${card.slug}`}
+                        className="rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-text hover:border-ctp-blue hover:text-ctp-blue"
+                      >
+                        {dc.name} <span className="text-ctp-subtext0">({(dc.prevalence * 100).toFixed(0)}%)</span>
+                      </Link>
+                    ) : (
+                      <span className="rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-text">
+                        {dc.name} <span className="text-ctp-subtext0">({(dc.prevalence * 100).toFixed(0)}%)</span>
+                      </span>
+                    )}
+                  </CardHoverPreview>
+                );
+              })}
+            </div>
+          </div>
+
+          {sample.decklist && (
             <div className="mt-6">
-              <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Matchups</h2>
-              <table className="mt-2 w-full text-sm">
-                <tbody className="divide-y divide-ctp-surface0">
-                  {matchups.map((m, i) => {
-                    const opponent = m.a === signature ? m.b : m.a;
-                    const wins = m.a === signature ? m.aWins : m.bWins;
-                    const losses = m.a === signature ? m.bWins : m.aWins;
-                    return (
-                      <tr key={i}>
-                        <td className="py-1.5">
-                          <Link to={`/archetypes/${encodeURIComponent(opponent)}`} className="text-ctp-text hover:text-ctp-blue">
-                            {opponent}
-                          </Link>
-                        </td>
-                        <td className="py-1.5 text-ctp-subtext1">
-                          {wins}-{losses}-{m.ties} ({m.games} games)
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+              <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Sample decklist</h2>
+              <p className="mt-1 text-xs text-ctp-subtext0">One representative instance of this build.</p>
+              <div className="mt-2">
+                <DecklistView decklist={sample.decklist} cardsByName={cardImages} showThumbnails />
+              </div>
             </div>
           )}
 
-          {archetype.sampleDecks.length > 0 && (
+          {instances.length > 0 && (
             <div className="mt-6">
-              <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Sample decks</h2>
-              <div className="mt-2 space-y-1 text-sm">
-                {archetype.sampleDecks.map((d, i) => {
-                  const playerName = playersData?.players.find((p) => p.id === d.player)?.username ?? `Player #${d.player}`;
-                  return (
-                    <div key={i}>
-                      <Link to={`/events/${d.eventId}`} className="text-ctp-blue hover:underline">
-                        {playerName}'s deck
-                      </Link>{" "}
-                      <span className="text-ctp-subtext0">at event {d.eventId}</span>
-                    </div>
-                  );
-                })}
+              <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Played by ({instances.length})</h2>
+              <div className="mt-2">
+                <TopDecksList decks={instances} playerName={playerName} />
               </div>
             </div>
           )}

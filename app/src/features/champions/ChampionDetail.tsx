@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useArchetypeData, useChampionTrendsData } from "../archetypes/data";
+import { useArchetypeData, useArchetypeTaxonomyData, useChampionTrendsData } from "../archetypes/data";
 import { useDeckSightingsData } from "../topdecks/data";
 import { useHipsterData } from "../players/data";
 import { useOmnidexPlayers } from "../tournaments/data";
@@ -13,11 +13,12 @@ const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
 
 type SpiritFilter = { kind: "all" } | { kind: "element"; element: string } | { kind: "spirit"; spiritName: string };
-type ChampionTab = "season" | "cards" | "decks";
+type ChampionTab = "season" | "cards" | "builds" | "decks";
 
 const TABS: { key: ChampionTab; label: string }[] = [
   { key: "season", label: "By Season" },
   { key: "cards", label: "Most Used Cards" },
+  { key: "builds", label: "Builds" },
   { key: "decks", label: "Decks" },
 ];
 
@@ -30,6 +31,7 @@ export default function ChampionDetail() {
   const championName = decodeURIComponent(name);
 
   const archetypeData = useArchetypeData();
+  const taxonomyData = useArchetypeTaxonomyData();
   const trendsData = useChampionTrendsData();
   const sightingsData = useDeckSightingsData();
   const hipsterData = useHipsterData();
@@ -67,6 +69,13 @@ export default function ChampionDetail() {
     if (!element) return [];
     return champion.spirits.filter((s) => s.spiritElement === element);
   }, [champion, spiritFilter]);
+
+  const builds = useMemo(() => {
+    if (!taxonomyData) return [];
+    return taxonomyData.clusters
+      .filter((c) => c.championName === championName)
+      .sort((a, b) => b.playerCount - a.playerCount);
+  }, [taxonomyData, championName]);
 
   const topDecks = useMemo(() => {
     if (!sightingsData) return [];
@@ -264,6 +273,42 @@ export default function ChampionDetail() {
                   <TopCardsSections topCards={displayedTopCards} cardImages={cardImages} />
                 </div>
               )}
+            </div>
+          )}
+
+          {tab === "builds" && builds.length > 0 && (
+            <div className="mt-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Builds</h2>
+                <Link to="/archetypes" className="text-xs text-ctp-blue hover:underline">
+                  All archetypes &rarr;
+                </Link>
+              </div>
+              <p className="mt-1 text-xs text-ctp-subtext0">
+                Named builds within {championName}, derived from real decklists.
+              </p>
+              <table className="mt-2 w-full text-sm">
+                <thead>
+                  <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+                    <th className="py-1">Build</th>
+                    <th className="py-1">Players</th>
+                    <th className="py-1">Win rate</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-ctp-surface0">
+                  {builds.map((b) => (
+                    <tr key={b.id}>
+                      <td className="py-1.5">
+                        <Link to={`/archetypes/${b.id}`} className="text-ctp-text hover:text-ctp-blue">
+                          {b.name}
+                        </Link>
+                      </td>
+                      <td className="py-1.5 text-ctp-subtext1">{b.playerCount}</td>
+                      <td className="py-1.5 text-ctp-subtext1">{(b.avgWinRate * 100).toFixed(0)}%</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
 

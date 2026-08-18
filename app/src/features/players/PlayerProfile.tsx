@@ -202,7 +202,7 @@ export default function PlayerProfile() {
               return (
                 <CardHoverPreview key={c.name} image={card?.editions[0]?.image} alt={c.name}>
                   <Link
-                    to={`/archetypes/${encodeURIComponent(c.name)}`}
+                    to={`/champions/${encodeURIComponent(c.name)}`}
                     className="flex items-center gap-2 text-sm hover:text-ctp-blue"
                   >
                     {card?.editions[0] ? (

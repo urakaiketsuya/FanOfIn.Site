@@ -50,7 +50,7 @@ const SECTIONS: Section[] = [
   },
   {
     title: "Archetypes",
-    description: "Deck archetypes grouped by class and element, with sample decklists and matchup data.",
+    description: "Named builds within each Champion, derived from real decklists, with sample decklists and matchup data.",
     to: "/archetypes",
     links: [{ to: "/battle-chart", label: "Battle chart" }],
   },

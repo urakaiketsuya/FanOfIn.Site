@@ -13,6 +13,7 @@ import { computePlayerDeckProfiles } from "./playerDecks.js";
 import { computeDeckSightings } from "./deckSightings.js";
 import { computeChampionTrends } from "./championTrends.js";
 import { computeDeckCardIndex } from "./deckCardIndex.js";
+import { computeArchetypeTaxonomy } from "./archetypeTaxonomy.js";
 
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/analysis");
 const PRICES_PATH = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/prices.json");
@@ -110,6 +111,9 @@ export async function buildAnalysis(): Promise<void> {
   const championTrends = computeChampionTrends(deckSightings);
   await writeFile(path.join(DATA_DIR, "champion-trends.json"), JSON.stringify(championTrends), "utf-8");
 
+  const archetypeTaxonomy = computeArchetypeTaxonomy(completed, cardIndex, deckSightings);
+  await writeFile(path.join(DATA_DIR, "archetype-taxonomy.json"), JSON.stringify(archetypeTaxonomy), "utf-8");
+
   const { cardNames: deckCardIndexNames, entries: deckCardIndex } = await computeDeckCardIndex(completed, cardIndex);
   await writeFile(
     path.join(DATA_DIR, "deck-card-index.json"),
@@ -128,6 +132,6 @@ export async function buildAnalysis(): Promise<void> {
   });
 
   console.log(
-    `analysis: ${ratings.size} rated players, ${upsets.length} upsets, ${cardStats.length} cards, ${archetypes.length} archetypes, ${championTrends.champions.length} champion trends across ${championTrends.seasonOrder.length} seasons, ${similarDecks.length} decks with similarity matches, ${playerDeckProfiles.length} player deck profiles, ${deckSightings.length} deck sightings, ${deckCardIndex.length} decks in card index`,
+    `analysis: ${ratings.size} rated players, ${upsets.length} upsets, ${cardStats.length} cards, ${archetypes.length} archetypes, ${championTrends.champions.length} champion trends across ${championTrends.seasonOrder.length} seasons, ${archetypeTaxonomy.clusters.length} named builds, ${similarDecks.length} decks with similarity matches, ${playerDeckProfiles.length} player deck profiles, ${deckSightings.length} deck sightings, ${deckCardIndex.length} decks in card index`,
   );
 }
