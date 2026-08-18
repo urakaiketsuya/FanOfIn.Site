@@ -8,6 +8,7 @@ import { formatUsd } from "../../lib/format";
 import { computeSectionPrice } from "../../lib/deckPrice";
 import { computeDeckIdentity } from "../../lib/deckIdentity";
 import { buildTcgplayerMassEntryUrl } from "../../lib/tcgplayerMassEntry";
+import { buildTtsSaveFile, downloadJsonFile, findDeckChampionName, slugifyFilename } from "../../lib/ttsExport";
 
 /** Plain-text export with "# Section" headers and "4 Card Name" lines — round-trips with the Compare tool's paste parser. */
 function buildDecklistText(decklist: OmnidexDecklist): string {
@@ -128,6 +129,19 @@ export default function DecklistView({
     [allLines],
   );
 
+  function handleExportTts() {
+    const championName = findDeckChampionName(decklist.material, cardsByName);
+    const save = buildTtsSaveFile(
+      [
+        { label: "Main", lines: decklist.main },
+        { label: "Material", lines: decklist.material },
+        { label: "Sideboard", lines: decklist.sideboard },
+      ],
+      cardsByName,
+    );
+    downloadJsonFile(`${slugifyFilename(championName ?? "decklist")}-tts.json`, save);
+  }
+
   return (
     <div>
       {(identity.classes.length > 0 || identity.elements.length > 0) && (
@@ -172,6 +186,14 @@ export default function DecklistView({
               >
                 Buy on TCGplayer &rarr;
               </a>
+              <button
+                type="button"
+                onClick={handleExportTts}
+                title="Downloads a .json file — in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it"
+                className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text"
+              >
+                Export to TTS
+              </button>
             </div>
           )}
         </div>

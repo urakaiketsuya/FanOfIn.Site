@@ -6,6 +6,7 @@ import { useCardsByNames } from "../events/useCardsByNames";
 import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
 import { computeSectionPrice } from "../../lib/deckPrice";
 import { formatUsd } from "../../lib/format";
+import { buildTtsSaveFile, downloadJsonFile, findDeckChampionName, slugifyFilename } from "../../lib/ttsExport";
 import type { ComparedDeck } from "./types";
 
 const SECTIONS: { key: keyof OmnidexDecklist; label: string }[] = [
@@ -36,6 +37,21 @@ export default function ComparisonGrid({
 
   const resolvedCount = decks.filter((d) => decklists.get(d.key)).length;
 
+  function handleExportTts(deck: ComparedDeck) {
+    const list = decklists.get(deck.key);
+    if (!list) return;
+    const championName = findDeckChampionName(list.material, cardsByName);
+    const save = buildTtsSaveFile(
+      [
+        { label: "Main", lines: list.main },
+        { label: "Material", lines: list.material },
+        { label: "Sideboard", lines: list.sideboard },
+      ],
+      cardsByName,
+    );
+    downloadJsonFile(`${slugifyFilename(championName ?? deck.label)}-tts.json`, save);
+  }
+
   return (
     <div className="overflow-x-auto">
       <table className="w-max min-w-full text-sm">
@@ -44,7 +60,19 @@ export default function ComparisonGrid({
             <th className="sticky left-0 z-10 bg-ctp-base py-1 pr-4">Card</th>
             {decks.map((d) => (
               <th key={d.key} className="min-w-[7rem] py-1 pr-4 font-medium normal-case text-ctp-text">
-                {d.label}
+                <div className="flex items-center gap-1.5">
+                  <span>{d.label}</span>
+                  {decklists.get(d.key) && (
+                    <button
+                      type="button"
+                      onClick={() => handleExportTts(d)}
+                      title="Downloads a .json file — in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it"
+                      className="rounded border border-ctp-surface1 px-1 py-0.5 text-[10px] font-normal text-ctp-subtext1 hover:text-ctp-text"
+                    >
+                      TTS
+                    </button>
+                  )}
+                </div>
               </th>
             ))}
           </tr>
