@@ -336,6 +336,17 @@ export interface ArchetypeCluster {
   definingCards: { name: string; prevalence: number }[];
   /** Every member deck's id, joinable against DeckSightingsData — same pattern as PopularDeck.deckIds. */
   deckIds: string[];
+  /** Only the seasons this build actually has sightings in (not zero-padded across every season) — for season filtering, not trend analysis. */
+  seasons: ArchetypeClusterSeasonStats[];
+}
+
+export interface ArchetypeClusterSeasonStats {
+  seasonId: number;
+  seasonName: string;
+  deckCount: number;
+  playerCount: number;
+  eventCount: number;
+  avgWinRate: number;
 }
 
 export interface ArchetypeTaxonomyData {

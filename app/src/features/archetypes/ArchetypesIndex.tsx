@@ -4,9 +4,19 @@ import { useArchetypeTaxonomyData } from "./data";
 
 type SortMode = "players" | "winRate";
 
+interface DisplayRow {
+  id: string;
+  name: string;
+  championName: string;
+  playerCount: number;
+  eventCount: number;
+  avgWinRate: number;
+}
+
 export default function ArchetypesIndex() {
   const data = useArchetypeTaxonomyData();
   const [championFilter, setChampionFilter] = useState<string | null>(null);
+  const [seasonId, setSeasonId] = useState<number | null>(null);
   const [sortMode, setSortMode] = useState<SortMode>("players");
 
   const championsPresent = useMemo(() => {
@@ -14,11 +24,52 @@ export default function ArchetypesIndex() {
     return Array.from(new Set(data.clusters.map((c) => c.championName))).sort();
   }, [data]);
 
-  const rows = useMemo(() => {
+  const seasonsPresent = useMemo(() => {
     if (!data) return [];
-    const filtered = championFilter ? data.clusters.filter((c) => c.championName === championFilter) : data.clusters;
-    return [...filtered].sort((a, b) => (sortMode === "winRate" ? b.avgWinRate - a.avgWinRate : b.playerCount - a.playerCount));
-  }, [data, championFilter, sortMode]);
+    const bySeasonId = new Map<number, string>();
+    for (const c of data.clusters) {
+      // `seasons` guards against a stale IndexedDB copy from before this field shipped — same
+      // rollout-window issue as the deck-card-index dictionary encoding.
+      for (const s of c.seasons ?? []) bySeasonId.set(s.seasonId, s.seasonName);
+    }
+    return Array.from(bySeasonId.entries()).sort((a, b) => a[0] - b[0]);
+  }, [data]);
+
+  const rows = useMemo((): DisplayRow[] => {
+    if (!data) return [];
+    let filtered = championFilter ? data.clusters.filter((c) => c.championName === championFilter) : data.clusters;
+
+    let displayRows: DisplayRow[];
+    if (seasonId !== null) {
+      // A build not played at all in the selected season simply isn't shown — same convention as
+      // Top Decks' season filter. Stats shown are that season's, not all-time.
+      displayRows = filtered
+        .map((c) => {
+          const season = c.seasons?.find((s) => s.seasonId === seasonId);
+          if (!season) return null;
+          return {
+            id: c.id,
+            name: c.name,
+            championName: c.championName,
+            playerCount: season.playerCount,
+            eventCount: season.eventCount,
+            avgWinRate: season.avgWinRate,
+          };
+        })
+        .filter((r): r is DisplayRow => r !== null);
+    } else {
+      displayRows = filtered.map((c) => ({
+        id: c.id,
+        name: c.name,
+        championName: c.championName,
+        playerCount: c.playerCount,
+        eventCount: c.eventCount,
+        avgWinRate: c.avgWinRate,
+      }));
+    }
+
+    return displayRows.sort((a, b) => (sortMode === "winRate" ? b.avgWinRate - a.avgWinRate : b.playerCount - a.playerCount));
+  }, [data, championFilter, seasonId, sortMode]);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -49,6 +100,20 @@ export default function ArchetypesIndex() {
           ))}
         </select>
 
+        <span className="ml-2 text-ctp-subtext0">Season:</span>
+        <select
+          value={seasonId ?? ""}
+          onChange={(e) => setSeasonId(e.target.value ? Number(e.target.value) : null)}
+          className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+        >
+          <option value="">All seasons</option>
+          {seasonsPresent.map(([id, name]) => (
+            <option key={id} value={id}>
+              {name}
+            </option>
+          ))}
+        </select>
+
         <span className="ml-2 text-ctp-subtext0">Sort by:</span>
         {(["players", "winRate"] as SortMode[]).map((mode) => (
           <button
@@ -65,7 +130,11 @@ export default function ArchetypesIndex() {
       </div>
 
       {!data && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
-      {data && rows.length === 0 && <p className="mt-6 text-ctp-subtext1">No builds have cleared the sample-size threshold yet.</p>}
+      {data && rows.length === 0 && (
+        <p className="mt-6 text-ctp-subtext1">
+          {seasonId !== null ? "No builds were played in this season yet." : "No builds have cleared the sample-size threshold yet."}
+        </p>
+      )}
 
       <table className="mt-6 w-full text-sm">
         <thead>

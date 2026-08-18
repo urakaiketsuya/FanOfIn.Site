@@ -185,6 +185,24 @@ export function computeArchetypeTaxonomy(
       const events = new Set(sightings.map((s) => s.eventId));
       const avgWinRate = sightings.length > 0 ? sightings.reduce((sum, s) => sum + s.winRate, 0) / sightings.length : 0;
 
+      const bySeasonId = new Map<number, { seasonName: string; sightings: DeckSighting[] }>();
+      for (const s of sightings) {
+        if (s.seasonId === null || s.seasonName === null) continue;
+        const entry = bySeasonId.get(s.seasonId) ?? { seasonName: s.seasonName, sightings: [] };
+        entry.sightings.push(s);
+        bySeasonId.set(s.seasonId, entry);
+      }
+      const seasons: ArchetypeCluster["seasons"] = Array.from(bySeasonId.entries())
+        .map(([seasonId, { seasonName, sightings: seasonSightings }]) => ({
+          seasonId,
+          seasonName,
+          deckCount: seasonSightings.length,
+          playerCount: new Set(seasonSightings.map((s) => s.player)).size,
+          eventCount: new Set(seasonSightings.map((s) => s.eventId)).size,
+          avgWinRate: seasonSightings.reduce((sum, s) => sum + s.winRate, 0) / seasonSightings.length,
+        }))
+        .sort((a, b) => a.seasonId - b.seasonId);
+
       championClusterSummaries.push({
         id: "",
         championName,
@@ -195,6 +213,7 @@ export function computeArchetypeTaxonomy(
         avgWinRate,
         definingCards: definingCards.slice(0, 12),
         deckIds,
+        seasons,
       });
     }
 
