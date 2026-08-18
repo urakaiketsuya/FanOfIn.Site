@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import AppRoutes from "./routes";
-import SyncStatus from "./components/SyncStatus";
 import RandomFlavorFooter from "./components/RandomFlavorFooter";
 
 const NAV_LINKS = [
@@ -57,7 +56,6 @@ export default function App() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <SyncStatus />
             <button
               type="button"
               onClick={() => setMenuOpen((v) => !v)}

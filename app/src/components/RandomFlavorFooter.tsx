@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useRandomFlavorCard } from "../features/cards/useRandomFlavorCard";
+import SyncStatus from "./SyncStatus";
 
 export default function RandomFlavorFooter() {
   const card = useRandomFlavorCard();
@@ -23,6 +24,9 @@ export default function RandomFlavorFooter() {
         This site is built and maintained with AI assistance. Card data, stats, and analysis are generated
         automatically — please verify anything important against official sources.
       </p>
+      <div className="mt-3">
+        <SyncStatus />
+      </div>
     </footer>
   );
 }
