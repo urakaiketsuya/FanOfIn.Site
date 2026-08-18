@@ -39,7 +39,11 @@ export default function ChampionDetail() {
   const hipsterData = useHipsterData();
   const playersData = useOmnidexPlayers();
 
-  const champion = archetypeData?.archetypes.find((a) => a.signature === championName);
+  // Named Spirits (e.g. "Kaze, Spirit of Wind") are tracked as their own Champion-like entry in a
+  // separate list, not merged into `archetypes` — fall back to it so this page works for either.
+  const champion =
+    archetypeData?.archetypes.find((a) => a.signature === championName) ??
+    archetypeData?.namedSpirits?.find((s) => s.signature === championName);
   const trend = trendsData?.champions.find((t) => t.championName === championName);
   const seasonHistory = useMemo(() => {
     if (!trend) return [];

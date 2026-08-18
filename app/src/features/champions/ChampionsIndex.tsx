@@ -1,8 +1,9 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import type { ChampionTrendDirection } from "@gatcg/shared";
+import type { ArchetypeSummary, ChampionTrendDirection } from "@gatcg/shared";
 import { useArchetypeData, useChampionTrendsData } from "../archetypes/data";
 import { useChampionCardImages } from "../players/useChampionCardImages";
+import { useCardsByNames } from "../events/useCardsByNames";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -40,6 +41,7 @@ export default function ChampionsIndex() {
     return Array.from(bySignature.values());
   }, [data]);
   const championImages = useChampionCardImages(archetypes?.map((c) => c.signature) ?? []);
+  const namedSpiritImages = useCardsByNames(data?.namedSpirits?.map((s) => s.signature) ?? []);
   const latestSeasonName = trendsData?.seasonOrder[trendsData.seasonOrder.length - 1];
 
   return (
@@ -112,6 +114,61 @@ export default function ChampionsIndex() {
           </tbody>
         </table>
       </div>
+
+      {data?.namedSpirits && data.namedSpirits.length > 0 && (
+        <div className="mt-10">
+          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Named Spirits</h2>
+          <p className="mt-1 text-xs text-ctp-subtext0">
+            Named Spirit companions (e.g. "Kaze, Spirit of Wind" — distinct from the generic "Spirit of Wind"), tracked
+            with the same stats as a Champion, across every deck that runs them regardless of which Champion is present.
+          </p>
+          <div className="mt-2 overflow-x-auto">
+            <table className="w-max min-w-full text-sm">
+              <thead>
+                <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+                  <th className="py-1 pr-6"></th>
+                  <th className="py-1 pr-6">Spirit</th>
+                  <th className="py-1 pr-6">Decks</th>
+                  <th className="py-1 pr-6">Events</th>
+                  <th className="py-1">Win rate</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
+                {data.namedSpirits.map((s: ArchetypeSummary) => {
+                  const card = namedSpiritImages.get(s.signature);
+                  return (
+                    <tr key={s.signature}>
+                      <td className="w-12 py-1.5 pr-6">
+                        <CardHoverPreview image={card?.editions[0]?.image} alt={s.signature}>
+                          <Link to={`/champions/${encodeURIComponent(s.signature)}`}>
+                            {card?.editions[0] ? (
+                              <CardImage
+                                image={card.editions[0].image}
+                                alt={s.signature}
+                                className="h-14 w-10 rounded object-cover object-top"
+                              />
+                            ) : (
+                              <div className="h-14 w-10 rounded bg-ctp-surface0" />
+                            )}
+                          </Link>
+                        </CardHoverPreview>
+                      </td>
+                      <td className="py-1.5 pr-6 whitespace-nowrap">
+                        <Link to={`/champions/${encodeURIComponent(s.signature)}`} className="text-ctp-text hover:text-ctp-blue">
+                          {s.signature}
+                        </Link>
+                      </td>
+                      <td className="py-1.5 pr-6 text-ctp-subtext1">{s.deckCount}</td>
+                      <td className="py-1.5 pr-6 text-ctp-subtext1">{s.eventCount}</td>
+                      <td className="py-1.5 text-ctp-subtext1">{(s.avgWinRate * 100).toFixed(0)}%</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

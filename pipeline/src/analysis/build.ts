@@ -81,10 +81,10 @@ export async function buildAnalysis(): Promise<void> {
     "utf-8",
   );
 
-  const { archetypes, battleChart } = computeArchetypeAnalysis(completed, cardIndex);
+  const { archetypes, namedSpirits, battleChart } = computeArchetypeAnalysis(completed, cardIndex);
   await writeFile(
     path.join(DATA_DIR, "archetypes.json"),
-    JSON.stringify({ generatedAt: new Date().toISOString(), archetypes, battleChart }),
+    JSON.stringify({ generatedAt: new Date().toISOString(), archetypes, namedSpirits, battleChart }),
     "utf-8",
   );
 
@@ -136,6 +136,6 @@ export async function buildAnalysis(): Promise<void> {
   });
 
   console.log(
-    `analysis: ${ratings.size} rated players, ${upsets.length} upsets, ${cardStats.length} cards, ${archetypes.length} archetypes, ${championTrends.champions.length} champion trends across ${championTrends.seasonOrder.length} seasons, ${archetypeTaxonomy.clusters.length} named builds, ${achievements.unlocks.length} achievement unlocks, ${similarDecks.length} decks with similarity matches, ${playerDeckProfiles.length} player deck profiles, ${deckSightings.length} deck sightings, ${deckCardIndex.length} decks in card index`,
+    `analysis: ${ratings.size} rated players, ${upsets.length} upsets, ${cardStats.length} cards, ${archetypes.length} archetypes, ${namedSpirits.length} named spirits, ${championTrends.champions.length} champion trends across ${championTrends.seasonOrder.length} seasons, ${archetypeTaxonomy.clusters.length} named builds, ${achievements.unlocks.length} achievement unlocks, ${similarDecks.length} decks with similarity matches, ${playerDeckProfiles.length} player deck profiles, ${deckSightings.length} deck sightings, ${deckCardIndex.length} decks in card index`,
   );
 }

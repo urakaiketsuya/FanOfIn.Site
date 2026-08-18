@@ -103,6 +103,16 @@ export interface BattleChartEntry {
 export interface ArchetypeData {
   generatedAt: string;
   archetypes: ArchetypeSummary[];
+  /**
+   * Named Spirit companion cards (e.g. "Kaze, Spirit of Wind" — has a personal name, unlike the
+   * generic "Spirit of Wind"), treated as their own Champion-like identity with the same full
+   * stats shape, aggregated across every deck that runs them regardless of which real Champion
+   * (if any) is present. Same list this data used to nest under each Champion's `spirits` field,
+   * but promoted to first-class entries in their own right rather than requiring a detour through
+   * a specific Champion's page to see. `spirits`/`elementBreakdown` are always empty here — a
+   * Spirit doesn't have its own sub-Spirits.
+   */
+  namedSpirits: ArchetypeSummary[];
   battleChart: BattleChartEntry[];
 }
 

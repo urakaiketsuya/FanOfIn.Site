@@ -99,6 +99,9 @@ export interface OmnidexTeamSighting {
   eventId: number;
   eventName: string;
   eventDate: string;
+  eventCategory: string;
+  seasonId: number | null;
+  seasonName: string | null;
   teamName: string;
   finalPlacement: number | null;
   players: { id: number; slot: string }[];

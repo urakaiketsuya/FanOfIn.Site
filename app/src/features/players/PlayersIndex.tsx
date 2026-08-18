@@ -1,14 +1,28 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useOmnidexPlayers } from "../tournaments/data";
-import { useEloData } from "./data";
+import { useEloData, usePlayerDecksData } from "./data";
+import { useChampionCardImages } from "./useChampionCardImages";
+import CardImage from "../../components/CardImage";
+import CardHoverPreview from "../../components/CardHoverPreview";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 export default function PlayersIndex() {
   useDocumentTitle("Players", "Grand Archive TCG player rankings by Elo rating across ingested tournaments.");
   const playersData = useOmnidexPlayers();
   const eloData = useEloData();
+  const playerDecksData = usePlayerDecksData();
   const [search, setSearch] = useState("");
+
+  const topChampionById = useMemo(() => {
+    const map = new Map<number, string>();
+    for (const p of playerDecksData?.players ?? []) {
+      const top = p.topChampions[0];
+      if (top) map.set(p.playerId, top.name);
+    }
+    return map;
+  }, [playerDecksData]);
+  const championImages = useChampionCardImages([...new Set(topChampionById.values())]);
 
   const ranked = useMemo(() => {
     if (!playersData || !eloData) return [];
@@ -57,20 +71,37 @@ export default function PlayersIndex() {
             </tr>
           </thead>
           <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-            {rows.map(({ player, rating, rank }) => (
-              <tr key={player.id}>
-                <td className="py-1.5 pr-6 text-ctp-subtext1">{rank}</td>
-                <td className="py-1.5 pr-6 whitespace-nowrap">
-                  <Link to={`/players/${player.id}`} className="text-ctp-text hover:text-ctp-blue">
-                    {player.username}
-                  </Link>
-                </td>
-                <td className="py-1.5 pr-6 text-ctp-subtext1">{Math.round(rating?.rating ?? 0)}</td>
-                <td className="py-1.5 pr-6 text-ctp-subtext1">
-                  {rating?.wins}-{rating?.losses}-{rating?.ties}
-                </td>
-              </tr>
-            ))}
+            {rows.map(({ player, rating, rank }) => {
+              const topChampion = topChampionById.get(player.id);
+              const card = topChampion ? championImages.get(topChampion) : undefined;
+              return (
+                <tr key={player.id}>
+                  <td className="py-1.5 pr-6 text-ctp-subtext1">{rank}</td>
+                  <td className="py-1.5 pr-6 whitespace-nowrap">
+                    <Link to={`/players/${player.id}`} className="flex items-center gap-2 text-ctp-text hover:text-ctp-blue">
+                      {topChampion && (
+                        <CardHoverPreview image={card?.editions[0]?.image} alt={topChampion}>
+                          {card?.editions[0] ? (
+                            <CardImage
+                              image={card.editions[0].image}
+                              alt={topChampion}
+                              className="h-8 w-6 shrink-0 rounded object-cover object-top"
+                            />
+                          ) : (
+                            <div className="h-8 w-6 shrink-0 rounded bg-ctp-surface0" />
+                          )}
+                        </CardHoverPreview>
+                      )}
+                      {player.username}
+                    </Link>
+                  </td>
+                  <td className="py-1.5 pr-6 text-ctp-subtext1">{Math.round(rating?.rating ?? 0)}</td>
+                  <td className="py-1.5 pr-6 text-ctp-subtext1">
+                    {rating?.wins}-{rating?.losses}-{rating?.ties}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
