@@ -86,7 +86,7 @@ export default function PlayersIndex() {
                               <CardImage
                                 image={card.editions[0].image}
                                 alt={topChampion}
-                                className="h-full w-full origin-top scale-[2.2] object-cover object-top"
+                                className="h-full w-full origin-[50%_20%] scale-[3] object-cover object-top"
                               />
                             )}
                           </div>
