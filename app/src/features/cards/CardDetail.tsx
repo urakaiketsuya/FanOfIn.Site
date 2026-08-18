@@ -6,8 +6,11 @@ import { gatcgApi } from "../../lib/api/client";
 import CardImage from "../../components/CardImage";
 import ElementIcon from "../../components/ElementIcon";
 import CostIcon from "../../components/CostIcon";
+import ClassIcon from "../../components/ClassIcon";
+import TypeIcon from "../../components/TypeIcon";
 import TopCardsSections from "../../components/TopCardsSections";
 import TopDecksList from "../../components/TopDecksList";
+import { typeIconKey } from "../../lib/cardTypeIcon";
 import { useCard } from "./useCard";
 import { usePriceLookup } from "../pricing/usePriceLookup";
 import { useCardStatsData, useArchetypeData } from "../archetypes/data";
@@ -32,12 +35,19 @@ const TABS: { key: CardTab; label: string }[] = [
   { key: "decks", label: "Decks" },
 ];
 
-function Badge({ children }: { children: ReactNode }) {
-  return (
-    <span className="flex items-center gap-1 rounded-full border border-ctp-surface1 bg-ctp-surface0 px-2 py-0.5 text-xs text-ctp-subtext1">
-      {children}
-    </span>
-  );
+const BADGE_CLASS =
+  "flex items-center gap-1 rounded-full border border-ctp-surface1 bg-ctp-surface0 px-2 py-0.5 text-xs text-ctp-subtext1";
+
+/** `to` makes it a link to that attribute's search results (e.g. every Warrior card, every Regalia) — same badge look either way. */
+function Badge({ children, to }: { children: ReactNode; to?: string }) {
+  if (to) {
+    return (
+      <Link to={to} className={`${BADGE_CLASS} hover:border-ctp-blue hover:text-ctp-blue`}>
+        {children}
+      </Link>
+    );
+  }
+  return <span className={BADGE_CLASS}>{children}</span>;
 }
 
 function Stat({ label, value, icon }: { label: string; value: number | string | null; icon?: ReactNode }) {
@@ -206,16 +216,24 @@ export default function CardDetail() {
 
           <div className="mt-2 flex flex-wrap gap-1.5">
             {card.classes.map((c) => (
-              <Badge key={c}>{c}</Badge>
+              <Badge key={c} to={`/cards?class=${encodeURIComponent(c)}`}>
+                <ClassIcon cardClass={c} size={14} />
+                {c}
+              </Badge>
             ))}
             {card.types.map((t) => (
-              <Badge key={t}>{t}</Badge>
+              <Badge key={t} to={`/cards?type=${encodeURIComponent(t)}`}>
+                <TypeIcon type={typeIconKey(t, card.types)} size={14} />
+                {t}
+              </Badge>
             ))}
             {card.subtypes.map((s) => (
-              <Badge key={s}>{s}</Badge>
+              <Badge key={s} to={`/cards?subtype=${encodeURIComponent(s)}`}>
+                {s}
+              </Badge>
             ))}
             {card.elements.map((e) => (
-              <Badge key={e}>
+              <Badge key={e} to={`/cards?element=${encodeURIComponent(e)}`}>
                 <ElementIcon element={e} size={14} />
                 {e}
               </Badge>

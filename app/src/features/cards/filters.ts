@@ -5,11 +5,12 @@ export interface CardFilterState {
   artist: string;
   classes: Set<string>;
   types: Set<string>;
+  subtypes: Set<string>;
   elements: Set<string>;
 }
 
 export function emptyFilterState(): CardFilterState {
-  return { name: "", artist: "", classes: new Set(), types: new Set(), elements: new Set() };
+  return { name: "", artist: "", classes: new Set(), types: new Set(), subtypes: new Set(), elements: new Set() };
 }
 
 export function filterCards(cards: Card[], filters: CardFilterState): Card[] {
@@ -20,6 +21,7 @@ export function filterCards(cards: Card[], filters: CardFilterState): Card[] {
     if (artist && !card.editions.some((ed) => ed.illustrator?.toLowerCase().includes(artist))) return false;
     if (filters.classes.size && !card.classes.some((c) => filters.classes.has(c))) return false;
     if (filters.types.size && !card.types.some((t) => filters.types.has(t))) return false;
+    if (filters.subtypes.size && !card.subtypes.some((s) => filters.subtypes.has(s))) return false;
     if (filters.elements.size && !card.elements.some((e) => filters.elements.has(e))) return false;
     return true;
   });

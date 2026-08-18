@@ -25,6 +25,10 @@ export default function CardsBrowse() {
   const [filters, setFilters] = useState<CardFilterState>(() => ({
     ...emptyFilterState(),
     artist: searchParams.get("artist") ?? "",
+    classes: new Set(searchParams.getAll("class")),
+    types: new Set(searchParams.getAll("type")),
+    subtypes: new Set(searchParams.getAll("subtype")),
+    elements: new Set(searchParams.getAll("element")),
   }));
 
   const filtered = useMemo(() => filterCards(cards, filters), [cards, filters]);
@@ -89,6 +93,12 @@ export default function CardsBrowse() {
             options={options.data.type}
             selected={filters.types}
             onToggle={(v) => setFilters((f) => ({ ...f, types: toggleInSet(f.types, v) }))}
+          />
+          <FilterCheckboxGroup
+            label="Subtype"
+            options={options.data.subtype}
+            selected={filters.subtypes}
+            onToggle={(v) => setFilters((f) => ({ ...f, subtypes: toggleInSet(f.subtypes, v) }))}
           />
           <FilterCheckboxGroup
             label="Element"

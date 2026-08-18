@@ -147,12 +147,16 @@ export const gatcgApi = {
   imageUrl: (imagePath: string, rounded = false) => `${BASE_URL}${imagePath}${rounded ? "?rounded=true" : ""}`,
 
   /**
-   * Official element/cost badge icons — same `gatcg.com` root domain as this API, just a
-   * dedicated asset host (`cdn2.gatcg.com/i/{elements,costs}/{key}.png`, lowercase key). Verified
-   * live: index.gatcg.com (a card-database site built on this same API) pulls its element and
-   * memory/reserve cost badges from this exact CDN rather than hosting its own copies.
+   * Official element/cost/class/type badge icons — same `gatcg.com` root domain as this API, just
+   * a dedicated asset host (`cdn2.gatcg.com/i/{kind}/{key}.png`, lowercase key, spaces allowed —
+   * e.g. "greater boon"). Verified live: index.gatcg.com (a card-database site built on this same
+   * API) pulls its badges from this exact CDN rather than hosting its own copies. Also verified
+   * directly (HEAD requests) that `classes` and plain `types` (not just the type-regalia
+   * compounds index.gatcg.com happens to display) resolve with a 200 even though that site's own
+   * UI doesn't render class icons anywhere.
    */
-  iconUrl: (kind: "elements" | "costs", key: string) => `https://cdn2.gatcg.com/i/${kind}/${key.toLowerCase()}.png`,
+  iconUrl: (kind: "elements" | "costs" | "classes" | "types", key: string) =>
+    `https://cdn2.gatcg.com/i/${kind}/${encodeURIComponent(key.toLowerCase())}.png`,
 };
 
 export { ApiError, isApiErrorBody };
