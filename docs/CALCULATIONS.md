@@ -419,6 +419,41 @@ encoded via `URLSearchParams` (which handles the `||` delimiter and special char
 even though it percent-encodes rather than matching the example's raw `+`/`||` styling — both are
 valid and TCGplayer's server decodes either the same way).
 
+## Tabletop Simulator export (`app/src/lib/ttsExport.ts`)
+
+Not a spritesheet-based `CustomDeck` (TTS's usual "deck of cards" mechanic, which needs a single
+grid image of every card face) — instead, each unique card gets its own 1x1 `CustomDeck` "sheet"
+whose `FaceURL` points straight at the card's already-hosted `api.gatcg.com` image. No image
+processing needed client-side, and no CORS/canvas-tainting risk from drawing a cross-origin image
+onto a canvas. There's no real card-back art in our data, so `BackURL` reuses the same face image
+(harmless — `BackIsHidden: true` keeps it hidden in normal play). Main/Material/Sideboard are
+exported as separate stacks laid out side by side, mirroring Grand Archive's actual deck structure
+rather than merging everything into one pile. A stack that resolves to exactly one card is emitted
+as a bare `Card` object instead of a one-item `DeckCustom`, matching how TTS itself serializes a
+single-card "stack" when saving — an actual `DeckCustom` with one `ContainedObjects` entry is not a
+state TTS produces on its own.
+
+## VOD/media links (`pipeline/src/curated/vods.ts`)
+
+Omnidex has no video-link field, so this is the pipeline's only hand-curated (not crawled) dataset —
+edited directly at `pipeline/curated/vods.json` (`{"<eventId>": [{"label", "url"}]}`), checked into
+git, and republished to `data/omnidex/vods.json` on every pipeline run regardless of fetch/analysis
+mode (same as the manifest write). The publish step cross-checks curated ids against the crawled
+cache and warns (doesn't fail the build) on an id that isn't there, since a typo'd event id would
+otherwise silently produce a dead link with no feedback. Read client-side via `useVodsData()`
+(`app/src/features/events/data.ts`) — a separate `usePublishedData` fetch from `EventDetail.tsx`'s
+own `useEventBundle`, since that hook reads live from the Omnidex API + IndexedDB rather than the
+published static bundle.
+
+## Pipeline REPL (`pipeline/src/repl.ts`, `npm run repl` in `pipeline/`)
+
+Formalizes a pattern used repeatedly during this project's development: validating a new stat
+against real cached data via a throwaway Node script before trusting it (e.g. the archetype
+clustering threshold, the defining-card prevalence fix). The REPL eagerly loads `bundles` (crawled
+events, filtered to `status === "complete"`), `catalog`, and `cardIndex` — cheap — and preloads
+every `compute*` analysis function into scope *uninvoked*, so an expensive one (`computeDeckSimilarity`,
+`computeDeckCardIndex`) only runs if explicitly called.
+
 ## Client load-time optimizations
 
 Three changes, made together to address the app's biggest measured load-time cost: fetching and

@@ -2,6 +2,7 @@ import { buildPrices, writePrices } from "./pricing/build.js";
 import { crawlEvents, type CrawlMode } from "./omnidex/crawler.js";
 import { buildOmnidexIndex, writeOmnidexData } from "./omnidex/build.js";
 import { buildAnalysis } from "./analysis/build.js";
+import { publishVods } from "./curated/vods.js";
 import { writeManifest } from "./manifest.js";
 import { config } from "./config.js";
 
@@ -46,6 +47,13 @@ async function main() {
       console.error("analysis pipeline failed", err);
       process.exitCode = 1;
     }
+  }
+
+  try {
+    await publishVods();
+  } catch (err) {
+    console.error("vod publish failed", err);
+    process.exitCode = 1;
   }
 
   await writeManifest();

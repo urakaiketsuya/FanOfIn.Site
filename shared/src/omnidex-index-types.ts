@@ -85,3 +85,14 @@ export interface OmnidexJudgesData {
   generatedAt: string;
   judges: OmnidexJudgeSummary[];
 }
+
+export interface VodLink {
+  label: string;
+  url: string;
+}
+
+/** Hand-curated (pipeline/curated/vods.json) — no API source for this, so it's maintained by hand rather than crawled. Keyed by event id (as a string, since it round-trips through JSON). */
+export interface VodsData {
+  generatedAt: string;
+  vods: Record<string, VodLink[]>;
+}

@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS } from "@gatcg/shared";
 import { isApiErrorBody } from "../../lib/api/client";
 import { useEventBundle } from "./useEventBundle";
+import { useVodsData } from "./data";
 import EventPairings from "./EventPairings";
 import DecklistsSection from "./DecklistsSection";
 import JudgesSection from "./JudgesSection";
@@ -13,6 +14,8 @@ export default function EventDetail() {
   const { id = "" } = useParams<{ id: string }>();
   const eventId = Number(id);
   const { bundle, loading, error } = useEventBundle(eventId);
+  const vodsData = useVodsData();
+  const vods = vodsData?.vods[id] ?? [];
 
   const standingsById = useMemo(() => {
     if (!bundle || isApiErrorBody(bundle.standings)) return new Map();
@@ -58,6 +61,21 @@ export default function EventDetail() {
         {event.season && ` · ${event.season.name}`}
       </p>
       {event.description && <p className="mt-2 text-sm text-ctp-subtext0">{event.description}</p>}
+      {vods.length > 0 && (
+        <div className="mt-2 flex flex-wrap gap-2">
+          {vods.map((vod, i) => (
+            <a
+              key={i}
+              href={vod.url}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-md border border-ctp-blue px-2 py-1 text-xs text-ctp-blue hover:bg-ctp-surface0"
+            >
+              &#9654; Watch {vod.label}
+            </a>
+          ))}
+        </div>
+      )}
 
       <div className="mt-6">
         <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
