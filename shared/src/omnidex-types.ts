@@ -86,8 +86,15 @@ export interface OmnidexTeam {
 
 export type OmnidexTeamsResponse = OmnidexTeam[];
 
+/**
+ * Team-format events report standings *per team*, not per player: `id` is absent and `name` (the
+ * team name) is present instead, with no `hasSubmittedDecklist`/`isDecklistPublic` — verified live
+ * against a real 3v3 event. Individual-format events are the reverse: `id` present, no `name`.
+ * Join a team standing back to its players via `OmnidexTeam.players` (same team `name`).
+ */
 export interface OmnidexStanding {
-  id: number;
+  id?: number;
+  name?: string;
   finalPlacement: number | null;
   status: string;
   statsWins: number;
@@ -102,8 +109,8 @@ export interface OmnidexStanding {
   statsPercentOGW: number;
   statsPercentOMW: number;
   tiebreaker: number;
-  hasSubmittedDecklist: boolean;
-  isDecklistPublic: boolean;
+  hasSubmittedDecklist?: boolean;
+  isDecklistPublic?: boolean;
 }
 
 export interface OmnidexStandingsResponse {

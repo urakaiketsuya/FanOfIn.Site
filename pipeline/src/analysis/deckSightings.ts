@@ -36,7 +36,10 @@ export function computeDeckSightings(bundles: OmnidexEventBundle[], cardIndex: M
 
     const { event } = bundle;
     const signatures = buildEventDeckSignatures(bundle.decklists, cardIndex);
-    const standingsByPlayer = new Map(bundle.standings.standings.map((s) => [s.id, s]));
+    const standingsByPlayer = new Map<number, (typeof bundle.standings.standings)[number]>();
+    for (const s of bundle.standings.standings) {
+      if (s.id !== undefined) standingsByPlayer.set(s.id, s);
+    }
 
     for (const entry of bundle.decklists) {
       const standing = standingsByPlayer.get(entry.player);

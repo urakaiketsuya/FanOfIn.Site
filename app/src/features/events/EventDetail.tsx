@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { EVENT_CATEGORY_LABELS } from "@gatcg/shared";
+import { EVENT_CATEGORY_LABELS, type OmnidexStanding } from "@gatcg/shared";
 import { isApiErrorBody } from "../../lib/api/client";
 import { useEventBundle } from "./useEventBundle";
 import { useVodsData } from "./data";
@@ -21,9 +21,30 @@ export default function EventDetail() {
   const vods = vodsData?.vods[id] ?? [];
   const [tab, setTab] = useState<EventTab>("standings");
 
+  // Individual-format events key each standing by numeric player `id`. Team-format events (e.g.
+  // 3v3) instead key by team `name` and have no per-player record at all -- verified live against
+  // a real Ascent event, where every standing had `name` but no `id`. For those, join each team's
+  // standing back to its roster via the Teams response so every player on the team shows the
+  // team's shared record instead of a blank one.
   const standingsById = useMemo(() => {
-    if (!bundle || isApiErrorBody(bundle.standings)) return new Map();
-    return new Map(bundle.standings.standings.map((s) => [s.id, s]));
+    const byId = new Map<number, OmnidexStanding>();
+    if (!bundle || isApiErrorBody(bundle.standings)) return byId;
+
+    for (const s of bundle.standings.standings) {
+      if (s.id !== undefined) byId.set(s.id, s);
+    }
+    if (byId.size > 0 || isApiErrorBody(bundle.teams)) return byId;
+
+    const standingByTeamName = new Map<string, OmnidexStanding>();
+    for (const s of bundle.standings.standings) {
+      if (s.name !== undefined) standingByTeamName.set(s.name, s);
+    }
+    for (const team of bundle.teams) {
+      const standing = standingByTeamName.get(team.name);
+      if (!standing) continue;
+      for (const p of team.players) byId.set(p.id, standing);
+    }
+    return byId;
   }, [bundle]);
 
   if (loading) {

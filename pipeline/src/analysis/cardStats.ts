@@ -34,6 +34,7 @@ export function computeCardStats(bundles: OmnidexEventBundle[], cardIndex: Map<s
     const winByPlayer = new Map<number, number>();
     if (!("error" in bundle.standings)) {
       for (const s of bundle.standings.standings) {
+        if (s.id === undefined) continue; // team-format standings are keyed by team name, not player id
         const total = s.statsWins + s.statsLosses + s.statsTies;
         if (total > 0) winByPlayer.set(s.id, (s.statsWins + s.statsTies * 0.5) / total);
       }

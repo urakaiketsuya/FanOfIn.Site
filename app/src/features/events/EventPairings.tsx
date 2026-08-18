@@ -11,7 +11,7 @@ function findPlayer(players: OmnidexPlayer[], id: number): OmnidexPlayer | undef
 }
 
 export default function EventPairings({ eventId, players, swissRounds }: { eventId: number; players: OmnidexPlayer[]; swissRounds: number }) {
-  const [round, setRound] = useState(swissRounds);
+  const [round, setRound] = useState(1);
 
   const pairings = useQuery({
     queryKey: ["omnidex-pairings", eventId, round],
