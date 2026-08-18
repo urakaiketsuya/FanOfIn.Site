@@ -91,10 +91,7 @@ export default function AchievementDetail() {
                       </Link>
                     )}
                     {u.opponentPlayerId === undefined && u.deckId !== undefined && u.eventId !== undefined && (
-                      <Link
-                        to={buildCompareLink([{ eventId: u.eventId, player: u.playerId }])}
-                        className="text-ctp-blue hover:underline"
-                      >
+                      <Link to={`/events/${u.eventId}?player=${u.playerId}`} className="text-ctp-blue hover:underline">
                         View deck &rarr;
                       </Link>
                     )}

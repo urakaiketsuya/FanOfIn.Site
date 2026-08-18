@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, type OmnidexStanding } from "@gatcg/shared";
 import { isApiErrorBody } from "../../lib/api/client";
 import { useEventBundle } from "./useEventBundle";
@@ -27,7 +27,12 @@ export default function EventDetail() {
   );
   const vodsData = useVodsData();
   const vods = vodsData?.vods[id] ?? [];
-  const [tab, setTab] = useState<EventTab>("standings");
+  // A "?player=" link (e.g. from an achievement's "View deck") jumps straight to that player's
+  // decklist instead of landing on Standings — read once on mount, same as the tab default.
+  const [searchParams] = useSearchParams();
+  const initialPlayerParam = searchParams.get("player");
+  const initialPlayer = initialPlayerParam ? Number(initialPlayerParam) : undefined;
+  const [tab, setTab] = useState<EventTab>(() => (initialPlayer !== undefined ? "decklists" : "standings"));
 
   // Individual-format events key each standing by numeric player `id`. Team-format events (e.g.
   // 3v3) instead key by team `name` and have no per-player record at all -- verified live against
@@ -184,7 +189,7 @@ export default function EventDetail() {
 
       {activeTab === "decklists" && !isApiErrorBody(bundle.decklists) && (
         <div className="mt-6">
-          <DecklistsSection eventId={eventId} decklists={bundle.decklists} players={players} />
+          <DecklistsSection eventId={eventId} decklists={bundle.decklists} players={players} initialPlayer={initialPlayer} />
         </div>
       )}
 

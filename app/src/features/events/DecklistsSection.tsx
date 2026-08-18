@@ -11,12 +11,14 @@ export default function DecklistsSection({
   eventId,
   decklists,
   players,
+  initialPlayer,
 }: {
   eventId: number;
   decklists: OmnidexDecklistEntry[];
   players: OmnidexPlayer[];
+  initialPlayer?: number;
 }) {
-  const [selectedPlayer, setSelectedPlayer] = useState(decklists[0]?.player);
+  const [selectedPlayer, setSelectedPlayer] = useState(initialPlayer ?? decklists[0]?.player);
   const selected = decklists.find((d) => d.player === selectedPlayer) ?? decklists[0];
 
   const allNames = useMemo(
