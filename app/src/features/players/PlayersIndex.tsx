@@ -81,15 +81,15 @@ export default function PlayersIndex() {
                     <Link to={`/players/${player.id}`} className="flex items-center gap-2 text-ctp-text hover:text-ctp-blue">
                       {topChampion && (
                         <CardHoverPreview image={card?.editions[0]?.image} alt={topChampion}>
-                          {card?.editions[0] ? (
-                            <CardImage
-                              image={card.editions[0].image}
-                              alt={topChampion}
-                              className="h-8 w-6 shrink-0 rounded object-cover object-top"
-                            />
-                          ) : (
-                            <div className="h-8 w-6 shrink-0 rounded bg-ctp-surface0" />
-                          )}
+                          <div className="h-8 w-8 shrink-0 overflow-hidden rounded-full bg-ctp-surface0">
+                            {card?.editions[0] && (
+                              <CardImage
+                                image={card.editions[0].image}
+                                alt={topChampion}
+                                className="h-full w-full origin-top scale-[2.2] object-cover object-top"
+                              />
+                            )}
+                          </div>
                         </CardHoverPreview>
                       )}
                       {player.username}
