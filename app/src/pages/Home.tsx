@@ -16,7 +16,8 @@ const SECTIONS: Section[] = [
   // Card catalog
   {
     title: "Cards",
-    description: "Browse and search the full card database, synced locally for instant filtering.",
+    description:
+      "Browse and search the full card database, synced locally for instant filtering — with pricing, related cards, and legality on every card page.",
     to: "/cards",
     links: [{ to: "/cards/stats", label: "Usage & win rates" }],
   },
@@ -34,7 +35,8 @@ const SECTIONS: Section[] = [
   },
   {
     title: "Players",
-    description: "Player index with Elo ratings, event history, and notable upsets.",
+    description:
+      "Player index with Elo ratings, event history, and notable upsets — plus each player's full deck history: champions played and most-used cards.",
     to: "/players",
   },
   {
@@ -55,7 +57,7 @@ const SECTIONS: Section[] = [
   // Deck analysis
   {
     title: "Champions",
-    description: "Per-Champion stats: most-played cards by deck section, top finishes, and standout builds.",
+    description: "Per-Champion stats: most-played cards by deck section, performance trends by season, and standout builds.",
     to: "/champions",
   },
   {
@@ -71,7 +73,8 @@ const SECTIONS: Section[] = [
   },
   {
     title: "Popular Decks",
-    description: "Exact decklists multiple players independently ran, ranked by how many played it or how well it performed.",
+    description:
+      "Exact decklists multiple players independently ran — each has its own page with composition charts, price, and a popularity trend.",
     to: "/popular-decks",
   },
   // Tools
