@@ -110,10 +110,10 @@ export async function buildAnalysis(): Promise<void> {
   const championTrends = computeChampionTrends(deckSightings);
   await writeFile(path.join(DATA_DIR, "champion-trends.json"), JSON.stringify(championTrends), "utf-8");
 
-  const deckCardIndex = computeDeckCardIndex(completed, cardIndex);
+  const { cardNames: deckCardIndexNames, entries: deckCardIndex } = await computeDeckCardIndex(completed, cardIndex);
   await writeFile(
     path.join(DATA_DIR, "deck-card-index.json"),
-    JSON.stringify({ generatedAt: new Date().toISOString(), decks: deckCardIndex }),
+    JSON.stringify({ generatedAt: new Date().toISOString(), cardNames: deckCardIndexNames, decks: deckCardIndex }),
     "utf-8",
   );
 

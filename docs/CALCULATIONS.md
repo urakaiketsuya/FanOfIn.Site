@@ -361,6 +361,57 @@ encoded via `URLSearchParams` (which handles the `||` delimiter and special char
 even though it percent-encodes rather than matching the example's raw `+`/`||` styling — both are
 valid and TCGplayer's server decodes either the same way).
 
+## Client load-time optimizations
+
+Three changes, made together to address the app's biggest measured load-time cost: fetching and
+parsing the published datasets in `data/analysis/` and `data/omnidex/`, several of which are tens
+of megabytes.
+
+**1. `data/manifest.json` (`pipeline/src/manifest.ts`, `app/src/lib/sync/usePublishedData.ts`)** —
+a tiny `{datasetKey: generatedAt}` map, written once at the very end of every pipeline run by
+re-reading each published file's first ~200 bytes (every dataset writes `generatedAt` as its first
+key, so this avoids `JSON.parse`-ing files that can be 90MB+ just to check one field). Before this
+existed, `usePublishedData` had no way to know a dataset was unchanged without downloading and
+fully parsing it first — every mount of a component using a large dataset (e.g. opening a card's
+"Combos" tab, which uses `deck-card-index.json`) re-paid that cost even when nothing had changed
+since the previous visit. Now the manifest is checked first (cached at module scope, one fetch per
+page load), and the real file is only fetched when its `generatedAt` differs from what's already in
+IndexedDB. Falls back to the old always-fetch behavior if the manifest is missing or fails to load,
+so this is purely additive — nothing breaks if `manifest.json` is stale or absent.
+
+**2. Dictionary-encoded `deck-card-index.json` (`pipeline/src/analysis/deckCardIndex.ts`,
+`shared/src/analysis-types.ts`'s `decodeCardLines`)** — this dataset's lines used to be
+`{"name": "...", "quantity": N}` per card per deck, repeating the same ~2,500 card names millions
+of times across ~57k decks (93MB raw in one real run). Now each deck's lines are
+`[cardNameIndex, quantity]` tuples against a single `cardNames: string[]` dictionary shipped once
+per file, and consumers (`useCardCombination.ts`, `useDeckPopularity.ts`) either work directly
+against the numeric indices (faster than string-keyed Sets/Maps, as a bonus) or decode back to
+`{name, quantity}` via `decodeCardLines` where the original shape is still needed (signature
+building, rendering). The full, human-readable form is preserved on disk at
+`pipeline/.cache/deck-card-index-full.json` — a local working artifact only, not published or
+committed — in case the raw per-deck data is needed for debugging without re-walking every event
+bundle.
+
+**3. Route-based code-splitting (`app/src/routes.tsx`)** — every page component is now
+`React.lazy`-loaded instead of eagerly imported, so Vite emits one JS chunk per route instead of a
+single bundle containing all ~25 pages' code. Verified with a real build: the main bundle dropped
+from 506KB (146KB gzipped) to 320KB (101KB gzipped), with the rest split into small per-route
+chunks fetched on demand. `Home` stays eagerly imported since it's the most common landing page and
+lazy-loading it would just add a loading flash for no benefit.
+
+**Operational notes for future pipeline runs** (nothing manual required, but worth knowing):
+- The manifest is regenerated unconditionally at the end of every run, reading whatever's currently
+  on disk — safe to run after a fetch-only, analysis-only, or full pipeline invocation; it always
+  reflects reality rather than tracking state through the run.
+- The `deck-card-index.json` dictionary is rebuilt from scratch every run (card indices are **not**
+  stable across generations — index 42 today might be a different card next run). This is never a
+  problem in practice since the app always fetches `cardNames` and `decks` together as one atomic
+  JSON file, but don't persist a bare `cardNameIndex` anywhere without also persisting which
+  generation's dictionary it came from.
+- `pipeline/.cache/deck-card-index-full.json` is overwritten every run and never committed — if
+  the `.cache/` directory is deleted entirely, it's simply recreated on the next run with no data
+  loss (it's derived from the same event bundles the encoded version comes from).
+
 ## The "deck identity" convention
 
 Used consistently across nearly every stat above and in `useDeckPopularity.ts`, `computeDeckIdentity`,

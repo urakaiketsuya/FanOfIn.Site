@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { DeckCardIndexEntry, DeckCardIndexLine } from "@gatcg/shared";
+import type { DeckCardIndexEntry } from "@gatcg/shared";
 import { useDeckCardIndexData } from "../archetypes/data";
 
 const MAX_RESULTS_PER_SECTION = 20;
@@ -20,18 +20,18 @@ export interface CardCombinationResult {
   sideboard: RawCardCount[];
 }
 
-/** Every deck's card names (any section), for fast "does this deck contain X" membership tests. */
-function buildPresenceIndex(decks: DeckCardIndexEntry[]): Map<string, Set<number>> {
-  const index = new Map<string, Set<number>>();
+/** Every deck's card-name indices (any section), for fast "does this deck contain X" membership tests — works directly against the dictionary-encoded tuples, no need to decode names first. */
+function buildPresenceIndex(decks: DeckCardIndexEntry[]): Map<number, Set<number>> {
+  const index = new Map<number, Set<number>>();
   decks.forEach((deck, i) => {
-    const seen = new Set<string>();
-    for (const line of [...deck.main, ...deck.material, ...deck.sideboard]) {
-      if (seen.has(line.name)) continue;
-      seen.add(line.name);
-      let bucket = index.get(line.name);
+    const seen = new Set<number>();
+    for (const [nameIndex] of [...deck.main, ...deck.material, ...deck.sideboard]) {
+      if (seen.has(nameIndex)) continue;
+      seen.add(nameIndex);
+      let bucket = index.get(nameIndex);
       if (!bucket) {
         bucket = new Set<number>();
-        index.set(line.name, bucket);
+        index.set(nameIndex, bucket);
       }
       bucket.add(i);
     }
@@ -39,8 +39,8 @@ function buildPresenceIndex(decks: DeckCardIndexEntry[]): Map<string, Set<number
   return index;
 }
 
-function intersectDeckIndices(names: string[], presenceIndex: Map<string, Set<number>>): Set<number> {
-  const sets = names.map((n) => presenceIndex.get(n) ?? new Set<number>()).sort((a, b) => a.size - b.size);
+function intersectDeckIndices(nameIndices: number[], presenceIndex: Map<number, Set<number>>): Set<number> {
+  const sets = nameIndices.map((n) => presenceIndex.get(n) ?? new Set<number>()).sort((a, b) => a.size - b.size);
   if (sets.length === 0) return new Set();
   let result = sets[0];
   for (let i = 1; i < sets.length; i++) {
@@ -52,21 +52,26 @@ function intersectDeckIndices(names: string[], presenceIndex: Map<string, Set<nu
   return result;
 }
 
-function tallySection(lines: DeckCardIndexLine[], exclude: Set<string>, counts: Map<string, RawCardCount>): void {
-  const copiesByName = new Map<string, number>();
-  for (const line of lines) {
-    if (exclude.has(line.name)) continue;
-    copiesByName.set(line.name, (copiesByName.get(line.name) ?? 0) + line.quantity);
+function tallySection(
+  lines: DeckCardIndexEntry["main"],
+  exclude: Set<number>,
+  cardNames: string[],
+  counts: Map<number, RawCardCount>,
+): void {
+  const copiesByNameIndex = new Map<number, number>();
+  for (const [nameIndex, quantity] of lines) {
+    if (exclude.has(nameIndex)) continue;
+    copiesByNameIndex.set(nameIndex, (copiesByNameIndex.get(nameIndex) ?? 0) + quantity);
   }
-  for (const [name, copies] of copiesByName) {
-    const c = counts.get(name) ?? { name, deckCount: 0, totalCopies: 0 };
+  for (const [nameIndex, copies] of copiesByNameIndex) {
+    const c = counts.get(nameIndex) ?? { name: cardNames[nameIndex], deckCount: 0, totalCopies: 0 };
     c.deckCount += 1;
     c.totalCopies += copies;
-    counts.set(name, c);
+    counts.set(nameIndex, c);
   }
 }
 
-function topN(counts: Map<string, RawCardCount>, limit: number): RawCardCount[] {
+function topN(counts: Map<number, RawCardCount>, limit: number): RawCardCount[] {
   return Array.from(counts.values())
     .sort((a, b) => b.deckCount - a.deckCount)
     .slice(0, limit);
@@ -79,7 +84,17 @@ function topN(counts: Map<string, RawCardCount>, limit: number): RawCardCount[] 
  * combinations work without a server round-trip.
  */
 export function useCardCombination(selectedCards: string[]): CardCombinationResult {
-  const data = useDeckCardIndexData();
+  const rawData = useDeckCardIndexData();
+  // `cardNames` guards against a stale IndexedDB copy from before dictionary-encoding shipped —
+  // during the rollout window, a returning visitor's cache briefly holds the old `{name,quantity}`
+  // shape until usePublishedData's generatedAt check catches up and refetches. Treating it the
+  // same as "not loaded yet" avoids a crash in that window instead of assuming the new shape.
+  const data = rawData?.cardNames ? rawData : undefined;
+
+  const nameToIndex = useMemo(() => {
+    if (!data) return null;
+    return new Map(data.cardNames.map((name, i) => [name, i]));
+  }, [data]);
 
   const presenceIndex = useMemo(() => {
     if (!data) return null;
@@ -87,22 +102,23 @@ export function useCardCombination(selectedCards: string[]): CardCombinationResu
   }, [data]);
 
   return useMemo(() => {
-    if (!data || !presenceIndex || selectedCards.length === 0) {
+    if (!data || !nameToIndex || !presenceIndex || selectedCards.length === 0) {
       return { deckCount: data ? 0 : undefined, deckIds: [], main: [], material: [], sideboard: [] };
     }
 
-    const matchingIndices = intersectDeckIndices(selectedCards, presenceIndex);
-    const exclude = new Set(selectedCards);
+    const selectedIndices = selectedCards.map((name) => nameToIndex.get(name) ?? -1);
+    const matchingIndices = intersectDeckIndices(selectedIndices, presenceIndex);
+    const exclude = new Set(selectedIndices);
 
-    const mainCounts = new Map<string, RawCardCount>();
-    const materialCounts = new Map<string, RawCardCount>();
-    const sideboardCounts = new Map<string, RawCardCount>();
+    const mainCounts = new Map<number, RawCardCount>();
+    const materialCounts = new Map<number, RawCardCount>();
+    const sideboardCounts = new Map<number, RawCardCount>();
 
     for (const idx of matchingIndices) {
       const deck = data.decks[idx];
-      tallySection(deck.main, exclude, mainCounts);
-      tallySection(deck.material, exclude, materialCounts);
-      tallySection(deck.sideboard, exclude, sideboardCounts);
+      tallySection(deck.main, exclude, data.cardNames, mainCounts);
+      tallySection(deck.material, exclude, data.cardNames, materialCounts);
+      tallySection(deck.sideboard, exclude, data.cardNames, sideboardCounts);
     }
 
     return {
@@ -112,5 +128,5 @@ export function useCardCombination(selectedCards: string[]): CardCombinationResu
       material: topN(materialCounts, MAX_RESULTS_PER_SECTION),
       sideboard: topN(sideboardCounts, MAX_RESULTS_PER_SECTION),
     };
-  }, [data, presenceIndex, selectedCards]);
+  }, [data, nameToIndex, presenceIndex, selectedCards]);
 }

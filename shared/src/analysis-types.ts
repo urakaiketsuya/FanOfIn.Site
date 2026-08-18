@@ -280,21 +280,37 @@ export interface DeckCardIndexLine {
   quantity: number;
 }
 
+/** `[cardNameIndex, quantity]` — the index refers into `DeckCardIndexData.cardNames`. See `decodeCardLines`. */
+export type EncodedCardLine = [number, number];
+
 /**
  * One entry per public decklist, giving its full card contents by section — the raw material
  * behind the "which cards are used together" filter (browse decks containing one or more chosen
  * cards, see what else shows up alongside them). Presence-matching considers all three sections;
  * event/player context isn't included here since that already lives in DeckSightingsData
  * (joinable by `deckId`) and this dataset is deliberately just the card-membership surface.
+ *
+ * Card names are dictionary-encoded (see `DeckCardIndexData.cardNames`) rather than repeated per
+ * line — this dataset has ~57k decks averaging ~45 unique card names each, so spelling out
+ * `{"name":"...","quantity":N}` per line meant repeating the same ~2,500 card names millions of
+ * times (93MB raw for one real run). `[index, quantity]` tuples against a shared dictionary cut
+ * that dramatically; see `decodeCardLines` to get back the `{name, quantity}` shape callers want.
  */
 export interface DeckCardIndexEntry {
   deckId: string;
-  main: DeckCardIndexLine[];
-  material: DeckCardIndexLine[];
-  sideboard: DeckCardIndexLine[];
+  main: EncodedCardLine[];
+  material: EncodedCardLine[];
+  sideboard: EncodedCardLine[];
 }
 
 export interface DeckCardIndexData {
   generatedAt: string;
+  /** Dictionary of every card name referenced anywhere in `decks`, indexed by position — see `DeckCardIndexEntry`. */
+  cardNames: string[];
   decks: DeckCardIndexEntry[];
+}
+
+/** Resolves `[cardNameIndex, quantity]` tuples back to `{name, quantity}` against a `DeckCardIndexData.cardNames` dictionary. */
+export function decodeCardLines(lines: EncodedCardLine[], cardNames: string[]): DeckCardIndexLine[] {
+  return lines.map(([nameIndex, quantity]) => ({ name: cardNames[nameIndex], quantity }));
 }

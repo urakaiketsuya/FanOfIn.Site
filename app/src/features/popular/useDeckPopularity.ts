@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { DeckCardIndexLine, DeckSighting } from "@gatcg/shared";
+import { decodeCardLines, type DeckCardIndexLine, type DeckSighting } from "@gatcg/shared";
 import { useDeckCardIndexData } from "../archetypes/data";
 import { useDeckSightingsData } from "../topdecks/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
@@ -49,7 +49,10 @@ interface PopularityResult {
  * already-published deck-card-index + deck-sightings datasets, same pattern as useCardCombination.
  */
 export function useDeckPopularity(championFilter: string | null): PopularityResult {
-  const cardIndexData = useDeckCardIndexData();
+  const rawCardIndexData = useDeckCardIndexData();
+  // Guards against a stale IndexedDB copy from before dictionary-encoding shipped — see the same
+  // guard in useCardCombination.ts for why.
+  const cardIndexData = rawCardIndexData?.cardNames ? rawCardIndexData : undefined;
   const sightingsData = useDeckSightingsData();
   const cardCatalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
@@ -72,10 +75,12 @@ export function useDeckPopularity(championFilter: string | null): PopularityResu
       const sighting = sightingByDeckId.get(entry.deckId);
       if (championFilter && sighting?.championName !== championFilter) continue;
 
-      const signature = canonicalSignature(entry.main, entry.material);
+      const main = decodeCardLines(entry.main, cardIndexData.cardNames);
+      const material = decodeCardLines(entry.material, cardIndexData.cardNames);
+      const signature = canonicalSignature(main, material);
       let group = groups.get(signature);
       if (!group) {
-        group = { main: entry.main, material: entry.material, championName: sighting?.championName ?? null, deckIds: [] };
+        group = { main, material, championName: sighting?.championName ?? null, deckIds: [] };
         groups.set(signature, group);
       }
       group.deckIds.push(entry.deckId);
