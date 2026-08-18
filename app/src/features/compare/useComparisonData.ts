@@ -20,10 +20,52 @@ export interface ComparisonCardEntry {
   isUnique: boolean;
 }
 
+/** Cards sharing the exact same presence pattern across the compared decks — see `groupCardsByMatch`. */
+export interface ComparisonCardGroup {
+  label: string;
+  /** Indices into the compare set's `decks` array that this group's cards are present in. */
+  deckIndices: number[];
+  cards: ComparisonCardEntry[];
+}
+
 export interface ComparisonSection {
   key: keyof OmnidexDecklist;
   label: string;
-  cards: ComparisonCardEntry[];
+  groups: ComparisonCardGroup[];
+}
+
+function buildGroupLabel(deckIndices: number[], decks: ComparedDeck[]): string {
+  if (deckIndices.length === decks.length) return "In every deck";
+  if (deckIndices.length === 1) return `Only in ${decks[deckIndices[0]].label}`;
+  return `In ${deckIndices.map((i) => decks[i].label).join(" & ")}`;
+}
+
+/**
+ * Clusters a section's cards by which exact subset of decks they're present in — "matching" cards
+ * (shared by every compared deck) first, then smaller partial matches, then each deck's own
+ * unique cards last (grouped by deck, in compare-set order). With only 2 decks compared (the
+ * common case) this collapses to just "In every deck" + one "Only in X" group per deck; the
+ * partial-match tier only shows up with 3+ decks where a card is shared by some but not all.
+ */
+function groupCardsByMatch(cards: ComparisonCardEntry[], decks: ComparedDeck[]): ComparisonCardGroup[] {
+  if (decks.length <= 1) return cards.length > 0 ? [{ label: "", deckIndices: [], cards }] : [];
+
+  const byPattern = new Map<string, ComparisonCardGroup>();
+  for (const card of cards) {
+    const deckIndices = card.quantities.flatMap((q, i) => (q > 0 ? [i] : []));
+    const key = deckIndices.join(",");
+    const group = byPattern.get(key) ?? { label: buildGroupLabel(deckIndices, decks), deckIndices, cards: [] };
+    group.cards.push(card);
+    byPattern.set(key, group);
+  }
+
+  return Array.from(byPattern.values()).sort((a, b) => {
+    const aAll = a.deckIndices.length === decks.length;
+    const bAll = b.deckIndices.length === decks.length;
+    if (aAll !== bAll) return aAll ? -1 : 1;
+    if (a.deckIndices.length !== b.deckIndices.length) return b.deckIndices.length - a.deckIndices.length;
+    return (a.deckIndices[0] ?? 0) - (b.deckIndices[0] ?? 0);
+  });
 }
 
 export interface ComparisonDeckStats {
@@ -103,7 +145,7 @@ export function useComparisonData(decks: ComparedDeck[], decklists: Map<string, 
             isUnique: resolvedCount > 1 && presentCount === 1,
           };
         });
-        return { key: sectionKey, label, cards };
+        return { key: sectionKey, label, groups: groupCardsByMatch(cards, decks) };
       }),
     [decks, decklists, resolvedCount],
   );

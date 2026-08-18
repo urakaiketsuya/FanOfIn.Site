@@ -99,39 +99,47 @@ export default function ComparisonCards({
             )}
 
             {list &&
-              sections.map(({ key: sectionKey, label, cards }) => {
-                const deckCards = cards.filter((c) => c.quantities[i] > 0);
-                if (deckCards.length === 0) return null;
+              sections.map(({ key: sectionKey, label, groups }) => {
+                const deckGroups = groups
+                  .map((g) => ({ ...g, cards: g.cards.filter((c) => c.quantities[i] > 0) }))
+                  .filter((g) => g.cards.length > 0);
+                if (deckGroups.length === 0) return null;
+                const total = deckGroups.reduce((n, g) => n + g.cards.length, 0);
                 return (
                   <div key={sectionKey} className="mt-3">
                     <h4 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
-                      {label} ({deckCards.length})
+                      {label} ({total})
                     </h4>
-                    <ul className="mt-1 flex flex-wrap gap-1">
-                      {deckCards.map((c) => {
-                        const card = cardsByName.get(c.name);
-                        const colorClass = c.isCore
-                          ? "border-ctp-green text-ctp-green"
-                          : c.isUnique
-                            ? "border-ctp-yellow text-ctp-yellow"
-                            : "border-ctp-surface1 text-ctp-text";
-                        return (
-                          <li key={c.name}>
-                            <CardHoverPreview image={card?.editions[0]?.image} alt={c.name}>
-                              {card?.slug ? (
-                                <Link to={`/cards/${card.slug}`} className={`rounded border px-1.5 py-0.5 text-xs ${colorClass}`}>
-                                  {c.quantities[i]}x {c.name}
-                                </Link>
-                              ) : (
-                                <span className={`rounded border px-1.5 py-0.5 text-xs ${colorClass}`}>
-                                  {c.quantities[i]}x {c.name}
-                                </span>
-                              )}
-                            </CardHoverPreview>
-                          </li>
-                        );
-                      })}
-                    </ul>
+                    {deckGroups.map((group) => (
+                      <div key={group.label || "all"} className="mt-1">
+                        {group.label && <p className="text-[11px] text-ctp-subtext0">{group.label}</p>}
+                        <ul className="mt-0.5 flex flex-wrap gap-1">
+                          {group.cards.map((c) => {
+                            const card = cardsByName.get(c.name);
+                            const colorClass = c.isCore
+                              ? "border-ctp-green text-ctp-green"
+                              : c.isUnique
+                                ? "border-ctp-yellow text-ctp-yellow"
+                                : "border-ctp-surface1 text-ctp-text";
+                            return (
+                              <li key={c.name}>
+                                <CardHoverPreview image={card?.editions[0]?.image} alt={c.name}>
+                                  {card?.slug ? (
+                                    <Link to={`/cards/${card.slug}`} className={`rounded border px-1.5 py-0.5 text-xs ${colorClass}`}>
+                                      {c.quantities[i]}x {c.name}
+                                    </Link>
+                                  ) : (
+                                    <span className={`rounded border px-1.5 py-0.5 text-xs ${colorClass}`}>
+                                      {c.quantities[i]}x {c.name}
+                                    </span>
+                                  )}
+                                </CardHoverPreview>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    ))}
                   </div>
                 );
               })}

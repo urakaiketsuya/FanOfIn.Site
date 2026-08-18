@@ -127,8 +127,8 @@ export default function ComparisonGrid({
             );
           })}
 
-          {sections.map(({ key: sectionKey, label, cards }) => {
-            if (cards.length === 0) return null;
+          {sections.map(({ key: sectionKey, label, groups }) => {
+            if (groups.length === 0) return null;
             return (
               <Fragment key={sectionKey}>
                 <tr>
@@ -140,34 +140,48 @@ export default function ComparisonGrid({
                     {label}
                   </td>
                 </tr>
-                {cards.map(({ name, quantities, isCore, isUnique }) => {
-                  const card = cardsByName.get(name);
-                  return (
-                    <tr key={`${sectionKey}-${name}`}>
-                      <td className="sticky left-0 z-10 bg-ctp-base py-1 pr-4">
-                        <CardHoverPreview image={card?.editions[0]?.image} alt={name}>
-                          {card?.slug ? (
-                            <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
-                              {name}
-                            </Link>
-                          ) : (
-                            <span className="text-ctp-text">{name}</span>
-                          )}
-                        </CardHoverPreview>
-                      </td>
-                      {quantities.map((q, i) => (
+                {groups.map((group) => (
+                  <Fragment key={group.label || "all"}>
+                    {group.label && (
+                      <tr>
                         <td
-                          key={decks[i].key}
-                          className={`py-1 pr-4 ${
-                            q === 0 ? "text-ctp-surface1" : isCore ? "text-ctp-green" : isUnique ? "text-ctp-yellow" : "text-ctp-text"
-                          }`}
+                          colSpan={decks.length + 1}
+                          className="sticky left-0 z-10 bg-ctp-base py-1 pr-4 pl-3 text-xs text-ctp-subtext0"
                         >
-                          {q === 0 ? "—" : `${q}x`}
+                          {group.label} ({group.cards.length})
                         </td>
-                      ))}
-                    </tr>
-                  );
-                })}
+                      </tr>
+                    )}
+                    {group.cards.map(({ name, quantities, isCore, isUnique }) => {
+                      const card = cardsByName.get(name);
+                      return (
+                        <tr key={`${sectionKey}-${name}`}>
+                          <td className="sticky left-0 z-10 bg-ctp-base py-1 pr-4 pl-3">
+                            <CardHoverPreview image={card?.editions[0]?.image} alt={name}>
+                              {card?.slug ? (
+                                <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
+                                  {name}
+                                </Link>
+                              ) : (
+                                <span className="text-ctp-text">{name}</span>
+                              )}
+                            </CardHoverPreview>
+                          </td>
+                          {quantities.map((q, i) => (
+                            <td
+                              key={decks[i].key}
+                              className={`py-1 pr-4 ${
+                                q === 0 ? "text-ctp-surface1" : isCore ? "text-ctp-green" : isUnique ? "text-ctp-yellow" : "text-ctp-text"
+                              }`}
+                            >
+                              {q === 0 ? "—" : `${q}x`}
+                            </td>
+                          ))}
+                        </tr>
+                      );
+                    })}
+                  </Fragment>
+                ))}
               </Fragment>
             );
           })}
