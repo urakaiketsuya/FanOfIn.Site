@@ -200,21 +200,21 @@ export default function CardStatsIndex() {
         <table className="w-max min-w-full text-sm">
           <thead>
             <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-              <th className="py-1">Card</th>
-              <th className="py-1">Decks</th>
-              <th className="py-1">Events</th>
-              <th className="py-1">Win rate</th>
-              <th className="py-1">Adjusted</th>
+              <th className="py-1 pr-6">Card</th>
+              <th className="py-1 pr-6">Decks</th>
+              <th className="py-1 pr-6">Events</th>
+              <th className="py-1 pr-6">Win rate</th>
+              <th className="py-1 pr-6">Adjusted</th>
               <th className="py-1"></th>
             </tr>
           </thead>
-        <tbody className="divide-y divide-ctp-surface0">
+        <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
           {rows.map((c) => {
             const card = cardImages.get(c.name);
             const isSelected = selectedCards.includes(c.name);
             return (
               <tr key={c.name}>
-                <td className="py-1.5">
+                <td className="py-1.5 pr-6">
                   <CardHoverPreview image={card?.editions[0]?.image} alt={c.name}>
                     {c.slug ? (
                       <Link to={`/cards/${c.slug}`} className="flex items-center gap-2 text-ctp-text hover:text-ctp-blue">
@@ -228,10 +228,10 @@ export default function CardStatsIndex() {
                     )}
                   </CardHoverPreview>
                 </td>
-                <td className="py-1.5 text-ctp-subtext1">{c.deckCount}</td>
-                <td className="py-1.5 text-ctp-subtext1">{c.eventCount}</td>
-                <td className="py-1.5 text-ctp-subtext1">{(c.avgWinRate * 100).toFixed(0)}%</td>
-                <td className="py-1.5 text-ctp-subtext1">{(c.adjustedWinRate * 100).toFixed(0)}%</td>
+                <td className="py-1.5 pr-6 text-ctp-subtext1">{c.deckCount}</td>
+                <td className="py-1.5 pr-6 text-ctp-subtext1">{c.eventCount}</td>
+                <td className="py-1.5 pr-6 text-ctp-subtext1">{(c.avgWinRate * 100).toFixed(0)}%</td>
+                <td className="py-1.5 pr-6 text-ctp-subtext1">{(c.adjustedWinRate * 100).toFixed(0)}%</td>
                 <td className="py-1.5 text-right">
                   <button
                     type="button"

@@ -87,12 +87,14 @@ export default function CardsBrowse() {
             options={options.data.class}
             selected={filters.classes}
             onToggle={(v) => setFilters((f) => ({ ...f, classes: toggleInSet(f.classes, v) }))}
+            iconKind="classes"
           />
           <FilterCheckboxGroup
             label="Type"
             options={options.data.type}
             selected={filters.types}
             onToggle={(v) => setFilters((f) => ({ ...f, types: toggleInSet(f.types, v) }))}
+            iconKind="types"
           />
           <FilterCheckboxGroup
             label="Subtype"
@@ -105,6 +107,7 @@ export default function CardsBrowse() {
             options={options.data.element}
             selected={filters.elements}
             onToggle={(v) => setFilters((f) => ({ ...f, elements: toggleInSet(f.elements, v) }))}
+            iconKind="elements"
           />
         </div>
       )}

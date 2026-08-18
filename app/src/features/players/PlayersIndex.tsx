@@ -50,23 +50,23 @@ export default function PlayersIndex() {
         <table className="w-max min-w-full text-sm">
           <thead>
             <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-              <th className="py-1">#</th>
-              <th className="py-1">Player</th>
-              <th className="py-1">Rating</th>
-              <th className="py-1">Record</th>
+              <th className="py-1 pr-6">#</th>
+              <th className="py-1 pr-6">Player</th>
+              <th className="py-1 pr-6">Rating</th>
+              <th className="py-1 pr-6">Record</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-ctp-surface0">
+          <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
             {rows.map(({ player, rating, rank }) => (
               <tr key={player.id}>
-                <td className="py-1.5 text-ctp-subtext1">{rank}</td>
-                <td className="py-1.5 whitespace-nowrap">
+                <td className="py-1.5 pr-6 text-ctp-subtext1">{rank}</td>
+                <td className="py-1.5 pr-6 whitespace-nowrap">
                   <Link to={`/players/${player.id}`} className="text-ctp-text hover:text-ctp-blue">
                     {player.username}
                   </Link>
                 </td>
-                <td className="py-1.5 text-ctp-subtext1">{Math.round(rating?.rating ?? 0)}</td>
-                <td className="py-1.5 text-ctp-subtext1">
+                <td className="py-1.5 pr-6 text-ctp-subtext1">{Math.round(rating?.rating ?? 0)}</td>
+                <td className="py-1.5 pr-6 text-ctp-subtext1">
                   {rating?.wins}-{rating?.losses}-{rating?.ties}
                 </td>
               </tr>

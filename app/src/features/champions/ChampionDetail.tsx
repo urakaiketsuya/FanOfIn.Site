@@ -183,23 +183,23 @@ export default function ChampionDetail() {
                 <table className="w-max min-w-full text-sm">
                   <thead>
                     <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                      <th className="py-1">Season</th>
-                      <th className="py-1">Decks</th>
-                      <th className="py-1">Wins</th>
-                      <th className="py-1">Top cut</th>
-                      <th className="py-1">Win rate</th>
-                      <th className="py-1">Share</th>
+                      <th className="py-1 pr-6">Season</th>
+                      <th className="py-1 pr-6">Decks</th>
+                      <th className="py-1 pr-6">Wins</th>
+                      <th className="py-1 pr-6">Top cut</th>
+                      <th className="py-1 pr-6">Win rate</th>
+                      <th className="py-1 pr-6">Share</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-ctp-surface0">
+                  <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
                     {seasonHistory.map((s) => (
                       <tr key={s.seasonId}>
-                        <td className="py-1 text-ctp-text">{s.seasonName}</td>
-                        <td className="py-1 text-ctp-subtext1">{s.deckCount}</td>
-                        <td className="py-1 text-ctp-subtext1">{s.winCount}</td>
-                        <td className="py-1 text-ctp-subtext1">{s.topCutCount}</td>
-                        <td className="py-1 text-ctp-subtext1">{s.deckCount > 0 ? `${(s.avgWinRate * 100).toFixed(0)}%` : "—"}</td>
-                        <td className="py-1 text-ctp-subtext1">{(s.shareOfSeason * 100).toFixed(1)}%</td>
+                        <td className="py-1 pr-6 text-ctp-text">{s.seasonName}</td>
+                        <td className="py-1 pr-6 text-ctp-subtext1">{s.deckCount}</td>
+                        <td className="py-1 pr-6 text-ctp-subtext1">{s.winCount}</td>
+                        <td className="py-1 pr-6 text-ctp-subtext1">{s.topCutCount}</td>
+                        <td className="py-1 pr-6 text-ctp-subtext1">{s.deckCount > 0 ? `${(s.avgWinRate * 100).toFixed(0)}%` : "—"}</td>
+                        <td className="py-1 pr-6 text-ctp-subtext1">{(s.shareOfSeason * 100).toFixed(1)}%</td>
                       </tr>
                     ))}
                   </tbody>
@@ -295,21 +295,21 @@ export default function ChampionDetail() {
                 <table className="w-max min-w-full text-sm">
                   <thead>
                     <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                      <th className="py-1">Build</th>
-                      <th className="py-1">Players</th>
-                      <th className="py-1">Win rate</th>
+                      <th className="py-1 pr-6">Build</th>
+                      <th className="py-1 pr-6">Players</th>
+                      <th className="py-1 pr-6">Win rate</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-ctp-surface0">
+                  <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
                     {builds.map((b) => (
                       <tr key={b.id}>
-                        <td className="py-1.5 whitespace-nowrap">
+                        <td className="py-1.5 pr-6 whitespace-nowrap">
                           <Link to={`/archetypes/${b.id}`} className="text-ctp-text hover:text-ctp-blue">
                             {b.name}
                           </Link>
                         </td>
-                        <td className="py-1.5 text-ctp-subtext1">{b.playerCount}</td>
-                        <td className="py-1.5 text-ctp-subtext1">{(b.avgWinRate * 100).toFixed(0)}%</td>
+                        <td className="py-1.5 pr-6 text-ctp-subtext1">{b.playerCount}</td>
+                        <td className="py-1.5 pr-6 text-ctp-subtext1">{(b.avgWinRate * 100).toFixed(0)}%</td>
                       </tr>
                     ))}
                   </tbody>

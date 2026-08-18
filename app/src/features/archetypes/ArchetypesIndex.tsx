@@ -142,29 +142,29 @@ export default function ArchetypesIndex() {
         <table className="w-max min-w-full text-sm">
           <thead>
             <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-              <th className="py-1">Build</th>
-              <th className="py-1">Champion</th>
-              <th className="py-1">Players</th>
-              <th className="py-1">Events</th>
-              <th className="py-1">Win rate</th>
+              <th className="py-1 pr-6">Build</th>
+              <th className="py-1 pr-6">Champion</th>
+              <th className="py-1 pr-6">Players</th>
+              <th className="py-1 pr-6">Events</th>
+              <th className="py-1 pr-6">Win rate</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-ctp-surface0">
+          <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
             {rows.map((c) => (
               <tr key={c.id}>
-                <td className="py-1.5 whitespace-nowrap">
+                <td className="py-1.5 pr-6 whitespace-nowrap">
                   <Link to={`/archetypes/${c.id}`} className="text-ctp-text hover:text-ctp-blue">
                     {c.name}
                   </Link>
                 </td>
-                <td className="py-1.5 whitespace-nowrap">
+                <td className="py-1.5 pr-6 whitespace-nowrap">
                   <Link to={`/champions/${encodeURIComponent(c.championName)}`} className="text-ctp-subtext1 hover:text-ctp-blue">
                     {c.championName}
                   </Link>
                 </td>
-                <td className="py-1.5 text-ctp-subtext1">{c.playerCount}</td>
-                <td className="py-1.5 text-ctp-subtext1">{c.eventCount}</td>
-                <td className="py-1.5 text-ctp-subtext1">{(c.avgWinRate * 100).toFixed(0)}%</td>
+                <td className="py-1.5 pr-6 text-ctp-subtext1">{c.playerCount}</td>
+                <td className="py-1.5 pr-6 text-ctp-subtext1">{c.eventCount}</td>
+                <td className="py-1.5 pr-6 text-ctp-subtext1">{(c.avgWinRate * 100).toFixed(0)}%</td>
               </tr>
             ))}
           </tbody>

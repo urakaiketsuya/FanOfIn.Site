@@ -149,25 +149,25 @@ export default function EventDetail() {
             <table className="mt-2 w-max min-w-full text-sm">
               <thead>
                 <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                  <th className="py-1">Place</th>
-                  <th className="py-1">Player</th>
-                  <th className="py-1">Record</th>
-                  <th className="py-1">GW%</th>
+                  <th className="py-1 pr-6">Place</th>
+                  <th className="py-1 pr-6">Player</th>
+                  <th className="py-1 pr-6">Record</th>
+                  <th className="py-1 pr-6">GW%</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-ctp-surface0">
+              <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
                 {rankedPlayers.map((player) => {
                   const s = standingsById.get(player.id);
                   return (
                     <tr key={player.id}>
-                      <td className="py-1 text-ctp-subtext1">{player.finalPlacement ?? "—"}</td>
-                      <td className="py-1 whitespace-nowrap text-ctp-text">
+                      <td className="py-1 pr-6 text-ctp-subtext1">{player.finalPlacement ?? "—"}</td>
+                      <td className="py-1 pr-6 whitespace-nowrap text-ctp-text">
                         <PlayerLink id={player.id} username={player.username} />
                       </td>
-                      <td className="py-1 text-ctp-subtext1">
+                      <td className="py-1 pr-6 text-ctp-subtext1">
                         {s ? `${s.statsWins}-${s.statsLosses}-${s.statsTies}` : "—"}
                       </td>
-                      <td className="py-1 text-ctp-subtext1">{s ? `${s.statsPercentGW}%` : "—"}</td>
+                      <td className="py-1 pr-6 text-ctp-subtext1">{s ? `${s.statsPercentGW}%` : "—"}</td>
                     </tr>
                   );
                 })}

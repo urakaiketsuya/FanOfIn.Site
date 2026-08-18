@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import type { Card, OmnidexDecklist, OmnidexDecklistCardLine } from "@gatcg/shared";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CardImage from "../../components/CardImage";
+import ElementIcon from "../../components/ElementIcon";
 import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
 import { formatUsd } from "../../lib/format";
 import { computeSectionPrice } from "../../lib/deckPrice";
@@ -63,6 +64,7 @@ function DeckSection({
                 ) : (
                   <div className="h-8 w-6 shrink-0 rounded bg-ctp-surface0" />
                 ))}
+              {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
               {card ? (
                 <CardHoverPreview image={card.editions[0]?.image} alt={line.card}>
                   <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">

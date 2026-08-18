@@ -55,9 +55,9 @@ export default function ComparisonGrid({
       <table className="w-max min-w-full text-sm">
         <thead>
           <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-            <th className="sticky left-0 z-10 bg-ctp-base py-1 pr-4">Card</th>
+            <th className="sticky left-0 z-10 bg-ctp-base py-1 pr-6">Card</th>
             {decks.map((d) => (
-              <th key={d.key} className="min-w-[7rem] py-1 pr-4 font-medium normal-case text-ctp-text">
+              <th key={d.key} className="min-w-[7rem] py-1 pr-6 font-medium normal-case text-ctp-text">
                 <div className="flex items-center gap-1.5">
                   <span>{d.label}</span>
                   {decklists.get(d.key) && (
@@ -77,22 +77,22 @@ export default function ComparisonGrid({
         </thead>
         <tbody className="divide-y divide-ctp-surface0">
           <tr>
-            <td className="sticky left-0 z-10 bg-ctp-base py-1.5 pr-4 text-xs font-semibold uppercase text-ctp-subtext0">
+            <td className="sticky left-0 z-10 bg-ctp-base py-1.5 pr-6 text-xs font-semibold uppercase text-ctp-subtext0">
               Deck price
             </td>
             {deckStats.map((s, i) => (
-              <td key={s.key} className={`py-1.5 pr-4 ${i === bestPriceIndex ? "text-ctp-green" : "text-ctp-subtext1"}`}>
+              <td key={s.key} className={`py-1.5 pr-6 ${i === bestPriceIndex ? "text-ctp-green" : "text-ctp-subtext1"}`}>
                 {s.price > 0 ? formatUsd(s.price) : "—"}
               </td>
             ))}
           </tr>
 
           <tr>
-            <td className="sticky left-0 z-10 bg-ctp-base py-1.5 pr-4 text-xs font-semibold uppercase text-ctp-subtext0">
+            <td className="sticky left-0 z-10 bg-ctp-base py-1.5 pr-6 text-xs font-semibold uppercase text-ctp-subtext0">
               Identity
             </td>
             {deckStats.map((s) => (
-              <td key={s.key} className="py-1.5 pr-4 text-ctp-subtext1">
+              <td key={s.key} className="py-1.5 pr-6 text-ctp-subtext1">
                 {s.championName ?? "—"}
                 {(s.classes.length > 0 || s.elements.length > 0) && (
                   <div className="text-xs text-ctp-subtext0">
@@ -104,11 +104,11 @@ export default function ComparisonGrid({
           </tr>
 
           <tr>
-            <td className="sticky left-0 z-10 bg-ctp-base py-1.5 pr-4 text-xs font-semibold uppercase text-ctp-subtext0">
+            <td className="sticky left-0 z-10 bg-ctp-base py-1.5 pr-6 text-xs font-semibold uppercase text-ctp-subtext0">
               Power rating
             </td>
             {deckStats.map((s, i) => (
-              <td key={s.key} className={`py-1.5 pr-4 font-semibold ${i === bestCompositeIndex ? "text-ctp-green" : "text-ctp-text"}`}>
+              <td key={s.key} className={`py-1.5 pr-6 font-semibold ${i === bestCompositeIndex ? "text-ctp-green" : "text-ctp-text"}`}>
                 {s.rating ? s.rating.composite.toFixed(1) : "—"}
               </td>
             ))}
@@ -117,9 +117,9 @@ export default function ComparisonGrid({
             const bestPillarIndex = bestIndex(deckStats.map((s) => s.rating?.scores[pillar] ?? null));
             return (
               <tr key={pillar}>
-                <td className="sticky left-0 z-10 bg-ctp-base py-1 pr-4 pl-3 text-xs text-ctp-subtext0">{label}</td>
+                <td className="sticky left-0 z-10 bg-ctp-base py-1 pr-6 pl-3 text-xs text-ctp-subtext0">{label}</td>
                 {deckStats.map((s, i) => (
-                  <td key={s.key} className={`py-1 pr-4 text-xs ${i === bestPillarIndex ? "text-ctp-green" : "text-ctp-subtext1"}`}>
+                  <td key={s.key} className={`py-1 pr-6 text-xs ${i === bestPillarIndex ? "text-ctp-green" : "text-ctp-subtext1"}`}>
                     {s.rating ? s.rating.scores[pillar] : "—"}
                   </td>
                 ))}
@@ -135,7 +135,7 @@ export default function ComparisonGrid({
                   {/* section header */}
                   <td
                     colSpan={decks.length + 1}
-                    className="sticky left-0 z-10 bg-ctp-mantle py-1 pr-4 text-xs font-semibold uppercase text-ctp-subtext0"
+                    className="sticky left-0 z-10 bg-ctp-mantle py-1 pr-6 text-xs font-semibold uppercase text-ctp-subtext0"
                   >
                     {label}
                   </td>
@@ -146,7 +146,7 @@ export default function ComparisonGrid({
                       <tr>
                         <td
                           colSpan={decks.length + 1}
-                          className="sticky left-0 z-10 bg-ctp-base py-1 pr-4 pl-3 text-xs text-ctp-subtext0"
+                          className="sticky left-0 z-10 bg-ctp-base py-1 pr-6 pl-3 text-xs text-ctp-subtext0"
                         >
                           {group.label} ({group.cards.length})
                         </td>
@@ -156,7 +156,7 @@ export default function ComparisonGrid({
                       const card = cardsByName.get(name);
                       return (
                         <tr key={`${sectionKey}-${name}`}>
-                          <td className="sticky left-0 z-10 bg-ctp-base py-1 pr-4 pl-3">
+                          <td className="sticky left-0 z-10 bg-ctp-base py-1 pr-6 pl-3">
                             <CardHoverPreview image={card?.editions[0]?.image} alt={name}>
                               {card?.slug ? (
                                 <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
@@ -170,7 +170,7 @@ export default function ComparisonGrid({
                           {quantities.map((q, i) => (
                             <td
                               key={decks[i].key}
-                              className={`py-1 pr-4 ${
+                              className={`py-1 pr-6 ${
                                 q === 0 ? "text-ctp-surface1" : isCore ? "text-ctp-green" : isUnique ? "text-ctp-yellow" : "text-ctp-text"
                               }`}
                             >

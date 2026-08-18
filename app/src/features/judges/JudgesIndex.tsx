@@ -38,23 +38,23 @@ export default function JudgesIndex() {
         <table className="w-max min-w-full text-sm">
           <thead>
             <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-              <th className="py-1">Judge</th>
-              <th className="py-1">Level</th>
-              <th className="py-1">Experience</th>
-              <th className="py-1">Events judged</th>
+              <th className="py-1 pr-6">Judge</th>
+              <th className="py-1 pr-6">Level</th>
+              <th className="py-1 pr-6">Experience</th>
+              <th className="py-1 pr-6">Events judged</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-ctp-surface0">
+          <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
             {judges.map((judge) => (
               <tr key={judge.id}>
-                <td className="py-1.5 whitespace-nowrap">
+                <td className="py-1.5 pr-6 whitespace-nowrap">
                   <Link to={`/players/${judge.id}`} className="text-ctp-text hover:text-ctp-blue">
                     {judge.username}
                   </Link>
                 </td>
-                <td className="py-1.5 text-ctp-subtext1">{judge.judgeLevel}</td>
-                <td className="py-1.5 text-ctp-subtext1">{judge.judgeExperience.toLocaleString()}</td>
-                <td className="py-1.5 text-ctp-subtext1">{judge.eventIds.length}</td>
+                <td className="py-1.5 pr-6 text-ctp-subtext1">{judge.judgeLevel}</td>
+                <td className="py-1.5 pr-6 text-ctp-subtext1">{judge.judgeExperience.toLocaleString()}</td>
+                <td className="py-1.5 pr-6 text-ctp-subtext1">{judge.eventIds.length}</td>
               </tr>
             ))}
           </tbody>
