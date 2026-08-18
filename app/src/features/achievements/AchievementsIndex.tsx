@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { Link } from "react-router-dom";
 import {
   ACHIEVEMENT_CATEGORY_LABELS,
   ACHIEVEMENT_CATEGORY_ORDER,
@@ -66,10 +67,12 @@ export default function AchievementsIndex() {
                 return (
                   <div key={def.id} className="rounded-md border border-ctp-surface1 p-3">
                     <div className="flex flex-wrap items-baseline justify-between gap-x-3">
-                      <span className="font-semibold text-ctp-text">{def.name}</span>
-                      <span className="text-xs text-ctp-subtext0">
-                        {unlocks.length} player{unlocks.length === 1 ? "" : "s"}
-                      </span>
+                      <Link to={`/achievements/${def.id}`} className="font-semibold text-ctp-text hover:text-ctp-blue">
+                        {def.name}
+                      </Link>
+                      <Link to={`/achievements/${def.id}`} className="text-xs text-ctp-subtext0 hover:text-ctp-blue hover:underline">
+                        {unlocks.length} player{unlocks.length === 1 ? "" : "s"} &rarr;
+                      </Link>
                     </div>
                     <p className="mt-0.5 text-sm text-ctp-subtext1">{def.description}</p>
                     {recent.length > 0 && (

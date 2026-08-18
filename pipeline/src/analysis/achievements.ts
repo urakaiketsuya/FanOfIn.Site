@@ -104,10 +104,16 @@ export function computeAchievements(
   const unlocks: AchievementUnlock[] = [];
   const definedIds = new Set(DEFINITIONS.map((d) => d.id));
 
-  function unlock(achievementId: string, playerId: number, earnedAt: string, context: string) {
+  function unlock(
+    achievementId: string,
+    playerId: number,
+    earnedAt: string,
+    context: string,
+    links?: { eventId?: number; deckId?: string; opponentPlayerId?: number },
+  ) {
     if (!definedIds.has(achievementId)) return; // e.g. an Omnidex event category we don't have a badge for
     if (typeof playerId !== "number" || Number.isNaN(playerId)) return; // team-event pairings occasionally carry a team name instead of a numeric player id
-    unlocks.push({ achievementId, playerId, earnedAt, context });
+    unlocks.push({ achievementId, playerId, earnedAt, context, ...links });
   }
 
   // --- Tournament wins by tier: first win per player+category ---
@@ -119,7 +125,7 @@ export function computeAchievements(
     if (!existing || s.eventDate < existing.eventDate) firstWinByPlayerCategory.set(key, s);
   }
   for (const s of firstWinByPlayerCategory.values()) {
-    unlock(`won-${s.eventCategory}`, s.player, s.eventDate, s.eventName);
+    unlock(`won-${s.eventCategory}`, s.player, s.eventDate, s.eventName, { eventId: s.eventId, deckId: s.deckId });
   }
 
   // --- Giant Slayer: first upset win per player ---
@@ -127,14 +133,19 @@ export function computeAchievements(
   for (const u of [...eloUpsets].sort((a, b) => a.eventDate.localeCompare(b.eventDate))) {
     if (giantSlayerSeen.has(u.winnerId)) continue;
     giantSlayerSeen.add(u.winnerId);
-    unlock("giant-slayer", u.winnerId, u.eventDate, `${Math.abs(u.eloSwing).toFixed(0)}-point swing at ${u.eventName}`);
+    unlock("giant-slayer", u.winnerId, u.eventDate, `${Math.abs(u.eloSwing).toFixed(0)}-point swing at ${u.eventName}`, {
+      eventId: u.eventId,
+      opponentPlayerId: u.loserId,
+    });
   }
 
   // --- Rating milestones: every threshold a player's current rating clears ---
   for (const { id, threshold } of RATING_MILESTONES) {
     for (const rating of eloRatings.values()) {
       if (Number.isNaN(rating.rating) || rating.rating < threshold) continue;
-      unlock(id, rating.playerId, rating.lastEventDate, `Reached ${Math.round(rating.rating)} rating`);
+      unlock(id, rating.playerId, rating.lastEventDate, `Reached ${Math.round(rating.rating)} rating`, {
+        eventId: rating.lastEventId,
+      });
     }
   }
 
@@ -143,7 +154,10 @@ export function computeAchievements(
   for (const d of [...hipsterDeckScores].sort((a, b) => a.eventDate.localeCompare(b.eventDate))) {
     if (d.score < HIPSTER_THRESHOLD || trailblazerSeen.has(d.player)) continue;
     trailblazerSeen.add(d.player);
-    unlock("trailblazer", d.player, d.eventDate, `${(d.score * 100).toFixed(0)}% novelty on ${d.championName} at ${d.eventName}`);
+    unlock("trailblazer", d.player, d.eventDate, `${(d.score * 100).toFixed(0)}% novelty on ${d.championName} at ${d.eventName}`, {
+      eventId: d.eventId,
+      deckId: `${d.eventId}:${d.player}`,
+    });
   }
 
   // --- Overperformer: Nth "tough finish" (see DeckSighting.underplaced) per player ---
@@ -158,12 +172,16 @@ export function computeAchievements(
     if (list.length < OVERPERFORMER_MIN_TOUGH_FINISHES) continue;
     const sorted = [...list].sort((a, b) => a.eventDate.localeCompare(b.eventDate));
     const qualifying = sorted[OVERPERFORMER_MIN_TOUGH_FINISHES - 1];
-    unlock("overperformer", player, qualifying.eventDate, `${list.length} strong-record-but-rough-finish events`);
+    unlock("overperformer", player, qualifying.eventDate, `${list.length} strong-record-but-rough-finish events`, {
+      eventId: qualifying.eventId,
+      deckId: qualifying.deckId,
+    });
   }
 
   // --- Trendsetter: earliest player of a decklist signature that others went on to copy ---
   interface SigSighting {
     player: number;
+    eventId: number;
     eventDate: string;
     eventName: string;
   }
@@ -176,11 +194,11 @@ export function computeAchievements(
       const cs = canonicalSignature(sig?.mainCards ?? [], sig?.materialCards ?? []);
       if (!cs) continue;
       const list = bySignature.get(cs) ?? [];
-      list.push({ player: entry.player, eventDate: bundle.event.date, eventName: bundle.event.name });
+      list.push({ player: entry.player, eventId: bundle.id, eventDate: bundle.event.date, eventName: bundle.event.name });
       bySignature.set(cs, list);
     }
   }
-  const trendsetterQualifying = new Map<number, { eventDate: string; copiers: number }>(); // player -> earliest qualifying signature
+  const trendsetterQualifying = new Map<number, { eventId: number; eventDate: string; copiers: number }>(); // player -> earliest qualifying signature
   for (const list of bySignature.values()) {
     const distinctPlayers = new Set(list.map((x) => x.player));
     const copiers = distinctPlayers.size - 1;
@@ -188,11 +206,14 @@ export function computeAchievements(
     const earliest = [...list].sort((a, b) => a.eventDate.localeCompare(b.eventDate))[0];
     const existing = trendsetterQualifying.get(earliest.player);
     if (!existing || earliest.eventDate < existing.eventDate) {
-      trendsetterQualifying.set(earliest.player, { eventDate: earliest.eventDate, copiers });
+      trendsetterQualifying.set(earliest.player, { eventId: earliest.eventId, eventDate: earliest.eventDate, copiers });
     }
   }
-  for (const [player, { eventDate, copiers }] of trendsetterQualifying) {
-    unlock("trendsetter", player, eventDate, `Later run by ${copiers} other players`);
+  for (const [player, { eventId, eventDate, copiers }] of trendsetterQualifying) {
+    unlock("trendsetter", player, eventDate, `Later run by ${copiers} other players`, {
+      eventId,
+      deckId: `${eventId}:${player}`,
+    });
   }
 
   // --- Grinder: Nth public decklist within one season, per player ---
@@ -215,27 +236,36 @@ export function computeAchievements(
     }
   }
   for (const q of grinderQualifying.values()) {
-    unlock("grinder", q.player, q.eventDate, `${q.seasonEventCount} events in ${q.seasonName}`);
+    unlock("grinder", q.player, q.eventDate, `${q.seasonEventCount} events in ${q.seasonName}`, {
+      eventId: q.eventId,
+      deckId: q.deckId,
+    });
   }
 
   // --- Judges: level + volume, tracked across every event a judge appears in ---
-  const judgeStats = new Map<number, { level: number; events: Set<number>; lastEventDate: string }>();
+  const judgeStats = new Map<number, { level: number; events: Set<number>; lastEventId: number; lastEventDate: string }>();
   for (const bundle of bundles) {
     if ("error" in bundle.judges) continue;
     for (const j of bundle.judges) {
-      const existing = judgeStats.get(j.id) ?? { level: 0, events: new Set<number>(), lastEventDate: bundle.event.date };
+      const existing =
+        judgeStats.get(j.id) ?? { level: 0, events: new Set<number>(), lastEventId: bundle.id, lastEventDate: bundle.event.date };
       existing.level = Math.max(existing.level, j.judgeLevel);
       existing.events.add(bundle.id);
-      if (bundle.event.date > existing.lastEventDate) existing.lastEventDate = bundle.event.date;
+      if (bundle.event.date > existing.lastEventDate) {
+        existing.lastEventDate = bundle.event.date;
+        existing.lastEventId = bundle.id;
+      }
       judgeStats.set(j.id, existing);
     }
   }
   for (const [judgeId, stats] of judgeStats) {
     if (stats.level >= VETERAN_JUDGE_MIN_LEVEL) {
-      unlock("veteran-judge", judgeId, stats.lastEventDate, `Judge level ${stats.level}`);
+      unlock("veteran-judge", judgeId, stats.lastEventDate, `Judge level ${stats.level}`, { eventId: stats.lastEventId });
     }
     if (stats.events.size >= DEDICATED_JUDGE_MIN_EVENTS) {
-      unlock("dedicated-judge", judgeId, stats.lastEventDate, `Judged ${stats.events.size} events`);
+      unlock("dedicated-judge", judgeId, stats.lastEventDate, `Judged ${stats.events.size} events`, {
+        eventId: stats.lastEventId,
+      });
     }
   }
 

@@ -492,6 +492,20 @@ qualifying seasons, multiple originated decklists) but are collapsed to a single
 — the earliest qualifying instance — so the achievement model stays "one badge per player per
 achievement," consistent with every other achievement here, rather than showing duplicate badges.
 
+Each `AchievementUnlock` also carries optional `eventId`/`deckId`/`opponentPlayerId` fields so the
+UI can link out to the event, the specific decklist, or (for Giant Slayer) both sides of the match
+— see "Compare-tool deep links" below for how those get turned into links.
+
+## Compare-tool deep links (`app/src/features/compare/deepLink.ts`)
+
+`buildCompareLink(pairs)` builds a `/compare?add=eventId:player,...` URL; `CompareIndex.tsx` reads
+the `add` param once player/event data is loaded, seeds the compare set from it, then strips the
+param (so removing a seeded deck later doesn't re-add it on a refetch). Two call sites:
+`EventPairings.tsx` (a "Compare decklists" link per 2-sided, numeric-id pairing — team-battle
+pairings, which have non-numeric ids per the Elo note above, are excluded) and achievement unlocks
+(`AchievementDetail.tsx` — "View deck" for a single `deckId`, "Compare match" for Giant Slayer's
+`opponentPlayerId`, comparing both sides of the actual upset).
+
 ## Client load-time optimizations
 
 Three changes, made together to address the app's biggest measured load-time cost: fetching and

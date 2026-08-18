@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import type { OmnidexPlayer } from "@gatcg/shared";
 import { gatcgApi, isApiErrorBody } from "../../lib/api/client";
 import PlayerLink from "../players/PlayerLink";
+import { buildCompareLink } from "../compare/deepLink";
 
 function findPlayer(players: OmnidexPlayer[], id: number): OmnidexPlayer | undefined {
   return players.find((p) => p.id === id);
@@ -39,25 +41,36 @@ export default function EventPairings({ eventId, players, swissRounds }: { event
 
       {pairings.data && !isApiErrorBody(pairings.data) && (
         <div className="mt-2 space-y-1">
-          {pairings.data.pairings.map((p) => (
-            <div key={p.id} className="flex items-center gap-2 text-sm">
-              {p.pairing.map((side, i) => {
-                const player = findPlayer(players, side.id);
-                const colorClass = side.status === "winner" ? "text-ctp-green" : "text-ctp-subtext1";
-                return (
-                  <span key={side.id} className={colorClass}>
-                    {i > 0 && <span className="mx-1 text-ctp-subtext0">vs</span>}
-                    {player ? (
-                      <PlayerLink id={side.id} username={player.username} className={`hover:underline ${colorClass}`} />
-                    ) : (
-                      `Player #${side.id}`
-                    )}{" "}
-                    ({side.score})
-                  </span>
-                );
-              })}
-            </div>
-          ))}
+          {pairings.data.pairings.map((p) => {
+            const bothNumeric = p.pairing.length === 2 && p.pairing.every((side) => typeof side.id === "number");
+            return (
+              <div key={p.id} className="flex items-center gap-2 text-sm">
+                {p.pairing.map((side, i) => {
+                  const player = findPlayer(players, side.id);
+                  const colorClass = side.status === "winner" ? "text-ctp-green" : "text-ctp-subtext1";
+                  return (
+                    <span key={side.id} className={colorClass}>
+                      {i > 0 && <span className="mx-1 text-ctp-subtext0">vs</span>}
+                      {player ? (
+                        <PlayerLink id={side.id} username={player.username} className={`hover:underline ${colorClass}`} />
+                      ) : (
+                        `Player #${side.id}`
+                      )}{" "}
+                      ({side.score})
+                    </span>
+                  );
+                })}
+                {bothNumeric && (
+                  <Link
+                    to={buildCompareLink(p.pairing.map((side) => ({ eventId, player: side.id })))}
+                    className="ml-1 text-xs text-ctp-blue hover:underline"
+                  >
+                    Compare decklists &rarr;
+                  </Link>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
 

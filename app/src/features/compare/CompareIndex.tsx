@@ -1,9 +1,11 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import DeckSearchByCards from "./DeckSearchByCards";
 import ImportByPlayer from "./ImportByPlayer";
 import PasteDecklist from "./PasteDecklist";
 import ComparisonGrid from "./ComparisonGrid";
 import { useComparedDecklists } from "./useComparedDecklists";
+import { useOmnidexIndex, useOmnidexPlayers } from "../tournaments/data";
 import type { ComparedDeck } from "./types";
 
 type SourceTab = "cards" | "player" | "paste";
@@ -17,9 +19,44 @@ const TAB_LABELS: Record<SourceTab, string> = {
 export default function CompareIndex() {
   const [decks, setDecks] = useState<ComparedDeck[]>([]);
   const [tab, setTab] = useState<SourceTab>("cards");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const playersData = useOmnidexPlayers();
+  const index = useOmnidexIndex();
 
   const comparedKeys = useMemo(() => new Set(decks.map((d) => d.key)), [decks]);
   const decklists = useComparedDecklists(decks);
+
+  // Seeds the compare set from a `?add=eventId:player,...` link (e.g. from an event's pairings
+  // or an achievement unlock) — once player/event data is available, then clears the param so it
+  // doesn't re-seed if the user removes a deck and the data refetches.
+  const seededRef = useRef(false);
+  useEffect(() => {
+    const add = searchParams.get("add");
+    if (!add || seededRef.current || !playersData || !index) return;
+    seededRef.current = true;
+
+    const usernameById = new Map(playersData.players.map((p) => [p.id, p.username]));
+    const eventNameById = new Map(index.events.map((e) => [e.id, e.name]));
+    const seeded: ComparedDeck[] = [];
+    for (const pair of add.split(",")) {
+      const [eventIdStr, playerStr] = pair.split(":");
+      const eventId = Number(eventIdStr);
+      const player = Number(playerStr);
+      if (!Number.isFinite(eventId) || !Number.isFinite(player)) continue;
+      const key = `${eventId}:${player}`;
+      if (seeded.some((d) => d.key === key)) continue;
+      const username = usernameById.get(player) ?? `Player #${player}`;
+      const eventName = eventNameById.get(eventId) ?? `Event #${eventId}`;
+      seeded.push({ key, label: `${username} @ ${eventName}`, source: { kind: "sighting", eventId, player } });
+    }
+    if (seeded.length > 0) setDecks((prev) => [...prev, ...seeded]);
+
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.delete("add");
+      return next;
+    });
+  }, [searchParams, playersData, index, setSearchParams]);
 
   function toggleDeck(deck: ComparedDeck) {
     setDecks((prev) => (prev.some((d) => d.key === deck.key) ? prev.filter((d) => d.key !== deck.key) : [...prev, deck]));

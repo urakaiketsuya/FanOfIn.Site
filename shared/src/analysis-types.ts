@@ -396,6 +396,12 @@ export interface AchievementUnlock {
   earnedAt: string;
   /** Human-readable specifics, e.g. the event name, rating reached, or a count — shown alongside the badge. */
   context: string;
+  /** The event most directly tied to this unlock, if any — lets the UI link to `/events/{eventId}`. */
+  eventId?: number;
+  /** The specific decklist tied to this unlock, if any (`${eventId}:${player}`, same convention as `DeckSighting.deckId`) — lets the UI open it in the Compare tool. */
+  deckId?: string;
+  /** For achievements tied to a specific match against another player (currently just Giant Slayer) — lets the UI open both sides' decks from that event in the Compare tool. */
+  opponentPlayerId?: number;
 }
 
 export interface AchievementsData {
