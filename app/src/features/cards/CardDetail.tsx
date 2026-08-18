@@ -1,9 +1,11 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { priceKey, type TopCardsBySection } from "@gatcg/shared";
 import { gatcgApi } from "../../lib/api/client";
 import CardImage from "../../components/CardImage";
+import ElementIcon from "../../components/ElementIcon";
+import CostIcon from "../../components/CostIcon";
 import TopCardsSections from "../../components/TopCardsSections";
 import TopDecksList from "../../components/TopDecksList";
 import { useCard } from "./useCard";
@@ -30,19 +32,22 @@ const TABS: { key: CardTab; label: string }[] = [
   { key: "decks", label: "Decks" },
 ];
 
-function Badge({ children }: { children: string }) {
+function Badge({ children }: { children: ReactNode }) {
   return (
-    <span className="rounded-full border border-ctp-surface1 bg-ctp-surface0 px-2 py-0.5 text-xs text-ctp-subtext1">
+    <span className="flex items-center gap-1 rounded-full border border-ctp-surface1 bg-ctp-surface0 px-2 py-0.5 text-xs text-ctp-subtext1">
       {children}
     </span>
   );
 }
 
-function Stat({ label, value }: { label: string; value: number | string | null }) {
+function Stat({ label, value, icon }: { label: string; value: number | string | null; icon?: ReactNode }) {
   if (value === null) return null;
   return (
     <div className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-center">
-      <div className="text-xs text-ctp-subtext0">{label}</div>
+      <div className="flex items-center justify-center gap-1 text-xs text-ctp-subtext0">
+        {icon}
+        {label}
+      </div>
       <div className="font-semibold text-ctp-text">{value}</div>
     </div>
   );
@@ -210,13 +215,16 @@ export default function CardDetail() {
               <Badge key={s}>{s}</Badge>
             ))}
             {card.elements.map((e) => (
-              <Badge key={e}>{e}</Badge>
+              <Badge key={e}>
+                <ElementIcon element={e} size={14} />
+                {e}
+              </Badge>
             ))}
           </div>
 
           <div className="mt-4 flex flex-wrap gap-2">
-            <Stat label="Memory" value={card.cost_memory} />
-            <Stat label="Reserve" value={card.cost_reserve} />
+            <Stat label="Memory" value={card.cost_memory} icon={<CostIcon kind="memory" size={12} />} />
+            <Stat label="Reserve" value={card.cost_reserve} icon={<CostIcon kind="reserve" size={12} />} />
             <Stat label="Level" value={card.level} />
             <Stat label="Power" value={card.power} />
             <Stat label="Life" value={card.life} />

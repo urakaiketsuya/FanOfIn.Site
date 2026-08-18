@@ -145,6 +145,14 @@ export const gatcgApi = {
 
   /** Works for both an edition's `image` ("/cards/images/…") and a featured group's `image` ("/featured-sets/images/…"). */
   imageUrl: (imagePath: string, rounded = false) => `${BASE_URL}${imagePath}${rounded ? "?rounded=true" : ""}`,
+
+  /**
+   * Official element/cost badge icons — same `gatcg.com` root domain as this API, just a
+   * dedicated asset host (`cdn2.gatcg.com/i/{elements,costs}/{key}.png`, lowercase key). Verified
+   * live: index.gatcg.com (a card-database site built on this same API) pulls its element and
+   * memory/reserve cost badges from this exact CDN rather than hosting its own copies.
+   */
+  iconUrl: (kind: "elements" | "costs", key: string) => `https://cdn2.gatcg.com/i/${kind}/${key.toLowerCase()}.png`,
 };
 
 export { ApiError, isApiErrorBody };
