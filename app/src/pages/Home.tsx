@@ -43,6 +43,11 @@ const SECTIONS: Section[] = [
     to: "/judges",
   },
   {
+    title: "Teams",
+    description: "Team registrations from 3v3 team-format events, searchable by team or player.",
+    to: "/teams",
+  },
+  {
     title: "Achievements",
     description: "Badges computed automatically from tournament wins, ratings, and decklists — tournament tiers, rating milestones, and more.",
     to: "/achievements",
