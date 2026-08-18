@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER } from "@gatcg/shared";
 import { useDeckSightingsData } from "./data";
+import { useArchetypeData } from "../archetypes/data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useOmnidexPlayers } from "../tournaments/data";
 import { useChampionCardImages } from "../players/useChampionCardImages";
@@ -20,17 +21,39 @@ const OUTCOME_LABELS: Record<Outcome, string> = {
 const PAGE_SIZE = 50;
 
 export default function TopDecksIndex() {
-  useDocumentTitle("Top Decks", "Browse public Grand Archive TCG tournament decklists, filterable by Champion, season, and outcome.");
+  useDocumentTitle(
+    "Top Decks",
+    "Browse public Grand Archive TCG tournament decklists, filterable by Champion, class, season, and outcome.",
+  );
   const sightingsData = useDeckSightingsData();
   const playersData = useOmnidexPlayers();
+  const archetypeData = useArchetypeData();
   const [searchParams] = useSearchParams();
 
   const [category, setCategory] = useState<string | null>(null);
   const [seasonId, setSeasonId] = useState<number | null>(null);
   const [championName, setChampionName] = useState<string | null>(searchParams.get("champion"));
+  const [selectedClasses, setSelectedClasses] = useState<Set<string>>(new Set());
   const [outcome, setOutcome] = useState<Outcome>("all");
   const [sortMode, setSortMode] = useState<SortMode>("best");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
+  const classesByChampion = useMemo(() => {
+    const map = new Map<string, string[]>();
+    for (const a of [...(archetypeData?.archetypes ?? []), ...(archetypeData?.namedSpirits ?? [])]) {
+      map.set(a.signature, a.classes);
+    }
+    return map;
+  }, [archetypeData]);
+
+  function toggleClass(cls: string) {
+    setSelectedClasses((prev) => {
+      const next = new Set(prev);
+      if (next.has(cls)) next.delete(cls);
+      else next.add(cls);
+      return next;
+    });
+  }
 
   const categoriesPresent = useMemo(() => {
     if (!sightingsData) return [];
@@ -52,6 +75,14 @@ export default function TopDecksIndex() {
     return Array.from(new Set(sightingsData.sightings.map((s) => s.championName).filter((n): n is string => n !== null))).sort();
   }, [sightingsData]);
 
+  const classesPresent = useMemo(() => {
+    const present = new Set<string>();
+    for (const name of championsPresent) {
+      for (const cls of classesByChampion.get(name) ?? []) present.add(cls);
+    }
+    return Array.from(present).sort();
+  }, [championsPresent, classesByChampion]);
+
   const filtered = useMemo(() => {
     if (!sightingsData) return [];
     const rows = sightingsData.sightings.filter(
@@ -59,6 +90,8 @@ export default function TopDecksIndex() {
         (!category || s.eventCategory === category) &&
         (seasonId === null || s.seasonId === seasonId) &&
         (!championName || s.championName === championName) &&
+        (selectedClasses.size === 0 ||
+          (s.championName && (classesByChampion.get(s.championName) ?? []).some((c) => selectedClasses.has(c)))) &&
         (outcome === "all" || (outcome === "winner" && s.winner) || (outcome === "topCut" && s.topCut) || (outcome === "high" && s.high)),
     );
     return [...rows].sort((a, b) => {
@@ -75,11 +108,11 @@ export default function TopDecksIndex() {
       }
       return b.eventDate.localeCompare(a.eventDate);
     });
-  }, [sightingsData, category, seasonId, championName, outcome, sortMode]);
+  }, [sightingsData, category, seasonId, championName, selectedClasses, classesByChampion, outcome, sortMode]);
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [category, seasonId, championName, outcome, sortMode]);
+  }, [category, seasonId, championName, selectedClasses, outcome, sortMode]);
 
   const visible = filtered.slice(0, visibleCount);
   const championImages = useChampionCardImages(Array.from(new Set(visible.map((s) => s.championName).filter((n): n is string => n !== null))));
@@ -147,6 +180,23 @@ export default function TopDecksIndex() {
           ))}
         </select>
       </div>
+
+      {classesPresent.length > 0 && (
+        <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
+          <span className="text-ctp-subtext0">Class:</span>
+          {classesPresent.map((cls) => (
+            <button
+              key={cls}
+              onClick={() => toggleClass(cls)}
+              className={`rounded-md border px-2 py-1 text-xs ${
+                selectedClasses.has(cls) ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+              }`}
+            >
+              {cls}
+            </button>
+          ))}
+        </div>
+      )}
 
       <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Outcome:</span>
