@@ -18,6 +18,7 @@ const STATIC_ROUTES = [
   "/seasons",
   "/players",
   "/judges",
+  "/teams",
   "/achievements",
   "/archetypes",
   "/battle-chart",

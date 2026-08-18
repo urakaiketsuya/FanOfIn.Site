@@ -30,9 +30,11 @@ async function main() {
       const result = await crawlEvents(mode);
       console.log(`omnidex: scanned ${result.scanned}, deep-fetched ${result.deepFetched}, max id ${result.maxIdSeen}`);
 
-      const { index, players, judges } = await buildOmnidexIndex();
-      await writeOmnidexData(index, players, judges);
-      console.log(`omnidex: published ${index.events.length} events, ${players.length} players, ${judges.length} judges`);
+      const { index, players, judges, teams } = await buildOmnidexIndex();
+      await writeOmnidexData(index, players, judges, teams);
+      console.log(
+        `omnidex: published ${index.events.length} events, ${players.length} players, ${judges.length} judges, ${teams.length} team sightings`,
+      );
     } catch (err) {
       console.error("omnidex pipeline failed", err);
       process.exitCode = 1;

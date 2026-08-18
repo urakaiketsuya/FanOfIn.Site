@@ -14,6 +14,7 @@ const NAV_LINKS = [
   { to: "/seasons", label: "Seasons" },
   { to: "/players", label: "Players" },
   { to: "/judges", label: "Judges" },
+  { to: "/teams", label: "Teams" },
   { to: "/achievements", label: "Achievements" },
   // Deck analysis
   { to: "/champions", label: "Champions" },
@@ -44,7 +45,7 @@ export default function App() {
       <header className="border-b border-ctp-surface0">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-2 px-4 py-3">
           <Link to="/" className="shrink-0 text-sm font-semibold text-ctp-blue md:hidden">
-            GA Explorer
+            Fan of Insight
           </Link>
 
           <nav className="hidden flex-wrap items-center gap-1 md:flex">

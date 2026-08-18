@@ -86,6 +86,29 @@ export interface OmnidexJudgesData {
   judges: OmnidexJudgeSummary[];
 }
 
+/**
+ * One team registration at one event — deliberately NOT deduplicated into a global "team roster"
+ * the way Players/Judges are. Verified against real data: team names are not a reliable identity
+ * — e.g. "Checkers Club" appears at two different events with zero overlapping players, and
+ * generic names like "Team 1" get reused across unrelated small local events. A real team can also
+ * legitimately reuse its name across events (same roster). So each entry here is just one
+ * event's registration; player IDs (a genuine stable identity) are the only safe way to notice
+ * "this looks like the same team again."
+ */
+export interface OmnidexTeamSighting {
+  eventId: number;
+  eventName: string;
+  eventDate: string;
+  teamName: string;
+  finalPlacement: number | null;
+  players: { id: number; slot: string }[];
+}
+
+export interface OmnidexTeamsData {
+  generatedAt: string;
+  teams: OmnidexTeamSighting[];
+}
+
 export interface VodLink {
   label: string;
   url: string;

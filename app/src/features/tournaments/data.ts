@@ -1,4 +1,4 @@
-import type { OmnidexIndexData, OmnidexJudgesData, OmnidexPlayersData } from "@gatcg/shared";
+import type { OmnidexIndexData, OmnidexJudgesData, OmnidexPlayersData, OmnidexTeamsData } from "@gatcg/shared";
 import { usePublishedData } from "../../lib/sync/usePublishedData";
 
 export function useOmnidexIndex(): OmnidexIndexData | undefined {
@@ -11,4 +11,8 @@ export function useOmnidexPlayers(): OmnidexPlayersData | undefined {
 
 export function useOmnidexJudges(): OmnidexJudgesData | undefined {
   return usePublishedData<OmnidexJudgesData>("omnidex-judges", "/data/omnidex/judges.json");
+}
+
+export function useOmnidexTeams(): OmnidexTeamsData | undefined {
+  return usePublishedData<OmnidexTeamsData>("omnidex-teams", "/data/omnidex/teams.json");
 }

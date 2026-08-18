@@ -8,6 +8,7 @@ import {
   type OmnidexJudgeSummary,
   type OmnidexPlayerSummary,
   type OmnidexSeasonSummary,
+  type OmnidexTeamSighting,
 } from "@gatcg/shared";
 import { readCachedBundle, listCachedBundles } from "./cache.js";
 
@@ -22,6 +23,7 @@ export async function buildOmnidexIndex(): Promise<{
   index: OmnidexIndexData;
   players: OmnidexPlayerSummary[];
   judges: OmnidexJudgeSummary[];
+  teams: OmnidexTeamSighting[];
 }> {
   const allBundles = await listCachedBundles();
 
@@ -29,6 +31,7 @@ export async function buildOmnidexIndex(): Promise<{
   const seasonsById = new Map<number, OmnidexSeasonSummary>();
   const playersById = new Map<number, OmnidexPlayerSummary>();
   const judgesById = new Map<number, OmnidexJudgeSummary>();
+  const teams: OmnidexTeamSighting[] = [];
 
   for (const bundle of allBundles) {
     if (bundle.event.status !== "complete") continue;
@@ -104,14 +107,30 @@ export async function buildOmnidexIndex(): Promise<{
         }
       }
     }
+
+    if (!("error" in bundle.teams)) {
+      for (const team of bundle.teams) {
+        if (team.players.length === 0) continue; // registered but never fielded a lineup
+        teams.push({
+          eventId: event.id,
+          eventName: event.name,
+          eventDate: event.date,
+          teamName: team.name,
+          finalPlacement: team.finalPlacement,
+          players: team.players.map((p) => ({ id: p.id, slot: p.slot })),
+        });
+      }
+    }
   }
 
   events.sort((a, b) => a.date.localeCompare(b.date));
+  teams.sort((a, b) => b.eventDate.localeCompare(a.eventDate));
 
   return {
     index: { generatedAt: new Date().toISOString(), events, seasons: Array.from(seasonsById.values()) },
     players: Array.from(playersById.values()),
     judges: Array.from(judgesById.values()),
+    teams,
   };
 }
 
@@ -119,12 +138,14 @@ export async function writeOmnidexData(
   index: OmnidexIndexData,
   players: OmnidexPlayerSummary[],
   judges: OmnidexJudgeSummary[],
+  teams: OmnidexTeamSighting[],
 ): Promise<void> {
   const eventsOutDir = path.join(DATA_DIR, "events");
   await mkdir(eventsOutDir, { recursive: true });
   await writeFile(path.join(DATA_DIR, "index.json"), JSON.stringify(index), "utf-8");
   await writeFile(path.join(DATA_DIR, "players.json"), JSON.stringify({ generatedAt: index.generatedAt, players }), "utf-8");
   await writeFile(path.join(DATA_DIR, "judges.json"), JSON.stringify({ generatedAt: index.generatedAt, judges }), "utf-8");
+  await writeFile(path.join(DATA_DIR, "teams.json"), JSON.stringify({ generatedAt: index.generatedAt, teams }), "utf-8");
 
   // Publish per-event bundles as small standalone files, fetched on-demand by event pages (Phase 8).
   for (const summary of index.events) {

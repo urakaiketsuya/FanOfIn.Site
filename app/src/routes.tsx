@@ -18,6 +18,7 @@ const SeasonDetail = lazy(() => import("./features/tournaments/SeasonDetail"));
 const PlayersIndex = lazy(() => import("./features/players/PlayersIndex"));
 const PlayerProfile = lazy(() => import("./features/players/PlayerProfile"));
 const JudgesIndex = lazy(() => import("./features/judges/JudgesIndex"));
+const TeamsIndex = lazy(() => import("./features/teams/TeamsIndex"));
 const AchievementsIndex = lazy(() => import("./features/achievements/AchievementsIndex"));
 const AchievementDetail = lazy(() => import("./features/achievements/AchievementDetail"));
 const ArchetypesIndex = lazy(() => import("./features/archetypes/ArchetypesIndex"));
@@ -58,6 +59,7 @@ export default function AppRoutes() {
         <Route path="/players" element={<PlayersIndex />} />
         <Route path="/players/:id" element={<PlayerProfile />} />
         <Route path="/judges" element={<JudgesIndex />} />
+        <Route path="/teams" element={<TeamsIndex />} />
         <Route path="/achievements" element={<AchievementsIndex />} />
         <Route path="/achievements/:id" element={<AchievementDetail />} />
         <Route path="/archetypes" element={<ArchetypesIndex />} />

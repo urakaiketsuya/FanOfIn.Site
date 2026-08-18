@@ -9,6 +9,7 @@ const MANIFEST_ENTRIES: { key: string; file: string }[] = [
   { key: "omnidex-index", file: "omnidex/index.json" },
   { key: "omnidex-players", file: "omnidex/players.json" },
   { key: "omnidex-judges", file: "omnidex/judges.json" },
+  { key: "omnidex-teams", file: "omnidex/teams.json" },
   { key: "omnidex-vods", file: "omnidex/vods.json" },
   { key: "analysis-elo", file: "analysis/elo.json" },
   { key: "analysis-cards", file: "analysis/cards.json" },
