@@ -1,8 +1,20 @@
-import type { ArchetypeData, ArchetypeTaxonomyData, CardStatsData, ChampionTrendsData, DeckCardIndexData, SimilarityData } from "@gatcg/shared";
+import type {
+  ArchetypeData,
+  ArchetypeTaxonomyData,
+  CardStatsData,
+  ChampionTrendsData,
+  DeckCardIndexData,
+  KeywordStatsData,
+  SimilarityData,
+} from "@gatcg/shared";
 import { usePublishedData } from "../../lib/sync/usePublishedData";
 
 export function useArchetypeData(): ArchetypeData | undefined {
   return usePublishedData<ArchetypeData>("analysis-archetypes", "/data/analysis/archetypes.json");
+}
+
+export function useKeywordStatsData(): KeywordStatsData | undefined {
+  return usePublishedData<KeywordStatsData>("analysis-keyword-stats", "/data/analysis/keyword-stats.json");
 }
 
 export function useArchetypeTaxonomyData(): ArchetypeTaxonomyData | undefined {

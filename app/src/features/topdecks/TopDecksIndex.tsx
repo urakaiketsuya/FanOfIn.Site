@@ -34,6 +34,7 @@ export default function TopDecksIndex() {
   const [seasonId, setSeasonId] = useState<number | null>(null);
   const [championName, setChampionName] = useState<string | null>(searchParams.get("champion"));
   const [selectedClasses, setSelectedClasses] = useState<Set<string>>(new Set());
+  const [keyword, setKeyword] = useState<string | null>(null);
   const [outcome, setOutcome] = useState<Outcome>("all");
   const [sortMode, setSortMode] = useState<SortMode>("best");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -83,6 +84,15 @@ export default function TopDecksIndex() {
     return Array.from(present).sort();
   }, [championsPresent, classesByChampion]);
 
+  const keywordsPresent = useMemo(() => {
+    if (!sightingsData) return [];
+    const present = new Set<string>();
+    for (const s of sightingsData.sightings) {
+      for (const k of s.keywords ?? []) present.add(k.keyword);
+    }
+    return Array.from(present).sort();
+  }, [sightingsData]);
+
   const filtered = useMemo(() => {
     if (!sightingsData) return [];
     const rows = sightingsData.sightings.filter(
@@ -92,6 +102,7 @@ export default function TopDecksIndex() {
         (!championName || s.championName === championName) &&
         (selectedClasses.size === 0 ||
           (s.championName && (classesByChampion.get(s.championName) ?? []).some((c) => selectedClasses.has(c)))) &&
+        (!keyword || (s.keywords ?? []).some((k) => k.keyword === keyword)) &&
         (outcome === "all" || (outcome === "winner" && s.winner) || (outcome === "topCut" && s.topCut) || (outcome === "high" && s.high)),
     );
     return [...rows].sort((a, b) => {
@@ -108,11 +119,11 @@ export default function TopDecksIndex() {
       }
       return b.eventDate.localeCompare(a.eventDate);
     });
-  }, [sightingsData, category, seasonId, championName, selectedClasses, classesByChampion, outcome, sortMode]);
+  }, [sightingsData, category, seasonId, championName, selectedClasses, classesByChampion, keyword, outcome, sortMode]);
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [category, seasonId, championName, selectedClasses, outcome, sortMode]);
+  }, [category, seasonId, championName, selectedClasses, keyword, outcome, sortMode]);
 
   const visible = filtered.slice(0, visibleCount);
   const championImages = useChampionCardImages(Array.from(new Set(visible.map((s) => s.championName).filter((n): n is string => n !== null))));
@@ -125,7 +136,7 @@ export default function TopDecksIndex() {
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="text-2xl font-bold text-ctp-blue">Top Decks</h1>
       <p className="mt-1 text-sm text-ctp-subtext1">
-        Every public decklist across ingested events, filterable by event type, season, Champion, and outcome.
+        Every public decklist across ingested events, filterable by event type, season, Champion, class, keyword, and outcome.
       </p>
 
       <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
@@ -195,6 +206,24 @@ export default function TopDecksIndex() {
               {cls}
             </button>
           ))}
+        </div>
+      )}
+
+      {keywordsPresent.length > 0 && (
+        <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
+          <span className="text-ctp-subtext0">Keyword:</span>
+          <select
+            value={keyword ?? ""}
+            onChange={(e) => setKeyword(e.target.value || null)}
+            className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+          >
+            <option value="">Any keyword</option>
+            {keywordsPresent.map((k) => (
+              <option key={k} value={k}>
+                {k}
+              </option>
+            ))}
+          </select>
         </div>
       )}
 

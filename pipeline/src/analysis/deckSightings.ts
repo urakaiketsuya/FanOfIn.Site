@@ -1,4 +1,4 @@
-import { EVENT_CATEGORY_WEIGHTS, type DeckSighting } from "@gatcg/shared";
+import { EVENT_CATEGORY_WEIGHTS, computeKeywordComposition, type DeckSighting } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
 import type { CardSignature } from "../cards/catalog.js";
 import { buildEventDeckSignatures, type DeckCardLine } from "./decklists.js";
@@ -49,6 +49,10 @@ export function computeDeckSightings(bundles: OmnidexEventBundle[], cardIndex: M
       const winRate = totalMatches > 0 ? (standing.statsWins + standing.statsTies * 0.5) / totalMatches : 0;
       const sig = signatures.get(entry.player);
       const cardSignature = canonicalSignature(sig?.mainCards ?? [], sig?.materialCards ?? []);
+      const keywordCounts = computeKeywordComposition([...(sig?.mainCards ?? []), ...(sig?.materialCards ?? [])], cardIndex);
+      const keywords = Array.from(keywordCounts.entries())
+        .map(([keyword, count]) => ({ keyword, count }))
+        .sort((a, b) => b.count - a.count);
 
       const playerCount = event.players.length;
       const placementPercentile =
@@ -87,6 +91,7 @@ export function computeDeckSightings(bundles: OmnidexEventBundle[], cardIndex: M
         eventTierWeight,
         weightedScore,
         underplaced: winRate >= 0.6 && standing.statsWins >= 3 && placementPercentile !== null && placementPercentile > 0.3,
+        keywords,
         signature: cardSignature,
       });
     }

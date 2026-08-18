@@ -240,11 +240,32 @@ export interface DeckSighting {
    * in the bottom half. Requires a known placementPercentile.
    */
   underplaced: boolean;
+  /** Ability keywords present in this deck's main+material, weighted by copies — see `computeKeywordComposition` in `keywords.ts`. Only present (non-zero) keywords are listed. */
+  keywords: DeckSightingKeyword[];
+}
+
+export interface DeckSightingKeyword {
+  keyword: string;
+  count: number;
 }
 
 export interface DeckSightingsData {
   generatedAt: string;
   sightings: DeckSighting[];
+}
+
+export interface KeywordStat {
+  keyword: string;
+  deckCount: number;
+  eventCount: number;
+  avgWinRate: number;
+  /** avgWinRate shrunk toward 50% proportional to sample size — same convention as CardStat.adjustedWinRate. */
+  adjustedWinRate: number;
+}
+
+export interface KeywordStatsData {
+  generatedAt: string;
+  keywords: KeywordStat[];
 }
 
 export interface ChampionSeasonPerformance {

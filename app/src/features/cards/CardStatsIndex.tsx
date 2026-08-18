@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER, type TopCardsBySection } from "@gatcg/shared";
-import { useCardStatsData } from "../archetypes/data";
+import { useCardStatsData, useKeywordStatsData } from "../archetypes/data";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useCardCombination } from "./useCardCombination";
 import CardImage from "../../components/CardImage";
@@ -23,12 +23,28 @@ const MIN_DECKS_OPTIONS = [0, 5, 10, 20];
 export default function CardStatsIndex() {
   useDocumentTitle("Card Stats", "Card usage and win-rate stats across ranked Grand Archive TCG tournaments.");
   const cardStatsData = useCardStatsData();
+  const keywordStatsData = useKeywordStatsData();
   const [sortMode, setSortMode] = useState<SortMode>("usage");
   const [minDecks, setMinDecks] = useState(5);
   const [category, setCategory] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
   const [comboCollapsed, setComboCollapsed] = useState(false);
+  const [keywordSortMode, setKeywordSortMode] = useState<"usage" | "adjusted" | "raw">("usage");
+
+  const keywordRows = useMemo(() => {
+    if (!keywordStatsData) return [];
+    return [...keywordStatsData.keywords].sort((a, b) => {
+      switch (keywordSortMode) {
+        case "adjusted":
+          return b.adjustedWinRate - a.adjustedWinRate;
+        case "raw":
+          return b.avgWinRate - a.avgWinRate;
+        default:
+          return b.deckCount - a.deckCount;
+      }
+    });
+  }, [keywordStatsData, keywordSortMode]);
 
   const categoriesPresent = useMemo(() => {
     if (!cardStatsData) return [];
@@ -250,6 +266,55 @@ export default function CardStatsIndex() {
           })}
         </tbody>
       </table>
+      </div>
+
+      <div className="mt-10">
+        <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Keywords</h2>
+        <p className="mt-1 text-xs text-ctp-subtext0">
+          Ability keyword usage and win rate across every public decklist (main + material, weighted by copies).
+        </p>
+
+        <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
+          <span className="text-ctp-subtext0">Sort by:</span>
+          {(["usage", "adjusted", "raw"] as const).map((mode) => (
+            <button
+              key={mode}
+              onClick={() => setKeywordSortMode(mode)}
+              className={`rounded-md border px-2 py-1 text-xs ${
+                keywordSortMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+              }`}
+            >
+              {mode === "usage" ? "Usage" : mode === "adjusted" ? "Win rate (adjusted)" : "Win rate (raw)"}
+            </button>
+          ))}
+        </div>
+
+        {!keywordStatsData && <p className="mt-4 text-ctp-subtext1">Loading…</p>}
+
+        <div className="mt-2 overflow-x-auto">
+          <table className="w-max min-w-full text-sm">
+            <thead>
+              <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+                <th className="py-1 pr-6">Keyword</th>
+                <th className="py-1 pr-6">Decks</th>
+                <th className="py-1 pr-6">Events</th>
+                <th className="py-1 pr-6">Win rate</th>
+                <th className="py-1">Adjusted</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
+              {keywordRows.map((k) => (
+                <tr key={k.keyword}>
+                  <td className="py-1.5 pr-6 whitespace-nowrap text-ctp-text">{k.keyword}</td>
+                  <td className="py-1.5 pr-6 text-ctp-subtext1">{k.deckCount}</td>
+                  <td className="py-1.5 pr-6 text-ctp-subtext1">{k.eventCount}</td>
+                  <td className="py-1.5 pr-6 text-ctp-subtext1">{(k.avgWinRate * 100).toFixed(0)}%</td>
+                  <td className="py-1.5 text-ctp-subtext1">{(k.adjustedWinRate * 100).toFixed(0)}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,7 @@
 import type { Card } from "@gatcg/shared";
+import { computeKeywordComposition } from "@gatcg/shared";
+
+export { computeKeywordComposition };
 
 export interface DeckIdentity {
   classes: string[];
@@ -142,86 +145,6 @@ export function computeAllyPower(lines: NamedLine[], cardsByName: Map<string, Ca
   }
 
   return { allyCopies, totalPower, averagePower: allyCopies > 0 ? totalPower / allyCopies : 0, byPower };
-}
-
-/**
- * Genuine ability keywords from rules.gatcg.com/glossary/keywords-and-abilities — deliberately
- * excludes trigger-timing labels (On Enter, On Attack, ...) and conditional/restriction markers
- * (Class Bonus, Level Locked, ...), which aren't "abilities" in the sense a player means by
- * "keyword composition". Floating Memory is excluded too since it already has its own richer,
- * class-bonus-aware breakdown above.
- */
-const ABILITY_KEYWORDS = [
-  "Aethercalling",
-  "Agility",
-  "Ambush",
-  "Aenean Progression",
-  "Brew",
-  "Bulwark",
-  "Cascade",
-  "Cleave",
-  "Critical",
-  "Command",
-  "Commanded Will",
-  "Divine Relic",
-  "Efficiency",
-  "Elysian Aura",
-  "Empower",
-  "Ephemerate",
-  "Fast Activation",
-  "First Boon",
-  "Foster",
-  "Hindered",
-  "Imbue",
-  "Immortality",
-  "Inherited Effect",
-  "Intercept",
-  "Interdiction",
-  "Kindle",
-  "Lineage Release",
-  "Lineage",
-  "Link Shield",
-  "Link",
-  "Multistrike",
-  "Omnishroud",
-  "Prepare",
-  "Preserve",
-  "Pride",
-  "Ranged",
-  "Renewable",
-  "Reservable",
-  "Retort",
-  "Spellshroud",
-  "Starcalling",
-  "Steadfast",
-  "Stealth",
-  "Taunt",
-  "True Sight",
-  "Unblockable",
-  "Vigor",
-];
-
-function keywordRegex(keyword: string): RegExp {
-  if (keyword === "Preserve") return /\*\*Preserved?\*\*/;
-  const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return new RegExp(`\\*\\*${escaped}(?: \\d+)?\\*\\*`);
-}
-
-const KEYWORD_PATTERNS = ABILITY_KEYWORDS.map((keyword) => ({ keyword, re: keywordRegex(keyword) }));
-
-/** Which cards in the deck (weighted by copies) carry each ability keyword — same bolded-keyword convention verified for Floating Memory, generalized across the full keyword list. Counts presence per card copy, not repeat mentions within one card's text. */
-export function computeKeywordComposition(lines: NamedLine[], cardsByName: Map<string, Card>): Map<string, number> {
-  const counts = new Map<string, number>();
-
-  for (const line of lines) {
-    const card = cardsByName.get(line.name);
-    if (!card?.effect) continue;
-    for (const { keyword, re } of KEYWORD_PATTERNS) {
-      if (re.test(card.effect)) counts.set(keyword, (counts.get(keyword) ?? 0) + line.quantity);
-    }
-  }
-
-  return counts;
 }
 
 interface DamageClause {

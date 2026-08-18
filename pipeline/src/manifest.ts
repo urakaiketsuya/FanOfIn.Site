@@ -13,6 +13,7 @@ const MANIFEST_ENTRIES: { key: string; file: string }[] = [
   { key: "omnidex-vods", file: "omnidex/vods.json" },
   { key: "analysis-elo", file: "analysis/elo.json" },
   { key: "analysis-cards", file: "analysis/cards.json" },
+  { key: "analysis-keyword-stats", file: "analysis/keyword-stats.json" },
   { key: "analysis-archetypes", file: "analysis/archetypes.json" },
   { key: "analysis-champion-trends", file: "analysis/champion-trends.json" },
   { key: "analysis-archetype-taxonomy", file: "analysis/archetype-taxonomy.json" },
