@@ -28,6 +28,16 @@ export function computeEloRatings(bundles: OmnidexEventBundle[]): EloResult {
       for (const pairing of roundData.pairings) {
         if (pairing.pairing.length !== 2) continue; // byes and similar have no opponent to rate against
 
+        // Team-battle formats (e.g. 3v3) return a team name string for `id` and omit `eloChange`
+        // entirely on both sides — verified against real data: every pairing side with a
+        // non-numeric `id` also has no `eloChange`, a perfect 1:1 correlation across 970 sides
+        // checked. Omnidex just doesn't track individual Elo for these matches, so there's
+        // nothing to accumulate; skip rather than corrupt the ratings map with a team-name key
+        // and a NaN rating.
+        if (pairing.pairing.some((side) => typeof side.id !== "number" || typeof side.eloChange !== "number")) {
+          continue;
+        }
+
         for (const side of pairing.pairing) {
           const existing = ratings.get(side.id) ?? {
             playerId: side.id,
