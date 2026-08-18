@@ -165,6 +165,18 @@ and avoids a bigger, riskier generalization. Live run: 128 named builds across 2
 zero duplicate names, Guo Jia's top 3 (Water/Wind/Fire, ~120-170 players each) matching hand
 inspection exactly.
 
+**Season data**: each cluster also carries `seasons` (per-season deckCount/playerCount/eventCount/
+avgWinRate, only for seasons it actually has sightings in — not zero-padded like
+`championTrends.ts`'s season array, since this is for filtering, not gap-detection) and `trend`
+(comparing the build's own two most recent seasons *with data*, not necessarily calendar-adjacent
+if it skipped one). Season order within a cluster comes from each season's earliest event date
+within that cluster's own sightings, not `seasonId` — same reasoning as `championTrends.ts`.
+`trend` is raw `playerCountChange`/`winRateChangePct` deltas, deliberately **not** normalized the
+way `championTrends.ts`'s `shareOfSeason` is — this was asked for as a direct player-count/win-rate
+comparison, so a build's raw growth reflects both real popularity change and the season's overall
+backfill coverage growing; read the number in that light rather than as a pure signal the way
+`shareOfSeason` is.
+
 ## Deck similarity (`pipeline/src/analysis/similarity.ts`)
 
 **Base metric**: weighted Jaccard, a.k.a. Ruzicka similarity, over each deck's card-copy multiset

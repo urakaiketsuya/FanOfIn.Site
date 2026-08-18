@@ -338,6 +338,8 @@ export interface ArchetypeCluster {
   deckIds: string[];
   /** Only the seasons this build actually has sightings in (not zero-padded across every season) — for season filtering, not trend analysis. */
   seasons: ArchetypeClusterSeasonStats[];
+  /** Comparing this build's own two most recent seasons with data (not necessarily calendar-adjacent, if it skipped a season) — null when it's only been seen in one season, so there's nothing to compare. */
+  trend: ArchetypeClusterTrend | null;
 }
 
 export interface ArchetypeClusterSeasonStats {
@@ -347,6 +349,15 @@ export interface ArchetypeClusterSeasonStats {
   playerCount: number;
   eventCount: number;
   avgWinRate: number;
+}
+
+export interface ArchetypeClusterTrend {
+  previousSeasonName: string;
+  latestSeasonName: string;
+  /** latest.playerCount - previous.playerCount. Raw counts, not normalized for backfill coverage growing season to season — see docs/CALCULATIONS.md. */
+  playerCountChange: number;
+  /** (latest.avgWinRate - previous.avgWinRate) * 100, signed percentage points. */
+  winRateChangePct: number;
 }
 
 export interface ArchetypeTaxonomyData {

@@ -76,6 +76,21 @@ export default function ArchetypeDetail() {
             {(cluster.avgWinRate * 100).toFixed(0)}% avg win rate
           </p>
 
+          {cluster.trend && (
+            <p className="mt-1 text-xs text-ctp-subtext0">
+              {cluster.trend.previousSeasonName} &rarr; {cluster.trend.latestSeasonName}:{" "}
+              <span className={cluster.trend.playerCountChange > 0 ? "text-ctp-green" : cluster.trend.playerCountChange < 0 ? "text-ctp-red" : ""}>
+                {cluster.trend.playerCountChange > 0 ? "+" : ""}
+                {cluster.trend.playerCountChange} players
+              </span>{" "}
+              ·{" "}
+              <span className={cluster.trend.winRateChangePct > 0 ? "text-ctp-green" : cluster.trend.winRateChangePct < 0 ? "text-ctp-red" : ""}>
+                {cluster.trend.winRateChangePct > 0 ? "+" : ""}
+                {cluster.trend.winRateChangePct.toFixed(1)}pp win rate
+              </span>
+            </p>
+          )}
+
           <div className="mt-6">
             <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Defining cards</h2>
             <p className="mt-1 text-xs text-ctp-subtext0">
