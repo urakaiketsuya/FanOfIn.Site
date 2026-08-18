@@ -454,6 +454,44 @@ events, filtered to `status === "complete"`), `catalog`, and `cardIndex` — che
 every `compute*` analysis function into scope *uninvoked*, so an expensive one (`computeDeckSimilarity`,
 `computeDeckCardIndex`) only runs if explicitly called.
 
+## Achievements (`pipeline/src/analysis/achievements.ts`)
+
+Every badge is derived purely from data already computed elsewhere in the pipeline (Elo, hipster
+scores, deck sightings, judge rosters) — no new crawling, and deliberately no hand-curated tier
+(a "best deck name" style community spotlight would follow the VOD-curation pattern above if ever
+added, but isn't part of this). Thresholds were chosen by checking real distributions via
+`pipeline/src/repl.ts` before picking a number, not guessed:
+
+- **Tournament wins by tier** (`won-worlds`, `won-nationals`, `won-ascent`, `won-regionals`,
+  `won-store-championships`, `won-regular`) — first `DeckSighting.winner` per player per
+  `eventCategory`.
+- **Giant Slayer** — first Elo upset win (reuses the existing `config.upsetEloSwingThreshold`
+  detection from `elo.ts`). 2,507 of ~13,700 rated players in a real run.
+- **Rating milestones** (`rating-1700`/`1800`/`1900`) — a player's current rating (a running total,
+  not a tracked peak) clearing each threshold; `lastEventDate` used as `earnedAt` since the exact
+  crossing date isn't tracked. Chosen after checking the real distribution: nobody in a real run
+  ever reaches 2200, so milestones above ~1900 would be permanently unearnable.
+- **Trailblazer** — first deck at/above a 0.9 hipster novelty score (~top 1%; real-run percentiles:
+  median 0.63, 90th 0.78, 99th 0.91).
+- **Overperformer** — 3rd `underplaced` ("tough finish") sighting for a player. 142 of ~13,700
+  players clear this in a real run (max ever seen: 7).
+- **Trendsetter** — earliest player of a decklist signature (same `canonicalSignature` used for
+  `DeckSighting.duplicateCount`, exported from `deckSightings.ts` rather than reimplemented) that
+  at least 4 other distinct players went on to run. 135 of ~48,900 signatures qualify in a real
+  run. Recomputes signatures directly from bundles rather than adding a signature field to the
+  published `DeckSighting` type, which is deliberately kept lean (see its own doc comment).
+- **Grinder** — 15th public decklist within one season, per player. 102 of ~19,400 (season,
+  player) pairs clear this in a real run (max ever seen: 28).
+- **Veteran Judge** / **Dedicated Judge** — judge level ≥25, or 50+ events judged, tracked directly
+  from each bundle's `judges` field (not the separately-published judge roster, to avoid a
+  cross-module dependency between `omnidex/build.ts` and `analysis/build.ts`). 114 and 137 of 929
+  judges respectively in a real run (max level seen: 52; max events judged: 196).
+
+Achievements like Grinder and Trendsetter are earned repeatably in the underlying data (multiple
+qualifying seasons, multiple originated decklists) but are collapsed to a single unlock per player
+— the earliest qualifying instance — so the achievement model stays "one badge per player per
+achievement," consistent with every other achievement here, rather than showing duplicate badges.
+
 ## Client load-time optimizations
 
 Three changes, made together to address the app's biggest measured load-time cost: fetching and

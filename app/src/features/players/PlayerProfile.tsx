@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER } from "@gatcg/shared";
+import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER, type AchievementDefinition, type AchievementUnlock } from "@gatcg/shared";
 import { useOmnidexIndex, useOmnidexJudges, useOmnidexPlayers } from "../tournaments/data";
 import { useEloData, useHipsterData, usePlayerDecksData } from "./data";
 import { useDeckSightingsData } from "../topdecks/data";
+import { useAchievementsData } from "../achievements/data";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useChampionCardImages } from "./useChampionCardImages";
 import PlayerEventDecklistRow from "./PlayerEventDecklistRow";
@@ -25,6 +26,7 @@ export default function PlayerProfile() {
   const playerDecksData = usePlayerDecksData();
   const index = useOmnidexIndex();
   const sightingsData = useDeckSightingsData();
+  const achievementsData = useAchievementsData();
 
   const player = playersData?.players.find((p) => p.id === playerId);
   const judge = judgesData?.judges.find((j) => j.id === playerId);
@@ -35,6 +37,14 @@ export default function PlayerProfile() {
     () => eloData?.upsets.filter((u) => u.winnerId === playerId || u.loserId === playerId) ?? [],
     [eloData, playerId],
   );
+  const playerAchievements = useMemo(() => {
+    if (!achievementsData) return [];
+    const definitionsById = new Map(achievementsData.definitions.map((d) => [d.id, d]));
+    return achievementsData.unlocks
+      .filter((u) => u.playerId === playerId)
+      .map((u) => ({ unlock: u, definition: definitionsById.get(u.achievementId) }))
+      .filter((a): a is { unlock: AchievementUnlock; definition: AchievementDefinition } => !!a.definition);
+  }, [achievementsData, playerId]);
   const allEvents = useMemo(
     () =>
       (player && index ? index.events.filter((e) => player.eventIds.includes(e.id)) : []).sort((a, b) =>
@@ -160,6 +170,19 @@ export default function PlayerProfile() {
           )}
           {!player && judge && (
             <p className="mt-1 text-sm text-ctp-subtext0">Not in the ingested player roster — judge only.</p>
+          )}
+          {playerAchievements.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {playerAchievements.map(({ unlock, definition }) => (
+                <span
+                  key={definition.id}
+                  title={`${definition.description} (${unlock.context})`}
+                  className="rounded-full border border-ctp-yellow px-2 py-0.5 text-xs text-ctp-yellow"
+                >
+                  {definition.name}
+                </span>
+              ))}
+            </div>
           )}
         </>
       )}

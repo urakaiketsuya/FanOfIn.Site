@@ -364,3 +364,42 @@ export interface ArchetypeTaxonomyData {
   generatedAt: string;
   clusters: ArchetypeCluster[];
 }
+
+export type AchievementCategory = "tournament" | "rating" | "playstyle" | "dedication" | "judging";
+
+export const ACHIEVEMENT_CATEGORY_ORDER: AchievementCategory[] = ["tournament", "rating", "playstyle", "dedication", "judging"];
+
+export const ACHIEVEMENT_CATEGORY_LABELS: Record<AchievementCategory, string> = {
+  tournament: "Tournament Wins",
+  rating: "Rating",
+  playstyle: "Playstyle",
+  dedication: "Dedication",
+  judging: "Judging",
+};
+
+export interface AchievementDefinition {
+  id: string;
+  name: string;
+  description: string;
+  category: AchievementCategory;
+}
+
+/**
+ * One player earning one achievement. `earnedAt` is the date of the qualifying event where
+ * possible; for milestone-style achievements (a rating threshold, a judge level) that aren't tied
+ * to one specific event, it's the most recent event date on record at the time the threshold was
+ * met — a reasonable proxy, not necessarily the exact date the threshold was first crossed.
+ */
+export interface AchievementUnlock {
+  achievementId: string;
+  playerId: number;
+  earnedAt: string;
+  /** Human-readable specifics, e.g. the event name, rating reached, or a count — shown alongside the badge. */
+  context: string;
+}
+
+export interface AchievementsData {
+  generatedAt: string;
+  definitions: AchievementDefinition[];
+  unlocks: AchievementUnlock[];
+}

@@ -42,6 +42,11 @@ const SECTIONS: Section[] = [
     description: "Roster of certified judges, searchable by level and experience.",
     to: "/judges",
   },
+  {
+    title: "Achievements",
+    description: "Badges computed automatically from tournament wins, ratings, and decklists — tournament tiers, rating milestones, and more.",
+    to: "/achievements",
+  },
   // Deck analysis
   {
     title: "Champions",

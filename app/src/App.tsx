@@ -14,6 +14,7 @@ const NAV_LINKS = [
   { to: "/seasons", label: "Seasons" },
   { to: "/players", label: "Players" },
   { to: "/judges", label: "Judges" },
+  { to: "/achievements", label: "Achievements" },
   // Deck analysis
   { to: "/champions", label: "Champions" },
   { to: "/archetypes", label: "Archetypes" },

@@ -15,6 +15,7 @@ const MANIFEST_ENTRIES: { key: string; file: string }[] = [
   { key: "analysis-archetypes", file: "analysis/archetypes.json" },
   { key: "analysis-champion-trends", file: "analysis/champion-trends.json" },
   { key: "analysis-archetype-taxonomy", file: "analysis/archetype-taxonomy.json" },
+  { key: "analysis-achievements", file: "analysis/achievements.json" },
   { key: "analysis-hipster", file: "analysis/hipster.json" },
   { key: "analysis-similarity", file: "analysis/similarity.json" },
   { key: "analysis-player-decks", file: "analysis/player-decks.json" },
