@@ -19,8 +19,6 @@ export interface DeckSignature {
    * champion card could be found (e.g. an unmatched/misnamed decklist entry).
    */
   championName: string | null;
-  /** Display label for grouping decks into archetypes — the champion name, or a class+element fallback when unknown. */
-  signature: string;
   /**
    * The named Spirit companion card in the Material Deck (CHAMPION type, SPIRIT subtype, e.g.
    * "Spirit of Water"), if present — a champion can be built around different Spirits, which
@@ -74,8 +72,16 @@ function findChampionName(
 
   for (const line of materialLines) {
     const card = cardIndex.get(line.card);
-    if (!card || !card.types.includes("CHAMPION") || !line.card.includes(",")) continue;
-    const name = line.card.split(",")[0].trim();
+    // Spirit companions are also CHAMPION-typed, and 13 of the 31 have a comma in their name
+    // (e.g. "Kaze, Spirit of Wind") -- without this exclusion they get mistaken for the deck's
+    // actual Champion. Verified live: real archetype data had a "Gwendolyn" (from "Gwendolyn,
+    // Spirit of Wind") signature with 16 decks, none of which were actually built around a
+    // Champion named Gwendolyn.
+    if (!card || !card.types.includes("CHAMPION") || card.subtypes.includes("SPIRIT")) continue;
+    // Named champions are "Name, Title" and the identity is the part before the comma. "Nameless
+    // Champion" (verified as the only comma-less, non-Spirit Champion card in the whole catalog)
+    // has no title to split off, so use its full name as-is rather than excluding it entirely.
+    const name = line.card.includes(",") ? line.card.split(",")[0].trim() : line.card;
     const level = card.level ?? 0;
     const entry = byName.get(name) ?? { maxLevel: -1, copies: 0 };
     entry.maxLevel = Math.max(entry.maxLevel, level);
@@ -132,8 +138,6 @@ export function buildDeckSignature(
   const classes = topKeys(classCounts, 2);
   const elements = topKeys(elementCounts, 2, new Set(["NORM"]));
   const championName = findChampionName(decklist.material, cardIndex);
-
-  const fallback = [...classes].sort().concat([...elements].sort()).join("+") || "UNKNOWN";
   const spirit = findSpirit(decklist.material, cardIndex);
 
   return {
@@ -142,7 +146,6 @@ export function buildDeckSignature(
     classes,
     elements,
     championName,
-    signature: championName ?? fallback,
     spiritName: spirit?.name ?? null,
     spiritElement: spirit?.element ?? null,
     mainCards: toLines(decklist.main),

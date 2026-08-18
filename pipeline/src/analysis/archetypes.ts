@@ -52,10 +52,13 @@ interface ArchetypeAccum {
 }
 
 /**
- * Groups decks into archetypes by class+element signature (see decklists.ts — Omnidex doesn't
- * expose the Champion card, so this is the closest reliable proxy) and tallies a
- * signature-vs-signature battle chart from pairings where both sides had a public decklist.
- * Archetypes/matchups below `config.minBattleChartSampleSize` are suppressed as noise.
+ * Groups decks into archetypes by their identified Champion (see decklists.ts's
+ * `findChampionName`) and tallies a champion-vs-champion battle chart from pairings where both
+ * sides had a public decklist and an identifiable Champion. Decks with no identifiable Champion
+ * (the card is simply missing from the submitted decklist — verified this isn't a matching bug)
+ * are excluded rather than grouped by a class+element fallback, since that string isn't a real
+ * Champion identity. Archetypes/matchups below `config.minBattleChartSampleSize` are suppressed
+ * as noise.
  */
 export function computeArchetypeAnalysis(
   bundles: OmnidexEventBundle[],
@@ -78,7 +81,14 @@ export function computeArchetypeAnalysis(
     }
 
     for (const [player, sig] of signatures) {
-      const a = archetypeAccum.get(sig.signature) ?? {
+      // Decks with no identifiable Champion fall back to a class+element combo (e.g.
+      // "CLERIC+RANGER+EXALTED+WIND") -- verified live that this isn't a matching bug: the
+      // Champion card is simply absent from the submitted decklist (289 decks sharing one such
+      // combo, spread across ordinary standard-format Swiss/single-elim events, not draft). That
+      // string isn't a real Champion identity and shouldn't be presented as one in the Champions
+      // list or Battle Chart, so these decks are excluded from archetype grouping entirely.
+      if (!sig.championName) continue;
+      const a = archetypeAccum.get(sig.championName) ?? {
         classes: sig.classes,
         elements: sig.elements,
         deckCount: 0,
@@ -119,7 +129,7 @@ export function computeArchetypeAnalysis(
         }
       }
 
-      archetypeAccum.set(sig.signature, a);
+      archetypeAccum.set(sig.championName, a);
     }
 
     for (const roundData of bundle.pairingsByRound) {
@@ -127,8 +137,8 @@ export function computeArchetypeAnalysis(
       for (const pairing of roundData.pairings) {
         if (pairing.pairing.length !== 2) continue;
         const [sideA, sideB] = pairing.pairing;
-        const sigA = signatures.get(sideA.id)?.signature;
-        const sigB = signatures.get(sideB.id)?.signature;
+        const sigA = signatures.get(sideA.id)?.championName;
+        const sigB = signatures.get(sideB.id)?.championName;
         if (!sigA || !sigB) continue;
 
         const [x, y, xSide, ySide] = sigA <= sigB ? [sigA, sigB, sideA, sideB] : [sigB, sigA, sideB, sideA];
