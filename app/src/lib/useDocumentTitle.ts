@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-const SITE_NAME = "Grand Archive TCG Explorer";
+const SITE_NAME = "Fan of Insight";
 const SITE_URL = "https://fanofin.site";
 
 function setMetaByAttr(attr: "name" | "property", key: string, content: string) {
