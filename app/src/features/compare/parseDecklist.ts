@@ -34,7 +34,7 @@ export function parseDecklist(text: string): ParsedDecklist {
     const line = rawLine.trim();
     if (!line) continue;
 
-    const headerKey = SECTION_HEADERS[line.toLowerCase().replace(/[:：]$/, "")];
+    const headerKey = SECTION_HEADERS[line.toLowerCase().replace(/^#\s*/, "").replace(/[:：]$/, "")];
     if (headerKey) {
       section = headerKey;
       continue;

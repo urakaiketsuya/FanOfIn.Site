@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Card, OmnidexDecklist, OmnidexDecklistCardLine } from "@gatcg/shared";
 import CardHoverPreview from "../../components/CardHoverPreview";
@@ -8,6 +8,19 @@ import { formatUsd } from "../../lib/format";
 import { computeSectionPrice } from "../../lib/deckPrice";
 import { computeDeckIdentity } from "../../lib/deckIdentity";
 import { buildTcgplayerMassEntryUrl } from "../../lib/tcgplayerMassEntry";
+
+/** Plain-text export with "# Section" headers and "4 Card Name" lines — round-trips with the Compare tool's paste parser. */
+function buildDecklistText(decklist: OmnidexDecklist): string {
+  const sections: [string, OmnidexDecklistCardLine[]][] = [
+    ["Main", decklist.main],
+    ["Material", decklist.material],
+    ["Sideboard", decklist.sideboard],
+  ];
+  return sections
+    .filter(([, lines]) => lines.length > 0)
+    .map(([title, lines]) => `# ${title}\n${lines.map((l) => `${l.quantity} ${l.card}`).join("\n")}`)
+    .join("\n\n");
+}
 
 function DeckSection({
   title,
@@ -84,6 +97,17 @@ export default function DecklistView({
   showThumbnails?: boolean;
 }) {
   const priceByName = useDeckPriceByName();
+  const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(buildDecklistText(decklist));
+      setCopyState("copied");
+    } catch {
+      setCopyState("failed");
+    }
+    setTimeout(() => setCopyState("idle"), 1500);
+  }
 
   const deckPrice = computeSectionPrice([...decklist.main, ...decklist.material], priceByName);
   const sideboardPrice = computeSectionPrice(decklist.sideboard, priceByName);
@@ -128,14 +152,27 @@ export default function DecklistView({
             </>
           )}
           {allLines.length > 0 && (
-            <a
-              href={massEntryUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="ml-auto shrink-0 rounded-md border border-ctp-blue px-2 py-1 text-xs text-ctp-blue hover:bg-ctp-surface0"
-            >
-              Buy on TCGplayer &rarr;
-            </a>
+            <div className="ml-auto flex shrink-0 gap-2">
+              <button
+                type="button"
+                onClick={handleCopy}
+                className={`rounded-md border px-2 py-1 text-xs ${
+                  copyState === "failed"
+                    ? "border-ctp-red text-ctp-red"
+                    : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                }`}
+              >
+                {copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy decklist"}
+              </button>
+              <a
+                href={massEntryUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-md border border-ctp-blue px-2 py-1 text-xs text-ctp-blue hover:bg-ctp-surface0"
+              >
+                Buy on TCGplayer &rarr;
+              </a>
+            </div>
           )}
         </div>
       )}
