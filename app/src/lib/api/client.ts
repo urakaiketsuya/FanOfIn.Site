@@ -11,6 +11,7 @@ import type {
   OmnidexPairingsResponse,
   OmnidexPlayer,
   OmnidexStandingsResponse,
+  OmnidexTeamsResponse,
   OptionDefinitions,
   ThemaHistoryPoint,
   ThemaKind,
@@ -136,7 +137,7 @@ export const gatcgApi = {
 
   getOmnidexJudges: (eventId: number) => requestMaybe<OmnidexJudge[]>(`/omnidex/events/${eventId}/judges`),
 
-  getOmnidexTeams: (eventId: number) => requestMaybe<unknown>(`/omnidex/events/${eventId}/teams`),
+  getOmnidexTeams: (eventId: number) => requestMaybe<OmnidexTeamsResponse>(`/omnidex/events/${eventId}/teams`),
 
   getOmnidexDecklists: (eventId: number) => requestMaybe<OmnidexDecklistEntry[]>(`/omnidex/events/${eventId}/decklists`),
 

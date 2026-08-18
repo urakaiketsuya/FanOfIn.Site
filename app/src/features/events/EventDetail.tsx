@@ -6,6 +6,7 @@ import { useEventBundle } from "./useEventBundle";
 import { useVodsData } from "./data";
 import EventPairings from "./EventPairings";
 import DecklistsSection from "./DecklistsSection";
+import EventTeamsSection from "./EventTeamsSection";
 import JudgesSection from "./JudgesSection";
 import RawObject from "./RawObject";
 import PlayerLink from "../players/PlayerLink";
@@ -122,15 +123,13 @@ export default function EventDetail() {
         </div>
       )}
 
+      {!isApiErrorBody(bundle.teams) && (
+        <div className="mt-6">
+          <EventTeamsSection teams={bundle.teams} players={players} />
+        </div>
+      )}
+
       <div className="mt-6 grid gap-6 sm:grid-cols-2">
-        {!isApiErrorBody(bundle.teams) && (
-          <div>
-            <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Teams</h2>
-            <div className="mt-2">
-              <RawObject data={bundle.teams} />
-            </div>
-          </div>
-        )}
         <div>
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Statistics</h2>
           <div className="mt-2">

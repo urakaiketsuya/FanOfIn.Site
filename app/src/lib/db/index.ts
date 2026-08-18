@@ -9,6 +9,7 @@ import type {
   OmnidexJudge,
   OmnidexPlayer,
   OmnidexStandingsResponse,
+  OmnidexTeamsResponse,
 } from "@gatcg/shared";
 
 export interface SyncMetaRow {
@@ -29,7 +30,7 @@ export interface OmnidexEventBundle {
   players: OmnidexPlayer[];
   standings: OmnidexStandingsResponse | OmnidexApiError;
   judges: OmnidexJudge[] | OmnidexApiError;
-  teams: unknown | OmnidexApiError;
+  teams: OmnidexTeamsResponse | OmnidexApiError;
   decklists: OmnidexDecklistEntry[] | OmnidexApiError;
   statistics: unknown | OmnidexApiError;
   fetchedAt: string;

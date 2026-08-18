@@ -9,6 +9,7 @@ import type {
   OmnidexPairingsResponse,
   OmnidexPlayer,
   OmnidexStandingsResponse,
+  OmnidexTeamsResponse,
 } from "@gatcg/shared";
 
 const CACHE_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../.cache/omnidex");
@@ -22,7 +23,7 @@ export interface OmnidexEventBundle {
   standings: OmnidexStandingsResponse | OmnidexApiError;
   pairingsByRound: (OmnidexPairingsResponse | OmnidexApiError)[];
   judges: OmnidexJudge[] | OmnidexApiError;
-  teams: unknown | OmnidexApiError;
+  teams: OmnidexTeamsResponse | OmnidexApiError;
   decklists: OmnidexDecklistEntry[] | OmnidexApiError;
   statistics: unknown | OmnidexApiError;
   fetchedAt: string;

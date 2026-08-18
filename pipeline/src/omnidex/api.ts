@@ -5,6 +5,7 @@ import type {
   OmnidexPairingsResponse,
   OmnidexPlayer,
   OmnidexStandingsResponse,
+  OmnidexTeamsResponse,
 } from "@gatcg/shared";
 import { fetchJson, fetchJsonMaybe, fetchJsonOrNull } from "../lib/http.js";
 
@@ -23,7 +24,7 @@ export const omnidexApi = {
 
   getJudges: (id: number) => fetchJsonMaybe<OmnidexJudge[]>(`${BASE_URL}/omnidex/events/${id}/judges`),
 
-  getTeams: (id: number) => fetchJsonMaybe<unknown>(`${BASE_URL}/omnidex/events/${id}/teams`),
+  getTeams: (id: number) => fetchJsonMaybe<OmnidexTeamsResponse>(`${BASE_URL}/omnidex/events/${id}/teams`),
 
   getDecklists: (id: number) => fetchJsonMaybe<OmnidexDecklistEntry[]>(`${BASE_URL}/omnidex/events/${id}/decklists`),
 

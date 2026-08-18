@@ -67,6 +67,25 @@ export interface OmnidexJudge extends OmnidexPlayer {
   judgeExperience: number;
 }
 
+export interface OmnidexTeamPlayer {
+  id: number;
+  slot: string;
+}
+
+/**
+ * Team-format events (e.g. 3v3) only. `finalPlacement` is null for almost every team in real data
+ * (verified live: 236 of 237 teams at a real Ascent event) — Omnidex records placement per
+ * *player* (via `OmnidexStanding`), not per team, except apparently for the eventual winner.
+ * `players` can be an empty array — teams that registered but never fielded a lineup.
+ */
+export interface OmnidexTeam {
+  name: string;
+  finalPlacement: number | null;
+  players: OmnidexTeamPlayer[];
+}
+
+export type OmnidexTeamsResponse = OmnidexTeam[];
+
 export interface OmnidexStanding {
   id: number;
   finalPlacement: number | null;
