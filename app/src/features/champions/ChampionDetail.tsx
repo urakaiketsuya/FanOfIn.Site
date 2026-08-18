@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useArchetypeData } from "../archetypes/data";
+import { useArchetypeData, useChampionTrendsData } from "../archetypes/data";
 import { useDeckSightingsData } from "../topdecks/data";
 import { useHipsterData } from "../players/data";
 import { useOmnidexPlayers } from "../tournaments/data";
@@ -23,11 +23,18 @@ export default function ChampionDetail() {
   const championName = decodeURIComponent(name);
 
   const archetypeData = useArchetypeData();
+  const trendsData = useChampionTrendsData();
   const sightingsData = useDeckSightingsData();
   const hipsterData = useHipsterData();
   const playersData = useOmnidexPlayers();
 
   const champion = archetypeData?.archetypes.find((a) => a.signature === championName);
+  const trend = trendsData?.champions.find((t) => t.championName === championName);
+  const seasonHistory = useMemo(() => {
+    if (!trend) return [];
+    const firstSeen = trend.seasons.findIndex((s) => s.deckCount > 0);
+    return firstSeen === -1 ? [] : trend.seasons.slice(firstSeen);
+  }, [trend]);
 
   const [spiritFilter, setSpiritFilter] = useState<SpiritFilter>({ kind: "all" });
   useEffect(() => {
@@ -102,6 +109,67 @@ export default function ChampionDetail() {
             {champion.classes.join("/")} · {champion.elements.join("/")} · {champion.deckCount} decks across{" "}
             {champion.eventCount} events · {(champion.avgWinRate * 100).toFixed(0)}% avg win rate
           </p>
+
+          {seasonHistory.length > 0 && (
+            <div className="mt-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">By season</h2>
+                {trend && trend.trend !== "insufficient-data" && (
+                  <span
+                    className={`text-xs ${
+                      trend.trend === "rising"
+                        ? "text-ctp-green"
+                        : trend.trend === "falling"
+                          ? "text-ctp-red"
+                          : trend.trend === "new"
+                            ? "text-ctp-blue"
+                            : "text-ctp-subtext0"
+                    }`}
+                  >
+                    {trend.trend === "rising" && "▲ Rising"}
+                    {trend.trend === "falling" && "▼ Falling"}
+                    {trend.trend === "stable" && "— Stable"}
+                    {trend.trend === "new" && "★ New this season"}
+                    {trend.trend === "absent" && "Absent last season"}
+                    {trend.trendDeltaPct !== null && (
+                      <span className="ml-1 text-ctp-subtext0">
+                        ({trend.trendDeltaPct > 0 ? "+" : ""}
+                        {trend.trendDeltaPct.toFixed(1)}pp share)
+                      </span>
+                    )}
+                  </span>
+                )}
+              </div>
+              <p className="mt-1 text-xs text-ctp-subtext0">
+                Share of season = this Champion's weighted placement score as a fraction of every Champion's
+                combined score that season — comparable across seasons regardless of how many events were played.
+              </p>
+              <table className="mt-2 w-full text-sm">
+                <thead>
+                  <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+                    <th className="py-1">Season</th>
+                    <th className="py-1">Decks</th>
+                    <th className="py-1">Wins</th>
+                    <th className="py-1">Top cut</th>
+                    <th className="py-1">Win rate</th>
+                    <th className="py-1">Share</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-ctp-surface0">
+                  {seasonHistory.map((s) => (
+                    <tr key={s.seasonId}>
+                      <td className="py-1 text-ctp-text">{s.seasonName}</td>
+                      <td className="py-1 text-ctp-subtext1">{s.deckCount}</td>
+                      <td className="py-1 text-ctp-subtext1">{s.winCount}</td>
+                      <td className="py-1 text-ctp-subtext1">{s.topCutCount}</td>
+                      <td className="py-1 text-ctp-subtext1">{s.deckCount > 0 ? `${(s.avgWinRate * 100).toFixed(0)}%` : "—"}</td>
+                      <td className="py-1 text-ctp-subtext1">{(s.shareOfSeason * 100).toFixed(1)}%</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
 
           {champion.topCards.main.length > 0 && (
             <div className="mt-6">

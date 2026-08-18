@@ -148,17 +148,25 @@ function findLshCandidatePairs(group: DeckRef[]): [number, number][] {
   return pairs;
 }
 
-async function loadCache(): Promise<Record<string, number>> {
+/**
+ * `Map` rather than a plain object — this cache grows into the millions of entries on a full
+ * backfill (verified live: one run had ~3.8M cached matches partway through a single champion
+ * group), and a plain object that large degrades badly in V8 (dictionary-mode property storage,
+ * GC pressure from continual growth) — measured live at ~0.2 scored pairs/sec, i.e. effectively
+ * stalled. `Map` has none of that degradation at this scale.
+ */
+async function loadCache(): Promise<Map<string, number>> {
   try {
-    return JSON.parse(await readFile(CACHE_PATH, "utf-8")) as Record<string, number>;
+    const raw = JSON.parse(await readFile(CACHE_PATH, "utf-8")) as Record<string, number>;
+    return new Map(Object.entries(raw));
   } catch {
-    return {};
+    return new Map();
   }
 }
 
-async function writeCache(cache: Record<string, number>): Promise<void> {
+async function writeCache(cache: Map<string, number>): Promise<void> {
   await mkdir(path.dirname(CACHE_PATH), { recursive: true });
-  await writeFile(CACHE_PATH, JSON.stringify(cache), "utf-8");
+  await writeFile(CACHE_PATH, JSON.stringify(Object.fromEntries(cache)), "utf-8");
 }
 
 /**
@@ -171,6 +179,14 @@ async function writeCache(cache: Record<string, number>): Promise<void> {
 export async function computeDeckSimilarity(
   bundles: OmnidexEventBundle[],
   cardIndex: Map<string, CardSignature>,
+  /**
+   * Called with one champion group's finished entries right after that group's scoring
+   * completes — lets the caller persist `data/analysis/similarity.json` incrementally instead of
+   * only at the very end. A champion's matches are only ever found within its own group (cross-
+   * champion pairs are never scored), so a group's results are genuinely final the moment its
+   * loop below finishes; no later champion can add to them.
+   */
+  onChampionComplete?: (entries: DeckSimilarityEntry[]) => Promise<void>,
 ): Promise<DeckSimilarityEntry[]> {
   if (config.fastMode) return [];
 
@@ -222,25 +238,61 @@ export async function computeDeckSimilarity(
   let pairsCompared = 0;
   let matchesFound = 0;
   let lastLogAt = startedAt;
+  let lastFlushAt = startedAt;
+  let flushing: Promise<void> | null = null;
+
+  // Previously the cache only ever hit disk once, at the very end — on a multi-hour run that
+  // meant killing (or crashing) the process at any point lost every match found so far, cache
+  // included. Flushing periodically means a restart only re-does the pairs scored since the last
+  // flush, not the whole run. Guarded by `flushing` so a slow write never overlaps a concurrent one.
+  function maybeFlush(): void {
+    if (flushing || Date.now() - lastFlushAt < 5 * 60_000) return;
+    lastFlushAt = Date.now();
+    flushing = writeCache(cache).finally(() => {
+      flushing = null;
+    });
+  }
 
   function scorePair(a: DeckRef, b: DeckRef): void {
     const pairKey = a.deckId < b.deckId ? `${a.deckId}|${b.deckId}` : `${b.deckId}|${a.deckId}`;
 
-    let score = cache[pairKey];
+    let score = cache.get(pairKey);
     if (score === undefined) {
       score = weightedJaccard(a.cardCounts, b.cardCounts);
       // Only cache pairs that clear the threshold — the vast majority of pairs within a
       // champion group score near zero, so caching every pair grows O(n²) with the champion's
       // deck count and balloons unbounded (this cache hit 347MB and made runs hang). Only
       // real matches are ever read back out, so non-matches are cheap to just recompute.
-      if (score >= MIN_SCORE) cache[pairKey] = score;
+      if (score >= MIN_SCORE) cache.set(pairKey, score);
     }
     pairsCompared++;
     if (score < MIN_SCORE) return;
 
-    matches.get(a.deckId)?.push({ deckId: b.deckId, eventId: b.eventId, eventName: b.eventName, player: b.player, score });
-    matches.get(b.deckId)?.push({ deckId: a.deckId, eventId: a.eventId, eventName: a.eventName, player: a.player, score });
+    addMatch(a.deckId, { deckId: b.deckId, eventId: b.eventId, eventName: b.eventName, player: b.player, score });
+    addMatch(b.deckId, { deckId: a.deckId, eventId: a.eventId, eventName: a.eventName, player: a.player, score });
     matchesFound++;
+  }
+
+  /**
+   * Keeps each deck's match list capped at TOP_K, sorted descending, instead of accumulating
+   * every match found before trimming at the very end. In a heavily-netdecked champion group
+   * (verified live: one Guo Jia run found ~6.8M matches on ~6.8M candidates scored, i.e. close to
+   * a 100% hit rate — a handful of "the" list gets played by thousands of players) an unbounded
+   * per-deck array is the actual memory blow-up, not the pair cache: a single popular list can
+   * match nearly every other deck in its group, so its match array would otherwise grow to
+   * thousands of entries when only the top 3 are ever read back out. This crashed a real run with
+   * a heap OOM at ~4GB.
+   */
+  function addMatch(deckId: string, candidate: SimilarDeck): void {
+    const list = matches.get(deckId);
+    if (!list) return;
+    if (list.length < TOP_K) {
+      list.push(candidate);
+      list.sort((x, y) => y.score - x.score);
+    } else if (candidate.score > list[list.length - 1].score) {
+      list[list.length - 1] = candidate;
+      list.sort((x, y) => y.score - x.score);
+    }
   }
 
   for (const [championName, group] of groupsBySize) {
@@ -259,6 +311,7 @@ export async function computeDeckSimilarity(
             `[similarity]   ${championName}: ${i + 1}/${group.length} decks compared, ${pairsCompared.toLocaleString()}/${totalPairs.toLocaleString()} total pairs (${pct}%), ${matchesFound.toLocaleString()} matches found so far`,
           );
         }
+        maybeFlush();
       }
     } else {
       const candidates = findLshCandidatePairs(group);
@@ -274,11 +327,32 @@ export async function computeDeckSimilarity(
             `[similarity]   ${championName}: ${(c + 1).toLocaleString()}/${candidates.length.toLocaleString()} candidates scored, ${matchesFound.toLocaleString()} matches found so far`,
           );
         }
+        maybeFlush();
       }
     }
 
     if (group.length > 50) {
       console.log(`[similarity] finished ${championName} (${group.length} decks) in ${((Date.now() - groupStartedAt) / 1000).toFixed(1)}s`);
+    }
+    // Cheap safety net regardless of the 5-minute timer — a champion group boundary is a natural
+    // checkpoint, and most groups finish well inside 5 minutes so they'd otherwise never flush.
+    await flushing;
+    await writeCache(cache);
+    lastFlushAt = Date.now();
+
+    if (onChampionComplete) {
+      const groupEntries = group
+        .map((deck) => ({
+          deckId: deck.deckId,
+          eventId: deck.eventId,
+          eventName: deck.eventName,
+          player: deck.player,
+          championName: deck.championName,
+          // Already sorted and capped at TOP_K by addMatch as matches were found.
+          topMatches: matches.get(deck.deckId) ?? [],
+        }))
+        .filter((d) => d.topMatches.length > 0);
+      await onChampionComplete(groupEntries);
     }
   }
 
@@ -286,6 +360,7 @@ export async function computeDeckSimilarity(
     `[similarity] done: ${pairsCompared.toLocaleString()} pairs exactly scored, ${matchesFound.toLocaleString()} matches found, in ${((Date.now() - startedAt) / 1000).toFixed(1)}s`,
   );
 
+  await flushing;
   await writeCache(cache);
 
   return decks

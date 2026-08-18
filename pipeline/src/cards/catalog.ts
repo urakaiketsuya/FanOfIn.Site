@@ -17,6 +17,8 @@ export interface CardSignature {
   types: string[];
   subtypes: string[];
   elements: string[];
+  /** Champion level (1-3 for named upgrade printings, 0 for Spirits, null for non-Champions) — used to identify a deck's "true" Champion by its highest-level printing in the material deck. */
+  level: number | null;
 }
 
 interface CardCatalogCache {
@@ -30,7 +32,15 @@ async function fetchFullCatalog(): Promise<CardSignature[]> {
   for (;;) {
     const res = await fetchJson<CardSearchResponse>(`${BASE_URL}/cards/search?page=${page}&page_size=50&sort=name&order=ASC`);
     for (const card of res.data) {
-      cards.push({ name: card.name, slug: card.slug, classes: card.classes, types: card.types, subtypes: card.subtypes, elements: card.elements });
+      cards.push({
+        name: card.name,
+        slug: card.slug,
+        classes: card.classes,
+        types: card.types,
+        subtypes: card.subtypes,
+        elements: card.elements,
+        level: card.level,
+      });
     }
     if (!res.has_more) break;
     page++;

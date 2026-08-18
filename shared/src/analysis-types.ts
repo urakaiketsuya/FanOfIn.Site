@@ -237,6 +237,44 @@ export interface DeckSightingsData {
   sightings: DeckSighting[];
 }
 
+export interface ChampionSeasonPerformance {
+  seasonId: number;
+  seasonName: string;
+  deckCount: number;
+  eventCount: number;
+  winCount: number;
+  topCutCount: number;
+  avgWinRate: number;
+  /** Sum of `DeckSighting.weightedScore` across this champion's sightings in this season. */
+  totalWeightedScore: number;
+  /**
+   * This champion's `totalWeightedScore` as a fraction of every champion's combined
+   * `totalWeightedScore` that season — the metric trends are actually computed from, since raw
+   * score totals aren't comparable across seasons (sample size grew a lot as backfill coverage
+   * improved: 2,488 sightings in the earliest season vs. 11,808 in the most recent).
+   */
+  shareOfSeason: number;
+}
+
+export type ChampionTrendDirection = "rising" | "falling" | "stable" | "new" | "absent" | "insufficient-data";
+
+export interface ChampionTrend {
+  championName: string;
+  /** Chronological order (oldest first), one entry per season in the dataset — 0-valued fields for seasons the champion had no sightings in. */
+  seasons: ChampionSeasonPerformance[];
+  /** Comparing `shareOfSeason` between the two most recent seasons in the dataset, not just this champion's own most recent appearances — so going quiet for a season shows up as "falling"/"absent" rather than being skipped. */
+  trend: ChampionTrendDirection;
+  /** Percentage-point change in `shareOfSeason` between the two most recent seasons (signed). Null when `trend` is "insufficient-data". */
+  trendDeltaPct: number | null;
+}
+
+export interface ChampionTrendsData {
+  generatedAt: string;
+  /** Season names in chronological order (oldest first) — the same order used within each `ChampionTrend.seasons`. */
+  seasonOrder: string[];
+  champions: ChampionTrend[];
+}
+
 export interface DeckCardIndexLine {
   name: string;
   quantity: number;

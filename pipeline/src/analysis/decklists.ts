@@ -14,13 +14,9 @@ export interface DeckSignature {
   /** Top elements present, "NORM" (colorless) excluded since it doesn't distinguish archetypes. */
   elements: string[];
   /**
-   * The Champion's character name (e.g. "Alice"), read off the CHAMPION-typed cards in the
-   * Material Deck — verified against live data: a deck's material section holds several
-   * alternate-form printings of one named character ("Alice, Distorted Queen" / "Alice, Phantom
-   * Monarch" / ...) plus a generic "Spirit of <element>" card, which is excluded here since it
-   * doesn't carry a character name. Majority vote by copies in the rare case (~7% of decks in a
-   * sampled event) where a deck's material section mixes more than one identity. Null if no
-   * named champion card could be found (e.g. an unmatched/misnamed decklist entry).
+   * The Champion's character name (e.g. "Alice"), taken from whichever named CHAMPION printing
+   * in the Material Deck has the highest level — see `findChampionName`. Null if no named
+   * champion card could be found (e.g. an unmatched/misnamed decklist entry).
    */
   championName: string | null;
   /** Display label for grouping decks into archetypes — the champion name, or a class+element fallback when unknown. */
@@ -41,11 +37,10 @@ export interface DeckSignature {
   unmatchedCardNames: string[];
 }
 
-/** Class/element/Champion identity is derived from main+material only — sideboard doesn't define what a deck "is". */
+/** Class/element identity is derived from main+material only — sideboard doesn't define what a deck "is". */
 function tally(lines: { card: string; quantity: number }[], cardIndex: Map<string, CardSignature>) {
   const classCounts = new Map<string, number>();
   const elementCounts = new Map<string, number>();
-  const championNameCounts = new Map<string, number>();
   const unmatched: string[] = [];
   let cardCount = 0;
 
@@ -58,14 +53,47 @@ function tally(lines: { card: string; quantity: number }[], cardIndex: Map<strin
     }
     for (const c of card.classes) classCounts.set(c, (classCounts.get(c) ?? 0) + line.quantity);
     for (const e of card.elements) elementCounts.set(e, (elementCounts.get(e) ?? 0) + line.quantity);
-
-    if (card.types.includes("CHAMPION") && line.card.includes(",")) {
-      const name = line.card.split(",")[0].trim();
-      championNameCounts.set(name, (championNameCounts.get(name) ?? 0) + line.quantity);
-    }
   }
 
-  return { classCounts, elementCounts, championNameCounts, unmatched, cardCount };
+  return { classCounts, elementCounts, unmatched, cardCount };
+}
+
+/**
+ * A deck's Champion is the named identity behind its *highest-level* Champion printing in the
+ * Material Deck (e.g. "Alice, Trifle's Royalty" at level 3 beats "Alice, Distorted Queen" at
+ * level 1) — this is what the player actually built toward, since level-1/2/3 prints of the same
+ * character are separate physical cards. Ties (same max level for two identities, e.g. neither
+ * got played past level 1) fall back to whichever has more copies in the material deck. Spirit
+ * companions (level 0, e.g. "Sabrina, Spirit of Water") only win if nothing else qualifies.
+ */
+function findChampionName(
+  materialLines: { card: string; quantity: number }[],
+  cardIndex: Map<string, CardSignature>,
+): string | null {
+  const byName = new Map<string, { maxLevel: number; copies: number }>();
+
+  for (const line of materialLines) {
+    const card = cardIndex.get(line.card);
+    if (!card || !card.types.includes("CHAMPION") || !line.card.includes(",")) continue;
+    const name = line.card.split(",")[0].trim();
+    const level = card.level ?? 0;
+    const entry = byName.get(name) ?? { maxLevel: -1, copies: 0 };
+    entry.maxLevel = Math.max(entry.maxLevel, level);
+    entry.copies += line.quantity;
+    byName.set(name, entry);
+  }
+
+  let best: string | null = null;
+  let bestLevel = -1;
+  let bestCopies = -1;
+  for (const [name, { maxLevel, copies }] of byName) {
+    if (maxLevel > bestLevel || (maxLevel === bestLevel && copies > bestCopies)) {
+      best = name;
+      bestLevel = maxLevel;
+      bestCopies = copies;
+    }
+  }
+  return best;
 }
 
 function topKeys(counts: Map<string, number>, limit: number, exclude: Set<string> = new Set()): string[] {
@@ -99,14 +127,11 @@ export function buildDeckSignature(
   decklist: OmnidexDecklist,
   cardIndex: Map<string, CardSignature>,
 ): DeckSignature {
-  const { classCounts, elementCounts, championNameCounts, unmatched, cardCount } = tally(
-    [...decklist.main, ...decklist.material],
-    cardIndex,
-  );
+  const { classCounts, elementCounts, unmatched, cardCount } = tally([...decklist.main, ...decklist.material], cardIndex);
 
   const classes = topKeys(classCounts, 2);
   const elements = topKeys(elementCounts, 2, new Set(["NORM"]));
-  const [championName] = topKeys(championNameCounts, 1);
+  const championName = findChampionName(decklist.material, cardIndex);
 
   const fallback = [...classes].sort().concat([...elements].sort()).join("+") || "UNKNOWN";
   const spirit = findSpirit(decklist.material, cardIndex);
@@ -116,7 +141,7 @@ export function buildDeckSignature(
     cardCount,
     classes,
     elements,
-    championName: championName ?? null,
+    championName,
     signature: championName ?? fallback,
     spiritName: spirit?.name ?? null,
     spiritElement: spirit?.element ?? null,

@@ -1,7 +1,7 @@
 import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { EVENT_CATEGORY_ORDER, type CardStat, type PriceData } from "@gatcg/shared";
+import { EVENT_CATEGORY_ORDER, type CardStat, type DeckSimilarityEntry, type PriceData } from "@gatcg/shared";
 import { listCachedBundles } from "../omnidex/cache.js";
 import { loadCardCatalog, buildCardIndex } from "../cards/catalog.js";
 import { computeEloRatings } from "./elo.js";
@@ -11,6 +11,7 @@ import { computeHipsterScores } from "./hipster.js";
 import { computeDeckSimilarity } from "./similarity.js";
 import { computePlayerDeckProfiles } from "./playerDecks.js";
 import { computeDeckSightings } from "./deckSightings.js";
+import { computeChampionTrends } from "./championTrends.js";
 import { computeDeckCardIndex } from "./deckCardIndex.js";
 
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/analysis");
@@ -48,25 +49,13 @@ export async function buildAnalysis(): Promise<void> {
     return computeCardStats(bundles, cardIndex).map((stat) => ({ ...stat, marketPrice: priceByName.get(stat.name) ?? null }));
   }
 
-  const { ratings, upsets } = computeEloRatings(completed);
-  const cardStats = cardStatsFor(completed);
-
-  const cardStatsByCategory: Record<string, CardStat[]> = {};
-  for (const category of EVENT_CATEGORY_ORDER) {
-    const subset = completed.filter((b) => b.event.category === category);
-    if (subset.length === 0) continue;
-    cardStatsByCategory[category] = cardStatsFor(subset);
-  }
-
-  const { archetypes, battleChart } = computeArchetypeAnalysis(completed, cardIndex);
-  const { deckScores, playerScores } = computeHipsterScores(completed, cardIndex);
-  const similarDecks = await computeDeckSimilarity(completed, cardIndex);
-  const playerDeckProfiles = computePlayerDeckProfiles(completed, cardIndex);
-  const deckSightings = computeDeckSightings(completed, cardIndex);
-  const deckCardIndex = computeDeckCardIndex(completed, cardIndex);
-
   await mkdir(DATA_DIR, { recursive: true });
 
+  // Each of these is fast and independent of deck similarity (the one slow, champion-scoped
+  // step below) — writing them out as soon as they're computed means a kill/crash during the
+  // slow part still leaves fresh data for everything else, instead of holding all of it hostage
+  // until the entire analysis run finishes.
+  const { ratings, upsets } = computeEloRatings(completed);
   await writeFile(
     path.join(DATA_DIR, "elo.json"),
     JSON.stringify({
@@ -77,49 +66,68 @@ export async function buildAnalysis(): Promise<void> {
     "utf-8",
   );
 
+  const cardStats = cardStatsFor(completed);
+  const cardStatsByCategory: Record<string, CardStat[]> = {};
+  for (const category of EVENT_CATEGORY_ORDER) {
+    const subset = completed.filter((b) => b.event.category === category);
+    if (subset.length === 0) continue;
+    cardStatsByCategory[category] = cardStatsFor(subset);
+  }
   await writeFile(
     path.join(DATA_DIR, "cards.json"),
     JSON.stringify({ generatedAt: new Date().toISOString(), cards: cardStats, byCategory: cardStatsByCategory }),
     "utf-8",
   );
 
+  const { archetypes, battleChart } = computeArchetypeAnalysis(completed, cardIndex);
   await writeFile(
     path.join(DATA_DIR, "archetypes.json"),
     JSON.stringify({ generatedAt: new Date().toISOString(), archetypes, battleChart }),
     "utf-8",
   );
 
+  const { deckScores, playerScores } = computeHipsterScores(completed, cardIndex);
   await writeFile(
     path.join(DATA_DIR, "hipster.json"),
     JSON.stringify({ generatedAt: new Date().toISOString(), deckScores, playerScores }),
     "utf-8",
   );
 
-  await writeFile(
-    path.join(DATA_DIR, "similarity.json"),
-    JSON.stringify({ generatedAt: new Date().toISOString(), decks: similarDecks }),
-    "utf-8",
-  );
-
+  const playerDeckProfiles = computePlayerDeckProfiles(completed, cardIndex);
   await writeFile(
     path.join(DATA_DIR, "player-decks.json"),
     JSON.stringify({ generatedAt: new Date().toISOString(), players: playerDeckProfiles }),
     "utf-8",
   );
 
+  const deckSightings = computeDeckSightings(completed, cardIndex);
   await writeFile(
     path.join(DATA_DIR, "deck-sightings.json"),
     JSON.stringify({ generatedAt: new Date().toISOString(), sightings: deckSightings }),
     "utf-8",
   );
 
+  const championTrends = computeChampionTrends(deckSightings);
+  await writeFile(path.join(DATA_DIR, "champion-trends.json"), JSON.stringify(championTrends), "utf-8");
+
+  const deckCardIndex = computeDeckCardIndex(completed, cardIndex);
   await writeFile(
     path.join(DATA_DIR, "deck-card-index.json"),
     JSON.stringify({ generatedAt: new Date().toISOString(), decks: deckCardIndex }),
     "utf-8",
   );
 
+  // Similarity is the slow, champion-scoped step — write similarity.json incrementally as each
+  // champion group finishes (see `onChampionComplete` below) rather than only once at the end,
+  // so a kill/crash mid-run keeps whichever champions already completed instead of losing them.
+  const similarityPath = path.join(DATA_DIR, "similarity.json");
+  const similarDecksSoFar: DeckSimilarityEntry[] = [];
+  const similarDecks = await computeDeckSimilarity(completed, cardIndex, async (championEntries) => {
+    similarDecksSoFar.push(...championEntries);
+    await writeFile(similarityPath, JSON.stringify({ generatedAt: new Date().toISOString(), decks: similarDecksSoFar }), "utf-8");
+  });
+
   console.log(
-    `analysis: ${ratings.size} rated players, ${upsets.length} upsets, ${cardStats.length} cards, ${archetypes.length} archetypes, ${similarDecks.length} decks with similarity matches, ${playerDeckProfiles.length} player deck profiles, ${deckSightings.length} deck sightings, ${deckCardIndex.length} decks in card index`,
+    `analysis: ${ratings.size} rated players, ${upsets.length} upsets, ${cardStats.length} cards, ${archetypes.length} archetypes, ${championTrends.champions.length} champion trends across ${championTrends.seasonOrder.length} seasons, ${similarDecks.length} decks with similarity matches, ${playerDeckProfiles.length} player deck profiles, ${deckSightings.length} deck sightings, ${deckCardIndex.length} decks in card index`,
   );
 }

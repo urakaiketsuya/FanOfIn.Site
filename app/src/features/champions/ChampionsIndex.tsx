@@ -1,12 +1,33 @@
 import { Link } from "react-router-dom";
-import { useArchetypeData } from "../archetypes/data";
+import type { ChampionTrendDirection } from "@gatcg/shared";
+import { useArchetypeData, useChampionTrendsData } from "../archetypes/data";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 
+const TREND_LABEL: Record<ChampionTrendDirection, string> = {
+  rising: "▲ Rising",
+  falling: "▼ Falling",
+  stable: "— Stable",
+  new: "★ New",
+  absent: "Absent",
+  "insufficient-data": "",
+};
+
+const TREND_CLASS: Record<ChampionTrendDirection, string> = {
+  rising: "text-ctp-green",
+  falling: "text-ctp-red",
+  stable: "text-ctp-subtext0",
+  new: "text-ctp-blue",
+  absent: "text-ctp-subtext0",
+  "insufficient-data": "text-ctp-subtext0",
+};
+
 export default function ChampionsIndex() {
   const data = useArchetypeData();
+  const trendsData = useChampionTrendsData();
   const championImages = useChampionCardImages(data?.archetypes.map((c) => c.signature) ?? []);
+  const latestSeasonName = trendsData?.seasonOrder[trendsData.seasonOrder.length - 1];
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -25,11 +46,15 @@ export default function ChampionsIndex() {
             <th className="py-1">Decks</th>
             <th className="py-1">Events</th>
             <th className="py-1">Win rate</th>
+            <th className="py-1" title={latestSeasonName ? `Change in share of ${latestSeasonName} vs. the prior season` : undefined}>
+              Trend
+            </th>
           </tr>
         </thead>
         <tbody className="divide-y divide-ctp-surface0">
           {data?.archetypes.map((c) => {
             const card = championImages.get(c.signature);
+            const trend = trendsData?.champions.find((t) => t.championName === c.signature);
             return (
               <tr key={c.signature}>
                 <td className="w-12 py-1.5">
@@ -58,6 +83,15 @@ export default function ChampionsIndex() {
                 <td className="py-1.5 text-ctp-subtext1">{c.deckCount}</td>
                 <td className="py-1.5 text-ctp-subtext1">{c.eventCount}</td>
                 <td className="py-1.5 text-ctp-subtext1">{(c.avgWinRate * 100).toFixed(0)}%</td>
+                <td className={`py-1.5 text-xs ${trend ? TREND_CLASS[trend.trend] : "text-ctp-subtext0"}`}>
+                  {trend ? TREND_LABEL[trend.trend] : ""}
+                  {trend?.trendDeltaPct !== null && trend?.trendDeltaPct !== undefined && (
+                    <span className="ml-1 text-ctp-subtext0">
+                      ({trend.trendDeltaPct > 0 ? "+" : ""}
+                      {trend.trendDeltaPct.toFixed(1)}pp)
+                    </span>
+                  )}
+                </td>
               </tr>
             );
           })}

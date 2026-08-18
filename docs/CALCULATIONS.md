@@ -33,6 +33,22 @@ Per-card novelty = `1 - (seenCount / totalSoFar)`, clamped at 0, treated as `1` 
 `totalSoFar === 0` (this Champion has no prior data yet). A deck's score is the average novelty
 across every card in its main+material set. Player score is the plain average of their deck scores.
 
+## Champion identity (`pipeline/src/analysis/decklists.ts` — `findChampionName`)
+
+A deck's Champion is the named identity behind whichever CHAMPION-typed printing in the Material
+Deck has the **highest `level`** (verified live against the GA API: e.g. "Alice, Distorted Queen"
+is level 1, "Alice, Phantom Monarch" level 2, "Alice, Trifle's Royalty" level 3 — separate physical
+cards per level, not one card that changes). This is what the player actually built toward. Ties
+(two identities both topping out at the same level, e.g. neither got played past level 1) fall back
+to whichever has more copies in the material deck. Spirit companions (level 0, e.g. "Sabrina, Spirit
+of Water") only win if nothing else in the deck qualifies.
+
+This replaced an earlier majority-vote-by-copies approach specifically because copy count doesn't
+track what the deck is built around — a deck could easily run more copies of a lower-level card
+than a level 3 one. `championName` computed here feeds every downstream per-Champion stat: deck
+sightings, similarity grouping, archetypes, hipster scores, player deck profiles, and the season
+trends below — it's a single source of truth, not recomputed independently anywhere else.
+
 ## Deck sighting fields (`pipeline/src/analysis/deckSightings.ts`)
 
 One record per public decklist ("sighting" = one player's decklist at one event). Several fields
@@ -66,6 +82,42 @@ are derived, not raw Omnidex data:
   **`high`** = match win rate >= 50%. These three (plus the netdecking idea) were adapted
   independently from Fractal of Insight's "which decks did well" concept, not their code or data —
   see the AGPL note in the project plan (Phase 13) for why that distinction matters.
+
+## Champion season trends (`pipeline/src/analysis/championTrends.ts`)
+
+Built on top of `computeDeckSightings` output (not a re-walk of event bundles) since sightings
+already carry every field needed: season, Champion, `weightedScore`.
+
+**Why `shareOfSeason`, not raw score**: verified against real data that a champion's total
+`weightedScore` isn't comparable across seasons because backfill coverage grew a lot over time
+(2,488 sightings in the earliest season vs. 11,808 in the most recent) — a champion could look like
+it "grew" between seasons purely because the dataset got bigger, not because it got more popular.
+`shareOfSeason` = this champion's total `weightedScore` that season ÷ every champion's combined
+`weightedScore` that season, which normalizes that away.
+
+**Season order** is derived from data, not hardcoded or assumed from `seasonId` ordering — each
+season's position is its earliest sighting's `eventDate`, sorted ascending. Every champion gets one
+entry per season in the full dataset (zero-valued for seasons they had no sightings in), so a
+champion going quiet shows up as a real zero rather than being silently absent from the array.
+
+**Trend classification** compares `shareOfSeason` between the two most recent seasons *in the whole
+dataset* (not this champion's own two most recent appearances) — so missing a season entirely
+surfaces as "absent," not skipped:
+- Both seasons zero sightings → `insufficient-data`.
+- Previous season zero, latest season ≥ `config.minBattleChartSampleSize` (5) → `new`.
+- Previous season ≥ threshold, latest season zero → `absent`.
+- Either season below the threshold (and not exactly zero) → `insufficient-data` — too little data
+  in one of the two seasons to trust a direction.
+- Otherwise, `deltaPct = (latest.shareOfSeason - prev.shareOfSeason) * 100`; `> +2pp` → `rising`,
+  `< -2pp` → `falling`, else `stable`. The ±2 percentage-point stable band was picked by eyeballing
+  the real distribution of season-to-season share changes — most champions move by low single-digit
+  points normally, so a ±2pp band separates real momentum from noise without being so wide it never
+  fires.
+
+Verified against a real gut-check: comparing top-5-by-`weightedScore` champions season over season
+by hand found 60-80% carryover most transitions, but one genuine meta shake-up (Mortal Ambition →
+Abyssal Heaven, only 1 of 5 carried over) and several one-season-only breakouts (e.g. Diao Chan) —
+confirming season-level trend tracking surfaces real signal, not noise.
 
 ## Deck similarity (`pipeline/src/analysis/similarity.ts`)
 
@@ -101,7 +153,29 @@ worth exactly-scoring, never what counts as a match.
 **Persisted cache**: `pipeline/.cache/similarity.json` keyed by `deckId|deckId` pair, only for pairs
 that cleared `MIN_SCORE` (caching every pair would grow unbounded with a champion's deck count — an
 earlier version of this cache hit 347MB and made runs hang). Non-matches are cheap enough to just
-recompute on a re-run.
+recompute on a re-run. Held in memory as a `Map`, not a plain object — a plain object with millions
+of string keys degrades badly in V8 (dictionary-mode storage, GC pressure); a real full-backfill run
+with heavy netdecking (Guo Jia alone: ~6.8M matches out of ~6.8M candidates scored, close to a 100%
+hit rate) grew the old object-cache to the point where scoring crawled at ~0.2 pairs/sec — Map has
+none of that degradation at this scale. Flushed to disk periodically (every 5 minutes, plus after
+every champion group finishes) rather than only once at the very end, so a kill/crash mid-run only
+re-scores whatever happened since the last flush instead of the whole run.
+
+**Per-deck match list is capped at `TOP_K` (3) while accumulating**, not just at the end —
+`addMatch` keeps each deck's match array sorted and bounded to `TOP_K`, evicting the lowest-scoring
+entry when a better one is found. This is the actual memory bottleneck in a heavily-netdecked
+champion group: one popular list can match nearly every other deck in its group, so letting the
+array grow unbounded (only trimming to top-3 at the very end) crashed a real run with a heap OOM at
+~4GB even after the `Map` fix above. Only the top 3 are ever read back out, so there's no reason to
+hold more than that at any point.
+
+**Incremental publish**: `computeDeckSimilarity` takes an optional `onChampionComplete` callback,
+invoked with a champion's finished, already-capped entries right after that group's scoring
+completes — a champion's matches are only ever found within its own group (cross-champion pairs are
+never scored), so its results are genuinely final the moment the group's loop ends. `build.ts` uses
+this to rewrite `data/analysis/similarity.json` after every champion instead of only once at the
+end, and writes every other (fast, non-champion-scoped) analysis output to disk as soon as it's
+computed rather than holding everything hostage until deck similarity — the slowest step — finishes.
 
 ## Floating Memory (`app/src/lib/deckIdentity.ts` — `computeFloatingMemory`)
 
