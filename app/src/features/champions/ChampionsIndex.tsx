@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import type { ChampionTrendDirection } from "@gatcg/shared";
 import { useArchetypeData, useChampionTrendsData } from "../archetypes/data";
@@ -28,7 +29,17 @@ export default function ChampionsIndex() {
   useDocumentTitle("Champions", "Grand Archive TCG Champion performance stats and season trends.");
   const data = useArchetypeData();
   const trendsData = useChampionTrendsData();
-  const championImages = useChampionCardImages(data?.archetypes.map((c) => c.signature) ?? []);
+  // Several distinct draft-only identities all share the literal signature "Nameless Champion"
+  // (different classes/elements), so dedupe by signature or React sees duplicate keys.
+  const archetypes = useMemo(() => {
+    if (!data) return undefined;
+    const bySignature = new Map<string, (typeof data.archetypes)[number]>();
+    for (const a of data.archetypes) {
+      if (!bySignature.has(a.signature)) bySignature.set(a.signature, a);
+    }
+    return Array.from(bySignature.values());
+  }, [data]);
+  const championImages = useChampionCardImages(archetypes?.map((c) => c.signature) ?? []);
   const latestSeasonName = trendsData?.seasonOrder[trendsData.seasonOrder.length - 1];
 
   return (
@@ -55,7 +66,7 @@ export default function ChampionsIndex() {
             </tr>
           </thead>
           <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-            {data?.archetypes.map((c) => {
+            {archetypes?.map((c) => {
               const card = championImages.get(c.signature);
               const trend = trendsData?.champions.find((t) => t.championName === c.signature);
               return (
