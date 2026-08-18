@@ -4,11 +4,13 @@ import DeckSearchByCards from "./DeckSearchByCards";
 import ImportByPlayer from "./ImportByPlayer";
 import PasteDecklist from "./PasteDecklist";
 import ComparisonGrid from "./ComparisonGrid";
+import ComparisonCards from "./ComparisonCards";
 import { useComparedDecklists } from "./useComparedDecklists";
 import { useOmnidexIndex, useOmnidexPlayers } from "../tournaments/data";
 import type { ComparedDeck } from "./types";
 
 type SourceTab = "cards" | "player" | "paste";
+type ViewMode = "table" | "cards";
 
 const TAB_LABELS: Record<SourceTab, string> = {
   cards: "Search by cards",
@@ -19,6 +21,9 @@ const TAB_LABELS: Record<SourceTab, string> = {
 export default function CompareIndex() {
   const [decks, setDecks] = useState<ComparedDeck[]>([]);
   const [tab, setTab] = useState<SourceTab>("cards");
+  // Table needs horizontal space (one column per deck) — default to the stacked card view on a
+  // phone-sized viewport instead, so the compare set is usable without opening on desktop first.
+  const [viewMode, setViewMode] = useState<ViewMode>(() => (window.innerWidth < 768 ? "cards" : "table"));
   const [searchParams, setSearchParams] = useSearchParams();
   const playersData = useOmnidexPlayers();
   const index = useOmnidexIndex();
@@ -99,15 +104,33 @@ export default function CompareIndex() {
       </div>
 
       <div className="mt-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
             Comparing {decks.length} deck{decks.length === 1 ? "" : "s"}
           </h2>
-          {decks.length > 0 && (
-            <button type="button" onClick={() => setDecks([])} className="text-xs text-ctp-subtext0 hover:text-ctp-text">
-              Clear all
-            </button>
-          )}
+          <div className="flex items-center gap-3">
+            {decks.length > 0 && (
+              <div className="flex gap-1 text-xs">
+                {(["table", "cards"] as ViewMode[]).map((mode) => (
+                  <button
+                    key={mode}
+                    type="button"
+                    onClick={() => setViewMode(mode)}
+                    className={`rounded-md border px-2 py-1 capitalize ${
+                      viewMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                    }`}
+                  >
+                    {mode}
+                  </button>
+                ))}
+              </div>
+            )}
+            {decks.length > 0 && (
+              <button type="button" onClick={() => setDecks([])} className="text-xs text-ctp-subtext0 hover:text-ctp-text">
+                Clear all
+              </button>
+            )}
+          </div>
         </div>
 
         {decks.length === 0 && <p className="mt-2 text-sm text-ctp-subtext1">Add decks above to start comparing.</p>}
@@ -130,7 +153,11 @@ export default function CompareIndex() {
 
         {decks.length > 0 && (
           <div className="mt-4">
-            <ComparisonGrid decks={decks} decklists={decklists} />
+            {viewMode === "table" ? (
+              <ComparisonGrid decks={decks} decklists={decklists} />
+            ) : (
+              <ComparisonCards decks={decks} decklists={decklists} />
+            )}
           </div>
         )}
       </div>

@@ -2,18 +2,26 @@ import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import type { OmnidexDecklist } from "@gatcg/shared";
 import CardHoverPreview from "../../components/CardHoverPreview";
-import { useCardsByNames } from "../events/useCardsByNames";
-import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
-import { computeSectionPrice } from "../../lib/deckPrice";
 import { formatUsd } from "../../lib/format";
-import { buildTtsSaveFile, downloadJsonFile, findDeckChampionName, slugifyFilename } from "../../lib/ttsExport";
+import { buildTtsSaveFile, downloadJsonFile, slugifyFilename } from "../../lib/ttsExport";
+import { useComparisonData } from "./useComparisonData";
 import type { ComparedDeck } from "./types";
 
-const SECTIONS: { key: keyof OmnidexDecklist; label: string }[] = [
-  { key: "main", label: "Main" },
-  { key: "material", label: "Material" },
-  { key: "sideboard", label: "Sideboard" },
+const PILLARS: { key: "aggro" | "consistency" | "interaction" | "resilience"; label: string }[] = [
+  { key: "aggro", label: "Aggro" },
+  { key: "consistency", label: "Consistency" },
+  { key: "interaction", label: "Interaction" },
+  { key: "resilience", label: "Resilience" },
 ];
+
+/** Index of the highest value in `values`, or -1 if there's nothing to compare (fewer than 2 real values, or a tie). */
+function bestIndex(values: (number | null)[]): number {
+  const real = values.filter((v): v is number => v !== null);
+  if (real.length < 2) return -1;
+  const max = Math.max(...real);
+  if (real.filter((v) => v === max).length > 1) return -1; // tied — nothing to highlight
+  return values.indexOf(max);
+}
 
 export default function ComparisonGrid({
   decks,
@@ -22,25 +30,12 @@ export default function ComparisonGrid({
   decks: ComparedDeck[];
   decklists: Map<string, OmnidexDecklist | null>;
 }) {
-  const priceByName = useDeckPriceByName();
-
-  const allNames = Array.from(
-    new Set(
-      decks.flatMap((d) => {
-        const list = decklists.get(d.key);
-        if (!list) return [];
-        return [...list.main, ...list.material, ...list.sideboard].map((l) => l.card);
-      }),
-    ),
-  );
-  const cardsByName = useCardsByNames(allNames);
-
-  const resolvedCount = decks.filter((d) => decklists.get(d.key)).length;
+  const { cardsByName, deckStats, sections } = useComparisonData(decks, decklists);
 
   function handleExportTts(deck: ComparedDeck) {
     const list = decklists.get(deck.key);
     if (!list) return;
-    const championName = findDeckChampionName(list.material, cardsByName);
+    const stats = deckStats.find((s) => s.key === deck.key);
     const save = buildTtsSaveFile(
       [
         { label: "Main", lines: list.main },
@@ -49,8 +44,11 @@ export default function ComparisonGrid({
       ],
       cardsByName,
     );
-    downloadJsonFile(`${slugifyFilename(championName ?? deck.label)}-tts.json`, save);
+    downloadJsonFile(`${slugifyFilename(stats?.championName ?? deck.label)}-tts.json`, save);
   }
+
+  const bestPriceIndex = bestIndex(deckStats.map((s) => (s.price > 0 ? s.price : null)));
+  const bestCompositeIndex = bestIndex(deckStats.map((s) => s.rating?.composite ?? null));
 
   return (
     <div className="overflow-x-auto">
@@ -82,29 +80,55 @@ export default function ComparisonGrid({
             <td className="sticky left-0 z-10 bg-ctp-base py-1.5 pr-4 text-xs font-semibold uppercase text-ctp-subtext0">
               Deck price
             </td>
-            {decks.map((d) => {
-              const list = decklists.get(d.key);
-              if (!list) return <td key={d.key} className="py-1.5 pr-4 text-ctp-subtext0">—</td>;
-              const price = computeSectionPrice([...list.main, ...list.material, ...list.sideboard], priceByName);
-              return (
-                <td key={d.key} className="py-1.5 pr-4 text-ctp-subtext1">
-                  {price.total > 0 ? formatUsd(price.total) : "—"}
-                </td>
-              );
-            })}
+            {deckStats.map((s, i) => (
+              <td key={s.key} className={`py-1.5 pr-4 ${i === bestPriceIndex ? "text-ctp-green" : "text-ctp-subtext1"}`}>
+                {s.price > 0 ? formatUsd(s.price) : "—"}
+              </td>
+            ))}
           </tr>
 
-          {SECTIONS.map(({ key: sectionKey, label }) => {
-            const namesInSection = Array.from(
-              new Set(
-                decks.flatMap((d) => {
-                  const list = decklists.get(d.key);
-                  return list ? list[sectionKey].map((l) => l.card) : [];
-                }),
-              ),
-            );
-            if (namesInSection.length === 0) return null;
+          <tr>
+            <td className="sticky left-0 z-10 bg-ctp-base py-1.5 pr-4 text-xs font-semibold uppercase text-ctp-subtext0">
+              Identity
+            </td>
+            {deckStats.map((s) => (
+              <td key={s.key} className="py-1.5 pr-4 text-ctp-subtext1">
+                {s.championName ?? "—"}
+                {(s.classes.length > 0 || s.elements.length > 0) && (
+                  <div className="text-xs text-ctp-subtext0">
+                    {[s.classes.join("/"), s.elements.join("/")].filter(Boolean).join(" · ")}
+                  </div>
+                )}
+              </td>
+            ))}
+          </tr>
 
+          <tr>
+            <td className="sticky left-0 z-10 bg-ctp-base py-1.5 pr-4 text-xs font-semibold uppercase text-ctp-subtext0">
+              Power rating
+            </td>
+            {deckStats.map((s, i) => (
+              <td key={s.key} className={`py-1.5 pr-4 font-semibold ${i === bestCompositeIndex ? "text-ctp-green" : "text-ctp-text"}`}>
+                {s.rating ? s.rating.composite.toFixed(1) : "—"}
+              </td>
+            ))}
+          </tr>
+          {PILLARS.map(({ key: pillar, label }) => {
+            const bestPillarIndex = bestIndex(deckStats.map((s) => s.rating?.scores[pillar] ?? null));
+            return (
+              <tr key={pillar}>
+                <td className="sticky left-0 z-10 bg-ctp-base py-1 pr-4 pl-3 text-xs text-ctp-subtext0">{label}</td>
+                {deckStats.map((s, i) => (
+                  <td key={s.key} className={`py-1 pr-4 text-xs ${i === bestPillarIndex ? "text-ctp-green" : "text-ctp-subtext1"}`}>
+                    {s.rating ? s.rating.scores[pillar] : "—"}
+                  </td>
+                ))}
+              </tr>
+            );
+          })}
+
+          {sections.map(({ key: sectionKey, label, cards }) => {
+            if (cards.length === 0) return null;
             return (
               <Fragment key={sectionKey}>
                 <tr>
@@ -116,17 +140,8 @@ export default function ComparisonGrid({
                     {label}
                   </td>
                 </tr>
-                {namesInSection.map((name) => {
-                  const quantities = decks.map((d) => {
-                    const list = decklists.get(d.key);
-                    const line = list?.[sectionKey].find((l) => l.card === name);
-                    return line?.quantity ?? 0;
-                  });
-                  const presentCount = quantities.filter((q) => q > 0).length;
-                  const isCore = resolvedCount > 1 && presentCount === resolvedCount;
-                  const isUnique = resolvedCount > 1 && presentCount === 1;
+                {cards.map(({ name, quantities, isCore, isUnique }) => {
                   const card = cardsByName.get(name);
-
                   return (
                     <tr key={`${sectionKey}-${name}`}>
                       <td className="sticky left-0 z-10 bg-ctp-base py-1 pr-4">
@@ -159,8 +174,8 @@ export default function ComparisonGrid({
         </tbody>
       </table>
 
-      <div className="mt-2 flex gap-4 text-xs text-ctp-subtext0">
-        <span className="text-ctp-green">■ in every deck</span>
+      <div className="mt-2 flex flex-wrap gap-4 text-xs text-ctp-subtext0">
+        <span className="text-ctp-green">■ in every deck / best value</span>
         <span className="text-ctp-yellow">■ in only one deck</span>
       </div>
     </div>
