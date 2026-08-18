@@ -1,12 +1,27 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useOmnidexJudges } from "../tournaments/data";
+import { usePlayerDecksData } from "../players/data";
+import { useChampionCardImages } from "../players/useChampionCardImages";
+import CardImage from "../../components/CardImage";
+import CardHoverPreview from "../../components/CardHoverPreview";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 export default function JudgesIndex() {
   useDocumentTitle("Judges", "Grand Archive TCG certified judges, ranked by level and experience.");
   const judgesData = useOmnidexJudges();
+  const playerDecksData = usePlayerDecksData();
   const [search, setSearch] = useState("");
+
+  const topChampionById = useMemo(() => {
+    const map = new Map<number, string>();
+    for (const p of playerDecksData?.players ?? []) {
+      const top = p.topChampions[0];
+      if (top) map.set(p.playerId, top.name);
+    }
+    return map;
+  }, [playerDecksData]);
+  const championImages = useChampionCardImages([...new Set(topChampionById.values())]);
 
   const judges = useMemo(() => {
     if (!judgesData) return [];
@@ -45,18 +60,35 @@ export default function JudgesIndex() {
             </tr>
           </thead>
           <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-            {judges.map((judge) => (
-              <tr key={judge.id}>
-                <td className="py-1.5 pr-6 whitespace-nowrap">
-                  <Link to={`/players/${judge.id}`} className="text-ctp-text hover:text-ctp-blue">
-                    {judge.username}
-                  </Link>
-                </td>
-                <td className="py-1.5 pr-6 text-ctp-subtext1">{judge.judgeLevel}</td>
-                <td className="py-1.5 pr-6 text-ctp-subtext1">{judge.judgeExperience.toLocaleString()}</td>
-                <td className="py-1.5 pr-6 text-ctp-subtext1">{judge.eventIds.length}</td>
-              </tr>
-            ))}
+            {judges.map((judge) => {
+              const topChampion = topChampionById.get(judge.id);
+              const card = topChampion ? championImages.get(topChampion) : undefined;
+              return (
+                <tr key={judge.id}>
+                  <td className="py-1.5 pr-6 whitespace-nowrap">
+                    <Link to={`/players/${judge.id}`} className="flex items-center gap-2 text-ctp-text hover:text-ctp-blue">
+                      {topChampion && (
+                        <CardHoverPreview image={card?.editions[0]?.image} alt={topChampion}>
+                          <div className="h-8 w-8 shrink-0 overflow-hidden rounded-full bg-ctp-surface0">
+                            {card?.editions[0] && (
+                              <CardImage
+                                image={card.editions[0].image}
+                                alt={topChampion}
+                                className="h-full w-full origin-[50%_20%] scale-[3] object-cover object-top"
+                              />
+                            )}
+                          </div>
+                        </CardHoverPreview>
+                      )}
+                      {judge.username}
+                    </Link>
+                  </td>
+                  <td className="py-1.5 pr-6 text-ctp-subtext1">{judge.judgeLevel}</td>
+                  <td className="py-1.5 pr-6 text-ctp-subtext1">{judge.judgeExperience.toLocaleString()}</td>
+                  <td className="py-1.5 pr-6 text-ctp-subtext1">{judge.eventIds.length}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
