@@ -4,6 +4,7 @@ import { useDeckSightingsData } from "../topdecks/data";
 import { useOmnidexPlayers } from "../tournaments/data";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import PopularDeckRow from "./PopularDeckRow";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 type SortMode = "mostPlayed" | "bestPerforming";
 
@@ -15,6 +16,7 @@ const SORT_LABELS: Record<SortMode, string> = {
 const PAGE_SIZE = 30;
 
 export default function PopularDecksIndex() {
+  useDocumentTitle("Popular Decks", "The most-played Grand Archive TCG decklists, independently run by 2 or more players.");
   const [championName, setChampionName] = useState<string | null>(null);
   const [elementFilter, setElementFilter] = useState<string | null>(null);
   const [sortMode, setSortMode] = useState<SortMode>("mostPlayed");

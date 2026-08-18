@@ -7,6 +7,7 @@ import { useCardCombination } from "./useCardCombination";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import TopCardsSections from "../../components/TopCardsSections";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 type SortMode = "usage" | "adjusted" | "raw" | "hot";
 
@@ -20,6 +21,7 @@ const SORT_LABELS: Record<SortMode, string> = {
 const MIN_DECKS_OPTIONS = [0, 5, 10, 20];
 
 export default function CardStatsIndex() {
+  useDocumentTitle("Card Stats", "Card usage and win-rate stats across ranked Grand Archive TCG tournaments.");
   const cardStatsData = useCardStatsData();
   const [sortMode, setSortMode] = useState<SortMode>("usage");
   const [minDecks, setMinDecks] = useState(5);

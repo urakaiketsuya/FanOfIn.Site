@@ -3,6 +3,7 @@ import { crawlEvents, type CrawlMode } from "./omnidex/crawler.js";
 import { buildOmnidexIndex, writeOmnidexData } from "./omnidex/build.js";
 import { buildAnalysis } from "./analysis/build.js";
 import { publishVods } from "./curated/vods.js";
+import { writeSitemap } from "./sitemap.js";
 import { writeManifest } from "./manifest.js";
 import { config } from "./config.js";
 
@@ -53,6 +54,13 @@ async function main() {
     await publishVods();
   } catch (err) {
     console.error("vod publish failed", err);
+    process.exitCode = 1;
+  }
+
+  try {
+    await writeSitemap();
+  } catch (err) {
+    console.error("sitemap generation failed", err);
     process.exitCode = 1;
   }
 

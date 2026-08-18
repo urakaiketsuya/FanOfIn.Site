@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { ThemaKind } from "@gatcg/shared";
 import { gatcgApi } from "../../lib/api/client";
 import CardImage from "../../components/CardImage";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 function RankChange({ value }: { value: number }) {
   if (value === 0) return <span className="text-ctp-subtext0">—</span>;
@@ -15,6 +16,7 @@ function RankChange({ value }: { value: number }) {
 }
 
 export default function ThemaLeaderboard() {
+  useDocumentTitle("Thema Rankings", "Live Thema price-rank leaderboard for Grand Archive TCG cards.");
   const [kind, setKind] = useState<ThemaKind>("FOIL");
   const ranks = useQuery({ queryKey: ["thema-ranks", kind], queryFn: () => gatcgApi.getThemaRanks(kind) });
 

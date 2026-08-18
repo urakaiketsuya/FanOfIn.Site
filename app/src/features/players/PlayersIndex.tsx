@@ -2,8 +2,10 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useOmnidexPlayers } from "../tournaments/data";
 import { useEloData } from "./data";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 export default function PlayersIndex() {
+  useDocumentTitle("Players", "Grand Archive TCG player rankings by Elo rating across ingested tournaments.");
   const playersData = useOmnidexPlayers();
   const eloData = useEloData();
   const [search, setSearch] = useState("");

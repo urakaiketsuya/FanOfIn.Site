@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { useSyncProgress } from "../../lib/sync/SyncProvider";
 import CardGrid from "../cards/CardGrid";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 export default function SetDetail() {
   const { prefix = "" } = useParams<{ prefix: string }>();
@@ -14,6 +15,7 @@ export default function SetDetail() {
     const setName = matches[0]?.editions.find((ed) => ed.set.prefix === prefix)?.set.name ?? prefix;
     return { setName, matches };
   }, [cards, prefix]);
+  useDocumentTitle(setName, matches.length > 0 ? `Browse every Grand Archive TCG card printed in ${setName}.` : null);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">

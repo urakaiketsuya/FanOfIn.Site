@@ -16,6 +16,7 @@ import { useHipsterData } from "../players/data";
 import { useOmnidexPlayers } from "../tournaments/data";
 import UniqueDeckRow from "../champions/UniqueDeckRow";
 import { formatUsd } from "../../lib/format";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
@@ -50,6 +51,12 @@ function Stat({ label, value }: { label: string; value: number | string | null }
 export default function CardDetail() {
   const { slug = "" } = useParams<{ slug: string }>();
   const { card, loading } = useCard(slug);
+  useDocumentTitle(
+    card?.name,
+    card && `${[card.types.join("/"), card.classes.join("/"), card.elements.join("/")].filter(Boolean).join(" · ")}${
+      card.effect ? ` — ${card.effect.replace(/\s+/g, " ").slice(0, 140)}` : ""
+    }`,
+  );
   const [editionIndex, setEditionIndex] = useState(0);
   const [editionsExpanded, setEditionsExpanded] = useState(false);
   const [tab, setTab] = useState<CardTab>("info");

@@ -10,6 +10,7 @@ import EventTeamsSection from "./EventTeamsSection";
 import JudgesSection from "./JudgesSection";
 import RawObject from "./RawObject";
 import PlayerLink from "../players/PlayerLink";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 type EventTab = "standings" | "pairings" | "decklists" | "teams" | "judges" | "statistics";
 
@@ -17,6 +18,13 @@ export default function EventDetail() {
   const { id = "" } = useParams<{ id: string }>();
   const eventId = Number(id);
   const { bundle, loading, error } = useEventBundle(eventId);
+  useDocumentTitle(
+    bundle?.event.name,
+    bundle &&
+      `${bundle.event.host.name} · ${new Date(bundle.event.date).toLocaleDateString()} · ${
+        EVENT_CATEGORY_LABELS[bundle.event.category] ?? bundle.event.category
+      }${bundle.event.season ? ` · ${bundle.event.season.name}` : ""} Grand Archive TCG tournament results.`,
+  );
   const vodsData = useVodsData();
   const vods = vodsData?.vods[id] ?? [];
   const [tab, setTab] = useState<EventTab>("standings");

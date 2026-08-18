@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER } from "@gatcg/shared";
 import { useDeckSightingsData } from "./data";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useOmnidexPlayers } from "../tournaments/data";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import DeckSightingRow from "./DeckSightingRow";
@@ -19,6 +20,7 @@ const OUTCOME_LABELS: Record<Outcome, string> = {
 const PAGE_SIZE = 50;
 
 export default function TopDecksIndex() {
+  useDocumentTitle("Top Decks", "Browse public Grand Archive TCG tournament decklists, filterable by Champion, season, and outcome.");
   const sightingsData = useDeckSightingsData();
   const playersData = useOmnidexPlayers();
   const [searchParams] = useSearchParams();

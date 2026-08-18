@@ -12,6 +12,7 @@ import EventRow from "../tournaments/EventRow";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import TopCardsSections from "../../components/TopCardsSections";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 type PlayerTab = "overview" | "events" | "judged";
 
@@ -30,6 +31,10 @@ export default function PlayerProfile() {
 
   const player = playersData?.players.find((p) => p.id === playerId);
   const judge = judgesData?.judges.find((j) => j.id === playerId);
+  useDocumentTitle(
+    player?.username ?? judge?.username,
+    (player || judge) && `Grand Archive TCG tournament history and stats for ${player?.username ?? judge?.username}.`,
+  );
   const rating = eloData?.ratings.find((r) => r.playerId === playerId);
   const hipster = hipsterData?.playerScores.find((p) => p.playerId === playerId);
   const deckProfile = playerDecksData?.players.find((p) => p.playerId === playerId);

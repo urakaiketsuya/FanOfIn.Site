@@ -8,6 +8,7 @@ import { useCardsByNames } from "../events/useCardsByNames";
 import DecklistView from "../events/DecklistView";
 import TopDecksList from "../../components/TopDecksList";
 import CardHoverPreview from "../../components/CardHoverPreview";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 export default function ArchetypeDetail() {
   const { id = "" } = useParams<{ id: string }>();
@@ -17,6 +18,14 @@ export default function ArchetypeDetail() {
   const playersData = useOmnidexPlayers();
 
   const cluster = data?.clusters.find((c) => c.id === id);
+  useDocumentTitle(
+    cluster?.name,
+    cluster &&
+      `${cluster.name} — a ${cluster.championName} build defined by ${cluster.definingCards
+        .slice(0, 3)
+        .map((c) => c.name)
+        .join(", ")}, played by ${cluster.playerCount} players in Grand Archive TCG tournaments.`,
+  );
 
   const [sampleEventId, samplePlayer] = useMemo(() => {
     const first = cluster?.deckIds[0];

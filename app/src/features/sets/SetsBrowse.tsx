@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { gatcgApi } from "../../lib/api/client";
 import { useFeaturedSets } from "./useFeaturedSets";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 export default function SetsBrowse() {
+  useDocumentTitle("Sets", "Browse Grand Archive TCG expansions and the cards printed in each one.");
   const featuredSets = useFeaturedSets();
 
   return (

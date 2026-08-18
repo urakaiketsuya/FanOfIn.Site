@@ -4,6 +4,7 @@ import { useAchievementsData } from "./data";
 import { useOmnidexIndex, useOmnidexPlayers } from "../tournaments/data";
 import { buildCompareLink } from "../compare/deepLink";
 import PlayerLink from "../players/PlayerLink";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 export default function AchievementDetail() {
   const { id = "" } = useParams<{ id: string }>();
@@ -12,6 +13,7 @@ export default function AchievementDetail() {
   const index = useOmnidexIndex();
 
   const definition = achievementsData?.definitions.find((d) => d.id === id);
+  useDocumentTitle(definition?.name, definition?.description);
 
   const usernameById = useMemo(() => {
     const map = new Map<number, string>();

@@ -9,10 +9,12 @@ import {
 import { useAchievementsData } from "./data";
 import { useOmnidexPlayers } from "../tournaments/data";
 import PlayerLink from "../players/PlayerLink";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 const RECENT_HOLDERS_SHOWN = 5;
 
 export default function AchievementsIndex() {
+  useDocumentTitle("Achievements", "Data-derived achievement badges earned across Grand Archive TCG tournament history.");
   const achievementsData = useAchievementsData();
   const playersData = useOmnidexPlayers();
 

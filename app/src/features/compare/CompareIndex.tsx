@@ -7,6 +7,7 @@ import ComparisonGrid from "./ComparisonGrid";
 import ComparisonCards from "./ComparisonCards";
 import { useComparedDecklists } from "./useComparedDecklists";
 import { useOmnidexIndex, useOmnidexPlayers } from "../tournaments/data";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import type { ComparedDeck } from "./types";
 
 type SourceTab = "cards" | "player" | "paste";
@@ -19,6 +20,7 @@ const TAB_LABELS: Record<SourceTab, string> = {
 };
 
 export default function CompareIndex() {
+  useDocumentTitle("Compare Decks", "Compare Grand Archive TCG decklists side by side to see exactly where they overlap and diverge.");
   const [decks, setDecks] = useState<ComparedDeck[]>([]);
   const [tab, setTab] = useState<SourceTab>("cards");
   // Table needs horizontal space (one column per deck) — default to the stacked card view on a

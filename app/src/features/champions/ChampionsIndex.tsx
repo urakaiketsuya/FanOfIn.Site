@@ -4,6 +4,7 @@ import { useArchetypeData, useChampionTrendsData } from "../archetypes/data";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 const TREND_LABEL: Record<ChampionTrendDirection, string> = {
   rising: "▲ Rising",
@@ -24,6 +25,7 @@ const TREND_CLASS: Record<ChampionTrendDirection, string> = {
 };
 
 export default function ChampionsIndex() {
+  useDocumentTitle("Champions", "Grand Archive TCG Champion performance stats and season trends.");
   const data = useArchetypeData();
   const trendsData = useChampionTrendsData();
   const championImages = useChampionCardImages(data?.archetypes.map((c) => c.signature) ?? []);

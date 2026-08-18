@@ -3,8 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import type { ThemaKind } from "@gatcg/shared";
 import { gatcgApi } from "../../lib/api/client";
 import ThemaSparkline from "./ThemaSparkline";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 export default function ThemaHistory() {
+  useDocumentTitle("Thema Price History", "Historical Thema price-rank chart for a Grand Archive TCG card edition.");
   const { editionUuid = "" } = useParams<{ editionUuid: string }>();
   const [searchParams] = useSearchParams();
   const kind = (searchParams.get("kind") as ThemaKind | null) ?? "FOIL";

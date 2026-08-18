@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { useOmnidexIndex } from "./data";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 export default function SeasonsIndex() {
+  useDocumentTitle("Seasons", "Grand Archive TCG card-legality seasons and their tournament history.");
   const index = useOmnidexIndex();
 
   return (

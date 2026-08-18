@@ -1,8 +1,10 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useOmnidexJudges } from "../tournaments/data";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 export default function JudgesIndex() {
+  useDocumentTitle("Judges", "Grand Archive TCG certified judges, ranked by level and experience.");
   const judgesData = useOmnidexJudges();
   const [search, setSearch] = useState("");
 

@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { gatcgApi } from "../../lib/api/client";
 import { useSyncProgress } from "../../lib/sync/SyncProvider";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useCardCatalog } from "./useCardCatalog";
 import { emptyFilterState, filterCards, type CardFilterState } from "./filters";
 import FilterCheckboxGroup from "./FilterCheckboxGroup";
@@ -16,6 +17,7 @@ function toggleInSet(set: Set<string>, value: string): Set<string> {
 }
 
 export default function CardsBrowse() {
+  useDocumentTitle("Cards", "Browse and search the full Grand Archive TCG card database — filter by class, element, type, and set.");
   const cards = useCardCatalog();
   const syncProgress = useSyncProgress();
   const options = useQuery({ queryKey: ["option-definitions"], queryFn: gatcgApi.getOptionDefinitions });

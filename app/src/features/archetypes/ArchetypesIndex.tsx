@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useArchetypeTaxonomyData } from "./data";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 type SortMode = "players" | "winRate";
 
@@ -14,6 +15,7 @@ interface DisplayRow {
 }
 
 export default function ArchetypesIndex() {
+  useDocumentTitle("Archetypes", "Data-derived Grand Archive TCG deck archetypes and named builds by Champion.");
   const data = useArchetypeTaxonomyData();
   const [championFilter, setChampionFilter] = useState<string | null>(null);
   const [seasonId, setSeasonId] = useState<number | null>(null);

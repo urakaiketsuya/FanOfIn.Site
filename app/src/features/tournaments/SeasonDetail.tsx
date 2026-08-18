@@ -2,12 +2,14 @@ import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useOmnidexIndex } from "./data";
 import EventRow from "./EventRow";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 export default function SeasonDetail() {
   const { slug = "" } = useParams<{ slug: string }>();
   const index = useOmnidexIndex();
 
   const season = index?.seasons.find((s) => s.slug === slug);
+  useDocumentTitle(season?.name, season && `Grand Archive TCG tournament history for the ${season.name} card-legality season.`);
   const events = useMemo(() => {
     if (!index) return [];
     return index.events.filter((e) => e.seasonSlug === slug).sort((a, b) => b.date.localeCompare(a.date));

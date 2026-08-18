@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER } from "@gatcg/shared";
 import { useOmnidexIndex } from "./data";
 import EventRow from "./EventRow";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 const MIN_PLAYERS_OPTIONS = [0, 8, 16, 32];
 type SortMode = "date" | "type";
@@ -13,6 +14,7 @@ function categoryRank(category: string): number {
 }
 
 export default function TournamentsIndex() {
+  useDocumentTitle("Tournaments", "Browse Grand Archive TCG tournament results from Store Championships to Worlds.");
   const index = useOmnidexIndex();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");

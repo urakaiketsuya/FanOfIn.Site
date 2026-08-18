@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useArchetypeData } from "./data";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 function winRateColor(rate: number | null): string {
   if (rate === null) return "text-ctp-subtext0";
@@ -10,6 +11,7 @@ function winRateColor(rate: number | null): string {
 }
 
 export default function BattleChart() {
+  useDocumentTitle("Battle Chart", "Archetype-vs-archetype win rate matrix for Grand Archive TCG.");
   const data = useArchetypeData();
 
   const signatures = useMemo(() => {

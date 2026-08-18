@@ -28,6 +28,7 @@ import DecklistView from "../events/DecklistView";
 import TopDecksList from "../../components/TopDecksList";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import DonutChart, { buildChartSegments } from "../../components/DonutChart";
 import BarChart from "../../components/BarChart";
 
@@ -49,6 +50,10 @@ export default function DeckDetail() {
   const playersData = useOmnidexPlayers();
 
   const deck = decks.find((d) => shortHash(d.signature) === hash);
+  useDocumentTitle(
+    deck?.championName ? `${deck.championName} deck` : null,
+    deck && `A popular ${deck.championName ?? "Grand Archive TCG"} decklist, independently played by ${deck.playerCount} players.`,
+  );
 
   const championImages = useChampionCardImages(deck?.championName ? [deck.championName] : []);
   const championCard = deck?.championName ? championImages.get(deck.championName) : undefined;

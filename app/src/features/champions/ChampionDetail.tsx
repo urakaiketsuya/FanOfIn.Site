@@ -8,6 +8,7 @@ import { useCardsByNames } from "../events/useCardsByNames";
 import TopCardsSections from "../../components/TopCardsSections";
 import TopDecksList from "../../components/TopDecksList";
 import UniqueDeckRow from "./UniqueDeckRow";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
@@ -29,6 +30,7 @@ function titleCase(s: string): string {
 export default function ChampionDetail() {
   const { name = "" } = useParams<{ name: string }>();
   const championName = decodeURIComponent(name);
+  useDocumentTitle(championName, `${championName} deck builds, win rates, and season trends in Grand Archive TCG.`);
 
   const archetypeData = useArchetypeData();
   const taxonomyData = useArchetypeTaxonomyData();
