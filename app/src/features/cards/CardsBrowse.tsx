@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { gatcgApi } from "../../lib/api/client";
@@ -8,6 +8,8 @@ import { useCardCatalog } from "./useCardCatalog";
 import { emptyFilterState, filterCards, type CardFilterState } from "./filters";
 import FilterCheckboxGroup from "./FilterCheckboxGroup";
 import CardGrid from "./CardGrid";
+
+const PAGE_SIZE = 60;
 
 function toggleInSet(set: Set<string>, value: string): Set<string> {
   const next = new Set(set);
@@ -32,6 +34,13 @@ export default function CardsBrowse() {
   }));
 
   const filtered = useMemo(() => filterCards(cards, filters), [cards, filters]);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [filters]);
+
+  const visible = filtered.slice(0, visibleCount);
 
   const artistOptions = useMemo(() => {
     const set = new Set<string>();
@@ -117,7 +126,16 @@ export default function CardsBrowse() {
         <p className="mt-6 text-ctp-subtext1">No cards match this filter.</p>
       )}
 
-      <CardGrid cards={filtered} />
+      <CardGrid cards={visible} />
+
+      {visibleCount < filtered.length && (
+        <button
+          onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
+          className="mt-6 w-full rounded-md border border-ctp-surface1 py-2 text-sm text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text"
+        >
+          Load more ({filtered.length - visibleCount} remaining)
+        </button>
+      )}
     </div>
   );
 }
