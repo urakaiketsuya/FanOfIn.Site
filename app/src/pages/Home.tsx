@@ -25,11 +25,6 @@ const SECTIONS: Section[] = [
     description: "Browse expansions and the cards printed in each one.",
     to: "/sets",
   },
-  {
-    title: "Thema",
-    description: "Dynamic thema price-tier rankings, updated regularly, with per-edition history.",
-    to: "/thema",
-  },
   // Tournaments & people
   {
     title: "Tournaments",
@@ -82,8 +77,7 @@ export default function Home() {
     <div className="mx-auto max-w-5xl px-4 py-10">
       <h1 className="text-3xl font-bold text-ctp-blue">Grand Archive TCG Explorer</h1>
       <p className="mt-2 text-ctp-subtext1">
-        Card database, sets, thema rankings, and tournament data — synced locally for fast, offline-friendly
-        browsing.
+        Card database, sets, and tournament data — synced locally for fast, offline-friendly browsing.
       </p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

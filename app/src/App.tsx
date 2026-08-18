@@ -9,7 +9,6 @@ const NAV_LINKS = [
   // Card catalog
   { to: "/cards", label: "Cards" },
   { to: "/sets", label: "Sets" },
-  { to: "/thema", label: "Thema" },
   // Tournaments & people
   { to: "/tournaments", label: "Tournaments" },
   { to: "/seasons", label: "Seasons" },
