@@ -57,6 +57,7 @@ export default function PlayerProfile() {
 
   const [eventCategory, setEventCategory] = useState<string | null>(null);
   const [eventChampion, setEventChampion] = useState<string | null>(null);
+  const [eventSeasonId, setEventSeasonId] = useState<number | null>(null);
   const [manualTab, setManualTab] = useState<PlayerTab | null>(null);
 
   const categoriesPresent = useMemo(() => {
@@ -69,13 +70,23 @@ export default function PlayerProfile() {
     [allEvents, championByEventId],
   );
 
+  const seasonsPresent = useMemo(() => {
+    const bySeasonId = new Map<number, string>();
+    for (const e of allEvents) {
+      if (e.seasonId !== null && e.seasonName) bySeasonId.set(e.seasonId, e.seasonName);
+    }
+    return Array.from(bySeasonId.entries()).sort((a, b) => a[0] - b[0]);
+  }, [allEvents]);
+
   const events = useMemo(
     () =>
       allEvents.filter(
         (e) =>
-          (!eventCategory || e.category === eventCategory) && (!eventChampion || championByEventId.get(e.id) === eventChampion),
+          (!eventCategory || e.category === eventCategory) &&
+          (!eventChampion || championByEventId.get(e.id) === eventChampion) &&
+          (eventSeasonId === null || e.seasonId === eventSeasonId),
       ),
-    [allEvents, eventCategory, eventChampion, championByEventId],
+    [allEvents, eventCategory, eventChampion, eventSeasonId, championByEventId],
   );
 
   const judgedEvents = useMemo(
@@ -240,7 +251,7 @@ export default function PlayerProfile() {
             {events.length !== allEvents.length && ` of ${allEvents.length}`})
           </h2>
 
-          {(categoriesPresent.length > 1 || championsPresent.length > 1) && (
+          {(categoriesPresent.length > 1 || championsPresent.length > 1 || seasonsPresent.length > 1) && (
             <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
               {categoriesPresent.length > 1 && (
                 <>
@@ -271,6 +282,24 @@ export default function PlayerProfile() {
                     <option value="">All champions</option>
                     {championsPresent.map((name) => (
                       <option key={name} value={name}>
+                        {name}
+                      </option>
+                    ))}
+                  </select>
+                </>
+              )}
+
+              {seasonsPresent.length > 1 && (
+                <>
+                  <span className="ml-2 text-ctp-subtext0">Season:</span>
+                  <select
+                    value={eventSeasonId ?? ""}
+                    onChange={(e) => setEventSeasonId(e.target.value ? Number(e.target.value) : null)}
+                    className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+                  >
+                    <option value="">All seasons</option>
+                    {seasonsPresent.map(([id, name]) => (
+                      <option key={id} value={id}>
                         {name}
                       </option>
                     ))}
