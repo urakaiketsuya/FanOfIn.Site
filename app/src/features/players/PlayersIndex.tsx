@@ -46,32 +46,34 @@ export default function PlayersIndex() {
         <p className="mt-6 text-ctp-subtext1">No rated players match "{search}".</p>
       )}
 
-      <table className="mt-6 w-full text-sm">
-        <thead>
-          <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-            <th className="py-1">#</th>
-            <th className="py-1">Player</th>
-            <th className="py-1">Rating</th>
-            <th className="py-1">Record</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-ctp-surface0">
-          {rows.map(({ player, rating, rank }) => (
-            <tr key={player.id}>
-              <td className="py-1.5 text-ctp-subtext1">{rank}</td>
-              <td className="py-1.5">
-                <Link to={`/players/${player.id}`} className="text-ctp-text hover:text-ctp-blue">
-                  {player.username}
-                </Link>
-              </td>
-              <td className="py-1.5 text-ctp-subtext1">{Math.round(rating?.rating ?? 0)}</td>
-              <td className="py-1.5 text-ctp-subtext1">
-                {rating?.wins}-{rating?.losses}-{rating?.ties}
-              </td>
+      <div className="mt-6 overflow-x-auto">
+        <table className="w-max min-w-full text-sm">
+          <thead>
+            <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+              <th className="py-1">#</th>
+              <th className="py-1">Player</th>
+              <th className="py-1">Rating</th>
+              <th className="py-1">Record</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-ctp-surface0">
+            {rows.map(({ player, rating, rank }) => (
+              <tr key={player.id}>
+                <td className="py-1.5 text-ctp-subtext1">{rank}</td>
+                <td className="py-1.5 whitespace-nowrap">
+                  <Link to={`/players/${player.id}`} className="text-ctp-text hover:text-ctp-blue">
+                    {player.username}
+                  </Link>
+                </td>
+                <td className="py-1.5 text-ctp-subtext1">{Math.round(rating?.rating ?? 0)}</td>
+                <td className="py-1.5 text-ctp-subtext1">
+                  {rating?.wins}-{rating?.losses}-{rating?.ties}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

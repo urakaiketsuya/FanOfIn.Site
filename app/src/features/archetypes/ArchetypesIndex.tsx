@@ -138,36 +138,38 @@ export default function ArchetypesIndex() {
         </p>
       )}
 
-      <table className="mt-6 w-full text-sm">
-        <thead>
-          <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-            <th className="py-1">Build</th>
-            <th className="py-1">Champion</th>
-            <th className="py-1">Players</th>
-            <th className="py-1">Events</th>
-            <th className="py-1">Win rate</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-ctp-surface0">
-          {rows.map((c) => (
-            <tr key={c.id}>
-              <td className="py-1.5">
-                <Link to={`/archetypes/${c.id}`} className="text-ctp-text hover:text-ctp-blue">
-                  {c.name}
-                </Link>
-              </td>
-              <td className="py-1.5">
-                <Link to={`/champions/${encodeURIComponent(c.championName)}`} className="text-ctp-subtext1 hover:text-ctp-blue">
-                  {c.championName}
-                </Link>
-              </td>
-              <td className="py-1.5 text-ctp-subtext1">{c.playerCount}</td>
-              <td className="py-1.5 text-ctp-subtext1">{c.eventCount}</td>
-              <td className="py-1.5 text-ctp-subtext1">{(c.avgWinRate * 100).toFixed(0)}%</td>
+      <div className="mt-6 overflow-x-auto">
+        <table className="w-max min-w-full text-sm">
+          <thead>
+            <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+              <th className="py-1">Build</th>
+              <th className="py-1">Champion</th>
+              <th className="py-1">Players</th>
+              <th className="py-1">Events</th>
+              <th className="py-1">Win rate</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-ctp-surface0">
+            {rows.map((c) => (
+              <tr key={c.id}>
+                <td className="py-1.5 whitespace-nowrap">
+                  <Link to={`/archetypes/${c.id}`} className="text-ctp-text hover:text-ctp-blue">
+                    {c.name}
+                  </Link>
+                </td>
+                <td className="py-1.5 whitespace-nowrap">
+                  <Link to={`/champions/${encodeURIComponent(c.championName)}`} className="text-ctp-subtext1 hover:text-ctp-blue">
+                    {c.championName}
+                  </Link>
+                </td>
+                <td className="py-1.5 text-ctp-subtext1">{c.playerCount}</td>
+                <td className="py-1.5 text-ctp-subtext1">{c.eventCount}</td>
+                <td className="py-1.5 text-ctp-subtext1">{(c.avgWinRate * 100).toFixed(0)}%</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

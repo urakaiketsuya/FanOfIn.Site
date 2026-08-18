@@ -179,30 +179,32 @@ export default function ChampionDetail() {
                 Share of season = this Champion's weighted placement score as a fraction of every Champion's
                 combined score that season — comparable across seasons regardless of how many events were played.
               </p>
-              <table className="mt-2 w-full text-sm">
-                <thead>
-                  <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                    <th className="py-1">Season</th>
-                    <th className="py-1">Decks</th>
-                    <th className="py-1">Wins</th>
-                    <th className="py-1">Top cut</th>
-                    <th className="py-1">Win rate</th>
-                    <th className="py-1">Share</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-ctp-surface0">
-                  {seasonHistory.map((s) => (
-                    <tr key={s.seasonId}>
-                      <td className="py-1 text-ctp-text">{s.seasonName}</td>
-                      <td className="py-1 text-ctp-subtext1">{s.deckCount}</td>
-                      <td className="py-1 text-ctp-subtext1">{s.winCount}</td>
-                      <td className="py-1 text-ctp-subtext1">{s.topCutCount}</td>
-                      <td className="py-1 text-ctp-subtext1">{s.deckCount > 0 ? `${(s.avgWinRate * 100).toFixed(0)}%` : "—"}</td>
-                      <td className="py-1 text-ctp-subtext1">{(s.shareOfSeason * 100).toFixed(1)}%</td>
+              <div className="overflow-x-auto">
+                <table className="w-max min-w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+                      <th className="py-1">Season</th>
+                      <th className="py-1">Decks</th>
+                      <th className="py-1">Wins</th>
+                      <th className="py-1">Top cut</th>
+                      <th className="py-1">Win rate</th>
+                      <th className="py-1">Share</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-ctp-surface0">
+                    {seasonHistory.map((s) => (
+                      <tr key={s.seasonId}>
+                        <td className="py-1 text-ctp-text">{s.seasonName}</td>
+                        <td className="py-1 text-ctp-subtext1">{s.deckCount}</td>
+                        <td className="py-1 text-ctp-subtext1">{s.winCount}</td>
+                        <td className="py-1 text-ctp-subtext1">{s.topCutCount}</td>
+                        <td className="py-1 text-ctp-subtext1">{s.deckCount > 0 ? `${(s.avgWinRate * 100).toFixed(0)}%` : "—"}</td>
+                        <td className="py-1 text-ctp-subtext1">{(s.shareOfSeason * 100).toFixed(1)}%</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
 
@@ -289,28 +291,30 @@ export default function ChampionDetail() {
               <p className="mt-1 text-xs text-ctp-subtext0">
                 Named builds within {championName}, derived from real decklists.
               </p>
-              <table className="mt-2 w-full text-sm">
-                <thead>
-                  <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                    <th className="py-1">Build</th>
-                    <th className="py-1">Players</th>
-                    <th className="py-1">Win rate</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-ctp-surface0">
-                  {builds.map((b) => (
-                    <tr key={b.id}>
-                      <td className="py-1.5">
-                        <Link to={`/archetypes/${b.id}`} className="text-ctp-text hover:text-ctp-blue">
-                          {b.name}
-                        </Link>
-                      </td>
-                      <td className="py-1.5 text-ctp-subtext1">{b.playerCount}</td>
-                      <td className="py-1.5 text-ctp-subtext1">{(b.avgWinRate * 100).toFixed(0)}%</td>
+              <div className="overflow-x-auto">
+                <table className="w-max min-w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+                      <th className="py-1">Build</th>
+                      <th className="py-1">Players</th>
+                      <th className="py-1">Win rate</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-ctp-surface0">
+                    {builds.map((b) => (
+                      <tr key={b.id}>
+                        <td className="py-1.5 whitespace-nowrap">
+                          <Link to={`/archetypes/${b.id}`} className="text-ctp-text hover:text-ctp-blue">
+                            {b.name}
+                          </Link>
+                        </td>
+                        <td className="py-1.5 text-ctp-subtext1">{b.playerCount}</td>
+                        <td className="py-1.5 text-ctp-subtext1">{(b.avgWinRate * 100).toFixed(0)}%</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
 

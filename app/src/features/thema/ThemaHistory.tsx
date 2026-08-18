@@ -42,24 +42,26 @@ export default function ThemaHistory() {
       )}
 
       {points.length > 0 && (
-        <table className="mt-6 w-full text-sm">
-          <thead>
-            <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-              <th className="py-1">Date</th>
-              <th className="py-1">Rank</th>
-              <th className="py-1">Total</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-ctp-surface0">
-            {[...points].reverse().map((p) => (
-              <tr key={p.created_at}>
-                <td className="py-1 text-ctp-subtext1">{new Date(p.created_at).toLocaleDateString()}</td>
-                <td className="py-1 text-ctp-subtext1">{p.rank}</td>
-                <td className="py-1 text-ctp-text">{p.thema_total}</td>
+        <div className="mt-6 overflow-x-auto">
+          <table className="w-max min-w-full text-sm">
+            <thead>
+              <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+                <th className="py-1">Date</th>
+                <th className="py-1">Rank</th>
+                <th className="py-1">Total</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-ctp-surface0">
+              {[...points].reverse().map((p) => (
+                <tr key={p.created_at}>
+                  <td className="py-1 whitespace-nowrap text-ctp-subtext1">{new Date(p.created_at).toLocaleDateString()}</td>
+                  <td className="py-1 text-ctp-subtext1">{p.rank}</td>
+                  <td className="py-1 text-ctp-text">{p.thema_total}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

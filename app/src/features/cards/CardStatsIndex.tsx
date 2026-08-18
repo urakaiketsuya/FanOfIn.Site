@@ -196,17 +196,18 @@ export default function CardStatsIndex() {
       {!cardStatsData && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
       {cardStatsData && rows.length === 0 && <p className="mt-6 text-ctp-subtext1">No cards match this filter yet.</p>}
 
-      <table className="mt-6 w-full text-sm">
-        <thead>
-          <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-            <th className="py-1">Card</th>
-            <th className="py-1">Decks</th>
-            <th className="py-1">Events</th>
-            <th className="py-1">Win rate</th>
-            <th className="py-1">Adjusted</th>
-            <th className="py-1"></th>
-          </tr>
-        </thead>
+      <div className="mt-6 overflow-x-auto">
+        <table className="w-max min-w-full text-sm">
+          <thead>
+            <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+              <th className="py-1">Card</th>
+              <th className="py-1">Decks</th>
+              <th className="py-1">Events</th>
+              <th className="py-1">Win rate</th>
+              <th className="py-1">Adjusted</th>
+              <th className="py-1"></th>
+            </tr>
+          </thead>
         <tbody className="divide-y divide-ctp-surface0">
           {rows.map((c) => {
             const card = cardImages.get(c.name);
@@ -249,6 +250,7 @@ export default function CardStatsIndex() {
           })}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

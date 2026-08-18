@@ -34,30 +34,32 @@ export default function JudgesIndex() {
       {!judgesData && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
       {judgesData && judges.length === 0 && <p className="mt-6 text-ctp-subtext1">No judges match "{search}".</p>}
 
-      <table className="mt-6 w-full text-sm">
-        <thead>
-          <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-            <th className="py-1">Judge</th>
-            <th className="py-1">Level</th>
-            <th className="py-1">Experience</th>
-            <th className="py-1">Events judged</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-ctp-surface0">
-          {judges.map((judge) => (
-            <tr key={judge.id}>
-              <td className="py-1.5">
-                <Link to={`/players/${judge.id}`} className="text-ctp-text hover:text-ctp-blue">
-                  {judge.username}
-                </Link>
-              </td>
-              <td className="py-1.5 text-ctp-subtext1">{judge.judgeLevel}</td>
-              <td className="py-1.5 text-ctp-subtext1">{judge.judgeExperience.toLocaleString()}</td>
-              <td className="py-1.5 text-ctp-subtext1">{judge.eventIds.length}</td>
+      <div className="mt-6 overflow-x-auto">
+        <table className="w-max min-w-full text-sm">
+          <thead>
+            <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+              <th className="py-1">Judge</th>
+              <th className="py-1">Level</th>
+              <th className="py-1">Experience</th>
+              <th className="py-1">Events judged</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-ctp-surface0">
+            {judges.map((judge) => (
+              <tr key={judge.id}>
+                <td className="py-1.5 whitespace-nowrap">
+                  <Link to={`/players/${judge.id}`} className="text-ctp-text hover:text-ctp-blue">
+                    {judge.username}
+                  </Link>
+                </td>
+                <td className="py-1.5 text-ctp-subtext1">{judge.judgeLevel}</td>
+                <td className="py-1.5 text-ctp-subtext1">{judge.judgeExperience.toLocaleString()}</td>
+                <td className="py-1.5 text-ctp-subtext1">{judge.eventIds.length}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

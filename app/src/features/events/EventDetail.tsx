@@ -145,33 +145,35 @@ export default function EventDetail() {
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
             Standings ({rankedPlayers.length} players)
           </h2>
-          <table className="mt-2 w-full text-sm">
-            <thead>
-              <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                <th className="py-1">Place</th>
-                <th className="py-1">Player</th>
-                <th className="py-1">Record</th>
-                <th className="py-1">GW%</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-ctp-surface0">
-              {rankedPlayers.map((player) => {
-                const s = standingsById.get(player.id);
-                return (
-                  <tr key={player.id}>
-                    <td className="py-1 text-ctp-subtext1">{player.finalPlacement ?? "—"}</td>
-                    <td className="py-1 text-ctp-text">
-                      <PlayerLink id={player.id} username={player.username} />
-                    </td>
-                    <td className="py-1 text-ctp-subtext1">
-                      {s ? `${s.statsWins}-${s.statsLosses}-${s.statsTies}` : "—"}
-                    </td>
-                    <td className="py-1 text-ctp-subtext1">{s ? `${s.statsPercentGW}%` : "—"}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <div className="overflow-x-auto">
+            <table className="mt-2 w-max min-w-full text-sm">
+              <thead>
+                <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+                  <th className="py-1">Place</th>
+                  <th className="py-1">Player</th>
+                  <th className="py-1">Record</th>
+                  <th className="py-1">GW%</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-ctp-surface0">
+                {rankedPlayers.map((player) => {
+                  const s = standingsById.get(player.id);
+                  return (
+                    <tr key={player.id}>
+                      <td className="py-1 text-ctp-subtext1">{player.finalPlacement ?? "—"}</td>
+                      <td className="py-1 whitespace-nowrap text-ctp-text">
+                        <PlayerLink id={player.id} username={player.username} />
+                      </td>
+                      <td className="py-1 text-ctp-subtext1">
+                        {s ? `${s.statsWins}-${s.statsLosses}-${s.statsTies}` : "—"}
+                      </td>
+                      <td className="py-1 text-ctp-subtext1">{s ? `${s.statsPercentGW}%` : "—"}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
