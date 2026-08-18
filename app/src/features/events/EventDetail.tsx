@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS } from "@gatcg/shared";
 import { isApiErrorBody } from "../../lib/api/client";
@@ -11,12 +11,15 @@ import JudgesSection from "./JudgesSection";
 import RawObject from "./RawObject";
 import PlayerLink from "../players/PlayerLink";
 
+type EventTab = "standings" | "pairings" | "decklists" | "teams" | "judges" | "statistics";
+
 export default function EventDetail() {
   const { id = "" } = useParams<{ id: string }>();
   const eventId = Number(id);
   const { bundle, loading, error } = useEventBundle(eventId);
   const vodsData = useVodsData();
   const vods = vodsData?.vods[id] ?? [];
+  const [tab, setTab] = useState<EventTab>("standings");
 
   const standingsById = useMemo(() => {
     if (!bundle || isApiErrorBody(bundle.standings)) return new Map();
@@ -49,6 +52,14 @@ export default function EventDetail() {
     (a, b) => (a.finalPlacement ?? Infinity) - (b.finalPlacement ?? Infinity),
   );
 
+  const tabs: { key: EventTab; label: string }[] = [{ key: "standings", label: "Standings" }];
+  if (event.swissRounds) tabs.push({ key: "pairings", label: "Pairings" });
+  if (!isApiErrorBody(bundle.decklists)) tabs.push({ key: "decklists", label: "Decklists" });
+  if (!isApiErrorBody(bundle.teams) && bundle.teams.length > 0) tabs.push({ key: "teams", label: `Teams (${bundle.teams.length})` });
+  if (!isApiErrorBody(bundle.judges) && bundle.judges.length > 0) tabs.push({ key: "judges", label: "Judges" });
+  if (!isApiErrorBody(bundle.statistics)) tabs.push({ key: "statistics", label: "Statistics" });
+  const activeTab = tabs.some((t) => t.key === tab) ? tab : "standings";
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
       <Link to="/tournaments" className="text-sm text-ctp-blue hover:underline">
@@ -78,66 +89,90 @@ export default function EventDetail() {
         </div>
       )}
 
-      <div className="mt-6">
-        <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
-          Standings ({rankedPlayers.length} players)
-        </h2>
-        <table className="mt-2 w-full text-sm">
-          <thead>
-            <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-              <th className="py-1">Place</th>
-              <th className="py-1">Player</th>
-              <th className="py-1">Record</th>
-              <th className="py-1">GW%</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-ctp-surface0">
-            {rankedPlayers.map((player) => {
-              const s = standingsById.get(player.id);
-              return (
-                <tr key={player.id}>
-                  <td className="py-1 text-ctp-subtext1">{player.finalPlacement ?? "—"}</td>
-                  <td className="py-1 text-ctp-text">
-                    <PlayerLink id={player.id} username={player.username} />
-                  </td>
-                  <td className="py-1 text-ctp-subtext1">
-                    {s ? `${s.statsWins}-${s.statsLosses}-${s.statsTies}` : "—"}
-                  </td>
-                  <td className="py-1 text-ctp-subtext1">{s ? `${s.statsPercentGW}%` : "—"}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      {tabs.length > 1 && (
+        <div className="mt-4 flex flex-wrap gap-2 border-b border-ctp-surface1 pb-2">
+          {tabs.map((t) => (
+            <button
+              key={t.key}
+              type="button"
+              onClick={() => setTab(t.key)}
+              className={`rounded-md border px-2.5 py-1 text-xs ${
+                activeTab === t.key ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+      )}
 
-      {event.swissRounds && (
+      {activeTab === "standings" && (
+        <div className="mt-6">
+          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
+            Standings ({rankedPlayers.length} players)
+          </h2>
+          <table className="mt-2 w-full text-sm">
+            <thead>
+              <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+                <th className="py-1">Place</th>
+                <th className="py-1">Player</th>
+                <th className="py-1">Record</th>
+                <th className="py-1">GW%</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-ctp-surface0">
+              {rankedPlayers.map((player) => {
+                const s = standingsById.get(player.id);
+                return (
+                  <tr key={player.id}>
+                    <td className="py-1 text-ctp-subtext1">{player.finalPlacement ?? "—"}</td>
+                    <td className="py-1 text-ctp-text">
+                      <PlayerLink id={player.id} username={player.username} />
+                    </td>
+                    <td className="py-1 text-ctp-subtext1">
+                      {s ? `${s.statsWins}-${s.statsLosses}-${s.statsTies}` : "—"}
+                    </td>
+                    <td className="py-1 text-ctp-subtext1">{s ? `${s.statsPercentGW}%` : "—"}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {activeTab === "pairings" && event.swissRounds && (
         <div className="mt-6">
           <EventPairings eventId={eventId} players={players} swissRounds={event.swissRounds} />
         </div>
       )}
 
-      {!isApiErrorBody(bundle.decklists) && (
+      {activeTab === "decklists" && !isApiErrorBody(bundle.decklists) && (
         <div className="mt-6">
           <DecklistsSection eventId={eventId} decklists={bundle.decklists} players={players} />
         </div>
       )}
 
-      {!isApiErrorBody(bundle.teams) && (
+      {activeTab === "teams" && !isApiErrorBody(bundle.teams) && (
         <div className="mt-6">
           <EventTeamsSection teams={bundle.teams} players={players} />
         </div>
       )}
 
-      <div className="mt-6 grid gap-6 sm:grid-cols-2">
-        <div>
+      {activeTab === "judges" && !isApiErrorBody(bundle.judges) && (
+        <div className="mt-6">
+          <JudgesSection judges={bundle.judges} />
+        </div>
+      )}
+
+      {activeTab === "statistics" && !isApiErrorBody(bundle.statistics) && (
+        <div className="mt-6">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Statistics</h2>
           <div className="mt-2">
             <RawObject data={bundle.statistics} />
           </div>
         </div>
-        {!isApiErrorBody(bundle.judges) && <JudgesSection judges={bundle.judges} />}
-      </div>
+      )}
     </div>
   );
 }
