@@ -21,6 +21,14 @@ const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
 const MAX_CHAMPIONS_SHOWN = 8;
 
+type CardTab = "info" | "combos" | "decks";
+
+const TABS: { key: CardTab; label: string }[] = [
+  { key: "info", label: "Info" },
+  { key: "combos", label: "Combos" },
+  { key: "decks", label: "Decks" },
+];
+
 function Badge({ children }: { children: string }) {
   return (
     <span className="rounded-full border border-ctp-surface1 bg-ctp-surface0 px-2 py-0.5 text-xs text-ctp-subtext1">
@@ -44,6 +52,7 @@ export default function CardDetail() {
   const { card, loading } = useCard(slug);
   const [editionIndex, setEditionIndex] = useState(0);
   const [editionsExpanded, setEditionsExpanded] = useState(false);
+  const [tab, setTab] = useState<CardTab>("info");
   const options = useQuery({ queryKey: ["option-definitions"], queryFn: gatcgApi.getOptionDefinitions });
   const rarityDisplay = (rarity: number) =>
     options.data?.rarity.find((r) => r.value === String(rarity))?.display ?? String(rarity);
@@ -234,6 +243,26 @@ export default function CardDetail() {
             </div>
           )}
 
+        </div>
+      </div>
+
+      <div className="mt-4 flex flex-wrap gap-2 border-b border-ctp-surface1 pb-2">
+        {TABS.map((t) => (
+          <button
+            key={t.key}
+            type="button"
+            onClick={() => setTab(t.key)}
+            className={`rounded-md border px-2.5 py-1 text-xs ${
+              tab === t.key ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {tab === "info" && (
+        <>
           {cardStat && (
             <div className="mt-4">
               <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Tournament usage</h2>
@@ -303,11 +332,11 @@ export default function CardDetail() {
               )}
             </div>
           )}
-        </div>
-      </div>
+        </>
+      )}
 
-      {playedByChampions.length > 0 && (
-        <div className="mt-8">
+      {tab === "decks" && playedByChampions.length > 0 && (
+        <div className="mt-4">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Popular with Champions</h2>
           <div className="mt-2 flex flex-wrap gap-2 text-sm">
             {playedByChampions.map((row) => (
@@ -323,8 +352,8 @@ export default function CardDetail() {
         </div>
       )}
 
-      {(combination.main.length > 0 || combination.material.length > 0 || combination.sideboard.length > 0) && (
-        <div className="mt-8">
+      {tab === "combos" && (combination.main.length > 0 || combination.material.length > 0 || combination.sideboard.length > 0) && (
+        <div className="mt-4">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Most used with {card.name}</h2>
           <p className="mt-1 text-xs text-ctp-subtext0">
             {combination.deckCount !== undefined && `Across ${combination.deckCount} decks. `}Other cards most often
@@ -336,7 +365,7 @@ export default function CardDetail() {
         </div>
       )}
 
-      {topDecks.length > 0 && (
+      {tab === "decks" && topDecks.length > 0 && (
         <div className="mt-8">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Top decks</h2>
           <div className="mt-2">
@@ -345,7 +374,7 @@ export default function CardDetail() {
         </div>
       )}
 
-      {uniqueDecks.length > 0 && (
+      {tab === "decks" && uniqueDecks.length > 0 && (
         <div className="mt-8">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Most unique decks</h2>
           <p className="mt-1 text-xs text-ctp-subtext0">

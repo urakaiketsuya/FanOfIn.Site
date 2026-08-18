@@ -12,6 +12,8 @@ import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import TopCardsSections from "../../components/TopCardsSections";
 
+type PlayerTab = "overview" | "events" | "judged";
+
 export default function PlayerProfile() {
   const { id = "" } = useParams<{ id: string }>();
   const playerId = Number(id);
@@ -55,6 +57,7 @@ export default function PlayerProfile() {
 
   const [eventCategory, setEventCategory] = useState<string | null>(null);
   const [eventChampion, setEventChampion] = useState<string | null>(null);
+  const [manualTab, setManualTab] = useState<PlayerTab | null>(null);
 
   const categoriesPresent = useMemo(() => {
     const present = new Set(allEvents.map((e) => e.category));
@@ -82,6 +85,17 @@ export default function PlayerProfile() {
       ),
     [judge, index],
   );
+
+  const availableTabs = useMemo(() => {
+    const list: { key: PlayerTab; label: string }[] = [];
+    if (player) {
+      list.push({ key: "overview", label: "Overview" });
+      list.push({ key: "events", label: `Events (${events.length})` });
+    }
+    if (judge) list.push({ key: "judged", label: `Judged (${judgedEvents.length})` });
+    return list;
+  }, [player, judge, events.length, judgedEvents.length]);
+  const tab = manualTab ?? availableTabs[0]?.key ?? "overview";
 
   const championImages = useChampionCardImages(deckProfile?.topChampions.map((c) => c.name) ?? []);
   const allTopCardNames = useMemo(() => {
@@ -139,7 +153,24 @@ export default function PlayerProfile() {
         </>
       )}
 
-      {upsets.length > 0 && (
+      {availableTabs.length > 1 && (
+        <div className="mt-4 flex flex-wrap gap-2 border-b border-ctp-surface1 pb-2">
+          {availableTabs.map((t) => (
+            <button
+              key={t.key}
+              type="button"
+              onClick={() => setManualTab(t.key)}
+              className={`rounded-md border px-2.5 py-1 text-xs ${
+                tab === t.key ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {tab === "overview" && upsets.length > 0 && (
         <div className="mt-6">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Notable upsets</h2>
           <div className="mt-2 space-y-1 text-sm">
@@ -160,7 +191,7 @@ export default function PlayerProfile() {
         </div>
       )}
 
-      {deckProfile && deckProfile.topChampions.length > 0 && (
+      {tab === "overview" && deckProfile && deckProfile.topChampions.length > 0 && (
         <div className="mt-6">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
             Most played champions ({deckProfile.totalDecks} decks)
@@ -193,7 +224,7 @@ export default function PlayerProfile() {
         </div>
       )}
 
-      {allTopCardNames.length > 0 && deckProfile && (
+      {tab === "overview" && allTopCardNames.length > 0 && deckProfile && (
         <div className="mt-6">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Most played cards</h2>
           <div className="mt-2">
@@ -202,7 +233,7 @@ export default function PlayerProfile() {
         </div>
       )}
 
-      {player && (
+      {tab === "events" && player && (
         <div className="mt-6">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
             Events ({events.length}
@@ -257,7 +288,7 @@ export default function PlayerProfile() {
         </div>
       )}
 
-      {judge && (
+      {tab === "judged" && judge && (
         <div className="mt-6">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
             Judged events ({judgedEvents.length})

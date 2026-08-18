@@ -13,6 +13,13 @@ const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
 
 type SpiritFilter = { kind: "all" } | { kind: "element"; element: string } | { kind: "spirit"; spiritName: string };
+type ChampionTab = "season" | "cards" | "decks";
+
+const TABS: { key: ChampionTab; label: string }[] = [
+  { key: "season", label: "By Season" },
+  { key: "cards", label: "Most Used Cards" },
+  { key: "decks", label: "Decks" },
+];
 
 function titleCase(s: string): string {
   return s.charAt(0) + s.slice(1).toLowerCase();
@@ -37,8 +44,10 @@ export default function ChampionDetail() {
   }, [trend]);
 
   const [spiritFilter, setSpiritFilter] = useState<SpiritFilter>({ kind: "all" });
+  const [tab, setTab] = useState<ChampionTab>("season");
   useEffect(() => {
     setSpiritFilter({ kind: "all" });
+    setTab("season");
   }, [championName]);
 
   const displayedTopCards = useMemo(() => {
@@ -110,7 +119,22 @@ export default function ChampionDetail() {
             {champion.eventCount} events · {(champion.avgWinRate * 100).toFixed(0)}% avg win rate
           </p>
 
-          {seasonHistory.length > 0 && (
+          <div className="mt-4 flex flex-wrap gap-2 border-b border-ctp-surface1 pb-2">
+            {TABS.map((t) => (
+              <button
+                key={t.key}
+                type="button"
+                onClick={() => setTab(t.key)}
+                className={`rounded-md border px-2.5 py-1 text-xs ${
+                  tab === t.key ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+
+          {tab === "season" && seasonHistory.length > 0 && (
             <div className="mt-6">
               <div className="flex items-center justify-between">
                 <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">By season</h2>
@@ -171,7 +195,7 @@ export default function ChampionDetail() {
             </div>
           )}
 
-          {champion.topCards.main.length > 0 && (
+          {tab === "cards" && champion.topCards.main.length > 0 && (
             <div className="mt-6">
               <div className="flex items-center justify-between">
                 <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Most used cards</h2>
@@ -243,7 +267,7 @@ export default function ChampionDetail() {
             </div>
           )}
 
-          {topDecks.length > 0 && (
+          {tab === "decks" && topDecks.length > 0 && (
             <div className="mt-6">
               <div className="flex items-center justify-between">
                 <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Top decks</h2>
@@ -260,7 +284,7 @@ export default function ChampionDetail() {
             </div>
           )}
 
-          {uniqueDecks.length > 0 && (
+          {tab === "decks" && uniqueDecks.length > 0 && (
             <div className="mt-6">
               <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Most unique decks</h2>
               <p className="mt-1 text-xs text-ctp-subtext0">

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import type { OmnidexDecklist } from "@gatcg/shared";
@@ -31,8 +31,18 @@ import CardHoverPreview from "../../components/CardHoverPreview";
 import DonutChart, { buildChartSegments } from "../../components/DonutChart";
 import BarChart from "../../components/BarChart";
 
+type DeckTab = "decklist" | "composition" | "history" | "similar";
+
+const TABS: { key: DeckTab; label: string }[] = [
+  { key: "decklist", label: "Decklist" },
+  { key: "composition", label: "Composition" },
+  { key: "history", label: "History" },
+  { key: "similar", label: "Similar Decks" },
+];
+
 export default function DeckDetail() {
   const { hash = "" } = useParams<{ hash: string }>();
+  const [tab, setTab] = useState<DeckTab>("decklist");
 
   const { decks, loading } = useDeckPopularity(null);
   const sightingsData = useDeckSightingsData();
@@ -243,7 +253,22 @@ export default function DeckDetail() {
         </div>
       </div>
 
-      {rating && (
+      <div className="mt-4 flex flex-wrap gap-2 border-b border-ctp-surface1 pb-2">
+        {TABS.map((t) => (
+          <button
+            key={t.key}
+            type="button"
+            onClick={() => setTab(t.key)}
+            className={`rounded-md border px-2.5 py-1 text-xs ${
+              tab === t.key ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {tab === "decklist" && rating && (
         <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
           <div className="flex items-center justify-between">
             <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Power Rating</h2>
@@ -266,11 +291,13 @@ export default function DeckDetail() {
         </div>
       )}
 
-      <div className="mt-6">
-        <DecklistView decklist={decklist} cardsByName={cardsByName} showThumbnails />
-      </div>
+      {tab === "decklist" && (
+        <div className="mt-6">
+          <DecklistView decklist={decklist} cardsByName={cardsByName} showThumbnails />
+        </div>
+      )}
 
-      {composition && (
+      {tab === "composition" && composition && (
         <div className="mt-8">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Composition</h2>
 
@@ -319,7 +346,7 @@ export default function DeckDetail() {
         </div>
       )}
 
-      {priciestCards.length > 0 && (
+      {tab === "decklist" && priciestCards.length > 0 && (
         <div className="mt-8">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Priciest Cards</h2>
           <ul className="mt-2 space-y-1 text-sm">
@@ -345,7 +372,7 @@ export default function DeckDetail() {
         </div>
       )}
 
-      {sightingsByMonth.length > 1 && (
+      {tab === "history" && sightingsByMonth.length > 1 && (
         <div className="mt-8">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Popularity Over Time</h2>
           <div className="mt-2">
@@ -354,7 +381,7 @@ export default function DeckDetail() {
         </div>
       )}
 
-      {similarDecks.length > 0 && (
+      {tab === "similar" && similarDecks.length > 0 && (
         <div className="mt-8">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Similar Decks</h2>
           <div className="mt-2 space-y-1 text-sm">
@@ -372,7 +399,7 @@ export default function DeckDetail() {
         </div>
       )}
 
-      {instances.length > 0 && (
+      {tab === "history" && instances.length > 0 && (
         <div className="mt-8">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Played by ({instances.length})</h2>
           <div className="mt-2">

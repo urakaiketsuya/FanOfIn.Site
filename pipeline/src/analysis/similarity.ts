@@ -148,25 +148,40 @@ function findLshCandidatePairs(group: DeckRef[]): [number, number][] {
   return pairs;
 }
 
+/** Filesystem-safe key for a champion's own cache file — champion names are plain English words/spaces, so this is just enough sanitizing to be safe, not a general slugifier. */
+function cacheFileFor(championName: string): string {
+  const slug = championName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "unknown";
+  return path.join(path.dirname(CACHE_PATH), `similarity-cache/${slug}.json`);
+}
+
 /**
- * `Map` rather than a plain object — this cache grows into the millions of entries on a full
- * backfill (verified live: one run had ~3.8M cached matches partway through a single champion
- * group), and a plain object that large degrades badly in V8 (dictionary-mode property storage,
- * GC pressure from continual growth) — measured live at ~0.2 scored pairs/sec, i.e. effectively
- * stalled. `Map` has none of that degradation at this scale.
+ * One cache file per Champion, not one combined cache for the whole run — a real run threw
+ * `RangeError: Map maximum size exceeded` (V8's hard cap, ~16.7M entries) after combining just
+ * three champion groups' worth of matches in a dataset this heavily netdecked (Tristan alone: LSH
+ * found 8.7M candidates out of 12.6M possible, 69%). Since `scorePair` only ever compares two
+ * decks from the *same* champion group, cache keys never collide across champions anyway — there
+ * was never a reason to hold every champion's pairs in one Map simultaneously. Per-champion files
+ * also keep each individual cache small enough that the `Map`/array-serialization fixes above
+ * actually hold (a single champion's pair count is bounded by that champion's own deck count, not
+ * the whole dataset's).
+ *
+ * `Map` rather than a plain object, and a JSON array of `[key, value]` pairs rather than
+ * `{key: value}` on disk — both documented (with the incidents that found them) in
+ * docs/CALCULATIONS.md, since the reasoning matters for not re-introducing either bug.
  */
-async function loadCache(): Promise<Map<string, number>> {
+async function loadCache(championName: string): Promise<Map<string, number>> {
   try {
-    const raw = JSON.parse(await readFile(CACHE_PATH, "utf-8")) as Record<string, number>;
-    return new Map(Object.entries(raw));
+    const raw = JSON.parse(await readFile(cacheFileFor(championName), "utf-8")) as [string, number][];
+    return new Map(raw);
   } catch {
     return new Map();
   }
 }
 
-async function writeCache(cache: Map<string, number>): Promise<void> {
-  await mkdir(path.dirname(CACHE_PATH), { recursive: true });
-  await writeFile(CACHE_PATH, JSON.stringify(Object.fromEntries(cache)), "utf-8");
+async function writeCache(championName: string, cache: Map<string, number>): Promise<void> {
+  const filePath = cacheFileFor(championName);
+  await mkdir(path.dirname(filePath), { recursive: true });
+  await writeFile(filePath, JSON.stringify(Array.from(cache.entries())), "utf-8");
 }
 
 /**
@@ -231,7 +246,10 @@ export async function computeDeckSimilarity(
       .join(", ")}`,
   );
 
-  const cache = await loadCache();
+  // Reloaded fresh per champion at the top of the loop below — see cacheFileFor's doc comment for
+  // why this can't be one cache shared across the whole run.
+  let cache = new Map<string, number>();
+  let currentChampionName = "";
   const matches = new Map<string, SimilarDeck[]>(decks.map((d) => [d.deckId, []]));
 
   const startedAt = Date.now();
@@ -248,7 +266,9 @@ export async function computeDeckSimilarity(
   function maybeFlush(): void {
     if (flushing || Date.now() - lastFlushAt < 5 * 60_000) return;
     lastFlushAt = Date.now();
-    flushing = writeCache(cache).finally(() => {
+    const championName = currentChampionName;
+    const snapshot = cache;
+    flushing = writeCache(championName, snapshot).finally(() => {
       flushing = null;
     });
   }
@@ -299,6 +319,9 @@ export async function computeDeckSimilarity(
     const groupStartedAt = Date.now();
     const groupFullPairs = (group.length * (group.length - 1)) / 2;
 
+    currentChampionName = championName;
+    cache = await loadCache(championName);
+
     if (group.length <= LSH_GROUP_THRESHOLD) {
       for (let i = 0; i < group.length; i++) {
         for (let j = i + 1; j < group.length; j++) {
@@ -337,7 +360,7 @@ export async function computeDeckSimilarity(
     // Cheap safety net regardless of the 5-minute timer — a champion group boundary is a natural
     // checkpoint, and most groups finish well inside 5 minutes so they'd otherwise never flush.
     await flushing;
-    await writeCache(cache);
+    await writeCache(championName, cache);
     lastFlushAt = Date.now();
 
     if (onChampionComplete) {
@@ -360,8 +383,10 @@ export async function computeDeckSimilarity(
     `[similarity] done: ${pairsCompared.toLocaleString()} pairs exactly scored, ${matchesFound.toLocaleString()} matches found, in ${((Date.now() - startedAt) / 1000).toFixed(1)}s`,
   );
 
+  // No final flush needed here — each champion's cache is already written at the end of its own
+  // loop iteration above, and `cache`/`currentChampionName` only ever hold the *last* champion's
+  // data by this point anyway.
   await flushing;
-  await writeCache(cache);
 
   return decks
     .map((deck) => ({
@@ -370,7 +395,8 @@ export async function computeDeckSimilarity(
       eventName: deck.eventName,
       player: deck.player,
       championName: deck.championName,
-      topMatches: (matches.get(deck.deckId) ?? []).sort((x, y) => y.score - x.score).slice(0, TOP_K),
+      // Already sorted and capped at TOP_K by addMatch as matches were found.
+      topMatches: matches.get(deck.deckId) ?? [],
     }))
     .filter((d) => d.topMatches.length > 0);
 }

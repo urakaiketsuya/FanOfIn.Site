@@ -150,16 +150,32 @@ matches near the cutoff are still likely to surface as LSH candidates (favoring 
 weighted-Jaccard call is what actually decides "is this really >= 0.35" — LSH only decides what's
 worth exactly-scoring, never what counts as a match.
 
-**Persisted cache**: `pipeline/.cache/similarity.json` keyed by `deckId|deckId` pair, only for pairs
-that cleared `MIN_SCORE` (caching every pair would grow unbounded with a champion's deck count — an
-earlier version of this cache hit 347MB and made runs hang). Non-matches are cheap enough to just
-recompute on a re-run. Held in memory as a `Map`, not a plain object — a plain object with millions
-of string keys degrades badly in V8 (dictionary-mode storage, GC pressure); a real full-backfill run
-with heavy netdecking (Guo Jia alone: ~6.8M matches out of ~6.8M candidates scored, close to a 100%
-hit rate) grew the old object-cache to the point where scoring crawled at ~0.2 pairs/sec — Map has
-none of that degradation at this scale. Flushed to disk periodically (every 5 minutes, plus after
-every champion group finishes) rather than only once at the very end, so a kill/crash mid-run only
-re-scores whatever happened since the last flush instead of the whole run.
+**Persisted cache**: one file per Champion, `pipeline/.cache/similarity-cache/{champion-slug}.json`,
+keyed by `deckId|deckId` pair, only for pairs that cleared `MIN_SCORE` (caching every pair would
+grow unbounded with a champion's deck count — an earlier version of this cache hit 347MB and made
+runs hang). Non-matches are cheap enough to just recompute on a re-run. Held in memory as a `Map`,
+not a plain object — a plain object with millions of string keys degrades badly in V8 (dictionary-
+mode storage, GC pressure); a real full-backfill run with heavy netdecking (Guo Jia alone: ~6.8M
+matches out of ~6.8M candidates scored, close to a 100% hit rate) grew the old object-cache to the
+point where scoring crawled at ~0.2 pairs/sec — Map has none of that degradation at this scale.
+Serialized to disk as a JSON array of `[key, value]` pairs, not `{key: value}` — a real run hung for
+16+ minutes at 99% CPU inside `Object.fromEntries`/`Object.entries` (confirmed via a macOS `sample`
+stack trace showing it stuck in `JSObject::CreateDataProperty`), because building a huge plain
+object one property at a time hits the *exact same* V8 degradation the Map switch above was meant
+to avoid — it just moved the bottleneck from "every `scorePair` call" to "every flush". Arrays avoid
+`CreateDataProperty` entirely.
+
+**Why one cache file per Champion, not one shared cache**: a real run threw `RangeError: Map maximum
+size exceeded` (V8's hard cap, ~16.7M entries) after combining just three champion groups in a
+dataset this heavily netdecked. Since `scorePair` only ever compares two decks from the *same*
+champion group, cache keys never collide across champions — there was never a reason to hold every
+champion's pairs in one Map simultaneously, and doing so meant the combined cache size scaled with
+the *whole dataset* instead of the largest single champion group. Splitting by champion bounds each
+individual cache to that champion's own deck count and sidesteps the V8 limit entirely.
+
+Flushed to disk periodically (every 5 minutes, plus always at the end of each champion's group)
+rather than only once at the very end, so a kill/crash mid-run only re-scores whatever happened
+since the last flush for the *current* champion — not the whole run.
 
 **Per-deck match list is capped at `TOP_K` (3) while accumulating**, not just at the end —
 `addMatch` keeps each deck's match array sorted and bounded to `TOP_K`, evicting the lowest-scoring
