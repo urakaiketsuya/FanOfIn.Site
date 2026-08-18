@@ -74,7 +74,7 @@ export default function EventDetail() {
   );
 
   const tabs: { key: EventTab; label: string }[] = [{ key: "standings", label: "Standings" }];
-  if (event.swissRounds) tabs.push({ key: "pairings", label: "Pairings" });
+  if (event.stages.length > 0) tabs.push({ key: "pairings", label: "Pairings" });
   if (!isApiErrorBody(bundle.decklists)) tabs.push({ key: "decklists", label: "Decklists" });
   if (!isApiErrorBody(bundle.teams) && bundle.teams.length > 0) tabs.push({ key: "teams", label: `Teams (${bundle.teams.length})` });
   if (!isApiErrorBody(bundle.judges) && bundle.judges.length > 0) tabs.push({ key: "judges", label: "Judges" });
@@ -162,9 +162,15 @@ export default function EventDetail() {
         </div>
       )}
 
-      {activeTab === "pairings" && event.swissRounds && (
+      {activeTab === "pairings" && event.stages.length > 0 && (
         <div className="mt-6">
-          <EventPairings eventId={eventId} players={players} swissRounds={event.swissRounds} />
+          <EventPairings
+            eventId={eventId}
+            players={players}
+            stages={event.stages}
+            swissRounds={event.swissRounds}
+            singleEliminationCutSize={event.singleEliminationCutSize}
+          />
         </div>
       )}
 

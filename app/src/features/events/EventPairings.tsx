@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import type { OmnidexPlayer } from "@gatcg/shared";
+import type { OmnidexPlayer, OmnidexStage } from "@gatcg/shared";
 import { gatcgApi, isApiErrorBody } from "../../lib/api/client";
 import PlayerLink from "../players/PlayerLink";
 import { buildCompareLink } from "../compare/deepLink";
@@ -10,31 +10,95 @@ function findPlayer(players: OmnidexPlayer[], id: number): OmnidexPlayer | undef
   return players.find((p) => p.id === id);
 }
 
-export default function EventPairings({ eventId, players, swissRounds }: { eventId: number; players: OmnidexPlayer[]; swissRounds: number }) {
+function stageLabel(type: string): string {
+  if (type === "swiss") return "Swiss";
+  if (type === "single-elimination") return "Top Cut";
+  return type.charAt(0).toUpperCase() + type.slice(1);
+}
+
+/**
+ * Round count for a stage — Omnidex doesn't return this directly per stage, only the event-level
+ * `swissRounds`/`singleEliminationCutSize`. A single-elimination bracket's round count is derived
+ * from its cut size (8 -> quarters/semis/final = 3 rounds); anything else defaults to 1 rather
+ * than guessing.
+ */
+function roundsForStage(stage: OmnidexStage, swissRounds: number | null, singleEliminationCutSize: number | null): number {
+  if (stage.type === "swiss") return swissRounds ?? 1;
+  if (stage.type === "single-elimination") {
+    return singleEliminationCutSize ? Math.max(1, Math.ceil(Math.log2(singleEliminationCutSize))) : 1;
+  }
+  return 1;
+}
+
+/**
+ * Events can run multiple stages (e.g. Swiss, then a single-elimination Top Cut) — verified live
+ * against a real Worlds event: 32 players, `stages: [{id:1,type:"swiss"}, {id:2,type:"single-
+ * elimination"}]`. Omnidex's pairings endpoint needs an explicit `stage` param to pick the right
+ * one; without it, "Round 1" silently returned Top Cut's round 1 (4 matches) instead of Swiss
+ * round 1 (16 matches) — the stage this component now defaults to.
+ */
+export default function EventPairings({
+  eventId,
+  players,
+  stages,
+  swissRounds,
+  singleEliminationCutSize,
+}: {
+  eventId: number;
+  players: OmnidexPlayer[];
+  stages: OmnidexStage[];
+  swissRounds: number | null;
+  singleEliminationCutSize: number | null;
+}) {
+  const sortedStages = [...stages].sort((a, b) => a.id - b.id);
+  const [stageId, setStageId] = useState(sortedStages[0]?.id);
   const [round, setRound] = useState(1);
+  const stage = sortedStages.find((s) => s.id === stageId) ?? sortedStages[0];
+  const totalRounds = stage ? roundsForStage(stage, swissRounds, singleEliminationCutSize) : 1;
 
   const pairings = useQuery({
-    queryKey: ["omnidex-pairings", eventId, round],
-    queryFn: () => gatcgApi.getOmnidexPairings(eventId, round),
+    queryKey: ["omnidex-pairings", eventId, round, stageId],
+    queryFn: () => gatcgApi.getOmnidexPairings(eventId, round, stageId),
+    enabled: stageId !== undefined,
   });
+
+  function handleStageChange(id: number) {
+    setStageId(id);
+    setRound(1);
+  }
 
   return (
     <div>
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Pairings</h2>
-        {swissRounds > 1 && (
-          <select
-            value={round}
-            onChange={(e) => setRound(Number(e.target.value))}
-            className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
-          >
-            {Array.from({ length: swissRounds }, (_, i) => i + 1).map((r) => (
-              <option key={r} value={r}>
-                Round {r}
-              </option>
-            ))}
-          </select>
-        )}
+        <div className="flex items-center gap-2">
+          {sortedStages.length > 1 && (
+            <select
+              value={stageId}
+              onChange={(e) => handleStageChange(Number(e.target.value))}
+              className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+            >
+              {sortedStages.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {stageLabel(s.type)}
+                </option>
+              ))}
+            </select>
+          )}
+          {totalRounds > 1 && (
+            <select
+              value={round}
+              onChange={(e) => setRound(Number(e.target.value))}
+              className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+            >
+              {Array.from({ length: totalRounds }, (_, i) => i + 1).map((r) => (
+                <option key={r} value={r}>
+                  Round {r}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
       </div>
 
       {pairings.isPending && <p className="mt-2 text-sm text-ctp-subtext1">Loading…</p>}
