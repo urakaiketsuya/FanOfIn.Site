@@ -418,7 +418,7 @@ export interface ArchetypeTaxonomyData {
 }
 
 /** How a card is typically played within a build — which section(s) of the deck its "with" sightings actually came from. */
-export type CardImpactRole = "main" | "sideboard" | "mixed";
+export type CardImpactRole = "main" | "material" | "sideboard" | "mixed";
 
 export interface CardImpactEntry {
   cardName: string;

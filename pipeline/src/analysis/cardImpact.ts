@@ -12,15 +12,17 @@ import { config } from "../config.js";
 
 interface DeckSections {
   main: Set<string>;
+  material: Set<string>;
   sideboard: Set<string>;
 }
 
-/** Main+material collapsed into one set (they're both "in the 60/12", same deck-identity convention used everywhere else) — sideboard tracked separately since that's the whole point of the `role` classification. */
+/** All three sections kept separate — a champion/relic that only ever appears in the material deck was previously getting mislabeled `role: "main"` when main and material were collapsed into one set. */
 function decodeDeckSections(entry: DeckCardIndexEntry, cardNames: string[]): DeckSections {
-  const main = new Set(decodeCardLines(entry.main, cardNames).map((l) => l.name));
-  for (const line of decodeCardLines(entry.material, cardNames)) main.add(line.name);
-  const sideboard = new Set(decodeCardLines(entry.sideboard, cardNames).map((l) => l.name));
-  return { main, sideboard };
+  return {
+    main: new Set(decodeCardLines(entry.main, cardNames).map((l) => l.name)),
+    material: new Set(decodeCardLines(entry.material, cardNames).map((l) => l.name)),
+    sideboard: new Set(decodeCardLines(entry.sideboard, cardNames).map((l) => l.name)),
+  };
 }
 
 /**
@@ -61,6 +63,7 @@ export function computeCardImpact(
     for (const id of memberDeckIds) {
       const sections = sectionsByDeckId.get(id)!;
       for (const n of sections.main) allCardNames.add(n);
+      for (const n of sections.material) allCardNames.add(n);
       for (const n of sections.sideboard) allCardNames.add(n);
     }
 
@@ -71,18 +74,21 @@ export function computeCardImpact(
       let withoutSum = 0;
       let withoutN = 0;
       let mainCount = 0;
+      let materialCount = 0;
       let sideboardCount = 0;
 
       for (const id of memberDeckIds) {
         const sections = sectionsByDeckId.get(id)!;
         const winRate = winRateByDeckId.get(id)!;
         const inMain = sections.main.has(cardName);
+        const inMaterial = sections.material.has(cardName);
         const inSideboard = sections.sideboard.has(cardName);
 
-        if (inMain || inSideboard) {
+        if (inMain || inMaterial || inSideboard) {
           withSum += winRate;
           withN++;
           if (inMain) mainCount++;
+          if (inMaterial) materialCount++;
           if (inSideboard) sideboardCount++;
         } else {
           withoutSum += winRate;
@@ -99,8 +105,17 @@ export function computeCardImpact(
       const shrunkWith = (withSum + prior * baseline) / (withN + prior);
       const shrunkWithout = (withoutSum + prior * baseline) / (withoutN + prior);
 
-      const sideboardFraction = sideboardCount / (mainCount + sideboardCount);
-      const role: CardImpactRole = sideboardFraction >= 0.8 ? "sideboard" : sideboardFraction <= 0.2 ? "main" : "mixed";
+      // Whichever section accounts for ≥80% of this card's appearances gives it that role label;
+      // otherwise it's genuinely split across sections ("mixed") — e.g. a card seen mostly
+      // maindeck but occasionally sideboarded in as extra copies.
+      const sectionTotal = mainCount + materialCount + sideboardCount;
+      const shares: { role: CardImpactRole; count: number }[] = [
+        { role: "main", count: mainCount },
+        { role: "material", count: materialCount },
+        { role: "sideboard", count: sideboardCount },
+      ];
+      const dominant = shares.find((s) => s.count / sectionTotal >= 0.8);
+      const role: CardImpactRole = dominant?.role ?? "mixed";
 
       entries.push({
         cardName,

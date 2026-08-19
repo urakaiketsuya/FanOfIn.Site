@@ -17,6 +17,7 @@ import { buildCompareLink } from "../compare/deepLink";
 const ROLE_FILTERS: { key: CardImpactRole | "all"; label: string }[] = [
   { key: "all", label: "All" },
   { key: "main", label: "Main" },
+  { key: "material", label: "Material" },
   { key: "sideboard", label: "Sideboard" },
   { key: "mixed", label: "Mixed" },
 ];
