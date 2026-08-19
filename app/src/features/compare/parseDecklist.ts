@@ -34,7 +34,17 @@ export function parseDecklist(text: string): ParsedDecklist {
     const line = rawLine.trim();
     if (!line) continue;
 
-    const headerKey = SECTION_HEADERS[line.toLowerCase().replace(/^#\s*/, "").replace(/[:：]$/, "")];
+    // Strips a trailing "Deck" too ("Material Deck", "Main Deck") — a real export format
+    // (confirmed live: unrecognized headers silently left every line in the default "main"
+    // section, so a pasted "# Material Deck" list showed its whole material section as main).
+    const headerKey =
+      SECTION_HEADERS[
+        line
+          .toLowerCase()
+          .replace(/^#\s*/, "")
+          .replace(/[:：]$/, "")
+          .replace(/\s*deck$/, "")
+      ];
     if (headerKey) {
       section = headerKey;
       continue;

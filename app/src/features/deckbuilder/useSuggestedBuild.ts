@@ -23,6 +23,8 @@ export interface SuggestedCard {
 export interface SuggestedBuild {
   material: SuggestedCard[];
   main: SuggestedCard[];
+  /** Locked-only — sideboard is situational tech excluded from every other "deck identity" surface in this codebase, so there's no population-derived ranking to fill it with. Only ever populated by a pasted decklist's own Sideboard section today. */
+  sideboard: SuggestedCard[];
   /** Size of the population actually used to rank suggestions for the remaining (unlocked) slots — not the same as the total matching-decks count once usedFallback is true. */
   rankingPopulationSize: number;
   /** True once enough cards are locked that the exact (Spirit + all locks) population got too thin to rank against, so remaining suggestions fell back to the Spirit-only population instead. */
@@ -94,17 +96,19 @@ export function useSuggestedBuild(
   lockedCards: Map<string, number>,
   rejectedCards: Set<string>,
   loading: boolean,
+  /** Section a lock is *known* to belong to (e.g. from a pasted decklist's own Main/Material/Sideboard headers) — trusted over the population-derived `sectionOf` guess below, which can misclassify a card the current population barely plays (see the Resonance Bauble bug: near-zero sample defaults to "main" regardless of the card's real section), and is the only way a card ever lands in the sideboard at all (there's no population-driven sideboard guess). Cards locked without a known section (manual "Add a card") still fall back to the main/material guess. */
+  lockedSections: Map<string, "main" | "material" | "sideboard"> = new Map(),
 ): SuggestedBuild {
   const cardCatalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
 
   return useMemo((): SuggestedBuild => {
     if (loading || rows.length === 0)
-      return { material: [], main: [], rankingPopulationSize: 0, usedFallback: false, conditionalWinRate: null, baselineWinRate: null, loading };
+      return { material: [], main: [], sideboard: [], rankingPopulationSize: 0, usedFallback: false, conditionalWinRate: null, baselineWinRate: null, loading };
 
     const spiritRows = spiritFilter === null ? rows : rows.filter((r) => r.spiritName === spiritFilter);
     if (spiritRows.length === 0)
-      return { material: [], main: [], rankingPopulationSize: 0, usedFallback: false, conditionalWinRate: null, baselineWinRate: null, loading: false };
+      return { material: [], main: [], sideboard: [], rankingPopulationSize: 0, usedFallback: false, conditionalWinRate: null, baselineWinRate: null, loading: false };
 
     const baselineWinRate = spiritRows.reduce((sum, r) => sum + r.winRate, 0) / spiritRows.length;
 
@@ -146,6 +150,7 @@ export function useSuggestedBuild(
 
     const material: SuggestedCard[] = [];
     const main: SuggestedCard[] = [];
+    const sideboard: SuggestedCard[] = [];
     const placed = new Set<string>();
 
     // Which section a card typically lives in, from raw presence in the (lock-independent)
@@ -167,10 +172,18 @@ export function useSuggestedBuild(
     }
 
     // Locked cards go in first, at their own quantity, sectioned by wherever they're actually
-    // played (falls back to "main" for a card never seen in this population).
+    // played (falls back to "main" for a card never seen in this population). A known "sideboard"
+    // section always wins — there's no population-derived guess for it, only explicit knowledge
+    // from where the card was locked (e.g. a pasted decklist's own Sideboard section).
     for (const [name, qty] of lockedCards) {
       const card = cardsByName.get(name);
-      const isMaterialCard = card?.types.includes("CHAMPION") || sectionOf(name) === "material";
+      const knownSection = lockedSections.get(name);
+      if (knownSection === "sideboard") {
+        sideboard.push(toSuggested(name, qty, true, entryByName.get(name), "ranked"));
+        placed.add(name);
+        continue;
+      }
+      const isMaterialCard = knownSection ? knownSection === "material" : card?.types.includes("CHAMPION") || sectionOf(name) === "material";
       (isMaterialCard ? material : main).push(toSuggested(name, qty, true, entryByName.get(name), "ranked"));
       placed.add(name);
     }
@@ -239,6 +252,6 @@ export function useSuggestedBuild(
       if (materialTotal >= materialTarget && mainTotal >= mainTarget) break;
     }
 
-    return { material, main, rankingPopulationSize: rankingRows.length, usedFallback, conditionalWinRate, baselineWinRate, loading: false };
-  }, [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName]);
+    return { material, main, sideboard, rankingPopulationSize: rankingRows.length, usedFallback, conditionalWinRate, baselineWinRate, loading: false };
+  }, [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName, lockedSections]);
 }

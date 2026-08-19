@@ -83,7 +83,18 @@ function BuddyCardsList({
   onAdd: (name: string) => void;
 }) {
   const groups = lockedNames.map((name) => ({ name, buddies: buddyCards.get(name) ?? [] })).filter((g) => g.buddies.length > 0);
-  if (groups.length === 0) return null;
+  if (groups.length === 0) {
+    return (
+      <div className="mt-6">
+        <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Buddy cards</h2>
+        <p className="mt-1 text-xs text-ctp-subtext0">
+          {lockedNames.length === 0
+            ? "Lock in a card to see what's most often run alongside it."
+            : "No buddy suggestions right now — either everything commonly run alongside your locked cards is already in the build, or this Champion/Spirit population is too thin to say (a heavily-locked build from a paste often narrows it down to just a few decks)."}
+        </p>
+      </div>
+    );
+  }
   return (
     <div className="mt-6">
       <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Buddy cards</h2>
@@ -185,12 +196,15 @@ function CardRow({
   onRemove,
   cardsByName,
   priceByName,
+  showLockToggle = true,
 }: {
   card: SuggestedCard;
   onToggleLock: () => void;
   onRemove: () => void;
   cardsByName: ReturnType<typeof useCardsByNames>;
   priceByName: Map<string, number>;
+  /** Sideboard rows are locked-only with no ranked-suggestion refill to fall back to, so unlocking one would just make it vanish — hide the toggle there and leave Remove as the only way out. */
+  showLockToggle?: boolean;
 }) {
   const cardInfo = cardsByName.get(card.cardName);
   const unitPrice = priceByName.get(card.cardName);
@@ -226,15 +240,17 @@ function CardRow({
       )}
       {card.sample && <span className="text-xs text-ctp-subtext0">({card.sample.with} vs {card.sample.without})</span>}
       <div className="ml-auto flex shrink-0 gap-1.5">
-        <button
-          type="button"
-          onClick={onToggleLock}
-          className={`rounded-md border px-1.5 py-0.5 text-[10px] ${
-            card.locked ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-          }`}
-        >
-          {card.locked ? "Locked" : "Lock"}
-        </button>
+        {showLockToggle && (
+          <button
+            type="button"
+            onClick={onToggleLock}
+            className={`rounded-md border px-1.5 py-0.5 text-[10px] ${
+              card.locked ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+            }`}
+          >
+            {card.locked ? "Locked" : "Lock"}
+          </button>
+        )}
         <button type="button" onClick={onRemove} className="rounded-md border border-ctp-surface1 px-1.5 py-0.5 text-[10px] text-ctp-subtext1 hover:text-ctp-red">
           Remove
         </button>
@@ -251,6 +267,10 @@ export default function DeckBuilderIndex() {
   const [championName, setChampionName] = useState<string | null>(null);
   const [spiritFilter, setSpiritFilter] = useState<string | null>(null);
   const [lockedCards, setLockedCards] = useState<Map<string, number>>(new Map());
+  // Section a lock is known to belong to (from where it was locked, or from a pasted decklist's
+  // own Main/Material headers) — see useSuggestedBuild's lockedSections param doc for why this
+  // beats guessing from population presence for a card the current population barely plays.
+  const [lockedSections, setLockedSections] = useState<Map<string, "main" | "material" | "sideboard">>(new Map());
   const [rejectedCards, setRejectedCards] = useState<Set<string>>(new Set());
   const [cardInput, setCardInput] = useState("");
   const [changeLog, setChangeLog] = useState<ChangeLogEntry[]>([]);
@@ -275,7 +295,7 @@ export default function DeckBuilderIndex() {
   const cardCatalog = useCardCatalog();
   const catalogByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
   const { rows, spiritsPresent, loading: populationLoading } = useDeckBuilderPopulation(championName);
-  const build = useSuggestedBuild(rows, spiritFilter, lockedCards, rejectedCards, populationLoading);
+  const build = useSuggestedBuild(rows, spiritFilter, lockedCards, rejectedCards, populationLoading, lockedSections);
 
   useEffect(() => {
     const current = new Set(
@@ -322,6 +342,7 @@ export default function DeckBuilderIndex() {
       startTransition(() => {
         setSpiritFilter(null);
         setLockedCards(new Map());
+        setLockedSections(new Map());
         setRejectedCards(new Set());
         setChangeLog([]);
       });
@@ -341,7 +362,7 @@ export default function DeckBuilderIndex() {
    */
   function loadPastedDecklist() {
     const { decklist, skippedLines } = parseDecklist(pasteText);
-    const lines = [...decklist.main, ...decklist.material];
+    const lines = [...decklist.main, ...decklist.material, ...decklist.sideboard];
     if (lines.length === 0) {
       setPasteError(skippedLines.length > 0 ? "Couldn't recognize any card lines in that paste." : "Paste a decklist first.");
       return;
@@ -350,17 +371,21 @@ export default function DeckBuilderIndex() {
     let detectedChampion: string | null = null;
     let detectedSpirit: string | null = null;
     const newLocked = new Map<string, number>();
+    const newSections = new Map<string, "main" | "material" | "sideboard">();
 
-    for (const line of lines) {
-      const card = catalogByName.get(line.card);
-      if (card?.types.includes("CHAMPION")) {
-        if (card.subtypes.includes("SPIRIT")) {
-          detectedSpirit = line.card;
-          continue;
+    for (const section of ["main", "material", "sideboard"] as const) {
+      for (const line of decklist[section]) {
+        const card = catalogByName.get(line.card);
+        if (card?.types.includes("CHAMPION")) {
+          if (card.subtypes.includes("SPIRIT")) {
+            detectedSpirit = line.card;
+            continue;
+          }
+          if (!detectedChampion) detectedChampion = card.name.split(",")[0].trim();
         }
-        if (!detectedChampion) detectedChampion = card.name.split(",")[0].trim();
+        newLocked.set(line.card, (newLocked.get(line.card) ?? 0) + line.quantity);
+        newSections.set(line.card, section);
       }
-      newLocked.set(line.card, (newLocked.get(line.card) ?? 0) + line.quantity);
     }
 
     if (!detectedChampion) {
@@ -372,6 +397,7 @@ export default function DeckBuilderIndex() {
     setChampionName(detectedChampion);
     setSpiritFilter(detectedSpirit);
     setLockedCards(newLocked);
+    setLockedSections(newSections);
     setRejectedCards(new Set());
     setChangeLog([]);
     pendingActionRef.current = null;
@@ -383,17 +409,24 @@ export default function DeckBuilderIndex() {
     setPasteOpen(false);
   }
 
-  function toggleLock(name: string, quantity: number) {
+  /** `section` is the section this card is being locked FROM (known for sure, since it's the list the click came from) — recorded so the section survives even if the current population barely plays this card (see lockedSections' doc comment). Omitted when unlocking. */
+  function toggleLock(name: string, quantity: number, section?: "main" | "material") {
     const willLock = !lockedCards.has(name);
     pendingActionRef.current = { label: willLock ? `Locked ${name}` : `Unlocked ${name}`, subject: name };
-    startTransition(() =>
+    startTransition(() => {
       setLockedCards((prev) => {
         const next = new Map(prev);
         if (next.has(name)) next.delete(name);
         else next.set(name, quantity);
         return next;
-      }),
-    );
+      });
+      setLockedSections((prev) => {
+        const next = new Map(prev);
+        if (willLock && section) next.set(name, section);
+        else next.delete(name);
+        return next;
+      });
+    });
   }
 
   /** Locked cards are dropped from the deck entirely; a non-locked (suggested) card is instead excluded from future suggestions, so a different card fills that slot. */
@@ -402,6 +435,11 @@ export default function DeckBuilderIndex() {
     startTransition(() => {
       if (locked) {
         setLockedCards((prev) => {
+          const next = new Map(prev);
+          next.delete(name);
+          return next;
+        });
+        setLockedSections((prev) => {
           const next = new Map(prev);
           next.delete(name);
           return next;
@@ -429,30 +467,38 @@ export default function DeckBuilderIndex() {
 
   const mainTotal = build.main.reduce((sum, c) => sum + c.quantity, 0);
   const materialTotal = build.material.reduce((sum, c) => sum + c.quantity, 0);
+  const sideboardTotal = build.sideboard.reduce((sum, c) => sum + c.quantity, 0);
+  // Deck price/Stats stay scoped to material+main — same "sideboard is situational tech, not part
+  // of deck identity" convention as everywhere else in this codebase (Popular Decks, Archetypes,
+  // etc.); sideboard gets its own separate price line below instead, matching DecklistView.tsx.
   const buildLines = useMemo(
     () => [...build.material, ...build.main].map((c) => ({ name: c.cardName, quantity: c.quantity })),
     [build.material, build.main],
   );
+  const sideboardLines = useMemo(() => build.sideboard.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.sideboard]);
 
   const decklist: OmnidexDecklist = useMemo(
     () => ({
       main: build.main.map((c) => ({ card: c.cardName, quantity: c.quantity })),
       material: build.material.map((c) => ({ card: c.cardName, quantity: c.quantity })),
-      sideboard: [],
+      sideboard: build.sideboard.map((c) => ({ card: c.cardName, quantity: c.quantity })),
     }),
-    [build.main, build.material],
+    [build.main, build.material, build.sideboard],
   );
-  const massEntryUrl = useMemo(() => buildTcgplayerMassEntryUrl(buildLines), [buildLines]);
-  const totalPrice = useMemo(() => {
+  // Buying/exporting covers the whole deck including sideboard tech, same as DecklistView.tsx.
+  const massEntryUrl = useMemo(() => buildTcgplayerMassEntryUrl([...buildLines, ...sideboardLines]), [buildLines, sideboardLines]);
+  function sumPrice(lines: { name: string; quantity: number }[]) {
     let sum = 0;
     let missing = 0;
-    for (const line of buildLines) {
+    for (const line of lines) {
       const unit = priceByName.get(line.name);
       if (unit === undefined) missing += 1;
       else sum += unit * line.quantity;
     }
     return { sum, missing };
-  }, [buildLines, priceByName]);
+  }
+  const totalPrice = useMemo(() => sumPrice(buildLines), [buildLines, priceByName]);
+  const sideboardPrice = useMemo(() => sumPrice(sideboardLines), [sideboardLines, priceByName]);
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
 
   async function handleCopy() {
@@ -606,6 +652,7 @@ export default function DeckBuilderIndex() {
                   ({totalPrice.missing} card{totalPrice.missing === 1 ? "" : "s"} missing price data)
                 </span>
               )}
+              {sideboardPrice.sum > 0 && <span className="ml-1.5 text-ctp-subtext1">+ {formatUsd(sideboardPrice.sum)} sideboard</span>}
             </p>
           )}
 
@@ -719,7 +766,7 @@ export default function DeckBuilderIndex() {
                         card={c}
                         cardsByName={cardsByName}
                         priceByName={priceByName}
-                        onToggleLock={() => toggleLock(c.cardName, c.quantity)}
+                        onToggleLock={() => toggleLock(c.cardName, c.quantity, "material")}
                         onRemove={() => removeCard(c.cardName, c.locked)}
                       />
                     ))}
@@ -734,13 +781,36 @@ export default function DeckBuilderIndex() {
                         card={c}
                         cardsByName={cardsByName}
                         priceByName={priceByName}
-                        onToggleLock={() => toggleLock(c.cardName, c.quantity)}
+                        onToggleLock={() => toggleLock(c.cardName, c.quantity, "main")}
                         onRemove={() => removeCard(c.cardName, c.locked)}
                       />
                     ))}
                   </ul>
                 </div>
               </div>
+
+              {build.sideboard.length > 0 && (
+                <div className="mt-4">
+                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Sideboard ({sideboardTotal})</h2>
+                  <p className="mt-1 text-xs text-ctp-subtext0">
+                    Situational tech from your pasted decklist — kept separate from the win-rate-ranked build above,
+                    same as everywhere else on this site.
+                  </p>
+                  <ul className="mt-2 space-y-1">
+                    {build.sideboard.map((c) => (
+                      <CardRow
+                        key={c.cardName}
+                        card={c}
+                        cardsByName={cardsByName}
+                        priceByName={priceByName}
+                        showLockToggle={false}
+                        onToggleLock={() => {}}
+                        onRemove={() => removeCard(c.cardName, c.locked)}
+                      />
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           )}
 
