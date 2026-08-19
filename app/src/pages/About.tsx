@@ -139,6 +139,15 @@ const FEATURES: FeatureGroup[] = [
     ],
     example: { to: "/compare", label: "Open Compare" },
   },
+  {
+    title: "Guided Deck Builder",
+    items: [
+      "Pick a Champion and Spirit, get a build assembled from the highest win-rate card at every slot — not one example decklist",
+      "Lock in your own picks (or search and add any card) and the rest re-ranks around them",
+      "A running log of exactly how each pick shifted the rest of the suggestions",
+    ],
+    example: { to: "/deck-builder", label: "Open Guided Deck Builder" },
+  },
 ];
 
 const WALKTHROUGH_HASH = "xenbr4";
@@ -231,6 +240,25 @@ const WALKTHROUGH_MATCHUP = {
     { name: "Fractal of Refreshment", slug: "fractal-of-refreshment", image: "/cards/images/htmfs6s6uh.jpg", role: "Main", winRateWith: 0.57, winRateWithout: 0.43, lift: 0.06 },
     { name: "Fire Resonance Bauble", slug: "fire-resonance-bauble", image: "/cards/images/pwkkbbu08s.jpg", role: "Mixed", winRateWith: 0.57, winRateWithout: 0.43, lift: 0.06 },
   ],
+};
+
+/**
+ * Same "pre-baked, no live fetch" reasoning as every other walkthrough constant above — captured
+ * directly from /deck-builder (Diao Chan + Spirit of Wind, 47 matching decks). The point of this
+ * feature is that it assembles a build from real data rather than showing one example decklist, so
+ * this is a real assembled-material-deck slice, not a hand-picked "best of" list.
+ */
+const WALKTHROUGH_DECK_BUILDER = {
+  championName: "Diao Chan",
+  spiritName: "Spirit of Wind",
+  matchingDecks: 47,
+  cards: [
+    { name: "Diao Chan, Enchantress", slug: "diao-chan-enchantress", image: "/cards/images/0ueslsle3w.jpg", lift: null },
+    { name: "Grand Crusader's Ring", slug: "grand-crusaders-ring", image: "/cards/images/ioxgugw9r9.jpg", lift: 0.136 },
+    { name: "Viridian Protective Trinket", slug: "viridian-protective-trinket", image: "/cards/images/ydupmu6gvm.jpg", lift: 0.088 },
+    { name: "Backup Charger", slug: "backup-charger", image: "/cards/images/3apypgzedx.jpg", lift: 0.081 },
+    { name: "Smoke Bombs", slug: "smoke-bombs", image: "/cards/images/porhmr2lkv.jpg", lift: 0.08 },
+  ] as { name: string; slug: string; image: string; lift: number | null }[],
 };
 
 /** Same "pre-baked, no live fetch" reasoning as WALKTHROUGH_DECK above — captured from the two real, independently popular Silvie builds at /decks/xenbr4 and /decks/1xiwetk. */
@@ -514,6 +542,43 @@ export default function About() {
             genuinely opposite real builds. Correlational, not causal, same as every other stat on this site.{" "}
             <Link to={`/decks/${WALKTHROUGH_HASH}`} className="hover:text-ctp-blue hover:underline">
               See it on this deck's own page &rarr;
+            </Link>
+          </p>
+        </div>
+      </section>
+
+      <section className="border-t border-ctp-surface0 px-4 py-16">
+        <div className="mx-auto max-w-2xl">
+          <h2 className="text-center text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">Guided Deck Builder</h2>
+          <p className="mx-auto mt-2 max-w-xl text-center text-sm text-ctp-subtext1">
+            Pick a Champion and Spirit and get a build assembled from the highest win-rate card at every slot —
+            aggregated from every matching real deck, not one example decklist.{" "}
+            {WALKTHROUGH_DECK_BUILDER.championName} + {WALKTHROUGH_DECK_BUILDER.spiritName},{" "}
+            {WALKTHROUGH_DECK_BUILDER.matchingDecks} matching decks:
+          </p>
+
+          <ul className="mt-6 space-y-1.5">
+            {WALKTHROUGH_DECK_BUILDER.cards.map((c) => (
+              <li key={c.name} className="flex items-center gap-2 rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm">
+                <CardHoverPreview image={c.image} alt={c.name}>
+                  <Link to={`/cards/${c.slug}`} className="text-ctp-text hover:text-ctp-blue">
+                    {c.name}
+                  </Link>
+                </CardHoverPreview>
+                {c.lift !== null ? (
+                  <span className="ml-auto text-xs font-semibold text-ctp-green">+{(c.lift * 100).toFixed(1)}pp</span>
+                ) : (
+                  <span className="ml-auto rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">staple</span>
+                )}
+              </li>
+            ))}
+          </ul>
+
+          <p className="mt-6 text-center text-xs text-ctp-subtext0">
+            Lock in your own picks and the rest re-ranks around them — with a "buddy cards" list per pick (what's
+            commonly run alongside it, independent of win rate) and a running log of what changed with each choice.{" "}
+            <Link to="/deck-builder" className="hover:text-ctp-blue hover:underline">
+              Open Guided Deck Builder &rarr;
             </Link>
           </p>
         </div>

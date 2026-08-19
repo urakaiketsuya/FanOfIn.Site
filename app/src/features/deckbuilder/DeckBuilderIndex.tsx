@@ -7,6 +7,7 @@ import CardHoverPreview from "../../components/CardHoverPreview";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useDeckBuilderPopulation } from "./useDeckBuilderPopulation";
 import { useSuggestedBuild, type SuggestedCard } from "./useSuggestedBuild";
+import { useBuddyCards, type BuddyCard } from "./useBuddyCards";
 
 interface ChangeLogEntry {
   label: string;
@@ -42,6 +43,65 @@ function ChangeLogList({ entries }: { entries: ChangeLogEntry[] }) {
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+function BuddyCardsList({
+  lockedNames,
+  buddyCards,
+  cardsByName,
+  onAdd,
+}: {
+  lockedNames: string[];
+  buddyCards: Map<string, BuddyCard[]>;
+  cardsByName: ReturnType<typeof useCardsByNames>;
+  onAdd: (name: string) => void;
+}) {
+  const groups = lockedNames.map((name) => ({ name, buddies: buddyCards.get(name) ?? [] })).filter((g) => g.buddies.length > 0);
+  if (groups.length === 0) return null;
+  return (
+    <div className="mt-6">
+      <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Buddy cards</h2>
+      <p className="mt-1 text-xs text-ctp-subtext0">
+        Cards most often run alongside a locked-in pick, regardless of win rate — add one straight from here even if
+        it never shows up in the ranked suggestions above.
+      </p>
+      <div className="mt-2 space-y-3">
+        {groups.map(({ name, buddies }) => (
+          <div key={name}>
+            <p className="text-xs text-ctp-subtext1">
+              With <span className="text-ctp-text">{name}</span>:
+            </p>
+            <ul className="mt-1 flex flex-wrap gap-1.5">
+              {buddies.map((b) => {
+                const cardInfo = cardsByName.get(b.cardName);
+                return (
+                  <li key={b.cardName} className="flex items-center gap-1.5 rounded-md border border-ctp-surface1 px-2 py-1 text-sm">
+                    <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={b.cardName}>
+                      {cardInfo ? (
+                        <Link to={`/cards/${cardInfo.slug}`} className="text-ctp-text hover:text-ctp-blue">
+                          {b.cardName}
+                        </Link>
+                      ) : (
+                        <span className="text-ctp-text">{b.cardName}</span>
+                      )}
+                    </CardHoverPreview>
+                    <span className="text-xs text-ctp-subtext0">{Math.round(b.coOccurrenceRate * 100)}%</span>
+                    <button
+                      type="button"
+                      onClick={() => onAdd(b.cardName)}
+                      className="rounded-md border border-ctp-surface1 px-1.5 py-0.5 text-[10px] text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
+                    >
+                      Add
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -151,7 +211,10 @@ export default function DeckBuilderIndex() {
     () => [...build.material.map((c) => c.cardName), ...build.main.map((c) => c.cardName)],
     [build.material, build.main],
   );
-  const cardsByName = useCardsByNames(allNames);
+  const placedNames = useMemo(() => new Set(allNames), [allNames]);
+  const buddyCards = useBuddyCards(rows, spiritFilter, lockedCards, placedNames);
+  const buddyNames = useMemo(() => Array.from(buddyCards.values()).flatMap((list) => list.map((b) => b.cardName)), [buddyCards]);
+  const cardsByName = useCardsByNames(useMemo(() => [...allNames, ...buddyNames], [allNames, buddyNames]));
 
   useEffect(() => {
     startTransition(() => {
@@ -349,6 +412,8 @@ export default function DeckBuilderIndex() {
               </ul>
             </div>
           </div>
+
+          <BuddyCardsList lockedNames={Array.from(lockedCards.keys())} buddyCards={buddyCards} cardsByName={cardsByName} onAdd={addCard} />
 
           <ChangeLogList entries={changeLog} />
         </>
