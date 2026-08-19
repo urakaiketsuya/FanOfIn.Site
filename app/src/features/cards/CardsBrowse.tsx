@@ -7,6 +7,7 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useCardCatalog } from "./useCardCatalog";
 import { emptyFilterState, filterCards, type CardFilterState } from "./filters";
 import FilterCheckboxGroup from "./FilterCheckboxGroup";
+import FilterSearchGroup from "./FilterSearchGroup";
 import CardGrid from "./CardGrid";
 import LoadMore from "../../components/LoadMore";
 
@@ -106,7 +107,7 @@ export default function CardsBrowse() {
             onToggle={(v) => setFilters((f) => ({ ...f, types: toggleInSet(f.types, v) }))}
             iconKind="types"
           />
-          <FilterCheckboxGroup
+          <FilterSearchGroup
             label="Subtype"
             options={options.data.subtype}
             selected={filters.subtypes}
