@@ -58,4 +58,14 @@ export const config = {
    * code/data, per the Phase 13 licensing note); this is a simple Bayesian-average version.
    */
   winRateShrinkagePriorWeight: Number(process.env.GATCG_WINRATE_SHRINKAGE ?? 10),
+
+  /**
+   * A card only gets a published win-rate "lift" figure within a build if both its "with" and
+   * "without" sightings meet this bar — same magnitude as `minBattleChartSampleSize`, appropriate
+   * since named-build clusters are already small populations (see archetypeTaxonomy.ts). This
+   * also has the side effect of excluding a cluster's own defining/staple cards from ever
+   * appearing as a "suggestion": they're in ~100% of the cluster's decks by construction, so the
+   * "without" bucket almost never has enough data to clear this bar.
+   */
+  cardImpactMinSampleSize: Number(process.env.GATCG_CARD_IMPACT_MIN_SAMPLE ?? 5),
 };

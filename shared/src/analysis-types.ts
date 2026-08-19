@@ -379,6 +379,17 @@ export interface ArchetypeCluster {
   seasons: ArchetypeClusterSeasonStats[];
   /** Comparing this build's own two most recent seasons with data (not necessarily calendar-adjacent, if it skipped a season) — null when it's only been seen in one season, so there's nothing to compare. */
   trend: ArchetypeClusterTrend | null;
+  /** deckCount / (sum of every cluster's deckCount) — scoped to the clustered population, not every sighting, since one-off unclustered brews were never eligible for a "share" of a named-build breakdown. */
+  metaShare: number;
+  /** Count / fraction of this cluster's sightings that made their event's single-elimination cut (whatever size that event used — see `DeckSighting.topCut`). */
+  topCutCount: number;
+  topCutRate: number;
+  /** Mean placement among sightings with a known placement; null when none of this cluster's sightings have one. */
+  avgPlacement: number | null;
+  /** Main+material price stats across this cluster's distinct builds, weighted by sighting count; null when no member deck has any priced cards. */
+  avgPrice: number | null;
+  minPrice: number | null;
+  maxPrice: number | null;
 }
 
 export interface ArchetypeClusterSeasonStats {
@@ -402,6 +413,37 @@ export interface ArchetypeClusterTrend {
 export interface ArchetypeTaxonomyData {
   generatedAt: string;
   clusters: ArchetypeCluster[];
+}
+
+/** How a card is typically played within a build — which section(s) of the deck its "with" sightings actually came from. */
+export type CardImpactRole = "main" | "sideboard" | "mixed";
+
+export interface CardImpactEntry {
+  cardName: string;
+  role: CardImpactRole;
+  deckCountWith: number;
+  deckCountWithout: number;
+  avgWinRateWith: number;
+  avgWinRateWithout: number;
+  /** Each side's avg win rate shrunk toward the cluster's own avgWinRate (not a flat 50%), then differenced — see docs/CALCULATIONS.md. The single sortable "does this card actually help" number. Correlational, not causal. */
+  adjustedLift: number;
+}
+
+export interface ClusterCardImpact {
+  clusterId: string;
+  championName: string;
+  clusterName: string;
+  totalDecks: number;
+  baselineWinRate: number;
+  /** Sorted by adjustedLift descending, capped to a generous top-N — see docs/CALCULATIONS.md. */
+  cards: CardImpactEntry[];
+}
+
+export interface CardImpactData {
+  generatedAt: string;
+  clusters: ClusterCardImpact[];
+  /** deckId -> clusterId, for resolving which cluster (if any) a viewed decklist elsewhere in the app belongs to. Only decks that belong to some cluster are present. */
+  deckClusterIndex: Record<string, string>;
 }
 
 export type AchievementCategory = "tournament" | "rating" | "playstyle" | "dedication" | "judging";

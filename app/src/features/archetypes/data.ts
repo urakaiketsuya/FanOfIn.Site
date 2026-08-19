@@ -1,6 +1,7 @@
 import type {
   ArchetypeData,
   ArchetypeTaxonomyData,
+  CardImpactData,
   CardStatsData,
   ChampionTrendsData,
   DeckCardIndexData,
@@ -35,4 +36,8 @@ export function useDeckCardIndexData(): DeckCardIndexData | undefined {
 
 export function useSimilarityData(): SimilarityData | undefined {
   return usePublishedData<SimilarityData>("analysis-similarity", "/data/analysis/similarity.json");
+}
+
+export function useCardImpactData(): CardImpactData | undefined {
+  return usePublishedData<CardImpactData>("analysis-card-impact", "/data/analysis/card-impact.json");
 }

@@ -93,7 +93,7 @@ export default function PopularDeckRow({
 
       {expanded && (
         <div className="mt-2 border-t border-ctp-surface0 pt-2">
-          <DecklistView decklist={decklist} cardsByName={cardsByName} />
+          <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={deck.deckIds[0]} />
 
           <h3 className="mt-4 text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
             Played by ({instances.length})

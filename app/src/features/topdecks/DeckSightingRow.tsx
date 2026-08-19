@@ -159,7 +159,7 @@ export default function DeckSightingRow({
         <div className="mt-2 border-t border-ctp-surface0 pt-2">
           {loading && <p className="text-sm text-ctp-subtext1">Loading…</p>}
           {error && <p className="text-sm text-ctp-subtext0">{error}</p>}
-          {decklist && <DecklistView decklist={decklist} cardsByName={cardsByName} />}
+          {decklist && <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={sighting.deckId} />}
         </div>
       )}
     </div>

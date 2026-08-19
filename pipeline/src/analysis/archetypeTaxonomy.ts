@@ -76,10 +76,24 @@ function dominantElement(definingCards: { name: string }[], cardIndex: Map<strin
  * genuinely distinct competitive builds. See docs/CALCULATIONS.md for the full method and the
  * real-data validation behind the threshold choices.
  */
+/** Sum of known card prices (main+material — same deck-identity convention used everywhere else) for one build group; missing-price cards are simply excluded from the sum, not treated as $0. */
+function groupPrice(cardCounts: Map<string, number>, priceByName: Map<string, number>): number | null {
+  let total = 0;
+  let sawAny = false;
+  for (const [name, qty] of cardCounts) {
+    const price = priceByName.get(name);
+    if (price === undefined) continue;
+    total += price * qty;
+    sawAny = true;
+  }
+  return sawAny ? total : null;
+}
+
 export function computeArchetypeTaxonomy(
   bundles: OmnidexEventBundle[],
   cardIndex: Map<string, CardSignature>,
   deckSightings: DeckSighting[],
+  priceByName: Map<string, number>,
 ): ArchetypeTaxonomyData {
   if (config.fastMode) return { generatedAt: new Date().toISOString(), clusters: [] };
 
@@ -185,6 +199,28 @@ export function computeArchetypeTaxonomy(
       const events = new Set(sightings.map((s) => s.eventId));
       const avgWinRate = sightings.length > 0 ? sightings.reduce((sum, s) => sum + s.winRate, 0) / sightings.length : 0;
 
+      const topCutCount = sightings.filter((s) => s.topCut).length;
+      const topCutRate = sightings.length > 0 ? topCutCount / sightings.length : 0;
+      const placements = sightings.map((s) => s.placement).filter((p): p is number => p !== null);
+      const avgPlacement = placements.length > 0 ? placements.reduce((sum, p) => sum + p, 0) / placements.length : null;
+
+      // Weighted by sighting count (how many players actually ran this exact list), same
+      // convention as avgWinRate above — a build ten people played counts ten times as much
+      // toward the cluster's average price as one two people played.
+      let priceSum = 0;
+      let priceWeight = 0;
+      let minPrice: number | null = null;
+      let maxPrice: number | null = null;
+      for (const g of cluster.members) {
+        const price = groupPrice(g.cardCounts, priceByName);
+        if (price === null) continue;
+        priceSum += price * g.deckIds.length;
+        priceWeight += g.deckIds.length;
+        minPrice = minPrice === null ? price : Math.min(minPrice, price);
+        maxPrice = maxPrice === null ? price : Math.max(maxPrice, price);
+      }
+      const avgPrice = priceWeight > 0 ? priceSum / priceWeight : null;
+
       const bySeasonId = new Map<number, { seasonName: string; earliestEventDate: string; sightings: DeckSighting[] }>();
       for (const s of sightings) {
         if (s.seasonId === null || s.seasonName === null) continue;
@@ -238,6 +274,13 @@ export function computeArchetypeTaxonomy(
         deckIds,
         seasons,
         trend,
+        metaShare: 0, // filled in once every cluster's deckCount is known, below
+        topCutCount,
+        topCutRate,
+        avgPlacement,
+        avgPrice,
+        minPrice,
+        maxPrice,
       });
     }
 
@@ -270,6 +313,13 @@ export function computeArchetypeTaxonomy(
     }
 
     clusters.push(...championClusterSummaries);
+  }
+
+  // Scoped to the clustered population (not every sighting) — an unclustered one-off brew was
+  // never eligible to have a "share" of a named-build breakdown in the first place.
+  const totalClusteredDecks = clusters.reduce((sum, c) => sum + c.deckCount, 0);
+  for (const c of clusters) {
+    c.metaShare = totalClusteredDecks > 0 ? c.deckCount / totalClusteredDecks : 0;
   }
 
   clusters.sort((a, b) => b.playerCount - a.playerCount);

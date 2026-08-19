@@ -32,7 +32,7 @@ export default function PlayerEventDecklistRow({ event, playerId }: { event: Omn
         <div className="mt-2 rounded-md border border-ctp-surface1 p-3">
           {loading && <p className="text-sm text-ctp-subtext1">Loading…</p>}
           {error && <p className="text-sm text-ctp-subtext0">{error}</p>}
-          {decklist && <DecklistView decklist={decklist} cardsByName={cardsByName} />}
+          {decklist && <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={`${event.id}:${playerId}`} />}
         </div>
       )}
     </div>

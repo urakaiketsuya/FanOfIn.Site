@@ -298,7 +298,7 @@ export default function DeckDetail() {
 
       {tab === "decklist" && (
         <div className="mt-6">
-          <DecklistView decklist={decklist} cardsByName={cardsByName} showThumbnails />
+          <DecklistView decklist={decklist} cardsByName={cardsByName} showThumbnails deckId={deck.deckIds[0]} />
         </div>
       )}
 
