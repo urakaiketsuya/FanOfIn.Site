@@ -270,7 +270,7 @@ Verified against real output: 302 of 1,247 published answers resolved at the pre
 963 needed the Champion-level fallback — confirming the fallback is the common case, not an edge
 case, exactly as the sample-size math above predicts.
 
-## Deck Builder (`app/src/features/deckbuilder/useDeckBuilderPopulation.ts`, `useSuggestedBuild.ts`)
+## Guided Deck Builder (`app/src/features/deckbuilder/useDeckBuilderPopulation.ts`, `useSuggestedBuild.ts`)
 
 Assembles a suggested build for a Champion (+ optional Spirit filter) from real decks — not one
 example decklist, but the actual highest-win-rate card at each slot — and lets the viewer lock in

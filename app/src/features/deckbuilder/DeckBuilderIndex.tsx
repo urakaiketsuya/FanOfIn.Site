@@ -63,7 +63,7 @@ function CardRow({
 
 export default function DeckBuilderIndex() {
   useDocumentTitle(
-    "Deck Builder",
+    "Guided Deck Builder",
     "Pick a Champion and Spirit and see a suggested build assembled from the highest win-rate cards in real decks, then lock in your own picks for updated suggestions.",
   );
   const [championName, setChampionName] = useState<string | null>(null);
@@ -146,7 +146,7 @@ export default function DeckBuilderIndex() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="text-2xl font-bold text-ctp-blue">Deck Builder</h1>
+      <h1 className="text-2xl font-bold text-ctp-blue">Guided Deck Builder</h1>
       <p className="mt-1 text-sm text-ctp-subtext1">
         Pick a Champion and Spirit — the build below is assembled from the highest win-rate cards across real decks
         matching that pair, not a single example decklist. Lock in cards of your own choosing and the rest re-ranks

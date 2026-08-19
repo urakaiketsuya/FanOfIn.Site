@@ -23,7 +23,7 @@ const NAV_LINKS = [
   { to: "/decks", label: "All Decks" },
   // Tools
   { to: "/compare", label: "Compare" },
-  { to: "/deck-builder", label: "Deck Builder" },
+  { to: "/deck-builder", label: "Guided Deck Builder" },
 ];
 
 function navLinkClass({ isActive }: { isActive: boolean }) {
