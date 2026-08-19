@@ -63,6 +63,13 @@ function tally(lines: { card: string; quantity: number }[], cardIndex: Map<strin
  * character are separate physical cards. Ties (same max level for two identities, e.g. neither
  * got played past level 1) fall back to whichever has more copies in the material deck. Spirit
  * companions (level 0, e.g. "Sabrina, Spirit of Water") only win if nothing else qualifies.
+ *
+ * Returns null (surfaced in the UI as "Unknown champion") for the ~0.7% of decklists that
+ * genuinely have no Champion-type card in either section — verified live against several real
+ * examples (e.g. event 60368 player 848): every "Name, Title"-formatted card in those decklists
+ * turned out to be a UNIQUE ALLY (e.g. "Blanche, Sheltering Saint"), not a misplaced Champion, so
+ * there is nothing to recover here — the submitted decklist is just missing its Champion card, an
+ * upstream Omnidex data gap rather than a section-placement bug in our own logic.
  */
 function findChampionName(
   materialLines: { card: string; quantity: number }[],

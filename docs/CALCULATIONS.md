@@ -49,6 +49,15 @@ than a level 3 one. `championName` computed here feeds every downstream per-Cham
 sightings, similarity grouping, archetypes, hipster scores, player deck profiles, and the season
 trends below — it's a single source of truth, not recomputed independently anywhere else.
 
+Only the Material Deck is checked. ~0.7% of decklists resolve to `null` (surfaced in the UI as
+"Unknown champion") — investigated whether these had their Champion misplaced under "main" instead
+(a plausible submission-tool quirk), but checked several real examples directly against the card
+catalog (e.g. event 60368 player 848) and every "Name, Title"-formatted card in their main decks
+turned out to be a UNIQUE ALLY (e.g. "Blanche, Sheltering Saint"), not a Champion. These decklists
+genuinely have no Champion-type card submitted in either section — an upstream Omnidex data gap,
+not something recoverable from the data we're given. A main-deck fallback was tried and reverted
+after confirming (post-regeneration) it resolved zero of the 385 affected sightings.
+
 ## Deck sighting fields (`pipeline/src/analysis/deckSightings.ts`)
 
 One record per public decklist ("sighting" = one player's decklist at one event). Several fields
@@ -176,6 +185,65 @@ way `championTrends.ts`'s `shareOfSeason` is — this was asked for as a direct 
 comparison, so a build's raw growth reflects both real popularity change and the season's overall
 backfill coverage growing; read the number in that light rather than as a pure signal the way
 `shareOfSeason` is.
+
+## Card Impact (`pipeline/src/analysis/cardImpact.ts`, `matchupCardImpact.ts`)
+
+For a named build (archetype cluster), does having a given card (in any of Main/Material/
+Sideboard) correlate with a higher win rate than not having it? Answers two things at once:
+"does sideboard tech actually matter" (filter the result by `role: "sideboard"`) and "what could
+improve this decklist" (any card not already in a viewed decklist, positive `adjustedLift`, for
+the cluster it belongs to — resolved via `deckClusterIndex`). Correlational, not causal — a card
+being associated with a higher win rate doesn't mean playing it *causes* that outcome; strong
+players may simply choose good cards more often. Every UI surface carries the same caveat.
+
+**Core computation** (`computeCardImpactEntries`, shared by both the general and matchup-scoped
+callers below): for each card name appearing in any row, split rows into "with"/"without" buckets,
+average each bucket's outcome, then shrink each average toward a `baseline` (not a flat 50%) using
+the same Bayesian-average shape as `cardStats.ts`'s win-rate shrinkage
+(`(sum + prior * baseline) / (n + prior)`, `prior = config.winRateShrinkagePriorWeight`) —
+anchoring to the *cluster's own* baseline rather than a global 50% is more honest, since a build can
+sit well off 50% due to Swiss/tournament dynamics. `adjustedLift = shrunkWith - shrunkWithout`. A
+card is only kept if **both** buckets meet `config.cardImpactMinSampleSize` (default 5, same
+magnitude as `minBattleChartSampleSize`) — this also quietly excludes a cluster's own
+defining/staple cards from ever appearing as a "suggestion", since they're in ~100% of the
+cluster's decks by construction and their "without" bucket has ~no data. **Role** (`main` /
+`material` / `sideboard` / `mixed`) is whichever section accounts for ≥80% of a card's "with"
+appearances; below that it's genuinely split ("mixed"). Sections are tracked as three separate
+sets (not main+material collapsed into one) — an earlier version merged them, which meant a
+champion/relic that only ever lives in the Material Deck always showed `role: "main"` (a real bug,
+fixed after being reported against live data — e.g. "Sabrina, Spirit of Water" now correctly shows
+`role: "material"`).
+
+**General Card Impact** (`computeCardImpact`): outcome = each deck's event-aggregate win rate
+(`DeckSighting.winRate`), baseline = the cluster's own `avgWinRate`. Published per-cluster, top 30
+by `adjustedLift`, plus a `deckClusterIndex` (deckId → clusterId) so any viewed decklist elsewhere
+in the app can resolve its own cluster's suggestions without knowing its Champion or build name.
+
+**Matchup Card Impact** (`computeMatchupCardImpact`): the same computation, but scoped to one
+specific opponent named build and driven by real per-game pairing outcomes instead of event-
+aggregate win rate — the only way to isolate "how did this build do specifically against THIS
+opponent build". Loops `bundle.pairingsByRound` the same way `archetypes.ts`'s battle chart does,
+keeping only pairings where *both* sides are members of some cluster (via `deckClusterIndex`,
+rebuilt locally from `ArchetypeCluster.deckIds`). Two entries are recorded per pairing — one keyed
+`clusterA__clusterB`, one `clusterB__clusterA` — since "my cards" vs "opponent cards" are
+asymmetric and each cluster needs its own view of the matchup.
+- `myCards`: bucketed by whether *my* side had the card, scored against *my* outcome — same as
+  general Card Impact, just scoped to games against this one opponent.
+- `opponentCards`: bucketed by whether the *opponent* had the card, but still scored against *my*
+  outcome — a negative `adjustedLift` here means "when they have this card, I do worse against
+  them." Sorted ascending (most negative first) rather than descending, since the useful signal is
+  the opponent's most punishing cards, not their least.
+
+**Sample size reality**: named-build-vs-named-build is a small population by construction — even
+the single biggest Champion-level matchup in the whole dataset (Silvie vs Lorraine, from the
+existing Battle Chart) tops out around 1,600 games, and a specific cluster vs a specific opponent
+cluster is a fraction of that. Below `config.minBattleChartSampleSize` total games, the card-level
+split is skipped entirely (guaranteed to come up empty) — but the matchup still publishes its
+`games`/`baselineWinRate` summary with empty `myCards`/`opponentCards`, so the UI can say "not
+enough data for a card breakdown" instead of the matchup silently not existing. In practice this
+means most matchup rows will have a games/win-rate summary but no card table — only the largest
+clusters against the largest opponents will have enough games to say anything about individual
+cards.
 
 ## Deck similarity (`pipeline/src/analysis/similarity.ts`)
 

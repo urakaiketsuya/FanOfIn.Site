@@ -24,6 +24,7 @@ const MANIFEST_ENTRIES: { key: string; file: string }[] = [
   { key: "analysis-deck-sightings", file: "analysis/deck-sightings.json" },
   { key: "analysis-deck-card-index", file: "analysis/deck-card-index.json" },
   { key: "analysis-card-impact", file: "analysis/card-impact.json" },
+  { key: "analysis-matchup-card-impact", file: "analysis/matchup-card-impact.json" },
 ];
 
 /**

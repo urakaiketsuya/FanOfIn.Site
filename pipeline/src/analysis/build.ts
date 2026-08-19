@@ -16,6 +16,7 @@ import { computeChampionTrends } from "./championTrends.js";
 import { computeDeckCardIndex } from "./deckCardIndex.js";
 import { computeArchetypeTaxonomy } from "./archetypeTaxonomy.js";
 import { computeCardImpact } from "./cardImpact.js";
+import { computeMatchupCardImpact } from "./matchupCardImpact.js";
 import { computeAchievements } from "./achievements.js";
 
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/analysis");
@@ -137,6 +138,9 @@ export async function buildAnalysis(): Promise<void> {
   const cardImpact = computeCardImpact(archetypeTaxonomy.clusters, { cardNames: deckCardIndexNames, entries: deckCardIndex }, deckSightings);
   await writeFile(path.join(DATA_DIR, "card-impact.json"), JSON.stringify(cardImpact), "utf-8");
 
+  const matchupCardImpact = computeMatchupCardImpact(completed, cardIndex, archetypeTaxonomy.clusters);
+  await writeFile(path.join(DATA_DIR, "matchup-card-impact.json"), JSON.stringify(matchupCardImpact), "utf-8");
+
   // Similarity is the slow, champion-scoped step — write similarity.json incrementally as each
   // champion group finishes (see `onChampionComplete` below) rather than only once at the end,
   // so a kill/crash mid-run keeps whichever champions already completed instead of losing them.
@@ -148,6 +152,6 @@ export async function buildAnalysis(): Promise<void> {
   });
 
   console.log(
-    `analysis: ${ratings.size} rated players, ${upsets.length} upsets, ${cardStats.length} cards, ${keywordStats.length} keywords, ${archetypes.length} archetypes, ${namedSpirits.length} named spirits, ${championTrends.champions.length} champion trends across ${championTrends.seasonOrder.length} seasons, ${archetypeTaxonomy.clusters.length} named builds, ${cardImpact.clusters.length} builds with card-impact data, ${achievements.unlocks.length} achievement unlocks, ${similarDecks.length} decks with similarity matches, ${playerDeckProfiles.length} player deck profiles, ${deckSightings.length} deck sightings, ${deckCardIndex.length} decks in card index`,
+    `analysis: ${ratings.size} rated players, ${upsets.length} upsets, ${cardStats.length} cards, ${keywordStats.length} keywords, ${archetypes.length} archetypes, ${namedSpirits.length} named spirits, ${championTrends.champions.length} champion trends across ${championTrends.seasonOrder.length} seasons, ${archetypeTaxonomy.clusters.length} named builds, ${cardImpact.clusters.length} builds with card-impact data, ${matchupCardImpact.matchups.length} archetype matchups tracked, ${achievements.unlocks.length} achievement unlocks, ${similarDecks.length} decks with similarity matches, ${playerDeckProfiles.length} player deck profiles, ${deckSightings.length} deck sightings, ${deckCardIndex.length} decks in card index`,
   );
 }

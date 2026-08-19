@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { useDeckPopularity } from "./useDeckPopularity";
 import { useDeckSightingsData } from "../topdecks/data";
 import { useOmnidexPlayers } from "../tournaments/data";
@@ -21,6 +21,11 @@ export default function PopularDecksIndex() {
   const [elementFilter, setElementFilter] = useState<string | null>(null);
   const [sortMode, setSortMode] = useState<SortMode>("mostPlayed");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  // Changing the champion filter re-runs a synchronous decode over every deck in the (20MB+)
+  // deck-card-index dataset (useDeckPopularity's useMemo) — noticeably slow on a big filter
+  // change. Wrapped in a transition so the select stays responsive and the page can show a
+  // "recalculating" state instead of appearing to hang with no feedback.
+  const [isPending, startTransition] = useTransition();
 
   const { decks, loading } = useDeckPopularity(championName);
   const sightingsData = useDeckSightingsData();
@@ -73,7 +78,10 @@ export default function PopularDecksIndex() {
         <span className="text-ctp-subtext0">Champion:</span>
         <select
           value={championName ?? ""}
-          onChange={(e) => setChampionName(e.target.value || null)}
+          onChange={(e) => {
+            const value = e.target.value || null;
+            startTransition(() => setChampionName(value));
+          }}
           className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
         >
           <option value="">All champions</option>
@@ -87,7 +95,10 @@ export default function PopularDecksIndex() {
         <span className="ml-2 text-ctp-subtext0">Element:</span>
         <select
           value={elementFilter ?? ""}
-          onChange={(e) => setElementFilter(e.target.value || null)}
+          onChange={(e) => {
+            const value = e.target.value || null;
+            startTransition(() => setElementFilter(value));
+          }}
           className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
         >
           <option value="">All elements</option>
@@ -121,10 +132,11 @@ export default function PopularDecksIndex() {
       {sorted.length > 0 && (
         <p className="mt-4 text-xs text-ctp-subtext0">
           {sorted.length} distinct deck{sorted.length === 1 ? "" : "s"} match
+          {isPending && " — recalculating…"}
         </p>
       )}
 
-      <div className="mt-2 space-y-2">
+      <div className={`mt-2 space-y-2 transition-opacity ${isPending ? "opacity-50" : ""}`}>
         {visible.map((deck) => (
           <PopularDeckRow
             key={deck.signature}

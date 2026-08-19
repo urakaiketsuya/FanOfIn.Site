@@ -6,6 +6,7 @@ import type {
   ChampionTrendsData,
   DeckCardIndexData,
   KeywordStatsData,
+  MatchupCardImpactData,
   SimilarityData,
 } from "@gatcg/shared";
 import { usePublishedData } from "../../lib/sync/usePublishedData";
@@ -40,4 +41,8 @@ export function useSimilarityData(): SimilarityData | undefined {
 
 export function useCardImpactData(): CardImpactData | undefined {
   return usePublishedData<CardImpactData>("analysis-card-impact", "/data/analysis/card-impact.json");
+}
+
+export function useMatchupCardImpactData(): MatchupCardImpactData | undefined {
+  return usePublishedData<MatchupCardImpactData>("analysis-matchup-card-impact", "/data/analysis/matchup-card-impact.json");
 }

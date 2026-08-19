@@ -448,6 +448,34 @@ export interface CardImpactData {
   deckClusterIndex: Record<string, string>;
 }
 
+/**
+ * Card Impact scoped to one specific opponent named build, from real pairing outcomes (not
+ * event-aggregate win rate) — answers "does my card help against THIS matchup" (myCards) and,
+ * inverted, "does the opponent's card hurt me against THIS matchup" (opponentCards). Named-build-
+ * vs-named-build is a small population by construction (see docs/CALCULATIONS.md for the sample
+ * size reality check), so `games`/`baselineWinRate` are always present even when there's too
+ * little data to break a matchup down card-by-card — `myCards`/`opponentCards` are simply empty
+ * in that case rather than the matchup being omitted outright.
+ */
+export interface ClusterMatchupImpact {
+  clusterId: string;
+  opponentClusterId: string;
+  opponentClusterName: string;
+  opponentChampionName: string;
+  games: number;
+  /** This cluster's win rate specifically in games played against opponentClusterId (ties count as 0.5). */
+  baselineWinRate: number;
+  /** My cards that correlate with beating this matchup more, sorted by adjustedLift descending. */
+  myCards: CardImpactEntry[];
+  /** The opponent's cards — role is their role in the OPPONENT's deck — sorted by adjustedLift ascending (most negative, i.e. worst for me, first). */
+  opponentCards: CardImpactEntry[];
+}
+
+export interface MatchupCardImpactData {
+  generatedAt: string;
+  matchups: ClusterMatchupImpact[];
+}
+
 export type AchievementCategory = "tournament" | "rating" | "playstyle" | "dedication" | "judging";
 
 export const ACHIEVEMENT_CATEGORY_ORDER: AchievementCategory[] = ["tournament", "rating", "playstyle", "dedication", "judging"];

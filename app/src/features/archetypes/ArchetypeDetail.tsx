@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import type { CardImpactRole } from "@gatcg/shared";
-import { useArchetypeTaxonomyData, useCardImpactData } from "./data";
+import type { Card, CardImpactEntry, CardImpactRole } from "@gatcg/shared";
+import { useArchetypeTaxonomyData, useCardImpactData, useMatchupCardImpactData } from "./data";
 import { useDeckSightingsData } from "../topdecks/data";
 import { useOmnidexPlayers } from "../tournaments/data";
 import { useSightingDecklist } from "../topdecks/useSightingDecklist";
@@ -25,6 +25,66 @@ const ROLE_FILTERS: { key: CardImpactRole | "all"; label: string }[] = [
 type DetailTab = "overview" | "impact" | "decklist" | "playedBy";
 const TAB_KEYS: DetailTab[] = ["overview", "impact", "decklist", "playedBy"];
 
+/** Shared row layout for both the (general or matchup-scoped) "my cards" table and the matchup "opponent cards" table. */
+function ImpactEntryTable({
+  cards,
+  cardImages,
+  withLabel,
+  withoutLabel,
+}: {
+  cards: CardImpactEntry[];
+  cardImages: Map<string, Card>;
+  withLabel: string;
+  withoutLabel: string;
+}) {
+  return (
+    <div className="mt-3 overflow-x-auto">
+      <table className="w-max min-w-full text-sm">
+        <thead>
+          <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+            <th className="py-1 pr-6">Card</th>
+            <th className="py-1 pr-6">Role</th>
+            <th className="py-1 pr-6">{withLabel}</th>
+            <th className="py-1 pr-6">{withoutLabel}</th>
+            <th className="py-1 pr-6">Lift</th>
+            <th className="py-1">Sample</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
+          {cards.map((c) => {
+            const card = cardImages.get(c.cardName);
+            return (
+              <tr key={c.cardName}>
+                <td className="py-1.5 pr-6 whitespace-nowrap">
+                  <CardHoverPreview image={card?.editions[0]?.image} alt={c.cardName}>
+                    {card ? (
+                      <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
+                        {c.cardName}
+                      </Link>
+                    ) : (
+                      <span className="text-ctp-text">{c.cardName}</span>
+                    )}
+                  </CardHoverPreview>
+                </td>
+                <td className="py-1.5 pr-6 text-ctp-subtext1 capitalize">{c.role}</td>
+                <td className="py-1.5 pr-6 text-ctp-subtext1">{(c.avgWinRateWith * 100).toFixed(0)}%</td>
+                <td className="py-1.5 pr-6 text-ctp-subtext1">{(c.avgWinRateWithout * 100).toFixed(0)}%</td>
+                <td className={`py-1.5 pr-6 font-semibold ${c.adjustedLift >= 0 ? "text-ctp-green" : "text-ctp-red"}`}>
+                  {c.adjustedLift >= 0 ? "+" : ""}
+                  {(c.adjustedLift * 100).toFixed(1)}pp
+                </td>
+                <td className="py-1.5 text-xs text-ctp-subtext0">
+                  {c.deckCountWith} vs {c.deckCountWithout}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 export default function ArchetypeDetail() {
   const { id = "" } = useParams<{ id: string }>();
 
@@ -32,7 +92,9 @@ export default function ArchetypeDetail() {
   const sightingsData = useDeckSightingsData();
   const playersData = useOmnidexPlayers();
   const cardImpactData = useCardImpactData();
+  const matchupCardImpactData = useMatchupCardImpactData();
   const [roleFilter, setRoleFilter] = useState<CardImpactRole | "all">("all");
+  const [opponentClusterId, setOpponentClusterId] = useState<string>("all");
   const [tab, setTab] = useTabParam("tab", TAB_KEYS, "overview");
   // Only reset when navigating from one build's page to a different one (same component instance
   // reused by the router) — not on initial mount, which would otherwise clobber a `?tab=` deep link.
@@ -40,17 +102,37 @@ export default function ArchetypeDetail() {
   useEffect(() => {
     if (prevIdRef.current !== id) {
       setTab("overview");
+      setOpponentClusterId("all");
       prevIdRef.current = id;
     }
   }, [id, setTab]);
 
   const cluster = data?.clusters.find((c) => c.id === id);
   const impact = cardImpactData?.clusters.find((c) => c.clusterId === id);
+  const clusterMatchups = useMemo(() => {
+    if (!matchupCardImpactData) return [];
+    return matchupCardImpactData.matchups.filter((m) => m.clusterId === id).sort((a, b) => b.games - a.games);
+  }, [matchupCardImpactData, id]);
+  const selectedMatchup = opponentClusterId === "all" ? null : clusterMatchups.find((m) => m.opponentClusterId === opponentClusterId) ?? null;
+
+  // "myCards" is either the general (all-opponents) table or, with a matchup selected, that
+  // matchup's card breakdown — same shape, same role filter, same table component either way.
+  const activeCards = selectedMatchup ? selectedMatchup.myCards : (impact?.cards ?? []);
+  const hasActiveData = selectedMatchup ? selectedMatchup.games > 0 : !!impact && impact.cards.length > 0;
   const impactCards = useMemo(() => {
-    if (!impact) return [];
-    return roleFilter === "all" ? impact.cards : impact.cards.filter((c) => c.role === roleFilter);
-  }, [impact, roleFilter]);
-  const impactCardImages = useCardsByNames(useMemo(() => impact?.cards.map((c) => c.cardName) ?? [], [impact]));
+    return roleFilter === "all" ? activeCards : activeCards.filter((c) => c.role === roleFilter);
+  }, [activeCards, roleFilter]);
+  const impactCardImages = useCardsByNames(
+    useMemo(() => {
+      const names = new Set<string>();
+      for (const c of impact?.cards ?? []) names.add(c.cardName);
+      for (const m of clusterMatchups) {
+        for (const c of m.myCards) names.add(c.cardName);
+        for (const c of m.opponentCards) names.add(c.cardName);
+      }
+      return Array.from(names);
+    }, [impact, clusterMatchups]),
+  );
   useDocumentTitle(
     cluster?.name,
     cluster &&
@@ -209,9 +291,41 @@ export default function ArchetypeDetail() {
                 Decks in this build with vs. without each card, and the win-rate difference — correlational, not a
                 guarantee. Filter to Sideboard to see whether sideboard tech actually moves the needle.
               </p>
-              {!impact || impact.cards.length === 0 ? (
+
+              {clusterMatchups.length > 0 && (
+                <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+                  <span className="text-ctp-subtext0">Vs:</span>
+                  <select
+                    value={opponentClusterId}
+                    onChange={(e) => setOpponentClusterId(e.target.value)}
+                    className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+                  >
+                    <option value="all">All opponents</option>
+                    {clusterMatchups.map((m) => (
+                      <option key={m.opponentClusterId} value={m.opponentClusterId}>
+                        {m.opponentClusterName} ({m.games} games)
+                      </option>
+                    ))}
+                  </select>
+                  {selectedMatchup && (
+                    <span className="text-ctp-subtext0">
+                      {(selectedMatchup.baselineWinRate * 100).toFixed(0)}% win rate in this matchup
+                    </span>
+                  )}
+                </div>
+              )}
+
+              {!hasActiveData ? (
                 <p className="mt-3 text-sm text-ctp-subtext1">
-                  Not enough with/without samples yet for this build to say anything meaningful about individual cards.
+                  {selectedMatchup
+                    ? `No recorded games against ${selectedMatchup.opponentClusterName} yet.`
+                    : "Not enough with/without samples yet for this build to say anything meaningful about individual cards."}
+                </p>
+              ) : activeCards.length === 0 ? (
+                <p className="mt-3 text-sm text-ctp-subtext1">
+                  {selectedMatchup
+                    ? `${selectedMatchup.games} game${selectedMatchup.games === 1 ? "" : "s"} recorded against ${selectedMatchup.opponentClusterName}, but not enough for a card-by-card breakdown yet.`
+                    : "Not enough with/without samples yet for this build to say anything meaningful about individual cards."}
                 </p>
               ) : (
                 <>
@@ -232,52 +346,30 @@ export default function ArchetypeDetail() {
                   {impactCards.length === 0 ? (
                     <p className="mt-3 text-sm text-ctp-subtext1">No {roleFilter === "all" ? "" : `${roleFilter} `}cards match this filter.</p>
                   ) : (
-                    <div className="mt-3 overflow-x-auto">
-                      <table className="w-max min-w-full text-sm">
-                        <thead>
-                          <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                            <th className="py-1 pr-6">Card</th>
-                            <th className="py-1 pr-6">Role</th>
-                            <th className="py-1 pr-6">Win rate (with)</th>
-                            <th className="py-1 pr-6">Win rate (without)</th>
-                            <th className="py-1 pr-6">Lift</th>
-                            <th className="py-1">Sample</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-                          {impactCards.map((c) => {
-                            const card = impactCardImages.get(c.cardName);
-                            return (
-                              <tr key={c.cardName}>
-                                <td className="py-1.5 pr-6 whitespace-nowrap">
-                                  <CardHoverPreview image={card?.editions[0]?.image} alt={c.cardName}>
-                                    {card ? (
-                                      <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
-                                        {c.cardName}
-                                      </Link>
-                                    ) : (
-                                      <span className="text-ctp-text">{c.cardName}</span>
-                                    )}
-                                  </CardHoverPreview>
-                                </td>
-                                <td className="py-1.5 pr-6 text-ctp-subtext1 capitalize">{c.role}</td>
-                                <td className="py-1.5 pr-6 text-ctp-subtext1">{(c.avgWinRateWith * 100).toFixed(0)}%</td>
-                                <td className="py-1.5 pr-6 text-ctp-subtext1">{(c.avgWinRateWithout * 100).toFixed(0)}%</td>
-                                <td className={`py-1.5 pr-6 font-semibold ${c.adjustedLift >= 0 ? "text-ctp-green" : "text-ctp-red"}`}>
-                                  {c.adjustedLift >= 0 ? "+" : ""}
-                                  {(c.adjustedLift * 100).toFixed(1)}pp
-                                </td>
-                                <td className="py-1.5 text-xs text-ctp-subtext0">
-                                  {c.deckCountWith} vs {c.deckCountWithout}
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    </div>
+                    <ImpactEntryTable
+                      cards={impactCards}
+                      cardImages={impactCardImages}
+                      withLabel="Win rate (with)"
+                      withoutLabel="Win rate (without)"
+                    />
                   )}
                 </>
+              )}
+
+              {selectedMatchup && selectedMatchup.opponentCards.length > 0 && (
+                <div className="mt-6">
+                  <h3 className="text-sm font-semibold text-ctp-red uppercase tracking-wide">Cards that hurt you</h3>
+                  <p className="mt-1 text-xs text-ctp-subtext0">
+                    When {selectedMatchup.opponentClusterName} plays these (any section of their deck), your win rate
+                    against them tends to be worse — correlational, not a guarantee.
+                  </p>
+                  <ImpactEntryTable
+                    cards={selectedMatchup.opponentCards}
+                    cardImages={impactCardImages}
+                    withLabel="Your win rate (they have it)"
+                    withoutLabel="Your win rate (they don't)"
+                  />
+                </div>
               )}
             </div>
           )}
