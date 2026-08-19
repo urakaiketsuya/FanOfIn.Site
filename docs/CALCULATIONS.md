@@ -352,6 +352,20 @@ lock's real effect is visible as a delta, and the same delta is captured per-act
 log. Verified live: locking one card moved the shown rate from 46% to 47% (+0.6pp), logged
 identically in both the header and that action's log entry.
 
+**Locks with too little data don't get to swing it.** The population used for
+`conditionalWinRate` is filtered to decks containing *every* locked card — but a lock is only
+included in that filter once it clears `MIN_SAMPLE_SIZE` (5) occurrences in the Spirit-filtered
+population. Without this, two real bugs showed up back to back, both reported live: locking a card
+nobody in the population has ever played (e.g. "Ariel, Archangel of Natura" — confirmed exactly 1
+Diao Chan deck runs it) required every row to contain it, which is trivially impossible and zeroed
+out the whole conditional population, making the win rate vanish entirely; loosening the bar to
+"at least 1 occurrence" fixed that but let that single deck's own 37.5% win rate dominate the
+entire reported number (38%, a real -8.7pp swing off a sample of one). Neither is "this card hurts
+your odds" — both are "we don't have enough data on this specific card to say anything," which
+should leave the win rate contributed by every other lock alone rather than distorting or erasing
+it. Same sample-size philosophy Card Impact already applies everywhere else, just gating
+conditioning instead of ranking.
+
 ## Card-page win-rate synergy (`app/src/features/cards/useCardSynergy.ts`)
 
 A card's own detail page already had "Most used with" (`useCardCombination.ts` — ranked by raw

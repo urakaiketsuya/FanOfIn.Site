@@ -109,11 +109,23 @@ export function useSuggestedBuild(
     const baselineWinRate = spiritRows.reduce((sum, r) => sum + r.winRate, 0) / spiritRows.length;
 
     const lockedNames = new Set(lockedCards.keys());
+    // Only condition on locks with a real sample behind them — a card only 1-4 decks in this
+    // population have ever played (e.g. "Ariel, Archangel of Natura", confirmed live: exactly 1
+    // Diao Chan deck) would otherwise let that single deck's own win rate dominate — or, at zero
+    // occurrences, require every row to contain it, which is trivially impossible and zeroes out
+    // the conditional population entirely. Neither is "this combo performs badly," it's "we don't
+    // have enough data on this card here" — a different situation that shouldn't erase or distort
+    // the win rate contributed by every OTHER lock already in place. Same MIN_SAMPLE_SIZE bar
+    // Card Impact uses everywhere else for "is this enough data to trust." Real bug, reported live
+    // (first as the win rate vanishing, then as a single deck swinging it) and fixed both ways.
+    const conditionableLockedNames = Array.from(lockedNames).filter(
+      (n) => spiritRows.filter((r) => r.main.has(n) || r.material.has(n)).length >= MIN_SAMPLE_SIZE,
+    );
     const conditionalRows =
-      lockedNames.size === 0 ? spiritRows : spiritRows.filter((r) => Array.from(lockedNames).every((n) => r.main.has(n) || r.material.has(n)));
-    // The real average for decks matching every lock exactly — reported even when that same
-    // population was too thin to rank against and suggestions fell back to the broader one below
-    // (ranking and "what does this combo actually average" are different questions).
+      conditionableLockedNames.length === 0 ? spiritRows : spiritRows.filter((r) => conditionableLockedNames.every((n) => r.main.has(n) || r.material.has(n)));
+    // The real average for decks matching every (data-backed) lock exactly — reported even when
+    // that same population was too thin to rank against and suggestions fell back to the broader
+    // one below (ranking and "what does this combo actually average" are different questions).
     const conditionalWinRate = conditionalRows.length > 0 ? conditionalRows.reduce((sum, r) => sum + r.winRate, 0) / conditionalRows.length : null;
 
     const usedFallback = lockedNames.size > 0 && conditionalRows.length < MIN_RANKING_POPULATION;

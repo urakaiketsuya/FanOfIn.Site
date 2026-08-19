@@ -5,13 +5,16 @@ import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { buildDecklistText } from "../events/DecklistView";
+import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CostIcon from "../../components/CostIcon";
+import ElementIcon from "../../components/ElementIcon";
 import DonutChart, { buildChartSegments } from "../../components/DonutChart";
 import BarChart from "../../components/BarChart";
 import { computeDeckComposition, computeDeckIdentity, computeDeckRating, computeMemoryCostCurve, computeReserveCostCurve, type RatingPillar } from "../../lib/deckIdentity";
 import { buildTcgplayerMassEntryUrl } from "../../lib/tcgplayerMassEntry";
 import { buildTtsSaveFile, downloadJsonFile, slugifyFilename } from "../../lib/ttsExport";
+import { formatUsd } from "../../lib/format";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import { useDeckBuilderPopulation } from "./useDeckBuilderPopulation";
@@ -180,16 +183,20 @@ function CardRow({
   onToggleLock,
   onRemove,
   cardsByName,
+  priceByName,
 }: {
   card: SuggestedCard;
   onToggleLock: () => void;
   onRemove: () => void;
   cardsByName: ReturnType<typeof useCardsByNames>;
+  priceByName: Map<string, number>;
 }) {
   const cardInfo = cardsByName.get(card.cardName);
+  const unitPrice = priceByName.get(card.cardName);
   return (
     <li className="flex flex-wrap items-center gap-1.5 rounded-md border border-ctp-surface1 px-2 py-1 text-sm">
       <span className="w-6 shrink-0 text-right text-ctp-subtext0">{card.quantity}x</span>
+      {cardInfo && cardInfo.element !== "NORM" && <ElementIcon element={cardInfo.element} size={14} />}
       <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={card.cardName}>
         {cardInfo ? (
           <Link to={`/cards/${cardInfo.slug}`} className="text-ctp-text hover:text-ctp-blue">
@@ -205,6 +212,7 @@ function CardRow({
           {cardInfo.cost.value}
         </span>
       )}
+      {unitPrice !== undefined && <span className="shrink-0 text-xs text-ctp-subtext0">{formatUsd(unitPrice * card.quantity)}</span>}
       {card.adjustedLift !== null ? (
         <span className={`text-xs font-semibold ${card.adjustedLift >= 0 ? "text-ctp-green" : "text-ctp-red"}`}>
           {card.adjustedLift >= 0 ? "+" : ""}
@@ -296,6 +304,7 @@ export default function DeckBuilderIndex() {
   const buddyCards = useBuddyCards(rows, spiritFilter, lockedCards, placedNames);
   const buddyNames = useMemo(() => Array.from(buddyCards.values()).flatMap((list) => list.map((b) => b.cardName)), [buddyCards]);
   const cardsByName = useCardsByNames(useMemo(() => [...allNames, ...buddyNames], [allNames, buddyNames]));
+  const priceByName = useDeckPriceByName();
 
   useEffect(() => {
     startTransition(() => {
@@ -370,6 +379,16 @@ export default function DeckBuilderIndex() {
     [build.main, build.material],
   );
   const massEntryUrl = useMemo(() => buildTcgplayerMassEntryUrl(buildLines), [buildLines]);
+  const totalPrice = useMemo(() => {
+    let sum = 0;
+    let missing = 0;
+    for (const line of buildLines) {
+      const unit = priceByName.get(line.name);
+      if (unit === undefined) missing += 1;
+      else sum += unit * line.quantity;
+    }
+    return { sum, missing };
+  }, [buildLines, priceByName]);
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
 
   async function handleCopy() {
@@ -464,6 +483,18 @@ export default function DeckBuilderIndex() {
                   ({build.conditionalWinRate - build.baselineWinRate >= 0 ? "+" : ""}
                   {((build.conditionalWinRate - build.baselineWinRate) * 100).toFixed(1)}pp vs. unlocked baseline of{" "}
                   {(build.baselineWinRate * 100).toFixed(0)}%)
+                </span>
+              )}
+            </p>
+          )}
+
+          {buildLines.length > 0 && (
+            <p className="mt-1 text-sm">
+              <span className="text-ctp-subtext0">Deck price: </span>
+              <span className="font-semibold text-ctp-text">{formatUsd(totalPrice.sum)}</span>
+              {totalPrice.missing > 0 && (
+                <span className="ml-1.5 text-xs text-ctp-subtext0">
+                  ({totalPrice.missing} card{totalPrice.missing === 1 ? "" : "s"} missing price data)
                 </span>
               )}
             </p>
@@ -578,6 +609,7 @@ export default function DeckBuilderIndex() {
                         key={c.cardName}
                         card={c}
                         cardsByName={cardsByName}
+                        priceByName={priceByName}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity)}
                         onRemove={() => removeCard(c.cardName, c.locked)}
                       />
@@ -592,6 +624,7 @@ export default function DeckBuilderIndex() {
                         key={c.cardName}
                         card={c}
                         cardsByName={cardsByName}
+                        priceByName={priceByName}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity)}
                         onRemove={() => removeCard(c.cardName, c.locked)}
                       />
