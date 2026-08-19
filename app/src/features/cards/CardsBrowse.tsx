@@ -8,6 +8,7 @@ import { useCardCatalog } from "./useCardCatalog";
 import { emptyFilterState, filterCards, type CardFilterState } from "./filters";
 import FilterCheckboxGroup from "./FilterCheckboxGroup";
 import CardGrid from "./CardGrid";
+import LoadMore from "../../components/LoadMore";
 
 const PAGE_SIZE = 60;
 
@@ -128,14 +129,7 @@ export default function CardsBrowse() {
 
       <CardGrid cards={visible} />
 
-      {visibleCount < filtered.length && (
-        <button
-          onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
-          className="mt-6 w-full rounded-md border border-ctp-surface1 py-2 text-sm text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text"
-        >
-          Load more ({filtered.length - visibleCount} remaining)
-        </button>
-      )}
+      <LoadMore remaining={filtered.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
     </div>
   );
 }

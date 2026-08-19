@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER } from "@gatcg/shared";
 import { useOmnidexTeams, useOmnidexPlayers } from "../tournaments/data";
@@ -7,7 +7,10 @@ import { useChampionCardImages } from "../players/useChampionCardImages";
 import PlayerLink from "../players/PlayerLink";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
+import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+
+const PAGE_SIZE = 50;
 
 export default function TeamsIndex() {
   useDocumentTitle(
@@ -20,6 +23,7 @@ export default function TeamsIndex() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string | null>(null);
   const [seasonId, setSeasonId] = useState<number | null>(null);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const usernameById = useMemo(() => {
     const map = new Map<number, string>();
@@ -35,7 +39,6 @@ export default function TeamsIndex() {
     }
     return map;
   }, [playerDecksData]);
-  const championImages = useChampionCardImages([...new Set(topChampionById.values())]);
 
   function playerName(id: number): string {
     return usernameById.get(id) ?? `Player #${id}`;
@@ -64,6 +67,19 @@ export default function TeamsIndex() {
       return t.teamName.toLowerCase().includes(needle) || t.players.some((p) => playerName(p.id).toLowerCase().includes(needle));
     });
   }, [teamsData, search, category, seasonId, usernameById]);
+
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [search, category, seasonId]);
+
+  const visibleRows = rows.slice(0, visibleCount);
+  const championImages = useChampionCardImages(
+    Array.from(
+      new Set(
+        visibleRows.flatMap((t) => t.players.map((p) => topChampionById.get(p.id)).filter((n): n is string => n !== undefined)),
+      ),
+    ),
+  );
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -133,7 +149,7 @@ export default function TeamsIndex() {
       )}
 
       <div className="mt-2 space-y-2">
-        {rows.map((t, i) => (
+        {visibleRows.map((t, i) => (
           <div key={i} className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm">
             <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
               <span className="font-medium text-ctp-text">{t.teamName.trim() || "(unnamed team)"}</span>
@@ -174,6 +190,8 @@ export default function TeamsIndex() {
           </div>
         ))}
       </div>
+
+      <LoadMore remaining={rows.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
     </div>
   );
 }

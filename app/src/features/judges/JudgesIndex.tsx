@@ -1,17 +1,21 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useOmnidexJudges } from "../tournaments/data";
 import { usePlayerDecksData } from "../players/data";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
+import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+
+const PAGE_SIZE = 50;
 
 export default function JudgesIndex() {
   useDocumentTitle("Judges", "Grand Archive TCG certified judges, ranked by level and experience.");
   const judgesData = useOmnidexJudges();
   const playerDecksData = usePlayerDecksData();
   const [search, setSearch] = useState("");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const topChampionById = useMemo(() => {
     const map = new Map<number, string>();
@@ -21,7 +25,6 @@ export default function JudgesIndex() {
     }
     return map;
   }, [playerDecksData]);
-  const championImages = useChampionCardImages([...new Set(topChampionById.values())]);
 
   const judges = useMemo(() => {
     if (!judgesData) return [];
@@ -30,6 +33,15 @@ export default function JudgesIndex() {
       .filter((j) => !needle || j.username.toLowerCase().includes(needle))
       .sort((a, b) => b.judgeLevel - a.judgeLevel || b.judgeExperience - a.judgeExperience);
   }, [judgesData, search]);
+
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [search]);
+
+  const visibleJudges = judges.slice(0, visibleCount);
+  const championImages = useChampionCardImages(
+    Array.from(new Set(visibleJudges.map((j) => topChampionById.get(j.id)).filter((n): n is string => n !== undefined))),
+  );
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -60,7 +72,7 @@ export default function JudgesIndex() {
             </tr>
           </thead>
           <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-            {judges.map((judge) => {
+            {visibleJudges.map((judge) => {
               const topChampion = topChampionById.get(judge.id);
               const card = topChampion ? championImages.get(topChampion) : undefined;
               return (
@@ -92,6 +104,8 @@ export default function JudgesIndex() {
           </tbody>
         </table>
       </div>
+
+      <LoadMore remaining={judges.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
     </div>
   );
 }

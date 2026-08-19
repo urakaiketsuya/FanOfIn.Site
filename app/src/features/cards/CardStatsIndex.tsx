@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER, type TopCardsBySection } from "@gatcg/shared";
 import { useCardStatsData, useKeywordStatsData } from "../archetypes/data";
@@ -7,6 +7,7 @@ import { useCardCombination } from "./useCardCombination";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import TopCardsSections from "../../components/TopCardsSections";
+import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 type SortMode = "usage" | "adjusted" | "raw" | "hot";
@@ -19,6 +20,7 @@ const SORT_LABELS: Record<SortMode, string> = {
 };
 
 const MIN_DECKS_OPTIONS = [0, 5, 10, 20];
+const PAGE_SIZE = 50;
 
 export default function CardStatsIndex() {
   useDocumentTitle("Card Stats", "Card usage and win-rate stats across ranked Grand Archive TCG tournaments.");
@@ -31,6 +33,7 @@ export default function CardStatsIndex() {
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
   const [comboCollapsed, setComboCollapsed] = useState(false);
   const [keywordSortMode, setKeywordSortMode] = useState<"usage" | "adjusted" | "raw">("usage");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const keywordRows = useMemo(() => {
     if (!keywordStatsData) return [];
@@ -70,7 +73,12 @@ export default function CardStatsIndex() {
     });
   }, [cardStatsData, sortMode, minDecks, category, search]);
 
-  const cardImages = useCardsByNames(rows.map((c) => c.name));
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [sortMode, minDecks, category, search]);
+
+  const visibleRows = rows.slice(0, visibleCount);
+  const cardImages = useCardsByNames(visibleRows.map((c) => c.name));
 
   const combination = useCardCombination(selectedCards);
   const comboNames = useMemo(
@@ -225,7 +233,7 @@ export default function CardStatsIndex() {
             </tr>
           </thead>
         <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-          {rows.map((c) => {
+          {visibleRows.map((c) => {
             const card = cardImages.get(c.name);
             const isSelected = selectedCards.includes(c.name);
             return (
@@ -267,6 +275,8 @@ export default function CardStatsIndex() {
         </tbody>
       </table>
       </div>
+
+      <LoadMore remaining={rows.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
 
       <div className="mt-10">
         <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Keywords</h2>

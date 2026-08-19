@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER, type AchievementDefinition, type AchievementUnlock } from "@gatcg/shared";
 import { useOmnidexIndex, useOmnidexJudges, useOmnidexPlayers } from "../tournaments/data";
@@ -12,9 +12,11 @@ import EventRow from "../tournaments/EventRow";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import TopCardsSections from "../../components/TopCardsSections";
+import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 type PlayerTab = "overview" | "events" | "judged";
+const PAGE_SIZE = 50;
 
 export default function PlayerProfile() {
   const { id = "" } = useParams<{ id: string }>();
@@ -74,6 +76,8 @@ export default function PlayerProfile() {
   const [eventChampion, setEventChampion] = useState<string | null>(null);
   const [eventSeasonId, setEventSeasonId] = useState<number | null>(null);
   const [manualTab, setManualTab] = useState<PlayerTab | null>(null);
+  const [eventsVisibleCount, setEventsVisibleCount] = useState(PAGE_SIZE);
+  const [judgedVisibleCount, setJudgedVisibleCount] = useState(PAGE_SIZE);
 
   const categoriesPresent = useMemo(() => {
     const present = new Set(allEvents.map((e) => e.category));
@@ -104,6 +108,12 @@ export default function PlayerProfile() {
     [allEvents, eventCategory, eventChampion, eventSeasonId, championByEventId],
   );
 
+  useEffect(() => {
+    setEventsVisibleCount(PAGE_SIZE);
+  }, [eventCategory, eventChampion, eventSeasonId]);
+
+  const visibleEvents = events.slice(0, eventsVisibleCount);
+
   const judgedEvents = useMemo(
     () =>
       (judge && index ? index.events.filter((e) => judge.eventIds.includes(e.id)) : []).sort((a, b) =>
@@ -111,6 +121,13 @@ export default function PlayerProfile() {
       ),
     [judge, index],
   );
+
+  useEffect(() => {
+    setEventsVisibleCount(PAGE_SIZE);
+    setJudgedVisibleCount(PAGE_SIZE);
+  }, [playerId]);
+
+  const visibleJudgedEvents = judgedEvents.slice(0, judgedVisibleCount);
 
   const availableTabs = useMemo(() => {
     const list: { key: PlayerTab; label: string }[] = [];
@@ -338,10 +355,12 @@ export default function PlayerProfile() {
           )}
 
           <div className="mt-2 space-y-2">
-            {events.map((event) => (
+            {visibleEvents.map((event) => (
               <PlayerEventDecklistRow key={event.id} event={event} playerId={playerId} />
             ))}
           </div>
+
+          <LoadMore remaining={events.length - eventsVisibleCount} onLoadMore={() => setEventsVisibleCount((v) => v + PAGE_SIZE)} />
         </div>
       )}
 
@@ -351,10 +370,15 @@ export default function PlayerProfile() {
             Judged events ({judgedEvents.length})
           </h2>
           <div className="mt-2 space-y-2">
-            {judgedEvents.map((event) => (
+            {visibleJudgedEvents.map((event) => (
               <EventRow key={event.id} event={event} />
             ))}
           </div>
+
+          <LoadMore
+            remaining={judgedEvents.length - judgedVisibleCount}
+            onLoadMore={() => setJudgedVisibleCount((v) => v + PAGE_SIZE)}
+          />
         </div>
       )}
     </div>

@@ -7,6 +7,7 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useOmnidexPlayers } from "../tournaments/data";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import DeckSightingRow from "./DeckSightingRow";
+import LoadMore from "../../components/LoadMore";
 
 type SortMode = "best" | "date" | "placement" | "duplicated";
 type Outcome = "all" | "winner" | "topCut" | "high";
@@ -276,14 +277,7 @@ export default function TopDecksIndex() {
         ))}
       </div>
 
-      {visibleCount < filtered.length && (
-        <button
-          onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
-          className="mt-4 w-full rounded-md border border-ctp-surface1 py-2 text-sm text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text"
-        >
-          Load more ({filtered.length - visibleCount} remaining)
-        </button>
-      )}
+      <LoadMore remaining={filtered.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
     </div>
   );
 }

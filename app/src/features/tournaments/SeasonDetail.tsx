@@ -1,12 +1,16 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useOmnidexIndex } from "./data";
 import EventRow from "./EventRow";
+import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+
+const PAGE_SIZE = 50;
 
 export default function SeasonDetail() {
   const { slug = "" } = useParams<{ slug: string }>();
   const index = useOmnidexIndex();
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const season = index?.seasons.find((s) => s.slug === slug);
   useDocumentTitle(season?.name, season && `Grand Archive TCG tournament history for the ${season.name} card-legality season.`);
@@ -14,6 +18,12 @@ export default function SeasonDetail() {
     if (!index) return [];
     return index.events.filter((e) => e.seasonSlug === slug).sort((a, b) => b.date.localeCompare(a.date));
   }, [index, slug]);
+
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [slug]);
+
+  const visibleEvents = events.slice(0, visibleCount);
 
   if (index && !season) {
     return (
@@ -45,10 +55,12 @@ export default function SeasonDetail() {
       )}
 
       <div className="mt-6 space-y-2">
-        {events.map((event) => (
+        {visibleEvents.map((event) => (
           <EventRow key={event.id} event={event} />
         ))}
       </div>
+
+      <LoadMore remaining={events.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
     </div>
   );
 }

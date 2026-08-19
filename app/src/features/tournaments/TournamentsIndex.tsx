@@ -1,11 +1,13 @@
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER } from "@gatcg/shared";
 import { useOmnidexIndex } from "./data";
 import EventRow from "./EventRow";
+import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 const MIN_PLAYERS_OPTIONS = [0, 8, 16, 32];
+const PAGE_SIZE = 50;
 type SortMode = "date" | "type";
 
 function categoryRank(category: string): number {
@@ -23,6 +25,7 @@ export default function TournamentsIndex() {
   const [category, setCategory] = useState<string | null>(null);
   const [seasonId, setSeasonId] = useState<number | null>(null);
   const [sortMode, setSortMode] = useState<SortMode>("date");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const categoriesPresent = useMemo(() => {
     if (!index) return [];
@@ -53,6 +56,12 @@ export default function TournamentsIndex() {
       return b.date.localeCompare(a.date);
     });
   }, [index, minPlayers, category, seasonId, sortMode, search]);
+
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [minPlayers, category, seasonId, sortMode, search]);
+
+  const visibleEvents = events.slice(0, visibleCount);
 
   function handleIdLookup(e: FormEvent) {
     e.preventDefault();
@@ -171,11 +180,19 @@ export default function TournamentsIndex() {
         </p>
       )}
 
-      <div className="mt-4 space-y-2">
-        {events.map((event) => (
+      {index && events.length > 0 && (
+        <p className="mt-4 text-xs text-ctp-subtext0">
+          {events.length} event{events.length === 1 ? "" : "s"} match
+        </p>
+      )}
+
+      <div className="mt-2 space-y-2">
+        {visibleEvents.map((event) => (
           <EventRow key={event.id} event={event} />
         ))}
       </div>
+
+      <LoadMore remaining={events.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
     </div>
   );
 }

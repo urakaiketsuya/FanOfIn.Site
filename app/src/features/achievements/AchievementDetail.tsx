@@ -1,16 +1,20 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAchievementsData } from "./data";
 import { useOmnidexIndex, useOmnidexPlayers } from "../tournaments/data";
 import { buildCompareLink } from "../compare/deepLink";
 import PlayerLink from "../players/PlayerLink";
+import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+
+const PAGE_SIZE = 50;
 
 export default function AchievementDetail() {
   const { id = "" } = useParams<{ id: string }>();
   const achievementsData = useAchievementsData();
   const playersData = useOmnidexPlayers();
   const index = useOmnidexIndex();
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const definition = achievementsData?.definitions.find((d) => d.id === id);
   useDocumentTitle(definition?.name, definition?.description);
@@ -31,6 +35,12 @@ export default function AchievementDetail() {
     () => achievementsData?.unlocks.filter((u) => u.achievementId === id) ?? [],
     [achievementsData, id],
   );
+
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [id]);
+
+  const visibleUnlocks = unlocks.slice(0, visibleCount);
 
   if (achievementsData && !definition) {
     return (
@@ -59,7 +69,7 @@ export default function AchievementDetail() {
           </h2>
 
           <div className="mt-2 space-y-1.5">
-            {unlocks.map((u, i) => {
+            {visibleUnlocks.map((u, i) => {
               const eventName = u.eventId !== undefined ? eventNameById.get(u.eventId) ?? `Event #${u.eventId}` : null;
               return (
                 <div
@@ -100,6 +110,8 @@ export default function AchievementDetail() {
               );
             })}
           </div>
+
+          <LoadMore remaining={unlocks.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
         </>
       )}
     </div>

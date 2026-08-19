@@ -5,6 +5,7 @@ import { useEloData, usePlayerDecksData } from "./data";
 import { useChampionCardImages } from "./useChampionCardImages";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
+import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 const PAGE_SIZE = 50;
@@ -122,14 +123,7 @@ export default function PlayersIndex() {
         </table>
       </div>
 
-      {visibleCount < rows.length && (
-        <button
-          onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
-          className="mt-4 w-full rounded-md border border-ctp-surface1 py-2 text-sm text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text"
-        >
-          Load more ({rows.length - visibleCount} remaining)
-        </button>
-      )}
+      <LoadMore remaining={rows.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
     </div>
   );
 }
