@@ -330,6 +330,16 @@ distinguish it. Support-gated (>=5 co-occurring decks) to avoid noise; each budd
 decks with the locked card that also ran it, with its own "Add" button that locks it in directly,
 bypassing the ranked suggestions entirely.
 
+**Layout is four tabs** (Build / Stats / Buddy Cards / Log), added once the page had enough
+independent surfaces stacked on one scroll to need separating — same `useTabParam` deep-linking
+pattern used everywhere else tabs appear on this site. Stats reuses the exact composition/rating
+functions a deck's own dedicated page uses (`computeDeckComposition`, `computeDeckRating`,
+`computeMemoryCostCurve`, `computeReserveCostCurve` — all from `app/src/lib/deckIdentity.ts`),
+recomputed live from whatever's currently assembled (locked + suggested lines combined), so Power
+Rating and the composition donuts update immediately as cards are locked, added, or removed —
+verified live: locking one card changed the composite Power Rating from 6.00 to 6.25 in the same
+render pass.
+
 ## Card-page win-rate synergy (`app/src/features/cards/useCardSynergy.ts`)
 
 A card's own detail page already had "Most used with" (`useCardCombination.ts` — ranked by raw

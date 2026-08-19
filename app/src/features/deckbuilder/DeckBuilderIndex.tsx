@@ -4,10 +4,17 @@ import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { useCardsByNames } from "../events/useCardsByNames";
 import CardHoverPreview from "../../components/CardHoverPreview";
+import DonutChart, { buildChartSegments } from "../../components/DonutChart";
+import BarChart from "../../components/BarChart";
+import { computeDeckComposition, computeDeckIdentity, computeDeckRating, computeMemoryCostCurve, computeReserveCostCurve, type RatingPillar } from "../../lib/deckIdentity";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import { useTabParam } from "../../lib/useTabParam";
 import { useDeckBuilderPopulation } from "./useDeckBuilderPopulation";
 import { useSuggestedBuild, type SuggestedCard } from "./useSuggestedBuild";
 import { useBuddyCards, type BuddyCard } from "./useBuddyCards";
+
+type BuilderTab = "build" | "stats" | "buddies" | "log";
+const TAB_KEYS: BuilderTab[] = ["build", "stats", "buddies", "log"];
 
 interface ChangeLogEntry {
   label: string;
@@ -106,6 +113,55 @@ function BuddyCardsList({
   );
 }
 
+/** Same composition/rating stats as a deck's own dedicated page (DeckDetail.tsx), recomputed live from whatever's currently assembled — updates as cards get locked, added, or removed. */
+function StatsPanel({
+  lines,
+  cardsByName,
+  championName,
+}: {
+  lines: { name: string; quantity: number }[];
+  cardsByName: ReturnType<typeof useCardsByNames>;
+  championName: string | null;
+}) {
+  const identity = useMemo(() => computeDeckIdentity(lines, cardsByName), [lines, cardsByName]);
+  const composition = useMemo(() => computeDeckComposition(lines, cardsByName), [lines, cardsByName]);
+  const rating = useMemo(() => computeDeckRating(lines, cardsByName, championName, identity.classes), [lines, cardsByName, championName, identity.classes]);
+  const memoryCurve = useMemo(() => computeMemoryCostCurve(lines, cardsByName), [lines, cardsByName]);
+  const reserveCurve = useMemo(() => computeReserveCostCurve(lines, cardsByName), [lines, cardsByName]);
+
+  if (lines.length === 0) return <p className="mt-6 text-sm text-ctp-subtext1">Nothing in the build yet.</p>;
+
+  return (
+    <div className="mt-6">
+      <div className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Power Rating</h2>
+          <span className="text-2xl font-bold text-ctp-blue">{rating.composite.toFixed(2)}</span>
+        </div>
+        <div className="mt-3 space-y-2">
+          {(["aggro", "consistency", "interaction", "resilience"] as RatingPillar[]).map((pillar) => (
+            <div key={pillar} className="flex items-center gap-2 text-sm">
+              <span className="w-24 shrink-0 capitalize text-ctp-subtext1">{pillar}</span>
+              <div className="h-2 flex-1 rounded-full bg-ctp-surface0">
+                <div className="h-2 rounded-full bg-ctp-blue" style={{ width: `${(rating.scores[pillar] / 10) * 100}%` }} />
+              </div>
+              <span className="w-6 shrink-0 text-right text-ctp-subtext0">{rating.scores[pillar]}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        <BarChart title="Memory Cost Curve" bars={memoryCurve} />
+        <BarChart title="Reserve Cost Curve" bars={reserveCurve} />
+        <DonutChart title="Card Types" segments={buildChartSegments(composition.types)} />
+        <DonutChart title="Elements" segments={buildChartSegments(composition.elements)} />
+        <DonutChart title="Card Subtypes" segments={buildChartSegments(composition.subtypes)} />
+      </div>
+    </div>
+  );
+}
+
 function CardRow({
   card,
   onToggleLock,
@@ -170,6 +226,7 @@ export default function DeckBuilderIndex() {
   const [rejectedCards, setRejectedCards] = useState<Set<string>>(new Set());
   const [cardInput, setCardInput] = useState("");
   const [changeLog, setChangeLog] = useState<ChangeLogEntry[]>([]);
+  const [tab, setTab] = useTabParam<BuilderTab>("tab", TAB_KEYS, "build");
   const [isPending, startTransition] = useTransition();
   // Set right before a state change that'll cause a recompute, read (and cleared) by the effect
   // below once that recompute lands — pairs the resulting suggestion diff with the action that
@@ -274,6 +331,10 @@ export default function DeckBuilderIndex() {
 
   const mainTotal = build.main.reduce((sum, c) => sum + c.quantity, 0);
   const materialTotal = build.material.reduce((sum, c) => sum + c.quantity, 0);
+  const buildLines = useMemo(
+    () => [...build.material, ...build.main].map((c) => ({ name: c.cardName, quantity: c.quantity })),
+    [build.material, build.main],
+  );
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -332,29 +393,6 @@ export default function DeckBuilderIndex() {
 
       {championName && !populationLoading && rows.length > 0 && (
         <>
-          <div className="mt-4">
-            <span className="text-sm text-ctp-subtext0">Add a card:</span>
-            <input
-              type="text"
-              list="deck-builder-card-options"
-              value={cardInput}
-              onChange={(e) => {
-                setCardInput(e.target.value);
-                if (cardNameSet.has(e.target.value)) addCard(e.target.value);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && cardNameSet.has(cardInput)) addCard(cardInput);
-              }}
-              placeholder="Type a card name to lock it in…"
-              className="mt-1 block w-full max-w-sm rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
-            />
-            <datalist id="deck-builder-card-options">
-              {cardNames.map((n) => (
-                <option key={n} value={n} />
-              ))}
-            </datalist>
-          </div>
-
           <p className="mt-4 text-xs text-ctp-subtext0">
             Ranking suggestions against {build.rankingPopulationSize} matching deck{build.rankingPopulationSize === 1 ? "" : "s"}
             {isPending && " — recalculating…"}
@@ -382,40 +420,91 @@ export default function DeckBuilderIndex() {
             </p>
           )}
 
-          <div className={`mt-3 grid gap-4 sm:grid-cols-2 transition-opacity ${isPending ? "opacity-50" : ""}`}>
-            <div>
-              <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Material ({materialTotal})</h2>
-              <ul className="mt-2 space-y-1">
-                {build.material.map((c) => (
-                  <CardRow
-                    key={c.cardName}
-                    card={c}
-                    cardsByName={cardsByName}
-                    onToggleLock={() => toggleLock(c.cardName, c.quantity)}
-                    onRemove={() => removeCard(c.cardName, c.locked)}
-                  />
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Main ({mainTotal})</h2>
-              <ul className="mt-2 space-y-1">
-                {build.main.map((c) => (
-                  <CardRow
-                    key={c.cardName}
-                    card={c}
-                    cardsByName={cardsByName}
-                    onToggleLock={() => toggleLock(c.cardName, c.quantity)}
-                    onRemove={() => removeCard(c.cardName, c.locked)}
-                  />
-                ))}
-              </ul>
-            </div>
+          <div className="mt-4 flex flex-wrap gap-2 border-b border-ctp-surface1 pb-2">
+            {(
+              [
+                { key: "build", label: "Build" },
+                { key: "stats", label: "Stats" },
+                { key: "buddies", label: "Buddy Cards" },
+                { key: "log", label: `Log (${changeLog.length})` },
+              ] as { key: BuilderTab; label: string }[]
+            ).map((t) => (
+              <button
+                key={t.key}
+                type="button"
+                onClick={() => setTab(t.key)}
+                className={`rounded-md border px-2.5 py-1 text-xs ${
+                  tab === t.key ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
           </div>
 
-          <BuddyCardsList lockedNames={Array.from(lockedCards.keys())} buddyCards={buddyCards} cardsByName={cardsByName} onAdd={addCard} />
+          {tab === "build" && (
+            <div className="mt-4">
+              <span className="text-sm text-ctp-subtext0">Add a card:</span>
+              <input
+                type="text"
+                list="deck-builder-card-options"
+                value={cardInput}
+                onChange={(e) => {
+                  setCardInput(e.target.value);
+                  if (cardNameSet.has(e.target.value)) addCard(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && cardNameSet.has(cardInput)) addCard(cardInput);
+                }}
+                placeholder="Type a card name to lock it in…"
+                className="mt-1 block w-full max-w-sm rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
+              />
+              <datalist id="deck-builder-card-options">
+                {cardNames.map((n) => (
+                  <option key={n} value={n} />
+                ))}
+              </datalist>
 
-          <ChangeLogList entries={changeLog} />
+              <div className={`mt-3 grid gap-4 sm:grid-cols-2 transition-opacity ${isPending ? "opacity-50" : ""}`}>
+                <div>
+                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Material ({materialTotal})</h2>
+                  <ul className="mt-2 space-y-1">
+                    {build.material.map((c) => (
+                      <CardRow
+                        key={c.cardName}
+                        card={c}
+                        cardsByName={cardsByName}
+                        onToggleLock={() => toggleLock(c.cardName, c.quantity)}
+                        onRemove={() => removeCard(c.cardName, c.locked)}
+                      />
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Main ({mainTotal})</h2>
+                  <ul className="mt-2 space-y-1">
+                    {build.main.map((c) => (
+                      <CardRow
+                        key={c.cardName}
+                        card={c}
+                        cardsByName={cardsByName}
+                        onToggleLock={() => toggleLock(c.cardName, c.quantity)}
+                        onRemove={() => removeCard(c.cardName, c.locked)}
+                      />
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {tab === "stats" && <StatsPanel lines={buildLines} cardsByName={cardsByName} championName={championName} />}
+
+          {tab === "buddies" && (
+            <BuddyCardsList lockedNames={Array.from(lockedCards.keys())} buddyCards={buddyCards} cardsByName={cardsByName} onAdd={addCard} />
+          )}
+
+          {tab === "log" && <ChangeLogList entries={changeLog} />}
         </>
       )}
     </div>
