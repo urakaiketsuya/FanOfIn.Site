@@ -92,10 +92,12 @@ const FEATURES: FeatureGroup[] = [
     title: "Archetypes",
     items: [
       "Named builds clustered from real decklists by similarity, not hand-picked ahead of time",
+      "Card Impact: which cards (including sideboard tech) actually correlate with a higher win rate for a given build",
+      "Meta share, top-cut rate, average finishing placement, and average deck price per build",
       "Full battle chart: matchup matrix, by-Champion view, and closest/most-lopsided highlights",
       "Sample decklists and defining cards per build",
     ],
-    example: { to: "/battle-chart", label: "Battle Chart" },
+    example: { to: "/archetypes/14lh0s0", label: "Tera Silvie" },
   },
   {
     title: "Top Decks",

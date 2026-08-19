@@ -2,8 +2,18 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useArchetypeTaxonomyData } from "./data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import { formatUsd } from "../../lib/format";
 
-type SortMode = "players" | "winRate";
+type SortMode = "players" | "winRate" | "metaShare" | "topCutRate" | "avgPlacement" | "avgPrice";
+
+const SORT_LABELS: Record<SortMode, string> = {
+  players: "Players",
+  winRate: "Win rate",
+  metaShare: "Meta share",
+  topCutRate: "Top cut rate",
+  avgPlacement: "Avg placement",
+  avgPrice: "Avg price",
+};
 
 interface DisplayRow {
   id: string;
@@ -12,6 +22,11 @@ interface DisplayRow {
   playerCount: number;
   eventCount: number;
   avgWinRate: number;
+  /** All-time cluster figures — undefined when a season filter is active, since these aren't computed per-season. Rendered as "—" in that case rather than a misleading all-time number next to season-scoped columns. */
+  metaShare?: number;
+  topCutRate?: number;
+  avgPlacement?: number | null;
+  avgPrice?: number | null;
 }
 
 export default function ArchetypesIndex() {
@@ -67,10 +82,30 @@ export default function ArchetypesIndex() {
         playerCount: c.playerCount,
         eventCount: c.eventCount,
         avgWinRate: c.avgWinRate,
+        metaShare: c.metaShare,
+        topCutRate: c.topCutRate,
+        avgPlacement: c.avgPlacement,
+        avgPrice: c.avgPrice,
       }));
     }
 
-    return displayRows.sort((a, b) => (sortMode === "winRate" ? b.avgWinRate - a.avgWinRate : b.playerCount - a.playerCount));
+    return displayRows.sort((a, b) => {
+      switch (sortMode) {
+        case "winRate":
+          return b.avgWinRate - a.avgWinRate;
+        case "metaShare":
+          return (b.metaShare ?? 0) - (a.metaShare ?? 0);
+        case "topCutRate":
+          return (b.topCutRate ?? 0) - (a.topCutRate ?? 0);
+        case "avgPlacement":
+          // Lower placement is better — nulls (unknown) sort last regardless of direction.
+          return (a.avgPlacement ?? Infinity) - (b.avgPlacement ?? Infinity);
+        case "avgPrice":
+          return (b.avgPrice ?? 0) - (a.avgPrice ?? 0);
+        default:
+          return b.playerCount - a.playerCount;
+      }
+    });
   }, [data, championFilter, seasonId, sortMode]);
 
   return (
@@ -117,7 +152,7 @@ export default function ArchetypesIndex() {
         </select>
 
         <span className="ml-2 text-ctp-subtext0">Sort by:</span>
-        {(["players", "winRate"] as SortMode[]).map((mode) => (
+        {(["players", "winRate", "metaShare", "topCutRate", "avgPlacement", "avgPrice"] as SortMode[]).map((mode) => (
           <button
             key={mode}
             type="button"
@@ -126,10 +161,16 @@ export default function ArchetypesIndex() {
               sortMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
           >
-            {mode === "players" ? "Players" : "Win rate"}
+            {SORT_LABELS[mode]}
           </button>
         ))}
       </div>
+      {seasonId !== null && (
+        <p className="mt-2 text-xs text-ctp-subtext0">
+          Meta share, top cut rate, avg placement, and avg price are all-time figures — shown as "—" while a season
+          filter is active, since they aren't computed per-season.
+        </p>
+      )}
 
       {!data && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
       {data && rows.length === 0 && (
@@ -147,6 +188,10 @@ export default function ArchetypesIndex() {
               <th className="py-1 pr-6">Players</th>
               <th className="py-1 pr-6">Events</th>
               <th className="py-1 pr-6">Win rate</th>
+              <th className="py-1 pr-6">Meta share</th>
+              <th className="py-1 pr-6">Top cut rate</th>
+              <th className="py-1 pr-6">Avg placement</th>
+              <th className="py-1">Avg price</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
@@ -165,6 +210,14 @@ export default function ArchetypesIndex() {
                 <td className="py-1.5 pr-6 text-ctp-subtext1">{c.playerCount}</td>
                 <td className="py-1.5 pr-6 text-ctp-subtext1">{c.eventCount}</td>
                 <td className="py-1.5 pr-6 text-ctp-subtext1">{(c.avgWinRate * 100).toFixed(0)}%</td>
+                <td className="py-1.5 pr-6 text-ctp-subtext1">{c.metaShare !== undefined ? `${(c.metaShare * 100).toFixed(1)}%` : "—"}</td>
+                <td className="py-1.5 pr-6 text-ctp-subtext1">{c.topCutRate !== undefined ? `${(c.topCutRate * 100).toFixed(0)}%` : "—"}</td>
+                <td className="py-1.5 pr-6 text-ctp-subtext1">
+                  {c.avgPlacement !== undefined && c.avgPlacement !== null ? `#${c.avgPlacement.toFixed(0)}` : "—"}
+                </td>
+                <td className="py-1.5 text-ctp-subtext1">
+                  {c.avgPrice !== undefined && c.avgPrice !== null ? formatUsd(c.avgPrice) : "—"}
+                </td>
               </tr>
             ))}
           </tbody>

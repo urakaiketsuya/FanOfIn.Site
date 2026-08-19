@@ -1,6 +1,7 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useArchetypeTaxonomyData } from "./data";
+import type { CardImpactRole } from "@gatcg/shared";
+import { useArchetypeTaxonomyData, useCardImpactData } from "./data";
 import { useDeckSightingsData } from "../topdecks/data";
 import { useOmnidexPlayers } from "../tournaments/data";
 import { useSightingDecklist } from "../topdecks/useSightingDecklist";
@@ -9,7 +10,17 @@ import DecklistView from "../events/DecklistView";
 import TopDecksList from "../../components/TopDecksList";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import { formatUsd } from "../../lib/format";
 import { buildCompareLink } from "../compare/deepLink";
+
+const ROLE_FILTERS: { key: CardImpactRole | "all"; label: string }[] = [
+  { key: "all", label: "All" },
+  { key: "main", label: "Main" },
+  { key: "sideboard", label: "Sideboard" },
+  { key: "mixed", label: "Mixed" },
+];
+
+type DetailTab = "overview" | "impact" | "decklist" | "playedBy";
 
 export default function ArchetypeDetail() {
   const { id = "" } = useParams<{ id: string }>();
@@ -17,8 +28,18 @@ export default function ArchetypeDetail() {
   const data = useArchetypeTaxonomyData();
   const sightingsData = useDeckSightingsData();
   const playersData = useOmnidexPlayers();
+  const cardImpactData = useCardImpactData();
+  const [roleFilter, setRoleFilter] = useState<CardImpactRole | "all">("all");
+  const [tab, setTab] = useState<DetailTab>("overview");
+  useEffect(() => setTab("overview"), [id]);
 
   const cluster = data?.clusters.find((c) => c.id === id);
+  const impact = cardImpactData?.clusters.find((c) => c.clusterId === id);
+  const impactCards = useMemo(() => {
+    if (!impact) return [];
+    return roleFilter === "all" ? impact.cards : impact.cards.filter((c) => c.role === roleFilter);
+  }, [impact, roleFilter]);
+  const impactCardImages = useCardsByNames(useMemo(() => impact?.cards.map((c) => c.cardName) ?? [], [impact]));
   useDocumentTitle(
     cluster?.name,
     cluster &&
@@ -96,6 +117,11 @@ export default function ArchetypeDetail() {
             {cluster.deckCount === 1 ? "" : "s"} across {cluster.eventCount} event{cluster.eventCount === 1 ? "" : "s"} ·{" "}
             {(cluster.avgWinRate * 100).toFixed(0)}% avg win rate
           </p>
+          <p className="mt-1 text-xs text-ctp-subtext0">
+            {(cluster.metaShare * 100).toFixed(1)}% meta share · {(cluster.topCutRate * 100).toFixed(0)}% top cut rate
+            {cluster.avgPlacement !== null && ` · avg placement #${cluster.avgPlacement.toFixed(0)}`}
+            {cluster.avgPrice !== null && ` · avg deck price ${formatUsd(cluster.avgPrice)}`}
+          </p>
 
           {cluster.trend && (
             <p className="mt-1 text-xs text-ctp-subtext0">
@@ -112,46 +138,154 @@ export default function ArchetypeDetail() {
             </p>
           )}
 
-          <div className="mt-6">
-            <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Defining cards</h2>
-            <p className="mt-1 text-xs text-ctp-subtext0">
-              Cards common in this build but not typical of other {cluster.championName} decks — what actually
-              distinguishes it.
-            </p>
-            <div className="mt-2 flex flex-wrap gap-2 text-sm">
-              {cluster.definingCards.map((dc) => {
-                const card = cardImages.get(dc.name);
-                return (
-                  <CardHoverPreview key={dc.name} image={card?.editions[0]?.image} alt={dc.name}>
-                    {card ? (
-                      <Link
-                        to={`/cards/${card.slug}`}
-                        className="rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-text hover:border-ctp-blue hover:text-ctp-blue"
-                      >
-                        {dc.name} <span className="text-ctp-subtext0">({(dc.prevalence * 100).toFixed(0)}%)</span>
-                      </Link>
-                    ) : (
-                      <span className="rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-text">
-                        {dc.name} <span className="text-ctp-subtext0">({(dc.prevalence * 100).toFixed(0)}%)</span>
-                      </span>
-                    )}
-                  </CardHoverPreview>
-                );
-              })}
-            </div>
+          <div className="mt-4 flex flex-wrap gap-2 border-b border-ctp-surface1 pb-2">
+            {(
+              [
+                { key: "overview", label: "Overview" },
+                { key: "impact", label: "Card Impact" },
+                { key: "decklist", label: "Sample Decklist" },
+                { key: "playedBy", label: `Played By (${instances.length})` },
+              ] as { key: DetailTab; label: string }[]
+            ).map((t) => (
+              <button
+                key={t.key}
+                type="button"
+                onClick={() => setTab(t.key)}
+                className={`rounded-md border px-2.5 py-1 text-xs ${
+                  tab === t.key ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
           </div>
 
-          {sample.decklist && (
+          {tab === "overview" && (
             <div className="mt-6">
-              <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Sample decklist</h2>
-              <p className="mt-1 text-xs text-ctp-subtext0">One representative instance of this build.</p>
-              <div className="mt-2">
-                <DecklistView decklist={sample.decklist} cardsByName={cardImages} showThumbnails />
+              <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Defining cards</h2>
+              <p className="mt-1 text-xs text-ctp-subtext0">
+                Cards common in this build but not typical of other {cluster.championName} decks — what actually
+                distinguishes it.
+              </p>
+              <div className="mt-2 flex flex-wrap gap-2 text-sm">
+                {cluster.definingCards.map((dc) => {
+                  const card = cardImages.get(dc.name);
+                  return (
+                    <CardHoverPreview key={dc.name} image={card?.editions[0]?.image} alt={dc.name}>
+                      {card ? (
+                        <Link
+                          to={`/cards/${card.slug}`}
+                          className="rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-text hover:border-ctp-blue hover:text-ctp-blue"
+                        >
+                          {dc.name} <span className="text-ctp-subtext0">({(dc.prevalence * 100).toFixed(0)}%)</span>
+                        </Link>
+                      ) : (
+                        <span className="rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-text">
+                          {dc.name} <span className="text-ctp-subtext0">({(dc.prevalence * 100).toFixed(0)}%)</span>
+                        </span>
+                      )}
+                    </CardHoverPreview>
+                  );
+                })}
               </div>
             </div>
           )}
 
-          {instances.length > 0 && (
+          {tab === "impact" && (
+            <div className="mt-6">
+              <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Card Impact</h2>
+              <p className="mt-1 text-xs text-ctp-subtext0">
+                Decks in this build with vs. without each card, and the win-rate difference — correlational, not a
+                guarantee. Filter to Sideboard to see whether sideboard tech actually moves the needle.
+              </p>
+              {!impact || impact.cards.length === 0 ? (
+                <p className="mt-3 text-sm text-ctp-subtext1">
+                  Not enough with/without samples yet for this build to say anything meaningful about individual cards.
+                </p>
+              ) : (
+                <>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {ROLE_FILTERS.map((f) => (
+                      <button
+                        key={f.key}
+                        type="button"
+                        onClick={() => setRoleFilter(f.key)}
+                        className={`rounded-md border px-2 py-1 text-xs ${
+                          roleFilter === f.key ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                        }`}
+                      >
+                        {f.label}
+                      </button>
+                    ))}
+                  </div>
+                  {impactCards.length === 0 ? (
+                    <p className="mt-3 text-sm text-ctp-subtext1">No {roleFilter === "all" ? "" : `${roleFilter} `}cards match this filter.</p>
+                  ) : (
+                    <div className="mt-3 overflow-x-auto">
+                      <table className="w-max min-w-full text-sm">
+                        <thead>
+                          <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+                            <th className="py-1 pr-6">Card</th>
+                            <th className="py-1 pr-6">Role</th>
+                            <th className="py-1 pr-6">Win rate (with)</th>
+                            <th className="py-1 pr-6">Win rate (without)</th>
+                            <th className="py-1 pr-6">Lift</th>
+                            <th className="py-1">Sample</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
+                          {impactCards.map((c) => {
+                            const card = impactCardImages.get(c.cardName);
+                            return (
+                              <tr key={c.cardName}>
+                                <td className="py-1.5 pr-6 whitespace-nowrap">
+                                  <CardHoverPreview image={card?.editions[0]?.image} alt={c.cardName}>
+                                    {card ? (
+                                      <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
+                                        {c.cardName}
+                                      </Link>
+                                    ) : (
+                                      <span className="text-ctp-text">{c.cardName}</span>
+                                    )}
+                                  </CardHoverPreview>
+                                </td>
+                                <td className="py-1.5 pr-6 text-ctp-subtext1 capitalize">{c.role}</td>
+                                <td className="py-1.5 pr-6 text-ctp-subtext1">{(c.avgWinRateWith * 100).toFixed(0)}%</td>
+                                <td className="py-1.5 pr-6 text-ctp-subtext1">{(c.avgWinRateWithout * 100).toFixed(0)}%</td>
+                                <td className={`py-1.5 pr-6 font-semibold ${c.adjustedLift >= 0 ? "text-ctp-green" : "text-ctp-red"}`}>
+                                  {c.adjustedLift >= 0 ? "+" : ""}
+                                  {(c.adjustedLift * 100).toFixed(1)}pp
+                                </td>
+                                <td className="py-1.5 text-xs text-ctp-subtext0">
+                                  {c.deckCountWith} vs {c.deckCountWithout}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          )}
+
+          {tab === "decklist" && (
+            <div className="mt-6">
+              <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Sample decklist</h2>
+              <p className="mt-1 text-xs text-ctp-subtext0">One representative instance of this build.</p>
+              <div className="mt-2">
+                {sample.decklist ? (
+                  <DecklistView decklist={sample.decklist} cardsByName={cardImages} showThumbnails />
+                ) : (
+                  <p className="text-sm text-ctp-subtext1">Loading…</p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {tab === "playedBy" && (
             <div className="mt-6">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Played by ({instances.length})</h2>
