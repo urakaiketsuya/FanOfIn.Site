@@ -637,6 +637,32 @@ from 506KB (146KB gzipped) to 320KB (101KB gzipped), with the rest split into sm
 chunks fetched on demand. `Home` stays eagerly imported since it's the most common landing page and
 lazy-loading it would just add a loading flash for no benefit.
 
+**4. In-flight fetch dedup + a lean `deck-popularity-index.json` (`app/src/lib/sync/usePublishedData.ts`,
+`pipeline/src/analysis/build.ts`)** — added after a real reported bug: Popular Decks / All Decks
+reloading itself repeatedly on mobile. Root-caused to two compounding issues, verified live with a
+cleared IndexedDB and the network panel:
+- `usePublishedData` had no dedup for concurrent callers wanting the same key — `/decks` mounts
+  `useDeckPopularity` and `useCardCombination`, which both pull `deck-card-index.json`, and neither
+  had written the IndexedDB cache yet when the other checked, so each independently fetched and
+  `JSON.parse`'d the same 20MB+ file. Fixed with a module-scoped `Map<key, Promise<void>>` so
+  concurrent callers share one in-flight refresh instead of racing.
+- Even fully deduped, `useDeckPopularity.ts` (which both pages depend on for their base list) still
+  needed the *entire* `deck-sightings.json` — which had grown to 40MB+ (every sighting's full
+  keyword breakdown, price, and repeated event/season name strings) — just to read each sighting's
+  `championName`/`winRate` for grouping. Fixed by publishing `deck-popularity-index.json`, a lean
+  8-field projection (`DeckPopularityEntry` in `shared/src/analysis-types.ts`) with none of that
+  weight, and pointing `useDeckPopularity.ts` at it instead. `PopularDeckRow.tsx`'s "Played by"
+  section (which does need the full per-sighting detail) was also split into a child component,
+  `ExpandedDeckRow`, so that fetch only fires once a row is actually expanded — previously every
+  one of the ~30 rows on a page fired it unconditionally on mount, unused unless expanded.
+
+Together: on a cold cache, several concurrent multi-hundred-MB in-memory parses is enough memory
+pressure that Safari will silently kill and reload the tab — exactly the reported symptom. Not
+provably eliminated without device-level memory profiling, but the actual bytes downloaded and
+parsed for a first visit to either page dropped from roughly 65MB (deck-sightings.json +
+deck-card-index.json, each fetched multiple times) to a fraction of that (deck-popularity-index.json
++ deck-card-index.json, each fetched exactly once).
+
 **Operational notes for future pipeline runs** (nothing manual required, but worth knowing):
 - The manifest is regenerated unconditionally at the end of every run, reading whatever's currently
   on disk — safe to run after a fetch-only, analysis-only, or full pipeline invocation; it always

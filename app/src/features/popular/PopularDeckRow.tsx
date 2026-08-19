@@ -10,6 +10,47 @@ import { useDeckSightingsData } from "../topdecks/data";
 import { shortHash } from "../../lib/hash";
 import type { PopularDeck } from "./useDeckPopularity";
 
+/**
+ * The decklist + "played by" section, split out so its useDeckSightingsData() call (the full
+ * 40MB+ deck-sightings.json, needed for per-instance placement/wins/losses) only fires once a row
+ * is actually expanded — not for every one of the ~30 rows rendered on page load. That call used
+ * to sit directly in PopularDeckRow, unconditionally, which meant just loading Popular Decks / All
+ * Decks forced the full file to download even though almost no rows ever get expanded — a real
+ * mobile-crash contributor (see git history around the fix).
+ */
+function ExpandedDeckRow({
+  deck,
+  decklist,
+  cardsByName,
+  playerName,
+}: {
+  deck: PopularDeck;
+  decklist: OmnidexDecklist;
+  cardsByName: Map<string, Card>;
+  playerName: (id: number) => string;
+}) {
+  const sightingsData = useDeckSightingsData();
+
+  const instances = useMemo(() => {
+    if (!sightingsData) return [];
+    const deckIdSet = new Set(deck.deckIds);
+    return sightingsData.sightings
+      .filter((s) => deckIdSet.has(s.deckId))
+      .sort((a, b) => (a.placement ?? Infinity) - (b.placement ?? Infinity));
+  }, [sightingsData, deck.deckIds]);
+
+  return (
+    <div className="mt-2 border-t border-ctp-surface0 pt-2">
+      <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={deck.deckIds[0]} />
+
+      <h3 className="mt-4 text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Played by ({instances.length})</h3>
+      <div className="mt-2">
+        <TopDecksList decks={instances} playerName={playerName} />
+      </div>
+    </div>
+  );
+}
+
 export default function PopularDeckRow({
   deck,
   playerName,
@@ -20,7 +61,6 @@ export default function PopularDeckRow({
   championCard: Card | undefined;
 }) {
   const [expanded, setExpanded] = useState(false);
-  const sightingsData = useDeckSightingsData();
 
   const decklist: OmnidexDecklist = useMemo(
     () => ({
@@ -32,14 +72,6 @@ export default function PopularDeckRow({
   );
   const allNames = useMemo(() => [...deck.main, ...deck.material].map((l) => l.name), [deck]);
   const cardsByName = useCardsByNames(allNames);
-
-  const instances = useMemo(() => {
-    if (!sightingsData) return [];
-    const deckIdSet = new Set(deck.deckIds);
-    return sightingsData.sightings
-      .filter((s) => deckIdSet.has(s.deckId))
-      .sort((a, b) => (a.placement ?? Infinity) - (b.placement ?? Infinity));
-  }, [sightingsData, deck.deckIds]);
 
   return (
     <div className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm">
@@ -91,18 +123,7 @@ export default function PopularDeckRow({
         </button>
       </div>
 
-      {expanded && (
-        <div className="mt-2 border-t border-ctp-surface0 pt-2">
-          <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={deck.deckIds[0]} />
-
-          <h3 className="mt-4 text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
-            Played by ({instances.length})
-          </h3>
-          <div className="mt-2">
-            <TopDecksList decks={instances} playerName={playerName} />
-          </div>
-        </div>
-      )}
+      {expanded && <ExpandedDeckRow deck={deck} decklist={decklist} cardsByName={cardsByName} playerName={playerName} />}
     </div>
   );
 }

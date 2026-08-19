@@ -264,6 +264,30 @@ export interface DeckSightingsData {
   sightings: DeckSighting[];
 }
 
+/**
+ * A lean projection of DeckSighting — only the fields `useDeckPopularity.ts` needs to group and
+ * rank decks (championName, per-sighting outcome, event context). Exists because `deck-sightings.json`
+ * grew to 40MB+ (every sighting's full keyword breakdown, price, repeated event/season name
+ * strings, etc.), and Popular Decks / All Decks need the whole file just to get championName +
+ * winRate for every sighting — a real mobile-crash cause (see git history around the fix). This
+ * file is a fraction of the size for the exact same population.
+ */
+export interface DeckPopularityEntry {
+  deckId: string;
+  championName: string | null;
+  player: number;
+  eventId: number;
+  eventDate: string;
+  placement: number | null;
+  winRate: number;
+  weightedScore: number;
+}
+
+export interface DeckPopularityIndexData {
+  generatedAt: string;
+  entries: DeckPopularityEntry[];
+}
+
 export interface KeywordStat {
   keyword: string;
   deckCount: number;

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { useDeckPopularity } from "./useDeckPopularity";
-import { useDeckSightingsData } from "../topdecks/data";
+import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useOmnidexPlayers } from "../tournaments/data";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import PopularDeckRow from "./PopularDeckRow";
@@ -28,13 +28,13 @@ export default function PopularDecksIndex() {
   const [isPending, startTransition] = useTransition();
 
   const { decks, loading } = useDeckPopularity(championName);
-  const sightingsData = useDeckSightingsData();
+  const popularityIndexData = useDeckPopularityIndexData();
   const playersData = useOmnidexPlayers();
 
   const championsPresent = useMemo(() => {
-    if (!sightingsData) return [];
-    return Array.from(new Set(sightingsData.sightings.map((s) => s.championName).filter((n): n is string => n !== null))).sort();
-  }, [sightingsData]);
+    if (!popularityIndexData) return [];
+    return Array.from(new Set(popularityIndexData.entries.map((s) => s.championName).filter((n): n is string => n !== null))).sort();
+  }, [popularityIndexData]);
 
   const elementsPresent = useMemo(() => {
     const set = new Set<string>();

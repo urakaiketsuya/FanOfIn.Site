@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, useTransition } from "react";
 import { useDeckPopularity } from "../popular/useDeckPopularity";
 import { useCardCombination } from "../cards/useCardCombination";
 import { useCardCatalog } from "../cards/useCardCatalog";
-import { useDeckSightingsData } from "../topdecks/data";
+import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useOmnidexPlayers } from "../tournaments/data";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import PopularDeckRow from "../popular/PopularDeckRow";
@@ -39,7 +39,7 @@ export default function AllDecksIndex() {
   const [isPending, startTransition] = useTransition();
 
   const { decks, loading } = useDeckPopularity(championName, 1);
-  const sightingsData = useDeckSightingsData();
+  const popularityIndexData = useDeckPopularityIndexData();
   const playersData = useOmnidexPlayers();
   const cardCatalog = useCardCatalog();
   const combination = useCardCombination(selectedCards);
@@ -49,9 +49,9 @@ export default function AllDecksIndex() {
   const combinationDeckIds = useMemo(() => new Set(combination.deckIds), [combination.deckIds]);
 
   const championsPresent = useMemo(() => {
-    if (!sightingsData) return [];
-    return Array.from(new Set(sightingsData.sightings.map((s) => s.championName).filter((n): n is string => n !== null))).sort();
-  }, [sightingsData]);
+    if (!popularityIndexData) return [];
+    return Array.from(new Set(popularityIndexData.entries.map((s) => s.championName).filter((n): n is string => n !== null))).sort();
+  }, [popularityIndexData]);
 
   const elementsPresent = useMemo(() => {
     const set = new Set<string>();

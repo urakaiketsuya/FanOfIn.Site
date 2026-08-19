@@ -1,7 +1,7 @@
 import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { EVENT_CATEGORY_ORDER, type CardStat, type DeckSimilarityEntry, type PriceData } from "@gatcg/shared";
+import { EVENT_CATEGORY_ORDER, type CardStat, type DeckPopularityEntry, type DeckSimilarityEntry, type PriceData } from "@gatcg/shared";
 import { listCachedBundles } from "../omnidex/cache.js";
 import { loadCardCatalog, buildCardIndex } from "../cards/catalog.js";
 import { computeEloRatings } from "./elo.js";
@@ -116,6 +116,26 @@ export async function buildAnalysis(): Promise<void> {
   await writeFile(
     path.join(DATA_DIR, "deck-sightings.json"),
     JSON.stringify({ generatedAt: new Date().toISOString(), sightings: deckSightings }),
+    "utf-8",
+  );
+
+  // Lean projection for useDeckPopularity.ts (Popular Decks / All Decks) — those pages only need
+  // championName + per-sighting outcome + event context to group/rank decks, not the full
+  // DeckSighting (keywords, price, repeated event/season name strings) that makes deck-sightings.json
+  // 40MB+. See the DeckPopularityEntry doc comment in shared/src/analysis-types.ts.
+  const deckPopularityIndex: DeckPopularityEntry[] = deckSightings.map((s) => ({
+    deckId: s.deckId,
+    championName: s.championName,
+    player: s.player,
+    eventId: s.eventId,
+    eventDate: s.eventDate,
+    placement: s.placement,
+    winRate: s.winRate,
+    weightedScore: s.weightedScore,
+  }));
+  await writeFile(
+    path.join(DATA_DIR, "deck-popularity-index.json"),
+    JSON.stringify({ generatedAt: new Date().toISOString(), entries: deckPopularityIndex }),
     "utf-8",
   );
 

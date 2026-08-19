@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import { decodeCardLines, type DeckCardIndexLine, type DeckSighting } from "@gatcg/shared";
+import { decodeCardLines, type DeckCardIndexLine, type DeckPopularityEntry } from "@gatcg/shared";
 import { useDeckCardIndexData } from "../archetypes/data";
-import { useDeckSightingsData } from "../topdecks/data";
+import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { computeDeckIdentity } from "../../lib/deckIdentity";
 
@@ -47,21 +47,25 @@ interface PopularityResult {
  * Groups every public decklist by its exact main+material card list — distinct from Champions
  * (character-level) and Archetypes (class+element-level), this surfaces specific builds multiple
  * different players independently converged on (or netdecked). Computed client-side from the
- * already-published deck-card-index + deck-sightings datasets, same pattern as useCardCombination.
+ * already-published deck-card-index + deck-popularity-index datasets, same pattern as
+ * useCardCombination. Uses the lean popularity index (not the full deck-sightings.json, 40MB+)
+ * since this only needs championName/winRate/event-context, not every sighting's full detail —
+ * a real mobile-crash cause when this and deck-card-index.json were both required in full just to
+ * render Popular Decks / All Decks (see git history around the fix).
  */
 export function useDeckPopularity(championFilter: string | null, minPlayers: number = MIN_PLAYERS): PopularityResult {
   const rawCardIndexData = useDeckCardIndexData();
   // Guards against a stale IndexedDB copy from before dictionary-encoding shipped — see the same
   // guard in useCardCombination.ts for why.
   const cardIndexData = rawCardIndexData?.cardNames ? rawCardIndexData : undefined;
-  const sightingsData = useDeckSightingsData();
+  const sightingsData = useDeckPopularityIndexData();
   const cardCatalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
 
   const decks = useMemo(() => {
     if (!cardIndexData || !sightingsData) return [];
 
-    const sightingByDeckId = new Map<string, DeckSighting>(sightingsData.sightings.map((s) => [s.deckId, s]));
+    const sightingByDeckId = new Map<string, DeckPopularityEntry>(sightingsData.entries.map((s) => [s.deckId, s]));
 
     interface Group {
       main: DeckCardIndexLine[];
@@ -89,7 +93,7 @@ export function useDeckPopularity(championFilter: string | null, minPlayers: num
 
     const result: PopularDeck[] = [];
     for (const [signature, group] of groups) {
-      const sightings = group.deckIds.map((id) => sightingByDeckId.get(id)).filter((s): s is DeckSighting => !!s);
+      const sightings = group.deckIds.map((id) => sightingByDeckId.get(id)).filter((s): s is DeckPopularityEntry => !!s);
       const players = new Set(sightings.map((s) => s.player));
       if (players.size < minPlayers) continue;
 
