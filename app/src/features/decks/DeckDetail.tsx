@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import type { OmnidexDecklist } from "@gatcg/shared";
@@ -6,10 +6,12 @@ import { gatcgApi } from "../../lib/api/client";
 import { useDeckPopularity } from "../popular/useDeckPopularity";
 import { useDeckSightingsData } from "../topdecks/data";
 import { useOmnidexPlayers } from "../tournaments/data";
-import { useSimilarityData } from "../archetypes/data";
+import { useCardImpactData, useSimilarityData } from "../archetypes/data";
+import { useChampionCardImpact } from "./useChampionCardImpact";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
+import CardImpactTable from "../../components/CardImpactTable";
 import {
   computeAllyPower,
   computeDamageComposition,
@@ -72,6 +74,45 @@ export default function DeckDetail() {
   );
   const allNames = useMemo(() => [...(deck?.main ?? []), ...(deck?.material ?? [])].map((l) => l.name), [deck]);
   const cardsByName = useCardsByNames(allNames);
+
+  // Precise, cluster-scoped "Cards that might help" (Phase 21) only covers the ~128 named-build
+  // clusters — most decks reachable from here (especially one-offs, since All Decks stopped
+  // gating deck pages behind Popular Decks' 2+-player bar) have no cluster match. Fall back to a
+  // broader Champion+Element-scoped recommendation in that case, never show both.
+  const cardImpactData = useCardImpactData();
+  const hasClusterMatch = !!(deck && cardImpactData?.deckClusterIndex[deck.deckIds[0]]);
+
+  const championElementsPresent = useMemo(() => {
+    if (!deck?.championName) return [];
+    const set = new Set<string>();
+    for (const d of decks) {
+      if (d.championName !== deck.championName) continue;
+      for (const e of d.elements) set.add(e);
+    }
+    return Array.from(set).sort();
+  }, [decks, deck?.championName]);
+
+  const [selectedElements, setSelectedElements] = useState<string[]>([]);
+  const [isRecommendationPending, startRecommendationTransition] = useTransition();
+  // Default to the viewed deck's own elements — the narrowest sensible starting point — only when
+  // the viewed deck itself changes (not on every render), same reset-on-identity-change pattern
+  // ArchetypeDetail/ChampionDetail already use for their own per-page state.
+  useEffect(() => {
+    if (deck) setSelectedElements(deck.elements);
+  }, [deck?.signature]);
+
+  function toggleElement(element: string) {
+    startRecommendationTransition(() => {
+      setSelectedElements((prev) => (prev.includes(element) ? prev.filter((e) => e !== element) : [...prev, element]));
+    });
+  }
+
+  const excludeCardNames = useMemo(
+    () => new Set([...(deck?.main ?? []), ...(deck?.material ?? [])].map((l) => l.name)),
+    [deck],
+  );
+  const championImpact = useChampionCardImpact(hasClusterMatch ? null : (deck?.championName ?? null), selectedElements, excludeCardNames);
+  const championImpactCardImages = useCardsByNames(useMemo(() => championImpact.cards.map((c) => c.cardName), [championImpact.cards]));
 
   const composition = useMemo(() => {
     if (!deck) return null;
@@ -303,6 +344,53 @@ export default function DeckDetail() {
       {tab === "decklist" && (
         <div className="mt-6">
           <DecklistView decklist={decklist} cardsByName={cardsByName} showThumbnails deckId={deck.deckIds[0]} />
+        </div>
+      )}
+
+      {tab === "decklist" && !hasClusterMatch && (
+        <div className="mt-6 rounded-md border border-ctp-surface1 bg-ctp-mantle p-3">
+          <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Cards that might help</h3>
+          <p className="mt-1 text-xs text-ctp-subtext0">
+            Cards that correlate with a higher win rate among other {deck.championName ?? "this Champion's"} decks —
+            correlational, not a guarantee.
+          </p>
+          {championElementsPresent.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-3">
+              {championElementsPresent.map((element) => (
+                <label key={element} className="flex items-center gap-1.5 text-xs text-ctp-subtext1">
+                  <input
+                    type="checkbox"
+                    checked={selectedElements.includes(element)}
+                    onChange={() => toggleElement(element)}
+                    className="accent-ctp-blue"
+                  />
+                  {element}
+                </label>
+              ))}
+            </div>
+          )}
+          {championImpact.cards.length === 0 ? (
+            <p className="mt-3 text-sm text-ctp-subtext1">
+              {championImpact.loading
+                ? "Loading…"
+                : championImpact.totalDecks === 0
+                  ? "No decks match these elements yet — try unchecking some."
+                  : `Not enough with/without samples yet among ${championImpact.totalDecks} matching decks.`}
+            </p>
+          ) : (
+            <>
+              <p className="mt-3 text-xs text-ctp-subtext0">
+                Based on {championImpact.totalDecks} matching deck{championImpact.totalDecks === 1 ? "" : "s"}
+                {isRecommendationPending && " — recalculating…"}
+              </p>
+              <CardImpactTable
+                cards={championImpact.cards}
+                cardImages={championImpactCardImages}
+                withLabel="Win rate (with)"
+                withoutLabel="Win rate (without)"
+              />
+            </>
+          )}
         </div>
       )}
 

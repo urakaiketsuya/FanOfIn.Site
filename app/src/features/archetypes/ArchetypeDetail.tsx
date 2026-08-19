@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import type { Card, CardImpactEntry, CardImpactRole } from "@gatcg/shared";
+import type { CardImpactRole } from "@gatcg/shared";
 import { useArchetypeTaxonomyData, useCardImpactData, useMatchupCardImpactData } from "./data";
 import { useDeckSightingsData } from "../topdecks/data";
 import { useOmnidexPlayers } from "../tournaments/data";
@@ -9,6 +9,7 @@ import { useCardsByNames } from "../events/useCardsByNames";
 import DecklistView from "../events/DecklistView";
 import TopDecksList from "../../components/TopDecksList";
 import CardHoverPreview from "../../components/CardHoverPreview";
+import CardImpactTable from "../../components/CardImpactTable";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import { formatUsd } from "../../lib/format";
@@ -24,66 +25,6 @@ const ROLE_FILTERS: { key: CardImpactRole | "all"; label: string }[] = [
 
 type DetailTab = "overview" | "impact" | "decklist" | "playedBy";
 const TAB_KEYS: DetailTab[] = ["overview", "impact", "decklist", "playedBy"];
-
-/** Shared row layout for both the (general or matchup-scoped) "my cards" table and the matchup "opponent cards" table. */
-function ImpactEntryTable({
-  cards,
-  cardImages,
-  withLabel,
-  withoutLabel,
-}: {
-  cards: CardImpactEntry[];
-  cardImages: Map<string, Card>;
-  withLabel: string;
-  withoutLabel: string;
-}) {
-  return (
-    <div className="mt-3 overflow-x-auto">
-      <table className="w-max min-w-full text-sm">
-        <thead>
-          <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-            <th className="py-1 pr-6">Card</th>
-            <th className="py-1 pr-6">Role</th>
-            <th className="py-1 pr-6">{withLabel}</th>
-            <th className="py-1 pr-6">{withoutLabel}</th>
-            <th className="py-1 pr-6">Lift</th>
-            <th className="py-1">Sample</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-          {cards.map((c) => {
-            const card = cardImages.get(c.cardName);
-            return (
-              <tr key={c.cardName}>
-                <td className="py-1.5 pr-6 whitespace-nowrap">
-                  <CardHoverPreview image={card?.editions[0]?.image} alt={c.cardName}>
-                    {card ? (
-                      <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
-                        {c.cardName}
-                      </Link>
-                    ) : (
-                      <span className="text-ctp-text">{c.cardName}</span>
-                    )}
-                  </CardHoverPreview>
-                </td>
-                <td className="py-1.5 pr-6 text-ctp-subtext1 capitalize">{c.role}</td>
-                <td className="py-1.5 pr-6 text-ctp-subtext1">{(c.avgWinRateWith * 100).toFixed(0)}%</td>
-                <td className="py-1.5 pr-6 text-ctp-subtext1">{(c.avgWinRateWithout * 100).toFixed(0)}%</td>
-                <td className={`py-1.5 pr-6 font-semibold ${c.adjustedLift >= 0 ? "text-ctp-green" : "text-ctp-red"}`}>
-                  {c.adjustedLift >= 0 ? "+" : ""}
-                  {(c.adjustedLift * 100).toFixed(1)}pp
-                </td>
-                <td className="py-1.5 text-xs text-ctp-subtext0">
-                  {c.deckCountWith} vs {c.deckCountWithout}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
-  );
-}
 
 export default function ArchetypeDetail() {
   const { id = "" } = useParams<{ id: string }>();
@@ -346,7 +287,7 @@ export default function ArchetypeDetail() {
                   {impactCards.length === 0 ? (
                     <p className="mt-3 text-sm text-ctp-subtext1">No {roleFilter === "all" ? "" : `${roleFilter} `}cards match this filter.</p>
                   ) : (
-                    <ImpactEntryTable
+                    <CardImpactTable
                       cards={impactCards}
                       cardImages={impactCardImages}
                       withLabel="Win rate (with)"
@@ -363,7 +304,7 @@ export default function ArchetypeDetail() {
                     When {selectedMatchup.opponentClusterName} plays these (any section of their deck), your win rate
                     against them tends to be worse — correlational, not a guarantee.
                   </p>
-                  <ImpactEntryTable
+                  <CardImpactTable
                     cards={selectedMatchup.opponentCards}
                     cardImages={impactCardImages}
                     withLabel="Your win rate (they have it)"

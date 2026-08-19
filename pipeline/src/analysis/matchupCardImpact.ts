@@ -1,8 +1,15 @@
-import type { ArchetypeCluster, CardImpactEntry, ClusterMatchupImpact, MatchupCardImpactData } from "@gatcg/shared";
+import {
+  computeCardImpactEntries,
+  type ArchetypeCluster,
+  type CardImpactEntry,
+  type CardSectionRow,
+  type ClusterMatchupImpact,
+  type DeckSections,
+  type MatchupCardImpactData,
+} from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
 import type { CardSignature } from "../cards/catalog.js";
 import { buildEventDeckSignatures, type DeckSignature } from "./decklists.js";
-import { computeCardImpactEntries, type CardSectionRow, type DeckSections } from "./cardImpact.js";
 import { config } from "../config.js";
 
 function sectionsFromSignature(sig: DeckSignature): DeckSections {
