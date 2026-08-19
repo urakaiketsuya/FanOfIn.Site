@@ -160,7 +160,34 @@ const WALKTHROUGH_DECK = {
   bestPlacement: 4,
   avgWinRate: 0.37,
   championImage: "/cards/images/tiptrzblqr.jpg",
+  rating: { composite: 7.0, scores: { aggro: 8, consistency: 6, interaction: 7, resilience: 7 } },
 };
+
+const RATING_PILLARS: { key: keyof typeof WALKTHROUGH_DECK.rating.scores; label: string; description: string }[] = [
+  {
+    key: "aggro",
+    label: "Aggro",
+    description:
+      "Board-pressure proxies: average Ally power, evasion (Unblockable/Ranged), threat count (power-2+ Allies), a cheap memory curve, and guaranteed champion/Ally damage.",
+  },
+  {
+    key: "consistency",
+    label: "Consistency",
+    description:
+      "Card draw, weighted higher for repeatable effects than one-shot ones, plus Floating Memory. Grand Archive has almost no tutors, so this replaces that half of the usual formula entirely.",
+  },
+  {
+    key: "interaction",
+    label: "Interaction",
+    description:
+      "Banish, Destroy, Negate, and Fast-speed access, plus guaranteed damage again (removal counts twice — once as damage, once as interaction). Negate and Fast-speed are weighted heavily; Banish is weighted low since it's table stakes, not a differentiator.",
+  },
+  {
+    key: "resilience",
+    label: "Resilience",
+    description: "Recover (life gain), protection effects (Spellshroud/Intercept/Prevent), and threat count again.",
+  },
+];
 
 const WALKTHROUGH_TYPE_SEGMENTS = buildChartSegments(
   new Map([
@@ -438,6 +465,55 @@ export default function About() {
             list, or paste in a decklist that was never even submitted to Omnidex.{" "}
             <Link to="/compare" className="hover:text-ctp-blue hover:underline">
               Open Compare &rarr;
+            </Link>
+          </p>
+        </div>
+      </section>
+
+      <section className="border-t border-ctp-surface0 px-4 py-16">
+        <div className="mx-auto max-w-2xl">
+          <h2 className="text-center text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">
+            How the Power Rating works
+          </h2>
+          <p className="mx-auto mt-2 max-w-xl text-center text-sm text-ctp-subtext1">
+            Every deck page scores its decklist on four independent 1&ndash;10 pillars, built from scratch for
+            Grand Archive &mdash; the game has almost no tutors and no turn-by-turn match data to simulate a
+            "speed" score from, so the formula leans on real, code-computable signals instead.
+          </p>
+
+          <div className="mt-8 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
+                {WALKTHROUGH_DECK.championName} example
+              </span>
+              <span className="text-2xl font-bold text-ctp-blue">{WALKTHROUGH_DECK.rating.composite.toFixed(2)}</span>
+            </div>
+            <div className="mt-4 space-y-4">
+              {RATING_PILLARS.map((p) => (
+                <div key={p.key}>
+                  <div className="flex items-center gap-2 text-sm">
+                    <span className="w-24 shrink-0 font-semibold text-ctp-text">{p.label}</span>
+                    <div className="h-2 flex-1 rounded-full bg-ctp-surface0">
+                      <div
+                        className="h-2 rounded-full bg-ctp-blue"
+                        style={{ width: `${(WALKTHROUGH_DECK.rating.scores[p.key] / 10) * 100}%` }}
+                      />
+                    </div>
+                    <span className="w-6 shrink-0 text-right text-ctp-subtext0">{WALKTHROUGH_DECK.rating.scores[p.key]}</span>
+                  </div>
+                  <p className="mt-1 text-xs text-ctp-subtext1">{p.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <p className="mx-auto mt-6 max-w-xl text-center text-xs text-ctp-subtext0">
+            The composite is the plain average of the four pillar scores. Every score-band boundary (what raw signal
+            count earns a 1 vs. a 10) is a real percentile from 94 actual Regionals/Ascent 1st-place decklists, not a
+            round number &mdash; and scored per decklist, not per Champion, since the same Champion can have
+            genuinely opposite real builds. Correlational, not causal, same as every other stat on this site.{" "}
+            <Link to={`/decks/${WALKTHROUGH_HASH}`} className="hover:text-ctp-blue hover:underline">
+              See it on this deck's own page &rarr;
             </Link>
           </p>
         </div>

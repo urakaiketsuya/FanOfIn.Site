@@ -11,6 +11,7 @@ const MANIFEST_ENTRIES: { key: string; file: string }[] = [
   { key: "omnidex-judges", file: "omnidex/judges.json" },
   { key: "omnidex-teams", file: "omnidex/teams.json" },
   { key: "omnidex-vods", file: "omnidex/vods.json" },
+  { key: "changelog", file: "changelog.json" },
   { key: "analysis-elo", file: "analysis/elo.json" },
   { key: "analysis-cards", file: "analysis/cards.json" },
   { key: "analysis-keyword-stats", file: "analysis/keyword-stats.json" },

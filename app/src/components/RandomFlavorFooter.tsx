@@ -27,6 +27,9 @@ export default function RandomFlavorFooter() {
       <div className="mt-3">
         <SyncStatus />
       </div>
+      <Link to="/changelog" className="mt-3 inline-block text-[11px] text-ctp-subtext0/70 hover:text-ctp-blue">
+        Changelog
+      </Link>
     </footer>
   );
 }
