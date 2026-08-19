@@ -70,6 +70,8 @@ export default function ArchetypeDetail() {
       for (const m of clusterMatchups) {
         for (const c of m.myCards) names.add(c.cardName);
         for (const c of m.opponentCards) names.add(c.cardName);
+        // `?? []` guards a stale IndexedDB copy from before `answers` existed on this type.
+        for (const a of m.answers ?? []) for (const c of a.answers) names.add(c.cardName);
       }
       return Array.from(names);
     }, [impact, clusterMatchups]),
@@ -310,6 +312,78 @@ export default function ArchetypeDetail() {
                     withLabel="Your win rate (they have it)"
                     withoutLabel="Your win rate (they don't)"
                   />
+                </div>
+              )}
+
+              {selectedMatchup && (selectedMatchup.answers?.length ?? 0) > 0 && (
+                <div className="mt-6">
+                  <h3 className="text-sm font-semibold text-ctp-green uppercase tracking-wide">Possible answers</h3>
+                  <p className="mt-1 text-xs text-ctp-subtext0">
+                    For each card above, cards of your own that correlate with doing better specifically in the games
+                    where the opponent had it — correlational, not a guarantee.
+                  </p>
+                  <div className="mt-3 overflow-x-auto">
+                    <table className="w-max min-w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+                          <th className="py-1 pr-6">Their card</th>
+                          <th className="py-1 pr-6">Your answer</th>
+                          <th className="py-1 pr-6">Role</th>
+                          <th className="py-1 pr-6">Mitigation</th>
+                          <th className="py-1 pr-6">Sample</th>
+                          <th className="py-1">Scope</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
+                        {(selectedMatchup.answers ?? []).flatMap((oa) =>
+                          oa.answers.map((a) => {
+                            const theirCard = impactCardImages.get(oa.opponentCardName);
+                            const answerCard = impactCardImages.get(a.cardName);
+                            return (
+                              <tr key={`${oa.opponentCardName}::${a.cardName}`}>
+                                <td className="py-1.5 pr-6 whitespace-nowrap">
+                                  <CardHoverPreview image={theirCard?.editions[0]?.image} alt={oa.opponentCardName}>
+                                    {theirCard ? (
+                                      <Link to={`/cards/${theirCard.slug}`} className="text-ctp-text hover:text-ctp-blue">
+                                        {oa.opponentCardName}
+                                      </Link>
+                                    ) : (
+                                      <span className="text-ctp-text">{oa.opponentCardName}</span>
+                                    )}
+                                  </CardHoverPreview>
+                                </td>
+                                <td className="py-1.5 pr-6 whitespace-nowrap">
+                                  <CardHoverPreview image={answerCard?.editions[0]?.image} alt={a.cardName}>
+                                    {answerCard ? (
+                                      <Link to={`/cards/${answerCard.slug}`} className="text-ctp-text hover:text-ctp-blue">
+                                        {a.cardName}
+                                      </Link>
+                                    ) : (
+                                      <span className="text-ctp-text">{a.cardName}</span>
+                                    )}
+                                  </CardHoverPreview>
+                                </td>
+                                <td className="py-1.5 pr-6 text-ctp-subtext1 capitalize">{a.role}</td>
+                                <td className="py-1.5 pr-6 font-semibold text-ctp-green">+{(a.mitigation * 100).toFixed(1)}pp</td>
+                                <td className="py-1.5 pr-6 text-xs text-ctp-subtext0">
+                                  {a.sampleWithAnswer} vs {a.sampleWithoutAnswer}
+                                </td>
+                                <td className="py-1.5 text-xs">
+                                  {a.scope === "champion" ? (
+                                    <span className="text-ctp-yellow" title={`Based on the broader ${cluster.championName} matchup, not this specific build — this build's own matchup sample didn't have enough data.`}>
+                                      Champion-wide
+                                    </span>
+                                  ) : (
+                                    <span className="text-ctp-subtext0">This build</span>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          }),
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               )}
             </div>

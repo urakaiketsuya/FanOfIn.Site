@@ -457,6 +457,32 @@ export interface CardImpactData {
  * little data to break a matchup down card-by-card — `myCards`/`opponentCards` are simply empty
  * in that case rather than the matchup being omitted outright.
  */
+/**
+ * One of my own cards that correlates with blunting a specific opponent card's sting — restricted
+ * to games where the opponent had that card, split by whether I also had this one. `scope`
+ * records which population produced the number: `"cluster"` (the precise named-build-vs-named-
+ * build pool, same as `myCards`/`opponentCards`) when it had enough games to clear the sample bar
+ * on its own, else `"champion"` (my whole Champion vs. their whole Champion, not gated by cluster
+ * membership — much bigger, less precise) as a fallback. The UI should disclaim `"champion"`
+ * entries as broader/less precise.
+ */
+export interface AnswerCardEntry {
+  cardName: string;
+  role: CardImpactRole;
+  /** Shrunk win-rate-with-my-card minus shrunk win-rate-without, both restricted to games where the opponent had the card being answered. */
+  mitigation: number;
+  sampleWithAnswer: number;
+  sampleWithoutAnswer: number;
+  scope: "cluster" | "champion";
+}
+
+export interface OpponentCardAnswers {
+  /** Matches a `cardName` in this matchup's `opponentCards`. */
+  opponentCardName: string;
+  /** Top candidates by mitigation descending. */
+  answers: AnswerCardEntry[];
+}
+
 export interface ClusterMatchupImpact {
   clusterId: string;
   opponentClusterId: string;
@@ -469,6 +495,8 @@ export interface ClusterMatchupImpact {
   myCards: CardImpactEntry[];
   /** The opponent's cards — role is their role in the OPPONENT's deck — sorted by adjustedLift ascending (most negative, i.e. worst for me, first). */
   opponentCards: CardImpactEntry[];
+  /** For opponentCards with a qualifying answer at either scope — see AnswerCardEntry. Only entries with >=1 answer are present. */
+  answers: OpponentCardAnswers[];
 }
 
 export interface MatchupCardImpactData {

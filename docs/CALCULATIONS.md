@@ -245,6 +245,31 @@ means most matchup rows will have a games/win-rate summary but no card table —
 clusters against the largest opponents will have enough games to say anything about individual
 cards.
 
+**Answer cards** (`computeAnswerCards`, called `answers` on `ClusterMatchupImpact`): for a card B
+that already qualifies as "hurts you," does running one of *my* own cards A blunt that — i.e., do I
+do better specifically in the games where the opponent had B, if I also had A? Restrict to rows
+where the opponent had B, split those by whether I had A, shrink each side toward *that subset's
+own* mean outcome (not the whole matchup's baseline — using the matchup baseline would understate
+B's harm by mixing in every game B wasn't even present for), and keep only positive mitigation
+(`computeSingleCardImpact`/`computeCardImpactEntries`, same shared scoring core as everywhere
+else). This is a strictly smaller population than the matchup's own `opponentCards` split
+(B-present rows, further split a second way), so most matchups' precise cluster-level pool doesn't
+have room for it — verified against the biggest real matchup (Tera Silvie's own mirror, 94 games):
+its worst "hurts you" card was already a 16-vs-78 split on card B alone, leaving only 16 games to
+divide a second way by card A.
+
+Because of that, the computation tries the precise cluster-level pool first and, only when a given
+(A, B) pair doesn't clear `cardImpactMinSampleSize` on both sides there, falls back to a second,
+much bigger pool: every recorded pairing between my whole Champion and the opponent's whole
+Champion, not gated by cluster/named-build membership at all (built the same way as the cluster
+pool — same `pairingsByRound` loop, same per-game card sections — just keyed by
+`${championA}__${championB}` instead of `${clusterA}__${clusterB}`, and requiring only that both
+sides resolved a Champion, not that they belong to a named-build cluster). Each published answer
+carries `scope: "cluster" | "champion"` so the UI can disclaim the broader, less precise ones.
+Verified against real output: 302 of 1,247 published answers resolved at the precise cluster level,
+963 needed the Champion-level fallback — confirming the fallback is the common case, not an edge
+case, exactly as the sample-size math above predicts.
+
 ## Deck similarity (`pipeline/src/analysis/similarity.ts`)
 
 **Base metric**: weighted Jaccard, a.k.a. Ruzicka similarity, over each deck's card-copy multiset
