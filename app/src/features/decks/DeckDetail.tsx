@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import type { OmnidexDecklist } from "@gatcg/shared";
@@ -29,6 +29,7 @@ import TopDecksList from "../../components/TopDecksList";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import { useTabParam } from "../../lib/useTabParam";
 import DonutChart, { buildChartSegments } from "../../components/DonutChart";
 import BarChart from "../../components/BarChart";
 
@@ -40,10 +41,11 @@ const TABS: { key: DeckTab; label: string }[] = [
   { key: "history", label: "History" },
   { key: "similar", label: "Similar Decks" },
 ];
+const TAB_KEYS = TABS.map((t) => t.key);
 
 export default function DeckDetail() {
   const { hash = "" } = useParams<{ hash: string }>();
-  const [tab, setTab] = useState<DeckTab>("decklist");
+  const [tab, setTab] = useTabParam("tab", TAB_KEYS, "decklist");
 
   const { decks, loading } = useDeckPopularity(null);
   const sightingsData = useDeckSightingsData();

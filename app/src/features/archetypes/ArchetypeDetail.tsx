@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { CardImpactRole } from "@gatcg/shared";
 import { useArchetypeTaxonomyData, useCardImpactData } from "./data";
@@ -10,6 +10,7 @@ import DecklistView from "../events/DecklistView";
 import TopDecksList from "../../components/TopDecksList";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import { useTabParam } from "../../lib/useTabParam";
 import { formatUsd } from "../../lib/format";
 import { buildCompareLink } from "../compare/deepLink";
 
@@ -21,6 +22,7 @@ const ROLE_FILTERS: { key: CardImpactRole | "all"; label: string }[] = [
 ];
 
 type DetailTab = "overview" | "impact" | "decklist" | "playedBy";
+const TAB_KEYS: DetailTab[] = ["overview", "impact", "decklist", "playedBy"];
 
 export default function ArchetypeDetail() {
   const { id = "" } = useParams<{ id: string }>();
@@ -30,8 +32,16 @@ export default function ArchetypeDetail() {
   const playersData = useOmnidexPlayers();
   const cardImpactData = useCardImpactData();
   const [roleFilter, setRoleFilter] = useState<CardImpactRole | "all">("all");
-  const [tab, setTab] = useState<DetailTab>("overview");
-  useEffect(() => setTab("overview"), [id]);
+  const [tab, setTab] = useTabParam("tab", TAB_KEYS, "overview");
+  // Only reset when navigating from one build's page to a different one (same component instance
+  // reused by the router) — not on initial mount, which would otherwise clobber a `?tab=` deep link.
+  const prevIdRef = useRef(id);
+  useEffect(() => {
+    if (prevIdRef.current !== id) {
+      setTab("overview");
+      prevIdRef.current = id;
+    }
+  }, [id, setTab]);
 
   const cluster = data?.clusters.find((c) => c.id === id);
   const impact = cardImpactData?.clusters.find((c) => c.clusterId === id);

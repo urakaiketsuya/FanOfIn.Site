@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import type { BattleChartEntry } from "@gatcg/shared";
 import { useArchetypeData } from "./data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import { useTabParam } from "../../lib/useTabParam";
 
 type ViewTab = "matrix" | "champion" | "highlights";
 
@@ -11,6 +12,7 @@ const TABS: { key: ViewTab; label: string }[] = [
   { key: "champion", label: "By Champion" },
   { key: "highlights", label: "Highlights" },
 ];
+const TAB_KEYS = TABS.map((t) => t.key);
 
 function winRateColor(rate: number | null): string {
   if (rate === null) return "text-ctp-subtext0";
@@ -44,7 +46,7 @@ function matchupsFor(champion: string, battleChart: BattleChartEntry[]): Matchup
 export default function BattleChart() {
   useDocumentTitle("Battle Chart", "Archetype-vs-archetype win rate matrix for Grand Archive TCG.");
   const data = useArchetypeData();
-  const [tab, setTab] = useState<ViewTab>("matrix");
+  const [tab, setTab] = useTabParam("tab", TAB_KEYS, "matrix");
   const [champion, setChampion] = useState<string | null>(null);
 
   const signatures = useMemo(() => {

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, type OmnidexStanding } from "@gatcg/shared";
 import { isApiErrorBody } from "../../lib/api/client";
@@ -11,8 +11,10 @@ import JudgesSection from "./JudgesSection";
 import RawObject from "./RawObject";
 import PlayerLink from "../players/PlayerLink";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import { useTabParam } from "../../lib/useTabParam";
 
 type EventTab = "standings" | "pairings" | "decklists" | "teams" | "judges" | "statistics";
+const ALL_EVENT_TABS: EventTab[] = ["standings", "pairings", "decklists", "teams", "judges", "statistics"];
 
 export default function EventDetail() {
   const { id = "" } = useParams<{ id: string }>();
@@ -32,7 +34,7 @@ export default function EventDetail() {
   const [searchParams] = useSearchParams();
   const initialPlayerParam = searchParams.get("player");
   const initialPlayer = initialPlayerParam ? Number(initialPlayerParam) : undefined;
-  const [tab, setTab] = useState<EventTab>(() => (initialPlayer !== undefined ? "decklists" : "standings"));
+  const [tab, setTab] = useTabParam("tab", ALL_EVENT_TABS, initialPlayer !== undefined ? "decklists" : "standings");
 
   // Individual-format events key each standing by numeric player `id`. Team-format events (e.g.
   // 3v3) instead key by team `name` and have no per-player record at all -- verified live against

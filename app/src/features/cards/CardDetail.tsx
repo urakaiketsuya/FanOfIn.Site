@@ -22,6 +22,7 @@ import { useOmnidexPlayers } from "../tournaments/data";
 import UniqueDeckRow from "../champions/UniqueDeckRow";
 import { formatUsd } from "../../lib/format";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import { useTabParam } from "../../lib/useTabParam";
 
 const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
@@ -34,6 +35,7 @@ const TABS: { key: CardTab; label: string }[] = [
   { key: "combos", label: "Combos" },
   { key: "decks", label: "Decks" },
 ];
+const TAB_KEYS = TABS.map((t) => t.key);
 
 const BADGE_CLASS =
   "flex items-center gap-1 rounded-full border border-ctp-surface1 bg-ctp-surface0 px-2 py-0.5 text-xs text-ctp-subtext1";
@@ -74,7 +76,7 @@ export default function CardDetail() {
   );
   const [editionIndex, setEditionIndex] = useState(0);
   const [editionsExpanded, setEditionsExpanded] = useState(false);
-  const [tab, setTab] = useState<CardTab>("info");
+  const [tab, setTab] = useTabParam("tab", TAB_KEYS, "info");
   const options = useQuery({ queryKey: ["option-definitions"], queryFn: gatcgApi.getOptionDefinitions });
   const rarityDisplay = (rarity: number) =>
     options.data?.rarity.find((r) => r.value === String(rarity))?.display ?? String(rarity);

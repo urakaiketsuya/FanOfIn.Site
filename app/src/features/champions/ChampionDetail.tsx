@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useArchetypeData, useArchetypeTaxonomyData, useChampionTrendsData } from "../archetypes/data";
 import { useDeckSightingsData } from "../topdecks/data";
@@ -9,6 +9,7 @@ import TopCardsSections from "../../components/TopCardsSections";
 import TopDecksList from "../../components/TopDecksList";
 import UniqueDeckRow from "./UniqueDeckRow";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import { useTabParam } from "../../lib/useTabParam";
 
 const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
@@ -22,6 +23,7 @@ const TABS: { key: ChampionTab; label: string }[] = [
   { key: "builds", label: "Builds" },
   { key: "decks", label: "Decks" },
 ];
+const TAB_KEYS = TABS.map((t) => t.key);
 
 function titleCase(s: string): string {
   return s.charAt(0) + s.slice(1).toLowerCase();
@@ -52,11 +54,18 @@ export default function ChampionDetail() {
   }, [trend]);
 
   const [spiritFilter, setSpiritFilter] = useState<SpiritFilter>({ kind: "all" });
-  const [tab, setTab] = useState<ChampionTab>("season");
+  const [tab, setTab] = useTabParam("tab", TAB_KEYS, "season");
+  // Only reset when navigating from one Champion's page to a different one (same component
+  // instance reused by the router) — not on initial mount, which would otherwise clobber a
+  // `?tab=` deep link.
+  const prevChampionNameRef = useRef(championName);
   useEffect(() => {
-    setSpiritFilter({ kind: "all" });
-    setTab("season");
-  }, [championName]);
+    if (prevChampionNameRef.current !== championName) {
+      setSpiritFilter({ kind: "all" });
+      setTab("season");
+      prevChampionNameRef.current = championName;
+    }
+  }, [championName, setTab]);
 
   const displayedTopCards = useMemo(() => {
     if (!champion) return null;

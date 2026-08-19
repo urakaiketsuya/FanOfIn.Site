@@ -8,6 +8,7 @@ import ComparisonCards from "./ComparisonCards";
 import { useComparedDecklists } from "./useComparedDecklists";
 import { useOmnidexIndex, useOmnidexPlayers } from "../tournaments/data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import { useTabParam } from "../../lib/useTabParam";
 import type { ComparedDeck } from "./types";
 
 type SourceTab = "cards" | "player" | "paste";
@@ -18,11 +19,12 @@ const TAB_LABELS: Record<SourceTab, string> = {
   player: "Import by player",
   paste: "Paste a decklist",
 };
+const SOURCE_TAB_KEYS = Object.keys(TAB_LABELS) as SourceTab[];
 
 export default function CompareIndex() {
   useDocumentTitle("Compare Decks", "Compare Grand Archive TCG decklists side by side to see exactly where they overlap and diverge.");
   const [decks, setDecks] = useState<ComparedDeck[]>([]);
-  const [tab, setTab] = useState<SourceTab>("cards");
+  const [tab, setTab] = useTabParam("tab", SOURCE_TAB_KEYS, "cards");
   // Table needs horizontal space (one column per deck) — default to the stacked card view on a
   // phone-sized viewport instead, so the compare set is usable without opening on desktop first.
   const [viewMode, setViewMode] = useState<ViewMode>(() => (window.innerWidth < 768 ? "cards" : "table"));
