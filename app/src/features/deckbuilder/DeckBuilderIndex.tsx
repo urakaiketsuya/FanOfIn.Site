@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Link } from "react-router-dom";
-import type { OmnidexDecklist } from "@gatcg/shared";
+import type { CompositionWinRateData, CompositionWinRateStat, OmnidexDecklist } from "@gatcg/shared";
 import { useDeckPopularityIndexData } from "../topdecks/data";
+import { useCardQuantityStatsData, useCompositionWinRateData } from "../archetypes/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { parseDecklist } from "../compare/parseDecklist";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -141,21 +142,104 @@ function BuddyCardsList({
   );
 }
 
+// Mirrors pipeline/src/analysis/deckCompositionStats.ts's bucketing exactly, so a build's own
+// composition lands in the same bucket the published win-rate data was computed against.
+const COMPOSITION_MIN_BUCKET_SAMPLE = 30;
+const COMPOSITION_GAP_FLOOR = 0.02;
+
+function compositionBucketLabel(pct: number): string {
+  const lower = Math.min(90, Math.floor(pct / 10) * 10);
+  return `${lower}-${lower + 10}%`;
+}
+
+interface CompositionGap {
+  type: string;
+  currentPct: number;
+  currentBucket: string;
+  currentWinRate: number;
+  bestBucket: string;
+  bestWinRate: number;
+  gap: number;
+}
+
+/**
+ * Compares the build's own main-deck type ratios against the global composition-win-rate data —
+ * main deck only, weighted by copies, same scope the pipeline computed it at. Only flags a type
+ * when its current bucket has a real sample of its own (not just the best bucket) and the gap to
+ * the best-performing bucket for that type clears a real margin, not shrinkage noise.
+ */
+function computeCompositionGaps(
+  mainLines: { name: string; quantity: number }[],
+  cardsByName: ReturnType<typeof useCardsByNames>,
+  compositionWinRateData: CompositionWinRateData | undefined,
+): CompositionGap[] {
+  if (!compositionWinRateData || mainLines.length === 0) return [];
+
+  const typeCounts = new Map<string, number>();
+  let total = 0;
+  for (const line of mainLines) {
+    const card = cardsByName.get(line.name);
+    if (!card) continue;
+    total += line.quantity;
+    for (const t of card.types) typeCounts.set(t, (typeCounts.get(t) ?? 0) + line.quantity);
+  }
+  if (total === 0) return [];
+
+  const byType = new Map<string, CompositionWinRateStat[]>();
+  for (const s of compositionWinRateData.stats) {
+    const list = byType.get(s.type) ?? [];
+    list.push(s);
+    byType.set(s.type, list);
+  }
+
+  const gaps: CompositionGap[] = [];
+  for (const [type, buckets] of byType) {
+    const eligible = buckets.filter((b) => b.deckCount >= COMPOSITION_MIN_BUCKET_SAMPLE);
+    if (eligible.length === 0) continue;
+    const pct = ((typeCounts.get(type) ?? 0) / total) * 100;
+    const currentBucketLabel = compositionBucketLabel(pct);
+    const currentBucket = eligible.find((b) => b.bucket === currentBucketLabel);
+    if (!currentBucket) continue;
+    const best = eligible.reduce((a, b) => (b.adjustedWinRate > a.adjustedWinRate ? b : a));
+    const gap = best.adjustedWinRate - currentBucket.adjustedWinRate;
+    if (gap >= COMPOSITION_GAP_FLOOR && best.bucket !== currentBucketLabel) {
+      gaps.push({
+        type,
+        currentPct: pct,
+        currentBucket: currentBucketLabel,
+        currentWinRate: currentBucket.adjustedWinRate,
+        bestBucket: best.bucket,
+        bestWinRate: best.adjustedWinRate,
+        gap,
+      });
+    }
+  }
+  return gaps.sort((a, b) => b.gap - a.gap);
+}
+
 /** Same composition/rating stats as a deck's own dedicated page (DeckDetail.tsx), recomputed live from whatever's currently assembled — updates as cards get locked, added, or removed. */
 function StatsPanel({
   lines,
+  mainLines,
   cardsByName,
   championName,
+  compositionWinRateData,
 }: {
   lines: { name: string; quantity: number }[];
+  mainLines: { name: string; quantity: number }[];
   cardsByName: ReturnType<typeof useCardsByNames>;
   championName: string | null;
+  compositionWinRateData: CompositionWinRateData | undefined;
 }) {
   const identity = useMemo(() => computeDeckIdentity(lines, cardsByName), [lines, cardsByName]);
   const composition = useMemo(() => computeDeckComposition(lines, cardsByName), [lines, cardsByName]);
   const rating = useMemo(() => computeDeckRating(lines, cardsByName, championName, identity.classes), [lines, cardsByName, championName, identity.classes]);
   const memoryCurve = useMemo(() => computeMemoryCostCurve(lines, cardsByName), [lines, cardsByName]);
   const reserveCurve = useMemo(() => computeReserveCostCurve(lines, cardsByName), [lines, cardsByName]);
+  const compositionGaps = useMemo(
+    () => computeCompositionGaps(mainLines, cardsByName, compositionWinRateData),
+    [mainLines, cardsByName, compositionWinRateData],
+  );
 
   if (lines.length === 0) return <p className="mt-6 text-sm text-ctp-subtext1">Nothing in the build yet.</p>;
 
@@ -178,6 +262,25 @@ function StatsPanel({
           ))}
         </div>
       </div>
+
+      {compositionGaps.length > 0 && (
+        <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+          <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Composition suggestions</h2>
+          <p className="mt-1 text-xs text-ctp-subtext0">
+            Across every public main deck (not scoped to this Champion), win rate by what share of the deck each
+            card type makes up — correlational, not causal, same as everywhere else on this site.
+          </p>
+          <ul className="mt-2 space-y-1.5 text-sm">
+            {compositionGaps.map((g) => (
+              <li key={g.type} className="text-ctp-subtext1">
+                <span className="font-semibold text-ctp-text capitalize">{g.type.toLowerCase()}</span> is {g.currentBucket} of your main deck
+                ({(g.currentWinRate * 100).toFixed(0)}% win rate) — decks at {g.bestBucket} average{" "}
+                <span className="font-semibold text-ctp-green">{(g.bestWinRate * 100).toFixed(0)}%</span>.
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <BarChart title="Memory Cost Curve" bars={memoryCurve} />
@@ -226,7 +329,12 @@ function CardRow({
           className="w-11 shrink-0 rounded border border-ctp-surface1 bg-ctp-mantle px-1 py-0.5 text-right text-xs text-ctp-text focus:border-ctp-blue focus:outline-none"
         />
       ) : (
-        <span className="w-6 shrink-0 text-right text-ctp-subtext0">{card.quantity}x</span>
+        <span
+          className="w-6 shrink-0 text-right text-ctp-subtext0"
+          title={card.optimizedFrom !== null ? `Quantity optimized from ${card.optimizedFrom}x — this card's global win rate is higher at ${card.quantity}x` : undefined}
+        >
+          {card.quantity}x{card.optimizedFrom !== null && <span className="text-ctp-blue">*</span>}
+        </span>
       )}
       {cardInfo && cardInfo.element !== "NORM" && <ElementIcon element={cardInfo.element} size={14} />}
       <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={card.cardName}>
@@ -292,7 +400,12 @@ function SuggestionRow({
   const unitPrice = priceByName.get(card.cardName);
   return (
     <li className="flex flex-wrap items-center gap-1.5 rounded-md border border-ctp-surface1 px-2 py-1 text-sm">
-      <span className="w-6 shrink-0 text-right text-ctp-subtext0">{card.quantity}x</span>
+      <span
+        className="w-6 shrink-0 text-right text-ctp-subtext0"
+        title={card.optimizedFrom !== null ? `Quantity optimized from ${card.optimizedFrom}x — this card's global win rate is higher at ${card.quantity}x` : undefined}
+      >
+        {card.quantity}x{card.optimizedFrom !== null && <span className="text-ctp-blue">*</span>}
+      </span>
       {cardInfo && cardInfo.element !== "NORM" && <ElementIcon element={cardInfo.element} size={14} />}
       <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={card.cardName}>
         {cardInfo ? (
@@ -358,7 +471,9 @@ export default function DeckBuilderIndex() {
   const cardCatalog = useCardCatalog();
   const catalogByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
   const { rows, spiritsPresent, loading: populationLoading } = useDeckBuilderPopulation(championName);
-  const build = useSuggestedBuild(rows, spiritFilter, lockedCards, rejectedCards, populationLoading, lockedSections);
+  const cardQuantityStatsData = useCardQuantityStatsData();
+  const compositionWinRateData = useCompositionWinRateData();
+  const build = useSuggestedBuild(rows, spiritFilter, lockedCards, rejectedCards, populationLoading, lockedSections, cardQuantityStatsData);
 
   useEffect(() => {
     const current = new Set(
@@ -556,6 +671,7 @@ export default function DeckBuilderIndex() {
     () => [...build.material, ...build.main].map((c) => ({ name: c.cardName, quantity: c.quantity })),
     [build.material, build.main],
   );
+  const mainOnlyLines = useMemo(() => build.main.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.main]);
   const sideboardLines = useMemo(() => build.sideboard.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.sideboard]);
 
   const decklist: OmnidexDecklist = useMemo(
@@ -836,6 +952,12 @@ export default function DeckBuilderIndex() {
                   <option key={n} value={n} />
                 ))}
               </datalist>
+              {build.hasQuantityOptimizations && (
+                <p className="mt-2 text-xs text-ctp-subtext0">
+                  <span className="text-ctp-blue">*</span> quantity adjusted from what this population usually runs — this card's own
+                  global win rate is meaningfully higher at that count, regardless of Champion.
+                </p>
+              )}
 
               <div className={`mt-3 grid gap-4 sm:grid-cols-2 transition-opacity ${isPending ? "opacity-50" : ""}`}>
                 <div>
@@ -937,7 +1059,15 @@ export default function DeckBuilderIndex() {
             </div>
           )}
 
-          {tab === "stats" && <StatsPanel lines={buildLines} cardsByName={cardsByName} championName={championName} />}
+          {tab === "stats" && (
+            <StatsPanel
+              lines={buildLines}
+              mainLines={mainOnlyLines}
+              cardsByName={cardsByName}
+              championName={championName}
+              compositionWinRateData={compositionWinRateData}
+            />
+          )}
 
           {tab === "buddies" && (
             <BuddyCardsList lockedNames={Array.from(lockedCards.keys())} buddyCards={buddyCards} cardsByName={cardsByName} onAdd={addCard} />

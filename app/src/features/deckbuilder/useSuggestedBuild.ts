@@ -1,5 +1,12 @@
 import { useMemo } from "react";
-import { computeCardImpactEntries, computeSingleCardImpact, type Card, type CardImpactEntry, type CardSectionRow } from "@gatcg/shared";
+import {
+  computeCardImpactEntries,
+  computeSingleCardImpact,
+  type Card,
+  type CardImpactEntry,
+  type CardQuantityStatsData,
+  type CardSectionRow,
+} from "@gatcg/shared";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import type { DeckBuilderRow } from "./useDeckBuilderPopulation";
 
@@ -13,6 +20,8 @@ const MAX_EXTRA_SUGGESTIONS = 8;
 /** A locked card's own lift needs to clear this far below zero (not just "any negative number") before it's worth flagging as a removal candidate — same shrinkage-noise-floor reasoning as the positive suggestion side. */
 const REMOVAL_LIFT_CEILING = -0.02;
 const MAX_REMOVAL_SUGGESTIONS = 5;
+/** How much better the best global quantity bucket's win rate needs to be than the population's modal quantity before it's worth overriding — a card's own global win-rate-by-quantity curve is real data, but a tiny/noisy edge shouldn't flip the number away from what this Champion's own decks actually run. */
+const QUANTITY_OPTIMIZATION_MARGIN = 0.01;
 
 type DeckSection = "main" | "material" | "sideboard";
 
@@ -25,6 +34,8 @@ export interface SuggestedCard {
   /** null when there's no lift number to show — either it's the viewer's picked Spirit, or a Champion-level print so near-universally run that it never cleared the with/without sample bar (see the "staple" note below). */
   adjustedLift: number | null;
   sample: { with: number; without: number } | null;
+  /** Set only when the global card-quantity data (win rate by copy count, not scoped to this Champion) meaningfully beat the population's own modal quantity for this card — the quantity this slot *would* have gotten otherwise. Never applies to a locked card (its quantity is the viewer's own choice, including via manual edits). */
+  optimizedFrom: number | null;
   /** "spirit" = the viewer's own Spirit pick, not ranked. "staple" = a Champion-level print included because it's the most commonly run print at that level, not because it cleared the lift sample bar (near-100%-adoption cards usually don't — their "without" bucket is too thin). "ranked" = a normal lift-ranked suggestion. */
   reason: "spirit" | "staple" | "ranked";
 }
@@ -38,6 +49,8 @@ export interface SuggestedBuild {
   suggestions: SuggestedCard[];
   /** Locked cards whose own with/without split (against the Spirit-only population, independent of any other lock) came out meaningfully negative — a candidate to cut, not just "no data either way." Always locked (they're already in material/main/sideboard); "Remove" is the only action. */
   removalSuggestions: SuggestedCard[];
+  /** True when at least one card's quantity was overridden by the global quantity-vs-win-rate data — drives a one-line legend explaining the "*" marker, shown only when it'd actually apply to something on screen. */
+  hasQuantityOptimizations: boolean;
   /** Size of the population actually used to rank suggestions for the remaining (unlocked) slots — not the same as the total matching-decks count once usedFallback is true. */
   rankingPopulationSize: number;
   /** True once enough cards are locked that the exact (Spirit + all locks) population got too thin to rank against, so remaining suggestions fell back to the Spirit-only population instead. */
@@ -84,6 +97,7 @@ function toSuggested(
   entry: CardImpactEntry | undefined,
   reason: SuggestedCard["reason"],
   section: DeckSection,
+  optimizedFrom: number | null = null,
 ): SuggestedCard {
   return {
     cardName,
@@ -93,7 +107,41 @@ function toSuggested(
     adjustedLift: entry?.adjustedLift ?? null,
     sample: entry ? { with: entry.deckCountWith, without: entry.deckCountWithout } : null,
     reason,
+    optimizedFrom,
   };
+}
+
+/**
+ * Picks a slot's quantity from the population's own modal count, unless the card's global
+ * win-rate-by-quantity data (not scoped to this Champion — a card's copy-count curve is a
+ * card-level property, e.g. "Dungeon Guide wins more at 4x than 2x" holds regardless of who's
+ * playing it) shows a clearly better quantity within the legal max. Returns the chosen quantity
+ * plus, when it differs from modal, what it was optimized *from* — for the UI to disclose the
+ * override rather than silently showing a number that doesn't match "what people actually run."
+ */
+function pickQuantity(
+  rows: DeckBuilderRow[],
+  section: DeckSection,
+  cardName: string,
+  card: Card | undefined,
+  quantityBucketsByName: Map<string, { quantity: number; deckCount: number; adjustedWinRate: number }[]>,
+): { quantity: number; optimizedFrom: number | null } {
+  const modal = modalQuantity(rows, section, cardName, card);
+  const buckets = quantityBucketsByName.get(cardName);
+  if (!buckets) return { quantity: modal, optimizedFrom: null };
+
+  const max = legalMaxCopies(card);
+  const eligible = buckets.filter((b) => b.deckCount >= MIN_SAMPLE_SIZE && b.quantity >= 1 && b.quantity <= max);
+  if (eligible.length === 0) return { quantity: modal, optimizedFrom: null };
+
+  const best = eligible.reduce((a, b) => (b.adjustedWinRate > a.adjustedWinRate ? b : a));
+  if (best.quantity === modal) return { quantity: modal, optimizedFrom: null };
+
+  const modalWinRate = eligible.find((b) => b.quantity === modal)?.adjustedWinRate ?? null;
+  if (modalWinRate !== null && best.adjustedWinRate - modalWinRate < QUANTITY_OPTIMIZATION_MARGIN) {
+    return { quantity: modal, optimizedFrom: null };
+  }
+  return { quantity: best.quantity, optimizedFrom: modal };
 }
 
 /**
@@ -113,9 +161,16 @@ export function useSuggestedBuild(
   loading: boolean,
   /** Section a lock is *known* to belong to (e.g. from a pasted decklist's own Main/Material/Sideboard headers) — trusted over the population-derived `sectionOf` guess below, which can misclassify a card the current population barely plays (see the Resonance Bauble bug: near-zero sample defaults to "main" regardless of the card's real section), and is the only way a card ever lands in the sideboard at all (there's no population-driven sideboard guess). Cards locked without a known section (manual "Add a card") still fall back to the main/material guess. */
   lockedSections: Map<string, "main" | "material" | "sideboard"> = new Map(),
+  /** Global (not Champion-scoped) win rate by copy count, published per-card — lets a suggested/ranked-fill quantity be overridden toward whichever copy count actually wins more, when the data clearly says so. Omit to always use the population's modal quantity, same as before this existed. */
+  cardQuantityStatsData?: CardQuantityStatsData,
 ): SuggestedBuild {
   const cardCatalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
+  const quantityBucketsByName = useMemo(() => {
+    const map = new Map<string, { quantity: number; deckCount: number; adjustedWinRate: number }[]>();
+    for (const c of cardQuantityStatsData?.cards ?? []) map.set(c.name, c.quantities);
+    return map;
+  }, [cardQuantityStatsData]);
 
   return useMemo((): SuggestedBuild => {
     if (loading || rows.length === 0)
@@ -125,6 +180,7 @@ export function useSuggestedBuild(
         sideboard: [],
         suggestions: [],
         removalSuggestions: [],
+        hasQuantityOptimizations: false,
         rankingPopulationSize: 0,
         usedFallback: false,
         conditionalWinRate: null,
@@ -140,6 +196,7 @@ export function useSuggestedBuild(
         sideboard: [],
         suggestions: [],
         removalSuggestions: [],
+        hasQuantityOptimizations: false,
         rankingPopulationSize: 0,
         usedFallback: false,
         conditionalWinRate: null,
@@ -297,13 +354,15 @@ export function useSuggestedBuild(
         materialTotal += 1;
       } else if (entry.role === "sideboard") {
         if (sideboardTotal >= sideboardTarget) continue;
-        const qty = Math.min(modalQuantity(rankingRows, "sideboard", entry.cardName, card), sideboardTarget - sideboardTotal);
-        sideboard.push(toSuggested(entry.cardName, qty, false, entry, "ranked", "sideboard"));
+        const picked = pickQuantity(rankingRows, "sideboard", entry.cardName, card, quantityBucketsByName);
+        const qty = Math.min(picked.quantity, sideboardTarget - sideboardTotal);
+        sideboard.push(toSuggested(entry.cardName, qty, false, entry, "ranked", "sideboard", qty === picked.quantity ? picked.optimizedFrom : null));
         sideboardTotal += qty;
       } else {
         if (mainTotal >= mainTarget) continue;
-        const qty = Math.min(modalQuantity(rankingRows, "main", entry.cardName, card), mainTarget - mainTotal);
-        main.push(toSuggested(entry.cardName, qty, false, entry, "ranked", "main"));
+        const picked = pickQuantity(rankingRows, "main", entry.cardName, card, quantityBucketsByName);
+        const qty = Math.min(picked.quantity, mainTarget - mainTotal);
+        main.push(toSuggested(entry.cardName, qty, false, entry, "ranked", "main", qty === picked.quantity ? picked.optimizedFrom : null));
         mainTotal += qty;
       }
       placed.add(entry.cardName);
@@ -319,8 +378,9 @@ export function useSuggestedBuild(
       .map((e) => {
         const card = cardsByName.get(e.cardName);
         const section: DeckSection = e.role === "material" ? "material" : e.role === "sideboard" ? "sideboard" : "main";
-        const qty = section === "material" ? 1 : modalQuantity(rankingRows, section, e.cardName, card);
-        return toSuggested(e.cardName, qty, false, e, "ranked", section);
+        if (section === "material") return toSuggested(e.cardName, 1, false, e, "ranked", section);
+        const picked = pickQuantity(rankingRows, section, e.cardName, card, quantityBucketsByName);
+        return toSuggested(e.cardName, picked.quantity, false, e, "ranked", section, picked.optimizedFrom);
       });
 
     const removalSuggestions = [...material, ...main, ...sideboard]
@@ -328,17 +388,20 @@ export function useSuggestedBuild(
       .sort((a, b) => a.adjustedLift! - b.adjustedLift!)
       .slice(0, MAX_REMOVAL_SUGGESTIONS);
 
+    const hasQuantityOptimizations = [...material, ...main, ...sideboard, ...suggestions].some((c) => c.optimizedFrom !== null);
+
     return {
       material,
       main,
       sideboard,
       suggestions,
       removalSuggestions,
+      hasQuantityOptimizations,
       rankingPopulationSize: rankingRows.length,
       usedFallback,
       conditionalWinRate,
       baselineWinRate,
       loading: false,
     };
-  }, [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName, lockedSections]);
+  }, [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName, lockedSections, quantityBucketsByName]);
 }
