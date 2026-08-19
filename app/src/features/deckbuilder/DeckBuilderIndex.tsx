@@ -911,6 +911,29 @@ export default function DeckBuilderIndex() {
                   </ul>
                 </div>
               )}
+
+              {build.removalSuggestions.length > 0 && (
+                <div className="mt-4">
+                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Cards that might hurt</h2>
+                  <p className="mt-1 text-xs text-ctp-subtext0">
+                    Locked-in cards whose own win rate (with vs. without, independent of your other locks) came out
+                    meaningfully negative — candidates to cut, not proof they're bad in every build.
+                  </p>
+                  <ul className="mt-2 space-y-1">
+                    {build.removalSuggestions.map((c) => (
+                      <CardRow
+                        key={c.cardName}
+                        card={c}
+                        cardsByName={cardsByName}
+                        priceByName={priceByName}
+                        showLockToggle={false}
+                        onToggleLock={() => {}}
+                        onRemove={() => removeCard(c.cardName, c.locked)}
+                      />
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           )}
 

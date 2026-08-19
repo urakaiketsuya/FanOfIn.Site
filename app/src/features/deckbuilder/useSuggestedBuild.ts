@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { computeCardImpactEntries, type Card, type CardImpactEntry, type CardSectionRow } from "@gatcg/shared";
+import { computeCardImpactEntries, computeSingleCardImpact, type Card, type CardImpactEntry, type CardSectionRow } from "@gatcg/shared";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import type { DeckBuilderRow } from "./useDeckBuilderPopulation";
 
@@ -10,6 +10,9 @@ const MIN_SAMPLE_SIZE = 5;
 const MIN_RANKING_POPULATION = MIN_SAMPLE_SIZE * 2;
 /** How many ranked-but-unplaced cards to surface as "cards that might help" beyond the assembled build — matters most for a fully-locked build (e.g. from a paste), where every Material/Main/Sideboard slot is already spoken for and the ranked pool would otherwise never be shown at all. */
 const MAX_EXTRA_SUGGESTIONS = 8;
+/** A locked card's own lift needs to clear this far below zero (not just "any negative number") before it's worth flagging as a removal candidate — same shrinkage-noise-floor reasoning as the positive suggestion side. */
+const REMOVAL_LIFT_CEILING = -0.02;
+const MAX_REMOVAL_SUGGESTIONS = 5;
 
 type DeckSection = "main" | "material" | "sideboard";
 
@@ -33,6 +36,8 @@ export interface SuggestedBuild {
   sideboard: SuggestedCard[];
   /** Top ranked cards that didn't make it into Material/Main/Sideboard above — either because every slot in their section's target was already full, or (most visibly) because a fully-locked build (e.g. loaded from a paste) leaves no open slots at all. Unlocked, "Add" is the only action; adding one grows the build past its modal target on purpose. */
   suggestions: SuggestedCard[];
+  /** Locked cards whose own with/without split (against the Spirit-only population, independent of any other lock) came out meaningfully negative — a candidate to cut, not just "no data either way." Always locked (they're already in material/main/sideboard); "Remove" is the only action. */
+  removalSuggestions: SuggestedCard[];
   /** Size of the population actually used to rank suggestions for the remaining (unlocked) slots — not the same as the total matching-decks count once usedFallback is true. */
   rankingPopulationSize: number;
   /** True once enough cards are locked that the exact (Spirit + all locks) population got too thin to rank against, so remaining suggestions fell back to the Spirit-only population instead. */
@@ -119,6 +124,7 @@ export function useSuggestedBuild(
         main: [],
         sideboard: [],
         suggestions: [],
+        removalSuggestions: [],
         rankingPopulationSize: 0,
         usedFallback: false,
         conditionalWinRate: null,
@@ -133,6 +139,7 @@ export function useSuggestedBuild(
         main: [],
         sideboard: [],
         suggestions: [],
+        removalSuggestions: [],
         rankingPopulationSize: 0,
         usedFallback: false,
         conditionalWinRate: null,
@@ -164,6 +171,21 @@ export function useSuggestedBuild(
 
     const usedFallback = lockedNames.size > 0 && conditionalRows.length < MIN_RANKING_POPULATION;
     const rankingRows = usedFallback ? spiritRows : conditionalRows;
+
+    // A locked card's OWN with/without split, independent of every other lock — `rankingRows` is
+    // the wrong population for this (once conditioned on this exact card, its own "without" bucket
+    // is empty by construction), so this runs against `spiritRows` instead, same population
+    // `baselineWinRate` already uses. Lets a locked card show a real lift number instead of a flat
+    // "locked" badge, and is what "which of my locked cards might actually be hurting me" needs.
+    const spiritSectionRows: CardSectionRow[] = spiritRows.map((r) => ({
+      sections: { main: new Set(r.main.keys()), material: new Set(r.material.keys()), sideboard: new Set(r.sideboard.keys()) },
+      outcome: r.winRate,
+    }));
+    const lockedEntryByName = new Map<string, CardImpactEntry>();
+    for (const name of lockedNames) {
+      const entry = computeSingleCardImpact(spiritSectionRows, name, baselineWinRate, PRIOR_WEIGHT, MIN_SAMPLE_SIZE);
+      if (entry) lockedEntryByName.set(name, entry);
+    }
 
     const sectionRows: CardSectionRow[] = rankingRows.map((r) => ({
       sections: { main: new Set(r.main.keys()), material: new Set(r.material.keys()), sideboard: new Set(r.sideboard.keys()) },
@@ -210,12 +232,12 @@ export function useSuggestedBuild(
       const card = cardsByName.get(name);
       const knownSection = lockedSections.get(name);
       if (knownSection === "sideboard") {
-        sideboard.push(toSuggested(name, qty, true, entryByName.get(name), "ranked", "sideboard"));
+        sideboard.push(toSuggested(name, qty, true, lockedEntryByName.get(name), "ranked", "sideboard"));
         placed.add(name);
         continue;
       }
       const isMaterialCard = knownSection ? knownSection === "material" : card?.types.includes("CHAMPION") || sectionOf(name) === "material";
-      (isMaterialCard ? material : main).push(toSuggested(name, qty, true, entryByName.get(name), "ranked", isMaterialCard ? "material" : "main"));
+      (isMaterialCard ? material : main).push(toSuggested(name, qty, true, lockedEntryByName.get(name), "ranked", isMaterialCard ? "material" : "main"));
       placed.add(name);
     }
 
@@ -301,11 +323,17 @@ export function useSuggestedBuild(
         return toSuggested(e.cardName, qty, false, e, "ranked", section);
       });
 
+    const removalSuggestions = [...material, ...main, ...sideboard]
+      .filter((c) => c.locked && c.adjustedLift !== null && c.adjustedLift <= REMOVAL_LIFT_CEILING)
+      .sort((a, b) => a.adjustedLift! - b.adjustedLift!)
+      .slice(0, MAX_REMOVAL_SUGGESTIONS);
+
     return {
       material,
       main,
       sideboard,
       suggestions,
+      removalSuggestions,
       rankingPopulationSize: rankingRows.length,
       usedFallback,
       conditionalWinRate,
