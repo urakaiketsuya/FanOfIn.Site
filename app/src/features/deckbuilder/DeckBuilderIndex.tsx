@@ -203,7 +203,6 @@ function CardRow({
   onRemove: () => void;
   cardsByName: ReturnType<typeof useCardsByNames>;
   priceByName: Map<string, number>;
-  /** Sideboard rows are locked-only with no ranked-suggestion refill to fall back to, so unlocking one would just make it vanish — hide the toggle there and leave Remove as the only way out. */
   showLockToggle?: boolean;
 }) {
   const cardInfo = cardsByName.get(card.cardName);
@@ -255,6 +254,52 @@ function CardRow({
           Remove
         </button>
       </div>
+    </li>
+  );
+}
+
+/** Not-yet-placed ranked cards ("cards that might help") — same info as CardRow but a single "Add" action instead of Lock/Remove, since these aren't in the build at all yet. */
+function SuggestionRow({
+  card,
+  onAdd,
+  cardsByName,
+  priceByName,
+}: {
+  card: SuggestedCard;
+  onAdd: () => void;
+  cardsByName: ReturnType<typeof useCardsByNames>;
+  priceByName: Map<string, number>;
+}) {
+  const cardInfo = cardsByName.get(card.cardName);
+  const unitPrice = priceByName.get(card.cardName);
+  return (
+    <li className="flex flex-wrap items-center gap-1.5 rounded-md border border-ctp-surface1 px-2 py-1 text-sm">
+      <span className="w-6 shrink-0 text-right text-ctp-subtext0">{card.quantity}x</span>
+      {cardInfo && cardInfo.element !== "NORM" && <ElementIcon element={cardInfo.element} size={14} />}
+      <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={card.cardName}>
+        {cardInfo ? (
+          <Link to={`/cards/${cardInfo.slug}`} className="text-ctp-text hover:text-ctp-blue">
+            {card.cardName}
+          </Link>
+        ) : (
+          <span className="text-ctp-text">{card.cardName}</span>
+        )}
+      </CardHoverPreview>
+      {unitPrice !== undefined && <span className="shrink-0 text-xs text-ctp-subtext0">{formatUsd(unitPrice * card.quantity)}</span>}
+      {card.adjustedLift !== null && (
+        <span className={`text-xs font-semibold ${card.adjustedLift >= 0 ? "text-ctp-green" : "text-ctp-red"}`}>
+          {card.adjustedLift >= 0 ? "+" : ""}
+          {(card.adjustedLift * 100).toFixed(1)}pp
+        </span>
+      )}
+      {card.sample && <span className="text-xs text-ctp-subtext0">({card.sample.with} vs {card.sample.without})</span>}
+      <button
+        type="button"
+        onClick={onAdd}
+        className="ml-auto shrink-0 rounded-md border border-ctp-surface1 px-1.5 py-0.5 text-[10px] text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
+      >
+        Add
+      </button>
     </li>
   );
 }
@@ -326,13 +371,14 @@ export default function DeckBuilderIndex() {
   const cardNameSet = useMemo(() => new Set(cardNames), [cardNames]);
 
   const allNames = useMemo(
-    () => [...build.material.map((c) => c.cardName), ...build.main.map((c) => c.cardName)],
-    [build.material, build.main],
+    () => [...build.material, ...build.main, ...build.sideboard].map((c) => c.cardName),
+    [build.material, build.main, build.sideboard],
   );
   const placedNames = useMemo(() => new Set(allNames), [allNames]);
   const buddyCards = useBuddyCards(rows, spiritFilter, lockedCards, placedNames);
   const buddyNames = useMemo(() => Array.from(buddyCards.values()).flatMap((list) => list.map((b) => b.cardName)), [buddyCards]);
-  const cardsByName = useCardsByNames(useMemo(() => [...allNames, ...buddyNames], [allNames, buddyNames]));
+  const suggestionNames = useMemo(() => build.suggestions.map((c) => c.cardName), [build.suggestions]);
+  const cardsByName = useCardsByNames(useMemo(() => [...allNames, ...buddyNames, ...suggestionNames], [allNames, buddyNames, suggestionNames]));
   const priceByName = useDeckPriceByName();
 
   useEffect(() => {
@@ -410,7 +456,7 @@ export default function DeckBuilderIndex() {
   }
 
   /** `section` is the section this card is being locked FROM (known for sure, since it's the list the click came from) — recorded so the section survives even if the current population barely plays this card (see lockedSections' doc comment). Omitted when unlocking. */
-  function toggleLock(name: string, quantity: number, section?: "main" | "material") {
+  function toggleLock(name: string, quantity: number, section?: "main" | "material" | "sideboard") {
     const willLock = !lockedCards.has(name);
     pendingActionRef.current = { label: willLock ? `Locked ${name}` : `Unlocked ${name}`, subject: name };
     startTransition(() => {
@@ -463,6 +509,11 @@ export default function DeckBuilderIndex() {
       }),
     );
     setCardInput("");
+  }
+
+  /** "Add" from the "Cards that might help" list — same as toggleLock, just with the section/quantity the suggestion already carries instead of guessing. */
+  function addSuggestion(card: SuggestedCard) {
+    toggleLock(card.cardName, card.quantity, card.section);
   }
 
   const mainTotal = build.main.reduce((sum, c) => sum + c.quantity, 0);
@@ -793,8 +844,9 @@ export default function DeckBuilderIndex() {
                 <div className="mt-4">
                   <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Sideboard ({sideboardTotal})</h2>
                   <p className="mt-1 text-xs text-ctp-subtext0">
-                    Situational tech from your pasted decklist — kept separate from the win-rate-ranked build above,
-                    same as everywhere else on this site.
+                    Situational tech — locked-in picks (e.g. from a pasted decklist) first, then ranked suggestions
+                    for the rest, same win-rate-lift ranking as Material/Main. Kept separate from Deck price/Stats,
+                    same "sideboard isn't part of deck identity" convention as everywhere else on this site.
                   </p>
                   <ul className="mt-2 space-y-1">
                     {build.sideboard.map((c) => (
@@ -803,10 +855,25 @@ export default function DeckBuilderIndex() {
                         card={c}
                         cardsByName={cardsByName}
                         priceByName={priceByName}
-                        showLockToggle={false}
-                        onToggleLock={() => {}}
+                        onToggleLock={() => toggleLock(c.cardName, c.quantity, "sideboard")}
                         onRemove={() => removeCard(c.cardName, c.locked)}
                       />
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {build.suggestions.length > 0 && (
+                <div className="mt-4">
+                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Cards that might help</h2>
+                  <p className="mt-1 text-xs text-ctp-subtext0">
+                    Top ranked cards that aren't in the build above — either every slot in their section is already
+                    full (common for a fully-locked paste), or they just missed the cut. Adding one grows the build
+                    past its usual size on purpose.
+                  </p>
+                  <ul className="mt-2 space-y-1">
+                    {build.suggestions.map((c) => (
+                      <SuggestionRow key={c.cardName} card={c} cardsByName={cardsByName} priceByName={priceByName} onAdd={() => addSuggestion(c)} />
                     ))}
                   </ul>
                 </div>

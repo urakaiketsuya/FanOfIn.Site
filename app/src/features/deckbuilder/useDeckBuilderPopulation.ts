@@ -6,9 +6,10 @@ import { useCardCatalog } from "../cards/useCardCatalog";
 
 export interface DeckBuilderRow {
   deckId: string;
-  /** name -> total copies, main + material only — sideboard excluded, same "deck identity" convention used everywhere else in this codebase. */
+  /** name -> total copies. Sideboard is still excluded from "deck identity" elsewhere in this codebase (Popular Decks, Archetypes, etc.), but the builder itself needs it to rank sideboard-tech suggestions. */
   main: Map<string, number>;
   material: Map<string, number>;
+  sideboard: Map<string, number>;
   spiritName: string | null;
   winRate: number;
 }
@@ -61,6 +62,7 @@ export function useDeckBuilderPopulation(championName: string | null): DeckBuild
 
       const mainLines = decodeCardLines(entry.main, cardIndexData.cardNames);
       const materialLines = decodeCardLines(entry.material, cardIndexData.cardNames);
+      const sideboardLines = decodeCardLines(entry.sideboard, cardIndexData.cardNames);
       const spiritName = findSpiritName(materialLines, cardsByName);
       if (spiritName) spirits.add(spiritName);
 
@@ -68,6 +70,7 @@ export function useDeckBuilderPopulation(championName: string | null): DeckBuild
         deckId: entry.deckId,
         main: new Map(mainLines.map((l) => [l.name, l.quantity])),
         material: new Map(materialLines.map((l) => [l.name, l.quantity])),
+        sideboard: new Map(sideboardLines.map((l) => [l.name, l.quantity])),
         spiritName,
         winRate,
       });

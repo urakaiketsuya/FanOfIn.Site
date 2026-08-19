@@ -8,11 +8,17 @@ const PRIOR_WEIGHT = 10;
 const MIN_SAMPLE_SIZE = 5;
 /** A with/without split needs at least this many rows total before it's worth ranking against — below this, fall back to the broader (lock-unconditioned) population instead of showing nothing. */
 const MIN_RANKING_POPULATION = MIN_SAMPLE_SIZE * 2;
+/** How many ranked-but-unplaced cards to surface as "cards that might help" beyond the assembled build — matters most for a fully-locked build (e.g. from a paste), where every Material/Main/Sideboard slot is already spoken for and the ranked pool would otherwise never be shown at all. */
+const MAX_EXTRA_SUGGESTIONS = 8;
+
+type DeckSection = "main" | "material" | "sideboard";
 
 export interface SuggestedCard {
   cardName: string;
   quantity: number;
   locked: boolean;
+  /** Which section this card is placed in (for entries already in material/main/sideboard) — or, for an unplaced `suggestions` entry, which section it *would* go into if added. */
+  section: DeckSection;
   /** null when there's no lift number to show — either it's the viewer's picked Spirit, or a Champion-level print so near-universally run that it never cleared the with/without sample bar (see the "staple" note below). */
   adjustedLift: number | null;
   sample: { with: number; without: number } | null;
@@ -23,8 +29,10 @@ export interface SuggestedCard {
 export interface SuggestedBuild {
   material: SuggestedCard[];
   main: SuggestedCard[];
-  /** Locked-only — sideboard is situational tech excluded from every other "deck identity" surface in this codebase, so there's no population-derived ranking to fill it with. Only ever populated by a pasted decklist's own Sideboard section today. */
+  /** Locked cards first, then ranked sideboard-role suggestions up to this population's own modal sideboard size (0 when most decks don't run one) — same ranking core as Material/Main, just against the `sideboard` presence data instead. */
   sideboard: SuggestedCard[];
+  /** Top ranked cards that didn't make it into Material/Main/Sideboard above — either because every slot in their section's target was already full, or (most visibly) because a fully-locked build (e.g. loaded from a paste) leaves no open slots at all. Unlocked, "Add" is the only action; adding one grows the build past its modal target on purpose. */
+  suggestions: SuggestedCard[];
   /** Size of the population actually used to rank suggestions for the remaining (unlocked) slots — not the same as the total matching-decks count once usedFallback is true. */
   rankingPopulationSize: number;
   /** True once enough cards are locked that the exact (Spirit + all locks) population got too thin to rank against, so remaining suggestions fell back to the Spirit-only population instead. */
@@ -41,7 +49,7 @@ function legalMaxCopies(card: Card | undefined): number {
 }
 
 /** Most common quantity this card was run at, among rows that include it in the given section — falls back to the legal max when the card was never seen in this population (e.g. added via free-text search). */
-function modalQuantity(rows: DeckBuilderRow[], section: "main" | "material", cardName: string, card: Card | undefined): number {
+function modalQuantity(rows: DeckBuilderRow[], section: DeckSection, cardName: string, card: Card | undefined): number {
   const counts = new Map<number, number>();
   for (const row of rows) {
     const qty = row[section].get(cardName);
@@ -52,8 +60,8 @@ function modalQuantity(rows: DeckBuilderRow[], section: "main" | "material", car
   return Math.min(best, legalMaxCopies(card));
 }
 
-/** Most common total main/material copy count across the population — the assembly target, rather than assuming a fixed 60/12 (real decklists vary, e.g. 60 vs 61). */
-function modalTotal(rows: DeckBuilderRow[], section: "main" | "material", fallback: number): number {
+/** Most common total copy count for a section across the population — the assembly target, rather than assuming a fixed 60/12 (real decklists vary, e.g. 60 vs 61). A sideboard target of 0 is a real, valid answer (most decks for a Champion may simply not run one) — no fallback games it upward. */
+function modalTotal(rows: DeckBuilderRow[], section: DeckSection, fallback: number): number {
   if (rows.length === 0) return fallback;
   const counts = new Map<number, number>();
   for (const row of rows) {
@@ -70,11 +78,13 @@ function toSuggested(
   locked: boolean,
   entry: CardImpactEntry | undefined,
   reason: SuggestedCard["reason"],
+  section: DeckSection,
 ): SuggestedCard {
   return {
     cardName,
     quantity,
     locked,
+    section,
     adjustedLift: entry?.adjustedLift ?? null,
     sample: entry ? { with: entry.deckCountWith, without: entry.deckCountWithout } : null,
     reason,
@@ -104,11 +114,31 @@ export function useSuggestedBuild(
 
   return useMemo((): SuggestedBuild => {
     if (loading || rows.length === 0)
-      return { material: [], main: [], sideboard: [], rankingPopulationSize: 0, usedFallback: false, conditionalWinRate: null, baselineWinRate: null, loading };
+      return {
+        material: [],
+        main: [],
+        sideboard: [],
+        suggestions: [],
+        rankingPopulationSize: 0,
+        usedFallback: false,
+        conditionalWinRate: null,
+        baselineWinRate: null,
+        loading,
+      };
 
     const spiritRows = spiritFilter === null ? rows : rows.filter((r) => r.spiritName === spiritFilter);
     if (spiritRows.length === 0)
-      return { material: [], main: [], sideboard: [], rankingPopulationSize: 0, usedFallback: false, conditionalWinRate: null, baselineWinRate: null, loading: false };
+      return {
+        material: [],
+        main: [],
+        sideboard: [],
+        suggestions: [],
+        rankingPopulationSize: 0,
+        usedFallback: false,
+        conditionalWinRate: null,
+        baselineWinRate: null,
+        loading: false,
+      };
 
     const baselineWinRate = spiritRows.reduce((sum, r) => sum + r.winRate, 0) / spiritRows.length;
 
@@ -136,7 +166,7 @@ export function useSuggestedBuild(
     const rankingRows = usedFallback ? spiritRows : conditionalRows;
 
     const sectionRows: CardSectionRow[] = rankingRows.map((r) => ({
-      sections: { main: new Set(r.main.keys()), material: new Set(r.material.keys()), sideboard: new Set() },
+      sections: { main: new Set(r.main.keys()), material: new Set(r.material.keys()), sideboard: new Set(r.sideboard.keys()) },
       outcome: r.winRate,
     }));
     const baseline = rankingRows.reduce((sum, r) => sum + r.winRate, 0) / rankingRows.length;
@@ -147,6 +177,7 @@ export function useSuggestedBuild(
 
     const materialTarget = modalTotal(spiritRows, "material", 12);
     const mainTarget = modalTotal(spiritRows, "main", 60);
+    const sideboardTarget = modalTotal(spiritRows, "sideboard", 0);
 
     const material: SuggestedCard[] = [];
     const main: SuggestedCard[] = [];
@@ -179,12 +210,12 @@ export function useSuggestedBuild(
       const card = cardsByName.get(name);
       const knownSection = lockedSections.get(name);
       if (knownSection === "sideboard") {
-        sideboard.push(toSuggested(name, qty, true, entryByName.get(name), "ranked"));
+        sideboard.push(toSuggested(name, qty, true, entryByName.get(name), "ranked", "sideboard"));
         placed.add(name);
         continue;
       }
       const isMaterialCard = knownSection ? knownSection === "material" : card?.types.includes("CHAMPION") || sectionOf(name) === "material";
-      (isMaterialCard ? material : main).push(toSuggested(name, qty, true, entryByName.get(name), "ranked"));
+      (isMaterialCard ? material : main).push(toSuggested(name, qty, true, entryByName.get(name), "ranked", isMaterialCard ? "material" : "main"));
       placed.add(name);
     }
 
@@ -220,38 +251,66 @@ export function useSuggestedBuild(
       const liftRanked = names.filter((n) => entryByName.has(n)).sort((a, b) => entryByName.get(b)!.adjustedLift - entryByName.get(a)!.adjustedLift);
       const best = liftRanked[0] ?? names.sort((a, b) => counts.get(b)! - counts.get(a)!)[0];
       if (!best) continue;
-      material.push(toSuggested(best, 1, false, entryByName.get(best), entryByName.has(best) ? "ranked" : "staple"));
+      material.push(toSuggested(best, 1, false, entryByName.get(best), entryByName.has(best) ? "ranked" : "staple", "material"));
       placed.add(best);
     }
 
     // The Spirit itself — the viewer's explicit pick, not ranked against alternatives.
     if (spiritFilter && !placed.has(spiritFilter)) {
-      material.push(toSuggested(spiritFilter, 1, false, undefined, "spirit"));
+      material.push(toSuggested(spiritFilter, 1, false, undefined, "spirit", "material"));
       placed.add(spiritFilter);
     }
 
     let materialTotal = material.reduce((sum, c) => sum + c.quantity, 0);
     let mainTotal = main.reduce((sum, c) => sum + c.quantity, 0);
+    let sideboardTotal = sideboard.reduce((sum, c) => sum + c.quantity, 0);
 
     for (const entry of ranked) {
       if (placed.has(entry.cardName)) continue;
       const card = cardsByName.get(entry.cardName);
       if (card?.types.includes("CHAMPION")) continue; // only ever placed as a level anchor above
-      const isMaterial = entry.role === "material";
-      if (isMaterial) {
+      if (entry.role === "material") {
         if (materialTotal >= materialTarget) continue;
-        material.push(toSuggested(entry.cardName, 1, false, entry, "ranked"));
+        material.push(toSuggested(entry.cardName, 1, false, entry, "ranked", "material"));
         materialTotal += 1;
+      } else if (entry.role === "sideboard") {
+        if (sideboardTotal >= sideboardTarget) continue;
+        const qty = Math.min(modalQuantity(rankingRows, "sideboard", entry.cardName, card), sideboardTarget - sideboardTotal);
+        sideboard.push(toSuggested(entry.cardName, qty, false, entry, "ranked", "sideboard"));
+        sideboardTotal += qty;
       } else {
         if (mainTotal >= mainTarget) continue;
         const qty = Math.min(modalQuantity(rankingRows, "main", entry.cardName, card), mainTarget - mainTotal);
-        main.push(toSuggested(entry.cardName, qty, false, entry, "ranked"));
+        main.push(toSuggested(entry.cardName, qty, false, entry, "ranked", "main"));
         mainTotal += qty;
       }
       placed.add(entry.cardName);
-      if (materialTotal >= materialTarget && mainTotal >= mainTarget) break;
+      if (materialTotal >= materialTarget && mainTotal >= mainTarget && sideboardTotal >= sideboardTarget) break;
     }
 
-    return { material, main, sideboard, rankingPopulationSize: rankingRows.length, usedFallback, conditionalWinRate, baselineWinRate, loading: false };
+    // Everything ranked that still didn't make it in — most visibly non-empty for a fully-locked
+    // build (every target already met by locks alone, so the loop above placed nothing new even
+    // though `ranked` has real candidates). Shown as swap-in ideas, not auto-filled.
+    const suggestions = ranked
+      .filter((e) => !placed.has(e.cardName) && !cardsByName.get(e.cardName)?.types.includes("CHAMPION"))
+      .slice(0, MAX_EXTRA_SUGGESTIONS)
+      .map((e) => {
+        const card = cardsByName.get(e.cardName);
+        const section: DeckSection = e.role === "material" ? "material" : e.role === "sideboard" ? "sideboard" : "main";
+        const qty = section === "material" ? 1 : modalQuantity(rankingRows, section, e.cardName, card);
+        return toSuggested(e.cardName, qty, false, e, "ranked", section);
+      });
+
+    return {
+      material,
+      main,
+      sideboard,
+      suggestions,
+      rankingPopulationSize: rankingRows.length,
+      usedFallback,
+      conditionalWinRate,
+      baselineWinRate,
+      loading: false,
+    };
   }, [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName, lockedSections]);
 }
