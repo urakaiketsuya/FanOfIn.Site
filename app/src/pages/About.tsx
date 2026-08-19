@@ -27,7 +27,9 @@ const FEATURES: FeatureGroup[] = [
       "By Set tab: every expansion, browsable — jump straight into a set's own printings",
       "Pricing per card, plus a decklist's total and priciest cards",
       "Usage & win rate, sortable by usage, raw/adjusted win rate, or recency (\"Hot\")",
-      "Related cards: what's played alongside it, top decks, and most unique decks running it",
+      "Win rate by copy count on a card's own page — does 4x actually win more than 2x?",
+      "Deck Composition: win rate by what share of the main deck one card type makes up, on Card Stats",
+      "Related cards: what's played alongside it, top decks, and most unique decks running it, plus a quick-compare tool right on the page",
       "References, referenced-by, and format legality",
     ],
     example: { to: "/cards/fan-of-insight", label: "Fan of Insight" },
@@ -48,16 +50,9 @@ const FEATURES: FeatureGroup[] = [
       "Full event history and notable upsets",
       "Deck history: every Champion played and most-used cards",
       "13,000+ rated players, paginated and searchable by username",
+      "Judges tab: certified judges sortable by level and experience — shares the player ID space, so a judge who also plays shows up under one profile",
     ],
     example: { to: "/players/5390", label: "elothere" },
-  },
-  {
-    title: "Judges",
-    items: [
-      "Certified judges, sortable by level and experience",
-      "Shares the player ID space, so a judge who also plays gets both views on one profile",
-    ],
-    example: { to: "/players/590", label: "Ain" },
   },
   {
     title: "Teams",
@@ -111,10 +106,9 @@ const FEATURES: FeatureGroup[] = [
   {
     title: "Compare",
     items: [
-      "Search for decks containing specific cards",
-      "Import any player's submitted decklist from an event",
-      "Paste in a decklist that was never even submitted to Omnidex",
-      "Side-by-side grid highlighting shared vs. unique cards, with price and power rating per deck, plus Tabletop Simulator export",
+      "Decks: search by cards they run, import any player's submitted decklist, or paste one that was never even submitted to Omnidex",
+      "Side-by-side grid highlighting shared vs. unique cards, with price, win rate, and power rating per deck, plus Tabletop Simulator export",
+      "Cards: line up any number of individual cards' usage, win rate, and price — one card is fine, it just shows its own numbers",
     ],
     example: { to: "/compare", label: "Open Compare" },
   },
@@ -122,7 +116,11 @@ const FEATURES: FeatureGroup[] = [
     title: "Guided Deck Builder",
     items: [
       "Pick a Champion and Spirit, get a build assembled from the highest win-rate card at every slot — not one example decklist",
-      "Lock in your own picks (or search and add any card) and the rest re-ranks around them",
+      "Or paste a decklist directly — Champion, Spirit, and every section (including sideboard) are detected and locked in automatically",
+      "Lock in your own picks (or search and add any card) and the rest re-ranks around them, with editable copy counts",
+      "Quantities optimized toward each card's own win-rate-by-copy-count curve, and ranked sideboard suggestions, not just locked-only",
+      "\"Cards that might help\" (ranked, unplaced picks) and \"Cards that might hurt\" (locked picks with a real negative lift) as swap-in ideas",
+      "Composition suggestions on the Stats tab — is your Ally/Action/etc. share in a range that actually wins more?",
       "A running log of exactly how each pick shifted the rest of the suggestions",
     ],
     example: { to: "/deck-builder", label: "Open Guided Deck Builder" },
@@ -469,7 +467,8 @@ export default function About() {
 
           <p className="mt-6 text-center text-xs text-ctp-subtext0">
             Compare accepts far more than this — search decks by cards they run, import any player's submitted
-            list, or paste in a decklist that was never even submitted to Omnidex.{" "}
+            list, or paste in a decklist that was never even submitted to Omnidex — and a second mode compares
+            individual cards' usage, win rate, and price side by side, not just whole decks.{" "}
             <Link to="/compare" className="hover:text-ctp-blue hover:underline">
               Open Compare &rarr;
             </Link>
@@ -554,8 +553,10 @@ export default function About() {
           </ul>
 
           <p className="mt-6 text-center text-xs text-ctp-subtext0">
-            Lock in your own picks and the rest re-ranks around them — with a "buddy cards" list per pick (what's
-            commonly run alongside it, independent of win rate) and a running log of what changed with each choice.{" "}
+            Lock in your own picks (or paste a decklist to start from) and the rest re-ranks around them, with
+            editable quantities, a "buddy cards" list per pick (what's commonly run alongside it, independent of
+            win rate), swap-in suggestions for both what to add and what to cut, composition suggestions, and a
+            running log of what changed with each choice.{" "}
             <Link to="/deck-builder" className="hover:text-ctp-blue hover:underline">
               Open Guided Deck Builder &rarr;
             </Link>
