@@ -30,6 +30,7 @@ const ChampionDetail = lazy(() => import("./features/champions/ChampionDetail"))
 const CompareIndex = lazy(() => import("./features/compare/CompareIndex"));
 const PopularDecksIndex = lazy(() => import("./features/popular/PopularDecksIndex"));
 const DeckDetail = lazy(() => import("./features/decks/DeckDetail"));
+const About = lazy(() => import("./pages/About"));
 
 function RouteFallback() {
   return (
@@ -71,6 +72,7 @@ export default function AppRoutes() {
         <Route path="/compare" element={<CompareIndex />} />
         <Route path="/popular-decks" element={<PopularDecksIndex />} />
         <Route path="/decks/:hash" element={<DeckDetail />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </Suspense>
   );

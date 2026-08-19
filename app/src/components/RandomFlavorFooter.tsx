@@ -16,7 +16,10 @@ export default function RandomFlavorFooter() {
           </Link>
         </>
       )}
-      <p className="mt-6 text-[11px] text-ctp-subtext0/70">
+      <Link to="/about" className="mt-6 inline-block text-xs text-ctp-subtext0 hover:text-ctp-blue hover:underline">
+        About this site
+      </Link>
+      <p className="mt-2 text-[11px] text-ctp-subtext0/70">
         Grand Archive is a trademark of Weebs of the Shore. This is an unofficial fan project and is not affiliated
         with or endorsed by Weebs of the Shore.
       </p>
