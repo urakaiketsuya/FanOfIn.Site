@@ -302,8 +302,18 @@ export async function computeDeckSimilarity(
    * match nearly every other deck in its group, so its match array would otherwise grow to
    * thousands of entries when only the top 3 are ever read back out. This crashed a real run with
    * a heap OOM at ~4GB.
+   *
+   * Exact duplicates (score === 1, an identical main+material card list — weightedJaccard of two
+   * equal multisets is always exactly 1, no floating-point fuzziness) are excluded from ever
+   * taking a slot here. Without this, a popular deck's own TOP_K=3 slots fill up entirely with
+   * other copies of itself before a genuinely different-but-similar build ever gets compared —
+   * verified live on a 42-player Silvie build (/decks/1xiwetk) whose "Similar Decks" tab came back
+   * completely empty because all 3 slots were other sightings of the identical list. Duplicate
+   * detection already has its own feature (DeckSighting.duplicateCount); this one is specifically
+   * "what's a different build that plays like this one."
    */
   function addMatch(deckId: string, candidate: SimilarDeck): void {
+    if (candidate.score === 1) return;
     const list = matches.get(deckId);
     if (!list) return;
     if (list.length < TOP_K) {

@@ -1,4 +1,4 @@
-import { EVENT_CATEGORY_WEIGHTS, computeKeywordComposition, type DeckSighting } from "@gatcg/shared";
+import { EVENT_CATEGORY_WEIGHTS, computeKeywordComposition, shortHash, type DeckSighting } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
 import type { CardSignature } from "../cards/catalog.js";
 import { buildEventDeckSignatures, type DeckCardLine } from "./decklists.js";
@@ -22,7 +22,7 @@ export function canonicalSignature(mainCards: DeckCardLine[], materialCards: Dec
  * surface (event context, Champion, outcome), not the deck contents.
  */
 export function computeDeckSightings(bundles: OmnidexEventBundle[], cardIndex: Map<string, CardSignature>): DeckSighting[] {
-  interface Interim extends Omit<DeckSighting, "duplicateCount"> {
+  interface Interim extends Omit<DeckSighting, "duplicateCount" | "deckHash"> {
     signature: string;
   }
 
@@ -97,10 +97,14 @@ export function computeDeckSightings(bundles: OmnidexEventBundle[], cardIndex: M
     }
   }
 
-  const sightings: DeckSighting[] = interim.map(({ signature, ...rest }) => ({
-    ...rest,
-    duplicateCount: signature ? (playersBySignature.get(signature)?.size ?? 1) - 1 : 0,
-  }));
+  const sightings: DeckSighting[] = interim.map(({ signature, ...rest }) => {
+    const duplicateCount = signature ? (playersBySignature.get(signature)?.size ?? 1) - 1 : 0;
+    return {
+      ...rest,
+      duplicateCount,
+      deckHash: duplicateCount > 0 ? shortHash(signature) : null,
+    };
+  });
 
   sightings.sort((a, b) => b.eventDate.localeCompare(a.eventDate));
   return sightings;

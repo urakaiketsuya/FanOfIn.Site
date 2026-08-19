@@ -226,6 +226,14 @@ export interface DeckSighting {
    * doesn't count.
    */
   duplicateCount: number;
+  /**
+   * `shortHash` of this sighting's main+material signature, matching a Popular Decks entry's
+   * `/decks/:hash` page — only set when duplicateCount > 0 (i.e. at least one other player ran
+   * the exact same list), the same threshold `useDeckPopularity` uses client-side to decide a
+   * build is "popular" enough for its own page. Null for decks unique to one player, which have
+   * no dedicated page to link to.
+   */
+  deckHash: string | null;
   /** placement / event player count — e.g. 0.02 = top 2%. Null when placement or player count is unavailable. Scales correctly across events of any size, unlike a bare placement number. */
   placementPercentile: number | null;
   /** Event-tier prestige weight (see EVENT_CATEGORY_WEIGHTS) — an Ascent counts for more than a Regular. */
