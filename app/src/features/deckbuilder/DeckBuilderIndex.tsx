@@ -194,6 +194,7 @@ function CardRow({
   card,
   onToggleLock,
   onRemove,
+  onChangeQuantity,
   cardsByName,
   priceByName,
   showLockToggle = true,
@@ -201,15 +202,32 @@ function CardRow({
   card: SuggestedCard;
   onToggleLock: () => void;
   onRemove: () => void;
+  /** Only meaningful (and only rendered as an editable input) for a locked card — an unlocked/suggested card's quantity comes from the ranking and would just get overwritten on the next recompute, so it stays plain text. */
+  onChangeQuantity?: (quantity: number) => void;
   cardsByName: ReturnType<typeof useCardsByNames>;
   priceByName: Map<string, number>;
   showLockToggle?: boolean;
 }) {
   const cardInfo = cardsByName.get(card.cardName);
   const unitPrice = priceByName.get(card.cardName);
+  const maxQuantity = cardInfo?.types.includes("UNIQUE") ? 1 : 4;
   return (
     <li className="flex flex-wrap items-center gap-1.5 rounded-md border border-ctp-surface1 px-2 py-1 text-sm">
-      <span className="w-6 shrink-0 text-right text-ctp-subtext0">{card.quantity}x</span>
+      {card.locked && onChangeQuantity ? (
+        <input
+          type="number"
+          min={1}
+          max={maxQuantity}
+          value={card.quantity}
+          onChange={(e) => {
+            const next = Number(e.target.value);
+            if (Number.isInteger(next) && next >= 1) onChangeQuantity(Math.min(next, maxQuantity));
+          }}
+          className="w-11 shrink-0 rounded border border-ctp-surface1 bg-ctp-mantle px-1 py-0.5 text-right text-xs text-ctp-text focus:border-ctp-blue focus:outline-none"
+        />
+      ) : (
+        <span className="w-6 shrink-0 text-right text-ctp-subtext0">{card.quantity}x</span>
+      )}
       {cardInfo && cardInfo.element !== "NORM" && <ElementIcon element={cardInfo.element} size={14} />}
       <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={card.cardName}>
         {cardInfo ? (
@@ -473,6 +491,18 @@ export default function DeckBuilderIndex() {
         return next;
       });
     });
+  }
+
+  /** Editing a locked card's own copy count — doesn't touch lock state or section, just the quantity. No changelog entry: this is a fine-tune, not a suggestion-changing action, and firing one per keystroke on the number input would spam the log. */
+  function setLockedQuantity(name: string, quantity: number) {
+    startTransition(() =>
+      setLockedCards((prev) => {
+        if (!prev.has(name)) return prev;
+        const next = new Map(prev);
+        next.set(name, quantity);
+        return next;
+      }),
+    );
   }
 
   /** Locked cards are dropped from the deck entirely; a non-locked (suggested) card is instead excluded from future suggestions, so a different card fills that slot. */
@@ -818,6 +848,7 @@ export default function DeckBuilderIndex() {
                         cardsByName={cardsByName}
                         priceByName={priceByName}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "material")}
+                        onChangeQuantity={(qty) => setLockedQuantity(c.cardName, qty)}
                         onRemove={() => removeCard(c.cardName, c.locked)}
                       />
                     ))}
@@ -833,6 +864,7 @@ export default function DeckBuilderIndex() {
                         cardsByName={cardsByName}
                         priceByName={priceByName}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "main")}
+                        onChangeQuantity={(qty) => setLockedQuantity(c.cardName, qty)}
                         onRemove={() => removeCard(c.cardName, c.locked)}
                       />
                     ))}
@@ -856,6 +888,7 @@ export default function DeckBuilderIndex() {
                         cardsByName={cardsByName}
                         priceByName={priceByName}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "sideboard")}
+                        onChangeQuantity={(qty) => setLockedQuantity(c.cardName, qty)}
                         onRemove={() => removeCard(c.cardName, c.locked)}
                       />
                     ))}
