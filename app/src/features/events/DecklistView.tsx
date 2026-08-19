@@ -20,7 +20,7 @@ const MAX_SUGGESTIONS = 5;
 const ROLE_LABEL: Record<CardImpactRole, string> = { main: "Main", material: "Material", sideboard: "Sideboard", mixed: "Mixed" };
 
 /** Plain-text export with "# Section" headers and "4 Card Name" lines — round-trips with the Compare tool's paste parser. */
-function buildDecklistText(decklist: OmnidexDecklist): string {
+export function buildDecklistText(decklist: OmnidexDecklist): string {
   const sections: [string, OmnidexDecklistCardLine[]][] = [
     ["Main", decklist.main],
     ["Material", decklist.material],

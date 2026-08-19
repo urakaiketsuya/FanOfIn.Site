@@ -1,12 +1,16 @@
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Link } from "react-router-dom";
+import type { OmnidexDecklist } from "@gatcg/shared";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { useCardsByNames } from "../events/useCardsByNames";
+import { buildDecklistText } from "../events/DecklistView";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import DonutChart, { buildChartSegments } from "../../components/DonutChart";
 import BarChart from "../../components/BarChart";
 import { computeDeckComposition, computeDeckIdentity, computeDeckRating, computeMemoryCostCurve, computeReserveCostCurve, type RatingPillar } from "../../lib/deckIdentity";
+import { buildTcgplayerMassEntryUrl } from "../../lib/tcgplayerMassEntry";
+import { buildTtsSaveFile, downloadJsonFile, slugifyFilename } from "../../lib/ttsExport";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import { useDeckBuilderPopulation } from "./useDeckBuilderPopulation";
@@ -336,6 +340,39 @@ export default function DeckBuilderIndex() {
     [build.material, build.main],
   );
 
+  const decklist: OmnidexDecklist = useMemo(
+    () => ({
+      main: build.main.map((c) => ({ card: c.cardName, quantity: c.quantity })),
+      material: build.material.map((c) => ({ card: c.cardName, quantity: c.quantity })),
+      sideboard: [],
+    }),
+    [build.main, build.material],
+  );
+  const massEntryUrl = useMemo(() => buildTcgplayerMassEntryUrl(buildLines), [buildLines]);
+  const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(buildDecklistText(decklist));
+      setCopyState("copied");
+    } catch {
+      setCopyState("failed");
+    }
+    setTimeout(() => setCopyState("idle"), 1500);
+  }
+
+  function handleExportTts() {
+    const save = buildTtsSaveFile(
+      [
+        { label: "Main", lines: decklist.main },
+        { label: "Material", lines: decklist.material },
+        { label: "Sideboard", lines: decklist.sideboard },
+      ],
+      cardsByName,
+    );
+    downloadJsonFile(`${slugifyFilename(championName ?? "decklist")}-tts.json`, save);
+  }
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="text-2xl font-bold text-ctp-blue">Guided Deck Builder</h1>
@@ -419,6 +456,34 @@ export default function DeckBuilderIndex() {
               {spiritFilter ?? "any Spirit"} {championName} population instead.
             </p>
           )}
+
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={handleCopy}
+              className={`rounded-md border px-2 py-1 text-xs ${
+                copyState === "failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+              }`}
+            >
+              {copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy decklist"}
+            </button>
+            <a
+              href={massEntryUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-md border border-ctp-blue px-2 py-1 text-xs text-ctp-blue hover:bg-ctp-surface0"
+            >
+              Buy on TCGplayer &rarr;
+            </a>
+            <button
+              type="button"
+              onClick={handleExportTts}
+              title="Downloads a .json file — in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it"
+              className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text"
+            >
+              Export to TTS
+            </button>
+          </div>
 
           <div className="mt-4 flex flex-wrap gap-2 border-b border-ctp-surface1 pb-2">
             {(
