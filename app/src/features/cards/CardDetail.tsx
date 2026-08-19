@@ -14,7 +14,7 @@ import TopDecksList from "../../components/TopDecksList";
 import { typeIconKey } from "../../lib/cardTypeIcon";
 import { useCard } from "./useCard";
 import { usePriceLookup } from "../pricing/usePriceLookup";
-import { useCardStatsData, useArchetypeData } from "../archetypes/data";
+import { useCardStatsData, useArchetypeData, useCardQuantityStatsData } from "../archetypes/data";
 import { useCardCatalog } from "./useCardCatalog";
 import { useCardCombination } from "./useCardCombination";
 import { useCardSynergy } from "./useCardSynergy";
@@ -88,6 +88,11 @@ export default function CardDetail() {
   const prices = usePriceLookup();
   const cardStatsData = useCardStatsData();
   const cardStat = cardStatsData?.cards.find((c) => c.name === card?.name);
+  const cardQuantityStatsData = useCardQuantityStatsData();
+  const cardQuantityStat = cardQuantityStatsData?.cards.find((c) => c.name === card?.name);
+  // Below this many decks, a quantity bucket is more likely a one-off brew or data quirk than a
+  // real signal — same MIN_SAMPLE_SIZE magnitude used everywhere else in this codebase.
+  const quantityBuckets = cardQuantityStat?.quantities.filter((q) => q.deckCount >= 5) ?? [];
 
   const cardCatalog = useCardCatalog();
   const compareCardNames = useMemo(() => Array.from(new Set(cardCatalog.map((c) => c.name))).sort(), [cardCatalog]);
@@ -340,6 +345,21 @@ export default function CardDetail() {
                 {cardStat.recentDeckCount > cardStat.priorDeckCount && cardStat.priorDeckCount > 0 && (
                   <span className="text-ctp-green">Trending up</span>
                 )}
+              </div>
+            </div>
+          )}
+
+          {quantityBuckets.length >= 2 && (
+            <div className="mt-4">
+              <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Win rate by quantity</h2>
+              <p className="mt-1 text-xs text-ctp-subtext0">Does running more (or fewer) copies actually change the outcome?</p>
+              <div className="mt-1 flex flex-wrap gap-4 text-sm text-ctp-subtext1">
+                {quantityBuckets.map((q) => (
+                  <span key={q.quantity}>
+                    {q.quantity}x: <span className="font-semibold text-ctp-text">{(q.adjustedWinRate * 100).toFixed(0)}%</span>{" "}
+                    <span className="text-xs text-ctp-subtext0">({q.deckCount} decks)</span>
+                  </span>
+                ))}
               </div>
             </div>
           )}

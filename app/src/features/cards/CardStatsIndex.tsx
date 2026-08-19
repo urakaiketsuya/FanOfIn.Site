@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER, type TopCardsBySection } from "@gatcg/shared";
-import { useCardStatsData, useKeywordStatsData } from "../archetypes/data";
+import { useCardStatsData, useKeywordStatsData, useCompositionWinRateData } from "../archetypes/data";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useCardCombination } from "./useCardCombination";
 import CardImage from "../../components/CardImage";
@@ -26,6 +26,7 @@ export default function CardStatsIndex() {
   useDocumentTitle("Card Stats", "Card usage and win-rate stats across ranked Grand Archive TCG tournaments.");
   const cardStatsData = useCardStatsData();
   const keywordStatsData = useKeywordStatsData();
+  const compositionData = useCompositionWinRateData();
   const [sortMode, setSortMode] = useState<SortMode>("usage");
   const [minDecks, setMinDecks] = useState(5);
   const [category, setCategory] = useState<string | null>(null);
@@ -33,6 +34,7 @@ export default function CardStatsIndex() {
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
   const [comboCollapsed, setComboCollapsed] = useState(false);
   const [keywordSortMode, setKeywordSortMode] = useState<"usage" | "adjusted" | "raw">("usage");
+  const [compositionType, setCompositionType] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const keywordRows = useMemo(() => {
@@ -48,6 +50,27 @@ export default function CardStatsIndex() {
       }
     });
   }, [keywordStatsData, keywordSortMode]);
+
+  const compositionTypesPresent = useMemo(() => {
+    if (!compositionData) return [];
+    return Array.from(new Set(compositionData.stats.map((s) => s.type))).sort();
+  }, [compositionData]);
+
+  const activeCompositionType = compositionType ?? compositionTypesPresent[0] ?? null;
+
+  const compositionRows = useMemo(() => {
+    if (!compositionData || !activeCompositionType) return [];
+    return compositionData.stats
+      .filter((s) => s.type === activeCompositionType)
+      .sort((a, b) => parseInt(a.bucket, 10) - parseInt(b.bucket, 10));
+  }, [compositionData, activeCompositionType]);
+
+  const compositionBestIndex = useMemo(() => {
+    if (compositionRows.length < 2) return -1;
+    const max = Math.max(...compositionRows.map((r) => r.adjustedWinRate));
+    if (compositionRows.filter((r) => r.adjustedWinRate === max).length > 1) return -1;
+    return compositionRows.findIndex((r) => r.adjustedWinRate === max);
+  }, [compositionRows]);
 
   const categoriesPresent = useMemo(() => {
     if (!cardStatsData) return [];
@@ -320,6 +343,58 @@ export default function CardStatsIndex() {
                   <td className="py-1.5 pr-6 text-ctp-subtext1">{k.eventCount}</td>
                   <td className="py-1.5 pr-6 text-ctp-subtext1">{(k.avgWinRate * 100).toFixed(0)}%</td>
                   <td className="py-1.5 text-ctp-subtext1">{(k.adjustedWinRate * 100).toFixed(0)}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="mt-10">
+        <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Deck Composition</h2>
+        <p className="mt-1 text-xs text-ctp-subtext0">
+          Does running more of a card type change your odds? Every public main deck (weighted by copies), bucketed
+          by what share of it one type makes up, with the average win rate in each bucket.
+        </p>
+
+        {compositionTypesPresent.length > 0 && (
+          <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
+            <span className="text-ctp-subtext0">Type:</span>
+            {compositionTypesPresent.map((t) => (
+              <button
+                key={t}
+                onClick={() => setCompositionType(t)}
+                className={`rounded-md border px-2 py-1 text-xs ${
+                  activeCompositionType === t ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {!compositionData && <p className="mt-4 text-ctp-subtext1">Loading…</p>}
+
+        <div className="mt-2 overflow-x-auto">
+          <table className="w-max min-w-full text-sm">
+            <thead>
+              <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+                <th className="py-1 pr-6">Share of main deck</th>
+                <th className="py-1 pr-6">Decks</th>
+                <th className="py-1 pr-6">Win rate</th>
+                <th className="py-1">Adjusted</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
+              {compositionRows.map((r, i) => (
+                <tr key={r.bucket}>
+                  <td className="py-1.5 pr-6 whitespace-nowrap text-ctp-text">{r.bucket}</td>
+                  <td className="py-1.5 pr-6 text-ctp-subtext1">{r.deckCount}</td>
+                  <td className="py-1.5 pr-6 text-ctp-subtext1">{(r.avgWinRate * 100).toFixed(0)}%</td>
+                  <td className={`py-1.5 font-semibold ${i === compositionBestIndex ? "text-ctp-green" : "text-ctp-subtext1"}`}>
+                    {(r.adjustedWinRate * 100).toFixed(0)}%
+                  </td>
                 </tr>
               ))}
             </tbody>

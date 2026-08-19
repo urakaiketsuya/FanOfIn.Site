@@ -15,6 +15,8 @@ const MANIFEST_ENTRIES: { key: string; file: string }[] = [
   { key: "analysis-elo", file: "analysis/elo.json" },
   { key: "analysis-cards", file: "analysis/cards.json" },
   { key: "analysis-keyword-stats", file: "analysis/keyword-stats.json" },
+  { key: "analysis-card-quantity-stats", file: "analysis/card-quantity-stats.json" },
+  { key: "analysis-composition-win-rates", file: "analysis/composition-win-rates.json" },
   { key: "analysis-archetypes", file: "analysis/archetypes.json" },
   { key: "analysis-champion-trends", file: "analysis/champion-trends.json" },
   { key: "analysis-archetype-taxonomy", file: "analysis/archetype-taxonomy.json" },

@@ -302,6 +302,41 @@ export interface KeywordStatsData {
   keywords: KeywordStat[];
 }
 
+export interface CardQuantityBucket {
+  quantity: number;
+  deckCount: number;
+  avgWinRate: number;
+  /** avgWinRate shrunk toward 50% proportional to sample size — same convention as CardStat.adjustedWinRate. */
+  adjustedWinRate: number;
+}
+
+/** A card's win rate broken out by how many copies a deck ran it at — only published for cards run at 2+ distinct quantities across public decklists (nothing to compare otherwise). */
+export interface CardQuantityStat {
+  name: string;
+  slug: string | null;
+  /** Sorted ascending by quantity. */
+  quantities: CardQuantityBucket[];
+}
+
+export interface CardQuantityStatsData {
+  generatedAt: string;
+  cards: CardQuantityStat[];
+}
+
+/** One main-deck card type (Ally, Action, Attack, ...) at one 10-percentage-point share-of-deck bucket (e.g. "20-30%"), and the average win rate among decks whose main deck fell in that bucket for that type — weighted by copies, main deck only (material/sideboard excluded; this is a "how much of your gameplan is X" question, not a full decklist tally). */
+export interface CompositionWinRateStat {
+  type: string;
+  bucket: string;
+  deckCount: number;
+  avgWinRate: number;
+  adjustedWinRate: number;
+}
+
+export interface CompositionWinRateData {
+  generatedAt: string;
+  stats: CompositionWinRateStat[];
+}
+
 export interface ChampionSeasonPerformance {
   seasonId: number;
   seasonName: string;

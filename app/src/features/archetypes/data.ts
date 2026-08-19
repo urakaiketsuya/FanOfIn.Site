@@ -2,8 +2,10 @@ import type {
   ArchetypeData,
   ArchetypeTaxonomyData,
   CardImpactData,
+  CardQuantityStatsData,
   CardStatsData,
   ChampionTrendsData,
+  CompositionWinRateData,
   DeckCardIndexData,
   KeywordStatsData,
   MatchupCardImpactData,
@@ -45,4 +47,12 @@ export function useCardImpactData(): CardImpactData | undefined {
 
 export function useMatchupCardImpactData(): MatchupCardImpactData | undefined {
   return usePublishedData<MatchupCardImpactData>("analysis-matchup-card-impact", "/data/analysis/matchup-card-impact.json");
+}
+
+export function useCardQuantityStatsData(): CardQuantityStatsData | undefined {
+  return usePublishedData<CardQuantityStatsData>("analysis-card-quantity-stats", "/data/analysis/card-quantity-stats.json");
+}
+
+export function useCompositionWinRateData(): CompositionWinRateData | undefined {
+  return usePublishedData<CompositionWinRateData>("analysis-composition-win-rates", "/data/analysis/composition-win-rates.json");
 }
