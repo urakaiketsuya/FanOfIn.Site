@@ -20,6 +20,7 @@ const NAV_LINKS = [
   { to: "/archetypes", label: "Archetypes" },
   { to: "/top-decks", label: "Top Decks" },
   { to: "/popular-decks", label: "Popular Decks" },
+  { to: "/decks", label: "All Decks" },
   // Tools
   { to: "/compare", label: "Compare" },
 ];

@@ -23,6 +23,7 @@ export interface PopularDeck {
   lastPlayedDate: string;
 }
 
+/** Popular Decks' own default — "netdecked more than once" bar. Callers that want every distinct decklist (e.g. the deck-page hash lookup, or the all-decks search page) pass `minPlayers: 1` instead. */
 const MIN_PLAYERS = 2;
 
 /** Same identity convention used everywhere else (cardStats, decklists, deckSightings): main+material define what a deck "is"; sideboard is situational and excluded from the grouping key. */
@@ -48,7 +49,7 @@ interface PopularityResult {
  * different players independently converged on (or netdecked). Computed client-side from the
  * already-published deck-card-index + deck-sightings datasets, same pattern as useCardCombination.
  */
-export function useDeckPopularity(championFilter: string | null): PopularityResult {
+export function useDeckPopularity(championFilter: string | null, minPlayers: number = MIN_PLAYERS): PopularityResult {
   const rawCardIndexData = useDeckCardIndexData();
   // Guards against a stale IndexedDB copy from before dictionary-encoding shipped — see the same
   // guard in useCardCombination.ts for why.
@@ -90,7 +91,7 @@ export function useDeckPopularity(championFilter: string | null): PopularityResu
     for (const [signature, group] of groups) {
       const sightings = group.deckIds.map((id) => sightingByDeckId.get(id)).filter((s): s is DeckSighting => !!s);
       const players = new Set(sightings.map((s) => s.player));
-      if (players.size < MIN_PLAYERS) continue;
+      if (players.size < minPlayers) continue;
 
       const events = new Set(sightings.map((s) => s.eventId));
       const placements = sightings.map((s) => s.placement).filter((p): p is number => p !== null);
@@ -116,7 +117,7 @@ export function useDeckPopularity(championFilter: string | null): PopularityResu
     }
 
     return result;
-  }, [cardIndexData, sightingsData, championFilter, cardsByName]);
+  }, [cardIndexData, sightingsData, championFilter, minPlayers, cardsByName]);
 
   return { decks, loading: !cardIndexData || !sightingsData };
 }

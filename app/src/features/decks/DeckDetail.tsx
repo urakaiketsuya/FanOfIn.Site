@@ -47,7 +47,9 @@ export default function DeckDetail() {
   const { hash = "" } = useParams<{ hash: string }>();
   const [tab, setTab] = useTabParam("tab", TAB_KEYS, "decklist");
 
-  const { decks, loading } = useDeckPopularity(null);
+  // minPlayers: 1 — a deck page should resolve for any decklist reachable by its hash, not just
+  // ones popular enough to appear on Popular Decks (2+ players).
+  const { decks, loading } = useDeckPopularity(null, 1);
   const sightingsData = useDeckSightingsData();
   const playersData = useOmnidexPlayers();
 
