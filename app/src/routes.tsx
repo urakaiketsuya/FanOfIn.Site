@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
+import About from "./pages/About";
 
 // Lazy-loaded so each route's JS is a separate chunk, fetched on demand — previously the whole
 // app (every page) shipped as one bundle regardless of which page a visitor actually opened.
@@ -30,7 +30,6 @@ const ChampionDetail = lazy(() => import("./features/champions/ChampionDetail"))
 const CompareIndex = lazy(() => import("./features/compare/CompareIndex"));
 const PopularDecksIndex = lazy(() => import("./features/popular/PopularDecksIndex"));
 const DeckDetail = lazy(() => import("./features/decks/DeckDetail"));
-const About = lazy(() => import("./pages/About"));
 
 function RouteFallback() {
   return (
@@ -44,7 +43,7 @@ export default function AppRoutes() {
   return (
     <Suspense fallback={<RouteFallback />}>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<About />} />
         <Route path="/cards" element={<CardsBrowse />} />
         <Route path="/cards/stats" element={<CardStatsIndex />} />
         <Route path="/cards/:slug" element={<CardDetail />} />
@@ -72,7 +71,7 @@ export default function AppRoutes() {
         <Route path="/compare" element={<CompareIndex />} />
         <Route path="/popular-decks" element={<PopularDecksIndex />} />
         <Route path="/decks/:hash" element={<DeckDetail />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/about" element={<Navigate to="/" replace />} />
       </Routes>
     </Suspense>
   );
