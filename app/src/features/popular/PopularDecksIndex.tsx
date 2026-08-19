@@ -18,7 +18,7 @@ const PAGE_SIZE = 30;
 export default function PopularDecksIndex() {
   useDocumentTitle("Popular Decks", "The most-played Grand Archive TCG decklists, independently run by 2 or more players.");
   const [championName, setChampionName] = useState<string | null>(null);
-  const [elementFilter, setElementFilter] = useState<string | null>(null);
+  const [elementFilter, setElementFilter] = useState<string[]>([]);
   const [sortMode, setSortMode] = useState<SortMode>("mostPlayed");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   // Changing the champion filter re-runs a synchronous decode over every deck in the (20MB+)
@@ -43,9 +43,15 @@ export default function PopularDecksIndex() {
   }, [decks]);
 
   const filtered = useMemo(() => {
-    if (!elementFilter) return decks;
-    return decks.filter((d) => d.elements.includes(elementFilter));
+    if (elementFilter.length === 0) return decks;
+    return decks.filter((d) => d.elements.some((e) => elementFilter.includes(e)));
   }, [decks, elementFilter]);
+
+  function toggleElement(element: string) {
+    startTransition(() =>
+      setElementFilter((prev) => (prev.includes(element) ? prev.filter((e) => e !== element) : [...prev, element])),
+    );
+  }
 
   const sorted = useMemo(() => {
     return [...filtered].sort((a, b) =>
@@ -92,22 +98,30 @@ export default function PopularDecksIndex() {
           ))}
         </select>
 
-        <span className="ml-2 text-ctp-subtext0">Element:</span>
-        <select
-          value={elementFilter ?? ""}
-          onChange={(e) => {
-            const value = e.target.value || null;
-            startTransition(() => setElementFilter(value));
-          }}
-          className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
-        >
-          <option value="">All elements</option>
-          {elementsPresent.map((element) => (
-            <option key={element} value={element}>
-              {element}
-            </option>
-          ))}
-        </select>
+      </div>
+
+      <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+        <span className="text-ctp-subtext0">Element:</span>
+        {elementsPresent.map((element) => (
+          <label key={element} className="flex items-center gap-1 text-xs text-ctp-subtext1">
+            <input
+              type="checkbox"
+              checked={elementFilter.includes(element)}
+              onChange={() => toggleElement(element)}
+              className="accent-ctp-blue"
+            />
+            {element}
+          </label>
+        ))}
+        {elementFilter.length > 0 && (
+          <button
+            type="button"
+            onClick={() => startTransition(() => setElementFilter([]))}
+            className="text-xs text-ctp-subtext0 hover:text-ctp-blue hover:underline"
+          >
+            Clear
+          </button>
+        )}
       </div>
 
       <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">

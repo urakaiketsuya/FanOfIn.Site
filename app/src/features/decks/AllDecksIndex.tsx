@@ -28,7 +28,7 @@ const PAGE_SIZE = 30;
 export default function AllDecksIndex() {
   useDocumentTitle("All Decks", "Search and browse every distinct Grand Archive TCG decklist, filterable by Champion, element, and cards played.");
   const [championName, setChampionName] = useState<string | null>(null);
-  const [elementFilter, setElementFilter] = useState<string | null>(null);
+  const [elementFilter, setElementFilter] = useState<string[]>([]);
   const [sortMode, setSortMode] = useState<SortMode>("mostRecent");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
@@ -61,13 +61,19 @@ export default function AllDecksIndex() {
 
   const filtered = useMemo(() => {
     let result = decks;
-    if (elementFilter) result = result.filter((d) => d.elements.includes(elementFilter));
+    if (elementFilter.length > 0) result = result.filter((d) => d.elements.some((e) => elementFilter.includes(e)));
     // A group's card content is identical across its main+material, so any member sighting
     // matching the combination search means the whole group matches — sideboard can differ
     // between members, so this is "played with this card at least once", not "always".
     if (selectedCards.length > 0) result = result.filter((d) => d.deckIds.some((id) => combinationDeckIds.has(id)));
     return result;
   }, [decks, elementFilter, selectedCards, combinationDeckIds]);
+
+  function toggleElement(element: string) {
+    startTransition(() =>
+      setElementFilter((prev) => (prev.includes(element) ? prev.filter((e) => e !== element) : [...prev, element])),
+    );
+  }
 
   const sorted = useMemo(() => {
     return [...filtered].sort((a, b) => {
@@ -127,22 +133,30 @@ export default function AllDecksIndex() {
           ))}
         </select>
 
-        <span className="ml-2 text-ctp-subtext0">Element:</span>
-        <select
-          value={elementFilter ?? ""}
-          onChange={(e) => {
-            const value = e.target.value || null;
-            startTransition(() => setElementFilter(value));
-          }}
-          className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
-        >
-          <option value="">All elements</option>
-          {elementsPresent.map((element) => (
-            <option key={element} value={element}>
-              {element}
-            </option>
-          ))}
-        </select>
+      </div>
+
+      <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+        <span className="text-ctp-subtext0">Element:</span>
+        {elementsPresent.map((element) => (
+          <label key={element} className="flex items-center gap-1 text-xs text-ctp-subtext1">
+            <input
+              type="checkbox"
+              checked={elementFilter.includes(element)}
+              onChange={() => toggleElement(element)}
+              className="accent-ctp-blue"
+            />
+            {element}
+          </label>
+        ))}
+        {elementFilter.length > 0 && (
+          <button
+            type="button"
+            onClick={() => startTransition(() => setElementFilter([]))}
+            className="text-xs text-ctp-subtext0 hover:text-ctp-blue hover:underline"
+          >
+            Clear
+          </button>
+        )}
       </div>
 
       <div className="mt-3">
