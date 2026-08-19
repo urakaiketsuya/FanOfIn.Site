@@ -1,6 +1,18 @@
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
+import type { OmnidexDecklist } from "@gatcg/shared";
 import ClassIcon from "../components/ClassIcon";
 import ElementIcon from "../components/ElementIcon";
+import CardImage from "../components/CardImage";
+import CardHoverPreview from "../components/CardHoverPreview";
+import DonutChart, { buildChartSegments } from "../components/DonutChart";
+import { useDeckPopularity } from "../features/popular/useDeckPopularity";
+import { useCardsByNames } from "../features/events/useCardsByNames";
+import { useChampionCardImages } from "../features/players/useChampionCardImages";
+import ComparisonGrid from "../features/compare/ComparisonGrid";
+import type { ComparedDeck } from "../features/compare/types";
+import { computeDeckComposition } from "../lib/deckIdentity";
+import { shortHash } from "../lib/hash";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 const CLASS_ROW = ["WARRIOR", "MAGE", "CLERIC", "ASSASSIN", "RANGER", "TAMER", "GUARDIAN"];
@@ -11,30 +23,6 @@ interface Highlight {
   description: string;
   example: { to: string; label: string };
 }
-
-const HIGHLIGHTS: Highlight[] = [
-  {
-    title: "Clustered, not curated",
-    description:
-      "Named builds are grouped from real decklists by how similar their card lists actually are, not hand-picked ahead of time.",
-    example: { to: "/archetypes/14lh0s0", label: "Tera Silvie" },
-  },
-  {
-    title: "What's trending",
-    description: "Card usage compares the last 30 days against the 30 before it, so you can see what's actually rising.",
-    example: { to: "/cards/scepter-of-fascination", label: "Scepter of Fascination" },
-  },
-  {
-    title: "Season over season",
-    description: "Every Champion's performance is broken down by season, so a swing in the meta is visible, not buried.",
-    example: { to: "/champions/Tristan", label: "Tristan's season trend" },
-  },
-  {
-    title: "Bring your own list",
-    description: "The comparison tool works with a deck that was never even submitted to Omnidex — paste it in directly.",
-    example: { to: "/compare", label: "Try Compare" },
-  },
-];
 
 const FEATURES: Highlight[] = [
   {
@@ -99,8 +87,52 @@ const FEATURES: Highlight[] = [
   },
 ];
 
+const WALKTHROUGH_HASH = "xenbr4";
+const COMPARE_HASHES = ["xenbr4", "1xiwetk"];
+
 export default function About() {
   useDocumentTitle("About", "What Fan of Insight is, how it's built, and why it exists.");
+
+  const { decks } = useDeckPopularity(null);
+  const walkthroughDeck = useMemo(() => decks.find((d) => shortHash(d.signature) === WALKTHROUGH_HASH), [decks]);
+  const walkthroughNames = useMemo(
+    () => [...(walkthroughDeck?.main ?? []), ...(walkthroughDeck?.material ?? [])].map((l) => l.name),
+    [walkthroughDeck],
+  );
+  const walkthroughCardsByName = useCardsByNames(walkthroughNames);
+  const walkthroughComposition = useMemo(() => {
+    if (!walkthroughDeck) return null;
+    return computeDeckComposition([...walkthroughDeck.main, ...walkthroughDeck.material], walkthroughCardsByName);
+  }, [walkthroughDeck, walkthroughCardsByName]);
+  const walkthroughChampionImages = useChampionCardImages(walkthroughDeck?.championName ? [walkthroughDeck.championName] : []);
+  const walkthroughChampionCard = walkthroughDeck?.championName
+    ? walkthroughChampionImages.get(walkthroughDeck.championName)
+    : undefined;
+
+  const compareSourceDecks = useMemo(
+    () => COMPARE_HASHES.map((hash) => decks.find((d) => shortHash(d.signature) === hash)).filter((d) => d !== undefined),
+    [decks],
+  );
+  const compareDecks: ComparedDeck[] = useMemo(
+    () =>
+      compareSourceDecks.map((d, i) => ({
+        key: shortHash(d.signature),
+        label: `${d.championName ?? "Deck"} build ${i + 1}`,
+        source: { kind: "custom", decklist: { main: [], material: [], sideboard: [] } },
+      })),
+    [compareSourceDecks],
+  );
+  const compareDecklists = useMemo(() => {
+    const map = new Map<string, OmnidexDecklist | null>();
+    for (const d of compareSourceDecks) {
+      map.set(shortHash(d.signature), {
+        main: d.main.map((l) => ({ card: l.name, quantity: l.quantity })),
+        material: d.material.map((l) => ({ card: l.name, quantity: l.quantity })),
+        sideboard: [],
+      });
+    }
+    return map;
+  }, [compareSourceDecks]);
 
   return (
     <div>
@@ -143,24 +175,98 @@ export default function About() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-4 py-16">
-        <h2 className="text-center text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">Why use it</h2>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          {HIGHLIGHTS.map((h) => (
-            <div key={h.title} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-5">
-              <h3 className="text-lg font-semibold text-ctp-text">{h.title}</h3>
-              <p className="mt-1.5 text-sm text-ctp-subtext1">{h.description}</p>
-              <Link to={h.example.to} className="mt-3 inline-block text-xs text-ctp-subtext0 hover:text-ctp-blue hover:underline">
-                Example: {h.example.label} &rarr;
-              </Link>
+      {walkthroughDeck && walkthroughComposition && (
+        <section className="border-t border-ctp-surface0 px-4 py-16">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="text-center text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">See it in action</h2>
+            <p className="mx-auto mt-2 max-w-xl text-center text-sm text-ctp-subtext1">
+              This isn't a mockup — it's a real deck's real page, rendered right here. {walkthroughDeck.championName} was
+              independently played by {walkthroughDeck.playerCount} players across {walkthroughDeck.eventCount} events.
+            </p>
+
+            <div className="mt-8 grid gap-6 lg:grid-cols-[220px_1fr] lg:items-center">
+              <div className="flex flex-col items-center text-center">
+                <CardHoverPreview
+                  image={walkthroughChampionCard?.editions[0]?.image}
+                  alt={walkthroughDeck.championName ?? "Champion"}
+                >
+                  <Link to={`/decks/${WALKTHROUGH_HASH}`}>
+                    {walkthroughChampionCard?.editions[0] ? (
+                      <CardImage
+                        image={walkthroughChampionCard.editions[0].image}
+                        alt={walkthroughDeck.championName ?? ""}
+                        className="h-40 w-28 rounded-md border border-ctp-surface1 object-cover object-top"
+                      />
+                    ) : (
+                      <div className="h-40 w-28 rounded-md border border-ctp-surface1 bg-ctp-mantle" />
+                    )}
+                  </Link>
+                </CardHoverPreview>
+                <Link
+                  to={`/decks/${WALKTHROUGH_HASH}`}
+                  className="mt-3 text-lg font-semibold text-ctp-text hover:text-ctp-blue"
+                >
+                  {walkthroughDeck.championName}
+                </Link>
+                <p className="mt-1 text-xs text-ctp-subtext0">
+                  {walkthroughDeck.classes.join("/")} · {walkthroughDeck.elements.join("/")}
+                </p>
+                <p className="mt-1 text-xs text-ctp-subtext0">
+                  {walkthroughDeck.bestPlacement !== null && `Best finish #${walkthroughDeck.bestPlacement} · `}
+                  {(walkthroughDeck.avgWinRate * 100).toFixed(0)}% avg win rate
+                </p>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <DonutChart title="Card Types" segments={buildChartSegments(walkthroughComposition.types)} />
+                <DonutChart title="Elements" segments={buildChartSegments(walkthroughComposition.elements)} />
+              </div>
             </div>
-          ))}
-        </div>
-      </section>
+
+            <p className="mt-6 text-center text-xs text-ctp-subtext0">
+              These are the exact charts from the deck's own page — plus subtypes, rarity, keywords, damage
+              composition, priciest cards, and a popularity trend.{" "}
+              <Link to={`/decks/${WALKTHROUGH_HASH}`} className="hover:text-ctp-blue hover:underline">
+                Open the full page &rarr;
+              </Link>
+            </p>
+          </div>
+        </section>
+      )}
+
+      {compareDecks.length === 2 && (
+        <section className="border-t border-ctp-surface0 px-4 py-16">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="text-center text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">
+              Compare decks, for real
+            </h2>
+            <p className="mx-auto mt-2 max-w-xl text-center text-sm text-ctp-subtext1">
+              Two real, independently popular {compareSourceDecks[0]?.championName} builds, lined up card by card —
+              green is in both, yellow is only in one. This is the live Compare tool, not a screenshot — scroll
+              within it to see the full card list.
+            </p>
+
+            <div className="relative mt-8">
+              <div className="max-h-[28rem] overflow-y-auto rounded-lg border border-ctp-surface1">
+                <ComparisonGrid decks={compareDecks} decklists={compareDecklists} />
+              </div>
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 rounded-b-lg bg-gradient-to-t from-ctp-base to-transparent" />
+            </div>
+
+            <p className="mt-6 text-center text-xs text-ctp-subtext0">
+              Compare accepts far more than this — search decks by cards they run, import any player's submitted
+              list, or paste in a decklist that was never even submitted to Omnidex.{" "}
+              <Link to="/compare" className="hover:text-ctp-blue hover:underline">
+                Open Compare &rarr;
+              </Link>
+            </p>
+          </div>
+        </section>
+      )}
 
       <section className="border-t border-ctp-surface0 bg-ctp-mantle/40 py-16">
         <div className="mx-auto max-w-5xl px-4">
-          <h2 className="text-center text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">Every feature</h2>
+          <h2 className="text-center text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">Explore the site</h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {FEATURES.map((f) => (
               <div key={f.title} className="rounded-lg border border-ctp-surface1 bg-ctp-base p-4">
