@@ -32,26 +32,35 @@ export default function DeckSightingRow({
     <div className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm">
       <div className="flex items-center gap-3">
         <CardHoverPreview image={championCard?.editions[0]?.image} alt={sighting.championName ?? "Unknown champion"}>
-          {championCard?.editions[0] ? (
-            <CardImage
-              image={championCard.editions[0].image}
-              alt={sighting.championName ?? ""}
-              className="h-14 w-10 shrink-0 rounded object-cover object-top"
-            />
-          ) : (
-            <div className="h-14 w-10 shrink-0 rounded bg-ctp-surface0" />
-          )}
+          <button
+            type="button"
+            onClick={() => setExpanded((v) => !v)}
+            title={expanded ? "Hide decklist" : "Show decklist"}
+            className="block shrink-0"
+          >
+            {championCard?.editions[0] ? (
+              <CardImage
+                image={championCard.editions[0].image}
+                alt={sighting.championName ?? ""}
+                className="h-14 w-10 shrink-0 rounded object-cover object-top"
+              />
+            ) : (
+              <div className="h-14 w-10 shrink-0 rounded bg-ctp-surface0" />
+            )}
+          </button>
         </CardHoverPreview>
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-1.5">
             {sighting.championName ? (
-              <Link
-                to={`/archetypes/${encodeURIComponent(sighting.championName)}`}
+              <button
+                type="button"
+                onClick={() => setExpanded((v) => !v)}
+                title={expanded ? "Hide decklist" : "Show decklist"}
                 className="font-medium text-ctp-text hover:text-ctp-blue"
               >
                 {sighting.championName}
-              </Link>
+              </button>
             ) : (
               <span className="text-ctp-subtext0">Unknown champion</span>
             )}
