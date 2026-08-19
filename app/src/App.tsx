@@ -6,7 +6,7 @@ import RandomFlavorFooter from "./components/RandomFlavorFooter";
 const NAV_LINKS = [
   { to: "/", label: "Home", end: true },
   // Card catalog
-  { to: "/cards", label: "Cards" },
+  { to: "/cards/stats", label: "Card Stats" },
   { to: "/sets", label: "Sets" },
   // Tournaments & people
   { to: "/tournaments", label: "Tournaments" },
@@ -18,9 +18,7 @@ const NAV_LINKS = [
   // Deck analysis
   { to: "/champions", label: "Champions" },
   { to: "/archetypes", label: "Archetypes" },
-  { to: "/top-decks", label: "Top Decks" },
-  { to: "/popular-decks", label: "Popular Decks" },
-  { to: "/decks", label: "All Decks" },
+  { to: "/decks", label: "Browse Decks" },
   // Tools
   { to: "/compare", label: "Compare" },
   { to: "/deck-builder", label: "Guided Deck Builder" },

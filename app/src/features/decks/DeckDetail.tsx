@@ -264,8 +264,8 @@ export default function DeckDetail() {
     return (
       <div className="mx-auto max-w-3xl px-4 py-10">
         <p className="text-ctp-red">This deck isn't in the ingested data (or hasn't been played by 2+ players yet).</p>
-        <Link to="/popular-decks" className="mt-2 inline-block text-ctp-blue hover:underline">
-          &larr; Popular Decks
+        <Link to="/decks?view=builds&minPlayers=2plus" className="mt-2 inline-block text-ctp-blue hover:underline">
+          &larr; Browse Decks
         </Link>
       </div>
     );
@@ -273,8 +273,8 @@ export default function DeckDetail() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <Link to="/popular-decks" className="text-sm text-ctp-blue hover:underline">
-        &larr; Popular Decks
+      <Link to="/decks?view=builds&minPlayers=2plus" className="text-sm text-ctp-blue hover:underline">
+        &larr; Browse Decks
       </Link>
 
       <div className="mt-2 flex items-center gap-3">

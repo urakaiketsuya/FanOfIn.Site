@@ -336,7 +336,7 @@ export default function ChampionDetail() {
               <div className="flex items-center justify-between">
                 <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Top decks</h2>
                 <Link
-                  to={`/top-decks?champion=${encodeURIComponent(championName)}`}
+                  to={`/decks?view=sightings&champion=${encodeURIComponent(championName)}`}
                   className="text-xs text-ctp-blue hover:underline"
                 >
                   View all &rarr;

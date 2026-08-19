@@ -1,6 +1,20 @@
 import { lazy, Suspense } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useSearchParams } from "react-router-dom";
 import About from "./pages/About";
+
+// /top-decks and /popular-decks were merged into /decks (Browse Decks, "By Sighting"/"By Build"
+// tabs) — these redirect old links/bookmarks to the equivalent tab, preserving a ?champion= param.
+function TopDecksRedirect() {
+  const [searchParams] = useSearchParams();
+  const params = new URLSearchParams({ view: "sightings" });
+  const champion = searchParams.get("champion");
+  if (champion) params.set("champion", champion);
+  return <Navigate to={`/decks?${params.toString()}`} replace />;
+}
+
+function PopularDecksRedirect() {
+  return <Navigate to="/decks?view=builds&minPlayers=2plus" replace />;
+}
 
 // Lazy-loaded so each route's JS is a separate chunk, fetched on demand — previously the whole
 // app (every page) shipped as one bundle regardless of which page a visitor actually opened.
@@ -24,12 +38,10 @@ const AchievementDetail = lazy(() => import("./features/achievements/Achievement
 const ArchetypesIndex = lazy(() => import("./features/archetypes/ArchetypesIndex"));
 const ArchetypeDetail = lazy(() => import("./features/archetypes/ArchetypeDetail"));
 const BattleChart = lazy(() => import("./features/archetypes/BattleChart"));
-const TopDecksIndex = lazy(() => import("./features/topdecks/TopDecksIndex"));
 const ChampionsIndex = lazy(() => import("./features/champions/ChampionsIndex"));
 const ChampionDetail = lazy(() => import("./features/champions/ChampionDetail"));
 const CompareIndex = lazy(() => import("./features/compare/CompareIndex"));
-const PopularDecksIndex = lazy(() => import("./features/popular/PopularDecksIndex"));
-const AllDecksIndex = lazy(() => import("./features/decks/AllDecksIndex"));
+const BrowseDecksIndex = lazy(() => import("./features/decks/BrowseDecksIndex"));
 const DeckDetail = lazy(() => import("./features/decks/DeckDetail"));
 const DeckBuilderIndex = lazy(() => import("./features/deckbuilder/DeckBuilderIndex"));
 const ChangelogIndex = lazy(() => import("./features/changelog/ChangelogIndex"));
@@ -68,12 +80,12 @@ export default function AppRoutes() {
         <Route path="/archetypes" element={<ArchetypesIndex />} />
         <Route path="/archetypes/:id" element={<ArchetypeDetail />} />
         <Route path="/battle-chart" element={<BattleChart />} />
-        <Route path="/top-decks" element={<TopDecksIndex />} />
+        <Route path="/top-decks" element={<TopDecksRedirect />} />
         <Route path="/champions" element={<ChampionsIndex />} />
         <Route path="/champions/:name" element={<ChampionDetail />} />
         <Route path="/compare" element={<CompareIndex />} />
-        <Route path="/popular-decks" element={<PopularDecksIndex />} />
-        <Route path="/decks" element={<AllDecksIndex />} />
+        <Route path="/popular-decks" element={<PopularDecksRedirect />} />
+        <Route path="/decks" element={<BrowseDecksIndex />} />
         <Route path="/decks/:hash" element={<DeckDetail />} />
         <Route path="/deck-builder" element={<DeckBuilderIndex />} />
         <Route path="/changelog" element={<ChangelogIndex />} />

@@ -101,33 +101,16 @@ const FEATURES: FeatureGroup[] = [
     example: { to: "/archetypes/14lh0s0", label: "Tera Silvie" },
   },
   {
-    title: "Top Decks",
+    title: "Browse Decks",
     items: [
-      "Every public decklist — 56,000+ and counting",
-      "Filterable by Champion, class, keyword, season, event type, and outcome",
+      "By Build: every distinct decklist grouped by exact main+material list, including one-off brews — filter to just the ones independently run by 2+ players, by Champion, element, or the specific cards it runs",
+      "By Sighting: every public tournament sighting — 56,000+ and counting — filterable by Champion, class, keyword, season, event type, and outcome",
       "Ranked by a tier-weighted placement score, not just raw finish, so a strong finish at a big event outranks a small one",
       "Flags netdecked lists (identical builds from other players) and \"tough finish\" upsets (a strong record that still missed the cut)",
       "Max-price filter and a cheapest-first sort, to find budget decks with strong finishes",
-    ],
-    example: { to: "/top-decks", label: "Browse Top Decks" },
-  },
-  {
-    title: "Popular Decks",
-    items: [
-      "Exact decklists independently run by 2+ players",
-      "Dedicated page per deck: composition donuts, a power rating, priciest cards, a popularity trend, and similar decks",
-      "One click loads the entire decklist into a TCGplayer cart — no manually searching for 60 cards one at a time",
+      "Dedicated page per build: composition donuts, a power rating, priciest cards, a popularity trend, and similar decks — one click loads the whole decklist into a TCGplayer cart",
     ],
     example: { to: "/decks/xenbr4", label: "A top Silvie build" },
-  },
-  {
-    title: "All Decks",
-    items: [
-      "Every distinct decklist, including one-off brews — not just builds multiple players converged on",
-      "Search by Champion, element, or the specific cards it runs",
-      "Links to the same dedicated deck page as Popular Decks",
-    ],
-    example: { to: "/decks", label: "Browse All Decks" },
   },
   {
     title: "Compare",
@@ -369,7 +352,7 @@ export default function About() {
               Browse Champions
             </Link>
             <Link
-              to="/top-decks"
+              to="/decks?view=sightings"
               className="rounded-md border border-ctp-surface1 px-5 py-2 text-sm font-semibold text-ctp-text hover:border-ctp-blue"
             >
               See Top Decks
