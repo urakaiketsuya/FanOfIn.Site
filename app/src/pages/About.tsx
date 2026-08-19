@@ -23,18 +23,14 @@ const FEATURES: FeatureGroup[] = [
   {
     title: "Cards",
     items: [
-      "Full catalog synced locally — search and filter by class, type, subtype, element, or artist with no repeat network calls",
+      "Full catalog synced locally — search and filter by class, type, subtype, element, set, or artist with no repeat network calls",
+      "By Set tab: every expansion, browsable — jump straight into a set's own printings",
       "Pricing per card, plus a decklist's total and priciest cards",
       "Usage & win rate, sortable by usage, raw/adjusted win rate, or recency (\"Hot\")",
       "Related cards: what's played alongside it, top decks, and most unique decks running it",
       "References, referenced-by, and format legality",
     ],
     example: { to: "/cards/fan-of-insight", label: "Fan of Insight" },
-  },
-  {
-    title: "Sets",
-    items: ["Every expansion, browsable", "Every card printed in a given set"],
-    example: { to: "/sets/DTR", label: "Distorted Reflections" },
   },
   {
     title: "Tournaments",

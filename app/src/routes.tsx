@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { Navigate, Route, Routes, useSearchParams } from "react-router-dom";
+import { Navigate, Route, Routes, useParams, useSearchParams } from "react-router-dom";
 import About from "./pages/About";
 
 // /top-decks and /popular-decks were merged into /decks (Browse Decks, "By Sighting"/"By Build"
@@ -16,13 +16,22 @@ function PopularDecksRedirect() {
   return <Navigate to="/decks?view=builds&minPlayers=2plus" replace />;
 }
 
+// Sets browsing merged into the Cards page's "By Set" tab; /sets/:prefix now redirects into the
+// Set filter directly instead of its own dedicated route.
+function SetsRedirect() {
+  return <Navigate to="/cards?tab=sets" replace />;
+}
+
+function SetDetailRedirect() {
+  const { prefix = "" } = useParams<{ prefix: string }>();
+  return <Navigate to={`/cards?tab=browse&set=${encodeURIComponent(prefix)}`} replace />;
+}
+
 // Lazy-loaded so each route's JS is a separate chunk, fetched on demand — previously the whole
 // app (every page) shipped as one bundle regardless of which page a visitor actually opened.
 const CardsBrowse = lazy(() => import("./features/cards/CardsBrowse"));
 const CardDetail = lazy(() => import("./features/cards/CardDetail"));
 const CardStatsIndex = lazy(() => import("./features/cards/CardStatsIndex"));
-const SetsBrowse = lazy(() => import("./features/sets/SetsBrowse"));
-const SetDetail = lazy(() => import("./features/sets/SetDetail"));
 const ThemaLeaderboard = lazy(() => import("./features/thema/ThemaLeaderboard"));
 const ThemaHistory = lazy(() => import("./features/thema/ThemaHistory"));
 const EventDetail = lazy(() => import("./features/events/EventDetail"));
@@ -62,8 +71,8 @@ export default function AppRoutes() {
         <Route path="/cards" element={<CardsBrowse />} />
         <Route path="/cards/stats" element={<CardStatsIndex />} />
         <Route path="/cards/:slug" element={<CardDetail />} />
-        <Route path="/sets" element={<SetsBrowse />} />
-        <Route path="/sets/:prefix" element={<SetDetail />} />
+        <Route path="/sets" element={<SetsRedirect />} />
+        <Route path="/sets/:prefix" element={<SetDetailRedirect />} />
         <Route path="/thema" element={<ThemaLeaderboard />} />
         <Route path="/thema/:editionUuid" element={<ThemaHistory />} />
         <Route path="/events" element={<Navigate to="/tournaments" replace />} />

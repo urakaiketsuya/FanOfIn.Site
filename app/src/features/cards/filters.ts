@@ -7,10 +7,12 @@ export interface CardFilterState {
   types: Set<string>;
   subtypes: Set<string>;
   elements: Set<string>;
+  /** Set prefixes (e.g. "ROTX"), matched against any of a card's editions — same convention as the former SetDetail page. */
+  sets: Set<string>;
 }
 
 export function emptyFilterState(): CardFilterState {
-  return { name: "", artist: "", classes: new Set(), types: new Set(), subtypes: new Set(), elements: new Set() };
+  return { name: "", artist: "", classes: new Set(), types: new Set(), subtypes: new Set(), elements: new Set(), sets: new Set() };
 }
 
 export function filterCards(cards: Card[], filters: CardFilterState): Card[] {
@@ -23,6 +25,7 @@ export function filterCards(cards: Card[], filters: CardFilterState): Card[] {
     if (filters.types.size && !card.types.some((t) => filters.types.has(t))) return false;
     if (filters.subtypes.size && !card.subtypes.some((s) => filters.subtypes.has(s))) return false;
     if (filters.elements.size && !card.elements.some((e) => filters.elements.has(e))) return false;
+    if (filters.sets.size && !card.editions.some((ed) => filters.sets.has(ed.set.prefix))) return false;
     return true;
   });
 }
