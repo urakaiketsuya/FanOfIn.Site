@@ -270,6 +270,46 @@ Verified against real output: 302 of 1,247 published answers resolved at the pre
 963 needed the Champion-level fallback — confirming the fallback is the common case, not an edge
 case, exactly as the sample-size math above predicts.
 
+## Deck Builder (`app/src/features/deckbuilder/useDeckBuilderPopulation.ts`, `useSuggestedBuild.ts`)
+
+Assembles a suggested build for a Champion (+ optional Spirit filter) from real decks — not one
+example decklist, but the actual highest-win-rate card at each slot — and lets the viewer lock in
+their own picks, re-ranking the rest against a population conditioned on those locks. Fully
+client-side, no new pipeline dataset: Spirit isn't published at individual-deck grain anywhere
+(only as a per-Champion aggregate in `archetypes.json`), so it's derived here the same way
+`computeDeckIdentity` already derives elements client-side — decode the material section, check the
+card catalog's own `types`/`subtypes` (`CHAMPION` + `SPIRIT`), same rule
+`pipeline/src/analysis/decklists.ts`'s `findSpirit` uses.
+
+**Locked cards need no ranking data to justify their presence** — they're the viewer's explicit
+choice, always included as-is. Only the *remaining* slots get ranked, against
+`shared/src/cardImpact.ts`'s `computeCardImpactEntries` (the exact same with/without/shrink core
+used by every other Card Impact surface), fed a population filtered to the chosen Spirit and, if
+any cards are locked, further filtered to decks containing every one of them. When that conditional
+population drops below a minimum size, ranking falls back to the Spirit-only population instead of
+returning nothing — disclosed in the UI, same "precise-first, broader-disclaimed-fallback" pattern
+`matchupCardImpact.ts`'s answer cards already use.
+
+**Champion-level print slots need a different rule than everything else.** Spot-checked directly:
+not every Champion has exactly one card per level — Silvie and Lorraine have multiple different
+prints at the *same* level (alternate lineages), so which print fills a level slot has to be picked
+from data, not assumed. But the normal lift-ranking approach systematically fails here: a
+near-universally-run print (most decks run every level of their own Champion) usually can't clear
+the with/without sample bar, since its "without" bucket is too thin — the same "excludes
+defining/staple cards" behavior already documented as *expected* for general Card Impact suggestions.
+For a flex-slot suggestion that's fine; a Champion's own level print is structurally close to
+mandatory, so this falls back to whichever print is simply most common at that level in the
+population, rather than silently omitting the level. Verified live: Diao Chan (single print per
+level) includes all three; Silvie (three different level-3 variants) correctly includes exactly one,
+picked by lift where enough data exists.
+
+Material items are consistently 1-copy-each in real decklists (spot-checked); Main deck copy counts
+vary and unique-flagged cards (`types` includes `"UNIQUE"`) are capped at 1, everything else at 4 —
+each suggested card's quantity is the modal (most common) quantity observed for it in the ranking
+population, capped at that legal max. Target deck sizes (main/material totals) are also the
+population's own modal totals rather than assumed 60/12, since real decklists vary slightly (60 vs.
+61 seen in spot checks).
+
 ## Deck similarity (`pipeline/src/analysis/similarity.ts`)
 
 **Base metric**: weighted Jaccard, a.k.a. Ruzicka similarity, over each deck's card-copy multiset

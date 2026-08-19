@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { computeCardImpactEntries, decodeCardLines, type CardImpactEntry, type CardSectionRow, type DeckSections } from "@gatcg/shared";
 import { useDeckCardIndexData } from "../archetypes/data";
-import { useDeckSightingsData } from "../topdecks/data";
+import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { computeDeckIdentity } from "../../lib/deckIdentity";
 
@@ -34,18 +34,19 @@ export function useChampionCardImpact(
   // Guards against a stale IndexedDB copy from before dictionary-encoding shipped — see the same
   // guard in useCardCombination.ts/useDeckPopularity.ts for why.
   const cardIndexData = rawCardIndexData?.cardNames ? rawCardIndexData : undefined;
-  const sightingsData = useDeckSightingsData();
+  const popularityIndexData = useDeckPopularityIndexData();
   const cardCatalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
 
   const result = useMemo((): ChampionCardImpactResult => {
-    if (!championName || !cardIndexData || !sightingsData) return { cards: [], totalDecks: 0, loading: !cardIndexData || !sightingsData };
+    if (!championName || !cardIndexData || !popularityIndexData)
+      return { cards: [], totalDecks: 0, loading: !cardIndexData || !popularityIndexData };
 
-    // Filter by Champion first, via the cheap sightings lookup, before touching the (20MB+)
+    // Filter by Champion first, via the cheap lean-index lookup, before touching the (20MB+)
     // deck-card-index dataset — same ordering useDeckPopularity.ts already uses for its own
     // championFilter, so only this Champion's decks (not all 57k+) get decoded below.
     const winRateByDeckId = new Map<string, number>();
-    for (const s of sightingsData.sightings) {
+    for (const s of popularityIndexData.entries) {
       if (s.championName === championName) winRateByDeckId.set(s.deckId, s.winRate);
     }
     if (winRateByDeckId.size === 0) return { cards: [], totalDecks: 0, loading: false };
@@ -81,7 +82,7 @@ export function useChampionCardImpact(
     const cards = entries.filter((c) => !excludeCardNames.has(c.cardName)).slice(0, MAX_RESULTS);
 
     return { cards, totalDecks: rows.length, loading: false };
-  }, [championName, selectedElements, excludeCardNames, cardIndexData, sightingsData, cardsByName]);
+  }, [championName, selectedElements, excludeCardNames, cardIndexData, popularityIndexData, cardsByName]);
 
   return result;
 }
