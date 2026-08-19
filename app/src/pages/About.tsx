@@ -18,71 +18,116 @@ import { useDocumentTitle } from "../lib/useDocumentTitle";
 const CLASS_ROW = ["WARRIOR", "MAGE", "CLERIC", "ASSASSIN", "RANGER", "TAMER", "GUARDIAN"];
 const ELEMENT_ROW = ["FIRE", "WATER", "WIND", "CRUX", "UMBRA", "EXALTED", "LUXEM", "TERA"];
 
-interface Highlight {
+interface FeatureGroup {
   title: string;
-  description: string;
+  items: string[];
   example: { to: string; label: string };
 }
 
-const FEATURES: Highlight[] = [
+const FEATURES: FeatureGroup[] = [
   {
     title: "Cards",
-    description: "The full card database, synced locally for instant filtering — with pricing, related cards, and legality per card.",
+    items: [
+      "Full catalog synced locally — search and filter by class, type, subtype, element, or artist with no repeat network calls",
+      "Pricing per card, plus a decklist's total and priciest cards",
+      "Usage & win rate, sortable by usage, raw/adjusted win rate, or recency (\"Hot\")",
+      "Related cards: what's played alongside it, top decks, and most unique decks running it",
+      "References, referenced-by, and format legality",
+    ],
     example: { to: "/cards/fan-of-insight", label: "Fan of Insight" },
   },
   {
     title: "Sets",
-    description: "Every expansion, browsable alongside the cards printed in it.",
+    items: ["Every expansion, browsable", "Every card printed in a given set"],
     example: { to: "/sets/DTR", label: "Distorted Reflections" },
   },
   {
     title: "Tournaments",
-    description: "Omnidex events — standings, pairings, decklists, and judges, for events live and past.",
+    items: [
+      "Omnidex events — standings, pairings, decklists, and judges",
+      "Live lookup for in-progress events, not just completed ones",
+      "Browsable by season, grouped by card-legality window",
+    ],
     example: { to: "/events/60488", label: "Grand Archive 2026 Worlds" },
   },
   {
     title: "Players",
-    description: "Elo ratings, event history, notable upsets, and a full deck history per player.",
+    items: [
+      "Elo ratings reconstructed from Omnidex's own per-match deltas",
+      "Full event history and notable upsets",
+      "Deck history: every Champion played and most-used cards",
+      "13,000+ rated players, paginated and searchable by username",
+    ],
     example: { to: "/players/5390", label: "elothere" },
   },
   {
     title: "Judges",
-    description: "Certified judges, searchable by level and experience — shared with the player rating system where they overlap.",
+    items: [
+      "Certified judges, sortable by level and experience",
+      "Shares the player ID space, so a judge who also plays gets both views on one profile",
+    ],
     example: { to: "/players/590", label: "Ain" },
   },
   {
     title: "Teams",
-    description: "Team registrations from 3v3 events, searchable by team or player.",
+    items: [
+      "3v3 team-format registrations — a flat log, not deduplicated (team names alone aren't a reliable identity)",
+      "Filterable by event type and season, searchable by team or player",
+    ],
     example: { to: "/teams", label: "Browse Teams" },
   },
   {
     title: "Achievements",
-    description: "Badges computed automatically from tournament wins, rating milestones, and decklists.",
+    items: [
+      "Badges computed automatically — tournament tiers, rating milestones, playstyle, dedication, and judging",
+      "No manual curation: every unlock is derived straight from the underlying stats",
+    ],
     example: { to: "/achievements/won-worlds", label: "Won Worlds" },
   },
   {
     title: "Champions",
-    description: "Per-Champion stats: most-played cards, performance by season, and standout builds.",
+    items: [
+      "Most-played cards by deck section, per Champion",
+      "Performance broken down season by season",
+      "Named Spirit companions tracked with full Champion-style stats of their own",
+    ],
     example: { to: "/champions/Guo%20Jia", label: "Guo Jia" },
   },
   {
     title: "Archetypes",
-    description: "Named builds within each Champion, plus the full battle chart of matchups between them.",
+    items: [
+      "Named builds clustered from real decklists by similarity, not hand-picked ahead of time",
+      "Full battle chart: matchup matrix, by-Champion view, and closest/most-lopsided highlights",
+      "Sample decklists and defining cards per build",
+    ],
     example: { to: "/battle-chart", label: "Battle Chart" },
   },
   {
     title: "Top Decks",
-    description: "Every public decklist, filterable by Champion, class, keyword, season, and result.",
+    items: [
+      "Every public decklist — 56,000+ and counting",
+      "Filterable by Champion, class, keyword, season, event type, and outcome",
+      "Ranked by a tier-weighted placement score, not just raw finish, so a strong finish at a big event outranks a small one",
+      "Flags netdecked lists (identical builds from other players) and \"tough finish\" upsets (a strong record that still missed the cut)",
+    ],
     example: { to: "/top-decks", label: "Browse Top Decks" },
   },
   {
     title: "Popular Decks",
-    description: "Exact decklists multiple players independently ran, each with its own composition breakdown.",
+    items: [
+      "Exact decklists independently run by 2+ players",
+      "Dedicated page per deck: composition donuts, a power rating, priciest cards, a popularity trend, and similar decks",
+    ],
     example: { to: "/decks/xenbr4", label: "A top Silvie build" },
   },
   {
     title: "Compare",
-    description: "Line up any number of decks side-by-side — search by cards, import a player's list, or paste your own.",
+    items: [
+      "Search for decks containing specific cards",
+      "Import any player's submitted decklist from an event",
+      "Paste in a decklist that was never even submitted to Omnidex",
+      "Side-by-side grid highlighting shared vs. unique cards, with price and power rating per deck, plus Tabletop Simulator export",
+    ],
     example: { to: "/compare", label: "Open Compare" },
   },
 ];
@@ -267,12 +312,22 @@ export default function About() {
       <section className="border-t border-ctp-surface0 bg-ctp-mantle/40 py-16">
         <div className="mx-auto max-w-5xl px-4">
           <h2 className="text-center text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">Explore the site</h2>
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <p className="mx-auto mt-2 max-w-xl text-center text-sm text-ctp-subtext1">
+            Every top-level section and what it actually does — not just a page list.
+          </p>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {FEATURES.map((f) => (
               <div key={f.title} className="rounded-lg border border-ctp-surface1 bg-ctp-base p-4">
                 <h3 className="text-sm font-semibold text-ctp-text">{f.title}</h3>
-                <p className="mt-1 text-xs text-ctp-subtext1">{f.description}</p>
-                <Link to={f.example.to} className="mt-2 inline-block text-xs text-ctp-subtext0 hover:text-ctp-blue hover:underline">
+                <ul className="mt-2 space-y-1">
+                  {f.items.map((item) => (
+                    <li key={item} className="flex gap-1.5 text-xs text-ctp-subtext1">
+                      <span className="mt-0.5 shrink-0 text-ctp-subtext0">&middot;</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link to={f.example.to} className="mt-3 inline-block text-xs text-ctp-subtext0 hover:text-ctp-blue hover:underline">
                   {f.example.label} &rarr;
                 </Link>
               </div>
