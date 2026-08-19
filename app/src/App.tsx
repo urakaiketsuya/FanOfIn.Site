@@ -12,7 +12,7 @@ const NAV_LINKS = [
   { to: "/tournaments", label: "Tournaments" },
   { to: "/seasons", label: "Seasons" },
   { to: "/players", label: "Players" },
-  { to: "/judges", label: "Judges" },
+  { to: "/players?tab=judges", label: "Judges" },
   { to: "/teams", label: "Teams" },
   { to: "/achievements", label: "Achievements" },
   // Deck analysis

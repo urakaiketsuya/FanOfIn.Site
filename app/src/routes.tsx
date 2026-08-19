@@ -27,6 +27,12 @@ function SetDetailRedirect() {
   return <Navigate to={`/cards?tab=browse&set=${encodeURIComponent(prefix)}`} replace />;
 }
 
+// Judges merged into the Players page's "Judges" tab (judge IDs share the player ID space, and
+// both link to the same /players/:id profile).
+function JudgesRedirect() {
+  return <Navigate to="/players?tab=judges" replace />;
+}
+
 // Lazy-loaded so each route's JS is a separate chunk, fetched on demand — previously the whole
 // app (every page) shipped as one bundle regardless of which page a visitor actually opened.
 const CardsBrowse = lazy(() => import("./features/cards/CardsBrowse"));
@@ -40,7 +46,6 @@ const SeasonsIndex = lazy(() => import("./features/tournaments/SeasonsIndex"));
 const SeasonDetail = lazy(() => import("./features/tournaments/SeasonDetail"));
 const PlayersIndex = lazy(() => import("./features/players/PlayersIndex"));
 const PlayerProfile = lazy(() => import("./features/players/PlayerProfile"));
-const JudgesIndex = lazy(() => import("./features/judges/JudgesIndex"));
 const TeamsIndex = lazy(() => import("./features/teams/TeamsIndex"));
 const AchievementsIndex = lazy(() => import("./features/achievements/AchievementsIndex"));
 const AchievementDetail = lazy(() => import("./features/achievements/AchievementDetail"));
@@ -82,7 +87,7 @@ export default function AppRoutes() {
         <Route path="/seasons/:slug" element={<SeasonDetail />} />
         <Route path="/players" element={<PlayersIndex />} />
         <Route path="/players/:id" element={<PlayerProfile />} />
-        <Route path="/judges" element={<JudgesIndex />} />
+        <Route path="/judges" element={<JudgesRedirect />} />
         <Route path="/teams" element={<TeamsIndex />} />
         <Route path="/achievements" element={<AchievementsIndex />} />
         <Route path="/achievements/:id" element={<AchievementDetail />} />
