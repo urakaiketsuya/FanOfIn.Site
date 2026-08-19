@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import type { OmnidexDecklist } from "@gatcg/shared";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
+import { parseDecklist } from "../compare/parseDecklist";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { buildDecklistText } from "../events/DecklistView";
 import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
@@ -255,6 +256,9 @@ export default function DeckBuilderIndex() {
   const [changeLog, setChangeLog] = useState<ChangeLogEntry[]>([]);
   const [tab, setTab] = useTabParam<BuilderTab>("tab", TAB_KEYS, "build");
   const [isPending, startTransition] = useTransition();
+  const [pasteOpen, setPasteOpen] = useState(false);
+  const [pasteText, setPasteText] = useState("");
+  const [pasteError, setPasteError] = useState<string | null>(null);
   // Set right before a state change that'll cause a recompute, read (and cleared) by the effect
   // below once that recompute lands — pairs the resulting suggestion diff with the action that
   // caused it. `subject` is excluded from the diff itself since "I locked X" already says X
@@ -262,9 +266,14 @@ export default function DeckBuilderIndex() {
   const pendingActionRef = useRef<{ label: string; subject: string | null } | null>(null);
   const prevSuggestedRef = useRef<Set<string> | null>(null);
   const prevWinRateRef = useRef<number | null>(null);
+  // Set right before setChampionName() by loadPastedDecklist() so the reset effect below doesn't
+  // clobber the Spirit/locks it just derived from the paste — a normal Champion-dropdown change
+  // still resets to a blank slate as usual.
+  const skipNextResetRef = useRef(false);
 
   const popularityIndexData = useDeckPopularityIndexData();
   const cardCatalog = useCardCatalog();
+  const catalogByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
   const { rows, spiritsPresent, loading: populationLoading } = useDeckBuilderPopulation(championName);
   const build = useSuggestedBuild(rows, spiritFilter, lockedCards, rejectedCards, populationLoading);
 
@@ -307,17 +316,72 @@ export default function DeckBuilderIndex() {
   const priceByName = useDeckPriceByName();
 
   useEffect(() => {
-    startTransition(() => {
-      setSpiritFilter(null);
-      setLockedCards(new Map());
-      setRejectedCards(new Set());
-      setChangeLog([]);
-    });
+    if (skipNextResetRef.current) {
+      skipNextResetRef.current = false;
+    } else {
+      startTransition(() => {
+        setSpiritFilter(null);
+        setLockedCards(new Map());
+        setRejectedCards(new Set());
+        setChangeLog([]);
+      });
+    }
     pendingActionRef.current = null;
     prevSuggestedRef.current = null;
     prevWinRateRef.current = null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [championName]);
+
+  /**
+   * Bulk equivalent of picking a Champion+Spirit then locking every remaining card by hand —
+   * detects the Champion (material CHAMPION-type card, non-Spirit) and Spirit (material
+   * CHAMPION+SPIRIT card, same rule useDeckBuilderPopulation uses) from the pasted list, then
+   * locks everything else (including the specific Champion-level prints run, so the algorithm
+   * doesn't silently swap in a different print at that level).
+   */
+  function loadPastedDecklist() {
+    const { decklist, skippedLines } = parseDecklist(pasteText);
+    const lines = [...decklist.main, ...decklist.material];
+    if (lines.length === 0) {
+      setPasteError(skippedLines.length > 0 ? "Couldn't recognize any card lines in that paste." : "Paste a decklist first.");
+      return;
+    }
+
+    let detectedChampion: string | null = null;
+    let detectedSpirit: string | null = null;
+    const newLocked = new Map<string, number>();
+
+    for (const line of lines) {
+      const card = catalogByName.get(line.card);
+      if (card?.types.includes("CHAMPION")) {
+        if (card.subtypes.includes("SPIRIT")) {
+          detectedSpirit = line.card;
+          continue;
+        }
+        if (!detectedChampion) detectedChampion = card.name.split(",")[0].trim();
+      }
+      newLocked.set(line.card, (newLocked.get(line.card) ?? 0) + line.quantity);
+    }
+
+    if (!detectedChampion) {
+      setPasteError("Couldn't find a Champion card in this decklist.");
+      return;
+    }
+
+    if (detectedChampion !== championName) skipNextResetRef.current = true;
+    setChampionName(detectedChampion);
+    setSpiritFilter(detectedSpirit);
+    setLockedCards(newLocked);
+    setRejectedCards(new Set());
+    setChangeLog([]);
+    pendingActionRef.current = null;
+    prevSuggestedRef.current = null;
+    prevWinRateRef.current = null;
+
+    setPasteText("");
+    setPasteError(null);
+    setPasteOpen(false);
+  }
 
   function toggleLock(name: string, quantity: number) {
     const willLock = !lockedCards.has(name);
@@ -457,6 +521,51 @@ export default function DeckBuilderIndex() {
               ))}
             </select>
           </>
+        )}
+      </div>
+
+      <div className="mt-2">
+        {!pasteOpen ? (
+          <button type="button" onClick={() => setPasteOpen(true)} className="text-xs text-ctp-blue hover:underline">
+            Or paste a decklist for recommendations &rarr;
+          </button>
+        ) : (
+          <div className="mt-1 max-w-sm">
+            <p className="text-xs text-ctp-subtext0">
+              Paste a decklist — one card per line, e.g. "4x Card Name", with optional "Main"/"Material" section
+              headers. The Champion (and Spirit, if run) are detected automatically and everything else locks in as
+              your starting point for recommendations.
+            </p>
+            <textarea
+              value={pasteText}
+              onChange={(e) => setPasteText(e.target.value)}
+              placeholder={"Main\n4x Dungeon Guide\n...\n\nMaterial\n1x Spirit of Water"}
+              rows={6}
+              className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
+            />
+            <div className="mt-2 flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={loadPastedDecklist}
+                disabled={pasteText.trim().length === 0}
+                className="rounded-md border border-ctp-blue px-2 py-1 text-xs text-ctp-blue hover:bg-ctp-surface0 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                Load decklist
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setPasteOpen(false);
+                  setPasteText("");
+                  setPasteError(null);
+                }}
+                className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text"
+              >
+                Cancel
+              </button>
+            </div>
+            {pasteError && <p className="mt-1.5 text-xs text-ctp-red">{pasteError}</p>}
+          </div>
         )}
       </div>
 
