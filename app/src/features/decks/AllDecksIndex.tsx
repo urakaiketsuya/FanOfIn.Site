@@ -61,7 +61,7 @@ export default function AllDecksIndex() {
 
   const filtered = useMemo(() => {
     let result = decks;
-    if (elementFilter.length > 0) result = result.filter((d) => d.elements.some((e) => elementFilter.includes(e)));
+    if (elementFilter.length > 0) result = result.filter((d) => elementFilter.every((e) => d.elements.includes(e)));
     // A group's card content is identical across its main+material, so any member sighting
     // matching the combination search means the whole group matches — sideboard can differ
     // between members, so this is "played with this card at least once", not "always".

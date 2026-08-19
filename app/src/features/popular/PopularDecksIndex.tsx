@@ -44,7 +44,7 @@ export default function PopularDecksIndex() {
 
   const filtered = useMemo(() => {
     if (elementFilter.length === 0) return decks;
-    return decks.filter((d) => d.elements.some((e) => elementFilter.includes(e)));
+    return decks.filter((d) => elementFilter.every((e) => d.elements.includes(e)));
   }, [decks, elementFilter]);
 
   function toggleElement(element: string) {
