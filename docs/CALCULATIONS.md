@@ -310,6 +310,39 @@ population, capped at that legal max. Target deck sizes (main/material totals) a
 population's own modal totals rather than assumed 60/12, since real decklists vary slightly (60 vs.
 61 seen in spot checks).
 
+**A locked card's section is determined from raw presence, not from the ranking data.** Real bug,
+reported and fixed live: locking a non-Champion Material card (e.g. a relic) sent it to Main. Cause —
+the section-placement check looked up the card in `entryByName`, which is built from `ranked`, and
+`ranked` deliberately excludes every locked card (so a card doesn't compete against itself for a
+slot). That lookup was therefore always `undefined` for any locked card, silently defaulting all of
+them to "main" regardless of where they're actually played. Fixed with a dedicated `sectionOf`
+helper that counts raw main/material presence directly from the Spirit-filtered population
+(independent of the lock-conditioned ranking population, so it stays stable regardless of fallback
+state) and applies the same >=80%-majority rule as role classification elsewhere.
+
+**Buddy cards** (`useBuddyCards.ts`): for each locked-in card, the other cards most often run
+alongside it — deliberately *not* filtered by win rate the way the main suggestions are. A real
+combo piece or deckbuilding staple can be run together constantly without that pairing ever clearing
+Card Impact's with/without sample bar (e.g. if both cards are individually near-universal, there's
+no "without" population to compare against) — this is a separate, unfiltered co-occurrence lens
+specifically so a genuinely synergistic pick isn't invisible just because the numbers can't
+distinguish it. Support-gated (>=5 co-occurring decks) to avoid noise; each buddy shows the % of
+decks with the locked card that also ran it, with its own "Add" button that locks it in directly,
+bypassing the ranked suggestions entirely.
+
+## Card-page win-rate synergy (`app/src/features/cards/useCardSynergy.ts`)
+
+A card's own detail page already had "Most used with" (`useCardCombination.ts` — ranked by raw
+co-occurrence count, split into Main/Material/Sideboard). This is a different question, asked
+directly by the user: not "what's commonly played alongside this card" but "does *also* running a
+given other card correlate with actually winning more" — a real win-rate interaction, not just
+popularity. Reuses `computeCardImpactEntries` a fourth time (general Card Impact, matchup Card
+Impact, Guided Deck Builder — see above), this time scoped globally: the population is simply every
+deck (any Champion) containing the page's card, baseline is that population's own mean win rate, and
+candidates are every other card seen in it. The card itself never appears in its own results without
+special-casing — every row in the population already contains it, so its "without" bucket is always
+empty and automatically fails the minimum-sample gate.
+
 ## Deck similarity (`pipeline/src/analysis/similarity.ts`)
 
 **Base metric**: weighted Jaccard, a.k.a. Ruzicka similarity, over each deck's card-copy multiset

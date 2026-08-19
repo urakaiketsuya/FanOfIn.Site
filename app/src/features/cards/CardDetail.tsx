@@ -9,12 +9,14 @@ import CostIcon from "../../components/CostIcon";
 import ClassIcon from "../../components/ClassIcon";
 import TypeIcon from "../../components/TypeIcon";
 import TopCardsSections from "../../components/TopCardsSections";
+import CardImpactTable from "../../components/CardImpactTable";
 import TopDecksList from "../../components/TopDecksList";
 import { typeIconKey } from "../../lib/cardTypeIcon";
 import { useCard } from "./useCard";
 import { usePriceLookup } from "../pricing/usePriceLookup";
 import { useCardStatsData, useArchetypeData } from "../archetypes/data";
 import { useCardCombination } from "./useCardCombination";
+import { useCardSynergy } from "./useCardSynergy";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useDeckSightingsData } from "../topdecks/data";
 import { useHipsterData } from "../players/data";
@@ -106,6 +108,9 @@ export default function CardDetail() {
   );
 
   const deckIdSet = useMemo(() => new Set(combination.deckIds), [combination.deckIds]);
+
+  const synergy = useCardSynergy(card?.name ?? null);
+  const synergyCardImages = useCardsByNames(useMemo(() => synergy.cards.map((c) => c.cardName), [synergy.cards]));
 
   const topDecks = useMemo(() => {
     if (!sightingsData) return [];
@@ -397,6 +402,18 @@ export default function CardDetail() {
           <div className="mt-3">
             <TopCardsSections topCards={comboTopCards} cardImages={comboCardImages} />
           </div>
+        </div>
+      )}
+
+      {tab === "combos" && synergy.cards.length > 0 && (
+        <div className="mt-8">
+          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Win-rate synergy</h2>
+          <p className="mt-1 text-xs text-ctp-subtext0">
+            Across {synergy.totalDecks} decks running {card.name}, cards that correlate with an even higher win rate
+            when also included — correlational, not causal, and different from "Most used with" above (that's ranked
+            by how often cards appear together; this is ranked by whether the pairing actually wins more).
+          </p>
+          <CardImpactTable cards={synergy.cards} cardImages={synergyCardImages} withLabel="Win rate (with)" withoutLabel="Win rate (without)" />
         </div>
       )}
 

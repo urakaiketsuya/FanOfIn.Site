@@ -124,11 +124,29 @@ export function useSuggestedBuild(
     const main: SuggestedCard[] = [];
     const placed = new Set<string>();
 
-    // Locked cards go in first, at their own quantity, sectioned by wherever the ranking data
-    // says they typically live (falls back to "main" for a card never seen in this population).
+    // Which section a card typically lives in, from raw presence in the (lock-independent)
+    // Spirit-filtered population — NOT from `entryByName`, which deliberately excludes locked
+    // cards (so a card doesn't compete against itself in the ranking) and would otherwise always
+    // return undefined for every locked card, silently defaulting every one of them to "main"
+    // regardless of where it's actually played. >=80% in one section wins; otherwise "mixed",
+    // which defaults to main — same convention `computeCardImpactEntries` uses for role.
+    function sectionOf(name: string): "main" | "material" {
+      let mainCount = 0;
+      let materialCount = 0;
+      for (const row of spiritRows) {
+        if (row.main.has(name)) mainCount++;
+        if (row.material.has(name)) materialCount++;
+      }
+      const total = mainCount + materialCount;
+      if (total === 0) return "main";
+      return materialCount / total >= 0.8 ? "material" : "main";
+    }
+
+    // Locked cards go in first, at their own quantity, sectioned by wherever they're actually
+    // played (falls back to "main" for a card never seen in this population).
     for (const [name, qty] of lockedCards) {
       const card = cardsByName.get(name);
-      const isMaterialCard = card?.types.includes("CHAMPION") || (entryByName.get(name)?.role ?? "main") === "material";
+      const isMaterialCard = card?.types.includes("CHAMPION") || sectionOf(name) === "material";
       (isMaterialCard ? material : main).push(toSuggested(name, qty, true, entryByName.get(name), "ranked"));
       placed.add(name);
     }
