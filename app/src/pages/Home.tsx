@@ -19,7 +19,10 @@ const SECTIONS: Section[] = [
     description:
       "Browse and search the full card database, synced locally for instant filtering — with pricing, related cards, and legality on every card page.",
     to: "/cards",
-    links: [{ to: "/cards/stats", label: "Usage & win rates" }],
+    links: [
+      { to: "/cards/stats", label: "Usage & win rates" },
+      { to: "/cards/fan-of-insight", label: "Example: Fan of Insight" },
+    ],
   },
   {
     title: "Sets",
@@ -38,6 +41,7 @@ const SECTIONS: Section[] = [
     description:
       "Player index with Elo ratings, event history, and notable upsets — plus each player's full deck history: champions played and most-used cards.",
     to: "/players",
+    links: [{ to: "/players/5390", label: "Example: elothere" }],
   },
   {
     title: "Judges",
@@ -59,12 +63,16 @@ const SECTIONS: Section[] = [
     title: "Champions",
     description: "Per-Champion stats: most-played cards by deck section, performance trends by season, and standout builds.",
     to: "/champions",
+    links: [{ to: "/champions/Guo%20Jia", label: "Example: Guo Jia" }],
   },
   {
     title: "Archetypes",
     description: "Named builds within each Champion, derived from real decklists, with sample decklists and matchup data.",
     to: "/archetypes",
-    links: [{ to: "/battle-chart", label: "Battle chart" }],
+    links: [
+      { to: "/battle-chart", label: "Battle chart" },
+      { to: "/archetypes/14lh0s0", label: "Example: Tera Silvie" },
+    ],
   },
   {
     title: "Top Decks",
@@ -76,6 +84,7 @@ const SECTIONS: Section[] = [
     description:
       "Exact decklists multiple players independently ran — each has its own page with composition charts, price, and a popularity trend.",
     to: "/popular-decks",
+    links: [{ to: "/decks/xenbr4", label: "Example: a top Silvie build" }],
   },
   // Tools
   {
@@ -93,9 +102,19 @@ export default function Home() {
         Card database, sets, and tournament data — synced locally for fast, offline-friendly browsing.
       </p>
       <p className="mt-2 text-xs text-ctp-subtext0">
-        A few things worth knowing: archetypes are clustered from real decklists rather than hand-picked, Card Stats
-        tracks recent vs. prior usage to surface what's trending, Champion pages break performance down by season,
-        and Compare accepts a decklist even if it's never been submitted to Omnidex.
+        A few things worth knowing: archetypes are clustered from real decklists rather than hand-picked (e.g.{" "}
+        <Link to="/archetypes/14lh0s0" className="hover:text-ctp-blue hover:underline">
+          Tera Silvie
+        </Link>
+        ), Card Stats tracks recent vs. prior usage to surface what's trending (e.g.{" "}
+        <Link to="/cards/scepter-of-fascination" className="hover:text-ctp-blue hover:underline">
+          Scepter of Fascination
+        </Link>
+        ), Champion pages break performance down by season (e.g.{" "}
+        <Link to="/champions/Tristan" className="hover:text-ctp-blue hover:underline">
+          Tristan
+        </Link>
+        ), and Compare accepts a decklist even if it's never been submitted to Omnidex.
       </p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
