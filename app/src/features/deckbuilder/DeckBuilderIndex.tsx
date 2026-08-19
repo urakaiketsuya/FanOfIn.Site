@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Link } from "react-router-dom";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
@@ -7,6 +7,44 @@ import CardHoverPreview from "../../components/CardHoverPreview";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useDeckBuilderPopulation } from "./useDeckBuilderPopulation";
 import { useSuggestedBuild, type SuggestedCard } from "./useSuggestedBuild";
+
+interface ChangeLogEntry {
+  label: string;
+  added: string[];
+  removed: string[];
+}
+
+function ChangeLogList({ entries }: { entries: ChangeLogEntry[] }) {
+  if (entries.length === 0) return null;
+  return (
+    <div className="mt-6">
+      <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Suggestion changes</h2>
+      <ul className="mt-2 space-y-1 text-xs text-ctp-subtext1">
+        {entries.map((e, i) => (
+          <li key={i}>
+            <span className="text-ctp-text">{e.label}</span>
+            {e.added.length === 0 && e.removed.length === 0 ? (
+              <span className="text-ctp-subtext0"> — no change to the rest of the suggestions</span>
+            ) : (
+              <>
+                {e.added.map((name) => (
+                  <span key={`+${name}`} className="ml-1.5 text-ctp-green">
+                    +{name}
+                  </span>
+                ))}
+                {e.removed.map((name) => (
+                  <span key={`-${name}`} className="ml-1.5 text-ctp-red">
+                    −{name}
+                  </span>
+                ))}
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 function CardRow({
   card,
@@ -71,12 +109,35 @@ export default function DeckBuilderIndex() {
   const [lockedCards, setLockedCards] = useState<Map<string, number>>(new Map());
   const [rejectedCards, setRejectedCards] = useState<Set<string>>(new Set());
   const [cardInput, setCardInput] = useState("");
+  const [changeLog, setChangeLog] = useState<ChangeLogEntry[]>([]);
   const [isPending, startTransition] = useTransition();
+  // Set right before a state change that'll cause a recompute, read (and cleared) by the effect
+  // below once that recompute lands — pairs the resulting suggestion diff with the action that
+  // caused it. `subject` is excluded from the diff itself since "I locked X" already says X
+  // changed; the log is about the ripple effect on everything else.
+  const pendingActionRef = useRef<{ label: string; subject: string | null } | null>(null);
+  const prevSuggestedRef = useRef<Set<string> | null>(null);
 
   const popularityIndexData = useDeckPopularityIndexData();
   const cardCatalog = useCardCatalog();
   const { rows, spiritsPresent, loading: populationLoading } = useDeckBuilderPopulation(championName);
   const build = useSuggestedBuild(rows, spiritFilter, lockedCards, rejectedCards, populationLoading);
+
+  useEffect(() => {
+    const current = new Set(
+      [...build.material, ...build.main].filter((c) => !c.locked).map((c) => c.cardName),
+    );
+    const pending = pendingActionRef.current;
+    const prev = prevSuggestedRef.current;
+    if (prev && pending) {
+      const subject = pending.subject;
+      const added = Array.from(current).filter((n) => !prev.has(n) && n !== subject);
+      const removed = Array.from(prev).filter((n) => !current.has(n) && n !== subject);
+      setChangeLog((log) => [{ label: pending.label, added, removed }, ...log].slice(0, 25));
+    }
+    prevSuggestedRef.current = current;
+    pendingActionRef.current = null;
+  }, [build]);
 
   const championsPresent = useMemo(() => {
     if (!popularityIndexData) return [];
@@ -97,11 +158,16 @@ export default function DeckBuilderIndex() {
       setSpiritFilter(null);
       setLockedCards(new Map());
       setRejectedCards(new Set());
+      setChangeLog([]);
     });
+    pendingActionRef.current = null;
+    prevSuggestedRef.current = null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [championName]);
 
   function toggleLock(name: string, quantity: number) {
+    const willLock = !lockedCards.has(name);
+    pendingActionRef.current = { label: willLock ? `Locked ${name}` : `Unlocked ${name}`, subject: name };
     startTransition(() =>
       setLockedCards((prev) => {
         const next = new Map(prev);
@@ -114,6 +180,7 @@ export default function DeckBuilderIndex() {
 
   /** Locked cards are dropped from the deck entirely; a non-locked (suggested) card is instead excluded from future suggestions, so a different card fills that slot. */
   function removeCard(name: string, locked: boolean) {
+    pendingActionRef.current = { label: locked ? `Removed ${name}` : `Excluded ${name} from suggestions`, subject: name };
     startTransition(() => {
       if (locked) {
         setLockedCards((prev) => {
@@ -131,6 +198,7 @@ export default function DeckBuilderIndex() {
     if (!cardNameSet.has(name) || lockedCards.has(name)) return;
     const card = cardCatalog.find((c) => c.name === name);
     const defaultQty = card?.types.includes("UNIQUE") ? 1 : 4;
+    pendingActionRef.current = { label: `Added ${name}`, subject: name };
     startTransition(() =>
       setLockedCards((prev) => {
         const next = new Map(prev);
@@ -173,7 +241,11 @@ export default function DeckBuilderIndex() {
             <span className="ml-2 text-ctp-subtext0">Spirit:</span>
             <select
               value={spiritFilter ?? ""}
-              onChange={(e) => startTransition(() => setSpiritFilter(e.target.value || null))}
+              onChange={(e) => {
+                const value = e.target.value || null;
+                pendingActionRef.current = { label: `Set Spirit to ${value ?? "Any Spirit"}`, subject: null };
+                startTransition(() => setSpiritFilter(value));
+              }}
               className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
             >
               <option value="">Any Spirit</option>
@@ -227,7 +299,14 @@ export default function DeckBuilderIndex() {
               <>
                 {" · "}
                 {rejectedCards.size} card{rejectedCards.size === 1 ? "" : "s"} excluded from suggestions —{" "}
-                <button type="button" onClick={() => startTransition(() => setRejectedCards(new Set()))} className="hover:text-ctp-blue hover:underline">
+                <button
+                  type="button"
+                  onClick={() => {
+                    pendingActionRef.current = { label: "Reset excluded cards", subject: null };
+                    startTransition(() => setRejectedCards(new Set()));
+                  }}
+                  className="hover:text-ctp-blue hover:underline"
+                >
                   reset
                 </button>
               </>
@@ -270,6 +349,8 @@ export default function DeckBuilderIndex() {
               </ul>
             </div>
           </div>
+
+          <ChangeLogList entries={changeLog} />
         </>
       )}
     </div>
