@@ -27,6 +27,10 @@ export interface SuggestedBuild {
   rankingPopulationSize: number;
   /** True once enough cards are locked that the exact (Spirit + all locks) population got too thin to rank against, so remaining suggestions fell back to the Spirit-only population instead. */
   usedFallback: boolean;
+  /** Real average win rate of decks matching the Spirit filter AND every card currently locked in — the actual population everything is being ranked against. Shifts as locks are added/removed, so it doubles as "does this pick move the needle." Null only when there's no population at all yet. */
+  conditionalWinRate: number | null;
+  /** Real average win rate of decks matching just the Spirit filter (no lock condition) — a stable reference point for measuring how far locks have moved conditionalWinRate. */
+  baselineWinRate: number | null;
   loading: boolean;
 }
 
@@ -95,14 +99,22 @@ export function useSuggestedBuild(
   const cardsByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
 
   return useMemo((): SuggestedBuild => {
-    if (loading || rows.length === 0) return { material: [], main: [], rankingPopulationSize: 0, usedFallback: false, loading };
+    if (loading || rows.length === 0)
+      return { material: [], main: [], rankingPopulationSize: 0, usedFallback: false, conditionalWinRate: null, baselineWinRate: null, loading };
 
     const spiritRows = spiritFilter === null ? rows : rows.filter((r) => r.spiritName === spiritFilter);
-    if (spiritRows.length === 0) return { material: [], main: [], rankingPopulationSize: 0, usedFallback: false, loading: false };
+    if (spiritRows.length === 0)
+      return { material: [], main: [], rankingPopulationSize: 0, usedFallback: false, conditionalWinRate: null, baselineWinRate: null, loading: false };
+
+    const baselineWinRate = spiritRows.reduce((sum, r) => sum + r.winRate, 0) / spiritRows.length;
 
     const lockedNames = new Set(lockedCards.keys());
     const conditionalRows =
       lockedNames.size === 0 ? spiritRows : spiritRows.filter((r) => Array.from(lockedNames).every((n) => r.main.has(n) || r.material.has(n)));
+    // The real average for decks matching every lock exactly — reported even when that same
+    // population was too thin to rank against and suggestions fell back to the broader one below
+    // (ranking and "what does this combo actually average" are different questions).
+    const conditionalWinRate = conditionalRows.length > 0 ? conditionalRows.reduce((sum, r) => sum + r.winRate, 0) / conditionalRows.length : null;
 
     const usedFallback = lockedNames.size > 0 && conditionalRows.length < MIN_RANKING_POPULATION;
     const rankingRows = usedFallback ? spiritRows : conditionalRows;
@@ -215,6 +227,6 @@ export function useSuggestedBuild(
       if (materialTotal >= materialTarget && mainTotal >= mainTarget) break;
     }
 
-    return { material, main, rankingPopulationSize: rankingRows.length, usedFallback, loading: false };
+    return { material, main, rankingPopulationSize: rankingRows.length, usedFallback, conditionalWinRate, baselineWinRate, loading: false };
   }, [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName]);
 }

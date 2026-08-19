@@ -340,6 +340,18 @@ Rating and the composition donuts update immediately as cards are locked, added,
 verified live: locking one card changed the composite Power Rating from 6.00 to 6.25 in the same
 render pass.
 
+**Expected win rate**: the real average win rate of decks matching the Spirit filter *and* every
+currently-locked card (`conditionalWinRate` in `SuggestedBuild`) — not a synthesized prediction.
+Summing individual cards' `adjustedLift` values to estimate a whole-deck win rate was considered and
+rejected: lift figures aren't independent (a card's lift already reflects correlation with whatever
+else typically accompanies it), so adding ~30 of them would compound into a number with no honest
+error bars. The actual conditional population average carries no such risk — it's just "how have
+real decks exactly like this actually performed" — and updates every time a lock changes which
+population that is. Shown against `baselineWinRate` (the same population before any locks) so a
+lock's real effect is visible as a delta, and the same delta is captured per-action in the change
+log. Verified live: locking one card moved the shown rate from 46% to 47% (+0.6pp), logged
+identically in both the header and that action's log entry.
+
 ## Card-page win-rate synergy (`app/src/features/cards/useCardSynergy.ts`)
 
 A card's own detail page already had "Most used with" (`useCardCombination.ts` — ranked by raw

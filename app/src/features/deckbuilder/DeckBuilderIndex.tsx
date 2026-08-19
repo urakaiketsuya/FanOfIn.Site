@@ -6,6 +6,7 @@ import { useCardCatalog } from "../cards/useCardCatalog";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { buildDecklistText } from "../events/DecklistView";
 import CardHoverPreview from "../../components/CardHoverPreview";
+import CostIcon from "../../components/CostIcon";
 import DonutChart, { buildChartSegments } from "../../components/DonutChart";
 import BarChart from "../../components/BarChart";
 import { computeDeckComposition, computeDeckIdentity, computeDeckRating, computeMemoryCostCurve, computeReserveCostCurve, type RatingPillar } from "../../lib/deckIdentity";
@@ -24,6 +25,8 @@ interface ChangeLogEntry {
   label: string;
   added: string[];
   removed: string[];
+  /** Change in the real (Spirit + all locks) population's average win rate this action caused — null when there's no prior value to compare against yet (the very first logged action). */
+  winRateDelta: number | null;
 }
 
 function ChangeLogList({ entries }: { entries: ChangeLogEntry[] }) {
@@ -35,6 +38,12 @@ function ChangeLogList({ entries }: { entries: ChangeLogEntry[] }) {
         {entries.map((e, i) => (
           <li key={i}>
             <span className="text-ctp-text">{e.label}</span>
+            {e.winRateDelta !== null && Math.abs(e.winRateDelta) >= 0.001 && (
+              <span className={`ml-1.5 font-semibold ${e.winRateDelta >= 0 ? "text-ctp-green" : "text-ctp-red"}`}>
+                (expected win rate {e.winRateDelta >= 0 ? "+" : ""}
+                {(e.winRateDelta * 100).toFixed(1)}pp)
+              </span>
+            )}
             {e.added.length === 0 && e.removed.length === 0 ? (
               <span className="text-ctp-subtext0"> — no change to the rest of the suggestions</span>
             ) : (
@@ -190,6 +199,12 @@ function CardRow({
           <span className="text-ctp-text">{card.cardName}</span>
         )}
       </CardHoverPreview>
+      {cardInfo && cardInfo.cost.type !== "none" && cardInfo.cost.value !== null && (
+        <span className="flex shrink-0 items-center gap-0.5 text-xs text-ctp-subtext0">
+          <CostIcon kind={cardInfo.cost.type} size={12} />
+          {cardInfo.cost.value}
+        </span>
+      )}
       {card.adjustedLift !== null ? (
         <span className={`text-xs font-semibold ${card.adjustedLift >= 0 ? "text-ctp-green" : "text-ctp-red"}`}>
           {card.adjustedLift >= 0 ? "+" : ""}
@@ -238,6 +253,7 @@ export default function DeckBuilderIndex() {
   // changed; the log is about the ripple effect on everything else.
   const pendingActionRef = useRef<{ label: string; subject: string | null } | null>(null);
   const prevSuggestedRef = useRef<Set<string> | null>(null);
+  const prevWinRateRef = useRef<number | null>(null);
 
   const popularityIndexData = useDeckPopularityIndexData();
   const cardCatalog = useCardCatalog();
@@ -250,13 +266,17 @@ export default function DeckBuilderIndex() {
     );
     const pending = pendingActionRef.current;
     const prev = prevSuggestedRef.current;
+    const prevWinRate = prevWinRateRef.current;
     if (prev && pending) {
       const subject = pending.subject;
       const added = Array.from(current).filter((n) => !prev.has(n) && n !== subject);
       const removed = Array.from(prev).filter((n) => !current.has(n) && n !== subject);
-      setChangeLog((log) => [{ label: pending.label, added, removed }, ...log].slice(0, 25));
+      const winRateDelta =
+        prevWinRate !== null && build.conditionalWinRate !== null ? build.conditionalWinRate - prevWinRate : null;
+      setChangeLog((log) => [{ label: pending.label, added, removed, winRateDelta }, ...log].slice(0, 25));
     }
     prevSuggestedRef.current = current;
+    prevWinRateRef.current = build.conditionalWinRate;
     pendingActionRef.current = null;
   }, [build]);
 
@@ -286,6 +306,7 @@ export default function DeckBuilderIndex() {
     });
     pendingActionRef.current = null;
     prevSuggestedRef.current = null;
+    prevWinRateRef.current = null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [championName]);
 
@@ -430,7 +451,25 @@ export default function DeckBuilderIndex() {
 
       {championName && !populationLoading && rows.length > 0 && (
         <>
-          <p className="mt-4 text-xs text-ctp-subtext0">
+          {build.conditionalWinRate !== null && (
+            <p className="mt-4 text-sm">
+              <span className="text-ctp-subtext0">Expected win rate: </span>
+              <span className="font-semibold text-ctp-text">{(build.conditionalWinRate * 100).toFixed(0)}%</span>
+              {build.baselineWinRate !== null && lockedCards.size > 0 && (
+                <span
+                  className={`ml-1.5 text-xs font-semibold ${
+                    build.conditionalWinRate - build.baselineWinRate >= 0 ? "text-ctp-green" : "text-ctp-red"
+                  }`}
+                >
+                  ({build.conditionalWinRate - build.baselineWinRate >= 0 ? "+" : ""}
+                  {((build.conditionalWinRate - build.baselineWinRate) * 100).toFixed(1)}pp vs. unlocked baseline of{" "}
+                  {(build.baselineWinRate * 100).toFixed(0)}%)
+                </span>
+              )}
+            </p>
+          )}
+
+          <p className="mt-1 text-xs text-ctp-subtext0">
             Ranking suggestions against {build.rankingPopulationSize} matching deck{build.rankingPopulationSize === 1 ? "" : "s"}
             {isPending && " — recalculating…"}
             {rejectedCards.size > 0 && (
