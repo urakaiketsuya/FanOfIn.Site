@@ -24,7 +24,9 @@ function loadManifest(): Promise<Record<string, string>> {
   return manifestPromise;
 }
 
-async function refresh(key: string, url: string): Promise<void> {
+const inFlightRefreshes = new Map<string, Promise<void>>();
+
+async function doRefresh(key: string, url: string): Promise<void> {
   const existing = await db.published.get(key);
   const manifest = await loadManifest();
 
@@ -41,6 +43,24 @@ async function refresh(key: string, url: string): Promise<void> {
   if (existing?.generatedAt === data.generatedAt) return; // already have this exact generation
 
   await db.published.put({ key, generatedAt: data.generatedAt, data });
+}
+
+/**
+ * Multiple hook call sites can mount in the same tick and all want the same key (e.g. `/decks`
+ * mounts `useDeckPopularity` and `useCardCombination`, which both pull `deck-card-index.json` —
+ * a 90MB+ dataset) — without this, each one raced its own independent fetch+JSON.parse of the
+ * same huge file before any had a chance to write the IndexedDB cache the others check. Harmless
+ * waste on desktop; on mobile, several concurrent multi-hundred-MB in-memory parses is enough
+ * memory pressure that Safari would silently kill and reload the tab, which is exactly what this
+ * fixes. One in-flight promise per key, shared by every concurrent caller.
+ */
+function refresh(key: string, url: string): Promise<void> {
+  let inFlight = inFlightRefreshes.get(key);
+  if (!inFlight) {
+    inFlight = doRefresh(key, url).finally(() => inFlightRefreshes.delete(key));
+    inFlightRefreshes.set(key, inFlight);
+  }
+  return inFlight;
 }
 
 /**
