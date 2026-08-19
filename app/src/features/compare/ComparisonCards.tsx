@@ -61,6 +61,9 @@ export default function ComparisonCards({
                     {identity && (stats.championName ? ` · ${identity}` : identity)}
                   </p>
                 )}
+                {stats?.winRate !== null && stats?.winRate !== undefined && (
+                  <p className="text-xs text-ctp-subtext1">Win rate: {(stats.winRate * 100).toFixed(0)}%</p>
+                )}
               </div>
               {list && (
                 <button

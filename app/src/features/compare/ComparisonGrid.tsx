@@ -49,6 +49,7 @@ export default function ComparisonGrid({
 
   const bestPriceIndex = bestIndex(deckStats.map((s) => (s.price > 0 ? s.price : null)));
   const bestCompositeIndex = bestIndex(deckStats.map((s) => s.rating?.composite ?? null));
+  const bestWinRateIndex = bestIndex(deckStats.map((s) => s.winRate));
 
   return (
     <div className="overflow-x-auto">
@@ -76,6 +77,17 @@ export default function ComparisonGrid({
           </tr>
         </thead>
         <tbody className="divide-y divide-ctp-surface0">
+          <tr>
+            <td className="sticky left-0 z-10 bg-ctp-base py-1.5 pr-6 text-xs font-semibold uppercase text-ctp-subtext0">
+              Win rate
+            </td>
+            {deckStats.map((s, i) => (
+              <td key={s.key} className={`py-1.5 pr-6 ${i === bestWinRateIndex ? "text-ctp-green" : "text-ctp-subtext1"}`}>
+                {s.winRate !== null ? `${(s.winRate * 100).toFixed(0)}%` : "—"}
+              </td>
+            ))}
+          </tr>
+
           <tr>
             <td className="sticky left-0 z-10 bg-ctp-base py-1.5 pr-6 text-xs font-semibold uppercase text-ctp-subtext0">
               Deck price

@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import type { OmnidexDecklist } from "@gatcg/shared";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
+import { useDeckPopularityIndexData } from "../topdecks/data";
 import { computeSectionPrice } from "../../lib/deckPrice";
 import { computeDeckIdentity, computeDeckRating, type DeckRating } from "../../lib/deckIdentity";
 import { findDeckChampionName } from "../../lib/ttsExport";
@@ -75,6 +76,8 @@ export interface ComparisonDeckStats {
   classes: string[];
   elements: string[];
   rating: DeckRating | null;
+  /** The real recorded outcome for a "sighting" deck (an actual event participant) — null for a "custom" (pasted) deck, since there's no tournament result to report. */
+  winRate: number | null;
 }
 
 /**
@@ -84,6 +87,12 @@ export interface ComparisonDeckStats {
  */
 export function useComparisonData(decks: ComparedDeck[], decklists: Map<string, OmnidexDecklist | null>) {
   const priceByName = useDeckPriceByName();
+  const popularityIndexData = useDeckPopularityIndexData();
+  const winRateByDeckId = useMemo(() => {
+    const map = new Map<string, number>();
+    for (const entry of popularityIndexData?.entries ?? []) map.set(entry.deckId, entry.winRate);
+    return map;
+  }, [popularityIndexData]);
 
   const allNames = useMemo(
     () =>
@@ -105,8 +114,9 @@ export function useComparisonData(decks: ComparedDeck[], decklists: Map<string, 
   const deckStats: ComparisonDeckStats[] = useMemo(
     () =>
       decks.map((d) => {
+        const winRate = d.source.kind === "sighting" ? (winRateByDeckId.get(d.key) ?? null) : null;
         const list = decklists.get(d.key);
-        if (!list) return { key: d.key, price: 0, championName: null, classes: [], elements: [], rating: null };
+        if (!list) return { key: d.key, price: 0, championName: null, classes: [], elements: [], rating: null, winRate };
 
         const price = computeSectionPrice([...list.main, ...list.material, ...list.sideboard], priceByName).total;
         const mainMaterialLines = [...list.main, ...list.material].map((l) => ({ name: l.card, quantity: l.quantity }));
@@ -115,9 +125,9 @@ export function useComparisonData(decks: ComparedDeck[], decklists: Map<string, 
         const rating =
           mainMaterialLines.length > 0 ? computeDeckRating(mainMaterialLines, cardsByName, championName, identity.classes) : null;
 
-        return { key: d.key, price, championName, classes: identity.classes, elements: identity.elements, rating };
+        return { key: d.key, price, championName, classes: identity.classes, elements: identity.elements, rating, winRate };
       }),
-    [decks, decklists, cardsByName, priceByName],
+    [decks, decklists, cardsByName, priceByName, winRateByDeckId],
   );
 
   const sections: ComparisonSection[] = useMemo(

@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { priceKey, type TopCardsBySection } from "@gatcg/shared";
@@ -15,8 +15,10 @@ import { typeIconKey } from "../../lib/cardTypeIcon";
 import { useCard } from "./useCard";
 import { usePriceLookup } from "../pricing/usePriceLookup";
 import { useCardStatsData, useArchetypeData } from "../archetypes/data";
+import { useCardCatalog } from "./useCardCatalog";
 import { useCardCombination } from "./useCardCombination";
 import { useCardSynergy } from "./useCardSynergy";
+import CardComparisonTable from "../compare/CardComparisonTable";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useDeckSightingsData } from "../topdecks/data";
 import { useHipsterData } from "../players/data";
@@ -30,12 +32,13 @@ const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
 const MAX_CHAMPIONS_SHOWN = 8;
 
-type CardTab = "info" | "combos" | "decks";
+type CardTab = "info" | "combos" | "decks" | "compare";
 
 const TABS: { key: CardTab; label: string }[] = [
   { key: "info", label: "Info" },
   { key: "combos", label: "Combos" },
   { key: "decks", label: "Decks" },
+  { key: "compare", label: "Compare" },
 ];
 const TAB_KEYS = TABS.map((t) => t.key);
 
@@ -85,6 +88,28 @@ export default function CardDetail() {
   const prices = usePriceLookup();
   const cardStatsData = useCardStatsData();
   const cardStat = cardStatsData?.cards.find((c) => c.name === card?.name);
+
+  const cardCatalog = useCardCatalog();
+  const compareCardNames = useMemo(() => Array.from(new Set(cardCatalog.map((c) => c.name))).sort(), [cardCatalog]);
+  const compareCardNameSet = useMemo(() => new Set(compareCardNames), [compareCardNames]);
+  const [compareWith, setCompareWith] = useState<string[]>([]);
+  const [compareInput, setCompareInput] = useState("");
+  // Reseeds to just this page's card whenever it changes (navigating to a different card) —
+  // otherwise a stale comparison from the previous card page would carry over.
+  useEffect(() => {
+    if (card) setCompareWith([card.name]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [card?.name]);
+
+  function addCompareCard(name: string) {
+    if (!compareCardNameSet.has(name) || compareWith.includes(name)) return;
+    setCompareWith((prev) => [...prev, name]);
+    setCompareInput("");
+  }
+
+  function removeCompareCard(name: string) {
+    setCompareWith((prev) => prev.filter((n) => n !== name));
+  }
 
   const archetypeData = useArchetypeData();
   const sightingsData = useDeckSightingsData();
@@ -438,6 +463,51 @@ export default function CardDetail() {
               <UniqueDeckRow key={`${d.eventId}:${d.player}`} score={d} playerName={playerName(d.player)} />
             ))}
           </div>
+        </div>
+      )}
+
+      {tab === "compare" && (
+        <div className="mt-4">
+          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Compare with other cards</h2>
+          <p className="mt-1 text-xs text-ctp-subtext0">
+            Add any card to see usage, win rate, and price side by side — a quick way to decide between two options
+            without leaving this page.
+          </p>
+
+          <input
+            type="text"
+            list="card-detail-compare-options"
+            value={compareInput}
+            onChange={(e) => {
+              setCompareInput(e.target.value);
+              if (compareCardNameSet.has(e.target.value)) addCompareCard(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && compareCardNameSet.has(compareInput)) addCompareCard(compareInput);
+            }}
+            placeholder="Type a card name to add…"
+            className="mt-2 w-full max-w-sm rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
+          />
+          <datalist id="card-detail-compare-options">
+            {compareCardNames.map((n) => (
+              <option key={n} value={n} />
+            ))}
+          </datalist>
+
+          {compareWith.length > 0 && (
+            <div className="mt-3">
+              <CardComparisonTable names={compareWith} onRemove={removeCompareCard} />
+            </div>
+          )}
+
+          {compareWith.length > 1 && (
+            <Link
+              to={`/compare?type=cards&cards=${encodeURIComponent(compareWith.join(","))}`}
+              className="mt-2 inline-block text-xs text-ctp-blue hover:underline"
+            >
+              Open in full Compare tool &rarr;
+            </Link>
+          )}
         </div>
       )}
     </div>

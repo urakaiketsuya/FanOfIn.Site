@@ -5,11 +5,16 @@ import ImportByPlayer from "./ImportByPlayer";
 import PasteDecklist from "./PasteDecklist";
 import ComparisonGrid from "./ComparisonGrid";
 import ComparisonCards from "./ComparisonCards";
+import CardCompareIndex from "./CardCompareIndex";
 import { useComparedDecklists } from "./useComparedDecklists";
 import { useOmnidexIndex, useOmnidexPlayers } from "../tournaments/data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import type { ComparedDeck } from "./types";
+
+type CompareType = "decks" | "cards";
+const COMPARE_TYPE_LABELS: Record<CompareType, string> = { decks: "Decks", cards: "Cards" };
+const COMPARE_TYPE_KEYS = Object.keys(COMPARE_TYPE_LABELS) as CompareType[];
 
 type SourceTab = "cards" | "player" | "paste";
 type ViewMode = "table" | "cards";
@@ -22,7 +27,11 @@ const TAB_LABELS: Record<SourceTab, string> = {
 const SOURCE_TAB_KEYS = Object.keys(TAB_LABELS) as SourceTab[];
 
 export default function CompareIndex() {
-  useDocumentTitle("Compare Decks", "Compare Grand Archive TCG decklists side by side to see exactly where they overlap and diverge.");
+  useDocumentTitle(
+    "Compare",
+    "Compare Grand Archive TCG decklists side by side to see exactly where they overlap and diverge, or compare individual cards' usage, win rate, and price.",
+  );
+  const [compareType, setCompareType] = useTabParam<CompareType>("type", COMPARE_TYPE_KEYS, "decks");
   const [decks, setDecks] = useState<ComparedDeck[]>([]);
   const [tab, setTab] = useTabParam("tab", SOURCE_TAB_KEYS, "cards");
   // Table needs horizontal space (one column per deck) — default to the stacked card view on a
@@ -81,90 +90,115 @@ export default function CompareIndex() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      <h1 className="text-2xl font-bold text-ctp-blue">Compare Decks</h1>
+      <h1 className="text-2xl font-bold text-ctp-blue">Compare</h1>
       <p className="mt-1 text-sm text-ctp-subtext1">
-        Add any number of decks, then see exactly where they overlap and diverge.
+        {compareType === "decks"
+          ? "Add any number of decks, then see exactly where they overlap and diverge."
+          : "Add any number of individual cards to compare their usage, win rate, and price."}
       </p>
 
-      <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
-        {(Object.keys(TAB_LABELS) as SourceTab[]).map((t) => (
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        {COMPARE_TYPE_KEYS.map((t) => (
           <button
             key={t}
             type="button"
-            onClick={() => setTab(t)}
-            className={`rounded-md border px-2 py-1 text-xs ${
-              tab === t ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+            onClick={() => setCompareType(t)}
+            className={`rounded-md border px-3 py-1.5 text-sm font-medium ${
+              compareType === t ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
           >
-            {TAB_LABELS[t]}
+            {COMPARE_TYPE_LABELS[t]}
           </button>
         ))}
       </div>
 
-      <div className="mt-3 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
-        {tab === "cards" && <DeckSearchByCards comparedKeys={comparedKeys} onToggle={toggleDeck} />}
-        {tab === "player" && <ImportByPlayer comparedKeys={comparedKeys} onToggle={toggleDeck} />}
-        {tab === "paste" && <PasteDecklist onAdd={addDeck} />}
-      </div>
+      {compareType === "cards" ? (
+        <div className="mt-4">
+          <CardCompareIndex />
+        </div>
+      ) : (
+        <>
+          <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
+            {(Object.keys(TAB_LABELS) as SourceTab[]).map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setTab(t)}
+                className={`rounded-md border px-2 py-1 text-xs ${
+                  tab === t ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                }`}
+              >
+                {TAB_LABELS[t]}
+              </button>
+            ))}
+          </div>
 
-      <div className="mt-6">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
-            Comparing {decks.length} deck{decks.length === 1 ? "" : "s"}
-          </h2>
-          <div className="flex items-center gap-3">
+          <div className="mt-3 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+            {tab === "cards" && <DeckSearchByCards comparedKeys={comparedKeys} onToggle={toggleDeck} />}
+            {tab === "player" && <ImportByPlayer comparedKeys={comparedKeys} onToggle={toggleDeck} />}
+            {tab === "paste" && <PasteDecklist onAdd={addDeck} />}
+          </div>
+
+          <div className="mt-6">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
+                Comparing {decks.length} deck{decks.length === 1 ? "" : "s"}
+              </h2>
+              <div className="flex items-center gap-3">
+                {decks.length > 0 && (
+                  <div className="flex gap-1 text-xs">
+                    {(["table", "cards"] as ViewMode[]).map((mode) => (
+                      <button
+                        key={mode}
+                        type="button"
+                        onClick={() => setViewMode(mode)}
+                        className={`rounded-md border px-2 py-1 capitalize ${
+                          viewMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                        }`}
+                      >
+                        {mode}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {decks.length > 0 && (
+                  <button type="button" onClick={() => setDecks([])} className="text-xs text-ctp-subtext0 hover:text-ctp-text">
+                    Clear all
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {decks.length === 0 && <p className="mt-2 text-sm text-ctp-subtext1">Add decks above to start comparing.</p>}
+
             {decks.length > 0 && (
-              <div className="flex gap-1 text-xs">
-                {(["table", "cards"] as ViewMode[]).map((mode) => (
+              <div className="mt-2 flex flex-wrap gap-2">
+                {decks.map((d) => (
                   <button
-                    key={mode}
+                    key={d.key}
                     type="button"
-                    onClick={() => setViewMode(mode)}
-                    className={`rounded-md border px-2 py-1 capitalize ${
-                      viewMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                    }`}
+                    onClick={() => removeDeck(d.key)}
+                    className="flex items-center gap-1 rounded-full border border-ctp-blue bg-ctp-surface0 px-2 py-0.5 text-xs text-ctp-blue"
                   >
-                    {mode}
+                    {d.label}
+                    <span aria-hidden="true">&times;</span>
                   </button>
                 ))}
               </div>
             )}
+
             {decks.length > 0 && (
-              <button type="button" onClick={() => setDecks([])} className="text-xs text-ctp-subtext0 hover:text-ctp-text">
-                Clear all
-              </button>
+              <div className="mt-4">
+                {viewMode === "table" ? (
+                  <ComparisonGrid decks={decks} decklists={decklists} />
+                ) : (
+                  <ComparisonCards decks={decks} decklists={decklists} />
+                )}
+              </div>
             )}
           </div>
-        </div>
-
-        {decks.length === 0 && <p className="mt-2 text-sm text-ctp-subtext1">Add decks above to start comparing.</p>}
-
-        {decks.length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-2">
-            {decks.map((d) => (
-              <button
-                key={d.key}
-                type="button"
-                onClick={() => removeDeck(d.key)}
-                className="flex items-center gap-1 rounded-full border border-ctp-blue bg-ctp-surface0 px-2 py-0.5 text-xs text-ctp-blue"
-              >
-                {d.label}
-                <span aria-hidden="true">&times;</span>
-              </button>
-            ))}
-          </div>
-        )}
-
-        {decks.length > 0 && (
-          <div className="mt-4">
-            {viewMode === "table" ? (
-              <ComparisonGrid decks={decks} decklists={decklists} />
-            ) : (
-              <ComparisonCards decks={decks} decklists={decklists} />
-            )}
-          </div>
-        )}
-      </div>
+        </>
+      )}
     </div>
   );
 }
