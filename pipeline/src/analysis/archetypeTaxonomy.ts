@@ -3,6 +3,7 @@ import type { OmnidexEventBundle } from "../omnidex/cache.js";
 import type { CardSignature } from "../cards/catalog.js";
 import { buildEventDeckSignatures } from "./decklists.js";
 import { weightedJaccard } from "./similarity.js";
+import { computeDeckPrice } from "./deckPricing.js";
 import { config } from "../config.js";
 
 /**
@@ -76,19 +77,6 @@ function dominantElement(definingCards: { name: string }[], cardIndex: Map<strin
  * genuinely distinct competitive builds. See docs/CALCULATIONS.md for the full method and the
  * real-data validation behind the threshold choices.
  */
-/** Sum of known card prices (main+material — same deck-identity convention used everywhere else) for one build group; missing-price cards are simply excluded from the sum, not treated as $0. */
-function groupPrice(cardCounts: Map<string, number>, priceByName: Map<string, number>): number | null {
-  let total = 0;
-  let sawAny = false;
-  for (const [name, qty] of cardCounts) {
-    const price = priceByName.get(name);
-    if (price === undefined) continue;
-    total += price * qty;
-    sawAny = true;
-  }
-  return sawAny ? total : null;
-}
-
 export function computeArchetypeTaxonomy(
   bundles: OmnidexEventBundle[],
   cardIndex: Map<string, CardSignature>,
@@ -212,7 +200,7 @@ export function computeArchetypeTaxonomy(
       let minPrice: number | null = null;
       let maxPrice: number | null = null;
       for (const g of cluster.members) {
-        const price = groupPrice(g.cardCounts, priceByName);
+        const price = computeDeckPrice(g.cardCounts, priceByName);
         if (price === null) continue;
         priceSum += price * g.deckIds.length;
         priceWeight += g.deckIds.length;

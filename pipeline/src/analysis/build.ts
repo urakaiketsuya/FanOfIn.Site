@@ -111,7 +111,7 @@ export async function buildAnalysis(): Promise<void> {
     "utf-8",
   );
 
-  const deckSightings = computeDeckSightings(completed, cardIndex);
+  const deckSightings = computeDeckSightings(completed, cardIndex, priceByName);
   await writeFile(
     path.join(DATA_DIR, "deck-sightings.json"),
     JSON.stringify({ generatedAt: new Date().toISOString(), sightings: deckSightings }),

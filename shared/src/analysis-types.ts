@@ -250,6 +250,8 @@ export interface DeckSighting {
   underplaced: boolean;
   /** Ability keywords present in this deck's main+material, weighted by copies — see `computeKeywordComposition` in `keywords.ts`. Only present (non-zero) keywords are listed. */
   keywords: DeckSightingKeyword[];
+  /** Sum of known main+material card prices — see `computeDeckPrice` in `deckPricing.ts`. Null when none of this deck's cards have a known price, not $0. */
+  price: number | null;
 }
 
 export interface DeckSightingKeyword {

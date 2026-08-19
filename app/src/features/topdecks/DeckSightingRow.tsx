@@ -8,6 +8,7 @@ import CardHoverPreview from "../../components/CardHoverPreview";
 import DecklistView from "../events/DecklistView";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useSightingDecklist } from "./useSightingDecklist";
+import { formatUsd } from "../../lib/format";
 
 export default function DeckSightingRow({
   sighting,
@@ -123,6 +124,7 @@ export default function DeckSightingRow({
           <div>
             {sighting.wins}-{sighting.losses}-{sighting.ties}
           </div>
+          {sighting.price !== null && <div className="text-ctp-subtext0">{formatUsd(sighting.price)}</div>}
         </div>
 
         {onAdd && (

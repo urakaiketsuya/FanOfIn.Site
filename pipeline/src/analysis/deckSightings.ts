@@ -2,6 +2,7 @@ import { EVENT_CATEGORY_WEIGHTS, computeKeywordComposition, shortHash, type Deck
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
 import type { CardSignature } from "../cards/catalog.js";
 import { buildEventDeckSignatures, type DeckCardLine } from "./decklists.js";
+import { computeDeckPrice } from "./deckPricing.js";
 
 /** A stable key for "this exact card list" — main+material combined, since that's what defines a deck's identity (sideboard is situational tech). Empty string for decks with no matched cards at all (unmatched/broken decklists), which are deliberately excluded from duplicate detection below. */
 export function canonicalSignature(mainCards: DeckCardLine[], materialCards: DeckCardLine[]): string {
@@ -21,7 +22,11 @@ export function canonicalSignature(mainCards: DeckCardLine[], materialCards: Dec
  * data/omnidex/events/{id}.json — this dataset is deliberately just the browsing/filtering
  * surface (event context, Champion, outcome), not the deck contents.
  */
-export function computeDeckSightings(bundles: OmnidexEventBundle[], cardIndex: Map<string, CardSignature>): DeckSighting[] {
+export function computeDeckSightings(
+  bundles: OmnidexEventBundle[],
+  cardIndex: Map<string, CardSignature>,
+  priceByName: Map<string, number>,
+): DeckSighting[] {
   interface Interim extends Omit<DeckSighting, "duplicateCount" | "deckHash"> {
     signature: string;
   }
@@ -48,11 +53,15 @@ export function computeDeckSightings(bundles: OmnidexEventBundle[], cardIndex: M
       const totalMatches = standing.statsWins + standing.statsLosses + standing.statsTies;
       const winRate = totalMatches > 0 ? (standing.statsWins + standing.statsTies * 0.5) / totalMatches : 0;
       const sig = signatures.get(entry.player);
+      const cardLines = [...(sig?.mainCards ?? []), ...(sig?.materialCards ?? [])];
       const cardSignature = canonicalSignature(sig?.mainCards ?? [], sig?.materialCards ?? []);
-      const keywordCounts = computeKeywordComposition([...(sig?.mainCards ?? []), ...(sig?.materialCards ?? [])], cardIndex);
+      const keywordCounts = computeKeywordComposition(cardLines, cardIndex);
       const keywords = Array.from(keywordCounts.entries())
         .map(([keyword, count]) => ({ keyword, count }))
         .sort((a, b) => b.count - a.count);
+      const cardCounts = new Map<string, number>();
+      for (const line of cardLines) cardCounts.set(line.name, (cardCounts.get(line.name) ?? 0) + line.quantity);
+      const price = computeDeckPrice(cardCounts, priceByName);
 
       const playerCount = event.players.length;
       const placementPercentile =
@@ -92,6 +101,7 @@ export function computeDeckSightings(bundles: OmnidexEventBundle[], cardIndex: M
         weightedScore,
         underplaced: winRate >= 0.6 && standing.statsWins >= 3 && placementPercentile !== null && placementPercentile > 0.3,
         keywords,
+        price,
         signature: cardSignature,
       });
     }

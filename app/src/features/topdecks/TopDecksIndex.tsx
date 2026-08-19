@@ -9,7 +9,7 @@ import { useChampionCardImages } from "../players/useChampionCardImages";
 import DeckSightingRow from "./DeckSightingRow";
 import LoadMore from "../../components/LoadMore";
 
-type SortMode = "best" | "date" | "placement" | "duplicated";
+type SortMode = "best" | "date" | "placement" | "duplicated" | "cheapest";
 type Outcome = "all" | "winner" | "topCut" | "high";
 
 const OUTCOME_LABELS: Record<Outcome, string> = {
@@ -18,6 +18,9 @@ const OUTCOME_LABELS: Record<Outcome, string> = {
   topCut: "Top Cut",
   high: "High performers",
 };
+
+/** A deck with no known price is excluded whenever a max-price filter is active — can't call something "budget" without knowing what it costs. */
+const MAX_PRICE_OPTIONS = [25, 50, 100, 250];
 
 const PAGE_SIZE = 50;
 
@@ -36,6 +39,7 @@ export default function TopDecksIndex() {
   const [championName, setChampionName] = useState<string | null>(searchParams.get("champion"));
   const [selectedClasses, setSelectedClasses] = useState<Set<string>>(new Set());
   const [keyword, setKeyword] = useState<string | null>(null);
+  const [maxPrice, setMaxPrice] = useState<number | null>(null);
   const [outcome, setOutcome] = useState<Outcome>("all");
   const [sortMode, setSortMode] = useState<SortMode>("best");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -104,6 +108,7 @@ export default function TopDecksIndex() {
         (selectedClasses.size === 0 ||
           (s.championName && (classesByChampion.get(s.championName) ?? []).some((c) => selectedClasses.has(c)))) &&
         (!keyword || (s.keywords ?? []).some((k) => k.keyword === keyword)) &&
+        (maxPrice === null || (s.price !== null && s.price <= maxPrice)) &&
         (outcome === "all" || (outcome === "winner" && s.winner) || (outcome === "topCut" && s.topCut) || (outcome === "high" && s.high)),
     );
     return [...rows].sort((a, b) => {
@@ -118,13 +123,18 @@ export default function TopDecksIndex() {
       if (sortMode === "duplicated" && a.duplicateCount !== b.duplicateCount) {
         return b.duplicateCount - a.duplicateCount;
       }
+      if (sortMode === "cheapest") {
+        const aPrice = a.price ?? Infinity;
+        const bPrice = b.price ?? Infinity;
+        if (aPrice !== bPrice) return aPrice - bPrice;
+      }
       return b.eventDate.localeCompare(a.eventDate);
     });
-  }, [sightingsData, category, seasonId, championName, selectedClasses, classesByChampion, keyword, outcome, sortMode]);
+  }, [sightingsData, category, seasonId, championName, selectedClasses, classesByChampion, keyword, maxPrice, outcome, sortMode]);
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [category, seasonId, championName, selectedClasses, keyword, outcome, sortMode]);
+  }, [category, seasonId, championName, selectedClasses, keyword, maxPrice, outcome, sortMode]);
 
   const visible = filtered.slice(0, visibleCount);
   const championImages = useChampionCardImages(Array.from(new Set(visible.map((s) => s.championName).filter((n): n is string => n !== null))));
@@ -229,6 +239,29 @@ export default function TopDecksIndex() {
       )}
 
       <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
+        <span className="text-ctp-subtext0">Max price:</span>
+        <button
+          onClick={() => setMaxPrice(null)}
+          className={`rounded-md border px-2 py-1 text-xs ${
+            maxPrice === null ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+          }`}
+        >
+          Any
+        </button>
+        {MAX_PRICE_OPTIONS.map((p) => (
+          <button
+            key={p}
+            onClick={() => setMaxPrice(p)}
+            className={`rounded-md border px-2 py-1 text-xs ${
+              maxPrice === p ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+            }`}
+          >
+            ${p}
+          </button>
+        ))}
+      </div>
+
+      <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Outcome:</span>
         {(Object.keys(OUTCOME_LABELS) as Outcome[]).map((o) => (
           <button
@@ -245,7 +278,7 @@ export default function TopDecksIndex() {
 
       <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Sort by:</span>
-        {(["best", "date", "placement", "duplicated"] as const).map((mode) => (
+        {(["best", "date", "placement", "duplicated", "cheapest"] as const).map((mode) => (
           <button
             key={mode}
             onClick={() => setSortMode(mode)}
