@@ -93,6 +93,7 @@ const FEATURES: FeatureGroup[] = [
     items: [
       "Named builds clustered from real decklists by similarity, not hand-picked ahead of time",
       "Card Impact: which cards (including sideboard tech) actually correlate with a higher win rate for a given build",
+      "Card Impact scoped to a specific matchup, from real pairing outcomes — plus the inverse: which of the opponent's cards tend to beat you",
       "Meta share, top-cut rate, average finishing placement, and average deck price per build",
       "Full battle chart: matchup matrix, by-Champion view, and closest/most-lopsided highlights",
       "Sample decklists and defining cards per build",
@@ -106,6 +107,7 @@ const FEATURES: FeatureGroup[] = [
       "Filterable by Champion, class, keyword, season, event type, and outcome",
       "Ranked by a tier-weighted placement score, not just raw finish, so a strong finish at a big event outranks a small one",
       "Flags netdecked lists (identical builds from other players) and \"tough finish\" upsets (a strong record that still missed the cut)",
+      "Max-price filter and a cheapest-first sort, to find budget decks with strong finishes",
     ],
     example: { to: "/top-decks", label: "Browse Top Decks" },
   },
@@ -117,6 +119,15 @@ const FEATURES: FeatureGroup[] = [
       "One click loads the entire decklist into a TCGplayer cart — no manually searching for 60 cards one at a time",
     ],
     example: { to: "/decks/xenbr4", label: "A top Silvie build" },
+  },
+  {
+    title: "All Decks",
+    items: [
+      "Every distinct decklist, including one-off brews — not just builds multiple players converged on",
+      "Search by Champion, element, or the specific cards it runs",
+      "Links to the same dedicated deck page as Popular Decks",
+    ],
+    example: { to: "/decks", label: "Browse All Decks" },
   },
   {
     title: "Compare",
@@ -173,6 +184,27 @@ const WALKTHROUGH_RESERVE_BARS = [
   { label: "7", value: 0 },
   { label: "8+", value: 0 },
 ];
+
+/**
+ * Same "pre-baked, no live fetch" reasoning as WALKTHROUGH_DECK above — captured directly from
+ * /archetypes/qnv8tz?tab=impact (Water Diao Chan vs. its Water Guo Jia matchup, real pairing data,
+ * 14 games). This is a genuinely small matchup sample (most matchup-scoped Card Impact rows are —
+ * see docs/CALCULATIONS.md's sample-size note), so the lift numbers here are modest by design,
+ * not cherry-picked for a bigger-looking result.
+ */
+const WALKTHROUGH_MATCHUP = {
+  clusterId: "qnv8tz",
+  clusterName: "Water Diao Chan",
+  opponentClusterName: "Water Guo Jia",
+  games: 14,
+  cards: [
+    { name: "Quicksilver Grail", slug: "quicksilver-grail", image: "/cards/images/6oyti67l58.jpg", role: "Material", winRateWith: 0.56, winRateWithout: 0.4, lift: 0.06 },
+    { name: "Viridian Protective Trinket", slug: "viridian-protective-trinket", image: "/cards/images/ydupmu6gvm.jpg", role: "Sideboard", winRateWith: 0.56, winRateWithout: 0.4, lift: 0.06 },
+    { name: "Song of Frost", slug: "song-of-frost", image: "/cards/images/rglq1kjunp.jpg", role: "Mixed", winRateWith: 0.56, winRateWithout: 0.42, lift: 0.06 },
+    { name: "Fractal of Refreshment", slug: "fractal-of-refreshment", image: "/cards/images/htmfs6s6uh.jpg", role: "Main", winRateWith: 0.57, winRateWithout: 0.43, lift: 0.06 },
+    { name: "Fire Resonance Bauble", slug: "fire-resonance-bauble", image: "/cards/images/pwkkbbu08s.jpg", role: "Mixed", winRateWith: 0.57, winRateWithout: 0.43, lift: 0.06 },
+  ],
+};
 
 /** Same "pre-baked, no live fetch" reasoning as WALKTHROUGH_DECK above — captured from the two real, independently popular Silvie builds at /decks/xenbr4 and /decks/1xiwetk. */
 const COMPARE_CHAMPION_NAME = "Silvie";
@@ -334,6 +366,52 @@ export default function About() {
               Open the full page &rarr;
             </Link>
           </p>
+
+          <div className="mx-auto mt-16 max-w-2xl border-t border-ctp-surface0 pt-10">
+            <p className="text-center text-sm text-ctp-subtext1">
+              Card Impact goes further than composition — for a given build, it can tell you which cards actually
+              correlate with a higher win rate against a specific opponent, from real pairing outcomes.{" "}
+              {WALKTHROUGH_MATCHUP.clusterName} vs. {WALKTHROUGH_MATCHUP.opponentClusterName}, {WALKTHROUGH_MATCHUP.games}{" "}
+              recorded games:
+            </p>
+            <div className="mt-4 overflow-x-auto rounded-lg border border-ctp-surface1 bg-ctp-base">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+                    <th className="px-3 py-2">Card</th>
+                    <th className="px-3 py-2">Role</th>
+                    <th className="px-3 py-2">Win rate (with)</th>
+                    <th className="px-3 py-2">Win rate (without)</th>
+                    <th className="px-3 py-2">Lift</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-ctp-surface0">
+                  {WALKTHROUGH_MATCHUP.cards.map((c) => (
+                    <tr key={c.name}>
+                      <td className="px-3 py-2 whitespace-nowrap">
+                        <CardHoverPreview image={c.image} alt={c.name}>
+                          <Link to={`/cards/${c.slug}`} className="text-ctp-text hover:text-ctp-blue">
+                            {c.name}
+                          </Link>
+                        </CardHoverPreview>
+                      </td>
+                      <td className="px-3 py-2 text-ctp-subtext1">{c.role}</td>
+                      <td className="px-3 py-2 text-ctp-subtext1">{(c.winRateWith * 100).toFixed(0)}%</td>
+                      <td className="px-3 py-2 text-ctp-subtext1">{(c.winRateWithout * 100).toFixed(0)}%</td>
+                      <td className="px-3 py-2 font-semibold text-ctp-green">+{(c.lift * 100).toFixed(0)}pp</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="mt-3 text-center text-xs text-ctp-subtext0">
+              Correlational, not causal — and a genuinely small sample, like most single matchups. Filter to a
+              different opponent, or drop the matchup filter entirely for the build's full-field numbers.{" "}
+              <Link to={`/archetypes/${WALKTHROUGH_MATCHUP.clusterId}?tab=impact`} className="hover:text-ctp-blue hover:underline">
+                Open Card Impact &rarr;
+              </Link>
+            </p>
+          </div>
         </div>
       </section>
 
