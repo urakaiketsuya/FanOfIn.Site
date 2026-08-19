@@ -92,6 +92,11 @@ export default function Home() {
       <p className="mt-2 text-ctp-subtext1">
         Card database, sets, and tournament data — synced locally for fast, offline-friendly browsing.
       </p>
+      <p className="mt-2 text-xs text-ctp-subtext0">
+        A few things worth knowing: archetypes are clustered from real decklists rather than hand-picked, Card Stats
+        tracks recent vs. prior usage to surface what's trending, Champion pages break performance down by season,
+        and Compare accepts a decklist even if it's never been submitted to Omnidex.
+      </p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {SECTIONS.map((section) => (
