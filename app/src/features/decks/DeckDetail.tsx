@@ -386,21 +386,28 @@ export default function DeckDetail() {
         </div>
       )}
 
-      {tab === "similar" && similarDecks.length > 0 && (
+      {tab === "similar" && (
         <div className="mt-8">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Similar Decks</h2>
-          <div className="mt-2 space-y-1 text-sm">
-            {similarDecks.map(({ deck: match, score }) => (
-              <div key={match.signature} className="text-ctp-subtext1">
-                <Link to={`/decks/${shortHash(match.signature)}`} className="text-ctp-blue hover:underline">
-                  {match.championName ?? "Unknown champion"}
-                </Link>
-                {match.elements.length > 0 && ` · ${match.elements.join("/")}`}
-                {match.classes.length > 0 && ` · ${match.classes.join("/")}`}{" "}
-                <span className="text-ctp-subtext0">({(score * 100).toFixed(0)}% similar)</span>
-              </div>
-            ))}
-          </div>
+          {similarDecks.length > 0 ? (
+            <div className="mt-2 space-y-1 text-sm">
+              {similarDecks.map(({ deck: match, score }) => (
+                <div key={match.signature} className="text-ctp-subtext1">
+                  <Link to={`/decks/${shortHash(match.signature)}`} className="text-ctp-blue hover:underline">
+                    {match.championName ?? "Unknown champion"}
+                  </Link>
+                  {match.elements.length > 0 && ` · ${match.elements.join("/")}`}
+                  {match.classes.length > 0 && ` · ${match.classes.join("/")}`}{" "}
+                  <span className="text-ctp-subtext0">({(score * 100).toFixed(0)}% similar)</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="mt-2 text-sm text-ctp-subtext1">
+              No distinct similar decks found — every close match for this build turned out to be another copy of
+              the exact same list, which doesn't count as "similar."
+            </p>
+          )}
         </div>
       )}
 
