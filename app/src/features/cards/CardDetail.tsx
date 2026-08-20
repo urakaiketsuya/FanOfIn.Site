@@ -35,11 +35,13 @@ const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
 const MAX_CHAMPIONS_SHOWN = 8;
 
-type CardTab = "info" | "combos" | "decks" | "compare";
+type CardTab = "info" | "usedWith" | "synergy" | "similar" | "decks" | "compare";
 
 const TABS: { key: CardTab; label: string }[] = [
   { key: "info", label: "Info" },
-  { key: "combos", label: "Combos" },
+  { key: "usedWith", label: "Most Used With" },
+  { key: "synergy", label: "Win-Rate Synergy" },
+  { key: "similar", label: "Same Effect Shape" },
   { key: "decks", label: "Decks" },
   { key: "compare", label: "Compare" },
 ];
@@ -446,39 +448,53 @@ export default function CardDetail() {
         </div>
       )}
 
-      {tab === "combos" && (combination.main.length > 0 || combination.material.length > 0 || combination.sideboard.length > 0) && (
+      {tab === "usedWith" && (
         <div className="mt-4">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Most used with {card.name}</h2>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            {combination.deckCount !== undefined && `Across ${combination.deckCount} decks. `}Other cards most often
-            played alongside this one.
-          </p>
-          <div className="mt-3">
-            <TopCardsSections topCards={comboTopCards} cardImages={comboCardImages} />
-          </div>
+          {combination.main.length > 0 || combination.material.length > 0 || combination.sideboard.length > 0 ? (
+            <>
+              <p className="mt-1 text-xs text-ctp-subtext0">
+                {combination.deckCount !== undefined && `Across ${combination.deckCount} decks. `}Other cards most often
+                played alongside this one.
+              </p>
+              <div className="mt-3">
+                <TopCardsSections topCards={comboTopCards} cardImages={comboCardImages} />
+              </div>
+            </>
+          ) : (
+            <p className="mt-4 text-sm text-ctp-subtext1">Not enough decks running {card.name} to say what's played alongside it yet.</p>
+          )}
         </div>
       )}
 
-      {tab === "combos" && synergy.cards.length > 0 && (
-        <div className="mt-8">
+      {tab === "synergy" && (
+        <div className="mt-4">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Win-rate synergy</h2>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            Across {synergy.totalDecks} decks running {card.name}, cards that correlate with an even higher win rate
-            when also included — correlational, not causal, and different from "Most used with" above (that's ranked
-            by how often cards appear together; this is ranked by whether the pairing actually wins more).
-          </p>
-          <CardImpactTable cards={synergy.cards} cardImages={synergyCardImages} withLabel="Win rate (with)" withoutLabel="Win rate (without)" />
+          {synergy.cards.length > 0 ? (
+            <>
+              <p className="mt-1 text-xs text-ctp-subtext0">
+                Across {synergy.totalDecks} decks running {card.name}, cards that correlate with an even higher win rate
+                when also included — correlational, not causal, and different from "Most Used With" (that's ranked by
+                how often cards appear together; this is ranked by whether the pairing actually wins more).
+              </p>
+              <CardImpactTable cards={synergy.cards} cardImages={synergyCardImages} withLabel="Win rate (with)" withoutLabel="Win rate (without)" />
+            </>
+          ) : (
+            <p className="mt-4 text-sm text-ctp-subtext1">No card clears the sample bar for a win-rate synergy with {card.name} yet.</p>
+          )}
         </div>
       )}
 
-      {tab === "combos" && similarCardsSorted.length > 0 && (
-        <div className="mt-8">
+      {tab === "similar" && (
+        <div className="mt-4">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Same effect shape</h2>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            Cards with a matching ability template, for comparing cost and stats side by side — not every difference
-            is a straight upgrade (class/element restrictions and cost type both matter for deckbuilding).
-          </p>
-          <div className="mt-3 overflow-x-auto">
+          {similarCardsSorted.length > 0 ? (
+            <>
+              <p className="mt-1 text-xs text-ctp-subtext0">
+                Cards with a matching ability template, for comparing cost and stats side by side — not every difference
+                is a straight upgrade (class/element restrictions and cost type both matter for deckbuilding).
+              </p>
+              <div className="mt-3 overflow-x-auto">
             <table className="w-max min-w-full text-sm">
               <thead>
                 <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
@@ -521,7 +537,11 @@ export default function CardDetail() {
                 })}
               </tbody>
             </table>
-          </div>
+              </div>
+            </>
+          ) : (
+            <p className="mt-4 text-sm text-ctp-subtext1">No other cards share {card.name}'s ability template yet.</p>
+          )}
         </div>
       )}
 
