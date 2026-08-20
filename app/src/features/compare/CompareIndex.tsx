@@ -152,12 +152,35 @@ export default function CompareIndex() {
             <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
               Comparing {decks.length} deck{decks.length === 1 ? "" : "s"}
             </h2>
-            {decks.length > 0 && (
-              <button type="button" onClick={() => setDecks([])} className="text-xs text-ctp-subtext0 hover:text-ctp-text">
-                Clear all
-              </button>
-            )}
+            <div className="flex items-center gap-2">
+              {decks.length > 0 && (
+                <button
+                  type="button"
+                  onClick={handleCopyShareLink}
+                  disabled={sightingKeys.length === 0}
+                  title={sightingKeys.length === 0 ? "No tournament decks in this set — pasted decks can't be shared via a link" : undefined}
+                  className={`rounded-md border px-2 py-1 text-xs disabled:cursor-not-allowed disabled:opacity-50 ${
+                    shareCopyState === "failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                  }`}
+                >
+                  {shareCopyState === "copied" ? "Copied!" : shareCopyState === "failed" ? "Couldn't copy" : "Copy share link"}
+                </button>
+              )}
+              {decks.length > 0 && (
+                <button type="button" onClick={() => setDecks([])} className="text-xs text-ctp-subtext0 hover:text-ctp-text">
+                  Clear all
+                </button>
+              )}
+            </div>
           </div>
+
+          {decks.length > 0 && excludedCustomCount > 0 && (
+            <p className="mt-1 text-xs text-ctp-subtext0">
+              {sightingKeys.length === 0
+                ? "This set is only pasted decks, which can't be included in a share link."
+                : `${excludedCustomCount} pasted deck${excludedCustomCount === 1 ? "" : "s"} can't be included in a share link.`}
+            </p>
+          )}
 
           {decks.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-2">
@@ -229,39 +252,20 @@ export default function CompareIndex() {
 
               {decks.length > 0 && (
                 <>
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex gap-1 text-xs">
-                      {(["table", "cards"] as ViewMode[]).map((mode) => (
-                        <button
-                          key={mode}
-                          type="button"
-                          onClick={() => setViewMode(mode)}
-                          className={`rounded-md border px-2 py-1 capitalize ${
-                            viewMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                          }`}
-                        >
-                          {mode}
-                        </button>
-                      ))}
-                    </div>
-                    {sightingKeys.length > 0 && (
+                  <div className="flex gap-1 text-xs">
+                    {(["table", "cards"] as ViewMode[]).map((mode) => (
                       <button
+                        key={mode}
                         type="button"
-                        onClick={handleCopyShareLink}
-                        className={`rounded-md border px-2 py-1 text-xs ${
-                          shareCopyState === "failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                        onClick={() => setViewMode(mode)}
+                        className={`rounded-md border px-2 py-1 capitalize ${
+                          viewMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
                         }`}
                       >
-                        {shareCopyState === "copied" ? "Copied!" : shareCopyState === "failed" ? "Couldn't copy" : "Copy share link"}
+                        {mode}
                       </button>
-                    )}
+                    ))}
                   </div>
-
-                  {excludedCustomCount > 0 && sightingKeys.length > 0 && (
-                    <p className="mt-1 text-xs text-ctp-subtext0">
-                      {excludedCustomCount} pasted deck{excludedCustomCount === 1 ? "" : "s"} can't be included in a share link.
-                    </p>
-                  )}
 
                   <div className="mt-4">
                     {viewMode === "table" ? (
