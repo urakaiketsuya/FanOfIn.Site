@@ -18,6 +18,9 @@ import { useCardStatsData, useArchetypeData, useCardQuantityStatsData } from "..
 import { useCardCatalog } from "./useCardCatalog";
 import { useCardCombination } from "./useCardCombination";
 import { useCardSynergy } from "./useCardSynergy";
+import { useSimilarCards } from "./useSimilarCards";
+import { earliestReleaseDate } from "../../lib/cardSimilarity";
+import CardHoverPreview from "../../components/CardHoverPreview";
 import CardComparisonTable from "../compare/CardComparisonTable";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useDeckSightingsData } from "../topdecks/data";
@@ -141,6 +144,12 @@ export default function CardDetail() {
 
   const synergy = useCardSynergy(card?.name ?? null);
   const synergyCardImages = useCardsByNames(useMemo(() => synergy.cards.map((c) => c.cardName), [synergy.cards]));
+
+  const similarCardsList = useSimilarCards(card ?? null);
+  const similarCardsSorted = useMemo(
+    () => [...similarCardsList].sort((a, b) => (earliestReleaseDate(a) ?? "").localeCompare(earliestReleaseDate(b) ?? "")),
+    [similarCardsList],
+  );
 
   const topDecks = useMemo(() => {
     if (!sightingsData) return [];
@@ -459,6 +468,60 @@ export default function CardDetail() {
             by how often cards appear together; this is ranked by whether the pairing actually wins more).
           </p>
           <CardImpactTable cards={synergy.cards} cardImages={synergyCardImages} withLabel="Win rate (with)" withoutLabel="Win rate (without)" />
+        </div>
+      )}
+
+      {tab === "combos" && similarCardsSorted.length > 0 && (
+        <div className="mt-8">
+          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Same effect shape</h2>
+          <p className="mt-1 text-xs text-ctp-subtext0">
+            Cards with a matching ability template, for comparing cost and stats side by side — not every difference
+            is a straight upgrade (class/element restrictions and cost type both matter for deckbuilding).
+          </p>
+          <div className="mt-3 overflow-x-auto">
+            <table className="w-max min-w-full text-sm">
+              <thead>
+                <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+                  <th className="py-1 pr-6">Card</th>
+                  <th className="py-1 pr-6">Cost</th>
+                  <th className="py-1 pr-6">Power</th>
+                  <th className="py-1 pr-6">Life</th>
+                  <th className="py-1 pr-6">Durability</th>
+                  <th className="py-1 pr-6">Released</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-ctp-surface0">
+                {similarCardsSorted.map((c) => {
+                  const released = earliestReleaseDate(c);
+                  return (
+                    <tr key={c.uuid}>
+                      <td className="py-1.5 pr-6 whitespace-nowrap">
+                        <CardHoverPreview image={c.editions[0]?.image} alt={c.name}>
+                          <Link to={`/cards/${c.slug}`} className="text-ctp-text hover:text-ctp-blue">
+                            {c.name}
+                          </Link>
+                        </CardHoverPreview>
+                      </td>
+                      <td className="py-1.5 pr-6 text-ctp-subtext1">
+                        {c.cost.type !== "none" && c.cost.value !== null ? (
+                          <span className="flex items-center gap-1">
+                            <CostIcon kind={c.cost.type} size={12} />
+                            {c.cost.value}
+                          </span>
+                        ) : (
+                          "—"
+                        )}
+                      </td>
+                      <td className="py-1.5 pr-6 text-ctp-subtext1">{c.power ?? "—"}</td>
+                      <td className="py-1.5 pr-6 text-ctp-subtext1">{c.life ?? "—"}</td>
+                      <td className="py-1.5 pr-6 text-ctp-subtext1">{c.durability ?? "—"}</td>
+                      <td className="py-1.5 pr-6 text-ctp-subtext1">{released ? new Date(released).toLocaleDateString() : "—"}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
