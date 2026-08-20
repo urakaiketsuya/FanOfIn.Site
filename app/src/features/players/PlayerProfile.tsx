@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER, type AchievementDefinition, type AchievementUnlock } from "@gatcg/shared";
 import { useOmnidexIndex, useOmnidexJudges, useOmnidexPlayers } from "../tournaments/data";
-import { useEloData, useHipsterData, usePlayerDecksData } from "./data";
+import { useEloData, useHipsterData, usePlayerDecksData, useRivalsData } from "./data";
 import { useDeckSightingsData } from "../topdecks/data";
 import { useAchievementsData } from "../achievements/data";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -27,6 +27,7 @@ export default function PlayerProfile() {
   const eloData = useEloData();
   const hipsterData = useHipsterData();
   const playerDecksData = usePlayerDecksData();
+  const rivalsData = useRivalsData();
   const index = useOmnidexIndex();
   const sightingsData = useDeckSightingsData();
   const achievementsData = useAchievementsData();
@@ -40,6 +41,7 @@ export default function PlayerProfile() {
   const rating = eloData?.ratings.find((r) => r.playerId === playerId);
   const hipster = hipsterData?.playerScores.find((p) => p.playerId === playerId);
   const deckProfile = playerDecksData?.players.find((p) => p.playerId === playerId);
+  const rivalsProfile = rivalsData?.players.find((p) => p.playerId === playerId);
   const upsets = useMemo(
     () => eloData?.upsets.filter((u) => u.winnerId === playerId || u.loserId === playerId) ?? [],
     [eloData, playerId],
@@ -243,6 +245,36 @@ export default function PlayerProfile() {
                 </Link>
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {tab === "overview" && rivalsProfile && rivalsProfile.rivals.length > 0 && (
+        <div className="mt-6">
+          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Rivals</h2>
+          <p className="mt-1 text-xs text-ctp-subtext0">
+            Most-played opponents, worst matchup first.
+          </p>
+          <div className="mt-2 space-y-1">
+            {rivalsProfile.rivals.map((r) => {
+              const opponent = playersData?.players.find((p) => p.id === r.opponentId);
+              return (
+                <Link
+                  key={r.opponentId}
+                  to={`/players/${r.opponentId}`}
+                  className="flex items-center gap-2 text-sm hover:text-ctp-blue"
+                >
+                  <span className="flex-1 truncate text-ctp-text">{opponent?.username ?? `Player #${r.opponentId}`}</span>
+                  <span className="text-ctp-subtext0">
+                    {r.wins}-{r.losses}
+                    {r.ties > 0 ? `-${r.ties}` : ""}
+                  </span>
+                  <span className={r.winRate < 0.5 ? "text-ctp-red" : r.winRate > 0.5 ? "text-ctp-green" : "text-ctp-subtext1"}>
+                    {(r.winRate * 100).toFixed(0)}%
+                  </span>
+                </Link>
+              );
+            })}
           </div>
         </div>
       )}

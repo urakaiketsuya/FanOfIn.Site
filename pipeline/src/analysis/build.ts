@@ -5,6 +5,7 @@ import { EVENT_CATEGORY_ORDER, type CardStat, type DeckPopularityEntry, type Dec
 import { listCachedBundles } from "../omnidex/cache.js";
 import { loadCardCatalog, buildCardIndex } from "../cards/catalog.js";
 import { computeEloRatings } from "./elo.js";
+import { computeRivals } from "./rivals.js";
 import { computeCardStats } from "./cardStats.js";
 import { computeKeywordStats } from "./keywordStats.js";
 import { computeCardQuantityStats } from "./cardQuantityStats.js";
@@ -70,6 +71,13 @@ export async function buildAnalysis(): Promise<void> {
       ratings: Array.from(ratings.values()).sort((a, b) => b.rating - a.rating),
       upsets: [...upsets].sort((a, b) => b.eventDate.localeCompare(a.eventDate)),
     }),
+    "utf-8",
+  );
+
+  const rivals = computeRivals(completed);
+  await writeFile(
+    path.join(DATA_DIR, "rivals.json"),
+    JSON.stringify({ generatedAt: new Date().toISOString(), players: rivals }),
     "utf-8",
   );
 
@@ -188,6 +196,6 @@ export async function buildAnalysis(): Promise<void> {
   });
 
   console.log(
-    `analysis: ${ratings.size} rated players, ${upsets.length} upsets, ${cardStats.length} cards, ${keywordStats.length} keywords, ${cardQuantityStats.length} cards with quantity stats, ${compositionWinRates.length} composition win-rate buckets, ${archetypes.length} archetypes, ${namedSpirits.length} named spirits, ${championTrends.champions.length} champion trends across ${championTrends.seasonOrder.length} seasons, ${archetypeTaxonomy.clusters.length} named builds, ${cardImpact.clusters.length} builds with card-impact data, ${matchupCardImpact.matchups.length} archetype matchups tracked, ${achievements.unlocks.length} achievement unlocks, ${similarDecks.length} decks with similarity matches, ${playerDeckProfiles.length} player deck profiles, ${deckSightings.length} deck sightings, ${deckCardIndex.length} decks in card index`,
+    `analysis: ${ratings.size} rated players, ${rivals.length} players with rival data, ${upsets.length} upsets, ${cardStats.length} cards, ${keywordStats.length} keywords, ${cardQuantityStats.length} cards with quantity stats, ${compositionWinRates.length} composition win-rate buckets, ${archetypes.length} archetypes, ${namedSpirits.length} named spirits, ${championTrends.champions.length} champion trends across ${championTrends.seasonOrder.length} seasons, ${archetypeTaxonomy.clusters.length} named builds, ${cardImpact.clusters.length} builds with card-impact data, ${matchupCardImpact.matchups.length} archetype matchups tracked, ${achievements.unlocks.length} achievement unlocks, ${similarDecks.length} decks with similarity matches, ${playerDeckProfiles.length} player deck profiles, ${deckSightings.length} deck sightings, ${deckCardIndex.length} decks in card index`,
   );
 }

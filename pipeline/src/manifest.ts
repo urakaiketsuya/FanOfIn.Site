@@ -13,6 +13,7 @@ const MANIFEST_ENTRIES: { key: string; file: string }[] = [
   { key: "omnidex-vods", file: "omnidex/vods.json" },
   { key: "changelog", file: "changelog.json" },
   { key: "analysis-elo", file: "analysis/elo.json" },
+  { key: "analysis-rivals", file: "analysis/rivals.json" },
   { key: "analysis-cards", file: "analysis/cards.json" },
   { key: "analysis-keyword-stats", file: "analysis/keyword-stats.json" },
   { key: "analysis-card-quantity-stats", file: "analysis/card-quantity-stats.json" },

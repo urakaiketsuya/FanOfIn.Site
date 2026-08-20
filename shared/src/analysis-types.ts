@@ -191,6 +191,31 @@ export interface PlayerDecksData {
   players: PlayerDeckProfile[];
 }
 
+/** One head-to-head record against a single opponent. `winRate` counts a tie as half a win, same convention as everywhere else win rate is computed. */
+export interface PlayerRival {
+  opponentId: number;
+  games: number;
+  wins: number;
+  losses: number;
+  ties: number;
+  winRate: number;
+}
+
+/**
+ * A player's most-played opponents ("rivals") — the top N by games played against them, then
+ * sorted by win rate ascending (worst matchups first) rather than by games played, since "who do
+ * they struggle against most" is the more interesting framing than raw pairing frequency.
+ */
+export interface PlayerRivalsProfile {
+  playerId: number;
+  rivals: PlayerRival[];
+}
+
+export interface RivalsData {
+  generatedAt: string;
+  players: PlayerRivalsProfile[];
+}
+
 /**
  * One lean record per public decklist ("sighting") — the full decklist itself isn't included
  * here, it stays in the already-published per-event bundle (data/omnidex/events/{id}.json);
