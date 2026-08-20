@@ -5,6 +5,7 @@ import { useRegionalArchetypes } from "./useRegionalArchetypes";
 import { useRegionalChampions } from "./useRegionalChampions";
 import { useRegionalCardComposition, type RegionalCardRow } from "./useRegionalCardComposition";
 import { useRegionalKeywords, type RegionalKeywordRow } from "./useRegionalKeywords";
+import RegionCompareView from "./RegionCompareView";
 import { useCardsByNames } from "../events/useCardsByNames";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -14,6 +15,10 @@ import type { RegionGroupMode } from "../../lib/regions";
 
 const GROUP_MODES: RegionGroupMode[] = ["country", "region"];
 const GROUP_LABELS: Record<RegionGroupMode, string> = { country: "Country", region: "Region" };
+
+type ViewMode = "single" | "compare";
+const VIEW_MODES: ViewMode[] = ["single", "compare"];
+const VIEW_LABELS: Record<ViewMode, string> = { single: "Single Region", compare: "Compare Regions" };
 
 type ContentTab = "archetypes" | "champions" | "cards" | "keywords";
 const CONTENT_TABS: ContentTab[] = ["archetypes", "champions", "cards", "keywords"];
@@ -93,6 +98,7 @@ export default function RegionsIndex() {
     "Grand Archive TCG meta stats broken out by region — archetypes, champions, card composition, and keywords.",
   );
   const [group, setGroup] = useTabParam<RegionGroupMode>("group", GROUP_MODES, "country");
+  const [view, setView] = useTabParam<ViewMode>("view", VIEW_MODES, "single");
   const [tab, setTab] = useTabParam<ContentTab>("tab", CONTENT_TABS, "archetypes");
   const [regionOverride, setRegionOverride] = useState<string | null>(null);
 
@@ -138,6 +144,25 @@ export default function RegionsIndex() {
 
       {!loading && options.length > 0 && (
         <>
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            {VIEW_MODES.map((v) => (
+              <button
+                key={v}
+                type="button"
+                onClick={() => setView(v)}
+                className={`rounded-md border px-3 py-1.5 text-sm font-medium ${
+                  view === v ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                }`}
+              >
+                {VIEW_LABELS[v]}
+              </button>
+            ))}
+          </div>
+
+          {view === "compare" && <RegionCompareView options={options} regionByDeckId={regionByDeckId} />}
+
+          {view === "single" && (
+          <>
           <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
             <span className="text-ctp-subtext0">{GROUP_LABELS[group]}:</span>
             <select
@@ -293,6 +318,8 @@ export default function RegionsIndex() {
               </>
             )}
           </div>
+          </>
+          )}
         </>
       )}
     </div>

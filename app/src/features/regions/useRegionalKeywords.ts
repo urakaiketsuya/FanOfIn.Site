@@ -19,6 +19,8 @@ export interface RegionalKeywordRow {
 export interface RegionalKeywords {
   overRepresented: RegionalKeywordRow[];
   underRepresented: RegionalKeywordRow[];
+  /** Every keyword clearing the sample-size bar — see the matching field on RegionalCardComposition for why. */
+  allEntries: RegionalKeywordRow[];
   regionDeckCount: number;
   loading: boolean;
 }
@@ -45,6 +47,7 @@ export function useRegionalKeywords(regionByDeckId: Map<string, string>, regionK
       return {
         overRepresented: [],
         underRepresented: [],
+        allEntries: [],
         regionDeckCount: 0,
         loading: !cardIndexData || !keywordStatsData || cardsByName.size === 0,
       };
@@ -67,7 +70,7 @@ export function useRegionalKeywords(regionByDeckId: Map<string, string>, regionK
       for (const keyword of composition.keys()) regionCount.set(keyword, (regionCount.get(keyword) ?? 0) + 1);
     }
 
-    if (regionDeckCount === 0) return { overRepresented: [], underRepresented: [], regionDeckCount: 0, loading: false };
+    if (regionDeckCount === 0) return { overRepresented: [], underRepresented: [], allEntries: [], regionDeckCount: 0, loading: false };
 
     const entries: RegionalKeywordRow[] = [];
     for (const [keyword, deckCountInRegion] of regionCount.entries()) {
@@ -88,6 +91,6 @@ export function useRegionalKeywords(regionByDeckId: Map<string, string>, regionK
     const overRepresented = entries.slice(0, MAX_RESULTS);
     const underRepresented = entries.slice(-MAX_RESULTS).reverse();
 
-    return { overRepresented, underRepresented, regionDeckCount, loading: false };
+    return { overRepresented, underRepresented, allEntries: entries, regionDeckCount, loading: false };
   }, [cardIndexData, keywordStatsData, cardsByName, regionByDeckId, regionKey]);
 }

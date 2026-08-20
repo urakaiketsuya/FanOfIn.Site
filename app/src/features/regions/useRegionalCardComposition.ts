@@ -21,6 +21,8 @@ export interface RegionalCardRow {
 export interface RegionalCardComposition {
   overRepresented: RegionalCardRow[];
   underRepresented: RegionalCardRow[];
+  /** Every card clearing the sample-size bar, not just the capped over/under lists — for joining two regions' rates directly against each other (see the Compare Regions view), where capping to the top movers vs. the GLOBAL average would drop cards that differ most between the two regions specifically. */
+  allEntries: RegionalCardRow[];
   regionDeckCount: number;
   loading: boolean;
 }
@@ -39,7 +41,7 @@ export function useRegionalCardComposition(regionByDeckId: Map<string, string>, 
 
   return useMemo((): RegionalCardComposition => {
     if (!cardIndexData || !cardStatsData || !regionKey) {
-      return { overRepresented: [], underRepresented: [], regionDeckCount: 0, loading: !cardIndexData || !cardStatsData };
+      return { overRepresented: [], underRepresented: [], allEntries: [], regionDeckCount: 0, loading: !cardIndexData || !cardStatsData };
     }
 
     const globalDeckTotal = cardIndexData.decks.length;
@@ -61,7 +63,7 @@ export function useRegionalCardComposition(regionByDeckId: Map<string, string>, 
       for (const name of names) regionCount.set(name, (regionCount.get(name) ?? 0) + 1);
     }
 
-    if (regionDeckCount === 0) return { overRepresented: [], underRepresented: [], regionDeckCount: 0, loading: false };
+    if (regionDeckCount === 0) return { overRepresented: [], underRepresented: [], allEntries: [], regionDeckCount: 0, loading: false };
 
     const entries: RegionalCardRow[] = [];
     for (const [cardName, deckCountInRegion] of regionCount.entries()) {
@@ -87,6 +89,6 @@ export function useRegionalCardComposition(regionByDeckId: Map<string, string>, 
     const overRepresented = entries.slice(0, MAX_RESULTS);
     const underRepresented = entries.slice(-MAX_RESULTS).reverse();
 
-    return { overRepresented, underRepresented, regionDeckCount, loading: false };
+    return { overRepresented, underRepresented, allEntries: entries, regionDeckCount, loading: false };
   }, [cardIndexData, cardStatsData, regionByDeckId, regionKey]);
 }
