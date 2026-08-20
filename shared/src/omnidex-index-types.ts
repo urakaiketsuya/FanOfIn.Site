@@ -18,6 +18,8 @@ export interface OmnidexEventSummary {
   seasonName: string | null;
   seasonSlug: string | null;
   hostName: string;
+  /** ISO-3166-1 alpha-2 code from the venue's address, or "??" when Omnidex doesn't have one — same convention as OmnidexPlayerSummary.country. */
+  hostCountry: string;
   url: string;
 }
 

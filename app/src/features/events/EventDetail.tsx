@@ -12,6 +12,7 @@ import RawObject from "./RawObject";
 import PlayerLink from "../players/PlayerLink";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
+import { formatCountry } from "../../lib/format";
 
 type EventTab = "standings" | "pairings" | "decklists" | "teams" | "judges" | "statistics";
 const ALL_EVENT_TABS: EventTab[] = ["standings", "pairings", "decklists", "teams", "judges", "statistics"];
@@ -104,7 +105,9 @@ export default function EventDetail() {
 
       <h1 className="mt-2 text-2xl font-bold text-ctp-blue">{event.name}</h1>
       <p className="mt-1 text-sm text-ctp-subtext1">
-        {event.host.name} · {new Date(event.date).toLocaleDateString()} · {event.format} · {event.status} ·{" "}
+        {event.host.name}
+        {formatCountry(event.host.addressCountryCode) && ` (${formatCountry(event.host.addressCountryCode)})`} ·{" "}
+        {new Date(event.date).toLocaleDateString()} · {event.format} · {event.status} ·{" "}
         {EVENT_CATEGORY_LABELS[event.category] ?? event.category}
         {event.season && ` · ${event.season.name}`}
       </p>

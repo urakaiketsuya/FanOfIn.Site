@@ -53,6 +53,7 @@ export async function buildOmnidexIndex(): Promise<{
       seasonName: event.season?.name ?? null,
       seasonSlug: event.season ? slugify(event.season.name) : null,
       hostName: event.host?.name ?? "",
+      hostCountry: event.host?.addressCountryCode ?? "??",
       url: event.url,
     });
 

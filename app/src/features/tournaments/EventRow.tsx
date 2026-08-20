@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, type OmnidexEventSummary } from "@gatcg/shared";
+import { formatCountry } from "../../lib/format";
 
 const HIGH_TIER = new Set(["worlds", "nationals", "ascent"]);
 
@@ -41,7 +42,9 @@ export default function EventRow({ event }: { event: OmnidexEventSummary }) {
           <CategoryBadge category={event.category} />
         </div>
         <div className="text-xs text-ctp-subtext0">
-          {event.hostName} · {new Date(event.date).toLocaleDateString()}
+          {event.hostName}
+          {formatCountry(event.hostCountry) && ` (${formatCountry(event.hostCountry)})`} ·{" "}
+          {new Date(event.date).toLocaleDateString()}
           {event.seasonName && ` · ${event.seasonName}`}
         </div>
       </div>
