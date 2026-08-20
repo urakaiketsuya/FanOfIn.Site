@@ -332,8 +332,8 @@ export default function About() {
         <div className="relative mx-auto max-w-3xl px-4 py-20 text-center">
           <h1 className="text-4xl font-bold text-ctp-blue sm:text-5xl">Fan of Insight</h1>
           <p className="mt-4 text-lg text-ctp-subtext1">
-            Every ingested Grand Archive TCG tournament, deck, and card — aggregated in one place and turned into
-            real analysis.
+            Every ingested Grand Archive TCG tournament, deck, and card — aggregated in one place, turned into real
+            analysis, and easy to share. See the data, then share exactly what you found.
           </p>
 
           <div className="mt-6 flex items-center justify-center gap-1.5">
@@ -349,13 +349,13 @@ export default function About() {
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link to="/champions" className="rounded-md bg-ctp-blue px-5 py-2 text-sm font-semibold text-ctp-base hover:opacity-90">
-              Browse Champions
+              See the Data
             </Link>
             <Link
-              to="/decks?view=sightings"
+              to="/compare"
               className="rounded-md border border-ctp-surface1 px-5 py-2 text-sm font-semibold text-ctp-text hover:border-ctp-blue"
             >
-              See Top Decks
+              Share the Data
             </Link>
           </div>
         </div>
