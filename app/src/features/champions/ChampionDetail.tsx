@@ -8,6 +8,8 @@ import { useCardsByNames } from "../events/useCardsByNames";
 import TopCardsSections from "../../components/TopCardsSections";
 import TopDecksList from "../../components/TopDecksList";
 import UniqueDeckRow from "./UniqueDeckRow";
+import CardGrid from "../cards/CardGrid";
+import { useChampionBonusCards } from "./useChampionBonusCards";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 
@@ -15,13 +17,14 @@ const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
 
 type SpiritFilter = { kind: "all" } | { kind: "element"; element: string } | { kind: "spirit"; spiritName: string };
-type ChampionTab = "season" | "cards" | "builds" | "decks";
+type ChampionTab = "season" | "cards" | "builds" | "decks" | "bonus";
 
 const TABS: { key: ChampionTab; label: string }[] = [
   { key: "season", label: "By Season" },
   { key: "cards", label: "Most Used Cards" },
   { key: "builds", label: "Builds" },
   { key: "decks", label: "Decks" },
+  { key: "bonus", label: "Bonus Cards" },
 ];
 const TAB_KEYS = TABS.map((t) => t.key);
 
@@ -99,6 +102,8 @@ export default function ChampionDetail() {
       .sort((a, b) => b.weightedScore - a.weightedScore)
       .slice(0, MAX_TOP_DECKS_SHOWN);
   }, [sightingsData, championName]);
+
+  const bonusCards = useChampionBonusCards(champion ? championName : null);
 
   const uniqueDecks = useMemo(() => {
     if (!hipsterData) return [];
@@ -360,6 +365,20 @@ export default function ChampionDetail() {
                   <UniqueDeckRow key={`${d.eventId}:${d.player}`} score={d} playerName={playerName(d.player)} />
                 ))}
               </div>
+            </div>
+          )}
+
+          {tab === "bonus" && (
+            <div className="mt-6">
+              <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Bonus cards</h2>
+              <p className="mt-1 text-xs text-ctp-subtext0">
+                Cards with an effect that specifically triggers or improves when your Champion is {championName}.
+              </p>
+              {bonusCards.length === 0 ? (
+                <p className="mt-4 text-sm text-ctp-subtext1">No published cards have a bonus tied to {championName} yet.</p>
+              ) : (
+                <CardGrid cards={bonusCards} />
+              )}
             </div>
           )}
         </>
