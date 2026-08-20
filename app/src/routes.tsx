@@ -58,6 +58,7 @@ const CompareIndex = lazy(() => import("./features/compare/CompareIndex"));
 const BrowseDecksIndex = lazy(() => import("./features/decks/BrowseDecksIndex"));
 const DeckDetail = lazy(() => import("./features/decks/DeckDetail"));
 const DeckBuilderIndex = lazy(() => import("./features/deckbuilder/DeckBuilderIndex"));
+const RegionsIndex = lazy(() => import("./features/regions/RegionsIndex"));
 const ChangelogIndex = lazy(() => import("./features/changelog/ChangelogIndex"));
 
 function RouteFallback() {
@@ -102,6 +103,7 @@ export default function AppRoutes() {
         <Route path="/decks" element={<BrowseDecksIndex />} />
         <Route path="/decks/:hash" element={<DeckDetail />} />
         <Route path="/deck-builder" element={<DeckBuilderIndex />} />
+        <Route path="/regions" element={<RegionsIndex />} />
         <Route path="/changelog" element={<ChangelogIndex />} />
         <Route path="/about" element={<Navigate to="/" replace />} />
       </Routes>
