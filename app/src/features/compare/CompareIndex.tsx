@@ -85,9 +85,13 @@ export default function CompareIndex() {
     }
     if (seeded.length > 0) setDecks((prev) => [...prev, ...seeded]);
 
+    // One combined update, not a separate setPanel() call — two sequential setSearchParams calls
+    // in the same effect can race (the second's `prev` may not see the first's write yet), silently
+    // dropping the panel switch.
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
       next.delete("add");
+      if (seeded.length > 0) next.set("panel", "compare");
       return next;
     });
   }, [searchParams, playersData, index, setSearchParams]);
@@ -109,9 +113,12 @@ export default function CompareIndex() {
       ]);
     }
 
+    // Combined into one setSearchParams call for the same reason the ?add= effect above avoids a
+    // separate setPanel() call — see that comment.
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
       next.delete("custom");
+      if (parsed.length > 0) next.set("panel", "compare");
       return next;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
