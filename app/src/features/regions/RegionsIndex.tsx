@@ -4,18 +4,39 @@ import { useRegionalDecks } from "./useRegionalDecks";
 import { useRegionalArchetypes } from "./useRegionalArchetypes";
 import { useRegionalChampions } from "./useRegionalChampions";
 import { useRegionalCardComposition, type RegionalCardRow } from "./useRegionalCardComposition";
+import { useRegionalKeywords, type RegionalKeywordRow } from "./useRegionalKeywords";
 import { useCardsByNames } from "../events/useCardsByNames";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
+import { formatUsd } from "../../lib/format";
 import type { RegionGroupMode } from "../../lib/regions";
 
 const GROUP_MODES: RegionGroupMode[] = ["country", "region"];
 const GROUP_LABELS: Record<RegionGroupMode, string> = { country: "Country", region: "Region" };
 
-type ContentTab = "archetypes" | "champions" | "cards";
-const CONTENT_TABS: ContentTab[] = ["archetypes", "champions", "cards"];
-const CONTENT_LABELS: Record<ContentTab, string> = { archetypes: "Archetypes", champions: "Champions", cards: "Card Composition" };
+type ContentTab = "archetypes" | "champions" | "cards" | "keywords";
+const CONTENT_TABS: ContentTab[] = ["archetypes", "champions", "cards", "keywords"];
+const CONTENT_LABELS: Record<ContentTab, string> = {
+  archetypes: "Archetypes",
+  champions: "Champions",
+  cards: "Card Composition",
+  keywords: "Keywords",
+};
+
+function LiftBadges({ lift, sign, regionRate, globalRate }: { lift: number; sign: "positive" | "negative"; regionRate: number; globalRate: number }) {
+  return (
+    <>
+      <span className={`ml-auto shrink-0 text-xs ${sign === "positive" ? "text-ctp-green" : "text-ctp-red"}`}>
+        {lift >= 0 ? "+" : ""}
+        {(lift * 100).toFixed(1)}pp
+      </span>
+      <span className="shrink-0 text-xs text-ctp-subtext0">
+        {(regionRate * 100).toFixed(0)}% here vs {(globalRate * 100).toFixed(0)}% overall
+      </span>
+    </>
+  );
+}
 
 function CardLiftList({ rows, sign }: { rows: RegionalCardRow[]; sign: "positive" | "negative" }) {
   const cardsByName = useCardsByNames(useMemo(() => rows.map((r) => r.cardName), [rows]));
@@ -35,13 +56,13 @@ function CardLiftList({ rows, sign }: { rows: RegionalCardRow[]; sign: "positive
             ) : (
               <span className="text-ctp-text">{r.cardName}</span>
             )}
-            <span className={`ml-auto shrink-0 text-xs ${sign === "positive" ? "text-ctp-green" : "text-ctp-red"}`}>
-              {r.lift >= 0 ? "+" : ""}
-              {(r.lift * 100).toFixed(1)}pp
+            <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">
+              {(r.avgWinRate * 100).toFixed(0)}% win rate
             </span>
-            <span className="shrink-0 text-xs text-ctp-subtext0">
-              {(r.regionRate * 100).toFixed(0)}% here vs {(r.globalRate * 100).toFixed(0)}% overall
-            </span>
+            {r.marketPrice !== null && (
+              <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">{formatUsd(r.marketPrice)}</span>
+            )}
+            <LiftBadges lift={r.lift} sign={sign} regionRate={r.regionRate} globalRate={r.globalRate} />
           </li>
         );
       })}
@@ -49,8 +70,28 @@ function CardLiftList({ rows, sign }: { rows: RegionalCardRow[]; sign: "positive
   );
 }
 
+function KeywordLiftList({ rows, sign }: { rows: RegionalKeywordRow[]; sign: "positive" | "negative" }) {
+  if (rows.length === 0) return <p className="text-sm text-ctp-subtext1">Nothing clears the sample bar yet.</p>;
+  return (
+    <ul className="mt-2 space-y-1">
+      {rows.map((r) => (
+        <li key={r.keyword} className="flex flex-wrap items-center gap-1.5 text-sm">
+          <span className="text-ctp-text">{r.keyword}</span>
+          <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">
+            {(r.avgWinRate * 100).toFixed(0)}% win rate
+          </span>
+          <LiftBadges lift={r.lift} sign={sign} regionRate={r.regionRate} globalRate={r.globalRate} />
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export default function RegionsIndex() {
-  useDocumentTitle("Regions", "Grand Archive TCG meta stats broken out by region — archetypes, champions, and card composition.");
+  useDocumentTitle(
+    "Regions",
+    "Grand Archive TCG meta stats broken out by region — archetypes, champions, card composition, and keywords.",
+  );
   const [group, setGroup] = useTabParam<RegionGroupMode>("group", GROUP_MODES, "country");
   const [tab, setTab] = useTabParam<ContentTab>("tab", CONTENT_TABS, "archetypes");
   const [regionOverride, setRegionOverride] = useState<string | null>(null);
@@ -63,13 +104,14 @@ export default function RegionsIndex() {
   const archetypes = useRegionalArchetypes(regionByDeckId, selectedRegion);
   const champions = useRegionalChampions(regionByDeckId, selectedRegion);
   const cards = useRegionalCardComposition(regionByDeckId, selectedRegion);
+  const keywords = useRegionalKeywords(regionByDeckId, selectedRegion);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="text-2xl font-bold text-ctp-blue">Regions</h1>
       <p className="mt-1 text-sm text-ctp-subtext1">
-        Archetypes, champions, and card composition broken out by where events were held — grouped by
-        country or by broader region. Regions with too few decks aren't shown.
+        Archetypes, champions, card composition, and keywords broken out by where events were held —
+        grouped by country or by broader region. Regions with too few decks aren't shown.
       </p>
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
@@ -223,6 +265,28 @@ export default function RegionsIndex() {
                     <div className="mt-6">
                       <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Under-represented</h2>
                       <CardLiftList rows={cards.underRepresented} sign="negative" />
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+
+            {tab === "keywords" && (
+              <>
+                {keywords.loading && <p className="text-ctp-subtext1">Loading…</p>}
+                {!keywords.loading && (
+                  <>
+                    <p className="text-xs text-ctp-subtext0">
+                      Ability keywords (Ranged, Swift, Bulwark, ...) used more or less often in {selectedOption?.label}'s
+                      main+material decklists than in the overall meta — correlational, not a guarantee.
+                    </p>
+                    <div className="mt-4">
+                      <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Over-represented</h2>
+                      <KeywordLiftList rows={keywords.overRepresented} sign="positive" />
+                    </div>
+                    <div className="mt-6">
+                      <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Under-represented</h2>
+                      <KeywordLiftList rows={keywords.underRepresented} sign="negative" />
                     </div>
                   </>
                 )}

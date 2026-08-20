@@ -13,6 +13,9 @@ export interface RegionalCardRow {
   globalRate: number;
   lift: number;
   deckCountInRegion: number;
+  /** Global figures (not region-scoped — no per-region sample is large enough to shrink a per-card win rate meaningfully) from cards.json, for context alongside the region/global usage rates. */
+  avgWinRate: number;
+  marketPrice: number | null;
 }
 
 export interface RegionalCardComposition {
@@ -41,6 +44,7 @@ export function useRegionalCardComposition(regionByDeckId: Map<string, string>, 
 
     const globalDeckTotal = cardIndexData.decks.length;
     const globalRateByName = new Map<string, number>();
+    const statByName = new Map(cardStatsData.cards.map((s) => [s.name, s]));
     for (const stat of cardStatsData.cards) {
       globalRateByName.set(stat.name, globalDeckTotal > 0 ? stat.deckCount / globalDeckTotal : 0);
     }
@@ -67,7 +71,16 @@ export function useRegionalCardComposition(regionByDeckId: Map<string, string>, 
       // (sum + prior*baseline)/(n+prior) convention docs/CALCULATIONS.md documents elsewhere, so a
       // card seen in 5 regional decks at 100% doesn't outrank one seen in 200 at 65%.
       const shrunkRegionRate = (deckCountInRegion + PRIOR_WEIGHT * globalRate) / (regionDeckCount + PRIOR_WEIGHT);
-      entries.push({ cardName, regionRate: shrunkRegionRate, globalRate, lift: shrunkRegionRate - globalRate, deckCountInRegion });
+      const stat = statByName.get(cardName);
+      entries.push({
+        cardName,
+        regionRate: shrunkRegionRate,
+        globalRate,
+        lift: shrunkRegionRate - globalRate,
+        deckCountInRegion,
+        avgWinRate: stat?.avgWinRate ?? 0,
+        marketPrice: stat?.marketPrice ?? null,
+      });
     }
 
     entries.sort((a, b) => b.lift - a.lift);
