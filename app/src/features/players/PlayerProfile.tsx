@@ -14,6 +14,7 @@ import CardHoverPreview from "../../components/CardHoverPreview";
 import TopCardsSections from "../../components/TopCardsSections";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import { formatCountry } from "../../lib/format";
 
 type PlayerTab = "overview" | "events" | "judged";
 const PAGE_SIZE = 50;
@@ -171,6 +172,10 @@ export default function PlayerProfile() {
       {(player || judge) && (
         <>
           <h1 className="mt-2 text-2xl font-bold text-ctp-blue">{player?.username ?? judge?.username}</h1>
+          {(() => {
+            const region = formatCountry(player?.country ?? judge?.country ?? "");
+            return region && <p className="mt-1 text-sm text-ctp-subtext0">{region}</p>;
+          })()}
           {rating && (
             <p className="mt-1 text-sm text-ctp-subtext1">
               Rating {Math.round(rating.rating)} · {rating.wins}-{rating.losses}-{rating.ties} across{" "}
