@@ -46,6 +46,7 @@ export default function CompareIndex() {
 
   const comparedKeys = useMemo(() => new Set(decks.map((d) => d.key)), [decks]);
   const decklists = useComparedDecklists(decks);
+  const [shareCopyState, setShareCopyState] = useState<"idle" | "copied" | "failed">("idle");
 
   // Seeds the compare set from a `?add=eventId:player,...` link (e.g. from an event's pairings
   // or an achievement unlock) — once player/event data is available, then clears the param so it
@@ -89,6 +90,24 @@ export default function CompareIndex() {
 
   function removeDeck(key: string) {
     setDecks((prev) => prev.filter((d) => d.key !== key));
+  }
+
+  // Only "sighting" decks (a real eventId:player pair) round-trip through a link — a "custom"
+  // (pasted) deck has no stable id to reference, same limitation the ?add= seed mechanism already
+  // has (it was built for this exact eventId:player shape).
+  const sightingKeys = decks.filter((d) => d.source.kind === "sighting").map((d) => d.key);
+  const excludedCustomCount = decks.length - sightingKeys.length;
+
+  async function handleCopyShareLink() {
+    const params = new URLSearchParams({ add: sightingKeys.join(",") });
+    const url = `${window.location.origin}/compare?${params.toString()}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setShareCopyState("copied");
+    } catch {
+      setShareCopyState("failed");
+    }
+    setTimeout(() => setShareCopyState("idle"), 1500);
   }
 
   return (
@@ -165,6 +184,17 @@ export default function CompareIndex() {
                     ))}
                   </div>
                 )}
+                {sightingKeys.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleCopyShareLink}
+                    className={`rounded-md border px-2 py-1 text-xs ${
+                      shareCopyState === "failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                    }`}
+                  >
+                    {shareCopyState === "copied" ? "Copied!" : shareCopyState === "failed" ? "Couldn't copy" : "Copy share link"}
+                  </button>
+                )}
                 {decks.length > 0 && (
                   <button type="button" onClick={() => setDecks([])} className="text-xs text-ctp-subtext0 hover:text-ctp-text">
                     Clear all
@@ -172,6 +202,12 @@ export default function CompareIndex() {
                 )}
               </div>
             </div>
+
+            {excludedCustomCount > 0 && sightingKeys.length > 0 && (
+              <p className="mt-1 text-xs text-ctp-subtext0">
+                {excludedCustomCount} pasted deck{excludedCustomCount === 1 ? "" : "s"} can't be included in a share link.
+              </p>
+            )}
 
             {decks.length === 0 && <p className="mt-2 text-sm text-ctp-subtext1">Add decks above to start comparing.</p>}
 

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import type { CompositionWinRateData, CompositionWinRateStat, OmnidexDecklist } from "@gatcg/shared";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCardQuantityStatsData, useCompositionWinRateData } from "../archetypes/data";
@@ -25,6 +25,60 @@ import { useBuddyCards, type BuddyCard } from "./useBuddyCards";
 
 type BuilderTab = "build" | "stats" | "buddies" | "log";
 const TAB_KEYS: BuilderTab[] = ["build", "stats", "buddies", "log"];
+
+type LockedSection = "main" | "material" | "sideboard";
+
+/** Packs locked cards into one URL-safe query param for sharing — `section:qty:name` entries joined
+ * by `;`. Real card names haven't been seen using either separator, and a stray one just produces a
+ * slightly malformed shared link rather than breaking anything, so no escaping beyond what
+ * URLSearchParams already does for the param value as a whole. */
+function encodeLockedCards(lockedCards: Map<string, number>, lockedSections: Map<string, LockedSection>): string {
+  return Array.from(lockedCards.entries())
+    .map(([name, qty]) => `${lockedSections.get(name) ?? "main"}:${qty}:${name}`)
+    .join(";");
+}
+
+function decodeLockedCards(encoded: string): { lockedCards: Map<string, number>; lockedSections: Map<string, LockedSection> } {
+  const lockedCards = new Map<string, number>();
+  const lockedSections = new Map<string, LockedSection>();
+  for (const entry of encoded.split(";")) {
+    if (!entry) continue;
+    const [section, qtyStr, ...nameParts] = entry.split(":");
+    const name = nameParts.join(":");
+    const qty = Number(qtyStr);
+    if (!name || !Number.isFinite(qty) || qty < 1) continue;
+    lockedCards.set(name, qty);
+    if (section === "main" || section === "material" || section === "sideboard") lockedSections.set(name, section);
+  }
+  return { lockedCards, lockedSections };
+}
+
+interface UrlSeed {
+  championName: string;
+  spiritFilter: string | null;
+  lockedCards: Map<string, number>;
+  lockedSections: Map<string, LockedSection>;
+}
+
+/**
+ * Parses a shared link's ?champion=&spirit=&locked= params, for use as the *initial* state itself
+ * (see the useState calls below) rather than seeding via an effect after mount. An effect-based
+ * approach was tried first and had a real bug: the champion-reset effect (keyed on championName)
+ * and a "seed from URL" effect both run on mount, in declaration order, and the reset effect's
+ * very first run has no way to know a seed is coming a moment later — it queues a transition that
+ * clears lockedCards, which then lands *after* the seed effect's own (higher-priority) update,
+ * silently wiping the shared cards back out. Computing the seed before first render sidesteps the
+ * race entirely: there's no reset-then-reseed dance because the state is correct from render one.
+ */
+function parseUrlSeed(searchParams: URLSearchParams): UrlSeed | null {
+  const championName = searchParams.get("champion");
+  if (!championName) return null;
+  const lockedParam = searchParams.get("locked");
+  const { lockedCards, lockedSections } = lockedParam
+    ? decodeLockedCards(lockedParam)
+    : { lockedCards: new Map<string, number>(), lockedSections: new Map<string, LockedSection>() };
+  return { championName, spiritFilter: searchParams.get("spirit"), lockedCards, lockedSections };
+}
 
 interface ChangeLogEntry {
   label: string;
@@ -440,13 +494,19 @@ export default function DeckBuilderIndex() {
     "Guided Deck Builder",
     "Pick a Champion and Spirit and see a suggested build assembled from the highest win-rate cards in real decks, then lock in your own picks for updated suggestions.",
   );
-  const [championName, setChampionName] = useState<string | null>(null);
-  const [spiritFilter, setSpiritFilter] = useState<string | null>(null);
-  const [lockedCards, setLockedCards] = useState<Map<string, number>>(new Map());
+  const [searchParams, setSearchParams] = useSearchParams();
+  // Computed fresh each render (cheap — parsing a couple of query params), but only its value on
+  // the very first render actually matters: every useState below that reads from it only consults
+  // its initializer once, on mount, same as React already guarantees for lazy useState.
+  const urlSeed = parseUrlSeed(searchParams);
+
+  const [championName, setChampionName] = useState<string | null>(urlSeed?.championName ?? null);
+  const [spiritFilter, setSpiritFilter] = useState<string | null>(urlSeed?.spiritFilter ?? null);
+  const [lockedCards, setLockedCards] = useState<Map<string, number>>(() => urlSeed?.lockedCards ?? new Map());
   // Section a lock is known to belong to (from where it was locked, or from a pasted decklist's
   // own Main/Material headers) — see useSuggestedBuild's lockedSections param doc for why this
   // beats guessing from population presence for a card the current population barely plays.
-  const [lockedSections, setLockedSections] = useState<Map<string, "main" | "material" | "sideboard">>(new Map());
+  const [lockedSections, setLockedSections] = useState<Map<string, LockedSection>>(() => urlSeed?.lockedSections ?? new Map());
   const [rejectedCards, setRejectedCards] = useState<Set<string>>(new Set());
   const [cardInput, setCardInput] = useState("");
   const [changeLog, setChangeLog] = useState<ChangeLogEntry[]>([]);
@@ -463,9 +523,17 @@ export default function DeckBuilderIndex() {
   const prevSuggestedRef = useRef<Set<string> | null>(null);
   const prevWinRateRef = useRef<number | null>(null);
   // Set right before setChampionName() by loadPastedDecklist() so the reset effect below doesn't
-  // clobber the Spirit/locks it just derived from the paste — a normal Champion-dropdown change
-  // still resets to a blank slate as usual.
+  // clobber the Spirit/locks it just derived — a normal Champion-dropdown change still resets to a
+  // blank slate as usual. (Not used for the URL-seed case below — see lastResetChampionRef.)
   const skipNextResetRef = useRef(false);
+  // The championName the reset effect has already dealt with (by resetting or by skipping) —
+  // starts at the seeded Champion so its very first (mount) run is a no-op. This has to be an
+  // idempotent *comparison* rather than a one-shot flag: React 18 StrictMode double-invokes mount
+  // effects in dev, and a flag that gets flipped inside the effect body reads as "already
+  // consumed" on the second invocation, incorrectly falling through to a real reset that clobbers
+  // the just-seeded lockedCards a moment later. Comparing against a ref that's never mutated
+  // during a no-op run stays correct across as many redundant invocations as StrictMode throws at it.
+  const lastResetChampionRef = useRef(urlSeed?.championName ?? null);
 
   const popularityIndexData = useDeckPopularityIndexData();
   const cardCatalog = useCardCatalog();
@@ -515,6 +583,12 @@ export default function DeckBuilderIndex() {
   const priceByName = useDeckPriceByName();
 
   useEffect(() => {
+    if (lastResetChampionRef.current === championName) {
+      // Already handled this exact championName (the seeded initial value, or a StrictMode
+      // dev double-invoke re-running this same effect) — idempotent no-op.
+      return;
+    }
+    lastResetChampionRef.current = championName;
     if (skipNextResetRef.current) {
       skipNextResetRef.current = false;
     } else {
@@ -531,6 +605,24 @@ export default function DeckBuilderIndex() {
     prevWinRateRef.current = null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [championName]);
+
+  // The shared link's params (see handleCopyShareLink below) already did their job as the
+  // *initial* state above — this just clears them once mounted, so the URL doesn't look "stuck"
+  // to the original shared state once the viewer starts editing.
+  useEffect(() => {
+    if (!urlSeed) return;
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        next.delete("champion");
+        next.delete("spirit");
+        next.delete("locked");
+        return next;
+      },
+      { replace: true },
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /**
    * Bulk equivalent of picking a Champion+Spirit then locking every remaining card by hand —
@@ -697,6 +789,7 @@ export default function DeckBuilderIndex() {
   const totalPrice = useMemo(() => sumPrice(buildLines), [buildLines, priceByName]);
   const sideboardPrice = useMemo(() => sumPrice(sideboardLines), [sideboardLines, priceByName]);
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
+  const [shareCopyState, setShareCopyState] = useState<"idle" | "copied" | "failed">("idle");
 
   async function handleCopy() {
     try {
@@ -706,6 +799,25 @@ export default function DeckBuilderIndex() {
       setCopyState("failed");
     }
     setTimeout(() => setCopyState("idle"), 1500);
+  }
+
+  /** Shares the Champion/Spirit/locked-cards *input*, not a snapshot of the assembled output —
+   * opening the link re-runs the same suggestion logic, so it stays a live recipe rather than a
+   * stale copy that drifts from the site's own numbers as data regenerates. */
+  async function handleCopyShareLink() {
+    const params = new URLSearchParams();
+    if (championName) params.set("champion", championName);
+    if (spiritFilter) params.set("spirit", spiritFilter);
+    const locked = encodeLockedCards(lockedCards, lockedSections);
+    if (locked) params.set("locked", locked);
+    const url = `${window.location.origin}/deck-builder?${params.toString()}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setShareCopyState("copied");
+    } catch {
+      setShareCopyState("failed");
+    }
+    setTimeout(() => setShareCopyState("idle"), 1500);
   }
 
   function handleExportTts() {
@@ -905,6 +1017,16 @@ export default function DeckBuilderIndex() {
               className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text"
             >
               Export to TTS
+            </button>
+            <button
+              type="button"
+              onClick={handleCopyShareLink}
+              title="Copies a link that reopens this Champion/Spirit and every locked-in card"
+              className={`rounded-md border px-2 py-1 text-xs ${
+                shareCopyState === "failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+              }`}
+            >
+              {shareCopyState === "copied" ? "Copied!" : shareCopyState === "failed" ? "Couldn't copy" : "Copy share link"}
             </button>
           </div>
 
