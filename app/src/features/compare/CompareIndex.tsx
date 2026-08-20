@@ -5,6 +5,7 @@ import ImportByPlayer from "./ImportByPlayer";
 import PasteDecklist from "./PasteDecklist";
 import ComparisonGrid from "./ComparisonGrid";
 import ComparisonCards from "./ComparisonCards";
+import ComparisonSuggestions from "./ComparisonSuggestions";
 import CardCompareIndex from "./CardCompareIndex";
 import { useComparedDecklists } from "./useComparedDecklists";
 import { useOmnidexIndex, useOmnidexPlayers } from "../tournaments/data";
@@ -196,6 +197,8 @@ export default function CompareIndex() {
                 )}
               </div>
             )}
+
+            {decks.length >= 2 && <ComparisonSuggestions decks={decks} decklists={decklists} />}
           </div>
         </>
       )}
