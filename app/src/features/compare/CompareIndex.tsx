@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import DeckSearchByCards from "./DeckSearchByCards";
 import ImportByPlayer from "./ImportByPlayer";
+import ImportTopDecks from "./ImportTopDecks";
 import PasteDecklist from "./PasteDecklist";
 import ComparisonGrid from "./ComparisonGrid";
 import ComparisonCards from "./ComparisonCards";
@@ -17,12 +18,13 @@ type CompareType = "decks" | "cards";
 const COMPARE_TYPE_LABELS: Record<CompareType, string> = { decks: "Decks", cards: "Cards" };
 const COMPARE_TYPE_KEYS = Object.keys(COMPARE_TYPE_LABELS) as CompareType[];
 
-type SourceTab = "cards" | "player" | "paste";
+type SourceTab = "cards" | "player" | "topDecks" | "paste";
 type ViewMode = "table" | "cards";
 
 const TAB_LABELS: Record<SourceTab, string> = {
   cards: "Search by cards",
   player: "Import by player",
+  topDecks: "Top decks",
   paste: "Paste a decklist",
 };
 const SOURCE_TAB_KEYS = Object.keys(TAB_LABELS) as SourceTab[];
@@ -137,6 +139,7 @@ export default function CompareIndex() {
           <div className="mt-3 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
             {tab === "cards" && <DeckSearchByCards comparedKeys={comparedKeys} onToggle={toggleDeck} />}
             {tab === "player" && <ImportByPlayer comparedKeys={comparedKeys} onToggle={toggleDeck} />}
+            {tab === "topDecks" && <ImportTopDecks comparedKeys={comparedKeys} onToggle={toggleDeck} />}
             {tab === "paste" && <PasteDecklist onAdd={addDeck} />}
           </div>
 
