@@ -1,6 +1,10 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { useArchetypeTaxonomyData } from "./data";
+import type { CardImpactRole } from "@gatcg/shared";
+import { useArchetypeTaxonomyData, useMatchupCardImpactData } from "./data";
+import { useCardsByNames } from "../events/useCardsByNames";
+import CardHoverPreview from "../../components/CardHoverPreview";
+import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { formatUsd } from "../../lib/format";
 
@@ -14,6 +18,24 @@ const SORT_LABELS: Record<SortMode, string> = {
   avgPlacement: "Avg placement",
   avgPrice: "Avg price",
 };
+
+type ViewMode = "builds" | "hurtYou";
+const ROLE_LABEL: Record<CardImpactRole, string> = { main: "Main", material: "Material", sideboard: "Sideboard", mixed: "Mixed" };
+const HURT_YOU_PAGE_SIZE = 30;
+
+interface HurtYouRow {
+  key: string;
+  cardName: string;
+  role: CardImpactRole;
+  adjustedLift: number;
+  deckCountWith: number;
+  deckCountWithout: number;
+  myClusterId: string;
+  myClusterName: string;
+  opponentClusterId: string;
+  opponentClusterName: string;
+  games: number;
+}
 
 interface DisplayRow {
   id: string;
@@ -32,9 +54,13 @@ interface DisplayRow {
 export default function ArchetypesIndex() {
   useDocumentTitle("Archetypes", "Data-derived Grand Archive TCG deck archetypes and named builds by Champion.");
   const data = useArchetypeTaxonomyData();
+  const matchupData = useMatchupCardImpactData();
   const [championFilter, setChampionFilter] = useState<string | null>(null);
   const [seasonId, setSeasonId] = useState<number | null>(null);
   const [sortMode, setSortMode] = useState<SortMode>("players");
+  const [view, setView] = useState<ViewMode>("builds");
+  const [hurtYouClusterId, setHurtYouClusterId] = useState<string | null>(null);
+  const [hurtYouVisibleCount, setHurtYouVisibleCount] = useState(HURT_YOU_PAGE_SIZE);
 
   const championsPresent = useMemo(() => {
     if (!data) return [];
@@ -108,6 +134,47 @@ export default function ArchetypesIndex() {
     });
   }, [data, championFilter, seasonId, sortMode]);
 
+  const clusterNameById = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const c of data?.clusters ?? []) map.set(c.id, c.name);
+    return map;
+  }, [data]);
+
+  // One row per (matchup, opponent card) — deliberately not collapsed across matchups: each
+  // adjustedLift is only meaningful against its own matchup's population/baseline, so blending
+  // different matchups' numbers into one score per card would mix incomparable denominators.
+  const hurtYouRows = useMemo((): HurtYouRow[] => {
+    if (!matchupData) return [];
+    const rows: HurtYouRow[] = [];
+    for (const m of matchupData.matchups) {
+      if (hurtYouClusterId && m.clusterId !== hurtYouClusterId) continue;
+      for (const c of m.opponentCards) {
+        rows.push({
+          key: `${m.clusterId}:${m.opponentClusterId}:${c.cardName}`,
+          cardName: c.cardName,
+          role: c.role,
+          adjustedLift: c.adjustedLift,
+          deckCountWith: c.deckCountWith,
+          deckCountWithout: c.deckCountWithout,
+          myClusterId: m.clusterId,
+          myClusterName: clusterNameById.get(m.clusterId) ?? m.clusterId,
+          opponentClusterId: m.opponentClusterId,
+          opponentClusterName: m.opponentClusterName,
+          games: m.games,
+        });
+      }
+    }
+    return rows.sort((a, b) => a.adjustedLift - b.adjustedLift);
+  }, [matchupData, hurtYouClusterId, clusterNameById]);
+
+  const hurtYouVisible = hurtYouRows.slice(0, hurtYouVisibleCount);
+  const hurtYouCardImages = useCardsByNames(useMemo(() => hurtYouVisible.map((r) => r.cardName), [hurtYouVisible]));
+
+  const buildOptions = useMemo(() => {
+    if (!data) return [];
+    return [...data.clusters].sort((a, b) => b.playerCount - a.playerCount);
+  }, [data]);
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <div className="flex items-center justify-between">
@@ -122,6 +189,23 @@ export default function ArchetypesIndex() {
         noise.
       </p>
 
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        {(["builds", "hurtYou"] as ViewMode[]).map((v) => (
+          <button
+            key={v}
+            type="button"
+            onClick={() => setView(v)}
+            className={`rounded-md border px-3 py-1.5 text-sm font-medium ${
+              view === v ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+            }`}
+          >
+            {v === "builds" ? "Builds" : "Cards That Hurt You"}
+          </button>
+        ))}
+      </div>
+
+      {view === "builds" && (
+        <>
       <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Champion:</span>
         <select
@@ -223,6 +307,104 @@ export default function ArchetypesIndex() {
           </tbody>
         </table>
       </div>
+        </>
+      )}
+
+      {view === "hurtYou" && (
+        <>
+          <p className="mt-3 text-xs text-ctp-subtext0">
+            Opponent cards that correlate with beating a build, from real pairing outcomes — the same "Cards that hurt
+            you" numbers shown per-matchup on a build's own Card Impact tab, gathered here across every matchup at
+            once. Each row is scoped to its own matchup's population, so lifts aren't comparable across different
+            opponents — correlational, not a guarantee.
+          </p>
+
+          <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
+            <span className="text-ctp-subtext0">My build:</span>
+            <select
+              value={hurtYouClusterId ?? ""}
+              onChange={(e) => {
+                setHurtYouClusterId(e.target.value || null);
+                setHurtYouVisibleCount(HURT_YOU_PAGE_SIZE);
+              }}
+              className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+            >
+              <option value="">All builds</option>
+              {buildOptions.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name} ({c.championName})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {!matchupData && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
+          {matchupData && hurtYouRows.length === 0 && (
+            <p className="mt-6 text-ctp-subtext1">
+              {hurtYouClusterId
+                ? "No matchup for this build has enough games to break down card-by-card yet."
+                : "No matchups have enough games to break down card-by-card yet."}
+            </p>
+          )}
+
+          {hurtYouRows.length > 0 && (
+            <>
+              <div className="mt-4 overflow-x-auto">
+                <table className="w-max min-w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+                      <th className="py-1 pr-6">Card</th>
+                      <th className="py-1 pr-6">Role</th>
+                      <th className="py-1 pr-6">Lift</th>
+                      <th className="py-1 pr-6">Sample</th>
+                      <th className="py-1 pr-6">My build</th>
+                      <th className="py-1 pr-6">Opponent</th>
+                      <th className="py-1">Games</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
+                    {hurtYouVisible.map((r) => {
+                      const card = hurtYouCardImages.get(r.cardName);
+                      return (
+                        <tr key={r.key}>
+                          <td className="py-1.5 pr-6 whitespace-nowrap">
+                            <CardHoverPreview image={card?.editions[0]?.image} alt={r.cardName}>
+                              {card ? (
+                                <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
+                                  {r.cardName}
+                                </Link>
+                              ) : (
+                                <span className="text-ctp-text">{r.cardName}</span>
+                              )}
+                            </CardHoverPreview>
+                          </td>
+                          <td className="py-1.5 pr-6 text-ctp-subtext1">{ROLE_LABEL[r.role]}</td>
+                          <td className="py-1.5 pr-6 font-semibold text-ctp-red">{(r.adjustedLift * 100).toFixed(1)}pp</td>
+                          <td className="py-1.5 pr-6 text-xs text-ctp-subtext0">
+                            {r.deckCountWith} vs {r.deckCountWithout}
+                          </td>
+                          <td className="py-1.5 pr-6 whitespace-nowrap">
+                            <Link to={`/archetypes/${r.myClusterId}`} className="text-ctp-subtext1 hover:text-ctp-blue">
+                              {r.myClusterName}
+                            </Link>
+                          </td>
+                          <td className="py-1.5 pr-6 whitespace-nowrap">
+                            <Link to={`/archetypes/${r.opponentClusterId}`} className="text-ctp-subtext1 hover:text-ctp-blue">
+                              {r.opponentClusterName}
+                            </Link>
+                          </td>
+                          <td className="py-1.5 text-ctp-subtext1">{r.games}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              <LoadMore remaining={hurtYouRows.length - hurtYouVisibleCount} onLoadMore={() => setHurtYouVisibleCount((v) => v + HURT_YOU_PAGE_SIZE)} />
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 }
