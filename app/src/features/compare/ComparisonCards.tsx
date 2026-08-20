@@ -3,6 +3,7 @@ import type { OmnidexDecklist } from "@gatcg/shared";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { formatUsd } from "../../lib/format";
 import { buildTtsSaveFile, downloadJsonFile, slugifyFilename } from "../../lib/ttsExport";
+import { buildDeckBuilderPath, deckBuilderParamsFromDecklist } from "../../lib/deckBuilderLink";
 import { useComparisonData } from "./useComparisonData";
 import type { ComparedDeck } from "./types";
 
@@ -43,12 +44,21 @@ export default function ComparisonCards({
     downloadJsonFile(`${slugifyFilename(stats?.championName ?? deck.label)}-tts.json`, save);
   }
 
+  function deckBuilderUrl(deck: ComparedDeck): string | null {
+    const list = decklists.get(deck.key);
+    if (!list) return null;
+    const params = deckBuilderParamsFromDecklist(list, cardsByName);
+    if (!params) return null;
+    return buildDeckBuilderPath(params.championName, params.spiritFilter, params.lockedCards, params.lockedSections);
+  }
+
   return (
     <div className="space-y-4">
       {decks.map((d, i) => {
         const stats = deckStats.find((s) => s.key === d.key);
         const list = decklists.get(d.key);
         const identity = stats && [stats.classes.join("/"), stats.elements.join("/")].filter(Boolean).join(" · ");
+        const builderUrl = deckBuilderUrl(d);
 
         return (
           <div key={d.key} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
@@ -65,16 +75,27 @@ export default function ComparisonCards({
                   <p className="text-xs text-ctp-subtext1">Win rate: {(stats.winRate * 100).toFixed(0)}%</p>
                 )}
               </div>
-              {list && (
-                <button
-                  type="button"
-                  onClick={() => handleExportTts(d)}
-                  title="Downloads a .json file — in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it"
-                  className="shrink-0 rounded border border-ctp-surface1 px-1.5 py-0.5 text-[10px] text-ctp-subtext1 hover:text-ctp-text"
-                >
-                  TTS
-                </button>
-              )}
+              <div className="flex shrink-0 items-center gap-1.5">
+                {list && (
+                  <button
+                    type="button"
+                    onClick={() => handleExportTts(d)}
+                    title="Downloads a .json file — in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it"
+                    className="rounded border border-ctp-surface1 px-1.5 py-0.5 text-[10px] text-ctp-subtext1 hover:text-ctp-text"
+                  >
+                    TTS
+                  </button>
+                )}
+                {builderUrl && (
+                  <Link
+                    to={builderUrl}
+                    title="Opens this deck in the Guided Deck Builder, locked in as a starting point"
+                    className="rounded border border-ctp-surface1 px-1.5 py-0.5 text-[10px] text-ctp-subtext1 hover:text-ctp-text"
+                  >
+                    Deck Builder
+                  </Link>
+                )}
+              </div>
             </div>
 
             {!list && <p className="mt-2 text-sm text-ctp-subtext1">No decklist available.</p>}

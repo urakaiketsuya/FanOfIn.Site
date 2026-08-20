@@ -4,6 +4,7 @@ import type { OmnidexDecklist } from "@gatcg/shared";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { formatUsd } from "../../lib/format";
 import { buildTtsSaveFile, downloadJsonFile, slugifyFilename } from "../../lib/ttsExport";
+import { buildDeckBuilderPath, deckBuilderParamsFromDecklist } from "../../lib/deckBuilderLink";
 import { useComparisonData } from "./useComparisonData";
 import type { ComparedDeck } from "./types";
 
@@ -47,6 +48,14 @@ export default function ComparisonGrid({
     downloadJsonFile(`${slugifyFilename(stats?.championName ?? deck.label)}-tts.json`, save);
   }
 
+  function deckBuilderUrl(deck: ComparedDeck): string | null {
+    const list = decklists.get(deck.key);
+    if (!list) return null;
+    const params = deckBuilderParamsFromDecklist(list, cardsByName);
+    if (!params) return null;
+    return buildDeckBuilderPath(params.championName, params.spiritFilter, params.lockedCards, params.lockedSections);
+  }
+
   const bestPriceIndex = bestIndex(deckStats.map((s) => (s.price > 0 ? s.price : null)));
   const bestCompositeIndex = bestIndex(deckStats.map((s) => s.rating?.composite ?? null));
   const bestWinRateIndex = bestIndex(deckStats.map((s) => s.winRate));
@@ -57,23 +66,35 @@ export default function ComparisonGrid({
         <thead>
           <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
             <th className="sticky left-0 z-10 bg-ctp-base py-1 pr-6">Card</th>
-            {decks.map((d) => (
-              <th key={d.key} className="min-w-[7rem] py-1 pr-6 font-medium normal-case text-ctp-text">
-                <div className="flex items-center gap-1.5">
-                  <span>{d.label}</span>
-                  {decklists.get(d.key) && (
-                    <button
-                      type="button"
-                      onClick={() => handleExportTts(d)}
-                      title="Downloads a .json file — in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it"
-                      className="rounded border border-ctp-surface1 px-1 py-0.5 text-[10px] font-normal text-ctp-subtext1 hover:text-ctp-text"
-                    >
-                      TTS
-                    </button>
-                  )}
-                </div>
-              </th>
-            ))}
+            {decks.map((d) => {
+              const builderUrl = deckBuilderUrl(d);
+              return (
+                <th key={d.key} className="min-w-[7rem] py-1 pr-6 font-medium normal-case text-ctp-text">
+                  <div className="flex items-center gap-1.5">
+                    <span>{d.label}</span>
+                    {decklists.get(d.key) && (
+                      <button
+                        type="button"
+                        onClick={() => handleExportTts(d)}
+                        title="Downloads a .json file — in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it"
+                        className="rounded border border-ctp-surface1 px-1 py-0.5 text-[10px] font-normal text-ctp-subtext1 hover:text-ctp-text"
+                      >
+                        TTS
+                      </button>
+                    )}
+                    {builderUrl && (
+                      <Link
+                        to={builderUrl}
+                        title="Opens this deck in the Guided Deck Builder, locked in as a starting point"
+                        className="rounded border border-ctp-surface1 px-1 py-0.5 text-[10px] font-normal text-ctp-subtext1 hover:text-ctp-text"
+                      >
+                        Deck Builder
+                      </Link>
+                    )}
+                  </div>
+                </th>
+              );
+            })}
           </tr>
         </thead>
         <tbody className="divide-y divide-ctp-surface0">

@@ -29,6 +29,10 @@ export function useChampionCardImpact(
   championName: string | null,
   selectedElements: string[],
   excludeCardNames: Set<string>,
+  /** "best" (default) = highest adjustedLift first, same as every existing caller. "worst" = most
+   * negative adjustedLift first — cards that correlate with this Champion doing *worse*, for a
+   * "what tends to hurt them" lens (e.g. Compare's "cards that hurt your opponent"). */
+  direction: "best" | "worst" = "best",
 ): ChampionCardImpactResult {
   const rawCardIndexData = useDeckCardIndexData();
   // Guards against a stale IndexedDB copy from before dictionary-encoding shipped — see the same
@@ -79,10 +83,13 @@ export function useChampionCardImpact(
     // cardImpact.ts documents for its cluster-scoped version.
     const baseline = rows.reduce((sum, r) => sum + r.outcome, 0) / rows.length;
     const entries = computeCardImpactEntries(rows, baseline, PRIOR_WEIGHT, MIN_SAMPLE_SIZE);
-    const cards = entries.filter((c) => !excludeCardNames.has(c.cardName)).slice(0, MAX_RESULTS);
+    const filtered = entries.filter((c) => !excludeCardNames.has(c.cardName));
+    // `entries` is already sorted best-first (adjustedLift descending) — the worst cards are the
+    // tail end, in ascending order, so reverse to get most-negative-first.
+    const cards = direction === "worst" ? filtered.slice(-MAX_RESULTS).reverse() : filtered.slice(0, MAX_RESULTS);
 
     return { cards, totalDecks: rows.length, loading: false };
-  }, [championName, selectedElements, excludeCardNames, cardIndexData, popularityIndexData, cardsByName]);
+  }, [championName, selectedElements, excludeCardNames, cardIndexData, popularityIndexData, cardsByName, direction]);
 
   return result;
 }

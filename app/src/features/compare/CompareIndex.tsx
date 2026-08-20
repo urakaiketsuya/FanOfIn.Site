@@ -6,12 +6,15 @@ import ImportTopDecks from "./ImportTopDecks";
 import PasteDecklist from "./PasteDecklist";
 import ComparisonGrid from "./ComparisonGrid";
 import ComparisonCards from "./ComparisonCards";
+import ComparisonCardStats from "./ComparisonCardStats";
 import ComparisonSuggestions from "./ComparisonSuggestions";
 import CardCompareIndex from "./CardCompareIndex";
 import { useComparedDecklists } from "./useComparedDecklists";
 import { useOmnidexIndex, useOmnidexPlayers } from "../tournaments/data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
+import { encodeCustomDecks, decodeCustomDecks } from "../../lib/compareShareLink";
+import type { OmnidexDecklist } from "@gatcg/shared";
 import type { ComparedDeck } from "./types";
 
 type CompareType = "decks" | "cards";
@@ -19,7 +22,8 @@ const COMPARE_TYPE_LABELS: Record<CompareType, string> = { decks: "Decks", cards
 const COMPARE_TYPE_KEYS = Object.keys(COMPARE_TYPE_LABELS) as CompareType[];
 
 type SourceTab = "cards" | "player" | "topDecks" | "paste";
-type ViewMode = "table" | "cards";
+type ViewMode = "table" | "cards" | "cardStats" | "suggestions";
+const VIEW_MODE_LABELS: Record<ViewMode, string> = { table: "Table", cards: "Cards", cardStats: "Card Stats", suggestions: "Suggested Changes" };
 
 const TAB_LABELS: Record<SourceTab, string> = {
   cards: "Search by cards",
@@ -88,6 +92,31 @@ export default function CompareIndex() {
     });
   }, [searchParams, playersData, index, setSearchParams]);
 
+  // Seeds pasted ("custom") decks from a `?custom=` link — independent of the ?add= effect above
+  // since decoding a custom deck's full card list needs no player/event lookup, unlike a sighting
+  // deck's eventId:player reference.
+  const seededCustomRef = useRef(false);
+  useEffect(() => {
+    const custom = searchParams.get("custom");
+    if (!custom || seededCustomRef.current) return;
+    seededCustomRef.current = true;
+
+    const parsed = decodeCustomDecks(custom);
+    if (parsed.length > 0) {
+      setDecks((prev) => [
+        ...prev,
+        ...parsed.map((d, i) => ({ key: `custom-shared-${i}`, label: d.label, source: { kind: "custom" as const, decklist: d.decklist } })),
+      ]);
+    }
+
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.delete("custom");
+      return next;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   function toggleDeck(deck: ComparedDeck) {
     setDecks((prev) => (prev.some((d) => d.key === deck.key) ? prev.filter((d) => d.key !== deck.key) : [...prev, deck]));
   }
@@ -100,14 +129,15 @@ export default function CompareIndex() {
     setDecks((prev) => prev.filter((d) => d.key !== key));
   }
 
-  // Only "sighting" decks (a real eventId:player pair) round-trip through a link — a "custom"
-  // (pasted) deck has no stable id to reference, same limitation the ?add= seed mechanism already
-  // has (it was built for this exact eventId:player shape).
   const sightingKeys = decks.filter((d) => d.source.kind === "sighting").map((d) => d.key);
-  const excludedCustomCount = decks.length - sightingKeys.length;
+  const customDecks = decks.filter((d): d is ComparedDeck & { source: { kind: "custom"; decklist: OmnidexDecklist } } => d.source.kind === "custom");
 
   async function handleCopyShareLink() {
-    const params = new URLSearchParams({ add: sightingKeys.join(",") });
+    const params = new URLSearchParams();
+    if (sightingKeys.length > 0) params.set("add", sightingKeys.join(","));
+    if (customDecks.length > 0) {
+      params.set("custom", encodeCustomDecks(customDecks.map((d) => ({ label: d.label, decklist: d.source.decklist }))));
+    }
     const url = `${window.location.origin}/compare?${params.toString()}`;
     try {
       await navigator.clipboard.writeText(url);
@@ -157,9 +187,7 @@ export default function CompareIndex() {
                 <button
                   type="button"
                   onClick={handleCopyShareLink}
-                  disabled={sightingKeys.length === 0}
-                  title={sightingKeys.length === 0 ? "No tournament decks in this set — pasted decks can't be shared via a link" : undefined}
-                  className={`rounded-md border px-2 py-1 text-xs disabled:cursor-not-allowed disabled:opacity-50 ${
+                  className={`rounded-md border px-2 py-1 text-xs ${
                     shareCopyState === "failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
                   }`}
                 >
@@ -173,14 +201,6 @@ export default function CompareIndex() {
               )}
             </div>
           </div>
-
-          {decks.length > 0 && excludedCustomCount > 0 && (
-            <p className="mt-1 text-xs text-ctp-subtext0">
-              {sightingKeys.length === 0
-                ? "This set is only pasted decks, which can't be included in a share link."
-                : `${excludedCustomCount} pasted deck${excludedCustomCount === 1 ? "" : "s"} can't be included in a share link.`}
-            </p>
-          )}
 
           {decks.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-2">
@@ -252,30 +272,27 @@ export default function CompareIndex() {
 
               {decks.length > 0 && (
                 <>
-                  <div className="flex gap-1 text-xs">
-                    {(["table", "cards"] as ViewMode[]).map((mode) => (
+                  <div className="flex flex-wrap gap-1 text-xs">
+                    {(Object.keys(VIEW_MODE_LABELS) as ViewMode[]).map((mode) => (
                       <button
                         key={mode}
                         type="button"
                         onClick={() => setViewMode(mode)}
-                        className={`rounded-md border px-2 py-1 capitalize ${
+                        className={`rounded-md border px-2 py-1 ${
                           viewMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
                         }`}
                       >
-                        {mode}
+                        {VIEW_MODE_LABELS[mode]}
                       </button>
                     ))}
                   </div>
 
                   <div className="mt-4">
-                    {viewMode === "table" ? (
-                      <ComparisonGrid decks={decks} decklists={decklists} />
-                    ) : (
-                      <ComparisonCards decks={decks} decklists={decklists} />
-                    )}
+                    {viewMode === "table" && <ComparisonGrid decks={decks} decklists={decklists} />}
+                    {viewMode === "cards" && <ComparisonCards decks={decks} decklists={decklists} />}
+                    {viewMode === "cardStats" && <ComparisonCardStats decks={decks} decklists={decklists} />}
+                    {viewMode === "suggestions" && <ComparisonSuggestions decks={decks} decklists={decklists} />}
                   </div>
-
-                  {decks.length >= 2 && <ComparisonSuggestions decks={decks} decklists={decklists} />}
                 </>
               )}
             </div>
