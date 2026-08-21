@@ -53,6 +53,7 @@ const FEATURES: FeatureGroup[] = [
       "13,000+ rated players, paginated and searchable by username",
       "Judges tab: certified judges sortable by level and experience — shares the player ID space, so a judge who also plays shows up under one profile",
       "One click from any decklist to compare it against that Champion's best-performing deck, or its top named build",
+      "Rivals: most-played opponents, ranked by worst win rate against them first",
     ],
     example: { to: "/players/5390", label: "elothere" },
   },
@@ -105,6 +106,16 @@ const FEATURES: FeatureGroup[] = [
       "Dedicated page per build: composition donuts, a power rating, priciest cards, a popularity trend, and similar decks — one click loads the whole decklist into a TCGplayer cart",
     ],
     example: { to: "/decks/xenbr4", label: "A top Silvie build" },
+  },
+  {
+    title: "Regions",
+    items: [
+      "Archetypes, Champions, Card Composition, and Keywords broken out by where events were held",
+      "Group by country, or by a broader region (North America, Southeast Asia, ...)",
+      "Card and keyword composition shown as over/under-represented vs. the overall meta, not just raw usage",
+      "Compare Regions: two regions side by side across all four tabs at once",
+    ],
+    example: { to: "/regions", label: "Open Regions" },
   },
   {
     title: "Compare",

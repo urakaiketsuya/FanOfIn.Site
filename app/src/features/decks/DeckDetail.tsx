@@ -299,6 +299,14 @@ export default function DeckDetail() {
             {(deck.avgWinRate * 100).toFixed(0)}% avg win rate
             {deck.elements.length > 0 && ` · ${deck.elements.join("/")}`}
             {deck.classes.length > 0 && ` · ${deck.classes.join("/")}`}
+            {deck.championName && (
+              <>
+                {" · "}
+                <Link to="/regions?tab=champions" className="text-ctp-blue hover:underline">
+                  Regional breakdown &rarr;
+                </Link>
+              </>
+            )}
           </p>
         </div>
       </div>

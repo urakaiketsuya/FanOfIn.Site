@@ -23,6 +23,7 @@ export default function TournamentsIndex() {
   const [idLookup, setIdLookup] = useState("");
   const [minPlayers, setMinPlayers] = useState(0);
   const [category, setCategory] = useState<string | null>(null);
+  const [setting, setSetting] = useState<string | null>(null);
   const [seasonId, setSeasonId] = useState<number | null>(null);
   const [sortMode, setSortMode] = useState<SortMode>("date");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -45,6 +46,7 @@ export default function TournamentsIndex() {
       (e) =>
         e.playerCount >= minPlayers &&
         (!category || e.category === category) &&
+        (!setting || e.setting === setting) &&
         (seasonId === null || e.seasonId === seasonId) &&
         (!needle || e.name.toLowerCase().includes(needle) || e.hostName.toLowerCase().includes(needle)),
     );
@@ -55,11 +57,11 @@ export default function TournamentsIndex() {
       }
       return b.date.localeCompare(a.date);
     });
-  }, [index, minPlayers, category, seasonId, sortMode, search]);
+  }, [index, minPlayers, category, setting, seasonId, sortMode, search]);
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [minPlayers, category, seasonId, sortMode, search]);
+  }, [minPlayers, category, setting, seasonId, sortMode, search]);
 
   const visibleEvents = events.slice(0, visibleCount);
 
@@ -122,6 +124,21 @@ export default function TournamentsIndex() {
             }`}
           >
             {EVENT_CATEGORY_LABELS[c] ?? c}
+          </button>
+        ))}
+      </div>
+
+      <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
+        <span className="text-ctp-subtext0">Setting:</span>
+        {[null, "physical", "online"].map((s) => (
+          <button
+            key={s ?? "all"}
+            onClick={() => setSetting(s)}
+            className={`rounded-md border px-2 py-1 text-xs capitalize ${
+              setting === s ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+            }`}
+          >
+            {s ?? "All"}
           </button>
         ))}
       </div>

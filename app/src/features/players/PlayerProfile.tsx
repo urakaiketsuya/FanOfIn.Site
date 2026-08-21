@@ -173,8 +173,17 @@ export default function PlayerProfile() {
         <>
           <h1 className="mt-2 text-2xl font-bold text-ctp-blue">{player?.username ?? judge?.username}</h1>
           {(() => {
-            const region = formatCountry(player?.country ?? judge?.country ?? "");
-            return region && <p className="mt-1 text-sm text-ctp-subtext0">{region}</p>;
+            const code = player?.country ?? judge?.country ?? "";
+            const region = formatCountry(code);
+            return (
+              region && (
+                <p className="mt-1 text-sm text-ctp-subtext0">
+                  <Link to={`/regions?group=country&region=${code}`} className="hover:text-ctp-blue hover:underline">
+                    {region}
+                  </Link>
+                </p>
+              )
+            );
           })()}
           {rating && (
             <p className="mt-1 text-sm text-ctp-subtext1">

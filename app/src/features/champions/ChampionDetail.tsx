@@ -10,6 +10,7 @@ import TopDecksList from "../../components/TopDecksList";
 import UniqueDeckRow from "./UniqueDeckRow";
 import CardGrid from "../cards/CardGrid";
 import { useChampionBonusCards } from "./useChampionBonusCards";
+import { useChampionRegionalBreakdown } from "../regions/useChampionRegionalBreakdown";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 
@@ -17,7 +18,7 @@ const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
 
 type SpiritFilter = { kind: "all" } | { kind: "element"; element: string } | { kind: "spirit"; spiritName: string };
-type ChampionTab = "season" | "cards" | "builds" | "decks" | "bonus";
+type ChampionTab = "season" | "cards" | "builds" | "decks" | "bonus" | "regions";
 
 const TABS: { key: ChampionTab; label: string }[] = [
   { key: "season", label: "By Season" },
@@ -25,6 +26,7 @@ const TABS: { key: ChampionTab; label: string }[] = [
   { key: "builds", label: "Builds" },
   { key: "decks", label: "Decks" },
   { key: "bonus", label: "Bonus Cards" },
+  { key: "regions", label: "Regions" },
 ];
 const TAB_KEYS = TABS.map((t) => t.key);
 
@@ -104,6 +106,7 @@ export default function ChampionDetail() {
   }, [sightingsData, championName]);
 
   const bonusCards = useChampionBonusCards(champion ? championName : null);
+  const regionalBreakdown = useChampionRegionalBreakdown(champion ? championName : null);
 
   const uniqueDecks = useMemo(() => {
     if (!hipsterData) return [];
@@ -378,6 +381,51 @@ export default function ChampionDetail() {
                 <p className="mt-4 text-sm text-ctp-subtext1">No published cards have a bonus tied to {championName} yet.</p>
               ) : (
                 <CardGrid cards={bonusCards} />
+              )}
+            </div>
+          )}
+
+          {tab === "regions" && (
+            <div className="mt-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Regional popularity</h2>
+                <Link to="/regions?tab=champions" className="text-xs text-ctp-blue hover:underline">
+                  Full Regions page &rarr;
+                </Link>
+              </div>
+              <p className="mt-1 text-xs text-ctp-subtext0">Where {championName} gets played the most.</p>
+              {regionalBreakdown.loading && <p className="mt-4 text-ctp-subtext1">Loading…</p>}
+              {!regionalBreakdown.loading && regionalBreakdown.rows.length === 0 && (
+                <p className="mt-4 text-sm text-ctp-subtext1">Not enough regional data for {championName} yet.</p>
+              )}
+              {regionalBreakdown.rows.length > 0 && (
+                <div className="mt-2 overflow-x-auto">
+                  <table className="w-max min-w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+                        <th className="py-1 pr-6">Country</th>
+                        <th className="py-1 pr-6">Decks</th>
+                        <th className="py-1">Win rate</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
+                      {regionalBreakdown.rows.map((r) => (
+                        <tr key={r.code}>
+                          <td className="py-1.5 pr-6 whitespace-nowrap">
+                            <Link
+                              to={`/regions?group=country&region=${r.code}&tab=champions`}
+                              className="text-ctp-text hover:text-ctp-blue"
+                            >
+                              {r.label}
+                            </Link>
+                          </td>
+                          <td className="py-1.5 pr-6 text-ctp-subtext1">{r.deckCount}</td>
+                          <td className="py-1.5 text-ctp-subtext1">{(r.avgWinRate * 100).toFixed(0)}%</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </div>
           )}

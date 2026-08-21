@@ -157,6 +157,10 @@ export default function ArchetypeDetail() {
             {(cluster.metaShare * 100).toFixed(1)}% meta share · {(cluster.topCutRate * 100).toFixed(0)}% top cut rate
             {cluster.avgPlacement !== null && ` · avg placement #${cluster.avgPlacement.toFixed(0)}`}
             {cluster.avgPrice !== null && ` · avg deck price ${formatUsd(cluster.avgPrice)}`}
+            {" · "}
+            <Link to="/regions?tab=archetypes" className="text-ctp-blue hover:underline">
+              Regional breakdown &rarr;
+            </Link>
           </p>
 
           {cluster.trend && (

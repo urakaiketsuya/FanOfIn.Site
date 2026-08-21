@@ -20,6 +20,8 @@ export interface OmnidexEventSummary {
   hostName: string;
   /** ISO-3166-1 alpha-2 code from the venue's address, or "??" when Omnidex doesn't have one — same convention as OmnidexPlayerSummary.country. */
   hostCountry: string;
+  /** "physical" | "online" (verified against live data; treat as open-ended like `category`). */
+  setting: string;
   url: string;
 }
 

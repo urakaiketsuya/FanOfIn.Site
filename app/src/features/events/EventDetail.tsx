@@ -63,6 +63,14 @@ export default function EventDetail() {
     return byId;
   }, [bundle]);
 
+  // `hasSubmittedDecklist` is only present on newer Omnidex responses — undefined means "unknown",
+  // not "no", so this stays null (hidden) unless at least one standing actually carries the field.
+  const decklistSubmissionRate = useMemo(() => {
+    const known = Array.from(standingsById.values()).filter((s) => s.hasSubmittedDecklist !== undefined);
+    if (known.length === 0) return null;
+    return { submitted: known.filter((s) => s.hasSubmittedDecklist).length, total: known.length };
+  }, [standingsById]);
+
   if (loading) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-10">
@@ -106,8 +114,19 @@ export default function EventDetail() {
       <h1 className="mt-2 text-2xl font-bold text-ctp-blue">{event.name}</h1>
       <p className="mt-1 text-sm text-ctp-subtext1">
         {event.host.name}
-        {formatCountry(event.host.addressCountryCode) && ` (${formatCountry(event.host.addressCountryCode)})`} ·{" "}
-        {new Date(event.date).toLocaleDateString()} · {event.format} · {event.status} ·{" "}
+        {formatCountry(event.host.addressCountryCode) && (
+          <>
+            {" ("}
+            <Link
+              to={`/regions?group=country&region=${event.host.addressCountryCode}`}
+              className="hover:text-ctp-blue hover:underline"
+            >
+              {formatCountry(event.host.addressCountryCode)}
+            </Link>
+            {")"}
+          </>
+        )}{" "}
+        · {new Date(event.date).toLocaleDateString()} · {event.format} · {event.status} ·{" "}
         {EVENT_CATEGORY_LABELS[event.category] ?? event.category}
         {event.season && ` · ${event.season.name}`}
       </p>
@@ -150,6 +169,12 @@ export default function EventDetail() {
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
             Standings ({rankedPlayers.length} players)
           </h2>
+          {decklistSubmissionRate && (
+            <p className="mt-0.5 text-xs text-ctp-subtext0">
+              {decklistSubmissionRate.submitted} of {decklistSubmissionRate.total} players submitted a decklist
+              {decklistSubmissionRate.total > 0 && ` (${Math.round((decklistSubmissionRate.submitted / decklistSubmissionRate.total) * 100)}%)`}
+            </p>
+          )}
           <div className="overflow-x-auto">
             <table className="mt-2 w-max min-w-full text-sm">
               <thead>
@@ -158,6 +183,11 @@ export default function EventDetail() {
                   <th className="py-1 pr-6">Player</th>
                   <th className="py-1 pr-6">Record</th>
                   <th className="py-1 pr-6">GW%</th>
+                  <th className="py-1 pr-6" title="Opponents' match win % — strength of schedule">
+                    OMW%
+                  </th>
+                  <th className="py-1 pr-6">Byes</th>
+                  <th className="py-1">Tiebreaker</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
@@ -173,6 +203,9 @@ export default function EventDetail() {
                         {s ? `${s.statsWins}-${s.statsLosses}-${s.statsTies}` : "—"}
                       </td>
                       <td className="py-1 pr-6 text-ctp-subtext1">{s ? `${s.statsPercentGW}%` : "—"}</td>
+                      <td className="py-1 pr-6 text-ctp-subtext1">{s ? `${s.statsPercentOMW}%` : "—"}</td>
+                      <td className="py-1 pr-6 text-ctp-subtext1">{s?.statsByes ?? "—"}</td>
+                      <td className="py-1 text-ctp-subtext1">{s?.tiebreaker ?? "—"}</td>
                     </tr>
                   );
                 })}

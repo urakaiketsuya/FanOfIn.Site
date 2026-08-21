@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useRegionalDecks } from "./useRegionalDecks";
 import { useRegionalArchetypes } from "./useRegionalArchetypes";
 import { useRegionalChampions } from "./useRegionalChampions";
@@ -100,12 +100,25 @@ export default function RegionsIndex() {
   const [group, setGroup] = useTabParam<RegionGroupMode>("group", GROUP_MODES, "country");
   const [view, setView] = useTabParam<ViewMode>("view", VIEW_MODES, "single");
   const [tab, setTab] = useTabParam<ContentTab>("tab", CONTENT_TABS, "archetypes");
-  const [regionOverride, setRegionOverride] = useState<string | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  // Backed by `?region=` (not useTabParam — its valid-values list is dynamic, one per loaded
+  // region/country) so a link from another page (e.g. a player's country) can land here already
+  // pointed at the right region, and the current selection stays in the URL to share.
+  const [regionOverride, setRegionOverride] = useState<string | null>(() => searchParams.get("region"));
 
   const { loading, options, regionByDeckId } = useRegionalDecks(group);
   const selectedRegion =
     regionOverride && options.some((o) => o.code === regionOverride) ? regionOverride : (options[0]?.code ?? null);
   const selectedOption = options.find((o) => o.code === selectedRegion);
+
+  function selectRegion(code: string) {
+    setRegionOverride(code);
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.set("region", code);
+      return next;
+    });
+  }
 
   const archetypes = useRegionalArchetypes(regionByDeckId, selectedRegion);
   const champions = useRegionalChampions(regionByDeckId, selectedRegion);
@@ -128,6 +141,11 @@ export default function RegionsIndex() {
             onClick={() => {
               setGroup(m);
               setRegionOverride(null);
+              setSearchParams((prev) => {
+                const next = new URLSearchParams(prev);
+                next.delete("region");
+                return next;
+              });
             }}
             className={`rounded-md border px-3 py-1.5 text-sm font-medium ${
               group === m ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
@@ -167,7 +185,7 @@ export default function RegionsIndex() {
             <span className="text-ctp-subtext0">{GROUP_LABELS[group]}:</span>
             <select
               value={selectedRegion ?? ""}
-              onChange={(e) => setRegionOverride(e.target.value)}
+              onChange={(e) => selectRegion(e.target.value)}
               className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
             >
               {options.map((o) => (

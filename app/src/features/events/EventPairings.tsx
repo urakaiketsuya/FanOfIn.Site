@@ -121,6 +121,9 @@ export default function EventPairings({
                         `Player #${side.id}`
                       )}{" "}
                       ({side.score})
+                      {side.dropped && (
+                        <span className="ml-1 rounded-full border border-ctp-red px-1.5 text-[10px] text-ctp-red">Dropped</span>
+                      )}
                     </span>
                   );
                 })}
