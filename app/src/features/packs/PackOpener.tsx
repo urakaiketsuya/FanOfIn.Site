@@ -1,57 +1,12 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
-import CardImage from "../../components/CardImage";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
-import { simulatePackOpening, RARITY_LABELS, RARITY_COLOR, type PackCard } from "./packOdds";
-
-const REVEAL_STAGGER_MS = 120;
-
-function PackCardFace({ pc, index, revealed }: { pc: PackCard; index: number; revealed: boolean }) {
-  return (
-    <div className="aspect-[5/7]" style={{ perspective: "1000px" }}>
-      <div
-        className="relative h-full w-full transition-transform duration-500 ease-out"
-        style={{
-          transformStyle: "preserve-3d",
-          transitionDelay: `${index * REVEAL_STAGGER_MS}ms`,
-          transform: revealed ? "rotateY(180deg)" : "rotateY(0deg)",
-        }}
-      >
-        <div
-          className="absolute inset-0 flex items-center justify-center rounded-md border border-ctp-surface1 bg-gradient-to-br from-ctp-blue to-ctp-mauve"
-          style={{ backfaceVisibility: "hidden" }}
-        >
-          <span className="text-xs font-semibold text-ctp-crust opacity-80">Fan of Insight</span>
-        </div>
-        <div className="absolute inset-0" style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}>
-          <CardImage
-            image={pc.edition.image}
-            alt={pc.card.name}
-            className={`h-full w-full rounded-md border-2 ${RARITY_COLOR[pc.rarity] ?? "border-ctp-surface1"}`}
-          />
-          {pc.isFoil && (
-            <span className="absolute right-1 top-1 rounded-full border border-ctp-yellow bg-ctp-crust/80 px-1.5 text-[10px] font-semibold text-ctp-yellow">
-              FOIL
-            </span>
-          )}
-        </div>
-      </div>
-      <p className="mt-1 truncate text-center text-xs text-ctp-subtext1">
-        <Link to={`/cards/${pc.card.slug}`} className="hover:text-ctp-blue">
-          {pc.card.name}
-        </Link>
-      </p>
-      <p className="truncate text-center text-[10px] text-ctp-subtext0">{RARITY_LABELS[pc.rarity] ?? "Unknown"}</p>
-    </div>
-  );
-}
+import PackOpenerWidget from "./PackOpenerWidget";
 
 export default function PackOpener() {
   const { prefix = "" } = useParams<{ prefix: string }>();
   const cards = useCardCatalog();
-  const [pack, setPack] = useState<PackCard[] | null>(null);
-  const [revealed, setRevealed] = useState(false);
 
   const setInfo = useMemo(() => {
     for (const card of cards) {
@@ -66,12 +21,6 @@ export default function PackOpener() {
     setInfo ? `Open a ${setInfo.name} Pack` : "Open a Pack",
     setInfo ? `Simulate opening a booster pack of ${setInfo.name} using approximate Grand Archive TCG pull rates.` : undefined,
   );
-
-  function openPack() {
-    setRevealed(false);
-    setPack(simulatePackOpening(cards, prefix));
-    requestAnimationFrame(() => requestAnimationFrame(() => setRevealed(true)));
-  }
 
   if (cards.length === 0) {
     return (
@@ -102,28 +51,15 @@ export default function PackOpener() {
         A simulated 12-card booster pack, randomly drawn from {setInfo.name}'s real card pool.
       </p>
 
-      <button
-        type="button"
-        onClick={openPack}
-        className="mt-4 rounded-md border border-ctp-blue px-4 py-2 text-sm font-medium text-ctp-blue hover:bg-ctp-surface0"
-      >
-        {pack ? "Open Another Pack" : "Open Pack"}
-      </button>
+      <div className="mt-4">
+        <PackOpenerWidget setPrefix={prefix} buttonLabel="Open Pack" />
+      </div>
 
-      {pack && (
-        <>
-          <div className="mt-6 grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6">
-            {pack.map((pc, i) => (
-              <PackCardFace key={`${pc.edition.uuid}-${i}`} pc={pc} index={i} revealed={revealed} />
-            ))}
-          </div>
-          <p className="mt-6 text-xs text-ctp-subtext0">
-            Odds are a best-effort approximation built from publicly available guaranteed-per-box rates (e.g. one
-            Ultra Rare per 24-pack box) — Grand Archive doesn't publish an official per-pack rarity table, so this
-            isn't exact retail odds.
-          </p>
-        </>
-      )}
+      <p className="mt-6 text-xs text-ctp-subtext0">
+        Odds are a best-effort approximation built from publicly available guaranteed-per-box rates (e.g. one
+        Ultra Rare per 24-pack box) — Grand Archive doesn't publish an official per-pack rarity table, so this
+        isn't exact retail odds.
+      </p>
     </div>
   );
 }

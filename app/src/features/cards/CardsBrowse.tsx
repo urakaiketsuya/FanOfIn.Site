@@ -13,6 +13,7 @@ import FilterSearchGroup from "./FilterSearchGroup";
 import CardGrid from "./CardGrid";
 import LoadMore from "../../components/LoadMore";
 import { useFeaturedSets } from "../sets/useFeaturedSets";
+import { isBoosterSet } from "../packs/boosterSets";
 
 const PAGE_SIZE = 60;
 
@@ -133,12 +134,7 @@ export default function CardsBrowse() {
               </div>
               <div className="mt-3 flex flex-wrap gap-2">
                 {group.sets.map((set) => {
-                  // Only the base/First Edition/Alter Edition printing of an expansion is sold as
-                  // random boosters — Starter Decks, Re:Collection singles, Pantheon Decks, and
-                  // supplemental releases (Armaments, Grimoire, Prelude, ...) are fixed-content
-                  // products with no pack odds to simulate.
-                  const isBoosterSet =
-                    set.name === group.name || set.name === `${group.name} First Edition` || set.name === `${group.name} Alter Edition`;
+                  const isBooster = isBoosterSet(set, group);
                   return (
                     <div key={set.id} className="flex items-center overflow-hidden rounded-md border border-ctp-surface1">
                       <button
@@ -149,7 +145,7 @@ export default function CardsBrowse() {
                         {set.name}
                         <span className="ml-2 text-xs text-ctp-subtext0">{set.prefix}</span>
                       </button>
-                      {isBoosterSet && (
+                      {isBooster && (
                         <Link
                           to={`/packs/${set.prefix}`}
                           className="border-l border-ctp-surface1 px-2 py-1.5 text-xs text-ctp-subtext0 hover:bg-ctp-surface0 hover:text-ctp-blue"

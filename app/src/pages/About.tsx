@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import type { OmnidexDecklist } from "@gatcg/shared";
 import ClassIcon from "../components/ClassIcon";
@@ -9,6 +10,9 @@ import BarChart from "../components/BarChart";
 import ComparisonGrid from "../features/compare/ComparisonGrid";
 import type { ComparedDeck } from "../features/compare/types";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
+import { useFeaturedSets } from "../features/sets/useFeaturedSets";
+import { latestBoosterSet } from "../features/packs/boosterSets";
+import PackOpenerWidget from "../features/packs/PackOpenerWidget";
 
 const CLASS_ROW = ["WARRIOR", "MAGE", "CLERIC", "ASSASSIN", "RANGER", "TAMER", "GUARDIAN"];
 const ELEMENT_ROW = ["FIRE", "WATER", "WIND", "CRUX", "UMBRA", "EXALTED", "LUXEM", "TERA"];
@@ -331,6 +335,8 @@ const COMPARE_DECKLISTS: Map<string, OmnidexDecklist | null> = new Map([
 
 export default function About() {
   useDocumentTitle(null, "What Fan of Insight is, how it's built, and why it exists.");
+  const featuredSets = useFeaturedSets();
+  const latestSet = useMemo(() => latestBoosterSet(featuredSets ?? []), [featuredSets]);
 
   return (
     <div>
@@ -580,6 +586,33 @@ export default function About() {
           </p>
         </div>
       </section>
+
+      {latestSet && (
+        <section className="border-t border-ctp-surface0 px-4 py-16">
+          <div className="mx-auto max-w-2xl">
+            <h2 className="text-center text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">
+              Open a pack
+            </h2>
+            <p className="mx-auto mt-2 max-w-xl text-center text-sm text-ctp-subtext1">
+              A simulated 12-card {latestSet.name} booster, drawn live from its real card pool — not a mockup, and
+              not the same 12 cards twice.
+            </p>
+
+            <div className="mt-8">
+              <PackOpenerWidget setPrefix={latestSet.prefix} buttonLabel={`Open a ${latestSet.name} Pack`} />
+            </div>
+
+            <p className="mt-6 text-center text-xs text-ctp-subtext0">
+              Odds are a best-effort approximation built from publicly available guaranteed-per-box rates — Grand
+              Archive doesn't publish an official per-pack rarity table, so this isn't exact retail odds. Works for
+              every set, not just this one.{" "}
+              <Link to="/cards?tab=sets" className="hover:text-ctp-blue hover:underline">
+                Open any set's pack &rarr;
+              </Link>
+            </p>
+          </div>
+        </section>
+      )}
 
       <section className="border-t border-ctp-surface0 bg-ctp-mantle/40 py-16">
         <div className="mx-auto max-w-5xl px-4">
