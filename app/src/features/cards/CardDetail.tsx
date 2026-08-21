@@ -20,6 +20,7 @@ import { useCardCombination } from "./useCardCombination";
 import { useCardSynergy } from "./useCardSynergy";
 import { useSimilarCards } from "./useSimilarCards";
 import { earliestReleaseDate, statDiff } from "../../lib/cardSimilarity";
+import { useIntentCards } from "./useIntentCards";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CardComparisonTable from "../compare/CardComparisonTable";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -43,13 +44,14 @@ function formatDelta(n: number | null): string {
   return ` (${n > 0 ? "+" : ""}${n})`;
 }
 
-type CardTab = "info" | "usedWith" | "synergy" | "similar" | "decks" | "compare";
+type CardTab = "info" | "usedWith" | "synergy" | "similar" | "intent" | "decks" | "compare";
 
 const TABS: { key: CardTab; label: string }[] = [
   { key: "info", label: "Info" },
   { key: "usedWith", label: "Most Used With" },
   { key: "synergy", label: "Win-Rate Synergy" },
   { key: "similar", label: "Same Effect Shape" },
+  { key: "intent", label: "Intent Cards" },
   { key: "decks", label: "Decks" },
   { key: "compare", label: "Compare" },
 ];
@@ -160,6 +162,8 @@ export default function CardDetail() {
     () => [...similarCardsList].sort((a, b) => (earliestReleaseDate(a) ?? "").localeCompare(earliestReleaseDate(b) ?? "")),
     [similarCardsList],
   );
+
+  const intent = useIntentCards(card ?? null);
 
   const topDecks = useMemo(() => {
     if (!sightingsData) return [];
@@ -597,6 +601,68 @@ export default function CardDetail() {
             </>
           ) : (
             <p className="mt-4 text-sm text-ctp-subtext1">No other cards share {card.name}'s ability template yet.</p>
+          )}
+        </div>
+      )}
+
+      {tab === "intent" && (
+        <div className="mt-4">
+          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Intent cards</h2>
+          <p className="mt-1 text-xs text-ctp-subtext0">
+            Cards designed to work with {card.name} — a shared token economy (e.g. summons/sacrifices a Powercell) or
+            a tribal category {card.name} either belongs to or explicitly references as a cost or condition. Most
+            cards aren't part of one of these — an empty list here is normal, not a sign anything's broken.
+          </p>
+
+          {intent.feeds.length === 0 && intent.poweredBy.length === 0 ? (
+            <p className="mt-4 text-sm text-ctp-subtext1">
+              No text-detected token or tribal relationship for {card.name} yet.
+            </p>
+          ) : (
+            <div className="mt-3 grid gap-6 sm:grid-cols-2">
+              {intent.feeds.length > 0 && (
+                <div>
+                  <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
+                    Feeds ({intent.feeds.length})
+                  </h3>
+                  <ul className="mt-2 space-y-1">
+                    {intent.feeds.map((m) => (
+                      <li key={`${m.card.uuid}-${m.via}`} className="flex items-center gap-1.5 text-sm">
+                        <CardHoverPreview image={m.card.editions[0]?.image} alt={m.card.name}>
+                          <Link to={`/cards/${m.card.slug}`} className="text-ctp-text hover:text-ctp-blue">
+                            {m.card.name}
+                          </Link>
+                        </CardHoverPreview>
+                        <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">
+                          via {m.via}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {intent.poweredBy.length > 0 && (
+                <div>
+                  <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
+                    Powered by ({intent.poweredBy.length})
+                  </h3>
+                  <ul className="mt-2 space-y-1">
+                    {intent.poweredBy.map((m) => (
+                      <li key={`${m.card.uuid}-${m.via}`} className="flex items-center gap-1.5 text-sm">
+                        <CardHoverPreview image={m.card.editions[0]?.image} alt={m.card.name}>
+                          <Link to={`/cards/${m.card.slug}`} className="text-ctp-text hover:text-ctp-blue">
+                            {m.card.name}
+                          </Link>
+                        </CardHoverPreview>
+                        <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">
+                          via {m.via}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
           )}
         </div>
       )}

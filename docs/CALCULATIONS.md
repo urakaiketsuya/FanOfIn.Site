@@ -379,6 +379,70 @@ candidates are every other card seen in it. The card itself never appears in its
 special-casing — every row in the population already contains it, so its "without" bucket is always
 empty and automatically fails the minimum-sample gate.
 
+## Same effect shape (`app/src/lib/cardSimilarity.ts`, `useSimilarCards.ts`)
+
+Groups cards by `sorted(types) | sorted(subtypes) | numbers-normalized effect text` (digits replaced
+with `#`, `**` bold markers stripped, `**Preserved?**` handled like every other keyword regex
+elsewhere). Templates under 15 characters are excluded — otherwise every blank-effect stat-stick in
+the catalog collapses into one meaningless mega-group. Deliberately does **not** rank or declare an
+upgrade: spot-checked against real data before shipping and found genuine same-day cost/stat
+tradeoffs between siblings, plus large intentional per-element design-parallel families (16 Spirit
+cards sharing one template) — an automated "X is strictly better" verdict would be wrong often
+enough that this stays a side-by-side comparison.
+
+**Power-creep deltas**: `statDiff(card, sibling)` shows each sibling's cost/power/life/durability
+*relative to* the card being viewed (`other - card`), not an absolute score — e.g. "costs 1 less" is
+a plain, verifiable fact a reader can act on, not a synthesized rating. A symbolic cost (e.g. `"X"`)
+or a missing stat on either side yields `null` (rendered as nothing), never a fabricated 0.
+
+**Low-sample reference callout**: for a card with `CardStat` missing entirely or `deckCount < 5`
+(the codebase's established "too few observations to trust" threshold — see
+`useChampionCardImpact.ts`'s `MIN_SAMPLE_SIZE`), the same tab also surfaces `Card.references`/
+`referenced_by` more prominently. These are Omnidex/GATCG's own designer-curated explicit
+references (a card's text literally naming another card) — not inferred, and not pipeline-computed
+(`grep -rn "references" pipeline/` turns up nothing; the fields arrive pre-populated on the API
+response). Shown specifically when real win-rate data is too thin to be useful, since it's a
+higher-confidence signal in that situation than a shrunk-toward-50%, near-zero-sample win rate.
+
+**Rejected approach — a single "Predicted Power" score per card**: tested whether a card's own
+text-derived signal count (the same evasion/banish/destroy/negate/fast-activation/recover-N/
+protection/draw regex detectors `computeDeckRating` below already uses) correlates with that card's
+own real `adjustedWinRate`, across 1,675 cards with `deckCount >= 20` in `data/analysis/cards.json`.
+Result: no meaningful correlation (combined signal count vs. adjustedWinRate: r = 0.057; every
+individual signal under 0.07 in magnitude) — one card's keyword presence in a 60-card deck is
+swamped by which Champion/archetype/deck-quality actually drove that deck's results, the same
+reason `computeDeckRating` only works as a whole-decklist aggregate, not a per-card score. Don't
+re-attempt a fabricated per-card number without redoing this validation on a smarter feature set
+(e.g. re-testing within one card type/cost bucket instead of pooled across all types).
+
+## Intent cards (`app/src/lib/cardIntent.ts`, `useIntentCards.ts`)
+
+A different relationship than "same effect shape": not near-identical cards, but cards **designed
+to work together** — one card produces a resource/condition, another's text explicitly consumes or
+cares about that same thing. Two detection tracks, both validated against the real card corpus
+before building (2,494 cards, `pipeline/.cache/cards.json`):
+
+- **Named token economies**: `extractProducedTokens` matches `**Summon** a/an/N <Name> token(s)` in
+  effect text; `extractConsumedTokens` matches `sacrifice a/an/N <Name>`. Matched by the token's own
+  name, not a hardcoded list — Powercell is the validated case (18 cards summon one, 10 separately
+  sacrifice one, a genuine shared resource economy), and the same pattern picks up any future shared
+  token economy automatically. Most other named tokens are single-card-specific and will show zero
+  or one match — expected, not a bug.
+- **Tribal/subtype categories**: no production-detection needed — a card simply *is* a producer of
+  its own `subtypes` (Chessman, Automaton, Specter, Beast, Elysian, VelTech, ...) by existing. Only
+  the consumer side needs a regex: `sacrifice|control(s)?|banish ... from` + a subtype string,
+  matched against the real subtype vocabulary collected from the loaded catalog (not hardcoded).
+  Validated: "sacrifice/control a Chessman [piece]" alone appears on 10+ real cards.
+- **Why `subtypes`, never `types`**: the false-positive risk here is generic sacrifice costs —
+  "sacrifice an ally" / "sacrifice an item" appear as unrelated boilerplate on many unconnected
+  cards. Matching against the 5 broad `types` values (ALLY/ITEM/WEAPON/ACTION/...) would pair every
+  card of that type with every card that happens to sacrifice one, which is noise, not a designed
+  relationship. `subtypes` values are specific tribal/flavor categories, not generic cost nouns, so
+  this filter is what keeps the feature signal instead of noise.
+
+Empty results (`feeds`/`poweredBy` both `[]`) are the normal case — only cards actually part of a
+named token or tribal economy will have entries.
+
 ## Deck similarity (`pipeline/src/analysis/similarity.ts`)
 
 **Base metric**: weighted Jaccard, a.k.a. Ruzicka similarity, over each deck's card-copy multiset
