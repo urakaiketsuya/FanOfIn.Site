@@ -19,7 +19,7 @@ import { useCardCatalog } from "./useCardCatalog";
 import { useCardCombination } from "./useCardCombination";
 import { useCardSynergy } from "./useCardSynergy";
 import { useSimilarCards } from "./useSimilarCards";
-import { earliestReleaseDate } from "../../lib/cardSimilarity";
+import { earliestReleaseDate, statDiff } from "../../lib/cardSimilarity";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CardComparisonTable from "../compare/CardComparisonTable";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -34,6 +34,14 @@ import { useTabParam } from "../../lib/useTabParam";
 const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
 const MAX_CHAMPIONS_SHOWN = 8;
+/** Below this many decks, adjustedWinRate is shrunk close enough to a flat 50% to not be worth
+ * leading with — same "too few observations to trust" threshold as useChampionCardImpact.ts. */
+const MIN_SAMPLE_SIZE = 5;
+
+function formatDelta(n: number | null): string {
+  if (n === null || n === 0) return "";
+  return ` (${n > 0 ? "+" : ""}${n})`;
+}
 
 type CardTab = "info" | "usedWith" | "synergy" | "similar" | "decks" | "compare";
 
@@ -488,11 +496,48 @@ export default function CardDetail() {
       {tab === "similar" && (
         <div className="mt-4">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Same effect shape</h2>
+
+          {(!cardStat || cardStat.deckCount < MIN_SAMPLE_SIZE) && (card.references.length > 0 || card.referenced_by.length > 0) && (
+            <div className="mt-2 rounded-md border border-ctp-surface1 bg-ctp-mantle p-3">
+              <p className="text-xs text-ctp-subtext0">
+                Too few recorded decks for a trustworthy win rate yet — this card's own explicit references are a
+                more reliable signal in the meantime:
+              </p>
+              <div className="mt-2 space-y-2">
+                {card.references.length > 0 && (
+                  <div>
+                    <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">References</h3>
+                    <div className="mt-1 flex flex-wrap gap-2 text-sm">
+                      {card.references.map((ref) => (
+                        <Link key={ref.slug} to={`/cards/${ref.slug}`} className="text-ctp-blue hover:underline">
+                          {ref.name} <span className="text-ctp-subtext0">({ref.kind.toLowerCase()})</span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {card.referenced_by.length > 0 && (
+                  <div>
+                    <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Referenced by</h3>
+                    <div className="mt-1 flex flex-wrap gap-2 text-sm">
+                      {card.referenced_by.map((ref) => (
+                        <Link key={ref.slug} to={`/cards/${ref.slug}`} className="text-ctp-blue hover:underline">
+                          {ref.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {similarCardsSorted.length > 0 ? (
             <>
-              <p className="mt-1 text-xs text-ctp-subtext0">
-                Cards with a matching ability template, for comparing cost and stats side by side — not every difference
-                is a straight upgrade (class/element restrictions and cost type both matter for deckbuilding).
+              <p className="mt-3 text-xs text-ctp-subtext0">
+                Cards with a matching ability template, for comparing cost and stats side by side — deltas are shown
+                relative to {card.name}. Not every difference is a straight upgrade (class/element restrictions and
+                cost type both matter for deckbuilding), and this is a comparison, not a verdict.
               </p>
               <div className="mt-3 overflow-x-auto">
             <table className="w-max min-w-full text-sm">
@@ -509,6 +554,7 @@ export default function CardDetail() {
               <tbody className="divide-y divide-ctp-surface0">
                 {similarCardsSorted.map((c) => {
                   const released = earliestReleaseDate(c);
+                  const diff = statDiff(card, c);
                   return (
                     <tr key={c.uuid}>
                       <td className="py-1.5 pr-6 whitespace-nowrap">
@@ -523,14 +569,24 @@ export default function CardDetail() {
                           <span className="flex items-center gap-1">
                             <CostIcon kind={c.cost.type} size={12} />
                             {c.cost.value}
+                            {formatDelta(diff.cost)}
                           </span>
                         ) : (
                           "—"
                         )}
                       </td>
-                      <td className="py-1.5 pr-6 text-ctp-subtext1">{c.power ?? "—"}</td>
-                      <td className="py-1.5 pr-6 text-ctp-subtext1">{c.life ?? "—"}</td>
-                      <td className="py-1.5 pr-6 text-ctp-subtext1">{c.durability ?? "—"}</td>
+                      <td className="py-1.5 pr-6 text-ctp-subtext1">
+                        {c.power ?? "—"}
+                        {formatDelta(diff.power)}
+                      </td>
+                      <td className="py-1.5 pr-6 text-ctp-subtext1">
+                        {c.life ?? "—"}
+                        {formatDelta(diff.life)}
+                      </td>
+                      <td className="py-1.5 pr-6 text-ctp-subtext1">
+                        {c.durability ?? "—"}
+                        {formatDelta(diff.durability)}
+                      </td>
                       <td className="py-1.5 pr-6 text-ctp-subtext1">{released ? new Date(released).toLocaleDateString() : "—"}</td>
                     </tr>
                   );

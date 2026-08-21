@@ -1,4 +1,4 @@
-import type { Card } from "@gatcg/shared";
+import type { Card, CardCost } from "@gatcg/shared";
 
 /** Below this length, a normalized template is too close to blank (a vanilla stat-stick with
  * little/no effect text) to mean anything as a "same effect shape" match — without this floor,
@@ -39,4 +39,34 @@ export function similarCards(card: Card, catalog: Card[]): Card[] {
 export function earliestReleaseDate(card: Card): string | null {
   if (card.editions.length === 0) return null;
   return [...card.editions].map((e) => e.set.release_date).sort()[0];
+}
+
+function numericCost(cost: CardCost): number | null {
+  if (cost.type === "none" || cost.value === null) return null;
+  const n = Number(cost.value);
+  return Number.isFinite(n) ? n : null;
+}
+
+export interface StatDiff {
+  cost: number | null;
+  power: number | null;
+  life: number | null;
+  durability: number | null;
+}
+
+/**
+ * `other`'s stat minus `card`'s, for each stat both cards have as a plain number — null where
+ * either side isn't numeric (e.g. a symbolic "X" cost) rather than pretending 0. Deliberately just
+ * the raw deltas, no aggregate "better/worse" verdict — same reasoning `similarCards`'s doc comment
+ * gives for not ranking siblings at all.
+ */
+export function statDiff(card: Card, other: Card): StatDiff {
+  const cardCost = numericCost(card.cost);
+  const otherCost = numericCost(other.cost);
+  return {
+    cost: cardCost !== null && otherCost !== null ? otherCost - cardCost : null,
+    power: card.power !== null && other.power !== null ? other.power - card.power : null,
+    life: card.life !== null && other.life !== null ? other.life - card.life : null,
+    durability: card.durability !== null && other.durability !== null ? other.durability - card.durability : null,
+  };
 }
