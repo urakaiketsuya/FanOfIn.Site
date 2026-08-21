@@ -132,17 +132,34 @@ export default function CardsBrowse() {
                 <h2 className="text-lg font-semibold text-ctp-text">{group.name}</h2>
               </div>
               <div className="mt-3 flex flex-wrap gap-2">
-                {group.sets.map((set) => (
-                  <button
-                    key={set.id}
-                    type="button"
-                    onClick={() => browseSet(set.prefix)}
-                    className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-sm text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text"
-                  >
-                    {set.name}
-                    <span className="ml-2 text-xs text-ctp-subtext0">{set.prefix}</span>
-                  </button>
-                ))}
+                {group.sets.map((set) => {
+                  // Only the base/First Edition/Alter Edition printing of an expansion is sold as
+                  // random boosters — Starter Decks, Re:Collection singles, Pantheon Decks, and
+                  // supplemental releases (Armaments, Grimoire, Prelude, ...) are fixed-content
+                  // products with no pack odds to simulate.
+                  const isBoosterSet =
+                    set.name === group.name || set.name === `${group.name} First Edition` || set.name === `${group.name} Alter Edition`;
+                  return (
+                    <div key={set.id} className="flex items-center overflow-hidden rounded-md border border-ctp-surface1">
+                      <button
+                        type="button"
+                        onClick={() => browseSet(set.prefix)}
+                        className="px-3 py-1.5 text-sm text-ctp-subtext1 hover:text-ctp-text"
+                      >
+                        {set.name}
+                        <span className="ml-2 text-xs text-ctp-subtext0">{set.prefix}</span>
+                      </button>
+                      {isBoosterSet && (
+                        <Link
+                          to={`/packs/${set.prefix}`}
+                          className="border-l border-ctp-surface1 px-2 py-1.5 text-xs text-ctp-subtext0 hover:bg-ctp-surface0 hover:text-ctp-blue"
+                        >
+                          Open a Pack
+                        </Link>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           ))}

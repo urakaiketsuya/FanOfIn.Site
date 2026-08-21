@@ -59,6 +59,7 @@ const BrowseDecksIndex = lazy(() => import("./features/decks/BrowseDecksIndex"))
 const DeckDetail = lazy(() => import("./features/decks/DeckDetail"));
 const DeckBuilderIndex = lazy(() => import("./features/deckbuilder/DeckBuilderIndex"));
 const RegionsIndex = lazy(() => import("./features/regions/RegionsIndex"));
+const PackOpener = lazy(() => import("./features/packs/PackOpener"));
 const ChangelogIndex = lazy(() => import("./features/changelog/ChangelogIndex"));
 
 function RouteFallback() {
@@ -104,6 +105,7 @@ export default function AppRoutes() {
         <Route path="/decks/:hash" element={<DeckDetail />} />
         <Route path="/deck-builder" element={<DeckBuilderIndex />} />
         <Route path="/regions" element={<RegionsIndex />} />
+        <Route path="/packs/:prefix" element={<PackOpener />} />
         <Route path="/changelog" element={<ChangelogIndex />} />
         <Route path="/about" element={<Navigate to="/" replace />} />
       </Routes>
