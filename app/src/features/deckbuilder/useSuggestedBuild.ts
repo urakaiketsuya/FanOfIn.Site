@@ -66,6 +66,12 @@ function legalMaxCopies(card: Card | undefined): number {
   return card?.types.includes("UNIQUE") ? 1 : 4;
 }
 
+/** NORM (colorless) always fits; an empty `identityElements` means there's no signal to filter on (e.g. a too-thin population) — both cases pass everything through unfiltered rather than risk hiding a legitimate pick. */
+function isElementCompatible(card: Card | undefined, identityElements: Set<string>): boolean {
+  if (identityElements.size === 0 || !card || card.elements.length === 0) return true;
+  return card.elements.some((e) => e === "NORM" || identityElements.has(e));
+}
+
 /** Most common quantity this card was run at, among rows that include it in the given section — falls back to the legal max when the card was never seen in this population (e.g. added via free-text search). */
 function modalQuantity(rows: DeckBuilderRow[], section: DeckSection, cardName: string, card: Card | undefined): number {
   const counts = new Map<number, number>();
@@ -205,6 +211,31 @@ export function useSuggestedBuild(
       };
 
     const baselineWinRate = spiritRows.reduce((sum, r) => sum + r.winRate, 0) / spiritRows.length;
+
+    // The population's own element identity — same "top 2 by weighted copies, NORM excluded"
+    // convention as computeDeckIdentity (app/src/lib/deckIdentity.ts) and the pipeline's Champion
+    // `elements` field, just aggregated across every row instead of one deck's lines. Real bug this
+    // fixes: a Champion with genuinely disjoint elemental sub-archetypes (e.g. "Water Diao Chan"
+    // vs. "Fire Diao Chan", confirmed via real archetype-cluster data — cleanly separated Spirits,
+    // no overlap) has a much smaller per-element sample once Spirit-scoped, small enough that a
+    // handful of players splashing an off-element tech card can clear MIN_SAMPLE_SIZE and post a
+    // real-looking lift with nothing checking it's even element-compatible with the rest of the
+    // build. When Spirit is unset ("Any Spirit"), a mixed population's own top-2 naturally spans
+    // both real elements, so this degrades safely without a special case for that state.
+    const elementCounts = new Map<string, number>();
+    for (const row of spiritRows) {
+      for (const [name, qty] of [...row.main, ...row.material]) {
+        const card = cardsByName.get(name);
+        if (!card) continue;
+        for (const e of card.elements) if (e !== "NORM") elementCounts.set(e, (elementCounts.get(e) ?? 0) + qty);
+      }
+    }
+    const identityElements = new Set(
+      Array.from(elementCounts.entries())
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 2)
+        .map(([e]) => e),
+    );
 
     const lockedNames = new Set(lockedCards.keys());
     // Only condition on locks with a real sample behind them — a card only 1-4 decks in this
@@ -348,6 +379,7 @@ export function useSuggestedBuild(
       if (placed.has(entry.cardName)) continue;
       const card = cardsByName.get(entry.cardName);
       if (card?.types.includes("CHAMPION")) continue; // only ever placed as a level anchor above
+      if (!isElementCompatible(card, identityElements)) continue;
       if (entry.role === "material") {
         if (materialTotal >= materialTarget) continue;
         material.push(toSuggested(entry.cardName, 1, false, entry, "ranked", "material"));
@@ -373,7 +405,10 @@ export function useSuggestedBuild(
     // build (every target already met by locks alone, so the loop above placed nothing new even
     // though `ranked` has real candidates). Shown as swap-in ideas, not auto-filled.
     const suggestions = ranked
-      .filter((e) => !placed.has(e.cardName) && !cardsByName.get(e.cardName)?.types.includes("CHAMPION"))
+      .filter((e) => {
+        const card = cardsByName.get(e.cardName);
+        return !placed.has(e.cardName) && !card?.types.includes("CHAMPION") && isElementCompatible(card, identityElements);
+      })
       .slice(0, MAX_EXTRA_SUGGESTIONS)
       .map((e) => {
         const card = cardsByName.get(e.cardName);
