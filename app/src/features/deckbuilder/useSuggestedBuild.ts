@@ -8,7 +8,15 @@ import {
   type CardSectionRow,
 } from "@gatcg/shared";
 import { useCardCatalog } from "../cards/useCardCatalog";
+import { useDebouncedValue } from "../../lib/useDebouncedValue";
 import type { DeckBuilderRow } from "./useDeckBuilderPopulation";
+
+/** Same reasoning as useAllDecodedDecks' CATALOG_SETTLE_MS (app/src/lib/decodedDecks.ts) — the
+ * catalog sync writes in batches, and this hook's own `cardsByName` feeds the big `useMemo` below
+ * that computes the actual rendered build, so an undebounced catalog here was still enough on its
+ * own to make the whole page recompute/re-render on every sync write, even after that other hook
+ * was fixed. */
+const CATALOG_SETTLE_MS = 500;
 
 /** Mirrors pipeline/src/config.ts's defaults — see useChampionCardImpact.ts for why these are plain literals here. */
 const PRIOR_WEIGHT = 10;
@@ -204,7 +212,8 @@ export function useSuggestedBuild(
   championCardOverride?: Card,
 ): SuggestedBuild {
   const cardCatalog = useCardCatalog();
-  const cardsByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
+  const settledCardCatalog = useDebouncedValue(cardCatalog, CATALOG_SETTLE_MS);
+  const cardsByName = useMemo(() => new Map(settledCardCatalog.map((c) => [c.name, c])), [settledCardCatalog]);
   const quantityBucketsByName = useMemo(() => {
     const map = new Map<string, { quantity: number; deckCount: number; adjustedWinRate: number }[]>();
     for (const c of cardQuantityStatsData?.cards ?? []) map.set(c.name, c.quantities);
