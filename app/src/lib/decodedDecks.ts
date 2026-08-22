@@ -3,6 +3,12 @@ import { decodeCardLines, type Card, type DeckCardIndexData, type DeckPopularity
 import { useDeckCardIndexData } from "../features/archetypes/data";
 import { useDeckPopularityIndexData } from "../features/topdecks/data";
 import { useCardCatalog } from "../features/cards/useCardCatalog";
+import { useDebouncedValue } from "./useDebouncedValue";
+
+/** How long the catalog has to go quiet before this hook redoes its ~57k-deck decode — long enough
+ * to coalesce an entire catalog sync's run of `bulkPut` batches (`app/src/lib/sync/cards.ts`, ~50
+ * cards per write) into one recompute at the end instead of one per batch. */
+const CATALOG_SETTLE_MS = 500;
 
 export interface DecodedDeck {
   deckId: string;
@@ -114,7 +120,8 @@ export function useAllDecodedDecks(): AllDecodedDecks {
   const cardIndexData = rawCardIndexData?.cardNames ? rawCardIndexData : undefined;
   const popularityIndexData = useDeckPopularityIndexData();
   const cardCatalog = useCardCatalog();
-  const cardsByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
+  const settledCardCatalog = useDebouncedValue(cardCatalog, CATALOG_SETTLE_MS);
+  const cardsByName = useMemo(() => new Map(settledCardCatalog.map((c) => [c.name, c])), [settledCardCatalog]);
 
   const decks = useMemo(
     () => decodeAllDecks(cardIndexData, popularityIndexData, cardsByName),
