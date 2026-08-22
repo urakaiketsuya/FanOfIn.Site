@@ -1,8 +1,5 @@
 import { useMemo } from "react";
-import { decodeCardLines, type Card } from "@gatcg/shared";
-import { useDeckCardIndexData } from "../archetypes/data";
-import { useDeckPopularityIndexData } from "../topdecks/data";
-import { useCardCatalog } from "../cards/useCardCatalog";
+import { useAllDecodedDecks, decodedDeckToRow } from "../../lib/decodedDecks";
 
 export interface DeckBuilderRow {
   deckId: string;
@@ -21,61 +18,27 @@ export interface DeckBuilderPopulation {
   loading: boolean;
 }
 
-/** Same detection rule as pipeline/src/analysis/decklists.ts's findSpirit — CHAMPION type, SPIRIT subtype, lives in the Material Deck. */
-function findSpiritName(material: { name: string; quantity: number }[], cardsByName: Map<string, Card>): string | null {
-  for (const line of material) {
-    const card = cardsByName.get(line.name);
-    if (card?.types.includes("CHAMPION") && card.subtypes.includes("SPIRIT")) return line.name;
-  }
-  return null;
-}
-
 /**
- * Every deck of one Champion, decoded once (main/material as name->quantity maps, not just
- * presence — the deck-builder needs real copy counts to assemble a plausible build) with its
- * Spirit companion resolved client-side. Spirit isn't published at individual-deck grain anywhere
- * (only pipeline-side per-Champion aggregates in archetypes.json), so it's derived here the same
- * way computeDeckIdentity already derives elements client-side, from the card catalog's own
- * types/subtypes.
+ * One Champion's decks, filtered from the shared `decodeAllDecks()` universe (`decodedDecks.ts`) —
+ * this hook used to do its own decode+decode-cache; now it's a thin Champion filter over the same
+ * shared decode every other suggestion pool (same Spirit/class/nearest deck/archetype cluster,
+ * cross-Champion) also draws from, so a real decklist is only ever decoded once regardless of how
+ * many pools are in play.
  */
 export function useDeckBuilderPopulation(championName: string | null): DeckBuilderPopulation {
-  const rawCardIndexData = useDeckCardIndexData();
-  const cardIndexData = rawCardIndexData?.cardNames ? rawCardIndexData : undefined;
-  const popularityIndexData = useDeckPopularityIndexData();
-  const cardCatalog = useCardCatalog();
-  const cardsByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
+  const { decks, loading } = useAllDecodedDecks();
 
   return useMemo((): DeckBuilderPopulation => {
-    if (!championName || !cardIndexData || !popularityIndexData)
-      return { rows: [], spiritsPresent: [], loading: !cardIndexData || !popularityIndexData };
-
-    const winRateByDeckId = new Map<string, number>();
-    for (const s of popularityIndexData.entries) {
-      if (s.championName === championName) winRateByDeckId.set(s.deckId, s.winRate);
-    }
+    if (!championName || loading) return { rows: [], spiritsPresent: [], loading };
 
     const rows: DeckBuilderRow[] = [];
     const spirits = new Set<string>();
-    for (const entry of cardIndexData.decks) {
-      const winRate = winRateByDeckId.get(entry.deckId);
-      if (winRate === undefined) continue;
-
-      const mainLines = decodeCardLines(entry.main, cardIndexData.cardNames);
-      const materialLines = decodeCardLines(entry.material, cardIndexData.cardNames);
-      const sideboardLines = decodeCardLines(entry.sideboard, cardIndexData.cardNames);
-      const spiritName = findSpiritName(materialLines, cardsByName);
-      if (spiritName) spirits.add(spiritName);
-
-      rows.push({
-        deckId: entry.deckId,
-        main: new Map(mainLines.map((l) => [l.name, l.quantity])),
-        material: new Map(materialLines.map((l) => [l.name, l.quantity])),
-        sideboard: new Map(sideboardLines.map((l) => [l.name, l.quantity])),
-        spiritName,
-        winRate,
-      });
+    for (const d of decks) {
+      if (d.championName !== championName) continue;
+      rows.push(decodedDeckToRow(d));
+      if (d.spiritName) spirits.add(d.spiritName);
     }
 
     return { rows, spiritsPresent: Array.from(spirits).sort(), loading: false };
-  }, [championName, cardIndexData, popularityIndexData, cardsByName]);
+  }, [championName, decks, loading]);
 }
