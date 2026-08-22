@@ -5,6 +5,7 @@ import { useArchetypeTaxonomyData, useMatchupCardImpactData } from "./data";
 import { useCardsByNames } from "../events/useCardsByNames";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import LoadMore from "../../components/LoadMore";
+import StaleDataNotice from "../../components/StaleDataNotice";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { formatUsd } from "../../lib/format";
 
@@ -204,6 +205,7 @@ export default function ArchetypesIndex() {
         than one Champion shows a "+N" next to its main Champion. Groups below a minimum sample
         size are hidden as noise.
       </p>
+      <StaleDataNotice generatedAt={[data?.generatedAt]} />
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
         {(["builds", "hurtYou"] as ViewMode[]).map((v) => (
