@@ -20,6 +20,7 @@ import { formatUsd } from "../../lib/format";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import { useAllDecodedDecks } from "../../lib/decodedDecks";
+import { useDebouncedValue } from "../../lib/useDebouncedValue";
 import { useDeckBuilderPopulation } from "./useDeckBuilderPopulation";
 import { usePoolPopulation, type CrossChampionPool } from "./usePoolPopulation";
 import { useNearestDecks, type NearestDeck } from "./useNearestDecks";
@@ -563,7 +564,12 @@ export default function DeckBuilderIndex() {
   const lastResetChampionRef = useRef(urlSeed?.championName ?? null);
 
   const popularityIndexData = useDeckPopularityIndexData();
-  const cardCatalog = useCardCatalog();
+  // Debounced against the catalog sync's own write batches (app/src/lib/sync/cards.ts writes ~50
+  // cards per bulkPut, and useCardCatalog's useLiveQuery emits a new array on every one) — same
+  // CATALOG_SETTLE_MS reasoning as useAllDecodedDecks/useSuggestedBuild, needed here too since
+  // catalogByName feeds championCard/identityElements/usePoolPopulation/useGlobalElementSuggestions,
+  // all of which would otherwise recompute (and re-render the whole page) on every sync write.
+  const cardCatalog = useDebouncedValue(useCardCatalog(), 500);
   const catalogByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
   // "default" pool's population — this Champion's decks, further narrowed by the Spirit dropdown
   // inside useSuggestedBuild itself (pool 1/2 combined; there's no separate state for them, since
