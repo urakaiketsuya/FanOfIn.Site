@@ -72,6 +72,23 @@ function isElementCompatible(card: Card | undefined, identityElements: Set<strin
   return card.elements.some((e) => e === "NORM" || identityElements.has(e));
 }
 
+/** The Champion card actually in play, for reading its granted element(s) — a locked print (the viewer's own choice) wins over the population guess, same precedence as everywhere else a lock beats a population-derived signal in this file. Falls back to whichever Champion-type material card (CHAMPION type, not SPIRIT subtype) is most common in this Spirit-scoped population. */
+function findChampionCard(spiritRows: DeckBuilderRow[], lockedCards: Map<string, number>, cardsByName: Map<string, Card>): Card | undefined {
+  for (const name of lockedCards.keys()) {
+    const card = cardsByName.get(name);
+    if (card?.types.includes("CHAMPION") && !card.subtypes.includes("SPIRIT")) return card;
+  }
+  const counts = new Map<string, number>();
+  for (const row of spiritRows) {
+    for (const name of row.material.keys()) {
+      const card = cardsByName.get(name);
+      if (card?.types.includes("CHAMPION") && !card.subtypes.includes("SPIRIT")) counts.set(name, (counts.get(name) ?? 0) + 1);
+    }
+  }
+  const best = Array.from(counts.entries()).sort((a, b) => b[1] - a[1])[0];
+  return best ? cardsByName.get(best[0]) : undefined;
+}
+
 /** Most common quantity this card was run at, among rows that include it in the given section — falls back to the legal max when the card was never seen in this population (e.g. added via free-text search). */
 function modalQuantity(rows: DeckBuilderRow[], section: DeckSection, cardName: string, card: Card | undefined): number {
   const counts = new Map<number, number>();
@@ -212,29 +229,18 @@ export function useSuggestedBuild(
 
     const baselineWinRate = spiritRows.reduce((sum, r) => sum + r.winRate, 0) / spiritRows.length;
 
-    // The population's own element identity — same "top 2 by weighted copies, NORM excluded"
-    // convention as computeDeckIdentity (app/src/lib/deckIdentity.ts) and the pipeline's Champion
-    // `elements` field, just aggregated across every row instead of one deck's lines. Real bug this
-    // fixes: a Champion with genuinely disjoint elemental sub-archetypes (e.g. "Water Diao Chan"
-    // vs. "Fire Diao Chan", confirmed via real archetype-cluster data — cleanly separated Spirits,
-    // no overlap) has a much smaller per-element sample once Spirit-scoped, small enough that a
-    // handful of players splashing an off-element tech card can clear MIN_SAMPLE_SIZE and post a
-    // real-looking lift with nothing checking it's even element-compatible with the rest of the
-    // build. When Spirit is unset ("Any Spirit"), a mixed population's own top-2 naturally spans
-    // both real elements, so this degrades safely without a special case for that state.
-    const elementCounts = new Map<string, number>();
-    for (const row of spiritRows) {
-      for (const [name, qty] of [...row.main, ...row.material]) {
-        const card = cardsByName.get(name);
-        if (!card) continue;
-        for (const e of card.elements) if (e !== "NORM") elementCounts.set(e, (elementCounts.get(e) ?? 0) + qty);
-      }
-    }
+    // The deck's actual castable elements are granted by its Champion and Spirit cards
+    // specifically, not inferred from which elements happen to be common across the main deck —
+    // that was the wrong signal (and the real bug): a well-represented or high-lift off-element
+    // splash (Water, Umbra, whatever) would count toward "identity" under a frequency-based proxy
+    // just as much as a genuinely granted element, since nothing distinguished "the deck can cast
+    // this" from "this happened to be common/lucky in a small sample." A locked Champion print
+    // wins if the viewer already picked one; otherwise the most common Champion-type material card
+    // in this Spirit-scoped population stands in for it.
+    const championCard = findChampionCard(spiritRows, lockedCards, cardsByName);
+    const spiritCard = spiritFilter ? cardsByName.get(spiritFilter) : undefined;
     const identityElements = new Set(
-      Array.from(elementCounts.entries())
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 2)
-        .map(([e]) => e),
+      [...(championCard?.elements ?? []), ...(spiritCard?.elements ?? [])].filter((e) => e !== "NORM"),
     );
 
     const lockedNames = new Set(lockedCards.keys());
