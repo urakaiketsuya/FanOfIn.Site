@@ -21,6 +21,8 @@ export interface CardSignature {
   level: number | null;
   /** Raw rules text (markdown-bolded keywords) — needed for `computeKeywordComposition` in @gatcg/shared. */
   effect: string | null;
+  /** Set prefix + collector number per printing — the precise join key into data/prices.json's priceKey(), instead of matching TCGPlayer's own product name string (see loadPriceByName in analysis/build.ts). May be absent (not just empty) on a stale on-disk cache from before this field shipped — always read with `?? []`, self-heals within the existing 24h cache TTL. */
+  editions: { setPrefix: string; collectorNumber: string }[];
 }
 
 interface CardCatalogCache {
@@ -43,6 +45,7 @@ async function fetchFullCatalog(): Promise<CardSignature[]> {
         elements: card.elements,
         level: card.level,
         effect: card.effect,
+        editions: card.editions.map((e) => ({ setPrefix: e.set.prefix, collectorNumber: e.collector_number })),
       });
     }
     if (!res.has_more) break;
@@ -73,4 +76,37 @@ export function buildCardIndex(cards: CardSignature[]): Map<string, CardSignatur
   const index = new Map<string, CardSignature>();
   for (const card of cards) index.set(card.name, card);
   return index;
+}
+
+/** Case/quote-folded form of a card name, for matching a raw decklist string against the catalog when the exact string doesn't match — real decklist submissions occasionally use non-canonical casing ("dungeon guide") or a straight apostrophe where the catalog has a curly one. Not used as `cardIndex`'s own keys (those stay canonical/exact — see `resolveCard`), only as the fallback lookup. */
+export function normalizeCardKey(name: string): string {
+  return name
+    .normalize("NFKC")
+    .replace(/[‘’‛′]/g, "'")
+    .replace(/[“”″]/g, '"')
+    .trim()
+    .toLowerCase();
+}
+
+/** One folded index per `cardIndex` instance, built lazily and reused — `cardIndex` is built once per pipeline run, so this pays the ~2,400-card fold cost once rather than per decklist line. */
+const foldedIndexCache = new WeakMap<Map<string, CardSignature>, Map<string, CardSignature>>();
+function getFoldedIndex(cardIndex: Map<string, CardSignature>): Map<string, CardSignature> {
+  let folded = foldedIndexCache.get(cardIndex);
+  if (!folded) {
+    folded = new Map();
+    for (const card of cardIndex.values()) folded.set(normalizeCardKey(card.name), card);
+    foldedIndexCache.set(cardIndex, folded);
+  }
+  return folded;
+}
+
+/**
+ * Resolves a raw, possibly-mistyped decklist card name to its `CardSignature` — exact match first
+ * (the overwhelming common case), falling back to a case/quote-folded match. Returns `undefined`
+ * only when genuinely not in the catalog even after folding, same as a plain `cardIndex.get()`
+ * miss today — a truly unrecognized card is still tracked under its own raw text by callers, not
+ * silently dropped.
+ */
+export function resolveCard(cardIndex: Map<string, CardSignature>, raw: string): CardSignature | undefined {
+  return cardIndex.get(raw) ?? getFoldedIndex(cardIndex).get(normalizeCardKey(raw));
 }

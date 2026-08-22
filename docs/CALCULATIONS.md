@@ -33,6 +33,54 @@ Per-card novelty = `1 - (seenCount / totalSoFar)`, clamped at 0, treated as `1` 
 `totalSoFar === 0` (this Champion has no prior data yet). A deck's score is the average novelty
 across every card in its main+material set. Player score is the plain average of their deck scores.
 
+## Card name resolution (`pipeline/src/cards/catalog.ts` — `resolveCard`, `normalizeCardKey`)
+
+Every raw decklist card name (`{card: string, quantity: number}`, free text a player/organizer
+typed, submitted to Omnidex — there is no card-ID field anywhere in the raw decklist shape) is
+resolved against the card catalog before it's used as a card-identity key anywhere in the
+pipeline. This wasn't always true: an exact-string, case-sensitive `cardIndex.get(line.card)`
+(and, in several files, no catalog lookup at all for the *key* even when one happened for other
+purposes) meant a decklist submitted with non-canonical casing ("dungeon guide" instead of
+"Dungeon Guide") or a different apostrophe character (straight `'` vs. the catalog's curly `’`)
+silently became a second, disconnected card identity — no slug, no price, undercounted
+popularity. Verified live against the real published data: **249 real cards had their deckCount
+split across 322 entries** in `cards.json` this way (e.g. "Dungeon Guide" at 31,908 decks vs. a
+"dungeon guide" ghost entry at 20, both real submissions of the same card) before this fix.
+
+`resolveCard(cardIndex, raw)` tries an exact match first (the overwhelming common case — no
+folding cost), then falls back to a case/quote-folded match (`normalizeCardKey`: NFKC-normalize,
+fold curly quote variants to straight, trim, lowercase) against a lazily-built, memoized folded
+index. Only a card that fails *both* is treated as genuinely unmatched (unchanged from prior
+behavior — still tracked under its own literal text via `unmatchedCardNames`, not dropped).
+
+Every place a raw decklist card name becomes an identity key calls this — not just
+`decklists.ts`'s `tally`/`findChampionName`/`toLines`/`findSpirit` (whose resolved
+`DeckCardLine.name`/`championName`/`spiritName` then propagate for free into everything that
+consumes `DeckSignature`), but also `cardStats.ts`, `cardQuantityStats.ts`, `similarity.ts`,
+`archetypeTaxonomy.ts`, `deckCompositionStats.ts`, `keywordStats.ts`, and `hipster.ts` — these
+read `bundle.decklists` raw and independently of `decklists.ts`, confirmed by grepping every
+`line.card`/`entry.decklist` touch point in `pipeline/src` rather than assuming decklists.ts was
+the only ingestion boundary. `findChampionName`'s own identity split (`card.name.split(",")[0]`)
+resolves the full card name first, then splits — a mis-cased Champion printing previously could
+make the lookup miss entirely (`if (!card) continue`) and silently misidentify the deck's
+Champion, not just cost a slug link.
+
+`buildCardIndex`'s own `Map` stays exact-match/canonical-keyed, unchanged — `resolveCard` is a
+separate, additive lookup path, so no existing `cardIndex.get(...)` call elsewhere in the
+codebase needed to change or is at risk from this.
+
+Price matching had the same class of bug from a different source: `loadPriceByName`
+(`pipeline/src/analysis/build.ts`) used to join by matching TCGPlayer's own product display name
+(`CardPriceEntry.cardName`) against the GA catalog's card name — fragile whenever TCGPlayer
+suffixes a product name the GA name doesn't (e.g. "Stonescale Band" only listed as "Stonescale
+Band (002B)"; confirmed on ~11% of all 3,838 priced editions in `data/prices.json`). Fixed by
+joining on the precise key both sides actually share: `CardSignature.editions` (set prefix +
+collector number per printing, fetched from the GA API's `Card.editions` but previously discarded
+when narrowing to `CardSignature`) against `data/prices.json`'s own `priceKey(setPrefix,
+collectorNumber)` keys — the same per-edition join `app/src/features/cards/CardDetail.tsx`
+already does client-side. `editions` is absent (not empty) on a stale on-disk catalog cache from
+before this field shipped; always read with `?? []`, self-heals within the existing 24h cache TTL.
+
 ## Champion identity (`pipeline/src/analysis/decklists.ts` — `findChampionName`)
 
 A deck's Champion is the named identity behind whichever CHAMPION-typed printing in the Material

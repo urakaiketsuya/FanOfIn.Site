@@ -1,6 +1,6 @@
 import type { CardQuantityStat } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
-import type { CardSignature } from "../cards/catalog.js";
+import { resolveCard, type CardSignature } from "../cards/catalog.js";
 import { config } from "../config.js";
 
 interface QuantityAccum {
@@ -34,7 +34,8 @@ export function computeCardQuantityStats(bundles: OmnidexEventBundle[], cardInde
       const winRate = winByPlayer.get(entry.player);
       const copiesByName = new Map<string, number>();
       for (const line of [...entry.decklist.main, ...entry.decklist.material]) {
-        copiesByName.set(line.card, (copiesByName.get(line.card) ?? 0) + line.quantity);
+        const name = resolveCard(cardIndex, line.card)?.name ?? line.card;
+        copiesByName.set(name, (copiesByName.get(name) ?? 0) + line.quantity);
       }
 
       for (const [name, copies] of copiesByName) {

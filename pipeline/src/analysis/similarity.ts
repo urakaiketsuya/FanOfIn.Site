@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import type { DeckSimilarityEntry, SimilarDeck } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
-import type { CardSignature } from "../cards/catalog.js";
+import { resolveCard, type CardSignature } from "../cards/catalog.js";
 import { buildEventDeckSignatures } from "./decklists.js";
 import { config } from "../config.js";
 
@@ -214,7 +214,10 @@ export async function computeDeckSimilarity(
       if (!championName) continue;
       const cardCounts = new Map<string, number>();
       for (const line of [...entry.decklist.main, ...entry.decklist.material]) {
-        cardCounts.set(line.card, (cardCounts.get(line.card) ?? 0) + line.quantity);
+        // Canonicalize — a mis-cased card would otherwise count as a *different* card between two
+        // decks that are actually identical, understating their weighted-Jaccard similarity.
+        const name = resolveCard(cardIndex, line.card)?.name ?? line.card;
+        cardCounts.set(name, (cardCounts.get(name) ?? 0) + line.quantity);
       }
       decks.push({
         deckId: `${bundle.id}:${entry.player}`,

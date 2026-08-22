@@ -1,9 +1,9 @@
 import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { EVENT_CATEGORY_ORDER, type CardStat, type DeckPopularityEntry, type DeckSimilarityEntry, type PriceData } from "@gatcg/shared";
+import { EVENT_CATEGORY_ORDER, priceKey, type CardStat, type DeckPopularityEntry, type DeckSimilarityEntry, type PriceData } from "@gatcg/shared";
 import { listCachedBundles } from "../omnidex/cache.js";
-import { loadCardCatalog, buildCardIndex } from "../cards/catalog.js";
+import { loadCardCatalog, buildCardIndex, type CardSignature } from "../cards/catalog.js";
 import { computeEloRatings } from "./elo.js";
 import { computeRivals } from "./rivals.js";
 import { computeCardStats } from "./cardStats.js";
@@ -25,15 +25,27 @@ import { computeAchievements } from "./achievements.js";
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/analysis");
 const PRICES_PATH = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/prices.json");
 
-async function loadPriceByName(): Promise<Map<string, number>> {
+/**
+ * Joins each catalog card to its price via `editions` (set prefix + collector number — the same
+ * precise key `data/prices.json` is keyed by), not by matching TCGPlayer's own product display
+ * name against the GA catalog's card name. Name-string matching was silently failing whenever
+ * TCGPlayer suffixed a product name the GA name doesn't have (e.g. "Stonescale Band" only listed
+ * as "Stonescale Band (002B)") — confirmed on ~11% of all priced editions. Mirrors the per-edition
+ * lookup `app/src/features/cards/CardDetail.tsx` already does client-side.
+ */
+async function loadPriceByName(cardIndex: Map<string, CardSignature>): Promise<Map<string, number>> {
   const priceByName = new Map<string, number>();
   try {
     const data = JSON.parse(await readFile(PRICES_PATH, "utf-8")) as PriceData;
-    for (const entry of Object.values(data.prices)) {
-      const market = entry.normal?.market ?? entry.foil?.market ?? null;
-      if (market === null) continue;
-      const existing = priceByName.get(entry.cardName);
-      if (existing === undefined || market > existing) priceByName.set(entry.cardName, market);
+    for (const card of cardIndex.values()) {
+      let best: number | null = null;
+      // `?? []` guards a stale on-disk card-catalog cache from before `editions` shipped.
+      for (const ed of card.editions ?? []) {
+        const entry = data.prices[priceKey(ed.setPrefix, ed.collectorNumber)];
+        const market = entry?.normal?.market ?? entry?.foil?.market ?? null;
+        if (market !== null && (best === null || market > best)) best = market;
+      }
+      if (best !== null) priceByName.set(card.name, best);
     }
   } catch {
     // pricing pipeline hasn't run yet — money-card tagging is just skipped this run
@@ -51,7 +63,7 @@ export async function buildAnalysis(): Promise<void> {
 
   const catalog = await loadCardCatalog();
   const cardIndex = buildCardIndex(catalog);
-  const priceByName = await loadPriceByName();
+  const priceByName = await loadPriceByName(cardIndex);
 
   function cardStatsFor(bundles: typeof completed): CardStat[] {
     return computeCardStats(bundles, cardIndex).map((stat) => ({ ...stat, marketPrice: priceByName.get(stat.name) ?? null }));

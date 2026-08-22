@@ -1,6 +1,6 @@
 import type { DeckHipsterScore, PlayerHipsterScore } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
-import type { CardSignature } from "../cards/catalog.js";
+import { resolveCard, type CardSignature } from "../cards/catalog.js";
 import { buildEventDeckSignatures } from "./decklists.js";
 
 export interface HipsterResult {
@@ -33,7 +33,9 @@ export function computeHipsterScores(bundles: OmnidexEventBundle[], cardIndex: M
       .map((entry) => ({
         player: entry.player,
         championName: signatures.get(entry.player)?.championName,
-        names: new Set([...entry.decklist.main, ...entry.decklist.material].map((l) => l.card)),
+        // Canonicalize — otherwise a mis-cased card counts as a distinct, never-before-seen card
+        // every time it's mis-typed that way, inflating novelty for what's actually a staple.
+        names: new Set([...entry.decklist.main, ...entry.decklist.material].map((l) => resolveCard(cardIndex, l.card)?.name ?? l.card)),
       }))
       .filter((d): d is { player: number; championName: string; names: Set<string> } => Boolean(d.championName) && d.names.size > 0);
 

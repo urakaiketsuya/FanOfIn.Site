@@ -1,6 +1,6 @@
 import type { CompositionWinRateStat } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
-import type { CardSignature } from "../cards/catalog.js";
+import { resolveCard, type CardSignature } from "../cards/catalog.js";
 import { config } from "../config.js";
 
 interface BucketAccum {
@@ -48,7 +48,7 @@ export function computeCompositionWinRates(bundles: OmnidexEventBundle[], cardIn
       const typeCounts = new Map<string, number>();
       let totalCopies = 0;
       for (const line of entry.decklist.main) {
-        const card = cardIndex.get(line.card);
+        const card = resolveCard(cardIndex, line.card);
         if (!card) continue;
         totalCopies += line.quantity;
         for (const t of card.types) typeCounts.set(t, (typeCounts.get(t) ?? 0) + line.quantity);

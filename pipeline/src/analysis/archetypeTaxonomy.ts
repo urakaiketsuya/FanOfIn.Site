@@ -1,6 +1,6 @@
 import { shortHash, type ArchetypeCluster, type ArchetypeTaxonomyData, type DeckSighting } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
-import type { CardSignature } from "../cards/catalog.js";
+import { resolveCard, type CardSignature } from "../cards/catalog.js";
 import { buildEventDeckSignatures } from "./decklists.js";
 import { weightedJaccard } from "./similarity.js";
 import { computeDeckPrice } from "./deckPricing.js";
@@ -108,7 +108,11 @@ export function computeArchetypeTaxonomy(
       if (!championName) continue;
       const cardCounts = new Map<string, number>();
       for (const line of [...entry.decklist.main, ...entry.decklist.material]) {
-        cardCounts.set(line.card, (cardCounts.get(line.card) ?? 0) + line.quantity);
+        // Canonicalize — otherwise a mis-cased submission of an otherwise-identical decklist
+        // would score as a *different* exact-signature build group, and its copy of the card
+        // would never count toward that card's real cluster prevalence.
+        const name = resolveCard(cardIndex, line.card)?.name ?? line.card;
+        cardCounts.set(name, (cardCounts.get(name) ?? 0) + line.quantity);
       }
       if (cardCounts.size === 0) continue;
       allDecks.push({ deckId: `${bundle.id}:${entry.player}`, player: entry.player, championName, cardCounts });

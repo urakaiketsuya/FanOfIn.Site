@@ -1,5 +1,5 @@
 import type { OmnidexDecklist, OmnidexDecklistEntry, PlayerTopCard } from "@gatcg/shared";
-import type { CardSignature } from "../cards/catalog.js";
+import { resolveCard, type CardSignature } from "../cards/catalog.js";
 
 export interface DeckCardLine {
   name: string;
@@ -44,7 +44,7 @@ function tally(lines: { card: string; quantity: number }[], cardIndex: Map<strin
 
   for (const line of lines) {
     cardCount += line.quantity;
-    const card = cardIndex.get(line.card);
+    const card = resolveCard(cardIndex, line.card);
     if (!card) {
       unmatched.push(line.card);
       continue;
@@ -78,7 +78,7 @@ function findChampionName(
   const byName = new Map<string, { maxLevel: number; copies: number }>();
 
   for (const line of materialLines) {
-    const card = cardIndex.get(line.card);
+    const card = resolveCard(cardIndex, line.card);
     // Spirit companions are also CHAMPION-typed, and 13 of the 31 have a comma in their name
     // (e.g. "Kaze, Spirit of Wind") -- without this exclusion they get mistaken for the deck's
     // actual Champion. Verified live: real archetype data had a "Gwendolyn" (from "Gwendolyn,
@@ -88,7 +88,10 @@ function findChampionName(
     // Named champions are "Name, Title" and the identity is the part before the comma. "Nameless
     // Champion" (verified as the only comma-less, non-Spirit Champion card in the whole catalog)
     // has no title to split off, so use its full name as-is rather than excluding it entirely.
-    const name = line.card.includes(",") ? line.card.split(",")[0].trim() : line.card;
+    // Split the catalog's canonical `card.name`, not the raw `line.card` — a mis-cased submission
+    // ("guo jia, blessed scion") would otherwise create its own separate, wrongly-cased identity
+    // bucket instead of joining the real "Guo Jia" group.
+    const name = card.name.includes(",") ? card.name.split(",")[0].trim() : card.name;
     const level = card.level ?? 0;
     const entry = byName.get(name) ?? { maxLevel: -1, copies: 0 };
     entry.maxLevel = Math.max(entry.maxLevel, level);
@@ -117,8 +120,9 @@ function topKeys(counts: Map<string, number>, limit: number, exclude: Set<string
     .map(([key]) => key);
 }
 
-function toLines(lines: { card: string; quantity: number }[]): DeckCardLine[] {
-  return lines.map((l) => ({ name: l.card, quantity: l.quantity }));
+/** `name` is the catalog's canonical `card.name` when the line matches (even loosely, via `resolveCard`'s case/quote folding) — falls back to the raw string only for a genuinely unrecognized card, so a mis-cased submission of a real card joins the same identity as every correctly-cased one instead of forming its own disconnected entry. */
+function toLines(lines: { card: string; quantity: number }[], cardIndex: Map<string, CardSignature>): DeckCardLine[] {
+  return lines.map((l) => ({ name: resolveCard(cardIndex, l.card)?.name ?? l.card, quantity: l.quantity }));
 }
 
 /** The Spirit card lives in the Material Deck alongside the Champion's own printings — CHAMPION type, SPIRIT subtype, no comma in name (unlike "Alice, Distorted Queen"). */
@@ -127,9 +131,9 @@ function findSpirit(
   cardIndex: Map<string, CardSignature>,
 ): { name: string; element: string | null } | null {
   for (const line of materialLines) {
-    const card = cardIndex.get(line.card);
+    const card = resolveCard(cardIndex, line.card);
     if (card?.types.includes("CHAMPION") && card.subtypes.includes("SPIRIT")) {
-      return { name: line.card, element: card.elements[0] ?? null };
+      return { name: card.name, element: card.elements[0] ?? null };
     }
   }
   return null;
@@ -155,9 +159,9 @@ export function buildDeckSignature(
     championName,
     spiritName: spirit?.name ?? null,
     spiritElement: spirit?.element ?? null,
-    mainCards: toLines(decklist.main),
-    materialCards: toLines(decklist.material),
-    sideboardCards: toLines(decklist.sideboard),
+    mainCards: toLines(decklist.main, cardIndex),
+    materialCards: toLines(decklist.material, cardIndex),
+    sideboardCards: toLines(decklist.sideboard, cardIndex),
     unmatchedCardNames: unmatched,
   };
 }

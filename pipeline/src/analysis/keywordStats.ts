@@ -1,6 +1,6 @@
 import { computeKeywordComposition, type KeywordStat } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
-import type { CardSignature } from "../cards/catalog.js";
+import { resolveCard, type CardSignature } from "../cards/catalog.js";
 import { config } from "../config.js";
 
 interface Accum {
@@ -33,7 +33,12 @@ export function computeKeywordStats(bundles: OmnidexEventBundle[], cardIndex: Ma
 
     for (const entry of bundle.decklists) {
       const winRate = winByPlayer.get(entry.player);
-      const lines = [...entry.decklist.main, ...entry.decklist.material].map((l) => ({ name: l.card, quantity: l.quantity }));
+      // Canonicalize before handing off to computeKeywordComposition — a mis-cased card would
+      // otherwise silently fail its own exact-match lookup there and drop out of the count.
+      const lines = [...entry.decklist.main, ...entry.decklist.material].map((l) => ({
+        name: resolveCard(cardIndex, l.card)?.name ?? l.card,
+        quantity: l.quantity,
+      }));
       const keywordCounts = computeKeywordComposition(lines, cardIndex);
 
       for (const keyword of keywordCounts.keys()) {
