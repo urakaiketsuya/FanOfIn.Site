@@ -10,6 +10,7 @@ import DecklistView from "../events/DecklistView";
 import TopDecksList from "../../components/TopDecksList";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CardImpactTable from "../../components/CardImpactTable";
+import StaleDataNotice from "../../components/StaleDataNotice";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import { formatUsd } from "../../lib/format";
@@ -216,6 +217,7 @@ export default function ArchetypeDetail() {
               Regional breakdown &rarr;
             </Link>
           </p>
+          <StaleDataNotice generatedAt={[data?.generatedAt]} />
 
           {cluster.trend && (
             <p className="mt-1 text-xs text-ctp-subtext0">
