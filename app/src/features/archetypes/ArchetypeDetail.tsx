@@ -104,7 +104,11 @@ export default function ArchetypeDetail() {
   }, [cluster]);
   const sample = useSightingDecklist(sampleEventId, samplePlayer, !!cluster);
 
-  const allDecodedDecks = useAllDecodedDecks();
+  // Only decoded once the Variants tab is actually open — this is a genuinely expensive decode of
+  // the full ~57k-deck universe (deck-card-index.json is 93MB+), so paying it on every archetype
+  // page visit regardless of which tab is open was itself a real memory-pressure bug; see
+  // useAllDecodedDecks's own doc comment.
+  const allDecodedDecks = useAllDecodedDecks(tab === "variants");
   const variants = useArchetypeVariants(cluster, allDecodedDecks.decks);
   const [expandedVariantDeckId, setExpandedVariantDeckId] = useState<string | null>(null);
   const [variantMinSimilarity, setVariantMinSimilarity] = useState(0.45);
@@ -235,7 +239,7 @@ export default function ArchetypeDetail() {
                 { key: "impact", label: "Card Impact" },
                 { key: "decklist", label: "Sample Decklist" },
                 { key: "playedBy", label: `Played By (${instances.length})` },
-                { key: "variants", label: `Variants (${variants.length})` },
+                { key: "variants", label: tab === "variants" ? `Variants (${variants.length})` : "Variants" },
               ] as { key: DetailTab; label: string }[]
             ).map((t) => (
               <button

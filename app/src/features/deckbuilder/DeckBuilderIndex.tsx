@@ -580,8 +580,15 @@ export default function DeckBuilderIndex() {
   const compositionWinRateData = useCompositionWinRateData();
   const archetypeTaxonomyData = useArchetypeTaxonomyData();
 
-  // Every deck, any Champion — the shared universe the cross-Champion pools filter/score over.
-  const { decks: allDecks, loading: allDecksLoading } = useAllDecodedDecks();
+  const crossChampionKind: CrossChampionPool | null =
+    pool === "spiritAnyChampion" || pool === "closestCluster" || pool === "sameClass" ? pool : null;
+  // Every deck, any Champion — the shared universe the cross-Champion pools and "nearest similar
+  // real decks" filter/score over. Only decoded when a pool that actually needs it is selected —
+  // this is a genuinely expensive decode (deck-card-index.json is 93MB+, ~57k decks), so paying it
+  // on every visit regardless of pool (the "default" single-Champion pool never needed it) was
+  // itself a real memory-pressure bug; see useAllDecodedDecks's own doc comment.
+  const needsAllDecks = crossChampionKind !== null || pool === "nearestDecks";
+  const { decks: allDecks, loading: allDecksLoading } = useAllDecodedDecks(needsAllDecks);
 
   // Resolved against the *stable* single-Champion population (`rows`, not whichever pool is
   // active) — see `useSuggestedBuild`'s `championCardOverride` doc comment for why this matters
@@ -595,8 +602,6 @@ export default function DeckBuilderIndex() {
     [championCard, spiritCardForIdentity],
   );
 
-  const crossChampionKind: CrossChampionPool | null =
-    pool === "spiritAnyChampion" || pool === "closestCluster" || pool === "sameClass" ? pool : null;
   const poolPopulation = usePoolPopulation(crossChampionKind, allDecks, championName, spiritFilter, championCard, catalogByName, archetypeTaxonomyData);
 
   // Which rows actually feed the ranking, and how the existing Spirit-narrowing inside

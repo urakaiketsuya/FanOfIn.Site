@@ -114,19 +114,32 @@ export interface AllDecodedDecks {
   loading: boolean;
 }
 
-/** Reactive wrapper over `decodeAllDecks` — one decode per (cardIndexData, popularityIndexData, catalog) change, shared by every hook that needs the full deck universe. */
-export function useAllDecodedDecks(): AllDecodedDecks {
+/**
+ * Reactive wrapper over `decodeAllDecks` — one decode per (cardIndexData, popularityIndexData,
+ * catalog) change, shared by every hook that needs the full deck universe.
+ *
+ * This decode is genuinely expensive (deck-card-index.json is 93MB+, and decoding it means
+ * building 3 Maps for each of ~57k decks) — real enough that this codebase's own
+ * `usePublishedData.ts` already documents a browser-memory-pressure bug from concurrent large
+ * parses (Safari silently killing and reloading the tab). `enabled` (default `true`, for existing
+ * always-need-it callers like the archetypes Variants tab once its own tab is open) lets a caller
+ * that only *sometimes* needs the full universe — e.g. the Guided Deck Builder's default,
+ * single-Champion pool, which never needed more than that one Champion's decks — skip the decode
+ * entirely rather than paying its cost on every page visit regardless of whether it's used.
+ */
+export function useAllDecodedDecks(enabled = true): AllDecodedDecks {
   const rawCardIndexData = useDeckCardIndexData();
-  const cardIndexData = rawCardIndexData?.cardNames ? rawCardIndexData : undefined;
-  const popularityIndexData = useDeckPopularityIndexData();
+  const cardIndexData = enabled && rawCardIndexData?.cardNames ? rawCardIndexData : undefined;
+  const rawPopularityIndexData = useDeckPopularityIndexData();
+  const popularityIndexData = enabled ? rawPopularityIndexData : undefined;
   const cardCatalog = useCardCatalog();
   const settledCardCatalog = useDebouncedValue(cardCatalog, CATALOG_SETTLE_MS);
   const cardsByName = useMemo(() => new Map(settledCardCatalog.map((c) => [c.name, c])), [settledCardCatalog]);
 
   const decks = useMemo(
-    () => decodeAllDecks(cardIndexData, popularityIndexData, cardsByName),
-    [cardIndexData, popularityIndexData, cardsByName],
+    () => (enabled ? decodeAllDecks(cardIndexData, popularityIndexData, cardsByName) : []),
+    [enabled, cardIndexData, popularityIndexData, cardsByName],
   );
 
-  return { decks, loading: !cardIndexData || !popularityIndexData };
+  return { decks, loading: enabled && (!cardIndexData || !popularityIndexData) };
 }
