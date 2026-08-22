@@ -1,39 +1,10 @@
 import { useMemo } from "react";
-import type { DecodedDeck } from "./decodedDecks";
+import { combinedCardCounts, weightedJaccard, type DecodedDeck } from "../../lib/decodedDecks";
 
 const MAX_RESULTS = 8;
 
 export interface NearestDeck extends DecodedDeck {
   similarity: number;
-}
-
-/**
- * Weighted Jaccard (Ruzicka similarity) over each side's card-copy multiset — verbatim port of
- * `pipeline/src/analysis/similarity.ts`'s function of the same name (plain TS, no dependencies,
- * so this is a straight copy; keep the two in sync by hand if the formula ever changes). Iterates
- * the smaller map and does direct lookups against the larger one, same reasoning as the pipeline
- * version: avoids allocating a union `Set` on every one of the ~57k comparisons this hook does.
- */
-function weightedJaccard(a: Map<string, number>, b: Map<string, number>): number {
-  const [small, large] = a.size <= b.size ? [a, b] : [b, a];
-  let intersection = 0;
-  for (const [key, smallValue] of small) {
-    const largeValue = large.get(key);
-    if (largeValue === undefined) continue;
-    intersection += Math.min(smallValue, largeValue);
-  }
-  let aTotal = 0;
-  for (const v of a.values()) aTotal += v;
-  let bTotal = 0;
-  for (const v of b.values()) bTotal += v;
-  const union = aTotal + bTotal - intersection;
-  return union === 0 ? 0 : intersection / union;
-}
-
-function combinedCardCounts(deck: DecodedDeck): Map<string, number> {
-  const combined = new Map(deck.main);
-  for (const [name, qty] of deck.material) combined.set(name, (combined.get(name) ?? 0) + qty);
-  return combined;
 }
 
 /**

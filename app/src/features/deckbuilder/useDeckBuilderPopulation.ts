@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useAllDecodedDecks, decodedDeckToRow } from "./decodedDecks";
+import { useAllDecodedDecks, decodedDeckToRow } from "../../lib/decodedDecks";
 
 export interface DeckBuilderRow {
   deckId: string;

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import type { ArchetypeTaxonomyData, Card } from "@gatcg/shared";
-import { decodedDeckToRow, type DecodedDeck } from "./decodedDecks";
+import { decodedDeckToRow, type DecodedDeck } from "../../lib/decodedDecks";
 import type { DeckBuilderRow } from "./useDeckBuilderPopulation";
 
 /** The three cross-Champion pools that still feed the same `computeCardImpactEntries`-based ranking `useSuggestedBuild.ts` already does — "this Champion + Spirit"/"this Champion, any Spirit" stay handled by `useDeckBuilderPopulation` directly, and "nearest similar decks"/"global element stats" are different enough in shape (see `useNearestDecks.ts`/`useGlobalElementSuggestions.ts`) to need their own hooks. */

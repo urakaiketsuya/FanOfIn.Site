@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import type { CardImpactRole } from "@gatcg/shared";
+import type { CardImpactRole, OmnidexDecklist } from "@gatcg/shared";
 import { useArchetypeTaxonomyData, useCardImpactData, useMatchupCardImpactData } from "./data";
 import { useDeckSightingsData } from "../topdecks/data";
 import { useOmnidexPlayers } from "../tournaments/data";
@@ -14,6 +14,8 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import { formatUsd } from "../../lib/format";
 import { buildCompareLink } from "../compare/deepLink";
+import { useAllDecodedDecks } from "../../lib/decodedDecks";
+import { useArchetypeVariants, type ArchetypeVariant } from "./useArchetypeVariants";
 
 const ROLE_FILTERS: { key: CardImpactRole | "all"; label: string }[] = [
   { key: "all", label: "All" },
@@ -23,8 +25,14 @@ const ROLE_FILTERS: { key: CardImpactRole | "all"; label: string }[] = [
   { key: "mixed", label: "Mixed" },
 ];
 
-type DetailTab = "overview" | "impact" | "decklist" | "playedBy";
-const TAB_KEYS: DetailTab[] = ["overview", "impact", "decklist", "playedBy"];
+/** A variant's already-decoded card maps, reshaped into the `OmnidexDecklist` shape `DecklistView` expects — no fetch needed, it's presentational-only and everything's already in memory. */
+function variantToDecklist(variant: ArchetypeVariant): OmnidexDecklist {
+  const toLines = (m: Map<string, number>) => Array.from(m.entries()).map(([card, quantity]) => ({ card, quantity }));
+  return { main: toLines(variant.main), material: toLines(variant.material), sideboard: toLines(variant.sideboard) };
+}
+
+type DetailTab = "overview" | "impact" | "decklist" | "playedBy" | "variants";
+const TAB_KEYS: DetailTab[] = ["overview", "impact", "decklist", "playedBy", "variants"];
 
 export default function ArchetypeDetail() {
   const { id = "" } = useParams<{ id: string }>();
@@ -93,6 +101,10 @@ export default function ArchetypeDetail() {
   }, [cluster]);
   const sample = useSightingDecklist(sampleEventId, samplePlayer, !!cluster);
 
+  const allDecodedDecks = useAllDecodedDecks();
+  const variants = useArchetypeVariants(cluster, allDecodedDecks.decks);
+  const [expandedVariantDeckId, setExpandedVariantDeckId] = useState<string | null>(null);
+
   const instances = useMemo(() => {
     if (!cluster || !sightingsData) return [];
     const deckIdSet = new Set(cluster.deckIds);
@@ -114,11 +126,17 @@ export default function ArchetypeDetail() {
 
   const definingCardNames = useMemo(() => cluster?.definingCards.map((c) => c.name) ?? [], [cluster]);
   const allSampleCardNames = useMemo(() => {
-    if (!sample.decklist) return definingCardNames;
-    return [...definingCardNames, ...sample.decklist.main, ...sample.decklist.material, ...sample.decklist.sideboard].map(
-      (c) => (typeof c === "string" ? c : c.card),
-    );
-  }, [sample.decklist, definingCardNames]);
+    const names = new Set(definingCardNames);
+    if (sample.decklist) {
+      for (const c of [...sample.decklist.main, ...sample.decklist.material, ...sample.decklist.sideboard]) names.add(c.card);
+    }
+    for (const v of variants) {
+      for (const name of v.main.keys()) names.add(name);
+      for (const name of v.material.keys()) names.add(name);
+      for (const name of v.sideboard.keys()) names.add(name);
+    }
+    return Array.from(names);
+  }, [sample.decklist, definingCardNames, variants]);
   const cardImages = useCardsByNames(allSampleCardNames);
 
   function playerName(pid: number): string {
@@ -201,6 +219,7 @@ export default function ArchetypeDetail() {
                 { key: "impact", label: "Card Impact" },
                 { key: "decklist", label: "Sample Decklist" },
                 { key: "playedBy", label: `Played By (${instances.length})` },
+                { key: "variants", label: `Variants (${variants.length})` },
               ] as { key: DetailTab; label: string }[]
             ).map((t) => (
               <button
@@ -444,6 +463,87 @@ export default function ArchetypeDetail() {
                   isSelected={(s) => selectedDeckIds.has(s.deckId)}
                 />
               </div>
+            </div>
+          )}
+
+          {tab === "variants" && (
+            <div className="mt-6">
+              <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Variants ({variants.length})</h2>
+              <p className="mt-1 text-xs text-ctp-subtext0">
+                Real decks close to this build (&ge;45% weighted overlap) but not identical to any other player's list, so
+                they never joined this cluster's own stats. Shown separately — not blended into this build's win rate,
+                defining cards, or meta share above.
+              </p>
+              {allDecodedDecks.loading ? (
+                <p className="mt-3 text-sm text-ctp-subtext1">Loading…</p>
+              ) : variants.length === 0 ? (
+                <p className="mt-3 text-sm text-ctp-subtext1">No close variants found for this build.</p>
+              ) : (
+                <div className="mt-2 divide-y divide-ctp-surface0">
+                  {variants.map((v) => {
+                    const [variantEventId, variantPlayer] = v.deckId.split(":").map(Number);
+                    const isExpanded = expandedVariantDeckId === v.deckId;
+                    return (
+                      <div key={v.deckId} className="py-3">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <div className="text-sm text-ctp-text">
+                            {v.championName ? (
+                              <Link to={`/champions/${encodeURIComponent(v.championName)}`} className="text-ctp-blue hover:underline">
+                                {v.championName}
+                              </Link>
+                            ) : (
+                              <span className="text-ctp-subtext0">Unknown Champion</span>
+                            )}
+                            {v.spiritName && <span className="text-ctp-subtext0"> + {v.spiritName}</span>}
+                            <span className="ml-2 text-xs text-ctp-subtext0">
+                              {(v.similarity * 100).toFixed(0)}% overlap · {(v.winRate * 100).toFixed(0)}% win rate
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2 text-xs">
+                            {(v.addedCards.length > 0 || v.missingCards.length > 0) && (
+                              <span>
+                                {v.addedCards.length > 0 && <span className="text-ctp-green">+{v.addedCards.length}</span>}
+                                {v.addedCards.length > 0 && v.missingCards.length > 0 && " / "}
+                                {v.missingCards.length > 0 && <span className="text-ctp-red">-{v.missingCards.length}</span>}
+                              </span>
+                            )}
+                            <button
+                              type="button"
+                              onClick={() => setExpandedVariantDeckId(isExpanded ? null : v.deckId)}
+                              className="rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-subtext1 hover:text-ctp-text"
+                            >
+                              {isExpanded ? "Hide decklist" : "View decklist"}
+                            </button>
+                            {!Number.isNaN(variantEventId) && !Number.isNaN(variantPlayer) && !Number.isNaN(sampleEventId) && !Number.isNaN(samplePlayer) && (
+                              <Link
+                                to={buildCompareLink([
+                                  { eventId: variantEventId, player: variantPlayer },
+                                  { eventId: sampleEventId, player: samplePlayer },
+                                ])}
+                                className="rounded-md border border-ctp-blue px-2 py-1 text-ctp-blue hover:bg-ctp-surface0"
+                              >
+                                Compare to sample &rarr;
+                              </Link>
+                            )}
+                          </div>
+                        </div>
+                        {(v.addedCards.length > 0 || v.missingCards.length > 0) && (
+                          <p className="mt-1 text-xs text-ctp-subtext0">
+                            {v.addedCards.length > 0 && <>Added: {v.addedCards.join(", ")}</>}
+                            {v.addedCards.length > 0 && v.missingCards.length > 0 && " — "}
+                            {v.missingCards.length > 0 && <>Missing: {v.missingCards.join(", ")}</>}
+                          </p>
+                        )}
+                        {isExpanded && (
+                          <div className="mt-3">
+                            <DecklistView decklist={variantToDecklist(v)} cardsByName={cardImages} showThumbnails />
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
         </>

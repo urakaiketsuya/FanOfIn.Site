@@ -19,7 +19,7 @@ import { buildTtsSaveFile, downloadJsonFile, slugifyFilename } from "../../lib/t
 import { formatUsd } from "../../lib/format";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
-import { useAllDecodedDecks } from "./decodedDecks";
+import { useAllDecodedDecks } from "../../lib/decodedDecks";
 import { useDeckBuilderPopulation } from "./useDeckBuilderPopulation";
 import { usePoolPopulation, type CrossChampionPool } from "./usePoolPopulation";
 import { useNearestDecks, type NearestDeck } from "./useNearestDecks";
