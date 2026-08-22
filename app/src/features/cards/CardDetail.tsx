@@ -14,7 +14,7 @@ import TopDecksList from "../../components/TopDecksList";
 import { typeIconKey } from "../../lib/cardTypeIcon";
 import { useCard } from "./useCard";
 import { usePriceLookup } from "../pricing/usePriceLookup";
-import { useCardStatsData, useArchetypeData, useCardQuantityStatsData } from "../archetypes/data";
+import { useCardStatsData, useArchetypeTaxonomyData, useCardQuantityStatsData } from "../archetypes/data";
 import { useCardCatalog } from "./useCardCatalog";
 import { useCardCombination } from "./useCardCombination";
 import { useCardSynergy } from "./useCardSynergy";
@@ -131,7 +131,7 @@ export default function CardDetail() {
     setCompareWith((prev) => prev.filter((n) => n !== name));
   }
 
-  const archetypeData = useArchetypeData();
+  const archetypeTaxonomyData = useArchetypeTaxonomyData();
   const sightingsData = useDeckSightingsData();
   const hipsterData = useHipsterData();
   const playersData = useOmnidexPlayers();
@@ -181,15 +181,24 @@ export default function CardDetail() {
       .slice(0, MAX_UNIQUE_DECKS_SHOWN);
   }, [hipsterData, deckIdSet]);
 
-  const playedByChampions = useMemo(() => {
-    if (!archetypeData || !card) return [];
-    const rows: { signature: string; cardDeckCount: number; championDeckCount: number }[] = [];
-    for (const a of archetypeData.archetypes) {
-      const hit = [...a.topCards.main, ...a.topCards.material, ...a.topCards.sideboard].find((c) => c.name === card.name);
-      if (hit) rows.push({ signature: a.signature, cardDeckCount: hit.deckCount, championDeckCount: a.deckCount });
-    }
-    return rows.sort((a, b) => b.cardDeckCount - a.cardDeckCount).slice(0, MAX_CHAMPIONS_SHOWN);
-  }, [archetypeData, card]);
+  // Cluster-level ("Water Diao Chan", not just "Diao Chan") builds this card is a *defining*
+  // member of — a strict upgrade over the older per-Champion `playedByChampions` this replaced,
+  // via `cardClusterIndex` (pipeline/src/analysis/archetypeTaxonomy.ts). `?? []`/`?.` guard a
+  // stale IndexedDB copy from before this field shipped, same convention as `c.seasons ?? []`
+  // elsewhere in this codebase.
+  const playedByArchetypes = useMemo(() => {
+    if (!archetypeTaxonomyData || !card) return [];
+    const hits = archetypeTaxonomyData.cardClusterIndex?.[card.name] ?? [];
+    const clusterById = new Map(archetypeTaxonomyData.clusters.map((c) => [c.id, c]));
+    return hits
+      .map((hit) => {
+        const cluster = clusterById.get(hit.clusterId);
+        return cluster ? { cluster, prevalence: hit.prevalence } : null;
+      })
+      .filter((row): row is { cluster: (typeof archetypeTaxonomyData.clusters)[number]; prevalence: number } => row !== null)
+      .sort((a, b) => b.cluster.playerCount - a.cluster.playerCount)
+      .slice(0, MAX_CHAMPIONS_SHOWN);
+  }, [archetypeTaxonomyData, card]);
 
   function playerName(id: number): string {
     return playersData?.players.find((p) => p.id === id)?.username ?? `Player #${id}`;
@@ -443,17 +452,21 @@ export default function CardDetail() {
         </>
       )}
 
-      {tab === "decks" && playedByChampions.length > 0 && (
+      {tab === "decks" && playedByArchetypes.length > 0 && (
         <div className="mt-4">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Popular with Champions</h2>
+          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Archetypes</h2>
+          <p className="mt-1 text-xs text-ctp-subtext0">Named builds this card helps define — not just decks that happen to include it.</p>
           <div className="mt-2 flex flex-wrap gap-2 text-sm">
-            {playedByChampions.map((row) => (
+            {playedByArchetypes.map(({ cluster, prevalence }) => (
               <Link
-                key={row.signature}
-                to={`/champions/${encodeURIComponent(row.signature)}`}
+                key={cluster.id}
+                to={`/archetypes/${cluster.id}`}
                 className="rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-text hover:border-ctp-blue hover:text-ctp-blue"
               >
-                {row.signature} <span className="text-ctp-subtext0">({row.cardDeckCount}/{row.championDeckCount} decks)</span>
+                {cluster.name}{" "}
+                <span className="text-ctp-subtext0">
+                  ({(prevalence * 100).toFixed(0)}% of {cluster.playerCount} players, {(cluster.avgWinRate * 100).toFixed(0)}% win rate)
+                </span>
               </Link>
             ))}
           </div>

@@ -198,6 +198,17 @@ Champion-blind; each resulting cluster then reports every Champion it was actual
    development: three-plus same-named clusters can share the same top *generic* defining card,
    e.g. "Dungeon Guide", and collide again after a naive single-card disambiguation).
 
+**Card → archetypes reverse index**: `ArchetypeTaxonomyData.cardClusterIndex` maps a card name to
+every cluster it's a `definingCards` member of (with that cluster's prevalence for the card),
+built by inverting each cluster's already-computed `definingCards` list — same "iterate clusters,
+invert into a lookup" shape as `CardImpactData.deckClusterIndex` in `cardImpact.ts`, just
+card-keyed and to multiple clusters instead of deck-keyed to one. Scoped to defining cards only
+(not every card any member deck happens to run) so it answers "which named build(s) does this
+card help define," not "which decks contain it" — the latter is already covered by other
+per-card stats (`cards.json`, `card-quantity-stats.json`). Powers the "Archetypes" section on a
+card's own page (`app/src/features/cards/CardDetail.tsx`), replacing an older Champion-level
+"Popular with Champions" block that read the coarser per-Champion `archetypes.json`.
+
 **Season data**: each cluster also carries `seasons` (per-season deckCount/playerCount/eventCount/
 avgWinRate, only for seasons it actually has sightings in — not zero-padded like
 `championTrends.ts`'s season array, since this is for filtering, not gap-detection) and `trend`

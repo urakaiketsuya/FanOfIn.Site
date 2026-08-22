@@ -502,6 +502,8 @@ export interface ArchetypeClusterTrend {
 export interface ArchetypeTaxonomyData {
   generatedAt: string;
   clusters: ArchetypeCluster[];
+  /** Card name -> every cluster it's a defining card of (with that cluster's prevalence for this card), for resolving "which archetypes is this card part of" on a card's own page. Same shape/purpose as `CardImpactData.deckClusterIndex`, just card-keyed and to multiple clusters instead of deck-keyed to one. Only cards that are a defining card of at least one cluster are present. */
+  cardClusterIndex: Record<string, { clusterId: string; prevalence: number }[]>;
 }
 
 /** How a card is typically played within a build — which section(s) of the deck its "with" sightings actually came from. */

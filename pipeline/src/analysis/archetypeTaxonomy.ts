@@ -95,7 +95,7 @@ export function computeArchetypeTaxonomy(
   deckSightings: DeckSighting[],
   priceByName: Map<string, number>,
 ): ArchetypeTaxonomyData {
-  if (config.fastMode) return { generatedAt: new Date().toISOString(), clusters: [] };
+  if (config.fastMode) return { generatedAt: new Date().toISOString(), clusters: [], cardClusterIndex: {} };
 
   const sightingByDeckId = new Map(deckSightings.map((s) => [s.deckId, s]));
 
@@ -345,5 +345,14 @@ export function computeArchetypeTaxonomy(
 
   clusters.sort((a, b) => b.playerCount - a.playerCount);
 
-  return { generatedAt: new Date().toISOString(), clusters };
+  // Card -> every cluster it's a defining card of — same "iterate clusters, invert" shape as
+  // cardImpact.ts's deckClusterIndex, just card-keyed and to multiple clusters instead of one.
+  const cardClusterIndex: ArchetypeTaxonomyData["cardClusterIndex"] = {};
+  for (const c of clusters) {
+    for (const dc of c.definingCards) {
+      (cardClusterIndex[dc.name] ??= []).push({ clusterId: c.id, prevalence: dc.prevalence });
+    }
+  }
+
+  return { generatedAt: new Date().toISOString(), clusters, cardClusterIndex };
 }
