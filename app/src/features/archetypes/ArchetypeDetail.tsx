@@ -52,6 +52,9 @@ export default function ArchetypeDetail() {
     if (prevIdRef.current !== id) {
       setTab("overview");
       setOpponentClusterId("all");
+      setVariantMinSimilarity(0.45);
+      setVariantChampionFilter("all");
+      setExpandedVariantDeckId(null);
       prevIdRef.current = id;
     }
   }, [id, setTab]);
@@ -104,6 +107,19 @@ export default function ArchetypeDetail() {
   const allDecodedDecks = useAllDecodedDecks();
   const variants = useArchetypeVariants(cluster, allDecodedDecks.decks);
   const [expandedVariantDeckId, setExpandedVariantDeckId] = useState<string | null>(null);
+  const [variantMinSimilarity, setVariantMinSimilarity] = useState(0.45);
+  const [variantChampionFilter, setVariantChampionFilter] = useState<string>("all");
+  const variantChampions = useMemo(
+    () => Array.from(new Set(variants.map((v) => v.championName).filter((n): n is string => n !== null))).sort(),
+    [variants],
+  );
+  const filteredVariants = useMemo(
+    () =>
+      variants.filter(
+        (v) => v.similarity >= variantMinSimilarity && (variantChampionFilter === "all" || v.championName === variantChampionFilter),
+      ),
+    [variants, variantMinSimilarity, variantChampionFilter],
+  );
 
   const instances = useMemo(() => {
     if (!cluster || !sightingsData) return [];
@@ -474,13 +490,50 @@ export default function ArchetypeDetail() {
                 they never joined this cluster's own stats. Shown separately — not blended into this build's win rate,
                 defining cards, or meta share above.
               </p>
+              {variants.length > 0 && (
+                <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+                  <span className="text-ctp-subtext0">Min overlap:</span>
+                  <select
+                    value={variantMinSimilarity}
+                    onChange={(e) => setVariantMinSimilarity(Number(e.target.value))}
+                    className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+                  >
+                    <option value={0.45}>45%+ (all)</option>
+                    <option value={0.6}>60%+</option>
+                    <option value={0.75}>75%+</option>
+                    <option value={0.9}>90%+</option>
+                  </select>
+                  {variantChampions.length > 1 && (
+                    <>
+                      <span className="ml-2 text-ctp-subtext0">Champion:</span>
+                      <select
+                        value={variantChampionFilter}
+                        onChange={(e) => setVariantChampionFilter(e.target.value)}
+                        className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+                      >
+                        <option value="all">All ({variantChampions.length})</option>
+                        {variantChampions.map((name) => (
+                          <option key={name} value={name}>
+                            {name}
+                          </option>
+                        ))}
+                      </select>
+                    </>
+                  )}
+                  <span className="ml-auto text-ctp-subtext0">
+                    Showing {filteredVariants.length} of {variants.length}
+                  </span>
+                </div>
+              )}
               {allDecodedDecks.loading ? (
                 <p className="mt-3 text-sm text-ctp-subtext1">Loading…</p>
               ) : variants.length === 0 ? (
                 <p className="mt-3 text-sm text-ctp-subtext1">No close variants found for this build.</p>
+              ) : filteredVariants.length === 0 ? (
+                <p className="mt-3 text-sm text-ctp-subtext1">No variants match these filters.</p>
               ) : (
                 <div className="mt-2 divide-y divide-ctp-surface0">
-                  {variants.map((v) => {
+                  {filteredVariants.map((v) => {
                     const [variantEventId, variantPlayer] = v.deckId.split(":").map(Number);
                     const isExpanded = expandedVariantDeckId === v.deckId;
                     return (
