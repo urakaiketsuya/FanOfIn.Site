@@ -66,14 +66,19 @@ function legalMaxCopies(card: Card | undefined): number {
   return card?.types.includes("UNIQUE") ? 1 : 4;
 }
 
-/** NORM (colorless) always fits; an empty `identityElements` means there's no signal to filter on (e.g. a too-thin population) — both cases pass everything through unfiltered rather than risk hiding a legitimate pick. */
-function isElementCompatible(card: Card | undefined, identityElements: Set<string>): boolean {
+/** NORM (colorless) always fits; an empty `identityElements` means there's no signal to filter on (e.g. a too-thin population) — both cases pass everything through unfiltered rather than risk hiding a legitimate pick. Exported for `useGlobalElementSuggestions.ts`, which needs the same gate with no deck population to derive one internally. */
+export function isElementCompatible(card: Card | undefined, identityElements: Set<string>): boolean {
   if (identityElements.size === 0 || !card || card.elements.length === 0) return true;
   return card.elements.some((e) => e === "NORM" || identityElements.has(e));
 }
 
-/** The Champion card actually in play, for reading its granted element(s) — a locked print (the viewer's own choice) wins over the population guess, same precedence as everywhere else a lock beats a population-derived signal in this file. Falls back to whichever Champion-type material card (CHAMPION type, not SPIRIT subtype) is most common in this Spirit-scoped population. */
-function findChampionCard(spiritRows: DeckBuilderRow[], lockedCards: Map<string, number>, cardsByName: Map<string, Card>): Card | undefined {
+/** The deck's actual castable elements — granted by its Champion and Spirit cards specifically (see `isElementCompatible`'s doc comment for why this isn't inferred from main-deck card frequency). Exported so `DeckBuilderIndex.tsx` can compute the same identity once for `useGlobalElementSuggestions.ts` (which has no deck population of its own to derive it from) instead of duplicating this formula. */
+export function computeIdentityElements(championCard: Card | undefined, spiritCard: Card | undefined): Set<string> {
+  return new Set([...(championCard?.elements ?? []), ...(spiritCard?.elements ?? [])].filter((e) => e !== "NORM"));
+}
+
+/** The Champion card actually in play, for reading its granted element(s) — a locked print (the viewer's own choice) wins over the population guess, same precedence as everywhere else a lock beats a population-derived signal in this file. Falls back to whichever Champion-type material card (CHAMPION type, not SPIRIT subtype) is most common in this Spirit-scoped population. Exported so callers (e.g. `DeckBuilderIndex.tsx`) can resolve it once against the *stable* single-Champion population and pass it back in as `championCardOverride`, for when `rows` itself comes from a cross-Champion suggestion pool. */
+export function findChampionCard(spiritRows: DeckBuilderRow[], lockedCards: Map<string, number>, cardsByName: Map<string, Card>): Card | undefined {
   for (const name of lockedCards.keys()) {
     const card = cardsByName.get(name);
     if (card?.types.includes("CHAMPION") && !card.subtypes.includes("SPIRIT")) return card;
@@ -186,6 +191,17 @@ export function useSuggestedBuild(
   lockedSections: Map<string, "main" | "material" | "sideboard"> = new Map(),
   /** Global (not Champion-scoped) win rate by copy count, published per-card — lets a suggested/ranked-fill quantity be overridden toward whichever copy count actually wins more, when the data clearly says so. Omit to always use the population's modal quantity, same as before this existed. */
   cardQuantityStatsData?: CardQuantityStatsData,
+  /**
+   * The Champion card to read granted elements from, resolved by the caller against the *stable*
+   * single-Champion population (`useDeckBuilderPopulation`'s own rows for the selected Champion) —
+   * not against whichever `rows` this call is ranking against. Needed once `rows` can come from a
+   * cross-Champion suggestion pool (same Spirit/class/nearest deck/archetype cluster, any
+   * Champion): `findChampionCard`'s own population-plurality guess would otherwise pick whichever
+   * Champion happens to be most common across a mixed-Champion `rows` set, which is meaningless.
+   * Omit to fall back to the population-guess behavior (correct and unchanged for the two
+   * single-Champion pools, where `rows` already only ever contains one Champion's decks anyway).
+   */
+  championCardOverride?: Card,
 ): SuggestedBuild {
   const cardCatalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
@@ -237,11 +253,9 @@ export function useSuggestedBuild(
     // this" from "this happened to be common/lucky in a small sample." A locked Champion print
     // wins if the viewer already picked one; otherwise the most common Champion-type material card
     // in this Spirit-scoped population stands in for it.
-    const championCard = findChampionCard(spiritRows, lockedCards, cardsByName);
+    const championCard = championCardOverride ?? findChampionCard(spiritRows, lockedCards, cardsByName);
     const spiritCard = spiritFilter ? cardsByName.get(spiritFilter) : undefined;
-    const identityElements = new Set(
-      [...(championCard?.elements ?? []), ...(spiritCard?.elements ?? [])].filter((e) => e !== "NORM"),
-    );
+    const identityElements = computeIdentityElements(championCard, spiritCard);
 
     const lockedNames = new Set(lockedCards.keys());
     // Only condition on locks with a real sample behind them — a card only 1-4 decks in this
@@ -339,6 +353,18 @@ export function useSuggestedBuild(
     // highest-lift pick at that level (a locked print at the same level, handled above, wins
     // instead). Real decklists showed the levels/prints aren't fixed per Champion — some Champions
     // have multiple same-level variants — so this is picked from data, not the raw card list.
+    // Scoped to the *intended* Champion's own identity (via `championCard`, same "before the
+    // comma" identity `findChampionName` uses) rather than "whichever Champion is most common in
+    // `rankingRows`" — that distinction only matters once `rows` can come from a cross-Champion
+    // pool (same Spirit/class/nearest deck/archetype cluster, any Champion): scanning unscoped
+    // there would suggest a print of whichever *borrowed* Champion happens to show up, not the one
+    // the viewer actually picked. If the intended Champion has no print at all in a borrowed
+    // population (the common case), no anchor gets placed here — correct: nothing to borrow.
+    const championIdentityName = championCard
+      ? championCard.name.includes(",")
+        ? championCard.name.split(",")[0].trim()
+        : championCard.name
+      : null;
     const lockedLevels = new Set(
       Array.from(lockedCards.keys())
         .map((n) => cardsByName.get(n)?.level)
@@ -350,6 +376,10 @@ export function useSuggestedBuild(
         const card = cardsByName.get(name);
         if (!card?.types.includes("CHAMPION") || card.subtypes.includes("SPIRIT") || card.level === null || card.level === undefined) continue;
         if (placed.has(name)) continue;
+        if (championIdentityName) {
+          const cardIdentityName = card.name.includes(",") ? card.name.split(",")[0].trim() : card.name;
+          if (cardIdentityName !== championIdentityName) continue;
+        }
         const counts = championCardsByLevel.get(card.level) ?? new Map<string, number>();
         counts.set(name, (counts.get(name) ?? 0) + 1);
         championCardsByLevel.set(card.level, counts);
@@ -444,5 +474,5 @@ export function useSuggestedBuild(
       baselineWinRate,
       loading: false,
     };
-  }, [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName, lockedSections, quantityBucketsByName]);
+  }, [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName, lockedSections, quantityBucketsByName, championCardOverride]);
 }

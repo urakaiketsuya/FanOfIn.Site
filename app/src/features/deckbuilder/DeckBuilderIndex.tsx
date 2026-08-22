@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import type { CompositionWinRateData, CompositionWinRateStat, OmnidexDecklist } from "@gatcg/shared";
 import { useDeckPopularityIndexData } from "../topdecks/data";
-import { useCardQuantityStatsData, useCompositionWinRateData } from "../archetypes/data";
+import { useArchetypeTaxonomyData, useCardQuantityStatsData, useCardStatsData, useCompositionWinRateData } from "../archetypes/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { parseDecklist } from "../compare/parseDecklist";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -19,9 +19,32 @@ import { buildTtsSaveFile, downloadJsonFile, slugifyFilename } from "../../lib/t
 import { formatUsd } from "../../lib/format";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
+import { useAllDecodedDecks } from "./decodedDecks";
 import { useDeckBuilderPopulation } from "./useDeckBuilderPopulation";
-import { useSuggestedBuild, type SuggestedCard } from "./useSuggestedBuild";
+import { usePoolPopulation, type CrossChampionPool } from "./usePoolPopulation";
+import { useNearestDecks, type NearestDeck } from "./useNearestDecks";
+import { useGlobalElementSuggestions } from "./useGlobalElementSuggestions";
+import { computeIdentityElements, findChampionCard, useSuggestedBuild, type SuggestedCard } from "./useSuggestedBuild";
 import { useBuddyCards, type BuddyCard } from "./useBuddyCards";
+
+/**
+ * Which population the ranking is computed against. "default" is today's existing behavior
+ * (Champion + whatever the Spirit dropdown says, including "Any Spirit") — everything else is an
+ * explicit alternative for when that combo has too little (or no) real data, rather than an
+ * automatic fallback cascade. `nearestDecks` and `globalElements` aren't routed through the same
+ * ranking at all (see `useNearestDecks`/`useGlobalElementSuggestions`'s doc comments for why) and
+ * get their own render sections below instead of feeding `useSuggestedBuild`.
+ */
+type SuggestionPool = "default" | CrossChampionPool | "nearestDecks" | "globalElements";
+
+const POOL_LABELS: Record<SuggestionPool, string> = {
+  default: "This Champion + Spirit (or Any Spirit)",
+  spiritAnyChampion: "Same Spirit, any Champion",
+  closestCluster: "Closest matching archetype, different Champion",
+  sameClass: "Same Class combination, any element",
+  nearestDecks: "Nearest similar real decks",
+  globalElements: "Cards matching these elements (global stats)",
+};
 
 type BuilderTab = "build" | "stats" | "buddies" | "log";
 const TAB_KEYS: BuilderTab[] = ["build", "stats", "buddies", "log"];
@@ -56,6 +79,7 @@ function decodeLockedCards(encoded: string): { lockedCards: Map<string, number>;
 interface UrlSeed {
   championName: string;
   spiritFilter: string | null;
+  pool: string | null;
   lockedCards: Map<string, number>;
   lockedSections: Map<string, LockedSection>;
 }
@@ -77,7 +101,7 @@ function parseUrlSeed(searchParams: URLSearchParams): UrlSeed | null {
   const { lockedCards, lockedSections } = lockedParam
     ? decodeLockedCards(lockedParam)
     : { lockedCards: new Map<string, number>(), lockedSections: new Map<string, LockedSection>() };
-  return { championName, spiritFilter: searchParams.get("spirit"), lockedCards, lockedSections };
+  return { championName, spiritFilter: searchParams.get("spirit"), pool: searchParams.get("pool"), lockedCards, lockedSections };
 }
 
 interface ChangeLogEntry {
@@ -502,6 +526,9 @@ export default function DeckBuilderIndex() {
 
   const [championName, setChampionName] = useState<string | null>(urlSeed?.championName ?? null);
   const [spiritFilter, setSpiritFilter] = useState<string | null>(urlSeed?.spiritFilter ?? null);
+  const [pool, setPool] = useState<SuggestionPool>(
+    urlSeed?.pool && urlSeed.pool in POOL_LABELS ? (urlSeed.pool as SuggestionPool) : "default",
+  );
   const [lockedCards, setLockedCards] = useState<Map<string, number>>(() => urlSeed?.lockedCards ?? new Map());
   // Section a lock is known to belong to (from where it was locked, or from a pasted decklist's
   // own Main/Material headers) — see useSuggestedBuild's lockedSections param doc for why this
@@ -538,10 +565,73 @@ export default function DeckBuilderIndex() {
   const popularityIndexData = useDeckPopularityIndexData();
   const cardCatalog = useCardCatalog();
   const catalogByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
+  // "default" pool's population — this Champion's decks, further narrowed by the Spirit dropdown
+  // inside useSuggestedBuild itself (pool 1/2 combined; there's no separate state for them, since
+  // the existing Spirit dropdown's own "Any Spirit" option already covers pool 2).
   const { rows, spiritsPresent, loading: populationLoading } = useDeckBuilderPopulation(championName);
   const cardQuantityStatsData = useCardQuantityStatsData();
+  const cardStatsData = useCardStatsData();
   const compositionWinRateData = useCompositionWinRateData();
-  const build = useSuggestedBuild(rows, spiritFilter, lockedCards, rejectedCards, populationLoading, lockedSections, cardQuantityStatsData);
+  const archetypeTaxonomyData = useArchetypeTaxonomyData();
+
+  // Every deck, any Champion — the shared universe the cross-Champion pools filter/score over.
+  const { decks: allDecks, loading: allDecksLoading } = useAllDecodedDecks();
+
+  // Resolved against the *stable* single-Champion population (`rows`, not whichever pool is
+  // active) — see `useSuggestedBuild`'s `championCardOverride` doc comment for why this matters
+  // once a cross-Champion pool is in play: without it, the Champion-print anchor and granted
+  // elements would be guessed from whichever Champion happens to be common in a borrowed
+  // population, not the one the viewer actually picked.
+  const championCard = useMemo(() => findChampionCard(rows, lockedCards, catalogByName), [rows, lockedCards, catalogByName]);
+  const spiritCardForIdentity = spiritFilter ? catalogByName.get(spiritFilter) : undefined;
+  const identityElements = useMemo(
+    () => computeIdentityElements(championCard, spiritCardForIdentity),
+    [championCard, spiritCardForIdentity],
+  );
+
+  const crossChampionKind: CrossChampionPool | null =
+    pool === "spiritAnyChampion" || pool === "closestCluster" || pool === "sameClass" ? pool : null;
+  const poolPopulation = usePoolPopulation(crossChampionKind, allDecks, championName, spiritFilter, championCard, catalogByName, archetypeTaxonomyData);
+
+  // Which rows actually feed the ranking, and how the existing Spirit-narrowing inside
+  // useSuggestedBuild should apply to them: "spiritAnyChampion"'s rows are already exactly that
+  // Spirit's decks, so passing spiritFilter through is a safe no-op (and keeps the "the Spirit
+  // itself" material slot, which is still correct there) — but "closestCluster"/"sameClass"'s rows
+  // don't share the current Spirit at all, so re-filtering by it there would zero out a population
+  // that's already fully resolved.
+  const activeRows = crossChampionKind ? poolPopulation.rows : rows;
+  const effectiveSpiritFilter = crossChampionKind === "closestCluster" || crossChampionKind === "sameClass" ? null : spiritFilter;
+  const activeLoading = crossChampionKind ? allDecksLoading : populationLoading;
+  // Only overridden for the cross-Champion pools — omitted for "default" so pool 1/2 behavior is
+  // byte-for-byte unchanged (useSuggestedBuild's own internal resolution already does the same
+  // thing against the same `rows` in that case).
+  const championCardOverride = crossChampionKind ? championCard : undefined;
+
+  const build = useSuggestedBuild(
+    activeRows,
+    effectiveSpiritFilter,
+    lockedCards,
+    rejectedCards,
+    activeLoading,
+    lockedSections,
+    cardQuantityStatsData,
+    championCardOverride,
+  );
+
+  const nearestDecks = useNearestDecks(allDecks, lockedCards);
+  const globalSuggestions = useGlobalElementSuggestions(cardStatsData, identityElements, catalogByName, lockedCards, rejectedCards);
+
+  // Pool-aware version of the top-level "loading / no data / show the build" gate below —
+  // `nearestDecks`/`globalElements` have their own empty states (no locks yet / no matching cards)
+  // rather than a blanket "no decks found", and every non-"default" pool depends on the full
+  // decoded-deck universe loading, not just this Champion's own population.
+  const gateLoading = pool === "default" ? populationLoading : allDecksLoading;
+  const gateHasData =
+    pool === "default"
+      ? rows.length > 0
+      : pool === "nearestDecks" || pool === "globalElements"
+        ? true
+        : poolPopulation.rows.length > 0;
 
   useEffect(() => {
     const current = new Set(
@@ -594,6 +684,7 @@ export default function DeckBuilderIndex() {
     } else {
       startTransition(() => {
         setSpiritFilter(null);
+        setPool("default");
         setLockedCards(new Map());
         setLockedSections(new Map());
         setRejectedCards(new Set());
@@ -616,6 +707,7 @@ export default function DeckBuilderIndex() {
         const next = new URLSearchParams(prev);
         next.delete("champion");
         next.delete("spirit");
+        next.delete("pool");
         next.delete("locked");
         return next;
       },
@@ -667,6 +759,7 @@ export default function DeckBuilderIndex() {
     if (detectedChampion !== championName) skipNextResetRef.current = true;
     setChampionName(detectedChampion);
     setSpiritFilter(detectedSpirit);
+    setPool("default");
     setLockedCards(newLocked);
     setLockedSections(newSections);
     setRejectedCards(new Set());
@@ -678,6 +771,34 @@ export default function DeckBuilderIndex() {
     setPasteText("");
     setPasteError(null);
     setPasteOpen(false);
+  }
+
+  /** Loads a `useNearestDecks` result as the new starting point — same shape as `loadPastedDecklist`, just sourced from an already-decoded real deck instead of re-parsing text. Switches back to the "default" pool once a concrete decklist is loaded, same as pasting one. */
+  function loadNearestDeck(deck: NearestDeck) {
+    const newLocked = new Map<string, number>();
+    const newSections = new Map<string, LockedSection>();
+    for (const [section, lines] of [
+      ["main", deck.main],
+      ["material", deck.material],
+      ["sideboard", deck.sideboard],
+    ] as const) {
+      for (const [name, qty] of lines) {
+        newLocked.set(name, qty);
+        newSections.set(name, section);
+      }
+    }
+
+    if (deck.championName && deck.championName !== championName) skipNextResetRef.current = true;
+    if (deck.championName) setChampionName(deck.championName);
+    setSpiritFilter(deck.spiritName);
+    setPool("default");
+    setLockedCards(newLocked);
+    setLockedSections(newSections);
+    setRejectedCards(new Set());
+    setChangeLog([]);
+    pendingActionRef.current = null;
+    prevSuggestedRef.current = null;
+    prevWinRateRef.current = null;
   }
 
   /** `section` is the section this card is being locked FROM (known for sure, since it's the list the click came from) — recorded so the section survives even if the current population barely plays this card (see lockedSections' doc comment). Omitted when unlocking. */
@@ -808,6 +929,7 @@ export default function DeckBuilderIndex() {
     const params = new URLSearchParams();
     if (championName) params.set("champion", championName);
     if (spiritFilter) params.set("spirit", spiritFilter);
+    if (pool !== "default") params.set("pool", pool);
     const locked = encodeLockedCards(lockedCards, lockedSections);
     if (locked) params.set("locked", locked);
     const url = `${window.location.origin}/deck-builder?${params.toString()}`;
@@ -875,9 +997,31 @@ export default function DeckBuilderIndex() {
                 </option>
               ))}
             </select>
+
+            <span className="ml-2 text-ctp-subtext0">Suggest from:</span>
+            <select
+              value={pool}
+              onChange={(e) => {
+                const value = e.target.value as SuggestionPool;
+                pendingActionRef.current = { label: `Suggest from: ${POOL_LABELS[value]}`, subject: null };
+                startTransition(() => setPool(value));
+              }}
+              className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+            >
+              {(Object.keys(POOL_LABELS) as SuggestionPool[]).map((key) => (
+                <option key={key} value={key} disabled={key === "spiritAnyChampion" && !spiritFilter}>
+                  {POOL_LABELS[key]}
+                  {key === "spiritAnyChampion" && !spiritFilter ? " (pick a Spirit first)" : ""}
+                </option>
+              ))}
+            </select>
           </>
         )}
       </div>
+
+      {championName && pool !== "default" && pool !== "nearestDecks" && pool !== "globalElements" && poolPopulation.label && (
+        <p className="mt-2 text-xs text-ctp-yellow">{poolPopulation.label}</p>
+      )}
 
       <div className="mt-2">
         {!pasteOpen ? (
@@ -926,13 +1070,15 @@ export default function DeckBuilderIndex() {
 
       {!championName && <p className="mt-6 text-ctp-subtext1">Choose a Champion to see a suggested build.</p>}
 
-      {championName && populationLoading && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
+      {championName && gateLoading && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
 
-      {championName && !populationLoading && rows.length === 0 && (
-        <p className="mt-6 text-ctp-subtext1">No decks found for {championName}.</p>
+      {championName && !gateLoading && !gateHasData && (
+        <p className="mt-6 text-ctp-subtext1">
+          {pool === "default" ? `No decks found for ${championName}.` : "No decks found for this pool — try a different one."}
+        </p>
       )}
 
-      {championName && !populationLoading && rows.length > 0 && (
+      {championName && !gateLoading && gateHasData && (
         <>
           {build.conditionalWinRate !== null && (
             <p className="mt-4 text-sm">
@@ -1074,6 +1220,8 @@ export default function DeckBuilderIndex() {
                   <option key={n} value={n} />
                 ))}
               </datalist>
+              {pool !== "nearestDecks" && pool !== "globalElements" && (
+                <>
               {build.hasQuantityOptimizations && (
                 <p className="mt-2 text-xs text-ctp-subtext0">
                   <span className="text-ctp-blue">*</span> quantity adjusted from what this population usually runs — this card's own
@@ -1176,6 +1324,84 @@ export default function DeckBuilderIndex() {
                       />
                     ))}
                   </ul>
+                </div>
+              )}
+                </>
+              )}
+
+              {pool === "nearestDecks" && (
+                <div className="mt-4">
+                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Nearest similar real decks</h2>
+                  <p className="mt-1 text-xs text-ctp-subtext0">
+                    Not ranked suggestions — real decklists (any Champion) most similar to whatever's currently
+                    locked in, by shared main+material cards. Click "Load" to replace your current locks with one of
+                    these as a new starting point.
+                  </p>
+                  {lockedCards.size === 0 ? (
+                    <p className="mt-3 text-sm text-ctp-subtext1">Lock in a few cards first to find similar decks.</p>
+                  ) : nearestDecks.length === 0 ? (
+                    <p className="mt-3 text-sm text-ctp-subtext1">No similar decks found for what's locked in so far.</p>
+                  ) : (
+                    <ul className="mt-2 space-y-1">
+                      {nearestDecks.map((d) => (
+                        <li key={d.deckId} className="flex flex-wrap items-center gap-1.5 rounded-md border border-ctp-surface1 px-2 py-1 text-sm">
+                          <span className="text-ctp-text">{d.championName ?? "Unknown Champion"}</span>
+                          {d.spiritName && <span className="text-ctp-subtext1">({d.spiritName})</span>}
+                          <span className="text-xs text-ctp-subtext0">{(d.similarity * 100).toFixed(0)}% similar</span>
+                          <span className="text-xs text-ctp-subtext0">{(d.winRate * 100).toFixed(0)}% win rate</span>
+                          <button
+                            type="button"
+                            onClick={() => loadNearestDeck(d)}
+                            className="ml-auto shrink-0 rounded-md border border-ctp-surface1 px-1.5 py-0.5 text-[10px] text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
+                          >
+                            Load
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+
+              {pool === "globalElements" && (
+                <div className="mt-4">
+                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Cards matching these elements</h2>
+                  <p className="mt-1 text-xs text-ctp-subtext0">
+                    No deck-level data behind this list at all — just each card's own overall win rate, filtered to
+                    this Champion/Spirit's granted elements. No with/without lift, no Material/Main/Sideboard split
+                    (that needs real decklists to guess from), so use your own judgment on where each card goes.
+                  </p>
+                  {globalSuggestions.length === 0 ? (
+                    <p className="mt-3 text-sm text-ctp-subtext1">No element-compatible cards with enough data yet.</p>
+                  ) : (
+                    <ul className="mt-2 space-y-1">
+                      {globalSuggestions.map((c) => (
+                        <li key={c.cardName} className="flex flex-wrap items-center gap-1.5 rounded-md border border-ctp-surface1 px-2 py-1 text-sm">
+                          {catalogByName.get(c.cardName)?.element !== "NORM" && (
+                            <ElementIcon element={catalogByName.get(c.cardName)?.element ?? "NORM"} size={14} />
+                          )}
+                          <CardHoverPreview image={catalogByName.get(c.cardName)?.editions[0]?.image} alt={c.cardName}>
+                            {catalogByName.get(c.cardName) ? (
+                              <Link to={`/cards/${catalogByName.get(c.cardName)!.slug}`} className="text-ctp-text hover:text-ctp-blue">
+                                {c.cardName}
+                              </Link>
+                            ) : (
+                              <span className="text-ctp-text">{c.cardName}</span>
+                            )}
+                          </CardHoverPreview>
+                          <span className="text-xs text-ctp-subtext0">{(c.adjustedWinRate * 100).toFixed(0)}% win rate</span>
+                          <span className="text-xs text-ctp-subtext0">({c.deckCount} decks)</span>
+                          <button
+                            type="button"
+                            onClick={() => addCard(c.cardName)}
+                            className="ml-auto shrink-0 rounded-md border border-ctp-surface1 px-1.5 py-0.5 text-[10px] text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
+                          >
+                            Add
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               )}
             </div>
