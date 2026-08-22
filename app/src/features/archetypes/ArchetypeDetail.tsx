@@ -153,6 +153,22 @@ export default function ArchetypeDetail() {
             {cluster.deckCount === 1 ? "" : "s"} across {cluster.eventCount} event{cluster.eventCount === 1 ? "" : "s"} ·{" "}
             {(cluster.avgWinRate * 100).toFixed(0)}% avg win rate
           </p>
+          {(cluster.championBreakdown ?? []).length > 1 && (
+            <p className="mt-1 text-xs text-ctp-subtext0">
+              Also played as{" "}
+              {cluster.championBreakdown
+                .filter((b) => b.championName !== cluster.championName)
+                .map((b, i, arr) => (
+                  <span key={b.championName}>
+                    <Link to={`/champions/${encodeURIComponent(b.championName)}`} className="text-ctp-blue hover:underline">
+                      {b.championName}
+                    </Link>{" "}
+                    ({b.playerCount}p){i < arr.length - 1 ? ", " : ""}
+                  </span>
+                ))}{" "}
+              — same card shell, different Champion.
+            </p>
+          )}
           <p className="mt-1 text-xs text-ctp-subtext0">
             {(cluster.metaShare * 100).toFixed(1)}% meta share · {(cluster.topCutRate * 100).toFixed(0)}% top cut rate
             {cluster.avgPlacement !== null && ` · avg placement #${cluster.avgPlacement.toFixed(0)}`}
@@ -204,8 +220,7 @@ export default function ArchetypeDetail() {
             <div className="mt-6">
               <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Defining cards</h2>
               <p className="mt-1 text-xs text-ctp-subtext0">
-                Cards common in this build but not typical of other {cluster.championName} decks — what actually
-                distinguishes it.
+                Cards common in this build but not typical of decks generally — what actually distinguishes it.
               </p>
               <div className="mt-2 flex flex-wrap gap-2 text-sm">
                 {cluster.definingCards.map((dc) => {

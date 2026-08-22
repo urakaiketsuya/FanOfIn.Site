@@ -41,6 +41,8 @@ interface DisplayRow {
   id: string;
   name: string;
   championName: string;
+  /** Other Champions besides `championName` this build was also played under, if any — e.g. [] for a single-Champion build. Guarded with `?? []` at read sites for a stale IndexedDB copy from before this field shipped. */
+  otherChampions: { championName: string; deckCount: number; playerCount: number }[];
   playerCount: number;
   eventCount: number;
   avgWinRate: number;
@@ -62,9 +64,14 @@ export default function ArchetypesIndex() {
   const [hurtYouClusterId, setHurtYouClusterId] = useState<string | null>(null);
   const [hurtYouVisibleCount, setHurtYouVisibleCount] = useState(HURT_YOU_PAGE_SIZE);
 
+  // Every Champion a build was ever played under, not just each cluster's plurality Champion —
+  // otherwise a Champion who only shows up as the minority side of a shared shell (e.g. Merlin in
+  // a mostly-Lorraine cluster) would silently disappear from the filter.
   const championsPresent = useMemo(() => {
     if (!data) return [];
-    return Array.from(new Set(data.clusters.map((c) => c.championName))).sort();
+    const names = new Set<string>();
+    for (const c of data.clusters) for (const b of c.championBreakdown) names.add(b.championName);
+    return Array.from(names).sort();
   }, [data]);
 
   const seasonsPresent = useMemo(() => {
@@ -80,7 +87,9 @@ export default function ArchetypesIndex() {
 
   const rows = useMemo((): DisplayRow[] => {
     if (!data) return [];
-    let filtered = championFilter ? data.clusters.filter((c) => c.championName === championFilter) : data.clusters;
+    let filtered = championFilter
+      ? data.clusters.filter((c) => c.championBreakdown.some((b) => b.championName === championFilter))
+      : data.clusters;
 
     let displayRows: DisplayRow[];
     if (seasonId !== null) {
@@ -94,6 +103,7 @@ export default function ArchetypesIndex() {
             id: c.id,
             name: c.name,
             championName: c.championName,
+            otherChampions: (c.championBreakdown ?? []).filter((b) => b.championName !== c.championName),
             playerCount: season.playerCount,
             eventCount: season.eventCount,
             avgWinRate: season.avgWinRate,
@@ -105,6 +115,7 @@ export default function ArchetypesIndex() {
         id: c.id,
         name: c.name,
         championName: c.championName,
+        otherChampions: (c.championBreakdown ?? []).filter((b) => b.championName !== c.championName),
         playerCount: c.playerCount,
         eventCount: c.eventCount,
         avgWinRate: c.avgWinRate,
@@ -184,9 +195,10 @@ export default function ArchetypesIndex() {
         </Link>
       </div>
       <p className="mt-1 text-sm text-ctp-subtext1">
-        Named builds within each Champion, derived from real decklists — decks are grouped by exact
-        card list, then clustered by similarity. Groups below a minimum sample size are hidden as
-        noise.
+        Named builds derived from real decklists by their cards alone — decks are grouped by exact
+        card list, then clustered by similarity, regardless of Champion. A build played under more
+        than one Champion shows a "+N" next to its main Champion. Groups below a minimum sample
+        size are hidden as noise.
       </p>
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
@@ -290,6 +302,14 @@ export default function ArchetypesIndex() {
                   <Link to={`/champions/${encodeURIComponent(c.championName)}`} className="text-ctp-subtext1 hover:text-ctp-blue">
                     {c.championName}
                   </Link>
+                  {c.otherChampions.length > 0 && (
+                    <span
+                      className="ml-1 text-xs text-ctp-subtext0"
+                      title={`Also played under: ${c.otherChampions.map((b) => `${b.championName} (${b.playerCount}p)`).join(", ")}`}
+                    >
+                      +{c.otherChampions.length}
+                    </span>
+                  )}
                 </td>
                 <td className="py-1.5 pr-6 text-ctp-subtext1">{c.playerCount}</td>
                 <td className="py-1.5 pr-6 text-ctp-subtext1">{c.eventCount}</td>

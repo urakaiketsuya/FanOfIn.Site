@@ -450,14 +450,17 @@ export function decodeCardLines(lines: EncodedCardLine[], cardNames: string[]): 
 export interface ArchetypeCluster {
   /** Stable across regenerations as long as the defining cards don't change — djb2 hash of championName + sorted defining card names, same scheme as `shortHash`. */
   id: string;
+  /** The plurality Champion (most players) among this cluster's decks — see `championBreakdown` for the full split. Clustering itself is card-only and cross-Champion, so a cluster can (and often does) span more than one Champion. */
   championName: string;
-  /** e.g. "Water Guo Jia", or "Fire Guo Jia (Vermilion Decree)" when a second cluster shares the dominant element. */
+  /** Every Champion this cluster's decks were actually played under, sorted by playerCount descending. Length 1 for a single-Champion build; length >1 means the same card shell got netdecked under more than one Champion. */
+  championBreakdown: { championName: string; deckCount: number; playerCount: number }[];
+  /** e.g. "Water Guo Jia", or "Fire Guo Jia (Vermilion Decree)" when a second cluster shares the dominant element. Named after the plurality Champion even when `championBreakdown` has more than one entry. */
   name: string;
   deckCount: number;
   playerCount: number;
   eventCount: number;
   avgWinRate: number;
-  /** Cards present in most of this cluster's decks but not most of the Champion's other decks — what actually distinguishes this build. Sorted by prevalence descending. */
+  /** Cards present in most of this cluster's decks but not most decks generally — what actually distinguishes this build. Sorted by prevalence descending. */
   definingCards: { name: string; prevalence: number }[];
   /** Every member deck's id, joinable against DeckSightingsData — same pattern as PopularDeck.deckIds. */
   deckIds: string[];
