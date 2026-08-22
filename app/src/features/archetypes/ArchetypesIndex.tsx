@@ -66,11 +66,12 @@ export default function ArchetypesIndex() {
 
   // Every Champion a build was ever played under, not just each cluster's plurality Champion —
   // otherwise a Champion who only shows up as the minority side of a shared shell (e.g. Merlin in
-  // a mostly-Lorraine cluster) would silently disappear from the filter.
+  // a mostly-Lorraine cluster) would silently disappear from the filter. `?? []` guards a stale
+  // published copy from before this field shipped — same rollout-window issue as `seasons` below.
   const championsPresent = useMemo(() => {
     if (!data) return [];
     const names = new Set<string>();
-    for (const c of data.clusters) for (const b of c.championBreakdown) names.add(b.championName);
+    for (const c of data.clusters) for (const b of c.championBreakdown ?? []) names.add(b.championName);
     return Array.from(names).sort();
   }, [data]);
 
@@ -87,8 +88,11 @@ export default function ArchetypesIndex() {
 
   const rows = useMemo((): DisplayRow[] => {
     if (!data) return [];
+    // `?? []` + the `c.championName ===` fallback both guard a stale published copy from before
+    // `championBreakdown` shipped — filtering still works (against the older single-Champion
+    // field) rather than throwing on `undefined.some(...)`.
     let filtered = championFilter
-      ? data.clusters.filter((c) => c.championBreakdown.some((b) => b.championName === championFilter))
+      ? data.clusters.filter((c) => c.championName === championFilter || (c.championBreakdown ?? []).some((b) => b.championName === championFilter))
       : data.clusters;
 
     let displayRows: DisplayRow[];
