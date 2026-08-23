@@ -505,3 +505,53 @@ export function computeDeckRating(
 
   return { signals, points, scores, composite: +composite.toFixed(2) };
 }
+
+/**
+ * A single card's own contribution to one rating pillar — the same signal vocabulary
+ * `computeDeckRating` scores a whole deck by (see its doc comment for the calibration this is
+ * built on: real signals from 94 Regional/Ascent-winning decklists, not invented heuristics),
+ * evaluated for one card in isolation rather than aggregated across a deck. Used to nudge the
+ * Guided Deck Builder's suggestions toward a chosen playstyle as a small boost on top of the real
+ * win-rate-lift ranking they're already built from, not a replacement for it — see
+ * `useSuggestedBuild.ts`'s `pillarBias` param for how the two combine. Relative weights mirror
+ * `computeDeckRating`'s own per-signal multipliers so a card's contribution here is proportional
+ * to what it would actually add to that pillar's score in a full deck.
+ */
+export function cardPillarScore(card: Card, pillar: RatingPillar): number {
+  const effect = (card.effect ?? "").replace(/\*\*/g, "");
+  const effectRaw = card.effect ?? "";
+  const isChampion = card.types.includes("CHAMPION");
+  const isAlly = card.types.includes("ALLY");
+
+  switch (pillar) {
+    case "aggro": {
+      let score = 0;
+      if (isAlly && card.power !== null) score += Math.max(0, card.power - 1);
+      if (/unblockable/i.test(effect)) score += 1.5;
+      if (/ranged \d/i.test(effect)) score += 0.5;
+      if (!isChampion && card.cost_memory !== null && card.cost_memory <= 1) score += 1;
+      return score;
+    }
+    case "consistency": {
+      if (/whenever .* draw a card|\[REST\].*draw a card|at the (beginning|start) of .* draw a card/i.test(effect)) return 4;
+      if (/draw (a|two|three|\d+) card/i.test(effect)) return 1.5;
+      return 0;
+    }
+    case "interaction": {
+      let score = 0;
+      if (!isChampion && /\bbanish\b/i.test(effect)) score += 0.3;
+      if (!isChampion && /\bdestroy\b/i.test(effect)) score += 0.3;
+      if (/\*\*negate\*\*/i.test(effectRaw)) score += 2;
+      if (/fast activation/i.test(effect)) score += 1.5;
+      return score;
+    }
+    case "resilience": {
+      let score = 0;
+      const recoverMatch = effect.match(/recover (\d+)/i);
+      if (recoverMatch) score += Number(recoverMatch[1]) * 0.3;
+      if (/spellshroud|intercept|\bprevent\b/i.test(effect)) score += 0.5;
+      if (isAlly && card.power !== null && card.power >= 2) score += 0.3;
+      return score;
+    }
+  }
+}

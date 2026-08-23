@@ -9,6 +9,7 @@ import {
 } from "@gatcg/shared";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { useDebouncedValue } from "../../lib/useDebouncedValue";
+import { cardPillarScore, type RatingPillar } from "../../lib/deckIdentity";
 import type { DeckBuilderRow } from "./useDeckBuilderPopulation";
 
 /** Same reasoning as useAllDecodedDecks' CATALOG_SETTLE_MS (app/src/lib/decodedDecks.ts) — the
@@ -17,6 +18,11 @@ import type { DeckBuilderRow } from "./useDeckBuilderPopulation";
  * own to make the whole page recompute/re-render on every sync write, even after that other hook
  * was fixed. */
 const CATALOG_SETTLE_MS = 500;
+/** How much a card's own `cardPillarScore` (roughly 0-4 for a strong signal) can nudge its position
+ * in the ranked list, in the same units as `adjustedLift` (a win-rate delta, typically within
+ * ±0.15) — small enough that pillar bias only breaks ties among comparably-performing real cards,
+ * never overrides a clearly better lift with a stylistically-matching but weaker one. */
+const PILLAR_BOOST_WEIGHT = 0.01;
 
 /** Mirrors pipeline/src/config.ts's defaults — see useChampionCardImpact.ts for why these are plain literals here. */
 const PRIOR_WEIGHT = 10;
@@ -265,6 +271,12 @@ export function useSuggestedBuild(
    * single-Champion pools, where `rows` already only ever contains one Champion's decks anyway).
    */
   championCardOverride?: Card,
+  /** When set, ranked suggestions get a small boost (see `PILLAR_BOOST_WEIGHT`) toward cards that
+   * score well on this rating pillar (`cardPillarScore`, the same signals `computeDeckRating`'s
+   * Power Rating uses) — a nudge toward a chosen playstyle among cards that already cleared the
+   * real win-rate-lift bar, never a replacement for that bar. Omit for unbiased lift-only ranking,
+   * unchanged from before this existed. */
+  pillarBias?: RatingPillar | null,
 ): SuggestedBuild {
   const cardCatalog = useCardCatalog();
   const settledCardCatalog = useDebouncedValue(cardCatalog, CATALOG_SETTLE_MS);
@@ -400,6 +412,16 @@ export function useSuggestedBuild(
     const ranked = computeCardImpactEntries(sectionRows, baseline, PRIOR_WEIGHT, MIN_SAMPLE_SIZE).filter(
       (e) => !lockedNames.has(e.cardName) && !rejectedCards.has(e.cardName),
     );
+    // Re-order (not re-score) by a small pillar-affinity boost — each entry's own `adjustedLift`
+    // stays the real, honest win-rate number shown in the UI; only which comparably-good real card
+    // gets picked first for a limited slot shifts toward the chosen playstyle.
+    if (pillarBias) {
+      const boostedScore = (e: CardImpactEntry): number => {
+        const card = cardsByName.get(e.cardName);
+        return e.adjustedLift + (card ? PILLAR_BOOST_WEIGHT * cardPillarScore(card, pillarBias) : 0);
+      };
+      ranked.sort((a, b) => boostedScore(b) - boostedScore(a));
+    }
     const entryByName = new Map(ranked.map((e) => [e.cardName, e]));
 
     const materialTarget = modalTotal(spiritRows, "material", 12);
@@ -577,5 +599,5 @@ export function useSuggestedBuild(
       baselineWinRate,
       loading: false,
     };
-  }, [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName, lockedSections, quantityBucketsByName, championCardOverride]);
+  }, [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName, lockedSections, quantityBucketsByName, championCardOverride, pillarBias]);
 }
