@@ -81,23 +81,6 @@ collectorNumber)` keys — the same per-edition join `app/src/features/cards/Car
 already does client-side. `editions` is absent (not empty) on a stale on-disk catalog cache from
 before this field shipped; always read with `?? []`, self-heals within the existing 24h cache TTL.
 
-> **Pending regen** (delete once done): everything above only fixes the *code* — the published
-> `data/analysis/*.json` still reflects the old, unresolved card names until the pipeline actually
-> runs again. Nearly every file in `data/analysis/` depends on `decklists.ts`'s card-name/Champion
-> resolution and needs a fresh `pipeline:analysis` run to reflect it: `archetype-taxonomy.json`
-> (`championBreakdown`, `cardClusterIndex`, cluster merges), `cards.json` (the 249 case-variant
-> cards should merge back into one entry each, price coverage should improve),
-> `card-quantity-stats.json`, `similarity.json`, `composition-win-rates.json`, `keyword-stats.json`,
-> `hipster.json`, `deck-sightings.json`, `deck-popularity-index.json`, `deck-card-index.json`,
-> `player-decks.json`, `archetypes.json`, `champion-trends.json`, `card-impact.json`,
-> `matchup-card-impact.json`, `achievements.json`. Not affected: `elo.json`, `rivals.json` (pure
-> pairing/opponent-id keyed, no card names involved). **Before running**: delete
-> `pipeline/.cache/cards.json` (or let it age past the 24h TTL) so the catalog re-fetches with the
-> new `editions` field — otherwise the price-join fix silently no-ops. Spot-check afterward: "Dungeon
-> Guide" should show ~31,928 decks (was split 31,908/20 across two entries), and cards like
-> "Stonescale Band" / "Guo Jia, Blessed Scion" should show a market price if TCGPlayer has one for
-> any printing.
-
 ## Champion identity (`pipeline/src/analysis/decklists.ts` — `findChampionName`)
 
 A deck's Champion is the named identity behind whichever CHAMPION-typed printing in the Material
