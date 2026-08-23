@@ -3,8 +3,29 @@ import type { Card } from "@gatcg/shared";
 const SUMMON_TOKEN_RE = /\*\*Summon\*\*\s+(?:a|an|\d+|two|three)\s+([A-Z][A-Za-z ]*?)\s+tokens?\b/g;
 const SACRIFICE_TOKEN_RE = /[Ss]acrifice\s+(?:a|an|\d+|any amount of)\s+([A-Z][A-Za-z ]*?)\b/g;
 
-function normalizeCategory(raw: string): string {
+/**
+ * Token names are discovered dynamically from free effect text with no canonical list to check
+ * against (unlike subtypes, see `normalizeSubtype` below) — the same token can be mentioned
+ * singular in one card's "Summon" text and plural in another's "sacrifice" text, so this strips a
+ * trailing "s" to unify them into one matching key. Naive (doesn't know real irregular plurals),
+ * but there's no better signal available for a name with no catalog entry of its own.
+ */
+function normalizeTokenName(raw: string): string {
   return raw.trim().replace(/s$/i, "").toLowerCase();
+}
+
+/**
+ * Subtypes, unlike token names, already have a canonical spelling straight from the catalog's own
+ * `card.subtypes` — no destructive "strip a trailing s" guess is needed or wanted here. Blindly
+ * stripping (this function's previous behavior, shared with `normalizeTokenName`) mangled any
+ * subtype whose real singular form happens to end in "s" (e.g. a hypothetical "Glass" → "Glas"),
+ * corrupting both the stored matching key and the `via` text shown to the user. Case-insensitive
+ * matching against effect text still allows the plural form via the trigger regexes' own trailing
+ * `s?` (see `validatedSubtypeRegexes`/`experimentalSubtypeRegexes`) — pluralization is handled once,
+ * at match time, not baked destructively into the stored value.
+ */
+function normalizeSubtype(raw: string): string {
+  return raw.trim().toLowerCase();
 }
 
 function escapeRegExp(s: string): string {
@@ -15,7 +36,7 @@ function escapeRegExp(s: string): string {
 export function extractProducedTokens(card: Card): Set<string> {
   const tokens = new Set<string>();
   const effect = card.effect ?? "";
-  for (const m of effect.matchAll(SUMMON_TOKEN_RE)) tokens.add(normalizeCategory(m[1]));
+  for (const m of effect.matchAll(SUMMON_TOKEN_RE)) tokens.add(normalizeTokenName(m[1]));
   return tokens;
 }
 
@@ -23,7 +44,7 @@ export function extractProducedTokens(card: Card): Set<string> {
 export function extractConsumedTokens(card: Card): Set<string> {
   const tokens = new Set<string>();
   const effect = card.effect ?? "";
-  for (const m of effect.matchAll(SACRIFICE_TOKEN_RE)) tokens.add(normalizeCategory(m[1]));
+  for (const m of effect.matchAll(SACRIFICE_TOKEN_RE)) tokens.add(normalizeTokenName(m[1]));
   return tokens;
 }
 
@@ -45,11 +66,22 @@ const FILLER = "(?:[A-Za-z]+\\s+){0,2}";
  * used here mismatched real cards, e.g. "**Sacrifice CARDNAME**: As a Spell, destroy..." as if it
  * meant "sacrifice a Spell [card]", just because both words fell within a fixed character window.
  */
+/**
+ * How far past the subtype word "from <zone>" is allowed to trail for the banish trigger — up to 4
+ * more words, comfortably covering real phrasing like "banish a Beast ally from your opponent's
+ * discard pile" (gap of 1: "ally"). Originally unbounded (`[^.]*`, "anywhere later in the same
+ * sentence"), which could cross into an unrelated clause sharing that sentence — e.g. "Banish a
+ * Beast ally, then look at the top card from your deck" has no period between the banish and an
+ * unrelated draw effect's own "from your deck", so the old pattern could credit the banish trigger
+ * with a "from" clause that actually belongs to a different effect entirely.
+ */
+const BANISH_FROM_GAP = "(?:\\s+\\S+){0,4}";
+
 function validatedSubtypeRegexes(s: string): RegExp[] {
   return [
     new RegExp(`\\bsacrifice\\s+(?:a|an|\\d+|any amount of)\\s+${FILLER}${s}s?\\b`, "i"),
     new RegExp(`\\bcontrols?\\s+(?:a|an|\\d+|at least \\d+)\\s+${FILLER}${s}s?\\b`, "i"),
-    new RegExp(`\\bbanish\\s+(?:a|an|\\d+)\\s+${FILLER}${s}s?\\b[^.]*\\bfrom\\s+(?:your|the)\\s+\\w+`, "i"),
+    new RegExp(`\\bbanish\\s+(?:a|an|\\d+)\\s+${FILLER}${s}s?\\b${BANISH_FROM_GAP}\\s+from\\s+(?:your|the)\\s+\\w+`, "i"),
   ];
 }
 
@@ -123,10 +155,10 @@ export interface IntentCards {
  */
 export function intentCards(card: Card, catalog: Card[]): IntentCards {
   const knownSubtypes = new Set<string>();
-  for (const c of catalog) for (const s of c.subtypes) knownSubtypes.add(normalizeCategory(s));
+  for (const c of catalog) for (const s of c.subtypes) knownSubtypes.add(normalizeSubtype(s));
 
   const myProducedTokens = extractProducedTokens(card);
-  const myOwnSubtypes = new Set(card.subtypes.map(normalizeCategory));
+  const myOwnSubtypes = new Set(card.subtypes.map(normalizeSubtype));
   const myConsumedTokens = extractConsumedTokens(card);
   const myConsumedSubtypes = extractConsumedSubtypes(card, knownSubtypes);
 
@@ -150,7 +182,7 @@ export function intentCards(card: Card, catalog: Card[]): IntentCards {
     for (const t of myConsumedTokens) {
       if (otherProducedTokens.has(t)) poweredBy.push({ card: other, via: t, tier: "validated" });
     }
-    const otherSubtypes = new Set(other.subtypes.map(normalizeCategory));
+    const otherSubtypes = new Set(other.subtypes.map(normalizeSubtype));
     for (const [s, tier] of myConsumedSubtypes) {
       if (otherSubtypes.has(s)) poweredBy.push({ card: other, via: s, tier });
     }

@@ -555,6 +555,24 @@ opt-in behind a checkbox naming the count and the risk, and are visually tagged 
 an experimental trigger to validated only after doing the same real-corpus check the original three
 got.
 
+**Subtype normalization is non-destructive**: `normalizeSubtype` only lowercases — it does *not*
+strip a trailing "s" the way `normalizeTokenName` does. Subtypes have a canonical spelling straight
+from `card.subtypes` (a real API field), so there's nothing to unify the way token names (discovered
+from free effect text with no catalog entry of their own) need; blindly stripping "s" here used to
+mangle any subtype whose real singular form happens to end in "s" (e.g. a hypothetical "Glass" →
+"Glas"), corrupting both the matching key and the `via` text shown to the user. Pluralization when
+searching effect text is still handled, just non-destructively — each trigger regex's own trailing
+`s?` matches the plural form without altering the stored subtype string.
+
+**The banish-from gap is bounded, not "anywhere in the sentence"**: the banish trigger originally
+allowed `[^.]*` between the subtype match and `from <zone>` — any non-period characters, i.e.
+anywhere later in the same sentence. That could credit the banish trigger with a `from` clause
+belonging to a different effect entirely, e.g. "Banish a Beast ally, then look at the top card from
+your deck" has no period separating the banish from an unrelated draw effect's own "from your deck".
+`BANISH_FROM_GAP` bounds it to at most 4 words past the subtype match, which comfortably covers real
+phrasing like "banish a Beast ally from your opponent's discard pile" (a 1-word gap: "ally") without
+reaching into an unrelated clause further down the same sentence.
+
 ## Deck similarity (`pipeline/src/analysis/similarity.ts`)
 
 **Base metric**: weighted Jaccard, a.k.a. Ruzicka similarity, over each deck's card-copy multiset
