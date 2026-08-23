@@ -15,6 +15,7 @@ import TopCardsSections from "../../components/TopCardsSections";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { formatCountry } from "../../lib/format";
+import { isProvisionalRating } from "../../lib/eloProvisional";
 
 type PlayerTab = "overview" | "events" | "judged";
 const PAGE_SIZE = 50;
@@ -189,6 +190,11 @@ export default function PlayerProfile() {
             <p className="mt-1 text-sm text-ctp-subtext1">
               Rating {Math.round(rating.rating)} · {rating.wins}-{rating.losses}-{rating.ties} across{" "}
               {rating.matches} matches
+              {isProvisionalRating(rating.matches) && (
+                <span className="ml-1.5 text-xs text-ctp-yellow">
+                  (provisional — too few matches for the rating to have converged)
+                </span>
+              )}
             </p>
           )}
           {hipster && (
