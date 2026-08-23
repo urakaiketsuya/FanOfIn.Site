@@ -543,6 +543,18 @@ before building (2,494 cards, `pipeline/.cache/cards.json`):
 Empty results (`feeds`/`poweredBy` both `[]`) are the normal case — only cards actually part of a
 named token or tribal economy will have entries.
 
+**Validated vs. experimental tiers**: every `IntentMatch` carries a `tier`. `"validated"` is the
+sacrifice/control/banish-from (subtypes) and Summon/sacrifice (tokens) triggers above — the ones
+actually checked against the real card corpus before shipping. `"experimental"` adds three broader
+subtype triggers (reveal/discard/return-from-your-discard-pile) that are real, plausible GA TCG
+patterns but have **not** had that same corpus check — a generic-enough trigger is exactly what
+turns this from a designed-relationship signal into noise (see the `types`-vs-`subtypes` reasoning
+above). `intentCards()` always computes both tiers (cheap — it's just more regexes, no extra data),
+but `CardDetail.tsx`'s Intent tab only shows validated matches by default; experimental matches are
+opt-in behind a checkbox naming the count and the risk, and are visually tagged when shown. Promote
+an experimental trigger to validated only after doing the same real-corpus check the original three
+got.
+
 ## Deck similarity (`pipeline/src/analysis/similarity.ts`)
 
 **Base metric**: weighted Jaccard, a.k.a. Ruzicka similarity, over each deck's card-copy multiset

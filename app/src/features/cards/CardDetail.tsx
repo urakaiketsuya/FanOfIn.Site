@@ -164,6 +164,17 @@ export default function CardDetail() {
   );
 
   const intent = useIntentCards(card ?? null);
+  const [showExperimentalIntent, setShowExperimentalIntent] = useState(false);
+  const visibleIntentFeeds = useMemo(
+    () => intent.feeds.filter((m) => showExperimentalIntent || m.tier === "validated"),
+    [intent.feeds, showExperimentalIntent],
+  );
+  const visibleIntentPoweredBy = useMemo(
+    () => intent.poweredBy.filter((m) => showExperimentalIntent || m.tier === "validated"),
+    [intent.poweredBy, showExperimentalIntent],
+  );
+  const experimentalIntentCount =
+    intent.feeds.filter((m) => m.tier === "experimental").length + intent.poweredBy.filter((m) => m.tier === "experimental").length;
 
   const topDecks = useMemo(() => {
     if (!sightingsData) return [];
@@ -627,19 +638,32 @@ export default function CardDetail() {
             cards aren't part of one of these — an empty list here is normal, not a sign anything's broken.
           </p>
 
-          {intent.feeds.length === 0 && intent.poweredBy.length === 0 ? (
+          {experimentalIntentCount > 0 && (
+            <label className="mt-2 flex items-center gap-1.5 text-xs text-ctp-subtext0">
+              <input
+                type="checkbox"
+                checked={showExperimentalIntent}
+                onChange={(e) => setShowExperimentalIntent(e.target.checked)}
+              />
+              Show {experimentalIntentCount} experimental match{experimentalIntentCount === 1 ? "" : "es"} (broader
+              reveal/discard/return-from-discard triggers — not yet checked against the full card corpus the way the
+              default set was, so may include false positives)
+            </label>
+          )}
+
+          {visibleIntentFeeds.length === 0 && visibleIntentPoweredBy.length === 0 ? (
             <p className="mt-4 text-sm text-ctp-subtext1">
               No text-detected token or tribal relationship for {card.name} yet.
             </p>
           ) : (
             <div className="mt-3 grid gap-6 sm:grid-cols-2">
-              {intent.feeds.length > 0 && (
+              {visibleIntentFeeds.length > 0 && (
                 <div>
                   <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
-                    Feeds ({intent.feeds.length})
+                    Feeds ({visibleIntentFeeds.length})
                   </h3>
                   <ul className="mt-2 space-y-1">
-                    {intent.feeds.map((m) => (
+                    {visibleIntentFeeds.map((m) => (
                       <li key={`${m.card.uuid}-${m.via}`} className="flex items-center gap-1.5 text-sm">
                         <CardHoverPreview image={m.card.editions[0]?.image} alt={m.card.name}>
                           <Link to={`/cards/${m.card.slug}`} className="text-ctp-text hover:text-ctp-blue">
@@ -649,18 +673,26 @@ export default function CardDetail() {
                         <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">
                           via {m.via}
                         </span>
+                        {m.tier === "experimental" && (
+                          <span
+                            className="rounded-full border border-ctp-yellow px-1.5 text-[10px] text-ctp-yellow"
+                            title="Broader trigger, not yet checked against the full card corpus"
+                          >
+                            experimental
+                          </span>
+                        )}
                       </li>
                     ))}
                   </ul>
                 </div>
               )}
-              {intent.poweredBy.length > 0 && (
+              {visibleIntentPoweredBy.length > 0 && (
                 <div>
                   <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
-                    Powered by ({intent.poweredBy.length})
+                    Powered by ({visibleIntentPoweredBy.length})
                   </h3>
                   <ul className="mt-2 space-y-1">
-                    {intent.poweredBy.map((m) => (
+                    {visibleIntentPoweredBy.map((m) => (
                       <li key={`${m.card.uuid}-${m.via}`} className="flex items-center gap-1.5 text-sm">
                         <CardHoverPreview image={m.card.editions[0]?.image} alt={m.card.name}>
                           <Link to={`/cards/${m.card.slug}`} className="text-ctp-text hover:text-ctp-blue">
@@ -670,6 +702,14 @@ export default function CardDetail() {
                         <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">
                           via {m.via}
                         </span>
+                        {m.tier === "experimental" && (
+                          <span
+                            className="rounded-full border border-ctp-yellow px-1.5 text-[10px] text-ctp-yellow"
+                            title="Broader trigger, not yet checked against the full card corpus"
+                          >
+                            experimental
+                          </span>
+                        )}
                       </li>
                     ))}
                   </ul>
