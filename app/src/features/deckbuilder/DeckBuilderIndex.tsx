@@ -1146,6 +1146,12 @@ export default function DeckBuilderIndex() {
               </>
             )}
           </p>
+          {build.usedSpiritElementFallback && (
+            <p className="mt-1 text-xs text-ctp-yellow">
+              Too few {championName} decks run {spiritFilter} specifically — suggestions also draw on other{" "}
+              {championName} decks with a same-element Spirit ({build.spiritElementFallbackSpirits.join(", ")}).
+            </p>
+          )}
           {build.usedFallback && (
             <p className="mt-1 text-xs text-ctp-yellow">
               Not enough decks have every card you've locked in — remaining suggestions are based on the broader{" "}

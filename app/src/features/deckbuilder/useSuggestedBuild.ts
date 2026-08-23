@@ -63,6 +63,10 @@ export interface SuggestedBuild {
   rankingPopulationSize: number;
   /** True once enough cards are locked that the exact (Spirit + all locks) population got too thin to rank against, so remaining suggestions fell back to the Spirit-only population instead. */
   usedFallback: boolean;
+  /** True when the chosen Champion+Spirit combo itself has zero real decks, so ranking fell back to other Spirits of the same element with this Champion instead (e.g. Fragmented Spirit of Wind has no Diao Chan decks, but Spirit of Wind does) — see `spiritElementFallbackSpirits` for which ones. The Spirit slot itself still shows the viewer's actual pick either way; only the population everything else is ranked against is broadened. */
+  usedSpiritElementFallback: boolean;
+  /** The other Spirit(s) actually contributing decks to the element fallback above — empty unless `usedSpiritElementFallback` is true. */
+  spiritElementFallbackSpirits: string[];
   /** Real average win rate of decks matching the Spirit filter AND every card currently locked in — the actual population everything is being ranked against. Shifts as locks are added/removed, so it doubles as "does this pick move the needle." Null only when there's no population at all yet. */
   conditionalWinRate: number | null;
   /** Real average win rate of decks matching just the Spirit filter (no lock condition) — a stable reference point for measuring how far locks have moved conditionalWinRate. */
@@ -231,12 +235,42 @@ export function useSuggestedBuild(
         hasQuantityOptimizations: false,
         rankingPopulationSize: 0,
         usedFallback: false,
+        usedSpiritElementFallback: false,
+        spiritElementFallbackSpirits: [],
         conditionalWinRate: null,
         baselineWinRate: null,
         loading,
       };
 
-    const spiritRows = spiritFilter === null ? rows : rows.filter((r) => r.spiritName === spiritFilter);
+    const exactSpiritRows = spiritFilter === null ? rows : rows.filter((r) => r.spiritName === spiritFilter);
+    // The exact Champion+Spirit combo itself may have too little real data to rank against
+    // reliably — same MIN_RANKING_POPULATION bar the locked-cards fallback below already uses for
+    // "too thin to trust" (real example: Fragmented Spirit of Wind has only 3 Diao Chan decks,
+    // Spirit of Wind has 47) — rather than ranking against a near-anecdotal population or showing
+    // nothing, fall back to this Champion's decks with any Spirit sharing the chosen one's
+    // element(s). Since a Spirit trivially shares its own element, this naturally still includes
+    // the exact combo's own (thin) decks alongside the broader ones, not instead of them. Real
+    // elements only (granted by the Spirit card itself, same source `computeIdentityElements`
+    // reads from) — a Spirit with no elements (shouldn't happen, but data can surprise) has nothing
+    // to match on, so no fallback rather than matching everything.
+    let spiritRows = exactSpiritRows;
+    let usedSpiritElementFallback = false;
+    let spiritElementFallbackSpirits: string[] = [];
+    if (spiritRows.length < MIN_RANKING_POPULATION && spiritFilter !== null) {
+      const chosenSpiritElements = new Set((cardsByName.get(spiritFilter)?.elements ?? []).filter((e) => e !== "NORM"));
+      if (chosenSpiritElements.size > 0) {
+        const fallbackRows = rows.filter((r) => {
+          if (!r.spiritName) return false;
+          const elements = cardsByName.get(r.spiritName)?.elements ?? [];
+          return elements.some((e) => chosenSpiritElements.has(e));
+        });
+        if (fallbackRows.length > spiritRows.length) {
+          spiritRows = fallbackRows;
+          usedSpiritElementFallback = true;
+          spiritElementFallbackSpirits = Array.from(new Set(fallbackRows.map((r) => r.spiritName!).filter((s) => s !== spiritFilter))).sort();
+        }
+      }
+    }
     if (spiritRows.length === 0)
       return {
         material: [],
@@ -247,6 +281,8 @@ export function useSuggestedBuild(
         hasQuantityOptimizations: false,
         rankingPopulationSize: 0,
         usedFallback: false,
+        usedSpiritElementFallback: false,
+        spiritElementFallbackSpirits: [],
         conditionalWinRate: null,
         baselineWinRate: null,
         loading: false,
@@ -479,6 +515,8 @@ export function useSuggestedBuild(
       hasQuantityOptimizations,
       rankingPopulationSize: rankingRows.length,
       usedFallback,
+      usedSpiritElementFallback,
+      spiritElementFallbackSpirits,
       conditionalWinRate,
       baselineWinRate,
       loading: false,
