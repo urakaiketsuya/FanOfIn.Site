@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import type { CompositionWinRateData, CompositionWinRateStat, OmnidexDecklist } from "@gatcg/shared";
 import { useDeckPopularityIndexData } from "../topdecks/data";
+import { useLatestSeason } from "../tournaments/useLatestSeason";
 import { useArchetypeTaxonomyData, useCardQuantityStatsData, useCardStatsData, useCompositionWinRateData } from "../archetypes/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { parseDecklist } from "../compare/parseDecklist";
@@ -38,10 +39,11 @@ import { useBuddyCards, type BuddyCard } from "./useBuddyCards";
  * ranking at all (see `useNearestDecks`/`useGlobalElementSuggestions`'s doc comments for why) and
  * get their own render sections below instead of feeding `useSuggestedBuild`.
  */
-type SuggestionPool = "default" | CrossChampionPool | "nearestDecks" | "globalElements";
+type SuggestionPool = "default" | "recentSeason" | CrossChampionPool | "nearestDecks" | "globalElements";
 
 const POOL_LABELS: Record<SuggestionPool, string> = {
   default: "This Champion + Spirit (or Any Spirit)",
+  recentSeason: "This Champion + Spirit, recent season only",
   spiritAnyChampion: "Same Spirit, any Champion",
   closestCluster: "Closest matching archetype, different Champion",
   sameClass: "Same Class combination, any element",
@@ -581,6 +583,15 @@ export default function DeckBuilderIndex() {
   const cardStatsData = useCardStatsData();
   const compositionWinRateData = useCompositionWinRateData();
   const archetypeTaxonomyData = useArchetypeTaxonomyData();
+  const latestSeason = useLatestSeason();
+  // Same Champion+Spirit population as "default", just date-restricted to the latest tracked
+  // season — its own targeted decode (not the full-universe one), only run while this pool is
+  // actually selected, same "don't pay for what isn't in use" reasoning as needsAllDecks below.
+  const recentSeasonPopulation = useDeckBuilderPopulation(
+    pool === "recentSeason" ? championName : null,
+    latestSeason?.dateStart,
+    latestSeason?.dateEnd,
+  );
 
   const crossChampionKind: CrossChampionPool | null =
     pool === "spiritAnyChampion" || pool === "closestCluster" || pool === "sameClass" ? pool : null;
@@ -612,9 +623,9 @@ export default function DeckBuilderIndex() {
   // itself" material slot, which is still correct there) — but "closestCluster"/"sameClass"'s rows
   // don't share the current Spirit at all, so re-filtering by it there would zero out a population
   // that's already fully resolved.
-  const activeRows = crossChampionKind ? poolPopulation.rows : rows;
+  const activeRows = crossChampionKind ? poolPopulation.rows : pool === "recentSeason" ? recentSeasonPopulation.rows : rows;
   const effectiveSpiritFilter = crossChampionKind === "closestCluster" || crossChampionKind === "sameClass" ? null : spiritFilter;
-  const activeLoading = crossChampionKind ? allDecksLoading : populationLoading;
+  const activeLoading = crossChampionKind ? allDecksLoading : pool === "recentSeason" ? recentSeasonPopulation.loading : populationLoading;
   // Only overridden for the cross-Champion pools — omitted for "default" so pool 1/2 behavior is
   // byte-for-byte unchanged (useSuggestedBuild's own internal resolution already does the same
   // thing against the same `rows` in that case).
@@ -638,13 +649,15 @@ export default function DeckBuilderIndex() {
   // `nearestDecks`/`globalElements` have their own empty states (no locks yet / no matching cards)
   // rather than a blanket "no decks found", and every non-"default" pool depends on the full
   // decoded-deck universe loading, not just this Champion's own population.
-  const gateLoading = pool === "default" ? populationLoading : allDecksLoading;
+  const gateLoading = pool === "default" ? populationLoading : pool === "recentSeason" ? recentSeasonPopulation.loading : allDecksLoading;
   const gateHasData =
     pool === "default"
       ? rows.length > 0
-      : pool === "nearestDecks" || pool === "globalElements"
-        ? true
-        : poolPopulation.rows.length > 0;
+      : pool === "recentSeason"
+        ? recentSeasonPopulation.rows.length > 0
+        : pool === "nearestDecks" || pool === "globalElements"
+          ? true
+          : poolPopulation.rows.length > 0;
 
   useEffect(() => {
     const current = new Set(
@@ -1024,9 +1037,14 @@ export default function DeckBuilderIndex() {
               className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
             >
               {(Object.keys(POOL_LABELS) as SuggestionPool[]).map((key) => (
-                <option key={key} value={key} disabled={key === "spiritAnyChampion" && !spiritFilter}>
-                  {POOL_LABELS[key]}
+                <option
+                  key={key}
+                  value={key}
+                  disabled={(key === "spiritAnyChampion" && !spiritFilter) || (key === "recentSeason" && !latestSeason)}
+                >
+                  {key === "recentSeason" && latestSeason ? `This Champion + Spirit, ${latestSeason.name} only` : POOL_LABELS[key]}
                   {key === "spiritAnyChampion" && !spiritFilter ? " (pick a Spirit first)" : ""}
+                  {key === "recentSeason" && !latestSeason ? " (loading season data)" : ""}
                 </option>
               ))}
             </select>
@@ -1034,8 +1052,14 @@ export default function DeckBuilderIndex() {
         )}
       </div>
 
-      {championName && pool !== "default" && pool !== "nearestDecks" && pool !== "globalElements" && poolPopulation.label && (
+      {championName && pool !== "default" && pool !== "nearestDecks" && pool !== "globalElements" && pool !== "recentSeason" && poolPopulation.label && (
         <p className="mt-2 text-xs text-ctp-yellow">{poolPopulation.label}</p>
+      )}
+      {championName && pool === "recentSeason" && !recentSeasonPopulation.loading && (
+        <p className="mt-2 text-xs text-ctp-yellow">
+          {recentSeasonPopulation.rows.length} deck{recentSeasonPopulation.rows.length === 1 ? "" : "s"} from{" "}
+          {latestSeason?.name ?? "the latest season"}.
+        </p>
       )}
 
       <div className="mt-2">

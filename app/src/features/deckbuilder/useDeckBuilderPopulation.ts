@@ -40,8 +40,14 @@ function findSpiritName(material: { name: string; quantity: number }[], cardsByN
  * Champion's few hundred decks — was itself the cause of a real memory-pressure bug (browsers,
  * Safari especially, silently killing and reloading the tab; see `usePublishedData.ts`'s own doc
  * comment on the same class of bug). Only decodes decks that actually match `championName`.
+ *
+ * `minEventDate`/`maxEventDate` (ISO strings, inclusive), when given, additionally restrict to
+ * decks whose event falls in that range — the "recent season only" pool's filter, kept as plain
+ * primitives rather than a `{start, end}` object so callers that recompute the range each render
+ * (e.g. from `useLatestSeason()`) don't accidentally bust this hook's own memoization with a new
+ * object reference every time.
  */
-export function useDeckBuilderPopulation(championName: string | null): DeckBuilderPopulation {
+export function useDeckBuilderPopulation(championName: string | null, minEventDate?: string, maxEventDate?: string): DeckBuilderPopulation {
   const rawCardIndexData = useDeckCardIndexData();
   const cardIndexData = rawCardIndexData?.cardNames ? rawCardIndexData : undefined;
   const popularityIndexData = useDeckPopularityIndexData();
@@ -52,17 +58,20 @@ export function useDeckBuilderPopulation(championName: string | null): DeckBuild
     if (!championName || !cardIndexData || !popularityIndexData)
       return { rows: [], spiritsPresent: [], loading: !cardIndexData || !popularityIndexData };
 
-    const winRateByDeckId = new Map<string, number>();
+    const infoByDeckId = new Map<string, { winRate: number; eventDate: string }>();
     for (const s of popularityIndexData.entries) {
-      if (s.championName === championName) winRateByDeckId.set(s.deckId, s.winRate);
+      if (s.championName !== championName) continue;
+      if (minEventDate && s.eventDate < minEventDate) continue;
+      if (maxEventDate && s.eventDate > maxEventDate) continue;
+      infoByDeckId.set(s.deckId, { winRate: s.winRate, eventDate: s.eventDate });
     }
-    if (winRateByDeckId.size === 0) return { rows: [], spiritsPresent: [], loading: false };
+    if (infoByDeckId.size === 0) return { rows: [], spiritsPresent: [], loading: false };
 
     const rows: DeckBuilderRow[] = [];
     const spirits = new Set<string>();
     for (const entry of cardIndexData.decks) {
-      const winRate = winRateByDeckId.get(entry.deckId);
-      if (winRate === undefined) continue;
+      const info = infoByDeckId.get(entry.deckId);
+      if (!info) continue;
 
       const mainLines = decodeCardLines(entry.main, cardIndexData.cardNames);
       const materialLines = decodeCardLines(entry.material, cardIndexData.cardNames);
@@ -76,10 +85,10 @@ export function useDeckBuilderPopulation(championName: string | null): DeckBuild
         material: new Map(materialLines.map((l) => [l.name, l.quantity])),
         sideboard: new Map(sideboardLines.map((l) => [l.name, l.quantity])),
         spiritName,
-        winRate,
+        winRate: info.winRate,
       });
     }
 
     return { rows, spiritsPresent: Array.from(spirits).sort(), loading: false };
-  }, [championName, cardIndexData, popularityIndexData, cardsByName]);
+  }, [championName, cardIndexData, popularityIndexData, cardsByName, minEventDate, maxEventDate]);
 }
