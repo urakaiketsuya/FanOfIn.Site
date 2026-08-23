@@ -341,9 +341,21 @@ export default function CardDetail() {
               </h2>
               <div className="mt-1 flex flex-wrap gap-4 text-sm">
                 {price.normal && (
-                  <span className="text-ctp-subtext1">Normal: {formatUsd(price.normal.market)}</span>
+                  <span className="text-ctp-subtext1">
+                    Normal: {formatUsd(price.normal.market)}
+                    {price.normal.low !== null && price.normal.high !== null && (
+                      <span className="text-xs text-ctp-subtext0"> ({formatUsd(price.normal.low)}–{formatUsd(price.normal.high)})</span>
+                    )}
+                  </span>
                 )}
-                {price.foil && <span className="text-ctp-subtext1">Foil: {formatUsd(price.foil.market)}</span>}
+                {price.foil && (
+                  <span className="text-ctp-subtext1">
+                    Foil: {formatUsd(price.foil.market)}
+                    {price.foil.low !== null && price.foil.high !== null && (
+                      <span className="text-xs text-ctp-subtext0"> ({formatUsd(price.foil.low)}–{formatUsd(price.foil.high)})</span>
+                    )}
+                  </span>
+                )}
                 <a
                   href={price.tcgplayerUrl}
                   target="_blank"
