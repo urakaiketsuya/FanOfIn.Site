@@ -824,6 +824,35 @@ otherwise silently produce a dead link with no feedback. Read client-side via `u
 own `useEventBundle`, since that hook reads live from the Omnidex API + IndexedDB rather than the
 published static bundle.
 
+## Omnidex crawl cache seeding (`pipeline/src/omnidex/cache.ts` — `seedCacheFromPublished`)
+
+`pipeline/.cache/omnidex/` (raw per-event bundles, gitignored, ~400MB) is what makes crawls
+idempotent — `crawlEvents()` skips re-fetching any event whose cache entry already has a terminal
+status, and incremental mode starts its scan from `meta.json`'s `maxKnownId` minus a lookback
+window. A brand-new checkout has none of this, so its first "incremental" crawl falls back to
+scanning a full year of ids (`config.backfillYear`) with a live, rate-limited API call per id —
+slow, and unnecessary, since `pipeline/.cache/omnidex/events/` and the already-committed
+`data/omnidex/events/` were verified byte-for-byte identical across all 20,705 events (same keys,
+same content — every cached bundle that ever got published went out untouched).
+
+`crawlEvents()` calls `seedCacheFromPublished()` first, which copies every file from
+`data/omnidex/events/` into the local cache and seeds `meta.json`'s `maxKnownId` from the published
+`index.json`'s max event id — but **only when the local cache is genuinely empty** (zero files);
+any existing entry, even one, skips this entirely, so a real in-progress local crawl's state is
+never touched. The seeded `maxKnownId` is a conservative underestimate (the published index only
+covers deep-fetched "substantial" events, not every id ever scanned and skipped), so the very next
+incremental crawl re-scans a bounded gap near the frontier rather than picking up at the exact
+prior stopping point — `meta.json` self-corrects to the precise value once that crawl finishes.
+Verified locally: seeding populated all 20,705 cached bundles and the following incremental scan
+started at id ~59,901 (near the real ~60,729 frontier) instead of scanning from 2026's start.
+
+Deliberately not committing `pipeline/.cache/` itself to git instead of doing this: it changes on
+every pipeline run and git doesn't diff JSON blobs efficiently, so the repo/clone size would grow
+by roughly the full cache size every week, forever. The scheduled weekly refresh (GitHub Actions)
+already avoids re-crawling via `actions/cache` (`.github/workflows/data-refresh.yml`); this seeding
+step is for everything outside that cache's scope — a new machine, or an interactive session that
+only has a fresh `git clone`.
+
 ## Pipeline REPL (`pipeline/src/repl.ts`, `npm run repl` in `pipeline/`)
 
 Formalizes a pattern used repeatedly during this project's development: validating a new stat

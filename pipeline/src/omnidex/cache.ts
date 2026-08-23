@@ -1,10 +1,11 @@
-import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
+import { readFile, writeFile, mkdir, readdir, copyFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import type {
   OmnidexApiError,
   OmnidexDecklistEntry,
   OmnidexEvent,
+  OmnidexIndexData,
   OmnidexJudge,
   OmnidexPairingsResponse,
   OmnidexPlayer,
@@ -15,6 +16,10 @@ import type {
 const CACHE_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../.cache/omnidex");
 const EVENTS_DIR = path.join(CACHE_DIR, "events");
 const META_PATH = path.join(CACHE_DIR, "meta.json");
+/** The published mirror of EVENTS_DIR — verified byte-for-byte identical to the cache across all 20,705 events (see docs/CALCULATIONS.md), since every cached bundle that ever got published went out untouched. Used to bootstrap a fresh checkout's cache instead of re-fetching from Omnidex. */
+const PUBLISHED_DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/omnidex");
+const PUBLISHED_EVENTS_DIR = path.join(PUBLISHED_DATA_DIR, "events");
+const PUBLISHED_INDEX_PATH = path.join(PUBLISHED_DATA_DIR, "index.json");
 
 export interface OmnidexEventBundle {
   id: number;
@@ -116,4 +121,58 @@ export async function listCachedBundles(): Promise<OmnidexEventBundle[]> {
     if (bundle) bundles.push(bundle);
   }
   return bundles;
+}
+
+/**
+ * Bootstraps a fresh checkout's crawl cache from the already-published `data/omnidex/` instead of
+ * re-fetching everything from Omnidex — a brand-new machine/session otherwise has no cache, so its
+ * first "incremental" crawl falls back to scanning a full year of ids with a live API call per id
+ * (see `crawlEvents`'s `startId` fallback). Only runs when the local cache is genuinely empty (zero
+ * files in EVENTS_DIR) — any existing entry, even one, skips this entirely, so a real in-progress
+ * local crawl's state is never touched or merged with. No-ops quietly if `data/omnidex/events/`
+ * itself doesn't exist (e.g. a minimal checkout without the data directory).
+ *
+ * `meta.json`'s seeded `maxKnownId` is a conservative underestimate — the published index only
+ * covers deep-fetched ("substantial") events, not every id that was ever scanned and skipped — so
+ * the next incremental crawl re-scans a bounded gap near the frontier rather than picking up
+ * exactly where the original machine left off. `meta.json` self-corrects once that crawl finishes.
+ */
+export async function seedCacheFromPublished(): Promise<void> {
+  let existing: string[] = [];
+  try {
+    existing = await readdir(EVENTS_DIR);
+  } catch {
+    // EVENTS_DIR doesn't exist yet — treat the same as empty.
+  }
+  if (existing.length > 0) return;
+
+  let publishedFiles: string[] = [];
+  try {
+    publishedFiles = (await readdir(PUBLISHED_EVENTS_DIR)).filter((f) => f.endsWith(".json"));
+  } catch {
+    return; // no published data/omnidex/events/ to seed from — fall through to a normal crawl.
+  }
+  if (publishedFiles.length === 0) return;
+
+  await ensureDirs();
+  for (const file of publishedFiles) {
+    await copyFile(path.join(PUBLISHED_EVENTS_DIR, file), path.join(EVENTS_DIR, file));
+  }
+
+  const priorMeta = await readMeta();
+  if (!priorMeta) {
+    let maxKnownId = 0;
+    try {
+      const index = JSON.parse(await readFile(PUBLISHED_INDEX_PATH, "utf-8")) as OmnidexIndexData;
+      maxKnownId = index.events.reduce((max, e) => Math.max(max, e.id), 0);
+    } catch {
+      // No published index.json — leave maxKnownId at 0; the crawl falls back to its own
+      // year-start logic, same as if nothing had been seeded at all.
+    }
+    if (maxKnownId > 0) {
+      await writeMeta({ maxKnownId, backfilledYears: [], lastRunAt: new Date().toISOString() });
+    }
+  }
+
+  console.log(`omnidex: seeded ${publishedFiles.length} cached events from published data/ (first run on this machine)`);
 }

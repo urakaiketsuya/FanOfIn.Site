@@ -3,7 +3,15 @@ import { sleep } from "../lib/http.js";
 import { config } from "../config.js";
 import { omnidexApi } from "./api.js";
 import { findMaxEventId, findYearStartId } from "./bounds.js";
-import { readCachedBundle, writeCachedBundle, readMeta, writeMeta, writeProgress, type OmnidexEventBundle } from "./cache.js";
+import {
+  readCachedBundle,
+  writeCachedBundle,
+  readMeta,
+  writeMeta,
+  writeProgress,
+  seedCacheFromPublished,
+  type OmnidexEventBundle,
+} from "./cache.js";
 
 export type CrawlMode =
   | { kind: "backfill-year"; year: number }
@@ -67,6 +75,7 @@ export interface CrawlResult {
  * cache, so a crawl and a re-publish can happen independently.
  */
 export async function crawlEvents(mode: CrawlMode): Promise<CrawlResult> {
+  await seedCacheFromPublished();
   const priorMeta = await readMeta();
 
   let startId: number;
