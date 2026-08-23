@@ -51,6 +51,14 @@ const POOL_LABELS: Record<SuggestionPool, string> = {
   globalElements: "Cards matching these elements (global stats)",
 };
 
+const PILLAR_OPTIONS: RatingPillar[] = ["aggro", "consistency", "interaction", "resilience"];
+const PILLAR_LABELS: Record<RatingPillar, string> = {
+  aggro: "Aggro",
+  consistency: "Consistency",
+  interaction: "Interaction",
+  resilience: "Resilience",
+};
+
 type BuilderTab = "build" | "stats" | "buddies" | "log";
 const TAB_KEYS: BuilderTab[] = ["build", "stats", "buddies", "log"];
 
@@ -85,6 +93,7 @@ interface UrlSeed {
   championName: string;
   spiritFilter: string | null;
   pool: string | null;
+  pillarBias: string | null;
   lockedCards: Map<string, number>;
   lockedSections: Map<string, LockedSection>;
 }
@@ -106,7 +115,14 @@ function parseUrlSeed(searchParams: URLSearchParams): UrlSeed | null {
   const { lockedCards, lockedSections } = lockedParam
     ? decodeLockedCards(lockedParam)
     : { lockedCards: new Map<string, number>(), lockedSections: new Map<string, LockedSection>() };
-  return { championName, spiritFilter: searchParams.get("spirit"), pool: searchParams.get("pool"), lockedCards, lockedSections };
+  return {
+    championName,
+    spiritFilter: searchParams.get("spirit"),
+    pool: searchParams.get("pool"),
+    pillarBias: searchParams.get("pillar"),
+    lockedCards,
+    lockedSections,
+  };
 }
 
 interface ChangeLogEntry {
@@ -534,6 +550,9 @@ export default function DeckBuilderIndex() {
   const [pool, setPool] = useState<SuggestionPool>(
     urlSeed?.pool && urlSeed.pool in POOL_LABELS ? (urlSeed.pool as SuggestionPool) : "default",
   );
+  const [pillarBias, setPillarBias] = useState<RatingPillar | null>(
+    urlSeed?.pillarBias && PILLAR_OPTIONS.includes(urlSeed.pillarBias as RatingPillar) ? (urlSeed.pillarBias as RatingPillar) : null,
+  );
   const [lockedCards, setLockedCards] = useState<Map<string, number>>(() => urlSeed?.lockedCards ?? new Map());
   // Section a lock is known to belong to (from where it was locked, or from a pasted decklist's
   // own Main/Material headers) — see useSuggestedBuild's lockedSections param doc for why this
@@ -640,6 +659,7 @@ export default function DeckBuilderIndex() {
     lockedSections,
     cardQuantityStatsData,
     championCardOverride,
+    pillarBias,
   );
 
   const nearestDecks = useNearestDecks(allDecks, lockedCards);
@@ -711,6 +731,7 @@ export default function DeckBuilderIndex() {
       startTransition(() => {
         setSpiritFilter(null);
         setPool("default");
+        setPillarBias(null);
         setLockedCards(new Map());
         setLockedSections(new Map());
         setRejectedCards(new Set());
@@ -734,6 +755,7 @@ export default function DeckBuilderIndex() {
         next.delete("champion");
         next.delete("spirit");
         next.delete("pool");
+        next.delete("pillar");
         next.delete("locked");
         return next;
       },
@@ -786,6 +808,7 @@ export default function DeckBuilderIndex() {
     setChampionName(detectedChampion);
     setSpiritFilter(detectedSpirit);
     setPool("default");
+    setPillarBias(null);
     setLockedCards(newLocked);
     setLockedSections(newSections);
     setRejectedCards(new Set());
@@ -818,6 +841,7 @@ export default function DeckBuilderIndex() {
     if (deck.championName) setChampionName(deck.championName);
     setSpiritFilter(deck.spiritName);
     setPool("default");
+    setPillarBias(null);
     setLockedCards(newLocked);
     setLockedSections(newSections);
     setRejectedCards(new Set());
@@ -956,6 +980,7 @@ export default function DeckBuilderIndex() {
     if (championName) params.set("champion", championName);
     if (spiritFilter) params.set("spirit", spiritFilter);
     if (pool !== "default") params.set("pool", pool);
+    if (pillarBias) params.set("pillar", pillarBias);
     const locked = encodeLockedCards(lockedCards, lockedSections);
     if (locked) params.set("locked", locked);
     const url = `${window.location.origin}/deck-builder?${params.toString()}`;
@@ -1048,6 +1073,24 @@ export default function DeckBuilderIndex() {
                 </option>
               ))}
             </select>
+
+            <span className="ml-2 text-ctp-subtext0">Bias toward:</span>
+            <select
+              value={pillarBias ?? ""}
+              onChange={(e) => {
+                const value = (e.target.value || null) as RatingPillar | null;
+                pendingActionRef.current = { label: `Bias toward: ${value ? PILLAR_LABELS[value] : "None"}`, subject: null };
+                startTransition(() => setPillarBias(value));
+              }}
+              className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+            >
+              <option value="">None</option>
+              {PILLAR_OPTIONS.map((p) => (
+                <option key={p} value={p}>
+                  {PILLAR_LABELS[p]}
+                </option>
+              ))}
+            </select>
           </>
         )}
       </div>
@@ -1059,6 +1102,12 @@ export default function DeckBuilderIndex() {
         <p className="mt-2 text-xs text-ctp-yellow">
           {recentSeasonPopulation.rows.length} deck{recentSeasonPopulation.rows.length === 1 ? "" : "s"} from{" "}
           {latestSeason?.name ?? "the latest season"}.
+        </p>
+      )}
+      {championName && pillarBias && pool !== "nearestDecks" && pool !== "globalElements" && (
+        <p className="mt-2 text-xs text-ctp-subtext0">
+          Biasing toward {PILLAR_LABELS[pillarBias]} — a small nudge among cards that already have real win-rate
+          support, not a replacement for it. Win rates and lift numbers above are unaffected.
         </p>
       )}
 
