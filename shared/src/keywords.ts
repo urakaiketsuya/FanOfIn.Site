@@ -66,6 +66,10 @@ export const ABILITY_KEYWORDS = [
 
 function keywordRegex(keyword: string): RegExp {
   if (keyword === "Preserve") return /\*\*Preserved?\*\*/;
+  // Imbue's element-qualified variants put a prefix inside the same bold span before the word
+  // itself — "**Advanced Imbue 2**", "**Crux & Tera Imbue 3**" — not just "**Imbue N**". Verified
+  // against the real card corpus: this is the only keyword templated that way.
+  if (keyword === "Imbue") return /\*\*(?:[A-Za-z]+(?:\s*&\s*[A-Za-z]+)?\s+)?Imbue(?:\s+(?:\d+|X))?\*\*/;
   const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   return new RegExp(`\\*\\*${escaped}(?: \\d+)?\\*\\*`);
 }
