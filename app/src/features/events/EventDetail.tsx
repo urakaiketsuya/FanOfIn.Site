@@ -4,6 +4,7 @@ import { EVENT_CATEGORY_LABELS, type OmnidexStanding } from "@gatcg/shared";
 import { isApiErrorBody } from "../../lib/api/client";
 import { useEventBundle } from "./useEventBundle";
 import { useVodsData } from "./data";
+import { useOmnidexIndex } from "../tournaments/data";
 import EventPairings from "./EventPairings";
 import DecklistsSection from "./DecklistsSection";
 import EventTeamsSection from "./EventTeamsSection";
@@ -30,6 +31,19 @@ export default function EventDetail() {
   );
   const vodsData = useVodsData();
   const vods = vodsData?.vods[id] ?? [];
+  const omnidexIndex = useOmnidexIndex();
+
+  // Grouped by Omnidex's own venue id, not host name — some venues rename over time, so name
+  // matching would both miss real matches and wrongly merge unrelated venues that happen to share
+  // a generic name.
+  const MAX_VENUE_EVENTS_SHOWN = 6;
+  const venueEvents = useMemo(() => {
+    const hostId = bundle?.event.host?.id;
+    if (!omnidexIndex || !hostId) return [];
+    return omnidexIndex.events
+      .filter((e) => e.hostId === hostId && e.id !== eventId)
+      .sort((a, b) => b.date.localeCompare(a.date));
+  }, [omnidexIndex, bundle?.event.host?.id, eventId]);
   // A "?player=" link (e.g. from an achievement's "View deck") jumps straight to that player's
   // decklist instead of landing on Standings — read once on mount, same as the tab default.
   const [searchParams] = useSearchParams();
@@ -113,7 +127,7 @@ export default function EventDetail() {
 
       <h1 className="mt-2 text-2xl font-bold text-ctp-blue">{event.name}</h1>
       <p className="mt-1 text-sm text-ctp-subtext1">
-        {event.host.name}
+        <span title={event.host.address || undefined}>{event.host.name}</span>
         {formatCountry(event.host.addressCountryCode) && (
           <>
             {" ("}
@@ -144,6 +158,28 @@ export default function EventDetail() {
               &#9654; Watch {vod.label}
             </a>
           ))}
+        </div>
+      )}
+
+      {venueEvents.length > 0 && (
+        <div className="mt-3">
+          <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
+            More events at {event.host.name}
+          </h2>
+          <div className="mt-1 flex flex-wrap gap-2 text-xs">
+            {venueEvents.slice(0, MAX_VENUE_EVENTS_SHOWN).map((e) => (
+              <Link
+                key={e.id}
+                to={`/events/${e.id}`}
+                className="rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
+              >
+                {e.name} <span className="text-ctp-subtext0">({new Date(e.date).toLocaleDateString()})</span>
+              </Link>
+            ))}
+            {venueEvents.length > MAX_VENUE_EVENTS_SHOWN && (
+              <span className="px-2 py-1 text-ctp-subtext0">+{venueEvents.length - MAX_VENUE_EVENTS_SHOWN} more</span>
+            )}
+          </div>
         </div>
       )}
 

@@ -18,6 +18,10 @@ export interface OmnidexEventSummary {
   seasonName: string | null;
   seasonSlug: string | null;
   hostName: string;
+  /** Omnidex's own venue/store id — stable across every event hosted there, so it's the join key for "other events at this venue" (a store's name alone isn't reliable — some rename over time). 0 when the event has no host record at all. */
+  hostId: number;
+  /** Full street address string as Omnidex has it (e.g. "1 Expo Drive, Tampines, 486150, Singapore"), or "" when unknown. */
+  hostAddress: string;
   /** ISO-3166-1 alpha-2 code from the venue's address, or "??" when Omnidex doesn't have one — same convention as OmnidexPlayerSummary.country. */
   hostCountry: string;
   /** "physical" | "online" (verified against live data; treat as open-ended like `category`). */
