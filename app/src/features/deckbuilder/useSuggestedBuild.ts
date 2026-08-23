@@ -89,6 +89,34 @@ export function computeIdentityElements(championCard: Card | undefined, spiritCa
   return new Set([...(championCard?.elements ?? []), ...(spiritCard?.elements ?? [])].filter((e) => e !== "NORM"));
 }
 
+/**
+ * Union of the elements granted by every level-print of this Champion's identity actually present
+ * in the population's material sections — not just `championCard`'s own single print. Reported
+ * live: a level-1 Diao Chan print might grant only Wind, but a level-3 print of the same Champion
+ * commonly grants an additional element (e.g. Tera) — using only the "most common" print's
+ * elements as the whole identity would filter out cards most real level-3 decks actually run.
+ * Scans `spiritRows` (not the possibly lock-narrowed `rankingRows`) so a thin locked-conditioned
+ * population can't hide a level this Champion's build still typically reaches. Falls back to
+ * `championCard`'s own elements when no other print of the same identity turns up in the
+ * population (matches the old single-print behavior exactly in that case).
+ */
+function findChampionIdentityElements(spiritRows: DeckBuilderRow[], championCard: Card | undefined, cardsByName: Map<string, Card>): Set<string> {
+  const elements = new Set<string>();
+  if (!championCard) return elements;
+  const identityName = championCard.name.includes(",") ? championCard.name.split(",")[0].trim() : championCard.name;
+  for (const row of spiritRows) {
+    for (const name of row.material.keys()) {
+      const card = cardsByName.get(name);
+      if (!card?.types.includes("CHAMPION") || card.subtypes.includes("SPIRIT")) continue;
+      const cardIdentityName = card.name.includes(",") ? card.name.split(",")[0].trim() : card.name;
+      if (cardIdentityName !== identityName) continue;
+      for (const e of card.elements) if (e !== "NORM") elements.add(e);
+    }
+  }
+  if (elements.size === 0) for (const e of championCard.elements) if (e !== "NORM") elements.add(e);
+  return elements;
+}
+
 /** The Champion card actually in play, for reading its granted element(s) — a locked print (the viewer's own choice) wins over the population guess, same precedence as everywhere else a lock beats a population-derived signal in this file. Falls back to whichever Champion-type material card (CHAMPION type, not SPIRIT subtype) is most common in this Spirit-scoped population. Exported so callers (e.g. `DeckBuilderIndex.tsx`) can resolve it once against the *stable* single-Champion population and pass it back in as `championCardOverride`, for when `rows` itself comes from a cross-Champion suggestion pool. */
 export function findChampionCard(spiritRows: DeckBuilderRow[], lockedCards: Map<string, number>, cardsByName: Map<string, Card>): Card | undefined {
   for (const name of lockedCards.keys()) {
@@ -104,6 +132,29 @@ export function findChampionCard(spiritRows: DeckBuilderRow[], lockedCards: Map<
   }
   const best = Array.from(counts.entries()).sort((a, b) => b[1] - a[1])[0];
   return best ? cardsByName.get(best[0]) : undefined;
+}
+
+/**
+ * Which section a ranked suggestion actually belongs in, resolving `entry.role`'s "mixed" case
+ * (reported live as material cards showing up under Main) by a plain plurality vote over the same
+ * ranking population instead of defaulting straight to "main". `entry.role` itself comes from
+ * `computeSingleCardImpact`'s stricter >=80%-share bar (shared with every other Card Impact surface
+ * on the site, so not something to change here) — a card at, say, 65% material / 35% main still
+ * clearly belongs in Material for build-assembly purposes, it just doesn't clear that bar, and
+ * defaulting the whole "mixed" bucket to Main was a real, silent placement bug.
+ */
+function pluralitySection(rows: DeckBuilderRow[], cardName: string): DeckSection {
+  let mainCount = 0;
+  let materialCount = 0;
+  let sideboardCount = 0;
+  for (const row of rows) {
+    if (row.main.has(cardName)) mainCount++;
+    if (row.material.has(cardName)) materialCount++;
+    if (row.sideboard.has(cardName)) sideboardCount++;
+  }
+  if (materialCount > 0 && materialCount >= mainCount && materialCount >= sideboardCount) return "material";
+  if (sideboardCount > 0 && sideboardCount >= mainCount) return "sideboard";
+  return "main";
 }
 
 /** Most common quantity this card was run at, among rows that include it in the given section — falls back to the legal max when the card was never seen in this population (e.g. added via free-text search). */
@@ -300,7 +351,8 @@ export function useSuggestedBuild(
     // in this Spirit-scoped population stands in for it.
     const championCard = championCardOverride ?? findChampionCard(spiritRows, lockedCards, cardsByName);
     const spiritCard = spiritFilter ? cardsByName.get(spiritFilter) : undefined;
-    const identityElements = computeIdentityElements(championCard, spiritCard);
+    const championElements = findChampionIdentityElements(spiritRows, championCard, cardsByName);
+    const identityElements = new Set([...championElements, ...(spiritCard?.elements ?? [])].filter((e) => e !== "NORM"));
 
     const lockedNames = new Set(lockedCards.keys());
     // Only condition on locks with a real sample behind them — a card only 1-4 decks in this
@@ -363,8 +415,12 @@ export function useSuggestedBuild(
     // Spirit-filtered population — NOT from `entryByName`, which deliberately excludes locked
     // cards (so a card doesn't compete against itself in the ranking) and would otherwise always
     // return undefined for every locked card, silently defaulting every one of them to "main"
-    // regardless of where it's actually played. >=80% in one section wins; otherwise "mixed",
-    // which defaults to main — same convention `computeCardImpactEntries` uses for role.
+    // regardless of where it's actually played. Plain plurality (whichever section has more
+    // occurrences wins, material on a tie) — a >=80%-dominance bar used to gate this (mirroring
+    // `computeCardImpactEntries`'s role convention) and defaulted anything short of that to "main",
+    // which silently misplaced material cards that were, say, 60-79% material into Main. That bar
+    // makes sense for `role`'s own purpose (flagging genuine uncertainty on Card Impact tables
+    // elsewhere), but not for actually placing a card into a section here.
     function sectionOf(name: string): "main" | "material" {
       let mainCount = 0;
       let materialCount = 0;
@@ -372,9 +428,8 @@ export function useSuggestedBuild(
         if (row.main.has(name)) mainCount++;
         if (row.material.has(name)) materialCount++;
       }
-      const total = mainCount + materialCount;
-      if (total === 0) return "main";
-      return materialCount / total >= 0.8 ? "material" : "main";
+      if (mainCount === 0 && materialCount === 0) return "main";
+      return materialCount >= mainCount ? "material" : "main";
     }
 
     // Locked cards go in first, at their own quantity, sectioned by wherever they're actually
@@ -461,11 +516,12 @@ export function useSuggestedBuild(
       const card = cardsByName.get(entry.cardName);
       if (card?.types.includes("CHAMPION")) continue; // only ever placed as a level anchor above
       if (!isElementCompatible(card, identityElements)) continue;
-      if (entry.role === "material") {
+      const section = entry.role === "mixed" ? pluralitySection(rankingRows, entry.cardName) : entry.role;
+      if (section === "material") {
         if (materialTotal >= materialTarget) continue;
         material.push(toSuggested(entry.cardName, 1, false, entry, "ranked", "material"));
         materialTotal += 1;
-      } else if (entry.role === "sideboard") {
+      } else if (section === "sideboard") {
         if (sideboardTotal >= sideboardTarget) continue;
         const picked = pickQuantity(rankingRows, "sideboard", entry.cardName, card, quantityBucketsByName);
         const qty = Math.min(picked.quantity, sideboardTarget - sideboardTotal);
@@ -493,7 +549,7 @@ export function useSuggestedBuild(
       .slice(0, MAX_EXTRA_SUGGESTIONS)
       .map((e) => {
         const card = cardsByName.get(e.cardName);
-        const section: DeckSection = e.role === "material" ? "material" : e.role === "sideboard" ? "sideboard" : "main";
+        const section: DeckSection = e.role === "mixed" ? pluralitySection(rankingRows, e.cardName) : e.role;
         if (section === "material") return toSuggested(e.cardName, 1, false, e, "ranked", section);
         const picked = pickQuantity(rankingRows, section, e.cardName, card, quantityBucketsByName);
         return toSuggested(e.cardName, picked.quantity, false, e, "ranked", section, picked.optimizedFrom);
