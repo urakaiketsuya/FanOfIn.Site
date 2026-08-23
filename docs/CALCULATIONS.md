@@ -18,6 +18,29 @@ events in chronological order (`event.date` ascending). Every player starts at `
 don't need to separately track pre-match rating gaps — a big swing already means Omnidex's own
 system considered the outcome surprising.
 
+## Elo rating history (`pipeline/src/analysis/elo.ts`, `data/analysis/elo-history.json`)
+
+`computeEloRatings` already replays every historical match in chronological order on every single
+pipeline run (Omnidex's cache holds full history, not just the current state) — the full rating
+trajectory is a free byproduct of that replay, not something that needs to accrue over time the way
+[price history](#price-history-pipelinesrcpricinghistoryts-appsrcfeaturespricingusepricehistoryts)
+does. `history` records one `RatingCheckpoint` per event a player appeared in (not per match) —
+collapsing a multi-round Swiss event into one point avoids charting round-by-round noise, and keeps
+the dataset bounded by real event counts rather than match counts (the single most active player in
+a real run has ~900 matches but far fewer distinct events).
+
+Published as its own file, `elo-history.json`, rather than folded into `elo.json` — `elo.json` is
+fetched broadly (leaderboards, achievements), while a player's full trajectory is only ever read on
+that one player's own profile page. Same "split the broad/small part from the narrow/large part"
+precedent as `DeckPopularityEntry` vs. the full `DeckSightingsData`, and `priceHistory.json` vs.
+`prices.json` — except here there's no cap needed at all, since a player's checkpoint count only
+grows as real events happen, never per pipeline run.
+
+`PlayerProfile.tsx` charts `eloHistoryData.history[String(playerId)]` via `ThemaSparkline`
+(`app/src/features/thema/ThemaSparkline.tsx`) once a player has ≥2 checkpoints — no series-selection
+logic needed here (unlike price history's Normal/Foil fallback), since there's only ever one rating
+series per player.
+
 ## Hipster / novelty score (`pipeline/src/analysis/hipster.ts`)
 
 Answers "how unusual is this build, for this Champion specifically" — not "how unusual are these

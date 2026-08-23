@@ -31,6 +31,27 @@ export interface EloData {
   upsets: UpsetMatch[];
 }
 
+/** One player's rating right after finishing an event (collapses that event's Swiss-round-by-round swings into one point). */
+export interface RatingCheckpoint {
+  eventId: number;
+  date: string;
+  rating: number;
+}
+
+/**
+ * Published separately from EloData (not folded in) — `elo.json` is fetched broadly (leaderboards,
+ * achievements), while a player's full rating trajectory is only ever needed on that one player's
+ * own profile page. Unlike price history, this needs no cap or cross-run accumulation: every
+ * historical match is already replayed from scratch each run, so the full trajectory is derivable
+ * in one pass and its size is naturally bounded by real event counts, not by how many pipeline runs
+ * have happened.
+ */
+export interface EloHistoryData {
+  generatedAt: string;
+  /** Keyed by playerId (as a string, JSON round-trip convention — same as VodsData.vods). Chronological oldest-first. */
+  history: Record<string, RatingCheckpoint[]>;
+}
+
 // ---------------------------------------------------------------------------
 // Meta-wide per-card win-rate stats (pipeline/src/analysis/cardStats.ts)
 // ---------------------------------------------------------------------------

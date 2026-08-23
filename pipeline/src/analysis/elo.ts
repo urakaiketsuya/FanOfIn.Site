@@ -1,4 +1,4 @@
-import type { PlayerRating, UpsetMatch } from "@gatcg/shared";
+import type { PlayerRating, RatingCheckpoint, UpsetMatch } from "@gatcg/shared";
 import { config } from "../config.js";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
 
@@ -7,20 +7,29 @@ const BASELINE_RATING = 1500;
 export interface EloResult {
   ratings: Map<number, PlayerRating>;
   upsets: UpsetMatch[];
+  /** One checkpoint per event a player appeared in, not per match — see RatingCheckpoint. */
+  history: Map<number, RatingCheckpoint[]>;
 }
 
 /**
  * Processes completed events in chronological order, accumulating each player's rating from
  * Omnidex's own per-match `eloChange` values rather than reimplementing an Elo formula — the
  * API already computes it per match, so this just replays those deltas onto a running total.
+ * Also records `history`, one checkpoint per event (not per match, which would just be Swiss-round
+ * noise) using each touched player's rating as it stands right after that event's round loop
+ * finishes — the full trajectory, not just the final rating, is a free byproduct of replaying
+ * every match from scratch on every run.
  */
 export function computeEloRatings(bundles: OmnidexEventBundle[]): EloResult {
   const ratings = new Map<number, PlayerRating>();
   const upsets: UpsetMatch[] = [];
+  const history = new Map<number, RatingCheckpoint[]>();
 
   const sorted = [...bundles].sort((a, b) => a.event.date.localeCompare(b.event.date));
 
   for (const bundle of sorted) {
+    const touchedThisEvent = new Set<number>();
+
     for (let roundIndex = 0; roundIndex < bundle.pairingsByRound.length; roundIndex++) {
       const roundData = bundle.pairingsByRound[roundIndex];
       if ("error" in roundData) continue;
@@ -57,6 +66,7 @@ export function computeEloRatings(bundles: OmnidexEventBundle[]): EloResult {
           existing.lastEventId = bundle.id;
           existing.lastEventDate = bundle.event.date;
           ratings.set(side.id, existing);
+          touchedThisEvent.add(side.id);
         }
 
         const [a, b] = pairing.pairing;
@@ -75,7 +85,13 @@ export function computeEloRatings(bundles: OmnidexEventBundle[]): EloResult {
         }
       }
     }
+
+    for (const playerId of touchedThisEvent) {
+      const points = history.get(playerId) ?? [];
+      points.push({ eventId: bundle.id, date: bundle.event.date, rating: ratings.get(playerId)!.rating });
+      history.set(playerId, points);
+    }
   }
 
-  return { ratings, upsets };
+  return { ratings, upsets, history };
 }

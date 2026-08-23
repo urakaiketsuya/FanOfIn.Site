@@ -75,13 +75,21 @@ export async function buildAnalysis(): Promise<void> {
   // step below) — writing them out as soon as they're computed means a kill/crash during the
   // slow part still leaves fresh data for everything else, instead of holding all of it hostage
   // until the entire analysis run finishes.
-  const { ratings, upsets } = computeEloRatings(completed);
+  const { ratings, upsets, history } = computeEloRatings(completed);
   await writeFile(
     path.join(DATA_DIR, "elo.json"),
     JSON.stringify({
       generatedAt: new Date().toISOString(),
       ratings: Array.from(ratings.values()).sort((a, b) => b.rating - a.rating),
       upsets: [...upsets].sort((a, b) => b.eventDate.localeCompare(a.eventDate)),
+    }),
+    "utf-8",
+  );
+  await writeFile(
+    path.join(DATA_DIR, "elo-history.json"),
+    JSON.stringify({
+      generatedAt: new Date().toISOString(),
+      history: Object.fromEntries(Array.from(history.entries()).map(([id, points]) => [String(id), points])),
     }),
     "utf-8",
   );

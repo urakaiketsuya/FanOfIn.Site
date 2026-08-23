@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER, type AchievementDefinition, type AchievementUnlock } from "@gatcg/shared";
 import { useOmnidexIndex, useOmnidexJudges, useOmnidexPlayers } from "../tournaments/data";
-import { useEloData, useHipsterData, usePlayerDecksData, useRivalsData } from "./data";
+import { useEloData, useEloHistoryData, useHipsterData, usePlayerDecksData, useRivalsData } from "./data";
+import ThemaSparkline from "../thema/ThemaSparkline";
 import { useDeckSightingsData } from "../topdecks/data";
 import { useAchievementsData } from "../achievements/data";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -27,6 +28,7 @@ export default function PlayerProfile() {
   const playersData = useOmnidexPlayers();
   const judgesData = useOmnidexJudges();
   const eloData = useEloData();
+  const eloHistoryData = useEloHistoryData();
   const hipsterData = useHipsterData();
   const playerDecksData = usePlayerDecksData();
   const rivalsData = useRivalsData();
@@ -41,6 +43,7 @@ export default function PlayerProfile() {
     (player || judge) && `Grand Archive TCG tournament history and stats for ${player?.username ?? judge?.username}.`,
   );
   const rating = eloData?.ratings.find((r) => r.playerId === playerId);
+  const ratingHistory = eloHistoryData?.history[String(playerId)];
   const hipster = hipsterData?.playerScores.find((p) => p.playerId === playerId);
   const deckProfile = playerDecksData?.players.find((p) => p.playerId === playerId);
   const rivalsProfile = rivalsData?.players.find((p) => p.playerId === playerId);
@@ -196,6 +199,16 @@ export default function PlayerProfile() {
                 </span>
               )}
             </p>
+          )}
+          {ratingHistory && ratingHistory.length >= 2 && (
+            <div className="mt-2 max-w-sm rounded-md border border-ctp-surface1 p-3">
+              <p className="text-xs text-ctp-subtext0">Rating over time, {ratingHistory.length} events</p>
+              <ThemaSparkline values={ratingHistory.map((p) => p.rating)} height={48} />
+              <div className="mt-1 flex justify-between text-[10px] text-ctp-subtext0">
+                <span>{new Date(ratingHistory[0].date).toLocaleDateString()}</span>
+                <span>{new Date(ratingHistory[ratingHistory.length - 1].date).toLocaleDateString()}</span>
+              </div>
+            </div>
           )}
           {hipster && (
             <p className="mt-1 text-sm text-ctp-subtext1">
