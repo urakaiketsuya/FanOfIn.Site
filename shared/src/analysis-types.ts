@@ -1,5 +1,9 @@
 /** Published by the pipeline's analysis engines (data/analysis/*.json). */
 
+// ---------------------------------------------------------------------------
+// Elo ratings (pipeline/src/analysis/elo.ts)
+// ---------------------------------------------------------------------------
+
 export interface PlayerRating {
   playerId: number;
   rating: number;
@@ -27,6 +31,10 @@ export interface EloData {
   upsets: UpsetMatch[];
 }
 
+// ---------------------------------------------------------------------------
+// Meta-wide per-card win-rate stats (pipeline/src/analysis/cardStats.ts)
+// ---------------------------------------------------------------------------
+
 export interface CardStat {
   name: string;
   slug: string | null;
@@ -47,6 +55,12 @@ export interface CardStatsData {
   /** Same shape, scoped to one Omnidex event category (worlds/nationals/ascent/regionals/store-championships/regular) — only present for categories with at least one qualifying event. */
   byCategory: Record<string, CardStat[]>;
 }
+
+// ---------------------------------------------------------------------------
+// Archetypes / Battle Chart — the older, coarser per-Champion rollup
+// (pipeline/src/analysis/archetypes.ts). Not the same thing as ArchetypeCluster
+// / ArchetypeTaxonomyData further below — see that section's own banner.
+// ---------------------------------------------------------------------------
 
 export interface ArchetypeSampleDeck {
   eventId: number;
@@ -116,6 +130,10 @@ export interface ArchetypeData {
   battleChart: BattleChartEntry[];
 }
 
+// ---------------------------------------------------------------------------
+// Hipster / novelty score (pipeline/src/analysis/hipster.ts)
+// ---------------------------------------------------------------------------
+
 export interface DeckHipsterScore {
   eventId: number;
   eventName: string;
@@ -136,6 +154,10 @@ export interface HipsterData {
   deckScores: DeckHipsterScore[];
   playerScores: PlayerHipsterScore[];
 }
+
+// ---------------------------------------------------------------------------
+// Deck similarity (pipeline/src/analysis/similarity.ts)
+// ---------------------------------------------------------------------------
 
 export interface SimilarDeck {
   deckId: string;
@@ -158,6 +180,10 @@ export interface SimilarityData {
   generatedAt: string;
   decks: DeckSimilarityEntry[];
 }
+
+// ---------------------------------------------------------------------------
+// Player profiles (pipeline/src/analysis/playerDecks.ts, rivals.ts)
+// ---------------------------------------------------------------------------
 
 export interface PlayerTopChampion {
   name: string;
@@ -192,6 +218,7 @@ export interface PlayerDecksData {
 }
 
 /** One head-to-head record against a single opponent. `winRate` counts a tie as half a win, same convention as everywhere else win rate is computed. */
+// (rivals.ts, still part of the "Player profiles" group above)
 export interface PlayerRival {
   opponentId: number;
   games: number;
@@ -215,6 +242,11 @@ export interface RivalsData {
   generatedAt: string;
   players: PlayerRivalsProfile[];
 }
+
+// ---------------------------------------------------------------------------
+// Deck sightings (pipeline/src/analysis/deckSightings.ts) — one record per
+// public decklist, plus the lean DeckPopularityEntry projection of it.
+// ---------------------------------------------------------------------------
 
 /**
  * One lean record per public decklist ("sighting") — the full decklist itself isn't included
@@ -313,6 +345,12 @@ export interface DeckPopularityIndexData {
   entries: DeckPopularityEntry[];
 }
 
+// ---------------------------------------------------------------------------
+// Meta-wide keyword / quantity / composition win-rate stats
+// (pipeline/src/analysis/keywordStats.ts, cardQuantityStats.ts, deckCompositionStats.ts)
+// — same accumulate-bucket-shrink shape as CardStat above, keyed differently.
+// ---------------------------------------------------------------------------
+
 export interface KeywordStat {
   keyword: string;
   deckCount: number;
@@ -362,6 +400,10 @@ export interface CompositionWinRateData {
   stats: CompositionWinRateStat[];
 }
 
+// ---------------------------------------------------------------------------
+// Champion season trends (pipeline/src/analysis/championTrends.ts)
+// ---------------------------------------------------------------------------
+
 export interface ChampionSeasonPerformance {
   seasonId: number;
   seasonName: string;
@@ -399,6 +441,10 @@ export interface ChampionTrendsData {
   seasonOrder: string[];
   champions: ChampionTrend[];
 }
+
+// ---------------------------------------------------------------------------
+// Deck card index (pipeline/src/analysis/deckCardIndex.ts)
+// ---------------------------------------------------------------------------
 
 export interface DeckCardIndexLine {
   name: string;
@@ -439,6 +485,12 @@ export interface DeckCardIndexData {
 export function decodeCardLines(lines: EncodedCardLine[], cardNames: string[]): DeckCardIndexLine[] {
   return lines.map(([nameIndex, quantity]) => ({ name: cardNames[nameIndex], quantity }));
 }
+
+// ---------------------------------------------------------------------------
+// Archetype taxonomy — data-derived named "builds" (clusters), distinct from
+// the coarser ArchetypeSummary/ArchetypeData near the top of this file.
+// (pipeline/src/analysis/archetypeTaxonomy.ts)
+// ---------------------------------------------------------------------------
 
 /**
  * A data-derived named "build" within a single Champion — e.g. "Water Guo Jia" — distinct from
@@ -505,6 +557,11 @@ export interface ArchetypeTaxonomyData {
   /** Card name -> every cluster it's a defining card of (with that cluster's prevalence for this card), for resolving "which archetypes is this card part of" on a card's own page. Same shape/purpose as `CardImpactData.deckClusterIndex`, just card-keyed and to multiple clusters instead of deck-keyed to one. Only cards that are a defining card of at least one cluster are present. */
   cardClusterIndex: Record<string, { clusterId: string; prevalence: number }[]>;
 }
+
+// ---------------------------------------------------------------------------
+// Card Impact — general and matchup-scoped
+// (pipeline/src/analysis/cardImpact.ts, matchupCardImpact.ts)
+// ---------------------------------------------------------------------------
 
 /** How a card is typically played within a build — which section(s) of the deck its "with" sightings actually came from. */
 export type CardImpactRole = "main" | "material" | "sideboard" | "mixed";
@@ -592,6 +649,10 @@ export interface MatchupCardImpactData {
   generatedAt: string;
   matchups: ClusterMatchupImpact[];
 }
+
+// ---------------------------------------------------------------------------
+// Achievements (pipeline/src/analysis/achievements.ts)
+// ---------------------------------------------------------------------------
 
 export type AchievementCategory = "tournament" | "rating" | "playstyle" | "dedication" | "judging";
 

@@ -33,6 +33,115 @@ Per-card novelty = `1 - (seenCount / totalSoFar)`, clamped at 0, treated as `1` 
 `totalSoFar === 0` (this Champion has no prior data yet). A deck's score is the average novelty
 across every card in its main+material set. Player score is the plain average of their deck scores.
 
+## Player profiles (`pipeline/src/analysis/playerDecks.ts`, `rivals.ts`)
+
+Two independent per-player rollups, both scoped to a single player rather than the meta-wide.
+
+**`computePlayerDeckProfiles`**: which Champions a player runs most (`topChampions`, top 5 by deck
+count) and which cards show up most in their decks, split main/material/sideboard since those are
+structurally different pools. Counted by **deck count, not raw copies** — a card that's a 4-of in
+one list shouldn't outrank a 1-of that's a staple across ten different decks; "how often do you
+reach for this" is the question, not "how many total copies have you registered." Reuses
+`decklists.ts`'s section-tallying helpers (`tallySectionCounts`/`topCardsFromCounts`) rather than
+reimplementing — same helpers `archetypes.ts` below uses for its own per-archetype top cards.
+
+**`computeRivals`**: a player's most-played opponents, selected by games played (not win rate —
+frequency decides who counts as a "rival," not how those games went), then the top 10 by games are
+re-sorted **win rate ascending** so the worst matchups surface first — the useful framing for a
+player looking at their own page is "who gives me trouble," not "who I've simply played the most."
+Walks `bundle.pairingsByRound` the same way `elo.ts` replays match deltas, and skips the same two
+cases Elo does: pairings with no second side (byes), and team-format pairings (`pairing.id` is a
+team-name string, not a numeric player id, for those formats — no individual identity to attach a
+rivalry to).
+
+## Meta-wide per-card and per-keyword win-rate stats (`cardStats.ts`, `cardQuantityStats.ts`, `deckCompositionStats.ts`, `keywordStats.ts`)
+
+Four analysis modules sharing one shape: walk every event's decklists + standings, bucket by some
+key, shrink each bucket's average win rate toward 50% via `shrinkWinRate` (the shared helper — see
+its own doc comment in `shared/src/winRateShrinkage.ts`), keyed differently per module:
+
+- **`computeCardStats`** (`cardStats.ts`) — per **card name**: deck count, total copies, event
+  count, win rate, plus `recentDeckCount`/`priorDeckCount` (30-day windows, most-recent-event-date
+  anchored, not wall-clock — so a `GATCG_ANALYSIS_ONLY` re-run against the same cached data always
+  produces the same windows) for downstream "trending" comparisons. `marketPrice` is left `null`
+  here and filled in by `build.ts`, which joins against `data/prices.json` afterward — this module
+  has no pricing data of its own.
+- **`computeCardQuantityStats`** (`cardQuantityStats.ts`) — per **(card name, copy count)**: does
+  running a card at 4x actually win more than at 2x? A card only ever run at a single quantity
+  across the whole dataset is dropped (`quantities.length < 2`) — same "nothing to compare against"
+  reasoning used for `CardQuantityStat` everywhere else a with/without split needs both sides
+  populated.
+- **`computeCompositionWinRates`** (`deckCompositionStats.ts`) — per **(main-deck card type, 10-point
+  composition-percentage bucket)**: does running more Allies (as a *share* of the main deck, by
+  copies) correlate with winning more? Scoped to the **main deck only** — material is a mostly-fixed
+  category (Champion prints, relics) that would dilute a gameplan signal, and sideboard is excluded
+  as situational tech, same "deck identity" convention as everywhere else in this doc. Requires a
+  known win rate to even enter the accumulator (`if (winRate === undefined) continue`) since the
+  entire point is the win-rate correlation — there's no other use for this dataset's rows.
+- **`computeKeywordStats`** (`keywordStats.ts`) — per **ability keyword** (via the shared
+  `computeKeywordComposition`, the same keyword-detection helper `useDeckIdentity`'s Keyword
+  Composition chart uses client-side): does a keyword's presence in a deck correlate with a higher
+  win rate, as a real meta-wide, sortable stat instead of only ever being visible per single deck.
+
+All four resolve raw decklist card names through `resolveCard` before using them as accumulator
+keys (not `cardIndex.get` directly) — these modules read `bundle.decklists` independently of
+`decklists.ts`, so without this they'd be exposed to the same mis-cased/curly-quote identity-split
+bug documented under "Card name resolution" below.
+
+## Archetypes / Battle Chart (`pipeline/src/analysis/archetypes.ts`)
+
+The older, coarser per-Champion rollup (`archetypes.json`, `ArchetypeSummary`) — still published
+and still the data source for `BattleChart.tsx`'s matchup matrix, `BrowseDecksIndex.tsx`, and the
+Champion/Champions pages; **not** the same thing as `archetypeTaxonomy.ts`'s cluster-level "named
+builds" below despite the similar domain (investigated directly, confirmed genuinely different axes
+— see the Data Roadmap note in the project plan).
+
+Groups every deck by its identified Champion (`decklists.ts`'s `findChampionName`) and tallies
+top cards (main/material/sideboard), a Spirit-companion breakdown, and a Spirit-element breakdown
+per Champion. Decks with no identifiable Champion are excluded from grouping entirely rather than
+falling back to a class+element bucket — that string isn't a real Champion identity, and a
+fabricated bucket would silently mix genuinely different decks. Archetypes below
+`config.minBattleChartSampleSize` are dropped as noise, same threshold used everywhere else a
+per-group sample needs a floor.
+
+**Named Spirits get their own parallel identity.** A Spirit with a personal name ("Kaze, Spirit of
+Wind" — has a comma, unlike the generic "Spirit of Wind") is tracked a second time in
+`namedSpirits`, with the exact same stats shape as a real Champion, aggregated across every deck
+running that Spirit regardless of Champion. Not mutually exclusive with `archetypes` — a deck with
+both a real Champion and a named Spirit counts toward both, since "which Champion is this" and
+"which named companion is this" are separate, non-competing questions about the same deck.
+
+**Battle chart**: walks `bundle.pairingsByRound` (same source `elo.ts`/`rivals.ts` use), keeping
+only 2-sided pairings where both decks resolved a Champion, and keys each matchup as
+`${lowerName}__${higherName}` (alphabetically sorted, not by which side won) so `A vs B` and `B vs
+A` pairings accumulate into the same entry rather than splitting a matchup's real game count in
+half across two mirrored keys. Matchups below the same `minBattleChartSampleSize` floor are dropped.
+
+## Deck price (`pipeline/src/analysis/deckPricing.ts`)
+
+`computeDeckPrice` sums known card prices for a card-count map (main+material — sideboard excluded,
+same deck-identity convention as everywhere else). Missing-price cards are simply skipped from the
+sum rather than treated as free — the function returns `null` (not `0`) when *no* card in the map
+had a known price at all, so a deck genuinely priced at $0 (impossible in practice, but structurally
+distinct) is never confused with "we don't have pricing data for this deck."
+
+## Deck card index (`pipeline/src/analysis/deckCardIndex.ts`)
+
+Full per-decklist card membership (main/material/sideboard, by section) for every public decklist —
+the raw material behind the "which cards get played together" filter on Card Stats
+(`useCardCombination.ts`) and deck-popularity lookups. Deliberately a separate published dataset
+from `DeckSightingsData` (event/player/placement context) rather than merged into it, so that
+leaner dataset stays cheap to fetch while this one — structurally the bulkiest, since it's every
+card of every decklist — carries the weight; the two join back together by a shared `deckId`
+(`${eventId}:${player}`).
+
+Computed in two layers: `computeFullDeckCardIndex` builds the human-readable `{name, quantity}`
+form and writes it to `pipeline/.cache/deck-card-index-full.json` (a local working artifact, not
+published — see "Client load-time optimizations" below for why the published form is dictionary-
+encoded instead, and why the full form is still kept on disk rather than discarded).
+`computeDeckCardIndex` then encodes it against a shared `cardNames` dictionary before returning —
+same `[cardNameIndex, quantity]` encoding documented in that section.
+
 ## Card name resolution (`pipeline/src/cards/catalog.ts` — `resolveCard`, `normalizeCardKey`)
 
 Every raw decklist card name (`{card: string, quantity: number}`, free text a player/organizer
