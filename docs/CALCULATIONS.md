@@ -894,6 +894,53 @@ a genuine signal that resilience varies less among decks that already win events
 do — worth watching as more tournament data (the ongoing multi-year backfill) becomes available to
 recalibrate against.
 
+## Price history (`pipeline/src/pricing/history.ts`, `app/src/features/pricing/usePriceHistory.ts`)
+
+`buildPrices()` (`pipeline/src/pricing/build.ts`) has always overwritten `data/prices.json`
+wholesale every run — only ever "the price right now," even though the pipeline has been running
+on a weekly cron (`.github/workflows/data-refresh.yml`) the whole time. `updatePriceHistory`
+appends instead of overwriting: it reads the **already-published** `data/priceHistory.json` (not a
+separate cache — this pipeline commits `data/` directly, so the file on disk before a run *is* the
+prior run's published state, defaulting to `{}` on a missing/unparsable file — covers both "first
+run ever" and a corrupt file the same way), pushes one `PriceHistoryPoint` per priced edition keyed
+by the same `priceKey(setPrefix, collectorNumber)` `PriceData.prices` uses, and trims each edition's
+array to the most recent `PRICE_HISTORY_MAX_POINTS` (52 — about a year at the weekly cadence,
+`shared/src/pricing.ts`). An edition present in a prior run's history but missing from the current
+run (TCGCSV briefly dropping a product) is left untouched rather than getting a forced null point or
+being deleted — just a gap in that edition's series.
+
+**No backfill exists or is possible** — TCGCSV/TCGplayer don't expose historical pricing through the
+API this pipeline reads, so history only starts accumulating from whenever this shipped. A card
+freshly viewed after ship has exactly one point and shows no chart; the client-side gate is simply
+"render nothing below 2 points" (see below), so this resolves itself automatically as weeks pass
+rather than needing a "not enough data yet" message.
+
+**Only `market` is tracked**, not the full `PriceQuote` (low/mid/high) — a trend line only needs one
+number per point, and `market` is already the number treated as "the real price" everywhere else in
+this codebase (Card Stats, `computeDeckPrice`, the price line on `CardDetail.tsx` itself). Kept
+**per-edition, not per-card-name**, matching `PriceData.prices` exactly — different printings of the
+same card can carry very different prices, so collapsing them would blend unrelated trend lines.
+
+**Bounded growth by construction**: 3,838 priced editions × 52 points × ~55 bytes/point ≈ 11MB
+steady-state once a full year has accrued — grows weekly until the cap, then stays flat. This is the
+directly-opposite tradeoff from the (rejected) idea of committing the multi-GB Omnidex raw cache to
+git every run (see "Omnidex crawl cache seeding" below) — small enough here that a flat-forever file
+is simply fine, no seeding/bootstrapping trick needed.
+
+**Client side**: `usePriceHistoryData()` is a thin `usePublishedData("price-history",
+"/data/priceHistory.json")` wrapper — the same generic manifest-gated fetch-if-stale + IndexedDB
+cache every `analysis-*` dataset uses (see "Client load-time optimizations" below). Deliberately
+*not* modeled on `usePriceLookup.ts`'s bespoke direct-fetch-plus-dedicated-Dexie-table pattern —
+that pattern exists because `prices.json` needs fast per-card Map lookups across many list-view rows
+at once; `priceHistory.json` is only ever read for one card at a time on `CardDetail.tsx`, so the
+generic dataset-cache path is the better fit and needed no new Dexie table or schema version.
+
+`CardDetail.tsx` charts whichever series has ≥2 real points — Normal preferred, Foil as a fallback,
+nothing rendered if neither qualifies (`selectPriceSeries`) — via `ThemaSparkline`
+(`app/src/features/thema/ThemaSparkline.tsx`, a generic `{values: number[]}` inline-SVG line chart
+already used for the unrelated Thema price-rank history page), rather than a new chart component or
+library.
+
 ## TCGplayer Mass Entry export (`app/src/lib/tcgplayerMassEntry.ts`)
 
 Not documented in TCGplayer's public API reference — reverse-engineered from a real working

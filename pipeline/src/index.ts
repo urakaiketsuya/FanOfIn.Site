@@ -1,4 +1,5 @@
 import { buildPrices, writePrices } from "./pricing/build.js";
+import { updatePriceHistory, writePriceHistory } from "./pricing/history.js";
 import { crawlEvents, type CrawlMode } from "./omnidex/crawler.js";
 import { buildOmnidexIndex, writeOmnidexData } from "./omnidex/build.js";
 import { buildAnalysis } from "./analysis/build.js";
@@ -17,6 +18,10 @@ async function main() {
         const prices = await buildPrices();
         await writePrices(prices);
         console.log("pricing: done");
+
+        const priceHistory = await updatePriceHistory(prices);
+        await writePriceHistory(priceHistory);
+        console.log(`pricing: history now tracks ${Object.keys(priceHistory.history).length} editions`);
       } catch (err) {
         console.error("pricing pipeline failed", err);
         process.exitCode = 1;

@@ -25,3 +25,20 @@ export interface PriceData {
 export function priceKey(setPrefix: string, collectorNumber: string): string {
   return `${setPrefix}-${collectorNumber}`;
 }
+
+/** ~1 year of weekly snapshots (the pipeline's refresh cadence) — tunable, not final. Bounds `PriceHistoryData` to a flat steady-state size instead of growing forever. */
+export const PRICE_HISTORY_MAX_POINTS = 52;
+
+/** One snapshot of a single edition's market price. Only `market` is tracked (not the full low/mid/high spread) — a trend line only needs one number per point, and `market` is already the number treated as "the real price" everywhere else in this codebase. */
+export interface PriceHistoryPoint {
+  /** The pipeline run's `generatedAt` that produced this point. */
+  date: string;
+  normalMarket: number | null;
+  foilMarket: number | null;
+}
+
+export interface PriceHistoryData {
+  generatedAt: string;
+  /** Keyed by `priceKey(setPrefix, collectorNumber)` — same join key as `PriceData.prices`. Chronological oldest-first, capped to `PRICE_HISTORY_MAX_POINTS` per edition. */
+  history: Record<string, PriceHistoryPoint[]>;
+}

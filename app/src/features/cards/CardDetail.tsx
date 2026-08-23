@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { priceKey, type TopCardsBySection } from "@gatcg/shared";
+import { priceKey, type PriceHistoryPoint, type TopCardsBySection } from "@gatcg/shared";
 import { gatcgApi } from "../../lib/api/client";
 import CardImage from "../../components/CardImage";
 import ElementIcon from "../../components/ElementIcon";
@@ -14,6 +14,8 @@ import TopDecksList from "../../components/TopDecksList";
 import { typeIconKey } from "../../lib/cardTypeIcon";
 import { useCard } from "./useCard";
 import { usePriceLookup } from "../pricing/usePriceLookup";
+import { usePriceHistoryData } from "../pricing/usePriceHistory";
+import ThemaSparkline from "../thema/ThemaSparkline";
 import { useCardStatsData, useArchetypeTaxonomyData, useCardQuantityStatsData } from "../archetypes/data";
 import { useCardCatalog } from "./useCardCatalog";
 import { useCardCombination } from "./useCardCombination";
@@ -42,6 +44,15 @@ const MIN_SAMPLE_SIZE = 5;
 function formatDelta(n: number | null): string {
   if (n === null || n === 0) return "";
   return ` (${n > 0 ? "+" : ""}${n})`;
+}
+
+/** Picks which market-price series to chart: Normal if it has enough real points, else Foil, else nothing (ThemaSparkline itself already no-ops under 2 points, but this also decides which label to show). */
+function selectPriceSeries(points: PriceHistoryPoint[]): { label: string; dated: { date: string; value: number }[] } | null {
+  const normal = points.filter((p) => p.normalMarket !== null).map((p) => ({ date: p.date, value: p.normalMarket as number }));
+  if (normal.length >= 2) return { label: "Normal", dated: normal };
+  const foil = points.filter((p) => p.foilMarket !== null).map((p) => ({ date: p.date, value: p.foilMarket as number }));
+  if (foil.length >= 2) return { label: "Foil", dated: foil };
+  return null;
 }
 
 type CardTab = "info" | "usedWith" | "synergy" | "similar" | "intent" | "decks" | "compare";
@@ -101,6 +112,7 @@ export default function CardDetail() {
   const rarityDisplay = (rarity: number) =>
     options.data?.rarity.find((r) => r.value === String(rarity))?.display ?? String(rarity);
   const prices = usePriceLookup();
+  const priceHistoryData = usePriceHistoryData();
   const cardStatsData = useCardStatsData();
   const cardStat = cardStatsData?.cards.find((c) => c.name === card?.name);
   const cardQuantityStatsData = useCardQuantityStatsData();
@@ -236,6 +248,8 @@ export default function CardDetail() {
 
   const edition = card.editions[editionIndex] ?? card.editions[0];
   const price = edition ? prices.get(priceKey(edition.set.prefix, edition.collector_number)) : undefined;
+  const priceHistoryPoints = edition ? priceHistoryData?.history[priceKey(edition.set.prefix, edition.collector_number)] : undefined;
+  const priceSeries = priceHistoryPoints ? selectPriceSeries(priceHistoryPoints) : null;
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
@@ -365,6 +379,18 @@ export default function CardDetail() {
                   View on TCGplayer &rarr;
                 </a>
               </div>
+              {priceSeries && (
+                <div className="mt-2 max-w-sm rounded-md border border-ctp-surface1 p-3">
+                  <p className="text-xs text-ctp-subtext0">
+                    {priceSeries.label} price, last {priceSeries.dated.length} weeks
+                  </p>
+                  <ThemaSparkline values={priceSeries.dated.map((d) => d.value)} height={48} />
+                  <div className="mt-1 flex justify-between text-[10px] text-ctp-subtext0">
+                    <span>{new Date(priceSeries.dated[0].date).toLocaleDateString()}</span>
+                    <span>{new Date(priceSeries.dated[priceSeries.dated.length - 1].date).toLocaleDateString()}</span>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

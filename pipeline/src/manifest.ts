@@ -6,6 +6,7 @@ const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../
 
 /** Every published dataset the app fetches via `usePublishedData` — key must match the `key` argument used at each call site (see app/src/features/.../data.ts), or the app won't recognize a change. */
 const MANIFEST_ENTRIES: { key: string; file: string }[] = [
+  { key: "price-history", file: "priceHistory.json" },
   { key: "omnidex-index", file: "omnidex/index.json" },
   { key: "omnidex-players", file: "omnidex/players.json" },
   { key: "omnidex-judges", file: "omnidex/judges.json" },
