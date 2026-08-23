@@ -9,6 +9,7 @@ import CardHoverPreview from "../../components/CardHoverPreview";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
+import { isProvisionalRating, PROVISIONAL_MATCH_THRESHOLD } from "../../lib/eloProvisional";
 
 const PAGE_SIZE = 50;
 
@@ -126,6 +127,8 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
       {playersData && eloData && rows.length > 0 && (
         <p className="mt-4 text-xs text-ctp-subtext0">
           {rows.length} rated player{rows.length === 1 ? "" : "s"}
+          {" · "}
+          <span className="text-ctp-yellow">*</span> provisional — fewer than {PROVISIONAL_MATCH_THRESHOLD} recorded matches
         </p>
       )}
 
@@ -152,7 +155,14 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
                       {player.username}
                     </Link>
                   </td>
-                  <td className="py-1.5 pr-6 text-ctp-subtext1">{Math.round(rating?.rating ?? 0)}</td>
+                  <td className="py-1.5 pr-6 text-ctp-subtext1">
+                    {Math.round(rating?.rating ?? 0)}
+                    {rating && isProvisionalRating(rating.matches) && (
+                      <span className="ml-1 text-ctp-yellow" title={`Provisional — only ${rating.matches} recorded match${rating.matches === 1 ? "" : "es"}`}>
+                        *
+                      </span>
+                    )}
+                  </td>
                   <td className="py-1.5 pr-6 text-ctp-subtext1">
                     {rating?.wins}-{rating?.losses}-{rating?.ties}
                   </td>

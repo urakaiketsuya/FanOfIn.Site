@@ -11,6 +11,7 @@ import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CostIcon from "../../components/CostIcon";
 import StaleDataNotice from "../../components/StaleDataNotice";
+import DecklistCoverageNotice from "../../components/DecklistCoverageNotice";
 import ElementIcon from "../../components/ElementIcon";
 import DonutChart, { buildChartSegments } from "../../components/DonutChart";
 import BarChart from "../../components/BarChart";
@@ -974,6 +975,7 @@ export default function DeckBuilderIndex() {
         matching that pair, not a single example decklist. Lock in cards of your own choosing and the rest re-ranks
         based on what you've picked. Correlational, not causal, same as every Card Impact number on this site.
       </p>
+      <DecklistCoverageNotice />
       <StaleDataNotice generatedAt={[popularityIndexData?.generatedAt, archetypeTaxonomyData?.generatedAt, cardStatsData?.generatedAt]} />
 
       <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
