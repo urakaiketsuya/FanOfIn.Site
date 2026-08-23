@@ -220,6 +220,23 @@ export default function CardsBrowse() {
                 selected={filters.sets}
                 onToggle={(v) => setFilters((f) => ({ ...f, sets: toggleInSet(f.sets, v) }))}
               />
+              <div>
+                <span className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Speed</span>
+                <div className="mt-1 flex flex-wrap gap-2">
+                  {(["any", "fast", "normal"] as const).map((s) => (
+                    <button
+                      key={s}
+                      type="button"
+                      onClick={() => setFilters((f) => ({ ...f, speed: s }))}
+                      className={`rounded-md border px-2 py-1 text-xs capitalize ${
+                        filters.speed === s ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                      }`}
+                    >
+                      {s === "any" ? "All" : s}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
 
