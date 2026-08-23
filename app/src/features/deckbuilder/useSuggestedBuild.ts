@@ -10,6 +10,7 @@ import {
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { useDebouncedValue } from "../../lib/useDebouncedValue";
 import { cardPillarScore, type RatingPillar } from "../../lib/deckIdentity";
+import { weightedJaccard } from "../../lib/decodedDecks";
 import type { DeckBuilderRow } from "./useDeckBuilderPopulation";
 
 /** Same reasoning as useAllDecodedDecks' CATALOG_SETTLE_MS (app/src/lib/decodedDecks.ts) — the
@@ -29,6 +30,16 @@ const PRIOR_WEIGHT = 10;
 const MIN_SAMPLE_SIZE = 5;
 /** A with/without split needs at least this many rows total before it's worth ranking against — below this, fall back to the broader (lock-unconditioned) population instead of showing nothing. */
 const MIN_RANKING_POPULATION = MIN_SAMPLE_SIZE * 2;
+/**
+ * Same element does not mean similar deck — real-data-verified: Arisanna's "Spirit of Wind" and
+ * "Fragmented Spirit of Wind" decks score only 0.19 weighted-Jaccard against each other (two nearly
+ * unrelated sub-archetypes that happen to share a Champion and element), while Diao Chan's and
+ * Merlin's same-element Spirit pairs score 0.72 and 0.65 respectively. Same bar as the Variants tab
+ * and the pipeline's own archetype `CLUSTER_THRESHOLD` for "is this really the same build" — the
+ * Spirit-element fallback below only uses a broader same-element population when it actually
+ * resembles what real data on the exact combo already shows, not just because it shares an element.
+ */
+const SPIRIT_ELEMENT_FALLBACK_MIN_SIMILARITY = 0.45;
 /** How many ranked-but-unplaced cards to surface as "cards that might help" beyond the assembled build — matters most for a fully-locked build (e.g. from a paste), where every Material/Main/Sideboard slot is already spoken for and the ranked pool would otherwise never be shown at all. */
 const MAX_EXTRA_SUGGESTIONS = 8;
 /** A locked card's own lift needs to clear this far below zero (not just "any negative number") before it's worth flagging as a removal candidate — same shrinkage-noise-floor reasoning as the positive suggestion side. */
@@ -69,7 +80,7 @@ export interface SuggestedBuild {
   rankingPopulationSize: number;
   /** True once enough cards are locked that the exact (Spirit + all locks) population got too thin to rank against, so remaining suggestions fell back to the Spirit-only population instead. */
   usedFallback: boolean;
-  /** True when the chosen Champion+Spirit combo itself has zero real decks, so ranking fell back to other Spirits of the same element with this Champion instead (e.g. Fragmented Spirit of Wind has no Diao Chan decks, but Spirit of Wind does) — see `spiritElementFallbackSpirits` for which ones. The Spirit slot itself still shows the viewer's actual pick either way; only the population everything else is ranked against is broadened. */
+  /** True when the chosen Champion+Spirit combo has too little (or zero) real data, so ranking fell back to other Spirits of the same element with this Champion instead (e.g. Fragmented Spirit of Wind has only 3 Diao Chan decks, Spirit of Wind has 47) — see `spiritElementFallbackSpirits` for which ones. Gated on `SPIRIT_ELEMENT_FALLBACK_MIN_SIMILARITY` whenever there's enough exact data to check: same element doesn't always mean similar deck (real example: Arisanna's two same-element Spirit builds score just 0.19 similarity against each other), so this only fires when the broader population actually resembles what's already known about the exact combo. The Spirit slot itself still shows the viewer's actual pick either way; only the population everything else is ranked against is broadened. */
   usedSpiritElementFallback: boolean;
   /** The other Spirit(s) actually contributing decks to the element fallback above — empty unless `usedSpiritElementFallback` is true. */
   spiritElementFallbackSpirits: string[];
@@ -185,6 +196,18 @@ function modalTotal(rows: DeckBuilderRow[], section: DeckSection, fallback: numb
   }
   if (counts.size === 0) return fallback;
   return Array.from(counts.entries()).sort((a, b) => b[1] - a[1])[0][0];
+}
+
+/** Average copies per deck (main+material combined, "deck identity" convention) across a row population — for scoring how similar two populations actually are via `weightedJaccard`, same centroid shape `useArchetypeVariants.ts`/`decodedDecks.ts` already use for real decks. */
+function rowsCentroid(rows: DeckBuilderRow[]): Map<string, number> {
+  const centroid = new Map<string, number>();
+  for (const row of rows) {
+    for (const [name, qty] of row.main) centroid.set(name, (centroid.get(name) ?? 0) + qty);
+    for (const [name, qty] of row.material) centroid.set(name, (centroid.get(name) ?? 0) + qty);
+  }
+  if (rows.length === 0) return centroid;
+  for (const [name, total] of centroid) centroid.set(name, total / rows.length);
+  return centroid;
 }
 
 function toSuggested(
@@ -310,12 +333,10 @@ export function useSuggestedBuild(
     // reliably — same MIN_RANKING_POPULATION bar the locked-cards fallback below already uses for
     // "too thin to trust" (real example: Fragmented Spirit of Wind has only 3 Diao Chan decks,
     // Spirit of Wind has 47) — rather than ranking against a near-anecdotal population or showing
-    // nothing, fall back to this Champion's decks with any Spirit sharing the chosen one's
-    // element(s). Since a Spirit trivially shares its own element, this naturally still includes
-    // the exact combo's own (thin) decks alongside the broader ones, not instead of them. Real
-    // elements only (granted by the Spirit card itself, same source `computeIdentityElements`
-    // reads from) — a Spirit with no elements (shouldn't happen, but data can surprise) has nothing
-    // to match on, so no fallback rather than matching everything.
+    // nothing, consider falling back to this Champion's decks with any Spirit sharing the chosen
+    // one's element(s). Real elements only (granted by the Spirit card itself, same source
+    // `computeIdentityElements` reads from) — a Spirit with no elements (shouldn't happen, but data
+    // can surprise) has nothing to match on, so no fallback rather than matching everything.
     let spiritRows = exactSpiritRows;
     let usedSpiritElementFallback = false;
     let spiritElementFallbackSpirits: string[] = [];
@@ -327,10 +348,19 @@ export function useSuggestedBuild(
           const elements = cardsByName.get(r.spiritName)?.elements ?? [];
           return elements.some((e) => chosenSpiritElements.has(e));
         });
-        if (fallbackRows.length > spiritRows.length) {
+        const otherSpiritRows = fallbackRows.filter((r) => r.spiritName !== spiritFilter);
+        // Same element does not mean similar deck (see SPIRIT_ELEMENT_FALLBACK_MIN_SIMILARITY's own
+        // doc comment) — when there's at least some real data for the exact combo, require the
+        // other same-element Spirits' decks to actually resemble it before pooling them in. With
+        // zero exact data there's nothing to validate against, so the element match alone (the only
+        // signal available) still applies.
+        const passesSimilarityCheck =
+          exactSpiritRows.length === 0 ||
+          weightedJaccard(rowsCentroid(exactSpiritRows), rowsCentroid(otherSpiritRows)) >= SPIRIT_ELEMENT_FALLBACK_MIN_SIMILARITY;
+        if (fallbackRows.length > spiritRows.length && passesSimilarityCheck) {
           spiritRows = fallbackRows;
           usedSpiritElementFallback = true;
-          spiritElementFallbackSpirits = Array.from(new Set(fallbackRows.map((r) => r.spiritName!).filter((s) => s !== spiritFilter))).sort();
+          spiritElementFallbackSpirits = Array.from(new Set(otherSpiritRows.map((r) => r.spiritName!))).sort();
         }
       }
     }
