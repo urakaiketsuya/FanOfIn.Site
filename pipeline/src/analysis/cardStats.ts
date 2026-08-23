@@ -1,4 +1,4 @@
-import type { CardStat } from "@gatcg/shared";
+import { shrinkWinRate, type CardStat } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
 import { resolveCard, type CardSignature } from "../cards/catalog.js";
 import { config } from "../config.js";
@@ -83,7 +83,7 @@ export function computeCardStats(bundles: OmnidexEventBundle[], cardIndex: Map<s
 
   return Array.from(accum.entries())
     .map(([name, a]) => {
-      const avgWinRate = a.winRateN > 0 ? a.winRateSum / a.winRateN : 0;
+      const { avgWinRate, adjustedWinRate } = shrinkWinRate(a.winRateSum, a.winRateN, prior);
       return {
         name,
         slug: cardIndex.get(name)?.slug ?? null,
@@ -91,7 +91,7 @@ export function computeCardStats(bundles: OmnidexEventBundle[], cardIndex: Map<s
         totalCopies: a.totalCopies,
         eventCount: a.events.size,
         avgWinRate,
-        adjustedWinRate: (a.winRateSum + prior * 0.5) / (a.winRateN + prior),
+        adjustedWinRate,
         recentDeckCount: a.recentDeckCount,
         priorDeckCount: a.priorDeckCount,
         marketPrice: null, // filled in by build.ts, which joins against data/prices.json

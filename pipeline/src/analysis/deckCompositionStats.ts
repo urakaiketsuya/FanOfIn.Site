@@ -1,4 +1,4 @@
-import type { CompositionWinRateStat } from "@gatcg/shared";
+import { shrinkWinRate, type CompositionWinRateStat } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
 import { resolveCard, type CardSignature } from "../cards/catalog.js";
 import { config } from "../config.js";
@@ -75,13 +75,7 @@ export function computeCompositionWinRates(bundles: OmnidexEventBundle[], cardIn
   const result: CompositionWinRateStat[] = [];
   for (const [type, byBucket] of accum) {
     for (const [bucket, a] of byBucket) {
-      result.push({
-        type,
-        bucket,
-        deckCount: a.deckCount,
-        avgWinRate: a.winRateSum / a.winRateN,
-        adjustedWinRate: (a.winRateSum + prior * 0.5) / (a.winRateN + prior),
-      });
+      result.push({ type, bucket, deckCount: a.deckCount, ...shrinkWinRate(a.winRateSum, a.winRateN, prior) });
     }
   }
 

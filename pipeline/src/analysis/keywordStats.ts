@@ -1,4 +1,4 @@
-import { computeKeywordComposition, type KeywordStat } from "@gatcg/shared";
+import { computeKeywordComposition, shrinkWinRate, type KeywordStat } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
 import { resolveCard, type CardSignature } from "../cards/catalog.js";
 import { config } from "../config.js";
@@ -57,15 +57,11 @@ export function computeKeywordStats(bundles: OmnidexEventBundle[], cardIndex: Ma
   const prior = config.winRateShrinkagePriorWeight;
 
   return Array.from(accum.entries())
-    .map(([keyword, a]) => {
-      const avgWinRate = a.winRateN > 0 ? a.winRateSum / a.winRateN : 0;
-      return {
-        keyword,
-        deckCount: a.deckCount,
-        eventCount: a.events.size,
-        avgWinRate,
-        adjustedWinRate: (a.winRateSum + prior * 0.5) / (a.winRateN + prior),
-      };
-    })
+    .map(([keyword, a]) => ({
+      keyword,
+      deckCount: a.deckCount,
+      eventCount: a.events.size,
+      ...shrinkWinRate(a.winRateSum, a.winRateN, prior),
+    }))
     .sort((a, b) => b.deckCount - a.deckCount);
 }

@@ -8,3 +8,4 @@ export * from "./cardImpact.js";
 export * from "./changelog-types.js";
 export * from "./hash.js";
 export * from "./keywords.js";
+export * from "./winRateShrinkage.js";

@@ -1,4 +1,4 @@
-import type { CardQuantityStat } from "@gatcg/shared";
+import { shrinkWinRate, type CardQuantityStat } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
 import { resolveCard, type CardSignature } from "../cards/catalog.js";
 import { config } from "../config.js";
@@ -60,12 +60,7 @@ export function computeCardQuantityStats(bundles: OmnidexEventBundle[], cardInde
 
   for (const [name, byQuantity] of accum) {
     const quantities = Array.from(byQuantity.entries())
-      .map(([quantity, a]) => ({
-        quantity,
-        deckCount: a.deckCount,
-        avgWinRate: a.winRateN > 0 ? a.winRateSum / a.winRateN : 0,
-        adjustedWinRate: (a.winRateSum + prior * 0.5) / (a.winRateN + prior),
-      }))
+      .map(([quantity, a]) => ({ quantity, deckCount: a.deckCount, ...shrinkWinRate(a.winRateSum, a.winRateN, prior) }))
       .sort((a, b) => a.quantity - b.quantity);
     // A card only ever run at one quantity has nothing to compare — same "don't show a
     // comparison with only one side" reasoning used everywhere else in this codebase.
