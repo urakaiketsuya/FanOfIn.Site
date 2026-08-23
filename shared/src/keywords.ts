@@ -70,6 +70,11 @@ function keywordRegex(keyword: string): RegExp {
   // itself — "**Advanced Imbue 2**", "**Crux & Tera Imbue 3**" — not just "**Imbue N**". Verified
   // against the real card corpus: this is the only keyword templated that way.
   if (keyword === "Imbue") return /\*\*(?:[A-Za-z]+(?:\s*&\s*[A-Za-z]+)?\s+)?Imbue(?:\s+(?:\d+|X))?\*\*/;
+  // Empower's magnitude can be a plain number, a bare "X", or "N+X"/"X+N" — the general
+  // `(?: \d+)?` suffix only ever matched the plain-number case. Verified against the real card
+  // corpus: 8 real grants (e.g. "**Empower X+2**", "**Da Qiao, Cinderbinder**'s **Empower X**")
+  // were silently missed before this.
+  if (keyword === "Empower") return /\*\*Empower(?:\s+(?:\d+|X)(?:\+(?:\d+|X))?)?\*\*/;
   const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   return new RegExp(`\\*\\*${escaped}(?: \\d+)?\\*\\*`);
 }

@@ -671,9 +671,10 @@ export default function CardDetail() {
         <div className="mt-4">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Intent cards</h2>
           <p className="mt-1 text-xs text-ctp-subtext0">
-            Cards designed to work with {card.name} — a shared token economy (e.g. summons/sacrifices a Powercell) or
-            a tribal category {card.name} either belongs to or explicitly references as a cost or condition. Most
-            cards aren't part of one of these — an empty list here is normal, not a sign anything's broken.
+            Cards designed to work with {card.name} — a shared token economy (e.g. summons/sacrifices a Powercell), a
+            tribal category {card.name} either belongs to or explicitly references as a cost or condition, or
+            Empower feeding a Spell that deals damage scaled by your champion's level. Most cards aren't part of one
+            of these — an empty list here is normal, not a sign anything's broken.
           </p>
 
           {experimentalIntentCount > 0 && (

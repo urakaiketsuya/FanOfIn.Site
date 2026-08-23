@@ -634,8 +634,8 @@ re-attempt a fabricated per-card number without redoing this validation on a sma
 
 A different relationship than "same effect shape": not near-identical cards, but cards **designed
 to work together** — one card produces a resource/condition, another's text explicitly consumes or
-cares about that same thing. Two detection tracks, both validated against the real card corpus
-before building (2,494 cards, `pipeline/.cache/cards.json`):
+cares about that same thing. Three detection tracks, all validated against the real card corpus
+before building (2,495 cards, `pipeline/.cache/cards.json`):
 
 - **Named token economies**: `extractProducedTokens` matches `**Summon** a/an/N <Name> token(s)` in
   effect text; `extractConsumedTokens` matches `sacrifice a/an/N <Name>`. Matched by the token's own
@@ -654,9 +654,21 @@ before building (2,494 cards, `pipeline/.cache/cards.json`):
   card of that type with every card that happens to sacrifice one, which is noise, not a designed
   relationship. `subtypes` values are specific tribal/flavor categories, not generic cost nouns, so
   this filter is what keeps the feature signal instead of noise.
+- **Empower ↔ level-scaled Spell damage**: `extractsEmpowerGrant` matches any card whose effect
+  bold-grants `**Empower**` (any magnitude — N, X, or N+X); `benefitsFromEmpower` matches Spell cards
+  whose own damage is written in terms of `**LV**` (Grand Archive's own reminder-text shorthand for
+  "your champion's level" — e.g. "Deal **LV** damage", "Deal 1+**LV** damage"), since Empower's grant
+  is specifically "the next Spell card you activate this turn resolves as if your champion got +N
+  level." Verified against the real corpus: 37 cards grant Empower, and of every card referencing
+  `**LV**` in a genuine "deal ... damage" clause (12 total, found by a bounded-gap regex — see
+  `DEAL_LV_DAMAGE_RE`), 9 are actually Spell-subtype and therefore real Empower consumers; the other
+  3 (two Potions, one Skill) also deal LV-scaled damage but aren't Spells, so Empower structurally
+  can't apply to them and they're deliberately excluded, not just missed. Unlike the tribal/subtype
+  track, there's no `via` value to look up — both sides always report `via: "Empower"`, since it's a
+  single named ability rather than an open-ended vocabulary of tokens or subtypes.
 
 Empty results (`feeds`/`poweredBy` both `[]`) are the normal case — only cards actually part of a
-named token or tribal economy will have entries.
+named token economy, tribal economy, or the Empower relationship will have entries.
 
 **Validated vs. experimental tiers**: every `IntentMatch` carries a `tier`. `"validated"` is the
 sacrifice/control/banish-from (subtypes) and Summon/sacrifice (tokens) triggers above — the ones
@@ -678,6 +690,19 @@ mangle any subtype whose real singular form happens to end in "s" (e.g. a hypoth
 "Glas"), corrupting both the matching key and the `via` text shown to the user. Pluralization when
 searching effect text is still handled, just non-destructively — each trigger regex's own trailing
 `s?` matches the plural form without altering the stored subtype string.
+
+**A word-token-quantified gap can swallow the separator it still needs**: `DEAL_LV_DAMAGE_RE` was
+first drafted with a `FILLER`-style word-token gap, `(?:\s+\S+){0,3}`, between `**LV**` and
+`\bdamage\b` — modeled on the subtype triggers' gap conventions above. It matched **zero** real
+cards. Root cause: at zero repetitions the group contributes nothing, so `\bdamage\b` had to sit
+immediately adjacent to `**LV**` with no space — but the real text always has one ("**LV** damage").
+At one-or-more repetitions, `(?:\s+\S+)` itself greedily consumes " damage" as its own `\S+` token,
+leaving nothing left over for the literal `\bdamage\b` that follows — so no repeat count ever
+actually left a real gap. Rewriting the gaps as plain bounded character classes (`[^.]{0,N}`, which
+match whitespace directly rather than needing a separate token boundary) fixed it immediately and
+matched all real cases. Caught only by testing the exact regex against the real corpus rather than
+trusting it by inspection — same discipline that caught the earlier banish-from and Imbue-prefix
+bugs.
 
 **The banish-from gap is bounded, not "anywhere in the sentence"**: the banish trigger originally
 allowed `[^.]*` between the subtype match and `from <zone>` — any non-period characters, i.e.
