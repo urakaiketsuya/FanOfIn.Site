@@ -1,6 +1,7 @@
 import type {
   ArchetypeData,
   ArchetypeTaxonomyData,
+  ArchetypeTaxonomyValidationData,
   CardImpactData,
   CardQuantityStatsData,
   CardStatsData,
@@ -23,6 +24,13 @@ export function useKeywordStatsData(): KeywordStatsData | undefined {
 
 export function useArchetypeTaxonomyData(): ArchetypeTaxonomyData | undefined {
   return usePublishedData<ArchetypeTaxonomyData>("analysis-archetype-taxonomy", "/data/analysis/archetype-taxonomy.json");
+}
+
+export function useArchetypeTaxonomyValidationData(): ArchetypeTaxonomyValidationData | undefined {
+  return usePublishedData<ArchetypeTaxonomyValidationData>(
+    "analysis-archetype-taxonomy-validation",
+    "/data/analysis/archetype-taxonomy-validation.json",
+  );
 }
 
 export function useChampionTrendsData(): ChampionTrendsData | undefined {

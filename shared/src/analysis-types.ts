@@ -590,6 +590,39 @@ export interface ArchetypeTaxonomyData {
   cardClusterIndex: Record<string, { clusterId: string; prevalence: number }[]>;
 }
 
+export interface ArchetypeGoldSetCheck {
+  label: string;
+  champion: string;
+  requiredCards: string[];
+  passed: boolean;
+  clusterId: string | null;
+  clusterName: string | null;
+}
+
+export interface ArchetypeThresholdValidation {
+  threshold: number;
+  clusterCount: number;
+  establishedCount: number;
+  classificationRate: number;
+  medianMeanSimilarity: number;
+  medianAssignmentMargin: number;
+  assignmentAgreementWithBaseline: number;
+  goldSet: ArchetypeGoldSetCheck[];
+}
+
+/** Sensitivity and temporal-stability report produced by archetypeTaxonomyValidation.ts. */
+export interface ArchetypeTaxonomyValidationData {
+  generatedAt: string;
+  baselineThreshold: number;
+  temporalHoldout: {
+    cutoff: string;
+    historicalDeckCount: number;
+    historicalClusterCount: number;
+    assignmentAgreementWithFull: number;
+  };
+  thresholds: ArchetypeThresholdValidation[];
+}
+
 // ---------------------------------------------------------------------------
 // Card Impact — general and matchup-scoped
 // (pipeline/src/analysis/cardImpact.ts, matchupCardImpact.ts)

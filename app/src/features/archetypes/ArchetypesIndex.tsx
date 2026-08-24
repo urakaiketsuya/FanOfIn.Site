@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { CardImpactRole } from "@gatcg/shared";
-import { useArchetypeTaxonomyData, useMatchupCardImpactData } from "./data";
+import { useArchetypeTaxonomyData, useArchetypeTaxonomyValidationData, useMatchupCardImpactData } from "./data";
 import { useCardsByNames } from "../events/useCardsByNames";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import LoadMore from "../../components/LoadMore";
@@ -11,6 +11,7 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { formatUsd } from "../../lib/format";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 import ArchetypeMetaMap from "./ArchetypeMetaMap";
+import ArchetypeValidationPanel from "./ArchetypeValidationPanel";
 
 type SortMode = "players" | "winRate" | "metaShare" | "topCutRate" | "avgPlacement" | "avgPrice";
 
@@ -23,7 +24,7 @@ const SORT_LABELS: Record<SortMode, string> = {
   avgPrice: "Avg price",
 };
 
-type ViewMode = "builds" | "hurtYou";
+type ViewMode = "builds" | "validation" | "hurtYou";
 type ConfidenceFilter = "established" | "all";
 const ROLE_LABEL: Record<CardImpactRole, string> = { main: "Main", material: "Material", sideboard: "Sideboard", mixed: "Mixed" };
 const HURT_YOU_PAGE_SIZE = 30;
@@ -65,6 +66,7 @@ export default function ArchetypesIndex() {
   useDocumentTitle("Archetypes", "Data-derived Grand Archive TCG deck archetypes and named builds by Champion.");
   const data = useArchetypeTaxonomyData();
   const matchupData = useMatchupCardImpactData();
+  const validationData = useArchetypeTaxonomyValidationData();
   const [championFilter, setChampionFilter] = useState<string | null>(null);
   const [seasonId, setSeasonId] = useState<number | null>(null);
   const [sortMode, setSortMode] = useState<SortMode>("players");
@@ -237,7 +239,7 @@ export default function ArchetypesIndex() {
       )}
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
-        {(["builds", "hurtYou"] as ViewMode[]).map((v) => (
+        {(["builds", "validation", "hurtYou"] as ViewMode[]).map((v) => (
           <button
             key={v}
             type="button"
@@ -246,7 +248,7 @@ export default function ArchetypesIndex() {
               view === v ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
           >
-            {v === "builds" ? "Builds" : "Cards That Hurt You"}
+            {v === "builds" ? "Builds" : v === "validation" ? "Validation" : "Cards That Hurt You"}
           </button>
         ))}
       </div>
@@ -490,6 +492,8 @@ export default function ArchetypesIndex() {
           )}
         </>
       )}
+
+      {view === "validation" && <ArchetypeValidationPanel data={validationData} />}
     </div>
   );
 }
