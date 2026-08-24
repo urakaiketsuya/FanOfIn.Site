@@ -555,8 +555,10 @@ Rating and the composition donuts update immediately as cards are locked, added,
 verified live: locking one card changed the composite Power Rating from 6.00 to 6.25 in the same
 render pass.
 
-**Expected win rate**: the real average win rate of decks matching the Spirit filter *and* every
+**Observed win rate among matching decks**: the real average win rate of decks matching the Spirit filter *and* every
 currently-locked card (`conditionalWinRate` in `SuggestedBuild`) — not a synthesized prediction.
+The UI displays the matching sample size beside it and explicitly marks populations below ten decks
+as insufficient for a stable summary. Fallback populations are named where they are used.
 Summing individual cards' `adjustedLift` values to estimate a whole-deck win rate was considered and
 rejected: lift figures aren't independent (a card's lift already reflects correlation with whatever
 else typically accompanies it), so adding ~30 of them would compound into a number with no honest

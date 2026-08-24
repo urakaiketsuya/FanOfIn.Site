@@ -30,6 +30,7 @@ import { useNearestDecks, type NearestDeck } from "./useNearestDecks";
 import { useGlobalElementSuggestions } from "./useGlobalElementSuggestions";
 import { computeIdentityElements, findChampionCard, useSuggestedBuild, type SuggestedCard } from "./useSuggestedBuild";
 import { useBuddyCards, type BuddyCard } from "./useBuddyCards";
+import { validateDeck } from "./validateDeck";
 
 /**
  * Which population the ranking is computed against. "default" is today's existing behavior
@@ -144,7 +145,7 @@ function ChangeLogList({ entries }: { entries: ChangeLogEntry[] }) {
             <span className="text-ctp-text">{e.label}</span>
             {e.winRateDelta !== null && Math.abs(e.winRateDelta) >= 0.001 && (
               <span className={`ml-1.5 font-semibold ${e.winRateDelta >= 0 ? "text-ctp-green" : "text-ctp-red"}`}>
-                (expected win rate {e.winRateDelta >= 0 ? "+" : ""}
+                (observed matching-deck rate {e.winRateDelta >= 0 ? "+" : ""}
                 {(e.winRateDelta * 100).toFixed(1)}pp)
               </span>
             )}
@@ -430,7 +431,7 @@ function CardRow({
       ) : (
         <span
           className="w-6 shrink-0 text-right text-ctp-subtext0"
-          title={card.optimizedFrom !== null ? `Quantity optimized from ${card.optimizedFrom}x — this card's global win rate is higher at ${card.quantity}x` : undefined}
+          title={card.optimizedFrom !== null ? `Quantity changed from ${card.optimizedFrom}x using ${card.quantityEvidence.source} evidence (n=${card.quantityEvidence.sampleSize})` : undefined}
         >
           {card.quantity}x{card.optimizedFrom !== null && <span className="text-ctp-blue">*</span>}
         </span>
@@ -501,7 +502,7 @@ function SuggestionRow({
     <li className="flex flex-wrap items-center gap-1.5 rounded-md border border-ctp-surface1 px-2 py-1 text-sm">
       <span
         className="w-6 shrink-0 text-right text-ctp-subtext0"
-        title={card.optimizedFrom !== null ? `Quantity optimized from ${card.optimizedFrom}x — this card's global win rate is higher at ${card.quantity}x` : undefined}
+        title={card.optimizedFrom !== null ? `Quantity changed from ${card.optimizedFrom}x using ${card.quantityEvidence.source} evidence (n=${card.quantityEvidence.sampleSize})` : undefined}
       >
         {card.quantity}x{card.optimizedFrom !== null && <span className="text-ctp-blue">*</span>}
       </span>
@@ -945,6 +946,10 @@ export default function DeckBuilderIndex() {
     }),
     [build.main, build.material, build.sideboard],
   );
+  const validation = useMemo(
+    () => validateDeck({ main: build.main, material: build.material, sideboard: build.sideboard }, catalogByName, identityElements),
+    [build.main, build.material, build.sideboard, catalogByName, identityElements],
+  );
   // Buying/exporting covers the whole deck including sideboard tech, same as DecklistView.tsx.
   const massEntryUrl = useMemo(() => buildTcgplayerMassEntryUrl([...buildLines, ...sideboardLines]), [buildLines, sideboardLines]);
   function sumPrice(lines: { name: string; quantity: number }[]) {
@@ -1009,9 +1014,9 @@ export default function DeckBuilderIndex() {
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="text-2xl font-bold text-ctp-blue">Guided Deck Builder</h1>
       <p className="mt-1 text-sm text-ctp-subtext1">
-        Pick a Champion and Spirit — the build below is assembled from the highest win-rate cards across real decks
-        matching that pair, not a single example decklist. Lock in cards of your own choosing and the rest re-ranks
-        based on what you've picked. Correlational, not causal, same as every Card Impact number on this site.
+        Identity → archetype/playstyle → core → flex/sideboard. Choose a Champion and Spirit, then review a
+        statistical shell from one comparable population. Lock accepted cards to condition the remaining choices.
+        Suggestions describe tournament correlations, not causes or predictions.
       </p>
       <DecklistCoverageNotice />
       <StaleDataNotice generatedAt={[popularityIndexData?.generatedAt, archetypeTaxonomyData?.generatedAt, cardStatsData?.generatedAt]} />
@@ -1043,7 +1048,7 @@ export default function DeckBuilderIndex() {
               }}
               className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
             >
-              <option value="">Any Spirit</option>
+              <option value="">Any Spirit — exploratory (advanced)</option>
               {spiritsPresent.map((name) => (
                 <option key={name} value={name}>
                   {name}
@@ -1051,7 +1056,10 @@ export default function DeckBuilderIndex() {
               ))}
             </select>
 
-            <span className="ml-2 text-ctp-subtext0">Suggest from:</span>
+            <details className="ml-2 rounded-md border border-ctp-surface1 px-2 py-1">
+              <summary className="cursor-pointer text-xs text-ctp-subtext0">Advanced population &amp; bias</summary>
+              <div className="mt-2 flex flex-wrap items-center gap-2">
+            <span className="text-ctp-subtext0">Suggest from:</span>
             <select
               value={pool}
               onChange={(e) => {
@@ -1091,6 +1099,8 @@ export default function DeckBuilderIndex() {
                 </option>
               ))}
             </select>
+              </div>
+            </details>
           </>
         )}
       </div>
@@ -1108,6 +1118,11 @@ export default function DeckBuilderIndex() {
         <p className="mt-2 text-xs text-ctp-subtext0">
           Biasing toward {PILLAR_LABELS[pillarBias]} — a small nudge among cards that already have real win-rate
           support, not a replacement for it. Win rates and lift numbers above are unaffected.
+        </p>
+      )}
+      {championName && spiritFilter === null && (
+        <p className="mt-2 text-xs text-ctp-yellow">
+          Any Spirit is exploratory: choose a specific Spirit before treating the core as coherent or complete.
         </p>
       )}
 
@@ -1170,8 +1185,9 @@ export default function DeckBuilderIndex() {
         <>
           {build.conditionalWinRate !== null && (
             <p className="mt-4 text-sm">
-              <span className="text-ctp-subtext0">Expected win rate: </span>
+              <span className="text-ctp-subtext0">Observed win rate among matching decks: </span>
               <span className="font-semibold text-ctp-text">{(build.conditionalWinRate * 100).toFixed(0)}%</span>
+              <span className="ml-1 text-xs text-ctp-subtext0">(n={build.matchingDeckCount})</span>
               {build.baselineWinRate !== null && lockedCards.size > 0 && (
                 <span
                   className={`ml-1.5 text-xs font-semibold ${
@@ -1185,6 +1201,20 @@ export default function DeckBuilderIndex() {
               )}
             </p>
           )}
+
+          <div className={`mt-3 rounded-md border px-3 py-2 text-sm ${validation.status === "Legal" ? "border-ctp-green" : validation.status === "Illegal" ? "border-ctp-red" : "border-ctp-yellow"}`}>
+            <span className="font-semibold">{validation.status}</span>
+            <span className="ml-1 text-xs text-ctp-subtext0">— Standard construction checks; not tournament certification.</span>
+            {validation.reasons.length > 0 && (
+              <ul className="mt-1 list-disc pl-5 text-xs text-ctp-subtext1">
+                {validation.reasons.slice(0, 8).map((reason) => <li key={reason}>{reason}</li>)}
+              </ul>
+            )}
+            <details className="mt-1 text-xs text-ctp-subtext0">
+              <summary className="cursor-pointer">Unsupported rules</summary>
+              {validation.unsupportedRules.join("; ")}.
+            </details>
+          </div>
 
           {buildLines.length > 0 && (
             <p className="mt-1 text-sm">
@@ -1229,6 +1259,12 @@ export default function DeckBuilderIndex() {
             <p className="mt-1 text-xs text-ctp-yellow">
               Not enough decks have every card you've locked in — remaining suggestions are based on the broader{" "}
               {spiritFilter ?? "any Spirit"} {championName} population instead.
+            </p>
+          )}
+          {build.matchingDeckCount > 0 && build.matchingDeckCount < 10 && (
+            <p className="mt-1 text-xs text-ctp-yellow">
+              Insufficient sample for a stable summary (n={build.matchingDeckCount}). Treat this as a statistical shell;
+              the observed rate and card ordering may be highly sensitive to a few decks.
             </p>
           )}
 
@@ -1318,14 +1354,21 @@ export default function DeckBuilderIndex() {
                 <>
               {build.hasQuantityOptimizations && (
                 <p className="mt-2 text-xs text-ctp-subtext0">
-                  <span className="text-ctp-blue">*</span> quantity adjusted from what this population usually runs — this card's own
-                  global win rate is meaningfully higher at that count, regardless of Champion.
+                  <span className="text-ctp-blue">*</span> quantity overridden only where global evidence has at least 30 decks and a
+                  meaningful margin. Each override discloses its source and sample on the card.
+                </p>
+              )}
+
+              {(build.unresolved.main > 0 || build.unresolved.material > 0 || build.unresolved.sideboard > 0) && (
+                <p className="mt-2 rounded-md border border-ctp-yellow px-3 py-2 text-xs text-ctp-yellow">
+                  Unresolved choices: {build.unresolved.main} main, {build.unresolved.material} material, {build.unresolved.sideboard} sideboard.
+                  Negative-lift cards are not inserted merely to hit modal totals; finish these flex slots with judgment and validate again.
                 </p>
               )}
 
               <div className={`mt-3 grid gap-4 sm:grid-cols-2 transition-opacity ${isPending ? "opacity-50" : ""}`}>
                 <div>
-                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Material ({materialTotal})</h2>
+                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Structural / common material ({materialTotal})</h2>
                   <ul className="mt-2 space-y-1">
                     {build.material.map((c) => (
                       <CardRow
@@ -1341,7 +1384,7 @@ export default function DeckBuilderIndex() {
                   </ul>
                 </div>
                 <div>
-                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Main ({mainTotal})</h2>
+                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Recommended core ({mainTotal})</h2>
                   <ul className="mt-2 space-y-1">
                     {build.main.map((c) => (
                       <CardRow
@@ -1362,9 +1405,8 @@ export default function DeckBuilderIndex() {
                 <div className="mt-4">
                   <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Sideboard ({sideboardTotal})</h2>
                   <p className="mt-1 text-xs text-ctp-subtext0">
-                    Situational tech — locked-in picks (e.g. from a pasted decklist) first, then ranked suggestions
-                    for the rest, same win-rate-lift ranking as Material/Main. Kept separate from Deck price/Stats,
-                    same "sideboard isn't part of deck identity" convention as everywhere else on this site.
+                    Common successful sideboard options in this population, not matchup-specific advice. Empty or
+                    unresolved slots are preferred when the data cannot support a confident option.
                   </p>
                   <ul className="mt-2 space-y-1">
                     {build.sideboard.map((c) => (

@@ -47,6 +47,9 @@ const REMOVAL_LIFT_CEILING = -0.02;
 const MAX_REMOVAL_SUGGESTIONS = 5;
 /** How much better the best global quantity bucket's win rate needs to be than the population's modal quantity before it's worth overriding — a card's own global win-rate-by-quantity curve is real data, but a tiny/noisy edge shouldn't flip the number away from what this Champion's own decks actually run. */
 const QUANTITY_OPTIMIZATION_MARGIN = 0.01;
+/** Global copy-count evidence is deliberately a last resort. Five decks is enough to display a
+ * card-impact split, but nowhere near enough to overturn what a coherent local population runs. */
+const MIN_GLOBAL_QUANTITY_SAMPLE = 30;
 
 type DeckSection = "main" | "material" | "sideboard";
 
@@ -61,6 +64,7 @@ export interface SuggestedCard {
   sample: { with: number; without: number } | null;
   /** Set only when the global card-quantity data (win rate by copy count, not scoped to this Champion) meaningfully beat the population's own modal quantity for this card — the quantity this slot *would* have gotten otherwise. Never applies to a locked card (its quantity is the viewer's own choice, including via manual edits). */
   optimizedFrom: number | null;
+  quantityEvidence: { source: "matching population" | "global"; sampleSize: number };
   /** "spirit" = the viewer's own Spirit pick, not ranked. "staple" = a Champion-level print included because it's the most commonly run print at that level, not because it cleared the lift sample bar (near-100%-adoption cards usually don't — their "without" bucket is too thin). "ranked" = a normal lift-ranked suggestion. */
   reason: "spirit" | "staple" | "ranked";
 }
@@ -88,6 +92,8 @@ export interface SuggestedBuild {
   conditionalWinRate: number | null;
   /** Real average win rate of decks matching just the Spirit filter (no lock condition) — a stable reference point for measuring how far locks have moved conditionalWinRate. */
   baselineWinRate: number | null;
+  matchingDeckCount: number;
+  unresolved: { main: number; material: number; sideboard: number };
   loading: boolean;
 }
 
@@ -218,6 +224,7 @@ function toSuggested(
   reason: SuggestedCard["reason"],
   section: DeckSection,
   optimizedFrom: number | null = null,
+  quantityEvidence: SuggestedCard["quantityEvidence"] = { source: "matching population", sampleSize: 0 },
 ): SuggestedCard {
   return {
     cardName,
@@ -228,6 +235,7 @@ function toSuggested(
     sample: entry ? { with: entry.deckCountWith, without: entry.deckCountWithout } : null,
     reason,
     optimizedFrom,
+    quantityEvidence,
   };
 }
 
@@ -245,23 +253,24 @@ function pickQuantity(
   cardName: string,
   card: Card | undefined,
   quantityBucketsByName: Map<string, { quantity: number; deckCount: number; adjustedWinRate: number }[]>,
-): { quantity: number; optimizedFrom: number | null } {
+): { quantity: number; optimizedFrom: number | null; evidence: SuggestedCard["quantityEvidence"] } {
   const modal = modalQuantity(rows, section, cardName, card);
+  const localSample = rows.filter((r) => r[section].has(cardName)).length;
   const buckets = quantityBucketsByName.get(cardName);
-  if (!buckets) return { quantity: modal, optimizedFrom: null };
+  if (!buckets) return { quantity: modal, optimizedFrom: null, evidence: { source: "matching population", sampleSize: localSample } };
 
   const max = legalMaxCopies(card);
-  const eligible = buckets.filter((b) => b.deckCount >= MIN_SAMPLE_SIZE && b.quantity >= 1 && b.quantity <= max);
-  if (eligible.length === 0) return { quantity: modal, optimizedFrom: null };
+  const eligible = buckets.filter((b) => b.deckCount >= MIN_GLOBAL_QUANTITY_SAMPLE && b.quantity >= 1 && b.quantity <= max);
+  if (eligible.length === 0) return { quantity: modal, optimizedFrom: null, evidence: { source: "matching population", sampleSize: localSample } };
 
   const best = eligible.reduce((a, b) => (b.adjustedWinRate > a.adjustedWinRate ? b : a));
-  if (best.quantity === modal) return { quantity: modal, optimizedFrom: null };
+  if (best.quantity === modal) return { quantity: modal, optimizedFrom: null, evidence: { source: "matching population", sampleSize: localSample } };
 
   const modalWinRate = eligible.find((b) => b.quantity === modal)?.adjustedWinRate ?? null;
   if (modalWinRate !== null && best.adjustedWinRate - modalWinRate < QUANTITY_OPTIMIZATION_MARGIN) {
-    return { quantity: modal, optimizedFrom: null };
+    return { quantity: modal, optimizedFrom: null, evidence: { source: "matching population", sampleSize: localSample } };
   }
-  return { quantity: best.quantity, optimizedFrom: modal };
+  return { quantity: best.quantity, optimizedFrom: modal, evidence: { source: "global", sampleSize: best.deckCount } };
 }
 
 /**
@@ -325,6 +334,8 @@ export function useSuggestedBuild(
         spiritElementFallbackSpirits: [],
         conditionalWinRate: null,
         baselineWinRate: null,
+        matchingDeckCount: 0,
+        unresolved: { main: 0, material: 0, sideboard: 0 },
         loading,
       };
 
@@ -378,6 +389,8 @@ export function useSuggestedBuild(
         spiritElementFallbackSpirits: [],
         conditionalWinRate: null,
         baselineWinRate: null,
+        matchingDeckCount: 0,
+        unresolved: { main: 0, material: 0, sideboard: 0 },
         loading: false,
       };
 
@@ -440,7 +453,11 @@ export function useSuggestedBuild(
     }));
     const baseline = rankingRows.reduce((sum, r) => sum + r.winRate, 0) / rankingRows.length;
     const ranked = computeCardImpactEntries(sectionRows, baseline, PRIOR_WEIGHT, MIN_SAMPLE_SIZE).filter(
-      (e) => !lockedNames.has(e.cardName) && !rejectedCards.has(e.cardName),
+      (e) =>
+        e.adjustedLift > 0 &&
+        cardsByName.get(e.cardName)?.legality?.STANDARD?.limit !== 0 &&
+        !lockedNames.has(e.cardName) &&
+        !rejectedCards.has(e.cardName),
     );
     // Re-order (not re-score) by a small pillar-affinity boost — each entry's own `adjustedLift`
     // stays the real, honest win-rate number shown in the UI; only which comparably-good real card
@@ -563,7 +580,10 @@ export function useSuggestedBuild(
     let mainTotal = main.reduce((sum, c) => sum + c.quantity, 0);
     let sideboardTotal = sideboard.reduce((sum, c) => sum + c.quantity, 0);
 
-    for (const entry of ranked) {
+    // "Any Spirit" is an exploratory comparison, not a coherent archetype. Keep its ranked cards
+    // available as optional ideas below, but do not auto-assemble them into a falsely complete deck.
+    const assemblyRanked = spiritFilter === null ? [] : ranked;
+    for (const entry of assemblyRanked) {
       if (placed.has(entry.cardName)) continue;
       const card = cardsByName.get(entry.cardName);
       if (card?.types.includes("CHAMPION")) continue; // only ever placed as a level anchor above
@@ -577,13 +597,13 @@ export function useSuggestedBuild(
         if (sideboardTotal >= sideboardTarget) continue;
         const picked = pickQuantity(rankingRows, "sideboard", entry.cardName, card, quantityBucketsByName);
         const qty = Math.min(picked.quantity, sideboardTarget - sideboardTotal);
-        sideboard.push(toSuggested(entry.cardName, qty, false, entry, "ranked", "sideboard", qty === picked.quantity ? picked.optimizedFrom : null));
+        sideboard.push(toSuggested(entry.cardName, qty, false, entry, "ranked", "sideboard", qty === picked.quantity ? picked.optimizedFrom : null, picked.evidence));
         sideboardTotal += qty;
       } else {
         if (mainTotal >= mainTarget) continue;
         const picked = pickQuantity(rankingRows, "main", entry.cardName, card, quantityBucketsByName);
         const qty = Math.min(picked.quantity, mainTarget - mainTotal);
-        main.push(toSuggested(entry.cardName, qty, false, entry, "ranked", "main", qty === picked.quantity ? picked.optimizedFrom : null));
+        main.push(toSuggested(entry.cardName, qty, false, entry, "ranked", "main", qty === picked.quantity ? picked.optimizedFrom : null, picked.evidence));
         mainTotal += qty;
       }
       placed.add(entry.cardName);
@@ -604,7 +624,7 @@ export function useSuggestedBuild(
         const section: DeckSection = e.role === "mixed" ? pluralitySection(rankingRows, e.cardName) : e.role;
         if (section === "material") return toSuggested(e.cardName, 1, false, e, "ranked", section);
         const picked = pickQuantity(rankingRows, section, e.cardName, card, quantityBucketsByName);
-        return toSuggested(e.cardName, picked.quantity, false, e, "ranked", section, picked.optimizedFrom);
+        return toSuggested(e.cardName, picked.quantity, false, e, "ranked", section, picked.optimizedFrom, picked.evidence);
       });
 
     const removalSuggestions = [...material, ...main, ...sideboard]
@@ -627,6 +647,12 @@ export function useSuggestedBuild(
       spiritElementFallbackSpirits,
       conditionalWinRate,
       baselineWinRate,
+      matchingDeckCount: conditionalRows.length,
+      unresolved: {
+        main: Math.max(0, mainTarget - mainTotal),
+        material: Math.max(0, materialTarget - materialTotal),
+        sideboard: Math.max(0, sideboardTarget - sideboardTotal),
+      },
       loading: false,
     };
   }, [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName, lockedSections, quantityBucketsByName, championCardOverride, pillarBias]);
