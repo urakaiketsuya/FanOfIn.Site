@@ -8,6 +8,7 @@ const CACHE_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../..
 const DECKS_DIR = path.join(CACHE_DIR, "decks");
 const HARVEST_META_PATH = path.join(CACHE_DIR, "harvest-meta.json");
 const PROGRESS_PATH = path.join(CACHE_DIR, "progress.json");
+const PUBLISHED_DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/shoutatyourdecks");
 
 export { DECKS_DIR };
 
@@ -101,4 +102,41 @@ export async function readProgress(): Promise<CrawlProgress | null> {
   } catch {
     return null;
   }
+}
+
+/**
+ * Seeds the local fetch cache from the already-committed data/shoutatyourdecks/ output. Without
+ * this, a cache-cold run — the very first CI run of this workflow, or any run after GitHub Actions
+ * evicts the actions/cache entry (7 days unused, or size pressure) — has no way to know which decks
+ * were already fetched, so it redoes the full ~21k-deck crawl instead of an incremental one (the
+ * workflow's inline reasoning about "metadata/decklists both skip anything already cached" assumes
+ * a warm cache that doesn't actually exist yet in that scenario).
+ *
+ * Only recovers decks that passed the publish filter — data/ never holds filtered-out decks, so
+ * those just get their (cheap, HTTP-only) metadata re-fetched and re-filtered, which is fine; the
+ * expensive phase this protects is the browser-driven decklist fetch.
+ */
+export async function hydrateCacheFromPublishedData(): Promise<{ hydrated: number }> {
+  let index: { decks: ShoutAtYourDecksDeckSummary[] };
+  try {
+    index = JSON.parse(await readFile(path.join(PUBLISHED_DATA_DIR, "index.json"), "utf-8"));
+  } catch {
+    return { hydrated: 0 };
+  }
+
+  let hydrated = 0;
+  for (const summary of index.decks) {
+    if (await readCachedDeck(summary.id)) continue; // already known to the local cache, nothing to recover
+
+    let deck: ShoutAtYourDecksDeck | null = null;
+    try {
+      deck = JSON.parse(await readFile(path.join(PUBLISHED_DATA_DIR, "decks", `${summary.id}.json`), "utf-8"));
+    } catch {
+      // decklist not published yet for this (kept) deck — the summary alone still saves the metadata fetch
+    }
+
+    await writeCachedDeck({ id: summary.id, url: summary.url, summary, deck });
+    hydrated++;
+  }
+  return { hydrated };
 }

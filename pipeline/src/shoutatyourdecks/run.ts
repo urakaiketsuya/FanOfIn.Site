@@ -1,6 +1,6 @@
 import { config } from "../config.js";
 import { sleep } from "../lib/http.js";
-import { listCachedDecks, writeCachedDeck, writeProgress } from "./cache.js";
+import { listCachedDecks, writeCachedDeck, writeProgress, hydrateCacheFromPublishedData } from "./cache.js";
 import { harvestDeckUrls } from "./harvest.js";
 import { fetchDeckSummary } from "./metadataFetch.js";
 import { shouldKeepDeck } from "./filter.js";
@@ -9,6 +9,10 @@ import { buildShoutAtYourDecksIndex, writeShoutAtYourDecksData } from "./build.j
 import { isShuttingDown } from "./shutdown.js";
 
 export async function runHarvest(): Promise<void> {
+  const { hydrated } = await hydrateCacheFromPublishedData();
+  if (hydrated > 0) {
+    console.log(`shoutatyourdecks: hydrated ${hydrated} decks from already-published data/shoutatyourdecks/ (cache was cold)`);
+  }
   const result = await harvestDeckUrls();
   console.log(
     `shoutatyourdecks: harvest done — ${result.newDecks} new decks over ${result.pagesHarvested} pages (${result.totalKnownDecks} known total)`,
