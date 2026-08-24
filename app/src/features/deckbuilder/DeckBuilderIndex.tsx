@@ -2,8 +2,7 @@ import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import type { CompositionWinRateData, CompositionWinRateStat, OmnidexDecklist } from "@gatcg/shared";
 import { useDeckPopularityIndexData } from "../topdecks/data";
-import { useLatestSeason } from "../tournaments/useLatestSeason";
-import { useArchetypeTaxonomyData, useCardQuantityStatsData, useCardStatsData, useCompositionWinRateData } from "../archetypes/data";
+import { useCardQuantityStatsData, useCompositionWinRateData } from "../archetypes/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { parseDecklist } from "../compare/parseDecklist";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -26,40 +25,10 @@ import { useTabParam } from "../../lib/useTabParam";
 import { useAllDecodedDecks } from "../../lib/decodedDecks";
 import { useDebouncedValue } from "../../lib/useDebouncedValue";
 import { useDeckBuilderPopulation } from "./useDeckBuilderPopulation";
-import { usePoolPopulation, type CrossChampionPool } from "./usePoolPopulation";
 import { useNearestDecks, type NearestDeck } from "./useNearestDecks";
-import { useGlobalElementSuggestions } from "./useGlobalElementSuggestions";
 import { computeIdentityElements, findChampionCard, useSuggestedBuild, type SuggestedCard } from "./useSuggestedBuild";
 import { useBuddyCards, type BuddyCard } from "./useBuddyCards";
 import { validateDeck } from "./validateDeck";
-
-/**
- * Which population the ranking is computed against. "default" is today's existing behavior
- * (Champion + whatever the Spirit dropdown says, including "Any Spirit") — everything else is an
- * explicit alternative for when that combo has too little (or no) real data, rather than an
- * automatic fallback cascade. `nearestDecks` and `globalElements` aren't routed through the same
- * ranking at all (see `useNearestDecks`/`useGlobalElementSuggestions`'s doc comments for why) and
- * get their own render sections below instead of feeding `useSuggestedBuild`.
- */
-type SuggestionPool = "default" | "recentSeason" | CrossChampionPool | "nearestDecks" | "globalElements";
-
-const POOL_LABELS: Record<SuggestionPool, string> = {
-  default: "This Champion + Spirit (or Any Spirit)",
-  recentSeason: "This Champion + Spirit, recent season only",
-  spiritAnyChampion: "Same Spirit, any Champion",
-  closestCluster: "Closest matching archetype, different Champion",
-  sameClass: "Same Class combination, any element",
-  nearestDecks: "Nearest similar real decks",
-  globalElements: "Cards matching these elements (global stats)",
-};
-
-const PILLAR_OPTIONS: RatingPillar[] = ["aggro", "consistency", "interaction", "resilience"];
-const PILLAR_LABELS: Record<RatingPillar, string> = {
-  aggro: "Aggro",
-  consistency: "Consistency",
-  interaction: "Interaction",
-  resilience: "Resilience",
-};
 
 type BuilderTab = "build" | "stats" | "buddies" | "log";
 const TAB_KEYS: BuilderTab[] = ["build", "stats", "buddies", "log"];
@@ -94,8 +63,6 @@ function decodeLockedCards(encoded: string): { lockedCards: Map<string, number>;
 interface UrlSeed {
   championName: string;
   spiritFilter: string | null;
-  pool: string | null;
-  pillarBias: string | null;
   lockedCards: Map<string, number>;
   lockedSections: Map<string, LockedSection>;
 }
@@ -120,8 +87,6 @@ function parseUrlSeed(searchParams: URLSearchParams): UrlSeed | null {
   return {
     championName,
     spiritFilter: searchParams.get("spirit"),
-    pool: searchParams.get("pool"),
-    pillarBias: searchParams.get("pillar"),
     lockedCards,
     lockedSections,
   };
@@ -549,12 +514,6 @@ export default function DeckBuilderIndex() {
 
   const [championName, setChampionName] = useState<string | null>(urlSeed?.championName ?? null);
   const [spiritFilter, setSpiritFilter] = useState<string | null>(urlSeed?.spiritFilter ?? null);
-  const [pool, setPool] = useState<SuggestionPool>(
-    urlSeed?.pool && urlSeed.pool in POOL_LABELS ? (urlSeed.pool as SuggestionPool) : "default",
-  );
-  const [pillarBias, setPillarBias] = useState<RatingPillar | null>(
-    urlSeed?.pillarBias && PILLAR_OPTIONS.includes(urlSeed.pillarBias as RatingPillar) ? (urlSeed.pillarBias as RatingPillar) : null,
-  );
   const [lockedCards, setLockedCards] = useState<Map<string, number>>(() => urlSeed?.lockedCards ?? new Map());
   // Section a lock is known to belong to (from where it was locked, or from a pasted decklist's
   // own Main/Material headers) — see useSuggestedBuild's lockedSections param doc for why this
@@ -592,7 +551,7 @@ export default function DeckBuilderIndex() {
   // Debounced against the catalog sync's own write batches (app/src/lib/sync/cards.ts writes ~50
   // cards per bulkPut, and useCardCatalog's useLiveQuery emits a new array on every one) — same
   // CATALOG_SETTLE_MS reasoning as useAllDecodedDecks/useSuggestedBuild, needed here too since
-  // catalogByName feeds championCard/identityElements/usePoolPopulation/useGlobalElementSuggestions,
+  // catalogByName feeds Champion/Spirit identity and legality checks,
   // all of which would otherwise recompute (and re-render the whole page) on every sync write.
   const cardCatalog = useDebouncedValue(useCardCatalog(), 500);
   const catalogByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
@@ -601,28 +560,11 @@ export default function DeckBuilderIndex() {
   // the existing Spirit dropdown's own "Any Spirit" option already covers pool 2).
   const { rows, spiritsPresent, loading: populationLoading } = useDeckBuilderPopulation(championName);
   const cardQuantityStatsData = useCardQuantityStatsData();
-  const cardStatsData = useCardStatsData();
   const compositionWinRateData = useCompositionWinRateData();
-  const archetypeTaxonomyData = useArchetypeTaxonomyData();
-  const latestSeason = useLatestSeason();
-  // Same Champion+Spirit population as "default", just date-restricted to the latest tracked
-  // season — its own targeted decode (not the full-universe one), only run while this pool is
-  // actually selected, same "don't pay for what isn't in use" reasoning as needsAllDecks below.
-  const recentSeasonPopulation = useDeckBuilderPopulation(
-    pool === "recentSeason" ? championName : null,
-    latestSeason?.dateStart,
-    latestSeason?.dateEnd,
-  );
-
-  const crossChampionKind: CrossChampionPool | null =
-    pool === "spiritAnyChampion" || pool === "closestCluster" || pool === "sameClass" ? pool : null;
-  // Every deck, any Champion — the shared universe the cross-Champion pools and "nearest similar
-  // real decks" filter/score over. Only decoded when a pool that actually needs it is selected —
-  // this is a genuinely expensive decode (deck-card-index.json is 93MB+, ~57k decks), so paying it
-  // on every visit regardless of pool (the "default" single-Champion pool never needed it) was
-  // itself a real memory-pressure bug; see useAllDecodedDecks's own doc comment.
-  const needsAllDecks = crossChampionKind !== null || pool === "nearestDecks";
-  const { decks: allDecks, loading: allDecksLoading } = useAllDecodedDecks(needsAllDecks);
+  // Similar real decks become useful only once the viewer has expressed enough intent through
+  // locks. Keep the expensive all-deck decode off the default path until then.
+  const showNearestDecks = lockedCards.size >= 2;
+  const { decks: allDecks } = useAllDecodedDecks(showNearestDecks);
 
   // Resolved against the *stable* single-Champion population (`rows`, not whichever pool is
   // active) — see `useSuggestedBuild`'s `championCardOverride` doc comment for why this matters
@@ -636,50 +578,38 @@ export default function DeckBuilderIndex() {
     [championCard, spiritCardForIdentity],
   );
 
-  const poolPopulation = usePoolPopulation(crossChampionKind, allDecks, championName, spiritFilter, championCard, catalogByName, archetypeTaxonomyData);
-
-  // Which rows actually feed the ranking, and how the existing Spirit-narrowing inside
-  // useSuggestedBuild should apply to them: "spiritAnyChampion"'s rows are already exactly that
-  // Spirit's decks, so passing spiritFilter through is a safe no-op (and keeps the "the Spirit
-  // itself" material slot, which is still correct there) — but "closestCluster"/"sameClass"'s rows
-  // don't share the current Spirit at all, so re-filtering by it there would zero out a population
-  // that's already fully resolved.
-  const activeRows = crossChampionKind ? poolPopulation.rows : pool === "recentSeason" ? recentSeasonPopulation.rows : rows;
-  const effectiveSpiritFilter = crossChampionKind === "closestCluster" || crossChampionKind === "sameClass" ? null : spiritFilter;
-  const activeLoading = crossChampionKind ? allDecksLoading : pool === "recentSeason" ? recentSeasonPopulation.loading : populationLoading;
-  // Only overridden for the cross-Champion pools — omitted for "default" so pool 1/2 behavior is
-  // byte-for-byte unchanged (useSuggestedBuild's own internal resolution already does the same
-  // thing against the same `rows` in that case).
-  const championCardOverride = crossChampionKind ? championCard : undefined;
-
   const build = useSuggestedBuild(
-    activeRows,
-    effectiveSpiritFilter,
+    rows,
+    spiritFilter,
     lockedCards,
     rejectedCards,
-    activeLoading,
+    populationLoading,
     lockedSections,
     cardQuantityStatsData,
-    championCardOverride,
-    pillarBias,
+    undefined,
+    null,
   );
 
   const nearestDecks = useNearestDecks(allDecks, lockedCards);
-  const globalSuggestions = useGlobalElementSuggestions(cardStatsData, identityElements, catalogByName, lockedCards, rejectedCards);
+  const gateLoading = populationLoading;
+  const gateHasData = rows.length > 0;
 
-  // Pool-aware version of the top-level "loading / no data / show the build" gate below —
-  // `nearestDecks`/`globalElements` have their own empty states (no locks yet / no matching cards)
-  // rather than a blanket "no decks found", and every non-"default" pool depends on the full
-  // decoded-deck universe loading, not just this Champion's own population.
-  const gateLoading = pool === "default" ? populationLoading : pool === "recentSeason" ? recentSeasonPopulation.loading : allDecksLoading;
-  const gateHasData =
-    pool === "default"
-      ? rows.length > 0
-      : pool === "recentSeason"
-        ? recentSeasonPopulation.rows.length > 0
-        : pool === "nearestDecks" || pool === "globalElements"
-          ? true
-          : poolPopulation.rows.length > 0;
+  const spiritStats = useMemo(() => {
+    const stats = new Map<string, { decks: number; winRate: number }>();
+    for (const spirit of spiritsPresent) {
+      const matching = rows.filter((row) => row.spiritName === spirit);
+      stats.set(spirit, {
+        decks: matching.length,
+        winRate: matching.length > 0 ? matching.reduce((sum, row) => sum + row.winRate, 0) / matching.length : 0,
+      });
+    }
+    return stats;
+  }, [rows, spiritsPresent]);
+  function spiritOptionLabel(name: string): string {
+    const stats = spiritStats.get(name);
+    if (!stats) return name;
+    return `${name} — ${stats.decks} ${stats.decks === 1 ? "deck" : "decks"} · ${(stats.winRate * 100).toFixed(0)}% observed`;
+  }
 
   useEffect(() => {
     const current = new Set(
@@ -732,8 +662,6 @@ export default function DeckBuilderIndex() {
     } else {
       startTransition(() => {
         setSpiritFilter(null);
-        setPool("default");
-        setPillarBias(null);
         setLockedCards(new Map());
         setLockedSections(new Map());
         setRejectedCards(new Set());
@@ -809,8 +737,6 @@ export default function DeckBuilderIndex() {
     if (detectedChampion !== championName) skipNextResetRef.current = true;
     setChampionName(detectedChampion);
     setSpiritFilter(detectedSpirit);
-    setPool("default");
-    setPillarBias(null);
     setLockedCards(newLocked);
     setLockedSections(newSections);
     setRejectedCards(new Set());
@@ -824,7 +750,7 @@ export default function DeckBuilderIndex() {
     setPasteOpen(false);
   }
 
-  /** Loads a `useNearestDecks` result as the new starting point — same shape as `loadPastedDecklist`, just sourced from an already-decoded real deck instead of re-parsing text. Switches back to the "default" pool once a concrete decklist is loaded, same as pasting one. */
+  /** Loads a `useNearestDecks` result as the new starting point — same shape as `loadPastedDecklist`, just sourced from an already-decoded real deck instead of re-parsing text. */
   function loadNearestDeck(deck: NearestDeck) {
     const newLocked = new Map<string, number>();
     const newSections = new Map<string, LockedSection>();
@@ -842,8 +768,6 @@ export default function DeckBuilderIndex() {
     if (deck.championName && deck.championName !== championName) skipNextResetRef.current = true;
     if (deck.championName) setChampionName(deck.championName);
     setSpiritFilter(deck.spiritName);
-    setPool("default");
-    setPillarBias(null);
     setLockedCards(newLocked);
     setLockedSections(newSections);
     setRejectedCards(new Set());
@@ -985,8 +909,6 @@ export default function DeckBuilderIndex() {
     const params = new URLSearchParams();
     if (championName) params.set("champion", championName);
     if (spiritFilter) params.set("spirit", spiritFilter);
-    if (pool !== "default") params.set("pool", pool);
-    if (pillarBias) params.set("pillar", pillarBias);
     const locked = encodeLockedCards(lockedCards, lockedSections);
     if (locked) params.set("locked", locked);
     const url = `${window.location.origin}/deck-builder?${params.toString()}`;
@@ -1015,12 +937,8 @@ export default function DeckBuilderIndex() {
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="text-2xl font-bold text-ctp-blue">Guided Deck Builder</h1>
       <p className="mt-1 text-sm text-ctp-subtext1">
-        Identity → archetype/playstyle → core → flex/sideboard. Choose a Champion and Spirit, then review a
-        statistical shell from one comparable population. Lock accepted cards to condition the remaining choices.
-        Suggestions describe tournament correlations, not causes or predictions.
+        Choose an identity, review its data-supported core, then lock decisions and resolve the remaining flex slots.
       </p>
-      <DecklistCoverageNotice />
-      <StaleDataNotice generatedAt={[popularityIndexData?.generatedAt, archetypeTaxonomyData?.generatedAt, cardStatsData?.generatedAt]} />
 
       <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Champion:</span>
@@ -1049,84 +967,22 @@ export default function DeckBuilderIndex() {
               }}
               className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
             >
-              <option value="">Any Spirit — exploratory (advanced)</option>
+              <option value="">Choose a Spirit…</option>
               {spiritsPresent.map((name) => (
                 <option key={name} value={name}>
-                  {name}
+                  {spiritOptionLabel(name)}
                 </option>
               ))}
             </select>
-
-            <details className="ml-2 rounded-md border border-ctp-surface1 px-2 py-1">
-              <summary className="cursor-pointer text-xs text-ctp-subtext0">Advanced population &amp; bias</summary>
-              <div className="mt-2 flex flex-wrap items-center gap-2">
-            <span className="text-ctp-subtext0">Suggest from:</span>
-            <select
-              value={pool}
-              onChange={(e) => {
-                const value = e.target.value as SuggestionPool;
-                pendingActionRef.current = { label: `Suggest from: ${POOL_LABELS[value]}`, subject: null };
-                startTransition(() => setPool(value));
-              }}
-              className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
-            >
-              {(Object.keys(POOL_LABELS) as SuggestionPool[]).map((key) => (
-                <option
-                  key={key}
-                  value={key}
-                  disabled={(key === "spiritAnyChampion" && !spiritFilter) || (key === "recentSeason" && !latestSeason)}
-                >
-                  {key === "recentSeason" && latestSeason ? `This Champion + Spirit, ${latestSeason.name} only` : POOL_LABELS[key]}
-                  {key === "spiritAnyChampion" && !spiritFilter ? " (pick a Spirit first)" : ""}
-                  {key === "recentSeason" && !latestSeason ? " (loading season data)" : ""}
-                </option>
-              ))}
-            </select>
-
-            <span className="ml-2 text-ctp-subtext0">Bias toward:</span>
-            <select
-              value={pillarBias ?? ""}
-              onChange={(e) => {
-                const value = (e.target.value || null) as RatingPillar | null;
-                pendingActionRef.current = { label: `Bias toward: ${value ? PILLAR_LABELS[value] : "None"}`, subject: null };
-                startTransition(() => setPillarBias(value));
-              }}
-              className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
-            >
-              <option value="">None</option>
-              {PILLAR_OPTIONS.map((p) => (
-                <option key={p} value={p}>
-                  {PILLAR_LABELS[p]}
-                </option>
-              ))}
-            </select>
-              </div>
-            </details>
           </>
         )}
       </div>
-
-      {championName && pool !== "default" && pool !== "nearestDecks" && pool !== "globalElements" && pool !== "recentSeason" && poolPopulation.label && (
-        <p className="mt-2 text-xs text-ctp-yellow">{poolPopulation.label}</p>
-      )}
-      {championName && pool === "recentSeason" && !recentSeasonPopulation.loading && (
-        <p className="mt-2 text-xs text-ctp-yellow">
-          {recentSeasonPopulation.rows.length} deck{recentSeasonPopulation.rows.length === 1 ? "" : "s"} from{" "}
-          {latestSeason?.name ?? "the latest season"}.
-        </p>
-      )}
-      {championName && pillarBias && pool !== "nearestDecks" && pool !== "globalElements" && (
-        <p className="mt-2 text-xs text-ctp-subtext0">
-          Biasing toward {PILLAR_LABELS[pillarBias]} — a small nudge among cards that already have real win-rate
-          support, not a replacement for it. Win rates and lift numbers above are unaffected.
-        </p>
-      )}
       {championName && spiritFilter === null && (
         <p className="mt-2 text-xs text-ctp-yellow">
-          Any Spirit is exploratory: choose a specific Spirit before treating the core as coherent or complete.
+          Choose a Spirit to define a coherent recommendation population. Deck counts and observed win rates in the
+          picker show how much evidence each option has.
         </p>
       )}
-
       <div className="mt-2">
         {!pasteOpen ? (
           <button type="button" onClick={() => setPasteOpen(true)} className="text-xs text-ctp-blue hover:underline">
@@ -1178,78 +1034,53 @@ export default function DeckBuilderIndex() {
 
       {championName && !gateLoading && !gateHasData && (
         <p className="mt-6 text-ctp-subtext1">
-          {pool === "default" ? `No decks found for ${championName}.` : "No decks found for this pool — try a different one."}
+          No decks found for {championName}.
         </p>
       )}
 
-      {championName && !gateLoading && gateHasData && (
-        <>
-          {build.conditionalWinRate !== null && (
-            <p className="mt-4 text-sm">
-              <span className="text-ctp-subtext0">Observed win rate among matching decks: </span>
-              <span className="font-semibold text-ctp-text">{(build.conditionalWinRate * 100).toFixed(0)}%</span>
-              <span className="ml-1 text-xs text-ctp-subtext0">(n={build.matchingDeckCount})</span>
-              {build.baselineWinRate !== null && lockedCards.size > 0 && (
-                <span
-                  className={`ml-1.5 text-xs font-semibold ${
-                    build.conditionalWinRate - build.baselineWinRate >= 0 ? "text-ctp-green" : "text-ctp-red"
-                  }`}
-                >
-                  ({build.conditionalWinRate - build.baselineWinRate >= 0 ? "+" : ""}
-                  {((build.conditionalWinRate - build.baselineWinRate) * 100).toFixed(1)}pp vs. unlocked baseline of{" "}
-                  {(build.baselineWinRate * 100).toFixed(0)}%)
-                </span>
-              )}
-            </p>
-          )}
+      {championName && !gateLoading && gateHasData && !spiritFilter && (
+        <p className="mt-6 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-4 py-3 text-sm text-ctp-subtext1">
+          Select a Spirit above to generate a coherent core. The builder will keep unsupported slots unresolved
+          instead of mixing this Champion's different strategies.
+        </p>
+      )}
 
-          <div className={`mt-3 rounded-md border px-3 py-2 text-sm ${validation.status === "Legal" ? "border-ctp-green" : validation.status === "Illegal" ? "border-ctp-red" : "border-ctp-yellow"}`}>
-            <span className="font-semibold">{validation.status}</span>
-            <span className="ml-1 text-xs text-ctp-subtext0">— Standard construction checks; not tournament certification.</span>
-            {validation.reasons.length > 0 && (
-              <ul className="mt-1 list-disc pl-5 text-xs text-ctp-subtext1">
-                {validation.reasons.slice(0, 8).map((reason) => <li key={reason}>{reason}</li>)}
-              </ul>
-            )}
-            <details className="mt-1 text-xs text-ctp-subtext0">
-              <summary className="cursor-pointer">Unsupported rules</summary>
-              {validation.unsupportedRules.join("; ")}.
-            </details>
+      {championName && spiritFilter && !gateLoading && gateHasData && (
+        <>
+          <div className="mt-4 grid overflow-hidden rounded-lg border border-ctp-surface1 bg-ctp-mantle sm:grid-cols-4">
+            <div className="border-b border-ctp-surface1 px-3 py-2 sm:border-b-0 sm:border-r">
+              <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Evidence</p>
+              <p className="mt-0.5 text-sm font-semibold text-ctp-text">{build.matchingDeckCount} decks</p>
+              <p className="text-[10px] text-ctp-subtext0">{build.matchingDeckCount >= 30 ? "Strong sample" : build.matchingDeckCount >= 10 ? "Limited sample" : "Exploratory"}</p>
+            </div>
+            <div className="border-b border-ctp-surface1 px-3 py-2 sm:border-b-0 sm:border-r">
+              <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Performance</p>
+              <p className="mt-0.5 text-sm font-semibold text-ctp-text">{build.conditionalWinRate === null ? "—" : `${(build.conditionalWinRate * 100).toFixed(0)}% observed`}</p>
+              {build.baselineWinRate !== null && lockedCards.size > 0 && <p className="text-[10px] text-ctp-subtext0">{build.conditionalWinRate !== null && build.conditionalWinRate - build.baselineWinRate >= 0 ? "+" : ""}{build.conditionalWinRate === null ? "" : `${((build.conditionalWinRate - build.baselineWinRate) * 100).toFixed(1)}pp`} vs. baseline</p>}
+            </div>
+            <div className="border-b border-ctp-surface1 px-3 py-2 sm:border-b-0 sm:border-r">
+              <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Completion</p>
+              <p className="mt-0.5 text-sm font-semibold text-ctp-text">{mainTotal}/{mainTotal + build.unresolved.main} main</p>
+              <p className="text-[10px] text-ctp-subtext0">{build.unresolved.main} flex slot{build.unresolved.main === 1 ? "" : "s"} open</p>
+            </div>
+            <div className="px-3 py-2">
+              <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Cost</p>
+              <p className="mt-0.5 text-sm font-semibold text-ctp-text">{formatUsd(totalPrice.sum)}</p>
+              <p className="text-[10px] text-ctp-subtext0">{sideboardPrice.sum > 0 ? `+ ${formatUsd(sideboardPrice.sum)} sideboard` : totalPrice.missing > 0 ? `${totalPrice.missing} price${totalPrice.missing === 1 ? "" : "s"} missing` : "Main + material"}</p>
+            </div>
           </div>
 
-          {buildLines.length > 0 && (
-            <p className="mt-1 text-sm">
-              <span className="text-ctp-subtext0">Deck price: </span>
-              <span className="font-semibold text-ctp-text">{formatUsd(totalPrice.sum)}</span>
-              {totalPrice.missing > 0 && (
-                <span className="ml-1.5 text-xs text-ctp-subtext0">
-                  ({totalPrice.missing} card{totalPrice.missing === 1 ? "" : "s"} missing price data)
-                </span>
-              )}
-              {sideboardPrice.sum > 0 && <span className="ml-1.5 text-ctp-subtext1">+ {formatUsd(sideboardPrice.sum)} sideboard</span>}
-            </p>
-          )}
+          <details className={`mt-2 rounded-md border px-3 py-2 text-sm ${validation.status === "Legal" ? "border-ctp-green" : validation.status === "Illegal" ? "border-ctp-red" : "border-ctp-yellow"}`}>
+            <summary className="flex cursor-pointer items-center justify-between gap-3">
+              <span className="font-semibold">{validation.status === "Incomplete" && build.unresolved.main > 0 ? `${build.unresolved.main} main-deck slots remaining` : validation.status}</span>
+              <span className="text-xs font-normal text-ctp-subtext0">View validation</span>
+            </summary>
+            {validation.reasons.length > 0 && <ul className="mt-2 list-disc pl-5 text-xs text-ctp-subtext1">{validation.reasons.slice(0, 8).map((reason) => <li key={reason}>{reason}</li>)}</ul>}
+            <p className="mt-2 text-xs text-ctp-subtext0">Standard construction checks only; not tournament certification.</p>
+          </details>
 
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            Ranking suggestions against {build.rankingPopulationSize} matching deck{build.rankingPopulationSize === 1 ? "" : "s"}
-            {isPending && " — recalculating…"}
-            {rejectedCards.size > 0 && (
-              <>
-                {" · "}
-                {rejectedCards.size} card{rejectedCards.size === 1 ? "" : "s"} excluded from suggestions —{" "}
-                <button
-                  type="button"
-                  onClick={() => {
-                    pendingActionRef.current = { label: "Reset excluded cards", subject: null };
-                    startTransition(() => setRejectedCards(new Set()));
-                  }}
-                  className="hover:text-ctp-blue hover:underline"
-                >
-                  reset
-                </button>
-              </>
-            )}
-          </p>
+          {isPending && <p className="mt-1 text-xs text-ctp-subtext0">Recalculating suggestions…</p>}
+          {rejectedCards.size > 0 && <p className="mt-1 text-xs text-ctp-subtext0">{rejectedCards.size} card{rejectedCards.size === 1 ? "" : "s"} excluded · <button type="button" onClick={() => { pendingActionRef.current = { label: "Reset excluded cards", subject: null }; startTransition(() => setRejectedCards(new Set())); }} className="hover:text-ctp-blue hover:underline">reset</button></p>}
           {build.usedSpiritElementFallback && (
             <p className="mt-1 text-xs text-ctp-yellow">
               Too few {championName} decks run {spiritFilter} specifically — suggestions also draw on other{" "}
@@ -1351,22 +1182,7 @@ export default function DeckBuilderIndex() {
                   <option key={n} value={n} />
                 ))}
               </datalist>
-              {pool !== "nearestDecks" && pool !== "globalElements" && (
-                <>
-              {build.hasQuantityOptimizations && (
-                <p className="mt-2 text-xs text-ctp-subtext0">
-                  <span className="text-ctp-blue">*</span> quantity overridden only where global evidence has at least 30 decks and a
-                  meaningful margin. Each override discloses its source and sample on the card.
-                </p>
-              )}
-
-              {(build.unresolved.main > 0 || build.unresolved.material > 0 || build.unresolved.sideboard > 0) && (
-                <p className="mt-2 rounded-md border border-ctp-yellow px-3 py-2 text-xs text-ctp-yellow">
-                  Unresolved choices: {build.unresolved.main} main, {build.unresolved.material} material, {build.unresolved.sideboard} sideboard.
-                  Negative-lift cards are not inserted merely to hit modal totals; finish these flex slots with judgment and validate again.
-                </p>
-              )}
-
+              <>
               <div className={`mt-3 grid gap-4 sm:grid-cols-2 transition-opacity ${isPending ? "opacity-50" : ""}`}>
                 <div>
                   <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Structural / common material ({materialTotal})</h2>
@@ -1464,19 +1280,16 @@ export default function DeckBuilderIndex() {
                 </div>
               )}
                 </>
-              )}
 
-              {pool === "nearestDecks" && (
+              {showNearestDecks && (
                 <div className="mt-4">
                   <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Nearest similar real decks</h2>
                   <p className="mt-1 text-xs text-ctp-subtext0">
-                    Not ranked suggestions — real decklists (any Champion) most similar to whatever's currently
-                    locked in, by shared main+material cards. Click "Load" to replace your current locks with one of
-                    these as a new starting point.
+                    Real decklists most similar to your accepted cards, shown automatically after two locks. These
+                    are references, not a replacement recommendation population. Click "Load" to use one as a new
+                    starting point.
                   </p>
-                  {lockedCards.size === 0 ? (
-                    <p className="mt-3 text-sm text-ctp-subtext1">Lock in a few cards first to find similar decks.</p>
-                  ) : nearestDecks.length === 0 ? (
+                  {nearestDecks.length === 0 ? (
                     <p className="mt-3 text-sm text-ctp-subtext1">No similar decks found for what's locked in so far.</p>
                   ) : (
                     <ul className="mt-2 space-y-1">
@@ -1492,48 +1305,6 @@ export default function DeckBuilderIndex() {
                             className="ml-auto shrink-0 rounded-md border border-ctp-surface1 px-1.5 py-0.5 text-[10px] text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
                           >
                             Load
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              )}
-
-              {pool === "globalElements" && (
-                <div className="mt-4">
-                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Cards matching these elements</h2>
-                  <p className="mt-1 text-xs text-ctp-subtext0">
-                    No deck-level data behind this list at all — just each card's own overall win rate, filtered to
-                    this Champion/Spirit's granted elements. No with/without lift, no Material/Main/Sideboard split
-                    (that needs real decklists to guess from), so use your own judgment on where each card goes.
-                  </p>
-                  {globalSuggestions.length === 0 ? (
-                    <p className="mt-3 text-sm text-ctp-subtext1">No element-compatible cards with enough data yet.</p>
-                  ) : (
-                    <ul className="mt-2 space-y-1">
-                      {globalSuggestions.map((c) => (
-                        <li key={c.cardName} className="flex flex-wrap items-center gap-1.5 rounded-md border border-ctp-surface1 px-2 py-1 text-sm">
-                          {catalogByName.get(c.cardName)?.element !== "NORM" && (
-                            <ElementIcon element={catalogByName.get(c.cardName)?.element ?? "NORM"} size={14} />
-                          )}
-                          <CardHoverPreview image={catalogByName.get(c.cardName)?.editions[0]?.image} alt={c.cardName}>
-                            {catalogByName.get(c.cardName) ? (
-                              <Link to={`/cards/${catalogByName.get(c.cardName)!.slug}`} className="text-ctp-text hover:text-ctp-blue">
-                                {c.cardName}
-                              </Link>
-                            ) : (
-                              <span className="text-ctp-text">{c.cardName}</span>
-                            )}
-                          </CardHoverPreview>
-                          <span className="text-xs text-ctp-subtext0">{(c.adjustedWinRate * 100).toFixed(0)}% win rate</span>
-                          <span className="text-xs text-ctp-subtext0">({c.deckCount} decks)</span>
-                          <button
-                            type="button"
-                            onClick={() => addCard(c.cardName)}
-                            className="ml-auto shrink-0 rounded-md border border-ctp-surface1 px-1.5 py-0.5 text-[10px] text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
-                          >
-                            Add
                           </button>
                         </li>
                       ))}
@@ -1559,6 +1330,17 @@ export default function DeckBuilderIndex() {
           )}
 
           {tab === "log" && <ChangeLogList entries={changeLog} />}
+
+          <details className="mt-8 border-t border-ctp-surface1 pt-3 text-xs text-ctp-subtext0">
+            <summary className="cursor-pointer font-medium hover:text-ctp-text">Data &amp; methodology</summary>
+            <div className="mt-2 space-y-2">
+              <DecklistCoverageNotice />
+              <StaleDataNotice generatedAt={[popularityIndexData?.generatedAt]} />
+              <p>Suggestions are correlations from public tournament decklists, not causal or predictive claims.</p>
+              {build.hasQuantityOptimizations && <p>Starred quantities use global copy-count evidence only when at least 30 decks support a meaningful difference; each affected card shows its source and sample.</p>}
+              <p>Validation does not cover {validation.unsupportedRules.join("; ")}.</p>
+            </div>
+          </details>
         </>
       )}
     </div>
