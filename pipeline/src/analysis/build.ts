@@ -17,7 +17,8 @@ import { computePlayerDeckProfiles } from "./playerDecks.js";
 import { computeDeckSightings } from "./deckSightings.js";
 import { computeChampionTrends } from "./championTrends.js";
 import { computeDeckCardIndex } from "./deckCardIndex.js";
-import { computeArchetypeTaxonomy } from "./archetypeTaxonomy.js";
+import { applyArchetypeLineageAliases, computeArchetypeTaxonomy } from "./archetypeTaxonomy.js";
+import type { ArchetypeTaxonomyData } from "@gatcg/shared";
 import { computeCardImpact } from "./cardImpact.js";
 import { computeMatchupCardImpact } from "./matchupCardImpact.js";
 import { computeAchievements } from "./achievements.js";
@@ -186,7 +187,16 @@ export async function buildAnalysis(): Promise<void> {
   const championTrends = computeChampionTrends(deckSightings);
   await writeFile(path.join(DATA_DIR, "champion-trends.json"), JSON.stringify(championTrends), "utf-8");
 
-  const archetypeTaxonomy = computeArchetypeTaxonomy(completed, cardIndex, deckSightings, priceByName);
+  let previousTaxonomy: ArchetypeTaxonomyData | null = null;
+  try {
+    previousTaxonomy = JSON.parse(await readFile(path.join(DATA_DIR, "archetype-taxonomy.json"), "utf-8")) as ArchetypeTaxonomyData;
+  } catch {
+    // First analysis run: there is no lineage to preserve yet.
+  }
+  const archetypeTaxonomy = applyArchetypeLineageAliases(
+    computeArchetypeTaxonomy(completed, cardIndex, deckSightings, priceByName),
+    previousTaxonomy,
+  );
   await writeFile(path.join(DATA_DIR, "archetype-taxonomy.json"), JSON.stringify(archetypeTaxonomy), "utf-8");
 
   const achievements = computeAchievements(completed, cardIndex, ratings, upsets, deckScores, deckSightings);

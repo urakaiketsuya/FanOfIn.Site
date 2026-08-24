@@ -40,6 +40,8 @@ interface MatchupAccum {
 }
 
 const MAX_ANSWERS_PER_CARD = 3;
+/** Answer guidance is most useful for the matchup's worst threats; bounding this also keeps the published dataset tractable. */
+const MAX_HARMFUL_CARDS_WITH_ANSWERS = 3;
 
 /**
  * For opponent card B, which of my own cards correlate with a better outcome specifically in the
@@ -220,7 +222,7 @@ export function computeMatchupCardImpact(
     // fallback pool for whichever candidate cards that precise pool didn't have enough data for.
     const championRows = championAccum.get(`${myCluster.championName}__${opponentCluster.championName}`) ?? [];
     const answers: OpponentCardAnswers[] = [];
-    for (const b of opponentCards) {
+    for (const b of opponentCards.slice(0, MAX_HARMFUL_CARDS_WITH_ANSWERS)) {
       const championCacheKey = `${myCluster.championName}__${opponentCluster.championName}__${b.cardName}`;
       const bAnswers = computeAnswersForCard(
         b.cardName,

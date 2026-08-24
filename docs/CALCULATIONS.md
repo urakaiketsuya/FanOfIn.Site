@@ -382,6 +382,24 @@ every Champion it was actually played under.
    earlier disambiguation in the same collision group (not just its #1 card — a real bug during
    development: three-plus same-named clusters can share the same top *generic* defining card,
    e.g. "Dungeon Guide", and collide again after a naive single-card disambiguation).
+7. **Quality and uncertainty**: every published cluster reports weighted mean/minimum similarity
+   to its representative seed and the weighted margin over each member's nearest alternative
+   seed. A high mean with a small margin means the lists resemble one another but sit near a
+   neighboring archetype boundary. Win rate is accompanied by a 95% Wilson interval over actual
+   match records (ties count as half a win), so small undefeated samples no longer look as certain
+   as large populations with the same point estimate.
+8. **Lineage**: before overwriting the taxonomy, the pipeline compares rebuilt clusters with the
+   previous publication. A retired id aliases to the new cluster when at least 60% of the smaller
+   cluster's deck membership overlaps. Existing aliases are carried forward transitively, and the
+   archetype detail route resolves them, preserving previously shared URLs without freezing the
+   clustering model forever.
+
+**Threshold validation**: `npm run validate:archetypes --workspace=pipeline` rebuilds the real
+cached dataset at weighted-Jaccard thresholds 0.40, 0.45, and 0.50. It publishes cluster count,
+classification coverage, median cohesion/margin, deck-assignment agreement with the 0.45
+baseline, and a small independently specified gold set of recognizable shells to
+`data/analysis/archetype-taxonomy-validation.json`. This is a sensitivity diagnostic, not an
+optimizer that silently selects whichever threshold produces the prettiest result.
 
 **Card → archetypes reverse index**: `ArchetypeTaxonomyData.cardClusterIndex` maps a card name to
 every cluster it's a `definingCards` member of (with that cluster's prevalence for the card),
@@ -486,6 +504,11 @@ pool — same `pairingsByRound` loop, same per-game card sections — just keyed
 `${championA}__${championB}` instead of `${clusterA}__${clusterB}`, and requiring only that both
 sides resolved a Champion, not that they belong to a named-build cluster). Each published answer
 carries `scope: "cluster" | "champion"` so the UI can disclaim the broader, less precise ones.
+Answer suggestions are generated for the three most harmful qualifying opponent cards in each
+matchup (up to three answers apiece). This keeps the actionable threats while bounding a payload
+that otherwise grows as matchup × harmful-card × answer-card; Champion-level fallback results
+are cached by Champion pair and opponent card because that population is identical across many
+named-build matchups.
 Verified against real output: 302 of 1,247 published answers resolved at the precise cluster level,
 963 needed the Champion-level fallback — confirming the fallback is the common case, not an edge
 case, exactly as the sample-size math above predicts.

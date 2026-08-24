@@ -51,6 +51,8 @@ interface DisplayRow {
   deckCount: number;
   eventCount: number;
   avgWinRate: number;
+  winRateInterval?: { low: number; high: number; matches: number };
+  quality?: { meanSimilarity: number; minSimilarity: number; meanAssignmentMargin: number };
   confidence: "established" | "emerging";
   /** Share is all-time or recalculated from the selected season; the remaining optional figures are all-time-only. */
   metaShare?: number;
@@ -141,6 +143,8 @@ export default function ArchetypesIndex() {
         deckCount: c.deckCount,
         eventCount: c.eventCount,
         avgWinRate: c.avgWinRate,
+        winRateInterval: c.winRateInterval,
+        quality: c.quality,
         confidence: c.confidence ?? "established",
         metaShare: c.metaShare,
         topCutRate: c.topCutRate,
@@ -368,7 +372,12 @@ export default function ArchetypesIndex() {
                 </td>
                 <td className="py-1.5 pr-6 text-ctp-subtext1">{c.playerCount}</td>
                 <td className="py-1.5 pr-6 text-ctp-subtext1">{c.eventCount}</td>
-                <td className="py-1.5 pr-6 text-ctp-subtext1">{(c.avgWinRate * 100).toFixed(0)}%</td>
+                <td
+                  className="py-1.5 pr-6 text-ctp-subtext1"
+                  title={c.winRateInterval ? `95% interval: ${(c.winRateInterval.low * 100).toFixed(1)}–${(c.winRateInterval.high * 100).toFixed(1)}% across ${c.winRateInterval.matches} matches${c.quality ? ` · ${(c.quality.meanSimilarity * 100).toFixed(0)}% mean cohesion` : ""}` : undefined}
+                >
+                  {(c.avgWinRate * 100).toFixed(0)}%
+                </td>
                 <td className="py-1.5 pr-6 text-ctp-subtext1">{c.metaShare !== undefined ? `${(c.metaShare * 100).toFixed(1)}%` : "—"}</td>
                 <td className="py-1.5 pr-6 text-ctp-subtext1">{c.topCutRate !== undefined ? `${(c.topCutRate * 100).toFixed(0)}%` : "—"}</td>
                 <td className="py-1.5 pr-6 text-ctp-subtext1">

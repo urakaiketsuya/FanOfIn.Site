@@ -23,6 +23,46 @@ const DEFINING_MIN_IN_CLUSTER = 0.8;
 /** ...and appear in *fewer* than this fraction of decks generally — otherwise it's just a universal staple, not something that distinguishes this build. */
 const DEFINING_MAX_GLOBAL_PRESENCE = 0.85;
 
+/** Wilson score interval, accepting half-wins so tied matches contribute symmetrically. */
+export function winRateWilsonInterval(wins: number, matches: number): { low: number; high: number; matches: number } {
+  if (matches <= 0) return { low: 0, high: 1, matches: 0 };
+  const z = 1.959963984540054;
+  const p = wins / matches;
+  const z2 = z * z;
+  const denominator = 1 + z2 / matches;
+  const center = (p + z2 / (2 * matches)) / denominator;
+  const margin = (z * Math.sqrt((p * (1 - p) + z2 / (4 * matches)) / matches)) / denominator;
+  return { low: Math.max(0, center - margin), high: Math.min(1, center + margin), matches };
+}
+
+/** Match retired ids to rebuilt clusters by deck-membership overlap and carry aliases forward. */
+export function applyArchetypeLineageAliases(current: ArchetypeTaxonomyData, previous: ArchetypeTaxonomyData | null): ArchetypeTaxonomyData {
+  if (!previous) return current;
+  const currentIds = new Set(current.clusters.map((cluster) => cluster.id));
+  const aliases: Record<string, string> = {};
+  for (const oldCluster of previous.clusters) {
+    if (currentIds.has(oldCluster.id)) continue;
+    const oldDecks = new Set(oldCluster.deckIds);
+    let bestId: string | null = null;
+    let bestOverlap = 0;
+    for (const nextCluster of current.clusters) {
+      let intersection = 0;
+      for (const deckId of nextCluster.deckIds) if (oldDecks.has(deckId)) intersection++;
+      const overlap = intersection / Math.min(oldDecks.size, nextCluster.deckIds.length);
+      if (overlap > bestOverlap) {
+        bestOverlap = overlap;
+        bestId = nextCluster.id;
+      }
+    }
+    if (bestId && bestOverlap >= 0.6) aliases[oldCluster.id] = bestId;
+  }
+  for (const [retiredId, formerTarget] of Object.entries(previous.aliases ?? {})) {
+    const target = aliases[formerTarget] ?? (currentIds.has(formerTarget) ? formerTarget : null);
+    if (target) aliases[retiredId] = target;
+  }
+  return { ...current, aliases };
+}
+
 interface CardDeck {
   deckId: string;
   player: number;
@@ -102,8 +142,10 @@ export function computeArchetypeTaxonomy(
   cardIndex: Map<string, CardSignature>,
   deckSightings: DeckSighting[],
   priceByName: Map<string, number>,
+  options: { clusterThreshold?: number } = {},
 ): ArchetypeTaxonomyData {
-  if (config.fastMode) return { generatedAt: new Date().toISOString(), clusters: [], coverage: { classifiedDeckCount: 0, totalDeckCount: 0, classificationRate: 0 }, cardClusterIndex: {} };
+  if (config.fastMode) return { generatedAt: new Date().toISOString(), clusters: [], coverage: { classifiedDeckCount: 0, totalDeckCount: 0, classificationRate: 0 }, aliases: {}, cardClusterIndex: {} };
+  const clusterThreshold = options.clusterThreshold ?? CLUSTER_THRESHOLD;
 
   const sightingByDeckId = new Map(deckSightings.map((s) => [s.deckId, s]));
 
@@ -173,7 +215,7 @@ export function computeArchetypeTaxonomy(
         best = c;
       }
     }
-    if (best && bestScore >= CLUSTER_THRESHOLD) {
+    if (best && bestScore >= clusterThreshold) {
       best.members.push(group);
       for (const p of group.players) best.players.add(p);
     } else {
@@ -200,7 +242,7 @@ export function computeArchetypeTaxonomy(
         best = cluster;
       }
     }
-    if (!best || bestScore < CLUSTER_THRESHOLD) continue;
+    if (!best || bestScore < clusterThreshold) continue;
     best.members.push(group);
     for (const player of group.players) best.players.add(player);
   }
@@ -267,6 +309,32 @@ export function computeArchetypeTaxonomy(
     const sightings = deckIds.map((id) => sightingByDeckId.get(id)).filter((s): s is DeckSighting => !!s);
     const events = new Set(sightings.map((s) => s.eventId));
     const avgWinRate = sightings.length > 0 ? sightings.reduce((sum, s) => sum + s.winRate, 0) / sightings.length : 0;
+    const matches = sightings.reduce((sum, sighting) => sum + sighting.wins + sighting.losses + sighting.ties, 0);
+    const effectiveWins = sightings.reduce((sum, sighting) => sum + sighting.wins + sighting.ties * 0.5, 0);
+    const winRateInterval = winRateWilsonInterval(effectiveWins, matches);
+
+    let weightedSimilarity = 0;
+    let weightedMargin = 0;
+    let similarityWeight = 0;
+    let minSimilarity = 1;
+    for (const member of cluster.members) {
+      const ownSimilarity = weightedJaccard(member.cardCounts, cluster.seedCards);
+      let alternativeSimilarity = 0;
+      for (const alternative of candidateClusters(member.cardCounts)) {
+        if (alternative === cluster) continue;
+        alternativeSimilarity = Math.max(alternativeSimilarity, weightedJaccard(member.cardCounts, alternative.seedCards));
+      }
+      const weight = member.deckIds.length;
+      weightedSimilarity += ownSimilarity * weight;
+      weightedMargin += (ownSimilarity - alternativeSimilarity) * weight;
+      similarityWeight += weight;
+      minSimilarity = Math.min(minSimilarity, ownSimilarity);
+    }
+    const quality = {
+      meanSimilarity: similarityWeight > 0 ? weightedSimilarity / similarityWeight : 0,
+      minSimilarity: similarityWeight > 0 ? minSimilarity : 0,
+      meanAssignmentMargin: similarityWeight > 0 ? weightedMargin / similarityWeight : 0,
+    };
 
     const topCutCount = sightings.filter((s) => s.topCut).length;
     const topCutRate = sightings.length > 0 ? topCutCount / sightings.length : 0;
@@ -343,6 +411,8 @@ export function computeArchetypeTaxonomy(
       eventCount: events.size,
       confidence: cluster.players.size >= 20 && events.size >= 2 ? "established" : "emerging",
       avgWinRate,
+      winRateInterval,
+      quality,
       definingCards: definingCards.slice(0, 12),
       deckIds,
       seasons,
@@ -411,6 +481,7 @@ export function computeArchetypeTaxonomy(
       totalDeckCount: allDecks.length,
       classificationRate: allDecks.length > 0 ? classifiedDeckCount / allDecks.length : 0,
     },
+    aliases: {},
     cardClusterIndex,
   };
 }

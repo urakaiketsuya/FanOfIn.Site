@@ -1,0 +1,6 @@
+[
+  { "label": "Tera Slimes", "champion": "Silvie", "requiredCards": ["Storm Slime", "Limitless Slime", "Gather Slimes"] },
+  { "label": "Diao Chan Fractals", "champion": "Diao Chan", "requiredCards": ["Burst Asunder", "Fractal of Rain", "Fractal of Insight"] },
+  { "label": "Guo Jia Water", "champion": "Guo Jia", "requiredCards": ["Fractal of Rain", "Fractal of Polar Depths"] },
+  { "label": "Tristan Wind", "champion": "Tristan", "requiredCards": ["Surveil the Winds", "Dungeon Guide", "Windwalker Boots"] }
+]

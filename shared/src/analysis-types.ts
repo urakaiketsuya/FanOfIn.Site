@@ -536,6 +536,10 @@ export interface ArchetypeCluster {
   /** Established clusters have at least 20 players across at least 2 events; smaller published clusters are emerging signals. */
   confidence: "established" | "emerging";
   avgWinRate: number;
+  /** 95% Wilson interval over the cluster's recorded match outcomes; ties count as half a win. */
+  winRateInterval: { low: number; high: number; matches: number };
+  /** Similarity to this cluster's seed and margin over the nearest alternative, weighted by deck sightings. */
+  quality: { meanSimilarity: number; minSimilarity: number; meanAssignmentMargin: number };
   /** Cards present in most of this cluster's deck sightings but not most deck sightings generally — what actually distinguishes this build. Sorted by prevalence descending. */
   definingCards: { name: string; prevalence: number }[];
   /** Every member deck's id, joinable against DeckSightingsData — same pattern as PopularDeck.deckIds. */
@@ -580,6 +584,8 @@ export interface ArchetypeTaxonomyData {
   clusters: ArchetypeCluster[];
   /** Coverage of all visible deck sightings by a published cluster, including attached singleton variants. */
   coverage: { classifiedDeckCount: number; totalDeckCount: number; classificationRate: number };
+  /** Retired archetype id -> current id, preserving previously shared archetype URLs across rebuilds. */
+  aliases: Record<string, string>;
   /** Card name -> every cluster it's a defining card of (with that cluster's prevalence for this card), for resolving "which archetypes is this card part of" on a card's own page. Same shape/purpose as `CardImpactData.deckClusterIndex`, just card-keyed and to multiple clusters instead of deck-keyed to one. Only cards that are a defining card of at least one cluster are present. */
   cardClusterIndex: Record<string, { clusterId: string; prevalence: number }[]>;
 }

@@ -61,7 +61,8 @@ export default function ArchetypeDetail() {
     }
   }, [id, setTab]);
 
-  const cluster = data?.clusters.find((c) => c.id === id);
+  const resolvedId = data?.aliases?.[id] ?? id;
+  const cluster = data?.clusters.find((c) => c.id === resolvedId);
   const impact = cardImpactData?.clusters.find((c) => c.clusterId === id);
   const clusterMatchups = useMemo(() => {
     if (!matchupCardImpactData) return [];
@@ -224,6 +225,14 @@ export default function ArchetypeDetail() {
               Regional breakdown &rarr;
             </Link>
           </p>
+          {cluster.winRateInterval && cluster.quality && (
+            <p className="mt-1 text-xs text-ctp-subtext0">
+              95% win-rate interval {(cluster.winRateInterval.low * 100).toFixed(1)}–{(cluster.winRateInterval.high * 100).toFixed(1)}%
+              {` across ${cluster.winRateInterval.matches.toLocaleString()} matches`}
+              {` · ${(cluster.quality.meanSimilarity * 100).toFixed(0)}% mean shell cohesion`}
+              {` · ${(cluster.quality.meanAssignmentMargin * 100).toFixed(0)}pt assignment margin`}
+            </p>
+          )}
           <StaleDataNotice generatedAt={[data?.generatedAt]} />
 
           {cluster.trend && (
