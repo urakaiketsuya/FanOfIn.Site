@@ -469,47 +469,54 @@ export default function About() {
         </div>
       </section>
 
-      <section className="border-t border-ctp-surface0 px-4 py-16">
-        <div className="mx-auto max-w-5xl">
-          <h2 className="text-center text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">
-            Compare decks, for real
-          </h2>
-          <p className="mx-auto mt-2 max-w-xl text-center text-sm text-ctp-subtext1">
-            Two real, independently popular {COMPARE_CHAMPION_NAME} builds, lined up card by card — green is in
-            both, yellow is only in one. This is the live Compare tool, not a screenshot — scroll within it to see
-            the full card list.
-          </p>
+      <section className="border-t border-ctp-surface0 bg-ctp-mantle/40 px-4 py-16">
+        <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[280px_1fr] lg:items-center">
+          <div>
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">Compare decks, for real</h2>
+            <p className="mt-2 text-sm text-ctp-subtext1">
+              Two real, independently popular {COMPARE_CHAMPION_NAME} builds, lined up card by card — green is in
+              both, yellow is only in one. This is the live Compare tool, not a screenshot.
+            </p>
+            <p className="mt-4 text-xs text-ctp-subtext0">
+              Compare accepts far more than this — search decks by cards they run, import any player's submitted
+              list, or paste in a decklist that was never even submitted to Omnidex — and a second mode compares
+              individual cards' usage, win rate, and price side by side, not just whole decks.
+            </p>
+            <Link to="/compare" className="mt-4 inline-block text-sm font-semibold text-ctp-blue hover:underline">
+              Open Compare &rarr;
+            </Link>
+          </div>
 
-          <div className="relative mt-8">
+          <div className="relative">
             <div className="max-h-[28rem] overflow-y-auto rounded-lg border border-ctp-surface1">
               <ComparisonGrid decks={COMPARE_DECKS} decklists={COMPARE_DECKLISTS} />
             </div>
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 rounded-b-lg bg-gradient-to-t from-ctp-base to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 rounded-b-lg bg-gradient-to-t from-ctp-mantle/40 to-transparent" />
           </div>
-
-          <p className="mt-6 text-center text-xs text-ctp-subtext0">
-            Compare accepts far more than this — search decks by cards they run, import any player's submitted
-            list, or paste in a decklist that was never even submitted to Omnidex — and a second mode compares
-            individual cards' usage, win rate, and price side by side, not just whole decks.{" "}
-            <Link to="/compare" className="hover:text-ctp-blue hover:underline">
-              Open Compare &rarr;
-            </Link>
-          </p>
         </div>
       </section>
 
       <section className="border-t border-ctp-surface0 px-4 py-16">
-        <div className="mx-auto max-w-2xl">
-          <h2 className="text-center text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">
-            How the Power Rating works
-          </h2>
-          <p className="mx-auto mt-2 max-w-xl text-center text-sm text-ctp-subtext1">
-            Every deck page scores its decklist on four independent 1&ndash;10 pillars &mdash; Aggro,
-            Consistency, Interaction, Resilience &mdash; so you can size up a build's play style at a glance,
-            before you've played a single game with it.
-          </p>
+        <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[280px_1fr] lg:items-center">
+          <div>
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">How the Power Rating works</h2>
+            <p className="mt-2 text-sm text-ctp-subtext1">
+              Every deck page scores its decklist on four independent 1&ndash;10 pillars &mdash; Aggro,
+              Consistency, Interaction, Resilience &mdash; so you can size up a build's play style at a glance,
+              before you've played a single game with it.
+            </p>
+            <p className="mt-4 text-xs text-ctp-subtext0">
+              The composite is the plain average of the four pillar scores. Every score-band boundary is a real
+              percentile from 94 actual Regionals/Ascent 1st-place decklists, not a round number &mdash; and scored
+              per decklist, not per Champion, since the same Champion can have genuinely opposite real builds.
+              Correlational, not causal, same as every other stat on this site.
+            </p>
+            <Link to={`/decks/${WALKTHROUGH_HASH}`} className="mt-4 inline-block text-sm font-semibold text-ctp-blue hover:underline">
+              See it on this deck's own page &rarr;
+            </Link>
+          </div>
 
-          <div className="mt-8 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+          <div className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
                 {WALKTHROUGH_DECK.championName} example
@@ -534,30 +541,30 @@ export default function About() {
               ))}
             </div>
           </div>
-
-          <p className="mx-auto mt-6 max-w-xl text-center text-xs text-ctp-subtext0">
-            The composite is the plain average of the four pillar scores. Every score-band boundary (what raw signal
-            count earns a 1 vs. a 10) is a real percentile from 94 actual Regionals/Ascent 1st-place decklists, not a
-            round number &mdash; and scored per decklist, not per Champion, since the same Champion can have
-            genuinely opposite real builds. Correlational, not causal, same as every other stat on this site.{" "}
-            <Link to={`/decks/${WALKTHROUGH_HASH}`} className="hover:text-ctp-blue hover:underline">
-              See it on this deck's own page &rarr;
-            </Link>
-          </p>
         </div>
       </section>
 
-      <section className="border-t border-ctp-surface0 px-4 py-16">
-        <div className="mx-auto max-w-2xl">
-          <h2 className="text-center text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">Guided Deck Builder</h2>
-          <p className="mx-auto mt-2 max-w-xl text-center text-sm text-ctp-subtext1">
-            Pick a Champion and Spirit and get a build assembled from the highest win-rate card at every slot —
-            aggregated from every matching real deck, not one example decklist.{" "}
-            {WALKTHROUGH_DECK_BUILDER.championName} + {WALKTHROUGH_DECK_BUILDER.spiritName},{" "}
-            {WALKTHROUGH_DECK_BUILDER.matchingDecks} matching decks:
-          </p>
+      <section className="border-t border-ctp-surface0 bg-ctp-mantle/40 px-4 py-16">
+        <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[280px_1fr] lg:items-center">
+          <div>
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">Guided Deck Builder</h2>
+            <p className="mt-2 text-sm text-ctp-subtext1">
+              Pick a Champion and Spirit and get a build assembled from the highest win-rate card at every slot —
+              aggregated from every matching real deck, not one example decklist.{" "}
+              {WALKTHROUGH_DECK_BUILDER.championName} + {WALKTHROUGH_DECK_BUILDER.spiritName},{" "}
+              {WALKTHROUGH_DECK_BUILDER.matchingDecks} matching decks:
+            </p>
+            <p className="mt-4 text-xs text-ctp-subtext0">
+              Lock in your own picks (or paste a decklist to start from) and the rest re-ranks around them, with
+              editable quantities, a "buddy cards" list per pick, swap-in suggestions for both what to add and what
+              to cut, composition suggestions, and a running log of what changed with each choice.
+            </p>
+            <Link to="/deck-builder" className="mt-4 inline-block text-sm font-semibold text-ctp-blue hover:underline">
+              Open Guided Deck Builder &rarr;
+            </Link>
+          </div>
 
-          <ul className="mt-6 space-y-1.5">
+          <ul className="space-y-1.5">
             {WALKTHROUGH_DECK_BUILDER.cards.map((c) => (
               <li key={c.name} className="flex items-center gap-2 rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm">
                 <CardHoverPreview image={c.image} alt={c.name}>
@@ -573,16 +580,6 @@ export default function About() {
               </li>
             ))}
           </ul>
-
-          <p className="mt-6 text-center text-xs text-ctp-subtext0">
-            Lock in your own picks (or paste a decklist to start from) and the rest re-ranks around them, with
-            editable quantities, a "buddy cards" list per pick (what's commonly run alongside it, independent of
-            win rate), swap-in suggestions for both what to add and what to cut, composition suggestions, and a
-            running log of what changed with each choice.{" "}
-            <Link to="/deck-builder" className="hover:text-ctp-blue hover:underline">
-              Open Guided Deck Builder &rarr;
-            </Link>
-          </p>
         </div>
       </section>
 
