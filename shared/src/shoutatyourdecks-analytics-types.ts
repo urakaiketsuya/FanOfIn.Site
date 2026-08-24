@@ -63,3 +63,17 @@ export interface ShoutAtYourDecksArchetypeClusteringData {
   decksConsidered: number;
   clusters: ShoutAtYourDecksArchetypeCluster[];
 }
+
+export interface DeckEraBucket {
+  setPrefix: string;
+  earliestDate: string;
+  deckCount: number;
+  percentOfDecks: number;
+}
+
+export interface DeckEraData {
+  generatedAt: string;
+  decksConsidered: number;
+  unresolvedDeckCount: number;
+  buckets: DeckEraBucket[];
+}

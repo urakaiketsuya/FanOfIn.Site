@@ -3,7 +3,14 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useCardsByNames } from "../events/useCardsByNames";
 import HorizontalBarChart, { type HorizontalBarChartBar } from "../../components/HorizontalBarChart";
 import RangeBar from "../../components/RangeBar";
-import { useCommunityCardInclusion, useCommunityPopularity, useCommunityPriceDistribution, useCommunityArchetypes } from "./data";
+import BarChart, { type BarChartBar } from "../../components/BarChart";
+import {
+  useCommunityCardInclusion,
+  useCommunityPopularity,
+  useCommunityPriceDistribution,
+  useCommunityArchetypes,
+  useCommunityDeckEra,
+} from "./data";
 
 const TOP_CARDS_SHOWN = 30;
 const TOP_ARCHETYPES_SHOWN = 20;
@@ -30,6 +37,7 @@ export default function CommunityDecksIndex() {
   const popularity = useCommunityPopularity();
   const priceDistribution = useCommunityPriceDistribution();
   const archetypes = useCommunityArchetypes();
+  const deckEra = useCommunityDeckEra();
 
   const [championFilter, setChampionFilter] = useState<string>("");
 
@@ -72,6 +80,31 @@ export default function CommunityDecksIndex() {
   );
 
   const price = championFilter ? priceDistribution?.byChampion[championFilter] : priceDistribution?.overall;
+
+  const eraBars = useMemo<BarChartBar[]>(() => {
+    if (!deckEra) return [];
+    // Alternate-printing variants of the same set (e.g. "PTM" / "PTM 1st", "AMB" / "AMB Alter")
+    // share a release date but publish as separate buckets — merge same-date buckets into one
+    // point so the timeline reads as "when", not fragmented by print variant. See
+    // docs/CALCULATIONS.md, "Deck era inference," for the known-wrinkle note this addresses.
+    const byDate = new Map<string, { deckCount: number; sets: string[] }>();
+    for (const b of deckEra.buckets) {
+      const existing = byDate.get(b.earliestDate);
+      if (existing) {
+        existing.deckCount += b.deckCount;
+        existing.sets.push(b.setPrefix);
+      } else {
+        byDate.set(b.earliestDate, { deckCount: b.deckCount, sets: [b.setPrefix] });
+      }
+    }
+    return Array.from(byDate.entries())
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([date, { deckCount, sets }]) => ({
+        label: new Date(date).toLocaleDateString(undefined, { month: "short", year: "2-digit" }),
+        value: deckCount,
+        title: `${sets.join(", ")} · ${deckCount.toLocaleString()} decks`,
+      }));
+  }, [deckEra]);
 
   const loading = !cardInclusion && !popularity && !priceDistribution && !archetypes;
 
@@ -183,6 +216,23 @@ export default function CommunityDecksIndex() {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {eraBars.length > 0 && (
+        <div className="mt-8">
+          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Deck era</h2>
+          <p className="mt-1 text-xs text-ctp-subtext0">
+            When decks were likely built, inferred from the newest card each one requires — a floor, not a real
+            timestamp, since Shout At Your Decks doesn't record a creation date. A deck built yesterday from only
+            year-old cards reads as year-old here. Hover a bar for the set(s) behind it.
+            {deckEra && deckEra.unresolvedDeckCount > 0 && (
+              <> {deckEra.unresolvedDeckCount.toLocaleString()} decks couldn't be dated and are excluded.</>
+            )}
+          </p>
+          <div className="mt-2">
+            <BarChart bars={eraBars} />
           </div>
         </div>
       )}

@@ -1,4 +1,4 @@
-import type { CardInclusionData, PopularityData, PriceDistributionData, ShoutAtYourDecksArchetypeClusteringData } from "@gatcg/shared";
+import type { CardInclusionData, DeckEraData, PopularityData, PriceDistributionData, ShoutAtYourDecksArchetypeClusteringData } from "@gatcg/shared";
 import { usePublishedData } from "../../lib/sync/usePublishedData";
 
 /** Standalone ShoutAtYourDecks-derived stats — deliberately separate from every Omnidex-derived hook elsewhere in this app (see docs/CALCULATIONS.md, "ShoutAtYourDecks analytics"). */
@@ -22,4 +22,8 @@ export function useCommunityArchetypes() {
     "shoutatyourdecks-archetypes",
     "/data/shoutatyourdecks/analytics/archetypes.json",
   );
+}
+
+export function useCommunityDeckEra() {
+  return usePublishedData<DeckEraData>("shoutatyourdecks-deck-era", "/data/shoutatyourdecks/analytics/deck-era.json");
 }

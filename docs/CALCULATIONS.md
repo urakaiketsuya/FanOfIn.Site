@@ -1247,9 +1247,28 @@ deliberate trade-off for keeping the two sources fully decoupled.
   way `similarity.ts`/`hipster.ts` work for Omnidex) is a materially bigger undertaking and
   deliberately out of scope here.
 
+- **Deck era inference** (`deckEra.ts`): ShoutAtYourDecks never captured a real deck creation/update
+  date — there's no such field on the site at all. This infers a *lower bound* instead: a card's
+  release date comes from its earliest printing (`CardSignature.editions[].releaseDate`, sourced
+  from the raw GA API's `set.release_date` — previously fetched and silently discarded by
+  `pipeline/src/cards/catalog.ts`, now kept), and a deck's inferred date is the **max** across every
+  card in it — i.e. a deck can't be older than the newest card it requires. Decks are bucketed by
+  the set that produced that bounding card, standing in for a "season" grouping in the absence of
+  any real date. This is honestly a floor, not the deck's actual date: a deck built yesterday from
+  only year-old cards infers as year-old. Known wrinkle: alternate-printing set prefixes (`PTM` vs
+  `PTM 1st`, `AMB` vs `AMB Alter`) currently bucket separately even though they're the same
+  timeframe — not wrong, just more fragmented than a true season grouping would be. The "Deck era"
+  chart on `/community-decks` (`CommunityDecksIndex.tsx`) addresses this client-side rather than in
+  the published data: it merges buckets sharing the exact same `earliestDate` before charting (real
+  data has several same-day pairs — `PTM`/`PTM 1st`, `RDO`/`RDO 1st`, `AMB`/`AMB 1st`, three-way for
+  `PRD`/`PRD 1st`/`PRDSD` — going from 24 published buckets down to 16 real release moments), and
+  shows the merged set name(s) on hover. The published `deck-era.json` itself is left un-merged —
+  other consumers may want the per-print-variant granularity, so the fold is a display-only choice,
+  not a change to what's published.
+
 Every output file's `generatedAt` is paired with a `decksConsidered` (or per-stat equivalent) count —
 worth checking before trusting a number, since Phase 3 of the scrape (full decklist fetch) can still
-be in progress when this runs, and three of the four stats depend on it.
+be in progress when this runs, and four of the five stats depend on it.
 
 ## The "deck identity" convention
 

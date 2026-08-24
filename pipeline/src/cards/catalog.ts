@@ -21,8 +21,17 @@ export interface CardSignature {
   level: number | null;
   /** Raw rules text (markdown-bolded keywords) — needed for `computeKeywordComposition` in @gatcg/shared. */
   effect: string | null;
-  /** Set prefix + collector number per printing — the precise join key into data/prices.json's priceKey(), instead of matching TCGPlayer's own product name string (see loadPriceByName in analysis/build.ts). May be absent (not just empty) on a stale on-disk cache from before this field shipped — always read with `?? []`, self-heals within the existing 24h cache TTL. */
-  editions: { setPrefix: string; collectorNumber: string }[];
+  /**
+   * Set prefix + collector number per printing — the precise join key into data/prices.json's
+   * priceKey(), instead of matching TCGPlayer's own product name string (see loadPriceByName in
+   * analysis/build.ts). `releaseDate` (the set's `release_date`, ISO-ish date string from the raw
+   * API — same source, just not dropped) is what lets a card's *earliest* printing stand in for
+   * "when this card first became legal," used by the ShoutAtYourDecks era-inference stat (see
+   * docs/CALCULATIONS.md) to lower-bound a deck's age from its newest-required card. May be
+   * absent (not just empty) on a stale on-disk cache from before a given field shipped — always
+   * read with `?? []`/optional chaining, self-heals within the existing 24h cache TTL.
+   */
+  editions: { setPrefix: string; collectorNumber: string; releaseDate: string }[];
 }
 
 interface CardCatalogCache {
@@ -45,7 +54,7 @@ async function fetchFullCatalog(): Promise<CardSignature[]> {
         elements: card.elements,
         level: card.level,
         effect: card.effect,
-        editions: card.editions.map((e) => ({ setPrefix: e.set.prefix, collectorNumber: e.collector_number })),
+        editions: card.editions.map((e) => ({ setPrefix: e.set.prefix, collectorNumber: e.collector_number, releaseDate: e.set.release_date })),
       });
     }
     if (!res.has_more) break;

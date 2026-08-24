@@ -9,6 +9,7 @@ import { computeCardInclusion } from "./cardInclusion.js";
 import { computePopularity } from "./popularity.js";
 import { computePriceDistribution } from "./priceDistribution.js";
 import { computeArchetypeClustering } from "./archetypeClustering.js";
+import { computeDeckEra } from "./deckEra.js";
 
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../../data/shoutatyourdecks/analytics");
 
@@ -42,15 +43,18 @@ export async function runAnalytics(): Promise<void> {
   const popularity = computePopularity(keptSummaries, keptDecksWithLists, cardIndex);
   const priceDistribution = computePriceDistribution(keptSummaries);
   const archetypes = computeArchetypeClustering(keptDecksWithLists);
+  const deckEra = computeDeckEra(keptDecksWithLists, cardIndex);
 
   await mkdir(DATA_DIR, { recursive: true });
   await writeFile(path.join(DATA_DIR, "card-inclusion.json"), JSON.stringify(cardInclusion), "utf-8");
   await writeFile(path.join(DATA_DIR, "popularity.json"), JSON.stringify(popularity), "utf-8");
   await writeFile(path.join(DATA_DIR, "price-distribution.json"), JSON.stringify(priceDistribution), "utf-8");
   await writeFile(path.join(DATA_DIR, "archetypes.json"), JSON.stringify(archetypes), "utf-8");
+  await writeFile(path.join(DATA_DIR, "deck-era.json"), JSON.stringify(deckEra), "utf-8");
 
   console.log(
     `shoutatyourdecks: analytics published — ${cardInclusion.overall.length} distinct cards, ` +
-      `${popularity.champion.length} champions, ${archetypes.clusters.length} archetype clusters`,
+      `${popularity.champion.length} champions, ${archetypes.clusters.length} archetype clusters, ` +
+      `${deckEra.buckets.length} era buckets`,
   );
 }
