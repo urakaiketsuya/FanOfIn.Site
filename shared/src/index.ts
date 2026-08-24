@@ -4,6 +4,8 @@ export * from "./pricing.js";
 export * from "./omnidex-types.js";
 export * from "./omnidex-index-types.js";
 export * from "./analysis-types.js";
+export * from "./shoutatyourdecks-types.js";
+export * from "./shoutatyourdecks-analytics-types.js";
 export * from "./cardImpact.js";
 export * from "./changelog-types.js";
 export * from "./hash.js";

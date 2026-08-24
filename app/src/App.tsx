@@ -19,6 +19,7 @@ const NAV_LINKS = [
   { to: "/champions", label: "Champions" },
   { to: "/archetypes", label: "Archetypes" },
   { to: "/decks", label: "Browse Decks" },
+  { to: "/community-decks", label: "Community Decks" },
   { to: "/regions", label: "Regions" },
   // Tools
   { to: "/compare", label: "Compare" },

@@ -68,4 +68,42 @@ export const config = {
    * "without" bucket almost never has enough data to clear this bar.
    */
   cardImpactMinSampleSize: Number(process.env.GATCG_CARD_IMPACT_MIN_SAMPLE ?? 5),
+
+  /**
+   * ShoutAtYourDecks (community deck-builder, see pipeline/src/shoutatyourdecks/README.md) has no
+   * bulk-listing API — the listing and every deck page only render after a live Blazor SignalR
+   * circuit, so harvesting URLs and fetching full decklists both need a real browser (Playwright).
+   * Only the cheap metadata fetch (title/author/champion/counts, baked into each deck page's
+   * server-prerendered HTML) is plain HTTP. These knobs keep both the browser and HTTP phases
+   * bounded and polite, same spirit as the Omnidex knobs above.
+   */
+
+  /** Delay between ShoutAtYourDecks HTTP metadata fetches — politeness over speed; skipped in fast mode. */
+  sydCrawlRequestDelayMs: FAST_MODE ? 0 : Number(process.env.GATCG_SYD_CRAWL_DELAY_MS ?? 250),
+
+  /**
+   * Valid constructed decks are 60 cards or more in the Main deck (most are exactly 60); anything
+   * under that is an unfinished/invalid brew, not a "potential deck" — filtered out before a
+   * decklist is ever worth the browser cost of fetching. See docs/CALCULATIONS.md.
+   */
+  sydMinMainDeckSize: Number(process.env.GATCG_SYD_MIN_MAIN_DECK_SIZE ?? 60),
+
+  /**
+   * Deck titles containing this (case-insensitive) are almost always scratch duplicates a user
+   * made while editing (e.g. "Untitled Deck - Copy") rather than a deck meant to be shared —
+   * confirmed against a live sample: every title matching this was junk, no false positives seen.
+   */
+  sydTitleExcludePattern: process.env.GATCG_SYD_TITLE_EXCLUDE_PATTERN ?? "copy",
+
+  /** How many browser pages/decks to process concurrently during harvest/decklist phases — bounded to stay polite to a small fan-run server. */
+  sydBrowserConcurrency: Number(process.env.GATCG_SYD_BROWSER_CONCURRENCY ?? 2),
+
+  /** Dev-iteration cap: only harvest this many listing pages (24 decks/page) instead of the full ~891. */
+  sydFastModePageLimit: Number(process.env.GATCG_SYD_FAST_MODE_PAGE_LIMIT ?? 3),
+
+  /** Per-champion breakdowns (card inclusion, price distribution) are suppressed below this many decks — same magnitude/reasoning as `minBattleChartSampleSize` above: a handful of decks isn't a real signal. */
+  sydMinChampionSampleSize: Number(process.env.GATCG_SYD_MIN_CHAMPION_SAMPLE ?? 5),
+
+  /** An archetype cluster (decks sharing the exact same champion + main+material card list) is only published if at least this many decks share it — a cluster of 1 is just "a deck exists," not a recurring build. */
+  sydMinArchetypeClusterSize: Number(process.env.GATCG_SYD_MIN_ARCHETYPE_CLUSTER ?? 2),
 };

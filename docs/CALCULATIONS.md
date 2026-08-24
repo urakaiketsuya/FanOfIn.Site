@@ -1195,6 +1195,62 @@ deck-card-index.json, each fetched multiple times) to a fraction of that (deck-p
   the `.cache/` directory is deleted entirely, it's simply recreated on the next run with no data
   loss (it's derived from the same event bundles the encoded version comes from).
 
+## ShoutAtYourDecks filter thresholds (`pipeline/src/shoutatyourdecks/filter.ts`)
+
+`shouldKeepDeck` decides which scraped decks are worth the browser cost of a full decklist fetch
+(see `pipeline/src/shoutatyourdecks/README.md` for the full three-phase pipeline). Two checks:
+
+- **`mainCount >= config.sydMinMainDeckSize`** (default 60, `GATCG_SYD_MIN_MAIN_DECK_SIZE` env
+  override). Grand Archive's constructed Main deck minimum is 60 cards — more is legal, less isn't
+  a real deck. `mainCount` comes from the deck page's own `Main (N)` header (see
+  `metadataFetch.ts`), so this check runs on the cheap HTTP-only metadata pass, before anything
+  pays for a browser session.
+- **Title excludes `config.sydTitleExcludePattern`** (default `"copy"`, case-insensitive,
+  `GATCG_SYD_TITLE_EXCLUDE_PATTERN` env override). Titles like "Untitled Deck - Copy" are scratch
+  duplicates left over from a user editing in the site's own deck builder, not decks meant to be
+  browsed. Validated against a live 24-deck sample: every title matching this pattern was junk (no
+  false positives) — none of the 20 kept decks in that sample happened to fall under the 60-card
+  threshold, so that check is validated by definition/rules rather than by an observed example yet;
+  worth spot-checking again once a full crawl surfaces some.
+
+## ShoutAtYourDecks analytics (`pipeline/src/shoutatyourdecks/analytics/`)
+
+Four stats computed over the ShoutAtYourDecks scrape (see `pipeline/src/shoutatyourdecks/README.md`)
+and published to `data/shoutatyourdecks/analytics/` — deliberately standalone from every Omnidex-
+derived stat above and from `pipeline/src/analysis/`, per the same "separate dataset" decision the
+scraper itself was built under. None of this reuses Omnidex's `canonicalSignature`/`deckSightings.ts`/
+`similarity.ts`, even where the underlying idea is the same — small logic duplication is the
+deliberate trade-off for keeping the two sources fully decoupled.
+
+- **Card inclusion** (`cardInclusion.ts`): `deckCount`/`percentOfDecks`/`totalCopies`/
+  `avgCopiesWhenIncluded` per card, over main+material (deck-identity convention below), resolved
+  against the card catalog via `resolveCard` (`pipeline/src/cards/catalog.ts`). Per-champion
+  breakdowns are only published for champions with `>= config.sydMinChampionSampleSize` (default 5)
+  decks — same reasoning as `minBattleChartSampleSize` elsewhere in this doc.
+- **Champion/element popularity** (`popularity.ts`): champion popularity covers every filtered deck
+  (no decklist needed — it's already in the cheap metadata). Element popularity needs the actual
+  card list, so it's scoped to decks with a fetched decklist only (`elementDecksConsidered`), and
+  uses the **top-2-elements-by-copies, NORM-excluded** identity convention — the same one
+  `computeDeckIdentity` (`app/src/lib/deckIdentity.ts`) uses, reimplemented locally here since
+  `pipeline` can't import from the `app` workspace directly.
+- **Price distribution** (`priceDistribution.ts`): min/p10/p25/median/p75/p90/max/mean of
+  `priceLow`, overall and per-champion (same min-sample gate as card inclusion). Decks with a null
+  price are excluded entirely rather than treated as $0.
+- **Archetype clustering** (`archetypeClustering.ts`): groups decks by `(champion, exact main+material
+  card list)` — a fresh, standalone reimplementation of the same idea as Omnidex's
+  `canonicalSignature`. **Exact-match only, not similarity-based** — this finds decks that are
+  literal copies of each other (real signal: validated against the first partial-data run, where the
+  largest cluster was 16 decks that all traced back to a named regional-tournament list), but will
+  not group "same core, 3 different tech slots" decks together. Clusters below
+  `config.sydMinArchetypeClusterSize` (default 2) aren't published — most decks are singletons, which
+  is expected for hand-built decklists, not a bug. A real similarity-based archetype detector (the
+  way `similarity.ts`/`hipster.ts` work for Omnidex) is a materially bigger undertaking and
+  deliberately out of scope here.
+
+Every output file's `generatedAt` is paired with a `decksConsidered` (or per-stat equivalent) count —
+worth checking before trusting a number, since Phase 3 of the scrape (full decklist fetch) can still
+be in progress when this runs, and three of the four stats depend on it.
+
 ## The "deck identity" convention
 
 Used consistently across nearly every stat above and in `useDeckPopularity.ts`, `computeDeckIdentity`,

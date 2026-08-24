@@ -7,9 +7,39 @@ import { publishVods } from "./curated/vods.js";
 import { publishChangelog } from "./changelog.js";
 import { writeSitemap } from "./sitemap.js";
 import { writeManifest } from "./manifest.js";
+import { runHarvest, runMetadataFetch, runDecklistFetch, runBuild as runShoutAtYourDecksBuild } from "./shoutatyourdecks/run.js";
+import { runAnalytics as runShoutAtYourDecksAnalytics } from "./shoutatyourdecks/analytics/build.js";
+import { installGracefulShutdown } from "./shoutatyourdecks/shutdown.js";
 import { config } from "./config.js";
 
+/**
+ * ShoutAtYourDecks is deliberately NOT part of the default pipeline run below — it needs a real
+ * browser (Playwright) and a full crawl can take hours across ~21k decks, which would blow past
+ * data-refresh.yml's 180-minute CI budget. Run explicitly via GATCG_SYD_MODE, same way the Omnidex
+ * *backfill* (as opposed to its normal incremental run) is split out via GATCG_OMNIDEX_MODE=backfill
+ * rather than folded into the weekly job. See pipeline/src/shoutatyourdecks/README.md.
+ */
+async function runShoutAtYourDecksMode(mode: string): Promise<void> {
+  installGracefulShutdown();
+  try {
+    if (mode === "harvest") await runHarvest();
+    else if (mode === "metadata") await runMetadataFetch();
+    else if (mode === "decklists") await runDecklistFetch();
+    else if (mode === "build") await runShoutAtYourDecksBuild();
+    else if (mode === "analytics") await runShoutAtYourDecksAnalytics();
+    else throw new Error(`unknown GATCG_SYD_MODE "${mode}" — expected harvest|metadata|decklists|build|analytics`);
+  } catch (err) {
+    console.error("shoutatyourdecks pipeline failed", err);
+    process.exitCode = 1;
+  }
+}
+
 async function main() {
+  if (process.env.GATCG_SYD_MODE) {
+    await runShoutAtYourDecksMode(process.env.GATCG_SYD_MODE);
+    return;
+  }
+
   if (config.analysisOnly) {
     console.log("analysis-only mode: skipping pricing + Omnidex fetch, using whatever's already cached");
   } else {

@@ -13,6 +13,11 @@
     "build": "npm run build --workspace=app",
     "pipeline": "npm run start --workspace=pipeline",
     "pipeline:analysis": "GATCG_ANALYSIS_ONLY=1 npm run start --workspace=pipeline",
-    "pipeline:backfill-year": "GATCG_OMNIDEX_MODE=backfill GATCG_FETCH_ONLY=1 npm run start --workspace=pipeline"
+    "pipeline:backfill-year": "GATCG_OMNIDEX_MODE=backfill GATCG_FETCH_ONLY=1 npm run start --workspace=pipeline",
+    "pipeline:syd:harvest": "GATCG_SYD_MODE=harvest npm run start --workspace=pipeline",
+    "pipeline:syd:metadata": "GATCG_SYD_MODE=metadata npm run start --workspace=pipeline",
+    "pipeline:syd:decklists": "GATCG_SYD_MODE=decklists npm run start --workspace=pipeline",
+    "pipeline:syd:build": "GATCG_SYD_MODE=build npm run start --workspace=pipeline",
+    "pipeline:syd:analytics": "GATCG_SYD_MODE=analytics npm run start --workspace=pipeline"
   }
 }
