@@ -55,7 +55,7 @@ const FEATURES: FeatureGroup[] = [
       "Full event history and notable upsets",
       "Deck history: every Champion played and most-used cards",
       "13,000+ rated players, paginated and searchable by username",
-      "Judges tab: certified judges sortable by level and experience — shares the player ID space, so a judge who also plays shows up under one profile",
+      "Judges tab: certified judges sortable by level and experience — a judge who also competes shows up under one unified profile, not split across two",
       "One click from any decklist to compare it against that Champion's best-performing deck, or its top named build",
       "Rivals: most-played opponents, ranked by worst win rate against them first",
     ],
@@ -64,7 +64,7 @@ const FEATURES: FeatureGroup[] = [
   {
     title: "Teams",
     items: [
-      "3v3 team-format registrations — a flat log, not deduplicated (team names alone aren't a reliable identity)",
+      "3v3 team-format registrations, browsable per event — similarly-named teams are never merged together by mistake",
       "Filterable by event type and season, searchable by team or player",
     ],
     example: { to: "/teams", label: "Browse Teams" },
@@ -73,7 +73,7 @@ const FEATURES: FeatureGroup[] = [
     title: "Achievements",
     items: [
       "Badges computed automatically — tournament tiers, rating milestones, playstyle, dedication, and judging",
-      "No manual curation: every unlock is derived straight from the underlying stats",
+      "Every badge reflects real, verified performance — nothing hand-picked",
     ],
     example: { to: "/achievements/won-worlds", label: "Won Worlds" },
   },
@@ -175,24 +175,23 @@ const RATING_PILLARS: { key: keyof typeof WALKTHROUGH_DECK.rating.scores; label:
     key: "aggro",
     label: "Aggro",
     description:
-      "Board-pressure proxies: average Ally power, evasion (Unblockable/Ranged), threat count (power-2+ Allies), a cheap memory curve, and guaranteed champion/Ally damage.",
+      "How much pressure this build applies: average Ally power, evasion (Unblockable/Ranged), threat count, a cheap memory curve, and guaranteed damage.",
   },
   {
     key: "consistency",
     label: "Consistency",
     description:
-      "Card draw, weighted higher for repeatable effects than one-shot ones, plus Floating Memory. Grand Archive has almost no tutors, so this replaces that half of the usual formula entirely.",
+      "How reliably this build finds its key plays: card draw (repeatable draw counts for more than a one-shot) plus Floating Memory.",
   },
   {
     key: "interaction",
     label: "Interaction",
-    description:
-      "Banish, Destroy, Negate, and Fast-speed access, plus guaranteed damage again (removal counts twice — once as damage, once as interaction). Negate and Fast-speed are weighted heavily; Banish is weighted low since it's table stakes, not a differentiator.",
+    description: "How much this build can disrupt or answer the opponent: Banish, Destroy, Negate, Fast-speed access, and guaranteed damage.",
   },
   {
     key: "resilience",
     label: "Resilience",
-    description: "Recover (life gain), protection effects (Spellshroud/Intercept/Prevent), and threat count again.",
+    description: "How well this build survives and stabilizes: Recover (life gain) and protection effects (Spellshroud/Intercept/Prevent).",
   },
 ];
 
@@ -505,9 +504,9 @@ export default function About() {
             How the Power Rating works
           </h2>
           <p className="mx-auto mt-2 max-w-xl text-center text-sm text-ctp-subtext1">
-            Every deck page scores its decklist on four independent 1&ndash;10 pillars, built from scratch for
-            Grand Archive &mdash; the game has almost no tutors and no turn-by-turn match data to simulate a
-            "speed" score from, so the formula leans on real, code-computable signals instead.
+            Every deck page scores its decklist on four independent 1&ndash;10 pillars &mdash; Aggro,
+            Consistency, Interaction, Resilience &mdash; so you can size up a build's play style at a glance,
+            before you've played a single game with it.
           </p>
 
           <div className="mt-8 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
