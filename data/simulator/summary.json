@@ -1,9 +1,13 @@
 {
   "schemaVersion": 1,
   "source": "GrandArchiveSim",
-  "generatedAt": "2026-08-24T00:00:00.000Z",
+  "generatedAt": "2026-08-24T19:53:01.003Z",
   "games": 0,
-  "firstPlayer": { "games": 0, "wins": 0, "winRate": null },
+  "firstPlayer": {
+    "games": 0,
+    "wins": 0,
+    "winRate": null
+  },
   "champions": [],
   "matchups": []
 }

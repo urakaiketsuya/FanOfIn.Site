@@ -1,0 +1,47 @@
+name: Daily simulator analytics refresh
+
+on:
+  schedule:
+    # Refresh after the Worker's 05:23 UTC raw-payload cleanup has completed.
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Share the weekly data job's group so two generated-data commits never race each other.
+concurrency:
+  group: data-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Fetch and validate simulator analytics
+        run: npm run pipeline:simulator
+        env:
+          # The repository variable can override this for staging or a future custom domain.
+          GATCG_SIMULATOR_API_URL: ${{ vars.GATCG_SIMULATOR_API_URL || 'https://fanofin-match-ingestion-production.fanofin-match-ingestion-worker.workers.dev' }}
+
+      - name: Commit updated analytics snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/simulator/summary.json data/manifest.json
+          if git diff --cached --quiet; then
+            echo "No simulator analytics changes this run"
+          else
+            git commit -m "chore: daily simulator analytics refresh $(date -u +%Y-%m-%d)"
+            git push
+          fi
