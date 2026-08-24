@@ -13,6 +13,9 @@ import { useChampionBonusCards } from "./useChampionBonusCards";
 import { useChampionRegionalBreakdown } from "../regions/useChampionRegionalBreakdown";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
+import ChampionSeasonChart from "./ChampionSeasonChart";
+import PageHeader from "../../components/ui/PageHeader";
+import Tabs from "../../components/ui/Tabs";
 
 const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
@@ -139,32 +142,15 @@ export default function ChampionDetail() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <Link to="/champions" className="text-sm text-ctp-blue hover:underline">
-        &larr; All champions
-      </Link>
-
       {champion && (
         <>
-          <h1 className="mt-2 text-2xl font-bold text-ctp-blue">{champion.signature}</h1>
-          <p className="mt-1 text-sm text-ctp-subtext1">
-            {champion.classes.join("/")} · {champion.elements.join("/")} · {champion.deckCount} decks across{" "}
-            {champion.eventCount} events · {(champion.avgWinRate * 100).toFixed(0)}% avg win rate
-          </p>
+          <PageHeader
+            title={champion.signature}
+            eyebrow={<Link to="/champions" className="hover:underline">&larr; All Champions</Link>}
+            description={<>{champion.classes.join("/")} · {champion.elements.join("/")} · <strong className="font-semibold text-ctp-text">{champion.deckCount.toLocaleString()}</strong> decks across {champion.eventCount.toLocaleString()} events · <strong className="font-semibold text-ctp-text">{(champion.avgWinRate * 100).toFixed(0)}%</strong> average win rate</>}
+          />
 
-          <div className="mt-4 flex flex-wrap gap-2 border-b border-ctp-surface1 pb-2">
-            {TABS.map((t) => (
-              <button
-                key={t.key}
-                type="button"
-                onClick={() => setTab(t.key)}
-                className={`rounded-md border px-2.5 py-1 text-xs ${
-                  tab === t.key ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                }`}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
+          <Tabs tabs={TABS} active={tab} onChange={setTab} label={`${champion.signature} details`} />
 
           {tab === "season" && seasonHistory.length > 0 && (
             <div className="mt-6">
@@ -200,6 +186,7 @@ export default function ChampionDetail() {
                 Share of season = this Champion's weighted placement score as a fraction of every Champion's
                 combined score that season — comparable across seasons regardless of how many events were played.
               </p>
+              <ChampionSeasonChart seasons={seasonHistory} />
               <div className="overflow-x-auto">
                 <table className="w-max min-w-full text-sm">
                   <thead>

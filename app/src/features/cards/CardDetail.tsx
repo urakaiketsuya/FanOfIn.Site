@@ -15,7 +15,7 @@ import { typeIconKey } from "../../lib/cardTypeIcon";
 import { useCard } from "./useCard";
 import { usePriceLookup } from "../pricing/usePriceLookup";
 import { usePriceHistoryData } from "../pricing/usePriceHistory";
-import ThemaSparkline from "../thema/ThemaSparkline";
+import HistoryChart from "../../components/HistoryChart";
 import { useCardStatsData, useArchetypeTaxonomyData, useCardQuantityStatsData } from "../archetypes/data";
 import { useCardCatalog } from "./useCardCatalog";
 import { useCardCombination } from "./useCardCombination";
@@ -384,7 +384,7 @@ export default function CardDetail() {
                   <p className="text-xs text-ctp-subtext0">
                     {priceSeries.label} price, last {priceSeries.dated.length} weeks
                   </p>
-                  <ThemaSparkline values={priceSeries.dated.map((d) => d.value)} height={48} />
+                  <HistoryChart points={priceSeries.dated.map((d) => ({ date: d.date, value: d.value }))} label={`${priceSeries.label} price`} formatValue={formatUsd} compact />
                   <div className="mt-1 flex justify-between text-[10px] text-ctp-subtext0">
                     <span>{new Date(priceSeries.dated[0].date).toLocaleDateString()}</span>
                     <span>{new Date(priceSeries.dated[priceSeries.dated.length - 1].date).toLocaleDateString()}</span>

@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER, type AchievementDefinition, type AchievementUnlock } from "@gatcg/shared";
 import { useOmnidexIndex, useOmnidexJudges, useOmnidexPlayers } from "../tournaments/data";
 import { useEloData, useEloHistoryData, useHipsterData, usePlayerDecksData, useRivalsData } from "./data";
-import ThemaSparkline from "../thema/ThemaSparkline";
+import HistoryChart from "../../components/HistoryChart";
 import { useDeckSightingsData } from "../topdecks/data";
 import { useAchievementsData } from "../achievements/data";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -203,7 +203,7 @@ export default function PlayerProfile() {
           {ratingHistory && ratingHistory.length >= 2 && (
             <div className="mt-2 max-w-sm rounded-md border border-ctp-surface1 p-3">
               <p className="text-xs text-ctp-subtext0">Rating over time, {ratingHistory.length} events</p>
-              <ThemaSparkline values={ratingHistory.map((p) => p.rating)} height={48} />
+              <HistoryChart points={ratingHistory.map((p) => ({ date: p.date, value: p.rating, detail: `${new Date(p.date).toLocaleDateString()}: ${Math.round(p.rating)} rating` }))} label="Rating" formatValue={(value) => Math.round(value).toString()} compact />
               <div className="mt-1 flex justify-between text-[10px] text-ctp-subtext0">
                 <span>{new Date(ratingHistory[0].date).toLocaleDateString()}</span>
                 <span>{new Date(ratingHistory[ratingHistory.length - 1].date).toLocaleDateString()}</span>

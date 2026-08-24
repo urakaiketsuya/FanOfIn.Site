@@ -7,6 +7,9 @@ import { useCardsByNames } from "../events/useCardsByNames";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import ChampionMetaMap from "./ChampionMetaMap";
+import PageHeader from "../../components/ui/PageHeader";
+import DataTable from "../../components/ui/DataTable";
 
 const TREND_LABEL: Record<ChampionTrendDirection, string> = {
   rising: "▲ Rising",
@@ -46,15 +49,13 @@ export default function ChampionsIndex() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="text-2xl font-bold text-ctp-blue">Champions</h1>
-      <p className="mt-1 text-sm text-ctp-subtext1">
-        Each Champion's top decks, most-used cards, and most unusual builds.
-      </p>
+      <PageHeader title="Champions" description="Compare current metagame position, tournament performance, season movement, and the builds defining each Champion." />
 
       {!data && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
 
-      <div className="mt-6 overflow-x-auto">
-        <table className="w-max min-w-full text-sm">
+      {archetypes && trendsData && <ChampionMetaMap champions={archetypes} trends={trendsData.champions} />}
+
+      <DataTable className="mt-6">
           <thead>
             <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
               <th className="py-1 pr-6"></th>
@@ -112,8 +113,7 @@ export default function ChampionsIndex() {
               );
             })}
           </tbody>
-        </table>
-      </div>
+      </DataTable>
 
       {data?.namedSpirits && data.namedSpirits.length > 0 && (
         <div className="mt-10">

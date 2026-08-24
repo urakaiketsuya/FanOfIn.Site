@@ -2,7 +2,7 @@ import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import type { ThemaKind } from "@gatcg/shared";
 import { gatcgApi } from "../../lib/api/client";
-import ThemaSparkline from "./ThemaSparkline";
+import HistoryChart from "../../components/HistoryChart";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
 export default function ThemaHistory() {
@@ -33,11 +33,7 @@ export default function ThemaHistory() {
 
       {points.length > 1 && (
         <div className="mt-6 rounded-md border border-ctp-surface1 p-4">
-          <ThemaSparkline values={points.map((p) => p.thema_total)} />
-          <div className="mt-2 flex justify-between text-xs text-ctp-subtext0">
-            <span>{new Date(points[0].created_at).toLocaleDateString()}</span>
-            <span>{new Date(points[points.length - 1].created_at).toLocaleDateString()}</span>
-          </div>
+          <HistoryChart points={points.map((p) => ({ date: p.created_at, value: p.thema_total, detail: `${new Date(p.created_at).toLocaleDateString()}: rank ${p.rank}, total ${p.thema_total.toLocaleString()}` }))} label="Thema total" formatValue={(value) => Math.round(value).toLocaleString()} />
         </div>
       )}
 

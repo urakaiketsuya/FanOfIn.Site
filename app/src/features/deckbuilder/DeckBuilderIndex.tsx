@@ -14,8 +14,9 @@ import CostIcon from "../../components/CostIcon";
 import StaleDataNotice from "../../components/StaleDataNotice";
 import DecklistCoverageNotice from "../../components/DecklistCoverageNotice";
 import ElementIcon from "../../components/ElementIcon";
-import DonutChart, { buildChartSegments } from "../../components/DonutChart";
+import { buildChartSegments } from "../../components/DonutChart";
 import BarChart from "../../components/BarChart";
+import RankedCompositionChart from "../../components/RankedCompositionChart";
 import { computeDeckComposition, computeDeckIdentity, computeDeckRating, computeMemoryCostCurve, computeReserveCostCurve, type RatingPillar } from "../../lib/deckIdentity";
 import { buildTcgplayerMassEntryUrl } from "../../lib/tcgplayerMassEntry";
 import { buildTtsSaveFile, downloadJsonFile, slugifyFilename } from "../../lib/ttsExport";
@@ -385,9 +386,9 @@ function StatsPanel({
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <BarChart title="Memory Cost Curve" bars={memoryCurve} />
         <BarChart title="Reserve Cost Curve" bars={reserveCurve} />
-        <DonutChart title="Card Types" segments={buildChartSegments(composition.types)} />
-        <DonutChart title="Elements" segments={buildChartSegments(composition.elements)} />
-        <DonutChart title="Card Subtypes" segments={buildChartSegments(composition.subtypes)} />
+        <RankedCompositionChart title="Card Types" segments={buildChartSegments(composition.types)} />
+        <RankedCompositionChart title="Elements" segments={buildChartSegments(composition.elements)} />
+        <RankedCompositionChart title="Card Subtypes" segments={buildChartSegments(composition.subtypes)} />
       </div>
     </div>
   );

@@ -34,6 +34,7 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import DonutChart, { buildChartSegments } from "../../components/DonutChart";
 import BarChart from "../../components/BarChart";
+import RankedCompositionChart from "../../components/RankedCompositionChart";
 
 type DeckTab = "decklist" | "composition" | "history" | "similar";
 
@@ -439,12 +440,12 @@ export default function DeckDetail() {
           <div className="mt-3 grid gap-4 sm:grid-cols-2">
             <BarChart title="Memory Cost Curve" bars={memoryCurve} />
             <BarChart title="Reserve Cost Curve" bars={reserveCurve} />
-            <DonutChart title="Card Types" segments={buildChartSegments(composition.types)} />
-            <DonutChart title="Elements" segments={buildChartSegments(composition.elements)} />
-            <DonutChart title="Card Subtypes" segments={buildChartSegments(composition.subtypes)} />
-            <DonutChart title="Rarity" segments={raritySegments} />
-            <DonutChart title="Ally Power" segments={allyPowerSegments} />
-            <DonutChart title="Keywords" segments={keywordSegments} />
+            <RankedCompositionChart title="Card Types" segments={buildChartSegments(composition.types)} />
+            <RankedCompositionChart title="Elements" segments={buildChartSegments(composition.elements)} />
+            <RankedCompositionChart title="Card Subtypes" segments={buildChartSegments(composition.subtypes)} />
+            <RankedCompositionChart title="Rarity" segments={raritySegments} />
+            <RankedCompositionChart title="Ally Power" segments={allyPowerSegments} />
+            <RankedCompositionChart title="Keywords" segments={keywordSegments} />
             <DonutChart title="Damage Targets" segments={damageTargetSegments} />
             <DonutChart title="Damage Type" segments={damageTypeSegments} />
           </div>

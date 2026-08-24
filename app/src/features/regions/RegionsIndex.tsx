@@ -12,6 +12,9 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import { formatUsd } from "../../lib/format";
 import type { RegionGroupMode } from "../../lib/regions";
+import PageHeader from "../../components/ui/PageHeader";
+import FilterBar from "../../components/ui/FilterBar";
+import Tabs from "../../components/ui/Tabs";
 
 const GROUP_MODES: RegionGroupMode[] = ["country", "region"];
 const GROUP_LABELS: Record<RegionGroupMode, string> = { country: "Country", region: "Region" };
@@ -127,13 +130,10 @@ export default function RegionsIndex() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="text-2xl font-bold text-ctp-blue">Regions</h1>
-      <p className="mt-1 text-sm text-ctp-subtext1">
-        Archetypes, champions, card composition, and keywords broken out by where events were held —
-        grouped by country or by broader region. Regions with too few decks aren't shown.
-      </p>
+      <PageHeader title="Regions" description="Compare archetypes, Champions, card composition, and keywords across countries or broader competitive regions." />
 
-      <div className="mt-4 flex flex-wrap items-center gap-2">
+      <FilterBar>
+        <div><div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-ctp-subtext0">Group events by</div><div className="flex flex-wrap items-center gap-2">
         {GROUP_MODES.map((m) => (
           <button
             key={m}
@@ -154,7 +154,8 @@ export default function RegionsIndex() {
             By {GROUP_LABELS[m]}
           </button>
         ))}
-      </div>
+        </div></div>
+      </FilterBar>
 
       {loading && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
 
@@ -162,20 +163,7 @@ export default function RegionsIndex() {
 
       {!loading && options.length > 0 && (
         <>
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            {VIEW_MODES.map((v) => (
-              <button
-                key={v}
-                type="button"
-                onClick={() => setView(v)}
-                className={`rounded-md border px-3 py-1.5 text-sm font-medium ${
-                  view === v ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                }`}
-              >
-                {VIEW_LABELS[v]}
-              </button>
-            ))}
-          </div>
+          <div className="mt-4"><Tabs tabs={VIEW_MODES.map((key) => ({ key, label: VIEW_LABELS[key] }))} active={view} onChange={setView} label="Regional analysis mode" /></div>
 
           {view === "compare" && <RegionCompareView options={options} regionByDeckId={regionByDeckId} />}
 

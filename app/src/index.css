@@ -3,4 +3,19 @@
 
 body {
   @apply bg-ctp-base text-ctp-text;
+  font-feature-settings: "kern" 1, "tnum" 1;
 }
+
+::selection { @apply bg-ctp-blue/30 text-ctp-text; }
+
+:focus-visible { @apply outline-2 outline-offset-2 outline-ctp-blue; }
+
+button, a, select, summary { @apply transition-colors duration-150; }
+
+select { @apply rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text shadow-sm; }
+
+table { @apply tabular-nums; }
+
+tbody tr { @apply transition-colors duration-150; }
+
+tbody tr:hover { @apply bg-ctp-surface0/60; }

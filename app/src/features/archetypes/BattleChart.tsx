@@ -1,9 +1,11 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import type { BattleChartEntry } from "@gatcg/shared";
 import { useArchetypeData } from "./data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
+import PageHeader from "../../components/ui/PageHeader";
+import Tabs from "../../components/ui/Tabs";
 
 type ViewTab = "matrix" | "champion" | "highlights";
 
@@ -19,6 +21,20 @@ function winRateColor(rate: number | null): string {
   if (rate >= 0.6) return "text-ctp-green";
   if (rate <= 0.4) return "text-ctp-red";
   return "text-ctp-text";
+}
+
+function heatmapStyle(rate: number | null, games: number): CSSProperties | undefined {
+  if (rate === null || games === 0) return undefined;
+  const distance = Math.abs(rate - 0.5) * 2;
+  const sampleConfidence = Math.min(1, games / 500);
+  const strength = Math.round(8 + distance * sampleConfidence * 42);
+  const color = rate >= 0.5 ? "var(--color-ctp-green)" : "var(--color-ctp-red)";
+  return { backgroundColor: `color-mix(in srgb, ${color} ${strength}%, transparent)` };
+}
+
+function heatmapTextColor(rate: number | null, games: number): string {
+  if (games < 100) return "text-ctp-subtext1";
+  return winRateColor(rate);
 }
 
 interface Matchup {
@@ -66,13 +82,13 @@ export default function BattleChart() {
     return map;
   }, [data]);
 
-  function cell(row: string, col: string): { label: string; rate: number | null } {
+  function cell(row: string, col: string): { label: string; rate: number | null; games: number } {
     const key = row <= col ? `${row}__${col}` : `${col}__${row}`;
     const entry = lookup.get(key);
-    if (!entry) return { label: "—", rate: null };
+    if (!entry) return { label: "—", rate: null, games: 0 };
     const wins = row <= col ? entry.aWins : entry.bWins;
     const losses = row <= col ? entry.bWins : entry.aWins;
-    return { label: `${wins}-${losses}-${entry.ties}`, rate: entry.games > 0 ? wins / entry.games : null };
+    return { label: `${wins}-${losses}-${entry.ties}`, rate: entry.games > 0 ? wins / entry.games : null, games: entry.games };
   }
 
   const activeChampion = champion && signatures.includes(champion) ? champion : signatures[0] ?? null;
@@ -98,43 +114,31 @@ export default function BattleChart() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-ctp-blue">Battle Chart</h1>
-        <Link to="/archetypes" className="text-sm text-ctp-blue hover:underline">
-          &larr; Archetypes
-        </Link>
-      </div>
-      <p className="mt-1 text-sm text-ctp-subtext1">Head-to-head win rates between Champions, from real tournament pairings.</p>
+      <PageHeader title="Battle Chart" eyebrow={<Link to="/archetypes" className="hover:underline">&larr; Archetypes</Link>} description="Explore head-to-head Champion win rates from real tournament pairings, with sample-aware color intensity." />
 
       {!data && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
       {data && signatures.length === 0 && <p className="mt-6 text-ctp-subtext1">No matchups have cleared the sample-size threshold yet.</p>}
 
       {signatures.length > 0 && (
         <>
-          <div className="mt-4 flex flex-wrap gap-2 border-b border-ctp-surface1 pb-2">
-            {TABS.map((t) => (
-              <button
-                key={t.key}
-                type="button"
-                onClick={() => setTab(t.key)}
-                className={`rounded-md border px-2.5 py-1 text-xs ${
-                  tab === t.key ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                }`}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
+          <Tabs tabs={TABS} active={tab} onChange={setTab} label="Battle Chart view" />
 
           {tab === "matrix" && (
             <div className="mt-6 overflow-x-auto">
-              <p className="mb-2 text-xs text-ctp-subtext0">Row's record against column, read as win-loss-tie. Click a name to see it as a list.</p>
-              <table className="text-xs">
+              <p className="mb-2 text-xs text-ctp-subtext0">Cell color and percentage show the row Champion's win rate against the column. Stronger color means a larger, better-supported advantage; hover for the full record.</p>
+              <div className="mb-3 flex flex-wrap items-center gap-2 text-[10px] text-ctp-subtext0" aria-label="Win-rate heatmap legend">
+                <span>Unfavored</span>
+                {["bg-ctp-red/40", "bg-ctp-red/20", "bg-ctp-surface0", "bg-ctp-green/20", "bg-ctp-green/40"].map((className) => (
+                  <span key={className} className={`h-3 w-7 rounded-sm ${className}`} />
+                ))}
+                <span>Favored</span>
+              </div>
+              <table className="border-separate border-spacing-0.5 text-xs">
                 <thead>
                   <tr>
-                    <th className="p-2"></th>
+                    <th className="sticky left-0 z-20 bg-ctp-base p-2"></th>
                     {signatures.map((s) => (
-                      <th key={s} className="p-2 text-ctp-subtext0">
+                      <th key={s} className="sticky top-0 z-10 bg-ctp-base p-2 text-ctp-subtext0">
                         <button type="button" onClick={() => goToChampion(s)} title={s} className="hover:text-ctp-blue hover:underline">
                           {s.slice(0, 4)}
                         </button>
@@ -145,16 +149,29 @@ export default function BattleChart() {
                 <tbody>
                   {signatures.map((row) => (
                     <tr key={row}>
-                      <th className="whitespace-nowrap p-2 text-right text-ctp-subtext0">
+                      <th className="sticky left-0 z-10 whitespace-nowrap bg-ctp-base p-2 text-right text-ctp-subtext0">
                         <button type="button" onClick={() => goToChampion(row)} className="hover:text-ctp-blue hover:underline">
                           {row}
                         </button>
                       </th>
                       {signatures.map((col) => {
-                        const { label, rate } = cell(row, col);
+                        const { label, rate, games } = cell(row, col);
+                        const isMirror = row === col;
                         return (
-                          <td key={col} className={`p-2 text-center ${winRateColor(rate)}`}>
-                            {row === col ? "—" : label}
+                          <td
+                            key={col}
+                            className={`min-w-14 rounded-sm p-1.5 text-center ${isMirror ? "bg-ctp-surface0 text-ctp-subtext0" : heatmapTextColor(rate, games)}`}
+                            style={isMirror ? undefined : heatmapStyle(rate, games)}
+                            title={isMirror ? `${row} mirror match` : rate === null ? `${row} vs ${col}: no qualifying games` : `${row} vs ${col}: ${label} over ${games.toLocaleString()} games`}
+                          >
+                            {isMirror || rate === null ? (
+                              "—"
+                            ) : (
+                              <>
+                                <span className="block font-semibold tabular-nums">{(rate * 100).toFixed(0)}%</span>
+                                <span className="block text-[9px] text-ctp-subtext0 tabular-nums">n={games.toLocaleString()}</span>
+                              </>
+                            )}
                           </td>
                         );
                       })}

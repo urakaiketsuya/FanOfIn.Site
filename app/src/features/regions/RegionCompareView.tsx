@@ -8,6 +8,9 @@ import { useCardsByNames } from "../events/useCardsByNames";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { formatUsd } from "../../lib/format";
 import type { RegionOption } from "./useRegionalDecks";
+import DivergingBarChart, { type DivergingBarRow } from "../../components/DivergingBarChart";
+import FilterBar from "../../components/ui/FilterBar";
+import Tabs from "../../components/ui/Tabs";
 
 type ContentTab = "archetypes" | "champions" | "cards" | "keywords";
 const CONTENT_TABS: ContentTab[] = ["archetypes", "champions", "cards", "keywords"];
@@ -97,7 +100,7 @@ function joinChampions(
 function diffRates<T extends { regionRate: number; deckCountInRegion: number; avgWinRate: number; marketPrice?: number | null }>(
   entriesA: (T & { cardName?: string; keyword?: string })[],
   entriesB: (T & { cardName?: string; keyword?: string })[],
-): { favorsA: CardDiffRow[]; favorsB: CardDiffRow[] } {
+): { favorsA: CardDiffRow[]; favorsB: CardDiffRow[]; largestDifferences: CardDiffRow[] } {
   const byName = new Map<string, CardDiffRow>();
   for (const r of entriesA) {
     const name = r.cardName ?? r.keyword ?? "";
@@ -111,7 +114,11 @@ function diffRates<T extends { regionRate: number; deckCountInRegion: number; av
   }
   const rows = Array.from(byName.values()).map((r) => ({ ...r, diff: r.rateA - r.rateB }));
   rows.sort((a, b) => b.diff - a.diff);
-  return { favorsA: rows.slice(0, MAX_DIFF_RESULTS), favorsB: rows.slice(-MAX_DIFF_RESULTS).reverse() };
+  return {
+    favorsA: rows.slice(0, MAX_DIFF_RESULTS),
+    favorsB: rows.slice(-MAX_DIFF_RESULTS).reverse(),
+    largestDifferences: [...rows].sort((a, b) => Math.abs(b.diff) - Math.abs(a.diff)).slice(0, MAX_DIFF_RESULTS),
+  };
 }
 
 function CardDiffList({ rows, labelA, labelB, sign }: { rows: CardDiffRow[]; labelA: string; labelB: string; sign: "positive" | "negative" }) {
@@ -177,9 +184,27 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
 
   const loading = archA.loading || archB.loading || champA.loading || champB.loading || cardsA.loading || cardsB.loading || keywordsA.loading || keywordsB.loading;
 
+  const archetypeChartRows = useMemo<DivergingBarRow[]>(() => archetypeRows.slice(0, MAX_DIFF_RESULTS).map((r) => ({
+    key: r.id,
+    label: r.name,
+    valueA: r.shareA,
+    valueB: r.shareB,
+    href: `/archetypes/${r.id}`,
+    detail: `${r.championName}: ${(r.shareA * 100).toFixed(1)}% ${labelA}, ${(r.shareB * 100).toFixed(1)}% ${labelB}`,
+  })), [archetypeRows, labelA, labelB]);
+  const championChartRows = useMemo<DivergingBarRow[]>(() => championRows.slice(0, MAX_DIFF_RESULTS).map((r) => ({
+    key: r.championName,
+    label: r.championName,
+    valueA: r.shareA,
+    valueB: r.shareB,
+    href: `/champions/${encodeURIComponent(r.championName)}`,
+  })), [championRows]);
+  const cardChartRows = useMemo<DivergingBarRow[]>(() => cardDiff.largestDifferences.map((r) => ({ key: r.name, label: r.name, valueA: r.rateA, valueB: r.rateB })), [cardDiff]);
+  const keywordChartRows = useMemo<DivergingBarRow[]>(() => keywordDiff.largestDifferences.map((r) => ({ key: r.name, label: r.name, valueA: r.rateA, valueB: r.rateB })), [keywordDiff]);
+
   return (
     <div>
-      <div className="mt-4 flex flex-wrap items-center gap-4 text-sm">
+      <FilterBar className="mt-4 text-sm">
         <div className="flex items-center gap-2">
           <span className="text-ctp-subtext0">Region A:</span>
           <select
@@ -208,22 +233,9 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
             ))}
           </select>
         </div>
-      </div>
+      </FilterBar>
 
-      <div className="mt-4 flex flex-wrap gap-1 text-xs">
-        {CONTENT_TABS.map((t) => (
-          <button
-            key={t}
-            type="button"
-            onClick={() => setTab(t)}
-            className={`rounded-md border px-2 py-1 ${
-              tab === t ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            {CONTENT_LABELS[t]}
-          </button>
-        ))}
-      </div>
+      <div className="mt-4"><Tabs tabs={CONTENT_TABS.map((key) => ({ key, label: CONTENT_LABELS[key] }))} active={tab} onChange={setTab} label="Regional comparison data" /></div>
 
       {loading && <p className="mt-4 text-ctp-subtext1">Loading…</p>}
 
@@ -234,7 +246,9 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
               {archetypeRows.length === 0 ? (
                 <p className="text-sm text-ctp-subtext1">Not enough data in either region yet.</p>
               ) : (
-                <div className="overflow-x-auto">
+                <>
+                <DivergingBarChart labelA={labelA} labelB={labelB} rows={archetypeChartRows} />
+                <div className="mt-4 overflow-x-auto">
                   <table className="w-max min-w-full text-sm">
                     <thead>
                       <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
@@ -268,6 +282,7 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
                     </tbody>
                   </table>
                 </div>
+                </>
               )}
             </>
           )}
@@ -277,7 +292,9 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
               {championRows.length === 0 ? (
                 <p className="text-sm text-ctp-subtext1">Not enough data in either region yet.</p>
               ) : (
-                <div className="overflow-x-auto">
+                <>
+                <DivergingBarChart labelA={labelA} labelB={labelB} rows={championChartRows} />
+                <div className="mt-4 overflow-x-auto">
                   <table className="w-max min-w-full text-sm">
                     <thead>
                       <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
@@ -305,6 +322,7 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
                     </tbody>
                   </table>
                 </div>
+                </>
               )}
             </>
           )}
@@ -314,6 +332,7 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
               <p className="text-xs text-ctp-subtext0">
                 Cards used more in {labelA} than {labelB}, and vice versa — correlational, not a guarantee.
               </p>
+              <div className="mt-3"><DivergingBarChart labelA={labelA} labelB={labelB} rows={cardChartRows} /></div>
               <div className="mt-4">
                 <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">More common in {labelA}</h2>
                 <CardDiffList rows={cardDiff.favorsA} labelA={labelA} labelB={labelB} sign="positive" />
@@ -330,6 +349,7 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
               <p className="text-xs text-ctp-subtext0">
                 Ability keywords used more in {labelA} than {labelB}, and vice versa — correlational, not a guarantee.
               </p>
+              <div className="mt-3"><DivergingBarChart labelA={labelA} labelB={labelB} rows={keywordChartRows} /></div>
               <div className="mt-4">
                 <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">More common in {labelA}</h2>
                 <CardDiffList rows={keywordDiff.favorsA} labelA={labelA} labelB={labelB} sign="positive" />

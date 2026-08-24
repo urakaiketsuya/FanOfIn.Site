@@ -358,8 +358,8 @@ export default function About() {
         <div className="relative mx-auto max-w-3xl px-4 py-20 text-center">
           <h1 className="text-4xl font-bold text-ctp-blue sm:text-5xl">Fan of Insight</h1>
           <p className="mt-4 text-lg text-ctp-subtext1">
-            Every ingested Grand Archive TCG tournament, deck, and card — aggregated in one place, turned into real
-            analysis, and easy to share. See the data, then share exactly what you found.
+            Build better Grand Archive decks with real tournament data. Explore the meta, compare proven lists, and
+            find card-by-card suggestions grounded in public results.
           </p>
 
           <div className="mt-6 flex items-center justify-center gap-1.5">
@@ -374,14 +374,14 @@ export default function About() {
           </div>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Link to="/champions" className="rounded-md bg-ctp-blue px-5 py-2 text-sm font-semibold text-ctp-base hover:opacity-90">
-              See the Data
+            <Link to="/decks" className="rounded-md bg-ctp-blue px-5 py-2 text-sm font-semibold text-ctp-base hover:opacity-90">
+              Explore Decks
             </Link>
             <Link
-              to="/compare"
+              to="/deck-builder"
               className="rounded-md border border-ctp-surface1 px-5 py-2 text-sm font-semibold text-ctp-text hover:border-ctp-blue"
             >
-              Share the Data
+              Build a Deck
             </Link>
           </div>
         </div>
@@ -559,15 +559,15 @@ export default function About() {
           <div>
             <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">Guided Deck Builder</h2>
             <p className="mt-2 text-sm text-ctp-subtext1">
-              Pick a Champion and Spirit and get a build assembled from the highest win-rate card at every slot —
-              aggregated from every matching real deck, not one example decklist.{" "}
+              Start with a Champion and Spirit, then get data-informed card and quantity suggestions from comparable
+              tournament decks.{" "}
               {WALKTHROUGH_DECK_BUILDER.championName} + {WALKTHROUGH_DECK_BUILDER.spiritName},{" "}
               {WALKTHROUGH_DECK_BUILDER.matchingDecks} matching decks:
             </p>
             <p className="mt-4 text-xs text-ctp-subtext0">
-              Lock in your own picks (or paste a decklist to start from) and the rest re-ranks around them, with
-              editable quantities, a "buddy cards" list per pick, swap-in suggestions for both what to add and what
-              to cut, composition suggestions, and a running log of what changed with each choice.
+              Lock in your own picks (or paste a decklist to start from) and the rest adapts around them, with
+              editable quantities, "buddy cards," swap-in ideas, composition guidance, and a running log of what
+              changed with each choice.
             </p>
             <Link to="/deck-builder" className="mt-4 inline-block text-sm font-semibold text-ctp-blue hover:underline">
               Open Guided Deck Builder &rarr;
