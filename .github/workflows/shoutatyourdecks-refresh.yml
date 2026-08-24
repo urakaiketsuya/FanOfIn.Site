@@ -1,0 +1,82 @@
+name: Monthly ShoutAtYourDecks refresh
+
+on:
+  schedule:
+    # 1st of the month, 06:00 UTC — no time-sensitive event to wait on here (unlike the
+    # Omnidex weekly refresh's weekend-tournament timing), just a steady monthly cadence.
+    - cron: "0 6 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Independent of the Omnidex `data-refresh` workflow — separate data source, separate concurrency
+# group, so neither job waits on the other.
+concurrency:
+  group: shoutatyourdecks-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    # First full backfill took much longer than this — but that was ~21k decks from zero. A
+    # monthly incremental run only touches decks new since last run (harvest re-walks the listing
+    # to find new ids, but metadata/decklists both skip anything already cached — see
+    # pipeline/src/shoutatyourdecks/README.md), so it should stay well inside this budget. If a
+    # run ever hits the timeout, that's not corrupting anything — every phase is resumable, so
+    # next month's run just picks up wherever this one stopped.
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      # This source's first (and so far only) Playwright dependency — harvest.ts and
+      # decklistFetch.ts both drive a real headless Chromium instance against
+      # shoutatyourdecks.com, since it's a Blazor Server app with no JSON API (see the module
+      # README's "Why this needs a browser at all").
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Restore ShoutAtYourDecks fetch cache
+        uses: actions/cache@v4
+        with:
+          # Scoped to this source only, not the whole pipeline/.cache — keeps this cache
+          # independent of the (much larger) Omnidex cache the weekly workflow manages, so
+          # neither job's cache churn affects the other's restore/save time.
+          path: pipeline/.cache/shoutatyourdecks
+          key: pipeline-cache-syd-${{ github.run_id }}
+          restore-keys: |
+            pipeline-cache-syd-
+
+      - name: Harvest deck listing
+        run: npm run pipeline:syd:harvest
+
+      - name: Fetch deck metadata
+        run: npm run pipeline:syd:metadata
+
+      - name: Fetch decklists (filtered decks only)
+        run: npm run pipeline:syd:decklists
+
+      - name: Publish to data/
+        run: npm run pipeline:syd:build
+
+      - name: Rebuild analytics
+        run: npm run pipeline:syd:analytics
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/shoutatyourdecks
+          if git diff --cached --quiet; then
+            echo "No data changes this run"
+          else
+            git commit -m "chore: monthly ShoutAtYourDecks refresh $(date -u +%Y-%m-%d)"
+            git push
+          fi
