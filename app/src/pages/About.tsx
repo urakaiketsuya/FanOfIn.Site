@@ -112,6 +112,16 @@ const FEATURES: FeatureGroup[] = [
     example: { to: "/decks/xenbr4", label: "A top Silvie build" },
   },
   {
+    title: "Community Decks",
+    items: [
+      "Deck-building trends from Shout At Your Decks, a community builder — what people actually build, not tournament results, kept fully separate from the rest of this site's stats",
+      "Champion and element popularity across 20,000+ decks",
+      "Top cards by inclusion rate, and a price distribution — both filterable to one Champion's own decks",
+      "Recurring exact builds: decks sharing the literal same card list, not a fuzzy \"similar archetype\" grouping",
+    ],
+    example: { to: "/community-decks", label: "Open Community Decks" },
+  },
+  {
     title: "Regions",
     items: [
       "Archetypes, Champions, Card Composition, and Keywords broken out by where events were held",
