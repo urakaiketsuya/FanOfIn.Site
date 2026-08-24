@@ -32,6 +32,7 @@ const MANIFEST_ENTRIES: { key: string; file: string }[] = [
   { key: "analysis-deck-card-index", file: "analysis/deck-card-index.json" },
   { key: "analysis-card-impact", file: "analysis/card-impact.json" },
   { key: "analysis-matchup-card-impact", file: "analysis/matchup-card-impact.json" },
+  { key: "simulator-summary", file: "simulator/summary.json" },
 ];
 
 /**
@@ -45,7 +46,7 @@ async function readGeneratedAt(filePath: string): Promise<string | null> {
     const buf = Buffer.alloc(200);
     const { bytesRead } = await handle.read(buf, 0, 200, 0);
     await handle.close();
-    return buf.subarray(0, bytesRead).toString("utf-8").match(/"generatedAt":"([^"]+)"/)?.[1] ?? null;
+    return buf.subarray(0, bytesRead).toString("utf-8").match(/"generatedAt"\s*:\s*"([^"]+)"/)?.[1] ?? null;
   } catch {
     return null;
   }

@@ -517,23 +517,26 @@ export function decodeCardLines(lines: EncodedCardLine[], cardNames: string[]): 
  * A data-derived named "build" within a single Champion — e.g. "Water Guo Jia" — distinct from
  * `ArchetypeSummary` (the older, coarser class+element/Champion rollup that `archetypes.json`
  * still publishes for the Battle Chart). Clusters are found by grouping exact main+material
- * decklists and greedily merging similar groups; see `pipeline/src/analysis/archetypeTaxonomy.ts`
+ * strategy signatures (excluding Champion and Spirit printings) and greedily merging similar
+ * groups; see `pipeline/src/analysis/archetypeTaxonomy.ts`
  * and docs/CALCULATIONS.md for the full method and why it was chosen over simpler alternatives.
  */
 export interface ArchetypeCluster {
-  /** Stable across regenerations as long as the defining cards don't change — djb2 hash of championName + sorted defining card names, same scheme as `shortHash`. */
+  /** Hash of the cluster's deterministic representative exact strategy signature; independent of plurality-Champion and defining-card threshold changes. */
   id: string;
   /** The plurality Champion (most players) among this cluster's decks — see `championBreakdown` for the full split. Clustering itself is card-only and cross-Champion, so a cluster can (and often does) span more than one Champion. */
   championName: string;
   /** Every Champion this cluster's decks were actually played under, sorted by playerCount descending. Length 1 for a single-Champion build; length >1 means the same card shell got netdecked under more than one Champion. */
   championBreakdown: { championName: string; deckCount: number; playerCount: number }[];
-  /** e.g. "Water Guo Jia", or "Fire Guo Jia (Vermilion Decree)" when a second cluster shares the dominant element. Named after the plurality Champion even when `championBreakdown` has more than one entry. */
+  /** Uses Element + Champion when one Champion has at least 60% of sightings; otherwise uses an Element + defining-card shell name. */
   name: string;
   deckCount: number;
   playerCount: number;
   eventCount: number;
+  /** Established clusters have at least 20 players across at least 2 events; smaller published clusters are emerging signals. */
+  confidence: "established" | "emerging";
   avgWinRate: number;
-  /** Cards present in most of this cluster's decks but not most decks generally — what actually distinguishes this build. Sorted by prevalence descending. */
+  /** Cards present in most of this cluster's deck sightings but not most deck sightings generally — what actually distinguishes this build. Sorted by prevalence descending. */
   definingCards: { name: string; prevalence: number }[];
   /** Every member deck's id, joinable against DeckSightingsData — same pattern as PopularDeck.deckIds. */
   deckIds: string[];
@@ -575,6 +578,8 @@ export interface ArchetypeClusterTrend {
 export interface ArchetypeTaxonomyData {
   generatedAt: string;
   clusters: ArchetypeCluster[];
+  /** Coverage of all visible deck sightings by a published cluster, including attached singleton variants. */
+  coverage: { classifiedDeckCount: number; totalDeckCount: number; classificationRate: number };
   /** Card name -> every cluster it's a defining card of (with that cluster's prevalence for this card), for resolving "which archetypes is this card part of" on a card's own page. Same shape/purpose as `CardImpactData.deckClusterIndex`, just card-keyed and to multiple clusters instead of deck-keyed to one. Only cards that are a defining card of at least one cluster are present. */
   cardClusterIndex: Record<string, { clusterId: string; prevalence: number }[]>;
 }

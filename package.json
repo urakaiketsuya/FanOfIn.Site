@@ -6,7 +6,8 @@
   "workspaces": [
     "app",
     "shared",
-    "pipeline"
+    "pipeline",
+    "worker"
   ],
   "scripts": {
     "dev": "npm run dev --workspace=app",
@@ -18,6 +19,9 @@
     "pipeline:syd:metadata": "GATCG_SYD_MODE=metadata npm run start --workspace=pipeline",
     "pipeline:syd:decklists": "GATCG_SYD_MODE=decklists npm run start --workspace=pipeline",
     "pipeline:syd:build": "GATCG_SYD_MODE=build npm run start --workspace=pipeline",
-    "pipeline:syd:analytics": "GATCG_SYD_MODE=analytics npm run start --workspace=pipeline"
+    "pipeline:syd:analytics": "GATCG_SYD_MODE=analytics npm run start --workspace=pipeline",
+    "pipeline:simulator": "GATCG_SIMULATOR_ONLY=1 npm run start --workspace=pipeline",
+    "worker:dev": "npm run dev --workspace=worker",
+    "worker:test": "npm run test --workspace=worker"
   }
 }

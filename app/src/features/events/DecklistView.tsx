@@ -12,6 +12,7 @@ import { computeSectionPrice } from "../../lib/deckPrice";
 import { computeDeckIdentity } from "../../lib/deckIdentity";
 import { buildTcgplayerMassEntryUrl } from "../../lib/tcgplayerMassEntry";
 import { buildTtsSaveFile, downloadJsonFile, findDeckChampionName, slugifyFilename } from "../../lib/ttsExport";
+import { buildClarentPlaytestUrl } from "../../lib/clarentPlaytest";
 
 /** Only surface a suggestion once shrinkage has left it meaningfully above zero — filters out noise that technically cleared the sample-size bar but is still statistically thin. */
 const MIN_SUGGESTED_LIFT = 0.02;
@@ -141,6 +142,7 @@ export default function DecklistView({
     () => buildTcgplayerMassEntryUrl(allLines.map((l) => ({ name: l.card, quantity: l.quantity }))),
     [allLines],
   );
+  const clarentUrl = useMemo(() => buildClarentPlaytestUrl(decklist), [decklist]);
 
   const cardImpactData = useCardImpactData();
   const suggestions = useMemo(() => {
@@ -192,6 +194,15 @@ export default function DecklistView({
           )}
           {allLines.length > 0 && (
             <div className="ml-auto flex shrink-0 gap-2">
+              <a
+                href={clarentUrl}
+                target="_blank"
+                rel="noreferrer"
+                title="Opens this deck in Clarent's solo Goldfish playtest mode"
+                className="rounded-md border border-ctp-green px-2 py-1 text-xs text-ctp-green hover:bg-ctp-surface0"
+              >
+                Playtest in Clarent &rarr;
+              </a>
               <button
                 type="button"
                 onClick={handleCopy}

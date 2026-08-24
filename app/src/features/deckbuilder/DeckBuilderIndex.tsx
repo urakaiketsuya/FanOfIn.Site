@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import type { CompositionWinRateData, CompositionWinRateStat, OmnidexDecklist } from "@gatcg/shared";
+import type { Card, CompositionWinRateData, CompositionWinRateStat, OmnidexDecklist } from "@gatcg/shared";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCardQuantityStatsData, useCompositionWinRateData } from "../archetypes/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
@@ -29,11 +29,40 @@ import { useNearestDecks, type NearestDeck } from "./useNearestDecks";
 import { computeIdentityElements, findChampionCard, useSuggestedBuild, type SuggestedCard } from "./useSuggestedBuild";
 import { useBuddyCards, type BuddyCard } from "./useBuddyCards";
 import { validateDeck } from "./validateDeck";
+import { computeDependencyReadiness, computeSynergyReadiness } from "./synergyReadiness";
 
 type BuilderTab = "build" | "stats" | "buddies" | "log";
 const TAB_KEYS: BuilderTab[] = ["build", "stats", "buddies", "log"];
 
 type LockedSection = "main" | "material" | "sideboard";
+
+const ELEMENT_RAIL_COLORS: Record<string, string> = {
+  // Saturation-weighted colors sampled from the official 50×50 CDN element icons. The small
+  // white mix offsets the icons' dark shading/metal rims so a 4px rail remains legible here.
+  ARCANE: "color-mix(in srgb, #1c73b7 78%, white)",
+  ASTRA: "color-mix(in srgb, #353367 72%, white)",
+  CRUX: "color-mix(in srgb, #2462a2 74%, white)",
+  EXALTED: "color-mix(in srgb, #c8af8c 86%, white)",
+  EXIA: "color-mix(in srgb, #7b1a19 68%, white)",
+  FIRE: "color-mix(in srgb, #93412c 72%, white)",
+  LUXEM: "color-mix(in srgb, #ba9141 82%, white)",
+  NEOS: "color-mix(in srgb, #bb893a 80%, white)",
+  NORM: "#8b8988",
+  TERA: "color-mix(in srgb, #256050 70%, white)",
+  UMBRA: "color-mix(in srgb, #3d2a5c 68%, white)",
+  WATER: "color-mix(in srgb, #236fb6 76%, white)",
+  WIND: "color-mix(in srgb, #4e9343 78%, white)",
+};
+
+function ElementRail({ elements = [] }: { elements?: string[] }) {
+  const colored = elements.filter((element) => element !== "NORM");
+  const visible = colored.length > 0 ? colored : elements.length > 0 ? elements : ["NORM"];
+  const colors = Array.from(new Set(visible.map((element) => ELEMENT_RAIL_COLORS[element] ?? "var(--color-ctp-overlay1)")));
+  const background = colors.length === 1
+    ? colors[0]
+    : `linear-gradient(to bottom, ${colors.map((color, index) => `${color} ${(index / colors.length) * 100}% ${((index + 1) / colors.length) * 100}%`).join(", ")})`;
+  return <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1" style={{ background }} />;
+}
 
 /** Packs locked cards into one URL-safe query param for sharing — `section:qty:name` entries joined
  * by `;`. Real card names haven't been seen using either separator, and a stray one just produces a
@@ -156,8 +185,8 @@ function BuddyCardsList({
         <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Buddy cards</h2>
         <p className="mt-1 text-xs text-ctp-subtext0">
           {lockedNames.length === 0
-            ? "Lock in a card to see what's most often run alongside it."
-            : "No buddy suggestions right now — either everything commonly run alongside your locked cards is already in the build, or this Champion/Spirit population is too thin to say (a heavily-locked build from a paste often narrows it down to just a few decks)."}
+            ? "Mark a card as your choice to see what's most often run alongside it."
+            : "No buddy suggestions right now — either everything commonly run alongside your choices is already in the build, or this Champion/Spirit population is too thin to say (a build with many user choices often narrows it down to just a few decks)."}
         </p>
       </div>
     );
@@ -166,7 +195,7 @@ function BuddyCardsList({
     <div className="mt-6">
       <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Buddy cards</h2>
       <p className="mt-1 text-xs text-ctp-subtext0">
-        Cards most often run alongside a locked-in pick, regardless of win rate — add one straight from here even if
+        Cards most often run alongside one of your choices, regardless of win rate — add one straight from here even if
         it never shows up in the ranked suggestions above.
       </p>
       <div className="mt-2 space-y-3">
@@ -179,7 +208,8 @@ function BuddyCardsList({
               {buddies.map((b) => {
                 const cardInfo = cardsByName.get(b.cardName);
                 return (
-                  <li key={b.cardName} className="flex items-center gap-1.5 rounded-md border border-ctp-surface1 px-2 py-1 text-sm">
+                  <li key={b.cardName} className="relative flex items-center gap-1.5 overflow-hidden rounded-md border border-ctp-surface1 py-1 pl-3 pr-2 text-sm">
+                    <ElementRail elements={cardInfo?.elements} />
                     <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={b.cardName}>
                       {cardInfo ? (
                         <Link to={`/cards/${cardInfo.slug}`} className="text-ctp-text hover:text-ctp-blue">
@@ -288,12 +318,18 @@ function StatsPanel({
   lines,
   mainLines,
   cardsByName,
+  catalogByName,
+  identityElements,
+  preferredSuggestions,
   championName,
   compositionWinRateData,
 }: {
   lines: { name: string; quantity: number }[];
   mainLines: { name: string; quantity: number }[];
   cardsByName: ReturnType<typeof useCardsByNames>;
+  catalogByName: Map<string, Card>;
+  identityElements: Set<string>;
+  preferredSuggestions: string[];
   championName: string | null;
   compositionWinRateData: CompositionWinRateData | undefined;
 }) {
@@ -305,6 +341,14 @@ function StatsPanel({
   const compositionGaps = useMemo(
     () => computeCompositionGaps(mainLines, cardsByName, compositionWinRateData),
     [mainLines, cardsByName, compositionWinRateData],
+  );
+  const synergyReadiness = useMemo(
+    () => computeSynergyReadiness(mainLines, catalogByName, catalogByName.values(), identityElements, preferredSuggestions),
+    [mainLines, catalogByName, identityElements, preferredSuggestions],
+  );
+  const dependencyReadiness = useMemo(
+    () => computeDependencyReadiness(mainLines, catalogByName, catalogByName.values(), identityElements, preferredSuggestions),
+    [mainLines, catalogByName, identityElements, preferredSuggestions],
   );
 
   if (lines.length === 0) return <p className="mt-6 text-sm text-ctp-subtext1">Nothing in the build yet.</p>;
@@ -328,6 +372,88 @@ function StatsPanel({
           ))}
         </div>
       </div>
+
+      {synergyReadiness.length > 0 && (
+        <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+          <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Synergy readiness</h2>
+          <p className="mt-1 text-xs text-ctp-subtext0">
+            Probability of seeing enough eligible cards at several cards-seen checkpoints. This measures availability,
+            not guaranteed activation—timing, reserve decisions, and spent cards can lower the real rate.
+          </p>
+          <div className="mt-3 space-y-3">
+            {synergyReadiness.map((synergy) => {
+              const shortfall = Math.max(0, synergy.targetEnablers - synergy.enablerCopies);
+              const statusColor = synergy.status === "Reliable" ? "text-ctp-green" : synergy.status === "Playable" ? "text-ctp-blue" : synergy.status === "Fragile" ? "text-ctp-yellow" : "text-ctp-red";
+              return (
+                <div key={synergy.key} className="rounded-md border border-ctp-surface1 px-3 py-2">
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <p className="font-semibold text-ctp-text">{synergy.label}</p>
+                    <p className={`text-sm font-semibold ${statusColor}`}>{synergy.status} · {(synergy.probabilityByTen * 100).toFixed(0)}%</p>
+                  </div>
+                  <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-ctp-surface0">
+                    <div className="h-full rounded-full bg-ctp-blue" style={{ width: `${synergy.probabilityByTen * 100}%` }} />
+                  </div>
+                  <div className="mt-2 grid grid-cols-4 gap-1">
+                    {synergy.checkpoints.map((checkpoint) => (
+                      <div key={checkpoint.key} className="rounded bg-ctp-surface0 px-1.5 py-1 text-center">
+                        <p className="text-[10px] uppercase tracking-wide text-ctp-subtext0">{checkpoint.label}</p>
+                        <p className="text-xs font-semibold text-ctp-text">{(checkpoint.probability * 100).toFixed(0)}%</p>
+                        <p className="text-[10px] text-ctp-subtext0">{checkpoint.seen} seen</p>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="mt-1.5 text-xs text-ctp-subtext1">
+                    {synergy.enablerCopies}/{synergy.deckSize} eligible cards · {synergy.payoffCopies} payoff cop{synergy.payoffCopies === 1 ? "y" : "ies"} ({synergy.payoffCards.map((card) => `${card.quantity}× ${card.name}`).join(", ")})
+                  </p>
+                  <p className="mt-1 text-xs text-ctp-subtext0">
+                    {shortfall > 0 ? `Add about ${shortfall} eligible card${shortfall === 1 ? "" : "s"} to reach 80% theoretical availability.` : "Meets the 80% theoretical-availability target."} {synergy.note} · {synergy.confidence}
+                  </p>
+                  {synergy.competingPayoffCopies > 0 && (
+                    <p className="mt-1 text-xs text-ctp-yellow">
+                      Shared resource pool: {synergy.competingPayoffCopies} other payoff cop{synergy.competingPayoffCopies === 1 ? "y" : "ies"} can compete for these enablers.
+                    </p>
+                  )}
+                  {synergy.recommendations.length > 0 && (
+                    <p className="mt-1 text-xs text-ctp-blue">Compatible options: {synergy.recommendations.join(", ")}.</p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {dependencyReadiness.length > 0 && (
+        <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+          <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Package balance</h2>
+          <p className="mt-1 text-xs text-ctp-subtext0">
+            Explicit producer/consumer relationships found in card text. Copy counts are a structural warning, not an activation forecast.
+          </p>
+          <div className="mt-3 space-y-2">
+            {dependencyReadiness.map((dependency) => {
+              const color = dependency.status === "Supported" ? "text-ctp-green" : dependency.status === "Thin" ? "text-ctp-yellow" : "text-ctp-red";
+              return (
+                <div key={dependency.key} className="rounded-md border border-ctp-surface1 px-3 py-2">
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <p className="font-semibold capitalize text-ctp-text">{dependency.label}</p>
+                    <p className={`text-sm font-semibold ${color}`}>{dependency.status}</p>
+                  </div>
+                  <p className="mt-1 text-xs text-ctp-subtext1">
+                    {dependency.producerCopies} producer copies · {dependency.consumerCopies} consumer copies · {dependency.kind}
+                  </p>
+                  <p className="mt-1 text-xs text-ctp-subtext1">
+                    Used by {dependency.consumers.map((card) => `${card.quantity}× ${card.name}`).join(", ")}
+                  </p>
+                  <p className="mt-1 text-xs text-ctp-subtext0">{dependency.note} · {dependency.confidence}</p>
+                  {dependency.recommendations.length > 0 && (
+                    <p className="mt-1 text-xs text-ctp-blue">Compatible support: {dependency.recommendations.join(", ")}.</p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {compositionGaps.length > 0 && (
         <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
@@ -371,7 +497,7 @@ function CardRow({
   card: SuggestedCard;
   onToggleLock: () => void;
   onRemove: () => void;
-  /** Only meaningful (and only rendered as an editable input) for a locked card — an unlocked/suggested card's quantity comes from the ranking and would just get overwritten on the next recompute, so it stays plain text. */
+  /** User-choice quantities are editable; recommendation-owned quantities remain derived from the ranking. */
   onChangeQuantity?: (quantity: number) => void;
   cardsByName: ReturnType<typeof useCardsByNames>;
   priceByName: Map<string, number>;
@@ -379,15 +505,18 @@ function CardRow({
 }) {
   const cardInfo = cardsByName.get(card.cardName);
   const unitPrice = priceByName.get(card.cardName);
-  const maxQuantity = cardInfo?.types.includes("UNIQUE") ? 1 : 4;
+  const maxQuantity = Math.max(1, Math.min(cardInfo?.types.includes("UNIQUE") ? 1 : 4, cardInfo?.legality?.STANDARD?.limit ?? 4));
   return (
-    <li className="flex flex-wrap items-center gap-1.5 rounded-md border border-ctp-surface1 px-2 py-1 text-sm">
+    <li className={`relative flex flex-wrap items-center gap-1.5 overflow-hidden rounded-md border py-1 pl-3 pr-2 text-sm ${card.locked ? "border-ctp-blue/70 bg-ctp-blue/5" : "border-ctp-surface1"}`}>
+      <ElementRail elements={cardInfo?.elements} />
       {card.locked && onChangeQuantity ? (
         <input
           type="number"
           min={1}
           max={maxQuantity}
           value={card.quantity}
+          aria-label={`Copies of ${card.cardName}`}
+          title="Adjust copies while keeping this card as your choice"
           onChange={(e) => {
             const next = Number(e.target.value);
             if (Number.isInteger(next) && next >= 1) onChangeQuantity(Math.min(next, maxQuantity));
@@ -426,7 +555,7 @@ function CardRow({
         </span>
       ) : (
         <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">
-          {card.reason === "spirit" ? "your pick" : card.reason === "staple" ? "staple" : "locked"}
+          {card.reason === "spirit" ? "your pick" : card.reason === "staple" ? "staple" : "your choice"}
         </span>
       )}
       {card.sample && <span className="text-xs text-ctp-subtext0">({card.sample.with} vs {card.sample.without})</span>}
@@ -439,7 +568,7 @@ function CardRow({
               card.locked ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
           >
-            {card.locked ? "Locked" : "Lock"}
+            {card.locked ? "Your choice" : "Make my choice"}
           </button>
         )}
         <button type="button" onClick={onRemove} className="rounded-md border border-ctp-surface1 px-1.5 py-0.5 text-[10px] text-ctp-subtext1 hover:text-ctp-red">
@@ -465,7 +594,8 @@ function SuggestionRow({
   const cardInfo = cardsByName.get(card.cardName);
   const unitPrice = priceByName.get(card.cardName);
   return (
-    <li className="flex flex-wrap items-center gap-1.5 rounded-md border border-ctp-surface1 px-2 py-1 text-sm">
+    <li className="relative flex flex-wrap items-center gap-1.5 overflow-hidden rounded-md border border-ctp-surface1 py-1 pl-3 pr-2 text-sm">
+      <ElementRail elements={cardInfo?.elements} />
       <span
         className="w-6 shrink-0 text-right text-ctp-subtext0"
         title={card.optimizedFrom !== null ? `Quantity changed from ${card.optimizedFrom}x using ${card.quantityEvidence.source} evidence (n=${card.quantityEvidence.sampleSize})` : undefined}
@@ -504,7 +634,7 @@ function SuggestionRow({
 export default function DeckBuilderIndex() {
   useDocumentTitle(
     "Guided Deck Builder",
-    "Pick a Champion and Spirit and see a suggested build assembled from the highest win-rate cards in real decks, then lock in your own picks for updated suggestions.",
+    "Pick a Champion and Spirit and see a suggested build assembled from the highest win-rate cards in real decks, then mark your own choices for updated suggestions.",
   );
   const [searchParams, setSearchParams] = useSearchParams();
   // Computed fresh each render (cheap — parsing a couple of query params), but only its value on
@@ -780,7 +910,7 @@ export default function DeckBuilderIndex() {
   /** `section` is the section this card is being locked FROM (known for sure, since it's the list the click came from) — recorded so the section survives even if the current population barely plays this card (see lockedSections' doc comment). Omitted when unlocking. */
   function toggleLock(name: string, quantity: number, section?: "main" | "material" | "sideboard") {
     const willLock = !lockedCards.has(name);
-    pendingActionRef.current = { label: willLock ? `Locked ${name}` : `Unlocked ${name}`, subject: name };
+    pendingActionRef.current = { label: willLock ? `Chose ${name}` : `Released ${name}`, subject: name };
     startTransition(() => {
       setLockedCards((prev) => {
         const next = new Map(prev);
@@ -937,7 +1067,7 @@ export default function DeckBuilderIndex() {
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="text-2xl font-bold text-ctp-blue">Guided Deck Builder</h1>
       <p className="mt-1 text-sm text-ctp-subtext1">
-        Choose an identity, review its data-supported core, then lock decisions and resolve the remaining flex slots.
+        Choose an identity, review its data-supported core, then mark your choices and resolve the remaining flex slots.
       </p>
 
       <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
@@ -1089,7 +1219,7 @@ export default function DeckBuilderIndex() {
           )}
           {build.usedFallback && (
             <p className="mt-1 text-xs text-ctp-yellow">
-              Not enough decks have every card you've locked in — remaining suggestions are based on the broader{" "}
+              Not enough decks have every card you've chosen — remaining suggestions are based on the broader{" "}
               {spiritFilter ?? "any Spirit"} {championName} population instead.
             </p>
           )}
@@ -1129,7 +1259,7 @@ export default function DeckBuilderIndex() {
             <button
               type="button"
               onClick={handleCopyShareLink}
-              title="Copies a link that reopens this Champion/Spirit and every locked-in card"
+              title="Copies a link that reopens this Champion/Spirit and every user-choice card"
               className={`rounded-md border px-2 py-1 text-xs ${
                 shareCopyState === "failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
               }`}
@@ -1174,7 +1304,7 @@ export default function DeckBuilderIndex() {
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && cardNameSet.has(cardInput)) addCard(cardInput);
                 }}
-                placeholder="Type a card name to lock it in…"
+                placeholder="Type a card name to add as your choice…"
                 className="mt-1 block w-full max-w-sm rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
               />
               <datalist id="deck-builder-card-options">
@@ -1261,7 +1391,7 @@ export default function DeckBuilderIndex() {
                 <div className="mt-4">
                   <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Cards that might hurt</h2>
                   <p className="mt-1 text-xs text-ctp-subtext0">
-                    Locked-in cards whose own win rate (with vs. without, independent of your other locks) came out
+                    User-choice cards whose own win rate (with vs. without, independent of your other choices) came out
                     meaningfully negative — candidates to cut, not proof they're bad in every build.
                   </p>
                   <ul className="mt-2 space-y-1">
@@ -1285,12 +1415,12 @@ export default function DeckBuilderIndex() {
                 <div className="mt-4">
                   <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Nearest similar real decks</h2>
                   <p className="mt-1 text-xs text-ctp-subtext0">
-                    Real decklists most similar to your accepted cards, shown automatically after two locks. These
+                    Real decklists most similar to your accepted cards, shown automatically after two choices. These
                     are references, not a replacement recommendation population. Click "Load" to use one as a new
                     starting point.
                   </p>
                   {nearestDecks.length === 0 ? (
-                    <p className="mt-3 text-sm text-ctp-subtext1">No similar decks found for what's locked in so far.</p>
+                    <p className="mt-3 text-sm text-ctp-subtext1">No similar decks found for your choices so far.</p>
                   ) : (
                     <ul className="mt-2 space-y-1">
                       {nearestDecks.map((d) => (
@@ -1320,6 +1450,9 @@ export default function DeckBuilderIndex() {
               lines={buildLines}
               mainLines={mainOnlyLines}
               cardsByName={cardsByName}
+              catalogByName={catalogByName}
+              identityElements={identityElements}
+              preferredSuggestions={build.suggestions.map((card) => card.cardName)}
               championName={championName}
               compositionWinRateData={compositionWinRateData}
             />

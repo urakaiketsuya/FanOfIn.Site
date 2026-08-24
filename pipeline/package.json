@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "tsx src/index.ts",
-    "repl": "tsx src/repl.ts"
+    "repl": "tsx src/repl.ts",
+    "test": "tsx --test src/**/*.test.ts"
   },
   "dependencies": {
     "@gatcg/shared": "*",

@@ -16,6 +16,7 @@ import { useTabParam } from "../../lib/useTabParam";
 import ChampionSeasonChart from "./ChampionSeasonChart";
 import PageHeader from "../../components/ui/PageHeader";
 import Tabs from "../../components/ui/Tabs";
+import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 
 const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
@@ -312,9 +313,12 @@ export default function ChampionDetail() {
                     {builds.map((b) => (
                       <tr key={b.id}>
                         <td className="py-1.5 pr-6 whitespace-nowrap">
-                          <Link to={`/archetypes/${b.id}`} className="text-ctp-text hover:text-ctp-blue">
-                            {b.name}
-                          </Link>
+                          <span className="inline-flex items-center gap-1.5">
+                            <ArchetypeElementIcon name={b.name} />
+                            <Link to={`/archetypes/${b.id}`} className="text-ctp-text hover:text-ctp-blue">
+                              {b.name}
+                            </Link>
+                          </span>
                         </td>
                         <td className="py-1.5 pr-6 text-ctp-subtext1">{b.playerCount}</td>
                         <td className="py-1.5 pr-6 text-ctp-subtext1">{(b.avgWinRate * 100).toFixed(0)}%</td>

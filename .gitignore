@@ -6,6 +6,8 @@ dist
 dist-ssr
 *.local
 *.tsbuildinfo
+.dev.vars
+.wrangler
 
 # Pipeline raw fetch cache — idempotency cache, not published output
 pipeline/.cache

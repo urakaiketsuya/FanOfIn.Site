@@ -9,6 +9,8 @@ import StaleDataNotice from "../../components/StaleDataNotice";
 import DecklistCoverageNotice from "../../components/DecklistCoverageNotice";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { formatUsd } from "../../lib/format";
+import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
+import ArchetypeMetaMap from "./ArchetypeMetaMap";
 
 type SortMode = "players" | "winRate" | "metaShare" | "topCutRate" | "avgPlacement" | "avgPrice";
 
@@ -22,9 +24,9 @@ const SORT_LABELS: Record<SortMode, string> = {
 };
 
 type ViewMode = "builds" | "hurtYou";
+type ConfidenceFilter = "established" | "all";
 const ROLE_LABEL: Record<CardImpactRole, string> = { main: "Main", material: "Material", sideboard: "Sideboard", mixed: "Mixed" };
 const HURT_YOU_PAGE_SIZE = 30;
-
 interface HurtYouRow {
   key: string;
   cardName: string;
@@ -46,9 +48,11 @@ interface DisplayRow {
   /** Other Champions besides `championName` this build was also played under, if any — e.g. [] for a single-Champion build. Guarded with `?? []` at read sites for a stale IndexedDB copy from before this field shipped. */
   otherChampions: { championName: string; deckCount: number; playerCount: number }[];
   playerCount: number;
+  deckCount: number;
   eventCount: number;
   avgWinRate: number;
-  /** All-time cluster figures — undefined when a season filter is active, since these aren't computed per-season. Rendered as "—" in that case rather than a misleading all-time number next to season-scoped columns. */
+  confidence: "established" | "emerging";
+  /** Share is all-time or recalculated from the selected season; the remaining optional figures are all-time-only. */
   metaShare?: number;
   topCutRate?: number;
   avgPlacement?: number | null;
@@ -63,6 +67,7 @@ export default function ArchetypesIndex() {
   const [seasonId, setSeasonId] = useState<number | null>(null);
   const [sortMode, setSortMode] = useState<SortMode>("players");
   const [view, setView] = useState<ViewMode>("builds");
+  const [confidenceFilter, setConfidenceFilter] = useState<ConfidenceFilter>("established");
   const [hurtYouClusterId, setHurtYouClusterId] = useState<string | null>(null);
   const [hurtYouVisibleCount, setHurtYouVisibleCount] = useState(HURT_YOU_PAGE_SIZE);
 
@@ -96,9 +101,16 @@ export default function ArchetypesIndex() {
     let filtered = championFilter
       ? data.clusters.filter((c) => c.championName === championFilter || (c.championBreakdown ?? []).some((b) => b.championName === championFilter))
       : data.clusters;
+    if (confidenceFilter === "established") {
+      filtered = filtered.filter((cluster) => (cluster.confidence ?? "established") === "established");
+    }
 
     let displayRows: DisplayRow[];
     if (seasonId !== null) {
+      const seasonDeckTotal = data.clusters.reduce(
+        (sum, cluster) => sum + (cluster.seasons?.find((season) => season.seasonId === seasonId)?.deckCount ?? 0),
+        0,
+      );
       // A build not played at all in the selected season simply isn't shown — same convention as
       // Top Decks' season filter. Stats shown are that season's, not all-time.
       displayRows = filtered
@@ -111,11 +123,14 @@ export default function ArchetypesIndex() {
             championName: c.championName,
             otherChampions: (c.championBreakdown ?? []).filter((b) => b.championName !== c.championName),
             playerCount: season.playerCount,
+            deckCount: season.deckCount,
             eventCount: season.eventCount,
             avgWinRate: season.avgWinRate,
+            confidence: c.confidence ?? "established",
+            metaShare: seasonDeckTotal > 0 ? season.deckCount / seasonDeckTotal : 0,
           };
         })
-        .filter((r): r is DisplayRow => r !== null);
+        .filter((r): r is NonNullable<typeof r> => r !== null);
     } else {
       displayRows = filtered.map((c) => ({
         id: c.id,
@@ -123,8 +138,10 @@ export default function ArchetypesIndex() {
         championName: c.championName,
         otherChampions: (c.championBreakdown ?? []).filter((b) => b.championName !== c.championName),
         playerCount: c.playerCount,
+        deckCount: c.deckCount,
         eventCount: c.eventCount,
         avgWinRate: c.avgWinRate,
+        confidence: c.confidence ?? "established",
         metaShare: c.metaShare,
         topCutRate: c.topCutRate,
         avgPlacement: c.avgPlacement,
@@ -149,7 +166,7 @@ export default function ArchetypesIndex() {
           return b.playerCount - a.playerCount;
       }
     });
-  }, [data, championFilter, seasonId, sortMode]);
+  }, [data, championFilter, confidenceFilter, seasonId, sortMode]);
 
   const clusterNameById = useMemo(() => {
     const map = new Map<string, string>();
@@ -208,6 +225,12 @@ export default function ArchetypesIndex() {
       </p>
       <DecklistCoverageNotice />
       <StaleDataNotice generatedAt={[data?.generatedAt]} />
+      {data?.coverage && (
+        <p className="mt-2 text-xs text-ctp-subtext0">
+          {(data.coverage.classificationRate * 100).toFixed(1)}% of public deck sightings are classified
+          ({data.coverage.classifiedDeckCount.toLocaleString()} of {data.coverage.totalDeckCount.toLocaleString()}).
+        </p>
+      )}
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
         {(["builds", "hurtYou"] as ViewMode[]).map((v) => (
@@ -255,6 +278,16 @@ export default function ArchetypesIndex() {
           ))}
         </select>
 
+        <span className="ml-2 text-ctp-subtext0">Confidence:</span>
+        <select
+          value={confidenceFilter}
+          onChange={(e) => setConfidenceFilter(e.target.value as ConfidenceFilter)}
+          className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+        >
+          <option value="established">Established</option>
+          <option value="all">Established + emerging</option>
+        </select>
+
         <span className="ml-2 text-ctp-subtext0">Sort by:</span>
         {(["players", "winRate", "metaShare", "topCutRate", "avgPlacement", "avgPrice"] as SortMode[]).map((mode) => (
           <button
@@ -271,9 +304,16 @@ export default function ArchetypesIndex() {
       </div>
       {seasonId !== null && (
         <p className="mt-2 text-xs text-ctp-subtext0">
-          Meta share, top cut rate, avg placement, and avg price are all-time figures — shown as "—" while a season
-          filter is active, since they aren't computed per-season.
+          Build share is calculated within this season's clustered deck population. Top cut rate, avg placement, and
+          avg price remain "—" because those figures aren't published per season.
         </p>
+      )}
+
+      {rows.length > 1 && (
+        <ArchetypeMetaMap
+          builds={rows}
+          scopeLabel={`${seasonId === null ? "all seasons" : seasonsPresent.find(([id]) => id === seasonId)?.[1] ?? "selected season"}${championFilter ? ` · ${championFilter}` : ""}`}
+        />
       )}
 
       {!data && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
@@ -299,12 +339,19 @@ export default function ArchetypesIndex() {
             </tr>
           </thead>
           <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-            {rows.map((c) => (
+            {rows.map((c) => {
+              return (
               <tr key={c.id}>
                 <td className="py-1.5 pr-6 whitespace-nowrap">
-                  <Link to={`/archetypes/${c.id}`} className="text-ctp-text hover:text-ctp-blue">
-                    {c.name}
-                  </Link>
+                  <span className="inline-flex items-center gap-1.5">
+                    <ArchetypeElementIcon name={c.name} />
+                    <Link to={`/archetypes/${c.id}`} className="text-ctp-text hover:text-ctp-blue">
+                      {c.name}
+                    </Link>
+                    {c.confidence === "emerging" && (
+                      <span className="rounded-full bg-ctp-yellow/15 px-1.5 py-0.5 text-[10px] font-medium text-ctp-yellow">Emerging</span>
+                    )}
+                  </span>
                 </td>
                 <td className="py-1.5 pr-6 whitespace-nowrap">
                   <Link to={`/champions/${encodeURIComponent(c.championName)}`} className="text-ctp-subtext1 hover:text-ctp-blue">
@@ -331,7 +378,8 @@ export default function ArchetypesIndex() {
                   {c.avgPrice !== undefined && c.avgPrice !== null ? formatUsd(c.avgPrice) : "—"}
                 </td>
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
       </div>

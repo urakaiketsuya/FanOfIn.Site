@@ -17,7 +17,9 @@ export default function DeckSearchByCards({
   onToggle: (deck: ComparedDeck) => void;
 }) {
   const cards = useCardCatalog();
-  const cardNames = useMemo(() => cards.map((c) => c.name).sort(), [cards]);
+  // Several distinct printings (e.g. draft-only "Nameless Champion" in every class pairing) share
+  // the same literal card name, so dedupe or React sees duplicate datalist-option keys.
+  const cardNames = useMemo(() => Array.from(new Set(cards.map((c) => c.name))).sort(), [cards]);
   const cardNameSet = useMemo(() => new Set(cardNames), [cardNames]);
 
   const [selectedCards, setSelectedCards] = useState<string[]>([]);

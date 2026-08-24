@@ -320,7 +320,7 @@ their curated archetype-to-card mappings would carry that license's obligations,
 independently derived from our own decklists via clustering, not curation — same general *shape*
 (named builds defined by discriminating cards), different origin.
 
-**Cards, not Champion, decide clustering.** Originally this ran per-Champion (group Champion X's
+**Strategy cards, not identity cards, decide clustering.** Originally this ran per-Champion (group Champion X's
 decks, cluster within that group, repeat per Champion) — but that structurally couldn't detect a
 shell netdecked under more than one Champion, since decks under different Champions were never
 even compared. Checked directly against real data: reconstructing every published cluster's full
@@ -329,17 +329,20 @@ cluster pairs ≥0.35 similar despite different Champions, several ≥0.7 (e.g. 
 "Fire Merlin (Library Witch)" at 0.82) — the same "Library Witch"/"Dungeon Guide" and "Snow
 Fairy"/spades-toolbox shells were being split into up to 5 separate per-Champion entries purely
 because clustering couldn't see across the Champion boundary. So clustering below is global and
-Champion-blind; each resulting cluster then reports every Champion it was actually played under.
+Champion-blind: Champion and Spirit printings are removed from the main+material feature set,
+while utility/regalia material cards remain strategy signals. Each resulting cluster then reports
+every Champion it was actually played under.
 
 **Method**:
-1. Group *all* decks (every Champion at once) by exact main+material signature (same convention as
-   `useDeckPopularity.ts`'s `canonicalSignature` — Champion isn't part of this signature, since
-   it's tracked in its own zone, not the main/material sections) — keep only signatures with ≥2
-   distinct players (same bar as Popular Decks; a one-off brew isn't a "build"). Each group tracks
+1. Group *all* decks (every Champion at once) by exact main+material strategy signature after
+   excluding catalog cards typed `CHAMPION` or `SPIRIT`. Signatures with ≥2 distinct players may
+   seed a cluster. After seeding, a singleton signature may join its nearest seed at the same
+   similarity threshold, but cannot establish an archetype alone. Each group tracks
    a per-Champion tally (`championTallies`) of which decks/players ran it under which Champion —
    almost always one Champion, but not structurally guaranteed.
 2. **Greedy nearest-seed clustering**, not union-find/single-linkage, over the full global set of
-   build-groups: sort by player count descending; each group joins the best-scoring *existing
+   seed build-groups: sort by player count descending with the canonical signature as a stable
+   tie-break; each group joins the best-scoring *existing
    cluster seed* (weighted Jaccard, reused from `similarity.ts`) if ≥ `CLUSTER_THRESHOLD` (0.45),
    else seeds a new cluster. Single-linkage was tried first and rejected — verified live against
    Guo Jia (our largest Champion, 7,154 decks → 238 multi-player build-groups) that union-find on
@@ -352,9 +355,10 @@ Champion-blind; each resulting cluster then reports every Champion it was actual
    `deck-card-index.json` + `deck-sightings.json` (55,840 decks): 116 published clusters, comparable
    to the old per-Champion count of 128, not a collapse into a handful of blobs.
 3. Clusters need ≥5 total players (`config.minBattleChartSampleSize`) to publish.
-4. **Defining cards**: present in ≥80% of the cluster's player-weighted decks (`DEFINING_MIN_IN_CLUSTER`)
+4. **Defining cards**: present in ≥80% of the cluster's deck sightings (`DEFINING_MIN_IN_CLUSTER`)
    *and* present in <85% of decks generally (`DEFINING_MAX_GLOBAL_PRESENCE`, over every deck in the
-   dataset) — the second condition is what keeps a cluster's defining-card list from just being
+   dataset). Cluster and global prevalence therefore use the same deck-sighting unit — the second
+   condition is what keeps a cluster's defining-card list from just being
    universal staples. A card that's a signature staple of one particular Champion (so it's rare
    globally, since only that Champion's decks run it, but common within this cluster) still
    correctly reads as "defining" under the global baseline — that's the same intent as the old
@@ -369,9 +373,10 @@ Champion-blind; each resulting cluster then reports every Champion it was actual
    above, 25 of 116 published clusters span more than one Champion (e.g. a 235-player "Water Diao
    Chan" cluster that's actually 211 Diao Chan + 28 Arisanna + a handful of others running the
    identical Burst Asunder/Fractal shell).
-6. **Naming**: dominant non-colorless element among the defining cards (via the card catalog's
-   `elements` field), formatted `"{Element} {plurality Champion}"`. No element signal → falls back
-   to `"{plurality Champion} — {top defining card}"`. When two clusters land on the same name
+6. **Naming**: non-colorless elements among defining cards are weighted by card prevalence. If the
+   leading element is less than 15% ahead of the runner-up, the shell is labeled `Mixed`. When one
+   Champion accounts for at least 60% of sightings, names use `"{Element} {plurality Champion}"`.
+   Otherwise the cross-Champion strategy uses `"{Element} {top defining card} Shell"`. When two clusters land on the same name
    (whether or not they share a plurality Champion), the smaller one gets `(card name)` appended —
    walking its own defining-card list in order for the first name not already claimed by an
    earlier disambiguation in the same collision group (not just its #1 card — a real bug during

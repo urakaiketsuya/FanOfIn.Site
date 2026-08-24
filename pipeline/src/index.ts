@@ -11,6 +11,7 @@ import { runHarvest, runMetadataFetch, runDecklistFetch, runBuild as runShoutAtY
 import { runAnalytics as runShoutAtYourDecksAnalytics } from "./shoutatyourdecks/analytics/build.js";
 import { installGracefulShutdown } from "./shoutatyourdecks/shutdown.js";
 import { config } from "./config.js";
+import { exportSimulatorSummary } from "./simulator/export.js";
 
 /**
  * ShoutAtYourDecks is deliberately NOT part of the default pipeline run below — it needs a real
@@ -35,6 +36,11 @@ async function runShoutAtYourDecksMode(mode: string): Promise<void> {
 }
 
 async function main() {
+  if (process.env.GATCG_SIMULATOR_ONLY === "1") {
+    await exportSimulatorSummary();
+    await writeManifest();
+    return;
+  }
   if (process.env.GATCG_SYD_MODE) {
     await runShoutAtYourDecksMode(process.env.GATCG_SYD_MODE);
     return;
@@ -84,6 +90,15 @@ async function main() {
       await buildAnalysis();
     } catch (err) {
       console.error("analysis pipeline failed", err);
+      process.exitCode = 1;
+    }
+  }
+
+  if (process.env.GATCG_SIMULATOR_API_URL) {
+    try {
+      await exportSimulatorSummary();
+    } catch (err) {
+      console.error("simulator analytics export failed", err);
       process.exitCode = 1;
     }
   }

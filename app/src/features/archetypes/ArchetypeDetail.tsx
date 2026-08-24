@@ -17,6 +17,7 @@ import { formatUsd } from "../../lib/format";
 import { buildCompareLink } from "../compare/deepLink";
 import { useAllDecodedDecks } from "../../lib/decodedDecks";
 import { useArchetypeVariants, type ArchetypeVariant } from "./useArchetypeVariants";
+import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 
 const ROLE_FILTERS: { key: CardImpactRole | "all"; label: string }[] = [
   { key: "all", label: "All" },
@@ -183,7 +184,13 @@ export default function ArchetypeDetail() {
 
       {cluster && (
         <>
-          <h1 className="mt-2 text-2xl font-bold text-ctp-blue">{cluster.name}</h1>
+          <h1 className="mt-2 flex items-center gap-2 text-2xl font-bold text-ctp-blue">
+            <ArchetypeElementIcon name={cluster.name} size={24} />
+            {cluster.name}
+            {cluster.confidence === "emerging" && (
+              <span className="rounded-full bg-ctp-yellow/15 px-2 py-1 text-xs font-medium text-ctp-yellow">Emerging</span>
+            )}
+          </h1>
           <p className="mt-1 text-sm text-ctp-subtext1">
             <Link to={`/champions/${encodeURIComponent(cluster.championName)}`} className="text-ctp-blue hover:underline">
               {cluster.championName}

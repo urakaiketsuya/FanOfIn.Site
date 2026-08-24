@@ -48,6 +48,10 @@ jobs:
 
       - name: Run pipeline (incremental)
         run: npm run pipeline
+        env:
+          # Optional until the Worker is provisioned. When set as a repository variable, the
+          # normal refresh publishes the simulator summary alongside tournament datasets.
+          GATCG_SIMULATOR_API_URL: ${{ vars.GATCG_SIMULATOR_API_URL }}
 
       - name: Commit updated data
         run: |

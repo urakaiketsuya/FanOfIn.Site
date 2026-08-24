@@ -6,11 +6,7 @@ import { weightedJaccard } from "./similarity.js";
 import { computeDeckPrice } from "./deckPricing.js";
 import { config } from "../config.js";
 
-/**
- * A build needs at least this many distinct players before it's eligible to seed or join a
- * cluster — same "netdecked more than once" bar as Popular Decks (`useDeckPopularity.ts`), so a
- * one-off brew doesn't get treated as a real strategy.
- */
+/** A build needs this many distinct players to create a cluster seed. Singleton variants may join an existing seed. */
 const MIN_GROUP_PLAYERS = 2;
 
 /**
@@ -50,8 +46,15 @@ interface BuildGroup {
 
 interface Cluster {
   seedCards: Map<string, number>;
+  seedSignature: string;
   members: BuildGroup[];
   players: Set<number>;
+}
+
+/** Champion and Spirit printings identify the pilot, not the strategic shell being clustered. */
+export function isArchetypeStrategyCard(card: CardSignature | undefined): boolean {
+  if (!card) return true;
+  return !card.types.some((type) => type.toUpperCase() === "CHAMPION" || type.toUpperCase() === "SPIRIT");
 }
 
 function canonicalSignature(cardCounts: Map<string, number>): string {
@@ -65,26 +68,31 @@ function titleCase(s: string): string {
   return s.charAt(0) + s.slice(1).toLowerCase();
 }
 
-/** Dominant non-colorless element among a cluster's defining cards — the primary naming signal. */
-function dominantElement(definingCards: { name: string }[], cardIndex: Map<string, CardSignature>): string | null {
+/** Dominant non-colorless element among defining cards, weighted by prevalence and requiring a clear margin. */
+function dominantElement(definingCards: { name: string; prevalence: number }[], cardIndex: Map<string, CardSignature>): string | null {
   const counts = new Map<string, number>();
-  for (const { name } of definingCards) {
+  for (const { name, prevalence } of definingCards) {
     const card = cardIndex.get(name);
     if (!card) continue;
     for (const el of card.elements) {
       if (el === "NORM") continue;
-      counts.set(el, (counts.get(el) ?? 0) + 1);
+      counts.set(el, (counts.get(el) ?? 0) + prevalence);
     }
   }
-  const top = Array.from(counts.entries()).sort((a, b) => b[1] - a[1])[0];
-  return top ? titleCase(top[0]) : null;
+  const ranked = Array.from(counts.entries()).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  const top = ranked[0];
+  if (!top) return null;
+  const runnerUp = ranked[1];
+  if (runnerUp && top[1] < runnerUp[1] * 1.15) return "Mixed";
+  return titleCase(top[0]);
 }
 
 /**
  * Data-derived named builds (e.g. "Water Guo Jia") — richer than the existing per-Champion
  * rollup in archetypes.json, since the same card shell is often played under more than one
  * Champion and a single Champion often has several genuinely distinct competitive builds.
- * Clustering is card-only (main+material, ignoring Champion entirely); each resulting cluster
+ * Clustering is strategy-card-only (main+material excluding Champion and Spirit printings);
+ * each resulting cluster
  * then reports which Champion(s) it was actually played under via `championBreakdown`. See
  * docs/CALCULATIONS.md for the full method and the real-data validation behind the threshold
  * choices.
@@ -95,7 +103,7 @@ export function computeArchetypeTaxonomy(
   deckSightings: DeckSighting[],
   priceByName: Map<string, number>,
 ): ArchetypeTaxonomyData {
-  if (config.fastMode) return { generatedAt: new Date().toISOString(), clusters: [], cardClusterIndex: {} };
+  if (config.fastMode) return { generatedAt: new Date().toISOString(), clusters: [], coverage: { classifiedDeckCount: 0, totalDeckCount: 0, classificationRate: 0 }, cardClusterIndex: {} };
 
   const sightingByDeckId = new Map(deckSightings.map((s) => [s.deckId, s]));
 
@@ -111,7 +119,9 @@ export function computeArchetypeTaxonomy(
         // Canonicalize — otherwise a mis-cased submission of an otherwise-identical decklist
         // would score as a *different* exact-signature build group, and its copy of the card
         // would never count toward that card's real cluster prevalence.
-        const name = resolveCard(cardIndex, line.card)?.name ?? line.card;
+        const card = resolveCard(cardIndex, line.card);
+        if (!isArchetypeStrategyCard(card)) continue;
+        const name = card?.name ?? line.card;
         cardCounts.set(name, (cardCounts.get(name) ?? 0) + line.quantity);
       }
       if (cardCounts.size === 0) continue;
@@ -136,18 +146,27 @@ export function computeArchetypeTaxonomy(
     groups.set(sig, g);
   }
 
-  const multiPlayerGroups = Array.from(groups.values())
-    .filter((g) => g.players.size >= MIN_GROUP_PLAYERS)
-    .sort((a, b) => b.players.size - a.players.size);
+  const sortedGroups = Array.from(groups.entries())
+    .sort(([signatureA, a], [signatureB, b]) => b.players.size - a.players.size || signatureA.localeCompare(signatureB));
+  const seedGroups = sortedGroups.filter(([, group]) => group.players.size >= MIN_GROUP_PLAYERS);
+  const singletonGroups = sortedGroups.filter(([, group]) => group.players.size < MIN_GROUP_PLAYERS);
 
   // Greedy nearest-seed clustering, not union-find/single-linkage — see CLUSTER_THRESHOLD doc
   // comment for why: single-linkage chains adjacent-but-not-alike builds into a few giant blobs.
   // Global across every Champion — a build's card shell decides its cluster, not who's piloting it.
   const rawClusters: Cluster[] = [];
-  for (const group of multiPlayerGroups) {
+  const seedClustersByCard = new Map<string, Cluster[]>();
+  const candidateClusters = (cardCounts: Map<string, number>): Cluster[] => {
+    const candidates = new Set<Cluster>();
+    for (const name of cardCounts.keys()) {
+      for (const cluster of seedClustersByCard.get(name) ?? []) candidates.add(cluster);
+    }
+    return Array.from(candidates);
+  };
+  for (const [signature, group] of seedGroups) {
     let best: Cluster | null = null;
     let bestScore = 0;
-    for (const c of rawClusters) {
+    for (const c of candidateClusters(group.cardCounts)) {
       const score = weightedJaccard(group.cardCounts, c.seedCards);
       if (score > bestScore) {
         bestScore = score;
@@ -158,8 +177,32 @@ export function computeArchetypeTaxonomy(
       best.members.push(group);
       for (const p of group.players) best.players.add(p);
     } else {
-      rawClusters.push({ seedCards: group.cardCounts, members: [group], players: new Set(group.players) });
+      const cluster = { seedCards: group.cardCounts, seedSignature: signature, members: [group], players: new Set(group.players) };
+      rawClusters.push(cluster);
+      for (const name of cluster.seedCards.keys()) {
+        const indexed = seedClustersByCard.get(name) ?? [];
+        indexed.push(cluster);
+        seedClustersByCard.set(name, indexed);
+      }
     }
+  }
+
+  // A one-off variant cannot establish an archetype by itself, but it can provide evidence for
+  // an already-supported shell. This removes the previous bias toward exact copied lists while
+  // retaining the two-player minimum for discovering a new strategy.
+  for (const [, group] of singletonGroups) {
+    let best: Cluster | null = null;
+    let bestScore = 0;
+    for (const cluster of candidateClusters(group.cardCounts)) {
+      const score = weightedJaccard(group.cardCounts, cluster.seedCards);
+      if (score > bestScore || (score === bestScore && best && cluster.seedSignature.localeCompare(best.seedSignature) < 0)) {
+        bestScore = score;
+        best = cluster;
+      }
+    }
+    if (!best || bestScore < CLUSTER_THRESHOLD) continue;
+    best.members.push(group);
+    for (const player of group.players) best.players.add(player);
   }
 
   // Global card prevalence (across ALL decks, not just multi-player groups) — the denominator for
@@ -178,22 +221,18 @@ export function computeArchetypeTaxonomy(
     if (cluster.players.size < config.minBattleChartSampleSize) continue;
 
     const deckIds = cluster.members.flatMap((g) => g.deckIds);
-    const clusterPlayerTotal = cluster.players.size;
+    const clusterDeckTotal = deckIds.length;
 
-    // Track by *distinct players*, not summed group sizes — a player who submitted more than
-    // one exact-signature list within this cluster (e.g. tweaked their build between events)
-    // would otherwise get counted once per list, pushing prevalence past 100%. A real bug caught
-    // live: "Fractal of Polar Depths (143%)" before this fix.
-    const inClusterPresence = new Map<string, Set<number>>();
+    // Use deck sightings here, matching globalPresence's unit. Every member is an exact-signature
+    // group, so each card in the signature is present in all of that group's deck sightings.
+    const inClusterPresence = new Map<string, number>();
     for (const g of cluster.members) {
       for (const name of g.cardCounts.keys()) {
-        const players = inClusterPresence.get(name) ?? new Set<number>();
-        for (const p of g.players) players.add(p);
-        inClusterPresence.set(name, players);
+        inClusterPresence.set(name, (inClusterPresence.get(name) ?? 0) + g.deckIds.length);
       }
     }
     const definingCards = Array.from(inClusterPresence.entries())
-      .map(([name, players]) => ({ name, prevalence: players.size / clusterPlayerTotal }))
+      .map(([name, deckCount]) => ({ name, prevalence: deckCount / clusterDeckTotal }))
       .filter((c) => c.prevalence >= DEFINING_MIN_IN_CLUSTER)
       .filter((c) => (globalPresence.get(c.name) ?? 0) / globalDeckCount < DEFINING_MAX_GLOBAL_PRESENCE)
       .sort((a, b) => b.prevalence - a.prevalence);
@@ -217,7 +256,13 @@ export function computeArchetypeTaxonomy(
     const championName = championBreakdown[0].championName;
 
     const element = dominantElement(definingCards, cardIndex);
-    const name = element ? `${element} ${championName}` : `${championName} — ${definingCards[0].name}`;
+    const championDeckTotal = championBreakdown.reduce((sum, champion) => sum + champion.deckCount, 0);
+    const hasChampionMajority = championBreakdown[0].deckCount / championDeckTotal >= 0.6;
+    const name = hasChampionMajority
+      ? element
+        ? `${element} ${championName}`
+        : `${championName} — ${definingCards[0].name}`
+      : `${element ?? "Mixed"} ${definingCards[0].name} Shell`;
 
     const sightings = deckIds.map((id) => sightingByDeckId.get(id)).filter((s): s is DeckSighting => !!s);
     const events = new Set(sightings.map((s) => s.eventId));
@@ -287,13 +332,16 @@ export function computeArchetypeTaxonomy(
     }
 
     clusterSummaries.push({
-      id: "",
+      // Based on the deterministic representative seed rather than threshold-sensitive defining
+      // cards or a plurality Champion that can flip as new events are ingested.
+      id: shortHash(cluster.seedSignature),
       championName,
       championBreakdown,
       name,
       deckCount: deckIds.length,
-      playerCount: clusterPlayerTotal,
+      playerCount: cluster.players.size,
       eventCount: events.size,
+      confidence: cluster.players.size >= 20 && events.size >= 2 ? "established" : "emerging",
       avgWinRate,
       definingCards: definingCards.slice(0, 12),
       deckIds,
@@ -334,10 +382,6 @@ export function computeArchetypeTaxonomy(
     }
   }
 
-  for (const c of clusterSummaries) {
-    c.id = shortHash(`${c.championName}::${[...c.definingCards.map((d) => d.name)].sort().join(",")}`);
-  }
-
   const clusters = clusterSummaries;
 
   // Scoped to the clustered population (not every sighting) — an unclustered one-off brew was
@@ -358,5 +402,15 @@ export function computeArchetypeTaxonomy(
     }
   }
 
-  return { generatedAt: new Date().toISOString(), clusters, cardClusterIndex };
+  const classifiedDeckCount = new Set(clusters.flatMap((cluster) => cluster.deckIds)).size;
+  return {
+    generatedAt: new Date().toISOString(),
+    clusters,
+    coverage: {
+      classifiedDeckCount,
+      totalDeckCount: allDecks.length,
+      classificationRate: allDecks.length > 0 ? classifiedDeckCount / allDecks.length : 0,
+    },
+    cardClusterIndex,
+  };
 }

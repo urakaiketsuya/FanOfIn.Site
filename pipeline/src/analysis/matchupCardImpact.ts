@@ -55,6 +55,8 @@ function computeAnswersForCard(
   opponentCardName: string,
   clusterRows: MatchupRow[],
   championRows: MatchupRow[],
+  championCacheKey: string,
+  championCandidateCache: Map<string, CardImpactEntry[]>,
   prior: number,
   minSample: number,
 ): AnswerCardEntry[] {
@@ -79,7 +81,12 @@ function computeAnswersForCard(
 
   if (answers.length < MAX_ANSWERS_PER_CARD) {
     const already = new Set(answers.map((a) => a.cardName));
-    for (const c of candidatesFrom(championRows)) {
+    let championCandidates = championCandidateCache.get(championCacheKey);
+    if (!championCandidates) {
+      championCandidates = candidatesFrom(championRows);
+      championCandidateCache.set(championCacheKey, championCandidates);
+    }
+    for (const c of championCandidates) {
       if (answers.length >= MAX_ANSWERS_PER_CARD) break;
       if (already.has(c.cardName)) continue;
       answers.push({
@@ -180,6 +187,9 @@ export function computeMatchupCardImpact(
   const minSample = config.cardImpactMinSampleSize;
 
   const matchups: ClusterMatchupImpact[] = [];
+  // Many named-build matchups share the same Champion matchup fallback. Cache each opponent-card
+  // calculation once instead of repeatedly rescanning that often-large row population.
+  const championCandidateCache = new Map<string, CardImpactEntry[]>();
   for (const { clusterA, clusterB, rows } of accum.values()) {
     const myCluster = clusterById.get(clusterA);
     const opponentCluster = clusterById.get(clusterB);
@@ -211,7 +221,16 @@ export function computeMatchupCardImpact(
     const championRows = championAccum.get(`${myCluster.championName}__${opponentCluster.championName}`) ?? [];
     const answers: OpponentCardAnswers[] = [];
     for (const b of opponentCards) {
-      const bAnswers = computeAnswersForCard(b.cardName, rows, championRows, prior, minSample);
+      const championCacheKey = `${myCluster.championName}__${opponentCluster.championName}__${b.cardName}`;
+      const bAnswers = computeAnswersForCard(
+        b.cardName,
+        rows,
+        championRows,
+        championCacheKey,
+        championCandidateCache,
+        prior,
+        minSample,
+      );
       if (bAnswers.length > 0) answers.push({ opponentCardName: b.cardName, answers: bAnswers });
     }
 

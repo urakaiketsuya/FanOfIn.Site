@@ -1,0 +1,39 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "fanofin-match-ingestion",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-24",
+  "secrets": {
+    "required": ["INGESTION_API_KEY"]
+  },
+  "d1_databases": [
+    {
+      "binding": "MATCH_DB",
+      "database_name": "fanofin-match-data-dev",
+      "database_id": "fa60b478-542d-43a5-9f48-bae28964edeb",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "triggers": {
+    "crons": ["23 5 * * *"]
+  },
+  "env": {
+    "production": {
+      "name": "fanofin-match-ingestion-production",
+      "secrets": {
+        "required": ["INGESTION_API_KEY"]
+      },
+      "d1_databases": [
+        {
+          "binding": "MATCH_DB",
+          "database_name": "fanofin-match-data-prod",
+          "database_id": "693dc3c0-edeb-43f0-9c27-14e578555c5a",
+          "migrations_dir": "migrations"
+        }
+      ],
+      "triggers": {
+        "crons": ["23 5 * * *"]
+      }
+    }
+  }
+}

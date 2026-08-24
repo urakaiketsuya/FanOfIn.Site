@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import type { OmnidexPlayer, OmnidexStage } from "@gatcg/shared";
+import type { OmnidexDecklistEntry, OmnidexPlayer, OmnidexStage } from "@gatcg/shared";
 import { gatcgApi, isApiErrorBody } from "../../lib/api/client";
 import PlayerLink from "../players/PlayerLink";
 import { buildCompareLink } from "../compare/deepLink";
+import { buildClarentPlaytestUrl } from "../../lib/clarentPlaytest";
 
 function findPlayer(players: OmnidexPlayer[], id: number): OmnidexPlayer | undefined {
   return players.find((p) => p.id === id);
@@ -43,12 +44,14 @@ export default function EventPairings({
   stages,
   swissRounds,
   singleEliminationCutSize,
+  decklists,
 }: {
   eventId: number;
   players: OmnidexPlayer[];
   stages: OmnidexStage[];
   swissRounds: number | null;
   singleEliminationCutSize: number | null;
+  decklists?: OmnidexDecklistEntry[];
 }) {
   const sortedStages = [...stages].sort((a, b) => a.id - b.id);
   const [stageId, setStageId] = useState(sortedStages[0]?.id);
@@ -107,6 +110,12 @@ export default function EventPairings({
         <div className="mt-2 space-y-1">
           {pairings.data.pairings.map((p) => {
             const bothNumeric = p.pairing.length === 2 && p.pairing.every((side) => typeof side.id === "number");
+            const matchupDecks = bothNumeric
+              ? p.pairing.map((side) => decklists?.find((entry) => entry.player === side.id)?.decklist)
+              : [];
+            const clarentUrl = matchupDecks.length === 2 && matchupDecks[0] && matchupDecks[1]
+              ? buildClarentPlaytestUrl(matchupDecks[0], matchupDecks[1])
+              : null;
             return (
               <div key={p.id} className="flex items-center gap-2 text-sm">
                 {p.pairing.map((side, i) => {
@@ -134,6 +143,17 @@ export default function EventPairings({
                   >
                     Compare decklists &rarr;
                   </Link>
+                )}
+                {clarentUrl && (
+                  <a
+                    href={clarentUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="ml-1 text-xs text-ctp-green hover:underline"
+                    title="Opens both public decklists in Clarent Hotseat mode"
+                  >
+                    Playtest matchup &rarr;
+                  </a>
                 )}
               </div>
             );

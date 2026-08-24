@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "submissionId": "match-fixture-001:1",
+  "submittedAt": "2026-08-24T16:00:00.000Z",
+  "source": { "application": "TCGEngine", "game": "GrandArchiveSim", "version": "fixture" },
+  "matchId": "match-fixture-001",
+  "format": "premier",
+  "bestOf": 3,
+  "gameName": "game-fixture-001",
+  "gameNumber": 1,
+  "winner": 1,
+  "firstPlayer": 2,
+  "turns": 8,
+  "matchWinner": 1,
+  "matchWins": { "1": 2, "2": 0 },
+  "players": {
+    "1": {
+      "deckLink": "https://example.test/decks/player-one",
+      "championId": "champion-one",
+      "element": "FIRE",
+      "classes": ["WARRIOR"],
+      "endLevel": 3,
+      "endHp": 9,
+      "cardStats": {
+        "card-one": { "drawn": 2, "drawnToMemory": 0, "materialized": 1, "reserved": 0, "discarded": 0, "activated": 1 }
+      },
+      "turnStats": [
+        { "turn": 2, "cardsPlayed": 1, "memorySpent": 2, "reserveSpent": 1, "damageDealt": 3, "damageTaken": 0, "healed": 0, "level": 2, "hp": 12 }
+      ]
+    },
+    "2": {
+      "deckLink": "",
+      "championId": "champion-two",
+      "element": "WIND",
+      "classes": ["RANGER"],
+      "endLevel": 2,
+      "endHp": 0,
+      "cardStats": {},
+      "turnStats": [
+        { "turn": 1, "cardsPlayed": 0, "memorySpent": 0, "reserveSpent": 0, "damageDealt": 0, "damageTaken": 3, "healed": 0, "level": 1, "hp": 9 }
+      ]
+    }
+  },
+  "combatEvents": [
+    { "type": "attack_initiated", "turn": 8, "attackerSeat": 1, "attackerCardId": "card-one", "targetSeat": 2, "targetCardId": "champion-two", "weaponCardId": null, "cleave": false },
+    { "type": "damage_resolved", "turn": 8, "sourceSeat": 1, "sourceCardId": "card-one", "targetSeat": 2, "targetCardId": "champion-two", "amount": 3, "isCombat": true, "lethal": true }
+  ]
+}

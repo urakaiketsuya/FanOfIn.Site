@@ -10,6 +10,7 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import ChampionMetaMap from "./ChampionMetaMap";
 import PageHeader from "../../components/ui/PageHeader";
 import DataTable from "../../components/ui/DataTable";
+import ElementIcon from "../../components/ElementIcon";
 
 const TREND_LABEL: Record<ChampionTrendDirection, string> = {
   rising: "▲ Rising",
@@ -90,9 +91,14 @@ export default function ChampionsIndex() {
                     </CardHoverPreview>
                   </td>
                   <td className="py-1.5 pr-6 whitespace-nowrap">
-                    <Link to={`/champions/${encodeURIComponent(c.signature)}`} className="text-ctp-text hover:text-ctp-blue">
-                      {c.signature}
-                    </Link>
+                    <span className="inline-flex items-center gap-1.5">
+                      {c.elements.filter((element) => element !== "NORM").map((element) => (
+                        <ElementIcon key={element} element={element} size={17} />
+                      ))}
+                      <Link to={`/champions/${encodeURIComponent(c.signature)}`} className="text-ctp-text hover:text-ctp-blue">
+                        {c.signature}
+                      </Link>
+                    </span>
                     <span className="ml-2 text-xs text-ctp-subtext0">
                       {c.classes.join("/")} · {c.elements.join("/")}
                     </span>
@@ -154,9 +160,14 @@ export default function ChampionsIndex() {
                         </CardHoverPreview>
                       </td>
                       <td className="py-1.5 pr-6 whitespace-nowrap">
-                        <Link to={`/champions/${encodeURIComponent(s.signature)}`} className="text-ctp-text hover:text-ctp-blue">
-                          {s.signature}
-                        </Link>
+                        <span className="inline-flex items-center gap-1.5">
+                          {s.elements.filter((element) => element !== "NORM").map((element) => (
+                            <ElementIcon key={element} element={element} size={17} />
+                          ))}
+                          <Link to={`/champions/${encodeURIComponent(s.signature)}`} className="text-ctp-text hover:text-ctp-blue">
+                            {s.signature}
+                          </Link>
+                        </span>
                       </td>
                       <td className="py-1.5 pr-6 text-ctp-subtext1">{s.deckCount}</td>
                       <td className="py-1.5 pr-6 text-ctp-subtext1">{s.eventCount}</td>

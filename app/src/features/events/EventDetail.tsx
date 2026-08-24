@@ -259,6 +259,7 @@ export default function EventDetail() {
             stages={event.stages}
             swissRounds={event.swissRounds}
             singleEliminationCutSize={event.singleEliminationCutSize}
+            decklists={isApiErrorBody(bundle.decklists) ? undefined : bundle.decklists}
           />
         </div>
       )}
