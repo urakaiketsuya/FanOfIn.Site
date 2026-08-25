@@ -315,6 +315,8 @@ function computeCompositionGaps(
 }
 
 /** Same composition/rating stats as a deck's own dedicated page (DeckDetail.tsx), recomputed live from whatever's currently assembled — updates as cards get locked, added, or removed. */
+const PILLAR_OPTIONS: RatingPillar[] = ["aggro", "consistency", "interaction", "resilience"];
+
 function StatsPanel({
   lines,
   mainLines,
@@ -324,6 +326,9 @@ function StatsPanel({
   preferredSuggestions,
   championName,
   compositionWinRateData,
+  pillarBias,
+  onPillarBiasChange,
+  onAddCard,
 }: {
   lines: { name: string; quantity: number }[];
   mainLines: { name: string; quantity: number }[];
@@ -333,6 +338,9 @@ function StatsPanel({
   preferredSuggestions: string[];
   championName: string | null;
   compositionWinRateData: CompositionWinRateData | undefined;
+  pillarBias: RatingPillar | null;
+  onPillarBiasChange: (pillar: RatingPillar | null) => void;
+  onAddCard: (name: string) => void;
 }) {
   const identity = useMemo(() => computeDeckIdentity(lines, cardsByName), [lines, cardsByName]);
   const composition = useMemo(() => computeDeckComposition(lines, cardsByName), [lines, cardsByName]);
@@ -405,6 +413,37 @@ function StatsPanel({
         </div>
       </div>
 
+      <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+        <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Tuning</h2>
+        <p className="mt-1 text-xs text-ctp-subtext0">
+          Bias ranked suggestions toward one Power Rating pillar — a small nudge among cards that already clear the
+          real win-rate bar below, never a filter or override, so it never surfaces a card the data doesn't support.
+        </p>
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          <button
+            type="button"
+            onClick={() => onPillarBiasChange(null)}
+            className={`rounded-md border px-2 py-1 text-xs capitalize ${
+              pillarBias === null ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+            }`}
+          >
+            Balanced
+          </button>
+          {PILLAR_OPTIONS.map((pillar) => (
+            <button
+              key={pillar}
+              type="button"
+              onClick={() => onPillarBiasChange(pillar)}
+              className={`rounded-md border px-2 py-1 text-xs capitalize ${
+                pillarBias === pillar ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+              }`}
+            >
+              {pillar}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {synergyReadiness.length > 0 && (
         <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
           <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Synergy readiness</h2>
@@ -453,7 +492,19 @@ function StatsPanel({
                     </p>
                   )}
                   {synergy.recommendations.length > 0 && (
-                    <p className="mt-1 text-xs text-ctp-blue">Compatible options: {synergy.recommendations.join(", ")}.</p>
+                    <div className="mt-1 flex flex-wrap items-center gap-1 text-xs text-ctp-subtext0">
+                      <span>Compatible options:</span>
+                      {synergy.recommendations.map((name) => (
+                        <button
+                          key={name}
+                          type="button"
+                          onClick={() => onAddCard(name)}
+                          className="rounded border border-ctp-blue/40 px-1.5 py-0.5 text-ctp-blue hover:bg-ctp-blue/10"
+                        >
+                          + {name}
+                        </button>
+                      ))}
+                    </div>
                   )}
                   {relatedDependencies.length > 0 && (
                     <p className="mt-1 text-xs text-ctp-mauve">
@@ -523,7 +574,19 @@ function StatsPanel({
                   </p>
                   <p className="mt-1 text-xs text-ctp-subtext0">{dependency.note} · {dependency.confidence}</p>
                   {dependency.recommendations.length > 0 && (
-                    <p className="mt-1 text-xs text-ctp-blue">Compatible support: {dependency.recommendations.join(", ")}.</p>
+                    <div className="mt-1 flex flex-wrap items-center gap-1 text-xs text-ctp-subtext0">
+                      <span>Compatible support:</span>
+                      {dependency.recommendations.map((name) => (
+                        <button
+                          key={name}
+                          type="button"
+                          onClick={() => onAddCard(name)}
+                          className="rounded border border-ctp-blue/40 px-1.5 py-0.5 text-ctp-blue hover:bg-ctp-blue/10"
+                        >
+                          + {name}
+                        </button>
+                      ))}
+                    </div>
                   )}
                   {relatedSynergies.length > 0 && (
                     <p className="mt-1 text-xs text-ctp-mauve">
@@ -739,6 +802,9 @@ export default function DeckBuilderIndex() {
   const [lockedSections, setLockedSections] = useState<Map<string, LockedSection>>(() => urlSeed?.lockedSections ?? new Map());
   const [rejectedCards, setRejectedCards] = useState<Set<string>>(new Set());
   const [cardInput, setCardInput] = useState("");
+  /** Tuning: nudges useSuggestedBuild's ranking toward a chosen Power Rating pillar (see its own
+   * pillarBias doc comment) — null ("Balanced") reproduces the original unbiased lift-only order. */
+  const [pillarBias, setPillarBias] = useState<RatingPillar | null>(null);
   const [changeLog, setChangeLog] = useState<ChangeLogEntry[]>([]);
   const [tab, setTab] = useTabParam<BuilderTab>("tab", TAB_KEYS, "build");
   const [isPending, startTransition] = useTransition();
@@ -805,7 +871,7 @@ export default function DeckBuilderIndex() {
     lockedSections,
     cardQuantityStatsData,
     undefined,
-    null,
+    pillarBias,
   );
 
   const nearestDecks = useNearestDecks(allDecks, lockedCards);
@@ -1542,6 +1608,9 @@ export default function DeckBuilderIndex() {
               preferredSuggestions={build.suggestions.map((card) => card.cardName)}
               championName={championName}
               compositionWinRateData={compositionWinRateData}
+              pillarBias={pillarBias}
+              onPillarBiasChange={setPillarBias}
+              onAddCard={addCard}
             />
           )}
 

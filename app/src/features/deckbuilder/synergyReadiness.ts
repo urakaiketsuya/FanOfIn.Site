@@ -119,6 +119,12 @@ function candidates(catalog: Iterable<Card>, lines: SynergyLine[], identity: Rea
 }
 
 export function computeSynergyReadiness(lines: SynergyLine[], cards: Map<string, Card>, catalog: Iterable<Card> = cards.values(), identity: ReadonlySet<string> = new Set(), preferred: readonly string[] = []): SynergyReadiness[] {
+  // Materialized once — `catalog` is frequently a live, single-use Map iterator
+  // (`cards.values()`), and `candidates()` below is called once per group in the `.map()` further
+  // down. Passing the raw iterable to more than one of those calls silently exhausts it after the
+  // first, leaving every later group's `recommendations` empty (a real bug, caught live: a
+  // build with 2+ under-supported synergy groups only ever got real recommendations for the first).
+  const catalogArray = Array.from(catalog);
   const groups = new Map<string, { requirement: Requirement; payoffs: SynergyLine[] }>();
   for (const line of lines) {
     const card = cards.get(line.name);
@@ -146,12 +152,16 @@ export function computeSynergyReadiness(lines: SynergyLine[], cards: Map<string,
       payoffCopies: group.payoffs.reduce((sum, payoff) => sum + payoff.quantity, 0), enablerCards, enablerCopies, deckSize, checkpoints, curve,
       probabilityByTen, targetEnablers: targetFor(deckSize, 10, group.requirement.required), status: readinessStatus(probabilityByTen),
       confidence: group.requirement.confidence, note: group.requirement.note, competingPayoffCopies,
-      recommendations: probabilityByTen < 0.8 ? candidates(catalog, lines, identity, (card) => isEnabler(card, group.requirement), preferred) : [] };
+      recommendations: probabilityByTen < 0.8 ? candidates(catalogArray, lines, identity, (card) => isEnabler(card, group.requirement), preferred) : [] };
   }).sort((a, b) => a.probabilityByTen - b.probabilityByTen);
 }
 
 type Group = Omit<DependencyReadiness, "producerCopies" | "consumerCopies" | "deckSize" | "producerCurve" | "status" | "recommendations">;
 export function computeDependencyReadiness(lines: SynergyLine[], cards: Map<string, Card>, catalog: Iterable<Card> = cards.values(), identity: ReadonlySet<string> = new Set(), preferred: readonly string[] = []): DependencyReadiness[] {
+  // Materialized once and reused for every `candidates()` call below (see the matching comment in
+  // computeSynergyReadiness) — `catalog` is frequently a live, single-use Map iterator, and this
+  // function already needed one full pass over it (for `knownSubtypes`) before any `candidates()`
+  // call ever ran, which silently exhausted it before recommendations were ever computed.
   const allCards = Array.from(catalog);
   const knownSubtypes = new Set(allCards.flatMap((card) => card.subtypes.map((value) => value.toLowerCase())));
   const groups = new Map<string, Group>();
@@ -186,6 +196,6 @@ export function computeDependencyReadiness(lines: SynergyLine[], cards: Map<stri
     const predicate = (card: Card) => group.kind === "Token" ? extractProducedTokens(card).has(group.key.slice(6)) : group.kind === "Subtype" ? card.subtypes.some((value) => value.toLowerCase() === group.key.slice(8)) : extractsEmpowerGrant(card);
     return { ...group, producerCopies, consumerCopies, deckSize, producerCurve,
       status: producerCopies === 0 ? "Missing support" as const : producerCopies < consumerCopies ? "Thin" as const : "Supported" as const,
-      recommendations: producerCopies < consumerCopies ? candidates(catalog, lines, identity, predicate, preferred) : [] };
+      recommendations: producerCopies < consumerCopies ? candidates(allCards, lines, identity, predicate, preferred) : [] };
   }).sort((a, b) => ({ "Missing support": 0, Thin: 1, Supported: 2 })[a.status] - ({ "Missing support": 0, Thin: 1, Supported: 2 })[b.status] || a.label.localeCompare(b.label));
 }
