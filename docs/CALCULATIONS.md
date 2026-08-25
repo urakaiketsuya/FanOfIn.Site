@@ -597,6 +597,16 @@ lock's real effect is visible as a delta, and the same delta is captured per-act
 log. Verified live: locking one card moved the shown rate from 46% to 47% (+0.6pp), logged
 identically in both the header and that action's log entry.
 
+**Potential meta gaps / card decay**: for the selected Champion + Spirit population, card adoption
+in the latest 90 days is compared with the immediately preceding 90 days. This uses inclusion rate
+(decks containing the card / decks in that window), not raw appearances, so a quieter tournament
+period does not make every card look like it declined. Champion/Spirit identity cards are excluded.
+A card is shown only when the prior window contains at least 5 copies of the signal, at least 10
+decks contain it across the full population, adoption fell by at least 8 percentage points, and its
+win rate—shrunk toward 50% with the site's standard 10-observation prior—remains at least 53%.
+Both windows must contain at least 10 decks. Results rank by decline, evidence, and adjusted win
+rate and are explicitly framed as leads to investigate rather than proof that a card is underplayed.
+
 **Locks with too little data don't get to swing it.** The population used for
 `conditionalWinRate` is filtered to decks containing *every* locked card — but a lock is only
 included in that filter once it clears `MIN_SAMPLE_SIZE` (5) occurrences in the Spirit-filtered

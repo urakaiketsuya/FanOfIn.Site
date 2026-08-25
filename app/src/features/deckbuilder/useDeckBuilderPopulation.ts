@@ -13,6 +13,8 @@ export interface DeckBuilderRow {
   sideboard: Map<string, number>;
   spiritName: string | null;
   winRate: number;
+  /** ISO event date, used for recent-vs-prior metagame trend comparisons. */
+  eventDate?: string;
 }
 
 export interface DeckBuilderPopulation {
@@ -86,6 +88,7 @@ export function useDeckBuilderPopulation(championName: string | null, minEventDa
         sideboard: new Map(sideboardLines.map((l) => [l.name, l.quantity])),
         spiritName,
         winRate: info.winRate,
+        eventDate: info.eventDate,
       });
     }
 

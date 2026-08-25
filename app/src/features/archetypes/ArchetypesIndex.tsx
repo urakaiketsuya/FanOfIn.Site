@@ -1,9 +1,6 @@
-import { useMemo, useState } from "react";
+import { lazy, Suspense, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import type { CardImpactRole } from "@gatcg/shared";
-import { useArchetypeTaxonomyData, useArchetypeTaxonomyValidationData, useMatchupCardImpactData } from "./data";
-import { useCardsByNames } from "../events/useCardsByNames";
-import CardHoverPreview from "../../components/CardHoverPreview";
+import { useArchetypeTaxonomyData } from "./data";
 import LoadMore from "../../components/LoadMore";
 import StaleDataNotice from "../../components/StaleDataNotice";
 import DecklistCoverageNotice from "../../components/DecklistCoverageNotice";
@@ -11,7 +8,9 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { formatUsd } from "../../lib/format";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 import ArchetypeMetaMap from "./ArchetypeMetaMap";
-import ArchetypeValidationPanel from "./ArchetypeValidationPanel";
+
+const ArchetypeValidationView = lazy(() => import("./ArchetypeValidationView"));
+const ArchetypeHurtYouView = lazy(() => import("./ArchetypeHurtYouView"));
 
 type SortMode = "players" | "winRate" | "metaShare" | "topCutRate" | "avgPlacement" | "avgPrice";
 
@@ -26,21 +25,7 @@ const SORT_LABELS: Record<SortMode, string> = {
 
 type ViewMode = "builds" | "validation" | "hurtYou";
 type ConfidenceFilter = "established" | "all";
-const ROLE_LABEL: Record<CardImpactRole, string> = { main: "Main", material: "Material", sideboard: "Sideboard", mixed: "Mixed" };
-const HURT_YOU_PAGE_SIZE = 30;
-interface HurtYouRow {
-  key: string;
-  cardName: string;
-  role: CardImpactRole;
-  adjustedLift: number;
-  deckCountWith: number;
-  deckCountWithout: number;
-  myClusterId: string;
-  myClusterName: string;
-  opponentClusterId: string;
-  opponentClusterName: string;
-  games: number;
-}
+const BUILD_PAGE_SIZE = 40;
 
 interface DisplayRow {
   id: string;
@@ -65,15 +50,12 @@ interface DisplayRow {
 export default function ArchetypesIndex() {
   useDocumentTitle("Archetypes", "Data-derived Grand Archive TCG deck archetypes and named builds by Champion.");
   const data = useArchetypeTaxonomyData();
-  const matchupData = useMatchupCardImpactData();
-  const validationData = useArchetypeTaxonomyValidationData();
   const [championFilter, setChampionFilter] = useState<string | null>(null);
   const [seasonId, setSeasonId] = useState<number | null>(null);
   const [sortMode, setSortMode] = useState<SortMode>("players");
   const [view, setView] = useState<ViewMode>("builds");
   const [confidenceFilter, setConfidenceFilter] = useState<ConfidenceFilter>("established");
-  const [hurtYouClusterId, setHurtYouClusterId] = useState<string | null>(null);
-  const [hurtYouVisibleCount, setHurtYouVisibleCount] = useState(HURT_YOU_PAGE_SIZE);
+  const [buildVisibleCount, setBuildVisibleCount] = useState(BUILD_PAGE_SIZE);
 
   // Every Champion a build was ever played under, not just each cluster's plurality Champion —
   // otherwise a Champion who only shows up as the minority side of a shared shell (e.g. Merlin in
@@ -174,46 +156,7 @@ export default function ArchetypesIndex() {
     });
   }, [data, championFilter, confidenceFilter, seasonId, sortMode]);
 
-  const clusterNameById = useMemo(() => {
-    const map = new Map<string, string>();
-    for (const c of data?.clusters ?? []) map.set(c.id, c.name);
-    return map;
-  }, [data]);
-
-  // One row per (matchup, opponent card) — deliberately not collapsed across matchups: each
-  // adjustedLift is only meaningful against its own matchup's population/baseline, so blending
-  // different matchups' numbers into one score per card would mix incomparable denominators.
-  const hurtYouRows = useMemo((): HurtYouRow[] => {
-    if (!matchupData) return [];
-    const rows: HurtYouRow[] = [];
-    for (const m of matchupData.matchups) {
-      if (hurtYouClusterId && m.clusterId !== hurtYouClusterId) continue;
-      for (const c of m.opponentCards) {
-        rows.push({
-          key: `${m.clusterId}:${m.opponentClusterId}:${c.cardName}`,
-          cardName: c.cardName,
-          role: c.role,
-          adjustedLift: c.adjustedLift,
-          deckCountWith: c.deckCountWith,
-          deckCountWithout: c.deckCountWithout,
-          myClusterId: m.clusterId,
-          myClusterName: clusterNameById.get(m.clusterId) ?? m.clusterId,
-          opponentClusterId: m.opponentClusterId,
-          opponentClusterName: m.opponentClusterName,
-          games: m.games,
-        });
-      }
-    }
-    return rows.sort((a, b) => a.adjustedLift - b.adjustedLift);
-  }, [matchupData, hurtYouClusterId, clusterNameById]);
-
-  const hurtYouVisible = hurtYouRows.slice(0, hurtYouVisibleCount);
-  const hurtYouCardImages = useCardsByNames(useMemo(() => hurtYouVisible.map((r) => r.cardName), [hurtYouVisible]));
-
-  const buildOptions = useMemo(() => {
-    if (!data) return [];
-    return [...data.clusters].sort((a, b) => b.playerCount - a.playerCount);
-  }, [data]);
+  const visibleRows = rows.slice(0, buildVisibleCount);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -259,7 +202,10 @@ export default function ArchetypesIndex() {
         <span className="text-ctp-subtext0">Champion:</span>
         <select
           value={championFilter ?? ""}
-          onChange={(e) => setChampionFilter(e.target.value || null)}
+          onChange={(e) => {
+            setChampionFilter(e.target.value || null);
+            setBuildVisibleCount(BUILD_PAGE_SIZE);
+          }}
           className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
         >
           <option value="">All champions</option>
@@ -273,7 +219,10 @@ export default function ArchetypesIndex() {
         <span className="ml-2 text-ctp-subtext0">Season:</span>
         <select
           value={seasonId ?? ""}
-          onChange={(e) => setSeasonId(e.target.value ? Number(e.target.value) : null)}
+          onChange={(e) => {
+            setSeasonId(e.target.value ? Number(e.target.value) : null);
+            setBuildVisibleCount(BUILD_PAGE_SIZE);
+          }}
           className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
         >
           <option value="">All seasons</option>
@@ -287,7 +236,10 @@ export default function ArchetypesIndex() {
         <span className="ml-2 text-ctp-subtext0">Confidence:</span>
         <select
           value={confidenceFilter}
-          onChange={(e) => setConfidenceFilter(e.target.value as ConfidenceFilter)}
+          onChange={(e) => {
+            setConfidenceFilter(e.target.value as ConfidenceFilter);
+            setBuildVisibleCount(BUILD_PAGE_SIZE);
+          }}
           className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
         >
           <option value="established">Established</option>
@@ -299,7 +251,10 @@ export default function ArchetypesIndex() {
           <button
             key={mode}
             type="button"
-            onClick={() => setSortMode(mode)}
+            onClick={() => {
+              setSortMode(mode);
+              setBuildVisibleCount(BUILD_PAGE_SIZE);
+            }}
             className={`rounded-md border px-2 py-1 text-xs ${
               sortMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
@@ -345,7 +300,7 @@ export default function ArchetypesIndex() {
             </tr>
           </thead>
           <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-            {rows.map((c) => {
+            {visibleRows.map((c) => {
               return (
               <tr key={c.id}>
                 <td className="py-1.5 pr-6 whitespace-nowrap">
@@ -394,106 +349,25 @@ export default function ArchetypesIndex() {
           </tbody>
         </table>
       </div>
+      <LoadMore
+        remaining={rows.length - buildVisibleCount}
+        onLoadMore={() => setBuildVisibleCount((count) => count + BUILD_PAGE_SIZE)}
+        label="Load more builds"
+      />
         </>
       )}
 
       {view === "hurtYou" && (
-        <>
-          <p className="mt-3 text-xs text-ctp-subtext0">
-            Opponent cards that correlate with beating a build, from real pairing outcomes — the same "Cards that hurt
-            you" numbers shown per-matchup on a build's own Card Impact tab, gathered here across every matchup at
-            once. Each row is scoped to its own matchup's population, so lifts aren't comparable across different
-            opponents — correlational, not a guarantee.
-          </p>
-
-          <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
-            <span className="text-ctp-subtext0">My build:</span>
-            <select
-              value={hurtYouClusterId ?? ""}
-              onChange={(e) => {
-                setHurtYouClusterId(e.target.value || null);
-                setHurtYouVisibleCount(HURT_YOU_PAGE_SIZE);
-              }}
-              className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
-            >
-              <option value="">All builds</option>
-              {buildOptions.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name} ({c.championName})
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {!matchupData && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
-          {matchupData && hurtYouRows.length === 0 && (
-            <p className="mt-6 text-ctp-subtext1">
-              {hurtYouClusterId
-                ? "No matchup for this build has enough games to break down card-by-card yet."
-                : "No matchups have enough games to break down card-by-card yet."}
-            </p>
-          )}
-
-          {hurtYouRows.length > 0 && (
-            <>
-              <div className="mt-4 overflow-x-auto">
-                <table className="w-max min-w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                      <th className="py-1 pr-6">Card</th>
-                      <th className="py-1 pr-6">Role</th>
-                      <th className="py-1 pr-6">Lift</th>
-                      <th className="py-1 pr-6">Sample</th>
-                      <th className="py-1 pr-6">My build</th>
-                      <th className="py-1 pr-6">Opponent</th>
-                      <th className="py-1">Games</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-                    {hurtYouVisible.map((r) => {
-                      const card = hurtYouCardImages.get(r.cardName);
-                      return (
-                        <tr key={r.key}>
-                          <td className="py-1.5 pr-6 whitespace-nowrap">
-                            <CardHoverPreview image={card?.editions[0]?.image} alt={r.cardName}>
-                              {card ? (
-                                <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
-                                  {r.cardName}
-                                </Link>
-                              ) : (
-                                <span className="text-ctp-text">{r.cardName}</span>
-                              )}
-                            </CardHoverPreview>
-                          </td>
-                          <td className="py-1.5 pr-6 text-ctp-subtext1">{ROLE_LABEL[r.role]}</td>
-                          <td className="py-1.5 pr-6 font-semibold text-ctp-red">{(r.adjustedLift * 100).toFixed(1)}pp</td>
-                          <td className="py-1.5 pr-6 text-xs text-ctp-subtext0">
-                            {r.deckCountWith} vs {r.deckCountWithout}
-                          </td>
-                          <td className="py-1.5 pr-6 whitespace-nowrap">
-                            <Link to={`/archetypes/${r.myClusterId}`} className="text-ctp-subtext1 hover:text-ctp-blue">
-                              {r.myClusterName}
-                            </Link>
-                          </td>
-                          <td className="py-1.5 pr-6 whitespace-nowrap">
-                            <Link to={`/archetypes/${r.opponentClusterId}`} className="text-ctp-subtext1 hover:text-ctp-blue">
-                              {r.opponentClusterName}
-                            </Link>
-                          </td>
-                          <td className="py-1.5 text-ctp-subtext1">{r.games}</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-              <LoadMore remaining={hurtYouRows.length - hurtYouVisibleCount} onLoadMore={() => setHurtYouVisibleCount((v) => v + HURT_YOU_PAGE_SIZE)} />
-            </>
-          )}
-        </>
+        <Suspense fallback={<p className="mt-6 text-ctp-subtext1">Loading…</p>}>
+          <ArchetypeHurtYouView taxonomy={data} />
+        </Suspense>
       )}
 
-      {view === "validation" && <ArchetypeValidationPanel data={validationData} />}
+      {view === "validation" && (
+        <Suspense fallback={<p className="mt-6 text-ctp-subtext1">Loading…</p>}>
+          <ArchetypeValidationView />
+        </Suspense>
+      )}
     </div>
   );
 }

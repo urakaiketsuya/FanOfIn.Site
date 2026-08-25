@@ -25,7 +25,7 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import { useAllDecodedDecks } from "../../lib/decodedDecks";
 import { useDebouncedValue } from "../../lib/useDebouncedValue";
-import { useDeckBuilderPopulation } from "./useDeckBuilderPopulation";
+import { useDeckBuilderPopulation, type DeckBuilderRow } from "./useDeckBuilderPopulation";
 import { useNearestDecks, type NearestDeck } from "./useNearestDecks";
 import { computeIdentityElements, findChampionCard, useSuggestedBuild, type SuggestedCard } from "./useSuggestedBuild";
 import { useCommunitySuggestedBuild } from "./useCommunitySuggestedBuild";
@@ -366,6 +366,99 @@ const PILLAR_OPTIONS: RatingPillar[] = ["aggro", "consistency", "interaction", "
  * population". */
 type PopulationSource = "tournament" | "community";
 
+interface CardDecaySignal {
+  cardName: string;
+  priorRate: number;
+  recentRate: number;
+  decay: number;
+  deckCount: number;
+  adjustedWinRate: number;
+}
+
+interface CardDecayReport {
+  signals: CardDecaySignal[];
+  recentDeckCount: number;
+  priorDeckCount: number;
+  recentStart: string;
+  latestDate: string;
+}
+
+/**
+ * Finds cards whose adoption fell in the latest 90-day window versus the preceding 90 days.
+ * Inclusion rate (not raw appearances) removes tournament-volume bias; the win rate is shrunk
+ * toward 50% so a tiny undefeated sample cannot outrank a broadly successful card.
+ */
+function computeCardDecay(
+  rows: DeckBuilderRow[],
+  spiritName: string | null,
+  catalogByName: Map<string, Card>,
+): CardDecayReport | null {
+  const population = spiritName ? rows.filter((row) => row.spiritName === spiritName) : rows;
+  if (population.length === 0) return null;
+  const latestMs = Math.max(...population.map((row) => row.eventDate ? Date.parse(row.eventDate) : NaN).filter(Number.isFinite));
+  if (!Number.isFinite(latestMs)) return null;
+  const dayMs = 86_400_000;
+  const recentStartMs = latestMs - 89 * dayMs;
+  const priorStartMs = latestMs - 179 * dayMs;
+  const priorEndMs = recentStartMs - dayMs;
+  const recentRows = population.filter((row) => row.eventDate && Date.parse(row.eventDate) >= recentStartMs);
+  const priorRows = population.filter((row) => {
+    const date = row.eventDate ? Date.parse(row.eventDate) : NaN;
+    return date >= priorStartMs && date <= priorEndMs;
+  });
+  if (recentRows.length < 10 || priorRows.length < 10) return null;
+
+  const cardNames = (row: DeckBuilderRow) => {
+    const names = new Set([...row.main.keys(), ...row.material.keys()]);
+    for (const name of names) {
+      const card = catalogByName.get(name);
+      if (card?.types.includes("CHAMPION")) names.delete(name);
+    }
+    return names;
+  };
+  const priorCounts = new Map<string, number>();
+  const recentCounts = new Map<string, number>();
+  const wins = new Map<string, { sum: number; count: number }>();
+  for (const row of priorRows) {
+    for (const name of cardNames(row)) priorCounts.set(name, (priorCounts.get(name) ?? 0) + 1);
+  }
+  for (const row of recentRows) {
+    for (const name of cardNames(row)) recentCounts.set(name, (recentCounts.get(name) ?? 0) + 1);
+  }
+  for (const row of population) {
+    for (const name of cardNames(row)) {
+      const current = wins.get(name) ?? { sum: 0, count: 0 };
+      current.sum += row.winRate;
+      current.count += 1;
+      wins.set(name, current);
+    }
+  }
+
+  const signals: CardDecaySignal[] = [];
+  for (const [cardName, priorCount] of priorCounts) {
+    const recentCount = recentCounts.get(cardName) ?? 0;
+    const performance = wins.get(cardName);
+    if (!performance || priorCount < 5 || performance.count < 10) continue;
+    const priorRate = priorCount / priorRows.length;
+    const recentRate = recentCount / recentRows.length;
+    const decay = priorRate - recentRate;
+    const adjustedWinRate = (performance.sum + 10 * 0.5) / (performance.count + 10);
+    if (decay < 0.08 || adjustedWinRate < 0.53) continue;
+    signals.push({ cardName, priorRate, recentRate, decay, deckCount: performance.count, adjustedWinRate });
+  }
+  signals.sort((a, b) => {
+    const score = (signal: CardDecaySignal) => signal.decay * Math.sqrt(signal.deckCount) * Math.max(0.01, signal.adjustedWinRate - 0.5);
+    return score(b) - score(a);
+  });
+  return {
+    signals: signals.slice(0, 6),
+    recentDeckCount: recentRows.length,
+    priorDeckCount: priorRows.length,
+    recentStart: new Date(recentStartMs).toISOString().slice(0, 10),
+    latestDate: new Date(latestMs).toISOString().slice(0, 10),
+  };
+}
+
 function StatsPanel({
   lines,
   mainLines,
@@ -380,6 +473,7 @@ function StatsPanel({
   onAddCard,
   populationSource,
   onPopulationSourceChange,
+  decayReport,
 }: {
   lines: { name: string; quantity: number }[];
   mainLines: { name: string; quantity: number }[];
@@ -394,6 +488,7 @@ function StatsPanel({
   onAddCard: (name: string) => void;
   populationSource: PopulationSource;
   onPopulationSourceChange: (source: PopulationSource) => void;
+  decayReport: CardDecayReport | null;
 }) {
   const identity = useMemo(() => computeDeckIdentity(lines, cardsByName), [lines, cardsByName]);
   const composition = useMemo(() => computeDeckComposition(lines, cardsByName), [lines, cardsByName]);
@@ -530,6 +625,57 @@ function StatsPanel({
           </p>
         )}
       </div>
+
+      {decayReport && decayReport.signals.length > 0 && (
+        <div className="mt-4 rounded-lg border border-ctp-mauve/50 bg-ctp-mantle p-4">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-mauve">Potential meta gaps</h2>
+            <span className="text-[10px] text-ctp-subtext0">
+              {decayReport.recentStart}–{decayReport.latestDate}
+            </span>
+          </div>
+          <p className="mt-1 text-xs text-ctp-subtext0">
+            Successful cards whose inclusion rate fell in the latest 90 days versus the preceding 90 days. Rates are
+            normalized by deck count; win rates are sample-adjusted. A gap is a prompt to investigate, not proof the
+            metagame is wrong.
+          </p>
+          <div className="mt-3 space-y-2">
+            {decayReport.signals.map((signal) => {
+              const card = catalogByName.get(signal.cardName);
+              return (
+                <div key={signal.cardName} className="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-md border border-ctp-surface1 px-3 py-2 text-xs">
+                  {card ? (
+                    <CardHoverPreview image={card.editions[0]?.image} alt={signal.cardName}>
+                      <Link to={`/cards/${card.slug}`} className="font-semibold text-ctp-text hover:text-ctp-blue">
+                        {signal.cardName}
+                      </Link>
+                    </CardHoverPreview>
+                  ) : (
+                    <span className="font-semibold text-ctp-text">{signal.cardName}</span>
+                  )}
+                  <span className="text-ctp-subtext1">
+                    {(signal.priorRate * 100).toFixed(0)}% → {(signal.recentRate * 100).toFixed(0)}%
+                  </span>
+                  <span className="font-semibold text-ctp-red">−{(signal.decay * 100).toFixed(1)}pp</span>
+                  <span className="text-ctp-green">{(signal.adjustedWinRate * 100).toFixed(0)}% adjusted win rate</span>
+                  <span className="text-ctp-subtext0">{signal.deckCount} decks</span>
+                  <button
+                    type="button"
+                    onClick={() => onAddCard(signal.cardName)}
+                    className="ml-auto rounded border border-ctp-blue/40 px-1.5 py-0.5 text-ctp-blue hover:bg-ctp-blue/10"
+                  >
+                    + Add
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+          <p className="mt-2 text-[10px] text-ctp-subtext0">
+            Compared {decayReport.recentDeckCount} recent decks with {decayReport.priorDeckCount} prior-period decks
+            for this Champion and Spirit.
+          </p>
+        </div>
+      )}
 
       {synergyReadiness.length > 0 && (
         <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
@@ -1016,6 +1162,14 @@ export default function DeckBuilderIndex() {
     }
     return stats;
   }, [rows, spiritsPresent]);
+  const sortedSpirits = useMemo(
+    () => [...spiritsPresent].sort((a, b) => (spiritStats.get(b)?.decks ?? 0) - (spiritStats.get(a)?.decks ?? 0) || a.localeCompare(b)),
+    [spiritsPresent, spiritStats],
+  );
+  const decayReport = useMemo(
+    () => computeCardDecay(rows, spiritFilter, catalogByName),
+    [rows, spiritFilter, catalogByName],
+  );
   function spiritOptionLabel(name: string): string {
     const stats = spiritStats.get(name);
     if (!stats) return name;
@@ -1388,7 +1542,7 @@ export default function DeckBuilderIndex() {
               className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
             >
               <option value="">Choose a Spirit…</option>
-              {spiritsPresent.map((name) => (
+              {sortedSpirits.map((name) => (
                 <option key={name} value={name}>
                   {spiritOptionLabel(name)}
                 </option>
@@ -1771,6 +1925,7 @@ export default function DeckBuilderIndex() {
               onAddCard={addCard}
               populationSource={populationSource}
               onPopulationSourceChange={setPopulationSource}
+              decayReport={decayReport}
             />
           )}
 
