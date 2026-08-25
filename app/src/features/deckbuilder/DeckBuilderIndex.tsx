@@ -568,7 +568,7 @@ function CardRow({
               card.locked ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
           >
-            {card.locked ? "Your choice" : "Make my choice"}
+            {card.locked ? "Pinned" : "Pin"}
           </button>
         )}
         <button type="button" onClick={onRemove} className="rounded-md border border-ctp-surface1 px-1.5 py-0.5 text-[10px] text-ctp-subtext1 hover:text-ctp-red">
