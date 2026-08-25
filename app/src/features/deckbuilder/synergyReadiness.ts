@@ -13,7 +13,8 @@ export interface SynergyReadiness {
 }
 export interface DependencyReadiness {
   key: string; label: string; kind: "Token" | "Subtype" | "Empower"; producerCopies: number; consumerCopies: number;
-  producers: SynergyLine[]; consumers: SynergyLine[]; status: "Supported" | "Thin" | "Missing support";
+  producers: SynergyLine[]; consumers: SynergyLine[]; deckSize: number; producerCurve: ReadinessCurvePoint[];
+  status: "Supported" | "Thin" | "Missing support";
   confidence: "Validated pattern" | "Experimental pattern"; note: string; recommendations: string[];
 }
 
@@ -149,7 +150,7 @@ export function computeSynergyReadiness(lines: SynergyLine[], cards: Map<string,
   }).sort((a, b) => a.probabilityByTen - b.probabilityByTen);
 }
 
-type Group = Omit<DependencyReadiness, "producerCopies" | "consumerCopies" | "status" | "recommendations">;
+type Group = Omit<DependencyReadiness, "producerCopies" | "consumerCopies" | "deckSize" | "producerCurve" | "status" | "recommendations">;
 export function computeDependencyReadiness(lines: SynergyLine[], cards: Map<string, Card>, catalog: Iterable<Card> = cards.values(), identity: ReadonlySet<string> = new Set(), preferred: readonly string[] = []): DependencyReadiness[] {
   const allCards = Array.from(catalog);
   const knownSubtypes = new Set(allCards.flatMap((card) => card.subtypes.map((value) => value.toLowerCase())));
@@ -168,13 +169,23 @@ export function computeDependencyReadiness(lines: SynergyLine[], cards: Map<stri
     for (const line of lines) if (cards.get(line.name)?.subtypes.some((value) => value.toLowerCase() === subtype)) group.producers.push(line);
   }
   const consumedTokenNames = new Set(Array.from(groups.keys()).filter((key) => key.startsWith("token:")).map((key) => key.slice(6)));
+  const deckSize = Math.max(60, lines.reduce((sum, line) => sum + line.quantity, 0));
   return Array.from(groups.values()).filter((group) =>
     group.consumers.length > 0 && !(group.kind === "Subtype" && consumedTokenNames.has(group.key.slice(8))),
   ).map((group) => {
     const producerCopies = group.producers.reduce((sum, line) => sum + line.quantity, 0);
     const consumerCopies = group.consumers.reduce((sum, line) => sum + line.quantity, 0);
+    // Chance of having drawn at least 1 producer copy by a given number of cards seen — same
+    // hypergeometric math Synergy readiness uses, just "need >=1" instead of an Imbue-style
+    // required count, and framed as sequencing ("have I found a producer yet") rather than a
+    // reveal-and-count check.
+    const producerCurve: ReadinessCurvePoint[] = Array.from({ length: Math.min(deckSize, CURVE_MAX_SEEN) }, (_, i) => {
+      const seen = i + 1;
+      return { seen, probability: probabilityAtLeast(deckSize, producerCopies, seen, 1) };
+    });
     const predicate = (card: Card) => group.kind === "Token" ? extractProducedTokens(card).has(group.key.slice(6)) : group.kind === "Subtype" ? card.subtypes.some((value) => value.toLowerCase() === group.key.slice(8)) : extractsEmpowerGrant(card);
-    return { ...group, producerCopies, consumerCopies, status: producerCopies === 0 ? "Missing support" as const : producerCopies < consumerCopies ? "Thin" as const : "Supported" as const,
+    return { ...group, producerCopies, consumerCopies, deckSize, producerCurve,
+      status: producerCopies === 0 ? "Missing support" as const : producerCopies < consumerCopies ? "Thin" as const : "Supported" as const,
       recommendations: producerCopies < consumerCopies ? candidates(catalog, lines, identity, predicate, preferred) : [] };
   }).sort((a, b) => ({ "Missing support": 0, Thin: 1, Supported: 2 })[a.status] - ({ "Missing support": 0, Thin: 1, Supported: 2 })[b.status] || a.label.localeCompare(b.label));
 }

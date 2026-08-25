@@ -186,7 +186,7 @@ function BuddyCardsList({
         <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Buddy cards</h2>
         <p className="mt-1 text-xs text-ctp-subtext0">
           {lockedNames.length === 0
-            ? "Mark a card as your choice to see what's most often run alongside it."
+            ? "Pin a card to see what's most often run alongside it."
             : "No buddy suggestions right now — either everything commonly run alongside your choices is already in the build, or this Champion/Spirit population is too thin to say (a build with many user choices often narrows it down to just a few decks)."}
         </p>
       </div>
@@ -486,14 +486,37 @@ function StatsPanel({
                 [...dependency.producers, ...dependency.consumers].map((c) => c.name),
                 "synergy",
               );
+              // Subtype "producers" are every card in the deck carrying that subtype — can run into
+              // the dozens, unlike Token/Empower producers which are usually a small, specific
+              // handful — so this caps the visible list rather than dumping every name.
+              const PRODUCER_NAMES_SHOWN = 5;
+              const shownProducers = dependency.producers.slice(0, PRODUCER_NAMES_SHOWN);
+              const hiddenProducerCount = dependency.producers.length - shownProducers.length;
+              const firstPoint = dependency.producerCurve[0];
+              const tenPoint = dependency.producerCurve.find((c) => c.seen === 10);
+              const lastPoint = dependency.producerCurve[dependency.producerCurve.length - 1];
               return (
                 <div key={dependency.key} id={`dependency-${dependency.key}`} className="rounded-md border border-ctp-surface1 px-3 py-2">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <p className="font-semibold capitalize text-ctp-text">{dependency.label}</p>
                     <p className={`text-sm font-semibold ${color}`}>{dependency.status}</p>
                   </div>
-                  <p className="mt-1 text-xs text-ctp-subtext1">
-                    {dependency.producerCopies} producer copies · {dependency.consumerCopies} consumer copies · {dependency.kind}
+                  {dependency.producerCurve.length >= 2 && (
+                    <div className="mt-2">
+                      <ThemaSparkline values={dependency.producerCurve.map((c) => c.probability)} height={36} />
+                      <div className="mt-1 flex justify-between text-[10px] text-ctp-subtext0">
+                        <span>{firstPoint.seen} seen: {(firstPoint.probability * 100).toFixed(0)}%</span>
+                        {tenPoint && (
+                          <span className="font-semibold text-ctp-text">{tenPoint.seen} seen: {(tenPoint.probability * 100).toFixed(0)}%</span>
+                        )}
+                        <span>{lastPoint.seen} seen: {(lastPoint.probability * 100).toFixed(0)}%</span>
+                      </div>
+                      <p className="mt-0.5 text-[10px] text-ctp-subtext0">Chance you've drawn at least one producer copy — sequencing, not the copy-count warning below.</p>
+                    </div>
+                  )}
+                  <p className="mt-1.5 text-xs text-ctp-subtext1">
+                    {dependency.producerCopies} producer copies ({shownProducers.map((card) => `${card.quantity}× ${card.name}`).join(", ")}
+                    {hiddenProducerCount > 0 ? `, +${hiddenProducerCount} more` : ""}) · {dependency.consumerCopies} consumer copies · {dependency.kind}
                   </p>
                   <p className="mt-1 text-xs text-ctp-subtext1">
                     Used by {dependency.consumers.map((card) => `${card.quantity}× ${card.name}`).join(", ")}
@@ -1380,7 +1403,7 @@ export default function DeckBuilderIndex() {
               <>
               <div className={`mt-3 grid gap-4 sm:grid-cols-2 transition-opacity ${isPending ? "opacity-50" : ""}`}>
                 <div>
-                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Structural / common material ({materialTotal})</h2>
+                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Material Deck ({materialTotal})</h2>
                   <ul className="mt-2 space-y-1">
                     {build.material.map((c) => (
                       <CardRow
@@ -1389,14 +1412,13 @@ export default function DeckBuilderIndex() {
                         cardsByName={cardsByName}
                         priceByName={priceByName}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "material")}
-                        onChangeQuantity={(qty) => setLockedQuantity(c.cardName, qty)}
                         onRemove={() => removeCard(c.cardName, c.locked)}
                       />
                     ))}
                   </ul>
                 </div>
                 <div>
-                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Recommended core ({mainTotal})</h2>
+                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Main Deck ({mainTotal})</h2>
                   <ul className="mt-2 space-y-1">
                     {build.main.map((c) => (
                       <CardRow
