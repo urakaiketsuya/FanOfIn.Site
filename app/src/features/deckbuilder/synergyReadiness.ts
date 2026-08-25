@@ -3,9 +3,10 @@ import { benefitsFromEmpower, extractConsumedSubtypes, extractConsumedTokens, ex
 
 export interface SynergyLine { name: string; quantity: number }
 export interface ReadinessCheckpoint { key: "opening" | "early" | "mid" | "late"; label: string; seen: number; probability: number }
+export interface ReadinessCurvePoint { seen: number; probability: number }
 export interface SynergyReadiness {
   key: string; label: string; required: number; payoffCards: SynergyLine[]; payoffCopies: number;
-  enablerCopies: number; deckSize: number; checkpoints: ReadinessCheckpoint[]; probabilityByTen: number;
+  enablerCards: SynergyLine[]; enablerCopies: number; deckSize: number; checkpoints: ReadinessCheckpoint[]; curve: ReadinessCurvePoint[]; probabilityByTen: number;
   targetEnablers: number; status: "Reliable" | "Playable" | "Fragile" | "Unlikely";
   confidence: "Verified template" | "Parsed template"; note: string; competingPayoffCopies: number;
   recommendations: string[];
@@ -17,13 +18,29 @@ export interface DependencyReadiness {
 }
 
 const BASIC_ELEMENTS = new Set(["NORM", "FIRE", "WATER", "WIND"]);
-const ADVANCED_IMBUE_RE = /\*\*Advanced Imbue (\d+)\*\*/i;
-const NAMED_IMBUE_RE = /\*\*([A-Za-z]+(?:\s*&\s*[A-Za-z]+)?) Imbue (\d+)\*\*/i;
-const PLAIN_IMBUE_RE = /\*\*Imbue (\d+)\*\*/i;
+// `(\d+|X)` — some real cards (e.g. Cauterizing Seraphim, "**Advanced Imbue X**") use a
+// player-chosen X instead of a fixed digit; see `magnitudeOf` for how that's handled.
+const ADVANCED_IMBUE_RE = /\*\*Advanced Imbue (\d+|X)\*\*/i;
+const NAMED_IMBUE_RE = /\*\*([A-Za-z]+(?:\s*&\s*[A-Za-z]+)?) Imbue (\d+|X)\*\*/i;
+const PLAIN_IMBUE_RE = /\*\*Imbue (\d+|X)\*\*/i;
 const CHECKPOINTS = [
   { key: "opening", label: "Opening", seen: 7 }, { key: "early", label: "Early", seen: 10 },
   { key: "mid", label: "Mid", seen: 15 }, { key: "late", label: "Late", seen: 20 },
 ] as const;
+const CURVE_MAX_SEEN = 25;
+/** X has no single fixed value — it's chosen by the player when the card is activated. 2 is the
+ * representative middle magnitude among this card's own fixed-number siblings (Advanced Imbue
+ * 1/2/3 all exist as real cards), used purely to give the probability math something concrete to
+ * show rather than dropping the card from the section entirely. */
+const VARIABLE_IMBUE_DEFAULT = 2;
+function magnitudeOf(raw: string): { required: number; variable: boolean } {
+  return raw.toUpperCase() === "X" ? { required: VARIABLE_IMBUE_DEFAULT, variable: true } : { required: Number(raw), variable: false };
+}
+function variableNote(base: string, variable: boolean, required: number): string {
+  return variable
+    ? `X is chosen when you activate this card — shown here assuming X=${required} for illustration, not a fixed requirement. ${base}`
+    : base;
+}
 
 function choose(n: number, k: number): number {
   if (k < 0 || k > n) return 0;
@@ -52,15 +69,34 @@ type Requirement = { label: string; required: number; elements: Set<string> | "a
 function parseImbue(card: Card): Requirement | null {
   const effect = card.effect ?? "";
   const advanced = effect.match(ADVANCED_IMBUE_RE);
-  if (advanced) return { label: `Advanced Imbue ${advanced[1]}`, required: Number(advanced[1]), elements: "advanced", confidence: "Verified template", note: "Requires advanced-element cards to be revealed while paying reserve costs." };
+  if (advanced) {
+    const { required, variable } = magnitudeOf(advanced[1]);
+    return {
+      label: variable ? `Advanced Imbue X (~${required})` : `Advanced Imbue ${required}`,
+      required, elements: "advanced", confidence: variable ? "Parsed template" : "Verified template",
+      note: variableNote("Requires advanced-element cards to be revealed while paying reserve costs.", variable, required),
+    };
+  }
   const named = effect.match(NAMED_IMBUE_RE);
   if (named && named[1].toLowerCase() !== "advanced") {
     const elements = new Set(named[1].split(/\s*&\s*/).map((value) => value.toUpperCase()));
-    return { label: `${Array.from(elements).map((value) => value[0] + value.slice(1).toLowerCase()).join(" & ")} Imbue ${named[2]}`, required: Number(named[2]), elements, confidence: "Verified template", note: `Requires ${Array.from(elements).join(" or ")} cards to be revealed while paying reserve costs.` };
+    const { required, variable } = magnitudeOf(named[2]);
+    const elementLabel = Array.from(elements).map((value) => value[0] + value.slice(1).toLowerCase()).join(" & ");
+    return {
+      label: variable ? `${elementLabel} Imbue X (~${required})` : `${elementLabel} Imbue ${required}`,
+      required, elements, confidence: variable ? "Parsed template" : "Verified template",
+      note: variableNote(`Requires ${Array.from(elements).join(" or ")} cards to be revealed while paying reserve costs.`, variable, required),
+    };
   }
   const plain = effect.match(PLAIN_IMBUE_RE);
   const elements = new Set(card.elements.filter((value) => value !== "NORM"));
-  return plain && elements.size ? { label: `Imbue ${plain[1]} (${Array.from(elements).join("/")})`, required: Number(plain[1]), elements, confidence: "Parsed template", note: "Uses the payoff card's printed element as the eligible Imbue element." } : null;
+  if (!plain || !elements.size) return null;
+  const { required, variable } = magnitudeOf(plain[1]);
+  return {
+    label: variable ? `Imbue X (~${required}) (${Array.from(elements).join("/")})` : `Imbue ${required} (${Array.from(elements).join("/")})`,
+    required, elements, confidence: "Parsed template",
+    note: variableNote("Uses the payoff card's printed element as the eligible Imbue element.", variable, required),
+  };
 }
 function isEnabler(card: Card | undefined, requirement: Requirement): boolean {
   if (!card) return false;
@@ -96,12 +132,17 @@ export function computeSynergyReadiness(lines: SynergyLine[], cards: Map<string,
   const entries = Array.from(groups.entries());
   const deckSize = Math.max(60, lines.reduce((sum, line) => sum + line.quantity, 0));
   return entries.map(([key, group]) => {
-    const enablerCopies = lines.reduce((sum, line) => sum + (isEnabler(cards.get(line.name), group.requirement) ? line.quantity : 0), 0);
+    const enablerCards = lines.filter((line) => isEnabler(cards.get(line.name), group.requirement));
+    const enablerCopies = enablerCards.reduce((sum, line) => sum + line.quantity, 0);
     const checkpoints = CHECKPOINTS.map((point) => ({ ...point, probability: probabilityAtLeast(deckSize, enablerCopies, point.seen, group.requirement.required) }));
+    const curve: ReadinessCurvePoint[] = Array.from({ length: Math.min(deckSize, CURVE_MAX_SEEN) }, (_, i) => {
+      const seen = i + 1;
+      return { seen, probability: probabilityAtLeast(deckSize, enablerCopies, seen, group.requirement.required) };
+    });
     const probabilityByTen = checkpoints[1].probability;
     const competingPayoffCopies = entries.reduce((sum, [otherKey, other]) => otherKey === key ? sum : sum + (lines.some((line) => isEnabler(cards.get(line.name), group.requirement) && isEnabler(cards.get(line.name), other.requirement)) ? other.payoffs.reduce((n, payoff) => n + payoff.quantity, 0) : 0), 0);
     return { key, label: group.requirement.label, required: group.requirement.required, payoffCards: group.payoffs,
-      payoffCopies: group.payoffs.reduce((sum, payoff) => sum + payoff.quantity, 0), enablerCopies, deckSize, checkpoints,
+      payoffCopies: group.payoffs.reduce((sum, payoff) => sum + payoff.quantity, 0), enablerCards, enablerCopies, deckSize, checkpoints, curve,
       probabilityByTen, targetEnablers: targetFor(deckSize, 10, group.requirement.required), status: readinessStatus(probabilityByTen),
       confidence: group.requirement.confidence, note: group.requirement.note, competingPayoffCopies,
       recommendations: probabilityByTen < 0.8 ? candidates(catalog, lines, identity, (card) => isEnabler(card, group.requirement), preferred) : [] };

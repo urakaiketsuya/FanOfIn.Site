@@ -30,6 +30,7 @@ import { computeIdentityElements, findChampionCard, useSuggestedBuild, type Sugg
 import { useBuddyCards, type BuddyCard } from "./useBuddyCards";
 import { validateDeck } from "./validateDeck";
 import { computeDependencyReadiness, computeSynergyReadiness } from "./synergyReadiness";
+import ThemaSparkline from "../thema/ThemaSparkline";
 
 type BuilderTab = "build" | "stats" | "buddies" | "log";
 const TAB_KEYS: BuilderTab[] = ["build", "stats", "buddies", "log"];
@@ -350,6 +351,37 @@ function StatsPanel({
     () => computeDependencyReadiness(mainLines, catalogByName, catalogByName.values(), identityElements, preferredSuggestions),
     [mainLines, catalogByName, identityElements, preferredSuggestions],
   );
+  // Cross-references between the two independently-computed readiness engines above, keyed by
+  // card name — kept as a pure UI lookup here rather than baked into synergyReadiness.ts, so
+  // Synergy readiness (Imbue) and Package balance (Token/Subtype/Empower) stay decoupled and this
+  // is purely "which of my cards also show up over there," not a new coupling between the modules.
+  const crossLinks = useMemo(() => {
+    const map = new Map<string, { synergy: { key: string; label: string }[]; dependency: { key: string; label: string }[] }>();
+    const ensure = (name: string) => map.get(name) ?? map.set(name, { synergy: [], dependency: [] }).get(name)!;
+    for (const synergy of synergyReadiness) {
+      for (const line of [...synergy.payoffCards, ...synergy.enablerCards]) {
+        const entry = ensure(line.name);
+        if (!entry.synergy.some((s) => s.key === synergy.key)) entry.synergy.push({ key: synergy.key, label: synergy.label });
+      }
+    }
+    for (const dependency of dependencyReadiness) {
+      for (const line of [...dependency.producers, ...dependency.consumers]) {
+        const entry = ensure(line.name);
+        if (!entry.dependency.some((d) => d.key === dependency.key)) entry.dependency.push({ key: dependency.key, label: dependency.label });
+      }
+    }
+    return map;
+  }, [synergyReadiness, dependencyReadiness]);
+  /** Union of the other engine's groups touched by any card in `names` — group-level, not a badge per card mention, since payoff/enabler/producer/consumer lists already render as one joined string. */
+  function otherEngineLinks(names: string[], side: "synergy" | "dependency"): { key: string; label: string }[] {
+    const seen = new Map<string, string>();
+    for (const name of names) {
+      const entry = crossLinks.get(name);
+      if (!entry) continue;
+      for (const ref of entry[side]) seen.set(ref.key, ref.label);
+    }
+    return Array.from(seen.entries()).map(([key, label]) => ({ key, label }));
+  }
 
   if (lines.length === 0) return <p className="mt-6 text-sm text-ctp-subtext1">Nothing in the build yet.</p>;
 
@@ -384,26 +416,33 @@ function StatsPanel({
             {synergyReadiness.map((synergy) => {
               const shortfall = Math.max(0, synergy.targetEnablers - synergy.enablerCopies);
               const statusColor = synergy.status === "Reliable" ? "text-ctp-green" : synergy.status === "Playable" ? "text-ctp-blue" : synergy.status === "Fragile" ? "text-ctp-yellow" : "text-ctp-red";
+              const tenPoint = synergy.curve.find((c) => c.seen === 10);
+              const firstPoint = synergy.curve[0];
+              const lastPoint = synergy.curve[synergy.curve.length - 1];
+              const relatedDependencies = otherEngineLinks(
+                [...synergy.payoffCards, ...synergy.enablerCards].map((c) => c.name),
+                "dependency",
+              );
               return (
-                <div key={synergy.key} className="rounded-md border border-ctp-surface1 px-3 py-2">
+                <div key={synergy.key} id={`synergy-${synergy.key}`} className="rounded-md border border-ctp-surface1 px-3 py-2">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <p className="font-semibold text-ctp-text">{synergy.label}</p>
                     <p className={`text-sm font-semibold ${statusColor}`}>{synergy.status} · {(synergy.probabilityByTen * 100).toFixed(0)}%</p>
                   </div>
-                  <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-ctp-surface0">
-                    <div className="h-full rounded-full bg-ctp-blue" style={{ width: `${synergy.probabilityByTen * 100}%` }} />
-                  </div>
-                  <div className="mt-2 grid grid-cols-4 gap-1">
-                    {synergy.checkpoints.map((checkpoint) => (
-                      <div key={checkpoint.key} className="rounded bg-ctp-surface0 px-1.5 py-1 text-center">
-                        <p className="text-[10px] uppercase tracking-wide text-ctp-subtext0">{checkpoint.label}</p>
-                        <p className="text-xs font-semibold text-ctp-text">{(checkpoint.probability * 100).toFixed(0)}%</p>
-                        <p className="text-[10px] text-ctp-subtext0">{checkpoint.seen} seen</p>
+                  {synergy.curve.length >= 2 && (
+                    <div className="mt-2">
+                      <ThemaSparkline values={synergy.curve.map((c) => c.probability)} height={36} />
+                      <div className="mt-1 flex justify-between text-[10px] text-ctp-subtext0">
+                        <span>{firstPoint.seen} seen: {(firstPoint.probability * 100).toFixed(0)}%</span>
+                        {tenPoint && (
+                          <span className="font-semibold text-ctp-text">{tenPoint.seen} seen: {(tenPoint.probability * 100).toFixed(0)}%</span>
+                        )}
+                        <span>{lastPoint.seen} seen: {(lastPoint.probability * 100).toFixed(0)}%</span>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  )}
                   <p className="mt-1.5 text-xs text-ctp-subtext1">
-                    {synergy.enablerCopies}/{synergy.deckSize} eligible cards · {synergy.payoffCopies} payoff cop{synergy.payoffCopies === 1 ? "y" : "ies"} ({synergy.payoffCards.map((card) => `${card.quantity}× ${card.name}`).join(", ")})
+                    {synergy.enablerCopies}/{synergy.deckSize} eligible cards ({synergy.enablerCards.map((card) => `${card.quantity}× ${card.name}`).join(", ")}) · {synergy.payoffCopies} payoff cop{synergy.payoffCopies === 1 ? "y" : "ies"} ({synergy.payoffCards.map((card) => `${card.quantity}× ${card.name}`).join(", ")})
                   </p>
                   <p className="mt-1 text-xs text-ctp-subtext0">
                     {shortfall > 0 ? `Add about ${shortfall} eligible card${shortfall === 1 ? "" : "s"} to reach 80% theoretical availability.` : "Meets the 80% theoretical-availability target."} {synergy.note} · {synergy.confidence}
@@ -415,6 +454,17 @@ function StatsPanel({
                   )}
                   {synergy.recommendations.length > 0 && (
                     <p className="mt-1 text-xs text-ctp-blue">Compatible options: {synergy.recommendations.join(", ")}.</p>
+                  )}
+                  {relatedDependencies.length > 0 && (
+                    <p className="mt-1 text-xs text-ctp-mauve">
+                      Also tracked in Package balance:{" "}
+                      {relatedDependencies.map((ref, i) => (
+                        <span key={ref.key}>
+                          {i > 0 && ", "}
+                          <a href={`#dependency-${ref.key}`} className="hover:underline">{ref.label}</a>
+                        </span>
+                      ))}
+                    </p>
                   )}
                 </div>
               );
@@ -432,8 +482,12 @@ function StatsPanel({
           <div className="mt-3 space-y-2">
             {dependencyReadiness.map((dependency) => {
               const color = dependency.status === "Supported" ? "text-ctp-green" : dependency.status === "Thin" ? "text-ctp-yellow" : "text-ctp-red";
+              const relatedSynergies = otherEngineLinks(
+                [...dependency.producers, ...dependency.consumers].map((c) => c.name),
+                "synergy",
+              );
               return (
-                <div key={dependency.key} className="rounded-md border border-ctp-surface1 px-3 py-2">
+                <div key={dependency.key} id={`dependency-${dependency.key}`} className="rounded-md border border-ctp-surface1 px-3 py-2">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <p className="font-semibold capitalize text-ctp-text">{dependency.label}</p>
                     <p className={`text-sm font-semibold ${color}`}>{dependency.status}</p>
@@ -447,6 +501,17 @@ function StatsPanel({
                   <p className="mt-1 text-xs text-ctp-subtext0">{dependency.note} · {dependency.confidence}</p>
                   {dependency.recommendations.length > 0 && (
                     <p className="mt-1 text-xs text-ctp-blue">Compatible support: {dependency.recommendations.join(", ")}.</p>
+                  )}
+                  {relatedSynergies.length > 0 && (
+                    <p className="mt-1 text-xs text-ctp-mauve">
+                      Also tracked in Synergy readiness:{" "}
+                      {relatedSynergies.map((ref, i) => (
+                        <span key={ref.key}>
+                          {i > 0 && ", "}
+                          <a href={`#synergy-${ref.key}`} className="hover:underline">{ref.label}</a>
+                        </span>
+                      ))}
+                    </p>
                   )}
                 </div>
               );
