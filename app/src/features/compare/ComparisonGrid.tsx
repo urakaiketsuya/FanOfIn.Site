@@ -61,7 +61,7 @@ export default function ComparisonGrid({
   const bestWinRateIndex = bestIndex(deckStats.map((s) => s.winRate));
 
   return (
-    <div className="overflow-x-auto">
+    <div className="max-w-full overflow-x-auto overscroll-x-contain" aria-label="Deck comparison table">
       <table className="w-max min-w-full text-sm">
         <thead>
           <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">

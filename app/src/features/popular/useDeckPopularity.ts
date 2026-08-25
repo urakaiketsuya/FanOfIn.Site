@@ -62,7 +62,10 @@ export function useDeckPopularity(championFilter: string | null, minPlayers: num
   const cardCatalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
 
-  const decks = useMemo(() => {
+  // Build the expensive all-decks aggregation once per published dataset. Champion and minimum-
+  // player filters are applied afterward so changing either control does not decode and regroup
+  // the entire 20MB+ card index again.
+  const allDecks = useMemo(() => {
     if (!cardIndexData || !sightingsData) return [];
 
     const sightingByDeckId = new Map<string, DeckPopularityEntry>(sightingsData.entries.map((s) => [s.deckId, s]));
@@ -78,8 +81,6 @@ export function useDeckPopularity(championFilter: string | null, minPlayers: num
     for (const entry of cardIndexData.decks) {
       if (entry.main.length === 0 && entry.material.length === 0) continue;
       const sighting = sightingByDeckId.get(entry.deckId);
-      if (championFilter && sighting?.championName !== championFilter) continue;
-
       const main = decodeCardLines(entry.main, cardIndexData.cardNames);
       const material = decodeCardLines(entry.material, cardIndexData.cardNames);
       const signature = canonicalSignature(main, material);
@@ -95,8 +96,6 @@ export function useDeckPopularity(championFilter: string | null, minPlayers: num
     for (const [signature, group] of groups) {
       const sightings = group.deckIds.map((id) => sightingByDeckId.get(id)).filter((s): s is DeckPopularityEntry => !!s);
       const players = new Set(sightings.map((s) => s.player));
-      if (players.size < minPlayers) continue;
-
       const events = new Set(sightings.map((s) => s.eventId));
       const placements = sightings.map((s) => s.placement).filter((p): p is number => p !== null);
       const lastPlayedDate = sightings.reduce((max, s) => (s.eventDate > max ? s.eventDate : max), "");
@@ -121,7 +120,15 @@ export function useDeckPopularity(championFilter: string | null, minPlayers: num
     }
 
     return result;
-  }, [cardIndexData, sightingsData, championFilter, minPlayers, cardsByName]);
+  }, [cardIndexData, sightingsData, cardsByName]);
+
+  const decks = useMemo(
+    () =>
+      allDecks.filter(
+        (deck) => deck.playerCount >= minPlayers && (!championFilter || deck.championName === championFilter),
+      ),
+    [allDecks, championFilter, minPlayers],
+  );
 
   return { decks, loading: !cardIndexData || !sightingsData };
 }

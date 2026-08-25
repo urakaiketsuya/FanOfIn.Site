@@ -497,8 +497,8 @@ export default function About() {
             </Link>
           </div>
 
-          <div className="relative">
-            <div className="max-h-[28rem] overflow-y-auto rounded-lg border border-ctp-surface1">
+          <div className="relative min-w-0 max-w-full">
+            <div className="max-h-[28rem] max-w-full overflow-y-auto rounded-lg border border-ctp-surface1">
               <ComparisonGrid decks={COMPARE_DECKS} decklists={COMPARE_DECKLISTS} />
             </div>
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 rounded-b-lg bg-gradient-to-t from-ctp-mantle/40 to-transparent" />
@@ -631,13 +631,28 @@ export default function About() {
               <div key={f.title} className="rounded-lg border border-ctp-surface1 bg-ctp-base p-4">
                 <h3 className="text-sm font-semibold text-ctp-text">{f.title}</h3>
                 <ul className="mt-2 space-y-1">
-                  {f.items.map((item) => (
+                  {f.items.slice(0, 3).map((item) => (
                     <li key={item} className="flex gap-1.5 text-xs text-ctp-subtext1">
                       <span className="mt-0.5 shrink-0 text-ctp-subtext0">&middot;</span>
                       <span>{item}</span>
                     </li>
                   ))}
                 </ul>
+                {f.items.length > 3 && (
+                  <details className="mt-2 text-xs text-ctp-subtext1">
+                    <summary className="cursor-pointer select-none text-ctp-blue hover:underline">
+                      {f.items.length - 3} more capabilities
+                    </summary>
+                    <ul className="mt-2 space-y-1 border-l border-ctp-surface1 pl-2">
+                      {f.items.slice(3).map((item) => (
+                        <li key={item} className="flex gap-1.5">
+                          <span className="mt-0.5 shrink-0 text-ctp-subtext0">&middot;</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+                )}
                 <Link to={f.example.to} className="mt-3 inline-block text-xs text-ctp-subtext0 hover:text-ctp-blue hover:underline">
                   {f.example.label} &rarr;
                 </Link>

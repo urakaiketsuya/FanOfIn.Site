@@ -21,6 +21,25 @@ const VIEW_LABELS: Record<ViewMode, string> = { builds: "By Build", sightings: "
 const BUILDS_PAGE_SIZE = 30;
 const SIGHTINGS_PAGE_SIZE = 50;
 
+function DeckResultsSkeleton() {
+  return (
+    <div className="mt-6 space-y-3" role="status" aria-label="Loading deck results">
+      <span className="sr-only">Loading deck results…</span>
+      {Array.from({ length: 6 }, (_, index) => (
+        <div
+          key={index}
+          className="animate-pulse rounded-lg border border-ctp-surface0 bg-ctp-mantle/60 p-4"
+          aria-hidden="true"
+        >
+          <div className="h-4 w-28 rounded bg-ctp-surface1" />
+          <div className="mt-3 h-3 w-full max-w-md rounded bg-ctp-surface0" />
+          <div className="mt-2 h-3 w-2/3 rounded bg-ctp-surface0" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function TabButton({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
   return (
     <button
@@ -277,7 +296,7 @@ function BuildsView({
         ))}
       </div>
 
-      {loading && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
+      {loading && <DeckResultsSkeleton />}
       {!loading && sorted.length === 0 && <p className="mt-6 text-ctp-subtext1">No decks match these filters.</p>}
       {sorted.length > 0 && (
         <p className="mt-4 text-xs text-ctp-subtext0">
@@ -577,7 +596,7 @@ function SightingsView({
         ))}
       </div>
 
-      {!sightingsData && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
+      {!sightingsData && <DeckResultsSkeleton />}
       {sightingsData && filtered.length === 0 && <p className="mt-6 text-ctp-subtext1">No decks match this filter yet.</p>}
       {sightingsData && filtered.length > 0 && (
         <p className="mt-4 text-xs text-ctp-subtext0">
