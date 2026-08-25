@@ -1,10 +1,10 @@
 # Fan of Insight
 
-Grand Archive TCG tournament stats site: a static-JSON pipeline + client-only SPA. No backend, no database, no user data collected. See `/Users/avery/.claude/plans/tingly-sleeping-crab.md` for active/planned feature work and a shipped-features summary.
+Grand Archive TCG tournament stats site: a static-JSON pipeline + client-only SPA for the core site, plus one small Cloudflare Worker + D1 backend (`worker/`) that ingests anonymous match telemetry from Clarent's TCGEngine simulator — no player identity is ever collected, and its public endpoint returns only aggregates. Everything else is still backend-free/no-user-data. See `/Users/avery/.claude/plans/tingly-sleeping-crab.md` for active/planned feature work and a shipped-features summary.
 
 ## Repo layout
 
-npm workspaces: `app` (Vite/React/TS SPA), `pipeline` (Node/TS crawler + analysis), `shared` (TS types), `data` (published JSON artifacts, committed).
+npm workspaces: `app` (Vite/React/TS SPA), `pipeline` (Node/TS crawler + analysis), `shared` (TS types), `worker` (Cloudflare Worker + D1, match-telemetry ingestion from Clarent — see `worker/README.md`), `data` (published JSON artifacts, committed).
 
 ## Conventions
 
@@ -27,6 +27,6 @@ npm workspaces: `app` (Vite/React/TS SPA), `pipeline` (Node/TS crawler + analysi
 
 ## Verification workflow
 
-- Typecheck every touched workspace after a change: `cd app && npx tsc -b --noEmit`, `cd pipeline && npx tsc --noEmit -p .`, `cd shared && npx tsc --noEmit -p .` (each needs its own explicit `cd`).
+- Typecheck every touched workspace after a change: `cd app && npx tsc -b --noEmit`, `cd pipeline && npx tsc --noEmit -p .`, `cd shared && npx tsc --noEmit -p .`, `cd worker && npm run typecheck` (each needs its own explicit `cd`).
 - Verify a game-mechanic or data-shape claim against real data (the live API, `pipeline/.cache/cards.json`, or a published `data/*.json`) before building a stat around it — don't assume a mechanic exists or behaves some way from memory alone.
 - For UI changes, verify live in a **fresh** browser tab — reusing a tab after a big HMR update can throw misleading stale-module errors (e.g. `ReferenceError: useRef is not defined`) that aren't a real bug.
