@@ -110,15 +110,26 @@ export interface HarvestResult {
   pagesHarvested: number;
 }
 
+/** How many consecutive full pages with zero new deck IDs before assuming everything deeper is
+ * already known too — see the early-stop reasoning in harvestDeckUrls's doc comment. More than 1
+ * as a safety margin against a single odd already-known deck (e.g. bumped by an edit) interrupting
+ * an otherwise-new stretch. */
+const CONSECUTIVE_KNOWN_PAGES_TO_STOP = 3;
+
 /**
  * Walks the /decks listing page by page (24 decks/page, ~891 pages total) collecting every deck's
- * GUID. Resumable: starts from the last completed page recorded in harvest-meta.json rather than
- * page 1, so an interrupted run doesn't redo work. Deliberately the only phase that scrolls/clicks
- * through the *entire* listing — Phases 2/3 only ever touch decks already in the cache.
+ * GUID. Always starts at page 1 — confirmed against the live site (checked the first page's deck
+ * IDs against a fully-harvested local cache: 0/8 were already known) that the listing is sorted
+ * newest-first, so that's the only place new decks can appear. This also means a *checkpoint-based*
+ * resume (starting past a previous run's last page) would be actively wrong once a prior run has
+ * completed: it would skip straight past the region where new decks actually show up and find
+ * nothing on every subsequent run. Instead, this stops early once `CONSECUTIVE_KNOWN_PAGES_TO_STOP`
+ * consecutive full pages contain no new IDs — cheap (each check is just a cache read) and correct
+ * for both a monthly incremental run and for resuming an interrupted full backfill, since
+ * already-harvested pages just replay as "nothing new here" until real new territory is reached.
  */
 export async function harvestDeckUrls(): Promise<HarvestResult> {
   const priorMeta = await readHarvestMeta();
-  const startPage = (priorMeta?.lastPageHarvested ?? 0) + 1;
   const pageLimit = config.fastMode ? config.sydFastModePageLimit : Infinity;
 
   const browser = await chromium.launch(PLAYWRIGHT_LAUNCH_OPTIONS);
@@ -126,25 +137,15 @@ export async function harvestDeckUrls(): Promise<HarvestResult> {
   let newDecks = 0;
   let pagesHarvested = 0;
   let deckCount = priorMeta?.deckCount ?? 0;
+  let consecutiveFullyKnownPages = 0;
 
   try {
     await page.goto(`${BASE_URL}/decks`, { waitUntil: "networkidle" });
     await applyFormatFilter(page);
 
-    // Fast-forward to startPage by repeated "Next page" clicks — Blazor Server has no URL-encoded
-    // page number (confirmed: pagination is pure SignalR client state, not a query param).
-    try {
-      for (let p = 1; p < startPage; p++) {
-        const advanced = await goToNextPage(page);
-        if (!advanced) break;
-      }
-    } catch (err) {
-      throw new Error(`shoutatyourdecks: failed to fast-forward to resume page ${startPage} — try again later`, { cause: err });
-    }
-
     let previousPageIds = new Set<string>();
     let pagesSinceLastLog = 0;
-    for (let p = startPage; p - startPage < pageLimit; p++) {
+    for (let p = 1; p <= pageLimit; p++) {
       if (isShuttingDown()) {
         console.log(`shoutatyourdecks: stopping before page ${p} (shutdown requested) — already-harvested pages are checkpointed`);
         break;
@@ -168,12 +169,14 @@ export async function harvestDeckUrls(): Promise<HarvestResult> {
       }
       previousPageIds = new Set(ids);
 
+      let anyNewOnPage = false;
       for (const id of ids) {
         const existing = await readCachedDeck(id);
         if (!existing) {
           await writeCachedDeck({ id, url: `${BASE_URL}/decks/${id}`, summary: null, deck: null });
           newDecks++;
           deckCount++;
+          anyNewOnPage = true;
         }
       }
 
@@ -191,14 +194,24 @@ export async function harvestDeckUrls(): Promise<HarvestResult> {
         pagesSinceLastLog = 0;
       }
 
+      consecutiveFullyKnownPages = ids.length === DECKS_PER_PAGE && !anyNewOnPage ? consecutiveFullyKnownPages + 1 : 0;
+      if (consecutiveFullyKnownPages >= CONSECUTIVE_KNOWN_PAGES_TO_STOP) {
+        console.log(
+          `shoutatyourdecks: stopping early at page ${p} — ${consecutiveFullyKnownPages} consecutive pages with no new decks (listing is newest-first, so everything deeper is already known)`,
+        );
+        break;
+      }
+
       let advanced: boolean;
       try {
         advanced = await goToNextPage(page);
       } catch (err) {
         // The live site's pagination is genuinely flaky under sustained automation (see
         // goToNextPage's doc comment) — rather than crash a multi-hour run over one stuck page,
-        // checkpoint what's done and stop cleanly. Re-running resumes from lastPageHarvested + 1.
-        console.error(`shoutatyourdecks: giving up advancing past page ${p}, stopping this run — resume later to continue`, err);
+        // checkpoint what's done and stop cleanly. A re-run just starts over at page 1 and replays
+        // through already-known pages cheaply (see this function's doc comment) until it's back
+        // past this point.
+        console.error(`shoutatyourdecks: giving up advancing past page ${p}, stopping this run — a re-run will pick back up from page 1`, err);
         await writeHarvestMeta({ lastPageHarvested: p, totalPages: null, deckCount, updatedAt: new Date().toISOString() });
         break;
       }
@@ -210,7 +223,7 @@ export async function harvestDeckUrls(): Promise<HarvestResult> {
     }
 
     await writeHarvestMeta({
-      lastPageHarvested: startPage + pagesHarvested - 1,
+      lastPageHarvested: pagesHarvested,
       totalPages: priorMeta?.totalPages ?? null,
       deckCount,
       updatedAt: new Date().toISOString(),
