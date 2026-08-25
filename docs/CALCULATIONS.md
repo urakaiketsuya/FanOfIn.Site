@@ -996,8 +996,11 @@ recalibrate against.
 ## Price history (`pipeline/src/pricing/history.ts`, `app/src/features/pricing/usePriceHistory.ts`)
 
 `buildPrices()` (`pipeline/src/pricing/build.ts`) has always overwritten `data/prices.json`
-wholesale every run — only ever "the price right now," even though the pipeline has been running
-on a weekly cron (`.github/workflows/data-refresh.yml`) the whole time. `updatePriceHistory`
+wholesale every run — only ever "the price right now." The overall data-refresh job
+(`.github/workflows/data-refresh.yml`) runs daily, but pricing specifically still only actually
+executes on Mondays (`GATCG_SKIP_PRICING`, set by a day-of-week check in that workflow) — kept at
+its original weekly cadence so `PRICE_HISTORY_MAX_POINTS`'s ~1 year lookback stays accurate rather
+than silently shrinking to ~7 weeks. `updatePriceHistory`
 appends instead of overwriting: it reads the **already-published** `data/priceHistory.json` (not a
 separate cache — this pipeline commits `data/` directly, so the file on disk before a run *is* the
 prior run's published state, defaulting to `{}` on a missing/unparsable file — covers both "first
@@ -1103,7 +1106,7 @@ started at id ~59,901 (near the real ~60,729 frontier) instead of scanning from 
 
 Deliberately not committing `pipeline/.cache/` itself to git instead of doing this: it changes on
 every pipeline run and git doesn't diff JSON blobs efficiently, so the repo/clone size would grow
-by roughly the full cache size every week, forever. The scheduled weekly refresh (GitHub Actions)
+by roughly the full cache size every run, forever. The scheduled daily refresh (GitHub Actions)
 already avoids re-crawling via `actions/cache` (`.github/workflows/data-refresh.yml`); this seeding
 step is for everything outside that cache's scope — a new machine, or an interactive session that
 only has a fresh `git clone`.

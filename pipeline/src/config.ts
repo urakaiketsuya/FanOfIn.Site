@@ -15,6 +15,12 @@ export const config = {
   /** Skips pricing + analysis and only runs the Omnidex crawl — lets a multi-year backfill be split into one fetch-only sub-process per year, with a single analysis run at the end over everything once all years are in the cache (analysis needs the full cross-year dataset to compute correct per-champion similarity groups, so it can't be split the same way). */
   fetchOnly: process.env.GATCG_FETCH_ONLY === "1",
 
+  /** Skips just the pricing step (Omnidex crawl + analysis still run) — lets the daily data-refresh
+   * schedule keep pricing/price-history on their original once-a-week cadence (PRICE_HISTORY_MAX_POINTS
+   * assumes weekly snapshots for its ~1 year lookback) without also slowing the Omnidex crawl down to
+   * weekly. See .github/workflows/data-refresh.yml, which sets this on every day but Monday. */
+  skipPricing: process.env.GATCG_SKIP_PRICING === "1",
+
   /** Initial Omnidex backfill is scoped to this year only (Phase 6); see Phase 12 for full history. */
   backfillYear: Number(process.env.GATCG_BACKFILL_YEAR ?? 2026),
 

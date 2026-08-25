@@ -666,7 +666,7 @@ export default function About() {
         <div className="mx-auto max-w-3xl px-4 py-16 text-center">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">How it's built</h2>
           <p className="mt-4 text-ctp-subtext1">
-            A small pipeline crawls Omnidex and the Grand Archive API on a weekly schedule and publishes the results
+            A small pipeline crawls Omnidex and the Grand Archive API on a daily schedule and publishes the results
             as static data. The site itself is a client-only app that fetches and caches that data in your
             browser — no backend, no database, no user data collected. Nothing to sign up for, nothing tracked.
           </p>

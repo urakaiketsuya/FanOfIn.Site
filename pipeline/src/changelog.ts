@@ -11,8 +11,10 @@ const RECORD_SEP = "\x1f";
 const ENTRY_SEP = "\x1e";
 const MAX_ENTRIES = 500;
 
-/** Automated weekly data-refresh commits (see .github/workflows/data-refresh.yml) aren't a real site change to show visitors. */
-const NOISE_PREFIXES = ["chore: weekly data refresh"];
+/** Automated data-refresh commits (see .github/workflows/data-refresh.yml) aren't a real site change
+ * to show visitors. Matches both the current daily-refresh message and the older weekly-refresh one
+ * still present in git history, so past entries don't suddenly reappear once this filter changes. */
+const NOISE_PREFIXES = ["chore: daily data refresh", "chore: weekly data refresh"];
 
 /**
  * Publishes recent commit history as a lightweight changelog — "for now," per explicit direction,

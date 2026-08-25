@@ -1,15 +1,16 @@
-name: Weekly data refresh
+name: Daily data refresh
 
 on:
   schedule:
-    # Monday 06:00 UTC — after weekend store championships have had time to get marked complete.
-    - cron: "0 6 * * 1"
+    # 06:00 UTC daily — incremental, so a day with no new completed events is a fast no-op; this
+    # just shortens how long a completed event (store championships included) waits to show up.
+    - cron: "0 6 * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
 
-# Don't let a slow run overlap with next week's — later one waits instead of racing it.
+# Don't let a slow run overlap with the next day's — later one waits instead of racing it.
 concurrency:
   group: data-refresh
   cancel-in-progress: false
@@ -41,14 +42,22 @@ jobs:
           # Always save a fresh entry (keyed by run id) and restore the most recent prior one —
           # this cache is genuinely incremental state (maxKnownId, per-event fetch cache, scored
           # similarity pairs), not a derived/reproducible build cache, so losing it would mean the
-          # next run re-scans from scratch instead of just picking up what's new since last week.
+          # next run re-scans from scratch instead of just picking up what's new since last time.
           key: pipeline-cache-${{ github.run_id }}
           restore-keys: |
             pipeline-cache-
 
+      - name: Check day of week
+        id: day
+        # PRICE_HISTORY_MAX_POINTS (shared/src/pricing.ts) assumes weekly snapshots for its ~1 year
+        # lookback — keep pricing/price-history on that original cadence even though events/analysis
+        # now run daily, rather than growing the file 7x or shrinking its real coverage to ~7 weeks.
+        run: echo "is_monday=$([ "$(date -u +%u)" = "1" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
       - name: Run pipeline (incremental)
         run: npm run pipeline
         env:
+          GATCG_SKIP_PRICING: ${{ steps.day.outputs.is_monday == 'true' && '0' || '1' }}
           # Optional until the Worker is provisioned. When set as a repository variable, the
           # normal refresh publishes the simulator summary alongside tournament datasets.
           GATCG_SIMULATOR_API_URL: ${{ vars.GATCG_SIMULATOR_API_URL }}
@@ -61,6 +70,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No data changes this run"
           else
-            git commit -m "chore: weekly data refresh $(date -u +%Y-%m-%d)"
+            git commit -m "chore: daily data refresh $(date -u +%Y-%m-%d)"
             git push
           fi

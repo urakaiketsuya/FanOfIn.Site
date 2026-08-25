@@ -49,7 +49,9 @@ async function main() {
   if (config.analysisOnly) {
     console.log("analysis-only mode: skipping pricing + Omnidex fetch, using whatever's already cached");
   } else {
-    if (!config.fetchOnly) {
+    if (config.skipPricing) {
+      console.log("skip-pricing mode: leaving prices/price history untouched this run");
+    } else if (!config.fetchOnly) {
       try {
         const prices = await buildPrices();
         await writePrices(prices);
