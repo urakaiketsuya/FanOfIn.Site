@@ -607,6 +607,17 @@ win rate—shrunk toward 50% with the site's standard 10-observation prior—rem
 Both windows must contain at least 10 decks. Results rank by decline, evidence, and adjusted win
 rate and are explicitly framed as leads to investigate rather than proof that a card is underplayed.
 
+Each shown decay signal is additionally checked for a **possible replacement**: a same-effect-shape
+sibling (`similarCards`, `app/src/lib/cardSimilarity.ts` — same type/subtype set and effect text with
+numbers normalized away) whose own inclusion rate rose by at least 5 percentage points over the same
+two windows, with at least 5 decks behind the recent count. When more than one sibling qualifies, the
+one with the largest rise wins. This is deliberately a narrow, structural match (not a broader "same
+role" heuristic) — two cards' adoption can move together for unrelated reasons, e.g. a whole
+archetype rotating out rather than one card replacing another — so it only fires when there's a real
+same-template sibling to point to, and is labeled "not proof of a swap" in the UI rather than a
+verdict. No sibling, or no sibling that rose, is a common and expected outcome (most cards have no
+same-effect-shape sibling at all) — the row just shows no replacement in that case.
+
 **Locks with too little data don't get to swing it.** The population used for
 `conditionalWinRate` is filtered to decks containing *every* locked card — but a lock is only
 included in that filter once it clears `MIN_SAMPLE_SIZE` (5) occurrences in the Spirit-filtered

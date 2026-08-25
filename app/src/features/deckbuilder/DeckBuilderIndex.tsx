@@ -32,6 +32,7 @@ import { useCommunitySuggestedBuild } from "./useCommunitySuggestedBuild";
 import { useBuddyCards, type BuddyCard } from "./useBuddyCards";
 import { validateDeck } from "./validateDeck";
 import { computeDependencyReadiness, computeSynergyReadiness } from "./synergyReadiness";
+import { similarCards } from "../../lib/cardSimilarity";
 import ThemaSparkline from "../thema/ThemaSparkline";
 
 type BuilderTab = "build" | "stats" | "buddies" | "log";
@@ -366,6 +367,13 @@ const PILLAR_OPTIONS: RatingPillar[] = ["aggro", "consistency", "interaction", "
  * population". */
 type PopulationSource = "tournament" | "community";
 
+interface CardDecayReplacement {
+  cardName: string;
+  priorRate: number;
+  recentRate: number;
+  rise: number;
+}
+
 interface CardDecaySignal {
   cardName: string;
   priorRate: number;
@@ -373,6 +381,11 @@ interface CardDecaySignal {
   decay: number;
   deckCount: number;
   adjustedWinRate: number;
+  /** A same-effect-shape sibling (see cardSimilarity.ts's similarCards) whose own inclusion rate
+   * rose over the same two windows — a candidate for "this is probably what replaced it," not a
+   * claim (two cards' adoption can move together for unrelated reasons, e.g. a whole archetype
+   * rotating out). Null when no sibling exists or none of them rose. */
+  replacement: CardDecayReplacement | null;
 }
 
 interface CardDecayReport {
@@ -434,7 +447,8 @@ function computeCardDecay(
     }
   }
 
-  const signals: CardDecaySignal[] = [];
+  type Signal = Omit<CardDecaySignal, "replacement">;
+  const signals: Signal[] = [];
   for (const [cardName, priorCount] of priorCounts) {
     const recentCount = recentCounts.get(cardName) ?? 0;
     const performance = wins.get(cardName);
@@ -447,11 +461,35 @@ function computeCardDecay(
     signals.push({ cardName, priorRate, recentRate, decay, deckCount: performance.count, adjustedWinRate });
   }
   signals.sort((a, b) => {
-    const score = (signal: CardDecaySignal) => signal.decay * Math.sqrt(signal.deckCount) * Math.max(0.01, signal.adjustedWinRate - 0.5);
+    const score = (signal: Signal) => signal.decay * Math.sqrt(signal.deckCount) * Math.max(0.01, signal.adjustedWinRate - 0.5);
     return score(b) - score(a);
   });
+
+  // For each shown decay signal, look for a same-effect-shape sibling (cardSimilarity.ts) whose
+  // own inclusion rate rose over the same two windows — the best-rising sibling becomes the
+  // "possibly replaced by" suggestion. Only run against the top 6 (not every candidate signal)
+  // since similarCards scans the whole catalog per call.
+  const RISE_THRESHOLD = 0.05;
+  const MIN_RISE_DECK_COUNT = 5;
+  const catalogArray = Array.from(catalogByName.values());
+  function findReplacement(cardName: string): CardDecayReplacement | null {
+    const card = catalogByName.get(cardName);
+    if (!card) return null;
+    let best: CardDecayReplacement | null = null;
+    for (const sibling of similarCards(card, catalogArray)) {
+      const recentCount = recentCounts.get(sibling.name) ?? 0;
+      if (recentCount < MIN_RISE_DECK_COUNT) continue;
+      const priorRate = (priorCounts.get(sibling.name) ?? 0) / priorRows.length;
+      const recentRate = recentCount / recentRows.length;
+      const rise = recentRate - priorRate;
+      if (rise < RISE_THRESHOLD) continue;
+      if (!best || rise > best.rise) best = { cardName: sibling.name, priorRate, recentRate, rise };
+    }
+    return best;
+  }
+
   return {
-    signals: signals.slice(0, 6),
+    signals: signals.slice(0, 6).map((signal) => ({ ...signal, replacement: findReplacement(signal.cardName) })),
     recentDeckCount: recentRows.length,
     priorDeckCount: priorRows.length,
     recentStart: new Date(recentStartMs).toISOString().slice(0, 10),
@@ -642,30 +680,58 @@ function StatsPanel({
           <div className="mt-3 space-y-2">
             {decayReport.signals.map((signal) => {
               const card = catalogByName.get(signal.cardName);
+              const replacementCard = signal.replacement ? catalogByName.get(signal.replacement.cardName) : undefined;
               return (
-                <div key={signal.cardName} className="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-md border border-ctp-surface1 px-3 py-2 text-xs">
-                  {card ? (
-                    <CardHoverPreview image={card.editions[0]?.image} alt={signal.cardName}>
-                      <Link to={`/cards/${card.slug}`} className="font-semibold text-ctp-text hover:text-ctp-blue">
-                        {signal.cardName}
-                      </Link>
-                    </CardHoverPreview>
-                  ) : (
-                    <span className="font-semibold text-ctp-text">{signal.cardName}</span>
+                <div key={signal.cardName}>
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-md border border-ctp-surface1 px-3 py-2 text-xs">
+                    {card ? (
+                      <CardHoverPreview image={card.editions[0]?.image} alt={signal.cardName}>
+                        <Link to={`/cards/${card.slug}`} className="font-semibold text-ctp-text hover:text-ctp-blue">
+                          {signal.cardName}
+                        </Link>
+                      </CardHoverPreview>
+                    ) : (
+                      <span className="font-semibold text-ctp-text">{signal.cardName}</span>
+                    )}
+                    <span className="text-ctp-subtext1">
+                      {(signal.priorRate * 100).toFixed(0)}% → {(signal.recentRate * 100).toFixed(0)}%
+                    </span>
+                    <span className="font-semibold text-ctp-red">−{(signal.decay * 100).toFixed(1)}pp</span>
+                    <span className="text-ctp-green">{(signal.adjustedWinRate * 100).toFixed(0)}% adjusted win rate</span>
+                    <span className="text-ctp-subtext0">{signal.deckCount} decks</span>
+                    <button
+                      type="button"
+                      onClick={() => onAddCard(signal.cardName)}
+                      className="ml-auto rounded border border-ctp-blue/40 px-1.5 py-0.5 text-ctp-blue hover:bg-ctp-blue/10"
+                    >
+                      + Add
+                    </button>
+                  </div>
+                  {signal.replacement && (
+                    <div className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 pl-3 text-[11px] text-ctp-subtext0">
+                      <span>possibly replaced by</span>
+                      {replacementCard ? (
+                        <CardHoverPreview image={replacementCard.editions[0]?.image} alt={signal.replacement.cardName}>
+                          <Link to={`/cards/${replacementCard.slug}`} className="font-medium text-ctp-text hover:text-ctp-blue">
+                            {signal.replacement.cardName}
+                          </Link>
+                        </CardHoverPreview>
+                      ) : (
+                        <span className="font-medium text-ctp-text">{signal.replacement.cardName}</span>
+                      )}
+                      <span className="text-ctp-green">
+                        {(signal.replacement.priorRate * 100).toFixed(0)}% → {(signal.replacement.recentRate * 100).toFixed(0)}%
+                      </span>
+                      <span>· same effect shape, not proof of a swap</span>
+                      <button
+                        type="button"
+                        onClick={() => onAddCard(signal.replacement!.cardName)}
+                        className="ml-auto rounded border border-ctp-surface1 px-1.5 py-0.5 text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
+                      >
+                        + Add
+                      </button>
+                    </div>
                   )}
-                  <span className="text-ctp-subtext1">
-                    {(signal.priorRate * 100).toFixed(0)}% → {(signal.recentRate * 100).toFixed(0)}%
-                  </span>
-                  <span className="font-semibold text-ctp-red">−{(signal.decay * 100).toFixed(1)}pp</span>
-                  <span className="text-ctp-green">{(signal.adjustedWinRate * 100).toFixed(0)}% adjusted win rate</span>
-                  <span className="text-ctp-subtext0">{signal.deckCount} decks</span>
-                  <button
-                    type="button"
-                    onClick={() => onAddCard(signal.cardName)}
-                    className="ml-auto rounded border border-ctp-blue/40 px-1.5 py-0.5 text-ctp-blue hover:bg-ctp-blue/10"
-                  >
-                    + Add
-                  </button>
                 </div>
               );
             })}
