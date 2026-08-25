@@ -134,6 +134,95 @@ interface ChangeLogEntry {
   winRateDelta: number | null;
 }
 
+const SESSION_STORAGE_KEY = "deckbuilder-session-v1";
+
+interface SessionSeed {
+  championName: string;
+  spiritFilter: string | null;
+  lockedCards: Map<string, number>;
+  lockedSections: Map<string, LockedSection>;
+  rejectedCards: Set<string>;
+  pillarBias: RatingPillar | null;
+  populationSource: PopulationSource;
+  changeLog: ChangeLogEntry[];
+}
+
+/** Plain-JSON shape written to sessionStorage — Maps/Sets aren't JSON.stringify-able, so lockedCards/
+ * lockedSections reuse the exact compact string encoding encodeLockedCards/decodeLockedCards already
+ * use for share links, and rejectedCards becomes a plain array. */
+interface StoredSession {
+  championName: string;
+  spiritFilter: string | null;
+  locked: string;
+  rejectedCards: string[];
+  pillarBias: RatingPillar | null;
+  populationSource: PopulationSource;
+  changeLog: ChangeLogEntry[];
+}
+
+/**
+ * Restores the last in-progress session from this browser tab, so navigating away (e.g. clicking
+ * a suggested card's own page) and back via the browser Back button doesn't reset every choice —
+ * sessionStorage survives that unmount/remount, unlike plain component state. Scoped to the tab
+ * (cleared when it closes) — distinct from the deliberate, on-demand "Copy share link" snapshot
+ * (handleCopyShareLink below), which stays untouched. Wrapped in try/catch: a corrupted or
+ * outdated-shape blob (e.g. from a future version of this file) should read as "no saved session,"
+ * never crash the page — same defensive posture parseUrlSeed's callers already get from a missing
+ * `?champion=` param.
+ */
+function loadSessionSeed(): SessionSeed | null {
+  try {
+    const raw = sessionStorage.getItem(SESSION_STORAGE_KEY);
+    if (!raw) return null;
+    const stored = JSON.parse(raw) as Partial<StoredSession>;
+    if (!stored.championName) return null;
+    const { lockedCards, lockedSections } = stored.locked ? decodeLockedCards(stored.locked) : { lockedCards: new Map<string, number>(), lockedSections: new Map<string, LockedSection>() };
+    return {
+      championName: stored.championName,
+      spiritFilter: stored.spiritFilter ?? null,
+      lockedCards,
+      lockedSections,
+      rejectedCards: new Set(stored.rejectedCards ?? []),
+      pillarBias: stored.pillarBias ?? null,
+      populationSource: stored.populationSource === "community" ? "community" : "tournament",
+      changeLog: Array.isArray(stored.changeLog) ? stored.changeLog : [],
+    };
+  } catch {
+    return null;
+  }
+}
+
+function saveSessionSeed(seed: {
+  championName: string | null;
+  spiritFilter: string | null;
+  lockedCards: Map<string, number>;
+  lockedSections: Map<string, LockedSection>;
+  rejectedCards: Set<string>;
+  pillarBias: RatingPillar | null;
+  populationSource: PopulationSource;
+  changeLog: ChangeLogEntry[];
+}): void {
+  try {
+    if (!seed.championName) {
+      sessionStorage.removeItem(SESSION_STORAGE_KEY);
+      return;
+    }
+    const stored: StoredSession = {
+      championName: seed.championName,
+      spiritFilter: seed.spiritFilter,
+      locked: encodeLockedCards(seed.lockedCards, seed.lockedSections),
+      rejectedCards: Array.from(seed.rejectedCards),
+      pillarBias: seed.pillarBias,
+      populationSource: seed.populationSource,
+      changeLog: seed.changeLog,
+    };
+    sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(stored));
+  } catch {
+    // Private-browsing/storage-full edge cases can throw here — losing autosave silently is
+    // strictly better than crashing the page over it.
+  }
+}
+
 function ChangeLogList({ entries }: { entries: ChangeLogEntry[] }) {
   if (entries.length === 0) return null;
   return (
@@ -1119,23 +1208,28 @@ export default function DeckBuilderIndex() {
   // the very first render actually matters: every useState below that reads from it only consults
   // its initializer once, on mount, same as React already guarantees for lazy useState.
   const urlSeed = parseUrlSeed(searchParams);
+  // An explicit shared link always wins over a leftover session — someone opening a shared link
+  // wants *that* state, not whatever this tab happened to have saved from before. Only consulted
+  // once (mount), same as urlSeed itself — see loadSessionSeed's own doc comment for why a lazy
+  // initializer, not an effect, is what avoids the reset-then-reseed race parseUrlSeed warns about.
+  const sessionSeed = urlSeed ? null : loadSessionSeed();
 
-  const [championName, setChampionName] = useState<string | null>(urlSeed?.championName ?? null);
-  const [spiritFilter, setSpiritFilter] = useState<string | null>(urlSeed?.spiritFilter ?? null);
-  const [lockedCards, setLockedCards] = useState<Map<string, number>>(() => urlSeed?.lockedCards ?? new Map());
+  const [championName, setChampionName] = useState<string | null>(urlSeed?.championName ?? sessionSeed?.championName ?? null);
+  const [spiritFilter, setSpiritFilter] = useState<string | null>(urlSeed?.spiritFilter ?? sessionSeed?.spiritFilter ?? null);
+  const [lockedCards, setLockedCards] = useState<Map<string, number>>(() => urlSeed?.lockedCards ?? sessionSeed?.lockedCards ?? new Map());
   // Section a lock is known to belong to (from where it was locked, or from a pasted decklist's
   // own Main/Material headers) — see useSuggestedBuild's lockedSections param doc for why this
   // beats guessing from population presence for a card the current population barely plays.
-  const [lockedSections, setLockedSections] = useState<Map<string, LockedSection>>(() => urlSeed?.lockedSections ?? new Map());
-  const [rejectedCards, setRejectedCards] = useState<Set<string>>(new Set());
+  const [lockedSections, setLockedSections] = useState<Map<string, LockedSection>>(() => urlSeed?.lockedSections ?? sessionSeed?.lockedSections ?? new Map());
+  const [rejectedCards, setRejectedCards] = useState<Set<string>>(() => sessionSeed?.rejectedCards ?? new Set());
   const [cardInput, setCardInput] = useState("");
   /** Tuning: nudges useSuggestedBuild's ranking toward a chosen Power Rating pillar (see its own
    * pillarBias doc comment) — null ("Balanced") reproduces the original unbiased lift-only order. */
-  const [pillarBias, setPillarBias] = useState<RatingPillar | null>(null);
+  const [pillarBias, setPillarBias] = useState<RatingPillar | null>(sessionSeed?.pillarBias ?? null);
   /** Tuning: swaps the assembled suggestions between real Omnidex win-rate data and Shout At Your
    * Decks' community popularity data — see useCommunitySuggestedBuild's own doc comment. */
-  const [populationSource, setPopulationSource] = useState<PopulationSource>("tournament");
-  const [changeLog, setChangeLog] = useState<ChangeLogEntry[]>([]);
+  const [populationSource, setPopulationSource] = useState<PopulationSource>(sessionSeed?.populationSource ?? "tournament");
+  const [changeLog, setChangeLog] = useState<ChangeLogEntry[]>(sessionSeed?.changeLog ?? []);
   const [tab, setTab] = useTabParam<BuilderTab>("tab", TAB_KEYS, "build");
   const [isPending, startTransition] = useTransition();
   const [pasteOpen, setPasteOpen] = useState(false);
@@ -1159,7 +1253,7 @@ export default function DeckBuilderIndex() {
   // consumed" on the second invocation, incorrectly falling through to a real reset that clobbers
   // the just-seeded lockedCards a moment later. Comparing against a ref that's never mutated
   // during a no-op run stays correct across as many redundant invocations as StrictMode throws at it.
-  const lastResetChampionRef = useRef(urlSeed?.championName ?? null);
+  const lastResetChampionRef = useRef(urlSeed?.championName ?? sessionSeed?.championName ?? null);
 
   const popularityIndexData = useDeckPopularityIndexData();
   // Debounced against the catalog sync's own write batches (app/src/lib/sync/cards.ts writes ~50
@@ -1336,6 +1430,14 @@ export default function DeckBuilderIndex() {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Autosaves this session on every meaningful state change — see loadSessionSeed's doc comment
+  // for why (surviving a click-into-a-card-and-Back round trip). Deliberately excludes ephemeral
+  // UI state (cardInput, pasteOpen/pasteText, tab — the last already survives via useTabParam's
+  // own URL sync) since none of that is "my session," just in-progress typing/navigation.
+  useEffect(() => {
+    saveSessionSeed({ championName, spiritFilter, lockedCards, lockedSections, rejectedCards, pillarBias, populationSource, changeLog });
+  }, [championName, spiritFilter, lockedCards, lockedSections, rejectedCards, pillarBias, populationSource, changeLog]);
 
   /**
    * Bulk equivalent of picking a Champion+Spirit then locking every remaining card by hand —

@@ -4,19 +4,22 @@ import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER, type TopCardsBySection } f
 import { useCardStatsData, useKeywordStatsData, useCompositionWinRateData } from "../archetypes/data";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useCardCombination } from "./useCardCombination";
+import { useCommunityCardInclusion } from "../community/data";
+import { useDeckPopularityIndexData } from "../topdecks/data";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import TopCardsSections from "../../components/TopCardsSections";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 
-type SortMode = "usage" | "adjusted" | "raw" | "hot";
+type SortMode = "usage" | "adjusted" | "raw" | "hot" | "hype";
 
 const SORT_LABELS: Record<SortMode, string> = {
   usage: "Usage",
   adjusted: "Win rate (adjusted)",
   raw: "Win rate (raw)",
   hot: "Hot",
+  hype: "Hype gap",
 };
 
 const MIN_DECKS_OPTIONS = [0, 5, 10, 20];
@@ -27,6 +30,13 @@ export default function CardStatsIndex() {
   const cardStatsData = useCardStatsData();
   const keywordStatsData = useKeywordStatsData();
   const compositionData = useCompositionWinRateData();
+  const communityCardInclusion = useCommunityCardInclusion();
+  const popularityIndexData = useDeckPopularityIndexData();
+  const communityByName = useMemo(
+    () => new Map((communityCardInclusion?.overall ?? []).map((c) => [c.name, c])),
+    [communityCardInclusion],
+  );
+  const totalTournamentDecks = popularityIndexData?.entries.length ?? 0;
   const [sortMode, setSortMode] = useState<SortMode>("usage");
   const [minDecks, setMinDecks] = useState(5);
   const [category, setCategory] = useState<string | null>(null);
@@ -82,7 +92,18 @@ export default function CardStatsIndex() {
     const source = category ? (cardStatsData.byCategory[category] ?? []) : cardStatsData.cards;
     const query = search.trim().toLowerCase();
     const filtered = source.filter((c) => c.deckCount >= minDecks && (query === "" || c.name.toLowerCase().includes(query)));
-    return [...filtered].sort((a, b) => {
+    // "Hype gap" — community popularity minus tournament popularity, two different real
+    // percentages of two different populations (brewers optimizing for fun/budget/theme vs
+    // tournament players optimizing for winning), not a performance judgment. Community %
+    // is null (not 0) when ShoutAtYourDecks has no data for this card at all, so a genuinely
+    // unbrewed card doesn't outrank one that's merely below the community dataset's own floor.
+    const withHype = filtered.map((c) => {
+      const communityEntry = communityByName.get(c.name);
+      const communityPercent = communityEntry?.percentOfDecks ?? null;
+      const tournamentPercent = totalTournamentDecks > 0 ? c.deckCount / totalTournamentDecks : 0;
+      return { ...c, communityPercent, hypeGap: communityPercent !== null ? communityPercent - tournamentPercent : null };
+    });
+    return withHype.sort((a, b) => {
       switch (sortMode) {
         case "adjusted":
           return b.adjustedWinRate - a.adjustedWinRate;
@@ -90,11 +111,13 @@ export default function CardStatsIndex() {
           return b.avgWinRate - a.avgWinRate;
         case "hot":
           return b.recentDeckCount - b.priorDeckCount - (a.recentDeckCount - a.priorDeckCount);
+        case "hype":
+          return (b.hypeGap ?? -1) - (a.hypeGap ?? -1);
         default:
           return b.deckCount - a.deckCount;
       }
     });
-  }, [cardStatsData, sortMode, minDecks, category, search]);
+  }, [cardStatsData, sortMode, minDecks, category, search, communityByName, totalTournamentDecks]);
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
@@ -225,6 +248,14 @@ export default function CardStatsIndex() {
         ))}
       </div>
 
+      {sortMode === "hype" && (
+        <p className="mt-2 text-xs text-ctp-subtext0">
+          Community % (Shout At Your Decks' full brew list) minus tournament share of decks — sorted highest first:
+          cards brewers reach for far more than tournament players do. Two different populations optimizing for
+          different things (fun/budget/theme vs. winning), not a performance verdict on either.
+        </p>
+      )}
+
       <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Min decks:</span>
         {MIN_DECKS_OPTIONS.map((n) => (
@@ -252,6 +283,7 @@ export default function CardStatsIndex() {
               <th className="py-1 pr-6">Events</th>
               <th className="py-1 pr-6">Win rate</th>
               <th className="py-1 pr-6">Adjusted</th>
+              <th className="py-1 pr-6" title="Share of Shout At Your Decks community decks that include this card">Community %</th>
               <th className="py-1"></th>
             </tr>
           </thead>
@@ -279,6 +311,7 @@ export default function CardStatsIndex() {
                 <td className="py-1.5 pr-6 text-ctp-subtext1">{c.eventCount}</td>
                 <td className="py-1.5 pr-6 text-ctp-subtext1">{(c.avgWinRate * 100).toFixed(0)}%</td>
                 <td className="py-1.5 pr-6 text-ctp-subtext1">{(c.adjustedWinRate * 100).toFixed(0)}%</td>
+                <td className="py-1.5 pr-6 text-ctp-mauve">{c.communityPercent !== null ? `${(c.communityPercent * 100).toFixed(0)}%` : "—"}</td>
                 <td className="py-1.5 text-right">
                   <button
                     type="button"

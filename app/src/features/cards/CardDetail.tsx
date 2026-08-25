@@ -27,6 +27,7 @@ import CardHoverPreview from "../../components/CardHoverPreview";
 import CardComparisonTable from "../compare/CardComparisonTable";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useDeckSightingsData } from "../topdecks/data";
+import { useCommunityCardInclusion } from "../community/data";
 import { useHipsterData } from "../players/data";
 import { useOmnidexPlayers } from "../tournaments/data";
 import UniqueDeckRow from "../champions/UniqueDeckRow";
@@ -115,6 +116,8 @@ export default function CardDetail() {
   const priceHistoryData = usePriceHistoryData();
   const cardStatsData = useCardStatsData();
   const cardStat = cardStatsData?.cards.find((c) => c.name === card?.name);
+  const communityCardInclusion = useCommunityCardInclusion();
+  const communityInclusion = communityCardInclusion?.overall.find((c) => c.name === card?.name);
   const cardQuantityStatsData = useCardQuantityStatsData();
   const cardQuantityStat = cardQuantityStatsData?.cards.find((c) => c.name === card?.name);
   // Below this many decks, a quantity bucket is more likely a one-off brew or data quirk than a
@@ -427,6 +430,12 @@ export default function CardDetail() {
                   <span className="text-ctp-green">Trending up</span>
                 )}
               </div>
+              {communityInclusion && (
+                <p className="mt-1 text-xs text-ctp-mauve">
+                  {(communityInclusion.percentOfDecks * 100).toFixed(0)}% of Shout At Your Decks community decks
+                  include this — popularity in community brews, not a performance figure like the stats above.
+                </p>
+              )}
             </div>
           )}
 
