@@ -1,5 +1,7 @@
 /** Published shapes for pipeline/src/shoutatyourdecks/analytics/ — see docs/CALCULATIONS.md, "ShoutAtYourDecks analytics". */
 
+import type { ShoutAtYourDecksDeckSummary } from "./shoutatyourdecks-types.js";
+
 export interface CardInclusionEntry {
   name: string;
   resolved: boolean;
@@ -100,4 +102,17 @@ export interface CommunityCoOccurrenceData {
   generatedAt: string;
   decksConsidered: number;
   byChampion: Record<string, Record<string, CommunityCoOccurrenceEntry[]>>;
+}
+
+/**
+ * Per card, a capped list of real ShoutAtYourDecks decks that include it — for linking out to the
+ * actual deck page (`ShoutAtYourDecksDeckSummary.url`), not an aggregate stat. See
+ * docs/CALCULATIONS.md, "ShoutAtYourDecks analytics" — deliberately unordered, since ShoutAtYourDecks
+ * doesn't record when a deck was actually built or updated (only when this site's scraper fetched
+ * it), so there's no honest basis to call any subset "most recent."
+ */
+export interface CardDeckReferencesData {
+  generatedAt: string;
+  decksConsidered: number;
+  byCardName: Record<string, ShoutAtYourDecksDeckSummary[]>;
 }

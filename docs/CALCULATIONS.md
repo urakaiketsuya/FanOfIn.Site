@@ -1285,6 +1285,17 @@ deliberate trade-off for keeping the two sources fully decoupled.
   all, since it never accrues a `deckCount`). Same ">=80% dominant, else mixed" rule `cardImpact.ts`
   uses for its own `role` field. Lets a community-derived build suggestion (below) know which section
   to place a card in without needing per-deck section data of its own.
+- **Deck references** (`deckReferences.ts`): per card, up to 8 real ShoutAtYourDecks decks that
+  include it (`{id, url, title, author, champion, ...}`, the same `ShoutAtYourDecksDeckSummary`
+  shape used everywhere else) — for linking straight out to the real deck page from `CardDetail.tsx`'s
+  Decks tab, not an aggregate stat. Checks all three sections (main+material+sideboard), not just the
+  deck-identity two, since the question here is "does this specific real deck contain the card" —
+  no min-sample-size gate applies, unlike every other stat in this section, since each entry already
+  is one real deck rather than a statistic needing enough evidence to trust. Deliberately unordered:
+  ShoutAtYourDecks doesn't record when a deck was actually built or last updated, only when this
+  site's own scraper fetched it (`fetchedAt` — confirmed all ~20,700 decks were fetched within one
+  2-day scrape window, so it carries no real recency signal at all), so there's no honest basis to
+  present any subset as "most recent."
 - **Community co-occurrence** (`coOccurrence.ts`): per champion, per card, its top-5 other cards most
   often seen in the same deck (main+material) — pure presence-based co-occurrence, deliberately
   unranked by win rate (there isn't any). Mirrors `app/src/features/deckbuilder/useBuddyCards.ts`'s

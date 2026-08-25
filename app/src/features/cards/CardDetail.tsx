@@ -27,7 +27,7 @@ import CardHoverPreview from "../../components/CardHoverPreview";
 import CardComparisonTable from "../compare/CardComparisonTable";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useDeckSightingsData } from "../topdecks/data";
-import { useCommunityCardInclusion } from "../community/data";
+import { useCardDeckReferences, useCommunityCardInclusion } from "../community/data";
 import { useHipsterData } from "../players/data";
 import { useOmnidexPlayers } from "../tournaments/data";
 import UniqueDeckRow from "../champions/UniqueDeckRow";
@@ -45,6 +45,15 @@ const MIN_SAMPLE_SIZE = 5;
 function formatDelta(n: number | null): string {
   if (n === null || n === 0) return "";
   return ` (${n > 0 ? "+" : ""}${n})`;
+}
+
+/** "diao-chan" -> "Diao Chan" — ShoutAtYourDecks champion slugs are lowercase, not display names.
+ * Same small formatter CommunityDecksIndex.tsx's own formatChampionName already does. */
+function formatShoutAtYourDecksChampion(key: string): string {
+  return key
+    .split("-")
+    .map((w) => w[0].toUpperCase() + w.slice(1))
+    .join(" ");
 }
 
 /** Picks which market-price series to chart: Normal if it has enough real points, else Foil, else nothing (ThemaSparkline itself already no-ops under 2 points, but this also decides which label to show). */
@@ -150,6 +159,8 @@ export default function CardDetail() {
   const sightingsData = useDeckSightingsData();
   const hipsterData = useHipsterData();
   const playersData = useOmnidexPlayers();
+  const cardDeckReferences = useCardDeckReferences();
+  const communityDeckRefs = card ? (cardDeckReferences?.byCardName[card.name] ?? []) : [];
 
   const selectedCardNames = useMemo(() => (card ? [card.name] : []), [card]);
   const combination = useCardCombination(selectedCardNames);
@@ -789,6 +800,32 @@ export default function CardDetail() {
               <UniqueDeckRow key={`${d.eventId}:${d.player}`} score={d} playerName={playerName(d.player)} />
             ))}
           </div>
+        </div>
+      )}
+
+      {tab === "decks" && communityDeckRefs.length > 0 && (
+        <div className="mt-8">
+          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Community decks</h2>
+          <p className="mt-1 text-xs text-ctp-subtext0">
+            Player brews from Shout At Your Decks that include this card — not real tournament results, and not
+            ordered by recency: the site doesn't track when a deck was actually built or updated.
+          </p>
+          <ul className="mt-2 space-y-1 text-sm">
+            {communityDeckRefs.map((d) => (
+              <li key={d.id} className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                <a href={d.url} target="_blank" rel="noreferrer" className="text-ctp-text hover:text-ctp-blue">
+                  {d.title || "(untitled)"}
+                </a>
+                {(d.author || d.champion) && (
+                  <span className="text-xs text-ctp-subtext0">
+                    {d.author ? `by ${d.author}` : ""}
+                    {d.author && d.champion ? " — " : ""}
+                    {d.champion ? formatShoutAtYourDecksChampion(d.champion) : ""}
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 

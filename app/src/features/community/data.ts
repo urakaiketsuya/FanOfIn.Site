@@ -1,4 +1,5 @@
 import type {
+  CardDeckReferencesData,
   CardInclusionData,
   CommunityCoOccurrenceData,
   DeckEraData,
@@ -37,6 +38,10 @@ export function useCommunityDeckEra() {
 
 export function useCommunityCoOccurrence() {
   return usePublishedData<CommunityCoOccurrenceData>("shoutatyourdecks-co-occurrence", "/data/shoutatyourdecks/analytics/co-occurrence.json");
+}
+
+export function useCardDeckReferences() {
+  return usePublishedData<CardDeckReferencesData>("shoutatyourdecks-deck-references", "/data/shoutatyourdecks/analytics/deck-references.json");
 }
 
 /** "Diao Chan" -> "diao-chan" — the inverse of CommunityDecksIndex.tsx's formatChampionName. Every real champion name today is plain ASCII words (confirmed against the real byChampion keys), so a simple lowercase+hyphenate is sufficient. */

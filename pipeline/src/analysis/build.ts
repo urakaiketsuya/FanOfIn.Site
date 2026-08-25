@@ -109,9 +109,18 @@ export async function buildAnalysis(): Promise<void> {
     if (subset.length === 0) continue;
     cardStatsByCategory[category] = cardStatsFor(subset);
   }
+  // Same population computeCardStats iterates over — published so a consumer can derive "% of
+  // tournament decks" without fetching the much larger deck-popularity-index.json/deck-sightings.json
+  // just for their .length (a real ~10MB-fetch-for-one-integer waste this replaced).
+  const cardStatsDecksConsidered = completed.reduce((sum, b) => sum + ("error" in b.decklists ? 0 : b.decklists.length), 0);
   await writeFile(
     path.join(DATA_DIR, "cards.json"),
-    JSON.stringify({ generatedAt: new Date().toISOString(), cards: cardStats, byCategory: cardStatsByCategory }),
+    JSON.stringify({
+      generatedAt: new Date().toISOString(),
+      cards: cardStats,
+      byCategory: cardStatsByCategory,
+      decksConsidered: cardStatsDecksConsidered,
+    }),
     "utf-8",
   );
 

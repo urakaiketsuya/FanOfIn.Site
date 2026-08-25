@@ -5,7 +5,6 @@ import { useCardStatsData, useKeywordStatsData, useCompositionWinRateData } from
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useCardCombination } from "./useCardCombination";
 import { useCommunityCardInclusion } from "../community/data";
-import { useDeckPopularityIndexData } from "../topdecks/data";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import TopCardsSections from "../../components/TopCardsSections";
@@ -31,12 +30,13 @@ export default function CardStatsIndex() {
   const keywordStatsData = useKeywordStatsData();
   const compositionData = useCompositionWinRateData();
   const communityCardInclusion = useCommunityCardInclusion();
-  const popularityIndexData = useDeckPopularityIndexData();
   const communityByName = useMemo(
     () => new Map((communityCardInclusion?.overall ?? []).map((c) => [c.name, c])),
     [communityCardInclusion],
   );
-  const totalTournamentDecks = popularityIndexData?.entries.length ?? 0;
+  // cards.json (already fetched on this page) publishes this directly — avoids fetching the
+  // ~10MB deck-popularity-index.json/deck-sightings.json just for their own .length.
+  const totalTournamentDecks = cardStatsData?.decksConsidered ?? 0;
   const [sortMode, setSortMode] = useState<SortMode>("usage");
   const [minDecks, setMinDecks] = useState(5);
   const [category, setCategory] = useState<string | null>(null);

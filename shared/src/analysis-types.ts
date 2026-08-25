@@ -75,6 +75,10 @@ export interface CardStatsData {
   cards: CardStat[];
   /** Same shape, scoped to one Omnidex event category (worlds/nationals/ascent/regionals/store-championships/regular) — only present for categories with at least one qualifying event. */
   byCategory: Record<string, CardStat[]>;
+  /** Total real decks this file's `cards` stats were computed over — lets a consumer derive "% of
+   * tournament decks" (e.g. deckCount / decksConsidered) without fetching the much larger per-deck
+   * datasets (deck-popularity-index.json, deck-sightings.json) just for their `.length`. */
+  decksConsidered: number;
 }
 
 // ---------------------------------------------------------------------------

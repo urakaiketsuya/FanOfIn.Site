@@ -11,6 +11,7 @@ import { computePriceDistribution } from "./priceDistribution.js";
 import { computeArchetypeClustering } from "./archetypeClustering.js";
 import { computeDeckEra } from "./deckEra.js";
 import { computeCoOccurrence } from "./coOccurrence.js";
+import { computeCardDeckReferences } from "./deckReferences.js";
 
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../../data/shoutatyourdecks/analytics");
 
@@ -46,6 +47,7 @@ export async function runAnalytics(): Promise<void> {
   const archetypes = computeArchetypeClustering(keptDecksWithLists);
   const deckEra = computeDeckEra(keptDecksWithLists, cardIndex);
   const coOccurrence = computeCoOccurrence(keptDecksWithLists, cardIndex);
+  const deckReferences = computeCardDeckReferences(keptDecksWithLists, cardIndex);
 
   await mkdir(DATA_DIR, { recursive: true });
   await writeFile(path.join(DATA_DIR, "card-inclusion.json"), JSON.stringify(cardInclusion), "utf-8");
@@ -54,10 +56,12 @@ export async function runAnalytics(): Promise<void> {
   await writeFile(path.join(DATA_DIR, "archetypes.json"), JSON.stringify(archetypes), "utf-8");
   await writeFile(path.join(DATA_DIR, "deck-era.json"), JSON.stringify(deckEra), "utf-8");
   await writeFile(path.join(DATA_DIR, "co-occurrence.json"), JSON.stringify(coOccurrence), "utf-8");
+  await writeFile(path.join(DATA_DIR, "deck-references.json"), JSON.stringify(deckReferences), "utf-8");
 
   console.log(
     `shoutatyourdecks: analytics published — ${cardInclusion.overall.length} distinct cards, ` +
       `${popularity.champion.length} champions, ${archetypes.clusters.length} archetype clusters, ` +
-      `${deckEra.buckets.length} era buckets, ${Object.keys(coOccurrence.byChampion).length} champions with co-occurrence data`,
+      `${deckEra.buckets.length} era buckets, ${Object.keys(coOccurrence.byChampion).length} champions with co-occurrence data, ` +
+      `${Object.keys(deckReferences.byCardName).length} cards with deck references`,
   );
 }
