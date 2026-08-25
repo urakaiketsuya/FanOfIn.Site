@@ -20,9 +20,10 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     # First full backfill took much longer than this — but that was ~21k decks from zero. A
-    # monthly incremental run only touches decks new since last run (harvest re-walks the listing
-    # to find new ids, but metadata/decklists both skip anything already cached — see
-    # pipeline/src/shoutatyourdecks/README.md), so it should stay well inside this budget. If a
+    # monthly incremental run only touches decks new since last run: harvest always starts at page
+    # 1 (the listing is newest-first) and stops once it hits a few consecutive pages with nothing
+    # new, and metadata/decklists both skip anything already cached — see
+    # pipeline/src/shoutatyourdecks/README.md — so it should stay well inside this budget. If a
     # run ever hits the timeout, that's not corrupting anything — every phase is resumable, so
     # next month's run just picks up wherever this one stopped.
     timeout-minutes: 180
@@ -76,7 +77,26 @@ jobs:
           git add data/shoutatyourdecks
           if git diff --cached --quiet; then
             echo "No data changes this run"
-          else
-            git commit -m "chore: monthly ShoutAtYourDecks refresh $(date -u +%Y-%m-%d)"
-            git push
+            exit 0
           fi
+          git commit -m "chore: monthly ShoutAtYourDecks refresh $(date -u +%Y-%m-%d)"
+
+          # This repo sees other commits land on main during a run (this job alone can take tens of
+          # minutes) — a plain push can get rejected as non-fast-forward. Retry with rebase; on a
+          # conflict (only possible under data/shoutatyourdecks, the only path this job touches),
+          # keep this run's freshly regenerated output — it's a full rebuild over the latest crawl
+          # state, so it supersedes whatever generated snapshot the other commit happened to carry.
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              exit 0
+            fi
+            echo "push rejected (attempt $attempt/5) — fetching and rebasing onto latest main"
+            git fetch origin main
+            if ! git rebase origin/main; then
+              git checkout --ours -- data/shoutatyourdecks
+              git add data/shoutatyourdecks
+              git rebase --continue
+            fi
+          done
+          echo "::error::failed to push updated data after 5 attempts"
+          exit 1
