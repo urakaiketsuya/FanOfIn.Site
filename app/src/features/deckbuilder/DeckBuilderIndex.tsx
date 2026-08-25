@@ -1053,7 +1053,7 @@ function CardRow({
   /** True when `card` came from useCommunitySuggestedBuild — an unlocked card here was placed by
    * popularity, not chosen by the viewer, so the no-lift fallback badge shouldn't say "your choice". */
   communityMode?: boolean;
-  /** Which optional data fields (Cost/Price/Win rate/Sample size/Community %) to render — the viewer's own Customize panel preference. */
+  /** Which optional data fields (Cost/Price/Win rate/Sample size/Community usage) to render — the viewer's own Customize panel preference. */
   visibleFields: CardFieldVisibility;
 }) {
   const cardInfo = cardsByName.get(card.cardName);
@@ -1120,7 +1120,7 @@ function CardRow({
       {visibleFields.sample && card.sample && <span className="text-xs text-ctp-subtext0">({card.sample.with} vs {card.sample.without})</span>}
       {visibleFields.community && communityInclusion?.get(card.cardName) && (
         <span className="text-xs text-ctp-mauve" title="Share of Shout At Your Decks community decks for this Champion that include this card">
-          {Math.round(communityInclusion.get(card.cardName)!.percentOfDecks * 100)}% community
+          {Math.round(communityInclusion.get(card.cardName)!.percentOfDecks * 100)}% brewed
         </span>
       )}
       <div className="ml-auto flex shrink-0 gap-1.5">
@@ -1157,7 +1157,7 @@ function SuggestionRow({
   cardsByName: ReturnType<typeof useCardsByNames>;
   priceByName: Map<string, number>;
   communityInclusion?: Map<string, CardInclusionEntry>;
-  /** Which optional data fields (Price/Win rate/Sample size/Community %) to render — the viewer's own Customize panel preference. */
+  /** Which optional data fields (Price/Win rate/Sample size/Community usage) to render — the viewer's own Customize panel preference. */
   visibleFields: CardFieldVisibility;
 }) {
   const cardInfo = cardsByName.get(card.cardName);
@@ -1191,7 +1191,7 @@ function SuggestionRow({
       {visibleFields.sample && card.sample && <span className="text-xs text-ctp-subtext0">({card.sample.with} vs {card.sample.without})</span>}
       {visibleFields.community && communityInclusion?.get(card.cardName) && (
         <span className="text-xs text-ctp-mauve" title="Share of Shout At Your Decks community decks for this Champion that include this card">
-          {Math.round(communityInclusion.get(card.cardName)!.percentOfDecks * 100)}% community
+          {Math.round(communityInclusion.get(card.cardName)!.percentOfDecks * 100)}% brewed
         </span>
       )}
       <button
@@ -1962,7 +1962,7 @@ export default function DeckBuilderIndex() {
                         ["price", "Price"],
                         ["winRate", "Win rate"],
                         ["sample", "Sample size"],
-                        ["community", "Community %"],
+                        ["community", "Community usage"],
                       ] as [keyof CardFieldVisibility, string][]
                     ).map(([field, label]) => (
                       <button

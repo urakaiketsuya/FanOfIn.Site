@@ -94,7 +94,7 @@ export default function CardStatsIndex() {
     const filtered = source.filter((c) => c.deckCount >= minDecks && (query === "" || c.name.toLowerCase().includes(query)));
     // "Hype gap" — community popularity minus tournament popularity, two different real
     // percentages of two different populations (brewers optimizing for fun/budget/theme vs
-    // tournament players optimizing for winning), not a performance judgment. Community %
+    // tournament players optimizing for winning), not a performance judgment. Community usage
     // is null (not 0) when ShoutAtYourDecks has no data for this card at all, so a genuinely
     // unbrewed card doesn't outrank one that's merely below the community dataset's own floor.
     const withHype = filtered.map((c) => {
@@ -250,7 +250,7 @@ export default function CardStatsIndex() {
 
       {sortMode === "hype" && (
         <p className="mt-2 text-xs text-ctp-subtext0">
-          Community % (Shout At Your Decks' full brew list) minus tournament share of decks — sorted highest first:
+          Community usage (Shout At Your Decks' full brew list) minus tournament share of decks — sorted highest first:
           cards brewers reach for far more than tournament players do. Two different populations optimizing for
           different things (fun/budget/theme vs. winning), not a performance verdict on either.
         </p>
@@ -283,7 +283,7 @@ export default function CardStatsIndex() {
               <th className="py-1 pr-6">Events</th>
               <th className="py-1 pr-6">Win rate</th>
               <th className="py-1 pr-6">Adjusted</th>
-              <th className="py-1 pr-6" title="Share of Shout At Your Decks community decks that include this card">Community %</th>
+              <th className="py-1 pr-6" title="Share of Shout At Your Decks community decks that include this card">Community usage</th>
               <th className="py-1"></th>
             </tr>
           </thead>
