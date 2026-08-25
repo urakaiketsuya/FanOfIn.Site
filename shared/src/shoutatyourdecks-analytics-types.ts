@@ -7,6 +7,8 @@ export interface CardInclusionEntry {
   percentOfDecks: number;
   totalCopies: number;
   avgCopiesWhenIncluded: number;
+  /** Whichever section (main/material/sideboard) accounts for >=80% of this card's appearances, "mixed" otherwise — same convention as CardImpactRole (shared/src/cardImpact.ts). Lets a community-derived build suggestion (see "Community population" in docs/CALCULATIONS.md) know which section to place a card in. */
+  primarySection: "main" | "material" | "sideboard" | "mixed";
 }
 
 export interface CardInclusionData {
@@ -76,4 +78,26 @@ export interface DeckEraData {
   decksConsidered: number;
   unresolvedDeckCount: number;
   buckets: DeckEraBucket[];
+}
+
+export interface CommunityCoOccurrenceEntry {
+  cardName: string;
+  /** Decks (within this champion's population) containing both the key card and this buddy. */
+  count: number;
+  /** count / (decks containing the key card) — same field name/meaning as app/src/features/deckbuilder/useBuddyCards.ts's client-side BuddyCard, so the two lenses read identically even though one is pipeline-computed and one is client-computed. */
+  coOccurrenceRate: number;
+}
+
+/**
+ * Per champion, per card, its top co-occurring other cards in the same deck (main+material) —
+ * pure presence-based co-occurrence, deliberately unranked by win rate (there isn't any). See
+ * docs/CALCULATIONS.md, "ShoutAtYourDecks analytics" — this mirrors useBuddyCards.ts's own
+ * MIN_SUPPORT/top-5 gating so the two "played together" lenses (tournament, community) read
+ * consistently even though this one is computed pipeline-side over the full ShoutAtYourDecks
+ * population instead of client-side over just the currently-locked cards.
+ */
+export interface CommunityCoOccurrenceData {
+  generatedAt: string;
+  decksConsidered: number;
+  byChampion: Record<string, Record<string, CommunityCoOccurrenceEntry[]>>;
 }

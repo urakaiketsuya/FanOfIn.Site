@@ -1,4 +1,11 @@
-import type { CardInclusionData, DeckEraData, PopularityData, PriceDistributionData, ShoutAtYourDecksArchetypeClusteringData } from "@gatcg/shared";
+import type {
+  CardInclusionData,
+  CommunityCoOccurrenceData,
+  DeckEraData,
+  PopularityData,
+  PriceDistributionData,
+  ShoutAtYourDecksArchetypeClusteringData,
+} from "@gatcg/shared";
 import { usePublishedData } from "../../lib/sync/usePublishedData";
 
 /** Standalone ShoutAtYourDecks-derived stats — deliberately separate from every Omnidex-derived hook elsewhere in this app (see docs/CALCULATIONS.md, "ShoutAtYourDecks analytics"). */
@@ -26,4 +33,13 @@ export function useCommunityArchetypes() {
 
 export function useCommunityDeckEra() {
   return usePublishedData<DeckEraData>("shoutatyourdecks-deck-era", "/data/shoutatyourdecks/analytics/deck-era.json");
+}
+
+export function useCommunityCoOccurrence() {
+  return usePublishedData<CommunityCoOccurrenceData>("shoutatyourdecks-co-occurrence", "/data/shoutatyourdecks/analytics/co-occurrence.json");
+}
+
+/** "Diao Chan" -> "diao-chan" — the inverse of CommunityDecksIndex.tsx's formatChampionName. Every real champion name today is plain ASCII words (confirmed against the real byChampion keys), so a simple lowercase+hyphenate is sufficient. */
+export function championToSlug(name: string): string {
+  return name.toLowerCase().replace(/\s+/g, "-");
 }

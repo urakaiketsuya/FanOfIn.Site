@@ -1245,7 +1245,7 @@ deck-card-index.json, each fetched multiple times) to a fraction of that (deck-p
 
 ## ShoutAtYourDecks analytics (`pipeline/src/shoutatyourdecks/analytics/`)
 
-Four stats computed over the ShoutAtYourDecks scrape (see `pipeline/src/shoutatyourdecks/README.md`)
+Several stats computed over the ShoutAtYourDecks scrape (see `pipeline/src/shoutatyourdecks/README.md`)
 and published to `data/shoutatyourdecks/analytics/` — deliberately standalone from every Omnidex-
 derived stat above and from `pipeline/src/analysis/`, per the same "separate dataset" decision the
 scraper itself was built under. None of this reuses Omnidex's `canonicalSignature`/`deckSightings.ts`/
@@ -1256,7 +1256,21 @@ deliberate trade-off for keeping the two sources fully decoupled.
   `avgCopiesWhenIncluded` per card, over main+material (deck-identity convention below), resolved
   against the card catalog via `resolveCard` (`pipeline/src/cards/catalog.ts`). Per-champion
   breakdowns are only published for champions with `>= config.sydMinChampionSampleSize` (default 5)
-  decks — same reasoning as `minBattleChartSampleSize` elsewhere in this doc.
+  decks — same reasoning as `minBattleChartSampleSize` elsewhere in this doc. Each entry also carries
+  `primarySection` (`"main" | "material" | "sideboard" | "mixed"`): whichever section accounts for
+  `>= 80%` of the card's appearances (main/material counted toward `deckCount`; sideboard tracked
+  separately and excluded from `deckCount`/`percentOfDecks`, same deck-identity convention as
+  everywhere else — in practice this means a sideboard-only card never appears in this dataset at
+  all, since it never accrues a `deckCount`). Same ">=80% dominant, else mixed" rule `cardImpact.ts`
+  uses for its own `role` field. Lets a community-derived build suggestion (below) know which section
+  to place a card in without needing per-deck section data of its own.
+- **Community co-occurrence** (`coOccurrence.ts`): per champion, per card, its top-5 other cards most
+  often seen in the same deck (main+material) — pure presence-based co-occurrence, deliberately
+  unranked by win rate (there isn't any). Mirrors `app/src/features/deckbuilder/useBuddyCards.ts`'s
+  own client-side gating exactly (`MIN_SUPPORT = 5` decks, top-5 cap), so the two "played together"
+  lenses read consistently on the Guided Deck Builder's Buddy Cards tab even though one is
+  pipeline-computed over the full ShoutAtYourDecks population and the other is client-computed over
+  just the currently-locked cards. Same per-champion sample gate as card inclusion.
 - **Champion/element popularity** (`popularity.ts`): champion popularity covers every filtered deck
   (no decklist needed — it's already in the cheap metadata). Element popularity needs the actual
   card list, so it's scoped to decks with a fetched decklist only (`elementDecksConsidered`), and
@@ -1298,7 +1312,28 @@ deliberate trade-off for keeping the two sources fully decoupled.
 
 Every output file's `generatedAt` is paired with a `decksConsidered` (or per-stat equivalent) count —
 worth checking before trusting a number, since Phase 3 of the scrape (full decklist fetch) can still
-be in progress when this runs, and four of the five stats depend on it.
+be in progress when this runs, and most of these stats depend on it.
+
+### Community population (`app/src/features/deckbuilder/useCommunitySuggestedBuild.ts`)
+
+The Guided Deck Builder's real assembly engine (`useSuggestedBuild.ts`, documented above) ranks by
+Omnidex win-rate lift — real tournament outcomes. ShoutAtYourDecks decks have no win/loss data at
+all (it's a deck-building site, not a tournament tracker), so blending them into that ranking would
+mean fabricating a performance signal. Instead, a "Tournament data / Community decks" toggle on the
+Stats tab's Tuning section swaps in a separate, much simpler build assembled by
+`useCommunitySuggestedBuild.ts`: it ranks by `percentOfDecks` (popularity, from the card inclusion
+dataset above) instead of `adjustedLift` (performance), sections cards via each entry's
+`primarySection`, and sets quantities from `avgCopiesWhenIncluded` (rounded, capped at the same
+UNIQUE-card=1/else=4 legal max `useSuggestedBuild` already applies, and at whatever's left of the
+12-material/48-main assembly targets — literal fallback constants here, since ShoutAtYourDecks
+analytics don't publish a real modal deck size to derive them from the way the tournament population
+does). Every card this hook returns has `adjustedLift`/`sample` permanently `null` and
+`removalSuggestions` permanently empty, so the existing "only show lift when present" UI guards hide
+every win-rate-specific figure on their own — Community mode additionally hides the Power Rating
+pillar-bias selector (a nudge that only makes sense against real lift data) with a one-line
+explanation instead of silently doing nothing when clicked. `DeckBuilderIndex.tsx` never touches
+`useSuggestedBuild.ts`'s own math for this — the two hooks are independent, and the toggle just picks
+which one's output feeds the shared rendering.
 
 ## The "deck identity" convention
 

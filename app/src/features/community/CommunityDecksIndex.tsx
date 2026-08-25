@@ -124,8 +124,8 @@ export default function CommunityDecksIndex() {
         <p className="mt-2 text-xs text-ctp-subtext0">
           {popularity.championDecksConsidered.toLocaleString()} decks total · {popularity.elementDecksConsidered.toLocaleString()} (
           {((popularity.elementDecksConsidered / popularity.championDecksConsidered) * 100).toFixed(0)}%) have a
-          full card list fetched so far — card inclusion, element popularity, and archetype clusters below are scoped
-          to that smaller, still-growing subset. Champion popularity and price cover every deck already.
+          full card list — card inclusion, element popularity, and archetype clusters below are scoped to that set.
+          Champion popularity and price cover every deck.
         </p>
       )}
 

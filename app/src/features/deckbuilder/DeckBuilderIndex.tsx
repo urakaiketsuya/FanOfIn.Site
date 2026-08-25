@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import type { Card, CompositionWinRateData, CompositionWinRateStat, OmnidexDecklist } from "@gatcg/shared";
+import type { Card, CardInclusionEntry, CommunityCoOccurrenceEntry, CompositionWinRateData, CompositionWinRateStat, OmnidexDecklist } from "@gatcg/shared";
+import { championToSlug, useCommunityCardInclusion, useCommunityCoOccurrence } from "../community/data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCardQuantityStatsData, useCompositionWinRateData } from "../archetypes/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
@@ -27,6 +28,7 @@ import { useDebouncedValue } from "../../lib/useDebouncedValue";
 import { useDeckBuilderPopulation } from "./useDeckBuilderPopulation";
 import { useNearestDecks, type NearestDeck } from "./useNearestDecks";
 import { computeIdentityElements, findChampionCard, useSuggestedBuild, type SuggestedCard } from "./useSuggestedBuild";
+import { useCommunitySuggestedBuild } from "./useCommunitySuggestedBuild";
 import { useBuddyCards, type BuddyCard } from "./useBuddyCards";
 import { validateDeck } from "./validateDeck";
 import { computeDependencyReadiness, computeSynergyReadiness } from "./synergyReadiness";
@@ -168,19 +170,59 @@ function ChangeLogList({ entries }: { entries: ChangeLogEntry[] }) {
   );
 }
 
+/** Shared by both the tournament (client-computed BuddyCard) and community (pipeline-computed CommunityCoOccurrenceEntry) lenses — same {cardName, count, coOccurrenceRate} shape. */
+function BuddyRow({
+  buddy,
+  cardsByName,
+  onAdd,
+}: {
+  buddy: { cardName: string; coOccurrenceRate: number };
+  cardsByName: ReturnType<typeof useCardsByNames>;
+  onAdd: (name: string) => void;
+}) {
+  const cardInfo = cardsByName.get(buddy.cardName);
+  return (
+    <li className="relative flex items-center gap-1.5 overflow-hidden rounded-md border border-ctp-surface1 py-1 pl-3 pr-2 text-sm">
+      <ElementRail elements={cardInfo?.elements} />
+      <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={buddy.cardName}>
+        {cardInfo ? (
+          <Link to={`/cards/${cardInfo.slug}`} className="text-ctp-text hover:text-ctp-blue">
+            {buddy.cardName}
+          </Link>
+        ) : (
+          <span className="text-ctp-text">{buddy.cardName}</span>
+        )}
+      </CardHoverPreview>
+      <span className="text-xs text-ctp-subtext0">{Math.round(buddy.coOccurrenceRate * 100)}%</span>
+      <button
+        type="button"
+        onClick={() => onAdd(buddy.cardName)}
+        className="rounded-md border border-ctp-surface1 px-1.5 py-0.5 text-[10px] text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
+      >
+        Add
+      </button>
+    </li>
+  );
+}
+
 function BuddyCardsList({
   lockedNames,
   buddyCards,
+  communityBuddyCards,
   cardsByName,
   onAdd,
 }: {
   lockedNames: string[];
   buddyCards: Map<string, BuddyCard[]>;
+  communityBuddyCards: Map<string, CommunityCoOccurrenceEntry[]>;
   cardsByName: ReturnType<typeof useCardsByNames>;
   onAdd: (name: string) => void;
 }) {
   const groups = lockedNames.map((name) => ({ name, buddies: buddyCards.get(name) ?? [] })).filter((g) => g.buddies.length > 0);
-  if (groups.length === 0) {
+  const communityGroups = lockedNames
+    .map((name) => ({ name, buddies: communityBuddyCards.get(name) ?? [] }))
+    .filter((g) => g.buddies.length > 0);
+  if (groups.length === 0 && communityGroups.length === 0) {
     return (
       <div className="mt-6">
         <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Buddy cards</h2>
@@ -206,35 +248,37 @@ function BuddyCardsList({
               With <span className="text-ctp-text">{name}</span>:
             </p>
             <ul className="mt-1 flex flex-wrap gap-1.5">
-              {buddies.map((b) => {
-                const cardInfo = cardsByName.get(b.cardName);
-                return (
-                  <li key={b.cardName} className="relative flex items-center gap-1.5 overflow-hidden rounded-md border border-ctp-surface1 py-1 pl-3 pr-2 text-sm">
-                    <ElementRail elements={cardInfo?.elements} />
-                    <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={b.cardName}>
-                      {cardInfo ? (
-                        <Link to={`/cards/${cardInfo.slug}`} className="text-ctp-text hover:text-ctp-blue">
-                          {b.cardName}
-                        </Link>
-                      ) : (
-                        <span className="text-ctp-text">{b.cardName}</span>
-                      )}
-                    </CardHoverPreview>
-                    <span className="text-xs text-ctp-subtext0">{Math.round(b.coOccurrenceRate * 100)}%</span>
-                    <button
-                      type="button"
-                      onClick={() => onAdd(b.cardName)}
-                      className="rounded-md border border-ctp-surface1 px-1.5 py-0.5 text-[10px] text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
-                    >
-                      Add
-                    </button>
-                  </li>
-                );
-              })}
+              {buddies.map((b) => (
+                <BuddyRow key={b.cardName} buddy={b} cardsByName={cardsByName} onAdd={onAdd} />
+              ))}
             </ul>
           </div>
         ))}
       </div>
+
+      {communityGroups.length > 0 && (
+        <div className="mt-4 border-t border-ctp-surface0 pt-3">
+          <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Community buddy cards</h3>
+          <p className="mt-1 text-xs text-ctp-subtext0">
+            Same idea, from Shout At Your Decks' full deck list instead of tournament data — real co-occurrence, no win
+            rate involved either way.
+          </p>
+          <div className="mt-2 space-y-3">
+            {communityGroups.map(({ name, buddies }) => (
+              <div key={name}>
+                <p className="text-xs text-ctp-subtext1">
+                  With <span className="text-ctp-text">{name}</span>:
+                </p>
+                <ul className="mt-1 flex flex-wrap gap-1.5">
+                  {buddies.map((b) => (
+                    <BuddyRow key={b.cardName} buddy={b} cardsByName={cardsByName} onAdd={onAdd} />
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -316,6 +360,11 @@ function computeCompositionGaps(
 
 /** Same composition/rating stats as a deck's own dedicated page (DeckDetail.tsx), recomputed live from whatever's currently assembled — updates as cards get locked, added, or removed. */
 const PILLAR_OPTIONS: RatingPillar[] = ["aggro", "consistency", "interaction", "resilience"];
+/** "tournament" ranks by real Omnidex win-rate lift (useSuggestedBuild); "community" ranks by
+ * Shout At Your Decks' popularity (useCommunitySuggestedBuild) — no win/loss data, so pillar
+ * tuning and lift-specific UI are unavailable in this mode. See docs/CALCULATIONS.md, "Community
+ * population". */
+type PopulationSource = "tournament" | "community";
 
 function StatsPanel({
   lines,
@@ -329,6 +378,8 @@ function StatsPanel({
   pillarBias,
   onPillarBiasChange,
   onAddCard,
+  populationSource,
+  onPopulationSourceChange,
 }: {
   lines: { name: string; quantity: number }[];
   mainLines: { name: string; quantity: number }[];
@@ -341,6 +392,8 @@ function StatsPanel({
   pillarBias: RatingPillar | null;
   onPillarBiasChange: (pillar: RatingPillar | null) => void;
   onAddCard: (name: string) => void;
+  populationSource: PopulationSource;
+  onPopulationSourceChange: (source: PopulationSource) => void;
 }) {
   const identity = useMemo(() => computeDeckIdentity(lines, cardsByName), [lines, cardsByName]);
   const composition = useMemo(() => computeDeckComposition(lines, cardsByName), [lines, cardsByName]);
@@ -416,32 +469,66 @@ function StatsPanel({
       <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
         <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Tuning</h2>
         <p className="mt-1 text-xs text-ctp-subtext0">
-          Bias ranked suggestions toward one Power Rating pillar — a small nudge among cards that already clear the
-          real win-rate bar below, never a filter or override, so it never surfaces a card the data doesn't support.
+          Data source for every suggestion below: real tournament win rates, or Shout At Your Decks' full community
+          deck list (popularity, not performance — see the note below).
         </p>
         <div className="mt-2 flex flex-wrap gap-1.5">
           <button
             type="button"
-            onClick={() => onPillarBiasChange(null)}
-            className={`rounded-md border px-2 py-1 text-xs capitalize ${
-              pillarBias === null ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+            onClick={() => onPopulationSourceChange("tournament")}
+            className={`rounded-md border px-2 py-1 text-xs ${
+              populationSource === "tournament" ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
           >
-            Balanced
+            Tournament data
           </button>
-          {PILLAR_OPTIONS.map((pillar) => (
-            <button
-              key={pillar}
-              type="button"
-              onClick={() => onPillarBiasChange(pillar)}
-              className={`rounded-md border px-2 py-1 text-xs capitalize ${
-                pillarBias === pillar ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-              }`}
-            >
-              {pillar}
-            </button>
-          ))}
+          <button
+            type="button"
+            onClick={() => onPopulationSourceChange("community")}
+            className={`rounded-md border px-2 py-1 text-xs ${
+              populationSource === "community" ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+            }`}
+          >
+            Community decks
+          </button>
         </div>
+        {populationSource === "tournament" ? (
+          <>
+            <p className="mt-3 text-xs text-ctp-subtext0">
+              Bias ranked suggestions toward one Power Rating pillar — a small nudge among cards that already clear the
+              real win-rate bar below, never a filter or override, so it never surfaces a card the data doesn't support.
+            </p>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              <button
+                type="button"
+                onClick={() => onPillarBiasChange(null)}
+                className={`rounded-md border px-2 py-1 text-xs capitalize ${
+                  pillarBias === null ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                }`}
+              >
+                Balanced
+              </button>
+              {PILLAR_OPTIONS.map((pillar) => (
+                <button
+                  key={pillar}
+                  type="button"
+                  onClick={() => onPillarBiasChange(pillar)}
+                  className={`rounded-md border px-2 py-1 text-xs capitalize ${
+                    pillarBias === pillar ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                  }`}
+                >
+                  {pillar}
+                </button>
+              ))}
+            </div>
+          </>
+        ) : (
+          <p className="mt-3 text-xs text-ctp-subtext0">
+            Community decks carry no win/loss data, so suggestions here rank by how often a card shows up across the
+            full Shout At Your Decks deck list, not by how it performs — playstyle tuning and win-rate figures are
+            unavailable in this mode. Switch back to Tournament data to use them.
+          </p>
+        )}
       </div>
 
       {synergyReadiness.length > 0 && (
@@ -644,6 +731,8 @@ function CardRow({
   cardsByName,
   priceByName,
   showLockToggle = true,
+  communityInclusion,
+  communityMode = false,
 }: {
   card: SuggestedCard;
   onToggleLock: () => void;
@@ -653,6 +742,11 @@ function CardRow({
   cardsByName: ReturnType<typeof useCardsByNames>;
   priceByName: Map<string, number>;
   showLockToggle?: boolean;
+  /** % of Shout At Your Decks community decks (for this Champion) that include this card — a second, clearly-separate data point, never blended into adjustedLift. */
+  communityInclusion?: Map<string, CardInclusionEntry>;
+  /** True when `card` came from useCommunitySuggestedBuild — an unlocked card here was placed by
+   * popularity, not chosen by the viewer, so the no-lift fallback badge shouldn't say "your choice". */
+  communityMode?: boolean;
 }) {
   const cardInfo = cardsByName.get(card.cardName);
   const unitPrice = priceByName.get(card.cardName);
@@ -706,10 +800,21 @@ function CardRow({
         </span>
       ) : (
         <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">
-          {card.reason === "spirit" ? "your pick" : card.reason === "staple" ? "staple" : "your choice"}
+          {communityMode && !card.locked
+            ? "popular pick"
+            : card.reason === "spirit"
+              ? "your pick"
+              : card.reason === "staple"
+                ? "staple"
+                : "your choice"}
         </span>
       )}
       {card.sample && <span className="text-xs text-ctp-subtext0">({card.sample.with} vs {card.sample.without})</span>}
+      {communityInclusion?.get(card.cardName) && (
+        <span className="text-xs text-ctp-mauve" title="Share of Shout At Your Decks community decks for this Champion that include this card">
+          {Math.round(communityInclusion.get(card.cardName)!.percentOfDecks * 100)}% community
+        </span>
+      )}
       <div className="ml-auto flex shrink-0 gap-1.5">
         {showLockToggle && (
           <button
@@ -736,11 +841,13 @@ function SuggestionRow({
   onAdd,
   cardsByName,
   priceByName,
+  communityInclusion,
 }: {
   card: SuggestedCard;
   onAdd: () => void;
   cardsByName: ReturnType<typeof useCardsByNames>;
   priceByName: Map<string, number>;
+  communityInclusion?: Map<string, CardInclusionEntry>;
 }) {
   const cardInfo = cardsByName.get(card.cardName);
   const unitPrice = priceByName.get(card.cardName);
@@ -771,6 +878,11 @@ function SuggestionRow({
         </span>
       )}
       {card.sample && <span className="text-xs text-ctp-subtext0">({card.sample.with} vs {card.sample.without})</span>}
+      {communityInclusion?.get(card.cardName) && (
+        <span className="text-xs text-ctp-mauve" title="Share of Shout At Your Decks community decks for this Champion that include this card">
+          {Math.round(communityInclusion.get(card.cardName)!.percentOfDecks * 100)}% community
+        </span>
+      )}
       <button
         type="button"
         onClick={onAdd}
@@ -805,6 +917,9 @@ export default function DeckBuilderIndex() {
   /** Tuning: nudges useSuggestedBuild's ranking toward a chosen Power Rating pillar (see its own
    * pillarBias doc comment) — null ("Balanced") reproduces the original unbiased lift-only order. */
   const [pillarBias, setPillarBias] = useState<RatingPillar | null>(null);
+  /** Tuning: swaps the assembled suggestions between real Omnidex win-rate data and Shout At Your
+   * Decks' community popularity data — see useCommunitySuggestedBuild's own doc comment. */
+  const [populationSource, setPopulationSource] = useState<PopulationSource>("tournament");
   const [changeLog, setChangeLog] = useState<ChangeLogEntry[]>([]);
   const [tab, setTab] = useTabParam<BuilderTab>("tab", TAB_KEYS, "build");
   const [isPending, startTransition] = useTransition();
@@ -862,7 +977,17 @@ export default function DeckBuilderIndex() {
     [championCard, spiritCardForIdentity],
   );
 
-  const build = useSuggestedBuild(
+  const communityCardInclusion = useCommunityCardInclusion();
+  const communityChampData = useMemo(() => {
+    if (!communityCardInclusion || !championName) return undefined;
+    return communityCardInclusion.byChampion[championToSlug(championName)];
+  }, [communityCardInclusion, championName]);
+  const communityInclusionByName = useMemo(() => {
+    if (!communityChampData) return undefined;
+    return new Map(communityChampData.cards.map((c) => [c.name, c]));
+  }, [communityChampData]);
+
+  const tournamentBuild = useSuggestedBuild(
     rows,
     spiritFilter,
     lockedCards,
@@ -873,6 +998,8 @@ export default function DeckBuilderIndex() {
     undefined,
     pillarBias,
   );
+  const communityBuild = useCommunitySuggestedBuild(communityChampData, lockedCards, rejectedCards, catalogByName, !communityCardInclusion);
+  const build = populationSource === "community" ? communityBuild : tournamentBuild;
 
   const nearestDecks = useNearestDecks(allDecks, lockedCards);
   const gateLoading = populationLoading;
@@ -929,6 +1056,15 @@ export default function DeckBuilderIndex() {
   );
   const placedNames = useMemo(() => new Set(allNames), [allNames]);
   const buddyCards = useBuddyCards(rows, spiritFilter, lockedCards, placedNames);
+  const communityCoOccurrence = useCommunityCoOccurrence();
+  const communityBuddyCards = useMemo(() => {
+    const result = new Map<string, CommunityCoOccurrenceEntry[]>();
+    if (!communityCoOccurrence || !championName) return result;
+    const champData = communityCoOccurrence.byChampion[championToSlug(championName)];
+    if (!champData) return result;
+    for (const name of lockedCards.keys()) result.set(name, champData[name] ?? []);
+    return result;
+  }, [communityCoOccurrence, championName, lockedCards]);
   const buddyNames = useMemo(() => Array.from(buddyCards.values()).flatMap((list) => list.map((b) => b.cardName)), [buddyCards]);
   const suggestionNames = useMemo(() => build.suggestions.map((c) => c.cardName), [build.suggestions]);
   const cardsByName = useCardsByNames(useMemo(() => [...allNames, ...buddyNames, ...suggestionNames], [allNames, buddyNames, suggestionNames]));
@@ -1477,6 +1613,8 @@ export default function DeckBuilderIndex() {
                         card={c}
                         cardsByName={cardsByName}
                         priceByName={priceByName}
+                        communityInclusion={communityInclusionByName}
+                        communityMode={populationSource === "community"}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "material")}
                         onRemove={() => removeCard(c.cardName, c.locked)}
                       />
@@ -1492,6 +1630,8 @@ export default function DeckBuilderIndex() {
                         card={c}
                         cardsByName={cardsByName}
                         priceByName={priceByName}
+                        communityInclusion={communityInclusionByName}
+                        communityMode={populationSource === "community"}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "main")}
                         onChangeQuantity={(qty) => setLockedQuantity(c.cardName, qty)}
                         onRemove={() => removeCard(c.cardName, c.locked)}
@@ -1515,6 +1655,8 @@ export default function DeckBuilderIndex() {
                         card={c}
                         cardsByName={cardsByName}
                         priceByName={priceByName}
+                        communityInclusion={communityInclusionByName}
+                        communityMode={populationSource === "community"}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "sideboard")}
                         onChangeQuantity={(qty) => setLockedQuantity(c.cardName, qty)}
                         onRemove={() => removeCard(c.cardName, c.locked)}
@@ -1534,13 +1676,20 @@ export default function DeckBuilderIndex() {
                   </p>
                   <ul className="mt-2 space-y-1">
                     {build.suggestions.map((c) => (
-                      <SuggestionRow key={c.cardName} card={c} cardsByName={cardsByName} priceByName={priceByName} onAdd={() => addSuggestion(c)} />
+                      <SuggestionRow
+                        key={c.cardName}
+                        card={c}
+                        cardsByName={cardsByName}
+                        priceByName={priceByName}
+                        communityInclusion={communityInclusionByName}
+                        onAdd={() => addSuggestion(c)}
+                      />
                     ))}
                   </ul>
                 </div>
               )}
 
-              {build.removalSuggestions.length > 0 && (
+              {build.removalSuggestions.length > 0 ? (
                 <div className="mt-4">
                   <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Cards that might hurt</h2>
                   <p className="mt-1 text-xs text-ctp-subtext0">
@@ -1554,6 +1703,7 @@ export default function DeckBuilderIndex() {
                         card={c}
                         cardsByName={cardsByName}
                         priceByName={priceByName}
+                        communityInclusion={communityInclusionByName}
                         showLockToggle={false}
                         onToggleLock={() => {}}
                         onRemove={() => removeCard(c.cardName, c.locked)}
@@ -1561,6 +1711,14 @@ export default function DeckBuilderIndex() {
                     ))}
                   </ul>
                 </div>
+              ) : (
+                populationSource === "community" &&
+                championName && (
+                  <p className="mt-4 text-xs text-ctp-subtext0">
+                    Cards that might hurt isn't available in Community mode — Shout At Your Decks has no win/loss data
+                    to flag underperforming choices from.
+                  </p>
+                )
               )}
                 </>
 
@@ -1611,11 +1769,19 @@ export default function DeckBuilderIndex() {
               pillarBias={pillarBias}
               onPillarBiasChange={setPillarBias}
               onAddCard={addCard}
+              populationSource={populationSource}
+              onPopulationSourceChange={setPopulationSource}
             />
           )}
 
           {tab === "buddies" && (
-            <BuddyCardsList lockedNames={Array.from(lockedCards.keys())} buddyCards={buddyCards} cardsByName={cardsByName} onAdd={addCard} />
+            <BuddyCardsList
+              lockedNames={Array.from(lockedCards.keys())}
+              buddyCards={buddyCards}
+              communityBuddyCards={communityBuddyCards}
+              cardsByName={cardsByName}
+              onAdd={addCard}
+            />
           )}
 
           {tab === "log" && <ChangeLogList entries={changeLog} />}
