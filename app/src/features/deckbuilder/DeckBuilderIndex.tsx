@@ -30,6 +30,7 @@ import { useDeckBuilderPopulation, type DeckBuilderRow } from "./useDeckBuilderP
 import { useNearestDecks, type NearestDeck } from "./useNearestDecks";
 import { computeIdentityElements, findChampionCard, useSuggestedBuild, type SuggestedCard } from "./useSuggestedBuild";
 import { useCommunitySuggestedBuild } from "./useCommunitySuggestedBuild";
+import { useCardFieldVisibility, type CardFieldVisibility } from "./useCardFieldVisibility";
 import { useBuddyCards, type BuddyCard } from "./useBuddyCards";
 import { validateDeck } from "./validateDeck";
 import { computeDependencyReadiness, computeSynergyReadiness } from "./synergyReadiness";
@@ -1037,6 +1038,7 @@ function CardRow({
   showLockToggle = true,
   communityInclusion,
   communityMode = false,
+  visibleFields,
 }: {
   card: SuggestedCard;
   onToggleLock: () => void;
@@ -1051,6 +1053,8 @@ function CardRow({
   /** True when `card` came from useCommunitySuggestedBuild — an unlocked card here was placed by
    * popularity, not chosen by the viewer, so the no-lift fallback badge shouldn't say "your choice". */
   communityMode?: boolean;
+  /** Which optional data fields (Cost/Price/Win rate/Sample size/Community %) to render — the viewer's own Customize panel preference. */
+  visibleFields: CardFieldVisibility;
 }) {
   const cardInfo = cardsByName.get(card.cardName);
   const unitPrice = priceByName.get(card.cardName);
@@ -1090,14 +1094,14 @@ function CardRow({
           <span className="text-ctp-text">{card.cardName}</span>
         )}
       </CardHoverPreview>
-      {cardInfo && cardInfo.cost.type !== "none" && cardInfo.cost.value !== null && (
+      {visibleFields.cost && cardInfo && cardInfo.cost.type !== "none" && cardInfo.cost.value !== null && (
         <span className="flex shrink-0 items-center gap-0.5 text-xs text-ctp-subtext0">
           <CostIcon kind={cardInfo.cost.type} size={12} />
           {cardInfo.cost.value}
         </span>
       )}
-      {unitPrice !== undefined && <span className="shrink-0 text-xs text-ctp-subtext0">{formatUsd(unitPrice * card.quantity)}</span>}
-      {card.adjustedLift !== null ? (
+      {visibleFields.price && unitPrice !== undefined && <span className="shrink-0 text-xs text-ctp-subtext0">{formatUsd(unitPrice * card.quantity)}</span>}
+      {visibleFields.winRate && (card.adjustedLift !== null ? (
         <span className={`text-xs font-semibold ${card.adjustedLift >= 0 ? "text-ctp-green" : "text-ctp-red"}`}>
           {card.adjustedLift >= 0 ? "+" : ""}
           {(card.adjustedLift * 100).toFixed(1)}pp
@@ -1112,9 +1116,9 @@ function CardRow({
                 ? "staple"
                 : "your choice"}
         </span>
-      )}
-      {card.sample && <span className="text-xs text-ctp-subtext0">({card.sample.with} vs {card.sample.without})</span>}
-      {communityInclusion?.get(card.cardName) && (
+      ))}
+      {visibleFields.sample && card.sample && <span className="text-xs text-ctp-subtext0">({card.sample.with} vs {card.sample.without})</span>}
+      {visibleFields.community && communityInclusion?.get(card.cardName) && (
         <span className="text-xs text-ctp-mauve" title="Share of Shout At Your Decks community decks for this Champion that include this card">
           {Math.round(communityInclusion.get(card.cardName)!.percentOfDecks * 100)}% community
         </span>
@@ -1146,12 +1150,15 @@ function SuggestionRow({
   cardsByName,
   priceByName,
   communityInclusion,
+  visibleFields,
 }: {
   card: SuggestedCard;
   onAdd: () => void;
   cardsByName: ReturnType<typeof useCardsByNames>;
   priceByName: Map<string, number>;
   communityInclusion?: Map<string, CardInclusionEntry>;
+  /** Which optional data fields (Price/Win rate/Sample size/Community %) to render — the viewer's own Customize panel preference. */
+  visibleFields: CardFieldVisibility;
 }) {
   const cardInfo = cardsByName.get(card.cardName);
   const unitPrice = priceByName.get(card.cardName);
@@ -1174,15 +1181,15 @@ function SuggestionRow({
           <span className="text-ctp-text">{card.cardName}</span>
         )}
       </CardHoverPreview>
-      {unitPrice !== undefined && <span className="shrink-0 text-xs text-ctp-subtext0">{formatUsd(unitPrice * card.quantity)}</span>}
-      {card.adjustedLift !== null && (
+      {visibleFields.price && unitPrice !== undefined && <span className="shrink-0 text-xs text-ctp-subtext0">{formatUsd(unitPrice * card.quantity)}</span>}
+      {visibleFields.winRate && card.adjustedLift !== null && (
         <span className={`text-xs font-semibold ${card.adjustedLift >= 0 ? "text-ctp-green" : "text-ctp-red"}`}>
           {card.adjustedLift >= 0 ? "+" : ""}
           {(card.adjustedLift * 100).toFixed(1)}pp
         </span>
       )}
-      {card.sample && <span className="text-xs text-ctp-subtext0">({card.sample.with} vs {card.sample.without})</span>}
-      {communityInclusion?.get(card.cardName) && (
+      {visibleFields.sample && card.sample && <span className="text-xs text-ctp-subtext0">({card.sample.with} vs {card.sample.without})</span>}
+      {visibleFields.community && communityInclusion?.get(card.cardName) && (
         <span className="text-xs text-ctp-mauve" title="Share of Shout At Your Decks community decks for this Champion that include this card">
           {Math.round(communityInclusion.get(card.cardName)!.percentOfDecks * 100)}% community
         </span>
@@ -1230,6 +1237,8 @@ export default function DeckBuilderIndex() {
    * Decks' community popularity data — see useCommunitySuggestedBuild's own doc comment. */
   const [populationSource, setPopulationSource] = useState<PopulationSource>(sessionSeed?.populationSource ?? "tournament");
   const [changeLog, setChangeLog] = useState<ChangeLogEntry[]>(sessionSeed?.changeLog ?? []);
+  const [visibleFields, setVisibleField] = useCardFieldVisibility();
+  const [customizeOpen, setCustomizeOpen] = useState(false);
   const [tab, setTab] = useTabParam<BuilderTab>("tab", TAB_KEYS, "build");
   const [isPending, startTransition] = useTransition();
   const [pasteOpen, setPasteOpen] = useState(false);
@@ -1937,6 +1946,39 @@ export default function DeckBuilderIndex() {
                   <option key={n} value={n} />
                 ))}
               </datalist>
+              <div className="mt-3">
+                <button
+                  type="button"
+                  onClick={() => setCustomizeOpen((v) => !v)}
+                  className="text-xs text-ctp-subtext0 hover:text-ctp-text"
+                >
+                  Customize card info {customizeOpen ? "▴" : "▾"}
+                </button>
+                {customizeOpen && (
+                  <div className="mt-1.5 flex flex-wrap gap-1.5">
+                    {(
+                      [
+                        ["cost", "Cost"],
+                        ["price", "Price"],
+                        ["winRate", "Win rate"],
+                        ["sample", "Sample size"],
+                        ["community", "Community %"],
+                      ] as [keyof CardFieldVisibility, string][]
+                    ).map(([field, label]) => (
+                      <button
+                        key={field}
+                        type="button"
+                        onClick={() => setVisibleField(field, !visibleFields[field])}
+                        className={`rounded-md border px-2 py-1 text-xs ${
+                          visibleFields[field] ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
               {(populationSource !== "tournament" || pillarBias !== null) && (
                 <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-md border border-ctp-blue/40 bg-ctp-blue/5 px-3 py-2 text-xs text-ctp-subtext1">
                   <span className="font-semibold text-ctp-blue">Tuning active:</span>
@@ -1966,6 +2008,7 @@ export default function DeckBuilderIndex() {
                         cardsByName={cardsByName}
                         priceByName={priceByName}
                         communityInclusion={communityInclusionByName}
+                        visibleFields={visibleFields}
                         communityMode={populationSource === "community"}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "material")}
                         onRemove={() => removeCard(c.cardName, c.locked)}
@@ -1983,6 +2026,7 @@ export default function DeckBuilderIndex() {
                         cardsByName={cardsByName}
                         priceByName={priceByName}
                         communityInclusion={communityInclusionByName}
+                        visibleFields={visibleFields}
                         communityMode={populationSource === "community"}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "main")}
                         onChangeQuantity={(qty) => setLockedQuantity(c.cardName, qty)}
@@ -2008,6 +2052,7 @@ export default function DeckBuilderIndex() {
                         cardsByName={cardsByName}
                         priceByName={priceByName}
                         communityInclusion={communityInclusionByName}
+                        visibleFields={visibleFields}
                         communityMode={populationSource === "community"}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "sideboard")}
                         onChangeQuantity={(qty) => setLockedQuantity(c.cardName, qty)}
@@ -2034,6 +2079,7 @@ export default function DeckBuilderIndex() {
                         cardsByName={cardsByName}
                         priceByName={priceByName}
                         communityInclusion={communityInclusionByName}
+                        visibleFields={visibleFields}
                         onAdd={() => addSuggestion(c)}
                       />
                     ))}
@@ -2056,6 +2102,7 @@ export default function DeckBuilderIndex() {
                         cardsByName={cardsByName}
                         priceByName={priceByName}
                         communityInclusion={communityInclusionByName}
+                        visibleFields={visibleFields}
                         showLockToggle={false}
                         onToggleLock={() => {}}
                         onRemove={() => removeCard(c.cardName, c.locked)}
