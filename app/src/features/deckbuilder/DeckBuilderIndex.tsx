@@ -19,6 +19,7 @@ import BarChart from "../../components/BarChart";
 import RankedCompositionChart from "../../components/RankedCompositionChart";
 import { computeDeckComposition, computeDeckIdentity, computeDeckRating, computeMemoryCostCurve, computeReserveCostCurve, type RatingPillar } from "../../lib/deckIdentity";
 import { buildTcgplayerMassEntryUrl } from "../../lib/tcgplayerMassEntry";
+import { buildClarentPlaytestUrl } from "../../lib/clarentPlaytest";
 import { buildTtsSaveFile, downloadJsonFile, slugifyFilename } from "../../lib/ttsExport";
 import { formatUsd } from "../../lib/format";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -602,8 +603,9 @@ function StatsPanel({
       <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
         <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Tuning</h2>
         <p className="mt-1 text-xs text-ctp-subtext0">
-          Data source for every suggestion below: real tournament win rates, or Shout At Your Decks' full community
-          deck list (popularity, not performance — see the note below).
+          Controls how the Material Deck, Main Deck, and suggestions on the <span className="font-semibold text-ctp-text">Build tab</span> get
+          assembled — not just the diagnostics on this page. Data source: real tournament win rates, or Shout At Your
+          Decks' full community deck list (popularity, not performance — see the note below).
         </p>
         <div className="mt-2 flex flex-wrap gap-1.5">
           <button
@@ -628,8 +630,9 @@ function StatsPanel({
         {populationSource === "tournament" ? (
           <>
             <p className="mt-3 text-xs text-ctp-subtext0">
-              Bias ranked suggestions toward one Power Rating pillar — a small nudge among cards that already clear the
-              real win-rate bar below, never a filter or override, so it never surfaces a card the data doesn't support.
+              Bias the Build tab's ranked suggestions toward one Power Rating pillar — a small nudge among cards that
+              already clear the real win-rate bar, never a filter or override, so it never surfaces a card the data
+              doesn't support.
             </p>
             <div className="mt-2 flex flex-wrap gap-1.5">
               <button
@@ -1517,6 +1520,7 @@ export default function DeckBuilderIndex() {
   );
   // Buying/exporting covers the whole deck including sideboard tech, same as DecklistView.tsx.
   const massEntryUrl = useMemo(() => buildTcgplayerMassEntryUrl([...buildLines, ...sideboardLines]), [buildLines, sideboardLines]);
+  const clarentUrl = useMemo(() => buildClarentPlaytestUrl(decklist), [decklist]);
   function sumPrice(lines: { name: string; quantity: number }[]) {
     let sum = 0;
     let missing = 0;
@@ -1758,6 +1762,15 @@ export default function DeckBuilderIndex() {
             >
               Buy on TCGplayer &rarr;
             </a>
+            <a
+              href={clarentUrl}
+              target="_blank"
+              rel="noreferrer"
+              title="Opens this deck in Clarent's solo Goldfish playtest mode"
+              className="rounded-md border border-ctp-green px-2 py-1 text-xs text-ctp-green hover:bg-ctp-surface0"
+            >
+              Playtest in Clarent &rarr;
+            </a>
             <button
               type="button"
               onClick={handleExportTts}
@@ -1822,6 +1835,23 @@ export default function DeckBuilderIndex() {
                   <option key={n} value={n} />
                 ))}
               </datalist>
+              {(populationSource !== "tournament" || pillarBias !== null) && (
+                <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-md border border-ctp-blue/40 bg-ctp-blue/5 px-3 py-2 text-xs text-ctp-subtext1">
+                  <span className="font-semibold text-ctp-blue">Tuning active:</span>
+                  <span>
+                    {populationSource === "community" ? "Community decks (popularity, not performance)" : "Tournament data"}
+                    {pillarBias && populationSource === "tournament" ? ` · ${pillarBias} bias` : ""}
+                  </span>
+                  <span className="text-ctp-subtext0">— shaping everything below.</span>
+                  <button
+                    type="button"
+                    onClick={() => setTab("stats")}
+                    className="ml-auto shrink-0 rounded border border-ctp-blue/40 px-1.5 py-0.5 text-ctp-blue hover:bg-ctp-blue/10"
+                  >
+                    Adjust in Stats →
+                  </button>
+                </div>
+              )}
               <>
               <div className={`mt-3 grid gap-4 sm:grid-cols-2 transition-opacity ${isPending ? "opacity-50" : ""}`}>
                 <div>
