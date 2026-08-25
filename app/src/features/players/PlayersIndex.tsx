@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import type { Card } from "@gatcg/shared";
 import { useOmnidexPlayers, useOmnidexJudges } from "../tournaments/data";
 import { useEloData, usePlayerDecksData } from "./data";
-import { useChampionCardImages } from "./useChampionCardImages";
+import { useChampionCardImages, useNamelessChampionCard } from "./useChampionCardImages";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import LoadMore from "../../components/LoadMore";
@@ -109,6 +109,7 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
   const championImages = useChampionCardImages(
     Array.from(new Set(visible.map((r) => topChampionById.get(r.player.id)).filter((n): n is string => n !== undefined))),
   );
+  const namelessCard = useNamelessChampionCard();
 
   return (
     <>
@@ -145,13 +146,13 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
           <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
             {visible.map(({ player, rating, rank }) => {
               const topChampion = topChampionById.get(player.id);
-              const card = topChampion ? championImages.get(topChampion) : undefined;
+              const card = topChampion ? championImages.get(topChampion) : namelessCard;
               return (
                 <tr key={player.id}>
                   <td className="py-1.5 pr-6 text-ctp-subtext1">{rank}</td>
                   <td className="py-1.5 pr-6 whitespace-nowrap">
                     <Link to={`/players/${player.id}`} className="flex items-center gap-2 text-ctp-text hover:text-ctp-blue">
-                      {topChampion && <PersonAvatar championName={topChampion} card={card} />}
+                      <PersonAvatar championName={topChampion ?? "Nameless Champion"} card={card} />
                       {player.username}
                     </Link>
                   </td>
@@ -199,6 +200,7 @@ function JudgesView({ topChampionById }: { topChampionById: Map<number, string> 
   const championImages = useChampionCardImages(
     Array.from(new Set(visibleJudges.map((j) => topChampionById.get(j.id)).filter((n): n is string => n !== undefined))),
   );
+  const namelessCard = useNamelessChampionCard();
 
   return (
     <>
@@ -226,12 +228,12 @@ function JudgesView({ topChampionById }: { topChampionById: Map<number, string> 
           <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
             {visibleJudges.map((judge) => {
               const topChampion = topChampionById.get(judge.id);
-              const card = topChampion ? championImages.get(topChampion) : undefined;
+              const card = topChampion ? championImages.get(topChampion) : namelessCard;
               return (
                 <tr key={judge.id}>
                   <td className="py-1.5 pr-6 whitespace-nowrap">
                     <Link to={`/players/${judge.id}`} className="flex items-center gap-2 text-ctp-text hover:text-ctp-blue">
-                      {topChampion && <PersonAvatar championName={topChampion} card={card} />}
+                      <PersonAvatar championName={topChampion ?? "Nameless Champion"} card={card} />
                       {judge.username}
                     </Link>
                   </td>
