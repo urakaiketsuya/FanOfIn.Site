@@ -5,6 +5,7 @@ import type { DeckCardIndexEntry, DeckCardIndexLine, EncodedCardLine } from "@ga
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
 import type { CardSignature } from "../cards/catalog.js";
 import { buildEventDeckSignatures } from "./decklists.js";
+import { config } from "../config.js";
 
 const FULL_CACHE_PATH = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -63,8 +64,9 @@ function encodeLines(lines: DeckCardIndexLine[], nameToIndex: Map<string, number
  * the bulkier per-card membership data, joinable back by `deckId`.
  *
  * Publishes the dictionary-encoded form (see `EncodedCardLine`) — the full, human-readable form
- * is written to `pipeline/.cache/deck-card-index-full.json` first and preserved there rather than
- * discarded, in case it's needed for debugging or regenerating the encoding.
+ * is only written to `pipeline/.cache/deck-card-index-full.json` when GATCG_DEBUG_ARTIFACTS=1
+ * (see config.debugArtifacts); a normal run skips the ~89MB serialization/write since nothing
+ * downstream reads that file.
  */
 export async function computeDeckCardIndex(
   bundles: OmnidexEventBundle[],
@@ -72,8 +74,10 @@ export async function computeDeckCardIndex(
 ): Promise<{ cardNames: string[]; entries: DeckCardIndexEntry[] }> {
   const full = computeFullDeckCardIndex(bundles, cardIndex);
 
-  await mkdir(path.dirname(FULL_CACHE_PATH), { recursive: true });
-  await writeFile(FULL_CACHE_PATH, JSON.stringify(full), "utf-8");
+  if (config.debugArtifacts) {
+    await mkdir(path.dirname(FULL_CACHE_PATH), { recursive: true });
+    await writeFile(FULL_CACHE_PATH, JSON.stringify(full), "utf-8");
+  }
 
   const nameToIndex = new Map<string, number>();
   const entries: DeckCardIndexEntry[] = full.map((entry) => ({
