@@ -798,7 +798,20 @@ worth exactly-scoring, never what counts as a match.
 **Persisted cache**: one file per Champion, `pipeline/.cache/similarity-cache/{champion-slug}.json`,
 keyed by `deckId|deckId` pair, only for pairs that cleared `MIN_SCORE` (caching every pair would
 grow unbounded with a champion's deck count — an earlier version of this cache hit 347MB and made
-runs hang). Non-matches are cheap enough to just recompute on a re-run. Held in memory as a `Map`,
+runs hang). Non-matches are cheap enough to just recompute on a re-run. This cache is restored/saved
+by `data-refresh.yml`'s CI job (bundled with the Omnidex fetch cache under one `actions/cache` key),
+not just a local-dev convenience — every scheduled daily run reads and extends it. Each file carries
+a `version` field (`SIMILARITY_CACHE_VERSION`); `loadCache` treats any mismatch — including a
+pre-versioning file, which has no `version` field at all — as a full cache miss for that champion,
+so a cached score computed under retired scoring logic never gets served silently. Bump the constant
+whenever `MIN_SCORE`/`MINHASH_K`/`LSH_ROWS`/`weightedJaccard`, or how `cardCounts` gets derived from
+a deck's raw lines, changes — the card-name canonicalization fix in commit `3d207c9c` is the one
+real precedent: it changed `weightedJaccard`'s effective inputs with no cache invalidation at the
+time, so any deck pair differing only by casing/Unicode kept whatever stale score an old cache
+already held. To force a full recompute for every champion (e.g. after a real scoring change, or
+just to reclaim disk), run `npm run clean:similarity-cache --workspace pipeline` — deletes the whole
+`similarity-cache/` directory; the next run rebuilds it from scratch, one file per champion as
+before. Held in memory as a `Map`,
 not a plain object — a plain object with millions of string keys degrades badly in V8 (dictionary-
 mode storage, GC pressure); a real full-backfill run with heavy netdecking (Guo Jia alone: ~6.8M
 matches out of ~6.8M candidates scored, close to a 100% hit rate) grew the old object-cache to the

@@ -12,6 +12,18 @@ const TOP_K = 3;
 const MIN_SCORE = 0.35;
 
 /**
+ * Bump whenever a change would make an already-cached score untrustworthy: `MIN_SCORE`,
+ * `MINHASH_K`/`LSH_ROWS` (LSH only affects which pairs get *exactly* scored, but a bump here is
+ * cheap insurance if that ever stops being true), `weightedJaccard`'s formula, or — the one real
+ * precedent for this so far — how `cardCounts` gets derived from a deck's raw card lines (e.g. the
+ * card-name canonicalization fix in commit 3d207c9c, which changed weightedJaccard's effective
+ * inputs with no cache invalidation at the time). A version mismatch (including the pre-versioning
+ * on-disk shape, a bare array with no `version` field at all) is treated as a full cache miss for
+ * that champion — see `loadCache`.
+ */
+const SIMILARITY_CACHE_VERSION = 1;
+
+/**
  * Groups at/below this size just run the exact O(n²) comparison — at ~31k pairs (250 choose 2)
  * that's already sub-second, so MinHash/LSH setup cost isn't worth paying. Above this, per-champion
  * deck counts get large enough (thousands today, likely tens of thousands once multi-year backfill
@@ -169,10 +181,20 @@ function cacheFileFor(championName: string): string {
  * `{key: value}` on disk — both documented (with the incidents that found them) in
  * docs/CALCULATIONS.md, since the reasoning matters for not re-introducing either bug.
  */
+interface SimilarityCacheFile {
+  version: number;
+  entries: [string, number][];
+}
+
+/** A version mismatch — including a pre-versioning file, which has no `version` field at all and so never matches — is treated as a full cache miss: an empty Map means every pair recomputes and the file gets rewritten (in the current version) by the next `writeCache`, same as a champion with no cache file yet. */
 async function loadCache(championName: string): Promise<Map<string, number>> {
   try {
-    const raw = JSON.parse(await readFile(cacheFileFor(championName), "utf-8")) as [string, number][];
-    return new Map(raw);
+    const parsed = JSON.parse(await readFile(cacheFileFor(championName), "utf-8")) as Partial<SimilarityCacheFile>;
+    if (parsed.version !== SIMILARITY_CACHE_VERSION || !parsed.entries) {
+      console.log(`[similarity] ${championName}: cache version mismatch (had ${parsed.version ?? "none"}, want ${SIMILARITY_CACHE_VERSION}) — recomputing`);
+      return new Map();
+    }
+    return new Map(parsed.entries);
   } catch {
     return new Map();
   }
@@ -181,7 +203,8 @@ async function loadCache(championName: string): Promise<Map<string, number>> {
 async function writeCache(championName: string, cache: Map<string, number>): Promise<void> {
   const filePath = cacheFileFor(championName);
   await mkdir(path.dirname(filePath), { recursive: true });
-  await writeFile(filePath, JSON.stringify(Array.from(cache.entries())), "utf-8");
+  const file: SimilarityCacheFile = { version: SIMILARITY_CACHE_VERSION, entries: Array.from(cache.entries()) };
+  await writeFile(filePath, JSON.stringify(file), "utf-8");
 }
 
 /**
