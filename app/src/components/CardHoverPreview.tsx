@@ -1,4 +1,4 @@
-import { useState, type MouseEvent, type ReactNode } from "react";
+import { useState, type FocusEvent, type MouseEvent, type ReactNode } from "react";
 import { gatcgApi } from "../lib/api/client";
 
 const PREVIEW_WIDTH = 220;
@@ -19,19 +19,39 @@ export default function CardHoverPreview({ image, alt, children }: CardHoverPrev
 
   if (!image) return <>{children}</>;
 
+  function clamp(x: number, y: number) {
+    return {
+      x: Math.max(VIEWPORT_MARGIN, Math.min(x, window.innerWidth - PREVIEW_WIDTH - VIEWPORT_MARGIN)),
+      y: Math.max(VIEWPORT_MARGIN, Math.min(y, window.innerHeight - PREVIEW_HEIGHT - VIEWPORT_MARGIN)),
+    };
+  }
+
   function handleMove(e: MouseEvent) {
-    const x = Math.min(e.clientX + CURSOR_OFFSET, window.innerWidth - PREVIEW_WIDTH - VIEWPORT_MARGIN);
-    const y = Math.min(e.clientY + CURSOR_OFFSET, window.innerHeight - PREVIEW_HEIGHT - VIEWPORT_MARGIN);
-    setPos({ x: Math.max(x, VIEWPORT_MARGIN), y: Math.max(y, VIEWPORT_MARGIN) });
+    setPos(clamp(e.clientX + CURSOR_OFFSET, e.clientY + CURSOR_OFFSET));
+  }
+
+  // Keyboard/touch users have no cursor to follow — anchor the preview to the focused element's
+  // right edge instead, so tabbing through a card name still shows the card.
+  function handleFocus(e: FocusEvent) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setPos(clamp(rect.right + CURSOR_OFFSET, rect.top));
   }
 
   return (
-    <span className="relative" onMouseEnter={handleMove} onMouseMove={handleMove} onMouseLeave={() => setPos(null)}>
+    <span
+      className="relative"
+      onMouseEnter={handleMove}
+      onMouseMove={handleMove}
+      onMouseLeave={() => setPos(null)}
+      onFocus={handleFocus}
+      onBlur={() => setPos(null)}
+    >
       {children}
       {pos && (
         <img
           src={gatcgApi.imageUrl(image)}
           alt={alt}
+          onError={() => setPos(null)}
           className="pointer-events-none fixed z-50 rounded-lg border border-ctp-surface1 shadow-xl"
           style={{ left: pos.x, top: pos.y, width: PREVIEW_WIDTH }}
         />

@@ -1,10 +1,14 @@
 import { useEffect } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "../db";
+import { beginLoading, endLoading } from "../useGlobalLoading";
 
 interface Generated {
   generatedAt: string;
 }
+
+/** Sentinel for `useLiveQuery`'s `defaultResult` — the value it returns until the first IndexedDB read resolves. */
+const PENDING = Symbol("published-data-pending");
 
 let manifestPromise: Promise<Record<string, string>> | null = null;
 
@@ -73,6 +77,17 @@ export function usePublishedData<T extends Generated>(key: string, url: string):
     refresh(key, url).catch((err: unknown) => console.error(`failed to refresh ${key}`, err));
   }, [key, url]);
 
-  const row = useLiveQuery(() => db.published.get(key), [key]);
-  return row?.data as T | undefined;
+  // `useLiveQuery`'s defaultResult distinguishes "still resolving the IndexedDB read" from
+  // "resolved to nothing" (the dataset is genuinely absent) — the latter must not keep the nav
+  // progress bar spinning forever.
+  const row = useLiveQuery(() => db.published.get(key), [key], PENDING as never);
+  const loading = (row as unknown) === PENDING;
+
+  useEffect(() => {
+    if (!loading) return;
+    beginLoading();
+    return endLoading;
+  }, [loading]);
+
+  return loading ? undefined : (row?.data as T | undefined);
 }

@@ -1,6 +1,7 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Navigate, Route, Routes, useParams, useSearchParams } from "react-router-dom";
 import About from "./pages/About";
+import { beginLoading, endLoading } from "./lib/useGlobalLoading";
 
 // /top-decks and /popular-decks were merged into /decks (Browse Decks, "By Sighting"/"By Build"
 // tabs) — these redirect old links/bookmarks to the equivalent tab, preserving a ?champion= param.
@@ -64,6 +65,10 @@ const ChangelogIndex = lazy(() => import("./features/changelog/ChangelogIndex"))
 const CommunityDecksIndex = lazy(() => import("./features/community/CommunityDecksIndex"));
 
 function RouteFallback() {
+  useEffect(() => {
+    beginLoading();
+    return endLoading;
+  }, []);
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
       <p className="text-ctp-subtext1">Loading…</p>

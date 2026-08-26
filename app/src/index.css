@@ -19,3 +19,12 @@ table { @apply tabular-nums; }
 tbody tr { @apply transition-colors duration-150; }
 
 tbody tr:hover { @apply bg-ctp-surface0/60; }
+
+@keyframes loading-bar-slide {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(300%); }
+}
+
+.loading-bar-slide {
+  animation: loading-bar-slide 1.2s ease-in-out infinite;
+}
