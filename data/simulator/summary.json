@@ -1,13 +1,36 @@
 {
   "schemaVersion": 1,
   "source": "GrandArchiveSim",
-  "generatedAt": "2026-08-26T06:45:06.272Z",
-  "games": 0,
+  "generatedAt": "2026-08-26T17:54:43.048Z",
+  "games": 1,
   "firstPlayer": {
-    "games": 0,
+    "games": 1,
     "wins": 0,
-    "winRate": null
+    "winRate": 0
   },
-  "champions": [],
-  "matchups": []
+  "champions": [
+    {
+      "championId": "00xbh8oc00",
+      "element": "NORM",
+      "games": 1,
+      "wins": 1,
+      "winRate": 1
+    },
+    {
+      "championId": "1trn0yetae",
+      "element": "WIND",
+      "games": 1,
+      "wins": 0,
+      "winRate": 0
+    }
+  ],
+  "matchups": [
+    {
+      "champion1": "1trn0yetae",
+      "champion2": "00xbh8oc00",
+      "games": 1,
+      "champion1Wins": 0,
+      "champion2Wins": 1
+    }
+  ]
 }
