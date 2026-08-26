@@ -12,10 +12,10 @@ export interface CardFieldVisibility {
 
 const DEFAULT_VISIBILITY: CardFieldVisibility = {
   cost: true,
-  price: true,
+  price: false,
   winRate: true,
-  sample: true,
-  community: true,
+  sample: false,
+  community: false,
 };
 
 function loadVisibility(): CardFieldVisibility {
@@ -41,9 +41,9 @@ function saveVisibility(visibility: CardFieldVisibility): void {
  * Which per-card data fields (Cost, Price, Win rate, Sample size, Community %) show on CardRow/
  * SuggestionRow across the whole Guided Deck Builder — a durable cross-session display preference
  * (`localStorage`, not scoped to a tab or a deck-builder session like `deckbuilder-session-v1`),
- * since "always show me X" is a standing preference, not in-progress deck state. Defaults to every
- * field visible, reproducing the page's original behavior exactly for anyone who's never touched
- * the Customize panel.
+ * since "always show me X" is a standing preference, not in-progress deck state. Defaults to a
+ * minimal set (Cost + Win rate) so card rows stay scannable; the rest are opt-in via the
+ * Customize panel.
  */
 export function useCardFieldVisibility(): [CardFieldVisibility, (field: keyof CardFieldVisibility, value: boolean) => void] {
   const [visibility, setVisibility] = useState<CardFieldVisibility>(loadVisibility);

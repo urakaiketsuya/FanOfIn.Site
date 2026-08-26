@@ -289,7 +289,7 @@ function BuddyRow({
       <button
         type="button"
         onClick={() => onAdd(buddy.cardName)}
-        className="rounded-md border border-ctp-surface1 px-1.5 py-0.5 text-[10px] text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
+        className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
       >
         Add
       </button>
@@ -320,7 +320,7 @@ function BuddyCardsList({
         <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Buddy cards</h2>
         <p className="mt-1 text-xs text-ctp-subtext0">
           {lockedNames.length === 0
-            ? "Pin a card to see what's most often run alongside it."
+            ? "Keep a card to see what's most often run alongside it."
             : "No buddy suggestions right now — either everything commonly run alongside your choices is already in the build, or this Champion/Spirit population is too thin to say (a build with many user choices often narrows it down to just a few decks)."}
         </p>
       </div>
@@ -1058,7 +1058,7 @@ function CardRow({
 }) {
   const cardInfo = cardsByName.get(card.cardName);
   const unitPrice = priceByName.get(card.cardName);
-  const maxQuantity = Math.max(1, Math.min(cardInfo?.types.includes("UNIQUE") ? 1 : 4, cardInfo?.legality?.STANDARD?.limit ?? 4));
+  const maxQuantity = Math.max(1, Math.min(cardInfo?.legality?.STANDARD?.limit ?? 4, 4));
   return (
     <li className={`relative flex flex-wrap items-center gap-1.5 overflow-hidden rounded-md border py-1 pl-3 pr-2 text-sm ${card.locked ? "border-ctp-blue/70 bg-ctp-blue/5" : "border-ctp-surface1"}`}>
       <ElementRail elements={cardInfo?.elements} />
@@ -1128,14 +1128,14 @@ function CardRow({
           <button
             type="button"
             onClick={onToggleLock}
-            className={`rounded-md border px-1.5 py-0.5 text-[10px] ${
+            className={`rounded-md border px-2 py-1 text-xs ${
               card.locked ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
           >
-            {card.locked ? "Pinned" : "Pin"}
+            {card.locked ? "Kept" : "Keep"}
           </button>
         )}
-        <button type="button" onClick={onRemove} className="rounded-md border border-ctp-surface1 px-1.5 py-0.5 text-[10px] text-ctp-subtext1 hover:text-ctp-red">
+        <button type="button" onClick={onRemove} className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-red">
           Remove
         </button>
       </div>
@@ -1197,7 +1197,7 @@ function SuggestionRow({
       <button
         type="button"
         onClick={onAdd}
-        className="ml-auto shrink-0 rounded-md border border-ctp-surface1 px-1.5 py-0.5 text-[10px] text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
+        className="ml-auto shrink-0 rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
       >
         Add
       </button>
@@ -1602,7 +1602,7 @@ export default function DeckBuilderIndex() {
     // real-data verification) — computed here too so the stored quantity starts correct instead of
     // only getting clamped once the build assembles.
     const isMaterialOnly = card ? card.types.includes("CHAMPION") || card.types.includes("REGALIA") : false;
-    const defaultQty = isMaterialOnly || card?.types.includes("UNIQUE") ? 1 : 4;
+    const defaultQty = isMaterialOnly ? 1 : 4;
     pendingActionRef.current = { label: `Added ${name}`, subject: name };
     startTransition(() =>
       setLockedCards((prev) => {
@@ -1747,12 +1747,6 @@ export default function DeckBuilderIndex() {
           </>
         )}
       </div>
-      {championName && spiritFilter === null && (
-        <p className="mt-2 text-xs text-ctp-yellow">
-          Choose a Spirit to define a coherent recommendation population. Deck counts and observed win rates in the
-          picker show how much evidence each option has.
-        </p>
-      )}
       <div className="mt-2">
         {!pasteOpen ? (
           <button type="button" onClick={() => setPasteOpen(true)} className="text-xs text-ctp-blue hover:underline">
@@ -1849,7 +1843,7 @@ export default function DeckBuilderIndex() {
             <p className="mt-2 text-xs text-ctp-subtext0">Standard construction checks only; not tournament certification.</p>
           </details>
 
-          {isPending && <p className="mt-1 text-xs text-ctp-subtext0">Recalculating suggestions…</p>}
+          {isPending && <p role="status" className="mt-1 text-xs text-ctp-subtext0">Recalculating suggestions…</p>}
           {rejectedCards.size > 0 && <p className="mt-1 text-xs text-ctp-subtext0">{rejectedCards.size} card{rejectedCards.size === 1 ? "" : "s"} excluded · <button type="button" onClick={() => { pendingActionRef.current = { label: "Reset excluded cards", subject: null }; startTransition(() => setRejectedCards(new Set())); }} className="hover:text-ctp-blue hover:underline">reset</button></p>}
           {build.usedSpiritElementFallback && (
             <p className="mt-1 text-xs text-ctp-yellow">
@@ -1874,6 +1868,7 @@ export default function DeckBuilderIndex() {
             <button
               type="button"
               onClick={handleCopy}
+              aria-live="polite"
               className={`rounded-md border px-2 py-1 text-xs ${
                 copyState === "failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
               }`}
@@ -1897,6 +1892,8 @@ export default function DeckBuilderIndex() {
             >
               Playtest in Clarent &rarr;
             </a>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-2">
             <button
               type="button"
               onClick={handleExportTts}
@@ -1908,6 +1905,7 @@ export default function DeckBuilderIndex() {
             <button
               type="button"
               onClick={handleCopyShareLink}
+              aria-live="polite"
               title="Copies a link that reopens this Champion/Spirit and every user-choice card"
               className={`rounded-md border px-2 py-1 text-xs ${
                 shareCopyState === "failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
@@ -1917,7 +1915,7 @@ export default function DeckBuilderIndex() {
             </button>
           </div>
 
-          <div className="mt-4 flex flex-wrap gap-2 border-b border-ctp-surface1 pb-2">
+          <div role="tablist" aria-label="Deck builder sections" className="mt-4 flex flex-wrap gap-2 border-b border-ctp-surface1 pb-2">
             {(
               [
                 { key: "build", label: "Build" },
@@ -1929,6 +1927,10 @@ export default function DeckBuilderIndex() {
               <button
                 key={t.key}
                 type="button"
+                role="tab"
+                id={`tab-${t.key}`}
+                aria-selected={tab === t.key}
+                aria-controls={`panel-${t.key}`}
                 onClick={() => setTab(t.key)}
                 className={`rounded-md border px-2.5 py-1 text-xs ${
                   tab === t.key ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
@@ -1940,7 +1942,7 @@ export default function DeckBuilderIndex() {
           </div>
 
           {tab === "build" && (
-            <div className="mt-4">
+            <div role="tabpanel" id="panel-build" aria-labelledby="tab-build" className="mt-4">
               <span className="text-sm text-ctp-subtext0">Add a card:</span>
               <input
                 type="text"
@@ -2012,6 +2014,12 @@ export default function DeckBuilderIndex() {
                 </div>
               )}
               <>
+              {build.hasQuantityOptimizations && (
+                <p className="mt-3 text-[11px] text-ctp-subtext0">
+                  A <span className="text-ctp-blue">*</span> next to a copy count marks a quantity tuned by global
+                  copy-count evidence (hover the count for its source).
+                </p>
+              )}
               <div className={`mt-3 grid gap-4 sm:grid-cols-2 transition-opacity ${isPending ? "opacity-50" : ""}`}>
                 <div>
                   <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Material Deck ({materialTotal})</h2>
@@ -2157,7 +2165,7 @@ export default function DeckBuilderIndex() {
                           <button
                             type="button"
                             onClick={() => loadNearestDeck(d)}
-                            className="ml-auto shrink-0 rounded-md border border-ctp-surface1 px-1.5 py-0.5 text-[10px] text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
+                            className="ml-auto shrink-0 rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
                           >
                             Load
                           </button>
@@ -2171,35 +2179,43 @@ export default function DeckBuilderIndex() {
           )}
 
           {tab === "stats" && (
-            <StatsPanel
-              lines={buildLines}
-              mainLines={mainOnlyLines}
-              cardsByName={cardsByName}
-              catalogByName={catalogByName}
-              identityElements={identityElements}
-              preferredSuggestions={build.suggestions.map((card) => card.cardName)}
-              championName={championName}
-              compositionWinRateData={compositionWinRateData}
-              pillarBias={pillarBias}
-              onPillarBiasChange={setPillarBias}
-              onAddCard={addCard}
-              populationSource={populationSource}
-              onPopulationSourceChange={setPopulationSource}
-              decayReport={decayReport}
-            />
+            <div role="tabpanel" id="panel-stats" aria-labelledby="tab-stats">
+              <StatsPanel
+                lines={buildLines}
+                mainLines={mainOnlyLines}
+                cardsByName={cardsByName}
+                catalogByName={catalogByName}
+                identityElements={identityElements}
+                preferredSuggestions={build.suggestions.map((card) => card.cardName)}
+                championName={championName}
+                compositionWinRateData={compositionWinRateData}
+                pillarBias={pillarBias}
+                onPillarBiasChange={setPillarBias}
+                onAddCard={addCard}
+                populationSource={populationSource}
+                onPopulationSourceChange={setPopulationSource}
+                decayReport={decayReport}
+              />
+            </div>
           )}
 
           {tab === "buddies" && (
-            <BuddyCardsList
-              lockedNames={Array.from(lockedCards.keys())}
-              buddyCards={buddyCards}
-              communityBuddyCards={communityBuddyCards}
-              cardsByName={cardsByName}
-              onAdd={addCard}
-            />
+            <div role="tabpanel" id="panel-buddies" aria-labelledby="tab-buddies">
+              <BuddyCardsList
+                lockedNames={Array.from(lockedCards.keys())}
+                buddyCards={buddyCards}
+                communityBuddyCards={communityBuddyCards}
+                cardsByName={cardsByName}
+                onAdd={addCard}
+              />
+            </div>
           )}
 
-          {tab === "log" && <ChangeLogList entries={changeLog} />}
+          {tab === "log" && (
+            <div role="tabpanel" id="panel-log" aria-labelledby="tab-log">
+              <ChangeLogList entries={changeLog} />
+            </div>
+          )}
 
           <details className="mt-8 border-t border-ctp-surface1 pt-3 text-xs text-ctp-subtext0">
             <summary className="cursor-pointer font-medium hover:text-ctp-text">Data &amp; methodology</summary>
