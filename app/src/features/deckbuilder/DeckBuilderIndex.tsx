@@ -1316,7 +1316,7 @@ export default function DeckBuilderIndex() {
     undefined,
     pillarBias,
   );
-  const communityBuild = useCommunitySuggestedBuild(communityChampData, lockedCards, rejectedCards, catalogByName, !communityCardInclusion);
+  const communityBuild = useCommunitySuggestedBuild(communityChampData, lockedCards, rejectedCards, catalogByName, !communityCardInclusion, identityElements);
   const build = populationSource === "community" ? communityBuild : tournamentBuild;
 
   const nearestDecks = useNearestDecks(allDecks, lockedCards);

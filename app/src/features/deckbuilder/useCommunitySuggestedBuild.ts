@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import type { Card, CardInclusionEntry } from "@gatcg/shared";
-import type { SuggestedBuild, SuggestedCard } from "./useSuggestedBuild";
+import { isElementCompatible, type SuggestedBuild, type SuggestedCard } from "./useSuggestedBuild";
 
 /** Same fallback defaults `useSuggestedBuild`'s `modalTotal` uses when a population can't supply its
  * own modal section size — ShoutAtYourDecks analytics don't publish an average deck size at all, so
@@ -42,6 +42,11 @@ export function useCommunitySuggestedBuild(
   rejectedCards: Set<string>,
   cardsByName: Map<string, Card>,
   loading: boolean,
+  /** The deck's actual castable elements (Champion + Spirit granted), same source useSuggestedBuild
+   * uses — ShoutAtYourDecks' card-inclusion data is only scoped per Champion, not per Spirit, so
+   * without this an off-element card from a different real Spirit build for the same Champion (e.g.
+   * a Fire-element pick showing up for a Water-Spirit build) would rank and suggest normally. */
+  identityElements: Set<string>,
 ): SuggestedBuild {
   return useMemo((): SuggestedBuild => {
     const empty: SuggestedBuild = {
@@ -99,7 +104,11 @@ export function useCommunitySuggestedBuild(
     // champData.cards already comes sorted by deckCount descending (pipeline/src/shoutatyourdecks/
     // analytics/cardInclusion.ts's tally()), same order as percentOfDecks for a fixed champion.
     const ranked = champData.cards.filter(
-      (c) => !placed.has(c.name) && !rejectedCards.has(c.name) && cardsByName.get(c.name)?.legality?.STANDARD?.limit !== 0,
+      (c) =>
+        !placed.has(c.name) &&
+        !rejectedCards.has(c.name) &&
+        cardsByName.get(c.name)?.legality?.STANDARD?.limit !== 0 &&
+        isElementCompatible(cardsByName.get(c.name), identityElements),
     );
 
     for (const entry of ranked) {
@@ -122,7 +131,7 @@ export function useCommunitySuggestedBuild(
 
     // Top ranked cards that didn't make the assembled build — mirrors useSuggestedBuild.suggestions.
     const suggestions = champData.cards
-      .filter((c) => !placed.has(c.name) && !rejectedCards.has(c.name))
+      .filter((c) => !placed.has(c.name) && !rejectedCards.has(c.name) && isElementCompatible(cardsByName.get(c.name), identityElements))
       .slice(0, MAX_EXTRA_SUGGESTIONS)
       .map((entry) => {
         const card = cardsByName.get(entry.name);
@@ -150,5 +159,5 @@ export function useCommunitySuggestedBuild(
       unresolved: { main: Math.max(0, MAIN_TARGET - mainTotal), material: Math.max(0, MATERIAL_TARGET - materialTotal), sideboard: 0 },
       loading: false,
     };
-  }, [champData, lockedCards, rejectedCards, cardsByName, loading]);
+  }, [champData, lockedCards, rejectedCards, cardsByName, loading, identityElements]);
 }
