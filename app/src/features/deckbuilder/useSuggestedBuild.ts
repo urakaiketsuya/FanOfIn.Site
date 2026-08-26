@@ -98,7 +98,7 @@ export interface SuggestedBuild {
 }
 
 function legalMaxCopies(card: Card | undefined): number {
-  return card?.types.includes("UNIQUE") ? 1 : 4;
+  return card?.legality?.STANDARD?.limit ?? 4;
 }
 
 /** NORM (colorless) always fits; an empty `identityElements` means there's no signal to filter on (e.g. a too-thin population) — both cases pass everything through unfiltered rather than risk hiding a legitimate pick. Exported for `useGlobalElementSuggestions.ts`, which needs the same gate with no deck population to derive one internally. */

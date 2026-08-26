@@ -38,7 +38,7 @@ export function validateDeck(
       continue;
     }
     const standardLimit = card.legality?.STANDARD?.limit;
-    const copyLimit = standardLimit ?? (card.types.includes("UNIQUE") ? 1 : 4);
+    const copyLimit = standardLimit ?? 4;
     if (standardLimit === 0) illegal.push(`${name} is not legal in Standard.`);
     else if (quantity > copyLimit) illegal.push(`${name}: ${quantity} copies exceeds the ${copyLimit}-copy Standard limit.`);
     if (!card.types.includes("CHAMPION") && effectiveIdentityElements.size > 0 && card.elements.length > 0 &&
@@ -61,6 +61,6 @@ export function validateDeck(
   return {
     status: illegal.length > 0 ? "Illegal" : incomplete.length > 0 ? "Incomplete" : "Legal",
     reasons: illegal.length > 0 ? [...illegal, ...incomplete] : incomplete,
-    unsupportedRules: ["Cards without a catalog Standard record use UNIQUE/4-copy fallback limits", "card-text deckbuilding exceptions", "event-specific registration and banlist timing", "gameplay/tournament readiness"],
+    unsupportedRules: ["Cards without a catalog Standard record use a flat 4-copy fallback limit", "card-text deckbuilding exceptions", "event-specific registration and banlist timing", "gameplay/tournament readiness"],
   };
 }

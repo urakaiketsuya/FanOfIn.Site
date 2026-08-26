@@ -10,7 +10,7 @@ const MAIN_TARGET = 48;
 const MAX_EXTRA_SUGGESTIONS = 8;
 
 function legalMaxCopies(card: Card | undefined): number {
-  return card?.types.includes("UNIQUE") ? 1 : 4;
+  return card?.legality?.STANDARD?.limit ?? 4;
 }
 
 function toSuggested(cardName: string, quantity: number, locked: boolean, entry: CardInclusionEntry | undefined, section: SuggestedCard["section"]): SuggestedCard {
