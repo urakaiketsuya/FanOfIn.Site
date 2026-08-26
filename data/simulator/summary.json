@@ -1,16 +1,18 @@
 {
   "schemaVersion": 1,
   "source": "GrandArchiveSim",
-  "generatedAt": "2026-08-26T17:54:43.048Z",
+  "generatedAt": "2026-08-26T19:09:10.106Z",
   "games": 1,
   "firstPlayer": {
     "games": 1,
     "wins": 0,
     "winRate": 0
   },
+  "avgTurns": 4,
   "champions": [
     {
       "championId": "00xbh8oc00",
+      "championName": "Diao Chan, Enchantress",
       "element": "NORM",
       "games": 1,
       "wins": 1,
@@ -18,6 +20,7 @@
     },
     {
       "championId": "1trn0yetae",
+      "championName": "Fragmented Spirit of Wind",
       "element": "WIND",
       "games": 1,
       "wins": 0,
@@ -27,10 +30,15 @@
   "matchups": [
     {
       "champion1": "1trn0yetae",
+      "champion1Name": "Fragmented Spirit of Wind",
       "champion2": "00xbh8oc00",
+      "champion2Name": "Diao Chan, Enchantress",
       "games": 1,
       "champion1Wins": 0,
       "champion2Wins": 1
     }
-  ]
+  ],
+  "cardStats": [],
+  "weapons": [],
+  "turnStats": []
 }
