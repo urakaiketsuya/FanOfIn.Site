@@ -600,8 +600,6 @@ function StatsPanel({
   pillarBias,
   onPillarBiasChange,
   onAddCard,
-  populationSource,
-  onPopulationSourceChange,
   decayReport,
 }: {
   lines: { name: string; quantity: number }[];
@@ -615,8 +613,6 @@ function StatsPanel({
   pillarBias: RatingPillar | null;
   onPillarBiasChange: (pillar: RatingPillar | null) => void;
   onAddCard: (name: string) => void;
-  populationSource: PopulationSource;
-  onPopulationSourceChange: (source: PopulationSource) => void;
   decayReport: CardDecayReport | null;
 }) {
   const identity = useMemo(() => computeDeckIdentity(lines, cardsByName), [lines, cardsByName]);
@@ -693,68 +689,33 @@ function StatsPanel({
       <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
         <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Tuning</h2>
         <p className="mt-1 text-xs text-ctp-subtext0">
-          Controls how the Material Deck, Main Deck, and suggestions on the <span className="font-semibold text-ctp-text">Build tab</span> get
-          assembled — not just the diagnostics on this page. Data source: real tournament win rates, or Shout At Your
-          Decks' full community deck list (popularity, not performance — see the note below).
+          Bias the Build tab's ranked suggestions toward one Power Rating pillar — a small nudge among cards that
+          already clear the real win-rate bar, never a filter or override, so it never surfaces a card the data
+          doesn't support. Applies to Tournament data only; Community decks carry no win rates to bias.
         </p>
         <div className="mt-2 flex flex-wrap gap-1.5">
           <button
             type="button"
-            onClick={() => onPopulationSourceChange("tournament")}
-            className={`rounded-md border px-2 py-1 text-xs ${
-              populationSource === "tournament" ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+            onClick={() => onPillarBiasChange(null)}
+            className={`rounded-md border px-2 py-1 text-xs capitalize ${
+              pillarBias === null ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
           >
-            Tournament data
+            Balanced
           </button>
-          <button
-            type="button"
-            onClick={() => onPopulationSourceChange("community")}
-            className={`rounded-md border px-2 py-1 text-xs ${
-              populationSource === "community" ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            Community decks
-          </button>
+          {PILLAR_OPTIONS.map((pillar) => (
+            <button
+              key={pillar}
+              type="button"
+              onClick={() => onPillarBiasChange(pillar)}
+              className={`rounded-md border px-2 py-1 text-xs capitalize ${
+                pillarBias === pillar ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+              }`}
+            >
+              {pillar}
+            </button>
+          ))}
         </div>
-        {populationSource === "tournament" ? (
-          <>
-            <p className="mt-3 text-xs text-ctp-subtext0">
-              Bias the Build tab's ranked suggestions toward one Power Rating pillar — a small nudge among cards that
-              already clear the real win-rate bar, never a filter or override, so it never surfaces a card the data
-              doesn't support.
-            </p>
-            <div className="mt-2 flex flex-wrap gap-1.5">
-              <button
-                type="button"
-                onClick={() => onPillarBiasChange(null)}
-                className={`rounded-md border px-2 py-1 text-xs capitalize ${
-                  pillarBias === null ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                }`}
-              >
-                Balanced
-              </button>
-              {PILLAR_OPTIONS.map((pillar) => (
-                <button
-                  key={pillar}
-                  type="button"
-                  onClick={() => onPillarBiasChange(pillar)}
-                  className={`rounded-md border px-2 py-1 text-xs capitalize ${
-                    pillarBias === pillar ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                  }`}
-                >
-                  {pillar}
-                </button>
-              ))}
-            </div>
-          </>
-        ) : (
-          <p className="mt-3 text-xs text-ctp-subtext0">
-            Community decks carry no win/loss data, so suggestions here rank by how often a card shows up across the
-            full Shout At Your Decks deck list, not by how it performs — playstyle tuning and win-rate figures are
-            unavailable in this mode. Switch back to Tournament data to use them.
-          </p>
-        )}
       </div>
 
       {decayReport && decayReport.signals.length > 0 && (
@@ -1811,7 +1772,40 @@ export default function DeckBuilderIndex() {
 
       {championName && spiritFilter && !gateLoading && gateHasData && (
         <>
-          <div className="mt-4 grid overflow-hidden rounded-lg border border-ctp-surface1 bg-ctp-mantle sm:grid-cols-4">
+          <div className="mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2">
+            <span className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Data source</span>
+            <div role="tablist" aria-label="Data source" className="inline-flex rounded-md border border-ctp-surface1 bg-ctp-base p-0.5">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={populationSource === "tournament"}
+                onClick={() => setPopulationSource("tournament")}
+                className={`rounded px-3 py-1 text-xs font-medium ${
+                  populationSource === "tournament" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
+                }`}
+              >
+                Tournament
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={populationSource === "community"}
+                onClick={() => setPopulationSource("community")}
+                className={`rounded px-3 py-1 text-xs font-medium ${
+                  populationSource === "community" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
+                }`}
+              >
+                Community
+              </button>
+            </div>
+            <span className="text-xs text-ctp-subtext0">
+              {populationSource === "tournament"
+                ? "ranked by real tournament win rates"
+                : "ranked by Shout At Your Decks popularity — no win/loss data"}
+            </span>
+          </div>
+
+          <div className="mt-2 grid overflow-hidden rounded-lg border border-ctp-surface1 bg-ctp-mantle sm:grid-cols-4">
             <div className="border-b border-ctp-surface1 px-3 py-2 sm:border-b-0 sm:border-r">
               <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Evidence</p>
               <p className="mt-0.5 text-sm font-semibold text-ctp-text">{build.matchingDeckCount} decks</p>
@@ -1996,14 +1990,11 @@ export default function DeckBuilderIndex() {
                   </div>
                 )}
               </div>
-              {(populationSource !== "tournament" || pillarBias !== null) && (
+              {pillarBias !== null && populationSource === "tournament" && (
                 <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-md border border-ctp-blue/40 bg-ctp-blue/5 px-3 py-2 text-xs text-ctp-subtext1">
                   <span className="font-semibold text-ctp-blue">Tuning active:</span>
-                  <span>
-                    {populationSource === "community" ? "Community decks (popularity, not performance)" : "Tournament data"}
-                    {pillarBias && populationSource === "tournament" ? ` · ${pillarBias} bias` : ""}
-                  </span>
-                  <span className="text-ctp-subtext0">— shaping everything below.</span>
+                  <span>{pillarBias} bias</span>
+                  <span className="text-ctp-subtext0">— nudging suggestions toward one Power Rating pillar.</span>
                   <button
                     type="button"
                     onClick={() => setTab("stats")}
@@ -2192,8 +2183,6 @@ export default function DeckBuilderIndex() {
                 pillarBias={pillarBias}
                 onPillarBiasChange={setPillarBias}
                 onAddCard={addCard}
-                populationSource={populationSource}
-                onPopulationSourceChange={setPopulationSource}
                 decayReport={decayReport}
               />
             </div>
