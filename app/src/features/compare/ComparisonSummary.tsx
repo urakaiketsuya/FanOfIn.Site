@@ -29,7 +29,10 @@ function changeLabel(change: ComparisonCardChange): string {
     case "removed":
       return `-${change.baselineQty}x ${change.name} — cut from ${SECTION_LABEL[change.baselineSection!]}`;
     case "quantity":
-      return `${signedDelta} ${change.name}`;
+      // baselineSection === targetSection for this kind (same-section quantity change) — a card
+      // can carry an independent one of these per section (e.g. Main and Sideboard both changing),
+      // so the section is always named rather than assumed to be the card's only placement.
+      return `${signedDelta} ${change.name} (${SECTION_LABEL[change.baselineSection!]})`;
     case "moved":
       return `Moved ${change.name}: ${SECTION_LABEL[change.baselineSection!]} → ${SECTION_LABEL[change.targetSection!]}`;
     case "movedQuantity":
@@ -148,7 +151,10 @@ export default function ComparisonSummary({
                       const card = cardsByName.get(change.name);
                       const sign = changeSign(change);
                       return (
-                        <li key={change.name} className="flex items-center gap-1.5 text-sm">
+                        <li
+                          key={`${change.name}-${change.baselineSection ?? ""}-${change.targetSection ?? ""}`}
+                          className="flex items-center gap-1.5 text-sm"
+                        >
                           <span
                             className={
                               sign === "positive" ? "text-ctp-green" : sign === "negative" ? "text-ctp-red" : "text-ctp-subtext1"

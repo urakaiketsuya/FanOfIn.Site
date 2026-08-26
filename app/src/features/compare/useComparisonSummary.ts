@@ -5,6 +5,7 @@ import { useComparisonData } from "./useComparisonData";
 import type { ComparedDeck } from "./types";
 
 type Section = "main" | "material" | "sideboard";
+const SECTION_KEYS: Section[] = ["main", "material", "sideboard"];
 
 export type ComparisonChangeKind = "added" | "removed" | "moved" | "quantity" | "movedQuantity";
 
@@ -71,14 +72,20 @@ export function useComparisonSummary(
     const baselineList = decklists.get(baselineDeck.key);
     const baselineSpirit = findSpiritName(baselineList, cardsByName);
 
-    // name -> where/how many copies it sits, per deck position — built once from the shared
-    // section grouping so a card's placement can't disagree between this and the Table view.
-    const placementsByDeck: Map<string, { section: Section; qty: number }>[] = decks.map(() => new Map());
+    // name -> per-section copy counts, per deck position — built once from the shared section
+    // grouping so a card's placement can't disagree between this and the Table view. Keyed by
+    // section (not just card name): a card can legally sit in more than one section at once (e.g.
+    // Main and Sideboard both running their own copies of the same card), and collapsing that to a
+    // single {section, qty} would silently drop whichever section got visited last.
+    const placementsByDeck: Map<string, Map<Section, number>>[] = decks.map(() => new Map());
     for (const section of sections) {
       for (const group of section.groups) {
         for (const card of group.cards) {
           card.quantities.forEach((qty, i) => {
-            if (qty > 0) placementsByDeck[i].set(card.name, { section: section.key as Section, qty });
+            if (qty === 0) return;
+            const byCard = placementsByDeck[i].get(card.name) ?? new Map<Section, number>();
+            byCard.set(section.key as Section, qty);
+            placementsByDeck[i].set(card.name, byCard);
           });
         }
       }
@@ -142,30 +149,53 @@ export function useComparisonSummary(
       let sharedCardCount = 0;
 
       for (const name of allNames) {
-        const b = baselinePlacements.get(name);
-        const t = targetPlacements.get(name);
-        if (b && t) {
-          sharedCardCount++;
-          const sectionChanged = b.section !== t.section;
-          const qtyChanged = b.qty !== t.qty;
-          if (sectionChanged || qtyChanged) {
+        const bSections = baselinePlacements.get(name);
+        const tSections = targetPlacements.get(name);
+        if (bSections && tSections) sharedCardCount++;
+
+        // Per-section deltas first — a card can sit in more than one section at once, so every
+        // section needs its own before/after comparison rather than picking just one.
+        const deltas = SECTION_KEYS.map((section) => ({
+          section,
+          baselineQty: bSections?.get(section) ?? 0,
+          targetQty: tSections?.get(section) ?? 0,
+        })).filter((d) => d.baselineQty !== d.targetQty);
+        if (deltas.length === 0) continue;
+
+        // Only call it a "move" for the clean two-section case — one section's copies zeroed out
+        // exactly as another section's appeared — so a card with independent changes across 2+
+        // sections (or a partial shift alongside an unrelated quantity change) isn't mislabeled.
+        if (deltas.length === 2) {
+          const [d1, d2] = deltas;
+          const from = d1.baselineQty > 0 && d1.targetQty === 0 ? d1 : d2.baselineQty > 0 && d2.targetQty === 0 ? d2 : null;
+          const to = from === d1 ? d2 : d1;
+          if (from && to.baselineQty === 0 && to.targetQty > 0) {
             changes.push({
               name,
-              kind: sectionChanged && qtyChanged ? "movedQuantity" : sectionChanged ? "moved" : "quantity",
-              baselineQty: b.qty,
-              targetQty: t.qty,
-              baselineSection: b.section,
-              targetSection: t.section,
+              kind: from.baselineQty === to.targetQty ? "moved" : "movedQuantity",
+              baselineQty: from.baselineQty,
+              targetQty: to.targetQty,
+              baselineSection: from.section,
+              targetSection: to.section,
             });
+            continue;
           }
-        } else if (t && !b) {
-          changes.push({ name, kind: "added", baselineQty: 0, targetQty: t.qty, baselineSection: null, targetSection: t.section });
-        } else if (b && !t) {
-          changes.push({ name, kind: "removed", baselineQty: b.qty, targetQty: 0, baselineSection: b.section, targetSection: null });
+        }
+
+        for (const d of deltas) {
+          const kind: ComparisonChangeKind = d.baselineQty === 0 ? "added" : d.targetQty === 0 ? "removed" : "quantity";
+          changes.push({
+            name,
+            kind,
+            baselineQty: d.baselineQty,
+            targetQty: d.targetQty,
+            baselineSection: d.baselineQty === 0 ? null : d.section,
+            targetSection: d.targetQty === 0 ? null : d.section,
+          });
         }
       }
 
-      changes.sort((a, b2) => a.name.localeCompare(b2.name));
+      changes.sort((a, b2) => a.name.localeCompare(b2.name) || (a.baselineSection ?? a.targetSection ?? "").localeCompare(b2.baselineSection ?? b2.targetSection ?? ""));
 
       const priceDelta = baselineStats.price > 0 && targetStats.price > 0 ? targetStats.price - baselineStats.price : null;
       const winRateDelta =

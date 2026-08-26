@@ -12,7 +12,7 @@ import ComparisonSuggestions from "./ComparisonSuggestions";
 import CardCompareIndex from "./CardCompareIndex";
 import DeckChip from "./DeckChip";
 import { useComparedDecklists } from "./useComparedDecklists";
-import { useComparisonData } from "./useComparisonData";
+import { useDeckChampionCards } from "./useDeckChampionCards";
 import { useOmnidexIndex, useOmnidexPlayers } from "../tournaments/data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
@@ -70,7 +70,7 @@ export default function CompareIndex() {
   // Falls back to the first compared deck whenever no baseline is set yet, or the chosen one gets removed.
   const effectiveBaselineKey = baselineKey && comparedKeys.has(baselineKey) ? baselineKey : (decks[0]?.key ?? null);
   const decklists = useComparedDecklists(decks);
-  const { cardsByName, deckStats } = useComparisonData(decks, decklists);
+  const championCardsByDeckKey = useDeckChampionCards(decks, decklists);
   const [shareCopyState, setShareCopyState] = useState<"idle" | "copied" | "failed">("idle");
 
   // Seeds the compare set from a `?add=eventId:player,...` link (e.g. from an event's pairings
@@ -224,11 +224,9 @@ export default function CompareIndex() {
 
           {decks.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-2">
-              {decks.map((d) => {
-                const championName = deckStats.find((s) => s.key === d.key)?.championName;
-                const championCard = championName ? cardsByName.get(championName) : undefined;
-                return <DeckChip key={d.key} deck={d} championCard={championCard} onRemove={() => removeDeck(d.key)} />;
-              })}
+              {decks.map((d) => (
+                <DeckChip key={d.key} deck={d} championCard={championCardsByDeckKey.get(d.key)} onRemove={() => removeDeck(d.key)} />
+              ))}
             </div>
           )}
 
