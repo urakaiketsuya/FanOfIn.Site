@@ -12,6 +12,7 @@ import { computeChampionTrends } from "./analysis/championTrends.js";
 import { computeDeckCardIndex } from "./analysis/deckCardIndex.js";
 import { computeArchetypeTaxonomy } from "./analysis/archetypeTaxonomy.js";
 import { buildEventDeckSignatures } from "./analysis/decklists.js";
+import { createAnalysisContext } from "./analysis/context.js";
 
 /**
  * Ad hoc exploration REPL over the pipeline's already-crawled cache — for validating a stat's
@@ -26,17 +27,19 @@ const allBundles = await listCachedBundles();
 const bundles = allBundles.filter((b) => b.event.status === "complete");
 const catalog = await loadCardCatalog();
 const cardIndex = buildCardIndex(catalog);
+const ctx = createAnalysisContext(cardIndex);
 
 console.log(`Ready: ${bundles.length} complete events (of ${allBundles.length} cached), ${catalog.length} cards.`);
-console.log("Preloaded: bundles, catalog, cardIndex, buildEventDeckSignatures, weightedJaccard, and every computeX analysis function.");
+console.log("Preloaded: bundles, catalog, cardIndex, ctx, buildEventDeckSignatures, weightedJaccard, and every computeX analysis function.");
 console.log("Heavy calls (computeDeckSimilarity, computeDeckCardIndex) are NOT run automatically — call them yourself.");
-console.log("Example: computeDeckSightings(bundles, cardIndex).length");
+console.log("Example: computeDeckSightings(bundles, ctx).length");
 
 const session = repl.start({ prompt: "gatcg> " });
 Object.assign(session.context, {
   bundles,
   catalog,
   cardIndex,
+  ctx,
   buildEventDeckSignatures,
   weightedJaccard,
   computeEloRatings,

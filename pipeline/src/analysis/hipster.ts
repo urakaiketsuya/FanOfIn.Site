@@ -1,7 +1,7 @@
 import type { DeckHipsterScore, PlayerHipsterScore } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
-import { resolveCard, type CardSignature } from "../cards/catalog.js";
-import { buildEventDeckSignatures } from "./decklists.js";
+import { resolveCard } from "../cards/catalog.js";
+import type { AnalysisContext } from "./context.js";
 
 export interface HipsterResult {
   deckScores: DeckHipsterScore[];
@@ -17,7 +17,7 @@ export interface HipsterResult {
  * an unusual build of THIS champion," so the running field is tracked per champion. Decks within
  * the same event are scored against the field as it stood before that event, not each other.
  */
-export function computeHipsterScores(bundles: OmnidexEventBundle[], cardIndex: Map<string, CardSignature>): HipsterResult {
+export function computeHipsterScores(bundles: OmnidexEventBundle[], ctx: AnalysisContext): HipsterResult {
   const sorted = [...bundles].sort((a, b) => a.event.date.localeCompare(b.event.date));
 
   const fieldCountsByChampion = new Map<string, Map<string, number>>();
@@ -27,7 +27,7 @@ export function computeHipsterScores(bundles: OmnidexEventBundle[], cardIndex: M
 
   for (const bundle of sorted) {
     if ("error" in bundle.decklists) continue;
-    const signatures = buildEventDeckSignatures(bundle.decklists, cardIndex);
+    const signatures = ctx.getEventSignatures(bundle);
 
     const deckInfos = bundle.decklists
       .map((entry) => ({
@@ -35,7 +35,9 @@ export function computeHipsterScores(bundles: OmnidexEventBundle[], cardIndex: M
         championName: signatures.get(entry.player)?.championName,
         // Canonicalize — otherwise a mis-cased card counts as a distinct, never-before-seen card
         // every time it's mis-typed that way, inflating novelty for what's actually a staple.
-        names: new Set([...entry.decklist.main, ...entry.decklist.material].map((l) => resolveCard(cardIndex, l.card)?.name ?? l.card)),
+        names: new Set(
+          [...entry.decklist.main, ...entry.decklist.material].map((l) => resolveCard(ctx.cardIndex, l.card)?.name ?? l.card),
+        ),
       }))
       .filter((d): d is { player: number; championName: string; names: Set<string> } => Boolean(d.championName) && d.names.size > 0);
 

@@ -6,6 +6,7 @@ import { listCachedBundles } from "../omnidex/cache.js";
 import type { CardSignature } from "../cards/catalog.js";
 import { buildCardIndex } from "../cards/catalog.js";
 import { computeArchetypeTaxonomy } from "./archetypeTaxonomy.js";
+import { createAnalysisContext } from "./context.js";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.join(HERE, "../../..");
@@ -81,12 +82,13 @@ async function main() {
   ]);
   const completed = bundles.filter((bundle) => bundle.event.status === "complete");
   const cardIndex = buildCardIndex((JSON.parse(cardCacheRaw) as { cards: CardSignature[] }).cards);
+  const ctx = createAnalysisContext(cardIndex);
   const deckSightings = (JSON.parse(sightingsRaw) as DeckSightingsData).sightings as DeckSighting[];
   const goldSet = JSON.parse(goldRaw) as GoldExpectation[];
   const builds = new Map<number, ArchetypeTaxonomyData>();
   for (const threshold of THRESHOLDS) {
     console.log(`archetype validation: threshold ${threshold.toFixed(2)}`);
-    builds.set(threshold, computeArchetypeTaxonomy(completed, cardIndex, deckSightings, new Map(), { clusterThreshold: threshold }));
+    builds.set(threshold, computeArchetypeTaxonomy(completed, ctx, deckSightings, new Map(), { clusterThreshold: threshold }));
   }
   const baseline = builds.get(0.45)!;
   const datedSightings = deckSightings.filter((sighting) => sighting.eventDate).sort((a, b) => a.eventDate.localeCompare(b.eventDate));
@@ -95,7 +97,7 @@ async function main() {
   const historicalEventIds = new Set(historicalSightings.map((sighting) => sighting.eventId));
   const historical = computeArchetypeTaxonomy(
     completed.filter((bundle) => historicalEventIds.has(bundle.id)),
-    cardIndex,
+    ctx,
     historicalSightings,
     new Map(),
     { clusterThreshold: 0.45 },

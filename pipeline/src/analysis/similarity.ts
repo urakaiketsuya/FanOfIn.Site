@@ -3,8 +3,8 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import type { DeckSimilarityEntry, SimilarDeck } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
-import { resolveCard, type CardSignature } from "../cards/catalog.js";
-import { buildEventDeckSignatures } from "./decklists.js";
+import { resolveCard } from "../cards/catalog.js";
+import type { AnalysisContext } from "./context.js";
 import { config } from "../config.js";
 
 const CACHE_PATH = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../.cache/similarity.json");
@@ -193,7 +193,7 @@ async function writeCache(championName: string, cache: Map<string, number>): Pro
  */
 export async function computeDeckSimilarity(
   bundles: OmnidexEventBundle[],
-  cardIndex: Map<string, CardSignature>,
+  ctx: AnalysisContext,
   /**
    * Called with one champion group's finished entries right after that group's scoring
    * completes — lets the caller persist `data/analysis/similarity.json` incrementally instead of
@@ -208,7 +208,7 @@ export async function computeDeckSimilarity(
   const decks: DeckRef[] = [];
   for (const bundle of bundles) {
     if ("error" in bundle.decklists) continue;
-    const signatures = buildEventDeckSignatures(bundle.decklists, cardIndex);
+    const signatures = ctx.getEventSignatures(bundle);
     for (const entry of bundle.decklists) {
       const championName = signatures.get(entry.player)?.championName;
       if (!championName) continue;
@@ -216,7 +216,7 @@ export async function computeDeckSimilarity(
       for (const line of [...entry.decklist.main, ...entry.decklist.material]) {
         // Canonicalize — a mis-cased card would otherwise count as a *different* card between two
         // decks that are actually identical, understating their weighted-Jaccard similarity.
-        const name = resolveCard(cardIndex, line.card)?.name ?? line.card;
+        const name = resolveCard(ctx.cardIndex, line.card)?.name ?? line.card;
         cardCounts.set(name, (cardCounts.get(name) ?? 0) + line.quantity);
       }
       decks.push({

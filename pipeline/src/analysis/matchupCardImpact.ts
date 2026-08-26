@@ -10,8 +10,8 @@ import {
   type OpponentCardAnswers,
 } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
-import type { CardSignature } from "../cards/catalog.js";
-import { buildEventDeckSignatures, type DeckSignature } from "./decklists.js";
+import type { DeckSignature } from "./decklists.js";
+import type { AnalysisContext } from "./context.js";
 import { config } from "../config.js";
 
 function sectionsFromSignature(sig: DeckSignature): DeckSections {
@@ -118,7 +118,7 @@ function computeAnswersForCard(
  */
 export function computeMatchupCardImpact(
   bundles: OmnidexEventBundle[],
-  cardIndex: Map<string, CardSignature>,
+  ctx: AnalysisContext,
   clusters: ArchetypeCluster[],
 ): MatchupCardImpactData {
   const clusterById = new Map(clusters.map((c) => [c.id, c]));
@@ -141,7 +141,7 @@ export function computeMatchupCardImpact(
 
   for (const bundle of bundles) {
     if ("error" in bundle.decklists) continue;
-    const signatures = buildEventDeckSignatures(bundle.decklists, cardIndex);
+    const signatures = ctx.getEventSignatures(bundle);
 
     for (const roundData of bundle.pairingsByRound) {
       if ("error" in roundData) continue;

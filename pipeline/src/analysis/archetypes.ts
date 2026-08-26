@@ -1,7 +1,8 @@
 import type { ArchetypeData, ArchetypeElementBreakdown, ArchetypeSpiritBreakdown, ArchetypeSummary, BattleChartEntry, TopCardsBySection } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
 import type { CardSignature } from "../cards/catalog.js";
-import { buildEventDeckSignatures, tallySectionCounts, topCardsFromCounts, type DeckSignature, type SectionCardCount } from "./decklists.js";
+import { tallySectionCounts, topCardsFromCounts, type DeckSignature, type SectionCardCount } from "./decklists.js";
+import type { AnalysisContext } from "./context.js";
 import { config } from "../config.js";
 
 const MAX_SAMPLE_DECKS = 5;
@@ -138,7 +139,7 @@ function buildSummaries(accum: Map<string, ArchetypeAccum>, cardIndex: Map<strin
  */
 export function computeArchetypeAnalysis(
   bundles: OmnidexEventBundle[],
-  cardIndex: Map<string, CardSignature>,
+  ctx: AnalysisContext,
 ): Omit<ArchetypeData, "generatedAt"> {
   const archetypeAccum = new Map<string, ArchetypeAccum>();
   const namedSpiritAccum = new Map<string, ArchetypeAccum>();
@@ -146,7 +147,7 @@ export function computeArchetypeAnalysis(
 
   for (const bundle of bundles) {
     if ("error" in bundle.decklists) continue;
-    const signatures = buildEventDeckSignatures(bundle.decklists, cardIndex);
+    const signatures = ctx.getEventSignatures(bundle);
 
     const winByPlayer = new Map<number, number>();
     if (!("error" in bundle.standings)) {
@@ -208,8 +209,8 @@ export function computeArchetypeAnalysis(
     }
   }
 
-  const archetypes = buildSummaries(archetypeAccum, cardIndex);
-  const namedSpirits = buildSummaries(namedSpiritAccum, cardIndex);
+  const archetypes = buildSummaries(archetypeAccum, ctx.cardIndex);
+  const namedSpirits = buildSummaries(namedSpiritAccum, ctx.cardIndex);
   const battleChart = Array.from(battleAccum.values()).filter((b) => b.games >= config.minBattleChartSampleSize);
 
   return { archetypes, namedSpirits, battleChart };

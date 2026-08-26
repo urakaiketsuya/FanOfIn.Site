@@ -3,8 +3,7 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import type { DeckCardIndexEntry, DeckCardIndexLine, EncodedCardLine } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
-import type { CardSignature } from "../cards/catalog.js";
-import { buildEventDeckSignatures } from "./decklists.js";
+import type { AnalysisContext } from "./context.js";
 import { config } from "../config.js";
 
 const FULL_CACHE_PATH = path.join(
@@ -25,12 +24,12 @@ interface FullDeckCardIndexEntry {
  * below is what the app actually fetches; this stays available on disk for debugging or
  * regenerating the encoding without re-walking every event bundle.
  */
-function computeFullDeckCardIndex(bundles: OmnidexEventBundle[], cardIndex: Map<string, CardSignature>): FullDeckCardIndexEntry[] {
+function computeFullDeckCardIndex(bundles: OmnidexEventBundle[], ctx: AnalysisContext): FullDeckCardIndexEntry[] {
   const entries: FullDeckCardIndexEntry[] = [];
 
   for (const bundle of bundles) {
     if ("error" in bundle.decklists) continue;
-    const signatures = buildEventDeckSignatures(bundle.decklists, cardIndex);
+    const signatures = ctx.getEventSignatures(bundle);
 
     for (const [player, sig] of signatures) {
       entries.push({
@@ -70,9 +69,9 @@ function encodeLines(lines: DeckCardIndexLine[], nameToIndex: Map<string, number
  */
 export async function computeDeckCardIndex(
   bundles: OmnidexEventBundle[],
-  cardIndex: Map<string, CardSignature>,
+  ctx: AnalysisContext,
 ): Promise<{ cardNames: string[]; entries: DeckCardIndexEntry[] }> {
-  const full = computeFullDeckCardIndex(bundles, cardIndex);
+  const full = computeFullDeckCardIndex(bundles, ctx);
 
   if (config.debugArtifacts) {
     await mkdir(path.dirname(FULL_CACHE_PATH), { recursive: true });

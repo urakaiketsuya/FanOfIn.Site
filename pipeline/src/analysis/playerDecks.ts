@@ -1,7 +1,7 @@
 import type { PlayerDeckProfile, PlayerTopChampion } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
-import type { CardSignature } from "../cards/catalog.js";
-import { buildEventDeckSignatures, tallySectionCounts, topCardsFromCounts, type SectionCardCount } from "./decklists.js";
+import { tallySectionCounts, topCardsFromCounts, type SectionCardCount } from "./decklists.js";
+import type { AnalysisContext } from "./context.js";
 
 const TOP_CHAMPIONS = 5;
 const MAX_TOP_CARDS_PER_SECTION = 12;
@@ -20,15 +20,12 @@ interface Accum {
  * card, not raw copies, so a 4-of doesn't outweigh being a staple across many different decks),
  * broken out by main/material/sideboard since those are structurally different card pools.
  */
-export function computePlayerDeckProfiles(
-  bundles: OmnidexEventBundle[],
-  cardIndex: Map<string, CardSignature>,
-): PlayerDeckProfile[] {
+export function computePlayerDeckProfiles(bundles: OmnidexEventBundle[], ctx: AnalysisContext): PlayerDeckProfile[] {
   const byPlayer = new Map<number, Accum>();
 
   for (const bundle of bundles) {
     if ("error" in bundle.decklists) continue;
-    const signatures = buildEventDeckSignatures(bundle.decklists, cardIndex);
+    const signatures = ctx.getEventSignatures(bundle);
 
     for (const entry of bundle.decklists) {
       const acc = byPlayer.get(entry.player) ?? {
@@ -63,9 +60,9 @@ export function computePlayerDeckProfiles(
       totalDecks: acc.totalDecks,
       topChampions,
       topCards: {
-        main: topCardsFromCounts(acc.mainCounts, MAX_TOP_CARDS_PER_SECTION, cardIndex),
-        material: topCardsFromCounts(acc.materialCounts, MAX_TOP_CARDS_PER_SECTION, cardIndex),
-        sideboard: topCardsFromCounts(acc.sideboardCounts, MAX_TOP_CARDS_PER_SECTION, cardIndex),
+        main: topCardsFromCounts(acc.mainCounts, MAX_TOP_CARDS_PER_SECTION, ctx.cardIndex),
+        material: topCardsFromCounts(acc.materialCounts, MAX_TOP_CARDS_PER_SECTION, ctx.cardIndex),
+        sideboard: topCardsFromCounts(acc.sideboardCounts, MAX_TOP_CARDS_PER_SECTION, ctx.cardIndex),
       },
     };
   });

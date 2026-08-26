@@ -1,7 +1,7 @@
 import { EVENT_CATEGORY_WEIGHTS, computeKeywordComposition, shortHash, type DeckSighting } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
-import type { CardSignature } from "../cards/catalog.js";
-import { buildEventDeckSignatures, type DeckCardLine } from "./decklists.js";
+import type { DeckCardLine } from "./decklists.js";
+import type { AnalysisContext } from "./context.js";
 import { computeDeckPrice } from "./deckPricing.js";
 
 /** A stable key for "this exact card list" — main+material combined, since that's what defines a deck's identity (sideboard is situational tech). Empty string for decks with no matched cards at all (unmatched/broken decklists), which are deliberately excluded from duplicate detection below. */
@@ -24,7 +24,7 @@ export function canonicalSignature(mainCards: DeckCardLine[], materialCards: Dec
  */
 export function computeDeckSightings(
   bundles: OmnidexEventBundle[],
-  cardIndex: Map<string, CardSignature>,
+  ctx: AnalysisContext,
   priceByName: Map<string, number>,
 ): DeckSighting[] {
   interface Interim extends Omit<DeckSighting, "duplicateCount" | "deckHash"> {
@@ -40,7 +40,7 @@ export function computeDeckSightings(
     if ("error" in bundle.standings) continue;
 
     const { event } = bundle;
-    const signatures = buildEventDeckSignatures(bundle.decklists, cardIndex);
+    const signatures = ctx.getEventSignatures(bundle);
     const standingsByPlayer = new Map<number, (typeof bundle.standings.standings)[number]>();
     for (const s of bundle.standings.standings) {
       if (s.id !== undefined) standingsByPlayer.set(s.id, s);
@@ -55,7 +55,7 @@ export function computeDeckSightings(
       const sig = signatures.get(entry.player);
       const cardLines = [...(sig?.mainCards ?? []), ...(sig?.materialCards ?? [])];
       const cardSignature = canonicalSignature(sig?.mainCards ?? [], sig?.materialCards ?? []);
-      const keywordCounts = computeKeywordComposition(cardLines, cardIndex);
+      const keywordCounts = computeKeywordComposition(cardLines, ctx.cardIndex);
       const keywords = Array.from(keywordCounts.entries())
         .map(([keyword, count]) => ({ keyword, count }))
         .sort((a, b) => b.count - a.count);

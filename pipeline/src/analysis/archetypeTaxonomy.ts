@@ -1,7 +1,7 @@
 import { shortHash, type ArchetypeCluster, type ArchetypeTaxonomyData, type DeckSighting } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
 import { resolveCard, type CardSignature } from "../cards/catalog.js";
-import { buildEventDeckSignatures } from "./decklists.js";
+import type { AnalysisContext } from "./context.js";
 import { weightedJaccard } from "./similarity.js";
 import { computeDeckPrice } from "./deckPricing.js";
 import { config } from "../config.js";
@@ -139,7 +139,7 @@ function dominantElement(definingCards: { name: string; prevalence: number }[], 
  */
 export function computeArchetypeTaxonomy(
   bundles: OmnidexEventBundle[],
-  cardIndex: Map<string, CardSignature>,
+  ctx: AnalysisContext,
   deckSightings: DeckSighting[],
   priceByName: Map<string, number>,
   options: { clusterThreshold?: number } = {},
@@ -152,7 +152,7 @@ export function computeArchetypeTaxonomy(
   const allDecks: CardDeck[] = [];
   for (const bundle of bundles) {
     if ("error" in bundle.decklists) continue;
-    const signatures = buildEventDeckSignatures(bundle.decklists, cardIndex);
+    const signatures = ctx.getEventSignatures(bundle);
     for (const entry of bundle.decklists) {
       const championName = signatures.get(entry.player)?.championName;
       if (!championName) continue;
@@ -161,7 +161,7 @@ export function computeArchetypeTaxonomy(
         // Canonicalize — otherwise a mis-cased submission of an otherwise-identical decklist
         // would score as a *different* exact-signature build group, and its copy of the card
         // would never count toward that card's real cluster prevalence.
-        const card = resolveCard(cardIndex, line.card);
+        const card = resolveCard(ctx.cardIndex, line.card);
         if (!isArchetypeStrategyCard(card)) continue;
         const name = card?.name ?? line.card;
         cardCounts.set(name, (cardCounts.get(name) ?? 0) + line.quantity);
@@ -297,7 +297,7 @@ export function computeArchetypeTaxonomy(
       .sort((a, b) => b.playerCount - a.playerCount || b.deckCount - a.deckCount || a.championName.localeCompare(b.championName));
     const championName = championBreakdown[0].championName;
 
-    const element = dominantElement(definingCards, cardIndex);
+    const element = dominantElement(definingCards, ctx.cardIndex);
     const championDeckTotal = championBreakdown.reduce((sum, champion) => sum + champion.deckCount, 0);
     const hasChampionMajority = championBreakdown[0].deckCount / championDeckTotal >= 0.6;
     const name = hasChampionMajority

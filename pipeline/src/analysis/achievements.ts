@@ -8,8 +8,7 @@ import type {
   UpsetMatch,
 } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
-import type { CardSignature } from "../cards/catalog.js";
-import { buildEventDeckSignatures } from "./decklists.js";
+import type { AnalysisContext } from "./context.js";
 import { canonicalSignature } from "./deckSightings.js";
 
 const RATING_MILESTONES = [
@@ -95,7 +94,7 @@ const DEFINITIONS: AchievementDefinition[] = [
  */
 export function computeAchievements(
   bundles: OmnidexEventBundle[],
-  cardIndex: Map<string, CardSignature>,
+  ctx: AnalysisContext,
   eloRatings: Map<number, PlayerRating>,
   eloUpsets: UpsetMatch[],
   hipsterDeckScores: DeckHipsterScore[],
@@ -188,7 +187,7 @@ export function computeAchievements(
   const bySignature = new Map<string, SigSighting[]>();
   for (const bundle of bundles) {
     if ("error" in bundle.decklists) continue;
-    const signatures = buildEventDeckSignatures(bundle.decklists, cardIndex);
+    const signatures = ctx.getEventSignatures(bundle);
     for (const entry of bundle.decklists) {
       const sig = signatures.get(entry.player);
       const cs = canonicalSignature(sig?.mainCards ?? [], sig?.materialCards ?? []);

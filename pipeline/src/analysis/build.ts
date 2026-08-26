@@ -22,6 +22,7 @@ import type { ArchetypeTaxonomyData } from "@gatcg/shared";
 import { computeCardImpact } from "./cardImpact.js";
 import { computeMatchupCardImpact } from "./matchupCardImpact.js";
 import { computeAchievements } from "./achievements.js";
+import { createAnalysisContext } from "./context.js";
 
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/analysis");
 const PRICES_PATH = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/prices.json");
@@ -65,6 +66,7 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
 
   const catalog = await loadCardCatalog();
   const cardIndex = buildCardIndex(catalog);
+  const ctx = createAnalysisContext(cardIndex);
   const priceByName = await loadPriceByName(cardIndex);
 
   function cardStatsFor(bundles: typeof completed): CardStat[] {
@@ -146,28 +148,28 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
     "utf-8",
   );
 
-  const { archetypes, namedSpirits, battleChart } = computeArchetypeAnalysis(completed, cardIndex);
+  const { archetypes, namedSpirits, battleChart } = computeArchetypeAnalysis(completed, ctx);
   await writeFile(
     path.join(DATA_DIR, "archetypes.json"),
     JSON.stringify({ generatedAt: new Date().toISOString(), archetypes, namedSpirits, battleChart }),
     "utf-8",
   );
 
-  const { deckScores, playerScores } = computeHipsterScores(completed, cardIndex);
+  const { deckScores, playerScores } = computeHipsterScores(completed, ctx);
   await writeFile(
     path.join(DATA_DIR, "hipster.json"),
     JSON.stringify({ generatedAt: new Date().toISOString(), deckScores, playerScores }),
     "utf-8",
   );
 
-  const playerDeckProfiles = computePlayerDeckProfiles(completed, cardIndex);
+  const playerDeckProfiles = computePlayerDeckProfiles(completed, ctx);
   await writeFile(
     path.join(DATA_DIR, "player-decks.json"),
     JSON.stringify({ generatedAt: new Date().toISOString(), players: playerDeckProfiles }),
     "utf-8",
   );
 
-  const deckSightings = computeDeckSightings(completed, cardIndex, priceByName);
+  const deckSightings = computeDeckSightings(completed, ctx, priceByName);
   await writeFile(
     path.join(DATA_DIR, "deck-sightings.json"),
     JSON.stringify({ generatedAt: new Date().toISOString(), sightings: deckSightings }),
@@ -207,15 +209,15 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
     // First analysis run: there is no lineage to preserve yet.
   }
   const archetypeTaxonomy = applyArchetypeLineageAliases(
-    computeArchetypeTaxonomy(completed, cardIndex, deckSightings, priceByName),
+    computeArchetypeTaxonomy(completed, ctx, deckSightings, priceByName),
     previousTaxonomy,
   );
   await writeFile(path.join(DATA_DIR, "archetype-taxonomy.json"), JSON.stringify(archetypeTaxonomy), "utf-8");
 
-  const achievements = computeAchievements(completed, cardIndex, ratings, upsets, deckScores, deckSightings);
+  const achievements = computeAchievements(completed, ctx, ratings, upsets, deckScores, deckSightings);
   await writeFile(path.join(DATA_DIR, "achievements.json"), JSON.stringify(achievements), "utf-8");
 
-  const { cardNames: deckCardIndexNames, entries: deckCardIndex } = await computeDeckCardIndex(completed, cardIndex);
+  const { cardNames: deckCardIndexNames, entries: deckCardIndex } = await computeDeckCardIndex(completed, ctx);
   await writeFile(
     path.join(DATA_DIR, "deck-card-index.json"),
     JSON.stringify({ generatedAt: new Date().toISOString(), cardNames: deckCardIndexNames, decks: deckCardIndex }),
@@ -225,7 +227,7 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
   const cardImpact = computeCardImpact(archetypeTaxonomy.clusters, { cardNames: deckCardIndexNames, entries: deckCardIndex }, deckSightings);
   await writeFile(path.join(DATA_DIR, "card-impact.json"), JSON.stringify(cardImpact), "utf-8");
 
-  const matchupCardImpact = computeMatchupCardImpact(completed, cardIndex, archetypeTaxonomy.clusters);
+  const matchupCardImpact = computeMatchupCardImpact(completed, ctx, archetypeTaxonomy.clusters);
   await writeFile(path.join(DATA_DIR, "matchup-card-impact.json"), JSON.stringify(matchupCardImpact), "utf-8");
 
   // Similarity is the slow, champion-scoped step — write similarity.json incrementally as each
@@ -233,7 +235,7 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
   // so a kill/crash mid-run keeps whichever champions already completed instead of losing them.
   const similarityPath = path.join(DATA_DIR, "similarity.json");
   const similarDecksSoFar: DeckSimilarityEntry[] = [];
-  const similarDecks = await computeDeckSimilarity(completed, cardIndex, async (championEntries) => {
+  const similarDecks = await computeDeckSimilarity(completed, ctx, async (championEntries) => {
     similarDecksSoFar.push(...championEntries);
     await writeFile(similarityPath, JSON.stringify({ generatedAt: new Date().toISOString(), decks: similarDecksSoFar }), "utf-8");
   });
