@@ -49,8 +49,11 @@ function SuggestionList({ cards, cardsByName, sign }: { cards: CardImpactEntry[]
  * Two lenses on the compared set, both built from useChampionCardImpact (the same hook powering
  * the Champion+Element fallback recommendation on deck pages) — no new scoring/pipeline code:
  * "help" for the lowest-win-rate deck (cards that correlate with its own Champion winning more,
- * not already in it), and "hurt" for the highest-win-rate deck (cards that correlate with *its*
- * Champion winning *less* — tech ideas against them, not already in their own list).
+ * not already in it), and "hurt" for the highest-win-rate deck (cards *not already in its own
+ * list* that correlate with *other* decks of its own Champion winning *less* when included —
+ * i.e. cards to be wary of adding to that deck, not tech to play against it; useChampionCardImpact
+ * is scoped to one Champion's own decks throughout, it has no notion of "cards that beat this
+ * Champion").
  */
 export default function ComparisonSuggestions({
   decks,
@@ -139,14 +142,14 @@ export default function ComparisonSuggestions({
       {opponent && opponentLabel && (
         <div>
           <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
-            Cards that hurt {opponentLabel} ({(opponent.winRate * 100).toFixed(0)}% win rate)
+            Cards to avoid adding to {opponentLabel} ({(opponent.winRate * 100).toFixed(0)}% win rate)
           </h2>
           {hurt.cards.length > 0 ? (
             <>
               <p className="mt-1 text-xs text-ctp-subtext0">
                 Cards from {hurt.totalDecks} other {opponentChampion} decks that correlate with a *lower* win rate
-                when included, not already in {opponentLabel}'s list — tech ideas to watch for or play around,
-                correlational, not a guarantee.
+                when included, not already in {opponentLabel}'s own list — this is about {opponentChampion} decks
+                in general, not tech to play against this specific deck. Correlational, not a guarantee.
               </p>
               <SuggestionList cards={hurt.cards} cardsByName={cardsByName} sign="negative" />
             </>

@@ -24,6 +24,15 @@ function bestIndex(values: (number | null)[]): number {
   return values.indexOf(max);
 }
 
+/** Index of the lowest value in `values` — same tie/insufficient-data rules as `bestIndex`, for stats where less is better (price). */
+function lowestIndex(values: (number | null)[]): number {
+  const real = values.filter((v): v is number => v !== null);
+  if (real.length < 2) return -1;
+  const min = Math.min(...real);
+  if (real.filter((v) => v === min).length > 1) return -1; // tied — nothing to highlight
+  return values.indexOf(min);
+}
+
 export default function ComparisonGrid({
   decks,
   decklists,
@@ -56,7 +65,7 @@ export default function ComparisonGrid({
     return buildDeckBuilderPath(params.championName, params.spiritFilter, params.lockedCards, params.lockedSections);
   }
 
-  const bestPriceIndex = bestIndex(deckStats.map((s) => (s.price > 0 ? s.price : null)));
+  const bestPriceIndex = lowestIndex(deckStats.map((s) => (s.price > 0 ? s.price : null)));
   const bestCompositeIndex = bestIndex(deckStats.map((s) => s.rating?.composite ?? null));
   const bestWinRateIndex = bestIndex(deckStats.map((s) => s.winRate));
 
