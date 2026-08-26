@@ -4,6 +4,7 @@ import DeckSearchByCards from "./DeckSearchByCards";
 import ImportByPlayer from "./ImportByPlayer";
 import ImportTopDecks from "./ImportTopDecks";
 import PasteDecklist from "./PasteDecklist";
+import ComparisonSummary from "./ComparisonSummary";
 import ComparisonGrid from "./ComparisonGrid";
 import ComparisonCards from "./ComparisonCards";
 import ComparisonCardStats from "./ComparisonCardStats";
@@ -22,8 +23,14 @@ const COMPARE_TYPE_LABELS: Record<CompareType, string> = { decks: "Decks", cards
 const COMPARE_TYPE_KEYS = Object.keys(COMPARE_TYPE_LABELS) as CompareType[];
 
 type SourceTab = "cards" | "player" | "topDecks" | "paste";
-type ViewMode = "table" | "cards" | "cardStats" | "suggestions";
-const VIEW_MODE_LABELS: Record<ViewMode, string> = { table: "Table", cards: "Cards", cardStats: "Card Stats", suggestions: "Suggested Changes" };
+type ViewMode = "summary" | "table" | "cards" | "cardStats" | "suggestions";
+const VIEW_MODE_LABELS: Record<ViewMode, string> = {
+  summary: "Summary",
+  table: "Table",
+  cards: "Cards",
+  cardStats: "Card Stats",
+  suggestions: "Suggested Changes",
+};
 
 const TAB_LABELS: Record<SourceTab, string> = {
   cards: "Search by cards",
@@ -49,14 +56,17 @@ export default function CompareIndex() {
   const [decks, setDecks] = useState<ComparedDeck[]>([]);
   const [panel, setPanel] = useTabParam<PanelTab>("panel", PANEL_KEYS, "add");
   const [tab, setTab] = useTabParam("tab", SOURCE_TAB_KEYS, "cards");
-  // Table needs horizontal space (one column per deck) — default to the stacked card view on a
-  // phone-sized viewport instead, so the compare set is usable without opening on desktop first.
-  const [viewMode, setViewMode] = useState<ViewMode>(() => (window.innerWidth < 768 ? "cards" : "table"));
+  // Summary answers "what's different" at a glance regardless of viewport — the other views are
+  // for drilling into the raw matrix once that question is answered.
+  const [viewMode, setViewMode] = useState<ViewMode>("summary");
+  const [baselineKey, setBaselineKey] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const playersData = useOmnidexPlayers();
   const index = useOmnidexIndex();
 
   const comparedKeys = useMemo(() => new Set(decks.map((d) => d.key)), [decks]);
+  // Falls back to the first compared deck whenever no baseline is set yet, or the chosen one gets removed.
+  const effectiveBaselineKey = baselineKey && comparedKeys.has(baselineKey) ? baselineKey : (decks[0]?.key ?? null);
   const decklists = useComparedDecklists(decks);
   const [shareCopyState, setShareCopyState] = useState<"idle" | "copied" | "failed">("idle");
 
@@ -295,6 +305,14 @@ export default function CompareIndex() {
                   </div>
 
                   <div className="mt-4">
+                    {viewMode === "summary" && (
+                      <ComparisonSummary
+                        decks={decks}
+                        decklists={decklists}
+                        baselineKey={effectiveBaselineKey}
+                        onBaselineChange={setBaselineKey}
+                      />
+                    )}
                     {viewMode === "table" && <ComparisonGrid decks={decks} decklists={decklists} />}
                     {viewMode === "cards" && <ComparisonCards decks={decks} decklists={decklists} />}
                     {viewMode === "cardStats" && <ComparisonCardStats decks={decks} decklists={decklists} />}
