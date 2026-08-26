@@ -54,6 +54,8 @@ type GameSubmissionV1 = {
 type PlayerGameStatsV1 = {
   deckLink: string;
   championId: string;
+  /** Clarent's canonical card display name. Additive/optional during the schema-v1 rollout. */
+  championName?: string;
   element: string;
   classes: string[];
   endLevel: number;

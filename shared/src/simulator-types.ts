@@ -3,9 +3,8 @@
  * (`GET /v1/grand-archive/analytics/summary`), published as `data/simulator/summary.json` by
  * `pipeline/src/simulator/export.ts`. This is anonymous simulator telemetry — a genuinely
  * different population from real tournament results (see the deck-sightings-derived datasets),
- * never blended into tournament win rates/Card Impact. `championId` is TCGEngine's own internal
- * card identifier, not this project's card `slug`/`name` — there is currently no known mapping
- * from one to the other, so callers should not assume a champion id resolves to a catalog card.
+ * never blended into tournament win rates/Card Impact. `championId` is TCGEngine's stable card
+ * identifier; Clarent supplies the corresponding display name when available.
  */
 export interface SimulatorSummary {
   schemaVersion: 1;
@@ -17,6 +16,7 @@ export interface SimulatorSummary {
   avgTurns: number | null;
   champions: Array<{
     championId: string;
+    championName: string | null;
     element: string;
     games: number;
     wins: number;
@@ -24,7 +24,9 @@ export interface SimulatorSummary {
   }>;
   matchups: Array<{
     champion1: string;
+    champion1Name: string | null;
     champion2: string;
+    champion2Name: string | null;
     games: number;
     champion1Wins: number;
     champion2Wins: number;

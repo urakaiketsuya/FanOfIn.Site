@@ -53,6 +53,13 @@ describe("match ingestion Worker", () => {
       games: 1,
       firstPlayer: { games: 1, wins: 0, winRate: 0 },
       avgTurns: fixture.turns,
+      champions: expect.arrayContaining([
+        expect.objectContaining({ championId: "champion-one", championName: "Champion One" }),
+        expect.objectContaining({ championId: "champion-two", championName: "Champion Two" }),
+      ]),
+      matchups: expect.arrayContaining([
+        expect.objectContaining({ champion1Name: "Champion One", champion2Name: "Champion Two" }),
+      ]),
     });
   });
 

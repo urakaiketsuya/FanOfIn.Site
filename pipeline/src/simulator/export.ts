@@ -51,6 +51,7 @@ export function assertSummary(value: unknown): asserts value is SimulatorSummary
   if (summary.champions.some((champion) => (
     !champion
     || typeof champion.championId !== "string"
+    || (champion.championName !== null && typeof champion.championName !== "string")
     || typeof champion.element !== "string"
     || !Number.isSafeInteger(champion.games)
     || champion.games < 0
@@ -64,7 +65,9 @@ export function assertSummary(value: unknown): asserts value is SimulatorSummary
   if (summary.matchups.some((matchup) => (
     !matchup
     || typeof matchup.champion1 !== "string"
+    || (matchup.champion1Name !== null && typeof matchup.champion1Name !== "string")
     || typeof matchup.champion2 !== "string"
+    || (matchup.champion2Name !== null && typeof matchup.champion2Name !== "string")
     || !Number.isSafeInteger(matchup.games)
     || matchup.games < 0
     || !Number.isSafeInteger(matchup.champion1Wins)

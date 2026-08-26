@@ -73,8 +73,7 @@ export default function SimulatorIndex() {
           <div>
             <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Champions</h2>
             <p className="mt-1 text-xs text-ctp-subtext1">
-              Champion ID is Clarent/TCGEngine's own internal identifier — this site has no known mapping from it
-              back to a card name yet, so ids are shown as-is.
+              Names are supplied by Clarent; its stable internal ID is retained as a fallback and for analytics joins.
             </p>
             {champions.length === 0 ? (
               <p className="mt-2 text-sm text-ctp-subtext1">No champion data yet.</p>
@@ -83,7 +82,7 @@ export default function SimulatorIndex() {
                 <table className="w-full text-left text-sm">
                   <thead>
                     <tr className="text-xs text-ctp-subtext0">
-                      <th className="pb-1 pr-3 font-normal">Champion ID</th>
+                      <th className="pb-1 pr-3 font-normal">Champion</th>
                       <th className="pb-1 pr-3 font-normal">Element</th>
                       <th className="pb-1 pr-3 font-normal">Games</th>
                       <th className="pb-1 font-normal">Win rate</th>
@@ -92,7 +91,10 @@ export default function SimulatorIndex() {
                   <tbody>
                     {champions.map((c) => (
                       <tr key={c.championId} className="border-t border-ctp-surface0">
-                        <td className="py-1.5 pr-3 font-mono text-xs text-ctp-text">{c.championId}</td>
+                        <td className="py-1.5 pr-3 text-ctp-text">
+                          <div>{c.championName ?? c.championId}</div>
+                          {c.championName && <div className="font-mono text-[10px] text-ctp-overlay1">{c.championId}</div>}
+                        </td>
                         <td className="py-1.5 pr-3 text-ctp-subtext1">{c.element}</td>
                         <td className="py-1.5 pr-3 text-ctp-subtext1">
                           {c.wins}-{c.games - c.wins}
@@ -114,9 +116,9 @@ export default function SimulatorIndex() {
               <ul className="mt-2 space-y-1 text-sm">
                 {matchups.map((m) => (
                   <li key={`${m.champion1}__${m.champion2}`} className="flex flex-wrap items-center gap-2">
-                    <span className="font-mono text-xs text-ctp-text">{m.champion1}</span>
+                    <span className="text-ctp-text" title={m.champion1}>{m.champion1Name ?? m.champion1}</span>
                     <span className="text-ctp-subtext0">vs</span>
-                    <span className="font-mono text-xs text-ctp-text">{m.champion2}</span>
+                    <span className="text-ctp-text" title={m.champion2}>{m.champion2Name ?? m.champion2}</span>
                     <span className="text-ctp-subtext1">
                       — {m.champion1Wins}-{m.champion2Wins} across {m.games} game{m.games === 1 ? "" : "s"}
                     </span>

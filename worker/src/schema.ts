@@ -56,6 +56,8 @@ const playerSchema = z.object({
   // free-text decklist accepted by its lobby. Keep it bounded, but do not reject valid text input.
   deckLink: z.string().max(MAX_DECK_INPUT),
   championId: boundedString,
+  // Additive in schema v1 so older Clarent deployments can continue submitting during rollout.
+  championName: boundedString.optional(),
   element: boundedString,
   classes: z.array(boundedString).max(16),
   endLevel: count,

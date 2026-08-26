@@ -17,6 +17,7 @@
     "1": {
       "deckLink": "https://example.test/decks/player-one",
       "championId": "champion-one",
+      "championName": "Champion One",
       "element": "FIRE",
       "classes": ["WARRIOR"],
       "endLevel": 3,
@@ -31,6 +32,7 @@
     "2": {
       "deckLink": "",
       "championId": "champion-two",
+      "championName": "Champion Two",
       "element": "WIND",
       "classes": ["RANGER"],
       "endLevel": 2,

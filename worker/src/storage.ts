@@ -95,13 +95,14 @@ export async function ingestSubmission(
     const player = submission.players[String(seat) as "1" | "2"];
     statements.push(env.MATCH_DB.prepare(
       `INSERT INTO game_players
-       (submission_id, seat, deck_link, champion_id, element, classes_json, end_level, end_hp)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+       (submission_id, seat, deck_link, champion_id, champion_name, element, classes_json, end_level, end_hp)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     ).bind(
       submission.submissionId,
       seat,
       player.deckLink,
       player.championId,
+      player.championName ?? "",
       player.element,
       JSON.stringify(player.classes),
       player.endLevel,

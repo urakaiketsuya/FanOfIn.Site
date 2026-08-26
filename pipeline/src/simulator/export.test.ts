@@ -10,8 +10,8 @@ function validSummary() {
     games: 5,
     firstPlayer: { games: 5, wins: 2, winRate: 0.4 },
     avgTurns: 6.2 as number | null,
-    champions: [{ championId: "a", element: "FIRE", games: 5, wins: 2, winRate: 0.4 }],
-    matchups: [{ champion1: "a", champion2: "b", games: 5, champion1Wins: 2, champion2Wins: 3 }],
+    champions: [{ championId: "a", championName: "Champion A" as string | null, element: "FIRE", games: 5, wins: 2, winRate: 0.4 }],
+    matchups: [{ champion1: "a", champion1Name: "Champion A" as string | null, champion2: "b", champion2Name: "Champion B" as string | null, games: 5, champion1Wins: 2, champion2Wins: 3 }],
     cardStats: [
       {
         cardId: "card-one",
@@ -55,6 +55,14 @@ test("accepts a well-formed summary, including below-threshold-gated cardStats/t
 test("accepts a null avgTurns (zero games)", () => {
   const summary = validSummary();
   summary.avgTurns = null;
+  assert.doesNotThrow(() => assertSummary(summary));
+});
+
+test("accepts null champion names for telemetry from an older Clarent deployment", () => {
+  const summary = validSummary();
+  summary.champions[0].championName = null;
+  summary.matchups[0].champion1Name = null;
+  summary.matchups[0].champion2Name = null;
   assert.doesNotThrow(() => assertSummary(summary));
 });
 

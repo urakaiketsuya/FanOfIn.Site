@@ -2,8 +2,8 @@ import type { Env } from "./storage";
 
 interface CountRow { total: number }
 interface FirstPlayerRow { games: number; first_player_wins: number; avg_turns: number | null }
-interface ChampionRow { champion_id: string; element: string; games: number; wins: number }
-interface MatchupRow { champion_1: string; champion_2: string; games: number; champion_1_wins: number; champion_2_wins: number }
+interface ChampionRow { champion_id: string; champion_name: string; element: string; games: number; wins: number }
+interface MatchupRow { champion_1: string; champion_1_name: string; champion_2: string; champion_2_name: string; games: number; champion_1_wins: number; champion_2_wins: number }
 interface CardStatsRow {
   card_id: string;
   games: number;
@@ -52,7 +52,7 @@ export async function buildSimulatorSummary(env: Env): Promise<unknown> {
        FROM games`,
     ),
     env.MATCH_DB.prepare(
-      `SELECT p.champion_id, p.element, COUNT(*) AS games,
+      `SELECT p.champion_id, MAX(p.champion_name) AS champion_name, p.element, COUNT(*) AS games,
               SUM(CASE WHEN g.winner = p.seat THEN 1 ELSE 0 END) AS wins
        FROM game_players p
        JOIN games g ON g.submission_id = p.submission_id
@@ -60,7 +60,8 @@ export async function buildSimulatorSummary(env: Env): Promise<unknown> {
        ORDER BY games DESC, p.champion_id ASC`,
     ),
     env.MATCH_DB.prepare(
-      `SELECT p1.champion_id AS champion_1, p2.champion_id AS champion_2, COUNT(*) AS games,
+      `SELECT p1.champion_id AS champion_1, MAX(p1.champion_name) AS champion_1_name,
+              p2.champion_id AS champion_2, MAX(p2.champion_name) AS champion_2_name, COUNT(*) AS games,
               SUM(CASE WHEN g.winner = 1 THEN 1 ELSE 0 END) AS champion_1_wins,
               SUM(CASE WHEN g.winner = 2 THEN 1 ELSE 0 END) AS champion_2_wins
        FROM games g
@@ -154,6 +155,7 @@ export async function buildSimulatorSummary(env: Env): Promise<unknown> {
     avgTurns: firstPlayer?.avg_turns !== null && firstPlayer?.avg_turns !== undefined ? Number(firstPlayer.avg_turns) : null,
     champions: champions.map((row) => ({
       championId: row.champion_id,
+      championName: row.champion_name || null,
       element: row.element,
       games: Number(row.games),
       wins: Number(row.wins),
@@ -161,7 +163,9 @@ export async function buildSimulatorSummary(env: Env): Promise<unknown> {
     })),
     matchups: matchups.map((row) => ({
       champion1: row.champion_1,
+      champion1Name: row.champion_1_name || null,
       champion2: row.champion_2,
+      champion2Name: row.champion_2_name || null,
       games: Number(row.games),
       champion1Wins: Number(row.champion_1_wins),
       champion2Wins: Number(row.champion_2_wins),
