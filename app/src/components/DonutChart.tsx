@@ -41,7 +41,7 @@ export default function DonutChart({ title, segments }: { title: string; segment
       <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">{title}</h3>
       <div className="mt-3 flex flex-wrap items-center gap-4">
         <div className="relative h-40 w-40 shrink-0">
-          <svg viewBox="0 0 100 100" className="h-full w-full -rotate-90">
+          <svg viewBox="0 0 100 100" className="h-full w-full -rotate-90" aria-hidden="true">
             <circle cx="50" cy="50" r={RADIUS} fill="none" stroke="var(--color-ctp-surface0)" strokeWidth={STROKE_WIDTH} />
             {segments.map((s) => {
               const fraction = s.value / total;

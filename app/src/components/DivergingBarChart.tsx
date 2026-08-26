@@ -24,7 +24,7 @@ export default function DivergingBarChart({
   if (max === 0) return null;
 
   return (
-    <figure className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+    <figure className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4" aria-label={`${labelA} vs ${labelB}`}>
       <div className="grid grid-cols-[minmax(6rem,9rem)_1fr] gap-2 text-[10px] text-ctp-subtext0 sm:grid-cols-[minmax(8rem,12rem)_1fr]">
         <span />
         <div className="grid grid-cols-2">
