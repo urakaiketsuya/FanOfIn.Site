@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { computeCardImpactEntries, decodeCardLines, type CardImpactEntry, type CardSectionRow, type DeckSections } from "@gatcg/shared";
-import { useDeckCardIndexData } from "../archetypes/data";
+import { useDeckCardPresenceIndex } from "./useDeckCardPresenceIndex";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 
 /** Mirrors pipeline/src/config.ts's defaults — see useChampionCardImpact.ts for why these are plain literals here. */
@@ -24,26 +24,31 @@ export interface CardSynergyResult {
  * automatically, no special-casing needed.
  */
 export function useCardSynergy(cardName: string | null): CardSynergyResult {
-  const rawCardIndexData = useDeckCardIndexData();
-  const cardIndexData = rawCardIndexData?.cardNames ? rawCardIndexData : undefined;
+  const presence = useDeckCardPresenceIndex();
   const popularityIndexData = useDeckPopularityIndexData();
 
   return useMemo((): CardSynergyResult => {
-    if (!cardName || !cardIndexData || !popularityIndexData)
-      return { cards: [], totalDecks: 0, loading: !cardIndexData || !popularityIndexData };
+    if (!cardName || !presence || !popularityIndexData)
+      return { cards: [], totalDecks: 0, loading: !presence || !popularityIndexData };
 
+    const { data: cardIndexData, nameToIndex, presenceIndex } = presence;
     const winRateByDeckId = new Map(popularityIndexData.entries.map((s) => [s.deckId, s.winRate]));
 
+    // Candidate decks come straight from the presence index — no need to decode and string-match
+    // every one of the ~57k published decks just to find the (typically far smaller) subset that
+    // actually run this card. See useDeckCardPresenceIndex's doc comment.
+    const cardNameIndex = nameToIndex.get(cardName);
+    const matchingDeckIndices = cardNameIndex === undefined ? [] : presenceIndex.get(cardNameIndex);
+
     const rows: CardSectionRow[] = [];
-    for (const entry of cardIndexData.decks) {
+    for (const idx of matchingDeckIndices ?? []) {
+      const entry = cardIndexData.decks[idx];
       const winRate = winRateByDeckId.get(entry.deckId);
       if (winRate === undefined) continue;
 
       const main = decodeCardLines(entry.main, cardIndexData.cardNames);
       const material = decodeCardLines(entry.material, cardIndexData.cardNames);
       const sideboard = decodeCardLines(entry.sideboard, cardIndexData.cardNames);
-      if (!main.some((l) => l.name === cardName) && !material.some((l) => l.name === cardName) && !sideboard.some((l) => l.name === cardName))
-        continue;
 
       const sections: DeckSections = {
         main: new Set(main.map((l) => l.name)),
@@ -59,5 +64,5 @@ export function useCardSynergy(cardName: string | null): CardSynergyResult {
     const cards = computeCardImpactEntries(rows, baseline, PRIOR_WEIGHT, MIN_SAMPLE_SIZE).slice(0, MAX_RESULTS);
 
     return { cards, totalDecks: rows.length, loading: false };
-  }, [cardName, cardIndexData, popularityIndexData]);
+  }, [cardName, presence, popularityIndexData]);
 }

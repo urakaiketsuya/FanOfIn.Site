@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import type { DeckCardIndexEntry } from "@gatcg/shared";
-import { useDeckCardIndexData } from "../archetypes/data";
+import { useDeckCardPresenceIndex } from "./useDeckCardPresenceIndex";
 
 const MAX_RESULTS_PER_SECTION = 20;
 
@@ -18,25 +18,6 @@ export interface CardCombinationResult {
   main: RawCardCount[];
   material: RawCardCount[];
   sideboard: RawCardCount[];
-}
-
-/** Every deck's card-name indices (any section), for fast "does this deck contain X" membership tests — works directly against the dictionary-encoded tuples, no need to decode names first. */
-function buildPresenceIndex(decks: DeckCardIndexEntry[]): Map<number, Set<number>> {
-  const index = new Map<number, Set<number>>();
-  decks.forEach((deck, i) => {
-    const seen = new Set<number>();
-    for (const [nameIndex] of [...deck.main, ...deck.material, ...deck.sideboard]) {
-      if (seen.has(nameIndex)) continue;
-      seen.add(nameIndex);
-      let bucket = index.get(nameIndex);
-      if (!bucket) {
-        bucket = new Set<number>();
-        index.set(nameIndex, bucket);
-      }
-      bucket.add(i);
-    }
-  });
-  return index;
 }
 
 function intersectDeckIndices(nameIndices: number[], presenceIndex: Map<number, Set<number>>): Set<number> {
@@ -84,22 +65,10 @@ function topN(counts: Map<number, RawCardCount>, limit: number): RawCardCount[] 
  * combinations work without a server round-trip.
  */
 export function useCardCombination(selectedCards: string[]): CardCombinationResult {
-  const rawData = useDeckCardIndexData();
-  // `cardNames` guards against a stale IndexedDB copy from before dictionary-encoding shipped —
-  // during the rollout window, a returning visitor's cache briefly holds the old `{name,quantity}`
-  // shape until usePublishedData's generatedAt check catches up and refetches. Treating it the
-  // same as "not loaded yet" avoids a crash in that window instead of assuming the new shape.
-  const data = rawData?.cardNames ? rawData : undefined;
-
-  const nameToIndex = useMemo(() => {
-    if (!data) return null;
-    return new Map(data.cardNames.map((name, i) => [name, i]));
-  }, [data]);
-
-  const presenceIndex = useMemo(() => {
-    if (!data) return null;
-    return buildPresenceIndex(data.decks);
-  }, [data]);
+  const presence = useDeckCardPresenceIndex();
+  const data = presence?.data;
+  const nameToIndex = presence?.nameToIndex;
+  const presenceIndex = presence?.presenceIndex;
 
   return useMemo(() => {
     if (!data || !nameToIndex || !presenceIndex || selectedCards.length === 0) {
