@@ -1,6 +1,23 @@
 import { Link } from "react-router-dom";
-import type { DeckSighting } from "@gatcg/shared";
 import PlayerLink from "../features/players/PlayerLink";
+
+/**
+ * Only the fields this list actually renders — a `Pick` of `DeckSighting` would also work, but
+ * every caller now sources these from the lean deck-popularity index (see
+ * `useDeckPopularityIndexData`) joined with an event-name lookup, not the full 40MB+ dataset, so
+ * the type stands on its own instead of implying a `DeckSighting` dependency that no longer exists.
+ */
+export interface TopDecksListEntry {
+  deckId: string;
+  player: number;
+  eventId: number;
+  eventName: string;
+  placement: number | null;
+  wins: number;
+  losses: number;
+  ties: number;
+  underplaced: boolean;
+}
 
 /** `onToggleSelect`/`isSelected` are optional — pass both to show a checkbox per row (e.g. for building a Compare set); omit for the plain read-only list every other caller uses. */
 export default function TopDecksList({
@@ -9,10 +26,10 @@ export default function TopDecksList({
   onToggleSelect,
   isSelected,
 }: {
-  decks: DeckSighting[];
+  decks: TopDecksListEntry[];
   playerName: (id: number) => string;
-  onToggleSelect?: (deck: DeckSighting) => void;
-  isSelected?: (deck: DeckSighting) => boolean;
+  onToggleSelect?: (deck: TopDecksListEntry) => void;
+  isSelected?: (deck: TopDecksListEntry) => boolean;
 }) {
   return (
     <div className="space-y-1 text-sm">
@@ -45,7 +62,12 @@ export default function TopDecksList({
             </div>
           </div>
           <div className="shrink-0 pl-2">
-            #{s.placement} · {s.wins}-{s.losses}-{s.ties}
+            {/* wins/losses/ties can briefly be absent from a cached deck-popularity-index.json
+                fetched before the next scheduled data-refresh run publishes them (see the field's
+                addition in DeckPopularityEntry) — falls back to placement-only rather than
+                rendering "undefined-undefined-undefined" during that window. */}
+            #{s.placement}
+            {typeof s.wins === "number" && ` · ${s.wins}-${s.losses}-${s.ties}`}
           </div>
         </div>
       ))}

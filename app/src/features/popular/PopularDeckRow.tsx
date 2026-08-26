@@ -6,17 +6,17 @@ import TopDecksList from "../../components/TopDecksList";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { useCardsByNames } from "../events/useCardsByNames";
-import { useDeckSightingsData } from "../topdecks/data";
+import { useDeckPopularityIndexData } from "../topdecks/data";
+import { useEventNameById } from "../tournaments/data";
 import { shortHash } from "../../lib/hash";
 import type { PopularDeck } from "./useDeckPopularity";
 
 /**
- * The decklist + "played by" section, split out so its useDeckSightingsData() call (the full
- * 40MB+ deck-sightings.json, needed for per-instance placement/wins/losses) only fires once a row
- * is actually expanded — not for every one of the ~30 rows rendered on page load. That call used
- * to sit directly in PopularDeckRow, unconditionally, which meant just loading Popular Decks / All
- * Decks forced the full file to download even though almost no rows ever get expanded — a real
- * mobile-crash contributor (see git history around the fix).
+ * The decklist + "played by" section, split out so its useDeckPopularityIndexData() call only
+ * fires once a row is actually expanded — not for every one of the ~30 rows rendered on page
+ * load. That call used to sit directly in PopularDeckRow, unconditionally, and used to be the
+ * full 40MB+ deck-sightings.json before the popularity-index migration below — either way, only
+ * fetching it on expand avoids a real mobile-crash contributor (see git history around the fix).
  */
 function ExpandedDeckRow({
   deck,
@@ -29,15 +29,27 @@ function ExpandedDeckRow({
   cardsByName: Map<string, Card>;
   playerName: (id: number) => string;
 }) {
-  const sightingsData = useDeckSightingsData();
+  const popularityIndexData = useDeckPopularityIndexData();
+  const eventNameById = useEventNameById();
 
   const instances = useMemo(() => {
-    if (!sightingsData) return [];
+    if (!popularityIndexData) return [];
     const deckIdSet = new Set(deck.deckIds);
-    return sightingsData.sightings
-      .filter((s) => deckIdSet.has(s.deckId))
-      .sort((a, b) => (a.placement ?? Infinity) - (b.placement ?? Infinity));
-  }, [sightingsData, deck.deckIds]);
+    return popularityIndexData.entries
+      .filter((e) => deckIdSet.has(e.deckId))
+      .sort((a, b) => (a.placement ?? Infinity) - (b.placement ?? Infinity))
+      .map((e) => ({
+        deckId: e.deckId,
+        player: e.player,
+        eventId: e.eventId,
+        eventName: eventNameById.get(e.eventId) ?? `Event #${e.eventId}`,
+        placement: e.placement,
+        wins: e.wins,
+        losses: e.losses,
+        ties: e.ties,
+        underplaced: e.underplaced,
+      }));
+  }, [popularityIndexData, deck.deckIds, eventNameById]);
 
   return (
     <div className="mt-2 border-t border-ctp-surface0 pt-2">

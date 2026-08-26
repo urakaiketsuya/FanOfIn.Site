@@ -174,10 +174,9 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
     "utf-8",
   );
 
-  // Lean projection for useDeckPopularity.ts (Popular Decks / All Decks) — those pages only need
-  // championName + per-sighting outcome + event context to group/rank decks, not the full
-  // DeckSighting (keywords, price, repeated event/season name strings) that makes deck-sightings.json
-  // 40MB+. See the DeckPopularityEntry doc comment in shared/src/analysis-types.ts.
+  // Lean projection for useDeckPopularity.ts (Popular Decks / All Decks) and TopDecksList's
+  // "played by" consumers — see the DeckPopularityEntry doc comment in shared/src/analysis-types.ts
+  // for why this stays a fraction of deck-sightings.json's size.
   const deckPopularityIndex: DeckPopularityEntry[] = deckSightings.map((s) => ({
     deckId: s.deckId,
     championName: s.championName,
@@ -187,6 +186,10 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
     placement: s.placement,
     winRate: s.winRate,
     weightedScore: s.weightedScore,
+    wins: s.wins,
+    losses: s.losses,
+    ties: s.ties,
+    underplaced: s.underplaced,
   }));
   await writeFile(
     path.join(DATA_DIR, "deck-popularity-index.json"),

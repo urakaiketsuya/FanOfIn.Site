@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useArchetypeData, useArchetypeTaxonomyData, useChampionTrendsData } from "../archetypes/data";
-import { useDeckSightingsData } from "../topdecks/data";
+import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useHipsterData } from "../players/data";
-import { useOmnidexPlayers } from "../tournaments/data";
+import { useOmnidexPlayers, useEventNameById } from "../tournaments/data";
 import { useCardsByNames } from "../events/useCardsByNames";
 import TopCardsSections from "../../components/TopCardsSections";
 import TopDecksList from "../../components/TopDecksList";
@@ -46,7 +46,8 @@ export default function ChampionDetail() {
   const archetypeData = useArchetypeData();
   const taxonomyData = useArchetypeTaxonomyData();
   const trendsData = useChampionTrendsData();
-  const sightingsData = useDeckSightingsData();
+  const popularityIndexData = useDeckPopularityIndexData();
+  const eventNameById = useEventNameById();
   const hipsterData = useHipsterData();
   const playersData = useOmnidexPlayers();
 
@@ -102,12 +103,23 @@ export default function ChampionDetail() {
   }, [taxonomyData, championName]);
 
   const topDecks = useMemo(() => {
-    if (!sightingsData) return [];
-    return sightingsData.sightings
-      .filter((s) => s.championName === championName)
+    if (!popularityIndexData) return [];
+    return popularityIndexData.entries
+      .filter((e) => e.championName === championName)
       .sort((a, b) => b.weightedScore - a.weightedScore)
-      .slice(0, MAX_TOP_DECKS_SHOWN);
-  }, [sightingsData, championName]);
+      .slice(0, MAX_TOP_DECKS_SHOWN)
+      .map((e) => ({
+        deckId: e.deckId,
+        player: e.player,
+        eventId: e.eventId,
+        eventName: eventNameById.get(e.eventId) ?? `Event #${e.eventId}`,
+        placement: e.placement,
+        wins: e.wins,
+        losses: e.losses,
+        ties: e.ties,
+        underplaced: e.underplaced,
+      }));
+  }, [popularityIndexData, championName, eventNameById]);
 
   const bonusCards = useChampionBonusCards(champion ? championName : null);
   const regionalBreakdown = useChampionRegionalBreakdown(champion ? championName : null);

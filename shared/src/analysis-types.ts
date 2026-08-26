@@ -348,11 +348,15 @@ export interface DeckSightingsData {
 
 /**
  * A lean projection of DeckSighting — only the fields `useDeckPopularity.ts` needs to group and
- * rank decks (championName, per-sighting outcome, event context). Exists because `deck-sightings.json`
- * grew to 40MB+ (every sighting's full keyword breakdown, price, repeated event/season name
- * strings, etc.), and Popular Decks / All Decks need the whole file just to get championName +
- * winRate for every sighting — a real mobile-crash cause (see git history around the fix). This
- * file is a fraction of the size for the exact same population.
+ * rank decks (championName, per-sighting outcome, event context), plus the small scalar fields
+ * (wins/losses/ties/underplaced) that let `TopDecksList`'s handful of "played by" consumers
+ * (Archetype/Deck/Card/Champion detail, Popular Decks' expanded row) migrate off the full dataset
+ * too — everything TopDecksList needs except eventName, which those pages join client-side from
+ * the already-widely-loaded Omnidex index by eventId instead of duplicating a ~31-char string
+ * per entry here. Exists because `deck-sightings.json` grew to 40MB+ (every sighting's full
+ * keyword breakdown, price, repeated event/season name strings, etc.), and these consumers need
+ * the whole file just for a handful of small fields per sighting — a real mobile-crash cause (see
+ * git history around the fix). This file is a fraction of the size for the exact same population.
  */
 export interface DeckPopularityEntry {
   deckId: string;
@@ -363,6 +367,10 @@ export interface DeckPopularityEntry {
   placement: number | null;
   winRate: number;
   weightedScore: number;
+  wins: number;
+  losses: number;
+  ties: number;
+  underplaced: boolean;
 }
 
 export interface DeckPopularityIndexData {

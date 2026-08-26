@@ -26,10 +26,10 @@ import { useIntentCards } from "./useIntentCards";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CardComparisonTable from "../compare/CardComparisonTable";
 import { useCardsByNames } from "../events/useCardsByNames";
-import { useDeckSightingsData } from "../topdecks/data";
+import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCardDeckReferences, useCommunityCardInclusion } from "../community/data";
 import { useHipsterData } from "../players/data";
-import { useOmnidexPlayers } from "../tournaments/data";
+import { useOmnidexPlayers, useEventNameById } from "../tournaments/data";
 import UniqueDeckRow from "../champions/UniqueDeckRow";
 import { formatUsd } from "../../lib/format";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -156,7 +156,8 @@ export default function CardDetail() {
   }
 
   const archetypeTaxonomyData = useArchetypeTaxonomyData();
-  const sightingsData = useDeckSightingsData();
+  const popularityIndexData = useDeckPopularityIndexData();
+  const eventNameById = useEventNameById();
   const hipsterData = useHipsterData();
   const playersData = useOmnidexPlayers();
   const cardDeckReferences = useCardDeckReferences();
@@ -203,12 +204,23 @@ export default function CardDetail() {
     intent.feeds.filter((m) => m.tier === "experimental").length + intent.poweredBy.filter((m) => m.tier === "experimental").length;
 
   const topDecks = useMemo(() => {
-    if (!sightingsData) return [];
-    return sightingsData.sightings
-      .filter((s) => deckIdSet.has(s.deckId))
+    if (!popularityIndexData) return [];
+    return popularityIndexData.entries
+      .filter((e) => deckIdSet.has(e.deckId))
       .sort((a, b) => b.weightedScore - a.weightedScore)
-      .slice(0, MAX_TOP_DECKS_SHOWN);
-  }, [sightingsData, deckIdSet]);
+      .slice(0, MAX_TOP_DECKS_SHOWN)
+      .map((e) => ({
+        deckId: e.deckId,
+        player: e.player,
+        eventId: e.eventId,
+        eventName: eventNameById.get(e.eventId) ?? `Event #${e.eventId}`,
+        placement: e.placement,
+        wins: e.wins,
+        losses: e.losses,
+        ties: e.ties,
+        underplaced: e.underplaced,
+      }));
+  }, [popularityIndexData, deckIdSet, eventNameById]);
 
   const uniqueDecks = useMemo(() => {
     if (!hipsterData) return [];

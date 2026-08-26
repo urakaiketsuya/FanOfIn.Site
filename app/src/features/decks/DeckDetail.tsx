@@ -4,8 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import type { OmnidexDecklist } from "@gatcg/shared";
 import { gatcgApi } from "../../lib/api/client";
 import { useDeckPopularity } from "../popular/useDeckPopularity";
-import { useDeckSightingsData } from "../topdecks/data";
-import { useOmnidexPlayers } from "../tournaments/data";
+import { useDeckPopularityIndexData } from "../topdecks/data";
+import { useOmnidexPlayers, useEventNameById } from "../tournaments/data";
 import { useCardImpactData, useSimilarityData } from "../archetypes/data";
 import { useChampionCardImpact } from "./useChampionCardImpact";
 import { useChampionCardImages } from "../players/useChampionCardImages";
@@ -53,7 +53,8 @@ export default function DeckDetail() {
   // minPlayers: 1 — a deck page should resolve for any decklist reachable by its hash, not just
   // ones popular enough to appear on Popular Decks (2+ players).
   const { decks, loading } = useDeckPopularity(null, 1);
-  const sightingsData = useDeckSightingsData();
+  const popularityIndexData = useDeckPopularityIndexData();
+  const eventNameById = useEventNameById();
   const playersData = useOmnidexPlayers();
 
   const deck = decks.find((d) => shortHash(d.signature) === hash);
@@ -191,12 +192,28 @@ export default function DeckDetail() {
   }, [deck, priceByName]);
 
   const instances = useMemo(() => {
-    if (!deck || !sightingsData) return [];
+    if (!deck || !popularityIndexData) return [];
     const deckIdSet = new Set(deck.deckIds);
-    return sightingsData.sightings
-      .filter((s) => deckIdSet.has(s.deckId))
+    return popularityIndexData.entries
+      .filter((e) => deckIdSet.has(e.deckId))
       .sort((a, b) => (a.placement ?? Infinity) - (b.placement ?? Infinity));
-  }, [deck, sightingsData]);
+  }, [deck, popularityIndexData]);
+
+  const instancesForList = useMemo(
+    () =>
+      instances.map((e) => ({
+        deckId: e.deckId,
+        player: e.player,
+        eventId: e.eventId,
+        eventName: eventNameById.get(e.eventId) ?? `Event #${e.eventId}`,
+        placement: e.placement,
+        wins: e.wins,
+        losses: e.losses,
+        ties: e.ties,
+        underplaced: e.underplaced,
+      })),
+    [instances, eventNameById],
+  );
 
   const sightingsByMonth = useMemo(() => {
     if (instances.length === 0) return [];
@@ -516,7 +533,7 @@ export default function DeckDetail() {
         <div className="mt-8">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Played by ({instances.length})</h2>
           <div className="mt-2">
-            <TopDecksList decks={instances} playerName={playerName} />
+            <TopDecksList decks={instancesForList} playerName={playerName} />
           </div>
         </div>
       )}

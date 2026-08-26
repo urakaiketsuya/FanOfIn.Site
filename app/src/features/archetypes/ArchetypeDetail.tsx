@@ -2,8 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { CardImpactRole, OmnidexDecklist } from "@gatcg/shared";
 import { useArchetypeTaxonomyData, useCardImpactData, useMatchupCardImpactData } from "./data";
-import { useDeckSightingsData } from "../topdecks/data";
-import { useOmnidexPlayers } from "../tournaments/data";
+import { useDeckPopularityIndexData } from "../topdecks/data";
+import { useOmnidexPlayers, useEventNameById } from "../tournaments/data";
 import { useSightingDecklist } from "../topdecks/useSightingDecklist";
 import { useCardsByNames } from "../events/useCardsByNames";
 import DecklistView from "../events/DecklistView";
@@ -40,7 +40,8 @@ export default function ArchetypeDetail() {
   const { id = "" } = useParams<{ id: string }>();
 
   const data = useArchetypeTaxonomyData();
-  const sightingsData = useDeckSightingsData();
+  const popularityIndexData = useDeckPopularityIndexData();
+  const eventNameById = useEventNameById();
   const playersData = useOmnidexPlayers();
   const cardImpactData = useCardImpactData();
   const matchupCardImpactData = useMatchupCardImpactData();
@@ -129,12 +130,23 @@ export default function ArchetypeDetail() {
   );
 
   const instances = useMemo(() => {
-    if (!cluster || !sightingsData) return [];
+    if (!cluster || !popularityIndexData) return [];
     const deckIdSet = new Set(cluster.deckIds);
-    return sightingsData.sightings
-      .filter((s) => deckIdSet.has(s.deckId))
-      .sort((a, b) => b.weightedScore - a.weightedScore);
-  }, [cluster, sightingsData]);
+    return popularityIndexData.entries
+      .filter((e) => deckIdSet.has(e.deckId))
+      .sort((a, b) => b.weightedScore - a.weightedScore)
+      .map((e) => ({
+        deckId: e.deckId,
+        player: e.player,
+        eventId: e.eventId,
+        eventName: eventNameById.get(e.eventId) ?? `Event #${e.eventId}`,
+        placement: e.placement,
+        wins: e.wins,
+        losses: e.losses,
+        ties: e.ties,
+        underplaced: e.underplaced,
+      }));
+  }, [cluster, popularityIndexData, eventNameById]);
 
   const [selectedDeckIds, setSelectedDeckIds] = useState<Set<string>>(new Set());
   function toggleSelect(s: { deckId: string }) {
