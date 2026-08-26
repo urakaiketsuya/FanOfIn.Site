@@ -111,7 +111,8 @@ type CombatEventV1 =
 ## Validation rules
 
 - Identifiers and free-form strings are non-empty and at most 255 characters unless noted.
-- `deckLink` is either empty or an HTTP(S) URL of at most 2,048 characters.
+- `deckLink` is Clarent's legacy deck-input field. It may be empty, an HTTP(S) deck URL, or a pasted
+  free-text decklist, and is limited to 32,768 characters.
 - Array and record sizes are bounded: 16 classes, 500 card-stat entries, 500 turn records per
   player, and 5,000 combat events.
 - Counts, turns, damage, healing, level, and HP are non-negative integers.

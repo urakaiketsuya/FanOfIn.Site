@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 const MAX_STRING = 255;
+const MAX_DECK_INPUT = 32_768;
 const seat = z.union([z.literal(1), z.literal(2)]);
 const boundedString = z.string().min(1).max(MAX_STRING);
 const count = z.number().int().nonnegative();
@@ -51,7 +52,9 @@ const damageResolvedSchema = z.object({
 }).strict();
 
 const playerSchema = z.object({
-  deckLink: z.union([z.literal(""), z.url({ protocol: /^https?$/ }).max(2_048)]),
+  // Clarent uses this legacy field for either a supported HTTP(S) deck URL or the pasted
+  // free-text decklist accepted by its lobby. Keep it bounded, but do not reject valid text input.
+  deckLink: z.string().max(MAX_DECK_INPUT),
   championId: boundedString,
   element: boundedString,
   classes: z.array(boundedString).max(16),

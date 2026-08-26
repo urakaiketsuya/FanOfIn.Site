@@ -11,6 +11,20 @@ describe("Grand Archive game submission v1", () => {
     expect(gameSubmissionV1Schema.safeParse(cloneFixture()).success).toBe(true);
   });
 
+  it("accepts a pasted Clarent decklist in the legacy deckLink field", () => {
+    const payload = cloneFixture();
+    const players = payload.players as Record<string, Record<string, unknown>>;
+    players["1"].deckLink = "# Material Deck\n1 Lorraine, Wandering Warrior\n\n# Main Deck\n4 Fireball";
+    expect(gameSubmissionV1Schema.safeParse(payload).success).toBe(true);
+  });
+
+  it("rejects an oversized pasted decklist", () => {
+    const payload = cloneFixture();
+    const players = payload.players as Record<string, Record<string, unknown>>;
+    players["1"].deckLink = "x".repeat(32_769);
+    expect(gameSubmissionV1Schema.safeParse(payload).success).toBe(false);
+  });
+
   it("rejects an identity that does not match matchId:gameNumber", () => {
     const payload = cloneFixture();
     payload.submissionId = "different:1";
