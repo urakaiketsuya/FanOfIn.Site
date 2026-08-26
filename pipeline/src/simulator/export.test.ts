@@ -9,6 +9,7 @@ function validSummary() {
     generatedAt: new Date().toISOString(),
     games: 5,
     firstPlayer: { games: 5, wins: 2, winRate: 0.4 },
+    avgTurns: 6.2 as number | null,
     champions: [{ championId: "a", element: "FIRE", games: 5, wins: 2, winRate: 0.4 }],
     matchups: [{ champion1: "a", champion2: "b", games: 5, champion1Wins: 2, champion2Wins: 3 }],
     cardStats: [
@@ -24,8 +25,10 @@ function validSummary() {
         winRate: 0.6 as number | null,
         attackEvents: 12,
         avgDamageDealt: 3.5,
+        lethalHits: 2,
       },
     ],
+    weapons: [{ weaponCardId: "weapon-one", games: 5, attackEvents: 8, cleaveRate: 0.25 }],
     turnStats: [
       {
         turn: 3,
@@ -43,10 +46,40 @@ function validSummary() {
   };
 }
 
-test("accepts a well-formed summary, including below-threshold-gated cardStats/turnStats being empty arrays", () => {
+test("accepts a well-formed summary, including below-threshold-gated cardStats/turnStats/weapons being empty arrays", () => {
   assert.doesNotThrow(() => assertSummary(validSummary()));
-  const belowThreshold = { ...validSummary(), cardStats: [], turnStats: [] };
+  const belowThreshold = { ...validSummary(), cardStats: [], weapons: [], turnStats: [] };
   assert.doesNotThrow(() => assertSummary(belowThreshold));
+});
+
+test("accepts a null avgTurns (zero games)", () => {
+  const summary = validSummary();
+  summary.avgTurns = null;
+  assert.doesNotThrow(() => assertSummary(summary));
+});
+
+test("rejects a negative avgTurns", () => {
+  const summary = validSummary();
+  summary.avgTurns = -1;
+  assert.throws(() => assertSummary(summary), /invalid avgTurns/);
+});
+
+test("rejects a weapons entry with an out-of-range cleaveRate", () => {
+  const summary = validSummary();
+  summary.weapons[0].cleaveRate = 1.5;
+  assert.throws(() => assertSummary(summary), /invalid weapon aggregates/);
+});
+
+test("rejects a weapons entry with a negative attackEvents", () => {
+  const summary = validSummary();
+  summary.weapons[0].attackEvents = -1;
+  assert.throws(() => assertSummary(summary), /invalid weapon aggregates/);
+});
+
+test("rejects a cardStats entry with a negative lethalHits", () => {
+  const summary = validSummary();
+  summary.cardStats[0].lethalHits = -1;
+  assert.throws(() => assertSummary(summary), /invalid card aggregates/);
 });
 
 test("accepts a card/turn entry with a null winRate/no appearances distinction", () => {
@@ -85,9 +118,10 @@ test("rejects a turnStats entry with a non-finite average", () => {
   assert.throws(() => assertSummary(summary), /invalid turn aggregates/);
 });
 
-test("rejects a summary missing the cardStats/turnStats arrays entirely (pre-normalization API shape)", () => {
+test("rejects a summary missing the cardStats/weapons/turnStats arrays entirely (pre-normalization API shape)", () => {
   const summary = validSummary() as Partial<ReturnType<typeof validSummary>>;
   delete summary.cardStats;
+  delete summary.weapons;
   delete summary.turnStats;
   assert.throws(() => assertSummary(summary), /missing aggregate arrays/);
 });

@@ -52,6 +52,7 @@ describe("match ingestion Worker", () => {
       source: "GrandArchiveSim",
       games: 1,
       firstPlayer: { games: 1, wins: 0, winRate: 0 },
+      avgTurns: fixture.turns,
     });
   });
 
@@ -206,25 +207,28 @@ describe("match ingestion Worker", () => {
     expect(counts.map((c) => c?.count)).toEqual([1_000, 1_000, 4_500]);
   });
 
-  it("only surfaces per-card/per-turn aggregates once they clear the minimum sample size", async () => {
+  it("only surfaces per-card/per-turn/per-weapon aggregates once they clear the minimum sample size", async () => {
     const CARD_ID = "aggregate-test-card";
+    const WEAPON_ID = "aggregate-test-weapon";
     // Outside the preceding "max-size" test's turn range (1-500) — that test's synthetic games
     // are still in the shared D1 state (tests in this file don't reset between `it` blocks), so a
     // turn number in that range would already have a pre-existing game and cross the sample-size
     // threshold one submission earlier than this test expects.
     const TURN = 10_000;
-    // 3 wins, 2 losses -> winRate should come out to 0.6; damage amounts sum to 20 across 5 games -> avg 4.
-    const outcomes: Array<{ winner: 1 | 2; amount: number }> = [
-      { winner: 1, amount: 4 },
-      { winner: 1, amount: 6 },
-      { winner: 1, amount: 5 },
-      { winner: 2, amount: 3 },
-      { winner: 2, amount: 2 },
+    // 3 wins, 2 losses -> winRate 0.6; damage amounts sum to 20 across 5 games -> avg 4;
+    // 2 of 5 damage events are lethal; 3 of 5 attacks cleave -> cleaveRate 0.6.
+    const outcomes: Array<{ winner: 1 | 2; amount: number; lethal: boolean; cleave: boolean }> = [
+      { winner: 1, amount: 4, lethal: true, cleave: true },
+      { winner: 1, amount: 6, lethal: true, cleave: false },
+      { winner: 1, amount: 5, lethal: false, cleave: true },
+      { winner: 2, amount: 3, lethal: false, cleave: false },
+      { winner: 2, amount: 2, lethal: false, cleave: true },
     ];
 
     async function fetchSummary() {
       const response = await worker.fetch("https://worker.test/v1/grand-archive/analytics/summary");
       return (await response.json()) as {
+        avgTurns: number | null;
         cardStats: Array<{
           cardId: string;
           games: number;
@@ -237,6 +241,13 @@ describe("match ingestion Worker", () => {
           winRate: number | null;
           attackEvents: number;
           avgDamageDealt: number;
+          lethalHits: number;
+        }>;
+        weapons: Array<{
+          weaponCardId: string;
+          games: number;
+          attackEvents: number;
+          cleaveRate: number;
         }>;
         turnStats: Array<{
           turn: number;
@@ -253,7 +264,7 @@ describe("match ingestion Worker", () => {
       };
     }
 
-    for (const [i, { winner, amount }] of outcomes.entries()) {
+    for (const [i, { winner, amount, lethal, cleave }] of outcomes.entries()) {
       const submission = structuredClone(fixture) as unknown as GameSubmissionV1;
       submission.matchId = `match-fixture-aggregate-${i}`;
       submission.submissionId = `match-fixture-aggregate-${i}:1`;
@@ -267,6 +278,16 @@ describe("match ingestion Worker", () => {
       ];
       submission.combatEvents = [
         {
+          type: "attack_initiated",
+          turn: TURN,
+          attackerSeat: 1,
+          attackerCardId: CARD_ID,
+          targetSeat: 2,
+          targetCardId: "champion-two",
+          weaponCardId: WEAPON_ID,
+          cleave,
+        },
+        {
           type: "damage_resolved",
           turn: TURN,
           sourceSeat: 1,
@@ -275,18 +296,21 @@ describe("match ingestion Worker", () => {
           targetCardId: "champion-two",
           amount,
           isCombat: true,
-          lethal: false,
+          lethal,
         },
       ];
 
       const created = await worker.fetch(submissionRequest(submission));
       expect(created.status).toBe(201);
 
-      // Below MIN_SAMPLE_GAMES (5), neither aggregate should be visible yet — showing them earlier
-      // would just be replaying these specific games' exact card/turn usage, not aggregating.
+      // Below MIN_SAMPLE_GAMES (5), none of the per-entity aggregates should be visible yet —
+      // showing them earlier would just be replaying these specific games' exact usage, not
+      // aggregating. avgTurns is deliberately NOT checked here — it's an overall average, not
+      // gated (see its doc comment), so it's expected to already reflect these games.
       if (i < 4) {
         const summary = await fetchSummary();
         expect(summary.cardStats.some((c) => c.cardId === CARD_ID)).toBe(false);
+        expect(summary.weapons.some((w) => w.weaponCardId === WEAPON_ID)).toBe(false);
         expect(summary.turnStats.some((t) => t.turn === TURN)).toBe(false);
       }
     }
@@ -305,6 +329,15 @@ describe("match ingestion Worker", () => {
       winRate: 0.6,
       attackEvents: 5,
       avgDamageDealt: 4,
+      lethalHits: 2,
+    });
+
+    const weapon = summary.weapons.find((w) => w.weaponCardId === WEAPON_ID);
+    expect(weapon).toMatchObject({
+      weaponCardId: WEAPON_ID,
+      games: 5,
+      attackEvents: 5,
+      cleaveRate: 0.6,
     });
 
     const turn = summary.turnStats.find((t) => t.turn === TURN);
@@ -320,5 +353,7 @@ describe("match ingestion Worker", () => {
       avgLevel: 3,
       avgHp: 15,
     });
+
+    expect(typeof summary.avgTurns).toBe("number");
   });
 });

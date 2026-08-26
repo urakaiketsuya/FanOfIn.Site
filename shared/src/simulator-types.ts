@@ -13,6 +13,8 @@ export interface SimulatorSummary {
   generatedAt: string;
   games: number;
   firstPlayer: { games: number; wins: number; winRate: number | null };
+  /** Overall average, across every game — not sample-gated like cardStats/turnStats/weapons below (see their doc comment for why). Null when `games` is 0. */
+  avgTurns: number | null;
   champions: Array<{
     championId: string;
     element: string;
@@ -45,6 +47,16 @@ export interface SimulatorSummary {
     winRate: number | null;
     attackEvents: number;
     avgDamageDealt: number;
+    /** Times this card was the source of a lethal `damage_resolved` event — i.e. landed the killing blow. */
+    lethalHits: number;
+  }>;
+  /** Per-weapon attack usage (from combatEvents' `weaponCardId`), same minimum-sample-games gate as `cardStats`. */
+  weapons: Array<{
+    weaponCardId: string;
+    games: number;
+    attackEvents: number;
+    /** Share of this weapon's attacks that had `cleave: true`. */
+    cleaveRate: number;
   }>;
   /** Per-turn telemetry (from turnStats), same minimum-sample-games gate as `cardStats`. */
   turnStats: Array<{

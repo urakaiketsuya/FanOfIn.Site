@@ -36,10 +36,14 @@ export function assertSummary(value: unknown): asserts value is SimulatorSummary
   ) {
     throw new Error("simulator API summary has invalid first-player aggregates");
   }
+  if (summary.avgTurns !== null && !isFiniteNonNegative(summary.avgTurns)) {
+    throw new Error("simulator API summary has an invalid avgTurns");
+  }
   if (
     !Array.isArray(summary.champions)
     || !Array.isArray(summary.matchups)
     || !Array.isArray(summary.cardStats)
+    || !Array.isArray(summary.weapons)
     || !Array.isArray(summary.turnStats)
   ) {
     throw new Error("simulator API summary is missing aggregate arrays");
@@ -86,8 +90,23 @@ export function assertSummary(value: unknown): asserts value is SimulatorSummary
     || !Number.isSafeInteger(card.attackEvents)
     || card.attackEvents < 0
     || !isFiniteNonNegative(card.avgDamageDealt)
+    || !Number.isSafeInteger(card.lethalHits)
+    || card.lethalHits < 0
   ))) {
     throw new Error("simulator API summary has invalid card aggregates");
+  }
+  if (summary.weapons.some((weapon) => (
+    !weapon
+    || typeof weapon.weaponCardId !== "string"
+    || !Number.isSafeInteger(weapon.games)
+    || weapon.games < 0
+    || !Number.isSafeInteger(weapon.attackEvents)
+    || weapon.attackEvents < 0
+    || typeof weapon.cleaveRate !== "number"
+    || weapon.cleaveRate < 0
+    || weapon.cleaveRate > 1
+  ))) {
+    throw new Error("simulator API summary has invalid weapon aggregates");
   }
   if (summary.turnStats.some((turn) => (
     !turn

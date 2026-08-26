@@ -1,7 +1,7 @@
 import type { Env } from "./storage";
 
 interface CountRow { total: number }
-interface FirstPlayerRow { games: number; first_player_wins: number }
+interface FirstPlayerRow { games: number; first_player_wins: number; avg_turns: number | null }
 interface ChampionRow { champion_id: string; element: string; games: number; wins: number }
 interface MatchupRow { champion_1: string; champion_2: string; games: number; champion_1_wins: number; champion_2_wins: number }
 interface CardStatsRow {
@@ -15,7 +15,8 @@ interface CardStatsRow {
   avg_activated: number;
   wins: number;
 }
-interface CardCombatRow { source_card_id: string; attack_events: number; total_damage_dealt: number }
+interface CardCombatRow { source_card_id: string; attack_events: number; total_damage_dealt: number; lethal_hits: number }
+interface WeaponRow { weapon_card_id: string; games: number; attack_events: number; cleave_events: number }
 interface TurnStatsRow {
   turn: number;
   games: number;
@@ -42,11 +43,12 @@ interface TurnStatsRow {
 const MIN_SAMPLE_GAMES = 5;
 
 export async function buildSimulatorSummary(env: Env): Promise<unknown> {
-  const [countResult, firstPlayerResult, championsResult, matchupsResult, cardStatsResult, cardCombatResult, turnStatsResult] = await env.MATCH_DB.batch([
+  const [countResult, firstPlayerResult, championsResult, matchupsResult, cardStatsResult, cardCombatResult, weaponsResult, turnStatsResult] = await env.MATCH_DB.batch([
     env.MATCH_DB.prepare("SELECT COUNT(*) AS total FROM games"),
     env.MATCH_DB.prepare(
       `SELECT COUNT(*) AS games,
-              COALESCE(SUM(CASE WHEN winner = first_player THEN 1 ELSE 0 END), 0) AS first_player_wins
+              COALESCE(SUM(CASE WHEN winner = first_player THEN 1 ELSE 0 END), 0) AS first_player_wins,
+              AVG(turns) AS avg_turns
        FROM games`,
     ),
     env.MATCH_DB.prepare(
@@ -84,12 +86,27 @@ export async function buildSimulatorSummary(env: Env): Promise<unknown> {
        JOIN games g ON g.submission_id = cs.submission_id
        GROUP BY cs.card_id`,
     ),
+    // event_type-filtered per metric, not a bare COUNT(*) — a card can be the source of both an
+    // attack_initiated AND a damage_resolved row for the same attack, so an unfiltered count would
+    // double-count "attack events" against damage-derived stats.
     env.MATCH_DB.prepare(
       `SELECT source_card_id,
-              COUNT(*) AS attack_events,
-              COALESCE(SUM(CASE WHEN event_type = 'damage_resolved' THEN amount ELSE 0 END), 0) AS total_damage_dealt
+              COALESCE(SUM(CASE WHEN event_type = 'attack_initiated' THEN 1 ELSE 0 END), 0) AS attack_events,
+              COALESCE(SUM(CASE WHEN event_type = 'damage_resolved' THEN amount ELSE 0 END), 0) AS total_damage_dealt,
+              COALESCE(SUM(CASE WHEN event_type = 'damage_resolved' AND lethal = 1 THEN 1 ELSE 0 END), 0) AS lethal_hits
        FROM game_combat_events
        GROUP BY source_card_id`,
+    ),
+    // weapon_card_id is only set on attack_initiated events (see the migration's doc comment) and
+    // is nullable (an unarmed attack) — excluded rather than grouped under a fake "no weapon" id.
+    env.MATCH_DB.prepare(
+      `SELECT weapon_card_id,
+              COUNT(DISTINCT submission_id) AS games,
+              COUNT(*) AS attack_events,
+              COALESCE(SUM(CASE WHEN cleave = 1 THEN 1 ELSE 0 END), 0) AS cleave_events
+       FROM game_combat_events
+       WHERE event_type = 'attack_initiated' AND weapon_card_id IS NOT NULL
+       GROUP BY weapon_card_id`,
     ),
     env.MATCH_DB.prepare(
       `SELECT turn,
@@ -116,6 +133,7 @@ export async function buildSimulatorSummary(env: Env): Promise<unknown> {
   const cardCombatByCardId = new Map(
     (cardCombatResult.results as unknown as CardCombatRow[]).map((row) => [row.source_card_id, row]),
   );
+  const weaponsRows = weaponsResult.results as unknown as WeaponRow[];
   const turnStatsRows = turnStatsResult.results as unknown as TurnStatsRow[];
 
   return {
@@ -130,6 +148,10 @@ export async function buildSimulatorSummary(env: Env): Promise<unknown> {
         ? Number(firstPlayer?.first_player_wins ?? 0) / Number(firstPlayer?.games ?? 1)
         : null,
     },
+    // Overall average, not gated by MIN_SAMPLE_GAMES — same coarseness as `games`/`firstPlayer`
+    // above (a single number describing every game together, not a specific card/turn/weapon's
+    // usage), so it doesn't carry the same single-game-exposure risk the per-entity arrays do.
+    avgTurns: firstPlayer?.avg_turns !== null && firstPlayer?.avg_turns !== undefined ? Number(firstPlayer.avg_turns) : null,
     champions: champions.map((row) => ({
       championId: row.champion_id,
       element: row.element,
@@ -160,9 +182,19 @@ export async function buildSimulatorSummary(env: Env): Promise<unknown> {
           winRate: Number(row.games) > 0 ? Number(row.wins) / Number(row.games) : null,
           attackEvents: Number(combat?.attack_events ?? 0),
           avgDamageDealt: Number(row.games) > 0 ? Number(combat?.total_damage_dealt ?? 0) / Number(row.games) : 0,
+          lethalHits: Number(combat?.lethal_hits ?? 0),
         };
       })
       .sort((a, b) => b.games - a.games || a.cardId.localeCompare(b.cardId)),
+    weapons: weaponsRows
+      .filter((row) => Number(row.games) >= MIN_SAMPLE_GAMES)
+      .map((row) => ({
+        weaponCardId: row.weapon_card_id,
+        games: Number(row.games),
+        attackEvents: Number(row.attack_events),
+        cleaveRate: Number(row.attack_events) > 0 ? Number(row.cleave_events) / Number(row.attack_events) : 0,
+      }))
+      .sort((a, b) => b.games - a.games || a.weaponCardId.localeCompare(b.weaponCardId)),
     turnStats: turnStatsRows
       .filter((row) => Number(row.games) >= MIN_SAMPLE_GAMES)
       .map((row) => ({
