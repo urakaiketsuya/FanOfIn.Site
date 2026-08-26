@@ -188,6 +188,7 @@ export default function BattleChart() {
                 <span className="text-ctp-subtext0">Champion:</span>
                 <select
                   value={activeChampion}
+                  aria-label="Champion"
                   onChange={(e) => setChampion(e.target.value)}
                   className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
                 >

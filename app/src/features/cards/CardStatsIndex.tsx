@@ -204,6 +204,7 @@ export default function CardStatsIndex() {
 
       <input
         type="text"
+        aria-label="Search by card name"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         placeholder="Search by card name…"
@@ -214,6 +215,7 @@ export default function CardStatsIndex() {
         <span className="text-ctp-subtext0">Type:</span>
         <button
           onClick={() => setCategory(null)}
+          aria-pressed={category === null}
           className={`rounded-md border px-2 py-1 text-xs ${
             category === null ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
           }`}
@@ -224,6 +226,7 @@ export default function CardStatsIndex() {
           <button
             key={c}
             onClick={() => setCategory(c)}
+            aria-pressed={category === c}
             className={`rounded-md border px-2 py-1 text-xs ${
               category === c ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
@@ -239,6 +242,7 @@ export default function CardStatsIndex() {
           <button
             key={mode}
             onClick={() => setSortMode(mode)}
+            aria-pressed={sortMode === mode}
             className={`rounded-md border px-2 py-1 text-xs ${
               sortMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
@@ -262,6 +266,7 @@ export default function CardStatsIndex() {
           <button
             key={n}
             onClick={() => setMinDecks(n)}
+            aria-pressed={minDecks === n}
             className={`rounded-md border px-2 py-1 text-xs ${
               minDecks === n ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
@@ -316,6 +321,7 @@ export default function CardStatsIndex() {
                   <button
                     type="button"
                     onClick={() => toggleSelected(c.name)}
+                    aria-pressed={isSelected}
                     className={`rounded-md border px-2 py-1 text-xs ${
                       isSelected
                         ? "border-ctp-blue text-ctp-blue"

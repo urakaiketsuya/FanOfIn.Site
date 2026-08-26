@@ -328,6 +328,7 @@ export default function ArchetypeDetail() {
                   <span className="text-ctp-subtext0">Vs:</span>
                   <select
                     value={opponentClusterId}
+                    aria-label="Opponent build"
                     onChange={(e) => setOpponentClusterId(e.target.value)}
                     className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
                   >
@@ -529,6 +530,7 @@ export default function ArchetypeDetail() {
                   <span className="text-ctp-subtext0">Min overlap:</span>
                   <select
                     value={variantMinSimilarity}
+                    aria-label="Minimum overlap"
                     onChange={(e) => setVariantMinSimilarity(Number(e.target.value))}
                     className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
                   >
@@ -542,6 +544,7 @@ export default function ArchetypeDetail() {
                       <span className="ml-2 text-ctp-subtext0">Champion:</span>
                       <select
                         value={variantChampionFilter}
+                        aria-label="Champion"
                         onChange={(e) => setVariantChampionFilter(e.target.value)}
                         className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
                       >

@@ -165,6 +165,7 @@ export default function CommunityDecksIndex() {
             <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Top cards by inclusion rate</h2>
             <select
               value={championFilter}
+              aria-label="Champion"
               onChange={(e) => setChampionFilter(e.target.value)}
               className="rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1 text-xs text-ctp-text focus:border-ctp-blue focus:outline-none"
             >

@@ -54,6 +54,9 @@ export default function DeckSightingRow({
               type="button"
               onClick={() => setExpanded((v) => !v)}
               title={expanded ? "Hide decklist" : "Show decklist"}
+              aria-expanded={expanded}
+              aria-controls={`decklist-${sighting.deckId}`}
+              aria-label={expanded ? "Hide decklist" : "Show decklist"}
               className="block shrink-0"
             >
               {championCard?.editions[0] ? (
@@ -80,6 +83,9 @@ export default function DeckSightingRow({
                 type="button"
                 onClick={() => setExpanded((v) => !v)}
                 title={expanded ? "Hide decklist" : "Show decklist"}
+                aria-expanded={expanded}
+                aria-controls={`decklist-${sighting.deckId}`}
+                aria-label={`${expanded ? "Hide" : "Show"} decklist for ${sighting.championName}`}
                 className="font-medium text-ctp-text hover:text-ctp-blue"
               >
                 {sighting.championName}
@@ -154,6 +160,8 @@ export default function DeckSightingRow({
             <button
               type="button"
               onClick={() => setExpanded((v) => !v)}
+              aria-expanded={expanded}
+              aria-controls={`decklist-${sighting.deckId}`}
               className="rounded-md border border-ctp-surface1 px-2 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-text"
             >
               {expanded ? "Hide" : "Decklist"}
@@ -163,7 +171,7 @@ export default function DeckSightingRow({
       </div>
 
       {expanded && !sighting.deckHash && (
-        <div className="mt-2 border-t border-ctp-surface0 pt-2">
+        <div id={`decklist-${sighting.deckId}`} className="mt-2 border-t border-ctp-surface0 pt-2">
           {loading && <p className="text-sm text-ctp-subtext1">Loading…</p>}
           {error && <p className="text-sm text-ctp-subtext0">{error}</p>}
           {decklist && <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={sighting.deckId} />}

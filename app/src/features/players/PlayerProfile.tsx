@@ -253,6 +253,7 @@ export default function PlayerProfile() {
               key={t.key}
               type="button"
               onClick={() => setManualTab(t.key)}
+              aria-pressed={tab === t.key}
               className={`rounded-md border px-2.5 py-1 text-xs ${
                 tab === t.key ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
               }`}
@@ -370,6 +371,7 @@ export default function PlayerProfile() {
                   <span className="text-ctp-subtext0">Type:</span>
                   <select
                     value={eventCategory ?? ""}
+                    aria-label="Type"
                     onChange={(e) => setEventCategory(e.target.value || null)}
                     className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
                   >
@@ -388,6 +390,7 @@ export default function PlayerProfile() {
                   <span className="ml-2 text-ctp-subtext0">Champion:</span>
                   <select
                     value={eventChampion ?? ""}
+                    aria-label="Champion"
                     onChange={(e) => setEventChampion(e.target.value || null)}
                     className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
                   >
@@ -406,6 +409,7 @@ export default function PlayerProfile() {
                   <span className="ml-2 text-ctp-subtext0">Season:</span>
                   <select
                     value={eventSeasonId ?? ""}
+                    aria-label="Season"
                     onChange={(e) => setEventSeasonId(e.target.value ? Number(e.target.value) : null)}
                     className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
                   >

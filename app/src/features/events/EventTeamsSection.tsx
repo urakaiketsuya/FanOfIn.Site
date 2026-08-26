@@ -28,6 +28,7 @@ export default function EventTeamsSection({ teams, players }: { teams: OmnidexTe
       {teams.length > 10 && (
         <input
           type="text"
+          aria-label="Search by team or player"
           placeholder="Search by team or player…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}

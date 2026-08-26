@@ -97,6 +97,7 @@ export default function CardCompareIndex() {
       <input
         type="text"
         list="card-compare-options"
+        aria-label="Card name"
         value={input}
         onChange={(e) => {
           setInput(e.target.value);

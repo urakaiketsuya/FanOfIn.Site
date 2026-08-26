@@ -78,6 +78,7 @@ export default function EventPairings({
           {sortedStages.length > 1 && (
             <select
               value={stageId}
+              aria-label="Stage"
               onChange={(e) => handleStageChange(Number(e.target.value))}
               className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
             >
@@ -91,6 +92,7 @@ export default function EventPairings({
           {totalRounds > 1 && (
             <select
               value={round}
+              aria-label="Round"
               onChange={(e) => setRound(Number(e.target.value))}
               className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
             >

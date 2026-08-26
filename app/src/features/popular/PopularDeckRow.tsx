@@ -129,6 +129,7 @@ export default function PopularDeckRow({
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
+          aria-expanded={expanded}
           className="shrink-0 rounded-md border border-ctp-surface1 px-2 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-text"
         >
           {expanded ? "Hide" : "Decklist"}

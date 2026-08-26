@@ -195,6 +195,7 @@ function BuildsView({
         <span className="text-ctp-subtext0">Champion:</span>
         <select
           value={championName ?? ""}
+          aria-label="Champion"
           onChange={(e) => setChampionName(e.target.value || null)}
           className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
         >
@@ -212,6 +213,7 @@ function BuildsView({
             key={mode}
             type="button"
             onClick={() => setMinPlayers(mode)}
+            aria-pressed={minPlayers === mode}
             className={`rounded-md border px-2 py-1 text-xs ${
               minPlayers === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
@@ -263,6 +265,7 @@ function BuildsView({
         <input
           type="text"
           list="browse-decks-card-options"
+          aria-label="Cards in deck"
           value={cardInput}
           onChange={(e) => {
             setCardInput(e.target.value);
@@ -287,6 +290,7 @@ function BuildsView({
           <button
             key={mode}
             onClick={() => setSortMode(mode)}
+            aria-pressed={sortMode === mode}
             className={`rounded-md border px-2 py-1 text-xs ${
               sortMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
@@ -459,6 +463,7 @@ function SightingsView({
         <span className="text-ctp-subtext0">Type:</span>
         <button
           onClick={() => setCategory(null)}
+          aria-pressed={category === null}
           className={`rounded-md border px-2 py-1 text-xs ${
             category === null ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
           }`}
@@ -469,6 +474,7 @@ function SightingsView({
           <button
             key={c}
             onClick={() => setCategory(c)}
+            aria-pressed={category === c}
             className={`rounded-md border px-2 py-1 text-xs ${
               category === c ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
@@ -482,6 +488,7 @@ function SightingsView({
         <span className="text-ctp-subtext0">Season:</span>
         <select
           value={seasonId ?? ""}
+          aria-label="Season"
           onChange={(e) => setSeasonId(e.target.value ? Number(e.target.value) : null)}
           className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
         >
@@ -496,6 +503,7 @@ function SightingsView({
         <span className="ml-2 text-ctp-subtext0">Champion:</span>
         <select
           value={championName ?? ""}
+          aria-label="Champion"
           onChange={(e) => setChampionName(e.target.value || null)}
           className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
         >
@@ -515,6 +523,7 @@ function SightingsView({
             <button
               key={cls}
               onClick={() => toggleClass(cls)}
+              aria-pressed={selectedClasses.has(cls)}
               className={`rounded-md border px-2 py-1 text-xs ${
                 selectedClasses.has(cls) ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
               }`}
@@ -530,6 +539,7 @@ function SightingsView({
           <span className="text-ctp-subtext0">Keyword:</span>
           <select
             value={keyword ?? ""}
+            aria-label="Keyword"
             onChange={(e) => setKeyword(e.target.value || null)}
             className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
           >
@@ -547,6 +557,7 @@ function SightingsView({
         <span className="text-ctp-subtext0">Max price:</span>
         <button
           onClick={() => setMaxPrice(null)}
+          aria-pressed={maxPrice === null}
           className={`rounded-md border px-2 py-1 text-xs ${
             maxPrice === null ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
           }`}
@@ -557,6 +568,7 @@ function SightingsView({
           <button
             key={p}
             onClick={() => setMaxPrice(p)}
+            aria-pressed={maxPrice === p}
             className={`rounded-md border px-2 py-1 text-xs ${
               maxPrice === p ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
@@ -572,6 +584,7 @@ function SightingsView({
           <button
             key={o}
             onClick={() => setOutcome(o)}
+            aria-pressed={outcome === o}
             className={`rounded-md border px-2 py-1 text-xs ${
               outcome === o ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
@@ -587,6 +600,7 @@ function SightingsView({
           <button
             key={mode}
             onClick={() => setSortMode(mode)}
+            aria-pressed={sortMode === mode}
             className={`rounded-md border px-2 py-1 text-xs capitalize ${
               sortMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}

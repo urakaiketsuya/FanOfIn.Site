@@ -83,6 +83,7 @@ export default function ArchetypeHurtYouView({ taxonomy }: { taxonomy: Archetype
         <span className="text-ctp-subtext0">My build:</span>
         <select
           value={clusterId ?? ""}
+          aria-label="My build"
           onChange={(event) => {
             setClusterId(event.target.value || null);
             setVisibleCount(PAGE_SIZE);

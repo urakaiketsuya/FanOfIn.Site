@@ -23,6 +23,7 @@ export default function FilterCheckboxGroup({ label, options, selected, onToggle
             <button
               key={opt.value}
               type="button"
+              aria-pressed={active}
               onClick={() => onToggle(opt.value)}
               className={`flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs ${
                 active

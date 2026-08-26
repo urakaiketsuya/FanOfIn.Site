@@ -187,6 +187,7 @@ export default function ArchetypesIndex() {
             key={v}
             type="button"
             onClick={() => setView(v)}
+            aria-pressed={view === v}
             className={`rounded-md border px-3 py-1.5 text-sm font-medium ${
               view === v ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
@@ -202,6 +203,7 @@ export default function ArchetypesIndex() {
         <span className="text-ctp-subtext0">Champion:</span>
         <select
           value={championFilter ?? ""}
+          aria-label="Champion"
           onChange={(e) => {
             setChampionFilter(e.target.value || null);
             setBuildVisibleCount(BUILD_PAGE_SIZE);
@@ -219,6 +221,7 @@ export default function ArchetypesIndex() {
         <span className="ml-2 text-ctp-subtext0">Season:</span>
         <select
           value={seasonId ?? ""}
+          aria-label="Season"
           onChange={(e) => {
             setSeasonId(e.target.value ? Number(e.target.value) : null);
             setBuildVisibleCount(BUILD_PAGE_SIZE);
@@ -236,6 +239,7 @@ export default function ArchetypesIndex() {
         <span className="ml-2 text-ctp-subtext0">Confidence:</span>
         <select
           value={confidenceFilter}
+          aria-label="Confidence"
           onChange={(e) => {
             setConfidenceFilter(e.target.value as ConfidenceFilter);
             setBuildVisibleCount(BUILD_PAGE_SIZE);
@@ -255,6 +259,7 @@ export default function ArchetypesIndex() {
               setSortMode(mode);
               setBuildVisibleCount(BUILD_PAGE_SIZE);
             }}
+            aria-pressed={sortMode === mode}
             className={`rounded-md border px-2 py-1 text-xs ${
               sortMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}

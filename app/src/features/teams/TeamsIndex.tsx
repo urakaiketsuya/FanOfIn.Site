@@ -92,6 +92,7 @@ export default function TeamsIndex() {
 
       <input
         type="text"
+        aria-label="Search by team or player"
         placeholder="Search by team or player…"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
@@ -105,6 +106,7 @@ export default function TeamsIndex() {
               <span className="text-ctp-subtext0">Type:</span>
               <select
                 value={category ?? ""}
+                aria-label="Type"
                 onChange={(e) => setCategory(e.target.value || null)}
                 className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
               >
@@ -123,6 +125,7 @@ export default function TeamsIndex() {
               <span className="ml-2 text-ctp-subtext0">Season:</span>
               <select
                 value={seasonId ?? ""}
+                aria-label="Season"
                 onChange={(e) => setSeasonId(e.target.value ? Number(e.target.value) : null)}
                 className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
               >

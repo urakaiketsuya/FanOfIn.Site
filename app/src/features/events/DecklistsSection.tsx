@@ -50,6 +50,7 @@ export default function DecklistsSection({
           )}
           <select
             value={selected?.player}
+            aria-label="Player"
             onChange={(e) => setSelectedPlayer(Number(e.target.value))}
             className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
           >

@@ -49,6 +49,7 @@ export default function FilterSearchGroup({ label, options, selected, onToggle }
       <input
         type="text"
         list={datalistId}
+        aria-label={`Search ${label.toLowerCase()}`}
         value={input}
         onChange={(e) => {
           setInput(e.target.value);

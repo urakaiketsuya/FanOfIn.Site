@@ -64,6 +64,7 @@ export default function ImportByPlayer({
 
       <input
         type="text"
+        aria-label="Search by username"
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);
@@ -104,6 +105,7 @@ export default function ImportByPlayer({
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <input
               type="text"
+              aria-label="Search by event name"
               value={eventSearch}
               onChange={(e) => setEventSearch(e.target.value)}
               placeholder="Search by event name…"

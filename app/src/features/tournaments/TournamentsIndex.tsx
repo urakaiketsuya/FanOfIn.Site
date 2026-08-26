@@ -82,6 +82,7 @@ export default function TournamentsIndex() {
       <div className="mt-4 flex flex-col gap-2 sm:flex-row">
         <input
           type="text"
+          aria-label="Search by event or host name"
           placeholder="Search by event or host name…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -91,6 +92,7 @@ export default function TournamentsIndex() {
           <input
             type="text"
             inputMode="numeric"
+            aria-label="Jump to event ID"
             placeholder="Or jump to event ID…"
             value={idLookup}
             onChange={(e) => setIdLookup(e.target.value)}
@@ -109,6 +111,7 @@ export default function TournamentsIndex() {
         <span className="text-ctp-subtext0">Type:</span>
         <button
           onClick={() => setCategory(null)}
+          aria-pressed={category === null}
           className={`rounded-md border px-2 py-1 text-xs ${
             category === null ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
           }`}
@@ -119,6 +122,7 @@ export default function TournamentsIndex() {
           <button
             key={c}
             onClick={() => setCategory(c)}
+            aria-pressed={category === c}
             className={`rounded-md border px-2 py-1 text-xs ${
               category === c ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
@@ -134,6 +138,7 @@ export default function TournamentsIndex() {
           <button
             key={s ?? "all"}
             onClick={() => setSetting(s)}
+            aria-pressed={setting === s}
             className={`rounded-md border px-2 py-1 text-xs capitalize ${
               setting === s ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
@@ -147,6 +152,7 @@ export default function TournamentsIndex() {
         <span className="text-ctp-subtext0">Season:</span>
         <select
           value={seasonId ?? ""}
+          aria-label="Season"
           onChange={(e) => setSeasonId(e.target.value ? Number(e.target.value) : null)}
           className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
         >
@@ -165,6 +171,7 @@ export default function TournamentsIndex() {
           <button
             key={n}
             onClick={() => setMinPlayers(n)}
+            aria-pressed={minPlayers === n}
             className={`rounded-md border px-2 py-1 text-xs ${
               minPlayers === n ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
@@ -180,6 +187,7 @@ export default function TournamentsIndex() {
           <button
             key={mode}
             onClick={() => setSortMode(mode)}
+            aria-pressed={sortMode === mode}
             className={`rounded-md border px-2 py-1 text-xs capitalize ${
               sortMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}

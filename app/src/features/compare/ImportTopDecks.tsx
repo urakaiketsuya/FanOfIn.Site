@@ -81,6 +81,7 @@ export default function ImportTopDecks({
         <span className="text-ctp-subtext0">Champion:</span>
         <select
           value={championName ?? ""}
+          aria-label="Champion"
           onChange={(e) => selectChampion(e.target.value || null)}
           className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
         >
@@ -116,6 +117,7 @@ export default function ImportTopDecks({
           <span className="text-ctp-subtext0">Build:</span>
           <select
             value={clusterId ?? ""}
+            aria-label="Build"
             onChange={(e) => {
               setClusterId(e.target.value || null);
               setVisibleCount(PAGE_SIZE);

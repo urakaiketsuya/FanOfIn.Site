@@ -31,6 +31,7 @@ export default function ThemaLeaderboard() {
             key={k}
             type="button"
             onClick={() => setKind(k)}
+            aria-pressed={kind === k}
             className={`rounded-md border px-2 py-1 text-xs ${
               kind === k ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}

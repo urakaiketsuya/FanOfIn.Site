@@ -298,10 +298,11 @@ export default function CardDetail() {
               <button
                 type="button"
                 onClick={() => setEditionsExpanded((v) => !v)}
+                aria-expanded={editionsExpanded}
                 className="flex w-full items-center justify-between text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide hover:text-ctp-text"
               >
                 <span>Editions ({card.editions.length})</span>
-                <span>{editionsExpanded ? "▲" : "▼"}</span>
+                <span aria-hidden="true">{editionsExpanded ? "▲" : "▼"}</span>
               </button>
               {editionsExpanded && (
                 <div className="mt-2 grid grid-cols-3 gap-2">
@@ -310,6 +311,7 @@ export default function CardDetail() {
                       key={ed.uuid}
                       type="button"
                       onClick={() => setEditionIndex(i)}
+                      aria-pressed={i === editionIndex}
                       className={`rounded-md border p-1 text-left ${
                         i === editionIndex ? "border-ctp-blue" : "border-ctp-surface1"
                       }`}
@@ -852,6 +854,7 @@ export default function CardDetail() {
           <input
             type="text"
             list="card-detail-compare-options"
+            aria-label="Card name"
             value={compareInput}
             onChange={(e) => {
               setCompareInput(e.target.value);

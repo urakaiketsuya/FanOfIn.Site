@@ -65,6 +65,7 @@ export default function PlayersIndex() {
             key={mode}
             type="button"
             onClick={() => setTab(mode)}
+            aria-pressed={tab === mode}
             className={`rounded-md border px-3 py-1.5 text-sm font-medium ${
               tab === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
@@ -115,6 +116,7 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
     <>
       <input
         type="text"
+        aria-label="Search by username"
         placeholder="Search by username…"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
@@ -206,6 +208,7 @@ function JudgesView({ topChampionById }: { topChampionById: Map<number, string> 
     <>
       <input
         type="text"
+        aria-label="Search by username"
         placeholder="Search by username…"
         value={search}
         onChange={(e) => setSearch(e.target.value)}

@@ -165,6 +165,7 @@ export default function CardsBrowse() {
           <div className="mt-4 flex flex-wrap gap-3">
             <input
               type="text"
+              aria-label="Search by name"
               placeholder="Search by name…"
               value={filters.name}
               onChange={(e) => setFilters((f) => ({ ...f, name: e.target.value }))}
@@ -173,6 +174,7 @@ export default function CardsBrowse() {
             <input
               type="text"
               list="artist-options"
+              aria-label="Search by artist"
               placeholder="Search by artist…"
               value={filters.artist}
               onChange={(e) => setFilters((f) => ({ ...f, artist: e.target.value }))}
@@ -228,6 +230,7 @@ export default function CardsBrowse() {
                       key={s}
                       type="button"
                       onClick={() => setFilters((f) => ({ ...f, speed: s }))}
+                      aria-pressed={filters.speed === s}
                       className={`rounded-md border px-2 py-1 text-xs capitalize ${
                         filters.speed === s ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
                       }`}
