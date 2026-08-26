@@ -5,6 +5,7 @@ import { useRegionalArchetypes } from "./useRegionalArchetypes";
 import { useRegionalChampions } from "./useRegionalChampions";
 import { useRegionalCardComposition, type RegionalCardRow } from "./useRegionalCardComposition";
 import { useRegionalKeywords, type RegionalKeywordRow } from "./useRegionalKeywords";
+import { useRegionDecodedDecks } from "./useRegionDecodedDecks";
 import RegionCompareView from "./RegionCompareView";
 import { useCardsByNames } from "../events/useCardsByNames";
 import CardHoverPreview from "../../components/CardHoverPreview";
@@ -125,8 +126,9 @@ export default function RegionsIndex() {
 
   const archetypes = useRegionalArchetypes(regionByDeckId, selectedRegion);
   const champions = useRegionalChampions(regionByDeckId, selectedRegion);
-  const cards = useRegionalCardComposition(regionByDeckId, selectedRegion);
-  const keywords = useRegionalKeywords(regionByDeckId, selectedRegion);
+  const regionDecks = useRegionDecodedDecks(regionByDeckId, selectedRegion);
+  const cards = useRegionalCardComposition(regionDecks);
+  const keywords = useRegionalKeywords(regionDecks);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">

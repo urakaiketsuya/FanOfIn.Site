@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { decodeCardLines } from "@gatcg/shared";
-import { useDeckCardIndexData, useCardStatsData } from "../archetypes/data";
+import { useCardStatsData } from "../archetypes/data";
+import type { RegionDecodedDecks } from "./useRegionDecodedDecks";
 
 /** Mirrors pipeline/src/config.ts's winRateShrinkagePriorWeight default — that config reads process.env, which doesn't exist client-side, same reasoning useChampionCardImpact.ts already documents for its own literal copies. */
 const PRIOR_WEIGHT = 10;
@@ -30,21 +30,21 @@ export interface RegionalCardComposition {
 /**
  * Which cards show up more or less often in a region's decks than in the overall meta — a
  * region-vs-global rate comparison, unlike Card Impact's within-population with/without lift.
- * Only the region's own decks are decoded (deck-card-index.json's card lines are dictionary-
- * encoded and expensive to decode at scale, ~57k decks) — the global side reuses cards.json's
- * already-published `deckCount` instead of a second full decode pass, same "filter before decode"
- * optimization useChampionCardImpact.ts uses for its champion filter.
+ * Takes the region's already-decoded decks from `useRegionDecodedDecks` (shared with
+ * `useRegionalKeywords`, which needs the same decode) rather than decoding its own copy — the
+ * global side still reuses cards.json's already-published `deckCount` instead of a second full
+ * decode pass, same "filter before decode" optimization useChampionCardImpact.ts uses for its
+ * champion filter.
  */
-export function useRegionalCardComposition(regionByDeckId: Map<string, string>, regionKey: string | null): RegionalCardComposition {
-  const cardIndexData = useDeckCardIndexData();
+export function useRegionalCardComposition(regionDecks: RegionDecodedDecks): RegionalCardComposition {
   const cardStatsData = useCardStatsData();
 
   return useMemo((): RegionalCardComposition => {
-    if (!cardIndexData || !cardStatsData || !regionKey) {
-      return { overRepresented: [], underRepresented: [], allEntries: [], regionDeckCount: 0, loading: !cardIndexData || !cardStatsData };
+    if (regionDecks.loading || !cardStatsData) {
+      return { overRepresented: [], underRepresented: [], allEntries: [], regionDeckCount: 0, loading: regionDecks.loading || !cardStatsData };
     }
 
-    const globalDeckTotal = cardIndexData.decks.length;
+    const globalDeckTotal = regionDecks.globalDeckTotal;
     const globalRateByName = new Map<string, number>();
     const statByName = new Map(cardStatsData.cards.map((s) => [s.name, s]));
     for (const stat of cardStatsData.cards) {
@@ -52,14 +52,12 @@ export function useRegionalCardComposition(regionByDeckId: Map<string, string>, 
     }
 
     const regionCount = new Map<string, number>();
-    let regionDeckCount = 0;
-    for (const entry of cardIndexData.decks) {
-      if (regionByDeckId.get(entry.deckId) !== regionKey) continue;
-      regionDeckCount += 1;
+    const regionDeckCount = regionDecks.decks.length;
+    for (const deck of regionDecks.decks) {
       const names = new Set<string>();
-      for (const line of decodeCardLines(entry.main, cardIndexData.cardNames)) names.add(line.name);
-      for (const line of decodeCardLines(entry.material, cardIndexData.cardNames)) names.add(line.name);
-      for (const line of decodeCardLines(entry.sideboard, cardIndexData.cardNames)) names.add(line.name);
+      for (const line of deck.main) names.add(line.name);
+      for (const line of deck.material) names.add(line.name);
+      for (const line of deck.sideboard) names.add(line.name);
       for (const name of names) regionCount.set(name, (regionCount.get(name) ?? 0) + 1);
     }
 
@@ -90,5 +88,5 @@ export function useRegionalCardComposition(regionByDeckId: Map<string, string>, 
     const underRepresented = entries.slice(-MAX_RESULTS).reverse();
 
     return { overRepresented, underRepresented, allEntries: entries, regionDeckCount, loading: false };
-  }, [cardIndexData, cardStatsData, regionByDeckId, regionKey]);
+  }, [regionDecks, cardStatsData]);
 }

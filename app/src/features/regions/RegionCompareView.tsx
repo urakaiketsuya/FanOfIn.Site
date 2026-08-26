@@ -4,6 +4,7 @@ import { useRegionalArchetypes } from "./useRegionalArchetypes";
 import { useRegionalChampions } from "./useRegionalChampions";
 import { useRegionalCardComposition } from "./useRegionalCardComposition";
 import { useRegionalKeywords } from "./useRegionalKeywords";
+import { useRegionDecodedDecks } from "./useRegionDecodedDecks";
 import { useCardsByNames } from "../events/useCardsByNames";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { formatUsd } from "../../lib/format";
@@ -174,12 +175,15 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
   const champB = useRegionalChampions(regionByDeckId, regionB);
   const championRows = useMemo(() => joinChampions(champA.rows, champB.rows), [champA.rows, champB.rows]);
 
-  const cardsA = useRegionalCardComposition(regionByDeckId, regionA);
-  const cardsB = useRegionalCardComposition(regionByDeckId, regionB);
+  const decodedA = useRegionDecodedDecks(regionByDeckId, regionA);
+  const decodedB = useRegionDecodedDecks(regionByDeckId, regionB);
+
+  const cardsA = useRegionalCardComposition(decodedA);
+  const cardsB = useRegionalCardComposition(decodedB);
   const cardDiff = useMemo(() => diffRates(cardsA.allEntries, cardsB.allEntries), [cardsA.allEntries, cardsB.allEntries]);
 
-  const keywordsA = useRegionalKeywords(regionByDeckId, regionA);
-  const keywordsB = useRegionalKeywords(regionByDeckId, regionB);
+  const keywordsA = useRegionalKeywords(decodedA);
+  const keywordsB = useRegionalKeywords(decodedB);
   const keywordDiff = useMemo(() => diffRates(keywordsA.allEntries, keywordsB.allEntries), [keywordsA.allEntries, keywordsB.allEntries]);
 
   const loading = archA.loading || archB.loading || champA.loading || champB.loading || cardsA.loading || cardsB.loading || keywordsA.loading || keywordsB.loading;
