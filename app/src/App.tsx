@@ -8,7 +8,7 @@ const NAV_GROUPS = [
   { label: "Explore", paths: ["/cards", "/champions", "/archetypes", "/decks"], links: [{ to: "/cards/stats", label: "Card Stats" }, { to: "/cards?tab=sets", label: "Sets" }, { to: "/champions", label: "Champions" }, { to: "/archetypes", label: "Archetypes" }, { to: "/decks", label: "Browse Decks" }] },
   { label: "Competition", paths: ["/tournaments", "/seasons", "/players", "/teams"], links: [{ to: "/tournaments", label: "Tournaments" }, { to: "/seasons", label: "Seasons" }, { to: "/players", label: "Players" }, { to: "/players?tab=judges", label: "Judges" }, { to: "/teams", label: "Teams" }] },
   { label: "Tools", paths: ["/compare", "/deck-builder", "/regions"], links: [{ to: "/compare", label: "Compare Decks" }, { to: "/deck-builder", label: "Guided Deck Builder" }, { to: "/regions", label: "Regional Analysis" }] },
-  { label: "More", paths: ["/achievements", "/community-decks", "/packs", "/changelog"], links: [{ to: "/achievements", label: "Achievements" }, { to: "/community-decks", label: "Community Decks" }, { to: "/changelog", label: "Changelog" }] },
+  { label: "More", paths: ["/achievements", "/community-decks", "/packs", "/changelog", "/simulator"], links: [{ to: "/achievements", label: "Achievements" }, { to: "/community-decks", label: "Community Decks" }, { to: "/simulator", label: "Simulator Data (Experimental)" }, { to: "/changelog", label: "Changelog" }] },
 ];
 
 function mobileNavLinkClass({ isActive }: { isActive: boolean }) {

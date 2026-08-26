@@ -1,29 +1,8 @@
 import { mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import type { SimulatorSummary } from "@gatcg/shared";
 import { writeJsonAtomic } from "../lib/atomicWrite.js";
-
-export interface SimulatorSummary {
-  schemaVersion: 1;
-  source: "GrandArchiveSim";
-  generatedAt: string;
-  games: number;
-  firstPlayer: { games: number; wins: number; winRate: number | null };
-  champions: Array<{
-    championId: string;
-    element: string;
-    games: number;
-    wins: number;
-    winRate: number | null;
-  }>;
-  matchups: Array<{
-    champion1: string;
-    champion2: string;
-    games: number;
-    champion1Wins: number;
-    champion2Wins: number;
-  }>;
-}
 
 function assertSummary(value: unknown): asserts value is SimulatorSummary {
   if (!value || typeof value !== "object") throw new Error("simulator API returned a non-object");
