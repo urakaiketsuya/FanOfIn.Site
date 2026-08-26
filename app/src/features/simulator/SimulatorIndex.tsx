@@ -6,12 +6,18 @@ function formatPercent(rate: number | null): string {
   return rate === null ? "—" : `${(rate * 100).toFixed(0)}%`;
 }
 
+function formatAvg(value: number): string {
+  return value.toFixed(1);
+}
+
 export default function SimulatorIndex() {
   useDocumentTitle("Simulator Data", "Experimental — anonymous match telemetry from Clarent, the community Grand Archive simulator.");
   const data = useSimulatorSummaryData();
 
   const champions = useMemo(() => [...(data?.champions ?? [])].sort((a, b) => b.games - a.games), [data]);
   const matchups = useMemo(() => [...(data?.matchups ?? [])].sort((a, b) => b.games - a.games), [data]);
+  const cardStats = useMemo(() => [...(data?.cardStats ?? [])].sort((a, b) => b.games - a.games), [data]);
+  const turnStats = useMemo(() => [...(data?.turnStats ?? [])].sort((a, b) => a.turn - b.turn), [data]);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -107,6 +113,102 @@ export default function SimulatorIndex() {
                   </li>
                 ))}
               </ul>
+            )}
+          </div>
+
+          <div>
+            <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Card stats</h2>
+            <p className="mt-1 text-xs text-ctp-subtext1">
+              Only shown for a card once it's appeared in at least 5 separate games — below that, an "average" would
+              just be replaying one specific game's exact card usage, not actually aggregating anything. Card ID is
+              Clarent/TCGEngine's internal identifier, same caveat as Champions above.
+            </p>
+            {cardStats.length === 0 ? (
+              <p className="mt-2 text-sm text-ctp-subtext1">
+                No card has reached 5 games yet ({data.games} game{data.games === 1 ? "" : "s"} recorded so far).
+              </p>
+            ) : (
+              <div className="mt-2 overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="text-xs text-ctp-subtext0">
+                      <th className="pb-1 pr-3 font-normal">Card ID</th>
+                      <th className="pb-1 pr-3 font-normal">Games</th>
+                      <th className="pb-1 pr-3 font-normal">Win rate</th>
+                      <th className="pb-1 pr-3 font-normal">Avg drawn</th>
+                      <th className="pb-1 pr-3 font-normal">Avg materialized</th>
+                      <th className="pb-1 pr-3 font-normal">Avg activated</th>
+                      <th className="pb-1 pr-3 font-normal">Avg discarded</th>
+                      <th className="pb-1 pr-3 font-normal">Avg reserved</th>
+                      <th className="pb-1 pr-3 font-normal">Attack events</th>
+                      <th className="pb-1 font-normal">Avg dmg dealt</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cardStats.map((c) => (
+                      <tr key={c.cardId} className="border-t border-ctp-surface0">
+                        <td className="py-1.5 pr-3 font-mono text-xs text-ctp-text">{c.cardId}</td>
+                        <td className="py-1.5 pr-3 text-ctp-subtext1">{c.games}</td>
+                        <td className="py-1.5 pr-3 text-ctp-text">{formatPercent(c.winRate)}</td>
+                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(c.avgDrawn)}</td>
+                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(c.avgMaterialized)}</td>
+                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(c.avgActivated)}</td>
+                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(c.avgDiscarded)}</td>
+                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(c.avgReserved)}</td>
+                        <td className="py-1.5 pr-3 text-ctp-subtext1">{c.attackEvents}</td>
+                        <td className="py-1.5 text-ctp-text">{formatAvg(c.avgDamageDealt)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          <div>
+            <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Turn stats</h2>
+            <p className="mt-1 text-xs text-ctp-subtext1">
+              Same 5-game minimum, per turn number — averaged across every seat that reported stats for that turn.
+            </p>
+            {turnStats.length === 0 ? (
+              <p className="mt-2 text-sm text-ctp-subtext1">
+                No turn has reached 5 games yet ({data.games} game{data.games === 1 ? "" : "s"} recorded so far).
+              </p>
+            ) : (
+              <div className="mt-2 overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="text-xs text-ctp-subtext0">
+                      <th className="pb-1 pr-3 font-normal">Turn</th>
+                      <th className="pb-1 pr-3 font-normal">Games</th>
+                      <th className="pb-1 pr-3 font-normal">Avg cards played</th>
+                      <th className="pb-1 pr-3 font-normal">Avg memory spent</th>
+                      <th className="pb-1 pr-3 font-normal">Avg reserve spent</th>
+                      <th className="pb-1 pr-3 font-normal">Avg dmg dealt</th>
+                      <th className="pb-1 pr-3 font-normal">Avg dmg taken</th>
+                      <th className="pb-1 pr-3 font-normal">Avg healed</th>
+                      <th className="pb-1 pr-3 font-normal">Avg level</th>
+                      <th className="pb-1 font-normal">Avg HP</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {turnStats.map((t) => (
+                      <tr key={t.turn} className="border-t border-ctp-surface0">
+                        <td className="py-1.5 pr-3 text-ctp-text">{t.turn}</td>
+                        <td className="py-1.5 pr-3 text-ctp-subtext1">{t.games}</td>
+                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(t.avgCardsPlayed)}</td>
+                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(t.avgMemorySpent)}</td>
+                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(t.avgReserveSpent)}</td>
+                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(t.avgDamageDealt)}</td>
+                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(t.avgDamageTaken)}</td>
+                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(t.avgHealed)}</td>
+                        <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(t.avgLevel)}</td>
+                        <td className="py-1.5 text-ctp-text">{formatAvg(t.avgHp)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
           </div>
         </div>

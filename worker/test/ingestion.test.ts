@@ -205,4 +205,120 @@ describe("match ingestion Worker", () => {
     ]);
     expect(counts.map((c) => c?.count)).toEqual([1_000, 1_000, 4_500]);
   });
+
+  it("only surfaces per-card/per-turn aggregates once they clear the minimum sample size", async () => {
+    const CARD_ID = "aggregate-test-card";
+    // Outside the preceding "max-size" test's turn range (1-500) — that test's synthetic games
+    // are still in the shared D1 state (tests in this file don't reset between `it` blocks), so a
+    // turn number in that range would already have a pre-existing game and cross the sample-size
+    // threshold one submission earlier than this test expects.
+    const TURN = 10_000;
+    // 3 wins, 2 losses -> winRate should come out to 0.6; damage amounts sum to 20 across 5 games -> avg 4.
+    const outcomes: Array<{ winner: 1 | 2; amount: number }> = [
+      { winner: 1, amount: 4 },
+      { winner: 1, amount: 6 },
+      { winner: 1, amount: 5 },
+      { winner: 2, amount: 3 },
+      { winner: 2, amount: 2 },
+    ];
+
+    async function fetchSummary() {
+      const response = await worker.fetch("https://worker.test/v1/grand-archive/analytics/summary");
+      return (await response.json()) as {
+        cardStats: Array<{
+          cardId: string;
+          games: number;
+          avgDrawn: number;
+          avgDrawnToMemory: number;
+          avgMaterialized: number;
+          avgReserved: number;
+          avgDiscarded: number;
+          avgActivated: number;
+          winRate: number | null;
+          attackEvents: number;
+          avgDamageDealt: number;
+        }>;
+        turnStats: Array<{
+          turn: number;
+          games: number;
+          avgCardsPlayed: number;
+          avgMemorySpent: number;
+          avgReserveSpent: number;
+          avgDamageDealt: number;
+          avgDamageTaken: number;
+          avgHealed: number;
+          avgLevel: number;
+          avgHp: number;
+        }>;
+      };
+    }
+
+    for (const [i, { winner, amount }] of outcomes.entries()) {
+      const submission = structuredClone(fixture) as unknown as GameSubmissionV1;
+      submission.matchId = `match-fixture-aggregate-${i}`;
+      submission.submissionId = `match-fixture-aggregate-${i}:1`;
+      submission.winner = winner;
+      submission.matchWinner = winner;
+      submission.players["1"].cardStats = {
+        [CARD_ID]: { drawn: 3, drawnToMemory: 1, materialized: 2, reserved: 0, discarded: 1, activated: 2 },
+      };
+      submission.players["1"].turnStats = [
+        { turn: TURN, cardsPlayed: 2, memorySpent: 3, reserveSpent: 1, damageDealt: 5, damageTaken: 2, healed: 0, level: 3, hp: 15 },
+      ];
+      submission.combatEvents = [
+        {
+          type: "damage_resolved",
+          turn: TURN,
+          sourceSeat: 1,
+          sourceCardId: CARD_ID,
+          targetSeat: 2,
+          targetCardId: "champion-two",
+          amount,
+          isCombat: true,
+          lethal: false,
+        },
+      ];
+
+      const created = await worker.fetch(submissionRequest(submission));
+      expect(created.status).toBe(201);
+
+      // Below MIN_SAMPLE_GAMES (5), neither aggregate should be visible yet — showing them earlier
+      // would just be replaying these specific games' exact card/turn usage, not aggregating.
+      if (i < 4) {
+        const summary = await fetchSummary();
+        expect(summary.cardStats.some((c) => c.cardId === CARD_ID)).toBe(false);
+        expect(summary.turnStats.some((t) => t.turn === TURN)).toBe(false);
+      }
+    }
+
+    const summary = await fetchSummary();
+    const card = summary.cardStats.find((c) => c.cardId === CARD_ID);
+    expect(card).toMatchObject({
+      cardId: CARD_ID,
+      games: 5,
+      avgDrawn: 3,
+      avgDrawnToMemory: 1,
+      avgMaterialized: 2,
+      avgReserved: 0,
+      avgDiscarded: 1,
+      avgActivated: 2,
+      winRate: 0.6,
+      attackEvents: 5,
+      avgDamageDealt: 4,
+    });
+
+    const turn = summary.turnStats.find((t) => t.turn === TURN);
+    expect(turn).toMatchObject({
+      turn: TURN,
+      games: 5,
+      avgCardsPlayed: 2,
+      avgMemorySpent: 3,
+      avgReserveSpent: 1,
+      avgDamageDealt: 5,
+      avgDamageTaken: 2,
+      avgHealed: 0,
+      avgLevel: 3,
+      avgHp: 15,
+    });
+  });
 });

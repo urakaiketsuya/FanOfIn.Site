@@ -4,7 +4,12 @@ import path from "node:path";
 import type { SimulatorSummary } from "@gatcg/shared";
 import { writeJsonAtomic } from "../lib/atomicWrite.js";
 
-function assertSummary(value: unknown): asserts value is SimulatorSummary {
+function isFiniteNonNegative(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0;
+}
+
+/** Exported for `export.test.ts` — otherwise module-internal. */
+export function assertSummary(value: unknown): asserts value is SimulatorSummary {
   if (!value || typeof value !== "object") throw new Error("simulator API returned a non-object");
   const summary = value as Partial<SimulatorSummary>;
   if (summary.schemaVersion !== 1 || summary.source !== "GrandArchiveSim") {
@@ -31,7 +36,12 @@ function assertSummary(value: unknown): asserts value is SimulatorSummary {
   ) {
     throw new Error("simulator API summary has invalid first-player aggregates");
   }
-  if (!Array.isArray(summary.champions) || !Array.isArray(summary.matchups)) {
+  if (
+    !Array.isArray(summary.champions)
+    || !Array.isArray(summary.matchups)
+    || !Array.isArray(summary.cardStats)
+    || !Array.isArray(summary.turnStats)
+  ) {
     throw new Error("simulator API summary is missing aggregate arrays");
   }
   if (summary.champions.some((champion) => (
@@ -60,6 +70,41 @@ function assertSummary(value: unknown): asserts value is SimulatorSummary {
     || matchup.champion1Wins + matchup.champion2Wins > matchup.games
   ))) {
     throw new Error("simulator API summary has invalid matchup aggregates");
+  }
+  if (summary.cardStats.some((card) => (
+    !card
+    || typeof card.cardId !== "string"
+    || !Number.isSafeInteger(card.games)
+    || card.games < 0
+    || !isFiniteNonNegative(card.avgDrawn)
+    || !isFiniteNonNegative(card.avgDrawnToMemory)
+    || !isFiniteNonNegative(card.avgMaterialized)
+    || !isFiniteNonNegative(card.avgReserved)
+    || !isFiniteNonNegative(card.avgDiscarded)
+    || !isFiniteNonNegative(card.avgActivated)
+    || (card.winRate !== null && (typeof card.winRate !== "number" || card.winRate < 0 || card.winRate > 1))
+    || !Number.isSafeInteger(card.attackEvents)
+    || card.attackEvents < 0
+    || !isFiniteNonNegative(card.avgDamageDealt)
+  ))) {
+    throw new Error("simulator API summary has invalid card aggregates");
+  }
+  if (summary.turnStats.some((turn) => (
+    !turn
+    || !Number.isSafeInteger(turn.turn)
+    || turn.turn < 0
+    || !Number.isSafeInteger(turn.games)
+    || turn.games < 0
+    || !isFiniteNonNegative(turn.avgCardsPlayed)
+    || !isFiniteNonNegative(turn.avgMemorySpent)
+    || !isFiniteNonNegative(turn.avgReserveSpent)
+    || !isFiniteNonNegative(turn.avgDamageDealt)
+    || !isFiniteNonNegative(turn.avgDamageTaken)
+    || !isFiniteNonNegative(turn.avgHealed)
+    || !isFiniteNonNegative(turn.avgLevel)
+    || !isFiniteNonNegative(turn.avgHp)
+  ))) {
+    throw new Error("simulator API summary has invalid turn aggregates");
   }
 }
 

@@ -27,4 +27,36 @@ export interface SimulatorSummary {
     champion1Wins: number;
     champion2Wins: number;
   }>;
+  /**
+   * Per-card telemetry (from cardStats/combatEvents), only for cards with at least
+   * `MIN_SAMPLE_GAMES` (worker/src/analytics.ts) distinct games behind them — below that
+   * threshold an "aggregate" would just be replaying one specific game's exact card usage, not
+   * actually aggregating anything. Expect this to be empty until real match volume grows.
+   */
+  cardStats: Array<{
+    cardId: string;
+    games: number;
+    avgDrawn: number;
+    avgDrawnToMemory: number;
+    avgMaterialized: number;
+    avgReserved: number;
+    avgDiscarded: number;
+    avgActivated: number;
+    winRate: number | null;
+    attackEvents: number;
+    avgDamageDealt: number;
+  }>;
+  /** Per-turn telemetry (from turnStats), same minimum-sample-games gate as `cardStats`. */
+  turnStats: Array<{
+    turn: number;
+    games: number;
+    avgCardsPlayed: number;
+    avgMemorySpent: number;
+    avgReserveSpent: number;
+    avgDamageDealt: number;
+    avgDamageTaken: number;
+    avgHealed: number;
+    avgLevel: number;
+    avgHp: number;
+  }>;
 }
