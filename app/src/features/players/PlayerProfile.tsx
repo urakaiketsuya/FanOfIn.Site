@@ -4,7 +4,7 @@ import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER, type AchievementDefinition
 import { useOmnidexIndex, useOmnidexJudges, useOmnidexPlayers } from "../tournaments/data";
 import { useEloData, useEloHistoryData, useHipsterData, usePlayerDecksData, useRivalsData } from "./data";
 import HistoryChart from "../../components/HistoryChart";
-import { useDeckSightingsData } from "../topdecks/data";
+import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useAchievementsData } from "../achievements/data";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useChampionCardImages } from "./useChampionCardImages";
@@ -33,7 +33,7 @@ export default function PlayerProfile() {
   const playerDecksData = usePlayerDecksData();
   const rivalsData = useRivalsData();
   const index = useOmnidexIndex();
-  const sightingsData = useDeckSightingsData();
+  const popularityIndexData = useDeckPopularityIndexData();
   const achievementsData = useAchievementsData();
 
   const player = playersData?.players.find((p) => p.id === playerId);
@@ -68,16 +68,18 @@ export default function PlayerProfile() {
   );
 
   // A player's champion for a given event only exists if that event had a public decklist —
-  // sourced from deck-sightings (already keyed by player+event) rather than lazily fetching every
-  // event's full decklist bundle just to build a filter list.
+  // sourced from the lean deck-popularity index (already keyed by player+event, same fields
+  // deck-sightings would give us here) rather than lazily fetching every event's full decklist
+  // bundle just to build a filter list, or pulling in deck-sightings' full ~43MB dataset for
+  // three fields.
   const championByEventId = useMemo(() => {
     const map = new Map<number, string>();
-    if (!sightingsData) return map;
-    for (const s of sightingsData.sightings) {
-      if (s.player === playerId && s.championName) map.set(s.eventId, s.championName);
+    if (!popularityIndexData) return map;
+    for (const entry of popularityIndexData.entries) {
+      if (entry.player === playerId && entry.championName) map.set(entry.eventId, entry.championName);
     }
     return map;
-  }, [sightingsData, playerId]);
+  }, [popularityIndexData, playerId]);
 
   const [eventCategory, setEventCategory] = useState<string | null>(null);
   const [eventChampion, setEventChampion] = useState<string | null>(null);
