@@ -59,7 +59,16 @@ new submission returns `201`; changed content under an existing ID returns `409`
 
 ## Recovery and retention
 
-D1 writes the checksum, canonical JSON, normalized game, and both player rows in one batch. The
-sender receives `500` and retains the game as retryable if that batch fails. Identical retries are
-idempotent; changed content under an existing submission ID is rejected. A daily scheduled trigger
-clears raw payload JSON after 30 days while preserving checksums and normalized analytics rows.
+D1 writes the checksum, canonical JSON, normalized game/player rows, and every submitted
+`cardStats`/`turnStats`/`combatEvents` entry (into `game_card_stats`/`game_turn_stats`/
+`game_combat_events`) in one batch. The sender receives `500` and retains the game as retryable if
+that batch fails. Identical retries are idempotent; changed content under an existing submission ID
+is rejected. A daily scheduled trigger clears raw payload JSON after 30 days while preserving
+checksums and normalized analytics rows — the card/turn/combat tables are unaffected by that purge,
+since they're written directly from the submission rather than derived from `raw_payload_json`.
+
+An empty `cardStats: {}` is schema-valid (see `worker/test/fixtures/game-submission-v1.json`'s
+second player), so zero rows in `game_card_stats` for a seat doesn't distinguish "this player's
+deck had no cards" from "the sender didn't report per-card activity for this game" — whether
+TCGEngine reliably reports every deck card (including ones never drawn) is a producer question, not
+something the ingestion schema or these tables can confirm on their own.

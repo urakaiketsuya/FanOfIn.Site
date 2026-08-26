@@ -107,7 +107,74 @@ export async function ingestSubmission(
       player.endLevel,
       player.endHp,
     ));
+
+    for (const [cardId, stats] of Object.entries(player.cardStats)) {
+      statements.push(env.MATCH_DB.prepare(
+        `INSERT INTO game_card_stats
+         (submission_id, seat, card_id, drawn, drawn_to_memory, materialized, reserved, discarded, activated)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      ).bind(
+        submission.submissionId,
+        seat,
+        cardId,
+        stats.drawn,
+        stats.drawnToMemory,
+        stats.materialized,
+        stats.reserved,
+        stats.discarded,
+        stats.activated,
+      ));
+    }
+
+    player.turnStats.forEach((turnStat, turnIndex) => {
+      statements.push(env.MATCH_DB.prepare(
+        `INSERT INTO game_turn_stats
+         (submission_id, seat, turn_index, turn, cards_played, memory_spent, reserve_spent, damage_dealt, damage_taken, healed, level, hp)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      ).bind(
+        submission.submissionId,
+        seat,
+        turnIndex,
+        turnStat.turn,
+        turnStat.cardsPlayed,
+        turnStat.memorySpent,
+        turnStat.reserveSpent,
+        turnStat.damageDealt,
+        turnStat.damageTaken,
+        turnStat.healed,
+        turnStat.level,
+        turnStat.hp,
+      ));
+    });
   }
+
+  submission.combatEvents.forEach((event, eventIndex) => {
+    // attack_initiated's attacker*/damage_resolved's source* both mean "the seat/card causing this
+    // event" — unified into source_seat/source_card_id so a query doesn't need to branch on type.
+    // See the migration's doc comment for which columns are type-specific and NULL on the other type.
+    const isAttack = event.type === "attack_initiated";
+    statements.push(env.MATCH_DB.prepare(
+      `INSERT INTO game_combat_events
+       (submission_id, event_index, event_type, turn, source_seat, source_card_id, target_seat, target_card_id,
+        weapon_card_id, cleave, amount, is_combat, lethal, domain)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    ).bind(
+      submission.submissionId,
+      eventIndex,
+      event.type,
+      event.turn,
+      isAttack ? event.attackerSeat : event.sourceSeat,
+      isAttack ? event.attackerCardId : event.sourceCardId,
+      event.targetSeat,
+      event.targetCardId,
+      isAttack ? event.weaponCardId : null,
+      isAttack ? Number(event.cleave) : null,
+      isAttack ? null : event.amount,
+      isAttack ? null : Number(event.isCombat),
+      isAttack ? null : Number(event.lethal),
+      isAttack ? null : event.domain === true ? 1 : null,
+    ));
+  });
 
   try {
     await env.MATCH_DB.batch(statements);
