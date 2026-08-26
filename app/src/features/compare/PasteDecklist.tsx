@@ -56,9 +56,8 @@ export default function PasteDecklist({ onAdd }: { onAdd: (deck: ComparedDeck) =
         disabled={text.trim().length === 0}
         className="mt-2 rounded-md border border-ctp-blue px-3 py-1.5 text-sm text-ctp-blue hover:bg-ctp-surface0 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        Add to comparison
+        + Compare
       </button>
-
       {lastSkipped && lastSkipped.length > 0 && (
         <p className="mt-2 text-xs text-ctp-subtext0">
           Skipped {lastSkipped.length} unrecognized line{lastSkipped.length === 1 ? "" : "s"}: {lastSkipped.join(", ")}

@@ -88,9 +88,6 @@ export default function ComparisonSummary({
   if (decks.length < 2) {
     return <p className="text-sm text-ctp-subtext1">Add at least one more deck to see a baseline comparison.</p>;
   }
-  if (baselineIndex === -1) {
-    return <p className="text-sm text-ctp-subtext1">Pick a baseline deck below to compare everything else against it.</p>;
-  }
 
   return (
     <div className="space-y-6">
@@ -102,7 +99,8 @@ export default function ComparisonSummary({
               key={d.key}
               type="button"
               onClick={() => onBaselineChange(d.key)}
-              className={`rounded-full border px-2.5 py-1 text-xs ${
+              title={d.label}
+              className={`inline-block max-w-[16rem] truncate align-middle rounded-full border px-2.5 py-1 text-xs ${
                 d.key === baselineKey
                   ? "border-ctp-blue bg-ctp-surface0 text-ctp-blue"
                   : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"

@@ -34,6 +34,7 @@ const VIEW_MODE_LABELS: Record<ViewMode, string> = {
   cardStats: "Card Stats",
   suggestions: "Suggested Changes",
 };
+const VIEW_MODE_KEYS = Object.keys(VIEW_MODE_LABELS) as ViewMode[];
 
 const TAB_LABELS: Record<SourceTab, string> = {
   cards: "Search by cards",
@@ -61,7 +62,12 @@ export default function CompareIndex() {
   const [tab, setTab] = useTabParam("tab", SOURCE_TAB_KEYS, "cards");
   // Summary answers "what's different" at a glance regardless of viewport — the other views are
   // for drilling into the raw matrix once that question is answered.
-  const [viewMode, setViewMode] = useState<ViewMode>("summary");
+  const [viewMode, setViewMode] = useTabParam<ViewMode>("view", VIEW_MODE_KEYS, "summary");
+  // The "Cards" view is per-deck stacked panels that only earn their place once 3+ decks make the
+  // side-by-side table too wide — for 2 decks the Table already shows the same shared/unique
+  // signal in one row per card. Hide it there, and fall back to Summary if the count drops below 3.
+  const visibleViewModes = useMemo(() => VIEW_MODE_KEYS.filter((m) => (m === "cards" ? decks.length >= 3 : true)), [decks.length]);
+  const effectiveViewMode: ViewMode = viewMode === "cards" && decks.length < 3 ? "summary" : viewMode;
   const [baselineKey, setBaselineKey] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const playersData = useOmnidexPlayers();
@@ -73,6 +79,8 @@ export default function CompareIndex() {
   const decklists = useComparedDecklists(decks);
   const championCardsByDeckKey = useDeckChampionCards(decks, decklists);
   const [shareCopyState, setShareCopyState] = useState<"idle" | "copied" | "failed">("idle");
+  const [confirmClear, setConfirmClear] = useState(false);
+  const confirmClearTimerRef = useRef<number | null>(null);
 
   // Seeds the compare set from a `?add=eventId:player,...` link (e.g. from an event's pairings
   // or an achievement unlock) — once player/event data is available, then clears the param so it
@@ -150,6 +158,19 @@ export default function CompareIndex() {
     setDecks((prev) => prev.filter((d) => d.key !== key));
   }
 
+  /** Two-step confirmation so wiping the whole compare set isn't one accidental click. */
+  function handleClearAll() {
+    if (confirmClear) {
+      setDecks([]);
+      setConfirmClear(false);
+      if (confirmClearTimerRef.current !== null) window.clearTimeout(confirmClearTimerRef.current);
+      confirmClearTimerRef.current = null;
+    } else {
+      setConfirmClear(true);
+      confirmClearTimerRef.current = window.setTimeout(() => setConfirmClear(false), 3000);
+    }
+  }
+
   const sightingKeys = decks.filter((d) => d.source.kind === "sighting").map((d) => d.key);
   const customDecks = decks.filter((d): d is ComparedDeck & { source: { kind: "custom"; decklist: OmnidexDecklist } } => d.source.kind === "custom");
 
@@ -178,14 +199,18 @@ export default function CompareIndex() {
           : "Add any number of individual cards to compare their usage, win rate, and price."}
       </p>
 
-      <div className="mt-4 flex flex-wrap items-center gap-2">
+      <div role="tablist" aria-label="Comparison type" className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1">
         {COMPARE_TYPE_KEYS.map((t) => (
           <button
             key={t}
             type="button"
+            role="tab"
+            id={`type-tab-${t}`}
+            aria-selected={compareType === t}
+            aria-controls={`type-panel-${t}`}
             onClick={() => setCompareType(t)}
-            className={`rounded-md border px-3 py-1.5 text-sm font-medium ${
-              compareType === t ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+            className={`rounded-md px-3 py-1.5 text-sm font-medium ${
+              compareType === t ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
             }`}
           >
             {COMPARE_TYPE_LABELS[t]}
@@ -194,11 +219,11 @@ export default function CompareIndex() {
       </div>
 
       {compareType === "cards" ? (
-        <div className="mt-4">
+        <div role="tabpanel" id="type-panel-cards" aria-labelledby="type-tab-cards" className="mt-4">
           <CardCompareIndex />
         </div>
       ) : (
-        <>
+        <div role="tabpanel" id="type-panel-decks" aria-labelledby="type-tab-decks">
           <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
             <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
               Comparing {decks.length} deck{decks.length === 1 ? "" : "s"}
@@ -216,8 +241,8 @@ export default function CompareIndex() {
                 </button>
               )}
               {decks.length > 0 && (
-                <button type="button" onClick={() => setDecks([])} className="text-xs text-ctp-subtext0 hover:text-ctp-text">
-                  Clear all
+                <button type="button" onClick={handleClearAll} className={`text-xs ${confirmClear ? "font-semibold text-ctp-red" : "text-ctp-subtext0 hover:text-ctp-text"}`}>
+                  {confirmClear ? "Confirm clear all?" : "Clear all"}
                 </button>
               )}
             </div>
@@ -233,11 +258,15 @@ export default function CompareIndex() {
 
           {/* Nested tabs: search/import (potentially long result lists) kept separate from the
               comparison itself, so switching to it never means scrolling past search results. */}
-          <div className="mt-4 flex flex-wrap items-center gap-2">
+          <div role="tablist" aria-label="Compare sections" className="mt-4 flex flex-wrap items-center gap-2">
             {PANEL_KEYS.map((p) => (
               <button
                 key={p}
                 type="button"
+                role="tab"
+                id={`panel-tab-${p}`}
+                aria-selected={panel === p}
+                aria-controls={`panel-${p}`}
                 onClick={() => setPanel(p)}
                 className={`rounded-md border px-3 py-1.5 text-sm font-medium ${
                   panel === p ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
@@ -250,12 +279,17 @@ export default function CompareIndex() {
           </div>
 
           {panel === "add" && (
-            <div className="mt-4">
-              <div className="flex flex-wrap items-center gap-2 text-sm">
+            <div role="tabpanel" id="panel-add" aria-labelledby="panel-tab-add" className="mt-4">
+              <div role="tablist" aria-label="Add decks source" className="flex flex-wrap items-center gap-2 text-sm">
+                <span className="text-xs text-ctp-subtext0">Source:</span>
                 {(Object.keys(TAB_LABELS) as SourceTab[]).map((t) => (
                   <button
                     key={t}
                     type="button"
+                    role="tab"
+                    id={`source-tab-${t}`}
+                    aria-selected={tab === t}
+                    aria-controls="source-panel"
                     onClick={() => setTab(t)}
                     className={`rounded-md border px-2 py-1 text-xs ${
                       tab === t ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
@@ -266,7 +300,16 @@ export default function CompareIndex() {
                 ))}
               </div>
 
-              <div className="mt-3 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+              {decks.length > 0 && (
+                <p className="mt-2 text-xs text-ctp-subtext0">
+                  {decks.length} deck{decks.length === 1 ? "" : "s"} selected —{" "}
+                  <button type="button" onClick={() => setPanel("compare")} className="text-ctp-blue hover:underline">
+                    view comparison &rarr;
+                  </button>
+                </p>
+              )}
+
+              <div role="tabpanel" id="source-panel" aria-labelledby={`source-tab-${tab}`} className="mt-3 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
                 {tab === "cards" && <DeckSearchByCards comparedKeys={comparedKeys} onToggle={toggleDeck} />}
                 {tab === "player" && <ImportByPlayer comparedKeys={comparedKeys} onToggle={toggleDeck} />}
                 {tab === "topDecks" && <ImportTopDecks comparedKeys={comparedKeys} onToggle={toggleDeck} />}
@@ -276,7 +319,7 @@ export default function CompareIndex() {
           )}
 
           {panel === "compare" && (
-            <div className="mt-4">
+            <div role="tabpanel" id="panel-compare" aria-labelledby="panel-tab-compare" className="mt-4">
               {decks.length === 0 && (
                 <p className="text-sm text-ctp-subtext1">
                   Nothing to compare yet — switch to "Add Decks" to search, import, or paste one.
@@ -285,14 +328,19 @@ export default function CompareIndex() {
 
               {decks.length > 0 && (
                 <>
-                  <div className="flex flex-wrap gap-1 text-xs">
-                    {(Object.keys(VIEW_MODE_LABELS) as ViewMode[]).map((mode) => (
+                  <div role="tablist" aria-label="Comparison view" className="flex flex-wrap gap-1 text-xs">
+                    <span className="text-xs text-ctp-subtext0">View:</span>
+                    {visibleViewModes.map((mode) => (
                       <button
                         key={mode}
                         type="button"
+                        role="tab"
+                        id={`view-tab-${mode}`}
+                        aria-selected={effectiveViewMode === mode}
+                        aria-controls="view-panel"
                         onClick={() => setViewMode(mode)}
                         className={`rounded-md border px-2 py-1 ${
-                          viewMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                          effectiveViewMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
                         }`}
                       >
                         {VIEW_MODE_LABELS[mode]}
@@ -300,8 +348,8 @@ export default function CompareIndex() {
                     ))}
                   </div>
 
-                  <div className="mt-4">
-                    {viewMode === "summary" && (
+                  <div role="tabpanel" id="view-panel" aria-labelledby={`view-tab-${effectiveViewMode}`} className="mt-4">
+                    {effectiveViewMode === "summary" && (
                       <ComparisonSummary
                         decks={decks}
                         decklists={decklists}
@@ -309,7 +357,7 @@ export default function CompareIndex() {
                         onBaselineChange={setBaselineKey}
                       />
                     )}
-                    {viewMode === "table" && (
+                    {effectiveViewMode === "table" && (
                       <>
                         {/* Below md, the desktop matrix shrinks each deck's column too far to stay
                             readable, so the same Table tab shows a card-by-card diff list instead —
@@ -322,15 +370,15 @@ export default function CompareIndex() {
                         </div>
                       </>
                     )}
-                    {viewMode === "cards" && <ComparisonCards decks={decks} decklists={decklists} />}
-                    {viewMode === "cardStats" && <ComparisonCardStats decks={decks} decklists={decklists} />}
-                    {viewMode === "suggestions" && <ComparisonSuggestions decks={decks} decklists={decklists} />}
+                    {effectiveViewMode === "cards" && <ComparisonCards decks={decks} decklists={decklists} />}
+                    {effectiveViewMode === "cardStats" && <ComparisonCardStats decks={decks} decklists={decklists} />}
+                    {effectiveViewMode === "suggestions" && <ComparisonSuggestions decks={decks} decklists={decklists} />}
                   </div>
                 </>
               )}
             </div>
           )}
-        </>
+        </div>
       )}
     </div>
   );

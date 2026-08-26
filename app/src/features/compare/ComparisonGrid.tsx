@@ -74,11 +74,11 @@ export default function ComparisonGrid({
       <table className="w-max min-w-full text-sm">
         <thead>
           <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-            <th className="sticky left-0 z-10 bg-ctp-base py-1 pr-6">Card</th>
+            <th className="sticky left-0 top-14 z-30 bg-ctp-base py-1 pr-6">Card</th>
             {decks.map((d) => {
               const builderUrl = deckBuilderUrl(d);
               return (
-                <th key={d.key} className="min-w-[7rem] py-1 pr-6 font-medium normal-case text-ctp-text">
+                <th key={d.key} className="sticky top-14 z-20 min-w-[7rem] bg-ctp-base py-1 pr-6 font-medium normal-case text-ctp-text">
                   <div className="flex items-center gap-1.5">
                     <span>{d.label}</span>
                     {decklists.get(d.key) && (
@@ -86,7 +86,7 @@ export default function ComparisonGrid({
                         type="button"
                         onClick={() => handleExportTts(d)}
                         title="Downloads a .json file — in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it"
-                        className="rounded border border-ctp-surface1 px-1 py-0.5 text-[10px] font-normal text-ctp-subtext1 hover:text-ctp-text"
+                        className="rounded border border-ctp-surface1 px-2 py-1 text-xs font-normal text-ctp-subtext1 hover:text-ctp-text"
                       >
                         TTS
                       </button>
@@ -95,7 +95,7 @@ export default function ComparisonGrid({
                       <Link
                         to={builderUrl}
                         title="Opens this deck in the Guided Deck Builder, locked in as a starting point"
-                        className="rounded border border-ctp-surface1 px-1 py-0.5 text-[10px] font-normal text-ctp-subtext1 hover:text-ctp-text"
+                        className="rounded border border-ctp-surface1 px-2 py-1 text-xs font-normal text-ctp-subtext1 hover:text-ctp-text"
                       >
                         Deck Builder
                       </Link>
@@ -112,7 +112,7 @@ export default function ComparisonGrid({
               Win rate
             </td>
             {deckStats.map((s, i) => (
-              <td key={s.key} className={`py-1.5 pr-6 ${i === bestWinRateIndex ? "text-ctp-green" : "text-ctp-subtext1"}`}>
+              <td key={s.key} className={`py-1.5 pr-6 ${i === bestWinRateIndex ? "text-ctp-blue" : "text-ctp-subtext1"}`}>
                 {s.winRate !== null ? `${(s.winRate * 100).toFixed(0)}%` : "—"}
               </td>
             ))}
@@ -123,7 +123,7 @@ export default function ComparisonGrid({
               Deck price
             </td>
             {deckStats.map((s, i) => (
-              <td key={s.key} className={`py-1.5 pr-6 ${i === bestPriceIndex ? "text-ctp-green" : "text-ctp-subtext1"}`}>
+              <td key={s.key} className={`py-1.5 pr-6 ${i === bestPriceIndex ? "text-ctp-blue" : "text-ctp-subtext1"}`}>
                 {s.price > 0 ? formatUsd(s.price) : "—"}
               </td>
             ))}
@@ -150,7 +150,7 @@ export default function ComparisonGrid({
               Power rating
             </td>
             {deckStats.map((s, i) => (
-              <td key={s.key} className={`py-1.5 pr-6 font-semibold ${i === bestCompositeIndex ? "text-ctp-green" : "text-ctp-text"}`}>
+              <td key={s.key} className={`py-1.5 pr-6 font-semibold ${i === bestCompositeIndex ? "text-ctp-blue" : "text-ctp-text"}`}>
                 {s.rating ? s.rating.composite.toFixed(1) : "—"}
               </td>
             ))}
@@ -161,7 +161,7 @@ export default function ComparisonGrid({
               <tr key={pillar}>
                 <td className="sticky left-0 z-10 bg-ctp-base py-1 pr-6 pl-3 text-xs text-ctp-subtext0">{label}</td>
                 {deckStats.map((s, i) => (
-                  <td key={s.key} className={`py-1 pr-6 text-xs ${i === bestPillarIndex ? "text-ctp-green" : "text-ctp-subtext1"}`}>
+                  <td key={s.key} className={`py-1 pr-6 text-xs ${i === bestPillarIndex ? "text-ctp-blue" : "text-ctp-subtext1"}`}>
                     {s.rating ? s.rating.scores[pillar] : "—"}
                   </td>
                 ))}
@@ -231,8 +231,9 @@ export default function ComparisonGrid({
       </table>
 
       <div className="mt-2 flex flex-wrap gap-4 text-xs text-ctp-subtext0">
-        <span className="text-ctp-green">■ in every deck / best value</span>
+        <span className="text-ctp-green">■ in every deck</span>
         <span className="text-ctp-yellow">■ in only one deck</span>
+        <span className="text-ctp-blue">■ best value</span>
       </div>
     </div>
   );

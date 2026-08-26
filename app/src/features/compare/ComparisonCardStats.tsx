@@ -86,9 +86,9 @@ export default function ComparisonCardStats({
                   {d.label}
                 </th>
               ))}
-              <th className="py-1 pr-6">Decks</th>
-              <th className="py-1 pr-6">Win rate</th>
-              <th className="py-1 pr-6">Adjusted</th>
+              <th className="py-1 pr-6" title="Number of public tournament decks running this card">Decks</th>
+              <th className="py-1 pr-6" title="Average win rate of decks running this card">Win rate</th>
+              <th className="py-1 pr-6" title="Sample-adjusted win rate, shrunk toward 50% for small samples">Adjusted</th>
               <th className="py-1">Price</th>
             </tr>
           </thead>

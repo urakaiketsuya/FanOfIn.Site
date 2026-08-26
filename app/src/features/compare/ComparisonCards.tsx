@@ -81,7 +81,7 @@ export default function ComparisonCards({
                     type="button"
                     onClick={() => handleExportTts(d)}
                     title="Downloads a .json file — in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it"
-                    className="rounded border border-ctp-surface1 px-1.5 py-0.5 text-[10px] text-ctp-subtext1 hover:text-ctp-text"
+                    className="rounded border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text"
                   >
                     TTS
                   </button>
@@ -90,7 +90,7 @@ export default function ComparisonCards({
                   <Link
                     to={builderUrl}
                     title="Opens this deck in the Guided Deck Builder, locked in as a starting point"
-                    className="rounded border border-ctp-surface1 px-1.5 py-0.5 text-[10px] text-ctp-subtext1 hover:text-ctp-text"
+                    className="rounded border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text"
                   >
                     Deck Builder
                   </Link>
