@@ -10,23 +10,23 @@ import {
   type OmnidexSeasonSummary,
   type OmnidexTeamSighting,
 } from "@gatcg/shared";
-import { readCachedBundle, listCachedBundles } from "./cache.js";
+import { readCachedBundle, type OmnidexEventBundle } from "./cache.js";
 
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/omnidex");
 
 /**
- * Pure local transform: reads whatever's in the raw cache (populated by `crawler.ts`) and
- * derives the published index + player/judge rosters. Decoupled from network fetching so a
- * re-publish never needs to hit the API — only a crawl does.
+ * Pure local transform: derives the published index + player/judge rosters from `allBundles`
+ * (the raw cache, populated by `crawler.ts`). Decoupled from network fetching so a re-publish
+ * never needs to hit the API — only a crawl does. Takes the bundle array as a parameter rather
+ * than reading the cache itself so a full pipeline run can load it once and share it with
+ * `buildAnalysis`/`publishVods` instead of re-reading ~20k event files per stage.
  */
-export async function buildOmnidexIndex(): Promise<{
+export async function buildOmnidexIndex(allBundles: OmnidexEventBundle[]): Promise<{
   index: OmnidexIndexData;
   players: OmnidexPlayerSummary[];
   judges: OmnidexJudgeSummary[];
   teams: OmnidexTeamSighting[];
 }> {
-  const allBundles = await listCachedBundles();
-
   const events: OmnidexEventSummary[] = [];
   const seasonsById = new Map<number, OmnidexSeasonSummary>();
   const playersById = new Map<number, OmnidexPlayerSummary>();

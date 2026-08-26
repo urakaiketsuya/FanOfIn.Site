@@ -2,7 +2,7 @@ import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { EVENT_CATEGORY_ORDER, priceKey, type CardStat, type DeckPopularityEntry, type DeckSimilarityEntry, type PriceData } from "@gatcg/shared";
-import { listCachedBundles } from "../omnidex/cache.js";
+import type { OmnidexEventBundle } from "../omnidex/cache.js";
 import { loadCardCatalog, buildCardIndex, type CardSignature } from "../cards/catalog.js";
 import { computeEloRatings } from "./elo.js";
 import { computeRivals } from "./rivals.js";
@@ -55,12 +55,13 @@ async function loadPriceByName(cardIndex: Map<string, CardSignature>): Promise<M
 }
 
 /**
- * Reads whatever's in the Omnidex cache (any subset — this doesn't require a full backfill to
- * be useful) plus the card catalog and published prices, and derives Elo ratings, card stats,
- * and archetype/battle-chart analysis. Pure local transform, same shape as omnidex/build.ts.
+ * Derives Elo ratings, card stats, and archetype/battle-chart analysis from `allBundles` (any
+ * subset — this doesn't require a full backfill to be useful) plus the card catalog and published
+ * prices. Pure local transform, same shape as omnidex/build.ts. Takes the bundle array as a
+ * parameter (see buildOmnidexIndex's doc comment) instead of reading the Omnidex cache itself.
  */
-export async function buildAnalysis(): Promise<void> {
-  const completed = (await listCachedBundles()).filter((b) => b.event.status === "complete");
+export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<void> {
+  const completed = allBundles.filter((b) => b.event.status === "complete");
 
   const catalog = await loadCardCatalog();
   const cardIndex = buildCardIndex(catalog);

@@ -2,6 +2,7 @@ import { buildPrices, writePrices } from "./pricing/build.js";
 import { updatePriceHistory, writePriceHistory } from "./pricing/history.js";
 import { crawlEvents, type CrawlMode } from "./omnidex/crawler.js";
 import { buildOmnidexIndex, writeOmnidexData } from "./omnidex/build.js";
+import { listCachedBundles, type OmnidexEventBundle } from "./omnidex/cache.js";
 import { buildAnalysis } from "./analysis/build.js";
 import { publishVods } from "./curated/vods.js";
 import { publishChangelog } from "./changelog.js";
@@ -35,7 +36,21 @@ async function runShoutAtYourDecksMode(mode: string): Promise<void> {
   }
 }
 
+/**
+ * The Omnidex cache (~20,700 event files, ~398MB) is otherwise re-read from disk independently
+ * by buildOmnidexIndex, buildAnalysis, and publishVods — three full listCachedBundles() scans
+ * per run. Memoized per-`main()`-invocation (not a module-level singleton) so it's still read
+ * fresh on each pipeline run and, critically, only ever loaded *after* crawlEvents has had a
+ * chance to update the cache earlier in this run.
+ */
+function makeBundleLoader(): () => Promise<OmnidexEventBundle[]> {
+  let bundles: Promise<OmnidexEventBundle[]> | null = null;
+  return () => (bundles ??= listCachedBundles());
+}
+
 async function main() {
+  const getBundles = makeBundleLoader();
+
   if (process.env.GATCG_SIMULATOR_ONLY === "1") {
     await exportSimulatorSummary();
     await writeManifest();
@@ -74,7 +89,7 @@ async function main() {
       const result = await crawlEvents(mode);
       console.log(`omnidex: scanned ${result.scanned}, deep-fetched ${result.deepFetched}, max id ${result.maxIdSeen}`);
 
-      const { index, players, judges, teams } = await buildOmnidexIndex();
+      const { index, players, judges, teams } = await buildOmnidexIndex(await getBundles());
       await writeOmnidexData(index, players, judges, teams);
       console.log(
         `omnidex: published ${index.events.length} events, ${players.length} players, ${judges.length} judges, ${teams.length} team sightings`,
@@ -89,7 +104,7 @@ async function main() {
     console.log("fetch-only mode: skipping analysis build — run with GATCG_ANALYSIS_ONLY=1 once every year's fetch is done");
   } else {
     try {
-      await buildAnalysis();
+      await buildAnalysis(await getBundles());
     } catch (err) {
       console.error("analysis pipeline failed", err);
       process.exitCode = 1;
@@ -106,7 +121,7 @@ async function main() {
   }
 
   try {
-    await publishVods();
+    await publishVods(await getBundles());
   } catch (err) {
     console.error("vod publish failed", err);
     process.exitCode = 1;
