@@ -31,7 +31,11 @@ export default function DeckSightingRow({
 
   return (
     <div className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm">
-      <div className="flex items-center gap-3">
+      {/* Thumbnail + identity only in this row — stats and action buttons get their own full-width
+          row below instead of competing with this one for space, which on a narrow viewport used to
+          squeeze this row's flexible middle column down to almost nothing (badges wrapping onto top
+          of each other, buttons overlapping the price line). */}
+      <div className="flex items-start gap-3">
         <CardHoverPreview image={championCard?.editions[0]?.image} alt={sighting.championName ?? "Unknown champion"}>
           {sighting.deckHash ? (
             <Link to={`/decks/${sighting.deckHash}`} title="Open this deck's own page" className="block shrink-0">
@@ -118,43 +122,44 @@ export default function DeckSightingRow({
             {sighting.seasonName && ` · ${sighting.seasonName}`}
           </div>
         </div>
+      </div>
 
-        <div className="shrink-0 text-right text-xs text-ctp-subtext1">
-          <div>{sighting.placement ? `#${sighting.placement}` : "—"}</div>
-          <div>
-            {sighting.wins}-{sighting.losses}-{sighting.ties}
-          </div>
-          {sighting.price !== null && <div className="text-ctp-subtext0">{formatUsd(sighting.price)}</div>}
+      <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
+        <div className="text-xs text-ctp-subtext1">
+          {sighting.placement ? `#${sighting.placement}` : "—"} · {sighting.wins}-{sighting.losses}-{sighting.ties}
+          {sighting.price !== null && <span className="text-ctp-subtext0"> · {formatUsd(sighting.price)}</span>}
         </div>
 
-        {onAdd && (
-          <button
-            type="button"
-            onClick={onAdd}
-            className={`shrink-0 rounded-md border px-2 py-1.5 text-xs ${
-              added ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            {added ? "− Remove" : "+ Compare"}
-          </button>
-        )}
+        <div className="flex shrink-0 items-center gap-2">
+          {onAdd && (
+            <button
+              type="button"
+              onClick={onAdd}
+              className={`rounded-md border px-2 py-1.5 text-xs ${
+                added ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+              }`}
+            >
+              {added ? "− Remove" : "+ Compare"}
+            </button>
+          )}
 
-        {sighting.deckHash ? (
-          <Link
-            to={`/decks/${sighting.deckHash}`}
-            className="shrink-0 rounded-md border border-ctp-surface1 px-2 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-text"
-          >
-            Decklist &rarr;
-          </Link>
-        ) : (
-          <button
-            type="button"
-            onClick={() => setExpanded((v) => !v)}
-            className="shrink-0 rounded-md border border-ctp-surface1 px-2 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-text"
-          >
-            {expanded ? "Hide" : "Decklist"}
-          </button>
-        )}
+          {sighting.deckHash ? (
+            <Link
+              to={`/decks/${sighting.deckHash}`}
+              className="rounded-md border border-ctp-surface1 px-2 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-text"
+            >
+              Decklist &rarr;
+            </Link>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setExpanded((v) => !v)}
+              className="rounded-md border border-ctp-surface1 px-2 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-text"
+            >
+              {expanded ? "Hide" : "Decklist"}
+            </button>
+          )}
+        </div>
       </div>
 
       {expanded && !sighting.deckHash && (
