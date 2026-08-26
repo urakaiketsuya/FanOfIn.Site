@@ -17,6 +17,7 @@ export default function SimulatorIndex() {
   const champions = useMemo(() => [...(data?.champions ?? [])].sort((a, b) => b.games - a.games), [data]);
   const matchups = useMemo(() => [...(data?.matchups ?? [])].sort((a, b) => b.games - a.games), [data]);
   const cardStats = useMemo(() => [...(data?.cardStats ?? [])].sort((a, b) => b.games - a.games), [data]);
+  const weapons = useMemo(() => [...(data?.weapons ?? [])].sort((a, b) => b.games - a.games), [data]);
   const turnStats = useMemo(() => [...(data?.turnStats ?? [])].sort((a, b) => a.turn - b.turn), [data]);
 
   return (
@@ -55,6 +56,15 @@ export default function SimulatorIndex() {
                 <span className="text-ctp-subtext1">First-player win rate: </span>
                 <span className="font-medium text-ctp-text">
                   {formatPercent(data.firstPlayer.winRate)} ({data.firstPlayer.wins}/{data.firstPlayer.games})
+                </span>
+              </div>
+              <div>
+                <span className="text-ctp-subtext1">Avg game length: </span>
+                <span className="font-medium text-ctp-text">
+                  {/* `typeof` guard, not `=== null` — a cached/stale published file from before
+                      avgTurns existed leaves it `undefined`, not `null`; formatAvg(undefined)
+                      would throw. See TopDecksList.tsx for the same pre-refresh-window pattern. */}
+                  {typeof data.avgTurns === "number" ? `${formatAvg(data.avgTurns)} turns` : "—"}
                 </span>
               </div>
             </div>
@@ -141,7 +151,8 @@ export default function SimulatorIndex() {
                       <th className="pb-1 pr-3 font-normal">Avg discarded</th>
                       <th className="pb-1 pr-3 font-normal">Avg reserved</th>
                       <th className="pb-1 pr-3 font-normal">Attack events</th>
-                      <th className="pb-1 font-normal">Avg dmg dealt</th>
+                      <th className="pb-1 pr-3 font-normal">Avg dmg dealt</th>
+                      <th className="pb-1 font-normal">Lethal hits</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -156,7 +167,44 @@ export default function SimulatorIndex() {
                         <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(c.avgDiscarded)}</td>
                         <td className="py-1.5 pr-3 text-ctp-subtext1">{formatAvg(c.avgReserved)}</td>
                         <td className="py-1.5 pr-3 text-ctp-subtext1">{c.attackEvents}</td>
-                        <td className="py-1.5 text-ctp-text">{formatAvg(c.avgDamageDealt)}</td>
+                        <td className="py-1.5 pr-3 text-ctp-text">{formatAvg(c.avgDamageDealt)}</td>
+                        <td className="py-1.5 text-ctp-text">{c.lethalHits}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          <div>
+            <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Weapons</h2>
+            <p className="mt-1 text-xs text-ctp-subtext1">
+              Same 5-game minimum. Cleave rate is the share of a weapon's attacks flagged as hitting multiple
+              targets.
+            </p>
+            {weapons.length === 0 ? (
+              <p className="mt-2 text-sm text-ctp-subtext1">
+                No weapon has reached 5 games yet ({data.games} game{data.games === 1 ? "" : "s"} recorded so far).
+              </p>
+            ) : (
+              <div className="mt-2 overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="text-xs text-ctp-subtext0">
+                      <th className="pb-1 pr-3 font-normal">Weapon ID</th>
+                      <th className="pb-1 pr-3 font-normal">Games</th>
+                      <th className="pb-1 pr-3 font-normal">Attack events</th>
+                      <th className="pb-1 font-normal">Cleave rate</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {weapons.map((w) => (
+                      <tr key={w.weaponCardId} className="border-t border-ctp-surface0">
+                        <td className="py-1.5 pr-3 font-mono text-xs text-ctp-text">{w.weaponCardId}</td>
+                        <td className="py-1.5 pr-3 text-ctp-subtext1">{w.games}</td>
+                        <td className="py-1.5 pr-3 text-ctp-subtext1">{w.attackEvents}</td>
+                        <td className="py-1.5 text-ctp-text">{formatPercent(w.cleaveRate)}</td>
                       </tr>
                     ))}
                   </tbody>
