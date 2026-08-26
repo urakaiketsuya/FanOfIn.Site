@@ -10,6 +10,7 @@ import CardHoverPreview from "../../components/CardHoverPreview";
 import TopCardsSections from "../../components/TopCardsSections";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import PageHeader from "../../components/ui/PageHeader";
 
 type SortMode = "usage" | "adjusted" | "raw" | "hot" | "hype";
 
@@ -147,17 +148,15 @@ export default function CardStatsIndex() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-ctp-blue">Card Stats</h1>
-        <Link to="/cards" className="text-sm text-ctp-blue hover:underline">
-          Browse the catalog &rarr;
-        </Link>
-      </div>
-      <p className="mt-1 text-sm text-ctp-subtext1">
-        Usage and win rate across every public decklist. "Adjusted" win rate is shrunk toward 50%
-        proportional to sample size, so a card with 3 appearances at 100% doesn't outrank one with
-        200 at 65%. Add cards to the filter below to see what's played alongside them.
-      </p>
+      <PageHeader
+        title="Card Stats"
+        description={`Usage and win rate across every public decklist. "Adjusted" win rate is shrunk toward 50% proportional to sample size, so a card with 3 appearances at 100% doesn't outrank one with 200 at 65%. Add cards to the filter below to see what's played alongside them.`}
+        actions={
+          <Link to="/cards" className="text-sm text-ctp-blue hover:underline">
+            Browse the catalog &rarr;
+          </Link>
+        }
+      />
 
       {selectedCards.length > 0 && (
         <div className="mt-4 rounded-lg border border-ctp-blue bg-ctp-mantle p-4">

@@ -34,6 +34,7 @@ import UniqueDeckRow from "../champions/UniqueDeckRow";
 import { formatUsd } from "../../lib/format";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
+import Tabs from "../../components/ui/Tabs";
 
 const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
@@ -425,19 +426,8 @@ export default function CardDetail() {
         </div>
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2 border-b border-ctp-surface1 pb-2">
-        {TABS.map((t) => (
-          <button
-            key={t.key}
-            type="button"
-            onClick={() => setTab(t.key)}
-            className={`rounded-md border px-2.5 py-1 text-xs ${
-              tab === t.key ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
+      <div className="mt-4">
+        <Tabs tabs={TABS} active={tab} onChange={setTab} label="Card data" />
       </div>
 
       {tab === "info" && (

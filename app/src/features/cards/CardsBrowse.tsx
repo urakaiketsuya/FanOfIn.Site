@@ -6,6 +6,8 @@ import { gatcgApi } from "../../lib/api/client";
 import { useSyncProgress } from "../../lib/sync/SyncProvider";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
+import Tabs from "../../components/ui/Tabs";
+import PageHeader from "../../components/ui/PageHeader";
 import { useCardCatalog } from "./useCardCatalog";
 import { emptyFilterState, filterCards, type CardFilterState } from "./filters";
 import FilterCheckboxGroup from "./FilterCheckboxGroup";
@@ -92,33 +94,24 @@ export default function CardsBrowse() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-ctp-blue">Cards</h1>
-        <div className="flex items-center gap-3">
-          <Link to="/cards/stats" className="text-sm text-ctp-blue hover:underline">
-            Card stats &rarr;
-          </Link>
-          {tab === "browse" && (
-            <p className="text-sm text-ctp-subtext0">
-              {filtered.length} of {cards.length} synced cards
-            </p>
-          )}
-        </div>
-      </div>
+      <PageHeader
+        title="Cards"
+        actions={
+          <div className="flex items-center gap-3">
+            <Link to="/cards/stats" className="text-sm text-ctp-blue hover:underline">
+              Card stats &rarr;
+            </Link>
+            {tab === "browse" && (
+              <p className="text-sm text-ctp-subtext0">
+                {filtered.length} of {cards.length} synced cards
+              </p>
+            )}
+          </div>
+        }
+      />
 
-      <div className="mt-4 flex flex-wrap items-center gap-2">
-        {TABS.map((mode) => (
-          <button
-            key={mode}
-            type="button"
-            onClick={() => setTab(mode)}
-            className={`rounded-md border px-3 py-1.5 text-sm font-medium ${
-              tab === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            {TAB_LABELS[mode]}
-          </button>
-        ))}
+      <div className="mt-4">
+        <Tabs tabs={TABS.map((mode) => ({ key: mode, label: TAB_LABELS[mode] }))} active={tab} onChange={setTab} label="Cards view" />
       </div>
 
       {tab === "sets" ? (

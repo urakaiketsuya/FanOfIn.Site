@@ -6,6 +6,7 @@ import EventRow from "./EventRow";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
+import Tabs from "../../components/ui/Tabs";
 
 const PAGE_SIZE = 50;
 
@@ -60,25 +61,14 @@ export default function SeasonDetail() {
             {events.length} ingested events
           </p>
 
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-            {TAB_KEYS.map((key) => (
-              <button
-                key={key}
-                type="button"
-                onClick={() => setTab(key)}
-                className={`rounded-md border px-3 py-1.5 text-sm font-medium ${
-                  tab === key ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                }`}
-              >
-                {TAB_LABELS[key]}
-              </button>
-            ))}
+          <div className="mt-4">
+            <Tabs tabs={TAB_KEYS.map((key) => ({ key, label: TAB_LABELS[key] }))} active={tab} onChange={setTab} baseId="season" label="Season data" />
           </div>
         </>
       )}
 
       {season && tab === "events" && (
-        <>
+        <div role="tabpanel" id="season-panel-events" aria-labelledby="season-tab-events">
           {events.length === 0 ? (
             <p className="mt-4 text-ctp-subtext1">No ingested events for this season yet.</p>
           ) : (
@@ -92,11 +82,11 @@ export default function SeasonDetail() {
               <LoadMore remaining={events.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
             </>
           )}
-        </>
+        </div>
       )}
 
       {season && tab === "champions" && (
-        <div className="mt-4">
+        <div role="tabpanel" id="season-panel-champions" aria-labelledby="season-tab-champions" className="mt-4">
           {seasonMeta.loading && <p className="text-ctp-subtext1">Loading…</p>}
           {!seasonMeta.loading && seasonMeta.champions.length === 0 && (
             <p className="text-ctp-subtext1">No Champion data for this season yet.</p>
@@ -133,7 +123,7 @@ export default function SeasonDetail() {
       )}
 
       {season && tab === "builds" && (
-        <div className="mt-4">
+        <div role="tabpanel" id="season-panel-builds" aria-labelledby="season-tab-builds" className="mt-4">
           {seasonMeta.loading && <p className="text-ctp-subtext1">Loading…</p>}
           {!seasonMeta.loading && seasonMeta.archetypes.length === 0 && (
             <p className="text-ctp-subtext1">No named builds for this season yet.</p>

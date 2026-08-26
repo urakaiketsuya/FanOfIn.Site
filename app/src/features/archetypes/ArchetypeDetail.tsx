@@ -13,6 +13,7 @@ import CardImpactTable from "../../components/CardImpactTable";
 import StaleDataNotice from "../../components/StaleDataNotice";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
+import Tabs from "../../components/ui/Tabs";
 import { formatUsd } from "../../lib/format";
 import { buildCompareLink } from "../compare/deepLink";
 import { useAllDecodedDecks } from "../../lib/decodedDecks";
@@ -262,27 +263,21 @@ export default function ArchetypeDetail() {
             </p>
           )}
 
-          <div className="mt-4 flex flex-wrap gap-2 border-b border-ctp-surface1 pb-2">
-            {(
-              [
-                { key: "overview", label: "Overview" },
-                { key: "impact", label: "Card Impact" },
-                { key: "decklist", label: "Sample Decklist" },
-                { key: "playedBy", label: `Played By (${instances.length})` },
-                { key: "variants", label: tab === "variants" ? `Variants (${variants.length})` : "Variants" },
-              ] as { key: DetailTab; label: string }[]
-            ).map((t) => (
-              <button
-                key={t.key}
-                type="button"
-                onClick={() => setTab(t.key)}
-                className={`rounded-md border px-2.5 py-1 text-xs ${
-                  tab === t.key ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                }`}
-              >
-                {t.label}
-              </button>
-            ))}
+          <div className="mt-4">
+            <Tabs
+              tabs={
+                [
+                  { key: "overview", label: "Overview" },
+                  { key: "impact", label: "Card Impact" },
+                  { key: "decklist", label: "Sample Decklist" },
+                  { key: "playedBy", label: `Played By (${instances.length})` },
+                  { key: "variants", label: tab === "variants" ? `Variants (${variants.length})` : "Variants" },
+                ] as { key: DetailTab; label: string }[]
+              }
+              active={tab}
+              onChange={setTab}
+              label="Build data"
+            />
           </div>
 
           {tab === "overview" && (

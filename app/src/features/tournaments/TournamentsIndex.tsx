@@ -5,6 +5,7 @@ import { useOmnidexIndex } from "./data";
 import EventRow from "./EventRow";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import PageHeader from "../../components/ui/PageHeader";
 
 const MIN_PLAYERS_OPTIONS = [0, 8, 16, 32];
 const PAGE_SIZE = 50;
@@ -73,11 +74,10 @@ export default function TournamentsIndex() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="text-2xl font-bold text-ctp-blue">Tournaments</h1>
-      <p className="mt-1 text-sm text-ctp-subtext1">
-        Events ingested by the tournament data pipeline. Only a subset of Omnidex events are deep-fetched —
-        most are small weekly leagues below the pipeline's size threshold.
-      </p>
+      <PageHeader
+        title="Tournaments"
+        description="Events ingested by the tournament data pipeline. Only a subset of Omnidex events are deep-fetched — most are small weekly leagues below the pipeline's size threshold."
+      />
 
       <div className="mt-4 flex flex-col gap-2 sm:flex-row">
         <input

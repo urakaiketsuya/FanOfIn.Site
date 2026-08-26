@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useOmnidexIndex } from "./data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import PageHeader from "../../components/ui/PageHeader";
 
 export default function SeasonsIndex() {
   useDocumentTitle("Seasons", "Grand Archive TCG card-legality seasons and their tournament history.");
@@ -8,8 +9,7 @@ export default function SeasonsIndex() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="text-2xl font-bold text-ctp-blue">Seasons</h1>
-      <p className="mt-1 text-sm text-ctp-subtext1">Card-legality windows, each with its own set of ingested events.</p>
+      <PageHeader title="Seasons" description="Card-legality windows, each with its own set of ingested events." />
 
       {!index && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
       {index && index.seasons.length === 0 && <p className="mt-6 text-ctp-subtext1">No seasons found yet.</p>}

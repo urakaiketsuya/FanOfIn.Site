@@ -13,6 +13,8 @@ import DeckSightingRow from "../topdecks/DeckSightingRow";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
+import Tabs from "../../components/ui/Tabs";
+import PageHeader from "../../components/ui/PageHeader";
 
 type ViewMode = "builds" | "sightings";
 const VIEW_TABS: readonly ViewMode[] = ["builds", "sightings"];
@@ -40,20 +42,6 @@ function DeckResultsSkeleton() {
   );
 }
 
-function TabButton({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`rounded-md border px-3 py-1.5 text-sm font-medium ${
-        active ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-      }`}
-    >
-      {children}
-    </button>
-  );
-}
-
 export default function BrowseDecksIndex() {
   useDocumentTitle(
     "Browse Decks",
@@ -65,19 +53,17 @@ export default function BrowseDecksIndex() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="text-2xl font-bold text-ctp-blue">Browse Decks</h1>
-      <p className="mt-1 text-sm text-ctp-subtext1">
-        {view === "builds"
-          ? "Distinct decklists (main + material) — one row per exact build, aggregated across every player who ran it."
-          : "Every public decklist sighting — one row per player per event — filterable by event type, season, keyword, and outcome."}
-      </p>
+      <PageHeader
+        title="Browse Decks"
+        description={
+          view === "builds"
+            ? "Distinct decklists (main + material) — one row per exact build, aggregated across every player who ran it."
+            : "Every public decklist sighting — one row per player per event — filterable by event type, season, keyword, and outcome."
+        }
+      />
 
-      <div className="mt-4 flex flex-wrap items-center gap-2">
-        {VIEW_TABS.map((mode) => (
-          <TabButton key={mode} active={view === mode} onClick={() => setView(mode)}>
-            {VIEW_LABELS[mode]}
-          </TabButton>
-        ))}
+      <div className="mt-4">
+        <Tabs tabs={VIEW_TABS.map((mode) => ({ key: mode, label: VIEW_LABELS[mode] }))} active={view} onChange={setView} label="Deck view" />
       </div>
 
       {view === "builds" ? (

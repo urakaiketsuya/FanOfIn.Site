@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useSiteChangelogData } from "./data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import PageHeader from "../../components/ui/PageHeader";
 
 const REPO_URL = "https://github.com/urakaiketsuya/FanOfIn.Site";
 
@@ -24,11 +25,10 @@ export default function ChangelogIndex() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="text-2xl font-bold text-ctp-blue">Changelog</h1>
-      <p className="mt-1 text-sm text-ctp-subtext1">
-        What's changed on the site, pulled from the commit history — for now this is just each change's own commit
-        message, not a rewritten description.
-      </p>
+      <PageHeader
+        title="Changelog"
+        description="What's changed on the site, pulled from the commit history — for now this is just each change's own commit message, not a rewritten description."
+      />
 
       {!data && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
 

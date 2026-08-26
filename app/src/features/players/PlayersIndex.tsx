@@ -8,6 +8,7 @@ import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import PageHeader from "../../components/ui/PageHeader";
 import { useTabParam } from "../../lib/useTabParam";
 import { isProvisionalRating, PROVISIONAL_MATCH_THRESHOLD } from "../../lib/eloProvisional";
 
@@ -52,12 +53,14 @@ export default function PlayersIndex() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="text-2xl font-bold text-ctp-blue">Players</h1>
-      <p className="mt-1 text-sm text-ctp-subtext1">
-        {tab === "players"
-          ? "Ratings are reconstructed from Omnidex's own per-match Elo deltas across every ingested event."
-          : "Everyone who's judged an ingested event, sorted by judge level."}
-      </p>
+      <PageHeader
+        title="Players"
+        description={
+          tab === "players"
+            ? "Ratings are reconstructed from Omnidex's own per-match Elo deltas across every ingested event."
+            : "Everyone who's judged an ingested event, sorted by judge level."
+        }
+      />
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
         {TABS.map((mode) => (

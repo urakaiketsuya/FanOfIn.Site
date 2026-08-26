@@ -32,6 +32,7 @@ import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
+import Tabs from "../../components/ui/Tabs";
 import DonutChart, { buildChartSegments } from "../../components/DonutChart";
 import BarChart from "../../components/BarChart";
 import RankedCompositionChart from "../../components/RankedCompositionChart";
@@ -329,19 +330,8 @@ export default function DeckDetail() {
         </div>
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2 border-b border-ctp-surface1 pb-2">
-        {TABS.map((t) => (
-          <button
-            key={t.key}
-            type="button"
-            onClick={() => setTab(t.key)}
-            className={`rounded-md border px-2.5 py-1 text-xs ${
-              tab === t.key ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
+      <div className="mt-4">
+        <Tabs tabs={TABS} active={tab} onChange={setTab} label="Deck data" />
       </div>
 
       {tab === "decklist" && rating && (

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import PageHeader from "../../components/ui/PageHeader";
 import { useCardsByNames } from "../events/useCardsByNames";
 import HorizontalBarChart, { type HorizontalBarChartBar } from "../../components/HorizontalBarChart";
 import RangeBar from "../../components/RangeBar";
@@ -110,15 +111,18 @@ export default function CommunityDecksIndex() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="text-2xl font-bold text-ctp-blue">Community Decks</h1>
-      <p className="mt-1 text-sm text-ctp-subtext1">
-        Deck-building trends from{" "}
-        <a href="https://shoutatyourdecks.com" target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">
-          Shout At Your Decks
-        </a>
-        , a community Grand Archive TCG deck builder — what people are actually building, not tournament results.
-        Deliberately kept separate from the Omnidex-derived stats elsewhere on this site.
-      </p>
+      <PageHeader
+        title="Community Decks"
+        description={
+          <>
+            Deck-building trends from{" "}
+            <a href="https://shoutatyourdecks.com" target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">
+              Shout At Your Decks
+            </a>
+            , a community Grand Archive TCG deck builder — what people are actually building, not tournament results. Deliberately kept separate from the Omnidex-derived stats elsewhere on this site.
+          </>
+        }
+      />
 
       {popularity && (
         <p className="mt-2 text-xs text-ctp-subtext0">

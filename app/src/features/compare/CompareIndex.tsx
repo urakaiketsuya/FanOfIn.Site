@@ -16,6 +16,7 @@ import { useComparedDecklists } from "./useComparedDecklists";
 import { useDeckChampionCards } from "./useDeckChampionCards";
 import { useOmnidexIndex, useOmnidexPlayers } from "../tournaments/data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import PageHeader from "../../components/ui/PageHeader";
 import { useTabParam } from "../../lib/useTabParam";
 import { encodeCustomDecks, decodeCustomDecks } from "../../lib/compareShareLink";
 import type { OmnidexDecklist } from "@gatcg/shared";
@@ -192,12 +193,14 @@ export default function CompareIndex() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      <h1 className="text-2xl font-bold text-ctp-blue">Compare</h1>
-      <p className="mt-1 text-sm text-ctp-subtext1">
-        {compareType === "decks"
-          ? "Add any number of decks, then see exactly where they overlap and diverge."
-          : "Add any number of individual cards to compare their usage, win rate, and price."}
-      </p>
+      <PageHeader
+        title="Compare"
+        description={
+          compareType === "decks"
+            ? "Add any number of decks, then see exactly where they overlap and diverge."
+            : "Add any number of individual cards to compare their usage, win rate, and price."
+        }
+      />
 
       <div role="tablist" aria-label="Comparison type" className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1">
         {COMPARE_TYPE_KEYS.map((t) => (

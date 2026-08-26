@@ -23,6 +23,7 @@ import { buildClarentPlaytestUrl } from "../../lib/clarentPlaytest";
 import { buildTtsSaveFile, downloadJsonFile, slugifyFilename } from "../../lib/ttsExport";
 import { formatUsd } from "../../lib/format";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import PageHeader from "../../components/ui/PageHeader";
 import { useTabParam } from "../../lib/useTabParam";
 import { useAllDecodedDecks } from "../../lib/decodedDecks";
 import { useDebouncedValue } from "../../lib/useDebouncedValue";
@@ -1666,10 +1667,10 @@ export default function DeckBuilderIndex() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="text-2xl font-bold text-ctp-blue">Guided Deck Builder</h1>
-      <p className="mt-1 text-sm text-ctp-subtext1">
-        Choose an identity, review its data-supported core, then mark your choices and resolve the remaining flex slots.
-      </p>
+      <PageHeader
+        title="Guided Deck Builder"
+        description="Choose an identity, review its data-supported core, then mark your choices and resolve the remaining flex slots."
+      />
 
       <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Champion:</span>

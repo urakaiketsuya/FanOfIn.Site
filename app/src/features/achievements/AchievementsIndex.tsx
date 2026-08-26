@@ -10,6 +10,7 @@ import { useAchievementsData } from "./data";
 import { useOmnidexPlayers } from "../tournaments/data";
 import PlayerLink from "../players/PlayerLink";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import PageHeader from "../../components/ui/PageHeader";
 
 const RECENT_HOLDERS_SHOWN = 5;
 
@@ -46,11 +47,10 @@ export default function AchievementsIndex() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="text-2xl font-bold text-ctp-blue">Achievements</h1>
-      <p className="mt-1 text-sm text-ctp-subtext1">
-        Every badge here is derived automatically from tournament results, ratings, and decklists already ingested —
-        there's no manual submission or curation involved.
-      </p>
+      <PageHeader
+        title="Achievements"
+        description="Every badge here is derived automatically from tournament results, ratings, and decklists already ingested — there's no manual submission or curation involved."
+      />
 
       {!achievementsData && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
       {achievementsData && achievementsData.definitions.length === 0 && (

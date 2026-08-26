@@ -13,6 +13,7 @@ import RawObject from "./RawObject";
 import PlayerLink from "../players/PlayerLink";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
+import Tabs from "../../components/ui/Tabs";
 import { formatCountry } from "../../lib/format";
 
 type EventTab = "standings" | "pairings" | "decklists" | "teams" | "judges" | "statistics";
@@ -184,19 +185,8 @@ export default function EventDetail() {
       )}
 
       {tabs.length > 1 && (
-        <div className="mt-4 flex flex-wrap gap-2 border-b border-ctp-surface1 pb-2">
-          {tabs.map((t) => (
-            <button
-              key={t.key}
-              type="button"
-              onClick={() => setTab(t.key)}
-              className={`rounded-md border px-2.5 py-1 text-xs ${
-                activeTab === t.key ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
+        <div className="mt-4">
+          <Tabs tabs={tabs} active={activeTab} onChange={setTab} label="Event data" />
         </div>
       )}
 

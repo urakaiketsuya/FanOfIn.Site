@@ -5,6 +5,7 @@ import LoadMore from "../../components/LoadMore";
 import StaleDataNotice from "../../components/StaleDataNotice";
 import DecklistCoverageNotice from "../../components/DecklistCoverageNotice";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import PageHeader from "../../components/ui/PageHeader";
 import { formatUsd } from "../../lib/format";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 import ArchetypeMetaMap from "./ArchetypeMetaMap";
@@ -160,18 +161,15 @@ export default function ArchetypesIndex() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-ctp-blue">Archetypes</h1>
-        <Link to="/battle-chart" className="text-sm text-ctp-blue hover:underline">
-          Battle chart &rarr;
-        </Link>
-      </div>
-      <p className="mt-1 text-sm text-ctp-subtext1">
-        Named builds derived from real decklists by their cards alone — decks are grouped by exact
-        card list, then clustered by similarity, regardless of Champion. A build played under more
-        than one Champion shows a "+N" next to its main Champion. Groups below a minimum sample
-        size are hidden as noise.
-      </p>
+      <PageHeader
+        title="Archetypes"
+        description={`Named builds derived from real decklists by their cards alone — decks are grouped by exact card list, then clustered by similarity, regardless of Champion. A build played under more than one Champion shows a "+N" next to its main Champion. Groups below a minimum sample size are hidden as noise.`}
+        actions={
+          <Link to="/battle-chart" className="text-sm text-ctp-blue hover:underline">
+            Battle chart &rarr;
+          </Link>
+        }
+      />
       <DecklistCoverageNotice />
       <StaleDataNotice generatedAt={[data?.generatedAt]} />
       {data?.coverage && (
