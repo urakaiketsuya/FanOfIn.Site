@@ -6,6 +6,7 @@ import ImportTopDecks from "./ImportTopDecks";
 import PasteDecklist from "./PasteDecklist";
 import ComparisonSummary from "./ComparisonSummary";
 import ComparisonGrid from "./ComparisonGrid";
+import ComparisonDifferences from "./ComparisonDifferences";
 import ComparisonCards from "./ComparisonCards";
 import ComparisonCardStats from "./ComparisonCardStats";
 import ComparisonSuggestions from "./ComparisonSuggestions";
@@ -308,7 +309,19 @@ export default function CompareIndex() {
                         onBaselineChange={setBaselineKey}
                       />
                     )}
-                    {viewMode === "table" && <ComparisonGrid decks={decks} decklists={decklists} />}
+                    {viewMode === "table" && (
+                      <>
+                        {/* Below md, the desktop matrix shrinks each deck's column too far to stay
+                            readable, so the same Table tab shows a card-by-card diff list instead —
+                            same underlying data, no separate tab to discover. */}
+                        <div className="hidden md:block">
+                          <ComparisonGrid decks={decks} decklists={decklists} />
+                        </div>
+                        <div className="md:hidden">
+                          <ComparisonDifferences decks={decks} decklists={decklists} />
+                        </div>
+                      </>
+                    )}
                     {viewMode === "cards" && <ComparisonCards decks={decks} decklists={decklists} />}
                     {viewMode === "cardStats" && <ComparisonCardStats decks={decks} decklists={decklists} />}
                     {viewMode === "suggestions" && <ComparisonSuggestions decks={decks} decklists={decklists} />}
