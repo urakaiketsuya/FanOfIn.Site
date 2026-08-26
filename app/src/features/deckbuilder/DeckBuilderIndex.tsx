@@ -1380,7 +1380,15 @@ export default function DeckBuilderIndex() {
     () => [...build.material, ...build.main, ...build.sideboard].map((c) => c.cardName),
     [build.material, build.main, build.sideboard],
   );
-  const placedNames = useMemo(() => new Set(allNames), [allNames]);
+  // Buddy Cards' own exclusion set — everything actually in the deck, plus everything already
+  // recommended under "Cards that might help" (build.suggestions). Not the same as allNames (the
+  // real decklist used for price/export/etc.): a card only suggested, not yet added, shouldn't be
+  // hidden from the export, but showing it again as a "buddy" is redundant with a suggestion the
+  // tool is already making through the ranked lens.
+  const placedNames = useMemo(
+    () => new Set([...allNames, ...build.suggestions.map((c) => c.cardName)]),
+    [allNames, build.suggestions],
+  );
   const buddyCards = useBuddyCards(rows, spiritFilter, lockedCards, placedNames);
   const communityCoOccurrence = useCommunityCoOccurrence();
   const communityBuddyCards = useMemo(() => {
@@ -1388,9 +1396,11 @@ export default function DeckBuilderIndex() {
     if (!communityCoOccurrence || !championName) return result;
     const champData = communityCoOccurrence.byChampion[championToSlug(championName)];
     if (!champData) return result;
-    for (const name of lockedCards.keys()) result.set(name, champData[name] ?? []);
+    // Same exclusion as useBuddyCards's own excludeNames — a card already in the assembled build
+    // isn't a useful "buddy" suggestion (there's nowhere to add it).
+    for (const name of lockedCards.keys()) result.set(name, (champData[name] ?? []).filter((b) => !placedNames.has(b.cardName)));
     return result;
-  }, [communityCoOccurrence, championName, lockedCards]);
+  }, [communityCoOccurrence, championName, lockedCards, placedNames]);
   const buddyNames = useMemo(() => Array.from(buddyCards.values()).flatMap((list) => list.map((b) => b.cardName)), [buddyCards]);
   const suggestionNames = useMemo(() => build.suggestions.map((c) => c.cardName), [build.suggestions]);
   const cardsByName = useCardsByNames(useMemo(() => [...allNames, ...buddyNames, ...suggestionNames], [allNames, buddyNames, suggestionNames]));
