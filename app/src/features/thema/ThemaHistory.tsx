@@ -30,6 +30,9 @@ export default function ThemaHistory() {
 
       {history.isPending && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
       {history.isError && <p className="mt-6 text-ctp-red">Failed to load history.</p>}
+      {!history.isPending && !history.isError && points.length === 0 && (
+        <p className="mt-6 text-ctp-subtext1">No price history recorded yet.</p>
+      )}
 
       {points.length > 1 && (
         <div className="mt-6 rounded-md border border-ctp-surface1 p-4">

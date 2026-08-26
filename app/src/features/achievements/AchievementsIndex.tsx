@@ -53,6 +53,9 @@ export default function AchievementsIndex() {
       </p>
 
       {!achievementsData && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
+      {achievementsData && achievementsData.definitions.length === 0 && (
+        <p className="mt-6 text-ctp-subtext1">No achievements have been derived yet.</p>
+      )}
 
       {ACHIEVEMENT_CATEGORY_ORDER.map((category) => {
         const defs = byCategory.get(category);

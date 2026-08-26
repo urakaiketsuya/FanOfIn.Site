@@ -66,7 +66,7 @@ export default function TopDecksList({
                 fetched before the next scheduled data-refresh run publishes them (see the field's
                 addition in DeckPopularityEntry) — falls back to placement-only rather than
                 rendering "undefined-undefined-undefined" during that window. */}
-            #{s.placement}
+            {s.placement !== null ? `#${s.placement}` : "—"}
             {typeof s.wins === "number" && ` · ${s.wins}-${s.losses}-${s.ties}`}
           </div>
         </div>

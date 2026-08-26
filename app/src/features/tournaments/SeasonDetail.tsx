@@ -79,13 +79,19 @@ export default function SeasonDetail() {
 
       {season && tab === "events" && (
         <>
-          <div className="mt-4 space-y-2">
-            {visibleEvents.map((event) => (
-              <EventRow key={event.id} event={event} />
-            ))}
-          </div>
+          {events.length === 0 ? (
+            <p className="mt-4 text-ctp-subtext1">No ingested events for this season yet.</p>
+          ) : (
+            <>
+              <div className="mt-4 space-y-2">
+                {visibleEvents.map((event) => (
+                  <EventRow key={event.id} event={event} />
+                ))}
+              </div>
 
-          <LoadMore remaining={events.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
+              <LoadMore remaining={events.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
+            </>
+          )}
         </>
       )}
 

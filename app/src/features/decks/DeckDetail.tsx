@@ -281,7 +281,7 @@ export default function DeckDetail() {
   if (!deck) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-10">
-        <p className="text-ctp-red">This deck isn't in the ingested data (or hasn't been played by 2+ players yet).</p>
+        <p className="text-ctp-red">This deck isn't in the ingested data.</p>
         <Link to="/decks?view=builds&minPlayers=2plus" className="mt-2 inline-block text-ctp-blue hover:underline">
           &larr; Browse Decks
         </Link>

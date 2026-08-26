@@ -1,12 +1,14 @@
 import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useCardCatalog } from "../cards/useCardCatalog";
+import { useSyncProgress } from "../../lib/sync/SyncProvider";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PackOpenerWidget from "./PackOpenerWidget";
 
 export default function PackOpener() {
   const { prefix = "" } = useParams<{ prefix: string }>();
   const cards = useCardCatalog();
+  const { phase } = useSyncProgress();
 
   const setInfo = useMemo(() => {
     for (const card of cards) {
@@ -23,6 +25,23 @@ export default function PackOpener() {
   );
 
   if (cards.length === 0) {
+    if (phase === "error") {
+      return (
+        <div className="mx-auto max-w-3xl px-4 py-10">
+          <p className="text-ctp-red">Couldn't load the card catalog.</p>
+        </div>
+      );
+    }
+    if (phase === "done") {
+      return (
+        <div className="mx-auto max-w-3xl px-4 py-10">
+          <p className="text-ctp-subtext1">No cards are available yet.</p>
+          <Link to="/cards?tab=sets" className="mt-2 inline-block text-ctp-blue hover:underline">
+            &larr; Back to Sets
+          </Link>
+        </div>
+      );
+    }
     return (
       <div className="mx-auto max-w-3xl px-4 py-10">
         <p className="text-ctp-subtext1">Loading…</p>

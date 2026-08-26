@@ -68,6 +68,8 @@ export default function AchievementDetail() {
             {unlocks.length} player{unlocks.length === 1 ? "" : "s"}
           </h2>
 
+          {unlocks.length === 0 && <p className="mt-2 text-sm text-ctp-subtext1">No one has earned this achievement yet.</p>}
+
           <div className="mt-2 space-y-1.5">
             {visibleUnlocks.map((u, i) => {
               const eventName = u.eventId !== undefined ? eventNameById.get(u.eventId) ?? `Event #${u.eventId}` : null;
