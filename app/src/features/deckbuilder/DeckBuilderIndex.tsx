@@ -1587,7 +1587,12 @@ export default function DeckBuilderIndex() {
   function addCard(name: string) {
     if (!cardNameSet.has(name) || lockedCards.has(name)) return;
     const card = cardCatalog.find((c) => c.name === name);
-    const defaultQty = card?.types.includes("UNIQUE") ? 1 : 4;
+    // Champion/Regalia cards are Material-deck-only and capped at 1 copy there regardless of the
+    // card's own UNIQUE/Standard limit (see useSuggestedBuild.ts's build-time precheck for the
+    // real-data verification) — computed here too so the stored quantity starts correct instead of
+    // only getting clamped once the build assembles.
+    const isMaterialOnly = card ? card.types.includes("CHAMPION") || card.types.includes("REGALIA") : false;
+    const defaultQty = isMaterialOnly || card?.types.includes("UNIQUE") ? 1 : 4;
     pendingActionRef.current = { label: `Added ${name}`, subject: name };
     startTransition(() =>
       setLockedCards((prev) => {

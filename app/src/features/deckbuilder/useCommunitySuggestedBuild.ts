@@ -74,8 +74,22 @@ export function useCommunitySuggestedBuild(
     // for a card ShoutAtYourDecks has never seen at all).
     for (const [name, qty] of lockedCards) {
       const entry = entryByName.get(name);
-      const section: SuggestedCard["section"] = entry?.primarySection === "material" ? "material" : entry?.primarySection === "sideboard" ? "sideboard" : "main";
-      (section === "material" ? material : section === "sideboard" ? sideboard : main).push(toSuggested(name, qty, true, entry, section));
+      const card = cardsByName.get(name);
+      // Same real-data-verified precheck as useSuggestedBuild.ts: Champion/Regalia cards can never
+      // legally sit in Main, so a missing/"mixed" primarySection defaults them to Material instead
+      // of the general main fallback.
+      const isMainIneligible = card ? card.types.includes("CHAMPION") || card.types.includes("REGALIA") : false;
+      const section: SuggestedCard["section"] =
+        entry?.primarySection === "sideboard" && !isMainIneligible
+          ? "sideboard"
+          : isMainIneligible || entry?.primarySection === "material"
+            ? "material"
+            : "main";
+      // Material Deck is capped at 1 copy of each card by rule (see useSuggestedBuild.ts's own
+      // note) — a locked card's stored quantity can predate knowing its section, so clamp rather
+      // than trust it.
+      const finalQty = section === "material" ? 1 : qty;
+      (section === "material" ? material : section === "sideboard" ? sideboard : main).push(toSuggested(name, finalQty, true, entry, section));
       placed.add(name);
     }
 

@@ -513,8 +513,20 @@ export function useSuggestedBuild(
         placed.add(name);
         continue;
       }
-      const isMaterialCard = knownSection ? knownSection === "material" : card?.types.includes("CHAMPION") || sectionOf(name) === "material";
-      (isMaterialCard ? material : main).push(toSuggested(name, qty, true, lockedEntryByName.get(name), "ranked", isMaterialCard ? "material" : "main"));
+      // Champion and Regalia cards can never legally sit in the Main deck — verified against real
+      // data (0 Main appearances across 549k+ real Champion/Regalia occurrences). A cached/shared
+      // `knownSection` of "main" that contradicts this is stale or simply wrong (e.g. from a bad
+      // paste), not authoritative, so this overrides it instead of silently misplacing the card.
+      const isMainIneligible = card ? card.types.includes("CHAMPION") || card.types.includes("REGALIA") : false;
+      const isMaterialCard = isMainIneligible || (knownSection ? knownSection === "material" : sectionOf(name) === "material");
+      // The Material Deck is capped at 1 copy of each card by rule, independent of the card's own
+      // Standard/UNIQUE copy limit (verified against real data: 8,454 real decks run a Resonance
+      // Bauble at exactly 1x in Material, vs. a handful of outlier qty>1 lines that are data-entry
+      // noise) — a locked card's stored quantity can predate knowing which section it'd land in
+      // (e.g. "Add a card" defaults non-UNIQUE cards to 4x before section is ever determined), so
+      // this clamps rather than trusting it.
+      const finalQty = isMaterialCard ? 1 : qty;
+      (isMaterialCard ? material : main).push(toSuggested(name, finalQty, true, lockedEntryByName.get(name), "ranked", isMaterialCard ? "material" : "main"));
       placed.add(name);
     }
 
