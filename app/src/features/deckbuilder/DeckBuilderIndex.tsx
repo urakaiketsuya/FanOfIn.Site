@@ -1156,7 +1156,7 @@ function SuggestionRow({
 export default function DeckBuilderIndex() {
   useDocumentTitle(
     "Guided Deck Builder",
-    "Pick a Champion and Spirit and see a suggested build assembled from the highest win-rate cards in real decks, then mark your own choices for updated suggestions.",
+    "Build a Grand Archive deck from tournament win-rate or community-usage recommendations, then tune, validate, share, buy, export, or playtest it.",
   );
   const [searchParams, setSearchParams] = useSearchParams();
   const [deckFormat, setDeckFormat] = useState<DeckFormat>(() => searchParams.get("format")?.toUpperCase() === "PANTHEON" ? "PANTHEON" : "STANDARD");
@@ -1672,7 +1672,12 @@ export default function DeckBuilderIndex() {
     <div className="mx-auto max-w-3xl px-4 py-8">
       <PageHeader
         title="Guided Deck Builder"
-        description="Choose an identity, review its data-supported core, then mark your choices and resolve the remaining flex slots."
+        description={(
+          <>
+            <p>Choose a Grand Archive Champion and Spirit to generate a suggested Main and Material Deck from real decklists. Use Tournament data to prioritize cards by win-rate evidence, or Community data to build around the cards players use most often.</p>
+            <p className="mt-2">Review each card’s sample size, performance, community usage, price, and common partners. Lock in your choices or exclude cards to recalculate the remaining slots, then validate, copy, share, buy, export, or playtest the finished deck.</p>
+          </>
+        )}
       />
 
       <div className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1 text-sm" role="tablist" aria-label="Deck format">
