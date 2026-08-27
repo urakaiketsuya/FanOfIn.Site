@@ -64,6 +64,7 @@ const PackOpener = lazy(() => import("./features/packs/PackOpener"));
 const ChangelogIndex = lazy(() => import("./features/changelog/ChangelogIndex"));
 const CommunityDecksIndex = lazy(() => import("./features/community/CommunityDecksIndex"));
 const SimulatorIndex = lazy(() => import("./features/simulator/SimulatorIndex"));
+const OfficialProductsIndex = lazy(() => import("./features/official-products/OfficialProductsIndex"));
 
 function RouteFallback() {
   useEffect(() => {
@@ -115,6 +116,7 @@ export default function AppRoutes() {
         <Route path="/packs/:prefix" element={<PackOpener />} />
         <Route path="/changelog" element={<ChangelogIndex />} />
         <Route path="/community-decks" element={<CommunityDecksIndex />} />
+        <Route path="/official-decks" element={<OfficialProductsIndex />} />
         <Route path="/simulator" element={<SimulatorIndex />} />
         <Route path="/about" element={<Navigate to="/" replace />} />
       </Routes>

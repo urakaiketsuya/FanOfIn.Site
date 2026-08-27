@@ -1,0 +1,3614 @@
+{
+  "schemaVersion": 1,
+  "source": "https://build-v2.silvie.org/@GrandArchive",
+  "decks": [
+    {
+      "id": "1c9SMsvMsihhi1c1XvfH",
+      "name": "Ciel, Mirage's Grave",
+      "productCode": "DTRSD",
+      "champions": [
+        "Ciel"
+      ],
+      "sourceUrl": "https://build-v2.silvie.org/@GrandArchive/1c9SMsvMsihhi1c1XvfH",
+      "cards": {
+        "main": [
+          {
+            "name": "Coy Bouclier",
+            "quantity": 3,
+            "set": "DTRSD",
+            "collectorNumber": "026"
+          },
+          {
+            "name": "Heavy Swing",
+            "quantity": 4,
+            "set": "DTRSD",
+            "collectorNumber": "027"
+          },
+          {
+            "name": "Idle Thoughts",
+            "quantity": 4,
+            "set": "DTRSD",
+            "collectorNumber": "028"
+          },
+          {
+            "name": "Lamentation's Toll",
+            "quantity": 2,
+            "set": "DTRSD",
+            "collectorNumber": "029"
+          },
+          {
+            "name": "Martial Guard",
+            "quantity": 2,
+            "set": "DTRSD",
+            "collectorNumber": "030"
+          },
+          {
+            "name": "Overpowering Defense",
+            "quantity": 2,
+            "set": "DTRSD",
+            "collectorNumber": "031"
+          },
+          {
+            "name": "Sablier Guard",
+            "quantity": 3,
+            "set": "DTRSD",
+            "collectorNumber": "034"
+          },
+          {
+            "name": "Stalwart Shieldmate",
+            "quantity": 4,
+            "set": "DTRSD",
+            "collectorNumber": "036"
+          },
+          {
+            "name": "Vigil Rempart",
+            "quantity": 3,
+            "set": "DTRSD",
+            "collectorNumber": "037"
+          },
+          {
+            "name": "Whimsy's Warden",
+            "quantity": 4,
+            "set": "DTRSD",
+            "collectorNumber": "038"
+          },
+          {
+            "name": "Conflagrant Sentinel",
+            "quantity": 4,
+            "set": "DTRSD",
+            "collectorNumber": "039"
+          },
+          {
+            "name": "Flamme Sorcel",
+            "quantity": 4,
+            "set": "DTRSD",
+            "collectorNumber": "040"
+          },
+          {
+            "name": "Tempered Steel",
+            "quantity": 3,
+            "set": "DTRSD",
+            "collectorNumber": "041"
+          },
+          {
+            "name": "Torch Marshal",
+            "quantity": 3,
+            "set": "DTRSD",
+            "collectorNumber": "042"
+          },
+          {
+            "name": "Devotion's Price",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "055"
+          },
+          {
+            "name": "Nocturne's Oblivion",
+            "quantity": 2,
+            "set": "DTRSD",
+            "collectorNumber": "056"
+          },
+          {
+            "name": "Ombreux Chevalier",
+            "quantity": 4,
+            "set": "DTRSD",
+            "collectorNumber": "057"
+          },
+          {
+            "name": "Reverse Affliction",
+            "quantity": 2,
+            "set": "DTRSD",
+            "collectorNumber": "058"
+          },
+          {
+            "name": "Sinistre Stab",
+            "quantity": 3,
+            "set": "DTRSD",
+            "collectorNumber": "059"
+          },
+          {
+            "name": "Umbra Sight",
+            "quantity": 3,
+            "set": "DTRSD",
+            "collectorNumber": "060"
+          }
+        ],
+        "material": [
+          {
+            "name": "Spirit of Fire",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "001"
+          },
+          {
+            "name": "Ciel, Loyal Valet",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "003"
+          },
+          {
+            "name": "Ciel, Omenbringer",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "004"
+          },
+          {
+            "name": "Ciel, Mirage's Grave",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "005"
+          },
+          {
+            "name": "Bauble of Abundance",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "009"
+          },
+          {
+            "name": "Bulwark Sword",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "010"
+          },
+          {
+            "name": "Grande Aiguille",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "012"
+          },
+          {
+            "name": "Leporine Masque",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "013"
+          },
+          {
+            "name": "Life Essence Amulet",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "014"
+          },
+          {
+            "name": "Manxome Armoire",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "015"
+          },
+          {
+            "name": "Tariff Ring",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "019"
+          },
+          {
+            "name": "Grande Sonnerie",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "022"
+          }
+        ],
+        "sideboard": [],
+        "mastery": [
+          {
+            "name": "Servile Possessions",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "035"
+          }
+        ],
+        "token": [],
+        "pantheon": [],
+        "generated": [],
+        "status": []
+      }
+    },
+    {
+      "id": "gbTwGoxXcMX1J2MES1nJ",
+      "name": "Diana, Moonpiercer",
+      "productCode": "DTRSD",
+      "champions": [
+        "Diana"
+      ],
+      "sourceUrl": "https://build-v2.silvie.org/@GrandArchive/gbTwGoxXcMX1J2MES1nJ",
+      "cards": {
+        "main": [
+          {
+            "name": "Aetheric Calibration",
+            "quantity": 4,
+            "set": "DTRSD",
+            "collectorNumber": "023"
+          },
+          {
+            "name": "Backstep",
+            "quantity": 4,
+            "set": "DTRSD",
+            "collectorNumber": "024"
+          },
+          {
+            "name": "Charge the Soul",
+            "quantity": 4,
+            "set": "DTRSD",
+            "collectorNumber": "025"
+          },
+          {
+            "name": "Idle Thoughts",
+            "quantity": 3,
+            "set": "DTRSD",
+            "collectorNumber": "028"
+          },
+          {
+            "name": "Prudent Nock",
+            "quantity": 4,
+            "set": "DTRSD",
+            "collectorNumber": "032"
+          },
+          {
+            "name": "Reposition",
+            "quantity": 4,
+            "set": "DTRSD",
+            "collectorNumber": "033"
+          },
+          {
+            "name": "Stalwart Shieldmate",
+            "quantity": 4,
+            "set": "DTRSD",
+            "collectorNumber": "036"
+          },
+          {
+            "name": "Corsair Captain",
+            "quantity": 3,
+            "set": "DTRSD",
+            "collectorNumber": "043"
+          },
+          {
+            "name": "Dissuading Aether",
+            "quantity": 4,
+            "set": "DTRSD",
+            "collectorNumber": "044"
+          },
+          {
+            "name": "Drown in Aether",
+            "quantity": 4,
+            "set": "DTRSD",
+            "collectorNumber": "045"
+          },
+          {
+            "name": "Undercurrent Vantage",
+            "quantity": 3,
+            "set": "DTRSD",
+            "collectorNumber": "046"
+          },
+          {
+            "name": "Astra Sight",
+            "quantity": 3,
+            "set": "DTRSD",
+            "collectorNumber": "047"
+          },
+          {
+            "name": "Constellation's Blessing",
+            "quantity": 4,
+            "set": "DTRSD",
+            "collectorNumber": "049"
+          },
+          {
+            "name": "Guided Starlight",
+            "quantity": 2,
+            "set": "DTRSD",
+            "collectorNumber": "050"
+          },
+          {
+            "name": "Meteoric Volley",
+            "quantity": 2,
+            "set": "DTRSD",
+            "collectorNumber": "051"
+          },
+          {
+            "name": "Poised Occlusion",
+            "quantity": 3,
+            "set": "DTRSD",
+            "collectorNumber": "052"
+          },
+          {
+            "name": "Sidereal Spellshot",
+            "quantity": 3,
+            "set": "DTRSD",
+            "collectorNumber": "053"
+          },
+          {
+            "name": "Starbirth",
+            "quantity": 2,
+            "set": "DTRSD",
+            "collectorNumber": "054"
+          }
+        ],
+        "material": [
+          {
+            "name": "Spirit of Water",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "002"
+          },
+          {
+            "name": "Diana, Aether Dilettante",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "006"
+          },
+          {
+            "name": "Diana, Judgment's Arrow",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "007"
+          },
+          {
+            "name": "Diana, Moonpiercer",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "008"
+          },
+          {
+            "name": "Bauble of Abundance",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "009"
+          },
+          {
+            "name": "Foresight Lens",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "011"
+          },
+          {
+            "name": "Ranger Boots",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "016"
+          },
+          {
+            "name": "Refluxal Ribbon",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "017"
+          },
+          {
+            "name": "Seeker's Aetherwing",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "018"
+          },
+          {
+            "name": "Tariff Ring",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "019"
+          },
+          {
+            "name": "Aquamirage Whisper",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "020"
+          },
+          {
+            "name": "Pleiades, Celestial Genesis",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "021"
+          }
+        ],
+        "sideboard": [],
+        "mastery": [],
+        "token": [
+          {
+            "name": "Astral Shard",
+            "quantity": 1,
+            "set": "DTRSD",
+            "collectorNumber": "048"
+          }
+        ],
+        "pantheon": [],
+        "generated": [],
+        "status": []
+      }
+    },
+    {
+      "id": "jFAAmMe4o8MCW8aklce2",
+      "name": "Diao Chan Re:Collection, Idyll Corsage",
+      "productCode": "ReC-IDY",
+      "champions": [
+        "Diao Chan"
+      ],
+      "sourceUrl": "https://build-v2.silvie.org/@GrandArchive/jFAAmMe4o8MCW8aklce2",
+      "cards": {
+        "main": [
+          {
+            "name": "Fractal of Insight",
+            "quantity": 3,
+            "set": "ReC-IDY",
+            "collectorNumber": "013"
+          },
+          {
+            "name": "Idle Thoughts",
+            "quantity": 2,
+            "set": "ReC-IDY",
+            "collectorNumber": "014"
+          },
+          {
+            "name": "Shimmering Refraction",
+            "quantity": 3,
+            "set": "ReC-IDY",
+            "collectorNumber": "015"
+          },
+          {
+            "name": "Unstable Fractal",
+            "quantity": 3,
+            "set": "ReC-IDY",
+            "collectorNumber": "016"
+          },
+          {
+            "name": "Acquiescing Rejection",
+            "quantity": 3,
+            "set": "ReC-IDY",
+            "collectorNumber": "017"
+          },
+          {
+            "name": "Chill to the Bone",
+            "quantity": 3,
+            "set": "ReC-IDY",
+            "collectorNumber": "018"
+          },
+          {
+            "name": "Dissuading Halt",
+            "quantity": 4,
+            "set": "ReC-IDY",
+            "collectorNumber": "019"
+          },
+          {
+            "name": "Eventide Lure",
+            "quantity": 4,
+            "set": "ReC-IDY",
+            "collectorNumber": "020"
+          },
+          {
+            "name": "Fractal of Refreshment",
+            "quantity": 3,
+            "set": "ReC-IDY",
+            "collectorNumber": "021"
+          },
+          {
+            "name": "Frostbind",
+            "quantity": 2,
+            "set": "ReC-IDY",
+            "collectorNumber": "022"
+          },
+          {
+            "name": "Frostlorn Caress",
+            "quantity": 3,
+            "set": "ReC-IDY",
+            "collectorNumber": "023"
+          },
+          {
+            "name": "Frostnip Pirouette",
+            "quantity": 3,
+            "set": "ReC-IDY",
+            "collectorNumber": "024"
+          },
+          {
+            "name": "Glimmering Refusal",
+            "quantity": 2,
+            "set": "ReC-IDY",
+            "collectorNumber": "025"
+          },
+          {
+            "name": "Protective Fractal",
+            "quantity": 2,
+            "set": "ReC-IDY",
+            "collectorNumber": "026"
+          },
+          {
+            "name": "Redirect Flow",
+            "quantity": 1,
+            "set": "ReC-IDY",
+            "collectorNumber": "027"
+          },
+          {
+            "name": "Refracting Missile",
+            "quantity": 2,
+            "set": "ReC-IDY",
+            "collectorNumber": "028"
+          },
+          {
+            "name": "Torpid Fractal",
+            "quantity": 2,
+            "set": "ReC-IDY",
+            "collectorNumber": "029"
+          },
+          {
+            "name": "Bloom: Summer's Glow",
+            "quantity": 3,
+            "set": "ReC-IDY",
+            "collectorNumber": "031"
+          },
+          {
+            "name": "Bloom: Winter's Chill",
+            "quantity": 2,
+            "set": "ReC-IDY",
+            "collectorNumber": "032"
+          },
+          {
+            "name": "Blossoming Denial",
+            "quantity": 3,
+            "set": "ReC-IDY",
+            "collectorNumber": "033"
+          },
+          {
+            "name": "Ripples of Atrophy",
+            "quantity": 2,
+            "set": "ReC-IDY",
+            "collectorNumber": "038"
+          },
+          {
+            "name": "Season's End",
+            "quantity": 3,
+            "set": "ReC-IDY",
+            "collectorNumber": "039"
+          },
+          {
+            "name": "Shriveling Vines",
+            "quantity": 2,
+            "set": "ReC-IDY",
+            "collectorNumber": "040"
+          }
+        ],
+        "material": [
+          {
+            "name": "Spirit of Water",
+            "quantity": 1,
+            "set": "ReC-IDY",
+            "collectorNumber": "001"
+          },
+          {
+            "name": "Diao Chan, Enchantress",
+            "quantity": 1,
+            "set": "ReC-IDY",
+            "collectorNumber": "002"
+          },
+          {
+            "name": "Diao Chan, Dreaming Wish",
+            "quantity": 1,
+            "set": "ReC-IDY",
+            "collectorNumber": "003"
+          },
+          {
+            "name": "Diao Chan, Idyll Corsage",
+            "quantity": 1,
+            "set": "ReC-IDY",
+            "collectorNumber": "004"
+          },
+          {
+            "name": "Cleric Robes",
+            "quantity": 1,
+            "set": "ReC-IDY",
+            "collectorNumber": "005"
+          },
+          {
+            "name": "Glimmer Essence Amulet",
+            "quantity": 1,
+            "set": "ReC-IDY",
+            "collectorNumber": "006"
+          },
+          {
+            "name": "Scepter of Fascination",
+            "quantity": 1,
+            "set": "ReC-IDY",
+            "collectorNumber": "007"
+          },
+          {
+            "name": "Tariff Ring",
+            "quantity": 1,
+            "set": "ReC-IDY",
+            "collectorNumber": "008"
+          },
+          {
+            "name": "Crystalline Mirror",
+            "quantity": 1,
+            "set": "ReC-IDY",
+            "collectorNumber": "009"
+          },
+          {
+            "name": "Hairpin of Transience",
+            "quantity": 1,
+            "set": "ReC-IDY",
+            "collectorNumber": "010"
+          },
+          {
+            "name": "Kaleidoscope Barrette",
+            "quantity": 1,
+            "set": "ReC-IDY",
+            "collectorNumber": "011"
+          },
+          {
+            "name": "Staff of Blossoming Will",
+            "quantity": 1,
+            "set": "ReC-IDY",
+            "collectorNumber": "012"
+          }
+        ],
+        "sideboard": [],
+        "mastery": [],
+        "token": [
+          {
+            "name": "Baihua",
+            "quantity": 1,
+            "set": "ReC-IDY",
+            "collectorNumber": "030"
+          },
+          {
+            "name": "Floodbloom",
+            "quantity": 1,
+            "set": "ReC-IDY",
+            "collectorNumber": "035"
+          },
+          {
+            "name": "Flowerbud",
+            "quantity": 1,
+            "set": "ReC-IDY",
+            "collectorNumber": "034"
+          },
+          {
+            "name": "Lycoria",
+            "quantity": 1,
+            "set": "ReC-IDY",
+            "collectorNumber": "036"
+          },
+          {
+            "name": "Nightshade",
+            "quantity": 1,
+            "set": "ReC-IDY",
+            "collectorNumber": "037"
+          }
+        ],
+        "pantheon": [],
+        "generated": [],
+        "status": []
+      }
+    },
+    {
+      "id": "jG74V21Ab6p3w1yTtpFV",
+      "name": "Guo Jia Re:Collection, Heaven's Favored",
+      "productCode": "ReC-HVF",
+      "champions": [
+        "Guo Jia"
+      ],
+      "sourceUrl": "https://build-v2.silvie.org/@GrandArchive/jG74V21Ab6p3w1yTtpFV",
+      "cards": {
+        "main": [
+          {
+            "name": "Companion Fatestone",
+            "quantity": 4,
+            "set": "ReC-HVF",
+            "collectorNumber": "013"
+          },
+          {
+            "name": "Craggy Fatestone",
+            "quantity": 4,
+            "set": "ReC-HVF",
+            "collectorNumber": "014"
+          },
+          {
+            "name": "Expel the Departed",
+            "quantity": 3,
+            "set": "ReC-HVF",
+            "collectorNumber": "015"
+          },
+          {
+            "name": "Fatestone of Revelations",
+            "quantity": 4,
+            "set": "ReC-HVF",
+            "collectorNumber": "016"
+          },
+          {
+            "name": "Foraging Fox",
+            "quantity": 4,
+            "set": "ReC-HVF",
+            "collectorNumber": "017"
+          },
+          {
+            "name": "Idle Thoughts",
+            "quantity": 2,
+            "set": "ReC-HVF",
+            "collectorNumber": "018"
+          },
+          {
+            "name": "Journey's Beginning",
+            "quantity": 4,
+            "set": "ReC-HVF",
+            "collectorNumber": "019"
+          },
+          {
+            "name": "Obscuring Threads",
+            "quantity": 2,
+            "set": "ReC-HVF",
+            "collectorNumber": "020"
+          },
+          {
+            "name": "Strengthen the Bonds",
+            "quantity": 4,
+            "set": "ReC-HVF",
+            "collectorNumber": "021"
+          },
+          {
+            "name": "Broken Promises",
+            "quantity": 4,
+            "set": "ReC-HVF",
+            "collectorNumber": "022"
+          },
+          {
+            "name": "Fatestone of Unrelenting",
+            "quantity": 4,
+            "set": "ReC-HVF",
+            "collectorNumber": "023"
+          },
+          {
+            "name": "Flamewreath Call",
+            "quantity": 2,
+            "set": "ReC-HVF",
+            "collectorNumber": "024"
+          },
+          {
+            "name": "Lavaplume Fatestone",
+            "quantity": 4,
+            "set": "ReC-HVF",
+            "collectorNumber": "025"
+          },
+          {
+            "name": "Shatter the Brittle",
+            "quantity": 2,
+            "set": "ReC-HVF",
+            "collectorNumber": "026"
+          },
+          {
+            "name": "Advent of the Shenju",
+            "quantity": 3,
+            "set": "ReC-HVF",
+            "collectorNumber": "028"
+          },
+          {
+            "name": "Fatestone of Heaven",
+            "quantity": 4,
+            "set": "ReC-HVF",
+            "collectorNumber": "029"
+          },
+          {
+            "name": "Light the Hunt",
+            "quantity": 3,
+            "set": "ReC-HVF",
+            "collectorNumber": "030"
+          },
+          {
+            "name": "Peacock of Prosperity",
+            "quantity": 3,
+            "set": "ReC-HVF",
+            "collectorNumber": "031"
+          }
+        ],
+        "material": [
+          {
+            "name": "Spirit of Fire",
+            "quantity": 1,
+            "set": "ReC-HVF",
+            "collectorNumber": "001"
+          },
+          {
+            "name": "Guo Jia, Chosen Disciple",
+            "quantity": 1,
+            "set": "ReC-HVF",
+            "collectorNumber": "002"
+          },
+          {
+            "name": "Guo Jia, Blessed Scion",
+            "quantity": 1,
+            "set": "ReC-HVF",
+            "collectorNumber": "003"
+          },
+          {
+            "name": "Guo Jia, Heaven's Favored",
+            "quantity": 1,
+            "set": "ReC-HVF",
+            "collectorNumber": "004"
+          },
+          {
+            "name": "Fated Keepsake",
+            "quantity": 1,
+            "set": "ReC-HVF",
+            "collectorNumber": "005"
+          },
+          {
+            "name": "Life Essence Amulet",
+            "quantity": 1,
+            "set": "ReC-HVF",
+            "collectorNumber": "006"
+          },
+          {
+            "name": "Portentous Tanggu",
+            "quantity": 1,
+            "set": "ReC-HVF",
+            "collectorNumber": "007"
+          },
+          {
+            "name": "Rousing Rattle Drum",
+            "quantity": 1,
+            "set": "ReC-HVF",
+            "collectorNumber": "008"
+          },
+          {
+            "name": "Tariff Ring",
+            "quantity": 1,
+            "set": "ReC-HVF",
+            "collectorNumber": "009"
+          },
+          {
+            "name": "Band of Burning Verdict",
+            "quantity": 1,
+            "set": "ReC-HVF",
+            "collectorNumber": "010"
+          },
+          {
+            "name": "Fabled Azurite Fatestone",
+            "quantity": 1,
+            "set": "ReC-HVF",
+            "collectorNumber": "011"
+          },
+          {
+            "name": "Incandescent Reliquary",
+            "quantity": 1,
+            "set": "ReC-HVF",
+            "collectorNumber": "012"
+          }
+        ],
+        "sideboard": [],
+        "mastery": [],
+        "token": [],
+        "pantheon": [],
+        "generated": [
+          {
+            "name": "Arcane Blast",
+            "quantity": 1,
+            "set": "ReC-HVF",
+            "collectorNumber": "027"
+          }
+        ],
+        "status": []
+      }
+    },
+    {
+      "id": "2lVqk6MGrk8xHy58lUd4",
+      "name": "Kongming Starter Deck",
+      "productCode": "AMBSD",
+      "champions": [
+        "Kongming"
+      ],
+      "sourceUrl": "https://build-v2.silvie.org/@GrandArchive/2lVqk6MGrk8xHy58lUd4",
+      "cards": {
+        "main": [
+          {
+            "name": "Ardent Cloudstriker",
+            "quantity": 4,
+            "set": "AMBSD",
+            "collectorNumber": "023"
+          },
+          {
+            "name": "Formidable Youxia",
+            "quantity": 4,
+            "set": "AMBSD",
+            "collectorNumber": "025"
+          },
+          {
+            "name": "Harmonious Mantra",
+            "quantity": 4,
+            "set": "AMBSD",
+            "collectorNumber": "026"
+          },
+          {
+            "name": "Heighten Spellcraft",
+            "quantity": 4,
+            "set": "AMBSD",
+            "collectorNumber": "027"
+          },
+          {
+            "name": "Idle Thoughts",
+            "quantity": 2,
+            "set": "AMBSD",
+            "collectorNumber": "028"
+          },
+          {
+            "name": "Spirited Neophyte",
+            "quantity": 4,
+            "set": "AMBSD",
+            "collectorNumber": "034"
+          },
+          {
+            "name": "Wisdom's Reprise",
+            "quantity": 3,
+            "set": "AMBSD",
+            "collectorNumber": "037"
+          },
+          {
+            "name": "Cone of Frost",
+            "quantity": 3,
+            "set": "AMBSD",
+            "collectorNumber": "038"
+          },
+          {
+            "name": "Coriolis Ward",
+            "quantity": 4,
+            "set": "AMBSD",
+            "collectorNumber": "039"
+          },
+          {
+            "name": "Hydroguard Retainer",
+            "quantity": 3,
+            "set": "AMBSD",
+            "collectorNumber": "040"
+          },
+          {
+            "name": "Rising Tides",
+            "quantity": 3,
+            "set": "AMBSD",
+            "collectorNumber": "041"
+          },
+          {
+            "name": "Taiji of Crystal Strategems",
+            "quantity": 4,
+            "set": "AMBSD",
+            "collectorNumber": "042"
+          },
+          {
+            "name": "Tsunami of Nanyue",
+            "quantity": 3,
+            "set": "AMBSD",
+            "collectorNumber": "043"
+          },
+          {
+            "name": "Water Barrier",
+            "quantity": 2,
+            "set": "AMBSD",
+            "collectorNumber": "044"
+          },
+          {
+            "name": "Devoted Bloomweaver",
+            "quantity": 4,
+            "set": "AMBSD",
+            "collectorNumber": "057"
+          },
+          {
+            "name": "Leeching Bolt",
+            "quantity": 3,
+            "set": "AMBSD",
+            "collectorNumber": "058"
+          },
+          {
+            "name": "Planar Abyss",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "059"
+          },
+          {
+            "name": "Ruinous Pillars of Qidao",
+            "quantity": 2,
+            "set": "AMBSD",
+            "collectorNumber": "060"
+          },
+          {
+            "name": "Tera Sight",
+            "quantity": 3,
+            "set": "AMBSD",
+            "collectorNumber": "061"
+          }
+        ],
+        "material": [
+          {
+            "name": "Spirit of Water",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "001"
+          },
+          {
+            "name": "Kongming, Wayward Maven",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "006"
+          },
+          {
+            "name": "Kongming, Ascetic Vice",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "007"
+          },
+          {
+            "name": "Kongming, Fel Eidolon",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "008"
+          },
+          {
+            "name": "Bauble of Abundance",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "009"
+          },
+          {
+            "name": "Fan of Seven Debts",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "011"
+          },
+          {
+            "name": "Life Essence Amulet",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "012"
+          },
+          {
+            "name": "Shard of Empowerment",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "014"
+          },
+          {
+            "name": "Tariff Ring",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "017"
+          },
+          {
+            "name": "Sweet Ambrosia",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "018"
+          },
+          {
+            "name": "Coronal of Rejuvenation",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "021"
+          },
+          {
+            "name": "Entrancing Filigree",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "022"
+          }
+        ],
+        "sideboard": [],
+        "mastery": [
+          {
+            "name": "Shifting Currents",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "033"
+          }
+        ],
+        "token": [],
+        "pantheon": [],
+        "generated": [],
+        "status": []
+      }
+    },
+    {
+      "id": "5Ng50uYTatKv4zRcWMZI",
+      "name": "Jin Starter Deck",
+      "productCode": "AMBSD",
+      "champions": [
+        "Jin"
+      ],
+      "sourceUrl": "https://build-v2.silvie.org/@GrandArchive/5Ng50uYTatKv4zRcWMZI",
+      "cards": {
+        "main": [
+          {
+            "name": "Banner Knight",
+            "quantity": 2,
+            "set": "AMBSD",
+            "collectorNumber": "024"
+          },
+          {
+            "name": "Idle Thoughts",
+            "quantity": 4,
+            "set": "AMBSD",
+            "collectorNumber": "028"
+          },
+          {
+            "name": "Pierce the Heavens",
+            "quantity": 4,
+            "set": "AMBSD",
+            "collectorNumber": "029"
+          },
+          {
+            "name": "Regenerate",
+            "quantity": 3,
+            "set": "AMBSD",
+            "collectorNumber": "030"
+          },
+          {
+            "name": "Safeguard Paladin",
+            "quantity": 4,
+            "set": "AMBSD",
+            "collectorNumber": "031"
+          },
+          {
+            "name": "Savage Swing",
+            "quantity": 4,
+            "set": "AMBSD",
+            "collectorNumber": "032"
+          },
+          {
+            "name": "Trusty Steed",
+            "quantity": 3,
+            "set": "AMBSD",
+            "collectorNumber": "035"
+          },
+          {
+            "name": "Veteran Soldier",
+            "quantity": 3,
+            "set": "AMBSD",
+            "collectorNumber": "036"
+          },
+          {
+            "name": "Eminent Commander",
+            "quantity": 4,
+            "set": "AMBSD",
+            "collectorNumber": "045"
+          },
+          {
+            "name": "Favorable Winds",
+            "quantity": 4,
+            "set": "AMBSD",
+            "collectorNumber": "046"
+          },
+          {
+            "name": "Materialize Polearm",
+            "quantity": 3,
+            "set": "AMBSD",
+            "collectorNumber": "047"
+          },
+          {
+            "name": "Reclaim",
+            "quantity": 2,
+            "set": "AMBSD",
+            "collectorNumber": "048"
+          },
+          {
+            "name": "Swift Recruit",
+            "quantity": 4,
+            "set": "AMBSD",
+            "collectorNumber": "049"
+          },
+          {
+            "name": "Wind Cutter",
+            "quantity": 3,
+            "set": "AMBSD",
+            "collectorNumber": "050"
+          },
+          {
+            "name": "Bloodbond Bladesworn",
+            "quantity": 2,
+            "set": "AMBSD",
+            "collectorNumber": "051"
+          },
+          {
+            "name": "Enrage",
+            "quantity": 4,
+            "set": "AMBSD",
+            "collectorNumber": "052"
+          },
+          {
+            "name": "Exia Sight",
+            "quantity": 2,
+            "set": "AMBSD",
+            "collectorNumber": "053"
+          },
+          {
+            "name": "Hemorrhaging Rend",
+            "quantity": 2,
+            "set": "AMBSD",
+            "collectorNumber": "054"
+          },
+          {
+            "name": "Mend Flesh",
+            "quantity": 2,
+            "set": "AMBSD",
+            "collectorNumber": "055"
+          },
+          {
+            "name": "Relentless Outburst",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "056"
+          }
+        ],
+        "material": [
+          {
+            "name": "Spirit of Wind",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "002"
+          },
+          {
+            "name": "Jin, Fate Defiant",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "003"
+          },
+          {
+            "name": "Jin, Zealous Maverick",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "004"
+          },
+          {
+            "name": "Jin, Undying Resolve",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "005"
+          },
+          {
+            "name": "Bauble of Abundance",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "009"
+          },
+          {
+            "name": "Executioner's Spear",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "010"
+          },
+          {
+            "name": "Life Essence Amulet",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "012"
+          },
+          {
+            "name": "Safeguard Amulet",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "013"
+          },
+          {
+            "name": "Slate Whetstone",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "015"
+          },
+          {
+            "name": "Steel Halberd",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "016"
+          },
+          {
+            "name": "Berserker Plate",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "019"
+          },
+          {
+            "name": "Shuang Ji of Sacrifice",
+            "quantity": 1,
+            "set": "AMBSD",
+            "collectorNumber": "020"
+          }
+        ],
+        "sideboard": [],
+        "mastery": [],
+        "token": [],
+        "pantheon": [],
+        "generated": [],
+        "status": []
+      }
+    },
+    {
+      "id": "F3W6n38rYYLtCyn7wYCu",
+      "name": "Silvie Re:Collection, Slime Sovereign",
+      "productCode": "ReC-SLM",
+      "champions": [
+        "Silvie"
+      ],
+      "sourceUrl": "https://build-v2.silvie.org/@GrandArchive/F3W6n38rYYLtCyn7wYCu",
+      "cards": {
+        "main": [
+          {
+            "name": "Baby Gray Slime",
+            "quantity": 4,
+            "set": "ReC-SLM",
+            "collectorNumber": "013"
+          },
+          {
+            "name": "Forest Cake",
+            "quantity": 4,
+            "set": "ReC-SLM",
+            "collectorNumber": "014"
+          },
+          {
+            "name": "Idle Thoughts",
+            "quantity": 3,
+            "set": "ReC-SLM",
+            "collectorNumber": "015"
+          },
+          {
+            "name": "Limitless Slime",
+            "quantity": 4,
+            "set": "ReC-SLM",
+            "collectorNumber": "016"
+          },
+          {
+            "name": "Smack with Flute",
+            "quantity": 3,
+            "set": "ReC-SLM",
+            "collectorNumber": "017"
+          },
+          {
+            "name": "Song of Nurturing",
+            "quantity": 2,
+            "set": "ReC-SLM",
+            "collectorNumber": "018"
+          },
+          {
+            "name": "Baby Red Slime",
+            "quantity": 4,
+            "set": "ReC-SLM",
+            "collectorNumber": "019"
+          },
+          {
+            "name": "Red Slime",
+            "quantity": 2,
+            "set": "ReC-SLM",
+            "collectorNumber": "020"
+          },
+          {
+            "name": "Slime Eruption",
+            "quantity": 3,
+            "set": "ReC-SLM",
+            "collectorNumber": "021"
+          },
+          {
+            "name": "Baby Blue Slime",
+            "quantity": 3,
+            "set": "ReC-SLM",
+            "collectorNumber": "022"
+          },
+          {
+            "name": "Blue Slime",
+            "quantity": 2,
+            "set": "ReC-SLM",
+            "collectorNumber": "023"
+          },
+          {
+            "name": "Gather Slimes",
+            "quantity": 4,
+            "set": "ReC-SLM",
+            "collectorNumber": "024"
+          },
+          {
+            "name": "Baby Green Slime",
+            "quantity": 3,
+            "set": "ReC-SLM",
+            "collectorNumber": "025"
+          },
+          {
+            "name": "Green Slime",
+            "quantity": 2,
+            "set": "ReC-SLM",
+            "collectorNumber": "026"
+          },
+          {
+            "name": "Slime's Blessing",
+            "quantity": 3,
+            "set": "ReC-SLM",
+            "collectorNumber": "027"
+          },
+          {
+            "name": "Slimeshield",
+            "quantity": 2,
+            "set": "ReC-SLM",
+            "collectorNumber": "028"
+          },
+          {
+            "name": "Storm Slime",
+            "quantity": 2,
+            "set": "ReC-SLM",
+            "collectorNumber": "029"
+          },
+          {
+            "name": "Ethereal Slime",
+            "quantity": 2,
+            "set": "ReC-SLM",
+            "collectorNumber": "030"
+          },
+          {
+            "name": "Lustrous Slime",
+            "quantity": 3,
+            "set": "ReC-SLM",
+            "collectorNumber": "031"
+          },
+          {
+            "name": "Slime King",
+            "quantity": 2,
+            "set": "ReC-SLM",
+            "collectorNumber": "032"
+          },
+          {
+            "name": "Verdant Slime",
+            "quantity": 3,
+            "set": "ReC-SLM",
+            "collectorNumber": "033"
+          }
+        ],
+        "material": [
+          {
+            "name": "Spirit of Slime",
+            "quantity": 1,
+            "set": "ReC-SLM",
+            "collectorNumber": "001"
+          },
+          {
+            "name": "Silvie, Wilds Whisperer",
+            "quantity": 1,
+            "set": "ReC-SLM",
+            "collectorNumber": "002"
+          },
+          {
+            "name": "Silvie, With the Pack",
+            "quantity": 1,
+            "set": "ReC-SLM",
+            "collectorNumber": "003"
+          },
+          {
+            "name": "Silvie, Slime Sovereign",
+            "quantity": 1,
+            "set": "ReC-SLM",
+            "collectorNumber": "004"
+          },
+          {
+            "name": "Bauble of Mending",
+            "quantity": 1,
+            "set": "ReC-SLM",
+            "collectorNumber": "005"
+          },
+          {
+            "name": "Beastbond Ears",
+            "quantity": 1,
+            "set": "ReC-SLM",
+            "collectorNumber": "006"
+          },
+          {
+            "name": "Beastbond Paws",
+            "quantity": 1,
+            "set": "ReC-SLM",
+            "collectorNumber": "007"
+          },
+          {
+            "name": "Key Slime Pudding",
+            "quantity": 1,
+            "set": "ReC-SLM",
+            "collectorNumber": "008"
+          },
+          {
+            "name": "Life Essence Amulet",
+            "quantity": 1,
+            "set": "ReC-SLM",
+            "collectorNumber": "009"
+          },
+          {
+            "name": "Slime Nexus",
+            "quantity": 1,
+            "set": "ReC-SLM",
+            "collectorNumber": "010"
+          },
+          {
+            "name": "Slime Totem",
+            "quantity": 1,
+            "set": "ReC-SLM",
+            "collectorNumber": "011"
+          },
+          {
+            "name": "Verdant Scepter",
+            "quantity": 1,
+            "set": "ReC-SLM",
+            "collectorNumber": "012"
+          }
+        ],
+        "sideboard": [],
+        "mastery": [],
+        "token": [],
+        "pantheon": [],
+        "generated": [],
+        "status": []
+      }
+    },
+    {
+      "id": "bYiwaT0gjLb8ja7V6Lt0",
+      "name": "Tristan Re:Collection, Shadowdancer",
+      "productCode": "ReC-SHD",
+      "champions": [
+        "Tristan"
+      ],
+      "sourceUrl": "https://build-v2.silvie.org/@GrandArchive/bYiwaT0gjLb8ja7V6Lt0",
+      "cards": {
+        "main": [
+          {
+            "name": "Exploit Vulnerability",
+            "quantity": 4,
+            "set": "ReC-SHD",
+            "collectorNumber": "013"
+          },
+          {
+            "name": "Idle Thoughts",
+            "quantity": 4,
+            "set": "ReC-SHD",
+            "collectorNumber": "014"
+          },
+          {
+            "name": "Incapacitate",
+            "quantity": 3,
+            "set": "ReC-SHD",
+            "collectorNumber": "015"
+          },
+          {
+            "name": "Mastermind Scheme",
+            "quantity": 1,
+            "set": "ReC-SHD",
+            "collectorNumber": "016"
+          },
+          {
+            "name": "Sable Remnant",
+            "quantity": 4,
+            "set": "ReC-SHD",
+            "collectorNumber": "017"
+          },
+          {
+            "name": "Slice and Dice",
+            "quantity": 3,
+            "set": "ReC-SHD",
+            "collectorNumber": "018"
+          },
+          {
+            "name": "Thieving Cut",
+            "quantity": 2,
+            "set": "ReC-SHD",
+            "collectorNumber": "019"
+          },
+          {
+            "name": "Arrow Trap",
+            "quantity": 2,
+            "set": "ReC-SHD",
+            "collectorNumber": "020"
+          },
+          {
+            "name": "Betraying Blade",
+            "quantity": 4,
+            "set": "ReC-SHD",
+            "collectorNumber": "021"
+          },
+          {
+            "name": "Cloaked Executioner",
+            "quantity": 3,
+            "set": "ReC-SHD",
+            "collectorNumber": "022"
+          },
+          {
+            "name": "Shimmercloak Assassin",
+            "quantity": 4,
+            "set": "ReC-SHD",
+            "collectorNumber": "023"
+          },
+          {
+            "name": "Sirocco Operative",
+            "quantity": 4,
+            "set": "ReC-SHD",
+            "collectorNumber": "024"
+          },
+          {
+            "name": "Stifling Trap",
+            "quantity": 2,
+            "set": "ReC-SHD",
+            "collectorNumber": "025"
+          },
+          {
+            "name": "Surveil the Winds",
+            "quantity": 4,
+            "set": "ReC-SHD",
+            "collectorNumber": "026"
+          },
+          {
+            "name": "Gloamspire Headhunter",
+            "quantity": 2,
+            "set": "ReC-SHD",
+            "collectorNumber": "027"
+          },
+          {
+            "name": "Grim Foreboding",
+            "quantity": 3,
+            "set": "ReC-SHD",
+            "collectorNumber": "028"
+          },
+          {
+            "name": "Haunting Demise",
+            "quantity": 2,
+            "set": "ReC-SHD",
+            "collectorNumber": "029"
+          },
+          {
+            "name": "Shadow Resonance",
+            "quantity": 3,
+            "set": "ReC-SHD",
+            "collectorNumber": "031"
+          },
+          {
+            "name": "Shadowstrike",
+            "quantity": 3,
+            "set": "ReC-SHD",
+            "collectorNumber": "032"
+          },
+          {
+            "name": "Shifting Mirage",
+            "quantity": 3,
+            "set": "ReC-SHD",
+            "collectorNumber": "033"
+          }
+        ],
+        "material": [
+          {
+            "name": "Spirit of Wind",
+            "quantity": 1,
+            "set": "ReC-SHD",
+            "collectorNumber": "001"
+          },
+          {
+            "name": "Tristan, Underhanded",
+            "quantity": 1,
+            "set": "ReC-SHD",
+            "collectorNumber": "002"
+          },
+          {
+            "name": "Tristan, Hired Blade",
+            "quantity": 1,
+            "set": "ReC-SHD",
+            "collectorNumber": "003"
+          },
+          {
+            "name": "Tristan, Shadowdancer",
+            "quantity": 1,
+            "set": "ReC-SHD",
+            "collectorNumber": "004"
+          },
+          {
+            "name": "Assassin's Mantle",
+            "quantity": 1,
+            "set": "ReC-SHD",
+            "collectorNumber": "005"
+          },
+          {
+            "name": "Curved Dagger",
+            "quantity": 1,
+            "set": "ReC-SHD",
+            "collectorNumber": "006"
+          },
+          {
+            "name": "Life Essence Amulet",
+            "quantity": 1,
+            "set": "ReC-SHD",
+            "collectorNumber": "007"
+          },
+          {
+            "name": "Poisoned Dagger",
+            "quantity": 1,
+            "set": "ReC-SHD",
+            "collectorNumber": "008"
+          },
+          {
+            "name": "Gearstride Gloves",
+            "quantity": 1,
+            "set": "ReC-SHD",
+            "collectorNumber": "009"
+          },
+          {
+            "name": "Dusksoul Stone",
+            "quantity": 1,
+            "set": "ReC-SHD",
+            "collectorNumber": "010"
+          },
+          {
+            "name": "Malignant Athame",
+            "quantity": 1,
+            "set": "ReC-SHD",
+            "collectorNumber": "011"
+          },
+          {
+            "name": "Shadeblood Coating",
+            "quantity": 1,
+            "set": "ReC-SHD",
+            "collectorNumber": "012"
+          }
+        ],
+        "sideboard": [],
+        "mastery": [],
+        "token": [],
+        "pantheon": [],
+        "generated": [],
+        "status": []
+      }
+    },
+    {
+      "id": "bxIbsmbzq7PtY2bIpx7H",
+      "name": "Arisanna Starter Deck",
+      "productCode": "ALCSD",
+      "champions": [
+        "Arisanna"
+      ],
+      "sourceUrl": "https://build-v2.silvie.org/@GrandArchive/bxIbsmbzq7PtY2bIpx7H",
+      "cards": {
+        "main": [
+          {
+            "name": "Academy Attendant",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "037"
+          },
+          {
+            "name": "Barter Herbs",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "040"
+          },
+          {
+            "name": "Caretaker Drone",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "042"
+          },
+          {
+            "name": "Foraging Servant",
+            "quantity": 4,
+            "set": "ALCSD",
+            "collectorNumber": "044"
+          },
+          {
+            "name": "Potion of Healing",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "057"
+          },
+          {
+            "name": "Scry the Skies",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "060"
+          },
+          {
+            "name": "Serum of Wisdom",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "061"
+          },
+          {
+            "name": "Essence of Blizzards",
+            "quantity": 4,
+            "set": "ALCSD",
+            "collectorNumber": "075"
+          },
+          {
+            "name": "Flash Freeze",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "076"
+          },
+          {
+            "name": "Hypothermia",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "077"
+          },
+          {
+            "name": "Krustallan Distiller",
+            "quantity": 2,
+            "set": "ALCSD",
+            "collectorNumber": "078"
+          },
+          {
+            "name": "Perfect Repulsion",
+            "quantity": 2,
+            "set": "ALCSD",
+            "collectorNumber": "079"
+          },
+          {
+            "name": "Potion Infusion: Clarity",
+            "quantity": 2,
+            "set": "ALCSD",
+            "collectorNumber": "080"
+          },
+          {
+            "name": "Potion Infusion: Frostbite",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "081"
+          },
+          {
+            "name": "Stream of Consciousness",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "082"
+          },
+          {
+            "name": "Water Barrier",
+            "quantity": 2,
+            "set": "ALCSD",
+            "collectorNumber": "083"
+          },
+          {
+            "name": "Astra Sight",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "089"
+          },
+          {
+            "name": "Cometfall",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "090"
+          },
+          {
+            "name": "Condensed Supernova",
+            "quantity": 2,
+            "set": "ALCSD",
+            "collectorNumber": "091"
+          },
+          {
+            "name": "Cosmic Bolt",
+            "quantity": 4,
+            "set": "ALCSD",
+            "collectorNumber": "092"
+          },
+          {
+            "name": "Potion Infusion: Starlight",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "093"
+          },
+          {
+            "name": "Spellshield: Astra",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "094"
+          }
+        ],
+        "material": [
+          {
+            "name": "Spirit of Water",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "002"
+          },
+          {
+            "name": "Arisanna, Herbalist Prodigy",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "004"
+          },
+          {
+            "name": "Arisanna, Master Alchemist",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "005"
+          },
+          {
+            "name": "Arisanna, Astral Zenith",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "006"
+          },
+          {
+            "name": "Cleric Robes",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "016"
+          },
+          {
+            "name": "Ingredient Pouch",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "019"
+          },
+          {
+            "name": "Life Essence Amulet",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "020"
+          },
+          {
+            "name": "Necklace of Foresight",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "021"
+          },
+          {
+            "name": "Prototype Staff",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "025"
+          },
+          {
+            "name": "Scale of Souls",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "027"
+          },
+          {
+            "name": "Synth Disrupter",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "028"
+          },
+          {
+            "name": "Cosmic Astroscope",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "033"
+          }
+        ],
+        "sideboard": [],
+        "mastery": [],
+        "token": [
+          {
+            "name": "Blightroot",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "041"
+          },
+          {
+            "name": "Fraysia",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "046"
+          },
+          {
+            "name": "Manaroot",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "053"
+          },
+          {
+            "name": "Razorvine",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "058"
+          },
+          {
+            "name": "Silvershine",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "062"
+          },
+          {
+            "name": "Springleaf",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "063"
+          }
+        ],
+        "pantheon": [],
+        "generated": [],
+        "status": []
+      }
+    },
+    {
+      "id": "7EHyaySNhzODdmzukoCQ",
+      "name": "Diana Starter Deck",
+      "productCode": "ALCSD",
+      "champions": [
+        "Diana"
+      ],
+      "sourceUrl": "https://build-v2.silvie.org/@GrandArchive/7EHyaySNhzODdmzukoCQ",
+      "cards": {
+        "main": [
+          {
+            "name": "Backstep",
+            "quantity": 4,
+            "set": "ALCSD",
+            "collectorNumber": "039"
+          },
+          {
+            "name": "Evasive Maneuvers",
+            "quantity": 4,
+            "set": "ALCSD",
+            "collectorNumber": "043"
+          },
+          {
+            "name": "Idle Thoughts",
+            "quantity": 4,
+            "set": "ALCSD",
+            "collectorNumber": "048"
+          },
+          {
+            "name": "Imperial Rifleman",
+            "quantity": 4,
+            "set": "ALCSD",
+            "collectorNumber": "050"
+          },
+          {
+            "name": "Materialize Munitions",
+            "quantity": 4,
+            "set": "ALCSD",
+            "collectorNumber": "055"
+          },
+          {
+            "name": "Reposition",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "059"
+          },
+          {
+            "name": "Supply Drone",
+            "quantity": 2,
+            "set": "ALCSD",
+            "collectorNumber": "065"
+          },
+          {
+            "name": "Take Aim",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "066"
+          },
+          {
+            "name": "Take Cover",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "067"
+          },
+          {
+            "name": "Trained Sharpshooter",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "069"
+          },
+          {
+            "name": "Airship Engineer",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "070"
+          },
+          {
+            "name": "Automaton Bomber",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "071"
+          },
+          {
+            "name": "Force Load",
+            "quantity": 2,
+            "set": "ALCSD",
+            "collectorNumber": "072"
+          },
+          {
+            "name": "Incendiary Shot",
+            "quantity": 4,
+            "set": "ALCSD",
+            "collectorNumber": "073"
+          },
+          {
+            "name": "Rocket Jump",
+            "quantity": 2,
+            "set": "ALCSD",
+            "collectorNumber": "074"
+          },
+          {
+            "name": "Anathema's End",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "103"
+          },
+          {
+            "name": "Creeping Torment",
+            "quantity": 4,
+            "set": "ALCSD",
+            "collectorNumber": "104"
+          },
+          {
+            "name": "Mindbreak Bullet",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "105"
+          },
+          {
+            "name": "Umbra Sight",
+            "quantity": 2,
+            "set": "ALCSD",
+            "collectorNumber": "106"
+          },
+          {
+            "name": "Umbral Tithe",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "107"
+          },
+          {
+            "name": "Violet Haze",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "108"
+          }
+        ],
+        "material": [
+          {
+            "name": "Spirit of Fire",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "001"
+          },
+          {
+            "name": "Diana, Keen Huntress",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "007"
+          },
+          {
+            "name": "Diana, Deadly Duelist",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "008"
+          },
+          {
+            "name": "Diana, Duskstalker",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "009"
+          },
+          {
+            "name": "Blastshot Pump",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "013"
+          },
+          {
+            "name": "Flash Grenade",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "018"
+          },
+          {
+            "name": "Plated Bullet",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "022"
+          },
+          {
+            "name": "Prototype Pistol",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "024"
+          },
+          {
+            "name": "Quickdraw Piercer",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "026"
+          },
+          {
+            "name": "Tasershot",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "029"
+          },
+          {
+            "name": "Penetrator Round",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "031"
+          },
+          {
+            "name": "Shadow's Twin",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "036"
+          }
+        ],
+        "sideboard": [],
+        "mastery": [],
+        "token": [],
+        "pantheon": [],
+        "generated": [
+          {
+            "name": "Creeping Torment",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "104"
+          }
+        ],
+        "status": []
+      }
+    },
+    {
+      "id": "yqVK5i6eQxDJhZJdTph1",
+      "name": "Tonoris Starter Deck",
+      "productCode": "ALCSD",
+      "champions": [
+        "Tonoris"
+      ],
+      "sourceUrl": "https://build-v2.silvie.org/@GrandArchive/yqVK5i6eQxDJhZJdTph1",
+      "cards": {
+        "main": [
+          {
+            "name": "Fortified Mana Shield",
+            "quantity": 4,
+            "set": "ALCSD",
+            "collectorNumber": "045"
+          },
+          {
+            "name": "Heavy Swing",
+            "quantity": 4,
+            "set": "ALCSD",
+            "collectorNumber": "047"
+          },
+          {
+            "name": "Imperial Recruit",
+            "quantity": 4,
+            "set": "ALCSD",
+            "collectorNumber": "049"
+          },
+          {
+            "name": "Imperial Sentry",
+            "quantity": 4,
+            "set": "ALCSD",
+            "collectorNumber": "051"
+          },
+          {
+            "name": "Into the Fray",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "052"
+          },
+          {
+            "name": "Martial Guard",
+            "quantity": 4,
+            "set": "ALCSD",
+            "collectorNumber": "054"
+          },
+          {
+            "name": "Novice Mechanist",
+            "quantity": 4,
+            "set": "ALCSD",
+            "collectorNumber": "056"
+          },
+          {
+            "name": "Stalwart Shieldmate",
+            "quantity": 4,
+            "set": "ALCSD",
+            "collectorNumber": "064"
+          },
+          {
+            "name": "Take Point",
+            "quantity": 4,
+            "set": "ALCSD",
+            "collectorNumber": "068"
+          },
+          {
+            "name": "Cyclonic Strike",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "084"
+          },
+          {
+            "name": "Recruitment Officer",
+            "quantity": 4,
+            "set": "ALCSD",
+            "collectorNumber": "085"
+          },
+          {
+            "name": "Rousing Slam",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "086"
+          },
+          {
+            "name": "Winds of Retribution",
+            "quantity": 2,
+            "set": "ALCSD",
+            "collectorNumber": "087"
+          },
+          {
+            "name": "Young Peacekeeper",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "088"
+          },
+          {
+            "name": "Assemble the Ancients",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "095"
+          },
+          {
+            "name": "Neos Sight",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "097"
+          },
+          {
+            "name": "Smash with Obelisk",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "101"
+          },
+          {
+            "name": "Summon Sentinels",
+            "quantity": 3,
+            "set": "ALCSD",
+            "collectorNumber": "102"
+          }
+        ],
+        "material": [
+          {
+            "name": "Spirit of Wind",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "003"
+          },
+          {
+            "name": "Tonoris, Lone Mercenary",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "010"
+          },
+          {
+            "name": "Tonoris, Might of Humanity",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "011"
+          },
+          {
+            "name": "Tonoris, Genesis Aegis",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "012"
+          },
+          {
+            "name": "Bulwark Sword",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "014"
+          },
+          {
+            "name": "Charged Manaplate",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "015"
+          },
+          {
+            "name": "Crest of the Alliance",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "017"
+          },
+          {
+            "name": "Powercharged Shield",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "023"
+          },
+          {
+            "name": "Worn Gearblade",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "030"
+          },
+          {
+            "name": "Deployment Beacon",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "032"
+          },
+          {
+            "name": "Archon Broadsword",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "034"
+          },
+          {
+            "name": "Sentinel Fabricator",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "035"
+          }
+        ],
+        "sideboard": [],
+        "mastery": [],
+        "token": [
+          {
+            "name": "Automaton Drone",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "038"
+          },
+          {
+            "name": "Aurousteel Greatsword",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "096"
+          },
+          {
+            "name": "Obelisk of Armaments",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "098"
+          },
+          {
+            "name": "Obelisk of Fabrication",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "099"
+          },
+          {
+            "name": "Obelisk of Protection",
+            "quantity": 1,
+            "set": "ALCSD",
+            "collectorNumber": "100"
+          }
+        ],
+        "pantheon": [],
+        "generated": [],
+        "status": []
+      }
+    },
+    {
+      "id": "lorraine-starter-deck-preview",
+      "name": "Lorraine Starter Deck",
+      "productCode": "DOASD",
+      "champions": [
+        "Lorraine"
+      ],
+      "sourceUrl": "https://build-v2.silvie.org/@GrandArchive/lorraine-starter-deck-preview",
+      "cards": {
+        "main": [
+          {
+            "name": "Banner Knight",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "038"
+          },
+          {
+            "name": "Crusader of Aesa",
+            "quantity": 4,
+            "set": "DOASD",
+            "collectorNumber": "042"
+          },
+          {
+            "name": "Deflecting Edge",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "043"
+          },
+          {
+            "name": "Esteemed Knight",
+            "quantity": 4,
+            "set": "DOASD",
+            "collectorNumber": "045"
+          },
+          {
+            "name": "Honorable Vanguard",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "047"
+          },
+          {
+            "name": "Inspiring Call",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "049"
+          },
+          {
+            "name": "Opening Cut",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "052"
+          },
+          {
+            "name": "Savage Slash",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "055"
+          },
+          {
+            "name": "Sudden Steel",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "059"
+          },
+          {
+            "name": "Training Session",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "060"
+          },
+          {
+            "name": "Veteran Soldier",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "062"
+          },
+          {
+            "name": "Weaponsmith",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "063"
+          },
+          {
+            "name": "Favorable Winds",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "084"
+          },
+          {
+            "name": "Hurricane Sweep",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "085"
+          },
+          {
+            "name": "Phalanx Captain",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "086"
+          },
+          {
+            "name": "Reclaim",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "087"
+          },
+          {
+            "name": "Swift Recruit",
+            "quantity": 4,
+            "set": "DOASD",
+            "collectorNumber": "088"
+          },
+          {
+            "name": "Wind Cutter",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "089"
+          },
+          {
+            "name": "Crux Sight",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "096"
+          },
+          {
+            "name": "Spirit Blade: Ascension",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "097"
+          },
+          {
+            "name": "Spirit Blade: Dispersion",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "098"
+          },
+          {
+            "name": "Spirit Blade: Ghost Strike",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "099"
+          },
+          {
+            "name": "Spirit Blade: Infusion",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "100"
+          },
+          {
+            "name": "Spirit's Blessing",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "101"
+          }
+        ],
+        "material": [
+          {
+            "name": "Spirit of Wind",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "003"
+          },
+          {
+            "name": "Lorraine, Wandering Warrior",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "004"
+          },
+          {
+            "name": "Lorraine, Blademaster",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "005"
+          },
+          {
+            "name": "Lorraine, Crux Knight",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "006"
+          },
+          {
+            "name": "Bauble of Abundance",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "014"
+          },
+          {
+            "name": "Clarent, Sword of Peace",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "018"
+          },
+          {
+            "name": "Fire Resonance Bauble",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "021"
+          },
+          {
+            "name": "Life Essence Amulet",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "023"
+          },
+          {
+            "name": "Ornamental Greatsword",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "027"
+          },
+          {
+            "name": "Sword of Seeking",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "029"
+          },
+          {
+            "name": "Warrior's Longsword",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "031"
+          },
+          {
+            "name": "Prismatic Edge",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "035"
+          }
+        ],
+        "sideboard": [],
+        "mastery": [],
+        "token": [],
+        "pantheon": [],
+        "generated": [],
+        "status": []
+      }
+    },
+    {
+      "id": "rai-starter-deck-preview",
+      "name": "Rai Starter Deck",
+      "productCode": "DOASD",
+      "champions": [
+        "Rai"
+      ],
+      "sourceUrl": "https://build-v2.silvie.org/@GrandArchive/rai-starter-deck-preview",
+      "cards": {
+        "main": [
+          {
+            "name": "Barrier Servant",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "039"
+          },
+          {
+            "name": "Careful Study",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "041"
+          },
+          {
+            "name": "Idle Thoughts",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "048"
+          },
+          {
+            "name": "Library Witch",
+            "quantity": 4,
+            "set": "DOASD",
+            "collectorNumber": "050"
+          },
+          {
+            "name": "Magus Disciple",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "051"
+          },
+          {
+            "name": "Peer into Mana",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "053"
+          },
+          {
+            "name": "Scry the Skies",
+            "quantity": 4,
+            "set": "DOASD",
+            "collectorNumber": "056"
+          },
+          {
+            "name": "Blitz Mage",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "064"
+          },
+          {
+            "name": "Creative Shock",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "065"
+          },
+          {
+            "name": "Cremation Ritual",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "066"
+          },
+          {
+            "name": "Disintegrate",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "067"
+          },
+          {
+            "name": "Fireball",
+            "quantity": 4,
+            "set": "DOASD",
+            "collectorNumber": "068"
+          },
+          {
+            "name": "Flame-Rune Swordsman",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "069"
+          },
+          {
+            "name": "Focused Flames",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "070"
+          },
+          {
+            "name": "Ignite the Soul",
+            "quantity": 4,
+            "set": "DOASD",
+            "collectorNumber": "071"
+          },
+          {
+            "name": "Impassioned Tutor",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "072"
+          },
+          {
+            "name": "Purge in Flames",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "073"
+          },
+          {
+            "name": "Anger the Skies",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "090"
+          },
+          {
+            "name": "Arcane Blast",
+            "quantity": 4,
+            "set": "DOASD",
+            "collectorNumber": "091"
+          },
+          {
+            "name": "Arcane Disposition",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "092"
+          },
+          {
+            "name": "Arcane Sight",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "093"
+          },
+          {
+            "name": "Power Overwhelming",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "094"
+          },
+          {
+            "name": "Spellshield: Arcane",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "095"
+          }
+        ],
+        "material": [
+          {
+            "name": "Spirit of Fire",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "001"
+          },
+          {
+            "name": "Rai, Spellcrafter",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "007"
+          },
+          {
+            "name": "Rai, Archmage",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "008"
+          },
+          {
+            "name": "Rai, Storm Seer",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "009"
+          },
+          {
+            "name": "Crystal of Empowerment",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "019"
+          },
+          {
+            "name": "Endura, Scepter of Ignition",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "020"
+          },
+          {
+            "name": "Life Essence Amulet",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "023"
+          },
+          {
+            "name": "Mana Limiter",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "024"
+          },
+          {
+            "name": "Surveillance Stone",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "028"
+          },
+          {
+            "name": "Tome of Knowledge",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "030"
+          },
+          {
+            "name": "Water Resonance Bauble",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "032"
+          },
+          {
+            "name": "Arcanist's Prism",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "034"
+          }
+        ],
+        "sideboard": [],
+        "mastery": [],
+        "token": [],
+        "pantheon": [],
+        "generated": [],
+        "status": []
+      }
+    },
+    {
+      "id": "silvie-starter-deck-preview",
+      "name": "Silvie Starter Deck",
+      "productCode": "DOASD",
+      "champions": [
+        "Silvie"
+      ],
+      "sourceUrl": "https://build-v2.silvie.org/@GrandArchive/silvie-starter-deck-preview",
+      "cards": {
+        "main": [
+          {
+            "name": "Blissful Calling",
+            "quantity": 4,
+            "set": "DOASD",
+            "collectorNumber": "040"
+          },
+          {
+            "name": "Empowering Harmony",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "044"
+          },
+          {
+            "name": "Gray Wolf",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "046"
+          },
+          {
+            "name": "Rebellious Bull",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "054"
+          },
+          {
+            "name": "Scry the Skies",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "056"
+          },
+          {
+            "name": "Smack with Flute",
+            "quantity": 4,
+            "set": "DOASD",
+            "collectorNumber": "057"
+          },
+          {
+            "name": "Song of Nurturing",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "058"
+          },
+          {
+            "name": "Trusty Steed",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "061"
+          },
+          {
+            "name": "Blue Slime",
+            "quantity": 4,
+            "set": "DOASD",
+            "collectorNumber": "074"
+          },
+          {
+            "name": "Deep Sea Beastbonder",
+            "quantity": 4,
+            "set": "DOASD",
+            "collectorNumber": "075"
+          },
+          {
+            "name": "Dewdrop Hares",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "076"
+          },
+          {
+            "name": "Freezing Hail",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "077"
+          },
+          {
+            "name": "Giant Tortoise",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "078"
+          },
+          {
+            "name": "Give Bath",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "079"
+          },
+          {
+            "name": "Lakeside Serpent",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "080"
+          },
+          {
+            "name": "Mist Resonance",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "081"
+          },
+          {
+            "name": "Piper's Lullaby",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "082"
+          },
+          {
+            "name": "Revitalizing Cleanse",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "083"
+          },
+          {
+            "name": "Gaia's Songbird",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "102"
+          },
+          {
+            "name": "Invoke Dominance",
+            "quantity": 2,
+            "set": "DOASD",
+            "collectorNumber": "103"
+          },
+          {
+            "name": "Meadowbloom Dryad",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "104"
+          },
+          {
+            "name": "Tera Sight",
+            "quantity": 3,
+            "set": "DOASD",
+            "collectorNumber": "105"
+          },
+          {
+            "name": "Vertus, Gaia's Roar",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "106"
+          }
+        ],
+        "material": [
+          {
+            "name": "Spirit of Water",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "002"
+          },
+          {
+            "name": "Silvie, Wilds Whisperer",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "010"
+          },
+          {
+            "name": "Silvie, With the Pack",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "011"
+          },
+          {
+            "name": "Silvie, Loved by All",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "012"
+          },
+          {
+            "name": "Beastbond Boots",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "015"
+          },
+          {
+            "name": "Beastbond Ears",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "016"
+          },
+          {
+            "name": "Beastbond Paws",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "017"
+          },
+          {
+            "name": "Flute of Taming",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "022"
+          },
+          {
+            "name": "Life Essence Amulet",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "023"
+          },
+          {
+            "name": "Melodious Flute",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "025"
+          },
+          {
+            "name": "Wind Resonance Bauble",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "033"
+          },
+          {
+            "name": "Seed of Nature",
+            "quantity": 1,
+            "set": "DOASD",
+            "collectorNumber": "037"
+          }
+        ],
+        "sideboard": [],
+        "mastery": [],
+        "token": [],
+        "pantheon": [],
+        "generated": [],
+        "status": []
+      }
+    },
+    {
+      "id": "56KHHOrH55T73zhgspun",
+      "name": "Rai Starter Deck (Prelude)",
+      "productCode": "DOAp",
+      "champions": [
+        "Rai"
+      ],
+      "sourceUrl": "https://build-v2.silvie.org/@GrandArchive/56KHHOrH55T73zhgspun",
+      "cards": {
+        "main": [
+          {
+            "name": "Barrier Servant",
+            "quantity": 3,
+            "set": "DOAp",
+            "collectorNumber": "033"
+          },
+          {
+            "name": "Careful Study",
+            "quantity": 2,
+            "set": "DOAp",
+            "collectorNumber": "034"
+          },
+          {
+            "name": "Dungeon Guide",
+            "quantity": 2,
+            "set": "DOAp",
+            "collectorNumber": "038"
+          },
+          {
+            "name": "Library Witch",
+            "quantity": 4,
+            "set": "DOAp",
+            "collectorNumber": "048"
+          },
+          {
+            "name": "Magus Disciple",
+            "quantity": 3,
+            "set": "DOAp",
+            "collectorNumber": "049"
+          },
+          {
+            "name": "Peer into Mana",
+            "quantity": 4,
+            "set": "DOAp",
+            "collectorNumber": "053"
+          },
+          {
+            "name": "Scry the Skies",
+            "quantity": 4,
+            "set": "DOAp",
+            "collectorNumber": "057"
+          },
+          {
+            "name": "Blitz Mage",
+            "quantity": 2,
+            "set": "DOAp",
+            "collectorNumber": "065"
+          },
+          {
+            "name": "Creative Shock",
+            "quantity": 4,
+            "set": "DOAp",
+            "collectorNumber": "066"
+          },
+          {
+            "name": "Fireball",
+            "quantity": 4,
+            "set": "DOAp",
+            "collectorNumber": "071"
+          },
+          {
+            "name": "Focused Flames",
+            "quantity": 2,
+            "set": "DOAp",
+            "collectorNumber": "074"
+          },
+          {
+            "name": "Ignite the Soul",
+            "quantity": 4,
+            "set": "DOAp",
+            "collectorNumber": "075"
+          },
+          {
+            "name": "Impassioned Tutor",
+            "quantity": 3,
+            "set": "DOAp",
+            "collectorNumber": "076"
+          },
+          {
+            "name": "Purge in Flames",
+            "quantity": 2,
+            "set": "DOAp",
+            "collectorNumber": "078"
+          },
+          {
+            "name": "Anger the Skies",
+            "quantity": 2,
+            "set": "DOAp",
+            "collectorNumber": "101"
+          },
+          {
+            "name": "Arcane Blast",
+            "quantity": 4,
+            "set": "DOAp",
+            "collectorNumber": "102"
+          },
+          {
+            "name": "Arcane Disposition",
+            "quantity": 4,
+            "set": "DOAp",
+            "collectorNumber": "103"
+          },
+          {
+            "name": "Arcane Sight",
+            "quantity": 4,
+            "set": "DOAp",
+            "collectorNumber": "104"
+          },
+          {
+            "name": "Power Overwhelming",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "105"
+          },
+          {
+            "name": "Spellshield: Arcane",
+            "quantity": 2,
+            "set": "DOAp",
+            "collectorNumber": "107"
+          }
+        ],
+        "material": [
+          {
+            "name": "Spirit of Fire",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "001"
+          },
+          {
+            "name": "Rai, Spellcrafter",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "006"
+          },
+          {
+            "name": "Rai, Archmage",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "007"
+          },
+          {
+            "name": "Rai, Storm Seer",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "008"
+          },
+          {
+            "name": "Crystal of Empowerment",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "013"
+          },
+          {
+            "name": "Endura, Scepter of Ignition",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "014"
+          },
+          {
+            "name": "Life Essence Amulet",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "017"
+          },
+          {
+            "name": "Mana Limiter",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "018"
+          },
+          {
+            "name": "Surveillance Stone",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "023"
+          },
+          {
+            "name": "Tome of Knowledge",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "025"
+          },
+          {
+            "name": "Wind Resonance Bauble",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "027"
+          },
+          {
+            "name": "Arcanist's Prism",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "028"
+          }
+        ],
+        "sideboard": [],
+        "mastery": [],
+        "token": [],
+        "pantheon": [],
+        "generated": [],
+        "status": []
+      }
+    },
+    {
+      "id": "GPHjg6vPntxcJdHNvtil",
+      "name": "Lorraine Starter Deck (Prelude)",
+      "productCode": "DOAp",
+      "champions": [
+        "Lorraine"
+      ],
+      "sourceUrl": "https://build-v2.silvie.org/@GrandArchive/GPHjg6vPntxcJdHNvtil",
+      "cards": {
+        "main": [
+          {
+            "name": "Banner Knight",
+            "quantity": 3,
+            "set": "DOAp",
+            "collectorNumber": "032"
+          },
+          {
+            "name": "Crusader of Aesa",
+            "quantity": 4,
+            "set": "DOAp",
+            "collectorNumber": "036"
+          },
+          {
+            "name": "Dungeon Guide",
+            "quantity": 2,
+            "set": "DOAp",
+            "collectorNumber": "038"
+          },
+          {
+            "name": "Esteemed Knight",
+            "quantity": 4,
+            "set": "DOAp",
+            "collectorNumber": "040"
+          },
+          {
+            "name": "Honorable Vanguard",
+            "quantity": 4,
+            "set": "DOAp",
+            "collectorNumber": "044"
+          },
+          {
+            "name": "Inspiring Call",
+            "quantity": 2,
+            "set": "DOAp",
+            "collectorNumber": "046"
+          },
+          {
+            "name": "Savage Slash",
+            "quantity": 3,
+            "set": "DOAp",
+            "collectorNumber": "056"
+          },
+          {
+            "name": "Scry the Skies",
+            "quantity": 4,
+            "set": "DOAp",
+            "collectorNumber": "057"
+          },
+          {
+            "name": "Sudden Steel",
+            "quantity": 2,
+            "set": "DOAp",
+            "collectorNumber": "058"
+          },
+          {
+            "name": "Weaponsmith",
+            "quantity": 4,
+            "set": "DOAp",
+            "collectorNumber": "062"
+          },
+          {
+            "name": "Disorienting Winds",
+            "quantity": 2,
+            "set": "DOAp",
+            "collectorNumber": "086"
+          },
+          {
+            "name": "Dream Fairy",
+            "quantity": 3,
+            "set": "DOAp",
+            "collectorNumber": "087"
+          },
+          {
+            "name": "Favorable Winds",
+            "quantity": 3,
+            "set": "DOAp",
+            "collectorNumber": "089"
+          },
+          {
+            "name": "Hurricane Sweep",
+            "quantity": 2,
+            "set": "DOAp",
+            "collectorNumber": "090"
+          },
+          {
+            "name": "Wind Cutter",
+            "quantity": 3,
+            "set": "DOAp",
+            "collectorNumber": "100"
+          },
+          {
+            "name": "Crux Sight",
+            "quantity": 3,
+            "set": "DOAp",
+            "collectorNumber": "108"
+          },
+          {
+            "name": "Spirit Blade: Ascension",
+            "quantity": 2,
+            "set": "DOAp",
+            "collectorNumber": "110"
+          },
+          {
+            "name": "Spirit Blade: Dispersion",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "111"
+          },
+          {
+            "name": "Spirit Blade: Ghost Strike",
+            "quantity": 4,
+            "set": "DOAp",
+            "collectorNumber": "112"
+          },
+          {
+            "name": "Spirit Blade: Infusion",
+            "quantity": 2,
+            "set": "DOAp",
+            "collectorNumber": "113"
+          },
+          {
+            "name": "Spirit's Blessing",
+            "quantity": 3,
+            "set": "DOAp",
+            "collectorNumber": "114"
+          }
+        ],
+        "material": [
+          {
+            "name": "Spirit of Wind",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "002"
+          },
+          {
+            "name": "Lorraine, Wandering Warrior",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "003"
+          },
+          {
+            "name": "Lorraine, Blademaster",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "004"
+          },
+          {
+            "name": "Lorraine, Crux Knight",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "005"
+          },
+          {
+            "name": "Clarent, Sword of Peace",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "012"
+          },
+          {
+            "name": "Fire Resonance Bauble",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "015"
+          },
+          {
+            "name": "Life Essence Amulet",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "017"
+          },
+          {
+            "name": "Ornamental Greatsword",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "021"
+          },
+          {
+            "name": "Seer's Sword",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "022"
+          },
+          {
+            "name": "Sword of Seeking",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "024"
+          },
+          {
+            "name": "Warrior's Longsword",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "026"
+          },
+          {
+            "name": "Prismatic Edge",
+            "quantity": 1,
+            "set": "DOAp",
+            "collectorNumber": "029"
+          }
+        ],
+        "sideboard": [],
+        "mastery": [],
+        "token": [],
+        "pantheon": [],
+        "generated": [],
+        "status": []
+      }
+    }
+  ]
+}
