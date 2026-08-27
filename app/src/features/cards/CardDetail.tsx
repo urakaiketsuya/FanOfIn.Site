@@ -27,7 +27,7 @@ import CardHoverPreview from "../../components/CardHoverPreview";
 import CardComparisonTable from "../compare/CardComparisonTable";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useDeckPopularityIndexData } from "../topdecks/data";
-import { useCardDeckReferences, useCommunityCardInclusion } from "../community/data";
+import { useCommunityBlendedCardInclusion, useCommunityBlendedDeckReferences } from "../community/data";
 import { useHipsterData } from "../players/data";
 import { useOmnidexPlayers, useEventNameById } from "../tournaments/data";
 import UniqueDeckRow from "../champions/UniqueDeckRow";
@@ -126,7 +126,7 @@ export default function CardDetail() {
   const priceHistoryData = usePriceHistoryData();
   const cardStatsData = useCardStatsData();
   const cardStat = cardStatsData?.cards.find((c) => c.name === card?.name);
-  const communityCardInclusion = useCommunityCardInclusion();
+  const communityCardInclusion = useCommunityBlendedCardInclusion();
   const communityInclusion = communityCardInclusion?.overall.find((c) => c.name === card?.name);
   const cardQuantityStatsData = useCardQuantityStatsData();
   const cardQuantityStat = cardQuantityStatsData?.cards.find((c) => c.name === card?.name);
@@ -161,7 +161,7 @@ export default function CardDetail() {
   const eventNameById = useEventNameById();
   const hipsterData = useHipsterData();
   const playersData = useOmnidexPlayers();
-  const cardDeckReferences = useCardDeckReferences();
+  const cardDeckReferences = useCommunityBlendedDeckReferences();
   const communityDeckRefs = card ? (cardDeckReferences?.byCardName[card.name] ?? []) : [];
 
   const selectedCardNames = useMemo(() => (card ? [card.name] : []), [card]);
@@ -447,8 +447,8 @@ export default function CardDetail() {
               </div>
               {communityInclusion && (
                 <p className="mt-1 text-xs text-ctp-mauve">
-                  {(communityInclusion.percentOfDecks * 100).toFixed(0)}% of Shout At Your Decks community decks
-                  include this — popularity in community brews, not a performance figure like the stats above.
+                  {(communityInclusion.percentOfDecks * 100).toFixed(0)}% of community decks include this — popularity
+                  in community brews, not a performance figure like the stats above.
                 </p>
               )}
             </div>
@@ -811,24 +811,35 @@ export default function CardDetail() {
         <div className="mt-8">
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Community decks</h2>
           <p className="mt-1 text-xs text-ctp-subtext0">
-            Player brews from Shout At Your Decks that include this card — not real tournament results, and not
-            ordered by recency: the site doesn't track when a deck was actually built or updated.
+            Community brews that include this card — not real tournament results and not ordered by recency because
+            the source archive does not consistently track when a deck was built or updated. Build your own on{" "}
+            <a href="https://sleeved.gg" target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">Sleeved.gg</a>.
           </p>
           <ul className="mt-2 space-y-1 text-sm">
-            {communityDeckRefs.map((d) => (
-              <li key={d.id} className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
-                <a href={d.url} target="_blank" rel="noreferrer" className="text-ctp-text hover:text-ctp-blue">
-                  {d.title || "(untitled)"}
-                </a>
-                {(d.author || d.champion) && (
-                  <span className="text-xs text-ctp-subtext0">
-                    {d.author ? `by ${d.author}` : ""}
-                    {d.author && d.champion ? " — " : ""}
-                    {d.champion ? formatShoutAtYourDecksChampion(d.champion) : ""}
-                  </span>
-                )}
-              </li>
-            ))}
+            {communityDeckRefs.map((d) => {
+              // Sleeved decks already carry a proper display-name champion (e.g. "Diao Chan"); only
+              // ShoutAtYourDecks' champion field is a lowercase slug needing formatShoutAtYourDecksChampion.
+              const isSleeved = d.url.includes("sleeved.gg");
+              const championLabel = d.champion ? (isSleeved ? d.champion : formatShoutAtYourDecksChampion(d.champion)) : "";
+              return (
+                <li key={d.id} className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                  {isSleeved ? (
+                    <a href={d.url} target="_blank" rel="noreferrer" className="text-ctp-text hover:text-ctp-blue">
+                      {d.title || "(untitled)"}
+                    </a>
+                  ) : (
+                    <span className="text-ctp-text">{d.title || "(untitled)"}</span>
+                  )}
+                  {(d.author || championLabel) && (
+                    <span className="text-xs text-ctp-subtext0">
+                      {d.author ? `by ${d.author}` : ""}
+                      {d.author && championLabel ? " — " : ""}
+                      {championLabel}
+                    </span>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}

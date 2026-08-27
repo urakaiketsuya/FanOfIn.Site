@@ -335,7 +335,7 @@ export function computeDamageComposition(lines: NamedLine[], cardsByName: Map<st
   };
 }
 
-export type RatingPillar = "aggro" | "consistency" | "interaction" | "resilience";
+export type RatingPillar = "durability" | "interaction" | "aggro" | "opportunity";
 
 export interface DeckRatingSignals {
   avgNonChampionCost: number;
@@ -363,11 +363,11 @@ export interface DeckRating {
 }
 
 /**
- * A four-pillar deck power/style rating (Aggro / Consistency / Interaction / Resilience),
+ * A four-pillar DIAO deck power/style rating (Durability / Interaction / Aggro / Opportunity),
  * independently derived for Grand Archive rather than ported from Magic: The Gathering's CRISPI
  * system (deckcheck.co) — CRISPI's own pillars don't translate directly: GA has no tutors (search
  * text like "search your deck for a card" appears on ~1-3 cards total, confirmed against the full
- * catalog), so Consistency can't lean on a tutor ladder the way CRISPI's does. "Speed" is CRISPI's
+ * catalog), so Opportunity can't lean on a tutor ladder the way CRISPI's Consistency pillar does. "Speed" is CRISPI's
  * hypothetical goldfish-turn count, which needs either turn-by-turn simulation or human judgment —
  * neither is available here (no per-turn match data exists anywhere, the same reason "average
  * damage per turn" was ruled out entirely) — so this uses "Aggro" instead: real, code-computable
@@ -378,7 +378,7 @@ export interface DeckRating {
  * sample, not a round number. Two findings from that calibration pass materially changed the
  * design before it was ever code:
  *  - Preserve (a real recursion keyword) appeared in ZERO of the 94 winning decklists — dropped
- *    entirely as a Resilience signal rather than shipping a signal that's always zero in practice.
+ *    entirely as a Durability signal rather than shipping a signal that's always zero in practice.
  *  - The median winning deck's guaranteed champion-damage floor was 0, and even the 75th
  *    percentile was still 0 — most decks pressure through combat (Ally power/evasion/threats), not
  *    direct-damage spells. Damage floor is a real but *minority-archetype* signal, weighted
@@ -463,14 +463,14 @@ export function computeDeckRating(
       Math.max(0, 1.5 - signals.avgNonChampionCost) * 3 +
       Math.min(signals.championDamageFloor, 25) * 0.2 +
       Math.min(signals.allyDamageFloor, 15) * 0.15,
-    consistency: Math.min(signals.repeatableDraw * 4 + Math.min(signals.oneShotDraw, 30), 50) + Math.min(signals.floatingMemory, 35) * 0.5,
+    opportunity: Math.min(signals.repeatableDraw * 4 + Math.min(signals.oneShotDraw, 30), 50) + Math.min(signals.floatingMemory, 35) * 0.5,
     interaction:
       Math.min(signals.banish, 30) * 0.3 +
       signals.destroy * 0.3 +
       signals.negate * 2 +
       signals.fastSpeed * 1.5 +
       Math.min(signals.championDamageFloor, 25) * 0.1,
-    resilience: Math.min(signals.recover, 30) * 0.3 + signals.protection * 0.5 + signals.threats * 0.3,
+    durability: Math.min(signals.recover, 30) * 0.3 + signals.protection * 0.5 + signals.threats * 0.3,
   };
 
   // Score-band boundaries below are real percentiles (min/p10/p25/median/p75/p90/max) from 94
@@ -478,9 +478,9 @@ export function computeDeckRating(
   // minimum (1-3) is extrapolated, since every deck in the calibration sample already won an event.
   const bands: Record<RatingPillar, number[]> = {
     aggro: [3.4, 4.9, 7.3, 10, 16.9, 20.3, 30],
-    consistency: [10, 18, 23, 36, 40, 47, 54],
+    opportunity: [10, 18, 23, 36, 40, 47, 54],
     interaction: [6.2, 9.3, 12.8, 19.8, 25.1, 27.9, 31],
-    resilience: [5.8, 8, 8.9, 10.2, 12.1, 15.7, 19],
+    durability: [5.8, 8, 8.9, 10.2, 12.1, 15.7, 19],
   };
 
   // boundaries = [min, p10, p25, median, p75, p90, max] from the calibration sample. Below the
@@ -496,12 +496,12 @@ export function computeDeckRating(
 
   const scores: Record<RatingPillar, number> = {
     aggro: toScore(points.aggro, bands.aggro),
-    consistency: toScore(points.consistency, bands.consistency),
+    opportunity: toScore(points.opportunity, bands.opportunity),
     interaction: toScore(points.interaction, bands.interaction),
-    resilience: toScore(points.resilience, bands.resilience),
+    durability: toScore(points.durability, bands.durability),
   };
 
-  const composite = (scores.aggro + scores.consistency + scores.interaction + scores.resilience) / 4;
+  const composite = (scores.durability + scores.interaction + scores.aggro + scores.opportunity) / 4;
 
   return { signals, points, scores, composite: +composite.toFixed(2) };
 }
@@ -532,7 +532,7 @@ export function cardPillarScore(card: Card, pillar: RatingPillar): number {
       if (!isChampion && card.cost_memory !== null && card.cost_memory <= 1) score += 1;
       return score;
     }
-    case "consistency": {
+    case "opportunity": {
       if (/whenever .* draw a card|\[REST\].*draw a card|at the (beginning|start) of .* draw a card/i.test(effect)) return 4;
       if (/draw (a|two|three|\d+) card/i.test(effect)) return 1.5;
       return 0;
@@ -545,7 +545,7 @@ export function cardPillarScore(card: Card, pillar: RatingPillar): number {
       if (/fast activation/i.test(effect)) score += 1.5;
       return score;
     }
-    case "resilience": {
+    case "durability": {
       let score = 0;
       const recoverMatch = effect.match(/recover (\d+)/i);
       if (recoverMatch) score += Number(recoverMatch[1]) * 0.3;

@@ -16,6 +16,7 @@ import { useTabParam } from "../../lib/useTabParam";
 import Tabs from "../../components/ui/Tabs";
 import PageHeader from "../../components/ui/PageHeader";
 import CardImage from "../../components/CardImage";
+import ElementIcon from "../../components/ElementIcon";
 import { usePantheonDeckIndex } from "../community/data";
 
 type ViewMode = "builds" | "sightings" | "pantheon";
@@ -278,29 +279,46 @@ function BuildsView({
         ))}
       </div>
 
-      <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
-        <span className="text-ctp-subtext0">Element:</span>
-        {elementsPresent.map((element) => (
-          <label key={element} className="flex items-center gap-1 text-xs text-ctp-subtext1">
-            <input
-              type="checkbox"
-              checked={elementFilter.includes(element)}
-              onChange={() => toggleElement(element)}
-              className="accent-ctp-blue"
-            />
-            {element}
-          </label>
-        ))}
-        {elementFilter.length > 0 && (
-          <button
-            type="button"
-            onClick={() => startTransition(() => setElementFilter([]))}
-            className="text-xs text-ctp-subtext0 hover:text-ctp-blue hover:underline"
-          >
-            Clear
-          </button>
-        )}
-      </div>
+      <fieldset className="mt-3" aria-labelledby="browse-decks-elements-label">
+        <div className="flex min-h-6 items-center gap-2">
+          <span id="browse-decks-elements-label" className="text-sm text-ctp-subtext0">Elements</span>
+          {elementFilter.length > 1 && <span className="text-[11px] text-ctp-overlay1">Match all selected</span>}
+          {elementFilter.length > 0 && (
+            <button
+              type="button"
+              onClick={() => startTransition(() => setElementFilter([]))}
+              className="ml-auto rounded px-1.5 py-0.5 text-xs text-ctp-subtext0 hover:bg-ctp-surface0 hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+        <div className="mt-1.5 flex flex-wrap gap-1.5">
+          {elementsPresent.map((element) => {
+            const selected = elementFilter.includes(element);
+            return (
+              <label
+                key={element}
+                className={`flex cursor-pointer select-none items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-xs font-medium transition-colors focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ctp-blue ${
+                  selected
+                    ? "border-ctp-blue bg-ctp-blue/15 text-ctp-blue"
+                    : "border-ctp-surface1 bg-ctp-mantle text-ctp-subtext1 hover:border-ctp-overlay0 hover:bg-ctp-surface0 hover:text-ctp-text"
+                }`}
+              >
+                <input
+                  type="checkbox"
+                  checked={selected}
+                  onChange={() => toggleElement(element)}
+                  className="sr-only"
+                />
+                <span aria-hidden="true"><ElementIcon element={element} size={18} className="shrink-0" /></span>
+                <span className="capitalize">{element.toLowerCase()}</span>
+                {selected && <span aria-hidden="true" className="ml-0.5 text-sm leading-none">✓</span>}
+              </label>
+            );
+          })}
+        </div>
+      </fieldset>
 
       <div className="mt-3">
         <span className="text-sm text-ctp-subtext0">Cards in deck:</span>

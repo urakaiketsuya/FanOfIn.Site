@@ -87,6 +87,19 @@ export function buildCardIndex(cards: CardSignature[]): Map<string, CardSignatur
   return index;
 }
 
+/**
+ * Keyed by `slug` — confirmed live against the real sleeved.gg API that a deck's `cardId` field
+ * (e.g. "spirit-of-fire") is the card's slug, not its `cardNumber`/set-collector-number join key
+ * (an earlier assumption, corrected before writing pipeline/src/sleeved/transform.ts, which is
+ * this index's only consumer). Slugs are per-card, not per-printing, so unlike a cardNumber index
+ * there's no printing ambiguity to resolve.
+ */
+export function buildSlugIndex(cards: CardSignature[]): Map<string, CardSignature> {
+  const index = new Map<string, CardSignature>();
+  for (const card of cards) index.set(card.slug, card);
+  return index;
+}
+
 /** Case/quote-folded form of a card name, for matching a raw decklist string against the catalog when the exact string doesn't match — real decklist submissions occasionally use non-canonical casing ("dungeon guide") or a straight apostrophe where the catalog has a curly one. Not used as `cardIndex`'s own keys (those stay canonical/exact — see `resolveCard`), only as the fallback lookup. */
 export function normalizeCardKey(name: string): string {
   return name

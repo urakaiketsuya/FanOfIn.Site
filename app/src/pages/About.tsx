@@ -107,14 +107,14 @@ const FEATURES: FeatureGroup[] = [
       "Ranked by a tier-weighted placement score, not just raw finish, so a strong finish at a big event outranks a small one",
       "Flags netdecked lists (identical builds from other players) and \"tough finish\" upsets (a strong record that still missed the cut)",
       "Max-price filter and a cheapest-first sort, to find budget decks with strong finishes",
-      "Dedicated page per build: composition donuts, a power rating, priciest cards, a popularity trend, and similar decks — one click loads the whole decklist into a TCGplayer cart",
+      "Dedicated page per build: composition donuts, a DIAO score, priciest cards, a popularity trend, and similar decks — one click loads the whole decklist into a TCGplayer cart",
     ],
     example: { to: "/decks/xenbr4", label: "A top Silvie build" },
   },
   {
     title: "Community & Pantheon Decks",
     items: [
-      "Deck-building trends from Shout At Your Decks, a community builder — what people actually build, not tournament results, kept fully separate from the rest of this site's stats",
+      "Community deck-building trends — what people actually build, not tournament results — plus Sleeved.gg, our recommended place to build and share Grand Archive decks",
       "Standard and Pantheon are classified, disclosed, and analyzed separately — unknown-format lists never contaminate either population",
       "Browse locally stored Pantheon lists by Champion, card, or Boon, then open the full deck page for visual decklist, composition, and readiness views",
       "Champion and element popularity across 20,000+ decks",
@@ -148,7 +148,7 @@ const FEATURES: FeatureGroup[] = [
     title: "Compare",
     items: [
       "Decks: search by cards they run, import any player's submitted decklist, browse top decks by placement or named build, or paste one that was never even submitted to Omnidex",
-      "Side-by-side grid highlighting shared vs. unique cards, with price, win rate, and power rating per deck, plus Tabletop Simulator export",
+      "Side-by-side grid highlighting shared vs. unique cards, with price, win rate, and DIAO score per deck, plus Tabletop Simulator export",
       "Suggests cards for whichever compared deck has the lowest win rate, scoped to its own Champion",
       "Cards: line up any number of individual cards' usage, win rate, and price — one card is fine, it just shows its own numbers",
       "Share link: copies a URL that reopens the exact same compared decks for anyone you send it to",
@@ -168,6 +168,7 @@ const FEATURES: FeatureGroup[] = [
       "A running log of exactly how each pick shifted the rest of the suggestions",
       "Share link: copies a URL that reopens this exact Champion/Spirit and every locked-in card",
       "Pantheon mode uses format-separated community adoption, singleton copy limits, and format-aware validation",
+      "Experimental Simulator source: a disclosed community shell with anonymous Clarent card evidence layered in only when enough games and resolvable card IDs exist",
     ],
     example: { to: "/deck-builder", label: "Open Guided Deck Builder" },
   },
@@ -192,21 +193,15 @@ const WALKTHROUGH_DECK = {
   bestPlacement: 4,
   avgWinRate: 0.37,
   championImage: "/cards/images/tiptrzblqr.jpg",
-  rating: { composite: 7.0, scores: { aggro: 8, consistency: 6, interaction: 7, resilience: 7 } },
+  rating: { composite: 7.0, scores: { durability: 7, interaction: 7, aggro: 8, opportunity: 6 } },
 };
 
 const RATING_PILLARS: { key: keyof typeof WALKTHROUGH_DECK.rating.scores; label: string; description: string }[] = [
   {
-    key: "aggro",
-    label: "Aggro",
+    key: "durability",
+    label: "Durability",
     description:
-      "How much pressure this build applies: average Ally power, evasion (Unblockable/Ranged), threat count, a cheap memory curve, and guaranteed damage.",
-  },
-  {
-    key: "consistency",
-    label: "Consistency",
-    description:
-      "How reliably this build finds its key plays: card draw (repeatable draw counts for more than a one-shot) plus Floating Memory.",
+      "How well this build survives and stabilizes: Recover (life gain) and protection effects (Spellshroud/Intercept/Prevent).",
   },
   {
     key: "interaction",
@@ -214,9 +209,16 @@ const RATING_PILLARS: { key: keyof typeof WALKTHROUGH_DECK.rating.scores; label:
     description: "How much this build can disrupt or answer the opponent: Banish, Destroy, Negate, Fast-speed access, and guaranteed damage.",
   },
   {
-    key: "resilience",
-    label: "Resilience",
-    description: "How well this build survives and stabilizes: Recover (life gain) and protection effects (Spellshroud/Intercept/Prevent).",
+    key: "aggro",
+    label: "Aggro",
+    description:
+      "How much pressure this build applies: average Ally power, evasion (Unblockable/Ranged), threat count, a cheap memory curve, and guaranteed damage.",
+  },
+  {
+    key: "opportunity",
+    label: "Opportunity",
+    description:
+      "How reliably this build creates access to its key plays: card draw (repeatable draw counts for more than a one-shot) plus Floating Memory.",
   },
 ];
 
@@ -530,10 +532,10 @@ export default function About() {
       <section className="border-t border-ctp-surface0 px-4 py-16">
         <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[280px_1fr] lg:items-center">
           <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">How the Power Rating works</h2>
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">How the DIAO Score works</h2>
             <p className="mt-2 text-sm text-ctp-subtext1">
               Every deck page scores its decklist on four independent 1&ndash;10 pillars &mdash; Aggro,
-              Consistency, Interaction, Resilience &mdash; so you can size up a build's play style at a glance,
+              Durability, Interaction, Aggro, Opportunity &mdash; so you can size up a build's play style at a glance,
               before you've played a single game with it.
             </p>
             <p className="mt-4 text-xs text-ctp-subtext0">

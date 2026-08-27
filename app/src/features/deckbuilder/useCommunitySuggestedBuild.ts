@@ -28,13 +28,14 @@ function toSuggested(cardName: string, quantity: number, locked: boolean, entry:
 }
 
 /**
- * A much simpler counterpart to `useSuggestedBuild`, for when the viewer wants Shout At Your Decks'
- * full community deck list instead of real tournament win-rate data (see docs/CALCULATIONS.md,
- * "Community population"). Ranks by `percentOfDecks` (popularity) instead of `adjustedLift`
- * (performance), since ShoutAtYourDecks decks carry no win/loss data at all — every `SuggestedCard`
- * this returns has `adjustedLift`/`sample` permanently null, so the UI's existing "only show lift
- * when present" guards hide the Card-Impact-specific figures on their own. Deliberately doesn't
- * touch `useSuggestedBuild.ts` or its win-rate math — a separate, additive hook.
+ * A much simpler counterpart to `useSuggestedBuild`, for when the viewer wants the blended community
+ * deck list (Shout At Your Decks + Sleeved, see pipeline/src/community/blend.ts) instead of real
+ * tournament win-rate data (see docs/CALCULATIONS.md, "Community population (blended)"). Ranks by
+ * `percentOfDecks` (popularity) instead of `adjustedLift` (performance), since neither community
+ * source carries win/loss data at all — every `SuggestedCard` this returns has
+ * `adjustedLift`/`sample` permanently null, so the UI's existing "only show lift when present"
+ * guards hide the Card-Impact-specific figures on their own. Deliberately doesn't touch
+ * `useSuggestedBuild.ts` or its win-rate math — a separate, additive hook.
  */
 export function useCommunitySuggestedBuild(
   champData: { deckCount: number; cards: CardInclusionEntry[] } | undefined,

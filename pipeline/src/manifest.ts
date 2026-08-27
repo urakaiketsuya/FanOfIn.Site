@@ -5,7 +5,7 @@ import path from "node:path";
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../data");
 
 /** Every published dataset the app fetches via `usePublishedData` — key must match the `key` argument used at each call site (see app/src/features/.../data.ts), or the app won't recognize a change. */
-const MANIFEST_ENTRIES: { key: string; file: string }[] = [
+export const MANIFEST_ENTRIES: { key: string; file: string }[] = [
   { key: "price-history", file: "priceHistory.json" },
   { key: "omnidex-index", file: "omnidex/index.json" },
   { key: "omnidex-players", file: "omnidex/players.json" },
@@ -37,6 +37,12 @@ const MANIFEST_ENTRIES: { key: string; file: string }[] = [
   { key: "shoutatyourdecks-format-summary", file: "shoutatyourdecks/analytics/format-summary.json" },
   { key: "shoutatyourdecks-index", file: "shoutatyourdecks/index.json" },
   { key: "shoutatyourdecks-pantheon-decks", file: "shoutatyourdecks/analytics/pantheon/decks.json" },
+  { key: "community-source-counts", file: "community/sources.json" },
+  { key: "community-blended-deck-references", file: "community/deck-references.json" },
+  ...["card-inclusion", "co-occurrence"].flatMap((name) => [
+    { key: `community-blended-${name}-STANDARD`, file: `community/${name}.json` },
+    { key: `community-blended-${name}-PANTHEON`, file: `community/pantheon/${name}.json` },
+  ]),
   ...["card-inclusion", "popularity", "price-distribution", "archetypes", "deck-era", "co-occurrence", "deck-references"].flatMap((name) => [
     { key: `shoutatyourdecks-${name}-STANDARD`, file: `shoutatyourdecks/analytics/${name}.json` },
     { key: `shoutatyourdecks-${name}-PANTHEON`, file: `shoutatyourdecks/analytics/pantheon/${name}.json` },

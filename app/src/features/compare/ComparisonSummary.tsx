@@ -11,10 +11,10 @@ import type { ComparedDeck } from "./types";
 
 const SECTION_LABEL: Record<"main" | "material" | "sideboard", string> = { main: "Main", material: "Material", sideboard: "Sideboard" };
 const PILLARS: { key: RatingPillar; label: string }[] = [
-  { key: "aggro", label: "Aggro" },
-  { key: "consistency", label: "Consistency" },
+  { key: "durability", label: "Durability" },
   { key: "interaction", label: "Interaction" },
-  { key: "resilience", label: "Resilience" },
+  { key: "aggro", label: "Aggro" },
+  { key: "opportunity", label: "Opportunity" },
 ];
 
 function shortLabel(label: string): string {

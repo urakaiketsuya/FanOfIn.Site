@@ -8,11 +8,11 @@ import { buildDeckBuilderPath, deckBuilderParamsFromDecklist } from "../../lib/d
 import { useComparisonData } from "./useComparisonData";
 import type { ComparedDeck } from "./types";
 
-const PILLARS: { key: "aggro" | "consistency" | "interaction" | "resilience"; label: string }[] = [
-  { key: "aggro", label: "Aggro" },
-  { key: "consistency", label: "Consistency" },
+const PILLARS: { key: "durability" | "interaction" | "aggro" | "opportunity"; label: string }[] = [
+  { key: "durability", label: "Durability" },
   { key: "interaction", label: "Interaction" },
-  { key: "resilience", label: "Resilience" },
+  { key: "aggro", label: "Aggro" },
+  { key: "opportunity", label: "Opportunity" },
 ];
 
 /** Index of the highest value in `values`, or -1 if there's nothing to compare (fewer than 2 real values, or a tie). */
@@ -147,7 +147,7 @@ export default function ComparisonGrid({
 
           <tr>
             <td className="sticky left-0 z-10 bg-ctp-base py-1.5 pr-6 text-xs font-semibold uppercase text-ctp-subtext0">
-              Power rating
+              DIAO score
             </td>
             {deckStats.map((s, i) => (
               <td key={s.key} className={`py-1.5 pr-6 font-semibold ${i === bestCompositeIndex ? "text-ctp-blue" : "text-ctp-text"}`}>

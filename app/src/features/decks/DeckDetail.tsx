@@ -337,11 +337,11 @@ export default function DeckDetail() {
       {tab === "decklist" && rating && (
         <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Power Rating</h2>
+            <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">DIAO Score</h2>
             <span className="text-2xl font-bold text-ctp-blue">{rating.composite.toFixed(2)}</span>
           </div>
           <div className="mt-3 space-y-2">
-            {(["aggro", "consistency", "interaction", "resilience"] as RatingPillar[]).map((pillar) => (
+            {(["durability", "interaction", "aggro", "opportunity"] as RatingPillar[]).map((pillar) => (
               <div key={pillar} className="flex items-center gap-2 text-sm">
                 <span className="w-24 shrink-0 capitalize text-ctp-subtext1">{pillar}</span>
                 <div className="h-2 flex-1 rounded-full bg-ctp-surface0">

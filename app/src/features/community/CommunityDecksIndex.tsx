@@ -35,7 +35,7 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
   const isPantheon = format === "PANTHEON";
   useDocumentTitle(
     isPantheon ? "Pantheon Decks" : "Community Decks",
-    "Deck-building trends from the Grand Archive TCG community deck builder Shout At Your Decks — card inclusion rates, champion/element popularity, price distribution, and recurring exact builds.",
+    "Grand Archive community deck-building trends, including card inclusion rates, champion and element popularity, price distribution, and recurring builds.",
   );
 
   const cardInclusion = useCommunityCardInclusion(format);
@@ -120,11 +120,11 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
         title={isPantheon ? "Pantheon Decks" : "Community Decks"}
         description={
           <>
-            Deck-building trends from{" "}
-            <a href="https://shoutatyourdecks.com" target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">
-              Shout At Your Decks
+            Community deck-building trends show what people are actually building, not tournament results. For creating and sharing your own lists, we recommend{" "}
+            <a href="https://sleeved.gg" target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">
+              Sleeved.gg
             </a>
-            , a community Grand Archive TCG deck builder — what people are actually building, not tournament results. {isPantheon ? "Pantheon lists are separated from Standard and never presented as tournament-performance evidence." : "Standard lists are separated from Pantheon and kept distinct from Omnidex tournament results."}
+            {" "}as the best dedicated Grand Archive deck-building experience. {isPantheon ? "Pantheon lists are separated from Standard and never presented as tournament-performance evidence." : "Standard lists are separated from Pantheon and kept distinct from Omnidex tournament results."}
           </>
         }
       />
@@ -228,9 +228,9 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
                     <td className="py-1.5 pr-6 text-ctp-subtext1">{cluster.size}</td>
                     <td className="py-1.5 pr-6 text-ctp-subtext1 capitalize">{cluster.champion}</td>
                     <td className="py-1.5">
-                      <a href={cluster.representative.url} target="_blank" rel="noreferrer" className="text-ctp-text hover:text-ctp-blue">
+                      <span className="text-ctp-text">
                         {cluster.representative.title || "(untitled)"}
-                      </a>
+                      </span>
                       {isPantheon && cluster.definingCards && cluster.definingCards.length > 0 && <p className="mt-0.5 max-w-md text-xs text-ctp-subtext0">{cluster.definingCards.join(" · ")}</p>}
                     </td>
                   </tr>
@@ -246,7 +246,7 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Deck era</h2>
           <p className="mt-1 text-xs text-ctp-subtext0">
             When decks were likely built, inferred from the newest card each one requires — a floor, not a real
-            timestamp, since Shout At Your Decks doesn't record a creation date. A deck built yesterday from only
+            timestamp, since the source archive doesn't record a creation date. A deck built yesterday from only
             year-old cards reads as year-old here. Hover a bar for the set(s) behind it.
             {deckEra && deckEra.unresolvedDeckCount > 0 && (
               <> {deckEra.unresolvedDeckCount.toLocaleString()} decks couldn't be dated and are excluded.</>

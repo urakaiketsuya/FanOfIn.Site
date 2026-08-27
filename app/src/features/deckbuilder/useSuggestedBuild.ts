@@ -305,7 +305,7 @@ export function useSuggestedBuild(
   championCardOverride?: Card,
   /** When set, ranked suggestions get a small boost (see `PILLAR_BOOST_WEIGHT`) toward cards that
    * score well on this rating pillar (`cardPillarScore`, the same signals `computeDeckRating`'s
-   * Power Rating uses) — a nudge toward a chosen playstyle among cards that already cleared the
+   * DIAO Score uses) — a nudge toward a chosen playstyle among cards that already cleared the
    * real win-rate-lift bar, never a replacement for that bar. Omit for unbiased lift-only ranking,
    * unchanged from before this existed. */
   pillarBias?: RatingPillar | null,

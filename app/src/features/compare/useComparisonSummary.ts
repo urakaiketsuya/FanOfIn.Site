@@ -104,7 +104,7 @@ export function useComparisonSummary(
           priceDelta: 0,
           winRateDelta: 0,
           compositeDelta: 0,
-          pillarDeltas: { aggro: 0, consistency: 0, interaction: 0, resilience: 0 },
+          pillarDeltas: { durability: 0, interaction: 0, aggro: 0, opportunity: 0 },
           baselineChampion: baselineStats.championName,
           targetChampion: baselineStats.championName,
           championChanged: false,
@@ -206,9 +206,9 @@ export function useComparisonSummary(
         baselineStats.rating && targetStats.rating
           ? {
               aggro: targetStats.rating.scores.aggro - baselineStats.rating.scores.aggro,
-              consistency: targetStats.rating.scores.consistency - baselineStats.rating.scores.consistency,
+              opportunity: targetStats.rating.scores.opportunity - baselineStats.rating.scores.opportunity,
               interaction: targetStats.rating.scores.interaction - baselineStats.rating.scores.interaction,
-              resilience: targetStats.rating.scores.resilience - baselineStats.rating.scores.resilience,
+              durability: targetStats.rating.scores.durability - baselineStats.rating.scores.durability,
             }
           : null;
 

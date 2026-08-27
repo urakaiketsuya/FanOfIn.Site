@@ -125,7 +125,7 @@ function ProductDeckCard({
             {copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy decklist"}
           </button>
           {builderPath && <Link to={builderPath} className="rounded-md border border-ctp-green px-2.5 py-1.5 text-xs text-ctp-green hover:bg-ctp-surface0">Tune in Deck Builder →</Link>}
-          <a href={deck.sourceUrl} target="_blank" rel="noreferrer" className="rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Official source ↗</a>
+          {deck.sourceUrl && <a href={deck.sourceUrl} target="_blank" rel="noreferrer" className="rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Official source ↗</a>}
         </div>
       </div>
 

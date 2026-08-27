@@ -91,7 +91,7 @@ function inferFormat(deck: ComparedDeck, list: OmnidexDecklist | null | undefine
 
 /**
  * Single source of truth for the compare set's derived data — card-by-card presence/core/unique
- * flags and per-deck stats (price, identity, power rating) — shared by both the table (`ComparisonGrid`)
+ * flags and per-deck stats (price, identity, DIAO score) — shared by both the table (`ComparisonGrid`)
  * and stacked-card (`ComparisonCards`) views so they can't drift from each other.
  */
 export function useComparisonData(decks: ComparedDeck[], decklists: Map<string, OmnidexDecklist | null>) {

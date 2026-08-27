@@ -11,6 +11,8 @@ import { writeManifest } from "./manifest.js";
 import { runHarvest, runMetadataFetch, runDecklistFetch, runBuild as runShoutAtYourDecksBuild } from "./shoutatyourdecks/run.js";
 import { runAnalytics as runShoutAtYourDecksAnalytics } from "./shoutatyourdecks/analytics/build.js";
 import { installGracefulShutdown } from "./shoutatyourdecks/shutdown.js";
+import { runHarvest as runSleevedHarvest, runFetchDetails as runSleevedFetchDetails, runBuild as runSleevedBuild } from "./sleeved/run.js";
+import { runCommunityBlend } from "./community/blend.js";
 import { config } from "./config.js";
 import { exportSimulatorSummary } from "./simulator/export.js";
 
@@ -37,6 +39,24 @@ async function runShoutAtYourDecksMode(mode: string): Promise<void> {
 }
 
 /**
+ * sleeved.gg is a real REST API (no browser needed, see pipeline/src/sleeved/client.ts) but still
+ * run as its own explicit mode rather than folded into the default daily run below — conservative
+ * default until a live run confirms real deck volume and rate limits (see the Phase 51 plan note in
+ * tingly-sleeping-crab.md), same reasoning GATCG_SYD_MODE already applies to ShoutAtYourDecks.
+ */
+async function runSleevedMode(mode: string): Promise<void> {
+  try {
+    if (mode === "harvest") await runSleevedHarvest();
+    else if (mode === "details") await runSleevedFetchDetails();
+    else if (mode === "build") await runSleevedBuild();
+    else throw new Error(`unknown GATCG_SLEEVED_MODE "${mode}" — expected harvest|details|build`);
+  } catch (err) {
+    console.error("sleeved pipeline failed", err);
+    process.exitCode = 1;
+  }
+}
+
+/**
  * The Omnidex cache (~20,700 event files, ~398MB) is otherwise re-read from disk independently
  * by buildOmnidexIndex, buildAnalysis, and publishVods — three full listCachedBundles() scans
  * per run. Memoized per-`main()`-invocation (not a module-level singleton) so it's still read
@@ -58,6 +78,10 @@ async function main() {
   }
   if (process.env.GATCG_SYD_MODE) {
     await runShoutAtYourDecksMode(process.env.GATCG_SYD_MODE);
+    return;
+  }
+  if (process.env.GATCG_SLEEVED_MODE) {
+    await runSleevedMode(process.env.GATCG_SLEEVED_MODE);
     return;
   }
 
@@ -118,6 +142,13 @@ async function main() {
       console.error("simulator analytics export failed", err);
       process.exitCode = 1;
     }
+  }
+
+  try {
+    await runCommunityBlend();
+  } catch (err) {
+    console.error("community blend failed", err);
+    process.exitCode = 1;
   }
 
   try {

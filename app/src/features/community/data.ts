@@ -2,6 +2,7 @@ import type {
   CardDeckReferencesData,
   CardInclusionData,
   CommunityCoOccurrenceData,
+  CommunitySourceCounts,
   DeckEraData,
   PopularityData,
   PriceDistributionData,
@@ -15,6 +16,32 @@ import { usePublishedData } from "../../lib/sync/usePublishedData";
 /** Standalone ShoutAtYourDecks-derived stats — deliberately separate from every Omnidex-derived hook elsewhere in this app (see docs/CALCULATIONS.md, "ShoutAtYourDecks analytics"). */
 function formatPath(format: DeckFormat, file: string): string {
   return `/data/shoutatyourdecks/analytics/${format === "PANTHEON" ? "pantheon/" : ""}${file}.json`;
+}
+
+/** Blended ShoutAtYourDecks + Sleeved community population — see pipeline/src/community/blend.ts
+ * and docs/CALCULATIONS.md, "Community population (blended)". Every site-facing community stat
+ * (Community usage badges, Card Stats "Hype gap", Guided Deck Builder's Community population) reads
+ * from here rather than `formatPath` above, which stays ShoutAtYourDecks-only. Pair with
+ * `useCommunitySourceCounts` to disclose the per-source split rather than presenting this as
+ * single-sourced. */
+function blendedPath(format: DeckFormat, file: string): string {
+  return `/data/community/${format === "PANTHEON" ? "pantheon/" : ""}${file}.json`;
+}
+
+export function useCommunityBlendedCardInclusion(format: DeckFormat = "STANDARD") {
+  return usePublishedData<CardInclusionData>(`community-blended-card-inclusion-${format}`, blendedPath(format, "card-inclusion"));
+}
+
+export function useCommunityBlendedCoOccurrence(format: DeckFormat = "STANDARD") {
+  return usePublishedData<CommunityCoOccurrenceData>(`community-blended-co-occurrence-${format}`, blendedPath(format, "co-occurrence"));
+}
+
+export function useCommunityBlendedDeckReferences() {
+  return usePublishedData<CardDeckReferencesData>("community-blended-deck-references", "/data/community/deck-references.json");
+}
+
+export function useCommunitySourceCounts() {
+  return usePublishedData<CommunitySourceCounts>("community-source-counts", "/data/community/sources.json");
 }
 
 export function useCommunityCardInclusion(format: DeckFormat = "STANDARD") {
@@ -41,14 +68,6 @@ export function useCommunityArchetypes(format: DeckFormat = "STANDARD") {
 
 export function useCommunityDeckEra(format: DeckFormat = "STANDARD") {
   return usePublishedData<DeckEraData>(`shoutatyourdecks-deck-era-${format}`, formatPath(format, "deck-era"));
-}
-
-export function useCommunityCoOccurrence(format: DeckFormat = "STANDARD") {
-  return usePublishedData<CommunityCoOccurrenceData>(`shoutatyourdecks-co-occurrence-${format}`, formatPath(format, "co-occurrence"));
-}
-
-export function useCardDeckReferences() {
-  return usePublishedData<CardDeckReferencesData>("shoutatyourdecks-deck-references", "/data/shoutatyourdecks/analytics/deck-references.json");
 }
 
 export function useCommunityFormatSummary() {

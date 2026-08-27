@@ -580,7 +580,7 @@ functions a deck's own dedicated page uses (`computeDeckComposition`, `computeDe
 `computeMemoryCostCurve`, `computeReserveCostCurve` — all from `app/src/lib/deckIdentity.ts`),
 recomputed live from whatever's currently assembled (locked + suggested lines combined), so Power
 Rating and the composition donuts update immediately as cards are locked, added, or removed —
-verified live: locking one card changed the composite Power Rating from 6.00 to 6.25 in the same
+verified live: locking one card changed the composite DIAO Score from 6.00 to 6.25 in the same
 render pass.
 
 **Observed win rate among matching decks**: the real average win rate of decks matching the Spirit filter *and* every
@@ -930,10 +930,10 @@ reasoning as the damage classifier. Overflow buckets: memory costs above 6 are r
 against the catalog — only a handful of non-champion cards exceed 3, topping out at 12), folded
 into `"6+"`; reserve costs above 8 fold into `"8+"` (real range runs 0–16 with a long thin tail).
 
-## Deck power rating (`app/src/lib/deckIdentity.ts` — `computeDeckRating`)
+## Deck DIAO score (`app/src/lib/deckIdentity.ts` — `computeDeckRating`)
 
-A four-pillar deck power/style rating — **Aggro / Consistency / Interaction / Resilience**, each
-1–10, averaged into a composite — shown on every deck page ("Power Rating" section). Independently
+A four-pillar deck power/style rating — **Durability / Interaction / Aggro / Opportunity** (DIAO), each
+1–10, averaged into a composite — shown on every deck page ("DIAO Score" section). Independently
 designed for Grand Archive, not a port of Magic: The Gathering's CRISPI system
 ([deckcheck.co](https://deckcheck.co/blog/crispi-deep-dive), the direct inspiration): CRISPI's own
 pillars don't translate as-is. Two structural differences drove real design decisions before any
@@ -941,7 +941,7 @@ code was written:
 
 - **No tutors.** "Search your deck/memory for a card" matches only 1–3 cards in the entire catalog
   (confirmed by direct count). CRISPI's Consistency leans heavily on a tutor ladder; that has no
-  equivalent here, so Consistency is built from card draw (tiered by repeatable vs. one-shot) and
+  equivalent here, so Opportunity is built from card draw (tiered by repeatable vs. one-shot) and
   Floating Memory instead.
 - **No turn-by-turn simulation data exists anywhere** (same reason "average damage per turn" was
   ruled out entirely as a stat, see the damage-classification history). CRISPI's Speed is a
@@ -964,7 +964,7 @@ time of writing: 90 Regionals + 4 Ascent). This calibration pass changed the des
 ever became a score:
 
 - **Preserve** (a real recursion keyword, 25 cards in the full catalog) appeared in **zero** of the
-  94 winning decklists. Dropped entirely as a Resilience signal rather than shipping something
+  94 winning decklists. Dropped entirely as a Durability signal rather than shipping something
   that's always zero against real data.
 - The **median** winning deck's guaranteed champion-damage floor was **0**, and even the 75th
   percentile was still 0 — most competitive decks pressure through combat (Ally power, evasion,
@@ -984,12 +984,12 @@ every other per-deck stat). `avgNonChampionCost` and `avgAllyPower` reuse `compu
 
 - **Aggro** = `max(0, avgAllyPower−1.0)×10 + evasion×0.5 + threats×0.5 + max(0, 1.5−avgNonChampionCost)×3 + min(championDamageFloor,25)×0.2 + min(allyDamageFloor,15)×0.15`
   `evasion` = Unblockable (×3, rare/premium — only 8 cards in the whole catalog) + Ranged N (×1, common). `threats` = Ally cards with power ≥ 2.
-- **Consistency** = `min(repeatableDraw×4 + min(oneShotDraw,30), 50) + min(floatingMemory,35)×0.5`
+- **Opportunity** = `min(repeatableDraw×4 + min(oneShotDraw,30), 50) + min(floatingMemory,35)×0.5`
   `repeatableDraw` (recurring draw effects, weighted higher) vs. `oneShotDraw` (single-use), matching CRISPI's own draw-quality tiering even though the tutor half of its Consistency table doesn't apply here.
 - **Interaction** = `min(banish,30)×0.3 + destroy×0.3 + negate×2 + fastSpeed×1.5 + min(championDamageFloor,25)×0.1`
   Banish and Destroy are weighted low deliberately — banish appears in every single one of the 94 winning decks (minimum 9 copies), confirming it's table stakes, not a differentiator. Destroy is real removal but weaker than Banish here specifically because **Preserve** triggers on Destroy, not Banish — a card that's Destroyed can come back; one that's Banished can't. Negate (a real counterspell-equivalent) and Fast-speed access are weighted much higher since those are what actually separated the 94 real winners.
-- **Resilience** = `min(recover,30)×0.3 + protection×0.5 + threats×0.3`
-  `recover` is Grand Archive's life-gain keyword — a real Resilience lever with no equivalent in Commander's 40-life 4-player pods, since a `recover 3` is meaningfully large against a ~21-life champion. `protection` = Spellshroud + Intercept + Prevent combined.
+- **Durability** = `min(recover,30)×0.3 + protection×0.5 + threats×0.3`
+  `recover` is Grand Archive's life-gain keyword — a real Durability lever with no equivalent in Commander's 40-life 4-player pods, since a `recover 3` is meaningfully large against a ~21-life champion. `protection` = Spellshroud + Intercept + Prevent combined.
 
 ### Score bands
 
@@ -999,10 +999,10 @@ compresses to a flat 3, since no real tournament winner in the sample scored low
 no percentile data to subdivide 1–3 further. The composite score averages the four *converted* 1–10
 scores, not the raw points (which live on different scales) — same method CRISPI itself uses.
 
-One open finding, not yet resolved: **Resilience's score band is comparatively compressed**
+One open finding, not yet resolved: **Durability's score band is comparatively compressed**
 (median 10.2 to p75 12.1 is a narrow gap versus the other three pillars), meaning it differentiates
 real winning decks less sharply. This may mean the formula's weights need revisiting, or it may be
-a genuine signal that resilience varies less among decks that already win events than aggro/interaction
+a genuine signal that durability varies less among decks that already win events than aggro/interaction
 do — worth watching as more tournament data (the ongoing multi-year backfill) becomes available to
 recalibrate against.
 
@@ -1382,11 +1382,101 @@ Every output file's `generatedAt` is paired with a `decksConsidered` (or per-sta
 worth checking before trusting a number, since Phase 3 of the scrape (full decklist fetch) can still
 be in progress when this runs, and most of these stats depend on it.
 
+## Sleeved analytics (`pipeline/src/sleeved/`)
+
+A second community deck-builder source, `sleeved.gg` — a real REST API (`X-API-Key` header), unlike
+ShoutAtYourDecks' Playwright scrape, so no browser is needed. Its own raw cache/index
+(`data/sleeved/`) is kept fully separate from ShoutAtYourDecks (different site, different
+population), same "separate dataset" discipline as everywhere else in this doc — the two only ever
+combine downstream, in the blended layer below.
+
+- **Card resolution is exact, not fuzzy.** Confirmed live against the real API (2026-08-27): a
+  Sleeved deck's `cards[].cardId` is the card's **slug** (e.g. `"spirit-of-fire"`), not its
+  `cardNumber`/set-collector-number join key used elsewhere in this codebase — `transform.ts`
+  resolves it via `buildSlugIndex` (`pipeline/src/cards/catalog.ts`). Verified against all 17 real
+  public Grand Archive decks at the time: 0 unresolved card slugs.
+- **Champion and format are both derived, not supplied.** Sleeved gives neither field. Champion:
+  the Material-zone card with `types.includes("CHAMPION")` at the highest `level` (ties broken by
+  copy count) — the exact same rule `pipeline/src/analysis/decklists.ts`'s `findChampionName` uses
+  for Omnidex decklists, reimplemented standalone in `sleeved/transform.ts` to keep this source
+  decoupled, same precedent as `shoutatyourdecks/analytics/archetypeClustering.ts`'s
+  `canonicalSignature`. Format: the same declared-then-inferred heuristic
+  `shoutatyourdecks/format.ts`'s `classifyDeckFormat` uses for its inferred branch (singleton 60+
+  card main+material identity → Pantheon, else Standard) — Sleeved supplies no format field at all.
+- **Zones**: confirmed live against real decks that Grand Archive's zoneIds are `main`, `material`,
+  `sideboard`, plus an occasional `extra` (not every deck has one) — e.g. a champion-specific
+  Regalia/Item like "Powercell" or "Core Fractal". `extraDeck` captures `extra` and, defensively, any
+  future zoneId Sleeved might add, rather than dropping unrecognized cards. Excluded from every
+  deck-identity computation, same as sideboard.
+- **`author`** is always the fixed placeholder `"Sleeved player"` (`SLEEVED_AUTHOR_PLACEHOLDER`,
+  `shared/src/sleeved-types.ts`) — confirmed live that the bulk-details response carries no
+  owner/display-name field at all, unlike the API's own published example. **`priceLow`** is always
+  `null` — Sleeved has no price data.
+- **Filter** (`sleeved/filter.ts`): same `mainCount >= config.sleevedMinMainDeckSize` (default 60)
+  floor as ShoutAtYourDecks. No title-junk filter — Sleeved has nothing like ShoutAtYourDecks'
+  "Untitled Deck - Copy" scratch-duplicate problem.
+- **Harvest is two phases, not three**: Sleeved's public listing only returns `{id, gameId,
+  createdAt, updatedAt}` — there's no cheap-metadata middle step the way ShoutAtYourDecks has, since
+  everything (including the deck name) only comes back from the bulk-details call. `harvest` walks
+  the cursor-paginated listing for ids; `details` bulk-fetches (up to 50 ids/call) and transforms
+  everything not yet cached. Run via `GATCG_SLEEVED_MODE=harvest|details|build`, mirroring
+  `GATCG_SYD_MODE`'s dispatch — kept as its own explicit mode rather than folded into the daily run,
+  conservative default until real deck volume and rate limits are better known (Grand Archive had
+  only 17 public decks on Sleeved as of 2026-08-27).
+
+## Community population (blended) (`pipeline/src/community/blend.ts`)
+
+Both community deck-builder sources are blended into a single population for every **site-facing**
+community stat — Community usage badges, Card Stats' "Hype gap", the Guided Deck Builder's Community
+mode — while each source's own raw cache/index/analytics stays fully separate
+(`data/shoutatyourdecks/`, `data/sleeved/`). Pure local transform, no network, safe to run daily
+regardless of how often either underlying harvest itself runs.
+
+Reuses the exact same `shoutatyourdecks/analytics/*` compute functions unmodified — `SleevedDeck`
+and `ShoutAtYourDecksDeck` share an identical field shape (see `shared/src/sleeved-types.ts`'s doc
+comment) by design, so a concatenation of both is structurally a valid input. Two corrections applied
+before blending:
+
+- **Champion key normalization.** ShoutAtYourDecks stores `champion` pre-slugified (e.g.
+  `"diao-chan"` — confirmed against real cache data); a transformed Sleeved deck's `champion` is a
+  proper display name from our own catalog (e.g. `"Diao Chan"`). Left alone, every stat that
+  *groups* by champion (card inclusion, popularity, archetypes, co-occurrence) would silently
+  fragment the same champion into two buckets, one per source. `withNormalizedChampion` runs
+  `slugify` (`shared/src/slugs.ts`) over both sources before those specific computations — a no-op
+  on ShoutAtYourDecks' already-slug values. **Deck references is the one exception** — it only
+  *displays* a deck's champion (`CardDetail.tsx`'s Community decks list), never groups by it, and the
+  app already renders each source's native format correctly (Sleeved's proper display name shown
+  as-is; ShoutAtYourDecks' slug run through `formatShoutAtYourDecksChampion`) — so it's computed from
+  the un-normalized decks.
+- **Price distribution is deliberately not blended.** Sleeved decks always carry `priceLow: null`,
+  so a blended population would just look like partial missing-price data — ShoutAtYourDecks still
+  publishes its own unblended `price-distribution.json`, with no combined equivalent.
+
+Every blended dataset is paired with `data/community/sources.json`
+(`CommunitySourceCounts`) — real per-source deck counts, per format, so the UI discloses the blend
+(`useCommunitySourceCounts`, e.g. "Shout At Your Decks (20,293) + Sleeved (15)") rather than
+presenting it as single-sourced. This is a deliberate exception to this doc's usual "never conflate
+populations" rule — the user explicitly asked for exactly this blend, and the disclosure keeps it
+honest rather than silent.
+
+The blend prefers the authenticated Sleeved cache when it exists, but falls back to the committed
+`data/sleeved/decks/` copies when that ignored cache is empty. This matters on a fresh CI cache: the
+normal daily pipeline does not call Sleeved's authenticated API, and must not silently overwrite the
+combined outputs with a ShoutAtYourDecks-only population. Generated community files also retain
+their prior `generatedAt` and are left untouched when only the newly computed timestamp differs;
+unchanged source data therefore creates neither an 18 MB data diff nor a false client-cache
+invalidation.
+
+`CommunityDecksIndex.tsx` (`/community-decks`, `/pantheon` — the deck **browse** list, as opposed to
+the aggregate stats above) deliberately stays ShoutAtYourDecks-only rather than blended: each deck
+link is inherently source-specific, so merging two different sites' deck pages into one browsable
+list wasn't part of what "blended on the site" was asking for.
+
 ### Community population (`app/src/features/deckbuilder/useCommunitySuggestedBuild.ts`)
 
 The Guided Deck Builder's real assembly engine (`useSuggestedBuild.ts`, documented above) ranks by
-Omnidex win-rate lift — real tournament outcomes. ShoutAtYourDecks decks have no win/loss data at
-all (it's a deck-building site, not a tournament tracker), so blending them into that ranking would
+Omnidex win-rate lift — real tournament outcomes. Neither community source has win/loss data at
+all (they're deck-building sites, not tournament trackers), so blending them into that ranking would
 mean fabricating a performance signal. Instead, a "Tournament data / Community decks" toggle on the
 Stats tab's Tuning section swaps in a separate, much simpler build assembled by
 `useCommunitySuggestedBuild.ts`: it ranks by `percentOfDecks` (popularity, from the card inclusion
@@ -1397,11 +1487,27 @@ UNIQUE-card=1/else=4 legal max `useSuggestedBuild` already applies, and at whate
 analytics don't publish a real modal deck size to derive them from the way the tournament population
 does). Every card this hook returns has `adjustedLift`/`sample` permanently `null` and
 `removalSuggestions` permanently empty, so the existing "only show lift when present" UI guards hide
-every win-rate-specific figure on their own — Community mode additionally hides the Power Rating
+every win-rate-specific figure on their own — Community mode additionally hides the DIAO Score
 pillar-bias selector (a nudge that only makes sense against real lift data) with a one-line
 explanation instead of silently doing nothing when clicked. `DeckBuilderIndex.tsx` never touches
 `useSuggestedBuild.ts`'s own math for this — the two hooks are independent, and the toggle just picks
 which one's output feeds the shared rendering.
+
+### Simulator source — experimental (`app/src/features/deckbuilder/useSimulatorSuggestedBuild.ts`)
+
+Simulator telemetry is exposed as a third Standard deck-builder source, but deliberately does not
+pretend to be a complete deck population. The published summary currently contains anonymous,
+sample-gated per-card activity and win rate, not submitted decklists or Champion-to-card membership;
+its `cardId` may also remain a Clarent/TCGEngine-internal identifier. A simulator-only legal build
+therefore cannot be derived honestly from the available grain.
+
+The experimental mode uses the selected Champion's blended-community build as its disclosed legal
+shell. Simulator card rows that resolve to a catalog UUID or slug reorder cards already supported by
+that shell; unresolved internal IDs are ignored. Ranking uses a neutral ten-game prior around 50%
+before game count and draw/activation activity break ties. It never fabricates Card Impact,
+with-versus-without removal advice, quantity optimization, or Champion-scoped simulator claims. The
+UI always shows total recorded games, the number of catalog-resolved qualifying cards, and a warning
+that an empty simulator sample leaves the community shell unchanged.
 
 ## The "deck identity" convention
 

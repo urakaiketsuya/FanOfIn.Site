@@ -4,7 +4,7 @@ import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER, type TopCardsBySection } f
 import { useCardStatsData, useKeywordStatsData, useCompositionWinRateData } from "../archetypes/data";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useCardCombination } from "./useCardCombination";
-import { useCommunityCardInclusion } from "../community/data";
+import { useCommunityBlendedCardInclusion, useCommunitySourceCounts } from "../community/data";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import TopCardsSections from "../../components/TopCardsSections";
@@ -30,7 +30,11 @@ export default function CardStatsIndex() {
   const cardStatsData = useCardStatsData();
   const keywordStatsData = useKeywordStatsData();
   const compositionData = useCompositionWinRateData();
-  const communityCardInclusion = useCommunityCardInclusion();
+  const communityCardInclusion = useCommunityBlendedCardInclusion();
+  const communitySourceCounts = useCommunitySourceCounts();
+  const communitySourceLabel = communitySourceCounts
+    ? `community archive (${communitySourceCounts.byFormat.STANDARD.shoutatyourdecks.toLocaleString()}) + Sleeved.gg (${communitySourceCounts.byFormat.STANDARD.sleeved.toLocaleString()})`
+    : "the community archive and Sleeved.gg";
   const communityByName = useMemo(
     () => new Map((communityCardInclusion?.overall ?? []).map((c) => [c.name, c])),
     [communityCardInclusion],
@@ -96,8 +100,9 @@ export default function CardStatsIndex() {
     // "Hype gap" — community popularity minus tournament popularity, two different real
     // percentages of two different populations (brewers optimizing for fun/budget/theme vs
     // tournament players optimizing for winning), not a performance judgment. Community usage
-    // is null (not 0) when ShoutAtYourDecks has no data for this card at all, so a genuinely
-    // unbrewed card doesn't outrank one that's merely below the community dataset's own floor.
+    // is null (not 0) when the blended community dataset has no data for this card at all, so a
+    // genuinely unbrewed card doesn't outrank one that's merely below the community dataset's own
+    // floor. "Community" here blends ShoutAtYourDecks + Sleeved (see pipeline/src/community/blend.ts).
     const withHype = filtered.map((c) => {
       const communityEntry = communityByName.get(c.name);
       const communityPercent = communityEntry?.percentOfDecks ?? null;
@@ -253,9 +258,9 @@ export default function CardStatsIndex() {
 
       {sortMode === "hype" && (
         <p className="mt-2 text-xs text-ctp-subtext0">
-          Community usage (Shout At Your Decks' full brew list) minus tournament share of decks — sorted highest first:
-          cards brewers reach for far more than tournament players do. Two different populations optimizing for
-          different things (fun/budget/theme vs. winning), not a performance verdict on either.
+          Community usage (blended brew lists from {communitySourceLabel}) minus tournament share of decks — sorted
+          highest first: cards brewers reach for far more than tournament players do. Two different populations
+          optimizing for different things (fun/budget/theme vs. winning), not a performance verdict on either.
         </p>
       )}
 
@@ -287,7 +292,7 @@ export default function CardStatsIndex() {
               <th className="py-1 pr-6">Events</th>
               <th className="py-1 pr-6">Win rate</th>
               <th className="py-1 pr-6">Adjusted</th>
-              <th className="py-1 pr-6" title="Share of Shout At Your Decks community decks that include this card">Community usage</th>
+              <th className="py-1 pr-6" title={`Share of blended community decks (${communitySourceLabel}) that include this card`}>Community usage</th>
               <th className="py-1"></th>
             </tr>
           </thead>

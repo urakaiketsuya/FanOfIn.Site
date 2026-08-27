@@ -66,6 +66,7 @@ const ChangelogIndex = lazy(() => import("./features/changelog/ChangelogIndex"))
 const CommunityDecksIndex = lazy(() => import("./features/community/CommunityDecksIndex"));
 const SimulatorIndex = lazy(() => import("./features/simulator/SimulatorIndex"));
 const OfficialProductsIndex = lazy(() => import("./features/official-products/OfficialProductsIndex"));
+const LookingForIndex = lazy(() => import("./features/looking-for/LookingForIndex"));
 
 function RouteFallback() {
   useEffect(() => {
@@ -120,6 +121,7 @@ export default function AppRoutes() {
         <Route path="/community-decks" element={<CommunityDecksIndex />} />
         <Route path="/pantheon" element={<CommunityDecksIndex format="PANTHEON" />} />
         <Route path="/official-decks" element={<OfficialProductsIndex />} />
+        <Route path="/looking-for" element={<LookingForIndex />} />
         <Route path="/simulator" element={<SimulatorIndex />} />
         <Route path="/about" element={<Navigate to="/" replace />} />
       </Routes>

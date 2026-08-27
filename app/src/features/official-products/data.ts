@@ -12,7 +12,7 @@ export interface OfficialProductDeck {
   name: string;
   productCode: string;
   champions: string[];
-  sourceUrl: string;
+  sourceUrl?: string;
   releaseDate: string;
   cards: Record<"main" | "material" | "sideboard" | "mastery" | "token" | "pantheon" | "generated" | "status", OfficialProductCardLine[]>;
 }

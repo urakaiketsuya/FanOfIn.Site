@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import type { Card, CardInclusionEntry, CommunityCoOccurrenceEntry, CompositionWinRateData, CompositionWinRateStat, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
-import { championToSlug, useCommunityCardInclusion, useCommunityCoOccurrence } from "../community/data";
+import { championToSlug, useCommunityBlendedCardInclusion, useCommunityBlendedCoOccurrence } from "../community/data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCardQuantityStatsData, useCompositionWinRateData } from "../archetypes/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
@@ -31,6 +31,8 @@ import { useDeckBuilderPopulation, type DeckBuilderRow } from "./useDeckBuilderP
 import { useNearestDecks, type NearestDeck } from "./useNearestDecks";
 import { computeIdentityElements, findChampionCard, useSuggestedBuild, type SuggestedCard } from "./useSuggestedBuild";
 import { useCommunitySuggestedBuild } from "./useCommunitySuggestedBuild";
+import { useSimulatorSuggestedBuild, type SimulatorCardEvidence } from "./useSimulatorSuggestedBuild";
+import { useSimulatorSummaryData } from "../simulator/data";
 import { useCardFieldVisibility, type CardFieldVisibility } from "./useCardFieldVisibility";
 import { useBuddyCards, type BuddyCard } from "./useBuddyCards";
 import { validateDeck } from "./validateDeck";
@@ -159,7 +161,7 @@ function loadSessionSeed(): SessionSeed | null {
       lockedSections,
       rejectedCards: new Set(stored.rejectedCards ?? []),
       pillarBias: stored.pillarBias ?? null,
-      populationSource: stored.populationSource === "community" ? "community" : "tournament",
+      populationSource: stored.populationSource === "community" || stored.populationSource === "simulator" ? stored.populationSource : "tournament",
       changeLog: Array.isArray(stored.changeLog) ? stored.changeLog : [],
     };
   } catch {
@@ -326,7 +328,7 @@ function BuddyCardsList({
         <div className="mt-4 border-t border-ctp-surface0 pt-3">
           <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Community buddy cards</h3>
           <p className="mt-1 text-xs text-ctp-subtext0">
-            Same idea, from Shout At Your Decks' full deck list instead of tournament data — real co-occurrence, no win
+            Same idea, from community deck lists instead of tournament data — real co-occurrence, no win
             rate involved either way.
           </p>
           <div className="mt-2 space-y-3">
@@ -425,12 +427,12 @@ function computeCompositionGaps(
 }
 
 /** Same composition/rating stats as a deck's own dedicated page (DeckDetail.tsx), recomputed live from whatever's currently assembled — updates as cards get locked, added, or removed. */
-const PILLAR_OPTIONS: RatingPillar[] = ["aggro", "consistency", "interaction", "resilience"];
+const PILLAR_OPTIONS: RatingPillar[] = ["durability", "interaction", "aggro", "opportunity"];
 /** "tournament" ranks by real Omnidex win-rate lift (useSuggestedBuild); "community" ranks by
- * Shout At Your Decks' popularity (useCommunitySuggestedBuild) — no win/loss data, so pillar
+ * the blended community population's popularity (useCommunitySuggestedBuild) — no win/loss data, so pillar
  * tuning and lift-specific UI are unavailable in this mode. See docs/CALCULATIONS.md, "Community
  * population". */
-type PopulationSource = "tournament" | "community";
+type PopulationSource = "tournament" | "community" | "simulator";
 
 interface CardDecayReplacement {
   cardName: string;
@@ -644,11 +646,11 @@ function StatsPanel({
     <div className="mt-6">
       <div className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Power Rating</h2>
+          <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">DIAO Score</h2>
           <span className="text-2xl font-bold text-ctp-blue">{rating.composite.toFixed(2)}</span>
         </div>
         <div className="mt-3 space-y-2">
-          {(["aggro", "consistency", "interaction", "resilience"] as RatingPillar[]).map((pillar) => (
+          {(["durability", "interaction", "aggro", "opportunity"] as RatingPillar[]).map((pillar) => (
             <div key={pillar} className="flex items-center gap-2 text-sm">
               <span className="w-24 shrink-0 capitalize text-ctp-subtext1">{pillar}</span>
               <div className="h-2 flex-1 rounded-full bg-ctp-surface0">
@@ -663,7 +665,7 @@ function StatsPanel({
       <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
         <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Tuning</h2>
         <p className="mt-1 text-xs text-ctp-subtext0">
-          Bias the Build tab's ranked suggestions toward one Power Rating pillar — a small nudge among cards that
+          Bias the Build tab's ranked suggestions toward one DIAO Score pillar — a small nudge among cards that
           already clear the real win-rate bar, never a filter or override, so it never surfaces a card the data
           doesn't support. Applies to Tournament data only; Community decks carry no win rates to bias.
         </p>
@@ -973,6 +975,7 @@ function CardRow({
   showLockToggle = true,
   communityInclusion,
   communityMode = false,
+  simulatorEvidence,
   visibleFields,
 }: {
   card: SuggestedCard;
@@ -983,11 +986,13 @@ function CardRow({
   cardsByName: ReturnType<typeof useCardsByNames>;
   priceByName: Map<string, number>;
   showLockToggle?: boolean;
-  /** % of Shout At Your Decks community decks (for this Champion) that include this card — a second, clearly-separate data point, never blended into adjustedLift. */
+  /** % of blended community decks (Shout At Your Decks + Sleeved, for this Champion) that include this card — a second, clearly-separate data point, never blended into adjustedLift. */
   communityInclusion?: Map<string, CardInclusionEntry>;
   /** True when `card` came from useCommunitySuggestedBuild — an unlocked card here was placed by
    * popularity, not chosen by the viewer, so the no-lift fallback badge shouldn't say "your choice". */
   communityMode?: boolean;
+  /** Sample-gated Clarent telemetry for this card, only supplied in the experimental source. */
+  simulatorEvidence?: SimulatorCardEvidence;
   /** Which optional data fields (Cost/Price/Win rate/Sample size/Community usage) to render — the viewer's own Customize panel preference. */
   visibleFields: CardFieldVisibility;
 }) {
@@ -1053,8 +1058,11 @@ function CardRow({
         </span>
       ))}
       {visibleFields.sample && card.sample && <span className="text-xs text-ctp-subtext0">({card.sample.with} vs {card.sample.without})</span>}
+      {simulatorEvidence && <span className="text-xs text-ctp-mauve" title="Anonymous Clarent simulator telemetry; experimental and not Champion-scoped">
+        {simulatorEvidence.games} sim game{simulatorEvidence.games === 1 ? "" : "s"}{simulatorEvidence.winRate === null ? "" : ` · ${(simulatorEvidence.winRate * 100).toFixed(0)}% wins`}
+      </span>}
       {visibleFields.community && communityInclusion?.get(card.cardName) && (
-        <span className="text-xs text-ctp-mauve" title="Share of Shout At Your Decks community decks for this Champion that include this card">
+        <span className="text-xs text-ctp-mauve" title="Share of community decks for this Champion that include this card">
           {Math.round(communityInclusion.get(card.cardName)!.percentOfDecks * 100)}% brewed
         </span>
       )}
@@ -1085,6 +1093,7 @@ function SuggestionRow({
   cardsByName,
   priceByName,
   communityInclusion,
+  simulatorEvidence,
   visibleFields,
 }: {
   card: SuggestedCard;
@@ -1092,6 +1101,7 @@ function SuggestionRow({
   cardsByName: ReturnType<typeof useCardsByNames>;
   priceByName: Map<string, number>;
   communityInclusion?: Map<string, CardInclusionEntry>;
+  simulatorEvidence?: SimulatorCardEvidence;
   /** Which optional data fields (Price/Win rate/Sample size/Community usage) to render — the viewer's own Customize panel preference. */
   visibleFields: CardFieldVisibility;
 }) {
@@ -1124,8 +1134,11 @@ function SuggestionRow({
         </span>
       )}
       {visibleFields.sample && card.sample && <span className="text-xs text-ctp-subtext0">({card.sample.with} vs {card.sample.without})</span>}
+      {simulatorEvidence && <span className="text-xs text-ctp-mauve" title="Anonymous Clarent simulator telemetry; experimental and not Champion-scoped">
+        {simulatorEvidence.games} sim game{simulatorEvidence.games === 1 ? "" : "s"}{simulatorEvidence.winRate === null ? "" : ` · ${(simulatorEvidence.winRate * 100).toFixed(0)}% wins`}
+      </span>}
       {visibleFields.community && communityInclusion?.get(card.cardName) && (
-        <span className="text-xs text-ctp-mauve" title="Share of Shout At Your Decks community decks for this Champion that include this card">
+        <span className="text-xs text-ctp-mauve" title="Share of community decks for this Champion that include this card">
           {Math.round(communityInclusion.get(card.cardName)!.percentOfDecks * 100)}% brewed
         </span>
       )}
@@ -1166,7 +1179,7 @@ export default function DeckBuilderIndex() {
   const [lockedSections, setLockedSections] = useState<Map<string, LockedSection>>(() => urlSeed?.lockedSections ?? sessionSeed?.lockedSections ?? new Map());
   const [rejectedCards, setRejectedCards] = useState<Set<string>>(() => sessionSeed?.rejectedCards ?? new Set());
   const [cardInput, setCardInput] = useState("");
-  /** Tuning: nudges useSuggestedBuild's ranking toward a chosen Power Rating pillar (see its own
+  /** Tuning: nudges useSuggestedBuild's ranking toward a chosen DIAO Score pillar (see its own
    * pillarBias doc comment) — null ("Balanced") reproduces the original unbiased lift-only order. */
   const [pillarBias, setPillarBias] = useState<RatingPillar | null>(sessionSeed?.pillarBias ?? null);
   /** Tuning: swaps the assembled suggestions between real Omnidex win-rate data and Shout At Your
@@ -1231,7 +1244,7 @@ export default function DeckBuilderIndex() {
     [championCard, spiritCardForIdentity],
   );
 
-  const communityCardInclusion = useCommunityCardInclusion(deckFormat);
+  const communityCardInclusion = useCommunityBlendedCardInclusion(deckFormat);
   const communityChampData = useMemo(() => {
     if (!communityCardInclusion || !championName) return undefined;
     return communityCardInclusion.byChampion[championToSlug(championName)];
@@ -1259,12 +1272,20 @@ export default function DeckBuilderIndex() {
     pillarBias,
   );
   const communityBuild = useCommunitySuggestedBuild(communityChampData, communityLockedCards, rejectedCards, catalogByName, !communityCardInclusion, identityElements, deckFormat);
+  const simulatorSummary = useSimulatorSummaryData();
+  const simulatorResult = useSimulatorSuggestedBuild(communityBuild, simulatorSummary, cardCatalog);
   const effectivePopulationSource: PopulationSource = deckFormat === "PANTHEON" ? "community" : populationSource;
-  const build = effectivePopulationSource === "community" ? communityBuild : tournamentBuild;
+  const build = effectivePopulationSource === "community" ? communityBuild : effectivePopulationSource === "simulator" ? simulatorResult.build : tournamentBuild;
 
   const nearestDecks = useNearestDecks(allDecks, lockedCards);
-  const gateLoading = deckFormat === "PANTHEON" ? !communityCardInclusion : populationLoading;
-  const gateHasData = deckFormat === "PANTHEON" ? Boolean(communityChampData) : rows.length > 0;
+  const gateLoading = deckFormat === "PANTHEON"
+    ? !communityCardInclusion
+    : effectivePopulationSource === "simulator"
+      ? !communityCardInclusion || !simulatorSummary
+      : populationLoading;
+  const gateHasData = deckFormat === "PANTHEON" || effectivePopulationSource === "community" || effectivePopulationSource === "simulator"
+    ? Boolean(communityChampData)
+    : rows.length > 0;
 
   const spiritStats = useMemo(() => {
     const stats = new Map<string, { decks: number; winRate: number }>();
@@ -1333,7 +1354,7 @@ export default function DeckBuilderIndex() {
     [allNames, build.suggestions],
   );
   const buddyCards = useBuddyCards(rows, spiritFilter, lockedCards, placedNames);
-  const communityCoOccurrence = useCommunityCoOccurrence(deckFormat);
+  const communityCoOccurrence = useCommunityBlendedCoOccurrence(deckFormat);
   const communityBuddyCards = useMemo(() => {
     const result = new Map<string, CommunityCoOccurrenceEntry[]>();
     if (!communityCoOccurrence || !championName) return result;
@@ -1785,23 +1806,45 @@ export default function DeckBuilderIndex() {
               >
                 Community
               </button>
+              {deckFormat === "STANDARD" && <button
+                type="button"
+                role="tab"
+                aria-selected={effectivePopulationSource === "simulator"}
+                onClick={() => setPopulationSource("simulator")}
+                className={`rounded px-3 py-1 text-xs font-medium ${
+                  effectivePopulationSource === "simulator" ? "bg-ctp-mauve text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
+                }`}
+              >
+                Simulator <span className="font-normal">(Experimental)</span>
+              </button>}
             </div>
             <span className="text-xs text-ctp-subtext0">
               {effectivePopulationSource === "tournament"
                 ? "ranked by real tournament win rates"
-                : "ranked by Shout At Your Decks popularity — no win/loss data"}
+                : effectivePopulationSource === "community"
+                  ? "ranked by blended community popularity — no win/loss data"
+                  : "community shell, reordered only where simulator card evidence resolves"}
             </span>
           </div>
+
+          {effectivePopulationSource === "simulator" && <div className="mt-2 rounded-lg border border-ctp-mauve/50 bg-ctp-mauve/10 px-3 py-2 text-xs text-ctp-subtext1">
+            <span className="font-semibold text-ctp-mauve">Experimental:</span>{" "}
+            Clarent currently reports {simulatorSummary?.games ?? 0} game{simulatorSummary?.games === 1 ? "" : "s"} and {simulatorResult.matchedCards} catalog-resolved card sample{simulatorResult.matchedCards === 1 ? "" : "s"}. Simulator telemetry does not contain complete Champion-scoped decklists, so community construction supplies the legal shell; qualifying simulator rows only change card priority. No simulator evidence means the shell stays unchanged.
+          </div>}
 
           <div className="mt-2 grid overflow-hidden rounded-lg border border-ctp-surface1 bg-ctp-mantle sm:grid-cols-4">
             <div className="border-b border-ctp-surface1 px-3 py-2 sm:border-b-0 sm:border-r">
               <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Evidence</p>
-              <p className="mt-0.5 text-sm font-semibold text-ctp-text">{build.matchingDeckCount} decks</p>
-              <p className="text-[10px] text-ctp-subtext0">{build.matchingDeckCount >= 30 ? "Strong sample" : build.matchingDeckCount >= 10 ? "Limited sample" : "Exploratory"}</p>
+              <p className="mt-0.5 text-sm font-semibold text-ctp-text">
+                {build.matchingDeckCount} {effectivePopulationSource === "simulator"
+                  ? `game${build.matchingDeckCount === 1 ? "" : "s"}`
+                  : `deck${build.matchingDeckCount === 1 ? "" : "s"}`}
+              </p>
+              <p className="text-[10px] text-ctp-subtext0">{effectivePopulationSource === "simulator" ? `${simulatorResult.matchedCards} qualifying cards` : build.matchingDeckCount >= 30 ? "Strong sample" : build.matchingDeckCount >= 10 ? "Limited sample" : "Exploratory"}</p>
             </div>
             <div className="border-b border-ctp-surface1 px-3 py-2 sm:border-b-0 sm:border-r">
               <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Performance</p>
-              <p className="mt-0.5 text-sm font-semibold text-ctp-text">{build.conditionalWinRate === null ? "—" : `${(build.conditionalWinRate * 100).toFixed(0)}% observed`}</p>
+              <p className="mt-0.5 text-sm font-semibold text-ctp-text">{effectivePopulationSource === "simulator" ? "Experimental" : build.conditionalWinRate === null ? "—" : `${(build.conditionalWinRate * 100).toFixed(0)}% observed`}</p>
               {build.baselineWinRate !== null && lockedCards.size > 0 && <p className="text-[10px] text-ctp-subtext0">{build.conditionalWinRate !== null && build.conditionalWinRate - build.baselineWinRate >= 0 ? "+" : ""}{build.conditionalWinRate === null ? "" : `${((build.conditionalWinRate - build.baselineWinRate) * 100).toFixed(1)}pp`} vs. baseline</p>}
             </div>
             <div className="border-b border-ctp-surface1 px-3 py-2 sm:border-b-0 sm:border-r">
@@ -1982,7 +2025,7 @@ export default function DeckBuilderIndex() {
                 <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-md border border-ctp-blue/40 bg-ctp-blue/5 px-3 py-2 text-xs text-ctp-subtext1">
                   <span className="font-semibold text-ctp-blue">Tuning active:</span>
                   <span>{pillarBias} bias</span>
-                  <span className="text-ctp-subtext0">— nudging suggestions toward one Power Rating pillar.</span>
+                  <span className="text-ctp-subtext0">— nudging suggestions toward one DIAO Score pillar.</span>
                   <button
                     type="button"
                     onClick={() => setTab("stats")}
@@ -2010,8 +2053,9 @@ export default function DeckBuilderIndex() {
                         cardsByName={cardsByName}
                         priceByName={priceByName}
                         communityInclusion={communityInclusionByName}
+                        simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(c.cardName) : undefined}
                         visibleFields={visibleFields}
-                        communityMode={effectivePopulationSource === "community"}
+                        communityMode={effectivePopulationSource !== "tournament"}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "material")}
                         onRemove={() => removeCard(c.cardName, c.locked)}
                       />
@@ -2028,8 +2072,9 @@ export default function DeckBuilderIndex() {
                         cardsByName={cardsByName}
                         priceByName={priceByName}
                         communityInclusion={communityInclusionByName}
+                        simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(c.cardName) : undefined}
                         visibleFields={visibleFields}
-                        communityMode={effectivePopulationSource === "community"}
+                        communityMode={effectivePopulationSource !== "tournament"}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "main")}
                         onChangeQuantity={(qty) => setLockedQuantity(c.cardName, qty)}
                         onRemove={() => removeCard(c.cardName, c.locked)}
@@ -2054,8 +2099,9 @@ export default function DeckBuilderIndex() {
                         cardsByName={cardsByName}
                         priceByName={priceByName}
                         communityInclusion={communityInclusionByName}
+                        simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(c.cardName) : undefined}
                         visibleFields={visibleFields}
-                        communityMode={effectivePopulationSource === "community"}
+                        communityMode={effectivePopulationSource !== "tournament"}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "sideboard")}
                         onChangeQuantity={(qty) => setLockedQuantity(c.cardName, qty)}
                         onRemove={() => removeCard(c.cardName, c.locked)}
@@ -2081,6 +2127,7 @@ export default function DeckBuilderIndex() {
                         cardsByName={cardsByName}
                         priceByName={priceByName}
                         communityInclusion={communityInclusionByName}
+                        simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(c.cardName) : undefined}
                         visibleFields={visibleFields}
                         onAdd={() => addSuggestion(c)}
                       />
@@ -2104,6 +2151,7 @@ export default function DeckBuilderIndex() {
                         cardsByName={cardsByName}
                         priceByName={priceByName}
                         communityInclusion={communityInclusionByName}
+                        simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(c.cardName) : undefined}
                         visibleFields={visibleFields}
                         showLockToggle={false}
                         onToggleLock={() => {}}
@@ -2113,11 +2161,10 @@ export default function DeckBuilderIndex() {
                   </ul>
                 </div>
               ) : (
-                effectivePopulationSource === "community" &&
+                effectivePopulationSource !== "tournament" &&
                 championName && (
                   <p className="mt-4 text-xs text-ctp-subtext0">
-                    Cards that might hurt isn't available in Community mode — Shout At Your Decks has no win/loss data
-                    to flag underperforming choices from.
+                    Cards that might hurt isn't available in {effectivePopulationSource === "simulator" ? "Simulator" : "Community"} mode — {effectivePopulationSource === "simulator" ? "current simulator telemetry is not Champion-scoped and cannot support with-versus-without deck comparisons" : "the blended community population has no win/loss data to flag underperforming choices"}.
                   </p>
                 )
               )}
@@ -2198,8 +2245,8 @@ export default function DeckBuilderIndex() {
             <summary className="cursor-pointer font-medium hover:text-ctp-text">Data &amp; methodology</summary>
             <div className="mt-2 space-y-2">
               <DecklistCoverageNotice />
-              <StaleDataNotice generatedAt={[popularityIndexData?.generatedAt]} />
-              <p>Suggestions are correlations from public tournament decklists, not causal or predictive claims.</p>
+              <StaleDataNotice generatedAt={[popularityIndexData?.generatedAt, effectivePopulationSource === "simulator" ? simulatorSummary?.generatedAt : undefined]} />
+              <p>{effectivePopulationSource === "simulator" ? "Simulator ordering is an experimental overlay on a community-built legal shell. Telemetry is anonymous, sample-gated, and not Champion-scoped." : "Suggestions are correlations from public tournament decklists, not causal or predictive claims."}</p>
               {build.hasQuantityOptimizations && <p>Starred quantities use global copy-count evidence only when at least 30 decks support a meaningful difference; each affected card shows its source and sample.</p>}
               <p>Validation does not cover {validation.unsupportedRules.join("; ")}.</p>
             </div>

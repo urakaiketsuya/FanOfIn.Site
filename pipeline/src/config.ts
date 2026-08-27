@@ -117,4 +117,22 @@ export const config = {
 
   /** An archetype cluster (decks sharing the exact same champion + main+material card list) is only published if at least this many decks share it — a cluster of 1 is just "a deck exists," not a recurring build. */
   sydMinArchetypeClusterSize: Number(process.env.GATCG_SYD_MIN_ARCHETYPE_CLUSTER ?? 2),
+
+  /**
+   * sleeved.gg (second community deck-builder source, see pipeline/src/sleeved/README.md) is a real
+   * REST API (`X-API-Key` header) — no browser needed, unlike ShoutAtYourDecks. `sleevedApiKey` is
+   * `null` when unset (e.g. CI before the repo secret is added); every Sleeved-mode entry point
+   * checks for that and throws a clear error rather than silently no-op'ing, same spirit as
+   * `simulator/export.ts`'s `GATCG_SIMULATOR_API_URL` check.
+   */
+  sleevedApiKey: process.env.SLEEVED_API_KEY ?? null,
+
+  /** Same deck-identity floor as `sydMinMainDeckSize` — see docs/CALCULATIONS.md. */
+  sleevedMinMainDeckSize: Number(process.env.GATCG_SLEEVED_MIN_MAIN_DECK_SIZE ?? 60),
+
+  /** Politeness delay between Sleeved API calls (listing pages + bulk-details batches) — skipped in fast mode. */
+  sleevedCrawlRequestDelayMs: FAST_MODE ? 0 : Number(process.env.GATCG_SLEEVED_CRAWL_DELAY_MS ?? 250),
+
+  /** Dev-iteration cap: only harvest this many deck ids from the public listing instead of the full set. */
+  sleevedFastModeDeckLimit: Number(process.env.GATCG_SLEEVED_FAST_MODE_DECK_LIMIT ?? 50),
 };
