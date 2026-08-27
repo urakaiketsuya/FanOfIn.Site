@@ -1,165 +1,111 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Card, CardImpactEntry, CardImpactRole, OmnidexDecklist } from "@gatcg/shared";
-import type { ComparedDeck } from "./types";
-import { useComparisonData, type ComparisonDeckStats } from "./useComparisonData";
+import CardHoverPreview from "../../components/CardHoverPreview";
+import { buildDeckBuilderPath, deckBuilderParamsFromDecklist } from "../../lib/deckBuilderLink";
 import { useChampionCardImpact } from "../decks/useChampionCardImpact";
 import { useCardsByNames } from "../events/useCardsByNames";
-import CardHoverPreview from "../../components/CardHoverPreview";
+import { useComparisonData } from "./useComparisonData";
+import type { ComparedDeck } from "./types";
 
 const ROLE_LABEL: Record<CardImpactRole, string> = { main: "Main", material: "Material", sideboard: "Sideboard", mixed: "Mixed" };
 
-interface KnownDeck extends ComparisonDeckStats {
-  winRate: number;
-  championName: string;
+function shortLabel(label: string): string {
+  const at = label.indexOf(" @ ");
+  return at === -1 ? label : label.slice(0, at);
 }
 
-function SuggestionList({ cards, cardsByName, sign }: { cards: CardImpactEntry[]; cardsByName: Map<string, Card>; sign: "positive" | "negative" }) {
-  return (
-    <ul className="mt-2 space-y-1">
-      {cards.map((c) => {
-        const card = cardsByName.get(c.cardName);
-        return (
-          <li key={c.cardName} className="flex flex-wrap items-center gap-1.5 text-sm">
-            {card ? (
-              <CardHoverPreview image={card.editions[0]?.image} alt={c.cardName}>
-                <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
-                  {c.cardName}
-                </Link>
-              </CardHoverPreview>
-            ) : (
-              <span className="text-ctp-text">{c.cardName}</span>
-            )}
-            <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">{ROLE_LABEL[c.role]}</span>
-            <span className={`ml-auto shrink-0 text-xs ${sign === "positive" ? "text-ctp-green" : "text-ctp-red"}`}>
-              {c.adjustedLift >= 0 ? "+" : ""}
-              {(c.adjustedLift * 100).toFixed(0)}pp
-            </span>
-            <span className="shrink-0 text-xs text-ctp-subtext0">
-              ({c.deckCountWith} with vs {c.deckCountWithout} without)
-            </span>
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
-
-/**
- * Two lenses on the compared set, both built from useChampionCardImpact (the same hook powering
- * the Champion+Element fallback recommendation on deck pages) — no new scoring/pipeline code:
- * "help" for the lowest-win-rate deck (cards that correlate with its own Champion winning more,
- * not already in it), and "hurt" for the highest-win-rate deck (cards *not already in its own
- * list* that correlate with *other* decks of its own Champion winning *less* when included —
- * i.e. cards to be wary of adding to that deck, not tech to play against it; useChampionCardImpact
- * is scoped to one Champion's own decks throughout, it has no notion of "cards that beat this
- * Champion").
- */
-export default function ComparisonSuggestions({
-  decks,
-  decklists,
-}: {
-  decks: ComparedDeck[];
-  decklists: Map<string, OmnidexDecklist | null>;
-}) {
-  const { deckStats } = useComparisonData(decks, decklists);
-
-  const known = useMemo(
-    () => deckStats.filter((d): d is KnownDeck => d.winRate !== null && d.championName !== null),
-    [deckStats],
-  );
-
-  // A tie for lowest/highest is ambiguous about which deck to target — say nothing for that side
-  // rather than guess.
-  const target = useMemo(() => {
-    if (known.length < 2) return null;
-    const sorted = [...known].sort((a, b) => a.winRate - b.winRate);
-    return sorted[0].winRate === sorted[1].winRate ? null : sorted[0];
-  }, [known]);
-  const opponent = useMemo(() => {
-    if (known.length < 2) return null;
-    const sorted = [...known].sort((a, b) => b.winRate - a.winRate);
-    if (sorted[0].winRate === sorted[1].winRate) return null;
-    // Same deck can't be both the worst and the best performer (only possible if every known deck
-    // is tied, which the checks above already rule out) — guarded anyway for safety.
-    return sorted[0].key === target?.key ? null : sorted[0];
-  }, [known, target]);
-
-  // `championName` is the specific print resolved by findDeckChampionName (e.g. "Guo Jia, Heaven's
-  // Favored") — every dataset useChampionCardImpact reads is keyed by the base Champion name
-  // instead (e.g. "Guo Jia"), same convention used for Spirit/paste-decklist detection elsewhere.
-  const targetChampion = target ? target.championName.split(",")[0].trim() : null;
-  const opponentChampion = opponent ? opponent.championName.split(",")[0].trim() : null;
-
-  const targetExclude = useMemo(() => {
-    const list = target ? decklists.get(target.key) : null;
-    return list ? new Set([...list.main, ...list.material].map((l) => l.card)) : new Set<string>();
-  }, [target, decklists]);
-  const opponentExclude = useMemo(() => {
-    const list = opponent ? decklists.get(opponent.key) : null;
-    return list ? new Set([...list.main, ...list.material].map((l) => l.card)) : new Set<string>();
-  }, [opponent, decklists]);
-
-  const help = useChampionCardImpact(targetChampion, [], targetExclude, "best");
-  const hurt = useChampionCardImpact(opponentChampion, [], opponentExclude, "worst");
-  const cardsByName = useCardsByNames(
-    useMemo(() => [...help.cards, ...hurt.cards].map((c) => c.cardName), [help.cards, hurt.cards]),
-  );
-
-  const targetLabel = target ? decks.find((d) => d.key === target.key)?.label : undefined;
-  const opponentLabel = opponent ? decks.find((d) => d.key === opponent.key)?.label : undefined;
-
-  if (!target || !targetLabel) {
-    return (
-      <p className="text-sm text-ctp-subtext1">
-        Suggestions need at least two decks with a known win rate (real tournament sightings, not pasted decks) and
-        no tie for lowest — add another sighting deck to see this.
-      </p>
-    );
-  }
-
-  return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
-          Suggestions for {targetLabel} ({(target.winRate * 100).toFixed(0)}% win rate)
-        </h2>
-        {help.cards.length > 0 ? (
-          <>
-            <p className="mt-1 text-xs text-ctp-subtext0">
-              Cards from {help.totalDecks} other {targetChampion} decks that tended to win more, not already in this
-              deck — correlational, not a guarantee.
-            </p>
-            <SuggestionList cards={help.cards} cardsByName={cardsByName} sign="positive" />
-          </>
-        ) : (
-          <p className="mt-1 text-sm text-ctp-subtext1">
-            No card clears the sample bar for a useful suggestion against {targetLabel}'s Champion yet.
-          </p>
-        )}
-      </div>
-
-      {opponent && opponentLabel && (
-        <div>
-          <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
-            Cards to avoid adding to {opponentLabel} ({(opponent.winRate * 100).toFixed(0)}% win rate)
-          </h2>
-          {hurt.cards.length > 0 ? (
-            <>
-              <p className="mt-1 text-xs text-ctp-subtext0">
-                Cards from {hurt.totalDecks} other {opponentChampion} decks that correlate with a *lower* win rate
-                when included, not already in {opponentLabel}'s own list — this is about {opponentChampion} decks
-                in general, not tech to play against this specific deck. Correlational, not a guarantee.
-              </p>
-              <SuggestionList cards={hurt.cards} cardsByName={cardsByName} sign="negative" />
-            </>
-          ) : (
-            <p className="mt-1 text-sm text-ctp-subtext1">
-              No card clears the sample bar for this against {opponentLabel}'s Champion yet.
-            </p>
-          )}
+function EvidenceList({ cards, cardsByName, tone }: { cards: CardImpactEntry[]; cardsByName: Map<string, Card>; tone: "add" | "review" }) {
+  return <ul className="mt-3 space-y-2">
+    {cards.map((entry) => {
+      const card = cardsByName.get(entry.cardName);
+      return <li key={entry.cardName} className="rounded-lg border border-ctp-surface0 bg-ctp-base/40 p-2.5">
+        <div className="flex flex-wrap items-center gap-1.5 text-sm">
+          {card ? <CardHoverPreview image={card.editions[0]?.image} alt={entry.cardName}><Link to={`/cards/${card.slug}`} className="font-medium text-ctp-text hover:text-ctp-blue">{entry.cardName}</Link></CardHoverPreview> : <span className="font-medium text-ctp-text">{entry.cardName}</span>}
+          <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">{ROLE_LABEL[entry.role]}</span>
+          <span className={`ml-auto text-xs font-semibold ${tone === "add" ? "text-ctp-blue" : "text-ctp-yellow"}`}>{entry.adjustedLift >= 0 ? "+" : ""}{(entry.adjustedLift * 100).toFixed(1)}pp</span>
         </div>
-      )}
-    </div>
-  );
+        <p className="mt-1 text-[11px] text-ctp-subtext0">{entry.deckCountWith} decks with · {entry.deckCountWithout} without</p>
+      </li>;
+    })}
+  </ul>;
+}
+
+export default function ComparisonSuggestions({ decks, decklists }: { decks: ComparedDeck[]; decklists: Map<string, OmnidexDecklist | null> }) {
+  const { cardsByName: comparisonCards, deckStats } = useComparisonData(decks, decklists);
+  const [selectedKey, setSelectedKey] = useState(decks[0]?.key ?? "");
+
+  useEffect(() => {
+    if (!decks.some((deck) => deck.key === selectedKey)) setSelectedKey(decks[0]?.key ?? "");
+  }, [decks, selectedKey]);
+
+  const selectedIndex = Math.max(0, decks.findIndex((deck) => deck.key === selectedKey));
+  const selectedDeck = decks[selectedIndex];
+  const selectedList = selectedDeck ? decklists.get(selectedDeck.key) : null;
+  const selectedStats = deckStats[selectedIndex];
+  const champion = selectedStats?.championName?.split(",")[0].trim() ?? null;
+  const currentNames = useMemo(() => selectedList ? new Set([...selectedList.main, ...selectedList.material, ...selectedList.sideboard].map((line) => line.card)) : new Set<string>(), [selectedList]);
+  const noExclusions = useMemo(() => new Set<string>(), []);
+  const identityElements = useMemo(() => selectedStats?.elements.filter((element) => element !== "NORM") ?? [], [selectedStats]);
+
+  const additionsResult = useChampionCardImpact(champion, identityElements, currentNames, "best");
+  const weakestResult = useChampionCardImpact(champion, identityElements, noExclusions, "worst");
+  const evidenceCards = useCardsByNames(useMemo(() => [...additionsResult.cards, ...weakestResult.cards].map((entry) => entry.cardName), [additionsResult.cards, weakestResult.cards]));
+  const cardsByName = useMemo(() => new Map([...comparisonCards, ...evidenceCards]), [comparisonCards, evidenceCards]);
+  const additions = useMemo(() => additionsResult.cards.filter((entry) => entry.adjustedLift > 0 && !cardsByName.get(entry.cardName)?.types.includes("CHAMPION")).slice(0, 5), [additionsResult.cards, cardsByName]);
+  const review = useMemo(() => weakestResult.cards.filter((entry) => entry.adjustedLift < 0 && currentNames.has(entry.cardName) && !cardsByName.get(entry.cardName)?.types.includes("CHAMPION")).slice(0, 5), [weakestResult.cards, currentNames, cardsByName]);
+
+  const builderPath = useMemo(() => {
+    if (!selectedList) return null;
+    const params = deckBuilderParamsFromDecklist(selectedList, comparisonCards);
+    return params ? buildDeckBuilderPath(params.championName, params.spiritFilter, params.lockedCards, params.lockedSections) : null;
+  }, [selectedList, comparisonCards]);
+
+  const loading = additionsResult.loading || weakestResult.loading;
+  const hasEvidence = additions.length > 0 || review.length > 0;
+
+  return <div className="space-y-6">
+    <section>
+      <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Choose a deck to tune</h2>
+      <div className="mt-2 flex flex-wrap gap-1.5">
+        {decks.map((deck) => <button key={deck.key} type="button" onClick={() => setSelectedKey(deck.key)} title={deck.label} className={`max-w-64 truncate rounded-full border px-2.5 py-1 text-xs ${deck.key === selectedDeck?.key ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`}>{shortLabel(deck.label)}</button>)}
+      </div>
+    </section>
+
+    {!selectedList && <p className="rounded-xl border border-ctp-surface1 p-4 text-sm text-ctp-subtext1">This decklist is unavailable, so it can’t be tuned.</p>}
+
+    {selectedList && <>
+      <section className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h2 className="font-semibold text-ctp-text">{shortLabel(selectedDeck.label)}</h2>
+            <p className="mt-1 text-xs text-ctp-subtext0">{champion ? `${champion} evidence across ${Math.max(additionsResult.totalDecks, weakestResult.totalDecks)} tournament decks` : "Champion could not be resolved"}</p>
+          </div>
+          {builderPath && <Link to={builderPath} className="rounded-md border border-ctp-blue px-2.5 py-1.5 text-xs font-medium text-ctp-blue hover:bg-ctp-surface0">Tune in Guided Deck Builder →</Link>}
+        </div>
+      </section>
+
+      {loading && <p className="text-sm text-ctp-subtext1">Loading tuning evidence…</p>}
+
+      {!loading && !hasEvidence && <section className="rounded-xl border border-ctp-surface1 p-4">
+        <h2 className="font-semibold text-ctp-text">No evidence-backed changes yet</h2>
+        <p className="mt-1 text-sm leading-6 text-ctp-subtext1">This Champion does not currently have enough with-versus-without samples for a reliable card recommendation. The deck remains available in the Guided Deck Builder for composition, synergy-readiness, and legality analysis.</p>
+      </section>}
+
+      {!loading && hasEvidence && <div className="grid items-start gap-4 lg:grid-cols-2">
+        <section className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
+          <h2 className="font-semibold text-ctp-text">Evidence-backed additions</h2>
+          <p className="mt-1 text-xs leading-5 text-ctp-subtext0">Cards not currently in this list that correlate with stronger results in other {champion} decks.</p>
+          {additions.length > 0 ? <EvidenceList cards={additions} cardsByName={cardsByName} tone="add" /> : <p className="mt-3 text-sm text-ctp-subtext1">No absent card clears the positive-evidence bar.</p>}
+        </section>
+        <section className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
+          <h2 className="font-semibold text-ctp-text">Cards worth reviewing</h2>
+          <p className="mt-1 text-xs leading-5 text-ctp-subtext0">Cards already in this list that correlate with weaker results in other {champion} decks. This is a review signal, not an automatic cut.</p>
+          {review.length > 0 ? <EvidenceList cards={review} cardsByName={cardsByName} tone="review" /> : <p className="mt-3 text-sm text-ctp-subtext1">None of this deck’s cards appear among the strongest negative signals.</p>}
+        </section>
+      </div>}
+    </>}
+
+    <p className="text-xs leading-5 text-ctp-overlay1">Tuning evidence is correlational and Bayesian-shrunk. It describes other decks using the same Champion; it does not prove that adding or removing a card will improve this list.</p>
+  </div>;
 }

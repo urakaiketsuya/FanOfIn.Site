@@ -7,7 +7,6 @@ import PasteDecklist from "./PasteDecklist";
 import ComparisonSummary from "./ComparisonSummary";
 import ComparisonGrid from "./ComparisonGrid";
 import ComparisonDifferences from "./ComparisonDifferences";
-import ComparisonCards from "./ComparisonCards";
 import ComparisonCardStats from "./ComparisonCardStats";
 import ComparisonSuggestions from "./ComparisonSuggestions";
 import CardCompareIndex from "./CardCompareIndex";
@@ -27,13 +26,12 @@ const COMPARE_TYPE_LABELS: Record<CompareType, string> = { decks: "Decks", cards
 const COMPARE_TYPE_KEYS = Object.keys(COMPARE_TYPE_LABELS) as CompareType[];
 
 type SourceTab = "cards" | "player" | "topDecks" | "paste";
-type ViewMode = "summary" | "table" | "cards" | "cardStats" | "suggestions";
+type ViewMode = "summary" | "table" | "cardStats" | "suggestions";
 const VIEW_MODE_LABELS: Record<ViewMode, string> = {
-  summary: "Summary",
+  summary: "Overview",
   table: "Table",
-  cards: "Cards",
   cardStats: "Card Stats",
-  suggestions: "Suggested Changes",
+  suggestions: "Tuning",
 };
 const VIEW_MODE_KEYS = Object.keys(VIEW_MODE_LABELS) as ViewMode[];
 
@@ -64,11 +62,7 @@ export default function CompareIndex() {
   // Summary answers "what's different" at a glance regardless of viewport — the other views are
   // for drilling into the raw matrix once that question is answered.
   const [viewMode, setViewMode] = useTabParam<ViewMode>("view", VIEW_MODE_KEYS, "summary");
-  // The "Cards" view is per-deck stacked panels that only earn their place once 3+ decks make the
-  // side-by-side table too wide — for 2 decks the Table already shows the same shared/unique
-  // signal in one row per card. Hide it there, and fall back to Summary if the count drops below 3.
-  const visibleViewModes = useMemo(() => VIEW_MODE_KEYS.filter((m) => (m === "cards" ? decks.length >= 3 : true)), [decks.length]);
-  const effectiveViewMode: ViewMode = viewMode === "cards" && decks.length < 3 ? "summary" : viewMode;
+  const effectiveViewMode = viewMode;
   const [baselineKey, setBaselineKey] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const playersData = useOmnidexPlayers();
@@ -82,6 +76,17 @@ export default function CompareIndex() {
   const [shareCopyState, setShareCopyState] = useState<"idle" | "copied" | "failed">("idle");
   const [confirmClear, setConfirmClear] = useState(false);
   const confirmClearTimerRef = useRef<number | null>(null);
+
+  // The former stacked Cards view duplicated the Overview and responsive Table. Preserve old
+  // bookmarks/share links by moving them to the complete card-by-card Table instead.
+  useEffect(() => {
+    if (searchParams.get("view") !== "cards") return;
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.set("view", "table");
+      return next;
+    }, { replace: true });
+  }, [searchParams, setSearchParams]);
 
   // Seeds the compare set from a `?add=eventId:player,...` link (e.g. from an event's pairings
   // or an achievement unlock) — once player/event data is available, then clears the param so it
@@ -331,9 +336,9 @@ export default function CompareIndex() {
 
               {decks.length > 0 && (
                 <>
-                  <div role="tablist" aria-label="Comparison view" className="flex flex-wrap gap-1 text-xs">
+                  <div role="tablist" aria-label="Comparison view" className="flex flex-wrap items-center gap-1 text-xs">
                     <span className="text-xs text-ctp-subtext0">View:</span>
-                    {visibleViewModes.map((mode) => (
+                    {VIEW_MODE_KEYS.map((mode) => (
                       <button
                         key={mode}
                         type="button"
@@ -358,6 +363,7 @@ export default function CompareIndex() {
                         decklists={decklists}
                         baselineKey={effectiveBaselineKey}
                         onBaselineChange={setBaselineKey}
+                        onViewAllDifferences={() => setViewMode("table")}
                       />
                     )}
                     {effectiveViewMode === "table" && (
@@ -373,7 +379,6 @@ export default function CompareIndex() {
                         </div>
                       </>
                     )}
-                    {effectiveViewMode === "cards" && <ComparisonCards decks={decks} decklists={decklists} />}
                     {effectiveViewMode === "cardStats" && <ComparisonCardStats decks={decks} decklists={decklists} />}
                     {effectiveViewMode === "suggestions" && <ComparisonSuggestions decks={decks} decklists={decklists} />}
                   </div>

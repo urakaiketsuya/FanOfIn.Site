@@ -7,6 +7,7 @@ import ElementRail from "../../components/ElementRail";
 import PageHeader from "../../components/ui/PageHeader";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { buildDeckBuilderPath, deckBuilderParamsFromDecklist } from "../../lib/deckBuilderLink";
+import { encodeCustomDecks } from "../../lib/compareShareLink";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { buildDecklistText } from "../events/DecklistView";
 import { officialProductDecks, officialProductsSource, PRODUCT_LABELS, type OfficialProductCardLine, type OfficialProductDeck } from "./data";
@@ -47,7 +48,19 @@ function ProductCardLine({ line, cardsByName }: { line: OfficialProductCardLine;
   );
 }
 
-function ProductDeckCard({ deck, cardsByName }: { deck: OfficialProductDeck; cardsByName: Map<string, Card> }) {
+function ProductDeckCard({
+  deck,
+  cardsByName,
+  compareSelected,
+  compareDisabled,
+  onToggleCompare,
+}: {
+  deck: OfficialProductDeck;
+  cardsByName: Map<string, Card>;
+  compareSelected: boolean;
+  compareDisabled: boolean;
+  onToggleCompare: () => void;
+}) {
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
   const decklist = useMemo(() => asDecklist(deck), [deck]);
   const builderPath = useMemo(() => {
@@ -92,6 +105,19 @@ function ProductDeckCard({ deck, cardsByName }: { deck: OfficialProductDeck; car
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={onToggleCompare}
+            disabled={compareDisabled}
+            aria-pressed={compareSelected}
+            className={`rounded-md border px-2.5 py-1.5 text-xs ${
+              compareSelected
+                ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue"
+                : "border-ctp-surface1 text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text disabled:cursor-not-allowed disabled:opacity-40"
+            }`}
+          >
+            {compareSelected ? "Selected to compare ✓" : "Select to compare"}
+          </button>
           <button type="button" onClick={copyDecklist} className="rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">
             {copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy decklist"}
           </button>
@@ -127,11 +153,25 @@ export default function OfficialProductsIndex() {
   const cardsByName = useMemo(() => new Map(catalog.map((card) => [card.name, card])), [catalog]);
   const [product, setProduct] = useState("all");
   const [query, setQuery] = useState("");
+  const [compareIds, setCompareIds] = useState<string[]>([]);
   const products = useMemo(() => Array.from(new Set(officialProductDecks.map((deck) => deck.productCode))), []);
   const visible = useMemo(() => {
     const needle = query.trim().toLowerCase();
     return officialProductDecks.filter((deck) => (product === "all" || deck.productCode === product) && (!needle || deck.name.toLowerCase().includes(needle) || deck.champions.some((champion) => champion.toLowerCase().includes(needle))));
   }, [product, query]);
+  const comparedDecks = useMemo(
+    () => compareIds.map((id) => officialProductDecks.find((deck) => deck.id === id)).filter((deck): deck is OfficialProductDeck => deck !== undefined),
+    [compareIds],
+  );
+  const comparePath = useMemo(() => {
+    if (comparedDecks.length < 2) return null;
+    const custom = encodeCustomDecks(comparedDecks.map((deck) => ({ label: deck.name, decklist: asDecklist(deck) })));
+    return `/compare?${new URLSearchParams({ custom, panel: "compare" }).toString()}`;
+  }, [comparedDecks]);
+
+  function toggleCompare(id: string) {
+    setCompareIds((current) => current.includes(id) ? current.filter((selected) => selected !== id) : current.length < 4 ? [...current, id] : current);
+  }
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
@@ -145,8 +185,28 @@ export default function OfficialProductsIndex() {
         </select>
       </div>
 
+      <div className={`mb-6 rounded-xl border p-3 shadow-sm backdrop-blur transition-colors ${compareIds.length > 0 ? "sticky top-16 z-30 border-ctp-blue/50 bg-ctp-base/95" : "border-ctp-surface0 bg-ctp-mantle/30"}`}>
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="min-w-48 flex-1">
+            <p className="text-sm font-semibold text-ctp-text">Compare starter decks</p>
+            <p className="mt-0.5 text-xs text-ctp-subtext0">
+              {compareIds.length === 0 && "Select two to four products below."}
+              {compareIds.length === 1 && "One selected — choose one more."}
+              {compareIds.length >= 2 && compareIds.length < 4 && `Ready to compare ${compareIds.length} decks — add up to ${4 - compareIds.length} more.`}
+              {compareIds.length === 4 && "Four selected — ready to compare."}
+            </p>
+          </div>
+          {comparedDecks.map((deck) => (
+            <button key={deck.id} type="button" onClick={() => toggleCompare(deck.id)} title={`Remove ${deck.name}`} className="rounded-full border border-ctp-blue/50 bg-ctp-base px-2.5 py-1 text-xs text-ctp-blue hover:border-ctp-red hover:text-ctp-red">
+              {deck.name} ×
+            </button>
+          ))}
+          {comparePath && <Link to={comparePath} className="rounded-md bg-ctp-blue px-3 py-2 text-sm font-semibold text-ctp-base hover:brightness-110">Compare selected →</Link>}
+        </div>
+      </div>
+
       <p className="mb-3 text-xs text-ctp-subtext0">Showing {visible.length} official deck{visible.length === 1 ? "" : "s"}</p>
-      <div className="grid gap-4 lg:grid-cols-2">{visible.map((deck) => <ProductDeckCard key={deck.id} deck={deck} cardsByName={cardsByName} />)}</div>
+      <div className="grid items-start gap-4 lg:grid-cols-2">{visible.map((deck) => <ProductDeckCard key={deck.id} deck={deck} cardsByName={cardsByName} compareSelected={compareIds.includes(deck.id)} compareDisabled={compareIds.length === 4 && !compareIds.includes(deck.id)} onToggleCompare={() => toggleCompare(deck.id)} />)}</div>
       {visible.length === 0 && <p className="rounded-xl border border-ctp-surface0 p-8 text-center text-sm text-ctp-subtext1">No official products match those filters.</p>}
     </div>
   );
