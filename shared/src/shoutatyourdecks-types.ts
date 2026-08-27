@@ -4,6 +4,9 @@ export interface DeckLine {
   quantity: number;
 }
 
+export type DeckFormat = "STANDARD" | "PANTHEON" | "UNKNOWN";
+export type DeckFormatConfidence = "declared" | "inferred" | "unknown";
+
 /**
  * Cheap, HTTP-only data — pulled from a deck page's server-prerendered HTML (meta tags + the
  * "Material (N)" / "Main (N)" / "Side (N)" section headers). No browser needed to obtain this;
@@ -21,6 +24,12 @@ export interface ShoutAtYourDecksDeckSummary {
   mainCount: number | null;
   sideCount: number;
   fetchedAt: string;
+  /** Source-declared format when available; older cached records are classified during publish. */
+  format?: DeckFormat;
+  formatConfidence?: DeckFormatConfidence;
+  /** Optional lean browse metadata published for locally stored Pantheon lists. */
+  cardNames?: string[];
+  boonNames?: string[];
 }
 
 /**
@@ -30,6 +39,8 @@ export interface ShoutAtYourDecksDeckSummary {
  */
 export interface ShoutAtYourDecksDeck extends ShoutAtYourDecksDeckSummary {
   materialDeck: DeckLine[];
+  /** Pantheon zone, containing the deck's selected Boon cards. */
+  pantheonDeck?: DeckLine[];
   mainDeck: DeckLine[];
   sideDeck: DeckLine[];
 }

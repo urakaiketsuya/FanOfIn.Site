@@ -34,6 +34,13 @@ const MANIFEST_ENTRIES: { key: string; file: string }[] = [
   { key: "analysis-matchup-card-impact", file: "analysis/matchup-card-impact.json" },
   { key: "analysis-archetype-taxonomy-validation", file: "analysis/archetype-taxonomy-validation.json" },
   { key: "simulator-summary", file: "simulator/summary.json" },
+  { key: "shoutatyourdecks-format-summary", file: "shoutatyourdecks/analytics/format-summary.json" },
+  { key: "shoutatyourdecks-index", file: "shoutatyourdecks/index.json" },
+  { key: "shoutatyourdecks-pantheon-decks", file: "shoutatyourdecks/analytics/pantheon/decks.json" },
+  ...["card-inclusion", "popularity", "price-distribution", "archetypes", "deck-era", "co-occurrence", "deck-references"].flatMap((name) => [
+    { key: `shoutatyourdecks-${name}-STANDARD`, file: `shoutatyourdecks/analytics/${name}.json` },
+    { key: `shoutatyourdecks-${name}-PANTHEON`, file: `shoutatyourdecks/analytics/pantheon/${name}.json` },
+  ]),
 ];
 
 /**

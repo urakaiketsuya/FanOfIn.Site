@@ -6,42 +6,63 @@ import type {
   PopularityData,
   PriceDistributionData,
   ShoutAtYourDecksArchetypeClusteringData,
+  CommunityFormatSummaryData,
+  DeckFormat,
+  ShoutAtYourDecksDeckSummary,
 } from "@gatcg/shared";
 import { usePublishedData } from "../../lib/sync/usePublishedData";
 
 /** Standalone ShoutAtYourDecks-derived stats — deliberately separate from every Omnidex-derived hook elsewhere in this app (see docs/CALCULATIONS.md, "ShoutAtYourDecks analytics"). */
-export function useCommunityCardInclusion() {
-  return usePublishedData<CardInclusionData>("shoutatyourdecks-card-inclusion", "/data/shoutatyourdecks/analytics/card-inclusion.json");
+function formatPath(format: DeckFormat, file: string): string {
+  return `/data/shoutatyourdecks/analytics/${format === "PANTHEON" ? "pantheon/" : ""}${file}.json`;
 }
 
-export function useCommunityPopularity() {
-  return usePublishedData<PopularityData>("shoutatyourdecks-popularity", "/data/shoutatyourdecks/analytics/popularity.json");
+export function useCommunityCardInclusion(format: DeckFormat = "STANDARD") {
+  return usePublishedData<CardInclusionData>(`shoutatyourdecks-card-inclusion-${format}`, formatPath(format, "card-inclusion"));
 }
 
-export function useCommunityPriceDistribution() {
+export function useCommunityPopularity(format: DeckFormat = "STANDARD") {
+  return usePublishedData<PopularityData>(`shoutatyourdecks-popularity-${format}`, formatPath(format, "popularity"));
+}
+
+export function useCommunityPriceDistribution(format: DeckFormat = "STANDARD") {
   return usePublishedData<PriceDistributionData>(
-    "shoutatyourdecks-price-distribution",
-    "/data/shoutatyourdecks/analytics/price-distribution.json",
+    `shoutatyourdecks-price-distribution-${format}`,
+    formatPath(format, "price-distribution"),
   );
 }
 
-export function useCommunityArchetypes() {
+export function useCommunityArchetypes(format: DeckFormat = "STANDARD") {
   return usePublishedData<ShoutAtYourDecksArchetypeClusteringData>(
-    "shoutatyourdecks-archetypes",
-    "/data/shoutatyourdecks/analytics/archetypes.json",
+    `shoutatyourdecks-archetypes-${format}`,
+    formatPath(format, "archetypes"),
   );
 }
 
-export function useCommunityDeckEra() {
-  return usePublishedData<DeckEraData>("shoutatyourdecks-deck-era", "/data/shoutatyourdecks/analytics/deck-era.json");
+export function useCommunityDeckEra(format: DeckFormat = "STANDARD") {
+  return usePublishedData<DeckEraData>(`shoutatyourdecks-deck-era-${format}`, formatPath(format, "deck-era"));
 }
 
-export function useCommunityCoOccurrence() {
-  return usePublishedData<CommunityCoOccurrenceData>("shoutatyourdecks-co-occurrence", "/data/shoutatyourdecks/analytics/co-occurrence.json");
+export function useCommunityCoOccurrence(format: DeckFormat = "STANDARD") {
+  return usePublishedData<CommunityCoOccurrenceData>(`shoutatyourdecks-co-occurrence-${format}`, formatPath(format, "co-occurrence"));
 }
 
 export function useCardDeckReferences() {
   return usePublishedData<CardDeckReferencesData>("shoutatyourdecks-deck-references", "/data/shoutatyourdecks/analytics/deck-references.json");
+}
+
+export function useCommunityFormatSummary() {
+  return usePublishedData<CommunityFormatSummaryData>("shoutatyourdecks-format-summary", "/data/shoutatyourdecks/analytics/format-summary.json");
+}
+
+export function useCommunityDeckIndex() {
+  // The root index remains available between community analytics rebuilds; Pantheon browsing
+  // filters its classified records locally and therefore does not disappear during a partial run.
+  return usePublishedData<{ generatedAt: string; decks: ShoutAtYourDecksDeckSummary[] }>("shoutatyourdecks-index", "/data/shoutatyourdecks/index.json");
+}
+
+export function usePantheonDeckIndex() {
+  return usePublishedData<{ generatedAt: string; decks: ShoutAtYourDecksDeckSummary[] }>("shoutatyourdecks-pantheon-decks", "/data/shoutatyourdecks/analytics/pantheon/decks.json");
 }
 
 /** "Diao Chan" -> "diao-chan" — the inverse of CommunityDecksIndex.tsx's formatChampionName. Every real champion name today is plain ASCII words (confirmed against the real byChampion keys), so a simple lowercase+hyphenate is sufficient. */

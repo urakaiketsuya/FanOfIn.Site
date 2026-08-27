@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { parseDecklist } from "./parseDecklist";
 import type { ComparedDeck } from "./types";
+import type { DeckFormat } from "@gatcg/shared";
 
 let nextCustomId = 1;
 
@@ -8,6 +9,7 @@ export default function PasteDecklist({ onAdd }: { onAdd: (deck: ComparedDeck) =
   const [label, setLabel] = useState("");
   const [text, setText] = useState("");
   const [lastSkipped, setLastSkipped] = useState<string[] | null>(null);
+  const [format, setFormat] = useState<DeckFormat>("STANDARD");
 
   function handleAdd() {
     const { decklist, skippedLines } = parseDecklist(text);
@@ -21,6 +23,7 @@ export default function PasteDecklist({ onAdd }: { onAdd: (deck: ComparedDeck) =
       key: `custom-${nextCustomId++}`,
       label: label.trim() || `Custom deck ${nextCustomId - 1}`,
       source: { kind: "custom", decklist },
+      format,
     });
     setLabel("");
     setText("");
@@ -41,6 +44,11 @@ export default function PasteDecklist({ onAdd }: { onAdd: (deck: ComparedDeck) =
         placeholder="Deck name (optional)"
         className="mt-2 w-full max-w-sm rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
       />
+
+      <select value={format} onChange={(event) => setFormat(event.target.value as DeckFormat)} aria-label="Deck format" className="mt-2 rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text">
+        <option value="STANDARD">Standard</option>
+        <option value="PANTHEON">Pantheon</option>
+      </select>
 
       <textarea
         value={text}

@@ -1,4 +1,4 @@
-import type { Card } from "@gatcg/shared";
+import type { Card, DeckFormat } from "@gatcg/shared";
 
 export type DeckValidationStatus = "Legal" | "Incomplete" | "Illegal";
 
@@ -17,6 +17,7 @@ export function validateDeck(
   sections: { main: Line[]; material: Line[]; sideboard: Line[] },
   cardsByName: Map<string, Card>,
   identityElements: Set<string>,
+  format: DeckFormat = "STANDARD",
 ): DeckValidationResult {
   const illegal: string[] = [];
   const incomplete: string[] = [];
@@ -37,10 +38,11 @@ export function validateDeck(
       incomplete.push(`${name}: card data unavailable, so legality cannot be checked.`);
       continue;
     }
-    const standardLimit = card.legality?.STANDARD?.limit;
-    const copyLimit = standardLimit ?? 4;
-    if (standardLimit === 0) illegal.push(`${name} is not legal in Standard.`);
-    else if (quantity > copyLimit) illegal.push(`${name}: ${quantity} copies exceeds the ${copyLimit}-copy Standard limit.`);
+    const formatLimit = card.legality?.[format]?.limit;
+    const copyLimit = formatLimit ?? (format === "PANTHEON" ? 1 : 4);
+    const label = format === "PANTHEON" ? "Pantheon" : "Standard";
+    if (formatLimit === 0) illegal.push(`${name} is not legal in ${label}.`);
+    else if (quantity > copyLimit) illegal.push(`${name}: ${quantity} copies exceeds the ${copyLimit}-copy ${label} limit.`);
     if (!card.types.includes("CHAMPION") && effectiveIdentityElements.size > 0 && card.elements.length > 0 &&
         !card.elements.some((element) => element === "NORM" || effectiveIdentityElements.has(element))) {
       illegal.push(`${name} is outside the Champion/Spirit element identity.`);
@@ -50,7 +52,7 @@ export function validateDeck(
   const mainTotal = sections.main.reduce((sum, line) => sum + line.quantity, 0);
   const materialTotal = sections.material.reduce((sum, line) => sum + line.quantity, 0);
   const sideboardTotal = sections.sideboard.reduce((sum, line) => sum + line.quantity, 0);
-  if (mainTotal < 60) incomplete.push(`Main deck needs ${60 - mainTotal} more card${60 - mainTotal === 1 ? "" : "s"} for Standard.`);
+  if (mainTotal < 60) incomplete.push(`Main deck needs ${60 - mainTotal} more card${60 - mainTotal === 1 ? "" : "s"} for ${format === "PANTHEON" ? "Pantheon" : "Standard"}.`);
   if (materialTotal > 12) illegal.push(`Material deck has ${materialTotal} cards; maximum supported is 12.`);
   if (sideboardTotal > 12) illegal.push(`Sideboard has ${sideboardTotal} cards; maximum supported is 12.`);
 
@@ -61,6 +63,6 @@ export function validateDeck(
   return {
     status: illegal.length > 0 ? "Illegal" : incomplete.length > 0 ? "Incomplete" : "Legal",
     reasons: illegal.length > 0 ? [...illegal, ...incomplete] : incomplete,
-    unsupportedRules: ["Cards without a catalog Standard record use a flat 4-copy fallback limit", "card-text deckbuilding exceptions", "event-specific registration and banlist timing", "gameplay/tournament readiness"],
+    unsupportedRules: [`Cards without a catalog ${format} record use a ${format === "PANTHEON" ? 1 : 4}-copy fallback limit`, "card-text deckbuilding exceptions", "event-specific registration and banlist timing", "gameplay/tournament readiness"],
   };
 }

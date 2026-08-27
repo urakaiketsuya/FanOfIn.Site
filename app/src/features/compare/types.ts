@@ -1,4 +1,4 @@
-import type { OmnidexDecklist } from "@gatcg/shared";
+import type { DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 
 export type ComparedDeckSource =
   | { kind: "sighting"; eventId: number; player: number }
@@ -9,4 +9,5 @@ export interface ComparedDeck {
   key: string;
   label: string;
   source: ComparedDeckSource;
+  format?: DeckFormat;
 }

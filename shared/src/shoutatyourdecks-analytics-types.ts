@@ -1,6 +1,14 @@
 /** Published shapes for pipeline/src/shoutatyourdecks/analytics/ — see docs/CALCULATIONS.md, "ShoutAtYourDecks analytics". */
 
 import type { ShoutAtYourDecksDeckSummary } from "./shoutatyourdecks-types.js";
+import type { DeckFormat } from "./shoutatyourdecks-types.js";
+
+export interface CommunityFormatSummaryData {
+  generatedAt: string;
+  counts: Record<DeckFormat, number>;
+  confirmedCounts: Record<DeckFormat, number>;
+  inferredCounts: Record<DeckFormat, number>;
+}
 
 export interface CardInclusionEntry {
   name: string;
@@ -60,6 +68,8 @@ export interface ShoutAtYourDecksArchetypeCluster {
   representative: { title: string; url: string };
   materialDeck: { name: string; quantity: number }[];
   mainDeck: { name: string; quantity: number }[];
+  definingCards?: string[];
+  championBreakdown?: { champion: string; deckCount: number }[];
 }
 
 export interface ShoutAtYourDecksArchetypeClusteringData {

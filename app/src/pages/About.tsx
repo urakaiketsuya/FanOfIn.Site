@@ -112,14 +112,27 @@ const FEATURES: FeatureGroup[] = [
     example: { to: "/decks/xenbr4", label: "A top Silvie build" },
   },
   {
-    title: "Community Decks",
+    title: "Community & Pantheon Decks",
     items: [
       "Deck-building trends from Shout At Your Decks, a community builder — what people actually build, not tournament results, kept fully separate from the rest of this site's stats",
+      "Standard and Pantheon are classified, disclosed, and analyzed separately — unknown-format lists never contaminate either population",
+      "Browse locally stored Pantheon lists by Champion, card, or Boon, then open the full deck page for visual decklist, composition, and readiness views",
       "Champion and element popularity across 20,000+ decks",
       "Top cards by inclusion rate, and a price distribution — both filterable to one Champion's own decks",
-      "Recurring exact builds: decks sharing the literal same card list, not a fuzzy \"similar archetype\" grouping",
+      "Recurring exact Standard builds, plus fuzzy Pantheon strategy shells with defining cards and Champion breakdowns",
     ],
-    example: { to: "/community-decks", label: "Open Community Decks" },
+    example: { to: "/pantheon", label: "Open Pantheon Decks" },
+  },
+  {
+    title: "Official Product Decks",
+    items: [
+      "Starter, Re:Collection, and Pantheon product decklists stored directly on Fan of Insight",
+      "Products ordered by release date, with dedicated filters and Champion artwork",
+      "Expand complete lists with separate Boon and Token sections, or open them as regular deck pages for composition and readiness analytics",
+      "Select two to four products and send them directly into the deck comparison workspace",
+      "Copy, buy, export, playtest, or tune a printed list in the Guided Deck Builder",
+    ],
+    example: { to: "/official-decks", label: "Browse Official Products" },
   },
   {
     title: "Regions",
@@ -139,6 +152,7 @@ const FEATURES: FeatureGroup[] = [
       "Suggests cards for whichever compared deck has the lowest win rate, scoped to its own Champion",
       "Cards: line up any number of individual cards' usage, win rate, and price — one card is fine, it just shows its own numbers",
       "Share link: copies a URL that reopens the exact same compared decks for anyone you send it to",
+      "Format badges and mixed-format warnings; Pantheon comparisons withhold Standard tournament tuning evidence",
     ],
     example: { to: "/compare", label: "Open Compare" },
   },
@@ -153,6 +167,7 @@ const FEATURES: FeatureGroup[] = [
       "Composition suggestions on the Stats tab — is your Ally/Action/etc. share in a range that actually wins more?",
       "A running log of exactly how each pick shifted the rest of the suggestions",
       "Share link: copies a URL that reopens this exact Champion/Spirit and every locked-in card",
+      "Pantheon mode uses format-separated community adoption, singleton copy limits, and format-aware validation",
     ],
     example: { to: "/deck-builder", label: "Open Guided Deck Builder" },
   },
@@ -358,8 +373,8 @@ export default function About() {
         <div className="relative mx-auto max-w-3xl px-4 py-20 text-center">
           <h1 className="text-4xl font-bold text-ctp-blue sm:text-5xl">Fan of Insight</h1>
           <p className="mt-4 text-lg text-ctp-subtext1">
-            Build better Grand Archive decks with real tournament data. Explore the meta, compare proven lists, and
-            find card-by-card suggestions grounded in public results.
+            Build better Grand Archive decks with tournament data and locally stored community lists. Explore the
+            Standard or Pantheon meta, compare proven and official products, and find card-by-card suggestions.
           </p>
 
           <div className="mt-6 flex items-center justify-center gap-1.5">
@@ -382,6 +397,12 @@ export default function About() {
               className="rounded-md border border-ctp-surface1 px-5 py-2 text-sm font-semibold text-ctp-text hover:border-ctp-blue"
             >
               Build a Deck
+            </Link>
+            <Link
+              to="/official-decks"
+              className="rounded-md border border-ctp-surface1 px-5 py-2 text-sm font-semibold text-ctp-text hover:border-ctp-mauve"
+            >
+              Official Decks
             </Link>
           </div>
         </div>

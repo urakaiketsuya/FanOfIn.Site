@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import type { Card, CardInclusionEntry, CommunityCoOccurrenceEntry, CompositionWinRateData, CompositionWinRateStat, OmnidexDecklist } from "@gatcg/shared";
+import type { Card, CardInclusionEntry, CommunityCoOccurrenceEntry, CompositionWinRateData, CompositionWinRateStat, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import { championToSlug, useCommunityCardInclusion, useCommunityCoOccurrence } from "../community/data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCardQuantityStatsData, useCompositionWinRateData } from "../archetypes/data";
@@ -1146,6 +1146,7 @@ export default function DeckBuilderIndex() {
     "Pick a Champion and Spirit and see a suggested build assembled from the highest win-rate cards in real decks, then mark your own choices for updated suggestions.",
   );
   const [searchParams, setSearchParams] = useSearchParams();
+  const [deckFormat, setDeckFormat] = useState<DeckFormat>(() => searchParams.get("format")?.toUpperCase() === "PANTHEON" ? "PANTHEON" : "STANDARD");
   // Computed fresh each render (cheap — parsing a couple of query params), but only its value on
   // the very first render actually matters: every useState below that reads from it only consults
   // its initializer once, on mount, same as React already guarantees for lazy useState.
@@ -1230,7 +1231,7 @@ export default function DeckBuilderIndex() {
     [championCard, spiritCardForIdentity],
   );
 
-  const communityCardInclusion = useCommunityCardInclusion();
+  const communityCardInclusion = useCommunityCardInclusion(deckFormat);
   const communityChampData = useMemo(() => {
     if (!communityCardInclusion || !championName) return undefined;
     return communityCardInclusion.byChampion[championToSlug(championName)];
@@ -1239,6 +1240,12 @@ export default function DeckBuilderIndex() {
     if (!communityChampData) return undefined;
     return new Map(communityChampData.cards.map((c) => [c.name, c]));
   }, [communityChampData]);
+  const communityLockedCards = useMemo(() => {
+    if (deckFormat !== "PANTHEON" || !spiritFilter) return lockedCards;
+    const next = new Map(lockedCards);
+    next.set(spiritFilter, 1);
+    return next;
+  }, [deckFormat, spiritFilter, lockedCards]);
 
   const tournamentBuild = useSuggestedBuild(
     rows,
@@ -1251,12 +1258,13 @@ export default function DeckBuilderIndex() {
     undefined,
     pillarBias,
   );
-  const communityBuild = useCommunitySuggestedBuild(communityChampData, lockedCards, rejectedCards, catalogByName, !communityCardInclusion, identityElements);
-  const build = populationSource === "community" ? communityBuild : tournamentBuild;
+  const communityBuild = useCommunitySuggestedBuild(communityChampData, communityLockedCards, rejectedCards, catalogByName, !communityCardInclusion, identityElements, deckFormat);
+  const effectivePopulationSource: PopulationSource = deckFormat === "PANTHEON" ? "community" : populationSource;
+  const build = effectivePopulationSource === "community" ? communityBuild : tournamentBuild;
 
   const nearestDecks = useNearestDecks(allDecks, lockedCards);
-  const gateLoading = populationLoading;
-  const gateHasData = rows.length > 0;
+  const gateLoading = deckFormat === "PANTHEON" ? !communityCardInclusion : populationLoading;
+  const gateHasData = deckFormat === "PANTHEON" ? Boolean(communityChampData) : rows.length > 0;
 
   const spiritStats = useMemo(() => {
     const stats = new Map<string, { decks: number; winRate: number }>();
@@ -1325,7 +1333,7 @@ export default function DeckBuilderIndex() {
     [allNames, build.suggestions],
   );
   const buddyCards = useBuddyCards(rows, spiritFilter, lockedCards, placedNames);
-  const communityCoOccurrence = useCommunityCoOccurrence();
+  const communityCoOccurrence = useCommunityCoOccurrence(deckFormat);
   const communityBuddyCards = useMemo(() => {
     const result = new Map<string, CommunityCoOccurrenceEntry[]>();
     if (!communityCoOccurrence || !championName) return result;
@@ -1576,8 +1584,8 @@ export default function DeckBuilderIndex() {
     [build.main, build.material, build.sideboard],
   );
   const validation = useMemo(
-    () => validateDeck({ main: build.main, material: build.material, sideboard: build.sideboard }, catalogByName, identityElements),
-    [build.main, build.material, build.sideboard, catalogByName, identityElements],
+    () => validateDeck({ main: build.main, material: build.material, sideboard: build.sideboard }, catalogByName, identityElements, deckFormat),
+    [build.main, build.material, build.sideboard, catalogByName, identityElements, deckFormat],
   );
   // Buying/exporting covers the whole deck including sideboard tech, same as DecklistView.tsx.
   const massEntryUrl = useMemo(() => buildTcgplayerMassEntryUrl([...buildLines, ...sideboardLines]), [buildLines, sideboardLines]);
@@ -1613,6 +1621,7 @@ export default function DeckBuilderIndex() {
   async function handleCopyShareLink() {
     const params = new URLSearchParams();
     if (championName) params.set("champion", championName);
+    if (deckFormat === "PANTHEON") params.set("format", "pantheon");
     if (spiritFilter) params.set("spirit", spiritFilter);
     const locked = encodeLockedCards(lockedCards, lockedSections);
     if (locked) params.set("locked", locked);
@@ -1644,6 +1653,11 @@ export default function DeckBuilderIndex() {
         title="Guided Deck Builder"
         description="Choose an identity, review its data-supported core, then mark your choices and resolve the remaining flex slots."
       />
+
+      <div className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1 text-sm" role="tablist" aria-label="Deck format">
+        {(["STANDARD", "PANTHEON"] as const).map((format) => <button key={format} type="button" role="tab" aria-selected={deckFormat === format} onClick={() => { setDeckFormat(format); if (format === "PANTHEON") setPopulationSource("community"); const next = new URLSearchParams(searchParams); if (format === "PANTHEON") next.set("format", "pantheon"); else next.delete("format"); setSearchParams(next, { replace: true }); }} className={`rounded-md px-3 py-1.5 ${deckFormat === format ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>{format === "PANTHEON" ? "Pantheon" : "Standard"}</button>)}
+      </div>
+      {deckFormat === "PANTHEON" && <p className="mt-2 text-xs text-ctp-subtext0">Pantheon recommendations use format-separated community adoption and singleton legality. They do not use Standard tournament win rates.</p>}
 
       <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Champion:</span>
@@ -1702,14 +1716,14 @@ export default function DeckBuilderIndex() {
               className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
             />
             <div className="mt-2 flex flex-wrap gap-2">
-              <button
+              {deckFormat === "STANDARD" && <button
                 type="button"
                 onClick={loadPastedDecklist}
                 disabled={pasteText.trim().length === 0}
                 className="rounded-md border border-ctp-blue px-2 py-1 text-xs text-ctp-blue hover:bg-ctp-surface0 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Load decklist
-              </button>
+              </button>}
               <button
                 type="button"
                 onClick={() => {
@@ -1752,10 +1766,10 @@ export default function DeckBuilderIndex() {
               <button
                 type="button"
                 role="tab"
-                aria-selected={populationSource === "tournament"}
+                aria-selected={effectivePopulationSource === "tournament"}
                 onClick={() => setPopulationSource("tournament")}
                 className={`rounded px-3 py-1 text-xs font-medium ${
-                  populationSource === "tournament" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
+                  effectivePopulationSource === "tournament" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
                 }`}
               >
                 Tournament
@@ -1763,17 +1777,17 @@ export default function DeckBuilderIndex() {
               <button
                 type="button"
                 role="tab"
-                aria-selected={populationSource === "community"}
+                aria-selected={effectivePopulationSource === "community"}
                 onClick={() => setPopulationSource("community")}
                 className={`rounded px-3 py-1 text-xs font-medium ${
-                  populationSource === "community" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
+                  effectivePopulationSource === "community" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
                 }`}
               >
                 Community
               </button>
             </div>
             <span className="text-xs text-ctp-subtext0">
-              {populationSource === "tournament"
+              {effectivePopulationSource === "tournament"
                 ? "ranked by real tournament win rates"
                 : "ranked by Shout At Your Decks popularity — no win/loss data"}
             </span>
@@ -1964,7 +1978,7 @@ export default function DeckBuilderIndex() {
                   </div>
                 )}
               </div>
-              {pillarBias !== null && populationSource === "tournament" && (
+              {pillarBias !== null && effectivePopulationSource === "tournament" && (
                 <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-md border border-ctp-blue/40 bg-ctp-blue/5 px-3 py-2 text-xs text-ctp-subtext1">
                   <span className="font-semibold text-ctp-blue">Tuning active:</span>
                   <span>{pillarBias} bias</span>
@@ -1997,7 +2011,7 @@ export default function DeckBuilderIndex() {
                         priceByName={priceByName}
                         communityInclusion={communityInclusionByName}
                         visibleFields={visibleFields}
-                        communityMode={populationSource === "community"}
+                        communityMode={effectivePopulationSource === "community"}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "material")}
                         onRemove={() => removeCard(c.cardName, c.locked)}
                       />
@@ -2015,7 +2029,7 @@ export default function DeckBuilderIndex() {
                         priceByName={priceByName}
                         communityInclusion={communityInclusionByName}
                         visibleFields={visibleFields}
-                        communityMode={populationSource === "community"}
+                        communityMode={effectivePopulationSource === "community"}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "main")}
                         onChangeQuantity={(qty) => setLockedQuantity(c.cardName, qty)}
                         onRemove={() => removeCard(c.cardName, c.locked)}
@@ -2041,7 +2055,7 @@ export default function DeckBuilderIndex() {
                         priceByName={priceByName}
                         communityInclusion={communityInclusionByName}
                         visibleFields={visibleFields}
-                        communityMode={populationSource === "community"}
+                        communityMode={effectivePopulationSource === "community"}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "sideboard")}
                         onChangeQuantity={(qty) => setLockedQuantity(c.cardName, qty)}
                         onRemove={() => removeCard(c.cardName, c.locked)}
@@ -2099,7 +2113,7 @@ export default function DeckBuilderIndex() {
                   </ul>
                 </div>
               ) : (
-                populationSource === "community" &&
+                effectivePopulationSource === "community" &&
                 championName && (
                   <p className="mt-4 text-xs text-ctp-subtext0">
                     Cards that might hurt isn't available in Community mode — Shout At Your Decks has no win/loss data

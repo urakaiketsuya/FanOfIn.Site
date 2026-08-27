@@ -65,10 +65,13 @@ function ProductDeckCard({
   const decklist = useMemo(() => asDecklist(deck), [deck]);
   const builderPath = useMemo(() => {
     const params = deckBuilderParamsFromDecklist(decklist, cardsByName);
-    return params ? buildDeckBuilderPath(params.championName, params.spiritFilter, params.lockedCards, params.lockedSections) : null;
-  }, [decklist, cardsByName]);
+    if (!params) return null;
+    const path = buildDeckBuilderPath(params.championName, params.spiritFilter, params.lockedCards, params.lockedSections);
+    return deck.productCode === "RDOPD" ? `${path}${path.includes("?") ? "&" : "?"}format=pantheon` : path;
+  }, [deck, decklist, cardsByName]);
   const total = deck.cards.main.reduce((sum, card) => sum + card.quantity, 0);
   const productLabel = PRODUCT_LABELS[deck.productCode] ?? deck.productCode;
+  const releaseLabel = deck.releaseDate ? (deck.productCode === "DOAp" ? "Jan 2023" : new Intl.DateTimeFormat(undefined, { year: "numeric", month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(deck.releaseDate))) : null;
   const elements = useMemo(() => Array.from(new Set(
     deck.cards.material
       .map((line) => cardsByName.get(line.name))
@@ -97,7 +100,7 @@ function ProductDeckCard({
       <div className="p-4 pl-5">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-ctp-blue">{productLabel}</p>
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-ctp-blue">{productLabel}{releaseLabel && <span className="ml-2 font-normal normal-case text-ctp-subtext0">· {deck.releaseDate! > new Date().toISOString().slice(0, 10) ? "Releases" : "Released"} {releaseLabel}</span>}</p>
             <h2 className="mt-1 text-lg font-semibold text-ctp-text">{deck.name}</h2>
             <p className="mt-1 text-xs text-ctp-subtext0">{deck.cards.material.length} material · {total} main{deck.cards.mastery.length ? ` · ${deck.cards.mastery.length} mastery` : ""}{deck.cards.token.length ? ` · ${deck.cards.token.length} token types` : ""}</p>
           </div>
@@ -151,14 +154,15 @@ export default function OfficialProductsIndex() {
   useDocumentTitle("Official Product Decks", "Browse and copy official Grand Archive starter deck and Re:Collection decklists, then tune them in the Guided Deck Builder.");
   const catalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(catalog.map((card) => [card.name, card])), [catalog]);
+  const [section, setSection] = useState<"starter" | "recollection" | "pantheon">("starter");
   const [product, setProduct] = useState("all");
   const [query, setQuery] = useState("");
   const [compareIds, setCompareIds] = useState<string[]>([]);
-  const products = useMemo(() => Array.from(new Set(officialProductDecks.map((deck) => deck.productCode))), []);
+  const products = useMemo(() => Array.from(new Set(officialProductDecks.filter((deck) => section === "pantheon" ? deck.productCode === "RDOPD" : section === "recollection" ? deck.productCode.startsWith("ReC-") : !deck.productCode.startsWith("ReC-") && deck.productCode !== "RDOPD").map((deck) => deck.productCode))), [section]);
   const visible = useMemo(() => {
     const needle = query.trim().toLowerCase();
-    return officialProductDecks.filter((deck) => (product === "all" || deck.productCode === product) && (!needle || deck.name.toLowerCase().includes(needle) || deck.champions.some((champion) => champion.toLowerCase().includes(needle))));
-  }, [product, query]);
+    return officialProductDecks.filter((deck) => (section === "pantheon" ? deck.productCode === "RDOPD" : section === "recollection" ? deck.productCode.startsWith("ReC-") : !deck.productCode.startsWith("ReC-") && deck.productCode !== "RDOPD") && (section === "pantheon" || product === "all" || deck.productCode === product) && (!needle || deck.name.toLowerCase().includes(needle) || deck.champions.some((champion) => champion.toLowerCase().includes(needle)))).sort((a, b) => (b.releaseDate ?? "").localeCompare(a.releaseDate ?? "") || a.name.localeCompare(b.name));
+  }, [section, product, query]);
   const comparedDecks = useMemo(
     () => compareIds.map((id) => officialProductDecks.find((deck) => deck.id === id)).filter((deck): deck is OfficialProductDeck => deck !== undefined),
     [compareIds],
@@ -168,6 +172,7 @@ export default function OfficialProductsIndex() {
     const custom = encodeCustomDecks(comparedDecks.map((deck) => ({ label: deck.name, decklist: asDecklist(deck) })));
     return `/compare?${new URLSearchParams({ custom, panel: "compare" }).toString()}`;
   }, [comparedDecks]);
+  const sectionLabel = section === "pantheon" ? "Pantheon" : section === "recollection" ? "Re:Collection" : "starter";
 
   function toggleCompare(id: string) {
     setCompareIds((current) => current.includes(id) ? current.filter((selected) => selected !== id) : current.length < 4 ? [...current, id] : current);
@@ -175,12 +180,16 @@ export default function OfficialProductsIndex() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
-      <PageHeader title="Official Product Decks" description={<>Starter decks and Re:Collection lists published by Grand Archive. Copy a list as printed or open it in the Guided Deck Builder to start tuning. Source data is attributed to <a href={officialProductsSource} target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">GrandArchive on Silvie.org</a>.</>} />
+      <PageHeader title="Official Product Decks" description={<>Starter decks, Re:Collection lists, and Pantheon starters published by Grand Archive. Copy a list as printed or open it in the Guided Deck Builder to start tuning. Source data is attributed to <a href={officialProductsSource} target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">GrandArchive on Silvie.org</a>.</>} />
+
+      <div className="mb-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1" role="tablist" aria-label="Official deck format">
+        {(["starter", "recollection", "pantheon"] as const).map((value) => <button key={value} type="button" role="tab" aria-selected={section === value} onClick={() => { setSection(value); setProduct("all"); }} className={`rounded-md px-3 py-1.5 text-sm ${section === value ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>{value === "pantheon" ? "Pantheon" : value === "recollection" ? "Re:Collection" : "Starter"}</button>)}
+      </div>
 
       <div className="mb-6 flex flex-wrap gap-3 rounded-xl border border-ctp-surface0 bg-ctp-mantle/50 p-3">
         <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search Champion or product…" aria-label="Search official decks" className="min-w-52 flex-1 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text placeholder:text-ctp-overlay0" />
         <select value={product} onChange={(event) => setProduct(event.target.value)} aria-label="Product" className="rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text">
-          <option value="all">All products ({officialProductDecks.length})</option>
+          <option value="all">All products ({officialProductDecks.filter((deck) => section === "pantheon" ? deck.productCode === "RDOPD" : section === "recollection" ? deck.productCode.startsWith("ReC-") : !deck.productCode.startsWith("ReC-") && deck.productCode !== "RDOPD").length})</option>
           {products.map((code) => <option key={code} value={code}>{PRODUCT_LABELS[code] ?? code}</option>)}
         </select>
       </div>
@@ -188,9 +197,9 @@ export default function OfficialProductsIndex() {
       <div className={`mb-6 rounded-xl border p-3 shadow-sm backdrop-blur transition-colors ${compareIds.length > 0 ? "sticky top-16 z-30 border-ctp-blue/50 bg-ctp-base/95" : "border-ctp-surface0 bg-ctp-mantle/30"}`}>
         <div className="flex flex-wrap items-center gap-3">
           <div className="min-w-48 flex-1">
-            <p className="text-sm font-semibold text-ctp-text">Compare starter decks</p>
+            <p className="text-sm font-semibold text-ctp-text">Compare {sectionLabel} decks</p>
             <p className="mt-0.5 text-xs text-ctp-subtext0">
-              {compareIds.length === 0 && "Select two to four products below."}
+              {compareIds.length === 0 && `Select two to four ${sectionLabel.toLowerCase()} decks below.`}
               {compareIds.length === 1 && "One selected — choose one more."}
               {compareIds.length >= 2 && compareIds.length < 4 && `Ready to compare ${compareIds.length} decks — add up to ${4 - compareIds.length} more.`}
               {compareIds.length === 4 && "Four selected — ready to compare."}

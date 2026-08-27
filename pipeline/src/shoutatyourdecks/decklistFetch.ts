@@ -5,8 +5,11 @@ import { config } from "../config.js";
 import { sleep } from "../lib/http.js";
 import { isShuttingDown, PLAYWRIGHT_LAUNCH_OPTIONS } from "./shutdown.js";
 
-const SECTION_HEADERS: Record<string, keyof Pick<ShoutAtYourDecksDeck, "materialDeck" | "mainDeck" | "sideDeck">> = {
+type ExportZone = "materialDeck" | "pantheonDeck" | "mainDeck" | "sideDeck";
+
+const SECTION_HEADERS: Record<string, ExportZone> = {
   "# Material Deck": "materialDeck",
+  "# Pantheon": "pantheonDeck",
   "# Main Deck": "mainDeck",
   "# Side Deck": "sideDeck",
 };
@@ -18,8 +21,8 @@ const LINE_RE = /^(\d+)\s+(.+)$/;
  * quantity-accurate decklist was found (the visual card grid only partially server-renders the
  * Main deck, and doesn't render quantities at all; see metadataFetch.ts and the README).
  */
-export function parseOmnidexExportText(text: string): Pick<ShoutAtYourDecksDeck, "materialDeck" | "mainDeck" | "sideDeck"> {
-  const result = { materialDeck: [] as DeckLine[], mainDeck: [] as DeckLine[], sideDeck: [] as DeckLine[] };
+export function parseOmnidexExportText(text: string): Pick<ShoutAtYourDecksDeck, "materialDeck" | "pantheonDeck" | "mainDeck" | "sideDeck"> {
+  const result = { materialDeck: [] as DeckLine[], pantheonDeck: [] as DeckLine[], mainDeck: [] as DeckLine[], sideDeck: [] as DeckLine[] };
   let current: (typeof result)[keyof typeof result] | null = null;
 
   for (const rawLine of text.split("\n")) {
@@ -41,7 +44,7 @@ export function parseOmnidexExportText(text: string): Pick<ShoutAtYourDecksDeck,
   return result;
 }
 
-async function fetchOneDecklist(page: Page, url: string): Promise<Pick<ShoutAtYourDecksDeck, "materialDeck" | "mainDeck" | "sideDeck">> {
+async function fetchOneDecklist(page: Page, url: string): Promise<Pick<ShoutAtYourDecksDeck, "materialDeck" | "pantheonDeck" | "mainDeck" | "sideDeck">> {
   await page.goto(url, { waitUntil: "networkidle" });
   // Clicking immediately after networkidle races Blazor's own post-connect initialization — same
   // empirically-confirmed settle requirement as harvest.ts's applyFormatFilter.

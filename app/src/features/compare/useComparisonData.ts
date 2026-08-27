@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { OmnidexDecklist } from "@gatcg/shared";
+import type { DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
 import { useDeckPopularityIndexData } from "../topdecks/data";
@@ -78,6 +78,15 @@ export interface ComparisonDeckStats {
   rating: DeckRating | null;
   /** The real recorded outcome for a "sighting" deck (an actual event participant) — null for a "custom" (pasted) deck, since there's no tournament result to report. */
   winRate: number | null;
+  format: DeckFormat;
+}
+
+function inferFormat(deck: ComparedDeck, list: OmnidexDecklist | null | undefined): DeckFormat {
+  if (deck.format) return deck.format;
+  if (deck.source.kind === "sighting") return "STANDARD";
+  if (!list) return "UNKNOWN";
+  const lines = [...list.main, ...list.material];
+  return lines.length > 0 && lines.every((line) => line.quantity === 1) ? "PANTHEON" : "STANDARD";
 }
 
 /**
@@ -116,7 +125,8 @@ export function useComparisonData(decks: ComparedDeck[], decklists: Map<string, 
       decks.map((d) => {
         const winRate = d.source.kind === "sighting" ? (winRateByDeckId.get(d.key) ?? null) : null;
         const list = decklists.get(d.key);
-        if (!list) return { key: d.key, price: 0, championName: null, classes: [], elements: [], rating: null, winRate };
+        const format = inferFormat(d, list);
+        if (!list) return { key: d.key, price: 0, championName: null, classes: [], elements: [], rating: null, winRate, format };
 
         const price = computeSectionPrice([...list.main, ...list.material, ...list.sideboard], priceByName).total;
         const mainMaterialLines = [...list.main, ...list.material].map((l) => ({ name: l.card, quantity: l.quantity }));
@@ -125,7 +135,7 @@ export function useComparisonData(decks: ComparedDeck[], decklists: Map<string, 
         const rating =
           mainMaterialLines.length > 0 ? computeDeckRating(mainMaterialLines, cardsByName, championName, identity.classes) : null;
 
-        return { key: d.key, price, championName, classes: identity.classes, elements: identity.elements, rating, winRate };
+        return { key: d.key, price, championName, classes: identity.classes, elements: identity.elements, rating, winRate, format };
       }),
     [decks, decklists, cardsByName, priceByName, winRateByDeckId],
   );

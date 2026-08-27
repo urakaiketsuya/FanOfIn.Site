@@ -16,9 +16,10 @@ function decklistText(decklist: OmnidexDecklist): string {
 }
 
 /** Build Clarent's backward-compatible menu-prefill URL for solo or two-deck local playtesting. */
-export function buildClarentPlaytestUrl(deck1: OmnidexDecklist, deck2?: OmnidexDecklist): string {
+export function buildClarentPlaytestUrl(deck1: OmnidexDecklist, deck2?: OmnidexDecklist, extraSections: { title: string; lines: OmnidexDecklist["main"] }[] = []): string {
   const url = new URL(CLARENT_MAIN_MENU_URL);
-  url.searchParams.set("deckText", decklistText(deck1));
+  const extraText = extraSections.filter((section) => section.lines.length > 0).map((section) => `# ${section.title}\n${section.lines.map((line) => `${line.quantity} ${line.card}`).join("\n")}`).join("\n\n");
+  url.searchParams.set("deckText", [extraText, decklistText(deck1)].filter(Boolean).join("\n\n"));
   url.searchParams.set("format", deck2 ? "hotseat" : "goldfish");
   url.searchParams.set("queueType", "bo1");
   if (deck2) url.searchParams.set("deckText2", decklistText(deck2));

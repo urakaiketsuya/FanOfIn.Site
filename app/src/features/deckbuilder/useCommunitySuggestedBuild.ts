@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { Card, CardInclusionEntry } from "@gatcg/shared";
+import type { Card, CardInclusionEntry, DeckFormat } from "@gatcg/shared";
 import { isElementCompatible, type SuggestedBuild, type SuggestedCard } from "./useSuggestedBuild";
 
 /** Same fallback defaults `useSuggestedBuild`'s `modalTotal` uses when a population can't supply its
@@ -9,8 +9,8 @@ const MATERIAL_TARGET = 12;
 const MAIN_TARGET = 48;
 const MAX_EXTRA_SUGGESTIONS = 8;
 
-function legalMaxCopies(card: Card | undefined): number {
-  return card?.legality?.STANDARD?.limit ?? 4;
+function legalMaxCopies(card: Card | undefined, format: DeckFormat): number {
+  return card?.legality?.[format]?.limit ?? (format === "PANTHEON" ? 1 : 4);
 }
 
 function toSuggested(cardName: string, quantity: number, locked: boolean, entry: CardInclusionEntry | undefined, section: SuggestedCard["section"]): SuggestedCard {
@@ -47,6 +47,7 @@ export function useCommunitySuggestedBuild(
    * without this an off-element card from a different real Spirit build for the same Champion (e.g.
    * a Fire-element pick showing up for a Water-Spirit build) would rank and suggest normally. */
   identityElements: Set<string>,
+  format: DeckFormat = "STANDARD",
 ): SuggestedBuild {
   return useMemo((): SuggestedBuild => {
     const empty: SuggestedBuild = {
@@ -100,6 +101,7 @@ export function useCommunitySuggestedBuild(
 
     let materialTotal = material.reduce((sum, c) => sum + c.quantity, 0);
     let mainTotal = main.reduce((sum, c) => sum + c.quantity, 0);
+    const mainTarget = format === "PANTHEON" ? 60 : MAIN_TARGET;
 
     // champData.cards already comes sorted by deckCount descending (pipeline/src/shoutatyourdecks/
     // analytics/cardInclusion.ts's tally()), same order as percentOfDecks for a fixed champion.
@@ -107,12 +109,13 @@ export function useCommunitySuggestedBuild(
       (c) =>
         !placed.has(c.name) &&
         !rejectedCards.has(c.name) &&
-        cardsByName.get(c.name)?.legality?.STANDARD?.limit !== 0 &&
+        !cardsByName.get(c.name)?.subtypes.includes("SPIRIT") &&
+        cardsByName.get(c.name)?.legality?.[format]?.limit !== 0 &&
         isElementCompatible(cardsByName.get(c.name), identityElements),
     );
 
     for (const entry of ranked) {
-      if (materialTotal >= MATERIAL_TARGET && mainTotal >= MAIN_TARGET) break;
+      if (materialTotal >= MATERIAL_TARGET && mainTotal >= mainTarget) break;
       const card = cardsByName.get(entry.name);
       if (card?.types.includes("CHAMPION") && entry.primarySection !== "material") continue;
       const section: SuggestedCard["section"] = entry.primarySection === "material" ? "material" : "main";
@@ -121,8 +124,8 @@ export function useCommunitySuggestedBuild(
         material.push(toSuggested(entry.name, 1, false, entry, "material"));
         materialTotal += 1;
       } else {
-        if (mainTotal >= MAIN_TARGET) continue;
-        const qty = Math.min(Math.max(1, Math.round(entry.avgCopiesWhenIncluded)), legalMaxCopies(card), MAIN_TARGET - mainTotal);
+        if (mainTotal >= mainTarget) continue;
+        const qty = Math.min(Math.max(1, Math.round(entry.avgCopiesWhenIncluded)), legalMaxCopies(card, format), mainTarget - mainTotal);
         main.push(toSuggested(entry.name, qty, false, entry, "main"));
         mainTotal += qty;
       }
@@ -136,7 +139,7 @@ export function useCommunitySuggestedBuild(
       .map((entry) => {
         const card = cardsByName.get(entry.name);
         const section: SuggestedCard["section"] = entry.primarySection === "material" ? "material" : entry.primarySection === "sideboard" ? "sideboard" : "main";
-        const qty = section === "material" ? 1 : Math.min(Math.max(1, Math.round(entry.avgCopiesWhenIncluded)), legalMaxCopies(card));
+        const qty = section === "material" ? 1 : Math.min(Math.max(1, Math.round(entry.avgCopiesWhenIncluded)), legalMaxCopies(card, format));
         return toSuggested(entry.name, qty, false, entry, section);
       });
 
@@ -156,8 +159,8 @@ export function useCommunitySuggestedBuild(
       conditionalWinRate: null,
       baselineWinRate: null,
       matchingDeckCount: champData.deckCount,
-      unresolved: { main: Math.max(0, MAIN_TARGET - mainTotal), material: Math.max(0, MATERIAL_TARGET - materialTotal), sideboard: 0 },
+      unresolved: { main: Math.max(0, mainTarget - mainTotal), material: Math.max(0, MATERIAL_TARGET - materialTotal), sideboard: 0 },
       loading: false,
     };
-  }, [champData, lockedCards, rejectedCards, cardsByName, loading, identityElements]);
+  }, [champData, lockedCards, rejectedCards, cardsByName, loading, identityElements, format]);
 }

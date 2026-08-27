@@ -1282,6 +1282,26 @@ deck-card-index.json, each fetched multiple times) to a fraction of that (deck-p
 
 ## ShoutAtYourDecks analytics (`pipeline/src/shoutatyourdecks/analytics/`)
 
+### Standard and Pantheon separation
+
+Community decks carry `format` (`STANDARD`, `PANTHEON`, or `UNKNOWN`) plus a confidence value.
+Source-declared format always wins. Legacy cached records are conservatively inferred as Pantheon
+only when the complete main+material list is singleton and the main deck has at least 60 cards;
+any repeated card infers Standard, while records without a complete list remain Unknown. Unknown
+decks are excluded from both format populations rather than silently contaminating either one.
+
+Standard analytics retain the existing file paths. Pantheon analytics publish under
+`data/shoutatyourdecks/analytics/pantheon/`, and `format-summary.json` publishes declared/inferred
+counts so the UI can disclose evidence quality. Pantheon has no tournament outcomes in the current
+Omnidex population, so its surfaces report adoption, co-occurrence, composition, and similarity —
+never win rate or matchup performance.
+
+Pantheon archetypes use greedy main-deck Jaccard similarity (threshold 0.35) rather than literal
+exact-list equality. Material identity cards are excluded from that similarity by comparing the
+main deck only. Published clusters include cards present in at least half their members as
+`definingCards`, plus the actual Champion distribution. This is a strategy-shell discovery aid,
+not a claim that every member is the same deck or that the shell performs well.
+
 Several stats computed over the ShoutAtYourDecks scrape (see `pipeline/src/shoutatyourdecks/README.md`)
 and published to `data/shoutatyourdecks/analytics/` — deliberately standalone from every Omnidex-
 derived stat above and from `pipeline/src/analysis/`, per the same "separate dataset" decision the

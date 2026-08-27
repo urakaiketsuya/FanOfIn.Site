@@ -31,7 +31,9 @@ That split is why the pipeline runs in three phases:
    the UI (~99% of all decks) before harvesting.
 2. **`metadataFetch.ts`** (plain HTTP) — for every harvested GUID, fetches the deck page directly
    and regexes out title/author/champion/price/material-count/main-count/side-count from the
-   prerendered HTML. Cheap enough to run at full ~21k scale.
+   prerendered HTML, including the declared Standard/Pantheon format when present. Cheap enough to
+   run at full ~21k scale. Older cache entries are conservatively classified from their complete
+   list during publish; uncertain records stay Unknown and are excluded from format analytics.
 3. **`filter.ts`** — `shouldKeepDeck`: `mainCount >= config.sydMinMainDeckSize` (default 60) and
    title doesn't contain "Copy" (case-insensitive). See docs/CALCULATIONS.md for why. Runs
    immediately after Phase 2, before Phase 3 ever touches a browser — this is what keeps the
@@ -55,6 +57,7 @@ npm run pipeline:syd:harvest    # walks the listing, populates pipeline/.cache/s
 npm run pipeline:syd:metadata   # cheap HTTP pass over every harvested deck
 npm run pipeline:syd:decklists  # browser pass, filtered decks only
 npm run pipeline:syd:build      # cache -> data/shoutatyourdecks/
+npm run pipeline:syd:analytics  # separate Standard/Pantheon community analytics
 ```
 
 All resumable — `harvest.ts` picks up from `harvest-meta.json`'s last completed page, and

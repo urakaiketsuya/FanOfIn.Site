@@ -24,6 +24,7 @@ const STATIC_ROUTES = [
   "/battle-chart",
   "/top-decks",
   "/champions",
+  "/pantheon",
   "/compare",
   "/popular-decks",
 ];

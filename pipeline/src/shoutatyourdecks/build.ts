@@ -4,6 +4,7 @@ import path from "node:path";
 import type { ShoutAtYourDecksDeckSummary } from "@gatcg/shared";
 import { listCachedDecks } from "./cache.js";
 import { shouldKeepDeck } from "./filter.js";
+import { withClassifiedFormat } from "./format.js";
 
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/shoutatyourdecks");
 
@@ -26,7 +27,7 @@ export async function buildShoutAtYourDecksIndex(): Promise<ShoutAtYourDecksInde
   for (const record of allRecords) {
     if (!record.summary) continue;
     if (!shouldKeepDeck(record.summary)) continue;
-    decks.push(record.summary);
+    decks.push(withClassifiedFormat(record.summary, record.deck));
   }
 
   decks.sort((a, b) => a.title.localeCompare(b.title));
@@ -45,7 +46,7 @@ export async function writeShoutAtYourDecksData(index: ShoutAtYourDecksIndex): P
   for (const summary of index.decks) {
     const record = recordsById.get(summary.id);
     if (record?.deck) {
-      await writeFile(path.join(decksOutDir, `${summary.id}.json`), JSON.stringify(record.deck), "utf-8");
+      await writeFile(path.join(decksOutDir, `${summary.id}.json`), JSON.stringify({ ...record.deck, format: summary.format, formatConfidence: summary.formatConfidence }), "utf-8");
       decklistsPublished++;
     }
   }

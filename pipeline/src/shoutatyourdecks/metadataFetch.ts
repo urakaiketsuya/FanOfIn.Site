@@ -12,6 +12,7 @@ const MATERIAL_RE = /Material \((\d+)\)/;
 const MAIN_RE = /Main \((\d+)\)/;
 const SIDE_RE = /Side \((\d+)\)/;
 const PRICE_RE = /TCG Player Low[\s\S]{0,200}?\$([0-9,]+\.[0-9]{2})/;
+const FORMAT_RES = [/(?:Deck\s+Format|Format)[\s\S]{0,80}?\b(Standard|Pantheon)\b/i];
 
 function decodeHtmlEntities(raw: string): string {
   // Deck titles can contain numeric character references (e.g. "&#x27;" for an apostrophe, or CJK
@@ -32,6 +33,7 @@ export function parseDeckSummary(id: string, url: string, html: string): ShoutAt
   const mainMatch = MAIN_RE.exec(html);
   const sideMatch = SIDE_RE.exec(html);
   const priceMatch = PRICE_RE.exec(html);
+  const declaredFormat = FORMAT_RES.map((pattern) => pattern.exec(html)?.[1]).find(Boolean)?.toUpperCase();
 
   return {
     id,
@@ -44,6 +46,8 @@ export function parseDeckSummary(id: string, url: string, html: string): ShoutAt
     mainCount: mainMatch ? Number(mainMatch[1]) : null,
     sideCount: sideMatch ? Number(sideMatch[1]) : 0,
     fetchedAt: new Date().toISOString(),
+    format: declaredFormat === "STANDARD" || declaredFormat === "PANTHEON" ? declaredFormat : "UNKNOWN",
+    formatConfidence: declaredFormat ? "declared" : "unknown",
   };
 }
 

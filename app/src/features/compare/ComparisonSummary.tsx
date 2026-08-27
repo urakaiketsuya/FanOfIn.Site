@@ -68,6 +68,9 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, onBas
 }) {
   const { deckStats, sections } = useComparisonData(decks, decklists);
   const { baselineIndex, summaries, cardsByName } = useComparisonSummary(decks, decklists, baselineKey);
+  const formats = new Set(deckStats.map((stats) => stats.format).filter((format) => format !== "UNKNOWN"));
+  const mixedFormats = formats.size > 1;
+  const pantheonOnly = formats.size === 1 && formats.has("PANTHEON");
 
   const findings = useMemo(() => {
     const allCards = sections.flatMap((section) => section.groups.flatMap((group) => group.cards));
@@ -88,6 +91,8 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, onBas
   if (decks.length < 2) return <p className="text-sm text-ctp-subtext1">Add at least one more deck to see an overview.</p>;
 
   return <div className="space-y-8">
+    {mixedFormats && <div className="rounded-lg border border-ctp-yellow/50 bg-ctp-yellow/10 p-3 text-sm text-ctp-yellow">This comparison mixes Standard and Pantheon decks. Card overlap remains useful, but copy counts, legality, and format-specific recommendations are not directly comparable.</div>}
+    {pantheonOnly && <div className="rounded-lg border border-ctp-mauve/40 bg-ctp-mauve/10 p-3 text-sm text-ctp-subtext1">Pantheon comparisons emphasize shared packages and singleton choices. Standard tournament results are not treated as Pantheon performance evidence.</div>}
     <section>
       <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Deck overview</h2>
       <div className="mt-2 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
@@ -97,6 +102,7 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, onBas
           return <article key={stats.key} className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
             <h3 className="truncate font-semibold text-ctp-text" title={decks[index].label}>{shortLabel(decks[index].label)}</h3>
             <p className="mt-1 truncate text-xs text-ctp-subtext1">{stats.championName ?? "Unknown Champion"}{spirit ? ` · ${spirit}` : ""}</p>
+            <span className="mt-2 inline-flex rounded-full border border-ctp-surface1 px-2 py-0.5 text-[10px] font-semibold text-ctp-subtext1">{stats.format === "UNKNOWN" ? "Format unknown" : stats.format === "PANTHEON" ? "Pantheon" : "Standard"}</span>
             <div className="mt-2 flex min-h-5 flex-wrap gap-1.5">{stats.elements.filter((element) => element !== "NORM").map((element) => <ElementIcon key={element} element={element} size={16} />)}</div>
             <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
               <div><span className="block text-ctp-subtext0">Price</span><span className="font-semibold text-ctp-text">{stats.price > 0 ? formatUsd(stats.price) : "—"}</span></div>
@@ -112,8 +118,8 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, onBas
       <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">What separates these decks</h2>
       <div className="mt-2 grid gap-3 md:grid-cols-3">
         <article className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
-          <h3 className="font-semibold text-ctp-text">Shared core <span className="text-sm font-normal text-ctp-subtext0">({findings.shared.length})</span></h3>
-          <p className="mt-1 text-xs text-ctp-subtext0">Cards present in every selected deck.</p>
+          <h3 className="font-semibold text-ctp-text">{pantheonOnly ? "Shared package" : "Shared core"} <span className="text-sm font-normal text-ctp-subtext0">({findings.shared.length})</span></h3>
+          <p className="mt-1 text-xs text-ctp-subtext0">Cards present in every selected deck{pantheonOnly ? " — the clearest visible signal of a recurring singleton package" : ""}.</p>
           <CardNames entries={findings.shared} cardsByName={cardsByName} empty="No cards are shared by every deck." />
         </article>
         <article className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">

@@ -1,8 +1,9 @@
-import type { OmnidexDecklist } from "@gatcg/shared";
+import type { DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 
 export interface CustomDeckShare {
   label: string;
   decklist: OmnidexDecklist;
+  format?: DeckFormat;
 }
 
 type Section = "main" | "material" | "sideboard";
@@ -38,19 +39,21 @@ function decodeDecklistLines(encoded: string): OmnidexDecklist {
  * each as `encodedLabel|encodedLines`. Combine with `?add=` (sighting decks) in the same share link
  * to cover a compare set that mixes both sources. */
 export function encodeCustomDecks(decks: CustomDeckShare[]): string {
-  return decks.map((d) => `${encodeURIComponent(d.label)}|${encodeDecklistLines(d.decklist)}`).join("~");
+  return decks.map((d) => `${encodeURIComponent(d.label)}|${d.format ?? "UNKNOWN"}|${encodeDecklistLines(d.decklist)}`).join("~");
 }
 
 export function decodeCustomDecks(encoded: string): CustomDeckShare[] {
   const result: CustomDeckShare[] = [];
   for (const entry of encoded.split("~")) {
     if (!entry) continue;
-    const sep = entry.indexOf("|");
-    if (sep === -1) continue;
-    const label = decodeURIComponent(entry.slice(0, sep));
-    const decklist = decodeDecklistLines(entry.slice(sep + 1));
+    const parts = entry.split("|");
+    if (parts.length < 2) continue;
+    const label = decodeURIComponent(parts[0]);
+    const hasFormat = parts.length >= 3 && ["STANDARD", "PANTHEON", "UNKNOWN"].includes(parts[1]);
+    const format = hasFormat && parts[1] !== "UNKNOWN" ? parts[1] as DeckFormat : undefined;
+    const decklist = decodeDecklistLines(parts.slice(hasFormat ? 2 : 1).join("|"));
     if (decklist.main.length + decklist.material.length + decklist.sideboard.length === 0) continue;
-    result.push({ label, decklist });
+    result.push({ label, decklist, format });
   }
   return result;
 }

@@ -58,8 +58,10 @@ export default function ComparisonSuggestions({ decks, decklists }: { decks: Com
   const builderPath = useMemo(() => {
     if (!selectedList) return null;
     const params = deckBuilderParamsFromDecklist(selectedList, comparisonCards);
-    return params ? buildDeckBuilderPath(params.championName, params.spiritFilter, params.lockedCards, params.lockedSections) : null;
-  }, [selectedList, comparisonCards]);
+    if (!params) return null;
+    const path = buildDeckBuilderPath(params.championName, params.spiritFilter, params.lockedCards, params.lockedSections);
+    return selectedStats?.format === "PANTHEON" ? `${path}${path.includes("?") ? "&" : "?"}format=pantheon` : path;
+  }, [selectedList, comparisonCards, selectedStats?.format]);
 
   const loading = additionsResult.loading || weakestResult.loading;
   const hasEvidence = additions.length > 0 || review.length > 0;
@@ -74,7 +76,13 @@ export default function ComparisonSuggestions({ decks, decklists }: { decks: Com
 
     {!selectedList && <p className="rounded-xl border border-ctp-surface1 p-4 text-sm text-ctp-subtext1">This decklist is unavailable, so it can’t be tuned.</p>}
 
-    {selectedList && <>
+    {selectedList && selectedStats?.format === "PANTHEON" && <section className="rounded-xl border border-ctp-mauve/40 bg-ctp-mauve/10 p-4">
+      <h2 className="font-semibold text-ctp-text">Pantheon tuning belongs in the guided builder</h2>
+      <p className="mt-1 text-sm leading-6 text-ctp-subtext1">Standard tournament card-impact signals are intentionally withheld for this list. Use format-separated community adoption, singleton legality, and synergy readiness instead.</p>
+      {builderPath && <Link to={builderPath} className="mt-3 inline-flex rounded-md border border-ctp-blue px-2.5 py-1.5 text-xs font-medium text-ctp-blue hover:bg-ctp-surface0">Open Pantheon builder →</Link>}
+    </section>}
+
+    {selectedList && selectedStats?.format !== "PANTHEON" && <>
       <section className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
@@ -106,6 +114,6 @@ export default function ComparisonSuggestions({ decks, decklists }: { decks: Com
       </div>}
     </>}
 
-    <p className="text-xs leading-5 text-ctp-overlay1">Tuning evidence is correlational and Bayesian-shrunk. It describes other decks using the same Champion; it does not prove that adding or removing a card will improve this list.</p>
+    {selectedStats?.format !== "PANTHEON" && <p className="text-xs leading-5 text-ctp-overlay1">Tuning evidence is correlational and Bayesian-shrunk. It describes other decks using the same Champion; it does not prove that adding or removing a card will improve this list.</p>}
   </div>;
 }

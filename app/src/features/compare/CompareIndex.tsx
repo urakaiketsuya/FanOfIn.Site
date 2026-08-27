@@ -137,7 +137,7 @@ export default function CompareIndex() {
     if (parsed.length > 0) {
       setDecks((prev) => [
         ...prev,
-        ...parsed.map((d, i) => ({ key: `custom-shared-${i}`, label: d.label, source: { kind: "custom" as const, decklist: d.decklist } })),
+        ...parsed.map((d, i) => ({ key: `custom-shared-${i}`, label: d.label, source: { kind: "custom" as const, decklist: d.decklist }, format: d.format })),
       ]);
     }
 
@@ -184,7 +184,7 @@ export default function CompareIndex() {
     const params = new URLSearchParams();
     if (sightingKeys.length > 0) params.set("add", sightingKeys.join(","));
     if (customDecks.length > 0) {
-      params.set("custom", encodeCustomDecks(customDecks.map((d) => ({ label: d.label, decklist: d.source.decklist }))));
+      params.set("custom", encodeCustomDecks(customDecks.map((d) => ({ label: d.label, decklist: d.source.decklist, format: d.format }))));
     }
     const url = `${window.location.origin}/compare?${params.toString()}`;
     try {

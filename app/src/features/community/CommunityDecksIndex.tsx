@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import type { DeckFormat } from "@gatcg/shared";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -11,6 +13,7 @@ import {
   useCommunityPriceDistribution,
   useCommunityArchetypes,
   useCommunityDeckEra,
+  useCommunityFormatSummary,
 } from "./data";
 
 const TOP_CARDS_SHOWN = 30;
@@ -28,17 +31,19 @@ function formatChampionName(key: string): string {
     .join(" ");
 }
 
-export default function CommunityDecksIndex() {
+export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: DeckFormat }) {
+  const isPantheon = format === "PANTHEON";
   useDocumentTitle(
-    "Community Decks",
+    isPantheon ? "Pantheon Decks" : "Community Decks",
     "Deck-building trends from the Grand Archive TCG community deck builder Shout At Your Decks — card inclusion rates, champion/element popularity, price distribution, and recurring exact builds.",
   );
 
-  const cardInclusion = useCommunityCardInclusion();
-  const popularity = useCommunityPopularity();
-  const priceDistribution = useCommunityPriceDistribution();
-  const archetypes = useCommunityArchetypes();
-  const deckEra = useCommunityDeckEra();
+  const cardInclusion = useCommunityCardInclusion(format);
+  const popularity = useCommunityPopularity(format);
+  const priceDistribution = useCommunityPriceDistribution(format);
+  const archetypes = useCommunityArchetypes(format);
+  const deckEra = useCommunityDeckEra(format);
+  const formatSummary = useCommunityFormatSummary();
 
   const [championFilter, setChampionFilter] = useState<string>("");
 
@@ -112,17 +117,28 @@ export default function CommunityDecksIndex() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <PageHeader
-        title="Community Decks"
+        title={isPantheon ? "Pantheon Decks" : "Community Decks"}
         description={
           <>
             Deck-building trends from{" "}
             <a href="https://shoutatyourdecks.com" target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">
               Shout At Your Decks
             </a>
-            , a community Grand Archive TCG deck builder — what people are actually building, not tournament results. Deliberately kept separate from the Omnidex-derived stats elsewhere on this site.
+            , a community Grand Archive TCG deck builder — what people are actually building, not tournament results. {isPantheon ? "Pantheon lists are separated from Standard and never presented as tournament-performance evidence." : "Standard lists are separated from Pantheon and kept distinct from Omnidex tournament results."}
           </>
         }
       />
+
+      <div className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1 text-sm">
+        <Link to="/community-decks" className={`rounded-md px-3 py-1.5 ${!isPantheon ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>Standard</Link>
+        <Link to="/pantheon" className={`rounded-md px-3 py-1.5 ${isPantheon ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>Pantheon</Link>
+      </div>
+
+      {formatSummary && (
+        <p className="mt-3 rounded-lg border border-ctp-surface0 bg-ctp-mantle/50 p-3 text-xs text-ctp-subtext0">
+          {formatSummary.counts[format].toLocaleString()} classified {isPantheon ? "Pantheon" : "Standard"} decks · {formatSummary.confirmedCounts[format].toLocaleString()} source-confirmed · {formatSummary.inferredCounts[format].toLocaleString()} inferred from deck construction. Unknown-format decks are excluded.
+        </p>
+      )}
 
       {popularity && (
         <p className="mt-2 text-xs text-ctp-subtext0">
@@ -193,10 +209,9 @@ export default function CommunityDecksIndex() {
 
       {archetypes && archetypes.clusters.length > 0 && (
         <div className="mt-8">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Recurring exact builds</h2>
+          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">{isPantheon ? "Recurring strategy shells" : "Recurring exact builds"}</h2>
           <p className="mt-1 text-xs text-ctp-subtext0">
-            Decks sharing the literal same champion + card list — real copies of a known build, not a fuzzy "similar
-            archetype" grouping. Most decks are one-offs and aren't shown here.
+            {isPantheon ? "Singleton lists grouped by meaningful main-deck overlap. Defining cards describe the shared shell; this is community adoption, not a performance ranking." : "Decks sharing the literal same champion + card list — real copies of a known build, not a fuzzy similar-archetype grouping. Most decks are one-offs and aren't shown here."}
           </p>
           <div className="mt-2 overflow-x-auto">
             <table className="w-max min-w-full text-sm">
@@ -216,6 +231,7 @@ export default function CommunityDecksIndex() {
                       <a href={cluster.representative.url} target="_blank" rel="noreferrer" className="text-ctp-text hover:text-ctp-blue">
                         {cluster.representative.title || "(untitled)"}
                       </a>
+                      {isPantheon && cluster.definingCards && cluster.definingCards.length > 0 && <p className="mt-0.5 max-w-md text-xs text-ctp-subtext0">{cluster.definingCards.join(" · ")}</p>}
                     </td>
                   </tr>
                 ))}
