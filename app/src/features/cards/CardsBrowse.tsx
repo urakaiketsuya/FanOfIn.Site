@@ -16,6 +16,7 @@ import CardGrid from "./CardGrid";
 import LoadMore from "../../components/LoadMore";
 import { useFeaturedSets } from "../sets/useFeaturedSets";
 import { isBoosterSet } from "../packs/boosterSets";
+import { PRODUCTS } from "../products/data";
 
 const PAGE_SIZE = 60;
 
@@ -91,6 +92,10 @@ export default function CardsBrowse() {
     setFilters((f) => ({ ...f, sets: new Set([prefix]) }));
     setTab("browse");
   }
+
+  // Only when the Set filter narrows to exactly one — a graceful no-op for any set outside the
+  // hand-authored Products dataset (old/obscure prefixes), not a broken image.
+  const bannerProduct = filters.sets.size === 1 ? PRODUCTS.find((p) => p.prefix === Array.from(filters.sets)[0] && p.banner) : undefined;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
@@ -234,6 +239,18 @@ export default function CardsBrowse() {
                 </div>
               </div>
             </div>
+          )}
+
+          {bannerProduct && (
+            <Link
+              to={`/products`}
+              className="relative mt-4 flex h-40 items-end overflow-hidden rounded-xl border border-ctp-surface0 bg-gradient-to-r from-ctp-crust via-ctp-crust/60 to-transparent"
+            >
+              <img src={bannerProduct.banner} alt="" className="absolute inset-y-0 right-0 h-full w-auto object-contain" />
+              <div className="relative z-10 p-4">
+                <img src={bannerProduct.logo} alt={bannerProduct.name} className="h-10 w-auto object-contain" />
+              </div>
+            </Link>
           )}
 
           {syncProgress.phase !== "done" && filtered.length === 0 && <p className="mt-6 text-ctp-subtext1">Loading…</p>}

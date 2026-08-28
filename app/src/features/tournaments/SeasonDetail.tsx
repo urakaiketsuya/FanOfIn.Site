@@ -7,8 +7,13 @@ import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import Tabs from "../../components/ui/Tabs";
+import { PRODUCTS } from "../products/data";
 
 const PAGE_SIZE = 50;
+
+function productSlug(name: string): string {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
 
 type SeasonTab = "events" | "champions" | "builds";
 const TAB_KEYS: SeasonTab[] = ["events", "champions", "builds"];
@@ -34,6 +39,20 @@ export default function SeasonDetail() {
 
   const visibleEvents = events.slice(0, visibleCount);
 
+  // Every ingested season is named identically after the product that defines it (e.g. season slug
+  // "mortal-ambition" ↔ product name "Mortal Ambition") — a real, exact join, not a guess. Falls
+  // back to an approximation (the newest product released by this season's end) only when no
+  // product's slugified name matches, so older/unusual seasons still degrade gracefully rather than
+  // showing nothing.
+  const seasonProduct = useMemo(() => {
+    if (!season) return undefined;
+    const bySlug = PRODUCTS.find((p) => p.banner && productSlug(p.name) === slug);
+    if (bySlug) return bySlug;
+    return [...PRODUCTS]
+      .filter((p) => p.banner && p.releaseDate <= season.dateEnd)
+      .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))[0];
+  }, [season, slug]);
+
   if (index && !season) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-10">
@@ -55,6 +74,14 @@ export default function SeasonDetail() {
 
       {season && (
         <>
+          {seasonProduct && (
+            <div className="relative mt-2 flex h-40 items-end overflow-hidden rounded-xl border border-ctp-surface0 bg-gradient-to-r from-ctp-crust via-ctp-crust/60 to-transparent">
+              <img src={seasonProduct.banner} alt="" className="absolute inset-y-0 right-0 h-full w-auto object-contain" />
+              <Link to={`/products`} className="relative z-10 p-4 text-xs text-ctp-subtext0 hover:text-ctp-blue">
+                Standard/Expansion set active this season: <span className="font-medium text-ctp-text">{seasonProduct.name}</span>
+              </Link>
+            </div>
+          )}
           <h1 className="mt-2 text-2xl font-bold text-ctp-blue">{season.name}</h1>
           <p className="mt-1 text-sm text-ctp-subtext1">
             {new Date(season.dateStart).toLocaleDateString()} – {new Date(season.dateEnd).toLocaleDateString()} ·{" "}

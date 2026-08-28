@@ -17,6 +17,7 @@ import ChampionSeasonChart from "./ChampionSeasonChart";
 import PageHeader from "../../components/ui/PageHeader";
 import Tabs from "../../components/ui/Tabs";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
+import { cutoutsForChampion } from "../products/characterArt";
 
 const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
@@ -121,6 +122,8 @@ export default function ChampionDetail() {
       }));
   }, [popularityIndexData, championName, eventNameById]);
 
+  const cutouts = useMemo(() => cutoutsForChampion(championName), [championName]);
+  const cutoutCards = useCardsByNames(useMemo(() => cutouts.map((c) => c.cardName), [cutouts]));
   const bonusCards = useChampionBonusCards(champion ? championName : null);
   const regionalBreakdown = useChampionRegionalBreakdown(champion ? championName : null);
 
@@ -162,6 +165,24 @@ export default function ChampionDetail() {
             eyebrow={<Link to="/champions" className="hover:underline">&larr; All Champions</Link>}
             description={<>{champion.classes.join("/")} · {champion.elements.join("/")} · <strong className="font-semibold text-ctp-text">{champion.deckCount.toLocaleString()}</strong> decks across {champion.eventCount.toLocaleString()} events · <strong className="font-semibold text-ctp-text">{(champion.avgWinRate * 100).toFixed(0)}%</strong> average win rate</>}
           />
+
+          {cutouts.length > 0 && (
+            <div className="mb-6 flex gap-2 overflow-x-auto rounded-xl border border-ctp-surface0 bg-gradient-to-b from-ctp-mantle to-ctp-crust p-3">
+              {cutouts.map((c) => {
+                const slug = cutoutCards.get(c.cardName)?.slug;
+                const img = <img src={c.image} alt={c.cardName} className="h-40 w-auto object-contain shadow-[0_14px_18px_-8px_rgba(0,0,0,0.5)] transition-transform hover:scale-105" />;
+                return slug ? (
+                  <Link key={c.cardName} to={`/cards/${slug}`} title={c.cardName} className="shrink-0">
+                    {img}
+                  </Link>
+                ) : (
+                  <div key={c.cardName} title={c.cardName} className="shrink-0">
+                    {img}
+                  </div>
+                );
+              })}
+            </div>
+          )}
 
           <Tabs tabs={TABS} active={tab} onChange={setTab} label={`${champion.signature} details`} />
 
