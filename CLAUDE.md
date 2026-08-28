@@ -14,6 +14,7 @@ npm workspaces: `app` (Vite/React/TS SPA), `pipeline` (Node/TS crawler + analysi
 - Every derived stat's formula/threshold (Elo, weightedScore, Card Impact shrinkage, deck-composition buckets, quantity-optimization margins, etc.) is documented in `docs/CALCULATIONS.md` — check there before re-deriving a threshold from scratch.
 - Reusable scoring/formatting logic that both `app` and `pipeline` need goes in `shared/` (e.g. `shared/src/cardImpact.ts`), not duplicated in both.
 - Client-side pages that recompute over a large dataset (Popular/All/Browse Decks, Guided Deck Builder) wrap state changes in `useTransition` so the UI shows "recalculating…" instead of appearing to hang.
+- **Tournament data and Clarent simulator telemetry are separate populations — never blend them.** Simulator/Clarent evidence (`SimulatorSummary`, `worker/`) is real anonymous playtest data, not a substitute for tournament results: it must never be merged into tournament win rates or Card Impact numbers, and any UI surfacing it (e.g. `/simulator`, the Guided Deck Builder's "Simulator" population source) must label it explicitly as experimental/simulator-sourced. The Deck Builder's implementation is the reference pattern: simulator evidence never defines what's in a deck, only re-sorts cards a community-assembled shell already legally supports.
 
 ## Bash/git safety
 
