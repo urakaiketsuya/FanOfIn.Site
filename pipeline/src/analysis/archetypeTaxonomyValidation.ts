@@ -64,12 +64,26 @@ function assignmentAgreement(baseline: ArchetypeTaxonomyData, candidate: Archety
 
 function checkGoldSet(clusters: ArchetypeCluster[], goldSet: GoldExpectation[]) {
   return goldSet.map((expectation) => {
-    const match = clusters.find(
-      (cluster) =>
-        cluster.championBreakdown.some((champion) => champion.championName === expectation.champion) &&
-        expectation.requiredCards.every((card) => cluster.definingCards.some((defining) => defining.name === card)),
+    const packagePrevalence = (cluster: ArchetypeCluster): number =>
+      Math.min(...expectation.requiredCards.map((card) => cluster.definingCards.find((defining) => defining.name === card)?.prevalence ?? 0));
+    const eligible = clusters.filter((cluster) =>
+      cluster.championBreakdown.some((champion) => champion.championName === expectation.champion),
     );
-    return { ...expectation, passed: !!match, clusterId: match?.id ?? null, clusterName: match?.name ?? null };
+    const ranked = eligible
+      .map((cluster) => ({ cluster, prevalence: packagePrevalence(cluster) }))
+      .sort((a, b) => b.prevalence - a.prevalence || b.cluster.deckCount - a.cluster.deckCount || a.cluster.id.localeCompare(b.cluster.id));
+    const match = ranked[0];
+    const nearestRivalPrevalence = ranked[1]?.prevalence ?? 0;
+    const separation = (match?.prevalence ?? 0) - nearestRivalPrevalence;
+    return {
+      ...expectation,
+      passed: (match?.prevalence ?? 0) >= 0.8 && separation > 0,
+      clusterId: match?.cluster.id ?? null,
+      clusterName: match?.cluster.name ?? null,
+      packagePrevalence: match?.prevalence ?? 0,
+      nearestRivalPrevalence,
+      separation,
+    };
   });
 }
 

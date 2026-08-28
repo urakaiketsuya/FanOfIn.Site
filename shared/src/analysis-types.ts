@@ -554,6 +554,10 @@ export interface ArchetypeCluster {
   quality: { meanSimilarity: number; minSimilarity: number; meanAssignmentMargin: number };
   /** Cards present in most of this cluster's deck sightings but not most deck sightings generally — what actually distinguishes this build. Sorted by prevalence descending. */
   definingCards: { name: string; prevalence: number }[];
+  /** Main-deck-only defining cards used to assign this build to a broader strategy archetype. */
+  mainDefiningCards: { name: string; prevalence: number }[];
+  /** Parent strategy archetype derived from shared main-deck engines/win conditions. */
+  strategyArchetypeId: string;
   /** Every member deck's id, joinable against DeckSightingsData — same pattern as PopularDeck.deckIds. */
   deckIds: string[];
   /** Only the seasons this build actually has sightings in (not zero-padded across every season) — for season filtering, not trend analysis. */
@@ -571,6 +575,21 @@ export interface ArchetypeCluster {
   avgPrice: number | null;
   minPrice: number | null;
   maxPrice: number | null;
+}
+
+/** A strategy family above one or more concrete build clusters. */
+export interface StrategyArchetype {
+  id: string;
+  name: string;
+  championName: string;
+  buildIds: string[];
+  /** Main-deck package shared by the member builds, weighted by their deck sightings. */
+  definingCards: { name: string; prevalence: number }[];
+  deckCount: number;
+  playerCount: number;
+  eventCount: number;
+  avgWinRate: number;
+  confidence: "established" | "emerging";
 }
 
 export interface ArchetypeClusterSeasonStats {
@@ -594,6 +613,8 @@ export interface ArchetypeClusterTrend {
 export interface ArchetypeTaxonomyData {
   generatedAt: string;
   clusters: ArchetypeCluster[];
+  /** Package-level strategy families; `clusters` remain the concrete builds within them. */
+  strategyArchetypes: StrategyArchetype[];
   /** Coverage of all visible deck sightings by a published cluster, including attached singleton variants. */
   coverage: { classifiedDeckCount: number; totalDeckCount: number; classificationRate: number };
   /** Retired archetype id -> current id, preserving previously shared archetype URLs across rebuilds. */
@@ -609,6 +630,12 @@ export interface ArchetypeGoldSetCheck {
   passed: boolean;
   clusterId: string | null;
   clusterName: string | null;
+  /** Lowest prevalence of any required strategy card inside the matched cluster. */
+  packagePrevalence: number;
+  /** Highest equivalent prevalence among every competing cluster. */
+  nearestRivalPrevalence: number;
+  /** packagePrevalence - nearestRivalPrevalence; positive values mean the package identifies this shell. */
+  separation: number;
 }
 
 export interface ArchetypeThresholdValidation {

@@ -20,18 +20,21 @@ export default function ArchetypeValidationPanel({ data }: { data: ArchetypeTaxo
 
   const baseline = data.thresholds.find((result) => result.threshold === data.baselineThreshold) ?? data.thresholds[0];
   const passedChecks = baseline.goldSet.filter((check) => check.passed).length;
+  const overlappingChecks = baseline.goldSet.filter((check) => check.passed && check.separation < 0.05).length;
 
   return (
     <section className="mt-5 space-y-5" aria-labelledby="validation-heading">
-      <div className="rounded-xl border border-ctp-blue/30 bg-ctp-blue/5 p-5">
-        <p className="text-xs font-semibold tracking-wide text-ctp-blue uppercase">Current conclusion</p>
+      <div className={`rounded-xl border p-5 ${overlappingChecks > 0 ? "border-ctp-yellow/40 bg-ctp-yellow/5" : "border-ctp-blue/30 bg-ctp-blue/5"}`}>
+        <p className={`text-xs font-semibold tracking-wide uppercase ${overlappingChecks > 0 ? "text-ctp-yellow" : "text-ctp-blue"}`}>Current conclusion</p>
         <h2 id="validation-heading" className="mt-1 text-xl font-semibold text-ctp-text">
-          0.45 is the balanced similarity threshold
+          {overlappingChecks > 0
+            ? `${overlappingChecks} known ${overlappingChecks === 1 ? "package spans" : "packages span"} neighboring shells`
+            : "Known strategy packages cleanly separate the current shells"}
         </h2>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ctp-subtext1">
-          Lowering the threshold classifies more decks but merges more neighboring strategies. Raising it creates tighter
-          shells but leaves more decks unclassified. The current setting keeps strong historical stability while preserving
-          useful metagame coverage.
+          Decks are grouped by recurring main-deck and material-deck strategy cards, excluding Champion and Spirit cards.
+          Element and plurality Champion are applied afterward as readable labels. A package below 5 percentage points of
+          separation is flagged as overlapping: the current model may be splitting variants of one strategy rather than finding distinct archetypes.
         </p>
       </div>
 
@@ -48,8 +51,8 @@ export default function ArchetypeValidationPanel({ data }: { data: ArchetypeTaxo
         />
         <MetricCard
           value={`${passedChecks}/${baseline.goldSet.length}`}
-          label="Reference shells found"
-          detail="Known strategies remain detectable without being used to define the clustering rules."
+          label="Strategy packages detected"
+          detail={`${overlappingChecks} also appear at nearly the same rate in a neighboring shell and need taxonomy review.`}
         />
       </div>
 
@@ -103,9 +106,9 @@ export default function ArchetypeValidationPanel({ data }: { data: ArchetypeTaxo
       </div>
 
       <div className="rounded-xl border border-ctp-surface1 bg-ctp-base p-4 shadow-sm">
-        <h3 className="font-semibold text-ctp-text">Reference-shell checks</h3>
+        <h3 className="font-semibold text-ctp-text">Strategy-package checks</h3>
         <p className="mt-1 text-xs leading-relaxed text-ctp-subtext0">
-          These examples catch obvious regressions. They verify the output; they do not manually assign decks to archetypes.
+          These card bundles represent recognizable engines or win conditions. They test the output without manually assigning individual decks.
         </p>
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
           {baseline.goldSet.map((check) => (
@@ -122,6 +125,13 @@ export default function ArchetypeValidationPanel({ data }: { data: ArchetypeTaxo
                   <p className="text-sm font-medium text-ctp-text">{check.label}</p>
                 )}
                 <p className="mt-0.5 text-xs text-ctp-subtext0">{check.requiredCards.join(" · ")}</p>
+                <p className="mt-1 text-xs text-ctp-subtext1">
+                  {pct(check.packagePrevalence)} together in this shell
+                  <span className="text-ctp-subtext0"> · nearest rival {pct(check.nearestRivalPrevalence)} · separation {pct(check.separation)}</span>
+                </p>
+                {check.passed && check.separation < 0.05 && (
+                  <p className="mt-1 text-xs font-medium text-ctp-yellow">Overlaps a neighboring shell</p>
+                )}
               </div>
             </div>
           ))}

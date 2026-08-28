@@ -394,12 +394,39 @@ every Champion it was actually played under.
    archetype detail route resolves them, preserving previously shared URLs without freezing the
    clustering model forever.
 
+### Strategy archetypes and concrete builds
+
+The published `clusters` remain concrete builds so their URLs, membership, matchup data, and card
+impact stay stable. A second layer, `strategyArchetypes`, groups those builds by their recurring
+**main-deck** package:
+
+- each build computes `mainDefiningCards` with the same 80% within-build and <85% global-presence
+  filters used for defining cards generally;
+- builds must have the same plurality Champion and share at least two main-deck defining cards;
+- overlap is the shared-card count divided by the smaller package size and must reach 0.60;
+- builds are assigned greedily against the largest existing seed, avoiding transitive chaining;
+- material cards, quantities, and tech choices can distinguish child builds but cannot establish a
+  shared parent strategy by themselves;
+- the parent package contains cards with at least 75% deck-weighted prevalence across its builds.
+
+This is intentionally hierarchical rather than an automatic destructive merge: an archetype means
+“same engine or win condition,” while a build means “this recurring construction of that strategy.”
+The validation report's package-separation warnings remain the audit signal for tuning the grouping
+thresholds as more independently named reference strategies are added.
+
 **Threshold validation**: `npm run validate:archetypes --workspace=pipeline` rebuilds the real
 cached dataset at weighted-Jaccard thresholds 0.40, 0.45, and 0.50. It publishes cluster count,
 classification coverage, median cohesion/margin, deck-assignment agreement with the 0.45
 baseline, and a small independently specified gold set of recognizable shells to
-`data/analysis/archetype-taxonomy-validation.json`. This is a sensitivity diagnostic, not an
-optimizer that silently selects whichever threshold produces the prettiest result.
+`data/analysis/archetype-taxonomy-validation.json`. Each gold-set entry is a multi-card engine or
+win-condition package rather than a Champion/element label. A package passes only when every card
+is defining in its strongest matching shell (at least 80% prevalence) and that joint prevalence is
+higher than in the nearest competing shell for the same Champion. The report publishes both values
+and their separation. The UI flags separation below 5 percentage points as overlap: evidence that
+the clusterer may be splitting variants that retain the same engine or win condition. The 5-point
+bar is a review trigger, not an automatic merge rule. This makes strategy bleed visible instead of
+merely checking that a cluster with the expected name exists. This is a sensitivity diagnostic, not
+an optimizer that silently selects whichever threshold produces the prettiest result.
 
 **Card → archetypes reverse index**: `ArchetypeTaxonomyData.cardClusterIndex` maps a card name to
 every cluster it's a `definingCards` member of (with that cluster's prevalence for the card),

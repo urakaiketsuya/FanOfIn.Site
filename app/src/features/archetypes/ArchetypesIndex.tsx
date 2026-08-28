@@ -24,7 +24,7 @@ const SORT_LABELS: Record<SortMode, string> = {
   avgPrice: "Avg price",
 };
 
-type ViewMode = "builds" | "validation" | "hurtYou";
+type ViewMode = "archetypes" | "builds" | "validation" | "hurtYou";
 type ConfidenceFilter = "established" | "all";
 const BUILD_PAGE_SIZE = 40;
 
@@ -54,7 +54,7 @@ export default function ArchetypesIndex() {
   const [championFilter, setChampionFilter] = useState<string | null>(null);
   const [seasonId, setSeasonId] = useState<number | null>(null);
   const [sortMode, setSortMode] = useState<SortMode>("players");
-  const [view, setView] = useState<ViewMode>("builds");
+  const [view, setView] = useState<ViewMode>("archetypes");
   const [confidenceFilter, setConfidenceFilter] = useState<ConfidenceFilter>("established");
   const [buildVisibleCount, setBuildVisibleCount] = useState(BUILD_PAGE_SIZE);
 
@@ -158,12 +158,19 @@ export default function ArchetypesIndex() {
   }, [data, championFilter, confidenceFilter, seasonId, sortMode]);
 
   const visibleRows = rows.slice(0, buildVisibleCount);
+  const strategyArchetypes = useMemo(() => {
+    if (!data?.strategyArchetypes) return [];
+    return data.strategyArchetypes.filter((strategy) =>
+      (!championFilter || strategy.championName === championFilter) &&
+      (confidenceFilter === "all" || strategy.confidence === "established"),
+    );
+  }, [data, championFilter, confidenceFilter]);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <PageHeader
         title="Archetypes"
-        description={`Named builds derived from real decklists by their cards alone — decks are grouped by exact card list, then clustered by similarity, regardless of Champion. A build played under more than one Champion shows a "+N" next to its main Champion. Groups below a minimum sample size are hidden as noise.`}
+        description="Strategy archetypes are defined by recurring main-deck engines and win conditions. Each archetype contains one or more concrete builds whose quantities, material package, or tech choices differ."
         actions={
           <Link to="/battle-chart" className="text-sm text-ctp-blue hover:underline">
             Battle chart &rarr;
@@ -180,7 +187,7 @@ export default function ArchetypesIndex() {
       )}
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
-        {(["builds", "validation", "hurtYou"] as ViewMode[]).map((v) => (
+        {(["archetypes", "builds", "validation", "hurtYou"] as ViewMode[]).map((v) => (
           <button
             key={v}
             type="button"
@@ -190,10 +197,52 @@ export default function ArchetypesIndex() {
               view === v ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
           >
-            {v === "builds" ? "Builds" : v === "validation" ? "Validation" : "Cards That Hurt You"}
+            {v === "archetypes" ? "Archetypes" : v === "builds" ? "Builds" : v === "validation" ? "Validation" : "Cards That Hurt You"}
           </button>
         ))}
       </div>
+
+      {view === "archetypes" && (
+        <>
+          <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
+            <span className="text-ctp-subtext0">Champion:</span>
+            <select value={championFilter ?? ""} aria-label="Champion" onChange={(event) => setChampionFilter(event.target.value || null)} className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text">
+              <option value="">All champions</option>
+              {championsPresent.map((name) => <option key={name} value={name}>{name}</option>)}
+            </select>
+            <span className="ml-2 text-ctp-subtext0">Confidence:</span>
+            <select value={confidenceFilter} aria-label="Confidence" onChange={(event) => setConfidenceFilter(event.target.value as ConfidenceFilter)} className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text">
+              <option value="established">Established</option>
+              <option value="all">Established + emerging</option>
+            </select>
+          </div>
+          {!data && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
+          {data && strategyArchetypes.length === 0 && <p className="mt-6 text-ctp-subtext1">No strategy archetypes match these filters.</p>}
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            {strategyArchetypes.map((strategy) => {
+              const primaryBuildId = strategy.buildIds[0];
+              return (
+                <article key={strategy.id} className="rounded-xl border border-ctp-surface1 bg-ctp-base p-4 shadow-sm">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h2 className="flex items-center gap-1.5 font-semibold text-ctp-text">
+                        <ArchetypeElementIcon name={strategy.name} />
+                        {primaryBuildId ? <Link to={`/archetypes/${primaryBuildId}`} className="hover:text-ctp-blue">{strategy.name}</Link> : strategy.name}
+                      </h2>
+                      <p className="mt-1 text-xs text-ctp-subtext0">{strategy.playerCount} players · {strategy.deckCount} decks · {strategy.buildIds.length} {strategy.buildIds.length === 1 ? "build" : "builds"}</p>
+                    </div>
+                    {strategy.confidence === "emerging" && <span className="rounded-full bg-ctp-yellow/15 px-2 py-1 text-[10px] font-medium text-ctp-yellow">Emerging</span>}
+                  </div>
+                  <p className="mt-3 text-xs font-medium text-ctp-subtext1">Defining main-deck package</p>
+                  <div className="mt-1.5 flex flex-wrap gap-1.5">
+                    {strategy.definingCards.slice(0, 5).map((card) => <span key={card.name} className="rounded-md bg-ctp-mantle px-2 py-1 text-xs text-ctp-subtext1">{card.name} <span className="text-ctp-subtext0">{(card.prevalence * 100).toFixed(0)}%</span></span>)}
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </>
+      )}
 
       {view === "builds" && (
         <>

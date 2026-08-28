@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type { CardSignature } from "../cards/catalog.js";
 import type { ArchetypeTaxonomyData } from "@gatcg/shared";
-import { applyArchetypeLineageAliases, isArchetypeStrategyCard, winRateWilsonInterval } from "./archetypeTaxonomy.js";
+import { applyArchetypeLineageAliases, archetypePackageOverlap, isArchetypeStrategyCard, winRateWilsonInterval } from "./archetypeTaxonomy.js";
 
 function card(types: string[]): CardSignature {
   return {
@@ -21,6 +21,13 @@ function card(types: string[]): CardSignature {
 test("excludes Champion and Spirit identity cards from archetype signatures", () => {
   assert.equal(isArchetypeStrategyCard(card(["CHAMPION"])), false);
   assert.equal(isArchetypeStrategyCard(card(["spirit"])), false);
+});
+
+test("requires a recurring multi-card main-deck package to group builds", () => {
+  const slimes = [{ name: "Storm Slime" }, { name: "Limitless Slime" }, { name: "Gather Slimes" }];
+  assert.equal(archetypePackageOverlap(slimes, [{ name: "Storm Slime" }, { name: "Limitless Slime" }, { name: "Ethereal Slime" }]), 2 / 3);
+  assert.equal(archetypePackageOverlap(slimes, [{ name: "Storm Slime" }, { name: "Dungeon Guide" }]), 0);
+  assert.equal(archetypePackageOverlap([], slimes), 0);
 });
 
 test("retains strategic material cards and unresolved submissions", () => {

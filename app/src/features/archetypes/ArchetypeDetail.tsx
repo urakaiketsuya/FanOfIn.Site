@@ -65,6 +65,10 @@ export default function ArchetypeDetail() {
 
   const resolvedId = data?.aliases?.[id] ?? id;
   const cluster = data?.clusters.find((c) => c.id === resolvedId);
+  const strategyArchetype = data?.strategyArchetypes?.find((strategy) => strategy.id === cluster?.strategyArchetypeId);
+  const siblingBuilds = strategyArchetype
+    ? strategyArchetype.buildIds.map((buildId) => data?.clusters.find((candidate) => candidate.id === buildId)).filter((candidate): candidate is NonNullable<typeof cluster> => !!candidate)
+    : [];
   const impact = cardImpactData?.clusters.find((c) => c.clusterId === id);
   const clusterMatchups = useMemo(() => {
     if (!matchupCardImpactData) return [];
@@ -213,6 +217,25 @@ export default function ArchetypeDetail() {
             {cluster.deckCount === 1 ? "" : "s"} across {cluster.eventCount} event{cluster.eventCount === 1 ? "" : "s"} ·{" "}
             {(cluster.avgWinRate * 100).toFixed(0)}% avg win rate
           </p>
+          {strategyArchetype && (
+            <div className="mt-4 rounded-xl border border-ctp-blue/25 bg-ctp-blue/5 p-4">
+              <p className="text-xs font-semibold tracking-wide text-ctp-blue uppercase">Strategy archetype</p>
+              <p className="mt-1 font-semibold text-ctp-text">{strategyArchetype.name}</p>
+              <p className="mt-1 text-xs text-ctp-subtext1">
+                This is one of {siblingBuilds.length} {siblingBuilds.length === 1 ? "build" : "builds"} sharing the same recurring main-deck engine or win condition.
+              </p>
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {strategyArchetype.definingCards.slice(0, 6).map((card) => (
+                  <span key={card.name} className="rounded-md bg-ctp-mantle px-2 py-1 text-xs text-ctp-subtext1">{card.name} <span className="text-ctp-subtext0">{(card.prevalence * 100).toFixed(0)}%</span></span>
+                ))}
+              </div>
+              {siblingBuilds.length > 1 && (
+                <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs">
+                  {siblingBuilds.map((build) => build.id === cluster.id ? <span key={build.id} className="font-medium text-ctp-text">{build.name}</span> : <Link key={build.id} to={`/archetypes/${build.id}`} className="text-ctp-blue hover:underline">{build.name}</Link>)}
+                </div>
+              )}
+            </div>
+          )}
           {(cluster.championBreakdown ?? []).length > 1 && (
             <p className="mt-1 text-xs text-ctp-subtext0">
               Also played as{" "}
