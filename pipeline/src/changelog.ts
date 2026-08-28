@@ -16,6 +16,14 @@ const MAX_ENTRIES = 500;
  * still present in git history, so past entries don't suddenly reappear once this filter changes. */
 const NOISE_PREFIXES = ["chore: daily data refresh", "chore: weekly data refresh"];
 
+/** Case-insensitive substring exclusions — for terms that shouldn't appear in the public changelog
+ * regardless of where they fall in the commit subject (a prefix-only match, like NOISE_PREFIXES,
+ * wouldn't catch these; real commit subjects have it mid-sentence, e.g. "Bring ShoutAtYourDecks
+ * community data into the Guided Deck Builder"). Per explicit direction: ShoutAtYourDecks is a real,
+ * shipped part of the codebase — this only hides it from the changelog's commit-subject display, it
+ * does not touch git history, code, or any other user-facing surface. */
+const NOISE_SUBSTRINGS = ["shoutatyourdecks"];
+
 /**
  * Publishes recent commit history as a lightweight changelog — "for now," per explicit direction,
  * each entry is just the commit's own subject line, not a curated/rewritten description. Pure
@@ -47,7 +55,8 @@ export async function publishChangelog(): Promise<void> {
       const [hash, date, summary] = line.split(RECORD_SEP);
       return { hash, date, summary };
     })
-    .filter((e) => !NOISE_PREFIXES.some((prefix) => e.summary.startsWith(prefix)));
+    .filter((e) => !NOISE_PREFIXES.some((prefix) => e.summary.startsWith(prefix)))
+    .filter((e) => !NOISE_SUBSTRINGS.some((substring) => e.summary.toLowerCase().includes(substring)));
 
   const data: SiteChangelogData = { generatedAt: new Date().toISOString(), entries };
   await writeFile(OUT_PATH, JSON.stringify(data), "utf-8");

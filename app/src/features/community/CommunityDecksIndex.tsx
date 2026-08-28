@@ -124,7 +124,13 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
             <a href="https://sleeved.gg" target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">
               Sleeved.gg
             </a>
-            {" "}as the best dedicated Grand Archive deck-building experience. {isPantheon ? "Pantheon lists are separated from Standard and never presented as tournament-performance evidence." : "Standard lists are separated from Pantheon and kept distinct from Omnidex tournament results."}
+            {" "}or{" "}
+            {/* Link-only for now, no ingestion — see pipeline/src/sleeved/ for the shape a future
+                TCGArchitect data source would take once API access is available. */}
+            <a href="https://tcgarchitect.com/grand-archive" target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">
+              TCGArchitect
+            </a>
+            {" "}as dedicated Grand Archive deck-building tools. {isPantheon ? "Pantheon lists are separated from Standard and never presented as tournament-performance evidence." : "Standard lists are separated from Pantheon and kept distinct from Omnidex tournament results."}
           </>
         }
       />
