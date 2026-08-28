@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "GrandArchiveSim",
-  "generatedAt": "2026-08-28T18:13:06.102Z",
+  "generatedAt": "2026-08-28T20:10:58.900Z",
   "games": 3,
   "firstPlayer": {
     "games": 3,
@@ -28,7 +28,7 @@
     },
     {
       "championId": "DpHDGaX2Pn",
-      "championName": null,
+      "championName": "Lorraine, Wandering Warrior",
       "element": "NORM",
       "games": 1,
       "wins": 0,
@@ -36,7 +36,7 @@
     },
     {
       "championId": "m7f6r8f3y8",
-      "championName": null,
+      "championName": "Diana, Aether Dilettante",
       "element": "NORM",
       "games": 1,
       "wins": 1,
@@ -44,7 +44,7 @@
     },
     {
       "championId": "tafqldAGRF",
-      "championName": null,
+      "championName": "Spirit of Water",
       "element": "WATER",
       "games": 1,
       "wins": 0,
@@ -52,7 +52,7 @@
     },
     {
       "championId": "tk3ir1o0qt",
-      "championName": null,
+      "championName": "Sabrina, Spirit of Water",
       "element": "WATER",
       "games": 1,
       "wins": 1,
@@ -71,18 +71,18 @@
     },
     {
       "champion1": "m7f6r8f3y8",
-      "champion1Name": null,
+      "champion1Name": "Diana, Aether Dilettante",
       "champion2": "DpHDGaX2Pn",
-      "champion2Name": null,
+      "champion2Name": "Lorraine, Wandering Warrior",
       "games": 1,
       "champion1Wins": 1,
       "champion2Wins": 0
     },
     {
       "champion1": "tafqldAGRF",
-      "champion1Name": null,
+      "champion1Name": "Spirit of Water",
       "champion2": "tk3ir1o0qt",
-      "champion2Name": null,
+      "champion2Name": "Sabrina, Spirit of Water",
       "games": 1,
       "champion1Wins": 0,
       "champion2Wins": 1
