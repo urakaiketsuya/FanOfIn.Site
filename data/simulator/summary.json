@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "source": "GrandArchiveSim",
-  "generatedAt": "2026-08-27T17:20:32.619Z",
-  "games": 1,
+  "generatedAt": "2026-08-28T18:13:06.102Z",
+  "games": 3,
   "firstPlayer": {
-    "games": 1,
-    "wins": 0,
-    "winRate": 0
+    "games": 3,
+    "wins": 1,
+    "winRate": 0.3333333333333333
   },
-  "avgTurns": 4,
+  "avgTurns": 3,
   "champions": [
     {
       "championId": "00xbh8oc00",
@@ -25,6 +25,38 @@
       "games": 1,
       "wins": 0,
       "winRate": 0
+    },
+    {
+      "championId": "DpHDGaX2Pn",
+      "championName": null,
+      "element": "NORM",
+      "games": 1,
+      "wins": 0,
+      "winRate": 0
+    },
+    {
+      "championId": "m7f6r8f3y8",
+      "championName": null,
+      "element": "NORM",
+      "games": 1,
+      "wins": 1,
+      "winRate": 1
+    },
+    {
+      "championId": "tafqldAGRF",
+      "championName": null,
+      "element": "WATER",
+      "games": 1,
+      "wins": 0,
+      "winRate": 0
+    },
+    {
+      "championId": "tk3ir1o0qt",
+      "championName": null,
+      "element": "WATER",
+      "games": 1,
+      "wins": 1,
+      "winRate": 1
     }
   ],
   "matchups": [
@@ -33,6 +65,24 @@
       "champion1Name": "Fragmented Spirit of Wind",
       "champion2": "00xbh8oc00",
       "champion2Name": "Diao Chan, Enchantress",
+      "games": 1,
+      "champion1Wins": 0,
+      "champion2Wins": 1
+    },
+    {
+      "champion1": "m7f6r8f3y8",
+      "champion1Name": null,
+      "champion2": "DpHDGaX2Pn",
+      "champion2Name": null,
+      "games": 1,
+      "champion1Wins": 1,
+      "champion2Wins": 0
+    },
+    {
+      "champion1": "tafqldAGRF",
+      "champion1Name": null,
+      "champion2": "tk3ir1o0qt",
+      "champion2Name": null,
       "games": 1,
       "champion1Wins": 0,
       "champion2Wins": 1
