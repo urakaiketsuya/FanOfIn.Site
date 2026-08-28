@@ -37,6 +37,7 @@ import { useCardFieldVisibility, type CardFieldVisibility } from "./useCardField
 import { useBuddyCards, type BuddyCard } from "./useBuddyCards";
 import { validateDeck } from "./validateDeck";
 import { computeDependencyReadiness, computeSynergyReadiness } from "./synergyReadiness";
+import HypergeometricCalculator from "./HypergeometricCalculator";
 import { similarCards } from "../../lib/cardSimilarity";
 import ThemaSparkline from "../thema/ThemaSparkline";
 import ElementRail from "../../components/ElementRail";
@@ -853,6 +854,8 @@ function StatsPanel({
         </div>
       )}
 
+      <HypergeometricCalculator mainLines={mainLines} />
+
       {dependencyReadiness.length > 0 && (
         <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
           <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Package balance</h2>
@@ -1629,11 +1632,22 @@ export default function DeckBuilderIndex() {
   const totalPrice = useMemo(() => sumPrice(buildLines), [buildLines, priceByName]);
   const sideboardPrice = useMemo(() => sumPrice(sideboardLines), [sideboardLines, priceByName]);
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
+  const [copyLockedOnly, setCopyLockedOnly] = useState(false);
   const [shareCopyState, setShareCopyState] = useState<"idle" | "copied" | "failed">("idle");
 
+  /** "Locked only" copies just the viewer's own choices (`card.locked`), skipping every
+   * auto-suggested slot — for pasting a partial want-list rather than the full assembled deck. */
   async function handleCopy() {
+    const source = copyLockedOnly
+      ? { main: build.main.filter((c) => c.locked), material: build.material.filter((c) => c.locked), sideboard: build.sideboard.filter((c) => c.locked) }
+      : { main: build.main, material: build.material, sideboard: build.sideboard };
+    const text = buildDecklistText({
+      main: source.main.map((c) => ({ card: c.cardName, quantity: c.quantity })),
+      material: source.material.map((c) => ({ card: c.cardName, quantity: c.quantity })),
+      sideboard: source.sideboard.map((c) => ({ card: c.cardName, quantity: c.quantity })),
+    });
     try {
-      await navigator.clipboard.writeText(buildDecklistText(decklist));
+      await navigator.clipboard.writeText(text);
       setCopyState("copied");
     } catch {
       setCopyState("failed");
@@ -1908,8 +1922,17 @@ export default function DeckBuilderIndex() {
                 copyState === "failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
               }`}
             >
-              {copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy decklist"}
+              {copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : copyLockedOnly ? "Copy locked cards" : "Copy decklist"}
             </button>
+            <label className="flex items-center gap-1.5 text-xs text-ctp-subtext1" title="Copy only the cards you've explicitly locked, skipping every auto-suggested slot">
+              <input
+                type="checkbox"
+                checked={copyLockedOnly}
+                onChange={(e) => setCopyLockedOnly(e.target.checked)}
+                className="accent-ctp-blue"
+              />
+              Locked only
+            </label>
             <a
               href={massEntryUrl}
               target="_blank"
