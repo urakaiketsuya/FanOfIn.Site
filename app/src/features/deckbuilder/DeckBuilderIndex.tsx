@@ -162,7 +162,10 @@ function loadSessionSeed(): SessionSeed | null {
       lockedSections,
       rejectedCards: new Set(stored.rejectedCards ?? []),
       pillarBias: stored.pillarBias ?? null,
-      populationSource: stored.populationSource === "community" || stored.populationSource === "simulator" ? stored.populationSource : "tournament",
+      populationSource:
+        stored.populationSource === "community" || stored.populationSource === "simulator" || stored.populationSource === "tournament"
+          ? stored.populationSource
+          : "balanced",
       changeLog: Array.isArray(stored.changeLog) ? stored.changeLog : [],
     };
   } catch {
@@ -431,9 +434,12 @@ function computeCompositionGaps(
 const PILLAR_OPTIONS: RatingPillar[] = ["durability", "interaction", "aggro", "opportunity"];
 /** "tournament" ranks by real Omnidex win-rate lift (useSuggestedBuild); "community" ranks by
  * the blended community population's popularity (useCommunitySuggestedBuild) — no win/loss data, so pillar
- * tuning and lift-specific UI are unavailable in this mode. See docs/CALCULATIONS.md, "Community
- * population". */
-type PopulationSource = "tournament" | "community" | "simulator";
+ * tuning and lift-specific UI are unavailable in this mode. "balanced" is still useSuggestedBuild's
+ * real lift-ranked build — same adjustedLift/conditionalWinRate numbers as "tournament" — just with
+ * community popularity nudging the ranking order alongside any pillar bias, so it keeps full
+ * lift-specific UI (pillar tuning, removal suggestions) unlike "community". The default source. See
+ * docs/CALCULATIONS.md, "Community population" and "Balanced source". */
+type PopulationSource = "tournament" | "community" | "simulator" | "balanced";
 
 interface CardDecayReplacement {
   cardName: string;
@@ -668,7 +674,7 @@ function StatsPanel({
         <p className="mt-1 text-xs text-ctp-subtext0">
           Bias the Build tab's ranked suggestions toward one DIAO Score pillar — a small nudge among cards that
           already clear the real win-rate bar, never a filter or override, so it never surfaces a card the data
-          doesn't support. Applies to Tournament data only; Community decks carry no win rates to bias.
+          doesn't support. Applies to Tournament and Balanced data only; Community decks carry no win rates to bias.
         </p>
         <div className="mt-2 flex flex-wrap gap-1.5">
           <button
@@ -1159,7 +1165,7 @@ function SuggestionRow({
 export default function DeckBuilderIndex() {
   useDocumentTitle(
     "Guided Deck Builder",
-    "Build a Grand Archive deck from tournament win-rate or community-usage recommendations, then tune, validate, share, buy, export, or playtest it.",
+    "Build a Grand Archive deck from tournament win-rate, blended community-usage, or balanced recommendations, then tune, validate, share, buy, export, or playtest it.",
   );
   const [searchParams, setSearchParams] = useSearchParams();
   const [deckFormat, setDeckFormat] = useState<DeckFormat>(() => searchParams.get("format")?.toUpperCase() === "PANTHEON" ? "PANTHEON" : "STANDARD");
@@ -1187,8 +1193,9 @@ export default function DeckBuilderIndex() {
    * pillarBias doc comment) — null ("Balanced") reproduces the original unbiased lift-only order. */
   const [pillarBias, setPillarBias] = useState<RatingPillar | null>(sessionSeed?.pillarBias ?? null);
   /** Tuning: swaps the assembled suggestions between real Omnidex win-rate data and Shout At Your
-   * Decks' community popularity data — see useCommunitySuggestedBuild's own doc comment. */
-  const [populationSource, setPopulationSource] = useState<PopulationSource>(sessionSeed?.populationSource ?? "tournament");
+   * Decks' community popularity data — see useCommunitySuggestedBuild's own doc comment. Defaults
+   * to "balanced" (real tournament lift, nudged by community popularity) — see PopulationSource. */
+  const [populationSource, setPopulationSource] = useState<PopulationSource>(sessionSeed?.populationSource ?? "balanced");
   const [changeLog, setChangeLog] = useState<ChangeLogEntry[]>(sessionSeed?.changeLog ?? []);
   const [visibleFields, setVisibleField] = useCardFieldVisibility();
   const [customizeOpen, setCustomizeOpen] = useState(false);
@@ -1275,11 +1282,33 @@ export default function DeckBuilderIndex() {
     undefined,
     pillarBias,
   );
+  // Same real tournament ranking as tournamentBuild above, plus a community-popularity nudge — see
+  // COMMUNITY_BOOST_WEIGHT's doc comment. Computed unconditionally (same pattern as tournamentBuild/
+  // communityBuild/simulatorResult below) so switching sources doesn't need a recompute.
+  const balancedBuild = useSuggestedBuild(
+    rows,
+    spiritFilter,
+    lockedCards,
+    rejectedCards,
+    populationLoading,
+    lockedSections,
+    cardQuantityStatsData,
+    undefined,
+    pillarBias,
+    communityInclusionByName,
+  );
   const communityBuild = useCommunitySuggestedBuild(communityChampData, communityLockedCards, lockedSections, rejectedCards, catalogByName, !communityCardInclusion, identityElements, deckFormat);
   const simulatorSummary = useSimulatorSummaryData();
   const simulatorResult = useSimulatorSuggestedBuild(communityBuild, simulatorSummary, cardCatalog);
   const effectivePopulationSource: PopulationSource = deckFormat === "PANTHEON" ? "community" : populationSource;
-  const build = effectivePopulationSource === "community" ? communityBuild : effectivePopulationSource === "simulator" ? simulatorResult.build : tournamentBuild;
+  const build =
+    effectivePopulationSource === "community"
+      ? communityBuild
+      : effectivePopulationSource === "simulator"
+        ? simulatorResult.build
+        : effectivePopulationSource === "balanced"
+          ? balancedBuild
+          : tournamentBuild;
 
   const nearestDecks = useNearestDecks(allDecks, lockedCards);
   const gateLoading = deckFormat === "PANTHEON"
@@ -1693,7 +1722,7 @@ export default function DeckBuilderIndex() {
         title="Guided Deck Builder"
         description={(
           <>
-            <p>Choose a Grand Archive Champion and Spirit to generate a suggested Main and Material Deck from real decklists. Use Tournament data to prioritize cards by win-rate evidence, or Community data to build around the cards players use most often.</p>
+            <p>Choose a Grand Archive Champion and Spirit to generate a suggested Main and Material Deck from real decklists. Balanced (the default) prioritizes tournament win-rate evidence nudged by community popularity; Tournament uses win-rate evidence alone; Community builds around the cards players use most often.</p>
             <p className="mt-2">Review each card’s sample size, performance, community usage, price, and common partners. Lock in your choices or exclude cards to recalculate the remaining slots, then validate, copy, share, buy, export, or playtest the finished deck.</p>
           </>
         )}
@@ -1811,6 +1840,17 @@ export default function DeckBuilderIndex() {
               <button
                 type="button"
                 role="tab"
+                aria-selected={effectivePopulationSource === "balanced"}
+                onClick={() => setPopulationSource("balanced")}
+                className={`rounded px-3 py-1 text-xs font-medium ${
+                  effectivePopulationSource === "balanced" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
+                }`}
+              >
+                Balanced
+              </button>
+              <button
+                type="button"
+                role="tab"
                 aria-selected={effectivePopulationSource === "tournament"}
                 onClick={() => setPopulationSource("tournament")}
                 className={`rounded px-3 py-1 text-xs font-medium ${
@@ -1845,9 +1885,11 @@ export default function DeckBuilderIndex() {
             <span className="text-xs text-ctp-subtext0">
               {effectivePopulationSource === "tournament"
                 ? "ranked by real tournament win rates"
-                : effectivePopulationSource === "community"
-                  ? "ranked by blended community popularity — no win/loss data"
-                  : "community shell, reordered only where simulator card evidence resolves"}
+                : effectivePopulationSource === "balanced"
+                  ? "ranked by real tournament win rates, nudged toward blended community popularity"
+                  : effectivePopulationSource === "community"
+                    ? "ranked by blended community popularity — no win/loss data"
+                    : "community shell, reordered only where simulator card evidence resolves"}
             </span>
           </div>
 
@@ -2063,7 +2105,7 @@ export default function DeckBuilderIndex() {
                   </div>
                 )}
               </div>
-              {pillarBias !== null && effectivePopulationSource === "tournament" && (
+              {pillarBias !== null && (effectivePopulationSource === "tournament" || effectivePopulationSource === "balanced") && (
                 <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-md border border-ctp-blue/40 bg-ctp-blue/5 px-3 py-2 text-xs text-ctp-subtext1">
                   <span className="font-semibold text-ctp-blue">Tuning active:</span>
                   <span>{pillarBias} bias</span>
@@ -2097,7 +2139,7 @@ export default function DeckBuilderIndex() {
                         communityInclusion={communityInclusionByName}
                         simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(c.cardName) : undefined}
                         visibleFields={visibleFields}
-                        communityMode={effectivePopulationSource !== "tournament"}
+                        communityMode={effectivePopulationSource !== "tournament" && effectivePopulationSource !== "balanced"}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "material")}
                         onRemove={() => removeCard(c.cardName, c.locked)}
                       />
@@ -2116,7 +2158,7 @@ export default function DeckBuilderIndex() {
                         communityInclusion={communityInclusionByName}
                         simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(c.cardName) : undefined}
                         visibleFields={visibleFields}
-                        communityMode={effectivePopulationSource !== "tournament"}
+                        communityMode={effectivePopulationSource !== "tournament" && effectivePopulationSource !== "balanced"}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "main")}
                         onChangeQuantity={(qty) => setLockedQuantity(c.cardName, qty)}
                         onRemove={() => removeCard(c.cardName, c.locked)}
@@ -2143,7 +2185,7 @@ export default function DeckBuilderIndex() {
                         communityInclusion={communityInclusionByName}
                         simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(c.cardName) : undefined}
                         visibleFields={visibleFields}
-                        communityMode={effectivePopulationSource !== "tournament"}
+                        communityMode={effectivePopulationSource !== "tournament" && effectivePopulationSource !== "balanced"}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "sideboard")}
                         onChangeQuantity={(qty) => setLockedQuantity(c.cardName, qty)}
                         onRemove={() => removeCard(c.cardName, c.locked)}
@@ -2204,6 +2246,7 @@ export default function DeckBuilderIndex() {
                 </div>
               ) : (
                 effectivePopulationSource !== "tournament" &&
+                effectivePopulationSource !== "balanced" &&
                 championName && (
                   <p className="mt-4 text-xs text-ctp-subtext0">
                     Cards that might hurt isn't available in {effectivePopulationSource === "simulator" ? "Simulator" : "Community"} mode — {effectivePopulationSource === "simulator" ? "current simulator telemetry is not Champion-scoped and cannot support with-versus-without deck comparisons" : "the blended community population has no win/loss data to flag underperforming choices"}.

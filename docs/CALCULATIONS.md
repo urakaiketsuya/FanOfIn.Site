@@ -1520,6 +1520,30 @@ explanation instead of silently doing nothing when clicked. `DeckBuilderIndex.ts
 `useSuggestedBuild.ts`'s own math for this — the two hooks are independent, and the toggle just picks
 which one's output feeds the shared rendering.
 
+### Balanced source — the default (`app/src/features/deckbuilder/useSuggestedBuild.ts`)
+
+The Community population section above explains why community popularity isn't blended into the
+lift *ranking* itself: neither community source has win/loss data, so treating `percentOfDecks` as
+if it were a performance number would be fabricating one. "Balanced" doesn't do that. It's still
+`useSuggestedBuild`'s real tournament build — same `adjustedLift`, `conditionalWinRate`,
+`baselineWinRate`, and removal suggestions as the Tournament source, all real Omnidex data — just
+with the blended community population's `percentOfDecks` added as a second, small re-ordering
+nudge alongside the existing DIAO Score pillar-bias nudge (`PILLAR_BOOST_WEIGHT`, see the Guided
+Deck Builder section above): `COMMUNITY_BOOST_WEIGHT = 0.03`, applied as
+`adjustedLift + COMMUNITY_BOOST_WEIGHT * percentOfDecks`. A card run in 100% of blended community
+decks gets at most a +0.03 boost to its sort score — comparable in magnitude to a maxed-out pillar
+boost, and small next to `adjustedLift`'s typical ±0.15 range — so it only breaks ties among
+cards that already cleared the real lift bar (`ranked` is still filtered to `adjustedLift > 0`
+first), never promotes a card the tournament data doesn't support. Cards absent from the community
+data get a boost of 0, not a penalty.
+
+Because it's the same hook and shape as Tournament, "balanced" keeps every lift-specific UI element
+Community mode hides — pillar tuning, removal suggestions ("Cards that might hurt"), the observed
+win-rate tiles — unlike Community/Simulator, which show `null` for all of those. It's also the only
+source where `pillarBias` and the community nudge combine in one ranking pass. Not available for
+Pantheon (no Standard tournament dataset to rank against — Pantheon always resolves to Community,
+same as it always has).
+
 ### Simulator source — experimental (`app/src/features/deckbuilder/useSimulatorSuggestedBuild.ts`)
 
 Simulator telemetry is exposed as a third Standard deck-builder source, but deliberately does not

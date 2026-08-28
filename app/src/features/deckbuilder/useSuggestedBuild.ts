@@ -24,6 +24,14 @@ const CATALOG_SETTLE_MS = 500;
  * ±0.15) — small enough that pillar bias only breaks ties among comparably-performing real cards,
  * never overrides a clearly better lift with a stylistically-matching but weaker one. */
 const PILLAR_BOOST_WEIGHT = 0.01;
+/** Same reasoning and units as `PILLAR_BOOST_WEIGHT`, for the "balanced" source's community-popularity
+ * nudge — `percentOfDecks` is already a 0-1 fraction, so a card run in 100% of blended community decks
+ * gets at most a +0.03 boost, comparable in magnitude to a maxed-out pillar boost. This never touches
+ * `adjustedLift` itself (still the real, honest win-rate number shown in the UI), only which
+ * comparably-performing real card gets picked first for a limited slot — see docs/CALCULATIONS.md,
+ * "Balanced source", for why this doesn't fall into the "fabricating a performance signal" trap the
+ * Community source's own doc explicitly warns about. */
+const COMMUNITY_BOOST_WEIGHT = 0.03;
 
 /** Mirrors pipeline/src/config.ts's defaults — see useChampionCardImpact.ts for why these are plain literals here. */
 const PRIOR_WEIGHT = 10;
@@ -309,6 +317,11 @@ export function useSuggestedBuild(
    * real win-rate-lift bar, never a replacement for that bar. Omit for unbiased lift-only ranking,
    * unchanged from before this existed. */
   pillarBias?: RatingPillar | null,
+  /** The "balanced" source's other half: the blended community population's card-inclusion map
+   * (cardName -> at least `percentOfDecks`), used exactly like `pillarBias` above — a small boost
+   * (see `COMMUNITY_BOOST_WEIGHT`) toward cards the community plays often, among cards that already
+   * cleared the real lift bar. Omit for tournament-only ranking, unchanged from before this existed. */
+  communityInclusion?: Map<string, { percentOfDecks: number }>,
 ): SuggestedBuild {
   const cardCatalog = useCardCatalog();
   const settledCardCatalog = useDebouncedValue(cardCatalog, CATALOG_SETTLE_MS);
@@ -459,13 +472,16 @@ export function useSuggestedBuild(
         !lockedNames.has(e.cardName) &&
         !rejectedCards.has(e.cardName),
     );
-    // Re-order (not re-score) by a small pillar-affinity boost — each entry's own `adjustedLift`
-    // stays the real, honest win-rate number shown in the UI; only which comparably-good real card
-    // gets picked first for a limited slot shifts toward the chosen playstyle.
-    if (pillarBias) {
+    // Re-order (not re-score) by a small pillar-affinity and/or community-popularity boost — each
+    // entry's own `adjustedLift` stays the real, honest win-rate number shown in the UI; only which
+    // comparably-good real card gets picked first for a limited slot shifts toward the chosen
+    // playstyle or the blended community's own usage.
+    if (pillarBias || communityInclusion) {
       const boostedScore = (e: CardImpactEntry): number => {
         const card = cardsByName.get(e.cardName);
-        return e.adjustedLift + (card ? PILLAR_BOOST_WEIGHT * cardPillarScore(card, pillarBias) : 0);
+        const pillarBoost = pillarBias && card ? PILLAR_BOOST_WEIGHT * cardPillarScore(card, pillarBias) : 0;
+        const communityBoost = communityInclusion ? COMMUNITY_BOOST_WEIGHT * (communityInclusion.get(e.cardName)?.percentOfDecks ?? 0) : 0;
+        return e.adjustedLift + pillarBoost + communityBoost;
       };
       ranked.sort((a, b) => boostedScore(b) - boostedScore(a));
     }
@@ -667,5 +683,5 @@ export function useSuggestedBuild(
       },
       loading: false,
     };
-  }, [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName, lockedSections, quantityBucketsByName, championCardOverride, pillarBias]);
+  }, [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName, lockedSections, quantityBucketsByName, championCardOverride, pillarBias, communityInclusion]);
 }
