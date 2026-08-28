@@ -1179,6 +1179,7 @@ export default function DeckBuilderIndex() {
   const [lockedSections, setLockedSections] = useState<Map<string, LockedSection>>(() => urlSeed?.lockedSections ?? sessionSeed?.lockedSections ?? new Map());
   const [rejectedCards, setRejectedCards] = useState<Set<string>>(() => sessionSeed?.rejectedCards ?? new Set());
   const [cardInput, setCardInput] = useState("");
+  const [addToSideboard, setAddToSideboard] = useState(false);
   /** Tuning: nudges useSuggestedBuild's ranking toward a chosen DIAO Score pillar (see its own
    * pillarBias doc comment) — null ("Balanced") reproduces the original unbiased lift-only order. */
   const [pillarBias, setPillarBias] = useState<RatingPillar | null>(sessionSeed?.pillarBias ?? null);
@@ -1271,7 +1272,7 @@ export default function DeckBuilderIndex() {
     undefined,
     pillarBias,
   );
-  const communityBuild = useCommunitySuggestedBuild(communityChampData, communityLockedCards, rejectedCards, catalogByName, !communityCardInclusion, identityElements, deckFormat);
+  const communityBuild = useCommunitySuggestedBuild(communityChampData, communityLockedCards, lockedSections, rejectedCards, catalogByName, !communityCardInclusion, identityElements, deckFormat);
   const simulatorSummary = useSimulatorSummaryData();
   const simulatorResult = useSimulatorSuggestedBuild(communityBuild, simulatorSummary, cardCatalog);
   const effectivePopulationSource: PopulationSource = deckFormat === "PANTHEON" ? "community" : populationSource;
@@ -1568,14 +1569,18 @@ export default function DeckBuilderIndex() {
     const isMaterialOnly = card ? card.types.includes("CHAMPION") || card.types.includes("REGALIA") : false;
     const defaultQty = isMaterialOnly ? 1 : 4;
     pendingActionRef.current = { label: `Added ${name}`, subject: name };
-    startTransition(() =>
+    startTransition(() => {
       setLockedCards((prev) => {
         const next = new Map(prev);
         next.set(name, defaultQty);
         return next;
-      }),
-    );
+      });
+      if (addToSideboard) {
+        setLockedSections((prev) => new Map(prev).set(name, "sideboard"));
+      }
+    });
     setCardInput("");
+    setAddToSideboard(false);
   }
 
   /** "Add" from the "Cards that might help" list — same as toggleLock, just with the section/quantity the suggestion already carries instead of guessing. */
@@ -1993,6 +1998,15 @@ export default function DeckBuilderIndex() {
                   <option key={n} value={n} />
                 ))}
               </datalist>
+              <label className="mt-2 flex w-fit cursor-pointer items-center gap-2 text-sm text-ctp-subtext1">
+                <input
+                  type="checkbox"
+                  checked={addToSideboard}
+                  onChange={(e) => setAddToSideboard(e.target.checked)}
+                  className="accent-ctp-blue"
+                />
+                Add this card to the sideboard
+              </label>
               <div className="mt-3">
                 <button
                   type="button"

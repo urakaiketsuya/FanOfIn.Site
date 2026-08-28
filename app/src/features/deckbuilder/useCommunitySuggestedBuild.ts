@@ -40,6 +40,7 @@ function toSuggested(cardName: string, quantity: number, locked: boolean, entry:
 export function useCommunitySuggestedBuild(
   champData: { deckCount: number; cards: CardInclusionEntry[] } | undefined,
   lockedCards: Map<string, number>,
+  lockedSections: Map<string, SuggestedCard["section"]>,
   rejectedCards: Set<string>,
   cardsByName: Map<string, Card>,
   loading: boolean,
@@ -77,21 +78,28 @@ export function useCommunitySuggestedBuild(
     const placed = new Set<string>();
 
     // Locked cards go in first, at the viewer's own quantity — same precedence as
-    // useSuggestedBuild. Sectioned by the card's own primarySection when known (falls back to main
-    // for a card ShoutAtYourDecks has never seen at all).
+    // useSuggestedBuild. An explicitly chosen section wins; otherwise use the card's community
+    // primarySection (falling back to main for a card ShoutAtYourDecks has never seen at all).
     for (const [name, qty] of lockedCards) {
       const entry = entryByName.get(name);
       const card = cardsByName.get(name);
+      const knownSection = lockedSections.get(name);
       // Same real-data-verified precheck as useSuggestedBuild.ts: Champion/Regalia cards can never
       // legally sit in Main, so a missing/"mixed" primarySection defaults them to Material instead
       // of the general main fallback.
       const isMainIneligible = card ? card.types.includes("CHAMPION") || card.types.includes("REGALIA") : false;
       const section: SuggestedCard["section"] =
-        entry?.primarySection === "sideboard" && !isMainIneligible
+        knownSection === "sideboard"
           ? "sideboard"
-          : isMainIneligible || entry?.primarySection === "material"
+          : isMainIneligible
             ? "material"
-            : "main";
+            : knownSection === "material" || knownSection === "main"
+              ? knownSection
+              : entry?.primarySection === "sideboard" && !isMainIneligible
+                ? "sideboard"
+                : entry?.primarySection === "material"
+                  ? "material"
+                  : "main";
       // Material Deck is capped at 1 copy of each card by rule (see useSuggestedBuild.ts's own
       // note) — a locked card's stored quantity can predate knowing its section, so clamp rather
       // than trust it.
@@ -163,5 +171,5 @@ export function useCommunitySuggestedBuild(
       unresolved: { main: Math.max(0, mainTarget - mainTotal), material: Math.max(0, MATERIAL_TARGET - materialTotal), sideboard: 0 },
       loading: false,
     };
-  }, [champData, lockedCards, rejectedCards, cardsByName, loading, identityElements, format]);
+  }, [champData, lockedCards, lockedSections, rejectedCards, cardsByName, loading, identityElements, format]);
 }
