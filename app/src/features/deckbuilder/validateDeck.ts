@@ -10,6 +10,12 @@ export interface DeckValidationResult {
 
 type Line = { cardName: string; quantity: number };
 
+/** Total sideboard points allowed — see the point-cost comment at its usage below. A 5-card
+ * all-Regalia/Champion sideboard (5 × 3) and a 15-card all-Main-type sideboard (15 × 1) are both
+ * exactly at budget; anything in between is legal too. */
+const SIDEBOARD_POINT_BUDGET = 15;
+const SIDEBOARD_MATERIAL_TYPE_POINT_COST = 3;
+
 /** Static Standard-format checks supported by the card catalog. This is a deck-construction
  * check, not a tournament-readiness certification: dynamic card-text exceptions, banlist timing,
  * registration policy, and event-specific rules still need an official judge/source. */
@@ -54,7 +60,18 @@ export function validateDeck(
   const sideboardTotal = sections.sideboard.reduce((sum, line) => sum + line.quantity, 0);
   if (mainTotal < 60) incomplete.push(`Main deck needs ${60 - mainTotal} more card${60 - mainTotal === 1 ? "" : "s"} for ${format === "PANTHEON" ? "Pantheon" : "Standard"}.`);
   if (materialTotal > 12) illegal.push(`Material deck has ${materialTotal} cards; maximum supported is 12.`);
-  if (sideboardTotal > 12) illegal.push(`Sideboard has ${sideboardTotal} cards; maximum supported is 12.`);
+  // Sideboard is a 15-point budget, not a flat card cap: a Regalia/Champion (a Material-deck-type
+  // card) costs 3 points instead of 1, so swapping one in for cheaper Main-deck-type tech costs
+  // Material deck flexibility elsewhere in the budget — the explicit design goal of this rework.
+  // Unresolvable card data defaults to the cheaper 1-point cost rather than blocking on it.
+  const sideboardPoints = sections.sideboard.reduce((sum, line) => {
+    const card = cardsByName.get(line.cardName);
+    const isMaterialType = card ? card.types.includes("REGALIA") || card.types.includes("CHAMPION") : false;
+    return sum + line.quantity * (isMaterialType ? SIDEBOARD_MATERIAL_TYPE_POINT_COST : 1);
+  }, 0);
+  if (sideboardPoints > SIDEBOARD_POINT_BUDGET) {
+    illegal.push(`Sideboard uses ${sideboardPoints}/${SIDEBOARD_POINT_BUDGET} points (${sideboardTotal} cards) — Regalia/Champion cards cost ${SIDEBOARD_MATERIAL_TYPE_POINT_COST} points each, others cost 1.`);
+  }
 
   const materialCards = sections.material.map((line) => cardsByName.get(line.cardName)).filter((card): card is Card => Boolean(card));
   if (!materialCards.some((card) => card.types.includes("CHAMPION") && !card.subtypes.includes("SPIRIT"))) incomplete.push("Add the required Champion identity piece to the material deck.");

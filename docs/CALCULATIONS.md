@@ -1536,6 +1536,19 @@ with-versus-without removal advice, quantity optimization, or Champion-scoped si
 UI always shows total recorded games, the number of catalog-resolved qualifying cards, and a warning
 that an empty simulator sample leaves the community shell unchanged.
 
+## Sideboard point budget (`app/src/features/deckbuilder/validateDeck.ts`)
+
+Standard's sideboard construction rule (2026 rework, per explicit direction — the design goal is to
+make players more frugal with Material deck slots, since sideboarding in a Regalia/Champion costs
+disproportionately more of the budget than sideboarding in a Main-deck-type card): a 15-**point**
+budget, not a flat card-count cap. A card whose home section would be the Material deck — Regalia or
+Champion type — costs 3 points; every other card costs 1. A sideboard can be, e.g., 5 Regalia/Champion
+cards (5 × 3 = 15), 15 Main-deck-type cards (15 × 1 = 15), or any point-valid mix in between.
+`validateDeck`'s check (`SIDEBOARD_POINT_BUDGET = 15`, `SIDEBOARD_MATERIAL_TYPE_POINT_COST = 3`)
+sums `quantity × cost` over the sideboard section; a card missing from the catalog defaults to the
+cheaper 1-point cost rather than blocking validation on it. Material deck itself keeps its existing
+flat 12-card cap — this rework only changes how the *sideboard* is metered.
+
 ## The "deck identity" convention
 
 Used consistently across nearly every stat above and in `useDeckPopularity.ts`, `computeDeckIdentity`,
