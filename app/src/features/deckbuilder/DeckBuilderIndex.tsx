@@ -216,7 +216,7 @@ function ChangeLogList({ entries }: { entries: ChangeLogEntry[] }) {
             {e.winRateDelta !== null && Math.abs(e.winRateDelta) >= 0.001 && (
               <span className={`ml-1.5 font-semibold ${e.winRateDelta >= 0 ? "text-ctp-green" : "text-ctp-red"}`}>
                 (observed matching-deck rate {e.winRateDelta >= 0 ? "+" : ""}
-                {(e.winRateDelta * 100).toFixed(1)}pp)
+                {(e.winRateDelta * 100).toFixed(1)}%)
               </span>
             )}
             {e.added.length === 0 && e.removed.length === 0 ? (
@@ -733,7 +733,7 @@ function StatsPanel({
                     <span className="text-ctp-subtext1">
                       {(signal.priorRate * 100).toFixed(0)}% → {(signal.recentRate * 100).toFixed(0)}%
                     </span>
-                    <span className="font-semibold text-ctp-red">−{(signal.decay * 100).toFixed(1)}pp</span>
+                    <span className="font-semibold text-ctp-red">−{(signal.decay * 100).toFixed(1)}%</span>
                     <span className="text-ctp-green">{(signal.adjustedWinRate * 100).toFixed(0)}% adjusted win rate</span>
                     <span className="text-ctp-subtext0">{signal.deckCount} decks</span>
                     <button
@@ -1053,7 +1053,7 @@ function CardRow({
       {visibleFields.winRate && (card.adjustedLift !== null ? (
         <span className={`text-xs font-semibold ${card.adjustedLift >= 0 ? "text-ctp-green" : "text-ctp-red"}`}>
           {card.adjustedLift >= 0 ? "+" : ""}
-          {(card.adjustedLift * 100).toFixed(1)}pp
+          {(card.adjustedLift * 100).toFixed(1)}%
         </span>
       ) : (
         <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">
@@ -1139,7 +1139,7 @@ function SuggestionRow({
       {visibleFields.winRate && card.adjustedLift !== null && (
         <span className={`text-xs font-semibold ${card.adjustedLift >= 0 ? "text-ctp-green" : "text-ctp-red"}`}>
           {card.adjustedLift >= 0 ? "+" : ""}
-          {(card.adjustedLift * 100).toFixed(1)}pp
+          {(card.adjustedLift * 100).toFixed(1)}%
         </span>
       )}
       {visibleFields.sample && card.sample && <span className="text-xs text-ctp-subtext0">({card.sample.with} vs {card.sample.without})</span>}
@@ -1911,7 +1911,7 @@ export default function DeckBuilderIndex() {
             <div className="border-b border-ctp-surface1 px-3 py-2 sm:border-b-0 sm:border-r">
               <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Performance</p>
               <p className="mt-0.5 text-sm font-semibold text-ctp-text">{effectivePopulationSource === "simulator" ? "Experimental" : build.conditionalWinRate === null ? "—" : `${(build.conditionalWinRate * 100).toFixed(0)}% observed`}</p>
-              {build.baselineWinRate !== null && lockedCards.size > 0 && <p className="text-[10px] text-ctp-subtext0">{build.conditionalWinRate !== null && build.conditionalWinRate - build.baselineWinRate >= 0 ? "+" : ""}{build.conditionalWinRate === null ? "" : `${((build.conditionalWinRate - build.baselineWinRate) * 100).toFixed(1)}pp`} vs. baseline</p>}
+              {build.baselineWinRate !== null && lockedCards.size > 0 && <p className="text-[10px] text-ctp-subtext0">{build.conditionalWinRate !== null && build.conditionalWinRate - build.baselineWinRate >= 0 ? "+" : ""}{build.conditionalWinRate === null ? "" : `${((build.conditionalWinRate - build.baselineWinRate) * 100).toFixed(1)}%`} vs. baseline</p>}
             </div>
             <div className="border-b border-ctp-surface1 px-3 py-2 sm:border-b-0 sm:border-r">
               <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Completion</p>

@@ -485,7 +485,7 @@ export default function About() {
                       <td className="px-3 py-2 text-ctp-subtext1">{c.role}</td>
                       <td className="px-3 py-2 text-ctp-subtext1">{(c.winRateWith * 100).toFixed(0)}%</td>
                       <td className="px-3 py-2 text-ctp-subtext1">{(c.winRateWithout * 100).toFixed(0)}%</td>
-                      <td className="px-3 py-2 font-semibold text-ctp-green">+{(c.lift * 100).toFixed(0)}pp</td>
+                      <td className="px-3 py-2 font-semibold text-ctp-green">+{(c.lift * 100).toFixed(0)}%</td>
                     </tr>
                   ))}
                 </tbody>
@@ -606,7 +606,7 @@ export default function About() {
                   </Link>
                 </CardHoverPreview>
                 {c.lift !== null ? (
-                  <span className="ml-auto text-xs font-semibold text-ctp-green">+{(c.lift * 100).toFixed(1)}pp</span>
+                  <span className="ml-auto text-xs font-semibold text-ctp-green">+{(c.lift * 100).toFixed(1)}%</span>
                 ) : (
                   <span className="ml-auto rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">staple</span>
                 )}
