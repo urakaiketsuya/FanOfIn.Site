@@ -33,6 +33,15 @@ const PILLAR_BOOST_WEIGHT = 0.01;
  * "Balanced source", for why this doesn't fall into the "fabricating a performance signal" trap the
  * Community source's own doc explicitly warns about. */
 const COMMUNITY_BOOST_WEIGHT = 0.03;
+/** Same tie-breaking-only philosophy as `COMMUNITY_BOOST_WEIGHT`, but subtracted — for the
+ * "balanced" source's decay penalty. `decay` (from `computeCardDecay`'s already-filtered top
+ * signals, `DeckBuilderIndex.tsx`) is a 0-1 inclusion-rate drop, floored at 0.08 by that function's
+ * own reporting bar; at 0.08 the penalty here is a barely-there ~0.004, and even a rare extreme
+ * ~0.5 decay caps out around 0.025 — comparable to a maxed-out community boost, never enough to
+ * outweigh a real `adjustedLift` gap. A card the decay report flags as declining (despite still
+ * winning — that's the report's own bar) gets nudged behind an equally-good, non-declining
+ * alternative; it is never excluded or scored below zero-lift cards. */
+const DECAY_PENALTY_WEIGHT = 0.05;
 
 /** Mirrors pipeline/src/config.ts's defaults — see useChampionCardImpact.ts for why these are plain literals here. */
 const PRIOR_WEIGHT = 10;
@@ -323,6 +332,11 @@ export function useSuggestedBuild(
    * (see `COMMUNITY_BOOST_WEIGHT`) toward cards the community plays often, among cards that already
    * cleared the real lift bar. Omit for tournament-only ranking, unchanged from before this existed. */
   communityInclusion?: Map<string, { percentOfDecks: number }>,
+  /** The "balanced" source's third nudge: cardName -> `decay` from `computeCardDecay`'s top signals
+   * (`DeckBuilderIndex.tsx`) — cards whose inclusion rate is falling despite still winning. Applies
+   * `DECAY_PENALTY_WEIGHT` as a small negative nudge, same tie-breaking-only bar as `pillarBias`/
+   * `communityInclusion` above. Omit for no decay penalty, unchanged from before this existed. */
+  decayingCards?: Map<string, number>,
 ): SuggestedBuild {
   const cardCatalog = useCardCatalog();
   const settledCardCatalog = useDebouncedValue(cardCatalog, CATALOG_SETTLE_MS);
@@ -473,16 +487,18 @@ export function useSuggestedBuild(
         !lockedNames.has(e.cardName) &&
         !rejectedCards.has(e.cardName),
     );
-    // Re-order (not re-score) by a small pillar-affinity and/or community-popularity boost — each
-    // entry's own `adjustedLift` stays the real, honest win-rate number shown in the UI; only which
-    // comparably-good real card gets picked first for a limited slot shifts toward the chosen
-    // playstyle or the blended community's own usage.
-    if (pillarBias || communityInclusion) {
+    // Re-order (not re-score) by a small pillar-affinity, community-popularity, and/or decay
+    // nudge — each entry's own `adjustedLift` stays the real, honest win-rate number shown in the
+    // UI; only which comparably-good real card gets picked first for a limited slot shifts toward
+    // the chosen playstyle, the blended community's own usage, or away from a card that's still
+    // winning but visibly falling out of use.
+    if (pillarBias || communityInclusion || decayingCards) {
       const boostedScore = (e: CardImpactEntry): number => {
         const card = cardsByName.get(e.cardName);
         const pillarBoost = pillarBias && card ? PILLAR_BOOST_WEIGHT * cardPillarScore(card, pillarBias) : 0;
         const communityBoost = communityInclusion ? COMMUNITY_BOOST_WEIGHT * (communityInclusion.get(e.cardName)?.percentOfDecks ?? 0) : 0;
-        return e.adjustedLift + pillarBoost + communityBoost;
+        const decayPenalty = decayingCards ? DECAY_PENALTY_WEIGHT * (decayingCards.get(e.cardName) ?? 0) : 0;
+        return e.adjustedLift + pillarBoost + communityBoost - decayPenalty;
       };
       ranked.sort((a, b) => boostedScore(b) - boostedScore(a));
     }

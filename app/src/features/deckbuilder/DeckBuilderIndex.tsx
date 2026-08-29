@@ -1278,6 +1278,17 @@ export default function DeckBuilderIndex() {
     return next;
   }, [deckFormat, spiritFilter, lockedCards]);
 
+  // Computed here (rather than down with sortedSpirits/spiritStats below) so its top signals can
+  // feed the "balanced" source's decay nudge right below — see DECAY_PENALTY_WEIGHT's doc comment.
+  const decayReport = useMemo(
+    () => computeCardDecay(rows, spiritFilter, catalogByName),
+    [rows, spiritFilter, catalogByName],
+  );
+  const decayingCardBoost = useMemo(
+    () => (decayReport ? new Map(decayReport.signals.map((s) => [s.cardName, s.decay])) : undefined),
+    [decayReport],
+  );
+
   const tournamentBuild = useSuggestedBuild(
     rows,
     spiritFilter,
@@ -1289,9 +1300,10 @@ export default function DeckBuilderIndex() {
     undefined,
     pillarBias,
   );
-  // Same real tournament ranking as tournamentBuild above, plus a community-popularity nudge — see
-  // COMMUNITY_BOOST_WEIGHT's doc comment. Computed unconditionally (same pattern as tournamentBuild/
-  // communityBuild/simulatorResult below) so switching sources doesn't need a recompute.
+  // Same real tournament ranking as tournamentBuild above, plus a community-popularity nudge and a
+  // decay penalty — see COMMUNITY_BOOST_WEIGHT's and DECAY_PENALTY_WEIGHT's doc comments. Computed
+  // unconditionally (same pattern as tournamentBuild/communityBuild/simulatorResult below) so
+  // switching sources doesn't need a recompute.
   const balancedBuild = useSuggestedBuild(
     rows,
     spiritFilter,
@@ -1303,6 +1315,7 @@ export default function DeckBuilderIndex() {
     undefined,
     pillarBias,
     communityInclusionByName,
+    decayingCardBoost,
   );
   const communityBuild = useCommunitySuggestedBuild(communityChampData, communityLockedCards, lockedSections, rejectedCards, catalogByName, !communityCardInclusion, identityElements, deckFormat);
   const simulatorSummary = useSimulatorSummaryData();
@@ -1343,10 +1356,6 @@ export default function DeckBuilderIndex() {
   const sortedSpirits = useMemo(
     () => [...spiritsPresent].sort((a, b) => (spiritStats.get(b)?.decks ?? 0) - (spiritStats.get(a)?.decks ?? 0) || a.localeCompare(b)),
     [spiritsPresent, spiritStats],
-  );
-  const decayReport = useMemo(
-    () => computeCardDecay(rows, spiritFilter, catalogByName),
-    [rows, spiritFilter, catalogByName],
   );
   function spiritOptionLabel(name: string): string {
     const stats = spiritStats.get(name);

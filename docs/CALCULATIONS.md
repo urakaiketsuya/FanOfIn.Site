@@ -1537,12 +1537,24 @@ cards that already cleared the real lift bar (`ranked` is still filtered to `adj
 first), never promotes a card the tournament data doesn't support. Cards absent from the community
 data get a boost of 0, not a penalty.
 
+A third nudge, subtracted rather than added: `DECAY_PENALTY_WEIGHT = 0.05`, applied as
+`... - DECAY_PENALTY_WEIGHT * decay` where `decay` comes from `computeCardDecay`'s already-filtered
+top signals (`DeckBuilderIndex.tsx`, see "Card decay" below) — cards whose real inclusion rate
+fell ≥8 points over the latest 90 days *despite still winning* (`computeCardDecay`'s own reporting
+bar). At that 0.08 floor the penalty is a barely-there ~0.004; even a rare ~0.5 decay caps around
+0.025, comparable to a maxed-out community boost. Deliberately a nudge, not a penalty large enough
+to exclude a card: decay is correlational (a real problem, or just a temporary meta/rotation blip —
+the decay report's own UI already discloses this), so a declining-but-still-winning card only gets
+nudged behind an equally-good, non-declining alternative, never scored below a weaker but stable one.
+Only the top-6 signals `computeCardDecay` already surfaces on the Stats tab feed this — not a full
+per-card decay lookup — so it stays consistent with what the viewer can see named on the same page.
+
 Because it's the same hook and shape as Tournament, "balanced" keeps every lift-specific UI element
 Community mode hides — pillar tuning, removal suggestions ("Cards that might hurt"), the observed
 win-rate tiles — unlike Community/Simulator, which show `null` for all of those. It's also the only
-source where `pillarBias` and the community nudge combine in one ranking pass. Not available for
-Pantheon (no Standard tournament dataset to rank against — Pantheon always resolves to Community,
-same as it always has).
+source where `pillarBias`, the community nudge, and the decay penalty combine in one ranking pass.
+Not available for Pantheon (no Standard tournament dataset to rank against — Pantheon always
+resolves to Community, same as it always has).
 
 ### Simulator source — experimental (`app/src/features/deckbuilder/useSimulatorSuggestedBuild.ts`)
 
