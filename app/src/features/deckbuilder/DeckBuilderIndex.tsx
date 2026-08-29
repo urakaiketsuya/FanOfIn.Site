@@ -17,7 +17,7 @@ import ElementIcon from "../../components/ElementIcon";
 import { buildChartSegments } from "../../components/DonutChart";
 import BarChart from "../../components/BarChart";
 import RankedCompositionChart from "../../components/RankedCompositionChart";
-import { computeDeckComposition, computeDeckIdentity, computeDeckRating, computeMemoryCostCurve, computeReserveCostCurve, type RatingPillar } from "../../lib/deckIdentity";
+import { computeDeckComposition, computeDeckIdentity, computeDeckRating, computeMemoryCostCurve, computeReserveCostCurve, type DeckRating, type RatingPillar } from "../../lib/deckIdentity";
 import { buildTcgplayerMassEntryUrl } from "../../lib/tcgplayerMassEntry";
 import { buildClarentPlaytestUrl } from "../../lib/clarentPlaytest";
 import { buildTtsSaveFile, downloadJsonFile, slugifyFilename } from "../../lib/ttsExport";
@@ -27,6 +27,7 @@ import PageHeader from "../../components/ui/PageHeader";
 import { useTabParam } from "../../lib/useTabParam";
 import { useAllDecodedDecks } from "../../lib/decodedDecks";
 import { useDebouncedValue } from "../../lib/useDebouncedValue";
+import { encodeCustomDecks } from "../../lib/compareShareLink";
 import { useDeckBuilderPopulation, type DeckBuilderRow } from "./useDeckBuilderPopulation";
 import { useNearestDecks, type NearestDeck } from "./useNearestDecks";
 import { computeIdentityElements, findChampionCard, useSuggestedBuild, type SuggestedCard } from "./useSuggestedBuild";
@@ -35,15 +36,15 @@ import { useSimulatorSuggestedBuild, type SimulatorCardEvidence } from "./useSim
 import { useSimulatorSummaryData } from "../simulator/data";
 import { useCardFieldVisibility, type CardFieldVisibility } from "./useCardFieldVisibility";
 import { useBuddyCards, type BuddyCard } from "./useBuddyCards";
-import { validateDeck } from "./validateDeck";
+import { validateDeck, type DeckValidationResult } from "./validateDeck";
 import { computeDependencyReadiness, computeSynergyReadiness } from "./synergyReadiness";
 import HypergeometricCalculator from "./HypergeometricCalculator";
 import { similarCards } from "../../lib/cardSimilarity";
 import ThemaSparkline from "../thema/ThemaSparkline";
 import ElementRail from "../../components/ElementRail";
 
-type BuilderTab = "build" | "stats" | "buddies" | "log";
-const TAB_KEYS: BuilderTab[] = ["build", "stats", "buddies", "log"];
+type BuilderTab = "build" | "stats" | "tools" | "buddies" | "copy" | "log";
+const TAB_KEYS: BuilderTab[] = ["build", "stats", "tools", "buddies", "copy", "log"];
 
 type LockedSection = "main" | "material" | "sideboard";
 
@@ -242,34 +243,72 @@ function ChangeLogList({ entries }: { entries: ChangeLogEntry[] }) {
   );
 }
 
-/** Shared by both the tournament (client-computed BuddyCard) and community (pipeline-computed CommunityCoOccurrenceEntry) lenses — same {cardName, count, coOccurrenceRate} shape. */
-function BuddyRow({
-  buddy,
+interface BuddyGroup {
+  cardName: string;
+  /** Which of the viewer's locked cards this card pairs with, each with its own co-occurrence rate, best first. */
+  withLocked: { name: string; coOccurrenceRate: number }[];
+}
+
+/**
+ * Inverts the per-locked-card buddy lists (`{lockedName: BuddyCard[]}`) into one entry per
+ * recommended card, so a card that pairs well with several of the viewer's locks is shown once —
+ * not duplicated under each lock — and sorted with the strongest multi-lock signals first.
+ */
+function groupBuddiesByCard(
+  groups: { name: string; buddies: { cardName: string; coOccurrenceRate: number }[] }[],
+): BuddyGroup[] {
+  const byCard = new Map<string, { name: string; coOccurrenceRate: number }[]>();
+  for (const { name, buddies } of groups) {
+    for (const b of buddies) {
+      const list = byCard.get(b.cardName);
+      const entry = { name, coOccurrenceRate: b.coOccurrenceRate };
+      if (list) list.push(entry);
+      else byCard.set(b.cardName, [entry]);
+    }
+  }
+  return Array.from(byCard.entries())
+    .map(([cardName, withLocked]) => ({
+      cardName,
+      withLocked: withLocked.sort((a, b) => b.coOccurrenceRate - a.coOccurrenceRate),
+    }))
+    .sort((a, b) => b.withLocked.length - a.withLocked.length || b.withLocked[0].coOccurrenceRate - a.withLocked[0].coOccurrenceRate);
+}
+
+/** Shared by both the tournament (client-computed BuddyCard) and community (pipeline-computed CommunityCoOccurrenceEntry) lenses — same {cardName, count, coOccurrenceRate} shape once inverted into a BuddyGroup. */
+function BuddyGroupRow({
+  group,
   cardsByName,
   onAdd,
 }: {
-  buddy: { cardName: string; coOccurrenceRate: number };
+  group: BuddyGroup;
   cardsByName: ReturnType<typeof useCardsByNames>;
   onAdd: (name: string) => void;
 }) {
-  const cardInfo = cardsByName.get(buddy.cardName);
+  const cardInfo = cardsByName.get(group.cardName);
   return (
-    <li className="relative flex items-center gap-1.5 overflow-hidden rounded-md border border-ctp-surface1 py-1 pl-3 pr-2 text-sm">
+    <li className="relative flex flex-wrap items-center gap-1.5 overflow-hidden rounded-md border border-ctp-surface1 py-1 pl-3 pr-2 text-sm">
       <ElementRail elements={cardInfo?.elements} />
-      <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={buddy.cardName}>
+      <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={group.cardName}>
         {cardInfo ? (
           <Link to={`/cards/${cardInfo.slug}`} className="text-ctp-text hover:text-ctp-blue">
-            {buddy.cardName}
+            {group.cardName}
           </Link>
         ) : (
-          <span className="text-ctp-text">{buddy.cardName}</span>
+          <span className="text-ctp-text">{group.cardName}</span>
         )}
       </CardHoverPreview>
-      <span className="text-xs text-ctp-subtext0">{Math.round(buddy.coOccurrenceRate * 100)}%</span>
+      {group.withLocked.length > 1 && (
+        <span className="rounded-full bg-ctp-surface1 px-1.5 py-0.5 text-[10px] font-semibold text-ctp-subtext1">
+          ×{group.withLocked.length}
+        </span>
+      )}
+      <span className="text-xs text-ctp-subtext0">
+        with {group.withLocked.map((w) => `${w.name} ${Math.round(w.coOccurrenceRate * 100)}%`).join(", ")}
+      </span>
       <button
         type="button"
-        onClick={() => onAdd(buddy.cardName)}
-        className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
+        onClick={() => onAdd(group.cardName)}
+        className="ml-auto rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
       >
         Add
       </button>
@@ -306,49 +345,34 @@ function BuddyCardsList({
       </div>
     );
   }
+  const merged = groupBuddiesByCard(groups);
+  const communityMerged = groupBuddiesByCard(communityGroups);
   return (
     <div className="mt-6">
       <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Buddy cards</h2>
       <p className="mt-1 text-xs text-ctp-subtext0">
-        Cards most often run alongside one of your choices, regardless of win rate — add one straight from here even if
-        it never shows up in the ranked suggestions above.
+        Cards most often run alongside your choices, regardless of win rate — sorted by how many of your locks
+        each one pairs with, so cards that go with several of your picks float to the top. Add one straight from
+        here even if it never shows up in the ranked suggestions above.
       </p>
-      <div className="mt-2 space-y-3">
-        {groups.map(({ name, buddies }) => (
-          <div key={name}>
-            <p className="text-xs text-ctp-subtext1">
-              With <span className="text-ctp-text">{name}</span>:
-            </p>
-            <ul className="mt-1 flex flex-wrap gap-1.5">
-              {buddies.map((b) => (
-                <BuddyRow key={b.cardName} buddy={b} cardsByName={cardsByName} onAdd={onAdd} />
-              ))}
-            </ul>
-          </div>
+      <ul className="mt-2 space-y-1.5">
+        {merged.map((g) => (
+          <BuddyGroupRow key={g.cardName} group={g} cardsByName={cardsByName} onAdd={onAdd} />
         ))}
-      </div>
+      </ul>
 
-      {communityGroups.length > 0 && (
+      {communityMerged.length > 0 && (
         <div className="mt-4 border-t border-ctp-surface0 pt-3">
           <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Community buddy cards</h3>
           <p className="mt-1 text-xs text-ctp-subtext0">
             Same idea, from community deck lists instead of tournament data — real co-occurrence, no win
             rate involved either way.
           </p>
-          <div className="mt-2 space-y-3">
-            {communityGroups.map(({ name, buddies }) => (
-              <div key={name}>
-                <p className="text-xs text-ctp-subtext1">
-                  With <span className="text-ctp-text">{name}</span>:
-                </p>
-                <ul className="mt-1 flex flex-wrap gap-1.5">
-                  {buddies.map((b) => (
-                    <BuddyRow key={b.cardName} buddy={b} cardsByName={cardsByName} onAdd={onAdd} />
-                  ))}
-                </ul>
-              </div>
+          <ul className="mt-2 space-y-1.5">
+            {communityMerged.map((g) => (
+              <BuddyGroupRow key={g.cardName} group={g} cardsByName={cardsByName} onAdd={onAdd} />
             ))}
-          </div>
+          </ul>
         </div>
       )}
     </div>
@@ -578,10 +602,7 @@ function StatsPanel({
   catalogByName,
   identityElements,
   preferredSuggestions,
-  championName,
   compositionWinRateData,
-  pillarBias,
-  onPillarBiasChange,
   onAddCard,
   decayReport,
 }: {
@@ -591,16 +612,11 @@ function StatsPanel({
   catalogByName: Map<string, Card>;
   identityElements: Set<string>;
   preferredSuggestions: string[];
-  championName: string | null;
   compositionWinRateData: CompositionWinRateData | undefined;
-  pillarBias: RatingPillar | null;
-  onPillarBiasChange: (pillar: RatingPillar | null) => void;
   onAddCard: (name: string) => void;
   decayReport: CardDecayReport | null;
 }) {
-  const identity = useMemo(() => computeDeckIdentity(lines, cardsByName), [lines, cardsByName]);
   const composition = useMemo(() => computeDeckComposition(lines, cardsByName), [lines, cardsByName]);
-  const rating = useMemo(() => computeDeckRating(lines, cardsByName, championName, identity.classes), [lines, cardsByName, championName, identity.classes]);
   const memoryCurve = useMemo(() => computeMemoryCostCurve(lines, cardsByName), [lines, cardsByName]);
   const reserveCurve = useMemo(() => computeReserveCostCurve(lines, cardsByName), [lines, cardsByName]);
   const compositionGaps = useMemo(
@@ -651,56 +667,6 @@ function StatsPanel({
 
   return (
     <div className="mt-6">
-      <div className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">DIAO Score</h2>
-          <span className="text-2xl font-bold text-ctp-blue">{rating.composite.toFixed(2)}</span>
-        </div>
-        <div className="mt-3 space-y-2">
-          {(["durability", "interaction", "aggro", "opportunity"] as RatingPillar[]).map((pillar) => (
-            <div key={pillar} className="flex items-center gap-2 text-sm">
-              <span className="w-24 shrink-0 capitalize text-ctp-subtext1">{pillar}</span>
-              <div className="h-2 flex-1 rounded-full bg-ctp-surface0">
-                <div className="h-2 rounded-full bg-ctp-blue" style={{ width: `${(rating.scores[pillar] / 10) * 100}%` }} />
-              </div>
-              <span className="w-6 shrink-0 text-right text-ctp-subtext0">{rating.scores[pillar]}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
-        <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Tuning</h2>
-        <p className="mt-1 text-xs text-ctp-subtext0">
-          Bias the Build tab's ranked suggestions toward one DIAO Score pillar — a small nudge among cards that
-          already clear the real win-rate bar, never a filter or override, so it never surfaces a card the data
-          doesn't support. Applies to Tournament and Balanced data only; Community decks carry no win rates to bias.
-        </p>
-        <div className="mt-2 flex flex-wrap gap-1.5">
-          <button
-            type="button"
-            onClick={() => onPillarBiasChange(null)}
-            className={`rounded-md border px-2 py-1 text-xs capitalize ${
-              pillarBias === null ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            Balanced
-          </button>
-          {PILLAR_OPTIONS.map((pillar) => (
-            <button
-              key={pillar}
-              type="button"
-              onClick={() => onPillarBiasChange(pillar)}
-              className={`rounded-md border px-2 py-1 text-xs capitalize ${
-                pillarBias === pillar ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-              }`}
-            >
-              {pillar}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {decayReport && decayReport.signals.length > 0 && (
         <div className="mt-4 rounded-lg border border-ctp-mauve/50 bg-ctp-mantle p-4">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -860,8 +826,6 @@ function StatsPanel({
         </div>
       )}
 
-      <HypergeometricCalculator mainLines={mainLines} />
-
       {dependencyReadiness.length > 0 && (
         <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
           <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Package balance</h2>
@@ -970,6 +934,156 @@ function StatsPanel({
         <RankedCompositionChart title="Elements" segments={buildChartSegments(composition.elements)} />
         <RankedCompositionChart title="Card Subtypes" segments={buildChartSegments(composition.subtypes)} />
       </div>
+    </div>
+  );
+}
+
+function ToolsPanel({
+  rating,
+  mainLines,
+  materialLines,
+  catalogByName,
+  pillarBias,
+  onPillarBiasChange,
+  validation,
+  unresolvedMain,
+  deckFormat,
+  populationSource,
+  onChangePopulationSource,
+}: {
+  rating: DeckRating;
+  mainLines: { name: string; quantity: number }[];
+  materialLines: { name: string; quantity: number }[];
+  catalogByName: Map<string, Card>;
+  pillarBias: RatingPillar | null;
+  onPillarBiasChange: (pillar: RatingPillar | null) => void;
+  validation: DeckValidationResult;
+  unresolvedMain: number;
+  deckFormat: DeckFormat;
+  populationSource: PopulationSource;
+  onChangePopulationSource: (source: PopulationSource, label: string) => void;
+}) {
+  return (
+    <div className="mt-6">
+      <div className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">DIAO Score</h2>
+          <span className="text-2xl font-bold text-ctp-blue">{rating.composite.toFixed(2)}</span>
+        </div>
+        <div className="mt-3 space-y-2">
+          {(["durability", "interaction", "aggro", "opportunity"] as RatingPillar[]).map((pillar) => (
+            <div key={pillar} className="flex items-center gap-2 text-sm">
+              <span className="w-24 shrink-0 capitalize text-ctp-subtext1">{pillar}</span>
+              <div className="h-2 flex-1 rounded-full bg-ctp-surface0">
+                <div className="h-2 rounded-full bg-ctp-blue" style={{ width: `${(rating.scores[pillar] / 10) * 100}%` }} />
+              </div>
+              <span className="w-6 shrink-0 text-right text-ctp-subtext0">{rating.scores[pillar]}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <details className={`mt-4 rounded-md border px-3 py-2 text-sm ${validation.status === "Legal" ? "border-ctp-green" : validation.status === "Illegal" ? "border-ctp-red" : "border-ctp-yellow"}`}>
+        <summary className="flex cursor-pointer items-center justify-between gap-3">
+          <span className="font-semibold">{validation.status === "Incomplete" && unresolvedMain > 0 ? `${unresolvedMain} main-deck slots remaining` : validation.status}</span>
+          <span className="text-xs font-normal text-ctp-subtext0">View validation</span>
+        </summary>
+        {validation.reasons.length > 0 && <ul className="mt-2 list-disc pl-5 text-xs text-ctp-subtext1">{validation.reasons.slice(0, 8).map((reason) => <li key={reason}>{reason}</li>)}</ul>}
+        <p className="mt-2 text-xs text-ctp-subtext0">Standard construction checks only; not tournament certification.</p>
+      </details>
+
+      <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+        <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Tuning</h2>
+        <p className="mt-1 text-xs text-ctp-subtext0">
+          Bias the Build tab's ranked suggestions toward one DIAO Score pillar — a small nudge among cards that
+          already clear the real win-rate bar, never a filter or override, so it never surfaces a card the data
+          doesn't support. Applies to Tournament and Balanced data only; Community decks carry no win rates to bias.
+        </p>
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          <button
+            type="button"
+            onClick={() => onPillarBiasChange(null)}
+            className={`rounded-md border px-2 py-1 text-xs capitalize ${
+              pillarBias === null ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+            }`}
+          >
+            Balanced
+          </button>
+          {PILLAR_OPTIONS.map((pillar) => (
+            <button
+              key={pillar}
+              type="button"
+              onClick={() => onPillarBiasChange(pillar)}
+              className={`rounded-md border px-2 py-1 text-xs capitalize ${
+                pillarBias === pillar ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+              }`}
+            >
+              {pillar}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2">
+        <span className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Data source</span>
+        <div role="tablist" aria-label="Data source" className="inline-flex max-w-full flex-wrap rounded-md border border-ctp-surface1 bg-ctp-base p-0.5">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={populationSource === "balanced"}
+            onClick={() => onChangePopulationSource("balanced", "Balanced")}
+            className={`rounded px-3 py-1 text-xs font-medium ${
+              populationSource === "balanced" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
+            }`}
+          >
+            Balanced
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={populationSource === "tournament"}
+            onClick={() => onChangePopulationSource("tournament", "Tournament")}
+            className={`rounded px-3 py-1 text-xs font-medium ${
+              populationSource === "tournament" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
+            }`}
+          >
+            Tournament
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={populationSource === "community"}
+            onClick={() => onChangePopulationSource("community", "Community")}
+            className={`rounded px-3 py-1 text-xs font-medium ${
+              populationSource === "community" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
+            }`}
+          >
+            Community
+          </button>
+          {deckFormat === "STANDARD" && <button
+            type="button"
+            role="tab"
+            aria-selected={populationSource === "simulator"}
+            onClick={() => onChangePopulationSource("simulator", "Simulator")}
+            className={`rounded px-3 py-1 text-xs font-medium ${
+              populationSource === "simulator" ? "bg-ctp-mauve text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
+            }`}
+          >
+            Simulator <span className="font-normal">(Experimental)</span>
+          </button>}
+        </div>
+        <span className="text-xs text-ctp-subtext0">
+          {populationSource === "tournament"
+            ? "ranked by real tournament win rates"
+            : populationSource === "balanced"
+              ? "ranked by real tournament win rates, nudged toward community popularity"
+              : populationSource === "community"
+                ? "ranked by community popularity — no win/loss data"
+                : "community shell, reordered only where simulator card evidence resolves"}
+        </span>
+      </div>
+
+      <HypergeometricCalculator mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
     </div>
   );
 }
@@ -1343,13 +1457,10 @@ export default function DeckBuilderIndex() {
     : rows.length > 0;
 
   const spiritStats = useMemo(() => {
-    const stats = new Map<string, { decks: number; winRate: number }>();
+    const stats = new Map<string, { decks: number }>();
     for (const spirit of spiritsPresent) {
       const matching = rows.filter((row) => row.spiritName === spirit);
-      stats.set(spirit, {
-        decks: matching.length,
-        winRate: matching.length > 0 ? matching.reduce((sum, row) => sum + row.winRate, 0) / matching.length : 0,
-      });
+      stats.set(spirit, { decks: matching.length });
     }
     return stats;
   }, [rows, spiritsPresent]);
@@ -1360,7 +1471,7 @@ export default function DeckBuilderIndex() {
   function spiritOptionLabel(name: string): string {
     const stats = spiritStats.get(name);
     if (!stats) return name;
-    return `${name} — ${stats.decks} ${stats.decks === 1 ? "deck" : "decks"} · ${(stats.winRate * 100).toFixed(0)}% observed`;
+    return `${name} — ${stats.decks} ${stats.decks === 1 ? "deck" : "decks"}`;
   }
 
   useEffect(() => {
@@ -1642,6 +1753,26 @@ export default function DeckBuilderIndex() {
     toggleLock(card.cardName, card.quantity, card.section);
   }
 
+  /** Re-ranking the suggested build by switching data source or tuning bias is itself a
+   * suggestion-changing action, same as locking/excluding a card — logged the same way so the
+   * change log reflects what actually moved instead of only crediting direct card clicks. Guarded
+   * on an actual value change so clicking the already-selected tab/pillar doesn't leave a stale
+   * pendingActionRef for the next real change to pick up. */
+  function changePopulationSource(source: PopulationSource, label: string) {
+    if (source !== populationSource) pendingActionRef.current = { label: `Switched to ${label} data`, subject: null };
+    setPopulationSource(source);
+  }
+
+  function changePillarBias(pillar: RatingPillar | null) {
+    if (pillar !== pillarBias) {
+      pendingActionRef.current = {
+        label: pillar === null ? "Reset tuning to Balanced" : `Tuned toward ${pillar[0].toUpperCase()}${pillar.slice(1)}`,
+        subject: null,
+      };
+    }
+    setPillarBias(pillar);
+  }
+
   const mainTotal = build.main.reduce((sum, c) => sum + c.quantity, 0);
   const materialTotal = build.material.reduce((sum, c) => sum + c.quantity, 0);
   const sideboardTotal = build.sideboard.reduce((sum, c) => sum + c.quantity, 0);
@@ -1653,6 +1784,7 @@ export default function DeckBuilderIndex() {
     [build.material, build.main],
   );
   const mainOnlyLines = useMemo(() => build.main.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.main]);
+  const materialOnlyLines = useMemo(() => build.material.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.material]);
   const sideboardLines = useMemo(() => build.sideboard.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.sideboard]);
 
   const decklist: OmnidexDecklist = useMemo(
@@ -1663,9 +1795,25 @@ export default function DeckBuilderIndex() {
     }),
     [build.main, build.material, build.sideboard],
   );
+  /** Link to `/compare` seeding the current in-progress build (as a `?custom=` deck) alongside one
+   * real deck (as a `?add=eventId:player`, reusing `NearestDeck.deckId`'s existing format) — lets the
+   * viewer see exactly where their build overlaps/diverges from a real result, not just the
+   * similarity percentage `useNearestDecks` already scores it with. */
+  function nearestDeckCompareLink(d: NearestDeck): string {
+    const label = `${championName ?? "My build"}${spiritFilter ? ` (${spiritFilter})` : ""}`;
+    const params = new URLSearchParams();
+    params.set("add", d.deckId);
+    params.set("custom", encodeCustomDecks([{ label, decklist, format: deckFormat }]));
+    return `/compare?${params.toString()}`;
+  }
   const validation = useMemo(
     () => validateDeck({ main: build.main, material: build.material, sideboard: build.sideboard }, catalogByName, identityElements, deckFormat),
     [build.main, build.material, build.sideboard, catalogByName, identityElements, deckFormat],
+  );
+  const deckIdentity = useMemo(() => computeDeckIdentity(buildLines, cardsByName), [buildLines, cardsByName]);
+  const rating = useMemo(
+    () => computeDeckRating(buildLines, cardsByName, championName, deckIdentity.classes),
+    [buildLines, cardsByName, championName, deckIdentity.classes],
   );
   // Buying/exporting covers the whole deck including sideboard tech, same as DecklistView.tsx.
   const massEntryUrl = useMemo(() => buildTcgplayerMassEntryUrl([...buildLines, ...sideboardLines]), [buildLines, sideboardLines]);
@@ -1839,67 +1987,6 @@ export default function DeckBuilderIndex() {
 
       {!championName && <p className="mt-6 text-ctp-subtext1">Choose a Champion to see a suggested build.</p>}
 
-      {championName && spiritFilter && (
-        <div className="mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2">
-          <span className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Data source</span>
-          <div role="tablist" aria-label="Data source" className="inline-flex max-w-full flex-wrap rounded-md border border-ctp-surface1 bg-ctp-base p-0.5">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={effectivePopulationSource === "balanced"}
-              onClick={() => setPopulationSource("balanced")}
-              className={`rounded px-3 py-1 text-xs font-medium ${
-                effectivePopulationSource === "balanced" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
-              }`}
-            >
-              Balanced
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={effectivePopulationSource === "tournament"}
-              onClick={() => setPopulationSource("tournament")}
-              className={`rounded px-3 py-1 text-xs font-medium ${
-                effectivePopulationSource === "tournament" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
-              }`}
-            >
-              Tournament
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={effectivePopulationSource === "community"}
-              onClick={() => setPopulationSource("community")}
-              className={`rounded px-3 py-1 text-xs font-medium ${
-                effectivePopulationSource === "community" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
-              }`}
-            >
-              Community
-            </button>
-            {deckFormat === "STANDARD" && <button
-              type="button"
-              role="tab"
-              aria-selected={effectivePopulationSource === "simulator"}
-              onClick={() => setPopulationSource("simulator")}
-              className={`rounded px-3 py-1 text-xs font-medium ${
-                effectivePopulationSource === "simulator" ? "bg-ctp-mauve text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
-              }`}
-            >
-              Simulator <span className="font-normal">(Experimental)</span>
-            </button>}
-          </div>
-          <span className="text-xs text-ctp-subtext0">
-            {effectivePopulationSource === "tournament"
-              ? "ranked by real tournament win rates"
-              : effectivePopulationSource === "balanced"
-                ? "ranked by real tournament win rates, nudged toward community popularity"
-                : effectivePopulationSource === "community"
-                  ? "ranked by community popularity — no win/loss data"
-                  : "community shell, reordered only where simulator card evidence resolves"}
-          </span>
-        </div>
-      )}
-
       {championName && gateLoading && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
 
       {championName && !gateLoading && !gateHasData && (
@@ -1949,15 +2036,6 @@ export default function DeckBuilderIndex() {
             </div>
           </div>
 
-          <details className={`mt-2 rounded-md border px-3 py-2 text-sm ${validation.status === "Legal" ? "border-ctp-green" : validation.status === "Illegal" ? "border-ctp-red" : "border-ctp-yellow"}`}>
-            <summary className="flex cursor-pointer items-center justify-between gap-3">
-              <span className="font-semibold">{validation.status === "Incomplete" && build.unresolved.main > 0 ? `${build.unresolved.main} main-deck slots remaining` : validation.status}</span>
-              <span className="text-xs font-normal text-ctp-subtext0">View validation</span>
-            </summary>
-            {validation.reasons.length > 0 && <ul className="mt-2 list-disc pl-5 text-xs text-ctp-subtext1">{validation.reasons.slice(0, 8).map((reason) => <li key={reason}>{reason}</li>)}</ul>}
-            <p className="mt-2 text-xs text-ctp-subtext0">Standard construction checks only; not tournament certification.</p>
-          </details>
-
           {isPending && <p role="status" className="mt-1 text-xs text-ctp-subtext0">Recalculating suggestions…</p>}
           {rejectedCards.size > 0 && <p className="mt-1 text-xs text-ctp-subtext0">{rejectedCards.size} card{rejectedCards.size === 1 ? "" : "s"} excluded · <button type="button" onClick={() => { pendingActionRef.current = { label: "Reset excluded cards", subject: null }; startTransition(() => setRejectedCards(new Set())); }} className="hover:text-ctp-blue hover:underline">reset</button></p>}
           {build.usedSpiritElementFallback && (
@@ -1979,72 +2057,14 @@ export default function DeckBuilderIndex() {
             </p>
           )}
 
-          <div className="mt-3 flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={handleCopy}
-              aria-live="polite"
-              className={`rounded-md border px-2 py-1 text-xs ${
-                copyState === "failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-              }`}
-            >
-              {copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : copyLockedOnly ? "Copy locked cards" : "Copy decklist"}
-            </button>
-            <label className="flex items-center gap-1.5 text-xs text-ctp-subtext1" title="Copy only the cards you've explicitly locked, skipping every auto-suggested slot">
-              <input
-                type="checkbox"
-                checked={copyLockedOnly}
-                onChange={(e) => setCopyLockedOnly(e.target.checked)}
-                className="accent-ctp-blue"
-              />
-              Locked only
-            </label>
-            <a
-              href={massEntryUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-md border border-ctp-blue px-2 py-1 text-xs text-ctp-blue hover:bg-ctp-surface0"
-            >
-              Buy on TCGplayer &rarr;
-            </a>
-            <a
-              href={clarentUrl}
-              target="_blank"
-              rel="noreferrer"
-              title="Opens this deck in Clarent's solo Goldfish playtest mode"
-              className="rounded-md border border-ctp-green px-2 py-1 text-xs text-ctp-green hover:bg-ctp-surface0"
-            >
-              Playtest in Clarent &rarr;
-            </a>
-          </div>
-          <div className="mt-2 flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={handleExportTts}
-              title="Downloads a .json file — in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it"
-              className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text"
-            >
-              Export to TTS
-            </button>
-            <button
-              type="button"
-              onClick={handleCopyShareLink}
-              aria-live="polite"
-              title="Copies a link that reopens this Champion/Spirit and every user-choice card"
-              className={`rounded-md border px-2 py-1 text-xs ${
-                shareCopyState === "failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-              }`}
-            >
-              {shareCopyState === "copied" ? "Copied!" : shareCopyState === "failed" ? "Couldn't copy" : "Copy share link"}
-            </button>
-          </div>
-
           <div role="tablist" aria-label="Deck builder sections" className="mt-4 flex flex-wrap gap-2 border-b border-ctp-surface1 pb-2">
             {(
               [
                 { key: "build", label: "Build" },
                 { key: "stats", label: "Stats" },
+                { key: "tools", label: "Tools" },
                 { key: "buddies", label: "Buddy Cards" },
+                { key: "copy", label: "Copy & Export" },
                 { key: "log", label: `Log (${changeLog.length})` },
               ] as { key: BuilderTab; label: string }[]
             ).map((t) => (
@@ -2144,10 +2164,10 @@ export default function DeckBuilderIndex() {
                   <span className="text-ctp-subtext0">— nudging suggestions toward one DIAO Score pillar.</span>
                   <button
                     type="button"
-                    onClick={() => setTab("stats")}
+                    onClick={() => setTab("tools")}
                     className="ml-auto shrink-0 rounded border border-ctp-blue/40 px-1.5 py-0.5 text-ctp-blue hover:bg-ctp-blue/10"
                   >
-                    Adjust in Stats →
+                    Adjust in Tools →
                   </button>
                 </div>
               )}
@@ -2305,10 +2325,16 @@ export default function DeckBuilderIndex() {
                           {d.spiritName && <span className="text-ctp-subtext1">({d.spiritName})</span>}
                           <span className="text-xs text-ctp-subtext0">{(d.similarity * 100).toFixed(0)}% similar</span>
                           <span className="text-xs text-ctp-subtext0">{(d.winRate * 100).toFixed(0)}% win rate</span>
+                          <Link
+                            to={nearestDeckCompareLink(d)}
+                            className="ml-auto shrink-0 rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
+                          >
+                            Compare
+                          </Link>
                           <button
                             type="button"
                             onClick={() => loadNearestDeck(d)}
-                            className="ml-auto shrink-0 rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
+                            className="shrink-0 rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
                           >
                             Load
                           </button>
@@ -2330,12 +2356,27 @@ export default function DeckBuilderIndex() {
                 catalogByName={catalogByName}
                 identityElements={identityElements}
                 preferredSuggestions={build.suggestions.map((card) => card.cardName)}
-                championName={championName}
                 compositionWinRateData={compositionWinRateData}
-                pillarBias={pillarBias}
-                onPillarBiasChange={setPillarBias}
                 onAddCard={addCard}
                 decayReport={decayReport}
+              />
+            </div>
+          )}
+
+          {tab === "tools" && (
+            <div role="tabpanel" id="panel-tools" aria-labelledby="tab-tools">
+              <ToolsPanel
+                rating={rating}
+                mainLines={mainOnlyLines}
+                materialLines={materialOnlyLines}
+                catalogByName={catalogByName}
+                pillarBias={pillarBias}
+                onPillarBiasChange={changePillarBias}
+                validation={validation}
+                unresolvedMain={build.unresolved.main}
+                deckFormat={deckFormat}
+                populationSource={effectivePopulationSource}
+                onChangePopulationSource={changePopulationSource}
               />
             </div>
           )}
@@ -2349,6 +2390,70 @@ export default function DeckBuilderIndex() {
                 cardsByName={cardsByName}
                 onAdd={addCard}
               />
+            </div>
+          )}
+
+          {tab === "copy" && (
+            <div role="tabpanel" id="panel-copy" aria-labelledby="tab-copy" className="mt-4">
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={handleCopy}
+                  aria-live="polite"
+                  className={`rounded-md border px-2 py-1 text-xs ${
+                    copyState === "failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                  }`}
+                >
+                  {copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : copyLockedOnly ? "Copy locked cards" : "Copy decklist"}
+                </button>
+                <label className="flex items-center gap-1.5 text-xs text-ctp-subtext1" title="Copy only the cards you've explicitly locked, skipping every auto-suggested slot">
+                  <input
+                    type="checkbox"
+                    checked={copyLockedOnly}
+                    onChange={(e) => setCopyLockedOnly(e.target.checked)}
+                    className="accent-ctp-blue"
+                  />
+                  Locked only
+                </label>
+                <a
+                  href={massEntryUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-md border border-ctp-blue px-2 py-1 text-xs text-ctp-blue hover:bg-ctp-surface0"
+                >
+                  Buy on TCGplayer &rarr;
+                </a>
+                <a
+                  href={clarentUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  title="Opens this deck in Clarent's solo Goldfish playtest mode"
+                  className="rounded-md border border-ctp-green px-2 py-1 text-xs text-ctp-green hover:bg-ctp-surface0"
+                >
+                  Playtest in Clarent &rarr;
+                </a>
+              </div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={handleExportTts}
+                  title="Downloads a .json file — in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it"
+                  className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text"
+                >
+                  Export to TTS
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCopyShareLink}
+                  aria-live="polite"
+                  title="Copies a link that reopens this Champion/Spirit and every user-choice card"
+                  className={`rounded-md border px-2 py-1 text-xs ${
+                    shareCopyState === "failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                  }`}
+                >
+                  {shareCopyState === "copied" ? "Copied!" : shareCopyState === "failed" ? "Couldn't copy" : "Copy share link"}
+                </button>
+              </div>
             </div>
           )}
 
