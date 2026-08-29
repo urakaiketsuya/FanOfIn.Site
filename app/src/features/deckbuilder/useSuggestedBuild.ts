@@ -12,6 +12,7 @@ import { useDebouncedValue } from "../../lib/useDebouncedValue";
 import { cardPillarScore, type RatingPillar } from "../../lib/deckIdentity";
 import { weightedJaccard } from "../../lib/decodedDecks";
 import type { DeckBuilderRow } from "./useDeckBuilderPopulation";
+import { SIDEBOARD_POINT_BUDGET, sideboardPointCost } from "./validateDeck";
 
 /** Same reasoning as useAllDecodedDecks' CATALOG_SETTLE_MS (app/src/lib/decodedDecks.ts) — the
  * catalog sync writes in batches, and this hook's own `cardsByName` feeds the big `useMemo` below
@@ -607,6 +608,7 @@ export function useSuggestedBuild(
     let materialTotal = material.reduce((sum, c) => sum + c.quantity, 0);
     let mainTotal = main.reduce((sum, c) => sum + c.quantity, 0);
     let sideboardTotal = sideboard.reduce((sum, c) => sum + c.quantity, 0);
+    let sideboardPoints = sideboard.reduce((sum, c) => sum + c.quantity * sideboardPointCost(cardsByName.get(c.cardName)), 0);
 
     // "Any Spirit" is an exploratory comparison, not a coherent archetype. Keep its ranked cards
     // available as optional ideas below, but do not auto-assemble them into a falsely complete deck.
@@ -622,11 +624,15 @@ export function useSuggestedBuild(
         material.push(toSuggested(entry.cardName, 1, false, entry, "ranked", "material"));
         materialTotal += 1;
       } else if (section === "sideboard") {
-        if (sideboardTotal >= sideboardTarget) continue;
+        if (sideboardTotal >= sideboardTarget || sideboardPoints >= SIDEBOARD_POINT_BUDGET) continue;
         const picked = pickQuantity(rankingRows, "sideboard", entry.cardName, card, quantityBucketsByName);
-        const qty = Math.min(picked.quantity, sideboardTarget - sideboardTotal);
+        const pointCost = sideboardPointCost(card);
+        const affordableQty = Math.floor((SIDEBOARD_POINT_BUDGET - sideboardPoints) / pointCost);
+        const qty = Math.min(picked.quantity, sideboardTarget - sideboardTotal, affordableQty);
+        if (qty <= 0) continue;
         sideboard.push(toSuggested(entry.cardName, qty, false, entry, "ranked", "sideboard", qty === picked.quantity ? picked.optimizedFrom : null, picked.evidence));
         sideboardTotal += qty;
+        sideboardPoints += qty * pointCost;
       } else {
         if (mainTotal >= mainTarget) continue;
         const picked = pickQuantity(rankingRows, "main", entry.cardName, card, quantityBucketsByName);
@@ -635,7 +641,7 @@ export function useSuggestedBuild(
         mainTotal += qty;
       }
       placed.add(entry.cardName);
-      if (materialTotal >= materialTarget && mainTotal >= mainTarget && sideboardTotal >= sideboardTarget) break;
+      if (materialTotal >= materialTarget && mainTotal >= mainTarget && (sideboardTotal >= sideboardTarget || sideboardPoints >= SIDEBOARD_POINT_BUDGET)) break;
     }
 
     // Everything ranked that still didn't make it in — most visibly non-empty for a fully-locked

@@ -13,8 +13,14 @@ type Line = { cardName: string; quantity: number };
 /** Total sideboard points allowed — see the point-cost comment at its usage below. A 5-card
  * all-Regalia/Champion sideboard (5 × 3) and a 15-card all-Main-type sideboard (15 × 1) are both
  * exactly at budget; anything in between is legal too. */
-const SIDEBOARD_POINT_BUDGET = 15;
+export const SIDEBOARD_POINT_BUDGET = 15;
 const SIDEBOARD_MATERIAL_TYPE_POINT_COST = 3;
+
+/** Point cost for one copy of a card in the sideboard. Unknown cards use the conservative
+ * validation fallback of one point so missing catalog data does not block deck construction. */
+export function sideboardPointCost(card: Card | undefined): number {
+  return card?.types.includes("REGALIA") || card?.types.includes("CHAMPION") ? SIDEBOARD_MATERIAL_TYPE_POINT_COST : 1;
+}
 
 /** Static Standard-format checks supported by the card catalog. This is a deck-construction
  * check, not a tournament-readiness certification: dynamic card-text exceptions, banlist timing,
@@ -66,8 +72,7 @@ export function validateDeck(
   // Unresolvable card data defaults to the cheaper 1-point cost rather than blocking on it.
   const sideboardPoints = sections.sideboard.reduce((sum, line) => {
     const card = cardsByName.get(line.cardName);
-    const isMaterialType = card ? card.types.includes("REGALIA") || card.types.includes("CHAMPION") : false;
-    return sum + line.quantity * (isMaterialType ? SIDEBOARD_MATERIAL_TYPE_POINT_COST : 1);
+    return sum + line.quantity * sideboardPointCost(card);
   }, 0);
   if (sideboardPoints > SIDEBOARD_POINT_BUDGET) {
     illegal.push(`Sideboard uses ${sideboardPoints}/${SIDEBOARD_POINT_BUDGET} points (${sideboardTotal} cards) — Regalia/Champion cards cost ${SIDEBOARD_MATERIAL_TYPE_POINT_COST} points each, others cost 1.`);

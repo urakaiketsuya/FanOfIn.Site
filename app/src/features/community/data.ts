@@ -48,6 +48,10 @@ export function useCommunityCardInclusion(format: DeckFormat = "STANDARD") {
   return usePublishedData<CardInclusionData>(`shoutatyourdecks-card-inclusion-${format}`, formatPath(format, "card-inclusion"));
 }
 
+export function useCommunityCoOccurrence(format: DeckFormat = "STANDARD") {
+  return usePublishedData<CommunityCoOccurrenceData>(`shoutatyourdecks-co-occurrence-${format}`, formatPath(format, "co-occurrence"));
+}
+
 export function useCommunityPopularity(format: DeckFormat = "STANDARD") {
   return usePublishedData<PopularityData>(`shoutatyourdecks-popularity-${format}`, formatPath(format, "popularity"));
 }

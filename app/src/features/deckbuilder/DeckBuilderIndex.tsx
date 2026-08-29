@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import type { Card, CardInclusionEntry, CommunityCoOccurrenceEntry, CompositionWinRateData, CompositionWinRateStat, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
-import { championToSlug, useCommunityBlendedCardInclusion, useCommunityBlendedCoOccurrence } from "../community/data";
+import { championToSlug, useCommunityBlendedCardInclusion, useCommunityBlendedCoOccurrence, useCommunityCardInclusion, useCommunityCoOccurrence } from "../community/data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCardQuantityStatsData, useCompositionWinRateData } from "../archetypes/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
@@ -1255,7 +1255,14 @@ export default function DeckBuilderIndex() {
     [championCard, spiritCardForIdentity],
   );
 
-  const communityCardInclusion = useCommunityBlendedCardInclusion(deckFormat);
+  const blendedCommunityCardInclusion = useCommunityBlendedCardInclusion(deckFormat);
+  const standaloneCommunityCardInclusion = useCommunityCardInclusion(deckFormat);
+  // A partial community refresh can temporarily contain only unclassified Sleeved lists and thus
+  // no champion groups. Keep Champion-scoped tools usable with the latest standalone
+  // ShoutAtYourDecks population until a complete blended generation is published.
+  const communityCardInclusion = blendedCommunityCardInclusion && Object.keys(blendedCommunityCardInclusion.byChampion).length > 0
+    ? blendedCommunityCardInclusion
+    : standaloneCommunityCardInclusion;
   const communityChampData = useMemo(() => {
     if (!communityCardInclusion || !championName) return undefined;
     return communityCardInclusion.byChampion[championToSlug(championName)];
@@ -1313,9 +1320,11 @@ export default function DeckBuilderIndex() {
   const nearestDecks = useNearestDecks(allDecks, lockedCards);
   const gateLoading = deckFormat === "PANTHEON"
     ? !communityCardInclusion
-    : effectivePopulationSource === "simulator"
-      ? !communityCardInclusion || !simulatorSummary
-      : populationLoading;
+    : effectivePopulationSource === "community"
+      ? !communityCardInclusion
+      : effectivePopulationSource === "simulator"
+        ? !communityCardInclusion || !simulatorSummary
+        : populationLoading;
   const gateHasData = deckFormat === "PANTHEON" || effectivePopulationSource === "community" || effectivePopulationSource === "simulator"
     ? Boolean(communityChampData)
     : rows.length > 0;
@@ -1387,7 +1396,11 @@ export default function DeckBuilderIndex() {
     [allNames, build.suggestions],
   );
   const buddyCards = useBuddyCards(rows, spiritFilter, lockedCards, placedNames);
-  const communityCoOccurrence = useCommunityBlendedCoOccurrence(deckFormat);
+  const blendedCommunityCoOccurrence = useCommunityBlendedCoOccurrence(deckFormat);
+  const standaloneCommunityCoOccurrence = useCommunityCoOccurrence(deckFormat);
+  const communityCoOccurrence = blendedCommunityCoOccurrence && Object.keys(blendedCommunityCoOccurrence.byChampion).length > 0
+    ? blendedCommunityCoOccurrence
+    : standaloneCommunityCoOccurrence;
   const communityBuddyCards = useMemo(() => {
     const result = new Map<string, CommunityCoOccurrenceEntry[]>();
     if (!communityCoOccurrence || !championName) return result;
@@ -1817,6 +1830,67 @@ export default function DeckBuilderIndex() {
 
       {!championName && <p className="mt-6 text-ctp-subtext1">Choose a Champion to see a suggested build.</p>}
 
+      {championName && spiritFilter && (
+        <div className="mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2">
+          <span className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Data source</span>
+          <div role="tablist" aria-label="Data source" className="inline-flex max-w-full flex-wrap rounded-md border border-ctp-surface1 bg-ctp-base p-0.5">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={effectivePopulationSource === "balanced"}
+              onClick={() => setPopulationSource("balanced")}
+              className={`rounded px-3 py-1 text-xs font-medium ${
+                effectivePopulationSource === "balanced" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
+              }`}
+            >
+              Balanced
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={effectivePopulationSource === "tournament"}
+              onClick={() => setPopulationSource("tournament")}
+              className={`rounded px-3 py-1 text-xs font-medium ${
+                effectivePopulationSource === "tournament" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
+              }`}
+            >
+              Tournament
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={effectivePopulationSource === "community"}
+              onClick={() => setPopulationSource("community")}
+              className={`rounded px-3 py-1 text-xs font-medium ${
+                effectivePopulationSource === "community" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
+              }`}
+            >
+              Community
+            </button>
+            {deckFormat === "STANDARD" && <button
+              type="button"
+              role="tab"
+              aria-selected={effectivePopulationSource === "simulator"}
+              onClick={() => setPopulationSource("simulator")}
+              className={`rounded px-3 py-1 text-xs font-medium ${
+                effectivePopulationSource === "simulator" ? "bg-ctp-mauve text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
+              }`}
+            >
+              Simulator <span className="font-normal">(Experimental)</span>
+            </button>}
+          </div>
+          <span className="text-xs text-ctp-subtext0">
+            {effectivePopulationSource === "tournament"
+              ? "ranked by real tournament win rates"
+              : effectivePopulationSource === "balanced"
+                ? "ranked by real tournament win rates, nudged toward community popularity"
+                : effectivePopulationSource === "community"
+                  ? "ranked by community popularity — no win/loss data"
+                  : "community shell, reordered only where simulator card evidence resolves"}
+          </span>
+        </div>
+      )}
+
       {championName && gateLoading && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
 
       {championName && !gateLoading && !gateHasData && (
@@ -1834,65 +1908,6 @@ export default function DeckBuilderIndex() {
 
       {championName && spiritFilter && !gateLoading && gateHasData && (
         <>
-          <div className="mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2">
-            <span className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Data source</span>
-            <div role="tablist" aria-label="Data source" className="inline-flex rounded-md border border-ctp-surface1 bg-ctp-base p-0.5">
-              <button
-                type="button"
-                role="tab"
-                aria-selected={effectivePopulationSource === "balanced"}
-                onClick={() => setPopulationSource("balanced")}
-                className={`rounded px-3 py-1 text-xs font-medium ${
-                  effectivePopulationSource === "balanced" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
-                }`}
-              >
-                Balanced
-              </button>
-              <button
-                type="button"
-                role="tab"
-                aria-selected={effectivePopulationSource === "tournament"}
-                onClick={() => setPopulationSource("tournament")}
-                className={`rounded px-3 py-1 text-xs font-medium ${
-                  effectivePopulationSource === "tournament" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
-                }`}
-              >
-                Tournament
-              </button>
-              <button
-                type="button"
-                role="tab"
-                aria-selected={effectivePopulationSource === "community"}
-                onClick={() => setPopulationSource("community")}
-                className={`rounded px-3 py-1 text-xs font-medium ${
-                  effectivePopulationSource === "community" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
-                }`}
-              >
-                Community
-              </button>
-              {deckFormat === "STANDARD" && <button
-                type="button"
-                role="tab"
-                aria-selected={effectivePopulationSource === "simulator"}
-                onClick={() => setPopulationSource("simulator")}
-                className={`rounded px-3 py-1 text-xs font-medium ${
-                  effectivePopulationSource === "simulator" ? "bg-ctp-mauve text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
-                }`}
-              >
-                Simulator <span className="font-normal">(Experimental)</span>
-              </button>}
-            </div>
-            <span className="text-xs text-ctp-subtext0">
-              {effectivePopulationSource === "tournament"
-                ? "ranked by real tournament win rates"
-                : effectivePopulationSource === "balanced"
-                  ? "ranked by real tournament win rates, nudged toward blended community popularity"
-                  : effectivePopulationSource === "community"
-                    ? "ranked by blended community popularity — no win/loss data"
-                    : "community shell, reordered only where simulator card evidence resolves"}
-            </span>
-          </div>
-
           {effectivePopulationSource === "simulator" && <div className="mt-2 rounded-lg border border-ctp-mauve/50 bg-ctp-mauve/10 px-3 py-2 text-xs text-ctp-subtext1">
             <span className="font-semibold text-ctp-mauve">Experimental:</span>{" "}
             Clarent currently reports {simulatorSummary?.games ?? 0} game{simulatorSummary?.games === 1 ? "" : "s"} and {simulatorResult.matchedCards} catalog-resolved card sample{simulatorResult.matchedCards === 1 ? "" : "s"}. Simulator telemetry does not contain complete Champion-scoped decklists, so community construction supplies the legal shell; qualifying simulator rows only change card priority. No simulator evidence means the shell stays unchanged.
@@ -2048,10 +2063,7 @@ export default function DeckBuilderIndex() {
                 type="text"
                 list="deck-builder-card-options"
                 value={cardInput}
-                onChange={(e) => {
-                  setCardInput(e.target.value);
-                  if (cardNameSet.has(e.target.value)) addCard(e.target.value);
-                }}
+                onChange={(e) => setCardInput(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && cardNameSet.has(cardInput)) addCard(cardInput);
                 }}
@@ -2063,15 +2075,26 @@ export default function DeckBuilderIndex() {
                   <option key={n} value={n} />
                 ))}
               </datalist>
-              <label className="mt-2 flex w-fit cursor-pointer items-center gap-2 text-sm text-ctp-subtext1">
-                <input
-                  type="checkbox"
-                  checked={addToSideboard}
-                  onChange={(e) => setAddToSideboard(e.target.checked)}
-                  className="accent-ctp-blue"
-                />
-                Add this card to the sideboard
-              </label>
+              <div className="mt-2 flex flex-wrap items-center gap-3">
+                <label className="flex w-fit cursor-pointer items-center gap-2 text-sm text-ctp-subtext1">
+                  <input
+                    type="checkbox"
+                    checked={addToSideboard}
+                    onChange={(e) => setAddToSideboard(e.target.checked)}
+                    className="accent-ctp-blue"
+                  />
+                  Place in sideboard
+                </label>
+                <button
+                  type="button"
+                  disabled={!cardNameSet.has(cardInput) || lockedCards.has(cardInput)}
+                  onClick={() => addCard(cardInput)}
+                  className="rounded-md border border-ctp-blue px-3 py-1 text-xs text-ctp-blue enabled:hover:bg-ctp-surface0 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  Add card
+                </button>
+                <span className="text-xs text-ctp-subtext0">Otherwise placed in Main or Material automatically.</span>
+              </div>
               <div className="mt-3">
                 <button
                   type="button"
