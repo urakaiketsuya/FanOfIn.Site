@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
+import type { Card } from "@gatcg/shared";
 import ThemaSparkline from "../thema/ThemaSparkline";
 import { probabilityAtLeast } from "./synergyReadiness";
+import { drawnCardsPerCopy, expectedExtraDraws, materialDrawBonus } from "./drawEffects";
 
 /** Same range Synergy readiness's curves use (`CURVE_MAX_SEEN` in synergyReadiness.ts) — keeps the
  * two probability visualizations on this tab reading consistently. */
@@ -34,7 +36,15 @@ const numberInputClass = "mt-1 block w-full rounded border border-ctp-surface1 b
  * that tiering was calibrated for synergy-specific thresholds and would misleadingly imply a
  * judgment about whatever arbitrary question the viewer is actually asking here.
  */
-export default function HypergeometricCalculator({ mainLines }: { mainLines: { name: string; quantity: number }[] }) {
+export default function HypergeometricCalculator({
+  mainLines,
+  materialLines,
+  catalogByName,
+}: {
+  mainLines: { name: string; quantity: number }[];
+  materialLines: { name: string; quantity: number }[];
+  catalogByName: Map<string, Card>;
+}) {
   const mainDeckTotal = useMemo(() => mainLines.reduce((sum, line) => sum + line.quantity, 0), [mainLines]);
   const defaultDeckSize = Math.max(60, mainDeckTotal);
 
@@ -57,6 +67,43 @@ export default function HypergeometricCalculator({ mainLines }: { mainLines: { n
   const curve = useMemo(
     () => Array.from({ length: Math.min(deckSize, CURVE_MAX_SEEN) }, (_, i) => probabilityAtLeast(deckSize, copies, i + 1, required)),
     [deckSize, copies, required],
+  );
+
+  /** Main Deck cards whose own effect text draws cards — the source of the "with card draw"
+   * estimate below. Nothing excludes the target card itself: if it also draws cards, a copy of it
+   * being drawn genuinely does help you see more of the deck, same as any other draw-effect card. */
+  const drawEffectLines = useMemo(
+    () =>
+      mainLines
+        .map((line) => ({ quantity: line.quantity, perCopy: catalogByName.get(line.name) ? drawnCardsPerCopy(catalogByName.get(line.name)!) : 0 }))
+        .filter((line) => line.perCopy > 0),
+    [mainLines, catalogByName],
+  );
+  /** Material Deck cards whose own effect text draws cards. Unlike `drawEffectLines`, these
+   * contribute a flat bonus rather than one scaled by `seen` — see `materialDrawBonus`'s note on
+   * why the Material Deck isn't subject to draw-probability the way the Main Deck is. */
+  const materialDrawEffectLines = useMemo(
+    () =>
+      materialLines
+        .map((line) => ({ quantity: line.quantity, perCopy: catalogByName.get(line.name) ? drawnCardsPerCopy(catalogByName.get(line.name)!) : 0 }))
+        .filter((line) => line.perCopy > 0),
+    [materialLines, catalogByName],
+  );
+  const materialBonus = useMemo(() => materialDrawBonus(materialDrawEffectLines), [materialDrawEffectLines]);
+  const hasDrawEngine = drawEffectLines.length > 0 || materialDrawEffectLines.length > 0;
+  const seenWithDraw = useMemo(
+    () => Math.min(deckSize, Math.round(seen + expectedExtraDraws(drawEffectLines, deckSize, seen) + materialBonus)),
+    [drawEffectLines, deckSize, seen, materialBonus],
+  );
+  const probabilityWithDraw = probabilityAtLeast(deckSize, copies, seenWithDraw, required);
+  const curveWithDraw = useMemo(
+    () =>
+      Array.from({ length: Math.min(deckSize, CURVE_MAX_SEEN) }, (_, i) => {
+        const baseSeen = i + 1;
+        const adjustedSeen = Math.min(deckSize, Math.round(baseSeen + expectedExtraDraws(drawEffectLines, deckSize, baseSeen) + materialBonus));
+        return probabilityAtLeast(deckSize, copies, adjustedSeen, required);
+      }),
+    [drawEffectLines, deckSize, copies, required, materialBonus],
   );
 
   return (
@@ -163,6 +210,36 @@ export default function HypergeometricCalculator({ mainLines }: { mainLines: { n
             <span>1 seen: {(curve[0] * 100).toFixed(0)}%</span>
             <span>{curve.length} seen: {(curve[curve.length - 1] * 100).toFixed(0)}%</span>
           </div>
+        </div>
+      )}
+
+      {hasDrawEngine && (
+        <div className="mt-4 border-t border-ctp-surface1 pt-3">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <span className="text-xs text-ctp-subtext0">
+              With card draw (est.): {seenWithDraw} effective seen from this build's own draw effects
+            </span>
+            <span className="text-2xl font-bold text-ctp-mauve">{(probabilityWithDraw * 100).toFixed(1)}%</span>
+          </div>
+          {curveWithDraw.length >= 2 && (
+            <div className="mt-2">
+              <ThemaSparkline values={curveWithDraw} height={36} />
+              <div className="mt-1 flex justify-between text-[10px] text-ctp-subtext0">
+                <span>1 seen: {(curveWithDraw[0] * 100).toFixed(0)}%</span>
+                <span>{curveWithDraw.length} seen: {(curveWithDraw[curveWithDraw.length - 1] * 100).toFixed(0)}%</span>
+              </div>
+            </div>
+          )}
+          <p className="mt-2 text-[10px] text-ctp-subtext0">
+            Estimate, not a guarantee — assumes every "Draw N card(s)" clause on{" "}
+            {drawEffectLines.reduce((sum, line) => sum + line.quantity, 0)} Main Deck card{drawEffectLines.reduce((sum, line) => sum + line.quantity, 0) === 1 ? "" : "s"}
+            {materialDrawEffectLines.length > 0 && (
+              <> and {materialDrawEffectLines.reduce((sum, line) => sum + line.quantity, 0)} Material Deck card{materialDrawEffectLines.reduce((sum, line) => sum + line.quantity, 0) === 1 ? "" : "s"}</>
+            )}{" "}
+            fires every time it's drawn or reachable, whether or not that trigger is actually conditional, and doesn't account for those extra cards
+            themselves containing further draw effects. Material Deck cards count in full regardless of {seen} seen — they're known and reachable from
+            the start of the game, not drawn at random.
+          </p>
         </div>
       )}
     </div>

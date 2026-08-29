@@ -481,18 +481,35 @@ export default function CardDetail() {
             </div>
           )}
 
-          {card.legality && (
-            <div className="mt-4">
-              <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Legality</h2>
-              <div className="mt-1 flex flex-wrap gap-2 text-sm">
-                {Object.entries(card.legality).map(([format, { limit }]) => (
+          <div className="mt-4">
+            <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Legality</h2>
+            <div className="mt-1 flex flex-wrap gap-2 text-sm">
+              {(["STANDARD", "PANTHEON"] as const).map((format) => {
+                // The API only publishes an entry for a card once it's been individually
+                // banned/restricted — most of the catalog (including entire recently-released sets)
+                // has no record at all, which means "no restriction," not "unconfirmed." Falling
+                // back to the same default copy limit validateDeck.ts/useSuggestedBuild.ts already
+                // assume elsewhere, rather than hiding the section, so a real, legal card doesn't
+                // read as having unknown/unconfirmed legality.
+                const limit = card.legality?.[format]?.limit;
+                const inferred = limit === undefined;
+                const effectiveLimit = limit ?? (format === "PANTHEON" ? 1 : 4);
+                return (
                   <span key={format} className="text-ctp-subtext1">
-                    {format}: {limit === 0 ? <span className="text-ctp-red">Banned</span> : `Max ${limit}`}
+                    {format}:{" "}
+                    {effectiveLimit === 0 ? (
+                      <span className="text-ctp-red">Banned</span>
+                    ) : (
+                      <>
+                        Max {effectiveLimit}
+                        {inferred && <span className="text-ctp-subtext0"> (assumed)</span>}
+                      </>
+                    )}
                   </span>
-                ))}
-              </div>
+                );
+              })}
             </div>
-          )}
+          </div>
 
           {(card.references.length > 0 || card.referenced_by.length > 0) && (
             <div className="mt-4 space-y-2">
