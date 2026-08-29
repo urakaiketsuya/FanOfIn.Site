@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import PageHeader from "../../components/ui/PageHeader";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -17,15 +17,53 @@ function assetCode(product: ProductEntry): string {
 type Thumb = { label: string; image: string; cardSlug?: string };
 
 function Lightbox({ thumb, onClose }: { thumb: Thumb; onClose: () => void }) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeRef.current?.focus();
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const focusable = Array.from(dialogRef.current?.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])') ?? []);
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+      previousFocus?.focus();
+    };
+  }, [onClose]);
+
   return (
     <div
+      ref={dialogRef}
       role="dialog"
       aria-modal="true"
       aria-label={thumb.label}
       onClick={onClose}
       className="fixed inset-0 z-50 flex items-center justify-center bg-ctp-crust/90 p-6"
     >
-      <button type="button" onClick={onClose} aria-label="Close" className="absolute right-4 top-4 text-2xl text-ctp-subtext0 hover:text-ctp-text">
+      <button ref={closeRef} type="button" onClick={onClose} aria-label="Close" className="absolute right-4 top-4 text-2xl text-ctp-subtext0 hover:text-ctp-text">
         ×
       </button>
       <figure className="flex max-h-full max-w-full flex-col items-center gap-3" onClick={(e) => e.stopPropagation()}>
@@ -58,7 +96,7 @@ function ProductMediaSection({ product, cutouts, onSelect }: { product: ProductE
       <div className="flex items-center gap-3">
         <img src={product.logo} alt="" className="h-8 w-auto object-contain" />
         <h2 className="text-lg font-semibold text-ctp-text">{product.name}</h2>
-        <Link to={`/products`} className="ml-auto text-xs text-ctp-blue hover:underline">
+        <Link to={`/products#product-${assetCode(product).toLowerCase()}`} className="ml-auto text-xs text-ctp-blue hover:underline">
           Product page &rarr;
         </Link>
       </div>

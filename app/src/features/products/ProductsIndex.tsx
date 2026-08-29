@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import PageHeader from "../../components/ui/PageHeader";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -18,8 +18,9 @@ function formatDate(iso: string): string {
 
 function ProductCard({ product, hasPack }: { product: ProductEntry; hasPack: boolean }) {
   const upcoming = product.releaseDate > new Date().toISOString().slice(0, 10);
+  const anchor = `product-${product.prefix.split(" ")[0].toLowerCase()}`;
   return (
-    <article className="overflow-hidden rounded-xl border border-ctp-surface0 bg-ctp-mantle/70 shadow-sm">
+    <article id={anchor} className="scroll-mt-20 overflow-hidden rounded-xl border border-ctp-surface0 bg-ctp-mantle/70 shadow-sm target:ring-2 target:ring-ctp-blue">
       <img src={product.boxArt} alt="" className="h-40 w-full object-contain bg-ctp-crust p-3" />
       <div className="p-4">
         <div className="flex flex-wrap items-center gap-2">
@@ -66,6 +67,11 @@ export default function ProductsIndex() {
   }, [featuredSets]);
 
   const sorted = useMemo(() => [...PRODUCTS].sort((a, b) => b.releaseDate.localeCompare(a.releaseDate)), []);
+
+  useEffect(() => {
+    if (!window.location.hash) return;
+    document.getElementById(window.location.hash.slice(1))?.scrollIntoView({ block: "start" });
+  }, []);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
