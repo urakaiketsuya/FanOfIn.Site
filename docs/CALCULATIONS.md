@@ -573,6 +573,32 @@ population, rather than silently omitting the level. Verified live: Diao Chan (s
 level) includes all three; Silvie (three different level-3 variants) correctly includes exactly one,
 picked by lift where enough data exists.
 
+Champion progression is also excluded from removal recommendations. The builder infers the
+intended Champion level from the highest non-Spirit Champion print the viewer has actually locked
+in the Material deck (not from auto-filled population suggestions), then protects every locked
+print of that same Champion identity at or below that ceiling. Thus a level-3 build will never be
+told to cut its level-1 or level-2 progression cards merely because their isolated with/without
+lift is negative; unrelated Champion cards and cards above the chosen ceiling remain reviewable.
+
+Review recommendations also account for the deterministic readiness engines used by the Stats
+tab. Among cards that already pass the positive observed-lift bar, additions recommended for an
+under-supported Imbue or producer/consumer package move to the front and receive a labeled
+readiness badge; readiness never creates a positive-performance claim on its own. A negative-lift
+Main-deck card is withheld from cut recommendations when removing all of its copies would lower an
+active Imbue package's turn-10 probability/status or lower an active token, subtype, or Empower
+package's producer-support status. Sole payoffs are not protected merely because removing them also
+removes the package: the guardrail prevents stranding a remaining package, not every possible cut.
+
+The review pool keeps up to 16 unplaced additions (previously 8, which could leave only three
+visible additions after same-section cut/add pairing consumed five). Each Tournament/Balanced
+addition also recomputes `computeDeckRating` with that card's recommended quantity and tags its
+continuous pillar-point changes directly (for example, `Interaction +0.60` or
+`Opportunity +1.00`). Using underlying pillar points instead of the rounded composite or discrete
+1–10 bands keeps a real contribution visible even when it does not cross a calibrated score-band
+boundary. Sideboard additions have no metric tags because the deck rating deliberately scores Main
++ Material only. These projections remain separate from observed win-rate lift and synergy
+readiness rather than being folded into the recommendation rank.
+
 Material items are consistently 1-copy-each in real decklists (spot-checked); Main deck copy counts
 vary and unique-flagged cards (`types` includes `"UNIQUE"`) are capped at 1, everything else at 4 —
 each suggested card's quantity is the modal (most common) quantity observed for it in the ranking
@@ -599,6 +625,28 @@ specifically so a genuinely synergistic pick isn't invisible just because the nu
 distinguish it. Support-gated (>=5 co-occurring decks) to avoid noise; each buddy shows the % of
 decks with the locked card that also ran it, with its own "Add" button that locks it in directly,
 bypassing the ranked suggestions entirely.
+
+The Buddy Cards tab inverts those per-lock results into one candidate-centric relationship view.
+Desktop uses a focused bipartite map: the candidate list stays stable, while selecting one candidate
+shows only its three strongest locked-card connections, ordered by co-occurrence rate with width
+proportional to that rate. An explicit control reveals any additional connections, and every visible
+relationship includes its rate and raw support count. This avoids an all-to-all line cloud when a
+pasted build contains many locks. Below the small-screen breakpoint, the map becomes expandable candidate cards with
+one bar per locked-card relationship and 44px Add targets. Both layouts initially show five
+candidates and progressively reveal the rest, so a large pasted/locked build does not create an
+unbounded graph. Tournament and community relationships remain separate because their populations
+and support counts are not directly interchangeable.
+
+**Archetype inspiration is a tuning nudge, not a population filter.** The picker is scoped to
+published taxonomy clusters that were actually played with the selected Champion, including
+cross-Champion shells whose `championBreakdown` contains it. Selecting one maps its defining-card
+prevalence to a capped ranking boost: `0.03 * prevalence`. A card present in every sighting of the
+archetype therefore receives at most the same +0.03 tie-breaking adjustment as the Balanced
+source's maximum community-popularity boost. The full Champion + Spirit population continues to
+provide lift, quantities, targets, and sample sizes; the tuning applies only after a card has
+already cleared the positive tournament-lift bar. It cannot surface an unsupported card, alter the
+displayed lift, or affect Community/Simulator recommendations. The selection is preserved in the
+builder's session and share link.
 
 **Layout is four tabs** (Build / Stats / Buddy Cards / Log), added once the page had enough
 independent surfaces stacked on one scroll to need separating — same `useTabParam` deep-linking

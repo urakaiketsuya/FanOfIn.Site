@@ -7,7 +7,7 @@ import { isElementCompatible, type SuggestedBuild, type SuggestedCard } from "./
  * these are the only targets available here. */
 const MATERIAL_TARGET = 12;
 const MAIN_TARGET = 48;
-const MAX_EXTRA_SUGGESTIONS = 8;
+const MAX_EXTRA_SUGGESTIONS = 16;
 
 function legalMaxCopies(card: Card | undefined, format: DeckFormat): number {
   return card?.legality?.[format]?.limit ?? (format === "PANTHEON" ? 1 : 4);

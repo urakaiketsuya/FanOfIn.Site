@@ -9,9 +9,10 @@ import {
 } from "@gatcg/shared";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { useDebouncedValue } from "../../lib/useDebouncedValue";
-import { cardPillarScore, type RatingPillar } from "../../lib/deckIdentity";
+import { cardPillarScore, computeDeckIdentity, computeDeckRating, type RatingPillar } from "../../lib/deckIdentity";
 import { weightedJaccard } from "../../lib/decodedDecks";
 import type { DeckBuilderRow } from "./useDeckBuilderPopulation";
+import { computeDependencyReadiness, computeSynergyReadiness, type SynergyLine } from "./synergyReadiness";
 import { SIDEBOARD_POINT_BUDGET, sideboardPointCost } from "./validateDeck";
 
 /** Same reasoning as useAllDecodedDecks' CATALOG_SETTLE_MS (app/src/lib/decodedDecks.ts) — the
@@ -33,6 +34,10 @@ const PILLAR_BOOST_WEIGHT = 0.01;
  * "Balanced source", for why this doesn't fall into the "fabricating a performance signal" trap the
  * Community source's own doc explicitly warns about. */
 const COMMUNITY_BOOST_WEIGHT = 0.03;
+/** Archetype inspiration is a preference, not a population filter. A defining card present in
+ * every sighting of the selected build gets the same maximum tie-breaking nudge as a universally
+ * played community card; lower prevalence scales the boost down proportionally. */
+const ARCHETYPE_BOOST_WEIGHT = 0.03;
 /** Same tie-breaking-only philosophy as `COMMUNITY_BOOST_WEIGHT`, but subtracted — for the
  * "balanced" source's decay penalty. `decay` (from `computeCardDecay`'s already-filtered top
  * signals, `DeckBuilderIndex.tsx`) is a 0-1 inclusion-rate drop, floored at 0.08 by that function's
@@ -59,7 +64,7 @@ const MIN_RANKING_POPULATION = MIN_SAMPLE_SIZE * 2;
  */
 const SPIRIT_ELEMENT_FALLBACK_MIN_SIMILARITY = 0.45;
 /** How many ranked-but-unplaced cards to surface as "cards that might help" beyond the assembled build — matters most for a fully-locked build (e.g. from a paste), where every Material/Main/Sideboard slot is already spoken for and the ranked pool would otherwise never be shown at all. */
-const MAX_EXTRA_SUGGESTIONS = 8;
+const MAX_EXTRA_SUGGESTIONS = 16;
 /** A locked card's own lift needs to clear this far below zero (not just "any negative number") before it's worth flagging as a removal candidate — same shrinkage-noise-floor reasoning as the positive suggestion side. */
 const REMOVAL_LIFT_CEILING = -0.02;
 const MAX_REMOVAL_SUGGESTIONS = 5;
@@ -85,6 +90,12 @@ export interface SuggestedCard {
   quantityEvidence: { source: "matching population" | "global"; sampleSize: number };
   /** "spirit" = the viewer's own Spirit pick, not ranked. "staple" = a Champion-level print included because it's the most commonly run print at that level, not because it cleared the lift sample bar (near-100%-adoption cards usually don't — their "without" bucket is too thin). "ranked" = a normal lift-ranked suggestion. */
   reason: "spirit" | "staple" | "ranked";
+  /** Active construction packages this card helps stabilize. These are deterministic readiness
+   * checks (Imbue/enabler or producer/consumer), kept separate from the observed win-rate lift. */
+  readinessReasons?: string[];
+  /** Continuous DIAO pillar-point changes, used for metric-specific tags even when the calibrated
+   * 1-10 score remains within the same band. */
+  diaoMetricChanges?: Partial<Record<RatingPillar, number>>;
 }
 
 export interface SuggestedBuild {
@@ -117,6 +128,35 @@ export interface SuggestedBuild {
 
 function legalMaxCopies(card: Card | undefined): number {
   return card?.legality?.STANDARD?.limit ?? 4;
+}
+
+function championIdentityName(card: Card): string {
+  return card.name.includes(",") ? card.name.split(",")[0].trim() : card.name;
+}
+
+/**
+ * Champion progression is structural, not a flex-card choice. Infer the build's intended ceiling
+ * from the highest non-Spirit Champion print the viewer actually locked, then protect every locked
+ * print in that identity at or below the ceiling from statistical cut recommendations. This uses
+ * the material choices themselves rather than population suggestions, so an auto-filled level 3
+ * cannot make a level-1-only draft look more committed than it is.
+ */
+function intendedChampionLevel(lockedCards: Map<string, number>, cardsByName: Map<string, Card>, identityName: string | null): number | null {
+  let highest: number | null = null;
+  for (const name of lockedCards.keys()) {
+    const card = cardsByName.get(name);
+    if (
+      !card?.types.includes("CHAMPION") ||
+      card.subtypes.includes("SPIRIT") ||
+      card.level === null ||
+      card.level === undefined ||
+      (identityName !== null && championIdentityName(card) !== identityName)
+    ) {
+      continue;
+    }
+    highest = highest === null ? card.level : Math.max(highest, card.level);
+  }
+  return highest;
 }
 
 /** NORM (colorless) always fits; an empty `identityElements` means there's no signal to filter on (e.g. a too-thin population) — both cases pass everything through unfiltered rather than risk hiding a legitimate pick. Exported for `useGlobalElementSuggestions.ts`, which needs the same gate with no deck population to derive one internally. */
@@ -337,6 +377,9 @@ export function useSuggestedBuild(
    * `DECAY_PENALTY_WEIGHT` as a small negative nudge, same tie-breaking-only bar as `pillarBias`/
    * `communityInclusion` above. Omit for no decay penalty, unchanged from before this existed. */
   decayingCards?: Map<string, number>,
+  /** Selected archetype's defining-card prevalence (0-1). This only reorders positive-lift
+   * candidates; it never makes an unsupported card eligible or changes the lift displayed. */
+  archetypePrevalence?: Map<string, number>,
 ): SuggestedBuild {
   const cardCatalog = useCardCatalog();
   const settledCardCatalog = useDebouncedValue(cardCatalog, CATALOG_SETTLE_MS);
@@ -492,13 +535,14 @@ export function useSuggestedBuild(
     // UI; only which comparably-good real card gets picked first for a limited slot shifts toward
     // the chosen playstyle, the blended community's own usage, or away from a card that's still
     // winning but visibly falling out of use.
-    if (pillarBias || communityInclusion || decayingCards) {
+    if (pillarBias || communityInclusion || decayingCards || archetypePrevalence) {
       const boostedScore = (e: CardImpactEntry): number => {
         const card = cardsByName.get(e.cardName);
         const pillarBoost = pillarBias && card ? PILLAR_BOOST_WEIGHT * cardPillarScore(card, pillarBias) : 0;
         const communityBoost = communityInclusion ? COMMUNITY_BOOST_WEIGHT * (communityInclusion.get(e.cardName)?.percentOfDecks ?? 0) : 0;
+        const archetypeBoost = archetypePrevalence ? ARCHETYPE_BOOST_WEIGHT * (archetypePrevalence.get(e.cardName) ?? 0) : 0;
         const decayPenalty = decayingCards ? DECAY_PENALTY_WEIGHT * (decayingCards.get(e.cardName) ?? 0) : 0;
-        return e.adjustedLift + pillarBoost + communityBoost - decayPenalty;
+        return e.adjustedLift + pillarBoost + communityBoost + archetypeBoost - decayPenalty;
       };
       ranked.sort((a, b) => boostedScore(b) - boostedScore(a));
     }
@@ -574,11 +618,7 @@ export function useSuggestedBuild(
     // there would suggest a print of whichever *borrowed* Champion happens to show up, not the one
     // the viewer actually picked. If the intended Champion has no print at all in a borrowed
     // population (the common case), no anchor gets placed here — correct: nothing to borrow.
-    const championIdentityName = championCard
-      ? championCard.name.includes(",")
-        ? championCard.name.split(",")[0].trim()
-        : championCard.name
-      : null;
+    const intendedChampionIdentity = championCard ? championIdentityName(championCard) : null;
     const lockedLevels = new Set(
       Array.from(lockedCards.keys())
         .map((n) => cardsByName.get(n)?.level)
@@ -590,9 +630,8 @@ export function useSuggestedBuild(
         const card = cardsByName.get(name);
         if (!card?.types.includes("CHAMPION") || card.subtypes.includes("SPIRIT") || card.level === null || card.level === undefined) continue;
         if (placed.has(name)) continue;
-        if (championIdentityName) {
-          const cardIdentityName = card.name.includes(",") ? card.name.split(",")[0].trim() : card.name;
-          if (cardIdentityName !== championIdentityName) continue;
+        if (intendedChampionIdentity) {
+          if (championIdentityName(card) !== intendedChampionIdentity) continue;
         }
         const counts = championCardsByLevel.get(card.level) ?? new Map<string, number>();
         counts.set(name, (counts.get(name) ?? 0) + 1);
@@ -663,12 +702,11 @@ export function useSuggestedBuild(
     // Everything ranked that still didn't make it in — most visibly non-empty for a fully-locked
     // build (every target already met by locks alone, so the loop above placed nothing new even
     // though `ranked` has real candidates). Shown as swap-in ideas, not auto-filled.
-    const suggestions = ranked
+    const rawSuggestions = ranked
       .filter((e) => {
         const card = cardsByName.get(e.cardName);
         return !placed.has(e.cardName) && !card?.types.includes("CHAMPION") && isElementCompatible(card, identityElements);
       })
-      .slice(0, MAX_EXTRA_SUGGESTIONS)
       .map((e) => {
         const card = cardsByName.get(e.cardName);
         const section: DeckSection = e.role === "mixed" ? pluralitySection(rankingRows, e.cardName) : e.role;
@@ -677,8 +715,84 @@ export function useSuggestedBuild(
         return toSuggested(e.cardName, picked.quantity, false, e, "ranked", section, picked.optimizedFrom, picked.evidence);
       });
 
+    // Review suggestions should preserve the deck's construction packages, not optimize each card
+    // as though it existed in isolation. Run the same deterministic engines shown in the Stats tab
+    // against the assembled Main deck. Their candidate lists only annotate/reorder cards that
+    // already passed the positive-lift bar; readiness never fabricates performance evidence.
+    const readinessLines: SynergyLine[] = main.map((card) => ({ name: card.cardName, quantity: card.quantity }));
+    const synergyReadiness = computeSynergyReadiness(readinessLines, cardsByName, cardsByName.values(), identityElements, ranked.map((entry) => entry.cardName));
+    const dependencyReadiness = computeDependencyReadiness(readinessLines, cardsByName, cardsByName.values(), identityElements, ranked.map((entry) => entry.cardName));
+    const readinessReasonsByName = new Map<string, string[]>();
+    const addReadinessReason = (name: string, reason: string) => {
+      const reasons = readinessReasonsByName.get(name) ?? [];
+      if (!reasons.includes(reason)) reasons.push(reason);
+      readinessReasonsByName.set(name, reasons);
+    };
+    for (const group of synergyReadiness) {
+      for (const name of group.recommendations) addReadinessReason(name, `Supports ${group.label}`);
+    }
+    for (const group of dependencyReadiness) {
+      for (const name of group.recommendations) addReadinessReason(name, `Supports ${group.label}`);
+    }
+    const ratingLines = [...material, ...main].map((card) => ({ name: card.cardName, quantity: card.quantity }));
+    const ratingIdentity = computeDeckIdentity(ratingLines, cardsByName);
+    const baseRating = computeDeckRating(ratingLines, cardsByName, intendedChampionIdentity, ratingIdentity.classes);
+    const withDiaoChange = (card: SuggestedCard): SuggestedCard => {
+      if (card.section === "sideboard") return card;
+      const nextLines = [...ratingLines, { name: card.cardName, quantity: card.quantity }];
+      const nextIdentity = computeDeckIdentity(nextLines, cardsByName);
+      const nextRating = computeDeckRating(nextLines, cardsByName, intendedChampionIdentity, nextIdentity.classes);
+      const metricChanges = (Object.keys(baseRating.points) as RatingPillar[]).reduce<Partial<Record<RatingPillar, number>>>((changes, pillar) => {
+        const delta = nextRating.points[pillar] - baseRating.points[pillar];
+        if (Math.abs(delta) >= 0.05) changes[pillar] = +delta.toFixed(2);
+        return changes;
+      }, {});
+      return { ...card, diaoMetricChanges: metricChanges };
+    };
+    const suggestions = rawSuggestions
+      .map((card) => withDiaoChange({ ...card, readinessReasons: readinessReasonsByName.get(card.cardName) }))
+      .sort((a, b) => Number((b.readinessReasons?.length ?? 0) > 0) - Number((a.readinessReasons?.length ?? 0) > 0))
+      .slice(0, MAX_EXTRA_SUGGESTIONS);
+
+    const dependencyStatusRank = { "Missing support": 0, Thin: 1, Supported: 2 } as const;
+    function removalHarmsReadiness(candidate: SuggestedCard): boolean {
+      if (candidate.section !== "main") return false;
+      for (const group of synergyReadiness) {
+        if (!group.enablerCards.some((line) => line.name === candidate.cardName)) continue;
+        const removedPayoffCopies = group.payoffCards.find((line) => line.name === candidate.cardName)?.quantity ?? 0;
+        // If another payoff remains, removing any enabler copies strictly lowers that package's
+        // probability (and can lower its tier). If this card was the sole payoff too, no remaining
+        // package is stranded, so it remains a valid review candidate.
+        if (group.payoffCopies - removedPayoffCopies > 0) return true;
+      }
+      for (const group of dependencyReadiness) {
+        if (!group.producers.some((line) => line.name === candidate.cardName)) continue;
+        const removedProducerCopies = group.producers.find((line) => line.name === candidate.cardName)?.quantity ?? 0;
+        const removedConsumerCopies = group.consumers.find((line) => line.name === candidate.cardName)?.quantity ?? 0;
+        const nextProducerCopies = group.producerCopies - removedProducerCopies;
+        const nextConsumerCopies = group.consumerCopies - removedConsumerCopies;
+        if (nextConsumerCopies <= 0) continue;
+        const nextStatus = nextProducerCopies === 0 ? "Missing support" : nextProducerCopies < nextConsumerCopies ? "Thin" : "Supported";
+        if (dependencyStatusRank[nextStatus] < dependencyStatusRank[group.status]) return true;
+      }
+      return false;
+    }
+
+    const championLevelCeiling = intendedChampionLevel(lockedCards, cardsByName, intendedChampionIdentity);
     const removalSuggestions = [...material, ...main, ...sideboard]
-      .filter((c) => c.locked && c.adjustedLift !== null && c.adjustedLift <= REMOVAL_LIFT_CEILING)
+      .filter((c) => {
+        if (!c.locked || c.adjustedLift === null || c.adjustedLift > REMOVAL_LIFT_CEILING) return false;
+        const card = cardsByName.get(c.cardName);
+        const isRequiredChampionProgression =
+          championLevelCeiling !== null &&
+          !!card?.types.includes("CHAMPION") &&
+          !card.subtypes.includes("SPIRIT") &&
+          card.level !== null &&
+          card.level !== undefined &&
+          card.level <= championLevelCeiling &&
+          (intendedChampionIdentity === null || championIdentityName(card) === intendedChampionIdentity);
+        return !isRequiredChampionProgression && !removalHarmsReadiness(c);
+      })
       .sort((a, b) => a.adjustedLift! - b.adjustedLift!)
       .slice(0, MAX_REMOVAL_SUGGESTIONS);
 
@@ -705,5 +819,5 @@ export function useSuggestedBuild(
       },
       loading: false,
     };
-  }, [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName, lockedSections, quantityBucketsByName, championCardOverride, pillarBias, communityInclusion]);
+  }, [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName, lockedSections, quantityBucketsByName, championCardOverride, pillarBias, communityInclusion, decayingCards, archetypePrevalence]);
 }

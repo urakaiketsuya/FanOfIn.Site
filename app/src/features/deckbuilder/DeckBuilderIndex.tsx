@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import type { Card, CardInclusionEntry, CommunityCoOccurrenceEntry, CompositionWinRateData, CompositionWinRateStat, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import { championToSlug, useCommunityBlendedCardInclusion, useCommunityBlendedCoOccurrence, useCommunityCardInclusion, useCommunityCoOccurrence } from "../community/data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
-import { useCardQuantityStatsData, useCompositionWinRateData } from "../archetypes/data";
+import { useArchetypeTaxonomyData, useCardQuantityStatsData, useCompositionWinRateData } from "../archetypes/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { parseDecklist } from "../compare/parseDecklist";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -24,6 +24,7 @@ import { buildTtsSaveFile, downloadJsonFile, slugifyFilename } from "../../lib/t
 import { formatUsd } from "../../lib/format";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
+import Tabs from "../../components/ui/Tabs";
 import { useTabParam } from "../../lib/useTabParam";
 import { useAllDecodedDecks } from "../../lib/decodedDecks";
 import { useDebouncedValue } from "../../lib/useDebouncedValue";
@@ -36,17 +37,24 @@ import { useSimulatorSuggestedBuild, type SimulatorCardEvidence } from "./useSim
 import { useSimulatorSummaryData } from "../simulator/data";
 import { useCardFieldVisibility, type CardFieldVisibility } from "./useCardFieldVisibility";
 import { useBuddyCards, type BuddyCard } from "./useBuddyCards";
-import { validateDeck, type DeckValidationResult } from "./validateDeck";
+import { SIDEBOARD_POINT_BUDGET, sideboardPointCost, validateDeck, type DeckValidationResult } from "./validateDeck";
 import { computeDependencyReadiness, computeSynergyReadiness } from "./synergyReadiness";
 import HypergeometricCalculator from "./HypergeometricCalculator";
 import { similarCards } from "../../lib/cardSimilarity";
 import ThemaSparkline from "../thema/ThemaSparkline";
 import ElementRail from "../../components/ElementRail";
 
-type BuilderTab = "build" | "stats" | "tools" | "buddies" | "copy" | "log";
-const TAB_KEYS: BuilderTab[] = ["build", "stats", "tools", "buddies", "copy", "log"];
+type BuilderTab = "build" | "review" | "stats" | "tools" | "buddies" | "copy" | "log";
+const TAB_KEYS: BuilderTab[] = ["build", "review", "stats", "tools", "buddies", "copy", "log"];
 
 type LockedSection = "main" | "material" | "sideboard";
+
+interface ArchetypeTuningOption {
+  id: string;
+  name: string;
+  deckCount: number;
+  confidence: "established" | "emerging";
+}
 
 /** Packs locked cards into one URL-safe query param for sharing — `section:qty:name` entries joined
  * by `;`. Real card names haven't been seen using either separator, and a stray one just produces a
@@ -76,6 +84,7 @@ function decodeLockedCards(encoded: string): { lockedCards: Map<string, number>;
 interface UrlSeed {
   championName: string;
   spiritFilter: string | null;
+  archetypeId: string | null;
   lockedCards: Map<string, number>;
   lockedSections: Map<string, LockedSection>;
 }
@@ -100,6 +109,7 @@ function parseUrlSeed(searchParams: URLSearchParams): UrlSeed | null {
   return {
     championName,
     spiritFilter: searchParams.get("spirit"),
+    archetypeId: searchParams.get("archetype"),
     lockedCards,
     lockedSections,
   };
@@ -122,6 +132,7 @@ interface SessionSeed {
   lockedSections: Map<string, LockedSection>;
   rejectedCards: Set<string>;
   pillarBias: RatingPillar | null;
+  archetypeId: string | null;
   populationSource: PopulationSource;
   changeLog: ChangeLogEntry[];
 }
@@ -135,6 +146,7 @@ interface StoredSession {
   locked: string;
   rejectedCards: string[];
   pillarBias: RatingPillar | null;
+  archetypeId: string | null;
   populationSource: PopulationSource;
   changeLog: ChangeLogEntry[];
 }
@@ -163,6 +175,7 @@ function loadSessionSeed(): SessionSeed | null {
       lockedSections,
       rejectedCards: new Set(stored.rejectedCards ?? []),
       pillarBias: stored.pillarBias ?? null,
+      archetypeId: stored.archetypeId ?? null,
       populationSource:
         stored.populationSource === "community" || stored.populationSource === "simulator" || stored.populationSource === "tournament"
           ? stored.populationSource
@@ -181,6 +194,7 @@ function saveSessionSeed(seed: {
   lockedSections: Map<string, LockedSection>;
   rejectedCards: Set<string>;
   pillarBias: RatingPillar | null;
+  archetypeId: string | null;
   populationSource: PopulationSource;
   changeLog: ChangeLogEntry[];
 }): void {
@@ -195,6 +209,7 @@ function saveSessionSeed(seed: {
       locked: encodeLockedCards(seed.lockedCards, seed.lockedSections),
       rejectedCards: Array.from(seed.rejectedCards),
       pillarBias: seed.pillarBias,
+      archetypeId: seed.archetypeId,
       populationSource: seed.populationSource,
       changeLog: seed.changeLog,
     };
@@ -246,7 +261,7 @@ function ChangeLogList({ entries }: { entries: ChangeLogEntry[] }) {
 interface BuddyGroup {
   cardName: string;
   /** Which of the viewer's locked cards this card pairs with, each with its own co-occurrence rate, best first. */
-  withLocked: { name: string; coOccurrenceRate: number }[];
+  withLocked: { name: string; coOccurrenceRate: number; count: number }[];
 }
 
 /**
@@ -255,13 +270,13 @@ interface BuddyGroup {
  * not duplicated under each lock — and sorted with the strongest multi-lock signals first.
  */
 function groupBuddiesByCard(
-  groups: { name: string; buddies: { cardName: string; coOccurrenceRate: number }[] }[],
+  groups: { name: string; buddies: { cardName: string; coOccurrenceRate: number; count: number }[] }[],
 ): BuddyGroup[] {
-  const byCard = new Map<string, { name: string; coOccurrenceRate: number }[]>();
+  const byCard = new Map<string, { name: string; coOccurrenceRate: number; count: number }[]>();
   for (const { name, buddies } of groups) {
     for (const b of buddies) {
       const list = byCard.get(b.cardName);
-      const entry = { name, coOccurrenceRate: b.coOccurrenceRate };
+      const entry = { name, coOccurrenceRate: b.coOccurrenceRate, count: b.count };
       if (list) list.push(entry);
       else byCard.set(b.cardName, [entry]);
     }
@@ -274,45 +289,209 @@ function groupBuddiesByCard(
     .sort((a, b) => b.withLocked.length - a.withLocked.length || b.withLocked[0].coOccurrenceRate - a.withLocked[0].coOccurrenceRate);
 }
 
-/** Shared by both the tournament (client-computed BuddyCard) and community (pipeline-computed CommunityCoOccurrenceEntry) lenses — same {cardName, count, coOccurrenceRate} shape once inverted into a BuddyGroup. */
-function BuddyGroupRow({
-  group,
+interface BuddyConnectionPath {
+  key: string;
+  d: string;
+  rate: number;
+  candidateName: string;
+}
+
+const INITIAL_BUDDY_CANDIDATES = 5;
+const INITIAL_DESKTOP_CONNECTIONS = 3;
+
+/** Responsive relationship view: a bipartite map on desktop and expandable candidate cards on
+ * mobile. Both encode the same rates/counts; neither calls co-occurrence causal synergy. */
+function BuddyRelationshipView({
+  title,
+  description,
+  groups,
   cardsByName,
   onAdd,
 }: {
-  group: BuddyGroup;
+  title: string;
+  description: string;
+  groups: BuddyGroup[];
   cardsByName: ReturnType<typeof useCardsByNames>;
   onAdd: (name: string) => void;
 }) {
-  const cardInfo = cardsByName.get(group.cardName);
+  const [showAll, setShowAll] = useState(false);
+  const visibleGroups = useMemo(
+    () => showAll ? groups : groups.slice(0, INITIAL_BUDDY_CANDIDATES),
+    [groups, showAll],
+  );
+  const [selectedName, setSelectedName] = useState<string | null>(visibleGroups[0]?.cardName ?? null);
+  const [showAllConnections, setShowAllConnections] = useState(false);
+  const [expandedMobile, setExpandedMobile] = useState<string | null>(visibleGroups[0]?.cardName ?? null);
+  const mapRef = useRef<HTMLDivElement>(null);
+  const lockedRefs = useRef(new Map<string, HTMLDivElement>());
+  const candidateRefs = useRef(new Map<string, HTMLDivElement>());
+  const [paths, setPaths] = useState<BuddyConnectionPath[]>([]);
+  const selected = visibleGroups.find((group) => group.cardName === selectedName) ?? visibleGroups[0];
+  const selectedRelationships = useMemo(
+    () => selected ? (showAllConnections ? selected.withLocked : selected.withLocked.slice(0, INITIAL_DESKTOP_CONNECTIONS)) : [],
+    [selected, showAllConnections],
+  );
+
+  useEffect(() => {
+    if (!visibleGroups.some((group) => group.cardName === selectedName)) setSelectedName(visibleGroups[0]?.cardName ?? null);
+  }, [visibleGroups, selectedName]);
+
+  useEffect(() => setShowAllConnections(false), [selectedName]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    const draw = () => {
+      const bounds = map.getBoundingClientRect();
+      if (!selected) {
+        setPaths([]);
+        return;
+      }
+      setPaths(selectedRelationships.flatMap((relationship) => {
+        const from = lockedRefs.current.get(relationship.name)?.getBoundingClientRect();
+        const to = candidateRefs.current.get(selected.cardName)?.getBoundingClientRect();
+        if (!from || !to) return [];
+        const x1 = from.right - bounds.left;
+        const y1 = from.top + from.height / 2 - bounds.top;
+        const x2 = to.left - bounds.left;
+        const y2 = to.top + to.height / 2 - bounds.top;
+        const bend = Math.max(28, (x2 - x1) * 0.4);
+        return [{
+          key: `${relationship.name}:${selected.cardName}`,
+          d: `M ${x1} ${y1} C ${x1 + bend} ${y1}, ${x2 - bend} ${y2}, ${x2} ${y2}`,
+          rate: relationship.coOccurrenceRate,
+          candidateName: selected.cardName,
+        }];
+      }));
+    };
+    const frame = requestAnimationFrame(draw);
+    const observer = new ResizeObserver(draw);
+    observer.observe(map);
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
+  }, [visibleGroups, selected, selectedRelationships]);
+
   return (
-    <li className="relative flex flex-wrap items-center gap-1.5 overflow-hidden rounded-md border border-ctp-surface1 py-1 pl-3 pr-2 text-sm">
-      <ElementRail elements={cardInfo?.elements} />
-      <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={group.cardName}>
-        {cardInfo ? (
-          <Link to={`/cards/${cardInfo.slug}`} className="text-ctp-text hover:text-ctp-blue">
-            {group.cardName}
-          </Link>
-        ) : (
-          <span className="text-ctp-text">{group.cardName}</span>
-        )}
-      </CardHoverPreview>
-      {group.withLocked.length > 1 && (
-        <span className="rounded-full bg-ctp-surface1 px-1.5 py-0.5 text-[10px] font-semibold text-ctp-subtext1">
-          ×{group.withLocked.length}
-        </span>
+    <section className="mt-4 border-t border-ctp-surface0 pt-3 first:mt-2 first:border-t-0 first:pt-0">
+      <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">{title}</h3>
+      <p className="mt-1 text-xs text-ctp-subtext0">{description}</p>
+
+      <div ref={mapRef} className="relative mt-3 hidden grid-cols-[minmax(0,0.9fr)_minmax(0,1.2fr)] gap-24 sm:grid">
+        <svg aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 h-full w-full overflow-visible">
+          {paths.map((path) => (
+            <path
+              key={path.key}
+              d={path.d}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1 + path.rate * 5}
+              className="text-ctp-blue opacity-80"
+            />
+          ))}
+        </svg>
+        <div className="relative z-10">
+          <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Linked to selected candidate</p>
+          <div className="space-y-2">
+            {selectedRelationships.map((relationship) => (
+              <div
+                key={relationship.name}
+                ref={(node) => { if (node) lockedRefs.current.set(relationship.name, node); else lockedRefs.current.delete(relationship.name); }}
+                className="flex items-center justify-between gap-2 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-xs font-medium text-ctp-text"
+              >
+                <span className="truncate">{relationship.name}</span>
+                <span className="shrink-0 text-[10px] font-semibold text-ctp-green">{Math.round(relationship.coOccurrenceRate * 100)}% · n={relationship.count}</span>
+              </div>
+            ))}
+          </div>
+          {selected && selected.withLocked.length > INITIAL_DESKTOP_CONNECTIONS && (
+            <button type="button" onClick={() => setShowAllConnections((value) => !value)} className="mt-2 min-h-9 text-xs text-ctp-blue hover:underline">
+              {showAllConnections ? "Show strongest 3" : `Show ${selected.withLocked.length - INITIAL_DESKTOP_CONNECTIONS} more connections`}
+            </button>
+          )}
+        </div>
+        <div className="relative z-10">
+          <div className="mb-2 flex items-center justify-between gap-2">
+            <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Best shared relationships</p>
+            <span className="text-[10px] text-ctp-subtext0">Line thickness = pairing rate</span>
+          </div>
+          <div className="space-y-2">
+            {visibleGroups.map((group) => {
+              const cardInfo = cardsByName.get(group.cardName);
+              return (
+                <div
+                  key={group.cardName}
+                  ref={(node) => { if (node) candidateRefs.current.set(group.cardName, node); else candidateRefs.current.delete(group.cardName); }}
+                  className={`relative flex items-center gap-2 overflow-hidden rounded-md border bg-ctp-base py-2 pl-3 pr-2 ${selected?.cardName === group.cardName ? "border-ctp-blue ring-1 ring-inset ring-ctp-blue/30" : "border-ctp-surface1"}`}
+                >
+                  <ElementRail elements={cardInfo?.elements} />
+                  <button type="button" aria-pressed={selected?.cardName === group.cardName} onClick={() => setSelectedName(group.cardName)} className="min-w-0 flex-1 text-left">
+                    <span className="block truncate text-xs font-semibold text-ctp-text">{group.cardName}</span>
+                    <span className="block text-[10px] text-ctp-subtext0">
+                      <span className="font-semibold text-ctp-green">{Math.round(group.withLocked[0].coOccurrenceRate * 100)}%</span>
+                      {" strongest · "}{group.withLocked.length} locked card{group.withLocked.length === 1 ? "" : "s"} · n={group.withLocked[0].count}
+                    </span>
+                  </button>
+                  <button type="button" onClick={() => onAdd(group.cardName)} className="min-h-9 rounded-md border border-ctp-surface1 px-2 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue">+ Add</button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {selected && (
+        <p className="mt-2 hidden text-[11px] text-ctp-subtext0 sm:block">
+          <span className="font-semibold text-ctp-text">{selected.cardName}</span>{" pairs with "}
+          {selectedRelationships.map((relationship) => `${relationship.name} in ${Math.round(relationship.coOccurrenceRate * 100)}% (n=${relationship.count})`).join(", ")} of supported decks
+          {!showAllConnections && selected.withLocked.length > INITIAL_DESKTOP_CONNECTIONS ? ` · ${selected.withLocked.length - INITIAL_DESKTOP_CONNECTIONS} more hidden` : ""}.
+        </p>
       )}
-      <span className="text-xs text-ctp-subtext0">
-        with {group.withLocked.map((w) => `${w.name} ${Math.round(w.coOccurrenceRate * 100)}%`).join(", ")}
-      </span>
-      <button
-        type="button"
-        onClick={() => onAdd(group.cardName)}
-        className="ml-auto rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
-      >
-        Add
-      </button>
-    </li>
+
+      <div className="mt-3 space-y-2 sm:hidden">
+        {visibleGroups.map((group) => {
+          const cardInfo = cardsByName.get(group.cardName);
+          const expanded = expandedMobile === group.cardName;
+          return (
+            <div key={group.cardName} className="relative overflow-hidden rounded-md border border-ctp-surface1 bg-ctp-base py-2 pl-3 pr-2">
+              <ElementRail elements={cardInfo?.elements} />
+              <div className="flex items-center gap-2">
+                <button type="button" aria-expanded={expanded} onClick={() => setExpandedMobile(expanded ? null : group.cardName)} className="min-h-9 min-w-0 flex-1 text-left">
+                  <span className="block truncate text-sm font-semibold text-ctp-text">{group.cardName}</span>
+                  <span className="block text-[10px] text-ctp-subtext0">
+                    <span className="font-semibold text-ctp-green">{Math.round(group.withLocked[0].coOccurrenceRate * 100)}%</span>
+                    {" strongest · "}{group.withLocked.length} locked card{group.withLocked.length === 1 ? "" : "s"} · n={group.withLocked[0].count}
+                  </span>
+                </button>
+                <button type="button" onClick={() => onAdd(group.cardName)} className="min-h-11 rounded-md border border-ctp-surface1 px-3 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue">+ Add</button>
+              </div>
+              {expanded && (
+                <div className="mt-2 space-y-2 border-t border-ctp-surface0 pt-2">
+                  {group.withLocked.map((relationship) => (
+                    <div key={relationship.name}>
+                      <div className="flex justify-between gap-3 text-[11px]">
+                        <span className="truncate text-ctp-subtext1">{relationship.name}</span>
+                        <span className="shrink-0 text-ctp-subtext0">{Math.round(relationship.coOccurrenceRate * 100)}% · n={relationship.count}</span>
+                      </div>
+                      <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-ctp-surface1">
+                        <div className="h-full rounded-full bg-ctp-blue" style={{ width: `${relationship.coOccurrenceRate * 100}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {groups.length > INITIAL_BUDDY_CANDIDATES && (
+        <button type="button" onClick={() => setShowAll((value) => !value)} className="mt-2 min-h-9 text-xs text-ctp-blue hover:underline">
+          {showAll ? "Show fewer" : `Show ${groups.length - INITIAL_BUDDY_CANDIDATES} more`}
+        </button>
+      )}
+    </section>
   );
 }
 
@@ -351,29 +530,28 @@ function BuddyCardsList({
     <div className="mt-6">
       <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Buddy cards</h2>
       <p className="mt-1 text-xs text-ctp-subtext0">
-        Cards most often run alongside your choices, regardless of win rate — sorted by how many of your locks
-        each one pairs with, so cards that go with several of your picks float to the top. Add one straight from
-        here even if it never shows up in the ranked suggestions above.
+        Cards most often run alongside your choices, regardless of win rate. Thicker connections and longer
+        mobile bars mean a higher pairing rate; sample counts show how many decks contained both cards. Frequent
+        pairing is a lead to investigate, not proof of synergy.
       </p>
-      <ul className="mt-2 space-y-1.5">
-        {merged.map((g) => (
-          <BuddyGroupRow key={g.cardName} group={g} cardsByName={cardsByName} onAdd={onAdd} />
-        ))}
-      </ul>
+      {merged.length > 0 && (
+        <BuddyRelationshipView
+          title="Tournament relationships"
+          description="Drawn from matching tournament decklists; no win-rate filter is applied."
+          groups={merged}
+          cardsByName={cardsByName}
+          onAdd={onAdd}
+        />
+      )}
 
       {communityMerged.length > 0 && (
-        <div className="mt-4 border-t border-ctp-surface0 pt-3">
-          <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Community buddy cards</h3>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            Same idea, from community deck lists instead of tournament data — real co-occurrence, no win
-            rate involved either way.
-          </p>
-          <ul className="mt-2 space-y-1.5">
-            {communityMerged.map((g) => (
-              <BuddyGroupRow key={g.cardName} group={g} cardsByName={cardsByName} onAdd={onAdd} />
-            ))}
-          </ul>
-        </div>
+        <BuddyRelationshipView
+          title="Community relationships"
+          description="The same co-occurrence view using community decklists instead of tournament data."
+          groups={communityMerged}
+          cardsByName={cardsByName}
+          onAdd={onAdd}
+        />
       )}
     </div>
   );
@@ -945,6 +1123,9 @@ function ToolsPanel({
   catalogByName,
   pillarBias,
   onPillarBiasChange,
+  archetypeId,
+  archetypeOptions,
+  onArchetypeChange,
   validation,
   unresolvedMain,
   deckFormat,
@@ -957,6 +1138,9 @@ function ToolsPanel({
   catalogByName: Map<string, Card>;
   pillarBias: RatingPillar | null;
   onPillarBiasChange: (pillar: RatingPillar | null) => void;
+  archetypeId: string | null;
+  archetypeOptions: ArchetypeTuningOption[];
+  onArchetypeChange: (archetypeId: string | null) => void;
   validation: DeckValidationResult;
   unresolvedMain: number;
   deckFormat: DeckFormat;
@@ -1022,15 +1206,40 @@ function ToolsPanel({
             </button>
           ))}
         </div>
+        <div className="mt-4 border-t border-ctp-surface1 pt-3">
+          <label htmlFor="archetype-inspiration" className="text-xs font-semibold text-ctp-subtext1">
+            Archetype inspiration
+          </label>
+          <select
+            id="archetype-inspiration"
+            value={archetypeId ?? ""}
+            onChange={(e) => onArchetypeChange(e.target.value || null)}
+            disabled={deckFormat !== "STANDARD" || archetypeOptions.length === 0}
+            className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1.5 text-xs text-ctp-text disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <option value="">None — use the full evidence ranking</option>
+            {archetypeOptions.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.name} · {option.deckCount} decks{option.confidence === "emerging" ? " · Emerging" : ""}
+              </option>
+            ))}
+          </select>
+          <p className="mt-1 text-[11px] text-ctp-subtext0">
+            {deckFormat !== "STANDARD"
+              ? "Archetype taxonomy is based on Standard tournament decklists."
+              : populationSource === "community" || populationSource === "simulator"
+                ? "Your choice is saved, but only affects Tournament and Balanced suggestions."
+                : "Gently favors this build's defining cards without narrowing the deck sample or overriding win-rate evidence."}
+          </p>
+        </div>
       </div>
 
       <div className="mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2">
         <span className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Data source</span>
-        <div role="tablist" aria-label="Data source" className="inline-flex max-w-full flex-wrap rounded-md border border-ctp-surface1 bg-ctp-base p-0.5">
+        <div role="group" aria-label="Data source" className="inline-flex max-w-full flex-wrap rounded-md border border-ctp-surface1 bg-ctp-base p-0.5">
           <button
             type="button"
-            role="tab"
-            aria-selected={populationSource === "balanced"}
+            aria-pressed={populationSource === "balanced"}
             onClick={() => onChangePopulationSource("balanced", "Balanced")}
             className={`rounded px-3 py-1 text-xs font-medium ${
               populationSource === "balanced" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
@@ -1040,8 +1249,7 @@ function ToolsPanel({
           </button>
           <button
             type="button"
-            role="tab"
-            aria-selected={populationSource === "tournament"}
+            aria-pressed={populationSource === "tournament"}
             onClick={() => onChangePopulationSource("tournament", "Tournament")}
             className={`rounded px-3 py-1 text-xs font-medium ${
               populationSource === "tournament" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
@@ -1051,8 +1259,7 @@ function ToolsPanel({
           </button>
           <button
             type="button"
-            role="tab"
-            aria-selected={populationSource === "community"}
+            aria-pressed={populationSource === "community"}
             onClick={() => onChangePopulationSource("community", "Community")}
             className={`rounded px-3 py-1 text-xs font-medium ${
               populationSource === "community" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
@@ -1062,8 +1269,7 @@ function ToolsPanel({
           </button>
           {deckFormat === "STANDARD" && <button
             type="button"
-            role="tab"
-            aria-selected={populationSource === "simulator"}
+            aria-pressed={populationSource === "simulator"}
             onClick={() => onChangePopulationSource("simulator", "Simulator")}
             className={`rounded px-3 py-1 text-xs font-medium ${
               populationSource === "simulator" ? "bg-ctp-mauve text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
@@ -1092,6 +1298,7 @@ function CardRow({
   card,
   onToggleLock,
   onRemove,
+  onDismiss,
   onChangeQuantity,
   cardsByName,
   priceByName,
@@ -1100,10 +1307,12 @@ function CardRow({
   communityMode = false,
   simulatorEvidence,
   visibleFields,
+  needsReview = false,
 }: {
   card: SuggestedCard;
   onToggleLock: () => void;
   onRemove: () => void;
+  onDismiss?: () => void;
   /** User-choice quantities are editable; recommendation-owned quantities remain derived from the ranking. */
   onChangeQuantity?: (quantity: number) => void;
   cardsByName: ReturnType<typeof useCardsByNames>;
@@ -1118,6 +1327,8 @@ function CardRow({
   simulatorEvidence?: SimulatorCardEvidence;
   /** Which optional data fields (Cost/Price/Win rate/Sample size/Community usage) to render — the viewer's own Customize panel preference. */
   visibleFields: CardFieldVisibility;
+  /** Marks a placed card that has a data-backed cut recommendation in the Review tab. */
+  needsReview?: boolean;
 }) {
   const cardInfo = cardsByName.get(card.cardName);
   const unitPrice = priceByName.get(card.cardName);
@@ -1189,6 +1400,7 @@ function CardRow({
           {Math.round(communityInclusion.get(card.cardName)!.percentOfDecks * 100)}% brewed
         </span>
       )}
+      {needsReview && <span className="rounded-full border border-ctp-yellow/60 bg-ctp-yellow/10 px-1.5 text-[10px] font-medium text-ctp-yellow">Review</span>}
       <div className="ml-auto flex shrink-0 gap-1.5">
         {showLockToggle && (
           <button
@@ -1204,15 +1416,32 @@ function CardRow({
         <button type="button" onClick={onRemove} className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-red">
           Remove
         </button>
+        {onDismiss && <button type="button" onClick={onDismiss} className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text">Dismiss</button>}
       </div>
     </li>
   );
 }
 
 /** Not-yet-placed ranked cards ("cards that might help") — same info as CardRow but a single "Add" action instead of Lock/Remove, since these aren't in the build at all yet. */
+function DiaoMetricBadges({ card }: { card: SuggestedCard }) {
+  const changes = Object.entries(card.diaoMetricChanges ?? {}) as [RatingPillar, number][];
+  return changes
+    .sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))
+    .map(([pillar, delta]) => (
+      <span
+        key={pillar}
+        className={`rounded-full border px-1.5 text-[10px] font-medium ${delta > 0 ? "border-ctp-mauve/50 bg-ctp-mauve/10 text-ctp-mauve" : "border-ctp-yellow/50 bg-ctp-yellow/10 text-ctp-yellow"}`}
+        title={`Projected ${pillar} pillar-point change from adding ${card.quantity}x ${card.cardName}; separate from observed win rate`}
+      >
+        {pillar[0].toUpperCase() + pillar.slice(1)} {delta > 0 ? "+" : ""}{delta.toFixed(2)}
+      </span>
+    ));
+}
+
 function SuggestionRow({
   card,
   onAdd,
+  onDismiss,
   cardsByName,
   priceByName,
   communityInclusion,
@@ -1221,6 +1450,7 @@ function SuggestionRow({
 }: {
   card: SuggestedCard;
   onAdd: () => void;
+  onDismiss?: () => void;
   cardsByName: ReturnType<typeof useCardsByNames>;
   priceByName: Map<string, number>;
   communityInclusion?: Map<string, CardInclusionEntry>;
@@ -1265,13 +1495,22 @@ function SuggestionRow({
           {Math.round(communityInclusion.get(card.cardName)!.percentOfDecks * 100)}% brewed
         </span>
       )}
-      <button
-        type="button"
-        onClick={onAdd}
-        className="ml-auto shrink-0 rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
-      >
-        Add
-      </button>
+      {card.readinessReasons?.map((reason) => (
+        <span key={reason} className="rounded-full border border-ctp-teal/50 bg-ctp-teal/10 px-1.5 text-[10px] font-medium text-ctp-teal" title="Deterministic synergy-readiness signal; separate from observed win rate">
+          {reason}
+        </span>
+      ))}
+      <DiaoMetricBadges card={card} />
+      <div className="ml-auto flex shrink-0 gap-1.5">
+        <button
+          type="button"
+          onClick={onAdd}
+          className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
+        >
+          Add
+        </button>
+        {onDismiss && <button type="button" onClick={onDismiss} className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text">Dismiss</button>}
+      </div>
     </li>
   );
 }
@@ -1306,6 +1545,7 @@ export default function DeckBuilderIndex() {
   /** Tuning: nudges useSuggestedBuild's ranking toward a chosen DIAO Score pillar (see its own
    * pillarBias doc comment) — null ("Balanced") reproduces the original unbiased lift-only order. */
   const [pillarBias, setPillarBias] = useState<RatingPillar | null>(sessionSeed?.pillarBias ?? null);
+  const [archetypeId, setArchetypeId] = useState<string | null>(urlSeed?.archetypeId ?? sessionSeed?.archetypeId ?? null);
   /** Tuning: swaps the assembled suggestions between real Omnidex win-rate data and Shout At Your
    * Decks' community popularity data — see useCommunitySuggestedBuild's own doc comment. Defaults
    * to "balanced" (real tournament lift, nudged by community popularity) — see PopulationSource. */
@@ -1313,6 +1553,7 @@ export default function DeckBuilderIndex() {
   const [changeLog, setChangeLog] = useState<ChangeLogEntry[]>(sessionSeed?.changeLog ?? []);
   const [visibleFields, setVisibleField] = useCardFieldVisibility();
   const [customizeOpen, setCustomizeOpen] = useState(false);
+  const [dismissedReviewCards, setDismissedReviewCards] = useState<Set<string>>(new Set());
   const [tab, setTab] = useTabParam<BuilderTab>("tab", TAB_KEYS, "build");
   const [isPending, startTransition] = useTransition();
   const [pasteOpen, setPasteOpen] = useState(false);
@@ -1352,6 +1593,29 @@ export default function DeckBuilderIndex() {
   const { rows, spiritsPresent, loading: populationLoading } = useDeckBuilderPopulation(championName);
   const cardQuantityStatsData = useCardQuantityStatsData();
   const compositionWinRateData = useCompositionWinRateData();
+  const archetypeTaxonomyData = useArchetypeTaxonomyData();
+  const archetypeOptions = useMemo((): ArchetypeTuningOption[] => {
+    if (!championName || !archetypeTaxonomyData) return [];
+    return archetypeTaxonomyData.clusters
+      .filter((cluster) => cluster.championName === championName || (cluster.championBreakdown ?? []).some((entry) => entry.championName === championName))
+      .map((cluster) => ({
+        id: cluster.id,
+        name: cluster.name,
+        deckCount: cluster.deckCount,
+        confidence: cluster.confidence ?? "established",
+      }))
+      .sort((a, b) => Number(b.confidence === "established") - Number(a.confidence === "established") || b.deckCount - a.deckCount || a.name.localeCompare(b.name));
+  }, [championName, archetypeTaxonomyData]);
+  const selectedArchetype = useMemo(
+    () => archetypeOptions.some((option) => option.id === archetypeId)
+      ? archetypeTaxonomyData?.clusters.find((cluster) => cluster.id === archetypeId)
+      : undefined,
+    [archetypeTaxonomyData, archetypeId, archetypeOptions],
+  );
+  const archetypePrevalence = useMemo(() => {
+    if (!selectedArchetype) return undefined;
+    return new Map(selectedArchetype.definingCards.map((card) => [card.name, card.prevalence]));
+  }, [selectedArchetype]);
   // Similar real decks become useful only once the viewer has expressed enough intent through
   // locks. Keep the expensive all-deck decode off the default path until then.
   const showNearestDecks = lockedCards.size >= 2;
@@ -1413,6 +1677,9 @@ export default function DeckBuilderIndex() {
     cardQuantityStatsData,
     undefined,
     pillarBias,
+    undefined,
+    undefined,
+    archetypePrevalence,
   );
   // Same real tournament ranking as tournamentBuild above, plus a community-popularity nudge and a
   // decay penalty — see COMMUNITY_BOOST_WEIGHT's and DECAY_PENALTY_WEIGHT's doc comments. Computed
@@ -1430,6 +1697,7 @@ export default function DeckBuilderIndex() {
     pillarBias,
     communityInclusionByName,
     decayingCardBoost,
+    archetypePrevalence,
   );
   const communityBuild = useCommunitySuggestedBuild(communityChampData, communityLockedCards, lockedSections, rejectedCards, catalogByName, !communityCardInclusion, identityElements, deckFormat);
   const simulatorSummary = useSimulatorSummaryData();
@@ -1443,6 +1711,34 @@ export default function DeckBuilderIndex() {
         : effectivePopulationSource === "balanced"
           ? balancedBuild
           : tournamentBuild;
+
+  const reviewSuggestions = useMemo(
+    () => build.suggestions.filter((card) => !dismissedReviewCards.has(card.cardName)),
+    [build.suggestions, dismissedReviewCards],
+  );
+  const reviewRemovals = useMemo(
+    () => build.removalSuggestions.filter((card) => !dismissedReviewCards.has(card.cardName)),
+    [build.removalSuggestions, dismissedReviewCards],
+  );
+  const reviewGroups = useMemo(() => {
+    const available = [...reviewSuggestions];
+    const pairs: { removal: SuggestedCard; addition: SuggestedCard }[] = [];
+    const unpairedRemovals: SuggestedCard[] = [];
+    for (const removal of reviewRemovals) {
+      const matchIndex = available.findIndex((addition) => addition.section === removal.section);
+      if (matchIndex < 0) unpairedRemovals.push(removal);
+      else pairs.push({ removal, addition: available.splice(matchIndex, 1)[0] });
+    }
+    return { pairs, unpairedRemovals, unpairedSuggestions: available };
+  }, [reviewRemovals, reviewSuggestions]);
+  const reviewItemCount = reviewGroups.pairs.length + reviewGroups.unpairedRemovals.length + reviewGroups.unpairedSuggestions.length;
+  const reviewRemovalNames = useMemo(() => new Set(reviewRemovals.map((card) => card.cardName)), [reviewRemovals]);
+
+  // A dismissal belongs to the current recommendation lens. Changing the Spirit, source, or
+  // tuning can produce materially different evidence for the same card, so surface it again.
+  useEffect(() => {
+    setDismissedReviewCards(new Set());
+  }, [championName, spiritFilter, effectivePopulationSource, pillarBias, archetypeId]);
 
   const nearestDecks = useNearestDecks(allDecks, lockedCards);
   const gateLoading = deckFormat === "PANTHEON"
@@ -1551,6 +1847,8 @@ export default function DeckBuilderIndex() {
         setLockedCards(new Map());
         setLockedSections(new Map());
         setRejectedCards(new Set());
+        setDismissedReviewCards(new Set());
+        setArchetypeId(null);
         setChangeLog([]);
       });
     }
@@ -1572,6 +1870,7 @@ export default function DeckBuilderIndex() {
         next.delete("spirit");
         next.delete("pool");
         next.delete("pillar");
+        next.delete("archetype");
         next.delete("locked");
         return next;
       },
@@ -1585,8 +1884,8 @@ export default function DeckBuilderIndex() {
   // UI state (cardInput, pasteOpen/pasteText, tab — the last already survives via useTabParam's
   // own URL sync) since none of that is "my session," just in-progress typing/navigation.
   useEffect(() => {
-    saveSessionSeed({ championName, spiritFilter, lockedCards, lockedSections, rejectedCards, pillarBias, populationSource, changeLog });
-  }, [championName, spiritFilter, lockedCards, lockedSections, rejectedCards, pillarBias, populationSource, changeLog]);
+    saveSessionSeed({ championName, spiritFilter, lockedCards, lockedSections, rejectedCards, pillarBias, archetypeId, populationSource, changeLog });
+  }, [championName, spiritFilter, lockedCards, lockedSections, rejectedCards, pillarBias, archetypeId, populationSource, changeLog]);
 
   /**
    * Bulk equivalent of picking a Champion+Spirit then locking every remaining card by hand —
@@ -1634,6 +1933,7 @@ export default function DeckBuilderIndex() {
     setLockedCards(newLocked);
     setLockedSections(newSections);
     setRejectedCards(new Set());
+    setDismissedReviewCards(new Set());
     setChangeLog([]);
     pendingActionRef.current = null;
     prevSuggestedRef.current = null;
@@ -1642,6 +1942,7 @@ export default function DeckBuilderIndex() {
     setPasteText("");
     setPasteError(null);
     setPasteOpen(false);
+    setTab("review");
   }
 
   /** Loads a `useNearestDecks` result as the new starting point — same shape as `loadPastedDecklist`, just sourced from an already-decoded real deck instead of re-parsing text. */
@@ -1733,6 +2034,12 @@ export default function DeckBuilderIndex() {
     // only getting clamped once the build assembles.
     const isMaterialOnly = card ? card.types.includes("CHAMPION") || card.types.includes("REGALIA") : false;
     const defaultQty = isMaterialOnly ? 1 : 4;
+    const currentSideboardPoints = build.sideboard.reduce(
+      (sum, entry) => sum + entry.quantity * sideboardPointCost(catalogByName.get(entry.cardName)),
+      0,
+    );
+    const fitsSideboard = currentSideboardPoints + defaultQty * sideboardPointCost(card) <= SIDEBOARD_POINT_BUDGET;
+    const placeInSideboard = addToSideboard && fitsSideboard;
     pendingActionRef.current = { label: `Added ${name}`, subject: name };
     startTransition(() => {
       setLockedCards((prev) => {
@@ -1740,7 +2047,7 @@ export default function DeckBuilderIndex() {
         next.set(name, defaultQty);
         return next;
       });
-      if (addToSideboard) {
+      if (placeInSideboard) {
         setLockedSections((prev) => new Map(prev).set(name, "sideboard"));
       }
     });
@@ -1751,6 +2058,39 @@ export default function DeckBuilderIndex() {
   /** "Add" from the "Cards that might help" list — same as toggleLock, just with the section/quantity the suggestion already carries instead of guessing. */
   function addSuggestion(card: SuggestedCard) {
     toggleLock(card.cardName, card.quantity, card.section);
+  }
+
+  function dismissReview(...cardNames: string[]) {
+    setDismissedReviewCards((previous) => {
+      const next = new Set(previous);
+      for (const name of cardNames) next.add(name);
+      return next;
+    });
+  }
+
+  function applyRecommendationSwap(removal: SuggestedCard, addition: SuggestedCard) {
+    pendingActionRef.current = { label: `Swapped ${removal.cardName} for ${addition.cardName}`, subject: null };
+    startTransition(() => {
+      setLockedCards((previous) => {
+        const next = new Map(previous);
+        next.delete(removal.cardName);
+        next.set(addition.cardName, addition.quantity);
+        return next;
+      });
+      setLockedSections((previous) => {
+        const next = new Map(previous);
+        next.delete(removal.cardName);
+        next.set(addition.cardName, addition.section);
+        return next;
+      });
+      setRejectedCards((previous) => new Set(previous).add(removal.cardName));
+      setDismissedReviewCards((previous) => {
+        const next = new Set(previous);
+        next.add(removal.cardName);
+        next.add(addition.cardName);
+        return next;
+      });
+    });
   }
 
   /** Re-ranking the suggested build by switching data source or tuning bias is itself a
@@ -1773,9 +2113,31 @@ export default function DeckBuilderIndex() {
     setPillarBias(pillar);
   }
 
+  function changeArchetype(archetype: string | null) {
+    if (archetype !== archetypeId) {
+      const selected = archetypeOptions.find((option) => option.id === archetype);
+      pendingActionRef.current = {
+        label: selected ? `Inspired by ${selected.name}` : "Removed archetype inspiration",
+        subject: null,
+      };
+    }
+    startTransition(() => setArchetypeId(archetype));
+  }
+
   const mainTotal = build.main.reduce((sum, c) => sum + c.quantity, 0);
   const materialTotal = build.material.reduce((sum, c) => sum + c.quantity, 0);
   const sideboardTotal = build.sideboard.reduce((sum, c) => sum + c.quantity, 0);
+  const selectedAddCard = cardNameSet.has(cardInput) && !lockedCards.has(cardInput)
+    ? catalogByName.get(cardInput)
+    : undefined;
+  const selectedAddQuantity = selectedAddCard?.types.some((type) => type === "CHAMPION" || type === "REGALIA") ? 1 : 4;
+  const currentSideboardPoints = build.sideboard.reduce(
+    (sum, card) => sum + card.quantity * sideboardPointCost(catalogByName.get(card.cardName)),
+    0,
+  );
+  const selectedSideboardPoints = selectedAddCard ? selectedAddQuantity * sideboardPointCost(selectedAddCard) : 0;
+  const canAddToSideboard = Boolean(selectedAddCard) && currentSideboardPoints + selectedSideboardPoints <= SIDEBOARD_POINT_BUDGET;
+  const sideboardDestinationSelected = addToSideboard && canAddToSideboard;
   // Deck price/Stats stay scoped to material+main — same "sideboard is situational tech, not part
   // of deck identity" convention as everywhere else in this codebase (Popular Decks, Archetypes,
   // etc.); sideboard gets its own separate price line below instead, matching DecklistView.tsx.
@@ -1830,14 +2192,17 @@ export default function DeckBuilderIndex() {
   }
   const totalPrice = useMemo(() => sumPrice(buildLines), [buildLines, priceByName]);
   const sideboardPrice = useMemo(() => sumPrice(sideboardLines), [sideboardLines, priceByName]);
-  const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
-  const [copyLockedOnly, setCopyLockedOnly] = useState(false);
+  const [copyState, setCopyState] = useState<"idle" | "full-copied" | "kept-copied" | "full-failed" | "kept-failed">("idle");
   const [shareCopyState, setShareCopyState] = useState<"idle" | "copied" | "failed">("idle");
+  const fullCopyCount = [...build.main, ...build.material, ...build.sideboard].reduce((sum, card) => sum + card.quantity, 0);
+  const keptCopyCount = [...build.main, ...build.material, ...build.sideboard]
+    .filter((card) => card.locked)
+    .reduce((sum, card) => sum + card.quantity, 0);
 
-  /** "Locked only" copies just the viewer's own choices (`card.locked`), skipping every
+  /** "Kept only" copies just the viewer's own choices (`card.locked`), skipping every
    * auto-suggested slot — for pasting a partial want-list rather than the full assembled deck. */
-  async function handleCopy() {
-    const source = copyLockedOnly
+  async function handleCopy(keptOnly: boolean) {
+    const source = keptOnly
       ? { main: build.main.filter((c) => c.locked), material: build.material.filter((c) => c.locked), sideboard: build.sideboard.filter((c) => c.locked) }
       : { main: build.main, material: build.material, sideboard: build.sideboard };
     const text = buildDecklistText({
@@ -1847,14 +2212,14 @@ export default function DeckBuilderIndex() {
     });
     try {
       await navigator.clipboard.writeText(text);
-      setCopyState("copied");
+      setCopyState(keptOnly ? "kept-copied" : "full-copied");
     } catch {
-      setCopyState("failed");
+      setCopyState(keptOnly ? "kept-failed" : "full-failed");
     }
     setTimeout(() => setCopyState("idle"), 1500);
   }
 
-  /** Shares the Champion/Spirit/locked-cards *input*, not a snapshot of the assembled output —
+  /** Shares the Champion/Spirit/archetype/locked-cards *input*, not a snapshot of the assembled output —
    * opening the link re-runs the same suggestion logic, so it stays a live recipe rather than a
    * stale copy that drifts from the site's own numbers as data regenerates. */
   async function handleCopyShareLink() {
@@ -1862,6 +2227,7 @@ export default function DeckBuilderIndex() {
     if (championName) params.set("champion", championName);
     if (deckFormat === "PANTHEON") params.set("format", "pantheon");
     if (spiritFilter) params.set("spirit", spiritFilter);
+    if (archetypeId) params.set("archetype", archetypeId);
     const locked = encodeLockedCards(lockedCards, lockedSections);
     if (locked) params.set("locked", locked);
     const url = `${window.location.origin}/deck-builder?${params.toString()}`;
@@ -1898,14 +2264,15 @@ export default function DeckBuilderIndex() {
         )}
       />
 
-      <div className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1 text-sm" role="tablist" aria-label="Deck format">
-        {(["STANDARD", "PANTHEON"] as const).map((format) => <button key={format} type="button" role="tab" aria-selected={deckFormat === format} onClick={() => { setDeckFormat(format); if (format === "PANTHEON") setPopulationSource("community"); const next = new URLSearchParams(searchParams); if (format === "PANTHEON") next.set("format", "pantheon"); else next.delete("format"); setSearchParams(next, { replace: true }); }} className={`rounded-md px-3 py-1.5 ${deckFormat === format ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>{format === "PANTHEON" ? "Pantheon" : "Standard"}</button>)}
+      <div className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1 text-sm" role="group" aria-label="Deck format">
+        {(["STANDARD", "PANTHEON"] as const).map((format) => <button key={format} type="button" aria-pressed={deckFormat === format} onClick={() => { setDeckFormat(format); if (format === "PANTHEON") setPopulationSource("community"); const next = new URLSearchParams(searchParams); if (format === "PANTHEON") next.set("format", "pantheon"); else next.delete("format"); setSearchParams(next, { replace: true }); }} className={`rounded-md px-3 py-1.5 ${deckFormat === format ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>{format === "PANTHEON" ? "Pantheon" : "Standard"}</button>)}
       </div>
       {deckFormat === "PANTHEON" && <p className="mt-2 text-xs text-ctp-subtext0">Pantheon recommendations use format-separated community adoption and singleton legality. They do not use Standard tournament win rates.</p>}
 
       <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
-        <span className="text-ctp-subtext0">Champion:</span>
+        <label htmlFor="deck-builder-champion" className="text-ctp-subtext0">Champion:</label>
         <select
+          id="deck-builder-champion"
           value={championName ?? ""}
           onChange={(e) => setChampionName(e.target.value || null)}
           className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
@@ -1920,8 +2287,9 @@ export default function DeckBuilderIndex() {
 
         {championName && (
           <>
-            <span className="ml-2 text-ctp-subtext0">Spirit:</span>
+            <label htmlFor="deck-builder-spirit" className="ml-2 text-ctp-subtext0">Spirit:</label>
             <select
+              id="deck-builder-spirit"
               value={spiritFilter ?? ""}
               onChange={(e) => {
                 const value = e.target.value || null;
@@ -2057,42 +2425,46 @@ export default function DeckBuilderIndex() {
             </p>
           )}
 
-          <div role="tablist" aria-label="Deck builder sections" className="mt-4 flex flex-wrap gap-2 border-b border-ctp-surface1 pb-2">
-            {(
-              [
+          <div className="mt-4">
+            <Tabs<BuilderTab>
+              tabs={[
                 { key: "build", label: "Build" },
+                { key: "review", label: `Review (${reviewItemCount})` },
                 { key: "stats", label: "Stats" },
                 { key: "tools", label: "Tools" },
                 { key: "buddies", label: "Buddy Cards" },
                 { key: "copy", label: "Copy & Export" },
                 { key: "log", label: `Log (${changeLog.length})` },
-              ] as { key: BuilderTab; label: string }[]
-            ).map((t) => (
-              <button
-                key={t.key}
-                type="button"
-                role="tab"
-                id={`tab-${t.key}`}
-                aria-selected={tab === t.key}
-                aria-controls={`panel-${t.key}`}
-                onClick={() => setTab(t.key)}
-                className={`rounded-md border px-2.5 py-1 text-xs ${
-                  tab === t.key ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                }`}
-              >
-                {t.label}
-              </button>
-            ))}
+              ]}
+              active={tab}
+              onChange={setTab}
+              label="Deck builder sections"
+              baseId="deck-builder"
+            />
           </div>
 
           {tab === "build" && (
-            <div role="tabpanel" id="panel-build" aria-labelledby="tab-build" className="mt-4">
+            <div role="tabpanel" id="deck-builder-panel-build" aria-labelledby="deck-builder-tab-build" className="mt-4">
+              {reviewItemCount > 0 && (
+                <div className="mb-4 flex flex-wrap items-center gap-2 rounded-lg border border-ctp-yellow/50 bg-ctp-yellow/10 px-3 py-2 text-sm">
+                  <span className="font-medium text-ctp-text">
+                    {reviewItemCount} recommendation{reviewItemCount === 1 ? "" : "s"} ready
+                  </span>
+                  <span className="text-xs text-ctp-subtext1">Review suggested additions, cuts, and section-compatible swaps.</span>
+                  <button type="button" onClick={() => setTab("review")} className="ml-auto rounded-md border border-ctp-yellow/60 px-2 py-1 text-xs text-ctp-yellow hover:bg-ctp-yellow/10">
+                    Review recommendations →
+                  </button>
+                </div>
+              )}
               <span className="text-sm text-ctp-subtext0">Add a card:</span>
               <input
                 type="text"
                 list="deck-builder-card-options"
                 value={cardInput}
-                onChange={(e) => setCardInput(e.target.value)}
+                onChange={(e) => {
+                  setCardInput(e.target.value);
+                  setAddToSideboard(false);
+                }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && cardNameSet.has(cardInput)) addCard(cardInput);
                 }}
@@ -2105,24 +2477,40 @@ export default function DeckBuilderIndex() {
                 ))}
               </datalist>
               <div className="mt-2 flex flex-wrap items-center gap-3">
-                <label className="flex w-fit cursor-pointer items-center gap-2 text-sm text-ctp-subtext1">
-                  <input
-                    type="checkbox"
-                    checked={addToSideboard}
-                    onChange={(e) => setAddToSideboard(e.target.checked)}
-                    className="accent-ctp-blue"
-                  />
-                  Place in sideboard
-                </label>
+                <span className="text-xs font-medium text-ctp-subtext1">Destination:</span>
+                <div role="group" aria-label="Card destination" className="inline-flex rounded-md border border-ctp-surface1 bg-ctp-mantle p-0.5">
+                  <button
+                    type="button"
+                    aria-pressed={!sideboardDestinationSelected}
+                    onClick={() => setAddToSideboard(false)}
+                    className={`rounded px-2.5 py-1 text-xs ${!sideboardDestinationSelected ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}
+                  >
+                    Automatic
+                  </button>
+                  <button
+                    type="button"
+                    aria-pressed={sideboardDestinationSelected}
+                    disabled={!canAddToSideboard}
+                    onClick={() => setAddToSideboard(true)}
+                    title={!selectedAddCard ? "Choose a card first" : !canAddToSideboard ? `This card would exceed the ${SIDEBOARD_POINT_BUDGET}-point sideboard budget` : undefined}
+                    className={`rounded px-2.5 py-1 text-xs ${sideboardDestinationSelected ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 enabled:hover:text-ctp-text disabled:cursor-not-allowed disabled:opacity-40"}`}
+                  >
+                    Sideboard
+                  </button>
+                </div>
                 <button
                   type="button"
                   disabled={!cardNameSet.has(cardInput) || lockedCards.has(cardInput)}
                   onClick={() => addCard(cardInput)}
                   className="rounded-md border border-ctp-blue px-3 py-1 text-xs text-ctp-blue enabled:hover:bg-ctp-surface0 disabled:cursor-not-allowed disabled:opacity-40"
                 >
-                  Add card
+                  {sideboardDestinationSelected ? "Add to sideboard" : "Add card"}
                 </button>
-                <span className="text-xs text-ctp-subtext0">Otherwise placed in Main or Material automatically.</span>
+                <span className="text-xs text-ctp-subtext0">
+                  {sideboardDestinationSelected
+                    ? `Uses ${selectedSideboardPoints} points; ${SIDEBOARD_POINT_BUDGET - currentSideboardPoints} available.`
+                    : "Automatic places the card in Main or Material."}
+                </span>
               </div>
               <div className="mt-3">
                 <button
@@ -2191,6 +2579,7 @@ export default function DeckBuilderIndex() {
                         communityInclusion={communityInclusionByName}
                         simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(c.cardName) : undefined}
                         visibleFields={visibleFields}
+                        needsReview={reviewRemovalNames.has(c.cardName)}
                         communityMode={effectivePopulationSource !== "tournament" && effectivePopulationSource !== "balanced"}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "material")}
                         onRemove={() => removeCard(c.cardName, c.locked)}
@@ -2210,6 +2599,7 @@ export default function DeckBuilderIndex() {
                         communityInclusion={communityInclusionByName}
                         simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(c.cardName) : undefined}
                         visibleFields={visibleFields}
+                        needsReview={reviewRemovalNames.has(c.cardName)}
                         communityMode={effectivePopulationSource !== "tournament" && effectivePopulationSource !== "balanced"}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "main")}
                         onChangeQuantity={(qty) => setLockedQuantity(c.cardName, qty)}
@@ -2237,6 +2627,7 @@ export default function DeckBuilderIndex() {
                         communityInclusion={communityInclusionByName}
                         simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(c.cardName) : undefined}
                         visibleFields={visibleFields}
+                        needsReview={reviewRemovalNames.has(c.cardName)}
                         communityMode={effectivePopulationSource !== "tournament" && effectivePopulationSource !== "balanced"}
                         onToggleLock={() => toggleLock(c.cardName, c.quantity, "sideboard")}
                         onChangeQuantity={(qty) => setLockedQuantity(c.cardName, qty)}
@@ -2247,64 +2638,6 @@ export default function DeckBuilderIndex() {
                 </div>
               )}
 
-              {build.suggestions.length > 0 && (
-                <div className="mt-4">
-                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Cards that might help</h2>
-                  <p className="mt-1 text-xs text-ctp-subtext0">
-                    Top ranked cards that aren't in the build above — either every slot in their section is already
-                    full (common for a fully-locked paste), or they just missed the cut. Adding one grows the build
-                    past its usual size on purpose.
-                  </p>
-                  <ul className="mt-2 space-y-1">
-                    {build.suggestions.map((c) => (
-                      <SuggestionRow
-                        key={c.cardName}
-                        card={c}
-                        cardsByName={cardsByName}
-                        priceByName={priceByName}
-                        communityInclusion={communityInclusionByName}
-                        simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(c.cardName) : undefined}
-                        visibleFields={visibleFields}
-                        onAdd={() => addSuggestion(c)}
-                      />
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {build.removalSuggestions.length > 0 ? (
-                <div className="mt-4">
-                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Cards that might hurt</h2>
-                  <p className="mt-1 text-xs text-ctp-subtext0">
-                    User-choice cards whose own win rate (with vs. without, independent of your other choices) came out
-                    meaningfully negative — candidates to cut, not proof they're bad in every build.
-                  </p>
-                  <ul className="mt-2 space-y-1">
-                    {build.removalSuggestions.map((c) => (
-                      <CardRow
-                        key={c.cardName}
-                        card={c}
-                        cardsByName={cardsByName}
-                        priceByName={priceByName}
-                        communityInclusion={communityInclusionByName}
-                        simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(c.cardName) : undefined}
-                        visibleFields={visibleFields}
-                        showLockToggle={false}
-                        onToggleLock={() => {}}
-                        onRemove={() => removeCard(c.cardName, c.locked)}
-                      />
-                    ))}
-                  </ul>
-                </div>
-              ) : (
-                effectivePopulationSource !== "tournament" &&
-                effectivePopulationSource !== "balanced" &&
-                championName && (
-                  <p className="mt-4 text-xs text-ctp-subtext0">
-                    Cards that might hurt isn't available in {effectivePopulationSource === "simulator" ? "Simulator" : "Community"} mode — {effectivePopulationSource === "simulator" ? "current simulator telemetry is not Champion-scoped and cannot support with-versus-without deck comparisons" : "the blended community population has no win/loss data to flag underperforming choices"}.
-                  </p>
-                )
-              )}
                 </>
 
               {showNearestDecks && (
@@ -2347,8 +2680,120 @@ export default function DeckBuilderIndex() {
             </div>
           )}
 
+          {tab === "review" && (
+            <div role="tabpanel" id="deck-builder-panel-review" aria-labelledby="deck-builder-tab-review" className="mt-4">
+              <div className="flex flex-wrap items-end justify-between gap-2">
+                <div>
+                  <h2 className="text-sm font-semibold text-ctp-text">Review recommendations</h2>
+                  <p className="mt-1 max-w-2xl text-xs text-ctp-subtext0">
+                    Suggestions are correlations from the selected evidence source. Swaps pair a card to review with the highest-ranked addition for the same deck section; they are starting points, not proof that one card directly replaces the other.
+                  </p>
+                </div>
+                {dismissedReviewCards.size > 0 && (
+                  <button type="button" onClick={() => setDismissedReviewCards(new Set())} className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text">
+                    Restore dismissed
+                  </button>
+                )}
+              </div>
+
+              {reviewItemCount === 0 ? (
+                <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-4 py-3 text-sm text-ctp-subtext1">
+                  {effectivePopulationSource === "community" || effectivePopulationSource === "simulator"
+                    ? `No additions to review right now. Cut recommendations are unavailable in ${effectivePopulationSource === "simulator" ? "Simulator" : "Community"} mode because this source cannot support Champion-scoped with-versus-without comparisons.`
+                    : "No recommendations to review right now. The current build already contains the ranked core, or the available evidence is too thin to support a change."}
+                </div>
+              ) : (
+                <>
+                  {reviewGroups.pairs.length > 0 && (
+                    <section className="mt-4">
+                      <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Suggested swaps</h3>
+                      <ul className="mt-2 space-y-2">
+                        {reviewGroups.pairs.map(({ removal, addition }) => {
+                          const removalInfo = cardsByName.get(removal.cardName);
+                          const additionInfo = cardsByName.get(addition.cardName);
+                          return (
+                            <li key={`${removal.cardName}:${addition.cardName}`} className="grid gap-2 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto] sm:items-center">
+                              <div className="min-w-0">
+                                <span className="text-[10px] font-semibold uppercase tracking-wide text-ctp-red">Review</span>
+                                <CardHoverPreview image={removalInfo?.editions[0]?.image} alt={removal.cardName}>
+                                  {removalInfo ? <Link to={`/cards/${removalInfo.slug}`} className="block truncate text-sm text-ctp-text hover:text-ctp-blue">{removal.cardName}</Link> : <span className="block truncate text-sm text-ctp-text">{removal.cardName}</span>}
+                                </CardHoverPreview>
+                                <span className="text-xs text-ctp-subtext0">{removal.adjustedLift === null ? "Limited performance evidence" : `${(removal.adjustedLift * 100).toFixed(1)}% observed lift`}</span>
+                              </div>
+                              <span className="hidden text-ctp-subtext0 sm:inline" aria-hidden="true">→</span>
+                              <div className="min-w-0">
+                                <span className="text-[10px] font-semibold uppercase tracking-wide text-ctp-green">Suggested addition</span>
+                                <CardHoverPreview image={additionInfo?.editions[0]?.image} alt={addition.cardName}>
+                                  {additionInfo ? <Link to={`/cards/${additionInfo.slug}`} className="block truncate text-sm text-ctp-text hover:text-ctp-blue">{addition.cardName}</Link> : <span className="block truncate text-sm text-ctp-text">{addition.cardName}</span>}
+                                </CardHoverPreview>
+                                <span className="text-xs text-ctp-subtext0">{addition.adjustedLift === null ? "Ranked candidate" : `+${(addition.adjustedLift * 100).toFixed(1)}% observed lift`} · {addition.quantity}x {addition.section}</span>
+                                {addition.readinessReasons?.map((reason) => <span key={reason} className="ml-1 inline-block rounded-full border border-ctp-teal/50 bg-ctp-teal/10 px-1.5 text-[10px] font-medium text-ctp-teal">{reason}</span>)}
+                                <span className="ml-1 inline-flex flex-wrap gap-1"><DiaoMetricBadges card={addition} /></span>
+                              </div>
+                              <div className="flex gap-1.5 sm:justify-end">
+                                <button type="button" onClick={() => applyRecommendationSwap(removal, addition)} className="rounded-md border border-ctp-blue px-2 py-1 text-xs text-ctp-blue hover:bg-ctp-blue/10">Swap</button>
+                                <button type="button" onClick={() => dismissReview(removal.cardName, addition.cardName)} className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text">Dismiss</button>
+                              </div>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </section>
+                  )}
+
+                  <div className="mt-5 grid gap-5 sm:grid-cols-2">
+                    {reviewGroups.unpairedSuggestions.length > 0 && (
+                      <section>
+                        <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Suggested additions</h3>
+                        <p className="mt-1 text-xs text-ctp-subtext0">Adding one keeps it as your choice and may grow the deck beyond its usual size.</p>
+                        <ul className="mt-2 space-y-1.5">
+                          {reviewGroups.unpairedSuggestions.map((card) => (
+                            <SuggestionRow
+                              key={card.cardName}
+                              card={card}
+                              cardsByName={cardsByName}
+                              priceByName={priceByName}
+                              communityInclusion={communityInclusionByName}
+                              simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(card.cardName) : undefined}
+                              visibleFields={visibleFields}
+                              onAdd={() => addSuggestion(card)}
+                              onDismiss={() => dismissReview(card.cardName)}
+                            />
+                          ))}
+                        </ul>
+                      </section>
+                    )}
+                    {reviewGroups.unpairedRemovals.length > 0 && (
+                      <section>
+                        <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Cards to review</h3>
+                        <p className="mt-1 text-xs text-ctp-subtext0">These user choices have meaningfully negative independent evidence; that does not prove they are wrong for this build.</p>
+                        <ul className="mt-2 space-y-1.5">
+                          {reviewGroups.unpairedRemovals.map((card) => (
+                            <CardRow
+                              key={card.cardName}
+                              card={card}
+                              cardsByName={cardsByName}
+                              priceByName={priceByName}
+                              communityInclusion={communityInclusionByName}
+                              simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(card.cardName) : undefined}
+                              visibleFields={visibleFields}
+                              showLockToggle={false}
+                              onToggleLock={() => {}}
+                              onRemove={() => removeCard(card.cardName, card.locked)}
+                              onDismiss={() => dismissReview(card.cardName)}
+                            />
+                          ))}
+                        </ul>
+                      </section>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
           {tab === "stats" && (
-            <div role="tabpanel" id="panel-stats" aria-labelledby="tab-stats">
+            <div role="tabpanel" id="deck-builder-panel-stats" aria-labelledby="deck-builder-tab-stats">
               <StatsPanel
                 lines={buildLines}
                 mainLines={mainOnlyLines}
@@ -2364,7 +2809,7 @@ export default function DeckBuilderIndex() {
           )}
 
           {tab === "tools" && (
-            <div role="tabpanel" id="panel-tools" aria-labelledby="tab-tools">
+            <div role="tabpanel" id="deck-builder-panel-tools" aria-labelledby="deck-builder-tab-tools">
               <ToolsPanel
                 rating={rating}
                 mainLines={mainOnlyLines}
@@ -2372,6 +2817,9 @@ export default function DeckBuilderIndex() {
                 catalogByName={catalogByName}
                 pillarBias={pillarBias}
                 onPillarBiasChange={changePillarBias}
+                archetypeId={archetypeId}
+                archetypeOptions={archetypeOptions}
+                onArchetypeChange={changeArchetype}
                 validation={validation}
                 unresolvedMain={build.unresolved.main}
                 deckFormat={deckFormat}
@@ -2382,7 +2830,7 @@ export default function DeckBuilderIndex() {
           )}
 
           {tab === "buddies" && (
-            <div role="tabpanel" id="panel-buddies" aria-labelledby="tab-buddies">
+            <div role="tabpanel" id="deck-builder-panel-buddies" aria-labelledby="deck-builder-tab-buddies">
               <BuddyCardsList
                 lockedNames={Array.from(lockedCards.keys())}
                 buddyCards={buddyCards}
@@ -2394,27 +2842,30 @@ export default function DeckBuilderIndex() {
           )}
 
           {tab === "copy" && (
-            <div role="tabpanel" id="panel-copy" aria-labelledby="tab-copy" className="mt-4">
+            <div role="tabpanel" id="deck-builder-panel-copy" aria-labelledby="deck-builder-tab-copy" className="mt-4">
               <div className="flex flex-wrap gap-2">
                 <button
                   type="button"
-                  onClick={handleCopy}
+                  onClick={() => handleCopy(false)}
                   aria-live="polite"
                   className={`rounded-md border px-2 py-1 text-xs ${
-                    copyState === "failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                    copyState === "full-failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
                   }`}
                 >
-                  {copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : copyLockedOnly ? "Copy locked cards" : "Copy decklist"}
+                  {copyState === "full-copied" ? "Copied!" : copyState === "full-failed" ? "Couldn't copy" : `Copy full deck (${fullCopyCount})`}
                 </button>
-                <label className="flex items-center gap-1.5 text-xs text-ctp-subtext1" title="Copy only the cards you've explicitly locked, skipping every auto-suggested slot">
-                  <input
-                    type="checkbox"
-                    checked={copyLockedOnly}
-                    onChange={(e) => setCopyLockedOnly(e.target.checked)}
-                    className="accent-ctp-blue"
-                  />
-                  Locked only
-                </label>
+                <button
+                  type="button"
+                  onClick={() => handleCopy(true)}
+                  disabled={keptCopyCount === 0}
+                  aria-live="polite"
+                  title={keptCopyCount === 0 ? "Keep at least one card to copy your choices" : "Copies your explicitly kept cards and skips auto-suggested slots"}
+                  className={`rounded-md border px-2 py-1 text-xs disabled:cursor-not-allowed disabled:opacity-40 ${
+                    copyState === "kept-failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 enabled:hover:text-ctp-text"
+                  }`}
+                >
+                  {copyState === "kept-copied" ? "Copied!" : copyState === "kept-failed" ? "Couldn't copy" : `Copy kept cards (${keptCopyCount})`}
+                </button>
                 <a
                   href={massEntryUrl}
                   target="_blank"
@@ -2458,7 +2909,7 @@ export default function DeckBuilderIndex() {
           )}
 
           {tab === "log" && (
-            <div role="tabpanel" id="panel-log" aria-labelledby="tab-log">
+            <div role="tabpanel" id="deck-builder-panel-log" aria-labelledby="deck-builder-tab-log">
               <ChangeLogList entries={changeLog} />
             </div>
           )}
