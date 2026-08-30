@@ -8,6 +8,7 @@
     "repl": "tsx src/repl.ts",
     "test": "tsx --test src/**/*.test.ts",
     "validate:archetypes": "tsx src/analysis/archetypeTaxonomyValidation.ts",
+    "audit:diao": "tsx src/analysis/diaoModelAudit.ts",
     "clean:similarity-cache": "rm -rf .cache/similarity-cache"
   },
   "dependencies": {

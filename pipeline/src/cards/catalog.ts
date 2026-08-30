@@ -19,6 +19,10 @@ export interface CardSignature {
   elements: string[];
   /** Champion level (1-3 for named upgrade printings, 0 for Spirits, null for non-Champions) — used to identify a deck's "true" Champion by its highest-level printing in the material deck. */
   level: number | null;
+  cost_memory?: number | null;
+  cost_reserve?: number | null;
+  power?: number | null;
+  speed?: boolean | null;
   /** Raw rules text (markdown-bolded keywords) — needed for `computeKeywordComposition` in @gatcg/shared. */
   effect: string | null;
   /**
@@ -53,6 +57,10 @@ async function fetchFullCatalog(): Promise<CardSignature[]> {
         subtypes: card.subtypes,
         elements: card.elements,
         level: card.level,
+        cost_memory: card.cost_memory,
+        cost_reserve: card.cost_reserve,
+        power: card.power,
+        speed: card.speed,
         effect: card.effect,
         editions: card.editions.map((e) => ({ setPrefix: e.set.prefix, collectorNumber: e.collector_number, releaseDate: e.set.release_date })),
       });
@@ -68,7 +76,7 @@ async function fetchFullCatalog(): Promise<CardSignature[]> {
 export async function loadCardCatalog(): Promise<CardSignature[]> {
   try {
     const cached = JSON.parse(await readFile(CACHE_PATH, "utf-8")) as CardCatalogCache;
-    if (Date.now() - new Date(cached.fetchedAt).getTime() < MAX_CACHE_AGE_MS) {
+    if (cached.cards[0]?.cost_memory !== undefined && Date.now() - new Date(cached.fetchedAt).getTime() < MAX_CACHE_AGE_MS) {
       return cached.cards;
     }
   } catch {

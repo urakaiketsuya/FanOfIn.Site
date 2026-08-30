@@ -1005,7 +1005,7 @@ reasoning as the damage classifier. Overflow buckets: memory costs above 6 are r
 against the catalog — only a handful of non-champion cards exceed 3, topping out at 12), folded
 into `"6+"`; reserve costs above 8 fold into `"8+"` (real range runs 0–16 with a long thin tail).
 
-## Deck DIAO score (`app/src/lib/deckIdentity.ts` — `computeDeckRating`)
+## Deck DIAO score (`shared/src/diao.ts` — `computeDeckRating`)
 
 A four-pillar deck power/style rating — **Durability / Interaction / Aggro / Opportunity** (DIAO), each
 1–10, averaged into a composite — shown on every deck page ("DIAO Score" section). Independently
@@ -1080,6 +1080,37 @@ real winning decks less sharply. This may mean the formula's weights need revisi
 a genuine signal that durability varies less among decks that already win events than aggro/interaction
 do — worth watching as more tournament data (the ongoing multi-year backfill) becomes available to
 recalibrate against.
+
+### Repeatable model audit
+
+`npm run audit:diao --workspace=pipeline` runs the production scorer from `@gatcg/shared` over every
+eligible public tournament decklist and writes the versioned machine-readable report to
+`data/analysis/diao-model-audit.json`. The scorer lives in `shared/` specifically so the app and
+audit cannot drift into separate formula implementations.
+
+The audit deliberately excludes an expert-label exercise. It includes:
+
+- within-champion style-separation diagnostics for all champions with at least 20 lists;
+- controlled one-card directional mutations against a deterministic sample of real decks;
+- pillar/composite range, floor, ceiling, and raw-point diagnostics;
+- correlations with match win rate and placement, with champion-centered and event-centered
+  controls; and
+- a chronological 70/30 development/holdout split to expose time-dependent results.
+
+The initial full-corpus run covered 55,205 decks from 1,769 events. Its central result is that DIAO
+is useful as a **deck-style profile**, but the evidence does not justify presenting it as a strong
+deck-power predictor: composite correlation with match win rate is weak (Spearman 0.070 overall;
+0.081 in the chronological holdout). Interaction has the strongest consistently positive pillar
+relationship, while Aggro is effectively uncorrelated/slightly negative. Those results remain
+similar after centering within champion or event, but are observational and do not control for
+pilot skill or matchup.
+
+Score-band behavior is intentionally coarse: every pillar currently produces only 3–10 because
+the original winning-deck calibration has no evidence for subdividing values below its observed
+minimum into scores 1–2. Controlled mutations therefore report both raw-point movement and the
+rate at which that movement crosses a visible score band. The generated report is the source of
+truth for the current counts and diagnostics; rerun it after any formula, catalog, or tournament
+data change rather than copying its snapshot values into UI claims.
 
 ## Price history (`pipeline/src/pricing/history.ts`, `app/src/features/pricing/usePriceHistory.ts`)
 
