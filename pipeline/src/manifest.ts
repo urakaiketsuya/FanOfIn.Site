@@ -31,6 +31,7 @@ export const MANIFEST_ENTRIES: { key: string; file: string }[] = [
   { key: "analysis-deck-popularity-index", file: "analysis/deck-popularity-index.json" },
   { key: "analysis-deck-card-index", file: "analysis/deck-card-index.json" },
   { key: "analysis-card-impact", file: "analysis/card-impact.json" },
+  { key: "analysis-package-candidates", file: "analysis/package-candidates.json" },
   { key: "analysis-matchup-card-impact", file: "analysis/matchup-card-impact.json" },
   { key: "analysis-archetype-taxonomy-validation", file: "analysis/archetype-taxonomy-validation.json" },
   { key: "simulator-summary", file: "simulator/summary.json" },

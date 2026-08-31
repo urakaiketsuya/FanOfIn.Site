@@ -1,0 +1,38 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "fanofin-accounts",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-24",
+  "vars": {
+    "ASSET_BASE_URL": "http://localhost:5173",
+    "ALLOWED_ORIGINS": "http://localhost:5173",
+    "GOOGLE_CLIENT_ID": "33283325780-takrrvtrs2qb8pshdkukog52le87b76k.apps.googleusercontent.com"
+  },
+  "d1_databases": [
+    {
+      "binding": "ACCOUNT_DB",
+      "database_name": "fanofin-accounts-dev",
+      "database_id": "replace-with-development-d1-id",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "env": {
+    "production": {
+      "name": "fanofin-accounts-production",
+      "workers_dev": true,
+      "vars": {
+        "ASSET_BASE_URL": "https://fanofin.site",
+        "ALLOWED_ORIGINS": "https://fanofin.site",
+        "GOOGLE_CLIENT_ID": "33283325780-takrrvtrs2qb8pshdkukog52le87b76k.apps.googleusercontent.com"
+      },
+      "d1_databases": [
+        {
+          "binding": "ACCOUNT_DB",
+          "database_name": "fanofin-accounts-production",
+          "database_id": "da2d610a-9025-4332-9b87-6d5edf79e19e",
+          "migrations_dir": "migrations"
+        }
+      ]
+    }
+  }
+}

@@ -39,6 +39,7 @@ function JudgesRedirect() {
 const CardsBrowse = lazy(() => import("./features/cards/CardsBrowse"));
 const CardDetail = lazy(() => import("./features/cards/CardDetail"));
 const CardStatsIndex = lazy(() => import("./features/cards/CardStatsIndex"));
+const PackagesIndex = lazy(() => import("./features/cards/PackagesIndex"));
 const ThemaLeaderboard = lazy(() => import("./features/thema/ThemaLeaderboard"));
 const ThemaHistory = lazy(() => import("./features/thema/ThemaHistory"));
 const EventDetail = lazy(() => import("./features/events/EventDetail"));
@@ -69,6 +70,8 @@ const OfficialProductsIndex = lazy(() => import("./features/official-products/Of
 const ProductsIndex = lazy(() => import("./features/products/ProductsIndex"));
 const MediaKitIndex = lazy(() => import("./features/products/MediaKitIndex"));
 const LookingForIndex = lazy(() => import("./features/looking-for/LookingForIndex"));
+const DiaoReviewIndex = lazy(() => import("./features/diao-review/DiaoReviewIndex"));
+const MyDecksIndex = lazy(() => import("./features/account/MyDecksIndex"));
 
 function RouteFallback() {
   useEffect(() => {
@@ -89,6 +92,7 @@ export default function AppRoutes() {
         <Route path="/" element={<About />} />
         <Route path="/cards" element={<CardsBrowse />} />
         <Route path="/cards/stats" element={<CardStatsIndex />} />
+        <Route path="/cards/packages" element={<PackagesIndex />} />
         <Route path="/cards/:slug" element={<CardDetail />} />
         <Route path="/sets" element={<SetsRedirect />} />
         <Route path="/sets/:prefix" element={<SetDetailRedirect />} />
@@ -127,6 +131,8 @@ export default function AppRoutes() {
         <Route path="/media-kit" element={<MediaKitIndex />} />
         <Route path="/looking-for" element={<LookingForIndex />} />
         <Route path="/simulator" element={<SimulatorIndex />} />
+        <Route path="/diao-review" element={<DiaoReviewIndex />} />
+        <Route path="/my-decks" element={<MyDecksIndex />} />
         <Route path="/about" element={<Navigate to="/" replace />} />
       </Routes>
     </Suspense>

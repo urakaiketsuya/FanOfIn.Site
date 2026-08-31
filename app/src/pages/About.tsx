@@ -534,13 +534,13 @@ export default function About() {
           <div>
             <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">How the DIAO Score works</h2>
             <p className="mt-2 text-sm text-ctp-subtext1">
-              Every deck page scores its decklist on four independent 1&ndash;10 pillars &mdash; Aggro,
+              Every deck page scores its decklist on four independent 1&ndash;10 pillars &mdash;
               Durability, Interaction, Aggro, Opportunity &mdash; so you can size up a build's play style at a glance,
               before you've played a single game with it.
             </p>
             <p className="mt-4 text-xs text-ctp-subtext0">
               The composite is the plain average of the four pillar scores. Every score-band boundary is a real
-              percentile from 94 actual Regionals/Ascent 1st-place decklists, not a round number &mdash; and scored
+              percentile from the current Regional/Ascent 1st-place decklist cohort, not a round number &mdash; and scored
               per decklist, not per Champion, since the same Champion can have genuinely opposite real builds.
               Correlational, not causal, same as every other stat on this site.
             </p>

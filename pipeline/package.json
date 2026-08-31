@@ -9,6 +9,8 @@
     "test": "tsx --test src/**/*.test.ts",
     "validate:archetypes": "tsx src/analysis/archetypeTaxonomyValidation.ts",
     "audit:diao": "tsx src/analysis/diaoModelAudit.ts",
+    "audit:diao:migration": "tsx src/analysis/diaoMigrationAudit.ts",
+    "audit:packages": "tsx src/analysis/packageCandidateAudit.ts",
     "clean:similarity-cache": "rm -rf .cache/similarity-cache"
   },
   "dependencies": {

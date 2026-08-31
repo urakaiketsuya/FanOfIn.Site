@@ -11,6 +11,7 @@ import TopCardsSections from "../../components/TopCardsSections";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
+import { getCardPackageMembership } from "../deckbuilder/packageGuardrails";
 
 type SortMode = "usage" | "adjusted" | "raw" | "hot" | "hype";
 
@@ -293,6 +294,7 @@ export default function CardStatsIndex() {
               <th className="py-1 pr-6">Win rate</th>
               <th className="py-1 pr-6">Adjusted</th>
               <th className="py-1 pr-6" title={`Share of blended community decks (${communitySourceLabel}) that include this card`}>Community usage</th>
+              <th className="py-1 pr-6">Packages</th>
               <th className="py-1"></th>
             </tr>
           </thead>
@@ -300,6 +302,7 @@ export default function CardStatsIndex() {
           {visibleRows.map((c) => {
             const card = cardImages.get(c.name);
             const isSelected = selectedCards.includes(c.name);
+            const packages = getCardPackageMembership(c.name);
             return (
               <tr key={c.name}>
                 <td className="py-1.5 pr-6">
@@ -321,6 +324,22 @@ export default function CardStatsIndex() {
                 <td className="py-1.5 pr-6 text-ctp-subtext1">{(c.avgWinRate * 100).toFixed(0)}%</td>
                 <td className="py-1.5 pr-6 text-ctp-subtext1">{(c.adjustedWinRate * 100).toFixed(0)}%</td>
                 <td className="py-1.5 pr-6 text-ctp-mauve">{c.communityPercent !== null ? `${(c.communityPercent * 100).toFixed(0)}%` : "—"}</td>
+                <td className="py-1.5 pr-6">
+                  {packages.length === 0 ? <span className="text-ctp-overlay0">—</span> : (
+                    <div className="flex flex-wrap gap-1">
+                      {packages.map((entry) => (
+                        <Link
+                          key={entry.id}
+                          to={`/cards/packages#${entry.id}`}
+                          className="rounded-full border border-ctp-teal/40 bg-ctp-teal/10 px-1.5 py-0.5 text-[10px] font-medium text-ctp-teal"
+                          title={`${entry.activation} Registry membership does not mean the package is active in every deck containing this card.`}
+                        >
+                          {entry.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </td>
                 <td className="py-1.5 text-right">
                   <button
                     type="button"

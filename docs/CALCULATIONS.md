@@ -589,6 +589,58 @@ active Imbue package's turn-10 probability/status or lower an active token, subt
 package's producer-support status. Sole payoffs are not protected merely because removing them also
 removes the package: the guardrail prevents stranding a remaining package, not every possible cut.
 
+Construction packages are evaluated separately from archetypes and from the Main-only readiness
+engines. A package may connect cards across deck sections and can suppress an otherwise eligible
+individual cut when that cut would damage an active package. The first audited rule recognizes
+Fluffy Shopkeep in Main with at least two differently named Fire, Water, or Wind Resonance Baubles
+in Material; while active, those present baubles are protected from individual cut recommendations
+and the Review tab explains why. If a protected card still clears the normal negative-evidence bar,
+it is retained separately and can be disclosed through an explicit **Review anyway** control; it
+never appears among default cuts. This encodes package integrity and matchup flexibility, not a
+causal win-rate claim, and does not change archetype assignment. Future co-occurrence analysis may
+nominate packages, but package definitions remain explicit and reviewable until their construction
+relationship is understood.
+
+The Review tab's **Package catalog** lists every registered construction rule, including inactive
+ones, with its activation condition, current status, protected cards, and last recorded audit
+support when available. The initial Fluffy Shopkeep rule was observed in 804 of 57,713 decks in the
+deck-card index audit. These counts document the audit that justified the explicit rule; they are
+not live usage statistics or an activation threshold.
+
+The site-wide **Card Stats** table also labels cards named by an explicit package definition. This
+is context-free registry membership only: it helps discover the relationship from an individual
+card, but does not claim that the package is active in every deck containing that card. Package
+activation continues to require the full section-aware deck check in the Guided Deck Builder.
+The **Card Packages** page at `/cards/packages` is the public registry catalog: it lists each rule's
+member cards, activation condition, purpose, and recorded audit support. Its prevalence figures are
+the same historical audit snapshots shown in Review, not live usage rates or performance evidence.
+The page also keeps **review candidates** separate from registered rules. Candidate discovery first
+mines recurring Main/Material relationships, controls co-occurrence for Champion, and then verifies
+the current card rules text for a named-card or subtype relationship. The displayed match counts and
+section patterns are audit evidence only. Candidate entries cannot protect cards, label Card Stats
+membership, or change recommendations until their proposed activation and protection behavior is
+manually reviewed and added to the explicit registry.
+
+The Packages page also supports browser-local approval of a mined relationship. A local approval
+does not edit the published registry or Card Stats membership. In that browser, it adds a
+conservative Guided Deck Builder guardrail: the package activates only when every named member is
+present in any deck section, and an active package protects all of its members from default cut
+suggestions. The user can revoke the approval from the same page. These overrides are stored in
+`localStorage`, do not sync between browsers, and should be treated as review experiments rather
+than verified construction rules.
+
+Material cards have a stricter hybrid gate because their isolated presence often represents
+matchup flexibility rather than an independently exercised choice. A standalone Material cut is
+never shown. For each statistically negative Material candidate, the builder removes that card
+from the current Main+Material identity vector, ranks same-Champion-and-Spirit decks by weighted
+Jaccard similarity, keeps up to 50 peers at similarity 0.30 or higher, and requires at least 10
+peers. Within that leave-one-out cohort, the candidate must still have adjusted lift at or below
+-0.02 and a suggested Material replacement must have positive adjusted lift, with both impacts
+passing the standard five-with/five-without sample rule and the same shrinkage prior used by Card
+Impact. The Review UI then pairs that exact alternative and discloses the peer count. Explicit
+package protection remains a hard default guardrail on top; contextual evidence only makes a
+protected cut available behind **Review anyway**.
+
 The review pool keeps up to 16 unplaced additions (previously 8, which could leave only three
 visible additions after same-section cut/add pairing consumed five). Each Tournament/Balanced
 addition also recomputes `computeDeckRating` with that card's recommended quantity and tags its
@@ -1007,7 +1059,7 @@ into `"6+"`; reserve costs above 8 fold into `"8+"` (real range runs 0–16 with
 
 ## Deck DIAO score (`shared/src/diao.ts` — `computeDeckRating`)
 
-A four-pillar deck power/style rating — **Durability / Interaction / Aggro / Opportunity** (DIAO), each
+A four-pillar deck-style profile — **Durability / Interaction / Aggro / Opportunity** (DIAO), each
 1–10, averaged into a composite — shown on every deck page ("DIAO Score" section). Independently
 designed for Grand Archive, not a port of Magic: The Gathering's CRISPI system
 ([deckcheck.co](https://deckcheck.co/blog/crispi-deep-dive), the direct inspiration): CRISPI's own
@@ -1033,13 +1085,13 @@ level would erase exactly this distinction.
 
 ### Calibration
 
-Every score-band boundary is a real percentile, not a round number — computed from **94 real
-tournament-winning decklists** (every Regionals + Ascent 1st-place sighting in the dataset at the
-time of writing: 90 Regionals + 4 Ascent). This calibration pass changed the design twice before it
+`DIAO_MODEL_VERSION = 2`. Every score-band boundary is a real percentile, not a round number — v2
+uses the current **331 Regional + Ascent first-place decklists** available to the repeatable audit.
+The original v1 calibration used 94 winners. That first pass changed the design twice before it
 ever became a score:
 
 - **Preserve** (a real recursion keyword, 25 cards in the full catalog) appeared in **zero** of the
-  94 winning decklists. Dropped entirely as a Durability signal rather than shipping something
+  original 94 winning decklists. Dropped entirely as a Durability signal rather than shipping something
   that's always zero against real data.
 - The **median** winning deck's guaranteed champion-damage floor was **0**, and even the 75th
   percentile was still 0 — most competitive decks pressure through combat (Ally power, evasion,
@@ -1053,33 +1105,47 @@ actually usable once the champion (average life ~21, range 15–32) would alread
 ### Signals and point formulas
 
 All signals are counted weighted by copies in the decklist (main + material, same convention as
-every other per-deck stat). `avgNonChampionCost` and `avgAllyPower` reuse `computeAllyPower`;
-`floatingMemory` reuses `computeFloatingMemory`; `championDamageFloor`/`allyDamageFloor` reuse
-`computeDamageComposition` — no signal is computed twice.
+every other per-deck stat).
 
 - **Aggro** = `max(0, avgAllyPower−1.0)×10 + evasion×0.5 + threats×0.5 + max(0, 1.5−avgNonChampionCost)×3 + min(championDamageFloor,25)×0.2 + min(allyDamageFloor,15)×0.15`
   `evasion` = Unblockable (×3, rare/premium — only 8 cards in the whole catalog) + Ranged N (×1, common). `threats` = Ally cards with power ≥ 2.
 - **Opportunity** = `min(repeatableDraw×4 + min(oneShotDraw,30), 50) + min(floatingMemory,35)×0.5`
-  `repeatableDraw` (recurring draw effects, weighted higher) vs. `oneShotDraw` (single-use), matching CRISPI's own draw-quality tiering even though the tutor half of its Consistency table doesn't apply here.
+  `repeatableDraw` (recurring draw effects, weighted higher) vs. `oneShotDraw` (single-use), matching CRISPI's own draw-quality tiering even though the tutor half of its Consistency table doesn't apply here. V2 recognizes fixed word/numeric quantities, X/"that many" draws, and recurring forms separately; variable draws are exposed in `variableDraw` while counting as one one-shot opportunity. Spirit/Champion "On Enter: Draw six/seven" opening-hand setup is excluded.
 - **Interaction** = `min(banish,30)×0.3 + destroy×0.3 + negate×2 + fastSpeed×1.5 + min(championDamageFloor,25)×0.1`
-  Banish and Destroy are weighted low deliberately — banish appears in every single one of the 94 winning decks (minimum 9 copies), confirming it's table stakes, not a differentiator. Destroy is real removal but weaker than Banish here specifically because **Preserve** triggers on Destroy, not Banish — a card that's Destroyed can come back; one that's Banished can't. Negate (a real counterspell-equivalent) and Fast-speed access are weighted much higher since those are what actually separated the 94 real winners.
-- **Durability** = `min(recover,30)×0.3 + protection×0.5 + threats×0.3`
-  `recover` is Grand Archive's life-gain keyword — a real Durability lever with no equivalent in Commander's 40-life 4-player pods, since a `recover 3` is meaningfully large against a ~21-life champion. `protection` = Spellshroud + Intercept + Prevent combined.
+  Banish and Destroy are weighted low deliberately — banish was table stakes in the original winner calibration. Destroy is real removal but weaker than Banish here specifically because **Preserve** triggers on Destroy, not Banish — a card that's Destroyed can come back; one that's Banished can't. V2 recognizes a bold Negate action even when it is embedded in a larger bold trigger label, while still excluding passive "can't be negated" references and attack negation.
+- **Durability** = `min(recover,30)×0.3 + protection×0.5`
+  `recover` is Grand Archive's life-gain keyword — a real Durability lever with no equivalent in Commander's 40-life 4-player pods, since a `recover 3` is meaningfully large against a ~21-life champion. `protection` = Spellshroud + Intercept + Prevent combined. V2 removed `threats`: it was strongly redundant with average Ally power and made Durability partly an Ally-density score. Only fixed Recover N contributes points; `Recover X` and `Recover N+X` are exposed through `variableRecover` but are not assigned a guessed static value.
+
+### Direct-damage forecast
+
+Deck pages supplement Aggro with an experimental, non-scoring **Direct damage forecast** at 7, 10,
+15, and 20 cards seen. It uses an exact multivariate hypergeometric distribution over the shuffled
+Main Deck: each distinct fixed champion-damage value is a category, non-damage cards are a zero
+category, and the probability mass for drawing each possible combination is weighted by the
+product of its binomial coefficients divided by `choose(deckSize, cardsSeen)`. Deck size is the
+larger of the listed Main total and 60, matching the Guided Builder calculator convention.
+
+For every checkpoint the UI reports expected printed damage, the 10th–90th percentile range, and
+the probability of having at least 5 or 10 printed damage available. Cards with multiple fixed
+champion-damage clauses produce separate lower/upper distributions from their smallest/largest
+printed value. Variable-X clauses are counted for disclosure but excluded from the arithmetic;
+Material cards are excluded because they are not drawn from the Main Deck. The result measures
+access to printed damage, not damage that resolves: costs, legal targets, conditional enablement,
+blockers, prevention, and game sequencing are not modeled. It therefore remains visibly separate
+from the calibrated DIAO score until an audit shows that adding consistency improves Aggro's
+usefulness.
 
 ### Score bands
 
 Each pillar's raw points map to a 1–10 score via boundaries at the real min/p10/p25/median/p75/p90/max
-from the 94-deck calibration sample (`toScore` in `computeDeckRating`); below the observed minimum
+from the current 331-deck calibration sample (`toScore` in `computeDeckRating`); below the observed minimum
 compresses to a flat 3, since no real tournament winner in the sample scored lower there and there's
 no percentile data to subdivide 1–3 further. The composite score averages the four *converted* 1–10
 scores, not the raw points (which live on different scales) — same method CRISPI itself uses.
 
-One open finding, not yet resolved: **Durability's score band is comparatively compressed**
-(median 10.2 to p75 12.1 is a narrow gap versus the other three pillars), meaning it differentiates
-real winning decks less sharply. This may mean the formula's weights need revisiting, or it may be
-a genuine signal that durability varies less among decks that already win events than aggro/interaction
-do — worth watching as more tournament data (the ongoing multi-year backfill) becomes available to
-recalibrate against.
+V2 resolves the original Durability compression finding by removing its redundant Ally-threat term
+and recalibrating the pillar after that semantic change. The generated audit retains raw-point,
+floor, ceiling, mutation, and outcome diagnostics so future compression or drift remains visible.
 
 ### Repeatable model audit
 
@@ -1097,10 +1163,10 @@ The audit deliberately excludes an expert-label exercise. It includes:
   controls; and
 - a chronological 70/30 development/holdout split to expose time-dependent results.
 
-The initial full-corpus run covered 55,205 decks from 1,769 events. Its central result is that DIAO
+The current v2 full-corpus run covers 55,205 decks from 1,769 events. Its central result is that DIAO
 is useful as a **deck-style profile**, but the evidence does not justify presenting it as a strong
-deck-power predictor: composite correlation with match win rate is weak (Spearman 0.070 overall;
-0.081 in the chronological holdout). Interaction has the strongest consistently positive pillar
+deck-power predictor: composite correlation with match win rate is weak (Spearman 0.064 overall;
+0.089 in the chronological holdout). Interaction has the strongest consistently positive pillar
 relationship, while Aggro is effectively uncorrelated/slightly negative. Those results remain
 similar after centering within champion or event, but are observational and do not control for
 pilot skill or matchup.
@@ -1673,3 +1739,21 @@ tech rather than part of the deck's identity. This is why, e.g., Popular Decks g
 main+material only, and why damage/keyword/memory-curve stats on a deck page don't include sideboard
 cards. The one deliberate exception is the TCGplayer export button, which includes sideboard too —
 that's a purchasing action ("buy everything shown"), not a classification one.
+### Package candidate mining
+
+Package discovery is a review-only pipeline (`pipeline/src/analysis/packageCandidates.ts`) and is
+deliberately separate from the registered guardrails. Rules-text card-name mentions and bounded
+mechanical subtype references nominate pair and multi-card relationships; `deck-card-index.json`
+then measures support, confidence, lift, and
+champion-cohort coverage. The score combines conditional confidence (42%), capped log lift (28%),
+sample strength (18%), and cross-champion coverage (12%). The Packages page hides scores below 40
+and relationships already represented by a curated or registered package. Promotion remains a
+manual decision because co-occurrence cannot establish gameplay intent. Single-member candidates
+anchored by a Champion receive a 15-point penalty so the queue favors actionable engines and
+toolboxes over the obvious champion-to-signature-card relationships.
+
+The audit also emits bounded **overlap families**. Candidates sharing an anchor and connected
+through overlapping members are clustered into required core cards plus interchangeable option
+cards. A family records the minimum number of options supported by its strongest underlying
+candidate, rather than requiring every option. This allows packages larger than three cards while
+preserving toolbox semantics; families remain review-only until approved.

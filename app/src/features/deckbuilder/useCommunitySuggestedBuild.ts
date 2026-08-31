@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import type { Card, CardInclusionEntry, DeckFormat } from "@gatcg/shared";
 import { isElementCompatible, type SuggestedBuild, type SuggestedCard } from "./useSuggestedBuild";
+import { getDeckPackageCatalog } from "./packageGuardrails";
 
 /** Same fallback defaults `useSuggestedBuild`'s `modalTotal` uses when a population can't supply its
  * own modal section size — ShoutAtYourDecks analytics don't publish an average deck size at all, so
@@ -58,6 +59,9 @@ export function useCommunitySuggestedBuild(
       sideboard: [],
       suggestions: [],
       removalSuggestions: [],
+      protectedRemovalSuggestions: [],
+      protectedPackages: [],
+      packageCatalog: getDeckPackageCatalog([]),
       hasQuantityOptimizations: false,
       rankingPopulationSize: 0,
       usedFallback: false,
@@ -152,6 +156,7 @@ export function useCommunitySuggestedBuild(
         return toSuggested(entry.name, qty, false, entry, section);
       });
 
+    const packageCatalog = getDeckPackageCatalog([...material, ...main, ...sideboard]);
     return {
       material,
       main,
@@ -160,6 +165,9 @@ export function useCommunitySuggestedBuild(
       // Meaningless without win/loss data — always empty here, so the existing
       // `build.removalSuggestions.length > 0` render guard hides "Cards that might hurt" on its own.
       removalSuggestions: [],
+      protectedRemovalSuggestions: [],
+      protectedPackages: packageCatalog.filter((entry) => entry.active),
+      packageCatalog,
       hasQuantityOptimizations: false,
       rankingPopulationSize: champData.deckCount,
       usedFallback: false,

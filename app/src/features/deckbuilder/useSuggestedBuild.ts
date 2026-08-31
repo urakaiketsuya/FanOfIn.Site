@@ -13,6 +13,8 @@ import { cardPillarScore, computeDeckIdentity, computeDeckRating, type RatingPil
 import { weightedJaccard } from "../../lib/decodedDecks";
 import type { DeckBuilderRow } from "./useDeckBuilderPopulation";
 import { computeDependencyReadiness, computeSynergyReadiness, type SynergyLine } from "./synergyReadiness";
+import { getDeckPackageCatalog, type ActiveDeckPackage, type DeckPackageCatalogEntry } from "./packageGuardrails";
+import { findContextualMaterialReplacement } from "./contextualMaterialGuardrail";
 import { SIDEBOARD_POINT_BUDGET, sideboardPointCost } from "./validateDeck";
 
 /** Same reasoning as useAllDecodedDecks' CATALOG_SETTLE_MS (app/src/lib/decodedDecks.ts) — the
@@ -96,6 +98,9 @@ export interface SuggestedCard {
   /** Continuous DIAO pillar-point changes, used for metric-specific tags even when the calibrated
    * 1-10 score remains within the same band. */
   diaoMetricChanges?: Partial<Record<RatingPillar, number>>;
+  /** For a Material cut, the positive same-section alternative that also cleared the normal
+   * sample/lift bars among leave-one-out nearest peers. Material cuts never appear without this. */
+  contextualReplacement?: { cardName: string; peerDecks: number };
 }
 
 export interface SuggestedBuild {
@@ -107,6 +112,14 @@ export interface SuggestedBuild {
   suggestions: SuggestedCard[];
   /** Locked cards whose own with/without split (against the Spirit-only population, independent of any other lock) came out meaningfully negative — a candidate to cut, not just "no data either way." Always locked (they're already in material/main/sideboard); "Remove" is the only action. */
   removalSuggestions: SuggestedCard[];
+  /** Statistically eligible cuts withheld only because they belong to an active construction
+   * package. The UI may reveal these on explicit request, but never mixes them into default cuts. */
+  protectedRemovalSuggestions: SuggestedCard[];
+  /** Active construction packages that suppressed otherwise eligible individual cuts. Packages
+   * annotate and protect the build; they do not define its archetype. */
+  protectedPackages: ActiveDeckPackage[];
+  /** Every explicit construction-package rule, including inactive rules, for the Review audit UI. */
+  packageCatalog: DeckPackageCatalogEntry[];
   /** True when at least one card's quantity was overridden by the global quantity-vs-win-rate data — drives a one-line legend explaining the "*" marker, shown only when it'd actually apply to something on screen. */
   hasQuantityOptimizations: boolean;
   /** Size of the population actually used to rank suggestions for the remaining (unlocked) slots — not the same as the total matching-decks count once usedFallback is true. */
@@ -398,6 +411,9 @@ export function useSuggestedBuild(
         sideboard: [],
         suggestions: [],
         removalSuggestions: [],
+        protectedRemovalSuggestions: [],
+        protectedPackages: [],
+        packageCatalog: getDeckPackageCatalog([]),
         hasQuantityOptimizations: false,
         rankingPopulationSize: 0,
         usedFallback: false,
@@ -453,6 +469,9 @@ export function useSuggestedBuild(
         sideboard: [],
         suggestions: [],
         removalSuggestions: [],
+        protectedRemovalSuggestions: [],
+        protectedPackages: [],
+        packageCatalog: getDeckPackageCatalog([]),
         hasQuantityOptimizations: false,
         rankingPopulationSize: 0,
         usedFallback: false,
@@ -778,8 +797,24 @@ export function useSuggestedBuild(
       return false;
     }
 
+    // Packages may connect sections, so evaluate the assembled deck rather than Main-only
+    // readinessLines (for example, a Main activator protecting Material utility cards).
+    const packageCatalog = getDeckPackageCatalog([...material, ...main, ...sideboard]);
+    const protectedPackages = packageCatalog.filter((entry) => entry.active);
+    const packageProtectedCards = new Set(protectedPackages.flatMap((deckPackage) => deckPackage.protectedCards));
+    const assembledIdentity = new Map<string, number>();
+    for (const card of [...material, ...main]) assembledIdentity.set(card.cardName, card.quantity);
+    const materialAlternatives = suggestions.filter((card) => card.section === "material");
+    function contextualMaterialReplacement(candidate: SuggestedCard): SuggestedCard["contextualReplacement"] {
+      return findContextualMaterialReplacement(
+        candidate.cardName,
+        assembledIdentity,
+        spiritRows,
+        materialAlternatives.map((card) => card.cardName),
+      );
+    }
     const championLevelCeiling = intendedChampionLevel(lockedCards, cardsByName, intendedChampionIdentity);
-    const removalSuggestions = [...material, ...main, ...sideboard]
+    const eligibleRemovalSuggestions = [...material, ...main, ...sideboard]
       .filter((c) => {
         if (!c.locked || c.adjustedLift === null || c.adjustedLift > REMOVAL_LIFT_CEILING) return false;
         const card = cardsByName.get(c.cardName);
@@ -793,7 +828,15 @@ export function useSuggestedBuild(
           (intendedChampionIdentity === null || championIdentityName(card) === intendedChampionIdentity);
         return !isRequiredChampionProgression && !removalHarmsReadiness(c);
       })
-      .sort((a, b) => a.adjustedLift! - b.adjustedLift!)
+      .sort((a, b) => a.adjustedLift! - b.adjustedLift!);
+    const contextualRemovalSuggestions = eligibleRemovalSuggestions.flatMap((card) => {
+      if (card.section !== "material") return [card];
+      const contextualReplacement = contextualMaterialReplacement(card);
+      return contextualReplacement ? [{ ...card, contextualReplacement }] : [];
+    });
+    const protectedRemovalSuggestions = contextualRemovalSuggestions.filter((card) => packageProtectedCards.has(card.cardName));
+    const removalSuggestions = contextualRemovalSuggestions
+      .filter((card) => !packageProtectedCards.has(card.cardName))
       .slice(0, MAX_REMOVAL_SUGGESTIONS);
 
     const hasQuantityOptimizations = [...material, ...main, ...sideboard, ...suggestions].some((c) => c.optimizedFrom !== null);
@@ -804,6 +847,9 @@ export function useSuggestedBuild(
       sideboard,
       suggestions,
       removalSuggestions,
+      protectedRemovalSuggestions,
+      protectedPackages,
+      packageCatalog,
       hasQuantityOptimizations,
       rankingPopulationSize: rankingRows.length,
       usedFallback,

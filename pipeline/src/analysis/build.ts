@@ -23,6 +23,7 @@ import { computeCardImpact } from "./cardImpact.js";
 import { computeMatchupCardImpact } from "./matchupCardImpact.js";
 import { computeAchievements } from "./achievements.js";
 import { createAnalysisContext } from "./context.js";
+import { computePackageCandidates, namedRulesTextSeeds, subtypeRulesTextSeeds } from "./packageCandidates.js";
 
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/analysis");
 const PRICES_PATH = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/prices.json");
@@ -226,6 +227,14 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
 
   const cardImpact = computeCardImpact(archetypeTaxonomy.clusters, { cardNames: deckCardIndexNames, entries: deckCardIndex }, deckSightings);
   await writeFile(path.join(DATA_DIR, "card-impact.json"), JSON.stringify(cardImpact), "utf-8");
+
+  const packageCandidates = computePackageCandidates(
+    deckCardIndex,
+    deckCardIndexNames,
+    new Map(deckSightings.flatMap((s) => s.championName ? [[s.deckId, s.championName] as const] : [])),
+    [...namedRulesTextSeeds(catalog), ...subtypeRulesTextSeeds(catalog)],
+  );
+  await writeFile(path.join(DATA_DIR, "package-candidates.json"), JSON.stringify(packageCandidates), "utf-8");
 
   const matchupCardImpact = computeMatchupCardImpact(completed, ctx, archetypeTaxonomy.clusters);
   await writeFile(path.join(DATA_DIR, "matchup-card-impact.json"), JSON.stringify(matchupCardImpact), "utf-8");

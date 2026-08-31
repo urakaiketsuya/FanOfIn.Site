@@ -204,6 +204,19 @@ function parseDamageClauses(rawEffect: string): DamageClause[] {
   return clauses;
 }
 
+/**
+ * Fixed printed damage a single copy can deal to an opposing champion. The two values differ when
+ * a card has multiple fixed champion-damage clauses (usually level- or state-gated). Variable-X
+ * clauses and damage to the controller's own champion are intentionally excluded.
+ */
+export function fixedChampionDamageRange(card: Pick<Card, "effect">): DamageRange | null {
+  if (!card.effect) return null;
+  const values = parseDamageClauses(card.effect)
+    .filter((clause) => clause.target === "Champion" && clause.kind === "fixed")
+    .map((clause) => clause.value!);
+  return values.length > 0 ? { min: Math.min(...values), max: Math.max(...values) } : null;
+}
+
 export interface DamageRange {
   min: number;
   max: number;
@@ -316,10 +329,10 @@ export function computeDamageComposition(lines: NamedLine[], cardsByName: Map<st
     const condLabel = hasVariable ? "Variable" : clauses.length > 1 ? "Conditional" : "Fixed";
     conditionality.set(condLabel, (conditionality.get(condLabel) ?? 0) + line.quantity);
 
-    const championValues = clauses.filter((c) => c.target === "Champion" && c.kind === "fixed").map((c) => c.value!);
-    if (championValues.length > 0) {
-      championMin += Math.min(...championValues) * line.quantity;
-      championMax += Math.max(...championValues) * line.quantity;
+    const championDamage = fixedChampionDamageRange(card);
+    if (championDamage) {
+      championMin += championDamage.min * line.quantity;
+      championMax += championDamage.max * line.quantity;
     }
 
     const allyValues = clauses.filter((c) => c.target === "Ally" && c.kind === "fixed").map((c) => c.value!);

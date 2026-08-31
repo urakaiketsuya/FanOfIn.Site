@@ -1554,6 +1554,7 @@ export default function DeckBuilderIndex() {
   const [visibleFields, setVisibleField] = useCardFieldVisibility();
   const [customizeOpen, setCustomizeOpen] = useState(false);
   const [dismissedReviewCards, setDismissedReviewCards] = useState<Set<string>>(new Set());
+  const [showProtectedCuts, setShowProtectedCuts] = useState(false);
   const [tab, setTab] = useTabParam<BuilderTab>("tab", TAB_KEYS, "build");
   const [isPending, startTransition] = useTransition();
   const [pasteOpen, setPasteOpen] = useState(false);
@@ -1717,15 +1718,19 @@ export default function DeckBuilderIndex() {
     [build.suggestions, dismissedReviewCards],
   );
   const reviewRemovals = useMemo(
-    () => build.removalSuggestions.filter((card) => !dismissedReviewCards.has(card.cardName)),
-    [build.removalSuggestions, dismissedReviewCards],
+    () => [...build.removalSuggestions, ...(showProtectedCuts ? build.protectedRemovalSuggestions : [])]
+      .filter((card) => !dismissedReviewCards.has(card.cardName)),
+    [build.removalSuggestions, build.protectedRemovalSuggestions, dismissedReviewCards, showProtectedCuts],
   );
   const reviewGroups = useMemo(() => {
     const available = [...reviewSuggestions];
     const pairs: { removal: SuggestedCard; addition: SuggestedCard }[] = [];
     const unpairedRemovals: SuggestedCard[] = [];
     for (const removal of reviewRemovals) {
-      const matchIndex = available.findIndex((addition) => addition.section === removal.section);
+      const contextualName = removal.contextualReplacement?.cardName;
+      const matchIndex = contextualName
+        ? available.findIndex((addition) => addition.cardName === contextualName)
+        : available.findIndex((addition) => addition.section === removal.section);
       if (matchIndex < 0) unpairedRemovals.push(removal);
       else pairs.push({ removal, addition: available.splice(matchIndex, 1)[0] });
     }
@@ -1738,6 +1743,7 @@ export default function DeckBuilderIndex() {
   // tuning can produce materially different evidence for the same card, so surface it again.
   useEffect(() => {
     setDismissedReviewCards(new Set());
+    setShowProtectedCuts(false);
   }, [championName, spiritFilter, effectivePopulationSource, pillarBias, archetypeId]);
 
   const nearestDecks = useNearestDecks(allDecks, lockedCards);
@@ -2696,6 +2702,62 @@ export default function DeckBuilderIndex() {
                 )}
               </div>
 
+              {build.protectedPackages.length > 0 && (
+                <div className="mt-4 rounded-lg border border-ctp-teal/40 bg-ctp-teal/10 px-4 py-3">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-ctp-teal">Protected packages</p>
+                  <ul className="mt-1 space-y-1.5">
+                    {build.protectedPackages.map((deckPackage) => (
+                      <li key={deckPackage.id} className="text-xs text-ctp-subtext1">
+                        <span className="font-medium text-ctp-text">{deckPackage.label}</span>
+                        {" — "}{deckPackage.explanation} Individual cuts are hidden for {deckPackage.protectedCards.join(", ")}.
+                      </li>
+                    ))}
+                  </ul>
+                  {build.protectedRemovalSuggestions.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setShowProtectedCuts((shown) => !shown)}
+                      className="mt-2 rounded-md border border-ctp-teal/50 px-2 py-1 text-xs text-ctp-teal hover:bg-ctp-teal/10"
+                      aria-pressed={showProtectedCuts}
+                    >
+                      {showProtectedCuts ? "Hide protected cuts" : `Review anyway (${build.protectedRemovalSuggestions.length})`}
+                    </button>
+                  )}
+                </div>
+              )}
+
+              <details className="mt-3 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-4 py-3">
+                <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-ctp-subtext1 hover:text-ctp-text">
+                  Package catalog ({build.packageCatalog.filter((entry) => entry.active).length}/{build.packageCatalog.length} active)
+                </summary>
+                <p className="mt-2 text-xs text-ctp-subtext0">
+                  Construction packages are explicit review guardrails and do not define the deck&apos;s archetype.
+                  {" "}<Link to="/cards/packages" className="text-ctp-blue hover:underline">Browse package definitions.</Link>
+                </p>
+                <ul className="mt-3 space-y-2">
+                  {build.packageCatalog.map((entry) => (
+                    <li key={entry.id} className="rounded-md border border-ctp-surface1 px-3 py-2 text-xs">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-medium text-ctp-text">{entry.label}</span>
+                        <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${entry.active ? "bg-ctp-teal/15 text-ctp-teal" : "bg-ctp-surface0 text-ctp-subtext0"}`}>
+                          {entry.active ? "Active" : "Inactive"}
+                        </span>
+                      </div>
+                      <p className="mt-1 text-ctp-subtext1"><span className="font-medium text-ctp-text">Activates:</span> {entry.activation}</p>
+                      <p className="mt-1 text-ctp-subtext0">{entry.explanation}</p>
+                      {entry.active && entry.protectedCards.length > 0 && (
+                        <p className="mt-1 text-ctp-teal"><span className="font-medium">Protecting:</span> {entry.protectedCards.join(", ")}</p>
+                      )}
+                      {entry.observedSupport && (
+                        <p className="mt-1 text-[10px] text-ctp-overlay1">
+                          Observed in {entry.observedSupport.matchingDecks.toLocaleString()} of {entry.observedSupport.populationDecks.toLocaleString()} decks ({entry.observedSupport.auditLabel}).
+                        </p>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </details>
+
               {reviewItemCount === 0 ? (
                 <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-4 py-3 text-sm text-ctp-subtext1">
                   {effectivePopulationSource === "community" || effectivePopulationSource === "simulator"
@@ -2719,6 +2781,7 @@ export default function DeckBuilderIndex() {
                                   {removalInfo ? <Link to={`/cards/${removalInfo.slug}`} className="block truncate text-sm text-ctp-text hover:text-ctp-blue">{removal.cardName}</Link> : <span className="block truncate text-sm text-ctp-text">{removal.cardName}</span>}
                                 </CardHoverPreview>
                                 <span className="text-xs text-ctp-subtext0">{removal.adjustedLift === null ? "Limited performance evidence" : `${(removal.adjustedLift * 100).toFixed(1)}% observed lift`}</span>
+                                {removal.contextualReplacement && <span className="mt-0.5 block text-[10px] text-ctp-teal">Contextual swap · {removal.contextualReplacement.peerDecks} similar decks</span>}
                               </div>
                               <span className="hidden text-ctp-subtext0 sm:inline" aria-hidden="true">→</span>
                               <div className="min-w-0">

@@ -35,6 +35,9 @@ jobs:
       - run: npm ci
 
       - run: npm run build --workspace=app
+        env:
+          VITE_GOOGLE_CLIENT_ID: 33283325780-takrrvtrs2qb8pshdkukog52le87b76k.apps.googleusercontent.com
+          VITE_ACCOUNT_API_URL: https://accounts.fanofin.site/api
 
       - name: Copy published data into the build output
         # app/public/data is a symlink to ../../data for local dev — copy explicitly here instead

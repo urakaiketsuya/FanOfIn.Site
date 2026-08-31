@@ -1,7 +1,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { cardPillarScore, computeDeckRating, type DeckRating, type RatingPillar } from "@gatcg/shared";
+import { cardPillarScore, computeDeckRating, DIAO_MODEL_VERSION, type DeckRating, type RatingPillar } from "@gatcg/shared";
 import { buildCardIndex, loadCardCatalog } from "../cards/catalog.js";
 import { buildEventDeckSignatures } from "./decklists.js";
 import { listCachedBundles } from "../omnidex/cache.js";
@@ -17,6 +17,8 @@ interface Row {
   champion: string;
   classes: string[];
   eventPlayers: number;
+  eventCategory: string;
+  finalPlacement: number | null;
   matchWinRate: number;
   placementPercentile: number;
   rating: DeckRating;
@@ -91,7 +93,7 @@ async function main(): Promise<void> {
       const matches = standing.statsWins + standing.statsLosses + standing.statsTies;
       rows.push({
         deckId: `${bundle.id}:${player}`, eventId: bundle.id, date: bundle.event.date,
-        champion: deck.championName, classes: deck.classes, eventPlayers: bundle.players.length,
+        champion: deck.championName, classes: deck.classes, eventPlayers: bundle.players.length, eventCategory: bundle.event.category, finalPlacement: standing.finalPlacement,
         matchWinRate: (standing.statsWins + 0.5 * standing.statsTies) / matches,
         placementPercentile: bundle.players.length > 1 && standing.finalPlacement ? 1 - (standing.finalPlacement - 1) / (bundle.players.length - 1) : 0.5,
         rating, lines,
@@ -112,7 +114,7 @@ async function main(): Promise<void> {
     if (metric !== "composite") {
       const raw = rows.map((r) => r.rating.points[metric]).sort((a, b) => a - b);
       const rawPercentile = (p: number) => raw[Math.min(raw.length - 1, Math.floor((raw.length - 1) * p))] ?? 0;
-      entry.rawPoints = { min: round(raw[0] ?? 0), p10: round(rawPercentile(.1)), median: round(rawPercentile(.5)), p90: round(rawPercentile(.9)), max: round(raw.at(-1) ?? 0) };
+      entry.rawPoints = { min: round(raw[0] ?? 0), p10: round(rawPercentile(.1)), p25: round(rawPercentile(.25)), median: round(rawPercentile(.5)), p75: round(rawPercentile(.75)), p90: round(rawPercentile(.9)), max: round(raw.at(-1) ?? 0) };
       entry.floorRate = round(values.filter((value) => value === 3).length / values.length);
       entry.ceilingRate = round(values.filter((value) => value === 10).length / values.length);
     }
@@ -151,12 +153,20 @@ async function main(): Promise<void> {
     stylePairs[pillar] = { championsTested: pairs.length, orderedScoreRate: round(pairs.filter((p) => p.high.rating.scores[pillar] > p.low.rating.scores[pillar]).length / Math.max(1, pairs.length)), meanScoreSeparation: round(mean(pairs.map((p) => p.high.rating.scores[pillar] - p.low.rating.scores[pillar]))) };
   }
 
+  const calibrationRows = rows.filter((row) => row.finalPlacement === 1 && (row.eventCategory === "regionals" || row.eventCategory === "ascent"));
+  const calibrationBands = Object.fromEntries(PILLARS.map((pillar) => {
+    const values = calibrationRows.map((row) => row.rating.points[pillar]).sort((a, b) => a - b);
+    const percentile = (p: number) => values[Math.min(values.length - 1, Math.floor((values.length - 1) * p))] ?? 0;
+    return [pillar, [values[0] ?? 0, percentile(.1), percentile(.25), percentile(.5), percentile(.75), percentile(.9), values.at(-1) ?? 0].map((value) => round(value))];
+  }));
+
   const report = {
     schemaVersion: 1,
     generatedAt: new Date().toISOString(),
-    model: { name: "DIAO", implementation: "@gatcg/shared computeDeckRating", calibrationStatus: "Existing fixed bands; this audit does not refit them." },
+    model: { name: "DIAO", version: DIAO_MODEL_VERSION, implementation: "@gatcg/shared computeDeckRating", calibrationStatus: "Fixed production bands; candidate bands are recomputed from the current Regional/Ascent winner cohort for explicit review." },
     sample: { decks: rows.length, events: new Set(rows.map((r) => r.eventId)).size, champions: new Set(rows.map((r) => r.champion)).size, firstEventDate: rows[0]?.date ?? null, lastEventDate: rows.at(-1)?.date ?? null, exclusions: "Incomplete events, private/missing decklists or standings, unmatched cards, unknown champions, and fewer than two recorded matches." },
     scoreDistributions: distributions,
+    calibrationReference: { sample: "Current Regional and Ascent first-place decks", decks: calibrationRows.length, candidateBands: calibrationBands },
     knownStylePairDiagnostics: { note: "Within each champion with >=20 lists, compares the 20th/80th-percentile real decks by raw pillar evidence. This is a face-validity/separation check, not independent expert labeling.", pillars: stylePairs },
     controlledMutations: { note: "Adds one copy of the catalog card with the strongest isolated signal for each pillar to up to 500 deterministic real decks. Checks direction, threshold sensitivity, and spillover; legality and deck-size validity are intentionally irrelevant to this formula test.", pillars: mutationResults },
     tournamentOutcomes: {

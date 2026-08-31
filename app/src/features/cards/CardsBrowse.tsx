@@ -103,6 +103,9 @@ export default function CardsBrowse() {
         title="Cards"
         actions={
           <div className="flex items-center gap-3">
+            <Link to="/cards/packages" className="text-sm text-ctp-blue hover:underline">
+              Packages &rarr;
+            </Link>
             <Link to="/cards/stats" className="text-sm text-ctp-blue hover:underline">
               Card stats &rarr;
             </Link>

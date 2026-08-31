@@ -36,6 +36,8 @@ import Tabs from "../../components/ui/Tabs";
 import DonutChart, { buildChartSegments } from "../../components/DonutChart";
 import BarChart from "../../components/BarChart";
 import RankedCompositionChart from "../../components/RankedCompositionChart";
+import AggressionForecast from "./AggressionForecast";
+import { computeAggressionForecast } from "../../lib/aggressionForecast";
 
 type DeckTab = "decklist" | "composition" | "history" | "similar";
 
@@ -130,6 +132,11 @@ export default function DeckDetail() {
   const rating = useMemo(() => {
     if (!deck) return null;
     return computeDeckRating([...deck.main, ...deck.material], cardsByName, deck.championName, deck.classes);
+  }, [deck, cardsByName]);
+
+  const aggressionForecast = useMemo(() => {
+    if (!deck) return null;
+    return computeAggressionForecast(deck.main, cardsByName);
   }, [deck, cardsByName]);
 
   const allyPower = useMemo(() => {
@@ -354,6 +361,7 @@ export default function DeckDetail() {
               </div>
             ))}
           </div>
+          {aggressionForecast && <AggressionForecast forecast={aggressionForecast} />}
         </div>
       )}
 
