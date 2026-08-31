@@ -834,18 +834,19 @@ export default function CardDetail() {
           </p>
           <ul className="mt-2 space-y-1 text-sm">
             {communityDeckRefs.map((d) => {
-              // Sleeved decks already carry a proper display-name champion (e.g. "Diao Chan"); only
-              // ShoutAtYourDecks' champion field is a lowercase slug needing formatShoutAtYourDecksChampion.
-              const isSleeved = d.url.includes("sleeved.gg");
-              const championLabel = d.champion ? (isSleeved ? d.champion : formatShoutAtYourDecksChampion(d.champion)) : "";
+              // Sleeved and TcgArchitect decks already carry a proper display-name champion (e.g.
+              // "Diao Chan"); only ShoutAtYourDecks' champion field is a lowercase slug needing
+              // formatShoutAtYourDecksChampion.
+              const isShoutAtYourDecks = d.url.includes("shoutatyourdecks.com");
+              const championLabel = d.champion ? (isShoutAtYourDecks ? formatShoutAtYourDecksChampion(d.champion) : d.champion) : "";
               return (
                 <li key={d.id} className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
-                  {isSleeved ? (
+                  {isShoutAtYourDecks ? (
+                    <span className="text-ctp-text">{d.title || "(untitled)"}</span>
+                  ) : (
                     <a href={d.url} target="_blank" rel="noreferrer" className="text-ctp-text hover:text-ctp-blue">
                       {d.title || "(untitled)"}
                     </a>
-                  ) : (
-                    <span className="text-ctp-text">{d.title || "(untitled)"}</span>
                   )}
                   {(d.author || championLabel) && (
                     <span className="text-xs text-ctp-subtext0">

@@ -34,8 +34,8 @@ export default function CardStatsIndex() {
   const communityCardInclusion = useCommunityBlendedCardInclusion();
   const communitySourceCounts = useCommunitySourceCounts();
   const communitySourceLabel = communitySourceCounts
-    ? `community archive (${communitySourceCounts.byFormat.STANDARD.shoutatyourdecks.toLocaleString()}) + Sleeved.gg (${communitySourceCounts.byFormat.STANDARD.sleeved.toLocaleString()})`
-    : "the community archive and Sleeved.gg";
+    ? `community archive (${communitySourceCounts.byFormat.STANDARD.shoutatyourdecks.toLocaleString()}) + Sleeved.gg (${communitySourceCounts.byFormat.STANDARD.sleeved.toLocaleString()}) + TCGArchitect (${communitySourceCounts.byFormat.STANDARD.tcgarchitect.toLocaleString()})`
+    : "the community archive, Sleeved.gg, and TCGArchitect";
   const communityByName = useMemo(
     () => new Map((communityCardInclusion?.overall ?? []).map((c) => [c.name, c])),
     [communityCardInclusion],
@@ -103,7 +103,7 @@ export default function CardStatsIndex() {
     // tournament players optimizing for winning), not a performance judgment. Community usage
     // is null (not 0) when the blended community dataset has no data for this card at all, so a
     // genuinely unbrewed card doesn't outrank one that's merely below the community dataset's own
-    // floor. "Community" here blends ShoutAtYourDecks + Sleeved (see pipeline/src/community/blend.ts).
+    // floor. "Community" here blends ShoutAtYourDecks + Sleeved + TCGArchitect (see pipeline/src/community/blend.ts).
     const withHype = filtered.map((c) => {
       const communityEntry = communityByName.get(c.name);
       const communityPercent = communityEntry?.percentOfDecks ?? null;

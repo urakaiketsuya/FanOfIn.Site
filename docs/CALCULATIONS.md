@@ -1598,45 +1598,51 @@ combine downstream, in the blended layer below.
 
 ## Community population (blended) (`pipeline/src/community/blend.ts`)
 
-Both community deck-builder sources are blended into a single population for every **site-facing**
-community stat — Community usage badges, Card Stats' "Hype gap", the Guided Deck Builder's Community
-mode — while each source's own raw cache/index/analytics stays fully separate
-(`data/shoutatyourdecks/`, `data/sleeved/`). Pure local transform, no network, safe to run daily
-regardless of how often either underlying harvest itself runs.
+All three community deck-builder sources (ShoutAtYourDecks, Sleeved, TcgArchitect) are blended into
+a single population for every **site-facing** community stat — Community usage badges, Card Stats'
+"Hype gap", the Guided Deck Builder's Community mode — while each source's own raw
+cache/index/analytics stays fully separate (`data/shoutatyourdecks/`, `data/sleeved/`,
+`data/tcgarchitect/`). Pure local transform, no network, safe to run daily regardless of how often
+any underlying harvest itself runs.
 
 Reuses the exact same `shoutatyourdecks/analytics/*` compute functions unmodified — `SleevedDeck`
-and `ShoutAtYourDecksDeck` share an identical field shape (see `shared/src/sleeved-types.ts`'s doc
-comment) by design, so a concatenation of both is structurally a valid input. Two corrections applied
-before blending:
+and `TcgArchitectDeck` both share `ShoutAtYourDecksDeck`'s field shape (see
+`shared/src/sleeved-types.ts` and `shared/src/tcgarchitect-types.ts`'s doc comments) by design, so a
+concatenation of all three is structurally a valid input. Two corrections applied before blending:
 
 - **Champion key normalization.** ShoutAtYourDecks stores `champion` pre-slugified (e.g.
-  `"diao-chan"` — confirmed against real cache data); a transformed Sleeved deck's `champion` is a
-  proper display name from our own catalog (e.g. `"Diao Chan"`). Left alone, every stat that
-  *groups* by champion (card inclusion, popularity, archetypes, co-occurrence) would silently
-  fragment the same champion into two buckets, one per source. `withNormalizedChampion` runs
-  `slugify` (`shared/src/slugs.ts`) over both sources before those specific computations — a no-op
-  on ShoutAtYourDecks' already-slug values. **Deck references is the one exception** — it only
+  `"diao-chan"` — confirmed against real cache data); a transformed Sleeved or TcgArchitect deck's
+  `champion` is a proper display name (e.g. `"Diao Chan"`). Left alone, every stat that *groups* by
+  champion (card inclusion, popularity, archetypes, co-occurrence) would silently fragment the same
+  champion into separate buckets, one per source. `withNormalizedChampion` runs `slugify`
+  (`shared/src/slugs.ts`) over all three sources before those specific computations — a no-op on
+  ShoutAtYourDecks' already-slug values. **Deck references is the one exception** — it only
   *displays* a deck's champion (`CardDetail.tsx`'s Community decks list), never groups by it, and the
-  app already renders each source's native format correctly (Sleeved's proper display name shown
-  as-is; ShoutAtYourDecks' slug run through `formatShoutAtYourDecksChampion`) — so it's computed from
+  app already renders each source's native format correctly (Sleeved's and TcgArchitect's proper
+  display names shown as-is; ShoutAtYourDecks' slug run through `formatShoutAtYourDecksChampion`,
+  selected by checking for `shoutatyourdecks.com` in the deck's own `url`) — so it's computed from
   the un-normalized decks.
-- **Price distribution is deliberately not blended.** Sleeved decks always carry `priceLow: null`,
-  so a blended population would just look like partial missing-price data — ShoutAtYourDecks still
-  publishes its own unblended `price-distribution.json`, with no combined equivalent.
+- **Price distribution is deliberately not blended.** Sleeved and TcgArchitect decks always carry
+  `priceLow: null` (neither source has usable deck-level price data), so a blended population would
+  just dilute ShoutAtYourDecks' real prices with missing ones — ShoutAtYourDecks still publishes its
+  own unblended `price-distribution.json`, with no combined equivalent.
 
 Every blended dataset is paired with `data/community/sources.json`
 (`CommunitySourceCounts`) — real per-source deck counts, per format, so the UI discloses the blend
-(`useCommunitySourceCounts`, e.g. "Shout At Your Decks (20,293) + Sleeved (15)") rather than
-presenting it as single-sourced. This is a deliberate exception to this doc's usual "never conflate
-populations" rule — the user explicitly asked for exactly this blend, and the disclosure keeps it
-honest rather than silent.
+(`useCommunitySourceCounts`, e.g. "community archive (20,293) + Sleeved.gg (15) + TCGArchitect
+(529)") rather than presenting it as single-sourced. This is a deliberate exception to this doc's
+usual "never conflate populations" rule — the user explicitly asked for exactly this blend, and the
+disclosure keeps it honest rather than silent.
 
-The blend prefers the authenticated Sleeved cache when it exists, but falls back to the committed
-`data/sleeved/decks/` copies when that ignored cache is empty. This matters on a fresh CI cache: the
-normal daily pipeline does not call Sleeved's authenticated API, and must not silently overwrite the
-combined outputs with a ShoutAtYourDecks-only population. Generated community files also retain
-their prior `generatedAt` and are left untouched when only the newly computed timestamp differs;
-unchanged source data therefore creates neither an 18 MB data diff nor a false client-cache
+The blend prefers each source's own live/authenticated cache when it exists (Sleeved's authenticated
+API cache, TcgArchitect's Playwright-harvested cache), but falls back to the committed
+`data/sleeved/decks/`/`data/tcgarchitect/decks/` copies when that ignored cache is empty. This
+matters on a fresh CI cache/job: the normal daily pipeline runs neither Sleeved's authenticated API
+nor TcgArchitect's Playwright harvest itself (both are split into their own explicit
+`GATCG_SLEEVED_MODE`/`GATCG_TCGA_MODE` workflows — see their READMEs), and must not silently
+overwrite the combined outputs with a ShoutAtYourDecks-only population. Generated community files
+also retain their prior `generatedAt` and are left untouched when only the newly computed timestamp
+differs; unchanged source data therefore creates neither an 18 MB data diff nor a false client-cache
 invalidation.
 
 `CommunityDecksIndex.tsx` (`/community-decks`, `/pantheon` — the deck **browse** list, as opposed to

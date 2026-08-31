@@ -3,11 +3,12 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { describe, it } from "node:test";
-import type { SleevedDeck } from "@gatcg/shared";
+import type { SleevedDeck, TcgArchitectDeck } from "@gatcg/shared";
 import { MANIFEST_ENTRIES } from "../manifest.js";
 import { listPublishedSleevedDecks, type CachedSleevedDeckRecord } from "../sleeved/cache.js";
 import { isRetryableSleevedStatus } from "../sleeved/client.js";
-import { chooseSleevedRecords, writeGeneratedJsonIfChanged } from "./blend.js";
+import { listPublishedTcgArchitectDecks, type CachedTcgArchitectDeckRecord } from "../tcgarchitect/cache.js";
+import { chooseSleevedRecords, chooseTcgArchitectRecords, writeGeneratedJsonIfChanged } from "./blend.js";
 
 function record(id: string): CachedSleevedDeckRecord {
   return { id, deck: null };
@@ -34,6 +35,33 @@ function deck(id: string): SleevedDeck {
   };
 }
 
+function tcgaRecord(id: string): CachedTcgArchitectDeckRecord {
+  return { id, deck: tcgaDeck(id) };
+}
+
+function tcgaDeck(id: string): TcgArchitectDeck {
+  return {
+    id,
+    url: `https://tcgarchitect.com/grand-archive/decks/${id}`,
+    title: "Test deck",
+    author: "Someone",
+    champion: "Lorraine, Wandering Warrior",
+    priceLow: null,
+    materialCount: 1,
+    mainCount: 60,
+    sideCount: 0,
+    fetchedAt: "2026-01-01T00:00:00Z",
+    format: "STANDARD",
+    formatConfidence: "declared",
+    likeCount: 0,
+    createdAt: "2026-01-01T00:00:00Z",
+    updatedAt: "2026-01-01T00:00:00Z",
+    materialDeck: [],
+    mainDeck: [],
+    sideDeck: [],
+  };
+}
+
 describe("community blend safeguards", () => {
   it("uses committed Sleeved records only when the cache is empty", () => {
     const cached = [record("cached")];
@@ -48,6 +76,26 @@ describe("community blend safeguards", () => {
       await writeFile(path.join(dir, "one.json"), JSON.stringify(deck("one")), "utf-8");
       await writeFile(path.join(dir, "broken.json"), "not json", "utf-8");
       const records = await listPublishedSleevedDecks(dir);
+      assert.deepEqual(records.map((entry) => entry.id), ["one"]);
+      assert.equal(records[0].deck?.title, "Test deck");
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it("uses committed TcgArchitect records only when the cache is empty", () => {
+    const cached = [tcgaRecord("cached")];
+    const published = [tcgaRecord("published")];
+    assert.equal(chooseTcgArchitectRecords(cached, published), cached);
+    assert.equal(chooseTcgArchitectRecords([], published), published);
+  });
+
+  it("loads committed TcgArchitect deck files as cache-shaped records", async () => {
+    const dir = await mkdtemp(path.join(os.tmpdir(), "foi-tcga-"));
+    try {
+      await writeFile(path.join(dir, "one.json"), JSON.stringify(tcgaDeck("one")), "utf-8");
+      await writeFile(path.join(dir, "broken.json"), "not json", "utf-8");
+      const records = await listPublishedTcgArchitectDecks(dir);
       assert.deepEqual(records.map((entry) => entry.id), ["one"]);
       assert.equal(records[0].deck?.title, "Test deck");
     } finally {

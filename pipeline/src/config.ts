@@ -135,4 +135,21 @@ export const config = {
 
   /** Dev-iteration cap: only harvest this many deck ids from the public listing instead of the full set. */
   sleevedFastModeDeckLimit: Number(process.env.GATCG_SLEEVED_FAST_MODE_DECK_LIMIT ?? 50),
+
+  /**
+   * tcgarchitect.com (third community deck-builder source, see pipeline/src/tcgarchitect/README.md)
+   * needs a real browser (Playwright) for its `/grand-archive/discover` listing — that page has no
+   * server-rendered data at all, and the API it calls client-side requires a bundled key on a path
+   * `robots.txt` disallows automating directly. Unlike ShoutAtYourDecks, that one page load already
+   * carries every deck's complete decklist, so there's no separate decklist-fetch phase/knobs here.
+   */
+
+  /** Delay between discover-listing page loads — politeness over speed; skipped in fast mode. */
+  tcgaCrawlRequestDelayMs: FAST_MODE ? 0 : Number(process.env.GATCG_TCGA_CRAWL_DELAY_MS ?? 250),
+
+  /** Same deck-identity floor as `sydMinMainDeckSize`/`sleevedMinMainDeckSize` — see docs/CALCULATIONS.md. */
+  tcgaMinMainDeckSize: Number(process.env.GATCG_TCGA_MIN_MAIN_DECK_SIZE ?? 60),
+
+  /** Dev-iteration cap: only harvest this many listing pages (48 decks/page) instead of the full set. */
+  tcgaFastModePageLimit: Number(process.env.GATCG_TCGA_FAST_MODE_PAGE_LIMIT ?? 2),
 };

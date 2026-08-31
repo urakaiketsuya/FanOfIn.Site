@@ -26,6 +26,8 @@
     "pipeline:official-products": "node pipeline/scripts/import-official-products.mjs",
     "pipeline:official-pantheon-products": "node pipeline/scripts/add-pantheon-official-products.mjs",
     "pipeline:syd:pantheon-boons": "node pipeline/scripts/backfill-pantheon-boons.mjs",
+    "pipeline:tcga:harvest": "GATCG_TCGA_MODE=harvest npm run start --workspace=pipeline",
+    "pipeline:tcga:build": "GATCG_TCGA_MODE=build npm run start --workspace=pipeline",
     "worker:dev": "npm run dev --workspace=worker",
     "worker:test": "npm run test --workspace=worker",
     "accounts:dev": "npm run dev --workspace=account-worker",

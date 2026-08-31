@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import type { CommunitySourceCounts, ShoutAtYourDecksDeck, ShoutAtYourDecksDeckSummary, SleevedDeck } from "@gatcg/shared";
+import type { CommunitySourceCounts, ShoutAtYourDecksDeck, ShoutAtYourDecksDeckSummary, SleevedDeck, TcgArchitectDeck } from "@gatcg/shared";
 import { slugify } from "@gatcg/shared";
 import { loadCardCatalog, buildCardIndex } from "../cards/catalog.js";
 import { listCachedDecks } from "../shoutatyourdecks/cache.js";
@@ -15,32 +15,37 @@ import { computeCoOccurrence } from "../shoutatyourdecks/analytics/coOccurrence.
 import { computeCardDeckReferences } from "../shoutatyourdecks/analytics/deckReferences.js";
 import { listCachedSleevedDecks, listPublishedSleevedDecks, type CachedSleevedDeckRecord } from "../sleeved/cache.js";
 import { shouldKeepSleevedDeck } from "../sleeved/filter.js";
+import { listCachedTcgArchitectDecks, listPublishedTcgArchitectDecks, type CachedTcgArchitectDeckRecord } from "../tcgarchitect/cache.js";
+import { shouldKeepTcgArchitectDeck } from "../tcgarchitect/filter.js";
 
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/community");
 
 /**
- * Blends both community deck-builder sources (ShoutAtYourDecks + Sleeved) into one population for
- * every site-facing community stat (Community usage badges, Card Stats "Hype gap", Guided Deck
- * Builder's Community population — see app/src/features/community/data.ts's blended hooks), while
- * each source's own raw cache/index/analytics stays fully separate (data/shoutatyourdecks/,
- * data/sleeved/). User-confirmed direction: "keep separate locally and then have a blended one used
- * on the site." Pure local transform, no network — safe to run every day regardless of how often
- * either underlying harvest itself runs, same as shoutatyourdecks/analytics/build.ts.
+ * Blends all three community deck-builder sources (ShoutAtYourDecks + Sleeved + TcgArchitect) into
+ * one population for every site-facing community stat (Community usage badges, Card Stats "Hype
+ * gap", Guided Deck Builder's Community population — see app/src/features/community/data.ts's
+ * blended hooks), while each source's own raw cache/index/analytics stays fully separate
+ * (data/shoutatyourdecks/, data/sleeved/, data/tcgarchitect/). User-confirmed direction: "keep
+ * separate locally and then have a blended one used on the site." Pure local transform, no network —
+ * safe to run every day regardless of how often any underlying harvest itself runs, same as
+ * shoutatyourdecks/analytics/build.ts.
  *
- * Reuses the exact same compute* functions ShoutAtYourDecks-only analytics already use — both
- * `ShoutAtYourDecksDeck` and `SleevedDeck` share the same field shape (see shared/src/sleeved-types.ts's
- * doc comment), so a concatenation of both is structurally a valid `ShoutAtYourDecksDeck[]`. Price
- * distribution is deliberately NOT blended: Sleeved decks always carry `priceLow: null` (Sleeved has
- * no price data), so a Sleeved-only population would just look like 100% missing prices — ShoutAtYourDecks
- * still publishes its own price-distribution.json unblended, and there's no combined equivalent.
+ * Reuses the exact same compute* functions ShoutAtYourDecks-only analytics already use — `SleevedDeck`
+ * and `TcgArchitectDeck` both share `ShoutAtYourDecksDeck`'s field shape by design (see
+ * shared/src/sleeved-types.ts and shared/src/tcgarchitect-types.ts's doc comments), so a
+ * concatenation of all three is structurally a valid `ShoutAtYourDecksDeck[]`. Price distribution is
+ * deliberately NOT blended: Sleeved and TcgArchitect decks always carry `priceLow: null` (neither
+ * source has usable deck-level price data), so a blend would just dilute ShoutAtYourDecks' real
+ * prices with missing ones — ShoutAtYourDecks still publishes its own price-distribution.json
+ * unblended, and there's no combined equivalent.
  *
  * `champion` field mismatch, corrected here: ShoutAtYourDecks stores it pre-slugified (e.g.
- * "diao-chan" — confirmed against real cache data), while a transformed Sleeved deck's `champion`
- * is a proper display name from our own catalog (e.g. "Diao Chan", see sleeved/transform.ts). Every
- * function below that *groups* by champion (cardInclusion/popularity/archetypes/coOccurrence) needs
- * both sources under the identical key or the same champion fragments into two buckets — `slugify`
- * normalizes both (a no-op on ShoutAtYourDecks' already-slug values). `deckReferences` is the one
- * exception: it only ever *displays* a deck's champion (app/src/features/cards/CardDetail.tsx),
+ * "diao-chan" — confirmed against real cache data), while a transformed Sleeved or TcgArchitect
+ * deck's `champion` is a proper display name (e.g. "Diao Chan", see each source's transform.ts).
+ * Every function below that *groups* by champion (cardInclusion/popularity/archetypes/coOccurrence)
+ * needs every source under the identical key or the same champion fragments into separate buckets —
+ * `slugify` normalizes all three (a no-op on ShoutAtYourDecks' already-slug values). `deckReferences`
+ * is the one exception: it only ever *displays* a deck's champion (app/src/features/cards/CardDetail.tsx),
  * never groups by it, and the app already knows how to display each source's native format
  * correctly — so it's computed from the un-normalized decks instead.
  */
@@ -55,6 +60,14 @@ export function chooseSleevedRecords(
   cached: CachedSleevedDeckRecord[],
   published: CachedSleevedDeckRecord[],
 ): CachedSleevedDeckRecord[] {
+  return cached.length > 0 ? cached : published;
+}
+
+/** Same cache-wins-else-published fallback as `chooseSleevedRecords`, for TcgArchitect. */
+export function chooseTcgArchitectRecords(
+  cached: CachedTcgArchitectDeckRecord[],
+  published: CachedTcgArchitectDeckRecord[],
+): CachedTcgArchitectDeckRecord[] {
   return cached.length > 0 ? cached : published;
 }
 
@@ -77,12 +90,15 @@ export async function writeGeneratedJsonIfChanged<T extends { generatedAt: strin
 }
 
 export async function runCommunityBlend(): Promise<void> {
-  const [saydRecords, cachedSleevedRecords, publishedSleevedRecords] = await Promise.all([
+  const [saydRecords, cachedSleevedRecords, publishedSleevedRecords, cachedTcgaRecords, publishedTcgaRecords] = await Promise.all([
     listCachedDecks(),
     listCachedSleevedDecks(),
     listPublishedSleevedDecks(),
+    listCachedTcgArchitectDecks(),
+    listPublishedTcgArchitectDecks(),
   ]);
   const sleevedRecords = chooseSleevedRecords(cachedSleevedRecords, publishedSleevedRecords);
+  const tcgaRecords = chooseTcgArchitectRecords(cachedTcgaRecords, publishedTcgaRecords);
 
   const saydSummaries: ShoutAtYourDecksDeckSummary[] = [];
   const saydDecks: ShoutAtYourDecksDeck[] = [];
@@ -98,27 +114,39 @@ export async function runCommunityBlend(): Promise<void> {
     if (record.deck && shouldKeepSleevedDeck(record.deck)) sleevedDecks.push(record.deck);
   }
 
-  console.log(`community: blending ${saydDecks.length} ShoutAtYourDecks decks + ${sleevedDecks.length} Sleeved decks`);
+  const tcgaDecks: TcgArchitectDeck[] = [];
+  for (const record of tcgaRecords) {
+    if (record.deck && shouldKeepTcgArchitectDeck(record.deck)) tcgaDecks.push(record.deck);
+  }
+
+  console.log(`community: blending ${saydDecks.length} ShoutAtYourDecks decks + ${sleevedDecks.length} Sleeved decks + ${tcgaDecks.length} TcgArchitect decks`);
 
   const catalog = await loadCardCatalog();
   const cardIndex = buildCardIndex(catalog);
 
   await mkdir(DATA_DIR, { recursive: true });
 
-  const byFormatCounts = { STANDARD: { shoutatyourdecks: 0, sleeved: 0 }, PANTHEON: { shoutatyourdecks: 0, sleeved: 0 }, UNKNOWN: { shoutatyourdecks: 0, sleeved: 0 } } satisfies CommunitySourceCounts["byFormat"];
+  const byFormatCounts = {
+    STANDARD: { shoutatyourdecks: 0, sleeved: 0, tcgarchitect: 0 },
+    PANTHEON: { shoutatyourdecks: 0, sleeved: 0, tcgarchitect: 0 },
+    UNKNOWN: { shoutatyourdecks: 0, sleeved: 0, tcgarchitect: 0 },
+  } satisfies CommunitySourceCounts["byFormat"];
 
   for (const format of ["STANDARD", "PANTHEON"] as const) {
     const decksWithLists: ShoutAtYourDecksDeck[] = [
       ...saydDecks.filter((d) => d.format === format),
       ...sleevedDecks.filter((d) => d.format === format),
+      ...tcgaDecks.filter((d) => d.format === format),
     ];
     const summaries: ShoutAtYourDecksDeckSummary[] = [
       ...saydSummaries.filter((d) => d.format === format),
       ...sleevedDecks.filter((d) => d.format === format),
+      ...tcgaDecks.filter((d) => d.format === format),
     ];
     byFormatCounts[format] = {
       shoutatyourdecks: saydDecks.filter((d) => d.format === format).length,
       sleeved: sleevedDecks.filter((d) => d.format === format).length,
+      tcgarchitect: tcgaDecks.filter((d) => d.format === format).length,
     };
 
     const normalizedDecks = decksWithLists.map(withNormalizedChampion);

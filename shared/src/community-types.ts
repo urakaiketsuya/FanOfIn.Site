@@ -5,5 +5,5 @@ import type { DeckFormat } from "./shoutatyourdecks-types.js";
 
 export interface CommunitySourceCounts {
   generatedAt: string;
-  byFormat: Record<DeckFormat, { shoutatyourdecks: number; sleeved: number }>;
+  byFormat: Record<DeckFormat, { shoutatyourdecks: number; sleeved: number; tcgarchitect: number }>;
 }

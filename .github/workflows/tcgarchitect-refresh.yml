@@ -1,0 +1,87 @@
+name: Monthly TCGArchitect refresh
+
+on:
+  schedule:
+    # 2nd of the month, 06:00 UTC — offset one day from the ShoutAtYourDecks refresh (1st, same
+    # hour) so the two Playwright-driven crawls never contend for the same runner window.
+    - cron: "0 6 2 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Independent of the Omnidex `data-refresh` and ShoutAtYourDecks workflows — separate data source,
+# separate concurrency group, so none of the three wait on each other.
+concurrency:
+  group: tcgarchitect-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    # A full harvest is 13 pages against tcgarchitect.com's own listing (~594 decks at time of
+    # writing) — dramatically faster than ShoutAtYourDecks' ~21k-deck, three-phase crawl (see
+    # pipeline/src/tcgarchitect/README.md: one page load already carries every deck's complete
+    # decklist), but keep a generous budget for whenever the site's deck count has grown a lot.
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      # harvest.ts drives a real headless Chromium through tcgarchitect.com's own (robots.txt-Allowed)
+      # /grand-archive/discover page — see the module README for why this can't be a plain HTTP crawl.
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Restore TCGArchitect fetch cache
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          # Scoped to this source only, not the whole pipeline/.cache — same reasoning as the
+          # ShoutAtYourDecks workflow's own cache step.
+          path: pipeline/.cache/tcgarchitect
+          key: pipeline-cache-tcga-${{ github.run_id }}
+          restore-keys: |
+            pipeline-cache-tcga-
+
+      - name: Harvest discover listing
+        run: npm run pipeline:tcga:harvest
+
+      - name: Publish to data/
+        run: npm run pipeline:tcga:build
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/tcgarchitect
+          if git diff --cached --quiet; then
+            echo "No data changes this run"
+            exit 0
+          fi
+          git commit -m "chore: monthly TCGArchitect refresh $(date -u +%Y-%m-%d)"
+
+          # Same retry-with-rebase reasoning as the ShoutAtYourDecks workflow: other commits can
+          # land on main during this run, and a conflict is only possible under data/tcgarchitect
+          # (the only path this job touches) — keep this run's freshly regenerated output, since
+          # it's a full rebuild over the latest crawl state and supersedes whatever generated
+          # snapshot the other commit happened to carry.
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              exit 0
+            fi
+            echo "push rejected (attempt $attempt/5) — fetching and rebasing onto latest main"
+            git fetch origin main
+            if ! git rebase origin/main; then
+              git checkout --ours -- data/tcgarchitect
+              git add data/tcgarchitect
+              git rebase --continue
+            fi
+          done
+          echo "::error::failed to push updated data after 5 attempts"
+          exit 1

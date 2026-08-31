@@ -12,6 +12,8 @@ import { runHarvest, runMetadataFetch, runDecklistFetch, runBuild as runShoutAtY
 import { runAnalytics as runShoutAtYourDecksAnalytics } from "./shoutatyourdecks/analytics/build.js";
 import { installGracefulShutdown } from "./shoutatyourdecks/shutdown.js";
 import { runHarvest as runSleevedHarvest, runFetchDetails as runSleevedFetchDetails, runBuild as runSleevedBuild } from "./sleeved/run.js";
+import { runHarvest as runTcgArchitectHarvest, runBuild as runTcgArchitectBuild } from "./tcgarchitect/run.js";
+import { installGracefulShutdown as installTcgArchitectShutdown } from "./tcgarchitect/shutdown.js";
 import { runCommunityBlend } from "./community/blend.js";
 import { config } from "./config.js";
 import { exportSimulatorSummary } from "./simulator/export.js";
@@ -57,6 +59,23 @@ async function runSleevedMode(mode: string): Promise<void> {
 }
 
 /**
+ * tcgarchitect.com (third community deck-builder source, see pipeline/src/tcgarchitect/README.md)
+ * needs a real browser (Playwright) for its discover listing, same reasoning ShoutAtYourDecks is
+ * split out via GATCG_SYD_MODE rather than folded into the default daily run below.
+ */
+async function runTcgArchitectMode(mode: string): Promise<void> {
+  installTcgArchitectShutdown();
+  try {
+    if (mode === "harvest") await runTcgArchitectHarvest();
+    else if (mode === "build") await runTcgArchitectBuild();
+    else throw new Error(`unknown GATCG_TCGA_MODE "${mode}" — expected harvest|build`);
+  } catch (err) {
+    console.error("tcgarchitect pipeline failed", err);
+    process.exitCode = 1;
+  }
+}
+
+/**
  * The Omnidex cache (~20,700 event files, ~398MB) is otherwise re-read from disk independently
  * by buildOmnidexIndex, buildAnalysis, and publishVods — three full listCachedBundles() scans
  * per run. Memoized per-`main()`-invocation (not a module-level singleton) so it's still read
@@ -82,6 +101,10 @@ async function main() {
   }
   if (process.env.GATCG_SLEEVED_MODE) {
     await runSleevedMode(process.env.GATCG_SLEEVED_MODE);
+    return;
+  }
+  if (process.env.GATCG_TCGA_MODE) {
+    await runTcgArchitectMode(process.env.GATCG_TCGA_MODE);
     return;
   }
 
