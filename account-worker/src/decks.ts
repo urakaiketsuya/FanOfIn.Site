@@ -11,6 +11,7 @@ import {
   type ShoutAtYourDecksDeckSummary,
 } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
+import { badRequest } from "./errors";
 
 interface SaveInput {
   decklist: OmnidexDecklist;
@@ -53,25 +54,25 @@ function validDecklist(value: unknown): value is OmnidexDecklist {
 }
 
 export function parseSaveInput(value: unknown): SaveInput {
-  if (!value || typeof value !== "object") throw new Error("Invalid saved deck");
+  if (!value || typeof value !== "object") throw badRequest("Invalid saved deck");
   const input = value as Partial<SaveInput>;
-  if (!validDecklist(input.decklist) || typeof input.title !== "string" || !input.title.trim() || input.title.length > 160) throw new Error("Invalid saved deck");
-  if (!input.source || input.source.provider !== "manual" || typeof input.source.externalDeckId !== "string" || !input.source.externalDeckId || input.source.externalDeckId.length > MAX_IDENTIFIER_LENGTH || typeof input.source.label !== "string" || !input.source.label || input.source.label.length > 240) throw new Error("Invalid deck source");
-  if (input.championName != null && (typeof input.championName !== "string" || input.championName.length > 200)) throw new Error("Invalid champion name");
-  if (input.source.sourceUrl != null && (typeof input.source.sourceUrl !== "string" || input.source.sourceUrl.length > MAX_SOURCE_URL_LENGTH)) throw new Error("Invalid source URL");
-  if (JSON.stringify(input.source.metadata ?? {}).length > MAX_METADATA_BYTES) throw new Error("Deck source metadata is too large");
+  if (!validDecklist(input.decklist) || typeof input.title !== "string" || !input.title.trim() || input.title.length > 160) throw badRequest("Invalid saved deck");
+  if (!input.source || input.source.provider !== "manual" || typeof input.source.externalDeckId !== "string" || !input.source.externalDeckId || input.source.externalDeckId.length > MAX_IDENTIFIER_LENGTH || typeof input.source.label !== "string" || !input.source.label || input.source.label.length > 240) throw badRequest("Invalid deck source");
+  if (input.championName != null && (typeof input.championName !== "string" || input.championName.length > 200)) throw badRequest("Invalid champion name");
+  if (input.source.sourceUrl != null && (typeof input.source.sourceUrl !== "string" || input.source.sourceUrl.length > MAX_SOURCE_URL_LENGTH)) throw badRequest("Invalid source URL");
+  if (JSON.stringify(input.source.metadata ?? {}).length > MAX_METADATA_BYTES) throw badRequest("Deck source metadata is too large");
   return input as SaveInput;
 }
 
 export async function saveDeck(env: Env, user: AuthUser, input: SaveInput): Promise<{ id: string; created: boolean }> {
   const canonical = canonicalizeSavedDecklist(input.decklist);
-  if (canonical.main.length + canonical.material.length === 0) throw new Error("A deck needs main or material cards");
+  if (canonical.main.length + canonical.material.length === 0) throw badRequest("A deck needs main or material cards");
   const hash = await identityHash(canonical);
   const now = new Date().toISOString();
   const existing = await env.ACCOUNT_DB.prepare("SELECT id FROM saved_decks WHERE user_id = ? AND identity_hash = ?").bind(user.id, hash).first<{ id: string }>();
   if (!existing) {
     const count = await env.ACCOUNT_DB.prepare("SELECT COUNT(*) AS count FROM saved_decks WHERE user_id = ?").bind(user.id).first<{ count: number }>();
-    if ((count?.count ?? 0) >= MAX_DECKS_PER_USER) throw new Error(`Saved deck limit of ${MAX_DECKS_PER_USER} reached`);
+    if ((count?.count ?? 0) >= MAX_DECKS_PER_USER) throw badRequest(`Saved deck limit of ${MAX_DECKS_PER_USER} reached`, "deck_limit_reached");
   }
   const deckId = existing?.id ?? crypto.randomUUID();
   await env.ACCOUNT_DB.prepare(`INSERT INTO saved_decks (id, user_id, identity_hash, title, format, champion_name, decklist_json, created_at, updated_at)
@@ -82,7 +83,7 @@ export async function saveDeck(env: Env, user: AuthUser, input: SaveInput): Prom
     .bind(deckId, input.source.provider, input.source.externalDeckId).first<{ id: string }>();
   if (!existingSource) {
     const count = await env.ACCOUNT_DB.prepare("SELECT COUNT(*) AS count FROM saved_deck_sources WHERE saved_deck_id = ?").bind(deckId).first<{ count: number }>();
-    if ((count?.count ?? 0) >= MAX_SOURCES_PER_DECK) throw new Error(`Deck source limit of ${MAX_SOURCES_PER_DECK} reached`);
+    if ((count?.count ?? 0) >= MAX_SOURCES_PER_DECK) throw badRequest(`Deck source limit of ${MAX_SOURCES_PER_DECK} reached`, "deck_source_limit_reached");
   }
   await env.ACCOUNT_DB.prepare(`INSERT INTO saved_deck_sources (id, saved_deck_id, provider, external_deck_id, source_url, label, metadata_json, sideboard_json, imported_at)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -122,10 +123,10 @@ interface ImportEvent { id: number; name: string; format: string; url: string; }
 
 export async function previewImport(env: Env, provider: string, rawIdentifier: string): Promise<DeckImportPreview> {
   const identifier = rawIdentifier.trim();
-  if (!identifier) throw new Error("Enter an import identifier");
-  if (identifier.length > MAX_IDENTIFIER_LENGTH) throw new Error("Import identifier is too long");
+  if (!identifier) throw badRequest("Enter an import identifier");
+  if (identifier.length > MAX_IDENTIFIER_LENGTH) throw badRequest("Import identifier is too long");
   if (provider === "omnidex") {
-    if (!/^\d+$/.test(identifier)) throw new Error("Omnidex player ID must be numeric");
+    if (!/^\d+$/.test(identifier)) throw badRequest("Omnidex player ID must be numeric");
     const playerId = Number(identifier);
     const [players, popularity, events] = await Promise.all([
       assetJson<{ players: { id: number; username: string }[] }>(env, "/data/omnidex/players.json"),
@@ -133,7 +134,7 @@ export async function previewImport(env: Env, provider: string, rawIdentifier: s
       assetJson<{ events: ImportEvent[] }>(env, "/data/omnidex/index.json"),
     ]);
     const player = players.players.find((item) => item.id === playerId);
-    if (!player) throw new Error("Omnidex player was not found in the published archive");
+    if (!player) throw badRequest("Omnidex player was not found in the published archive", "import_profile_not_found");
     const eventsById = new Map(events.events.map((event) => [event.id, event]));
     const candidates: DeckImportCandidate[] = popularity.entries.filter((item) => item.player === playerId).map((item) => {
       const event = eventsById.get(item.eventId);
@@ -152,12 +153,12 @@ export async function previewImport(env: Env, provider: string, rawIdentifier: s
       format: deck.format ?? "UNKNOWN", label: deck.title, sourceUrl: deck.url, available: true,
     })) };
   }
-  throw new Error("Unknown import provider");
+  throw badRequest("Unknown import provider");
 }
 
 export async function performImport(env: Env, user: AuthUser, provider: string, identifier: string): Promise<{ created: number; linked: number }> {
   const preview = await previewImport(env, provider, identifier);
-  if (preview.candidates.length > MAX_IMPORT_DECKS) throw new Error(`Import is limited to ${MAX_IMPORT_DECKS} decks at a time`);
+  if (preview.candidates.length > MAX_IMPORT_DECKS) throw badRequest(`Import is limited to ${MAX_IMPORT_DECKS} decks at a time`, "import_limit_reached");
   let created = 0;
   let linked = 0;
   if (provider === "omnidex") {

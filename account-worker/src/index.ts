@@ -1,5 +1,6 @@
 import { authenticatedUser, bffAllowed, consumeOAuthNonce, createOAuthNonce, createUserSession, destroyAllSessions, destroySession, originAllowed, rotateCurrentSession, verifyGoogleCredential, type Env } from "./auth";
 import { listDecks, parseSaveInput, performImport, previewImport, saveDeck } from "./decks";
+import { ApiError, badRequest } from "./errors";
 
 function response(env: Env, request: Request, body: unknown, status = 200, extra: HeadersInit = {}): Response {
   const origin = request.headers.get("Origin");
@@ -22,13 +23,32 @@ function tooManyRequests(env: Env, request: Request): Response {
 
 async function jsonBody(request: Request): Promise<unknown> {
   const length = Number(request.headers.get("Content-Length") ?? 0);
-  if (length > 1_048_576) throw new Error("Request is too large");
-  return request.json();
+  if (length > 1_048_576) throw new ApiError("Request is too large", 413, "request_too_large");
+  try {
+    return await request.json();
+  } catch (error) {
+    throw badRequest("Request body must be valid JSON", "invalid_json");
+  }
+}
+
+function logError(request: Request, requestId: string, error: unknown, status: number, code: string): void {
+  console.error(JSON.stringify({
+    level: "error",
+    service: "fanofin-accounts",
+    requestId,
+    method: request.method,
+    path: new URL(request.url).pathname,
+    status,
+    code,
+    cfRay: request.headers.get("CF-Ray") ?? undefined,
+    error: error instanceof Error ? error.message : "Non-error value thrown",
+  }));
 }
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+    const requestId = request.headers.get("CF-Ray") ?? crypto.randomUUID();
     if (url.pathname !== "/health" && !bffAllowed(request, env)) {
       return response(env, request, { error: "Account service gateway is required" }, 403);
     }
@@ -51,7 +71,12 @@ export default {
         if (await rateLimited(env.LOGIN_RATE_LIMITER, clientIp)) return tooManyRequests(env, request);
         const body = await jsonBody(request) as { credential?: unknown; nonce?: unknown };
         if (typeof body.credential !== "string" || typeof body.nonce !== "string") return response(env, request, { error: "Google credential and nonce are required" }, 400);
-        const claims = await verifyGoogleCredential(body.credential, env.GOOGLE_CLIENT_ID, body.nonce);
+        let claims;
+        try {
+          claims = await verifyGoogleCredential(body.credential, env.GOOGLE_CLIENT_ID, body.nonce);
+        } catch (error) {
+          throw new ApiError("Google sign-in failed", 401, "google_sign_in_failed", { cause: error });
+        }
         if (!await consumeOAuthNonce(env, body.nonce)) return response(env, request, { error: "Google sign-in nonce is expired or already used" }, 400);
         await rotateCurrentSession(request, env);
         const session = await createUserSession(env, claims);
@@ -97,8 +122,11 @@ export default {
       }
       return response(env, request, { error: "Route not found" }, 404);
     } catch (error) {
-      console.error(error);
-      return response(env, request, { error: error instanceof Error ? error.message : "Unexpected account service error" }, 400);
+      const known = error instanceof ApiError;
+      const status = known ? error.status : 500;
+      const code = known ? error.code : "internal_error";
+      logError(request, requestId, known && error.cause ? error.cause : error, status, code);
+      return response(env, request, { error: known ? error.publicMessage : "Unexpected account service error", requestId }, status, { "X-Request-ID": requestId });
     }
   },
 } satisfies ExportedHandler<Env>;

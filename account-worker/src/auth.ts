@@ -42,13 +42,23 @@ function decodeBase64Url(value: string): Uint8Array {
   return Uint8Array.from(binary, (character) => character.charCodeAt(0));
 }
 
-async function googleKeys(): Promise<GoogleJsonWebKey[]> {
-  if (cachedKeys && cachedKeys.expiresAt > Date.now()) return cachedKeys.keys;
+function cacheSeconds(value: string | null): number {
+  const match = value?.match(/(?:^|,)\s*max-age=(\d+)/i);
+  return match ? Math.max(0, Number(match[1])) : 60 * 60;
+}
+
+async function googleKeys(forceRefresh = false): Promise<GoogleJsonWebKey[]> {
+  if (!forceRefresh && cachedKeys && cachedKeys.expiresAt > Date.now()) return cachedKeys.keys;
   const response = await fetch("https://www.googleapis.com/oauth2/v3/certs");
   if (!response.ok) throw new Error("Google signing keys are unavailable");
   const body = await response.json<{ keys: GoogleJsonWebKey[] }>();
-  cachedKeys = { keys: body.keys, expiresAt: Date.now() + 60 * 60 * 1000 };
+  if (!Array.isArray(body.keys)) throw new Error("Google signing keys are malformed");
+  cachedKeys = { keys: body.keys, expiresAt: Date.now() + cacheSeconds(response.headers.get("Cache-Control")) * 1000 };
   return body.keys;
+}
+
+export function clearGoogleKeyCacheForTest(): void {
+  cachedKeys = null;
 }
 
 export async function verifyGoogleCredential(credential: string, clientId: string, expectedNonce: string): Promise<GoogleClaims> {
@@ -56,7 +66,8 @@ export async function verifyGoogleCredential(credential: string, clientId: strin
   if (parts.length !== 3) throw new Error("Malformed Google credential");
   const header = JSON.parse(new TextDecoder().decode(decodeBase64Url(parts[0]))) as { alg?: string; kid?: string };
   if (header.alg !== "RS256" || !header.kid) throw new Error("Unsupported Google credential");
-  const jwk = (await googleKeys()).find((key) => key.kid === header.kid);
+  let jwk = (await googleKeys()).find((key) => key.kid === header.kid);
+  if (!jwk) jwk = (await googleKeys(true)).find((key) => key.kid === header.kid);
   if (!jwk) throw new Error("Google signing key was not found");
   const key = await crypto.subtle.importKey("jwk", jwk, { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" }, false, ["verify"]);
   const valid = await crypto.subtle.verify(
