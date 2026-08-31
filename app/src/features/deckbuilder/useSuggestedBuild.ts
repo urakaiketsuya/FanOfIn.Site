@@ -40,6 +40,9 @@ const COMMUNITY_BOOST_WEIGHT = 0.03;
  * every sighting of the selected build gets the same maximum tie-breaking nudge as a universally
  * played community card; lower prevalence scales the boost down proportionally. */
 const ARCHETYPE_BOOST_WEIGHT = 0.03;
+/** Collection preference is intentionally a tie-breaker: ownership can choose between similarly
+ * supported cards, but cannot turn a weak or unsupported card into a performance recommendation. */
+const COLLECTION_BOOST_WEIGHT = 0.025;
 /** Same tie-breaking-only philosophy as `COMMUNITY_BOOST_WEIGHT`, but subtracted — for the
  * "balanced" source's decay penalty. `decay` (from `computeCardDecay`'s already-filtered top
  * signals, `DeckBuilderIndex.tsx`) is a 0-1 inclusion-rate drop, floored at 0.08 by that function's
@@ -393,6 +396,10 @@ export function useSuggestedBuild(
   /** Selected archetype's defining-card prevalence (0-1). This only reorders positive-lift
    * candidates; it never makes an unsupported card eligible or changes the lift displayed. */
   archetypePrevalence?: Map<string, number>,
+  /** Physical copies owned by canonical card name. Used only to prioritize/cap auto-suggestions;
+   * explicit locked cards remain the user's authority. */
+  collectionOwnedByName?: Map<string, number>,
+  collectionMode: "all" | "prioritize" | "owned-only" = "all",
 ): SuggestedBuild {
   const cardCatalog = useCardCatalog();
   const settledCardCatalog = useDebouncedValue(cardCatalog, CATALOG_SETTLE_MS);
@@ -547,21 +554,23 @@ export function useSuggestedBuild(
         e.adjustedLift > 0 &&
         cardsByName.get(e.cardName)?.legality?.STANDARD?.limit !== 0 &&
         !lockedNames.has(e.cardName) &&
-        !rejectedCards.has(e.cardName),
+        !rejectedCards.has(e.cardName) &&
+        (collectionMode !== "owned-only" || (collectionOwnedByName?.get(e.cardName) ?? 0) > 0),
     );
     // Re-order (not re-score) by a small pillar-affinity, community-popularity, and/or decay
     // nudge — each entry's own `adjustedLift` stays the real, honest win-rate number shown in the
     // UI; only which comparably-good real card gets picked first for a limited slot shifts toward
     // the chosen playstyle, the blended community's own usage, or away from a card that's still
     // winning but visibly falling out of use.
-    if (pillarBias || communityInclusion || decayingCards || archetypePrevalence) {
+    if (pillarBias || communityInclusion || decayingCards || archetypePrevalence || collectionMode === "prioritize") {
       const boostedScore = (e: CardImpactEntry): number => {
         const card = cardsByName.get(e.cardName);
         const pillarBoost = pillarBias && card ? PILLAR_BOOST_WEIGHT * cardPillarScore(card, pillarBias) : 0;
         const communityBoost = communityInclusion ? COMMUNITY_BOOST_WEIGHT * (communityInclusion.get(e.cardName)?.percentOfDecks ?? 0) : 0;
         const archetypeBoost = archetypePrevalence ? ARCHETYPE_BOOST_WEIGHT * (archetypePrevalence.get(e.cardName) ?? 0) : 0;
         const decayPenalty = decayingCards ? DECAY_PENALTY_WEIGHT * (decayingCards.get(e.cardName) ?? 0) : 0;
-        return e.adjustedLift + pillarBoost + communityBoost + archetypeBoost - decayPenalty;
+        const collectionBoost = collectionMode === "prioritize" && (collectionOwnedByName?.get(e.cardName) ?? 0) > 0 ? COLLECTION_BOOST_WEIGHT : 0;
+        return e.adjustedLift + pillarBoost + communityBoost + archetypeBoost + collectionBoost - decayPenalty;
       };
       ranked.sort((a, b) => boostedScore(b) - boostedScore(a));
     }
@@ -702,7 +711,8 @@ export function useSuggestedBuild(
         const picked = pickQuantity(rankingRows, "sideboard", entry.cardName, card, quantityBucketsByName);
         const pointCost = sideboardPointCost(card);
         const affordableQty = Math.floor((SIDEBOARD_POINT_BUDGET - sideboardPoints) / pointCost);
-        const qty = Math.min(picked.quantity, sideboardTarget - sideboardTotal, affordableQty);
+        const ownedCap = collectionMode === "owned-only" ? (collectionOwnedByName?.get(entry.cardName) ?? 0) : Number.POSITIVE_INFINITY;
+        const qty = Math.min(picked.quantity, sideboardTarget - sideboardTotal, affordableQty, ownedCap);
         if (qty <= 0) continue;
         sideboard.push(toSuggested(entry.cardName, qty, false, entry, "ranked", "sideboard", qty === picked.quantity ? picked.optimizedFrom : null, picked.evidence));
         sideboardTotal += qty;
@@ -710,7 +720,8 @@ export function useSuggestedBuild(
       } else {
         if (mainTotal >= mainTarget) continue;
         const picked = pickQuantity(rankingRows, "main", entry.cardName, card, quantityBucketsByName);
-        const qty = Math.min(picked.quantity, mainTarget - mainTotal);
+        const ownedCap = collectionMode === "owned-only" ? (collectionOwnedByName?.get(entry.cardName) ?? 0) : Number.POSITIVE_INFINITY;
+        const qty = Math.min(picked.quantity, mainTarget - mainTotal, ownedCap);
         main.push(toSuggested(entry.cardName, qty, false, entry, "ranked", "main", qty === picked.quantity ? picked.optimizedFrom : null, picked.evidence));
         mainTotal += qty;
       }
@@ -865,5 +876,5 @@ export function useSuggestedBuild(
       },
       loading: false,
     };
-  }, [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName, lockedSections, quantityBucketsByName, championCardOverride, pillarBias, communityInclusion, decayingCards, archetypePrevalence]);
+  }, [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName, lockedSections, quantityBucketsByName, championCardOverride, pillarBias, communityInclusion, decayingCards, archetypePrevalence, collectionOwnedByName, collectionMode]);
 }

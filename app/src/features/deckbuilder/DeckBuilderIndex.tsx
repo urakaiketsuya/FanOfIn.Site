@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import type { Card, CardInclusionEntry, CommunityCoOccurrenceEntry, CompositionWinRateData, CompositionWinRateStat, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
+import type { Card, CardInclusionEntry, CollectionEntry, CommunityCoOccurrenceEntry, CompositionWinRateData, CompositionWinRateStat, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import { championToSlug, useCommunityBlendedCardInclusion, useCommunityBlendedCoOccurrence, useCommunityCardInclusion, useCommunityCoOccurrence } from "../community/data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useArchetypeTaxonomyData, useCardQuantityStatsData, useCompositionWinRateData } from "../archetypes/data";
@@ -45,6 +45,7 @@ import { similarCards } from "../../lib/cardSimilarity";
 import ThemaSparkline from "../thema/ThemaSparkline";
 import ElementRail from "../../components/ElementRail";
 import { accountApi, AccountApiError } from "../../lib/accountApi";
+import DeckCollectionTools from "../collection/DeckCollectionTools";
 
 type BuilderTab = "build" | "review" | "stats" | "tools" | "buddies" | "copy" | "log";
 const TAB_KEYS: BuilderTab[] = ["build", "review", "stats", "tools", "buddies", "copy", "log"];
@@ -644,6 +645,7 @@ const PILLAR_OPTIONS: RatingPillar[] = ["durability", "interaction", "aggro", "o
  * lift-specific UI (pillar tuning, removal suggestions) unlike "community". The default source. See
  * docs/CALCULATIONS.md, "Community population" and "Balanced source". */
 type PopulationSource = "tournament" | "community" | "simulator" | "balanced";
+type CollectionMode = "all" | "prioritize" | "owned-only";
 
 interface CardDecayReplacement {
   cardName: string;
@@ -1553,6 +1555,8 @@ export default function DeckBuilderIndex() {
    * Decks' community popularity data — see useCommunitySuggestedBuild's own doc comment. Defaults
    * to "balanced" (real tournament lift, nudged by community popularity) — see PopulationSource. */
   const [populationSource, setPopulationSource] = useState<PopulationSource>(sessionSeed?.populationSource ?? "balanced");
+  const [collectionMode, setCollectionMode] = useState<CollectionMode>("all");
+  const [collection, setCollection] = useState<CollectionEntry[]>([]);
   const [changeLog, setChangeLog] = useState<ChangeLogEntry[]>(sessionSeed?.changeLog ?? []);
   const [visibleFields, setVisibleField] = useCardFieldVisibility();
   const [customizeOpen, setCustomizeOpen] = useState(false);
@@ -1591,6 +1595,19 @@ export default function DeckBuilderIndex() {
   // all of which would otherwise recompute (and re-render the whole page) on every sync write.
   const cardCatalog = useDebouncedValue(useCardCatalog(), 500);
   const catalogByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
+  useEffect(() => {
+    const refreshCollection = () => { void accountApi.collection().then((result) => setCollection(result.entries)).catch(() => undefined); };
+    refreshCollection();
+    window.addEventListener("fanofin:collection-updated", refreshCollection);
+    return () => window.removeEventListener("fanofin:collection-updated", refreshCollection);
+  }, []);
+  const collectionOwnedByName = useMemo(() => new Map(collection.map((entry) => [entry.cardName, entry.ownedQuantity])), [collection]);
+  const collectionRejectedCards = useMemo(() => {
+    if (collectionMode !== "owned-only") return rejectedCards;
+    const next = new Set(rejectedCards);
+    for (const card of cardCatalog) if ((collectionOwnedByName.get(card.name) ?? 0) === 0 && !lockedCards.has(card.name)) next.add(card.name);
+    return next;
+  }, [collectionMode, rejectedCards, cardCatalog, collectionOwnedByName, lockedCards]);
   // "default" pool's population — this Champion's decks, further narrowed by the Spirit dropdown
   // inside useSuggestedBuild itself (pool 1/2 combined; there's no separate state for them, since
   // the existing Spirit dropdown's own "Any Spirit" option already covers pool 2).
@@ -1675,7 +1692,7 @@ export default function DeckBuilderIndex() {
     rows,
     spiritFilter,
     lockedCards,
-    rejectedCards,
+    collectionRejectedCards,
     populationLoading,
     lockedSections,
     cardQuantityStatsData,
@@ -1684,6 +1701,8 @@ export default function DeckBuilderIndex() {
     undefined,
     undefined,
     archetypePrevalence,
+    collectionOwnedByName,
+    collectionMode,
   );
   // Same real tournament ranking as tournamentBuild above, plus a community-popularity nudge and a
   // decay penalty — see COMMUNITY_BOOST_WEIGHT's and DECAY_PENALTY_WEIGHT's doc comments. Computed
@@ -1693,7 +1712,7 @@ export default function DeckBuilderIndex() {
     rows,
     spiritFilter,
     lockedCards,
-    rejectedCards,
+    collectionRejectedCards,
     populationLoading,
     lockedSections,
     cardQuantityStatsData,
@@ -1702,12 +1721,14 @@ export default function DeckBuilderIndex() {
     communityInclusionByName,
     decayingCardBoost,
     archetypePrevalence,
+    collectionOwnedByName,
+    collectionMode,
   );
-  const communityBuild = useCommunitySuggestedBuild(communityChampData, communityLockedCards, lockedSections, rejectedCards, catalogByName, !communityCardInclusion, identityElements, deckFormat);
+  const communityBuild = useCommunitySuggestedBuild(communityChampData, communityLockedCards, lockedSections, collectionRejectedCards, catalogByName, !communityCardInclusion, identityElements, deckFormat);
   const simulatorSummary = useSimulatorSummaryData();
   const simulatorResult = useSimulatorSuggestedBuild(communityBuild, simulatorSummary, cardCatalog);
   const effectivePopulationSource: PopulationSource = deckFormat === "PANTHEON" ? "community" : populationSource;
-  const build =
+  const rawBuild =
     effectivePopulationSource === "community"
       ? communityBuild
       : effectivePopulationSource === "simulator"
@@ -1715,6 +1736,27 @@ export default function DeckBuilderIndex() {
         : effectivePopulationSource === "balanced"
           ? balancedBuild
           : tournamentBuild;
+  const build = useMemo(() => {
+    if (collectionMode !== "owned-only") return rawBuild;
+    const cap = (cards: SuggestedCard[]) => cards.flatMap((card) => {
+      if (card.locked) return [card];
+      const quantity = Math.min(card.quantity, collectionOwnedByName.get(card.cardName) ?? 0);
+      return quantity > 0 ? [{ ...card, quantity }] : [];
+    });
+    const material = cap(rawBuild.material); const main = cap(rawBuild.main); const sideboard = cap(rawBuild.sideboard);
+    return {
+      ...rawBuild,
+      material,
+      main,
+      sideboard,
+      suggestions: cap(rawBuild.suggestions),
+      unresolved: {
+        main: rawBuild.unresolved.main + rawBuild.main.reduce((sum, card) => sum + card.quantity, 0) - main.reduce((sum, card) => sum + card.quantity, 0),
+        material: rawBuild.unresolved.material + rawBuild.material.reduce((sum, card) => sum + card.quantity, 0) - material.reduce((sum, card) => sum + card.quantity, 0),
+        sideboard: rawBuild.unresolved.sideboard + rawBuild.sideboard.reduce((sum, card) => sum + card.quantity, 0) - sideboard.reduce((sum, card) => sum + card.quantity, 0),
+      },
+    };
+  }, [rawBuild, collectionMode, collectionOwnedByName]);
 
   const reviewSuggestions = useMemo(
     () => build.suggestions.filter((card) => !dismissedReviewCards.has(card.cardName)),
@@ -2327,6 +2369,8 @@ export default function DeckBuilderIndex() {
         {(["STANDARD", "PANTHEON"] as const).map((format) => <button key={format} type="button" aria-pressed={deckFormat === format} onClick={() => { setDeckFormat(format); if (format === "PANTHEON") setPopulationSource("community"); const next = new URLSearchParams(searchParams); if (format === "PANTHEON") next.set("format", "pantheon"); else next.delete("format"); setSearchParams(next, { replace: true }); }} className={`rounded-md px-3 py-1.5 ${deckFormat === format ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>{format === "PANTHEON" ? "Pantheon" : "Standard"}</button>)}
       </div>
       {deckFormat === "PANTHEON" && <p className="mt-2 text-xs text-ctp-subtext0">Pantheon recommendations use format-separated community adoption and singleton legality. They do not use Standard tournament win rates.</p>}
+
+      <div className="mt-3 flex flex-wrap items-center gap-2 rounded-lg border border-ctp-green/30 bg-ctp-green/5 p-3 text-xs"><span className="font-medium text-ctp-text">Build from collection:</span>{([['all', 'All cards'], ['prioritize', 'Prioritize owned'], ['owned-only', 'Owned only']] as const).map(([value, label]) => <button key={value} type="button" aria-pressed={collectionMode === value} onClick={() => startTransition(() => setCollectionMode(value))} className={`rounded px-2.5 py-1.5 ${collectionMode === value ? "bg-ctp-green text-ctp-base" : "border border-ctp-surface1 text-ctp-subtext1"}`}>{label}</button>)}<Link to="/collection" className="ml-auto text-ctp-blue hover:underline">Manage collection</Link><p className="w-full text-ctp-subtext0">{collectionMode === "owned-only" ? "Auto-suggestions are capped to physical copies you own. Locked cards remain, and shortages stay visible as unresolved slots." : collectionMode === "prioritize" ? "Owned cards win close recommendation ties; performance evidence still leads." : `${collection.length} owned card ${collection.length === 1 ? "entry" : "entries"} loaded.`}</p></div>
 
       <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
         <label htmlFor="deck-builder-champion" className="text-ctp-subtext0">Champion:</label>
@@ -2970,6 +3014,7 @@ export default function DeckBuilderIndex() {
                 {saveState === "sign-in" && <p className="mt-2 text-sm text-ctp-yellow">Sign in from <Link to="/my-decks" className="font-medium underline">My Decks</Link>, then return to save this build. Your builder choices are kept in this browser.</p>}
                 {saveState === "failed" && <p className="mt-2 text-sm text-ctp-red">The deck could not be saved. Please try again.</p>}
               </div>
+              <DeckCollectionTools decklist={decklist} cardsByName={catalogByName} source={`${championName ?? "Guided"} deck builder`} />
               <div className="flex flex-wrap gap-2">
                 <button
                   type="button"

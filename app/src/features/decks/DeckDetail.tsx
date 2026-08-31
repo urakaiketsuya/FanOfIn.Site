@@ -27,6 +27,7 @@ import {
 import { shortHash } from "../../lib/hash";
 import { formatUsd } from "../../lib/format";
 import DecklistView from "../events/DecklistView";
+import DeckCollectionTools from "../collection/DeckCollectionTools";
 import TopDecksList from "../../components/TopDecksList";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
@@ -368,6 +369,7 @@ export default function DeckDetail() {
       {tab === "decklist" && (
         <div className="mt-6">
           <DecklistView decklist={decklist} cardsByName={cardsByName} showThumbnails deckId={deck.deckIds[0]} />
+          <DeckCollectionTools decklist={decklist} cardsByName={cardsByName} source={`Tournament build: ${deck.championName ?? "Unknown Champion"}`} />
         </div>
       )}
 

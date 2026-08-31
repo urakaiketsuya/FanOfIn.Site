@@ -11,6 +11,7 @@ import { encodeCustomDecks } from "../../lib/compareShareLink";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { buildDecklistText } from "../events/DecklistView";
 import { officialProductDecks, officialProductsSource, PRODUCT_LABELS, type OfficialProductCardLine, type OfficialProductDeck } from "./data";
+import DeckCollectionTools from "../collection/DeckCollectionTools";
 
 const SECTION_LABELS: Record<keyof OfficialProductDeck["cards"], string> = {
   material: "Material",
@@ -146,6 +147,7 @@ function ProductDeckCard({
           })}
         </div>
       </details>
+      <div className="px-4 pb-4"><DeckCollectionTools decklist={decklist} cardsByName={cardsByName} source={`Official deck: ${deck.name}`} /></div>
     </article>
   );
 }

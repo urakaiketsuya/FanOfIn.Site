@@ -5,6 +5,7 @@ import { copyPublishedDeck, getDeckSocialState, listBookmarks, setDeckBookmark, 
 import { discoverDecks, getPublicProfile } from "./discovery";
 import { reportDeck } from "./moderation";
 import { serviceHealth } from "./health";
+import { listCollection, undoCollectionTransaction, updateCollection } from "./collection";
 
 function response(env: Env, request: Request, body: unknown, status = 200, extra: HeadersInit = {}): Response {
   const origin = request.headers.get("Origin");
@@ -131,11 +132,23 @@ export default {
       if (request.method === "GET" && url.pathname === "/v1/me/bookmarks") return response(env, request, { decks: await listBookmarks(env, user) });
 
       if (request.method === "GET" && url.pathname === "/v1/me/decks") return response(env, request, { decks: await listDecks(env, user) });
+      if (request.method === "GET" && url.pathname === "/v1/me/collection") return response(env, request, await listCollection(env, user));
+      if (request.method === "POST" && url.pathname === "/v1/me/collection") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        return response(env, request, await updateCollection(env, user, await jsonBody(request)), 201);
+      }
+      const collectionUndoMatch = url.pathname.match(/^\/v1\/me\/collection\/transactions\/([^/]+)\/undo$/);
+      if (collectionUndoMatch && request.method === "POST") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        await undoCollectionTransaction(env, user, collectionUndoMatch[1]);
+        return response(env, request, { success: true });
+      }
       if (request.method === "GET" && url.pathname === "/v1/me/export") {
         const profiles = await env.ACCOUNT_DB.prepare("SELECT provider, external_identifier, display_name, last_imported_at, created_at FROM external_profiles WHERE user_id = ? ORDER BY created_at").bind(user.id).all();
         const deckSummaries = await listDecks(env, user);
         const decks = (await Promise.all(deckSummaries.map((deck) => getDeck(env, user, deck.id)))).filter((deck) => deck !== null);
-        return response(env, request, { exportedAt: new Date().toISOString(), user, profiles: profiles.results, decks });
+        const collection = await listCollection(env, user);
+        return response(env, request, { exportedAt: new Date().toISOString(), user, profiles: profiles.results, decks, collection: collection.entries });
       }
       if (request.method === "PATCH" && url.pathname === "/v1/me") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);

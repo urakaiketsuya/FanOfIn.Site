@@ -6,10 +6,27 @@ import { getDeckSocialState, setDeckBookmark, setDeckLike } from "../src/deck-so
 import { discoverDecks, getPublicProfile } from "../src/discovery";
 import { reportDeck } from "../src/moderation";
 import { REQUIRED_SCHEMA_VERSION, serviceHealth } from "../src/health";
+import { computeDeckCollectionStatus } from "@gatcg/shared";
 
 function envWithSecret(secret: string): Env {
   return { BFF_SHARED_SECRET: secret } as Env;
 }
+
+test("deck collection status counts physical copies, sideboard, and proxies distinctly", () => {
+  const status = computeDeckCollectionStatus({
+    main: [{ card: "Dungeon Guide", quantity: 4 }],
+    material: [{ card: "Spirit of Water", quantity: 1 }],
+    sideboard: [{ card: "Dungeon Guide", quantity: 1 }],
+  }, [
+    { cardUuid: "guide", cardName: "dungeon guide", ownedQuantity: 3, proxyQuantity: 2, updatedAt: "now" },
+    { cardUuid: "spirit", cardName: "Spirit of Water", ownedQuantity: 1, proxyQuantity: 0, updatedAt: "now" },
+  ]);
+  assert.equal(status.requiredCopies, 6);
+  assert.equal(status.ownedCopies, 4);
+  assert.equal(status.missingCopies, 2);
+  assert.equal(status.proxyCopies, 2);
+  assert.equal(status.complete, false);
+});
 
 test("health verifies the latest required account schema without exposing data", async () => {
   const queries: string[] = [];

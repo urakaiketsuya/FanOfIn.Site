@@ -67,7 +67,7 @@ export default function PublicDeckDetail() {
     </div>
     {notice && <p className="mt-3 text-sm text-ctp-yellow">{notice}</p>}
     <div className="mt-6"><Tabs tabs={PUBLIC_TABS} active={tab} onChange={setTab} label="Published deck details" baseId="public-deck" /></div>
-    {tab === "decklist" && <div id="public-deck-panel-decklist" role="tabpanel" aria-labelledby="public-deck-tab-decklist" tabIndex={0}><UserDecklistPanel decklist={deck.decklist} /></div>}
+    {tab === "decklist" && <div id="public-deck-panel-decklist" role="tabpanel" aria-labelledby="public-deck-tab-decklist" tabIndex={0}><UserDecklistPanel decklist={deck.decklist} collectionSource={`Shared deck: ${deck.title}`} /></div>}
     {tab === "analysis" && <section id="public-deck-panel-analysis" role="tabpanel" aria-labelledby="public-deck-tab-analysis" tabIndex={0}><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} title={deck.title} /></section>}
     {tab === "primer" && <section id="public-deck-panel-primer" role="tabpanel" aria-labelledby="public-deck-tab-primer" tabIndex={0} className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-5">{deck.primerMarkdown.trim() ? <PrimerMarkdown markdown={deck.primerMarkdown} /> : <p className="text-sm text-ctp-subtext1">The author has not added a primer yet.</p>}</section>}
     <p className="mt-4 text-xs text-ctp-subtext0">Published {new Date(deck.publishedAt).toLocaleDateString()} · Updated {new Date(deck.updatedAt).toLocaleDateString()}</p>

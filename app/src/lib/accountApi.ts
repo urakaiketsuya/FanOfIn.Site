@@ -1,4 +1,4 @@
-import type { AccountSession, AccountUser, BookmarkedDeck, DeckImportPreview, DeckReportReason, DeckSocialState, DeckVisibility, OmnidexDecklist, PublicDeck, PublicDeckSummary, PublicProfile, SavedDeck, SavedDeckDetail } from "@gatcg/shared";
+import type { AccountSession, AccountUser, BookmarkedDeck, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, DeckImportPreview, DeckReportReason, DeckSocialState, DeckVisibility, OmnidexDecklist, PublicDeck, PublicDeckSummary, PublicProfile, SavedDeck, SavedDeckDetail } from "@gatcg/shared";
 
 const ACCOUNT_API_URL = (import.meta.env.VITE_ACCOUNT_API_URL as string | undefined)?.replace(/\/$/, "")
   ?? (import.meta.env.PROD ? "https://accounts.fanofin.site/api" : "http://localhost:8788");
@@ -41,6 +41,9 @@ export const accountApi = {
   copyDeck: (slug: string) => accountRequest<{ id: string; created: boolean }>(`/v1/me/decklists/${encodeURIComponent(slug)}/copy`, { method: "POST", body: "{}" }),
   reportDeck: (slug: string, reason: DeckReportReason, details: string) => accountRequest<{ reported: true }>(`/v1/me/decklists/${encodeURIComponent(slug)}/report`, { method: "POST", body: JSON.stringify({ reason, details }) }),
   bookmarks: () => accountRequest<{ decks: BookmarkedDeck[] }>("/v1/me/bookmarks"),
+  collection: () => accountRequest<{ entries: CollectionEntry[]; transactions: CollectionTransaction[] }>("/v1/me/collection"),
+  updateCollection: (input: { mode: CollectionUpdateMode; source: string; lines: CollectionUpdateLine[] }) => accountRequest<{ transactionId: string; changed: number }>("/v1/me/collection", { method: "POST", body: JSON.stringify(input) }),
+  undoCollectionTransaction: (id: string) => accountRequest<{ success: true }>(`/v1/me/collection/transactions/${encodeURIComponent(id)}/undo`, { method: "POST", body: "{}" }),
   createDeckVersion: (id: string, input: { decklist: OmnidexDecklist; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; changeNote?: string }) =>
     accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}/versions`, { method: "POST", body: JSON.stringify(input) }),
   restoreDeckVersion: (id: string, versionId: string) => accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}/versions/${encodeURIComponent(versionId)}/restore`, { method: "POST" }),
