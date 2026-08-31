@@ -1,0 +1,111 @@
+name: Account D1 restore drill
+
+on:
+  schedule:
+    - cron: "41 7 15 1,4,7,10 *"
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Backup release tag; leave blank to use the newest recovery point
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: account-d1-restore-drill
+  cancel-in-progress: false
+
+jobs:
+  restore-drill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_D1_BACKUP_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      BACKUP_REPOSITORY: ${{ secrets.ACCOUNT_BACKUP_REPOSITORY }}
+      GH_TOKEN: ${{ secrets.ACCOUNT_BACKUP_REPOSITORY_TOKEN }}
+      BACKUP_PASSPHRASE: ${{ secrets.ACCOUNT_BACKUP_PASSPHRASE }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Download and decrypt a recovery point
+        id: recovery
+        env:
+          REQUESTED_TAG: ${{ inputs.release_tag }}
+        run: |
+          set -euo pipefail
+          umask 077
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          test -n "$BACKUP_REPOSITORY"
+          test -n "$GH_TOKEN"
+          test -n "$BACKUP_PASSPHRASE"
+
+          tag="$REQUESTED_TAG"
+          if [ -z "$tag" ]; then
+            tag="$(gh release list --repo "$BACKUP_REPOSITORY" --limit 100 --json tagName,createdAt \
+              --jq '[.[] | select(.tagName | startswith("account-d1-"))] | sort_by(.createdAt) | last | .tagName')"
+          fi
+          test -n "$tag"
+          mkdir recovery
+          gh release download "$tag" --repo "$BACKUP_REPOSITORY" --dir recovery --pattern '*.gpg*'
+          cd recovery
+          sha256sum --check ./*.sha256
+          encrypted="$(find . -maxdepth 1 -type f -name '*.tar.gz.gpg' -print -quit)"
+          test -n "$encrypted"
+          printf '%s\n' "$BACKUP_PASSPHRASE" | gpg --batch --yes --no-symkey-cache --pinentry-mode loopback --passphrase-fd 0 \
+            --decrypt --output backup.tar.gz "$encrypted"
+          mkdir unpacked
+          tar -C unpacked -xzf backup.tar.gz
+          test -s unpacked/account-backup.sql
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Restore into a disposable D1 database and verify it
+        working-directory: account-worker
+        run: |
+          set -euo pipefail
+          restore_db="fanofin-restore-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          created=false
+          cleanup() {
+            if [ "$created" = true ]; then
+              npx wrangler d1 delete "$restore_db" --skip-confirmation
+            fi
+          }
+          trap cleanup EXIT
+
+          npx wrangler d1 create "$restore_db"
+          created=true
+          npx wrangler d1 execute "$restore_db" --remote --yes --file ../recovery/unpacked/account-backup.sql
+          npx wrangler d1 execute "$restore_db" --remote --json --command \
+            "SELECT COUNT(*) AS application_table_count FROM sqlite_schema WHERE type = 'table' AND name IN ('users','sessions','external_profiles','saved_decks','saved_deck_sources','oauth_nonces','canonical_builds','user_decks','deck_versions','deck_likes','deck_bookmarks','deck_reports')" \
+            > ../recovery/schema.json
+          jq -e '.[0].results[0].application_table_count == 12' ../recovery/schema.json
+          npx wrangler d1 execute "$restore_db" --remote --json --command \
+            "SELECT (SELECT COUNT(*) FROM sessions c LEFT JOIN users p ON p.id = c.user_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM external_profiles c LEFT JOIN users p ON p.id = c.user_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM saved_decks c LEFT JOIN users p ON p.id = c.user_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM saved_deck_sources c LEFT JOIN saved_decks p ON p.id = c.saved_deck_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM user_decks c LEFT JOIN users p ON p.id = c.owner_user_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM deck_versions c LEFT JOIN user_decks p ON p.id = c.deck_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM deck_versions c LEFT JOIN canonical_builds p ON p.id = c.canonical_build_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM deck_likes c LEFT JOIN users p ON p.id = c.user_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM deck_likes c LEFT JOIN user_decks p ON p.id = c.deck_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM deck_bookmarks c LEFT JOIN users p ON p.id = c.user_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM deck_bookmarks c LEFT JOIN user_decks p ON p.id = c.deck_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM deck_bookmarks c LEFT JOIN deck_versions p ON p.id = c.version_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM deck_reports c LEFT JOIN users p ON p.id = c.reporter_user_id WHERE p.id IS NULL) + (SELECT COUNT(*) FROM deck_reports c LEFT JOIN user_decks p ON p.id = c.deck_id WHERE p.id IS NULL) AS orphan_count" \
+            > ../recovery/relationships.json
+          jq -e '.[0].results[0].orphan_count == 0' ../recovery/relationships.json
+
+      - name: Confirm disposable database cleanup
+        if: always()
+        working-directory: account-worker
+        run: |
+          set -euo pipefail
+          restore_db="fanofin-restore-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          if npx wrangler d1 list --json | jq -e --arg name "$restore_db" '.[] | select(.name == $name)' > /dev/null; then
+            npx wrangler d1 delete "$restore_db" --skip-confirmation
+          fi
+
+      - name: Record drill result
+        run: |
+          echo "### Account D1 restore drill passed" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Recovery point: \`${{ steps.recovery.outputs.tag }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Verified: encrypted asset checksum, decryption, D1 import, 12 application tables, and required parent relationships" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Disposable D1 database deleted" >> "$GITHUB_STEP_SUMMARY"

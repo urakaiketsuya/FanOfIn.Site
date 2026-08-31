@@ -24,20 +24,36 @@ Alert on sustained 5xx responses, repeated `google_sign_in_failed`, rate-limit s
 
 ## Backups and restore drill
 
-Before schema migrations or risky releases, export production D1 from the `account-worker` directory to an access-controlled location:
+Cloudflare D1 Time Travel is the first recovery layer. It is automatic; Workers Free retains seven days and Workers Paid retains 30 days. Before every production migration, capture a bookmark by manually running the `Account D1 backup` workflow with the migration identifier as its reason. The workflow records the bookmark alongside an encrypted export, so the release has both a short-term point-in-time recovery target and a durable recovery copy.
+
+The same workflow runs at 06:23 UTC every Sunday. It exports production D1, packages the SQL export with its Time Travel response and a manifest, encrypts the package with GnuPG AES-256, and uploads the encrypted file plus its SHA-256 checksum as a release in a separate private GitHub repository. Releases older than 90 days are deleted. Backup files are release assets rather than Git commits so retention does not require rewriting repository history.
+
+Create a private repository dedicated to backups, initialize it with a README so it has a default branch, and configure these Actions secrets on this application repository:
+
+- `CLOUDFLARE_D1_BACKUP_API_TOKEN`: narrowly scoped token that can read/export D1 and create/delete disposable D1 databases for drills.
+- `CLOUDFLARE_ACCOUNT_ID`: Cloudflare account containing production D1.
+- `ACCOUNT_BACKUP_REPOSITORY`: private repository in `owner/repository` form.
+- `ACCOUNT_BACKUP_REPOSITORY_TOKEN`: fine-grained GitHub token limited to read/write repository Contents access for that repository (GitHub releases use this permission).
+- `ACCOUNT_BACKUP_PASSPHRASE`: high-entropy backup encryption secret stored separately in the recovery runbook or password manager as well as GitHub Actions.
+
+Do not use the application repository as the backup repository. Do not commit SQL exports, encrypted exports, checksums, credentials, or passphrases. Repository privacy is an additional access control, not a substitute for encryption. Anyone with the backup passphrase and release access can recover user account data.
+
+For an exceptional local recovery point, export production D1 from the `account-worker` directory to a temporary, access-controlled location and encrypt it immediately:
 
 ```bash
 npx wrangler d1 export fanofin-accounts-production --env production --remote --output account-backup.sql
 ```
 
-Encrypt backups at rest, restrict access, and choose a written retention period consistent with the privacy policy. Do not commit exports to Git. Test restore at least quarterly against a disposable D1 database:
+The `Account D1 restore drill` workflow runs quarterly and can also be dispatched for a selected release tag. It downloads and verifies an encrypted release, restores it into a uniquely named disposable D1 database, checks the expected application tables and required parent relationships, and deletes the disposable database even when verification fails. GitHub Actions failure notifications must be enabled for maintainers. D1 does not authorize `PRAGMA integrity_check`, so successful import, queryability, schema presence, relationship checks, and the encrypted asset checksum form the automated verification set.
+
+For a manual restore drill:
 
 ```bash
 npx wrangler d1 create fanofin-accounts-restore-test
 npx wrangler d1 execute fanofin-accounts-restore-test --remote --file account-backup.sql
 ```
 
-Verify user, session, deck, source, profile, and nonce row counts; sign-in and deck access should be tested with non-production credentials. Delete the disposable database and backup copy according to the retention policy after the drill.
+Verify user, session, deck, source, profile, and nonce row counts; sign-in and deck access should be tested with non-production credentials. Delete the disposable database and decrypted backup copy according to the retention policy after the drill. Never restore Time Travel or a SQL export over production until the selected recovery point has been verified and the resulting loss window has been approved.
 
 ## Privacy lifecycle
 
@@ -51,7 +67,7 @@ Account records remain until the user deletes the account. OAuth nonces expire a
 
 1. Start from a clean checkout and run the account Worker tests and Worker, BFF, and app typechecks.
 2. Apply every migration to a fresh local D1 database and confirm `npx wrangler d1 migrations list fanofin-accounts-dev --local` has no pending migration.
-3. Export and encrypt a production D1 backup as described above.
+3. Run the `Account D1 backup` workflow with the release or migration identifier and confirm its private backup release succeeded. Record its Time Travel bookmark from the encrypted manifest only when recovery is needed.
 4. Record the current Cloudflare Worker and Vercel deployment IDs so each code deployment can be restored independently.
 
 ### Production rollout

@@ -1,0 +1,111 @@
+name: Account D1 backup
+
+on:
+  schedule:
+    - cron: "23 6 * * 0"
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: Why this recovery point is being created
+        required: false
+        default: manual
+
+permissions:
+  contents: read
+
+concurrency:
+  group: account-d1-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_D1_BACKUP_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      BACKUP_REPOSITORY: ${{ secrets.ACCOUNT_BACKUP_REPOSITORY }}
+      GH_TOKEN: ${{ secrets.ACCOUNT_BACKUP_REPOSITORY_TOKEN }}
+      BACKUP_PASSPHRASE: ${{ secrets.ACCOUNT_BACKUP_PASSPHRASE }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Validate backup configuration
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          test -n "$BACKUP_REPOSITORY"
+          test -n "$GH_TOKEN"
+          test -n "$BACKUP_PASSPHRASE"
+          case "$BACKUP_REPOSITORY" in
+            */*) ;;
+            *) echo "ACCOUNT_BACKUP_REPOSITORY must be owner/repository" >&2; exit 1 ;;
+          esac
+
+      - name: Export and encrypt production D1
+        id: backup
+        working-directory: account-worker
+        env:
+          BACKUP_REASON: ${{ inputs.reason || 'scheduled' }}
+        run: |
+          set -euo pipefail
+          umask 077
+          timestamp="$(date -u +%Y%m%dT%H%M%SZ)"
+          tag="account-d1-${timestamp}"
+          archive="${tag}.tar.gz"
+          encrypted="${archive}.gpg"
+          work="$(mktemp -d)"
+          trap 'rm -rf "$work"' EXIT
+
+          npx wrangler d1 time-travel info fanofin-accounts-production --env production --json > "$work/time-travel.json"
+          npx wrangler d1 export fanofin-accounts-production --env production --remote --output "$work/account-backup.sql"
+          jq -n \
+            --arg created_at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --arg source_commit "$GITHUB_SHA" \
+            --arg reason "$BACKUP_REASON" \
+            '{created_at: $created_at, source_commit: $source_commit, reason: $reason, database: "fanofin-accounts-production"}' \
+            > "$work/manifest.json"
+          tar -C "$work" -czf "$archive" account-backup.sql manifest.json time-travel.json
+          printf '%s\n' "$BACKUP_PASSPHRASE" | gpg --batch --yes --no-symkey-cache --pinentry-mode loopback --passphrase-fd 0 \
+            --symmetric --cipher-algo AES256 --output "$encrypted" "$archive"
+          sha256sum "$encrypted" > "${encrypted}.sha256"
+          rm -f "$archive"
+
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "asset=$encrypted" >> "$GITHUB_OUTPUT"
+
+      - name: Upload to the private backup repository
+        working-directory: account-worker
+        run: |
+          gh release create "${{ steps.backup.outputs.tag }}" \
+            "${{ steps.backup.outputs.asset }}" \
+            "${{ steps.backup.outputs.asset }}.sha256" \
+            --repo "$BACKUP_REPOSITORY" \
+            --title "Account D1 ${{ steps.backup.outputs.tag }}" \
+            --notes "Encrypted production D1 recovery point. Retention: 90 days."
+
+      - name: Remove recovery points older than 90 days
+        run: |
+          set -euo pipefail
+          cutoff="$(date -u -d '90 days ago' +%s)"
+          gh api --paginate "repos/$BACKUP_REPOSITORY/releases?per_page=100" \
+            --jq '.[] | select(.tag_name | startswith("account-d1-")) | [.tag_name, .created_at] | @tsv' |
+          while IFS=$'\t' read -r tag created_at; do
+            if [ "$(date -u -d "$created_at" +%s)" -lt "$cutoff" ]; then
+              gh release delete "$tag" --repo "$BACKUP_REPOSITORY" --cleanup-tag --yes
+            fi
+          done
+
+      - name: Record recovery point
+        run: |
+          echo "### Account D1 recovery point" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Release: \`${{ steps.backup.outputs.tag }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Repository: \`$BACKUP_REPOSITORY\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Retention: 90 days" >> "$GITHUB_STEP_SUMMARY"
