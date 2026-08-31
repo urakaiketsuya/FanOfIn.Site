@@ -1,4 +1,4 @@
-import type { AccountSession, DeckImportPreview, OmnidexDecklist, SavedDeck } from "@gatcg/shared";
+import type { AccountSession, AccountUser, DeckImportPreview, OmnidexDecklist, SavedDeck } from "@gatcg/shared";
 
 const ACCOUNT_API_URL = (import.meta.env.VITE_ACCOUNT_API_URL as string | undefined)?.replace(/\/$/, "")
   ?? (import.meta.env.PROD ? "https://accounts.fanofin.site/api" : "http://localhost:8788");
@@ -26,6 +26,7 @@ export const accountApi = {
   logout: () => accountRequest<{ success: true }>("/v1/auth/logout", { method: "POST" }),
   logoutAll: () => accountRequest<{ success: true }>("/v1/auth/logout-all", { method: "POST" }),
   exportAccount: () => accountRequest<Record<string, unknown>>("/v1/me/export"),
+  updateUsername: (displayName: string) => accountRequest<{ user: AccountUser }>("/v1/me", { method: "PATCH", body: JSON.stringify({ displayName }) }),
   deleteAccount: () => accountRequest<{ success: true }>("/v1/me", { method: "DELETE", body: JSON.stringify({ confirmation: "DELETE" }) }),
   decks: () => accountRequest<{ decks: SavedDeck[] }>("/v1/me/decks"),
   saveDeck: (input: { title: string; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; decklist: OmnidexDecklist; source: { provider: "manual"; externalDeckId: string; label: string } }) =>

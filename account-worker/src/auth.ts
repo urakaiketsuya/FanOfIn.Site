@@ -104,12 +104,12 @@ function cookieValue(request: Request, name: string): string | null {
 
 export async function createUserSession(env: Env, claims: GoogleClaims): Promise<{ user: AuthUser; cookie: string }> {
   const now = new Date().toISOString();
-  const existing = await env.ACCOUNT_DB.prepare("SELECT id FROM users WHERE google_subject = ?").bind(claims.sub).first<{ id: string }>();
+  const existing = await env.ACCOUNT_DB.prepare("SELECT id, display_name FROM users WHERE google_subject = ?").bind(claims.sub).first<{ id: string; display_name: string }>();
   const userId = existing?.id ?? crypto.randomUUID();
-  const displayName = claims.name?.trim() || claims.email.split("@")[0];
+  const displayName = existing?.display_name ?? (claims.name?.trim() || claims.email.split("@")[0]);
   await env.ACCOUNT_DB.prepare(`INSERT INTO users (id, google_subject, email, display_name, avatar_url, created_at, updated_at)
     VALUES (?, ?, ?, ?, ?, ?, ?)
-    ON CONFLICT(google_subject) DO UPDATE SET email = excluded.email, display_name = excluded.display_name,
+    ON CONFLICT(google_subject) DO UPDATE SET email = excluded.email,
       avatar_url = excluded.avatar_url, updated_at = excluded.updated_at`)
     .bind(userId, claims.sub, claims.email, displayName, claims.picture ?? null, now, now).run();
   const rawToken = `${crypto.randomUUID()}${crypto.randomUUID()}`.replace(/-/g, "");
@@ -120,6 +120,13 @@ export async function createUserSession(env: Env, claims: GoogleClaims): Promise
     user: { id: userId, email: claims.email, displayName, avatarUrl: claims.picture ?? null },
     cookie: `${SESSION_COOKIE}=${rawToken}; Path=/; HttpOnly; ${env.ALLOWED_ORIGINS.includes("https://") ? "Secure; " : ""}SameSite=Lax; Max-Age=${SESSION_SECONDS}`,
   };
+}
+
+export function normalizeDisplayName(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const normalized = value.trim().replace(/\s+/g, " ");
+  if (normalized.length < 2 || normalized.length > 32 || /[\p{Cc}\p{Cf}]/u.test(normalized)) return null;
+  return normalized;
 }
 
 export async function createOAuthNonce(env: Env): Promise<string> {

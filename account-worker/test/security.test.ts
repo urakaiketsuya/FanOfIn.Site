@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { bffAllowed, clearGoogleKeyCacheForTest, consumeOAuthNonce, createOAuthNonce, verifyGoogleCredential, type Env } from "../src/auth";
+import { bffAllowed, clearGoogleKeyCacheForTest, consumeOAuthNonce, createOAuthNonce, normalizeDisplayName, verifyGoogleCredential, type Env } from "../src/auth";
 import { assetJson, deleteDeck, parseSaveInput, renameDeck } from "../src/decks";
 
 function envWithSecret(secret: string): Env {
@@ -60,6 +60,13 @@ test("manual saves reject oversized decklists", () => {
     decklist: { main: lines, material: [], sideboard: [] },
     source: { provider: "manual", externalDeckId: "local", label: "Manual" },
   }), /Invalid saved deck/);
+});
+
+test("usernames are normalized and bounded", () => {
+  assert.equal(normalizeDisplayName("  Grand   Player  "), "Grand Player");
+  assert.equal(normalizeDisplayName("A"), null);
+  assert.equal(normalizeDisplayName("x".repeat(33)), null);
+  assert.equal(normalizeDisplayName("Player\u0000Name"), null);
 });
 
 test("the public save endpoint cannot forge imported sources", () => {

@@ -1,4 +1,4 @@
-import { authenticatedUser, bffAllowed, consumeOAuthNonce, createOAuthNonce, createUserSession, destroyAllSessions, destroySession, originAllowed, rotateCurrentSession, verifyGoogleCredential, type Env } from "./auth";
+import { authenticatedUser, bffAllowed, consumeOAuthNonce, createOAuthNonce, createUserSession, destroyAllSessions, destroySession, normalizeDisplayName, originAllowed, rotateCurrentSession, verifyGoogleCredential, type Env } from "./auth";
 import { deleteDeck, listDecks, parseSaveInput, performImport, previewImport, renameDeck, saveDeck } from "./decks";
 import { ApiError, badRequest } from "./errors";
 
@@ -95,6 +95,15 @@ export default {
       if (request.method === "GET" && url.pathname === "/v1/me/export") {
         const profiles = await env.ACCOUNT_DB.prepare("SELECT provider, external_identifier, display_name, last_imported_at, created_at FROM external_profiles WHERE user_id = ? ORDER BY created_at").bind(user.id).all();
         return response(env, request, { exportedAt: new Date().toISOString(), user, profiles: profiles.results, decks: await listDecks(env, user) });
+      }
+      if (request.method === "PATCH" && url.pathname === "/v1/me") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        const body = await jsonBody(request) as { displayName?: unknown };
+        const displayName = normalizeDisplayName(body.displayName);
+        if (!displayName) return response(env, request, { error: "Username must be 2–32 characters and cannot contain control characters" }, 400);
+        const now = new Date().toISOString();
+        await env.ACCOUNT_DB.prepare("UPDATE users SET display_name = ?, updated_at = ? WHERE id = ?").bind(displayName, now, user.id).run();
+        return response(env, request, { user: { ...user, displayName } });
       }
       if (request.method === "DELETE" && url.pathname === "/v1/me") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
