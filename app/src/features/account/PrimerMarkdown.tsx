@@ -1,4 +1,8 @@
 import { Fragment, type ReactNode } from "react";
+import { Link } from "react-router-dom";
+import CardHoverPreview from "../../components/CardHoverPreview";
+import CardImage from "../../components/CardImage";
+import { useCardsByNames } from "../events/useCardsByNames";
 
 const INLINE = /(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*|`[^`]+`|\*[^*]+\*)/g;
 
@@ -25,8 +29,17 @@ function inlineMarkdown(value: string): ReactNode[] {
   });
 }
 
+function calloutCardCandidate(line: string): { name: string; quantity: number | null } | null {
+  const bullet = line.match(/^[-*]\s+(.+)$/);
+  if (!bullet) return null;
+  const quantity = bullet[1].match(/^(\d+)x?\s+(.+)$/i);
+  return quantity ? { name: quantity[2].trim(), quantity: Number(quantity[1]) } : { name: bullet[1].trim(), quantity: null };
+}
+
 export default function PrimerMarkdown({ markdown }: { markdown: string }) {
   const lines = markdown.replace(/\r\n?/g, "\n").split("\n");
+  const candidateNames = lines.map(calloutCardCandidate).filter((candidate): candidate is { name: string; quantity: number | null } => candidate !== null).map((candidate) => candidate.name);
+  const cardsByName = useCardsByNames(candidateNames);
   const blocks: ReactNode[] = [];
   let paragraph: string[] = [];
   let list: string[] = [];
@@ -39,9 +52,16 @@ export default function PrimerMarkdown({ markdown }: { markdown: string }) {
     if (!callout) return;
     const current = callout;
     const isCombo = current.kind === "combo";
+    const cardLines = current.lines.map((line, index) => ({ index, candidate: calloutCardCandidate(line) })).filter((entry): entry is { index: number; candidate: { name: string; quantity: number | null } } => entry.candidate !== null && cardsByName.has(entry.candidate.name));
+    const cardLineIndexes = new Set(cardLines.map((entry) => entry.index));
+    const remainingLines = current.lines.filter((_, index) => !cardLineIndexes.has(index));
     blocks.push(<aside key={`callout-${blocks.length}`} className={`rounded-xl border p-4 ${isCombo ? "border-ctp-mauve/50 bg-ctp-mauve/10" : "border-ctp-teal/50 bg-ctp-teal/10"}`}>
       <div className="flex items-center gap-2"><span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${isCombo ? "bg-ctp-mauve/20 text-ctp-mauve" : "bg-ctp-teal/20 text-ctp-teal"}`}>{isCombo ? "Combo" : "Package"}</span><h3 className="font-semibold text-ctp-text">{inlineMarkdown(current.title)}</h3></div>
-      {current.lines.some((line) => line.trim()) && <div className="mt-3"><PrimerMarkdown markdown={current.lines.join("\n")} /></div>}
+      {cardLines.length > 0 && <div className="mt-3 grid gap-2 sm:grid-cols-2">{cardLines.map(({ index, candidate }) => {
+        const card = cardsByName.get(candidate.name)!;
+        return <CardHoverPreview key={`${candidate.name}-${index}`} image={card.editions[0]?.image} alt={candidate.name}><Link to={`/cards/${card.slug}`} className="flex items-center gap-2 rounded-lg border border-ctp-surface1/70 bg-ctp-base/40 p-2 hover:border-ctp-blue/60"><CardImage image={card.editions[0]?.image} alt={candidate.name} className="h-12 w-9 shrink-0 rounded object-cover object-top" /><span className="min-w-0 text-sm font-medium text-ctp-text"><span className="block truncate">{candidate.name}</span>{candidate.quantity && <span className="text-xs font-normal text-ctp-subtext0">{candidate.quantity} copies</span>}</span></Link></CardHoverPreview>;
+      })}</div>}
+      {remainingLines.some((line) => line.trim()) && <div className="mt-3"><PrimerMarkdown markdown={remainingLines.join("\n")} /></div>}
     </aside>);
     callout = null;
   };
