@@ -31,11 +31,27 @@ export default function PrimerMarkdown({ markdown }: { markdown: string }) {
   let paragraph: string[] = [];
   let list: string[] = [];
   let code: string[] | null = null;
+  let callout: { kind: "combo" | "package"; title: string; lines: string[] } | null = null;
 
   const flushParagraph = () => { if (paragraph.length) { blocks.push(<p key={`p-${blocks.length}`}>{inlineMarkdown(paragraph.join(" "))}</p>); paragraph = []; } };
   const flushList = () => { if (list.length) { blocks.push(<ul key={`ul-${blocks.length}`} className="list-disc space-y-1 pl-6">{list.map((item, index) => <li key={index}>{inlineMarkdown(item)}</li>)}</ul>); list = []; } };
+  const flushCallout = () => {
+    if (!callout) return;
+    const current = callout;
+    const isCombo = current.kind === "combo";
+    blocks.push(<aside key={`callout-${blocks.length}`} className={`rounded-xl border p-4 ${isCombo ? "border-ctp-mauve/50 bg-ctp-mauve/10" : "border-ctp-teal/50 bg-ctp-teal/10"}`}>
+      <div className="flex items-center gap-2"><span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${isCombo ? "bg-ctp-mauve/20 text-ctp-mauve" : "bg-ctp-teal/20 text-ctp-teal"}`}>{isCombo ? "Combo" : "Package"}</span><h3 className="font-semibold text-ctp-text">{inlineMarkdown(current.title)}</h3></div>
+      {current.lines.some((line) => line.trim()) && <div className="mt-3"><PrimerMarkdown markdown={current.lines.join("\n")} /></div>}
+    </aside>);
+    callout = null;
+  };
 
   for (const line of lines) {
+    if (callout) {
+      if (line.trim() === ":::") flushCallout();
+      else callout.lines.push(line);
+      continue;
+    }
     if (line.startsWith("```")) {
       flushParagraph(); flushList();
       if (code) { blocks.push(<pre key={`code-${blocks.length}`} className="overflow-auto rounded-lg bg-ctp-base p-4 text-sm"><code>{code.join("\n")}</code></pre>); code = null; }
@@ -43,6 +59,13 @@ export default function PrimerMarkdown({ markdown }: { markdown: string }) {
       continue;
     }
     if (code) { code.push(line); continue; }
+    const calloutStart = line.match(/^:::(combo|package)(?:\s+(.+))?$/i);
+    if (calloutStart) {
+      flushParagraph(); flushList();
+      const kind = calloutStart[1].toLowerCase() as "combo" | "package";
+      callout = { kind, title: calloutStart[2]?.trim() || (kind === "combo" ? "Card combo" : "Card package"), lines: [] };
+      continue;
+    }
     const heading = line.match(/^(#{1,3})\s+(.+)$/);
     const bullet = line.match(/^[-*]\s+(.+)$/);
     if (heading) {
@@ -59,6 +82,7 @@ export default function PrimerMarkdown({ markdown }: { markdown: string }) {
     } else paragraph.push(line.trim());
   }
   flushParagraph(); flushList();
+  flushCallout();
   if (code) blocks.push(<pre key={`code-${blocks.length}`} className="overflow-auto rounded-lg bg-ctp-base p-4 text-sm"><code>{code.join("\n")}</code></pre>);
 
   return <article className="space-y-4 leading-7 text-ctp-text">{blocks}</article>;
