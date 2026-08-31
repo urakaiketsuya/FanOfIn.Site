@@ -66,8 +66,8 @@ export default function PublicDeckDetail() {
     </div>
     {notice && <p className="mt-3 text-sm text-ctp-yellow">{notice}</p>}
     <div className="mt-6"><Tabs tabs={PUBLIC_TABS} active={tab} onChange={setTab} label="Published deck details" baseId="public-deck" /></div>
-    {tab === "decklist" && <UserDecklistPanel decklist={deck.decklist} />}
-    {tab === "primer" && <section className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-5">{deck.primerMarkdown.trim() ? <PrimerMarkdown markdown={deck.primerMarkdown} /> : <p className="text-sm text-ctp-subtext1">The author has not added a primer yet.</p>}</section>}
+    {tab === "decklist" && <div id="public-deck-panel-decklist" role="tabpanel" aria-labelledby="public-deck-tab-decklist" tabIndex={0}><UserDecklistPanel decklist={deck.decklist} /></div>}
+    {tab === "primer" && <section id="public-deck-panel-primer" role="tabpanel" aria-labelledby="public-deck-tab-primer" tabIndex={0} className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-5">{deck.primerMarkdown.trim() ? <PrimerMarkdown markdown={deck.primerMarkdown} /> : <p className="text-sm text-ctp-subtext1">The author has not added a primer yet.</p>}</section>}
     <p className="mt-4 text-xs text-ctp-subtext0">Published {new Date(deck.publishedAt).toLocaleDateString()}</p>
   </div>;
 }

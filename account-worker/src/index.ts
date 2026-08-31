@@ -56,12 +56,12 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     const requestId = request.headers.get("CF-Ray") ?? crypto.randomUUID();
-    if (url.pathname !== "/health" && !await bffAllowed(request, env)) {
-      return response(env, request, { error: "Account service gateway is required" }, 403);
-    }
     if (request.method === "OPTIONS") {
       if (!originAllowed(request, env)) return response(env, request, { error: "Origin is not allowed" }, 403);
       return response(env, request, {}, 200, { "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS", "Access-Control-Allow-Headers": "Content-Type" });
+    }
+    if (url.pathname !== "/health" && !await bffAllowed(request, env)) {
+      return response(env, request, { error: "Account service gateway is required" }, 403);
     }
     if (!originAllowed(request, env)) return response(env, request, { error: "Origin is not allowed" }, 403);
 

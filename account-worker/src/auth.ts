@@ -212,6 +212,9 @@ function constantTimeEqual(left: string, right: string): boolean {
 }
 
 export async function bffAllowed(request: Request, env: Env): Promise<boolean> {
+  // Local Wrangler serves the browser directly; production traffic must use the BFF.
+  const origin = request.headers.get("Origin");
+  if (new URL(request.url).hostname === "localhost" && origin === "http://localhost:5173" && env.ALLOWED_ORIGINS === origin) return true;
   if (!env.BFF_SHARED_SECRET || request.headers.get("X-Fanofin-BFF-Secret") !== env.BFF_SHARED_SECRET) return false;
   const timestamp = request.headers.get("X-Fanofin-BFF-Timestamp");
   const requestId = request.headers.get("X-Fanofin-BFF-Request-ID");
