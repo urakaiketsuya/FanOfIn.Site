@@ -34,12 +34,17 @@ export function buildDeckBuilderPath(
   spiritFilter: string | null,
   lockedCards: Map<string, number>,
   lockedSections: Map<string, LockedSection>,
+  options?: { mode?: "improve"; sourceDeckId?: string },
 ): string {
   const params = new URLSearchParams();
   params.set("champion", championName);
   if (spiritFilter) params.set("spirit", spiritFilter);
   const locked = encodeLockedCards(lockedCards, lockedSections);
   if (locked) params.set("locked", locked);
+  if (options?.mode === "improve") {
+    params.set("tab", "review");
+    if (options.sourceDeckId) params.set("improveDeck", options.sourceDeckId);
+  }
   return `/deck-builder?${params.toString()}`;
 }
 

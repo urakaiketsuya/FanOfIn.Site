@@ -1522,6 +1522,7 @@ export default function DeckBuilderIndex() {
     "Build a Grand Archive deck from tournament win-rate, blended community-usage, or balanced recommendations, then tune, validate, share, buy, export, or playtest it.",
   );
   const [searchParams, setSearchParams] = useSearchParams();
+  const improveDeckId = searchParams.get("improveDeck");
   const [deckFormat, setDeckFormat] = useState<DeckFormat>(() => searchParams.get("format")?.toUpperCase() === "PANTHEON" ? "PANTHEON" : "STANDARD");
   // Computed fresh each render (cheap — parsing a couple of query params), but only its value on
   // the very first render actually matters: every useState below that reads from it only consults
@@ -2202,6 +2203,7 @@ export default function DeckBuilderIndex() {
   const [copyState, setCopyState] = useState<"idle" | "full-copied" | "kept-copied" | "full-failed" | "kept-failed">("idle");
   const [shareCopyState, setShareCopyState] = useState<"idle" | "copied" | "failed">("idle");
   const [saveTitle, setSaveTitle] = useState("");
+  const [saveNote, setSaveNote] = useState("");
   const [saveState, setSaveState] = useState<"idle" | "saving" | "saved" | "sign-in" | "failed">("idle");
   const [savedDeckId, setSavedDeckId] = useState<string | null>(null);
   const fullCopyCount = [...build.main, ...build.material, ...build.sideboard].reduce((sum, card) => sum + card.quantity, 0);
@@ -2271,6 +2273,17 @@ export default function DeckBuilderIndex() {
     if (!championName || fullCopyCount === 0) return;
     setSaveState("saving");
     try {
+      if (improveDeckId) {
+        await accountApi.createDeckVersion(improveDeckId, {
+          format: deckFormat,
+          championName,
+          decklist,
+          changeNote: saveNote.trim() || "Improved in Guided Deck Builder",
+        });
+        setSavedDeckId(improveDeckId);
+        setSaveState("saved");
+        return;
+      }
       const result = await accountApi.saveDeck({
         title: saveTitle.trim() || `${championName} guided build`,
         format: deckFormat,
@@ -2296,6 +2309,8 @@ export default function DeckBuilderIndex() {
           </>
         )}
       />
+
+      {improveDeckId && <div className="mt-4 rounded-lg border border-ctp-blue/40 bg-ctp-blue/10 px-4 py-3"><p className="font-semibold text-ctp-blue">Improving a saved deck</p><p className="mt-1 text-sm text-ctp-subtext1">Review the imported baseline, accept only the changes you want, then save the result as a new version. The previous version remains in its history.</p></div>}
 
       <div className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1 text-sm" role="group" aria-label="Deck format">
         {(["STANDARD", "PANTHEON"] as const).map((format) => <button key={format} type="button" aria-pressed={deckFormat === format} onClick={() => { setDeckFormat(format); if (format === "PANTHEON") setPopulationSource("community"); const next = new URLSearchParams(searchParams); if (format === "PANTHEON") next.set("format", "pantheon"); else next.delete("format"); setSearchParams(next, { replace: true }); }} className={`rounded-md px-3 py-1.5 ${deckFormat === format ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>{format === "PANTHEON" ? "Pantheon" : "Standard"}</button>)}
@@ -2934,13 +2949,13 @@ export default function DeckBuilderIndex() {
           {tab === "copy" && (
             <div role="tabpanel" id="deck-builder-panel-copy" aria-labelledby="deck-builder-tab-copy" className="mt-4">
               <div className="mb-4 rounded-lg border border-ctp-blue/40 bg-ctp-blue/5 p-4">
-                <h3 className="font-semibold text-ctp-text">Save this build</h3>
-                <p className="mt-1 text-sm text-ctp-subtext1">Add the current Main, Material, and Sideboard to your private editable decks.</p>
+                <h3 className="font-semibold text-ctp-text">{improveDeckId ? "Save improved version" : "Save this build"}</h3>
+                <p className="mt-1 text-sm text-ctp-subtext1">{improveDeckId ? "Save the accepted changes as a new version. Your previous deck version remains available." : "Add the current Main, Material, and Sideboard to your private editable decks."}</p>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  <input value={saveTitle} onChange={(event) => setSaveTitle(event.target.value)} maxLength={160} placeholder={championName ? `${championName} guided build` : "Deck name"} aria-label="Saved deck name" className="min-w-56 flex-1 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text" />
-                  <button type="button" disabled={!championName || fullCopyCount === 0 || saveState === "saving"} onClick={() => void handleSaveToMyDecks()} className="rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base disabled:cursor-not-allowed disabled:opacity-50">{saveState === "saving" ? "Saving…" : savedDeckId ? "Saved to My Decks" : "Save to My Decks"}</button>
+                  {improveDeckId ? <input value={saveNote} onChange={(event) => setSaveNote(event.target.value)} maxLength={240} placeholder="What changed? (optional)" aria-label="Version change note" className="min-w-56 flex-1 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text" /> : <input value={saveTitle} onChange={(event) => setSaveTitle(event.target.value)} maxLength={160} placeholder={championName ? `${championName} guided build` : "Deck name"} aria-label="Saved deck name" className="min-w-56 flex-1 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text" />}
+                  <button type="button" disabled={!championName || fullCopyCount === 0 || saveState === "saving"} onClick={() => void handleSaveToMyDecks()} className="rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base disabled:cursor-not-allowed disabled:opacity-50">{saveState === "saving" ? "Saving…" : savedDeckId ? "Saved" : improveDeckId ? "Save new version" : "Save to My Decks"}</button>
                 </div>
-                {saveState === "saved" && savedDeckId && <p className="mt-2 text-sm text-ctp-green">Deck saved. <Link to={`/my-decks/${savedDeckId}`} className="font-medium underline">Open deck →</Link></p>}
+                {saveState === "saved" && savedDeckId && <p className="mt-2 text-sm text-ctp-green">{improveDeckId ? "New version saved." : "Deck saved."} <Link to={`/my-decks/${savedDeckId}`} className="font-medium underline">Open deck →</Link></p>}
                 {saveState === "sign-in" && <p className="mt-2 text-sm text-ctp-yellow">Sign in from <Link to="/my-decks" className="font-medium underline">My Decks</Link>, then return to save this build. Your builder choices are kept in this browser.</p>}
                 {saveState === "failed" && <p className="mt-2 text-sm text-ctp-red">The deck could not be saved. Please try again.</p>}
               </div>

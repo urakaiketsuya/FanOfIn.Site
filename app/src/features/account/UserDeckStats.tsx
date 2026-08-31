@@ -16,7 +16,7 @@ import BarChart from "../../components/BarChart";
 import DonutChart, { buildChartSegments } from "../../components/DonutChart";
 import RankedCompositionChart from "../../components/RankedCompositionChart";
 
-export default function UserDeckStats({ decklist, championName, format, title }: { decklist: OmnidexDecklist; championName: string | null; format: DeckFormat; title: string }) {
+export default function UserDeckStats({ decklist, championName, format, title, ownerDeckId }: { decklist: OmnidexDecklist; championName: string | null; format: DeckFormat; title: string; ownerDeckId?: string }) {
   const namedSections = useMemo(() => ({
     main: decklist.main.map((line) => ({ name: line.card, quantity: line.quantity })),
     material: decklist.material.map((line) => ({ name: line.card, quantity: line.quantity })),
@@ -53,7 +53,7 @@ export default function UserDeckStats({ decklist, championName, format, title }:
   const validationTone = validation.status === "Legal" ? "border-ctp-green/50 bg-ctp-green/10 text-ctp-green" : validation.status === "Illegal" ? "border-ctp-red/50 bg-ctp-red/10 text-ctp-red" : "border-ctp-yellow/50 bg-ctp-yellow/10 text-ctp-yellow";
   return <div className="mt-6 space-y-6">
     <section className={`rounded-lg border p-4 ${validationTone}`}>
-      <div className="flex flex-wrap items-center justify-between gap-3"><div><h2 className="font-semibold">{validation.status}</h2><p className="mt-1 text-xs opacity-80">Main {totals.main} · Material {totals.material} · Sideboard {totals.sideboard}</p></div><div className="flex flex-wrap gap-2"><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: title, decklist, format }]))}`} className="rounded-md border border-current px-3 py-1.5 text-sm">Compare deck</Link>{builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections)} className="rounded-md border border-current px-3 py-1.5 text-sm">Edit in Deck Builder</Link>}</div></div>
+      <div className="flex flex-wrap items-center justify-between gap-3"><div><h2 className="font-semibold">{validation.status}</h2><p className="mt-1 text-xs opacity-80">Main {totals.main} · Material {totals.material} · Sideboard {totals.sideboard}</p></div><div className="flex flex-wrap gap-2"><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: title, decklist, format }]))}`} className="rounded-md border border-current px-3 py-1.5 text-sm">Compare deck</Link>{builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections)} className="rounded-md border border-current px-3 py-1.5 text-sm">Continue in Deck Builder</Link>}{builderParams && ownerDeckId && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, { mode: "improve", sourceDeckId: ownerDeckId })} className="rounded-md bg-current px-3 py-1.5 text-sm"><span className="text-ctp-base">Improve this deck</span></Link>}</div></div>
       {validation.reasons.length > 0 && <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">{validation.reasons.map((reason) => <li key={reason}>{reason}</li>)}</ul>}
       <p className="mt-3 text-[11px] opacity-70">Static construction check only; event-specific rules and card-text exceptions still require an official source.</p>
     </section>
