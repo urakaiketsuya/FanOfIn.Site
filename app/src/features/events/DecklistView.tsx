@@ -13,6 +13,7 @@ import { computeDeckIdentity } from "../../lib/deckIdentity";
 import { buildTcgplayerMassEntryUrl } from "../../lib/tcgplayerMassEntry";
 import { buildTtsSaveFile, downloadJsonFile, findDeckChampionName, slugifyFilename } from "../../lib/ttsExport";
 import { buildClarentPlaytestUrl } from "../../lib/clarentPlaytest";
+import { copyDecklistAndOpen, deckBuilderDestinations } from "../../lib/deckBuilderDestinations";
 
 /** Only surface a suggestion once shrinkage has left it meaningfully above zero — filters out noise that technically cleared the sample-size bar but is still statistically thin. */
 const MIN_SUGGESTED_LIFT = 0.02;
@@ -146,6 +147,16 @@ export default function DecklistView({
     setTimeout(() => setCopyState("idle"), 1500);
   }
 
+  async function handleCopyAndOpen(url: string) {
+    try {
+      await copyDecklistAndOpen(buildDecklistText(decklist, [...extraSections, ...trailingSections]), url);
+      setCopyState("copied");
+    } catch {
+      setCopyState("failed");
+    }
+    setTimeout(() => setCopyState("idle"), 1500);
+  }
+
   const deckPrice = computeSectionPrice([...decklist.main, ...decklist.material], priceByName);
   const sideboardPrice = computeSectionPrice(decklist.sideboard, priceByName);
   const missingCount = deckPrice.missing + sideboardPrice.missing;
@@ -238,6 +249,17 @@ export default function DecklistView({
               >
                 {copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy decklist"}
               </button>
+              {deckBuilderDestinations.map((destination) => (
+                <button
+                  key={destination.id}
+                  type="button"
+                  onClick={() => void handleCopyAndOpen(destination.url)}
+                  title={`Copies this decklist, then opens ${destination.label} so you can paste it into a new deck`}
+                  className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text"
+                >
+                  Copy & open {destination.label} &rarr;
+                </button>
+              ))}
               <a
                 href={massEntryUrl}
                 target="_blank"

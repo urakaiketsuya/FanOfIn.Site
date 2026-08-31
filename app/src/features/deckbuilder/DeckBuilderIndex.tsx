@@ -20,6 +20,7 @@ import RankedCompositionChart from "../../components/RankedCompositionChart";
 import { computeDeckComposition, computeDeckIdentity, computeDeckRating, computeMemoryCostCurve, computeReserveCostCurve, type DeckRating, type RatingPillar } from "../../lib/deckIdentity";
 import { buildTcgplayerMassEntryUrl } from "../../lib/tcgplayerMassEntry";
 import { buildClarentPlaytestUrl } from "../../lib/clarentPlaytest";
+import { copyDecklistAndOpen, deckBuilderDestinations } from "../../lib/deckBuilderDestinations";
 import { buildTtsSaveFile, downloadJsonFile, slugifyFilename } from "../../lib/ttsExport";
 import { formatUsd } from "../../lib/format";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -2231,6 +2232,16 @@ export default function DeckBuilderIndex() {
     setTimeout(() => setCopyState("idle"), 1500);
   }
 
+  async function handleCopyAndOpen(url: string) {
+    try {
+      await copyDecklistAndOpen(buildDecklistText(decklist), url);
+      setCopyState("full-copied");
+    } catch {
+      setCopyState("full-failed");
+    }
+    setTimeout(() => setCopyState("idle"), 1500);
+  }
+
   /** Shares the Champion/Spirit/archetype/locked-cards *input*, not a snapshot of the assembled output —
    * opening the link re-runs the same suggestion logic, so it stays a live recipe rather than a
    * stale copy that drifts from the site's own numbers as data regenerates. */
@@ -2982,6 +2993,18 @@ export default function DeckBuilderIndex() {
                 >
                   {copyState === "kept-copied" ? "Copied!" : copyState === "kept-failed" ? "Couldn't copy" : `Copy kept cards (${keptCopyCount})`}
                 </button>
+                {deckBuilderDestinations.map((destination) => (
+                  <button
+                    key={destination.id}
+                    type="button"
+                    disabled={fullCopyCount === 0}
+                    onClick={() => void handleCopyAndOpen(destination.url)}
+                    title={`Copies the full deck, then opens ${destination.label} so you can paste it into a new deck`}
+                    className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 enabled:hover:text-ctp-text disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    Copy & open {destination.label} &rarr;
+                  </button>
+                ))}
                 <a
                   href={massEntryUrl}
                   target="_blank"
