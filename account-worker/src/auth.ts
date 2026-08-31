@@ -107,11 +107,11 @@ export async function createUserSession(env: Env, claims: GoogleClaims): Promise
   const existing = await env.ACCOUNT_DB.prepare("SELECT id, display_name FROM users WHERE google_subject = ?").bind(claims.sub).first<{ id: string; display_name: string }>();
   const userId = existing?.id ?? crypto.randomUUID();
   const displayName = existing?.display_name ?? (claims.name?.trim() || claims.email.split("@")[0]);
-  await env.ACCOUNT_DB.prepare(`INSERT INTO users (id, google_subject, email, display_name, avatar_url, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+  await env.ACCOUNT_DB.prepare(`INSERT INTO users (id, google_subject, email, display_name, avatar_url, profile_slug, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(google_subject) DO UPDATE SET email = excluded.email,
       avatar_url = excluded.avatar_url, updated_at = excluded.updated_at`)
-    .bind(userId, claims.sub, claims.email, displayName, claims.picture ?? null, now, now).run();
+    .bind(userId, claims.sub, claims.email, displayName, claims.picture ?? null, crypto.randomUUID().replace(/-/g, "").slice(0, 24), now, now).run();
   const rawToken = `${crypto.randomUUID()}${crypto.randomUUID()}`.replace(/-/g, "");
   const expires = new Date(Date.now() + SESSION_SECONDS * 1000).toISOString();
   await env.ACCOUNT_DB.prepare("INSERT INTO sessions (id, user_id, token_hash, expires_at, created_at, last_seen_at) VALUES (?, ?, ?, ?, ?, ?)")

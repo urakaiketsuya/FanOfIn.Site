@@ -3,6 +3,7 @@ import test from "node:test";
 import { bffAllowed, clearGoogleKeyCacheForTest, consumeOAuthNonce, createOAuthNonce, normalizeDisplayName, verifyGoogleCredential, type Env } from "../src/auth";
 import { assetJson, deleteDeck, getPublicDeck, parseSaveInput, renameDeck } from "../src/decks";
 import { getDeckSocialState, setDeckBookmark, setDeckLike } from "../src/deck-social";
+import { discoverDecks, getPublicProfile } from "../src/discovery";
 
 function envWithSecret(secret: string): Env {
   return { BFF_SHARED_SECRET: secret } as Env;
@@ -117,7 +118,7 @@ test("public decks expose only published card data and a display name", async ()
           return {
             public_slug: "a".repeat(32), title: "Shared deck", description: "Public notes", visibility: "public",
             published_at: "2026-08-31T12:00:00.000Z", updated_at: "2026-08-31T12:00:00.000Z",
-            display_name: "Deck Pilot", version_number: 3, format: "STANDARD", champion_name: "Rai",
+            display_name: "Deck Pilot", profile_slug: "b".repeat(24), version_number: 3, format: "STANDARD", champion_name: "Rai",
             decklist_json: JSON.stringify({ main: [{ card: "Test Card", quantity: 4 }], material: [], sideboard: [] }),
             email: "private@example.com", owner_user_id: "private-user-id", source_url: "https://private.example",
           };
@@ -127,9 +128,30 @@ test("public decks expose only published card data and a display name", async ()
   } as unknown as D1Database;
   const deck = await getPublicDeck({ ACCOUNT_DB: database } as Env, "a".repeat(32));
   assert.deepEqual(Object.keys(deck!).sort(), ["championName", "decklist", "description", "format", "likeCount", "owner", "publicSlug", "publishedAt", "title", "updatedAt", "versionNumber", "visibility"]);
-  assert.deepEqual(deck!.owner, { displayName: "Deck Pilot" });
+  assert.deepEqual(deck!.owner, { displayName: "Deck Pilot", profileSlug: "b".repeat(24) });
   assert.equal(JSON.stringify(deck).includes("private@example.com"), false);
   assert.equal(await getPublicDeck({ ACCOUNT_DB: database } as Env, "not-a-valid-slug"), null);
+});
+
+test("discovery returns summaries and explicitly filters to public decks", async () => {
+  let discoverySql = "";
+  const row = { public_slug: "a".repeat(32), title: "Shared", description: "", published_at: "now", display_name: "Pilot", profile_slug: "b".repeat(24), version_number: 2, format: "STANDARD", champion_name: "Rai", like_count: 4 };
+  const database = { prepare(query: string) { discoverySql = query; return { bind() { return this; }, async all() { return { results: [row] }; } }; } } as unknown as D1Database;
+  const result = await discoverDecks({ ACCOUNT_DB: database } as Env, new URLSearchParams("q=Rai&format=STANDARD"));
+  assert.match(discoverySql, /ud\.visibility = 'public'/);
+  assert.equal(discoverySql.includes("unlisted"), false);
+  assert.equal("decklist" in result.decks[0], false);
+  assert.deepEqual(result.decks[0].owner, { displayName: "Pilot", profileSlug: "b".repeat(24) });
+  await assert.rejects(discoverDecks({ ACCOUNT_DB: database } as Env, new URLSearchParams(`q=${"x".repeat(81)}`)), /Search is too long/);
+});
+
+test("public profiles include only their public deck summaries", async () => {
+  const queries: string[] = [];
+  const database = { prepare(query: string) { queries.push(query); return { bind() { return this; }, async first() { return { display_name: "Pilot", profile_slug: "b".repeat(24) }; }, async all() { return { results: [] }; } }; } } as unknown as D1Database;
+  const profile = await getPublicProfile({ ACCOUNT_DB: database } as Env, "b".repeat(24));
+  assert.deepEqual(profile, { displayName: "Pilot", profileSlug: "b".repeat(24), decks: [] });
+  assert.match(queries[1], /ud\.visibility = 'public'/);
+  assert.equal(await getPublicProfile({ ACCOUNT_DB: database } as Env, "invalid"), null);
 });
 
 test("deck likes are idempotent and bookmarks pin the published version", async () => {
@@ -141,7 +163,7 @@ test("deck likes are idempotent and bookmarks pin the published version", async 
       return {
         bind(...bound: unknown[]) { values = bound; return this; },
         async first() {
-          if (query.includes("FROM user_decks ud JOIN users")) return { id: "deck-a", title: "Deck", description: "", visibility: "public", public_slug: "a".repeat(32), published_at: "now", updated_at: "now", published_version_id: "version-7", display_name: "Pilot", version_number: 7, format: "STANDARD", champion_name: null, decklist_json: '{"main":[],"material":[],"sideboard":[]}', like_count: liked ? 1 : 0 };
+          if (query.includes("FROM user_decks ud JOIN users")) return { id: "deck-a", title: "Deck", description: "", visibility: "public", public_slug: "a".repeat(32), published_at: "now", updated_at: "now", published_version_id: "version-7", display_name: "Pilot", profile_slug: "b".repeat(24), version_number: 7, format: "STANDARD", champion_name: null, decklist_json: '{"main":[],"material":[],"sideboard":[]}', like_count: liked ? 1 : 0 };
           if (query.includes("COUNT(*) AS count FROM deck_likes")) return { count: liked ? 1 : 0 };
           if (query.includes("FROM deck_likes WHERE")) return liked ? { found: 1 } : null;
           if (query.includes("FROM deck_bookmarks")) return bookmarkedVersion ? { version_number: 7 } : null;

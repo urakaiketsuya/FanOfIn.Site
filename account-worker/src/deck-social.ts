@@ -6,7 +6,7 @@ import { saveDeck } from "./decks";
 async function publishedDeck(env: Env, slug: string) {
   if (!/^[a-f0-9]{32}$/.test(slug)) return null;
   return env.ACCOUNT_DB.prepare(`SELECT ud.id, ud.title, ud.description, ud.visibility, ud.public_slug, ud.published_at,
-    ud.updated_at, ud.published_version_id, users.display_name, dv.version_number, cb.format, cb.champion_name,
+    ud.updated_at, ud.published_version_id, users.display_name, users.profile_slug, dv.version_number, cb.format, cb.champion_name,
     cb.decklist_json, (SELECT COUNT(*) FROM deck_likes dl WHERE dl.deck_id = ud.id) AS like_count
     FROM user_decks ud JOIN users ON users.id = ud.owner_user_id
     JOIN deck_versions dv ON dv.id = ud.published_version_id AND dv.deck_id = ud.id
@@ -59,7 +59,7 @@ export async function copyPublishedDeck(env: Env, user: AuthUser, slug: string):
 
 export async function listBookmarks(env: Env, user: AuthUser): Promise<BookmarkedDeck[]> {
   const rows = await env.ACCOUNT_DB.prepare(`SELECT ud.public_slug, ud.title, ud.description, ud.visibility, ud.published_at, ud.updated_at,
-    users.display_name, dv.version_number, cb.format, cb.champion_name, cb.decklist_json, db.created_at AS bookmarked_at,
+    users.display_name, users.profile_slug, dv.version_number, cb.format, cb.champion_name, cb.decklist_json, db.created_at AS bookmarked_at,
     (SELECT COUNT(*) FROM deck_likes dl WHERE dl.deck_id = ud.id) AS like_count
     FROM deck_bookmarks db JOIN user_decks ud ON ud.id = db.deck_id JOIN users ON users.id = ud.owner_user_id
     JOIN deck_versions dv ON dv.id = db.version_id AND dv.deck_id = ud.id JOIN canonical_builds cb ON cb.id = dv.canonical_build_id
@@ -68,5 +68,5 @@ export async function listBookmarks(env: Env, user: AuthUser): Promise<Bookmarke
     visibility: row.visibility as "public" | "unlisted", format: row.format as "STANDARD" | "PANTHEON" | "UNKNOWN",
     championName: row.champion_name as string | null, decklist: JSON.parse(String(row.decklist_json)) as OmnidexDecklist,
     versionNumber: Number(row.version_number), publishedAt: String(row.published_at), updatedAt: String(row.updated_at),
-    owner: { displayName: String(row.display_name) }, likeCount: Number(row.like_count), bookmarkedAt: String(row.bookmarked_at) }));
+    owner: { displayName: String(row.display_name), profileSlug: String(row.profile_slug) }, likeCount: Number(row.like_count), bookmarkedAt: String(row.bookmarked_at) }));
 }

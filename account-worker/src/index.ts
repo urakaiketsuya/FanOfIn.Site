@@ -2,6 +2,7 @@ import { authenticatedUser, bffAllowed, consumeOAuthNonce, createOAuthNonce, cre
 import { createDeckVersion, deleteDeck, getDeck, getPublicDeck, listDecks, parseSaveInput, performImport, previewImport, publishDeck, restoreDeckVersion, saveDeck, updateDeckMetadata } from "./decks";
 import { ApiError, badRequest } from "./errors";
 import { copyPublishedDeck, getDeckSocialState, listBookmarks, setDeckBookmark, setDeckLike } from "./deck-social";
+import { discoverDecks, getPublicProfile } from "./discovery";
 
 function response(env: Env, request: Request, body: unknown, status = 200, extra: HeadersInit = {}): Response {
   const origin = request.headers.get("Origin");
@@ -93,6 +94,12 @@ export default {
       if (publicDeckMatch && request.method === "GET") {
         const deck = await getPublicDeck(env, publicDeckMatch[1]);
         return deck ? response(env, request, { deck }) : response(env, request, { error: "Deck not found" }, 404);
+      }
+      if (request.method === "GET" && url.pathname === "/v1/discover/decklists") return response(env, request, await discoverDecks(env, url.searchParams));
+      const publicProfileMatch = url.pathname.match(/^\/v1\/profiles\/([a-f0-9]{24})$/);
+      if (publicProfileMatch && request.method === "GET") {
+        const profile = await getPublicProfile(env, publicProfileMatch[1]);
+        return profile ? response(env, request, { profile }) : response(env, request, { error: "Profile not found" }, 404);
       }
 
       const user = await authenticatedUser(request, env);

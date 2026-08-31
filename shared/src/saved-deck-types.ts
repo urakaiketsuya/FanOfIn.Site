@@ -59,8 +59,16 @@ export interface PublicDeck {
   versionNumber: number;
   publishedAt: string;
   updatedAt: string;
-  owner: { displayName: string };
+  owner: { displayName: string; profileSlug: string };
   likeCount: number;
+}
+
+export interface PublicDeckSummary extends Omit<PublicDeck, "decklist" | "visibility" | "updatedAt"> {}
+
+export interface PublicProfile {
+  displayName: string;
+  profileSlug: string;
+  decks: PublicDeckSummary[];
 }
 
 export interface DeckSocialState {
