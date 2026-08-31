@@ -5,10 +5,34 @@ import { assetJson, deleteDeck, getPublicDeck, parseSaveInput, renameDeck } from
 import { getDeckSocialState, setDeckBookmark, setDeckLike } from "../src/deck-social";
 import { discoverDecks, getPublicProfile } from "../src/discovery";
 import { reportDeck } from "../src/moderation";
+import { REQUIRED_SCHEMA_VERSION, serviceHealth } from "../src/health";
 
 function envWithSecret(secret: string): Env {
   return { BFF_SHARED_SECRET: secret } as Env;
 }
+
+test("health verifies the latest required account schema without exposing data", async () => {
+  const queries: string[] = [];
+  const database = {
+    prepare(query: string) {
+      queries.push(query);
+      return { async all() { return { results: [] }; } };
+    },
+  } as unknown as D1Database;
+  assert.deepEqual(await serviceHealth({ ACCOUNT_DB: database } as Env), {
+    success: true,
+    service: "fanofin-accounts",
+    schema: { ready: true, requiredVersion: REQUIRED_SCHEMA_VERSION },
+  });
+  assert.match(queries[0], /profile_discoverable/);
+  assert.match(queries[0], /moderation_status/);
+  assert.match(queries[1], /deck_reports/);
+
+  const missingSchema = {
+    prepare() { return { async all() { throw new Error("no such column"); } }; },
+  } as unknown as D1Database;
+  assert.equal((await serviceHealth({ ACCOUNT_DB: missingSchema } as Env)).success, false);
+});
 
 test("gateway authentication fails closed when its secret is missing", async () => {
   const request = new Request("https://worker.example/v1/auth/session");

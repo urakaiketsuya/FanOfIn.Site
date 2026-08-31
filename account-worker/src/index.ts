@@ -4,6 +4,7 @@ import { ApiError, badRequest } from "./errors";
 import { copyPublishedDeck, getDeckSocialState, listBookmarks, setDeckBookmark, setDeckLike } from "./deck-social";
 import { discoverDecks, getPublicProfile } from "./discovery";
 import { reportDeck } from "./moderation";
+import { serviceHealth } from "./health";
 
 function response(env: Env, request: Request, body: unknown, status = 200, extra: HeadersInit = {}): Response {
   const origin = request.headers.get("Origin");
@@ -65,7 +66,10 @@ export default {
     if (!originAllowed(request, env)) return response(env, request, { error: "Origin is not allowed" }, 403);
 
     try {
-      if (request.method === "GET" && url.pathname === "/health") return response(env, request, { success: true, service: "fanofin-accounts" });
+      if (request.method === "GET" && url.pathname === "/health") {
+        const health = await serviceHealth(env);
+        return response(env, request, health, health.success ? 200 : 503);
+      }
       if (request.method === "GET" && url.pathname === "/v1/auth/session") return response(env, request, { user: await authenticatedUser(request, env) });
       if (request.method === "POST" && url.pathname === "/v1/auth/google/nonce") {
         const clientIp = request.headers.get("X-Fanofin-Client-IP") ?? "unknown";
