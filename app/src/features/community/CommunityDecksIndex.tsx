@@ -120,17 +120,11 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
         title={isPantheon ? "Pantheon Decks" : "Community Decks"}
         description={
           <>
-            Community deck-building trends show what people are actually building, not tournament results. For creating and sharing your own lists, we recommend{" "}
-            <a href="https://sleeved.gg" target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">
-              Sleeved.gg
-            </a>
-            {" "}or{" "}
-            {/* Link-only for now, no ingestion — see pipeline/src/sleeved/ for the shape a future
-                TCGArchitect data source would take once API access is available. */}
-            <a href="https://tcgarchitect.com/grand-archive" target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">
-              TCGArchitect
-            </a>
-            {" "}as dedicated Grand Archive deck-building tools. {isPantheon ? "Pantheon lists are separated from Standard and never presented as tournament-performance evidence." : "Standard lists are separated from Pantheon and kept distinct from Omnidex tournament results."}
+            Community deck-building trends show what people are actually building, not tournament results. To create your own list with data-guided recommendations, use our{" "}
+            <Link to="/deck-builder" className="text-ctp-blue hover:underline">
+              Guided Deck Builder
+            </Link>
+            . {isPantheon ? "Pantheon lists are separated from Standard and never presented as tournament-performance evidence." : "Standard lists are separated from Pantheon and kept distinct from Omnidex tournament results."}
           </>
         }
       />
