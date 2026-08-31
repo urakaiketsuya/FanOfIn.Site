@@ -5,6 +5,7 @@ import { parseDecklist } from "../compare/parseDecklist";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import GoogleSignInButton from "./GoogleSignInButton";
 import { Link } from "react-router-dom";
+import AccountChecklist from "./AccountChecklist";
 
 type Provider = "omnidex" | "shoutatyourdecks";
 
@@ -22,13 +23,12 @@ export default function MyDecksIndex() {
   const [provider, setProvider] = useState<Provider>("omnidex");
   const [identifier, setIdentifier] = useState("");
   const [preview, setPreview] = useState<DeckImportPreview | null>(null);
-  const [username, setUsername] = useState("");
 
   const refreshDecks = useCallback(async () => {
     const [owned, saved] = await Promise.all([accountApi.decks(), accountApi.bookmarks()]);
     setDecks(owned.decks); setBookmarks(saved.decks);
   }, []);
-  useEffect(() => { void accountApi.session().then((session) => { setUser(session.user); setUsername(session.user?.displayName ?? ""); if (session.user) void refreshDecks(); }).catch((reason: Error) => { setError(reason.message); setUser(null); }); }, [refreshDecks]);
+  useEffect(() => { void accountApi.session().then((session) => { setUser(session.user); if (session.user) void refreshDecks(); }).catch((reason: Error) => { setError(reason.message); setUser(null); }); }, [refreshDecks]);
 
   async function run(action: () => Promise<void>) {
     setBusy(true); setError(null); setNotice(null);
@@ -36,36 +36,15 @@ export default function MyDecksIndex() {
     finally { setBusy(false); }
   }
 
-  async function downloadAccountExport() {
-    const data = await accountApi.exportAccount();
-    const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }));
-    const link = document.createElement("a");
-    link.href = url; link.download = `fanofin-account-${new Date().toISOString().slice(0, 10)}.json`; link.click();
-    URL.revokeObjectURL(url);
-  }
-
   if (user === undefined) return <div className="mx-auto max-w-4xl px-4 py-10 text-ctp-subtext1">Loading your account…</div>;
   if (!user) return <div className="mx-auto max-w-xl px-4 py-12"><h1 className="text-2xl font-bold text-ctp-blue">My Decks</h1><p className="mt-2 text-ctp-subtext1">Sign in to save decklists and keep imported tournament and community builds together.</p><div className="mt-6"><GoogleSignInButton onCredential={(credential, nonce) => void run(async () => { const session = await accountApi.googleSignIn(credential, nonce); setUser(session.user); await refreshDecks(); })} /></div>{error && <p className="mt-4 text-sm text-ctp-red">{error}</p>}</div>;
 
   return <div className="mx-auto max-w-4xl px-4 py-8">
-    <div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-2xl font-bold text-ctp-blue">My Decks</h1><p className="mt-1 text-sm text-ctp-subtext1">Signed in as {user.displayName} · {decks.length} unique build{decks.length === 1 ? "" : "s"}</p></div><div className="flex flex-wrap gap-2"><button type="button" onClick={() => void run(downloadAccountExport)} className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-sm text-ctp-subtext1 hover:text-ctp-text">Export my data</button><button type="button" onClick={() => void run(async () => { await accountApi.logout(); setUser(null); setDecks([]); })} className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-sm text-ctp-subtext1 hover:text-ctp-text">Sign out</button><button type="button" onClick={() => void run(async () => { await accountApi.logoutAll(); setUser(null); setDecks([]); })} className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-sm text-ctp-subtext1 hover:text-ctp-text">Sign out all devices</button><button type="button" onClick={() => { if (window.prompt("Permanently delete your account and saved decks? Type DELETE to confirm.") === "DELETE") void run(async () => { await accountApi.deleteAccount(); setUser(null); setDecks([]); }); }} className="rounded-md border border-ctp-red/60 px-3 py-1.5 text-sm text-ctp-red">Delete account</button></div></div>
+    <div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-2xl font-bold text-ctp-blue">My Decks</h1><p className="mt-1 text-sm text-ctp-subtext1">{decks.length} editable build{decks.length === 1 ? "" : "s"} · {bookmarks.length} saved deck{bookmarks.length === 1 ? "" : "s"}</p></div><Link to="/account" className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-sm text-ctp-subtext1 hover:text-ctp-text">Account settings</Link></div>
     {error && <p className="mt-4 rounded-md border border-ctp-red/50 bg-ctp-red/10 p-3 text-sm text-ctp-red">{error}</p>}
     {notice && <p className="mt-4 rounded-md border border-ctp-green/50 bg-ctp-green/10 p-3 text-sm text-ctp-green">{notice}</p>}
 
-    <section className="mt-8 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
-      <h2 className="font-semibold text-ctp-text">Profile</h2>
-      <p className="mt-1 text-xs text-ctp-subtext1">Choose the username shown with your account. It can be 2–32 characters.</p>
-      <form className="mt-3 flex max-w-md gap-2" onSubmit={(event) => { event.preventDefault(); void run(async () => { const result = await accountApi.updateUsername(username); setUser(result.user); setUsername(result.user.displayName); setNotice("Username updated."); }); }}>
-        <label htmlFor="account-username" className="sr-only">Username</label>
-        <input id="account-username" autoComplete="nickname" minLength={2} maxLength={32} required value={username} onChange={(event) => setUsername(event.target.value)} className="min-w-0 flex-1 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm" />
-        <button disabled={busy || username.trim() === user.displayName} type="submit" className="rounded-md bg-ctp-blue px-3 py-2 text-sm text-ctp-base disabled:opacity-50">Save username</button>
-      </form>
-      <label className="mt-4 flex max-w-xl items-start gap-3 text-sm text-ctp-subtext1">
-        <input type="checkbox" checked={user.profileDiscoverable} disabled={busy} onChange={(event) => { const checked = event.target.checked; void run(async () => { const result = await accountApi.updateProfileDiscoverability(checked); setUser(result.user); setNotice(checked ? "Your public decks can appear in discovery." : "Your profile and decks are hidden from discovery; shared deck links still work."); }); }} className="mt-0.5" />
-        <span><span className="font-medium text-ctp-text">Show my public profile in discovery</span><br />Turn this off to hide your profile and public decks from browsing. Existing deck links remain accessible.</span>
-      </label>
-      {user.profileDiscoverable && <Link to={`/users/${user.profileSlug}`} className="mt-3 inline-block text-sm text-ctp-blue hover:underline">View my public profile</Link>}
-    </section>
+    <AccountChecklist user={user} decks={decks} />
 
     <div className="mt-8 grid gap-5 md:grid-cols-2">
       <section className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><h2 className="font-semibold text-ctp-text">Import public decks</h2><p className="mt-1 text-xs text-ctp-subtext1">This links a public profile for importing; it does not verify ownership.</p><div className="mt-3 flex gap-2"><select value={provider} onChange={(event) => { setProvider(event.target.value as Provider); setPreview(null); }} className="rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-2 text-sm"><option value="omnidex">Omnidex ID</option><option value="shoutatyourdecks">Shout At Your Decks</option></select><input value={identifier} onChange={(event) => setIdentifier(event.target.value)} placeholder={provider === "omnidex" ? "Player ID" : "Username"} className="min-w-0 flex-1 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm" /></div><button disabled={busy || !identifier.trim()} type="button" onClick={() => void run(async () => setPreview(await accountApi.previewImport(provider, identifier)))} className="mt-3 rounded-md border border-ctp-blue px-3 py-1.5 text-sm text-ctp-blue disabled:opacity-50">Preview import</button>{preview && <div className="mt-3 rounded-md border border-ctp-surface0 p-3 text-sm"><p className="font-medium">{preview.displayName}</p><p className="text-ctp-subtext1">{preview.candidates.length} archived decklist{preview.candidates.length === 1 ? "" : "s"} found</p><ul className="mt-2 max-h-32 space-y-1 overflow-auto text-xs text-ctp-subtext1">{preview.candidates.slice(0, 50).map((candidate) => <li key={candidate.externalDeckId}>{candidate.title}</li>)}</ul><button disabled={busy || preview.candidates.length === 0} type="button" onClick={() => void run(async () => { const result = await accountApi.importDecks(provider, identifier); await refreshDecks(); setPreview(null); setNotice(`Imported ${result.created} new build${result.created === 1 ? "" : "s"}; linked ${result.linked} duplicate appearance${result.linked === 1 ? "" : "s"}.`); })} className="mt-3 rounded-md bg-ctp-blue px-3 py-1.5 text-sm text-ctp-base disabled:opacity-50">Import all</button></div>}</section>

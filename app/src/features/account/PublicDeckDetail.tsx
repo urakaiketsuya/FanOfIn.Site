@@ -3,7 +3,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import type { DeckSocialState, PublicDeck } from "@gatcg/shared";
 import { accountApi, AccountApiError } from "../../lib/accountApi";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
-import { buildDecklistText } from "../events/DecklistView";
+import UserDeckHeader from "./UserDeckHeader";
+import UserDecklistPanel from "./UserDecklistPanel";
 
 export default function PublicDeckDetail() {
   const { publicSlug = "" } = useParams<{ publicSlug: string }>();
@@ -46,9 +47,7 @@ export default function PublicDeckDetail() {
   if (!deck) return <div className="mx-auto max-w-4xl px-4 py-10"><h1 className="text-2xl font-bold text-ctp-text">Deck unavailable</h1><p className="mt-2 text-ctp-subtext1">{error}</p><Link to="/" className="mt-5 inline-block text-ctp-blue hover:underline">Back home</Link></div>;
 
   return <div className="mx-auto max-w-4xl px-4 py-8">
-    <p className="text-sm text-ctp-subtext1">Shared by <Link to={`/users/${deck.owner.profileSlug}`} className="text-ctp-blue hover:underline">{deck.owner.displayName}</Link></p>
-    <div className="mt-2 flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-3xl font-bold text-ctp-text">{deck.title}</h1><p className="mt-1 text-sm text-ctp-subtext1">{deck.championName ?? "Unknown champion"} · {deck.format} · Version {deck.versionNumber}</p></div>{deck.visibility === "unlisted" && <span className="rounded-full border border-ctp-yellow/60 px-3 py-1 text-xs text-ctp-yellow">Unlisted</span>}</div>
-    {deck.description && <p className="mt-5 whitespace-pre-wrap text-ctp-subtext1">{deck.description}</p>}
+    <UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} versionNumber={deck.versionNumber} visibility={deck.visibility} description={deck.description} eyebrow={<>Shared by <Link to={`/users/${deck.owner.profileSlug}`} className="text-ctp-blue hover:underline">{deck.owner.displayName}</Link></>} />
     <div className="mt-5 flex flex-wrap items-center gap-2">
       <button type="button" disabled={busy || !social} onClick={() => void run(async () => { const result = await accountApi.likeDeck(publicSlug, !social?.liked); setSocial((current) => current ? { ...current, liked: result.liked } : current); setDeck((current) => current ? { ...current, likeCount: result.likeCount } : current); })} className="rounded-md border border-ctp-pink/60 px-3 py-1.5 text-sm text-ctp-pink disabled:opacity-50">{social?.liked ? "Liked" : "Like"} · {deck.likeCount}</button>
       <button type="button" disabled={busy || !social} onClick={() => void run(async () => { const result = await accountApi.bookmarkDeck(publicSlug, !social?.bookmarked); setSocial((current) => current ? { ...current, bookmarked: result.bookmarked, bookmarkedVersionNumber: result.versionNumber } : current); })} className="rounded-md border border-ctp-blue px-3 py-1.5 text-sm text-ctp-blue disabled:opacity-50">{social?.bookmarked ? `Saved v${social.bookmarkedVersionNumber}` : "Save deck"}</button>
@@ -57,7 +56,7 @@ export default function PublicDeckDetail() {
       {!social && <Link to="/my-decks" className="text-sm text-ctp-blue hover:underline">Sign in to like, save, or copy</Link>}
     </div>
     {notice && <p className="mt-3 text-sm text-ctp-yellow">{notice}</p>}
-    <section className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><h2 className="font-semibold text-ctp-text">Decklist</h2><pre className="mt-3 max-h-[42rem] overflow-auto whitespace-pre-wrap rounded-md bg-ctp-base p-4 text-sm text-ctp-subtext1">{buildDecklistText(deck.decklist)}</pre></section>
+    <UserDecklistPanel decklist={deck.decklist} />
     <p className="mt-4 text-xs text-ctp-subtext0">Published {new Date(deck.publishedAt).toLocaleDateString()}</p>
   </div>;
 }

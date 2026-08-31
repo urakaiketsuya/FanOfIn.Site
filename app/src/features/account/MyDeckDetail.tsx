@@ -5,6 +5,8 @@ import { accountApi, AccountApiError } from "../../lib/accountApi";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { buildDecklistText } from "../events/DecklistView";
 import { parseDecklist } from "../compare/parseDecklist";
+import UserDeckHeader from "./UserDeckHeader";
+import UserDecklistPanel from "./UserDecklistPanel";
 
 export default function MyDeckDetail() {
   const { deckId = "" } = useParams<{ deckId: string }>();
@@ -49,10 +51,7 @@ export default function MyDeckDetail() {
 
   return <div className="mx-auto max-w-4xl px-4 py-8">
     <Link to="/my-decks" className="text-sm text-ctp-blue hover:underline">← My Decks</Link>
-    <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
-      <div><h1 className="text-2xl font-bold text-ctp-text">{deck.title}</h1><p className="mt-1 text-sm text-ctp-subtext1">{deck.championName ?? "Unknown champion"} · {deck.format}</p></div>
-      <span className="rounded-full border border-ctp-surface1 px-3 py-1 text-xs capitalize text-ctp-subtext1">{deck.visibility}</span>
-    </div>
+    <div className="mt-4"><UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} description={deck.description} visibility={deck.visibility} /></div>
     <section className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
       <h2 className="font-semibold text-ctp-text">Details and sharing</h2>
       <form className="mt-3 space-y-2" onSubmit={(event) => { event.preventDefault(); void run(async () => { await accountApi.updateDeckMetadata(deck.id, title, description); await refresh(); }); }}>
@@ -71,15 +70,14 @@ export default function MyDeckDetail() {
         <p className="mt-2 text-xs text-ctp-subtext0">Publishing snapshots the current version. Later edits stay private until you publish again.</p>
       </div>
     </section>
-    <section className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
-      <div className="flex items-center justify-between gap-3"><h2 className="font-semibold text-ctp-text">Current decklist</h2><button type="button" onClick={() => { setDeckText(buildDecklistText(deck.decklist)); setEditing((value) => !value); }} className="rounded border border-ctp-blue px-2 py-1 text-xs text-ctp-blue">{editing ? "Cancel" : "Edit deck"}</button></div>
+    <UserDecklistPanel decklist={deck.decklist} actions={<button type="button" onClick={() => { setDeckText(buildDecklistText(deck.decklist)); setEditing((value) => !value); }} className="rounded border border-ctp-blue px-2 py-1 text-xs text-ctp-blue">{editing ? "Cancel" : "Edit deck"}</button>}>
       {error && <p className="mt-3 rounded border border-ctp-red/50 bg-ctp-red/10 p-2 text-sm text-ctp-red">{error}</p>}
       {editing ? <form className="mt-3" onSubmit={(event) => { event.preventDefault(); void run(async () => { const parsed = parseDecklist(deckText); await accountApi.createDeckVersion(deck.id, { decklist: parsed.decklist, format: deck.format, championName: deck.championName, changeNote }); await refresh(); setChangeNote(""); setEditing(false); }); }}>
         <textarea rows={18} required value={deckText} onChange={(event) => setDeckText(event.target.value)} className="w-full rounded-md border border-ctp-surface1 bg-ctp-base p-4 font-mono text-sm text-ctp-text" />
         <input value={changeNote} maxLength={240} onChange={(event) => setChangeNote(event.target.value)} placeholder="What changed? (optional)" className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm" />
         <button disabled={busy} type="submit" className="mt-3 rounded-md bg-ctp-blue px-3 py-2 text-sm text-ctp-base disabled:opacity-50">Save new version</button>
       </form> : <pre className="mt-3 max-h-[36rem] overflow-auto whitespace-pre-wrap rounded-md bg-ctp-base p-4 text-sm text-ctp-subtext1">{buildDecklistText(deck.decklist)}</pre>}
-    </section>
+    </UserDecklistPanel>
     <section className="mt-6">
       <h2 className="text-lg font-semibold text-ctp-text">Version history</h2>
       <div className="mt-3 space-y-2">{deck.versions.map((version) => <details key={version.id} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3" open={version.id === deck.currentVersionId}>

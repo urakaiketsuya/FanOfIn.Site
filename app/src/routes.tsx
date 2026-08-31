@@ -72,6 +72,7 @@ const MediaKitIndex = lazy(() => import("./features/products/MediaKitIndex"));
 const LookingForIndex = lazy(() => import("./features/looking-for/LookingForIndex"));
 const DiaoReviewIndex = lazy(() => import("./features/diao-review/DiaoReviewIndex"));
 const MyDecksIndex = lazy(() => import("./features/account/MyDecksIndex"));
+const AccountIndex = lazy(() => import("./features/account/AccountIndex"));
 const MyDeckDetail = lazy(() => import("./features/account/MyDeckDetail"));
 const PublicDeckDetail = lazy(() => import("./features/account/PublicDeckDetail"));
 const SharedDecksIndex = lazy(() => import("./features/account/SharedDecksIndex"));
@@ -137,6 +138,7 @@ export default function AppRoutes() {
         <Route path="/simulator" element={<SimulatorIndex />} />
         <Route path="/diao-review" element={<DiaoReviewIndex />} />
         <Route path="/my-decks" element={<MyDecksIndex />} />
+        <Route path="/account" element={<AccountIndex />} />
         <Route path="/my-decks/:deckId" element={<MyDeckDetail />} />
         <Route path="/decklists/:publicSlug" element={<PublicDeckDetail />} />
         <Route path="/shared-decks" element={<SharedDecksIndex />} />
