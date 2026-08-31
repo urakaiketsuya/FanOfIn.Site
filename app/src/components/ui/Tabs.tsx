@@ -27,7 +27,7 @@ export default function Tabs<T extends string>({ tabs, active, onChange, label =
   }
 
   return (
-    <div ref={tablistRef} className="flex gap-1 overflow-x-auto border-b border-ctp-surface1" role="tablist" aria-label={label}>
+    <div ref={tablistRef} className="flex max-w-full gap-1 overflow-x-auto overscroll-x-contain scroll-smooth border-b border-ctp-surface1" role="tablist" aria-label={label}>
       {tabs.map((tab, index) => {
         const selected = active === tab.key;
         return (
@@ -39,7 +39,7 @@ export default function Tabs<T extends string>({ tabs, active, onChange, label =
             aria-selected={selected}
             aria-controls={baseId ? `${baseId}-panel-${tab.key}` : undefined}
             tabIndex={selected ? 0 : -1}
-            onClick={() => onChange(tab.key)}
+            onClick={(event) => { onChange(tab.key); event.currentTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" }); }}
             onKeyDown={(e) => handleKeyDown(e, index)}
             className={`shrink-0 border-b-2 px-3 py-2 text-sm font-medium transition-colors ${selected ? "border-ctp-blue text-ctp-blue" : "border-transparent text-ctp-subtext1 hover:border-ctp-surface2 hover:text-ctp-text"}`}
           >

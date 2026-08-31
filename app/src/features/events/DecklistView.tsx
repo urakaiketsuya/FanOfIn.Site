@@ -135,7 +135,7 @@ export default function DecklistView({
 }) {
   const priceByName = useDeckPriceByName();
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
-  const [displayMode, setDisplayMode] = useState<DeckDisplayMode>(defaultDisplayMode);
+  const [displayMode, setDisplayMode] = useState<DeckDisplayMode>(() => defaultDisplayMode === "detailed" && typeof window !== "undefined" && window.matchMedia?.("(max-width: 639px)").matches ? "compact" : defaultDisplayMode);
 
   async function handleCopy() {
     try {
@@ -228,7 +228,7 @@ export default function DecklistView({
             </>
           )}
           {allLines.length > 0 && (
-            <div className="ml-auto flex shrink-0 gap-2">
+            <div className="flex w-full flex-wrap gap-2 sm:ml-auto sm:w-auto">
               <a
                 href={clarentUrl}
                 target="_blank"
@@ -249,33 +249,14 @@ export default function DecklistView({
               >
                 {copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy decklist"}
               </button>
-              {deckBuilderDestinations.map((destination) => (
-                <button
-                  key={destination.id}
-                  type="button"
-                  onClick={() => void handleCopyAndOpen(destination.url)}
-                  title={`Copies this decklist, then opens ${destination.label} so you can paste it into a new deck`}
-                  className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text"
-                >
-                  Copy & open {destination.label} &rarr;
-                </button>
-              ))}
-              <a
-                href={massEntryUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-md border border-ctp-blue px-2 py-1 text-xs text-ctp-blue hover:bg-ctp-surface0"
-              >
-                Buy on TCGplayer &rarr;
-              </a>
-              <button
-                type="button"
-                onClick={handleExportTts}
-                title="Downloads a .json file — in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it"
-                className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text"
-              >
-                Export to TTS
-              </button>
+              <details className="relative">
+                <summary className="cursor-pointer list-none rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text">More actions</summary>
+                <div className="absolute right-0 z-30 mt-2 grid w-64 gap-1 rounded-lg border border-ctp-surface1 bg-ctp-base p-2 shadow-xl">
+                  {deckBuilderDestinations.map((destination) => <button key={destination.id} type="button" onClick={() => void handleCopyAndOpen(destination.url)} title={`Copies this decklist, then opens ${destination.label} so you can paste it into a new deck`} className="rounded px-3 py-2 text-left text-sm text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Copy & open {destination.label} &rarr;</button>)}
+                  <a href={massEntryUrl} target="_blank" rel="noreferrer" className="rounded px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">Buy on TCGplayer &rarr;</a>
+                  <button type="button" onClick={handleExportTts} title="Downloads a .json file — in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it" className="rounded px-3 py-2 text-left text-sm text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Export to TTS</button>
+                </div>
+              </details>
             </div>
           )}
         </div>
