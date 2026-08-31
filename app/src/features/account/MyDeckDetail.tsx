@@ -36,6 +36,12 @@ export default function MyDeckDetail() {
   const editedCardNames = useMemo(() => [...editedDecklist.main, ...editedDecklist.material, ...editedDecklist.sideboard].map((line) => line.card), [editedDecklist]);
   const editedCardsByName = useCardsByNames(editedCardNames);
   const editedChampionName = useMemo(() => findDeckChampionName(editedDecklist.material, editedCardsByName)?.split(",")[0].trim() ?? null, [editedDecklist.material, editedCardsByName]);
+  const previousDecklist = useMemo(() => {
+    if (!deck) return undefined;
+    const current = deck.versions.find((version) => version.id === deck.currentVersionId);
+    if (!current) return undefined;
+    return deck.versions.filter((version) => version.versionNumber < current.versionNumber).sort((a, b) => b.versionNumber - a.versionNumber)[0]?.decklist;
+  }, [deck]);
   useDocumentTitle(deck?.title ?? "Saved Deck", "View a private saved deck and its version history.");
 
   useEffect(() => {
@@ -100,7 +106,7 @@ export default function MyDeckDetail() {
         <p className="mt-2 text-xs text-ctp-subtext0">Publishing snapshots the current version. Later edits stay private until you publish again.</p>
       </div>
     </section>}
-    {tab === "analysis" && <section id="owned-deck-panel-analysis" role="tabpanel" aria-labelledby="owned-deck-tab-analysis" tabIndex={0}><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} title={deck.title} ownerDeckId={deck.id} /></section>}
+    {tab === "analysis" && <section id="owned-deck-panel-analysis" role="tabpanel" aria-labelledby="owned-deck-tab-analysis" tabIndex={0}><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} title={deck.title} ownerDeckId={deck.id} previousDecklist={previousDecklist} /></section>}
     {tab === "decklist" && <UserDecklistPanel decklist={deck.decklist} ownerDeckId={deck.id} actions={<button type="button" onClick={() => { setDeckText(buildDecklistText(deck.decklist)); setEditing((value) => !value); }} className="rounded border border-ctp-blue px-2 py-1 text-xs text-ctp-blue">{editing ? "Cancel" : "Edit deck"}</button>}>
       {editing ? <form className="mt-3" onSubmit={(event) => { event.preventDefault(); void run(async () => { if (editedChampionName !== deck.championName && !window.confirm(`Change Champion from ${deck.championName ?? "none"} to ${editedChampionName ?? "none"}?`)) return; await accountApi.createDeckVersion(deck.id, { decklist: editedDecklist, format: deck.format, championName: editedChampionName, changeNote }); await refresh(); setChangeNote(""); setEditing(false); }); }}>
         <textarea rows={18} required value={deckText} onChange={(event) => setDeckText(event.target.value)} className="w-full rounded-md border border-ctp-surface1 bg-ctp-base p-4 font-mono text-sm text-ctp-text" />
