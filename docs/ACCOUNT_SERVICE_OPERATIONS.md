@@ -2,7 +2,7 @@
 
 ## Security boundary
 
-Browser traffic goes to `https://accounts.fanofin.site/api`. The Vercel BFF forwards it to the account Worker with `BFF_SHARED_SECRET`; every non-health Worker route fails closed without that secret. Keep the Vercel and Wrangler copies synchronized and rotate both copies together.
+Browser traffic goes to `https://accounts.fanofin.site/api`. The Vercel BFF signs every upstream request with `BFF_SHARED_SECRET`; the HMAC covers the method, path and query, body hash, timestamp, and random request ID. Every non-health Worker route fails closed when the secret, signature, or one-minute freshness window is invalid. Keep the Vercel and Wrangler copies synchronized and rotate both copies together.
 
 The production Worker currently uses its `workers.dev` address as the BFF upstream. Do not set `workers_dev` to `false` until the Worker has a custom Cloudflare route and `ACCOUNT_WORKER_URL` in Vercel points to it. After that cutover, disable `workers.dev` and verify the BFF health endpoint before and after deployment.
 

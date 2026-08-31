@@ -52,7 +52,7 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     const requestId = request.headers.get("CF-Ray") ?? crypto.randomUUID();
-    if (url.pathname !== "/health" && !bffAllowed(request, env)) {
+    if (url.pathname !== "/health" && !await bffAllowed(request, env)) {
       return response(env, request, { error: "Account service gateway is required" }, 403);
     }
     if (request.method === "OPTIONS") {

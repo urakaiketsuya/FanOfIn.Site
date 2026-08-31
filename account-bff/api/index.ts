@@ -1,4 +1,5 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
+import { createHash, createHmac, randomUUID } from "node:crypto";
 
 interface VercelRequest extends IncomingMessage {
   body?: unknown;
@@ -8,6 +9,21 @@ const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN ?? "https://fanofin.site";
 const WORKER_URL = process.env.ACCOUNT_WORKER_URL?.replace(/\/$/, "");
 const SHARED_SECRET = process.env.BFF_SHARED_SECRET;
 const MAX_BODY_BYTES = 1_048_576;
+
+type BufferedBody = string | Uint8Array<ArrayBuffer>;
+
+function signWorkerRequest(method: string, path: string, body: BufferedBody | undefined): Record<string, string> {
+  const timestamp = Date.now().toString();
+  const requestId = randomUUID();
+  const bytes = body === undefined ? Buffer.alloc(0) : Buffer.from(body);
+  const bodyHash = createHash("sha256").update(bytes).digest("hex");
+  const canonical = `${method}\n${path}\n${bodyHash}\n${timestamp}\n${requestId}`;
+  return {
+    "X-Fanofin-BFF-Timestamp": timestamp,
+    "X-Fanofin-BFF-Request-ID": requestId,
+    "X-Fanofin-BFF-Signature": createHmac("sha256", SHARED_SECRET!).update(canonical).digest("hex"),
+  };
+}
 
 class PayloadTooLargeError extends Error {}
 class InvalidRequestBodyError extends Error {}
@@ -31,7 +47,7 @@ function sendJson(response: ServerResponse, status: number, body: unknown): void
   response.end(JSON.stringify(body));
 }
 
-async function requestBody(request: VercelRequest): Promise<BodyInit | undefined> {
+async function requestBody(request: VercelRequest): Promise<BufferedBody | undefined> {
   if (request.method === "GET" || request.method === "HEAD") return undefined;
   const declaredLength = Number(request.headers["content-length"] ?? 0);
   if (declaredLength > MAX_BODY_BYTES) throw new PayloadTooLargeError();
@@ -98,7 +114,7 @@ export default async function handler(request: VercelRequest, response: ServerRe
   if (request.headers["content-type"]) headers.set("Content-Type", request.headers["content-type"]);
   if (request.headers.cookie) headers.set("Cookie", request.headers.cookie);
 
-  let body: BodyInit | undefined;
+  let body: BufferedBody | undefined;
   try {
     body = await requestBody(request);
   } catch (error) {
@@ -110,8 +126,11 @@ export default async function handler(request: VercelRequest, response: ServerRe
     return;
   }
 
+  const upstreamPath = `${workerPath}${incomingUrl.search}`;
+  for (const [name, value] of Object.entries(signWorkerRequest(request.method ?? "GET", upstreamPath, body))) headers.set(name, value);
+
   try {
-    const upstream = await fetch(`${WORKER_URL}${workerPath}${incomingUrl.search}`, {
+    const upstream = await fetch(`${WORKER_URL}${upstreamPath}`, {
       method: request.method,
       headers,
       body,

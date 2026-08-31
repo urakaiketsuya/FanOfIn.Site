@@ -7,20 +7,50 @@ function envWithSecret(secret: string): Env {
   return { BFF_SHARED_SECRET: secret } as Env;
 }
 
-test("gateway authentication fails closed when its secret is missing", () => {
+test("gateway authentication fails closed when its secret is missing", async () => {
   const request = new Request("https://worker.example/v1/auth/session");
-  assert.equal(bffAllowed(request, envWithSecret("")), false);
+  assert.equal(await bffAllowed(request, envWithSecret("")), false);
 });
 
-test("gateway authentication requires the exact shared secret", () => {
+test("gateway authentication rejects unsigned bearer-secret requests", async () => {
   const rejected = new Request("https://worker.example/v1/auth/session", {
     headers: { "X-Fanofin-BFF-Secret": "wrong" },
   });
-  const accepted = new Request("https://worker.example/v1/auth/session", {
+  const unsigned = new Request("https://worker.example/v1/auth/session", {
     headers: { "X-Fanofin-BFF-Secret": "correct" },
   });
-  assert.equal(bffAllowed(rejected, envWithSecret("correct")), false);
-  assert.equal(bffAllowed(accepted, envWithSecret("correct")), true);
+  assert.equal(await bffAllowed(rejected, envWithSecret("correct")), false);
+  assert.equal(await bffAllowed(unsigned, envWithSecret("correct")), false);
+});
+
+async function signedGatewayRequest(secret: string, timestamp = Date.now()): Promise<Request> {
+  const method = "POST";
+  const path = "/v1/me/imports?mode=preview";
+  const body = JSON.stringify({ provider: "omnidex", identifier: "1" });
+  const requestId = "12345678-1234-4123-8123-123456789abc";
+  const bodyHash = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(body));
+  const hashHex = Array.from(new Uint8Array(bodyHash), (byte) => byte.toString(16).padStart(2, "0")).join("");
+  const canonical = `${method}\n${path}\n${hashHex}\n${timestamp}\n${requestId}`;
+  const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const signature = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(canonical));
+  const signatureHex = Array.from(new Uint8Array(signature), (byte) => byte.toString(16).padStart(2, "0")).join("");
+  return new Request(`https://worker.example${path}`, { method, body, headers: {
+    "X-Fanofin-BFF-Secret": secret,
+    "X-Fanofin-BFF-Timestamp": timestamp.toString(),
+    "X-Fanofin-BFF-Request-ID": requestId,
+    "X-Fanofin-BFF-Signature": signatureHex,
+  } });
+}
+
+test("gateway authentication accepts a fresh request-bound signature", async () => {
+  assert.equal(await bffAllowed(await signedGatewayRequest("correct"), envWithSecret("correct")), true);
+});
+
+test("gateway authentication rejects stale and tampered signatures", async () => {
+  assert.equal(await bffAllowed(await signedGatewayRequest("correct", Date.now() - 61_000), envWithSecret("correct")), false);
+  const signed = await signedGatewayRequest("correct");
+  const tampered = new Request("https://worker.example/v1/me/decks", signed);
+  assert.equal(await bffAllowed(tampered, envWithSecret("correct")), false);
 });
 
 test("manual saves reject oversized decklists", () => {

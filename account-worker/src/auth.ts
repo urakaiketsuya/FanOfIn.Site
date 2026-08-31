@@ -86,7 +86,11 @@ export async function verifyGoogleCredential(credential: string, clientId: strin
 }
 
 async function sha256(value: string): Promise<string> {
-  const bytes = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
+  return sha256Bytes(new TextEncoder().encode(value));
+}
+
+async function sha256Bytes(value: BufferSource): Promise<string> {
+  const bytes = await crypto.subtle.digest("SHA-256", value);
   return Array.from(new Uint8Array(bytes), (byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
@@ -180,6 +184,27 @@ export function originAllowed(request: Request, env: Env): boolean {
   return env.ALLOWED_ORIGINS.split(",").map((value) => value.trim()).includes(origin);
 }
 
-export function bffAllowed(request: Request, env: Env): boolean {
-  return Boolean(env.BFF_SHARED_SECRET) && request.headers.get("X-Fanofin-BFF-Secret") === env.BFF_SHARED_SECRET;
+const BFF_SIGNATURE_MAX_AGE_MS = 60_000;
+
+function constantTimeEqual(left: string, right: string): boolean {
+  if (left.length !== right.length) return false;
+  let difference = 0;
+  for (let index = 0; index < left.length; index++) difference |= left.charCodeAt(index) ^ right.charCodeAt(index);
+  return difference === 0;
+}
+
+export async function bffAllowed(request: Request, env: Env): Promise<boolean> {
+  if (!env.BFF_SHARED_SECRET || request.headers.get("X-Fanofin-BFF-Secret") !== env.BFF_SHARED_SECRET) return false;
+  const timestamp = request.headers.get("X-Fanofin-BFF-Timestamp");
+  const requestId = request.headers.get("X-Fanofin-BFF-Request-ID");
+  const signature = request.headers.get("X-Fanofin-BFF-Signature");
+  if (!timestamp || !requestId || !signature || !/^\d{13}$/.test(timestamp) || !/^[0-9a-f-]{36}$/i.test(requestId) || !/^[0-9a-f]{64}$/i.test(signature)) return false;
+  if (Math.abs(Date.now() - Number(timestamp)) > BFF_SIGNATURE_MAX_AGE_MS) return false;
+  const bodyHash = await sha256Bytes(await request.clone().arrayBuffer());
+  const url = new URL(request.url);
+  const canonical = `${request.method}\n${url.pathname}${url.search}\n${bodyHash}\n${timestamp}\n${requestId}`;
+  const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(env.BFF_SHARED_SECRET), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const expectedBytes = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(canonical));
+  const expected = Array.from(new Uint8Array(expectedBytes), (byte) => byte.toString(16).padStart(2, "0")).join("");
+  return constantTimeEqual(signature.toLowerCase(), expected);
 }
