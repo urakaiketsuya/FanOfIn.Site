@@ -3,6 +3,7 @@ import { createDeckVersion, deleteDeck, getDeck, getPublicDeck, listDecks, parse
 import { ApiError, badRequest } from "./errors";
 import { copyPublishedDeck, getDeckSocialState, listBookmarks, setDeckBookmark, setDeckLike } from "./deck-social";
 import { discoverDecks, getPublicProfile } from "./discovery";
+import { reportDeck } from "./moderation";
 
 function response(env: Env, request: Request, body: unknown, status = 200, extra: HeadersInit = {}): Response {
   const origin = request.headers.get("Origin");
@@ -105,7 +106,7 @@ export default {
       const user = await authenticatedUser(request, env);
       if (!user) return response(env, request, { error: "Sign in is required" }, 401);
 
-      const socialMatch = url.pathname.match(/^\/v1\/me\/decklists\/([a-f0-9]{32})\/(social|like|bookmark|copy)$/);
+      const socialMatch = url.pathname.match(/^\/v1\/me\/decklists\/([a-f0-9]{32})\/(social|like|bookmark|copy|report)$/);
       if (socialMatch) {
         if (socialMatch[2] === "social" && request.method === "GET") return response(env, request, await getDeckSocialState(env, user, socialMatch[1]));
         if (request.method !== "POST") return response(env, request, { error: "Route not found" }, 404);
@@ -120,6 +121,7 @@ export default {
           if (typeof bookmarked !== "boolean") throw badRequest("Bookmarked must be a boolean");
           return response(env, request, await setDeckBookmark(env, user, socialMatch[1], bookmarked));
         }
+        if (socialMatch[2] === "report") return response(env, request, await reportDeck(env, user, socialMatch[1], await jsonBody(request)), 201);
         if (socialMatch[2] === "copy") { const result = await copyPublishedDeck(env, user, socialMatch[1]); return response(env, request, result, result.created ? 201 : 200); }
       }
       if (request.method === "GET" && url.pathname === "/v1/me/bookmarks") return response(env, request, { decks: await listBookmarks(env, user) });
@@ -131,12 +133,14 @@ export default {
       }
       if (request.method === "PATCH" && url.pathname === "/v1/me") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
-        const body = await jsonBody(request) as { displayName?: unknown };
-        const displayName = normalizeDisplayName(body.displayName);
+        const body = await jsonBody(request) as { displayName?: unknown; profileDiscoverable?: unknown };
+        const displayName = body.displayName === undefined ? user.displayName : normalizeDisplayName(body.displayName);
         if (!displayName) return response(env, request, { error: "Username must be 2–32 characters and cannot contain control characters" }, 400);
+        const profileDiscoverable = body.profileDiscoverable === undefined ? user.profileDiscoverable : body.profileDiscoverable;
+        if (typeof profileDiscoverable !== "boolean") throw badRequest("Profile discoverability must be a boolean");
         const now = new Date().toISOString();
-        await env.ACCOUNT_DB.prepare("UPDATE users SET display_name = ?, updated_at = ? WHERE id = ?").bind(displayName, now, user.id).run();
-        return response(env, request, { user: { ...user, displayName } });
+        await env.ACCOUNT_DB.prepare("UPDATE users SET display_name = ?, profile_discoverable = ?, updated_at = ? WHERE id = ?").bind(displayName, profileDiscoverable ? 1 : 0, now, user.id).run();
+        return response(env, request, { user: { ...user, displayName, profileDiscoverable } });
       }
       if (request.method === "DELETE" && url.pathname === "/v1/me") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);

@@ -60,6 +60,11 @@ export default function MyDecksIndex() {
         <input id="account-username" autoComplete="nickname" minLength={2} maxLength={32} required value={username} onChange={(event) => setUsername(event.target.value)} className="min-w-0 flex-1 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm" />
         <button disabled={busy || username.trim() === user.displayName} type="submit" className="rounded-md bg-ctp-blue px-3 py-2 text-sm text-ctp-base disabled:opacity-50">Save username</button>
       </form>
+      <label className="mt-4 flex max-w-xl items-start gap-3 text-sm text-ctp-subtext1">
+        <input type="checkbox" checked={user.profileDiscoverable} disabled={busy} onChange={(event) => { const checked = event.target.checked; void run(async () => { const result = await accountApi.updateProfileDiscoverability(checked); setUser(result.user); setNotice(checked ? "Your public decks can appear in discovery." : "Your profile and decks are hidden from discovery; shared deck links still work."); }); }} className="mt-0.5" />
+        <span><span className="font-medium text-ctp-text">Show my public profile in discovery</span><br />Turn this off to hide your profile and public decks from browsing. Existing deck links remain accessible.</span>
+      </label>
+      {user.profileDiscoverable && <Link to={`/users/${user.profileSlug}`} className="mt-3 inline-block text-sm text-ctp-blue hover:underline">View my public profile</Link>}
     </section>
 
     <div className="mt-8 grid gap-5 md:grid-cols-2">

@@ -14,6 +14,8 @@ export interface AuthUser {
   email: string;
   displayName: string;
   avatarUrl: string | null;
+  profileSlug: string;
+  profileDiscoverable: boolean;
 }
 
 interface GoogleClaims {
@@ -104,20 +106,21 @@ function cookieValue(request: Request, name: string): string | null {
 
 export async function createUserSession(env: Env, claims: GoogleClaims): Promise<{ user: AuthUser; cookie: string }> {
   const now = new Date().toISOString();
-  const existing = await env.ACCOUNT_DB.prepare("SELECT id, display_name FROM users WHERE google_subject = ?").bind(claims.sub).first<{ id: string; display_name: string }>();
+  const existing = await env.ACCOUNT_DB.prepare("SELECT id, display_name, profile_slug, profile_discoverable FROM users WHERE google_subject = ?").bind(claims.sub).first<{ id: string; display_name: string; profile_slug: string; profile_discoverable: number }>();
   const userId = existing?.id ?? crypto.randomUUID();
   const displayName = existing?.display_name ?? (claims.name?.trim() || claims.email.split("@")[0]);
+  const profileSlug = existing?.profile_slug ?? crypto.randomUUID().replace(/-/g, "").slice(0, 24);
   await env.ACCOUNT_DB.prepare(`INSERT INTO users (id, google_subject, email, display_name, avatar_url, profile_slug, created_at, updated_at)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(google_subject) DO UPDATE SET email = excluded.email,
       avatar_url = excluded.avatar_url, updated_at = excluded.updated_at`)
-    .bind(userId, claims.sub, claims.email, displayName, claims.picture ?? null, crypto.randomUUID().replace(/-/g, "").slice(0, 24), now, now).run();
+    .bind(userId, claims.sub, claims.email, displayName, claims.picture ?? null, profileSlug, now, now).run();
   const rawToken = `${crypto.randomUUID()}${crypto.randomUUID()}`.replace(/-/g, "");
   const expires = new Date(Date.now() + SESSION_SECONDS * 1000).toISOString();
   await env.ACCOUNT_DB.prepare("INSERT INTO sessions (id, user_id, token_hash, expires_at, created_at, last_seen_at) VALUES (?, ?, ?, ?, ?, ?)")
     .bind(crypto.randomUUID(), userId, await sha256(rawToken), expires, now, now).run();
   return {
-    user: { id: userId, email: claims.email, displayName, avatarUrl: claims.picture ?? null },
+    user: { id: userId, email: claims.email, displayName, avatarUrl: claims.picture ?? null, profileSlug, profileDiscoverable: existing ? Boolean(existing.profile_discoverable) : true },
     cookie: `${SESSION_COOKIE}=${rawToken}; Path=/; HttpOnly; ${env.ALLOWED_ORIGINS.includes("https://") ? "Secure; " : ""}SameSite=Lax; Max-Age=${SESSION_SECONDS}`,
   };
 }
@@ -154,11 +157,11 @@ export async function authenticatedUser(request: Request, env: Env): Promise<Aut
   if (!token) return null;
   const now = new Date();
   const tokenHash = await sha256(token);
-  const row = await env.ACCOUNT_DB.prepare(`SELECT users.id, users.email, users.display_name, users.avatar_url, sessions.last_seen_at
+  const row = await env.ACCOUNT_DB.prepare(`SELECT users.id, users.email, users.display_name, users.avatar_url, users.profile_slug, users.profile_discoverable, sessions.last_seen_at
     FROM sessions JOIN users ON users.id = sessions.user_id
     WHERE sessions.token_hash = ? AND sessions.expires_at > ? AND sessions.last_seen_at > ?`)
     .bind(tokenHash, now.toISOString(), new Date(now.getTime() - SESSION_IDLE_SECONDS * 1000).toISOString())
-    .first<{ id: string; email: string; display_name: string; avatar_url: string | null; last_seen_at: string }>();
+    .first<{ id: string; email: string; display_name: string; avatar_url: string | null; profile_slug: string; profile_discoverable: number; last_seen_at: string }>();
   if (!row) {
     await env.ACCOUNT_DB.prepare("DELETE FROM sessions WHERE token_hash = ?").bind(tokenHash).run();
     return null;
@@ -166,7 +169,7 @@ export async function authenticatedUser(request: Request, env: Env): Promise<Aut
   if (now.getTime() - new Date(row.last_seen_at).getTime() >= SESSION_TOUCH_SECONDS * 1000) {
     await env.ACCOUNT_DB.prepare("UPDATE sessions SET last_seen_at = ? WHERE token_hash = ?").bind(now.toISOString(), tokenHash).run();
   }
-  return { id: row.id, email: row.email, displayName: row.display_name, avatarUrl: row.avatar_url };
+  return { id: row.id, email: row.email, displayName: row.display_name, avatarUrl: row.avatar_url, profileSlug: row.profile_slug, profileDiscoverable: Boolean(row.profile_discoverable) };
 }
 
 export async function destroySession(request: Request, env: Env): Promise<string> {

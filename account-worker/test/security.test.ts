@@ -4,6 +4,7 @@ import { bffAllowed, clearGoogleKeyCacheForTest, consumeOAuthNonce, createOAuthN
 import { assetJson, deleteDeck, getPublicDeck, parseSaveInput, renameDeck } from "../src/decks";
 import { getDeckSocialState, setDeckBookmark, setDeckLike } from "../src/deck-social";
 import { discoverDecks, getPublicProfile } from "../src/discovery";
+import { reportDeck } from "../src/moderation";
 
 function envWithSecret(secret: string): Env {
   return { BFF_SHARED_SECRET: secret } as Env;
@@ -139,6 +140,8 @@ test("discovery returns summaries and explicitly filters to public decks", async
   const database = { prepare(query: string) { discoverySql = query; return { bind() { return this; }, async all() { return { results: [row] }; } }; } } as unknown as D1Database;
   const result = await discoverDecks({ ACCOUNT_DB: database } as Env, new URLSearchParams("q=Rai&format=STANDARD"));
   assert.match(discoverySql, /ud\.visibility = 'public'/);
+  assert.match(discoverySql, /users\.profile_discoverable = 1/);
+  assert.match(discoverySql, /ud\.moderation_status = 'active'/);
   assert.equal(discoverySql.includes("unlisted"), false);
   assert.equal("decklist" in result.decks[0], false);
   assert.deepEqual(result.decks[0].owner, { displayName: "Pilot", profileSlug: "b".repeat(24) });
@@ -150,8 +153,39 @@ test("public profiles include only their public deck summaries", async () => {
   const database = { prepare(query: string) { queries.push(query); return { bind() { return this; }, async first() { return { display_name: "Pilot", profile_slug: "b".repeat(24) }; }, async all() { return { results: [] }; } }; } } as unknown as D1Database;
   const profile = await getPublicProfile({ ACCOUNT_DB: database } as Env, "b".repeat(24));
   assert.deepEqual(profile, { displayName: "Pilot", profileSlug: "b".repeat(24), decks: [] });
+  assert.match(queries[0], /profile_discoverable = 1/);
   assert.match(queries[1], /ud\.visibility = 'public'/);
+  assert.match(queries[1], /moderation_status = 'active'/);
   assert.equal(await getPublicProfile({ ACCOUNT_DB: database } as Env, "invalid"), null);
+});
+
+test("deck reports are bounded, reject self-reporting, and are idempotent", async () => {
+  let reports = 0;
+  const database = {
+    prepare(query: string) {
+      let values: unknown[] = [];
+      return {
+        bind(...bound: unknown[]) { values = bound; return this; },
+        async first() {
+          if (query.includes("FROM user_decks")) return { id: "deck-a", owner_user_id: values[0] === "b".repeat(32) ? "user-a" : "owner" };
+          return null;
+        },
+        async run() {
+          if (!query.startsWith("INSERT INTO deck_reports")) return { meta: { changes: 0 } };
+          if (reports) return { meta: { changes: 0 } };
+          reports++;
+          return { meta: { changes: 1 } };
+        },
+      };
+    },
+  } as unknown as D1Database;
+  const env = { ACCOUNT_DB: database } as Env;
+  const user = { id: "user-a", email: "a@example.com", displayName: "A", avatarUrl: null, profileSlug: "c".repeat(24), profileDiscoverable: true };
+  await assert.rejects(reportDeck(env, user, "b".repeat(32), { reason: "spam" }), /cannot report your own deck/);
+  assert.deepEqual(await reportDeck(env, user, "a".repeat(32), { reason: "abuse", details: "Harassment" }), { reported: true });
+  await assert.rejects(reportDeck(env, user, "a".repeat(32), { reason: "abuse" }), /already reported/);
+  await assert.rejects(reportDeck(env, user, "a".repeat(32), { reason: "invalid" }), /Invalid report reason/);
+  await assert.rejects(reportDeck(env, user, "a".repeat(32), { reason: "other", details: "x".repeat(1_001) }), /1,000 characters/);
 });
 
 test("deck likes are idempotent and bookmarks pin the published version", async () => {

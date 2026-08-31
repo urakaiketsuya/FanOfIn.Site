@@ -31,7 +31,7 @@ export async function discoverDecks(env: Env, params: URLSearchParams): Promise<
   if (format && format !== "STANDARD" && format !== "PANTHEON" && format !== "UNKNOWN") throw badRequest("Invalid deck format");
   const page = Number(params.get("page") ?? "1");
   if (!Number.isInteger(page) || page < 1 || page > 100) throw badRequest("Invalid page");
-  const where = ["ud.visibility = 'public'", "ud.published_version_id IS NOT NULL"];
+  const where = ["ud.visibility = 'public'", "ud.published_version_id IS NOT NULL", "ud.moderation_status = 'active'", "users.profile_discoverable = 1"];
   const bindings: unknown[] = [];
   if (query) { where.push("(ud.title LIKE ? ESCAPE '\\' OR cb.champion_name LIKE ? ESCAPE '\\' OR users.display_name LIKE ? ESCAPE '\\')"); const escaped = `%${query.replace(/[\\%_]/g, "\\$&")}%`; bindings.push(escaped, escaped, escaped); }
   if (format) { where.push("cb.format = ?"); bindings.push(format); }
@@ -43,10 +43,10 @@ export async function discoverDecks(env: Env, params: URLSearchParams): Promise<
 
 export async function getPublicProfile(env: Env, slug: string): Promise<PublicProfile | null> {
   if (!PROFILE_SLUG.test(slug)) return null;
-  const user = await env.ACCOUNT_DB.prepare("SELECT display_name, profile_slug FROM users WHERE profile_slug = ?")
+  const user = await env.ACCOUNT_DB.prepare("SELECT display_name, profile_slug FROM users WHERE profile_slug = ? AND profile_discoverable = 1")
     .bind(slug).first<{ display_name: string; profile_slug: string }>();
   if (!user) return null;
-  const rows = await env.ACCOUNT_DB.prepare(`${SELECT} WHERE users.profile_slug = ? AND ud.visibility = 'public'
+  const rows = await env.ACCOUNT_DB.prepare(`${SELECT} WHERE users.profile_slug = ? AND ud.visibility = 'public' AND ud.moderation_status = 'active'
     AND ud.published_version_id IS NOT NULL ORDER BY ud.published_at DESC LIMIT 100`).bind(slug).all<Record<string, string | number | null>>();
   return { displayName: user.display_name, profileSlug: user.profile_slug, decks: rows.results.map(summary) };
 }

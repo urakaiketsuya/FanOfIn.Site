@@ -86,7 +86,11 @@ export interface AccountUser {
   email: string;
   displayName: string;
   avatarUrl: string | null;
+  profileSlug: string;
+  profileDiscoverable: boolean;
 }
+
+export type DeckReportReason = "spam" | "abuse" | "copyright" | "other";
 
 export interface AccountSession {
   user: AccountUser | null;

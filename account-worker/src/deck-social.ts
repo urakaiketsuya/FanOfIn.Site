@@ -3,6 +3,9 @@ import type { AuthUser, Env } from "./auth";
 import { ApiError } from "./errors";
 import { saveDeck } from "./decks";
 
+const MAX_LIKES_PER_USER = 5_000;
+const MAX_BOOKMARKS_PER_USER = 500;
+
 async function publishedDeck(env: Env, slug: string) {
   if (!/^[a-f0-9]{32}$/.test(slug)) return null;
   return env.ACCOUNT_DB.prepare(`SELECT ud.id, ud.title, ud.description, ud.visibility, ud.public_slug, ud.published_at,
@@ -11,7 +14,7 @@ async function publishedDeck(env: Env, slug: string) {
     FROM user_decks ud JOIN users ON users.id = ud.owner_user_id
     JOIN deck_versions dv ON dv.id = ud.published_version_id AND dv.deck_id = ud.id
     JOIN canonical_builds cb ON cb.id = dv.canonical_build_id
-    WHERE ud.public_slug = ? AND ud.visibility IN ('public', 'unlisted')`).bind(slug).first<Record<string, string | number | null>>();
+    WHERE ud.public_slug = ? AND ud.visibility IN ('public', 'unlisted') AND ud.moderation_status = 'active'`).bind(slug).first<Record<string, string | number | null>>();
 }
 
 export async function getDeckSocialState(env: Env, user: AuthUser, slug: string): Promise<DeckSocialState> {
@@ -26,7 +29,14 @@ export async function getDeckSocialState(env: Env, user: AuthUser, slug: string)
 export async function setDeckLike(env: Env, user: AuthUser, slug: string, liked: boolean): Promise<{ liked: boolean; likeCount: number }> {
   const deck = await publishedDeck(env, slug);
   if (!deck) throw new ApiError("Deck not found", 404, "deck_not_found");
-  if (liked) await env.ACCOUNT_DB.prepare("INSERT INTO deck_likes (user_id, deck_id, created_at) VALUES (?, ?, ?) ON CONFLICT DO NOTHING").bind(user.id, deck.id, new Date().toISOString()).run();
+  if (liked) {
+    const existing = await env.ACCOUNT_DB.prepare("SELECT 1 AS found FROM deck_likes WHERE user_id = ? AND deck_id = ?").bind(user.id, deck.id).first();
+    if (!existing) {
+      const count = await env.ACCOUNT_DB.prepare("SELECT COUNT(*) AS count FROM deck_likes WHERE user_id = ?").bind(user.id).first<{ count: number }>();
+      if ((count?.count ?? 0) >= MAX_LIKES_PER_USER) throw new ApiError(`Like limit of ${MAX_LIKES_PER_USER} reached`, 400, "like_limit_reached");
+    }
+    await env.ACCOUNT_DB.prepare("INSERT INTO deck_likes (user_id, deck_id, created_at) VALUES (?, ?, ?) ON CONFLICT DO NOTHING").bind(user.id, deck.id, new Date().toISOString()).run();
+  }
   else await env.ACCOUNT_DB.prepare("DELETE FROM deck_likes WHERE user_id = ? AND deck_id = ?").bind(user.id, deck.id).run();
   const count = await env.ACCOUNT_DB.prepare("SELECT COUNT(*) AS count FROM deck_likes WHERE deck_id = ?").bind(deck.id).first<{ count: number }>();
   return { liked, likeCount: count?.count ?? 0 };
@@ -35,10 +45,16 @@ export async function setDeckLike(env: Env, user: AuthUser, slug: string, liked:
 export async function setDeckBookmark(env: Env, user: AuthUser, slug: string, bookmarked: boolean): Promise<{ bookmarked: boolean; versionNumber: number | null }> {
   const deck = await publishedDeck(env, slug);
   if (!deck) throw new ApiError("Deck not found", 404, "deck_not_found");
-  if (bookmarked) await env.ACCOUNT_DB.prepare(`INSERT INTO deck_bookmarks (user_id, deck_id, version_id, created_at) VALUES (?, ?, ?, ?)
+  if (bookmarked) {
+    const existing = await env.ACCOUNT_DB.prepare("SELECT 1 AS found FROM deck_bookmarks WHERE user_id = ? AND deck_id = ?").bind(user.id, deck.id).first();
+    if (!existing) {
+      const count = await env.ACCOUNT_DB.prepare("SELECT COUNT(*) AS count FROM deck_bookmarks WHERE user_id = ?").bind(user.id).first<{ count: number }>();
+      if ((count?.count ?? 0) >= MAX_BOOKMARKS_PER_USER) throw new ApiError(`Saved deck limit of ${MAX_BOOKMARKS_PER_USER} reached`, 400, "bookmark_limit_reached");
+    }
+    await env.ACCOUNT_DB.prepare(`INSERT INTO deck_bookmarks (user_id, deck_id, version_id, created_at) VALUES (?, ?, ?, ?)
     ON CONFLICT(user_id, deck_id) DO UPDATE SET version_id = excluded.version_id, created_at = excluded.created_at`)
     .bind(user.id, deck.id, deck.published_version_id, new Date().toISOString()).run();
-  else await env.ACCOUNT_DB.prepare("DELETE FROM deck_bookmarks WHERE user_id = ? AND deck_id = ?").bind(user.id, deck.id).run();
+  } else await env.ACCOUNT_DB.prepare("DELETE FROM deck_bookmarks WHERE user_id = ? AND deck_id = ?").bind(user.id, deck.id).run();
   return { bookmarked, versionNumber: bookmarked ? Number(deck.version_number) : null };
 }
 
@@ -63,7 +79,7 @@ export async function listBookmarks(env: Env, user: AuthUser): Promise<Bookmarke
     (SELECT COUNT(*) FROM deck_likes dl WHERE dl.deck_id = ud.id) AS like_count
     FROM deck_bookmarks db JOIN user_decks ud ON ud.id = db.deck_id JOIN users ON users.id = ud.owner_user_id
     JOIN deck_versions dv ON dv.id = db.version_id AND dv.deck_id = ud.id JOIN canonical_builds cb ON cb.id = dv.canonical_build_id
-    WHERE db.user_id = ? AND ud.visibility IN ('public', 'unlisted') ORDER BY db.created_at DESC`).bind(user.id).all<Record<string, string | number | null>>();
+    WHERE db.user_id = ? AND ud.visibility IN ('public', 'unlisted') AND ud.moderation_status = 'active' ORDER BY db.created_at DESC`).bind(user.id).all<Record<string, string | number | null>>();
   return rows.results.map((row) => ({ publicSlug: String(row.public_slug), title: String(row.title), description: String(row.description),
     visibility: row.visibility as "public" | "unlisted", format: row.format as "STANDARD" | "PANTHEON" | "UNKNOWN",
     championName: row.champion_name as string | null, decklist: JSON.parse(String(row.decklist_json)) as OmnidexDecklist,

@@ -216,7 +216,7 @@ export async function getPublicDeck(env: Env, publicSlug: string): Promise<Publi
     JOIN users ON users.id = ud.owner_user_id
     JOIN deck_versions dv ON dv.id = ud.published_version_id AND dv.deck_id = ud.id
     JOIN canonical_builds cb ON cb.id = dv.canonical_build_id
-    WHERE ud.public_slug = ? AND ud.visibility IN ('public', 'unlisted')`)
+    WHERE ud.public_slug = ? AND ud.visibility IN ('public', 'unlisted') AND ud.moderation_status = 'active'`)
     .bind(publicSlug).first<Record<string, string | null>>();
   if (!row) return null;
   return {
