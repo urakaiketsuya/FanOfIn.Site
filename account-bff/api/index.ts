@@ -10,6 +10,7 @@ const SHARED_SECRET = process.env.BFF_SHARED_SECRET;
 const MAX_BODY_BYTES = 1_048_576;
 
 class PayloadTooLargeError extends Error {}
+class InvalidRequestBodyError extends Error {}
 
 function applyCors(response: ServerResponse): void {
   response.setHeader("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
@@ -31,22 +32,34 @@ async function requestBody(request: VercelRequest): Promise<BodyInit | undefined
   const declaredLength = Number(request.headers["content-length"] ?? 0);
   if (declaredLength > MAX_BODY_BYTES) throw new PayloadTooLargeError();
   if (request.body !== undefined) {
-    const body = typeof request.body === "string"
-      ? request.body
-      : request.body instanceof Uint8Array
-        ? new Uint8Array(request.body)
-        : JSON.stringify(request.body);
+    let body: string | Uint8Array<ArrayBuffer>;
+    try {
+      if (typeof request.body === "string") body = request.body;
+      else if (request.body instanceof Uint8Array) body = new Uint8Array(request.body);
+      else {
+        const serialized = JSON.stringify(request.body);
+        if (serialized === undefined) throw new TypeError("Body is not JSON serializable");
+        body = serialized;
+      }
+    } catch (error) {
+      throw new InvalidRequestBodyError("Request body could not be serialized", { cause: error });
+    }
     const size = typeof body === "string" ? Buffer.byteLength(body) : body.byteLength;
     if (size > MAX_BODY_BYTES) throw new PayloadTooLargeError();
     return body;
   }
   const chunks: Buffer[] = [];
   let size = 0;
-  for await (const chunk of request) {
-    const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
-    size += buffer.length;
-    if (size > MAX_BODY_BYTES) throw new PayloadTooLargeError();
-    chunks.push(buffer);
+  try {
+    for await (const chunk of request) {
+      const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
+      size += buffer.length;
+      if (size > MAX_BODY_BYTES) throw new PayloadTooLargeError();
+      chunks.push(buffer);
+    }
+  } catch (error) {
+    if (error instanceof PayloadTooLargeError) throw error;
+    throw new InvalidRequestBodyError("Request body could not be read", { cause: error });
   }
   return chunks.length ? Buffer.concat(chunks) : undefined;
 }
@@ -81,11 +94,23 @@ export default async function handler(request: VercelRequest, response: ServerRe
   if (request.headers["content-type"]) headers.set("Content-Type", request.headers["content-type"]);
   if (request.headers.cookie) headers.set("Cookie", request.headers.cookie);
 
+  let body: BodyInit | undefined;
+  try {
+    body = await requestBody(request);
+  } catch (error) {
+    if (error instanceof PayloadTooLargeError) {
+      sendJson(response, 413, { error: "Request is too large" });
+      return;
+    }
+    sendJson(response, 400, { error: "Request body is invalid" });
+    return;
+  }
+
   try {
     const upstream = await fetch(`${WORKER_URL}${workerPath}${incomingUrl.search}`, {
       method: request.method,
       headers,
-      body: await requestBody(request),
+      body,
       redirect: "manual",
     });
     response.statusCode = upstream.status;
@@ -93,12 +118,10 @@ export default async function handler(request: VercelRequest, response: ServerRe
     response.setHeader("Content-Type", upstream.headers.get("Content-Type") ?? "application/json");
     const setCookie = upstream.headers.get("Set-Cookie");
     if (setCookie) response.setHeader("Set-Cookie", setCookie);
+    const requestId = upstream.headers.get("X-Request-ID");
+    if (requestId) response.setHeader("X-Request-ID", requestId);
     response.end(Buffer.from(await upstream.arrayBuffer()));
   } catch (error) {
-    if (error instanceof PayloadTooLargeError) {
-      sendJson(response, 413, { error: "Request is too large" });
-      return;
-    }
     console.error("Account Worker proxy failed", error);
     sendJson(response, 502, { error: "Account service is unavailable" });
   }
