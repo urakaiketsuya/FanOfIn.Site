@@ -133,18 +133,25 @@ export default {
       if (request.method === "GET" && url.pathname === "/v1/me/decks") return response(env, request, { decks: await listDecks(env, user) });
       if (request.method === "GET" && url.pathname === "/v1/me/export") {
         const profiles = await env.ACCOUNT_DB.prepare("SELECT provider, external_identifier, display_name, last_imported_at, created_at FROM external_profiles WHERE user_id = ? ORDER BY created_at").bind(user.id).all();
-        return response(env, request, { exportedAt: new Date().toISOString(), user, profiles: profiles.results, decks: await listDecks(env, user) });
+        const deckSummaries = await listDecks(env, user);
+        const decks = (await Promise.all(deckSummaries.map((deck) => getDeck(env, user, deck.id)))).filter((deck) => deck !== null);
+        return response(env, request, { exportedAt: new Date().toISOString(), user, profiles: profiles.results, decks });
       }
       if (request.method === "PATCH" && url.pathname === "/v1/me") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
-        const body = await jsonBody(request) as { displayName?: unknown; profileDiscoverable?: unknown };
+        const body = await jsonBody(request) as { displayName?: unknown; profileDiscoverable?: unknown; deckChecklistDismissed?: unknown; displayNameReviewed?: unknown };
         const displayName = body.displayName === undefined ? user.displayName : normalizeDisplayName(body.displayName);
         if (!displayName) return response(env, request, { error: "Username must be 2–32 characters and cannot contain control characters or blocked language" }, 400);
         const profileDiscoverable = body.profileDiscoverable === undefined ? user.profileDiscoverable : body.profileDiscoverable;
         if (typeof profileDiscoverable !== "boolean") throw badRequest("Profile discoverability must be a boolean");
+        const deckChecklistDismissed = body.deckChecklistDismissed === undefined ? user.deckChecklistDismissed : body.deckChecklistDismissed;
+        const displayNameReviewed = body.displayNameReviewed === undefined ? (body.displayName === undefined ? user.displayNameReviewed : true) : body.displayNameReviewed;
+        if (typeof deckChecklistDismissed !== "boolean" || typeof displayNameReviewed !== "boolean") throw badRequest("Account preferences must be booleans");
         const now = new Date().toISOString();
-        await env.ACCOUNT_DB.prepare("UPDATE users SET display_name = ?, profile_discoverable = ?, updated_at = ? WHERE id = ?").bind(displayName, profileDiscoverable ? 1 : 0, now, user.id).run();
-        return response(env, request, { user: { ...user, displayName, profileDiscoverable } });
+        await env.ACCOUNT_DB.prepare(`UPDATE users SET display_name = ?, profile_discoverable = ?, deck_checklist_dismissed = ?,
+          display_name_reviewed = ?, updated_at = ? WHERE id = ?`)
+          .bind(displayName, profileDiscoverable ? 1 : 0, deckChecklistDismissed ? 1 : 0, displayNameReviewed ? 1 : 0, now, user.id).run();
+        return response(env, request, { user: { ...user, displayName, profileDiscoverable, deckChecklistDismissed, displayNameReviewed } });
       }
       if (request.method === "DELETE" && url.pathname === "/v1/me") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);

@@ -39,9 +39,27 @@ const MAX_VERSIONS_PER_DECK = 200;
 const MAX_IDENTIFIER_LENGTH = 240;
 const MAX_SOURCE_URL_LENGTH = 1_000;
 const MAX_METADATA_BYTES = 16_384;
+const MAX_PRIMER_LENGTH = 50_000;
+const MAX_TAGS = 8;
+const MAX_TAG_LENGTH = 24;
 const ASSET_FETCH_TIMEOUT_MS = 10_000;
 const MAX_ASSET_BYTES = 5 * 1024 * 1024;
 const SAFE_ARCHIVE_ID = /^[A-Za-z0-9:_-]{1,240}$/;
+
+export function normalizeDeckTags(value: unknown): string[] {
+  if (!Array.isArray(value) || value.length > MAX_TAGS) throw badRequest(`Decks can have up to ${MAX_TAGS} tags`);
+  const tags: string[] = [];
+  const seen = new Set<string>();
+  for (const raw of value) {
+    if (typeof raw !== "string") throw badRequest("Invalid deck tag");
+    const tag = raw.trim().replace(/\s+/g, " ");
+    if (tag.length < 2 || tag.length > MAX_TAG_LENGTH || /[\p{Cc}\p{Cf}]/u.test(tag)) throw badRequest(`Tags must be 2–${MAX_TAG_LENGTH} characters`);
+    if (!validUserFacingName(tag)) throw badRequest("Deck tag contains blocked language", "blocked_language");
+    const key = tag.toLocaleLowerCase("en-US");
+    if (!seen.has(key)) { seen.add(key); tags.push(tag); }
+  }
+  return tags;
+}
 
 async function identityHash(decklist: OmnidexDecklist): Promise<string> {
   const bytes = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(savedDeckIdentityInput(decklist)));
@@ -177,14 +195,19 @@ export async function renameDeck(env: Env, user: AuthUser, deckId: string, title
 
 export async function updateDeckMetadata(env: Env, user: AuthUser, deckId: string, value: unknown): Promise<boolean> {
   if (!value || typeof value !== "object") throw badRequest("Invalid deck metadata");
-  const input = value as { title?: unknown; description?: unknown };
-  if (typeof input.title !== "string" || !input.title.trim() || input.title.length > 160) throw badRequest("A valid title is required");
-  if (!validUserFacingName(input.title)) throw badRequest("Deck name contains blocked language", "blocked_language");
+  const input = value as { title?: unknown; description?: unknown; primerMarkdown?: unknown; tags?: unknown };
+  if (input.title != null && (typeof input.title !== "string" || !input.title.trim() || input.title.length > 160)) throw badRequest("A valid title is required");
+  if (typeof input.title === "string" && !validUserFacingName(input.title)) throw badRequest("Deck name contains blocked language", "blocked_language");
   if (input.description != null && (typeof input.description !== "string" || input.description.length > 2_000)) throw badRequest("Description is too long");
+  if (input.primerMarkdown != null && (typeof input.primerMarkdown !== "string" || input.primerMarkdown.length > MAX_PRIMER_LENGTH)) throw badRequest("Primer is too long");
+  const tags = input.tags === undefined ? null : normalizeDeckTags(input.tags);
+  if (input.title === undefined && input.description === undefined && input.primerMarkdown === undefined && tags === null) throw badRequest("No deck metadata was provided");
   const now = new Date().toISOString();
-  const result = await env.ACCOUNT_DB.prepare("UPDATE user_decks SET title = ?, description = COALESCE(?, description), updated_at = ? WHERE id = ? AND owner_user_id = ?")
-    .bind(input.title.trim(), typeof input.description === "string" ? input.description.trim() : null, now, deckId, user.id).run();
-  if (result.meta.changes) {
+  const result = await env.ACCOUNT_DB.prepare(`UPDATE user_decks SET title = COALESCE(?, title), description = COALESCE(?, description),
+    primer_markdown = COALESCE(?, primer_markdown), tags_json = COALESCE(?, tags_json), updated_at = ? WHERE id = ? AND owner_user_id = ?`)
+    .bind(typeof input.title === "string" ? input.title.trim() : null, typeof input.description === "string" ? input.description.trim() : null,
+      typeof input.primerMarkdown === "string" ? input.primerMarkdown.trim() : null, tags ? JSON.stringify(tags) : null, now, deckId, user.id).run();
+  if (result.meta.changes && typeof input.title === "string") {
     await env.ACCOUNT_DB.prepare("UPDATE saved_decks SET title = ?, updated_at = ? WHERE id = ? AND user_id = ?")
       .bind(input.title.trim(), now, deckId, user.id).run();
   }
@@ -195,8 +218,8 @@ export async function publishDeck(env: Env, user: AuthUser, deckId: string, valu
   if (!value || typeof value !== "object") throw badRequest("Invalid publishing settings");
   const visibility = (value as { visibility?: unknown }).visibility;
   if (visibility !== "private" && visibility !== "unlisted" && visibility !== "public") throw badRequest("Invalid deck visibility");
-  const deck = await env.ACCOUNT_DB.prepare("SELECT public_slug, current_version_id FROM user_decks WHERE id = ? AND owner_user_id = ?")
-    .bind(deckId, user.id).first<{ public_slug: string | null; current_version_id: string | null }>();
+  const deck = await env.ACCOUNT_DB.prepare("SELECT public_slug, current_version_id, title, description, primer_markdown, tags_json FROM user_decks WHERE id = ? AND owner_user_id = ?")
+    .bind(deckId, user.id).first<{ public_slug: string | null; current_version_id: string | null; title: string; description: string; primer_markdown: string; tags_json: string }>();
   if (!deck) throw new ApiError("Deck not found", 404, "deck_not_found");
   if (!deck.current_version_id) throw badRequest("Deck has no version to publish");
   const slug = deck.public_slug ?? crypto.randomUUID().replace(/-/g, "");
@@ -206,7 +229,8 @@ export async function publishDeck(env: Env, user: AuthUser, deckId: string, valu
       .bind(now, deckId, user.id).run();
   } else {
     await env.ACCOUNT_DB.prepare(`UPDATE user_decks SET public_slug = ?, visibility = ?, published_version_id = current_version_id,
-      published_at = ?, updated_at = ? WHERE id = ? AND owner_user_id = ?`)
+      published_title = title, published_description = description, published_primer_markdown = primer_markdown,
+      published_tags_json = tags_json, published_at = ?, updated_at = ? WHERE id = ? AND owner_user_id = ?`)
       .bind(slug, visibility, now, now, deckId, user.id).run();
   }
   return { publicSlug: visibility === "private" ? deck.public_slug : slug, visibility };
@@ -214,7 +238,8 @@ export async function publishDeck(env: Env, user: AuthUser, deckId: string, valu
 
 export async function getPublicDeck(env: Env, publicSlug: string): Promise<PublicDeck | null> {
   if (!/^[a-f0-9]{32}$/.test(publicSlug)) return null;
-  const row = await env.ACCOUNT_DB.prepare(`SELECT ud.public_slug, ud.title, ud.description, ud.visibility, ud.published_at,
+  const row = await env.ACCOUNT_DB.prepare(`SELECT ud.public_slug, ud.published_title, ud.published_description, ud.published_primer_markdown,
+    ud.published_tags_json, ud.visibility, ud.published_at,
     ud.updated_at, users.display_name, users.profile_slug, dv.version_number, cb.format, cb.champion_name, cb.decklist_json,
     (SELECT COUNT(*) FROM deck_likes dl WHERE dl.deck_id = ud.id) AS like_count
     FROM user_decks ud
@@ -225,7 +250,8 @@ export async function getPublicDeck(env: Env, publicSlug: string): Promise<Publi
     .bind(publicSlug).first<Record<string, string | null>>();
   if (!row) return null;
   return {
-    publicSlug: row.public_slug!, title: row.title!, description: row.description!,
+    publicSlug: row.public_slug!, title: row.published_title!, description: row.published_description!,
+    primerMarkdown: row.published_primer_markdown ?? "", tags: JSON.parse(row.published_tags_json ?? "[]") as string[],
     visibility: row.visibility as "public" | "unlisted", format: row.format as DeckFormat,
     championName: row.champion_name, decklist: JSON.parse(row.decklist_json!) as OmnidexDecklist,
     versionNumber: Number(row.version_number), publishedAt: row.published_at!, updatedAt: row.updated_at!,
@@ -252,7 +278,8 @@ export async function getDeck(env: Env, user: AuthUser, deckId: string): Promise
   const current = versions.find((version) => version.id === deck.current_version_id) ?? versions[0];
   if (!current) return null;
   return {
-    id: deck.id!, identityHash: deck.identity_hash!, title: deck.title!, description: deck.description!,
+    id: deck.id!, identityHash: deck.identity_hash!, title: deck.title!, description: deck.description!, primerMarkdown: deck.primer_markdown ?? "",
+    tags: JSON.parse(deck.tags_json ?? "[]") as string[],
     visibility: deck.visibility as SavedDeckDetail["visibility"], publicSlug: deck.public_slug,
     currentVersionId: current.id, publishedVersionId: deck.published_version_id,
     format: deck.format as DeckFormat, championName: deck.champion_name, decklist: current.decklist,

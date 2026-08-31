@@ -5,6 +5,13 @@ import { accountApi, AccountApiError } from "../../lib/accountApi";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import UserDeckHeader from "./UserDeckHeader";
 import UserDecklistPanel from "./UserDecklistPanel";
+import DeckTags from "./DeckTags";
+import PrimerMarkdown from "./PrimerMarkdown";
+import Tabs from "../../components/ui/Tabs";
+import { useTabParam } from "../../lib/useTabParam";
+
+type PublicDeckTab = "decklist" | "primer";
+const PUBLIC_TABS = [{ key: "decklist", label: "Decklist" }, { key: "primer", label: "Primer" }] satisfies { key: PublicDeckTab; label: string }[];
 
 export default function PublicDeckDetail() {
   const { publicSlug = "" } = useParams<{ publicSlug: string }>();
@@ -14,6 +21,7 @@ export default function PublicDeckDetail() {
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const navigate = useNavigate();
+  const [tab, setTab] = useTabParam<PublicDeckTab>("tab", PUBLIC_TABS.map(({ key }) => key), "decklist");
   useDocumentTitle(deck?.title ?? "Decklist", deck?.description || "A community decklist on Fan of Insight.");
 
   useEffect(() => {
@@ -48,6 +56,7 @@ export default function PublicDeckDetail() {
 
   return <div className="mx-auto max-w-4xl px-4 py-8">
     <UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} versionNumber={deck.versionNumber} visibility={deck.visibility} description={deck.description} eyebrow={<>Shared by <Link to={`/users/${deck.owner.profileSlug}`} className="text-ctp-blue hover:underline">{deck.owner.displayName}</Link></>} />
+    <DeckTags tags={deck.tags} />
     <div className="mt-5 flex flex-wrap items-center gap-2">
       <button type="button" disabled={busy || !social} onClick={() => void run(async () => { const result = await accountApi.likeDeck(publicSlug, !social?.liked); setSocial((current) => current ? { ...current, liked: result.liked } : current); setDeck((current) => current ? { ...current, likeCount: result.likeCount } : current); })} className="rounded-md border border-ctp-pink/60 px-3 py-1.5 text-sm text-ctp-pink disabled:opacity-50">{social?.liked ? "Liked" : "Like"} · {deck.likeCount}</button>
       <button type="button" disabled={busy || !social} onClick={() => void run(async () => { const result = await accountApi.bookmarkDeck(publicSlug, !social?.bookmarked); setSocial((current) => current ? { ...current, bookmarked: result.bookmarked, bookmarkedVersionNumber: result.versionNumber } : current); })} className="rounded-md border border-ctp-blue px-3 py-1.5 text-sm text-ctp-blue disabled:opacity-50">{social?.bookmarked ? `Saved v${social.bookmarkedVersionNumber}` : "Save deck"}</button>
@@ -56,7 +65,9 @@ export default function PublicDeckDetail() {
       {!social && <Link to="/my-decks" className="text-sm text-ctp-blue hover:underline">Sign in to like, save, or copy</Link>}
     </div>
     {notice && <p className="mt-3 text-sm text-ctp-yellow">{notice}</p>}
-    <UserDecklistPanel decklist={deck.decklist} />
+    <div className="mt-6"><Tabs tabs={PUBLIC_TABS} active={tab} onChange={setTab} label="Published deck details" baseId="public-deck" /></div>
+    {tab === "decklist" && <UserDecklistPanel decklist={deck.decklist} />}
+    {tab === "primer" && <section className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-5">{deck.primerMarkdown.trim() ? <PrimerMarkdown markdown={deck.primerMarkdown} /> : <p className="text-sm text-ctp-subtext1">The author has not added a primer yet.</p>}</section>}
     <p className="mt-4 text-xs text-ctp-subtext0">Published {new Date(deck.publishedAt).toLocaleDateString()}</p>
   </div>;
 }

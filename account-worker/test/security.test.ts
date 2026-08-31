@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { bffAllowed, clearGoogleKeyCacheForTest, consumeOAuthNonce, createOAuthNonce, normalizeDisplayName, verifyGoogleCredential, type Env } from "../src/auth";
-import { assetJson, deleteDeck, getPublicDeck, parseSaveInput, renameDeck } from "../src/decks";
+import { assetJson, deleteDeck, getPublicDeck, normalizeDeckTags, parseSaveInput, renameDeck } from "../src/decks";
 import { getDeckSocialState, setDeckBookmark, setDeckLike } from "../src/deck-social";
 import { discoverDecks, getPublicProfile } from "../src/discovery";
 import { reportDeck } from "../src/moderation";
@@ -110,6 +110,13 @@ test("deck names reject blocked language without substring false positives", () 
   assert.equal(parseSaveInput(input("Classic Assassin")).title, "Classic Assassin");
 });
 
+test("deck tags are normalized, deduplicated, moderated, and bounded", () => {
+  assert.deepEqual(normalizeDeckTags([" Control ", "control", "Tournament"]), ["Control", "Tournament"]);
+  assert.throws(() => normalizeDeckTags(Array.from({ length: 9 }, (_, index) => `Tag ${index}`)), /up to 8 tags/);
+  assert.throws(() => normalizeDeckTags(["x"]), /2–24 characters/);
+  assert.throws(() => normalizeDeckTags(["Sh1t"]), /blocked language/);
+});
+
 test("the public save endpoint cannot forge imported sources", () => {
   assert.throws(() => parseSaveInput({
     title: "Forged import",
@@ -155,7 +162,8 @@ test("public decks expose only published card data and a display name", async ()
         bind() { return this; },
         async first() {
           return {
-            public_slug: "a".repeat(32), title: "Shared deck", description: "Public notes", visibility: "public",
+            public_slug: "a".repeat(32), published_title: "Shared deck", published_description: "Public notes",
+            published_primer_markdown: "# Game plan", published_tags_json: '["Control"]', visibility: "public",
             published_at: "2026-08-31T12:00:00.000Z", updated_at: "2026-08-31T12:00:00.000Z",
             display_name: "Deck Pilot", profile_slug: "b".repeat(24), version_number: 3, format: "STANDARD", champion_name: "Rai",
             decklist_json: JSON.stringify({ main: [{ card: "Test Card", quantity: 4 }], material: [], sideboard: [] }),
@@ -166,7 +174,9 @@ test("public decks expose only published card data and a display name", async ()
     },
   } as unknown as D1Database;
   const deck = await getPublicDeck({ ACCOUNT_DB: database } as Env, "a".repeat(32));
-  assert.deepEqual(Object.keys(deck!).sort(), ["championName", "decklist", "description", "format", "likeCount", "owner", "publicSlug", "publishedAt", "title", "updatedAt", "versionNumber", "visibility"]);
+  assert.deepEqual(Object.keys(deck!).sort(), ["championName", "decklist", "description", "format", "likeCount", "owner", "primerMarkdown", "publicSlug", "publishedAt", "tags", "title", "updatedAt", "versionNumber", "visibility"]);
+  assert.equal(deck!.primerMarkdown, "# Game plan");
+  assert.deepEqual(deck!.tags, ["Control"]);
   assert.deepEqual(deck!.owner, { displayName: "Deck Pilot", profileSlug: "b".repeat(24) });
   assert.equal(JSON.stringify(deck).includes("private@example.com"), false);
   assert.equal(await getPublicDeck({ ACCOUNT_DB: database } as Env, "not-a-valid-slug"), null);

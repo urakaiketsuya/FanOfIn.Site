@@ -28,6 +28,7 @@ export const accountApi = {
   exportAccount: () => accountRequest<Record<string, unknown>>("/v1/me/export"),
   updateUsername: (displayName: string) => accountRequest<{ user: AccountUser }>("/v1/me", { method: "PATCH", body: JSON.stringify({ displayName }) }),
   updateProfileDiscoverability: (profileDiscoverable: boolean) => accountRequest<{ user: AccountUser }>("/v1/me", { method: "PATCH", body: JSON.stringify({ profileDiscoverable }) }),
+  updateAccountPreferences: (preferences: { deckChecklistDismissed?: boolean; displayNameReviewed?: boolean }) => accountRequest<{ user: AccountUser }>("/v1/me", { method: "PATCH", body: JSON.stringify(preferences) }),
   deleteAccount: () => accountRequest<{ success: true }>("/v1/me", { method: "DELETE", body: JSON.stringify({ confirmation: "DELETE" }) }),
   decks: () => accountRequest<{ decks: SavedDeck[] }>("/v1/me/decks"),
   deck: (id: string) => accountRequest<{ deck: SavedDeckDetail }>(`/v1/me/decks/${encodeURIComponent(id)}`),
@@ -45,7 +46,7 @@ export const accountApi = {
   restoreDeckVersion: (id: string, versionId: string) => accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}/versions/${encodeURIComponent(versionId)}/restore`, { method: "POST" }),
   saveDeck: (input: { title: string; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; decklist: OmnidexDecklist; source: { provider: "manual"; externalDeckId: string; label: string } }) =>
     accountRequest<{ id: string; created: boolean }>("/v1/me/decks", { method: "POST", body: JSON.stringify(input) }),
-  updateDeckMetadata: (id: string, title: string, description: string) => accountRequest<{ success: true }>(`/v1/me/decks/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify({ title, description }) }),
+  updateDeckMetadata: (id: string, input: { title?: string; description?: string; primerMarkdown?: string; tags?: string[] }) => accountRequest<{ success: true }>(`/v1/me/decks/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify(input) }),
   renameDeck: (id: string, title: string) => accountRequest<{ success: true }>(`/v1/me/decks/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify({ title }) }),
   publishDeck: (id: string, visibility: DeckVisibility) => accountRequest<{ publicSlug: string | null; visibility: DeckVisibility }>(`/v1/me/decks/${encodeURIComponent(id)}/publish`, { method: "POST", body: JSON.stringify({ visibility }) }),
   deleteDeck: (id: string) => accountRequest<{ success: true }>(`/v1/me/decks/${encodeURIComponent(id)}`, { method: "DELETE" }),

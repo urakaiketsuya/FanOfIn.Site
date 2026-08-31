@@ -8,7 +8,8 @@ const PAGE_SIZE = 24;
 
 function summary(row: Record<string, string | number | null>): PublicDeckSummary {
   return {
-    publicSlug: String(row.public_slug), title: String(row.title), description: String(row.description),
+    publicSlug: String(row.public_slug), title: String(row.published_title), description: String(row.published_description),
+    primerMarkdown: String(row.published_primer_markdown ?? ""), tags: JSON.parse(String(row.published_tags_json ?? "[]")) as string[],
     format: row.format as DeckFormat, championName: row.champion_name ? String(row.champion_name) : null,
     versionNumber: Number(row.version_number), publishedAt: String(row.published_at),
     owner: { displayName: String(row.display_name), profileSlug: String(row.profile_slug) },
@@ -16,7 +17,8 @@ function summary(row: Record<string, string | number | null>): PublicDeckSummary
   };
 }
 
-const SELECT = `SELECT ud.public_slug, ud.title, ud.description, ud.published_at,
+const SELECT = `SELECT ud.public_slug, ud.published_title, ud.published_description, ud.published_primer_markdown,
+  ud.published_tags_json, ud.published_at,
   users.display_name, users.profile_slug, dv.version_number, cb.format, cb.champion_name,
   (SELECT COUNT(*) FROM deck_likes dl WHERE dl.deck_id = ud.id) AS like_count
   FROM user_decks ud
@@ -33,7 +35,7 @@ export async function discoverDecks(env: Env, params: URLSearchParams): Promise<
   if (!Number.isInteger(page) || page < 1 || page > 100) throw badRequest("Invalid page");
   const where = ["ud.visibility = 'public'", "ud.published_version_id IS NOT NULL", "ud.moderation_status = 'active'", "users.profile_discoverable = 1"];
   const bindings: unknown[] = [];
-  if (query) { where.push("(ud.title LIKE ? ESCAPE '\\' OR cb.champion_name LIKE ? ESCAPE '\\' OR users.display_name LIKE ? ESCAPE '\\')"); const escaped = `%${query.replace(/[\\%_]/g, "\\$&")}%`; bindings.push(escaped, escaped, escaped); }
+  if (query) { where.push("(ud.published_title LIKE ? ESCAPE '\\' OR ud.published_tags_json LIKE ? ESCAPE '\\' OR cb.champion_name LIKE ? ESCAPE '\\' OR users.display_name LIKE ? ESCAPE '\\')"); const escaped = `%${query.replace(/[\\%_]/g, "\\$&")}%`; bindings.push(escaped, escaped, escaped, escaped); }
   if (format) { where.push("cb.format = ?"); bindings.push(format); }
   const rows = await env.ACCOUNT_DB.prepare(`${SELECT} WHERE ${where.join(" AND ")}
     ORDER BY like_count DESC, ud.published_at DESC LIMIT ? OFFSET ?`)

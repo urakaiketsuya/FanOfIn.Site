@@ -41,6 +41,8 @@ export interface SavedDeckVersion {
 
 export interface SavedDeckDetail extends SavedDeck {
   description: string;
+  primerMarkdown: string;
+  tags: string[];
   visibility: DeckVisibility;
   publicSlug: string | null;
   currentVersionId: string;
@@ -52,6 +54,8 @@ export interface PublicDeck {
   publicSlug: string;
   title: string;
   description: string;
+  primerMarkdown: string;
+  tags: string[];
   visibility: Exclude<DeckVisibility, "private">;
   format: DeckFormat;
   championName: string | null;
@@ -88,6 +92,8 @@ export interface AccountUser {
   avatarUrl: string | null;
   profileSlug: string;
   profileDiscoverable: boolean;
+  deckChecklistDismissed: boolean;
+  displayNameReviewed: boolean;
 }
 
 export type DeckReportReason = "spam" | "abuse" | "copyright" | "other";

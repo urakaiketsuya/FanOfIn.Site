@@ -18,6 +18,8 @@ export interface AuthUser {
   avatarUrl: string | null;
   profileSlug: string;
   profileDiscoverable: boolean;
+  deckChecklistDismissed: boolean;
+  displayNameReviewed: boolean;
 }
 
 interface GoogleClaims {
@@ -108,7 +110,7 @@ function cookieValue(request: Request, name: string): string | null {
 
 export async function createUserSession(env: Env, claims: GoogleClaims): Promise<{ user: AuthUser; cookie: string }> {
   const now = new Date().toISOString();
-  const existing = await env.ACCOUNT_DB.prepare("SELECT id, display_name, profile_slug, profile_discoverable FROM users WHERE google_subject = ?").bind(claims.sub).first<{ id: string; display_name: string; profile_slug: string; profile_discoverable: number }>();
+  const existing = await env.ACCOUNT_DB.prepare("SELECT id, display_name, profile_slug, profile_discoverable, deck_checklist_dismissed, display_name_reviewed FROM users WHERE google_subject = ?").bind(claims.sub).first<{ id: string; display_name: string; profile_slug: string; profile_discoverable: number; deck_checklist_dismissed: number; display_name_reviewed: number }>();
   const userId = existing?.id ?? crypto.randomUUID();
   const suggestedName = normalizeDisplayName(claims.name) ?? normalizeDisplayName(claims.email.split("@")[0]);
   const displayName = existing?.display_name ?? suggestedName ?? "Deck Player";
@@ -123,7 +125,8 @@ export async function createUserSession(env: Env, claims: GoogleClaims): Promise
   await env.ACCOUNT_DB.prepare("INSERT INTO sessions (id, user_id, token_hash, expires_at, created_at, last_seen_at) VALUES (?, ?, ?, ?, ?, ?)")
     .bind(crypto.randomUUID(), userId, await sha256(rawToken), expires, now, now).run();
   return {
-    user: { id: userId, email: claims.email, displayName, avatarUrl: claims.picture ?? null, profileSlug, profileDiscoverable: existing ? Boolean(existing.profile_discoverable) : true },
+    user: { id: userId, email: claims.email, displayName, avatarUrl: claims.picture ?? null, profileSlug, profileDiscoverable: existing ? Boolean(existing.profile_discoverable) : true,
+      deckChecklistDismissed: Boolean(existing?.deck_checklist_dismissed), displayNameReviewed: Boolean(existing?.display_name_reviewed) },
     cookie: `${SESSION_COOKIE}=${rawToken}; Path=/; HttpOnly; ${env.ALLOWED_ORIGINS.includes("https://") ? "Secure; " : ""}SameSite=Lax; Max-Age=${SESSION_SECONDS}`,
   };
 }
@@ -160,11 +163,12 @@ export async function authenticatedUser(request: Request, env: Env): Promise<Aut
   if (!token) return null;
   const now = new Date();
   const tokenHash = await sha256(token);
-  const row = await env.ACCOUNT_DB.prepare(`SELECT users.id, users.email, users.display_name, users.avatar_url, users.profile_slug, users.profile_discoverable, sessions.last_seen_at
+  const row = await env.ACCOUNT_DB.prepare(`SELECT users.id, users.email, users.display_name, users.avatar_url, users.profile_slug, users.profile_discoverable,
+    users.deck_checklist_dismissed, users.display_name_reviewed, sessions.last_seen_at
     FROM sessions JOIN users ON users.id = sessions.user_id
     WHERE sessions.token_hash = ? AND sessions.expires_at > ? AND sessions.last_seen_at > ?`)
     .bind(tokenHash, now.toISOString(), new Date(now.getTime() - SESSION_IDLE_SECONDS * 1000).toISOString())
-    .first<{ id: string; email: string; display_name: string; avatar_url: string | null; profile_slug: string; profile_discoverable: number; last_seen_at: string }>();
+    .first<{ id: string; email: string; display_name: string; avatar_url: string | null; profile_slug: string; profile_discoverable: number; deck_checklist_dismissed: number; display_name_reviewed: number; last_seen_at: string }>();
   if (!row) {
     await env.ACCOUNT_DB.prepare("DELETE FROM sessions WHERE token_hash = ?").bind(tokenHash).run();
     return null;
@@ -172,7 +176,8 @@ export async function authenticatedUser(request: Request, env: Env): Promise<Aut
   if (now.getTime() - new Date(row.last_seen_at).getTime() >= SESSION_TOUCH_SECONDS * 1000) {
     await env.ACCOUNT_DB.prepare("UPDATE sessions SET last_seen_at = ? WHERE token_hash = ?").bind(now.toISOString(), tokenHash).run();
   }
-  return { id: row.id, email: row.email, displayName: row.display_name, avatarUrl: row.avatar_url, profileSlug: row.profile_slug, profileDiscoverable: Boolean(row.profile_discoverable) };
+  return { id: row.id, email: row.email, displayName: row.display_name, avatarUrl: row.avatar_url, profileSlug: row.profile_slug,
+    profileDiscoverable: Boolean(row.profile_discoverable), deckChecklistDismissed: Boolean(row.deck_checklist_dismissed), displayNameReviewed: Boolean(row.display_name_reviewed) };
 }
 
 export async function destroySession(request: Request, env: Env): Promise<string> {
