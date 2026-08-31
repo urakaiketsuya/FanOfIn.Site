@@ -1,3 +1,5 @@
+import { validUserFacingName } from "./content-policy";
+
 export interface Env {
   ACCOUNT_DB: D1Database;
   GOOGLE_CLIENT_ID: string;
@@ -108,7 +110,8 @@ export async function createUserSession(env: Env, claims: GoogleClaims): Promise
   const now = new Date().toISOString();
   const existing = await env.ACCOUNT_DB.prepare("SELECT id, display_name, profile_slug, profile_discoverable FROM users WHERE google_subject = ?").bind(claims.sub).first<{ id: string; display_name: string; profile_slug: string; profile_discoverable: number }>();
   const userId = existing?.id ?? crypto.randomUUID();
-  const displayName = existing?.display_name ?? (claims.name?.trim() || claims.email.split("@")[0]);
+  const suggestedName = normalizeDisplayName(claims.name) ?? normalizeDisplayName(claims.email.split("@")[0]);
+  const displayName = existing?.display_name ?? suggestedName ?? "Deck Player";
   const profileSlug = existing?.profile_slug ?? crypto.randomUUID().replace(/-/g, "").slice(0, 24);
   await env.ACCOUNT_DB.prepare(`INSERT INTO users (id, google_subject, email, display_name, avatar_url, profile_slug, created_at, updated_at)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
@@ -128,7 +131,7 @@ export async function createUserSession(env: Env, claims: GoogleClaims): Promise
 export function normalizeDisplayName(value: unknown): string | null {
   if (typeof value !== "string") return null;
   const normalized = value.trim().replace(/\s+/g, " ");
-  if (normalized.length < 2 || normalized.length > 32 || /[\p{Cc}\p{Cf}]/u.test(normalized)) return null;
+  if (normalized.length < 2 || normalized.length > 32 || /[\p{Cc}\p{Cf}]/u.test(normalized) || !validUserFacingName(normalized)) return null;
   return normalized;
 }
 

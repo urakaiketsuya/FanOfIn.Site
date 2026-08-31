@@ -70,6 +70,20 @@ test("usernames are normalized and bounded", () => {
   assert.equal(normalizeDisplayName("A"), null);
   assert.equal(normalizeDisplayName("x".repeat(33)), null);
   assert.equal(normalizeDisplayName("Player\u0000Name"), null);
+  assert.equal(normalizeDisplayName("f.u.c.k"), null);
+  assert.equal(normalizeDisplayName("Sh1t Pilot"), null);
+  assert.equal(normalizeDisplayName("Classic Assassin"), "Classic Assassin");
+});
+
+test("deck names reject blocked language without substring false positives", () => {
+  const input = (title: string) => ({
+    title,
+    decklist: { main: [{ card: "Test Card", quantity: 1 }], material: [], sideboard: [] },
+    source: { provider: "manual" as const, externalDeckId: "local", label: "Manual" },
+  });
+  assert.throws(() => parseSaveInput(input("Sh1t Deck")), /blocked language/);
+  assert.throws(() => parseSaveInput(input("f.u.c.k")), /blocked language/);
+  assert.equal(parseSaveInput(input("Classic Assassin")).title, "Classic Assassin");
 });
 
 test("the public save endpoint cannot forge imported sources", () => {

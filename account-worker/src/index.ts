@@ -135,7 +135,7 @@ export default {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
         const body = await jsonBody(request) as { displayName?: unknown; profileDiscoverable?: unknown };
         const displayName = body.displayName === undefined ? user.displayName : normalizeDisplayName(body.displayName);
-        if (!displayName) return response(env, request, { error: "Username must be 2–32 characters and cannot contain control characters" }, 400);
+        if (!displayName) return response(env, request, { error: "Username must be 2–32 characters and cannot contain control characters or blocked language" }, 400);
         const profileDiscoverable = body.profileDiscoverable === undefined ? user.profileDiscoverable : body.profileDiscoverable;
         if (typeof profileDiscoverable !== "boolean") throw badRequest("Profile discoverability must be a boolean");
         const now = new Date().toISOString();

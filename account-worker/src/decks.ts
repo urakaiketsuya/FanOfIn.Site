@@ -14,6 +14,7 @@ import {
   type ShoutAtYourDecksDeckSummary,
 } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
+import { validUserFacingName } from "./content-policy";
 import { ApiError, badRequest } from "./errors";
 
 interface SaveInput {
@@ -105,6 +106,7 @@ export function parseSaveInput(value: unknown): SaveInput {
   if (!value || typeof value !== "object") throw badRequest("Invalid saved deck");
   const input = value as Partial<SaveInput>;
   if (!validDecklist(input.decklist) || typeof input.title !== "string" || !input.title.trim() || input.title.length > 160) throw badRequest("Invalid saved deck");
+  if (!validUserFacingName(input.title)) throw badRequest("Deck name contains blocked language", "blocked_language");
   if (!input.source || input.source.provider !== "manual" || typeof input.source.externalDeckId !== "string" || !input.source.externalDeckId || input.source.externalDeckId.length > MAX_IDENTIFIER_LENGTH || typeof input.source.label !== "string" || !input.source.label || input.source.label.length > 240) throw badRequest("Invalid deck source");
   if (input.championName != null && (typeof input.championName !== "string" || input.championName.length > 200)) throw badRequest("Invalid champion name");
   if (input.source.sourceUrl != null && (typeof input.source.sourceUrl !== "string" || input.source.sourceUrl.length > MAX_SOURCE_URL_LENGTH)) throw badRequest("Invalid source URL");
@@ -113,6 +115,7 @@ export function parseSaveInput(value: unknown): SaveInput {
 }
 
 export async function saveDeck(env: Env, user: AuthUser, input: SaveInput): Promise<{ id: string; created: boolean }> {
+  if (!validUserFacingName(input.title)) throw badRequest("Deck name contains blocked language", "blocked_language");
   const canonical = canonicalizeSavedDecklist(input.decklist);
   if (canonical.main.length + canonical.material.length === 0) throw badRequest("A deck needs main or material cards");
   const hash = await identityHash(canonical);
@@ -162,6 +165,7 @@ export async function listDecks(env: Env, user: AuthUser): Promise<SavedDeck[]> 
 }
 
 export async function renameDeck(env: Env, user: AuthUser, deckId: string, title: string): Promise<boolean> {
+  if (!validUserFacingName(title)) throw badRequest("Deck name contains blocked language", "blocked_language");
   const result = await env.ACCOUNT_DB.prepare("UPDATE saved_decks SET title = ?, updated_at = ? WHERE id = ? AND user_id = ?")
     .bind(title, new Date().toISOString(), deckId, user.id).run();
   if (result.meta.changes) {
@@ -175,6 +179,7 @@ export async function updateDeckMetadata(env: Env, user: AuthUser, deckId: strin
   if (!value || typeof value !== "object") throw badRequest("Invalid deck metadata");
   const input = value as { title?: unknown; description?: unknown };
   if (typeof input.title !== "string" || !input.title.trim() || input.title.length > 160) throw badRequest("A valid title is required");
+  if (!validUserFacingName(input.title)) throw badRequest("Deck name contains blocked language", "blocked_language");
   if (input.description != null && (typeof input.description !== "string" || input.description.length > 2_000)) throw badRequest("Description is too long");
   const now = new Date().toISOString();
   const result = await env.ACCOUNT_DB.prepare("UPDATE user_decks SET title = ?, description = COALESCE(?, description), updated_at = ? WHERE id = ? AND owner_user_id = ?")
