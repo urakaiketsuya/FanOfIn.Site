@@ -33,8 +33,13 @@ export default function CardStatsIndex() {
   const compositionData = useCompositionWinRateData();
   const communityCardInclusion = useCommunityBlendedCardInclusion();
   const communitySourceCounts = useCommunitySourceCounts();
-  const communitySourceLabel = communitySourceCounts
-    ? `community archive (${communitySourceCounts.byFormat.STANDARD.shoutatyourdecks.toLocaleString()}) + Sleeved.gg (${communitySourceCounts.byFormat.STANDARD.sleeved.toLocaleString()}) + TCGArchitect (${communitySourceCounts.byFormat.STANDARD.tcgarchitect.toLocaleString()})`
+  // Published data is cached in IndexedDB and can briefly outlive the schema that produced it.
+  // In particular, source-count records from before TCGArchitect was added have no
+  // `tcgarchitect` field. Treat missing counts as zero so an old cache cannot crash the page while
+  // the current artifact refreshes in the background.
+  const standardCommunitySources = communitySourceCounts?.byFormat?.STANDARD;
+  const communitySourceLabel = standardCommunitySources
+    ? `community archive (${(standardCommunitySources.shoutatyourdecks ?? 0).toLocaleString()}) + Sleeved.gg (${(standardCommunitySources.sleeved ?? 0).toLocaleString()}) + TCGArchitect (${(standardCommunitySources.tcgarchitect ?? 0).toLocaleString()})`
     : "the community archive, Sleeved.gg, and TCGArchitect";
   const communityByName = useMemo(
     () => new Map((communityCardInclusion?.overall ?? []).map((c) => [c.name, c])),
