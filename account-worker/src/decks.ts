@@ -7,11 +7,13 @@ import {
   type OmnidexDecklist,
   type OmnidexDecklistEntry,
   type SavedDeck,
+  type SavedDeckDetail,
+  type SavedDeckVersion,
   type ShoutAtYourDecksDeck,
   type ShoutAtYourDecksDeckSummary,
 } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
-import { badRequest } from "./errors";
+import { ApiError, badRequest } from "./errors";
 
 interface SaveInput {
   decklist: OmnidexDecklist;
@@ -31,6 +33,7 @@ const MAX_DECKS_PER_USER = 250;
 const MAX_LINES_PER_DECK = 250;
 const MAX_SOURCES_PER_DECK = 50;
 const MAX_IMPORT_DECKS = 50;
+const MAX_VERSIONS_PER_DECK = 200;
 const MAX_IDENTIFIER_LENGTH = 240;
 const MAX_SOURCE_URL_LENGTH = 1_000;
 const MAX_METADATA_BYTES = 16_384;
@@ -41,6 +44,47 @@ const SAFE_ARCHIVE_ID = /^[A-Za-z0-9:_-]{1,240}$/;
 async function identityHash(decklist: OmnidexDecklist): Promise<string> {
   const bytes = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(savedDeckIdentityInput(decklist)));
   return Array.from(new Uint8Array(bytes), (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+async function sha256(value: string): Promise<string> {
+  const bytes = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
+  return Array.from(new Uint8Array(bytes), (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+async function fullIdentityHash(decklist: OmnidexDecklist, format: DeckFormat, championName: string | null): Promise<string> {
+  const canonical = canonicalizeSavedDecklist(decklist);
+  return sha256(JSON.stringify({
+    format,
+    championName: championName?.trim().toLocaleLowerCase("en-US") ?? null,
+    decklist: canonical,
+  }));
+}
+
+async function ensureVersionedDeck(env: Env, user: AuthUser, deckId: string, input: SaveInput, coreHash: string, now: string): Promise<void> {
+  const existing = await env.ACCOUNT_DB.prepare("SELECT id FROM user_decks WHERE id = ? AND owner_user_id = ?")
+    .bind(deckId, user.id).first<{ id: string }>();
+  if (existing) return;
+  const canonical = canonicalizeSavedDecklist(input.decklist);
+  const format = input.format ?? "UNKNOWN";
+  const fullHash = await fullIdentityHash(canonical, format, input.championName ?? null);
+  const buildId = fullHash;
+  const versionId = crypto.randomUUID();
+  await env.ACCOUNT_DB.prepare(`INSERT INTO canonical_builds (id, core_identity_hash, full_identity_hash, format, champion_name, decklist_json, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT(full_identity_hash) DO NOTHING`)
+    .bind(buildId, coreHash, fullHash, format, input.championName ?? null, JSON.stringify(canonical), now).run();
+  const build = await env.ACCOUNT_DB.prepare("SELECT id FROM canonical_builds WHERE full_identity_hash = ?")
+    .bind(fullHash).first<{ id: string }>();
+  if (!build) throw new Error("Canonical build was not created");
+  await env.ACCOUNT_DB.prepare(`INSERT INTO user_decks
+    (id, owner_user_id, title, description, visibility, format, champion_name, created_at, updated_at)
+    VALUES (?, ?, ?, '', 'private', ?, ?, ?, ?)`)
+    .bind(deckId, user.id, input.title.trim(), format, input.championName ?? null, now, now).run();
+  await env.ACCOUNT_DB.prepare(`INSERT INTO deck_versions
+    (id, deck_id, version_number, canonical_build_id, change_note, change_summary_json, created_at)
+    VALUES (?, ?, 1, ?, 'Initial version', '{}', ?)`)
+    .bind(versionId, deckId, build.id, now).run();
+  await env.ACCOUNT_DB.prepare("UPDATE user_decks SET current_version_id = ? WHERE id = ? AND owner_user_id = ?")
+    .bind(versionId, deckId, user.id).run();
 }
 
 function validDecklist(value: unknown): value is OmnidexDecklist {
@@ -94,6 +138,7 @@ export async function saveDeck(env: Env, user: AuthUser, input: SaveInput): Prom
       label = excluded.label, metadata_json = excluded.metadata_json, sideboard_json = excluded.sideboard_json, imported_at = excluded.imported_at`)
     .bind(crypto.randomUUID(), deckId, input.source.provider, input.source.externalDeckId, input.source.sourceUrl ?? null,
       input.source.label.slice(0, 240), JSON.stringify(input.source.metadata ?? {}), JSON.stringify(canonical.sideboard), now).run();
+  await ensureVersionedDeck(env, user, deckId, input, hash, now);
   return { id: deckId, created: !existing };
 }
 
@@ -118,12 +163,105 @@ export async function listDecks(env: Env, user: AuthUser): Promise<SavedDeck[]> 
 export async function renameDeck(env: Env, user: AuthUser, deckId: string, title: string): Promise<boolean> {
   const result = await env.ACCOUNT_DB.prepare("UPDATE saved_decks SET title = ?, updated_at = ? WHERE id = ? AND user_id = ?")
     .bind(title, new Date().toISOString(), deckId, user.id).run();
+  if (result.meta.changes) {
+    await env.ACCOUNT_DB.prepare("UPDATE user_decks SET title = ?, updated_at = ? WHERE id = ? AND owner_user_id = ?")
+      .bind(title, new Date().toISOString(), deckId, user.id).run();
+  }
   return Boolean(result.meta.changes);
 }
 
+export async function getDeck(env: Env, user: AuthUser, deckId: string): Promise<SavedDeckDetail | null> {
+  const deck = await env.ACCOUNT_DB.prepare(`SELECT ud.*, sd.identity_hash
+    FROM user_decks ud JOIN saved_decks sd ON sd.id = ud.id
+    WHERE ud.id = ? AND ud.owner_user_id = ?`).bind(deckId, user.id).first<Record<string, string | null>>();
+  if (!deck) return null;
+  const sources = await env.ACCOUNT_DB.prepare("SELECT * FROM saved_deck_sources WHERE saved_deck_id = ? ORDER BY imported_at DESC")
+    .bind(deckId).all<Record<string, string | null>>();
+  const versionRows = await env.ACCOUNT_DB.prepare(`SELECT dv.*, cb.decklist_json, cb.format, cb.champion_name
+    FROM deck_versions dv JOIN canonical_builds cb ON cb.id = dv.canonical_build_id
+    WHERE dv.deck_id = ? ORDER BY dv.version_number DESC`).bind(deckId).all<Record<string, string | null>>();
+  const versions: SavedDeckVersion[] = versionRows.results.map((row) => ({
+    id: row.id!, versionNumber: Number(row.version_number), decklist: JSON.parse(row.decklist_json!) as OmnidexDecklist,
+    format: row.format as DeckFormat, championName: row.champion_name,
+    changeNote: row.change_note!, changeSummary: JSON.parse(row.change_summary_json!), createdAt: row.created_at!,
+  }));
+  const current = versions.find((version) => version.id === deck.current_version_id) ?? versions[0];
+  if (!current) return null;
+  return {
+    id: deck.id!, identityHash: deck.identity_hash!, title: deck.title!, description: deck.description!,
+    visibility: deck.visibility as SavedDeckDetail["visibility"], publicSlug: deck.public_slug,
+    currentVersionId: current.id, publishedVersionId: deck.published_version_id,
+    format: deck.format as DeckFormat, championName: deck.champion_name, decklist: current.decklist,
+    versions, createdAt: deck.created_at!, updatedAt: deck.updated_at!,
+    sources: sources.results.map((source) => ({ id: source.id!, provider: source.provider as "manual" | "omnidex" | "shoutatyourdecks",
+      externalDeckId: source.external_deck_id!, sourceUrl: source.source_url, label: source.label!, metadata: JSON.parse(source.metadata_json!),
+      sideboard: JSON.parse(source.sideboard_json!), importedAt: source.imported_at! })),
+  };
+}
+
+export async function createDeckVersion(env: Env, user: AuthUser, deckId: string, value: unknown): Promise<{ id: string; versionNumber: number }> {
+  if (!value || typeof value !== "object") throw badRequest("Invalid deck version");
+  const input = value as { decklist?: unknown; format?: unknown; championName?: unknown; changeNote?: unknown };
+  if (!validDecklist(input.decklist)) throw badRequest("Invalid decklist");
+  if (input.format !== "STANDARD" && input.format !== "PANTHEON" && input.format !== "UNKNOWN") throw badRequest("Invalid deck format");
+  if (input.championName != null && (typeof input.championName !== "string" || input.championName.length > 200)) throw badRequest("Invalid champion name");
+  if (input.changeNote != null && (typeof input.changeNote !== "string" || input.changeNote.length > 240)) throw badRequest("Change note is too long");
+  const owned = await env.ACCOUNT_DB.prepare("SELECT id, current_version_id FROM user_decks WHERE id = ? AND owner_user_id = ?")
+    .bind(deckId, user.id).first<{ id: string; current_version_id: string }>();
+  if (!owned) throw new ApiError("Deck not found", 404, "deck_not_found");
+  const canonical = canonicalizeSavedDecklist(input.decklist);
+  if (canonical.main.length + canonical.material.length === 0) throw badRequest("A deck needs main or material cards");
+  const coreHash = await identityHash(canonical);
+  const fullHash = await fullIdentityHash(canonical, input.format, typeof input.championName === "string" ? input.championName : null);
+  const current = await env.ACCOUNT_DB.prepare(`SELECT cb.full_identity_hash FROM deck_versions dv
+    JOIN canonical_builds cb ON cb.id = dv.canonical_build_id WHERE dv.id = ? AND dv.deck_id = ?`)
+    .bind(owned.current_version_id, deckId).first<{ full_identity_hash: string }>();
+  if (current?.full_identity_hash === fullHash) throw badRequest("This decklist is already the current version", "duplicate_version");
+  const count = await env.ACCOUNT_DB.prepare("SELECT COUNT(*) AS count, MAX(version_number) AS latest FROM deck_versions WHERE deck_id = ?")
+    .bind(deckId).first<{ count: number; latest: number }>();
+  if ((count?.count ?? 0) >= MAX_VERSIONS_PER_DECK) throw badRequest(`Version limit of ${MAX_VERSIONS_PER_DECK} reached`, "deck_version_limit_reached");
+  await env.ACCOUNT_DB.prepare(`INSERT INTO canonical_builds (id, core_identity_hash, full_identity_hash, format, champion_name, decklist_json, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT(full_identity_hash) DO NOTHING`)
+    .bind(fullHash, coreHash, fullHash, input.format, input.championName ?? null, JSON.stringify(canonical), new Date().toISOString()).run();
+  const build = await env.ACCOUNT_DB.prepare("SELECT id FROM canonical_builds WHERE full_identity_hash = ?").bind(fullHash).first<{ id: string }>();
+  if (!build) throw new Error("Canonical build was not created");
+  const duplicateOwned = await env.ACCOUNT_DB.prepare("SELECT id FROM saved_decks WHERE user_id = ? AND identity_hash = ? AND id <> ?")
+    .bind(user.id, coreHash, deckId).first<{ id: string }>();
+  if (duplicateOwned) throw badRequest("This build already exists in your decks", "owned_duplicate_deck");
+  const versionId = crypto.randomUUID();
+  const versionNumber = (count?.latest ?? 0) + 1;
+  const now = new Date().toISOString();
+  await env.ACCOUNT_DB.batch([
+    env.ACCOUNT_DB.prepare(`INSERT INTO deck_versions (id, deck_id, version_number, canonical_build_id, change_note, change_summary_json, created_at)
+      VALUES (?, ?, ?, ?, ?, '{}', ?)`).bind(versionId, deckId, versionNumber, build.id, typeof input.changeNote === "string" ? input.changeNote.trim() : "", now),
+    env.ACCOUNT_DB.prepare("UPDATE user_decks SET current_version_id = ?, format = ?, champion_name = ?, updated_at = ? WHERE id = ? AND owner_user_id = ?")
+      .bind(versionId, input.format, input.championName ?? null, now, deckId, user.id),
+    env.ACCOUNT_DB.prepare("UPDATE saved_decks SET identity_hash = ?, format = ?, champion_name = ?, decklist_json = ?, updated_at = ? WHERE id = ? AND user_id = ?")
+      .bind(coreHash, input.format, input.championName ?? null, JSON.stringify({ ...canonical, sideboard: [] }), now, deckId, user.id),
+  ]);
+  return { id: versionId, versionNumber };
+}
+
+export async function restoreDeckVersion(env: Env, user: AuthUser, deckId: string, versionId: string): Promise<{ id: string; versionNumber: number }> {
+  const source = await env.ACCOUNT_DB.prepare(`SELECT cb.decklist_json, cb.format, cb.champion_name
+    FROM deck_versions dv JOIN canonical_builds cb ON cb.id = dv.canonical_build_id
+    JOIN user_decks ud ON ud.id = dv.deck_id
+    WHERE dv.id = ? AND dv.deck_id = ? AND ud.owner_user_id = ?`)
+    .bind(versionId, deckId, user.id).first<{ decklist_json: string; format: DeckFormat; champion_name: string | null }>();
+  if (!source) throw new ApiError("Deck version not found", 404, "deck_version_not_found");
+  return createDeckVersion(env, user, deckId, { decklist: JSON.parse(source.decklist_json), format: source.format,
+    championName: source.champion_name, changeNote: "Restored an earlier version" });
+}
+
 export async function deleteDeck(env: Env, user: AuthUser, deckId: string): Promise<boolean> {
-  const result = await env.ACCOUNT_DB.prepare("DELETE FROM saved_decks WHERE id = ? AND user_id = ?").bind(deckId, user.id).run();
-  return Boolean(result.meta.changes);
+  const owned = await env.ACCOUNT_DB.prepare("SELECT id FROM saved_decks WHERE id = ? AND user_id = ?")
+    .bind(deckId, user.id).first<{ id: string }>();
+  if (!owned) return false;
+  await env.ACCOUNT_DB.batch([
+    env.ACCOUNT_DB.prepare("DELETE FROM user_decks WHERE id = ? AND owner_user_id = ?").bind(deckId, user.id),
+    env.ACCOUNT_DB.prepare("DELETE FROM saved_decks WHERE id = ? AND user_id = ?").bind(deckId, user.id),
+  ]);
+  return true;
 }
 
 export async function assetJson<T>(env: Env, path: string): Promise<T> {

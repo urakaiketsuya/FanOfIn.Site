@@ -1,5 +1,5 @@
 import { authenticatedUser, bffAllowed, consumeOAuthNonce, createOAuthNonce, createUserSession, destroyAllSessions, destroySession, normalizeDisplayName, originAllowed, rotateCurrentSession, verifyGoogleCredential, type Env } from "./auth";
-import { deleteDeck, listDecks, parseSaveInput, performImport, previewImport, renameDeck, saveDeck } from "./decks";
+import { createDeckVersion, deleteDeck, getDeck, listDecks, parseSaveInput, performImport, previewImport, renameDeck, restoreDeckVersion, saveDeck } from "./decks";
 import { ApiError, badRequest } from "./errors";
 
 function response(env: Env, request: Request, body: unknown, status = 200, extra: HeadersInit = {}): Response {
@@ -118,6 +118,10 @@ export default {
         return response(env, request, result, result.created ? 201 : 200);
       }
       const deckMatch = url.pathname.match(/^\/v1\/me\/decks\/([^/]+)$/);
+      if (deckMatch && request.method === "GET") {
+        const deck = await getDeck(env, user, deckMatch[1]);
+        return deck ? response(env, request, { deck }) : response(env, request, { error: "Deck not found" }, 404);
+      }
       if (deckMatch && request.method === "PATCH") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
         const body = await jsonBody(request) as { title?: unknown };
@@ -127,6 +131,16 @@ export default {
       if (deckMatch && request.method === "DELETE") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
         return await deleteDeck(env, user, deckMatch[1]) ? response(env, request, { success: true }) : response(env, request, { error: "Deck not found" }, 404);
+      }
+      const versionsMatch = url.pathname.match(/^\/v1\/me\/decks\/([^/]+)\/versions$/);
+      if (versionsMatch && request.method === "POST") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        return response(env, request, await createDeckVersion(env, user, versionsMatch[1], await jsonBody(request)), 201);
+      }
+      const restoreMatch = url.pathname.match(/^\/v1\/me\/decks\/([^/]+)\/versions\/([^/]+)\/restore$/);
+      if (restoreMatch && request.method === "POST") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        return response(env, request, await restoreDeckVersion(env, user, restoreMatch[1], restoreMatch[2]), 201);
       }
       if (request.method === "POST" && url.pathname === "/v1/me/imports/preview") {
         if (await rateLimited(env.IMPORT_RATE_LIMITER, user.id)) return tooManyRequests(env, request);

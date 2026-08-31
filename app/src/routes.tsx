@@ -72,6 +72,7 @@ const MediaKitIndex = lazy(() => import("./features/products/MediaKitIndex"));
 const LookingForIndex = lazy(() => import("./features/looking-for/LookingForIndex"));
 const DiaoReviewIndex = lazy(() => import("./features/diao-review/DiaoReviewIndex"));
 const MyDecksIndex = lazy(() => import("./features/account/MyDecksIndex"));
+const MyDeckDetail = lazy(() => import("./features/account/MyDeckDetail"));
 
 function RouteFallback() {
   useEffect(() => {
@@ -133,6 +134,7 @@ export default function AppRoutes() {
         <Route path="/simulator" element={<SimulatorIndex />} />
         <Route path="/diao-review" element={<DiaoReviewIndex />} />
         <Route path="/my-decks" element={<MyDecksIndex />} />
+        <Route path="/my-decks/:deckId" element={<MyDeckDetail />} />
         <Route path="/about" element={<Navigate to="/" replace />} />
       </Routes>
     </Suspense>

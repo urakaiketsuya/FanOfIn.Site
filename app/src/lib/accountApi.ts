@@ -1,4 +1,4 @@
-import type { AccountSession, AccountUser, DeckImportPreview, OmnidexDecklist, SavedDeck } from "@gatcg/shared";
+import type { AccountSession, AccountUser, DeckImportPreview, OmnidexDecklist, SavedDeck, SavedDeckDetail } from "@gatcg/shared";
 
 const ACCOUNT_API_URL = (import.meta.env.VITE_ACCOUNT_API_URL as string | undefined)?.replace(/\/$/, "")
   ?? (import.meta.env.PROD ? "https://accounts.fanofin.site/api" : "http://localhost:8788");
@@ -29,6 +29,10 @@ export const accountApi = {
   updateUsername: (displayName: string) => accountRequest<{ user: AccountUser }>("/v1/me", { method: "PATCH", body: JSON.stringify({ displayName }) }),
   deleteAccount: () => accountRequest<{ success: true }>("/v1/me", { method: "DELETE", body: JSON.stringify({ confirmation: "DELETE" }) }),
   decks: () => accountRequest<{ decks: SavedDeck[] }>("/v1/me/decks"),
+  deck: (id: string) => accountRequest<{ deck: SavedDeckDetail }>(`/v1/me/decks/${encodeURIComponent(id)}`),
+  createDeckVersion: (id: string, input: { decklist: OmnidexDecklist; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; changeNote?: string }) =>
+    accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}/versions`, { method: "POST", body: JSON.stringify(input) }),
+  restoreDeckVersion: (id: string, versionId: string) => accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}/versions/${encodeURIComponent(versionId)}/restore`, { method: "POST" }),
   saveDeck: (input: { title: string; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; decklist: OmnidexDecklist; source: { provider: "manual"; externalDeckId: string; label: string } }) =>
     accountRequest<{ id: string; created: boolean }>("/v1/me/decks", { method: "POST", body: JSON.stringify(input) }),
   renameDeck: (id: string, title: string) => accountRequest<{ success: true }>(`/v1/me/decks/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify({ title }) }),

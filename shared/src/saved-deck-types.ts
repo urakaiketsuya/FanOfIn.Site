@@ -26,6 +26,28 @@ export interface SavedDeck {
   updatedAt: string;
 }
 
+export type DeckVisibility = "private" | "unlisted" | "public";
+
+export interface SavedDeckVersion {
+  id: string;
+  versionNumber: number;
+  decklist: OmnidexDecklist;
+  format: DeckFormat;
+  championName: string | null;
+  changeNote: string;
+  changeSummary: Record<string, unknown>;
+  createdAt: string;
+}
+
+export interface SavedDeckDetail extends SavedDeck {
+  description: string;
+  visibility: DeckVisibility;
+  publicSlug: string | null;
+  currentVersionId: string;
+  publishedVersionId: string | null;
+  versions: SavedDeckVersion[];
+}
+
 export interface AccountUser {
   id: string;
   email: string;
