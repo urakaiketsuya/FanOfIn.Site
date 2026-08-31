@@ -31,11 +31,19 @@ export default function MyDecksIndex() {
     finally { setBusy(false); }
   }
 
+  async function downloadAccountExport() {
+    const data = await accountApi.exportAccount();
+    const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }));
+    const link = document.createElement("a");
+    link.href = url; link.download = `fanofin-account-${new Date().toISOString().slice(0, 10)}.json`; link.click();
+    URL.revokeObjectURL(url);
+  }
+
   if (user === undefined) return <div className="mx-auto max-w-4xl px-4 py-10 text-ctp-subtext1">Loading your account…</div>;
   if (!user) return <div className="mx-auto max-w-xl px-4 py-12"><h1 className="text-2xl font-bold text-ctp-blue">My Decks</h1><p className="mt-2 text-ctp-subtext1">Sign in to save decklists and keep imported tournament and community builds together.</p><div className="mt-6"><GoogleSignInButton onCredential={(credential, nonce) => void run(async () => { const session = await accountApi.googleSignIn(credential, nonce); setUser(session.user); await refreshDecks(); })} /></div>{error && <p className="mt-4 text-sm text-ctp-red">{error}</p>}</div>;
 
   return <div className="mx-auto max-w-4xl px-4 py-8">
-    <div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-2xl font-bold text-ctp-blue">My Decks</h1><p className="mt-1 text-sm text-ctp-subtext1">Signed in as {user.displayName} · {decks.length} unique build{decks.length === 1 ? "" : "s"}</p></div><div className="flex gap-2"><button type="button" onClick={() => void run(async () => { await accountApi.logout(); setUser(null); setDecks([]); })} className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-sm text-ctp-subtext1 hover:text-ctp-text">Sign out</button><button type="button" onClick={() => void run(async () => { await accountApi.logoutAll(); setUser(null); setDecks([]); })} className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-sm text-ctp-subtext1 hover:text-ctp-text">Sign out all devices</button></div></div>
+    <div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-2xl font-bold text-ctp-blue">My Decks</h1><p className="mt-1 text-sm text-ctp-subtext1">Signed in as {user.displayName} · {decks.length} unique build{decks.length === 1 ? "" : "s"}</p></div><div className="flex flex-wrap gap-2"><button type="button" onClick={() => void run(downloadAccountExport)} className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-sm text-ctp-subtext1 hover:text-ctp-text">Export my data</button><button type="button" onClick={() => void run(async () => { await accountApi.logout(); setUser(null); setDecks([]); })} className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-sm text-ctp-subtext1 hover:text-ctp-text">Sign out</button><button type="button" onClick={() => void run(async () => { await accountApi.logoutAll(); setUser(null); setDecks([]); })} className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-sm text-ctp-subtext1 hover:text-ctp-text">Sign out all devices</button><button type="button" onClick={() => { if (window.prompt("Permanently delete your account and saved decks? Type DELETE to confirm.") === "DELETE") void run(async () => { await accountApi.deleteAccount(); setUser(null); setDecks([]); }); }} className="rounded-md border border-ctp-red/60 px-3 py-1.5 text-sm text-ctp-red">Delete account</button></div></div>
     {error && <p className="mt-4 rounded-md border border-ctp-red/50 bg-ctp-red/10 p-3 text-sm text-ctp-red">{error}</p>}
     {notice && <p className="mt-4 rounded-md border border-ctp-green/50 bg-ctp-green/10 p-3 text-sm text-ctp-green">{notice}</p>}
 

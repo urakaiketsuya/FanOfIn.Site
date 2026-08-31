@@ -14,3 +14,5 @@ Authenticated saved-deck storage for the SPA. This Worker intentionally uses a s
 Production traffic goes through the Vercel BFF in `account-bff/`, served from `accounts.fanofin.site`. The session uses a `Secure`, `HttpOnly`, `SameSite=Lax` cookie. Set the same random `BFF_SHARED_SECRET` as a Wrangler secret and as a Vercel environment variable; once configured, the Worker rejects direct account requests that bypass the BFF.
 
 Imports read the pipeline-published archive at `ASSET_BASE_URL`. Shout At Your Decks summaries without a fetched full list are skipped. Public identifiers are import sources, not proof of profile ownership.
+
+Production monitoring, backup/restore, privacy lifecycle, incident response, and the prerequisite for disabling `workers.dev` are documented in `docs/ACCOUNT_SERVICE_OPERATIONS.md`.

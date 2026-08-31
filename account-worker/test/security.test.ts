@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { bffAllowed, clearGoogleKeyCacheForTest, consumeOAuthNonce, createOAuthNonce, verifyGoogleCredential, type Env } from "../src/auth";
-import { parseSaveInput } from "../src/decks";
+import { assetJson, deleteDeck, parseSaveInput, renameDeck } from "../src/decks";
 
 function envWithSecret(secret: string): Env {
   return { BFF_SHARED_SECRET: secret } as Env;
@@ -38,6 +38,42 @@ test("the public save endpoint cannot forge imported sources", () => {
     decklist: { main: [{ card: "Test Card", quantity: 1 }], material: [], sideboard: [] },
     source: { provider: "omnidex", externalDeckId: "123", label: "Forged" },
   }), /Invalid deck source/);
+});
+
+test("deck mutations cannot cross user boundaries", async () => {
+  const rows = new Map([["deck-a", { userId: "user-a", title: "Original" }]]);
+  const database = {
+    prepare(query: string) {
+      let values: unknown[] = [];
+      return {
+        bind(...bound: unknown[]) { values = bound; return this; },
+        async run() {
+          const isRename = query.startsWith("UPDATE");
+          const deckId = String(values[isRename ? 2 : 0]);
+          const userId = String(values[isRename ? 3 : 1]);
+          const row = rows.get(deckId);
+          if (!row || row.userId !== userId) return { meta: { changes: 0 } };
+          if (isRename) row.title = String(values[0]); else rows.delete(deckId);
+          return { meta: { changes: 1 } };
+        },
+      };
+    },
+  } as unknown as D1Database;
+  const env = { ACCOUNT_DB: database } as Env;
+  const otherUser = { id: "user-b", email: "b@example.com", displayName: "B", avatarUrl: null };
+  assert.equal(await renameDeck(env, otherUser, "deck-a", "Stolen"), false);
+  assert.equal(await deleteDeck(env, otherUser, "deck-a"), false);
+  assert.equal(rows.get("deck-a")?.title, "Original");
+});
+
+test("archive fetches reject oversized streamed responses", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response(new Uint8Array(5 * 1024 * 1024 + 1));
+  try {
+    await assert.rejects(assetJson({ ASSET_BASE_URL: "https://assets.example" } as Env, "/large.json"), /too large/);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
 
 test("OAuth nonces are random and can only be consumed once", async () => {

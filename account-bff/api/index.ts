@@ -18,6 +18,10 @@ function applyCors(response: ServerResponse): void {
   response.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
   response.setHeader("Access-Control-Allow-Headers", "Content-Type");
   response.setHeader("Vary", "Origin");
+  response.setHeader("Content-Security-Policy", "default-src 'none'; frame-ancestors 'none'");
+  response.setHeader("Referrer-Policy", "no-referrer");
+  response.setHeader("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload");
+  response.setHeader("X-Content-Type-Options", "nosniff");
 }
 
 function sendJson(response: ServerResponse, status: number, body: unknown): void {

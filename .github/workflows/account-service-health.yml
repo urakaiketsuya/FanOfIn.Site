@@ -1,0 +1,21 @@
+name: Account service health
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: account-service-health
+  cancel-in-progress: true
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Check the public BFF path
+        run: 'curl --fail-with-body --silent --show-error --max-time 15 --header "Origin: https://fanofin.site" https://accounts.fanofin.site/api/health'

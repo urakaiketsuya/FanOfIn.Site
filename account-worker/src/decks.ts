@@ -34,6 +34,9 @@ const MAX_IMPORT_DECKS = 50;
 const MAX_IDENTIFIER_LENGTH = 240;
 const MAX_SOURCE_URL_LENGTH = 1_000;
 const MAX_METADATA_BYTES = 16_384;
+const ASSET_FETCH_TIMEOUT_MS = 10_000;
+const MAX_ASSET_BYTES = 5 * 1024 * 1024;
+const SAFE_ARCHIVE_ID = /^[A-Za-z0-9:_-]{1,240}$/;
 
 async function identityHash(decklist: OmnidexDecklist): Promise<string> {
   const bytes = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(savedDeckIdentityInput(decklist)));
@@ -112,10 +115,46 @@ export async function listDecks(env: Env, user: AuthUser): Promise<SavedDeck[]> 
   return output;
 }
 
-async function assetJson<T>(env: Env, path: string): Promise<T> {
-  const response = await fetch(new URL(path, env.ASSET_BASE_URL));
-  if (!response.ok) throw new Error(`Published data is unavailable (${response.status})`);
-  return response.json<T>();
+export async function renameDeck(env: Env, user: AuthUser, deckId: string, title: string): Promise<boolean> {
+  const result = await env.ACCOUNT_DB.prepare("UPDATE saved_decks SET title = ?, updated_at = ? WHERE id = ? AND user_id = ?")
+    .bind(title, new Date().toISOString(), deckId, user.id).run();
+  return Boolean(result.meta.changes);
+}
+
+export async function deleteDeck(env: Env, user: AuthUser, deckId: string): Promise<boolean> {
+  const result = await env.ACCOUNT_DB.prepare("DELETE FROM saved_decks WHERE id = ? AND user_id = ?").bind(deckId, user.id).run();
+  return Boolean(result.meta.changes);
+}
+
+export async function assetJson<T>(env: Env, path: string): Promise<T> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), ASSET_FETCH_TIMEOUT_MS);
+  try {
+    const response = await fetch(new URL(path, env.ASSET_BASE_URL), { signal: controller.signal, redirect: "error" });
+    if (!response.ok) throw new Error(`Published data is unavailable (${response.status})`);
+    const declaredSize = Number(response.headers.get("Content-Length") ?? 0);
+    if (declaredSize > MAX_ASSET_BYTES) throw new Error("Published data response is too large");
+    if (!response.body) throw new Error("Published data response is empty");
+    const reader = response.body.getReader();
+    const chunks: Uint8Array[] = [];
+    let size = 0;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > MAX_ASSET_BYTES) {
+        await reader.cancel();
+        throw new Error("Published data response is too large");
+      }
+      chunks.push(value);
+    }
+    const bytes = new Uint8Array(size);
+    let offset = 0;
+    for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.byteLength; }
+    return JSON.parse(new TextDecoder().decode(bytes)) as T;
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 interface ImportEntry { deckId: string; eventId: number; eventDate: string; player: number; championName: string | null; placement: number | null; }
@@ -164,6 +203,7 @@ export async function performImport(env: Env, user: AuthUser, provider: string, 
   if (provider === "omnidex") {
     const popularity = await assetJson<{ entries: ImportEntry[] }>(env, "/data/analysis/deck-popularity-index.json");
     for (const candidate of preview.candidates) {
+      if (!SAFE_ARCHIVE_ID.test(candidate.externalDeckId)) continue;
       const sighting = popularity.entries.find((item) => item.deckId === candidate.externalDeckId);
       if (!sighting) continue;
       const bundle = await assetJson<{ decklists: OmnidexDecklistEntry[] | { error: string } }>(env, `/data/omnidex/events/${sighting.eventId}.json`);
@@ -177,6 +217,7 @@ export async function performImport(env: Env, user: AuthUser, provider: string, 
     }
   } else {
     for (const candidate of preview.candidates) {
+      if (!SAFE_ARCHIVE_ID.test(candidate.externalDeckId)) continue;
       try {
         const deck = await assetJson<ShoutAtYourDecksDeck>(env, `/data/shoutatyourdecks/decks/${candidate.externalDeckId}.json`);
         const decklist: OmnidexDecklist = { main: deck.mainDeck.map((line) => ({ card: line.name, quantity: line.quantity })),
