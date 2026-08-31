@@ -43,6 +43,7 @@ import HypergeometricCalculator from "./HypergeometricCalculator";
 import { similarCards } from "../../lib/cardSimilarity";
 import ThemaSparkline from "../thema/ThemaSparkline";
 import ElementRail from "../../components/ElementRail";
+import { accountApi, AccountApiError } from "../../lib/accountApi";
 
 type BuilderTab = "build" | "review" | "stats" | "tools" | "buddies" | "copy" | "log";
 const TAB_KEYS: BuilderTab[] = ["build", "review", "stats", "tools", "buddies", "copy", "log"];
@@ -2200,6 +2201,9 @@ export default function DeckBuilderIndex() {
   const sideboardPrice = useMemo(() => sumPrice(sideboardLines), [sideboardLines, priceByName]);
   const [copyState, setCopyState] = useState<"idle" | "full-copied" | "kept-copied" | "full-failed" | "kept-failed">("idle");
   const [shareCopyState, setShareCopyState] = useState<"idle" | "copied" | "failed">("idle");
+  const [saveTitle, setSaveTitle] = useState("");
+  const [saveState, setSaveState] = useState<"idle" | "saving" | "saved" | "sign-in" | "failed">("idle");
+  const [savedDeckId, setSavedDeckId] = useState<string | null>(null);
   const fullCopyCount = [...build.main, ...build.material, ...build.sideboard].reduce((sum, card) => sum + card.quantity, 0);
   const keptCopyCount = [...build.main, ...build.material, ...build.sideboard]
     .filter((card) => card.locked)
@@ -2256,6 +2260,29 @@ export default function DeckBuilderIndex() {
       cardsByName,
     );
     downloadJsonFile(`${slugifyFilename(championName ?? "decklist")}-tts.json`, save);
+  }
+
+  useEffect(() => {
+    setSaveState("idle");
+    setSavedDeckId(null);
+  }, [decklist]);
+
+  async function handleSaveToMyDecks() {
+    if (!championName || fullCopyCount === 0) return;
+    setSaveState("saving");
+    try {
+      const result = await accountApi.saveDeck({
+        title: saveTitle.trim() || `${championName} guided build`,
+        format: deckFormat,
+        championName,
+        decklist,
+        source: { provider: "manual", externalDeckId: crypto.randomUUID(), label: "Guided Deck Builder" },
+      });
+      setSavedDeckId(result.id);
+      setSaveState("saved");
+    } catch (reason) {
+      setSaveState(reason instanceof AccountApiError && reason.status === 401 ? "sign-in" : "failed");
+    }
   }
 
   return (
@@ -2906,6 +2933,17 @@ export default function DeckBuilderIndex() {
 
           {tab === "copy" && (
             <div role="tabpanel" id="deck-builder-panel-copy" aria-labelledby="deck-builder-tab-copy" className="mt-4">
+              <div className="mb-4 rounded-lg border border-ctp-blue/40 bg-ctp-blue/5 p-4">
+                <h3 className="font-semibold text-ctp-text">Save this build</h3>
+                <p className="mt-1 text-sm text-ctp-subtext1">Add the current Main, Material, and Sideboard to your private editable decks.</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <input value={saveTitle} onChange={(event) => setSaveTitle(event.target.value)} maxLength={160} placeholder={championName ? `${championName} guided build` : "Deck name"} aria-label="Saved deck name" className="min-w-56 flex-1 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text" />
+                  <button type="button" disabled={!championName || fullCopyCount === 0 || saveState === "saving"} onClick={() => void handleSaveToMyDecks()} className="rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base disabled:cursor-not-allowed disabled:opacity-50">{saveState === "saving" ? "Saving…" : savedDeckId ? "Saved to My Decks" : "Save to My Decks"}</button>
+                </div>
+                {saveState === "saved" && savedDeckId && <p className="mt-2 text-sm text-ctp-green">Deck saved. <Link to={`/my-decks/${savedDeckId}`} className="font-medium underline">Open deck →</Link></p>}
+                {saveState === "sign-in" && <p className="mt-2 text-sm text-ctp-yellow">Sign in from <Link to="/my-decks" className="font-medium underline">My Decks</Link>, then return to save this build. Your builder choices are kept in this browser.</p>}
+                {saveState === "failed" && <p className="mt-2 text-sm text-ctp-red">The deck could not be saved. Please try again.</p>}
+              </div>
               <div className="flex flex-wrap gap-2">
                 <button
                   type="button"
