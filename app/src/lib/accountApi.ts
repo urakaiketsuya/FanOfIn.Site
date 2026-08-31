@@ -21,8 +21,10 @@ async function accountRequest<T>(path: string, init?: RequestInit): Promise<T> {
 
 export const accountApi = {
   session: () => accountRequest<AccountSession>("/v1/auth/session"),
-  googleSignIn: (credential: string) => accountRequest<AccountSession>("/v1/auth/google", { method: "POST", body: JSON.stringify({ credential }) }),
+  googleNonce: () => accountRequest<{ nonce: string }>("/v1/auth/google/nonce", { method: "POST" }),
+  googleSignIn: (credential: string, nonce: string) => accountRequest<AccountSession>("/v1/auth/google", { method: "POST", body: JSON.stringify({ credential, nonce }) }),
   logout: () => accountRequest<{ success: true }>("/v1/auth/logout", { method: "POST" }),
+  logoutAll: () => accountRequest<{ success: true }>("/v1/auth/logout-all", { method: "POST" }),
   decks: () => accountRequest<{ decks: SavedDeck[] }>("/v1/me/decks"),
   saveDeck: (input: { title: string; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; decklist: OmnidexDecklist; source: { provider: "manual"; externalDeckId: string; label: string } }) =>
     accountRequest<{ id: string; created: boolean }>("/v1/me/decks", { method: "POST", body: JSON.stringify(input) }),

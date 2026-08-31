@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import { accountApi } from "../../lib/accountApi";
 
 declare global {
   interface Window {
-    google?: { accounts: { id: { initialize(config: { client_id: string; callback: (response: { credential: string }) => void }): void; renderButton(parent: HTMLElement, options: Record<string, unknown>): void } } };
+    google?: { accounts: { id: { initialize(config: { client_id: string; nonce: string; callback: (response: { credential: string }) => void }): void; renderButton(parent: HTMLElement, options: Record<string, unknown>): void } } };
   }
 }
 
@@ -20,7 +21,7 @@ function loadGoogleIdentity(): Promise<void> {
   return scriptPromise;
 }
 
-export default function GoogleSignInButton({ onCredential }: { onCredential: (credential: string) => void }) {
+export default function GoogleSignInButton({ onCredential }: { onCredential: (credential: string, nonce: string) => void }) {
   const container = useRef<HTMLDivElement>(null);
   const credentialHandler = useRef(onCredential);
   credentialHandler.current = onCredential;
@@ -30,9 +31,9 @@ export default function GoogleSignInButton({ onCredential }: { onCredential: (cr
   useEffect(() => {
     if (!clientId || !container.current) return;
     let active = true;
-    void loadGoogleIdentity().then(() => {
+    void Promise.all([loadGoogleIdentity(), accountApi.googleNonce()]).then(([, { nonce }]) => {
       if (!active || !container.current || !window.google) return;
-      window.google.accounts.id.initialize({ client_id: clientId, callback: (value) => credentialHandler.current(value.credential) });
+      window.google.accounts.id.initialize({ client_id: clientId, nonce, callback: (value) => credentialHandler.current(value.credential, nonce) });
       window.google.accounts.id.renderButton(container.current, { theme: "outline", size: "large", text: "signin_with", shape: "rectangular" });
     }).catch((reason: Error) => setError(reason.message));
     return () => { active = false; };

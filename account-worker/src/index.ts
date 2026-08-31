@@ -1,4 +1,4 @@
-import { authenticatedUser, bffAllowed, createUserSession, destroySession, originAllowed, verifyGoogleCredential, type Env } from "./auth";
+import { authenticatedUser, bffAllowed, consumeOAuthNonce, createOAuthNonce, createUserSession, destroyAllSessions, destroySession, originAllowed, rotateCurrentSession, verifyGoogleCredential, type Env } from "./auth";
 import { listDecks, parseSaveInput, performImport, previewImport, saveDeck } from "./decks";
 
 function response(env: Env, request: Request, body: unknown, status = 200, extra: HeadersInit = {}): Response {
@@ -41,15 +41,24 @@ export default {
     try {
       if (request.method === "GET" && url.pathname === "/health") return response(env, request, { success: true, service: "fanofin-accounts" });
       if (request.method === "GET" && url.pathname === "/v1/auth/session") return response(env, request, { user: await authenticatedUser(request, env) });
+      if (request.method === "POST" && url.pathname === "/v1/auth/google/nonce") {
+        const clientIp = request.headers.get("X-Fanofin-Client-IP") ?? "unknown";
+        if (await rateLimited(env.LOGIN_RATE_LIMITER, clientIp)) return tooManyRequests(env, request);
+        return response(env, request, { nonce: await createOAuthNonce(env) });
+      }
       if (request.method === "POST" && url.pathname === "/v1/auth/google") {
         const clientIp = request.headers.get("X-Fanofin-Client-IP") ?? "unknown";
         if (await rateLimited(env.LOGIN_RATE_LIMITER, clientIp)) return tooManyRequests(env, request);
-        const body = await jsonBody(request) as { credential?: unknown };
-        if (typeof body.credential !== "string") return response(env, request, { error: "Google credential is required" }, 400);
-        const session = await createUserSession(env, await verifyGoogleCredential(body.credential, env.GOOGLE_CLIENT_ID));
+        const body = await jsonBody(request) as { credential?: unknown; nonce?: unknown };
+        if (typeof body.credential !== "string" || typeof body.nonce !== "string") return response(env, request, { error: "Google credential and nonce are required" }, 400);
+        const claims = await verifyGoogleCredential(body.credential, env.GOOGLE_CLIENT_ID, body.nonce);
+        if (!await consumeOAuthNonce(env, body.nonce)) return response(env, request, { error: "Google sign-in nonce is expired or already used" }, 400);
+        await rotateCurrentSession(request, env);
+        const session = await createUserSession(env, claims);
         return response(env, request, { user: session.user }, 200, { "Set-Cookie": session.cookie });
       }
       if (request.method === "POST" && url.pathname === "/v1/auth/logout") return response(env, request, { success: true }, 200, { "Set-Cookie": await destroySession(request, env) });
+      if (request.method === "POST" && url.pathname === "/v1/auth/logout-all") return response(env, request, { success: true }, 200, { "Set-Cookie": await destroyAllSessions(request, env) });
 
       const user = await authenticatedUser(request, env);
       if (!user) return response(env, request, { error: "Sign in is required" }, 401);

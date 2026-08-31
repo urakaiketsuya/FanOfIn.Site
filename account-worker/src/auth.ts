@@ -25,10 +25,14 @@ interface GoogleClaims {
   name?: string;
   picture?: string;
   exp: number;
+  nonce?: string;
 }
 
 const SESSION_COOKIE = "fanofin_session";
 const SESSION_SECONDS = 60 * 60 * 24 * 30;
+const SESSION_IDLE_SECONDS = 60 * 60 * 24 * 7;
+const SESSION_TOUCH_SECONDS = 60 * 5;
+const OAUTH_NONCE_SECONDS = 60 * 10;
 type GoogleJsonWebKey = JsonWebKey & { kid: string };
 let cachedKeys: { expiresAt: number; keys: GoogleJsonWebKey[] } | null = null;
 
@@ -47,7 +51,7 @@ async function googleKeys(): Promise<GoogleJsonWebKey[]> {
   return body.keys;
 }
 
-export async function verifyGoogleCredential(credential: string, clientId: string): Promise<GoogleClaims> {
+export async function verifyGoogleCredential(credential: string, clientId: string, expectedNonce: string): Promise<GoogleClaims> {
   const parts = credential.split(".");
   if (parts.length !== 3) throw new Error("Malformed Google credential");
   const header = JSON.parse(new TextDecoder().decode(decodeBase64Url(parts[0]))) as { alg?: string; kid?: string };
@@ -66,6 +70,7 @@ export async function verifyGoogleCredential(credential: string, clientId: strin
   if (!(["https://accounts.google.com", "accounts.google.com"].includes(claims.iss))) throw new Error("Invalid Google issuer");
   if (claims.aud !== clientId || claims.exp <= Math.floor(Date.now() / 1000)) throw new Error("Expired or misdirected Google credential");
   if (!claims.sub || !claims.email || claims.email_verified === false) throw new Error("Google account email is not verified");
+  if (!claims.nonce || claims.nonce !== expectedNonce) throw new Error("Invalid Google sign-in nonce");
   return claims;
 }
 
@@ -102,20 +107,59 @@ export async function createUserSession(env: Env, claims: GoogleClaims): Promise
   };
 }
 
+export async function createOAuthNonce(env: Env): Promise<string> {
+  const nonce = `${crypto.randomUUID()}${crypto.randomUUID()}`.replace(/-/g, "");
+  const now = new Date();
+  await env.ACCOUNT_DB.prepare("DELETE FROM oauth_nonces WHERE expires_at <= ?").bind(now.toISOString()).run();
+  await env.ACCOUNT_DB.prepare("INSERT INTO oauth_nonces (nonce_hash, expires_at, created_at) VALUES (?, ?, ?)")
+    .bind(await sha256(nonce), new Date(now.getTime() + OAUTH_NONCE_SECONDS * 1000).toISOString(), now.toISOString()).run();
+  return nonce;
+}
+
+export async function consumeOAuthNonce(env: Env, nonce: string): Promise<boolean> {
+  const result = await env.ACCOUNT_DB.prepare("DELETE FROM oauth_nonces WHERE nonce_hash = ? AND expires_at > ?")
+    .bind(await sha256(nonce), new Date().toISOString()).run();
+  return result.meta.changes === 1;
+}
+
+export async function rotateCurrentSession(request: Request, env: Env): Promise<void> {
+  const token = cookieValue(request, SESSION_COOKIE);
+  if (token) await env.ACCOUNT_DB.prepare("DELETE FROM sessions WHERE token_hash = ?").bind(await sha256(token)).run();
+}
+
 export async function authenticatedUser(request: Request, env: Env): Promise<AuthUser | null> {
   const token = cookieValue(request, SESSION_COOKIE);
   if (!token) return null;
-  const row = await env.ACCOUNT_DB.prepare(`SELECT users.id, users.email, users.display_name, users.avatar_url
+  const now = new Date();
+  const tokenHash = await sha256(token);
+  const row = await env.ACCOUNT_DB.prepare(`SELECT users.id, users.email, users.display_name, users.avatar_url, sessions.last_seen_at
     FROM sessions JOIN users ON users.id = sessions.user_id
-    WHERE sessions.token_hash = ? AND sessions.expires_at > ?`)
-    .bind(await sha256(token), new Date().toISOString())
-    .first<{ id: string; email: string; display_name: string; avatar_url: string | null }>();
-  return row ? { id: row.id, email: row.email, displayName: row.display_name, avatarUrl: row.avatar_url } : null;
+    WHERE sessions.token_hash = ? AND sessions.expires_at > ? AND sessions.last_seen_at > ?`)
+    .bind(tokenHash, now.toISOString(), new Date(now.getTime() - SESSION_IDLE_SECONDS * 1000).toISOString())
+    .first<{ id: string; email: string; display_name: string; avatar_url: string | null; last_seen_at: string }>();
+  if (!row) {
+    await env.ACCOUNT_DB.prepare("DELETE FROM sessions WHERE token_hash = ?").bind(tokenHash).run();
+    return null;
+  }
+  if (now.getTime() - new Date(row.last_seen_at).getTime() >= SESSION_TOUCH_SECONDS * 1000) {
+    await env.ACCOUNT_DB.prepare("UPDATE sessions SET last_seen_at = ? WHERE token_hash = ?").bind(now.toISOString(), tokenHash).run();
+  }
+  return { id: row.id, email: row.email, displayName: row.display_name, avatarUrl: row.avatar_url };
 }
 
 export async function destroySession(request: Request, env: Env): Promise<string> {
   const token = cookieValue(request, SESSION_COOKIE);
   if (token) await env.ACCOUNT_DB.prepare("DELETE FROM sessions WHERE token_hash = ?").bind(await sha256(token)).run();
+  return clearSessionCookie(env);
+}
+
+export async function destroyAllSessions(request: Request, env: Env): Promise<string> {
+  const user = await authenticatedUser(request, env);
+  if (user) await env.ACCOUNT_DB.prepare("DELETE FROM sessions WHERE user_id = ?").bind(user.id).run();
+  return clearSessionCookie(env);
+}
+
+function clearSessionCookie(env: Env): string {
   return `${SESSION_COOKIE}=; Path=/; HttpOnly; ${env.ALLOWED_ORIGINS.includes("https://") ? "Secure; " : ""}SameSite=Lax; Max-Age=0`;
 }
 
