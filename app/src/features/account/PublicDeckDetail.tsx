@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import type { PublicDeck } from "@gatcg/shared";
-import { accountApi } from "../../lib/accountApi";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import type { DeckSocialState, PublicDeck } from "@gatcg/shared";
+import { accountApi, AccountApiError } from "../../lib/accountApi";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { buildDecklistText } from "../events/DecklistView";
 
@@ -9,6 +9,10 @@ export default function PublicDeckDetail() {
   const { publicSlug = "" } = useParams<{ publicSlug: string }>();
   const [deck, setDeck] = useState<PublicDeck | null>();
   const [error, setError] = useState<string | null>(null);
+  const [social, setSocial] = useState<DeckSocialState | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
+  const navigate = useNavigate();
   useDocumentTitle(deck?.title ?? "Decklist", deck?.description || "A community decklist on Fan of Insight.");
 
   useEffect(() => {
@@ -17,6 +21,18 @@ export default function PublicDeckDetail() {
       .catch((reason: unknown) => { if (active) { setError(reason instanceof Error ? reason.message : "Deck could not be loaded"); setDeck(null); } });
     return () => { active = false; };
   }, [publicSlug]);
+
+  useEffect(() => {
+    void accountApi.deckSocial(publicSlug).then(setSocial).catch((reason: unknown) => {
+      if (!(reason instanceof AccountApiError && reason.status === 401)) setNotice(reason instanceof Error ? reason.message : "Social actions are unavailable");
+    });
+  }, [publicSlug]);
+
+  const run = async (action: () => Promise<void>) => {
+    setBusy(true); setNotice(null);
+    try { await action(); } catch (reason) { setNotice(reason instanceof Error ? reason.message : "Action failed"); }
+    finally { setBusy(false); }
+  };
 
   useEffect(() => {
     let meta = document.querySelector<HTMLMetaElement>('meta[name="robots"]');
@@ -33,6 +49,13 @@ export default function PublicDeckDetail() {
     <p className="text-sm text-ctp-subtext1">Shared by {deck.owner.displayName}</p>
     <div className="mt-2 flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-3xl font-bold text-ctp-text">{deck.title}</h1><p className="mt-1 text-sm text-ctp-subtext1">{deck.championName ?? "Unknown champion"} · {deck.format} · Version {deck.versionNumber}</p></div>{deck.visibility === "unlisted" && <span className="rounded-full border border-ctp-yellow/60 px-3 py-1 text-xs text-ctp-yellow">Unlisted</span>}</div>
     {deck.description && <p className="mt-5 whitespace-pre-wrap text-ctp-subtext1">{deck.description}</p>}
+    <div className="mt-5 flex flex-wrap items-center gap-2">
+      <button type="button" disabled={busy || !social} onClick={() => void run(async () => { const result = await accountApi.likeDeck(publicSlug, !social?.liked); setSocial((current) => current ? { ...current, liked: result.liked } : current); setDeck((current) => current ? { ...current, likeCount: result.likeCount } : current); })} className="rounded-md border border-ctp-pink/60 px-3 py-1.5 text-sm text-ctp-pink disabled:opacity-50">{social?.liked ? "Liked" : "Like"} · {deck.likeCount}</button>
+      <button type="button" disabled={busy || !social} onClick={() => void run(async () => { const result = await accountApi.bookmarkDeck(publicSlug, !social?.bookmarked); setSocial((current) => current ? { ...current, bookmarked: result.bookmarked, bookmarkedVersionNumber: result.versionNumber } : current); })} className="rounded-md border border-ctp-blue px-3 py-1.5 text-sm text-ctp-blue disabled:opacity-50">{social?.bookmarked ? `Saved v${social.bookmarkedVersionNumber}` : "Save deck"}</button>
+      <button type="button" disabled={busy || !social} onClick={() => void run(async () => { const result = await accountApi.copyDeck(publicSlug); navigate(`/my-decks/${encodeURIComponent(result.id)}`, { state: { notice: result.created ? "Copied to your decks." : "You already had this build; opened the existing deck." } }); })} className="rounded-md bg-ctp-blue px-3 py-1.5 text-sm text-ctp-base disabled:opacity-50">Copy to my decks</button>
+      {!social && <Link to="/my-decks" className="text-sm text-ctp-blue hover:underline">Sign in to like, save, or copy</Link>}
+    </div>
+    {notice && <p className="mt-3 text-sm text-ctp-yellow">{notice}</p>}
     <section className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><h2 className="font-semibold text-ctp-text">Decklist</h2><pre className="mt-3 max-h-[42rem] overflow-auto whitespace-pre-wrap rounded-md bg-ctp-base p-4 text-sm text-ctp-subtext1">{buildDecklistText(deck.decklist)}</pre></section>
     <p className="mt-4 text-xs text-ctp-subtext0">Published {new Date(deck.publishedAt).toLocaleDateString()}</p>
   </div>;

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { bffAllowed, clearGoogleKeyCacheForTest, consumeOAuthNonce, createOAuthNonce, normalizeDisplayName, verifyGoogleCredential, type Env } from "../src/auth";
 import { assetJson, deleteDeck, getPublicDeck, parseSaveInput, renameDeck } from "../src/decks";
+import { getDeckSocialState, setDeckBookmark, setDeckLike } from "../src/deck-social";
 
 function envWithSecret(secret: string): Env {
   return { BFF_SHARED_SECRET: secret } as Env;
@@ -125,10 +126,44 @@ test("public decks expose only published card data and a display name", async ()
     },
   } as unknown as D1Database;
   const deck = await getPublicDeck({ ACCOUNT_DB: database } as Env, "a".repeat(32));
-  assert.deepEqual(Object.keys(deck!).sort(), ["championName", "decklist", "description", "format", "owner", "publicSlug", "publishedAt", "title", "updatedAt", "versionNumber", "visibility"]);
+  assert.deepEqual(Object.keys(deck!).sort(), ["championName", "decklist", "description", "format", "likeCount", "owner", "publicSlug", "publishedAt", "title", "updatedAt", "versionNumber", "visibility"]);
   assert.deepEqual(deck!.owner, { displayName: "Deck Pilot" });
   assert.equal(JSON.stringify(deck).includes("private@example.com"), false);
   assert.equal(await getPublicDeck({ ACCOUNT_DB: database } as Env, "not-a-valid-slug"), null);
+});
+
+test("deck likes are idempotent and bookmarks pin the published version", async () => {
+  let liked = false;
+  let bookmarkedVersion: string | null = null;
+  const database = {
+    prepare(query: string) {
+      let values: unknown[] = [];
+      return {
+        bind(...bound: unknown[]) { values = bound; return this; },
+        async first() {
+          if (query.includes("FROM user_decks ud JOIN users")) return { id: "deck-a", title: "Deck", description: "", visibility: "public", public_slug: "a".repeat(32), published_at: "now", updated_at: "now", published_version_id: "version-7", display_name: "Pilot", version_number: 7, format: "STANDARD", champion_name: null, decklist_json: '{"main":[],"material":[],"sideboard":[]}', like_count: liked ? 1 : 0 };
+          if (query.includes("COUNT(*) AS count FROM deck_likes")) return { count: liked ? 1 : 0 };
+          if (query.includes("FROM deck_likes WHERE")) return liked ? { found: 1 } : null;
+          if (query.includes("FROM deck_bookmarks")) return bookmarkedVersion ? { version_number: 7 } : null;
+          return null;
+        },
+        async run() {
+          if (query.startsWith("INSERT INTO deck_likes")) liked = true;
+          if (query.startsWith("DELETE FROM deck_likes")) liked = false;
+          if (query.startsWith("INSERT INTO deck_bookmarks")) bookmarkedVersion = String(values[2]);
+          if (query.startsWith("DELETE FROM deck_bookmarks")) bookmarkedVersion = null;
+          return { meta: { changes: 1 } };
+        },
+      };
+    },
+  } as unknown as D1Database;
+  const env = { ACCOUNT_DB: database } as Env;
+  const user = { id: "user-a", email: "a@example.com", displayName: "A", avatarUrl: null };
+  assert.deepEqual(await setDeckLike(env, user, "a".repeat(32), true), { liked: true, likeCount: 1 });
+  assert.deepEqual(await setDeckLike(env, user, "a".repeat(32), true), { liked: true, likeCount: 1 });
+  assert.deepEqual(await setDeckBookmark(env, user, "a".repeat(32), true), { bookmarked: true, versionNumber: 7 });
+  assert.equal(bookmarkedVersion, "version-7");
+  assert.deepEqual(await getDeckSocialState(env, user, "a".repeat(32)), { liked: true, bookmarked: true, bookmarkedVersionNumber: 7 });
 });
 
 test("archive fetches reject oversized streamed responses", async () => {

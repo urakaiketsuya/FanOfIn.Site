@@ -60,6 +60,17 @@ export interface PublicDeck {
   publishedAt: string;
   updatedAt: string;
   owner: { displayName: string };
+  likeCount: number;
+}
+
+export interface DeckSocialState {
+  liked: boolean;
+  bookmarked: boolean;
+  bookmarkedVersionNumber: number | null;
+}
+
+export interface BookmarkedDeck extends PublicDeck {
+  bookmarkedAt: string;
 }
 
 export interface AccountUser {

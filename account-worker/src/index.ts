@@ -1,6 +1,7 @@
 import { authenticatedUser, bffAllowed, consumeOAuthNonce, createOAuthNonce, createUserSession, destroyAllSessions, destroySession, normalizeDisplayName, originAllowed, rotateCurrentSession, verifyGoogleCredential, type Env } from "./auth";
 import { createDeckVersion, deleteDeck, getDeck, getPublicDeck, listDecks, parseSaveInput, performImport, previewImport, publishDeck, restoreDeckVersion, saveDeck, updateDeckMetadata } from "./decks";
 import { ApiError, badRequest } from "./errors";
+import { copyPublishedDeck, getDeckSocialState, listBookmarks, setDeckBookmark, setDeckLike } from "./deck-social";
 
 function response(env: Env, request: Request, body: unknown, status = 200, extra: HeadersInit = {}): Response {
   const origin = request.headers.get("Origin");
@@ -96,6 +97,25 @@ export default {
 
       const user = await authenticatedUser(request, env);
       if (!user) return response(env, request, { error: "Sign in is required" }, 401);
+
+      const socialMatch = url.pathname.match(/^\/v1\/me\/decklists\/([a-f0-9]{32})\/(social|like|bookmark|copy)$/);
+      if (socialMatch) {
+        if (socialMatch[2] === "social" && request.method === "GET") return response(env, request, await getDeckSocialState(env, user, socialMatch[1]));
+        if (request.method !== "POST") return response(env, request, { error: "Route not found" }, 404);
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        if (socialMatch[2] === "like") {
+          const liked = (await jsonBody(request) as { liked?: unknown }).liked;
+          if (typeof liked !== "boolean") throw badRequest("Liked must be a boolean");
+          return response(env, request, await setDeckLike(env, user, socialMatch[1], liked));
+        }
+        if (socialMatch[2] === "bookmark") {
+          const bookmarked = (await jsonBody(request) as { bookmarked?: unknown }).bookmarked;
+          if (typeof bookmarked !== "boolean") throw badRequest("Bookmarked must be a boolean");
+          return response(env, request, await setDeckBookmark(env, user, socialMatch[1], bookmarked));
+        }
+        if (socialMatch[2] === "copy") { const result = await copyPublishedDeck(env, user, socialMatch[1]); return response(env, request, result, result.created ? 201 : 200); }
+      }
+      if (request.method === "GET" && url.pathname === "/v1/me/bookmarks") return response(env, request, { decks: await listBookmarks(env, user) });
 
       if (request.method === "GET" && url.pathname === "/v1/me/decks") return response(env, request, { decks: await listDecks(env, user) });
       if (request.method === "GET" && url.pathname === "/v1/me/export") {

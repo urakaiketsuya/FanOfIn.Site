@@ -1,4 +1,4 @@
-import type { AccountSession, AccountUser, DeckImportPreview, DeckVisibility, OmnidexDecklist, PublicDeck, SavedDeck, SavedDeckDetail } from "@gatcg/shared";
+import type { AccountSession, AccountUser, BookmarkedDeck, DeckImportPreview, DeckSocialState, DeckVisibility, OmnidexDecklist, PublicDeck, SavedDeck, SavedDeckDetail } from "@gatcg/shared";
 
 const ACCOUNT_API_URL = (import.meta.env.VITE_ACCOUNT_API_URL as string | undefined)?.replace(/\/$/, "")
   ?? (import.meta.env.PROD ? "https://accounts.fanofin.site/api" : "http://localhost:8788");
@@ -31,6 +31,11 @@ export const accountApi = {
   decks: () => accountRequest<{ decks: SavedDeck[] }>("/v1/me/decks"),
   deck: (id: string) => accountRequest<{ deck: SavedDeckDetail }>(`/v1/me/decks/${encodeURIComponent(id)}`),
   publicDeck: (slug: string) => accountRequest<{ deck: PublicDeck }>(`/v1/decklists/${encodeURIComponent(slug)}`),
+  deckSocial: (slug: string) => accountRequest<DeckSocialState>(`/v1/me/decklists/${encodeURIComponent(slug)}/social`),
+  likeDeck: (slug: string, liked: boolean) => accountRequest<{ liked: boolean; likeCount: number }>(`/v1/me/decklists/${encodeURIComponent(slug)}/like`, { method: "POST", body: JSON.stringify({ liked }) }),
+  bookmarkDeck: (slug: string, bookmarked: boolean) => accountRequest<{ bookmarked: boolean; versionNumber: number | null }>(`/v1/me/decklists/${encodeURIComponent(slug)}/bookmark`, { method: "POST", body: JSON.stringify({ bookmarked }) }),
+  copyDeck: (slug: string) => accountRequest<{ id: string; created: boolean }>(`/v1/me/decklists/${encodeURIComponent(slug)}/copy`, { method: "POST", body: "{}" }),
+  bookmarks: () => accountRequest<{ decks: BookmarkedDeck[] }>("/v1/me/bookmarks"),
   createDeckVersion: (id: string, input: { decklist: OmnidexDecklist; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; changeNote?: string }) =>
     accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}/versions`, { method: "POST", body: JSON.stringify(input) }),
   restoreDeckVersion: (id: string, versionId: string) => accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}/versions/${encodeURIComponent(versionId)}/restore`, { method: "POST" }),
