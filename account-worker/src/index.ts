@@ -1,5 +1,5 @@
 import { authenticatedUser, bffAllowed, consumeOAuthNonce, createOAuthNonce, createUserSession, destroyAllSessions, destroySession, normalizeDisplayName, originAllowed, rotateCurrentSession, verifyGoogleCredential, type Env } from "./auth";
-import { createDeckVersion, deleteDeck, getDeck, listDecks, parseSaveInput, performImport, previewImport, renameDeck, restoreDeckVersion, saveDeck } from "./decks";
+import { createDeckVersion, deleteDeck, getDeck, getPublicDeck, listDecks, parseSaveInput, performImport, previewImport, publishDeck, restoreDeckVersion, saveDeck, updateDeckMetadata } from "./decks";
 import { ApiError, badRequest } from "./errors";
 
 function response(env: Env, request: Request, body: unknown, status = 200, extra: HeadersInit = {}): Response {
@@ -88,6 +88,12 @@ export default {
       if (request.method === "POST" && url.pathname === "/v1/auth/logout") return response(env, request, { success: true }, 200, { "Set-Cookie": await destroySession(request, env) });
       if (request.method === "POST" && url.pathname === "/v1/auth/logout-all") return response(env, request, { success: true }, 200, { "Set-Cookie": await destroyAllSessions(request, env) });
 
+      const publicDeckMatch = url.pathname.match(/^\/v1\/decklists\/([a-f0-9]{32})$/);
+      if (publicDeckMatch && request.method === "GET") {
+        const deck = await getPublicDeck(env, publicDeckMatch[1]);
+        return deck ? response(env, request, { deck }) : response(env, request, { error: "Deck not found" }, 404);
+      }
+
       const user = await authenticatedUser(request, env);
       if (!user) return response(env, request, { error: "Sign in is required" }, 401);
 
@@ -124,9 +130,7 @@ export default {
       }
       if (deckMatch && request.method === "PATCH") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
-        const body = await jsonBody(request) as { title?: unknown };
-        if (typeof body.title !== "string" || !body.title.trim() || body.title.length > 160) return response(env, request, { error: "A valid title is required" }, 400);
-        return await renameDeck(env, user, deckMatch[1], body.title.trim()) ? response(env, request, { success: true }) : response(env, request, { error: "Deck not found" }, 404);
+        return await updateDeckMetadata(env, user, deckMatch[1], await jsonBody(request)) ? response(env, request, { success: true }) : response(env, request, { error: "Deck not found" }, 404);
       }
       if (deckMatch && request.method === "DELETE") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
@@ -136,6 +140,11 @@ export default {
       if (versionsMatch && request.method === "POST") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
         return response(env, request, await createDeckVersion(env, user, versionsMatch[1], await jsonBody(request)), 201);
+      }
+      const publishMatch = url.pathname.match(/^\/v1\/me\/decks\/([^/]+)\/publish$/);
+      if (publishMatch && request.method === "POST") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        return response(env, request, await publishDeck(env, user, publishMatch[1], await jsonBody(request)));
       }
       const restoreMatch = url.pathname.match(/^\/v1\/me\/decks\/([^/]+)\/versions\/([^/]+)\/restore$/);
       if (restoreMatch && request.method === "POST") {

@@ -73,6 +73,7 @@ const LookingForIndex = lazy(() => import("./features/looking-for/LookingForInde
 const DiaoReviewIndex = lazy(() => import("./features/diao-review/DiaoReviewIndex"));
 const MyDecksIndex = lazy(() => import("./features/account/MyDecksIndex"));
 const MyDeckDetail = lazy(() => import("./features/account/MyDeckDetail"));
+const PublicDeckDetail = lazy(() => import("./features/account/PublicDeckDetail"));
 
 function RouteFallback() {
   useEffect(() => {
@@ -135,6 +136,7 @@ export default function AppRoutes() {
         <Route path="/diao-review" element={<DiaoReviewIndex />} />
         <Route path="/my-decks" element={<MyDecksIndex />} />
         <Route path="/my-decks/:deckId" element={<MyDeckDetail />} />
+        <Route path="/decklists/:publicSlug" element={<PublicDeckDetail />} />
         <Route path="/about" element={<Navigate to="/" replace />} />
       </Routes>
     </Suspense>

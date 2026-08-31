@@ -13,13 +13,15 @@ export default function MyDeckDetail() {
   const [editing, setEditing] = useState(false);
   const [deckText, setDeckText] = useState("");
   const [changeNote, setChangeNote] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [busy, setBusy] = useState(false);
   useDocumentTitle(deck?.title ?? "Saved Deck", "View a private saved deck and its version history.");
 
   useEffect(() => {
     let active = true;
     void accountApi.deck(deckId).then(({ deck: result }) => {
-      if (active) setDeck(result);
+      if (active) { setDeck(result); setTitle(result.title); setDescription(result.description); }
     }).catch((reason: unknown) => {
       if (!active) return;
       setError(reason instanceof AccountApiError && reason.status === 401 ? "Sign in to view this deck." : reason instanceof Error ? reason.message : "Deck could not be loaded");
@@ -31,6 +33,8 @@ export default function MyDeckDetail() {
   async function refresh() {
     const result = await accountApi.deck(deckId);
     setDeck(result.deck);
+    setTitle(result.deck.title);
+    setDescription(result.deck.description);
     setDeckText(buildDecklistText(result.deck.decklist));
   }
 
@@ -49,6 +53,24 @@ export default function MyDeckDetail() {
       <div><h1 className="text-2xl font-bold text-ctp-text">{deck.title}</h1><p className="mt-1 text-sm text-ctp-subtext1">{deck.championName ?? "Unknown champion"} · {deck.format}</p></div>
       <span className="rounded-full border border-ctp-surface1 px-3 py-1 text-xs capitalize text-ctp-subtext1">{deck.visibility}</span>
     </div>
+    <section className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
+      <h2 className="font-semibold text-ctp-text">Details and sharing</h2>
+      <form className="mt-3 space-y-2" onSubmit={(event) => { event.preventDefault(); void run(async () => { await accountApi.updateDeckMetadata(deck.id, title, description); await refresh(); }); }}>
+        <input required maxLength={160} value={title} onChange={(event) => setTitle(event.target.value)} aria-label="Deck title" className="w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm" />
+        <textarea rows={3} maxLength={2000} value={description} onChange={(event) => setDescription(event.target.value)} placeholder="Describe this deck (optional)" className="w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm" />
+        <button disabled={busy} type="submit" className="rounded border border-ctp-surface1 px-3 py-1.5 text-sm disabled:opacity-50">Save details</button>
+      </form>
+      <div className="mt-4 border-t border-ctp-surface1 pt-4">
+        <label className="text-sm text-ctp-subtext1" htmlFor="deck-visibility">Who can view this published version?</label>
+        <div className="mt-2 flex flex-wrap items-center gap-2">
+          <select id="deck-visibility" value={deck.visibility} disabled={busy} onChange={(event) => void run(async () => { await accountApi.publishDeck(deck.id, event.target.value as SavedDeckDetail["visibility"]); await refresh(); })} className="rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm">
+            <option value="private">Private</option><option value="unlisted">Unlisted — link only</option><option value="public">Public</option>
+          </select>
+          {deck.publicSlug && deck.visibility !== "private" && <><Link to={`/decklists/${deck.publicSlug}`} className="rounded border border-ctp-blue px-3 py-1.5 text-sm text-ctp-blue">View published deck</Link><button type="button" onClick={() => void navigator.clipboard.writeText(`${window.location.origin}/decklists/${deck.publicSlug}`)} className="rounded border border-ctp-surface1 px-3 py-1.5 text-sm">Copy link</button></>}
+        </div>
+        <p className="mt-2 text-xs text-ctp-subtext0">Publishing snapshots the current version. Later edits stay private until you publish again.</p>
+      </div>
+    </section>
     <section className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
       <div className="flex items-center justify-between gap-3"><h2 className="font-semibold text-ctp-text">Current decklist</h2><button type="button" onClick={() => { setDeckText(buildDecklistText(deck.decklist)); setEditing((value) => !value); }} className="rounded border border-ctp-blue px-2 py-1 text-xs text-ctp-blue">{editing ? "Cancel" : "Edit deck"}</button></div>
       {error && <p className="mt-3 rounded border border-ctp-red/50 bg-ctp-red/10 p-2 text-sm text-ctp-red">{error}</p>}

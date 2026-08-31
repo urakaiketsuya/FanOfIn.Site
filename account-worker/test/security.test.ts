@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { bffAllowed, clearGoogleKeyCacheForTest, consumeOAuthNonce, createOAuthNonce, normalizeDisplayName, verifyGoogleCredential, type Env } from "../src/auth";
-import { assetJson, deleteDeck, parseSaveInput, renameDeck } from "../src/decks";
+import { assetJson, deleteDeck, getPublicDeck, parseSaveInput, renameDeck } from "../src/decks";
 
 function envWithSecret(secret: string): Env {
   return { BFF_SHARED_SECRET: secret } as Env;
@@ -84,6 +84,10 @@ test("deck mutations cannot cross user boundaries", async () => {
       let values: unknown[] = [];
       return {
         bind(...bound: unknown[]) { values = bound; return this; },
+        async first() {
+          const row = rows.get(String(values[0]));
+          return row && row.userId === String(values[1]) ? { id: String(values[0]) } : null;
+        },
         async run() {
           const isRename = query.startsWith("UPDATE");
           const deckId = String(values[isRename ? 2 : 0]);
@@ -101,6 +105,30 @@ test("deck mutations cannot cross user boundaries", async () => {
   assert.equal(await renameDeck(env, otherUser, "deck-a", "Stolen"), false);
   assert.equal(await deleteDeck(env, otherUser, "deck-a"), false);
   assert.equal(rows.get("deck-a")?.title, "Original");
+});
+
+test("public decks expose only published card data and a display name", async () => {
+  const database = {
+    prepare() {
+      return {
+        bind() { return this; },
+        async first() {
+          return {
+            public_slug: "a".repeat(32), title: "Shared deck", description: "Public notes", visibility: "public",
+            published_at: "2026-08-31T12:00:00.000Z", updated_at: "2026-08-31T12:00:00.000Z",
+            display_name: "Deck Pilot", version_number: 3, format: "STANDARD", champion_name: "Rai",
+            decklist_json: JSON.stringify({ main: [{ card: "Test Card", quantity: 4 }], material: [], sideboard: [] }),
+            email: "private@example.com", owner_user_id: "private-user-id", source_url: "https://private.example",
+          };
+        },
+      };
+    },
+  } as unknown as D1Database;
+  const deck = await getPublicDeck({ ACCOUNT_DB: database } as Env, "a".repeat(32));
+  assert.deepEqual(Object.keys(deck!).sort(), ["championName", "decklist", "description", "format", "owner", "publicSlug", "publishedAt", "title", "updatedAt", "versionNumber", "visibility"]);
+  assert.deepEqual(deck!.owner, { displayName: "Deck Pilot" });
+  assert.equal(JSON.stringify(deck).includes("private@example.com"), false);
+  assert.equal(await getPublicDeck({ ACCOUNT_DB: database } as Env, "not-a-valid-slug"), null);
 });
 
 test("archive fetches reject oversized streamed responses", async () => {

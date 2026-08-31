@@ -6,6 +6,7 @@ import {
   type DeckImportPreview,
   type OmnidexDecklist,
   type OmnidexDecklistEntry,
+  type PublicDeck,
   type SavedDeck,
   type SavedDeckDetail,
   type SavedDeckVersion,
@@ -168,6 +169,62 @@ export async function renameDeck(env: Env, user: AuthUser, deckId: string, title
       .bind(title, new Date().toISOString(), deckId, user.id).run();
   }
   return Boolean(result.meta.changes);
+}
+
+export async function updateDeckMetadata(env: Env, user: AuthUser, deckId: string, value: unknown): Promise<boolean> {
+  if (!value || typeof value !== "object") throw badRequest("Invalid deck metadata");
+  const input = value as { title?: unknown; description?: unknown };
+  if (typeof input.title !== "string" || !input.title.trim() || input.title.length > 160) throw badRequest("A valid title is required");
+  if (input.description != null && (typeof input.description !== "string" || input.description.length > 2_000)) throw badRequest("Description is too long");
+  const now = new Date().toISOString();
+  const result = await env.ACCOUNT_DB.prepare("UPDATE user_decks SET title = ?, description = COALESCE(?, description), updated_at = ? WHERE id = ? AND owner_user_id = ?")
+    .bind(input.title.trim(), typeof input.description === "string" ? input.description.trim() : null, now, deckId, user.id).run();
+  if (result.meta.changes) {
+    await env.ACCOUNT_DB.prepare("UPDATE saved_decks SET title = ?, updated_at = ? WHERE id = ? AND user_id = ?")
+      .bind(input.title.trim(), now, deckId, user.id).run();
+  }
+  return Boolean(result.meta.changes);
+}
+
+export async function publishDeck(env: Env, user: AuthUser, deckId: string, value: unknown): Promise<{ publicSlug: string | null; visibility: "private" | "unlisted" | "public" }> {
+  if (!value || typeof value !== "object") throw badRequest("Invalid publishing settings");
+  const visibility = (value as { visibility?: unknown }).visibility;
+  if (visibility !== "private" && visibility !== "unlisted" && visibility !== "public") throw badRequest("Invalid deck visibility");
+  const deck = await env.ACCOUNT_DB.prepare("SELECT public_slug, current_version_id FROM user_decks WHERE id = ? AND owner_user_id = ?")
+    .bind(deckId, user.id).first<{ public_slug: string | null; current_version_id: string | null }>();
+  if (!deck) throw new ApiError("Deck not found", 404, "deck_not_found");
+  if (!deck.current_version_id) throw badRequest("Deck has no version to publish");
+  const slug = deck.public_slug ?? crypto.randomUUID().replace(/-/g, "");
+  const now = new Date().toISOString();
+  if (visibility === "private") {
+    await env.ACCOUNT_DB.prepare("UPDATE user_decks SET visibility = 'private', updated_at = ? WHERE id = ? AND owner_user_id = ?")
+      .bind(now, deckId, user.id).run();
+  } else {
+    await env.ACCOUNT_DB.prepare(`UPDATE user_decks SET public_slug = ?, visibility = ?, published_version_id = current_version_id,
+      published_at = ?, updated_at = ? WHERE id = ? AND owner_user_id = ?`)
+      .bind(slug, visibility, now, now, deckId, user.id).run();
+  }
+  return { publicSlug: visibility === "private" ? deck.public_slug : slug, visibility };
+}
+
+export async function getPublicDeck(env: Env, publicSlug: string): Promise<PublicDeck | null> {
+  if (!/^[a-f0-9]{32}$/.test(publicSlug)) return null;
+  const row = await env.ACCOUNT_DB.prepare(`SELECT ud.public_slug, ud.title, ud.description, ud.visibility, ud.published_at,
+    ud.updated_at, users.display_name, dv.version_number, cb.format, cb.champion_name, cb.decklist_json
+    FROM user_decks ud
+    JOIN users ON users.id = ud.owner_user_id
+    JOIN deck_versions dv ON dv.id = ud.published_version_id AND dv.deck_id = ud.id
+    JOIN canonical_builds cb ON cb.id = dv.canonical_build_id
+    WHERE ud.public_slug = ? AND ud.visibility IN ('public', 'unlisted')`)
+    .bind(publicSlug).first<Record<string, string | null>>();
+  if (!row) return null;
+  return {
+    publicSlug: row.public_slug!, title: row.title!, description: row.description!,
+    visibility: row.visibility as "public" | "unlisted", format: row.format as DeckFormat,
+    championName: row.champion_name, decklist: JSON.parse(row.decklist_json!) as OmnidexDecklist,
+    versionNumber: Number(row.version_number), publishedAt: row.published_at!, updatedAt: row.updated_at!,
+    owner: { displayName: row.display_name! },
+  };
 }
 
 export async function getDeck(env: Env, user: AuthUser, deckId: string): Promise<SavedDeckDetail | null> {

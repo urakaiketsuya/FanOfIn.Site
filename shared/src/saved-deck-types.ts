@@ -48,6 +48,20 @@ export interface SavedDeckDetail extends SavedDeck {
   versions: SavedDeckVersion[];
 }
 
+export interface PublicDeck {
+  publicSlug: string;
+  title: string;
+  description: string;
+  visibility: Exclude<DeckVisibility, "private">;
+  format: DeckFormat;
+  championName: string | null;
+  decklist: OmnidexDecklist;
+  versionNumber: number;
+  publishedAt: string;
+  updatedAt: string;
+  owner: { displayName: string };
+}
+
 export interface AccountUser {
   id: string;
   email: string;
