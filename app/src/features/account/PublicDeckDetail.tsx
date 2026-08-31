@@ -5,13 +5,14 @@ import { accountApi, AccountApiError } from "../../lib/accountApi";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import UserDeckHeader from "./UserDeckHeader";
 import UserDecklistPanel from "./UserDecklistPanel";
+import UserDeckStats from "./UserDeckStats";
 import DeckTags from "./DeckTags";
 import PrimerMarkdown from "./PrimerMarkdown";
 import Tabs from "../../components/ui/Tabs";
 import { useTabParam } from "../../lib/useTabParam";
 
-type PublicDeckTab = "decklist" | "primer";
-const PUBLIC_TABS = [{ key: "decklist", label: "Decklist" }, { key: "primer", label: "Primer" }] satisfies { key: PublicDeckTab; label: string }[];
+type PublicDeckTab = "decklist" | "analysis" | "primer";
+const PUBLIC_TABS = [{ key: "decklist", label: "Decklist" }, { key: "analysis", label: "Analysis" }, { key: "primer", label: "Primer" }] satisfies { key: PublicDeckTab; label: string }[];
 
 export default function PublicDeckDetail() {
   const { publicSlug = "" } = useParams<{ publicSlug: string }>();
@@ -67,7 +68,8 @@ export default function PublicDeckDetail() {
     {notice && <p className="mt-3 text-sm text-ctp-yellow">{notice}</p>}
     <div className="mt-6"><Tabs tabs={PUBLIC_TABS} active={tab} onChange={setTab} label="Published deck details" baseId="public-deck" /></div>
     {tab === "decklist" && <div id="public-deck-panel-decklist" role="tabpanel" aria-labelledby="public-deck-tab-decklist" tabIndex={0}><UserDecklistPanel decklist={deck.decklist} /></div>}
+    {tab === "analysis" && <section id="public-deck-panel-analysis" role="tabpanel" aria-labelledby="public-deck-tab-analysis" tabIndex={0}><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} /></section>}
     {tab === "primer" && <section id="public-deck-panel-primer" role="tabpanel" aria-labelledby="public-deck-tab-primer" tabIndex={0} className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-5">{deck.primerMarkdown.trim() ? <PrimerMarkdown markdown={deck.primerMarkdown} /> : <p className="text-sm text-ctp-subtext1">The author has not added a primer yet.</p>}</section>}
-    <p className="mt-4 text-xs text-ctp-subtext0">Published {new Date(deck.publishedAt).toLocaleDateString()}</p>
+    <p className="mt-4 text-xs text-ctp-subtext0">Published {new Date(deck.publishedAt).toLocaleDateString()} · Updated {new Date(deck.updatedAt).toLocaleDateString()}</p>
   </div>;
 }

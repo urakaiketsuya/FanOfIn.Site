@@ -7,13 +7,14 @@ import { buildDecklistText } from "../events/DecklistView";
 import { parseDecklist } from "../compare/parseDecklist";
 import UserDeckHeader from "./UserDeckHeader";
 import UserDecklistPanel from "./UserDecklistPanel";
+import UserDeckStats from "./UserDeckStats";
 import DeckTags from "./DeckTags";
 import PrimerMarkdown from "./PrimerMarkdown";
 import Tabs from "../../components/ui/Tabs";
 import { useTabParam } from "../../lib/useTabParam";
 
-type DeckTab = "decklist" | "primer" | "versions" | "settings";
-const DECK_TABS = [{ key: "decklist", label: "Decklist" }, { key: "primer", label: "Primer" }, { key: "versions", label: "Versions" }, { key: "settings", label: "Settings" }] satisfies { key: DeckTab; label: string }[];
+type DeckTab = "decklist" | "analysis" | "primer" | "versions" | "settings";
+const DECK_TABS = [{ key: "decklist", label: "Decklist" }, { key: "analysis", label: "Analysis" }, { key: "primer", label: "Primer" }, { key: "versions", label: "Versions" }, { key: "settings", label: "Settings" }] satisfies { key: DeckTab; label: string }[];
 
 export default function MyDeckDetail() {
   const { deckId = "" } = useParams<{ deckId: string }>();
@@ -69,7 +70,7 @@ export default function MyDeckDetail() {
 
   return <div className="mx-auto max-w-3xl px-4 py-8">
     <Link to="/my-decks" className="text-sm text-ctp-blue hover:underline">← My Decks</Link>
-    <div className="mt-4"><UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} description={deck.description} visibility={deck.visibility} /><DeckTags tags={deck.tags} /></div>
+    <div className="mt-4"><UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} description={deck.description} visibility={deck.visibility} /><DeckTags tags={deck.tags} /><p className="mt-3 text-xs text-ctp-subtext0">Updated {new Date(deck.updatedAt).toLocaleDateString()} · {deck.versions.length} version{deck.versions.length === 1 ? "" : "s"}</p></div>
     <div className="mt-6"><Tabs tabs={DECK_TABS} active={tab} onChange={setTab} label="Deck details" baseId="owned-deck" /></div>
     {error && <p className="mt-4 rounded border border-ctp-red/50 bg-ctp-red/10 p-3 text-sm text-ctp-red">{error}</p>}
     {notice && <p className="mt-4 rounded border border-ctp-green/50 bg-ctp-green/10 p-3 text-sm text-ctp-green">{notice}</p>}
@@ -93,6 +94,7 @@ export default function MyDeckDetail() {
         <p className="mt-2 text-xs text-ctp-subtext0">Publishing snapshots the current version. Later edits stay private until you publish again.</p>
       </div>
     </section>}
+    {tab === "analysis" && <section id="owned-deck-panel-analysis" role="tabpanel" aria-labelledby="owned-deck-tab-analysis" tabIndex={0}><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} /></section>}
     {tab === "decklist" && <UserDecklistPanel decklist={deck.decklist} actions={<button type="button" onClick={() => { setDeckText(buildDecklistText(deck.decklist)); setEditing((value) => !value); }} className="rounded border border-ctp-blue px-2 py-1 text-xs text-ctp-blue">{editing ? "Cancel" : "Edit deck"}</button>}>
       {editing ? <form className="mt-3" onSubmit={(event) => { event.preventDefault(); void run(async () => { const parsed = parseDecklist(deckText); await accountApi.createDeckVersion(deck.id, { decklist: parsed.decklist, format: deck.format, championName: deck.championName, changeNote }); await refresh(); setChangeNote(""); setEditing(false); }); }}>
         <textarea rows={18} required value={deckText} onChange={(event) => setDeckText(event.target.value)} className="w-full rounded-md border border-ctp-surface1 bg-ctp-base p-4 font-mono text-sm text-ctp-text" />
@@ -113,7 +115,7 @@ export default function MyDeckDetail() {
       <h2 className="text-lg font-semibold text-ctp-text">Version history</h2>
       <div className="mt-3 space-y-2">{deck.versions.map((version) => <details key={version.id} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3" open={version.id === deck.currentVersionId}>
         <summary className="cursor-pointer text-sm"><span className="font-medium">Version {version.versionNumber}</span><span className="ml-2 text-ctp-subtext1">{new Date(version.createdAt).toLocaleString()} · {version.changeNote || "Deck updated"}</span>{version.id === deck.currentVersionId && <span className="ml-2 text-ctp-green">Current</span>}</summary>
-        <pre className="mt-3 max-h-72 overflow-auto whitespace-pre-wrap rounded bg-ctp-base p-3 text-xs text-ctp-subtext1">{buildDecklistText(version.decklist)}</pre>
+        <UserDecklistPanel decklist={version.decklist} />
         {version.id !== deck.currentVersionId && <button disabled={busy} type="button" onClick={() => void run(async () => { await accountApi.restoreDeckVersion(deck.id, version.id); await refresh(); })} className="mt-2 rounded border border-ctp-blue px-2 py-1 text-xs text-ctp-blue disabled:opacity-50">Restore as new version</button>}
       </details>)}</div>
     </section>}
