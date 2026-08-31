@@ -3,7 +3,10 @@ export interface Env {
   GOOGLE_CLIENT_ID: string;
   ASSET_BASE_URL: string;
   ALLOWED_ORIGINS: string;
-  BFF_SHARED_SECRET?: string;
+  BFF_SHARED_SECRET: string;
+  LOGIN_RATE_LIMITER: RateLimit;
+  WRITE_RATE_LIMITER: RateLimit;
+  IMPORT_RATE_LIMITER: RateLimit;
 }
 
 export interface AuthUser {
@@ -123,6 +126,5 @@ export function originAllowed(request: Request, env: Env): boolean {
 }
 
 export function bffAllowed(request: Request, env: Env): boolean {
-  if (!env.BFF_SHARED_SECRET) return true;
-  return request.headers.get("X-Fanofin-BFF-Secret") === env.BFF_SHARED_SECRET;
+  return Boolean(env.BFF_SHARED_SECRET) && request.headers.get("X-Fanofin-BFF-Secret") === env.BFF_SHARED_SECRET;
 }

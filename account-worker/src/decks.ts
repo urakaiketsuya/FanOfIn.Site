@@ -26,6 +26,14 @@ interface SaveInput {
   };
 }
 
+const MAX_DECKS_PER_USER = 250;
+const MAX_LINES_PER_DECK = 250;
+const MAX_SOURCES_PER_DECK = 50;
+const MAX_IMPORT_DECKS = 50;
+const MAX_IDENTIFIER_LENGTH = 240;
+const MAX_SOURCE_URL_LENGTH = 1_000;
+const MAX_METADATA_BYTES = 16_384;
+
 async function identityHash(decklist: OmnidexDecklist): Promise<string> {
   const bytes = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(savedDeckIdentityInput(decklist)));
   return Array.from(new Uint8Array(bytes), (byte) => byte.toString(16).padStart(2, "0")).join("");
@@ -34,7 +42,10 @@ async function identityHash(decklist: OmnidexDecklist): Promise<string> {
 function validDecklist(value: unknown): value is OmnidexDecklist {
   if (!value || typeof value !== "object") return false;
   const deck = value as Record<string, unknown>;
-  return ["main", "material", "sideboard"].every((section) => Array.isArray(deck[section]) && (deck[section] as unknown[]).every((line) => {
+  const sections = ["main", "material", "sideboard"];
+  if (!sections.every((section) => Array.isArray(deck[section]))) return false;
+  if (sections.reduce((total, section) => total + (deck[section] as unknown[]).length, 0) > MAX_LINES_PER_DECK) return false;
+  return sections.every((section) => (deck[section] as unknown[]).every((line) => {
     if (!line || typeof line !== "object") return false;
     const item = line as Record<string, unknown>;
     return typeof item.card === "string" && item.card.length <= 200 && Number.isInteger(item.quantity) && Number(item.quantity) > 0 && Number(item.quantity) <= 100;
@@ -45,7 +56,10 @@ export function parseSaveInput(value: unknown): SaveInput {
   if (!value || typeof value !== "object") throw new Error("Invalid saved deck");
   const input = value as Partial<SaveInput>;
   if (!validDecklist(input.decklist) || typeof input.title !== "string" || !input.title.trim() || input.title.length > 160) throw new Error("Invalid saved deck");
-  if (!input.source || !["manual", "omnidex", "shoutatyourdecks"].includes(input.source.provider ?? "") || typeof input.source.externalDeckId !== "string" || typeof input.source.label !== "string") throw new Error("Invalid deck source");
+  if (!input.source || input.source.provider !== "manual" || typeof input.source.externalDeckId !== "string" || !input.source.externalDeckId || input.source.externalDeckId.length > MAX_IDENTIFIER_LENGTH || typeof input.source.label !== "string" || !input.source.label || input.source.label.length > 240) throw new Error("Invalid deck source");
+  if (input.championName != null && (typeof input.championName !== "string" || input.championName.length > 200)) throw new Error("Invalid champion name");
+  if (input.source.sourceUrl != null && (typeof input.source.sourceUrl !== "string" || input.source.sourceUrl.length > MAX_SOURCE_URL_LENGTH)) throw new Error("Invalid source URL");
+  if (JSON.stringify(input.source.metadata ?? {}).length > MAX_METADATA_BYTES) throw new Error("Deck source metadata is too large");
   return input as SaveInput;
 }
 
@@ -55,11 +69,21 @@ export async function saveDeck(env: Env, user: AuthUser, input: SaveInput): Prom
   const hash = await identityHash(canonical);
   const now = new Date().toISOString();
   const existing = await env.ACCOUNT_DB.prepare("SELECT id FROM saved_decks WHERE user_id = ? AND identity_hash = ?").bind(user.id, hash).first<{ id: string }>();
+  if (!existing) {
+    const count = await env.ACCOUNT_DB.prepare("SELECT COUNT(*) AS count FROM saved_decks WHERE user_id = ?").bind(user.id).first<{ count: number }>();
+    if ((count?.count ?? 0) >= MAX_DECKS_PER_USER) throw new Error(`Saved deck limit of ${MAX_DECKS_PER_USER} reached`);
+  }
   const deckId = existing?.id ?? crypto.randomUUID();
   await env.ACCOUNT_DB.prepare(`INSERT INTO saved_decks (id, user_id, identity_hash, title, format, champion_name, decklist_json, created_at, updated_at)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(user_id, identity_hash) DO UPDATE SET updated_at = excluded.updated_at`)
     .bind(deckId, user.id, hash, input.title.trim(), input.format ?? "UNKNOWN", input.championName ?? null, JSON.stringify({ ...canonical, sideboard: [] }), now, now).run();
+  const existingSource = await env.ACCOUNT_DB.prepare("SELECT id FROM saved_deck_sources WHERE saved_deck_id = ? AND provider = ? AND external_deck_id = ?")
+    .bind(deckId, input.source.provider, input.source.externalDeckId).first<{ id: string }>();
+  if (!existingSource) {
+    const count = await env.ACCOUNT_DB.prepare("SELECT COUNT(*) AS count FROM saved_deck_sources WHERE saved_deck_id = ?").bind(deckId).first<{ count: number }>();
+    if ((count?.count ?? 0) >= MAX_SOURCES_PER_DECK) throw new Error(`Deck source limit of ${MAX_SOURCES_PER_DECK} reached`);
+  }
   await env.ACCOUNT_DB.prepare(`INSERT INTO saved_deck_sources (id, saved_deck_id, provider, external_deck_id, source_url, label, metadata_json, sideboard_json, imported_at)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(saved_deck_id, provider, external_deck_id) DO UPDATE SET source_url = excluded.source_url,
@@ -99,6 +123,7 @@ interface ImportEvent { id: number; name: string; format: string; url: string; }
 export async function previewImport(env: Env, provider: string, rawIdentifier: string): Promise<DeckImportPreview> {
   const identifier = rawIdentifier.trim();
   if (!identifier) throw new Error("Enter an import identifier");
+  if (identifier.length > MAX_IDENTIFIER_LENGTH) throw new Error("Import identifier is too long");
   if (provider === "omnidex") {
     if (!/^\d+$/.test(identifier)) throw new Error("Omnidex player ID must be numeric");
     const playerId = Number(identifier);
@@ -132,6 +157,7 @@ export async function previewImport(env: Env, provider: string, rawIdentifier: s
 
 export async function performImport(env: Env, user: AuthUser, provider: string, identifier: string): Promise<{ created: number; linked: number }> {
   const preview = await previewImport(env, provider, identifier);
+  if (preview.candidates.length > MAX_IMPORT_DECKS) throw new Error(`Import is limited to ${MAX_IMPORT_DECKS} decks at a time`);
   let created = 0;
   let linked = 0;
   if (provider === "omnidex") {

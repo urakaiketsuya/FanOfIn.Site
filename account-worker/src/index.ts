@@ -12,6 +12,14 @@ function response(env: Env, request: Request, body: unknown, status = 200, extra
   return new Response(JSON.stringify(body), { status, headers });
 }
 
+async function rateLimited(limiter: RateLimit, key: string): Promise<boolean> {
+  return !(await limiter.limit({ key })).success;
+}
+
+function tooManyRequests(env: Env, request: Request): Response {
+  return response(env, request, { error: "Too many requests. Try again in a minute." }, 429, { "Retry-After": "60" });
+}
+
 async function jsonBody(request: Request): Promise<unknown> {
   const length = Number(request.headers.get("Content-Length") ?? 0);
   if (length > 1_048_576) throw new Error("Request is too large");
@@ -34,6 +42,8 @@ export default {
       if (request.method === "GET" && url.pathname === "/health") return response(env, request, { success: true, service: "fanofin-accounts" });
       if (request.method === "GET" && url.pathname === "/v1/auth/session") return response(env, request, { user: await authenticatedUser(request, env) });
       if (request.method === "POST" && url.pathname === "/v1/auth/google") {
+        const clientIp = request.headers.get("X-Fanofin-Client-IP") ?? "unknown";
+        if (await rateLimited(env.LOGIN_RATE_LIMITER, clientIp)) return tooManyRequests(env, request);
         const body = await jsonBody(request) as { credential?: unknown };
         if (typeof body.credential !== "string") return response(env, request, { error: "Google credential is required" }, 400);
         const session = await createUserSession(env, await verifyGoogleCredential(body.credential, env.GOOGLE_CLIENT_ID));
@@ -46,11 +56,13 @@ export default {
 
       if (request.method === "GET" && url.pathname === "/v1/me/decks") return response(env, request, { decks: await listDecks(env, user) });
       if (request.method === "POST" && url.pathname === "/v1/me/decks") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
         const result = await saveDeck(env, user, parseSaveInput(await jsonBody(request)));
         return response(env, request, result, result.created ? 201 : 200);
       }
       const deckMatch = url.pathname.match(/^\/v1\/me\/decks\/([^/]+)$/);
       if (deckMatch && request.method === "PATCH") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
         const body = await jsonBody(request) as { title?: unknown };
         if (typeof body.title !== "string" || !body.title.trim() || body.title.length > 160) return response(env, request, { error: "A valid title is required" }, 400);
         const result = await env.ACCOUNT_DB.prepare("UPDATE saved_decks SET title = ?, updated_at = ? WHERE id = ? AND user_id = ?")
@@ -58,15 +70,18 @@ export default {
         return result.meta.changes ? response(env, request, { success: true }) : response(env, request, { error: "Deck not found" }, 404);
       }
       if (deckMatch && request.method === "DELETE") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
         const result = await env.ACCOUNT_DB.prepare("DELETE FROM saved_decks WHERE id = ? AND user_id = ?").bind(deckMatch[1], user.id).run();
         return result.meta.changes ? response(env, request, { success: true }) : response(env, request, { error: "Deck not found" }, 404);
       }
       if (request.method === "POST" && url.pathname === "/v1/me/imports/preview") {
+        if (await rateLimited(env.IMPORT_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
         const body = await jsonBody(request) as { provider?: unknown; identifier?: unknown };
         if (typeof body.provider !== "string" || typeof body.identifier !== "string") return response(env, request, { error: "Provider and identifier are required" }, 400);
         return response(env, request, await previewImport(env, body.provider, body.identifier));
       }
       if (request.method === "POST" && url.pathname === "/v1/me/imports") {
+        if (await rateLimited(env.IMPORT_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
         const body = await jsonBody(request) as { provider?: unknown; identifier?: unknown };
         if (typeof body.provider !== "string" || typeof body.identifier !== "string") return response(env, request, { error: "Provider and identifier are required" }, 400);
         return response(env, request, await performImport(env, user, body.provider, body.identifier));

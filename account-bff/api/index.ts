@@ -7,6 +7,9 @@ interface VercelRequest extends IncomingMessage {
 const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN ?? "https://fanofin.site";
 const WORKER_URL = process.env.ACCOUNT_WORKER_URL?.replace(/\/$/, "");
 const SHARED_SECRET = process.env.BFF_SHARED_SECRET;
+const MAX_BODY_BYTES = 1_048_576;
+
+class PayloadTooLargeError extends Error {}
 
 function applyCors(response: ServerResponse): void {
   response.setHeader("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
@@ -25,13 +28,26 @@ function sendJson(response: ServerResponse, status: number, body: unknown): void
 
 async function requestBody(request: VercelRequest): Promise<BodyInit | undefined> {
   if (request.method === "GET" || request.method === "HEAD") return undefined;
+  const declaredLength = Number(request.headers["content-length"] ?? 0);
+  if (declaredLength > MAX_BODY_BYTES) throw new PayloadTooLargeError();
   if (request.body !== undefined) {
-    if (typeof request.body === "string") return request.body;
-    if (request.body instanceof Uint8Array) return new Blob([new Uint8Array(request.body)]);
-    return JSON.stringify(request.body);
+    const body = typeof request.body === "string"
+      ? request.body
+      : request.body instanceof Uint8Array
+        ? new Uint8Array(request.body)
+        : JSON.stringify(request.body);
+    const size = typeof body === "string" ? Buffer.byteLength(body) : body.byteLength;
+    if (size > MAX_BODY_BYTES) throw new PayloadTooLargeError();
+    return body;
   }
   const chunks: Buffer[] = [];
-  for await (const chunk of request) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+  let size = 0;
+  for await (const chunk of request) {
+    const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
+    size += buffer.length;
+    if (size > MAX_BODY_BYTES) throw new PayloadTooLargeError();
+    chunks.push(buffer);
+  }
   return chunks.length ? Buffer.concat(chunks) : undefined;
 }
 
@@ -60,6 +76,8 @@ export default async function handler(request: VercelRequest, response: ServerRe
     "Accept": "application/json",
     "X-Fanofin-BFF-Secret": SHARED_SECRET,
   });
+  const clientIp = request.headers["x-vercel-forwarded-for"] ?? request.headers["x-forwarded-for"] ?? request.socket.remoteAddress;
+  if (clientIp) headers.set("X-Fanofin-Client-IP", (Array.isArray(clientIp) ? clientIp[0] : clientIp).split(",")[0].trim().slice(0, 128));
   if (request.headers["content-type"]) headers.set("Content-Type", request.headers["content-type"]);
   if (request.headers.cookie) headers.set("Cookie", request.headers.cookie);
 
@@ -77,6 +95,10 @@ export default async function handler(request: VercelRequest, response: ServerRe
     if (setCookie) response.setHeader("Set-Cookie", setCookie);
     response.end(Buffer.from(await upstream.arrayBuffer()));
   } catch (error) {
+    if (error instanceof PayloadTooLargeError) {
+      sendJson(response, 413, { error: "Request is too large" });
+      return;
+    }
     console.error("Account Worker proxy failed", error);
     sendJson(response, 502, { error: "Account service is unavailable" });
   }
