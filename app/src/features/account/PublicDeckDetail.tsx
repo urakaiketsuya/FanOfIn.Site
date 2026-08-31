@@ -51,10 +51,10 @@ export default function PublicDeckDetail() {
     return () => { if (created) meta?.remove(); else if (meta) meta.content = "index,follow"; };
   }, [deck?.visibility]);
 
-  if (deck === undefined) return <div className="mx-auto max-w-4xl px-4 py-10 text-ctp-subtext1">Loading deck…</div>;
-  if (!deck) return <div className="mx-auto max-w-4xl px-4 py-10"><h1 className="text-2xl font-bold text-ctp-text">Deck unavailable</h1><p className="mt-2 text-ctp-subtext1">{error}</p><Link to="/" className="mt-5 inline-block text-ctp-blue hover:underline">Back home</Link></div>;
+  if (deck === undefined) return <div className="mx-auto max-w-3xl px-4 py-10 text-ctp-subtext1">Loading deck…</div>;
+  if (!deck) return <div className="mx-auto max-w-3xl px-4 py-10"><h1 className="text-2xl font-bold text-ctp-text">Deck unavailable</h1><p className="mt-2 text-ctp-subtext1">{error}</p><Link to="/" className="mt-5 inline-block text-ctp-blue hover:underline">Back home</Link></div>;
 
-  return <div className="mx-auto max-w-4xl px-4 py-8">
+  return <div className="mx-auto max-w-3xl px-4 py-8">
     <UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} versionNumber={deck.versionNumber} visibility={deck.visibility} description={deck.description} eyebrow={<>Shared by <Link to={`/users/${deck.owner.profileSlug}`} className="text-ctp-blue hover:underline">{deck.owner.displayName}</Link></>} />
     <DeckTags tags={deck.tags} />
     <div className="mt-5 flex flex-wrap items-center gap-2">
