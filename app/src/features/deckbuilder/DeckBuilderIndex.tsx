@@ -1673,7 +1673,6 @@ export default function DeckBuilderIndex() {
     next.set("intent", intent);
     next.set("tab", "build");
     setSearchParams(next, { replace: true });
-    setTab("build");
   }
 
   const popularityIndexData = useDeckPopularityIndexData();
