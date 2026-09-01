@@ -1718,6 +1718,12 @@ export default function DeckBuilderIndex() {
     window.addEventListener("fanofin:collection-updated", refreshCollection);
     return () => window.removeEventListener("fanofin:collection-updated", refreshCollection);
   }, []);
+  useEffect(() => {
+    if (!improveDeckId) return;
+    void accountApi.deck(improveDeckId).then(({ deck }) => {
+      setMaybeboard(new Map(deck.maybeboard.map((line) => [line.card, line.quantity])));
+    }).catch(() => undefined);
+  }, [improveDeckId]);
   const collectionOwnedByName = useMemo(() => new Map(collection.map((entry) => [entry.cardName, entry.ownedQuantity])), [collection]);
   const collectionRejectedCards = useMemo(() => {
     if (collectionMode !== "owned-only") return rejectedCards;
@@ -2615,6 +2621,7 @@ export default function DeckBuilderIndex() {
           decklist: deckToSave,
           changeNote: saveNote.trim() || "Improved in Guided Deck Builder",
         });
+        await accountApi.updateDeckMetadata(improveDeckId, { maybeboard: Array.from(maybeboard, ([card, quantity]) => ({ card, quantity })) });
         setSavedDeckId(improveDeckId);
         setSaveState("saved");
         return;
@@ -2624,6 +2631,7 @@ export default function DeckBuilderIndex() {
         format: deckFormat,
         championName,
         decklist: deckToSave,
+        maybeboard: Array.from(maybeboard, ([card, quantity]) => ({ card, quantity })),
         source: { provider: "manual", externalDeckId: crypto.randomUUID(), label: "Guided Deck Builder" },
       });
       setSavedDeckId(result.id);

@@ -40,6 +40,8 @@ export interface SavedDeckVersion {
 }
 
 export interface SavedDeckDetail extends SavedDeck {
+  /** Private working list attached to the deck itself, independent of version snapshots. */
+  maybeboard: OmnidexDecklistCardLine[];
   description: string;
   primerMarkdown: string;
   tags: string[];

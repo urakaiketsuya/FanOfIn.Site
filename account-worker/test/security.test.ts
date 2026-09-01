@@ -106,6 +106,17 @@ test("manual saves reject oversized decklists", () => {
   }), /Invalid saved deck/);
 });
 
+test("manual saves accept a bounded maybeboard outside the decklist", () => {
+  const input = parseSaveInput({
+    title: "Testing options",
+    decklist: { main: [{ card: "Main Card", quantity: 4 }], material: [], sideboard: [] },
+    maybeboard: [{ card: "Maybe Card", quantity: 2 }],
+    source: { provider: "manual", externalDeckId: "local", label: "Manual" },
+  });
+  assert.deepEqual(input.maybeboard, [{ card: "Maybe Card", quantity: 2 }]);
+  assert.throws(() => parseSaveInput({ ...input, maybeboard: [{ card: "Maybe Card", quantity: 0 }] }), /Invalid maybeboard/);
+});
+
 test("deck imports accept only selected candidates and deduplicate IDs", () => {
   const candidate = (id: string) => ({ provider: "omnidex" as const, externalDeckId: id, title: id, championName: null, format: "STANDARD" as const, label: id, sourceUrl: null, available: true });
   const preview = { provider: "omnidex" as const, identifier: "1", displayName: "Player", candidates: [candidate("one"), candidate("two")] };

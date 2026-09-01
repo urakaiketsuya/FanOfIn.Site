@@ -48,7 +48,7 @@ export default function MyDeckDetail() {
   useEffect(() => {
     let active = true;
     void accountApi.deck(deckId).then(({ deck: result }) => {
-      if (active) { setDeck(result); setTitle(result.title); setDescription(result.description); setPrimerMarkdown(result.primerMarkdown); setTagsText(result.tags.join(", ")); }
+      if (active) { setDeck(result); setTitle(result.title); setDescription(result.description); setPrimerMarkdown(result.primerMarkdown); setTagsText(result.tags.join(", ")); setMaybeboardText(result.maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n")); }
     }).catch((reason: unknown) => {
       if (!active) return;
       setError(reason instanceof AccountApiError && reason.status === 401 ? "Sign in to view this deck." : reason instanceof Error ? reason.message : "Deck could not be loaded");
@@ -57,13 +57,13 @@ export default function MyDeckDetail() {
     return () => { active = false; };
   }, [deckId]);
 
-  useEffect(() => {
-    try { setMaybeboardText(localStorage.getItem(`my-deck-maybeboard:${deckId}`) ?? ""); } catch { setMaybeboardText(""); }
-  }, [deckId]);
-
-  function saveMaybeboard() {
-    try { localStorage.setItem(`my-deck-maybeboard:${deckId}`, maybeboardText); setNotice("Maybeboard saved in this browser."); }
-    catch { setError("Could not save the maybeboard in this browser."); }
+  async function saveMaybeboard() {
+    const maybeboard = parseDecklist(`Main\n${maybeboardText}`).decklist.main;
+    await run(async () => {
+      await accountApi.updateDeckMetadata(deckId, { maybeboard });
+      setDeck((current) => current ? { ...current, maybeboard } : current);
+      setNotice("Maybeboard saved.");
+    });
   }
 
   function addMaybeboardToEditor() {
@@ -81,6 +81,7 @@ export default function MyDeckDetail() {
     setDescription(result.deck.description);
     setPrimerMarkdown(result.deck.primerMarkdown);
     setTagsText(result.deck.tags.join(", "));
+    setMaybeboardText(result.deck.maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n"));
     setDeckText(buildDecklistText(result.deck.decklist));
   }
 
@@ -134,8 +135,8 @@ export default function MyDeckDetail() {
       </form> : undefined}
       <section className="mt-5 rounded-lg border border-dashed border-ctp-yellow/60 bg-ctp-yellow/5 p-4">
         <div className="flex flex-wrap items-start justify-between gap-3"><div><h3 className="font-medium text-ctp-yellow">Maybeboard</h3><p className="mt-1 text-xs text-ctp-subtext1">Keep cards under consideration outside the deck. One line per card, for example <span className="font-mono">2x Card Name</span>.</p></div><button type="button" disabled={!maybeboardText.trim()} onClick={addMaybeboardToEditor} className="rounded border border-ctp-blue px-2 py-1 text-xs text-ctp-blue disabled:opacity-50">Add to deck editor</button></div>
-        <textarea rows={5} value={maybeboardText} onChange={(event) => setMaybeboardText(event.target.value)} onBlur={saveMaybeboard} placeholder={"2x Card to test\n4x Another option"} aria-label="Maybeboard" className="mt-3 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-3 font-mono text-sm" />
-        <p className="mt-2 text-xs text-ctp-subtext0">Saved automatically in this browser; it never affects this deck's legality, statistics, exports, or published version.</p>
+        <textarea rows={5} value={maybeboardText} onChange={(event) => setMaybeboardText(event.target.value)} onBlur={() => void saveMaybeboard()} placeholder={"2x Card to test\n4x Another option"} aria-label="Maybeboard" className="mt-3 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-3 font-mono text-sm" />
+        <p className="mt-2 text-xs text-ctp-subtext0">Saved to this deck, independently of version history. It never affects legality, statistics, exports, or publishing.</p>
       </section>
     </UserDecklistPanel>}
     {tab === "primer" && <section id="owned-deck-panel-primer" role="tabpanel" aria-labelledby="owned-deck-tab-primer" tabIndex={0} className="mt-6 grid gap-5 lg:grid-cols-2">

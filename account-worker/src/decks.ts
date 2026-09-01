@@ -6,6 +6,7 @@ import {
   type DeckImportPreview,
   type DeckImportResult,
   type OmnidexDecklist,
+  type OmnidexDecklistCardLine,
   type OmnidexDecklistEntry,
   type PublicDeck,
   type SavedDeck,
@@ -20,6 +21,7 @@ import { ApiError, badRequest } from "./errors";
 
 interface SaveInput {
   decklist: OmnidexDecklist;
+  maybeboard?: OmnidexDecklistCardLine[];
   title: string;
   format?: DeckFormat;
   championName?: string | null;
@@ -121,6 +123,19 @@ function validDecklist(value: unknown): value is OmnidexDecklist {
   }));
 }
 
+function validMaybeboard(value: unknown): value is OmnidexDecklistCardLine[] {
+  if (!Array.isArray(value) || value.length > MAX_LINES_PER_DECK) return false;
+  return value.every((line) => {
+    if (!line || typeof line !== "object") return false;
+    const item = line as Record<string, unknown>;
+    return typeof item.card === "string" && item.card.length <= 200 && Number.isInteger(item.quantity) && Number(item.quantity) > 0 && Number(item.quantity) <= 100;
+  });
+}
+
+function canonicalMaybeboard(lines: OmnidexDecklistCardLine[] | undefined): OmnidexDecklistCardLine[] {
+  return canonicalizeSavedDecklist({ main: lines ?? [], material: [], sideboard: [] }).main;
+}
+
 export function parseSaveInput(value: unknown): SaveInput {
   if (!value || typeof value !== "object") throw badRequest("Invalid saved deck");
   const input = value as Partial<SaveInput>;
@@ -128,6 +143,7 @@ export function parseSaveInput(value: unknown): SaveInput {
   if (!validUserFacingName(input.title)) throw badRequest("Deck name contains blocked language", "blocked_language");
   if (!input.source || input.source.provider !== "manual" || typeof input.source.externalDeckId !== "string" || !input.source.externalDeckId || input.source.externalDeckId.length > MAX_IDENTIFIER_LENGTH || typeof input.source.label !== "string" || !input.source.label || input.source.label.length > 240) throw badRequest("Invalid deck source");
   if (input.championName != null && (typeof input.championName !== "string" || input.championName.length > 200)) throw badRequest("Invalid champion name");
+  if (input.maybeboard !== undefined && !validMaybeboard(input.maybeboard)) throw badRequest("Invalid maybeboard");
   if (input.source.sourceUrl != null && (typeof input.source.sourceUrl !== "string" || input.source.sourceUrl.length > MAX_SOURCE_URL_LENGTH)) throw badRequest("Invalid source URL");
   if (JSON.stringify(input.source.metadata ?? {}).length > MAX_METADATA_BYTES) throw badRequest("Deck source metadata is too large");
   return input as SaveInput;
@@ -162,6 +178,10 @@ export async function saveDeck(env: Env, user: AuthUser, input: SaveInput): Prom
     .bind(crypto.randomUUID(), deckId, input.source.provider, input.source.externalDeckId, input.source.sourceUrl ?? null,
       input.source.label.slice(0, 240), JSON.stringify(input.source.metadata ?? {}), JSON.stringify(canonical.sideboard), now).run();
   await ensureVersionedDeck(env, user, deckId, input, hash, now);
+  if (input.maybeboard !== undefined) {
+    await env.ACCOUNT_DB.prepare("UPDATE user_decks SET maybeboard_json = ?, updated_at = ? WHERE id = ? AND owner_user_id = ?")
+      .bind(JSON.stringify(canonicalMaybeboard(input.maybeboard)), now, deckId, user.id).run();
+  }
   return { id: deckId, created: !existing };
 }
 
@@ -196,18 +216,20 @@ export async function renameDeck(env: Env, user: AuthUser, deckId: string, title
 
 export async function updateDeckMetadata(env: Env, user: AuthUser, deckId: string, value: unknown): Promise<boolean> {
   if (!value || typeof value !== "object") throw badRequest("Invalid deck metadata");
-  const input = value as { title?: unknown; description?: unknown; primerMarkdown?: unknown; tags?: unknown };
+  const input = value as { title?: unknown; description?: unknown; primerMarkdown?: unknown; tags?: unknown; maybeboard?: unknown };
   if (input.title != null && (typeof input.title !== "string" || !input.title.trim() || input.title.length > 160)) throw badRequest("A valid title is required");
   if (typeof input.title === "string" && !validUserFacingName(input.title)) throw badRequest("Deck name contains blocked language", "blocked_language");
   if (input.description != null && (typeof input.description !== "string" || input.description.length > 2_000)) throw badRequest("Description is too long");
   if (input.primerMarkdown != null && (typeof input.primerMarkdown !== "string" || input.primerMarkdown.length > MAX_PRIMER_LENGTH)) throw badRequest("Primer is too long");
   const tags = input.tags === undefined ? null : normalizeDeckTags(input.tags);
-  if (input.title === undefined && input.description === undefined && input.primerMarkdown === undefined && tags === null) throw badRequest("No deck metadata was provided");
+  if (input.maybeboard !== undefined && !validMaybeboard(input.maybeboard)) throw badRequest("Invalid maybeboard");
+  if (input.title === undefined && input.description === undefined && input.primerMarkdown === undefined && tags === null && input.maybeboard === undefined) throw badRequest("No deck metadata was provided");
   const now = new Date().toISOString();
   const result = await env.ACCOUNT_DB.prepare(`UPDATE user_decks SET title = COALESCE(?, title), description = COALESCE(?, description),
-    primer_markdown = COALESCE(?, primer_markdown), tags_json = COALESCE(?, tags_json), updated_at = ? WHERE id = ? AND owner_user_id = ?`)
+    primer_markdown = COALESCE(?, primer_markdown), tags_json = COALESCE(?, tags_json), maybeboard_json = COALESCE(?, maybeboard_json), updated_at = ? WHERE id = ? AND owner_user_id = ?`)
     .bind(typeof input.title === "string" ? input.title.trim() : null, typeof input.description === "string" ? input.description.trim() : null,
-      typeof input.primerMarkdown === "string" ? input.primerMarkdown.trim() : null, tags ? JSON.stringify(tags) : null, now, deckId, user.id).run();
+      typeof input.primerMarkdown === "string" ? input.primerMarkdown.trim() : null, tags ? JSON.stringify(tags) : null,
+      input.maybeboard === undefined ? null : JSON.stringify(canonicalMaybeboard(input.maybeboard)), now, deckId, user.id).run();
   if (result.meta.changes && typeof input.title === "string") {
     await env.ACCOUNT_DB.prepare("UPDATE saved_decks SET title = ?, updated_at = ? WHERE id = ? AND user_id = ?")
       .bind(input.title.trim(), now, deckId, user.id).run();
@@ -283,6 +305,7 @@ export async function getDeck(env: Env, user: AuthUser, deckId: string): Promise
     tags: JSON.parse(deck.tags_json ?? "[]") as string[],
     visibility: deck.visibility as SavedDeckDetail["visibility"], publicSlug: deck.public_slug,
     currentVersionId: current.id, publishedVersionId: deck.published_version_id,
+    maybeboard: JSON.parse(deck.maybeboard_json ?? "[]") as OmnidexDecklistCardLine[],
     format: deck.format as DeckFormat, championName: deck.champion_name, decklist: current.decklist,
     versions, createdAt: deck.created_at!, updatedAt: deck.updated_at!,
     sources: sources.results.map((source) => ({ id: source.id!, provider: source.provider as "manual" | "omnidex" | "shoutatyourdecks",
