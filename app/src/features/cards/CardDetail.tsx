@@ -23,6 +23,7 @@ import { useCardSynergy } from "./useCardSynergy";
 import { useSimilarCards } from "./useSimilarCards";
 import { earliestReleaseDate, statDiff } from "../../lib/cardSimilarity";
 import { useIntentCards } from "./useIntentCards";
+import { getCardPackageMembership } from "../deckbuilder/packageGuardrails";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CardComparisonTable from "../compare/CardComparisonTable";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -192,6 +193,7 @@ export default function CardDetail() {
   );
 
   const intent = useIntentCards(card ?? null);
+  const cardPackages = useMemo(() => (card ? getCardPackageMembership(card.name) : []), [card]);
   const [showExperimentalIntent, setShowExperimentalIntent] = useState(false);
   const visibleIntentFeeds = useMemo(
     () => intent.feeds.filter((m) => showExperimentalIntent || m.tier === "validated"),
@@ -718,6 +720,22 @@ export default function CardDetail() {
             of these — an empty list here is normal, not a sign anything's broken.
           </p>
 
+          {cardPackages.length > 0 && (
+            <div className="mt-3 rounded-lg border border-ctp-teal/40 bg-ctp-teal/10 p-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-teal">Explicit construction package{cardPackages.length === 1 ? "" : "s"}</p>
+              <ul className="mt-1.5 space-y-1 text-sm text-ctp-subtext1">
+                {cardPackages.map((deckPackage) => (
+                  <li key={deckPackage.id}>
+                    <Link to={`/cards/packages#${deckPackage.id}`} className="font-medium text-ctp-text hover:text-ctp-blue">
+                      {deckPackage.label}
+                    </Link>
+                    <span className="text-ctp-subtext0"> — {deckPackage.explanation}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           {experimentalIntentCount > 0 && (
             <label className="mt-2 flex items-center gap-1.5 text-xs text-ctp-subtext0">
               <input
@@ -744,14 +762,14 @@ export default function CardDetail() {
                   </h3>
                   <ul className="mt-2 space-y-1">
                     {visibleIntentFeeds.map((m) => (
-                      <li key={`${m.card.uuid}-${m.via}`} className="flex items-center gap-1.5 text-sm">
+                      <li key={`${m.card.uuid}-${m.via}`} className="flex flex-wrap items-center gap-1.5 text-sm">
                         <CardHoverPreview image={m.card.editions[0]?.image} alt={m.card.name}>
                           <Link to={`/cards/${m.card.slug}`} className="text-ctp-text hover:text-ctp-blue">
                             {m.card.name}
                           </Link>
                         </CardHoverPreview>
-                        <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">
-                          via {m.via}
+                        <span className="rounded-full border border-ctp-mauve/50 bg-ctp-mauve/10 px-1.5 text-[10px] font-medium text-ctp-mauve">
+                          combo: {m.via}
                         </span>
                         {m.tier === "experimental" && (
                           <span
@@ -773,14 +791,14 @@ export default function CardDetail() {
                   </h3>
                   <ul className="mt-2 space-y-1">
                     {visibleIntentPoweredBy.map((m) => (
-                      <li key={`${m.card.uuid}-${m.via}`} className="flex items-center gap-1.5 text-sm">
+                      <li key={`${m.card.uuid}-${m.via}`} className="flex flex-wrap items-center gap-1.5 text-sm">
                         <CardHoverPreview image={m.card.editions[0]?.image} alt={m.card.name}>
                           <Link to={`/cards/${m.card.slug}`} className="text-ctp-text hover:text-ctp-blue">
                             {m.card.name}
                           </Link>
                         </CardHoverPreview>
-                        <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">
-                          via {m.via}
+                        <span className="rounded-full border border-ctp-mauve/50 bg-ctp-mauve/10 px-1.5 text-[10px] font-medium text-ctp-mauve">
+                          combo: {m.via}
                         </span>
                         {m.tier === "experimental" && (
                           <span

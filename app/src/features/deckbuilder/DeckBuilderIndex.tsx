@@ -2228,6 +2228,34 @@ export default function DeckBuilderIndex() {
     () => computeDeckRating(buildLines, cardsByName, championName, deckIdentity.classes),
     [buildLines, cardsByName, championName, deckIdentity.classes],
   );
+  function resetBuilder(): void {
+    // Clear the persisted snapshot as well as component state. This matters when the user resets
+    // and immediately navigates away before React's autosave effect gets a chance to run.
+    try { sessionStorage.removeItem(SESSION_STORAGE_KEY); } catch { /* storage can be unavailable */ }
+    pendingActionRef.current = null;
+    prevSuggestedRef.current = null;
+    prevWinRateRef.current = null;
+    skipNextResetRef.current = false;
+    lastResetChampionRef.current = null;
+    startTransition(() => {
+      setChampionName(null);
+      setSpiritFilter(null);
+      setLockedCards(new Map());
+      setLockedSections(new Map());
+      setRejectedCards(new Set());
+      setCardInput("");
+      setAddToSideboard(false);
+      setPillarBias(null);
+      setArchetypeId(null);
+      setPopulationSource("balanced");
+      setChangeLog([]);
+      setDismissedReviewCards(new Set());
+      setShowProtectedCuts(false);
+      setPasteOpen(false);
+      setPasteText("");
+      setPasteError(null);
+    });
+  }
   // Buying/exporting covers the whole deck including sideboard tech, same as DecklistView.tsx.
   const massEntryUrl = useMemo(() => buildTcgplayerMassEntryUrl([...buildLines, ...sideboardLines]), [buildLines, sideboardLines]);
   const clarentUrl = useMemo(() => buildClarentPlaytestUrl(decklist), [decklist]);
@@ -2409,6 +2437,15 @@ export default function DeckBuilderIndex() {
               ))}
             </select>
           </>
+        )}
+        {championName && (
+          <button
+            type="button"
+            onClick={resetBuilder}
+            className="ml-1 rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-red hover:text-ctp-red"
+          >
+            Reset builder
+          </button>
         )}
       </div>
       <div className="mt-2">

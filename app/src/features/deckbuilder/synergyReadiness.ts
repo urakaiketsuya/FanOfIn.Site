@@ -1,7 +1,9 @@
 import type { Card } from "@gatcg/shared";
 import { benefitsFromEmpower, extractConsumedSubtypes, extractConsumedTokens, extractProducedTokens, extractsEmpowerGrant } from "../../lib/cardIntent";
 
-export interface SynergyLine { name: string; quantity: number }
+/** `section` is optional for callers that already pass Main-only lines. When present, only Main
+ * lines enter draw/reveal math: Material and sideboard cards are not shuffled into the deck. */
+export interface SynergyLine { name: string; quantity: number; section?: "main" | "material" | "sideboard" }
 export interface ReadinessCheckpoint { key: "opening" | "early" | "mid" | "late"; label: string; seen: number; probability: number }
 export interface ReadinessCurvePoint { seen: number; probability: number }
 export interface SynergyReadiness {
@@ -125,8 +127,9 @@ export function computeSynergyReadiness(lines: SynergyLine[], cards: Map<string,
   // first, leaving every later group's `recommendations` empty (a real bug, caught live: a
   // build with 2+ under-supported synergy groups only ever got real recommendations for the first).
   const catalogArray = Array.from(catalog);
+  const mainLines = lines.filter((line) => line.section !== "material" && line.section !== "sideboard");
   const groups = new Map<string, { requirement: Requirement; payoffs: SynergyLine[] }>();
-  for (const line of lines) {
+  for (const line of mainLines) {
     const card = cards.get(line.name);
     if (!card) continue;
     const requirement = parseImbue(card);
@@ -137,9 +140,13 @@ export function computeSynergyReadiness(lines: SynergyLine[], cards: Map<string,
     group.payoffs.push(line); groups.set(key, group);
   }
   const entries = Array.from(groups.entries());
-  const deckSize = Math.max(60, lines.reduce((sum, line) => sum + line.quantity, 0));
+  const deckSize = Math.max(60, mainLines.reduce((sum, line) => sum + line.quantity, 0));
   return entries.map(([key, group]) => {
-    const enablerCards = lines.filter((line) => isEnabler(cards.get(line.name), group.requirement));
+    // The card bearing Imbue is paid from Material/reserve, not revealed from the shuffled Main
+    // deck. Even when another copy happens to appear in a line list, it cannot pay its own
+    // requirement; only other Main-deck cards are eligible reveals.
+    const payoffNames = new Set(group.payoffs.map((line) => line.name));
+    const enablerCards = mainLines.filter((line) => !payoffNames.has(line.name) && isEnabler(cards.get(line.name), group.requirement));
     const enablerCopies = enablerCards.reduce((sum, line) => sum + line.quantity, 0);
     const checkpoints = CHECKPOINTS.map((point) => ({ ...point, probability: probabilityAtLeast(deckSize, enablerCopies, point.seen, group.requirement.required) }));
     const curve: ReadinessCurvePoint[] = Array.from({ length: Math.min(deckSize, CURVE_MAX_SEEN) }, (_, i) => {
@@ -147,12 +154,12 @@ export function computeSynergyReadiness(lines: SynergyLine[], cards: Map<string,
       return { seen, probability: probabilityAtLeast(deckSize, enablerCopies, seen, group.requirement.required) };
     });
     const probabilityByTen = checkpoints[1].probability;
-    const competingPayoffCopies = entries.reduce((sum, [otherKey, other]) => otherKey === key ? sum : sum + (lines.some((line) => isEnabler(cards.get(line.name), group.requirement) && isEnabler(cards.get(line.name), other.requirement)) ? other.payoffs.reduce((n, payoff) => n + payoff.quantity, 0) : 0), 0);
+    const competingPayoffCopies = entries.reduce((sum, [otherKey, other]) => otherKey === key ? sum : sum + (mainLines.some((line) => isEnabler(cards.get(line.name), group.requirement) && isEnabler(cards.get(line.name), other.requirement)) ? other.payoffs.reduce((n, payoff) => n + payoff.quantity, 0) : 0), 0);
     return { key, label: group.requirement.label, required: group.requirement.required, payoffCards: group.payoffs,
       payoffCopies: group.payoffs.reduce((sum, payoff) => sum + payoff.quantity, 0), enablerCards, enablerCopies, deckSize, checkpoints, curve,
       probabilityByTen, targetEnablers: targetFor(deckSize, 10, group.requirement.required), status: readinessStatus(probabilityByTen),
       confidence: group.requirement.confidence, note: group.requirement.note, competingPayoffCopies,
-      recommendations: probabilityByTen < 0.8 ? candidates(catalogArray, lines, identity, (card) => isEnabler(card, group.requirement), preferred) : [] };
+      recommendations: probabilityByTen < 0.8 ? candidates(catalogArray, mainLines, identity, (card) => isEnabler(card, group.requirement), preferred) : [] };
   }).sort((a, b) => a.probabilityByTen - b.probabilityByTen);
 }
 
