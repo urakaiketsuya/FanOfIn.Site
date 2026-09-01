@@ -45,13 +45,13 @@ export default function CardDiscoveryIndex() {
   return <div className="mx-auto max-w-3xl px-4 py-8">
     <PageHeader
       title="Find new cards"
-      description="Browse cards from the newest release that have a designed connection to your chosen identity or the cards you care about. These are structural matches, not invented performance scores."
+      description="Browse cards from the newest release that connect to your Champion, optional Spirit, or cards you already play. These are structural matches, not invented performance scores."
       actions={<Link to="/deck-builder" className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm font-semibold text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue">Build a deck →</Link>}
     />
 
     <section className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4" aria-labelledby="discovery-context">
       <h2 id="discovery-context" className="font-semibold text-ctp-text">What should we match against?</h2>
-      <p className="mt-1 text-sm text-ctp-subtext1">Choose an identity, then add any key cards whose support you want to explore.</p>
+      <p className="mt-1 text-sm text-ctp-subtext1">Choose a Champion, optionally narrow it to a Spirit, then add any key cards whose support you want to explore.</p>
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         <label className="text-sm text-ctp-subtext1">Champion
           <select value={championName} onChange={(event) => { setChampionName(event.target.value); setSpiritName(""); }} className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-ctp-text">
@@ -79,7 +79,7 @@ export default function CardDiscoveryIndex() {
 
     {!championName && <p className="mt-6 text-ctp-subtext1">Choose a Champion to start discovering cards.</p>}
     {championName && <section className="mt-6" aria-live="polite">
-      <div className="flex flex-wrap items-baseline justify-between gap-2"><h2 className="text-lg font-semibold text-ctp-text">New cards worth a look</h2><Link to={builderLink} className="text-sm font-semibold text-ctp-blue hover:underline">Build around this identity →</Link></div>
+      <div className="flex flex-wrap items-baseline justify-between gap-2"><h2 className="text-lg font-semibold text-ctp-text">New cards worth a look</h2><Link to={builderLink} className="text-sm font-semibold text-ctp-blue hover:underline">Build around this Champion →</Link></div>
       <p className="mt-1 text-sm text-ctp-subtext1">Matches are limited to the newest released set and must connect through a shared token, subtype, Empower, or named reference.</p>
       {discoveries.length === 0 ? <p className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-4 py-3 text-sm text-ctp-subtext1">No designed connections found yet. Add a card you already play to make this lens more specific.</p> : <div className="mt-4 space-y-3">{discoveries.map(({ card, combos, setName, releaseDate }) => <article key={card.uuid} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
         <div className="flex flex-wrap items-center gap-2"><CardHoverPreview image={card.editions[0]?.image} alt={card.name}><Link to={`/cards/${card.slug}`} className="font-semibold text-ctp-text hover:text-ctp-blue">{card.name}</Link></CardHoverPreview><span className="text-xs text-ctp-subtext0">{setName} · {releaseDate}</span></div>

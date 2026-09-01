@@ -55,8 +55,8 @@ type LockedSection = "main" | "material" | "sideboard";
 type BuilderIntent = "seed" | "scratch";
 
 const BUILDER_INTENTS: { key: BuilderIntent; title: string; description: string }[] = [
-  { key: "seed", title: "Build around cards", description: "Choose your identity, lock the cards you care about, and fill the rest." },
-  { key: "scratch", title: "Start from scratch", description: "Choose an identity and optimize a full suggested list." },
+  { key: "seed", title: "Build around cards", description: "Choose a Champion and Spirit, lock the cards you care about, and fill the rest." },
+  { key: "scratch", title: "Start from scratch", description: "Choose a Champion and Spirit, then optimize a full suggested list." },
 ];
 
 interface ArchetypeTuningOption {
@@ -2559,7 +2559,7 @@ export default function DeckBuilderIndex() {
         <div className="mt-3 grid gap-3 sm:grid-cols-3">
           <Link to="/card-discovery" className="rounded-lg border border-ctp-surface1 bg-ctp-base p-3 text-left transition-colors hover:border-ctp-blue/60">
             <span className="text-sm font-semibold text-ctp-text">Find new cards</span>
-            <span className="mt-1 block text-xs leading-5 text-ctp-subtext1">Explore new-release cards that connect to an identity or cards you already play.</span>
+            <span className="mt-1 block text-xs leading-5 text-ctp-subtext1">Explore new-release cards that connect to a Champion, Spirit, or cards you already play.</span>
           </Link>
           {BUILDER_INTENTS.map((intent) => <button
             key={intent.key}
