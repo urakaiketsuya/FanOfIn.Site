@@ -52,10 +52,9 @@ type BuilderTab = "build" | "review" | "stats" | "tools" | "buddies" | "copy" | 
 const TAB_KEYS: BuilderTab[] = ["build", "review", "stats", "tools", "buddies", "copy", "log"];
 
 type LockedSection = "main" | "material" | "sideboard";
-type BuilderIntent = "discover" | "seed" | "scratch";
+type BuilderIntent = "seed" | "scratch";
 
 const BUILDER_INTENTS: { key: BuilderIntent; title: string; description: string }[] = [
-  { key: "discover", title: "Find new cards", description: "See recent cards that connect to your deck's game plan." },
   { key: "seed", title: "Build around cards", description: "Choose your identity, lock the cards you care about, and fill the rest." },
   { key: "scratch", title: "Start from scratch", description: "Choose an identity and optimize a full suggested list." },
 ];
@@ -1314,8 +1313,17 @@ function ToolsPanel({
         </div>
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2">
+      <div className="mt-4 flex flex-col items-start gap-3">
         <span className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Data source</span>
+        <p className="text-xs text-ctp-subtext0 max-w-xs">
+          {populationSource === "tournament"
+            ? "Real tournament win-rate data. Most reliable for meta analysis."
+            : populationSource === "balanced"
+              ? "Tournament win rates nudged by community popularity. Good all-rounder."
+              : populationSource === "community"
+                ? "Community popularity (Shout At Your Decks). No win/loss data, just play frequency."
+                : "Simulator (Experimental). Community-built legal shell with card-level evidence."}
+        </p>
         <div role="group" aria-label="Data source" className="inline-flex max-w-full flex-wrap rounded-md border border-ctp-surface1 bg-ctp-base p-0.5">
           <button
             type="button"
@@ -1595,7 +1603,7 @@ export default function DeckBuilderIndex() {
   const improveDeckId = searchParams.get("improveDeck");
   const isImproving = Boolean(improveDeckId);
   const intentParam = searchParams.get("intent");
-  const builderIntent: BuilderIntent | null = intentParam === "discover" || intentParam === "seed" || intentParam === "scratch" ? intentParam : null;
+  const builderIntent: BuilderIntent | null = intentParam === "seed" || intentParam === "scratch" ? intentParam : null;
   const [deckFormat, setDeckFormat] = useState<DeckFormat>(() => searchParams.get("format")?.toUpperCase() === "PANTHEON" ? "PANTHEON" : "STANDARD");
   // Computed fresh each render (cheap — parsing a couple of query params), but only its value on
   // the very first render actually matters: every useState below that reads from it only consults
@@ -1663,10 +1671,9 @@ export default function DeckBuilderIndex() {
   function chooseIntent(intent: BuilderIntent) {
     const next = new URLSearchParams(searchParams);
     next.set("intent", intent);
-    if (intent === "discover") next.set("tab", "stats");
-    else next.set("tab", "build");
+    next.set("tab", "build");
     setSearchParams(next, { replace: true });
-    setTab(intent === "discover" ? "stats" : "build");
+    setTab("build");
   }
 
   const popularityIndexData = useDeckPopularityIndexData();
@@ -2551,6 +2558,10 @@ export default function DeckBuilderIndex() {
           <Link to="/my-decks" className="text-sm text-ctp-blue hover:underline">Improve a saved deck →</Link>
         </div>
         <div className="mt-3 grid gap-3 sm:grid-cols-3">
+          <Link to="/card-discovery" className="rounded-lg border border-ctp-surface1 bg-ctp-base p-3 text-left transition-colors hover:border-ctp-blue/60">
+            <span className="text-sm font-semibold text-ctp-text">Find new cards</span>
+            <span className="mt-1 block text-xs leading-5 text-ctp-subtext1">Explore new-release cards that connect to an identity or cards you already play.</span>
+          </Link>
           {BUILDER_INTENTS.map((intent) => <button
             key={intent.key}
             type="button"
@@ -2562,7 +2573,6 @@ export default function DeckBuilderIndex() {
             <span className="mt-1 block text-xs leading-5 text-ctp-subtext1">{intent.description}</span>
           </button>)}
         </div>
-        {builderIntent === "discover" && <p className="mt-3 rounded-md border border-ctp-mauve/40 bg-ctp-mauve/10 px-3 py-2 text-xs text-ctp-subtext1">Choose your Champion and Spirit below. The <span className="font-medium text-ctp-text">Stats</span> tab will surface newest-set cards with a direct synergy to your resulting deck; they are shown separately until enough match data exists.</p>}
         {builderIntent === "seed" && <p className="mt-3 rounded-md border border-ctp-green/40 bg-ctp-green/10 px-3 py-2 text-xs text-ctp-subtext1">Choose your Champion and Spirit, then add the cards you already want to play. They stay locked while recommendations fill the remaining slots.</p>}
         {builderIntent === "scratch" && <p className="mt-3 rounded-md border border-ctp-blue/40 bg-ctp-blue/10 px-3 py-2 text-xs text-ctp-subtext1">Choose a Champion, Element, and Spirit to generate an evidence-backed shell. Use the Review tab to decide which changes to keep.</p>}
       </section>}
@@ -2837,7 +2847,7 @@ export default function DeckBuilderIndex() {
             <div className="mb-4 rounded-lg border border-ctp-mauve/50 bg-ctp-mauve/10 px-3 py-2 text-xs text-ctp-subtext1">
               <span className="font-medium">New cards available</span>
               <span className="ml-auto">({newReleaseCards.length} new cards from recent sets)</span>
-              <button type="button" onClick={() => setTab("stats")} className="ml-3 text-ctp-mauve hover:underline">See why →</button>
+              <Link to="/card-discovery" className="ml-3 text-ctp-mauve hover:underline">Explore new cards →</Link>
             </div>
           )}
           {tab === "build" && (
