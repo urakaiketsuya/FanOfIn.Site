@@ -11,6 +11,12 @@ export interface MinedPackageCandidate {
   championCoverage: number;
   strongestChampions: { championName: string; matchingDecks: number; confidence: number; lift: number }[];
   evidenceKinds: string[];
+  archetypeSources?: {
+    buildId: string;
+    buildName: string;
+    prevalence: number;
+    sectionPattern: "Main → Main" | "Main → Material" | "Material → Material";
+  }[];
   confidenceScore: number;
   cautions: string[];
 }

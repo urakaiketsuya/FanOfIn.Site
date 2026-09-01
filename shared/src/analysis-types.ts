@@ -545,7 +545,7 @@ export interface ArchetypeCluster {
   deckCount: number;
   playerCount: number;
   eventCount: number;
-  /** Established clusters have at least 20 players across at least 2 events; smaller published clusters are emerging signals. */
+  /** Established clusters have at least the configured independent-player floor across at least 2 events; smaller published clusters are emerging signals. */
   confidence: "established" | "emerging";
   avgWinRate: number;
   /** 95% Wilson interval over the cluster's recorded match outcomes; ties count as half a win. */
@@ -556,6 +556,14 @@ export interface ArchetypeCluster {
   definingCards: { name: string; prevalence: number }[];
   /** Main-deck-only defining cards used to assign this build to a broader strategy archetype. */
   mainDefiningCards: { name: string; prevalence: number }[];
+  /** Material cards common to this exact build path. Includes Champion/Spirit identity cards. */
+  materialDefiningCards: { name: string; prevalence: number }[];
+  /** Average copies per sighting for every main-deck card in this cluster. Used to explain clustering and compare builds without downloading the full deck-card index. */
+  mainDeckAverageCards: { name: string; quantity: number }[];
+  /** Average copies per sighting for every material-deck card in this cluster. */
+  materialDeckAverageCards: { name: string; quantity: number }[];
+  /** Parent material progression shared across Spirits (for example, Lorraine, Crux Knight). */
+  materialArchetypeId: string;
   /** Parent strategy archetype derived from shared main-deck engines/win conditions. */
   strategyArchetypeId: string;
   /** Every member deck's id, joinable against DeckSightingsData — same pattern as PopularDeck.deckIds. */
@@ -575,6 +583,27 @@ export interface ArchetypeCluster {
   avgPrice: number | null;
   minPrice: number | null;
   maxPrice: number | null;
+}
+
+/** Main-deck centroid similarity required for the conservative near-duplicate build repair pass. */
+export const ARCHETYPE_NEAR_DUPLICATE_THRESHOLD = 0.85;
+
+/** A Champion progression/material route above Spirit variants and concrete main-deck builds. */
+export interface MaterialArchetype {
+  id: string;
+  /** Human-readable route name, normally the highest-level Champion printing. */
+  name: string;
+  championName: string;
+  buildIds: string[];
+  deckIds: string[];
+  /** Spirits observed inside this route, aggregated independently of exact build clustering. */
+  spiritBreakdown: { name: string; deckCount: number; playerCount: number }[];
+  definingCards: { name: string; prevalence: number }[];
+  deckCount: number;
+  playerCount: number;
+  eventCount: number;
+  avgWinRate: number;
+  confidence: "established" | "emerging";
 }
 
 /** A strategy family above one or more concrete build clusters. */
@@ -613,6 +642,8 @@ export interface ArchetypeClusterTrend {
 export interface ArchetypeTaxonomyData {
   generatedAt: string;
   clusters: ArchetypeCluster[];
+  /** Material progression families; these deliberately merge across Spirit choices. */
+  materialArchetypes: MaterialArchetype[];
   /** Package-level strategy families; `clusters` remain the concrete builds within them. */
   strategyArchetypes: StrategyArchetype[];
   /** Coverage of all visible deck sightings by a published cluster, including attached singleton variants. */

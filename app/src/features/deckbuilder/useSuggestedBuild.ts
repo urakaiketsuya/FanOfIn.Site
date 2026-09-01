@@ -400,6 +400,9 @@ export function useSuggestedBuild(
    * explicit locked cards remain the user's authority. */
   collectionOwnedByName?: Map<string, number>,
   collectionMode: "all" | "prioritize" | "owned-only" = "all",
+  /** Maximum Champion level to propose. The user can deliberately build at a lower level instead
+   * of having every observed level silently reinserted by the recommendation population. */
+  championLevelCap: number | null = null,
 ): SuggestedBuild {
   const cardCatalog = useCardCatalog();
   const settledCardCatalog = useDebouncedValue(cardCatalog, CATALOG_SETTLE_MS);
@@ -667,8 +670,13 @@ export function useSuggestedBuild(
       }
     }
     for (const [level, counts] of Array.from(championCardsByLevel.entries()).sort((a, b) => a[0] - b[0])) {
+      if (championLevelCap !== null && level > championLevelCap) continue;
       if (lockedLevels.has(level)) continue;
-      const names = Array.from(counts.keys());
+      // Removing an inferred Champion print is a real choice. Previously it only put the card
+      // into `rejectedCards`, but this structural fill ignored that set and restored it every
+      // render, making the Remove button look broken.
+      const names = Array.from(counts.keys()).filter((name) => !rejectedCards.has(name));
+      if (names.length === 0) continue;
       // Prefer the highest-lift print if any candidate at this level cleared the sample bar; a
       // near-universally-run print (most decks include all their Champion's level prints) usually
       // won't, since its "without" bucket is too thin — same "excludes defining/staple cards"
@@ -876,5 +884,5 @@ export function useSuggestedBuild(
       },
       loading: false,
     };
-  }, [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName, lockedSections, quantityBucketsByName, championCardOverride, pillarBias, communityInclusion, decayingCards, archetypePrevalence, collectionOwnedByName, collectionMode]);
+  }, [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName, lockedSections, quantityBucketsByName, championCardOverride, pillarBias, communityInclusion, decayingCards, archetypePrevalence, collectionOwnedByName, collectionMode, championLevelCap]);
 }

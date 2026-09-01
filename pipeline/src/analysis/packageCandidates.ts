@@ -1,4 +1,11 @@
-import { decodeCardLines, type DeckCardIndexEntry } from "@gatcg/shared";
+import { decodeCardLines, type ArchetypeCluster, type DeckCardIndexEntry } from "@gatcg/shared";
+
+export interface ArchetypePackageSource {
+  buildId: string;
+  buildName: string;
+  prevalence: number;
+  sectionPattern: "Main → Main" | "Main → Material" | "Material → Material";
+}
 
 export interface PackageCandidateEvidence {
   anchorCard: string;
@@ -13,6 +20,7 @@ export interface PackageCandidateEvidence {
   championCoverage: number;
   strongestChampions: { championName: string; matchingDecks: number; confidence: number; lift: number }[];
   evidenceKinds: string[];
+  archetypeSources?: ArchetypePackageSource[];
   confidenceScore: number;
   cautions: string[];
 }
@@ -39,6 +47,7 @@ export interface PackageCandidateSeed {
   memberCards: string[];
   evidenceKinds: string[];
   anchorIsChampion?: boolean;
+  archetypeSources?: ArchetypePackageSource[];
 }
 
 interface DeckPresence {
@@ -47,6 +56,67 @@ interface DeckPresence {
 }
 
 const ratio = (a: number, b: number) => (b > 0 ? a / b : 0);
+
+/**
+ * Nominates pairs that repeatedly define concrete builds. Defining-card selection has already
+ * removed globally ubiquitous cards, so this is substantially less noisy than mining every pair
+ * in every deck. A pair must occur in two builds in the same strategy family, or in one very
+ * well-established (200-player) build, before it reaches the more expensive deck-level scorer.
+ */
+export function archetypeOverlapSeeds(clusters: ArchetypeCluster[]): PackageCandidateSeed[] {
+  type Accumulator = { anchorCard: string; memberCard: string; strategyIds: Set<string>; sources: ArchetypePackageSource[] };
+  const pairs = new Map<string, Accumulator>();
+  const clusterById = new Map(clusters.map((cluster) => [cluster.id, cluster]));
+
+  for (const cluster of clusters) {
+    const cards = [
+      ...cluster.mainDefiningCards.slice(0, 6).map((card) => ({ ...card, section: "Main" as const })),
+      ...cluster.materialDefiningCards.slice(0, 5).map((card) => ({ ...card, section: "Material" as const })),
+    ];
+    for (let i = 0; i < cards.length; i++) {
+      for (let j = i + 1; j < cards.length; j++) {
+        const [left, right] = [cards[i], cards[j]].sort((a, b) => a.name.localeCompare(b.name));
+        if (left.name === right.name) continue;
+        const key = `${left.name}\u0000${right.name}`;
+        const entry = pairs.get(key) ?? { anchorCard: left.name, memberCard: right.name, strategyIds: new Set<string>(), sources: [] };
+        entry.strategyIds.add(cluster.strategyArchetypeId);
+        const sectionPattern = left.section === right.section
+          ? `${left.section} → ${right.section}` as ArchetypePackageSource["sectionPattern"]
+          : "Main → Material";
+        entry.sources.push({
+          buildId: cluster.id,
+          buildName: cluster.name,
+          prevalence: Math.min(left.prevalence, right.prevalence),
+          sectionPattern,
+        });
+        pairs.set(key, entry);
+      }
+    }
+  }
+
+  return [...pairs.values()].flatMap((entry) => {
+    const sources = entry.sources
+      .sort((a, b) => b.prevalence - a.prevalence || a.buildName.localeCompare(b.buildName));
+    const sourceBuildIds = new Set(sources.map((source) => source.buildId));
+    const sourceStrategies = new Map<string, Set<string>>();
+    for (const buildId of sourceBuildIds) {
+      const cluster = clusterById.get(buildId);
+      if (!cluster) continue;
+      const ids = sourceStrategies.get(cluster.strategyArchetypeId) ?? new Set<string>();
+      ids.add(buildId);
+      sourceStrategies.set(cluster.strategyArchetypeId, ids);
+    }
+    const qualifiesFromMultipleRelatedBuilds = [...sourceStrategies.values()].some((ids) => ids.size >= 2);
+    const qualifiesFromLargeBuild = sources.some((source) => (clusterById.get(source.buildId)?.playerCount ?? 0) >= 200);
+    if (!qualifiesFromMultipleRelatedBuilds && !qualifiesFromLargeBuild) return [];
+    return [{
+      anchorCard: entry.anchorCard,
+      memberCards: [entry.memberCard],
+      evidenceKinds: ["Archetype defining-card overlap"],
+      archetypeSources: sources.slice(0, 6),
+    }];
+  });
+}
 
 /**
  * Scores semantically nominated relationships against champion-stratified deck data. Semantic
@@ -131,6 +201,9 @@ export function computePackageCandidates(
 
   const sorted = candidates.sort((a, b) => b.confidenceScore - a.confidenceScore);
   const named = sorted.filter((candidate) => candidate.evidenceKinds.includes("Named rules-text link"));
+  const archetypeOverlap = sorted
+    .filter((candidate) => candidate.evidenceKinds.includes("Archetype defining-card overlap") && candidate.confidenceScore >= 40)
+    .slice(0, 80);
   const bestSubtypeCluster = new Map<string, PackageCandidateEvidence>();
   for (const candidate of sorted) {
     if (candidate.memberCards.length < 2 || candidate.evidenceKinds.includes("Named rules-text link")) continue;
@@ -142,7 +215,7 @@ export function computePackageCandidates(
   // be revisited without making the UI unusable.
   const subtypeClusters = [...bestSubtypeCluster.values()].filter((candidate) => candidate.confidenceScore >= 40).slice(0, 40);
   const deduped = new Map<string, PackageCandidateEvidence>();
-  for (const candidate of [...named, ...subtypeClusters]) {
+  for (const candidate of [...named, ...subtypeClusters, ...archetypeOverlap]) {
     const key = [candidate.anchorCard, ...candidate.memberCards].sort().join("\u0000");
     if (!deduped.has(key)) deduped.set(key, candidate);
   }

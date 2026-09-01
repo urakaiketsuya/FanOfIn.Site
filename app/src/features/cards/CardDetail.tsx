@@ -23,7 +23,9 @@ import { useCardSynergy } from "./useCardSynergy";
 import { useSimilarCards } from "./useSimilarCards";
 import { earliestReleaseDate, statDiff } from "../../lib/cardSimilarity";
 import { useIntentCards } from "./useIntentCards";
+import type { IntentMatch } from "../../lib/cardIntent";
 import { getCardPackageMembership } from "../deckbuilder/packageGuardrails";
+import { useMinedPackageCandidates, type MinedPackageCandidate } from "../deckbuilder/useMinedPackageCandidates";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CardComparisonTable from "../compare/CardComparisonTable";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -93,6 +95,52 @@ function Badge({ children, to }: { children: ReactNode; to?: string }) {
     );
   }
   return <span className={BADGE_CLASS}>{children}</span>;
+}
+
+/** One Intent Cards list row. `evidence`, when present, is a real package-candidate record (scored
+ * against actual deck data) for this exact pair — corroboration for a text-detected relationship,
+ * not just another guess. `evidence.archetypeSources` ties it to a specific concrete build when the
+ * evidence came from archetype defining-card overlap, giving the match real archetype scope instead
+ * of an unscoped "somewhere in the whole catalog" match. */
+function IntentMatchRow({ match, evidence }: { match: IntentMatch; evidence: MinedPackageCandidate | undefined }) {
+  const archetype = evidence?.archetypeSources?.[0];
+  return (
+    <li className="flex flex-wrap items-center gap-1.5 text-sm">
+      <CardHoverPreview image={match.card.editions[0]?.image} alt={match.card.name}>
+        <Link to={`/cards/${match.card.slug}`} className="text-ctp-text hover:text-ctp-blue">
+          {match.card.name}
+        </Link>
+      </CardHoverPreview>
+      <span className="rounded-full border border-ctp-mauve/50 bg-ctp-mauve/10 px-1.5 text-[10px] font-medium text-ctp-mauve">
+        combo: {match.via}
+      </span>
+      {match.tier === "experimental" && (
+        <span
+          className="rounded-full border border-ctp-yellow px-1.5 text-[10px] text-ctp-yellow"
+          title="Broader trigger, not yet checked against the full card corpus"
+        >
+          experimental
+        </span>
+      )}
+      {evidence && (
+        <span
+          className="rounded-full border border-ctp-green/50 bg-ctp-green/10 px-1.5 text-[10px] font-medium text-ctp-green"
+          title={`Also found together in ${evidence.matchingDecks} real tournament decks (${Math.round(evidence.confidence * 100)}% confidence)`}
+        >
+          {evidence.matchingDecks} decks
+        </span>
+      )}
+      {archetype && (
+        <Link
+          to={`/archetypes/${archetype.buildId}`}
+          className="rounded-full border border-ctp-blue/50 bg-ctp-blue/10 px-1.5 text-[10px] font-medium text-ctp-blue hover:bg-ctp-blue/20"
+          title={`Seen together in the ${archetype.buildName} build`}
+        >
+          {archetype.buildName}
+        </Link>
+      )}
+    </li>
+  );
 }
 
 function Stat({ label, value, icon }: { label: string; value: number | string | null; icon?: ReactNode }) {
@@ -205,6 +253,24 @@ export default function CardDetail() {
   );
   const experimentalIntentCount =
     intent.feeds.filter((m) => m.tier === "experimental").length + intent.poweredBy.filter((m) => m.tier === "experimental").length;
+
+  // Real-deck corroboration for Intent Cards matches: package-candidate mining scores the exact
+  // same kind of relationship against actual deck data, and (via `archetypeSources`) ties some of
+  // it to specific concrete builds. Only pair-level candidates (memberCards.length === 1) apply
+  // here — a multi-card family candidate doesn't confirm any one pair by itself.
+  const minedPackages = useMinedPackageCandidates();
+  const packageEvidenceByPair = useMemo(() => {
+    const map = new Map<string, MinedPackageCandidate>();
+    for (const candidate of minedPackages?.candidates ?? []) {
+      if (candidate.memberCards.length !== 1) continue;
+      const key = [candidate.anchorCard, candidate.memberCards[0]].sort().join("\u0000");
+      const existing = map.get(key);
+      if (!existing || candidate.confidenceScore > existing.confidenceScore) map.set(key, candidate);
+    }
+    return map;
+  }, [minedPackages]);
+  const intentPackageEvidence = (otherCardName: string): MinedPackageCandidate | undefined =>
+    card ? packageEvidenceByPair.get([card.name, otherCardName].sort().join("\u0000")) : undefined;
 
   const topDecks = useMemo(() => {
     if (!popularityIndexData) return [];
@@ -715,9 +781,11 @@ export default function CardDetail() {
           <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Intent cards</h2>
           <p className="mt-1 text-xs text-ctp-subtext0">
             Cards designed to work with {card.name} — a shared token economy (e.g. summons/sacrifices a Powercell), a
-            tribal category {card.name} either belongs to or explicitly references as a cost or condition, or
-            Empower feeding a Spell that deals damage scaled by your champion's level. Most cards aren't part of one
-            of these — an empty list here is normal, not a sign anything's broken.
+            tribal category {card.name} either belongs to or explicitly references as a cost or condition, Empower
+            feeding a Spell that deals damage scaled by your champion's level, or an explicit named reference to
+            another card's text. Most cards aren't part of one of these — an empty list here is normal, not a sign
+            anything's broken. A green deck count means the pairing is also confirmed by real tournament decks, not
+            just text; a blue tag names the specific archetype build that evidence came from.
           </p>
 
           {cardPackages.length > 0 && (
@@ -751,7 +819,7 @@ export default function CardDetail() {
 
           {visibleIntentFeeds.length === 0 && visibleIntentPoweredBy.length === 0 ? (
             <p className="mt-4 text-sm text-ctp-subtext1">
-              No text-detected token or tribal relationship for {card.name} yet.
+              No text-detected token, tribal, Empower, or named-reference relationship for {card.name} yet.
             </p>
           ) : (
             <div className="mt-3 grid gap-6 sm:grid-cols-2">
@@ -762,24 +830,7 @@ export default function CardDetail() {
                   </h3>
                   <ul className="mt-2 space-y-1">
                     {visibleIntentFeeds.map((m) => (
-                      <li key={`${m.card.uuid}-${m.via}`} className="flex flex-wrap items-center gap-1.5 text-sm">
-                        <CardHoverPreview image={m.card.editions[0]?.image} alt={m.card.name}>
-                          <Link to={`/cards/${m.card.slug}`} className="text-ctp-text hover:text-ctp-blue">
-                            {m.card.name}
-                          </Link>
-                        </CardHoverPreview>
-                        <span className="rounded-full border border-ctp-mauve/50 bg-ctp-mauve/10 px-1.5 text-[10px] font-medium text-ctp-mauve">
-                          combo: {m.via}
-                        </span>
-                        {m.tier === "experimental" && (
-                          <span
-                            className="rounded-full border border-ctp-yellow px-1.5 text-[10px] text-ctp-yellow"
-                            title="Broader trigger, not yet checked against the full card corpus"
-                          >
-                            experimental
-                          </span>
-                        )}
-                      </li>
+                      <IntentMatchRow key={`${m.card.uuid}-${m.via}`} match={m} evidence={intentPackageEvidence(m.card.name)} />
                     ))}
                   </ul>
                 </div>
@@ -791,24 +842,7 @@ export default function CardDetail() {
                   </h3>
                   <ul className="mt-2 space-y-1">
                     {visibleIntentPoweredBy.map((m) => (
-                      <li key={`${m.card.uuid}-${m.via}`} className="flex flex-wrap items-center gap-1.5 text-sm">
-                        <CardHoverPreview image={m.card.editions[0]?.image} alt={m.card.name}>
-                          <Link to={`/cards/${m.card.slug}`} className="text-ctp-text hover:text-ctp-blue">
-                            {m.card.name}
-                          </Link>
-                        </CardHoverPreview>
-                        <span className="rounded-full border border-ctp-mauve/50 bg-ctp-mauve/10 px-1.5 text-[10px] font-medium text-ctp-mauve">
-                          combo: {m.via}
-                        </span>
-                        {m.tier === "experimental" && (
-                          <span
-                            className="rounded-full border border-ctp-yellow px-1.5 text-[10px] text-ctp-yellow"
-                            title="Broader trigger, not yet checked against the full card corpus"
-                          >
-                            experimental
-                          </span>
-                        )}
-                      </li>
+                      <IntentMatchRow key={`${m.card.uuid}-${m.via}`} match={m} evidence={intentPackageEvidence(m.card.name)} />
                     ))}
                   </ul>
                 </div>

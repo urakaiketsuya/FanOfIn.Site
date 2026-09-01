@@ -56,6 +56,8 @@ type LockedSection = "main" | "material" | "sideboard";
 interface ArchetypeTuningOption {
   id: string;
   name: string;
+  routeName: string;
+  routeDeckCount: number;
   deckCount: number;
   confidence: "established" | "emerging";
 }
@@ -1170,6 +1172,8 @@ function ToolsPanel({
   archetypeId,
   archetypeOptions,
   onArchetypeChange,
+  championLevelCap,
+  onChampionLevelCapChange,
   validation,
   unresolvedMain,
   deckFormat,
@@ -1185,6 +1189,8 @@ function ToolsPanel({
   archetypeId: string | null;
   archetypeOptions: ArchetypeTuningOption[];
   onArchetypeChange: (archetypeId: string | null) => void;
+  championLevelCap: number | null;
+  onChampionLevelCapChange: (cap: number | null) => void;
   validation: DeckValidationResult;
   unresolvedMain: number;
   deckFormat: DeckFormat;
@@ -1252,7 +1258,7 @@ function ToolsPanel({
         </div>
         <div className="mt-4 border-t border-ctp-surface1 pt-3">
           <label htmlFor="archetype-inspiration" className="text-xs font-semibold text-ctp-subtext1">
-            Archetype inspiration
+            Build path
           </label>
           <select
             id="archetype-inspiration"
@@ -1261,10 +1267,10 @@ function ToolsPanel({
             disabled={deckFormat !== "STANDARD" || archetypeOptions.length === 0}
             className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1.5 text-xs text-ctp-text disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <option value="">None — use the full evidence ranking</option>
+            <option value="">None — use the full Champion/Spirit evidence</option>
             {archetypeOptions.map((option) => (
               <option key={option.id} value={option.id}>
-                {option.name} · {option.deckCount} decks{option.confidence === "emerging" ? " · Emerging" : ""}
+                {option.routeName} → {option.name} · {option.deckCount} build decks / {option.routeDeckCount} route appearances{option.confidence === "emerging" ? " · Emerging" : ""}
               </option>
             ))}
           </select>
@@ -1273,8 +1279,23 @@ function ToolsPanel({
               ? "Archetype taxonomy is based on Standard tournament decklists."
               : populationSource === "community" || populationSource === "simulator"
                 ? "Your choice is saved, but only affects Tournament and Balanced suggestions."
-                : "Gently favors this build's defining cards without narrowing the deck sample or overriding win-rate evidence."}
+                : "Uses this build path's real deck sample, then ranks cards by its win-rate evidence. Your Spirit selection still remains a hard boundary."}
           </p>
+        </div>
+        <div className="mt-4 border-t border-ctp-surface1 pt-3">
+          <label htmlFor="champion-level-cap" className="text-xs font-semibold text-ctp-subtext1">Champion progression</label>
+          <select
+            id="champion-level-cap"
+            value={championLevelCap ?? ""}
+            onChange={(e) => onChampionLevelCapChange(e.target.value ? Number(e.target.value) : null)}
+            className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1.5 text-xs text-ctp-text"
+          >
+            <option value="">Auto — use this evidence pool&apos;s common progression</option>
+            <option value="1">Level 1 only</option>
+            <option value="2">Up to Level 2</option>
+            <option value="3">Up to Level 3</option>
+          </select>
+          <p className="mt-1 text-[11px] text-ctp-subtext0">This controls which Champion levels are proposed. Remove a proposed print to reject that specific version; choose a lower cap to omit higher levels entirely.</p>
         </div>
       </div>
 
@@ -1591,6 +1612,7 @@ export default function DeckBuilderIndex() {
    * pillarBias doc comment) — null ("Balanced") reproduces the original unbiased lift-only order. */
   const [pillarBias, setPillarBias] = useState<RatingPillar | null>(sessionSeed?.pillarBias ?? null);
   const [archetypeId, setArchetypeId] = useState<string | null>(urlSeed?.archetypeId ?? sessionSeed?.archetypeId ?? null);
+  const [championLevelCap, setChampionLevelCap] = useState<number | null>(null);
   /** Tuning: swaps the assembled suggestions between real Omnidex win-rate data and Shout At Your
    * Decks' community popularity data — see useCommunitySuggestedBuild's own doc comment. Defaults
    * to "balanced" (real tournament lift, nudged by community popularity) — see PopulationSource. */
@@ -1659,12 +1681,17 @@ export default function DeckBuilderIndex() {
     if (!championName || !archetypeTaxonomyData) return [];
     return archetypeTaxonomyData.clusters
       .filter((cluster) => cluster.championName === championName || (cluster.championBreakdown ?? []).some((entry) => entry.championName === championName))
-      .map((cluster) => ({
-        id: cluster.id,
-        name: cluster.name,
-        deckCount: cluster.deckCount,
-        confidence: cluster.confidence ?? "established",
-      }))
+      .map((cluster) => {
+        const route = archetypeTaxonomyData.materialArchetypes?.find((candidate) => candidate.id === cluster.materialArchetypeId);
+        return {
+          id: cluster.id,
+          name: cluster.name,
+          routeName: route?.name ?? cluster.championName,
+          routeDeckCount: route?.deckCount ?? cluster.deckCount,
+          deckCount: cluster.deckCount,
+          confidence: cluster.confidence ?? "established",
+        };
+      })
       .sort((a, b) => Number(b.confidence === "established") - Number(a.confidence === "established") || b.deckCount - a.deckCount || a.name.localeCompare(b.name));
   }, [championName, archetypeTaxonomyData]);
   const selectedArchetype = useMemo(
@@ -1677,6 +1704,14 @@ export default function DeckBuilderIndex() {
     if (!selectedArchetype) return undefined;
     return new Map(selectedArchetype.definingCards.map((card) => [card.name, card.prevalence]));
   }, [selectedArchetype]);
+  // A selected build path is evidence, not merely decoration: keep the original Champion pool
+  // but use only the path's observed decks for tournament/balanced recommendations. A Spirit
+  // selection below further narrows that path, preventing a broad family from mixing Spirits.
+  const recommendationRows = useMemo(() => {
+    if (!selectedArchetype) return rows;
+    const deckIds = new Set(selectedArchetype.deckIds);
+    return rows.filter((row) => deckIds.has(row.deckId));
+  }, [rows, selectedArchetype]);
   // Similar real decks become useful only once the viewer has expressed enough intent through
   // locks. Keep the expensive all-deck decode off the default path until then.
   const showNearestDecks = lockedCards.size >= 2;
@@ -1687,7 +1722,7 @@ export default function DeckBuilderIndex() {
   // once a cross-Champion pool is in play: without it, the Champion-print anchor and granted
   // elements would be guessed from whichever Champion happens to be common in a borrowed
   // population, not the one the viewer actually picked.
-  const championCard = useMemo(() => findChampionCard(rows, lockedCards, catalogByName), [rows, lockedCards, catalogByName]);
+  const championCard = useMemo(() => findChampionCard(recommendationRows, lockedCards, catalogByName), [recommendationRows, lockedCards, catalogByName]);
   const spiritCardForIdentity = spiritFilter ? catalogByName.get(spiritFilter) : undefined;
   const identityElements = useMemo(
     () => computeIdentityElements(championCard, spiritCardForIdentity),
@@ -1720,8 +1755,8 @@ export default function DeckBuilderIndex() {
   // Computed here (rather than down with sortedSpirits/spiritStats below) so its top signals can
   // feed the "balanced" source's decay nudge right below — see DECAY_PENALTY_WEIGHT's doc comment.
   const decayReport = useMemo(
-    () => computeCardDecay(rows, spiritFilter, catalogByName),
-    [rows, spiritFilter, catalogByName],
+    () => computeCardDecay(recommendationRows, spiritFilter, catalogByName),
+    [recommendationRows, spiritFilter, catalogByName],
   );
   const decayingCardBoost = useMemo(
     () => (decayReport ? new Map(decayReport.signals.map((s) => [s.cardName, s.decay])) : undefined),
@@ -1729,7 +1764,7 @@ export default function DeckBuilderIndex() {
   );
 
   const tournamentBuild = useSuggestedBuild(
-    rows,
+    recommendationRows,
     spiritFilter,
     lockedCards,
     collectionRejectedCards,
@@ -1743,13 +1778,14 @@ export default function DeckBuilderIndex() {
     archetypePrevalence,
     collectionOwnedByName,
     collectionMode,
+    championLevelCap,
   );
   // Same real tournament ranking as tournamentBuild above, plus a community-popularity nudge and a
   // decay penalty — see COMMUNITY_BOOST_WEIGHT's and DECAY_PENALTY_WEIGHT's doc comments. Computed
   // unconditionally (same pattern as tournamentBuild/communityBuild/simulatorResult below) so
   // switching sources doesn't need a recompute.
   const balancedBuild = useSuggestedBuild(
-    rows,
+    recommendationRows,
     spiritFilter,
     lockedCards,
     collectionRejectedCards,
@@ -1763,6 +1799,7 @@ export default function DeckBuilderIndex() {
     archetypePrevalence,
     collectionOwnedByName,
     collectionMode,
+    championLevelCap,
   );
   const communityBuild = useCommunitySuggestedBuild(communityChampData, communityLockedCards, lockedSections, collectionRejectedCards, catalogByName, !communityCardInclusion, identityElements, deckFormat);
   const simulatorSummary = useSimulatorSummaryData();
@@ -2213,6 +2250,13 @@ export default function DeckBuilderIndex() {
       };
     }
     startTransition(() => setArchetypeId(archetype));
+  }
+
+  function changeChampionLevelCap(cap: number | null) {
+    if (cap !== championLevelCap) {
+      pendingActionRef.current = { label: cap === null ? "Restored automatic Champion progression" : `Set Champion progression through Level ${cap}`, subject: null };
+    }
+    startTransition(() => setChampionLevelCap(cap));
   }
 
   const mainTotal = build.main.reduce((sum, c) => sum + c.quantity, 0);
@@ -3081,6 +3125,8 @@ export default function DeckBuilderIndex() {
                 archetypeId={archetypeId}
                 archetypeOptions={archetypeOptions}
                 onArchetypeChange={changeArchetype}
+                championLevelCap={championLevelCap}
+                onChampionLevelCapChange={changeChampionLevelCap}
                 validation={validation}
                 unresolvedMain={build.unresolved.main}
                 deckFormat={deckFormat}

@@ -23,7 +23,7 @@ import { computeCardImpact } from "./cardImpact.js";
 import { computeMatchupCardImpact } from "./matchupCardImpact.js";
 import { computeAchievements } from "./achievements.js";
 import { createAnalysisContext } from "./context.js";
-import { computePackageCandidates, namedRulesTextSeeds, subtypeRulesTextSeeds } from "./packageCandidates.js";
+import { archetypeOverlapSeeds, computePackageCandidates, namedRulesTextSeeds, subtypeRulesTextSeeds } from "./packageCandidates.js";
 
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/analysis");
 const PRICES_PATH = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/prices.json");
@@ -232,7 +232,7 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
     deckCardIndex,
     deckCardIndexNames,
     new Map(deckSightings.flatMap((s) => s.championName ? [[s.deckId, s.championName] as const] : [])),
-    [...namedRulesTextSeeds(catalog), ...subtypeRulesTextSeeds(catalog)],
+    [...namedRulesTextSeeds(catalog), ...subtypeRulesTextSeeds(catalog), ...archetypeOverlapSeeds(archetypeTaxonomy.clusters)],
   );
   await writeFile(path.join(DATA_DIR, "package-candidates.json"), JSON.stringify(packageCandidates), "utf-8");
 

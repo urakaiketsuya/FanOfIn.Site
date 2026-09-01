@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildPackageCandidateFamilies, computePackageCandidates, namedRulesTextSeeds, subtypeRulesTextSeeds, type PackageCandidateEvidence } from "./packageCandidates.js";
+import { archetypeOverlapSeeds, buildPackageCandidateFamilies, computePackageCandidates, namedRulesTextSeeds, subtypeRulesTextSeeds, type PackageCandidateEvidence } from "./packageCandidates.js";
+import type { ArchetypeCluster } from "@gatcg/shared";
 
 test("champion-stratified package scoring reports lift and counter-evidence", () => {
   const names = ["Engine", "Target", "Staple"];
@@ -36,6 +37,32 @@ test("mechanically referenced subtypes nominate toolbox combinations", () => {
   ]);
   assert.equal(seeds.filter((seed) => seed.memberCards.length === 1).length, 3);
   assert.equal(seeds.filter((seed) => seed.memberCards.length === 2).length, 3);
+});
+
+test("defining-card overlap nominates pairs from related builds and records provenance", () => {
+  const cluster = (id: string, strategyArchetypeId: string, playerCount: number, cards: string[]): ArchetypeCluster => ({
+    id, strategyArchetypeId, playerCount, name: `Build ${id}`,
+    mainDefiningCards: cards.map((name) => ({ name, prevalence: 0.9 })),
+    materialDefiningCards: [],
+  } as unknown as ArchetypeCluster);
+  const seeds = archetypeOverlapSeeds([
+    cluster("a", "shared", 50, ["Engine", "Payoff"]),
+    cluster("b", "shared", 60, ["Engine", "Payoff"]),
+    cluster("c", "isolated", 50, ["Lone Engine", "Lone Payoff"]),
+  ]);
+  const shared = seeds.find((seed) => seed.anchorCard === "Engine" && seed.memberCards[0] === "Payoff");
+  assert.equal(shared?.archetypeSources?.length, 2);
+  assert.ok(shared?.evidenceKinds.includes("Archetype defining-card overlap"));
+  assert.ok(!seeds.some((seed) => seed.anchorCard === "Lone Engine"));
+});
+
+test("a large established build can nominate a defining-card package by itself", () => {
+  const seed = archetypeOverlapSeeds([{
+    id: "large", strategyArchetypeId: "solo", playerCount: 200, name: "Large Build",
+    mainDefiningCards: [{ name: "Engine", prevalence: 0.95 }, { name: "Payoff", prevalence: 0.85 }],
+    materialDefiningCards: [],
+  } as unknown as ArchetypeCluster]);
+  assert.equal(seed.length, 1);
 });
 
 test("overlapping candidates become a core-and-options family", () => {

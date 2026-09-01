@@ -63,9 +63,9 @@ export const config = {
   minBattleChartSampleSize: Number(process.env.GATCG_MIN_BATTLE_SAMPLE ?? 5),
 
   /**
-   * A discovered named build must have this many distinct players before it is published.
-   * This deliberately measures independent adoption rather than repeated sightings from a
-   * single player; it is separate from the battle-chart sample floor.
+   * A named build needs this many distinct players to be labelled established. Smaller recurring
+   * builds remain visible as emerging, so distinct material paths are not erased by a popularity
+   * floor. This deliberately measures independent adoption rather than repeated sightings.
    */
   minArchetypePlayers: Number(process.env.GATCG_MIN_ARCHETYPE_PLAYERS ?? 50),
 

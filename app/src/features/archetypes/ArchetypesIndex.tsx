@@ -57,6 +57,16 @@ export default function ArchetypesIndex() {
   const [view, setView] = useState<ViewMode>("archetypes");
   const [confidenceFilter, setConfidenceFilter] = useState<ConfidenceFilter>("established");
   const [buildVisibleCount, setBuildVisibleCount] = useState(BUILD_PAGE_SIZE);
+  const [selectedCompareIds, setSelectedCompareIds] = useState<Set<string>>(new Set());
+
+  function toggleCompare(id: string) {
+    setSelectedCompareIds((current) => {
+      const next = new Set(current);
+      if (next.has(id)) next.delete(id);
+      else if (next.size < 4) next.add(id);
+      return next;
+    });
+  }
 
   // Every Champion a build was ever played under, not just each cluster's plurality Champion —
   // otherwise a Champion who only shows up as the minority side of a shared shell (e.g. Merlin in
@@ -158,19 +168,22 @@ export default function ArchetypesIndex() {
   }, [data, championFilter, confidenceFilter, seasonId, sortMode]);
 
   const visibleRows = rows.slice(0, buildVisibleCount);
-  const strategyArchetypes = useMemo(() => {
-    if (!data?.strategyArchetypes) return [];
-    return data.strategyArchetypes.filter((strategy) =>
-      (!championFilter || strategy.championName === championFilter) &&
-      (confidenceFilter === "all" || strategy.confidence === "established"),
-    );
+  const materialArchetypes = useMemo(() => {
+    if (!data?.materialArchetypes) return [];
+    return data.materialArchetypes
+      .filter((route) =>
+        (!championFilter || route.championName === championFilter) &&
+        (confidenceFilter === "all" || route.confidence === "established"),
+      )
+      .sort((a, b) => b.playerCount - a.playerCount);
   }, [data, championFilter, confidenceFilter]);
+  const largestMaterialArchetype = materialArchetypes[0]?.playerCount ?? 1;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <PageHeader
         title="Archetypes"
-        description="Strategy archetypes are defined by recurring main-deck engines and win conditions. Each archetype contains one or more concrete builds whose quantities, material package, or tech choices differ."
+        description="Choose a recurring material build path first, then explore its main-deck engine and win condition. Smaller but coherent paths remain visible as emerging evidence instead of being blended into the most common shell."
         actions={
           <Link to="/battle-chart" className="text-sm text-ctp-blue hover:underline">
             Battle chart &rarr;
@@ -191,7 +204,10 @@ export default function ArchetypesIndex() {
           <button
             key={v}
             type="button"
-            onClick={() => setView(v)}
+            onClick={() => {
+              setView(v);
+              setSelectedCompareIds(new Set());
+            }}
             aria-pressed={view === v}
             className={`rounded-md border px-3 py-1.5 text-sm font-medium ${
               view === v ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
@@ -204,38 +220,88 @@ export default function ArchetypesIndex() {
 
       {view === "archetypes" && (
         <>
+          <div className="mt-5 grid gap-2 rounded-xl border border-ctp-surface1 bg-ctp-mantle/50 p-3 text-xs sm:grid-cols-3">
+            <div className="rounded-lg bg-ctp-base p-3">
+              <span className="font-semibold text-ctp-mauve">1 · Material route</span>
+              <p className="mt-1 text-ctp-subtext0">The Champion path and material cards you commit to.</p>
+            </div>
+            <div className="rounded-lg bg-ctp-base p-3">
+              <span className="font-semibold text-ctp-blue">2 · Spirit</span>
+              <p className="mt-1 text-ctp-subtext0">The Spirit version played within that route.</p>
+            </div>
+            <div className="rounded-lg bg-ctp-base p-3">
+              <span className="font-semibold text-ctp-green">3 · Build</span>
+              <p className="mt-1 text-ctp-subtext0">The distinct main-deck package you want to explore.</p>
+            </div>
+          </div>
           <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
-            <span className="text-ctp-subtext0">Champion:</span>
-            <select value={championFilter ?? ""} aria-label="Champion" onChange={(event) => setChampionFilter(event.target.value || null)} className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text">
-              <option value="">All champions</option>
-              {championsPresent.map((name) => <option key={name} value={name}>{name}</option>)}
-            </select>
-            <span className="ml-2 text-ctp-subtext0">Confidence:</span>
-            <select value={confidenceFilter} aria-label="Confidence" onChange={(event) => setConfidenceFilter(event.target.value as ConfidenceFilter)} className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text">
-              <option value="established">Established</option>
-              <option value="all">Established + emerging</option>
-            </select>
+            <label className="flex items-center gap-2 text-ctp-subtext0">Champion
+              <select value={championFilter ?? ""} aria-label="Champion" onChange={(event) => setChampionFilter(event.target.value || null)} className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text">
+                <option value="">All champions</option>
+                {championsPresent.map((name) => <option key={name} value={name}>{name}</option>)}
+              </select>
+            </label>
+            <label className="flex items-center gap-2 text-ctp-subtext0">Confidence
+              <select value={confidenceFilter} aria-label="Confidence" onChange={(event) => setConfidenceFilter(event.target.value as ConfidenceFilter)} className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text">
+                <option value="established">Established</option>
+                <option value="all">Established + emerging</option>
+              </select>
+            </label>
           </div>
           {!data && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
-          {data && strategyArchetypes.length === 0 && <p className="mt-6 text-ctp-subtext1">No strategy archetypes match these filters.</p>}
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            {strategyArchetypes.map((strategy) => {
-              const primaryBuildId = strategy.buildIds[0];
+          {data && materialArchetypes.length === 0 && <p className="mt-6 text-ctp-subtext1">No material archetypes match these filters.</p>}
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            {materialArchetypes.map((route) => {
+              const primaryBuildId = route.buildIds[0];
+              const childBuilds = route.buildIds
+                .map((buildId) => data?.clusters.find((cluster) => cluster.id === buildId))
+                .filter((build): build is NonNullable<typeof data>['clusters'][number] => !!build)
+                .sort((a, b) => b.playerCount - a.playerCount);
               return (
-                <article key={strategy.id} className="rounded-xl border border-ctp-surface1 bg-ctp-base p-4 shadow-sm">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <h2 className="flex items-center gap-1.5 font-semibold text-ctp-text">
-                        <ArchetypeElementIcon name={strategy.name} />
-                        {primaryBuildId ? <Link to={`/archetypes/${primaryBuildId}`} className="hover:text-ctp-blue">{strategy.name}</Link> : strategy.name}
-                      </h2>
-                      <p className="mt-1 text-xs text-ctp-subtext0">{strategy.playerCount} players · {strategy.deckCount} decks · {strategy.buildIds.length} {strategy.buildIds.length === 1 ? "build" : "builds"}</p>
-                    </div>
-                    {strategy.confidence === "emerging" && <span className="rounded-full bg-ctp-yellow/15 px-2 py-1 text-[10px] font-medium text-ctp-yellow">Emerging</span>}
+                <article key={route.id} className="group relative overflow-hidden rounded-xl border border-ctp-surface1 bg-ctp-base shadow-sm transition hover:-translate-y-0.5 hover:border-ctp-blue/50 hover:shadow-md">
+                  <div className="h-1 bg-ctp-surface0">
+                    <div className="h-full rounded-r bg-gradient-to-r from-ctp-mauve to-ctp-blue" style={{ width: `${Math.max(4, (route.playerCount / largestMaterialArchetype) * 100)}%` }} />
                   </div>
-                  <p className="mt-3 text-xs font-medium text-ctp-subtext1">Defining main-deck package</p>
-                  <div className="mt-1.5 flex flex-wrap gap-1.5">
-                    {strategy.definingCards.slice(0, 5).map((card) => <span key={card.name} className="rounded-md bg-ctp-mantle px-2 py-1 text-xs text-ctp-subtext1">{card.name} <span className="text-ctp-subtext0">{(card.prevalence * 100).toFixed(0)}%</span></span>)}
+                  <div className="p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="mb-1 text-[10px] font-semibold tracking-widest text-ctp-mauve uppercase">Material route</p>
+                      <h2 className="flex items-center gap-2 text-base font-semibold text-ctp-text">
+                        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-ctp-mauve/25 to-ctp-blue/20 text-xs font-bold text-ctp-mauve" aria-hidden="true">{route.championName.slice(0, 1)}</span>
+                        {primaryBuildId ? <Link to={`/archetypes/${primaryBuildId}`} className="hover:text-ctp-blue">{route.name}</Link> : route.name}
+                      </h2>
+                    </div>
+                    <div className="flex shrink-0 items-center gap-1.5">
+                      {route.confidence === "emerging" && <span className="rounded-full bg-ctp-yellow/15 px-2 py-1 text-[10px] font-medium text-ctp-yellow">Emerging</span>}
+                      <button type="button" onClick={() => toggleCompare(route.id)} aria-pressed={selectedCompareIds.has(route.id)} className={`rounded-md border px-2 py-1 text-[10px] font-medium ${selectedCompareIds.has(route.id) ? "border-ctp-green bg-ctp-green/10 text-ctp-green" : "border-ctp-surface1 text-ctp-subtext0 hover:border-ctp-blue hover:text-ctp-blue"}`}>
+                        {selectedCompareIds.has(route.id) ? "Selected" : "Compare"}
+                      </button>
+                    </div>
+                  </div>
+                  <div className="mt-3 grid grid-cols-3 divide-x divide-ctp-surface1 rounded-lg bg-ctp-mantle py-2 text-center">
+                    <div><strong className="block text-sm text-ctp-text">{route.playerCount.toLocaleString()}</strong><span className="text-[10px] text-ctp-subtext0">players</span></div>
+                    <div><strong className="block text-sm text-ctp-text">{route.deckCount.toLocaleString()}</strong><span className="text-[10px] text-ctp-subtext0">appearances</span></div>
+                    <div><strong className="block text-sm text-ctp-text">{route.buildIds.length}</strong><span className="text-[10px] text-ctp-subtext0">{route.buildIds.length === 1 ? "build" : "builds"}</span></div>
+                  </div>
+                  <div className="mt-4">
+                    <p className="text-[10px] font-semibold tracking-wider text-ctp-blue uppercase">Spirits</p>
+                    <div className="mt-1.5 flex flex-wrap gap-1.5">
+                      {route.spiritBreakdown.slice(0, 4).map((spirit) => <span key={spirit.name} className="rounded-full border border-ctp-blue/25 bg-ctp-blue/5 px-2 py-1 text-xs text-ctp-subtext1">{spirit.name} <span className="text-ctp-subtext0">{spirit.playerCount}p</span></span>)}
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <p className="text-[10px] font-semibold tracking-wider text-ctp-mauve uppercase">Signature material cards</p>
+                    <div className="mt-1.5 flex flex-wrap gap-1.5">
+                      {route.definingCards.slice(0, 4).map((card) => <span key={card.name} className="rounded-md bg-ctp-surface0 px-2 py-1 text-xs text-ctp-subtext1">{card.name} <span className="text-ctp-subtext0">{(card.prevalence * 100).toFixed(0)}%</span></span>)}
+                    </div>
+                  </div>
+                  <div className="mt-4 border-t border-ctp-surface0 pt-3">
+                    <p className="text-[10px] font-semibold tracking-wider text-ctp-green uppercase">Main-deck builds</p>
+                    <div className="mt-1.5 space-y-1">
+                      {childBuilds.slice(0, 3).map((build) => <Link key={build.id} to={`/archetypes/${build.id}`} className="flex items-center justify-between gap-3 rounded-md px-2 py-1.5 text-xs text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-blue"><span className="truncate">{build.name}</span><span className="shrink-0 text-ctp-subtext0">{build.playerCount}p &rarr;</span></Link>)}
+                      {childBuilds.length > 3 && <p className="px-2 pt-1 text-[10px] text-ctp-subtext0">+{childBuilds.length - 3} more builds</p>}
+                    </div>
+                  </div>
                   </div>
                 </article>
               );
@@ -340,6 +406,7 @@ export default function ArchetypesIndex() {
         <table className="w-max min-w-full text-sm">
           <thead>
             <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+              <th className="w-16 py-1 pr-3">Compare</th>
               <th className="py-1 pr-6">Build</th>
               <th className="py-1 pr-6">Champion</th>
               <th className="py-1 pr-6">Players</th>
@@ -355,6 +422,11 @@ export default function ArchetypesIndex() {
             {visibleRows.map((c) => {
               return (
               <tr key={c.id}>
+                <td className="py-1.5 pr-3">
+                  <button type="button" onClick={() => toggleCompare(c.id)} aria-label={`${selectedCompareIds.has(c.id) ? "Remove" : "Add"} ${c.name} ${selectedCompareIds.has(c.id) ? "from" : "to"} comparison`} aria-pressed={selectedCompareIds.has(c.id)} className={`grid h-6 w-6 place-items-center rounded border text-xs ${selectedCompareIds.has(c.id) ? "border-ctp-green bg-ctp-green/10 text-ctp-green" : "border-ctp-surface1 text-ctp-subtext0 hover:border-ctp-blue hover:text-ctp-blue"}`}>
+                    {selectedCompareIds.has(c.id) ? "✓" : "+"}
+                  </button>
+                </td>
                 <td className="py-1.5 pr-6 whitespace-nowrap">
                   <span className="inline-flex items-center gap-1.5">
                     <ArchetypeElementIcon name={c.name} />
@@ -419,6 +491,22 @@ export default function ArchetypesIndex() {
         <Suspense fallback={<p className="mt-6 text-ctp-subtext1">Loading…</p>}>
           <ArchetypeValidationView />
         </Suspense>
+      )}
+      {(view === "archetypes" || view === "builds") && selectedCompareIds.size > 0 && (
+        <div className="sticky bottom-4 z-20 mt-6 flex items-center justify-between gap-3 rounded-xl border border-ctp-blue/40 bg-ctp-mantle/95 p-3 shadow-xl backdrop-blur">
+          <div className="min-w-0 text-sm">
+            <span className="font-semibold text-ctp-text">{selectedCompareIds.size} of 4 selected</span>
+            <span className="ml-2 hidden text-xs text-ctp-subtext0 sm:inline">Choose at least two {view === "archetypes" ? "material archetypes" : "builds"}.</span>
+          </div>
+          <div className="flex shrink-0 gap-2">
+            <button type="button" onClick={() => setSelectedCompareIds(new Set())} className="rounded-md px-2 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-text">Clear</button>
+            {selectedCompareIds.size >= 2 ? (
+              <Link to={`/archetypes/compare?type=${view === "archetypes" ? "route" : "build"}&ids=${Array.from(selectedCompareIds).join(",")}`} className="rounded-md bg-ctp-blue px-3 py-1.5 text-xs font-semibold text-ctp-base hover:brightness-110">Compare selected &rarr;</Link>
+            ) : (
+              <span className="rounded-md bg-ctp-surface1 px-3 py-1.5 text-xs font-semibold text-ctp-overlay1">Select one more</span>
+            )}
+          </div>
+        </div>
       )}
     </div>
   );

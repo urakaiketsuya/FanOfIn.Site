@@ -125,6 +125,26 @@ export function extractConsumedSubtypes(card: Card, knownSubtypes: ReadonlySet<s
   return found;
 }
 
+/**
+ * Minimum length for a card name to count as a rules-text mention of another card — mirrors the
+ * gate `namedRulesTextSeeds` uses pipeline-side for the equivalent package-candidate signal.
+ * Verified against the real 2,495-card corpus: below 7 characters, short names start producing
+ * coincidental substring hits rather than real designed references.
+ */
+const NAME_MENTION_MIN_LENGTH = 7;
+
+/**
+ * Does `text` literally contain `name` (case-insensitive)? An explicit proper-noun mention is as
+ * unambiguous a designed relationship as text gets — verified against the real corpus this catches
+ * genuine cross-card references (e.g. "Incarnate Majesty" naming "The Majestic Spirit", "Scry the
+ * Stars" naming "Scry the Skies") with no false positives once TOKEN-type mentions are excluded by
+ * the caller (see `intentCards` — those duplicate the Summon/sacrifice token track instead of
+ * adding new information).
+ */
+function mentionsCardName(text: string, name: string): boolean {
+  return name.length >= NAME_MENTION_MIN_LENGTH && text.toLowerCase().includes(name.toLowerCase());
+}
+
 const EMPOWER_GRANT_RE = /\*\*Empower\b/;
 
 /**
@@ -184,7 +204,11 @@ export interface IntentCards {
  */
 export function intentCards(card: Card, catalog: Card[]): IntentCards {
   const knownSubtypes = new Set<string>();
-  for (const c of catalog) for (const s of c.subtypes) knownSubtypes.add(normalizeSubtype(s));
+  const catalogBySlug = new Map<string, Card>();
+  for (const c of catalog) {
+    for (const s of c.subtypes) knownSubtypes.add(normalizeSubtype(s));
+    catalogBySlug.set(c.slug, c);
+  }
 
   const myProducedTokens = extractProducedTokens(card);
   const myOwnSubtypes = new Set(card.subtypes.map(normalizeSubtype));
@@ -192,9 +216,35 @@ export function intentCards(card: Card, catalog: Card[]): IntentCards {
   const myConsumedSubtypes = extractConsumedSubtypes(card, knownSubtypes);
   const myGrantsEmpower = extractsEmpowerGrant(card);
   const myBenefitsFromEmpower = benefitsFromEmpower(card);
+  const myEffect = card.effect ?? "";
+  const myIsToken = card.types.includes("TOKEN");
 
   const feeds: IntentMatch[] = [];
   const poweredBy: IntentMatch[] = [];
+  // Tracks which cards already have a "named reference" entry per direction, so the API's own
+  // curated cross-references (below) and the rules-text scan (in the main loop) never duplicate
+  // the same pair under the same `via` label.
+  const namedRefFeeds = new Set<string>();
+  const namedRefPoweredBy = new Set<string>();
+
+  // Official API cross-references, when the upstream catalog has curated them (`card.references`/
+  // `referenced_by`) — the strongest possible signal, since it isn't inferred from text at all.
+  // Sparse today (most real named relationships aren't curated yet), so this is additive to, not a
+  // replacement for, the rules-text scan below.
+  for (const ref of card.references) {
+    const target = catalogBySlug.get(ref.slug);
+    if (target && !namedRefPoweredBy.has(target.uuid)) {
+      namedRefPoweredBy.add(target.uuid);
+      poweredBy.push({ card: target, via: "named reference", tier: "validated" });
+    }
+  }
+  for (const ref of card.referenced_by) {
+    const source = catalogBySlug.get(ref.slug);
+    if (source && !namedRefFeeds.has(source.uuid)) {
+      namedRefFeeds.add(source.uuid);
+      feeds.push({ card: source, via: "named reference", tier: "validated" });
+    }
+  }
 
   for (const other of catalog) {
     if (other.uuid === card.uuid) continue;
@@ -219,6 +269,20 @@ export function intentCards(card: Card, catalog: Card[]): IntentCards {
       if (otherSubtypes.has(s)) poweredBy.push({ card: other, via: s, tier });
     }
     if (myBenefitsFromEmpower && extractsEmpowerGrant(other)) poweredBy.push({ card: other, via: "Empower", tier: "validated" });
+
+    // Named card references in rules text (e.g. "if you control Lacunarity Guide") — the only one
+    // of these four tracks that can surface a relationship for a card with no deck history yet
+    // (a just-released set), since it needs nothing but the card's own printed text. Token-type
+    // mentions are skipped: they're already covered by the Summon/sacrifice token track above and
+    // would just duplicate that match under a different `via` label.
+    if (!other.types.includes("TOKEN") && !namedRefPoweredBy.has(other.uuid) && mentionsCardName(myEffect, other.name)) {
+      namedRefPoweredBy.add(other.uuid);
+      poweredBy.push({ card: other, via: "named reference", tier: "validated" });
+    }
+    if (!myIsToken && !namedRefFeeds.has(other.uuid) && mentionsCardName(other.effect ?? "", card.name)) {
+      namedRefFeeds.add(other.uuid);
+      feeds.push({ card: other, via: "named reference", tier: "validated" });
+    }
   }
 
   return { feeds, poweredBy };

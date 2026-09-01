@@ -65,9 +65,10 @@ export default function ArchetypeDetail() {
 
   const resolvedId = data?.aliases?.[id] ?? id;
   const cluster = data?.clusters.find((c) => c.id === resolvedId);
+  const materialArchetype = data?.materialArchetypes?.find((route) => route.id === cluster?.materialArchetypeId);
   const strategyArchetype = data?.strategyArchetypes?.find((strategy) => strategy.id === cluster?.strategyArchetypeId);
-  const siblingBuilds = strategyArchetype
-    ? strategyArchetype.buildIds.map((buildId) => data?.clusters.find((candidate) => candidate.id === buildId)).filter((candidate): candidate is NonNullable<typeof cluster> => !!candidate)
+  const siblingBuilds = materialArchetype
+    ? materialArchetype.buildIds.map((buildId) => data?.clusters.find((candidate) => candidate.id === buildId)).filter((candidate): candidate is NonNullable<typeof cluster> => !!candidate)
     : [];
   const impact = cardImpactData?.clusters.find((c) => c.clusterId === id);
   const clusterMatchups = useMemo(() => {
@@ -164,7 +165,10 @@ export default function ArchetypeDetail() {
   }
   const selectedInstances = instances.filter((s) => selectedDeckIds.has(s.deckId));
 
-  const definingCardNames = useMemo(() => cluster?.definingCards.map((c) => c.name) ?? [], [cluster]);
+  const definingCardNames = useMemo(
+    () => [...(cluster?.materialDefiningCards ?? []), ...(cluster?.definingCards ?? [])].map((c) => c.name),
+    [cluster],
+  );
   const allSampleCardNames = useMemo(() => {
     const names = new Set(definingCardNames);
     if (sample.decklist) {
@@ -217,15 +221,15 @@ export default function ArchetypeDetail() {
             {cluster.deckCount === 1 ? "" : "s"} across {cluster.eventCount} event{cluster.eventCount === 1 ? "" : "s"} ·{" "}
             {(cluster.avgWinRate * 100).toFixed(0)}% avg win rate
           </p>
-          {strategyArchetype && (
+          {materialArchetype && (
             <div className="mt-4 rounded-xl border border-ctp-blue/25 bg-ctp-blue/5 p-4">
-              <p className="text-xs font-semibold tracking-wide text-ctp-blue uppercase">Strategy archetype</p>
-              <p className="mt-1 font-semibold text-ctp-text">{strategyArchetype.name}</p>
+              <p className="text-xs font-semibold tracking-wide text-ctp-blue uppercase">Material archetype</p>
+              <p className="mt-1 font-semibold text-ctp-text">{materialArchetype.name}</p>
               <p className="mt-1 text-xs text-ctp-subtext1">
-                This is one of {siblingBuilds.length} {siblingBuilds.length === 1 ? "build" : "builds"} sharing the same recurring main-deck engine or win condition.
+                {materialArchetype.deckCount} appearances across {materialArchetype.spiritBreakdown.length} {materialArchetype.spiritBreakdown.length === 1 ? "Spirit" : "Spirits"}; this is one of {siblingBuilds.length} discovered main-deck {siblingBuilds.length === 1 ? "build" : "builds"} beneath that route.
               </p>
               <div className="mt-2 flex flex-wrap gap-1.5">
-                {strategyArchetype.definingCards.slice(0, 6).map((card) => (
+                {materialArchetype.definingCards.slice(0, 6).map((card) => (
                   <span key={card.name} className="rounded-md bg-ctp-mantle px-2 py-1 text-xs text-ctp-subtext1">{card.name} <span className="text-ctp-subtext0">{(card.prevalence * 100).toFixed(0)}%</span></span>
                 ))}
               </div>
@@ -236,6 +240,7 @@ export default function ArchetypeDetail() {
               )}
             </div>
           )}
+          {strategyArchetype && <p className="mt-2 text-xs text-ctp-subtext0">Main-deck package: {strategyArchetype.name}</p>}
           {(cluster.championBreakdown ?? []).length > 1 && (
             <p className="mt-1 text-xs text-ctp-subtext0">
               Also played as{" "}
@@ -305,7 +310,31 @@ export default function ArchetypeDetail() {
 
           {tab === "overview" && (
             <div className="mt-6">
-              <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Defining cards</h2>
+              {(cluster.materialDefiningCards ?? []).length > 0 && (
+                <>
+                  <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Material build path</h2>
+                  <p className="mt-1 text-xs text-ctp-subtext0">
+                    The recurring material package for this exact path. Choose this before using the main-deck card suggestions below.
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-2 text-sm">
+                    {cluster.materialDefiningCards.map((dc) => {
+                      const card = cardImages.get(dc.name);
+                      return (
+                        <CardHoverPreview key={dc.name} image={card?.editions[0]?.image} alt={dc.name}>
+                          {card ? (
+                            <Link to={`/cards/${card.slug}`} className="rounded-md border border-ctp-mauve/60 bg-ctp-mauve/5 px-2 py-1 text-ctp-text hover:border-ctp-mauve hover:text-ctp-mauve">
+                              {dc.name} <span className="text-ctp-subtext0">({(dc.prevalence * 100).toFixed(0)}%)</span>
+                            </Link>
+                          ) : (
+                            <span className="rounded-md border border-ctp-mauve/60 bg-ctp-mauve/5 px-2 py-1 text-ctp-text">{dc.name} <span className="text-ctp-subtext0">({(dc.prevalence * 100).toFixed(0)}%)</span></span>
+                          )}
+                        </CardHoverPreview>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
+              <h2 className={`${(cluster.materialDefiningCards ?? []).length > 0 ? "mt-6 " : ""}text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide`}>Defining cards</h2>
               <p className="mt-1 text-xs text-ctp-subtext0">
                 Cards common in this build but not typical of decks generally — what actually distinguishes it.
               </p>

@@ -241,7 +241,7 @@ export default function PackagesIndex() {
           <div className="max-w-3xl">
             <h2 className="text-2xl font-bold tracking-tight text-ctp-text">Newly mined relationships</h2>
             <p className="mt-2 text-sm leading-6 text-ctp-subtext1">
-              Rules-text nominations scored against champion-stratified deck data. Candidates below 40 confidence, and relationships already covered above, stay in the audit data but are hidden here. Local approvals can be revoked and refined later.
+              Rules-text and archetype defining-card nominations scored against champion-stratified deck data. Candidates below 40 confidence, and relationships already covered above, stay in the audit data but are hidden here. Archetype overlap is discovery evidence, not proof that cards are mechanically inseparable. Local approvals can be revoked and refined later.
             </p>
           </div>
           {(minedFamilies.length > 0 || minedCandidates.length > 0) && (
@@ -330,6 +330,18 @@ export default function PackagesIndex() {
                   })}
                 </div>
                 {entry.strongestChampions.length > 0 && <p className="mt-4 text-xs text-ctp-overlay1">Strongest cohorts: {entry.strongestChampions.map((cohort) => `${cohort.championName} (${cohort.matchingDecks})`).join(" · ")}</p>}
+                {entry.archetypeSources && entry.archetypeSources.length > 0 && (
+                  <div className="mt-3 rounded-lg border border-ctp-surface0 bg-ctp-base/50 px-3 py-2">
+                    <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Defining-card overlap seen in</p>
+                    <div className="mt-1 flex flex-wrap gap-1.5">
+                      {entry.archetypeSources.map((source) => (
+                        <Link key={`${source.buildId}:${source.sectionPattern}`} to={`/archetypes/${source.buildId}`} className="rounded-md bg-ctp-surface0 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-blue">
+                          {source.buildName} · {source.sectionPattern} · {(source.prevalence * 100).toFixed(0)}%
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 {entry.cautions.length > 0 && <p className="mt-2 text-xs text-ctp-peach">Review caution: {entry.cautions.join("; ")}.</p>}
               </article>
             );

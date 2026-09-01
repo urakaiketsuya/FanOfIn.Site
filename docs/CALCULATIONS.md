@@ -320,7 +320,7 @@ their curated archetype-to-card mappings would carry that license's obligations,
 independently derived from our own decklists via clustering, not curation — same general *shape*
 (named builds defined by discriminating cards), different origin.
 
-**Strategy cards, not identity cards, decide clustering.** Originally this ran per-Champion (group Champion X's
+**Material identity decides the build path; strategy cards decide the shell inside it.** Originally this ran per-Champion (group Champion X's
 decks, cluster within that group, repeat per Champion) — but that structurally couldn't detect a
 shell netdecked under more than one Champion, since decks under different Champions were never
 even compared. Checked directly against real data: reconstructing every published cluster's full
@@ -328,19 +328,25 @@ main+material multiset and scoring cross-Champion pairs with the same weighted J
 cluster pairs ≥0.35 similar despite different Champions, several ≥0.7 (e.g. "Fire Arisanna" vs.
 "Fire Merlin (Library Witch)" at 0.82) — the same "Library Witch"/"Dungeon Guide" and "Snow
 Fairy"/spades-toolbox shells were being split into up to 5 separate per-Champion entries purely
-because clustering couldn't see across the Champion boundary. So clustering below is global and
-Champion-blind: Champion and Spirit printings are removed from the main+material feature set,
-while utility/regalia material cards remain strategy signals. Each resulting cluster then reports
-every Champion it was actually played under.
+because clustering couldn't see across the Champion boundary. So clustering below is global, but
+first partitions concrete builds by their exact material Champion/Spirit identity. That remains a
+hard child-build boundary. A separate parent **material archetype** groups those builds by the
+highest-level non-Spirit Champion printing, so Wind, Fire, and other Spirit variants of
+`Lorraine, Crux Knight` contribute to one Crux Lorraine population without mixing their card
+recommendations. Within an exact path, Champion and
+Spirit printings are removed from the weighted-Jaccard strategy feature set, while utility/regalia
+material cards remain strategy signals. Each resulting cluster then reports every Champion it was
+actually played under.
 
 **Method**:
-1. Group *all* decks (every Champion at once) by exact main+material strategy signature after
-   excluding catalog cards typed `CHAMPION` or `SPIRIT`. Signatures with ≥2 distinct players may
+1. Partition *all* decks by their material Champion/Spirit signature, then group each partition by
+   exact main+material strategy signature after excluding catalog cards typed `CHAMPION` or
+   `SPIRIT`. Signatures with ≥2 distinct players may
    seed a cluster. After seeding, a singleton signature may join its nearest seed at the same
    similarity threshold, but cannot establish an archetype alone. Each group tracks
    a per-Champion tally (`championTallies`) of which decks/players ran it under which Champion —
    almost always one Champion, but not structurally guaranteed.
-2. **Greedy nearest-seed clustering**, not union-find/single-linkage, over the full global set of
+2. **Greedy nearest-seed clustering**, not union-find/single-linkage, within each material path over
    seed build-groups: sort by player count descending with the canonical signature as a stable
    tie-break; each group joins the best-scoring *existing
    cluster seed* (weighted Jaccard, reused from `similarity.ts`) if ≥ `CLUSTER_THRESHOLD` (0.45),
@@ -354,9 +360,18 @@ every Champion it was actually played under.
    giant-blob problem — verified by replicating this exact algorithm against the published
    `deck-card-index.json` + `deck-sightings.json` (55,840 decks): 116 published clusters, comparable
    to the old per-Champion count of 128, not a collapse into a handful of blobs.
-3. Clusters need ≥50 distinct players (`config.minArchetypePlayers`) to publish. This is
-   intentionally separate from the battle-chart floor: independent adoption is stronger evidence
-   of an archetype than repeated sightings from the same player.
+3. A recurring cluster needs ≥5 distinct players to publish as an **emerging** build. It becomes
+   **established** at ≥50 distinct players (`config.minArchetypePlayers`) across at least two
+   events. This keeps a coherent but smaller route such as Shenju or Crux discoverable without
+   presenting it with the same confidence as a widely adopted deck.
+   After singleton variants are assigned, a conservative repair pass combines greedy seed
+   partitions whose deck-sighting-weighted **main-deck quantity centroids** have weighted-Jaccard
+   similarity ≥0.85 and whose highest Champion material route and Spirit match. Initial discovery
+   still uses the exact Champion/Spirit progression as its hard boundary; this repair may combine
+   differently submitted progressions only after their complete main decks independently agree.
+   Candidates are
+   compared with the evolving retained centroid, rather than connected by pairwise edges, so this
+   cannot recreate the single-linkage chaining problem described above.
 4. **Defining cards**: present in ≥80% of the cluster's deck sightings (`DEFINING_MIN_IN_CLUSTER`)
    *and* present in <85% of decks generally (`DEFINING_MAX_GLOBAL_PRESENCE`, over every deck in the
    dataset). Cluster and global prevalence therefore use the same deck-sighting unit — the second
@@ -365,7 +380,8 @@ every Champion it was actually played under.
    globally, since only that Champion's decks run it, but common within this cluster) still
    correctly reads as "defining" under the global baseline — that's the same intent as the old
    per-Champion baseline, just measured against the whole dataset instead of one Champion's decks.
-   Both thresholds are initial values chosen from inspecting real output, same status as
+   The overview separately shows **Material build path** cards using the same prevalence rule,
+   including Champion/Spirit identities, before main-deck defining cards. Both thresholds are initial values chosen from inspecting real output, same status as
    `MIN_SCORE` or the trend ±2pp band elsewhere in this doc — tunable, not final.
 5. **Champion breakdown**: each cluster reports every Champion it was played under
    (`championBreakdown`, `{championName, deckCount, playerCount}[]`, sorted by playerCount
@@ -381,9 +397,10 @@ every Champion it was actually played under.
    Otherwise the cross-Champion strategy uses `"{Element} {top defining card} Shell"`. When two clusters land on the same name
    (whether or not they share a plurality Champion), the smaller one gets `(card name)` appended —
    walking its own defining-card list in order for the first name not already claimed by an
-   earlier disambiguation in the same collision group (not just its #1 card — a real bug during
-   development: three-plus same-named clusters can share the same top *generic* defining card,
-   e.g. "Dungeon Guide", and collide again after a naive single-card disambiguation).
+   earlier disambiguation in the same collision group. The suffix first uses a main-deck card seen
+   in at least 35% of that build and at least 20 percentage points more often than in every sibling;
+   only when no such discriminator exists does it fall back to the defining-card list. This keeps
+   universally shared core cards from being presented as the reason two variants differ.
 7. **Quality and uncertainty**: every published cluster reports weighted mean/minimum similarity
    to its representative seed and the weighted margin over each member's nearest alternative
    seed. A high mean with a small margin means the lists resemble one another but sit near a
@@ -623,6 +640,15 @@ section patterns are audit evidence only. Candidate entries cannot protect cards
 membership, or change recommendations until their proposed activation and protection behavior is
 manually reviewed and added to the explicit registry.
 
+Candidate discovery also inverts concrete builds' defining-card lists into pair nominations. It
+uses the top six Main and top five Material defining cards and retains the section pattern and up to
+six contributing builds. A pair proceeds to deck-level scoring only when it defines at least two
+builds in the same strategy family, or one build with at least 200 independent players. This source
+inherits the defining-card staple filter, then uses the same Champion-stratified confidence, lift,
+sample, and review-confidence scoring as rules-text nominations. At most the strongest 80 overlap
+candidates with review confidence 40 or higher are published. They remain review-only: recurring
+strategic use is evidence for a possible package, not proof of a mechanical dependency.
+
 The Packages page also supports browser-local approval of a mined relationship. A local approval
 does not edit the published registry or Card Stats membership. In that browser, it adds a
 conservative Guided Deck Builder guardrail: the package activates only when every named member is
@@ -846,9 +872,27 @@ before building (2,495 cards, `pipeline/.cache/cards.json`):
   can't apply to them and they're deliberately excluded, not just missed. Unlike the tribal/subtype
   track, there's no `via` value to look up — both sides always report `via: "Empower"`, since it's a
   single named ability rather than an open-ended vocabulary of tokens or subtypes.
+- **Named card references**: two sources, both reported as `via: "named reference"`. (1) The API's
+  own curated `card.references`/`referenced_by` fields, when populated — the strongest possible
+  signal since it isn't inferred from text at all, but sparse in practice (e.g. "Incarnate Majesty"
+  → "The Majestic Spirit" and "Scry the Stars" → "Scry the Skies" are curated; the equally-real
+  "Clarent, Reimagined" → "Clarent, Sword of Peace" pair isn't, as of this writing). (2) A rules-text
+  scan (`mentionsCardName`) checking whether a card's own effect text literally contains another
+  card's full name — gated to names of at least 7 characters (`NAME_MENTION_MIN_LENGTH`, matching
+  `namedRulesTextSeeds`'s pipeline-side gate for the equivalent package-candidate signal) and
+  excluding TOKEN-type mentions (those duplicate the Summon/sacrifice token track above under a
+  different `via` label — e.g. "**summon** an Automaton Drone token" would otherwise double-count).
+  Verified against the real corpus: 116 real cross-card mentions once TOKEN-type matches are
+  excluded, spot-checked clean (genuine Mastery/status/flavor-family references like "Shifting
+  Currents", "Crowd's Favor", "Fractured Memories", "Bolt of Diamonds" — not coincidental substring
+  hits). This is the only one of the four tracks that can surface a relationship for a card with no
+  deck history yet, since it needs nothing but the card's own printed text — the other three tracks
+  are equally text-only, but named references are specifically the pattern a brand-new card is most
+  likely to use to call out a synergy partner by name.
 
 Empty results (`feeds`/`poweredBy` both `[]`) are the normal case — only cards actually part of a
-named token economy, tribal economy, or the Empower relationship will have entries.
+named token economy, tribal economy, the Empower relationship, or a named reference will have
+entries.
 
 **Validated vs. experimental tiers**: every `IntentMatch` carries a `tier`. `"validated"` is the
 sacrifice/control/banish-from (subtypes) and Summon/sacrifice (tokens) triggers above — the ones
