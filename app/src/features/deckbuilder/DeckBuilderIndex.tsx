@@ -52,6 +52,13 @@ type BuilderTab = "build" | "review" | "stats" | "tools" | "buddies" | "copy" | 
 const TAB_KEYS: BuilderTab[] = ["build", "review", "stats", "tools", "buddies", "copy", "log"];
 
 type LockedSection = "main" | "material" | "sideboard";
+type BuilderIntent = "discover" | "seed" | "scratch";
+
+const BUILDER_INTENTS: { key: BuilderIntent; title: string; description: string }[] = [
+  { key: "discover", title: "Find new cards", description: "See recent cards that connect to your deck's game plan." },
+  { key: "seed", title: "Build around cards", description: "Choose your identity, lock the cards you care about, and fill the rest." },
+  { key: "scratch", title: "Start from scratch", description: "Choose an identity and optimize a full suggested list." },
+];
 
 interface ArchetypeTuningOption {
   id: string;
@@ -1587,6 +1594,8 @@ export default function DeckBuilderIndex() {
   const [searchParams, setSearchParams] = useSearchParams();
   const improveDeckId = searchParams.get("improveDeck");
   const isImproving = Boolean(improveDeckId);
+  const intentParam = searchParams.get("intent");
+  const builderIntent: BuilderIntent | null = intentParam === "discover" || intentParam === "seed" || intentParam === "scratch" ? intentParam : null;
   const [deckFormat, setDeckFormat] = useState<DeckFormat>(() => searchParams.get("format")?.toUpperCase() === "PANTHEON" ? "PANTHEON" : "STANDARD");
   // Computed fresh each render (cheap — parsing a couple of query params), but only its value on
   // the very first render actually matters: every useState below that reads from it only consults
@@ -1650,6 +1659,15 @@ export default function DeckBuilderIndex() {
   // the just-seeded lockedCards a moment later. Comparing against a ref that's never mutated
   // during a no-op run stays correct across as many redundant invocations as StrictMode throws at it.
   const lastResetChampionRef = useRef(urlSeed?.championName ?? sessionSeed?.championName ?? null);
+
+  function chooseIntent(intent: BuilderIntent) {
+    const next = new URLSearchParams(searchParams);
+    next.set("intent", intent);
+    if (intent === "discover") next.set("tab", "stats");
+    else next.set("tab", "build");
+    setSearchParams(next, { replace: true });
+    setTab(intent === "discover" ? "stats" : "build");
+  }
 
   const popularityIndexData = useDeckPopularityIndexData();
   // Debounced against the catalog sync's own write batches (app/src/lib/sync/cards.ts writes ~50
@@ -1985,8 +2003,12 @@ export default function DeckBuilderIndex() {
       startTransition(() => {
         setSpiritFilter(null);
         setSpiritElement(null);
-        setLockedCards(new Map());
-        setLockedSections(new Map());
+        // A seed-card build intentionally starts with cards before its identity. Preserve those
+        // choices while the user tries compatible Champions; all other workflows reset normally.
+        if (builderIntent !== "seed") {
+          setLockedCards(new Map());
+          setLockedSections(new Map());
+        }
         setRejectedCards(new Set());
         setDismissedReviewCards(new Set());
         setArchetypeId(null);
@@ -1997,7 +2019,7 @@ export default function DeckBuilderIndex() {
     prevSuggestedRef.current = null;
     prevWinRateRef.current = null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [championName]);
+  }, [championName, builderIntent]);
 
   // The shared link's params (see handleCopyShareLink below) already did their job as the
   // *initial* state above — this just clears them once mounted, so the URL doesn't look "stuck"
@@ -2520,6 +2542,31 @@ export default function DeckBuilderIndex() {
         )}
       />
 
+      {!isImproving && <section className="mt-5 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4" aria-labelledby="builder-start">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <div>
+            <h2 id="builder-start" className="font-semibold text-ctp-text">What do you want to do?</h2>
+            <p className="mt-1 text-sm text-ctp-subtext1">Pick a starting point. You can change direction without losing your current build.</p>
+          </div>
+          <Link to="/my-decks" className="text-sm text-ctp-blue hover:underline">Improve a saved deck →</Link>
+        </div>
+        <div className="mt-3 grid gap-3 sm:grid-cols-3">
+          {BUILDER_INTENTS.map((intent) => <button
+            key={intent.key}
+            type="button"
+            onClick={() => chooseIntent(intent.key)}
+            aria-pressed={builderIntent === intent.key}
+            className={`rounded-lg border p-3 text-left transition-colors ${builderIntent === intent.key ? "border-ctp-blue bg-ctp-blue/10" : "border-ctp-surface1 bg-ctp-base hover:border-ctp-blue/60"}`}
+          >
+            <span className={`text-sm font-semibold ${builderIntent === intent.key ? "text-ctp-blue" : "text-ctp-text"}`}>{intent.title}</span>
+            <span className="mt-1 block text-xs leading-5 text-ctp-subtext1">{intent.description}</span>
+          </button>)}
+        </div>
+        {builderIntent === "discover" && <p className="mt-3 rounded-md border border-ctp-mauve/40 bg-ctp-mauve/10 px-3 py-2 text-xs text-ctp-subtext1">Choose your Champion and Spirit below. The <span className="font-medium text-ctp-text">Stats</span> tab will surface newest-set cards with a direct synergy to your resulting deck; they are shown separately until enough match data exists.</p>}
+        {builderIntent === "seed" && <p className="mt-3 rounded-md border border-ctp-green/40 bg-ctp-green/10 px-3 py-2 text-xs text-ctp-subtext1">Choose your Champion and Spirit, then add the cards you already want to play. They stay locked while recommendations fill the remaining slots.</p>}
+        {builderIntent === "scratch" && <p className="mt-3 rounded-md border border-ctp-blue/40 bg-ctp-blue/10 px-3 py-2 text-xs text-ctp-subtext1">Choose a Champion, Element, and Spirit to generate an evidence-backed shell. Use the Review tab to decide which changes to keep.</p>}
+      </section>}
+
       {isImproving && <section className="mt-4 rounded-xl border border-ctp-blue/40 bg-ctp-blue/10 p-4" aria-labelledby="improvement-workflow">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
@@ -2667,6 +2714,25 @@ export default function DeckBuilderIndex() {
         )}
       </div>}
 
+      {builderIntent === "seed" && !championName && <section className="mt-5 rounded-lg border border-ctp-green/40 bg-ctp-green/5 p-3" aria-labelledby="seed-cards">
+        <h2 id="seed-cards" className="text-sm font-semibold text-ctp-text">Start with your cards</h2>
+        <p className="mt-1 text-xs text-ctp-subtext1">Add one or more cards first, then choose the Champion and Spirit that should support them. Your selected cards stay locked as the deck fills in.</p>
+        <div className="mt-3 flex max-w-xl flex-wrap gap-2">
+          <input
+            type="text"
+            list="deck-builder-card-options"
+            value={cardInput}
+            onChange={(event) => setCardInput(event.target.value)}
+            onKeyDown={(event) => { if (event.key === "Enter" && cardNameSet.has(cardInput)) addCard(cardInput); }}
+            placeholder="Type a card name…"
+            className="min-w-52 flex-1 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
+          />
+          <button type="button" disabled={!cardNameSet.has(cardInput) || lockedCards.has(cardInput)} onClick={() => addCard(cardInput)} className="rounded-md border border-ctp-green/60 px-3 py-1.5 text-sm text-ctp-green hover:bg-ctp-green/10 disabled:cursor-not-allowed disabled:opacity-50">Add card</button>
+        </div>
+        <datalist id="deck-builder-card-options">{cardNames.map((name) => <option key={name} value={name} />)}</datalist>
+        {lockedCards.size > 0 && <div className="mt-3 flex flex-wrap gap-1.5">{Array.from(lockedCards.keys()).map((name) => <button key={name} type="button" onClick={() => removeCard(name, true)} className="rounded-full border border-ctp-green/40 px-2 py-0.5 text-xs text-ctp-green hover:border-ctp-red hover:text-ctp-red" title="Remove seed card">{name} ×</button>)}</div>}
+      </section>}
+
       {!championName && <p className="mt-6 text-ctp-subtext1">Choose a Champion to see a suggested build.</p>}
 
       {championName && gateLoading && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
@@ -2771,6 +2837,7 @@ export default function DeckBuilderIndex() {
             <div className="mb-4 rounded-lg border border-ctp-mauve/50 bg-ctp-mauve/10 px-3 py-2 text-xs text-ctp-subtext1">
               <span className="font-medium">New cards available</span>
               <span className="ml-auto">({newReleaseCards.length} new cards from recent sets)</span>
+              <button type="button" onClick={() => setTab("stats")} className="ml-3 text-ctp-mauve hover:underline">See why →</button>
             </div>
           )}
           {tab === "build" && (
@@ -2786,7 +2853,7 @@ export default function DeckBuilderIndex() {
                   </button>
                 </div>
               )}
-              <span className="text-sm text-ctp-subtext0">Add a card:</span>
+              <span className="text-sm text-ctp-subtext0">{builderIntent === "seed" ? "Cards to build around:" : "Add a card:"}</span>
               <input
                 type="text"
                 list="deck-builder-card-options"
@@ -2798,7 +2865,7 @@ export default function DeckBuilderIndex() {
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && cardNameSet.has(cardInput)) addCard(cardInput);
                 }}
-                placeholder="Type a card name to add as your choice…"
+                placeholder={builderIntent === "seed" ? "Type a card you want to keep in the deck…" : "Type a card name to add as your choice…"}
                 className="mt-1 block w-full max-w-sm rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
               />
               <datalist id="deck-builder-card-options">
