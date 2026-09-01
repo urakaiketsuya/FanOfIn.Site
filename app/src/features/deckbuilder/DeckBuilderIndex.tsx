@@ -1586,6 +1586,7 @@ export default function DeckBuilderIndex() {
   );
   const [searchParams, setSearchParams] = useSearchParams();
   const improveDeckId = searchParams.get("improveDeck");
+  const isImproving = Boolean(improveDeckId);
   const [deckFormat, setDeckFormat] = useState<DeckFormat>(() => searchParams.get("format")?.toUpperCase() === "PANTHEON" ? "PANTHEON" : "STANDARD");
   // Computed fresh each render (cheap — parsing a couple of query params), but only its value on
   // the very first render actually matters: every useState below that reads from it only consults
@@ -1625,6 +1626,7 @@ export default function DeckBuilderIndex() {
   const [dismissedReviewCards, setDismissedReviewCards] = useState<Set<string>>(new Set());
   const [showProtectedCuts, setShowProtectedCuts] = useState(false);
   const [tab, setTab] = useTabParam<BuilderTab>("tab", TAB_KEYS, "build");
+  const [identityEditorOpen, setIdentityEditorOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [pasteOpen, setPasteOpen] = useState(false);
   const [pasteText, setPasteText] = useState("");
@@ -2406,6 +2408,7 @@ export default function DeckBuilderIndex() {
   const keptCopyCount = [...build.main, ...build.material, ...build.sideboard]
     .filter((card) => card.locked)
     .reduce((sum, card) => sum + card.quantity, 0);
+  const importedCardCount = Array.from(lockedCards.values()).reduce((sum, quantity) => sum + quantity, 0);
   const deckToSave = saveKeptOnly ? keptDecklist : decklist;
   const saveCopyCount = saveKeptOnly ? keptCopyCount : fullCopyCount;
 
@@ -2509,16 +2512,30 @@ export default function DeckBuilderIndex() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <PageHeader
-        title="Guided Deck Builder"
+        title={isImproving ? "Improve your deck" : "Guided Deck Builder"}
         description={(
-          <>
-            <p>Choose a Grand Archive Champion, then an element and Spirit, to generate a suggested Main and Material Deck from real decklists. Balanced (the default) prioritizes tournament win-rate evidence nudged by community popularity; Tournament uses win-rate evidence alone; Community builds around the cards players use most often.</p>
-            <p className="mt-2">Review each card’s sample size, performance, community usage, price, and common partners. Lock in your choices or exclude cards to recalculate the remaining slots, then validate, copy, share, buy, export, or playtest the finished deck.</p>
-          </>
+          isImproving
+            ? <>Your saved list is the baseline. Review evidence-backed changes, keep only the ones you want, then save a new version when you are ready.</>
+            : <>Start from a Champion, an Element, and a Spirit to generate a suggested deck from real decklists. You can also paste a list to tune cards you already have.</>
         )}
       />
 
-      {improveDeckId && <div className="mt-4 rounded-lg border border-ctp-blue/40 bg-ctp-blue/10 px-4 py-3"><p className="font-semibold text-ctp-blue">Improving a saved deck</p><p className="mt-1 text-sm text-ctp-subtext1">Review the imported baseline, accept only the changes you want, then save the result as a new version. The previous version remains in its history.</p></div>}
+      {isImproving && <section className="mt-4 rounded-xl border border-ctp-blue/40 bg-ctp-blue/10 p-4" aria-labelledby="improvement-workflow">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h2 id="improvement-workflow" className="font-semibold text-ctp-blue">Improvement review</h2>
+            <p className="mt-1 text-sm text-ctp-subtext1">{importedCardCount} imported card{importedCardCount === 1 ? "" : "s"} are protected as your baseline. Your existing version will not change.</p>
+          </div>
+          <button type="button" onClick={() => setTab("review")} className="rounded-md bg-ctp-blue px-3 py-1.5 text-sm font-medium text-ctp-base">
+            Review {reviewItemCount} change{reviewItemCount === 1 ? "" : "s"}
+          </button>
+        </div>
+        <ol className="mt-3 grid gap-2 text-xs text-ctp-subtext1 sm:grid-cols-3">
+          <li><span className="font-semibold text-ctp-text">1. Baseline loaded</span><br />Your cards remain locked until you change them.</li>
+          <li><span className="font-semibold text-ctp-text">2. Review changes</span><br />Accept additions and cuts selectively.</li>
+          <li><span className="font-semibold text-ctp-text">3. Save a version</span><br />Create a snapshot only when you choose.</li>
+        </ol>
+      </section>}
 
       <div className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1 text-sm" role="group" aria-label="Deck format">
         {(["STANDARD", "PANTHEON"] as const).map((format) => <button key={format} type="button" aria-pressed={deckFormat === format} onClick={() => { setDeckFormat(format); if (format === "PANTHEON") setPopulationSource("community"); const next = new URLSearchParams(searchParams); if (format === "PANTHEON") next.set("format", "pantheon"); else next.delete("format"); setSearchParams(next, { replace: true }); }} className={`rounded-md px-3 py-1.5 ${deckFormat === format ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>{format === "PANTHEON" ? "Pantheon" : "Standard"}</button>)}
@@ -2527,7 +2544,20 @@ export default function DeckBuilderIndex() {
 
       <div className="mt-3 flex flex-wrap items-center gap-2 rounded-lg border border-ctp-green/30 bg-ctp-green/5 p-3 text-xs"><span className="font-medium text-ctp-text">Build from collection:</span>{([['all', 'All cards'], ['prioritize', 'Prioritize owned'], ['owned-only', 'Owned only']] as const).map(([value, label]) => <button key={value} type="button" aria-pressed={collectionMode === value} onClick={() => startTransition(() => setCollectionMode(value))} className={`rounded px-2.5 py-1.5 ${collectionMode === value ? "bg-ctp-green text-ctp-base" : "border border-ctp-surface1 text-ctp-subtext1"}`}>{label}</button>)}<Link to="/collection" className="ml-auto text-ctp-blue hover:underline">Manage collection</Link><p className="w-full text-ctp-subtext0">{collectionMode === "owned-only" ? "Auto-suggestions are capped to physical copies you own. Locked cards remain, and shortages stay visible as unresolved slots." : collectionMode === "prioritize" ? "Owned cards win close recommendation ties; performance evidence still leads." : `${collection.length} owned card ${collection.length === 1 ? "entry" : "entries"} loaded.`}</p></div>
 
-      <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
+      <div className={isImproving ? "mt-4" : "mt-4 flex flex-wrap items-center gap-2 text-sm"}>
+        {isImproving && championName && <>
+          <div className="flex flex-wrap items-center gap-2 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm">
+            <span className="text-ctp-subtext0">Reviewing:</span>
+            <span className="font-medium text-ctp-text">{championName}</span>
+            <span className="text-ctp-subtext0">·</span>
+            <span className={spiritFilter ? "text-ctp-green" : "text-ctp-yellow"}>{spiritFilter ?? "Spirit required"}</span>
+            <button type="button" onClick={() => setIdentityEditorOpen((open) => !open)} className="ml-auto text-xs text-ctp-blue hover:underline">
+              {identityEditorOpen ? "Done changing identity" : "Change identity"}
+            </button>
+          </div>
+          {identityEditorOpen && <p className="mt-2 text-xs text-ctp-yellow">Changing Champion clears the imported baseline. Changing Spirit keeps the baseline but changes the recommendation lens.</p>}
+        </>}
+        {(!isImproving || identityEditorOpen) && <>
         <label htmlFor="deck-builder-champion" className="text-ctp-subtext0">Champion:</label>
         <select
           id="deck-builder-champion"
@@ -2543,7 +2573,7 @@ export default function DeckBuilderIndex() {
           ))}
         </select>
 
-        {championName && (
+        {championName && (!isImproving || identityEditorOpen) && (
           <>
             <label htmlFor="deck-builder-element" className="ml-2 text-ctp-subtext0">Element:</label>
             <select
@@ -2581,6 +2611,7 @@ export default function DeckBuilderIndex() {
             </>}
           </>
         )}
+        </>}
         {championName && (
           <button
             type="button"
@@ -2591,7 +2622,7 @@ export default function DeckBuilderIndex() {
           </button>
         )}
       </div>
-      <div className="mt-2">
+      {!isImproving && <div className="mt-2">
         {!pasteOpen ? (
           <button type="button" onClick={() => setPasteOpen(true)} className="text-xs text-ctp-blue hover:underline">
             Or paste a decklist for recommendations &rarr;
@@ -2634,7 +2665,7 @@ export default function DeckBuilderIndex() {
             {pasteError && <p className="mt-1.5 text-xs text-ctp-red">{pasteError}</p>}
           </div>
         )}
-      </div>
+      </div>}
 
       {!championName && <p className="mt-6 text-ctp-subtext1">Choose a Champion to see a suggested build.</p>}
 
@@ -2710,7 +2741,8 @@ export default function DeckBuilderIndex() {
 
           <section className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3" aria-labelledby="deck-builder-checklist">
             <h2 id="deck-builder-checklist" className="text-sm font-semibold text-ctp-text">Deck-building checklist</h2>
-            <div className="mt-2 grid gap-2 text-xs sm:grid-cols-3">
+            <div className="mt-2 grid gap-2 text-xs sm:grid-cols-4">
+              {isImproving && <p className={importedCardCount > 0 ? "text-ctp-green" : "text-ctp-yellow"}>{importedCardCount > 0 ? `✓ ${importedCardCount} baseline cards loaded` : "○ Imported deck is empty"}</p>}
               <p className={championName ? "text-ctp-green" : "text-ctp-subtext1"}>{championName ? "✓ Champion selected" : "○ Choose a Champion"}</p>
               <p className={spiritFilter ? "text-ctp-green" : "text-ctp-subtext1"}>{spiritFilter ? "✓ Spirit selected" : "○ Choose an element and Spirit"}</p>
               <p className={validation.status === "Legal" ? "text-ctp-green" : "text-ctp-yellow"}>{validation.status === "Legal" ? "✓ Construction checks pass" : `○ ${validation.status}: review deck size and legality`}</p>
