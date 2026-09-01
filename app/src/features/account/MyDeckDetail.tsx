@@ -145,7 +145,7 @@ export default function MyDeckDetail() {
       </div>
     </section>}
     {tab === "analysis" && <section id="owned-deck-panel-analysis" role="tabpanel" aria-labelledby="owned-deck-tab-analysis" tabIndex={0}><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} title={deck.title} ownerDeckId={deck.id} previousDecklist={previousDecklist} /></section>}
-    {tab === "decklist" && <><UserDecklistPanel decklist={deck.decklist} ownerDeckId={deck.id} collectionSource={`Deck: ${deck.title}`} actions={<button type="button" onClick={() => { setDeckText(buildDecklistText(deck.decklist)); setEditing((value) => !value); }} className={`rounded px-2 py-1 text-xs ${editing ? "border border-ctp-surface1 text-ctp-subtext1" : "bg-ctp-blue text-ctp-base"}`}>{editing ? "Cancel" : "Edit deck"}</button>}>
+    {tab === "decklist" && <><UserDecklistPanel decklist={deck.decklist} format={deck.format} ownerDeckId={deck.id} collectionSource={`Deck: ${deck.title}`} actions={<button type="button" onClick={() => { setDeckText(buildDecklistText(deck.decklist)); setEditing((value) => !value); }} className={`rounded px-2 py-1 text-xs ${editing ? "border border-ctp-surface1 text-ctp-subtext1" : "bg-ctp-blue text-ctp-base"}`}>{editing ? "Cancel" : "Edit deck"}</button>}>
       {editing ? <div className="mt-3">
         <div className="flex flex-wrap items-center gap-2">
           <input type="text" list="my-deck-card-options" value={cardInput} onChange={(event) => setCardInput(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); if (cardNameSet.has(cardInput)) addCard(cardInput); } }} placeholder="Add a card by name…" aria-label="Add a card by name" className="min-w-0 flex-1 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm" />
@@ -160,7 +160,7 @@ export default function MyDeckDetail() {
         </form>
         <div className="mt-6">
           <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Preview</h3>
-          <div className="mt-2"><DecklistView decklist={editedDecklist} cardsByName={editedCardsByName} showThumbnails /></div>
+          <div className="mt-2"><DecklistView decklist={editedDecklist} cardsByName={editedCardsByName} showThumbnails format={deck.format} /></div>
         </div>
       </div> : undefined}
     </UserDecklistPanel>
@@ -184,7 +184,7 @@ export default function MyDeckDetail() {
       <h2 className="text-lg font-semibold text-ctp-text">Version history</h2>
       <div className="mt-3 space-y-2">{deck.versions.map((version) => <details key={version.id} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3" open={version.id === deck.currentVersionId}>
         <summary className="cursor-pointer text-sm"><span className="font-medium">Version {version.versionNumber}</span><span className="ml-2 text-ctp-subtext1">{new Date(version.createdAt).toLocaleString()} · {version.changeNote || "Deck updated"}</span>{version.id === deck.currentVersionId && <span className="ml-2 text-ctp-green">Current</span>}</summary>
-        <UserDecklistPanel decklist={version.decklist} />
+        <UserDecklistPanel decklist={version.decklist} format={version.format} />
         {version.id !== deck.currentVersionId && <button disabled={busy} type="button" onClick={() => void run(async () => { await accountApi.restoreDeckVersion(deck.id, version.id); await refresh(); })} className="mt-2 rounded border border-ctp-blue px-2 py-1 text-xs text-ctp-blue disabled:opacity-50">Restore as new version</button>}
       </details>)}</div>
     </section>}

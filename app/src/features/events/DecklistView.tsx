@@ -1,12 +1,11 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import type { Card, CardImpactRole, OmnidexDecklist, OmnidexDecklistCardLine } from "@gatcg/shared";
+import type { Card, DeckFormat, OmnidexDecklist, OmnidexDecklistCardLine } from "@gatcg/shared";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CardImage from "../../components/CardImage";
 import ElementIcon from "../../components/ElementIcon";
 import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
-import { useCardImpactData } from "../archetypes/data";
-import { useCardsByNames } from "./useCardsByNames";
+import DeckTuningEvidence from "./DeckTuningEvidence";
 import { formatUsd } from "../../lib/format";
 import { computeSectionPrice } from "../../lib/deckPrice";
 import { computeDeckIdentity } from "../../lib/deckIdentity";
@@ -17,12 +16,7 @@ import { copyDecklistAndOpen, deckBuilderDestinations } from "../../lib/deckBuil
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { extractProducedTokens } from "../../lib/cardIntent";
 
-/** Only surface a suggestion once shrinkage has left it meaningfully above zero — filters out noise that technically cleared the sample-size bar but is still statistically thin. */
-const MIN_SUGGESTED_LIFT = 0.02;
-const MAX_SUGGESTIONS = 5;
 type DeckDisplayMode = "compact" | "visual" | "detailed";
-
-const ROLE_LABEL: Record<CardImpactRole, string> = { main: "Main", material: "Material", sideboard: "Sideboard", mixed: "Mixed" };
 
 /** Plain-text export with "# Section" headers and "4 Card Name" lines — round-trips with the Compare tool's paste parser. */
 export function buildDecklistText(decklist: OmnidexDecklist, extraSections: { title: string; lines: OmnidexDecklistCardLine[] }[] = []): string {
@@ -122,6 +116,8 @@ export default function DecklistView({
   cardsByName,
   showThumbnails = false,
   deckId,
+  format,
+  championFallback = true,
   extraSections = [],
   trailingSections = [],
   defaultDisplayMode = "detailed",
@@ -129,8 +125,12 @@ export default function DecklistView({
   decklist: OmnidexDecklist;
   cardsByName: Map<string, Card>;
   showThumbnails?: boolean;
-  /** `${eventId}:${player}` — when present, resolves this decklist's named-build cluster and surfaces "Cards that might help" below the three sections. Omit to skip the lookup entirely (e.g. a pasted/custom decklist with no real deckId). */
+  /** `${eventId}:${player}` — when present, resolves this decklist's named-build cluster for `DeckTuningEvidence`'s "Cards that might help" box. Omit for a pasted/custom decklist with no real deckId — `DeckTuningEvidence` still falls back to Champion-scoped evidence unless `championFallback` is false. */
   deckId?: string;
+  /** Suppresses `DeckTuningEvidence` entirely when "PANTHEON" — the tournament pipeline that evidence is built from doesn't track that format. Omit for tournament decklists, which are always Standard. */
+  format?: DeckFormat;
+  /** Set false on a page that already renders its own Champion-scoped "cards that might help" fallback (currently only `DeckDetail.tsx`) to avoid a redundant second copy. The "cards worth reviewing" box is unaffected — nothing else surfaces that signal today. */
+  championFallback?: boolean;
   extraSections?: { title: string; lines: OmnidexDecklistCardLine[] }[];
   trailingSections?: { title: string; lines: OmnidexDecklistCardLine[] }[];
   defaultDisplayMode?: DeckDisplayMode;
@@ -205,18 +205,6 @@ export default function DecklistView({
     [allLines],
   );
   const clarentUrl = useMemo(() => buildClarentPlaytestUrl(decklist, undefined, [...extraSections, ...trailingSections]), [decklist, extraSections, trailingSections]);
-
-  const cardImpactData = useCardImpactData();
-  const suggestions = useMemo(() => {
-    if (!deckId || !cardImpactData) return [];
-    const clusterId = cardImpactData.deckClusterIndex[deckId];
-    if (!clusterId) return [];
-    const cluster = cardImpactData.clusters.find((c) => c.clusterId === clusterId);
-    if (!cluster) return [];
-    const currentNames = new Set(allLines.map((l) => l.card));
-    return cluster.cards.filter((c) => c.adjustedLift >= MIN_SUGGESTED_LIFT && !currentNames.has(c.cardName)).slice(0, MAX_SUGGESTIONS);
-  }, [deckId, cardImpactData, allLines]);
-  const suggestionCards = useCardsByNames(suggestions.map((s) => s.cardName));
 
   function handleExportTts() {
     const championName = findDeckChampionName(decklist.material, cardsByName);
@@ -313,41 +301,7 @@ export default function DecklistView({
         {displayTrailingSections.map((section) => <DeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} />)}
       </div>}
 
-      {suggestions.length > 0 && (
-        <div className="mt-4 rounded-md border border-ctp-surface1 bg-ctp-mantle p-3">
-          <h4 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Cards that might help</h4>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            Decks in this build that ran these cards tended to win more — correlational, not a guarantee.
-          </p>
-          <ul className="mt-2 space-y-1">
-            {suggestions.map((s) => {
-              const card = suggestionCards.get(s.cardName);
-              return (
-                <li key={s.cardName} className="flex flex-wrap items-center gap-1.5 text-sm">
-                  {card ? (
-                    <CardHoverPreview image={card.editions[0]?.image} alt={s.cardName}>
-                      <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
-                        {s.cardName}
-                      </Link>
-                    </CardHoverPreview>
-                  ) : (
-                    <span className="text-ctp-text">{s.cardName}</span>
-                  )}
-                  <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">
-                    {ROLE_LABEL[s.role]}
-                  </span>
-                  <span className="ml-auto shrink-0 text-xs text-ctp-green">
-                    +{(s.adjustedLift * 100).toFixed(0)}pp
-                  </span>
-                  <span className="shrink-0 text-xs text-ctp-subtext0">
-                    ({s.deckCountWith} with vs {s.deckCountWithout} without)
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      )}
+      <DeckTuningEvidence decklist={decklist} cardsByName={displayCardsByName} deckId={deckId} format={format} championFallback={championFallback} />
     </div>
   );
 }

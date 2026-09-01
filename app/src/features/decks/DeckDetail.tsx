@@ -10,6 +10,7 @@ import { useCardImpactData, useSimilarityData } from "../archetypes/data";
 import { useChampionCardImpact } from "./useChampionCardImpact";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import { useCardsByNames } from "../events/useCardsByNames";
+import DeckDecaySignals from "../events/DeckDecaySignals";
 import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
 import CardImpactTable from "../../components/CardImpactTable";
 import {
@@ -368,7 +369,8 @@ export default function DeckDetail() {
 
       {tab === "decklist" && (
         <div className="mt-6">
-          <DecklistView decklist={decklist} cardsByName={cardsByName} showThumbnails deckId={deck.deckIds[0]} />
+          <DecklistView decklist={decklist} cardsByName={cardsByName} showThumbnails deckId={deck.deckIds[0]} championFallback={false} />
+          <DeckDecaySignals decklist={decklist} cardsByName={cardsByName} />
           <DeckCollectionTools decklist={decklist} cardsByName={cardsByName} source={`Tournament build: ${deck.championName ?? "Unknown Champion"}`} />
         </div>
       )}

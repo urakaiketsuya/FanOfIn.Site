@@ -25,7 +25,7 @@ export interface DeckBuilderPopulation {
 }
 
 /** Same detection rule as pipeline/src/analysis/decklists.ts's findSpirit — CHAMPION type, SPIRIT subtype, lives in the Material Deck. */
-function findSpiritName(material: { name: string; quantity: number }[], cardsByName: Map<string, Card>): string | null {
+export function findSpiritName(material: { name: string; quantity: number }[], cardsByName: Map<string, Card>): string | null {
   for (const line of material) {
     const card = cardsByName.get(line.name);
     if (card?.types.includes("CHAMPION") && card.subtypes.includes("SPIRIT")) return line.name;

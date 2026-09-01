@@ -4,6 +4,7 @@ import {
   computeSingleCardImpact,
   type Card,
   type CardImpactEntry,
+  type CardQuantityBucket,
   type CardQuantityStatsData,
   type CardSectionRow,
 } from "@gatcg/shared";
@@ -16,6 +17,7 @@ import { computeDependencyReadiness, computeSynergyReadiness, type SynergyLine }
 import { getDeckPackageCatalog, type ActiveDeckPackage, type DeckPackageCatalogEntry } from "./packageGuardrails";
 import { findContextualMaterialReplacement } from "./contextualMaterialGuardrail";
 import { SIDEBOARD_POINT_BUDGET, sideboardPointCost } from "./validateDeck";
+import { legalMaxCopies, pickBetterQuantity } from "../../lib/cardQuantityAdvice";
 
 /** Same reasoning as useAllDecodedDecks' CATALOG_SETTLE_MS (app/src/lib/decodedDecks.ts) — the
  * catalog sync writes in batches, and this hook's own `cardsByName` feeds the big `useMemo` below
@@ -73,11 +75,6 @@ const MAX_EXTRA_SUGGESTIONS = 16;
 /** A locked card's own lift needs to clear this far below zero (not just "any negative number") before it's worth flagging as a removal candidate — same shrinkage-noise-floor reasoning as the positive suggestion side. */
 const REMOVAL_LIFT_CEILING = -0.02;
 const MAX_REMOVAL_SUGGESTIONS = 5;
-/** How much better the best global quantity bucket's win rate needs to be than the population's modal quantity before it's worth overriding — a card's own global win-rate-by-quantity curve is real data, but a tiny/noisy edge shouldn't flip the number away from what this Champion's own decks actually run. */
-const QUANTITY_OPTIMIZATION_MARGIN = 0.01;
-/** Global copy-count evidence is deliberately a last resort. Five decks is enough to display a
- * card-impact split, but nowhere near enough to overturn what a coherent local population runs. */
-const MIN_GLOBAL_QUANTITY_SAMPLE = 30;
 /** Named Champion-bonus cards are promoted from flex picks only when they describe a genuinely
  * dominant construction pattern. This avoids treating every thematic card with bonus text as
  * mandatory while rescuing near-universal staples that an isolated with/without lift suppresses. */
@@ -145,10 +142,6 @@ export interface SuggestedBuild {
   matchingDeckCount: number;
   unresolved: { main: number; material: number; sideboard: number };
   loading: boolean;
-}
-
-function legalMaxCopies(card: Card | undefined): number {
-  return card?.legality?.STANDARD?.limit ?? 4;
 }
 
 function championIdentityName(card: Card): string {
@@ -358,25 +351,13 @@ function pickQuantity(
   section: DeckSection,
   cardName: string,
   card: Card | undefined,
-  quantityBucketsByName: Map<string, { quantity: number; deckCount: number; adjustedWinRate: number }[]>,
+  quantityBucketsByName: Map<string, CardQuantityBucket[]>,
 ): { quantity: number; optimizedFrom: number | null; evidence: SuggestedCard["quantityEvidence"] } {
   const modal = modalQuantity(rows, section, cardName, card);
   const localSample = rows.filter((r) => r[section].has(cardName)).length;
-  const buckets = quantityBucketsByName.get(cardName);
-  if (!buckets) return { quantity: modal, optimizedFrom: null, evidence: { source: "matching population", sampleSize: localSample } };
-
-  const max = legalMaxCopies(card);
-  const eligible = buckets.filter((b) => b.deckCount >= MIN_GLOBAL_QUANTITY_SAMPLE && b.quantity >= 1 && b.quantity <= max);
-  if (eligible.length === 0) return { quantity: modal, optimizedFrom: null, evidence: { source: "matching population", sampleSize: localSample } };
-
-  const best = eligible.reduce((a, b) => (b.adjustedWinRate > a.adjustedWinRate ? b : a));
-  if (best.quantity === modal) return { quantity: modal, optimizedFrom: null, evidence: { source: "matching population", sampleSize: localSample } };
-
-  const modalWinRate = eligible.find((b) => b.quantity === modal)?.adjustedWinRate ?? null;
-  if (modalWinRate !== null && best.adjustedWinRate - modalWinRate < QUANTITY_OPTIMIZATION_MARGIN) {
-    return { quantity: modal, optimizedFrom: null, evidence: { source: "matching population", sampleSize: localSample } };
-  }
-  return { quantity: best.quantity, optimizedFrom: modal, evidence: { source: "global", sampleSize: best.deckCount } };
+  const advice = pickBetterQuantity(modal, quantityBucketsByName.get(cardName), legalMaxCopies(card));
+  if (!advice) return { quantity: modal, optimizedFrom: null, evidence: { source: "matching population", sampleSize: localSample } };
+  return { quantity: advice.quantity, optimizedFrom: advice.optimizedFrom, evidence: { source: "global", sampleSize: advice.sampleSize } };
 }
 
 /**
@@ -440,7 +421,7 @@ export function useSuggestedBuild(
   const settledCardCatalog = useDebouncedValue(cardCatalog, CATALOG_SETTLE_MS);
   const cardsByName = useMemo(() => new Map(settledCardCatalog.map((c) => [c.name, c])), [settledCardCatalog]);
   const quantityBucketsByName = useMemo(() => {
-    const map = new Map<string, { quantity: number; deckCount: number; adjustedWinRate: number }[]>();
+    const map = new Map<string, CardQuantityBucket[]>();
     for (const c of cardQuantityStatsData?.cards ?? []) map.set(c.name, c.quantities);
     return map;
   }, [cardQuantityStatsData]);
