@@ -30,7 +30,7 @@ import { useTabParam } from "../../lib/useTabParam";
 import { useAllDecodedDecks } from "../../lib/decodedDecks";
 import { useDebouncedValue } from "../../lib/useDebouncedValue";
 import { encodeCustomDecks } from "../../lib/compareShareLink";
-import { useDeckBuilderPopulation, type DeckBuilderRow } from "./useDeckBuilderPopulation";
+import { buildSpiritCanonicalNames, useDeckBuilderPopulation, type DeckBuilderRow } from "./useDeckBuilderPopulation";
 import { useNearestDecks, type NearestDeck } from "./useNearestDecks";
 import { computeIdentityElements, findChampionCard, useSuggestedBuild, type SuggestedCard } from "./useSuggestedBuild";
 import { useCommunitySuggestedBuild } from "./useCommunitySuggestedBuild";
@@ -147,6 +147,7 @@ interface SessionSeed {
   archetypeId: string | null;
   populationSource: PopulationSource;
   changeLog: ChangeLogEntry[];
+  maybeboard: Map<string, number>;
 }
 
 /** Plain-JSON shape written to sessionStorage — Maps/Sets aren't JSON.stringify-able, so lockedCards/
@@ -161,6 +162,7 @@ interface StoredSession {
   archetypeId: string | null;
   populationSource: PopulationSource;
   changeLog: ChangeLogEntry[];
+  maybeboard?: string;
 }
 
 /**
@@ -193,6 +195,7 @@ function loadSessionSeed(): SessionSeed | null {
           ? stored.populationSource
           : "balanced",
       changeLog: Array.isArray(stored.changeLog) ? stored.changeLog : [],
+      maybeboard: stored.maybeboard ? decodeLockedCards(stored.maybeboard).lockedCards : new Map<string, number>(),
     };
   } catch {
     return null;
@@ -209,6 +212,7 @@ function saveSessionSeed(seed: {
   archetypeId: string | null;
   populationSource: PopulationSource;
   changeLog: ChangeLogEntry[];
+  maybeboard: Map<string, number>;
 }): void {
   try {
     if (!seed.championName) {
@@ -224,6 +228,7 @@ function saveSessionSeed(seed: {
       archetypeId: seed.archetypeId,
       populationSource: seed.populationSource,
       changeLog: seed.changeLog,
+      maybeboard: encodeLockedCards(seed.maybeboard, new Map()),
     };
     sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(stored));
   } catch {
@@ -1185,6 +1190,8 @@ function ToolsPanel({
   deckFormat,
   populationSource,
   onChangePopulationSource,
+  collectionMode,
+  onCollectionModeChange,
 }: {
   rating: DeckRating;
   mainLines: { name: string; quantity: number }[];
@@ -1202,6 +1209,8 @@ function ToolsPanel({
   deckFormat: DeckFormat;
   populationSource: PopulationSource;
   onChangePopulationSource: (source: PopulationSource, label: string) => void;
+  collectionMode: CollectionMode;
+  onCollectionModeChange: (mode: CollectionMode) => void;
 }) {
   return (
     <div className="mt-6">
@@ -1323,8 +1332,17 @@ function ToolsPanel({
               : populationSource === "community"
                 ? "Community popularity (Shout At Your Decks). No win/loss data, just play frequency."
                 : "Simulator (Experimental). Community-built legal shell with card-level evidence."}
+          {collectionMode === "owned-only" && " Suggestions are limited to cards in your collection."}
         </p>
         <div role="group" aria-label="Data source" className="inline-flex max-w-full flex-wrap rounded-md border border-ctp-surface1 bg-ctp-base p-0.5">
+          <button
+            type="button"
+            aria-pressed={collectionMode === "owned-only"}
+            onClick={() => onCollectionModeChange("owned-only")}
+            className={`rounded px-3 py-1 text-xs font-medium ${collectionMode === "owned-only" ? "bg-ctp-green text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}
+          >
+            My collection
+          </button>
           <button
             type="button"
             aria-pressed={populationSource === "balanced"}
@@ -1619,13 +1637,16 @@ export default function DeckBuilderIndex() {
   const [spiritFilter, setSpiritFilter] = useState<string | null>(urlSeed?.spiritFilter ?? sessionSeed?.spiritFilter ?? null);
   const [spiritElement, setSpiritElement] = useState<string | null>(null);
   const [lockedCards, setLockedCards] = useState<Map<string, number>>(() => urlSeed?.lockedCards ?? sessionSeed?.lockedCards ?? new Map());
+  // A private parking lot for cards worth testing later. Unlike locked cards, these do not feed
+  // recommendations, totals, validation, exports, or saved decklists.
+  const [maybeboard, setMaybeboard] = useState<Map<string, number>>(() => sessionSeed?.maybeboard ?? new Map());
   // Section a lock is known to belong to (from where it was locked, or from a pasted decklist's
   // own Main/Material headers) — see useSuggestedBuild's lockedSections param doc for why this
   // beats guessing from population presence for a card the current population barely plays.
   const [lockedSections, setLockedSections] = useState<Map<string, LockedSection>>(() => urlSeed?.lockedSections ?? sessionSeed?.lockedSections ?? new Map());
   const [rejectedCards, setRejectedCards] = useState<Set<string>>(() => sessionSeed?.rejectedCards ?? new Set());
   const [cardInput, setCardInput] = useState("");
-  const [addToSideboard, setAddToSideboard] = useState(false);
+  const [addDestination, setAddDestination] = useState<"automatic" | "sideboard" | "maybeboard">("automatic");
   /** Tuning: nudges useSuggestedBuild's ranking toward a chosen DIAO Score pillar (see its own
    * pillarBias doc comment) — null ("Balanced") reproduces the original unbiased lift-only order. */
   const [pillarBias, setPillarBias] = useState<RatingPillar | null>(sessionSeed?.pillarBias ?? null);
@@ -1683,6 +1704,14 @@ export default function DeckBuilderIndex() {
   // all of which would otherwise recompute (and re-render the whole page) on every sync write.
   const cardCatalog = useDebouncedValue(useCardCatalog(), 500);
   const catalogByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
+  const spiritCanonicalNames = useMemo(() => buildSpiritCanonicalNames(cardCatalog), [cardCatalog]);
+  // Shared links and pasted decks can name a cosmetic equivalent. Store the canonical Spirit so
+  // it uses the same population as the picker (Miao, Spirit of Water = Spirit of Water).
+  useEffect(() => {
+    if (!spiritFilter) return;
+    const canonical = spiritCanonicalNames.get(spiritFilter);
+    if (canonical && canonical !== spiritFilter) setSpiritFilter(canonical);
+  }, [spiritFilter, spiritCanonicalNames]);
   useEffect(() => {
     const refreshCollection = () => { void accountApi.collection().then((result) => setCollection(result.entries)).catch(() => undefined); };
     refreshCollection();
@@ -1993,7 +2022,7 @@ export default function DeckBuilderIndex() {
   }, [communityCoOccurrence, championName, lockedCards, placedNames]);
   const buddyNames = useMemo(() => Array.from(buddyCards.values()).flatMap((list) => list.map((b) => b.cardName)), [buddyCards]);
   const suggestionNames = useMemo(() => build.suggestions.map((c) => c.cardName), [build.suggestions]);
-  const cardsByName = useCardsByNames(useMemo(() => [...allNames, ...buddyNames, ...suggestionNames], [allNames, buddyNames, suggestionNames]));
+  const cardsByName = useCardsByNames(useMemo(() => [...allNames, ...buddyNames, ...suggestionNames, ...maybeboard.keys()], [allNames, buddyNames, suggestionNames, maybeboard]));
   const priceByName = useDeckPriceByName();
 
   useEffect(() => {
@@ -2015,6 +2044,7 @@ export default function DeckBuilderIndex() {
           setLockedCards(new Map());
           setLockedSections(new Map());
         }
+        setMaybeboard(new Map());
         setRejectedCards(new Set());
         setDismissedReviewCards(new Set());
         setArchetypeId(null);
@@ -2053,8 +2083,8 @@ export default function DeckBuilderIndex() {
   // UI state (cardInput, pasteOpen/pasteText, tab — the last already survives via useTabParam's
   // own URL sync) since none of that is "my session," just in-progress typing/navigation.
   useEffect(() => {
-    saveSessionSeed({ championName, spiritFilter, lockedCards, lockedSections, rejectedCards, pillarBias, archetypeId, populationSource, changeLog });
-  }, [championName, spiritFilter, lockedCards, lockedSections, rejectedCards, pillarBias, archetypeId, populationSource, changeLog]);
+    saveSessionSeed({ championName, spiritFilter, lockedCards, lockedSections, rejectedCards, pillarBias, archetypeId, populationSource, changeLog, maybeboard });
+  }, [championName, spiritFilter, lockedCards, lockedSections, rejectedCards, pillarBias, archetypeId, populationSource, changeLog, maybeboard]);
 
   /**
    * Bulk equivalent of picking a Champion+Spirit then locking every remaining card by hand —
@@ -2098,9 +2128,10 @@ export default function DeckBuilderIndex() {
 
     if (detectedChampion !== championName) skipNextResetRef.current = true;
     setChampionName(detectedChampion);
-    setSpiritFilter(detectedSpirit);
+    setSpiritFilter(detectedSpirit ? (spiritCanonicalNames.get(detectedSpirit) ?? detectedSpirit) : null);
     setLockedCards(newLocked);
     setLockedSections(newSections);
+    setMaybeboard(new Map());
     setRejectedCards(new Set());
     setDismissedReviewCards(new Set());
     setChangeLog([]);
@@ -2131,9 +2162,10 @@ export default function DeckBuilderIndex() {
 
     if (deck.championName && deck.championName !== championName) skipNextResetRef.current = true;
     if (deck.championName) setChampionName(deck.championName);
-    setSpiritFilter(deck.spiritName);
+    setSpiritFilter(deck.spiritName ? (spiritCanonicalNames.get(deck.spiritName) ?? deck.spiritName) : null);
     setLockedCards(newLocked);
     setLockedSections(newSections);
+    setMaybeboard(new Map());
     setRejectedCards(new Set());
     setChangeLog([]);
     pendingActionRef.current = null;
@@ -2180,11 +2212,29 @@ export default function DeckBuilderIndex() {
       if (locked) {
         setLockedCards((prev) => {
           const next = new Map(prev);
+          const removed = catalogByName.get(name);
+          // Champion levels are a progression: removing level 2 must also remove any later
+          // locked levels for that same Champion, otherwise the material deck is invalid.
+          if (removed?.types.includes("CHAMPION") && !removed.subtypes.includes("SPIRIT") && removed.level !== null && removed.level !== undefined) {
+            const identity = removed.name.split(",")[0].trim();
+            for (const lockedName of next.keys()) {
+              const candidate = catalogByName.get(lockedName);
+              if (candidate?.types.includes("CHAMPION") && !candidate.subtypes.includes("SPIRIT") && candidate.level !== null && candidate.level !== undefined && candidate.level > removed.level && candidate.name.split(",")[0].trim() === identity) next.delete(lockedName);
+            }
+          }
           next.delete(name);
           return next;
         });
         setLockedSections((prev) => {
           const next = new Map(prev);
+          const removed = catalogByName.get(name);
+          if (removed?.types.includes("CHAMPION") && !removed.subtypes.includes("SPIRIT") && removed.level !== null && removed.level !== undefined) {
+            const identity = removed.name.split(",")[0].trim();
+            for (const lockedName of next.keys()) {
+              const candidate = catalogByName.get(lockedName);
+              if (candidate?.types.includes("CHAMPION") && !candidate.subtypes.includes("SPIRIT") && candidate.level !== null && candidate.level !== undefined && candidate.level > removed.level && candidate.name.split(",")[0].trim() === identity) next.delete(lockedName);
+            }
+          }
           next.delete(name);
           return next;
         });
@@ -2195,7 +2245,7 @@ export default function DeckBuilderIndex() {
   }
 
   function addCard(name: string) {
-    if (!cardNameSet.has(name) || lockedCards.has(name)) return;
+    if (!cardNameSet.has(name) || (lockedCards.has(name) && addDestination !== "maybeboard")) return;
     const card = cardCatalog.find((c) => c.name === name);
     // Champion/Regalia cards are Material-deck-only and capped at 1 copy there regardless of the
     // card's own UNIQUE/Standard limit (see useSuggestedBuild.ts's build-time precheck for the
@@ -2208,7 +2258,13 @@ export default function DeckBuilderIndex() {
       0,
     );
     const fitsSideboard = currentSideboardPoints + defaultQty * sideboardPointCost(card) <= SIDEBOARD_POINT_BUDGET;
-    const placeInSideboard = addToSideboard && fitsSideboard;
+    if (addDestination === "maybeboard") {
+      setMaybeboard((previous) => new Map(previous).set(name, defaultQty));
+      setCardInput("");
+      setAddDestination("automatic");
+      return;
+    }
+    const placeInSideboard = addDestination === "sideboard" && fitsSideboard;
     pendingActionRef.current = { label: `Added ${name}`, subject: name };
     startTransition(() => {
       setLockedCards((prev) => {
@@ -2221,7 +2277,37 @@ export default function DeckBuilderIndex() {
       }
     });
     setCardInput("");
-    setAddToSideboard(false);
+    setAddDestination("automatic");
+  }
+
+  function removeMaybeCard(name: string) {
+    setMaybeboard((previous) => {
+      const next = new Map(previous);
+      next.delete(name);
+      return next;
+    });
+  }
+
+  function setMaybeQuantity(name: string, quantity: number) {
+    if (!Number.isInteger(quantity) || quantity < 1) return;
+    setMaybeboard((previous) => new Map(previous).set(name, Math.min(quantity, 4)));
+  }
+
+  function promoteMaybeCard(name: string) {
+    const quantity = maybeboard.get(name);
+    if (!quantity || lockedCards.has(name)) return;
+    const card = catalogByName.get(name);
+    const section: LockedSection = card?.types.some((type) => type === "CHAMPION" || type === "REGALIA") ? "material" : "main";
+    pendingActionRef.current = { label: `Added ${name} from maybeboard`, subject: name };
+    startTransition(() => {
+      setLockedCards((previous) => new Map(previous).set(name, quantity));
+      setLockedSections((previous) => new Map(previous).set(name, section));
+      setMaybeboard((previous) => {
+        const next = new Map(previous);
+        next.delete(name);
+        return next;
+      });
+    });
   }
 
   /** "Add" from the "Cards that might help" list — same as toggleLock, just with the section/quantity the suggestion already carries instead of guessing. */
@@ -2313,7 +2399,7 @@ export default function DeckBuilderIndex() {
   );
   const selectedSideboardPoints = selectedAddCard ? selectedAddQuantity * sideboardPointCost(selectedAddCard) : 0;
   const canAddToSideboard = Boolean(selectedAddCard) && currentSideboardPoints + selectedSideboardPoints <= SIDEBOARD_POINT_BUDGET;
-  const sideboardDestinationSelected = addToSideboard && canAddToSideboard;
+  const sideboardDestinationSelected = addDestination === "sideboard" && canAddToSideboard;
   // Deck price/Stats stay scoped to material+main — same "sideboard is situational tech, not part
   // of deck identity" convention as everywhere else in this codebase (Popular Decks, Archetypes,
   // etc.); sideboard gets its own separate price line below instead, matching DecklistView.tsx.
@@ -2398,7 +2484,8 @@ export default function DeckBuilderIndex() {
       setLockedSections(new Map());
       setRejectedCards(new Set());
       setCardInput("");
-      setAddToSideboard(false);
+      setAddDestination("automatic");
+      setMaybeboard(new Map());
       setPillarBias(null);
       setArchetypeId(null);
       setPopulationSource("balanced");
@@ -2437,6 +2524,15 @@ export default function DeckBuilderIndex() {
     .filter((card) => card.locked)
     .reduce((sum, card) => sum + card.quantity, 0);
   const importedCardCount = Array.from(lockedCards.values()).reduce((sum, quantity) => sum + quantity, 0);
+  const identityComplete = Boolean(championName && spiritFilter);
+  const startingCardsComplete = isImproving ? importedCardCount > 0 : builderIntent === "seed" ? lockedCards.size > 0 : identityComplete;
+  const buildComplete = identityComplete && mainTotal > 0;
+  const reviewComplete = buildComplete && reviewItemCount === 0;
+  const validationComplete = validation.status === "Legal";
+  function focusBuilderStep(id: string, destination?: BuilderTab) {
+    if (destination) setTab(destination);
+    requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" }));
+  }
   const deckToSave = saveKeptOnly ? keptDecklist : decklist;
   const saveCopyCount = saveKeptOnly ? keptCopyCount : fullCopyCount;
 
@@ -2548,6 +2644,26 @@ export default function DeckBuilderIndex() {
         )}
       />
 
+      <nav className="mt-5 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3" aria-label="Guided deck-building steps">
+        <p className="px-1 text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Your deck-building path</p>
+        <ol className="mt-2 grid gap-1 sm:grid-cols-5">
+          {[
+            { label: "Identity", summary: identityComplete ? `${championName} · ${spiritFilter}` : "Choose Champion and Spirit", complete: identityComplete, id: "deck-builder-identity" },
+            { label: "Starting cards", summary: startingCardsComplete ? (isImproving ? `${importedCardCount} baseline cards` : builderIntent === "seed" ? `${lockedCards.size} cards locked` : "Fresh suggested shell") : "Choose your starting point", complete: startingCardsComplete, id: "deck-builder-starting" },
+            { label: "Build", summary: buildComplete ? `${mainTotal} main cards` : "Shape your deck", complete: buildComplete, id: "deck-builder-panel-build", tab: "build" as BuilderTab },
+            { label: "Review", summary: reviewComplete ? "Changes reviewed" : reviewItemCount > 0 ? `${reviewItemCount} changes to review` : "Review recommendations", complete: reviewComplete, id: "deck-builder-panel-review", tab: "review" as BuilderTab },
+            { label: "Validate & save", summary: validationComplete ? "Ready to save" : validation.status, complete: validationComplete, id: "deck-builder-panel-copy", tab: "copy" as BuilderTab },
+          ].map((step, index) => (
+            <li key={step.label}>
+              <button type="button" onClick={() => focusBuilderStep(step.id, step.tab)} className={`flex w-full items-start gap-2 rounded-lg px-2 py-2 text-left transition-colors ${step.tab === tab ? "bg-ctp-blue/10" : "hover:bg-ctp-surface0"}`}>
+                <span className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold ${step.complete ? "bg-ctp-green text-ctp-base" : step.tab === tab ? "bg-ctp-blue text-ctp-base" : "border border-ctp-surface1 text-ctp-subtext0"}`}>{step.complete ? "✓" : index + 1}</span>
+                <span className="min-w-0"><span className="block text-xs font-semibold text-ctp-text">{step.label}</span><span className="mt-0.5 block truncate text-[10px] text-ctp-subtext0">{step.summary}</span></span>
+              </button>
+            </li>
+          ))}
+        </ol>
+      </nav>
+
       {!isImproving && <section className="mt-5 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4" aria-labelledby="builder-start">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <div>
@@ -2593,14 +2709,14 @@ export default function DeckBuilderIndex() {
         </ol>
       </section>}
 
-      <div className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1 text-sm" role="group" aria-label="Deck format">
+      <div id="deck-builder-starting" className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1 text-sm" role="group" aria-label="Deck format">
         {(["STANDARD", "PANTHEON"] as const).map((format) => <button key={format} type="button" aria-pressed={deckFormat === format} onClick={() => { setDeckFormat(format); if (format === "PANTHEON") setPopulationSource("community"); const next = new URLSearchParams(searchParams); if (format === "PANTHEON") next.set("format", "pantheon"); else next.delete("format"); setSearchParams(next, { replace: true }); }} className={`rounded-md px-3 py-1.5 ${deckFormat === format ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>{format === "PANTHEON" ? "Pantheon" : "Standard"}</button>)}
       </div>
       {deckFormat === "PANTHEON" && <p className="mt-2 text-xs text-ctp-subtext0">Pantheon recommendations use format-separated community adoption and singleton legality. They do not use Standard tournament win rates.</p>}
 
       <div className="mt-3 flex flex-wrap items-center gap-2 rounded-lg border border-ctp-green/30 bg-ctp-green/5 p-3 text-xs"><span className="font-medium text-ctp-text">Build from collection:</span>{([['all', 'All cards'], ['prioritize', 'Prioritize owned'], ['owned-only', 'Owned only']] as const).map(([value, label]) => <button key={value} type="button" aria-pressed={collectionMode === value} onClick={() => startTransition(() => setCollectionMode(value))} className={`rounded px-2.5 py-1.5 ${collectionMode === value ? "bg-ctp-green text-ctp-base" : "border border-ctp-surface1 text-ctp-subtext1"}`}>{label}</button>)}<Link to="/collection" className="ml-auto text-ctp-blue hover:underline">Manage collection</Link><p className="w-full text-ctp-subtext0">{collectionMode === "owned-only" ? "Auto-suggestions are capped to physical copies you own. Locked cards remain, and shortages stay visible as unresolved slots." : collectionMode === "prioritize" ? "Owned cards win close recommendation ties; performance evidence still leads." : `${collection.length} owned card ${collection.length === 1 ? "entry" : "entries"} loaded.`}</p></div>
 
-      <div className={isImproving ? "mt-4" : "mt-4 flex flex-wrap items-center gap-2 text-sm"}>
+      <div id="deck-builder-identity" className={isImproving ? "mt-4" : "mt-4 flex flex-wrap items-center gap-2 text-sm"}>
         {isImproving && championName && <>
           <div className="flex flex-wrap items-center gap-2 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm">
             <span className="text-ctp-subtext0">Reviewing:</span>
@@ -2830,11 +2946,11 @@ export default function DeckBuilderIndex() {
             <Tabs<BuilderTab>
               tabs={[
                 { key: "build", label: "Build" },
-                { key: "review", label: reviewItemCount > 0 ? `Review (${reviewItemCount})` : `Review` },
+                { key: "review", label: reviewItemCount > 0 ? `Review & decide (${reviewItemCount})` : "Review & decide" },
                 { key: "stats", label: statsSignalCount > 0 ? `Stats (${statsSignalCount})` : "Stats" },
-                { key: "tools", label: "Tools" },
+                { key: "tools", label: "Advanced" },
                 { key: "buddies", label: "Buddy Cards" },
-                { key: "copy", label: "Copy & Export" },
+                { key: "copy", label: "Validate & save" },
                 { key: "log", label: `Log (${changeLog.length})` },
               ]}
               active={tab}
@@ -2871,7 +2987,7 @@ export default function DeckBuilderIndex() {
                 value={cardInput}
                 onChange={(e) => {
                   setCardInput(e.target.value);
-                  setAddToSideboard(false);
+                  setAddDestination("automatic");
                 }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && cardNameSet.has(cardInput)) addCard(cardInput);
@@ -2889,33 +3005,43 @@ export default function DeckBuilderIndex() {
                 <div role="group" aria-label="Card destination" className="inline-flex rounded-md border border-ctp-surface1 bg-ctp-mantle p-0.5">
                   <button
                     type="button"
-                    aria-pressed={!sideboardDestinationSelected}
-                    onClick={() => setAddToSideboard(false)}
-                    className={`rounded px-2.5 py-1 text-xs ${!sideboardDestinationSelected ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}
+                    aria-pressed={addDestination === "automatic"}
+                    onClick={() => setAddDestination("automatic")}
+                    className={`rounded px-2.5 py-1 text-xs ${addDestination === "automatic" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}
                   >
                     Automatic
                   </button>
                   <button
                     type="button"
-                    aria-pressed={sideboardDestinationSelected}
+                    aria-pressed={addDestination === "sideboard"}
                     disabled={!canAddToSideboard}
-                    onClick={() => setAddToSideboard(true)}
+                    onClick={() => setAddDestination("sideboard")}
                     title={!selectedAddCard ? "Choose a card first" : !canAddToSideboard ? `This card would exceed the ${SIDEBOARD_POINT_BUDGET}-point sideboard budget` : undefined}
-                    className={`rounded px-2.5 py-1 text-xs ${sideboardDestinationSelected ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 enabled:hover:text-ctp-text disabled:cursor-not-allowed disabled:opacity-40"}`}
+                    className={`rounded px-2.5 py-1 text-xs ${addDestination === "sideboard" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 enabled:hover:text-ctp-text disabled:cursor-not-allowed disabled:opacity-40"}`}
                   >
                     Sideboard
+                  </button>
+                  <button
+                    type="button"
+                    aria-pressed={addDestination === "maybeboard"}
+                    onClick={() => setAddDestination("maybeboard")}
+                    className={`rounded px-2.5 py-1 text-xs ${addDestination === "maybeboard" ? "bg-ctp-yellow text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}
+                  >
+                    Maybeboard
                   </button>
                 </div>
                 <button
                   type="button"
-                  disabled={!cardNameSet.has(cardInput) || lockedCards.has(cardInput)}
+                  disabled={!cardNameSet.has(cardInput) || (lockedCards.has(cardInput) && addDestination !== "maybeboard")}
                   onClick={() => addCard(cardInput)}
                   className="rounded-md border border-ctp-blue px-3 py-1 text-xs text-ctp-blue enabled:hover:bg-ctp-surface0 disabled:cursor-not-allowed disabled:opacity-40"
                 >
-                  {sideboardDestinationSelected ? "Add to sideboard" : "Add card"}
+                  {addDestination === "maybeboard" ? "Add to maybeboard" : sideboardDestinationSelected ? "Add to sideboard" : "Add card"}
                 </button>
                 <span className="text-xs text-ctp-subtext0">
-                  {sideboardDestinationSelected
+                  {addDestination === "maybeboard"
+                    ? "Doesn't affect the deck until you promote it."
+                    : sideboardDestinationSelected
                     ? `Uses ${selectedSideboardPoints} points; ${SIDEBOARD_POINT_BUDGET - currentSideboardPoints} available.`
                     : "Automatic places the card in Main or Material."}
                 </span>
@@ -3042,6 +3168,29 @@ export default function DeckBuilderIndex() {
                         onRemove={() => removeCard(c.cardName, c.locked)}
                       />
                     ))}
+                  </ul>
+                </div>
+              )}
+
+              {maybeboard.size > 0 && (
+                <div className="mt-4 rounded-lg border border-dashed border-ctp-yellow/60 bg-ctp-yellow/5 p-3">
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <div>
+                      <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-yellow">Maybeboard ({maybeboard.size})</h2>
+                      <p className="mt-1 text-xs text-ctp-subtext0">Cards you are considering. They are not part of the deck, so they do not affect legality, stats, exports, or saved versions.</p>
+                    </div>
+                  </div>
+                  <ul className="mt-2 space-y-1">
+                    {Array.from(maybeboard.entries()).map(([name, quantity]) => {
+                      const card = catalogByName.get(name);
+                      return <li key={name} className="relative flex flex-wrap items-center gap-1.5 overflow-hidden rounded-md border border-ctp-yellow/30 bg-ctp-base py-1 pl-3 pr-2 text-sm">
+                        <ElementRail elements={card?.elements} />
+                        <input type="number" min={1} max={4} value={quantity} aria-label={`Copies of ${name} in maybeboard`} onChange={(event) => setMaybeQuantity(name, Number(event.target.value))} className="w-11 rounded border border-ctp-surface1 bg-ctp-mantle px-1 py-0.5 text-right text-xs text-ctp-text" />
+                        {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
+                        <CardHoverPreview image={card?.editions[0]?.image} alt={name}>{card ? <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">{name}</Link> : <span className="text-ctp-text">{name}</span>}</CardHoverPreview>
+                        <div className="ml-auto flex gap-1.5"><button type="button" disabled={lockedCards.has(name)} onClick={() => promoteMaybeCard(name)} className="rounded-md border border-ctp-blue px-2 py-1 text-xs text-ctp-blue disabled:opacity-40">Add to deck</button><button type="button" onClick={() => removeMaybeCard(name)} className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-red">Remove</button></div>
+                      </li>;
+                    })}
                   </ul>
                 </div>
               )}
@@ -3254,6 +3403,10 @@ export default function DeckBuilderIndex() {
                   </div>
                 </>
               )}
+              <div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-ctp-surface1 pt-3">
+                <button type="button" onClick={() => setTab("build")} className="text-xs text-ctp-blue hover:underline">← Back to build</button>
+                <button type="button" onClick={() => setTab("copy")} className="rounded-md bg-ctp-blue px-3 py-1.5 text-xs font-medium text-ctp-base">{reviewComplete ? "Continue to validation" : "Validate current deck"} →</button>
+              </div>
             </div>
           )}
 
@@ -3292,7 +3445,12 @@ export default function DeckBuilderIndex() {
                 unresolvedMain={build.unresolved.main}
                 deckFormat={deckFormat}
                 populationSource={effectivePopulationSource}
-                onChangePopulationSource={changePopulationSource}
+                onChangePopulationSource={(source, label) => {
+                  startTransition(() => setCollectionMode("all"));
+                  changePopulationSource(source, label);
+                }}
+                collectionMode={collectionMode}
+                onCollectionModeChange={(mode) => startTransition(() => setCollectionMode(mode))}
               />
             </div>
           )}
@@ -3311,6 +3469,16 @@ export default function DeckBuilderIndex() {
 
           {tab === "copy" && (
             <div role="tabpanel" id="deck-builder-panel-copy" aria-labelledby="deck-builder-tab-copy" className="mt-4">
+              <section className={`mb-4 rounded-lg border p-4 ${validationComplete ? "border-ctp-green/50 bg-ctp-green/5" : "border-ctp-yellow/50 bg-ctp-yellow/5"}`} aria-labelledby="validate-and-save">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <h2 id="validate-and-save" className="font-semibold text-ctp-text">Validate & save</h2>
+                    <p className={`mt-1 text-sm ${validationComplete ? "text-ctp-green" : "text-ctp-yellow"}`}>{validationComplete ? "Construction checks pass. This version is ready to save, export, or playtest." : `${validation.status}: ${validation.reasons[0] ?? "review the deck before saving."}`}</p>
+                  </div>
+                  {!reviewComplete && <button type="button" onClick={() => setTab("review")} className="rounded-md border border-ctp-yellow/60 px-3 py-1.5 text-xs font-medium text-ctp-yellow hover:bg-ctp-yellow/10">Review changes first</button>}
+                </div>
+                {validation.reasons.length > 1 && <ul className="mt-2 list-disc pl-5 text-xs text-ctp-subtext1">{validation.reasons.slice(1, 4).map((reason) => <li key={reason}>{reason}</li>)}</ul>}
+              </section>
               <div className="mb-4 rounded-lg border border-ctp-blue/40 bg-ctp-blue/5 p-4">
                 <h3 className="font-semibold text-ctp-text">{improveDeckId ? "Save improved version" : "Save this build"}</h3>
                 <p className="mt-1 text-sm text-ctp-subtext1">{improveDeckId ? "Save the accepted changes as a new version. Your previous deck version remains available." : "Add the current Main, Material, and Sideboard to your private editable decks."}</p>

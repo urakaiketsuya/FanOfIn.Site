@@ -46,11 +46,13 @@ function findSpiritName(material: { name: string; quantity: number }[], cardsByN
  * Spirit of Fire" — 1 deck) instead of counting toward the shared "Spirit of Fire" population they
  * actually belong to.
  */
-function buildSpiritCanonicalNames(catalog: Card[]): Map<string, string> {
+export function buildSpiritCanonicalNames(catalog: Card[]): Map<string, string> {
   const groups = new Map<string, Card[]>();
   for (const card of catalog) {
     if (!card.types.includes("CHAMPION") || !card.subtypes.includes("SPIRIT")) continue;
-    const key = `${[...card.elements].sort().join(",")}|${card.effect ?? ""}`;
+    // Incidental API whitespace must not split mechanically-identical Spirit printings
+    // (for example Miao, Spirit of Water and Spirit of Water) into separate populations.
+    const key = `${[...card.elements].sort().join(",")}|${(card.effect ?? "").replace(/\s+/g, " ").trim()}`;
     const list = groups.get(key) ?? [];
     list.push(card);
     groups.set(key, list);

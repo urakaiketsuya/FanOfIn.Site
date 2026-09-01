@@ -15,6 +15,7 @@ import { buildTtsSaveFile, downloadJsonFile, findDeckChampionName, slugifyFilena
 import { buildClarentPlaytestUrl } from "../../lib/clarentPlaytest";
 import { copyDecklistAndOpen, deckBuilderDestinations } from "../../lib/deckBuilderDestinations";
 import { useCardCatalog } from "../cards/useCardCatalog";
+import { extractProducedTokens } from "../../lib/cardIntent";
 
 /** Only surface a suggestion once shrinkage has left it meaningfully above zero — filters out noise that technically cleared the sample-size bar but is still statistically thin. */
 const MIN_SUGGESTED_LIFT = 0.02;
@@ -173,11 +174,19 @@ export default function DecklistView({
   );
   const referencedTokens = useMemo(() => {
     const catalogBySlug = new Map(catalog.map((card) => [card.slug, card]));
+    const tokenByName = new Map(catalog.filter((card) => card.types.includes("TOKEN")).map((card) => [card.name.toLocaleLowerCase(), card]));
     const tokens = new Map<string, OmnidexDecklistCardLine>();
     for (const line of [...decklist.main, ...decklist.material, ...decklist.sideboard]) {
-      for (const reference of cardsByName.get(line.card)?.references ?? []) {
+      const source = cardsByName.get(line.card);
+      for (const reference of source?.references ?? []) {
         const target = catalogBySlug.get(reference.slug) ?? catalog.find((card) => card.name === reference.name);
         if (target?.types.includes("TOKEN")) tokens.set(target.name, { card: target.name, quantity: 1 });
+      }
+      // Many token cards are absent from the API reference graph even though the printed effect
+      // names them. Resolve those names through the catalog for real card thumbnails and links.
+      for (const tokenName of source ? extractProducedTokens(source) : []) {
+        const target = tokenByName.get(tokenName.toLocaleLowerCase());
+        if (target) tokens.set(target.name, { card: target.name, quantity: 1 });
       }
     }
     return Array.from(tokens.values()).sort((a, b) => a.card.localeCompare(b.card));
@@ -186,6 +195,9 @@ export default function DecklistView({
     () => [...trailingSections, ...(referencedTokens.length > 0 && !trailingSections.some((section) => section.title === "Tokens") ? [{ title: "Tokens", lines: referencedTokens }] : [])],
     [trailingSections, referencedTokens],
   );
+  // Tokens are not decklist lines, so callers generally do not include them in their initial
+  // image lookup. Merge the local catalog for display only, keeping caller-resolved cards first.
+  const displayCardsByName = useMemo(() => new Map([...catalog.map((card) => [card.name, card] as const), ...cardsByName]), [catalog, cardsByName]);
 
   const allLines = useMemo(() => [...extraSections.flatMap((section) => section.lines), ...decklist.main, ...decklist.material, ...decklist.sideboard, ...trailingSections.flatMap((section) => section.lines)], [decklist, extraSections, trailingSections]);
   const massEntryUrl = useMemo(
@@ -279,26 +291,26 @@ export default function DecklistView({
         </div>
       )}
       <div className="mb-4 flex justify-end gap-1" role="group" aria-label="Decklist display">{(["compact", "visual", "detailed"] as const).map((mode) => <button key={mode} type="button" onClick={() => setDisplayMode(mode)} aria-pressed={displayMode === mode} className={`rounded-md border px-2 py-1 text-xs capitalize ${displayMode === mode ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`}>{mode}</button>)}</div>
-      {displayMode === "compact" && <div className="space-y-5">{[...extraSections, { title: "Main", lines: decklist.main }, { title: "Material", lines: decklist.material }, { title: "Sideboard", lines: decklist.sideboard }, ...displayTrailingSections].map((section) => <CompactDeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={cardsByName} />)}</div>}
-      {displayMode === "visual" && <div className="space-y-6">{[...extraSections, { title: "Main", lines: decklist.main }, { title: "Material", lines: decklist.material }, { title: "Sideboard", lines: decklist.sideboard }, ...displayTrailingSections].map((section) => <VisualDeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={cardsByName} />)}</div>}
+      {displayMode === "compact" && <div className="space-y-5">{[...extraSections, { title: "Main", lines: decklist.main }, { title: "Material", lines: decklist.material }, { title: "Sideboard", lines: decklist.sideboard }, ...displayTrailingSections].map((section) => <CompactDeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} />)}</div>}
+      {displayMode === "visual" && <div className="space-y-6">{[...extraSections, { title: "Main", lines: decklist.main }, { title: "Material", lines: decklist.material }, { title: "Sideboard", lines: decklist.sideboard }, ...displayTrailingSections].map((section) => <VisualDeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} />)}</div>}
       {displayMode === "detailed" && <div className="grid gap-4 sm:grid-cols-2">
-        {extraSections.map((section) => <DeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={cardsByName} priceByName={priceByName} showThumbnails={showThumbnails} />)}
-        <DeckSection title="Main" lines={decklist.main} cardsByName={cardsByName} priceByName={priceByName} showThumbnails={showThumbnails} />
+        {extraSections.map((section) => <DeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} />)}
+        <DeckSection title="Main" lines={decklist.main} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} />
         <DeckSection
           title="Material"
           lines={decklist.material}
-          cardsByName={cardsByName}
+          cardsByName={displayCardsByName}
           priceByName={priceByName}
           showThumbnails={showThumbnails}
         />
         <DeckSection
           title="Sideboard"
           lines={decklist.sideboard}
-          cardsByName={cardsByName}
+          cardsByName={displayCardsByName}
           priceByName={priceByName}
           showThumbnails={showThumbnails}
         />
-        {displayTrailingSections.map((section) => <DeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={cardsByName} priceByName={priceByName} showThumbnails={showThumbnails} />)}
+        {displayTrailingSections.map((section) => <DeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} />)}
       </div>}
 
       {suggestions.length > 0 && (

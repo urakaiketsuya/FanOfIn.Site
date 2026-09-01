@@ -24,6 +24,7 @@ export default function MyDeckDetail() {
   const [error, setError] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
   const [deckText, setDeckText] = useState("");
+  const [maybeboardText, setMaybeboardText] = useState("");
   const [changeNote, setChangeNote] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -55,6 +56,23 @@ export default function MyDeckDetail() {
     });
     return () => { active = false; };
   }, [deckId]);
+
+  useEffect(() => {
+    try { setMaybeboardText(localStorage.getItem(`my-deck-maybeboard:${deckId}`) ?? ""); } catch { setMaybeboardText(""); }
+  }, [deckId]);
+
+  function saveMaybeboard() {
+    try { localStorage.setItem(`my-deck-maybeboard:${deckId}`, maybeboardText); setNotice("Maybeboard saved in this browser."); }
+    catch { setError("Could not save the maybeboard in this browser."); }
+  }
+
+  function addMaybeboardToEditor() {
+    const lines = maybeboardText.trim();
+    if (!lines) return;
+    setDeckText(`${buildDecklistText(deck!.decklist).trim()}\n\nMain\n${lines}\n`);
+    setEditing(true);
+    setNotice("Maybeboard cards were added to the deck editor. Save a new version when you are ready.");
+  }
 
   async function refresh() {
     const result = await accountApi.deck(deckId);
@@ -114,6 +132,11 @@ export default function MyDeckDetail() {
         <input value={changeNote} maxLength={240} onChange={(event) => setChangeNote(event.target.value)} placeholder="What changed? (optional)" className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm" />
         <button disabled={busy} type="submit" className="mt-3 rounded-md bg-ctp-blue px-3 py-2 text-sm text-ctp-base disabled:opacity-50">Save new version</button>
       </form> : undefined}
+      <section className="mt-5 rounded-lg border border-dashed border-ctp-yellow/60 bg-ctp-yellow/5 p-4">
+        <div className="flex flex-wrap items-start justify-between gap-3"><div><h3 className="font-medium text-ctp-yellow">Maybeboard</h3><p className="mt-1 text-xs text-ctp-subtext1">Keep cards under consideration outside the deck. One line per card, for example <span className="font-mono">2x Card Name</span>.</p></div><button type="button" disabled={!maybeboardText.trim()} onClick={addMaybeboardToEditor} className="rounded border border-ctp-blue px-2 py-1 text-xs text-ctp-blue disabled:opacity-50">Add to deck editor</button></div>
+        <textarea rows={5} value={maybeboardText} onChange={(event) => setMaybeboardText(event.target.value)} onBlur={saveMaybeboard} placeholder={"2x Card to test\n4x Another option"} aria-label="Maybeboard" className="mt-3 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-3 font-mono text-sm" />
+        <p className="mt-2 text-xs text-ctp-subtext0">Saved automatically in this browser; it never affects this deck's legality, statistics, exports, or published version.</p>
+      </section>
     </UserDecklistPanel>}
     {tab === "primer" && <section id="owned-deck-panel-primer" role="tabpanel" aria-labelledby="owned-deck-tab-primer" tabIndex={0} className="mt-6 grid gap-5 lg:grid-cols-2">
       <form className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4" onSubmit={(event) => { event.preventDefault(); void run(async () => { await accountApi.updateDeckMetadata(deck.id, { primerMarkdown }); await refresh(); }); }}>
