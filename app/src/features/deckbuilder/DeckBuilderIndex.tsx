@@ -1268,18 +1268,26 @@ function ToolsPanel({
             className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1.5 text-xs text-ctp-text disabled:cursor-not-allowed disabled:opacity-50"
           >
             <option value="">None — use the full Champion/Spirit evidence</option>
-            {archetypeOptions.map((option) => (
-              <option key={option.id} value={option.id}>
-                {option.routeName} → {option.name} · {option.deckCount} build decks / {option.routeDeckCount} route appearances{option.confidence === "emerging" ? " · Emerging" : ""}
-              </option>
-            ))}
+            {archetypeOptions.map((option) => {
+              const isEstablished = option.confidence === "established";
+              return (
+                <option key={option.id} value={option.id}>
+                  {option.routeName} → {option.name}
+                  {isEstablished ? ` · ${option.deckCount} established decks` : ` · ${option.deckCount} emerging build`}
+                  {option.routeDeckCount > 0 && ` (${option.routeDeckCount} route matches)`}
+                </option>
+              );
+            })}
           </select>
           <p className="mt-1 text-[11px] text-ctp-subtext0">
             {deckFormat !== "STANDARD"
               ? "Archetype taxonomy is based on Standard tournament decklists."
               : populationSource === "community" || populationSource === "simulator"
                 ? "Your choice is saved, but only affects Tournament and Balanced suggestions."
-                : "Uses this build path's real deck sample, then ranks cards by its win-rate evidence. Your Spirit selection still remains a hard boundary."}
+                : "Filters suggestions to decks matching this archetype's card combinations. Your Spirit selection still remains a hard boundary."}
+          </p>
+          <p className="mt-0.5 text-[10px] text-ctp-subtext1">
+            An archetype groups decks that run similar card combinations. The "route" represents a specific play pattern within the archetype. Selecting an archetype filters suggestions toward cards commonly run in that build path.
           </p>
         </div>
         <div className="mt-4 border-t border-ctp-surface1 pt-3">
@@ -1343,15 +1351,6 @@ function ToolsPanel({
             Simulator <span className="font-normal">(Experimental)</span>
           </button>}
         </div>
-        <span className="text-xs text-ctp-subtext0">
-          {populationSource === "tournament"
-            ? "ranked by real tournament win rates"
-            : populationSource === "balanced"
-              ? "ranked by real tournament win rates, nudged toward community popularity"
-              : populationSource === "community"
-                ? "ranked by community popularity — no win/loss data"
-                : "community shell, reordered only where simulator card evidence resolves"}
-        </span>
       </div>
 
       <HypergeometricCalculator mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
@@ -1600,6 +1599,7 @@ export default function DeckBuilderIndex() {
 
   const [championName, setChampionName] = useState<string | null>(urlSeed?.championName ?? sessionSeed?.championName ?? null);
   const [spiritFilter, setSpiritFilter] = useState<string | null>(urlSeed?.spiritFilter ?? sessionSeed?.spiritFilter ?? null);
+  const [spiritElement, setSpiritElement] = useState<string | null>(null);
   const [lockedCards, setLockedCards] = useState<Map<string, number>>(() => urlSeed?.lockedCards ?? sessionSeed?.lockedCards ?? new Map());
   // Section a lock is known to belong to (from where it was locked, or from a pasted decklist's
   // own Main/Material headers) — see useSuggestedBuild's lockedSections param doc for why this
@@ -1892,6 +1892,16 @@ export default function DeckBuilderIndex() {
     () => [...spiritsPresent].sort((a, b) => (spiritStats.get(b)?.decks ?? 0) - (spiritStats.get(a)?.decks ?? 0) || a.localeCompare(b)),
     [spiritsPresent, spiritStats],
   );
+  const spiritElements = useMemo(
+    () => Array.from(new Set(sortedSpirits.flatMap((name) => catalogByName.get(name)?.elements ?? [])))
+      .filter((element) => element !== "NORM")
+      .sort(),
+    [sortedSpirits, catalogByName],
+  );
+  const spiritsForElement = useMemo(
+    () => spiritElement ? sortedSpirits.filter((name) => catalogByName.get(name)?.elements.includes(spiritElement)) : sortedSpirits,
+    [spiritElement, sortedSpirits, catalogByName],
+  );
   function spiritOptionLabel(name: string): string {
     const stats = spiritStats.get(name);
     if (!stats) return name;
@@ -1972,6 +1982,7 @@ export default function DeckBuilderIndex() {
     } else {
       startTransition(() => {
         setSpiritFilter(null);
+        setSpiritElement(null);
         setLockedCards(new Map());
         setLockedSections(new Map());
         setRejectedCards(new Set());
@@ -2315,6 +2326,11 @@ export default function DeckBuilderIndex() {
     }),
     [build.main, build.material, build.sideboard],
   );
+  const keptDecklist: OmnidexDecklist = useMemo(() => ({
+    main: build.main.filter((card) => card.locked).map((card) => ({ card: card.cardName, quantity: card.quantity })),
+    material: build.material.filter((card) => card.locked).map((card) => ({ card: card.cardName, quantity: card.quantity })),
+    sideboard: build.sideboard.filter((card) => card.locked).map((card) => ({ card: card.cardName, quantity: card.quantity })),
+  }), [build.main, build.material, build.sideboard]);
   /** Link to `/compare` seeding the current in-progress build (as a `?custom=` deck) alongside one
    * real deck (as a `?add=eventId:player`, reusing `NearestDeck.deckId`'s existing format) — lets the
    * viewer see exactly where their build overlaps/diverges from a real result, not just the
@@ -2347,6 +2363,7 @@ export default function DeckBuilderIndex() {
     startTransition(() => {
       setChampionName(null);
       setSpiritFilter(null);
+      setSpiritElement(null);
       setLockedCards(new Map());
       setLockedSections(new Map());
       setRejectedCards(new Set());
@@ -2382,12 +2399,15 @@ export default function DeckBuilderIndex() {
   const [shareCopyState, setShareCopyState] = useState<"idle" | "copied" | "failed">("idle");
   const [saveTitle, setSaveTitle] = useState("");
   const [saveNote, setSaveNote] = useState("");
+  const [saveKeptOnly, setSaveKeptOnly] = useState(false);
   const [saveState, setSaveState] = useState<"idle" | "saving" | "saved" | "sign-in" | "failed">("idle");
   const [savedDeckId, setSavedDeckId] = useState<string | null>(null);
   const fullCopyCount = [...build.main, ...build.material, ...build.sideboard].reduce((sum, card) => sum + card.quantity, 0);
   const keptCopyCount = [...build.main, ...build.material, ...build.sideboard]
     .filter((card) => card.locked)
     .reduce((sum, card) => sum + card.quantity, 0);
+  const deckToSave = saveKeptOnly ? keptDecklist : decklist;
+  const saveCopyCount = saveKeptOnly ? keptCopyCount : fullCopyCount;
 
   /** "Kept only" copies just the viewer's own choices (`card.locked`), skipping every
    * auto-suggested slot — for pasting a partial want-list rather than the full assembled deck. */
@@ -2458,14 +2478,14 @@ export default function DeckBuilderIndex() {
   }, [decklist]);
 
   async function handleSaveToMyDecks() {
-    if (!championName || fullCopyCount === 0) return;
+    if (!championName || saveCopyCount === 0) return;
     setSaveState("saving");
     try {
       if (improveDeckId) {
         await accountApi.createDeckVersion(improveDeckId, {
           format: deckFormat,
           championName,
-          decklist,
+          decklist: deckToSave,
           changeNote: saveNote.trim() || "Improved in Guided Deck Builder",
         });
         setSavedDeckId(improveDeckId);
@@ -2476,7 +2496,7 @@ export default function DeckBuilderIndex() {
         title: saveTitle.trim() || `${championName} guided build`,
         format: deckFormat,
         championName,
-        decklist,
+        decklist: deckToSave,
         source: { provider: "manual", externalDeckId: crypto.randomUUID(), label: "Guided Deck Builder" },
       });
       setSavedDeckId(result.id);
@@ -2492,7 +2512,7 @@ export default function DeckBuilderIndex() {
         title="Guided Deck Builder"
         description={(
           <>
-            <p>Choose a Grand Archive Champion and Spirit to generate a suggested Main and Material Deck from real decklists. Balanced (the default) prioritizes tournament win-rate evidence nudged by community popularity; Tournament uses win-rate evidence alone; Community builds around the cards players use most often.</p>
+            <p>Choose a Grand Archive Champion, then an element and Spirit, to generate a suggested Main and Material Deck from real decklists. Balanced (the default) prioritizes tournament win-rate evidence nudged by community popularity; Tournament uses win-rate evidence alone; Community builds around the cards players use most often.</p>
             <p className="mt-2">Review each card’s sample size, performance, community usage, price, and common partners. Lock in your choices or exclude cards to recalculate the remaining slots, then validate, copy, share, buy, export, or playtest the finished deck.</p>
           </>
         )}
@@ -2525,6 +2545,21 @@ export default function DeckBuilderIndex() {
 
         {championName && (
           <>
+            <label htmlFor="deck-builder-element" className="ml-2 text-ctp-subtext0">Element:</label>
+            <select
+              id="deck-builder-element"
+              value={spiritElement ?? catalogByName.get(spiritFilter ?? "")?.elements.find((element) => element !== "NORM") ?? ""}
+              onChange={(e) => {
+                const value = e.target.value || null;
+                setSpiritElement(value);
+                if (spiritFilter && value && !catalogByName.get(spiritFilter)?.elements.includes(value)) setSpiritFilter(null);
+              }}
+              className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+            >
+              <option value="">Choose an element…</option>
+              {spiritElements.map((element) => <option key={element} value={element}>{element}</option>)}
+            </select>
+            {(spiritElement || spiritFilter) && <>
             <label htmlFor="deck-builder-spirit" className="ml-2 text-ctp-subtext0">Spirit:</label>
             <select
               id="deck-builder-spirit"
@@ -2537,12 +2572,13 @@ export default function DeckBuilderIndex() {
               className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
             >
               <option value="">Choose a Spirit…</option>
-              {sortedSpirits.map((name) => (
+              {spiritsForElement.map((name) => (
                 <option key={name} value={name}>
                   {spiritOptionLabel(name)}
                 </option>
               ))}
             </select>
+            </>}
           </>
         )}
         {championName && (
@@ -2612,7 +2648,7 @@ export default function DeckBuilderIndex() {
 
       {championName && !gateLoading && gateHasData && !spiritFilter && (
         <p className="mt-6 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-4 py-3 text-sm text-ctp-subtext1">
-          Select a Spirit above to generate a coherent core. The builder will keep unsupported slots unresolved
+          Select an element and Spirit above to generate a coherent core. The builder will keep unsupported slots unresolved
           instead of mixing this Champion's different strategies.
         </p>
       )}
@@ -2672,11 +2708,20 @@ export default function DeckBuilderIndex() {
             </p>
           )}
 
+          <section className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3" aria-labelledby="deck-builder-checklist">
+            <h2 id="deck-builder-checklist" className="text-sm font-semibold text-ctp-text">Deck-building checklist</h2>
+            <div className="mt-2 grid gap-2 text-xs sm:grid-cols-3">
+              <p className={championName ? "text-ctp-green" : "text-ctp-subtext1"}>{championName ? "✓ Champion selected" : "○ Choose a Champion"}</p>
+              <p className={spiritFilter ? "text-ctp-green" : "text-ctp-subtext1"}>{spiritFilter ? "✓ Spirit selected" : "○ Choose an element and Spirit"}</p>
+              <p className={validation.status === "Legal" ? "text-ctp-green" : "text-ctp-yellow"}>{validation.status === "Legal" ? "✓ Construction checks pass" : `○ ${validation.status}: review deck size and legality`}</p>
+            </div>
+          </section>
+
           <div className="mt-4">
             <Tabs<BuilderTab>
               tabs={[
                 { key: "build", label: "Build" },
-                { key: "review", label: `Review (${reviewItemCount})` },
+                { key: "review", label: reviewItemCount > 0 ? `Review (${reviewItemCount})` : `Review` },
                 { key: "stats", label: statsSignalCount > 0 ? `Stats (${statsSignalCount})` : "Stats" },
                 { key: "tools", label: "Tools" },
                 { key: "buddies", label: "Buddy Cards" },
@@ -2690,6 +2735,12 @@ export default function DeckBuilderIndex() {
             />
           </div>
 
+          {tab === "build" && newReleaseCards.length > 0 && (
+            <div className="mb-4 rounded-lg border border-ctp-mauve/50 bg-ctp-mauve/10 px-3 py-2 text-xs text-ctp-subtext1">
+              <span className="font-medium">New cards available</span>
+              <span className="ml-auto">({newReleaseCards.length} new cards from recent sets)</span>
+            </div>
+          )}
           {tab === "build" && (
             <div role="tabpanel" id="deck-builder-panel-build" aria-labelledby="deck-builder-tab-build" className="mt-4">
               {reviewItemCount > 0 && (

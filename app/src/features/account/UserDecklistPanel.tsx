@@ -14,10 +14,11 @@ export default function UserDecklistPanel({ decklist, actions, children, ownerDe
   );
   const cardsByName = useCardsByNames(cardNames);
   const builderParams = useMemo(() => deckBuilderParamsFromDecklist(decklist, cardsByName), [decklist, cardsByName]);
+  const canImprove = Boolean(builderParams?.spiritFilter);
 
   return <section className="mt-6">
     <h2 className="sr-only">Decklist</h2>
-    {(actions || builderParams) && <div className="mb-4 flex flex-wrap justify-end gap-2">{builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, ownerDeckId ? { mode: "improve", sourceDeckId: ownerDeckId } : undefined)} className="rounded border border-ctp-blue px-2 py-1 text-xs text-ctp-blue">{ownerDeckId ? "Improve this deck" : "Tune in Deck Builder"}</Link>}{actions}</div>}
+    {(actions || builderParams) && <div className="mb-4 flex flex-wrap justify-end gap-2">{builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, canImprove && ownerDeckId ? { mode: "improve", sourceDeckId: ownerDeckId } : undefined)} className="rounded border border-ctp-blue px-2 py-1 text-xs text-ctp-blue">{canImprove && ownerDeckId ? "Improve this deck" : "Tune in Deck Builder"}</Link>}{ownerDeckId && !canImprove && <span className="self-center text-xs text-ctp-subtext0">Choose a Spirit in the decklist to unlock improvement review.</span>}{actions}</div>}
     {collectionSource && <div className="mb-4"><DeckCollectionTools decklist={decklist} cardsByName={cardsByName} source={collectionSource} /></div>}
     {children ?? <DecklistView decklist={decklist} cardsByName={cardsByName} showThumbnails />}
   </section>;
