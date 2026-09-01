@@ -39,7 +39,8 @@ import { useSimulatorSummaryData } from "../simulator/data";
 import { useCardFieldVisibility, type CardFieldVisibility } from "./useCardFieldVisibility";
 import { useBuddyCards, type BuddyCard } from "./useBuddyCards";
 import { SIDEBOARD_POINT_BUDGET, sideboardPointCost, validateDeck, type DeckValidationResult } from "./validateDeck";
-import { computeDependencyReadiness, computeSynergyReadiness } from "./synergyReadiness";
+import { computeDependencyReadiness, computeSynergyReadiness, type DependencyReadiness, type SynergyReadiness } from "./synergyReadiness";
+import { computeNewReleaseCards, type NewReleaseCard } from "./newReleaseCards";
 import HypergeometricCalculator from "./HypergeometricCalculator";
 import { similarCards } from "../../lib/cardSimilarity";
 import ThemaSparkline from "../thema/ThemaSparkline";
@@ -782,8 +783,9 @@ function StatsPanel({
   mainLines,
   cardsByName,
   catalogByName,
-  identityElements,
-  preferredSuggestions,
+  synergyReadiness,
+  dependencyReadiness,
+  newReleaseCards,
   compositionWinRateData,
   onAddCard,
   decayReport,
@@ -792,8 +794,9 @@ function StatsPanel({
   mainLines: { name: string; quantity: number }[];
   cardsByName: ReturnType<typeof useCardsByNames>;
   catalogByName: Map<string, Card>;
-  identityElements: Set<string>;
-  preferredSuggestions: string[];
+  synergyReadiness: SynergyReadiness[];
+  dependencyReadiness: DependencyReadiness[];
+  newReleaseCards: NewReleaseCard[];
   compositionWinRateData: CompositionWinRateData | undefined;
   onAddCard: (name: string) => void;
   decayReport: CardDecayReport | null;
@@ -804,14 +807,6 @@ function StatsPanel({
   const compositionGaps = useMemo(
     () => computeCompositionGaps(mainLines, cardsByName, compositionWinRateData),
     [mainLines, cardsByName, compositionWinRateData],
-  );
-  const synergyReadiness = useMemo(
-    () => computeSynergyReadiness(mainLines, catalogByName, catalogByName.values(), identityElements, preferredSuggestions),
-    [mainLines, catalogByName, identityElements, preferredSuggestions],
-  );
-  const dependencyReadiness = useMemo(
-    () => computeDependencyReadiness(mainLines, catalogByName, catalogByName.values(), identityElements, preferredSuggestions),
-    [mainLines, catalogByName, identityElements, preferredSuggestions],
   );
   // Cross-references between the two independently-computed readiness engines above, keyed by
   // card name — kept as a pure UI lookup here rather than baked into synergyReadiness.ts, so
@@ -925,6 +920,51 @@ function StatsPanel({
             Compared {decayReport.recentDeckCount} recent decks with {decayReport.priorDeckCount} prior-period decks
             for this Champion and Spirit.
           </p>
+        </div>
+      )}
+
+      {newReleaseCards.length > 0 && (
+        <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">New from {newReleaseCards[0].setName}</h2>
+            <span className="text-[10px] text-ctp-subtext0">{newReleaseCards[0].releaseDate}</span>
+          </div>
+          <p className="mt-1 text-xs text-ctp-subtext0">
+            Cards from the newest set with a designed connection — shared token economy, tribal reference, or named
+            reference — to a card already in this build. Too new for tournament data, so this isn't ranked or
+            scored, just worth a look.
+          </p>
+          <div className="mt-3 space-y-2">
+            {newReleaseCards.map(({ card, combos }) => (
+              <div key={card.name} className="rounded-md border border-ctp-surface1 px-3 py-2 text-xs">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <CardHoverPreview image={card.editions[0]?.image} alt={card.name}>
+                    <Link to={`/cards/${card.slug}`} className="font-semibold text-ctp-text hover:text-ctp-blue">
+                      {card.name}
+                    </Link>
+                  </CardHoverPreview>
+                  <button
+                    type="button"
+                    onClick={() => onAddCard(card.name)}
+                    className="ml-auto rounded border border-ctp-blue/40 px-1.5 py-0.5 text-ctp-blue hover:bg-ctp-blue/10"
+                  >
+                    + Add
+                  </button>
+                </div>
+                <div className="mt-1 flex flex-wrap gap-x-1.5 gap-y-1 text-[11px] text-ctp-subtext0">
+                  {combos.map((combo) => (
+                    <span key={`${combo.with.uuid}-${combo.via}`}>
+                      combos with{" "}
+                      <Link to={`/cards/${combo.with.slug}`} className="text-ctp-subtext1 hover:text-ctp-blue">
+                        {combo.with.name}
+                      </Link>{" "}
+                      via {combo.via}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
@@ -2200,6 +2240,29 @@ export default function DeckBuilderIndex() {
   const materialOnlyLines = useMemo(() => build.material.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.material]);
   const sideboardLines = useMemo(() => build.sideboard.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.sideboard]);
 
+  // Lifted out of StatsPanel (rather than computed only when that tab is active) so a tab-label
+  // badge can reflect these findings even while the user is looking at the Build tab — otherwise
+  // discovery-worthy signals (a card decaying out of the meta, a new-set combo, an under-supported
+  // package) stay invisible behind a tab most users never click.
+  const preferredSuggestionNames = useMemo(() => build.suggestions.map((card) => card.cardName), [build.suggestions]);
+  const synergyReadiness = useMemo(
+    () => computeSynergyReadiness(mainOnlyLines, catalogByName, catalogByName.values(), identityElements, preferredSuggestionNames),
+    [mainOnlyLines, catalogByName, identityElements, preferredSuggestionNames],
+  );
+  const dependencyReadiness = useMemo(
+    () => computeDependencyReadiness(mainOnlyLines, catalogByName, catalogByName.values(), identityElements, preferredSuggestionNames),
+    [mainOnlyLines, catalogByName, identityElements, preferredSuggestionNames],
+  );
+  const newReleaseCards = useMemo(() => {
+    const includedNames = new Set(buildLines.map((line) => line.name));
+    const deckCards = buildLines.map((line) => catalogByName.get(line.name)).filter((c): c is Card => c !== undefined);
+    return computeNewReleaseCards(catalogByName.values(), deckCards, identityElements, includedNames);
+  }, [buildLines, catalogByName, identityElements]);
+  const statsSignalCount = buildLines.length === 0 ? 0 :
+    (decayReport?.signals.length ?? 0) + newReleaseCards.length +
+    synergyReadiness.filter((s) => s.recommendations.length > 0).length +
+    dependencyReadiness.filter((d) => d.recommendations.length > 0).length;
+
   const decklist: OmnidexDecklist = useMemo(
     () => ({
       main: build.main.map((c) => ({ card: c.cardName, quantity: c.quantity })),
@@ -2570,7 +2633,7 @@ export default function DeckBuilderIndex() {
               tabs={[
                 { key: "build", label: "Build" },
                 { key: "review", label: `Review (${reviewItemCount})` },
-                { key: "stats", label: "Stats" },
+                { key: "stats", label: statsSignalCount > 0 ? `Stats (${statsSignalCount})` : "Stats" },
                 { key: "tools", label: "Tools" },
                 { key: "buddies", label: "Buddy Cards" },
                 { key: "copy", label: "Copy & Export" },
@@ -2996,8 +3059,9 @@ export default function DeckBuilderIndex() {
                 mainLines={mainOnlyLines}
                 cardsByName={cardsByName}
                 catalogByName={catalogByName}
-                identityElements={identityElements}
-                preferredSuggestions={build.suggestions.map((card) => card.cardName)}
+                synergyReadiness={synergyReadiness}
+                dependencyReadiness={dependencyReadiness}
+                newReleaseCards={newReleaseCards}
                 compositionWinRateData={compositionWinRateData}
                 onAddCard={addCard}
                 decayReport={decayReport}
