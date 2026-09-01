@@ -2723,9 +2723,9 @@ export default function DeckBuilderIndex() {
         )}
       </div>}
 
-      {builderIntent === "seed" && !championName && <section className="mt-5 rounded-lg border border-ctp-green/40 bg-ctp-green/5 p-3" aria-labelledby="seed-cards">
+      {builderIntent === "seed" && (!championName || !spiritFilter || gateLoading || !gateHasData) && <section className="mt-5 rounded-lg border border-ctp-green/40 bg-ctp-green/5 p-3" aria-labelledby="seed-cards">
         <h2 id="seed-cards" className="text-sm font-semibold text-ctp-text">Start with your cards</h2>
-        <p className="mt-1 text-xs text-ctp-subtext1">Add one or more cards first, then choose the Champion and Spirit that should support them. Your selected cards stay locked as the deck fills in.</p>
+        <p className="mt-1 text-xs text-ctp-subtext1">Add one or more cards, then choose the Champion and Spirit that should support them. Your selected cards stay locked as the deck fills in.</p>
         <div className="mt-3 flex max-w-xl flex-wrap gap-2">
           <input
             type="text"
