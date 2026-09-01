@@ -599,6 +599,20 @@ print of that same Champion identity at or below that ceiling. Thus a level-3 bu
 told to cut its level-1 or level-2 progression cards merely because their isolated with/without
 lift is negative; unrelated Champion cards and cards above the chosen ceiling remain reviewable.
 
+Named Champion-bonus staples are structural identity support. A legal card whose printed rules
+contain the exact `[Selected Champion Bonus]` marker is placed before flex slots and labeled
+**core synergy** when it appears in at least 80% of a matching population of at least 10 decks.
+Its modal quantity and predominant section come from that population. This rescues dominant cards
+such as signature Regalia from the isolated positive-lift gate without treating every thematic
+bonus card as mandatory. Explicit rejection, format legality, element legality, and the
+collection-only source remain authoritative; a full section receives the card as a swap idea.
+
+Guo Jia's Fabled Fatestone retains one deterministic refinement: the selected Spirit's element
+maps directly to its matching Fatestone (Fire/Ruby, Water/Sapphire, Wind/Emerald, or
+Arcane/Azurite). Multiple Fatestones can otherwise be element-legal because Guo Jia grants Arcane,
+so the matching Fatestone is core synergy even when its exact Spirit population is thin. It still
+must carry the printed Guo Jia Bonus marker and obey the same user, legality, and collection gates.
+
 Review recommendations also account for the deterministic readiness engines used by the Stats
 tab. Among cards that already pass the positive observed-lift bar, additions recommended for an
 under-supported Imbue or producer/consumer package move to the front and receive a labeled

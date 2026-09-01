@@ -1479,9 +1479,11 @@ function CardRow({
         </span>
       ) : (
         <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">
-          {communityMode && !card.locked
-            ? "popular pick"
-            : card.reason === "spirit"
+          {card.reason === "identity-staple"
+            ? "core synergy"
+            : communityMode && !card.locked
+              ? "popular pick"
+              : card.reason === "spirit"
               ? "your pick"
               : card.reason === "staple"
                 ? "staple"
@@ -1832,7 +1834,7 @@ export default function DeckBuilderIndex() {
     populationLoading,
     lockedSections,
     cardQuantityStatsData,
-    undefined,
+    championCard,
     pillarBias,
     undefined,
     undefined,
@@ -1853,7 +1855,7 @@ export default function DeckBuilderIndex() {
     populationLoading,
     lockedSections,
     cardQuantityStatsData,
-    undefined,
+    championCard,
     pillarBias,
     communityInclusionByName,
     decayingCardBoost,
@@ -1862,7 +1864,7 @@ export default function DeckBuilderIndex() {
     collectionMode,
     championLevelCap,
   );
-  const communityBuild = useCommunitySuggestedBuild(communityChampData, communityLockedCards, lockedSections, collectionRejectedCards, catalogByName, !communityCardInclusion, identityElements, deckFormat);
+  const communityBuild = useCommunitySuggestedBuild(communityChampData, communityLockedCards, lockedSections, collectionRejectedCards, catalogByName, !communityCardInclusion, identityElements, deckFormat, championCard, spiritCardForIdentity);
   const simulatorSummary = useSimulatorSummaryData();
   const simulatorResult = useSimulatorSuggestedBuild(communityBuild, simulatorSummary, cardCatalog);
   const effectivePopulationSource: PopulationSource = deckFormat === "PANTHEON" ? "community" : populationSource;

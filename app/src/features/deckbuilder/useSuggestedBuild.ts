@@ -78,6 +78,11 @@ const QUANTITY_OPTIMIZATION_MARGIN = 0.01;
 /** Global copy-count evidence is deliberately a last resort. Five decks is enough to display a
  * card-impact split, but nowhere near enough to overturn what a coherent local population runs. */
 const MIN_GLOBAL_QUANTITY_SAMPLE = 30;
+/** Named Champion-bonus cards are promoted from flex picks only when they describe a genuinely
+ * dominant construction pattern. This avoids treating every thematic card with bonus text as
+ * mandatory while rescuing near-universal staples that an isolated with/without lift suppresses. */
+export const IDENTITY_STAPLE_PREVALENCE = 0.8;
+export const MIN_IDENTITY_STAPLE_POPULATION = 10;
 
 type DeckSection = "main" | "material" | "sideboard";
 
@@ -87,14 +92,14 @@ export interface SuggestedCard {
   locked: boolean;
   /** Which section this card is placed in (for entries already in material/main/sideboard) — or, for an unplaced `suggestions` entry, which section it *would* go into if added. */
   section: DeckSection;
-  /** null when there's no lift number to show — either it's the viewer's picked Spirit, or a Champion-level print so near-universally run that it never cleared the with/without sample bar (see the "staple" note below). */
+  /** null when there's no lift number to show — either it's the viewer's picked Spirit, or a structural identity card that does not need an isolated with/without result. */
   adjustedLift: number | null;
   sample: { with: number; without: number } | null;
   /** Set only when the global card-quantity data (win rate by copy count, not scoped to this Champion) meaningfully beat the population's own modal quantity for this card — the quantity this slot *would* have gotten otherwise. Never applies to a locked card (its quantity is the viewer's own choice, including via manual edits). */
   optimizedFrom: number | null;
   quantityEvidence: { source: "matching population" | "global"; sampleSize: number };
-  /** "spirit" = the viewer's own Spirit pick, not ranked. "staple" = a Champion-level print included because it's the most commonly run print at that level, not because it cleared the lift sample bar (near-100%-adoption cards usually don't — their "without" bucket is too thin). "ranked" = a normal lift-ranked suggestion. */
-  reason: "spirit" | "staple" | "ranked";
+  /** "spirit" = the viewer's own Spirit pick. "staple" = a structural Champion print. "identity-staple" = a card explicitly tied to the selected Champion by its rules text and supported by observed prevalence, or a deterministic Champion+Spirit identity card. "ranked" = a normal lift-ranked suggestion. */
+  reason: "spirit" | "staple" | "identity-staple" | "ranked";
   /** Active construction packages this card helps stabilize. These are deterministic readiness
    * checks (Imbue/enabler or producer/consumer), kept separate from the observed win-rate lift. */
   readinessReasons?: string[];
@@ -148,6 +153,33 @@ function legalMaxCopies(card: Card | undefined): number {
 
 function championIdentityName(card: Card): string {
   return card.name.includes(",") ? card.name.split(",")[0].trim() : card.name;
+}
+
+/** Exact named-bonus match, so Jin never matches Guo Jia and ordinary Class/Element bonuses do not
+ * become identity claims. Catalog effects retain the printed `[Name Bonus]` marker. */
+export function hasChampionBonus(card: Card | undefined, championCard: Card | undefined): boolean {
+  if (!card || !championCard || !card.effect) return false;
+  const identity = championIdentityName(championCard).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`\\[${identity} Bonus\\]`, "i").test(card.effect);
+}
+
+const GUO_JIA_FATESTONE_BY_SPIRIT_ELEMENT: Readonly<Record<string, string>> = {
+  ARCANE: "Fabled Azurite Fatestone",
+  FIRE: "Fabled Ruby Fatestone",
+  WATER: "Fabled Sapphire Fatestone",
+  WIND: "Fabled Emerald Fatestone",
+};
+
+/** Guo Jia's Fabled Fatestones explicitly grant a Guo Jia Bonus and correspond to the element
+ * selected by the Spirit. They are identity infrastructure, not flex cards: meta-level adoption
+ * can leave too few credible decks without one for isolated lift ranking to recommend it. */
+export function guoJiaFatestoneForIdentity(championCard: Card | undefined, spiritCard: Card | undefined): string | undefined {
+  if (!championCard || championIdentityName(championCard) !== "Guo Jia" || !spiritCard) return undefined;
+  for (const element of spiritCard.elements) {
+    const fatestone = GUO_JIA_FATESTONE_BY_SPIRIT_ELEMENT[element];
+    if (fatestone) return fatestone;
+  }
+  return undefined;
 }
 
 /**
@@ -696,6 +728,42 @@ export function useSuggestedBuild(
       placed.add(spiritFilter);
     }
 
+    // Dominant cards whose printed rules explicitly name this Champion are structural identity
+    // support, not ordinary flex picks. Guo Jia's Spirit-matched Fatestone is forced into this set
+    // because multiple Fatestones are element-legal while only the Spirit-matched one is intended.
+    const identityFatestone = guoJiaFatestoneForIdentity(championCard, spiritCard);
+    const namedBonusCandidates = Array.from(cardsByName.values()).flatMap((card) => {
+      if (!hasChampionBonus(card, championCard) || card.types.includes("CHAMPION") || card.subtypes.includes("SPIRIT")) return [];
+      const mainCount = spiritRows.filter((row) => row.main.has(card.name)).length;
+      const materialCount = spiritRows.filter((row) => row.material.has(card.name)).length;
+      const presence = spiritRows.filter((row) => row.main.has(card.name) || row.material.has(card.name)).length;
+      const forced = card.name === identityFatestone;
+      if (!forced && (spiritRows.length < MIN_IDENTITY_STAPLE_POPULATION || presence / spiritRows.length < IDENTITY_STAPLE_PREVALENCE)) return [];
+      return [{ card, presence, section: materialCount >= mainCount ? "material" as const : "main" as const, forced }];
+    }).sort((a, b) => Number(b.forced) - Number(a.forced) || b.presence - a.presence || a.card.name.localeCompare(b.card.name));
+    const deferredIdentityStaples: SuggestedCard[] = [];
+    for (const candidate of namedBonusCandidates) {
+      const { card, presence, section } = candidate;
+      if (
+        placed.has(card.name) ||
+        rejectedCards.has(card.name) ||
+        card.legality?.STANDARD?.limit === 0 ||
+        !isElementCompatible(card, identityElements) ||
+        (collectionMode === "owned-only" && (collectionOwnedByName?.get(card.name) ?? 0) <= 0)
+      ) continue;
+      const quantity = section === "material" ? 1 : modalQuantity(spiritRows, "main", card.name, card);
+      const suggestion = toSuggested(card.name, quantity, false, undefined, "identity-staple", section, null, {
+        source: "matching population",
+        sampleSize: presence,
+      });
+      const sectionCards = section === "material" ? material : main;
+      const target = section === "material" ? materialTarget : mainTarget;
+      const total = sectionCards.reduce((sum, item) => sum + item.quantity, 0);
+      if (total + quantity <= target) sectionCards.push(suggestion);
+      else deferredIdentityStaples.push(suggestion);
+      placed.add(card.name);
+    }
+
     let materialTotal = material.reduce((sum, c) => sum + c.quantity, 0);
     let mainTotal = main.reduce((sum, c) => sum + c.quantity, 0);
     let sideboardTotal = sideboard.reduce((sum, c) => sum + c.quantity, 0);
@@ -740,7 +808,9 @@ export function useSuggestedBuild(
     // Everything ranked that still didn't make it in — most visibly non-empty for a fully-locked
     // build (every target already met by locks alone, so the loop above placed nothing new even
     // though `ranked` has real candidates). Shown as swap-in ideas, not auto-filled.
-    const rawSuggestions = ranked
+    const rawSuggestions = [
+      ...deferredIdentityStaples,
+      ...ranked
       .filter((e) => {
         const card = cardsByName.get(e.cardName);
         return !placed.has(e.cardName) && !card?.types.includes("CHAMPION") && isElementCompatible(card, identityElements);
@@ -751,7 +821,8 @@ export function useSuggestedBuild(
         if (section === "material") return toSuggested(e.cardName, 1, false, e, "ranked", section);
         const picked = pickQuantity(rankingRows, section, e.cardName, card, quantityBucketsByName);
         return toSuggested(e.cardName, picked.quantity, false, e, "ranked", section, picked.optimizedFrom, picked.evidence);
-      });
+      }),
+    ];
 
     // Review suggestions should preserve the deck's construction packages, not optimize each card
     // as though it existed in isolation. Run the same deterministic engines shown in the Stats tab

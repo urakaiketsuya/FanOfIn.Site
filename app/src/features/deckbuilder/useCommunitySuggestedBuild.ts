@@ -1,6 +1,14 @@
 import { useMemo } from "react";
 import type { Card, CardInclusionEntry, DeckFormat } from "@gatcg/shared";
-import { isElementCompatible, type SuggestedBuild, type SuggestedCard } from "./useSuggestedBuild";
+import {
+  guoJiaFatestoneForIdentity,
+  hasChampionBonus,
+  IDENTITY_STAPLE_PREVALENCE,
+  MIN_IDENTITY_STAPLE_POPULATION,
+  isElementCompatible,
+  type SuggestedBuild,
+  type SuggestedCard,
+} from "./useSuggestedBuild";
 import { getDeckPackageCatalog } from "./packageGuardrails";
 
 /** Same fallback defaults `useSuggestedBuild`'s `modalTotal` uses when a population can't supply its
@@ -14,7 +22,7 @@ function legalMaxCopies(card: Card | undefined, format: DeckFormat): number {
   return card?.legality?.[format]?.limit ?? (format === "PANTHEON" ? 1 : 4);
 }
 
-function toSuggested(cardName: string, quantity: number, locked: boolean, entry: CardInclusionEntry | undefined, section: SuggestedCard["section"]): SuggestedCard {
+function toSuggested(cardName: string, quantity: number, locked: boolean, entry: CardInclusionEntry | undefined, section: SuggestedCard["section"], reason: SuggestedCard["reason"] = "ranked"): SuggestedCard {
   return {
     cardName,
     quantity,
@@ -24,7 +32,7 @@ function toSuggested(cardName: string, quantity: number, locked: boolean, entry:
     sample: null,
     optimizedFrom: null,
     quantityEvidence: { source: "matching population", sampleSize: entry?.deckCount ?? 0 },
-    reason: "ranked",
+    reason,
   };
 }
 
@@ -51,6 +59,8 @@ export function useCommunitySuggestedBuild(
    * a Fire-element pick showing up for a Water-Spirit build) would rank and suggest normally. */
   identityElements: Set<string>,
   format: DeckFormat = "STANDARD",
+  championCard?: Card,
+  spiritCard?: Card,
 ): SuggestedBuild {
   return useMemo((): SuggestedBuild => {
     const empty: SuggestedBuild = {
@@ -112,6 +122,36 @@ export function useCommunitySuggestedBuild(
       placed.add(name);
     }
 
+    const identityFatestone = guoJiaFatestoneForIdentity(championCard, spiritCard);
+    const identityCandidates: { card: Card; entry: CardInclusionEntry | undefined; forced: boolean }[] = champData.cards
+      .flatMap((entry) => {
+        const card = cardsByName.get(entry.name);
+        const forced = entry.name === identityFatestone;
+        if (!card || !hasChampionBonus(card, championCard) || card.types.includes("CHAMPION") || card.subtypes.includes("SPIRIT")) return [];
+        if (!forced && (champData.deckCount < MIN_IDENTITY_STAPLE_POPULATION || entry.percentOfDecks < IDENTITY_STAPLE_PREVALENCE)) return [];
+        return [{ card, entry, forced }];
+      })
+      .sort((a, b) => Number(b.forced) - Number(a.forced) || b.entry.percentOfDecks - a.entry.percentOfDecks || a.card.name.localeCompare(b.card.name));
+    // The selected Fatestone can be absent from a thin community export. Its catalog rules text is
+    // still authoritative, so add it explicitly instead of requiring an inclusion entry.
+    if (identityFatestone && !identityCandidates.some(({ card }) => card.name === identityFatestone)) {
+      const card = cardsByName.get(identityFatestone);
+      if (card && hasChampionBonus(card, championCard)) identityCandidates.unshift({ card, entry: entryByName.get(identityFatestone), forced: true });
+    }
+    const deferredIdentityStaples: SuggestedCard[] = [];
+    for (const { card, entry } of identityCandidates) {
+      if (placed.has(card.name) || rejectedCards.has(card.name) || card.legality?.[format]?.limit === 0 || !isElementCompatible(card, identityElements)) continue;
+      const section: SuggestedCard["section"] = entry?.primarySection === "main" && !card.types.includes("REGALIA") ? "main" : "material";
+      const quantity = section === "material" ? 1 : Math.min(Math.max(1, Math.round(entry?.avgCopiesWhenIncluded ?? 1)), legalMaxCopies(card, format));
+      const suggestion = toSuggested(card.name, quantity, false, entry, section, "identity-staple");
+      const sectionCards = section === "material" ? material : main;
+      const target = section === "material" ? MATERIAL_TARGET : (format === "PANTHEON" ? 60 : MAIN_TARGET);
+      const total = sectionCards.reduce((sum, item) => sum + item.quantity, 0);
+      if (total + quantity <= target) sectionCards.push(suggestion);
+      else deferredIdentityStaples.push(suggestion);
+      placed.add(card.name);
+    }
+
     let materialTotal = material.reduce((sum, c) => sum + c.quantity, 0);
     let mainTotal = main.reduce((sum, c) => sum + c.quantity, 0);
     const mainTarget = format === "PANTHEON" ? 60 : MAIN_TARGET;
@@ -146,7 +186,9 @@ export function useCommunitySuggestedBuild(
     }
 
     // Top ranked cards that didn't make the assembled build — mirrors useSuggestedBuild.suggestions.
-    const suggestions = champData.cards
+    const suggestions = [
+      ...deferredIdentityStaples,
+      ...champData.cards
       .filter((c) => !placed.has(c.name) && !rejectedCards.has(c.name) && isElementCompatible(cardsByName.get(c.name), identityElements))
       .slice(0, MAX_EXTRA_SUGGESTIONS)
       .map((entry) => {
@@ -154,7 +196,8 @@ export function useCommunitySuggestedBuild(
         const section: SuggestedCard["section"] = entry.primarySection === "material" ? "material" : entry.primarySection === "sideboard" ? "sideboard" : "main";
         const qty = section === "material" ? 1 : Math.min(Math.max(1, Math.round(entry.avgCopiesWhenIncluded)), legalMaxCopies(card, format));
         return toSuggested(entry.name, qty, false, entry, section);
-      });
+      }),
+    ].slice(0, MAX_EXTRA_SUGGESTIONS);
 
     const packageCatalog = getDeckPackageCatalog([...material, ...main, ...sideboard]);
     return {
@@ -179,5 +222,5 @@ export function useCommunitySuggestedBuild(
       unresolved: { main: Math.max(0, mainTarget - mainTotal), material: Math.max(0, MATERIAL_TARGET - materialTotal), sideboard: 0 },
       loading: false,
     };
-  }, [champData, lockedCards, lockedSections, rejectedCards, cardsByName, loading, identityElements, format]);
+  }, [champData, lockedCards, lockedSections, rejectedCards, cardsByName, loading, identityElements, format, championCard, spiritCard]);
 }
