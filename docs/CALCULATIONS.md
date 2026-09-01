@@ -354,7 +354,9 @@ every Champion it was actually played under.
    giant-blob problem — verified by replicating this exact algorithm against the published
    `deck-card-index.json` + `deck-sightings.json` (55,840 decks): 116 published clusters, comparable
    to the old per-Champion count of 128, not a collapse into a handful of blobs.
-3. Clusters need ≥5 total players (`config.minBattleChartSampleSize`) to publish.
+3. Clusters need ≥50 distinct players (`config.minArchetypePlayers`) to publish. This is
+   intentionally separate from the battle-chart floor: independent adoption is stronger evidence
+   of an archetype than repeated sightings from the same player.
 4. **Defining cards**: present in ≥80% of the cluster's deck sightings (`DEFINING_MIN_IN_CLUSTER`)
    *and* present in <85% of decks generally (`DEFINING_MAX_GLOBAL_PRESENCE`, over every deck in the
    dataset). Cluster and global prevalence therefore use the same deck-sighting unit — the second

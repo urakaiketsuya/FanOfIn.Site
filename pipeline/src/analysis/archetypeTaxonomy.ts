@@ -283,7 +283,7 @@ export function computeArchetypeTaxonomy(
 
   const clusterSummaries: ArchetypeCluster[] = [];
   for (const cluster of rawClusters) {
-    if (cluster.players.size < config.minBattleChartSampleSize) continue;
+    if (cluster.players.size < config.minArchetypePlayers) continue;
 
     const deckIds = cluster.members.flatMap((g) => g.deckIds);
     const clusterDeckTotal = deckIds.length;

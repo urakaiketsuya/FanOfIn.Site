@@ -63,6 +63,13 @@ export const config = {
   minBattleChartSampleSize: Number(process.env.GATCG_MIN_BATTLE_SAMPLE ?? 5),
 
   /**
+   * A discovered named build must have this many distinct players before it is published.
+   * This deliberately measures independent adoption rather than repeated sightings from a
+   * single player; it is separate from the battle-chart sample floor.
+   */
+  minArchetypePlayers: Number(process.env.GATCG_MIN_ARCHETYPE_PLAYERS ?? 50),
+
+  /**
    * Pseudo-count for shrinking a card's win rate toward 50% when it has few decklist
    * appearances — a card with 3 appearances at 100% shouldn't outrank one with 200 at 65%.
    * Concept adapted independently from Fractal of Insight's win-rate padding idea (not their
