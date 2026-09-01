@@ -40,6 +40,7 @@ import BarChart from "../../components/BarChart";
 import RankedCompositionChart from "../../components/RankedCompositionChart";
 import AggressionForecast from "./AggressionForecast";
 import { computeAggressionForecast } from "../../lib/aggressionForecast";
+import { useDecklistEvidencePrefs } from "../../lib/decklistEvidencePrefs";
 
 type DeckTab = "decklist" | "composition" | "history" | "similar";
 
@@ -81,6 +82,7 @@ export default function DeckDetail() {
   );
   const allNames = useMemo(() => [...(deck?.main ?? []), ...(deck?.material ?? [])].map((l) => l.name), [deck]);
   const cardsByName = useCardsByNames(allNames);
+  const evidencePrefs = useDecklistEvidencePrefs();
 
   // Precise, cluster-scoped "Cards that might help" (Phase 21) only covers the ~128 named-build
   // clusters — most decks reachable from here (especially one-offs, since All Decks stopped
@@ -369,8 +371,8 @@ export default function DeckDetail() {
 
       {tab === "decklist" && (
         <div className="mt-6">
-          <DecklistView decklist={decklist} cardsByName={cardsByName} showThumbnails deckId={deck.deckIds[0]} championFallback={false} />
-          <DeckDecaySignals decklist={decklist} cardsByName={cardsByName} />
+          <DecklistView decklist={decklist} cardsByName={cardsByName} showThumbnails deckId={deck.deckIds[0]} championFallback={false} showMetaGapsToggle />
+          {evidencePrefs.metaGaps && <DeckDecaySignals decklist={decklist} cardsByName={cardsByName} />}
           <DeckCollectionTools decklist={decklist} cardsByName={cardsByName} source={`Tournament build: ${deck.championName ?? "Unknown Champion"}`} />
         </div>
       )}

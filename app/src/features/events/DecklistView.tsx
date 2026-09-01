@@ -15,6 +15,7 @@ import { buildClarentPlaytestUrl } from "../../lib/clarentPlaytest";
 import { copyDecklistAndOpen, deckBuilderDestinations } from "../../lib/deckBuilderDestinations";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { extractProducedTokens } from "../../lib/cardIntent";
+import { useDecklistEvidencePrefs } from "../../lib/decklistEvidencePrefs";
 
 type DeckDisplayMode = "compact" | "visual" | "detailed";
 
@@ -121,6 +122,7 @@ export default function DecklistView({
   extraSections = [],
   trailingSections = [],
   defaultDisplayMode = "detailed",
+  showMetaGapsToggle = false,
 }: {
   decklist: OmnidexDecklist;
   cardsByName: Map<string, Card>;
@@ -134,9 +136,12 @@ export default function DecklistView({
   extraSections?: { title: string; lines: OmnidexDecklistCardLine[] }[];
   trailingSections?: { title: string; lines: OmnidexDecklistCardLine[] }[];
   defaultDisplayMode?: DeckDisplayMode;
+  /** Set true only on pages that also render `DeckDecaySignals` as a sibling (currently `DeckDetail.tsx` and `UserDecklistPanel.tsx`) — shows the "meta gap trends" checkbox in the evidence-settings control so the shared preference has a visible toggle there. Doesn't render `DeckDecaySignals` itself; the caller still does that, gated on the same `useDecklistEvidencePrefs().metaGaps` flag. */
+  showMetaGapsToggle?: boolean;
 }) {
   const priceByName = useDeckPriceByName();
   const catalog = useCardCatalog();
+  const evidencePrefs = useDecklistEvidencePrefs();
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
   const [displayMode, setDisplayMode] = useState<DeckDisplayMode>(() => defaultDisplayMode === "detailed" && typeof window !== "undefined" && window.matchMedia?.("(max-width: 639px)").matches ? "compact" : defaultDisplayMode);
 
@@ -278,7 +283,37 @@ export default function DecklistView({
           )}
         </div>
       )}
-      <div className="mb-4 flex justify-end gap-1" role="group" aria-label="Decklist display">{(["compact", "visual", "detailed"] as const).map((mode) => <button key={mode} type="button" onClick={() => setDisplayMode(mode)} aria-pressed={displayMode === mode} className={`rounded-md border px-2 py-1 text-xs capitalize ${displayMode === mode ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`}>{mode}</button>)}</div>
+      <div className="mb-4 flex flex-wrap items-center justify-end gap-2">
+        {format !== "PANTHEON" && (
+          <details className="relative">
+            <summary className="cursor-pointer list-none rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text">Evidence settings</summary>
+            <div className="absolute right-0 z-30 mt-2 grid w-64 gap-2 rounded-lg border border-ctp-surface1 bg-ctp-base p-3 shadow-xl">
+              <label className="flex items-start gap-2 text-xs text-ctp-subtext1">
+                <input
+                  type="checkbox"
+                  checked={evidencePrefs.tuningEvidence}
+                  onChange={(e) => evidencePrefs.setTuningEvidence(e.target.checked)}
+                  className="mt-0.5"
+                />
+                <span>Tuning suggestions (might-help, worth-reviewing, quantity advice)</span>
+              </label>
+              {showMetaGapsToggle && (
+                <label className="flex items-start gap-2 text-xs text-ctp-subtext1">
+                  <input
+                    type="checkbox"
+                    checked={evidencePrefs.metaGaps}
+                    onChange={(e) => evidencePrefs.setMetaGaps(e.target.checked)}
+                    className="mt-0.5"
+                  />
+                  <span>Meta gap trends (Champion-wide adoption decay)</span>
+                </label>
+              )}
+              <p className="text-[10px] text-ctp-subtext0">Saved to this browser. Both are drawn from tournament data only.</p>
+            </div>
+          </details>
+        )}
+        <div className="flex gap-1" role="group" aria-label="Decklist display">{(["compact", "visual", "detailed"] as const).map((mode) => <button key={mode} type="button" onClick={() => setDisplayMode(mode)} aria-pressed={displayMode === mode} className={`rounded-md border px-2 py-1 text-xs capitalize ${displayMode === mode ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`}>{mode}</button>)}</div>
+      </div>
       {displayMode === "compact" && <div className="space-y-5">{[...extraSections, { title: "Main", lines: decklist.main }, { title: "Material", lines: decklist.material }, { title: "Sideboard", lines: decklist.sideboard }, ...displayTrailingSections].map((section) => <CompactDeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} />)}</div>}
       {displayMode === "visual" && <div className="space-y-6">{[...extraSections, { title: "Main", lines: decklist.main }, { title: "Material", lines: decklist.material }, { title: "Sideboard", lines: decklist.sideboard }, ...displayTrailingSections].map((section) => <VisualDeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} />)}</div>}
       {displayMode === "detailed" && <div className="grid gap-4 sm:grid-cols-2">
@@ -301,7 +336,9 @@ export default function DecklistView({
         {displayTrailingSections.map((section) => <DeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} />)}
       </div>}
 
-      <DeckTuningEvidence decklist={decklist} cardsByName={displayCardsByName} deckId={deckId} format={format} championFallback={championFallback} />
+      {evidencePrefs.tuningEvidence && (
+        <DeckTuningEvidence decklist={decklist} cardsByName={displayCardsByName} deckId={deckId} format={format} championFallback={championFallback} />
+      )}
     </div>
   );
 }
