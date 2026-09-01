@@ -214,9 +214,9 @@ export default {
       }
       if (request.method === "POST" && url.pathname === "/v1/me/imports") {
         if (await rateLimited(env.IMPORT_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
-        const body = await jsonBody(request) as { provider?: unknown; identifier?: unknown };
+        const body = await jsonBody(request) as { provider?: unknown; identifier?: unknown; externalDeckIds?: unknown };
         if (typeof body.provider !== "string" || typeof body.identifier !== "string") return response(env, request, { error: "Provider and identifier are required" }, 400);
-        return response(env, request, await performImport(env, user, body.provider, body.identifier));
+        return response(env, request, await performImport(env, user, body.provider, body.identifier, body.externalDeckIds));
       }
       return response(env, request, { error: "Route not found" }, 404);
     } catch (error) {

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { bffAllowed, clearGoogleKeyCacheForTest, consumeOAuthNonce, createOAuthNonce, normalizeDisplayName, verifyGoogleCredential, type Env } from "../src/auth";
-import { assetJson, deleteDeck, getPublicDeck, normalizeDeckTags, parseSaveInput, renameDeck } from "../src/decks";
+import { assetJson, deleteDeck, getPublicDeck, normalizeDeckTags, parseSaveInput, renameDeck, selectImportCandidates } from "../src/decks";
 import { getDeckSocialState, setDeckBookmark, setDeckLike } from "../src/deck-social";
 import { discoverDecks, getPublicProfile } from "../src/discovery";
 import { reportDeck } from "../src/moderation";
@@ -104,6 +104,15 @@ test("manual saves reject oversized decklists", () => {
     decklist: { main: lines, material: [], sideboard: [] },
     source: { provider: "manual", externalDeckId: "local", label: "Manual" },
   }), /Invalid saved deck/);
+});
+
+test("deck imports accept only selected candidates and deduplicate IDs", () => {
+  const candidate = (id: string) => ({ provider: "omnidex" as const, externalDeckId: id, title: id, championName: null, format: "STANDARD" as const, label: id, sourceUrl: null, available: true });
+  const preview = { provider: "omnidex" as const, identifier: "1", displayName: "Player", candidates: [candidate("one"), candidate("two")] };
+  assert.deepEqual(selectImportCandidates(preview, ["two", "two", "one"]).map((item) => item.externalDeckId), ["two", "one"]);
+  assert.throws(() => selectImportCandidates(preview, []), /Select at least one/);
+  assert.throws(() => selectImportCandidates(preview, ["missing"]), /not part of this profile/);
+  assert.throws(() => selectImportCandidates({ ...preview, candidates: Array.from({ length: 51 }, (_, index) => candidate(String(index))) }, Array.from({ length: 51 }, (_, index) => String(index))), /limited to 50/);
 });
 
 test("usernames are normalized and bounded", () => {

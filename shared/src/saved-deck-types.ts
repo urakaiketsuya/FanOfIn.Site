@@ -111,6 +111,9 @@ export interface DeckImportCandidate {
   label: string;
   sourceUrl: string | null;
   available: boolean;
+  eventName?: string;
+  eventDate?: string;
+  placement?: number | null;
 }
 
 export interface DeckImportPreview {
@@ -118,6 +121,22 @@ export interface DeckImportPreview {
   identifier: string;
   displayName: string;
   candidates: DeckImportCandidate[];
+}
+
+export interface DeckImportFailure {
+  externalDeckId: string;
+  title: string;
+  reason: string;
+}
+
+export interface DeckImportResult {
+  requested: number;
+  created: number;
+  linked: number;
+  skipped: number;
+  failures: DeckImportFailure[];
+  /** Present when the client also applied an optional collection backfill. */
+  collectionChanged?: number;
 }
 
 function normalizeLines(lines: OmnidexDecklistCardLine[]): OmnidexDecklistCardLine[] {

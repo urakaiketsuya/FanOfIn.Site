@@ -1,4 +1,4 @@
-import type { AccountSession, AccountUser, BookmarkedDeck, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, DeckImportPreview, DeckReportReason, DeckSocialState, DeckVisibility, OmnidexDecklist, PublicDeck, PublicDeckSummary, PublicProfile, SavedDeck, SavedDeckDetail } from "@gatcg/shared";
+import type { AccountSession, AccountUser, BookmarkedDeck, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, DeckImportPreview, DeckImportResult, DeckReportReason, DeckSocialState, DeckVisibility, OmnidexDecklist, PublicDeck, PublicDeckSummary, PublicProfile, SavedDeck, SavedDeckDetail } from "@gatcg/shared";
 
 const ACCOUNT_API_URL = (import.meta.env.VITE_ACCOUNT_API_URL as string | undefined)?.replace(/\/$/, "")
   ?? (import.meta.env.PROD ? "https://accounts.fanofin.site/api" : "http://localhost:8788");
@@ -54,7 +54,7 @@ export const accountApi = {
   publishDeck: (id: string, visibility: DeckVisibility) => accountRequest<{ publicSlug: string | null; visibility: DeckVisibility }>(`/v1/me/decks/${encodeURIComponent(id)}/publish`, { method: "POST", body: JSON.stringify({ visibility }) }),
   deleteDeck: (id: string) => accountRequest<{ success: true }>(`/v1/me/decks/${encodeURIComponent(id)}`, { method: "DELETE" }),
   previewImport: (provider: "omnidex" | "shoutatyourdecks", identifier: string) => accountRequest<DeckImportPreview>("/v1/me/imports/preview", { method: "POST", body: JSON.stringify({ provider, identifier }) }),
-  importDecks: (provider: "omnidex" | "shoutatyourdecks", identifier: string) => accountRequest<{ created: number; linked: number }>("/v1/me/imports", { method: "POST", body: JSON.stringify({ provider, identifier }) }),
+  importDecks: (provider: "omnidex" | "shoutatyourdecks", identifier: string, externalDeckIds: string[]) => accountRequest<DeckImportResult>("/v1/me/imports", { method: "POST", body: JSON.stringify({ provider, identifier, externalDeckIds }) }),
 };
 
 export { AccountApiError };

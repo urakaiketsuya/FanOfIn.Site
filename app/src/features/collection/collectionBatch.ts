@@ -42,6 +42,29 @@ export function deckCollectionLines(decklist: OmnidexDecklist, cards: Card[], in
   return Array.from(quantities.values()).sort((a, b) => a.cardName.localeCompare(b.cardName));
 }
 
+/** Infer one collection from several lists without treating repeat appearances as extra purchases. */
+export function decklistsCollectionBackfillLines(decklists: OmnidexDecklist[], cards: Card[], maxCopies = 4): CollectionUpdateLine[] {
+  const cardsByName = new Map(cards.map((card) => [cardKey(card.name), card]));
+  const quantities = new Map<string, CollectionUpdateLine>();
+  for (const decklist of decklists) {
+    const deckQuantities = new Map<string, { cardName: string; quantity: number }>();
+    for (const line of [...decklist.main, ...decklist.material, ...decklist.sideboard]) {
+      const key = cardKey(line.card);
+      const current = deckQuantities.get(key);
+      if (current) current.quantity += line.quantity;
+      else deckQuantities.set(key, { cardName: line.card, quantity: line.quantity });
+    }
+    for (const [key, line] of deckQuantities) {
+      const card = cardsByName.get(key);
+      if (!card) continue;
+      const quantity = Math.min(maxCopies, line.quantity);
+      const current = quantities.get(card.uuid);
+      if (!current || quantity > current.quantity) quantities.set(card.uuid, { cardUuid: card.uuid, cardName: card.name, quantity });
+    }
+  }
+  return Array.from(quantities.values()).sort((a, b) => a.cardName.localeCompare(b.cardName));
+}
+
 export function setRarityCollectionLines(cards: Card[], setPrefix: string, quantities: Readonly<Record<number, number>>): CollectionUpdateLine[] {
   const lines: CollectionUpdateLine[] = [];
   for (const card of cards) {
