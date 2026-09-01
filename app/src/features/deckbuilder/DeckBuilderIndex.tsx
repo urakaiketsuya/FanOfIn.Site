@@ -2723,7 +2723,7 @@ export default function DeckBuilderIndex() {
         )}
       </div>}
 
-      {builderIntent === "seed" && (!championName || !spiritFilter || gateLoading || !gateHasData) && <section className="mt-5 rounded-lg border border-ctp-green/40 bg-ctp-green/5 p-3" aria-labelledby="seed-cards">
+      {builderIntent === "seed" && (!championName || !spiritFilter || gateLoading || !gateHasData || lockedCards.size === 0) && <section className="mt-5 rounded-lg border border-ctp-green/40 bg-ctp-green/5 p-3" aria-labelledby="seed-cards">
         <h2 id="seed-cards" className="text-sm font-semibold text-ctp-text">Start with your cards</h2>
         <p className="mt-1 text-xs text-ctp-subtext1">Add one or more cards, then choose the Champion and Spirit that should support them. Your selected cards stay locked as the deck fills in.</p>
         <div className="mt-3 flex max-w-xl flex-wrap gap-2">
@@ -2744,6 +2744,8 @@ export default function DeckBuilderIndex() {
 
       {!championName && <p className="mt-6 text-ctp-subtext1">Choose a Champion to see a suggested build.</p>}
 
+      {builderIntent === "seed" && championName && spiritFilter && lockedCards.size === 0 && !gateLoading && gateHasData && <p className="mt-6 rounded-lg border border-ctp-green/40 bg-ctp-green/5 px-4 py-3 text-sm text-ctp-subtext1">Add at least one card you want to build around. We’ll use it with {championName} and {spiritFilter} to shape the suggested deck.</p>}
+
       {championName && gateLoading && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
 
       {championName && !gateLoading && !gateHasData && (
@@ -2759,7 +2761,7 @@ export default function DeckBuilderIndex() {
         </p>
       )}
 
-      {championName && spiritFilter && !gateLoading && gateHasData && (
+      {championName && spiritFilter && !gateLoading && gateHasData && (builderIntent !== "seed" || lockedCards.size > 0) && (
         <>
           {effectivePopulationSource === "simulator" && <div className="mt-2 rounded-lg border border-ctp-mauve/50 bg-ctp-mauve/10 px-3 py-2 text-xs text-ctp-subtext1">
             <span className="font-semibold text-ctp-mauve">Experimental:</span>{" "}
