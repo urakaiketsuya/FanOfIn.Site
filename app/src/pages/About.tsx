@@ -112,6 +112,19 @@ const FEATURES: FeatureGroup[] = [
     example: { to: "/decks/xenbr4", label: "A top Silvie build" },
   },
   {
+    title: "My Decks & Collection",
+    items: [
+      "Save, rename, version, tag, and share your own Standard or Pantheon decklists from a mobile-friendly deck library",
+      "Import an experienced player's Omnidex history in bulk — search and filter the preview, choose exact lists, or keep only their latest deck per Champion",
+      "Track physical and proxy copies, import or export CSV, and undo recent collection changes",
+      "Add a saved, tournament, Pantheon, or official-product deck straight to your collection, with optional sideboard cards",
+      "Build a set quickly by assigning quantities to every card of selected rarities at once",
+      "Backfill collection quantities from imported Omnidex decklists without double-counting repeated cards, capped at four copies per unique card",
+      "Check deck readiness and missing copies anywhere a decklist appears, then prioritize owned cards—or restrict suggestions to owned cards—in the Guided Deck Builder",
+    ],
+    example: { to: "/my-decks", label: "Open My Decks" },
+  },
+  {
     title: "Community & Pantheon Decks",
     items: [
       "Community deck-building trends — what people actually build, not tournament results — plus Sleeved.gg, our recommended place to build and share Grand Archive decks",
@@ -375,8 +388,8 @@ export default function About() {
         <div className="relative mx-auto max-w-3xl px-4 py-20 text-center">
           <h1 className="text-4xl font-bold text-ctp-blue sm:text-5xl">Fan of Insight</h1>
           <p className="mt-4 text-lg text-ctp-subtext1">
-            Build better Grand Archive decks with tournament data and locally stored community lists. Explore the
-            Standard or Pantheon meta, compare proven and official products, and find card-by-card suggestions.
+            Build better Grand Archive decks with tournament data and locally stored community lists. Save and share
+            decklists, track the cards you own, explore the Standard or Pantheon meta, and build from your collection.
           </p>
 
           <div className="mt-6 flex items-center justify-center gap-1.5">
@@ -405,6 +418,31 @@ export default function About() {
               className="rounded-md border border-ctp-surface1 px-5 py-2 text-sm font-semibold text-ctp-text hover:border-ctp-mauve"
             >
               Official Decks
+            </Link>
+            <Link
+              to="/collection"
+              className="rounded-md border border-ctp-green/60 px-5 py-2 text-sm font-semibold text-ctp-green hover:border-ctp-green hover:bg-ctp-green/5"
+            >
+              My Collection
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-ctp-surface0 bg-ctp-mantle/40 px-4 py-10">
+        <div className="mx-auto max-w-5xl">
+          <div className="grid gap-4 sm:grid-cols-3">
+            <Link to="/my-decks" className="rounded-xl border border-ctp-surface1 bg-ctp-base p-4 hover:border-ctp-blue">
+              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Save your decks</p>
+              <p className="mt-2 text-sm text-ctp-subtext1">Keep versions, import many Omnidex lists at once, and share a public decklist when it is ready.</p>
+            </Link>
+            <Link to="/collection" className="rounded-xl border border-ctp-surface1 bg-ctp-base p-4 hover:border-ctp-green">
+              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-green">Track your collection</p>
+              <p className="mt-2 text-sm text-ctp-subtext1">Add whole decks or sets by rarity, import CSV, and backfill up to four copies from your Omnidex history.</p>
+            </Link>
+            <Link to="/deck-builder" className="rounded-xl border border-ctp-surface1 bg-ctp-base p-4 hover:border-ctp-mauve">
+              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-mauve">Build what you own</p>
+              <p className="mt-2 text-sm text-ctp-subtext1">Prioritize owned cards, restrict suggestions to your collection, and see shortages before committing to a list.</p>
             </Link>
           </div>
         </div>
@@ -690,8 +728,9 @@ export default function About() {
           <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">How it's built</h2>
           <p className="mt-4 text-ctp-subtext1">
             A small pipeline crawls Omnidex and the Grand Archive API on a daily schedule and publishes the results
-            as static data. The site itself is a client-only app that fetches and caches that data in your
-            browser — no backend, no database, no user data collected. Nothing to sign up for, nothing tracked.
+            as static data. Most browsing stays fast and account-free, with published data cached in your browser.
+            Signing in is optional and is only needed for personal features such as saved decks, public profiles,
+            and collection tracking.
           </p>
         </div>
       </section>
