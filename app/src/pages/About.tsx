@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import type { OmnidexDecklist } from "@gatcg/shared";
+import type { AccountUser, OmnidexDecklist } from "@gatcg/shared";
 import ClassIcon from "../components/ClassIcon";
 import ElementIcon from "../components/ElementIcon";
 import CardImage from "../components/CardImage";
@@ -13,6 +13,7 @@ import { useDocumentTitle } from "../lib/useDocumentTitle";
 import { useFeaturedSets } from "../features/sets/useFeaturedSets";
 import { latestBoosterSet } from "../features/packs/boosterSets";
 import PackOpenerWidget from "../features/packs/PackOpenerWidget";
+import { accountApi } from "../lib/accountApi";
 
 const CLASS_ROW = ["WARRIOR", "MAGE", "CLERIC", "ASSASSIN", "RANGER", "TAMER", "GUARDIAN"];
 const ELEMENT_ROW = ["FIRE", "WATER", "WIND", "CRUX", "UMBRA", "EXALTED", "LUXEM", "TERA"];
@@ -376,6 +377,15 @@ export default function About() {
   useDocumentTitle(null, "What Fan of Insight is, how it's built, and why it exists.");
   const featuredSets = useFeaturedSets();
   const latestSet = useMemo(() => latestBoosterSet(featuredSets ?? []), [featuredSets]);
+  const [user, setUser] = useState<AccountUser | null | undefined>(undefined);
+
+  useEffect(() => {
+    let active = true;
+    void accountApi.session()
+      .then((session) => { if (active) setUser(session.user); })
+      .catch(() => { if (active) setUser(null); });
+    return () => { active = false; };
+  }, []);
 
   return (
     <div>
@@ -385,11 +395,13 @@ export default function About() {
           style={{ backgroundImage: `url(https://api.gatcg.com/cards/images/gd06sut2vg.jpg)` }}
         />
         <div className="pointer-events-none absolute inset-0 bg-ctp-base/85" />
-        <div className="relative mx-auto max-w-3xl px-4 py-20 text-center">
+        <div className="relative mx-auto max-w-3xl px-4 py-14 text-center sm:py-20">
           <h1 className="text-4xl font-bold text-ctp-blue sm:text-5xl">Fan of Insight</h1>
           <p className="mt-4 text-lg text-ctp-subtext1">
-            Build better Grand Archive decks with tournament data and locally stored community lists. Save and share
-            decklists, track the cards you own, explore the Standard or Pantheon meta, and build from your collection.
+            Find a proven Grand Archive deck, adapt it to your cards, and track what you can build.
+          </p>
+          <p className="mx-auto mt-2 max-w-2xl text-sm text-ctp-subtext0">
+            Tournament results, community lists, collection tools, and data-informed deck building in one place.
           </p>
 
           <div className="mt-6 flex items-center justify-center gap-1.5">
@@ -403,27 +415,21 @@ export default function About() {
             ))}
           </div>
 
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
             <Link to="/decks" className="rounded-md bg-ctp-blue px-5 py-2 text-sm font-semibold text-ctp-base hover:opacity-90">
-              Explore Decks
-            </Link>
-            <Link
-              to="/deck-builder"
-              className="rounded-md border border-ctp-surface1 px-5 py-2 text-sm font-semibold text-ctp-text hover:border-ctp-blue"
-            >
-              Build a Deck
-            </Link>
-            <Link
-              to="/official-decks"
-              className="rounded-md border border-ctp-surface1 px-5 py-2 text-sm font-semibold text-ctp-text hover:border-ctp-mauve"
-            >
-              Official Decks
+              Find a proven deck
             </Link>
             <Link
               to="/collection"
               className="rounded-md border border-ctp-green/60 px-5 py-2 text-sm font-semibold text-ctp-green hover:border-ctp-green hover:bg-ctp-green/5"
             >
-              My Collection
+              Build from my collection
+            </Link>
+            <Link
+              to="/deck-builder"
+              className="rounded-md border border-ctp-surface1 px-5 py-2 text-sm font-semibold text-ctp-text hover:border-ctp-mauve"
+            >
+              Start building
             </Link>
           </div>
         </div>
@@ -431,18 +437,63 @@ export default function About() {
 
       <section className="border-b border-ctp-surface0 bg-ctp-mantle/40 px-4 py-10">
         <div className="mx-auto max-w-5xl">
-          <div className="grid gap-4 sm:grid-cols-3">
-            <Link to="/my-decks" className="rounded-xl border border-ctp-surface1 bg-ctp-base p-4 hover:border-ctp-blue">
-              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Save your decks</p>
-              <p className="mt-2 text-sm text-ctp-subtext1">Keep versions, import many Omnidex lists at once, and share a public decklist when it is ready.</p>
-            </Link>
-            <Link to="/collection" className="rounded-xl border border-ctp-surface1 bg-ctp-base p-4 hover:border-ctp-green">
-              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-green">Track your collection</p>
-              <p className="mt-2 text-sm text-ctp-subtext1">Add whole decks or sets by rarity, import CSV, and backfill up to four copies from your Omnidex history.</p>
+          {user && (
+            <div className="mb-6 flex flex-col gap-3 rounded-xl border border-ctp-blue/40 bg-ctp-blue/5 p-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="font-semibold text-ctp-text">Welcome back, {user.displayName}</p>
+                <p className="mt-0.5 text-sm text-ctp-subtext1">Pick up where you left off.</p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Link to="/my-decks" className="rounded-md bg-ctp-blue px-3 py-2 text-sm font-semibold text-ctp-base hover:opacity-90">My Decks</Link>
+                <Link to="/collection" className="rounded-md border border-ctp-green/60 px-3 py-2 text-sm font-semibold text-ctp-green hover:bg-ctp-green/5">My Collection</Link>
+                <Link to="/deck-builder" className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm font-semibold text-ctp-text hover:border-ctp-mauve">Continue Building</Link>
+              </div>
+            </div>
+          )}
+
+          <h2 className="text-center text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">What do you want to do?</h2>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <Link to="/decks" className="rounded-xl border border-ctp-surface1 bg-ctp-base p-4 hover:border-ctp-blue">
+              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Find a deck</p>
+              <p className="mt-2 text-sm text-ctp-subtext1">Browse proven tournament builds by Champion, results, cards, or budget.</p>
             </Link>
             <Link to="/deck-builder" className="rounded-xl border border-ctp-surface1 bg-ctp-base p-4 hover:border-ctp-mauve">
-              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-mauve">Build what you own</p>
-              <p className="mt-2 text-sm text-ctp-subtext1">Prioritize owned cards, restrict suggestions to your collection, and see shortages before committing to a list.</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-mauve">Build a deck</p>
+              <p className="mt-2 text-sm text-ctp-subtext1">Start with a Champion or paste a list, then tune it with real deck data.</p>
+            </Link>
+            <Link to="/collection" className="rounded-xl border border-ctp-surface1 bg-ctp-base p-4 hover:border-ctp-green">
+              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-green">Use my cards</p>
+              <p className="mt-2 text-sm text-ctp-subtext1">Track your collection, add complete decks, and see exactly what you are missing.</p>
+            </Link>
+            <Link to="/my-decks" className="rounded-xl border border-ctp-surface1 bg-ctp-base p-4 hover:border-ctp-yellow">
+              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-yellow">Manage my decks</p>
+              <p className="mt-2 text-sm text-ctp-subtext1">Save versions, import Omnidex history in bulk, and share finished lists.</p>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-ctp-surface0 px-4 py-10">
+        <div className="mx-auto max-w-5xl">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">New on Fan of Insight</h2>
+              <p className="mt-1 text-sm text-ctp-subtext1">The newest ways to go from deck idea to cards in hand.</p>
+            </div>
+            <Link to="/changelog" className="shrink-0 text-xs text-ctp-blue hover:underline">Full changelog &rarr;</Link>
+          </div>
+          <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            <Link to="/my-decks" className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4 hover:border-ctp-blue">
+              <p className="font-semibold text-ctp-text">Bulk Omnidex import</p>
+              <p className="mt-1 text-xs text-ctp-subtext1">Preview a player's history, filter it, and bring in up to 50 selected decklists at once.</p>
+            </Link>
+            <Link to="/collection" className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4 hover:border-ctp-green">
+              <p className="font-semibold text-ctp-text">Fast collection backfill</p>
+              <p className="mt-1 text-xs text-ctp-subtext1">Add cards from imported decks or fill a set by rarity, safely capped at four copies.</p>
+            </Link>
+            <Link to="/deck-builder" className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4 hover:border-ctp-mauve">
+              <p className="font-semibold text-ctp-text">Collection-aware building</p>
+              <p className="mt-1 text-xs text-ctp-subtext1">Prioritize cards you own, restrict suggestions, and catch shortages while you build.</p>
             </Link>
           </div>
         </div>
@@ -681,12 +732,15 @@ export default function About() {
         </section>
       )}
 
-      <section className="border-t border-ctp-surface0 bg-ctp-mantle/40 py-16">
+      <section className="border-t border-ctp-surface0 bg-ctp-mantle/40 py-12">
         <div className="mx-auto max-w-5xl px-4">
-          <h2 className="text-center text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">Explore the site</h2>
-          <p className="mx-auto mt-2 max-w-xl text-center text-sm text-ctp-subtext1">
-            Every top-level section and what it actually does — not just a page list.
-          </p>
+          <details>
+            <summary className="cursor-pointer list-none text-center text-sm font-semibold uppercase tracking-wide text-ctp-blue hover:underline">
+              Explore every feature <span aria-hidden="true">&darr;</span>
+            </summary>
+            <p className="mx-auto mt-2 max-w-xl text-center text-sm text-ctp-subtext1">
+              A complete guide to every top-level section and what it does.
+            </p>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {FEATURES.map((f) => (
               <div key={f.title} className="rounded-lg border border-ctp-surface1 bg-ctp-base p-4">
@@ -720,6 +774,7 @@ export default function About() {
               </div>
             ))}
           </div>
+          </details>
         </div>
       </section>
 
