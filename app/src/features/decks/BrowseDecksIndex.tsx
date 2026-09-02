@@ -19,6 +19,8 @@ import CardImage from "../../components/CardImage";
 import ElementIcon from "../../components/ElementIcon";
 import { usePantheonDeckIndex } from "../community/data";
 import PageLayout from "../../components/layout/PageLayout";
+import Button from "../../components/ui/Button";
+import { InlineState } from "../../components/ui/ContentState";
 
 type ViewMode = "builds" | "sightings" | "pantheon";
 const VIEW_TABS: readonly ViewMode[] = ["builds", "sightings", "pantheon"];
@@ -119,10 +121,10 @@ function PantheonView() {
       <select value={sort} onChange={(event) => setSort(event.target.value as "champion" | "main")} aria-label="Sort Pantheon decks" className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1.5 text-xs text-ctp-text"><option value="champion">Champion A–Z</option><option value="main">Largest main deck</option></select>
     </div>
     <p className="mt-3 text-xs text-ctp-subtext0">Showing {filtered.length.toLocaleString()} of {decks.length.toLocaleString()} locally stored Pantheon decklists.</p>
-    {!index && <p className="mt-5 text-sm text-ctp-subtext1">Loading Pantheon decks…</p>}
-    {index && filtered.length === 0 && <p className="mt-5 text-sm text-ctp-subtext1">No Pantheon decklists match these filters.</p>}
+    {!index && <InlineState className="mt-5 text-sm">Loading Pantheon decks…</InlineState>}
+    {index && filtered.length === 0 && <InlineState className="mt-5 text-sm">No Pantheon decklists match these filters.</InlineState>}
     <div className="mt-3 space-y-2">{filtered.slice(0, visibleCount).map((deck) => <PantheonDeckRow key={deck.id} deck={deck} cardsByName={cardsByName} championCard={deck.champion ? championImages.get(formatPantheonChampion(deck.champion)) : undefined} />)}</div>
-    {visibleCount < filtered.length && <button type="button" onClick={() => setVisibleCount((count) => count + 30)} className="mt-4 rounded-md border border-ctp-surface1 px-3 py-1.5 text-sm text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue">Load more</button>}
+    {visibleCount < filtered.length && <Button variant="secondary" onClick={() => setVisibleCount((count) => count + 30)} className="mt-4">Load more</Button>}
   </div>;
 }
 
@@ -140,9 +142,9 @@ function PantheonDeckRow({ deck, championCard, cardsByName }: { deck: ShoutAtYou
       {championCard?.editions[0] ? <CardImage image={championCard.editions[0].image} alt={deck.champion ?? "Champion"} className="h-14 w-10 shrink-0 rounded object-cover object-top" /> : <div className="h-14 w-10 shrink-0 rounded bg-ctp-surface0" />}
       <div className="min-w-0 flex-1"><Link to={`/pantheon/decks/${deck.id}`} className="font-medium text-ctp-text hover:text-ctp-blue">{formatPantheonChampion(deck.champion)}</Link><div className="mt-0.5 text-xs text-ctp-subtext0">{deck.mainCount !== null ? `${deck.mainCount} main` : ""}{deck.materialCount !== null ? ` · ${deck.materialCount} material` : ""}</div>{(deck.boonNames?.length ?? 0) > 0 && <div className="mt-1.5 flex flex-wrap gap-1" aria-label="Boons">{deck.boonNames!.map((name) => <span key={name} className="rounded-full border border-ctp-mauve/40 bg-ctp-mauve/10 px-2 py-0.5 text-[10px] text-ctp-mauve">{name}</span>)}</div>}</div>
       <Link to={`/pantheon/decks/${deck.id}`} className="shrink-0 rounded-md border border-ctp-blue px-2 py-1.5 text-xs text-ctp-blue hover:bg-ctp-surface0">View stats →</Link>
-      <button type="button" onClick={() => setExpanded((value) => !value)} aria-expanded={expanded} className="shrink-0 rounded-md border border-ctp-surface1 px-2 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-text">{expanded ? "Hide" : "Decklist"}</button>
+      <Button variant="secondary" size="sm" onClick={() => setExpanded((value) => !value)} aria-expanded={expanded} className="shrink-0">{expanded ? "Hide" : "Decklist"}</Button>
     </div>
-    {expanded && <div className="mt-2 grid gap-3 border-t border-ctp-surface0 pt-2 text-xs text-ctp-subtext1 sm:grid-cols-2">{detailStatus === "loaded" && detail ? <><div><p className="mb-1 font-semibold text-ctp-text">Boons</p>{boons.map((line) => <div key={line.name}>{line.quantity}× {line.name}</div>)}<p className="mb-1 mt-3 font-semibold text-ctp-text">Material</p>{material.map((line) => <div key={line.name}>{line.quantity}× {line.name}</div>)}{tokens.length > 0 && <><p className="mb-1 mt-3 font-semibold text-ctp-text">Tokens</p>{tokens.map((name) => <div key={name}>1× {name}</div>)}</>}</div><div><p className="mb-1 font-semibold text-ctp-text">Main deck</p>{detail.mainDeck.map((line) => <div key={line.name}>{line.quantity}× {line.name}</div>)}</div></> : detailStatus === "error" ? <div><p className="text-ctp-red">Decklist unavailable.</p><button type="button" onClick={() => setDetailStatus("idle")} className="mt-2 text-ctp-blue hover:underline">Retry</button></div> : <p>Loading decklist…</p>}</div>}
+    {expanded && <div className="mt-2 grid gap-3 border-t border-ctp-surface0 pt-2 text-xs text-ctp-subtext1 sm:grid-cols-2">{detailStatus === "loaded" && detail ? <><div><p className="mb-1 font-semibold text-ctp-text">Boons</p>{boons.map((line) => <div key={line.name}>{line.quantity}× {line.name}</div>)}<p className="mb-1 mt-3 font-semibold text-ctp-text">Material</p>{material.map((line) => <div key={line.name}>{line.quantity}× {line.name}</div>)}{tokens.length > 0 && <><p className="mb-1 mt-3 font-semibold text-ctp-text">Tokens</p>{tokens.map((name) => <div key={name}>1× {name}</div>)}</>}</div><div><p className="mb-1 font-semibold text-ctp-text">Main deck</p>{detail.mainDeck.map((line) => <div key={line.name}>{line.quantity}× {line.name}</div>)}</div></> : detailStatus === "error" ? <div><InlineState tone="danger">Decklist unavailable.</InlineState><button type="button" onClick={() => setDetailStatus("idle")} className="mt-2 text-ctp-blue hover:underline">Retry</button></div> : <InlineState>Loading decklist…</InlineState>}</div>}
   </article>;
 }
 
@@ -375,7 +377,7 @@ function BuildsView({
       </div>
 
       {loading && <DeckResultsSkeleton />}
-      {!loading && sorted.length === 0 && <p className="mt-6 text-ctp-subtext1">No decks match these filters.</p>}
+      {!loading && sorted.length === 0 && <InlineState className="mt-6">No decks match these filters.</InlineState>}
       {sorted.length > 0 && (
         <p className="mt-4 text-xs text-ctp-subtext0">
           {sorted.length} distinct deck{sorted.length === 1 ? "" : "s"} match
@@ -685,7 +687,7 @@ function SightingsView({
       </div>
 
       {!sightingsData && <DeckResultsSkeleton />}
-      {sightingsData && filtered.length === 0 && <p className="mt-6 text-ctp-subtext1">No decks match this filter yet.</p>}
+      {sightingsData && filtered.length === 0 && <InlineState className="mt-6">No decks match this filter yet.</InlineState>}
       {sightingsData && filtered.length > 0 && (
         <p className="mt-4 text-xs text-ctp-subtext0">
           {filtered.length} deck{filtered.length === 1 ? "" : "s"} match

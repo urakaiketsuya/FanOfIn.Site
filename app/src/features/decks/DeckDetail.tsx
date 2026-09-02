@@ -44,6 +44,9 @@ import { computeAggressionForecast } from "../../lib/aggressionForecast";
 import { useDecklistDisplayPrefs } from "../../lib/decklistDisplayPrefs";
 import DiaoScoreCard from "../../components/DiaoScoreCard";
 import PageLayout from "../../components/layout/PageLayout";
+import Panel from "../../components/ui/Panel";
+import Section from "../../components/ui/Section";
+import { InlineState, EmptyState } from "../../components/ui/ContentState";
 
 type DeckTab = "decklist" | "composition" | "history" | "similar";
 
@@ -327,20 +330,21 @@ export default function DeckDetail() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-10">
-        <p className="text-ctp-subtext1">Loading…</p>
-      </div>
+      <PageLayout>
+        <InlineState className="mt-10">Loading…</InlineState>
+      </PageLayout>
     );
   }
 
   if (!deck) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-10">
-        <p className="text-ctp-red">This deck isn't in the ingested data.</p>
-        <Link to="/decks?view=builds&minPlayers=2plus" className="mt-2 inline-block text-ctp-blue hover:underline">
-          &larr; Browse Decks
-        </Link>
-      </div>
+      <PageLayout>
+        <EmptyState
+          title="Deck not found"
+          description="This deck isn't in the ingested data."
+          action={<Link to="/decks?view=builds&minPlayers=2plus" className="text-ctp-blue hover:underline">&larr; Browse Decks</Link>}
+        />
+      </PageLayout>
     );
   }
 
@@ -405,12 +409,12 @@ export default function DeckDetail() {
       )}
 
       {tab === "decklist" && !hasClusterMatch && (
-        <div className="mt-6 rounded-md border border-ctp-surface1 bg-ctp-mantle p-3">
-          <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Cards that might help</h3>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            Cards that correlate with a higher win rate among other {deck.championName ?? "this Champion's"} decks —
-            correlational, not a guarantee.
-          </p>
+        <Panel padding="sm" className="mt-6">
+          <Section
+            heading="dense"
+            title="Cards that might help"
+            description={`Cards that correlate with a higher win rate among other ${deck.championName ?? "this Champion's"} decks — correlational, not a guarantee.`}
+          >
           {championElementsPresent.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-3">
               {championElementsPresent.map((element) => (
@@ -427,13 +431,13 @@ export default function DeckDetail() {
             </div>
           )}
           {championImpact.cards.length === 0 ? (
-            <p className="mt-3 text-sm text-ctp-subtext1">
+            <InlineState className="mt-3 text-sm">
               {championImpact.loading
                 ? "Loading…"
                 : championImpact.totalDecks === 0
                   ? "No decks match these elements yet — try unchecking some."
                   : `Not enough with/without samples yet among ${championImpact.totalDecks} matching decks.`}
-            </p>
+            </InlineState>
           ) : (
             <>
               <p className="mt-3 text-xs text-ctp-subtext0">
@@ -448,13 +452,12 @@ export default function DeckDetail() {
               />
             </>
           )}
-        </div>
+          </Section>
+        </Panel>
       )}
 
       {tab === "composition" && composition && (
-        <div className="mt-8">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Composition</h2>
-
+        <Section className="mt-8" heading="compact" title="Composition">
           {(floatingMemory && (floatingMemory.base > 0 || floatingMemory.classBonus > 0)) ||
           (allyPower && allyPower.allyCopies > 0) ||
           (damage && (damage.championRange.max > 0 || damage.allyRange.max > 0)) ? (
@@ -497,12 +500,11 @@ export default function DeckDetail() {
             <DonutChart title="Damage Targets" segments={damageTargetSegments} />
             <DonutChart title="Damage Type" segments={damageTypeSegments} />
           </div>
-        </div>
+        </Section>
       )}
 
       {tab === "decklist" && priciestCards.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Priciest Cards</h2>
+        <Section className="mt-8" heading="compact" title="Priciest Cards">
           <ul className="mt-2 space-y-1 text-sm">
             {priciestCards.map((c) => {
               const card = cardsByName.get(c.name);
@@ -523,21 +525,19 @@ export default function DeckDetail() {
               );
             })}
           </ul>
-        </div>
+        </Section>
       )}
 
       {tab === "history" && sightingsByMonth.length > 1 && (
-        <div className="mt-8">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Popularity Over Time</h2>
+        <Section className="mt-8" heading="compact" title="Popularity Over Time">
           <div className="mt-2">
             <BarChart title="Sightings per Month" bars={sightingsByMonth} />
           </div>
-        </div>
+        </Section>
       )}
 
       {tab === "similar" && (
-        <div className="mt-8">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Similar Decks</h2>
+        <Section className="mt-8" heading="compact" title="Similar Decks">
           {similarDecks.length > 0 ? (
             <div className="mt-2 space-y-1 text-sm">
               {similarDecks.map(({ deck: match, score }) => (
@@ -552,21 +552,20 @@ export default function DeckDetail() {
               ))}
             </div>
           ) : (
-            <p className="mt-2 text-sm text-ctp-subtext1">
+            <InlineState className="mt-2 text-sm">
               No distinct similar decks found — every close match for this build turned out to be another copy of
               the exact same list, which doesn't count as "similar."
-            </p>
+            </InlineState>
           )}
-        </div>
+        </Section>
       )}
 
       {tab === "history" && instances.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Played by ({instances.length})</h2>
+        <Section className="mt-8" heading="compact" title={`Played by (${instances.length})`}>
           <div className="mt-2">
             <TopDecksList decks={instancesForList} playerName={playerName} />
           </div>
-        </div>
+        </Section>
       )}
     </PageLayout>
   );

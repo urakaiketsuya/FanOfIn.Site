@@ -9,6 +9,8 @@ import DecklistView from "../events/DecklistView";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useSightingDecklist } from "./useSightingDecklist";
 import { formatUsd } from "../../lib/format";
+import Button from "../../components/ui/Button";
+import { InlineState } from "../../components/ui/ContentState";
 
 export default function DeckSightingRow({
   sighting,
@@ -157,23 +159,23 @@ export default function DeckSightingRow({
               Decklist &rarr;
             </Link>
           ) : (
-            <button
-              type="button"
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={() => setExpanded((v) => !v)}
               aria-expanded={expanded}
               aria-controls={`decklist-${sighting.deckId}`}
-              className="rounded-md border border-ctp-surface1 px-2 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-text"
             >
               {expanded ? "Hide" : "Decklist"}
-            </button>
+            </Button>
           )}
         </div>
       </div>
 
       {expanded && !sighting.deckHash && (
         <div id={`decklist-${sighting.deckId}`} className="mt-2 border-t border-ctp-surface0 pt-2">
-          {loading && <p className="text-sm text-ctp-subtext1">Loading…</p>}
-          {error && <p className="text-sm text-ctp-subtext0">{error}</p>}
+          {loading && <InlineState className="text-sm">Loading…</InlineState>}
+          {error && <InlineState className="text-sm">{error}</InlineState>}
           {decklist && <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={sighting.deckId} />}
         </div>
       )}
