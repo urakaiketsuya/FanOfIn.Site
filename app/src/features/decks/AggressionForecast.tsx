@@ -13,7 +13,8 @@ export default function AggressionForecast({ forecast }: { forecast: Forecast })
     forecast.fixedDamageCopies === 0 &&
     forecast.variableDamageCopies === 0 &&
     forecast.scalingDamageCopies === 0 &&
-    forecast.ambiguousDamageCopies === 0
+    forecast.ambiguousDamageCopies === 0 &&
+    forecast.recurringDamagePerTurn === 0
   )
     return null;
 
@@ -29,6 +30,7 @@ export default function AggressionForecast({ forecast }: { forecast: Forecast })
         </div>
         <span className="text-xs text-ctp-subtext1">
           {forecast.fixedDamageCopies} fixed-damage cop{forecast.fixedDamageCopies === 1 ? "y" : "ies"}
+          {forecast.symmetricDamageCopies > 0 && ` (${forecast.symmetricDamageCopies} also hit your own champion)`}
           {forecast.scalingDamageCopies > 0 && (
             <>
               , {forecast.scalingDamageCopies} combo-scaling cop{forecast.scalingDamageCopies === 1 ? "y" : "ies"}
@@ -67,6 +69,12 @@ export default function AggressionForecast({ forecast }: { forecast: Forecast })
         </table>
       </div>
 
+      {forecast.recurringDamagePerTurn > 0 && (
+        <p className="mt-2 text-[11px] text-ctp-green">
+          Material Deck also deals {forecast.recurringDamagePerTurn} damage to the champion every turn, unconditionally, once its source is in play (e.g. Fabled Ruby
+          Fatestone) — not in the table above, since "cards seen" doesn't correspond to turns elapsed. Assumes the card stays in play; doesn't model it being removed.
+        </p>
+      )}
       {forecast.scalingDamageCopies > 0 && (
         <p className="mt-2 text-[11px] text-ctp-mauve">
           {forecast.scalingDamageCopies} cop{forecast.scalingDamageCopies === 1 ? "y" : "ies"} deal bonus damage scaled by a sacrifice/combo cost (e.g. Burst Asunder off Fractals) —

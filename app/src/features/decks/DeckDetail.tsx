@@ -186,7 +186,7 @@ export default function DeckDetail() {
 
   const aggressionForecast = useMemo(() => {
     if (!deck) return null;
-    return computeAggressionForecast(deck.main, cardsByName);
+    return computeAggressionForecast(deck.main, cardsByName, deck.material);
   }, [deck, cardsByName]);
 
   const allyPower = useMemo(() => {

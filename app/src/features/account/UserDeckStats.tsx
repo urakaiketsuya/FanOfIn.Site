@@ -40,7 +40,10 @@ export default function UserDeckStats({ decklist, championName, format, title, o
   const catalogByName = useMemo(() => new Map(catalog.map((card) => [card.name, card])), [catalog]);
   const identity = useMemo(() => computeDeckIdentity(identityLines, cardsByName), [identityLines, cardsByName]);
   const rating = useMemo(() => computeDeckRating(identityLines, cardsByName, championName, identity.classes), [identityLines, cardsByName, championName, identity.classes]);
-  const aggressionForecast = useMemo(() => computeAggressionForecast(namedSections.main, cardsByName), [namedSections.main, cardsByName]);
+  const aggressionForecast = useMemo(
+    () => computeAggressionForecast(namedSections.main, cardsByName, namedSections.material),
+    [namedSections.main, namedSections.material, cardsByName],
+  );
   const composition = useMemo(() => computeDeckComposition(identityLines, cardsByName), [identityLines, cardsByName]);
   const memoryCurve = useMemo(() => computeMemoryCostCurve(identityLines, cardsByName), [identityLines, cardsByName]);
   const reserveCurve = useMemo(() => computeReserveCostCurve(identityLines, cardsByName), [identityLines, cardsByName]);

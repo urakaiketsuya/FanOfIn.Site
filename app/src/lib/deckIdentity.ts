@@ -275,6 +275,46 @@ export function hasUnquantifiedChampionDamage(card: Pick<Card, "effect">): boole
   return parseDamageClauses(card.effect).some((clause) => clause.kind === "variable" && (clause.target === "Champion" || clause.target === "Unit"));
 }
 
+/** "At the beginning of your <phase>, Deal N damage to ..." with "Deal" appearing immediately after
+ * the trigger's comma — an unconditional recurring trigger, as opposed to the many state-gated
+ * variants in the real card pool (e.g. Ashwick Cremator's "...if you have no cards in your
+ * hand..."), which this deliberately excludes since a forecast can't evaluate an arbitrary
+ * board-state condition: requiring "Deal" to directly follow the comma means any intervening
+ * "if"/condition clause breaks the match rather than being silently ignored. */
+const RECURRING_DAMAGE_RE = /At the beginning of your [^,]*phase,\s*Deal (\d+) damage to ([^.]*)\./i;
+
+/**
+ * Fixed damage a Material Deck card deals to an opposing champion every one of the controller's
+ * turns, unconditionally, once it's in play — e.g. Fabled Ruby Fatestone's "At the beginning of
+ * your recollection phase, deal 1 damage to each champion." Material Deck cards are known and in
+ * play from the start of the game rather than drawn at random (same convention
+ * `drawEffects.ts`'s `materialDrawBonus` uses), so this is a flat per-turn number, not something
+ * the "cards seen" hypergeometric model applies to — see `computeAggressionForecast`, which
+ * surfaces it as a separate per-turn figure rather than folding it into the seen-based table.
+ * Excludes damage to the controller's own champion only (reuses `classifyTarget`'s "your/own
+ * champion" stripping), same as every other export here.
+ */
+export function parseRecurringChampionDamage(card: Pick<Card, "effect">): number | null {
+  if (!card.effect) return null;
+  const clean = card.effect.replace(/\*\*/g, "");
+  const match = RECURRING_DAMAGE_RE.exec(clean);
+  if (!match) return null;
+  const { target } = classifyTarget(match[2]);
+  return target === "Champion" || target === "Unit" ? Number(match[1]) : null;
+}
+
+/** Does this card's damage clause say "each champion" — hitting the controller's own champion too,
+ * not just the opponent's (e.g. Embercrypt Burn's "deal 2 damage to each champion")? Doesn't change
+ * any guaranteed value: the opponent's champion still takes the full amount regardless of who else
+ * it hits. This just flags the real cost to the card's own controller, so a forecast reader isn't
+ * left thinking a "guaranteed" damage source is free. */
+const EACH_CHAMPION_RE = /\beach champion\b/i;
+
+export function isSymmetricChampionDamage(card: Pick<Card, "effect">): boolean {
+  if (!card.effect) return false;
+  return EACH_CHAMPION_RE.test(card.effect.replace(/\*\*/g, ""));
+}
+
 export interface SubtypeScalingDamage {
   /** This card's own printed base damage, before any subtype-sacrifice bonus (e.g. Burst Asunder's base 2). */
   baseDamage: number;

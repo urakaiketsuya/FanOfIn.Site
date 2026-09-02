@@ -1,5 +1,12 @@
 import type { Card } from "@gatcg/shared";
-import { ambiguousFixedChampionDamage, fixedChampionDamageRange, hasUnquantifiedChampionDamage, parseSubtypeScalingDamage } from "./deckIdentity";
+import {
+  ambiguousFixedChampionDamage,
+  fixedChampionDamageRange,
+  hasUnquantifiedChampionDamage,
+  isSymmetricChampionDamage,
+  parseRecurringChampionDamage,
+  parseSubtypeScalingDamage,
+} from "./deckIdentity";
 
 export interface AggressionForecastPoint {
   seen: number;
@@ -21,6 +28,10 @@ export interface AggressionForecast {
   scalingDamageCopies: number;
   /** Copies with a fixed printed damage value that isn't guaranteed to reach the champion — either an ambiguous "target unit" clause (e.g. Blazing Throw) or one mode of a "Choose one" modal card (e.g. Vermilion Decree). Folded into the Max side only, same as `scalingDamageCopies`. */
   ambiguousDamageCopies: number;
+  /** Of `fixedDamageCopies`, how many also hit the deck's own champion (e.g. Embercrypt Burn's "each champion") — informational only, doesn't change any guaranteed value. */
+  symmetricDamageCopies: number;
+  /** Fixed champion-reach damage from Material Deck cards with an unconditional per-turn trigger (e.g. Fabled Ruby Fatestone), summed across copies. Material Deck cards are known and in play from the start of the game, not drawn — so this is a flat per-turn figure, deliberately kept separate from `points`' "cards seen" checkpoints rather than folded into them. 0 if the deck runs no such cards. */
+  recurringDamagePerTurn: number;
   points: AggressionForecastPoint[];
 }
 
@@ -89,6 +100,7 @@ function round(value: number, digits = 1): number {
 export function computeAggressionForecast(
   mainLines: { name: string; quantity: number }[],
   cardsByName: Map<string, Card>,
+  materialLines: { name: string; quantity: number }[] = [],
 ): AggressionForecast {
   const listedTotal = mainLines.reduce((sum, line) => sum + line.quantity, 0);
   const deckSize = Math.max(60, listedTotal);
@@ -98,6 +110,15 @@ export function computeAggressionForecast(
   let variableDamageCopies = 0;
   let scalingDamageCopies = 0;
   let ambiguousDamageCopies = 0;
+  let symmetricDamageCopies = 0;
+
+  let recurringDamagePerTurn = 0;
+  for (const line of materialLines) {
+    const card = cardsByName.get(line.name);
+    if (!card) continue;
+    const recurring = parseRecurringChampionDamage(card);
+    if (recurring !== null) recurringDamagePerTurn += recurring * line.quantity;
+  }
 
   // Real subtype vocabulary for this deck's own cards, gating `parseSubtypeScalingDamage` the same
   // way `cardIntent.ts`'s subtype detection is gated — see that function's doc comment.
@@ -125,6 +146,7 @@ export function computeAggressionForecast(
     const range = fixedChampionDamageRange(card);
     if (range) {
       fixedDamageCopies += line.quantity;
+      if (isSymmetricChampionDamage(card)) symmetricDamageCopies += line.quantity;
       minGroups.push({ copies: line.quantity, damage: range.min });
       maxGroups.push({ copies: line.quantity, damage: range.max });
       continue;
@@ -188,5 +210,14 @@ export function computeAggressionForecast(
     };
   });
 
-  return { deckSize, fixedDamageCopies, variableDamageCopies, scalingDamageCopies, ambiguousDamageCopies, points };
+  return {
+    deckSize,
+    fixedDamageCopies,
+    variableDamageCopies,
+    scalingDamageCopies,
+    ambiguousDamageCopies,
+    symmetricDamageCopies,
+    recurringDamagePerTurn,
+    points,
+  };
 }
