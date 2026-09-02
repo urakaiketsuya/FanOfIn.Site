@@ -1202,17 +1202,8 @@ function ToolsPanel({
               : populationSource === "community"
                 ? "Community popularity (Shout At Your Decks). No win/loss data, just play frequency."
                 : "Simulator (Experimental). Community-built legal shell with card-level evidence."}
-          {collectionMode === "owned-only" && " Suggestions are limited to cards in your collection."}
         </p>
         <div role="group" aria-label="Data source" className="inline-flex max-w-full flex-wrap rounded-md border border-ctp-surface1 bg-ctp-base p-0.5">
-          <button
-            type="button"
-            aria-pressed={collectionMode === "owned-only"}
-            onClick={() => onCollectionModeChange("owned-only")}
-            className={`rounded px-3 py-1 text-xs font-medium ${collectionMode === "owned-only" ? "bg-ctp-green text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}
-          >
-            My collection
-          </button>
           <button
             type="button"
             aria-pressed={populationSource === "balanced"}
@@ -1253,6 +1244,31 @@ function ToolsPanel({
           >
             Simulator <span className="font-normal">(Experimental)</span>
           </button>}
+        </div>
+
+        <div className="w-full max-w-xs border-t border-ctp-surface1 pt-3">
+          <span className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Build from collection</span>
+          <div role="group" aria-label="Build from collection" className="mt-2 inline-flex max-w-full flex-wrap rounded-md border border-ctp-surface1 bg-ctp-base p-0.5">
+            {([["all", "All cards"], ["prioritize", "Prioritize owned"], ["owned-only", "Owned only"]] as const).map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                aria-pressed={collectionMode === value}
+                onClick={() => onCollectionModeChange(value)}
+                className={`rounded px-3 py-1 text-xs font-medium ${collectionMode === value ? "bg-ctp-green text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <p className="mt-1.5 text-[11px] text-ctp-subtext0">
+            {collectionMode === "owned-only"
+              ? "Auto-suggestions are capped to physical copies you own. Locked cards remain, and shortages stay visible as unresolved slots."
+              : collectionMode === "prioritize"
+                ? "Owned cards win close recommendation ties; performance evidence still leads."
+                : "Suggestions draw from every legal card, regardless of what you own."}
+            {" "}<Link to="/collection" className="text-ctp-blue hover:underline">Manage collection</Link>
+          </p>
         </div>
       </div>
 
@@ -1569,12 +1585,18 @@ export default function DeckBuilderIndex() {
   }
 
   const popularityIndexData = useDeckPopularityIndexData();
+  // Undebounced, for the Element/Spirit dropdowns only — those should fill in as soon as each
+  // sync batch lands rather than waiting for the settle window below, since an empty dropdown
+  // reads as broken while a still-growing one reads as loading. (The Champion dropdown already
+  // loads from popularityIndexData above, not the catalog, so it isn't affected by this at all.)
+  const liveCardCatalog = useCardCatalog();
+  const liveCatalogByName = useMemo(() => new Map(liveCardCatalog.map((c) => [c.name, c])), [liveCardCatalog]);
   // Debounced against the catalog sync's own write batches (app/src/lib/sync/cards.ts writes ~50
   // cards per bulkPut, and useCardCatalog's useLiveQuery emits a new array on every one) — same
   // CATALOG_SETTLE_MS reasoning as useAllDecodedDecks/useSuggestedBuild, needed here too since
   // catalogByName feeds Champion/Spirit identity and legality checks,
   // all of which would otherwise recompute (and re-render the whole page) on every sync write.
-  const cardCatalog = useDebouncedValue(useCardCatalog(), 500);
+  const cardCatalog = useDebouncedValue(liveCardCatalog, 500);
   const catalogByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
   const spiritCanonicalNames = useMemo(() => buildSpiritCanonicalNames(cardCatalog), [cardCatalog]);
   // Shared links and pasted decks can name a cosmetic equivalent. Store the canonical Spirit so
@@ -1826,14 +1848,14 @@ export default function DeckBuilderIndex() {
     [spiritsPresent, spiritStats],
   );
   const spiritElements = useMemo(
-    () => Array.from(new Set(sortedSpirits.flatMap((name) => catalogByName.get(name)?.elements ?? [])))
+    () => Array.from(new Set(sortedSpirits.flatMap((name) => liveCatalogByName.get(name)?.elements ?? [])))
       .filter((element) => element !== "NORM")
       .sort(),
-    [sortedSpirits, catalogByName],
+    [sortedSpirits, liveCatalogByName],
   );
   const spiritsForElement = useMemo(
-    () => spiritElement ? sortedSpirits.filter((name) => catalogByName.get(name)?.elements.includes(spiritElement)) : sortedSpirits,
-    [spiritElement, sortedSpirits, catalogByName],
+    () => spiritElement ? sortedSpirits.filter((name) => liveCatalogByName.get(name)?.elements.includes(spiritElement)) : sortedSpirits,
+    [spiritElement, sortedSpirits, liveCatalogByName],
   );
   function spiritOptionLabel(name: string): string {
     const stats = spiritStats.get(name);
@@ -2544,7 +2566,7 @@ export default function DeckBuilderIndex() {
         </ol>
       </nav>
 
-      {!isImproving && <section className="mt-5 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4" aria-labelledby="builder-start">
+      {!isImproving && !identityComplete && <section className="mt-5 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4" aria-labelledby="builder-start">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <div>
             <h2 id="builder-start" className="font-semibold text-ctp-text">What do you want to do?</h2>
@@ -2589,12 +2611,10 @@ export default function DeckBuilderIndex() {
         </ol>
       </section>}
 
-      <div id="deck-builder-starting" className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1 text-sm" role="group" aria-label="Deck format">
+      {!identityComplete && <div id="deck-builder-starting" className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1 text-sm" role="group" aria-label="Deck format">
         {(["STANDARD", "PANTHEON"] as const).map((format) => <button key={format} type="button" aria-pressed={deckFormat === format} onClick={() => { setDeckFormat(format); if (format === "PANTHEON") setPopulationSource("community"); const next = new URLSearchParams(searchParams); if (format === "PANTHEON") next.set("format", "pantheon"); else next.delete("format"); setSearchParams(next, { replace: true }); }} className={`rounded-md px-3 py-1.5 ${deckFormat === format ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>{format === "PANTHEON" ? "Pantheon" : "Standard"}</button>)}
-      </div>
-      {deckFormat === "PANTHEON" && <p className="mt-2 text-xs text-ctp-subtext0">Pantheon recommendations use format-separated community adoption and singleton legality. They do not use Standard tournament win rates.</p>}
-
-      <div className="mt-3 flex flex-wrap items-center gap-2 rounded-lg border border-ctp-green/30 bg-ctp-green/5 p-3 text-xs"><span className="font-medium text-ctp-text">Build from collection:</span>{([['all', 'All cards'], ['prioritize', 'Prioritize owned'], ['owned-only', 'Owned only']] as const).map(([value, label]) => <button key={value} type="button" aria-pressed={collectionMode === value} onClick={() => startTransition(() => setCollectionMode(value))} className={`rounded px-2.5 py-1.5 ${collectionMode === value ? "bg-ctp-green text-ctp-base" : "border border-ctp-surface1 text-ctp-subtext1"}`}>{label}</button>)}<Link to="/collection" className="ml-auto text-ctp-blue hover:underline">Manage collection</Link><p className="w-full text-ctp-subtext0">{collectionMode === "owned-only" ? "Auto-suggestions are capped to physical copies you own. Locked cards remain, and shortages stay visible as unresolved slots." : collectionMode === "prioritize" ? "Owned cards win close recommendation ties; performance evidence still leads." : `${collection.length} owned card ${collection.length === 1 ? "entry" : "entries"} loaded.`}</p></div>
+      </div>}
+      {!identityComplete && deckFormat === "PANTHEON" && <p className="mt-2 text-xs text-ctp-subtext0">Pantheon recommendations use format-separated community adoption and singleton legality. They do not use Standard tournament win rates.</p>}
 
       <div id="deck-builder-identity" className={isImproving ? "mt-4" : "mt-4 flex flex-wrap items-center gap-2 text-sm"}>
         {isImproving && championName && <>
@@ -2630,11 +2650,11 @@ export default function DeckBuilderIndex() {
             <label htmlFor="deck-builder-element" className="ml-2 text-ctp-subtext0">Element:</label>
             <select
               id="deck-builder-element"
-              value={spiritElement ?? catalogByName.get(spiritFilter ?? "")?.elements.find((element) => element !== "NORM") ?? ""}
+              value={spiritElement ?? liveCatalogByName.get(spiritFilter ?? "")?.elements.find((element) => element !== "NORM") ?? ""}
               onChange={(e) => {
                 const value = e.target.value || null;
                 setSpiritElement(value);
-                if (spiritFilter && value && !catalogByName.get(spiritFilter)?.elements.includes(value)) setSpiritFilter(null);
+                if (spiritFilter && value && !liveCatalogByName.get(spiritFilter)?.elements.includes(value)) setSpiritFilter(null);
               }}
               className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
             >
@@ -2764,33 +2784,6 @@ export default function DeckBuilderIndex() {
             Clarent currently reports {simulatorSummary?.games ?? 0} game{simulatorSummary?.games === 1 ? "" : "s"} and {simulatorResult.matchedCards} catalog-resolved card sample{simulatorResult.matchedCards === 1 ? "" : "s"}. Simulator telemetry does not contain complete Champion-scoped decklists, so community construction supplies the legal shell; qualifying simulator rows only change card priority. No simulator evidence means the shell stays unchanged.
           </div>}
 
-          <div className="mt-2 grid overflow-hidden rounded-lg border border-ctp-surface1 bg-ctp-mantle sm:grid-cols-4">
-            <div className="border-b border-ctp-surface1 px-3 py-2 sm:border-b-0 sm:border-r">
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Evidence</p>
-              <p className="mt-0.5 text-sm font-semibold text-ctp-text">
-                {build.matchingDeckCount} {effectivePopulationSource === "simulator"
-                  ? `game${build.matchingDeckCount === 1 ? "" : "s"}`
-                  : `deck${build.matchingDeckCount === 1 ? "" : "s"}`}
-              </p>
-              <p className="text-[10px] text-ctp-subtext0">{effectivePopulationSource === "simulator" ? `${simulatorResult.matchedCards} qualifying cards` : build.matchingDeckCount >= 30 ? "Strong sample" : build.matchingDeckCount >= 10 ? "Limited sample" : "Exploratory"}</p>
-            </div>
-            <div className="border-b border-ctp-surface1 px-3 py-2 sm:border-b-0 sm:border-r">
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Performance</p>
-              <p className="mt-0.5 text-sm font-semibold text-ctp-text">{effectivePopulationSource === "simulator" ? "Experimental" : build.conditionalWinRate === null ? "—" : `${(build.conditionalWinRate * 100).toFixed(0)}% observed`}</p>
-              {build.baselineWinRate !== null && lockedCards.size > 0 && <p className="text-[10px] text-ctp-subtext0">{build.conditionalWinRate !== null && build.conditionalWinRate - build.baselineWinRate >= 0 ? "+" : ""}{build.conditionalWinRate === null ? "" : `${((build.conditionalWinRate - build.baselineWinRate) * 100).toFixed(1)}%`} vs. baseline</p>}
-            </div>
-            <div className="border-b border-ctp-surface1 px-3 py-2 sm:border-b-0 sm:border-r">
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Completion</p>
-              <p className="mt-0.5 text-sm font-semibold text-ctp-text">{mainTotal}/{mainTotal + build.unresolved.main} main</p>
-              <p className="text-[10px] text-ctp-subtext0">{build.unresolved.main} flex slot{build.unresolved.main === 1 ? "" : "s"} open</p>
-            </div>
-            <div className="px-3 py-2">
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Cost</p>
-              <p className="mt-0.5 text-sm font-semibold text-ctp-text">{formatUsd(totalPrice.sum)}</p>
-              <p className="text-[10px] text-ctp-subtext0">{sideboardPrice.sum > 0 ? `+ ${formatUsd(sideboardPrice.sum)} sideboard` : totalPrice.missing > 0 ? `${totalPrice.missing} price${totalPrice.missing === 1 ? "" : "s"} missing` : "Main + material"}</p>
-            </div>
-          </div>
-
           {isPending && <p role="status" className="mt-1 text-xs text-ctp-subtext0">Recalculating suggestions…</p>}
           {rejectedCards.size > 0 && <p className="mt-1 text-xs text-ctp-subtext0">{rejectedCards.size} card{rejectedCards.size === 1 ? "" : "s"} excluded · <button type="button" onClick={() => { pendingActionRef.current = { label: "Reset excluded cards", subject: null }; startTransition(() => setRejectedCards(new Set())); }} className="hover:text-ctp-blue hover:underline">reset</button></p>}
           {build.usedSpiritElementFallback && (
@@ -2841,7 +2834,7 @@ export default function DeckBuilderIndex() {
           </div>
 
           {tab === "build" && newReleaseCards.length > 0 && (
-            <div className="mb-4 rounded-lg border border-ctp-mauve/50 bg-ctp-mauve/10 px-3 py-2 text-xs text-ctp-subtext1">
+            <div className="mt-4 mb-4 rounded-lg border border-ctp-mauve/50 bg-ctp-mauve/10 px-3 py-2 text-xs text-ctp-subtext1">
               <span className="font-medium">New cards available</span>
               <span className="ml-auto">({newReleaseCards.length} new cards from recent sets)</span>
               <Link to="/card-discovery" className="ml-3 text-ctp-mauve hover:underline">Explore new cards →</Link>
@@ -3076,44 +3069,6 @@ export default function DeckBuilderIndex() {
               )}
 
                 </>
-
-              {showNearestDecks && (
-                <div className="mt-4">
-                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Nearest similar real decks</h2>
-                  <p className="mt-1 text-xs text-ctp-subtext0">
-                    Real decklists most similar to your accepted cards, shown automatically after two choices. These
-                    are references, not a replacement recommendation population. Click "Load" to use one as a new
-                    starting point.
-                  </p>
-                  {nearestDecks.length === 0 ? (
-                    <p className="mt-3 text-sm text-ctp-subtext1">No similar decks found for your choices so far.</p>
-                  ) : (
-                    <ul className="mt-2 space-y-1">
-                      {nearestDecks.map((d) => (
-                        <li key={d.deckId} className="flex flex-wrap items-center gap-1.5 rounded-md border border-ctp-surface1 px-2 py-1 text-sm">
-                          <span className="text-ctp-text">{d.championName ?? "Unknown Champion"}</span>
-                          {d.spiritName && <span className="text-ctp-subtext1">({d.spiritName})</span>}
-                          <span className="text-xs text-ctp-subtext0">{(d.similarity * 100).toFixed(0)}% similar</span>
-                          <span className="text-xs text-ctp-subtext0">{(d.winRate * 100).toFixed(0)}% win rate</span>
-                          <Link
-                            to={nearestDeckCompareLink(d)}
-                            className="ml-auto shrink-0 rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
-                          >
-                            Compare
-                          </Link>
-                          <button
-                            type="button"
-                            onClick={() => loadNearestDeck(d)}
-                            className="shrink-0 rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
-                          >
-                            Load
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              )}
             </div>
           )}
 
@@ -3131,6 +3086,33 @@ export default function DeckBuilderIndex() {
                     Restore dismissed
                   </button>
                 )}
+              </div>
+
+              <div className="mt-4 grid overflow-hidden rounded-lg border border-ctp-surface1 bg-ctp-mantle sm:grid-cols-4">
+                <div className="border-b border-ctp-surface1 px-3 py-2 sm:border-b-0 sm:border-r">
+                  <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Evidence</p>
+                  <p className="mt-0.5 text-sm font-semibold text-ctp-text">
+                    {build.matchingDeckCount} {effectivePopulationSource === "simulator"
+                      ? `game${build.matchingDeckCount === 1 ? "" : "s"}`
+                      : `deck${build.matchingDeckCount === 1 ? "" : "s"}`}
+                  </p>
+                  <p className="text-[10px] text-ctp-subtext0">{effectivePopulationSource === "simulator" ? `${simulatorResult.matchedCards} qualifying cards` : build.matchingDeckCount >= 30 ? "Strong sample" : build.matchingDeckCount >= 10 ? "Limited sample" : "Exploratory"}</p>
+                </div>
+                <div className="border-b border-ctp-surface1 px-3 py-2 sm:border-b-0 sm:border-r">
+                  <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0" title="Win rate observed among matching decks in the selected data source — not a guaranteed outcome for this specific build.">Performance</p>
+                  <p className="mt-0.5 text-sm font-semibold text-ctp-text">{effectivePopulationSource === "simulator" ? "Experimental" : build.conditionalWinRate === null ? "—" : `${(build.conditionalWinRate * 100).toFixed(0)}% observed`}</p>
+                  {build.baselineWinRate !== null && lockedCards.size > 0 && <p className="text-[10px] text-ctp-subtext0">{build.conditionalWinRate !== null && build.conditionalWinRate - build.baselineWinRate >= 0 ? "+" : ""}{build.conditionalWinRate === null ? "" : `${((build.conditionalWinRate - build.baselineWinRate) * 100).toFixed(1)}%`} vs. baseline</p>}
+                </div>
+                <div className="border-b border-ctp-surface1 px-3 py-2 sm:border-b-0 sm:border-r">
+                  <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Completion</p>
+                  <p className="mt-0.5 text-sm font-semibold text-ctp-text">{mainTotal}/{mainTotal + build.unresolved.main} main</p>
+                  <p className="text-[10px] text-ctp-subtext0">{build.unresolved.main} flex slot{build.unresolved.main === 1 ? "" : "s"} open</p>
+                </div>
+                <div className="px-3 py-2">
+                  <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Cost</p>
+                  <p className="mt-0.5 text-sm font-semibold text-ctp-text">{formatUsd(totalPrice.sum)}</p>
+                  <p className="text-[10px] text-ctp-subtext0">{sideboardPrice.sum > 0 ? `+ ${formatUsd(sideboardPrice.sum)} sideboard` : totalPrice.missing > 0 ? `${totalPrice.missing} price${totalPrice.missing === 1 ? "" : "s"} missing` : "Main + material"}</p>
+                </div>
               </div>
 
               {build.protectedPackages.length > 0 && (
@@ -3283,6 +3265,45 @@ export default function DeckBuilderIndex() {
                   </div>
                 </>
               )}
+
+              {showNearestDecks && (
+                <div className="mt-5">
+                  <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Nearest similar real decks</h3>
+                  <p className="mt-1 text-xs text-ctp-subtext0">
+                    Real decklists most similar to your accepted cards, shown automatically after two choices. These
+                    are references, not a replacement recommendation population. Click "Load" to use one as a new
+                    starting point.
+                  </p>
+                  {nearestDecks.length === 0 ? (
+                    <p className="mt-3 text-sm text-ctp-subtext1">No similar decks found for your choices so far.</p>
+                  ) : (
+                    <ul className="mt-2 space-y-1">
+                      {nearestDecks.map((d) => (
+                        <li key={d.deckId} className="flex flex-wrap items-center gap-1.5 rounded-md border border-ctp-surface1 px-2 py-1 text-sm">
+                          <span className="text-ctp-text">{d.championName ?? "Unknown Champion"}</span>
+                          {d.spiritName && <span className="text-ctp-subtext1">({d.spiritName})</span>}
+                          <span className="text-xs text-ctp-subtext0">{(d.similarity * 100).toFixed(0)}% similar</span>
+                          <span className="text-xs text-ctp-subtext0">{(d.winRate * 100).toFixed(0)}% win rate</span>
+                          <Link
+                            to={nearestDeckCompareLink(d)}
+                            className="ml-auto shrink-0 rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
+                          >
+                            Compare
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={() => loadNearestDeck(d)}
+                            className="shrink-0 rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
+                          >
+                            Load
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+
               <div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-ctp-surface1 pt-3">
                 <button type="button" onClick={() => setTab("build")} className="text-xs text-ctp-blue hover:underline">← Back to build</button>
                 <button type="button" onClick={() => setTab("copy")} className="rounded-md bg-ctp-blue px-3 py-1.5 text-xs font-medium text-ctp-base">{reviewComplete ? "Continue to validation" : "Validate current deck"} →</button>
@@ -3325,10 +3346,7 @@ export default function DeckBuilderIndex() {
                 unresolvedMain={build.unresolved.main}
                 deckFormat={deckFormat}
                 populationSource={effectivePopulationSource}
-                onChangePopulationSource={(source, label) => {
-                  startTransition(() => setCollectionMode("all"));
-                  changePopulationSource(source, label);
-                }}
+                onChangePopulationSource={changePopulationSource}
                 collectionMode={collectionMode}
                 onCollectionModeChange={(mode) => startTransition(() => setCollectionMode(mode))}
               />
