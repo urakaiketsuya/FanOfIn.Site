@@ -16,6 +16,8 @@ import DeckTags from "./DeckTags";
 import PrimerMarkdown from "./PrimerMarkdown";
 import Tabs from "../../components/ui/Tabs";
 import { useTabParam } from "../../lib/useTabParam";
+import Panel from "../../components/ui/Panel";
+import { EmptyState, InlineState } from "../../components/ui/ContentState";
 
 type DeckTab = "decklist" | "analysis" | "primer" | "versions" | "settings";
 const DECK_TABS = [{ key: "decklist", label: "Decklist" }, { key: "analysis", label: "Analysis" }, { key: "primer", label: "Primer" }, { key: "versions", label: "Versions" }, { key: "settings", label: "Settings" }] satisfies { key: DeckTab; label: string }[];
@@ -137,15 +139,15 @@ export default function MyDeckDetail() {
     setPrimerMarkdown((current) => `${current}${current.trim() ? "\n\n" : ""}${template}`);
   }
 
-  if (deck === undefined) return <div className="mx-auto max-w-3xl px-4 py-10 text-ctp-subtext1">Loading deck…</div>;
-  if (!deck) return <div className="mx-auto max-w-3xl px-4 py-10"><h1 className="text-2xl font-bold text-ctp-text">Deck unavailable</h1><p className="mt-2 text-ctp-subtext1">{error}</p><Link to="/my-decks" className="mt-5 inline-block text-ctp-blue hover:underline">Back to My Decks</Link></div>;
+  if (deck === undefined) return <PageLayout><InlineState className="mt-10">Loading deck…</InlineState></PageLayout>;
+  if (!deck) return <PageLayout><EmptyState title="Deck unavailable" description={error} action={<Link to="/my-decks" className="text-ctp-blue hover:underline">Back to My Decks</Link>} /></PageLayout>;
 
   return <PageLayout>
     <Link to="/my-decks" className="text-sm text-ctp-blue hover:underline">← My Decks</Link>
     <div className="mt-4"><UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} description={deck.description} visibility={deck.visibility} /><DeckTags tags={deck.tags} /><div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2"><p className="text-xs text-ctp-subtext0">Updated {new Date(deck.updatedAt).toLocaleDateString()} · {deck.versions.length} version{deck.versions.length === 1 ? "" : "s"}</p>{deck.publicSlug && deck.visibility !== "private" && <Link to={`/decklists/${deck.publicSlug}`} className="text-sm font-medium text-ctp-blue hover:underline">{deck.visibility === "public" ? "View public deck →" : "View shared deck →"}</Link>}</div></div>
     <div className="mt-6"><Tabs tabs={DECK_TABS} active={tab} onChange={setTab} label="Deck details" baseId="owned-deck" /></div>
-    {error && <p className="mt-4 rounded border border-ctp-red/50 bg-ctp-red/10 p-3 text-sm text-ctp-red">{error}</p>}
-    {notice && <p className="mt-4 rounded border border-ctp-green/50 bg-ctp-green/10 p-3 text-sm text-ctp-green">{notice}</p>}
+    {error && <Panel tone="danger" padding="sm" className="mt-4 text-sm text-ctp-red">{error}</Panel>}
+    {notice && <Panel tone="success" padding="sm" className="mt-4 text-sm text-ctp-green">{notice}</Panel>}
     {tab === "settings" && <section id="owned-deck-panel-settings" role="tabpanel" aria-labelledby="owned-deck-tab-settings" tabIndex={0} className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
       <h2 className="font-semibold text-ctp-text">Details and sharing</h2>
       <form className="mt-3 space-y-2" onSubmit={(event) => { event.preventDefault(); void run(async () => { const tags = tagsText.split(",").map((tag) => tag.trim()).filter(Boolean); if (tags.length > 8) throw new Error("Use no more than 8 tags."); if (tags.some((tag) => tag.length < 2 || tag.length > 24)) throw new Error("Each tag must be 2–24 characters."); await accountApi.updateDeckMetadata(deck.id, { title, description, tags }); await refresh(); }); }}>

@@ -11,6 +11,7 @@ import PrimerMarkdown from "./PrimerMarkdown";
 import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import { useTabParam } from "../../lib/useTabParam";
 import PageLayout from "../../components/layout/PageLayout";
+import { EmptyState, InlineState } from "../../components/ui/ContentState";
 
 type PublicDeckTab = "decklist" | "analysis" | "primer";
 const PUBLIC_TABS = [{ key: "decklist", label: "Decklist" }, { key: "analysis", label: "Analysis" }, { key: "primer", label: "Primer" }] satisfies { key: PublicDeckTab; label: string }[];
@@ -53,8 +54,8 @@ export default function PublicDeckDetail() {
     return () => { if (created) meta?.remove(); else if (meta) meta.content = "index,follow"; };
   }, [deck?.visibility]);
 
-  if (deck === undefined) return <div className="mx-auto max-w-3xl px-4 py-10 text-ctp-subtext1">Loading deck…</div>;
-  if (!deck) return <div className="mx-auto max-w-3xl px-4 py-10"><h1 className="text-2xl font-bold text-ctp-text">Deck unavailable</h1><p className="mt-2 text-ctp-subtext1">{error}</p><Link to="/" className="mt-5 inline-block text-ctp-blue hover:underline">Back home</Link></div>;
+  if (deck === undefined) return <PageLayout><InlineState className="mt-10">Loading deck…</InlineState></PageLayout>;
+  if (!deck) return <PageLayout><EmptyState title="Deck unavailable" description={error} action={<Link to="/" className="text-ctp-blue hover:underline">Back home</Link>} /></PageLayout>;
 
   return <PageLayout>
     <UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} versionNumber={deck.versionNumber} visibility={deck.visibility} description={deck.description} eyebrow={<>Shared by <Link to={`/users/${deck.owner.profileSlug}`} className="text-ctp-blue hover:underline">{deck.owner.displayName}</Link></>} />

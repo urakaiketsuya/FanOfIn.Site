@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { AccountUser, SavedDeck } from "@gatcg/shared";
 import { Link } from "react-router-dom";
 import { accountApi } from "../../lib/accountApi";
+import Panel from "../../components/ui/Panel";
 
 interface Props {
   user: AccountUser;
@@ -21,16 +22,16 @@ export default function AccountChecklist({ user, decks }: Props) {
 
   if (dismissed || remaining === 0) return null;
 
-  return <section className="mt-6 rounded-xl border border-ctp-blue/40 bg-ctp-blue/5 p-4" aria-labelledby="account-checklist-title">
+  return <Panel tone="info" className="mt-6" aria-labelledby="account-checklist-title">
     <div className="flex items-start justify-between gap-4">
       <div><h2 id="account-checklist-title" className="font-semibold text-ctp-text">Finish setting up your deck library</h2><p className="mt-1 text-xs text-ctp-subtext1">{remaining} optional step{remaining === 1 ? "" : "s"} remaining</p></div>
       <button type="button" onClick={() => { setDismissed(true); void accountApi.updateAccountPreferences({ deckChecklistDismissed: true }).catch(() => setDismissed(false)); }} className="text-xs text-ctp-subtext1 hover:text-ctp-text">Hide</button>
     </div>
     <ul className="mt-3 grid gap-2 sm:grid-cols-3">
-      {tasks.map((task) => <li key={task.label} className="flex items-center justify-between gap-2 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3 text-sm">
+      {tasks.map((task) => <Panel as="li" padding="sm" key={task.label} className="flex items-center justify-between gap-2 text-sm">
         <span className={task.complete ? "text-ctp-green" : "text-ctp-text"}>{task.complete ? "✓ " : "○ "}{task.label}</span>
         {!task.complete && <Link to={task.to} onClick={() => { if (task.to === "/account") { setReviewedDisplayName(true); void accountApi.updateAccountPreferences({ displayNameReviewed: true }).catch(() => setReviewedDisplayName(false)); } }} className="shrink-0 text-xs text-ctp-blue hover:underline">{task.action}</Link>}
-      </li>)}
+      </Panel>)}
     </ul>
-  </section>;
+  </Panel>;
 }

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { accountApi } from "../../lib/accountApi";
+import { InlineState } from "../../components/ui/ContentState";
 
 declare global {
   interface Window {
@@ -40,5 +41,5 @@ export default function GoogleSignInButton({ onCredential }: { onCredential: (cr
   }, [clientId]);
 
   if (!clientId) return <p className="text-sm text-ctp-yellow">Google sign-in needs VITE_GOOGLE_CLIENT_ID configuration.</p>;
-  return <div>{error && <p className="mb-2 text-sm text-ctp-red">{error}</p>}<div ref={container} /></div>;
+  return <div>{error && <InlineState tone="danger" className="mb-2 text-sm">{error}</InlineState>}<div ref={container} /></div>;
 }

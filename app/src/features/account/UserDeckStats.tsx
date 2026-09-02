@@ -18,6 +18,11 @@ import RankedCompositionChart from "../../components/RankedCompositionChart";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { RARITY_LABELS } from "../packs/packOdds";
 import { computeDependencyReadiness, computeSynergyReadiness } from "../deckbuilder/synergyReadiness";
+import Panel from "../../components/ui/Panel";
+import Section from "../../components/ui/Section";
+import { InlineState } from "../../components/ui/ContentState";
+
+const FINDING_TONE = { red: "danger", yellow: "warning", green: "success", blue: "info" } as const;
 
 type Finding = { tone: "red" | "yellow" | "green" | "blue"; title: string; detail: string };
 
@@ -103,21 +108,22 @@ export default function UserDeckStats({ decklist, championName, format, title, o
     return result.slice(0, 5);
   }, [coverage.unresolved.length, dependencyReadiness, synergyReadiness, validation]);
 
-  if (cardNames.length > 0 && cardsByName.size === 0 && catalog.length === 0) return <section className="mt-6 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4 text-sm text-ctp-subtext1">Resolving card data and calculating deck analytics…</section>;
+  if (cardNames.length > 0 && cardsByName.size === 0 && catalog.length === 0) return <Panel className="mt-6"><InlineState className="text-sm">Resolving card data and calculating deck analytics…</InlineState></Panel>;
 
   const validationTone = validation.status === "Legal" ? "border-ctp-green/50 bg-ctp-green/10 text-ctp-green" : validation.status === "Illegal" ? "border-ctp-red/50 bg-ctp-red/10 text-ctp-red" : "border-ctp-yellow/50 bg-ctp-yellow/10 text-ctp-yellow";
   return <div className="mt-6 space-y-6">
-    <section className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4" aria-labelledby="analysis-findings">
+    <Panel aria-labelledby="analysis-findings">
       <div className="flex flex-wrap items-start justify-between gap-3"><div><h2 id="analysis-findings" className="font-semibold text-ctp-text">Key findings</h2><p className="mt-1 text-xs text-ctp-subtext0">Prioritized structural signals from this exact list.</p></div>{ownerDeckId && builderParams && canImprove && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, { mode: "improve", sourceDeckId: ownerDeckId })} className="rounded-md bg-ctp-blue px-3 py-1.5 text-sm text-ctp-base">Review improvements</Link>}</div>
-      <div className="mt-3 grid gap-2 sm:grid-cols-2">{findings.map((finding) => <div key={`${finding.title}:${finding.detail}`} className={`rounded-md border p-3 ${finding.tone === "red" ? "border-ctp-red/40 bg-ctp-red/10" : finding.tone === "yellow" ? "border-ctp-yellow/40 bg-ctp-yellow/10" : finding.tone === "green" ? "border-ctp-green/40 bg-ctp-green/10" : "border-ctp-blue/40 bg-ctp-blue/10"}`}><p className="text-sm font-semibold text-ctp-text">{finding.title}</p><p className="mt-1 text-xs text-ctp-subtext1">{finding.detail}</p></div>)}</div>
-    </section>
+      <div className="mt-3 grid gap-2 sm:grid-cols-2">{findings.map((finding) => <Panel key={`${finding.title}:${finding.detail}`} tone={FINDING_TONE[finding.tone]} padding="sm"><p className="text-sm font-semibold text-ctp-text">{finding.title}</p><p className="mt-1 text-xs text-ctp-subtext1">{finding.detail}</p></Panel>)}</div>
+    </Panel>
 
-    <section className={`rounded-lg border p-4 ${coverage.unresolved.length > 0 ? "border-ctp-yellow/50 bg-ctp-yellow/10" : "border-ctp-surface1 bg-ctp-mantle"}`}>
-      <div className="flex flex-wrap items-baseline justify-between gap-2"><h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Analysis coverage</h2><span className="text-sm font-semibold text-ctp-text">{coverage.resolvedCopies}/{coverage.totalCopies} copies resolved</span></div>
-      <p className="mt-1 text-xs text-ctp-subtext1">{coverage.uniqueResolved}/{coverage.uniqueTotal} unique cards matched the local card catalog. Composition analytics use main + material; sideboard cards are included only in legality and coverage.</p>
-      {coverage.unresolved.length > 0 && <p className="mt-2 text-xs text-ctp-yellow">Not resolved: {coverage.unresolved.join(", ")}. Fix these names before relying on scores or charts.</p>}
-      {versionChange && <p className="mt-2 border-t border-current/10 pt-2 text-xs text-ctp-subtext1">Since the previous version: {versionChange.added} copies added · {versionChange.removed} removed · {versionChange.changedCards} card entries changed · DIAO {versionChange.scoreDelta > 0 ? "+" : ""}{versionChange.scoreDelta.toFixed(2)}.</p>}
-    </section>
+    <Panel tone={coverage.unresolved.length > 0 ? "warning" : "default"}>
+      <Section heading="dense" title="Analysis coverage" actions={<span className="text-sm font-semibold text-ctp-text">{coverage.resolvedCopies}/{coverage.totalCopies} copies resolved</span>}>
+        <p className="mt-1 text-xs text-ctp-subtext1">{coverage.uniqueResolved}/{coverage.uniqueTotal} unique cards matched the local card catalog. Composition analytics use main + material; sideboard cards are included only in legality and coverage.</p>
+        {coverage.unresolved.length > 0 && <p className="mt-2 text-xs text-ctp-yellow">Not resolved: {coverage.unresolved.join(", ")}. Fix these names before relying on scores or charts.</p>}
+        {versionChange && <p className="mt-2 border-t border-current/10 pt-2 text-xs text-ctp-subtext1">Since the previous version: {versionChange.added} copies added · {versionChange.removed} removed · {versionChange.changedCards} card entries changed · DIAO {versionChange.scoreDelta > 0 ? "+" : ""}{versionChange.scoreDelta.toFixed(2)}.</p>}
+      </Section>
+    </Panel>
 
     <section className={`rounded-lg border p-4 ${validationTone}`}>
       <div className="flex flex-wrap items-center justify-between gap-3"><div><h2 className="font-semibold">{validation.status}</h2><p className="mt-1 text-xs opacity-80">Main {totals.main} · Material {totals.material} · Sideboard {totals.sideboard}</p></div><div className="flex flex-wrap gap-2"><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: title, decklist, format }]))}`} className="rounded-md border border-current px-3 py-1.5 text-sm">Compare deck</Link>{builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections)} className="rounded-md border border-current px-3 py-1.5 text-sm">Continue in Deck Builder</Link>}{builderParams && ownerDeckId && canImprove && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, { mode: "improve", sourceDeckId: ownerDeckId })} className="rounded-md bg-current px-3 py-1.5 text-sm"><span className="text-ctp-base">Improve this deck</span></Link>}</div></div>
@@ -125,15 +131,14 @@ export default function UserDeckStats({ decklist, championName, format, title, o
       <p className="mt-3 text-[11px] opacity-70">Static construction check only; event-specific rules and card-text exceptions still require an official source.</p>
     </section>
 
-    <section className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4" aria-labelledby="user-deck-score">
-      <div className="flex items-center justify-between"><div><h2 id="user-deck-score" className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">DIAO Score</h2><p className="mt-1 text-xs text-ctp-subtext0">Calculated from this exact decklist.</p></div><span className="text-2xl font-bold text-ctp-blue">{rating.composite.toFixed(2)}</span></div>
-      <div className="mt-3 space-y-2">{(["durability", "interaction", "aggro", "opportunity"] as RatingPillar[]).map((pillar) => <div key={pillar} className="flex items-center gap-2 text-sm"><span className="w-24 shrink-0 capitalize text-ctp-subtext1">{pillar}</span><div className="h-2 flex-1 rounded-full bg-ctp-surface0"><div className="h-2 rounded-full bg-ctp-blue" style={{ width: `${rating.scores[pillar] * 10}%` }} /></div><span className="w-6 shrink-0 text-right text-ctp-subtext0">{rating.scores[pillar]}</span></div>)}</div>
-      <AggressionForecast forecast={aggressionForecast} />
-    </section>
+    <Panel aria-labelledby="user-deck-score">
+      <Section heading="dense" title="DIAO Score" description="Calculated from this exact decklist." actions={<span className="text-2xl font-bold text-ctp-blue">{rating.composite.toFixed(2)}</span>}>
+        <div className="mt-3 space-y-2">{(["durability", "interaction", "aggro", "opportunity"] as RatingPillar[]).map((pillar) => <div key={pillar} className="flex items-center gap-2 text-sm"><span className="w-24 shrink-0 capitalize text-ctp-subtext1">{pillar}</span><div className="h-2 flex-1 rounded-full bg-ctp-surface0"><div className="h-2 rounded-full bg-ctp-blue" style={{ width: `${rating.scores[pillar] * 10}%` }} /></div><span className="w-6 shrink-0 text-right text-ctp-subtext0">{rating.scores[pillar]}</span></div>)}</div>
+        <AggressionForecast forecast={aggressionForecast} />
+      </Section>
+    </Panel>
 
-    <section>
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">Composition</h2>
-      <p className="mt-1 text-sm text-ctp-subtext1">Floating Memory: {floatingMemory.base}{floatingMemory.classBonus > 0 && ` + ${floatingMemory.classBonus} class bonus`} · Average Ally Power: {allyPower.allyCopies > 0 ? allyPower.averagePower.toFixed(1) : "—"} · Champion damage: {damage.championRange.min}–{damage.championRange.max} · Ally damage: {damage.allyRange.min}–{damage.allyRange.max}</p>
+    <Section heading="compact" title="Composition" description={`Floating Memory: ${floatingMemory.base}${floatingMemory.classBonus > 0 ? ` + ${floatingMemory.classBonus} class bonus` : ""} · Average Ally Power: ${allyPower.allyCopies > 0 ? allyPower.averagePower.toFixed(1) : "—"} · Champion damage: ${damage.championRange.min}–${damage.championRange.max} · Ally damage: ${damage.allyRange.min}–${damage.allyRange.max}`}>
       <div className="mt-3 grid gap-4 sm:grid-cols-2">
         <BarChart title="Memory Cost Curve" bars={memoryCurve} />
         <BarChart title="Reserve Cost Curve" bars={reserveCurve} />
@@ -146,15 +151,13 @@ export default function UserDeckStats({ decklist, championName, format, title, o
         <DonutChart title="Damage Targets" segments={buildChartSegments(damage.targets)} />
         <DonutChart title="Damage Type" segments={buildChartSegments(damage.conditionality)} />
       </div>
-    </section>
+    </Section>
 
-    {(synergyReadiness.length > 0 || dependencyReadiness.length > 0) && <section>
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">Package readiness</h2>
-      <p className="mt-1 text-sm text-ctp-subtext1">Detected relationships in the main deck. Probabilities measure card availability, not guaranteed activation.</p>
+    {(synergyReadiness.length > 0 || dependencyReadiness.length > 0) && <Section heading="compact" title="Package readiness" description="Detected relationships in the main deck. Probabilities measure card availability, not guaranteed activation.">
       <div className="mt-3 space-y-3">
-        {synergyReadiness.map((entry) => <article key={entry.key} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4"><div className="flex flex-wrap justify-between gap-2"><h3 className="font-semibold text-ctp-text">{entry.label}</h3><span className={entry.status === "Reliable" ? "text-ctp-green" : entry.status === "Playable" ? "text-ctp-blue" : "text-ctp-yellow"}>{entry.status} · {(entry.probabilityByTen * 100).toFixed(0)}% by 10 seen</span></div><p className="mt-2 text-xs text-ctp-subtext1">{entry.enablerCopies} eligible copies · {entry.payoffCopies} payoff copies. {entry.note}</p>{entry.recommendations.length > 0 && <p className="mt-1 text-xs text-ctp-blue">Potential enablers to review: {entry.recommendations.join(", ")}</p>}</article>)}
-        {dependencyReadiness.map((entry) => <article key={entry.key} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4"><div className="flex flex-wrap justify-between gap-2"><h3 className="font-semibold capitalize text-ctp-text">{entry.label}</h3><span className={entry.status === "Supported" ? "text-ctp-green" : "text-ctp-yellow"}>{entry.status}</span></div><p className="mt-2 text-xs text-ctp-subtext1">{entry.producerCopies} producer copies · {entry.consumerCopies} consumer copies. {entry.note}</p>{entry.recommendations.length > 0 && <p className="mt-1 text-xs text-ctp-blue">Potential support to review: {entry.recommendations.join(", ")}</p>}</article>)}
+        {synergyReadiness.map((entry) => <Panel as="article" key={entry.key}><div className="flex flex-wrap justify-between gap-2"><h3 className="font-semibold text-ctp-text">{entry.label}</h3><span className={entry.status === "Reliable" ? "text-ctp-green" : entry.status === "Playable" ? "text-ctp-blue" : "text-ctp-yellow"}>{entry.status} · {(entry.probabilityByTen * 100).toFixed(0)}% by 10 seen</span></div><p className="mt-2 text-xs text-ctp-subtext1">{entry.enablerCopies} eligible copies · {entry.payoffCopies} payoff copies. {entry.note}</p>{entry.recommendations.length > 0 && <p className="mt-1 text-xs text-ctp-blue">Potential enablers to review: {entry.recommendations.join(", ")}</p>}</Panel>)}
+        {dependencyReadiness.map((entry) => <Panel as="article" key={entry.key}><div className="flex flex-wrap justify-between gap-2"><h3 className="font-semibold capitalize text-ctp-text">{entry.label}</h3><span className={entry.status === "Supported" ? "text-ctp-green" : "text-ctp-yellow"}>{entry.status}</span></div><p className="mt-2 text-xs text-ctp-subtext1">{entry.producerCopies} producer copies · {entry.consumerCopies} consumer copies. {entry.note}</p>{entry.recommendations.length > 0 && <p className="mt-1 text-xs text-ctp-blue">Potential support to review: {entry.recommendations.join(", ")}</p>}</Panel>)}
       </div>
-    </section>}
+    </Section>}
   </div>;
 }
