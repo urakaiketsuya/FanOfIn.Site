@@ -7,6 +7,7 @@ import { useCardCatalog } from "../cards/useCardCatalog";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { computeIdentityElements } from "../deckbuilder/useSuggestedBuild";
 import { computeNewReleaseCards } from "../deckbuilder/newReleaseCards";
+import { buildSpiritCanonicalNames } from "../deckbuilder/useDeckBuilderPopulation";
 import PageLayout from "../../components/layout/PageLayout";
 
 function identityName(card: Card): string {
@@ -26,6 +27,11 @@ export default function CardDiscoveryIndex() {
   const championCards = useMemo(() => catalog.filter((card) => card.types.includes("CHAMPION") && !card.subtypes.includes("SPIRIT") && identityName(card) === championName), [catalog, championName]);
   const championCard = championCards.sort((a, b) => (b.level ?? 0) - (a.level ?? 0))[0];
   const spiritCards = useMemo(() => catalog.filter((card) => card.types.includes("CHAMPION") && card.subtypes.includes("SPIRIT")), [catalog]);
+  const spiritCanonicalNames = useMemo(() => buildSpiritCanonicalNames(catalog), [catalog]);
+  const spiritOptionNames = useMemo(
+    () => Array.from(new Set(spiritCards.map((card) => spiritCanonicalNames.get(card.name) ?? card.name))).sort(),
+    [spiritCards, spiritCanonicalNames],
+  );
   const spiritCard = cardsByName.get(spiritName);
   const identityElements = useMemo(() => computeIdentityElements(championCard, spiritCard), [championCard, spiritCard]);
   const cardNames = useMemo(() => catalog.map((card) => card.name).sort(), [catalog]);
@@ -63,7 +69,7 @@ export default function CardDiscoveryIndex() {
         <label className="text-sm text-ctp-subtext1">Spirit <span className="text-ctp-subtext0">(optional)</span>
           <select value={spiritName} onChange={(event) => setSpiritName(event.target.value)} disabled={!championName} className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-ctp-text disabled:opacity-50">
             <option value="">Any Spirit</option>
-            {spiritCards.map((card) => <option key={card.uuid} value={card.name}>{card.name}</option>)}
+            {spiritOptionNames.map((name) => <option key={name} value={name}>{name}</option>)}
           </select>
         </label>
       </div>
