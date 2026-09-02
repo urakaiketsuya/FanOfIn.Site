@@ -5,6 +5,8 @@ import { useOmnidexPlayers } from "../tournaments/data";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import DeckSightingRow from "../topdecks/DeckSightingRow";
 import type { ComparedDeck } from "./types";
+import Button from "../../components/ui/Button";
+import { InlineState } from "../../components/ui/ContentState";
 
 const PAGE_SIZE = 20;
 type Mode = "placement" | "archetype";
@@ -141,7 +143,7 @@ export default function ImportTopDecks({
             {matches.length} deck{matches.length === 1 ? "" : "s"} match, ranked by placement
           </p>
 
-          {matches.length === 0 && <p className="mt-2 text-sm text-ctp-subtext1">No decks match this filter.</p>}
+          {matches.length === 0 && <InlineState className="mt-2 text-sm">No decks match this filter.</InlineState>}
 
           <div className="mt-2 space-y-2">
             {visible.map((sighting) => (
@@ -163,12 +165,13 @@ export default function ImportTopDecks({
           </div>
 
           {visibleCount < matches.length && (
-            <button
+            <Button
+              variant="secondary"
               onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
-              className="mt-4 w-full rounded-md border border-ctp-surface1 py-2 text-sm text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text"
+              className="mt-4 w-full"
             >
               Load more ({matches.length - visibleCount} remaining)
-            </button>
+            </Button>
           )}
         </>
       )}

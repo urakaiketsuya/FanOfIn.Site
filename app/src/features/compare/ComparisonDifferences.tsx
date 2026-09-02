@@ -6,6 +6,7 @@ import CardImage from "../../components/CardImage";
 import { formatUsd } from "../../lib/format";
 import { useComparisonData, type ComparisonCardEntry } from "./useComparisonData";
 import type { ComparedDeck } from "./types";
+import { InlineState } from "../../components/ui/ContentState";
 
 /** Same " @ " split DeckChip uses, trimmed further for a compact per-card chip label. */
 function shortLabel(deck: ComparedDeck): string {
@@ -103,7 +104,7 @@ export default function ComparisonDifferences({
               {!collapsed && (
                 <>
                   {shown.length === 0 ? (
-                    <p className="mt-2 text-sm text-ctp-subtext1">No differences in {label.toLowerCase()}.</p>
+                    <InlineState className="mt-2 text-sm">No differences in {label.toLowerCase()}.</InlineState>
                   ) : (
                     <ul className="mt-2 grid grid-cols-2 gap-3">
                       {shown.map((card) => {

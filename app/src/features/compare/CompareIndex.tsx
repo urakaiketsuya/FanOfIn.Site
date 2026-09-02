@@ -21,6 +21,10 @@ import { encodeCustomDecks, decodeCustomDecks } from "../../lib/compareShareLink
 import type { OmnidexDecklist } from "@gatcg/shared";
 import type { ComparedDeck } from "./types";
 import PageLayout from "../../components/layout/PageLayout";
+import Panel from "../../components/ui/Panel";
+import Section from "../../components/ui/Section";
+import Button from "../../components/ui/Button";
+import { InlineState } from "../../components/ui/ContentState";
 
 type CompareType = "decks" | "cards";
 const COMPARE_TYPE_LABELS: Record<CompareType, string> = { decks: "Decks", cards: "Cards" };
@@ -233,29 +237,32 @@ export default function CompareIndex() {
         </div>
       ) : (
         <div role="tabpanel" id="type-panel-decks" aria-labelledby="type-tab-decks">
-          <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
-              Comparing {decks.length} deck{decks.length === 1 ? "" : "s"}
-            </h2>
-            <div className="flex items-center gap-2">
-              {decks.length > 0 && (
-                <button
-                  type="button"
-                  onClick={handleCopyShareLink}
-                  className={`rounded-md border px-2 py-1 text-xs ${
-                    shareCopyState === "failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                  }`}
-                >
-                  {shareCopyState === "copied" ? "Copied!" : shareCopyState === "failed" ? "Couldn't copy" : "Copy share link"}
-                </button>
-              )}
-              {decks.length > 0 && (
-                <button type="button" onClick={handleClearAll} className={`text-xs ${confirmClear ? "font-semibold text-ctp-red" : "text-ctp-subtext0 hover:text-ctp-text"}`}>
-                  {confirmClear ? "Confirm clear all?" : "Clear all"}
-                </button>
-              )}
-            </div>
-          </div>
+          <Section
+            className="mt-4"
+            heading="compact"
+            title={`Comparing ${decks.length} deck${decks.length === 1 ? "" : "s"}`}
+            actions={
+              <div className="flex items-center gap-2">
+                {decks.length > 0 && (
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={handleCopyShareLink}
+                    className={shareCopyState === "failed" ? "border-ctp-red text-ctp-red" : ""}
+                  >
+                    {shareCopyState === "copied" ? "Copied!" : shareCopyState === "failed" ? "Couldn't copy" : "Copy share link"}
+                  </Button>
+                )}
+                {decks.length > 0 && (
+                  <button type="button" onClick={handleClearAll} className={`text-xs ${confirmClear ? "font-semibold text-ctp-red" : "text-ctp-subtext0 hover:text-ctp-text"}`}>
+                    {confirmClear ? "Confirm clear all?" : "Clear all"}
+                  </button>
+                )}
+              </div>
+            }
+          >
+            {null}
+          </Section>
 
           {decks.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-2">
@@ -318,21 +325,21 @@ export default function CompareIndex() {
                 </p>
               )}
 
-              <div role="tabpanel" id="source-panel" aria-labelledby={`source-tab-${tab}`} className="mt-3 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+              <Panel as="div" role="tabpanel" id="source-panel" aria-labelledby={`source-tab-${tab}`} className="mt-3">
                 {tab === "cards" && <DeckSearchByCards comparedKeys={comparedKeys} onToggle={toggleDeck} />}
                 {tab === "player" && <ImportByPlayer comparedKeys={comparedKeys} onToggle={toggleDeck} />}
                 {tab === "topDecks" && <ImportTopDecks comparedKeys={comparedKeys} onToggle={toggleDeck} />}
                 {tab === "paste" && <PasteDecklist onAdd={addDeck} />}
-              </div>
+              </Panel>
             </div>
           )}
 
           {panel === "compare" && (
             <div role="tabpanel" id="panel-compare" aria-labelledby="panel-tab-compare" className="mt-4">
               {decks.length === 0 && (
-                <p className="text-sm text-ctp-subtext1">
+                <InlineState className="text-sm">
                   Nothing to compare yet — switch to "Add Decks" to search, import, or paste one.
-                </p>
+                </InlineState>
               )}
 
               {decks.length > 0 && (

@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import CardComparisonTable from "./CardComparisonTable";
+import Button from "../../components/ui/Button";
+import { InlineState } from "../../components/ui/ContentState";
 
 /** Individual-card comparison — any number of cards (including just one, which still shows that card's own stats), unlike the deck-vs-deck mode which needs 2+ decklists to say anything about overlap. */
 export default function CardCompareIndex() {
@@ -67,16 +69,15 @@ export default function CardCompareIndex() {
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-sm text-ctp-subtext1">Add any number of cards to compare their usage, win rate, and price side by side.</p>
         {selected.length > 0 && (
-          <button
-            type="button"
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={handleCopyShareLink}
             aria-live="polite"
-            className={`rounded-md border px-2 py-1 text-xs ${
-              shareCopyState === "failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
+            className={shareCopyState === "failed" ? "border-ctp-red text-ctp-red" : ""}
           >
             {shareCopyState === "copied" ? "Copied!" : shareCopyState === "failed" ? "Couldn't copy" : "Copy share link"}
-          </button>
+          </Button>
         )}
       </div>
 
@@ -117,7 +118,7 @@ export default function CardCompareIndex() {
 
       {hint && <p role="status" className="mt-1.5 text-xs text-ctp-subtext0">{hint}</p>}
 
-      {selected.length === 0 && <p className="mt-3 text-sm text-ctp-subtext1">Add cards above to start comparing.</p>}
+      {selected.length === 0 && <InlineState className="mt-3 text-sm">Add cards above to start comparing.</InlineState>}
 
       {selected.length > 0 && (
         <div className="mt-4">

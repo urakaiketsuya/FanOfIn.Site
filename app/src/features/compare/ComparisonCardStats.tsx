@@ -6,6 +6,7 @@ import { formatUsd } from "../../lib/format";
 import { useCardStatsData } from "../archetypes/data";
 import { useComparisonData } from "./useComparisonData";
 import type { ComparedDeck } from "./types";
+import { InlineState } from "../../components/ui/ContentState";
 
 type SortMode = "adjustedWinRate" | "deckCount" | "name";
 const SORT_LABELS: Record<SortMode, string> = { adjustedWinRate: "Win rate", deckCount: "Usage", name: "Name" };
@@ -52,7 +53,7 @@ export default function ComparisonCardStats({
     });
   }, [decks, decklists, statByName, sortMode]);
 
-  if (rows.length === 0) return <p className="text-sm text-ctp-subtext1">No cards to show yet.</p>;
+  if (rows.length === 0) return <InlineState className="text-sm">No cards to show yet.</InlineState>;
 
   return (
     <div>

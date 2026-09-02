@@ -7,6 +7,9 @@ import { useChampionCardImpact } from "../decks/useChampionCardImpact";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useComparisonData } from "./useComparisonData";
 import type { ComparedDeck } from "./types";
+import Panel from "../../components/ui/Panel";
+import Section from "../../components/ui/Section";
+import { InlineState } from "../../components/ui/ContentState";
 
 const ROLE_LABEL: Record<CardImpactRole, string> = { main: "Main", material: "Material", sideboard: "Sideboard", mixed: "Mixed" };
 
@@ -67,12 +70,11 @@ export default function ComparisonSuggestions({ decks, decklists }: { decks: Com
   const hasEvidence = additions.length > 0 || review.length > 0;
 
   return <div className="space-y-6">
-    <section>
-      <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Choose a deck to tune</h2>
+    <Section heading="dense" title="Choose a deck to tune">
       <div className="mt-2 flex flex-wrap gap-1.5">
         {decks.map((deck) => <button key={deck.key} type="button" onClick={() => setSelectedKey(deck.key)} title={deck.label} className={`max-w-64 truncate rounded-full border px-2.5 py-1 text-xs ${deck.key === selectedDeck?.key ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`}>{shortLabel(deck.label)}</button>)}
       </div>
-    </section>
+    </Section>
 
     {!selectedList && <p className="rounded-xl border border-ctp-surface1 p-4 text-sm text-ctp-subtext1">This decklist is unavailable, so it can’t be tuned.</p>}
 
@@ -83,7 +85,7 @@ export default function ComparisonSuggestions({ decks, decklists }: { decks: Com
     </section>}
 
     {selectedList && selectedStats?.format !== "PANTHEON" && <>
-      <section className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
+      <Panel>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <h2 className="font-semibold text-ctp-text">{shortLabel(selectedDeck.label)}</h2>
@@ -91,9 +93,9 @@ export default function ComparisonSuggestions({ decks, decklists }: { decks: Com
           </div>
           {builderPath && <Link to={builderPath} className="rounded-md border border-ctp-blue px-2.5 py-1.5 text-xs font-medium text-ctp-blue hover:bg-ctp-surface0">Tune in Guided Deck Builder →</Link>}
         </div>
-      </section>
+      </Panel>
 
-      {loading && <p className="text-sm text-ctp-subtext1">Loading tuning evidence…</p>}
+      {loading && <InlineState className="text-sm">Loading tuning evidence…</InlineState>}
 
       {!loading && !hasEvidence && <section className="rounded-xl border border-ctp-surface1 p-4">
         <h2 className="font-semibold text-ctp-text">No evidence-backed changes yet</h2>
@@ -101,16 +103,16 @@ export default function ComparisonSuggestions({ decks, decklists }: { decks: Com
       </section>}
 
       {!loading && hasEvidence && <div className="grid items-start gap-4 lg:grid-cols-2">
-        <section className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
+        <Panel>
           <h2 className="font-semibold text-ctp-text">Evidence-backed additions</h2>
           <p className="mt-1 text-xs leading-5 text-ctp-subtext0">Cards not currently in this list that correlate with stronger results in other {champion} decks.</p>
-          {additions.length > 0 ? <EvidenceList cards={additions} cardsByName={cardsByName} tone="add" /> : <p className="mt-3 text-sm text-ctp-subtext1">No absent card clears the positive-evidence bar.</p>}
-        </section>
-        <section className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
+          {additions.length > 0 ? <EvidenceList cards={additions} cardsByName={cardsByName} tone="add" /> : <InlineState className="mt-3 text-sm">No absent card clears the positive-evidence bar.</InlineState>}
+        </Panel>
+        <Panel>
           <h2 className="font-semibold text-ctp-text">Cards worth reviewing</h2>
           <p className="mt-1 text-xs leading-5 text-ctp-subtext0">Cards already in this list that correlate with weaker results in other {champion} decks. This is a review signal, not an automatic cut.</p>
-          {review.length > 0 ? <EvidenceList cards={review} cardsByName={cardsByName} tone="review" /> : <p className="mt-3 text-sm text-ctp-subtext1">None of this deck’s cards appear among the strongest negative signals.</p>}
-        </section>
+          {review.length > 0 ? <EvidenceList cards={review} cardsByName={cardsByName} tone="review" /> : <InlineState className="mt-3 text-sm">None of this deck’s cards appear among the strongest negative signals.</InlineState>}
+        </Panel>
       </div>}
     </>}
 

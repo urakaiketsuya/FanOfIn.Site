@@ -3,6 +3,7 @@ import { useOmnidexIndex, useOmnidexPlayers } from "../tournaments/data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import EventRow from "../tournaments/EventRow";
 import type { ComparedDeck } from "./types";
+import { InlineState } from "../../components/ui/ContentState";
 
 type SortMode = "date" | "best";
 
@@ -128,7 +129,7 @@ export default function ImportByPlayer({
             ))}
           </div>
 
-          {events.length === 0 && <p className="mt-2 text-sm text-ctp-subtext1">No public decklists match.</p>}
+          {events.length === 0 && <InlineState className="mt-2 text-sm">No public decklists match.</InlineState>}
 
           <div className="mt-2 space-y-2">
             {events.map((event) => {
