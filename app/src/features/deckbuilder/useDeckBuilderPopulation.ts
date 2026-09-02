@@ -50,9 +50,11 @@ export function buildSpiritCanonicalNames(catalog: Card[]): Map<string, string> 
   const groups = new Map<string, Card[]>();
   for (const card of catalog) {
     if (!card.types.includes("CHAMPION") || !card.subtypes.includes("SPIRIT")) continue;
-    // Incidental API whitespace must not split mechanically-identical Spirit printings
-    // (for example Miao, Spirit of Water and Spirit of Water) into separate populations.
-    const key = `${[...card.elements].sort().join(",")}|${(card.effect ?? "").replace(/\s+/g, " ").trim()}`;
+    // Incidental API formatting must not split mechanically-identical Spirit printings into
+    // separate populations: whitespace (for example Miao, Spirit of Water vs. Spirit of Water)
+    // and bold-marker placement around the same words (Kaze, Spirit of Wind writes "**On
+    // Enter**:", the base print writes "**On Enter:**" — same ability, stray asterisks).
+    const key = `${[...card.elements].sort().join(",")}|${(card.effect ?? "").replace(/\*\*/g, "").replace(/\s+/g, " ").trim()}`;
     const list = groups.get(key) ?? [];
     list.push(card);
     groups.set(key, list);
