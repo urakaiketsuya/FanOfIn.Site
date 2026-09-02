@@ -6,6 +6,7 @@ import DecklistView from "./DecklistView";
 import { useSimilarityData } from "../archetypes/data";
 import { useOmnidexPlayers } from "../tournaments/data";
 import PlayerLink from "../players/PlayerLink";
+import Section from "../../components/ui/Section";
 
 export default function DecklistsSection({
   eventId,
@@ -41,9 +42,10 @@ export default function DecklistsSection({
   if (decklists.length === 0) return null;
 
   return (
-    <div>
-      <div className="flex items-center justify-between gap-2">
-        <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Decklists ({decklists.length})</h2>
+    <Section
+      title={`Decklists (${decklists.length})`}
+      heading="compact"
+      actions={
         <div className="flex items-center gap-2">
           {selected && (
             <PlayerLink id={selected.player} username={playerName(selected.player)} className="text-xs text-ctp-blue hover:underline" />
@@ -61,15 +63,15 @@ export default function DecklistsSection({
             ))}
           </select>
         </div>
-      </div>
+      }
+    >
       {selected && (
         <div className="mt-3">
           <DecklistView decklist={selected.decklist} cardsByName={cardsByName} deckId={`${eventId}:${selected.player}`} />
         </div>
       )}
       {similarDecks && similarDecks.topMatches.length > 0 && (
-        <div className="mt-4">
-          <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Similar decks</h3>
+        <Section className="mt-4" heading="dense" title="Similar decks">
           <div className="mt-1 space-y-1 text-sm">
             {similarDecks.topMatches.map((m, i) => (
               <div key={i} className="text-ctp-subtext1">
@@ -82,8 +84,8 @@ export default function DecklistsSection({
               </div>
             ))}
           </div>
-        </div>
+        </Section>
       )}
-    </div>
+    </Section>
   );
 }

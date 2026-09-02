@@ -1,12 +1,12 @@
 import type { OmnidexJudge } from "@gatcg/shared";
 import PlayerLink from "../players/PlayerLink";
+import Section from "../../components/ui/Section";
 
 export default function JudgesSection({ judges }: { judges: OmnidexJudge[] }) {
   if (judges.length === 0) return null;
 
   return (
-    <div>
-      <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Judges</h2>
+    <Section heading="compact" title="Judges">
       <ul className="mt-2 space-y-1 text-sm">
         {judges.map((judge) => (
           <li key={judge.id} className="flex items-center gap-2">
@@ -17,6 +17,6 @@ export default function JudgesSection({ judges }: { judges: OmnidexJudge[] }) {
           </li>
         ))}
       </ul>
-    </div>
+    </Section>
   );
 }

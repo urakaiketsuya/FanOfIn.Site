@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import type { OmnidexPlayer, OmnidexTeamsResponse } from "@gatcg/shared";
 import PlayerLink from "../players/PlayerLink";
+import Section from "../../components/ui/Section";
+import { InlineState } from "../../components/ui/ContentState";
 
 export default function EventTeamsSection({ teams, players }: { teams: OmnidexTeamsResponse; players: OmnidexPlayer[] }) {
   const [search, setSearch] = useState("");
@@ -22,9 +24,7 @@ export default function EventTeamsSection({ teams, players }: { teams: OmnidexTe
   if (teams.length === 0) return null;
 
   return (
-    <div>
-      <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Teams ({teams.length})</h2>
-
+    <Section heading="compact" title={`Teams (${teams.length})`}>
       {teams.length > 10 && (
         <input
           type="text"
@@ -36,7 +36,7 @@ export default function EventTeamsSection({ teams, players }: { teams: OmnidexTe
         />
       )}
 
-      {sorted.length === 0 && <p className="mt-2 text-sm text-ctp-subtext1">No teams match "{search}".</p>}
+      {sorted.length === 0 && <InlineState className="mt-2 text-sm">No teams match "{search}".</InlineState>}
 
       <div className="mt-2 space-y-1 text-sm">
         {sorted.map((team, i) => (
@@ -58,6 +58,6 @@ export default function EventTeamsSection({ teams, players }: { teams: OmnidexTe
           </div>
         ))}
       </div>
-    </div>
+    </Section>
   );
 }

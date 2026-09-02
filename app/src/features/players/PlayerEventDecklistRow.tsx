@@ -7,6 +7,8 @@ import { useCardsByNames } from "../events/useCardsByNames";
 import { usePlayerDecklist } from "./usePlayerDecklist";
 import { useTopDecksForChampion } from "../decks/useTopDecksForChampion";
 import { findDeckChampionName } from "../../lib/ttsExport";
+import Button from "../../components/ui/Button";
+import { InlineState } from "../../components/ui/ContentState";
 
 export default function PlayerEventDecklistRow({ event, playerId }: { event: OmnidexEventSummary; playerId: number }) {
   const [expanded, setExpanded] = useState(false);
@@ -29,19 +31,15 @@ export default function PlayerEventDecklistRow({ event, playerId }: { event: Omn
           <EventRow event={event} />
         </div>
         {event.decklists && (
-          <button
-            type="button"
-            onClick={() => setExpanded((v) => !v)}
-            className="shrink-0 rounded-md border border-ctp-surface1 px-2 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-text"
-          >
+          <Button variant="secondary" size="sm" onClick={() => setExpanded((v) => !v)} className="shrink-0">
             {expanded ? "Hide decklist" : "View decklist"}
-          </button>
+          </Button>
         )}
       </div>
       {expanded && (
         <div className="mt-2 rounded-md border border-ctp-surface1 p-3">
-          {loading && <p className="text-sm text-ctp-subtext1">Loading…</p>}
-          {error && <p className="text-sm text-ctp-subtext0">{error}</p>}
+          {loading && <InlineState className="text-sm">Loading…</InlineState>}
+          {error && <InlineState className="text-sm">{error}</InlineState>}
           {decklist && (
             <>
               {(topDecks.bestOverall || topDecks.bestArchetype) && (

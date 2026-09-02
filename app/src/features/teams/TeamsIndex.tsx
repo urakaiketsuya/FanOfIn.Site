@@ -11,6 +11,7 @@ import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
+import { InlineState } from "../../components/ui/ContentState";
 
 const PAGE_SIZE = 50;
 
@@ -141,8 +142,8 @@ export default function TeamsIndex() {
         </div>
       )}
 
-      {!teamsData && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
-      {teamsData && rows.length === 0 && <p className="mt-6 text-ctp-subtext1">No teams match this filter.</p>}
+      {!teamsData && <InlineState className="mt-6">Loading…</InlineState>}
+      {teamsData && rows.length === 0 && <InlineState className="mt-6">No teams match this filter.</InlineState>}
       {teamsData && rows.length > 0 && (
         <p className="mt-4 text-xs text-ctp-subtext0">
           {rows.length}

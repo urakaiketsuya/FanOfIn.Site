@@ -19,6 +19,8 @@ import { useDecklistDisplayPrefs } from "../../lib/decklistDisplayPrefs";
 import { computeDeckRating } from "../../lib/deckIdentity";
 import DiaoScoreCard from "../../components/DiaoScoreCard";
 import DecklistWinRate from "./DecklistWinRate";
+import Button from "../../components/ui/Button";
+import Section from "../../components/ui/Section";
 
 type DeckDisplayMode = "compact" | "visual" | "detailed";
 
@@ -54,10 +56,10 @@ function DeckSection({
   const price = computeSectionPrice(lines, priceByName);
 
   return (
-    <div>
-      <h4 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
-        {title} ({total}){price.total > 0 && <span className="ml-1 normal-case text-ctp-subtext1">· {formatUsd(price.total)}</span>}
-      </h4>
+    <Section
+      heading="dense"
+      title={<>{title} ({total}){price.total > 0 && <span className="ml-1 normal-case text-ctp-subtext1">· {formatUsd(price.total)}</span>}</>}
+    >
       <ul className="mt-1 space-y-0.5">
         {lines.map((line, i) => {
           const card = cardsByName.get(line.card);
@@ -98,7 +100,7 @@ function DeckSection({
           );
         })}
       </ul>
-    </div>
+    </Section>
   );
 }
 
@@ -106,13 +108,13 @@ function CompactDeckSection({ title, lines, cardsByName }: { title: string; line
   if (lines.length === 0) return null;
   const total = lines.reduce((sum, line) => sum + line.quantity, 0);
   const columns = title === "Main" ? "sm:grid-cols-2 lg:grid-cols-4" : title === "Material" ? "sm:grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-3";
-  return <section><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">{title} ({total})</h4><ul className={`mt-2 grid gap-x-4 gap-y-1.5 ${columns}`}>{lines.map((line) => { const card = cardsByName.get(line.card); return <li key={line.card} className="flex min-w-0 items-center gap-1.5 text-sm">{card?.editions[0] ? <CardImage image={card.editions[0].image} alt={line.card} className="h-7 w-5 shrink-0 rounded-sm object-cover object-top" /> : <div className="h-7 w-5 shrink-0 rounded-sm bg-ctp-surface0" />}{line.quantity > 1 && <span className="shrink-0 text-ctp-subtext0">{line.quantity}x</span>}<span className="min-w-0 truncate">{card ? <CardHoverPreview image={card.editions[0]?.image} alt={line.card}><Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">{line.card}</Link></CardHoverPreview> : <span className="text-ctp-text">{line.card}</span>}</span></li>; })}</ul></section>;
+  return <Section heading="dense" title={`${title} (${total})`}><ul className={`mt-2 grid gap-x-4 gap-y-1.5 ${columns}`}>{lines.map((line) => { const card = cardsByName.get(line.card); return <li key={line.card} className="flex min-w-0 items-center gap-1.5 text-sm">{card?.editions[0] ? <CardImage image={card.editions[0].image} alt={line.card} className="h-7 w-5 shrink-0 rounded-sm object-cover object-top" /> : <div className="h-7 w-5 shrink-0 rounded-sm bg-ctp-surface0" />}{line.quantity > 1 && <span className="shrink-0 text-ctp-subtext0">{line.quantity}x</span>}<span className="min-w-0 truncate">{card ? <CardHoverPreview image={card.editions[0]?.image} alt={line.card}><Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">{line.card}</Link></CardHoverPreview> : <span className="text-ctp-text">{line.card}</span>}</span></li>; })}</ul></Section>;
 }
 
 function VisualDeckSection({ title, lines, cardsByName }: { title: string; lines: OmnidexDecklistCardLine[]; cardsByName: Map<string, Card> }) {
   if (lines.length === 0) return null;
   const total = lines.reduce((sum, line) => sum + line.quantity, 0);
-  return <section><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">{title} ({total})</h4><div className="mt-2 grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-8">{lines.map((line) => { const card = cardsByName.get(line.card); const content = <>{card?.editions[0] ? <CardImage image={card.editions[0].image} alt={line.card} className="h-full w-full object-cover" /> : <span className="flex h-full items-center p-1 text-center text-[9px] text-ctp-subtext0">{line.card}</span>}{line.quantity > 1 && <span className="absolute right-1 top-1 rounded bg-ctp-base/90 px-1 text-[10px] text-ctp-text">{line.quantity}x</span>}</>; return <CardHoverPreview key={line.card} image={card?.editions[0]?.image} alt={line.card}>{card ? <Link to={`/cards/${card.slug}`} title={line.card} className="relative block aspect-[5/7] overflow-hidden rounded bg-ctp-surface0">{content}</Link> : <div title={line.card} className="relative block aspect-[5/7] overflow-hidden rounded bg-ctp-surface0">{content}</div>}</CardHoverPreview>; })}</div></section>;
+  return <Section heading="dense" title={`${title} (${total})`}><div className="mt-2 grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-8">{lines.map((line) => { const card = cardsByName.get(line.card); const content = <>{card?.editions[0] ? <CardImage image={card.editions[0].image} alt={line.card} className="h-full w-full object-cover" /> : <span className="flex h-full items-center p-1 text-center text-[9px] text-ctp-subtext0">{line.card}</span>}{line.quantity > 1 && <span className="absolute right-1 top-1 rounded bg-ctp-base/90 px-1 text-[10px] text-ctp-text">{line.quantity}x</span>}</>; return <CardHoverPreview key={line.card} image={card?.editions[0]?.image} alt={line.card}>{card ? <Link to={`/cards/${card.slug}`} title={line.card} className="relative block aspect-[5/7] overflow-hidden rounded bg-ctp-surface0">{content}</Link> : <div title={line.card} className="relative block aspect-[5/7] overflow-hidden rounded bg-ctp-surface0">{content}</div>}</CardHoverPreview>; })}</div></Section>;
 }
 
 export default function DecklistView({
@@ -269,17 +271,14 @@ export default function DecklistView({
               >
                 Playtest in Clarent &rarr;
               </a>
-              <button
-                type="button"
+              <Button
+                variant="secondary"
+                size="sm"
                 onClick={handleCopy}
-                className={`rounded-md border px-2 py-1 text-xs ${
-                  copyState === "failed"
-                    ? "border-ctp-red text-ctp-red"
-                    : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                }`}
+                className={copyState === "failed" ? "border-ctp-red text-ctp-red" : ""}
               >
                 {copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy decklist"}
-              </button>
+              </Button>
               <details className="relative">
                 <summary className="cursor-pointer list-none rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text">More actions</summary>
                 <div className="absolute right-0 z-30 mt-2 grid w-64 gap-1 rounded-lg border border-ctp-surface1 bg-ctp-base p-2 shadow-xl">

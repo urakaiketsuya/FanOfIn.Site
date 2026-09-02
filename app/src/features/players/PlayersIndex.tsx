@@ -12,6 +12,7 @@ import PageHeader from "../../components/ui/PageHeader";
 import { useTabParam } from "../../lib/useTabParam";
 import { isProvisionalRating, PROVISIONAL_MATCH_THRESHOLD } from "../../lib/eloProvisional";
 import PageLayout from "../../components/layout/PageLayout";
+import { InlineState } from "../../components/ui/ContentState";
 
 const PAGE_SIZE = 50;
 
@@ -127,9 +128,9 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
         className="mt-4 w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none sm:max-w-sm"
       />
 
-      {(!playersData || !eloData) && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
+      {(!playersData || !eloData) && <InlineState className="mt-6">Loading…</InlineState>}
       {playersData && eloData && rows.length === 0 && (
-        <p className="mt-6 text-ctp-subtext1">No rated players match "{search}".</p>
+        <InlineState className="mt-6">No rated players match "{search}".</InlineState>
       )}
       {playersData && eloData && rows.length > 0 && (
         <p className="mt-4 text-xs text-ctp-subtext0">
@@ -219,8 +220,8 @@ function JudgesView({ topChampionById }: { topChampionById: Map<number, string> 
         className="mt-4 w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none sm:max-w-sm"
       />
 
-      {!judgesData && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
-      {judgesData && judges.length === 0 && <p className="mt-6 text-ctp-subtext1">No judges match "{search}".</p>}
+      {!judgesData && <InlineState className="mt-6">Loading…</InlineState>}
+      {judgesData && judges.length === 0 && <InlineState className="mt-6">No judges match "{search}".</InlineState>}
 
       <div className="mt-6 overflow-x-auto">
         <table className="w-max min-w-full text-sm">

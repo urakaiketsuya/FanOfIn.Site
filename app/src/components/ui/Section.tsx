@@ -36,7 +36,7 @@ export default function Section({
   heading?: SectionHeading;
   children: ReactNode;
   className?: string;
-} & HTMLAttributes<HTMLElement>) {
+} & Omit<HTMLAttributes<HTMLElement>, "title">) {
   return <Tag className={className} {...props}>
     {(title || description || actions) && <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
       <div>

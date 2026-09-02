@@ -8,6 +8,8 @@ import { legalMaxCopies, pickBetterQuantity, type QuantityAdvice } from "../../l
 import { useCardImpactData, useCardQuantityStatsData } from "../archetypes/data";
 import { useChampionCardImpact } from "../decks/useChampionCardImpact";
 import { useCardsByNames } from "./useCardsByNames";
+import Panel from "../../components/ui/Panel";
+import Section from "../../components/ui/Section";
 
 const MIN_SUGGESTED_LIFT = 0.02;
 const MAX_SUGGESTIONS = 5;
@@ -154,40 +156,50 @@ export default function DeckTuningEvidence({
   return (
     <div className="mt-4 grid gap-3 sm:grid-cols-2">
       {addCards.length > 0 && (
-        <div className="rounded-md border border-ctp-surface1 bg-ctp-mantle p-3">
-          <h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Cards that might help</h4>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            {clusterSuggestions.length > 0
-              ? "Decks in this build that ran these cards tended to win more."
-              : `Other ${championName} decks that ran these cards tended to win more.`}{" "}
-            Correlational, not a guarantee.
-          </p>
-          <ul className="mt-2 space-y-1.5">
-            {addCards.map((entry) => <EvidenceRow key={entry.cardName} entry={entry} cardsByName={mergedCardsByName} tone="add" />)}
-          </ul>
-        </div>
+        <Panel padding="sm">
+          <Section
+            heading="dense"
+            title="Cards that might help"
+            description={
+              <>
+                {clusterSuggestions.length > 0
+                  ? "Decks in this build that ran these cards tended to win more."
+                  : `Other ${championName} decks that ran these cards tended to win more.`}{" "}
+                Correlational, not a guarantee.
+              </>
+            }
+          >
+            <ul className="mt-2 space-y-1.5">
+              {addCards.map((entry) => <EvidenceRow key={entry.cardName} entry={entry} cardsByName={mergedCardsByName} tone="add" />)}
+            </ul>
+          </Section>
+        </Panel>
       )}
       {reviewCards.length > 0 && (
-        <div className="rounded-md border border-ctp-surface1 bg-ctp-mantle p-3">
-          <h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Cards worth reviewing</h4>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            Cards in this list that correlate with weaker results in other {championName} decks. A review signal, not an automatic cut.
-          </p>
-          <ul className="mt-2 space-y-1.5">
-            {reviewCards.map((entry) => <EvidenceRow key={entry.cardName} entry={entry} cardsByName={mergedCardsByName} tone="review" />)}
-          </ul>
-        </div>
+        <Panel padding="sm">
+          <Section
+            heading="dense"
+            title="Cards worth reviewing"
+            description={`Cards in this list that correlate with weaker results in other ${championName} decks. A review signal, not an automatic cut.`}
+          >
+            <ul className="mt-2 space-y-1.5">
+              {reviewCards.map((entry) => <EvidenceRow key={entry.cardName} entry={entry} cardsByName={mergedCardsByName} tone="review" />)}
+            </ul>
+          </Section>
+        </Panel>
       )}
       {quantitySuggestions.length > 0 && (
-        <div className="rounded-md border border-ctp-surface1 bg-ctp-mantle p-3">
-          <h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Quantities worth adjusting</h4>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            This card's own win rate by copy count (any Champion, any deck) supports a different count than this list runs.
-          </p>
-          <ul className="mt-2 space-y-1.5">
-            {quantitySuggestions.map((suggestion) => <QuantityRow key={suggestion.cardName} suggestion={suggestion} cardsByName={mergedCardsByName} />)}
-          </ul>
-        </div>
+        <Panel padding="sm">
+          <Section
+            heading="dense"
+            title="Quantities worth adjusting"
+            description="This card's own win rate by copy count (any Champion, any deck) supports a different count than this list runs."
+          >
+            <ul className="mt-2 space-y-1.5">
+              {quantitySuggestions.map((suggestion) => <QuantityRow key={suggestion.cardName} suggestion={suggestion} cardsByName={mergedCardsByName} />)}
+            </ul>
+          </Section>
+        </Panel>
       )}
     </div>
   );

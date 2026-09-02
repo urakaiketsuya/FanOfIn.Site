@@ -7,6 +7,8 @@ import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
+import Button from "../../components/ui/Button";
+import { InlineState } from "../../components/ui/ContentState";
 
 const MIN_PLAYERS_OPTIONS = [0, 8, 16, 32];
 const PAGE_SIZE = 50;
@@ -99,12 +101,7 @@ export default function TournamentsIndex() {
             onChange={(e) => setIdLookup(e.target.value)}
             className="w-40 rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
           />
-          <button
-            type="submit"
-            className="shrink-0 rounded-md border border-ctp-surface1 px-3 py-1.5 text-sm text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text"
-          >
-            Go
-          </button>
+          <Button type="submit" variant="secondary">Go</Button>
         </form>
       </div>
 
@@ -198,12 +195,12 @@ export default function TournamentsIndex() {
         ))}
       </div>
 
-      {!index && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
+      {!index && <InlineState className="mt-6">Loading…</InlineState>}
       {index && events.length === 0 && (
-        <p className="mt-6 text-ctp-subtext1">
+        <InlineState className="mt-6">
           No ingested events match this filter yet. Not every event gets deep-fetched — if you know its ID, try
           the lookup box above.
-        </p>
+        </InlineState>
       )}
 
       {index && events.length > 0 && (

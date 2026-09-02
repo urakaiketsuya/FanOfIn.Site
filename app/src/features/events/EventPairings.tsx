@@ -6,6 +6,8 @@ import { gatcgApi, isApiErrorBody } from "../../lib/api/client";
 import PlayerLink from "../players/PlayerLink";
 import { buildCompareLink } from "../compare/deepLink";
 import { buildClarentPlaytestUrl } from "../../lib/clarentPlaytest";
+import Section from "../../components/ui/Section";
+import { InlineState } from "../../components/ui/ContentState";
 
 function findPlayer(players: OmnidexPlayer[], id: number): OmnidexPlayer | undefined {
   return players.find((p) => p.id === id);
@@ -71,9 +73,10 @@ export default function EventPairings({
   }
 
   return (
-    <div>
-      <div className="flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Pairings</h2>
+    <Section
+      heading="compact"
+      title="Pairings"
+      actions={
         <div className="flex items-center gap-2">
           {sortedStages.length > 1 && (
             <select
@@ -104,9 +107,9 @@ export default function EventPairings({
             </select>
           )}
         </div>
-      </div>
-
-      {pairings.isPending && <p className="mt-2 text-sm text-ctp-subtext1">Loading…</p>}
+      }
+    >
+      {pairings.isPending && <InlineState className="mt-2 text-sm">Loading…</InlineState>}
 
       {pairings.data && !isApiErrorBody(pairings.data) && (
         <div className="mt-2 space-y-1">
@@ -164,8 +167,8 @@ export default function EventPairings({
       )}
 
       {pairings.data && isApiErrorBody(pairings.data) && (
-        <p className="mt-2 text-sm text-ctp-subtext0">{pairings.data.error}</p>
+        <InlineState className="mt-2 text-sm">{pairings.data.error}</InlineState>
       )}
-    </div>
+    </Section>
   );
 }

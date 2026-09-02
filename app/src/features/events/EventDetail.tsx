@@ -16,6 +16,8 @@ import { useTabParam } from "../../lib/useTabParam";
 import Tabs from "../../components/ui/Tabs";
 import { formatCountry } from "../../lib/format";
 import PageLayout from "../../components/layout/PageLayout";
+import Section from "../../components/ui/Section";
+import { EmptyState, InlineState } from "../../components/ui/ContentState";
 
 type EventTab = "standings" | "pairings" | "decklists" | "teams" | "judges" | "statistics";
 const ALL_EVENT_TABS: EventTab[] = ["standings", "pairings", "decklists", "teams", "judges", "statistics"];
@@ -89,20 +91,21 @@ export default function EventDetail() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-4xl px-4 py-10">
-        <p className="text-ctp-subtext1">Loading event {eventId}…</p>
-      </div>
+      <PageLayout width="standard">
+        <InlineState className="mt-10">Loading event {eventId}…</InlineState>
+      </PageLayout>
     );
   }
 
   if (error && !bundle) {
     return (
-      <div className="mx-auto max-w-4xl px-4 py-10">
-        <p className="text-ctp-red">{error}</p>
-        <Link to="/tournaments" className="mt-2 inline-block text-ctp-blue hover:underline">
-          &larr; Back
-        </Link>
-      </div>
+      <PageLayout width="standard">
+        <EmptyState
+          title="Event unavailable"
+          description={error}
+          action={<Link to="/tournaments" className="text-ctp-blue hover:underline">&larr; Back</Link>}
+        />
+      </PageLayout>
     );
   }
 
@@ -164,10 +167,7 @@ export default function EventDetail() {
       )}
 
       {venueEvents.length > 0 && (
-        <div className="mt-3">
-          <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
-            More events at {event.host.name}
-          </h2>
+        <Section className="mt-3" heading="dense" title={`More events at ${event.host.name}`}>
           <div className="mt-1 flex flex-wrap gap-2 text-xs">
             {venueEvents.slice(0, MAX_VENUE_EVENTS_SHOWN).map((e) => (
               <Link
@@ -182,7 +182,7 @@ export default function EventDetail() {
               <span className="px-2 py-1 text-ctp-subtext0">+{venueEvents.length - MAX_VENUE_EVENTS_SHOWN} more</span>
             )}
           </div>
-        </div>
+        </Section>
       )}
 
       {tabs.length > 1 && (
@@ -192,10 +192,7 @@ export default function EventDetail() {
       )}
 
       {activeTab === "standings" && (
-        <div className="mt-6">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
-            Standings ({rankedPlayers.length} players)
-          </h2>
+        <Section className="mt-6" heading="compact" title={`Standings (${rankedPlayers.length} players)`}>
           {decklistSubmissionRate && (
             <p className="mt-0.5 text-xs text-ctp-subtext0">
               {decklistSubmissionRate.submitted} of {decklistSubmissionRate.total} players submitted a decklist
@@ -239,7 +236,7 @@ export default function EventDetail() {
               </tbody>
             </table>
           </div>
-        </div>
+        </Section>
       )}
 
       {activeTab === "pairings" && event.stages.length > 0 && (
@@ -274,12 +271,11 @@ export default function EventDetail() {
       )}
 
       {activeTab === "statistics" && !isApiErrorBody(bundle.statistics) && (
-        <div className="mt-6">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Statistics</h2>
+        <Section className="mt-6" heading="compact" title="Statistics">
           <div className="mt-2">
             <RawObject data={bundle.statistics} />
           </div>
-        </div>
+        </Section>
       )}
     </PageLayout>
   );

@@ -5,6 +5,8 @@ import CardHoverPreview from "../../components/CardHoverPreview";
 import { computeCardDecay } from "../../lib/cardDecay";
 import { findDeckChampionName } from "../../lib/ttsExport";
 import { findSpiritName, useDeckBuilderPopulation } from "../deckbuilder/useDeckBuilderPopulation";
+import Panel from "../../components/ui/Panel";
+import Section from "../../components/ui/Section";
 
 /**
  * "Potential meta gaps" (the Guided Deck Builder's Stats tab decay report, `computeCardDecay`)
@@ -36,13 +38,12 @@ export default function DeckDecaySignals({ decklist, cardsByName }: { decklist: 
   if (signals.length === 0) return null;
 
   return (
-    <div className="mt-4 rounded-md border border-ctp-surface1 bg-ctp-mantle p-3">
-      <h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Potential meta gaps</h4>
-      <p className="mt-1 text-xs text-ctp-subtext0">
-        Cards in this list whose adoption among other {championName} decks fell over the last {report!.recentDeckCount} decks vs. the
-        {" "}
-        {report!.priorDeckCount} before that — a lead to investigate, not proof the card is underplayed.
-      </p>
+    <Panel padding="sm" className="mt-4">
+      <Section
+        heading="dense"
+        title="Potential meta gaps"
+        description={`Cards in this list whose adoption among other ${championName} decks fell over the last ${report!.recentDeckCount} decks vs. the ${report!.priorDeckCount} before that — a lead to investigate, not proof the card is underplayed.`}
+      >
       <ul className="mt-2 space-y-2">
         {signals.map((signal) => {
           const card = cardsByName.get(signal.cardName);
@@ -83,6 +84,7 @@ export default function DeckDecaySignals({ decklist, cardsByName }: { decklist: 
           );
         })}
       </ul>
-    </div>
+      </Section>
+    </Panel>
   );
 }

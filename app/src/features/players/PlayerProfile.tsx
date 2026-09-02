@@ -18,6 +18,8 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { formatCountry } from "../../lib/format";
 import { isProvisionalRating } from "../../lib/eloProvisional";
 import PageLayout from "../../components/layout/PageLayout";
+import Section from "../../components/ui/Section";
+import { EmptyState } from "../../components/ui/ContentState";
 
 type PlayerTab = "overview" | "events" | "judged";
 const PAGE_SIZE = 50;
@@ -161,12 +163,13 @@ export default function PlayerProfile() {
 
   if (playersData && judgesData && !player && !judge) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-10">
-        <p className="text-ctp-red">Player {playerId} isn't in the ingested roster yet.</p>
-        <Link to="/players" className="mt-2 inline-block text-ctp-blue hover:underline">
-          &larr; All players
-        </Link>
-      </div>
+      <PageLayout>
+        <EmptyState
+          title="Player not found"
+          description={`Player ${playerId} isn't in the ingested roster yet.`}
+          action={<Link to="/players" className="text-ctp-blue hover:underline">&larr; All players</Link>}
+        />
+      </PageLayout>
     );
   }
 
@@ -266,8 +269,7 @@ export default function PlayerProfile() {
       )}
 
       {tab === "overview" && upsets.length > 0 && (
-        <div className="mt-6">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Notable upsets</h2>
+        <Section className="mt-6" heading="compact" title="Notable upsets">
           <div className="mt-2 space-y-1 text-sm">
             {upsets.map((u, i) => (
               <div key={i} className="text-ctp-subtext1">
@@ -283,15 +285,11 @@ export default function PlayerProfile() {
               </div>
             ))}
           </div>
-        </div>
+        </Section>
       )}
 
       {tab === "overview" && rivalsProfile && rivalsProfile.rivals.length > 0 && (
-        <div className="mt-6">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Rivals</h2>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            Most-played opponents, worst matchup first.
-          </p>
+        <Section className="mt-6" heading="compact" title="Rivals" description="Most-played opponents, worst matchup first.">
           <div className="mt-2 space-y-1">
             {rivalsProfile.rivals.map((r) => {
               const opponent = playersData?.players.find((p) => p.id === r.opponentId);
@@ -313,14 +311,11 @@ export default function PlayerProfile() {
               );
             })}
           </div>
-        </div>
+        </Section>
       )}
 
       {tab === "overview" && deckProfile && deckProfile.topChampions.length > 0 && (
-        <div className="mt-6">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
-            Most played champions ({deckProfile.totalDecks} decks)
-          </h2>
+        <Section className="mt-6" heading="compact" title={`Most played champions (${deckProfile.totalDecks} decks)`}>
           <div className="mt-2 grid gap-2 sm:grid-cols-2">
             {deckProfile.topChampions.map((c) => {
               const card = championImages.get(c.name);
@@ -346,25 +341,23 @@ export default function PlayerProfile() {
               );
             })}
           </div>
-        </div>
+        </Section>
       )}
 
       {tab === "overview" && allTopCardNames.length > 0 && deckProfile && (
-        <div className="mt-6">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Most played cards</h2>
+        <Section className="mt-6" heading="compact" title="Most played cards">
           <div className="mt-2">
             <TopCardsSections topCards={deckProfile.topCards} cardImages={cardImages} />
           </div>
-        </div>
+        </Section>
       )}
 
       {tab === "events" && player && (
-        <div className="mt-6">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
-            Events ({events.length}
-            {events.length !== allEvents.length && ` of ${allEvents.length}`})
-          </h2>
-
+        <Section
+          className="mt-6"
+          heading="compact"
+          title={`Events (${events.length}${events.length !== allEvents.length ? ` of ${allEvents.length}` : ""})`}
+        >
           {(categoriesPresent.length > 1 || championsPresent.length > 1 || seasonsPresent.length > 1) && (
             <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
               {categoriesPresent.length > 1 && (
@@ -433,14 +426,11 @@ export default function PlayerProfile() {
           </div>
 
           <LoadMore remaining={events.length - eventsVisibleCount} onLoadMore={() => setEventsVisibleCount((v) => v + PAGE_SIZE)} />
-        </div>
+        </Section>
       )}
 
       {tab === "judged" && judge && (
-        <div className="mt-6">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
-            Judged events ({judgedEvents.length})
-          </h2>
+        <Section className="mt-6" heading="compact" title={`Judged events (${judgedEvents.length})`}>
           <div className="mt-2 space-y-2">
             {visibleJudgedEvents.map((event) => (
               <EventRow key={event.id} event={event} />
@@ -451,7 +441,7 @@ export default function PlayerProfile() {
             remaining={judgedEvents.length - judgedVisibleCount}
             onLoadMore={() => setJudgedVisibleCount((v) => v + PAGE_SIZE)}
           />
-        </div>
+        </Section>
       )}
     </PageLayout>
   );
