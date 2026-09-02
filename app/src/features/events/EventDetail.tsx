@@ -15,6 +15,7 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import Tabs from "../../components/ui/Tabs";
 import { formatCountry } from "../../lib/format";
+import PageLayout from "../../components/layout/PageLayout";
 
 type EventTab = "standings" | "pairings" | "decklists" | "teams" | "judges" | "statistics";
 const ALL_EVENT_TABS: EventTab[] = ["standings", "pairings", "decklists", "teams", "judges", "statistics"];
@@ -121,7 +122,7 @@ export default function EventDetail() {
   const activeTab = tabs.some((t) => t.key === tab) ? tab : "standings";
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
+    <PageLayout width="standard">
       <Link to="/tournaments" className="text-sm text-ctp-blue hover:underline">
         &larr; Back to Tournaments
       </Link>
@@ -280,6 +281,6 @@ export default function EventDetail() {
           </div>
         </div>
       )}
-    </div>
+    </PageLayout>
   );
 }

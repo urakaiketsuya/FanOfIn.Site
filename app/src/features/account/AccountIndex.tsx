@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { accountApi } from "../../lib/accountApi";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import GoogleSignInButton from "./GoogleSignInButton";
+import PageLayout from "../../components/layout/PageLayout";
 
 export default function AccountIndex() {
   useDocumentTitle("Account", "Manage your Fan of Insight account and public profile.");
@@ -32,7 +33,7 @@ export default function AccountIndex() {
   if (user === undefined) return <div className="mx-auto max-w-3xl px-4 py-10 text-ctp-subtext1">Loading your account…</div>;
   if (!user) return <div className="mx-auto max-w-xl px-4 py-12"><h1 className="text-2xl font-bold text-ctp-blue">Account</h1><p className="mt-2 text-ctp-subtext1">Sign in to manage your profile and account.</p><div className="mt-6"><GoogleSignInButton onCredential={(credential, nonce) => void run(async () => setUser((await accountApi.googleSignIn(credential, nonce)).user))} /></div>{error && <p className="mt-4 text-sm text-ctp-red">{error}</p>}</div>;
 
-  return <div className="mx-auto max-w-3xl px-4 py-8">
+  return <PageLayout>
     <div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-2xl font-bold text-ctp-blue">Account</h1><p className="mt-1 text-sm text-ctp-subtext1">Profile, privacy, sessions, and your data.</p></div><Link to="/my-decks" className="rounded-md border border-ctp-blue px-3 py-1.5 text-sm text-ctp-blue">My Decks</Link></div>
     {error && <p className="mt-4 rounded-md border border-ctp-red/50 bg-ctp-red/10 p-3 text-sm text-ctp-red">{error}</p>}
     {notice && <p className="mt-4 rounded-md border border-ctp-green/50 bg-ctp-green/10 p-3 text-sm text-ctp-green">{notice}</p>}
@@ -52,5 +53,5 @@ export default function AccountIndex() {
     <section className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><h2 className="font-semibold text-ctp-text">Sessions and data</h2><div className="mt-3 flex flex-wrap gap-2"><button type="button" disabled={busy} onClick={() => void run(downloadAccountExport)} className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-sm">Export my data</button><button type="button" disabled={busy} onClick={() => void run(async () => { await accountApi.logout(); setUser(null); })} className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-sm">Sign out</button><button type="button" disabled={busy} onClick={() => void run(async () => { await accountApi.logoutAll(); setUser(null); })} className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-sm">Sign out all devices</button></div></section>
 
     <section className="mt-6 rounded-xl border border-ctp-red/40 bg-ctp-red/5 p-4"><h2 className="font-semibold text-ctp-red">Delete account</h2><p className="mt-1 text-sm text-ctp-subtext1">Permanently remove your account, decks, collection, and social activity.</p><button type="button" disabled={busy} onClick={() => { if (window.prompt("Permanently delete your account, saved decks, and collection? Type DELETE to confirm.") === "DELETE") void run(async () => { await accountApi.deleteAccount(); setUser(null); }); }} className="mt-3 rounded-md border border-ctp-red/60 px-3 py-1.5 text-sm text-ctp-red">Delete account</button></section>
-  </div>;
+  </PageLayout>;
 }

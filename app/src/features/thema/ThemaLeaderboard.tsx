@@ -6,6 +6,7 @@ import { gatcgApi } from "../../lib/api/client";
 import CardImage from "../../components/CardImage";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
+import PageLayout from "../../components/layout/PageLayout";
 
 function RankChange({ value }: { value: number }) {
   if (value === 0) return <span className="text-ctp-subtext0">—</span>;
@@ -22,7 +23,7 @@ export default function ThemaLeaderboard() {
   const ranks = useQuery({ queryKey: ["thema-ranks", kind], queryFn: () => gatcgApi.getThemaRanks(kind) });
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <PageHeader title="Thema Rankings" description="Dynamic thema price-tier leaderboard, updated regularly." />
 
       <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
@@ -62,6 +63,6 @@ export default function ThemaLeaderboard() {
           </Link>
         ))}
       </div>
-    </div>
+    </PageLayout>
   );
 }

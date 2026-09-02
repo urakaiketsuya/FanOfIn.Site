@@ -11,6 +11,9 @@ import { useOmnidexPlayers } from "../tournaments/data";
 import PlayerLink from "../players/PlayerLink";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
+import PageLayout from "../../components/layout/PageLayout";
+import Panel from "../../components/ui/Panel";
+import { EmptyState, InlineState } from "../../components/ui/ContentState";
 
 const RECENT_HOLDERS_SHOWN = 5;
 
@@ -46,15 +49,15 @@ export default function AchievementsIndex() {
   }, [achievementsData]);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <PageHeader
         title="Achievements"
         description="Every badge here is derived automatically from tournament results, ratings, and decklists already ingested — there's no manual submission or curation involved."
       />
 
-      {!achievementsData && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
+      {!achievementsData && <InlineState className="mt-6">Loading…</InlineState>}
       {achievementsData && achievementsData.definitions.length === 0 && (
-        <p className="mt-6 text-ctp-subtext1">No achievements have been derived yet.</p>
+        <EmptyState className="mt-6" title="No achievements have been derived yet" />
       )}
 
       {ACHIEVEMENT_CATEGORY_ORDER.map((category) => {
@@ -70,7 +73,7 @@ export default function AchievementsIndex() {
                 const unlocks = unlocksByAchievement.get(def.id) ?? [];
                 const recent = unlocks.slice(0, RECENT_HOLDERS_SHOWN);
                 return (
-                  <div key={def.id} className="rounded-md border border-ctp-surface1 p-3">
+                  <Panel key={def.id} padding="sm" className="rounded-md bg-transparent">
                     <div className="flex flex-wrap items-baseline justify-between gap-x-3">
                       <Link to={`/achievements/${def.id}`} className="font-semibold text-ctp-text hover:text-ctp-blue">
                         {def.name}
@@ -95,13 +98,13 @@ export default function AchievementsIndex() {
                         ))}
                       </div>
                     )}
-                  </div>
+                  </Panel>
                 );
               })}
             </div>
           </div>
         );
       })}
-    </div>
+    </PageLayout>
   );
 }

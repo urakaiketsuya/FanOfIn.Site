@@ -8,6 +8,7 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import Tabs from "../../components/ui/Tabs";
 import { PRODUCTS } from "../products/data";
+import PageLayout from "../../components/layout/PageLayout";
 
 const PAGE_SIZE = 50;
 
@@ -65,7 +66,7 @@ export default function SeasonDetail() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <Link to="/seasons" className="text-sm text-ctp-blue hover:underline">
         &larr; All seasons
       </Link>
@@ -183,6 +184,6 @@ export default function SeasonDetail() {
           )}
         </div>
       )}
-    </div>
+    </PageLayout>
   );
 }

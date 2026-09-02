@@ -18,6 +18,7 @@ import PageHeader from "../../components/ui/PageHeader";
 import Tabs from "../../components/ui/Tabs";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 import { cutoutsForChampion } from "../products/characterArt";
+import PageLayout from "../../components/layout/PageLayout";
 
 const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
@@ -157,7 +158,7 @@ export default function ChampionDetail() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       {champion && (
         <>
           <PageHeader
@@ -455,6 +456,6 @@ export default function ChampionDetail() {
           )}
         </>
       )}
-    </div>
+    </PageLayout>
   );
 }

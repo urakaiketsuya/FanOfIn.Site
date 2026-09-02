@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import type { Card, CardEdition } from "@gatcg/shared";
 import CardImage from "../../components/CardImage";
 import PageHeader from "../../components/ui/PageHeader";
+import PageLayout from "../../components/layout/PageLayout";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { decodeLookingForShare, encodeLookingForShare, type LookingForEntry } from "../../lib/lookingForShareLink";
 import { parseDecklist } from "../compare/parseDecklist";
@@ -136,7 +137,7 @@ export default function LookingForIndex() {
   }, [resolved]);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
+    <PageLayout width="wide">
       <PageHeader title={shared?.title ?? "Looking For"} description={isSharedView ? `${totalCards} cards across ${visibleEntries.length} requested items.` : "Paste a card list, choose acceptable printings, and send one link to traders or friends."} actions={isSharedView ? <button type="button" onClick={startNewList} className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-sm text-ctp-subtext1 hover:text-ctp-text">Create your own</button> : undefined} />
 
       {!isSharedView && (
@@ -164,6 +165,6 @@ export default function LookingForIndex() {
       )}
 
       {isSharedView && resolved.some(({ card }) => !card) && <p className="mt-5 text-sm text-ctp-yellow">Some requested names could not be matched to the current card catalog. They remain visible so nothing is silently lost.</p>}
-    </div>
+    </PageLayout>
   );
 }

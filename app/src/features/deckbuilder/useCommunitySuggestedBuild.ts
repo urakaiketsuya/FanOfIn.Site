@@ -46,7 +46,7 @@ function toSuggested(cardName: string, quantity: number, locked: boolean, entry:
  * guards hide the Card-Impact-specific figures on their own. Deliberately doesn't touch
  * `useSuggestedBuild.ts` or its win-rate math — a separate, additive hook.
  */
-export function useCommunitySuggestedBuild(
+export function buildCommunitySuggestedDeck(
   champData: { deckCount: number; cards: CardInclusionEntry[] } | undefined,
   lockedCards: Map<string, number>,
   lockedSections: Map<string, SuggestedCard["section"]>,
@@ -62,7 +62,7 @@ export function useCommunitySuggestedBuild(
   championCard?: Card,
   spiritCard?: Card,
 ): SuggestedBuild {
-  return useMemo((): SuggestedBuild => {
+  {
     const empty: SuggestedBuild = {
       material: [],
       main: [],
@@ -222,5 +222,23 @@ export function useCommunitySuggestedBuild(
       unresolved: { main: Math.max(0, mainTarget - mainTotal), material: Math.max(0, MATERIAL_TARGET - materialTotal), sideboard: 0 },
       loading: false,
     };
-  }, [champData, lockedCards, lockedSections, rejectedCards, cardsByName, loading, identityElements, format, championCard, spiritCard]);
+  }
+}
+
+export function useCommunitySuggestedBuild(
+  champData: { deckCount: number; cards: CardInclusionEntry[] } | undefined,
+  lockedCards: Map<string, number>,
+  lockedSections: Map<string, SuggestedCard["section"]>,
+  rejectedCards: Set<string>,
+  cardsByName: Map<string, Card>,
+  loading: boolean,
+  identityElements: Set<string>,
+  format: DeckFormat = "STANDARD",
+  championCard?: Card,
+  spiritCard?: Card,
+): SuggestedBuild {
+  return useMemo(
+    () => buildCommunitySuggestedDeck(champData, lockedCards, lockedSections, rejectedCards, cardsByName, loading, identityElements, format, championCard, spiritCard),
+    [champData, lockedCards, lockedSections, rejectedCards, cardsByName, loading, identityElements, format, championCard, spiritCard],
+  );
 }

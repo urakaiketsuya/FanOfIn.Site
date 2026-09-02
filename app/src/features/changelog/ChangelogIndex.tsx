@@ -2,6 +2,8 @@ import { useMemo } from "react";
 import { useSiteChangelogData } from "./data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
+import PageLayout from "../../components/layout/PageLayout";
+import { InlineState } from "../../components/ui/ContentState";
 
 const REPO_URL = "https://github.com/urakaiketsuya/FanOfIn.Site";
 
@@ -24,13 +26,13 @@ export default function ChangelogIndex() {
   }, [data]);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <PageHeader
         title="Changelog"
         description="What's changed on the site, pulled from the commit history — for now this is just each change's own commit message, not a rewritten description."
       />
 
-      {!data && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
+      {!data && <InlineState className="mt-6">Loading…</InlineState>}
 
       <div className="mt-6 space-y-6">
         {groups.map(([day, entries]) => (
@@ -56,6 +58,6 @@ export default function ChangelogIndex() {
           </div>
         ))}
       </div>
-    </div>
+    </PageLayout>
   );
 }

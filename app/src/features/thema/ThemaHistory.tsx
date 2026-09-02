@@ -4,6 +4,7 @@ import type { ThemaKind } from "@gatcg/shared";
 import { gatcgApi } from "../../lib/api/client";
 import HistoryChart from "../../components/HistoryChart";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import PageLayout from "../../components/layout/PageLayout";
 
 export default function ThemaHistory() {
   useDocumentTitle("Thema Price History", "Historical Thema price-rank chart for a Grand Archive TCG card edition.");
@@ -19,7 +20,7 @@ export default function ThemaHistory() {
   const points = [...(history.data ?? [])].reverse(); // API returns newest-first; chart reads left-to-right
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <Link to="/thema" className="text-sm text-ctp-blue hover:underline">
         &larr; Back to Rankings
       </Link>
@@ -62,6 +63,6 @@ export default function ThemaHistory() {
           </table>
         </div>
       )}
-    </div>
+    </PageLayout>
   );
 }

@@ -369,16 +369,16 @@ function pickQuantity(
  * falling back to the Spirit-only population once locking has narrowed things too far to rank
  * against reliably.
  */
-export function useSuggestedBuild(
+export function buildTournamentSuggestedDeck(
   rows: DeckBuilderRow[],
   spiritFilter: string | null,
   lockedCards: Map<string, number>,
   rejectedCards: Set<string>,
   loading: boolean,
+  cardsByName: Map<string, Card>,
+  quantityBucketsByName: Map<string, CardQuantityBucket[]>,
   /** Section a lock is *known* to belong to (e.g. from a pasted decklist's own Main/Material/Sideboard headers) — trusted over the population-derived `sectionOf` guess below, which can misclassify a card the current population barely plays (see the Resonance Bauble bug: near-zero sample defaults to "main" regardless of the card's real section), and is the only way a card ever lands in the sideboard at all (there's no population-driven sideboard guess). Cards locked without a known section (manual "Add a card") still fall back to the main/material guess. */
   lockedSections: Map<string, "main" | "material" | "sideboard"> = new Map(),
-  /** Global (not Champion-scoped) win rate by copy count, published per-card — lets a suggested/ranked-fill quantity be overridden toward whichever copy count actually wins more, when the data clearly says so. Omit to always use the population's modal quantity, same as before this existed. */
-  cardQuantityStatsData?: CardQuantityStatsData,
   /**
    * The Champion card to read granted elements from, resolved by the caller against the *stable*
    * single-Champion population (`useDeckBuilderPopulation`'s own rows for the selected Champion) —
@@ -417,16 +417,7 @@ export function useSuggestedBuild(
    * of having every observed level silently reinserted by the recommendation population. */
   championLevelCap: number | null = null,
 ): SuggestedBuild {
-  const cardCatalog = useCardCatalog();
-  const settledCardCatalog = useDebouncedValue(cardCatalog, CATALOG_SETTLE_MS);
-  const cardsByName = useMemo(() => new Map(settledCardCatalog.map((c) => [c.name, c])), [settledCardCatalog]);
-  const quantityBucketsByName = useMemo(() => {
-    const map = new Map<string, CardQuantityBucket[]>();
-    for (const c of cardQuantityStatsData?.cards ?? []) map.set(c.name, c.quantities);
-    return map;
-  }, [cardQuantityStatsData]);
-
-  return useMemo((): SuggestedBuild => {
+  {
     if (loading || rows.length === 0)
       return {
         material: [],
@@ -936,5 +927,36 @@ export function useSuggestedBuild(
       },
       loading: false,
     };
-  }, [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName, lockedSections, quantityBucketsByName, championCardOverride, pillarBias, communityInclusion, decayingCards, archetypePrevalence, collectionOwnedByName, collectionMode, championLevelCap]);
+  }
+}
+
+export function useSuggestedBuild(
+  rows: DeckBuilderRow[],
+  spiritFilter: string | null,
+  lockedCards: Map<string, number>,
+  rejectedCards: Set<string>,
+  loading: boolean,
+  lockedSections: Map<string, "main" | "material" | "sideboard"> = new Map(),
+  cardQuantityStatsData?: CardQuantityStatsData,
+  championCardOverride?: Card,
+  pillarBias?: RatingPillar | null,
+  communityInclusion?: Map<string, { percentOfDecks: number }>,
+  decayingCards?: Map<string, number>,
+  archetypePrevalence?: Map<string, number>,
+  collectionOwnedByName?: Map<string, number>,
+  collectionMode: "all" | "prioritize" | "owned-only" = "all",
+  championLevelCap: number | null = null,
+): SuggestedBuild {
+  const cardCatalog = useCardCatalog();
+  const settledCardCatalog = useDebouncedValue(cardCatalog, CATALOG_SETTLE_MS);
+  const cardsByName = useMemo(() => new Map(settledCardCatalog.map((card) => [card.name, card])), [settledCardCatalog]);
+  const quantityBucketsByName = useMemo(() => {
+    const map = new Map<string, CardQuantityBucket[]>();
+    for (const card of cardQuantityStatsData?.cards ?? []) map.set(card.name, card.quantities);
+    return map;
+  }, [cardQuantityStatsData]);
+  return useMemo(
+    () => buildTournamentSuggestedDeck(rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName, quantityBucketsByName, lockedSections, championCardOverride, pillarBias, communityInclusion, decayingCards, archetypePrevalence, collectionOwnedByName, collectionMode, championLevelCap),
+    [rows, spiritFilter, lockedCards, rejectedCards, loading, cardsByName, quantityBucketsByName, lockedSections, championCardOverride, pillarBias, communityInclusion, decayingCards, archetypePrevalence, collectionOwnedByName, collectionMode, championLevelCap],
+  );
 }

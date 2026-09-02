@@ -17,6 +17,7 @@ import LoadMore from "../../components/LoadMore";
 import { useFeaturedSets } from "../sets/useFeaturedSets";
 import { isBoosterSet } from "../packs/boosterSets";
 import { PRODUCTS } from "../products/data";
+import PageLayout from "../../components/layout/PageLayout";
 
 const PAGE_SIZE = 60;
 
@@ -98,7 +99,7 @@ export default function CardsBrowse() {
   const bannerProduct = filters.sets.size === 1 ? PRODUCTS.find((p) => p.prefix === Array.from(filters.sets)[0] && p.banner) : undefined;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8">
+    <PageLayout width="full">
       <PageHeader
         title="Cards"
         actions={
@@ -266,6 +267,6 @@ export default function CardsBrowse() {
           <LoadMore remaining={filtered.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
         </>
       )}
-    </div>
+    </PageLayout>
   );
 }

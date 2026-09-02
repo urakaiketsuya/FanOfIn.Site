@@ -1,6 +1,8 @@
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import { useDecklistDisplayPrefs } from "../../lib/decklistDisplayPrefs";
+import PageLayout from "../../components/layout/PageLayout";
+import Section from "../../components/ui/Section";
 
 function ToggleRow({ label, description, checked, onChange }: { label: string; description: string; checked: boolean; onChange: (value: boolean) => void }) {
   return (
@@ -20,15 +22,14 @@ export default function SettingsIndex() {
   const prefs = useDecklistDisplayPrefs();
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <PageHeader
         title="Display Settings"
         description="These preferences are saved to this browser only — they don't follow you to another device, and they don't require an account. Used to be an inline 'Evidence settings' menu on decklist pages, moved here because that menu didn't work well on mobile."
       />
 
-      <section className="mt-6">
-        <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Decklist stats</h2>
-        <div className="mt-2 space-y-2">
+      <Section className="mt-6" title="Decklist stats" heading="compact">
+        <div className="space-y-2">
           <ToggleRow
             label="DIAO score"
             description="A computed 4-pillar style rating (Durability/Interaction/Aggro/Opportunity) for any decklist shown on the site — not just dedicated deck pages. Weak correlation with actual match win rate; a style profile, not a power ranking."
@@ -42,11 +43,10 @@ export default function SettingsIndex() {
             onChange={prefs.setWinRate}
           />
         </div>
-      </section>
+      </Section>
 
-      <section className="mt-6">
-        <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Decklist evidence panels</h2>
-        <div className="mt-2 space-y-2">
+      <Section className="mt-6" title="Decklist evidence panels" heading="compact">
+        <div className="space-y-2">
           <ToggleRow
             label="Tuning suggestions"
             description="Cards that might help, cards worth reviewing, and quantity advice — drawn from tournament data for this decklist's named-build cluster (or its Champion, as a fallback)."
@@ -60,7 +60,7 @@ export default function SettingsIndex() {
             onChange={prefs.setMetaGaps}
           />
         </div>
-      </section>
-    </div>
+      </Section>
+    </PageLayout>
   );
 }

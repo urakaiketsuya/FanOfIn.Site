@@ -16,6 +16,7 @@ import type { RegionGroupMode } from "../../lib/regions";
 import PageHeader from "../../components/ui/PageHeader";
 import FilterBar from "../../components/ui/FilterBar";
 import Tabs from "../../components/ui/Tabs";
+import PageLayout from "../../components/layout/PageLayout";
 
 const GROUP_MODES: RegionGroupMode[] = ["country", "region"];
 const GROUP_LABELS: Record<RegionGroupMode, string> = { country: "Country", region: "Region" };
@@ -131,7 +132,7 @@ export default function RegionsIndex() {
   const keywords = useRegionalKeywords(regionDecks);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <PageHeader title="Regions" description="Compare archetypes, Champions, card composition, and keywords across countries or broader competitive regions." />
 
       <FilterBar>
@@ -330,6 +331,6 @@ export default function RegionsIndex() {
           )}
         </>
       )}
-    </div>
+    </PageLayout>
   );
 }

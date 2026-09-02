@@ -6,6 +6,7 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import PageHeader from "../../components/ui/PageHeader";
 import Tabs from "../../components/ui/Tabs";
+import PageLayout from "../../components/layout/PageLayout";
 
 type ViewTab = "matrix" | "champion" | "highlights";
 
@@ -113,7 +114,7 @@ export default function BattleChart() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
+    <PageLayout width="wide">
       <PageHeader title="Battle Chart" eyebrow={<Link to="/archetypes" className="hover:underline">&larr; Archetypes</Link>} description="Explore head-to-head Champion win rates from real tournament pairings, with sample-aware color intensity." />
 
       {!data && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
@@ -289,6 +290,6 @@ export default function BattleChart() {
           )}
         </>
       )}
-    </div>
+    </PageLayout>
   );
 }

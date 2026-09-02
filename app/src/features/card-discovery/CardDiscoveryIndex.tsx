@@ -7,6 +7,7 @@ import { useCardCatalog } from "../cards/useCardCatalog";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { computeIdentityElements } from "../deckbuilder/useSuggestedBuild";
 import { computeNewReleaseCards } from "../deckbuilder/newReleaseCards";
+import PageLayout from "../../components/layout/PageLayout";
 
 function identityName(card: Card): string {
   return card.name.split(",")[0].trim();
@@ -42,7 +43,7 @@ export default function CardDiscoveryIndex() {
     return `/deck-builder?${params.toString()}`;
   }, [championName, spiritName]);
 
-  return <div className="mx-auto max-w-3xl px-4 py-8">
+  return <PageLayout>
     <PageHeader
       title="Find new cards"
       description="Browse cards from the newest release that connect to your Champion, optional Spirit, or cards you already play. These are structural matches, not invented performance scores."
@@ -86,5 +87,5 @@ export default function CardDiscoveryIndex() {
         <ul className="mt-2 space-y-1 text-sm text-ctp-subtext1">{combos.map((combo) => <li key={`${combo.with.uuid}-${combo.via}`}>Connects with <Link to={`/cards/${combo.with.slug}`} className="text-ctp-blue hover:underline">{combo.with.name}</Link> via {combo.via}.</li>)}</ul>
       </article>)}</div>}
     </section>}
-  </div>;
+  </PageLayout>;
 }

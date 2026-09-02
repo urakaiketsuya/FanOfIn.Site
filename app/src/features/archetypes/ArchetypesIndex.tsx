@@ -9,6 +9,7 @@ import PageHeader from "../../components/ui/PageHeader";
 import { formatUsd } from "../../lib/format";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 import ArchetypeMetaMap from "./ArchetypeMetaMap";
+import PageLayout from "../../components/layout/PageLayout";
 
 const ArchetypeValidationView = lazy(() => import("./ArchetypeValidationView"));
 const ArchetypeHurtYouView = lazy(() => import("./ArchetypeHurtYouView"));
@@ -180,7 +181,7 @@ export default function ArchetypesIndex() {
   const largestMaterialArchetype = materialArchetypes[0]?.playerCount ?? 1;
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <PageHeader
         title="Archetypes"
         description="Choose a recurring material build path first, then explore its main-deck engine and win condition. Smaller but coherent paths remain visible as emerging evidence instead of being blended into the most common shell."
@@ -508,6 +509,6 @@ export default function ArchetypesIndex() {
           </div>
         </div>
       )}
-    </div>
+    </PageLayout>
   );
 }

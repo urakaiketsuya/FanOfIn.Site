@@ -12,6 +12,7 @@ import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import { getCardPackageMembership } from "../deckbuilder/packageGuardrails";
+import PageLayout from "../../components/layout/PageLayout";
 
 type SortMode = "usage" | "adjusted" | "raw" | "hot" | "hype";
 
@@ -158,7 +159,7 @@ export default function CardStatsIndex() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <PageHeader
         title="Card Stats"
         description={`Usage and win rate across every public decklist. "Adjusted" win rate is shrunk toward 50% proportional to sample size, so a card with 3 appearances at 100% doesn't outrank one with 200 at 65%. Add cards to the filter below to see what's played alongside them.`}
@@ -468,6 +469,6 @@ export default function CardStatsIndex() {
           </table>
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 }

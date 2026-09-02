@@ -2,17 +2,19 @@ import { Link } from "react-router-dom";
 import { useOmnidexIndex } from "./data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
+import PageLayout from "../../components/layout/PageLayout";
+import { EmptyState, InlineState } from "../../components/ui/ContentState";
 
 export default function SeasonsIndex() {
   useDocumentTitle("Seasons", "Grand Archive TCG card-legality seasons and their tournament history.");
   const index = useOmnidexIndex();
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <PageHeader title="Seasons" description="Card-legality windows, each with its own set of ingested events." />
 
-      {!index && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
-      {index && index.seasons.length === 0 && <p className="mt-6 text-ctp-subtext1">No seasons found yet.</p>}
+      {!index && <InlineState className="mt-6">Loading…</InlineState>}
+      {index && index.seasons.length === 0 && <EmptyState className="mt-6" title="No seasons found yet" />}
 
       <div className="mt-6 space-y-2">
         {index?.seasons
@@ -37,6 +39,6 @@ export default function SeasonsIndex() {
             );
           })}
       </div>
-    </div>
+    </PageLayout>
   );
 }

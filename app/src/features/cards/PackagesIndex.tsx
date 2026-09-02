@@ -9,6 +9,7 @@ import { localPackageApprovalId, useLocalPackageApprovals } from "../deckbuilder
 import { DECK_PACKAGE_CANDIDATES } from "../deckbuilder/packageCandidates";
 import { useMinedPackageCandidates } from "../deckbuilder/useMinedPackageCandidates";
 import { useCardCatalog } from "./useCardCatalog";
+import PageLayout from "../../components/layout/PageLayout";
 
 export default function PackagesIndex() {
   useDocumentTitle("Card Packages", "Browse explicit card packages used by Fan of Insight deck-review guardrails.");
@@ -68,7 +69,7 @@ export default function PackagesIndex() {
   }, [location.hash]);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
+    <PageLayout width="wide">
       <PageHeader
         title="Card Packages"
         description="Explicit groups of cards whose construction relationship should be reviewed together. Packages guide suggestions without redefining a deck's archetype."
@@ -348,6 +349,6 @@ export default function PackagesIndex() {
           })}
         </div>
       </section>
-    </div>
+    </PageLayout>
   );
 }

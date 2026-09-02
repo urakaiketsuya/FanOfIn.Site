@@ -10,6 +10,7 @@ import { useCardCatalog } from "../cards/useCardCatalog";
 import { findDeckChampionName } from "../../lib/ttsExport";
 import UserDeckHeader from "./UserDeckHeader";
 import UserDecklistPanel from "./UserDecklistPanel";
+import PageLayout from "../../components/layout/PageLayout";
 import UserDeckStats from "./UserDeckStats";
 import DeckTags from "./DeckTags";
 import PrimerMarkdown from "./PrimerMarkdown";
@@ -139,7 +140,7 @@ export default function MyDeckDetail() {
   if (deck === undefined) return <div className="mx-auto max-w-3xl px-4 py-10 text-ctp-subtext1">Loading deck…</div>;
   if (!deck) return <div className="mx-auto max-w-3xl px-4 py-10"><h1 className="text-2xl font-bold text-ctp-text">Deck unavailable</h1><p className="mt-2 text-ctp-subtext1">{error}</p><Link to="/my-decks" className="mt-5 inline-block text-ctp-blue hover:underline">Back to My Decks</Link></div>;
 
-  return <div className="mx-auto max-w-3xl px-4 py-8">
+  return <PageLayout>
     <Link to="/my-decks" className="text-sm text-ctp-blue hover:underline">← My Decks</Link>
     <div className="mt-4"><UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} description={deck.description} visibility={deck.visibility} /><DeckTags tags={deck.tags} /><div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2"><p className="text-xs text-ctp-subtext0">Updated {new Date(deck.updatedAt).toLocaleDateString()} · {deck.versions.length} version{deck.versions.length === 1 ? "" : "s"}</p>{deck.publicSlug && deck.visibility !== "private" && <Link to={`/decklists/${deck.publicSlug}`} className="text-sm font-medium text-ctp-blue hover:underline">{deck.visibility === "public" ? "View public deck →" : "View shared deck →"}</Link>}</div></div>
     <div className="mt-6"><Tabs tabs={DECK_TABS} active={tab} onChange={setTab} label="Deck details" baseId="owned-deck" /></div>
@@ -214,5 +215,5 @@ export default function MyDeckDetail() {
         {version.id !== deck.currentVersionId && <button disabled={busy} type="button" onClick={() => void run(async () => { await accountApi.restoreDeckVersion(deck.id, version.id); await refresh(); })} className="mt-2 rounded border border-ctp-blue px-2 py-1 text-xs text-ctp-blue disabled:opacity-50">Restore as new version</button>}
       </details>)}</div>
     </section>}
-  </div>;
+  </PageLayout>;
 }

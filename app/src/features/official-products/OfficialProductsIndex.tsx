@@ -5,6 +5,7 @@ import CardHoverPreview from "../../components/CardHoverPreview";
 import ElementIcon from "../../components/ElementIcon";
 import ElementRail from "../../components/ElementRail";
 import PageHeader from "../../components/ui/PageHeader";
+import PageLayout from "../../components/layout/PageLayout";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { buildDeckBuilderPath, deckBuilderParamsFromDecklist } from "../../lib/deckBuilderLink";
 import { encodeCustomDecks } from "../../lib/compareShareLink";
@@ -181,7 +182,7 @@ export default function OfficialProductsIndex() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
+    <PageLayout width="wide">
       <PageHeader title="Official Product Decks" description={<>Starter decks, Re:Collection lists, and Pantheon starters published by Grand Archive. Copy a list as printed or open it in the Guided Deck Builder to start tuning. Source data is attributed to <a href={officialProductsSource} target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">GrandArchive on Silvie.org</a>.</>} />
 
       <div className="mb-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1" role="tablist" aria-label="Official deck format">
@@ -219,6 +220,6 @@ export default function OfficialProductsIndex() {
       <p className="mb-3 text-xs text-ctp-subtext0">Showing {visible.length} official deck{visible.length === 1 ? "" : "s"}</p>
       <div className="grid items-start gap-4 lg:grid-cols-2">{visible.map((deck) => <ProductDeckCard key={deck.id} deck={deck} cardsByName={cardsByName} compareSelected={compareIds.includes(deck.id)} compareDisabled={compareIds.length === 4 && !compareIds.includes(deck.id)} onToggleCompare={() => toggleCompare(deck.id)} />)}</div>
       {visible.length === 0 && <p className="rounded-xl border border-ctp-surface0 p-8 text-center text-sm text-ctp-subtext1">No official products match those filters.</p>}
-    </div>
+    </PageLayout>
   );
 }

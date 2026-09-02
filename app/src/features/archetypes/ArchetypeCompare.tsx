@@ -3,6 +3,7 @@ import { ARCHETYPE_NEAR_DUPLICATE_THRESHOLD, type ArchetypeCluster, type Materia
 import { useArchetypeTaxonomyData } from "./data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
+import PageLayout from "../../components/layout/PageLayout";
 
 type CompareItem = ArchetypeCluster | MaterialArchetype;
 
@@ -69,7 +70,7 @@ export default function ArchetypeCompare() {
   const materialQuantityRows = quantityRows(builds, "material", 16);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
+    <PageLayout width="wide">
       <Link to="/archetypes" className="text-sm text-ctp-blue hover:underline">&larr; Back to archetypes</Link>
       <div className="mt-2 flex flex-wrap items-end justify-between gap-3">
         <div>
@@ -146,7 +147,7 @@ export default function ArchetypeCompare() {
           </section>
         </>
       )}
-    </div>
+    </PageLayout>
   );
 }
 

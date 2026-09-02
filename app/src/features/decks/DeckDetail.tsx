@@ -43,6 +43,7 @@ import AggressionForecast from "./AggressionForecast";
 import { computeAggressionForecast } from "../../lib/aggressionForecast";
 import { useDecklistDisplayPrefs } from "../../lib/decklistDisplayPrefs";
 import DiaoScoreCard from "../../components/DiaoScoreCard";
+import PageLayout from "../../components/layout/PageLayout";
 
 type DeckTab = "decklist" | "composition" | "history" | "similar";
 
@@ -344,7 +345,7 @@ export default function DeckDetail() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <Link to="/decks?view=builds&minPlayers=2plus" className="text-sm text-ctp-blue hover:underline">
         &larr; Browse Decks
       </Link>
@@ -567,6 +568,6 @@ export default function DeckDetail() {
           </div>
         </div>
       )}
-    </div>
+    </PageLayout>
   );
 }

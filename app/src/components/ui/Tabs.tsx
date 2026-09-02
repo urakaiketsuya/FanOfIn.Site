@@ -1,4 +1,4 @@
-import { useRef, type KeyboardEvent } from "react";
+import { useRef, type KeyboardEvent, type ReactNode } from "react";
 
 export interface TabOption<T extends string> { key: T; label: string }
 
@@ -49,4 +49,20 @@ export default function Tabs<T extends string>({ tabs, active, onChange, label =
       })}
     </div>
   );
+}
+
+/** Pairs with `Tabs baseId` so callers do not have to reproduce panel ids and ARIA wiring. */
+export function TabPanel<T extends string>({ baseId, tab, active, children, className = "", keepMounted = false }: { baseId: string; tab: T; active: T; children: ReactNode; className?: string; keepMounted?: boolean }) {
+  const selected = tab === active;
+  if (!selected && !keepMounted) return null;
+  return <div
+    role="tabpanel"
+    id={`${baseId}-panel-${tab}`}
+    aria-labelledby={`${baseId}-tab-${tab}`}
+    tabIndex={0}
+    hidden={!selected}
+    className={className}
+  >
+    {children}
+  </div>;
 }

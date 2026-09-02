@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import type { DeckFormat } from "@gatcg/shared";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
+import PageLayout from "../../components/layout/PageLayout";
 import { useCardsByNames } from "../events/useCardsByNames";
 import HorizontalBarChart, { type HorizontalBarChartBar } from "../../components/HorizontalBarChart";
 import RangeBar from "../../components/RangeBar";
@@ -115,7 +116,7 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
   const loading = !cardInclusion && !popularity && !priceDistribution && !archetypes;
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <PageHeader
         title={isPantheon ? "Pantheon Decks" : "Community Decks"}
         description={
@@ -257,6 +258,6 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
           </div>
         </div>
       )}
-    </div>
+    </PageLayout>
   );
 }

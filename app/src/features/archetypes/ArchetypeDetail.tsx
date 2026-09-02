@@ -19,6 +19,7 @@ import { buildCompareLink } from "../compare/deepLink";
 import { useAllDecodedDecks } from "../../lib/decodedDecks";
 import { useArchetypeVariants, type ArchetypeVariant } from "./useArchetypeVariants";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
+import PageLayout from "../../components/layout/PageLayout";
 
 const ROLE_FILTERS: { key: CardImpactRole | "all"; label: string }[] = [
   { key: "all", label: "All" },
@@ -199,7 +200,7 @@ export default function ArchetypeDetail() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <Link to="/archetypes" className="text-sm text-ctp-blue hover:underline">
         &larr; All archetypes
       </Link>
@@ -685,6 +686,6 @@ export default function ArchetypeDetail() {
           )}
         </>
       )}
-    </div>
+    </PageLayout>
   );
 }

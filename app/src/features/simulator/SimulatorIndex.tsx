@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useSimulatorSummaryData } from "./data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import PageLayout from "../../components/layout/PageLayout";
 
 function formatPercent(rate: number | null): string {
   return rate === null ? "—" : `${(rate * 100).toFixed(0)}%`;
@@ -21,7 +22,7 @@ export default function SimulatorIndex() {
   const turnStats = useMemo(() => [...(data?.turnStats ?? [])].sort((a, b) => a.turn - b.turn), [data]);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <h1 className="text-2xl font-bold text-ctp-blue">Simulator Data</h1>
       <p className="mt-1 text-sm text-ctp-subtext1">
         Anonymous match telemetry submitted by{" "}
@@ -263,6 +264,6 @@ export default function SimulatorIndex() {
           </div>
         </div>
       )}
-    </div>
+    </PageLayout>
   );
 }

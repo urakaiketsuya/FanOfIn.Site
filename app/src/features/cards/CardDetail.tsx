@@ -38,6 +38,7 @@ import { formatUsd } from "../../lib/format";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import Tabs from "../../components/ui/Tabs";
+import PageLayout from "../../components/layout/PageLayout";
 
 const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
@@ -347,7 +348,7 @@ export default function CardDetail() {
   const priceSeries = priceHistoryPoints ? selectPriceSeries(priceHistoryPoints) : null;
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
+    <PageLayout width="standard">
       <Link to="/cards" className="text-sm text-ctp-blue hover:underline">
         &larr; Back to Cards
       </Link>
@@ -959,6 +960,6 @@ export default function CardDetail() {
           )}
         </div>
       )}
-    </div>
+    </PageLayout>
   );
 }

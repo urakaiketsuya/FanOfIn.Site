@@ -11,6 +11,7 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import { useTabParam } from "../../lib/useTabParam";
 import { isProvisionalRating, PROVISIONAL_MATCH_THRESHOLD } from "../../lib/eloProvisional";
+import PageLayout from "../../components/layout/PageLayout";
 
 const PAGE_SIZE = 50;
 
@@ -52,7 +53,7 @@ export default function PlayersIndex() {
   }, [playerDecksData]);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <PageHeader
         title="Players"
         description={
@@ -79,7 +80,7 @@ export default function PlayersIndex() {
       </div>
 
       {tab === "players" ? <PlayerRankingView topChampionById={topChampionById} /> : <JudgesView topChampionById={topChampionById} />}
-    </div>
+    </PageLayout>
   );
 }
 

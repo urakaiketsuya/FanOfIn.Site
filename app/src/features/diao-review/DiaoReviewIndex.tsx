@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import PageHeader from "../../components/ui/PageHeader";
+import PageLayout from "../../components/layout/PageLayout";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import {
   useDiaoMigrationAudit,
@@ -160,7 +161,7 @@ export default function DiaoReviewIndex() {
   const examples = exampleView === "changes" ? data.representativeDecks.largestCompositeChanges : data.representativeDecks.correctedSignalDetection;
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
+    <PageLayout width="wide">
       <PageHeader
         eyebrow={`Model migration v${data.migration.from} → v${data.migration.to}`}
         title="DIAO Score Review"
@@ -246,6 +247,6 @@ export default function DiaoReviewIndex() {
         <h2 className="font-semibold">Review checklist</h2>
         <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ctp-subtext1"><li>Confirm the evidence change matches what the card text actually does.</li><li>Check that heavily moved Champions and archetypes still compare plausibly to neighboring strategies.</li><li>Compare the aggression pillar with the direct-damage forecast without expecting them to match: aggression includes pressure beyond burn.</li><li>Treat broad upward movement as a calibration decision, not automatic proof that v2 is more accurate.</li></ul>
       </section>
-    </div>
+    </PageLayout>
   );
 }

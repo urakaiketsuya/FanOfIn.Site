@@ -4,6 +4,7 @@ import { useCardCatalog } from "../cards/useCardCatalog";
 import { useSyncProgress } from "../../lib/sync/SyncProvider";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PackOpenerWidget from "./PackOpenerWidget";
+import PageLayout from "../../components/layout/PageLayout";
 
 export default function PackOpener() {
   const { prefix = "" } = useParams<{ prefix: string }>();
@@ -27,41 +28,41 @@ export default function PackOpener() {
   if (cards.length === 0) {
     if (phase === "error") {
       return (
-        <div className="mx-auto max-w-3xl px-4 py-10">
+        <PageLayout className="py-10">
           <p className="text-ctp-red">Couldn't load the card catalog.</p>
-        </div>
+        </PageLayout>
       );
     }
     if (phase === "done") {
       return (
-        <div className="mx-auto max-w-3xl px-4 py-10">
+        <PageLayout className="py-10">
           <p className="text-ctp-subtext1">No cards are available yet.</p>
           <Link to="/cards?tab=sets" className="mt-2 inline-block text-ctp-blue hover:underline">
             &larr; Back to Sets
           </Link>
-        </div>
+        </PageLayout>
       );
     }
     return (
-      <div className="mx-auto max-w-3xl px-4 py-10">
+      <PageLayout className="py-10">
         <p className="text-ctp-subtext1">Loading…</p>
-      </div>
+      </PageLayout>
     );
   }
 
   if (!setInfo) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-10">
+      <PageLayout className="py-10">
         <p className="text-ctp-red">Set "{prefix}" not found.</p>
         <Link to="/cards?tab=sets" className="mt-2 inline-block text-ctp-blue hover:underline">
           &larr; Back to Sets
         </Link>
-      </div>
+      </PageLayout>
     );
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <Link to="/cards?tab=sets" className="text-sm text-ctp-blue hover:underline">
         &larr; Back to Sets
       </Link>
@@ -79,6 +80,6 @@ export default function PackOpener() {
         Ultra Rare per 24-pack box) — Grand Archive doesn't publish an official per-pack rarity table, so this
         isn't exact retail odds.
       </p>
-    </div>
+    </PageLayout>
   );
 }

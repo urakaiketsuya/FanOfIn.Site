@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import PageHeader from "../../components/ui/PageHeader";
+import PageLayout from "../../components/layout/PageLayout";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { CHARACTER_CUTOUTS } from "./characterArt";
@@ -139,7 +140,7 @@ export default function MediaKitIndex() {
   const sorted = useMemo(() => [...PRODUCTS].sort((a, b) => b.releaseDate.localeCompare(a.releaseDate)), []);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
+    <PageLayout width="wide">
       <PageHeader
         title="Media Kit"
         description="Every official Grand Archive TCG media-kit asset used on this site, grouped by product. Click any thumbnail to enlarge."
@@ -156,6 +157,6 @@ export default function MediaKitIndex() {
       </div>
       <p className="mt-8 text-xs text-ctp-subtext0">{PRODUCTS_ATTRIBUTION}</p>
       {selected && <Lightbox thumb={selected} onClose={() => setSelected(null)} />}
-    </div>
+    </PageLayout>
   );
 }

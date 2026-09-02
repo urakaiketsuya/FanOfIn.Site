@@ -6,6 +6,7 @@ import { buildCompareLink } from "../compare/deepLink";
 import PlayerLink from "../players/PlayerLink";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import PageLayout from "../../components/layout/PageLayout";
 
 const PAGE_SIZE = 50;
 
@@ -54,7 +55,7 @@ export default function AchievementDetail() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <Link to="/achievements" className="text-sm text-ctp-blue hover:underline">
         &larr; All achievements
       </Link>
@@ -116,6 +117,6 @@ export default function AchievementDetail() {
           <LoadMore remaining={unlocks.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
         </>
       )}
-    </div>
+    </PageLayout>
   );
 }

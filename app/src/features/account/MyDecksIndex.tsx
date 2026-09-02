@@ -10,6 +10,7 @@ import SavedDeckCard from "./SavedDeckCard";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { findDeckChampionName } from "../../lib/ttsExport";
 import { PublicDeckCard } from "./PublicDeckCard";
+import PageLayout from "../../components/layout/PageLayout";
 import ImportDecksPanel from "./ImportDecksPanel";
 
 type AddMode = "choose" | "import" | "paste" | null;
@@ -46,7 +47,7 @@ export default function MyDecksIndex() {
   if (user === undefined) return <div className="mx-auto max-w-4xl px-4 py-10 text-ctp-subtext1">Loading your account…</div>;
   if (!user) return <div className="mx-auto max-w-xl px-4 py-12"><h1 className="text-2xl font-bold text-ctp-blue">My Decks</h1><p className="mt-2 text-ctp-subtext1">Sign in to save decklists and keep imported tournament and community builds together.</p><div className="mt-6"><GoogleSignInButton onCredential={(credential, nonce) => void run(async () => { const session = await accountApi.googleSignIn(credential, nonce); setUser(session.user); await refreshDecks(); })} /></div>{error && <p className="mt-4 text-sm text-ctp-red">{error}</p>}</div>;
 
-  return <div className="mx-auto max-w-5xl px-4 py-8">
+  return <PageLayout width="wide">
     <div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-3xl font-bold text-ctp-blue">My Decks</h1><p className="mt-2 text-sm text-ctp-subtext1">Your editable builds and saved community decks in one library.</p><p className="mt-1 text-xs text-ctp-subtext0">{decks.length} editable build{decks.length === 1 ? "" : "s"} · {bookmarks.length} saved deck{bookmarks.length === 1 ? "" : "s"}</p></div><button type="button" aria-expanded={addMode !== null} onClick={() => setAddMode((current) => current ? null : "choose")} className="rounded-md bg-ctp-blue px-3 py-2 text-sm text-ctp-base">{addMode ? "Close" : "Add deck"}</button></div>
     {error && <p className="mt-4 rounded-md border border-ctp-red/50 bg-ctp-red/10 p-3 text-sm text-ctp-red">{error}</p>}
     {notice && <p className="mt-4 rounded-md border border-ctp-green/50 bg-ctp-green/10 p-3 text-sm text-ctp-green">{notice}</p>}
@@ -61,5 +62,5 @@ export default function MyDecksIndex() {
 
     <section className="mt-10"><h2 className="text-lg font-semibold">My editable decks</h2>{decks.length === 0 ? <p className="mt-3 rounded-lg border border-dashed border-ctp-surface1 p-6 text-center text-sm text-ctp-subtext1">Import or paste a decklist to start your library.</p> : <div className="mt-3 grid gap-4 md:grid-cols-2 lg:grid-cols-3">{decks.map((deck) => <SavedDeckCard key={deck.id} deck={deck} onRename={() => { const next = window.prompt("Deck name", deck.title); if (next?.trim()) void run(async () => { await accountApi.renameDeck(deck.id, next); await refreshDecks(); }); }} onDelete={() => { if (window.confirm(`Delete ${deck.title}?`)) void run(async () => { await accountApi.deleteDeck(deck.id); await refreshDecks(); }); }} />)}</div>}</section>
     <section className="mt-8"><h2 className="text-lg font-semibold">Saved community decks</h2><p className="mt-1 text-sm text-ctp-subtext1">Bookmarks keep the exact version you saved, even when its author publishes a newer one.</p>{bookmarks.length === 0 ? <p className="mt-3 rounded-lg border border-dashed border-ctp-surface1 p-6 text-center text-sm text-ctp-subtext1">Decks you save from public pages will appear here.</p> : <div className="mt-3 grid gap-3 md:grid-cols-2">{bookmarks.map((deck) => <PublicDeckCard key={deck.publicSlug} deck={deck} />)}</div>}</section>
-  </div>;
+  </PageLayout>;
 }

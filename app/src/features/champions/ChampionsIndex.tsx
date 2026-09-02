@@ -11,6 +11,8 @@ import ChampionMetaMap from "./ChampionMetaMap";
 import PageHeader from "../../components/ui/PageHeader";
 import DataTable from "../../components/ui/DataTable";
 import ElementIcon from "../../components/ElementIcon";
+import PageLayout from "../../components/layout/PageLayout";
+import { InlineState } from "../../components/ui/ContentState";
 
 const TREND_LABEL: Record<ChampionTrendDirection, string> = {
   rising: "▲ Rising",
@@ -49,10 +51,10 @@ export default function ChampionsIndex() {
   const latestSeasonName = trendsData?.seasonOrder[trendsData.seasonOrder.length - 1];
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <PageHeader title="Champions" description="Compare current metagame position, tournament performance, season movement, and the builds defining each Champion." />
 
-      {!data && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
+      {!data && <InlineState className="mt-6">Loading…</InlineState>}
 
       {archetypes && trendsData && <ChampionMetaMap champions={archetypes} trends={trendsData.champions} />}
 
@@ -180,6 +182,6 @@ export default function ChampionsIndex() {
           </div>
         </div>
       )}
-    </div>
+    </PageLayout>
   );
 }

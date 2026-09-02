@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import PageHeader from "../../components/ui/PageHeader";
+import PageLayout from "../../components/layout/PageLayout";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useFeaturedSets } from "../sets/useFeaturedSets";
 import { isBoosterSet } from "../packs/boosterSets";
@@ -74,7 +75,7 @@ export default function ProductsIndex() {
   }, []);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
+    <PageLayout width="wide">
       <PageHeader
         title="Products"
         description="Every Grand Archive TCG set release, official art, and a link into that set's cards or a live pack simulation."
@@ -85,6 +86,6 @@ export default function ProductsIndex() {
         ))}
       </div>
       <p className="mt-8 text-xs text-ctp-subtext0">{PRODUCTS_ATTRIBUTION}</p>
-    </div>
+    </PageLayout>
   );
 }

@@ -10,6 +10,7 @@ import CardHoverPreview from "../../components/CardHoverPreview";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
+import PageLayout from "../../components/layout/PageLayout";
 
 const PAGE_SIZE = 50;
 
@@ -83,7 +84,7 @@ export default function TeamsIndex() {
   );
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <PageHeader
         title="Teams"
         description={`Team registrations from 3v3 team-format events. Each row is one team at one event — team names aren't a reliable identity (the same name can belong to unrelated teams, and generic names like "Team 1" repeat across unrelated local events), so this isn't deduplicated into one profile per team.`}
@@ -194,6 +195,6 @@ export default function TeamsIndex() {
       </div>
 
       <LoadMore remaining={rows.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
-    </div>
+    </PageLayout>
   );
 }

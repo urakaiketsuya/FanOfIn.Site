@@ -20,6 +20,7 @@ import { useTabParam } from "../../lib/useTabParam";
 import { encodeCustomDecks, decodeCustomDecks } from "../../lib/compareShareLink";
 import type { OmnidexDecklist } from "@gatcg/shared";
 import type { ComparedDeck } from "./types";
+import PageLayout from "../../components/layout/PageLayout";
 
 type CompareType = "decks" | "cards";
 const COMPARE_TYPE_LABELS: Record<CompareType, string> = { decks: "Decks", cards: "Cards" };
@@ -197,7 +198,7 @@ export default function CompareIndex() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8">
+    <PageLayout width="full">
       <PageHeader
         title="Compare"
         description={
@@ -388,6 +389,6 @@ export default function CompareIndex() {
           )}
         </div>
       )}
-    </div>
+    </PageLayout>
   );
 }

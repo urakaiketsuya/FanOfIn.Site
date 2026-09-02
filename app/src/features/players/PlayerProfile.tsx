@@ -17,6 +17,7 @@ import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { formatCountry } from "../../lib/format";
 import { isProvisionalRating } from "../../lib/eloProvisional";
+import PageLayout from "../../components/layout/PageLayout";
 
 type PlayerTab = "overview" | "events" | "judged";
 const PAGE_SIZE = 50;
@@ -170,7 +171,7 @@ export default function PlayerProfile() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <Link to="/players" className="text-sm text-ctp-blue hover:underline">
         &larr; All players
       </Link>
@@ -452,6 +453,6 @@ export default function PlayerProfile() {
           />
         </div>
       )}
-    </div>
+    </PageLayout>
   );
 }

@@ -18,6 +18,7 @@ import PageHeader from "../../components/ui/PageHeader";
 import CardImage from "../../components/CardImage";
 import ElementIcon from "../../components/ElementIcon";
 import { usePantheonDeckIndex } from "../community/data";
+import PageLayout from "../../components/layout/PageLayout";
 
 type ViewMode = "builds" | "sightings" | "pantheon";
 const VIEW_TABS: readonly ViewMode[] = ["builds", "sightings", "pantheon"];
@@ -69,7 +70,7 @@ export default function BrowseDecksIndex() {
   const [championName, setChampionName] = useState<string | null>(searchParams.get("champion"));
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <PageHeader
         title="Browse Decks"
         description={
@@ -90,7 +91,7 @@ export default function BrowseDecksIndex() {
       ) : (
         <PantheonView />
       )}
-    </div>
+    </PageLayout>
   );
 }
 

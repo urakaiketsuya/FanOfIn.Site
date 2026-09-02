@@ -6,6 +6,7 @@ import EventRow from "./EventRow";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
+import PageLayout from "../../components/layout/PageLayout";
 
 const MIN_PLAYERS_OPTIONS = [0, 8, 16, 32];
 const PAGE_SIZE = 50;
@@ -73,7 +74,7 @@ export default function TournamentsIndex() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <PageLayout>
       <PageHeader
         title="Tournaments"
         description="Events ingested by the tournament data pipeline. Only a subset of Omnidex events are deep-fetched — most are small weekly leagues below the pipeline's size threshold."
@@ -218,6 +219,6 @@ export default function TournamentsIndex() {
       </div>
 
       <LoadMore remaining={events.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
-    </div>
+    </PageLayout>
   );
 }
