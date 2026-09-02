@@ -80,6 +80,7 @@ const PublicDeckDetail = lazy(() => import("./features/account/PublicDeckDetail"
 const SharedDecksIndex = lazy(() => import("./features/account/SharedDecksIndex"));
 const PublicUserProfile = lazy(() => import("./features/account/PublicUserProfile"));
 const CollectionIndex = lazy(() => import("./features/collection/CollectionIndex"));
+const SettingsIndex = lazy(() => import("./features/settings/SettingsIndex"));
 
 function RouteFallback() {
   useEffect(() => {
@@ -145,6 +146,7 @@ export default function AppRoutes() {
         <Route path="/my-decks" element={<MyDecksIndex />} />
         <Route path="/collection" element={<CollectionIndex />} />
         <Route path="/account" element={<AccountIndex />} />
+        <Route path="/settings" element={<SettingsIndex />} />
         <Route path="/my-decks/:deckId" element={<MyDeckDetail />} />
         <Route path="/decklists/:publicSlug" element={<PublicDeckDetail />} />
         <Route path="/shared-decks" element={<SharedDecksIndex />} />

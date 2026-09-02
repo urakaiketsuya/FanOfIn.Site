@@ -15,7 +15,10 @@ import { buildClarentPlaytestUrl } from "../../lib/clarentPlaytest";
 import { copyDecklistAndOpen, deckBuilderDestinations } from "../../lib/deckBuilderDestinations";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { extractProducedTokens } from "../../lib/cardIntent";
-import { useDecklistEvidencePrefs } from "../../lib/decklistEvidencePrefs";
+import { useDecklistDisplayPrefs } from "../../lib/decklistDisplayPrefs";
+import { computeDeckRating } from "../../lib/deckIdentity";
+import DiaoScoreCard from "../../components/DiaoScoreCard";
+import DecklistWinRate from "./DecklistWinRate";
 
 type DeckDisplayMode = "compact" | "visual" | "detailed";
 
@@ -122,12 +125,12 @@ export default function DecklistView({
   extraSections = [],
   trailingSections = [],
   defaultDisplayMode = "detailed",
-  showMetaGapsToggle = false,
+  showDeckStats = true,
 }: {
   decklist: OmnidexDecklist;
   cardsByName: Map<string, Card>;
   showThumbnails?: boolean;
-  /** `${eventId}:${player}` — when present, resolves this decklist's named-build cluster for `DeckTuningEvidence`'s "Cards that might help" box. Omit for a pasted/custom decklist with no real deckId — `DeckTuningEvidence` still falls back to Champion-scoped evidence unless `championFallback` is false. */
+  /** `${eventId}:${player}` — when present, resolves this decklist's named-build cluster for `DeckTuningEvidence`'s "Cards that might help" box, and (with the "Win rate" display preference on) this specific sighting's own match record. Omit for a pasted/custom decklist with no real deckId — `DeckTuningEvidence` still falls back to Champion-scoped evidence unless `championFallback` is false, and the win-rate section simply doesn't render. */
   deckId?: string;
   /** Suppresses `DeckTuningEvidence` entirely when "PANTHEON" — the tournament pipeline that evidence is built from doesn't track that format. Omit for tournament decklists, which are always Standard. */
   format?: DeckFormat;
@@ -136,12 +139,12 @@ export default function DecklistView({
   extraSections?: { title: string; lines: OmnidexDecklistCardLine[] }[];
   trailingSections?: { title: string; lines: OmnidexDecklistCardLine[] }[];
   defaultDisplayMode?: DeckDisplayMode;
-  /** Set true only on pages that also render `DeckDecaySignals` as a sibling (currently `DeckDetail.tsx` and `UserDecklistPanel.tsx`) — shows the "meta gap trends" checkbox in the evidence-settings control so the shared preference has a visible toggle there. Doesn't render `DeckDecaySignals` itself; the caller still does that, gated on the same `useDecklistEvidencePrefs().metaGaps` flag. */
-  showMetaGapsToggle?: boolean;
+  /** Set false on a page that already renders its own DIAO score / win rate (currently only `DeckDetail.tsx`, which shows a cluster-level average win rate rather than this one sighting's record) to avoid a redundant, differently-scoped second copy. */
+  showDeckStats?: boolean;
 }) {
   const priceByName = useDeckPriceByName();
   const catalog = useCardCatalog();
-  const evidencePrefs = useDecklistEvidencePrefs();
+  const displayPrefs = useDecklistDisplayPrefs();
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
   const [displayMode, setDisplayMode] = useState<DeckDisplayMode>(() => defaultDisplayMode === "detailed" && typeof window !== "undefined" && window.matchMedia?.("(max-width: 639px)").matches ? "compact" : defaultDisplayMode);
 
@@ -177,6 +180,12 @@ export default function DecklistView({
       ),
     [decklist, cardsByName],
   );
+  const rating = useMemo(() => {
+    if (!showDeckStats || !displayPrefs.diaoScore) return null;
+    const championName = findDeckChampionName(decklist.material, cardsByName);
+    const lines = [...decklist.main, ...decklist.material].map((line) => ({ name: line.card, quantity: line.quantity }));
+    return computeDeckRating(lines, cardsByName, championName, identity.classes);
+  }, [showDeckStats, displayPrefs.diaoScore, decklist, cardsByName, identity.classes]);
   const referencedTokens = useMemo(() => {
     const catalogBySlug = new Map(catalog.map((card) => [card.slug, card]));
     const tokenByName = new Map(catalog.filter((card) => card.types.includes("TOKEN")).map((card) => [card.name.toLocaleLowerCase(), card]));
@@ -284,36 +293,15 @@ export default function DecklistView({
         </div>
       )}
       <div className="mb-4 flex flex-wrap items-center justify-end gap-2">
-        {format !== "PANTHEON" && (
-          <details className="relative">
-            <summary className="cursor-pointer list-none rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text">Evidence settings</summary>
-            <div className="absolute right-0 z-30 mt-2 grid w-64 gap-2 rounded-lg border border-ctp-surface1 bg-ctp-base p-3 shadow-xl">
-              <label className="flex items-start gap-2 text-xs text-ctp-subtext1">
-                <input
-                  type="checkbox"
-                  checked={evidencePrefs.tuningEvidence}
-                  onChange={(e) => evidencePrefs.setTuningEvidence(e.target.checked)}
-                  className="mt-0.5"
-                />
-                <span>Tuning suggestions (might-help, worth-reviewing, quantity advice)</span>
-              </label>
-              {showMetaGapsToggle && (
-                <label className="flex items-start gap-2 text-xs text-ctp-subtext1">
-                  <input
-                    type="checkbox"
-                    checked={evidencePrefs.metaGaps}
-                    onChange={(e) => evidencePrefs.setMetaGaps(e.target.checked)}
-                    className="mt-0.5"
-                  />
-                  <span>Meta gap trends (Champion-wide adoption decay)</span>
-                </label>
-              )}
-              <p className="text-[10px] text-ctp-subtext0">Saved to this browser. Both are drawn from tournament data only.</p>
-            </div>
-          </details>
-        )}
+        <Link to="/settings" className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text">Display settings</Link>
         <div className="flex gap-1" role="group" aria-label="Decklist display">{(["compact", "visual", "detailed"] as const).map((mode) => <button key={mode} type="button" onClick={() => setDisplayMode(mode)} aria-pressed={displayMode === mode} className={`rounded-md border px-2 py-1 text-xs capitalize ${displayMode === mode ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`}>{mode}</button>)}</div>
       </div>
+      {showDeckStats && (rating || (displayPrefs.winRate && deckId)) && (
+        <div className="mb-4 space-y-3">
+          {displayPrefs.winRate && deckId && <DecklistWinRate deckId={deckId} />}
+          {rating && <DiaoScoreCard rating={rating} />}
+        </div>
+      )}
       {displayMode === "compact" && <div className="space-y-5">{[...extraSections, { title: "Main", lines: decklist.main }, { title: "Material", lines: decklist.material }, { title: "Sideboard", lines: decklist.sideboard }, ...displayTrailingSections].map((section) => <CompactDeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} />)}</div>}
       {displayMode === "visual" && <div className="space-y-6">{[...extraSections, { title: "Main", lines: decklist.main }, { title: "Material", lines: decklist.material }, { title: "Sideboard", lines: decklist.sideboard }, ...displayTrailingSections].map((section) => <VisualDeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} />)}</div>}
       {displayMode === "detailed" && <div className="grid gap-4 sm:grid-cols-2">
@@ -336,7 +324,7 @@ export default function DecklistView({
         {displayTrailingSections.map((section) => <DeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} />)}
       </div>}
 
-      {evidencePrefs.tuningEvidence && (
+      {displayPrefs.tuningEvidence && (
         <DeckTuningEvidence decklist={decklist} cardsByName={displayCardsByName} deckId={deckId} format={format} championFallback={championFallback} />
       )}
     </div>
