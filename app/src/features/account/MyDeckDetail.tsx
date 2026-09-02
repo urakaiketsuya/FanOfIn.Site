@@ -35,6 +35,7 @@ export default function MyDeckDetail() {
   const [notice, setNotice] = useState<string | null>(null);
   const [tab, setTab] = useTabParam<DeckTab>("tab", DECK_TABS.map(({ key }) => key), "decklist");
   const [cardInput, setCardInput] = useState("");
+  const [addDestination, setAddDestination] = useState<"automatic" | "sideboard" | "maybeboard">("automatic");
   const cardCatalog = useCardCatalog();
   const cardNames = useMemo(() => Array.from(new Set(cardCatalog.map((card) => card.name))).sort(), [cardCatalog]);
   const cardNameSet = useMemo(() => new Set(cardNames), [cardNames]);
@@ -71,18 +72,38 @@ export default function MyDeckDetail() {
     });
   }
 
+  // Mirrors the Guided Deck Builder's "Destination: Automatic/Sideboard/Maybeboard" convention
+  // (DeckBuilderIndex.tsx's own addCard) so the same choice means the same thing in both editors.
+  // Maybeboard has its own persistence path (updateDeckMetadata), independent of decklist version
+  // history, matching saveMaybeboard()/addMaybeboardToEditor() below.
   function addCard(name: string) {
     if (!cardNameSet.has(name)) return;
     const card = cardCatalog.find((candidate) => candidate.name === name);
     const isMaterial = card ? card.types.includes("CHAMPION") || card.types.includes("REGALIA") : false;
-    const section = isMaterial ? "material" : "main";
     const defaultQty = isMaterial ? 1 : 4;
+    if (addDestination === "maybeboard") {
+      const maybeboard = parseDecklist(`Main\n${maybeboardText}`).decklist.main;
+      const existing = maybeboard.find((line) => line.card === name);
+      if (existing) existing.quantity += defaultQty;
+      else maybeboard.push({ card: name, quantity: defaultQty });
+      setMaybeboardText(maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n"));
+      setCardInput("");
+      setAddDestination("automatic");
+      void run(async () => {
+        await accountApi.updateDeckMetadata(deckId, { maybeboard });
+        setDeck((current) => (current ? { ...current, maybeboard } : current));
+        setNotice(`${name} added to the maybeboard.`);
+      });
+      return;
+    }
+    const section = addDestination === "sideboard" ? "sideboard" : isMaterial ? "material" : "main";
     const decklist = parseDecklist(deckText).decklist;
     const existing = decklist[section].find((line) => line.card === name);
     if (existing) existing.quantity += defaultQty;
     else decklist[section].push({ card: name, quantity: defaultQty });
     setDeckText(buildDecklistText(decklist));
     setCardInput("");
+    setAddDestination("automatic");
   }
 
   function addMaybeboardToEditor() {
@@ -150,6 +171,11 @@ export default function MyDeckDetail() {
         <div className="flex flex-wrap items-center gap-2">
           <input type="text" list="my-deck-card-options" value={cardInput} onChange={(event) => setCardInput(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); if (cardNameSet.has(cardInput)) addCard(cardInput); } }} placeholder="Add a card by name…" aria-label="Add a card by name" className="min-w-0 flex-1 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm" />
           <datalist id="my-deck-card-options">{cardNames.map((name) => <option key={name} value={name} />)}</datalist>
+          <div role="group" aria-label="Card destination" className="inline-flex rounded-md border border-ctp-surface1 bg-ctp-base p-0.5">
+            <button type="button" aria-pressed={addDestination === "automatic"} onClick={() => setAddDestination("automatic")} className={`rounded px-2 py-1.5 text-xs ${addDestination === "automatic" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>Automatic</button>
+            <button type="button" aria-pressed={addDestination === "sideboard"} onClick={() => setAddDestination("sideboard")} className={`rounded px-2 py-1.5 text-xs ${addDestination === "sideboard" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>Sideboard</button>
+            <button type="button" aria-pressed={addDestination === "maybeboard"} onClick={() => setAddDestination("maybeboard")} className={`rounded px-2 py-1.5 text-xs ${addDestination === "maybeboard" ? "bg-ctp-yellow text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>Maybeboard</button>
+          </div>
           <button type="button" disabled={!cardNameSet.has(cardInput)} onClick={() => addCard(cardInput)} className="rounded-md border border-ctp-green/60 px-3 py-2 text-sm text-ctp-green hover:bg-ctp-green/10 disabled:cursor-not-allowed disabled:opacity-50">Add card</button>
         </div>
         <form className="mt-3" onSubmit={(event) => { event.preventDefault(); void run(async () => { if (editedChampionName !== deck.championName && !window.confirm(`Change Champion from ${deck.championName ?? "none"} to ${editedChampionName ?? "none"}?`)) return; await accountApi.createDeckVersion(deck.id, { decklist: editedDecklist, format: deck.format, championName: editedChampionName, changeNote }); await refresh(); setChangeNote(""); setEditing(false); }); }}>
