@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import type { Card, CardEdition } from "@gatcg/shared";
 import CardImage from "../../components/CardImage";
+import { InlineState } from "../../components/ui/ContentState";
 
 interface CardGridProps {
   cards: Card[];
@@ -10,7 +11,7 @@ interface CardGridProps {
 
 export default function CardGrid({ cards, pickEdition }: CardGridProps) {
   if (cards.length === 0) {
-    return <p className="mt-8 text-ctp-subtext0">No cards match these filters.</p>;
+    return <InlineState className="mt-8">No cards match these filters.</InlineState>;
   }
 
   return (

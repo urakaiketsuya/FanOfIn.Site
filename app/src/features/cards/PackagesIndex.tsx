@@ -10,6 +10,7 @@ import { DECK_PACKAGE_CANDIDATES } from "../deckbuilder/packageCandidates";
 import { useMinedPackageCandidates } from "../deckbuilder/useMinedPackageCandidates";
 import { useCardCatalog } from "./useCardCatalog";
 import PageLayout from "../../components/layout/PageLayout";
+import { InlineState } from "../../components/ui/ContentState";
 
 export default function PackagesIndex() {
   useDocumentTitle("Card Packages", "Browse explicit card packages used by Fan of Insight deck-review guardrails.");
@@ -118,7 +119,7 @@ export default function PackagesIndex() {
         </section>
       )}
 
-      {visiblePackages.length === 0 && <p className="mt-6 text-sm text-ctp-subtext1">No packages match that search.</p>}
+      {visiblePackages.length === 0 && <InlineState className="mt-6 text-sm">No packages match that search.</InlineState>}
 
       <div className="mt-6 space-y-5">
         {visiblePackages.map((entry) => {
@@ -186,7 +187,7 @@ export default function PackagesIndex() {
           </div>
           <span className="rounded-full bg-ctp-peach/10 px-2.5 py-1 text-xs font-semibold text-ctp-peach">{visibleCandidates.length} candidates</span>
         </div>
-        {visibleCandidates.length === 0 && <p className="text-sm text-ctp-subtext1">No review candidates match that search.</p>}
+        {visibleCandidates.length === 0 && <InlineState className="text-sm">No review candidates match that search.</InlineState>}
         <div className="space-y-4">
           {visibleCandidates.map((entry) => (
             <article id={entry.id} key={entry.id} className="scroll-mt-20 rounded-xl border border-ctp-peach/30 bg-ctp-mantle p-5">
@@ -251,8 +252,8 @@ export default function PackagesIndex() {
             </button>
           )}
         </div>
-        {!minedData && <p className="text-sm text-ctp-subtext1">Loading the latest package audit…</p>}
-        {minedData && visibleMinedCandidates.length === 0 && visibleMinedFamilies.length === 0 && <p className="text-sm text-ctp-subtext1">No newly mined relationships match that search.</p>}
+        {!minedData && <InlineState className="text-sm">Loading the latest package audit…</InlineState>}
+        {minedData && visibleMinedCandidates.length === 0 && visibleMinedFamilies.length === 0 && <InlineState className="text-sm">No newly mined relationships match that search.</InlineState>}
         {visibleMinedFamilies.length > 0 && (
           <div className="mb-7">
             <div className="mb-3 flex flex-wrap items-end justify-between gap-2">

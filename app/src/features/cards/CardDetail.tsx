@@ -39,6 +39,9 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import Tabs from "../../components/ui/Tabs";
 import PageLayout from "../../components/layout/PageLayout";
+import Panel from "../../components/ui/Panel";
+import Section from "../../components/ui/Section";
+import { InlineState, EmptyState } from "../../components/ui/ContentState";
 
 const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
@@ -325,20 +328,21 @@ export default function CardDetail() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-4xl px-4 py-10">
-        <p className="text-ctp-subtext1">Loading…</p>
-      </div>
+      <PageLayout width="standard">
+        <InlineState className="mt-10">Loading…</InlineState>
+      </PageLayout>
     );
   }
 
   if (!card) {
     return (
-      <div className="mx-auto max-w-4xl px-4 py-10">
-        <p className="text-ctp-red">Card "{slug}" not found.</p>
-        <Link to="/cards" className="mt-2 inline-block text-ctp-blue hover:underline">
-          Back to Cards
-        </Link>
-      </div>
+      <PageLayout width="standard">
+        <EmptyState
+          title="Card not found"
+          description={`Card "${slug}" not found.`}
+          action={<Link to="/cards" className="text-ctp-blue hover:underline">Back to Cards</Link>}
+        />
+      </PageLayout>
     );
   }
 
@@ -502,8 +506,7 @@ export default function CardDetail() {
       {tab === "info" && (
         <>
           {cardStat && (
-            <div className="mt-4">
-              <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Tournament usage</h2>
+            <Section className="mt-4" heading="dense" title="Tournament usage">
               <div className="mt-1 flex flex-wrap gap-4 text-sm text-ctp-subtext1">
                 <span>
                   {cardStat.deckCount} decks across {cardStat.eventCount} events
@@ -520,13 +523,11 @@ export default function CardDetail() {
                   in community brews, not a performance figure like the stats above.
                 </p>
               )}
-            </div>
+            </Section>
           )}
 
           {quantityBuckets.length >= 2 && (
-            <div className="mt-4">
-              <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Win rate by quantity</h2>
-              <p className="mt-1 text-xs text-ctp-subtext0">Does running more (or fewer) copies actually change the outcome?</p>
+            <Section className="mt-4" heading="dense" title="Win rate by quantity" description="Does running more (or fewer) copies actually change the outcome?">
               <div className="mt-1 flex flex-wrap gap-4 text-sm text-ctp-subtext1">
                 {quantityBuckets.map((q) => (
                   <span key={q.quantity}>
@@ -535,23 +536,21 @@ export default function CardDetail() {
                   </span>
                 ))}
               </div>
-            </div>
+            </Section>
           )}
 
           {edition?.illustrator && (
-            <div className="mt-4">
-              <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Illustrator</h2>
+            <Section className="mt-4" heading="dense" title="Illustrator">
               <Link
                 to={`/cards?artist=${encodeURIComponent(edition.illustrator)}`}
                 className="mt-1 inline-block text-sm text-ctp-blue hover:underline"
               >
                 {edition.illustrator}
               </Link>
-            </div>
+            </Section>
           )}
 
-          <div className="mt-4">
-            <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Legality</h2>
+          <Section className="mt-4" heading="dense" title="Legality">
             <div className="mt-1 flex flex-wrap gap-2 text-sm">
               {(["STANDARD", "PANTHEON"] as const).map((format) => {
                 // The API only publishes an entry for a card once it's been individually
@@ -578,13 +577,12 @@ export default function CardDetail() {
                 );
               })}
             </div>
-          </div>
+          </Section>
 
           {(card.references.length > 0 || card.referenced_by.length > 0) && (
             <div className="mt-4 space-y-2">
               {card.references.length > 0 && (
-                <div>
-                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">References</h2>
+                <Section heading="dense" title="References">
                   <div className="mt-1 flex flex-wrap gap-2 text-sm">
                     {card.references.map((ref) => (
                       <Link key={ref.slug} to={`/cards/${ref.slug}`} className="text-ctp-blue hover:underline">
@@ -592,11 +590,10 @@ export default function CardDetail() {
                       </Link>
                     ))}
                   </div>
-                </div>
+                </Section>
               )}
               {card.referenced_by.length > 0 && (
-                <div>
-                  <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Referenced by</h2>
+                <Section heading="dense" title="Referenced by">
                   <div className="mt-1 flex flex-wrap gap-2 text-sm">
                     {card.referenced_by.map((ref) => (
                       <Link key={ref.slug} to={`/cards/${ref.slug}`} className="text-ctp-blue hover:underline">
@@ -604,7 +601,7 @@ export default function CardDetail() {
                       </Link>
                     ))}
                   </div>
-                </div>
+                </Section>
               )}
             </div>
           )}
@@ -612,9 +609,7 @@ export default function CardDetail() {
       )}
 
       {tab === "decks" && playedByArchetypes.length > 0 && (
-        <div className="mt-4">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Archetypes</h2>
-          <p className="mt-1 text-xs text-ctp-subtext0">Named builds this card helps define — not just decks that happen to include it.</p>
+        <Section className="mt-4" heading="compact" title="Archetypes" description="Named builds this card helps define — not just decks that happen to include it.">
           <div className="mt-2 flex flex-wrap gap-2 text-sm">
             {playedByArchetypes.map(({ cluster, prevalence }) => (
               <Link
@@ -629,12 +624,11 @@ export default function CardDetail() {
               </Link>
             ))}
           </div>
-        </div>
+        </Section>
       )}
 
       {tab === "usedWith" && (
-        <div className="mt-4">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Most used with {card.name}</h2>
+        <Section className="mt-4" heading="compact" title={`Most used with ${card.name}`}>
           {combination.main.length > 0 || combination.material.length > 0 || combination.sideboard.length > 0 ? (
             <>
               <p className="mt-1 text-xs text-ctp-subtext0">
@@ -646,14 +640,13 @@ export default function CardDetail() {
               </div>
             </>
           ) : (
-            <p className="mt-4 text-sm text-ctp-subtext1">Not enough decks running {card.name} to say what's played alongside it yet.</p>
+            <InlineState className="mt-4 text-sm">Not enough decks running {card.name} to say what's played alongside it yet.</InlineState>
           )}
-        </div>
+        </Section>
       )}
 
       {tab === "synergy" && (
-        <div className="mt-4">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Win-rate synergy</h2>
+        <Section className="mt-4" heading="compact" title="Win-rate synergy">
           {synergy.cards.length > 0 ? (
             <>
               <p className="mt-1 text-xs text-ctp-subtext0">
@@ -664,17 +657,15 @@ export default function CardDetail() {
               <CardImpactTable cards={synergy.cards} cardImages={synergyCardImages} withLabel="Win rate (with)" withoutLabel="Win rate (without)" />
             </>
           ) : (
-            <p className="mt-4 text-sm text-ctp-subtext1">No card clears the sample bar for a win-rate synergy with {card.name} yet.</p>
+            <InlineState className="mt-4 text-sm">No card clears the sample bar for a win-rate synergy with {card.name} yet.</InlineState>
           )}
-        </div>
+        </Section>
       )}
 
       {tab === "similar" && (
-        <div className="mt-4">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Same effect shape</h2>
-
+        <Section className="mt-4" heading="compact" title="Same effect shape">
           {(!cardStat || cardStat.deckCount < MIN_SAMPLE_SIZE) && (card.references.length > 0 || card.referenced_by.length > 0) && (
-            <div className="mt-2 rounded-md border border-ctp-surface1 bg-ctp-mantle p-3">
+            <Panel padding="sm" className="mt-2">
               <p className="text-xs text-ctp-subtext0">
                 Too few recorded decks for a trustworthy win rate yet — this card's own explicit references are a
                 more reliable signal in the meantime:
@@ -705,7 +696,7 @@ export default function CardDetail() {
                   </div>
                 )}
               </div>
-            </div>
+            </Panel>
           )}
 
           {similarCardsSorted.length > 0 ? (
@@ -772,23 +763,27 @@ export default function CardDetail() {
               </div>
             </>
           ) : (
-            <p className="mt-4 text-sm text-ctp-subtext1">No other cards share {card.name}'s ability template yet.</p>
+            <InlineState className="mt-4 text-sm">No other cards share {card.name}'s ability template yet.</InlineState>
           )}
-        </div>
+        </Section>
       )}
 
       {tab === "intent" && (
-        <div className="mt-4">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Intent cards</h2>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            Cards designed to work with {card.name} — a shared token economy (e.g. summons/sacrifices a Powercell), a
-            tribal category {card.name} either belongs to or explicitly references as a cost or condition, Empower
-            feeding a Spell that deals damage scaled by your champion's level, or an explicit named reference to
-            another card's text. Most cards aren't part of one of these — an empty list here is normal, not a sign
-            anything's broken. A green deck count means the pairing is also confirmed by real tournament decks, not
-            just text; a blue tag names the specific archetype build that evidence came from.
-          </p>
-
+        <Section
+          className="mt-4"
+          heading="compact"
+          title="Intent cards"
+          description={
+            <>
+              Cards designed to work with {card.name} — a shared token economy (e.g. summons/sacrifices a Powercell), a
+              tribal category {card.name} either belongs to or explicitly references as a cost or condition, Empower
+              feeding a Spell that deals damage scaled by your champion's level, or an explicit named reference to
+              another card's text. Most cards aren't part of one of these — an empty list here is normal, not a sign
+              anything's broken. A green deck count means the pairing is also confirmed by real tournament decks, not
+              just text; a blue tag names the specific archetype build that evidence came from.
+            </>
+          }
+        >
           {cardPackages.length > 0 && (
             <div className="mt-3 rounded-lg border border-ctp-teal/40 bg-ctp-teal/10 p-3">
               <p className="text-xs font-semibold uppercase tracking-wide text-ctp-teal">Explicit construction package{cardPackages.length === 1 ? "" : "s"}</p>
@@ -819,9 +814,9 @@ export default function CardDetail() {
           )}
 
           {visibleIntentFeeds.length === 0 && visibleIntentPoweredBy.length === 0 ? (
-            <p className="mt-4 text-sm text-ctp-subtext1">
+            <InlineState className="mt-4 text-sm">
               No text-detected token, tribal, Empower, or named-reference relationship for {card.name} yet.
-            </p>
+            </InlineState>
           ) : (
             <div className="mt-3 grid gap-6 sm:grid-cols-2">
               {visibleIntentFeeds.length > 0 && (
@@ -850,41 +845,45 @@ export default function CardDetail() {
               )}
             </div>
           )}
-        </div>
+        </Section>
       )}
 
       {tab === "decks" && topDecks.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Top decks</h2>
+        <Section className="mt-8" heading="compact" title="Top decks">
           <div className="mt-2">
             <TopDecksList decks={topDecks} playerName={playerName} />
           </div>
-        </div>
+        </Section>
       )}
 
       {tab === "decks" && uniqueDecks.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Most unique decks</h2>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            Builds featuring {card.name} with the most uncommon card choices relative to other decks of the same
-            Champion at the time they were played.
-          </p>
+        <Section
+          className="mt-8"
+          heading="compact"
+          title="Most unique decks"
+          description={`Builds featuring ${card.name} with the most uncommon card choices relative to other decks of the same Champion at the time they were played.`}
+        >
           <div className="mt-2 space-y-2">
             {uniqueDecks.map((d) => (
               <UniqueDeckRow key={`${d.eventId}:${d.player}`} score={d} playerName={playerName(d.player)} />
             ))}
           </div>
-        </div>
+        </Section>
       )}
 
       {tab === "decks" && communityDeckRefs.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Community decks</h2>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            Community brews that include this card — not real tournament results and not ordered by recency because
-            the source archive does not consistently track when a deck was built or updated. Build your own on{" "}
-            <a href="https://sleeved.gg" target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">Sleeved.gg</a>.
-          </p>
+        <Section
+          className="mt-8"
+          heading="compact"
+          title="Community decks"
+          description={
+            <>
+              Community brews that include this card — not real tournament results and not ordered by recency because
+              the source archive does not consistently track when a deck was built or updated. Build your own on{" "}
+              <a href="https://sleeved.gg" target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">Sleeved.gg</a>.
+            </>
+          }
+        >
           <ul className="mt-2 space-y-1 text-sm">
             {communityDeckRefs.map((d) => {
               // Sleeved and TcgArchitect decks already carry a proper display-name champion (e.g.
@@ -912,17 +911,16 @@ export default function CardDetail() {
               );
             })}
           </ul>
-        </div>
+        </Section>
       )}
 
       {tab === "compare" && (
-        <div className="mt-4">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Compare with other cards</h2>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            Add any card to see usage, win rate, and price side by side — a quick way to decide between two options
-            without leaving this page.
-          </p>
-
+        <Section
+          className="mt-4"
+          heading="compact"
+          title="Compare with other cards"
+          description="Add any card to see usage, win rate, and price side by side — a quick way to decide between two options without leaving this page."
+        >
           <input
             type="text"
             list="card-detail-compare-options"
@@ -958,7 +956,7 @@ export default function CardDetail() {
               Open in full Compare tool &rarr;
             </Link>
           )}
-        </div>
+        </Section>
       )}
     </PageLayout>
   );

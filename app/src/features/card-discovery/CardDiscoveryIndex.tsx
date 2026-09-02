@@ -9,6 +9,9 @@ import { computeIdentityElements } from "../deckbuilder/useSuggestedBuild";
 import { computeNewReleaseCards } from "../deckbuilder/newReleaseCards";
 import { buildSpiritCanonicalNames } from "../deckbuilder/useDeckBuilderPopulation";
 import PageLayout from "../../components/layout/PageLayout";
+import Panel from "../../components/ui/Panel";
+import Section from "../../components/ui/Section";
+import { InlineState } from "../../components/ui/ContentState";
 
 function identityName(card: Card): string {
   return card.name.split(",")[0].trim();
@@ -56,7 +59,7 @@ export default function CardDiscoveryIndex() {
       actions={<Link to="/deck-builder" className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm font-semibold text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue">Build a deck →</Link>}
     />
 
-    <section className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4" aria-labelledby="discovery-context">
+    <Panel as="section" aria-labelledby="discovery-context">
       <h2 id="discovery-context" className="font-semibold text-ctp-text">What should we match against?</h2>
       <p className="mt-1 text-sm text-ctp-subtext1">Choose a Champion, optionally narrow it to a Spirit, then add any key cards whose support you want to explore.</p>
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -82,16 +85,20 @@ export default function CardDiscoveryIndex() {
         <datalist id="discovery-card-options">{cardNames.map((name) => <option key={name} value={name} />)}</datalist>
         {focusCards.length > 0 && <div className="mt-2 flex flex-wrap gap-1.5">{focusCards.map((name) => <button key={name} type="button" onClick={() => setFocusCards((cards) => cards.filter((card) => card !== name))} className="rounded-full border border-ctp-blue/40 px-2 py-0.5 text-xs text-ctp-blue hover:border-ctp-red hover:text-ctp-red" title="Remove card">{name} ×</button>)}</div>}
       </div>
-    </section>
+    </Panel>
 
-    {!championName && <p className="mt-6 text-ctp-subtext1">Choose a Champion to start discovering cards.</p>}
-    {championName && <section className="mt-6" aria-live="polite">
-      <div className="flex flex-wrap items-baseline justify-between gap-2"><h2 className="text-lg font-semibold text-ctp-text">New cards worth a look</h2><Link to={builderLink} className="text-sm font-semibold text-ctp-blue hover:underline">Build around this Champion →</Link></div>
-      <p className="mt-1 text-sm text-ctp-subtext1">Matches are limited to the newest released set and must connect through a shared token, subtype, Empower, or named reference.</p>
+    {!championName && <InlineState className="mt-6">Choose a Champion to start discovering cards.</InlineState>}
+    {championName && <Section
+      className="mt-6"
+      aria-live="polite"
+      title="New cards worth a look"
+      actions={<Link to={builderLink} className="text-sm font-semibold text-ctp-blue hover:underline">Build around this Champion →</Link>}
+      description="Matches are limited to the newest released set and must connect through a shared token, subtype, Empower, or named reference."
+    >
       {discoveries.length === 0 ? <p className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-4 py-3 text-sm text-ctp-subtext1">No designed connections found yet. Add a card you already play to make this lens more specific.</p> : <div className="mt-4 space-y-3">{discoveries.map(({ card, combos, setName, releaseDate }) => <article key={card.uuid} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
         <div className="flex flex-wrap items-center gap-2"><CardHoverPreview image={card.editions[0]?.image} alt={card.name}><Link to={`/cards/${card.slug}`} className="font-semibold text-ctp-text hover:text-ctp-blue">{card.name}</Link></CardHoverPreview><span className="text-xs text-ctp-subtext0">{setName} · {releaseDate}</span></div>
         <ul className="mt-2 space-y-1 text-sm text-ctp-subtext1">{combos.map((combo) => <li key={`${combo.with.uuid}-${combo.via}`}>Connects with <Link to={`/cards/${combo.with.slug}`} className="text-ctp-blue hover:underline">{combo.with.name}</Link> via {combo.via}.</li>)}</ul>
       </article>)}</div>}
-    </section>}
+    </Section>}
   </PageLayout>;
 }

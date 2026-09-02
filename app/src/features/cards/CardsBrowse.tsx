@@ -18,6 +18,7 @@ import { useFeaturedSets } from "../sets/useFeaturedSets";
 import { isBoosterSet } from "../packs/boosterSets";
 import { PRODUCTS } from "../products/data";
 import PageLayout from "../../components/layout/PageLayout";
+import { InlineState } from "../../components/ui/ContentState";
 
 const PAGE_SIZE = 60;
 
@@ -126,8 +127,8 @@ export default function CardsBrowse() {
       {tab === "sets" ? (
         <div className="mt-6 space-y-8">
           <p className="text-sm text-ctp-subtext1">Browse expansions and the cards printed in each one.</p>
-          {!featuredSets && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
-          {featuredSets && featuredSets.length === 0 && <p className="mt-6 text-ctp-subtext1">No sets found.</p>}
+          {!featuredSets && <InlineState className="mt-6">Loading…</InlineState>}
+          {featuredSets && featuredSets.length === 0 && <InlineState className="mt-6">No sets found.</InlineState>}
           {(featuredSets ?? []).map((group) => (
             <div key={group.uuid}>
               <div className="flex items-center gap-3">
@@ -257,9 +258,9 @@ export default function CardsBrowse() {
             </Link>
           )}
 
-          {syncProgress.phase !== "done" && filtered.length === 0 && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
+          {syncProgress.phase !== "done" && filtered.length === 0 && <InlineState className="mt-6">Loading…</InlineState>}
           {syncProgress.phase === "done" && filtered.length === 0 && (
-            <p className="mt-6 text-ctp-subtext1">No cards match this filter.</p>
+            <InlineState className="mt-6">No cards match this filter.</InlineState>
           )}
 
           <CardGrid cards={visible} pickEdition={pickEdition} />

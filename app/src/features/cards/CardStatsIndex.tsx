@@ -13,6 +13,8 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import { getCardPackageMembership } from "../deckbuilder/packageGuardrails";
 import PageLayout from "../../components/layout/PageLayout";
+import Section from "../../components/ui/Section";
+import { InlineState } from "../../components/ui/ContentState";
 
 type SortMode = "usage" | "adjusted" | "raw" | "hot" | "hype";
 
@@ -287,8 +289,8 @@ export default function CardStatsIndex() {
         ))}
       </div>
 
-      {!cardStatsData && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
-      {cardStatsData && rows.length === 0 && <p className="mt-6 text-ctp-subtext1">No cards match this filter yet.</p>}
+      {!cardStatsData && <InlineState className="mt-6">Loading…</InlineState>}
+      {cardStatsData && rows.length === 0 && <InlineState className="mt-6">No cards match this filter yet.</InlineState>}
 
       <div className="mt-6 overflow-x-auto">
         <table className="w-max min-w-full text-sm">
@@ -369,12 +371,12 @@ export default function CardStatsIndex() {
 
       <LoadMore remaining={rows.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
 
-      <div className="mt-10">
-        <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Keywords</h2>
-        <p className="mt-1 text-xs text-ctp-subtext0">
-          Ability keyword usage and win rate across every public decklist (main + material, weighted by copies).
-        </p>
-
+      <Section
+        className="mt-10"
+        heading="compact"
+        title="Keywords"
+        description="Ability keyword usage and win rate across every public decklist (main + material, weighted by copies)."
+      >
         <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
           <span className="text-ctp-subtext0">Sort by:</span>
           {(["usage", "adjusted", "raw"] as const).map((mode) => (
@@ -390,7 +392,7 @@ export default function CardStatsIndex() {
           ))}
         </div>
 
-        {!keywordStatsData && <p className="mt-4 text-ctp-subtext1">Loading…</p>}
+        {!keywordStatsData && <InlineState className="mt-4">Loading…</InlineState>}
 
         <div className="mt-2 overflow-x-auto">
           <table className="w-max min-w-full text-sm">
@@ -416,15 +418,14 @@ export default function CardStatsIndex() {
             </tbody>
           </table>
         </div>
-      </div>
+      </Section>
 
-      <div className="mt-10">
-        <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Deck Composition</h2>
-        <p className="mt-1 text-xs text-ctp-subtext0">
-          Does running more of a card type change your odds? Every public main deck (weighted by copies), bucketed
-          by what share of it one type makes up, with the average win rate in each bucket.
-        </p>
-
+      <Section
+        className="mt-10"
+        heading="compact"
+        title="Deck Composition"
+        description="Does running more of a card type change your odds? Every public main deck (weighted by copies), bucketed by what share of it one type makes up, with the average win rate in each bucket."
+      >
         {compositionTypesPresent.length > 0 && (
           <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
             <span className="text-ctp-subtext0">Type:</span>
@@ -442,7 +443,7 @@ export default function CardStatsIndex() {
           </div>
         )}
 
-        {!compositionData && <p className="mt-4 text-ctp-subtext1">Loading…</p>}
+        {!compositionData && <InlineState className="mt-4">Loading…</InlineState>}
 
         <div className="mt-2 overflow-x-auto">
           <table className="w-max min-w-full text-sm">
@@ -468,7 +469,7 @@ export default function CardStatsIndex() {
             </tbody>
           </table>
         </div>
-      </div>
+      </Section>
     </PageLayout>
   );
 }
