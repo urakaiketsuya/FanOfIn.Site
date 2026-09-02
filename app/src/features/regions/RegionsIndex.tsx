@@ -17,6 +17,8 @@ import PageHeader from "../../components/ui/PageHeader";
 import FilterBar from "../../components/ui/FilterBar";
 import Tabs from "../../components/ui/Tabs";
 import PageLayout from "../../components/layout/PageLayout";
+import Section from "../../components/ui/Section";
+import { InlineState } from "../../components/ui/ContentState";
 
 const GROUP_MODES: RegionGroupMode[] = ["country", "region"];
 const GROUP_LABELS: Record<RegionGroupMode, string> = { country: "Country", region: "Region" };
@@ -50,7 +52,7 @@ function LiftBadges({ lift, sign, regionRate, globalRate }: { lift: number; sign
 
 function CardLiftList({ rows, sign }: { rows: RegionalCardRow[]; sign: "positive" | "negative" }) {
   const cardsByName = useCardsByNames(useMemo(() => rows.map((r) => r.cardName), [rows]));
-  if (rows.length === 0) return <p className="text-sm text-ctp-subtext1">Nothing clears the sample bar yet.</p>;
+  if (rows.length === 0) return <InlineState className="text-sm">Nothing clears the sample bar yet.</InlineState>;
   return (
     <ul className="mt-2 space-y-1">
       {rows.map((r) => {
@@ -81,7 +83,7 @@ function CardLiftList({ rows, sign }: { rows: RegionalCardRow[]; sign: "positive
 }
 
 function KeywordLiftList({ rows, sign }: { rows: RegionalKeywordRow[]; sign: "positive" | "negative" }) {
-  if (rows.length === 0) return <p className="text-sm text-ctp-subtext1">Nothing clears the sample bar yet.</p>;
+  if (rows.length === 0) return <InlineState className="text-sm">Nothing clears the sample bar yet.</InlineState>;
   return (
     <ul className="mt-2 space-y-1">
       {rows.map((r) => (
@@ -160,9 +162,9 @@ export default function RegionsIndex() {
         </div></div>
       </FilterBar>
 
-      {loading && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
+      {loading && <InlineState className="mt-6">Loading…</InlineState>}
 
-      {!loading && options.length === 0 && <p className="mt-6 text-ctp-subtext1">Not enough data yet.</p>}
+      {!loading && options.length === 0 && <InlineState className="mt-6">Not enough data yet.</InlineState>}
 
       {!loading && options.length > 0 && (
         <>
@@ -205,9 +207,9 @@ export default function RegionsIndex() {
           <div className="mt-4">
             {tab === "archetypes" && (
               <>
-                {archetypes.loading && <p className="text-ctp-subtext1">Loading…</p>}
+                {archetypes.loading && <InlineState>Loading…</InlineState>}
                 {!archetypes.loading && archetypes.rows.length === 0 && (
-                  <p className="text-sm text-ctp-subtext1">No named builds have enough decks in {selectedOption?.label} yet.</p>
+                  <InlineState className="text-sm">No named builds have enough decks in {selectedOption?.label} yet.</InlineState>
                 )}
                 {archetypes.rows.length > 0 && (
                   <div className="overflow-x-auto">
@@ -248,9 +250,9 @@ export default function RegionsIndex() {
 
             {tab === "champions" && (
               <>
-                {champions.loading && <p className="text-ctp-subtext1">Loading…</p>}
+                {champions.loading && <InlineState>Loading…</InlineState>}
                 {!champions.loading && champions.rows.length === 0 && (
-                  <p className="text-sm text-ctp-subtext1">Not enough decks in {selectedOption?.label} yet.</p>
+                  <InlineState className="text-sm">Not enough decks in {selectedOption?.label} yet.</InlineState>
                 )}
                 {champions.rows.length > 0 && (
                   <div className="overflow-x-auto">
@@ -285,21 +287,19 @@ export default function RegionsIndex() {
 
             {tab === "cards" && (
               <>
-                {cards.loading && <p className="text-ctp-subtext1">Loading…</p>}
+                {cards.loading && <InlineState>Loading…</InlineState>}
                 {!cards.loading && (
                   <>
                     <p className="text-xs text-ctp-subtext0">
                       Cards used more or less often in {selectedOption?.label} than in the overall meta — correlational,
                       not a guarantee.
                     </p>
-                    <div className="mt-4">
-                      <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Over-represented</h2>
+                    <Section className="mt-4" heading="dense" title="Over-represented">
                       <CardLiftList rows={cards.overRepresented} sign="positive" />
-                    </div>
-                    <div className="mt-6">
-                      <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Under-represented</h2>
+                    </Section>
+                    <Section className="mt-6" heading="dense" title="Under-represented">
                       <CardLiftList rows={cards.underRepresented} sign="negative" />
-                    </div>
+                    </Section>
                   </>
                 )}
               </>
@@ -307,21 +307,19 @@ export default function RegionsIndex() {
 
             {tab === "keywords" && (
               <>
-                {keywords.loading && <p className="text-ctp-subtext1">Loading…</p>}
+                {keywords.loading && <InlineState>Loading…</InlineState>}
                 {!keywords.loading && (
                   <>
                     <p className="text-xs text-ctp-subtext0">
                       Ability keywords (Ranged, Swift, Bulwark, ...) used more or less often in {selectedOption?.label}'s
                       main+material decklists than in the overall meta — correlational, not a guarantee.
                     </p>
-                    <div className="mt-4">
-                      <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Over-represented</h2>
+                    <Section className="mt-4" heading="dense" title="Over-represented">
                       <KeywordLiftList rows={keywords.overRepresented} sign="positive" />
-                    </div>
-                    <div className="mt-6">
-                      <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Under-represented</h2>
+                    </Section>
+                    <Section className="mt-6" heading="dense" title="Under-represented">
                       <KeywordLiftList rows={keywords.underRepresented} sign="negative" />
-                    </div>
+                    </Section>
                   </>
                 )}
               </>

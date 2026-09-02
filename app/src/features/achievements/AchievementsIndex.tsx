@@ -13,6 +13,7 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
 import Panel from "../../components/ui/Panel";
+import Section from "../../components/ui/Section";
 import { EmptyState, InlineState } from "../../components/ui/ContentState";
 
 const RECENT_HOLDERS_SHOWN = 5;
@@ -64,10 +65,7 @@ export default function AchievementsIndex() {
         const defs = byCategory.get(category);
         if (!defs || defs.length === 0) return null;
         return (
-          <div key={category} className="mt-8">
-            <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
-              {ACHIEVEMENT_CATEGORY_LABELS[category]}
-            </h2>
+          <Section key={category} className="mt-8" heading="compact" title={ACHIEVEMENT_CATEGORY_LABELS[category]}>
             <div className="mt-2 space-y-4">
               {defs.map((def) => {
                 const unlocks = unlocksByAchievement.get(def.id) ?? [];
@@ -102,7 +100,7 @@ export default function AchievementsIndex() {
                 );
               })}
             </div>
-          </div>
+          </Section>
         );
       })}
     </PageLayout>

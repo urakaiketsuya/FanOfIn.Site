@@ -4,6 +4,7 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
 import { InlineState } from "../../components/ui/ContentState";
+import Section from "../../components/ui/Section";
 
 const REPO_URL = "https://github.com/urakaiketsuya/FanOfIn.Site";
 
@@ -36,10 +37,7 @@ export default function ChangelogIndex() {
 
       <div className="mt-6 space-y-6">
         {groups.map(([day, entries]) => (
-          <div key={day}>
-            <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
-              {new Date(`${day}T00:00:00`).toLocaleDateString(undefined, DATE_FORMAT)}
-            </h2>
+          <Section key={day} heading="dense" title={new Date(`${day}T00:00:00`).toLocaleDateString(undefined, DATE_FORMAT)}>
             <ul className="mt-2 space-y-1.5">
               {entries.map((e) => (
                 <li key={e.hash} className="flex items-baseline gap-2 text-sm">
@@ -55,7 +53,7 @@ export default function ChangelogIndex() {
                 </li>
               ))}
             </ul>
-          </div>
+          </Section>
         ))}
       </div>
     </PageLayout>

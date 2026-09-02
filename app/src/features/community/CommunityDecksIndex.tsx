@@ -4,6 +4,8 @@ import type { DeckFormat } from "@gatcg/shared";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
+import Section from "../../components/ui/Section";
+import { InlineState } from "../../components/ui/ContentState";
 import { useCardsByNames } from "../events/useCardsByNames";
 import HorizontalBarChart, { type HorizontalBarChartBar } from "../../components/HorizontalBarChart";
 import RangeBar from "../../components/RangeBar";
@@ -150,7 +152,7 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
         </p>
       )}
 
-      {loading && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
+      {loading && <InlineState className="mt-6">Loading…</InlineState>}
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         {championBars.length > 0 && (
@@ -181,9 +183,17 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
       )}
 
       {cardInclusion && (
-        <div className="mt-8">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Top cards by inclusion rate</h2>
+        <Section
+          className="mt-8"
+          heading="compact"
+          title="Top cards by inclusion rate"
+          description={
+            <>
+              % of decks running at least one copy, out of {cardsConsidered?.toLocaleString()} decks
+              {championFilter ? ` piloting ${formatChampionName(championFilter)}` : " with a fetched card list"}.
+            </>
+          }
+          actions={
             <select
               value={championFilter}
               aria-label="Champion"
@@ -199,21 +209,19 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
                   </option>
                 ))}
             </select>
-          </div>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            % of decks running at least one copy, out of {cardsConsidered?.toLocaleString()} decks
-            {championFilter ? ` piloting ${formatChampionName(championFilter)}` : " with a fetched card list"}.
-          </p>
+          }
+        >
           <div className="mt-2">{topCardBars.length > 0 && <HorizontalBarChart bars={topCardBars} />}</div>
-        </div>
+        </Section>
       )}
 
       {archetypes && archetypes.clusters.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">{isPantheon ? "Recurring strategy shells" : "Recurring exact builds"}</h2>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            {isPantheon ? "Singleton lists grouped by meaningful main-deck overlap. Defining cards describe the shared shell; this is community adoption, not a performance ranking." : "Decks sharing the literal same champion + card list — real copies of a known build, not a fuzzy similar-archetype grouping. Most decks are one-offs and aren't shown here."}
-          </p>
+        <Section
+          className="mt-8"
+          heading="compact"
+          title={isPantheon ? "Recurring strategy shells" : "Recurring exact builds"}
+          description={isPantheon ? "Singleton lists grouped by meaningful main-deck overlap. Defining cards describe the shared shell; this is community adoption, not a performance ranking." : "Decks sharing the literal same champion + card list — real copies of a known build, not a fuzzy similar-archetype grouping. Most decks are one-offs and aren't shown here."}
+        >
           <div className="mt-2 overflow-x-auto">
             <table className="w-max min-w-full text-sm">
               <thead>
@@ -239,24 +247,29 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
               </tbody>
             </table>
           </div>
-        </div>
+        </Section>
       )}
 
       {eraBars.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Deck era</h2>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            When decks were likely built, inferred from the newest card each one requires — a floor, not a real
-            timestamp, since the source archive doesn't record a creation date. A deck built yesterday from only
-            year-old cards reads as year-old here. Hover a bar for the set(s) behind it.
-            {deckEra && deckEra.unresolvedDeckCount > 0 && (
-              <> {deckEra.unresolvedDeckCount.toLocaleString()} decks couldn't be dated and are excluded.</>
-            )}
-          </p>
+        <Section
+          className="mt-8"
+          heading="compact"
+          title="Deck era"
+          description={
+            <>
+              When decks were likely built, inferred from the newest card each one requires — a floor, not a real
+              timestamp, since the source archive doesn't record a creation date. A deck built yesterday from only
+              year-old cards reads as year-old here. Hover a bar for the set(s) behind it.
+              {deckEra && deckEra.unresolvedDeckCount > 0 && (
+                <> {deckEra.unresolvedDeckCount.toLocaleString()} decks couldn't be dated and are excluded.</>
+              )}
+            </>
+          }
+        >
           <div className="mt-2">
             <BarChart bars={eraBars} />
           </div>
-        </div>
+        </Section>
       )}
     </PageLayout>
   );

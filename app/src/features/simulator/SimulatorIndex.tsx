@@ -2,6 +2,8 @@ import { useMemo } from "react";
 import { useSimulatorSummaryData } from "./data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageLayout from "../../components/layout/PageLayout";
+import Section from "../../components/ui/Section";
+import { InlineState } from "../../components/ui/ContentState";
 
 function formatPercent(rate: number | null): string {
   return rate === null ? "—" : `${(rate * 100).toFixed(0)}%`;
@@ -42,12 +44,12 @@ export default function SimulatorIndex() {
         </p>
       </div>
 
-      {!data && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
+      {!data && <InlineState className="mt-6">Loading…</InlineState>}
 
       {data && (
         <div className="mt-6 space-y-6">
           <div className="rounded-lg border border-ctp-surface1 p-4">
-            <div className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Overview</div>
+            <Section heading="dense" title="Overview">
             <div className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-sm">
               <div>
                 <span className="text-ctp-subtext1">Games recorded: </span>
@@ -69,15 +71,16 @@ export default function SimulatorIndex() {
                 </span>
               </div>
             </div>
+            </Section>
           </div>
 
-          <div>
-            <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Champions</h2>
-            <p className="mt-1 text-xs text-ctp-subtext1">
-              Names are supplied by Clarent; its stable internal ID is retained as a fallback and for analytics joins.
-            </p>
+          <Section
+            heading="dense"
+            title="Champions"
+            description="Names are supplied by Clarent; its stable internal ID is retained as a fallback and for analytics joins."
+          >
             {champions.length === 0 ? (
-              <p className="mt-2 text-sm text-ctp-subtext1">No champion data yet.</p>
+              <InlineState className="mt-2 text-sm">No champion data yet.</InlineState>
             ) : (
               <div className="mt-2 overflow-x-auto">
                 <table className="w-full text-left text-sm">
@@ -107,12 +110,11 @@ export default function SimulatorIndex() {
                 </table>
               </div>
             )}
-          </div>
+          </Section>
 
-          <div>
-            <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Matchups</h2>
+          <Section heading="dense" title="Matchups">
             {matchups.length === 0 ? (
-              <p className="mt-2 text-sm text-ctp-subtext1">No matchup data yet.</p>
+              <InlineState className="mt-2 text-sm">No matchup data yet.</InlineState>
             ) : (
               <ul className="mt-2 space-y-1 text-sm">
                 {matchups.map((m) => (
@@ -127,19 +129,23 @@ export default function SimulatorIndex() {
                 ))}
               </ul>
             )}
-          </div>
+          </Section>
 
-          <div>
-            <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Card stats</h2>
-            <p className="mt-1 text-xs text-ctp-subtext1">
-              Only shown for a card once it's appeared in at least 5 separate games — below that, an "average" would
-              just be replaying one specific game's exact card usage, not actually aggregating anything. Card ID is
-              Clarent/TCGEngine's internal identifier, same caveat as Champions above.
-            </p>
+          <Section
+            heading="dense"
+            title="Card stats"
+            description={
+              <>
+                Only shown for a card once it's appeared in at least 5 separate games — below that, an "average" would
+                just be replaying one specific game's exact card usage, not actually aggregating anything. Card ID is
+                Clarent/TCGEngine's internal identifier, same caveat as Champions above.
+              </>
+            }
+          >
             {cardStats.length === 0 ? (
-              <p className="mt-2 text-sm text-ctp-subtext1">
+              <InlineState className="mt-2 text-sm">
                 No card has reached 5 games yet ({data.games} game{data.games === 1 ? "" : "s"} recorded so far).
-              </p>
+              </InlineState>
             ) : (
               <div className="mt-2 overflow-x-auto">
                 <table className="w-full text-left text-sm">
@@ -178,18 +184,17 @@ export default function SimulatorIndex() {
                 </table>
               </div>
             )}
-          </div>
+          </Section>
 
-          <div>
-            <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Weapons</h2>
-            <p className="mt-1 text-xs text-ctp-subtext1">
-              Same 5-game minimum. Cleave rate is the share of a weapon's attacks flagged as hitting multiple
-              targets.
-            </p>
+          <Section
+            heading="dense"
+            title="Weapons"
+            description="Same 5-game minimum. Cleave rate is the share of a weapon's attacks flagged as hitting multiple targets."
+          >
             {weapons.length === 0 ? (
-              <p className="mt-2 text-sm text-ctp-subtext1">
+              <InlineState className="mt-2 text-sm">
                 No weapon has reached 5 games yet ({data.games} game{data.games === 1 ? "" : "s"} recorded so far).
-              </p>
+              </InlineState>
             ) : (
               <div className="mt-2 overflow-x-auto">
                 <table className="w-full text-left text-sm">
@@ -214,17 +219,17 @@ export default function SimulatorIndex() {
                 </table>
               </div>
             )}
-          </div>
+          </Section>
 
-          <div>
-            <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Turn stats</h2>
-            <p className="mt-1 text-xs text-ctp-subtext1">
-              Same 5-game minimum, per turn number — averaged across every seat that reported stats for that turn.
-            </p>
+          <Section
+            heading="dense"
+            title="Turn stats"
+            description="Same 5-game minimum, per turn number — averaged across every seat that reported stats for that turn."
+          >
             {turnStats.length === 0 ? (
-              <p className="mt-2 text-sm text-ctp-subtext1">
+              <InlineState className="mt-2 text-sm">
                 No turn has reached 5 games yet ({data.games} game{data.games === 1 ? "" : "s"} recorded so far).
-              </p>
+              </InlineState>
             ) : (
               <div className="mt-2 overflow-x-auto">
                 <table className="w-full text-left text-sm">
@@ -261,7 +266,7 @@ export default function SimulatorIndex() {
                 </table>
               </div>
             )}
-          </div>
+          </Section>
         </div>
       )}
     </PageLayout>

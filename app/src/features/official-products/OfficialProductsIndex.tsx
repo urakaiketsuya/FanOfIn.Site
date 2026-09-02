@@ -13,6 +13,7 @@ import { useCardCatalog } from "../cards/useCardCatalog";
 import { buildDecklistText } from "../events/DecklistView";
 import { officialProductDecks, officialProductsSource, PRODUCT_LABELS, type OfficialProductCardLine, type OfficialProductDeck } from "./data";
 import DeckCollectionTools from "../collection/DeckCollectionTools";
+import Section from "../../components/ui/Section";
 
 const SECTION_LABELS: Record<keyof OfficialProductDeck["cards"], string> = {
   material: "Material",
@@ -141,10 +142,9 @@ function ProductDeckCard({
             const lines = deck.cards[section];
             if (lines.length === 0) return null;
             const count = lines.reduce((sum, line) => sum + line.quantity, 0);
-            return <section key={section}>
-              <h3 className="mb-1 text-xs font-semibold uppercase tracking-wider text-ctp-subtext0">{SECTION_LABELS[section]} ({count})</h3>
+            return <Section key={section} heading="dense" title={`${SECTION_LABELS[section]} (${count})`}>
               <ul>{lines.map((line) => <ProductCardLine key={`${line.name}:${line.set}:${line.collectorNumber}`} line={line} cardsByName={cardsByName} />)}</ul>
-            </section>;
+            </Section>;
           })}
         </div>
       </details>

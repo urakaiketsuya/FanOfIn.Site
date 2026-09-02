@@ -2,6 +2,8 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
+import Section from "../../components/ui/Section";
+import { InlineState } from "../../components/ui/ContentState";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import {
   useDiaoMigrationAudit,
@@ -155,7 +157,7 @@ export default function DiaoReviewIndex() {
   const [groupView, setGroupView] = useState<"champions" | "archetypes">("champions");
   const [exampleView, setExampleView] = useState<"changes" | "signals">("changes");
 
-  if (!data) return <div className="mx-auto max-w-5xl px-4 py-10 text-ctp-subtext1">Loading DIAO migration audit…</div>;
+  if (!data) return <PageLayout width="wide"><InlineState className="mt-10">Loading DIAO migration audit…</InlineState></PageLayout>;
   const overall = data.overall[metric];
   const decomposition = data.scoreChangeDecomposition[metric];
   const examples = exampleView === "changes" ? data.representativeDecks.largestCompositeChanges : data.representativeDecks.correctedSignalDetection;
@@ -214,34 +216,40 @@ export default function DiaoReviewIndex() {
         </div>
 
         <div className="mt-4 grid gap-4 border-t border-ctp-surface0 pt-4 md:grid-cols-2">
-          <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">What to compare</h3>
+          <Section heading="dense" title="What to compare">
             <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ctp-subtext1">
               <li>The 10th–90th percentile range should widen sensibly for conditional printed damage.</li>
               <li>Expected damage and the chances of reaching 5+ or 10+ should rise as more cards are seen.</li>
               <li>Decks with similar aggression scores may legitimately have different direct-damage forecasts.</li>
             </ul>
-          </div>
-          <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Known boundaries</h3>
+          </Section>
+          <Section heading="dense" title="Known boundaries">
             <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ctp-subtext1">
               <li>Variable-X damage is disclosed but excluded from the arithmetic.</li>
               <li>Costs, targets, blockers, prevention, and whether conditions are enabled are not modeled.</li>
               <li>Only the main deck is sampled; material and sideboard cards do not enter the draw calculation.</li>
             </ul>
-          </div>
+          </Section>
         </div>
       </section>
 
-      <section className="mt-8">
-        <div className="mb-3 flex flex-wrap items-end justify-between gap-3"><div><h2 className="text-lg font-semibold">Who moves most?</h2><p className="text-sm text-ctp-subtext1">Large or one-sided shifts are the best candidates for expert review.</p></div><div className="flex gap-1"><button type="button" onClick={() => setGroupView("champions")} className={`rounded-md px-3 py-1.5 text-xs font-medium ${groupView === "champions" ? "bg-ctp-blue text-ctp-base" : "bg-ctp-surface0 text-ctp-subtext1"}`}>Champions</button><button type="button" onClick={() => setGroupView("archetypes")} className={`rounded-md px-3 py-1.5 text-xs font-medium ${groupView === "archetypes" ? "bg-ctp-blue text-ctp-base" : "bg-ctp-surface0 text-ctp-subtext1"}`}>Archetypes</button></div></div>
+      <Section
+        className="mt-8"
+        title="Who moves most?"
+        description="Large or one-sided shifts are the best candidates for expert review."
+        actions={<div className="flex gap-1"><button type="button" onClick={() => setGroupView("champions")} className={`rounded-md px-3 py-1.5 text-xs font-medium ${groupView === "champions" ? "bg-ctp-blue text-ctp-base" : "bg-ctp-surface0 text-ctp-subtext1"}`}>Champions</button><button type="button" onClick={() => setGroupView("archetypes")} className={`rounded-md px-3 py-1.5 text-xs font-medium ${groupView === "archetypes" ? "bg-ctp-blue text-ctp-base" : "bg-ctp-surface0 text-ctp-subtext1"}`}>Archetypes</button></div>}
+      >
         <GroupTable rows={groupView === "champions" ? data.byChampion : data.byArchetype} metric={metric} />
-      </section>
+      </Section>
 
-      <section className="mt-8">
-        <div className="mb-3 flex flex-wrap items-end justify-between gap-3"><div><h2 className="text-lg font-semibold">Deck spot checks</h2><p className="text-sm text-ctp-subtext1">The middle score isolates evidence-rule changes from score-band recalibration.</p></div><div className="flex gap-1"><button type="button" onClick={() => setExampleView("changes")} className={`rounded-md px-3 py-1.5 text-xs font-medium ${exampleView === "changes" ? "bg-ctp-blue text-ctp-base" : "bg-ctp-surface0 text-ctp-subtext1"}`}>Largest changes</button><button type="button" onClick={() => setExampleView("signals")} className={`rounded-md px-3 py-1.5 text-xs font-medium ${exampleView === "signals" ? "bg-ctp-blue text-ctp-base" : "bg-ctp-surface0 text-ctp-subtext1"}`}>Corrected signals</button></div></div>
+      <Section
+        className="mt-8"
+        title="Deck spot checks"
+        description="The middle score isolates evidence-rule changes from score-band recalibration."
+        actions={<div className="flex gap-1"><button type="button" onClick={() => setExampleView("changes")} className={`rounded-md px-3 py-1.5 text-xs font-medium ${exampleView === "changes" ? "bg-ctp-blue text-ctp-base" : "bg-ctp-surface0 text-ctp-subtext1"}`}>Largest changes</button><button type="button" onClick={() => setExampleView("signals")} className={`rounded-md px-3 py-1.5 text-xs font-medium ${exampleView === "signals" ? "bg-ctp-blue text-ctp-base" : "bg-ctp-surface0 text-ctp-subtext1"}`}>Corrected signals</button></div>}
+      >
         <div className="grid gap-3 lg:grid-cols-2">{examples.map((deck) => <DeckExample key={`${exampleView}-${deck.deckId}`} deck={deck} />)}</div>
-      </section>
+      </Section>
 
       <section className="mt-8 rounded-lg border border-ctp-surface0 p-4">
         <h2 className="font-semibold">Review checklist</h2>

@@ -8,6 +8,9 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { decodeLookingForShare, encodeLookingForShare, type LookingForEntry } from "../../lib/lookingForShareLink";
 import { parseDecklist } from "../compare/parseDecklist";
 import { useCardCatalog } from "../cards/useCardCatalog";
+import Panel from "../../components/ui/Panel";
+import Section from "../../components/ui/Section";
+import Button from "../../components/ui/Button";
 
 type ViewMode = "cards" | "sets";
 
@@ -36,7 +39,7 @@ function RequestedCard({ entry, card, editable, onEditionChange }: {
   const displayEdition = selectedEdition ?? card?.editions[0];
 
   return (
-    <article className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3">
+    <Panel as="article" padding="sm">
       <div className="flex gap-3">
         {displayEdition ? (
           <CardImage image={displayEdition.image} alt={entry.name} className="h-28 w-20 shrink-0 rounded object-cover" />
@@ -67,7 +70,7 @@ function RequestedCard({ entry, card, editable, onEditionChange }: {
           )}
         </div>
       </div>
-    </article>
+    </Panel>
   );
 }
 
@@ -138,18 +141,18 @@ export default function LookingForIndex() {
 
   return (
     <PageLayout width="wide">
-      <PageHeader title={shared?.title ?? "Looking For"} description={isSharedView ? `${totalCards} cards across ${visibleEntries.length} requested items.` : "Paste a card list, choose acceptable printings, and send one link to traders or friends."} actions={isSharedView ? <button type="button" onClick={startNewList} className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-sm text-ctp-subtext1 hover:text-ctp-text">Create your own</button> : undefined} />
+      <PageHeader title={shared?.title ?? "Looking For"} description={isSharedView ? `${totalCards} cards across ${visibleEntries.length} requested items.` : "Paste a card list, choose acceptable printings, and send one link to traders or friends."} actions={isSharedView ? <Button variant="secondary" onClick={startNewList}>Create your own</Button> : undefined} />
 
       {!isSharedView && (
-        <section className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+        <Panel>
           <label className="block text-sm font-medium text-ctp-text">List title <span className="font-normal text-ctp-subtext0">(optional)</span><input value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Looking For List" className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text" /></label>
           <label className="mt-4 block text-sm font-medium text-ctp-text">Card list<textarea value={pasteText} onChange={(event) => setPasteText(event.target.value)} rows={9} placeholder={'# Main Deck\n1 Aenean Ward\n2 Angel Attendant\n4 Fireball'} className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 font-mono text-sm text-ctp-text" /></label>
           <p className="mt-2 text-xs text-ctp-subtext0">Use one card per line: “4 Fireball” or “4x Fireball”. Main, Material, and Sideboard headers are accepted but combined into one wishlist.</p>
-          <button type="button" onClick={importList} disabled={!pasteText.trim()} className="mt-4 rounded-md bg-ctp-blue px-4 py-2 text-sm font-semibold text-ctp-base disabled:cursor-not-allowed disabled:opacity-50">Review list</button>
-        </section>
+          <Button variant="primary" onClick={importList} disabled={!pasteText.trim()} className="mt-4">Review list</Button>
+        </Panel>
       )}
 
-      {skippedLines.length > 0 && !isSharedView && <div className="mt-4 rounded-md border border-ctp-yellow/50 bg-ctp-yellow/10 p-3 text-sm text-ctp-subtext1"><p className="font-medium text-ctp-yellow">Some lines could not be imported:</p><p className="mt-1 font-mono text-xs">{skippedLines.join(" · ")}</p></div>}
+      {skippedLines.length > 0 && !isSharedView && <Panel tone="warning" padding="sm" className="mt-4 text-sm text-ctp-subtext1"><p className="font-medium text-ctp-yellow">Some lines could not be imported:</p><p className="mt-1 font-mono text-xs">{skippedLines.join(" · ")}</p></Panel>}
 
       {visibleEntries.length > 0 && (
         <section className="mt-6">
@@ -158,7 +161,7 @@ export default function LookingForIndex() {
             {isSharedView && <div className="flex rounded-md border border-ctp-surface1 p-0.5">{(["cards", "sets"] as const).map((mode) => <button key={mode} type="button" onClick={() => setViewMode(mode)} className={`rounded px-3 py-1 text-xs ${viewMode === mode ? "bg-ctp-surface1 text-ctp-text" : "text-ctp-subtext0"}`}>{mode === "cards" ? "Cards" : "By Set"}</button>)}</div>}
           </div>
 
-          {viewMode === "cards" || !isSharedView ? <div className="mt-4 grid gap-4 sm:grid-cols-2">{resolved.map(({ entry, card }, index) => <RequestedCard key={`${entry.name}-${entry.editionUuid ?? "any"}-${index}`} entry={entry} card={card} editable={!isSharedView} onEditionChange={(uuid) => changeEdition(index, uuid)} />)}</div> : <div className="mt-5 space-y-7">{grouped.map(([group, items]) => <section key={group}><h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">{group}</h2><div className="mt-3 grid gap-4 sm:grid-cols-2">{items.map(({ entry, card }, index) => <RequestedCard key={`${entry.name}-${index}`} entry={entry} card={card} editable={false} />)}</div></section>)}</div>}
+          {viewMode === "cards" || !isSharedView ? <div className="mt-4 grid gap-4 sm:grid-cols-2">{resolved.map(({ entry, card }, index) => <RequestedCard key={`${entry.name}-${entry.editionUuid ?? "any"}-${index}`} entry={entry} card={card} editable={!isSharedView} onEditionChange={(uuid) => changeEdition(index, uuid)} />)}</div> : <div className="mt-5 space-y-7">{grouped.map(([group, items]) => <Section key={group} heading="compact" title={group}><div className="mt-3 grid gap-4 sm:grid-cols-2">{items.map(({ entry, card }, index) => <RequestedCard key={`${entry.name}-${index}`} entry={entry} card={card} editable={false} />)}</div></Section>)}</div>}
 
           {!isSharedView && <div className="mt-6 flex items-center gap-3"><button type="button" onClick={copyShareLink} className="rounded-md bg-ctp-green px-4 py-2 text-sm font-semibold text-ctp-base">{copyState === "copied" ? "Link copied!" : copyState === "failed" ? "Couldn't copy link" : "Copy share link"}</button><span className="text-xs text-ctp-subtext0">The link contains the list; no account or server storage is needed.</span></div>}
         </section>

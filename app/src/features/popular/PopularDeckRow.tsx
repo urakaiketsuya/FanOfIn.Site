@@ -10,6 +10,8 @@ import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useEventNameById } from "../tournaments/data";
 import { shortHash } from "../../lib/hash";
 import type { PopularDeck } from "./useDeckPopularity";
+import Section from "../../components/ui/Section";
+import Button from "../../components/ui/Button";
 
 /**
  * The decklist + "played by" section, split out so its useDeckPopularityIndexData() call only
@@ -55,10 +57,11 @@ function ExpandedDeckRow({
     <div className="mt-2 border-t border-ctp-surface0 pt-2">
       <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={deck.deckIds[0]} />
 
-      <h3 className="mt-4 text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Played by ({instances.length})</h3>
-      <div className="mt-2">
-        <TopDecksList decks={instances} playerName={playerName} />
-      </div>
+      <Section className="mt-4" heading="dense" title={`Played by (${instances.length})`}>
+        <div className="mt-2">
+          <TopDecksList decks={instances} playerName={playerName} />
+        </div>
+      </Section>
     </div>
   );
 }
@@ -126,14 +129,9 @@ export default function PopularDeckRow({
         >
           View stats &rarr;
         </Link>
-        <button
-          type="button"
-          onClick={() => setExpanded((v) => !v)}
-          aria-expanded={expanded}
-          className="shrink-0 rounded-md border border-ctp-surface1 px-2 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-text"
-        >
+        <Button variant="secondary" size="sm" onClick={() => setExpanded((v) => !v)} aria-expanded={expanded} className="shrink-0">
           {expanded ? "Hide" : "Decklist"}
-        </button>
+        </Button>
       </div>
 
       {expanded && <ExpandedDeckRow deck={deck} decklist={decklist} cardsByName={cardsByName} playerName={playerName} />}

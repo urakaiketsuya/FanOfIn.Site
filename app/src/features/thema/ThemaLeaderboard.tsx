@@ -7,6 +7,7 @@ import CardImage from "../../components/CardImage";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
+import { InlineState } from "../../components/ui/ContentState";
 
 function RankChange({ value }: { value: number }) {
   if (value === 0) return <span className="text-ctp-subtext0">—</span>;
@@ -42,8 +43,8 @@ export default function ThemaLeaderboard() {
         ))}
       </div>
 
-      {ranks.isPending && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
-      {ranks.isError && <p className="mt-6 text-ctp-red">Failed to load rankings.</p>}
+      {ranks.isPending && <InlineState className="mt-6">Loading…</InlineState>}
+      {ranks.isError && <InlineState tone="danger" className="mt-6">Failed to load rankings.</InlineState>}
 
       <div className="mt-6 divide-y divide-ctp-surface0">
         {ranks.data?.map((entry) => (

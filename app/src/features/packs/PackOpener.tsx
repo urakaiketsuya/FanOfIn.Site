@@ -5,6 +5,7 @@ import { useSyncProgress } from "../../lib/sync/SyncProvider";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PackOpenerWidget from "./PackOpenerWidget";
 import PageLayout from "../../components/layout/PageLayout";
+import { EmptyState, InlineState } from "../../components/ui/ContentState";
 
 export default function PackOpener() {
   const { prefix = "" } = useParams<{ prefix: string }>();
@@ -29,23 +30,23 @@ export default function PackOpener() {
     if (phase === "error") {
       return (
         <PageLayout className="py-10">
-          <p className="text-ctp-red">Couldn't load the card catalog.</p>
+          <InlineState tone="danger">Couldn't load the card catalog.</InlineState>
         </PageLayout>
       );
     }
     if (phase === "done") {
       return (
         <PageLayout className="py-10">
-          <p className="text-ctp-subtext1">No cards are available yet.</p>
-          <Link to="/cards?tab=sets" className="mt-2 inline-block text-ctp-blue hover:underline">
-            &larr; Back to Sets
-          </Link>
+          <EmptyState
+            title="No cards are available yet"
+            action={<Link to="/cards?tab=sets" className="text-ctp-blue hover:underline">&larr; Back to Sets</Link>}
+          />
         </PageLayout>
       );
     }
     return (
       <PageLayout className="py-10">
-        <p className="text-ctp-subtext1">Loading…</p>
+        <InlineState>Loading…</InlineState>
       </PageLayout>
     );
   }
@@ -53,10 +54,10 @@ export default function PackOpener() {
   if (!setInfo) {
     return (
       <PageLayout className="py-10">
-        <p className="text-ctp-red">Set "{prefix}" not found.</p>
-        <Link to="/cards?tab=sets" className="mt-2 inline-block text-ctp-blue hover:underline">
-          &larr; Back to Sets
-        </Link>
+        <EmptyState
+          title={`Set "${prefix}" not found`}
+          action={<Link to="/cards?tab=sets" className="text-ctp-blue hover:underline">&larr; Back to Sets</Link>}
+        />
       </PageLayout>
     );
   }

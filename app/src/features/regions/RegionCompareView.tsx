@@ -12,6 +12,8 @@ import type { RegionOption } from "./useRegionalDecks";
 import DivergingBarChart, { type DivergingBarRow } from "../../components/DivergingBarChart";
 import FilterBar from "../../components/ui/FilterBar";
 import Tabs from "../../components/ui/Tabs";
+import Section from "../../components/ui/Section";
+import { InlineState } from "../../components/ui/ContentState";
 
 type ContentTab = "archetypes" | "champions" | "cards" | "keywords";
 const CONTENT_TABS: ContentTab[] = ["archetypes", "champions", "cards", "keywords"];
@@ -124,7 +126,7 @@ function diffRates<T extends { regionRate: number; deckCountInRegion: number; av
 
 function CardDiffList({ rows, labelA, labelB, sign }: { rows: CardDiffRow[]; labelA: string; labelB: string; sign: "positive" | "negative" }) {
   const cardsByName = useCardsByNames(useMemo(() => rows.map((r) => r.name), [rows]));
-  if (rows.length === 0) return <p className="text-sm text-ctp-subtext1">Nothing clears the sample bar in either region yet.</p>;
+  if (rows.length === 0) return <InlineState className="text-sm">Nothing clears the sample bar in either region yet.</InlineState>;
   return (
     <ul className="mt-2 space-y-1">
       {rows.map((r) => {
@@ -241,14 +243,14 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
 
       <div className="mt-4"><Tabs tabs={CONTENT_TABS.map((key) => ({ key, label: CONTENT_LABELS[key] }))} active={tab} onChange={setTab} label="Regional comparison data" /></div>
 
-      {loading && <p className="mt-4 text-ctp-subtext1">Loading…</p>}
+      {loading && <InlineState className="mt-4">Loading…</InlineState>}
 
       {!loading && (
         <div className="mt-4">
           {tab === "archetypes" && (
             <>
               {archetypeRows.length === 0 ? (
-                <p className="text-sm text-ctp-subtext1">Not enough data in either region yet.</p>
+                <InlineState className="text-sm">Not enough data in either region yet.</InlineState>
               ) : (
                 <>
                 <DivergingBarChart labelA={labelA} labelB={labelB} rows={archetypeChartRows} />
@@ -294,7 +296,7 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
           {tab === "champions" && (
             <>
               {championRows.length === 0 ? (
-                <p className="text-sm text-ctp-subtext1">Not enough data in either region yet.</p>
+                <InlineState className="text-sm">Not enough data in either region yet.</InlineState>
               ) : (
                 <>
                 <DivergingBarChart labelA={labelA} labelB={labelB} rows={championChartRows} />
@@ -337,14 +339,12 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
                 Cards used more in {labelA} than {labelB}, and vice versa — correlational, not a guarantee.
               </p>
               <div className="mt-3"><DivergingBarChart labelA={labelA} labelB={labelB} rows={cardChartRows} /></div>
-              <div className="mt-4">
-                <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">More common in {labelA}</h2>
+              <Section className="mt-4" heading="dense" title={`More common in ${labelA}`}>
                 <CardDiffList rows={cardDiff.favorsA} labelA={labelA} labelB={labelB} sign="positive" />
-              </div>
-              <div className="mt-6">
-                <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">More common in {labelB}</h2>
+              </Section>
+              <Section className="mt-6" heading="dense" title={`More common in ${labelB}`}>
                 <CardDiffList rows={cardDiff.favorsB} labelA={labelA} labelB={labelB} sign="negative" />
-              </div>
+              </Section>
             </>
           )}
 
@@ -354,14 +354,12 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
                 Ability keywords used more in {labelA} than {labelB}, and vice versa — correlational, not a guarantee.
               </p>
               <div className="mt-3"><DivergingBarChart labelA={labelA} labelB={labelB} rows={keywordChartRows} /></div>
-              <div className="mt-4">
-                <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">More common in {labelA}</h2>
+              <Section className="mt-4" heading="dense" title={`More common in ${labelA}`}>
                 <CardDiffList rows={keywordDiff.favorsA} labelA={labelA} labelB={labelB} sign="positive" />
-              </div>
-              <div className="mt-6">
-                <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">More common in {labelB}</h2>
+              </Section>
+              <Section className="mt-6" heading="dense" title={`More common in ${labelB}`}>
                 <CardDiffList rows={keywordDiff.favorsB} labelA={labelA} labelB={labelB} sign="negative" />
-              </div>
+              </Section>
             </>
           )}
         </div>

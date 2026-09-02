@@ -7,6 +7,8 @@ import PlayerLink from "../players/PlayerLink";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageLayout from "../../components/layout/PageLayout";
+import Section from "../../components/ui/Section";
+import { EmptyState, InlineState } from "../../components/ui/ContentState";
 
 const PAGE_SIZE = 50;
 
@@ -45,12 +47,13 @@ export default function AchievementDetail() {
 
   if (achievementsData && !definition) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-10">
-        <p className="text-ctp-red">There's no achievement with id "{id}".</p>
-        <Link to="/achievements" className="mt-2 inline-block text-ctp-blue hover:underline">
-          &larr; All achievements
-        </Link>
-      </div>
+      <PageLayout>
+        <EmptyState
+          title="Achievement not found"
+          description={`There's no achievement with id "${id}".`}
+          action={<Link to="/achievements" className="text-ctp-blue hover:underline">&larr; All achievements</Link>}
+        />
+      </PageLayout>
     );
   }
 
@@ -65,11 +68,9 @@ export default function AchievementDetail() {
           <h1 className="mt-2 text-2xl font-bold text-ctp-blue">{definition.name}</h1>
           <p className="mt-1 text-sm text-ctp-subtext1">{definition.description}</p>
 
-          <h2 className="mt-6 text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">
-            {unlocks.length} player{unlocks.length === 1 ? "" : "s"}
-          </h2>
+          <Section className="mt-6" heading="compact" title={`${unlocks.length} player${unlocks.length === 1 ? "" : "s"}`}>
 
-          {unlocks.length === 0 && <p className="mt-2 text-sm text-ctp-subtext1">No one has earned this achievement yet.</p>}
+          {unlocks.length === 0 && <InlineState className="mt-2 text-sm">No one has earned this achievement yet.</InlineState>}
 
           <div className="mt-2 space-y-1.5">
             {visibleUnlocks.map((u, i) => {
@@ -115,6 +116,7 @@ export default function AchievementDetail() {
           </div>
 
           <LoadMore remaining={unlocks.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
+          </Section>
         </>
       )}
     </PageLayout>

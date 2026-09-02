@@ -5,6 +5,7 @@ import { gatcgApi } from "../../lib/api/client";
 import HistoryChart from "../../components/HistoryChart";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageLayout from "../../components/layout/PageLayout";
+import { InlineState } from "../../components/ui/ContentState";
 
 export default function ThemaHistory() {
   useDocumentTitle("Thema Price History", "Historical Thema price-rank chart for a Grand Archive TCG card edition.");
@@ -29,10 +30,10 @@ export default function ThemaHistory() {
         Thema history <span className="text-ctp-subtext0">({kind === "FOIL" ? "Foil" : "Non-foil"})</span>
       </h1>
 
-      {history.isPending && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
-      {history.isError && <p className="mt-6 text-ctp-red">Failed to load history.</p>}
+      {history.isPending && <InlineState className="mt-6">Loading…</InlineState>}
+      {history.isError && <InlineState tone="danger" className="mt-6">Failed to load history.</InlineState>}
       {!history.isPending && !history.isError && points.length === 0 && (
-        <p className="mt-6 text-ctp-subtext1">No price history recorded yet.</p>
+        <InlineState className="mt-6">No price history recorded yet.</InlineState>
       )}
 
       {points.length > 1 && (
