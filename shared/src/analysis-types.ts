@@ -371,6 +371,16 @@ export interface DeckPopularityEntry {
   losses: number;
   ties: number;
   underplaced: boolean;
+  /**
+   * Same value as this sighting's `DeckSighting.deckHash` — carried onto the lean index too so a
+   * deck page (`/decks/:hash`) can resolve its one target deck by a cheap filter over this
+   * already-loaded dataset, instead of decoding and grouping the full deck-card-index universe
+   * (or worse, loading deck-sightings.json, 40MB+, just to read this field) — see DeckDetail.tsx's
+   * `matchingSightings` fast path. Optional on older cached copies published before this field
+   * existed; `usePublishedData`'s `generatedAt` check republishes once the pipeline catches up, so
+   * this is a temporary, self-healing gap, not a permanent optional field.
+   */
+  deckHash?: string | null;
 }
 
 export interface DeckPopularityIndexData {

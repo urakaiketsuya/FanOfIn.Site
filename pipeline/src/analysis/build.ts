@@ -193,6 +193,7 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
     losses: s.losses,
     ties: s.ties,
     underplaced: s.underplaced,
+    deckHash: s.deckHash,
   }));
   await writeFile(
     path.join(DATA_DIR, "deck-popularity-index.json"),

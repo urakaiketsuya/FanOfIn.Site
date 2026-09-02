@@ -1,15 +1,16 @@
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import type { OmnidexDecklist } from "@gatcg/shared";
+import { decodeCardLines, type OmnidexDecklist } from "@gatcg/shared";
 import { gatcgApi } from "../../lib/api/client";
-import { useDeckPopularity } from "../popular/useDeckPopularity";
+import { useDeckPopularity, buildPopularDeck } from "../popular/useDeckPopularity";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useOmnidexPlayers, useEventNameById } from "../tournaments/data";
-import { useCardImpactData, useSimilarityData } from "../archetypes/data";
+import { useCardImpactData, useSimilarityData, useDeckCardIndexData } from "../archetypes/data";
 import { useChampionCardImpact } from "./useChampionCardImpact";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import { useCardsByNames } from "../events/useCardsByNames";
+import { useCardCatalog } from "../cards/useCardCatalog";
 import DeckDecaySignals from "../events/DeckDecaySignals";
 import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
 import CardImpactTable from "../../components/CardImpactTable";
@@ -17,6 +18,7 @@ import {
   computeAllyPower,
   computeDamageComposition,
   computeDeckComposition,
+  computeDeckIdentity,
   computeDeckRating,
   computeFloatingMemory,
   computeKeywordComposition,
@@ -56,14 +58,46 @@ export default function DeckDetail() {
   const { hash = "" } = useParams<{ hash: string }>();
   const [tab, setTab] = useTabParam("tab", TAB_KEYS, "decklist");
 
-  // minPlayers: 1 — a deck page should resolve for any decklist reachable by its hash, not just
-  // ones popular enough to appear on Popular Decks (2+ players).
-  const { decks, loading } = useDeckPopularity(null, 1);
   const popularityIndexData = useDeckPopularityIndexData();
   const eventNameById = useEventNameById();
   const playersData = useOmnidexPlayers();
 
-  const deck = decks.find((d) => shortHash(d.signature) === hash);
+  // Fast path: `deckHash` is precomputed pipeline-side for every deck with at least one duplicate
+  // (see DeckPopularityEntry's own doc comment) — matching against the already-loaded lean index
+  // resolves most deck pages (anything popular enough to be linked to from elsewhere) directly,
+  // without decoding and grouping the full ~57k-deck universe just to find one deck by hash.
+  const matchingSightings = useMemo(
+    () => (popularityIndexData ? popularityIndexData.entries.filter((e) => e.deckHash === hash) : null),
+    [popularityIndexData, hash],
+  );
+  const rawCardIndexData = useDeckCardIndexData();
+  const cardIndexData = rawCardIndexData?.cardNames ? rawCardIndexData : undefined;
+  const catalog = useCardCatalog();
+  const catalogByName = useMemo(() => new Map(catalog.map((c) => [c.name, c])), [catalog]);
+  const fastDeck = useMemo(() => {
+    if (!matchingSightings || matchingSightings.length === 0 || !cardIndexData) return null;
+    const entry = cardIndexData.decks.find((d) => d.deckId === matchingSightings[0].deckId);
+    if (!entry) return null;
+    const main = decodeCardLines(entry.main, cardIndexData.cardNames);
+    const material = decodeCardLines(entry.material, cardIndexData.cardNames);
+    return buildPopularDeck(
+      main,
+      material,
+      matchingSightings[0].championName,
+      matchingSightings.map((s) => s.deckId),
+      matchingSightings,
+      catalogByName,
+    );
+  }, [matchingSightings, cardIndexData, catalogByName]);
+
+  // Only decode + group the full universe when the fast path can't resolve this hash (a genuinely
+  // unique, one-player decklist has no precomputed deckHash) or the Similar Decks tab needs the
+  // broader universe to find other decks to compare against.
+  const needsFullUniverse = matchingSightings !== null && (matchingSightings.length === 0 || tab === "similar");
+  const { decks, loading: fullUniverseLoading } = useDeckPopularity(null, 1, needsFullUniverse);
+  const deck = fastDeck ?? decks.find((d) => shortHash(d.signature) === hash);
+  const loading =
+    matchingSightings === null || (matchingSightings.length > 0 && !fastDeck) || (needsFullUniverse && fullUniverseLoading);
   useDocumentTitle(
     deck?.championName ? `${deck.championName} deck` : null,
     deck && `A popular ${deck.championName ?? "Grand Archive TCG"} decklist, independently played by ${deck.playerCount} players.`,
@@ -91,15 +125,23 @@ export default function DeckDetail() {
   const cardImpactData = useCardImpactData();
   const hasClusterMatch = !!(deck && cardImpactData?.deckClusterIndex[deck.deckIds[0]]);
 
+  // Champion-scoped directly (same filter-before-decode pattern as useChampionCardImpact.ts)
+  // rather than scanning the full cross-Champion `decks` universe, which the fast path above
+  // deliberately avoids decoding for the common case.
   const championElementsPresent = useMemo(() => {
-    if (!deck?.championName) return [];
-    const set = new Set<string>();
-    for (const d of decks) {
-      if (d.championName !== deck.championName) continue;
-      for (const e of d.elements) set.add(e);
+    if (!deck?.championName || !cardIndexData || !popularityIndexData) return [];
+    const deckIdsForChampion = new Set(
+      popularityIndexData.entries.filter((e) => e.championName === deck.championName).map((e) => e.deckId),
+    );
+    const elements = new Set<string>();
+    for (const entry of cardIndexData.decks) {
+      if (!deckIdsForChampion.has(entry.deckId)) continue;
+      const main = decodeCardLines(entry.main, cardIndexData.cardNames);
+      const material = decodeCardLines(entry.material, cardIndexData.cardNames);
+      for (const e of computeDeckIdentity([...main, ...material], catalogByName).elements) elements.add(e);
     }
-    return Array.from(set).sort();
-  }, [decks, deck?.championName]);
+    return Array.from(elements).sort();
+  }, [deck?.championName, cardIndexData, popularityIndexData, catalogByName]);
 
   const [selectedElements, setSelectedElements] = useState<string[]>([]);
   const [isRecommendationPending, startRecommendationTransition] = useTransition();
