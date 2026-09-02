@@ -155,8 +155,19 @@ interface DamageClause {
   value: number | null;
 }
 
-/** Matches "Deal N damage", "Deal X damage", or "Deal N+X damage" after stripping markdown bold, capturing the trailing target text up to the next sentence. */
-const DEAL_DAMAGE_RE = /Deal (\d+(?:\+X)?|X) damage\s*([^.]*)/gi;
+/**
+ * Matches "Deal N damage", "Deal X damage", "Deal N+X damage", or the same forms preceded by
+ * "an additional"/"a further" (e.g. Burst Asunder's "deal an additional 2 damage to that unit"),
+ * after stripping markdown bold, capturing the trailing target text up to the next sentence. The
+ * additional-damage prefix is common on scaling/combo clauses layered onto a card's base damage —
+ * without it, that second clause silently fails to match at all rather than just misclassifying.
+ * A single adjective word is allowed between the number and "damage" (e.g. Spark Alight's "Deal 2
+ * unpreventable damage") — without this, the whole clause silently fails to match, not just its
+ * unpreventable-ness; the real card pool has been checked for how many distinct modifier words
+ * actually appear (one, "unpreventable", as of this writing) so this stays generalized rather than
+ * hardcoded to that word specifically.
+ */
+const DEAL_DAMAGE_RE = /Deal (?:an additional |a further )?(\d+(?:\+X)?|X)(?: [a-zA-Z]+)? damage\s*([^.]*)/gi;
 
 /** "your champion"/"own champion" is the caster paying a cost against themselves, not reach damage at an opponent — must be stripped before scanning for "champion" so it can't masquerade as a Champion-target clause. */
 const SELF_CHAMPION_RE = /\b(your|own) champion\b/g;
@@ -204,13 +215,22 @@ function parseDamageClauses(rawEffect: string): DamageClause[] {
   return clauses;
 }
 
+/** "Choose one. ... —" modal framing (e.g. Vermilion Decree) — every bullet is one of several
+ * mutually-exclusive options, so a Champion-damage clause inside one is a possible mode, not a
+ * guarantee the way a plain "Deal N damage to target champion" clause is. */
+const MODAL_RE = /\bChoose one\b/i;
+
 /**
  * Fixed printed damage a single copy can deal to an opposing champion. The two values differ when
  * a card has multiple fixed champion-damage clauses (usually level- or state-gated). Variable-X
- * clauses and damage to the controller's own champion are intentionally excluded.
+ * clauses, damage to the controller's own champion, and Champion-damage clauses that are only one
+ * mode of a "Choose one" modal card are intentionally excluded — none of those are guaranteed the
+ * way this range's callers (the forecast's Min/guaranteed side) require. See
+ * `ambiguousFixedChampionDamage` for the non-guaranteed counterpart.
  */
 export function fixedChampionDamageRange(card: Pick<Card, "effect">): DamageRange | null {
   if (!card.effect) return null;
+  if (MODAL_RE.test(card.effect)) return null;
   const values = parseDamageClauses(card.effect)
     .filter((clause) => clause.target === "Champion" && clause.kind === "fixed")
     .map((clause) => clause.value!);
@@ -220,6 +240,84 @@ export function fixedChampionDamageRange(card: Pick<Card, "effect">): DamageRang
 export interface DamageRange {
   min: number;
   max: number;
+}
+
+/**
+ * Fixed printed damage a single copy could deal to an opposing champion, but isn't guaranteed to —
+ * either because the clause targets the ambiguous "unit" bucket (legally includes champions, so
+ * genuinely could go to face even though it might land on an ally instead — e.g. Blazing Throw's
+ * "Deal 4 damage to target unit"), or because the clause sits inside a "Choose one" modal card
+ * (e.g. Vermilion Decree's "Deal 3 damage to up to one target champion" bullet — a mode the
+ * controller might not pick). Returns the highest such value on the card, for sizing an optimistic
+ * ceiling estimate — never a guarantee, so callers must never fold this into a Min/guaranteed
+ * number. Excludes anything `parseSubtypeScalingDamage` already accounts for via its own base
+ * clause, since that combo shape gets a richer (fodder-scaled) estimate instead.
+ */
+export function ambiguousFixedChampionDamage(card: Pick<Card, "effect">): number | null {
+  if (!card.effect) return null;
+  const modal = MODAL_RE.test(card.effect);
+  const clauses = parseDamageClauses(card.effect).filter(
+    (clause) => clause.kind === "fixed" && (clause.target === "Unit" || (modal && clause.target === "Champion")),
+  );
+  return clauses.length > 0 ? Math.max(...clauses.map((clause) => clause.value!)) : null;
+}
+
+/**
+ * Does this card deal champion-reach damage that no other export here can put a number on — a
+ * variable-X clause targeting Champion or Unit? (Fixed-value clauses always land in
+ * `fixedChampionDamageRange`, `parseSubtypeScalingDamage`, or `ambiguousFixedChampionDamage`
+ * instead, so they never reach this fallback.) This is what keeps a card like Chronicle's
+ * X-damage burn visible as excluded-because-unquantifiable, rather than not surfacing at all.
+ * Deliberately excludes Ally/Self-only clauses, which never reach the champion.
+ */
+export function hasUnquantifiedChampionDamage(card: Pick<Card, "effect">): boolean {
+  if (!card.effect) return false;
+  return parseDamageClauses(card.effect).some((clause) => clause.kind === "variable" && (clause.target === "Champion" || clause.target === "Unit"));
+}
+
+export interface SubtypeScalingDamage {
+  /** This card's own printed base damage, before any subtype-sacrifice bonus (e.g. Burst Asunder's base 2). */
+  baseDamage: number;
+  /** Extra damage per copy of `subtype` sacrificed (e.g. Burst Asunder's "additional 2 damage" per Fractal). */
+  perUnitDamage: number;
+  /** Normalized (lowercase, singular) subtype name sacrificed to fuel the bonus — matches `card.subtypes` case-insensitively once pluralization is stripped. */
+  subtype: string;
+}
+
+const SACRIFICE_ANY_AMOUNT_RE = /sacrifice\s+any amount of\s+([A-Za-z]+)/i;
+
+/**
+ * Detects the "Deal N damage to target unit. ...sacrifice any amount of <Subtype>s... deal an
+ * additional M damage..." combo shape (e.g. Burst Asunder feeding off Fractal tokens) — damage that
+ * genuinely scales with deck composition, not just a fixed number. `fixedChampionDamageRange`
+ * correctly excludes this from its *guaranteed* range (the "unit" target is ambiguous, and neither
+ * clause is a flat number a champion is certain to take), but for a deck actually built around the
+ * combo it is real, sizeable reach damage that a forecast reporting flat zero would misrepresent —
+ * see `computeAggressionForecast`, which uses this to size an optimistic (not guaranteed) estimate
+ * from how much of the named subtype the deck actually runs.
+ *
+ * `knownSubtypes` (real subtype strings, lowercased) gates the match the same way `cardIntent.ts`'s
+ * `extractConsumedSubtypes` gates its own subtype detection, so a generic capitalized word after
+ * "sacrifice any amount of" can't misfire as a subtype trigger. Restricted to clauses targeting
+ * Champion/Unit (never Ally/Self), so an ally-buff or self-damage clause sharing the sentence can't
+ * be mistaken for reach damage.
+ */
+export function parseSubtypeScalingDamage(card: Pick<Card, "effect">, knownSubtypes: ReadonlySet<string>): SubtypeScalingDamage | null {
+  if (!card.effect) return null;
+  const clean = card.effect.replace(/\*\*/g, "");
+  const sacMatch = SACRIFICE_ANY_AMOUNT_RE.exec(clean);
+  if (!sacMatch) return null;
+  const subtype = sacMatch[1].replace(/s$/i, "").toLowerCase();
+  if (!knownSubtypes.has(subtype)) return null;
+
+  const clauses = parseDamageClauses(clean).filter((clause) => clause.target === "Champion" || clause.target === "Unit");
+  if (clauses.length < 2) return null;
+  const [baseClause, ...rest] = clauses;
+  const scalingClause = rest[rest.length - 1];
+  if (baseClause.kind !== "fixed" || baseClause.value === null) return null;
+  if (scalingClause.kind !== "fixed" || scalingClause.value === null) return null;
+
+  return { baseDamage: baseClause.value, perUnitDamage: scalingClause.value, subtype };
 }
 
 /**

@@ -1,5 +1,5 @@
 import type { Card } from "@gatcg/shared";
-import { fixedChampionDamageRange } from "./deckIdentity";
+import { ambiguousFixedChampionDamage, fixedChampionDamageRange, hasUnquantifiedChampionDamage, parseSubtypeScalingDamage } from "./deckIdentity";
 
 export interface AggressionForecastPoint {
   seen: number;
@@ -17,6 +17,10 @@ export interface AggressionForecast {
   deckSize: number;
   fixedDamageCopies: number;
   variableDamageCopies: number;
+  /** Copies whose damage scales with a subtype-sacrifice combo (e.g. Burst Asunder off Fractals) — folded into `expectedMax`/`high`/the "Max" chance columns as an optimistic estimate sized off this deck's own fodder count, never into the guaranteed `Min` side. */
+  scalingDamageCopies: number;
+  /** Copies with a fixed printed damage value that isn't guaranteed to reach the champion — either an ambiguous "target unit" clause (e.g. Blazing Throw) or one mode of a "Choose one" modal card (e.g. Vermilion Decree). Folded into the Max side only, same as `scalingDamageCopies`. */
+  ambiguousDamageCopies: number;
   points: AggressionForecastPoint[];
 }
 
@@ -92,6 +96,28 @@ export function computeAggressionForecast(
   const maxGroups: { copies: number; damage: number }[] = [];
   let fixedDamageCopies = 0;
   let variableDamageCopies = 0;
+  let scalingDamageCopies = 0;
+  let ambiguousDamageCopies = 0;
+
+  // Real subtype vocabulary for this deck's own cards, gating `parseSubtypeScalingDamage` the same
+  // way `cardIntent.ts`'s subtype detection is gated — see that function's doc comment.
+  const knownSubtypes = new Set<string>();
+  for (const card of cardsByName.values()) for (const s of card.subtypes) knownSubtypes.add(s.toLowerCase());
+
+  // How much of each subtype this specific deck actually runs — the fodder count a scaling combo's
+  // ceiling estimate is sized off, so a deck with 0 Fractals gets 0 bonus and one built around them
+  // gets a realistic one.
+  const subtypeCopyCounts = new Map<string, number>();
+  for (const line of mainLines) {
+    const card = cardsByName.get(line.name);
+    if (!card) continue;
+    for (const s of card.subtypes) {
+      const key = s.toLowerCase();
+      subtypeCopyCounts.set(key, (subtypeCopyCounts.get(key) ?? 0) + line.quantity);
+    }
+  }
+
+  const scalingSources: { copies: number; perUnitDamage: number; fodderCopies: number }[] = [];
 
   for (const line of mainLines) {
     const card = cardsByName.get(line.name);
@@ -101,7 +127,32 @@ export function computeAggressionForecast(
       fixedDamageCopies += line.quantity;
       minGroups.push({ copies: line.quantity, damage: range.min });
       maxGroups.push({ copies: line.quantity, damage: range.max });
-    } else if (/Deal (?:\d+\+X|X) damage[^.]*champion/i.test((card.effect ?? "").replace(/\*\*/g, ""))) {
+      continue;
+    }
+
+    const scaling = parseSubtypeScalingDamage(card, knownSubtypes);
+    if (scaling) {
+      scalingDamageCopies += line.quantity;
+      // Base clause targets the ambiguous "unit" bucket (may hit an ally instead), so it's not
+      // guaranteed — 0 on the Min side, its printed value on the Max side, same as the rest of this
+      // group's combinatorics. The fodder-scaled bonus on top is handled separately below.
+      minGroups.push({ copies: line.quantity, damage: 0 });
+      maxGroups.push({ copies: line.quantity, damage: scaling.baseDamage });
+      scalingSources.push({ copies: line.quantity, perUnitDamage: scaling.perUnitDamage, fodderCopies: subtypeCopyCounts.get(scaling.subtype) ?? 0 });
+      continue;
+    }
+
+    const ambiguous = ambiguousFixedChampionDamage(card);
+    if (ambiguous !== null) {
+      ambiguousDamageCopies += line.quantity;
+      // Not guaranteed — could land on an ally instead of the champion, or (for a modal card) never
+      // get chosen at all — so 0 on the Min side, its printed value on the Max side.
+      minGroups.push({ copies: line.quantity, damage: 0 });
+      maxGroups.push({ copies: line.quantity, damage: ambiguous });
+      continue;
+    }
+
+    if (hasUnquantifiedChampionDamage(card)) {
       variableDamageCopies += line.quantity;
     }
   }
@@ -109,18 +160,33 @@ export function computeAggressionForecast(
   const points = CHECKPOINTS.map((seen) => {
     const minDistribution = damageDistribution(minGroups, deckSize, seen);
     const maxDistribution = damageDistribution(maxGroups, deckSize, seen);
+
+    // Expected extra damage from subtype-sacrifice combos (e.g. Burst Asunder off Fractals) at this
+    // checkpoint: each source's own expected copies seen so far, times its per-unit bonus, times the
+    // expected copies of its fodder subtype seen so far — the same closed-form hypergeometric-mean
+    // approximation `drawEffects.ts`'s `expectedExtraDraws` uses (`copies * seen / deckSize`), not an
+    // exact joint distribution: it treats the source and its fodder as independently drawn, and
+    // doesn't model turn sequencing or fodder shared across multiple combo sources competing for the
+    // same sacrifices. Ceiling-only — never added to `expectedMin`/`low`.
+    const scalingBonus = scalingSources.reduce((sum, source) => {
+      const sourceSeen = (source.copies * Math.min(seen, deckSize)) / deckSize;
+      const fodderSeen = (source.fodderCopies * Math.min(seen, deckSize)) / deckSize;
+      return sum + sourceSeen * source.perUnitDamage * fodderSeen;
+    }, 0);
+    const roundedBonus = Math.round(scalingBonus);
+
     return {
       seen,
       expectedMin: round(expected(minDistribution)),
-      expectedMax: round(expected(maxDistribution)),
+      expectedMax: round(expected(maxDistribution) + scalingBonus),
       low: quantile(minDistribution, 0.1),
-      high: quantile(maxDistribution, 0.9),
+      high: quantile(maxDistribution, 0.9) + roundedBonus,
       chanceAtLeastFiveMin: round(chanceAtLeast(minDistribution, 5), 3),
-      chanceAtLeastFiveMax: round(chanceAtLeast(maxDistribution, 5), 3),
+      chanceAtLeastFiveMax: round(chanceAtLeast(maxDistribution, Math.max(0, 5 - roundedBonus)), 3),
       chanceAtLeastTenMin: round(chanceAtLeast(minDistribution, 10), 3),
-      chanceAtLeastTenMax: round(chanceAtLeast(maxDistribution, 10), 3),
+      chanceAtLeastTenMax: round(chanceAtLeast(maxDistribution, Math.max(0, 10 - roundedBonus)), 3),
     };
   });
 
-  return { deckSize, fixedDamageCopies, variableDamageCopies, points };
+  return { deckSize, fixedDamageCopies, variableDamageCopies, scalingDamageCopies, ambiguousDamageCopies, points };
 }

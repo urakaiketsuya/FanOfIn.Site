@@ -9,7 +9,13 @@ function formatChance(min: number, max: number): string {
 }
 
 export default function AggressionForecast({ forecast }: { forecast: Forecast }) {
-  if (forecast.fixedDamageCopies === 0 && forecast.variableDamageCopies === 0) return null;
+  if (
+    forecast.fixedDamageCopies === 0 &&
+    forecast.variableDamageCopies === 0 &&
+    forecast.scalingDamageCopies === 0 &&
+    forecast.ambiguousDamageCopies === 0
+  )
+    return null;
 
   return (
     <div className="mt-4 border-t border-ctp-surface1 pt-4">
@@ -23,6 +29,16 @@ export default function AggressionForecast({ forecast }: { forecast: Forecast })
         </div>
         <span className="text-xs text-ctp-subtext1">
           {forecast.fixedDamageCopies} fixed-damage cop{forecast.fixedDamageCopies === 1 ? "y" : "ies"}
+          {forecast.scalingDamageCopies > 0 && (
+            <>
+              , {forecast.scalingDamageCopies} combo-scaling cop{forecast.scalingDamageCopies === 1 ? "y" : "ies"}
+            </>
+          )}
+          {forecast.ambiguousDamageCopies > 0 && (
+            <>
+              , {forecast.ambiguousDamageCopies} ambiguous-target cop{forecast.ambiguousDamageCopies === 1 ? "y" : "ies"}
+            </>
+          )}
         </span>
       </div>
 
@@ -51,9 +67,24 @@ export default function AggressionForecast({ forecast }: { forecast: Forecast })
         </table>
       </div>
 
+      {forecast.scalingDamageCopies > 0 && (
+        <p className="mt-2 text-[11px] text-ctp-mauve">
+          {forecast.scalingDamageCopies} cop{forecast.scalingDamageCopies === 1 ? "y" : "ies"} deal bonus damage scaled by a sacrifice/combo cost (e.g. Burst Asunder off Fractals) —
+          folded into the Expected/Chance "Max" side above, sized off how much of that fodder this deck actually runs. Not in the Min side, and not a guarantee: it assumes
+          each copy has independent access to all the fodder seen so far, which overstates the total once more than one copy is in play and sharing the same fodder pool.
+        </p>
+      )}
+      {forecast.ambiguousDamageCopies > 0 && (
+        <p className="mt-2 text-[11px] text-ctp-blue">
+          {forecast.ambiguousDamageCopies} cop{forecast.ambiguousDamageCopies === 1 ? "y deals" : "ies deal"} its printed damage to an ambiguously-targeted "unit" (could hit an
+          ally instead of the champion) or as one mode of a "Choose one" card (might not get picked) — folded into the "Max" side above as an optimistic estimate that assumes
+          it lands on the champion, never into the guaranteed Min side.
+        </p>
+      )}
       {forecast.variableDamageCopies > 0 && (
         <p className="mt-2 text-[11px] text-ctp-yellow">
-          {forecast.variableDamageCopies} variable-X damage cop{forecast.variableDamageCopies === 1 ? "y is" : "ies are"} excluded because its damage depends on game state.
+          {forecast.variableDamageCopies} variable-damage cop{forecast.variableDamageCopies === 1 ? "y is" : "ies are"} excluded entirely — its damage scales with an
+          unresolved X value, so no number, not even an optimistic one, can be assigned.
         </p>
       )}
       <p className="mt-2 text-[11px] text-ctp-subtext0">
