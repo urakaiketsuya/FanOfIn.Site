@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import type { ArchetypeTaxonomyValidationData } from "@gatcg/shared";
+import Panel from "../../components/ui/Panel";
+import { InlineState } from "../../components/ui/ContentState";
 
 function pct(value: number, digits = 1): string {
   return `${(value * 100).toFixed(digits)}%`;
@@ -7,16 +9,16 @@ function pct(value: number, digits = 1): string {
 
 function MetricCard({ value, label, detail }: { value: string; label: string; detail: string }) {
   return (
-    <div className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4 shadow-sm">
+    <Panel className="shadow-sm">
       <p className="text-2xl font-semibold tracking-tight text-ctp-blue">{value}</p>
       <p className="mt-1 text-sm font-medium text-ctp-text">{label}</p>
       <p className="mt-1 text-xs leading-relaxed text-ctp-subtext0">{detail}</p>
-    </div>
+    </Panel>
   );
 }
 
 export default function ArchetypeValidationPanel({ data }: { data: ArchetypeTaxonomyValidationData | undefined }) {
-  if (!data) return <p className="mt-6 text-sm text-ctp-subtext1">Loading validation report…</p>;
+  if (!data) return <InlineState className="mt-6 text-sm">Loading validation report…</InlineState>;
 
   const baseline = data.thresholds.find((result) => result.threshold === data.baselineThreshold) ?? data.thresholds[0];
   const passedChecks = baseline.goldSet.filter((check) => check.passed).length;
@@ -24,7 +26,7 @@ export default function ArchetypeValidationPanel({ data }: { data: ArchetypeTaxo
 
   return (
     <section className="mt-5 space-y-5" aria-labelledby="validation-heading">
-      <div className={`rounded-xl border p-5 ${overlappingChecks > 0 ? "border-ctp-yellow/40 bg-ctp-yellow/5" : "border-ctp-blue/30 bg-ctp-blue/5"}`}>
+      <Panel tone={overlappingChecks > 0 ? "warning" : "info"} padding="lg">
         <p className={`text-xs font-semibold tracking-wide uppercase ${overlappingChecks > 0 ? "text-ctp-yellow" : "text-ctp-blue"}`}>Current conclusion</p>
         <h2 id="validation-heading" className="mt-1 text-xl font-semibold text-ctp-text">
           {overlappingChecks > 0
@@ -36,7 +38,7 @@ export default function ArchetypeValidationPanel({ data }: { data: ArchetypeTaxo
           Element and plurality Champion are applied afterward as readable labels. A package below 5 percentage points of
           separation is flagged as overlapping: the current model may be splitting variants of one strategy rather than finding distinct archetypes.
         </p>
-      </div>
+      </Panel>
 
       <div className="grid gap-3 sm:grid-cols-3">
         <MetricCard

@@ -1,4 +1,5 @@
 import type { ChampionSeasonPerformance } from "@gatcg/shared";
+import Panel from "../../components/ui/Panel";
 
 const WIDTH = 720;
 const HEIGHT = 260;
@@ -36,7 +37,7 @@ export default function ChampionSeasonChart({ seasons }: { seasons: ChampionSeas
   const ticks = [0, 0.25, 0.5, 0.75, 1];
 
   return (
-    <figure className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3">
+    <Panel as="figure" padding="sm" className="mt-4">
       <div className="mb-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-ctp-subtext1">
         <span className="inline-flex items-center gap-1.5"><span className="h-0.5 w-4 bg-ctp-blue" />Meta share</span>
         <span className="inline-flex items-center gap-1.5"><span className="h-0.5 w-4 bg-ctp-mauve" />Win rate</span>
@@ -74,6 +75,6 @@ export default function ChampionSeasonChart({ seasons }: { seasons: ChampionSeas
         <text x={WIDTH - 10} y={MARGIN.top + plotHeight / 2} transform={`rotate(90 ${WIDTH - 10} ${MARGIN.top + plotHeight / 2})`} textAnchor="middle" className="fill-ctp-subtext0 text-[10px] uppercase">Win rate</text>
       </svg>
       </div>
-    </figure>
+    </Panel>
   );
 }

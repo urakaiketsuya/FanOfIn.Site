@@ -4,6 +4,8 @@ import HypergeometricCalculator from "../HypergeometricCalculator";
 import type { DeckRating, RatingPillar } from "../../../lib/deckIdentity";
 import type { DeckValidationResult } from "../validateDeck";
 import type { ArchetypeTuningOption, CollectionMode, PopulationSource } from "../model/builderTypes";
+import Panel from "../../../components/ui/Panel";
+import Section from "../../../components/ui/Section";
 
 const PILLAR_OPTIONS: RatingPillar[] = ["durability", "interaction", "aggro", "opportunity"];
 
@@ -48,11 +50,8 @@ export default function ToolsPanel({
 }) {
   return (
     <div className="mt-6">
-      <div className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">DIAO Score</h2>
-          <span className="text-2xl font-bold text-ctp-blue">{rating.composite.toFixed(2)}</span>
-        </div>
+      <Panel>
+        <Section heading="dense" title="DIAO Score" actions={<span className="text-2xl font-bold text-ctp-blue">{rating.composite.toFixed(2)}</span>}>
         <div className="mt-3 space-y-2">
           {(["durability", "interaction", "aggro", "opportunity"] as RatingPillar[]).map((pillar) => (
             <div key={pillar} className="flex items-center gap-2 text-sm">
@@ -64,7 +63,8 @@ export default function ToolsPanel({
             </div>
           ))}
         </div>
-      </div>
+        </Section>
+      </Panel>
 
       <details className={`mt-4 rounded-md border px-3 py-2 text-sm ${validation.status === "Legal" ? "border-ctp-green" : validation.status === "Illegal" ? "border-ctp-red" : "border-ctp-yellow"}`}>
         <summary className="flex cursor-pointer items-center justify-between gap-3">
@@ -75,13 +75,12 @@ export default function ToolsPanel({
         <p className="mt-2 text-xs text-ctp-subtext0">Standard construction checks only; not tournament certification.</p>
       </details>
 
-      <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
-        <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Tuning</h2>
-        <p className="mt-1 text-xs text-ctp-subtext0">
-          Bias the Build tab's ranked suggestions toward one DIAO Score pillar — a small nudge among cards that
-          already clear the real win-rate bar, never a filter or override, so it never surfaces a card the data
-          doesn't support. Applies to Tournament and Balanced data only; Community decks carry no win rates to bias.
-        </p>
+      <Panel className="mt-4">
+        <Section
+          heading="dense"
+          title="Tuning"
+          description="Bias the Build tab's ranked suggestions toward one DIAO Score pillar — a small nudge among cards that already clear the real win-rate bar, never a filter or override, so it never surfaces a card the data doesn't support. Applies to Tournament and Balanced data only; Community decks carry no win rates to bias."
+        >
         <div className="mt-2 flex flex-wrap gap-1.5">
           <button
             type="button"
@@ -154,7 +153,8 @@ export default function ToolsPanel({
           </select>
           <p className="mt-1 text-[11px] text-ctp-subtext0">This controls which Champion levels are proposed. Remove a proposed print to reject that specific version; choose a lower cap to omit higher levels entirely.</p>
         </div>
-      </div>
+        </Section>
+      </Panel>
 
       <div className="mt-4 flex flex-col items-start gap-3">
         <span className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Data source</span>

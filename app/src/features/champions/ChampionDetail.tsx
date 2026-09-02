@@ -19,6 +19,8 @@ import Tabs from "../../components/ui/Tabs";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 import { cutoutsForChampion } from "../products/characterArt";
 import PageLayout from "../../components/layout/PageLayout";
+import Section from "../../components/ui/Section";
+import { EmptyState, InlineState } from "../../components/ui/ContentState";
 
 const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
@@ -148,12 +150,13 @@ export default function ChampionDetail() {
 
   if (archetypeData && !champion) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-10">
-        <p className="text-ctp-red">Champion "{championName}" hasn't cleared the sample-size threshold (or doesn't exist).</p>
-        <Link to="/champions" className="mt-2 inline-block text-ctp-blue hover:underline">
-          &larr; All champions
-        </Link>
-      </div>
+      <PageLayout>
+        <EmptyState
+          title="Champion not found"
+          description={<>Champion "{championName}" hasn't cleared the sample-size threshold (or doesn't exist).</>}
+          action={<Link to="/champions" className="text-ctp-blue hover:underline">&larr; All champions</Link>}
+        />
+      </PageLayout>
     );
   }
 
@@ -188,39 +191,37 @@ export default function ChampionDetail() {
           <Tabs tabs={TABS} active={tab} onChange={setTab} label={`${champion.signature} details`} />
 
           {tab === "season" && seasonHistory.length > 0 && (
-            <div className="mt-6">
-              <div className="flex items-center justify-between">
-                <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">By season</h2>
-                {trend && trend.trend !== "insufficient-data" && (
-                  <span
-                    className={`text-xs ${
-                      trend.trend === "rising"
-                        ? "text-ctp-green"
-                        : trend.trend === "falling"
-                          ? "text-ctp-red"
-                          : trend.trend === "new"
-                            ? "text-ctp-blue"
-                            : "text-ctp-subtext0"
-                    }`}
-                  >
-                    {trend.trend === "rising" && "▲ Rising"}
-                    {trend.trend === "falling" && "▼ Falling"}
-                    {trend.trend === "stable" && "— Stable"}
-                    {trend.trend === "new" && "★ New this season"}
-                    {trend.trend === "absent" && "Absent last season"}
-                    {trend.trendDeltaPct !== null && (
-                      <span className="ml-1 text-ctp-subtext0">
-                        ({trend.trendDeltaPct > 0 ? "+" : ""}
-                        {trend.trendDeltaPct.toFixed(1)}pp share)
-                      </span>
-                    )}
-                  </span>
-                )}
-              </div>
-              <p className="mt-1 text-xs text-ctp-subtext0">
-                Share of season = this Champion's weighted placement score as a fraction of every Champion's
-                combined score that season — comparable across seasons regardless of how many events were played.
-              </p>
+            <Section
+              className="mt-6"
+              heading="compact"
+              title="By season"
+              description="Share of season = this Champion's weighted placement score as a fraction of every Champion's combined score that season — comparable across seasons regardless of how many events were played."
+              actions={trend && trend.trend !== "insufficient-data" && (
+                <span
+                  className={`text-xs ${
+                    trend.trend === "rising"
+                      ? "text-ctp-green"
+                      : trend.trend === "falling"
+                        ? "text-ctp-red"
+                        : trend.trend === "new"
+                          ? "text-ctp-blue"
+                          : "text-ctp-subtext0"
+                  }`}
+                >
+                  {trend.trend === "rising" && "▲ Rising"}
+                  {trend.trend === "falling" && "▼ Falling"}
+                  {trend.trend === "stable" && "— Stable"}
+                  {trend.trend === "new" && "★ New this season"}
+                  {trend.trend === "absent" && "Absent last season"}
+                  {trend.trendDeltaPct !== null && (
+                    <span className="ml-1 text-ctp-subtext0">
+                      ({trend.trendDeltaPct > 0 ? "+" : ""}
+                      {trend.trendDeltaPct.toFixed(1)}pp share)
+                    </span>
+                  )}
+                </span>
+              )}
+            >
               <ChampionSeasonChart seasons={seasonHistory} />
               <div className="overflow-x-auto">
                 <table className="w-max min-w-full text-sm">
@@ -248,15 +249,11 @@ export default function ChampionDetail() {
                   </tbody>
                 </table>
               </div>
-            </div>
+            </Section>
           )}
 
           {tab === "cards" && champion.topCards.main.length > 0 && (
-            <div className="mt-6">
-              <div className="flex items-center justify-between">
-                <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Most used cards</h2>
-              </div>
-
+            <Section className="mt-6" heading="compact" title="Most used cards">
               {champion.elementBreakdown.length > 0 && (
                 <>
                   <p className="mt-2 text-xs text-ctp-subtext0">
@@ -320,20 +317,17 @@ export default function ChampionDetail() {
                   <TopCardsSections topCards={displayedTopCards} cardImages={cardImages} />
                 </div>
               )}
-            </div>
+            </Section>
           )}
 
           {tab === "builds" && builds.length > 0 && (
-            <div className="mt-6">
-              <div className="flex items-center justify-between">
-                <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Builds</h2>
-                <Link to="/archetypes" className="text-xs text-ctp-blue hover:underline">
-                  All archetypes &rarr;
-                </Link>
-              </div>
-              <p className="mt-1 text-xs text-ctp-subtext0">
-                Named builds within {championName}, derived from real decklists.
-              </p>
+            <Section
+              className="mt-6"
+              heading="compact"
+              title="Builds"
+              description={<>Named builds within {championName}, derived from real decklists.</>}
+              actions={<Link to="/archetypes" className="text-xs text-ctp-blue hover:underline">All archetypes &rarr;</Link>}
+            >
               <div className="overflow-x-auto">
                 <table className="w-max min-w-full text-sm">
                   <thead>
@@ -361,67 +355,63 @@ export default function ChampionDetail() {
                   </tbody>
                 </table>
               </div>
-            </div>
+            </Section>
           )}
 
           {tab === "decks" && topDecks.length > 0 && (
-            <div className="mt-6">
-              <div className="flex items-center justify-between">
-                <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Top decks</h2>
-                <Link
-                  to={`/decks?view=sightings&champion=${encodeURIComponent(championName)}`}
-                  className="text-xs text-ctp-blue hover:underline"
-                >
-                  View all &rarr;
-                </Link>
-              </div>
+            <Section
+              className="mt-6"
+              heading="compact"
+              title="Top decks"
+              actions={<Link to={`/decks?view=sightings&champion=${encodeURIComponent(championName)}`} className="text-xs text-ctp-blue hover:underline">View all &rarr;</Link>}
+            >
               <div className="mt-2">
                 <TopDecksList decks={topDecks} playerName={playerName} />
               </div>
-            </div>
+            </Section>
           )}
 
           {tab === "decks" && uniqueDecks.length > 0 && (
-            <div className="mt-6">
-              <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Most unique decks</h2>
-              <p className="mt-1 text-xs text-ctp-subtext0">
-                Builds with the most uncommon card choices relative to other {championName} decks at the time they
-                were played.
-              </p>
+            <Section
+              className="mt-6"
+              heading="compact"
+              title="Most unique decks"
+              description={<>Builds with the most uncommon card choices relative to other {championName} decks at the time they were played.</>}
+            >
               <div className="mt-2 space-y-2">
                 {uniqueDecks.map((d) => (
                   <UniqueDeckRow key={`${d.eventId}:${d.player}`} score={d} playerName={playerName(d.player)} />
                 ))}
               </div>
-            </div>
+            </Section>
           )}
 
           {tab === "bonus" && (
-            <div className="mt-6">
-              <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Bonus cards</h2>
-              <p className="mt-1 text-xs text-ctp-subtext0">
-                Cards with an effect that specifically triggers or improves when your Champion is {championName}.
-              </p>
+            <Section
+              className="mt-6"
+              heading="compact"
+              title="Bonus cards"
+              description={<>Cards with an effect that specifically triggers or improves when your Champion is {championName}.</>}
+            >
               {bonusCards.length === 0 ? (
-                <p className="mt-4 text-sm text-ctp-subtext1">No published cards have a bonus tied to {championName} yet.</p>
+                <InlineState className="mt-4 text-sm">No published cards have a bonus tied to {championName} yet.</InlineState>
               ) : (
                 <CardGrid cards={bonusCards} />
               )}
-            </div>
+            </Section>
           )}
 
           {tab === "regions" && (
-            <div className="mt-6">
-              <div className="flex items-center justify-between">
-                <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Regional popularity</h2>
-                <Link to="/regions?tab=champions" className="text-xs text-ctp-blue hover:underline">
-                  Full Regions page &rarr;
-                </Link>
-              </div>
-              <p className="mt-1 text-xs text-ctp-subtext0">Where {championName} gets played the most.</p>
-              {regionalBreakdown.loading && <p className="mt-4 text-ctp-subtext1">Loading…</p>}
+            <Section
+              className="mt-6"
+              heading="compact"
+              title="Regional popularity"
+              description={<>Where {championName} gets played the most.</>}
+              actions={<Link to="/regions?tab=champions" className="text-xs text-ctp-blue hover:underline">Full Regions page &rarr;</Link>}
+            >
+              {regionalBreakdown.loading && <InlineState className="mt-4">Loading…</InlineState>}
               {!regionalBreakdown.loading && regionalBreakdown.rows.length === 0 && (
-                <p className="mt-4 text-sm text-ctp-subtext1">Not enough regional data for {championName} yet.</p>
+                <InlineState className="mt-4 text-sm">Not enough regional data for {championName} yet.</InlineState>
               )}
               {regionalBreakdown.rows.length > 0 && (
                 <div className="mt-2 overflow-x-auto">
@@ -452,7 +442,7 @@ export default function ChampionDetail() {
                   </table>
                 </div>
               )}
-            </div>
+            </Section>
           )}
         </>
       )}

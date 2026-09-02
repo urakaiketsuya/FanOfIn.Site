@@ -4,6 +4,8 @@ import { useArchetypeTaxonomyData } from "./data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 import PageLayout from "../../components/layout/PageLayout";
+import Panel from "../../components/ui/Panel";
+import { InlineState } from "../../components/ui/ContentState";
 
 type CompareItem = ArchetypeCluster | MaterialArchetype;
 
@@ -81,8 +83,8 @@ export default function ArchetypeCompare() {
         <span className="rounded-full bg-ctp-surface0 px-3 py-1 text-xs text-ctp-subtext0">{items.length} selected</span>
       </div>
 
-      {!data && <p className="mt-8 text-ctp-subtext1">Loading…</p>}
-      {data && items.length < 2 && <div className="mt-8 rounded-xl border border-ctp-yellow/30 bg-ctp-yellow/5 p-4 text-sm text-ctp-subtext1">Choose at least two {type === "route" ? "material archetypes" : "builds"} from the <Link to="/archetypes" className="text-ctp-blue hover:underline">Archetypes page</Link>.</div>}
+      {!data && <InlineState className="mt-8">Loading…</InlineState>}
+      {data && items.length < 2 && <Panel tone="warning" className="mt-8 text-sm text-ctp-subtext1">Choose at least two {type === "route" ? "material archetypes" : "builds"} from the <Link to="/archetypes" className="text-ctp-blue hover:underline">Archetypes page</Link>.</Panel>}
       {items.length >= 2 && (
         <>
           <div className={`mt-6 grid gap-3 ${items.length === 2 ? "sm:grid-cols-2" : items.length === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2 lg:grid-cols-4"}`}>

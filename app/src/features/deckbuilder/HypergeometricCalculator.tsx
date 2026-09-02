@@ -3,6 +3,8 @@ import type { Card } from "@gatcg/shared";
 import ThemaSparkline from "../thema/ThemaSparkline";
 import { probabilityAtLeast } from "./synergyReadiness";
 import { drawnCardsPerCopy, expectedExtraDraws, materialDrawBonus } from "./drawEffects";
+import Panel from "../../components/ui/Panel";
+import Section from "../../components/ui/Section";
 
 /** Same range Synergy readiness's curves use (`CURVE_MAX_SEEN` in synergyReadiness.ts) — keeps the
  * two probability visualizations on this tab reading consistently. */
@@ -107,14 +109,12 @@ export default function HypergeometricCalculator({
   );
 
   return (
-    <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
-      <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Hypergeometric calculator</h2>
-      <p className="mt-1 text-xs text-ctp-subtext0">
-        Chance of having seen at least a given number of copies of a card, given the deck size, copies in the deck,
-        and cards drawn so far. A plain probability for whatever you're checking, not a verdict — unlike Synergy
-        readiness above, nothing here is labeled "Reliable" or "Fragile."
-      </p>
-
+    <Panel className="mt-4">
+      <Section
+        heading="dense"
+        title="Hypergeometric calculator"
+        description={<>Chance of having seen at least a given number of copies of a card, given the deck size, copies in the deck, and cards drawn so far. A plain probability for whatever you're checking, not a verdict — unlike Synergy readiness above, nothing here is labeled "Reliable" or "Fragile."</>}
+      >
       {mainLines.length > 0 && (
         <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
           <span className="text-ctp-subtext0">Card in build:</span>
@@ -242,6 +242,7 @@ export default function HypergeometricCalculator({
           </p>
         </div>
       )}
-    </div>
+      </Section>
+    </Panel>
   );
 }

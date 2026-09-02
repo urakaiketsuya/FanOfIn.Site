@@ -5,6 +5,8 @@ import PlayerLink from "../players/PlayerLink";
 import DecklistView from "../events/DecklistView";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useSightingDecklist } from "../topdecks/useSightingDecklist";
+import Button from "../../components/ui/Button";
+import { InlineState } from "../../components/ui/ContentState";
 
 export default function UniqueDeckRow({ score, playerName }: { score: DeckHipsterScore; playerName: string }) {
   const [expanded, setExpanded] = useState(false);
@@ -24,18 +26,14 @@ export default function UniqueDeckRow({ score, playerName }: { score: DeckHipste
         </div>
         <div className="flex shrink-0 items-center gap-2">
           <span className="text-xs text-ctp-subtext0">{(score.score * 100).toFixed(0)} novelty</span>
-          <button
-            type="button"
-            onClick={() => setExpanded((v) => !v)}
-            className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text"
-          >
+          <Button variant="secondary" size="sm" onClick={() => setExpanded((v) => !v)}>
             {expanded ? "Hide" : "Decklist"}
-          </button>
+          </Button>
         </div>
       </div>
       {expanded && (
         <div className="mt-2 border-t border-ctp-surface0 pt-2">
-          {loading && <p className="text-sm text-ctp-subtext1">Loading…</p>}
+          {loading && <InlineState className="text-sm">Loading…</InlineState>}
           {error && <p className="text-sm text-ctp-subtext0">{error}</p>}
           {decklist && <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={`${score.eventId}:${score.player}`} />}
         </div>

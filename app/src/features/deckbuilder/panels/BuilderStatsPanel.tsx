@@ -11,6 +11,9 @@ import type { CardDecayReport } from "../../../lib/cardDecay";
 import type { DependencyReadiness, SynergyReadiness } from "../synergyReadiness";
 import type { NewReleaseCard } from "../newReleaseCards";
 import { computeCompositionGaps } from "../engine/builderSelectors";
+import Panel from "../../../components/ui/Panel";
+import Section from "../../../components/ui/Section";
+import { InlineState } from "../../../components/ui/ContentState";
 
 export default function StatsPanel({
   lines,
@@ -74,7 +77,7 @@ export default function StatsPanel({
     return Array.from(seen.entries()).map(([key, label]) => ({ key, label }));
   }
 
-  if (lines.length === 0) return <p className="mt-6 text-sm text-ctp-subtext1">Nothing in the build yet.</p>;
+  if (lines.length === 0) return <InlineState className="mt-6 text-sm">Nothing in the build yet.</InlineState>;
 
   return (
     <div className="mt-6">
@@ -158,16 +161,13 @@ export default function StatsPanel({
       )}
 
       {newReleaseCards.length > 0 && (
-        <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
-          <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">New from {newReleaseCards[0].setName}</h2>
-            <span className="text-[10px] text-ctp-subtext0">{newReleaseCards[0].releaseDate}</span>
-          </div>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            Cards from the newest set with a designed connection — shared token economy, tribal reference, or named
-            reference — to a card already in this build. Too new for tournament data, so this isn't ranked or
-            scored, just worth a look.
-          </p>
+        <Panel className="mt-4">
+          <Section
+            heading="dense"
+            title={`New from ${newReleaseCards[0].setName}`}
+            description="Cards from the newest set with a designed connection — shared token economy, tribal reference, or named reference — to a card already in this build. Too new for tournament data, so this isn't ranked or scored, just worth a look."
+            actions={<span className="text-[10px] text-ctp-subtext0">{newReleaseCards[0].releaseDate}</span>}
+          >
           <div className="mt-3 space-y-2">
             {newReleaseCards.map(({ card, combos }) => (
               <div key={card.name} className="rounded-md border border-ctp-surface1 px-3 py-2 text-xs">
@@ -199,16 +199,17 @@ export default function StatsPanel({
               </div>
             ))}
           </div>
-        </div>
+          </Section>
+        </Panel>
       )}
 
       {synergyReadiness.length > 0 && (
-        <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
-          <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Synergy readiness</h2>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            Probability of seeing enough eligible cards at several cards-seen checkpoints. This measures availability,
-            not guaranteed activation—timing, reserve decisions, and spent cards can lower the real rate.
-          </p>
+        <Panel className="mt-4">
+          <Section
+            heading="dense"
+            title="Synergy readiness"
+            description="Probability of seeing enough eligible cards at several cards-seen checkpoints. This measures availability, not guaranteed activation—timing, reserve decisions, and spent cards can lower the real rate."
+          >
           <div className="mt-3 space-y-3">
             {synergyReadiness.map((synergy) => {
               const shortfall = Math.max(0, synergy.targetEnablers - synergy.enablerCopies);
@@ -279,15 +280,17 @@ export default function StatsPanel({
               );
             })}
           </div>
-        </div>
+          </Section>
+        </Panel>
       )}
 
       {dependencyReadiness.length > 0 && (
-        <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
-          <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Package balance</h2>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            Explicit producer/consumer relationships found in card text. Copy counts are a structural warning, not an activation forecast.
-          </p>
+        <Panel className="mt-4">
+          <Section
+            heading="dense"
+            title="Package balance"
+            description="Explicit producer/consumer relationships found in card text. Copy counts are a structural warning, not an activation forecast."
+          >
           <div className="mt-3 space-y-2">
             {dependencyReadiness.map((dependency) => {
               const color = dependency.status === "Supported" ? "text-ctp-green" : dependency.status === "Thin" ? "text-ctp-yellow" : "text-ctp-red";
@@ -361,16 +364,17 @@ export default function StatsPanel({
               );
             })}
           </div>
-        </div>
+          </Section>
+        </Panel>
       )}
 
       {compositionGaps.length > 0 && (
-        <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
-          <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Composition suggestions</h2>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            Across every public main deck (not scoped to this Champion), win rate by what share of the deck each
-            card type makes up — correlational, not causal, same as everywhere else on this site.
-          </p>
+        <Panel className="mt-4">
+          <Section
+            heading="dense"
+            title="Composition suggestions"
+            description="Across every public main deck (not scoped to this Champion), win rate by what share of the deck each card type makes up — correlational, not causal, same as everywhere else on this site."
+          >
           <ul className="mt-2 space-y-1.5 text-sm">
             {compositionGaps.map((g) => (
               <li key={g.type} className="text-ctp-subtext1">
@@ -380,7 +384,8 @@ export default function StatsPanel({
               </li>
             ))}
           </ul>
-        </div>
+          </Section>
+        </Panel>
       )}
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">

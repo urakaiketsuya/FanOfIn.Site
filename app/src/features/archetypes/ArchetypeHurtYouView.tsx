@@ -5,6 +5,7 @@ import CardHoverPreview from "../../components/CardHoverPreview";
 import LoadMore from "../../components/LoadMore";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useMatchupCardImpactData } from "./data";
+import { InlineState } from "../../components/ui/ContentState";
 
 const PAGE_SIZE = 30;
 const ROLE_LABEL: Record<CardImpactRole, string> = {
@@ -99,13 +100,13 @@ export default function ArchetypeHurtYouView({ taxonomy }: { taxonomy: Archetype
         </select>
       </div>
 
-      {!matchupData && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
+      {!matchupData && <InlineState className="mt-6">Loading…</InlineState>}
       {matchupData && rows.length === 0 && (
-        <p className="mt-6 text-ctp-subtext1">
+        <InlineState className="mt-6">
           {clusterId
             ? "No matchup for this build has enough games to break down card-by-card yet."
             : "No matchups have enough games to break down card-by-card yet."}
-        </p>
+        </InlineState>
       )}
 
       {rows.length > 0 && (

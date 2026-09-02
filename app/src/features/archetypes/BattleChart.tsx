@@ -7,6 +7,8 @@ import { useTabParam } from "../../lib/useTabParam";
 import PageHeader from "../../components/ui/PageHeader";
 import Tabs from "../../components/ui/Tabs";
 import PageLayout from "../../components/layout/PageLayout";
+import Section from "../../components/ui/Section";
+import { InlineState } from "../../components/ui/ContentState";
 
 type ViewTab = "matrix" | "champion" | "highlights";
 
@@ -117,8 +119,8 @@ export default function BattleChart() {
     <PageLayout width="wide">
       <PageHeader title="Battle Chart" eyebrow={<Link to="/archetypes" className="hover:underline">&larr; Archetypes</Link>} description="Explore head-to-head Champion win rates from real tournament pairings, with sample-aware color intensity." />
 
-      {!data && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
-      {data && signatures.length === 0 && <p className="mt-6 text-ctp-subtext1">No matchups have cleared the sample-size threshold yet.</p>}
+      {!data && <InlineState className="mt-6">Loading…</InlineState>}
+      {data && signatures.length === 0 && <InlineState className="mt-6">No matchups have cleared the sample-size threshold yet.</InlineState>}
 
       {signatures.length > 0 && (
         <>
@@ -240,9 +242,7 @@ export default function BattleChart() {
 
           {tab === "highlights" && (
             <div className="mt-6 grid gap-6 sm:grid-cols-2">
-              <div>
-                <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Most lopsided</h2>
-                <p className="mt-1 text-xs text-ctp-subtext0">The matchups furthest from an even 50/50.</p>
+              <Section heading="compact" title="Most lopsided" description="The matchups furthest from an even 50/50.">
                 <div className="mt-2 space-y-1.5 text-sm">
                   {highlights.lopsided.map((h, i) => {
                     const favored = h.aWinRate >= 0.5 ? h.a : h.b;
@@ -264,11 +264,9 @@ export default function BattleChart() {
                     );
                   })}
                 </div>
-              </div>
+              </Section>
 
-              <div>
-                <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Closest</h2>
-                <p className="mt-1 text-xs text-ctp-subtext0">The matchups nearest to a true coin flip.</p>
+              <Section heading="compact" title="Closest" description="The matchups nearest to a true coin flip.">
                 <div className="mt-2 space-y-1.5 text-sm">
                   {highlights.closest.map((h, i) => (
                     <div key={i} className="rounded-md border border-ctp-surface1 px-2.5 py-1.5">
@@ -285,7 +283,7 @@ export default function BattleChart() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </Section>
             </div>
           )}
         </>

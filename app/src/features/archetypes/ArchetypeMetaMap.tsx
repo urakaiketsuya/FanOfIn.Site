@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Surface from "../../components/ui/Surface";
+import Section from "../../components/ui/Section";
 import { gatcgApi } from "../../lib/api/client";
 import { archetypeElement } from "../../lib/archetypeElement";
 
@@ -36,10 +37,14 @@ export default function ArchetypeMetaMap({ builds, scopeLabel }: { builds: Arche
 
   return (
     <Surface as="figure" className="mt-5 p-3">
-      <figcaption>
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">Build metagame map</h2>
-        <p className="mt-1 text-xs text-ctp-subtext0">Further right means more popular; higher means a stronger win rate. Bubble size represents players. Showing {scopeLabel}; builds below five players are omitted.</p>
-      </figcaption>
+      <Section
+        as="figcaption"
+        heading="compact"
+        title="Build metagame map"
+        description={`Further right means more popular; higher means a stronger win rate. Bubble size represents players. Showing ${scopeLabel}; builds below five players are omitted.`}
+      >
+        {null}
+      </Section>
       <div className="mt-2 overflow-x-auto">
         <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="w-full min-w-[40rem]" role="img" aria-label={`Archetype metagame share versus win rate for ${scopeLabel}`}>
           {xTicks.map((tick) => { const px = MARGIN.left + tick * plotWidth; return <g key={tick}><line x1={px} x2={px} y1={MARGIN.top} y2={MARGIN.top + plotHeight} stroke="var(--color-ctp-surface1)" /><text x={px} y={HEIGHT - 20} textAnchor="middle" className="fill-ctp-subtext0 text-[10px]">{(tick * maxShare).toFixed(0)}%</text></g>; })}

@@ -6,6 +6,7 @@ import StaleDataNotice from "../../components/StaleDataNotice";
 import DecklistCoverageNotice from "../../components/DecklistCoverageNotice";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
+import { InlineState } from "../../components/ui/ContentState";
 import { formatUsd } from "../../lib/format";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 import ArchetypeMetaMap from "./ArchetypeMetaMap";
@@ -249,8 +250,8 @@ export default function ArchetypesIndex() {
               </select>
             </label>
           </div>
-          {!data && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
-          {data && materialArchetypes.length === 0 && <p className="mt-6 text-ctp-subtext1">No material archetypes match these filters.</p>}
+          {!data && <InlineState className="mt-6">Loading…</InlineState>}
+          {data && materialArchetypes.length === 0 && <InlineState className="mt-6">No material archetypes match these filters.</InlineState>}
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             {materialArchetypes.map((route) => {
               const primaryBuildId = route.buildIds[0];
@@ -396,11 +397,11 @@ export default function ArchetypesIndex() {
         />
       )}
 
-      {!data && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
+      {!data && <InlineState className="mt-6">Loading…</InlineState>}
       {data && rows.length === 0 && (
-        <p className="mt-6 text-ctp-subtext1">
+        <InlineState className="mt-6">
           {seasonId !== null ? "No builds were played in this season yet." : "No builds have cleared the sample-size threshold yet."}
-        </p>
+        </InlineState>
       )}
 
       <div className="mt-6 overflow-x-auto">

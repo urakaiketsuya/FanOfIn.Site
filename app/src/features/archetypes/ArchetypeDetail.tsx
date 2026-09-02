@@ -20,6 +20,10 @@ import { useAllDecodedDecks } from "../../lib/decodedDecks";
 import { useArchetypeVariants, type ArchetypeVariant } from "./useArchetypeVariants";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 import PageLayout from "../../components/layout/PageLayout";
+import Panel from "../../components/ui/Panel";
+import Section from "../../components/ui/Section";
+import Button from "../../components/ui/Button";
+import { InlineState, EmptyState } from "../../components/ui/ContentState";
 
 const ROLE_FILTERS: { key: CardImpactRole | "all"; label: string }[] = [
   { key: "all", label: "All" },
@@ -190,12 +194,13 @@ export default function ArchetypeDetail() {
 
   if (data && !cluster) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-10">
-        <p className="text-ctp-red">This build isn't in the ingested data (or hasn't cleared the sample-size threshold).</p>
-        <Link to="/archetypes" className="mt-2 inline-block text-ctp-blue hover:underline">
-          &larr; All archetypes
-        </Link>
-      </div>
+      <PageLayout>
+        <EmptyState
+          title="Build not found"
+          description="This build isn't in the ingested data (or hasn't cleared the sample-size threshold)."
+          action={<Link to="/archetypes" className="text-ctp-blue hover:underline">&larr; All archetypes</Link>}
+        />
+      </PageLayout>
     );
   }
 
@@ -223,7 +228,7 @@ export default function ArchetypeDetail() {
             {(cluster.avgWinRate * 100).toFixed(0)}% avg win rate
           </p>
           {materialArchetype && (
-            <div className="mt-4 rounded-xl border border-ctp-blue/25 bg-ctp-blue/5 p-4">
+            <Panel tone="info" className="mt-4">
               <p className="text-xs font-semibold tracking-wide text-ctp-blue uppercase">Material archetype</p>
               <p className="mt-1 font-semibold text-ctp-text">{materialArchetype.name}</p>
               <p className="mt-1 text-xs text-ctp-subtext1">
@@ -239,7 +244,7 @@ export default function ArchetypeDetail() {
                   {siblingBuilds.map((build) => build.id === cluster.id ? <span key={build.id} className="font-medium text-ctp-text">{build.name}</span> : <Link key={build.id} to={`/archetypes/${build.id}`} className="text-ctp-blue hover:underline">{build.name}</Link>)}
                 </div>
               )}
-            </div>
+            </Panel>
           )}
           {strategyArchetype && <p className="mt-2 text-xs text-ctp-subtext0">Main-deck package: {strategyArchetype.name}</p>}
           {(cluster.championBreakdown ?? []).length > 1 && (
@@ -312,11 +317,11 @@ export default function ArchetypeDetail() {
           {tab === "overview" && (
             <div className="mt-6">
               {(cluster.materialDefiningCards ?? []).length > 0 && (
-                <>
-                  <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Material build path</h2>
-                  <p className="mt-1 text-xs text-ctp-subtext0">
-                    The recurring material package for this exact path. Choose this before using the main-deck card suggestions below.
-                  </p>
+                <Section
+                  heading="compact"
+                  title="Material build path"
+                  description="The recurring material package for this exact path. Choose this before using the main-deck card suggestions below."
+                >
                   <div className="mt-2 flex flex-wrap gap-2 text-sm">
                     {cluster.materialDefiningCards.map((dc) => {
                       const card = cardImages.get(dc.name);
@@ -333,44 +338,46 @@ export default function ArchetypeDetail() {
                       );
                     })}
                   </div>
-                </>
+                </Section>
               )}
-              <h2 className={`${(cluster.materialDefiningCards ?? []).length > 0 ? "mt-6 " : ""}text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide`}>Defining cards</h2>
-              <p className="mt-1 text-xs text-ctp-subtext0">
-                Cards common in this build but not typical of decks generally — what actually distinguishes it.
-              </p>
-              <div className="mt-2 flex flex-wrap gap-2 text-sm">
-                {cluster.definingCards.map((dc) => {
-                  const card = cardImages.get(dc.name);
-                  return (
-                    <CardHoverPreview key={dc.name} image={card?.editions[0]?.image} alt={dc.name}>
-                      {card ? (
-                        <Link
-                          to={`/cards/${card.slug}`}
-                          className="rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-text hover:border-ctp-blue hover:text-ctp-blue"
-                        >
-                          {dc.name} <span className="text-ctp-subtext0">({(dc.prevalence * 100).toFixed(0)}%)</span>
-                        </Link>
-                      ) : (
-                        <span className="rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-text">
-                          {dc.name} <span className="text-ctp-subtext0">({(dc.prevalence * 100).toFixed(0)}%)</span>
-                        </span>
-                      )}
-                    </CardHoverPreview>
-                  );
-                })}
-              </div>
+              <Section
+                heading="compact"
+                className={(cluster.materialDefiningCards ?? []).length > 0 ? "mt-6" : ""}
+                title="Defining cards"
+                description="Cards common in this build but not typical of decks generally — what actually distinguishes it."
+              >
+                <div className="mt-2 flex flex-wrap gap-2 text-sm">
+                  {cluster.definingCards.map((dc) => {
+                    const card = cardImages.get(dc.name);
+                    return (
+                      <CardHoverPreview key={dc.name} image={card?.editions[0]?.image} alt={dc.name}>
+                        {card ? (
+                          <Link
+                            to={`/cards/${card.slug}`}
+                            className="rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-text hover:border-ctp-blue hover:text-ctp-blue"
+                          >
+                            {dc.name} <span className="text-ctp-subtext0">({(dc.prevalence * 100).toFixed(0)}%)</span>
+                          </Link>
+                        ) : (
+                          <span className="rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-text">
+                            {dc.name} <span className="text-ctp-subtext0">({(dc.prevalence * 100).toFixed(0)}%)</span>
+                          </span>
+                        )}
+                      </CardHoverPreview>
+                    );
+                  })}
+                </div>
+              </Section>
             </div>
           )}
 
           {tab === "impact" && (
-            <div className="mt-6">
-              <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Card Impact</h2>
-              <p className="mt-1 text-xs text-ctp-subtext0">
-                Decks in this build with vs. without each card, and the win-rate difference — correlational, not a
-                guarantee. Filter to Sideboard to see whether sideboard tech actually moves the needle.
-              </p>
-
+            <Section
+              className="mt-6"
+              heading="compact"
+              title="Card Impact"
+              description="Decks in this build with vs. without each card, and the win-rate difference — correlational, not a guarantee. Filter to Sideboard to see whether sideboard tech actually moves the needle."
+            >
               {clusterMatchups.length > 0 && (
                 <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
                   <span className="text-ctp-subtext0">Vs:</span>
@@ -396,17 +403,17 @@ export default function ArchetypeDetail() {
               )}
 
               {!hasActiveData ? (
-                <p className="mt-3 text-sm text-ctp-subtext1">
+                <InlineState className="mt-3 text-sm">
                   {selectedMatchup
                     ? `No recorded games against ${selectedMatchup.opponentClusterName} yet.`
                     : "Not enough with/without samples yet for this build to say anything meaningful about individual cards."}
-                </p>
+                </InlineState>
               ) : activeCards.length === 0 ? (
-                <p className="mt-3 text-sm text-ctp-subtext1">
+                <InlineState className="mt-3 text-sm">
                   {selectedMatchup
                     ? `${selectedMatchup.games} game${selectedMatchup.games === 1 ? "" : "s"} recorded against ${selectedMatchup.opponentClusterName}, but not enough for a card-by-card breakdown yet.`
                     : "Not enough with/without samples yet for this build to say anything meaningful about individual cards."}
-                </p>
+                </InlineState>
               ) : (
                 <>
                   <div className="mt-2 flex flex-wrap gap-2">
@@ -424,7 +431,7 @@ export default function ArchetypeDetail() {
                     ))}
                   </div>
                   {impactCards.length === 0 ? (
-                    <p className="mt-3 text-sm text-ctp-subtext1">No {roleFilter === "all" ? "" : `${roleFilter} `}cards match this filter.</p>
+                    <InlineState className="mt-3 text-sm">No {roleFilter === "all" ? "" : `${roleFilter} `}cards match this filter.</InlineState>
                   ) : (
                     <CardImpactTable
                       cards={impactCards}
@@ -523,37 +530,36 @@ export default function ArchetypeDetail() {
                   </div>
                 </div>
               )}
-            </div>
+            </Section>
           )}
 
           {tab === "decklist" && (
-            <div className="mt-6">
-              <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Sample decklist</h2>
-              <p className="mt-1 text-xs text-ctp-subtext0">One representative instance of this build.</p>
+            <Section className="mt-6" heading="compact" title="Sample decklist" description="One representative instance of this build.">
               <div className="mt-2">
                 {sample.decklist ? (
                   <DecklistView decklist={sample.decklist} cardsByName={cardImages} showThumbnails />
                 ) : (
-                  <p className="text-sm text-ctp-subtext1">Loading…</p>
+                  <InlineState className="text-sm">Loading…</InlineState>
                 )}
               </div>
-            </div>
+            </Section>
           )}
 
           {tab === "playedBy" && (
-            <div className="mt-6">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Played by ({instances.length})</h2>
-                {selectedInstances.length > 0 && (
-                  <Link
-                    to={buildCompareLink(selectedInstances.map((s) => ({ eventId: s.eventId, player: s.player })))}
-                    className="rounded-md border border-ctp-blue px-2 py-1 text-xs text-ctp-blue hover:bg-ctp-surface0"
-                  >
-                    Compare {selectedInstances.length} selected &rarr;
-                  </Link>
-                )}
-              </div>
-              <p className="mt-1 text-xs text-ctp-subtext0">Check any of these instances to compare their decklists side by side.</p>
+            <Section
+              className="mt-6"
+              heading="compact"
+              title={`Played by (${instances.length})`}
+              description="Check any of these instances to compare their decklists side by side."
+              actions={selectedInstances.length > 0 && (
+                <Link
+                  to={buildCompareLink(selectedInstances.map((s) => ({ eventId: s.eventId, player: s.player })))}
+                  className="rounded-md border border-ctp-blue px-2 py-1 text-xs text-ctp-blue hover:bg-ctp-surface0"
+                >
+                  Compare {selectedInstances.length} selected &rarr;
+                </Link>
+              )}
+            >
               <div className="mt-2">
                 <TopDecksList
                   decks={instances}
@@ -562,17 +568,16 @@ export default function ArchetypeDetail() {
                   isSelected={(s) => selectedDeckIds.has(s.deckId)}
                 />
               </div>
-            </div>
+            </Section>
           )}
 
           {tab === "variants" && (
-            <div className="mt-6">
-              <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Variants ({variants.length})</h2>
-              <p className="mt-1 text-xs text-ctp-subtext0">
-                Real decks close to this build (&ge;45% weighted overlap) but not identical to any other player's list, so
-                they never joined this cluster's own stats. Shown separately — not blended into this build's win rate,
-                defining cards, or meta share above.
-              </p>
+            <Section
+              className="mt-6"
+              heading="compact"
+              title={`Variants (${variants.length})`}
+              description={<>Real decks close to this build (&ge;45% weighted overlap) but not identical to any other player's list, so they never joined this cluster's own stats. Shown separately — not blended into this build's win rate, defining cards, or meta share above.</>}
+            >
               {variants.length > 0 && (
                 <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
                   <span className="text-ctp-subtext0">Min overlap:</span>
@@ -611,11 +616,11 @@ export default function ArchetypeDetail() {
                 </div>
               )}
               {allDecodedDecks.loading ? (
-                <p className="mt-3 text-sm text-ctp-subtext1">Loading…</p>
+                <InlineState className="mt-3 text-sm">Loading…</InlineState>
               ) : variants.length === 0 ? (
-                <p className="mt-3 text-sm text-ctp-subtext1">No close variants found for this build.</p>
+                <InlineState className="mt-3 text-sm">No close variants found for this build.</InlineState>
               ) : filteredVariants.length === 0 ? (
-                <p className="mt-3 text-sm text-ctp-subtext1">No variants match these filters.</p>
+                <InlineState className="mt-3 text-sm">No variants match these filters.</InlineState>
               ) : (
                 <div className="mt-2 divide-y divide-ctp-surface0">
                   {filteredVariants.map((v) => {
@@ -645,13 +650,13 @@ export default function ArchetypeDetail() {
                                 {v.missingCards.length > 0 && <span className="text-ctp-red">-{v.missingCards.length}</span>}
                               </span>
                             )}
-                            <button
-                              type="button"
+                            <Button
+                              variant="secondary"
+                              size="sm"
                               onClick={() => setExpandedVariantDeckId(isExpanded ? null : v.deckId)}
-                              className="rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-subtext1 hover:text-ctp-text"
                             >
                               {isExpanded ? "Hide decklist" : "View decklist"}
-                            </button>
+                            </Button>
                             {!Number.isNaN(variantEventId) && !Number.isNaN(variantPlayer) && !Number.isNaN(sampleEventId) && !Number.isNaN(samplePlayer) && (
                               <Link
                                 to={buildCompareLink([
@@ -682,7 +687,7 @@ export default function ArchetypeDetail() {
                   })}
                 </div>
               )}
-            </div>
+            </Section>
           )}
         </>
       )}

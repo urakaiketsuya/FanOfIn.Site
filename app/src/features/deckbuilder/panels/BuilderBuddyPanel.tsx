@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { Card, CommunityCoOccurrenceEntry } from "@gatcg/shared";
 import ElementRail from "../../../components/ElementRail";
 import type { BuddyCard } from "../useBuddyCards";
+import Section from "../../../components/ui/Section";
 
 interface BuddyGroup {
   cardName: string;
@@ -259,26 +260,27 @@ export default function BuddyCardsList({
     .filter((g) => g.buddies.length > 0);
   if (groups.length === 0 && communityGroups.length === 0) {
     return (
-      <div className="mt-6">
-        <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Buddy cards</h2>
-        <p className="mt-1 text-xs text-ctp-subtext0">
-          {lockedNames.length === 0
-            ? "Keep a card to see what's most often run alongside it."
-            : "No buddy suggestions right now — either everything commonly run alongside your choices is already in the build, or this Champion/Spirit population is too thin to say (a build with many user choices often narrows it down to just a few decks)."}
-        </p>
-      </div>
+      <Section
+        className="mt-6"
+        heading="dense"
+        title="Buddy cards"
+        description={lockedNames.length === 0
+          ? "Keep a card to see what's most often run alongside it."
+          : "No buddy suggestions right now — either everything commonly run alongside your choices is already in the build, or this Champion/Spirit population is too thin to say (a build with many user choices often narrows it down to just a few decks)."}
+      >
+        {null}
+      </Section>
     );
   }
   const merged = groupBuddiesByCard(groups);
   const communityMerged = groupBuddiesByCard(communityGroups);
   return (
-    <div className="mt-6">
-      <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Buddy cards</h2>
-      <p className="mt-1 text-xs text-ctp-subtext0">
-        Cards most often run alongside your choices, regardless of win rate. Thicker connections and longer
-        mobile bars mean a higher pairing rate; sample counts show how many decks contained both cards. Frequent
-        pairing is a lead to investigate, not proof of synergy.
-      </p>
+    <Section
+      className="mt-6"
+      heading="dense"
+      title="Buddy cards"
+      description="Cards most often run alongside your choices, regardless of win rate. Thicker connections and longer mobile bars mean a higher pairing rate; sample counts show how many decks contained both cards. Frequent pairing is a lead to investigate, not proof of synergy."
+    >
       {merged.length > 0 && (
         <BuddyRelationshipView
           title="Tournament relationships"
@@ -298,7 +300,7 @@ export default function BuddyCardsList({
           onAdd={onAdd}
         />
       )}
-    </div>
+    </Section>
   );
 }
 

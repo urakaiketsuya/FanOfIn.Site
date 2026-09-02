@@ -13,6 +13,7 @@ import DataTable from "../../components/ui/DataTable";
 import ElementIcon from "../../components/ElementIcon";
 import PageLayout from "../../components/layout/PageLayout";
 import { InlineState } from "../../components/ui/ContentState";
+import Section from "../../components/ui/Section";
 
 const TREND_LABEL: Record<ChampionTrendDirection, string> = {
   rising: "▲ Rising",
@@ -124,12 +125,12 @@ export default function ChampionsIndex() {
       </DataTable>
 
       {data?.namedSpirits && data.namedSpirits.length > 0 && (
-        <div className="mt-10">
-          <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Named Spirits</h2>
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            Named Spirit companions (e.g. "Kaze, Spirit of Wind" — distinct from the generic "Spirit of Wind"), tracked
-            with the same stats as a Champion, across every deck that runs them regardless of which Champion is present.
-          </p>
+        <Section
+          className="mt-10"
+          heading="compact"
+          title="Named Spirits"
+          description={<>Named Spirit companions (e.g. "Kaze, Spirit of Wind" — distinct from the generic "Spirit of Wind"), tracked with the same stats as a Champion, across every deck that runs them regardless of which Champion is present.</>}
+        >
           <div className="mt-2 overflow-x-auto">
             <table className="w-max min-w-full text-sm">
               <thead>
@@ -180,7 +181,7 @@ export default function ChampionsIndex() {
               </tbody>
             </table>
           </div>
-        </div>
+        </Section>
       )}
     </PageLayout>
   );

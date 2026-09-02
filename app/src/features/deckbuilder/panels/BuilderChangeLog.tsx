@@ -1,9 +1,9 @@
 import type { ChangeLogEntry } from "../model/builderTypes";
+import Section from "../../../components/ui/Section";
 
 export default function BuilderChangeLog({ entries }: { entries: ChangeLogEntry[] }) {
   if (entries.length === 0) return null;
-  return <div className="mt-6">
-    <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Suggestion changes</h2>
+  return <Section className="mt-6" heading="dense" title="Suggestion changes">
     <ul className="mt-2 space-y-1 text-xs text-ctp-subtext1">
       {entries.map((entry, index) => <li key={index}>
         <span className="text-ctp-text">{entry.label}</span>
@@ -15,5 +15,5 @@ export default function BuilderChangeLog({ entries }: { entries: ChangeLogEntry[
           : <>{entry.added.map((name) => <span key={`+${name}`} className="ml-1.5 text-ctp-green">+{name}</span>)}{entry.removed.map((name) => <span key={`-${name}`} className="ml-1.5 text-ctp-red">−{name}</span>)}</>}
       </li>)}
     </ul>
-  </div>;
+  </Section>;
 }
