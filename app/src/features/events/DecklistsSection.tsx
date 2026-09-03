@@ -20,6 +20,8 @@ export default function DecklistsSection({
   initialPlayer?: number;
 }) {
   const [selectedPlayer, setSelectedPlayer] = useState(initialPlayer ?? decklists[0]?.player);
+  const [search, setSearch] = useState("");
+  const [searchOpen, setSearchOpen] = useState(false);
   const selected = decklists.find((d) => d.player === selectedPlayer) ?? decklists[0];
 
   const allNames = useMemo(
@@ -39,6 +41,13 @@ export default function DecklistsSection({
     return players.find((p) => p.id === id)?.username ?? allPlayersData?.players.find((p) => p.id === id)?.username ?? `Player #${id}`;
   }
 
+  const searchMatches = useMemo(() => {
+    const needle = search.trim().toLowerCase();
+    if (!needle) return [];
+    return decklists.filter((d) => playerName(d.player).toLowerCase().includes(needle)).slice(0, 8);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [decklists, search, players, allPlayersData]);
+
   if (decklists.length === 0) return null;
 
   return (
@@ -46,25 +55,50 @@ export default function DecklistsSection({
       title={`Decklists (${decklists.length})`}
       heading="compact"
       actions={
-        <div className="flex items-center gap-2">
-          {selected && (
-            <PlayerLink id={selected.player} username={playerName(selected.player)} className="text-xs text-ctp-blue hover:underline" />
-          )}
-          <select
-            value={selected?.player}
-            aria-label="Player"
-            onChange={(e) => setSelectedPlayer(Number(e.target.value))}
-            className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
-          >
-            {decklists.map((d) => (
-              <option key={d.player} value={d.player}>
-                {playerName(d.player)}
-              </option>
-            ))}
-          </select>
-        </div>
+        selected && <PlayerLink id={selected.player} username={playerName(selected.player)} className="text-xs text-ctp-blue hover:underline" />
       }
     >
+      <div className="relative mt-1 max-w-sm">
+        <input
+          type="text"
+          aria-label="Search players"
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setSearchOpen(true);
+          }}
+          onFocus={() => setSearchOpen(true)}
+          onBlur={() => setTimeout(() => setSearchOpen(false), 100)}
+          placeholder="Search players…"
+          className="w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
+        />
+        {searchOpen && search.trim() !== "" && (
+          <div className="absolute z-10 mt-1 max-h-64 w-full overflow-y-auto rounded-md border border-ctp-surface1 bg-ctp-mantle shadow-lg">
+            {searchMatches.length > 0 ? (
+              searchMatches.map((d) => (
+                <button
+                  key={d.player}
+                  type="button"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => {
+                    setSelectedPlayer(d.player);
+                    setSearch("");
+                    setSearchOpen(false);
+                  }}
+                  className={`block w-full px-3 py-1.5 text-left text-sm hover:bg-ctp-surface0 ${
+                    d.player === selectedPlayer ? "text-ctp-blue" : "text-ctp-text"
+                  }`}
+                >
+                  {playerName(d.player)}
+                </button>
+              ))
+            ) : (
+              <p className="px-3 py-1.5 text-sm text-ctp-subtext0">No players match &ldquo;{search.trim()}&rdquo;.</p>
+            )}
+          </div>
+        )}
+      </div>
+
       {selected && (
         <div className="mt-3">
           <DecklistView decklist={selected.decklist} cardsByName={cardsByName} deckId={`${eventId}:${selected.player}`} showThumbnails />
