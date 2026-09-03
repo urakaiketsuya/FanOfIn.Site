@@ -280,28 +280,28 @@
       "sourceNote": "Cleaned broadcast transcript, Ascent Taipei Day 1 Round 9 VOD (single deciding game shown). Card names/numbers are as called by the casters and may contain minor ASR errors."
     },
     {
-      "id": "ascent-manila-2026-day2-round10-mark-onzero",
+      "id": "ascent-manila-2026-day2-round10-muck-zero",
       "event": "Ascent Manila",
       "eventId": 42040,
       "round": "Round 10 (Day 2, Round 1)",
       "players": [
         {
           "id": "p1",
-          "name": "Mark",
+          "name": "Muck1234",
           "deck": "Wind \"Normal Rye\" — all-Normal/Arcane brew"
         },
         {
           "id": "p2",
-          "name": "Onzero Magus",
+          "name": "ZeRoMagus",
           "deck": "Fire Merlin"
         }
       ],
-      "result": "Mark wins 2-0",
+      "result": "Muck wins 2-0",
       "games": [
         {
           "gameNumber": 1,
           "winner": "p1",
-          "summary": "Mark wins",
+          "summary": "Muck wins",
           "beats": [
             {
               "order": 1,
@@ -311,7 +311,7 @@
             {
               "order": 2,
               "actor": "p1",
-              "text": "Mark closes it out before Merlin's fireballs can come online.",
+              "text": "Muck closes it out before Merlin's fireballs can come online.",
               "tags": [
                 "lethal"
               ]
@@ -321,7 +321,7 @@
         {
           "gameNumber": 2,
           "winner": "p1",
-          "summary": "Mark wins",
+          "summary": "Muck wins",
           "beats": [
             {
               "order": 1,
@@ -331,7 +331,7 @@
             {
               "order": 2,
               "actor": "p1",
-              "text": "Mark's Rye assembles an enormous burst turn: double Advent of the Stormcaller for 12, plus a 21-damage Erratic Bolt.",
+              "text": "Muck's Rye assembles an enormous burst turn: double Advent of the Stormcaller for 12, plus a 21-damage Erratic Bolt.",
               "cards": [
                 "Advent of the Stormcaller",
                 "Erratic Bolt"
@@ -356,7 +356,7 @@
             {
               "order": 4,
               "actor": "p1",
-              "text": "Mark sweeps the match 2-0."
+              "text": "Muck sweeps the match 2-0."
             }
           ]
         }
@@ -738,7 +738,7 @@
       "sourceNote": "Cleaned broadcast transcript, Ascent Manila Top 8 Quarterfinal VOD. Card names/numbers are as called by the casters and may contain minor ASR errors."
     },
     {
-      "id": "ascent-manila-2026-top4-sf2-egg-railam",
+      "id": "ascent-manila-2026-top4-sf2-egg-raylam",
       "event": "Ascent Manila",
       "eventId": 42040,
       "round": "Top 4 — Semifinal 2 (featured match)",
@@ -750,21 +750,21 @@
         },
         {
           "id": "p2",
-          "name": "Railam",
+          "name": "Raylam",
           "deck": "Wind Seiryuu Guo Jia, winner of Ascent Akihabara"
         }
       ],
-      "result": "Railam wins 2-1",
+      "result": "Raylam wins 2-1",
       "games": [
         {
           "gameNumber": 1,
           "winner": "p2",
-          "summary": "Railam wins",
+          "summary": "Raylam wins",
           "beats": [
             {
               "order": 1,
               "actor": "p2",
-              "text": "Railam assembles the Seiryuu combo — Generate into Empower — building toward Arcane Blast.",
+              "text": "Raylam assembles the Seiryuu combo — Generate into Empower — building toward Arcane Blast.",
               "tags": [
                 "combo"
               ]
@@ -815,12 +815,12 @@
         {
           "gameNumber": 3,
           "winner": "p2",
-          "summary": "Railam wins",
+          "summary": "Raylam wins",
           "beats": [
             {
               "order": 1,
               "actor": "p2",
-              "text": "Railam closes out the series.",
+              "text": "Raylam closes out the series.",
               "tags": [
                 "lethal"
               ]
@@ -828,7 +828,7 @@
             {
               "order": 2,
               "actor": "p2",
-              "text": "Railam advances to a second consecutive Ascent Manila grand finals appearance."
+              "text": "Raylam advances to a second consecutive Ascent Manila grand finals appearance."
             }
           ]
         }
@@ -836,7 +836,7 @@
       "sourceNote": "Cleaned broadcast transcript, Ascent Manila Top 4 Semifinal 2 VOD. Card names/numbers are as called by the casters and may contain minor ASR errors."
     },
     {
-      "id": "ascent-manila-2026-grand-finals-mike-railam",
+      "id": "ascent-manila-2026-grand-finals-mike-Raylam",
       "event": "Ascent Manila",
       "eventId": 42040,
       "round": "Grand Finals",
@@ -848,7 +848,7 @@
         },
         {
           "id": "p2",
-          "name": "Railam",
+          "name": "Raylam",
           "deck": "Wind Seiryuu Guo Jia, defending Ascent Akihabara champion seeking back-to-back titles"
         }
       ],
@@ -857,12 +857,12 @@
         {
           "gameNumber": 1,
           "winner": "p2",
-          "summary": "Railam wins",
+          "summary": "Raylam wins",
           "beats": [
             {
               "order": 1,
               "actor": "p2",
-              "text": "Railam's Seiryuu closes out a relatively quick game (roughly 15-20 minutes), taking a 1-0 lead."
+              "text": "Raylam's Seiryuu closes out a relatively quick game (roughly 15-20 minutes), taking a 1-0 lead."
             }
           ]
         },
@@ -874,7 +874,7 @@
             {
               "order": 1,
               "actor": "both",
-              "text": "A much longer grind, roughly 40 minutes — Mike's Tristan fights through Railam's dragon threats."
+              "text": "A much longer grind, roughly 40 minutes — Mike's Tristan fights through Raylam's dragon threats."
             },
             {
               "order": 2,
@@ -899,7 +899,7 @@
             {
               "order": 2,
               "actor": "p1",
-              "text": "Mike wins the match 2-1 and is crowned Ascent Manila Champion, denying Railam a second consecutive Ascent title."
+              "text": "Mike wins the match 2-1 and is crowned Ascent Manila Champion, denying Raylam a second consecutive Ascent title."
             }
           ]
         }
