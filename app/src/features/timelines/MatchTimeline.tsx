@@ -7,6 +7,7 @@ import Section from "../../components/ui/Section";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CardImage from "../../components/CardImage";
 import { useCardsByMentions } from "./data";
+import MatchDecklists from "./MatchDecklists";
 
 const ACTOR_COLOR: Record<"p1" | "p2" | "both", string> = {
   p1: "border-ctp-blue bg-ctp-blue",
@@ -149,6 +150,8 @@ export default function MatchTimeline({ match }: { match: BroadcastTimelineMatch
         </p>
         <p className="mt-1 text-sm font-medium text-ctp-text">{match.result}</p>
       </div>
+
+      <MatchDecklists match={match} />
 
       {match.games.map((game) => {
         const notes = match.sideboardNotes?.filter((n) => n.beforeGame === game.gameNumber) ?? [];

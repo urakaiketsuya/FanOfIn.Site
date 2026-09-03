@@ -1,10 +1,11 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-03T13:44:07.000Z",
+  "generatedAt": "2026-09-03T15:00:00.000Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
       "event": "Ascent Akihabara",
+      "eventId": 38740,
       "round": "Round 9 (final round, Day 1)",
       "players": [
         {
@@ -188,6 +189,7 @@
     {
       "id": "ascent-taipei-2026-day1-round9-silvercrowx-limbo",
       "event": "Ascent Taipei",
+      "eventId": 33786,
       "round": "Round 9 (final round, Day 1) — win-and-in for both players",
       "players": [
         {
@@ -280,6 +282,7 @@
     {
       "id": "ascent-manila-2026-day2-round10-mark-onzero",
       "event": "Ascent Manila",
+      "eventId": 42040,
       "round": "Round 10 (Day 2, Round 1)",
       "players": [
         {
@@ -363,6 +366,7 @@
     {
       "id": "ascent-manila-2026-day2-round11-two-over9000",
       "event": "Ascent Manila",
+      "eventId": 42040,
       "round": "Round 11 (Day 2, Round 2)",
       "players": [
         {
@@ -440,6 +444,7 @@
     {
       "id": "ascent-manila-2026-day2-round12-hanky-zeia",
       "event": "Ascent Manila",
+      "eventId": 42040,
       "round": "Round 12 (Day 2, Round 3)",
       "players": [
         {
@@ -557,6 +562,7 @@
     {
       "id": "ascent-manila-2026-day2-round13-egg-lance",
       "event": "Ascent Manila",
+      "eventId": 42040,
       "round": "Round 13 (Day 2, Round 4 — final Swiss round)",
       "players": [
         {
@@ -622,6 +628,7 @@
     {
       "id": "ascent-manila-2026-top8-qf-abby-duo",
       "event": "Ascent Manila",
+      "eventId": 42040,
       "round": "Top 8 — Quarterfinal (featured match; other quarterfinals not shown)",
       "players": [
         {
@@ -733,6 +740,7 @@
     {
       "id": "ascent-manila-2026-top4-sf2-egg-railam",
       "event": "Ascent Manila",
+      "eventId": 42040,
       "round": "Top 4 — Semifinal 2 (featured match)",
       "players": [
         {
@@ -830,6 +838,7 @@
     {
       "id": "ascent-manila-2026-grand-finals-mike-railam",
       "event": "Ascent Manila",
+      "eventId": 42040,
       "round": "Grand Finals",
       "players": [
         {
@@ -900,6 +909,7 @@
     {
       "id": "worlds-2026-championship-sunday-semifinal1-jet-raingoddess",
       "event": "2026 World Championship — Championship Sunday",
+      "eventId": 60488,
       "round": "Semifinal 1",
       "players": [
         {
@@ -1029,6 +1039,7 @@
     {
       "id": "worlds-2026-championship-sunday-semifinal2-zero-livil",
       "event": "2026 World Championship — Championship Sunday",
+      "eventId": 60488,
       "round": "Semifinal 2",
       "players": [
         {
@@ -1120,6 +1131,7 @@
     {
       "id": "worlds-2026-championship-sunday-grandfinals-jet-zero",
       "event": "2026 World Championship — Championship Sunday",
+      "eventId": 60488,
       "round": "Grand Finals (Best of 5)",
       "players": [
         {
@@ -1355,6 +1367,7 @@
     {
       "id": "ascent-las-vegas-2026-day2-round10-novafelon-noel",
       "event": "Ascent Las Vegas",
+      "eventId": 52587,
       "round": "Round 10 (Day 2, Round 1)",
       "players": [
         {
@@ -1481,6 +1494,7 @@
     {
       "id": "ascent-las-vegas-2026-day2-round11-mattg-novafelon",
       "event": "Ascent Las Vegas",
+      "eventId": 52587,
       "round": "Round 11 (Day 2, Round 2) — rematch of Round 10's winner",
       "players": [
         {
@@ -1563,6 +1577,7 @@
     {
       "id": "ascent-las-vegas-2026-day2-round12-duckhats-bokal",
       "event": "Ascent Las Vegas",
+      "eventId": 52587,
       "round": "Round 12 (Day 2, Round 3)",
       "players": [
         {
@@ -1673,6 +1688,7 @@
     {
       "id": "ascent-las-vegas-2026-day2-round13-wisp-mechsniper",
       "event": "Ascent Las Vegas",
+      "eventId": 52587,
       "round": "Round 13 (Day 2, Round 4 — final Swiss round)",
       "players": [
         {
@@ -1734,6 +1750,7 @@
     {
       "id": "ascent-niagara-falls-day2-round7-isaac-tress",
       "event": "Ascent Niagara Falls",
+      "eventId": 36225,
       "round": "Round 7 (Day 2, Round 1)",
       "players": [
         {
@@ -1822,6 +1839,7 @@
     {
       "id": "ascent-niagara-falls-day2-round10-hyoka-tepslor",
       "event": "Ascent Niagara Falls",
+      "eventId": 36225,
       "round": "Round 10 (Day 2, Round 2)",
       "players": [
         {
@@ -1939,6 +1957,7 @@
     {
       "id": "ascent-niagara-falls-day2-round11-perfy-gurthos",
       "event": "Ascent Niagara Falls",
+      "eventId": 36225,
       "round": "Round 11 (Day 2, Round 3)",
       "players": [
         {
@@ -2032,6 +2051,7 @@
     {
       "id": "ascent-niagara-falls-day2-round12-asa-orabomb",
       "event": "Ascent Niagara Falls",
+      "eventId": 36225,
       "round": "Round 12 (Day 2, Round 4 — final Swiss round)",
       "players": [
         {
@@ -2110,6 +2130,7 @@
     {
       "id": "ascent-niagara-falls-top8-qf-perfy-zenadriel",
       "event": "Ascent Niagara Falls",
+      "eventId": 36225,
       "round": "Top 8 — Quarterfinal",
       "players": [
         {
@@ -2199,6 +2220,7 @@
     {
       "id": "ascent-niagara-falls-top4-sf-fruitcake-bratis",
       "event": "Ascent Niagara Falls",
+      "eventId": 36225,
       "round": "Top 4 — Semifinal",
       "players": [
         {
@@ -2271,6 +2293,7 @@
     {
       "id": "ascent-niagara-falls-grand-finals-zenadriel-bratis",
       "event": "Ascent Niagara Falls",
+      "eventId": 36225,
       "round": "Grand Finals",
       "players": [
         {
@@ -2373,6 +2396,7 @@
     {
       "id": "eu-nationals-2026-day1-round1-zelage-cubone",
       "event": "European Nationals",
+      "eventId": 54238,
       "round": "Round 1",
       "players": [
         {
@@ -2469,6 +2493,7 @@
     {
       "id": "eu-nationals-2026-day1-round2-tatap-nitra",
       "event": "European Nationals",
+      "eventId": 54238,
       "round": "Round 2",
       "players": [
         {
@@ -2570,6 +2595,7 @@
     {
       "id": "eu-nationals-2026-day1-round3-asuna-sangorio",
       "event": "European Nationals",
+      "eventId": 54238,
       "round": "Round 3",
       "players": [
         {
@@ -2674,6 +2700,7 @@
     {
       "id": "eu-nationals-2026-day1-round5-fdwings-yoyi",
       "event": "European Nationals",
+      "eventId": 54238,
       "round": "Round 5",
       "players": [
         {
@@ -2752,6 +2779,7 @@
     {
       "id": "eu-nationals-2026-day1-round6-cabin-sebastian",
       "event": "European Nationals",
+      "eventId": 54238,
       "round": "Round 6",
       "players": [
         {
@@ -2842,6 +2870,7 @@
     {
       "id": "eu-nationals-2026-day1-round7-marux-pewpewstan",
       "event": "European Nationals",
+      "eventId": 54238,
       "round": "Round 7",
       "players": [
         {
@@ -2934,6 +2963,7 @@
     {
       "id": "eu-nationals-2026-day1-round8-noel-jigjun",
       "event": "European Nationals",
+      "eventId": 54238,
       "round": "Round 8 (final round, Day 1) — win-and-in for day two",
       "players": [
         {
@@ -3021,6 +3051,7 @@
     {
       "id": "european-nationals-2026-day2-round9-bonnie-shoko",
       "event": "European Nationals",
+      "eventId": 54238,
       "round": "Round 9 (Day 2, Round 1)",
       "players": [
         {
@@ -3124,6 +3155,7 @@
     {
       "id": "european-nationals-2026-day2-round10-zelage-sebastian",
       "event": "European Nationals",
+      "eventId": 54238,
       "round": "Round 10 (Day 2, Round 2) — Europe vs. North America",
       "players": [
         {
@@ -3205,6 +3237,7 @@
     {
       "id": "european-nationals-2026-day2-round11-heri-casual",
       "event": "European Nationals",
+      "eventId": 54238,
       "round": "Round 11 (Day 2, Round 3)",
       "players": [
         {
@@ -3275,6 +3308,7 @@
     {
       "id": "european-nationals-2026-day2-round12-hanky-noel",
       "event": "European Nationals",
+      "eventId": 54238,
       "round": "Round 12 (Day 2, Round 4 — final Swiss round) — Water Aetherwing Diana mirror, the weekend's first",
       "players": [
         {
@@ -3367,6 +3401,7 @@
     {
       "id": "european-nationals-2026-day2-top8-qf1-asa-kiddelicious",
       "event": "European Nationals",
+      "eventId": 54238,
       "round": "Top 8 — Quarterfinal 1 (all-EU pairing)",
       "players": [
         {
@@ -3456,6 +3491,7 @@
     {
       "id": "european-nationals-2026-day2-top4-semifinal-cabin-sebastian",
       "event": "European Nationals",
+      "eventId": 54238,
       "round": "Top 4 — Semifinal (featured match; rematch of a prior Day 2 loss for Cabin)",
       "players": [
         {
@@ -3554,6 +3590,7 @@
     {
       "id": "worlds-2026-top8-qf1-cabin-raingoddess",
       "event": "Worlds 2026",
+      "eventId": 60488,
       "round": "Top 8 — Quarterfinal 1",
       "players": [
         {
@@ -3661,6 +3698,7 @@
     {
       "id": "worlds-2026-top8-qf2-noel-liftdrasil",
       "event": "Worlds 2026",
+      "eventId": 60488,
       "round": "Top 8 — Quarterfinal 2",
       "players": [
         {
@@ -3779,6 +3817,7 @@
     {
       "id": "worlds-2026-top8-qf3-zero-asa",
       "event": "Worlds 2026",
+      "eventId": 60488,
       "round": "Top 8 — Quarterfinal 3",
       "players": [
         {
@@ -3870,6 +3909,7 @@
     {
       "id": "worlds-2026-top8-qf4-glennyboy-jet",
       "event": "Worlds 2026",
+      "eventId": 60488,
       "round": "Top 8 — Quarterfinal 4",
       "players": [
         {
@@ -3978,6 +4018,7 @@
     {
       "id": "ascent-london-2026-day2-round10-casual-vain",
       "event": "Ascent London",
+      "eventId": 43636,
       "round": "Round 10",
       "players": [
         {
@@ -4033,6 +4074,7 @@
     {
       "id": "ascent-london-2026-day2-round11-dinkydane-djnova",
       "event": "Ascent London",
+      "eventId": 43636,
       "round": "Round 11",
       "players": [
         {
@@ -4113,6 +4155,7 @@
     {
       "id": "ascent-london-2026-day2-round12-duckhats-dragoill",
       "event": "Ascent London",
+      "eventId": 43636,
       "round": "Round 12 (final Swiss round)",
       "players": [
         {
@@ -4211,6 +4254,7 @@
     {
       "id": "ascent-london-2026-top8-qf-fallenbuu-cabin",
       "event": "Ascent London",
+      "eventId": 43636,
       "round": "Top 8 — Quarterfinal",
       "players": [
         {
@@ -4360,6 +4404,7 @@
     {
       "id": "ascent-london-2026-top4-sf-superior-djnova",
       "event": "Ascent London",
+      "eventId": 43636,
       "round": "Top 4 — Semifinal",
       "players": [
         {
@@ -4476,6 +4521,7 @@
     {
       "id": "ascent-london-2026-grand-finals-superior-lifteril",
       "event": "Ascent London",
+      "eventId": 43636,
       "round": "Grand Finals (untimed, best of 3)",
       "players": [
         {
@@ -4605,6 +4651,7 @@
     {
       "id": "ascent-london-day1-round1-taylor-steve",
       "event": "Ascent London",
+      "eventId": 43636,
       "round": "Round 1",
       "players": [
         {
@@ -4760,6 +4807,7 @@
     {
       "id": "ascent-london-day1-round2-argonaut-dragoill",
       "event": "Ascent London",
+      "eventId": 43636,
       "round": "Round 2",
       "players": [
         {
@@ -4862,6 +4910,7 @@
     {
       "id": "ascent-london-day1-round3-henti-lucas",
       "event": "Ascent London",
+      "eventId": 43636,
       "round": "Round 3",
       "players": [
         {
@@ -4956,6 +5005,7 @@
     {
       "id": "ascent-london-day1-round4-enderzone-alisarez",
       "event": "Ascent London",
+      "eventId": 43636,
       "round": "Round 4",
       "players": [
         {
@@ -5086,6 +5136,7 @@
     {
       "id": "ascent-london-day1-round5-superior-business",
       "event": "Ascent London",
+      "eventId": 43636,
       "round": "Round 5",
       "players": [
         {
@@ -5200,6 +5251,7 @@
     {
       "id": "ascent-london-day1-round6-sono-sangorio",
       "event": "Ascent London",
+      "eventId": 43636,
       "round": "Round 6",
       "players": [
         {
@@ -5321,6 +5373,7 @@
     {
       "id": "ascent-london-day1-round7-dinkydane-rexarion",
       "event": "Ascent London",
+      "eventId": 43636,
       "round": "Round 7",
       "players": [
         {
@@ -5440,6 +5493,7 @@
     {
       "id": "ascent-london-day1-round8-celad-asuna",
       "event": "Ascent London",
+      "eventId": 43636,
       "round": "Round 8 (final round, Day 1)",
       "players": [
         {
@@ -5564,6 +5618,7 @@
     {
       "id": "sea-nationals-2026-day1-round1-egg-long",
       "event": "Southeast Asia Nationals",
+      "eventId": 56265,
       "round": "Round 1",
       "players": [
         {
@@ -5685,6 +5740,7 @@
     {
       "id": "sea-nationals-2026-day1-round2-aqua-haro",
       "event": "Southeast Asia Nationals",
+      "eventId": 56265,
       "round": "Round 2",
       "players": [
         {
@@ -5780,6 +5836,7 @@
     {
       "id": "sea-nationals-2026-day1-round3-ruby-zelia-dragon-jg",
       "event": "Southeast Asia Nationals",
+      "eventId": 56265,
       "round": "Round 3",
       "players": [
         {
@@ -5897,6 +5954,7 @@
     {
       "id": "sea-nationals-2026-day1-round4-ai-sentus",
       "event": "Southeast Asia Nationals",
+      "eventId": 56265,
       "round": "Round 4",
       "players": [
         {
@@ -5986,6 +6044,7 @@
     {
       "id": "sea-nationals-2026-day1-round5-mario-wind-rye",
       "event": "Southeast Asia Nationals",
+      "eventId": 56265,
       "round": "Round 5",
       "players": [
         {
@@ -6081,6 +6140,7 @@
     {
       "id": "sea-nationals-2026-day1-round6-zaba-ray-pig",
       "event": "Southeast Asia Nationals",
+      "eventId": 56265,
       "round": "Round 6",
       "players": [
         {
@@ -6157,6 +6217,7 @@
     {
       "id": "sea-nationals-2026-day1-round7-joel-neptuno",
       "event": "Southeast Asia Nationals",
+      "eventId": 56265,
       "round": "Round 7 — reportedly Joel's toughest possible matchup on paper",
       "players": [
         {
@@ -6242,6 +6303,7 @@
     {
       "id": "sea-nationals-2026-day1-round8-abby-microcanthus",
       "event": "Southeast Asia Nationals",
+      "eventId": 56265,
       "round": "Round 8",
       "players": [
         {
@@ -6303,6 +6365,7 @@
     {
       "id": "sea-nationals-2026-day1-round9-megalobana-neptuno",
       "event": "Southeast Asia Nationals",
+      "eventId": 56265,
       "round": "Round 9 (final Swiss round of Day 1) — win-and-in for both players",
       "players": [
         {
@@ -6339,6 +6402,7 @@
     {
       "id": "ascent-taipei-2026-day2-round11-zabishan-quorax",
       "event": "Ascent Taipei",
+      "eventId": 33786,
       "round": "Round 11",
       "players": [
         {
@@ -6433,6 +6497,7 @@
     {
       "id": "ascent-taipei-2026-day2-round12-quorax-trueops",
       "event": "Ascent Taipei",
+      "eventId": 33786,
       "round": "Round 12",
       "players": [
         {
@@ -6507,6 +6572,7 @@
     {
       "id": "ascent-taipei-2026-day2-round13-apal-kuan",
       "event": "Ascent Taipei",
+      "eventId": 33786,
       "round": "Round 13",
       "players": [
         {
@@ -6609,6 +6675,7 @@
     {
       "id": "ascent-taipei-2026-day2-round14-enki-long",
       "event": "Ascent Taipei",
+      "eventId": 33786,
       "round": "Round 14 (final round of Swiss, 14 rounds total) — winner claims the last Top 8 spot",
       "players": [
         {
@@ -6701,6 +6768,7 @@
     {
       "id": "ascent-taipei-2026-day2-top8-qf-yamikin-zero",
       "event": "Ascent Taipei",
+      "eventId": 33786,
       "round": "Top 8 — Quarterfinal (featured match, untimed)",
       "players": [
         {
@@ -6773,6 +6841,7 @@
     {
       "id": "ascent-taipei-2026-day2-top4-sf-apal-long",
       "event": "Ascent Taipei",
+      "eventId": 33786,
       "round": "Top 4 — Semifinal (featured match, untimed)",
       "players": [
         {
@@ -6870,6 +6939,7 @@
     {
       "id": "ascent-taipei-2026-day2-bronze-long-yamikin",
       "event": "Ascent Taipei",
+      "eventId": 33786,
       "round": "Bronze Match (third place, untimed)",
       "players": [
         {
@@ -6927,6 +6997,7 @@
     {
       "id": "ascent-taipei-2026-day2-grand-finals-proan-apal",
       "event": "Ascent Taipei",
+      "eventId": 33786,
       "round": "Grand Finals (best of 3, untimed)",
       "players": [
         {
@@ -7032,6 +7103,7 @@
     {
       "id": "the-gauntlet-2026-round1-hyoka-duckhats",
       "event": "The Gauntlet 2026",
+      "eventId": 60363,
       "round": "Round 1",
       "players": [
         {
@@ -7158,6 +7230,7 @@
     {
       "id": "the-gauntlet-2026-round2-zelenitis-holysamurai",
       "event": "The Gauntlet 2026",
+      "eventId": 60363,
       "round": "Round 2",
       "players": [
         {
@@ -7261,6 +7334,7 @@
     {
       "id": "the-gauntlet-2026-round3-roen-jacepatrick",
       "event": "The Gauntlet 2026",
+      "eventId": 60363,
       "round": "Round 3",
       "players": [
         {
@@ -7346,6 +7420,7 @@
     {
       "id": "the-gauntlet-2026-round4-raingoddess-dal",
       "event": "The Gauntlet 2026",
+      "eventId": 60363,
       "round": "Round 4",
       "players": [
         {
@@ -7474,6 +7549,7 @@
     {
       "id": "the-gauntlet-2026-round5-gerthos-jr",
       "event": "The Gauntlet 2026",
+      "eventId": 60363,
       "round": "Round 5",
       "players": [
         {
@@ -7597,6 +7673,7 @@
     {
       "id": "the-gauntlet-2026-round6-glennyboy-limelight",
       "event": "The Gauntlet 2026",
+      "eventId": 60363,
       "round": "Round 6 (rematch of their Worlds 2024 Round 1 match, which Limelight won)",
       "players": [
         {
@@ -7687,6 +7764,7 @@
     {
       "id": "the-gauntlet-2026-round7-aqua-apal",
       "event": "The Gauntlet 2026",
+      "eventId": 60363,
       "round": "Round 7 (between two of the day's five remaining one-loss players)",
       "players": [
         {
@@ -7777,6 +7855,7 @@
     {
       "id": "the-gauntlet-2026-round8-emp-yamikin",
       "event": "The Gauntlet 2026",
+      "eventId": 60363,
       "round": "Round 8",
       "players": [
         {
@@ -7897,6 +7976,7 @@
     {
       "id": "the-gauntlet-2026-round9-bailey-leowong",
       "event": "The Gauntlet 2026",
+      "eventId": 60363,
       "round": "Round 9 (final round of Swiss, before the asymmetric round-10 tiebreaker)",
       "players": [
         {
@@ -7946,6 +8026,7 @@
     {
       "id": "worlds-swiss-2026-round1-proan-duckhats",
       "event": "Worlds Swiss Stage 2026",
+      "eventId": 60488,
       "round": "Round 1",
       "players": [
         {
@@ -8132,6 +8213,7 @@
     {
       "id": "worlds-swiss-2026-round2-raylam-caven",
       "event": "Worlds Swiss Stage 2026",
+      "eventId": 60488,
       "round": "Round 2",
       "players": [
         {
@@ -8325,6 +8407,7 @@
     {
       "id": "worlds-swiss-2026-round2-second-asa-liftdraasil",
       "event": "Worlds Swiss Stage 2026",
+      "eventId": 60488,
       "round": "Round 2 (second featured match, same round)",
       "players": [
         {
@@ -8458,6 +8541,7 @@
     {
       "id": "worlds-swiss-2026-round4-superior-raingoddess",
       "event": "Worlds Swiss Stage 2026",
+      "eventId": 60488,
       "round": "Round 4",
       "players": [
         {
@@ -8565,6 +8649,7 @@
     {
       "id": "worlds-swiss-2026-round4-bonus-raylam-gerthos",
       "event": "Worlds Swiss Stage 2026",
+      "eventId": 60488,
       "round": "Round 4 (bonus recorded match, same round — pairing that determined seeding into Round 5)",
       "players": [
         {
@@ -8636,6 +8721,7 @@
     {
       "id": "worlds-swiss-2026-round5-gerthos-jet",
       "event": "Worlds Swiss Stage 2026",
+      "eventId": 60488,
       "round": "Round 5",
       "players": [
         {
@@ -8809,6 +8895,7 @@
     {
       "id": "worlds-swiss-2026-round6-noel-asa",
       "event": "Worlds Swiss Stage 2026",
+      "eventId": 60488,
       "round": "Round 6",
       "players": [
         {
@@ -8947,6 +9034,7 @@
     {
       "id": "worlds-swiss-2026-round6-bonus-raylam-jair",
       "event": "Worlds Swiss Stage 2026",
+      "eventId": 60488,
       "round": "Round 6 (bonus feature match, same round)",
       "players": [
         {
@@ -9034,6 +9122,7 @@
     {
       "id": "worlds-swiss-2026-round7-glennyboy-duckhats",
       "event": "Worlds Swiss Stage 2026",
+      "eventId": 60488,
       "round": "Round 7",
       "players": [
         {
@@ -9143,6 +9232,7 @@
     {
       "id": "worlds-swiss-2026-round7-bonus-dragonjg-sono",
       "event": "Worlds Swiss Stage 2026",
+      "eventId": 60488,
       "round": "Round 7 (bonus recorded match, same round)",
       "players": [
         {
@@ -9208,6 +9298,7 @@
     {
       "id": "worlds-swiss-2026-round8-caven-sono",
       "event": "Worlds Swiss Stage 2026",
+      "eventId": 60488,
       "round": "Round 8 (final round of Day One Swiss — win-and-in for the asynchronous top-8 bracket)",
       "players": [
         {
