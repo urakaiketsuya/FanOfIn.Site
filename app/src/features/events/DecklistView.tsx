@@ -1,10 +1,15 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
-import type { Card, DeckFormat, OmnidexDecklist, OmnidexDecklistCardLine } from "@gatcg/shared";
+import type { Card, CardInclusionEntry, DeckFormat, OmnidexDecklist, OmnidexDecklistCardLine } from "@gatcg/shared";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CardImage from "../../components/CardImage";
+import CostIcon from "../../components/CostIcon";
 import ElementIcon from "../../components/ElementIcon";
 import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
+import { usePriceTrendByName, type PriceTrendEntry } from "../pricing/usePriceTrendByName";
+import { useSimulatorSummaryData } from "../simulator/data";
+import type { SimulatorCardEvidence } from "../deckbuilder/useSimulatorSuggestedBuild";
+import { useCommunityBlendedCardInclusion } from "../community/data";
 import DeckTuningEvidence from "./DeckTuningEvidence";
 import { formatUsd } from "../../lib/format";
 import { computeSectionPrice } from "../../lib/deckPrice";
@@ -15,7 +20,7 @@ import { buildClarentPlaytestUrl } from "../../lib/clarentPlaytest";
 import { copyDecklistAndOpen, deckBuilderDestinations } from "../../lib/deckBuilderDestinations";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { extractProducedTokens } from "../../lib/cardIntent";
-import { useDecklistDisplayPrefs } from "../../lib/decklistDisplayPrefs";
+import { useDecklistDisplayPrefs, type VisualCardSize } from "../../lib/decklistDisplayPrefs";
 import { computeDeckRating } from "../../lib/deckIdentity";
 import DiaoScoreCard from "../../components/DiaoScoreCard";
 import DecklistWinRate from "./DecklistWinRate";
@@ -111,10 +116,197 @@ function CompactDeckSection({ title, lines, cardsByName }: { title: string; line
   return <Section heading="dense" title={`${title} (${total})`}><ul className={`mt-2 grid gap-x-4 gap-y-1.5 ${columns}`}>{lines.map((line) => { const card = cardsByName.get(line.card); return <li key={line.card} className="flex min-w-0 items-center gap-1.5 text-sm">{card?.editions[0] ? <CardImage image={card.editions[0].image} alt={line.card} className="h-7 w-5 shrink-0 rounded-sm object-cover object-top" /> : <div className="h-7 w-5 shrink-0 rounded-sm bg-ctp-surface0" />}{line.quantity > 1 && <span className="shrink-0 text-ctp-subtext0">{line.quantity}x</span>}<span className="min-w-0 truncate">{card ? <CardHoverPreview image={card.editions[0]?.image} alt={line.card}><Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">{line.card}</Link></CardHoverPreview> : <span className="text-ctp-text">{line.card}</span>}</span></li>; })}</ul></Section>;
 }
 
-function VisualDeckSection({ title, lines, cardsByName }: { title: string; lines: OmnidexDecklistCardLine[]; cardsByName: Map<string, Card> }) {
+const VISUAL_CARD_SIZE_CLASSES: Record<VisualCardSize, string> = {
+  large: "grid-cols-2 gap-3",
+  medium: "grid-cols-3 gap-2 sm:grid-cols-4",
+  compact: "grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-8",
+};
+
+interface VisualFieldVisibility {
+  cost: boolean;
+  price: boolean;
+  priceTrend: boolean;
+  tags: boolean;
+  simulator: boolean;
+  community: boolean;
+}
+
+/** One card in Visual mode — full art plus an optional footer of toggleable fields, same idea as the Guided Deck Builder's BuilderCardGrid but for a plain finished decklist line rather than a suggestion-model card. */
+function VisualCardTile({
+  line,
+  card,
+  unitPrice,
+  priceTrend,
+  simulatorEvidence,
+  communityEntry,
+  fields,
+}: {
+  line: OmnidexDecklistCardLine;
+  card: Card | undefined;
+  unitPrice: number | undefined;
+  priceTrend: PriceTrendEntry | undefined;
+  simulatorEvidence: SimulatorCardEvidence | undefined;
+  communityEntry: CardInclusionEntry | undefined;
+  fields: VisualFieldVisibility;
+}) {
+  const tags = [...(card?.elements.filter((e) => e !== "NORM") ?? []), ...(card?.classes ?? [])];
+  const image = (
+    <div className="relative aspect-[5/7] overflow-hidden rounded bg-ctp-surface0">
+      {card?.editions[0] ? (
+        <CardImage image={card.editions[0].image} alt={line.card} className="h-full w-full object-cover" />
+      ) : (
+        <span className="flex h-full items-center p-1 text-center text-[9px] text-ctp-subtext0">{line.card}</span>
+      )}
+      {line.quantity > 1 && <span className="absolute right-1 top-1 rounded bg-ctp-base/90 px-1 text-[10px] text-ctp-text">{line.quantity}x</span>}
+      {fields.tags && tags.length > 0 && (
+        <div className="absolute inset-x-1 bottom-1 flex flex-wrap gap-0.5">
+          {tags.map((tag) => (
+            <span key={tag} className="rounded border border-ctp-surface1 bg-ctp-base/90 px-1 text-[9px] text-ctp-subtext1">
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <CardHoverPreview image={card?.editions[0]?.image} alt={line.card}>
+      <div title={line.card}>
+        {card ? <Link to={`/cards/${card.slug}`}>{image}</Link> : image}
+        {fields.cost && card && card.cost.type !== "none" && card.cost.value !== null && (
+          <div className="mt-1 flex items-center justify-between text-[10px] text-ctp-subtext1">
+            <span>Cost</span>
+            <span className="flex items-center gap-0.5 text-ctp-text">
+              <CostIcon kind={card.cost.type} size={10} />
+              {card.cost.value}
+            </span>
+          </div>
+        )}
+        {fields.price && unitPrice !== undefined && (
+          <div className="mt-1 flex items-center justify-between text-[10px] text-ctp-subtext1">
+            <span>Price</span>
+            <span className="text-ctp-text">{formatUsd(unitPrice * line.quantity)}</span>
+          </div>
+        )}
+        {fields.priceTrend && priceTrend && (
+          <div className="mt-1 flex items-center justify-between text-[10px] text-ctp-subtext1">
+            <span>Trend</span>
+            <span className={priceTrend.pctChange >= 0 ? "text-ctp-green" : "text-ctp-red"}>
+              {priceTrend.pctChange >= 0 ? "▲" : "▼"} {Math.abs(priceTrend.pctChange * 100).toFixed(0)}%
+            </span>
+          </div>
+        )}
+        {fields.simulator && simulatorEvidence && (
+          <div className="mt-1 text-[10px] text-ctp-mauve" title="Anonymous Clarent simulator telemetry; experimental">
+            {simulatorEvidence.games} sim game{simulatorEvidence.games === 1 ? "" : "s"}
+            {simulatorEvidence.winRate === null ? "" : ` · ${(simulatorEvidence.winRate * 100).toFixed(0)}%`}
+          </div>
+        )}
+        {fields.community && communityEntry && (
+          <div className="mt-1 flex items-center justify-between text-[10px] text-ctp-subtext1">
+            <span>Community</span>
+            <span className="text-ctp-mauve" title="Share of all tracked community decks (any Champion) that include this card">
+              {Math.round(communityEntry.percentOfDecks * 100)}% brewed
+            </span>
+          </div>
+        )}
+      </div>
+    </CardHoverPreview>
+  );
+}
+
+function VisualDeckSection({
+  title,
+  lines,
+  cardsByName,
+  cardSize,
+  priceByName,
+  priceTrendByName,
+  simulatorEvidenceByName,
+  communityInclusionByName,
+  fields,
+}: {
+  title: string;
+  lines: OmnidexDecklistCardLine[];
+  cardsByName: Map<string, Card>;
+  cardSize: VisualCardSize;
+  priceByName: Map<string, number>;
+  priceTrendByName: Map<string, PriceTrendEntry>;
+  simulatorEvidenceByName: Map<string, SimulatorCardEvidence>;
+  communityInclusionByName: Map<string, CardInclusionEntry> | undefined;
+  fields: VisualFieldVisibility;
+}) {
   if (lines.length === 0) return null;
   const total = lines.reduce((sum, line) => sum + line.quantity, 0);
-  return <Section heading="dense" title={`${title} (${total})`}><div className="mt-2 grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-8">{lines.map((line) => { const card = cardsByName.get(line.card); const content = <>{card?.editions[0] ? <CardImage image={card.editions[0].image} alt={line.card} className="h-full w-full object-cover" /> : <span className="flex h-full items-center p-1 text-center text-[9px] text-ctp-subtext0">{line.card}</span>}{line.quantity > 1 && <span className="absolute right-1 top-1 rounded bg-ctp-base/90 px-1 text-[10px] text-ctp-text">{line.quantity}x</span>}</>; return <CardHoverPreview key={line.card} image={card?.editions[0]?.image} alt={line.card}>{card ? <Link to={`/cards/${card.slug}`} title={line.card} className="relative block aspect-[5/7] overflow-hidden rounded bg-ctp-surface0">{content}</Link> : <div title={line.card} className="relative block aspect-[5/7] overflow-hidden rounded bg-ctp-surface0">{content}</div>}</CardHoverPreview>; })}</div></Section>;
+  return (
+    <Section heading="dense" title={`${title} (${total})`}>
+      <div className={`mt-2 grid ${VISUAL_CARD_SIZE_CLASSES[cardSize]}`}>
+        {lines.map((line) => (
+          <VisualCardTile
+            key={line.card}
+            line={line}
+            card={cardsByName.get(line.card)}
+            unitPrice={priceByName.get(line.card)}
+            priceTrend={priceTrendByName.get(line.card)}
+            communityEntry={communityInclusionByName?.get(line.card)}
+            simulatorEvidence={simulatorEvidenceByName.get(line.card)}
+            fields={fields}
+          />
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+type VisualModeSectionsProps = {
+  sections: { title: string; lines: OmnidexDecklistCardLine[] }[];
+  cardsByName: Map<string, Card>;
+  cardSize: VisualCardSize;
+  priceByName: Map<string, number>;
+  priceTrendByName: Map<string, PriceTrendEntry>;
+  simulatorEvidenceByName: Map<string, SimulatorCardEvidence>;
+  communityInclusionByName: Map<string, CardInclusionEntry> | undefined;
+  fields: VisualFieldVisibility;
+};
+
+function VisualModeSections({ sections, communityInclusionByName, ...rest }: VisualModeSectionsProps) {
+  return (
+    <div className="space-y-6">
+      {sections.map((section) => (
+        <VisualDeckSection key={section.title} title={section.title} lines={section.lines} communityInclusionByName={communityInclusionByName} {...rest} />
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Fetches the blended community-inclusion dataset (~1MB) and resolves its format-wide `overall`
+ * array to a per-card map, then hands it to `children` — only mounted when the viewer has the
+ * Community field switched on, so every other decklist page load skips this fetch entirely (same
+ * gating `DeckTuningEvidence` below relies on for its own, larger cost).
+ *
+ * Deliberately format-wide, not Champion-scoped: `CardInclusionData.byChampion` is keyed by
+ * ShoutAtYourDecks' own per-print champion slug (e.g. "diao-chan-enchantress"), which has no
+ * reliable mapping back to this app's base Champion names (e.g. "Diao Chan", from the tournament
+ * pipeline) — `DeckBuilderIndex.tsx`'s own `championToSlug(championName)` lookup into `byChampion`
+ * has this same mismatch against current real data, confirmed empirically (every one of the 22
+ * live `byChampion` keys carries a print-specific suffix a base name can't produce). Using
+ * `overall` here sidesteps that rather than repeating it.
+ */
+function VisualCommunityGate({
+  format,
+  children,
+}: {
+  format?: DeckFormat;
+  children: (communityInclusionByName: Map<string, CardInclusionEntry> | undefined) => ReactNode;
+}) {
+  const communityCardInclusion = useCommunityBlendedCardInclusion(format);
+  const communityInclusionByName = useMemo(() => {
+    if (!communityCardInclusion) return undefined;
+    return new Map(communityCardInclusion.overall.map((c) => [c.name, c]));
+  }, [communityCardInclusion]);
+  return <>{children(communityInclusionByName)}</>;
 }
 
 export default function DecklistView({
@@ -145,8 +337,25 @@ export default function DecklistView({
   showDeckStats?: boolean;
 }) {
   const priceByName = useDeckPriceByName();
+  const priceTrendByName = usePriceTrendByName();
   const catalog = useCardCatalog();
   const displayPrefs = useDecklistDisplayPrefs();
+  const simulatorSummary = useSimulatorSummaryData();
+  // Visual mode's optional "sim games" field only — cardId isn't Champion-scoped like the Guided
+  // Deck Builder's own evidence map, so this works for any decklist, not just a suggested build.
+  const simulatorEvidenceByName = useMemo(() => {
+    const cardById = new Map<string, Card>();
+    for (const c of catalog) {
+      cardById.set(c.uuid, c);
+      cardById.set(c.slug, c);
+    }
+    const byName = new Map<string, SimulatorCardEvidence>();
+    for (const stat of simulatorSummary?.cardStats ?? []) {
+      const card = cardById.get(stat.cardId);
+      if (card) byName.set(card.name, stat);
+    }
+    return byName;
+  }, [catalog, simulatorSummary]);
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
   const [displayMode, setDisplayMode] = useState<DeckDisplayMode>(() => defaultDisplayMode === "detailed" && typeof window !== "undefined" && window.matchMedia?.("(max-width: 639px)").matches ? "compact" : defaultDisplayMode);
 
@@ -302,7 +511,26 @@ export default function DecklistView({
         </div>
       )}
       {displayMode === "compact" && <div className="space-y-5">{[...extraSections, { title: "Main", lines: decklist.main }, { title: "Material", lines: decklist.material }, { title: "Sideboard", lines: decklist.sideboard }, ...displayTrailingSections].map((section) => <CompactDeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} />)}</div>}
-      {displayMode === "visual" && <div className="space-y-6">{[...extraSections, { title: "Main", lines: decklist.main }, { title: "Material", lines: decklist.material }, { title: "Sideboard", lines: decklist.sideboard }, ...displayTrailingSections].map((section) => <VisualDeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} />)}</div>}
+      {displayMode === "visual" && (() => {
+        const sections = [...extraSections, { title: "Main", lines: decklist.main }, { title: "Material", lines: decklist.material }, { title: "Sideboard", lines: decklist.sideboard }, ...displayTrailingSections];
+        const fields: VisualFieldVisibility = {
+          cost: displayPrefs.visualCost,
+          price: displayPrefs.visualPrice,
+          priceTrend: displayPrefs.visualPriceTrend,
+          tags: displayPrefs.visualTags,
+          simulator: displayPrefs.visualSimulator,
+          community: displayPrefs.visualCommunity,
+        };
+        return displayPrefs.visualCommunity ? (
+          <VisualCommunityGate format={format}>
+            {(communityInclusionByName) => (
+              <VisualModeSections sections={sections} cardsByName={displayCardsByName} cardSize={displayPrefs.visualCardSize} priceByName={priceByName} priceTrendByName={priceTrendByName} simulatorEvidenceByName={simulatorEvidenceByName} communityInclusionByName={communityInclusionByName} fields={fields} />
+            )}
+          </VisualCommunityGate>
+        ) : (
+          <VisualModeSections sections={sections} cardsByName={displayCardsByName} cardSize={displayPrefs.visualCardSize} priceByName={priceByName} priceTrendByName={priceTrendByName} simulatorEvidenceByName={simulatorEvidenceByName} communityInclusionByName={undefined} fields={fields} />
+        );
+      })()}
       {displayMode === "detailed" && <div className="grid gap-4 sm:grid-cols-2">
         {extraSections.map((section) => <DeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} />)}
         <DeckSection title="Main" lines={decklist.main} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} />

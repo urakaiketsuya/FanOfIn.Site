@@ -62,7 +62,7 @@ export default function PlayerEventDecklistRow({ event, playerId }: { event: Omn
                   )}
                 </div>
               )}
-              <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={deckId} />
+              <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={deckId} showThumbnails />
             </>
           )}
         </div>

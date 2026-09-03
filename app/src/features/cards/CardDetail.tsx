@@ -527,7 +527,7 @@ export default function CardDetail() {
           )}
 
           {quantityBuckets.length >= 2 && (
-            <Section className="mt-4" heading="dense" title="Win rate by quantity" description="Does running more (or fewer) copies actually change the outcome?">
+            <Section className="mt-4" heading="dense" collapsible defaultOpen={false} title="Win rate by quantity" description="Does running more (or fewer) copies actually change the outcome?">
               <div className="mt-1 flex flex-wrap gap-4 text-sm text-ctp-subtext1">
                 {quantityBuckets.map((q) => (
                   <span key={q.quantity}>
@@ -540,7 +540,7 @@ export default function CardDetail() {
           )}
 
           {edition?.illustrator && (
-            <Section className="mt-4" heading="dense" title="Illustrator">
+            <Section className="mt-4" heading="dense" collapsible defaultOpen={false} title="Illustrator">
               <Link
                 to={`/cards?artist=${encodeURIComponent(edition.illustrator)}`}
                 className="mt-1 inline-block text-sm text-ctp-blue hover:underline"
@@ -582,7 +582,7 @@ export default function CardDetail() {
           {(card.references.length > 0 || card.referenced_by.length > 0) && (
             <div className="mt-4 space-y-2">
               {card.references.length > 0 && (
-                <Section heading="dense" title="References">
+                <Section heading="dense" collapsible defaultOpen={false} title="References">
                   <div className="mt-1 flex flex-wrap gap-2 text-sm">
                     {card.references.map((ref) => (
                       <Link key={ref.slug} to={`/cards/${ref.slug}`} className="text-ctp-blue hover:underline">
@@ -593,7 +593,7 @@ export default function CardDetail() {
                 </Section>
               )}
               {card.referenced_by.length > 0 && (
-                <Section heading="dense" title="Referenced by">
+                <Section heading="dense" collapsible defaultOpen={false} title="Referenced by">
                   <div className="mt-1 flex flex-wrap gap-2 text-sm">
                     {card.referenced_by.map((ref) => (
                       <Link key={ref.slug} to={`/cards/${ref.slug}`} className="text-ctp-blue hover:underline">

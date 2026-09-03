@@ -176,7 +176,7 @@ export default function DeckSightingRow({
         <div id={`decklist-${sighting.deckId}`} className="mt-2 border-t border-ctp-surface0 pt-2">
           {loading && <InlineState className="text-sm">Loading…</InlineState>}
           {error && <InlineState className="text-sm">{error}</InlineState>}
-          {decklist && <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={sighting.deckId} />}
+          {decklist && <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={sighting.deckId} showThumbnails />}
         </div>
       )}
     </div>

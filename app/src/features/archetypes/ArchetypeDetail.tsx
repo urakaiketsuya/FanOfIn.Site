@@ -460,8 +460,11 @@ export default function ArchetypeDetail() {
               )}
 
               {selectedMatchup && (selectedMatchup.answers?.length ?? 0) > 0 && (
-                <div className="mt-6">
-                  <h3 className="text-sm font-semibold text-ctp-green uppercase tracking-wide">Possible answers</h3>
+                <details className="group mt-6">
+                  <summary className="flex cursor-pointer list-none items-baseline gap-1.5 [&::-webkit-details-marker]:hidden">
+                    <span aria-hidden="true" className="inline-block text-ctp-green transition-transform group-open:rotate-90">&#9656;</span>
+                    <h3 className="text-sm font-semibold text-ctp-green uppercase tracking-wide">Possible answers</h3>
+                  </summary>
                   <p className="mt-1 text-xs text-ctp-subtext0">
                     For each card above, cards of your own that correlate with doing better specifically in the games
                     where the opponent had it — correlational, not a guarantee.
@@ -528,7 +531,7 @@ export default function ArchetypeDetail() {
                       </tbody>
                     </table>
                   </div>
-                </div>
+                </details>
               )}
             </Section>
           )}

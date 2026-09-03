@@ -269,7 +269,7 @@ export default function PlayerProfile() {
       )}
 
       {tab === "overview" && upsets.length > 0 && (
-        <Section className="mt-6" heading="compact" title="Notable upsets">
+        <Section className="mt-6" heading="compact" collapsible defaultOpen={false} title="Notable upsets">
           <div className="mt-2 space-y-1 text-sm">
             {upsets.map((u, i) => (
               <div key={i} className="text-ctp-subtext1">
@@ -289,7 +289,7 @@ export default function PlayerProfile() {
       )}
 
       {tab === "overview" && rivalsProfile && rivalsProfile.rivals.length > 0 && (
-        <Section className="mt-6" heading="compact" title="Rivals" description="Most-played opponents, worst matchup first.">
+        <Section className="mt-6" heading="compact" collapsible defaultOpen={false} title="Rivals" description="Most-played opponents, worst matchup first.">
           <div className="mt-2 space-y-1">
             {rivalsProfile.rivals.map((r) => {
               const opponent = playersData?.players.find((p) => p.id === r.opponentId);

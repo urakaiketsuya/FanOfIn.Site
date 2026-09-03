@@ -2,14 +2,37 @@ import { useEffect, useState } from "react";
 
 const STORAGE_KEY = "decklist-display-prefs-v1";
 
+export type VisualCardSize = "large" | "medium" | "compact";
+
 interface DecklistDisplayPrefs {
   tuningEvidence: boolean;
   metaGaps: boolean;
   diaoScore: boolean;
   winRate: boolean;
+  visualCardSize: VisualCardSize;
+  /** Per-card fields under a card's image in Visual mode — same idea as the Guided Deck Builder's Customize panel, just for a plain finished decklist rather than a suggestion-model one. */
+  visualCost: boolean;
+  visualPrice: boolean;
+  visualPriceTrend: boolean;
+  visualTags: boolean;
+  visualSimulator: boolean;
+  /** The one Visual-mode field with a real fetch cost (~1MB community-inclusion dataset) — resolved Champion-scoped, same data DeckBuilderIndex.tsx already uses for its own Community usage badges. */
+  visualCommunity: boolean;
 }
 
-const DEFAULTS: DecklistDisplayPrefs = { tuningEvidence: true, metaGaps: true, diaoScore: false, winRate: false };
+const DEFAULTS: DecklistDisplayPrefs = {
+  tuningEvidence: true,
+  metaGaps: true,
+  diaoScore: false,
+  winRate: false,
+  visualCardSize: "large",
+  visualCost: true,
+  visualPrice: false,
+  visualPriceTrend: false,
+  visualTags: false,
+  visualSimulator: false,
+  visualCommunity: false,
+};
 
 function load(): DecklistDisplayPrefs {
   try {
@@ -21,6 +44,13 @@ function load(): DecklistDisplayPrefs {
       metaGaps: parsed.metaGaps ?? DEFAULTS.metaGaps,
       diaoScore: parsed.diaoScore ?? DEFAULTS.diaoScore,
       winRate: parsed.winRate ?? DEFAULTS.winRate,
+      visualCardSize: parsed.visualCardSize ?? DEFAULTS.visualCardSize,
+      visualCost: parsed.visualCost ?? DEFAULTS.visualCost,
+      visualPrice: parsed.visualPrice ?? DEFAULTS.visualPrice,
+      visualPriceTrend: parsed.visualPriceTrend ?? DEFAULTS.visualPriceTrend,
+      visualTags: parsed.visualTags ?? DEFAULTS.visualTags,
+      visualSimulator: parsed.visualSimulator ?? DEFAULTS.visualSimulator,
+      visualCommunity: parsed.visualCommunity ?? DEFAULTS.visualCommunity,
     };
   } catch {
     return DEFAULTS;
@@ -72,5 +102,12 @@ export function useDecklistDisplayPrefs() {
     setMetaGaps: (value: boolean) => setPrefs({ ...getPrefs(), metaGaps: value }),
     setDiaoScore: (value: boolean) => setPrefs({ ...getPrefs(), diaoScore: value }),
     setWinRate: (value: boolean) => setPrefs({ ...getPrefs(), winRate: value }),
+    setVisualCardSize: (value: VisualCardSize) => setPrefs({ ...getPrefs(), visualCardSize: value }),
+    setVisualCost: (value: boolean) => setPrefs({ ...getPrefs(), visualCost: value }),
+    setVisualPrice: (value: boolean) => setPrefs({ ...getPrefs(), visualPrice: value }),
+    setVisualPriceTrend: (value: boolean) => setPrefs({ ...getPrefs(), visualPriceTrend: value }),
+    setVisualTags: (value: boolean) => setPrefs({ ...getPrefs(), visualTags: value }),
+    setVisualSimulator: (value: boolean) => setPrefs({ ...getPrefs(), visualSimulator: value }),
+    setVisualCommunity: (value: boolean) => setPrefs({ ...getPrefs(), visualCommunity: value }),
   };
 }

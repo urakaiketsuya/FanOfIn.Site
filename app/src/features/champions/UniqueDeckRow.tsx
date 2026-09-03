@@ -35,7 +35,7 @@ export default function UniqueDeckRow({ score, playerName }: { score: DeckHipste
         <div className="mt-2 border-t border-ctp-surface0 pt-2">
           {loading && <InlineState className="text-sm">Loading…</InlineState>}
           {error && <p className="text-sm text-ctp-subtext0">{error}</p>}
-          {decklist && <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={`${score.eventId}:${score.player}`} />}
+          {decklist && <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={`${score.eventId}:${score.player}`} showThumbnails />}
         </div>
       )}
     </div>

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import type { Card, CommunityCoOccurrenceEntry, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
-import { championToSlug } from "../community/data";
+import { championSlugsFor, mergeCardInclusionBuckets, mergeCoOccurrenceForCard } from "../community/data";
 import { parseDecklist } from "../compare/parseDecklist";
 import { useCardsByNames } from "../events/useCardsByNames";
 import CardHoverPreview from "../../components/CardHoverPreview";
@@ -14,7 +14,9 @@ import { buildClarentPlaytestUrl } from "../../lib/clarentPlaytest";
 import { deckBuilderDestinations } from "../../lib/deckBuilderDestinations";
 import { formatUsd } from "../../lib/format";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import NotificationBanner from "../../components/ui/NotificationBanner";
 import PageHeader from "../../components/ui/PageHeader";
+import Panel from "../../components/ui/Panel";
 import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import { useTabParam } from "../../lib/useTabParam";
 import { encodeCustomDecks } from "../../lib/compareShareLink";
@@ -23,6 +25,9 @@ import { computeIdentityElements, findChampionCard, useSuggestedBuild, type Sugg
 import { useCommunitySuggestedBuild } from "./useCommunitySuggestedBuild";
 import { useSimulatorSuggestedBuild } from "./useSimulatorSuggestedBuild";
 import { useCardFieldVisibility, type CardFieldVisibility } from "./useCardFieldVisibility";
+import { useBuilderViewMode } from "./useBuilderViewMode";
+import { usePriceTrendByName } from "../pricing/usePriceTrendByName";
+import BuilderCardGrid from "./components/BuilderCardGrid";
 import { useBuddyCards } from "./useBuddyCards";
 import { SIDEBOARD_POINT_BUDGET, sideboardPointCost, validateDeck } from "./validateDeck";
 import { computeDependencyReadiness, computeSynergyReadiness } from "./synergyReadiness";
@@ -185,6 +190,8 @@ export default function DeckBuilderIndex() {
   const [addDestination, setAddDestination] = useState<"automatic" | "sideboard" | "maybeboard">("automatic");
   const [visibleFields, setVisibleField] = useCardFieldVisibility();
   const [customizeOpen, setCustomizeOpen] = useState(false);
+  const [viewMode, setViewMode] = useBuilderViewMode();
+  const priceTrendByName = usePriceTrendByName();
   const [dismissedReviewCards, setDismissedReviewCards] = useState<Set<string>>(new Set());
   const [showProtectedCuts, setShowProtectedCuts] = useState(false);
   const [tab, setTab] = useTabParam<BuilderTab>("tab", TAB_KEYS, "build");
@@ -294,7 +301,9 @@ export default function DeckBuilderIndex() {
 
   const communityChampData = useMemo(() => {
     if (!communityCardInclusion || !championName) return undefined;
-    return communityCardInclusion.byChampion[championToSlug(championName)];
+    const slugs = championSlugsFor(Object.keys(communityCardInclusion.byChampion), championName);
+    if (slugs.length === 0) return undefined;
+    return mergeCardInclusionBuckets(slugs.map((slug) => communityCardInclusion.byChampion[slug]));
   }, [communityCardInclusion, championName]);
   const communityInclusionByName = useMemo(() => {
     if (!communityChampData) return undefined;
@@ -317,6 +326,36 @@ export default function DeckBuilderIndex() {
     () => (decayReport ? new Map(decayReport.signals.map((s) => [s.cardName, s.decay])) : undefined),
     [decayReport],
   );
+  // Grid-view "Meta trend" toggle wants the full signal (recent/prior rate, replacement
+  // suggestion), not just decayingCardBoost's single ranking-nudge number. computeCardDecay only
+  // returns its top 6 flagged decliners (see its own doc comment), so most cards have no entry here.
+  const decaySignalByName = useMemo(
+    () => (decayReport ? new Map(decayReport.signals.map((s) => [s.cardName, s])) : undefined),
+    [decayReport],
+  );
+  // Champion-scoped real tournament inclusion rate per card, for the grid's "Hype gap" toggle —
+  // mirrors CardStatsIndex.tsx's hypeGap idea (community brew rate minus tournament share) but
+  // recomputed against this Champion's own population rather than the whole card pool, since that's
+  // the more relevant denominator for "is this overhyped for THIS Champion specifically".
+  const tournamentInclusionByName = useMemo(() => {
+    if (recommendationRows.length === 0) return undefined;
+    const counts = new Map<string, number>();
+    for (const row of recommendationRows) {
+      for (const name of row.main.keys()) counts.set(name, (counts.get(name) ?? 0) + 1);
+      for (const name of row.material.keys()) counts.set(name, (counts.get(name) ?? 0) + 1);
+    }
+    const byName = new Map<string, number>();
+    for (const [name, count] of counts) byName.set(name, count / recommendationRows.length);
+    return byName;
+  }, [recommendationRows]);
+  const hypeGapByName = useMemo(() => {
+    if (!communityInclusionByName || !tournamentInclusionByName) return undefined;
+    const byName = new Map<string, number>();
+    for (const [name, entry] of communityInclusionByName) {
+      byName.set(name, entry.percentOfDecks - (tournamentInclusionByName.get(name) ?? 0));
+    }
+    return byName;
+  }, [communityInclusionByName, tournamentInclusionByName]);
 
   const tournamentBuild = useSuggestedBuild(
     recommendationRows,
@@ -469,13 +508,17 @@ export default function DeckBuilderIndex() {
   const communityBuddyCards = useMemo(() => {
     const result = new Map<string, CommunityCoOccurrenceEntry[]>();
     if (!communityCoOccurrence || !championName) return result;
-    const champData = communityCoOccurrence.byChampion[championToSlug(championName)];
-    if (!champData) return result;
+    const slugs = championSlugsFor(Object.keys(communityCoOccurrence.byChampion), championName);
+    if (slugs.length === 0) return result;
+    const buckets = slugs.map((slug) => communityCoOccurrence.byChampion[slug]);
     // Same exclusion as useBuddyCards's own excludeNames — a card already in the assembled build
     // isn't a useful "buddy" suggestion (there's nowhere to add it).
-    for (const name of lockedCards.keys()) result.set(name, (champData[name] ?? []).filter((b) => !placedNames.has(b.cardName)));
+    for (const name of lockedCards.keys()) {
+      const keyCardDeckCount = communityInclusionByName?.get(name)?.deckCount ?? 0;
+      result.set(name, mergeCoOccurrenceForCard(buckets, name, keyCardDeckCount).filter((b) => !placedNames.has(b.cardName)));
+    }
     return result;
-  }, [communityCoOccurrence, championName, lockedCards, placedNames]);
+  }, [communityCoOccurrence, championName, communityInclusionByName, lockedCards, placedNames]);
   const buddyNames = useMemo(() => Array.from(buddyCards.values()).flatMap((list) => list.map((b) => b.cardName)), [buddyCards]);
   const suggestionNames = useMemo(() => build.suggestions.map((c) => c.cardName), [build.suggestions]);
   const cardsByName = useCardsByNames(useMemo(() => [...allNames, ...buddyNames, ...suggestionNames, ...maybeboard.keys()], [allNames, buddyNames, suggestionNames, maybeboard]));
@@ -1317,26 +1360,28 @@ export default function DeckBuilderIndex() {
             />
           </div>
 
-          {tab === "build" && newReleaseCards.length > 0 && (
-            <div className="mt-4 mb-4 rounded-lg border border-ctp-mauve/50 bg-ctp-mauve/10 px-3 py-2 text-xs text-ctp-subtext1">
-              <span className="font-medium">New cards available</span>
-              <span className="ml-auto">({newReleaseCards.length} new cards from recent sets)</span>
-              <Link to="/card-discovery" className="ml-3 text-ctp-mauve hover:underline">Explore new cards →</Link>
+          {newReleaseCards.length > 0 && (
+            <div className="mt-4">
+              <NotificationBanner
+                tone="highlight"
+                title="New cards available"
+                description={`${newReleaseCards.length} new card${newReleaseCards.length === 1 ? "" : "s"} from recent sets`}
+                action={{ label: "Explore new cards", to: "/card-discovery" }}
+              />
+            </div>
+          )}
+          {reviewItemCount > 0 && tab !== "review" && (
+            <div className="mt-4">
+              <NotificationBanner
+                tone="warning"
+                title={`${reviewItemCount} recommendation${reviewItemCount === 1 ? "" : "s"} ready`}
+                description="Review suggested additions, cuts, and section-compatible swaps."
+                action={{ label: "Review recommendations", onClick: () => setTab("review") }}
+              />
             </div>
           )}
           {tab === "build" && (
             <div role="tabpanel" id="deck-builder-panel-build" aria-labelledby="deck-builder-tab-build" className="mt-4">
-              {reviewItemCount > 0 && (
-                <div className="mb-4 flex flex-wrap items-center gap-2 rounded-lg border border-ctp-yellow/50 bg-ctp-yellow/10 px-3 py-2 text-sm">
-                  <span className="font-medium text-ctp-text">
-                    {reviewItemCount} recommendation{reviewItemCount === 1 ? "" : "s"} ready
-                  </span>
-                  <span className="text-xs text-ctp-subtext1">Review suggested additions, cuts, and section-compatible swaps.</span>
-                  <button type="button" onClick={() => setTab("review")} className="ml-auto rounded-md border border-ctp-yellow/60 px-2 py-1 text-xs text-ctp-yellow hover:bg-ctp-yellow/10">
-                    Review recommendations →
-                  </button>
-                </div>
-              )}
               <span className="text-sm text-ctp-subtext0">{builderIntent === "seed" ? "Cards to build around:" : "Add a card:"}</span>
               <input
                 type="text"
@@ -1403,51 +1448,85 @@ export default function DeckBuilderIndex() {
                     : "Automatic places the card in Main or Material."}
                 </span>
               </div>
-              <div className="mt-3">
+              <div className="mt-3 flex flex-wrap items-center gap-3">
                 <button
                   type="button"
+                  aria-pressed={customizeOpen}
                   onClick={() => setCustomizeOpen((v) => !v)}
-                  className="text-xs text-ctp-subtext0 hover:text-ctp-text"
+                  className={`rounded-md border px-2 py-1 text-xs ${
+                    customizeOpen ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                  }`}
                 >
                   Customize card info {customizeOpen ? "▴" : "▾"}
                 </button>
-                {customizeOpen && (
-                  <div className="mt-1.5 flex flex-wrap gap-1.5">
-                    {(
-                      [
+                <div className="flex gap-1" role="group" aria-label="Material/Main/Sideboard display">
+                  {(["list", "grid"] as const).map((mode) => (
+                    <button
+                      key={mode}
+                      type="button"
+                      onClick={() => setViewMode(mode)}
+                      aria-pressed={viewMode === mode}
+                      className={`rounded-md border px-2 py-1 text-xs capitalize ${
+                        viewMode === mode ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                      }`}
+                    >
+                      {mode}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              {customizeOpen && (
+                <div className="mt-1.5 space-y-1.5">
+                  {(
+                    [
+                      ["Basics", [
                         ["cost", "Cost"],
                         ["price", "Price"],
+                        ["priceTrend", "Price trend"],
+                        ["tags", "Element/class"],
+                      ]],
+                      ["Performance", [
                         ["winRate", "Win rate"],
                         ["sample", "Sample size"],
+                        ["quantityNote", "Quantity note"],
+                      ]],
+                      ["Community & meta", [
                         ["community", "Community usage"],
-                      ] as [keyof CardFieldVisibility, string][]
-                    ).map(([field, label]) => (
-                      <button
-                        key={field}
-                        type="button"
-                        onClick={() => setVisibleField(field, !visibleFields[field])}
-                        className={`rounded-md border px-2 py-1 text-xs ${
-                          visibleFields[field] ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                        }`}
-                      >
-                        {label}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
+                        ["hypeGap", "Hype gap"],
+                        ["metaTrend", "Meta trend"],
+                      ]],
+                      ["Simulator", [
+                        ["simulatorDetail", "Simulator detail"],
+                      ]],
+                    ] as [string, [keyof CardFieldVisibility, string][]][]
+                  ).map(([group, fields]) => (
+                    <div key={group} className="flex flex-wrap items-center gap-1.5">
+                      <span className="w-24 shrink-0 text-[11px] text-ctp-subtext0">{group}</span>
+                      {fields.map(([field, label]) => (
+                        <button
+                          key={field}
+                          type="button"
+                          onClick={() => setVisibleField(field, !visibleFields[field])}
+                          className={`rounded-md border px-2 py-1 text-xs ${
+                            visibleFields[field] ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                          }`}
+                        >
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                  ))}
+                  <p className="text-[11px] text-ctp-subtext0">Cost/Price/Win rate/Sample size/Community usage show in both List and Grid; every other field only renders in Grid.</p>
+                </div>
+              )}
               {pillarBias !== null && (effectivePopulationSource === "tournament" || effectivePopulationSource === "balanced") && (
-                <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-md border border-ctp-blue/40 bg-ctp-blue/5 px-3 py-2 text-xs text-ctp-subtext1">
-                  <span className="font-semibold text-ctp-blue">Tuning active:</span>
-                  <span>{pillarBias} bias</span>
-                  <span className="text-ctp-subtext0">— nudging suggestions toward one DIAO Score pillar.</span>
-                  <button
-                    type="button"
-                    onClick={() => setTab("tools")}
-                    className="ml-auto shrink-0 rounded border border-ctp-blue/40 px-1.5 py-0.5 text-ctp-blue hover:bg-ctp-blue/10"
-                  >
-                    Adjust in Tools →
-                  </button>
+                <div className="mt-3">
+                  <NotificationBanner
+                    tone="info"
+                    title={`Tuning active: ${pillarBias} bias`}
+                    description="Nudging suggestions toward one DIAO Score pillar."
+                    action={{ label: "Adjust in Tools", onClick: () => setTab("tools") }}
+                  />
                 </div>
               )}
               <>
@@ -1458,47 +1537,86 @@ export default function DeckBuilderIndex() {
                 </p>
               )}
               <div className={`mt-3 grid gap-4 sm:grid-cols-2 transition-opacity ${isPending ? "opacity-50" : ""}`}>
-                <div>
+                <Panel elevation={1} padding="sm">
                   <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Material Deck ({materialTotal})</h2>
-                  <ul className="mt-2 space-y-1">
-                    {build.material.map((c) => (
-                      <CardRow
-                        key={c.cardName}
-                        card={c}
-                        cardsByName={cardsByName}
-                        priceByName={priceByName}
-                        communityInclusion={communityInclusionByName}
-                        simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(c.cardName) : undefined}
-                        visibleFields={visibleFields}
-                        needsReview={reviewRemovalNames.has(c.cardName)}
-                        communityMode={effectivePopulationSource !== "tournament" && effectivePopulationSource !== "balanced"}
-                        onToggleLock={() => toggleLock(c.cardName, c.quantity, "material")}
-                        onRemove={() => removeCard(c.cardName, c.locked)}
-                      />
-                    ))}
-                  </ul>
-                </div>
-                <div>
+                  {viewMode === "grid" ? (
+                    <BuilderCardGrid
+                      section="material"
+                      cards={build.material}
+                      cardsByName={cardsByName}
+                      priceByName={priceByName}
+                      priceTrendByName={priceTrendByName}
+                      communityInclusion={communityInclusionByName}
+                      hypeGapByName={hypeGapByName}
+                      decayByName={decaySignalByName}
+                      simulatorEvidenceByName={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName : undefined}
+                      visibleFields={visibleFields}
+                      reviewRemovalNames={reviewRemovalNames}
+                      communityMode={effectivePopulationSource !== "tournament" && effectivePopulationSource !== "balanced"}
+                      onToggleLock={toggleLock}
+                      onRemove={removeCard}
+                    />
+                  ) : (
+                    <ul className="mt-2 space-y-1">
+                      {build.material.map((c) => (
+                        <CardRow
+                          key={c.cardName}
+                          card={c}
+                          cardsByName={cardsByName}
+                          priceByName={priceByName}
+                          communityInclusion={communityInclusionByName}
+                          simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(c.cardName) : undefined}
+                          visibleFields={visibleFields}
+                          needsReview={reviewRemovalNames.has(c.cardName)}
+                          communityMode={effectivePopulationSource !== "tournament" && effectivePopulationSource !== "balanced"}
+                          onToggleLock={() => toggleLock(c.cardName, c.quantity, "material")}
+                          onRemove={() => removeCard(c.cardName, c.locked)}
+                        />
+                      ))}
+                    </ul>
+                  )}
+                </Panel>
+                <Panel elevation={1} padding="sm">
                   <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Main Deck ({mainTotal})</h2>
-                  <ul className="mt-2 space-y-1">
-                    {build.main.map((c) => (
-                      <CardRow
-                        key={c.cardName}
-                        card={c}
-                        cardsByName={cardsByName}
-                        priceByName={priceByName}
-                        communityInclusion={communityInclusionByName}
-                        simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(c.cardName) : undefined}
-                        visibleFields={visibleFields}
-                        needsReview={reviewRemovalNames.has(c.cardName)}
-                        communityMode={effectivePopulationSource !== "tournament" && effectivePopulationSource !== "balanced"}
-                        onToggleLock={() => toggleLock(c.cardName, c.quantity, "main")}
-                        onChangeQuantity={(qty) => setLockedQuantity(c.cardName, qty)}
-                        onRemove={() => removeCard(c.cardName, c.locked)}
-                      />
-                    ))}
-                  </ul>
-                </div>
+                  {viewMode === "grid" ? (
+                    <BuilderCardGrid
+                      section="main"
+                      cards={build.main}
+                      cardsByName={cardsByName}
+                      priceByName={priceByName}
+                      priceTrendByName={priceTrendByName}
+                      communityInclusion={communityInclusionByName}
+                      hypeGapByName={hypeGapByName}
+                      decayByName={decaySignalByName}
+                      simulatorEvidenceByName={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName : undefined}
+                      visibleFields={visibleFields}
+                      reviewRemovalNames={reviewRemovalNames}
+                      communityMode={effectivePopulationSource !== "tournament" && effectivePopulationSource !== "balanced"}
+                      onToggleLock={toggleLock}
+                      onChangeQuantity={setLockedQuantity}
+                      onRemove={removeCard}
+                    />
+                  ) : (
+                    <ul className="mt-2 space-y-1">
+                      {build.main.map((c) => (
+                        <CardRow
+                          key={c.cardName}
+                          card={c}
+                          cardsByName={cardsByName}
+                          priceByName={priceByName}
+                          communityInclusion={communityInclusionByName}
+                          simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(c.cardName) : undefined}
+                          visibleFields={visibleFields}
+                          needsReview={reviewRemovalNames.has(c.cardName)}
+                          communityMode={effectivePopulationSource !== "tournament" && effectivePopulationSource !== "balanced"}
+                          onToggleLock={() => toggleLock(c.cardName, c.quantity, "main")}
+                          onChangeQuantity={(qty) => setLockedQuantity(c.cardName, qty)}
+                          onRemove={() => removeCard(c.cardName, c.locked)}
+                        />
+                      ))}
+                    </ul>
+                  )}
+                </Panel>
               </div>
 
               {build.sideboard.length > 0 && (
@@ -1508,24 +1626,44 @@ export default function DeckBuilderIndex() {
                     Common successful sideboard options in this population, not matchup-specific advice. Empty or
                     unresolved slots are preferred when the data cannot support a confident option.
                   </p>
-                  <ul className="mt-2 space-y-1">
-                    {build.sideboard.map((c) => (
-                      <CardRow
-                        key={c.cardName}
-                        card={c}
-                        cardsByName={cardsByName}
-                        priceByName={priceByName}
-                        communityInclusion={communityInclusionByName}
-                        simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(c.cardName) : undefined}
-                        visibleFields={visibleFields}
-                        needsReview={reviewRemovalNames.has(c.cardName)}
-                        communityMode={effectivePopulationSource !== "tournament" && effectivePopulationSource !== "balanced"}
-                        onToggleLock={() => toggleLock(c.cardName, c.quantity, "sideboard")}
-                        onChangeQuantity={(qty) => setLockedQuantity(c.cardName, qty)}
-                        onRemove={() => removeCard(c.cardName, c.locked)}
-                      />
-                    ))}
-                  </ul>
+                  {viewMode === "grid" ? (
+                    <BuilderCardGrid
+                      section="sideboard"
+                      cards={build.sideboard}
+                      cardsByName={cardsByName}
+                      priceByName={priceByName}
+                      priceTrendByName={priceTrendByName}
+                      communityInclusion={communityInclusionByName}
+                      hypeGapByName={hypeGapByName}
+                      decayByName={decaySignalByName}
+                      simulatorEvidenceByName={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName : undefined}
+                      visibleFields={visibleFields}
+                      reviewRemovalNames={reviewRemovalNames}
+                      communityMode={effectivePopulationSource !== "tournament" && effectivePopulationSource !== "balanced"}
+                      onToggleLock={toggleLock}
+                      onChangeQuantity={setLockedQuantity}
+                      onRemove={removeCard}
+                    />
+                  ) : (
+                    <ul className="mt-2 space-y-1">
+                      {build.sideboard.map((c) => (
+                        <CardRow
+                          key={c.cardName}
+                          card={c}
+                          cardsByName={cardsByName}
+                          priceByName={priceByName}
+                          communityInclusion={communityInclusionByName}
+                          simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorResult.evidenceByName.get(c.cardName) : undefined}
+                          visibleFields={visibleFields}
+                          needsReview={reviewRemovalNames.has(c.cardName)}
+                          communityMode={effectivePopulationSource !== "tournament" && effectivePopulationSource !== "balanced"}
+                          onToggleLock={() => toggleLock(c.cardName, c.quantity, "sideboard")}
+                          onChangeQuantity={(qty) => setLockedQuantity(c.cardName, qty)}
+                          onRemove={() => removeCard(c.cardName, c.locked)}
+                        />
+                      ))}
+                    </ul>
+                  )}
                 </div>
               )}
 

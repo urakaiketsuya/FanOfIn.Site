@@ -55,7 +55,7 @@ function ExpandedDeckRow({
 
   return (
     <div className="mt-2 border-t border-ctp-surface0 pt-2">
-      <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={deck.deckIds[0]} />
+      <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={deck.deckIds[0]} showThumbnails />
 
       <Section className="mt-4" heading="dense" title={`Played by (${instances.length})`}>
         <div className="mt-2">

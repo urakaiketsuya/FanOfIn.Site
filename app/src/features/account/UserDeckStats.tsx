@@ -12,7 +12,8 @@ import { encodeCustomDecks } from "../../lib/compareShareLink";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { validateDeck } from "../deckbuilder/validateDeck";
 import AggressionForecast from "../decks/AggressionForecast";
-import BarChart from "../../components/BarChart";
+import CompositionChartGrid from "../../components/CompositionChartGrid";
+import { DependencyReadinessEntries, SynergyReadinessEntries } from "../../components/DeckReadinessSection";
 import DonutChart, { buildChartSegments } from "../../components/DonutChart";
 import RankedCompositionChart from "../../components/RankedCompositionChart";
 import { useCardCatalog } from "../cards/useCardCatalog";
@@ -138,13 +139,11 @@ export default function UserDeckStats({ decklist, championName, format, title, o
       </Section>
     </Panel>
 
-    <Section heading="compact" title="Composition" description={`Floating Memory: ${floatingMemory.base}${floatingMemory.classBonus > 0 ? ` + ${floatingMemory.classBonus} class bonus` : ""} · Average Ally Power: ${allyPower.allyCopies > 0 ? allyPower.averagePower.toFixed(1) : "—"} · Champion damage: ${damage.championRange.min}–${damage.championRange.max} · Ally damage: ${damage.allyRange.min}–${damage.allyRange.max}`}>
-      <div className="mt-3 grid gap-4 sm:grid-cols-2">
-        <BarChart title="Memory Cost Curve" bars={memoryCurve} />
-        <BarChart title="Reserve Cost Curve" bars={reserveCurve} />
-        <RankedCompositionChart title="Card Types" segments={buildChartSegments(composition.types)} />
-        <RankedCompositionChart title="Elements" segments={buildChartSegments(composition.elements)} />
-        <RankedCompositionChart title="Card Subtypes" segments={buildChartSegments(composition.subtypes)} />
+    <Section heading="compact" collapsible defaultOpen={false} title="Composition" description={`Floating Memory: ${floatingMemory.base}${floatingMemory.classBonus > 0 ? ` + ${floatingMemory.classBonus} class bonus` : ""} · Average Ally Power: ${allyPower.allyCopies > 0 ? allyPower.averagePower.toFixed(1) : "—"} · Champion damage: ${damage.championRange.min}–${damage.championRange.max} · Ally damage: ${damage.allyRange.min}–${damage.allyRange.max}`}>
+      <div className="mt-3">
+        <CompositionChartGrid composition={composition} memoryCurve={memoryCurve} reserveCurve={reserveCurve} />
+      </div>
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <RankedCompositionChart title="Rarity" segments={rarity} />
         <RankedCompositionChart title="Ally Power" segments={allyPowerSegments} />
         <RankedCompositionChart title="Keywords" segments={keywords} />
@@ -153,10 +152,10 @@ export default function UserDeckStats({ decklist, championName, format, title, o
       </div>
     </Section>
 
-    {(synergyReadiness.length > 0 || dependencyReadiness.length > 0) && <Section heading="compact" title="Package readiness" description="Detected relationships in the main deck. Probabilities measure card availability, not guaranteed activation.">
+    {(synergyReadiness.length > 0 || dependencyReadiness.length > 0) && <Section heading="compact" collapsible defaultOpen={false} title="Package readiness" description="Detected relationships in the main deck. Probabilities measure card availability, not guaranteed activation.">
       <div className="mt-3 space-y-3">
-        {synergyReadiness.map((entry) => <Panel as="article" key={entry.key}><div className="flex flex-wrap justify-between gap-2"><h3 className="font-semibold text-ctp-text">{entry.label}</h3><span className={entry.status === "Reliable" ? "text-ctp-green" : entry.status === "Playable" ? "text-ctp-blue" : "text-ctp-yellow"}>{entry.status} · {(entry.probabilityByTen * 100).toFixed(0)}% by 10 seen</span></div><p className="mt-2 text-xs text-ctp-subtext1">{entry.enablerCopies} eligible copies · {entry.payoffCopies} payoff copies. {entry.note}</p>{entry.recommendations.length > 0 && <p className="mt-1 text-xs text-ctp-blue">Potential enablers to review: {entry.recommendations.join(", ")}</p>}</Panel>)}
-        {dependencyReadiness.map((entry) => <Panel as="article" key={entry.key}><div className="flex flex-wrap justify-between gap-2"><h3 className="font-semibold capitalize text-ctp-text">{entry.label}</h3><span className={entry.status === "Supported" ? "text-ctp-green" : "text-ctp-yellow"}>{entry.status}</span></div><p className="mt-2 text-xs text-ctp-subtext1">{entry.producerCopies} producer copies · {entry.consumerCopies} consumer copies. {entry.note}</p>{entry.recommendations.length > 0 && <p className="mt-1 text-xs text-ctp-blue">Potential support to review: {entry.recommendations.join(", ")}</p>}</Panel>)}
+        <SynergyReadinessEntries items={synergyReadiness} variant="compact" />
+        <DependencyReadinessEntries items={dependencyReadiness} variant="compact" />
       </div>
     </Section>}
   </div>;

@@ -39,6 +39,7 @@ import Tabs from "../../components/ui/Tabs";
 import DonutChart, { buildChartSegments } from "../../components/DonutChart";
 import BarChart from "../../components/BarChart";
 import RankedCompositionChart from "../../components/RankedCompositionChart";
+import CompositionChartGrid from "../../components/CompositionChartGrid";
 import AggressionForecast from "./AggressionForecast";
 import { computeAggressionForecast } from "../../lib/aggressionForecast";
 import { useDecklistDisplayPrefs } from "../../lib/decklistDisplayPrefs";
@@ -412,6 +413,8 @@ export default function DeckDetail() {
         <Panel padding="sm" className="mt-6">
           <Section
             heading="dense"
+            collapsible
+            defaultOpen={false}
             title="Cards that might help"
             description={`Cards that correlate with a higher win rate among other ${deck.championName ?? "this Champion's"} decks — correlational, not a guarantee.`}
           >
@@ -488,23 +491,24 @@ export default function DeckDetail() {
             </p>
           ) : null}
 
-          <div className="mt-3 grid gap-4 sm:grid-cols-2">
-            <BarChart title="Memory Cost Curve" bars={memoryCurve} />
-            <BarChart title="Reserve Cost Curve" bars={reserveCurve} />
-            <RankedCompositionChart title="Card Types" segments={buildChartSegments(composition.types)} />
-            <RankedCompositionChart title="Elements" segments={buildChartSegments(composition.elements)} />
-            <RankedCompositionChart title="Card Subtypes" segments={buildChartSegments(composition.subtypes)} />
-            <RankedCompositionChart title="Rarity" segments={raritySegments} />
-            <RankedCompositionChart title="Ally Power" segments={allyPowerSegments} />
-            <RankedCompositionChart title="Keywords" segments={keywordSegments} />
-            <DonutChart title="Damage Targets" segments={damageTargetSegments} />
-            <DonutChart title="Damage Type" segments={damageTypeSegments} />
+          <div className="mt-3">
+            <CompositionChartGrid composition={composition} memoryCurve={memoryCurve} reserveCurve={reserveCurve} />
           </div>
+
+          <Section className="mt-4" heading="dense" collapsible defaultOpen={false} title="Detailed breakdown" description="Rarity, ally power, keywords, and damage composition.">
+            <div className="mt-3 grid gap-4 sm:grid-cols-2">
+              <RankedCompositionChart title="Rarity" segments={raritySegments} />
+              <RankedCompositionChart title="Ally Power" segments={allyPowerSegments} />
+              <RankedCompositionChart title="Keywords" segments={keywordSegments} />
+              <DonutChart title="Damage Targets" segments={damageTargetSegments} />
+              <DonutChart title="Damage Type" segments={damageTypeSegments} />
+            </div>
+          </Section>
         </Section>
       )}
 
       {tab === "decklist" && priciestCards.length > 0 && (
-        <Section className="mt-8" heading="compact" title="Priciest Cards">
+        <Section className="mt-8" heading="compact" collapsible defaultOpen={false} title="Priciest Cards">
           <ul className="mt-2 space-y-1 text-sm">
             {priciestCards.map((c) => {
               const card = cardsByName.get(c.name);

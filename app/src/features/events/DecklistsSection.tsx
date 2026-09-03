@@ -67,7 +67,7 @@ export default function DecklistsSection({
     >
       {selected && (
         <div className="mt-3">
-          <DecklistView decklist={selected.decklist} cardsByName={cardsByName} deckId={`${eventId}:${selected.player}`} />
+          <DecklistView decklist={selected.decklist} cardsByName={cardsByName} deckId={`${eventId}:${selected.player}`} showThumbnails />
         </div>
       )}
       {similarDecks && similarDecks.topMatches.length > 0 && (
