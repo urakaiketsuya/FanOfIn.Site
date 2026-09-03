@@ -25,6 +25,7 @@ import {
   computeMemoryCostCurve,
   computeRarityBreakdown,
   computeReserveCostCurve,
+  formatAllyPower,
 } from "../../lib/deckIdentity";
 import { shortHash } from "../../lib/hash";
 import { formatUsd } from "../../lib/format";
@@ -473,7 +474,7 @@ export default function DeckDetail() {
               )}
               {allyPower && allyPower.allyCopies > 0 && (
                 <>
-                  Average Ally Power: {allyPower.averagePower.toFixed(1)} (across {allyPower.allyCopies} allies)
+                  Average Ally Power: {formatAllyPower(allyPower)} (across {allyPower.allyCopies} allies)
                   {damage && (damage.championRange.max > 0 || damage.allyRange.max > 0) && " · "}
                 </>
               )}

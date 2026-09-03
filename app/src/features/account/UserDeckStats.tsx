@@ -4,7 +4,7 @@ import type { DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import {
   computeAllyPower, computeDamageComposition, computeDeckComposition, computeDeckIdentity,
   computeDeckRating, computeFloatingMemory, computeKeywordComposition, computeMemoryCostCurve,
-  computeRarityBreakdown, computeReserveCostCurve, type RatingPillar,
+  computeRarityBreakdown, computeReserveCostCurve, formatAllyPower, type RatingPillar,
 } from "../../lib/deckIdentity";
 import { computeAggressionForecast } from "../../lib/aggressionForecast";
 import { buildDeckBuilderPath, deckBuilderParamsFromDecklist } from "../../lib/deckBuilderLink";
@@ -184,7 +184,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
       </Section>
     </Panel>
 
-    <Section heading="compact" collapsible defaultOpen={false} title="Composition" description={`Floating Memory: ${floatingMemory.base}${floatingMemory.classBonus > 0 ? ` + ${floatingMemory.classBonus} class bonus` : ""} · Average Ally Power: ${allyPower.allyCopies > 0 ? allyPower.averagePower.toFixed(1) : "—"} · Champion damage: ${damage.championRange.min}–${damage.championRange.max} · Ally damage: ${damage.allyRange.min}–${damage.allyRange.max}`}>
+    <Section heading="compact" collapsible defaultOpen={false} title="Composition" description={`Floating Memory: ${floatingMemory.base}${floatingMemory.classBonus > 0 ? ` + ${floatingMemory.classBonus} class bonus` : ""} · Average Ally Power: ${allyPower.allyCopies > 0 ? formatAllyPower(allyPower) : "—"} · Champion damage: ${damage.championRange.min}–${damage.championRange.max} · Ally damage: ${damage.allyRange.min}–${damage.allyRange.max}`}>
       <div className="mt-3">
         <CompositionChartGrid composition={composition} memoryCurve={memoryCurve} reserveCurve={reserveCurve} />
       </div>

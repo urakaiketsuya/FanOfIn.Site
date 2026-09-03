@@ -128,15 +128,88 @@ export interface AllyPowerStats {
   allyCopies: number;
   totalPower: number;
   averagePower: number;
-  /** Power value (as a plain number, e.g. 3) -> ally copy count at that power. */
+  /**
+   * Ceiling total/average power once board-state-scaled allies (e.g. Maiden of Primal Virtue's
+   * "+1 [POWER] for each phantasia you control") are sized off this deck's own count of whatever
+   * they scale with — same optimistic-ceiling convention `aggressionForecast.ts`'s subtype-scaling
+   * damage uses: a floor from the printed base stat (0 for most of these), a ceiling from "every
+   * copy of the scaling type/subtype this list runs were simultaneously in play." Never how many
+   * will actually be alive on board at once — equal to `totalPower`/`averagePower` when the deck
+   * runs no such cards.
+   */
+  totalPowerMax: number;
+  averagePowerMax: number;
+  /** Of `allyCopies`, how many have board-state-scaled power rather than a fixed printed number — so callers can flag `averagePower` as a floor, not the card's real battlefield stat. */
+  scalingPowerCopies: number;
+  /** Power value (as a plain number, e.g. 3) -> ally copy count at that power. Bucketed by printed floor even for scaling allies, since their real power isn't a fixed number. */
   byPower: Map<number, number>;
+}
+
+/**
+ * "Whenever X you control" board-state noun this deck's own cards (main + material) actually run,
+ * gating `parseSubtypeScalingStat` the same way `aggressionForecast.ts`'s `knownSubtypes` gates its
+ * own subtype-scaling damage detection — so a generic capitalized word can't misfire as a real
+ * identity-scaling subject. Built from both `types` and `subtypes` since the scaling noun can be
+ * either (e.g. "phantasia" is a card *type*, not a subtype).
+ */
+function vocabularyCopyCounts(lines: NamedLine[], cardsByName: Map<string, Card>): Map<string, number> {
+  const counts = new Map<string, number>();
+  for (const line of lines) {
+    const card = cardsByName.get(line.name);
+    if (!card) continue;
+    for (const word of [...card.types, ...card.subtypes]) {
+      const key = word.toLowerCase();
+      counts.set(key, (counts.get(key) ?? 0) + line.quantity);
+    }
+  }
+  return counts;
+}
+
+export interface SubtypeScalingStat {
+  /** Extra power per copy of `subtype` this deck controls. */
+  perUnitPower: number;
+  /** Normalized (lowercase) type/subtype name the card scales with. */
+  subtype: string;
+}
+
+/**
+ * Nouns too broad to mean anything as an "identity" count — nearly every creature is an "ally",
+ * and "token"/"card" don't correspond to a fixed number of printed copies in a decklist the way a
+ * real type/subtype like "phantasia" or "Fractal" does. Excluded even though they'd otherwise pass
+ * the `knownVocabulary` check (every deck's own cards are almost all type ALLY).
+ */
+const EXCLUDED_SCALING_SUBJECTS = new Set(["ally", "allies", "champion", "champions", "unit", "units", "token", "tokens", "card", "cards"]);
+
+/**
+ * Matches the narrow, unambiguous "gets +N [POWER] (and +N [LIFE]) for each <single word> you
+ * control" shape (e.g. Maiden of Primal Virtue). Deliberately requires the scaling noun to be one
+ * bare word directly followed by "you control" — real cards with a qualifier in between (a named
+ * unique, a capped "up to N", a compound noun like "token object") don't match and are silently
+ * excluded rather than misparsed, since none of those represent a plain per-copy count this
+ * function's ceiling estimate could size correctly.
+ */
+const SCALING_STAT_RE = /gets? \+(\d+) \[POWER\](?:\s*and\s*\+\d+ \[LIFE\])?\s*for each ([a-zA-Z]+) you control/i;
+
+export function parseSubtypeScalingStat(card: Pick<Card, "effect">, knownVocabulary: ReadonlySet<string>): SubtypeScalingStat | null {
+  if (!card.effect) return null;
+  const match = SCALING_STAT_RE.exec(card.effect.replace(/\*\*/g, ""));
+  if (!match) return null;
+  const subtype = match[2].toLowerCase();
+  if (EXCLUDED_SCALING_SUBJECTS.has(subtype) || !knownVocabulary.has(subtype)) return null;
+  return { perUnitPower: Number(match[1]), subtype };
 }
 
 /** `power` is populated on every ALLY card (verified against the synced catalog), so no null-handling surprises here. Scoped to ALLY specifically, not ATTACK, per how the stat was asked for. */
 export function computeAllyPower(lines: NamedLine[], cardsByName: Map<string, Card>): AllyPowerStats {
   let allyCopies = 0;
   let totalPower = 0;
+  let totalPowerMax = 0;
+  let scalingPowerCopies = 0;
   const byPower = new Map<number, number>();
+
+  const knownVocabulary = new Set<string>();
+  for (const card of cardsByName.values()) for (const word of [...card.types, ...card.subtypes]) knownVocabulary.add(word.toLowerCase());
+  const vocabCounts = vocabularyCopyCounts(lines, cardsByName);
 
   for (const line of lines) {
     const card = cardsByName.get(line.name);
@@ -144,9 +217,31 @@ export function computeAllyPower(lines: NamedLine[], cardsByName: Map<string, Ca
     allyCopies += line.quantity;
     totalPower += card.power * line.quantity;
     byPower.set(card.power, (byPower.get(card.power) ?? 0) + line.quantity);
+
+    const scaling = parseSubtypeScalingStat(card, knownVocabulary);
+    if (scaling) {
+      scalingPowerCopies += line.quantity;
+      totalPowerMax += (card.power + scaling.perUnitPower * (vocabCounts.get(scaling.subtype) ?? 0)) * line.quantity;
+    } else {
+      totalPowerMax += card.power * line.quantity;
+    }
   }
 
-  return { allyCopies, totalPower, averagePower: allyCopies > 0 ? totalPower / allyCopies : 0, byPower };
+  return {
+    allyCopies,
+    totalPower,
+    averagePower: allyCopies > 0 ? totalPower / allyCopies : 0,
+    totalPowerMax,
+    averagePowerMax: allyCopies > 0 ? totalPowerMax / allyCopies : 0,
+    scalingPowerCopies,
+    byPower,
+  };
+}
+
+/** "1.5" for a deck with no board-state-scaled allies, "1.5–3.2" once `computeAllyPower` finds some — so a single flat number never quietly stands in for what's really a floor. */
+export function formatAllyPower(stats: AllyPowerStats): string {
+  if (stats.scalingPowerCopies === 0) return stats.averagePower.toFixed(1);
+  return `${stats.averagePower.toFixed(1)}–${stats.averagePowerMax.toFixed(1)}`;
 }
 
 interface DamageClause {
