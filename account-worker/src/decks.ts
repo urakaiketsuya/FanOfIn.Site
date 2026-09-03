@@ -213,8 +213,13 @@ export async function renameDeck(env: Env, user: AuthUser, deckId: string, title
   const result = await env.ACCOUNT_DB.prepare("UPDATE saved_decks SET title = ?, updated_at = ? WHERE id = ? AND user_id = ?")
     .bind(title, new Date().toISOString(), deckId, user.id).run();
   if (result.meta.changes) {
-    await env.ACCOUNT_DB.prepare("UPDATE user_decks SET title = ?, updated_at = ? WHERE id = ? AND owner_user_id = ?")
-      .bind(title, new Date().toISOString(), deckId, user.id).run();
+    // Decks that are already public/unlisted show live edits on their published link (see
+    // ensureVersionedDeck/createDeckVersion) — a rename should be no different, so keep the
+    // published snapshot's title in sync rather than leaving the old one stuck on the public page.
+    await env.ACCOUNT_DB.prepare(`UPDATE user_decks SET title = ?,
+      published_title = CASE WHEN visibility <> 'private' THEN ? ELSE published_title END, updated_at = ?
+      WHERE id = ? AND owner_user_id = ?`)
+      .bind(title, title, new Date().toISOString(), deckId, user.id).run();
   }
   return Boolean(result.meta.changes);
 }
@@ -230,14 +235,27 @@ export async function updateDeckMetadata(env: Env, user: AuthUser, deckId: strin
   if (input.maybeboard !== undefined && !validMaybeboard(input.maybeboard)) throw badRequest("Invalid maybeboard");
   if (input.title === undefined && input.description === undefined && input.primerMarkdown === undefined && tags === null && input.maybeboard === undefined) throw badRequest("No deck metadata was provided");
   const now = new Date().toISOString();
+  const title = typeof input.title === "string" ? input.title.trim() : null;
+  const description = typeof input.description === "string" ? input.description.trim() : null;
+  const primerMarkdown = typeof input.primerMarkdown === "string" ? input.primerMarkdown.trim() : null;
+  const tagsJson = tags ? JSON.stringify(tags) : null;
+  // Mirror every draft-field change onto the published snapshot too, but only for decks that are
+  // already public/unlisted — private decks have nothing published to sync (see createDeckVersion
+  // for the matching decklist-side fix).
   const result = await env.ACCOUNT_DB.prepare(`UPDATE user_decks SET title = COALESCE(?, title), description = COALESCE(?, description),
-    primer_markdown = COALESCE(?, primer_markdown), tags_json = COALESCE(?, tags_json), maybeboard_json = COALESCE(?, maybeboard_json), updated_at = ? WHERE id = ? AND owner_user_id = ?`)
-    .bind(typeof input.title === "string" ? input.title.trim() : null, typeof input.description === "string" ? input.description.trim() : null,
-      typeof input.primerMarkdown === "string" ? input.primerMarkdown.trim() : null, tags ? JSON.stringify(tags) : null,
-      input.maybeboard === undefined ? null : JSON.stringify(canonicalMaybeboard(input.maybeboard)), now, deckId, user.id).run();
-  if (result.meta.changes && typeof input.title === "string") {
+    primer_markdown = COALESCE(?, primer_markdown), tags_json = COALESCE(?, tags_json), maybeboard_json = COALESCE(?, maybeboard_json),
+    published_title = CASE WHEN visibility <> 'private' THEN COALESCE(?, published_title) ELSE published_title END,
+    published_description = CASE WHEN visibility <> 'private' THEN COALESCE(?, published_description) ELSE published_description END,
+    published_primer_markdown = CASE WHEN visibility <> 'private' THEN COALESCE(?, published_primer_markdown) ELSE published_primer_markdown END,
+    published_tags_json = CASE WHEN visibility <> 'private' THEN COALESCE(?, published_tags_json) ELSE published_tags_json END,
+    updated_at = ? WHERE id = ? AND owner_user_id = ?`)
+    .bind(title, description, primerMarkdown, tagsJson,
+      input.maybeboard === undefined ? null : JSON.stringify(canonicalMaybeboard(input.maybeboard)),
+      title, description, primerMarkdown, tagsJson,
+      now, deckId, user.id).run();
+  if (result.meta.changes && title) {
     await env.ACCOUNT_DB.prepare("UPDATE saved_decks SET title = ?, updated_at = ? WHERE id = ? AND user_id = ?")
-      .bind(input.title.trim(), now, deckId, user.id).run();
+      .bind(title, now, deckId, user.id).run();
   }
   return Boolean(result.meta.changes);
 }
@@ -326,8 +344,8 @@ export async function createDeckVersion(env: Env, user: AuthUser, deckId: string
   if (input.format !== "STANDARD" && input.format !== "PANTHEON" && input.format !== "UNKNOWN") throw badRequest("Invalid deck format");
   if (input.championName != null && (typeof input.championName !== "string" || input.championName.length > 200)) throw badRequest("Invalid champion name");
   if (input.changeNote != null && (typeof input.changeNote !== "string" || input.changeNote.length > 240)) throw badRequest("Change note is too long");
-  const owned = await env.ACCOUNT_DB.prepare("SELECT id, current_version_id FROM user_decks WHERE id = ? AND owner_user_id = ?")
-    .bind(deckId, user.id).first<{ id: string; current_version_id: string }>();
+  const owned = await env.ACCOUNT_DB.prepare("SELECT id, current_version_id, visibility FROM user_decks WHERE id = ? AND owner_user_id = ?")
+    .bind(deckId, user.id).first<{ id: string; current_version_id: string; visibility: "private" | "unlisted" | "public" }>();
   if (!owned) throw new ApiError("Deck not found", 404, "deck_not_found");
   const canonical = canonicalizeSavedDecklist(input.decklist);
   if (canonical.main.length + canonical.material.length === 0) throw badRequest("A deck needs main or material cards");
@@ -351,11 +369,20 @@ export async function createDeckVersion(env: Env, user: AuthUser, deckId: string
   const versionId = crypto.randomUUID();
   const versionNumber = (count?.latest ?? 0) + 1;
   const now = new Date().toISOString();
+  // Decks that are already public/unlisted have no separate "publish" gate to hide edits behind
+  // (see ensureVersionedDeck) — advance the published snapshot to this new version too, so the
+  // shared link always shows the latest decklist instead of freezing at whatever was current the
+  // last time someone hit Publish.
+  const versionUpdate = owned.visibility === "private"
+    ? env.ACCOUNT_DB.prepare("UPDATE user_decks SET current_version_id = ?, format = ?, champion_name = ?, updated_at = ? WHERE id = ? AND owner_user_id = ?")
+        .bind(versionId, input.format, input.championName ?? null, now, deckId, user.id)
+    : env.ACCOUNT_DB.prepare(`UPDATE user_decks SET current_version_id = ?, published_version_id = ?, published_at = ?,
+        format = ?, champion_name = ?, updated_at = ? WHERE id = ? AND owner_user_id = ?`)
+        .bind(versionId, versionId, now, input.format, input.championName ?? null, now, deckId, user.id);
   await env.ACCOUNT_DB.batch([
     env.ACCOUNT_DB.prepare(`INSERT INTO deck_versions (id, deck_id, version_number, canonical_build_id, change_note, change_summary_json, created_at)
       VALUES (?, ?, ?, ?, ?, '{}', ?)`).bind(versionId, deckId, versionNumber, build.id, typeof input.changeNote === "string" ? input.changeNote.trim() : "", now),
-    env.ACCOUNT_DB.prepare("UPDATE user_decks SET current_version_id = ?, format = ?, champion_name = ?, updated_at = ? WHERE id = ? AND owner_user_id = ?")
-      .bind(versionId, input.format, input.championName ?? null, now, deckId, user.id),
+    versionUpdate,
     env.ACCOUNT_DB.prepare("UPDATE saved_decks SET identity_hash = ?, format = ?, champion_name = ?, decklist_json = ?, updated_at = ? WHERE id = ? AND user_id = ?")
       .bind(coreHash, input.format, input.championName ?? null, JSON.stringify({ ...canonical, sideboard: [] }), now, deckId, user.id),
   ]);
