@@ -68,6 +68,8 @@ const PackOpener = lazy(() => import("./features/packs/PackOpener"));
 const ChangelogIndex = lazy(() => import("./features/changelog/ChangelogIndex"));
 const CommunityDecksIndex = lazy(() => import("./features/community/CommunityDecksIndex"));
 const SimulatorIndex = lazy(() => import("./features/simulator/SimulatorIndex"));
+const TimelinesIndex = lazy(() => import("./features/timelines/TimelinesIndex"));
+const TimelineDetail = lazy(() => import("./features/timelines/TimelineDetail"));
 const OfficialProductsIndex = lazy(() => import("./features/official-products/OfficialProductsIndex"));
 const ProductsIndex = lazy(() => import("./features/products/ProductsIndex"));
 const MediaKitIndex = lazy(() => import("./features/products/MediaKitIndex"));
@@ -142,6 +144,8 @@ export default function AppRoutes() {
         <Route path="/media-kit" element={<MediaKitIndex />} />
         <Route path="/looking-for" element={<LookingForIndex />} />
         <Route path="/simulator" element={<SimulatorIndex />} />
+        <Route path="/timelines" element={<TimelinesIndex />} />
+        <Route path="/timelines/:id" element={<TimelineDetail />} />
         <Route path="/diao-review" element={<DiaoReviewIndex />} />
         <Route path="/my-decks" element={<MyDecksIndex />} />
         <Route path="/collection" element={<CollectionIndex />} />

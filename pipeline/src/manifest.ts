@@ -35,6 +35,7 @@ export const MANIFEST_ENTRIES: { key: string; file: string }[] = [
   { key: "analysis-matchup-card-impact", file: "analysis/matchup-card-impact.json" },
   { key: "analysis-archetype-taxonomy-validation", file: "analysis/archetype-taxonomy-validation.json" },
   { key: "simulator-summary", file: "simulator/summary.json" },
+  { key: "broadcast-timelines", file: "broadcast-timelines.json" },
   { key: "shoutatyourdecks-format-summary", file: "shoutatyourdecks/analytics/format-summary.json" },
   { key: "shoutatyourdecks-index", file: "shoutatyourdecks/index.json" },
   { key: "shoutatyourdecks-pantheon-decks", file: "shoutatyourdecks/analytics/pantheon/decks.json" },
