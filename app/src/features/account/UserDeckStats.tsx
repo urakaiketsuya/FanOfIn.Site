@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import {
@@ -10,7 +10,10 @@ import { computeAggressionForecast } from "../../lib/aggressionForecast";
 import { buildDeckBuilderPath, deckBuilderParamsFromDecklist } from "../../lib/deckBuilderLink";
 import { encodeCustomDecks } from "../../lib/compareShareLink";
 import { useCardsByNames } from "../events/useCardsByNames";
-import { validateDeck } from "../deckbuilder/validateDeck";
+import { validateDeck, sideboardPointCost } from "../deckbuilder/validateDeck";
+import { computeTrimPlan, computeCurvePeakCardNames, TRIM_TARGET_SIZE, type TrimSection } from "../deckbuilder/deckTrimming";
+import { useChampionCardImpact } from "../decks/useChampionCardImpact";
+import { useCardStatsData, useCardQuantityStatsData } from "../archetypes/data";
 import AggressionForecast from "../decks/AggressionForecast";
 import CompositionChartGrid from "../../components/CompositionChartGrid";
 import { DependencyReadinessEntries, SynergyReadinessEntries } from "../../components/DeckReadinessSection";
@@ -68,6 +71,26 @@ export default function UserDeckStats({ decklist, championName, format, title, o
   }, cardsByName, new Set(identity.elements), format), [decklist, cardsByName, identity.elements, format]);
   const builderParams = useMemo(() => deckBuilderParamsFromDecklist(decklist, cardsByName), [decklist, cardsByName]);
   const canImprove = Boolean(builderParams?.spiritFilter);
+  const [selectedTrimSection, setSelectedTrimSection] = useState<TrimSection | null>(null);
+  const noExclusions = useMemo(() => new Set<string>(), []);
+  const impactResult = useChampionCardImpact(championName, identity.elements, noExclusions, "all");
+  const impactByName = useMemo(() => new Map(impactResult.cards.map((c) => [c.cardName, c])), [impactResult.cards]);
+  const cardStatsData = useCardStatsData();
+  const priceByName = useMemo(() => new Map((cardStatsData?.cards ?? []).map((c) => [c.name, c.marketPrice])), [cardStatsData]);
+  const quantityStatsData = useCardQuantityStatsData();
+  const quantityBucketsByName = useMemo(() => new Map((quantityStatsData?.cards ?? []).map((c) => [c.name, c.quantities])), [quantityStatsData]);
+  const curvePeakCardNames = useMemo(() => new Set([
+    ...computeCurvePeakCardNames(namedSections.main.map((l) => ({ cardName: l.name, quantity: l.quantity })), cardsByName, "cost_memory"),
+    ...computeCurvePeakCardNames(namedSections.main.map((l) => ({ cardName: l.name, quantity: l.quantity })), cardsByName, "cost_reserve"),
+  ]), [namedSections.main, cardsByName]);
+  const trimPlans = useMemo(() => ({
+    main: computeTrimPlan("main", namedSections.main.map((l) => ({ cardName: l.name, quantity: l.quantity })), cardsByName, TRIM_TARGET_SIZE.main, { impactByName, quantityBucketsByName, priceByName, curvePeakCardNames }),
+    material: computeTrimPlan("material", namedSections.material.map((l) => ({ cardName: l.name, quantity: l.quantity })), cardsByName, TRIM_TARGET_SIZE.material, { impactByName, quantityBucketsByName, priceByName }),
+    sideboard: computeTrimPlan("sideboard", namedSections.sideboard.map((l) => ({ cardName: l.name, quantity: l.quantity })), cardsByName, TRIM_TARGET_SIZE.sideboard, { impactByName, quantityBucketsByName, priceByName, pointCost: sideboardPointCost }),
+  }), [namedSections, cardsByName, impactByName, quantityBucketsByName, priceByName, curvePeakCardNames]);
+  const overTrimSections = (["main", "material", "sideboard"] as TrimSection[]).filter((s) => trimPlans[s] !== null);
+  const activeTrimSection = selectedTrimSection && trimPlans[selectedTrimSection] ? selectedTrimSection : (overTrimSections[0] ?? null);
+  const activeTrimPlan = activeTrimSection ? trimPlans[activeTrimSection] : null;
   const totals = useMemo(() => ({
     main: decklist.main.reduce((sum, line) => sum + line.quantity, 0),
     material: decklist.material.reduce((sum, line) => sum + line.quantity, 0),
@@ -101,13 +124,14 @@ export default function UserDeckStats({ decklist, championName, format, title, o
     const result: Finding[] = [];
     if (coverage.unresolved.length > 0) result.push({ tone: "yellow", title: "Incomplete card data", detail: `${coverage.unresolved.length} card name${coverage.unresolved.length === 1 ? " is" : "s are"} unresolved, so computed scores and charts may be incomplete.` });
     if (validation.status !== "Legal") result.push({ tone: "red", title: `${validation.status} construction`, detail: validation.reasons[0] ?? "Review the construction rules before playing this list." });
+    if (trimPlans.main) result.push({ tone: "yellow", title: `Main deck is ${trimPlans.main.overBy} card${trimPlans.main.overBy === 1 ? "" : "s"} over target`, detail: `${trimPlans.main.currentSize} cards vs. a 60-card target — extra cards dilute consistency. See "Trim to size" below for ranked cut suggestions.` });
     const weakSynergy = synergyReadiness.find((entry) => entry.status === "Unlikely" || entry.status === "Fragile");
     if (weakSynergy) result.push({ tone: "yellow", title: `${weakSynergy.label} is ${weakSynergy.status.toLowerCase()}`, detail: `${weakSynergy.enablerCopies} eligible copies give a ${(weakSynergy.probabilityByTen * 100).toFixed(0)}% theoretical chance by 10 cards seen.` });
     const weakPackage = dependencyReadiness.find((entry) => entry.status !== "Supported");
     if (weakPackage) result.push({ tone: "yellow", title: `${weakPackage.label}: ${weakPackage.status}`, detail: `${weakPackage.producerCopies} producer copies support ${weakPackage.consumerCopies} consumer copies.` });
     if (result.length === 0) result.push({ tone: "green", title: "No immediate structural warnings", detail: "The construction check and detected card packages look supported. Use the builder review for matchup-aware tuning." });
     return result.slice(0, 5);
-  }, [coverage.unresolved.length, dependencyReadiness, synergyReadiness, validation]);
+  }, [coverage.unresolved.length, dependencyReadiness, synergyReadiness, validation, trimPlans.main]);
 
   if (cardNames.length > 0 && cardsByName.size === 0 && catalog.length === 0) return <Panel className="mt-6"><InlineState className="text-sm">Resolving card data and calculating deck analytics…</InlineState></Panel>;
 
@@ -131,6 +155,27 @@ export default function UserDeckStats({ decklist, championName, format, title, o
       {validation.reasons.length > 0 && <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">{validation.reasons.map((reason) => <li key={reason}>{reason}</li>)}</ul>}
       <p className="mt-3 text-[11px] opacity-70">Static construction check only; event-specific rules and card-text exceptions still require an official source.</p>
     </section>
+
+    {overTrimSections.length > 0 && activeTrimPlan && <Section heading="compact" collapsible defaultOpen title="Trim to size" description="Ranked cut suggestions from quantity-vs-optimal, Champion-scoped win-rate lift, and cost-curve evidence already computed elsewhere on the site. Price is shown for reference and never used to rank a card.">
+      <div className="mt-3 flex flex-wrap gap-2">
+        {overTrimSections.map((section) => {
+          const plan = trimPlans[section];
+          if (!plan) return null;
+          return <button key={section} type="button" onClick={() => setSelectedTrimSection(section)} className={`rounded-md border px-3 py-1.5 text-sm capitalize ${activeTrimSection === section ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1"}`}>{section} ({plan.overBy} {plan.unit} over)</button>;
+        })}
+      </div>
+      <p className="mt-3 text-xs text-ctp-subtext1">{activeTrimPlan.currentSize}/{activeTrimPlan.targetSize} {activeTrimPlan.unit} — cut at least {activeTrimPlan.overBy} to reach target.</p>
+      <ul className="mt-3 space-y-2">
+        {activeTrimPlan.candidates.map((candidate) => <li key={candidate.cardName} className="rounded-md border border-ctp-surface1 p-2 text-sm">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <span className="font-semibold text-ctp-text">{candidate.remainingQuantity > 0 ? `Cut ${candidate.cutQuantity}x (keep ${candidate.remainingQuantity}x)` : `Cut all ${candidate.cutQuantity}x`} {candidate.cardName}</span>
+            {candidate.priceEach !== null && <span className="text-xs text-ctp-subtext0">${(candidate.priceEach * candidate.cutQuantity).toFixed(2)} saved</span>}
+          </div>
+          <p className="mt-1 text-xs text-ctp-subtext1">{candidate.detail}</p>
+        </li>)}
+      </ul>
+      {builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, ownerDeckId && canImprove ? { mode: "improve", sourceDeckId: ownerDeckId } : undefined)} className="mt-3 inline-block text-sm text-ctp-blue hover:underline">Full guardrail-aware review in the Deck Builder →</Link>}
+    </Section>}
 
     <Panel aria-labelledby="user-deck-score">
       <Section heading="dense" title="DIAO Score" description="Calculated from this exact decklist." actions={<span className="text-2xl font-bold text-ctp-blue">{rating.composite.toFixed(2)}</span>}>

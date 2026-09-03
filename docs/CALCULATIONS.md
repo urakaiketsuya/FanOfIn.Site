@@ -1796,6 +1796,44 @@ sums `quantity × cost` over the sideboard section; a card missing from the cata
 cheaper 1-point cost rather than blocking validation on it. Material deck itself keeps its existing
 flat 12-card cap — this rework only changes how the *sideboard* is metered.
 
+## Trim to size (`app/src/features/deckbuilder/deckTrimming.ts`)
+
+My Decks' Analysis tab (`app/src/features/account/UserDeckStats.tsx`) surfaces ranked cut
+suggestions whenever a section is over its target size: Main above `TRIM_TARGET_SIZE.main = 60`
+(a consistency concern — going over 60 is not illegal, only Main's *minimum* is enforced by
+`validateDeck`), Material above its existing 12-card cap, or Sideboard above its existing 15-point
+budget (see "Sideboard point budget" above). This composes three signals the site already computes
+elsewhere — it introduces no new dataset or scoring model of its own:
+
+1. **Quantity surplus** (always ranked first): `pickBetterQuantity` (`app/src/lib/cardQuantityAdvice.ts`)
+   flags a card whose count in the list is worse-supported than a lower legal count by the same
+   card's own global quantity-win-rate data. These lead the list because they're a strictly
+   evidence-backed trim — cutting down to the better-supported count, not dropping the card.
+2. **Win-rate lift** (ascending `adjustedLift`, most negative first): Champion(+element)-scoped Card
+   Impact, via `useChampionCardImpact(championName, identity.elements, ..., "all")` — the same
+   client-side hook and population `useChampionCardImpact.ts` already computes for Card Detail,
+   Compare, and Deck Tuning Evidence, called here with the `"all"` direction (every scored card,
+   unsliced) instead of `"best"`/`"worst"`'s top-8, since a card lookup needs the deck's *own* cards
+   scored, not a top-N list. Cards with no Card Impact entry (too little with/without sample) sort
+   after every scored card, disclosed as `"no-data"` rather than silently defaulted to neutral.
+3. **Cost-curve peak nudge** (tie-break only, `CURVE_PEAK_NUDGE = -0.02`): `computeCurvePeakCardNames`
+   finds the Main deck's own most-populous Memory and Reserve cost bucket (same non-Champion,
+   non-X-cost exclusions as `computeMemoryCostCurve`/`computeReserveCostCurve`) and nudges cards
+   sitting in that bucket slightly earlier in the cut order. This only ever reorders cards whose
+   lift is otherwise close — it cannot override a clearly-worse or clearly-better lift score.
+
+Price (`CardStat.marketPrice`) is attached to every candidate for display and is never a ranking
+input — this stays a "what hurts the deck least" tool, not a budget-cutting one. The returned list
+is truncated to roughly what's needed to clear the section's target (plus a few extra for choice,
+capped at `MAX_CANDIDATES = 12`), so it never dumps the whole section as "candidates."
+
+This lightweight panel intentionally does not reproduce the Guided Deck Builder's heavier
+guardrails — Champion-progression protection, active-package protection, or Material same-section
+replacement pairing (see "Guided Deck Builder" above) — since My Decks doesn't have that engine's
+Spirit/lock population. It instead links out to the Deck Builder's own review tab for that
+guardrail-aware pass, the same `buildDeckBuilderPath(..., { mode: "improve", sourceDeckId })` link
+`UserDeckStats.tsx` already uses for "Improve this deck."
+
 ## The "deck identity" convention
 
 Used consistently across nearly every stat above and in `useDeckPopularity.ts`, `computeDeckIdentity`,
