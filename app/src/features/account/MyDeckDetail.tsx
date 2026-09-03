@@ -189,7 +189,7 @@ export default function MyDeckDetail() {
         </form>
         <div className="mt-6">
           <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Preview</h3>
-          <div className="mt-2"><DecklistView decklist={editedDecklist} cardsByName={editedCardsByName} showThumbnails format={deck.format} /></div>
+          <div className="mt-2"><DecklistView decklist={editedDecklist} cardsByName={editedCardsByName} showThumbnails defaultDisplayMode="visual" format={deck.format} /></div>
         </div>
       </div> : undefined}
     </UserDecklistPanel>
