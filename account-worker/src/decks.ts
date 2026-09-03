@@ -98,16 +98,21 @@ async function ensureVersionedDeck(env: Env, user: AuthUser, deckId: string, inp
   const build = await env.ACCOUNT_DB.prepare("SELECT id FROM canonical_builds WHERE full_identity_hash = ?")
     .bind(fullHash).first<{ id: string }>();
   if (!build) throw new Error("Canonical build was not created");
+  const title = input.title.trim();
+  // New decks publish themselves immediately (visibility defaults to public) rather than
+  // starting private and requiring an explicit publish step — mirrors publishDeck's own
+  // public-path fields below so the first version is visible right away.
+  const publicSlug = crypto.randomUUID().replace(/-/g, "");
   await env.ACCOUNT_DB.prepare(`INSERT INTO user_decks
-    (id, owner_user_id, title, description, visibility, format, champion_name, created_at, updated_at)
-    VALUES (?, ?, ?, '', 'private', ?, ?, ?, ?)`)
-    .bind(deckId, user.id, input.title.trim(), format, input.championName ?? null, now, now).run();
+    (id, owner_user_id, title, description, visibility, public_slug, published_title, published_description, published_primer_markdown, published_tags_json, format, champion_name, created_at, updated_at)
+    VALUES (?, ?, ?, '', 'public', ?, ?, '', '', '[]', ?, ?, ?, ?)`)
+    .bind(deckId, user.id, title, publicSlug, title, format, input.championName ?? null, now, now).run();
   await env.ACCOUNT_DB.prepare(`INSERT INTO deck_versions
     (id, deck_id, version_number, canonical_build_id, change_note, change_summary_json, created_at)
     VALUES (?, ?, 1, ?, 'Initial version', '{}', ?)`)
     .bind(versionId, deckId, build.id, now).run();
-  await env.ACCOUNT_DB.prepare("UPDATE user_decks SET current_version_id = ? WHERE id = ? AND owner_user_id = ?")
-    .bind(versionId, deckId, user.id).run();
+  await env.ACCOUNT_DB.prepare("UPDATE user_decks SET current_version_id = ?, published_version_id = ?, published_at = ? WHERE id = ? AND owner_user_id = ?")
+    .bind(versionId, versionId, now, deckId, user.id).run();
 }
 
 function validDecklist(value: unknown): value is OmnidexDecklist {

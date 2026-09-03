@@ -52,7 +52,7 @@ export default function MyDeckDetail() {
     if (!current) return undefined;
     return deck.versions.filter((version) => version.versionNumber < current.versionNumber).sort((a, b) => b.versionNumber - a.versionNumber)[0]?.decklist;
   }, [deck]);
-  useDocumentTitle(deck?.title ?? "Saved Deck", "View a private saved deck and its version history.");
+  useDocumentTitle(deck?.title ?? "Saved Deck", "View a saved deck and its version history.");
 
   useEffect(() => {
     let active = true;
@@ -165,7 +165,7 @@ export default function MyDeckDetail() {
           </select>
           {deck.publicSlug && deck.visibility !== "private" && <><Link to={`/decklists/${deck.publicSlug}`} className="rounded border border-ctp-blue px-3 py-1.5 text-sm text-ctp-blue">View published deck</Link><button type="button" onClick={() => void navigator.clipboard.writeText(`${window.location.origin}/decklists/${deck.publicSlug}`).then(() => setNotice("Deck link copied."), () => setError("Could not copy the deck link. Please copy it from the address bar."))} className="rounded border border-ctp-surface1 px-3 py-1.5 text-sm">Copy link</button></>}
         </div>
-        <p className="mt-2 text-xs text-ctp-subtext0">Publishing snapshots the current version. Later edits stay private until you publish again.</p>
+        <p className="mt-2 text-xs text-ctp-subtext0">New decks are public by default. Publishing snapshots the current version — later edits aren't visible on the published link until you publish again.</p>
       </div>
     </section>}
     {tab === "analysis" && <section id="owned-deck-panel-analysis" role="tabpanel" aria-labelledby="owned-deck-tab-analysis" tabIndex={0}><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} title={deck.title} ownerDeckId={deck.id} previousDecklist={previousDecklist} /></section>}
