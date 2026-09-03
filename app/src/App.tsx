@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import AppRoutes from "./routes";
 import RandomFlavorFooter from "./components/RandomFlavorFooter";
 import LoadingBar from "./components/LoadingBar";
+import FeatureBanner from "./components/FeatureBanner";
 
 interface NavLinkItem { to: string; label: string }
 interface NavGroup { label: string; paths: string[]; links: NavLinkItem[] }
@@ -36,6 +37,7 @@ export default function App() {
 
   return <div className="min-h-screen bg-ctp-base text-ctp-text">
     <header className="sticky top-0 z-40 border-b border-ctp-surface0 bg-ctp-base/95 backdrop-blur">
+      <FeatureBanner />
       <div className="relative">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
           <Link to="/" className="shrink-0 font-semibold tracking-tight text-ctp-blue">Fan of Insight</Link>
