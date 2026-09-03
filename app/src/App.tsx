@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AppRoutes from "./routes";
 import RandomFlavorFooter from "./components/RandomFlavorFooter";
 import LoadingBar from "./components/LoadingBar";
 import FeatureBanner from "./components/FeatureBanner";
+import { initAnalytics, trackPageview } from "./lib/analytics";
 
 interface NavLinkItem { to: string; label: string }
 interface NavGroup { label: string; paths: string[]; links: NavLinkItem[] }
@@ -34,6 +35,14 @@ export default function App() {
   const [mobileGroup, setMobileGroup] = useState<string | null>(null);
   const location = useLocation();
   const isActive = (to: string) => linkIsActive(location.pathname, location.search, to);
+
+  useEffect(() => {
+    initAnalytics();
+  }, []);
+
+  useEffect(() => {
+    trackPageview(location.pathname + location.search);
+  }, [location.pathname, location.search]);
 
   return <div className="min-h-screen bg-ctp-base text-ctp-text">
     <header className="sticky top-0 z-40 border-b border-ctp-surface0 bg-ctp-base/95 backdrop-blur">

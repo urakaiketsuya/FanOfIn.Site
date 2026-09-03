@@ -38,6 +38,9 @@ jobs:
         env:
           VITE_GOOGLE_CLIENT_ID: 33283325780-takrrvtrs2qb8pshdkukog52le87b76k.apps.googleusercontent.com
           VITE_ACCOUNT_API_URL: https://accounts.fanofin.site/api
+          # Not secret — GA4 measurement IDs are visible in every page's outgoing requests. See
+          # app/src/lib/analytics.ts (loads only in production builds, no-ops without this).
+          VITE_GA_MEASUREMENT_ID: "G-R6Q0DXG947"
 
       - name: Copy published data into the build output
         # app/public/data is a symlink to ../../data for local dev — copy explicitly here instead
