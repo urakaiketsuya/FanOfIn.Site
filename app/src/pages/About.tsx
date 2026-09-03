@@ -98,7 +98,7 @@ const FEATURES: FeatureGroup[] = [
       "Full battle chart: matchup matrix, by-Champion view, and closest/most-lopsided highlights",
       "Sample decklists and defining cards per build",
     ],
-    example: { to: "/archetypes/14lh0s0", label: "Tera Silvie" },
+    example: { to: "/archetypes/1oi8ut8", label: "Tera Silvie" },
   },
   {
     title: "Browse Decks",
