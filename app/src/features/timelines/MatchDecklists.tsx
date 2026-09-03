@@ -5,8 +5,7 @@ import { isApiErrorBody } from "../../lib/api/client";
 import { useEventBundle } from "../events/useEventBundle";
 import { useCardsByNames } from "../events/useCardsByNames";
 import DecklistView from "../events/DecklistView";
-import Section from "../../components/ui/Section";
-import { InlineState } from "../../components/ui/ContentState";
+import { InlineState, EmptyState } from "../../components/ui/ContentState";
 
 function normalize(s: string): string {
   return s.toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -168,33 +167,32 @@ function PlayerDecklistSlot({
 function MatchDecklistsForEvent({ match, eventId }: { match: BroadcastTimelineMatch; eventId: number }) {
   const { bundle, error } = useEventBundle(eventId);
 
-  if (error) return null;
+  if (!bundle && error) {
+    return <EmptyState title="Tournament decklists unavailable" description={error} />;
+  }
   if (!bundle) return <InlineState className="mt-1">Loading tournament decklists…</InlineState>;
-  if (isApiErrorBody(bundle.decklists) || bundle.decklists.length === 0) return null;
+  if (isApiErrorBody(bundle.decklists) || bundle.decklists.length === 0) {
+    return <EmptyState title="No public decklists for this event" />;
+  }
 
   const decklists = bundle.decklists;
   const players = bundle.players;
 
   return (
-    <Section
-      heading="compact"
-      title="Tournament decklists"
-      actions={
-        <Link to={`/events/${eventId}?tab=decklists`} className="text-xs text-ctp-blue hover:underline">
+    <div>
+      <p className="text-xs text-ctp-subtext1">
+        Pulled from{" "}
+        <Link to={`/events/${eventId}?tab=decklists`} className="text-ctp-blue hover:underline">
           {bundle.event.name}
         </Link>
-      }
-    >
-      <p className="text-xs text-ctp-subtext1">
-        Pulled from this event&rsquo;s public tournament decklists — a separate population from the broadcast commentary
-        above. Caster call-outs don&rsquo;t always match the registered username exactly, so a match isn&rsquo;t always
-        automatic.
+        &rsquo;s public tournament decklists — a separate population from the broadcast commentary. Caster call-outs
+        don&rsquo;t always match the registered username exactly, so a match isn&rsquo;t always automatic.
       </p>
       <div className="mt-3 flex flex-col gap-4 sm:flex-row">
         <PlayerDecklistSlot caster={match.players[0]} eventId={eventId} decklists={decklists} players={players} accent="text-ctp-blue" />
         <PlayerDecklistSlot caster={match.players[1]} eventId={eventId} decklists={decklists} players={players} accent="text-ctp-mauve" />
       </div>
-    </Section>
+    </div>
   );
 }
 

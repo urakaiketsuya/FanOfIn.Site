@@ -1,13 +1,10 @@
 import { useMemo } from "react";
-import { Link } from "react-router-dom";
 import type { Card } from "@gatcg/shared";
 import type { BroadcastTimelineBeat, BroadcastTimelineGame, BroadcastTimelineMatch, BroadcastTimelineTag } from "@gatcg/shared";
 import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
-import CardHoverPreview from "../../components/CardHoverPreview";
-import CardImage from "../../components/CardImage";
+import CardMentions from "./CardMentions";
 import { useCardsByMentions } from "./data";
-import MatchDecklists from "./MatchDecklists";
 
 const ACTOR_COLOR: Record<"p1" | "p2" | "both", string> = {
   p1: "border-ctp-blue bg-ctp-blue",
@@ -38,38 +35,6 @@ const TAG_CLASS: Record<BroadcastTimelineTag, string> = {
   lethal: "border-ctp-red/40 bg-ctp-red/10 text-ctp-red",
   stabilize: "border-ctp-green/40 bg-ctp-green/10 text-ctp-green",
 };
-
-/** A card name as called by casters may not exactly match the card DB (ASR errors, shorthand) —
- * anything that doesn't resolve via useCardsByNames falls back to a plain text badge rather than
- * being dropped, so an unmatched name is still visible (just not linked/thumbnailed). */
-function CardMentions({ names, cardsByName }: { names: string[]; cardsByName: Map<string, Card> }) {
-  return (
-    <div className="mt-2 flex flex-wrap gap-1.5">
-      {names.map((name, i) => {
-        const card = cardsByName.get(name);
-        if (!card) {
-          return (
-            <span key={`${name}-${i}`} className="rounded-md border border-ctp-surface1 px-1.5 py-1 text-xs text-ctp-subtext1">
-              {name}
-            </span>
-          );
-        }
-        const image = card.editions[0]?.image;
-        return (
-          <CardHoverPreview key={`${name}-${i}`} image={image} alt={name}>
-            <Link
-              to={`/cards/${card.slug}`}
-              className="flex items-center gap-1.5 rounded-md border border-ctp-surface1 bg-ctp-base/40 py-1 pl-1 pr-2 text-xs font-medium text-ctp-text hover:border-ctp-blue/60"
-            >
-              <CardImage image={image} alt={name} className="h-7 w-5 shrink-0 rounded-sm object-cover object-top" />
-              {name}
-            </Link>
-          </CardHoverPreview>
-        );
-      })}
-    </div>
-  );
-}
 
 function BeatRow({ beat, playerName, cardsByName }: { beat: BroadcastTimelineBeat; playerName: (a: "p1" | "p2" | "both") => string; cardsByName: Map<string, Card> }) {
   return (
@@ -119,6 +84,32 @@ function GameTimeline({
   );
 }
 
+export function MatchTimelineHeader({ match }: { match: BroadcastTimelineMatch }) {
+  return (
+    <div>
+      <Panel tone="info" padding="md">
+        <p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Broadcast commentary — not tournament data</p>
+        <p className="mt-1 text-sm text-ctp-subtext1">
+          Reconstructed from a cleaned VOD transcript, not tracked gameplay — card names and life totals are as called
+          by the casters and may contain minor transcription errors. Never blended into tournament win rates, Elo, or
+          Card Impact numbers.
+        </p>
+      </Panel>
+
+      <div className="mt-4">
+        <h1 className="text-2xl font-bold text-ctp-blue">
+          {match.event} — {match.round}
+        </h1>
+        <p className="mt-1 text-sm text-ctp-subtext1">
+          <span className="font-medium text-ctp-blue">{match.players[0].name}</span> ({match.players[0].deck}) vs.{" "}
+          <span className="font-medium text-ctp-mauve">{match.players[1].name}</span> ({match.players[1].deck})
+        </p>
+        <p className="mt-1 text-sm font-medium text-ctp-text">{match.result}</p>
+      </div>
+    </div>
+  );
+}
+
 export default function MatchTimeline({ match }: { match: BroadcastTimelineMatch }) {
   const playerName = (actor: "p1" | "p2" | "both") =>
     actor === "both" ? "Both" : match.players.find((p) => p.id === actor)?.name ?? actor;
@@ -131,28 +122,6 @@ export default function MatchTimeline({ match }: { match: BroadcastTimelineMatch
 
   return (
     <div className="space-y-4">
-      <Panel tone="info" padding="md">
-        <p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Broadcast commentary — not tournament data</p>
-        <p className="mt-1 text-sm text-ctp-subtext1">
-          Reconstructed from a cleaned VOD transcript, not tracked gameplay — card names and life totals are as called
-          by the casters and may contain minor transcription errors. Never blended into tournament win rates, Elo, or
-          Card Impact numbers.
-        </p>
-      </Panel>
-
-      <div>
-        <h1 className="text-2xl font-bold text-ctp-blue">
-          {match.event} — {match.round}
-        </h1>
-        <p className="mt-1 text-sm text-ctp-subtext1">
-          <span className="font-medium text-ctp-blue">{match.players[0].name}</span> ({match.players[0].deck}) vs.{" "}
-          <span className="font-medium text-ctp-mauve">{match.players[1].name}</span> ({match.players[1].deck})
-        </p>
-        <p className="mt-1 text-sm font-medium text-ctp-text">{match.result}</p>
-      </div>
-
-      <MatchDecklists match={match} />
-
       {match.games.map((game) => {
         const notes = match.sideboardNotes?.filter((n) => n.beforeGame === game.gameNumber) ?? [];
         return (

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-03T15:00:00.000Z",
+  "generatedAt": "2026-09-03T16:00:00.000Z",
   "matches": [
     {
       "id": "ascent-akihabara-2026-day1-round9-zeus-schwarzer",
@@ -10,7 +10,7 @@
       "players": [
         {
           "id": "p1",
-          "name": "Zeus",
+          "name": "Z3US",
           "deck": "Fire Diaochan aggro"
         },
         {
@@ -19,7 +19,7 @@
           "deck": "Wind Umbra Tristan"
         }
       ],
-      "result": "Zeus wins 2-0",
+      "result": "Z3US wins 2-0",
       "sideboardNotes": [
         {
           "beforeGame": 2,
@@ -31,7 +31,7 @@
         {
           "gameNumber": 1,
           "winner": "p1",
-          "summary": "Zeus wins",
+          "summary": "Z3US wins",
           "beats": [
             {
               "order": 1,
@@ -46,7 +46,7 @@
             {
               "order": 2,
               "actor": "p1",
-              "text": "Zeus opens with Diaochan, Spirit of Fire and two Fire Bloom Flourishes back to back — each Flourish is itself a spell, so they immediately trigger Everflame Staff for free damage.",
+              "text": "Z3US opens with Diaochan, Spirit of Fire and two Fire Bloom Flourishes back to back — each Flourish is itself a spell, so they immediately trigger Everflame Staff for free damage.",
               "cards": [
                 "Diao Chan, Enchantress",
                 "Spirit of Fire",
@@ -60,7 +60,7 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "Diaochan's end-of-turn \"influence 4 or less → draw + glimmer counter\" ability lets Zeus dump his whole hand every turn without running dry.",
+              "text": "Diaochan's end-of-turn \"influence 4 or less → draw + glimmer counter\" ability lets Z3US dump his whole hand every turn without running dry.",
               "cards": [
                 "Diao Chan, Enchantress"
               ],
@@ -79,7 +79,7 @@
             {
               "order": 5,
               "actor": "p1",
-              "text": "Zeus finds a third Flourish, adds Ash Cremator (+ Smoke Out) and a Shimmering Refraction.",
+              "text": "Z3US finds a third Flourish, adds Ash Cremator (+ Smoke Out) and a Shimmering Refraction.",
               "cards": [
                 "Firebloom Flourish",
                 "Ashwick Cremator",
@@ -107,12 +107,12 @@
         {
           "gameNumber": 2,
           "winner": "p1",
-          "summary": "Zeus wins",
+          "summary": "Z3US wins",
           "beats": [
             {
               "order": 1,
               "actor": "p2",
-              "text": "Schwarzer's sideboard plan works for a while: a Scatter Essence answers Zeus's first Fire Bloom Flourish, a Stifling Trap stops an Ash Cremator.",
+              "text": "Schwarzer's sideboard plan works for a while: a Scatter Essence answers Z3US's first Fire Bloom Flourish, a Stifling Trap stops an Ash Cremator.",
               "cards": [
                 "Scatter Essence",
                 "Firebloom Flourish",
@@ -139,7 +139,7 @@
             {
               "order": 3,
               "actor": "p1",
-              "text": "Zeus's Fractal of Sparks (a repeatable 1-damage ping every turn, later turned on himself to trigger Searing Rebuke for 3 to Schwarzer) chips constantly in the background.",
+              "text": "Z3US's Fractal of Sparks (a repeatable 1-damage ping every turn, later turned on himself to trigger Searing Rebuke for 3 to Schwarzer) chips constantly in the background.",
               "cards": [
                 "Fractal of Sparks",
                 "Searing Rebuke"
@@ -151,7 +151,7 @@
             {
               "order": 4,
               "actor": "p2",
-              "text": "Schwarzer gets Zeus down to 5 life via a big Shadow Strike swing but can't quite close it — Zeus's Searing Rebukes (three activated over the game) keep shutting off follow-up attack damage.",
+              "text": "Schwarzer gets Z3US down to 5 life via a big Shadow Strike swing but can't quite close it — Z3US's Searing Rebukes (three activated over the game) keep shutting off follow-up attack damage.",
               "cards": [
                 "Shadowstrike",
                 "Searing Rebuke"
@@ -167,7 +167,7 @@
             {
               "order": 5,
               "actor": "p1",
-              "text": "With Schwarzer empty-handed and pinged down by a final self-targeted Fractal of Sparks + Searing Rebuke combo, Zeus finishes him off. Zeus wins the match 2-0, securing his day-two berth at 6-3; Schwarzer finishes 5-4.",
+              "text": "With Schwarzer empty-handed and pinged down by a final self-targeted Fractal of Sparks + Searing Rebuke combo, Z3US finishes him off. Z3US wins the match 2-0, securing his day-two berth at 6-3; Schwarzer finishes 5-4.",
               "cards": [
                 "Fractal of Sparks",
                 "Searing Rebuke"
