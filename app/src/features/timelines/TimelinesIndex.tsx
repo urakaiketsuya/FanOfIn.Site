@@ -11,11 +11,18 @@ export default function TimelinesIndex() {
 
   return (
     <PageLayout>
-      <h1 className="text-2xl font-bold text-ctp-blue">Match Timelines</h1>
-      <p className="mt-1 text-sm text-ctp-subtext1">
-        Feature matches from broadcast VODs, reconstructed beat-by-beat from caster commentary — a small, hand-curated
-        set of matches, not a comprehensive dataset.
-      </p>
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <div>
+          <h1 className="text-2xl font-bold text-ctp-blue">Match Timelines</h1>
+          <p className="mt-1 text-sm text-ctp-subtext1">
+            Feature matches from broadcast VODs, reconstructed beat-by-beat from caster commentary — a small,
+            hand-curated set of matches, not a comprehensive dataset.
+          </p>
+        </div>
+        <Link to="/timelines/combos" className="shrink-0 text-sm font-medium text-ctp-blue hover:underline">
+          Browse notable combos &rarr;
+        </Link>
+      </div>
 
       <div className="mt-4 rounded-lg border border-ctp-peach bg-ctp-peach/10 px-4 py-3 text-sm text-ctp-text">
         <p className="font-semibold text-ctp-peach">Experimental — commentary-derived, not tournament data</p>
