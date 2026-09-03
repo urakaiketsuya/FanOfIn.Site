@@ -207,7 +207,7 @@ const WALKTHROUGH_DECK = {
   bestPlacement: 4,
   avgWinRate: 0.37,
   championImage: "/cards/images/tiptrzblqr.jpg",
-  rating: { composite: 7.0, scores: { durability: 7, interaction: 7, aggro: 8, opportunity: 6 } },
+  rating: { composite: 3.25, scores: { durability: 3, interaction: 3, aggro: 4, opportunity: 3 } },
 };
 
 const RATING_PILLARS: { key: keyof typeof WALKTHROUGH_DECK.rating.scores; label: string; description: string }[] = [
@@ -261,22 +261,25 @@ const WALKTHROUGH_RESERVE_BARS = [
 
 /**
  * Same "pre-baked, no live fetch" reasoning as WALKTHROUGH_DECK above — captured directly from
- * /archetypes/qnv8tz?tab=impact (Water Diao Chan vs. its Water Guo Jia matchup, real pairing data,
- * 14 games). This is a genuinely small matchup sample (most matchup-scoped Card Impact rows are —
+ * /archetypes/1oi8ut8?tab=impact (Tera Silvie vs. its Water Diao Chan matchup, real pairing data,
+ * 52 games). This is a genuinely small matchup sample (most matchup-scoped Card Impact rows are —
  * see docs/CALCULATIONS.md's sample-size note), so the lift numbers here are modest by design,
- * not cherry-picked for a bigger-looking result.
+ * not cherry-picked for a bigger-looking result. Archetype cluster IDs are re-derived by the
+ * clustering pipeline and aren't stable long-term (this replaced a since-vanished "qnv8tz") — if
+ * this example's own link ever breaks, re-capture from a currently-real cluster, don't just
+ * refresh the numbers on the old id.
  */
 const WALKTHROUGH_MATCHUP = {
-  clusterId: "qnv8tz",
-  clusterName: "Water Diao Chan",
-  opponentClusterName: "Water Guo Jia",
-  games: 14,
+  clusterId: "1oi8ut8",
+  clusterName: "Tera Silvie",
+  opponentClusterName: "Water Diao Chan",
+  games: 52,
   cards: [
-    { name: "Quicksilver Grail", slug: "quicksilver-grail", image: "/cards/images/6oyti67l58.jpg", role: "Material", winRateWith: 0.56, winRateWithout: 0.4, lift: 0.06 },
-    { name: "Viridian Protective Trinket", slug: "viridian-protective-trinket", image: "/cards/images/ydupmu6gvm.jpg", role: "Sideboard", winRateWith: 0.56, winRateWithout: 0.4, lift: 0.06 },
-    { name: "Song of Frost", slug: "song-of-frost", image: "/cards/images/rglq1kjunp.jpg", role: "Mixed", winRateWith: 0.56, winRateWithout: 0.42, lift: 0.06 },
-    { name: "Fractal of Refreshment", slug: "fractal-of-refreshment", image: "/cards/images/htmfs6s6uh.jpg", role: "Main", winRateWith: 0.57, winRateWithout: 0.43, lift: 0.06 },
-    { name: "Fire Resonance Bauble", slug: "fire-resonance-bauble", image: "/cards/images/pwkkbbu08s.jpg", role: "Mixed", winRateWith: 0.57, winRateWithout: 0.43, lift: 0.06 },
+    { name: "Resolute Stand", slug: "resolute-stand", image: "/cards/images/7ML4Ui4aoA.jpg", role: "Sideboard", winRateWith: 0.42, winRateWithout: 0.23, lift: 0.133 },
+    { name: "Blissful Calling", slug: "blissful-calling", image: "/cards/images/nacqadnk8i.jpg", role: "Main", winRateWith: 0.35, winRateWithout: 0.13, lift: 0.114 },
+    { name: "Fluffy Shopkeep", slug: "fluffy-shopkeep", image: "/cards/images/sl3h52hiqj.jpg", role: "Main", winRateWith: 0.5, winRateWithout: 0.28, lift: 0.108 },
+    { name: "Quicksilver Grail", slug: "quicksilver-grail", image: "/cards/images/6oyti67l58.jpg", role: "Material", winRateWith: 0.38, winRateWithout: 0.24, lift: 0.101 },
+    { name: "Mystic Purifier", slug: "mystic-purifier", image: "/cards/images/SEN9Zgyh2Y.jpg", role: "Sideboard", winRateWith: 0.5, winRateWithout: 0.29, lift: 0.098 },
   ],
 };
 
@@ -293,9 +296,9 @@ const WALKTHROUGH_DECK_BUILDER = {
   cards: [
     { name: "Diao Chan, Enchantress", slug: "diao-chan-enchantress", image: "/cards/images/0ueslsle3w.jpg", lift: null },
     { name: "Grand Crusader's Ring", slug: "grand-crusaders-ring", image: "/cards/images/ioxgugw9r9.jpg", lift: 0.136 },
-    { name: "Viridian Protective Trinket", slug: "viridian-protective-trinket", image: "/cards/images/ydupmu6gvm.jpg", lift: 0.088 },
+    { name: "Smoke Bombs", slug: "smoke-bombs", image: "/cards/images/porhmr2lkv.jpg", lift: 0.121 },
     { name: "Backup Charger", slug: "backup-charger", image: "/cards/images/3apypgzedx.jpg", lift: 0.081 },
-    { name: "Smoke Bombs", slug: "smoke-bombs", image: "/cards/images/porhmr2lkv.jpg", lift: 0.08 },
+    { name: "Nullifying Lantern", slug: "nullifying-lantern", image: "/cards/images/t6kxtm8eed.jpg", lift: 0.072 },
   ] as { name: string; slug: string; image: string; lift: number | null }[],
 };
 
