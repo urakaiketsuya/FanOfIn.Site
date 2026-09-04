@@ -97,7 +97,7 @@ export default function CardDiscoveryIndex() {
     >
       {discoveries.length === 0 ? <p className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-4 py-3 text-sm text-ctp-subtext1">No designed connections found yet. Add a card you already play to make this lens more specific.</p> : <div className="mt-4 space-y-3">{discoveries.map(({ card, combos, setName, releaseDate }) => <article key={card.uuid} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
         <div className="flex flex-wrap items-center gap-2"><CardHoverPreview image={card.editions[0]?.image} alt={card.name}><Link to={`/cards/${card.slug}`} className="font-semibold text-ctp-text hover:text-ctp-blue">{card.name}</Link></CardHoverPreview><span className="text-xs text-ctp-subtext0">{setName} · {releaseDate}</span></div>
-        <ul className="mt-2 space-y-1 text-sm text-ctp-subtext1">{combos.map((combo) => <li key={`${combo.with.uuid}-${combo.via}`}>Connects with <Link to={`/cards/${combo.with.slug}`} className="text-ctp-blue hover:underline">{combo.with.name}</Link> via {combo.via}.</li>)}</ul>
+        <ul className="mt-2 space-y-1 text-sm text-ctp-subtext1">{combos.map((combo) => <li key={`${combo.with.uuid}-${combo.via}`}>Connects with <CardHoverPreview image={combo.with.editions[0]?.image} alt={combo.with.name}><Link to={`/cards/${combo.with.slug}`} className="text-ctp-blue hover:underline">{combo.with.name}</Link></CardHoverPreview> via {combo.via}.</li>)}</ul>
       </article>)}</div>}
     </Section>}
   </PageLayout>;
