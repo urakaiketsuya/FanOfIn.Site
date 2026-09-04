@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import type { Card, CardImpactEntry, CardInclusionEntry } from "@gatcg/shared";
 import CardHoverPreview from "../../../components/CardHoverPreview";
 import CardImpactTable from "../../../components/CardImpactTable";
+import Tabs from "../../../components/ui/Tabs";
 import { formatUsd } from "../../../lib/format";
 import { CardRow, DiaoMetricBadges, SuggestionRow } from "../components/BuilderCardRows";
 import { BuilderSuggestionGrid } from "../components/BuilderCardGrid";
@@ -13,6 +15,8 @@ import type { SimulatorCardEvidence } from "../useSimulatorSuggestedBuild";
 import type { CardFieldVisibility } from "../useCardFieldVisibility";
 import type { PopulationSource } from "../model/builderTypes";
 import type { BuilderViewMode } from "../useBuilderViewMode";
+
+type ReviewSubTab = "suggestions" | "matchups" | "similarDecks";
 
 export default function BuilderReviewPanel({
   build, effectivePopulationSource, simulatorMatchedCards, simulatorEvidenceByName, lockedCards,
@@ -59,6 +63,14 @@ export default function BuilderReviewPanel({
   onViewModeChange: (mode: BuilderViewMode) => void;
 }) {
   const simulatorMode = effectivePopulationSource === "simulator";
+  const showMatchupsTab = buildCounters.sourceDeck !== null && buildCounters.clusterMatchups.length > 0;
+  const subTabs: { key: ReviewSubTab; label: string }[] = [
+    { key: "suggestions", label: reviewItemCount > 0 ? `Suggestions (${reviewItemCount})` : "Suggestions" },
+    ...(showMatchupsTab ? [{ key: "matchups" as ReviewSubTab, label: "Matchups" }] : []),
+    ...(showNearestDecks ? [{ key: "similarDecks" as ReviewSubTab, label: "Similar decks" }] : []),
+  ];
+  const [subTab, setSubTab] = useState<ReviewSubTab>("suggestions");
+  const activeSubTab: ReviewSubTab = subTabs.some((t) => t.key === subTab) ? subTab : subTabs[0].key;
   return (
     <div role="tabpanel" id="deck-builder-panel-review" aria-labelledby="deck-builder-tab-review" className="mt-4">
       <div className="flex flex-wrap items-end justify-between gap-2">
@@ -158,7 +170,12 @@ export default function BuilderReviewPanel({
         </ul>
       </details>
 
-      {reviewItemCount === 0 ? (
+      <div className="mt-4">
+        <Tabs tabs={subTabs} active={activeSubTab} onChange={setSubTab} label="Review sections" baseId="deck-builder-review" />
+      </div>
+
+      {activeSubTab === "suggestions" && (
+      reviewItemCount === 0 ? (
         <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-4 py-3 text-sm text-ctp-subtext1">
           {effectivePopulationSource === "community" || simulatorMode
             ? `No additions to review right now. Cut recommendations are unavailable in ${simulatorMode ? "Simulator" : "Community"} mode because this source cannot support Champion-scoped with-versus-without comparisons.`
@@ -281,10 +298,11 @@ export default function BuilderReviewPanel({
             )}
           </div>
         </>
+      )
       )}
 
-      {buildCounters.sourceDeck && buildCounters.clusterMatchups.length > 0 && (
-        <div className="mt-5 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-4 py-3">
+      {activeSubTab === "matchups" && buildCounters.sourceDeck && buildCounters.clusterMatchups.length > 0 && (
+        <div className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-4 py-3">
           <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Counters against this build</h3>
           <p className="mt-1 text-xs text-ctp-subtext0">
             This build isn't a real decklist yet, so this is proxied off {buildCounters.sourceDeck.championName ?? "the"} deck
@@ -292,6 +310,37 @@ export default function BuilderReviewPanel({
             ({(buildCounters.sourceDeck.similarity * 100).toFixed(0)}% similar) — correlational, not a guarantee, and it may not
             hold once you finish the build.
           </p>
+          {buildCounters.clusterMatchups.length > 1 && (
+            <div className="mt-3">
+              <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Matchup spread</p>
+              <ul className="mt-1.5 space-y-1">
+                {[...buildCounters.clusterMatchups].sort((a, b) => b.baselineWinRate - a.baselineWinRate).map((m) => {
+                  const winRatePct = m.baselineWinRate * 100;
+                  const isSelected = (buildCounters.opponentClusterId ?? buildCounters.clusterMatchups[0]?.opponentClusterId) === m.opponentClusterId;
+                  return (
+                    <li key={m.opponentClusterId}>
+                      <button
+                        type="button"
+                        onClick={() => buildCounters.setOpponentClusterId(m.opponentClusterId)}
+                        aria-pressed={isSelected}
+                        className={`flex w-full items-center gap-2 rounded-md border px-2 py-1 text-left text-xs ${isSelected ? "border-ctp-blue bg-ctp-blue/10" : "border-ctp-surface1 hover:border-ctp-surface2"}`}
+                      >
+                        <span className="w-28 shrink-0 truncate text-ctp-text">{m.opponentClusterName}</span>
+                        <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-ctp-surface1">
+                          <span
+                            className={`block h-full rounded-full ${winRatePct >= 50 ? "bg-ctp-green" : "bg-ctp-red"}`}
+                            style={{ width: `${Math.min(100, Math.max(0, winRatePct))}%` }}
+                          />
+                        </span>
+                        <span className={`w-10 shrink-0 text-right font-semibold ${winRatePct >= 50 ? "text-ctp-green" : "text-ctp-red"}`}>{winRatePct.toFixed(0)}%</span>
+                        <span className="w-16 shrink-0 text-right text-ctp-subtext0">{m.games}g</span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
           <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
             <span className="text-ctp-subtext0">Vs:</span>
             <select
@@ -323,8 +372,8 @@ export default function BuilderReviewPanel({
         </div>
       )}
 
-      {showNearestDecks && (
-        <div className="mt-5">
+      {activeSubTab === "similarDecks" && (
+        <div className="mt-4">
           <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Nearest similar real decks</h3>
           <p className="mt-1 text-xs text-ctp-subtext0">
             Real decklists most similar to your accepted cards, shown automatically after two choices. These
