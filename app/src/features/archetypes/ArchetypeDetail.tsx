@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { CardImpactRole, OmnidexDecklist } from "@gatcg/shared";
-import { useArchetypeTaxonomyData, useCardImpactData, useMatchupCardImpactData } from "./data";
+import { useArchetypeTaxonomyData, useCardImpactData, useCardQuantityStatsData, useMatchupCardImpactData } from "./data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useOmnidexPlayers, useEventNameById } from "../tournaments/data";
 import { useSightingDecklist } from "../topdecks/useSightingDecklist";
@@ -51,6 +51,7 @@ export default function ArchetypeDetail() {
   const playersData = useOmnidexPlayers();
   const cardImpactData = useCardImpactData();
   const matchupCardImpactData = useMatchupCardImpactData();
+  const cardQuantityStatsData = useCardQuantityStatsData();
   const [roleFilter, setRoleFilter] = useState<CardImpactRole | "all">("all");
   const [opponentClusterId, setOpponentClusterId] = useState<string>("all");
   const [tab, setTab] = useTabParam("tab", TAB_KEYS, "overview");
@@ -174,6 +175,14 @@ export default function ArchetypeDetail() {
     () => [...(cluster?.materialDefiningCards ?? []), ...(cluster?.definingCards ?? [])].map((c) => c.name),
     [cluster],
   );
+  // This build's own defining cards, restricted to ones with a real quantity-vs-win-rate signal
+  // (published only for cards run at 2+ distinct quantities across public decklists) — same
+  // "Win rate by quantity" convention CardDetail.tsx already uses, just scoped to this build.
+  const definingQuantityStats = useMemo(() => {
+    if (!cardQuantityStatsData) return [];
+    const names = new Set(definingCardNames);
+    return cardQuantityStatsData.cards.filter((c) => names.has(c.name) && c.quantities.length >= 2);
+  }, [cardQuantityStatsData, definingCardNames]);
   const allSampleCardNames = useMemo(() => {
     const names = new Set(definingCardNames);
     if (sample.decklist) {
@@ -533,6 +542,33 @@ export default function ArchetypeDetail() {
                   </div>
                 </details>
               )}
+            </Section>
+          )}
+
+          {tab === "impact" && definingQuantityStats.length > 0 && (
+            <Section
+              className="mt-6"
+              heading="dense"
+              collapsible
+              defaultOpen={false}
+              title="Quantity vs. win rate"
+              description="For this build's defining cards, does running more (or fewer) copies actually change the outcome? Figures are across all public decklists running the card, not scoped to this build alone."
+            >
+              <div className="mt-2 space-y-2">
+                {definingQuantityStats.map((c) => (
+                  <div key={c.name} className="text-sm">
+                    <span className="text-ctp-text">{c.name}</span>
+                    <div className="mt-0.5 flex flex-wrap gap-4 text-ctp-subtext1">
+                      {c.quantities.map((q) => (
+                        <span key={q.quantity}>
+                          {q.quantity}x: <span className="font-semibold text-ctp-text">{(q.adjustedWinRate * 100).toFixed(0)}%</span>{" "}
+                          <span className="text-xs text-ctp-subtext0">({q.deckCount} decks)</span>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </Section>
           )}
 
