@@ -5,6 +5,7 @@ import { useRegionalArchetypes } from "./useRegionalArchetypes";
 import { useRegionalChampions } from "./useRegionalChampions";
 import { useRegionalCardComposition, type RegionalCardRow } from "./useRegionalCardComposition";
 import { useRegionalKeywords, type RegionalKeywordRow } from "./useRegionalKeywords";
+import { useRegionalVenues } from "./useRegionalVenues";
 import { useRegionDecodedDecks } from "./useRegionDecodedDecks";
 import RegionCompareView from "./RegionCompareView";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -27,14 +28,17 @@ type ViewMode = "single" | "compare";
 const VIEW_MODES: ViewMode[] = ["single", "compare"];
 const VIEW_LABELS: Record<ViewMode, string> = { single: "Single Region", compare: "Compare Regions" };
 
-type ContentTab = "archetypes" | "champions" | "cards" | "keywords";
-const CONTENT_TABS: ContentTab[] = ["archetypes", "champions", "cards", "keywords"];
+type ContentTab = "archetypes" | "champions" | "cards" | "keywords" | "venues";
+const CONTENT_TABS: ContentTab[] = ["archetypes", "champions", "cards", "keywords", "venues"];
 const CONTENT_LABELS: Record<ContentTab, string> = {
   archetypes: "Archetypes",
   champions: "Champions",
   cards: "Card Composition",
   keywords: "Keywords",
+  venues: "Venues",
 };
+
+const MAX_VENUE_EVENTS_SHOWN = 3;
 
 function LiftBadges({ lift, sign, regionRate, globalRate }: { lift: number; sign: "positive" | "negative"; regionRate: number; globalRate: number }) {
   return (
@@ -132,10 +136,11 @@ export default function RegionsIndex() {
   const regionDecks = useRegionDecodedDecks(regionByDeckId, selectedRegion);
   const cards = useRegionalCardComposition(regionDecks);
   const keywords = useRegionalKeywords(regionDecks);
+  const venues = useRegionalVenues(group, selectedRegion);
 
   return (
     <PageLayout>
-      <PageHeader title="Regions" description="Compare archetypes, Champions, card composition, and keywords across countries or broader competitive regions." />
+      <PageHeader title="Regions" description="Compare archetypes, Champions, card composition, keywords, and venues across countries or broader competitive regions." />
 
       <FilterBar>
         <div><div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-ctp-subtext0">Group events by</div><div className="flex flex-wrap items-center gap-2">
@@ -320,6 +325,47 @@ export default function RegionsIndex() {
                     <Section className="mt-6" heading="dense" title="Under-represented">
                       <KeywordLiftList rows={keywords.underRepresented} sign="negative" />
                     </Section>
+                  </>
+                )}
+              </>
+            )}
+
+            {tab === "venues" && (
+              <>
+                {venues.loading && <InlineState>Loading…</InlineState>}
+                {!venues.loading && venues.rows.length === 0 && (
+                  <InlineState className="text-sm">No venue records for {selectedOption?.label} yet.</InlineState>
+                )}
+                {venues.rows.length > 0 && (
+                  <>
+                    <p className="text-xs text-ctp-subtext0">
+                      Omnidex venue records with events in {selectedOption?.label} — grouped by venue id, not name, since some venues rename over time. No mapping data is published, so this is a list, not a map.
+                    </p>
+                    <ul className="mt-3 space-y-3">
+                      {venues.rows.map((v) => (
+                        <li key={v.hostId} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2">
+                          <div className="flex flex-wrap items-baseline justify-between gap-2">
+                            <span className="text-sm font-medium text-ctp-text">{v.hostName}</span>
+                            <span className="text-xs text-ctp-subtext0">{v.eventCount} event{v.eventCount === 1 ? "" : "s"}</span>
+                          </div>
+                          {v.hostAddress && <p className="mt-0.5 text-xs text-ctp-subtext0">{v.hostAddress}</p>}
+                          <div className="mt-2 flex flex-wrap gap-2 text-xs">
+                            {v.events.slice(0, MAX_VENUE_EVENTS_SHOWN).map((e) => (
+                              <Link
+                                key={e.id}
+                                to={`/events/${e.id}`}
+                                className="rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
+                              >
+                                {e.name} <span className="text-ctp-subtext0">({new Date(e.date).toLocaleDateString()})</span>
+                              </Link>
+                            ))}
+                            {v.events.length > MAX_VENUE_EVENTS_SHOWN && (
+                              <span className="px-2 py-1 text-ctp-subtext0">+{v.events.length - MAX_VENUE_EVENTS_SHOWN} more</span>
+                            )}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
                   </>
                 )}
               </>
