@@ -1,4 +1,4 @@
-import type { Card, CollectionEntry, CollectionUpdateLine, OmnidexDecklist } from "@gatcg/shared";
+import type { Card, CollectionEntry, CollectionUpdateLine, OmnidexDecklist, SavedDeck } from "@gatcg/shared";
 
 export const COLLECTION_RARITY_LABELS: Record<number, string> = {
   1: "Common",
@@ -73,6 +73,48 @@ export function setRarityCollectionLines(cards: Card[], setPrefix: string, quant
     if (quantity > 0) lines.push({ cardUuid: card.uuid, cardName: card.name, quantity });
   }
   return lines.sort((a, b) => a.cardName.localeCompare(b.cardName));
+}
+
+export interface SharedCardUsage {
+  card: string;
+  totalRequired: number;
+  owned: number;
+  missing: number;
+  decks: { deckId: string; title: string; quantity: number }[];
+}
+
+/**
+ * Cards required by 2+ of the given decks, checked against one pooled collection — the case where
+ * a limited physical playset has to move between decks rather than living fully in each at once
+ * (e.g. two decks each running 4x of a card you only own 4 copies of). `missing` is 0 when the
+ * combined requirement still fits what's owned, even though the card is nominally "shared."
+ */
+export function sharedCardBreakdown(decks: SavedDeck[], entries: CollectionEntry[], includeSideboard = true): SharedCardUsage[] {
+  const owned = new Map(entries.map((entry) => [cardKey(entry.cardName), entry.ownedQuantity]));
+  const usage = new Map<string, SharedCardUsage>();
+  for (const deck of decks) {
+    const sections = includeSideboard ? [deck.decklist.main, deck.decklist.material, deck.decklist.sideboard] : [deck.decklist.main, deck.decklist.material];
+    const deckQuantities = new Map<string, { card: string; quantity: number }>();
+    for (const line of sections.flat()) {
+      const key = cardKey(line.card);
+      const current = deckQuantities.get(key);
+      if (current) current.quantity += line.quantity;
+      else deckQuantities.set(key, { card: line.card, quantity: line.quantity });
+    }
+    for (const [key, { card, quantity }] of deckQuantities) {
+      let entry = usage.get(key);
+      if (!entry) { entry = { card, totalRequired: 0, owned: 0, missing: 0, decks: [] }; usage.set(key, entry); }
+      entry.totalRequired += quantity;
+      entry.decks.push({ deckId: deck.id, title: deck.title, quantity });
+    }
+  }
+  const shared = Array.from(usage.values()).filter((entry) => entry.decks.length >= 2);
+  for (const entry of shared) {
+    entry.owned = owned.get(cardKey(entry.card)) ?? 0;
+    entry.missing = Math.max(0, entry.totalRequired - entry.owned);
+    entry.decks.sort((a, b) => b.quantity - a.quantity || a.title.localeCompare(b.title));
+  }
+  return shared.sort((a, b) => b.missing - a.missing || b.totalRequired - a.totalRequired || a.card.localeCompare(b.card));
 }
 
 export function summarizeAtLeastChanges(lines: CollectionUpdateLine[], entries: CollectionEntry[]): { affectedCards: number; addedCopies: number; coveredCards: number } {

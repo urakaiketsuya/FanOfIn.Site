@@ -191,15 +191,19 @@ export async function saveDeck(env: Env, user: AuthUser, input: SaveInput): Prom
 }
 
 export async function listDecks(env: Env, user: AuthUser): Promise<SavedDeck[]> {
-  const decks = await env.ACCOUNT_DB.prepare("SELECT * FROM saved_decks WHERE user_id = ? ORDER BY updated_at DESC").bind(user.id).all<Record<string, string | null>>();
+  // Left join, not inner: `collection_tracked` lives on `user_decks`, and every `saved_decks` row
+  // should have one, but this must not silently drop a deck from the list if that ever drifts.
+  const decks = await env.ACCOUNT_DB.prepare(`SELECT sd.*, ud.collection_tracked FROM saved_decks sd
+    LEFT JOIN user_decks ud ON ud.id = sd.id WHERE sd.user_id = ? ORDER BY sd.updated_at DESC`).bind(user.id).all<Record<string, string | number | null>>();
   const output: SavedDeck[] = [];
   for (const row of decks.results) {
     const sources = await env.ACCOUNT_DB.prepare("SELECT * FROM saved_deck_sources WHERE saved_deck_id = ? ORDER BY imported_at DESC").bind(row.id).all<Record<string, string | null>>();
-    const base = JSON.parse(row.decklist_json!) as OmnidexDecklist;
+    const base = JSON.parse(row.decklist_json as string) as OmnidexDecklist;
     const newestSideboard = sources.results[0]?.sideboard_json ? JSON.parse(sources.results[0].sideboard_json) : [];
     output.push({
-      id: row.id!, identityHash: row.identity_hash!, title: row.title!, format: row.format as DeckFormat,
-      championName: row.champion_name, decklist: { ...base, sideboard: newestSideboard }, createdAt: row.created_at!, updatedAt: row.updated_at!,
+      id: row.id as string, identityHash: row.identity_hash as string, title: row.title as string, format: row.format as DeckFormat,
+      championName: row.champion_name as string | null, decklist: { ...base, sideboard: newestSideboard }, createdAt: row.created_at as string, updatedAt: row.updated_at as string,
+      collectionTracked: Boolean(row.collection_tracked),
       sources: sources.results.map((source) => ({ id: source.id!, provider: source.provider as "manual" | "omnidex" | "shoutatyourdecks",
         externalDeckId: source.external_deck_id!, sourceUrl: source.source_url, label: source.label!, metadata: JSON.parse(source.metadata_json!),
         sideboard: JSON.parse(source.sideboard_json!), importedAt: source.imported_at! })),
@@ -226,24 +230,28 @@ export async function renameDeck(env: Env, user: AuthUser, deckId: string, title
 
 export async function updateDeckMetadata(env: Env, user: AuthUser, deckId: string, value: unknown): Promise<boolean> {
   if (!value || typeof value !== "object") throw badRequest("Invalid deck metadata");
-  const input = value as { title?: unknown; description?: unknown; primerMarkdown?: unknown; tags?: unknown; maybeboard?: unknown };
+  const input = value as { title?: unknown; description?: unknown; primerMarkdown?: unknown; tags?: unknown; maybeboard?: unknown; collectionTracked?: unknown };
   if (input.title != null && (typeof input.title !== "string" || !input.title.trim() || input.title.length > 160)) throw badRequest("A valid title is required");
   if (typeof input.title === "string" && !validUserFacingName(input.title)) throw badRequest("Deck name contains blocked language", "blocked_language");
   if (input.description != null && (typeof input.description !== "string" || input.description.length > 2_000)) throw badRequest("Description is too long");
   if (input.primerMarkdown != null && (typeof input.primerMarkdown !== "string" || input.primerMarkdown.length > MAX_PRIMER_LENGTH)) throw badRequest("Primer is too long");
+  if (input.collectionTracked !== undefined && typeof input.collectionTracked !== "boolean") throw badRequest("Invalid collection tracking flag");
   const tags = input.tags === undefined ? null : normalizeDeckTags(input.tags);
   if (input.maybeboard !== undefined && !validMaybeboard(input.maybeboard)) throw badRequest("Invalid maybeboard");
-  if (input.title === undefined && input.description === undefined && input.primerMarkdown === undefined && tags === null && input.maybeboard === undefined) throw badRequest("No deck metadata was provided");
+  if (input.title === undefined && input.description === undefined && input.primerMarkdown === undefined && tags === null && input.maybeboard === undefined && input.collectionTracked === undefined) throw badRequest("No deck metadata was provided");
   const now = new Date().toISOString();
   const title = typeof input.title === "string" ? input.title.trim() : null;
   const description = typeof input.description === "string" ? input.description.trim() : null;
   const primerMarkdown = typeof input.primerMarkdown === "string" ? input.primerMarkdown.trim() : null;
   const tagsJson = tags ? JSON.stringify(tags) : null;
+  // Personal bookkeeping, not a decklist/description-style field — never mirrored to the published snapshot.
+  const collectionTracked = typeof input.collectionTracked === "boolean" ? (input.collectionTracked ? 1 : 0) : null;
   // Mirror every draft-field change onto the published snapshot too, but only for decks that are
   // already public/unlisted — private decks have nothing published to sync (see createDeckVersion
   // for the matching decklist-side fix).
   const result = await env.ACCOUNT_DB.prepare(`UPDATE user_decks SET title = COALESCE(?, title), description = COALESCE(?, description),
     primer_markdown = COALESCE(?, primer_markdown), tags_json = COALESCE(?, tags_json), maybeboard_json = COALESCE(?, maybeboard_json),
+    collection_tracked = COALESCE(?, collection_tracked),
     published_title = CASE WHEN visibility <> 'private' THEN COALESCE(?, published_title) ELSE published_title END,
     published_description = CASE WHEN visibility <> 'private' THEN COALESCE(?, published_description) ELSE published_description END,
     published_primer_markdown = CASE WHEN visibility <> 'private' THEN COALESCE(?, published_primer_markdown) ELSE published_primer_markdown END,
@@ -251,6 +259,7 @@ export async function updateDeckMetadata(env: Env, user: AuthUser, deckId: strin
     updated_at = ? WHERE id = ? AND owner_user_id = ?`)
     .bind(title, description, primerMarkdown, tagsJson,
       input.maybeboard === undefined ? null : JSON.stringify(canonicalMaybeboard(input.maybeboard)),
+      collectionTracked,
       title, description, primerMarkdown, tagsJson,
       now, deckId, user.id).run();
   if (result.meta.changes && title) {
@@ -330,6 +339,7 @@ export async function getDeck(env: Env, user: AuthUser, deckId: string): Promise
     currentVersionId: current.id, publishedVersionId: deck.published_version_id,
     maybeboard: JSON.parse(deck.maybeboard_json ?? "[]") as OmnidexDecklistCardLine[],
     format: deck.format as DeckFormat, championName: deck.champion_name, decklist: current.decklist,
+    collectionTracked: Boolean(deck.collection_tracked),
     versions, createdAt: deck.created_at!, updatedAt: deck.updated_at!,
     sources: sources.results.map((source) => ({ id: source.id!, provider: source.provider as "manual" | "omnidex" | "shoutatyourdecks",
       externalDeckId: source.external_deck_id!, sourceUrl: source.source_url, label: source.label!, metadata: JSON.parse(source.metadata_json!),
