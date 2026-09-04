@@ -9,9 +9,6 @@ import StaleDataNotice from "../../components/StaleDataNotice";
 import DecklistCoverageNotice from "../../components/DecklistCoverageNotice";
 import ElementIcon from "../../components/ElementIcon";
 import { computeDeckIdentity, computeDeckRating, type RatingPillar } from "../../lib/deckIdentity";
-import { buildTcgplayerMassEntryUrl } from "../../lib/tcgplayerMassEntry";
-import { buildClarentPlaytestUrl } from "../../lib/clarentPlaytest";
-import { deckBuilderDestinations } from "../../lib/deckBuilderDestinations";
 import { formatUsd } from "../../lib/format";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import NotificationBanner from "../../components/ui/NotificationBanner";
@@ -34,8 +31,7 @@ import { computeDependencyReadiness, computeSynergyReadiness } from "./synergyRe
 import { computeNewReleaseCards } from "./newReleaseCards";
 import { computeCardDecay } from "../../lib/cardDecay";
 import ElementRail from "../../components/ElementRail";
-import { accountApi, AccountApiError } from "../../lib/accountApi";
-import DeckCollectionTools from "../collection/DeckCollectionTools";
+import { accountApi } from "../../lib/accountApi";
 import { clearBuilderSession, loadBuilderSession, parseBuilderShareParams } from "./persistence/builderPersistence";
 import { selectionsToMaps, type ChangeLogEntry, type LockedSection, type PopulationSource } from "./model/builderTypes";
 import { buildToDecklist, calculateLinePrice, deriveArchetypeOptions, deriveReviewGroups } from "./engine/builderSelectors";
@@ -50,8 +46,8 @@ import BuddyCardsList from "./panels/BuilderBuddyPanel";
 import { CardRow, DiaoMetricBadges, SuggestionRow } from "./components/BuilderCardRows";
 import { useBuilderWorkflowState } from "./controller/useBuilderWorkflowState";
 import { useBuilderSessionPersistence } from "./controller/useBuilderSessionPersistence";
-import { saveBuilderDeck } from "./services/builderDeckService";
-import { copyBuilderDecklist, copyBuilderDecklistAndOpen, copyBuilderShareLink, exportBuilderTts } from "./services/builderExportService";
+import { useBuilderCopyState } from "./controller/useBuilderCopyState";
+import BuilderCopyPanel from "./panels/BuilderCopyPanel";
 
 type BuilderTab = "build" | "review" | "stats" | "tools" | "buddies" | "copy" | "log";
 const TAB_KEYS: BuilderTab[] = ["build", "review", "stats", "tools", "buddies", "copy", "log"];
@@ -977,21 +973,8 @@ export default function DeckBuilderIndex() {
     });
   }
   // Buying/exporting covers the whole deck including sideboard tech, same as DecklistView.tsx.
-  const massEntryUrl = useMemo(() => buildTcgplayerMassEntryUrl([...buildLines, ...sideboardLines]), [buildLines, sideboardLines]);
-  const clarentUrl = useMemo(() => buildClarentPlaytestUrl(decklist), [decklist]);
   const totalPrice = useMemo(() => calculateLinePrice(buildLines, priceByName), [buildLines, priceByName]);
   const sideboardPrice = useMemo(() => calculateLinePrice(sideboardLines, priceByName), [sideboardLines, priceByName]);
-  const [copyState, setCopyState] = useState<"idle" | "full-copied" | "kept-copied" | "full-failed" | "kept-failed">("idle");
-  const [shareCopyState, setShareCopyState] = useState<"idle" | "copied" | "failed">("idle");
-  const [saveTitle, setSaveTitle] = useState("");
-  const [saveNote, setSaveNote] = useState("");
-  const [saveKeptOnly, setSaveKeptOnly] = useState(false);
-  const [saveState, setSaveState] = useState<"idle" | "saving" | "saved" | "sign-in" | "failed">("idle");
-  const [savedDeckId, setSavedDeckId] = useState<string | null>(null);
-  const fullCopyCount = [...build.main, ...build.material, ...build.sideboard].reduce((sum, card) => sum + card.quantity, 0);
-  const keptCopyCount = [...build.main, ...build.material, ...build.sideboard]
-    .filter((card) => card.locked)
-    .reduce((sum, card) => sum + card.quantity, 0);
   const importedCardCount = Array.from(lockedCards.values()).reduce((sum, quantity) => sum + quantity, 0);
   const identityComplete = Boolean(championName && spiritFilter);
   const startingCardsComplete = isImproving ? importedCardCount > 0 : builderIntent === "seed" ? lockedCards.size > 0 : identityComplete;
@@ -1002,80 +985,10 @@ export default function DeckBuilderIndex() {
     if (destination) setTab(destination);
     requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" }));
   }
-  const deckToSave = saveKeptOnly ? keptDecklist : decklist;
-  const saveCopyCount = saveKeptOnly ? keptCopyCount : fullCopyCount;
-
-  /** "Kept only" copies just the viewer's own choices (`card.locked`), skipping every
-   * auto-suggested slot — for pasting a partial want-list rather than the full assembled deck. */
-  async function handleCopy(keptOnly: boolean) {
-    try {
-      await copyBuilderDecklist(keptOnly ? keptDecklist : decklist);
-      setCopyState(keptOnly ? "kept-copied" : "full-copied");
-    } catch {
-      setCopyState(keptOnly ? "kept-failed" : "full-failed");
-    }
-    setTimeout(() => setCopyState("idle"), 1500);
-  }
-
-  async function handleCopyAndOpen(url: string) {
-    try {
-      await copyBuilderDecklistAndOpen(decklist, url);
-      setCopyState("full-copied");
-    } catch {
-      setCopyState("full-failed");
-    }
-    setTimeout(() => setCopyState("idle"), 1500);
-  }
-
-  /** Shares the Champion/Spirit/archetype/locked-cards *input*, not a snapshot of the assembled output —
-   * opening the link re-runs the same suggestion logic, so it stays a live recipe rather than a
-   * stale copy that drifts from the site's own numbers as data regenerates. */
-  async function handleCopyShareLink() {
-    try {
-      await copyBuilderShareLink({
-        origin: window.location.origin,
-        championName,
-        spiritName: spiritFilter,
-        archetypeId,
-        format: deckFormat,
-        lockedCards,
-        lockedSections,
-      });
-      setShareCopyState("copied");
-    } catch {
-      setShareCopyState("failed");
-    }
-    setTimeout(() => setShareCopyState("idle"), 1500);
-  }
-
-  function handleExportTts() {
-    exportBuilderTts(decklist, cardsByName, championName);
-  }
-
-  useEffect(() => {
-    setSaveState("idle");
-    setSavedDeckId(null);
-  }, [decklist]);
-
-  async function handleSaveToMyDecks() {
-    if (!championName || saveCopyCount === 0) return;
-    setSaveState("saving");
-    try {
-      const result = await saveBuilderDeck({
-        improveDeckId,
-        title: saveTitle,
-        changeNote: saveNote,
-        format: deckFormat,
-        championName,
-        decklist: deckToSave,
-        maybeboard,
-      });
-      setSavedDeckId(result.id);
-      setSaveState("saved");
-    } catch (reason) {
-      setSaveState(reason instanceof AccountApiError && reason.status === 401 ? "sign-in" : "failed");
-    }
-  }
+  const copyPanel = useBuilderCopyState({
+    build, buildLines, sideboardLines, decklist, keptDecklist, cardsByName, championName, spiritFilter,
+    archetypeId, deckFormat, lockedCards, lockedSections, improveDeckId, maybeboard,
+  });
 
   return (
     <PageLayout>
@@ -1984,106 +1897,36 @@ export default function DeckBuilderIndex() {
           </TabPanel>
 
           {tab === "copy" && (
-            <div role="tabpanel" id="deck-builder-panel-copy" aria-labelledby="deck-builder-tab-copy" className="mt-4">
-              <section className={`mb-4 rounded-lg border p-4 ${validationComplete ? "border-ctp-green/50 bg-ctp-green/5" : "border-ctp-yellow/50 bg-ctp-yellow/5"}`} aria-labelledby="validate-and-save">
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div>
-                    <h2 id="validate-and-save" className="font-semibold text-ctp-text">Validate & save</h2>
-                    <p className={`mt-1 text-sm ${validationComplete ? "text-ctp-green" : "text-ctp-yellow"}`}>{validationComplete ? "Construction checks pass. This version is ready to save, export, or playtest." : `${validation.status}: ${validation.reasons[0] ?? "review the deck before saving."}`}</p>
-                  </div>
-                  {!reviewComplete && <button type="button" onClick={() => setTab("review")} className="rounded-md border border-ctp-yellow/60 px-3 py-1.5 text-xs font-medium text-ctp-yellow hover:bg-ctp-yellow/10">Review changes first</button>}
-                </div>
-                {validation.reasons.length > 1 && <ul className="mt-2 list-disc pl-5 text-xs text-ctp-subtext1">{validation.reasons.slice(1, 4).map((reason) => <li key={reason}>{reason}</li>)}</ul>}
-              </section>
-              <div className="mb-4 rounded-lg border border-ctp-blue/40 bg-ctp-blue/5 p-4">
-                <h3 className="font-semibold text-ctp-text">{improveDeckId ? "Save improved version" : "Save this build"}</h3>
-                <p className="mt-1 text-sm text-ctp-subtext1">{improveDeckId ? "Save the accepted changes as a new version. Your previous deck version remains available." : "Add the current Main, Material, and Sideboard to your private editable decks."}</p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {improveDeckId ? <input value={saveNote} onChange={(event) => setSaveNote(event.target.value)} maxLength={240} placeholder="What changed? (optional)" aria-label="Version change note" className="min-w-56 flex-1 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text" /> : <input value={saveTitle} onChange={(event) => setSaveTitle(event.target.value)} maxLength={160} placeholder={championName ? `${championName} guided build` : "Deck name"} aria-label="Saved deck name" className="min-w-56 flex-1 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text" />}
-                  <button type="button" disabled={!championName || saveCopyCount === 0 || saveState === "saving"} onClick={() => void handleSaveToMyDecks()} className="rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base disabled:cursor-not-allowed disabled:opacity-50">{saveState === "saving" ? "Saving…" : savedDeckId ? "Saved" : improveDeckId ? "Save new version" : "Save to My Decks"}</button>
-                </div>
-                <label className="mt-3 flex cursor-pointer items-center gap-2 text-xs text-ctp-subtext1"><input type="checkbox" checked={saveKeptOnly} onChange={(event) => setSaveKeptOnly(event.target.checked)} /> Save only kept cards ({keptCopyCount})</label>
-                {saveKeptOnly && <p className="mt-1 text-xs text-ctp-yellow">This saves your explicit choices only; it can be a partial decklist.</p>}
-                {saveState === "saved" && savedDeckId && <p className="mt-2 text-sm text-ctp-green">{improveDeckId ? "New version saved." : "Deck saved."} <Link to={`/my-decks/${savedDeckId}`} className="font-medium underline">Open deck →</Link></p>}
-                {saveState === "sign-in" && <p className="mt-2 text-sm text-ctp-yellow">Sign in from <Link to="/my-decks" className="font-medium underline">My Decks</Link>, then return to save this build. Your builder choices are kept in this browser.</p>}
-                {saveState === "failed" && <p className="mt-2 text-sm text-ctp-red">The deck could not be saved. Please try again.</p>}
-              </div>
-              <DeckCollectionTools decklist={decklist} cardsByName={catalogByName} source={`${championName ?? "Guided"} deck builder`} />
-              <div className="flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={() => handleCopy(false)}
-                  aria-live="polite"
-                  className={`rounded-md border px-2 py-1 text-xs ${
-                    copyState === "full-failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                  }`}
-                >
-                  {copyState === "full-copied" ? "Copied!" : copyState === "full-failed" ? "Couldn't copy" : `Copy full deck (${fullCopyCount})`}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleCopy(true)}
-                  disabled={keptCopyCount === 0}
-                  aria-live="polite"
-                  title={keptCopyCount === 0 ? "Keep at least one card to copy your choices" : "Copies your explicitly kept cards and skips auto-suggested slots"}
-                  className={`rounded-md border px-2 py-1 text-xs disabled:cursor-not-allowed disabled:opacity-40 ${
-                    copyState === "kept-failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 enabled:hover:text-ctp-text"
-                  }`}
-                >
-                  {copyState === "kept-copied" ? "Copied!" : copyState === "kept-failed" ? "Couldn't copy" : `Copy kept cards (${keptCopyCount})`}
-                </button>
-                {deckBuilderDestinations.map((destination) => (
-                  <button
-                    key={destination.id}
-                    type="button"
-                    disabled={fullCopyCount === 0}
-                    onClick={() => void handleCopyAndOpen(destination.url)}
-                    title={`Copies the full deck, then opens ${destination.label} so you can paste it into a new deck`}
-                    className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 enabled:hover:text-ctp-text disabled:cursor-not-allowed disabled:opacity-40"
-                  >
-                    Copy & open {destination.label} &rarr;
-                  </button>
-                ))}
-                <a
-                  href={massEntryUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-md border border-ctp-blue px-2 py-1 text-xs text-ctp-blue hover:bg-ctp-surface0"
-                >
-                  Buy on TCGplayer &rarr;
-                </a>
-                <a
-                  href={clarentUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  title="Opens this deck in Clarent's solo Goldfish playtest mode"
-                  className="rounded-md border border-ctp-green px-2 py-1 text-xs text-ctp-green hover:bg-ctp-surface0"
-                >
-                  Playtest in Clarent &rarr;
-                </a>
-              </div>
-              <div className="mt-2 flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={handleExportTts}
-                  title="Downloads a .json file — in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it"
-                  className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text"
-                >
-                  Export to TTS
-                </button>
-                <button
-                  type="button"
-                  onClick={handleCopyShareLink}
-                  aria-live="polite"
-                  title="Copies a link that reopens this Champion/Spirit and every user-choice card"
-                  className={`rounded-md border px-2 py-1 text-xs ${
-                    shareCopyState === "failed" ? "border-ctp-red text-ctp-red" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                  }`}
-                >
-                  {shareCopyState === "copied" ? "Copied!" : shareCopyState === "failed" ? "Couldn't copy" : "Copy share link"}
-                </button>
-              </div>
-            </div>
+            <BuilderCopyPanel
+              validation={validation}
+              validationComplete={validationComplete}
+              reviewComplete={reviewComplete}
+              onReviewFirst={() => setTab("review")}
+              improveDeckId={improveDeckId}
+              championName={championName}
+              saveNote={copyPanel.saveNote}
+              onSaveNoteChange={copyPanel.setSaveNote}
+              saveTitle={copyPanel.saveTitle}
+              onSaveTitleChange={copyPanel.setSaveTitle}
+              saveCopyCount={copyPanel.saveCopyCount}
+              saveState={copyPanel.saveState}
+              onSave={() => void copyPanel.handleSaveToMyDecks()}
+              savedDeckId={copyPanel.savedDeckId}
+              saveKeptOnly={copyPanel.saveKeptOnly}
+              onSaveKeptOnlyChange={copyPanel.setSaveKeptOnly}
+              keptCopyCount={copyPanel.keptCopyCount}
+              decklist={decklist}
+              catalogByName={catalogByName}
+              onCopy={(keptOnly) => void copyPanel.handleCopy(keptOnly)}
+              copyState={copyPanel.copyState}
+              fullCopyCount={copyPanel.fullCopyCount}
+              onCopyAndOpen={(url) => void copyPanel.handleCopyAndOpen(url)}
+              massEntryUrl={copyPanel.massEntryUrl}
+              clarentUrl={copyPanel.clarentUrl}
+              onExportTts={copyPanel.handleExportTts}
+              onCopyShareLink={() => void copyPanel.handleCopyShareLink()}
+              shareCopyState={copyPanel.shareCopyState}
+            />
           )}
 
           <TabPanel baseId="deck-builder" tab="log" active={tab}>
