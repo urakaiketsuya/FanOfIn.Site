@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { archetypeOverlapSeeds, buildPackageCandidateFamilies, computePackageCandidates, namedRulesTextSeeds, subtypeRulesTextSeeds, type PackageCandidateEvidence } from "./packageCandidates.js";
-import type { ArchetypeCluster } from "@gatcg/shared";
+import { namedRulesTextSeeds, subtypeRulesTextSeeds, type ArchetypeCluster, type PackageCandidateEvidence } from "@gatcg/shared";
+import { archetypeOverlapSeeds, buildPackageCandidateFamilies, computePackageCandidates } from "./packageCandidates.js";
 
 test("champion-stratified package scoring reports lift and counter-evidence", () => {
   const names = ["Engine", "Target", "Staple"];
@@ -12,11 +12,55 @@ test("champion-stratified package scoring reports lift and counter-evidence", ()
   }));
   const result = computePackageCandidates(entries, names, new Map(entries.map((e, i) => [e.deckId, i < 10 ? "A" : "B"])), [
     { anchorCard: "Engine", memberCards: ["Target"], evidenceKinds: ["Named rules-text link"] },
-  ], 4);
+  ], [{ tier: "strong", minMatches: 4 }]);
   assert.equal(result.candidates.length, 1);
   assert.equal(result.candidates[0].matchingDecks, 13);
   assert.equal(result.candidates[0].championCoverage, 2);
+  assert.equal(result.candidates[0].confidenceTier, "strong");
   assert.ok(result.candidates[0].confidenceScore > 0);
+});
+
+test("a seed below the strong threshold but above a looser tier is tagged with that tier instead of dropped", () => {
+  const names = ["Engine", "Target"];
+  const entries = Array.from({ length: 20 }, (_, i) => ({
+    deckId: `d${i}`,
+    main: [[0, 1], ...(i < 6 ? [[1, 1] as [number, number]] : [])] as [number, number][],
+    material: [], sideboard: [],
+  }));
+  const result = computePackageCandidates(entries, names, new Map(entries.map((e, i) => [e.deckId, "A"])), [
+    { anchorCard: "Engine", memberCards: ["Target"], evidenceKinds: ["Named rules-text link"] },
+  ]);
+  assert.equal(result.candidates.length, 1);
+  assert.equal(result.candidates[0].matchingDecks, 6);
+  assert.equal(result.candidates[0].confidenceTier, "limited");
+  assert.ok(result.candidates[0].cautions.some((c) => c.includes("Limited sample")));
+});
+
+test("a seed with exactly one matching deck clears only the exploratory tier", () => {
+  const names = ["Engine", "Target"];
+  const entries = Array.from({ length: 20 }, (_, i) => ({
+    deckId: `d${i}`,
+    main: [[0, 1], ...(i < 1 ? [[1, 1] as [number, number]] : [])] as [number, number][],
+    material: [], sideboard: [],
+  }));
+  const result = computePackageCandidates(entries, names, new Map(entries.map((e, i) => [e.deckId, "A"])), [
+    { anchorCard: "Engine", memberCards: ["Target"], evidenceKinds: ["Named rules-text link"] },
+  ]);
+  assert.equal(result.candidates.length, 1);
+  assert.equal(result.candidates[0].confidenceTier, "exploratory");
+});
+
+test("a seed with zero matching decks is dropped entirely, even with the cascade", () => {
+  const names = ["Engine", "Target"];
+  const entries = Array.from({ length: 20 }, (_, i) => ({
+    deckId: `d${i}`,
+    main: [[0, 1]] as [number, number][],
+    material: [], sideboard: [],
+  }));
+  const result = computePackageCandidates(entries, names, new Map(entries.map((e, i) => [e.deckId, "A"])), [
+    { anchorCard: "Engine", memberCards: ["Target"], evidenceKinds: ["Named rules-text link"] },
+  ]);
+  assert.equal(result.candidates.length, 0);
 });
 
 test("named rules text produces pair and multi-card seeds", () => {
@@ -69,7 +113,7 @@ test("overlapping candidates become a core-and-options family", () => {
   const evidence = (members: string[], score: number): PackageCandidateEvidence => ({
     anchorCard: "Engine", memberCards: members, evidenceKinds: ["BULLET rules-text link", "Multi-card cluster"],
     matchingDecks: 20, anchorDecks: 25, memberDecks: 30, populationDecks: 100, support: 0.2,
-    confidence: 0.8, lift: 2, championCoverage: 2, strongestChampions: [], confidenceScore: score, cautions: [],
+    confidence: 0.8, lift: 2, confidenceTier: "strong", championCoverage: 2, strongestChampions: [], confidenceScore: score, cautions: [],
   });
   const [family] = buildPackageCandidateFamilies([
     evidence(["Core", "Option A"], 90), evidence(["Core", "Option B"], 88), evidence(["Core", "Option C"], 70),

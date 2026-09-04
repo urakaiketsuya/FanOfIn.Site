@@ -7,10 +7,18 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { getDeckPackageCatalog } from "../deckbuilder/packageGuardrails";
 import { localPackageApprovalId, useLocalPackageApprovals } from "../deckbuilder/localPackageApprovals";
 import { DECK_PACKAGE_CANDIDATES } from "../deckbuilder/packageCandidates";
+import { PACKAGE_CONFIDENCE_TIER_LABELS, type ConfidenceTier } from "@gatcg/shared";
 import { useMinedPackageCandidates } from "../deckbuilder/useMinedPackageCandidates";
 import { useCardCatalog } from "./useCardCatalog";
 import PageLayout from "../../components/layout/PageLayout";
 import { InlineState } from "../../components/ui/ContentState";
+
+const TIER_BADGE_CLASS: Record<ConfidenceTier, string> = {
+  strong: "border-ctp-green/50 bg-ctp-green/10 text-ctp-green",
+  limited: "border-ctp-blue/50 bg-ctp-blue/10 text-ctp-blue",
+  exploratory: "border-ctp-subtext1/50 bg-ctp-surface0 text-ctp-subtext1",
+  textOnly: "border-dashed border-ctp-overlay1 text-ctp-overlay1",
+};
 
 export default function PackagesIndex() {
   useDocumentTitle("Card Packages", "Browse explicit card packages used by Fan of Insight deck-review guardrails.");
@@ -293,6 +301,9 @@ export default function PackagesIndex() {
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
                       <h3 className="text-lg font-semibold text-ctp-text">{entry.anchorCard} package</h3>
+                      <span className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${TIER_BADGE_CLASS[entry.confidenceTier]}`}>
+                        {PACKAGE_CONFIDENCE_TIER_LABELS[entry.confidenceTier]}
+                      </span>
                       {entry.evidenceKinds.map((kind) => <span key={kind} className="rounded-full bg-ctp-surface0 px-2 py-0.5 text-[10px] text-ctp-subtext1">{kind}</span>)}
                     </div>
                     <p className="mt-1 text-sm text-ctp-subtext1">{entry.anchorCard} with {entry.memberCards.join(", ")}</p>
@@ -312,8 +323,8 @@ export default function PackagesIndex() {
                 <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
                   {[
                     ["Matches", entry.matchingDecks.toLocaleString()],
-                    ["Given anchor", `${(entry.confidence * 100).toFixed(1)}%`],
-                    ["Lift", `${entry.lift.toFixed(1)}×`],
+                    ["Given anchor", entry.confidence === null ? "—" : `${(entry.confidence * 100).toFixed(1)}%`],
+                    ["Lift", entry.lift === null ? "—" : `${entry.lift.toFixed(1)}×`],
                     ["Cohorts", String(entry.championCoverage)],
                   ].map(([label, value]) => <div key={label} className="rounded-lg bg-ctp-base px-3 py-2"><p className="font-semibold text-ctp-text">{value}</p><p className="text-[10px] text-ctp-subtext0">{label}</p></div>)}
                 </div>

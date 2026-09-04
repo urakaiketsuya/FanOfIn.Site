@@ -1,54 +1,19 @@
-import { decodeCardLines, type ArchetypeCluster, type DeckCardIndexEntry } from "@gatcg/shared";
+import {
+  decodeCardLines,
+  scoreTieredPackageConfidence,
+  DEFAULT_PACKAGE_CONFIDENCE_TIERS,
+  PACKAGE_CONFIDENCE_TIER_LABELS,
+  type ArchetypeCluster,
+  type ArchetypePackageSource,
+  type ConfidenceTierThreshold,
+  type DeckCardIndexEntry,
+  type PackageCandidateEvidence,
+  type PackageCandidateFamily,
+  type PackageCandidateSeed,
+  type PackageCandidatesData,
+} from "@gatcg/shared";
 
-export interface ArchetypePackageSource {
-  buildId: string;
-  buildName: string;
-  prevalence: number;
-  sectionPattern: "Main → Main" | "Main → Material" | "Material → Material";
-}
-
-export interface PackageCandidateEvidence {
-  anchorCard: string;
-  memberCards: string[];
-  matchingDecks: number;
-  anchorDecks: number;
-  memberDecks: number;
-  populationDecks: number;
-  support: number;
-  confidence: number;
-  lift: number;
-  championCoverage: number;
-  strongestChampions: { championName: string; matchingDecks: number; confidence: number; lift: number }[];
-  evidenceKinds: string[];
-  archetypeSources?: ArchetypePackageSource[];
-  confidenceScore: number;
-  cautions: string[];
-}
-
-export interface PackageCandidatesData {
-  generatedAt: string;
-  candidates: PackageCandidateEvidence[];
-  families: PackageCandidateFamily[];
-}
-
-export interface PackageCandidateFamily {
-  anchorCard: string;
-  coreCards: string[];
-  optionCards: string[];
-  minOptions: number;
-  evidenceKinds: string[];
-  candidateCount: number;
-  confidenceScore: number;
-  matchingDecks: number;
-}
-
-export interface PackageCandidateSeed {
-  anchorCard: string;
-  memberCards: string[];
-  evidenceKinds: string[];
-  anchorIsChampion?: boolean;
-  archetypeSources?: ArchetypePackageSource[];
-}
+export type { ArchetypePackageSource, PackageCandidateEvidence, PackageCandidateFamily, PackageCandidateSeed, PackageCandidatesData };
 
 interface DeckPresence {
   championName: string;
@@ -128,7 +93,7 @@ export function computePackageCandidates(
   cardNames: string[],
   championByDeckId: ReadonlyMap<string, string>,
   seeds: PackageCandidateSeed[],
-  minMatches = 12,
+  tiers: ConfidenceTierThreshold[] = DEFAULT_PACKAGE_CONFIDENCE_TIERS,
 ): PackageCandidatesData {
   const decks: DeckPresence[] = entries.flatMap((entry) => {
     const championName = championByDeckId.get(entry.deckId);
@@ -149,6 +114,10 @@ export function computePackageCandidates(
     }
   });
 
+  // Same shape as the pre-cascade `Math.max(3, Math.floor(minMatches / 3))` floor, now derived
+  // from the strictest tier (tiers are supplied strictest-first) instead of a single minMatches.
+  const championCohortFloor = Math.max(3, Math.floor((tiers[0]?.minMatches ?? 12) / 3));
+
   const candidates = seeds.flatMap((seed): PackageCandidateEvidence[] => {
     const anchorIndexes = deckIndexesByCard.get(seed.anchorCard) ?? [];
     const smallestMemberIndexes = seed.memberCards
@@ -156,18 +125,17 @@ export function computePackageCandidates(
       .sort((a, b) => a.length - b.length)[0] ?? [];
     const memberIndexes = smallestMemberIndexes.filter((index) => seed.memberCards.every((card) => decks[index].cards.has(card)));
     const matchingIndexes = anchorIndexes.filter((index) => seed.memberCards.every((card) => decks[index].cards.has(card)));
-    if (matchingIndexes.length < minMatches || anchorIndexes.length === 0 || memberIndexes.length === 0) return [];
-
-    const confidence = ratio(matchingIndexes.length, anchorIndexes.length);
+    const scored = scoreTieredPackageConfidence(matchingIndexes.length, anchorIndexes.length, memberIndexes.length, decks.length, tiers);
+    if (!scored) return [];
+    const { confidence, lift, tier: confidenceTier } = scored;
     const baseline = ratio(memberIndexes.length, decks.length);
-    const lift = baseline > 0 ? confidence / baseline : 0;
     const champions = [...new Set(anchorIndexes.map((index) => decks[index].championName))];
     const strongestChampions = champions.flatMap((championName) => {
       const populationCount = populationByChampion.get(championName) ?? 0;
       const anchorCount = anchorIndexes.reduce((count, index) => count + Number(decks[index].championName === championName), 0);
       const memberCount = memberIndexes.reduce((count, index) => count + Number(decks[index].championName === championName), 0);
       const matchCount = matchingIndexes.reduce((count, index) => count + Number(decks[index].championName === championName), 0);
-      if (matchCount < Math.max(3, Math.floor(minMatches / 3))) return [];
+      if (matchCount < championCohortFloor) return [];
       const cohortConfidence = ratio(matchCount, anchorCount);
       const cohortBaseline = ratio(memberCount, populationCount);
       return [{ championName, matchingDecks: matchCount, confidence: cohortConfidence, lift: cohortBaseline > 0 ? cohortConfidence / cohortBaseline : 0 }];
@@ -177,6 +145,7 @@ export function computePackageCandidates(
     if (confidence < 0.5) cautions.push("Members often appear without the complete package");
     if (strongestChampions.length < 2) cautions.push("Evidence is concentrated in one champion cohort");
     if (baseline > 0.2) cautions.push("Members are common enough that staple correlation is possible");
+    if (confidenceTier !== "strong") cautions.push(`Cleared only the ${PACKAGE_CONFIDENCE_TIER_LABELS[confidenceTier]} threshold (${matchingIndexes.length} matching decks)`);
     const championCoverage = strongestChampions.length;
     const sampleFactor = Math.min(1, Math.log10(matchingIndexes.length + 1) / 2);
     const championPairPenalty = seed.anchorIsChampion && seed.memberCards.length === 1 ? 15 : 0;
@@ -192,6 +161,7 @@ export function computePackageCandidates(
       support: ratio(matchingIndexes.length, decks.length),
       confidence,
       lift,
+      confidenceTier,
       championCoverage,
       strongestChampions,
       confidenceScore: Math.round(score),
@@ -280,68 +250,4 @@ export function buildPackageCandidateFamilies(candidates: PackageCandidateEviden
     }
   }
   return families.sort((a, b) => b.confidenceScore - a.confidenceScore || b.optionCards.length - a.optionCards.length).slice(0, 40);
-}
-
-/** Builds pair and multi-member seeds from explicit card-name mentions in rules text. */
-export function namedRulesTextSeeds(cards: { name: string; types?: string[]; effect?: string | null; ruleText?: string | null }[]): PackageCandidateSeed[] {
-  const names = cards.map((card) => card.name).sort((a, b) => b.length - a.length);
-  const grouped = new Map<string, Set<string>>();
-  for (const card of cards) {
-    const text = `${card.effect ?? ""} ${card.ruleText ?? ""}`.toLowerCase();
-    if (!text) continue;
-    for (const name of names) {
-      if (name === card.name || name.length < 7) continue;
-      if (text.includes(name.toLowerCase())) {
-        const members = grouped.get(card.name) ?? new Set<string>();
-        members.add(name);
-        grouped.set(card.name, members);
-      }
-    }
-  }
-  return [...grouped].flatMap(([anchorCard, members]) => {
-    const memberCards = [...members];
-    const anchorIsChampion = cards.find((card) => card.name === anchorCard)?.types?.includes("CHAMPION") ?? false;
-    const pairSeeds = memberCards.map((member) => ({ anchorCard, memberCards: [member], evidenceKinds: ["Named rules-text link"], anchorIsChampion }));
-    return memberCards.length > 1
-      ? [...pairSeeds, { anchorCard, memberCards, evidenceKinds: ["Named rules-text link", "Multi-card cluster"], anchorIsChampion }]
-      : pairSeeds;
-  });
-}
-
-const MECHANICAL_SUBTYPE_RE = /\b(materialize|sacrifice|control|banish|discard|reveal|summon|return)\b/i;
-
-/**
- * Nominates small subtype toolboxes from rules text (for example an effect that materializes a
- * Bullet). Pairwise seeds preserve sparse packages; two-member combinations let the audit find
- * interchangeable/toolbox construction patterns instead of returning only anchor→card pairs.
- */
-export function subtypeRulesTextSeeds(cards: { name: string; types?: string[]; subtypes?: string[]; effect?: string | null }[]): PackageCandidateSeed[] {
-  const membersBySubtype = new Map<string, string[]>();
-  for (const card of cards) {
-    for (const subtype of card.subtypes ?? []) {
-      const members = membersBySubtype.get(subtype) ?? [];
-      members.push(card.name);
-      membersBySubtype.set(subtype, members);
-    }
-  }
-
-  const seeds: PackageCandidateSeed[] = [];
-  for (const anchor of cards) {
-    const effect = anchor.effect ?? "";
-    if (!MECHANICAL_SUBTYPE_RE.test(effect)) continue;
-    for (const [subtype, rawMembers] of membersBySubtype) {
-      if (!new RegExp(`\\b${subtype.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}s?\\b`, "i").test(effect)) continue;
-      const members = rawMembers.filter((name) => name !== anchor.name);
-      // Very broad categories are archetype identity, not a reviewable construction package.
-      if (members.length < 2 || members.length > 12) continue;
-      const anchorIsChampion = anchor.types?.includes("CHAMPION") ?? false;
-      for (const member of members) seeds.push({ anchorCard: anchor.name, memberCards: [member], evidenceKinds: [`${subtype} rules-text link`], anchorIsChampion });
-      for (let i = 0; i < members.length; i++) {
-        for (let j = i + 1; j < members.length; j++) {
-          seeds.push({ anchorCard: anchor.name, memberCards: [members[i], members[j]], evidenceKinds: [`${subtype} rules-text link`, "Multi-card cluster"], anchorIsChampion });
-        }
-      }
-    }
-  }
-  return seeds;
 }

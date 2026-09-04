@@ -1,8 +1,8 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import type { ArchetypeTaxonomyData, DeckCardIndexData, DeckPopularityIndexData } from "@gatcg/shared";
-import { archetypeOverlapSeeds, computePackageCandidates, namedRulesTextSeeds, subtypeRulesTextSeeds } from "./packageCandidates.js";
+import { namedRulesTextSeeds, subtypeRulesTextSeeds, type ArchetypeTaxonomyData, type DeckCardIndexData, type DeckPopularityIndexData } from "@gatcg/shared";
+import { archetypeOverlapSeeds, computePackageCandidates } from "./packageCandidates.js";
 import { writeManifest } from "../manifest.js";
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../..");

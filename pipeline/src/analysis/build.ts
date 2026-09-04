@@ -23,7 +23,8 @@ import { computeCardImpact } from "./cardImpact.js";
 import { computeMatchupCardImpact } from "./matchupCardImpact.js";
 import { computeAchievements } from "./achievements.js";
 import { createAnalysisContext } from "./context.js";
-import { archetypeOverlapSeeds, computePackageCandidates, namedRulesTextSeeds, subtypeRulesTextSeeds } from "./packageCandidates.js";
+import { namedRulesTextSeeds, subtypeRulesTextSeeds } from "@gatcg/shared";
+import { archetypeOverlapSeeds, computePackageCandidates } from "./packageCandidates.js";
 
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/analysis");
 const PRICES_PATH = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/prices.json");

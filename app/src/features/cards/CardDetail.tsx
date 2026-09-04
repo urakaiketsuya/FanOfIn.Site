@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { priceKey, type PriceHistoryPoint, type TopCardsBySection } from "@gatcg/shared";
+import { priceKey, type PackageCandidateEvidence, type PriceHistoryPoint, type TopCardsBySection } from "@gatcg/shared";
 import { gatcgApi } from "../../lib/api/client";
 import CardImage from "../../components/CardImage";
 import ElementIcon from "../../components/ElementIcon";
@@ -25,7 +25,7 @@ import { earliestReleaseDate, statDiff } from "../../lib/cardSimilarity";
 import { useIntentCards } from "./useIntentCards";
 import type { IntentMatch } from "../../lib/cardIntent";
 import { getCardPackageMembership } from "../deckbuilder/packageGuardrails";
-import { useMinedPackageCandidates, type MinedPackageCandidate } from "../deckbuilder/useMinedPackageCandidates";
+import { useMinedPackageCandidates } from "../deckbuilder/useMinedPackageCandidates";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CardComparisonTable from "../compare/CardComparisonTable";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -106,7 +106,7 @@ function Badge({ children, to }: { children: ReactNode; to?: string }) {
  * not just another guess. `evidence.archetypeSources` ties it to a specific concrete build when the
  * evidence came from archetype defining-card overlap, giving the match real archetype scope instead
  * of an unscoped "somewhere in the whole catalog" match. */
-function IntentMatchRow({ match, evidence }: { match: IntentMatch; evidence: MinedPackageCandidate | undefined }) {
+function IntentMatchRow({ match, evidence }: { match: IntentMatch; evidence: PackageCandidateEvidence | undefined }) {
   const archetype = evidence?.archetypeSources?.[0];
   return (
     <li className="flex flex-wrap items-center gap-1.5 text-sm">
@@ -129,7 +129,7 @@ function IntentMatchRow({ match, evidence }: { match: IntentMatch; evidence: Min
       {evidence && (
         <span
           className="rounded-full border border-ctp-green/50 bg-ctp-green/10 px-1.5 text-[10px] font-medium text-ctp-green"
-          title={`Also found together in ${evidence.matchingDecks} real tournament decks (${Math.round(evidence.confidence * 100)}% confidence)`}
+          title={`Also found together in ${evidence.matchingDecks} real tournament decks (${Math.round((evidence.confidence ?? 0) * 100)}% confidence)`}
         >
           {evidence.matchingDecks} decks
         </span>
@@ -271,7 +271,7 @@ export default function CardDetail() {
   // here — a multi-card family candidate doesn't confirm any one pair by itself.
   const minedPackages = useMinedPackageCandidates();
   const packageEvidenceByPair = useMemo(() => {
-    const map = new Map<string, MinedPackageCandidate>();
+    const map = new Map<string, PackageCandidateEvidence>();
     for (const candidate of minedPackages?.candidates ?? []) {
       if (candidate.memberCards.length !== 1) continue;
       const key = [candidate.anchorCard, candidate.memberCards[0]].sort().join("\u0000");
@@ -280,7 +280,7 @@ export default function CardDetail() {
     }
     return map;
   }, [minedPackages]);
-  const intentPackageEvidence = (otherCardName: string): MinedPackageCandidate | undefined =>
+  const intentPackageEvidence = (otherCardName: string): PackageCandidateEvidence | undefined =>
     card ? packageEvidenceByPair.get([card.name, otherCardName].sort().join("\u0000")) : undefined;
 
   const topDecks = useMemo(() => {

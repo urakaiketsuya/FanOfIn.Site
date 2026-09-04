@@ -559,6 +559,68 @@ Verified against real output: 302 of 1,247 published answers resolved at the pre
 963 needed the Champion-level fallback — confirming the fallback is the common case, not an edge
 case, exactly as the sample-size math above predicts.
 
+## Package candidates (`pipeline/src/analysis/packageCandidates.ts`, `shared/src/packageConfidence.ts`, `shared/src/packageSeeds.ts`, `app/src/lib/deckWinConditions.ts`)
+
+Nominates card-pair "packages" — construction relationships worth reviewing together — and scores
+them against real deck co-occurrence. Two different jobs consume the same nomination + scoring
+core: a site-wide curator review queue (`app/src/features/cards/PackagesIndex.tsx`, fed by
+`data/analysis/package-candidates.json`) and a live, per-deck "How this deck wins" panel
+(`DeckWinConditions.tsx` on `DeckDetail.tsx`) that runs the identical logic scoped to one
+decklist's own cards, with no new pipeline dataset.
+
+**Seed nomination** (`shared/src/packageSeeds.ts`, pure string/array scanning — no deck data
+needed, which is why it's shared rather than pipeline-only): `namedRulesTextSeeds` scans every
+card's `effect`/`ruleText` for an explicit mention of another card's name (candidate names under 7
+characters are skipped to avoid matching short common words); `subtypeRulesTextSeeds` looks for an
+effect matching `MECHANICAL_SUBTYPE_RE` (materialize/sacrifice/control/banish/discard/reveal/
+summon/return) alongside cards sharing a subtype it names (e.g. an effect that materializes a
+Bullet, paired with every card of subtype BULLET) — bounded to 2-12 members, since a broader
+category is archetype identity, not a reviewable package. `archetypeOverlapSeeds`
+(`pipeline/src/analysis/packageCandidates.ts`, stays pipeline-only — needs the full
+`ArchetypeCluster[]` taxonomy) nominates from named-cluster defining-card overlap: a pair must
+appear in two builds sharing a strategy family, or in one 200+-player build alone.
+
+**Scoring** (`computePackageCandidates`, champion-stratified, pipeline-only): for a seed, count
+decks containing the anchor card (`anchorDecks`), decks containing every member card
+(`memberDecks`), and decks containing both (`matchingDecks`). `confidence = matchingDecks /
+anchorDecks` ("given the anchor, how often does the rest of the package show up"), `lift =
+confidence / (memberDecks / populationDecks)` (how much more often than the members' own base
+rate). `confidenceScore` (0-100, used for filtering/sorting the review queue) blends
+`0.42×confidence + 0.28×log2(lift)-scaled + 0.18×sampleFactor + 0.12×championCoverage`, minus a
+15-point penalty for a champion-anchor pair with a single member (too narrow to review as
+construction evidence). `cautions` flags low confidence (<0.5 — "members often appear without the
+complete package"), single-cohort evidence, high-baseline members (staple correlation risk), and
+(since the tier cascade below) anything that only cleared a looser tier than `"strong"`.
+
+**Confidence tiering** (`shared/src/packageConfidence.ts`, `scoreTieredPackageConfidence`,
+shared): rather than one hard `minMatches` cutoff that silently drops everything below it, tries a
+cascade of tiers strictest-first and tags the result with whichever it clears —
+`DEFAULT_PACKAGE_CONFIDENCE_TIERS`: `strong` (≥12 matching decks — the original, sole cutoff before
+this cascade existed, so every previously-published candidate keeps this tier unchanged), `limited`
+(≥4 — same floor `computePackageCandidates` already used for whether to report a champion cohort at
+all), `exploratory` (≥1 — at least one real deck actually ran both). A seed below even the loosest
+tier (0 matches) still isn't returned — the cascade widens what counts as *evidence*, it doesn't
+manufacture evidence from nothing. A fourth tier, `"textOnly"`, is never produced by the pipeline
+scorer (a mined candidate is already a real cross-deck co-occurrence, or it's dropped) — it's
+reserved for the client-side detector below, whose per-deck population is exactly one decklist and
+can be genuinely, correctly 0.
+
+**Per-deck live detection** (`computeDeckWinConditions` in `app/src/lib/deckWinConditions.ts`):
+runs `namedRulesTextSeeds`/`subtypeRulesTextSeeds` scoped to just the viewed deck's own ~20-30
+unique cards (cheap enough to do live — the pipeline-scale run is the same functions over the full
+~20k+ card catalog in a build script), then scores each surviving seed with
+`scoreTieredPackageConfidence` against the live client-side presence index
+(`useDeckCardPresenceIndex` — `Map<cardName, Set<deckIndex>>` over the published ~57k-deck
+`deck-card-index.json`) instead of the pipeline's champion-stratified population. A pair with zero
+real co-occurrence — or before the presence index has finished loading — becomes a `"textOnly"`
+entry (`confidence`/`lift`: `null`) rather than being dropped: this is the one path in the whole
+site built specifically for a deck no cluster and no Card Impact data can say anything about (see
+the Card Impact section above — only ~128 named clusters exist against ~57k decks). `"textOnly"`
+must never render next to a numeric win-rate figure without being visibly distinguished (own badge
+color, own section, never merged into `CardImpactTable`) — it carries no game-outcome evidence at
+all, only a rules-text pattern match, which is categorically weaker than everything else this
+section sits beside.
+
 ## Guided Deck Builder (`app/src/features/deckbuilder/useDeckBuilderPopulation.ts`, `useSuggestedBuild.ts`)
 
 Assembles a suggested build for a Champion (+ optional Spirit filter) from real decks — not one

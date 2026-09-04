@@ -704,6 +704,71 @@ export interface ArchetypeTaxonomyValidationData {
 }
 
 // ---------------------------------------------------------------------------
+// Package candidates — rules-text-nominated card relationships, scored against
+// real deck co-occurrence (pipeline/src/analysis/packageCandidates.ts,
+// shared/src/packageConfidence.ts, shared/src/packageSeeds.ts)
+// ---------------------------------------------------------------------------
+
+export interface ArchetypePackageSource {
+  buildId: string;
+  buildName: string;
+  prevalence: number;
+  sectionPattern: "Main → Main" | "Main → Material" | "Material → Material";
+}
+
+export interface PackageCandidateSeed {
+  anchorCard: string;
+  memberCards: string[];
+  evidenceKinds: string[];
+  anchorIsChampion?: boolean;
+  archetypeSources?: ArchetypePackageSource[];
+}
+
+export type ConfidenceTier = "strong" | "limited" | "exploratory" | "textOnly";
+
+/** Common shape for a scored anchor/member relationship, shared between the pipeline's
+ * site-wide mining (`PackageCandidateEvidence`) and the client's per-deck live detector. */
+export interface TieredPackageMatch {
+  anchorCard: string;
+  memberCards: string[];
+  evidenceKinds: string[];
+  confidenceTier: ConfidenceTier;
+  /** Null only when `confidenceTier` is `"textOnly"` — no confirming deck exists (or presence data hasn't loaded yet). */
+  confidence: number | null;
+  lift: number | null;
+  matchingDecks: number;
+  populationDecks: number;
+}
+
+export interface PackageCandidateEvidence extends TieredPackageMatch {
+  anchorDecks: number;
+  memberDecks: number;
+  support: number;
+  championCoverage: number;
+  strongestChampions: { championName: string; matchingDecks: number; confidence: number; lift: number }[];
+  archetypeSources?: ArchetypePackageSource[];
+  confidenceScore: number;
+  cautions: string[];
+}
+
+export interface PackageCandidateFamily {
+  anchorCard: string;
+  coreCards: string[];
+  optionCards: string[];
+  minOptions: number;
+  evidenceKinds: string[];
+  candidateCount: number;
+  confidenceScore: number;
+  matchingDecks: number;
+}
+
+export interface PackageCandidatesData {
+  generatedAt: string;
+  candidates: PackageCandidateEvidence[];
+  families: PackageCandidateFamily[];
+}
+
+// ---------------------------------------------------------------------------
 // Card Impact — general and matchup-scoped
 // (pipeline/src/analysis/cardImpact.ts, matchupCardImpact.ts)
 // ---------------------------------------------------------------------------

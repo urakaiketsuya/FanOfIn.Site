@@ -19,3 +19,5 @@ export * from "./collection-types.js";
 export * from "./community-types.js";
 export * from "./diao.js";
 export * from "./broadcast-timeline-types.js";
+export * from "./packageConfidence.js";
+export * from "./packageSeeds.js";

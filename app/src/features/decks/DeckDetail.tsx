@@ -11,6 +11,8 @@ import { useChampionCardImpact } from "./useChampionCardImpact";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useCardCatalog } from "../cards/useCardCatalog";
+import { useDeckWinConditions } from "./useDeckWinConditions";
+import DeckWinConditions from "./DeckWinConditions";
 import DeckDecaySignals from "../events/DeckDecaySignals";
 import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
 import CardImpactTable from "../../components/CardImpactTable";
@@ -122,6 +124,7 @@ export default function DeckDetail() {
   );
   const allNames = useMemo(() => [...(deck?.main ?? []), ...(deck?.material ?? [])].map((l) => l.name), [deck]);
   const cardsByName = useCardsByNames(allNames);
+  const { interactions: winConditions } = useDeckWinConditions(allNames, cardsByName);
   const displayPrefs = useDecklistDisplayPrefs();
 
   // Precise, cluster-scoped "Cards that might help" (Phase 21) only covers the ~128 named-build
@@ -428,6 +431,20 @@ export default function DeckDetail() {
           {displayPrefs.metaGaps && <DeckDecaySignals decklist={decklist} cardsByName={cardsByName} />}
           <DeckCollectionTools decklist={decklist} cardsByName={cardsByName} source={`Tournament build: ${deck.championName ?? "Unknown Champion"}`} />
         </div>
+      )}
+
+      {tab === "decklist" && winConditions.length > 0 && (
+        <Panel padding="sm" className="mt-6">
+          <Section
+            heading="dense"
+            collapsible
+            defaultOpen={false}
+            title="How this deck wins"
+            description="Card interactions detected from rules text and, where a real deck confirms them, cross-deck co-occurrence — not a win-rate claim, and not exclusive with the sections below."
+          >
+            <DeckWinConditions interactions={winConditions} cardsByName={cardsByName} />
+          </Section>
+        </Panel>
       )}
 
       {tab === "decklist" && !hasClusterMatch && (
