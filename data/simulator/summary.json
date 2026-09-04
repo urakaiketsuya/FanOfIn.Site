@@ -1,22 +1,30 @@
 {
   "schemaVersion": 1,
   "source": "GrandArchiveSim",
-  "generatedAt": "2026-09-03T10:42:12.410Z",
-  "games": 8,
+  "generatedAt": "2026-09-04T10:39:49.274Z",
+  "games": 10,
   "firstPlayer": {
-    "games": 8,
+    "games": 10,
     "wins": 3,
-    "winRate": 0.375
+    "winRate": 0.3
   },
-  "avgTurns": 3.125,
+  "avgTurns": 3.3,
   "champions": [
     {
       "championId": "tafqldAGRF",
       "championName": "Spirit of Water",
       "element": "WATER",
-      "games": 3,
+      "games": 4,
       "wins": 1,
-      "winRate": 0.3333333333333333
+      "winRate": 0.25
+    },
+    {
+      "championId": "00xbh8oc00",
+      "championName": "Diao Chan, Enchantress",
+      "element": "NORM",
+      "games": 2,
+      "wins": 2,
+      "winRate": 1
     },
     {
       "championId": "DpHDGaX2Pn",
@@ -27,17 +35,17 @@
       "winRate": 0.5
     },
     {
-      "championId": "00xbh8oc00",
-      "championName": "Diao Chan, Enchantress",
-      "element": "NORM",
-      "games": 1,
-      "wins": 1,
-      "winRate": 1
-    },
-    {
       "championId": "1trn0yetae",
       "championName": "Fragmented Spirit of Wind",
       "element": "WIND",
+      "games": 1,
+      "wins": 0,
+      "winRate": 0
+    },
+    {
+      "championId": "2TCyILvBYa",
+      "championName": null,
+      "element": "CRUX",
       "games": 1,
       "wins": 0,
       "winRate": 0
@@ -49,6 +57,14 @@
       "games": 1,
       "wins": 0,
       "winRate": 0
+    },
+    {
+      "championId": "6R8XmWoKLn",
+      "championName": null,
+      "element": "NORM",
+      "games": 1,
+      "wins": 1,
+      "winRate": 1
     },
     {
       "championId": "GiQxfpKTUC",
@@ -126,6 +142,15 @@
       "champion2Wins": 1
     },
     {
+      "champion1": "2TCyILvBYa",
+      "champion1Name": null,
+      "champion2": "00xbh8oc00",
+      "champion2Name": null,
+      "games": 1,
+      "champion1Wins": 0,
+      "champion2Wins": 1
+    },
+    {
       "champion1": "4FtNBFaOJp",
       "champion1Name": null,
       "champion2": "DpHDGaX2Pn",
@@ -164,6 +189,15 @@
     {
       "champion1": "tafqldAGRF",
       "champion1Name": null,
+      "champion2": "6R8XmWoKLn",
+      "champion2Name": null,
+      "games": 1,
+      "champion1Wins": 0,
+      "champion2Wins": 1
+    },
+    {
+      "champion1": "tafqldAGRF",
+      "champion1Name": null,
       "champion2": "tafqldAGRF",
       "champion2Name": null,
       "games": 1,
@@ -189,16 +223,31 @@
       "champion2Wins": 0
     }
   ],
-  "cardStats": [],
+  "cardStats": [
+    {
+      "cardId": "cpvn96659y",
+      "games": 6,
+      "avgDrawn": 1.25,
+      "avgDrawnToMemory": 0,
+      "avgMaterialized": 0,
+      "avgReserved": 0.875,
+      "avgDiscarded": 0,
+      "avgActivated": 0,
+      "winRate": 0.8333333333333334,
+      "attackEvents": 0,
+      "avgDamageDealt": 0,
+      "lethalHits": 0
+    }
+  ],
   "weapons": [],
   "turnStats": [
     {
       "turn": 1,
-      "games": 7,
-      "avgCardsPlayed": 1.2142857142857142,
+      "games": 9,
+      "avgCardsPlayed": 1.2777777777777777,
       "avgMemorySpent": 0,
-      "avgReserveSpent": 2.2857142857142856,
-      "avgDamageDealt": 0.5714285714285714,
+      "avgReserveSpent": 2.611111111111111,
+      "avgDamageDealt": 0.4444444444444444,
       "avgDamageTaken": 0,
       "avgHealed": 0,
       "avgLevel": 0,
@@ -206,15 +255,27 @@
     },
     {
       "turn": 2,
-      "games": 7,
-      "avgCardsPlayed": 1.5454545454545454,
-      "avgMemorySpent": 0.5454545454545454,
-      "avgReserveSpent": 2.272727272727273,
-      "avgDamageDealt": 1.6363636363636365,
-      "avgDamageTaken": 1.7272727272727273,
+      "games": 9,
+      "avgCardsPlayed": 1.4666666666666666,
+      "avgMemorySpent": 0.4,
+      "avgReserveSpent": 2.2666666666666666,
+      "avgDamageDealt": 1.2,
+      "avgDamageTaken": 1.2666666666666666,
       "avgHealed": 0,
-      "avgLevel": 0.5454545454545454,
-      "avgHp": 17.272727272727273
+      "avgLevel": 0.4666666666666667,
+      "avgHp": 16.933333333333334
+    },
+    {
+      "turn": 3,
+      "games": 5,
+      "avgCardsPlayed": 1.6363636363636365,
+      "avgMemorySpent": 0.18181818181818182,
+      "avgReserveSpent": 3.8181818181818183,
+      "avgDamageDealt": 1.0909090909090908,
+      "avgDamageTaken": 1.4545454545454546,
+      "avgHealed": 0.09090909090909091,
+      "avgLevel": 1.1818181818181819,
+      "avgHp": 19.727272727272727
     }
   ]
 }
