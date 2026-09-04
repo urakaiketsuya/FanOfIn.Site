@@ -4,6 +4,7 @@ import CardHoverPreview from "../../../components/CardHoverPreview";
 import CardImpactTable from "../../../components/CardImpactTable";
 import { formatUsd } from "../../../lib/format";
 import { CardRow, DiaoMetricBadges, SuggestionRow } from "../components/BuilderCardRows";
+import { BuilderSuggestionGrid } from "../components/BuilderCardGrid";
 import type { ReviewGroups } from "../engine/builderSelectors";
 import type { SuggestedBuild, SuggestedCard } from "../useSuggestedBuild";
 import type { NearestDeck } from "../useNearestDecks";
@@ -11,6 +12,7 @@ import type { BuildCounters } from "../useBuildCounters";
 import type { SimulatorCardEvidence } from "../useSimulatorSuggestedBuild";
 import type { CardFieldVisibility } from "../useCardFieldVisibility";
 import type { PopulationSource } from "../model/builderTypes";
+import type { BuilderViewMode } from "../useBuilderViewMode";
 
 export default function BuilderReviewPanel({
   build, effectivePopulationSource, simulatorMatchedCards, simulatorEvidenceByName, lockedCards,
@@ -19,6 +21,7 @@ export default function BuilderReviewPanel({
   communityInclusionByName, onApplySwap, onDismissReview, onAddSuggestion, onRemoveCard,
   showNearestDecks, nearestDecks, nearestDeckCompareLink, onLoadNearestDeck, onBackToBuild,
   onContinueToValidation, reviewComplete, buildCounters, hurtYouCards, hurtYouCardImages,
+  viewMode, onViewModeChange,
 }: {
   build: SuggestedBuild;
   effectivePopulationSource: PopulationSource;
@@ -52,6 +55,8 @@ export default function BuilderReviewPanel({
   buildCounters: BuildCounters;
   hurtYouCards: CardImpactEntry[];
   hurtYouCardImages: Map<string, Card>;
+  viewMode: BuilderViewMode;
+  onViewModeChange: (mode: BuilderViewMode) => void;
 }) {
   const simulatorMode = effectivePopulationSource === "simulator";
   return (
@@ -202,23 +207,53 @@ export default function BuilderReviewPanel({
           <div className="mt-5 grid gap-5 sm:grid-cols-2">
             {reviewGroups.unpairedSuggestions.length > 0 && (
               <section>
-                <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Suggested additions</h3>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Suggested additions</h3>
+                  <div className="flex gap-1" role="group" aria-label="Suggested additions display">
+                    {(["list", "grid"] as const).map((mode) => (
+                      <button
+                        key={mode}
+                        type="button"
+                        onClick={() => onViewModeChange(mode)}
+                        aria-pressed={viewMode === mode}
+                        className={`rounded-md border px-2 py-1 text-xs capitalize ${
+                          viewMode === mode ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                        }`}
+                      >
+                        {mode}
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <p className="mt-1 text-xs text-ctp-subtext0">Adding one keeps it as your choice and may grow the deck beyond its usual size.</p>
-                <ul className="mt-2 space-y-1.5">
-                  {reviewGroups.unpairedSuggestions.map((card) => (
-                    <SuggestionRow
-                      key={card.cardName}
-                      card={card}
-                      cardsByName={cardsByName}
-                      priceByName={priceByName}
-                      communityInclusion={communityInclusionByName}
-                      simulatorEvidence={simulatorMode ? simulatorEvidenceByName.get(card.cardName) : undefined}
-                      visibleFields={visibleFields}
-                      onAdd={() => onAddSuggestion(card)}
-                      onDismiss={() => onDismissReview(card.cardName)}
-                    />
-                  ))}
-                </ul>
+                {viewMode === "grid" ? (
+                  <BuilderSuggestionGrid
+                    cards={reviewGroups.unpairedSuggestions}
+                    cardsByName={cardsByName}
+                    priceByName={priceByName}
+                    communityInclusion={communityInclusionByName}
+                    simulatorEvidenceByName={simulatorMode ? simulatorEvidenceByName : undefined}
+                    visibleFields={visibleFields}
+                    onAdd={onAddSuggestion}
+                    onDismiss={(cardName) => onDismissReview(cardName)}
+                  />
+                ) : (
+                  <ul className="mt-2 space-y-1.5">
+                    {reviewGroups.unpairedSuggestions.map((card) => (
+                      <SuggestionRow
+                        key={card.cardName}
+                        card={card}
+                        cardsByName={cardsByName}
+                        priceByName={priceByName}
+                        communityInclusion={communityInclusionByName}
+                        simulatorEvidence={simulatorMode ? simulatorEvidenceByName.get(card.cardName) : undefined}
+                        visibleFields={visibleFields}
+                        onAdd={() => onAddSuggestion(card)}
+                        onDismiss={() => onDismissReview(card.cardName)}
+                      />
+                    ))}
+                  </ul>
+                )}
               </section>
             )}
             {reviewGroups.unpairedRemovals.length > 0 && (

@@ -9,10 +9,11 @@ import type { SuggestedCard } from "../useSuggestedBuild";
 import type { SimulatorCardEvidence } from "../useSimulatorSuggestedBuild";
 import type { CardFieldVisibility } from "../useCardFieldVisibility";
 import type { PriceTrendEntry } from "../../pricing/usePriceTrendByName";
+import { DiaoMetricBadges } from "./BuilderCardRows";
 
 type BuilderSection = "main" | "material" | "sideboard";
 
-function CardTile({
+export function CardTile({
   card,
   cardInfo,
   unitPrice,
@@ -27,6 +28,8 @@ function CardTile({
   onToggleLock,
   onChangeQuantity,
   onRemove,
+  onAdd,
+  onDismiss,
 }: {
   card: SuggestedCard;
   cardInfo: Card | undefined;
@@ -40,9 +43,13 @@ function CardTile({
   visibleFields: CardFieldVisibility;
   communityMode: boolean;
   needsReview: boolean;
-  onToggleLock: () => void;
+  /** Placed-card footer (Keep/Remove) — mutually exclusive with `onAdd`/`onDismiss` below. */
+  onToggleLock?: () => void;
   onChangeQuantity?: (quantity: number) => void;
-  onRemove: () => void;
+  onRemove?: () => void;
+  /** Not-yet-placed suggestion footer (Add/Dismiss) — set instead of `onToggleLock`/`onRemove` for a card that isn't in the build yet. */
+  onAdd?: () => void;
+  onDismiss?: () => void;
 }) {
   const maxQuantity = Math.max(1, Math.min(cardInfo?.legality?.STANDARD?.limit ?? 4, 4));
   const tags = [...(cardInfo?.elements.filter((e) => e !== "NORM") ?? []), ...(cardInfo?.classes ?? [])];
@@ -156,6 +163,20 @@ function CardTile({
             <span className="text-ctp-text">{card.sample.with} vs {card.sample.without}</span>
           </div>
         )}
+        {((card.readinessReasons?.length ?? 0) > 0 || card.diaoMetricChanges) && (
+          <div className="flex flex-wrap gap-1 pt-0.5">
+            {card.readinessReasons?.map((reason) => (
+              <span
+                key={reason}
+                className="rounded-full border border-ctp-teal/50 bg-ctp-teal/10 px-1.5 text-[10px] font-medium text-ctp-teal"
+                title="Deterministic synergy-readiness signal; separate from observed win rate"
+              >
+                {reason}
+              </span>
+            ))}
+            <DiaoMetricBadges card={card} />
+          </div>
+        )}
         {visibleFields.quantityNote && card.optimizedFrom !== null && (
           <div className="text-ctp-subtext0">
             Changed from {card.optimizedFrom}x — {card.quantityEvidence.source} evidence (n={card.quantityEvidence.sampleSize})
@@ -204,16 +225,35 @@ function CardTile({
       </div>
 
       <div className="flex border-t border-ctp-surface1">
-        <button
-          type="button"
-          onClick={onToggleLock}
-          className={`flex-1 border-r border-ctp-surface1 py-1.5 text-xs ${card.locked ? "text-ctp-blue" : "text-ctp-subtext1 hover:text-ctp-text"}`}
-        >
-          {card.locked ? "Kept" : "Keep"}
-        </button>
-        <button type="button" onClick={onRemove} className="flex-1 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-red">
-          Remove
-        </button>
+        {onAdd ? (
+          <>
+            <button
+              type="button"
+              onClick={onAdd}
+              className={`flex-1 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-blue ${onDismiss ? "border-r border-ctp-surface1" : ""}`}
+            >
+              Add
+            </button>
+            {onDismiss && (
+              <button type="button" onClick={onDismiss} className="flex-1 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-text">
+                Dismiss
+              </button>
+            )}
+          </>
+        ) : (
+          <>
+            <button
+              type="button"
+              onClick={onToggleLock}
+              className={`flex-1 border-r border-ctp-surface1 py-1.5 text-xs ${card.locked ? "text-ctp-blue" : "text-ctp-subtext1 hover:text-ctp-text"}`}
+            >
+              {card.locked ? "Kept" : "Keep"}
+            </button>
+            <button type="button" onClick={onRemove} className="flex-1 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-red">
+              Remove
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
@@ -273,6 +313,51 @@ export default function BuilderCardGrid({
           onToggleLock={() => onToggleLock(card.cardName, card.quantity, section)}
           onChangeQuantity={onChangeQuantity ? (quantity) => onChangeQuantity(card.cardName, quantity) : undefined}
           onRemove={() => onRemove(card.cardName, card.locked)}
+        />
+      ))}
+    </div>
+  );
+}
+
+/** Same full-image tile as `BuilderCardGrid`, for not-yet-placed cards — an Add/Dismiss footer instead of Keep/Remove, and no section/lock/quantity concerns since these cards aren't in the build. Used by the Review tab's "Suggested additions" grid view. */
+export function BuilderSuggestionGrid({
+  cards,
+  cardsByName,
+  priceByName,
+  communityInclusion,
+  simulatorEvidenceByName,
+  visibleFields,
+  onAdd,
+  onDismiss,
+}: {
+  cards: SuggestedCard[];
+  cardsByName: Map<string, Card>;
+  priceByName: Map<string, number>;
+  communityInclusion?: Map<string, CardInclusionEntry>;
+  simulatorEvidenceByName?: Map<string, SimulatorCardEvidence>;
+  visibleFields: CardFieldVisibility;
+  onAdd: (card: SuggestedCard) => void;
+  onDismiss: (cardName: string) => void;
+}) {
+  if (cards.length === 0) return null;
+  return (
+    <div className="mt-2 grid grid-cols-2 gap-3">
+      {cards.map((card) => (
+        <CardTile
+          key={card.cardName}
+          card={card}
+          cardInfo={cardsByName.get(card.cardName)}
+          unitPrice={priceByName.get(card.cardName)}
+          priceTrend={undefined}
+          communityEntry={communityInclusion?.get(card.cardName)}
+          hypeGap={undefined}
+          decaySignal={undefined}
+          simulatorEvidence={simulatorEvidenceByName?.get(card.cardName)}
+          visibleFields={visibleFields}
+          communityMode={false}
+          needsReview={false}
+          onAdd={() => onAdd(card)}
+          onDismiss={() => onDismiss(card.cardName)}
         />
       ))}
     </div>

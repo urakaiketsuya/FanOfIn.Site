@@ -1373,6 +1373,8 @@ export default function DeckBuilderIndex() {
               buildCounters={buildCounters}
               hurtYouCards={hurtYouCards}
               hurtYouCardImages={hurtYouCardImages}
+              viewMode={viewMode}
+              onViewModeChange={setViewMode}
               onBackToBuild={() => setTab("build")}
               onContinueToValidation={() => setTab("copy")}
               reviewComplete={reviewComplete}
