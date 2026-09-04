@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
-import type { Card, CardInclusionEntry } from "@gatcg/shared";
+import type { Card, CardImpactEntry, CardInclusionEntry } from "@gatcg/shared";
 import CardHoverPreview from "../../../components/CardHoverPreview";
+import CardImpactTable from "../../../components/CardImpactTable";
 import { formatUsd } from "../../../lib/format";
 import { CardRow, DiaoMetricBadges, SuggestionRow } from "../components/BuilderCardRows";
 import type { ReviewGroups } from "../engine/builderSelectors";
 import type { SuggestedBuild, SuggestedCard } from "../useSuggestedBuild";
 import type { NearestDeck } from "../useNearestDecks";
+import type { BuildCounters } from "../useBuildCounters";
 import type { SimulatorCardEvidence } from "../useSimulatorSuggestedBuild";
 import type { CardFieldVisibility } from "../useCardFieldVisibility";
 import type { PopulationSource } from "../model/builderTypes";
@@ -16,7 +18,7 @@ export default function BuilderReviewPanel({
   onToggleShowProtectedCuts, reviewItemCount, reviewGroups, cardsByName, priceByName, visibleFields,
   communityInclusionByName, onApplySwap, onDismissReview, onAddSuggestion, onRemoveCard,
   showNearestDecks, nearestDecks, nearestDeckCompareLink, onLoadNearestDeck, onBackToBuild,
-  onContinueToValidation, reviewComplete,
+  onContinueToValidation, reviewComplete, buildCounters, hurtYouCards, hurtYouCardImages,
 }: {
   build: SuggestedBuild;
   effectivePopulationSource: PopulationSource;
@@ -47,6 +49,9 @@ export default function BuilderReviewPanel({
   onBackToBuild: () => void;
   onContinueToValidation: () => void;
   reviewComplete: boolean;
+  buildCounters: BuildCounters;
+  hurtYouCards: CardImpactEntry[];
+  hurtYouCardImages: Map<string, Card>;
 }) {
   const simulatorMode = effectivePopulationSource === "simulator";
   return (
@@ -241,6 +246,46 @@ export default function BuilderReviewPanel({
             )}
           </div>
         </>
+      )}
+
+      {buildCounters.sourceDeck && buildCounters.clusterMatchups.length > 0 && (
+        <div className="mt-5 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-4 py-3">
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Counters against this build</h3>
+          <p className="mt-1 text-xs text-ctp-subtext0">
+            This build isn't a real decklist yet, so this is proxied off {buildCounters.sourceDeck.championName ?? "the"} deck
+            {buildCounters.sourceDeck.spiritName ? ` (${buildCounters.sourceDeck.spiritName})` : ""} closest to your current picks
+            ({(buildCounters.sourceDeck.similarity * 100).toFixed(0)}% similar) — correlational, not a guarantee, and it may not
+            hold once you finish the build.
+          </p>
+          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+            <span className="text-ctp-subtext0">Vs:</span>
+            <select
+              value={buildCounters.opponentClusterId ?? buildCounters.clusterMatchups[0]?.opponentClusterId ?? ""}
+              aria-label="Opponent build"
+              onChange={(e) => buildCounters.setOpponentClusterId(e.target.value)}
+              className="rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1 text-xs text-ctp-text"
+            >
+              {buildCounters.clusterMatchups.map((m) => (
+                <option key={m.opponentClusterId} value={m.opponentClusterId}>
+                  {m.opponentClusterName} ({m.games} games)
+                </option>
+              ))}
+            </select>
+            {buildCounters.selectedMatchup && (
+              <span className="text-ctp-subtext0">{(buildCounters.selectedMatchup.baselineWinRate * 100).toFixed(0)}% win rate in this matchup</span>
+            )}
+          </div>
+          {hurtYouCards.length === 0 ? (
+            <p className="mt-3 text-sm text-ctp-subtext1">Not enough recorded games yet for a card-by-card breakdown.</p>
+          ) : (
+            <CardImpactTable
+              cards={hurtYouCards}
+              cardImages={hurtYouCardImages}
+              withLabel="Your win rate (they have it)"
+              withoutLabel="Your win rate (they don't)"
+            />
+          )}
+        </div>
       )}
 
       {showNearestDecks && (

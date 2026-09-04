@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { CollectionEntry, DeckFormat } from "@gatcg/shared";
 import { useCommunityBlendedCardInclusion, useCommunityBlendedCoOccurrence, useCommunityCardInclusion, useCommunityCoOccurrence } from "../../community/data";
 import { useDeckPopularityIndexData } from "../../topdecks/data";
-import { useArchetypeTaxonomyData, useCardQuantityStatsData, useCompositionWinRateData } from "../../archetypes/data";
+import { useArchetypeTaxonomyData, useCardImpactData, useCardQuantityStatsData, useCompositionWinRateData, useMatchupCardImpactData } from "../../archetypes/data";
 import { useCardCatalog } from "../../cards/useCardCatalog";
 import { useSimulatorSummaryData } from "../../simulator/data";
 import { useDeckPriceByName } from "../../pricing/useDeckPriceByName";
@@ -55,6 +55,8 @@ export function useDeckBuilderData({ championName, format, includeDecodedDecks }
     cardQuantityStats,
     compositionWinRates,
     archetypeTaxonomy,
+    cardImpact: useCardImpactData(),
+    matchupCardImpact: useMatchupCardImpactData(),
     decodedDecks: decodedDecks.decks,
     communityInclusion,
     communityCoOccurrence,

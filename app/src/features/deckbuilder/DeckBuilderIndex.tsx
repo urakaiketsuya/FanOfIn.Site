@@ -14,6 +14,7 @@ import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import { useTabParam } from "../../lib/useTabParam";
 import { encodeCustomDecks } from "../../lib/compareShareLink";
 import { useNearestDecks, type NearestDeck } from "./useNearestDecks";
+import { useBuildCounters } from "./useBuildCounters";
 import { computeIdentityElements, findChampionCard, useSuggestedBuild, type SuggestedCard } from "./useSuggestedBuild";
 import { useCommunitySuggestedBuild } from "./useCommunitySuggestedBuild";
 import { useSimulatorSuggestedBuild } from "./useSimulatorSuggestedBuild";
@@ -231,6 +232,8 @@ export default function DeckBuilderIndex() {
     cardQuantityStats: cardQuantityStatsData,
     compositionWinRates: compositionWinRateData,
     archetypeTaxonomy: archetypeTaxonomyData,
+    cardImpact: cardImpactData,
+    matchupCardImpact: matchupCardImpactData,
     decodedDecks: allDecks,
     communityInclusion: communityCardInclusion,
     communityCoOccurrence,
@@ -415,6 +418,9 @@ export default function DeckBuilderIndex() {
   }, [championName, spiritFilter, effectivePopulationSource, pillarBias, archetypeId]);
 
   const nearestDecks = useNearestDecks(allDecks, lockedCards);
+  const buildCounters = useBuildCounters(nearestDecks, cardImpactData, matchupCardImpactData);
+  const hurtYouCards = buildCounters.selectedMatchup?.opponentCards ?? [];
+  const hurtYouCardImages = useCardsByNames(useMemo(() => hurtYouCards.map((c) => c.cardName), [hurtYouCards]));
   const gateLoading = deckFormat === "PANTHEON"
     ? !communityCardInclusion
     : effectivePopulationSource === "community"
@@ -1364,6 +1370,9 @@ export default function DeckBuilderIndex() {
               nearestDecks={nearestDecks}
               nearestDeckCompareLink={nearestDeckCompareLink}
               onLoadNearestDeck={loadNearestDeck}
+              buildCounters={buildCounters}
+              hurtYouCards={hurtYouCards}
+              hurtYouCardImages={hurtYouCardImages}
               onBackToBuild={() => setTab("build")}
               onContinueToValidation={() => setTab("copy")}
               reviewComplete={reviewComplete}
