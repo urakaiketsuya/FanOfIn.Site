@@ -6,7 +6,7 @@ import { gatcgApi } from "../../lib/api/client";
 import { useDeckPopularity, buildPopularDeck } from "../popular/useDeckPopularity";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useOmnidexPlayers, useEventNameById } from "../tournaments/data";
-import { useCardImpactData, useSimilarityData, useDeckCardIndexData } from "../archetypes/data";
+import { useCardImpactData, useMatchupCardImpactData, useSimilarityData, useDeckCardIndexData } from "../archetypes/data";
 import { useChampionCardImpact } from "./useChampionCardImpact";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -129,7 +129,27 @@ export default function DeckDetail() {
   // gating deck pages behind Popular Decks' 2+-player bar) have no cluster match. Fall back to a
   // broader Champion+Element-scoped recommendation in that case, never show both.
   const cardImpactData = useCardImpactData();
-  const hasClusterMatch = !!(deck && cardImpactData?.deckClusterIndex[deck.deckIds[0]]);
+  const myClusterId = deck ? cardImpactData?.deckClusterIndex[deck.deckIds[0]] : undefined;
+  const hasClusterMatch = !!myClusterId;
+
+  // "What beats this build" — same matchup-scoped opponent-card data ArchetypeDetail's own Card
+  // Impact tab shows, just pre-filtered to this one deck's cluster instead of offering a build
+  // picker. Only decks with a named-cluster match have this data (see hasClusterMatch's own doc
+  // comment) — a one-off decklist with no cluster has nothing to key this off of.
+  const matchupCardImpactData = useMatchupCardImpactData();
+  // No "all opponents" aggregate here (unlike ArchetypeDetail's own Card Impact tab): each
+  // matchup's lifts are scoped to its own population and aren't comparable across opponents (see
+  // ArchetypeHurtYouView.tsx's doc comment), and the same card can appear as a hurt-you signal in
+  // more than one matchup, so flattening them would produce duplicate React keys. Defaults to the
+  // most-played matchup instead.
+  const [opponentClusterId, setOpponentClusterId] = useState<string | null>(null);
+  const clusterMatchups = useMemo(
+    () => (matchupCardImpactData && myClusterId ? matchupCardImpactData.matchups.filter((m) => m.clusterId === myClusterId).sort((a, b) => b.games - a.games) : []),
+    [matchupCardImpactData, myClusterId],
+  );
+  const selectedMatchup = clusterMatchups.find((m) => m.opponentClusterId === (opponentClusterId ?? clusterMatchups[0]?.opponentClusterId));
+  const hurtYouCards = selectedMatchup?.opponentCards ?? [];
+  const hurtYouCardImages = useCardsByNames(useMemo(() => hurtYouCards.map((c) => c.cardName), [hurtYouCards]));
 
   // Champion-scoped directly (same filter-before-decode pattern as useChampionCardImpact.ts)
   // rather than scanning the full cross-Champion `decks` universe, which the fast path above
@@ -456,6 +476,47 @@ export default function DeckDetail() {
               />
             </>
           )}
+          </Section>
+        </Panel>
+      )}
+
+      {tab === "decklist" && hasClusterMatch && clusterMatchups.length > 0 && (
+        <Panel padding="sm" className="mt-6">
+          <Section
+            heading="dense"
+            collapsible
+            defaultOpen={false}
+            title="What beats this build"
+            description="Opponent cards that correlate with beating this build, from real pairing outcomes — correlational, not a guarantee."
+          >
+            <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+              <span className="text-ctp-subtext0">Vs:</span>
+              <select
+                value={opponentClusterId ?? clusterMatchups[0]?.opponentClusterId ?? ""}
+                aria-label="Opponent build"
+                onChange={(e) => setOpponentClusterId(e.target.value)}
+                className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+              >
+                {clusterMatchups.map((m) => (
+                  <option key={m.opponentClusterId} value={m.opponentClusterId}>
+                    {m.opponentClusterName} ({m.games} games)
+                  </option>
+                ))}
+              </select>
+              {selectedMatchup && (
+                <span className="text-ctp-subtext0">{(selectedMatchup.baselineWinRate * 100).toFixed(0)}% win rate in this matchup</span>
+              )}
+            </div>
+            {hurtYouCards.length === 0 ? (
+              <InlineState className="mt-3 text-sm">Not enough recorded games yet for a card-by-card breakdown.</InlineState>
+            ) : (
+              <CardImpactTable
+                cards={hurtYouCards}
+                cardImages={hurtYouCardImages}
+                withLabel="Your win rate (they have it)"
+                withoutLabel="Your win rate (they don't)"
+              />
+            )}
           </Section>
         </Panel>
       )}
