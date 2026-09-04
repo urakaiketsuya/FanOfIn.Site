@@ -188,6 +188,13 @@ export default function CardDetail() {
   const quantityBuckets = cardQuantityStat?.quantities.filter((q) => q.deckCount >= 5) ?? [];
 
   const cardCatalog = useCardCatalog();
+  // Same slug-first, name-fallback resolution DecklistView.tsx's own Tokens section already uses —
+  // a CardReference only carries {kind, name, slug, direction}, no image, so References/Referenced
+  // by need this to show a thumbnail/hover-preview instead of plain text links.
+  const catalogBySlug = useMemo(() => new Map(cardCatalog.map((c) => [c.slug, c])), [cardCatalog]);
+  function resolveReference(ref: { slug: string; name: string }) {
+    return catalogBySlug.get(ref.slug) ?? cardCatalog.find((c) => c.name === ref.name);
+  }
   const compareCardNames = useMemo(() => Array.from(new Set(cardCatalog.map((c) => c.name))).sort(), [cardCatalog]);
   const compareCardNameSet = useMemo(() => new Set(compareCardNames), [compareCardNames]);
   const [compareWith, setCompareWith] = useState<string[]>([]);
@@ -585,9 +592,11 @@ export default function CardDetail() {
                 <Section heading="dense" collapsible defaultOpen={false} title="References">
                   <div className="mt-1 flex flex-wrap gap-2 text-sm">
                     {card.references.map((ref) => (
-                      <Link key={ref.slug} to={`/cards/${ref.slug}`} className="text-ctp-blue hover:underline">
-                        {ref.name} <span className="text-ctp-subtext0">({ref.kind.toLowerCase()})</span>
-                      </Link>
+                      <CardHoverPreview key={ref.slug} image={resolveReference(ref)?.editions[0]?.image} alt={ref.name}>
+                        <Link to={`/cards/${ref.slug}`} className="text-ctp-blue hover:underline">
+                          {ref.name} <span className="text-ctp-subtext0">({ref.kind.toLowerCase()})</span>
+                        </Link>
+                      </CardHoverPreview>
                     ))}
                   </div>
                 </Section>
@@ -596,9 +605,11 @@ export default function CardDetail() {
                 <Section heading="dense" collapsible defaultOpen={false} title="Referenced by">
                   <div className="mt-1 flex flex-wrap gap-2 text-sm">
                     {card.referenced_by.map((ref) => (
-                      <Link key={ref.slug} to={`/cards/${ref.slug}`} className="text-ctp-blue hover:underline">
-                        {ref.name}
-                      </Link>
+                      <CardHoverPreview key={ref.slug} image={resolveReference(ref)?.editions[0]?.image} alt={ref.name}>
+                        <Link to={`/cards/${ref.slug}`} className="text-ctp-blue hover:underline">
+                          {ref.name}
+                        </Link>
+                      </CardHoverPreview>
                     ))}
                   </div>
                 </Section>
@@ -676,9 +687,11 @@ export default function CardDetail() {
                     <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">References</h3>
                     <div className="mt-1 flex flex-wrap gap-2 text-sm">
                       {card.references.map((ref) => (
-                        <Link key={ref.slug} to={`/cards/${ref.slug}`} className="text-ctp-blue hover:underline">
-                          {ref.name} <span className="text-ctp-subtext0">({ref.kind.toLowerCase()})</span>
-                        </Link>
+                        <CardHoverPreview key={ref.slug} image={resolveReference(ref)?.editions[0]?.image} alt={ref.name}>
+                          <Link to={`/cards/${ref.slug}`} className="text-ctp-blue hover:underline">
+                            {ref.name} <span className="text-ctp-subtext0">({ref.kind.toLowerCase()})</span>
+                          </Link>
+                        </CardHoverPreview>
                       ))}
                     </div>
                   </div>
@@ -688,9 +701,11 @@ export default function CardDetail() {
                     <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Referenced by</h3>
                     <div className="mt-1 flex flex-wrap gap-2 text-sm">
                       {card.referenced_by.map((ref) => (
-                        <Link key={ref.slug} to={`/cards/${ref.slug}`} className="text-ctp-blue hover:underline">
-                          {ref.name}
-                        </Link>
+                        <CardHoverPreview key={ref.slug} image={resolveReference(ref)?.editions[0]?.image} alt={ref.name}>
+                          <Link to={`/cards/${ref.slug}`} className="text-ctp-blue hover:underline">
+                            {ref.name}
+                          </Link>
+                        </CardHoverPreview>
                       ))}
                     </div>
                   </div>
