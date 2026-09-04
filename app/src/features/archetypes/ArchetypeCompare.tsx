@@ -1,6 +1,8 @@
 import { Link, useSearchParams } from "react-router-dom";
-import { ARCHETYPE_NEAR_DUPLICATE_THRESHOLD, type ArchetypeCluster, type MaterialArchetype } from "@gatcg/shared";
+import { ARCHETYPE_NEAR_DUPLICATE_THRESHOLD, type Card, type ArchetypeCluster, type MaterialArchetype } from "@gatcg/shared";
 import { useArchetypeTaxonomyData } from "./data";
+import { useCardsByNames } from "../events/useCardsByNames";
+import CardHoverPreview from "../../components/CardHoverPreview";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 import PageLayout from "../../components/layout/PageLayout";
@@ -70,6 +72,12 @@ export default function ArchetypeCompare() {
   })));
   const mainQuantityRows = quantityRows(builds, "main", 20);
   const materialQuantityRows = quantityRows(builds, "material", 16);
+  const cardsByName = useCardsByNames([
+    ...spiritRows.map((row) => row.name),
+    ...materialQuantityRows.map((row) => row.name),
+    ...mainQuantityRows.map((row) => row.name),
+    ...cardRows.map((row) => row.name),
+  ]);
 
   return (
     <PageLayout width="wide">
@@ -107,7 +115,7 @@ export default function ArchetypeCompare() {
             <section className="mt-8">
               <h2 className="text-sm font-semibold tracking-wide text-ctp-blue uppercase">Spirit populations</h2>
               <p className="mt-1 text-xs text-ctp-subtext0">Unique players observed with each Spirit inside the material route.</p>
-              <ComparisonTable firstColumn="Spirit" names={items.map((item) => item.name)} rows={spiritRows.map((row) => ({ label: row.name, values: row.counts.map((count) => count ? `${count}p` : "—") }))} />
+              <ComparisonTable firstColumn="Spirit" names={items.map((item) => item.name)} rows={spiritRows.map((row) => ({ label: row.name, values: row.counts.map((count) => count ? `${count}p` : "—") }))} cardsByName={cardsByName} />
             </section>
           )}
 
@@ -131,13 +139,13 @@ export default function ArchetypeCompare() {
               {materialQuantityRows.length > 0 && <section className="mt-8">
                 <h2 className="text-sm font-semibold tracking-wide text-ctp-blue uppercase">Material progression differences</h2>
                 <p className="mt-1 text-xs text-ctp-subtext0">Average copies per submitted material deck. This exposes Champion levels and route cards that defining-card prevalence can hide.</p>
-                <ComparisonTable firstColumn="Material card" names={builds.map((item) => item.name)} rows={materialQuantityRows.map((row) => ({ label: row.name, values: row.quantities.map(formatQuantity), strengths: row.quantities.map((quantity) => quantity / Math.max(1, ...row.quantities)) }))} />
+                <ComparisonTable firstColumn="Material card" names={builds.map((item) => item.name)} rows={materialQuantityRows.map((row) => ({ label: row.name, values: row.quantities.map(formatQuantity), strengths: row.quantities.map((quantity) => quantity / Math.max(1, ...row.quantities)) }))} cardsByName={cardsByName} />
               </section>}
 
               {mainQuantityRows.length > 0 && <section className="mt-8">
                 <h2 className="text-sm font-semibold tracking-wide text-ctp-peach uppercase">Largest main-deck differences</h2>
                 <p className="mt-1 text-xs text-ctp-subtext0">Average copies per deck, ordered by the largest gap between selected builds—not merely whether a card appears.</p>
-                <ComparisonTable firstColumn="Main-deck card" names={builds.map((item) => item.name)} rows={mainQuantityRows.map((row) => ({ label: row.name, values: row.quantities.map(formatQuantity), strengths: row.quantities.map((quantity) => quantity / Math.max(1, ...row.quantities)) }))} />
+                <ComparisonTable firstColumn="Main-deck card" names={builds.map((item) => item.name)} rows={mainQuantityRows.map((row) => ({ label: row.name, values: row.quantities.map(formatQuantity), strengths: row.quantities.map((quantity) => quantity / Math.max(1, ...row.quantities)) }))} cardsByName={cardsByName} />
               </section>}
             </>
           )}
@@ -145,7 +153,7 @@ export default function ArchetypeCompare() {
           <section className="mt-8">
             <h2 className="text-sm font-semibold tracking-wide text-ctp-green uppercase">Defining-card overlap</h2>
             <p className="mt-1 text-xs text-ctp-subtext0">Presence within each selected {type === "route" ? "route" : "build"}. A dash means the card is not one of that population's defining cards.</p>
-            <ComparisonTable firstColumn="Card" names={items.map((item) => item.name)} rows={cardRows.map((row) => ({ label: row.name, values: row.prevalence.map((value) => value ? `${(value * 100).toFixed(0)}%` : "—"), strengths: row.prevalence }))} />
+            <ComparisonTable firstColumn="Card" names={items.map((item) => item.name)} rows={cardRows.map((row) => ({ label: row.name, values: row.prevalence.map((value) => value ? `${(value * 100).toFixed(0)}%` : "—"), strengths: row.prevalence }))} cardsByName={cardsByName} />
           </section>
         </>
       )}
@@ -157,6 +165,9 @@ function formatQuantity(quantity: number) {
   return quantity >= 0.05 ? quantity.toFixed(2) : "—";
 }
 
-function ComparisonTable({ firstColumn, names, rows }: { firstColumn: string; names: string[]; rows: { label: string; values: string[]; strengths?: number[] }[] }) {
-  return <div className="mt-3 overflow-x-auto rounded-xl border border-ctp-surface1"><table className="min-w-full text-sm"><thead><tr className="bg-ctp-mantle text-left text-xs text-ctp-subtext0"><th className="min-w-44 p-3">{firstColumn}</th>{names.map((name) => <th key={name} className="min-w-36 p-3">{name}</th>)}</tr></thead><tbody className="divide-y divide-ctp-surface0">{rows.map((row) => <tr key={row.label}><th className="p-3 text-left font-medium text-ctp-text">{row.label}</th>{row.values.map((value, index) => <td key={`${row.label}-${names[index]}`} className="relative p-3 text-ctp-subtext1"><span className="relative z-10">{value}</span>{row.strengths?.[index] ? <span className="absolute inset-y-1 left-1 rounded bg-ctp-green/10" style={{ width: `${Math.max(4, row.strengths[index] * 100)}%` }} /> : null}</td>)}</tr>)}</tbody></table></div>;
+function ComparisonTable({ firstColumn, names, rows, cardsByName }: { firstColumn: string; names: string[]; rows: { label: string; values: string[]; strengths?: number[] }[]; cardsByName?: Map<string, Card> }) {
+  return <div className="mt-3 overflow-x-auto rounded-xl border border-ctp-surface1"><table className="min-w-full text-sm"><thead><tr className="bg-ctp-mantle text-left text-xs text-ctp-subtext0"><th className="min-w-44 p-3">{firstColumn}</th>{names.map((name) => <th key={name} className="min-w-36 p-3">{name}</th>)}</tr></thead><tbody className="divide-y divide-ctp-surface0">{rows.map((row) => {
+    const card = cardsByName?.get(row.label);
+    return <tr key={row.label}><th className="p-3 text-left font-medium text-ctp-text">{card ? <CardHoverPreview image={card.editions[0]?.image} alt={row.label}><Link to={`/cards/${card.slug}`} className="hover:text-ctp-blue">{row.label}</Link></CardHoverPreview> : row.label}</th>{row.values.map((value, index) => <td key={`${row.label}-${names[index]}`} className="relative p-3 text-ctp-subtext1"><span className="relative z-10">{value}</span>{row.strengths?.[index] ? <span className="absolute inset-y-1 left-1 rounded bg-ctp-green/10" style={{ width: `${Math.max(4, row.strengths[index] * 100)}%` }} /> : null}</td>)}</tr>;
+  })}</tbody></table></div>;
 }
