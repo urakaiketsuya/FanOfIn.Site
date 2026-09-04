@@ -1,9 +1,25 @@
+/* Matches gatcg.com's own type pair: Merriweather Sans for body text (used there as-is), and PT
+   Sans for headings — gatcg.com actually uses "Linux Biolinum", a humanist sans that isn't on
+   Google Fonts (they self-host it), so PT Sans stands in as the closest available equivalent.
+   Must stay the very first rule in this file — Tailwind's own `@import "tailwindcss"` below expands
+   into multiple `@layer` statements at build time, and a browser silently drops any `@import` that
+   ends up after other rules in the final CSS. */
+@import url("https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital,wght@0,300;0,400;0,700;1,400&family=PT+Sans:wght@400;700&display=swap");
 @import "tailwindcss";
 @import "@catppuccin/tailwindcss/mocha.css";
+
+@theme {
+  --font-sans: "Merriweather Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "PT Sans", ui-sans-serif, system-ui, sans-serif;
+}
 
 body {
   @apply bg-ctp-base text-ctp-text;
   font-feature-settings: "kern" 1, "tnum" 1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-heading;
 }
 
 ::selection { @apply bg-ctp-blue/30 text-ctp-text; }
