@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Card, CommunityCoOccurrenceEntry } from "@gatcg/shared";
 import ElementRail from "../../../components/ElementRail";
+import CardHoverPreview from "../../../components/CardHoverPreview";
 import type { BuddyCard } from "../useBuddyCards";
 import Section from "../../../components/ui/Section";
 
@@ -173,7 +174,9 @@ function BuddyRelationshipView({
                 >
                   <ElementRail elements={cardInfo?.elements} />
                   <button type="button" aria-pressed={selected?.cardName === group.cardName} onClick={() => setSelectedName(group.cardName)} className="min-w-0 flex-1 text-left">
-                    <span className="block truncate text-xs font-semibold text-ctp-text">{group.cardName}</span>
+                    <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={group.cardName}>
+                      <span className="block truncate text-xs font-semibold text-ctp-text">{group.cardName}</span>
+                    </CardHoverPreview>
                     <span className="block text-[10px] text-ctp-subtext0">
                       <span className="font-semibold text-ctp-green">{Math.round(group.withLocked[0].coOccurrenceRate * 100)}%</span>
                       {" strongest · "}{group.withLocked.length} locked card{group.withLocked.length === 1 ? "" : "s"} · n={group.withLocked[0].count}
@@ -204,7 +207,9 @@ function BuddyRelationshipView({
               <ElementRail elements={cardInfo?.elements} />
               <div className="flex items-center gap-2">
                 <button type="button" aria-expanded={expanded} onClick={() => setExpandedMobile(expanded ? null : group.cardName)} className="min-h-9 min-w-0 flex-1 text-left">
-                  <span className="block truncate text-sm font-semibold text-ctp-text">{group.cardName}</span>
+                  <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={group.cardName}>
+                    <span className="block truncate text-sm font-semibold text-ctp-text">{group.cardName}</span>
+                  </CardHoverPreview>
                   <span className="block text-[10px] text-ctp-subtext0">
                     <span className="font-semibold text-ctp-green">{Math.round(group.withLocked[0].coOccurrenceRate * 100)}%</span>
                     {" strongest · "}{group.withLocked.length} locked card{group.withLocked.length === 1 ? "" : "s"} · n={group.withLocked[0].count}
