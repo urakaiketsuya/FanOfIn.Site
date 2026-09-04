@@ -1,4 +1,4 @@
-import type { AccountSession, AccountUser, BookmarkedDeck, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, DeckImportPreview, DeckImportResult, DeckReportReason, DeckSocialState, DeckVisibility, OmnidexDecklist, PublicDeck, PublicDeckSummary, PublicProfile, SavedDeck, SavedDeckDetail } from "@gatcg/shared";
+import type { AccountSession, AccountUser, BookmarkedDeck, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, DeckImportPreview, DeckImportResult, DeckReportReason, DeckSocialState, DeckVisibility, OmnidexDecklist, PublicDeck, PublicDeckSummary, PublicProfile, SavedDeck, SavedDeckDetail, SharedCardWatch } from "@gatcg/shared";
 
 const ACCOUNT_API_URL = (import.meta.env.VITE_ACCOUNT_API_URL as string | undefined)?.replace(/\/$/, "")
   ?? (import.meta.env.PROD ? "https://accounts.fanofin.site/api" : "http://localhost:8788");
@@ -44,12 +44,14 @@ export const accountApi = {
   collection: () => accountRequest<{ entries: CollectionEntry[]; transactions: CollectionTransaction[] }>("/v1/me/collection"),
   updateCollection: (input: { mode: CollectionUpdateMode; source: string; lines: CollectionUpdateLine[] }) => accountRequest<{ transactionId: string; changed: number }>("/v1/me/collection", { method: "POST", body: JSON.stringify(input) }),
   undoCollectionTransaction: (id: string) => accountRequest<{ success: true }>(`/v1/me/collection/transactions/${encodeURIComponent(id)}/undo`, { method: "POST", body: "{}" }),
+  sharedCardWatches: () => accountRequest<{ cards: SharedCardWatch[] }>("/v1/me/collection/shared-cards"),
+  setSharedCardWatch: (cardUuid: string, input: { cardName?: string; watched: boolean }) => accountRequest<{ success: true }>(`/v1/me/collection/shared-cards/${encodeURIComponent(cardUuid)}`, { method: "PATCH", body: JSON.stringify(input) }),
   createDeckVersion: (id: string, input: { decklist: OmnidexDecklist; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; changeNote?: string }) =>
     accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}/versions`, { method: "POST", body: JSON.stringify(input) }),
   restoreDeckVersion: (id: string, versionId: string) => accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}/versions/${encodeURIComponent(versionId)}/restore`, { method: "POST" }),
   saveDeck: (input: { title: string; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; decklist: OmnidexDecklist; maybeboard?: { card: string; quantity: number }[]; source: { provider: "manual"; externalDeckId: string; label: string } }) =>
     accountRequest<{ id: string; created: boolean }>("/v1/me/decks", { method: "POST", body: JSON.stringify(input) }),
-  updateDeckMetadata: (id: string, input: { title?: string; description?: string; primerMarkdown?: string; tags?: string[]; maybeboard?: { card: string; quantity: number }[]; collectionTracked?: boolean }) => accountRequest<{ success: true }>(`/v1/me/decks/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify(input) }),
+  updateDeckMetadata: (id: string, input: { title?: string; description?: string; primerMarkdown?: string; tags?: string[]; maybeboard?: { card: string; quantity: number }[] }) => accountRequest<{ success: true }>(`/v1/me/decks/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify(input) }),
   renameDeck: (id: string, title: string) => accountRequest<{ success: true }>(`/v1/me/decks/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify({ title }) }),
   publishDeck: (id: string, visibility: DeckVisibility) => accountRequest<{ publicSlug: string | null; visibility: DeckVisibility }>(`/v1/me/decks/${encodeURIComponent(id)}/publish`, { method: "POST", body: JSON.stringify({ visibility }) }),
   deleteDeck: (id: string) => accountRequest<{ success: true }>(`/v1/me/decks/${encodeURIComponent(id)}`, { method: "DELETE" }),

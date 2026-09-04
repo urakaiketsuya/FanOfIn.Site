@@ -5,7 +5,7 @@ import { copyPublishedDeck, getDeckSocialState, listBookmarks, setDeckBookmark, 
 import { discoverDecks, getPublicProfile } from "./discovery";
 import { reportDeck } from "./moderation";
 import { serviceHealth } from "./health";
-import { listCollection, undoCollectionTransaction, updateCollection } from "./collection";
+import { listCollection, listSharedCardWatches, setSharedCardWatch, undoCollectionTransaction, updateCollection } from "./collection";
 
 function response(env: Env, request: Request, body: unknown, status = 200, extra: HeadersInit = {}): Response {
   const origin = request.headers.get("Origin");
@@ -141,6 +141,13 @@ export default {
       if (collectionUndoMatch && request.method === "POST") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
         await undoCollectionTransaction(env, user, collectionUndoMatch[1]);
+        return response(env, request, { success: true });
+      }
+      if (request.method === "GET" && url.pathname === "/v1/me/collection/shared-cards") return response(env, request, { cards: await listSharedCardWatches(env, user) });
+      const sharedCardMatch = url.pathname.match(/^\/v1\/me\/collection\/shared-cards\/([^/]+)$/);
+      if (sharedCardMatch && request.method === "PATCH") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        await setSharedCardWatch(env, user, sharedCardMatch[1], await jsonBody(request));
         return response(env, request, { success: true });
       }
       if (request.method === "GET" && url.pathname === "/v1/me/export") {

@@ -25,6 +25,12 @@ export interface CollectionTransaction {
   undoneAt: string | null;
 }
 
+/** A card the owner has flagged for cross-deck sharing checks — see `watchedCardUsage` in the app's collection helpers. */
+export interface SharedCardWatch {
+  cardUuid: string;
+  cardName: string;
+}
+
 export interface DeckCollectionLine {
   card: string;
   required: number;

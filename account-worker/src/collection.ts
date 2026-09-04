@@ -1,10 +1,11 @@
-import type { CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode } from "@gatcg/shared";
+import type { CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, SharedCardWatch } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
 import { ApiError, badRequest } from "./errors";
 
 const MAX_LINES = 500;
 const MAX_QUANTITY = 9_999;
 const MAX_SOURCE_LENGTH = 160;
+const MAX_SHARED_WATCHES = 200;
 
 interface StoredChange {
   cardUuid: string;
@@ -76,6 +77,32 @@ export async function updateCollection(env: Env, user: AuthUser, value: unknown)
       .bind(transactionId, user.id, source, JSON.stringify(changes), now),
   ]);
   return { transactionId, changed: changes.length };
+}
+
+export async function listSharedCardWatches(env: Env, user: AuthUser): Promise<SharedCardWatch[]> {
+  const rows = await env.ACCOUNT_DB.prepare("SELECT card_uuid, card_name FROM shared_card_watches WHERE user_id = ? ORDER BY card_name COLLATE NOCASE")
+    .bind(user.id).all<{ card_uuid: string; card_name: string }>();
+  return rows.results.map((row) => ({ cardUuid: row.card_uuid, cardName: row.card_name }));
+}
+
+/** Toggles whether a card counts toward the owner's cross-deck sharing checks (see `watchedCardUsage` in the app). Kept in its own table rather than on `collection_entries` so it survives that table deleting a row once owned/proxy quantity both hit 0. */
+export async function setSharedCardWatch(env: Env, user: AuthUser, cardUuid: string, value: unknown): Promise<boolean> {
+  if (!cardUuid || cardUuid.length > 200) throw badRequest("Invalid card");
+  if (!value || typeof value !== "object") throw badRequest("Invalid request");
+  const input = value as { cardName?: unknown; watched?: unknown };
+  if (typeof input.watched !== "boolean") throw badRequest("watched must be a boolean");
+  if (!input.watched) {
+    await env.ACCOUNT_DB.prepare("DELETE FROM shared_card_watches WHERE user_id = ? AND card_uuid = ?").bind(user.id, cardUuid).run();
+    return true;
+  }
+  const cardName = typeof input.cardName === "string" ? input.cardName.trim().replace(/\s+/g, " ") : "";
+  if (!cardName || cardName.length > 200) throw badRequest("A valid card name is required");
+  const count = await env.ACCOUNT_DB.prepare("SELECT COUNT(*) AS count FROM shared_card_watches WHERE user_id = ?").bind(user.id).first<{ count: number }>();
+  if ((count?.count ?? 0) >= MAX_SHARED_WATCHES) throw badRequest(`You can track up to ${MAX_SHARED_WATCHES} shared cards`);
+  await env.ACCOUNT_DB.prepare(`INSERT INTO shared_card_watches (user_id, card_uuid, card_name, created_at) VALUES (?, ?, ?, ?)
+    ON CONFLICT(user_id, card_uuid) DO UPDATE SET card_name = excluded.card_name`)
+    .bind(user.id, cardUuid, cardName, new Date().toISOString()).run();
+  return true;
 }
 
 export async function undoCollectionTransaction(env: Env, user: AuthUser, transactionId: string): Promise<boolean> {

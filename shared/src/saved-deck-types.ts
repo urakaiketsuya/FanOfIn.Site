@@ -24,8 +24,6 @@ export interface SavedDeck {
   sources: SavedDeckSource[];
   createdAt: string;
   updatedAt: string;
-  /** Marks this deck as currently physically built from the owner's collection, so its card requirements are pooled with other tracked decks when checking for cards shared (and possibly short) across decks — see `sharedCardBreakdown`. */
-  collectionTracked: boolean;
 }
 
 export type DeckVisibility = "private" | "unlisted" | "public";
