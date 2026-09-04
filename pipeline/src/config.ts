@@ -39,6 +39,9 @@ export const config = {
   /** Delay between Omnidex requests — politeness over speed; skipped entirely in fast mode. */
   crawlRequestDelayMs: FAST_MODE ? 0 : Number(process.env.GATCG_CRAWL_DELAY_MS ?? 150),
 
+  /** Delay between Nominatim geocoding requests (pipeline/src/omnidex/geocode.ts) — Nominatim's usage policy caps free requests at 1/sec, so this stays above 1000ms; skipped in fast mode. Only applies to venues not already in pipeline/.cache/geocode.json, so a normal run only pays this for newly-seen venues. */
+  geocodeRequestDelayMs: FAST_MODE ? 0 : Number(process.env.GATCG_GEOCODE_DELAY_MS ?? 1100),
+
   /** Dev-iteration cap: only scan the most recent N event IDs instead of a full range. */
   fastModeEventLimit: Number(process.env.GATCG_FAST_MODE_EVENT_LIMIT ?? 25),
 

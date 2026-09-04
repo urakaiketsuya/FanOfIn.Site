@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { OmnidexIndexData, OmnidexJudgesData, OmnidexPlayersData, OmnidexTeamsData } from "@gatcg/shared";
+import type { OmnidexIndexData, OmnidexJudgesData, OmnidexPlayersData, OmnidexTeamsData, OmnidexVenueGeocodeData } from "@gatcg/shared";
 import { usePublishedData } from "../../lib/sync/usePublishedData";
 
 export function useOmnidexIndex(): OmnidexIndexData | undefined {
@@ -26,4 +26,9 @@ export function useOmnidexJudges(): OmnidexJudgesData | undefined {
 
 export function useOmnidexTeams(): OmnidexTeamsData | undefined {
   return usePublishedData<OmnidexTeamsData>("omnidex-teams", "/data/omnidex/teams.json");
+}
+
+/** Geocoded venue coordinates (Nominatim, via pipeline/src/omnidex/geocode.ts) — only venues Nominatim could resolve are present, keyed by the same `hostId` join `OmnidexEventSummary` uses. */
+export function useVenueGeocodes(): OmnidexVenueGeocodeData | undefined {
+  return usePublishedData<OmnidexVenueGeocodeData>("omnidex-venue-geocodes", "/data/omnidex/venues.json");
 }

@@ -13,10 +13,13 @@
   "dependencies": {
     "@gatcg/shared": "*",
     "@tanstack/react-query": "^5.101.4",
+    "@types/leaflet": "^1.9.22",
     "dexie": "^4.4.5",
     "dexie-react-hooks": "^4.4.0",
+    "leaflet": "^1.9.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.18.2"
   },
   "devDependencies": {

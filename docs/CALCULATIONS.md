@@ -1356,6 +1356,36 @@ already avoids re-crawling via `actions/cache` (`.github/workflows/data-refresh.
 step is for everything outside that cache's scope — a new machine, or an interactive session that
 only has a fresh `git clone`.
 
+## Venue geocoding (`pipeline/src/omnidex/geocode.ts`, `data/omnidex/venues.json`)
+
+`OmnidexHost` only carries a free-text `address` string, no coordinates, so plotting venues on a
+real map (Regions page's Venues tab) needed a geocoding step. Each distinct venue (`hostId` with a
+non-empty address) is geocoded via Nominatim (OpenStreetMap's free geocoder, no API key) and cached
+forever in `pipeline/.cache/geocode.json`, keyed by `hostId` — a venue's address doesn't change, so
+a normal incremental pipeline run only geocodes venues seen for the first time. A `null` cache entry
+means Nominatim had no match (a bad/unresolvable address), also cached so it isn't retried every run.
+
+Nominatim's usage policy caps free requests at 1/sec (`config.geocodeRequestDelayMs`, default
+1100ms) and requires an identifying User-Agent — this deliberately geocodes one venue at a time
+rather than in parallel. The cache is saved after every single venue, not batched at the end of the
+run: the real first-backfill run took ~12 minutes for 648 venues, and an interruption (CI timeout,
+crash) shouldn't lose progress already paid for against the rate limit. Only venues Nominatim
+actually resolved are published to `data/omnidex/venues.json` — a venue whose address doesn't
+resolve is simply absent from the map while remaining in the Venues tab's list.
+
+**Real hit rate, checked against the full first backfill**: 282/648 venues (44%) resolved overall,
+but this splits sharply by region — Western/English-address countries do well (Germany/Netherlands/
+Belgium 100%, New Zealand 81%, UK 86%, US 61%), while several Asian countries resolved poorly or not
+at all (Taiwan 0/65, Indonesia 0/13, Singapore 14%, Hong Kong 20%, Japan 23%, Philippines 25%).
+Spot-checked directly against the live Nominatim API: a real Taiwan venue's full romanized street
+address ("No. 81, Section 1, Liuqiao W Rd, Gangshan City, Taiwan 820") returns zero matches, while
+the same city alone ("Kaohsiung City, Taiwan") resolves fine — Nominatim's free-text parser is
+specifically weak at romanized/Latin-transliterated addresses for these countries, not a bug in the
+query construction here. Improving this would mean either a paid geocoder (Google/Mapbox, needs an
+API key + billing) or a fallback strategy that progressively simplifies a failed query (drop the
+street line, retry city+country) — neither implemented, since this is a real free-service ceiling,
+not a fixable string-formatting issue.
+
 ## Pipeline REPL (`pipeline/src/repl.ts`, `npm run repl` in `pipeline/`)
 
 Formalizes a pattern used repeatedly during this project's development: validating a new stat

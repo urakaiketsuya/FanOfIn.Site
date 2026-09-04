@@ -2,6 +2,7 @@ import { buildPrices, writePrices } from "./pricing/build.js";
 import { updatePriceHistory, writePriceHistory } from "./pricing/history.js";
 import { crawlEvents, type CrawlMode } from "./omnidex/crawler.js";
 import { buildOmnidexIndex, writeOmnidexData } from "./omnidex/build.js";
+import { buildVenueGeocodes, writeVenueGeocodes } from "./omnidex/geocode.js";
 import { listCachedBundles, type OmnidexEventBundle } from "./omnidex/cache.js";
 import { buildAnalysis } from "./analysis/build.js";
 import { publishVods } from "./curated/vods.js";
@@ -141,6 +142,10 @@ async function main() {
       console.log(
         `omnidex: published ${index.events.length} events, ${players.length} players, ${judges.length} judges, ${teams.length} team sightings`,
       );
+
+      const venues = await buildVenueGeocodes(index.events);
+      await writeVenueGeocodes(venues);
+      console.log(`omnidex: published ${venues.length} geocoded venues`);
     } catch (err) {
       console.error("omnidex pipeline failed", err);
       process.exitCode = 1;

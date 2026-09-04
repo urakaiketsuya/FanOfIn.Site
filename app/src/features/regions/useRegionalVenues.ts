@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useOmnidexIndex } from "../tournaments/data";
+import { useOmnidexIndex, useVenueGeocodes } from "../tournaments/data";
 import { regionKeyForCountry, type RegionGroupMode } from "../../lib/regions";
 
 export interface RegionalVenueEvent {
@@ -15,6 +15,9 @@ export interface RegionalVenueRow {
   eventCount: number;
   lastEventDate: string;
   events: RegionalVenueEvent[];
+  /** Present only when Nominatim resolved this venue's address (see pipeline/src/omnidex/geocode.ts) — most venues have this, but a venue with no/unresolvable address won't. */
+  lat?: number;
+  lng?: number;
 }
 
 export interface RegionalVenuesResult {
@@ -25,15 +28,19 @@ export interface RegionalVenuesResult {
 /**
  * Venues (Omnidex host records) hosting events in the selected region — grouped by `hostId`, same
  * "id, not name" join `EventDetail.tsx`'s own "More events at this venue" block already uses, since
- * some venues rename over time. Pure client-side pivot of the already-published Omnidex index; no
- * geocoding data exists anywhere in the pipeline, so this is a sortable list, not a map.
+ * some venues rename over time. Pure client-side pivot of the already-published Omnidex index,
+ * joined against the pipeline's geocoded venues.json (Nominatim, see pipeline/src/omnidex/geocode.ts)
+ * for lat/lng when available.
  */
 export function useRegionalVenues(mode: RegionGroupMode, selectedRegion: string | null): RegionalVenuesResult {
   const index = useOmnidexIndex();
+  const geocodes = useVenueGeocodes();
 
   return useMemo((): RegionalVenuesResult => {
     if (!index) return { loading: true, rows: [] };
     if (!selectedRegion) return { loading: false, rows: [] };
+
+    const coordsByHost = new Map(geocodes?.venues.map((v) => [v.hostId, v]) ?? []);
 
     const byHost = new Map<number, RegionalVenueRow>();
     for (const e of index.events) {
@@ -41,7 +48,17 @@ export function useRegionalVenues(mode: RegionGroupMode, selectedRegion: string 
       if (regionKeyForCountry(e.hostCountry, mode) !== selectedRegion) continue;
       let row = byHost.get(e.hostId);
       if (!row) {
-        row = { hostId: e.hostId, hostName: e.hostName, hostAddress: e.hostAddress, eventCount: 0, lastEventDate: e.date, events: [] };
+        const coords = coordsByHost.get(e.hostId);
+        row = {
+          hostId: e.hostId,
+          hostName: e.hostName,
+          hostAddress: e.hostAddress,
+          eventCount: 0,
+          lastEventDate: e.date,
+          events: [],
+          lat: coords?.lat,
+          lng: coords?.lng,
+        };
         byHost.set(e.hostId, row);
       }
       row.eventCount += 1;
@@ -54,5 +71,5 @@ export function useRegionalVenues(mode: RegionGroupMode, selectedRegion: string 
       .sort((a, b) => b.eventCount - a.eventCount);
 
     return { loading: false, rows };
-  }, [index, mode, selectedRegion]);
+  }, [index, geocodes, mode, selectedRegion]);
 }

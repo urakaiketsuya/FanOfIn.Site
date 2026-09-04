@@ -6,6 +6,7 @@ import { useRegionalChampions } from "./useRegionalChampions";
 import { useRegionalCardComposition, type RegionalCardRow } from "./useRegionalCardComposition";
 import { useRegionalKeywords, type RegionalKeywordRow } from "./useRegionalKeywords";
 import { useRegionalVenues } from "./useRegionalVenues";
+import VenueMap from "./VenueMap";
 import { useRegionDecodedDecks } from "./useRegionDecodedDecks";
 import RegionCompareView from "./RegionCompareView";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -339,8 +340,9 @@ export default function RegionsIndex() {
                 {venues.rows.length > 0 && (
                   <>
                     <p className="text-xs text-ctp-subtext0">
-                      Omnidex venue records with events in {selectedOption?.label} — grouped by venue id, not name, since some venues rename over time. No mapping data is published, so this is a list, not a map.
+                      Omnidex venue records with events in {selectedOption?.label} — grouped by venue id, not name, since some venues rename over time. Coordinates are geocoded from each venue's address (OpenStreetMap Nominatim) — not every venue resolves to a real address, so a venue can be missing from the map below while still listed.
                     </p>
+                    <VenueMap rows={venues.rows} />
                     <ul className="mt-3 space-y-3">
                       {venues.rows.map((v) => (
                         <li key={v.hostId} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2">

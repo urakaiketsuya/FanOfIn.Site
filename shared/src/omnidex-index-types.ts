@@ -65,6 +65,18 @@ export interface OmnidexIndexData {
   seasons: OmnidexSeasonSummary[];
 }
 
+/** One venue's geocoded coordinates, keyed by the same `hostId` join `OmnidexEventSummary` uses. Only venues Nominatim could resolve are published — a venue with an unresolvable/missing address just has no entry. */
+export interface OmnidexVenueGeocode {
+  hostId: number;
+  lat: number;
+  lng: number;
+}
+
+export interface OmnidexVenueGeocodeData {
+  generatedAt: string;
+  venues: OmnidexVenueGeocode[];
+}
+
 export interface OmnidexPlayerSummary {
   id: number;
   username: string;
