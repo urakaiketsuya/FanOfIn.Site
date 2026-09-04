@@ -62,7 +62,7 @@ export default function RandomFlavorFooter() {
             <img
               src={CHARACTER_CUTOUTS[cutoutName]}
               alt={cutoutName}
-              className="mx-auto h-40 w-auto object-contain shadow-[0_14px_18px_-8px_rgba(0,0,0,0.5)] transition-transform hover:scale-105"
+              className="mx-auto h-40 w-auto object-contain transition-transform hover:scale-105"
             />
           </Link>
         </div>
