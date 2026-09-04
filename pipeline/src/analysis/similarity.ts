@@ -1,7 +1,9 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import type { DeckSimilarityEntry, SimilarDeck } from "@gatcg/shared";
+import { weightedJaccard, type DeckSimilarityEntry, type SimilarDeck } from "@gatcg/shared";
+
+export { weightedJaccard };
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
 import { resolveCard } from "../cards/catalog.js";
 import type { AnalysisContext } from "./context.js";
@@ -54,30 +56,6 @@ interface DeckRef {
   player: number;
   championName: string;
   cardCounts: Map<string, number>;
-}
-
-/**
- * Weighted Jaccard (Ruzicka similarity) over each deck's card-copy multiset. Iterates the smaller
- * map and does direct lookups against the larger one, rather than building a `new Set([...a, ...b])`
- * union every call — that allocation was pure overhead paid millions of times across a champion
- * group, and this does the identical math without it.
- */
-export function weightedJaccard(a: Map<string, number>, b: Map<string, number>): number {
-  const [small, large] = a.size <= b.size ? [a, b] : [b, a];
-  let intersection = 0;
-  for (const [key, smallValue] of small) {
-    const largeValue = large.get(key);
-    if (largeValue === undefined) continue;
-    intersection += Math.min(smallValue, largeValue);
-  }
-  let aTotal = 0;
-  for (const v of a.values()) aTotal += v;
-  let bTotal = 0;
-  for (const v of b.values()) bTotal += v;
-  // union of a multiset max(a,b) summed over all keys == aTotal + bTotal - intersection (each
-  // shared key's min gets double-counted once in aTotal and once in bTotal, so subtract it back out once).
-  const union = aTotal + bTotal - intersection;
-  return union === 0 ? 0 : intersection / union;
 }
 
 /** Deterministic (not cryptographic) hash coefficients for MinHash — same seed every run so signatures are stable across machines, which matters for the persisted score cache. */

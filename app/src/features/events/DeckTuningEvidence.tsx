@@ -165,7 +165,7 @@ export default function DeckTuningEvidence({
                 {clusterSuggestions.length > 0
                   ? "Decks in this build that ran these cards tended to win more."
                   : `Other ${championName} decks that ran these cards tended to win more.`}{" "}
-                Correlational, not a guarantee.
+                <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link>
               </>
             }
           >

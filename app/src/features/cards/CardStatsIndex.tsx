@@ -164,7 +164,13 @@ export default function CardStatsIndex() {
     <PageLayout>
       <PageHeader
         title="Card Stats"
-        description={`Usage and win rate across every public decklist. "Adjusted" win rate is shrunk toward 50% proportional to sample size, so a card with 3 appearances at 100% doesn't outrank one with 200 at 65%. Add cards to the filter below to see what's played alongside them.`}
+        description={
+          <>
+            Usage and win rate across every public decklist. Add cards to the filter below to see what's played
+            alongside them. "Adjusted" win rate is shrunk toward 50% for small samples —{" "}
+            <Link to="/methodology#small-samples" className="text-ctp-blue hover:underline">learn more</Link>.
+          </>
+        }
         actions={
           <Link to="/cards" className="text-sm text-ctp-blue hover:underline">
             Browse the catalog &rarr;

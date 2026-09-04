@@ -98,7 +98,7 @@ export default function BuilderReviewPanel({
           <p className="text-[10px] text-ctp-subtext0">{simulatorMode ? `${simulatorMatchedCards} qualifying cards` : build.matchingDeckCount >= 30 ? "Strong sample" : build.matchingDeckCount >= 10 ? "Limited sample" : "Exploratory"}</p>
         </div>
         <div className="border-b border-ctp-surface1 px-3 py-2 sm:border-b-0 sm:border-r">
-          <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0" title="Win rate observed among matching decks in the selected data source — not a guaranteed outcome for this specific build.">Performance</p>
+          <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0" title="Win rate observed among matching decks — not guaranteed for this specific build.">Performance</p>
           <p className="mt-0.5 text-sm font-semibold text-ctp-text">{simulatorMode ? "Experimental" : build.conditionalWinRate === null ? "—" : `${(build.conditionalWinRate * 100).toFixed(0)}% observed`}</p>
           {build.baselineWinRate !== null && lockedCards.size > 0 && <p className="text-[10px] text-ctp-subtext0">{build.conditionalWinRate !== null && build.conditionalWinRate - build.baselineWinRate >= 0 ? "+" : ""}{build.conditionalWinRate === null ? "" : `${((build.conditionalWinRate - build.baselineWinRate) * 100).toFixed(1)}%`} vs. baseline</p>}
         </div>
@@ -307,8 +307,9 @@ export default function BuilderReviewPanel({
           <p className="mt-1 text-xs text-ctp-subtext0">
             This build isn't a real decklist yet, so this is proxied off {buildCounters.sourceDeck.championName ?? "the"} deck
             {buildCounters.sourceDeck.spiritName ? ` (${buildCounters.sourceDeck.spiritName})` : ""} closest to your current picks
-            ({(buildCounters.sourceDeck.similarity * 100).toFixed(0)}% similar) — correlational, not a guarantee, and it may not
-            hold once you finish the build.
+            ({(buildCounters.sourceDeck.similarity * 100).toFixed(0)}% similar), and it may not hold once you finish
+            the build.{" "}
+            <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link>
           </p>
           {buildCounters.clusterMatchups.length > 1 && (
             <div className="mt-3">

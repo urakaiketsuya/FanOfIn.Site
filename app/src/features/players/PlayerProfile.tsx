@@ -201,7 +201,7 @@ export default function PlayerProfile() {
               {rating.matches} matches
               {isProvisionalRating(rating.matches) && (
                 <span className="ml-1.5 text-xs text-ctp-yellow">
-                  (provisional — too few matches for the rating to have converged)
+                  (provisional — <Link to="/methodology#elo" className="hover:underline">learn more</Link>)
                 </span>
               )}
             </p>

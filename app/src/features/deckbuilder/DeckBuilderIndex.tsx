@@ -44,9 +44,11 @@ import { useBuilderCopyState } from "./controller/useBuilderCopyState";
 import BuilderCopyPanel from "./panels/BuilderCopyPanel";
 import BuilderBuildPanel from "./panels/BuilderBuildPanel";
 import BuilderReviewPanel from "./panels/BuilderReviewPanel";
+import BuilderTestPanel from "./panels/BuilderTestPanel";
+import { useDeckTestResult } from "../decks/useDeckTestResult";
 
-type BuilderTab = "build" | "review" | "stats" | "tools" | "buddies" | "copy" | "log";
-const TAB_KEYS: BuilderTab[] = ["build", "review", "stats", "tools", "buddies", "copy", "log"];
+type BuilderTab = "build" | "review" | "test" | "stats" | "tools" | "buddies" | "copy" | "log";
+const TAB_KEYS: BuilderTab[] = ["build", "review", "test", "stats", "tools", "buddies", "copy", "log"];
 
 type BuilderIntent = "seed" | "scratch";
 
@@ -894,6 +896,20 @@ export default function DeckBuilderIndex() {
     () => [...build.material, ...build.main].map((c) => ({ name: c.cardName, quantity: c.quantity })),
     [build.material, build.main],
   );
+  // "Test This Deck" — classifies the build-in-progress against the taxonomy and reports how that
+  // matched build has actually performed, its matchup spread, and how it wins. No deckId (this
+  // isn't a real decklist yet), so classification is a best guess against every cluster's centroid.
+  const deckCardCounts = useMemo(() => new Map(buildLines.map((l) => [l.name, l.quantity])), [buildLines]);
+  const deckTestNearestDecks = useMemo(
+    () =>
+      nearestDecks.map((d) => ({
+        deckId: d.deckId,
+        label: `${d.championName ?? "Unknown Champion"}${d.spiritName ? ` (${d.spiritName})` : ""}`,
+        similarity: d.similarity,
+      })),
+    [nearestDecks],
+  );
+  const { result: deckTestResult, loading: deckTestLoading } = useDeckTestResult({ deckCardCounts, cardsByName, nearestDecks: deckTestNearestDecks });
   const mainOnlyLines = useMemo(() => build.main.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.main]);
   const materialOnlyLines = useMemo(() => build.material.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.material]);
   const sideboardLines = useMemo(() => build.sideboard.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.sideboard]);
@@ -1222,7 +1238,8 @@ export default function DeckBuilderIndex() {
         <>
           {effectivePopulationSource === "simulator" && <div className="mt-2 rounded-lg border border-ctp-mauve/50 bg-ctp-mauve/10 px-3 py-2 text-xs text-ctp-subtext1">
             <span className="font-semibold text-ctp-mauve">Experimental:</span>{" "}
-            Clarent currently reports {simulatorSummary?.games ?? 0} game{simulatorSummary?.games === 1 ? "" : "s"} and {simulatorResult.matchedCards} catalog-resolved card sample{simulatorResult.matchedCards === 1 ? "" : "s"}. Simulator telemetry does not contain complete Champion-scoped decklists, so community construction supplies the legal shell; qualifying simulator rows only change card priority. No simulator evidence means the shell stays unchanged.
+            Clarent currently reports {simulatorSummary?.games ?? 0} game{simulatorSummary?.games === 1 ? "" : "s"} and {simulatorResult.matchedCards} catalog-resolved card sample{simulatorResult.matchedCards === 1 ? "" : "s"}. Community construction still supplies the legal shell — simulator rows only reorder card priority within it.{" "}
+            <Link to="/methodology#simulator-data" className="text-ctp-blue hover:underline">Learn more</Link>
           </div>}
 
           {isPending && <p role="status" className="mt-1 text-xs text-ctp-subtext0">Recalculating suggestions…</p>}
@@ -1261,6 +1278,7 @@ export default function DeckBuilderIndex() {
               tabs={[
                 { key: "build", label: "Build" },
                 { key: "review", label: reviewItemCount > 0 ? `Review & decide (${reviewItemCount})` : "Review & decide" },
+                { key: "test", label: "Test" },
                 { key: "stats", label: statsSignalCount > 0 ? `Stats (${statsSignalCount})` : "Stats" },
                 { key: "tools", label: "Advanced" },
                 { key: "buddies", label: "Buddy Cards" },
@@ -1381,6 +1399,17 @@ export default function DeckBuilderIndex() {
             />
           )}
 
+          <TabPanel baseId="deck-builder" tab="test" active={tab}>
+            <BuilderTestPanel
+              deckTestResult={deckTestResult}
+              loading={deckTestLoading}
+              cardsByName={cardsByName}
+              nearestDecks={nearestDecks}
+              nearestDeckCompareLink={nearestDeckCompareLink}
+              onLoadNearestDeck={loadNearestDeck}
+            />
+          </TabPanel>
+
           {tab === "stats" && (
             <div role="tabpanel" id="deck-builder-panel-stats" aria-labelledby="deck-builder-tab-stats">
               <StatsPanel
@@ -1473,8 +1502,16 @@ export default function DeckBuilderIndex() {
             <div className="mt-2 space-y-2">
               <DecklistCoverageNotice />
               <StaleDataNotice generatedAt={[popularityIndexData?.generatedAt, effectivePopulationSource === "simulator" ? simulatorSummary?.generatedAt : undefined]} />
-              <p>{effectivePopulationSource === "simulator" ? "Simulator ordering is an experimental overlay on a community-built legal shell. Telemetry is anonymous, sample-gated, and not Champion-scoped." : "Suggestions are correlations from public tournament decklists, not causal or predictive claims."}</p>
-              {build.hasQuantityOptimizations && <p>Starred quantities use global copy-count evidence only when at least 30 decks support a meaningful difference; each affected card shows its source and sample.</p>}
+              <p>
+                {effectivePopulationSource === "simulator" ? "Simulator ordering is an experimental overlay on a community-built legal shell." : "Suggestions are correlations from public tournament decklists, not causal or predictive claims."}{" "}
+                <Link to={effectivePopulationSource === "simulator" ? "/methodology#simulator-data" : "/methodology#classification"} className="text-ctp-blue hover:underline">Learn more</Link>
+              </p>
+              {build.hasQuantityOptimizations && (
+                <p>
+                  Starred quantities use global copy-count evidence only when at least 30 decks support a meaningful difference.{" "}
+                  <Link to="/methodology#small-samples" className="text-ctp-blue hover:underline">Learn more</Link>
+                </p>
+              )}
               <p>Validation does not cover {validation.unsupportedRules.join("; ")}.</p>
             </div>
           </details>

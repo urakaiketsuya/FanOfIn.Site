@@ -662,8 +662,9 @@ export default function CardDetail() {
             <>
               <p className="mt-1 text-xs text-ctp-subtext0">
                 Across {synergy.totalDecks} decks running {card.name}, cards that correlate with an even higher win rate
-                when also included — correlational, not causal, and different from "Most Used With" (that's ranked by
-                how often cards appear together; this is ranked by whether the pairing actually wins more).
+                when also included — different from "Most Used With" (that's ranked by how often cards appear
+                together; this is ranked by whether the pairing actually wins more).{" "}
+                <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link>
               </p>
               <CardImpactTable cards={synergy.cards} cardImages={synergyCardImages} withLabel="Win rate (with)" withoutLabel="Win rate (without)" />
             </>
@@ -678,8 +679,9 @@ export default function CardDetail() {
           {(!cardStat || cardStat.deckCount < MIN_SAMPLE_SIZE) && (card.references.length > 0 || card.referenced_by.length > 0) && (
             <Panel padding="sm" className="mt-2">
               <p className="text-xs text-ctp-subtext0">
-                Too few recorded decks for a trustworthy win rate yet — this card's own explicit references are a
-                more reliable signal in the meantime:
+                Too few recorded decks for a trustworthy win rate yet ({" "}
+                <Link to="/methodology#small-samples" className="text-ctp-blue hover:underline">learn more</Link>
+                ). This card's own explicit references are a more reliable signal in the meantime:
               </p>
               <div className="mt-2 space-y-2">
                 {card.references.length > 0 && (

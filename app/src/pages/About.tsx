@@ -790,6 +790,9 @@ export default function About() {
             Signing in is optional and is only needed for personal features such as saved decks, public profiles,
             and collection tracking.
           </p>
+          <Link to="/methodology" className="mt-3 inline-block text-sm text-ctp-blue hover:underline">
+            How the stats work &rarr;
+          </Link>
         </div>
       </section>
     </div>

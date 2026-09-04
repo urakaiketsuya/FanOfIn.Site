@@ -83,7 +83,7 @@ export default function SettingsIndex() {
           <ToggleRow label="Price" description="Cheapest current market price for this card." checked={prefs.visualPrice} onChange={prefs.setVisualPrice} />
           <ToggleRow label="Price trend" description="Recent change in that price, from the last ~30 days of published history." checked={prefs.visualPriceTrend} onChange={prefs.setVisualPriceTrend} />
           <ToggleRow label="Element/class tags" description="Small badges on the card art itself." checked={prefs.visualTags} onChange={prefs.setVisualTags} />
-          <ToggleRow label="Simulator games" description="Anonymous Clarent simulator telemetry for this card, where enough games exist — experimental and separate from tournament data." checked={prefs.visualSimulator} onChange={prefs.setVisualSimulator} />
+          <ToggleRow label="Simulator games" description="Anonymous Clarent simulator telemetry, where enough games exist — experimental, see /methodology." checked={prefs.visualSimulator} onChange={prefs.setVisualSimulator} />
           <ToggleRow label="Community usage" description="Share of all tracked community decks (any Champion) that include this card. Fetches an extra dataset the first time it's turned on, so it's off by default." checked={prefs.visualCommunity} onChange={prefs.setVisualCommunity} />
         </div>
       </Section>

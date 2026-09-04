@@ -385,7 +385,13 @@ export default function ArchetypeDetail() {
               className="mt-6"
               heading="compact"
               title="Card Impact"
-              description="Decks in this build with vs. without each card, and the win-rate difference — correlational, not a guarantee. Filter to Sideboard to see whether sideboard tech actually moves the needle."
+              description={
+                <>
+                  Decks in this build with vs. without each card, and the win-rate difference. Filter to Sideboard to
+                  see whether sideboard tech actually moves the needle.{" "}
+                  <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link>
+                </>
+              }
             >
               {clusterMatchups.length > 0 && (
                 <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
@@ -457,7 +463,8 @@ export default function ArchetypeDetail() {
                   <h3 className="text-sm font-semibold text-ctp-red uppercase tracking-wide">Cards that hurt you</h3>
                   <p className="mt-1 text-xs text-ctp-subtext0">
                     When {selectedMatchup.opponentClusterName} plays these (any section of their deck), your win rate
-                    against them tends to be worse — correlational, not a guarantee.
+                    against them tends to be worse.{" "}
+                    <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link>
                   </p>
                   <CardImpactTable
                     cards={selectedMatchup.opponentCards}
@@ -476,7 +483,8 @@ export default function ArchetypeDetail() {
                   </summary>
                   <p className="mt-1 text-xs text-ctp-subtext0">
                     For each card above, cards of your own that correlate with doing better specifically in the games
-                    where the opponent had it — correlational, not a guarantee.
+                    where the opponent had it.{" "}
+                    <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link>
                   </p>
                   <div className="mt-3 overflow-x-auto">
                     <table className="w-max min-w-full text-sm">

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { decodeCardLines, type Card, type DeckCardIndexData, type DeckPopularityIndexData } from "@gatcg/shared";
+import { decodeCardLines, weightedJaccard, type Card, type DeckCardIndexData, type DeckPopularityIndexData } from "@gatcg/shared";
 import { useDeckCardIndexData } from "../features/archetypes/data";
 import { useDeckPopularityIndexData } from "../features/topdecks/data";
 import { useCardCatalog } from "../features/cards/useCardCatalog";
@@ -85,29 +85,7 @@ export function combinedCardCounts(deck: DecodedDeck): Map<string, number> {
   return combined;
 }
 
-/**
- * Weighted Jaccard (Ruzicka similarity) over each side's card-copy multiset — verbatim port of
- * `pipeline/src/analysis/similarity.ts`'s function of the same name (plain TS, no dependencies,
- * so this is a straight copy; keep the two in sync by hand if the formula ever changes). Iterates
- * the smaller map and does direct lookups against the larger one, same reasoning as the pipeline
- * version: avoids allocating a union `Set` on every one of the ~57k comparisons callers do against
- * the full deck universe.
- */
-export function weightedJaccard(a: Map<string, number>, b: Map<string, number>): number {
-  const [small, large] = a.size <= b.size ? [a, b] : [b, a];
-  let intersection = 0;
-  for (const [key, smallValue] of small) {
-    const largeValue = large.get(key);
-    if (largeValue === undefined) continue;
-    intersection += Math.min(smallValue, largeValue);
-  }
-  let aTotal = 0;
-  for (const v of a.values()) aTotal += v;
-  let bTotal = 0;
-  for (const v of b.values()) bTotal += v;
-  const union = aTotal + bTotal - intersection;
-  return union === 0 ? 0 : intersection / union;
-}
+export { weightedJaccard };
 
 export interface AllDecodedDecks {
   decks: DecodedDeck[];

@@ -13,6 +13,7 @@ import { useCardsByNames } from "../events/useCardsByNames";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { useDeckWinConditions } from "./useDeckWinConditions";
 import DeckWinConditions from "./DeckWinConditions";
+import { useDeckTestResult } from "./useDeckTestResult";
 import DeckDecaySignals from "../events/DeckDecaySignals";
 import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
 import CardImpactTable from "../../components/CardImpactTable";
@@ -51,6 +52,7 @@ import PageLayout from "../../components/layout/PageLayout";
 import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
 import { InlineState, EmptyState } from "../../components/ui/ContentState";
+import MethodologyNote from "../../components/ui/MethodologyNote";
 
 type DeckTab = "decklist" | "composition" | "history" | "similar";
 
@@ -125,6 +127,14 @@ export default function DeckDetail() {
   const allNames = useMemo(() => [...(deck?.main ?? []), ...(deck?.material ?? [])].map((l) => l.name), [deck]);
   const cardsByName = useCardsByNames(allNames);
   const { interactions: winConditions } = useDeckWinConditions(allNames, cardsByName);
+  // "Similar Decks" is already its own tab on this page, so nearestDecks is left empty here — only
+  // classification/performance (this page's one genuinely new section) are read from the result.
+  const deckCardCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const line of [...(deck?.main ?? []), ...(deck?.material ?? [])]) counts.set(line.name, line.quantity);
+    return counts;
+  }, [deck]);
+  const { result: deckTestResult } = useDeckTestResult({ deckCardCounts, cardsByName, deckId: deck?.deckIds[0], nearestDecks: [] });
   const displayPrefs = useDecklistDisplayPrefs();
 
   // Precise, cluster-scoped "Cards that might help" (Phase 21) only covers the ~128 named-build
@@ -431,6 +441,66 @@ export default function DeckDetail() {
           {displayPrefs.metaGaps && <DeckDecaySignals decklist={decklist} cardsByName={cardsByName} />}
           <DeckCollectionTools decklist={decklist} cardsByName={cardsByName} source={`Tournament build: ${deck.championName ?? "Unknown Champion"}`} />
         </div>
+      )}
+
+      {tab === "decklist" && deckTestResult && deckTestResult.classification.status !== "unclassified" && deckTestResult.classification.cluster && deckTestResult.performance && (
+        <Panel padding="sm" className="mt-6">
+          <Section
+            heading="dense"
+            collapsible
+            defaultOpen={false}
+            title="Historical performance"
+            description="How this build's matched named archetype has actually performed across every recorded match — not a prediction for this exact decklist."
+          >
+            <p className="mt-2 text-xs text-ctp-subtext0">
+              Matches{" "}
+              <Link to={`/archetypes/${deckTestResult.classification.cluster.id}`} className="text-ctp-blue hover:underline">
+                {deckTestResult.classification.cluster.name}
+              </Link>{" "}
+              ({(deckTestResult.classification.similarity * 100).toFixed(0)}% similar{deckTestResult.classification.status === "borderline" ? ", borderline" : ""})
+            </p>
+            <p className="mt-1 text-xs text-ctp-subtext0">
+              {(deckTestResult.performance.winRate * 100).toFixed(0)}% avg win rate · {(deckTestResult.performance.topCutRate * 100).toFixed(0)}% top cut rate
+              {deckTestResult.performance.avgPlacement !== null && ` · avg placement #${deckTestResult.performance.avgPlacement.toFixed(0)}`}
+            </p>
+            <p className="mt-1 text-xs text-ctp-subtext0">
+              95% win-rate interval {(deckTestResult.performance.interval95.low * 100).toFixed(1)}–{(deckTestResult.performance.interval95.high * 100).toFixed(1)}%
+              {` across ${deckTestResult.performance.interval95.matches.toLocaleString()} matches`}
+              {` · ${deckTestResult.performance.deckCount} decks, ${deckTestResult.performance.playerCount} players, ${deckTestResult.performance.eventCount} events`}
+              {deckTestResult.performance.confidence === "emerging" ? " · emerging signal" : ""}
+            </p>
+            {deckTestResult.performance.trend && (
+              <p className="mt-1 text-xs text-ctp-subtext0">
+                {deckTestResult.performance.trend.previousSeasonName} → {deckTestResult.performance.trend.latestSeasonName}:{" "}
+                <span
+                  className={
+                    deckTestResult.performance.trend.playerCountChange > 0 ? "text-ctp-green" : deckTestResult.performance.trend.playerCountChange < 0 ? "text-ctp-red" : ""
+                  }
+                >
+                  {deckTestResult.performance.trend.playerCountChange > 0 ? "+" : ""}
+                  {deckTestResult.performance.trend.playerCountChange} players
+                </span>{" "}
+                ·{" "}
+                <span
+                  className={
+                    deckTestResult.performance.trend.winRateChangePct > 0 ? "text-ctp-green" : deckTestResult.performance.trend.winRateChangePct < 0 ? "text-ctp-red" : ""
+                  }
+                >
+                  {deckTestResult.performance.trend.winRateChangePct > 0 ? "+" : ""}
+                  {deckTestResult.performance.trend.winRateChangePct.toFixed(1)}pp win rate
+                </span>
+              </p>
+            )}
+            {deckTestResult.cautions.length > 0 && (
+              <ul className="mt-2 list-disc space-y-0.5 pl-4 text-xs text-ctp-subtext0">
+                {deckTestResult.cautions.map((c) => (
+                  <li key={c}>{c}</li>
+                ))}
+              </ul>
+            )}
+            <MethodologyNote anchor="classification">How this match and its confidence tier are determined.</MethodologyNote>
+          </Section>
+        </Panel>
       )}
 
       {tab === "decklist" && winConditions.length > 0 && (

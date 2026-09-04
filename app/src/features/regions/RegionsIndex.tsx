@@ -297,8 +297,8 @@ export default function RegionsIndex() {
                 {!cards.loading && (
                   <>
                     <p className="text-xs text-ctp-subtext0">
-                      Cards used more or less often in {selectedOption?.label} than in the overall meta — correlational,
-                      not a guarantee.
+                      Cards used more or less often in {selectedOption?.label} than in the overall meta.{" "}
+                      <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link>
                     </p>
                     <Section className="mt-4" heading="dense" title="Over-represented">
                       <CardLiftList rows={cards.overRepresented} sign="positive" />
@@ -318,7 +318,8 @@ export default function RegionsIndex() {
                   <>
                     <p className="text-xs text-ctp-subtext0">
                       Ability keywords (Ranged, Swift, Bulwark, ...) used more or less often in {selectedOption?.label}'s
-                      main+material decklists than in the overall meta — correlational, not a guarantee.
+                      main+material decklists than in the overall meta.{" "}
+                      <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link>
                     </p>
                     <Section className="mt-4" heading="dense" title="Over-represented">
                       <KeywordLiftList rows={keywords.overRepresented} sign="positive" />

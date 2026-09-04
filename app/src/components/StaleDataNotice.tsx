@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { isDataStale } from "../lib/dataFreshness";
 
 /** Surfaces the `docs/CALCULATIONS.md` "Pending regen" gap where it's actually visible to a
@@ -10,7 +11,8 @@ export default function StaleDataNotice({ generatedAt }: { generatedAt: (string 
     <p className="mt-2 text-xs text-ctp-yellow">
       Some of this page's data is from a pipeline run before a recent accuracy fix (archetype
       clustering, card-name matching) — a few entries may look slightly off until the site's data
-      is next regenerated.
+      is next regenerated.{" "}
+      <Link to="/methodology#coverage" className="text-ctp-blue hover:underline">Learn more</Link>
     </p>
   );
 }

@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useSimulatorSummaryData } from "./data";
+import { Link } from "react-router-dom";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
@@ -37,10 +38,10 @@ export default function SimulatorIndex() {
       <div className="mt-4 rounded-lg border border-ctp-peach bg-ctp-peach/10 px-4 py-3 text-sm text-ctp-text">
         <p className="font-semibold text-ctp-peach">Experimental — very early data</p>
         <p className="mt-1 text-ctp-subtext1">
-          This page is a first look at what the simulator pipeline publishes, not a finished feature. Everything
-          below is simulator play, a genuinely different population from real tournament results shown everywhere
-          else on this site — it is never blended into tournament win rates or Card Impact numbers. At this sample
-          size, none of it is meaningful yet; treat it as a preview of the data shape, not a signal to act on.
+          A first look at what the simulator pipeline publishes, not a finished feature — a separate population
+          from tournament results, and never blended into them. At this sample size, treat it as a preview of the
+          data shape, not a signal to act on.{" "}
+          <Link to="/methodology#simulator-data" className="text-ctp-blue hover:underline">Learn more</Link>
         </p>
       </div>
 

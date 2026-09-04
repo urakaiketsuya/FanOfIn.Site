@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import type { Card, CompositionWinRateData } from "@gatcg/shared";
 import CompositionChartGrid from "../../../components/CompositionChartGrid";
 import { computeDeckComposition, computeMemoryCostCurve, computeReserveCostCurve } from "../../../lib/deckIdentity";
@@ -55,7 +56,13 @@ export function CompositionSuggestionsSection({
         defaultOpen={false}
         onOpen={() => setOpened(true)}
         title="Composition suggestions"
-        description="Across every public main deck (not scoped to this Champion), win rate by what share of the deck each card type makes up — correlational, not causal, same as everywhere else on this site."
+        description={
+          <>
+            Across every public main deck (not scoped to this Champion), win rate by what share of the deck each
+            card type makes up.{" "}
+            <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link>
+          </>
+        }
       >
         {opened && <CompositionSuggestionsBody mainLines={mainLines} cardsByName={cardsByName} compositionWinRateData={compositionWinRateData} />}
       </Section>

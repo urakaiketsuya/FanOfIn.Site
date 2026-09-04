@@ -230,7 +230,7 @@ export default function BuilderBuildPanel({
           copy-count evidence (hover the count for its source).
         </p>
       )}
-      <div className={`mt-3 grid gap-4 sm:grid-cols-2 transition-opacity ${isPending ? "opacity-50" : ""}`}>
+      <div className={`mt-3 grid items-start gap-4 sm:grid-cols-2 transition-opacity ${isPending ? "opacity-50" : ""}`}>
         <Panel elevation={1} padding="sm">
           <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Material Deck ({materialTotal})</h2>
           {viewMode === "grid" ? (

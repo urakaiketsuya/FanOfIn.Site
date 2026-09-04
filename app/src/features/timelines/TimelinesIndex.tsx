@@ -3,6 +3,7 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageLayout from "../../components/layout/PageLayout";
 import Panel from "../../components/ui/Panel";
 import { InlineState, EmptyState } from "../../components/ui/ContentState";
+import BroadcastDataNotice from "../../components/BroadcastDataNotice";
 import { useBroadcastTimelines } from "./data";
 
 export default function TimelinesIndex() {
@@ -26,11 +27,7 @@ export default function TimelinesIndex() {
 
       <div className="mt-4 rounded-lg border border-ctp-peach bg-ctp-peach/10 px-4 py-3 text-sm text-ctp-text">
         <p className="font-semibold text-ctp-peach">Experimental — commentary-derived, not tournament data</p>
-        <p className="mt-1 text-ctp-subtext1">
-          Card names and life totals here are as called by broadcast casters and may contain transcription errors.
-          This is a genuinely different population from tournament results shown elsewhere on the site — it is never
-          blended into win rates, Elo, or Card Impact numbers.
-        </p>
+        <BroadcastDataNotice className="mt-1 text-sm text-ctp-subtext1" />
       </div>
 
       {!data && <InlineState className="mt-6">Loading…</InlineState>}

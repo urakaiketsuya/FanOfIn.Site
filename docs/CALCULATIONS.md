@@ -621,6 +621,52 @@ color, own section, never merged into `CardImpactTable`) — it carries no game-
 all, only a rules-text pattern match, which is categorically weaker than everything else this
 section sits beside.
 
+## Test This Deck (`app/src/lib/deckTestResult.ts`, `app/src/features/decks/useDeckTestResult.ts`)
+
+Assembles one `DeckTestResult` — "what historical build does this deck resemble, how has that
+population performed, what's its matchup spread, and how does it win" — for an arbitrary decklist
+(a real published deck, or a Guided Deck Builder build in progress with no `deckId` yet). Phase 1
+is assembly only: every field is a pass-through of an already-published, already-documented stat
+(`ArchetypeCluster`'s own win rate/Wilson interval/trend, `MatchupCardImpactData`'s per-matchup
+card findings, `computeDeckWinConditions` above) — nothing here recomputes a number that already
+has its own section in this document.
+
+**Classifying an arbitrary deck against the taxonomy** (`classifyDeckAgainstTaxonomy`): no existing
+function did this for a candidate deck that isn't already a taxonomy member. Rather than
+re-scanning the ~57k-deck universe to reconstruct each cluster's centroid (what
+`useArchetypeVariants.ts` does for one known cluster), it builds each cluster's centroid directly
+from its own already-published `mainDeckAverageCards`/`materialDeckAverageCards` (average copies
+per sighting) and scores the candidate's main+material multiset against every cluster with
+`weightedJaccard` (`shared/src/similarity.ts` — moved here from a hand-duplicated copy in
+`pipeline/src/analysis/similarity.ts` and `app/src/lib/decodedDecks.ts`, now imported by both).
+~116 clusters, one in-browser pass.
+
+A real deck with a known `CardImpactData.deckClusterIndex` entry skips this scoring entirely and
+uses that authoritative pipeline assignment instead — the pipeline clustered it against its own
+internal seed data, which is strictly more accurate than any client-side approximation from
+published centroids alone.
+
+**Status bands** reuse the taxonomy's own clustering cutoff (`CLUSTER_THRESHOLD = 0.45` in
+`archetypeTaxonomy.ts`, see "Archetype taxonomy" above) rather than a second invented threshold:
+`similarity >= 0.45` → `"matched"` (this deck would itself have qualified to join that cluster);
+`0 < similarity < 0.45` → `"borderline"` (closest available, but wouldn't have made the cut);
+`similarity === 0` → `"unclassified"` (no published cluster shares a single card). This is a new,
+first-pass banding choice — not yet validated the way `CLUSTER_THRESHOLD` itself was (see the
+"Threshold validation" note above) — open to tuning once real decklists have been run through it.
+`assignmentMargin` (best similarity minus second-best, across every scored cluster) is only
+reported for a best-guess classification; an authoritative `deckClusterIndex` match reports `null`
+since it isn't a scored guess with a runner-up.
+
+**Cautions** are plain-language strings derived from the fields already assembled — an
+`"unclassified"`/`"borderline"` status, an `"emerging"` (vs. `"established"`) cluster confidence, a
+single-event population, or every matchup lacking card-level findings (below
+`config.minBattleChartSampleSize`, see "Card Impact" above) — not a new multi-dimensional scoring
+system.
+
+No UI surfaces this report yet — `useDeckTestResult` is wired to the published datasets and
+covered by unit tests, but not consumed by any component. See the active-work plan doc for the
+follow-up UI phase.
+
 ## Guided Deck Builder (`app/src/features/deckbuilder/useDeckBuilderPopulation.ts`, `useSuggestedBuild.ts`)
 
 Assembles a suggested build for a Champion (+ optional Spirit filter) from real decks — not one

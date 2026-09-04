@@ -336,7 +336,8 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
           {tab === "cards" && (
             <>
               <p className="text-xs text-ctp-subtext0">
-                Cards used more in {labelA} than {labelB}, and vice versa — correlational, not a guarantee.
+                Cards used more in {labelA} than {labelB}, and vice versa.{" "}
+                <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link>
               </p>
               <div className="mt-3"><DivergingBarChart labelA={labelA} labelB={labelB} rows={cardChartRows} /></div>
               <Section className="mt-4" heading="dense" title={`More common in ${labelA}`}>
@@ -351,7 +352,8 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
           {tab === "keywords" && (
             <>
               <p className="text-xs text-ctp-subtext0">
-                Ability keywords used more in {labelA} than {labelB}, and vice versa — correlational, not a guarantee.
+                Ability keywords used more in {labelA} than {labelB}, and vice versa.{" "}
+                <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link>
               </p>
               <div className="mt-3"><DivergingBarChart labelA={labelA} labelB={labelB} rows={keywordChartRows} /></div>
               <Section className="mt-4" heading="dense" title={`More common in ${labelA}`}>

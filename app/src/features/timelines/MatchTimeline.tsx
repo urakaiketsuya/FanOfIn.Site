@@ -3,6 +3,7 @@ import type { Card } from "@gatcg/shared";
 import type { BroadcastTimelineBeat, BroadcastTimelineGame, BroadcastTimelineMatch, BroadcastTimelineTag } from "@gatcg/shared";
 import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
+import BroadcastDataNotice from "../../components/BroadcastDataNotice";
 import CardMentions from "./CardMentions";
 import { useCardsByMentions } from "./data";
 
@@ -89,11 +90,7 @@ export function MatchTimelineHeader({ match }: { match: BroadcastTimelineMatch }
     <div>
       <Panel tone="info" padding="md">
         <p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Broadcast commentary — not tournament data</p>
-        <p className="mt-1 text-sm text-ctp-subtext1">
-          Reconstructed from a cleaned VOD transcript, not tracked gameplay — card names and life totals are as called
-          by the casters and may contain minor transcription errors. Never blended into tournament win rates, Elo, or
-          Card Impact numbers.
-        </p>
+        <BroadcastDataNotice className="mt-1 text-sm text-ctp-subtext1" />
       </Panel>
 
       <div className="mt-4">

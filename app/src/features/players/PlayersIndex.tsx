@@ -136,7 +136,8 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
         <p className="mt-4 text-xs text-ctp-subtext0">
           {rows.length} rated player{rows.length === 1 ? "" : "s"}
           {" · "}
-          <span className="text-ctp-yellow">*</span> provisional — fewer than {PROVISIONAL_MATCH_THRESHOLD} recorded matches
+          <span className="text-ctp-yellow">*</span> provisional — fewer than {PROVISIONAL_MATCH_THRESHOLD} recorded matches ({" "}
+          <Link to="/methodology#elo" className="text-ctp-blue hover:underline">learn more</Link>)
         </p>
       )}
 

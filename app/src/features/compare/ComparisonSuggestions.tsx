@@ -116,6 +116,6 @@ export default function ComparisonSuggestions({ decks, decklists }: { decks: Com
       </div>}
     </>}
 
-    {selectedStats?.format !== "PANTHEON" && <p className="text-xs leading-5 text-ctp-overlay1">Tuning evidence is correlational and Bayesian-shrunk. It describes other decks using the same Champion; it does not prove that adding or removing a card will improve this list.</p>}
+    {selectedStats?.format !== "PANTHEON" && <p className="text-xs leading-5 text-ctp-overlay1">Tuning evidence describes other decks using the same Champion — it does not prove a change will improve this list. <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link></p>}
   </div>;
 }
