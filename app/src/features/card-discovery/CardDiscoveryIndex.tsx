@@ -37,7 +37,10 @@ export default function CardDiscoveryIndex() {
   );
   const spiritCard = cardsByName.get(spiritName);
   const identityElements = useMemo(() => computeIdentityElements(championCard, spiritCard), [championCard, spiritCard]);
-  const cardNames = useMemo(() => catalog.map((card) => card.name).sort(), [catalog]);
+  // Several distinct printings (e.g. draft-only "Nameless Champion" in every class pairing) share
+  // the same literal card name, so dedupe or React sees duplicate datalist-option keys — same fix
+  // DeckSearchByCards.tsx already applies to this identical hazard.
+  const cardNames = useMemo(() => Array.from(new Set(catalog.map((card) => card.name))).sort(), [catalog]);
   const contextCards = useMemo(() => [championCard, spiritCard, ...focusCards.map((name) => cardsByName.get(name))].filter((card): card is Card => card !== undefined), [championCard, spiritCard, focusCards, cardsByName]);
   const discoveries = useMemo(() => computeNewReleaseCards(catalog, contextCards, identityElements, new Set(contextCards.map((card) => card.name))), [catalog, contextCards, identityElements]);
 
