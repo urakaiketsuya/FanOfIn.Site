@@ -223,7 +223,7 @@ export default function BuilderReviewPanel({
 
           <div className="mt-5 grid gap-5 sm:grid-cols-2">
             {reviewGroups.unpairedSuggestions.length > 0 && (
-              <section>
+              <section className={viewMode === "grid" ? "sm:col-span-2" : undefined}>
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Suggested additions</h3>
                   <div className="flex gap-1" role="group" aria-label="Suggested additions display">
@@ -274,7 +274,7 @@ export default function BuilderReviewPanel({
               </section>
             )}
             {reviewGroups.unpairedRemovals.length > 0 && (
-              <section>
+              <section className={viewMode === "grid" ? "sm:col-span-2" : undefined}>
                 <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Cards to review</h3>
                 <p className="mt-1 text-xs text-ctp-subtext0">These user choices have meaningfully negative independent evidence; that does not prove they are wrong for this build.</p>
                 <ul className="mt-2 space-y-1.5">
