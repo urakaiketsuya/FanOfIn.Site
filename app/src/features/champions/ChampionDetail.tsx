@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useArchetypeData, useArchetypeTaxonomyData, useChampionTrendsData } from "../archetypes/data";
+import { useArchetypeData, useArchetypeTaxonomyData, useChampionTrendsData, useCompositionWinRateData, useSimilarityData } from "../archetypes/data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useHipsterData } from "../players/data";
 import { useOmnidexPlayers, useEventNameById } from "../tournaments/data";
@@ -26,7 +26,7 @@ const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
 
 type SpiritFilter = { kind: "all" } | { kind: "element"; element: string } | { kind: "spirit"; spiritName: string };
-type ChampionTab = "season" | "cards" | "builds" | "decks" | "bonus" | "regions";
+type ChampionTab = "season" | "cards" | "builds" | "decks" | "bonus" | "regions" | "similar";
 
 const TABS: { key: ChampionTab; label: string }[] = [
   { key: "season", label: "By Season" },
@@ -35,7 +35,10 @@ const TABS: { key: ChampionTab; label: string }[] = [
   { key: "decks", label: "Decks" },
   { key: "bonus", label: "Bonus Cards" },
   { key: "regions", label: "Regions" },
+  { key: "similar", label: "Similar Decks" },
 ];
+
+const MAX_SIMILAR_DECKS_SHOWN = 10;
 const TAB_KEYS = TABS.map((t) => t.key);
 
 function titleCase(s: string): string {
@@ -54,6 +57,8 @@ export default function ChampionDetail() {
   const eventNameById = useEventNameById();
   const hipsterData = useHipsterData();
   const playersData = useOmnidexPlayers();
+  const similarityData = useSimilarityData();
+  const compositionData = useCompositionWinRateData();
 
   // Named Spirits (e.g. "Kaze, Spirit of Wind") are tracked as their own Champion-like entry in a
   // separate list, not merged into `archetypes` — fall back to it so this page works for either.
@@ -137,6 +142,61 @@ export default function ChampionDetail() {
       .sort((a, b) => b.score - a.score)
       .slice(0, MAX_UNIQUE_DECKS_SHOWN);
   }, [hipsterData, championName]);
+
+  // Cross-links to real decks similar to any of this Champion's own instances, resolved against
+  // the already-loaded lean popularity index (deckId -> deckHash/championName) rather than the
+  // full decoded-deck universe DeckDetail.tsx's own Similar Decks tab needs — cheap enough to
+  // compute here since we only need a page link and a label, not the actual decklist. Verified
+  // against real data before shipping: an early version excluded same-Champion matches to bias
+  // toward cross-Champion shell crossover, but that turned out to filter out ~100% of real
+  // matches (Diao Chan: 0/596 checked matches were a different Champion) — the material/Champion
+  // section is itself part of the similarity signature, so a high-similarity match is almost
+  // always the same Champion. Kept as a plain "similar decks" list instead.
+  const similarDecks = useMemo(() => {
+    if (!similarityData || !popularityIndexData) return [];
+    const entryByDeckId = new Map(popularityIndexData.entries.map((e) => [e.deckId, e]));
+    const bestByHash = new Map<string, { hash: string; championName: string | null; eventName: string; score: number }>();
+    for (const entry of similarityData.decks) {
+      if (entry.championName !== championName) continue;
+      for (const match of entry.topMatches) {
+        if (match.deckId === entry.deckId) continue;
+        const target = entryByDeckId.get(match.deckId);
+        if (!target?.deckHash) continue;
+        const existing = bestByHash.get(target.deckHash);
+        if (!existing || match.score > existing.score) {
+          bestByHash.set(target.deckHash, {
+            hash: target.deckHash,
+            championName: target.championName,
+            eventName: eventNameById.get(target.eventId) ?? `Event #${target.eventId}`,
+            score: match.score,
+          });
+        }
+      }
+    }
+    return Array.from(bestByHash.values())
+      .sort((a, b) => b.score - a.score)
+      .slice(0, MAX_SIMILAR_DECKS_SHOWN);
+  }, [similarityData, popularityIndexData, championName, eventNameById]);
+
+  // A compact "which composition sweet spot wins the most" summary, one row per card type — the
+  // best-win-rate share-of-deck bucket for each, distinct from /cards/stats' own per-type toggle
+  // view (which shows every bucket for one type at a time, not a cross-type comparison).
+  const compositionBestByType = useMemo(() => {
+    if (!compositionData) return [];
+    const byType = new Map<string, typeof compositionData.stats>();
+    for (const stat of compositionData.stats) {
+      const list = byType.get(stat.type) ?? [];
+      list.push(stat);
+      byType.set(stat.type, list);
+    }
+    const rows: { type: string; bucket: string; adjustedWinRate: number; deckCount: number }[] = [];
+    for (const [type, stats] of byType) {
+      if (stats.length < 2) continue;
+      const best = stats.reduce((a, b) => (b.adjustedWinRate > a.adjustedWinRate ? b : a));
+      rows.push({ type, bucket: best.bucket, adjustedWinRate: best.adjustedWinRate, deckCount: best.deckCount });
+    }
+    return rows.sort((a, b) => b.adjustedWinRate - a.adjustedWinRate);
+  }, [compositionData]);
 
   const allTopCardNames = useMemo(() => {
     if (!displayedTopCards) return [];
@@ -442,6 +502,63 @@ export default function ChampionDetail() {
                   </table>
                 </div>
               )}
+            </Section>
+          )}
+
+          {tab === "similar" && (
+            <Section
+              className="mt-6"
+              heading="compact"
+              title="Similar Decks"
+              description={<>Real decks with a similar card shell to a {championName} build.</>}
+            >
+              {similarDecks.length === 0 ? (
+                <InlineState className="mt-4 text-sm">No similar decks found yet.</InlineState>
+              ) : (
+                <ul className="mt-2 space-y-1">
+                  {similarDecks.map((s) => (
+                    <li key={s.hash} className="flex flex-wrap items-center gap-1.5 text-sm">
+                      <Link to={`/decks/${s.hash}`} className="text-ctp-text hover:text-ctp-blue">
+                        {s.championName ?? "Unknown Champion"} &middot; {s.eventName}
+                      </Link>
+                      <span className="text-xs text-ctp-subtext0">({(s.score * 100).toFixed(0)}% similar)</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </Section>
+          )}
+
+          {tab === "similar" && compositionBestByType.length > 0 && (
+            <Section
+              className="mt-6"
+              heading="compact"
+              title="Deck composition guide"
+              description="Across all decks, the best-performing share-of-main-deck bucket for each card type — a cross-type summary, not scoped to this Champion."
+              actions={<Link to="/cards/stats" className="text-xs text-ctp-blue hover:underline">Full breakdown by type &rarr;</Link>}
+            >
+              <div className="mt-2 overflow-x-auto">
+                <table className="w-max min-w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
+                      <th className="py-1 pr-6">Type</th>
+                      <th className="py-1 pr-6">Best share of main deck</th>
+                      <th className="py-1 pr-6">Win rate</th>
+                      <th className="py-1">Decks</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
+                    {compositionBestByType.map((r) => (
+                      <tr key={r.type}>
+                        <td className="py-1.5 pr-6 whitespace-nowrap text-ctp-text">{r.type}</td>
+                        <td className="py-1.5 pr-6 text-ctp-subtext1">{r.bucket}</td>
+                        <td className="py-1.5 pr-6 font-semibold text-ctp-text">{(r.adjustedWinRate * 100).toFixed(0)}%</td>
+                        <td className="py-1.5 text-ctp-subtext1">{r.deckCount}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </Section>
           )}
         </>
