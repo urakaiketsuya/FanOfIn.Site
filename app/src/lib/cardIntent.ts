@@ -77,11 +77,21 @@ const FILLER = "(?:[A-Za-z]+\\s+){0,2}";
  */
 const BANISH_FROM_GAP = "(?:\\s+\\S+){0,4}";
 
+/**
+ * A trigger like "banish a Warrior champion card" restricts the target to champions of that
+ * subtype — a narrower pool than "any Warrior [ally/token/card]" — which this subtype-only
+ * matching system has no way to represent (it tracks subtypes, not the type+subtype combination).
+ * Verified against the real corpus: only one card (Break the Line) has this "<subtype> champion
+ * card" shape, and excluding it here is what it takes to stop a non-champion card sharing the same
+ * subtype (e.g. Eye of Argus, a Warrior-subtype Item) from being falsely credited as a valid target.
+ */
+const NOT_CHAMPION_QUALIFIED = "(?!\\s*champion)";
+
 function validatedSubtypeRegexes(s: string): RegExp[] {
   return [
-    new RegExp(`\\bsacrifice\\s+(?:a|an|\\d+|any amount of)\\s+${FILLER}${s}s?\\b`, "i"),
-    new RegExp(`\\bcontrols?\\s+(?:a|an|\\d+|at least \\d+)\\s+${FILLER}${s}s?\\b`, "i"),
-    new RegExp(`\\bbanish\\s+(?:a|an|\\d+)\\s+${FILLER}${s}s?\\b${BANISH_FROM_GAP}\\s+from\\s+(?:your|the)\\s+\\w+`, "i"),
+    new RegExp(`\\bsacrifice\\s+(?:a|an|\\d+|any amount of)\\s+${FILLER}${s}s?\\b${NOT_CHAMPION_QUALIFIED}`, "i"),
+    new RegExp(`\\bcontrols?\\s+(?:a|an|\\d+|at least \\d+)\\s+${FILLER}${s}s?\\b${NOT_CHAMPION_QUALIFIED}`, "i"),
+    new RegExp(`\\bbanish\\s+(?:a|an|\\d+)\\s+${FILLER}${s}s?\\b${NOT_CHAMPION_QUALIFIED}${BANISH_FROM_GAP}\\s+from\\s+(?:your|the)\\s+\\w+`, "i"),
   ];
 }
 
@@ -94,9 +104,9 @@ function validatedSubtypeRegexes(s: string): RegExp[] {
  */
 function experimentalSubtypeRegexes(s: string): RegExp[] {
   return [
-    new RegExp(`\\breveal\\s+(?:a|an|\\d+)\\s+${FILLER}${s}s?\\b`, "i"),
-    new RegExp(`\\bdiscard\\s+(?:a|an|\\d+)\\s+${FILLER}${s}s?\\b`, "i"),
-    new RegExp(`\\breturn\\s+(?:a|an|\\d+)\\s+${FILLER}${s}s?\\b[^.]*\\bfrom\\s+your\\s+discard\\s+pile\\b`, "i"),
+    new RegExp(`\\breveal\\s+(?:a|an|\\d+)\\s+${FILLER}${s}s?\\b${NOT_CHAMPION_QUALIFIED}`, "i"),
+    new RegExp(`\\bdiscard\\s+(?:a|an|\\d+)\\s+${FILLER}${s}s?\\b${NOT_CHAMPION_QUALIFIED}`, "i"),
+    new RegExp(`\\breturn\\s+(?:a|an|\\d+)\\s+${FILLER}${s}s?\\b${NOT_CHAMPION_QUALIFIED}[^.]*\\bfrom\\s+your\\s+discard\\s+pile\\b`, "i"),
   ];
 }
 
