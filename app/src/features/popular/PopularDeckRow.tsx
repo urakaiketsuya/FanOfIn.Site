@@ -9,6 +9,7 @@ import { useCardsByNames } from "../events/useCardsByNames";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useEventNameById } from "../tournaments/data";
 import { shortHash } from "../../lib/hash";
+import { championNameToSlug } from "../../lib/championSlug";
 import type { PopularDeck } from "./useDeckPopularity";
 import Section from "../../components/ui/Section";
 import Button from "../../components/ui/Button";
@@ -106,7 +107,7 @@ export default function PopularDeckRow({
         <div className="min-w-0 flex-1">
           {deck.championName ? (
             <Link
-              to={`/champions/${encodeURIComponent(deck.championName)}`}
+              to={`/champions/${championNameToSlug(deck.championName)}`}
               className="font-medium text-ctp-text hover:text-ctp-blue"
             >
               {deck.championName}

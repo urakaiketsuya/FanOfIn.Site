@@ -9,6 +9,7 @@ import { useAchievementsData } from "../achievements/data";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useChampionCardImages } from "./useChampionCardImages";
 import PlayerEventDecklistRow from "./PlayerEventDecklistRow";
+import { championNameToSlug } from "../../lib/championSlug";
 import EventRow from "../tournaments/EventRow";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
@@ -322,7 +323,7 @@ export default function PlayerProfile() {
               return (
                 <CardHoverPreview key={c.name} image={card?.editions[0]?.image} alt={c.name}>
                   <Link
-                    to={`/champions/${encodeURIComponent(c.name)}`}
+                    to={`/champions/${championNameToSlug(c.name)}`}
                     className="flex items-center gap-2 text-sm hover:text-ctp-blue"
                   >
                     {card?.editions[0] ? (

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import type { ArchetypeSummary, ChampionTrend } from "@gatcg/shared";
 import Surface from "../../components/ui/Surface";
+import { championNameToSlug } from "../../lib/championSlug";
 
 const WIDTH = 720;
 const HEIGHT = 390;
@@ -47,7 +48,7 @@ export default function ChampionMetaMap({ champions, trends }: { champions: Arch
           const px = x(latest.shareOfSeason * 100);
           const py = y(latest.avgWinRate * 100);
           return (
-            <Link key={champion.signature} to={`/champions/${encodeURIComponent(champion.signature)}`}>
+            <Link key={champion.signature} to={`/champions/${championNameToSlug(champion.signature)}`}>
               <g className="cursor-pointer">
                 <circle cx={px} cy={py} r={radius(latest.deckCount)} fill="var(--color-ctp-blue)" fillOpacity="0.42" stroke="var(--color-ctp-blue)" strokeWidth="1.5">
                   <title>{`${champion.signature}: ${(latest.shareOfSeason * 100).toFixed(1)}% share, ${(latest.avgWinRate * 100).toFixed(1)}% win rate, ${latest.deckCount.toLocaleString()} decks`}</title>

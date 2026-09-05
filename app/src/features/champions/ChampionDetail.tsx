@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { championNameToSlug, slugToChampionName } from "../../lib/championSlug";
 import { useArchetypeData, useArchetypeTaxonomyData, useChampionTrendsData, useCompositionWinRateData, useSimilarityData } from "../archetypes/data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useHipsterData } from "../players/data";
@@ -47,7 +48,7 @@ function titleCase(s: string): string {
 
 export default function ChampionDetail() {
   const { name = "" } = useParams<{ name: string }>();
-  const championName = decodeURIComponent(name);
+  const championName = slugToChampionName(name);
   useDocumentTitle(championName, `${championName} deck builds, win rates, and season trends in Grand Archive TCG.`);
 
   const archetypeData = useArchetypeData();
@@ -228,6 +229,7 @@ export default function ChampionDetail() {
             title={champion.signature}
             eyebrow={<Link to="/champions" className="hover:underline">&larr; All Champions</Link>}
             description={<>{champion.classes.join("/")} · {champion.elements.join("/")} · <strong className="font-semibold text-ctp-text">{champion.deckCount.toLocaleString()}</strong> decks across {champion.eventCount.toLocaleString()} events · <strong className="font-semibold text-ctp-text">{(champion.avgWinRate * 100).toFixed(0)}%</strong> average win rate</>}
+            actions={<Link to={`/champions/${championNameToSlug(championName)}/synergy`} className="text-xs text-ctp-blue hover:underline">Synergy view &rarr;</Link>}
           />
 
           {cutouts.length > 0 && (

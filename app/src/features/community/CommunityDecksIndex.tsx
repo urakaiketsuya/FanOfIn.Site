@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { DeckFormat } from "@gatcg/shared";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import { championNameToSlug } from "../../lib/championSlug";
 import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
@@ -57,7 +58,7 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
         label: formatChampionName(b.key),
         value: b.deckCount,
         valueLabel: `${(b.percentOfDecks * 100).toFixed(1)}%`,
-        href: `/champions/${encodeURIComponent(formatChampionName(b.key))}`,
+        href: `/champions/${championNameToSlug(formatChampionName(b.key))}`,
       })),
     [popularity],
   );

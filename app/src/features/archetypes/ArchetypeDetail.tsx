@@ -13,6 +13,7 @@ import CardImpactTable from "../../components/CardImpactTable";
 import StaleDataNotice from "../../components/StaleDataNotice";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
+import { championNameToSlug } from "../../lib/championSlug";
 import Tabs from "../../components/ui/Tabs";
 import { formatUsd } from "../../lib/format";
 import { buildCompareLink } from "../compare/deepLink";
@@ -229,7 +230,7 @@ export default function ArchetypeDetail() {
             )}
           </h1>
           <p className="mt-1 text-sm text-ctp-subtext1">
-            <Link to={`/champions/${encodeURIComponent(cluster.championName)}`} className="text-ctp-blue hover:underline">
+            <Link to={`/champions/${championNameToSlug(cluster.championName)}`} className="text-ctp-blue hover:underline">
               {cluster.championName}
             </Link>{" "}
             · {cluster.playerCount} player{cluster.playerCount === 1 ? "" : "s"} · {cluster.deckCount} deck
@@ -263,7 +264,7 @@ export default function ArchetypeDetail() {
                 .filter((b) => b.championName !== cluster.championName)
                 .map((b, i, arr) => (
                   <span key={b.championName}>
-                    <Link to={`/champions/${encodeURIComponent(b.championName)}`} className="text-ctp-blue hover:underline">
+                    <Link to={`/champions/${championNameToSlug(b.championName)}`} className="text-ctp-blue hover:underline">
                       {b.championName}
                     </Link>{" "}
                     ({b.playerCount}p){i < arr.length - 1 ? ", " : ""}
@@ -678,7 +679,7 @@ export default function ArchetypeDetail() {
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <div className="text-sm text-ctp-text">
                             {v.championName ? (
-                              <Link to={`/champions/${encodeURIComponent(v.championName)}`} className="text-ctp-blue hover:underline">
+                              <Link to={`/champions/${championNameToSlug(v.championName)}`} className="text-ctp-blue hover:underline">
                                 {v.championName}
                               </Link>
                             ) : (

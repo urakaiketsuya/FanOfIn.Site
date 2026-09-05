@@ -6,6 +6,7 @@ import EventRow from "./EventRow";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
+import { championNameToSlug } from "../../lib/championSlug";
 import Tabs from "../../components/ui/Tabs";
 import { PRODUCTS } from "../products/data";
 import PageLayout from "../../components/layout/PageLayout";
@@ -134,7 +135,7 @@ export default function SeasonDetail() {
                   {seasonMeta.champions.map((c) => (
                     <tr key={c.championName}>
                       <td className="py-1.5 pr-3 whitespace-nowrap">
-                        <Link to={`/champions/${encodeURIComponent(c.championName)}?tab=season`} className="text-ctp-text hover:text-ctp-blue">
+                        <Link to={`/champions/${championNameToSlug(c.championName)}?tab=season`} className="text-ctp-text hover:text-ctp-blue">
                           {c.championName}
                         </Link>
                       </td>

@@ -7,6 +7,7 @@ import { useCardsByNames } from "../events/useCardsByNames";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import { championNameToSlug } from "../../lib/championSlug";
 import ChampionMetaMap from "./ChampionMetaMap";
 import PageHeader from "../../components/ui/PageHeader";
 import DataTable from "../../components/ui/DataTable";
@@ -80,7 +81,7 @@ export default function ChampionsIndex() {
                 <tr key={c.signature}>
                   <td className="w-12 py-1.5 pr-6">
                     <CardHoverPreview image={card?.editions[0]?.image} alt={c.signature}>
-                      <Link to={`/champions/${encodeURIComponent(c.signature)}`}>
+                      <Link to={`/champions/${championNameToSlug(c.signature)}`}>
                         {card?.editions[0] ? (
                           <CardImage
                             image={card.editions[0].image}
@@ -98,7 +99,7 @@ export default function ChampionsIndex() {
                       {c.elements.filter((element) => element !== "NORM").map((element) => (
                         <ElementIcon key={element} element={element} size={17} />
                       ))}
-                      <Link to={`/champions/${encodeURIComponent(c.signature)}`} className="text-ctp-text hover:text-ctp-blue">
+                      <Link to={`/champions/${championNameToSlug(c.signature)}`} className="text-ctp-text hover:text-ctp-blue">
                         {c.signature}
                       </Link>
                     </span>
@@ -149,7 +150,7 @@ export default function ChampionsIndex() {
                     <tr key={s.signature}>
                       <td className="w-12 py-1.5 pr-6">
                         <CardHoverPreview image={card?.editions[0]?.image} alt={s.signature}>
-                          <Link to={`/champions/${encodeURIComponent(s.signature)}`}>
+                          <Link to={`/champions/${championNameToSlug(s.signature)}`}>
                             {card?.editions[0] ? (
                               <CardImage
                                 image={card.editions[0].image}
@@ -167,7 +168,7 @@ export default function ChampionsIndex() {
                           {s.elements.filter((element) => element !== "NORM").map((element) => (
                             <ElementIcon key={element} element={element} size={17} />
                           ))}
-                          <Link to={`/champions/${encodeURIComponent(s.signature)}`} className="text-ctp-text hover:text-ctp-blue">
+                          <Link to={`/champions/${championNameToSlug(s.signature)}`} className="text-ctp-text hover:text-ctp-blue">
                             {s.signature}
                           </Link>
                         </span>

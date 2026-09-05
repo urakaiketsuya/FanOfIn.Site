@@ -86,7 +86,7 @@ const FEATURES: FeatureGroup[] = [
       "Named Spirit companions tracked with full Champion-style stats of their own",
       "Bonus Cards tab: every card with an effect that specifically triggers or improves for this Champion",
     ],
-    example: { to: "/champions/Guo%20Jia", label: "Guo Jia" },
+    example: { to: "/champions/Guo-Jia", label: "Guo Jia" },
   },
   {
     title: "Archetypes",

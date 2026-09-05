@@ -8,6 +8,7 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import { InlineState } from "../../components/ui/ContentState";
 import { formatUsd } from "../../lib/format";
+import { championNameToSlug } from "../../lib/championSlug";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 import ArchetypeMetaMap from "./ArchetypeMetaMap";
 import PageLayout from "../../components/layout/PageLayout";
@@ -441,7 +442,7 @@ export default function ArchetypesIndex() {
                   </span>
                 </td>
                 <td className="py-1.5 pr-6 whitespace-nowrap">
-                  <Link to={`/champions/${encodeURIComponent(c.championName)}`} className="text-ctp-subtext1 hover:text-ctp-blue">
+                  <Link to={`/champions/${championNameToSlug(c.championName)}`} className="text-ctp-subtext1 hover:text-ctp-blue">
                     {c.championName}
                   </Link>
                   {c.otherChampions.length > 0 && (

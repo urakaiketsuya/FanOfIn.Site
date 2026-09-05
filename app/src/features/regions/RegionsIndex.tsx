@@ -12,6 +12,7 @@ import RegionCompareView from "./RegionCompareView";
 import { useCardsByNames } from "../events/useCardsByNames";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import { championNameToSlug } from "../../lib/championSlug";
 import { useTabParam } from "../../lib/useTabParam";
 import { formatUsd } from "../../lib/format";
 import type { RegionGroupMode } from "../../lib/regions";
@@ -238,7 +239,7 @@ export default function RegionsIndex() {
                               </Link>
                             </td>
                             <td className="py-1.5 pr-6 whitespace-nowrap">
-                              <Link to={`/champions/${encodeURIComponent(r.championName)}`} className="text-ctp-subtext1 hover:text-ctp-blue">
+                              <Link to={`/champions/${championNameToSlug(r.championName)}`} className="text-ctp-subtext1 hover:text-ctp-blue">
                                 {r.championName}
                               </Link>
                             </td>
@@ -275,7 +276,7 @@ export default function RegionsIndex() {
                         {champions.rows.map((r) => (
                           <tr key={r.championName}>
                             <td className="py-1.5 pr-6 whitespace-nowrap">
-                              <Link to={`/champions/${encodeURIComponent(r.championName)}`} className="text-ctp-text hover:text-ctp-blue">
+                              <Link to={`/champions/${championNameToSlug(r.championName)}`} className="text-ctp-text hover:text-ctp-blue">
                                 {r.championName}
                               </Link>
                             </td>

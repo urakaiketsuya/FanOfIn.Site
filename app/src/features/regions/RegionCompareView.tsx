@@ -8,6 +8,7 @@ import { useRegionDecodedDecks } from "./useRegionDecodedDecks";
 import { useCardsByNames } from "../events/useCardsByNames";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { formatUsd } from "../../lib/format";
+import { championNameToSlug } from "../../lib/championSlug";
 import type { RegionOption } from "./useRegionalDecks";
 import DivergingBarChart, { type DivergingBarRow } from "../../components/DivergingBarChart";
 import FilterBar from "../../components/ui/FilterBar";
@@ -203,7 +204,7 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
     label: r.championName,
     valueA: r.shareA,
     valueB: r.shareB,
-    href: `/champions/${encodeURIComponent(r.championName)}`,
+    href: `/champions/${championNameToSlug(r.championName)}`,
   })), [championRows]);
   const cardChartRows = useMemo<DivergingBarRow[]>(() => cardDiff.largestDifferences.map((r) => ({ key: r.name, label: r.name, valueA: r.rateA, valueB: r.rateB })), [cardDiff]);
   const keywordChartRows = useMemo<DivergingBarRow[]>(() => keywordDiff.largestDifferences.map((r) => ({ key: r.name, label: r.name, valueA: r.rateA, valueB: r.rateB })), [keywordDiff]);
@@ -275,7 +276,7 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
                             </Link>
                           </td>
                           <td className="py-1.5 pr-6 whitespace-nowrap">
-                            <Link to={`/champions/${encodeURIComponent(r.championName)}`} className="text-ctp-subtext1 hover:text-ctp-blue">
+                            <Link to={`/champions/${championNameToSlug(r.championName)}`} className="text-ctp-subtext1 hover:text-ctp-blue">
                               {r.championName}
                             </Link>
                           </td>
@@ -315,7 +316,7 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
                       {championRows.map((r) => (
                         <tr key={r.championName}>
                           <td className="py-1.5 pr-6 whitespace-nowrap">
-                            <Link to={`/champions/${encodeURIComponent(r.championName)}`} className="text-ctp-text hover:text-ctp-blue">
+                            <Link to={`/champions/${championNameToSlug(r.championName)}`} className="text-ctp-text hover:text-ctp-blue">
                               {r.championName}
                             </Link>
                           </td>
