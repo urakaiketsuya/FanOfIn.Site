@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import type { CollectionEntry, DeckFormat } from "@gatcg/shared";
+import { buildSpiritCanonicalNames, type CollectionEntry, type DeckFormat } from "@gatcg/shared";
 import { useCommunityBlendedCardInclusion, useCommunityBlendedCoOccurrence, useCommunityCardInclusion, useCommunityCoOccurrence } from "../../community/data";
 import { useDeckPopularityIndexData } from "../../topdecks/data";
 import { useArchetypeTaxonomyData, useCardImpactData, useCardQuantityStatsData, useCompositionWinRateData, useMatchupCardImpactData } from "../../archetypes/data";
@@ -9,7 +9,7 @@ import { useDeckPriceByName } from "../../pricing/useDeckPriceByName";
 import { useAllDecodedDecks } from "../../../lib/decodedDecks";
 import { useDebouncedValue } from "../../../lib/useDebouncedValue";
 import { accountApi } from "../../../lib/accountApi";
-import { buildSpiritCanonicalNames, useDeckBuilderPopulation } from "../useDeckBuilderPopulation";
+import { useDeckBuilderPopulation } from "../useDeckBuilderPopulation";
 
 /** External evidence gateway for the builder. It owns retrieval and source fallback policy, not selections or recommendation logic. */
 export function useDeckBuilderData({ championName, format, includeDecodedDecks }: { championName: string | null; format: DeckFormat; includeDecodedDecks: boolean }) {

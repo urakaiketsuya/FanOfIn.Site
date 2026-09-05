@@ -1,13 +1,12 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import type { Card } from "@gatcg/shared";
+import { buildSpiritCanonicalNames, type Card } from "@gatcg/shared";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import PageHeader from "../../components/ui/PageHeader";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { computeIdentityElements } from "../deckbuilder/useSuggestedBuild";
 import { computeNewReleaseCards } from "../deckbuilder/newReleaseCards";
-import { buildSpiritCanonicalNames } from "../deckbuilder/useDeckBuilderPopulation";
 import PageLayout from "../../components/layout/PageLayout";
 import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";

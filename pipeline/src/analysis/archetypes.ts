@@ -1,4 +1,4 @@
-import type { ArchetypeData, ArchetypeElementBreakdown, ArchetypeSpiritBreakdown, ArchetypeSummary, BattleChartEntry, TopCardsBySection } from "@gatcg/shared";
+import { buildSpiritCanonicalNames, type ArchetypeData, type ArchetypeElementBreakdown, type ArchetypeSpiritBreakdown, type ArchetypeSummary, type BattleChartEntry, type TopCardsBySection } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
 import type { CardSignature } from "../cards/catalog.js";
 import { tallySectionCounts, topCardsFromCounts, type DeckSignature, type SectionCardCount } from "./decklists.js";
@@ -144,6 +144,13 @@ export function computeArchetypeAnalysis(
   const archetypeAccum = new Map<string, ArchetypeAccum>();
   const namedSpiritAccum = new Map<string, ArchetypeAccum>();
   const battleAccum = new Map<string, BattleChartEntry>();
+  // Folds named-alter Spirit prints (e.g. "Aithne, Spirit of Fire") into their base "Spirit of
+  // Fire" population for the per-Champion Spirit breakdown below — without this, the Champion
+  // Synergy page's Spirit filter shows every named alter as its own separate, thin option instead
+  // of joining the shared base population it's mechanically identical to. `namedSpiritAccum`
+  // below is intentionally exempt: it exists specifically to track named Spirits as their own
+  // distinct identity, so it must keep the raw (uncanonicalized) name.
+  const spiritCanonicalNames = buildSpiritCanonicalNames(Array.from(ctx.cardIndex.values()));
 
   for (const bundle of bundles) {
     if ("error" in bundle.decklists) continue;
@@ -166,10 +173,11 @@ export function computeArchetypeAnalysis(
         accumulateDeck(a, sig, bundle.id, player, winRate);
 
         if (sig.spiritName) {
-          const spiritBucket = a.spirits.get(sig.spiritName) ?? newBucket();
+          const canonicalSpiritName = spiritCanonicalNames.get(sig.spiritName) ?? sig.spiritName;
+          const spiritBucket = a.spirits.get(canonicalSpiritName) ?? newBucket();
           tallyIntoBucket(spiritBucket, sig);
-          a.spirits.set(sig.spiritName, spiritBucket);
-          a.spiritElements.set(sig.spiritName, sig.spiritElement);
+          a.spirits.set(canonicalSpiritName, spiritBucket);
+          a.spiritElements.set(canonicalSpiritName, sig.spiritElement);
 
           if (sig.spiritElement) {
             const elementBucket = a.elementBuckets.get(sig.spiritElement) ?? newBucket();

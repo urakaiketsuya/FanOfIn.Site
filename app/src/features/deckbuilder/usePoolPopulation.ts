@@ -44,13 +44,15 @@ export function usePoolPopulation(
   championCard: Card | undefined,
   cardsByName: Map<string, Card>,
   archetypeTaxonomyData: ArchetypeTaxonomyData | undefined,
+  /** Named-alter Spirit prints (e.g. "Aithne, Spirit of Fire") -> base name ("Spirit of Fire"), same map `DeckBuilderIndex.tsx` already keeps `spiritFilter` itself canonicalized against — needed here too since `DecodedDeck.spiritName` is the raw per-deck name, not canonicalized. */
+  spiritCanonicalNames: Map<string, string>,
 ): PoolPopulationResult {
   return useMemo((): PoolPopulationResult => {
     if (pool === null) return { rows: [], label: "" };
 
     if (pool === "spiritAnyChampion") {
       if (!spiritFilter) return { rows: [], label: "Pick a Spirit to use this pool." };
-      const rows = decks.filter((d) => d.spiritName === spiritFilter).map(decodedDeckToRow);
+      const rows = decks.filter((d) => d.spiritName !== null && (spiritCanonicalNames.get(d.spiritName) ?? d.spiritName) === spiritFilter).map(decodedDeckToRow);
       return { rows, label: `Everyone who ran ${spiritFilter}, any Champion (${rows.length} decks)` };
     }
 
@@ -91,5 +93,5 @@ export function usePoolPopulation(
     const deckIdSet = new Set(best.deckIds);
     const rows = decks.filter((d) => deckIdSet.has(d.deckId)).map(decodedDeckToRow);
     return { rows, label: `Borrowed from ${best.name} (${best.championName}, ${rows.length} decks)` };
-  }, [pool, decks, championName, spiritFilter, championCard, cardsByName, archetypeTaxonomyData]);
+  }, [pool, decks, championName, spiritFilter, championCard, cardsByName, archetypeTaxonomyData, spiritCanonicalNames]);
 }
