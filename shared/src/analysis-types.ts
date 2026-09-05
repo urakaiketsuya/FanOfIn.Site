@@ -99,6 +99,8 @@ export interface ArchetypeSpiritBreakdown {
   spiritElement: string | null;
   deckCount: number;
   topCards: TopCardsBySection;
+  /** `topCards.main`, regrouped by the card's own primary type (e.g. "ALLY", "ATTACK") and independently capped per type — so a type with fewer total appearances (e.g. Domain) isn't crowded out of the flat top-N by a more numerous one (e.g. Ally). Keyed by type name; absent/empty types are omitted. */
+  mainByType: Record<string, PlayerTopCard[]>;
 }
 
 /** Top cards aggregated across every Spirit sharing one element — coarser than `spirits`. */
@@ -106,6 +108,8 @@ export interface ArchetypeElementBreakdown {
   element: string;
   deckCount: number;
   topCards: TopCardsBySection;
+  /** See `ArchetypeSpiritBreakdown.mainByType`. */
+  mainByType: Record<string, PlayerTopCard[]>;
 }
 
 /**
@@ -124,6 +128,8 @@ export interface ArchetypeSummary {
   sampleDecks: ArchetypeSampleDeck[];
   /** Most-played cards within this champion's decks specifically — capped per section, not the full list. */
   topCards: TopCardsBySection;
+  /** See `ArchetypeSpiritBreakdown.mainByType`. */
+  mainByType: Record<string, PlayerTopCard[]>;
   /** Same breakdown, sliced per Spirit companion card — a champion's Spirit pick can drastically change deck composition. Sorted by deckCount desc; empty if no deck had an identifiable Spirit. */
   spirits: ArchetypeSpiritBreakdown[];
   /** Same breakdown, sliced per Spirit element (coarser than `spirits`, groups e.g. "Spirit of Water" and "Spirit of Fortuitous Water" together). Sorted by deckCount desc. */
@@ -631,6 +637,40 @@ export interface StrategyArchetype {
   confidence: "established" | "emerging";
 }
 
+/**
+ * Champion-agnostic counterpart to `StrategyArchetype`: groups builds purely by shared main-deck
+ * package (the same >=60% `mainDefiningCards` overlap rule), without requiring a common plurality
+ * Champion. Experimental and additive — `clusters`/`strategyArchetypes` are computed exactly as
+ * before and this never overwrites them. Currently only consumed by the Champion Synergy page's
+ * Archetypes section, in place of a raw per-Champion build listing.
+ */
+export interface EngineArchetype {
+  id: string;
+  name: string;
+  /** The largest member build's cluster id — a click-through target, since this layer has no detail page of its own yet. */
+  seedBuildId: string;
+  buildIds: string[];
+  /** Every Champion at least one member build was played under, sorted by playerCount descending. */
+  championBreakdown: { championName: string; deckCount: number; playerCount: number }[];
+  /** Main+material strategy-card package shared across member builds (Champion/Spirit identity cards excluded), weighted by their deck sightings. Unlike `StrategyArchetype.definingCards`, this isn't main-deck-only. */
+  definingCards: { name: string; prevalence: number }[];
+  deckCount: number;
+  playerCount: number;
+  eventCount: number;
+  avgWinRate: number;
+  confidence: "established" | "emerging";
+}
+
+/**
+ * An `EngineArchetype` whose defining cards include at least one card currently banned in
+ * Standard — the package can no longer legally be built as-is, so it's kept out of the live
+ * `engineArchetypes` list rather than presented as a currently-viable package.
+ */
+export interface HistoricalEngineArchetype extends EngineArchetype {
+  /** Which of this package's defining cards are currently banned — the reason it's historical. */
+  bannedCards: string[];
+}
+
 export interface ArchetypeClusterSeasonStats {
   seasonId: number;
   seasonName: string;
@@ -656,6 +696,10 @@ export interface ArchetypeTaxonomyData {
   materialArchetypes: MaterialArchetype[];
   /** Package-level strategy families; `clusters` remain the concrete builds within them. */
   strategyArchetypes: StrategyArchetype[];
+  /** Champion-agnostic counterpart to `strategyArchetypes` — see `EngineArchetype` doc comment. Currently-playable packages only; see `historicalEngineArchetypes` for ones a ban has retired. */
+  engineArchetypes: EngineArchetype[];
+  /** `engineArchetypes` entries retired by a Standard ban on one of their defining cards — kept as a separate, explicitly historical dataset rather than mixed into the live list. */
+  historicalEngineArchetypes: HistoricalEngineArchetype[];
   /** Coverage of all visible deck sightings by a published cluster, including attached singleton variants. */
   coverage: { classifiedDeckCount: number; totalDeckCount: number; classificationRate: number };
   /** Retired archetype id -> current id, preserving previously shared archetype URLs across rebuilds. */

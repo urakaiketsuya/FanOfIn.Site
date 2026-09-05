@@ -1,7 +1,7 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import type { CardSearchResponse } from "@gatcg/shared";
+import type { CardLegality, CardSearchResponse } from "@gatcg/shared";
 import { fetchJson, sleep } from "../lib/http.js";
 
 const BASE_URL = "https://api.gatcg.com";
@@ -25,6 +25,8 @@ export interface CardSignature {
   speed?: boolean | null;
   /** Raw rules text (markdown-bolded keywords) — needed for `computeKeywordComposition` in @gatcg/shared. */
   effect: string | null;
+  /** Keyed by format (e.g. "STANDARD", "PANTHEON"); a format's `limit: 0` means banned in that format. Optional/absent on a stale on-disk cache from before this field shipped or a synthetic test fixture — always read with optional chaining. Used to keep currently-unplayable (banned-card) archetypes out of the live taxonomy — see archetypeTaxonomy.ts's historical-archetype split. */
+  legality?: CardLegality | null;
   /**
    * Set prefix + collector number per printing — the precise join key into data/prices.json's
    * priceKey(), instead of matching TCGPlayer's own product name string (see loadPriceByName in
@@ -62,6 +64,7 @@ async function fetchFullCatalog(): Promise<CardSignature[]> {
         power: card.power,
         speed: card.speed,
         effect: card.effect,
+        legality: card.legality,
         editions: card.editions.map((e) => ({ setPrefix: e.set.prefix, collectorNumber: e.collector_number, releaseDate: e.set.release_date })),
       });
     }
@@ -76,7 +79,7 @@ async function fetchFullCatalog(): Promise<CardSignature[]> {
 export async function loadCardCatalog(): Promise<CardSignature[]> {
   try {
     const cached = JSON.parse(await readFile(CACHE_PATH, "utf-8")) as CardCatalogCache;
-    if (cached.cards[0]?.cost_memory !== undefined && Date.now() - new Date(cached.fetchedAt).getTime() < MAX_CACHE_AGE_MS) {
+    if (cached.cards[0]?.cost_memory !== undefined && cached.cards[0]?.legality !== undefined && Date.now() - new Date(cached.fetchedAt).getTime() < MAX_CACHE_AGE_MS) {
       return cached.cards;
     }
   } catch {
