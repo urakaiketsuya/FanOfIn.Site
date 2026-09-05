@@ -57,6 +57,7 @@ const ArchetypeCompare = lazy(() => import("./features/archetypes/ArchetypeCompa
 const BattleChart = lazy(() => import("./features/archetypes/BattleChart"));
 const ChampionsIndex = lazy(() => import("./features/champions/ChampionsIndex"));
 const ChampionDetail = lazy(() => import("./features/champions/ChampionDetail"));
+const ChampionSynergy = lazy(() => import("./features/champions/ChampionSynergy"));
 const CompareIndex = lazy(() => import("./features/compare/CompareIndex"));
 const BrowseDecksIndex = lazy(() => import("./features/decks/BrowseDecksIndex"));
 const DeckDetail = lazy(() => import("./features/decks/DeckDetail"));
@@ -129,6 +130,7 @@ export default function AppRoutes() {
         <Route path="/top-decks" element={<TopDecksRedirect />} />
         <Route path="/champions" element={<ChampionsIndex />} />
         <Route path="/champions/:name" element={<ChampionDetail />} />
+        <Route path="/champions/:name/synergy" element={<ChampionSynergy />} />
         <Route path="/compare" element={<CompareIndex />} />
         <Route path="/popular-decks" element={<PopularDecksRedirect />} />
         <Route path="/decks" element={<BrowseDecksIndex />} />
