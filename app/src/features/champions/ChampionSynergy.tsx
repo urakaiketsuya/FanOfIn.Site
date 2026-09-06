@@ -50,6 +50,18 @@ interface LinkedCardStatSources {
   fields: VisualFieldVisibility;
 }
 
+/** Same badge/tooltip as CardDetail.tsx's Intent Cards list — a shared visual vocabulary for "broader trigger, not yet checked against the full card corpus" rather than a validated connection. */
+function ExperimentalBadge() {
+  return (
+    <span
+      className="shrink-0 rounded-full border border-ctp-yellow px-1.5 text-[10px] text-ctp-yellow"
+      title="Broader trigger, not yet checked against the full card corpus"
+    >
+      experimental
+    </span>
+  );
+}
+
 function CardImpactRow({ entry, clusterName }: { entry: CardImpactEntry; clusterName: string }) {
   return (
     <div className="mt-0.5 flex min-w-0 items-center justify-between gap-2 text-ctp-subtext1">
@@ -76,7 +88,10 @@ function LinkedCardRow({ combo, stats }: { combo: NewReleaseCombo; stats: Linked
       </div>
       <div className="mt-0.5 flex min-w-0 items-center justify-between gap-2 text-ctp-subtext1">
         <span className="shrink-0">Connection</span>
-        <span className="truncate text-right text-ctp-text" title={combo.via}>{combo.via}</span>
+        <span className="flex min-w-0 items-center justify-end gap-1">
+          <span className="truncate text-right text-ctp-text" title={combo.via}>{combo.via}</span>
+          {combo.tier === "experimental" && <ExperimentalBadge />}
+        </span>
       </div>
       {impact && <CardImpactRow entry={impact.entry} clusterName={impact.clusterName} />}
       <CardStatRows
@@ -118,7 +133,10 @@ function NewReleaseComboFooter({ combos, stats }: { combos: NewReleaseCombo[]; s
       </div>
       <div className="mt-0.5 flex min-w-0 items-center justify-between gap-2 text-ctp-subtext1">
         <span className="shrink-0">Connection</span>
-        <span className="truncate text-right text-ctp-text" title={first.via}>{first.via}</span>
+        <span className="flex min-w-0 items-center justify-end gap-1">
+          <span className="truncate text-right text-ctp-text" title={first.via}>{first.via}</span>
+          {first.tier === "experimental" && <ExperimentalBadge />}
+        </span>
       </div>
       {firstImpact && <CardImpactRow entry={firstImpact.entry} clusterName={firstImpact.clusterName} />}
       <CardStatRows
