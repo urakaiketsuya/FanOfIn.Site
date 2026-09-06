@@ -10,11 +10,12 @@ interface NavLinkItem { to: string; label: string }
 interface NavGroup { label: string; paths: string[]; links: NavLinkItem[] }
 
 const NAV_GROUPS: NavGroup[] = [
-  { label: "Cards", paths: ["/cards", "/champions", "/archetypes"], links: [{ to: "/cards", label: "Browse Cards" }, { to: "/cards/stats", label: "Card Stats" }, { to: "/cards/packages", label: "Card Packages" }, { to: "/cards?tab=sets", label: "Sets" }, { to: "/champions", label: "Champions" }, { to: "/archetypes", label: "Archetypes" }] },
-  { label: "Decks", paths: ["/decks", "/decklists", "/shared-decks", "/community-decks", "/users", "/my-decks", "/collection", "/official-decks", "/pantheon"], links: [{ to: "/decks", label: "Tournament Decks" }, { to: "/shared-decks", label: "Community Decks" }, { to: "/my-decks", label: "My Decks" }, { to: "/collection", label: "My Collection" }, { to: "/official-decks", label: "Official Decks" }, { to: "/pantheon", label: "Pantheon Decks" }, { to: "/community-decks", label: "Deck Trends" }] },
+  { label: "Cards", paths: ["/cards", "/champions"], links: [{ to: "/cards", label: "Browse Cards" }, { to: "/cards/stats", label: "Card Stats" }, { to: "/cards/packages", label: "Card Packages" }, { to: "/champions", label: "Champions" }] },
+  { label: "Decks", paths: ["/decks", "/decklists", "/shared-decks", "/community-decks", "/users", "/official-decks", "/pantheon"], links: [{ to: "/decks", label: "Tournament Decks" }, { to: "/shared-decks", label: "Community Decks" }, { to: "/official-decks", label: "Official Decks" }, { to: "/pantheon", label: "Pantheon Decks" }, { to: "/community-decks", label: "Deck Trends" }] },
   { label: "Competition", paths: ["/tournaments", "/seasons", "/players", "/teams", "/timelines"], links: [{ to: "/tournaments", label: "Tournaments" }, { to: "/seasons", label: "Seasons" }, { to: "/players", label: "Players" }, { to: "/players?tab=judges", label: "Judges" }, { to: "/teams", label: "Teams" }, { to: "/timelines", label: "Match Timelines" }] },
   { label: "Tools", paths: ["/compare", "/deck-builder", "/card-discovery", "/looking-for", "/regions", "/simulator", "/diao-review"], links: [{ to: "/compare", label: "Compare Decks" }, { to: "/deck-builder", label: "Deck Builder" }, { to: "/card-discovery", label: "Find New Cards" }, { to: "/looking-for", label: "Looking For" }, { to: "/regions", label: "Regional Analysis" }, { to: "/simulator", label: "Simulator" }, { to: "/diao-review", label: "DIAO Score Review" }] },
-  { label: "More", paths: ["/achievements", "/changelog", "/media-kit", "/settings", "/methodology"], links: [{ to: "/achievements", label: "Achievements" }, { to: "/media-kit", label: "Media Kit" }, { to: "/changelog", label: "Changelog" }, { to: "/methodology", label: "Methodology" }, { to: "/settings", label: "Display Settings" }] },
+  { label: "More", paths: ["/achievements", "/changelog", "/media-kit", "/methodology"], links: [{ to: "/achievements", label: "Achievements" }, { to: "/media-kit", label: "Media Kit" }, { to: "/changelog", label: "Changelog" }, { to: "/methodology", label: "Methodology" }] },
+  { label: "Account", paths: ["/my-decks", "/collection", "/settings"], links: [{ to: "/my-decks", label: "My Decks" }, { to: "/collection", label: "My Collection" }, { to: "/settings", label: "Settings" }] },
 ];
 
 function linkClass(active: boolean) {
@@ -64,7 +65,6 @@ export default function App() {
             })}
           </nav>
           <div className="flex items-center gap-2">
-            <Link to="/account" aria-current={location.pathname === "/account" ? "page" : undefined} className={`hidden rounded-md border px-3 py-1.5 text-sm md:block ${location.pathname === "/account" ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`}>Account</Link>
             <button type="button" onClick={() => setMenuOpen((value) => !value)} aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} aria-controls="mobile-nav" className="rounded-md border border-ctp-surface1 p-1.5 text-ctp-subtext1 hover:text-ctp-text md:hidden">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">{menuOpen ? <path d="M5 5l10 10M15 5L5 15" strokeLinecap="round" /> : <path d="M3 5h14M3 10h14M3 15h14" strokeLinecap="round" />}</svg>
             </button>
@@ -81,7 +81,6 @@ export default function App() {
             {open && <div id={groupId} className="grid gap-1 pb-2">{group.links.map((link) => <Link key={link.to} to={link.to} aria-current={isActive(link.to) ? "page" : undefined} className={linkClass(isActive(link.to))} onClick={() => setMenuOpen(false)}>{link.label}</Link>)}</div>}
           </section>;
         })}</div>
-        <Link to="/account" aria-current={location.pathname === "/account" ? "page" : undefined} className={`mt-2 ${linkClass(location.pathname === "/account")}`} onClick={() => setMenuOpen(false)}>Account</Link>
       </nav>}
     </header>
     <main><AppRoutes /></main>

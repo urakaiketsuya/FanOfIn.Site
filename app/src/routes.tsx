@@ -34,6 +34,13 @@ function JudgesRedirect() {
   return <Navigate to="/players?tab=judges" replace />;
 }
 
+// Champion Synergy became the default champion page; the old dedicated /synergy path now just
+// points at the same URL its content already lives at, preserving any existing bookmarks/links.
+function ChampionSynergyRedirect() {
+  const { name = "" } = useParams<{ name: string }>();
+  return <Navigate to={`/champions/${name}`} replace />;
+}
+
 // Lazy-loaded so each route's JS is a separate chunk, fetched on demand — previously the whole
 // app (every page) shipped as one bundle regardless of which page a visitor actually opened.
 const CardsBrowse = lazy(() => import("./features/cards/CardsBrowse"));
@@ -129,8 +136,9 @@ export default function AppRoutes() {
         <Route path="/battle-chart" element={<BattleChart />} />
         <Route path="/top-decks" element={<TopDecksRedirect />} />
         <Route path="/champions" element={<ChampionsIndex />} />
-        <Route path="/champions/:name" element={<ChampionDetail />} />
-        <Route path="/champions/:name/synergy" element={<ChampionSynergy />} />
+        <Route path="/champions/:name" element={<ChampionSynergy />} />
+        <Route path="/champions/:name/stats" element={<ChampionDetail />} />
+        <Route path="/champions/:name/synergy" element={<ChampionSynergyRedirect />} />
         <Route path="/compare" element={<CompareIndex />} />
         <Route path="/popular-decks" element={<PopularDecksRedirect />} />
         <Route path="/decks" element={<BrowseDecksIndex />} />

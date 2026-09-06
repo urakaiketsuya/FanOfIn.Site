@@ -171,7 +171,7 @@ function NewReleaseComboFooter({ combos, stats }: { combos: NewReleaseCombo[]; s
 export default function ChampionSynergy() {
   const { name = "" } = useParams<{ name: string }>();
   const championName = slugToChampionName(name);
-  useDocumentTitle(`${championName} Synergy`, `Card synergies, most-used cards, and archetypes for ${championName} in Grand Archive TCG.`);
+  useDocumentTitle(championName, `Card synergies, most-used cards, and archetypes for ${championName} in Grand Archive TCG.`);
 
   const archetypeData = useArchetypeData();
   const taxonomyData = useArchetypeTaxonomyData();
@@ -407,9 +407,10 @@ export default function ChampionSynergy() {
         const body = (communityInclusionByName: Map<string, CardInclusionEntry> | undefined) => (
         <>
           <PageHeader
-            title={`${champ.signature} Synergy`}
-            eyebrow={<Link to={`/champions/${championNameToSlug(championName)}`}>&larr; {champ.signature}</Link>}
+            title={champ.signature}
+            eyebrow={<Link to="/champions">&larr; All Champions</Link>}
             description={<>{champ.classes.join("/")} · {champ.elements.join("/")} · <strong className="font-semibold text-ctp-text">{champ.deckCount.toLocaleString()}</strong> decks across {champ.eventCount.toLocaleString()} events</>}
+            actions={<Link to={`/champions/${championNameToSlug(championName)}/stats`} className="text-xs text-ctp-blue hover:underline">Full stats &amp; season history &rarr;</Link>}
           />
 
           {championPrints.length > 1 && (
