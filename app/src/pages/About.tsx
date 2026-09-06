@@ -401,10 +401,10 @@ export default function About() {
         <div className="relative mx-auto max-w-3xl px-4 py-14 text-center sm:py-20">
           <h1 className="text-4xl font-bold text-ctp-blue sm:text-5xl">Fan of Insight</h1>
           <p className="mt-4 text-lg text-ctp-subtext1">
-            Find a proven Grand Archive deck, adapt it to your cards, and track what you can build.
+            "Oh, it's like EDHRecs, but better."
           </p>
           <p className="mx-auto mt-2 max-w-2xl text-sm text-ctp-subtext0">
-            Tournament results, community lists, collection tools, and data-informed deck building in one place.
+            Build better decks using the same info the pros have.
           </p>
 
           <div className="mt-6 flex items-center justify-center gap-1.5">

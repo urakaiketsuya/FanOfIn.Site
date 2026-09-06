@@ -54,7 +54,7 @@ export default function ChampionsIndex() {
 
   return (
     <PageLayout data-component="ChampionsIndex">
-      <PageHeader title="Champions" description="Compare current metagame position, tournament performance, season movement, and the builds defining each Champion." />
+      <PageHeader title="Champions" description="See the top cards for each champion." />
 
       {!data && <InlineState className="mt-6">Loading…</InlineState>}
 
