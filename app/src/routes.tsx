@@ -70,6 +70,7 @@ const BrowseDecksIndex = lazy(() => import("./features/decks/BrowseDecksIndex"))
 const DeckDetail = lazy(() => import("./features/decks/DeckDetail"));
 const PantheonDeckDetail = lazy(() => import("./features/decks/PantheonDeckDetail"));
 const DeckBuilderIndex = lazy(() => import("./features/deckbuilder/DeckBuilderIndex"));
+const DeckReviewIndex = lazy(() => import("./features/deck-review/DeckReviewIndex"));
 const CardDiscoveryIndex = lazy(() => import("./features/card-discovery/CardDiscoveryIndex"));
 const RegionsIndex = lazy(() => import("./features/regions/RegionsIndex"));
 const PackOpener = lazy(() => import("./features/packs/PackOpener"));
@@ -145,6 +146,7 @@ export default function AppRoutes() {
         <Route path="/decks/:hash" element={<DeckDetail />} />
         <Route path="/pantheon/decks/:id" element={<PantheonDeckDetail />} />
         <Route path="/deck-builder" element={<DeckBuilderIndex />} />
+        <Route path="/deck-review" element={<DeckReviewIndex />} />
         <Route path="/card-discovery" element={<CardDiscoveryIndex />} />
         <Route path="/regions" element={<RegionsIndex />} />
         <Route path="/packs/:prefix" element={<PackOpener />} />

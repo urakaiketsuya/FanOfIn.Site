@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import type { DeckFormat } from "@gatcg/shared";
-import { legacyMapsToSelections, saveBuilderSession } from "../persistence/builderPersistence";
+import { BUILDER_SESSION_KEY, legacyMapsToSelections, saveBuilderSession } from "../persistence/builderPersistence";
 import type { BuilderWorkflowState } from "./useBuilderWorkflowState";
 
-export function useBuilderSessionPersistence(format: DeckFormat, state: BuilderWorkflowState): void {
+export function useBuilderSessionPersistence(format: DeckFormat, state: BuilderWorkflowState, storageKey: string = BUILDER_SESSION_KEY): void {
   useEffect(() => {
     saveBuilderSession(sessionStorage, {
       selection: {
@@ -20,6 +20,6 @@ export function useBuilderSessionPersistence(format: DeckFormat, state: BuilderW
         maybeboard: legacyMapsToSelections(state.maybeboard, new Map()),
       },
       changeLog: state.changeLog,
-    });
-  }, [format, state]);
+    }, storageKey);
+  }, [format, state, storageKey]);
 }

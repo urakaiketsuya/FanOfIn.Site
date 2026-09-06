@@ -34,6 +34,19 @@ export interface ReviewGroups {
   unpairedSuggestions: SuggestedCard[];
 }
 
+/**
+ * Every card the engine would place if nothing were treated as already-decided — the auto-filled
+ * Main/Material/Sideboard entries that aren't locked yet (`SuggestedCard.locked === false`), plus
+ * the ordinary leftover-ranked `suggestions`. The full Guided Deck Builder never needs this (its
+ * auto-fill already IS the deck, so only genuine leftovers go through Review) — this exists for a
+ * suggestions-only surface where nothing is committed until the viewer explicitly accepts it, so an
+ * unlocked auto-fill pick is exactly as much "just a suggestion" as an unplaced leftover one.
+ */
+export function derivePendingSuggestions(build: SuggestedBuild): SuggestedCard[] {
+  const unplacedFromFill = [...build.main, ...build.material, ...build.sideboard].filter((card) => !card.locked);
+  return [...unplacedFromFill, ...build.suggestions];
+}
+
 export function deriveReviewGroups(removals: SuggestedCard[], suggestions: SuggestedCard[]): ReviewGroups {
   const available = [...suggestions];
   const pairs: ReviewGroups["pairs"] = [];

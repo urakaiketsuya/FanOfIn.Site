@@ -17,7 +17,7 @@ const NAV_ENTRIES: NavEntry[] = [
   { kind: "link", to: "/champions", label: "Top Champions" },
   { kind: "group", label: "Decks", paths: ["/decks", "/shared-decks"], links: [{ to: "/decks", label: "Tournament Decks" }, { to: "/shared-decks", label: "Community Decks" }] },
   { kind: "group", label: "Competition", paths: ["/seasons", "/players", "/teams", "/timelines", "/regions"], links: [{ to: "/seasons", label: "Seasons" }, { to: "/players", label: "Players" }, { to: "/players?tab=judges", label: "Judges" }, { to: "/teams", label: "Teams" }, { to: "/timelines", label: "Match Timelines" }, { to: "/regions", label: "Regional Analysis" }] },
-  { kind: "group", label: "Tools", paths: ["/compare", "/deck-builder", "/card-discovery", "/looking-for"], links: [{ to: "/compare", label: "Compare Decks" }, { to: "/deck-builder", label: "Deck Builder" }, { to: "/card-discovery", label: "Find New Cards" }, { to: "/looking-for", label: "Looking For" }] },
+  { kind: "group", label: "Tools", paths: ["/compare", "/deck-builder", "/deck-review", "/card-discovery", "/looking-for"], links: [{ to: "/compare", label: "Compare Decks" }, { to: "/deck-builder", label: "Deck Builder" }, { to: "/deck-review", label: "Deck Review" }, { to: "/card-discovery", label: "Find New Cards" }, { to: "/looking-for", label: "Looking For" }] },
   { kind: "group", label: "Account", paths: ["/my-decks", "/collection", "/settings"], links: [{ to: "/my-decks", label: "My Decks" }, { to: "/collection", label: "My Collection" }, { to: "/settings", label: "Settings" }] },
 ];
 

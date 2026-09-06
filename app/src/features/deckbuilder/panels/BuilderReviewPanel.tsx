@@ -54,7 +54,8 @@ export default function BuilderReviewPanel({
   nearestDecks: NearestDeck[];
   nearestDeckCompareLink: (deck: NearestDeck) => string;
   onLoadNearestDeck: (deck: NearestDeck) => void;
-  onBackToBuild: () => void;
+  /** Omitted when there's no Build tab to return to (e.g. the suggestions-only Deck Review page) — hides the "Back to build" link instead of wiring it to a no-op. */
+  onBackToBuild?: () => void;
   onContinueToValidation: () => void;
   reviewComplete: boolean;
   buildCounters: BuildCounters;
@@ -418,7 +419,7 @@ export default function BuilderReviewPanel({
       )}
 
       <div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-ctp-surface1 pt-3">
-        <button type="button" onClick={onBackToBuild} className="text-xs text-ctp-blue hover:underline">← Back to build</button>
+        {onBackToBuild ? <button type="button" onClick={onBackToBuild} className="text-xs text-ctp-blue hover:underline">← Back to build</button> : <span />}
         <button type="button" onClick={onContinueToValidation} className="rounded-md bg-ctp-blue px-3 py-1.5 text-xs font-medium text-ctp-base">{reviewComplete ? "Continue to validation" : "Validate current deck"} →</button>
       </div>
     </div>
