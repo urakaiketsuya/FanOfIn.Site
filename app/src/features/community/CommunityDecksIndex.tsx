@@ -17,7 +17,6 @@ import {
   useCommunityPriceDistribution,
   useCommunityArchetypes,
   useCommunityDeckEra,
-  useCommunityFormatSummary,
 } from "./data";
 
 const TOP_CARDS_SHOWN = 30;
@@ -47,7 +46,6 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
   const priceDistribution = useCommunityPriceDistribution(format);
   const archetypes = useCommunityArchetypes(format);
   const deckEra = useCommunityDeckEra(format);
-  const formatSummary = useCommunityFormatSummary();
 
   const [championFilter, setChampionFilter] = useState<string>("");
 
