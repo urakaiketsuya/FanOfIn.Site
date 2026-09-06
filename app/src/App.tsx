@@ -7,14 +7,18 @@ import FeatureBanner from "./components/FeatureBanner";
 import { initAnalytics, trackPageview } from "./lib/analytics";
 
 interface NavLinkItem { to: string; label: string }
-interface NavGroup { label: string; paths: string[]; links: NavLinkItem[] }
+interface NavGroup { kind: "group"; label: string; paths: string[]; links: NavLinkItem[] }
+/** A single-destination top-level pillar (no dropdown) — for a section important enough to earn its own nav slot without a menu of sub-pages underneath it. */
+interface NavFlatLink { kind: "link"; to: string; label: string }
+type NavEntry = NavGroup | NavFlatLink;
 
-const NAV_GROUPS: NavGroup[] = [
-  { label: "Cards", paths: ["/cards", "/champions"], links: [{ to: "/cards", label: "Browse Cards" }, { to: "/cards/stats", label: "Card Stats" }, { to: "/cards/packages", label: "Card Packages" }, { to: "/champions", label: "Champions" }] },
-  { label: "Decks", paths: ["/decks", "/shared-decks"], links: [{ to: "/decks", label: "Tournament Decks" }, { to: "/shared-decks", label: "Community Decks" }] },
-  { label: "Competition", paths: ["/seasons", "/players", "/teams", "/timelines"], links: [{ to: "/seasons", label: "Seasons" }, { to: "/players", label: "Players" }, { to: "/players?tab=judges", label: "Judges" }, { to: "/teams", label: "Teams" }, { to: "/timelines", label: "Match Timelines" }] },
-  { label: "Tools", paths: ["/compare", "/deck-builder", "/card-discovery", "/looking-for", "/regions"], links: [{ to: "/compare", label: "Compare Decks" }, { to: "/deck-builder", label: "Deck Builder" }, { to: "/card-discovery", label: "Find New Cards" }, { to: "/looking-for", label: "Looking For" }, { to: "/regions", label: "Regional Analysis" }] },
-  { label: "Account", paths: ["/my-decks", "/collection", "/settings"], links: [{ to: "/my-decks", label: "My Decks" }, { to: "/collection", label: "My Collection" }, { to: "/settings", label: "Settings" }] },
+const NAV_ENTRIES: NavEntry[] = [
+  { kind: "group", label: "Cards", paths: ["/cards"], links: [{ to: "/cards", label: "Browse Cards" }, { to: "/cards/stats", label: "Top Cards" }, { to: "/cards/packages", label: "Card Packages" }] },
+  { kind: "link", to: "/champions", label: "Top Champions" },
+  { kind: "group", label: "Decks", paths: ["/decks", "/shared-decks"], links: [{ to: "/decks", label: "Tournament Decks" }, { to: "/shared-decks", label: "Community Decks" }] },
+  { kind: "group", label: "Competition", paths: ["/seasons", "/players", "/teams", "/timelines", "/regions"], links: [{ to: "/seasons", label: "Seasons" }, { to: "/players", label: "Players" }, { to: "/players?tab=judges", label: "Judges" }, { to: "/teams", label: "Teams" }, { to: "/timelines", label: "Match Timelines" }, { to: "/regions", label: "Regional Analysis" }] },
+  { kind: "group", label: "Tools", paths: ["/compare", "/deck-builder", "/card-discovery", "/looking-for"], links: [{ to: "/compare", label: "Compare Decks" }, { to: "/deck-builder", label: "Deck Builder" }, { to: "/card-discovery", label: "Find New Cards" }, { to: "/looking-for", label: "Looking For" }] },
+  { kind: "group", label: "Account", paths: ["/my-decks", "/collection", "/settings"], links: [{ to: "/my-decks", label: "My Decks" }, { to: "/collection", label: "My Collection" }, { to: "/settings", label: "Settings" }] },
 ];
 
 function linkClass(active: boolean) {
@@ -51,7 +55,20 @@ export default function App() {
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
           <Link to="/" className="shrink-0 font-semibold tracking-tight text-ctp-blue">Fan of Insight</Link>
           <nav className="hidden items-center gap-1 md:flex" aria-label="Primary navigation">
-            {NAV_GROUPS.map((group) => {
+            {NAV_ENTRIES.map((entry) => {
+              if (entry.kind === "link") {
+                return (
+                  <Link
+                    key={entry.to}
+                    to={entry.to}
+                    aria-current={isActive(entry.to) ? "page" : undefined}
+                    className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${isActive(entry.to) ? "bg-ctp-surface0 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-mantle hover:text-ctp-text"}`}
+                  >
+                    {entry.label}
+                  </Link>
+                );
+              }
+              const group = entry;
               const active = group.paths.some((path) => location.pathname === path || location.pathname.startsWith(`${path}/`));
               const open = openGroup === group.label;
               const menuId = `nav-links-${group.label.toLowerCase()}`;
@@ -72,7 +89,15 @@ export default function App() {
         <LoadingBar />
       </div>
       {menuOpen && <nav id="mobile-nav" className="max-h-[calc(100vh-3.75rem)] overflow-y-auto border-t border-ctp-surface0 bg-ctp-mantle px-4 py-3 md:hidden" aria-label="Mobile navigation">
-        <div className="space-y-1">{NAV_GROUPS.map((group) => {
+        <div className="space-y-1">{NAV_ENTRIES.map((entry) => {
+          if (entry.kind === "link") {
+            return (
+              <section key={entry.to} className="border-b border-ctp-surface0 pb-1 last:border-0">
+                <Link to={entry.to} aria-current={isActive(entry.to) ? "page" : undefined} className="block rounded px-3 py-2 text-sm font-semibold text-ctp-text hover:bg-ctp-base" onClick={() => setMenuOpen(false)}>{entry.label}</Link>
+              </section>
+            );
+          }
+          const group = entry;
           const open = mobileGroup === group.label;
           const groupId = `mobile-links-${group.label.toLowerCase()}`;
           return <section key={group.label} className="border-b border-ctp-surface0 pb-1 last:border-0">
