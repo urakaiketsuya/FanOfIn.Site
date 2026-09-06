@@ -77,7 +77,7 @@ export default function PackOpenerWidget({ setPrefix, buttonLabel }: { setPrefix
       </div>
 
       {pack && (
-        <div className="mt-6 grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6">
+        <div className="mt-6 grid grid-cols-3 gap-3 sm:grid-cols-4">
           {pack.map((pc, i) => (
             <PackCardFace key={`${pc.edition.uuid}-${i}`} pc={pc} index={i} revealed={revealed} />
           ))}

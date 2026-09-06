@@ -106,7 +106,7 @@ function GridTopCardsSections({ topCards, cardImages, mainOverride }: TopCardsSe
           cards.length > 0 ? (
             <div key={label}>
               <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">{label}</h3>
-              <div className="mt-2 grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-6">
+              <div className="mt-2 grid grid-cols-3 gap-2 sm:grid-cols-4">
                 {cards.map((c) => (
                   <div key={c.name}>
                     <VisualCardTile

@@ -15,7 +15,7 @@ export default function CardGrid({ cards, pickEdition }: CardGridProps) {
   }
 
   return (
-    <div data-component="CardGrid" className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+    <div data-component="CardGrid" className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
       {cards.map((card) => {
         const edition = pickEdition ? pickEdition(card) : card.editions[0];
         return (

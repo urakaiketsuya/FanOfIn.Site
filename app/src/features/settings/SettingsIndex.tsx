@@ -20,7 +20,7 @@ function ToggleRow({ label, description, checked, onChange }: { label: string; d
 const VISUAL_CARD_SIZE_OPTIONS: { value: VisualCardSize; label: string; description: string }[] = [
   { value: "large", label: "Large (2 per row)", description: "Biggest card art, fewest per row." },
   { value: "medium", label: "Medium (3-4 per row)", description: "A middle ground." },
-  { value: "compact", label: "Compact (4-8 per row)", description: "Smallest thumbnails, most cards visible at once." },
+  { value: "compact", label: "Compact (4 per row)", description: "Smallest thumbnails, most cards visible at once." },
 ];
 
 export default function SettingsIndex() {

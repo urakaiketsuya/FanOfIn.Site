@@ -66,7 +66,7 @@ function EditableDecklistGrid({ decklist, cardsByName, onChangeQuantity, onRemov
       {sections.map((section) => (
         <div key={section.key}>
           <h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">{section.title} ({section.lines.reduce((n, l) => n + l.quantity, 0)})</h4>
-          <div className="mt-2 grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
+          <div className="mt-2 grid grid-cols-3 gap-3 sm:grid-cols-4">
             {section.lines.map((line) => (
               <EditableCardTile key={line.card} line={line} card={cardsByName.get(line.card)} onChangeQuantity={(quantity) => onChangeQuantity(section.key, line.card, quantity)} onRemove={() => onRemove(section.key, line.card)} />
             ))}

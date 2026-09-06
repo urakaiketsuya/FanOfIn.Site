@@ -116,7 +116,7 @@ function CompactDeckSection({ title, lines, cardsByName }: { title: string; line
 const VISUAL_CARD_SIZE_CLASSES: Record<VisualCardSize, string> = {
   large: "grid-cols-2 gap-3",
   medium: "grid-cols-3 gap-2 sm:grid-cols-4",
-  compact: "grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-8",
+  compact: "grid-cols-4 gap-2",
 };
 
 function VisualDeckSection({

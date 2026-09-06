@@ -15,6 +15,8 @@ import type { SimulatorCardEvidence } from "../deckbuilder/useSimulatorSuggested
 import { useDecklistDisplayPrefs } from "../../lib/decklistDisplayPrefs";
 import { championNameToSlug, slugToChampionName } from "../../lib/championSlug";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
+import ElementIcon from "../../components/ElementIcon";
+import ClassIcon from "../../components/ClassIcon";
 import Chip from "../../components/ui/Chip";
 import PageLayout from "../../components/layout/PageLayout";
 import PageHeader from "../../components/ui/PageHeader";
@@ -409,38 +411,72 @@ export default function ChampionSynergy() {
           <PageHeader
             title={champ.signature}
             eyebrow={<Link to="/champions">&larr; All Champions</Link>}
-            description={<>{champ.classes.join("/")} · {champ.elements.join("/")} · <strong className="font-semibold text-ctp-text">{champ.deckCount.toLocaleString()}</strong> decks across {champ.eventCount.toLocaleString()} events</>}
+            description={
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+                <span className="flex flex-wrap items-center gap-1.5">
+                  {champ.classes.map((c) => (
+                    <span key={c} className="inline-flex items-center gap-1 rounded-full border border-ctp-surface1 bg-ctp-mantle py-0.5 pl-1 pr-2 text-xs font-medium text-ctp-subtext1">
+                      <ClassIcon cardClass={c} size={12} />
+                      {titleCase(c)}
+                    </span>
+                  ))}
+                  {champ.elements.map((e) => (
+                    <span key={e} className="inline-flex items-center gap-1 rounded-full border border-ctp-surface1 bg-ctp-mantle py-0.5 pl-1 pr-2 text-xs font-medium text-ctp-subtext1">
+                      <ElementIcon element={e} size={12} />
+                      {titleCase(e)}
+                    </span>
+                  ))}
+                </span>
+                <span className="text-ctp-subtext1">
+                  <strong className="font-semibold text-ctp-text">{champ.deckCount.toLocaleString()}</strong> decks ·{" "}
+                  <strong className="font-semibold text-ctp-text">{champ.eventCount.toLocaleString()}</strong> events
+                </span>
+              </div>
+            }
             actions={<Link to={`/champions/${championNameToSlug(championName)}/stats`} className="text-xs text-ctp-blue hover:underline">Full stats &amp; season history &rarr;</Link>}
           />
 
           {championPrints.length > 1 && (
             <div className="mb-4">
               <div className="mb-2 text-sm font-semibold text-ctp-subtext0">Level</div>
-              <div className="flex flex-wrap gap-2 text-sm">
-                {championPrints.map((c) => (
-                  <button
-                    key={c.name}
-                    type="button"
-                    onClick={() => setLevel(c.level ?? null)}
-                    className={`w-24 shrink-0 rounded-md border p-1 text-left ${
-                      selectedPrint?.name === c.name ? "border-ctp-blue" : "border-ctp-surface1 hover:border-ctp-surface2"
-                    }`}
-                  >
-                    <VisualCardTile
-                      line={{ card: c.name, quantity: 1 }}
-                      card={c}
-                      unitPrice={priceByName.get(c.name)}
-                      priceTrend={priceTrendByName.get(c.name)}
-                      simulatorEvidence={simulatorEvidenceByName.get(c.name)}
-                      communityEntry={communityInclusionByName?.get(c.name)}
-                      fields={visualFields}
-                      linkToCard={false}
-                    />
-                    <div className="mt-0.5 truncate text-center text-[10px] text-ctp-subtext1">
-                      Lv{c.level ?? "?"} · {c.name.split(",")[1]?.trim()}
-                    </div>
-                  </button>
-                ))}
+              <div className="grid grid-cols-4 gap-2 text-sm">
+                {championPrints.map((c) => {
+                  const selected = selectedPrint?.name === c.name;
+                  return (
+                    <button
+                      key={c.name}
+                      type="button"
+                      onClick={() => setLevel(c.level ?? null)}
+                      aria-pressed={selected}
+                      className={`relative rounded-lg border p-1.5 text-left transition-all duration-200 ease-out active:scale-[0.97] ${
+                        selected
+                          ? "border-ctp-blue bg-ctp-blue/10 shadow-md shadow-ctp-blue/20"
+                          : "border-ctp-surface1 bg-ctp-mantle hover:-translate-y-0.5 hover:border-ctp-surface2 hover:shadow-md hover:shadow-black/20"
+                      }`}
+                    >
+                      {selected && (
+                        <span className="absolute right-1 top-1 z-10 flex h-4 w-4 items-center justify-center rounded-full bg-ctp-blue text-ctp-base">
+                          <svg viewBox="0 0 16 16" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                            <path d="M3 8.5l3 3 7-7" />
+                          </svg>
+                        </span>
+                      )}
+                      <VisualCardTile
+                        line={{ card: c.name, quantity: 1 }}
+                        card={c}
+                        unitPrice={priceByName.get(c.name)}
+                        priceTrend={priceTrendByName.get(c.name)}
+                        simulatorEvidence={simulatorEvidenceByName.get(c.name)}
+                        communityEntry={communityInclusionByName?.get(c.name)}
+                        fields={visualFields}
+                        linkToCard={false}
+                      />
+                      <div className={`mt-1 truncate text-center text-[10px] ${selected ? "font-semibold text-ctp-blue" : "text-ctp-subtext1"}`}>
+                        Lv{c.level ?? "?"} · {c.name.split(",")[1]?.trim()}
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
               <div className="mt-1 text-xs text-ctp-subtext0">(picks which print is linked below — deck stats aren't tracked per level)</div>
             </div>
@@ -494,7 +530,7 @@ export default function ChampionSynergy() {
               {newReleaseCards.length === 0 ? (
                 <InlineState className="mt-2 text-sm">No new-set cards connect to {champ.signature}'s most-played cards yet.</InlineState>
               ) : (
-                <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+                <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                   {newReleaseCards.map(({ card, combos }) => (
                     <VisualCardTile
                       key={card.name}
