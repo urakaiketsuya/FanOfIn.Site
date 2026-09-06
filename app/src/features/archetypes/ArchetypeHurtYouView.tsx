@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { ArchetypeTaxonomyData, CardImpactRole } from "@gatcg/shared";
 import CardHoverPreview from "../../components/CardHoverPreview";
+import ElementIcon from "../../components/ElementIcon";
 import LoadMore from "../../components/LoadMore";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useMatchupCardImpactData } from "./data";
@@ -131,13 +132,16 @@ export default function ArchetypeHurtYouView({ taxonomy }: { taxonomy: Archetype
                     <tr key={row.key}>
                       <td className="py-1.5 pr-6 whitespace-nowrap">
                         <CardHoverPreview image={card?.editions[0]?.image} alt={row.cardName}>
-                          {card ? (
-                            <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
-                              {row.cardName}
-                            </Link>
-                          ) : (
-                            <span className="text-ctp-text">{row.cardName}</span>
-                          )}
+                          <span className="inline-flex items-center gap-1.5">
+                            {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
+                            {card ? (
+                              <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
+                                {row.cardName}
+                              </Link>
+                            ) : (
+                              <span className="text-ctp-text">{row.cardName}</span>
+                            )}
+                          </span>
                         </CardHoverPreview>
                       </td>
                       <td className="py-1.5 pr-6 text-ctp-subtext1">{ROLE_LABEL[row.role]}</td>

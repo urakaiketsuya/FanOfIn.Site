@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import type { Card, CardImpactEntry, CardImpactRole, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import CardHoverPreview from "../../components/CardHoverPreview";
+import ElementIcon from "../../components/ElementIcon";
 import { computeDeckIdentity } from "../../lib/deckIdentity";
 import { findDeckChampionName } from "../../lib/ttsExport";
 import { legalMaxCopies, pickBetterQuantity, type QuantityAdvice } from "../../lib/cardQuantityAdvice";
@@ -23,6 +24,7 @@ function QuantityRow({ suggestion, cardsByName }: { suggestion: QuantitySuggesti
   const card = cardsByName.get(suggestion.cardName);
   return (
     <li className="flex flex-wrap items-center gap-1.5 text-sm">
+      {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
       {card ? (
         <CardHoverPreview image={card.editions[0]?.image} alt={suggestion.cardName}>
           <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
@@ -46,6 +48,7 @@ function EvidenceRow({ entry, cardsByName, tone }: { entry: CardImpactEntry; car
   const card = cardsByName.get(entry.cardName);
   return (
     <li className="flex flex-wrap items-center gap-1.5 text-sm">
+      {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
       {card ? (
         <CardHoverPreview image={card.editions[0]?.image} alt={entry.cardName}>
           <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">

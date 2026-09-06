@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import type { OmnidexDecklist } from "@gatcg/shared";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CardImage from "../../components/CardImage";
+import ElementIcon from "../../components/ElementIcon";
 import { formatUsd } from "../../lib/format";
 import { useComparisonData, type ComparisonCardEntry } from "./useComparisonData";
 import type { ComparedDeck } from "./types";
@@ -120,13 +121,16 @@ export default function ComparisonDifferences({
                               )}
                             </CardHoverPreview>
                             <div className="mt-1.5 min-w-0">
-                              {cardInfo?.slug ? (
-                                <Link to={`/cards/${cardInfo.slug}`} className="block truncate text-sm text-ctp-text hover:text-ctp-blue">
-                                  {card.name}
-                                </Link>
-                              ) : (
-                                <span className="block truncate text-sm text-ctp-text">{card.name}</span>
-                              )}
+                              <div className="flex items-center gap-1 truncate">
+                                {cardInfo && cardInfo.element !== "NORM" && <ElementIcon element={cardInfo.element} size={14} />}
+                                {cardInfo?.slug ? (
+                                  <Link to={`/cards/${cardInfo.slug}`} className="truncate text-sm text-ctp-text hover:text-ctp-blue">
+                                    {card.name}
+                                  </Link>
+                                ) : (
+                                  <span className="truncate text-sm text-ctp-text">{card.name}</span>
+                                )}
+                              </div>
                               <div className="mt-1 flex flex-col gap-0.5 text-xs">
                                 {card.quantities.map((q, i) => (
                                   <span

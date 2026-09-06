@@ -54,7 +54,12 @@ function featuredChanges(changes: ComparisonCardChange[]): ComparisonCardChange[
 function LinkedCard({ name, cardsByName }: { name: string; cardsByName: Map<string, Card> }) {
   const card = cardsByName.get(name);
   if (!card) return <span>{name}</span>;
-  return <CardHoverPreview image={card.editions[0]?.image} alt={name}><Link to={`/cards/${card.slug}`} className="hover:text-ctp-blue hover:underline">{name}</Link></CardHoverPreview>;
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      {card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
+      <CardHoverPreview image={card.editions[0]?.image} alt={name}><Link to={`/cards/${card.slug}`} className="hover:text-ctp-blue hover:underline">{name}</Link></CardHoverPreview>
+    </span>
+  );
 }
 
 function CardNames({ entries, cardsByName, empty }: { entries: ComparisonCardEntry[]; cardsByName: Map<string, Card>; empty: string }) {

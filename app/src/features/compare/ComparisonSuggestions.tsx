@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Card, CardImpactEntry, CardImpactRole, OmnidexDecklist } from "@gatcg/shared";
 import CardHoverPreview from "../../components/CardHoverPreview";
+import ElementIcon from "../../components/ElementIcon";
 import { buildDeckBuilderPath, deckBuilderParamsFromDecklist } from "../../lib/deckBuilderLink";
 import { useChampionCardImpact } from "../decks/useChampionCardImpact";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -24,6 +25,7 @@ function EvidenceList({ cards, cardsByName, tone }: { cards: CardImpactEntry[]; 
       const card = cardsByName.get(entry.cardName);
       return <li key={entry.cardName} className="rounded-lg border border-ctp-surface0 bg-ctp-base/40 p-2.5">
         <div className="flex flex-wrap items-center gap-1.5 text-sm">
+          {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
           {card ? <CardHoverPreview image={card.editions[0]?.image} alt={entry.cardName}><Link to={`/cards/${card.slug}`} className="font-medium text-ctp-text hover:text-ctp-blue">{entry.cardName}</Link></CardHoverPreview> : <span className="font-medium text-ctp-text">{entry.cardName}</span>}
           <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">{ROLE_LABEL[entry.role]}</span>
           <span className={`ml-auto text-xs font-semibold ${tone === "add" ? "text-ctp-blue" : "text-ctp-yellow"}`}>{entry.adjustedLift >= 0 ? "+" : ""}{(entry.adjustedLift * 100).toFixed(1)}pp</span>

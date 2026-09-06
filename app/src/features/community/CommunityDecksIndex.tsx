@@ -121,14 +121,10 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
   return (
     <PageLayout>
       <PageHeader
-        title={isPantheon ? "Pantheon Decks" : "Community Decks"}
+        title={isPantheon ? "Pantheon Decks" : "Deck Trends"}
         description={
           <>
-            Community deck-building trends show what people are actually building, not tournament results. To create your own list with data-guided recommendations, use our{" "}
-            <Link to="/deck-builder" className="text-ctp-blue hover:underline">
-              Guided Deck Builder
-            </Link>
-            . {isPantheon ? "Pantheon lists are separated from Standard and never presented as tournament-performance evidence." : "Standard lists are separated from Pantheon and kept distinct from Omnidex tournament results."}
+            See what other users have been brewing, or try our <Link to="/deck-builder" className="text-ctp-blue hover:underline">Guided Deck Builder</Link> to make your own.
           </>
         }
       />
@@ -138,18 +134,9 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
         <Link to="/pantheon" className={`rounded-md px-3 py-1.5 ${isPantheon ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>Pantheon</Link>
       </div>
 
-      {formatSummary && (
-        <p className="mt-3 rounded-lg border border-ctp-surface0 bg-ctp-mantle/50 p-3 text-xs text-ctp-subtext0">
-          {formatSummary.counts[format].toLocaleString()} classified {isPantheon ? "Pantheon" : "Standard"} decks · {formatSummary.confirmedCounts[format].toLocaleString()} source-confirmed · {formatSummary.inferredCounts[format].toLocaleString()} inferred from deck construction. Unknown-format decks are excluded.
-        </p>
-      )}
-
       {popularity && (
         <p className="mt-2 text-xs text-ctp-subtext0">
-          {popularity.championDecksConsidered.toLocaleString()} decks total · {popularity.elementDecksConsidered.toLocaleString()} (
-          {((popularity.elementDecksConsidered / popularity.championDecksConsidered) * 100).toFixed(0)}%) have a
-          full card list — card inclusion, element popularity, and archetype clusters below are scoped to that set.
-          Champion popularity and price cover every deck.
+          {popularity.championDecksConsidered.toLocaleString()} decks total.
         </p>
       )}
 

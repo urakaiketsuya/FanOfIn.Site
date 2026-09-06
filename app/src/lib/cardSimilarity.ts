@@ -35,6 +35,51 @@ export function similarCards(card: Card, catalog: Card[]): Card[] {
   return catalog.filter((c) => c.uuid !== card.uuid && templateKey(c) === key);
 }
 
+/** Where a conditional bonus clause begins — "**Class Bonus:**", "**Merlin Bonus**", "[Element
+ * Bonus]", etc. (a per-class/champion/element clause tacked onto the base effect) — everything
+ * before this point is the effect's unconditional "core." */
+const BONUS_CLAUSE_RE = /(\*\*[A-Za-z][\w' ]* Bonus:?\*\*|\[[A-Za-z][\w' ]* Bonus\])/i;
+
+/** Italicized reminder text clarifying a bonus clause's condition, e.g. "*(Apply this effect only
+ * if your champion's class matches this card's class.)*" — flavor text, not part of the effect. */
+const REMINDER_TEXT_RE = /\*\([^)]*\)\*/g;
+
+function normalizeCoreEffect(effectRaw: string | null): string {
+  if (!effectRaw) return "";
+  const marker = BONUS_CLAUSE_RE.exec(effectRaw);
+  const core = marker ? effectRaw.slice(0, marker.index) : effectRaw;
+  return core
+    .replace(REMINDER_TEXT_RE, "")
+    .replace(/\*\*/g, "")
+    .replace(/\d+/g, "#")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+}
+
+/**
+ * Cards whose core effect — everything before any conditional class/champion/element "Bonus"
+ * clause, with reminder text and numbers normalized away — is textually identical, regardless of
+ * type, subtype, or cost. Looser than `similarCards` above (which requires the *entire* template,
+ * bonus clause included, plus a matching type/subtype set): this catches cards that do the same
+ * base thing but differ in a class-specific bonus or a type/subtype detail — e.g. Creative Tinder
+ * ("Draw two cards, then discard a card.") and Creative Shock (the same core line plus a Fire Class
+ * Bonus) share a core-effect key despite Shock also carrying a MAGE subtype Tinder lacks. Verified
+ * against the real 2,495-card corpus: 51 groups / 181 cards share a core-effect key this way — a
+ * comparable size to `similarCards`'s own groups, so this reads as a real signal, not noise.
+ *
+ * Deliberately reads `card.effect` here, never `effect_raw` (unlike `similarCards`'s full-template
+ * match, which doesn't care which one it reads as long as it's consistent): `effect_raw` is plain
+ * text with no `**Bonus:**`/`*(...)*` markup at all on the live catalog (only the bold `effect`
+ * field carries it, confirmed against real synced card records), so `BONUS_CLAUSE_RE` would never
+ * find the split point on `effect_raw` and every bonus clause would stay glued to the core text.
+ */
+export function sameCoreEffectCards(card: Card, catalog: Card[]): Card[] {
+  const key = normalizeCoreEffect(card.effect);
+  if (key.length < MIN_TEMPLATE_LENGTH) return [];
+  return catalog.filter((c) => c.uuid !== card.uuid && normalizeCoreEffect(c.effect) === key);
+}
+
 /** Earliest print date across every edition — used to sort siblings oldest-to-newest. */
 export function earliestReleaseDate(card: Card): string | null {
   if (card.editions.length === 0) return null;

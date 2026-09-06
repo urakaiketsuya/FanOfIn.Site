@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { OmnidexDecklist } from "@gatcg/shared";
 import CardHoverPreview from "../../components/CardHoverPreview";
+import ElementIcon from "../../components/ElementIcon";
 import { formatUsd } from "../../lib/format";
 import { useCardStatsData } from "../archetypes/data";
 import { useComparisonData } from "./useComparisonData";
@@ -100,13 +101,16 @@ export default function ComparisonCardStats({
                 <tr key={r.name}>
                   <td className="sticky left-0 z-10 bg-ctp-base py-1.5 pr-6 whitespace-nowrap">
                     <CardHoverPreview image={card?.editions[0]?.image} alt={r.name}>
-                      {card?.slug ? (
-                        <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
-                          {r.name}
-                        </Link>
-                      ) : (
-                        <span className="text-ctp-text">{r.name}</span>
-                      )}
+                      <span className="inline-flex items-center gap-1.5">
+                        {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
+                        {card?.slug ? (
+                          <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
+                            {r.name}
+                          </Link>
+                        ) : (
+                          <span className="text-ctp-text">{r.name}</span>
+                        )}
+                      </span>
                     </CardHoverPreview>
                   </td>
                   {r.quantities.map((q, i) => (

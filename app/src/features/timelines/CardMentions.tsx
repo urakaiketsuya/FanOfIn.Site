@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import type { Card } from "@gatcg/shared";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CardImage from "../../components/CardImage";
+import ElementIcon from "../../components/ElementIcon";
 
 /** A card name as called by casters may not exactly match the card DB (ASR errors, shorthand) —
  * anything that doesn't resolve via useCardsByMentions falls back to a plain text badge rather than
@@ -26,6 +27,7 @@ export default function CardMentions({ names, cardsByName }: { names: string[]; 
               className="flex items-center gap-1.5 rounded-md border border-ctp-surface1 bg-ctp-base/40 py-1 pl-1 pr-2 text-xs font-medium text-ctp-text hover:border-ctp-blue/60"
             >
               <CardImage image={image} alt={name} className="h-7 w-5 shrink-0 rounded-sm object-cover object-top" />
+              {card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
               {name}
             </Link>
           </CardHoverPreview>

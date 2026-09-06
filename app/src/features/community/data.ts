@@ -80,12 +80,6 @@ export function useCommunityFormatSummary() {
   return usePublishedData<CommunityFormatSummaryData>("shoutatyourdecks-format-summary", "/data/shoutatyourdecks/analytics/format-summary.json");
 }
 
-export function useCommunityDeckIndex() {
-  // The root index remains available between community analytics rebuilds; Pantheon browsing
-  // filters its classified records locally and therefore does not disappear during a partial run.
-  return usePublishedData<{ generatedAt: string; decks: ShoutAtYourDecksDeckSummary[] }>("shoutatyourdecks-index", "/data/shoutatyourdecks/index.json");
-}
-
 export function usePantheonDeckIndex() {
   return usePublishedData<{ generatedAt: string; decks: ShoutAtYourDecksDeckSummary[] }>("shoutatyourdecks-pantheon-decks", "/data/shoutatyourdecks/analytics/pantheon/decks.json");
 }

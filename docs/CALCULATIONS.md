@@ -958,6 +958,20 @@ reason `computeDeckRating` only works as a whole-decklist aggregate, not a per-c
 re-attempt a fabricated per-card number without redoing this validation on a smarter feature set
 (e.g. re-testing within one card type/cost bucket instead of pooled across all types).
 
+**Same *core* effect, looser than the above**: `sameCoreEffectCards` cuts the effect text at the
+first conditional bonus clause (`**Class Bonus:**`, `**<Champion> Bonus**`, `[Element Bonus]`, ...),
+strips reminder text (`*(...)*`) and numbers the same way `similarCards` does, then matches on that
+*core* text alone — no type/subtype requirement. This is deliberately looser than `similarCards`
+(full template + matching type/subtype set) so it can catch cards that do the same base thing but
+differ in a class-specific bonus or a type/subtype detail, e.g. Creative Tinder ("Draw two cards,
+then discard a card.") and Creative Shock (the same core line plus a Fire Class Bonus) — Shock's
+extra MAGE subtype would fail `similarCards`'s stricter check. Verified against the real 2,495-card
+corpus: 51 groups / 181 cards share a core-effect key, comparable in size to `similarCards`'s own
+groups. Used by `computeNewReleaseCards` (`app/src/features/deckbuilder/newReleaseCards.ts`) as a fourth
+connection track, reported with `via: "same effect"` — it's the only track there that can flag a
+genuinely new effect template (not just a token/tribal/named-reference relationship) as worth a
+look.
+
 ## Intent cards (`app/src/lib/cardIntent.ts`, `useIntentCards.ts`)
 
 A different relationship than "same effect shape": not near-identical cards, but cards **designed

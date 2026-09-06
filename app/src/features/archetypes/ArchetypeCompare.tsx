@@ -3,6 +3,7 @@ import { ARCHETYPE_NEAR_DUPLICATE_THRESHOLD, type Card, type ArchetypeCluster, t
 import { useArchetypeTaxonomyData } from "./data";
 import { useCardsByNames } from "../events/useCardsByNames";
 import CardHoverPreview from "../../components/CardHoverPreview";
+import ElementIcon from "../../components/ElementIcon";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 import PageLayout from "../../components/layout/PageLayout";
@@ -168,6 +169,6 @@ function formatQuantity(quantity: number) {
 function ComparisonTable({ firstColumn, names, rows, cardsByName }: { firstColumn: string; names: string[]; rows: { label: string; values: string[]; strengths?: number[] }[]; cardsByName?: Map<string, Card> }) {
   return <div className="mt-3 overflow-x-auto rounded-xl border border-ctp-surface1"><table className="min-w-full text-sm"><thead><tr className="bg-ctp-mantle text-left text-xs text-ctp-subtext0"><th className="min-w-44 p-3">{firstColumn}</th>{names.map((name) => <th key={name} className="min-w-36 p-3">{name}</th>)}</tr></thead><tbody className="divide-y divide-ctp-surface0">{rows.map((row) => {
     const card = cardsByName?.get(row.label);
-    return <tr key={row.label}><th className="p-3 text-left font-medium text-ctp-text">{card ? <CardHoverPreview image={card.editions[0]?.image} alt={row.label}><Link to={`/cards/${card.slug}`} className="hover:text-ctp-blue">{row.label}</Link></CardHoverPreview> : row.label}</th>{row.values.map((value, index) => <td key={`${row.label}-${names[index]}`} className="relative p-3 text-ctp-subtext1"><span className="relative z-10">{value}</span>{row.strengths?.[index] ? <span className="absolute inset-y-1 left-1 rounded bg-ctp-green/10" style={{ width: `${Math.max(4, row.strengths[index] * 100)}%` }} /> : null}</td>)}</tr>;
+    return <tr key={row.label}><th className="p-3 text-left font-medium text-ctp-text">{card ? <span className="inline-flex items-center gap-1.5">{card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}<CardHoverPreview image={card.editions[0]?.image} alt={row.label}><Link to={`/cards/${card.slug}`} className="hover:text-ctp-blue">{row.label}</Link></CardHoverPreview></span> : row.label}</th>{row.values.map((value, index) => <td key={`${row.label}-${names[index]}`} className="relative p-3 text-ctp-subtext1"><span className="relative z-10">{value}</span>{row.strengths?.[index] ? <span className="absolute inset-y-1 left-1 rounded bg-ctp-green/10" style={{ width: `${Math.max(4, row.strengths[index] * 100)}%` }} /> : null}</td>)}</tr>;
   })}</tbody></table></div>;
 }

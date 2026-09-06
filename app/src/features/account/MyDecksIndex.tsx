@@ -31,10 +31,27 @@ export default function MyDecksIndex() {
   const [format, setFormat] = useState<DeckFormat>("STANDARD");
   const [deckText, setDeckText] = useState("");
   const [addMode, setAddMode] = useState<AddMode>(null);
+  const [deckSearch, setDeckSearch] = useState("");
+  const [deckFormatFilter, setDeckFormatFilter] = useState<"ALL" | DeckFormat>("ALL");
+  const [deckChampionFilter, setDeckChampionFilter] = useState("ALL");
+  const [deckSort, setDeckSort] = useState<"updated" | "created" | "title">("updated");
   const pastedDeck = useMemo(() => parseDecklist(deckText).decklist, [deckText]);
   const pastedCardNames = useMemo(() => [...pastedDeck.main, ...pastedDeck.material, ...pastedDeck.sideboard].map((line) => line.card), [pastedDeck]);
   const pastedCardsByName = useCardsByNames(pastedCardNames);
   const pastedChampionName = useMemo(() => findDeckChampionName(pastedDeck.material, pastedCardsByName)?.split(",")[0].trim() ?? null, [pastedDeck.material, pastedCardsByName]);
+
+  const deckChampionOptions = useMemo(
+    () => Array.from(new Set(decks.map((deck) => deck.championName).filter((name): name is string => !!name))).sort((a, b) => a.localeCompare(b)),
+    [decks],
+  );
+  const visibleDecks = useMemo(() => {
+    const query = deckSearch.trim().toLowerCase();
+    return decks
+      .filter((deck) => !query || deck.title.toLowerCase().includes(query) || (deck.championName?.toLowerCase().includes(query) ?? false))
+      .filter((deck) => deckFormatFilter === "ALL" || deck.format === deckFormatFilter)
+      .filter((deck) => deckChampionFilter === "ALL" || deck.championName === deckChampionFilter)
+      .sort((a, b) => deckSort === "title" ? a.title.localeCompare(b.title) : deckSort === "created" ? b.createdAt.localeCompare(a.createdAt) : b.updatedAt.localeCompare(a.updatedAt));
+  }, [decks, deckSearch, deckFormatFilter, deckChampionFilter, deckSort]);
 
   const refreshDecks = useCallback(async () => {
     const [owned, saved] = await Promise.all([accountApi.decks(), accountApi.bookmarks()]);
@@ -64,7 +81,31 @@ export default function MyDecksIndex() {
 
     {addMode === "paste" && <section className="mt-6 rounded-xl border border-ctp-blue/40 bg-ctp-mantle p-5"><div className="flex items-start justify-between gap-3"><div><h2 className="font-semibold text-ctp-text">Add a pasted decklist</h2><p className="mt-1 text-xs text-ctp-subtext1">Paste a Grand Archive decklist to create an editable build.</p></div><button type="button" onClick={() => setAddMode(null)} className="text-sm text-ctp-subtext1 hover:text-ctp-text" aria-label="Close add deck form">Close</button></div><div className="mt-4 grid gap-3 md:grid-cols-[minmax(0,1fr)_10rem]"><input value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Deck name" aria-label="Deck name" className="rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm" /><select value={format} onChange={(event) => setFormat(event.target.value as DeckFormat)} aria-label="Deck format" className="rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-2 text-sm"><option value="STANDARD">Standard</option><option value="PANTHEON">Pantheon</option><option value="UNKNOWN">Unknown</option></select></div><textarea rows={9} value={deckText} onChange={(event) => setDeckText(event.target.value)} placeholder={"Main\n4x Dungeon Guide\n\nMaterial\n1x Spirit of Water"} aria-label="Decklist" className="mt-3 w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 font-mono text-sm" />{deckText.trim() && <p className={`mt-2 text-sm ${pastedChampionName ? "text-ctp-green" : "text-ctp-yellow"}`}>{pastedChampionName ? `Champion detected: ${pastedChampionName}` : "No Champion detected in the Material section."}</p>}<Button disabled={busy || !deckText.trim()} type="button" onClick={() => void run(async () => { const parsed = parseDecklist(deckText); if (parsed.decklist.main.length + parsed.decklist.material.length === 0) throw new Error("No main or material cards were recognized"); await accountApi.saveDeck({ title: title.trim() || "Untitled deck", format, championName: pastedChampionName, decklist: parsed.decklist, source: { provider: "manual", externalDeckId: crypto.randomUUID(), label: "Pasted decklist" } }); setTitle(""); setDeckText(""); setAddMode(null); await refreshDecks(); setNotice("Deck added to your library."); })} className="mt-3" variant="primary">Save deck</Button></section>}
 
-    <Section className="mt-10" title="My editable decks">{decks.length === 0 ? <p className="mt-3 rounded-lg border border-dashed border-ctp-surface1 p-6 text-center text-sm text-ctp-subtext1">Import or paste a decklist to start your library.</p> : <div className="mt-3 grid gap-4 md:grid-cols-2 lg:grid-cols-3">{decks.map((deck) => <SavedDeckCard key={deck.id} deck={deck} onRename={() => { const next = window.prompt("Deck name", deck.title); if (next?.trim()) void run(async () => { await accountApi.renameDeck(deck.id, next); await refreshDecks(); }); }} onDelete={() => { if (window.confirm(`Delete ${deck.title}?`)) void run(async () => { await accountApi.deleteDeck(deck.id); await refreshDecks(); }); }} />)}</div>}</Section>
+    <Section className="mt-10" title="My editable decks">
+      {decks.length === 0 ? <p className="mt-3 rounded-lg border border-dashed border-ctp-surface1 p-6 text-center text-sm text-ctp-subtext1">Import or paste a decklist to start your library.</p> : <>
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <input value={deckSearch} onChange={(event) => setDeckSearch(event.target.value)} placeholder="Search by name or Champion" aria-label="Search my decks" className="min-w-0 flex-1 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm" />
+          <select value={deckFormatFilter} onChange={(event) => setDeckFormatFilter(event.target.value as "ALL" | DeckFormat)} aria-label="Filter by format" className="rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-2 text-sm">
+            <option value="ALL">All formats</option>
+            <option value="STANDARD">Standard</option>
+            <option value="PANTHEON">Pantheon</option>
+            <option value="UNKNOWN">Unknown</option>
+          </select>
+          {deckChampionOptions.length > 0 && <select value={deckChampionFilter} onChange={(event) => setDeckChampionFilter(event.target.value)} aria-label="Filter by Champion" className="rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-2 text-sm">
+            <option value="ALL">All Champions</option>
+            {deckChampionOptions.map((name) => <option key={name} value={name}>{name}</option>)}
+          </select>}
+          <select value={deckSort} onChange={(event) => setDeckSort(event.target.value as "updated" | "created" | "title")} aria-label="Sort my decks" className="rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-2 text-sm">
+            <option value="updated">Recently updated</option>
+            <option value="created">Recently created</option>
+            <option value="title">Name (A-Z)</option>
+          </select>
+        </div>
+        {visibleDecks.length === 0
+          ? <p className="mt-3 rounded-lg border border-dashed border-ctp-surface1 p-6 text-center text-sm text-ctp-subtext1">No decks match those filters.</p>
+          : <div className="mt-3 grid gap-4 md:grid-cols-2 lg:grid-cols-3">{visibleDecks.map((deck) => <SavedDeckCard key={deck.id} deck={deck} onRename={() => { const next = window.prompt("Deck name", deck.title); if (next?.trim()) void run(async () => { await accountApi.renameDeck(deck.id, next); await refreshDecks(); }); }} onDelete={() => { if (window.confirm(`Delete ${deck.title}?`)) void run(async () => { await accountApi.deleteDeck(deck.id); await refreshDecks(); }); }} />)}</div>}
+      </>}
+    </Section>
     <Section className="mt-8" title="Saved community decks" description="Bookmarks keep the exact version you saved, even when its author publishes a newer one.">{bookmarks.length === 0 ? <p className="mt-3 rounded-lg border border-dashed border-ctp-surface1 p-6 text-center text-sm text-ctp-subtext1">Decks you save from public pages will appear here.</p> : <div className="mt-3 grid gap-3 md:grid-cols-2">{bookmarks.map((deck) => <PublicDeckCard key={deck.publicSlug} deck={deck} />)}</div>}</Section>
   </PageLayout>;
 }

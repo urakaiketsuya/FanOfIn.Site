@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import type { Card, CardImpactEntry, CardInclusionEntry } from "@gatcg/shared";
 import CardHoverPreview from "../../../components/CardHoverPreview";
 import CardImpactTable from "../../../components/CardImpactTable";
+import ElementIcon from "../../../components/ElementIcon";
 import Tabs from "../../../components/ui/Tabs";
 import { formatUsd } from "../../../lib/format";
 import { CardRow, DiaoMetricBadges, SuggestionRow } from "../components/BuilderCardRows";
@@ -194,18 +195,24 @@ export default function BuilderReviewPanel({
                     <li key={`${removal.cardName}:${addition.cardName}`} className="grid gap-2 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto] sm:items-center">
                       <div className="min-w-0">
                         <span className="text-[10px] font-semibold uppercase tracking-wide text-ctp-red">Review</span>
-                        <CardHoverPreview image={removalInfo?.editions[0]?.image} alt={removal.cardName}>
-                          {removalInfo ? <Link to={`/cards/${removalInfo.slug}`} className="block truncate text-sm text-ctp-text hover:text-ctp-blue">{removal.cardName}</Link> : <span className="block truncate text-sm text-ctp-text">{removal.cardName}</span>}
-                        </CardHoverPreview>
+                        <div className="flex items-center gap-1 truncate">
+                          {removalInfo && removalInfo.element !== "NORM" && <ElementIcon element={removalInfo.element} size={14} />}
+                          <CardHoverPreview image={removalInfo?.editions[0]?.image} alt={removal.cardName}>
+                            {removalInfo ? <Link to={`/cards/${removalInfo.slug}`} className="truncate text-sm text-ctp-text hover:text-ctp-blue">{removal.cardName}</Link> : <span className="truncate text-sm text-ctp-text">{removal.cardName}</span>}
+                          </CardHoverPreview>
+                        </div>
                         <span className="text-xs text-ctp-subtext0">{removal.adjustedLift === null ? "Limited performance evidence" : `${(removal.adjustedLift * 100).toFixed(1)}% observed lift`}</span>
                         {removal.contextualReplacement && <span className="mt-0.5 block text-[10px] text-ctp-teal">Contextual swap · {removal.contextualReplacement.peerDecks} similar decks</span>}
                       </div>
                       <span className="hidden text-ctp-subtext0 sm:inline" aria-hidden="true">→</span>
                       <div className="min-w-0">
                         <span className="text-[10px] font-semibold uppercase tracking-wide text-ctp-green">Suggested addition</span>
-                        <CardHoverPreview image={additionInfo?.editions[0]?.image} alt={addition.cardName}>
-                          {additionInfo ? <Link to={`/cards/${additionInfo.slug}`} className="block truncate text-sm text-ctp-text hover:text-ctp-blue">{addition.cardName}</Link> : <span className="block truncate text-sm text-ctp-text">{addition.cardName}</span>}
-                        </CardHoverPreview>
+                        <div className="flex items-center gap-1 truncate">
+                          {additionInfo && additionInfo.element !== "NORM" && <ElementIcon element={additionInfo.element} size={14} />}
+                          <CardHoverPreview image={additionInfo?.editions[0]?.image} alt={addition.cardName}>
+                            {additionInfo ? <Link to={`/cards/${additionInfo.slug}`} className="truncate text-sm text-ctp-text hover:text-ctp-blue">{addition.cardName}</Link> : <span className="truncate text-sm text-ctp-text">{addition.cardName}</span>}
+                          </CardHoverPreview>
+                        </div>
                         <span className="text-xs text-ctp-subtext0">{addition.adjustedLift === null ? "Ranked candidate" : `+${(addition.adjustedLift * 100).toFixed(1)}% observed lift`} · {addition.quantity}x {addition.section}</span>
                         {addition.readinessReasons?.map((reason) => <span key={reason} className="ml-1 inline-block rounded-full border border-ctp-teal/50 bg-ctp-teal/10 px-1.5 text-[10px] font-medium text-ctp-teal">{reason}</span>)}
                         <span className="ml-1 inline-flex flex-wrap gap-1"><DiaoMetricBadges card={addition} /></span>

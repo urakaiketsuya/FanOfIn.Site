@@ -1,4 +1,4 @@
-import type { InputHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
+import type { InputHTMLAttributes, SelectHTMLAttributes } from "react";
 
 const CONTROL_CLASS = "rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text placeholder:text-ctp-subtext0 disabled:cursor-not-allowed disabled:opacity-50";
 
@@ -10,6 +10,3 @@ export function Select({ className = "", ...props }: SelectHTMLAttributes<HTMLSe
   return <select className={`${CONTROL_CLASS} ${className}`} {...props} />;
 }
 
-export function Textarea({ className = "", ...props }: TextareaHTMLAttributes<HTMLTextAreaElement>) {
-  return <textarea className={`${CONTROL_CLASS} ${className}`} {...props} />;
-}

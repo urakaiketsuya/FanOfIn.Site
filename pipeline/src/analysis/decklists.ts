@@ -205,3 +205,49 @@ export function topCardsFromCounts(
     .slice(0, limit)
     .map(([name, c]) => ({ name, slug: cardIndex.get(name)?.slug ?? null, deckCount: c.deckCount, totalCopies: c.totalCopies }));
 }
+
+/**
+ * "Type" tags that ride alongside a card's real type rather than naming one themselves (e.g.
+ * Apotheosis Rite's `types` is `["REGALIA", "ITEM"]`, not a Regalia-typed card with no other
+ * type — see `app/src/lib/cardTypeIcon.ts`'s identical finding). Confirmed against the full card
+ * catalog: none of these three ever appear as a card's only type, so `types[0]` alone silently
+ * mis-bucketed every Regalia/Unique/Token card (2,495-card catalog: 378 Regalia, 197 Unique, 41
+ * Token cards affected — not a rare edge case).
+ */
+const NON_TYPE_TAGS = new Set(["REGALIA", "UNIQUE", "TOKEN"]);
+
+/** The type that actually names what a card is, ignoring tags from `NON_TYPE_TAGS`. Falls back to `types[0]` if every entry is a tag (shouldn't happen in practice — verified 0 such cards in the real catalog). */
+function primaryCardType(types: string[]): string | undefined {
+  return types.find((t) => !NON_TYPE_TAGS.has(t)) ?? types[0];
+}
+
+/**
+ * Same ranking as `topCardsFromCounts`, but regrouped by each card's own primary type (e.g.
+ * "ALLY"/"ATTACK"/"DOMAIN") and capped independently per type, instead of one flat top-N — a type
+ * that appears in fewer decks overall (e.g. Domain) would otherwise get crowded out of a flat list
+ * by a more numerous one (e.g. Ally). Cards with no resolvable type are omitted rather than lumped
+ * into a fake bucket. Empty groups are omitted entirely.
+ */
+export function topCardsByTypeFromCounts(
+  counts: Map<string, SectionCardCount>,
+  perTypeLimit: number,
+  cardIndex: Map<string, CardSignature>,
+): Record<string, PlayerTopCard[]> {
+  const byType = new Map<string, [string, SectionCardCount][]>();
+  for (const entry of counts.entries()) {
+    const [name] = entry;
+    const type = primaryCardType(cardIndex.get(name)?.types ?? []);
+    if (!type) continue;
+    const list = byType.get(type) ?? [];
+    list.push(entry);
+    byType.set(type, list);
+  }
+  const result: Record<string, PlayerTopCard[]> = {};
+  for (const [type, entries] of byType) {
+    result[type] = entries
+      .sort((x, y) => y[1].deckCount - x[1].deckCount)
+      .slice(0, perTypeLimit)
+      .map(([name, c]) => ({ name, slug: cardIndex.get(name)?.slug ?? null, deckCount: c.deckCount, totalCopies: c.totalCopies }));
+  }
+  return result;
+}

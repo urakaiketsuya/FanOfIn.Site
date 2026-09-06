@@ -7,6 +7,7 @@ import { useCardCombination } from "./useCardCombination";
 import { useCommunityBlendedCardInclusion, useCommunitySourceCounts } from "../community/data";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
+import ElementIcon from "../../components/ElementIcon";
 import TopCardsSections from "../../components/TopCardsSections";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -326,6 +327,7 @@ export default function CardStatsIndex() {
                         {card?.editions[0] && (
                           <CardImage image={card.editions[0].image} alt={c.name} className="h-10 w-7 rounded object-cover object-top" />
                         )}
+                        {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
                         {c.name}
                       </Link>
                     ) : (

@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import type { Card, CompositionWinRateData } from "@gatcg/shared";
 import CardHoverPreview from "../../../components/CardHoverPreview";
+import ElementIcon from "../../../components/ElementIcon";
 import { computeReadinessCrossLinks, DependencyReadinessEntries, SynergyReadinessEntries } from "../../../components/DeckReadinessSection";
 import { CompositionChartsSection, CompositionSuggestionsSection } from "./CompositionPanels";
 import type { CardDecayReport } from "../../../lib/cardDecay";
@@ -66,6 +67,7 @@ export default function StatsPanel({
               return (
                 <div key={signal.cardName}>
                   <div className="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-md border border-ctp-surface1 px-3 py-2 text-xs">
+                    {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
                     {card ? (
                       <CardHoverPreview image={card.editions[0]?.image} alt={signal.cardName}>
                         <Link to={`/cards/${card.slug}`} className="font-semibold text-ctp-text hover:text-ctp-blue">
@@ -92,6 +94,7 @@ export default function StatsPanel({
                   {signal.replacement && (
                     <div className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 pl-3 text-[11px] text-ctp-subtext0">
                       <span>possibly replaced by</span>
+                      {replacementCard && replacementCard.element !== "NORM" && <ElementIcon element={replacementCard.element} size={14} />}
                       {replacementCard ? (
                         <CardHoverPreview image={replacementCard.editions[0]?.image} alt={signal.replacement.cardName}>
                           <Link to={`/cards/${replacementCard.slug}`} className="font-medium text-ctp-text hover:text-ctp-blue">
@@ -140,6 +143,7 @@ export default function StatsPanel({
             {newReleaseCards.map(({ card, combos }) => (
               <div key={card.name} className="rounded-md border border-ctp-surface1 px-3 py-2 text-xs">
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                  {card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
                   <CardHoverPreview image={card.editions[0]?.image} alt={card.name}>
                     <Link to={`/cards/${card.slug}`} className="font-semibold text-ctp-text hover:text-ctp-blue">
                       {card.name}

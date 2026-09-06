@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import type { Card, OmnidexDecklist } from "@gatcg/shared";
 import CardHoverPreview from "../../components/CardHoverPreview";
+import ElementIcon from "../../components/ElementIcon";
 import { computeCardDecay } from "../../lib/cardDecay";
 import { findDeckChampionName } from "../../lib/ttsExport";
 import { findSpiritName, useDeckBuilderPopulation } from "../deckbuilder/useDeckBuilderPopulation";
@@ -51,6 +52,7 @@ export default function DeckDecaySignals({ decklist, cardsByName }: { decklist: 
           return (
             <li key={signal.cardName} className="text-sm">
               <div className="flex flex-wrap items-center gap-1.5">
+                {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
                 {card ? (
                   <CardHoverPreview image={card.editions[0]?.image} alt={signal.cardName}>
                     <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
@@ -70,6 +72,7 @@ export default function DeckDecaySignals({ decklist, cardsByName }: { decklist: 
               {signal.replacement && (
                 <p className="mt-0.5 text-xs text-ctp-subtext0">
                   Possibly replaced by{" "}
+                  {replacementCard && replacementCard.element !== "NORM" && <ElementIcon element={replacementCard.element} size={14} className="inline-block align-text-bottom" />}{" "}
                   {replacementCard ? (
                     <Link to={`/cards/${replacementCard.slug}`} className="text-ctp-text hover:text-ctp-blue">
                       {signal.replacement.cardName}

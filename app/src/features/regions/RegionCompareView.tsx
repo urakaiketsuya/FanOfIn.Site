@@ -7,6 +7,7 @@ import { useRegionalKeywords } from "./useRegionalKeywords";
 import { useRegionDecodedDecks } from "./useRegionDecodedDecks";
 import { useCardsByNames } from "../events/useCardsByNames";
 import CardHoverPreview from "../../components/CardHoverPreview";
+import ElementIcon from "../../components/ElementIcon";
 import { formatUsd } from "../../lib/format";
 import { championNameToSlug } from "../../lib/championSlug";
 import type { RegionOption } from "./useRegionalDecks";
@@ -134,6 +135,7 @@ function CardDiffList({ rows, labelA, labelB, sign }: { rows: CardDiffRow[]; lab
         const card = cardsByName.get(r.name);
         return (
           <li key={r.name} className="flex flex-wrap items-center gap-1.5 text-sm">
+            {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
             {card ? (
               <CardHoverPreview image={card.editions[0]?.image} alt={r.name}>
                 <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">

@@ -1,15 +1,14 @@
-import { useMemo, useState, type ReactNode } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Card, CardInclusionEntry, DeckFormat, OmnidexDecklist, OmnidexDecklistCardLine } from "@gatcg/shared";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CardImage from "../../components/CardImage";
-import CostIcon from "../../components/CostIcon";
 import ElementIcon from "../../components/ElementIcon";
+import { VisualCardTile, VisualCommunityGate, type VisualFieldVisibility } from "../../components/VisualCardTile";
 import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
 import { usePriceTrendByName, type PriceTrendEntry } from "../pricing/usePriceTrendByName";
-import { useSimulatorSummaryData } from "../simulator/data";
+import { useSimulatorEvidenceByName } from "../simulator/useSimulatorEvidenceByName";
 import type { SimulatorCardEvidence } from "../deckbuilder/useSimulatorSuggestedBuild";
-import { useCommunityBlendedCardInclusion } from "../community/data";
 import DeckTuningEvidence from "./DeckTuningEvidence";
 import { formatUsd } from "../../lib/format";
 import { computeSectionPrice } from "../../lib/deckPrice";
@@ -122,100 +121,6 @@ const VISUAL_CARD_SIZE_CLASSES: Record<VisualCardSize, string> = {
   compact: "grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-8",
 };
 
-interface VisualFieldVisibility {
-  cost: boolean;
-  price: boolean;
-  priceTrend: boolean;
-  tags: boolean;
-  simulator: boolean;
-  community: boolean;
-}
-
-/** One card in Visual mode — full art plus an optional footer of toggleable fields, same idea as the Guided Deck Builder's BuilderCardGrid but for a plain finished decklist line rather than a suggestion-model card. */
-function VisualCardTile({
-  line,
-  card,
-  unitPrice,
-  priceTrend,
-  simulatorEvidence,
-  communityEntry,
-  fields,
-}: {
-  line: OmnidexDecklistCardLine;
-  card: Card | undefined;
-  unitPrice: number | undefined;
-  priceTrend: PriceTrendEntry | undefined;
-  simulatorEvidence: SimulatorCardEvidence | undefined;
-  communityEntry: CardInclusionEntry | undefined;
-  fields: VisualFieldVisibility;
-}) {
-  const tags = [...(card?.elements.filter((e) => e !== "NORM") ?? []), ...(card?.classes ?? [])];
-  const image = (
-    <div className="relative aspect-[5/7] overflow-hidden rounded bg-ctp-surface0">
-      {card?.editions[0] ? (
-        <CardImage image={card.editions[0].image} alt={line.card} className="h-full w-full object-cover" />
-      ) : (
-        <span className="flex h-full items-center p-1 text-center text-[9px] text-ctp-subtext0">{line.card}</span>
-      )}
-      {line.quantity > 1 && <span className="absolute right-1 top-1 rounded bg-ctp-base/90 px-1 text-[10px] text-ctp-text">{line.quantity}x</span>}
-      {fields.tags && tags.length > 0 && (
-        <div className="absolute inset-x-1 bottom-1 flex flex-wrap gap-0.5">
-          {tags.map((tag) => (
-            <span key={tag} className="rounded border border-ctp-surface1 bg-ctp-base/90 px-1 text-[9px] text-ctp-subtext1">
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-
-  return (
-    <CardHoverPreview image={card?.editions[0]?.image} alt={line.card}>
-      <div title={line.card}>
-        {card ? <Link to={`/cards/${card.slug}`}>{image}</Link> : image}
-        {fields.cost && card && card.cost.type !== "none" && card.cost.value !== null && (
-          <div className="mt-1 flex items-center justify-between text-[10px] text-ctp-subtext1">
-            <span>Cost</span>
-            <span className="flex items-center gap-0.5 text-ctp-text">
-              <CostIcon kind={card.cost.type} size={10} />
-              {card.cost.value}
-            </span>
-          </div>
-        )}
-        {fields.price && unitPrice !== undefined && (
-          <div className="mt-1 flex items-center justify-between text-[10px] text-ctp-subtext1">
-            <span>Price</span>
-            <span className="text-ctp-text">{formatUsd(unitPrice * line.quantity)}</span>
-          </div>
-        )}
-        {fields.priceTrend && priceTrend && (
-          <div className="mt-1 flex items-center justify-between text-[10px] text-ctp-subtext1">
-            <span>Trend</span>
-            <span className={priceTrend.pctChange >= 0 ? "text-ctp-green" : "text-ctp-red"}>
-              {priceTrend.pctChange >= 0 ? "▲" : "▼"} {Math.abs(priceTrend.pctChange * 100).toFixed(0)}%
-            </span>
-          </div>
-        )}
-        {fields.simulator && simulatorEvidence && (
-          <div className="mt-1 text-[10px] text-ctp-mauve" title="Anonymous Clarent simulator telemetry; experimental">
-            {simulatorEvidence.games} sim game{simulatorEvidence.games === 1 ? "" : "s"}
-            {simulatorEvidence.winRate === null ? "" : ` · ${(simulatorEvidence.winRate * 100).toFixed(0)}%`}
-          </div>
-        )}
-        {fields.community && communityEntry && (
-          <div className="mt-1 flex items-center justify-between text-[10px] text-ctp-subtext1">
-            <span>Community</span>
-            <span className="text-ctp-mauve" title="Share of all tracked community decks (any Champion) that include this card">
-              {Math.round(communityEntry.percentOfDecks * 100)}% brewed
-            </span>
-          </div>
-        )}
-      </div>
-    </CardHoverPreview>
-  );
-}
-
 function VisualDeckSection({
   title,
   lines,
@@ -280,35 +185,6 @@ function VisualModeSections({ sections, communityInclusionByName, ...rest }: Vis
   );
 }
 
-/**
- * Fetches the blended community-inclusion dataset (~1MB) and resolves its format-wide `overall`
- * array to a per-card map, then hands it to `children` — only mounted when the viewer has the
- * Community field switched on, so every other decklist page load skips this fetch entirely (same
- * gating `DeckTuningEvidence` below relies on for its own, larger cost).
- *
- * Deliberately format-wide, not Champion-scoped: `CardInclusionData.byChampion` is keyed by
- * ShoutAtYourDecks' own per-print champion slug (e.g. "diao-chan-enchantress"), which has no
- * reliable mapping back to this app's base Champion names (e.g. "Diao Chan", from the tournament
- * pipeline) — `DeckBuilderIndex.tsx`'s own `championToSlug(championName)` lookup into `byChampion`
- * has this same mismatch against current real data, confirmed empirically (every one of the 22
- * live `byChampion` keys carries a print-specific suffix a base name can't produce). Using
- * `overall` here sidesteps that rather than repeating it.
- */
-function VisualCommunityGate({
-  format,
-  children,
-}: {
-  format?: DeckFormat;
-  children: (communityInclusionByName: Map<string, CardInclusionEntry> | undefined) => ReactNode;
-}) {
-  const communityCardInclusion = useCommunityBlendedCardInclusion(format);
-  const communityInclusionByName = useMemo(() => {
-    if (!communityCardInclusion) return undefined;
-    return new Map(communityCardInclusion.overall.map((c) => [c.name, c]));
-  }, [communityCardInclusion]);
-  return <>{children(communityInclusionByName)}</>;
-}
-
 export default function DecklistView({
   decklist,
   cardsByName,
@@ -340,22 +216,9 @@ export default function DecklistView({
   const priceTrendByName = usePriceTrendByName();
   const catalog = useCardCatalog();
   const displayPrefs = useDecklistDisplayPrefs();
-  const simulatorSummary = useSimulatorSummaryData();
   // Visual mode's optional "sim games" field only — cardId isn't Champion-scoped like the Guided
   // Deck Builder's own evidence map, so this works for any decklist, not just a suggested build.
-  const simulatorEvidenceByName = useMemo(() => {
-    const cardById = new Map<string, Card>();
-    for (const c of catalog) {
-      cardById.set(c.uuid, c);
-      cardById.set(c.slug, c);
-    }
-    const byName = new Map<string, SimulatorCardEvidence>();
-    for (const stat of simulatorSummary?.cardStats ?? []) {
-      const card = cardById.get(stat.cardId);
-      if (card) byName.set(card.name, stat);
-    }
-    return byName;
-  }, [catalog, simulatorSummary]);
+  const simulatorEvidenceByName = useSimulatorEvidenceByName();
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
   const [displayMode, setDisplayMode] = useState<DeckDisplayMode>(() => defaultDisplayMode === "detailed" && typeof window !== "undefined" && window.matchMedia?.("(max-width: 639px)").matches ? "compact" : defaultDisplayMode);
 

@@ -21,6 +21,7 @@ import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 import { cutoutsForChampion } from "../products/characterArt";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
+import Chip from "../../components/ui/Chip";
 import { EmptyState, InlineState } from "../../components/ui/ContentState";
 
 const MAX_TOP_DECKS_SHOWN = 5;
@@ -74,6 +75,7 @@ export default function ChampionDetail() {
   }, [trend]);
 
   const [spiritFilter, setSpiritFilter] = useState<SpiritFilter>({ kind: "all" });
+  const [typeFilter, setTypeFilter] = useState<string | "all">("all");
   const [tab, setTab] = useTabParam("tab", TAB_KEYS, "season");
   // Only reset when navigating from one Champion's page to a different one (same component
   // instance reused by the router) — not on initial mount, which would otherwise clobber a
@@ -82,10 +84,17 @@ export default function ChampionDetail() {
   useEffect(() => {
     if (prevChampionNameRef.current !== championName) {
       setSpiritFilter({ kind: "all" });
+      setTypeFilter("all");
       setTab("season");
       prevChampionNameRef.current = championName;
     }
   }, [championName, setTab]);
+
+  // Switching Spirit/Element resets the type filter — the previously-selected type may not exist
+  // (or may mean something very different) in the newly-selected breakdown's card pool.
+  useEffect(() => {
+    setTypeFilter("all");
+  }, [spiritFilter]);
 
   const displayedTopCards = useMemo(() => {
     if (!champion) return null;
@@ -97,6 +106,28 @@ export default function ChampionDetail() {
     }
     return champion.topCards;
   }, [champion, spiritFilter]);
+
+  const displayedMainByType = useMemo(() => {
+    if (!champion) return null;
+    if (spiritFilter.kind === "element") {
+      return champion.elementBreakdown.find((e) => e.element === spiritFilter.element)?.mainByType ?? champion.mainByType;
+    }
+    if (spiritFilter.kind === "spirit") {
+      return champion.spirits.find((s) => s.spiritName === spiritFilter.spiritName)?.mainByType ?? champion.mainByType;
+    }
+    return champion.mainByType;
+  }, [champion, spiritFilter]);
+
+  // Type chips, most-represented first (by total deckCount across that type's cards) — mirrors
+  // the deckCount-desc ordering already used for the Spirit dropdown/element buttons.
+  const typeFilterOptions = useMemo(() => {
+    if (!displayedMainByType) return [];
+    return Object.entries(displayedMainByType)
+      .map(([type, cards]) => ({ type, total: cards.reduce((sum, c) => sum + c.deckCount, 0) }))
+      .sort((a, b) => b.total - a.total);
+  }, [displayedMainByType]);
+
+  const displayedMainCards = typeFilter === "all" ? undefined : displayedMainByType?.[typeFilter];
 
   const spiritsForSelectedElement = useMemo(() => {
     if (!champion) return [];
@@ -201,8 +232,14 @@ export default function ChampionDetail() {
 
   const allTopCardNames = useMemo(() => {
     if (!displayedTopCards) return [];
-    return [...displayedTopCards.main, ...displayedTopCards.material, ...displayedTopCards.sideboard].map((c) => c.name);
-  }, [displayedTopCards]);
+    const names = new Set([...displayedTopCards.main, ...displayedTopCards.material, ...displayedTopCards.sideboard].map((c) => c.name));
+    if (displayedMainByType) {
+      for (const cards of Object.values(displayedMainByType)) {
+        for (const c of cards) names.add(c.name);
+      }
+    }
+    return Array.from(names);
+  }, [displayedTopCards, displayedMainByType]);
   const cardImages = useCardsByNames(allTopCardNames);
 
   function playerName(id: number): string {
@@ -322,32 +359,21 @@ export default function ChampionDetail() {
                     see it.
                   </p>
                   <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
-                    <button
-                      type="button"
-                      onClick={() => setSpiritFilter({ kind: "all" })}
-                      className={`rounded-md border px-2 py-1 text-xs ${
-                        spiritFilter.kind === "all"
-                          ? "border-ctp-blue text-ctp-blue"
-                          : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                      }`}
-                    >
+                    <Chip active={spiritFilter.kind === "all"} onClick={() => setSpiritFilter({ kind: "all" })}>
                       All ({champion.deckCount})
-                    </button>
+                    </Chip>
                     {champion.elementBreakdown.map((e) => (
-                      <button
+                      <Chip
                         key={e.element}
-                        type="button"
-                        onClick={() => setSpiritFilter({ kind: "element", element: e.element })}
-                        className={`rounded-md border px-2 py-1 text-xs ${
+                        active={
                           (spiritFilter.kind === "element" && spiritFilter.element === e.element) ||
                           (spiritFilter.kind === "spirit" &&
                             champion.spirits.find((s) => s.spiritName === spiritFilter.spiritName)?.spiritElement === e.element)
-                            ? "border-ctp-blue text-ctp-blue"
-                            : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                        }`}
+                        }
+                        onClick={() => setSpiritFilter({ kind: "element", element: e.element })}
                       >
                         {titleCase(e.element)} ({e.deckCount})
-                      </button>
+                      </Chip>
                     ))}
                   </div>
 
@@ -355,27 +381,37 @@ export default function ChampionDetail() {
                     <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs">
                       <span className="text-ctp-subtext0">Spirit:</span>
                       {spiritsForSelectedElement.map((s) => (
-                        <button
+                        <Chip
                           key={s.spiritName}
-                          type="button"
+                          size="sm"
+                          active={spiritFilter.kind === "spirit" && spiritFilter.spiritName === s.spiritName}
                           onClick={() => setSpiritFilter({ kind: "spirit", spiritName: s.spiritName })}
-                          className={`rounded-md border px-1.5 py-0.5 ${
-                            spiritFilter.kind === "spirit" && spiritFilter.spiritName === s.spiritName
-                              ? "border-ctp-blue text-ctp-blue"
-                              : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                          }`}
                         >
                           {s.spiritName} ({s.deckCount})
-                        </button>
+                        </Chip>
                       ))}
                     </div>
                   )}
                 </>
               )}
 
+              {typeFilterOptions.length > 0 && (
+                <div className="mt-3 flex flex-wrap items-center gap-1.5 text-xs">
+                  <span className="text-ctp-subtext0">Main card type:</span>
+                  <Chip size="sm" active={typeFilter === "all"} onClick={() => setTypeFilter("all")}>
+                    All
+                  </Chip>
+                  {typeFilterOptions.map(({ type }) => (
+                    <Chip key={type} size="sm" active={typeFilter === type} onClick={() => setTypeFilter(type)}>
+                      {titleCase(type)}
+                    </Chip>
+                  ))}
+                </div>
+              )}
+
               {displayedTopCards && (
                 <div className="mt-3">
-                  <TopCardsSections topCards={displayedTopCards} cardImages={cardImages} />
+                  <TopCardsSections topCards={displayedTopCards} cardImages={cardImages} mainOverride={displayedMainCards} />
                 </div>
               )}
             </Section>

@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import type { OmnidexDecklist } from "@gatcg/shared";
 import CardHoverPreview from "../../components/CardHoverPreview";
+import ElementIcon from "../../components/ElementIcon";
 import { formatUsd } from "../../lib/format";
 import { buildTtsSaveFile, downloadJsonFile, slugifyFilename } from "../../lib/ttsExport";
 import { buildDeckBuilderPath, deckBuilderParamsFromDecklist } from "../../lib/deckBuilderLink";
@@ -200,13 +201,16 @@ export default function ComparisonGrid({
                         <tr key={`${sectionKey}-${name}`}>
                           <td className="sticky left-0 z-10 bg-ctp-base py-1 pr-6 pl-3">
                             <CardHoverPreview image={card?.editions[0]?.image} alt={name}>
-                              {card?.slug ? (
-                                <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
-                                  {name}
-                                </Link>
-                              ) : (
-                                <span className="text-ctp-text">{name}</span>
-                              )}
+                              <span className="inline-flex items-center gap-1.5">
+                                {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
+                                {card?.slug ? (
+                                  <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
+                                    {name}
+                                  </Link>
+                                ) : (
+                                  <span className="text-ctp-text">{name}</span>
+                                )}
+                              </span>
                             </CardHoverPreview>
                           </td>
                           {quantities.map((q, i) => (

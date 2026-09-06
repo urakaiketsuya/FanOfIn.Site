@@ -28,7 +28,6 @@ export const RARITY_COLOR: Record<number, string> = {
   8: "border-ctp-red",
 };
 
-export const PACK_SIZE = 12;
 const COMMON_SLOTS = 7;
 const UNCOMMON_SLOTS = 3;
 

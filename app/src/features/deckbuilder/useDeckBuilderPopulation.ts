@@ -46,8 +46,7 @@ export function findSpiritName(material: { name: string; quantity: number }[], c
  * `minEventDate`/`maxEventDate` (ISO strings, inclusive), when given, additionally restrict to
  * decks whose event falls in that range — the "recent season only" pool's filter, kept as plain
  * primitives rather than a `{start, end}` object so callers that recompute the range each render
- * (e.g. from `useLatestSeason()`) don't accidentally bust this hook's own memoization with a new
- * object reference every time.
+ * don't accidentally bust this hook's own memoization with a new object reference every time.
  */
 export function useDeckBuilderPopulation(championName: string | null, minEventDate?: string, maxEventDate?: string): DeckBuilderPopulation {
   const rawCardIndexData = useDeckCardIndexData();

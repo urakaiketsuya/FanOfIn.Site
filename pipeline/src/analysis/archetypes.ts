@@ -1,12 +1,14 @@
-import { buildSpiritCanonicalNames, type ArchetypeData, type ArchetypeElementBreakdown, type ArchetypeSpiritBreakdown, type ArchetypeSummary, type BattleChartEntry, type TopCardsBySection } from "@gatcg/shared";
+import { buildSpiritCanonicalNames, type ArchetypeData, type ArchetypeElementBreakdown, type ArchetypeSpiritBreakdown, type ArchetypeSummary, type BattleChartEntry, type PlayerTopCard, type TopCardsBySection } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
 import type { CardSignature } from "../cards/catalog.js";
-import { tallySectionCounts, topCardsFromCounts, type DeckSignature, type SectionCardCount } from "./decklists.js";
+import { tallySectionCounts, topCardsByTypeFromCounts, topCardsFromCounts, type DeckSignature, type SectionCardCount } from "./decklists.js";
 import type { AnalysisContext } from "./context.js";
 import { config } from "../config.js";
 
 const MAX_SAMPLE_DECKS = 5;
 const MAX_TOP_CARDS_PER_SECTION = 12;
+/** Independent per-type cap for the Main section's type-grouped view — same figure as the flat cap, kept as its own constant since the two aren't required to move together. */
+const MAX_TOP_CARDS_PER_TYPE = 12;
 
 interface SectionAccumBucket {
   deckCount: number;
@@ -26,12 +28,32 @@ function tallyIntoBucket(bucket: SectionAccumBucket, sig: DeckSignature): void {
   tallySectionCounts(bucket.sideboardCounts, sig.sideboardCards);
 }
 
-function bucketToTopCards(bucket: SectionAccumBucket, cardIndex: Map<string, CardSignature>): TopCardsBySection {
+/**
+ * Builds a `{main, material, sideboard}` + `mainByType` view from a section's tallied counts.
+ * Shared by every breakdown level (champion-wide, per-element, per-Spirit) so there's exactly one
+ * place that knows how to turn tallied counts into the published shape — takes the three raw count
+ * maps rather than a specific accumulator type so it works for both `SectionAccumBucket` and
+ * `ArchetypeAccum`, which carry the same three fields under different container types.
+ */
+function countsToTopCards(
+  mainCounts: Map<string, SectionCardCount>,
+  materialCounts: Map<string, SectionCardCount>,
+  sideboardCounts: Map<string, SectionCardCount>,
+  cardIndex: Map<string, CardSignature>,
+): TopCardsBySection & { mainByType: Record<string, PlayerTopCard[]> } {
   return {
-    main: topCardsFromCounts(bucket.mainCounts, MAX_TOP_CARDS_PER_SECTION, cardIndex),
-    material: topCardsFromCounts(bucket.materialCounts, MAX_TOP_CARDS_PER_SECTION, cardIndex),
-    sideboard: topCardsFromCounts(bucket.sideboardCounts, MAX_TOP_CARDS_PER_SECTION, cardIndex),
+    main: topCardsFromCounts(mainCounts, MAX_TOP_CARDS_PER_SECTION, cardIndex),
+    material: topCardsFromCounts(materialCounts, MAX_TOP_CARDS_PER_SECTION, cardIndex),
+    sideboard: topCardsFromCounts(sideboardCounts, MAX_TOP_CARDS_PER_SECTION, cardIndex),
+    mainByType: topCardsByTypeFromCounts(mainCounts, MAX_TOP_CARDS_PER_TYPE, cardIndex),
   };
+}
+
+function bucketToTopCards(
+  bucket: SectionAccumBucket,
+  cardIndex: Map<string, CardSignature>,
+): TopCardsBySection & { mainByType: Record<string, PlayerTopCard[]> } {
+  return countsToTopCards(bucket.mainCounts, bucket.materialCounts, bucket.sideboardCounts, cardIndex);
 }
 
 interface ArchetypeAccum {
@@ -85,39 +107,47 @@ function accumulateDeck(a: ArchetypeAccum, sig: DeckSignature, eventId: number, 
 
 function buildSummaries(accum: Map<string, ArchetypeAccum>, cardIndex: Map<string, CardSignature>): ArchetypeSummary[] {
   return Array.from(accum.entries())
-    .map(([signature, a]) => ({
-      signature,
-      classes: a.classes,
-      elements: a.elements,
-      deckCount: a.deckCount,
-      eventCount: a.events.size,
-      avgWinRate: a.winRateN > 0 ? a.winRateSum / a.winRateN : 0,
-      sampleDecks: a.sampleDecks,
-      topCards: {
-        main: topCardsFromCounts(a.mainCounts, MAX_TOP_CARDS_PER_SECTION, cardIndex),
-        material: topCardsFromCounts(a.materialCounts, MAX_TOP_CARDS_PER_SECTION, cardIndex),
-        sideboard: topCardsFromCounts(a.sideboardCounts, MAX_TOP_CARDS_PER_SECTION, cardIndex),
-      },
-      spirits: Array.from(a.spirits.entries())
-        .map(
-          ([spiritName, bucket]): ArchetypeSpiritBreakdown => ({
-            spiritName,
-            spiritElement: a.spiritElements.get(spiritName) ?? null,
-            deckCount: bucket.deckCount,
-            topCards: bucketToTopCards(bucket, cardIndex),
-          }),
-        )
-        .sort((x, y) => y.deckCount - x.deckCount),
-      elementBreakdown: Array.from(a.elementBuckets.entries())
-        .map(
-          ([element, bucket]): ArchetypeElementBreakdown => ({
-            element,
-            deckCount: bucket.deckCount,
-            topCards: bucketToTopCards(bucket, cardIndex),
-          }),
-        )
-        .sort((x, y) => y.deckCount - x.deckCount),
-    }))
+    .map(([signature, a]) => {
+      const top = countsToTopCards(a.mainCounts, a.materialCounts, a.sideboardCounts, cardIndex);
+      return {
+        signature,
+        classes: a.classes,
+        elements: a.elements,
+        deckCount: a.deckCount,
+        eventCount: a.events.size,
+        avgWinRate: a.winRateN > 0 ? a.winRateSum / a.winRateN : 0,
+        sampleDecks: a.sampleDecks,
+        topCards: top,
+        mainByType: top.mainByType,
+        spirits: Array.from(a.spirits.entries())
+          .map(
+            ([spiritName, bucket]): ArchetypeSpiritBreakdown => {
+              const spiritTop = bucketToTopCards(bucket, cardIndex);
+              return {
+                spiritName,
+                spiritElement: a.spiritElements.get(spiritName) ?? null,
+                deckCount: bucket.deckCount,
+                topCards: spiritTop,
+                mainByType: spiritTop.mainByType,
+              };
+            },
+          )
+          .sort((x, y) => y.deckCount - x.deckCount),
+        elementBreakdown: Array.from(a.elementBuckets.entries())
+          .map(
+            ([element, bucket]): ArchetypeElementBreakdown => {
+              const elementTop = bucketToTopCards(bucket, cardIndex);
+              return {
+                element,
+                deckCount: bucket.deckCount,
+                topCards: elementTop,
+                mainByType: elementTop.mainByType,
+              };
+            },
+          )
+          .sort((x, y) => y.deckCount - x.deckCount),
+      };
+    })
     .filter((a) => a.deckCount >= config.minBattleChartSampleSize)
     .sort((a, b) => b.deckCount - a.deckCount);
 }

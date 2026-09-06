@@ -87,14 +87,6 @@ export async function listPublishedTcgArchitectDecks(publishedDecksDir = PUBLISH
   return records;
 }
 
-export async function readTcgArchitectHarvestMeta(): Promise<TcgArchitectHarvestMeta | null> {
-  try {
-    return JSON.parse(await readFile(HARVEST_META_PATH, "utf-8")) as TcgArchitectHarvestMeta;
-  } catch {
-    return null;
-  }
-}
-
 export async function writeTcgArchitectHarvestMeta(meta: TcgArchitectHarvestMeta): Promise<void> {
   await ensureDirs();
   await writeJsonAtomic(HARVEST_META_PATH, meta);

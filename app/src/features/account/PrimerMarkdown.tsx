@@ -2,6 +2,7 @@ import { Fragment, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CardImage from "../../components/CardImage";
+import ElementIcon from "../../components/ElementIcon";
 import { useCardsByNames } from "../events/useCardsByNames";
 
 const INLINE = /(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*|`[^`]+`|\*[^*]+\*)/g;
@@ -59,7 +60,7 @@ export default function PrimerMarkdown({ markdown }: { markdown: string }) {
       <div className="flex items-center gap-2"><span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${isCombo ? "bg-ctp-mauve/20 text-ctp-mauve" : "bg-ctp-teal/20 text-ctp-teal"}`}>{isCombo ? "Combo" : "Package"}</span><h3 className="font-semibold text-ctp-text">{inlineMarkdown(current.title)}</h3></div>
       {cardLines.length > 0 && <div className="mt-3 grid gap-2 sm:grid-cols-2">{cardLines.map(({ index, candidate }) => {
         const card = cardsByName.get(candidate.name)!;
-        return <CardHoverPreview key={`${candidate.name}-${index}`} image={card.editions[0]?.image} alt={candidate.name}><Link to={`/cards/${card.slug}`} className="flex items-center gap-2 rounded-lg border border-ctp-surface1/70 bg-ctp-base/40 p-2 hover:border-ctp-blue/60"><CardImage image={card.editions[0]?.image} alt={candidate.name} className="h-12 w-9 shrink-0 rounded object-cover object-top" /><span className="min-w-0 text-sm font-medium text-ctp-text"><span className="block truncate">{candidate.name}</span>{candidate.quantity && <span className="text-xs font-normal text-ctp-subtext0">{candidate.quantity} copies</span>}</span></Link></CardHoverPreview>;
+        return <CardHoverPreview key={`${candidate.name}-${index}`} image={card.editions[0]?.image} alt={candidate.name}><Link to={`/cards/${card.slug}`} className="flex items-center gap-2 rounded-lg border border-ctp-surface1/70 bg-ctp-base/40 p-2 hover:border-ctp-blue/60"><CardImage image={card.editions[0]?.image} alt={candidate.name} className="h-12 w-9 shrink-0 rounded object-cover object-top" /><span className="min-w-0 text-sm font-medium text-ctp-text"><span className="flex items-center gap-1 truncate">{card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}<span className="truncate">{candidate.name}</span></span>{candidate.quantity && <span className="text-xs font-normal text-ctp-subtext0">{candidate.quantity} copies</span>}</span></Link></CardHoverPreview>;
       })}</div>}
       {remainingLines.some((line) => line.trim()) && <div className="mt-3"><PrimerMarkdown markdown={remainingLines.join("\n")} /></div>}
     </aside>);

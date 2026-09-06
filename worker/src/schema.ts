@@ -100,5 +100,3 @@ export const gameSubmissionV1Schema = z.object({
 });
 
 export type GameSubmissionV1 = z.infer<typeof gameSubmissionV1Schema>;
-export type PlayerGameStatsV1 = GameSubmissionV1["players"]["1"];
-export type CombatEventV1 = GameSubmissionV1["combatEvents"][number];
