@@ -4,14 +4,14 @@ import type { ArchetypeSummary, ChampionTrendDirection } from "@gatcg/shared";
 import { useArchetypeData, useChampionTrendsData } from "../archetypes/data";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import { useCardsByNames } from "../events/useCardsByNames";
-import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { championNameToSlug } from "../../lib/championSlug";
 import ChampionMetaMap from "./ChampionMetaMap";
 import PageHeader from "../../components/ui/PageHeader";
-import DataTable from "../../components/ui/DataTable";
 import ElementIcon from "../../components/ElementIcon";
+import ClassIcon from "../../components/ClassIcon";
+import CardArtTile from "../../components/CardArtTile";
 import PageLayout from "../../components/layout/PageLayout";
 import { InlineState } from "../../components/ui/ContentState";
 import Section from "../../components/ui/Section";
@@ -60,57 +60,37 @@ export default function ChampionsIndex() {
 
       {archetypes && trendsData && <ChampionMetaMap champions={archetypes} trends={trendsData.champions} />}
 
-      <DataTable className="mt-6">
-          <thead>
-            <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-              <th className="py-1 pr-6"></th>
-              <th className="py-1 pr-6">Champion</th>
-              <th className="py-1 pr-6">Decks</th>
-              <th className="py-1 pr-6">Events</th>
-              <th className="py-1 pr-6">Win rate</th>
-              <th className="py-1" title={latestSeasonName ? `Change in share of ${latestSeasonName} vs. the prior season` : undefined}>
-                Trend
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-            {archetypes?.map((c) => {
-              const card = championImages.get(c.signature);
-              const trend = trendsData?.champions.find((t) => t.championName === c.signature);
-              return (
-                <tr key={c.signature}>
-                  <td className="w-12 py-1.5 pr-6">
-                    <CardHoverPreview image={card?.editions[0]?.image} alt={c.signature}>
-                      <Link to={`/champions/${championNameToSlug(c.signature)}`}>
-                        {card?.editions[0] ? (
-                          <CardImage
-                            image={card.editions[0].image}
-                            alt={c.signature}
-                            className="h-14 w-10 rounded object-cover object-top"
-                          />
-                        ) : (
-                          <div className="h-14 w-10 rounded bg-ctp-surface0" />
-                        )}
-                      </Link>
-                    </CardHoverPreview>
-                  </td>
-                  <td className="py-1.5 pr-6 whitespace-nowrap">
-                    <span className="inline-flex items-center gap-1.5">
-                      {c.elements.filter((element) => element !== "NORM").map((element) => (
-                        <ElementIcon key={element} element={element} size={17} />
-                      ))}
-                      <Link to={`/champions/${championNameToSlug(c.signature)}`} className="text-ctp-text hover:text-ctp-blue">
-                        {c.signature}
-                      </Link>
-                    </span>
-                    <span className="ml-2 text-xs text-ctp-subtext0">
-                      {c.classes.join("/")} · {c.elements.join("/")}
-                    </span>
-                  </td>
-                  <td className="py-1.5 pr-6 text-ctp-subtext1">{c.deckCount}</td>
-                  <td className="py-1.5 pr-6 text-ctp-subtext1">{c.eventCount}</td>
-                  <td className="py-1.5 pr-6 text-ctp-subtext1">{(c.avgWinRate * 100).toFixed(0)}%</td>
-                  <td className={`py-1.5 text-xs whitespace-nowrap ${trend ? TREND_CLASS[trend.trend] : "text-ctp-subtext0"}`}>
+      <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        {archetypes?.map((c) => {
+          const card = championImages.get(c.signature);
+          const trend = trendsData?.champions.find((t) => t.championName === c.signature);
+          return (
+            <CardHoverPreview key={c.signature} image={card?.editions[0]?.image} alt={c.signature}>
+              <Link
+                to={`/champions/${championNameToSlug(c.signature)}`}
+                className="group block rounded-lg border border-ctp-surface1 bg-ctp-mantle p-2 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-ctp-surface2 hover:shadow-md hover:shadow-black/20"
+              >
+                <CardArtTile card={card} name={c.signature} />
+                <p className="mt-2 truncate text-sm font-semibold text-ctp-text group-hover:text-ctp-blue">{c.signature}</p>
+                <p className="mt-0.5 flex items-center gap-1 text-[10px] text-ctp-subtext0">
+                  {c.classes.map((cls) => (
+                    <ClassIcon key={cls} cardClass={cls} size={11} />
+                  ))}
+                  {c.elements.filter((element) => element !== "NORM").map((element) => (
+                    <ElementIcon key={element} element={element} size={11} />
+                  ))}
+                  <span className="truncate">{c.classes.join("/")} · {c.elements.join("/")}</span>
+                </p>
+                <div className="mt-1.5 flex items-center justify-between text-[10px] text-ctp-subtext1">
+                  <span>{c.deckCount.toLocaleString()} decks</span>
+                  <span className="font-medium text-ctp-text">{(c.avgWinRate * 100).toFixed(0)}% WR</span>
+                </div>
+                <div className="mt-0.5 flex items-center justify-between text-[10px]">
+                  <span className="text-ctp-subtext0">{c.eventCount.toLocaleString()} events</span>
+                  <span
+                    className={trend ? TREND_CLASS[trend.trend] : "text-ctp-subtext0"}
+                    title={latestSeasonName ? `Change in share of ${latestSeasonName} vs. the prior season` : undefined}
+                  >
                     {trend ? TREND_LABEL[trend.trend] : ""}
                     {trend?.trendDeltaPct !== null && trend?.trendDeltaPct !== undefined && (
                       <span className="ml-1 text-ctp-subtext0">
@@ -118,12 +98,13 @@ export default function ChampionsIndex() {
                         {trend.trendDeltaPct.toFixed(1)}pp)
                       </span>
                     )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-      </DataTable>
+                  </span>
+                </div>
+              </Link>
+            </CardHoverPreview>
+          );
+        })}
+      </div>
 
       {data?.namedSpirits && data.namedSpirits.length > 0 && (
         <Section
@@ -132,55 +113,32 @@ export default function ChampionsIndex() {
           title="Named Spirits"
           description={<>Named Spirit companions (e.g. "Kaze, Spirit of Wind" — distinct from the generic "Spirit of Wind"), tracked with the same stats as a Champion, across every deck that runs them regardless of which Champion is present.</>}
         >
-          <div className="mt-2 overflow-x-auto">
-            <table className="w-max min-w-full text-sm">
-              <thead>
-                <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                  <th className="py-1 pr-6"></th>
-                  <th className="py-1 pr-6">Spirit</th>
-                  <th className="py-1 pr-6">Decks</th>
-                  <th className="py-1 pr-6">Events</th>
-                  <th className="py-1">Win rate</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-                {data.namedSpirits.map((s: ArchetypeSummary) => {
-                  const card = namedSpiritImages.get(s.signature);
-                  return (
-                    <tr key={s.signature}>
-                      <td className="w-12 py-1.5 pr-6">
-                        <CardHoverPreview image={card?.editions[0]?.image} alt={s.signature}>
-                          <Link to={`/champions/${championNameToSlug(s.signature)}`}>
-                            {card?.editions[0] ? (
-                              <CardImage
-                                image={card.editions[0].image}
-                                alt={s.signature}
-                                className="h-14 w-10 rounded object-cover object-top"
-                              />
-                            ) : (
-                              <div className="h-14 w-10 rounded bg-ctp-surface0" />
-                            )}
-                          </Link>
-                        </CardHoverPreview>
-                      </td>
-                      <td className="py-1.5 pr-6 whitespace-nowrap">
-                        <span className="inline-flex items-center gap-1.5">
-                          {s.elements.filter((element) => element !== "NORM").map((element) => (
-                            <ElementIcon key={element} element={element} size={17} />
-                          ))}
-                          <Link to={`/champions/${championNameToSlug(s.signature)}`} className="text-ctp-text hover:text-ctp-blue">
-                            {s.signature}
-                          </Link>
-                        </span>
-                      </td>
-                      <td className="py-1.5 pr-6 text-ctp-subtext1">{s.deckCount}</td>
-                      <td className="py-1.5 pr-6 text-ctp-subtext1">{s.eventCount}</td>
-                      <td className="py-1.5 text-ctp-subtext1">{(s.avgWinRate * 100).toFixed(0)}%</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            {data.namedSpirits.map((s: ArchetypeSummary) => {
+              const card = namedSpiritImages.get(s.signature);
+              return (
+                <CardHoverPreview key={s.signature} image={card?.editions[0]?.image} alt={s.signature}>
+                  <Link
+                    to={`/champions/${championNameToSlug(s.signature)}`}
+                    className="group block rounded-lg border border-ctp-surface1 bg-ctp-mantle p-2 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-ctp-surface2 hover:shadow-md hover:shadow-black/20"
+                  >
+                    <CardArtTile card={card} name={s.signature} />
+                    <p className="mt-2 truncate text-sm font-semibold text-ctp-text group-hover:text-ctp-blue">{s.signature}</p>
+                    <p className="mt-0.5 flex items-center gap-1 text-[10px] text-ctp-subtext0">
+                      {s.elements.filter((element) => element !== "NORM").map((element) => (
+                        <ElementIcon key={element} element={element} size={11} />
+                      ))}
+                      <span className="truncate">{s.elements.join("/")}</span>
+                    </p>
+                    <div className="mt-1.5 flex items-center justify-between text-[10px] text-ctp-subtext1">
+                      <span>{s.deckCount.toLocaleString()} decks</span>
+                      <span className="font-medium text-ctp-text">{(s.avgWinRate * 100).toFixed(0)}% WR</span>
+                    </div>
+                    <div className="mt-0.5 text-[10px] text-ctp-subtext0">{s.eventCount.toLocaleString()} events</div>
+                  </Link>
+                </CardHoverPreview>
+              );
+            })}
           </div>
         </Section>
       )}
