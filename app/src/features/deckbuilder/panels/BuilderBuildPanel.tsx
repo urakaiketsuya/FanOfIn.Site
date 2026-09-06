@@ -75,7 +75,7 @@ export default function BuilderBuildPanel({
 }) {
   const communityMode = effectivePopulationSource !== "tournament" && effectivePopulationSource !== "balanced";
   return (
-    <div role="tabpanel" id="deck-builder-panel-build" aria-labelledby="deck-builder-tab-build" className="mt-4">
+    <div data-component="BuilderBuildPanel" role="tabpanel" id="deck-builder-panel-build" aria-labelledby="deck-builder-tab-build" className="mt-4">
       <span className="text-sm text-ctp-subtext0">{builderIntent === "seed" ? "Cards to build around:" : "Add a card:"}</span>
       <input
         type="text"

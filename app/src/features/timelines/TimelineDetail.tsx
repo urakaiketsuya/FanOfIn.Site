@@ -27,7 +27,7 @@ export default function TimelineDetail() {
   const activeTab = tabs.some((t) => t.key === tab) ? tab : "timeline";
 
   return (
-    <PageLayout width="standard">
+    <PageLayout data-component="TimelineDetail" width="standard">
       {!data && <InlineState>Loading…</InlineState>}
       {data && !match && (
         <EmptyState

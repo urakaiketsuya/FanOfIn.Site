@@ -76,7 +76,7 @@ export default function TournamentsIndex() {
   }
 
   return (
-    <PageLayout>
+    <PageLayout data-component="TournamentsIndex">
       <PageHeader
         title="Tournaments"
         description="Events ingested by the tournament data pipeline. Only a subset of Omnidex events are deep-fetched — most are small weekly leagues below the pipeline's size threshold."

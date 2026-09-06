@@ -64,8 +64,8 @@ export default function PantheonDeckDetail() {
   const material = deck?.materialDeck.filter((line) => !legacyBoons.includes(line)) ?? [];
   useDocumentTitle(deck ? `${championName} Pantheon Deck` : "Pantheon Deck", "View a locally stored Pantheon decklist and its composition analytics.");
 
-  if (deck === undefined) return <PageLayout width="standard"><InlineState>Loading Pantheon deck…</InlineState></PageLayout>;
-  if (deck === null) return <PageLayout width="standard"><PageHeader title="Pantheon deck not found" /><Link to="/decks?view=pantheon" className="text-ctp-blue">← Browse Pantheon decks</Link></PageLayout>;
+  if (deck === undefined) return <PageLayout data-component="PantheonDeckDetail" width="standard"><InlineState>Loading Pantheon deck…</InlineState></PageLayout>;
+  if (deck === null) return <PageLayout data-component="PantheonDeckDetail" width="standard"><PageHeader title="Pantheon deck not found" /><Link to="/decks?view=pantheon" className="text-ctp-blue">← Browse Pantheon decks</Link></PageLayout>;
 
   const uniqueCards = new Set([...deck.mainDeck, ...deck.materialDeck, ...(deck.pantheonDeck ?? []), ...deck.sideDeck].map((line) => line.name)).size;
   const identity = computeDeckIdentity([...deck.mainDeck, ...deck.materialDeck], cardsByName);
@@ -101,7 +101,7 @@ export default function PantheonDeckDetail() {
     { label: "Card-data coverage", detail: `${resolvedMainCount} of ${totalMainCount} main-deck cards resolved`, state: catalogCoverage >= 0.9 ? "ready" : "unknown" },
   ] as const;
 
-  return <PageLayout>
+  return <PageLayout data-component="PantheonDeckDetail">
     <Link to="/decks?view=pantheon" className="text-sm text-ctp-blue hover:underline">← Browse Decks</Link>
     <div className="mt-2 flex items-center gap-3">
       <CardHoverPreview image={championCard?.editions[0]?.image} alt={championName}>

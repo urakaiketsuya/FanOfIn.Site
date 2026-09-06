@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import type { Card, DeckFormat } from "@gatcg/shared";
 import HypergeometricCalculator from "../HypergeometricCalculator";
-import type { DeckRating, RatingPillar } from "../../../lib/deckIdentity";
+import type { RatingPillar } from "../../../lib/deckIdentity";
 import type { DeckValidationResult } from "../validateDeck";
 import type { ArchetypeTuningOption, CollectionMode, PopulationSource } from "../model/builderTypes";
 import Panel from "../../../components/ui/Panel";
@@ -10,7 +10,6 @@ import Section from "../../../components/ui/Section";
 const PILLAR_OPTIONS: RatingPillar[] = ["durability", "interaction", "aggro", "opportunity"];
 
 export default function ToolsPanel({
-  rating,
   mainLines,
   materialLines,
   catalogByName,
@@ -29,7 +28,6 @@ export default function ToolsPanel({
   collectionMode,
   onCollectionModeChange,
 }: {
-  rating: DeckRating;
   mainLines: { name: string; quantity: number }[];
   materialLines: { name: string; quantity: number }[];
   catalogByName: Map<string, Card>;
@@ -49,24 +47,8 @@ export default function ToolsPanel({
   onCollectionModeChange: (mode: CollectionMode) => void;
 }) {
   return (
-    <div className="mt-6">
-      <Panel>
-        <Section heading="dense" title="DIAO Score" actions={<span className="text-2xl font-bold text-ctp-blue">{rating.composite.toFixed(2)}</span>}>
-        <div className="mt-3 space-y-2">
-          {(["durability", "interaction", "aggro", "opportunity"] as RatingPillar[]).map((pillar) => (
-            <div key={pillar} className="flex items-center gap-2 text-sm">
-              <span className="w-24 shrink-0 capitalize text-ctp-subtext1">{pillar}</span>
-              <div className="h-2 flex-1 rounded-full bg-ctp-surface0">
-                <div className="h-2 rounded-full bg-ctp-blue" style={{ width: `${(rating.scores[pillar] / 10) * 100}%` }} />
-              </div>
-              <span className="w-6 shrink-0 text-right text-ctp-subtext0">{rating.scores[pillar]}</span>
-            </div>
-          ))}
-        </div>
-        </Section>
-      </Panel>
-
-      <details className={`mt-4 rounded-md border px-3 py-2 text-sm ${validation.status === "Legal" ? "border-ctp-green" : validation.status === "Illegal" ? "border-ctp-red" : "border-ctp-yellow"}`}>
+    <div data-component="BuilderToolsPanel" className="mt-6">
+      <details className={`rounded-md border px-3 py-2 text-sm ${validation.status === "Legal" ? "border-ctp-green" : validation.status === "Illegal" ? "border-ctp-red" : "border-ctp-yellow"}`}>
         <summary className="flex cursor-pointer items-center justify-between gap-3">
           <span className="font-semibold">{validation.status === "Incomplete" && unresolvedMain > 0 ? `${unresolvedMain} main-deck slots remaining` : validation.status}</span>
           <span className="text-xs font-normal text-ctp-subtext0">View validation</span>

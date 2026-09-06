@@ -19,7 +19,7 @@ export default function SharedDecksIndex() {
   useDocumentTitle("Shared Decks", "Discover public Grand Archive decklists shared by the community.");
   useEffect(() => { let active = true; setDecks(undefined); setError(null); void accountApi.discoverDecks(params).then((result) => { if (active) { setDecks(result.decks); setNextPage(result.nextPage); } }).catch((reason: unknown) => { if (active) { setError(reason instanceof Error ? reason.message : "Decks could not be loaded"); setDecks([]); setNextPage(null); } }); return () => { active = false; }; }, [params]);
   const format = params.get("format") ?? "";
-  return <PageLayout width="wide">
+  return <PageLayout data-component="SharedDecksIndex" width="wide">
     <PageHeader title="Shared Decks" description="Public lists from Fan of Insight users, ranked by likes and recency." />
     <form className="mt-6 flex flex-wrap gap-2" onSubmit={(event) => { event.preventDefault(); const next = new URLSearchParams(); if (query.trim()) next.set("q", query.trim()); if (format) next.set("format", format); setParams(next); }}>
       <TextInput maxLength={80} value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Deck, champion, or author" className="min-w-64 flex-1" />

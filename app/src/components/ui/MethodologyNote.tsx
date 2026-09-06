@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
  * BroadcastDataNotice). */
 export default function MethodologyNote({ anchor, children }: { anchor: string; children: ReactNode }) {
   return (
-    <p className="mt-2 text-xs text-ctp-subtext0">
+    <p data-component="MethodologyNote" className="mt-2 text-xs text-ctp-subtext0">
       {children} <Link to={`/methodology#${anchor}`} className="text-ctp-blue hover:underline">Learn more</Link>
     </p>
   );

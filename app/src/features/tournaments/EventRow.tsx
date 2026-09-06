@@ -31,6 +31,7 @@ function CategoryBadge({ category }: { category: string }) {
 export default function EventRow({ event }: { event: OmnidexEventSummary }) {
   return (
     <Link
+      data-component="EventRow"
       to={`/events/${event.id}`}
       className={`flex items-center justify-between gap-4 rounded-md border border-l-4 border-ctp-surface1 px-3 py-2 text-sm hover:border-t-ctp-blue hover:border-r-ctp-blue hover:border-b-ctp-blue ${
         CATEGORY_BORDER[event.category] ?? "border-l-ctp-surface1"

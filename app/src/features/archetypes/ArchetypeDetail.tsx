@@ -204,7 +204,7 @@ export default function ArchetypeDetail() {
 
   if (data && !cluster) {
     return (
-      <PageLayout>
+      <PageLayout data-component="ArchetypeDetail">
         <EmptyState
           title="Build not found"
           description="This build isn't in the ingested data (or hasn't cleared the sample-size threshold)."
@@ -215,7 +215,7 @@ export default function ArchetypeDetail() {
   }
 
   return (
-    <PageLayout>
+    <PageLayout data-component="ArchetypeDetail">
       <Link to="/archetypes" className="text-sm text-ctp-blue hover:underline">
         &larr; All archetypes
       </Link>

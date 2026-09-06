@@ -3,7 +3,7 @@ import Section from "../../../components/ui/Section";
 
 export default function BuilderChangeLog({ entries }: { entries: ChangeLogEntry[] }) {
   if (entries.length === 0) return null;
-  return <Section className="mt-6" heading="dense" title="Suggestion changes">
+  return <Section data-component="BuilderChangeLog" className="mt-6" heading="dense" title="Suggestion changes">
     <ul className="mt-2 space-y-1 text-xs text-ctp-subtext1">
       {entries.map((entry, index) => <li key={index}>
         <span className="text-ctp-text">{entry.label}</span>

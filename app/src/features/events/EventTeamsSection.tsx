@@ -24,7 +24,7 @@ export default function EventTeamsSection({ teams, players }: { teams: OmnidexTe
   if (teams.length === 0) return null;
 
   return (
-    <Section heading="compact" title={`Teams (${teams.length})`}>
+    <Section data-component="EventTeamsSection" heading="compact" title={`Teams (${teams.length})`}>
       {teams.length > 10 && (
         <input
           type="text"

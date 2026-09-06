@@ -9,7 +9,7 @@ const PILLARS: RatingPillar[] = ["durability", "interaction", "aggro", "opportun
  * that page has the extra data for. */
 export default function DiaoScoreCard({ rating, children }: { rating: DeckRating; children?: ReactNode }) {
   return (
-    <div className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+    <div data-component="DiaoScoreCard" className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
       <div className="flex items-center justify-between">
         <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">DIAO Score</h2>
         <span className="text-2xl font-bold text-ctp-blue">{rating.composite.toFixed(2)}</span>

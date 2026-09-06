@@ -8,6 +8,7 @@ export default function TypeIcon({ type, size = 16, className }: { type: string;
 
   return (
     <img
+      data-component="TypeIcon"
       src={gatcgApi.iconUrl("types", type)}
       alt={type}
       title={type}

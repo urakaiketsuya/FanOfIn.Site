@@ -391,7 +391,7 @@ export default function About() {
   }, []);
 
   return (
-    <div>
+    <div data-component="About">
       <section className="relative overflow-hidden border-b border-ctp-surface0">
         <div
           className="pointer-events-none absolute inset-0 bg-cover bg-[center_20%]"
@@ -620,55 +620,7 @@ export default function About() {
           </div>
         </div>
       </section>
-
-      <section className="border-t border-ctp-surface0 px-4 py-16">
-        <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[280px_1fr] lg:items-center">
-          <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">How the DIAO Score works</h2>
-            <p className="mt-2 text-sm text-ctp-subtext1">
-              Every deck page scores its decklist on four independent 1&ndash;10 pillars &mdash;
-              Durability, Interaction, Aggro, Opportunity &mdash; so you can size up a build's play style at a glance,
-              before you've played a single game with it.
-            </p>
-            <p className="mt-4 text-xs text-ctp-subtext0">
-              The composite is the plain average of the four pillar scores. Every score-band boundary is a real
-              percentile from the current Regional/Ascent 1st-place decklist cohort, not a round number &mdash; and scored
-              per decklist, not per Champion, since the same Champion can have genuinely opposite real builds.
-              Correlational, not causal, same as every other stat on this site.
-            </p>
-            <Link to={`/decks/${WALKTHROUGH_HASH}`} className="mt-4 inline-block text-sm font-semibold text-ctp-blue hover:underline">
-              See it on this deck's own page &rarr;
-            </Link>
-          </div>
-
-          <div className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
-                {WALKTHROUGH_DECK.championName} example
-              </span>
-              <span className="text-2xl font-bold text-ctp-blue">{WALKTHROUGH_DECK.rating.composite.toFixed(2)}</span>
-            </div>
-            <div className="mt-4 space-y-4">
-              {RATING_PILLARS.map((p) => (
-                <div key={p.key}>
-                  <div className="flex items-center gap-2 text-sm">
-                    <span className="w-24 shrink-0 font-semibold text-ctp-text">{p.label}</span>
-                    <div className="h-2 flex-1 rounded-full bg-ctp-surface0">
-                      <div
-                        className="h-2 rounded-full bg-ctp-blue"
-                        style={{ width: `${(WALKTHROUGH_DECK.rating.scores[p.key] / 10) * 100}%` }}
-                      />
-                    </div>
-                    <span className="w-6 shrink-0 text-right text-ctp-subtext0">{WALKTHROUGH_DECK.rating.scores[p.key]}</span>
-                  </div>
-                  <p className="mt-1 text-xs text-ctp-subtext1">{p.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
+      
       <section className="border-t border-ctp-surface0 bg-ctp-mantle/40 px-4 py-16">
         <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[280px_1fr] lg:items-center">
           <div>

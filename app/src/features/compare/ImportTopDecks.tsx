@@ -74,7 +74,7 @@ export default function ImportTopDecks({
   const showResults = championName && (mode === "placement" || clusterId);
 
   return (
-    <div>
+    <div data-component="ImportTopDecks">
       <p className="text-sm text-ctp-subtext1">
         Browse top-performing decks by Champion, ranked by placement — or narrow to one named build.
       </p>

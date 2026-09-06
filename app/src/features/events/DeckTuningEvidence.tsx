@@ -157,7 +157,7 @@ export default function DeckTuningEvidence({
   if (isPantheon || (addCards.length === 0 && reviewCards.length === 0 && quantitySuggestions.length === 0)) return null;
 
   return (
-    <div className="mt-4 grid gap-3 sm:grid-cols-2">
+    <div data-component="DeckTuningEvidence" className="mt-4 grid gap-3 sm:grid-cols-2">
       {addCards.length > 0 && (
         <Panel padding="sm">
           <Section

@@ -64,7 +64,7 @@ export default function PackOpenerWidget({ setPrefix, buttonLabel }: { setPrefix
   }
 
   return (
-    <div>
+    <div data-component="PackOpenerWidget">
       <div className="flex justify-center">
         <button
           type="button"

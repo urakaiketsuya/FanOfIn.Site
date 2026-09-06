@@ -40,6 +40,6 @@ export default function GoogleSignInButton({ onCredential }: { onCredential: (cr
     return () => { active = false; };
   }, [clientId]);
 
-  if (!clientId) return <p className="text-sm text-ctp-yellow">Google sign-in needs VITE_GOOGLE_CLIENT_ID configuration.</p>;
-  return <div>{error && <InlineState tone="danger" className="mb-2 text-sm">{error}</InlineState>}<div ref={container} /></div>;
+  if (!clientId) return <p data-component="GoogleSignInButton" className="text-sm text-ctp-yellow">Google sign-in needs VITE_GOOGLE_CLIENT_ID configuration.</p>;
+  return <div data-component="GoogleSignInButton">{error && <InlineState tone="danger" className="mb-2 text-sm">{error}</InlineState>}<div ref={container} /></div>;
 }

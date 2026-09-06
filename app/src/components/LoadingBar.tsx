@@ -28,6 +28,7 @@ export default function LoadingBar() {
 
   return (
     <div
+      data-component="LoadingBar"
       className="absolute inset-x-0 bottom-0 h-0.5 overflow-hidden"
       role="progressbar"
       aria-label="Loading"

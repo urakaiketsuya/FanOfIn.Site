@@ -21,6 +21,7 @@ export default function CardImage({ image, alt, rounded, className }: CardImageP
 
   return (
     <img
+      data-component="CardImage"
       src={gatcgApi.imageUrl(image, rounded)}
       alt={alt}
       loading="lazy"

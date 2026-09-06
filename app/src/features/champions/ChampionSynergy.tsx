@@ -390,7 +390,7 @@ export default function ChampionSynergy() {
 
   if (archetypeData && !champion) {
     return (
-      <PageLayout>
+      <PageLayout data-component="ChampionSynergy">
         <EmptyState
           title="Champion not found"
           description={<>Champion "{championName}" hasn't cleared the sample-size threshold (or doesn't exist).</>}
@@ -401,7 +401,7 @@ export default function ChampionSynergy() {
   }
 
   return (
-    <PageLayout>
+    <PageLayout data-component="ChampionSynergy">
       {champion && (() => {
         const champ = champion;
         const body = (communityInclusionByName: Map<string, CardInclusionEntry> | undefined) => (

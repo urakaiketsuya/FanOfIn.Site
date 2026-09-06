@@ -75,7 +75,7 @@ export default function ProductsIndex() {
   }, []);
 
   return (
-    <PageLayout width="wide">
+    <PageLayout data-component="ProductsIndex" width="wide">
       <PageHeader
         title="Products"
         description="Every Grand Archive TCG set release, official art, and a link into that set's cards or a live pack simulation."

@@ -8,6 +8,7 @@ export default function ClassIcon({ cardClass, size = 16, className }: { cardCla
 
   return (
     <img
+      data-component="ClassIcon"
       src={gatcgApi.iconUrl("classes", cardClass)}
       alt={cardClass}
       title={cardClass}

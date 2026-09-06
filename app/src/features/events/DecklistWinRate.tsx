@@ -15,7 +15,7 @@ export default function DecklistWinRate({ deckId }: { deckId: string }) {
 
   const record = `${entry.wins}-${entry.losses}${entry.ties > 0 ? `-${entry.ties}` : ""}`;
   return (
-    <p className="text-sm text-ctp-subtext1">
+    <p data-component="DecklistWinRate" className="text-sm text-ctp-subtext1">
       <span className="font-semibold text-ctp-text">{(entry.winRate * 100).toFixed(0)}% win rate</span>{" "}
       ({record}) at this event — this decklist's own record, not a champion-wide average.
     </p>

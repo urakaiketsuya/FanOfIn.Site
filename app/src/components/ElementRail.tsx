@@ -23,5 +23,5 @@ export default function ElementRail({ elements = [] }: { elements?: string[] }) 
   const background = colors.length === 1
     ? colors[0]
     : `linear-gradient(to bottom, ${colors.map((color, index) => `${color} ${(index / colors.length) * 100}% ${((index + 1) / colors.length) * 100}%`).join(", ")})`;
-  return <span aria-hidden="true" className="absolute inset-y-0 left-0 w-1" style={{ background }} />;
+  return <span data-component="ElementRail" aria-hidden="true" className="absolute inset-y-0 left-0 w-1" style={{ background }} />;
 }

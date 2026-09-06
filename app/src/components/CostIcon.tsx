@@ -8,6 +8,7 @@ export default function CostIcon({ kind, size = 16, className }: { kind: "memory
 
   return (
     <img
+      data-component="CostIcon"
       src={gatcgApi.iconUrl("costs", kind)}
       alt={`${kind} cost`}
       title={`${kind} cost`}

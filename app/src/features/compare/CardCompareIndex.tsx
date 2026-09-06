@@ -65,7 +65,7 @@ export default function CardCompareIndex() {
   }
 
   return (
-    <div>
+    <div data-component="CardCompareIndex">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-sm text-ctp-subtext1">Add any number of cards to compare their usage, win rate, and price side by side.</p>
         {selected.length > 0 && (

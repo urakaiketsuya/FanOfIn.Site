@@ -12,7 +12,7 @@ export default function DeckVisualStrip({ decklist, championName }: { decklist: 
   const championImages = useChampionCardImages(useMemo(() => championName ? [championName] : [], [championName]));
   const championCard = championName ? championImages.get(championName) : undefined;
 
-  return <div className="mt-4 flex h-24 gap-2 overflow-hidden rounded-lg bg-ctp-base p-2" aria-label="Featured deck cards">
+  return <div data-component="DeckVisualStrip" className="mt-4 flex h-24 gap-2 overflow-hidden rounded-lg bg-ctp-base p-2" aria-label="Featured deck cards">
     <CardHoverPreview image={championCard?.editions[0]?.image} alt={championName ?? "Unknown champion"}>
       {championCard?.editions[0] ? <Link to={`/cards/${championCard.slug}`} title={championCard.name} className="block h-20 w-14 shrink-0 overflow-hidden rounded border border-ctp-blue/40"><CardImage image={championCard.editions[0].image} alt={championCard.name} className="h-full w-full object-cover object-top" /></Link> : <div className="flex h-20 w-14 shrink-0 items-center justify-center rounded border border-ctp-surface1 bg-ctp-surface0 px-1 text-center text-[9px] text-ctp-subtext0">{championName ?? "Champion"}</div>}
     </CardHoverPreview>

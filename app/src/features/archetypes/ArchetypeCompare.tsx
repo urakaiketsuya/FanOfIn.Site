@@ -81,7 +81,7 @@ export default function ArchetypeCompare() {
   ]);
 
   return (
-    <PageLayout width="wide">
+    <PageLayout data-component="ArchetypeCompare" width="wide">
       <Link to="/archetypes" className="text-sm text-ctp-blue hover:underline">&larr; Back to archetypes</Link>
       <div className="mt-2 flex flex-wrap items-end justify-between gap-3">
         <div>

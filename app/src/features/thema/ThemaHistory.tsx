@@ -21,7 +21,7 @@ export default function ThemaHistory() {
   const points = [...(history.data ?? [])].reverse(); // API returns newest-first; chart reads left-to-right
 
   return (
-    <PageLayout>
+    <PageLayout data-component="ThemaHistory">
       <Link to="/thema" className="text-sm text-ctp-blue hover:underline">
         &larr; Back to Rankings
       </Link>

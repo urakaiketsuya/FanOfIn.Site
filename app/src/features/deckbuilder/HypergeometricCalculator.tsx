@@ -109,7 +109,7 @@ export default function HypergeometricCalculator({
   );
 
   return (
-    <Panel className="mt-4">
+    <Panel data-component="HypergeometricCalculator" className="mt-4">
       <Section
         heading="dense"
         title="Hypergeometric calculator"

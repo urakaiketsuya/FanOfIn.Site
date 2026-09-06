@@ -335,7 +335,7 @@ export default function CardDetail() {
 
   if (loading) {
     return (
-      <PageLayout width="standard">
+      <PageLayout data-component="CardDetail" width="standard">
         <InlineState className="mt-10">Loading…</InlineState>
       </PageLayout>
     );
@@ -343,7 +343,7 @@ export default function CardDetail() {
 
   if (!card) {
     return (
-      <PageLayout width="standard">
+      <PageLayout data-component="CardDetail" width="standard">
         <EmptyState
           title="Card not found"
           description={`Card "${slug}" not found.`}
@@ -359,7 +359,7 @@ export default function CardDetail() {
   const priceSeries = priceHistoryPoints ? selectPriceSeries(priceHistoryPoints) : null;
 
   return (
-    <PageLayout width="standard">
+    <PageLayout data-component="CardDetail" width="standard">
       <Link to="/cards" className="text-sm text-ctp-blue hover:underline">
         &larr; Back to Cards
       </Link>

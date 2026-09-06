@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
  * used to be spelled out inline (3 near-identical copies before this component existed). */
 export default function BroadcastDataNotice({ className = "mt-2 text-xs text-ctp-subtext0" }: { className?: string }) {
   return (
-    <p className={className}>
+    <p data-component="BroadcastDataNotice" className={className}>
       Experimental — commentary-derived from broadcasts, not a comprehensive tournament dataset.{" "}
       <Link to="/methodology#broadcast-data" className="text-ctp-blue hover:underline">Learn more</Link>
     </p>

@@ -6,7 +6,7 @@ export default function JudgesSection({ judges }: { judges: OmnidexJudge[] }) {
   if (judges.length === 0) return null;
 
   return (
-    <Section heading="compact" title="Judges">
+    <Section data-component="JudgesSection" heading="compact" title="Judges">
       <ul className="mt-2 space-y-1 text-sm">
         {judges.map((judge) => (
           <li key={judge.id} className="flex items-center gap-2">

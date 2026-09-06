@@ -29,7 +29,7 @@ export default function NotificationBanner({
 }) {
   const classes = TONE_CLASSES[tone];
   return (
-    <div className={`mb-4 flex flex-wrap items-center gap-2 rounded-lg border px-3 py-2 text-sm ${classes.wrap}`}>
+    <div data-component="NotificationBanner" className={`mb-4 flex flex-wrap items-center gap-2 rounded-lg border px-3 py-2 text-sm ${classes.wrap}`}>
       <span className={`font-medium ${classes.title}`}>{title}</span>
       {description && <span className="text-xs text-ctp-subtext1">{description}</span>}
       {"to" in action ? (

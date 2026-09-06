@@ -162,7 +162,7 @@ export default function CardStatsIndex() {
   }
 
   return (
-    <PageLayout>
+    <PageLayout data-component="CardStatsIndex">
       <PageHeader
         title="Card Stats"
         description={

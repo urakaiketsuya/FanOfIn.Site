@@ -79,7 +79,7 @@ export default function PackagesIndex() {
   }, [location.hash]);
 
   return (
-    <PageLayout width="wide">
+    <PageLayout data-component="PackagesIndex" width="wide">
       <PageHeader
         title="Card Packages"
         description="Explicit groups of cards whose construction relationship should be reviewed together. Packages guide suggestions without redefining a deck's archetype."

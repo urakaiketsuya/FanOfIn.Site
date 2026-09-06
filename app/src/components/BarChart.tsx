@@ -11,7 +11,7 @@ export default function BarChart({ title, bars }: { title?: string; bars: BarCha
   if (max === 0) return null;
 
   return (
-    <div className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+    <div data-component="BarChart" className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
       {title && <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">{title}</h3>}
       <div className={`flex h-32 items-end gap-1.5 ${title ? "mt-4" : ""}`}>
         {bars.map((b, i) => {

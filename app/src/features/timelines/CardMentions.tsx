@@ -9,7 +9,7 @@ import ElementIcon from "../../components/ElementIcon";
  * being dropped, so an unmatched name is still visible (just not linked/thumbnailed). */
 export default function CardMentions({ names, cardsByName }: { names: string[]; cardsByName: Map<string, Card> }) {
   return (
-    <div className="mt-2 flex flex-wrap gap-1.5">
+    <div data-component="CardMentions" className="mt-2 flex flex-wrap gap-1.5">
       {names.map((name, i) => {
         const card = cardsByName.get(name);
         if (!card) {

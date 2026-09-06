@@ -39,7 +39,7 @@ export default function DeckDecaySignals({ decklist, cardsByName }: { decklist: 
   if (signals.length === 0) return null;
 
   return (
-    <Panel padding="sm" className="mt-4">
+    <Panel data-component="DeckDecaySignals" padding="sm" className="mt-4">
       <Section
         heading="dense"
         title="Potential meta gaps"

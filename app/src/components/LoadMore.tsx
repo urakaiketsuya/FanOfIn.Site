@@ -15,6 +15,7 @@ export default function LoadMore({ remaining, onLoadMore, label = "Load more" }:
 
   return (
     <button
+      data-component="LoadMore"
       type="button"
       onClick={onLoadMore}
       className="mt-4 w-full rounded-md border border-ctp-surface1 py-2 text-sm text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text"

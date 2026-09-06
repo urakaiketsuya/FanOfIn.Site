@@ -13,5 +13,5 @@ const VARIANTS: Record<ButtonVariant, string> = {
 };
 
 export default function Button({ variant = "secondary", size = "md", children, className = "", type = "button", ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: ButtonVariant; size?: ButtonSize; children: ReactNode }) {
-  return <button type={type} className={`rounded-md border font-medium disabled:cursor-not-allowed disabled:opacity-50 ${size === "sm" ? "px-2.5 py-1 text-xs" : "px-3 py-2 text-sm"} ${VARIANTS[variant]} ${className}`} {...props}>{children}</button>;
+  return <button data-component="Button" type={type} className={`rounded-md border font-medium disabled:cursor-not-allowed disabled:opacity-50 ${size === "sm" ? "px-2.5 py-1 text-xs" : "px-3 py-2 text-sm"} ${VARIANTS[variant]} ${className}`} {...props}>{children}</button>;
 }

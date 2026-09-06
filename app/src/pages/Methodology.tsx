@@ -18,7 +18,7 @@ export default function Methodology() {
   }, [location.hash]);
 
   return (
-    <PageLayout>
+    <PageLayout data-component="Methodology">
       <PageHeader
         title="The Math Behind the Stats"
         description="Look, every number on this site comes with an asterisk, whether that is a microscopic sample size, weird data quirks, or just high variance. Instead of cluttering every single page with the math homework, here is how we keep the numbers honest."

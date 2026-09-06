@@ -11,7 +11,7 @@ export default function TimelinesIndex() {
   const data = useBroadcastTimelines();
 
   return (
-    <PageLayout>
+    <PageLayout data-component="TimelinesIndex">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <h1 className="text-2xl font-bold text-ctp-blue">Match Timelines</h1>

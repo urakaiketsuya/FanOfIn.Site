@@ -157,13 +157,13 @@ export default function DiaoReviewIndex() {
   const [groupView, setGroupView] = useState<"champions" | "archetypes">("champions");
   const [exampleView, setExampleView] = useState<"changes" | "signals">("changes");
 
-  if (!data) return <PageLayout width="wide"><InlineState className="mt-10">Loading DIAO migration audit…</InlineState></PageLayout>;
+  if (!data) return <PageLayout data-component="DiaoReviewIndex" width="wide"><InlineState className="mt-10">Loading DIAO migration audit…</InlineState></PageLayout>;
   const overall = data.overall[metric];
   const decomposition = data.scoreChangeDecomposition[metric];
   const examples = exampleView === "changes" ? data.representativeDecks.largestCompositeChanges : data.representativeDecks.correctedSignalDetection;
 
   return (
-    <PageLayout width="wide">
+    <PageLayout data-component="DiaoReviewIndex" width="wide">
       <PageHeader
         eyebrow={`Model migration v${data.migration.from} → v${data.migration.to}`}
         title="DIAO Score Review"

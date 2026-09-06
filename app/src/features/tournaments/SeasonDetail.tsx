@@ -57,7 +57,7 @@ export default function SeasonDetail() {
 
   if (index && !season) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-10">
+      <div data-component="SeasonDetail" className="mx-auto max-w-3xl px-4 py-10">
         <p className="text-ctp-red">Season "{slug}" not found in the ingested data.</p>
         <Link to="/seasons" className="mt-2 inline-block text-ctp-blue hover:underline">
           &larr; All seasons
@@ -67,7 +67,7 @@ export default function SeasonDetail() {
   }
 
   return (
-    <PageLayout>
+    <PageLayout data-component="SeasonDetail">
       <Link to="/seasons" className="text-sm text-ctp-blue hover:underline">
         &larr; All seasons
       </Link>

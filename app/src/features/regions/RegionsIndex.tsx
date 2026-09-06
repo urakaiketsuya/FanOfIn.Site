@@ -143,7 +143,7 @@ export default function RegionsIndex() {
   const venues = useRegionalVenues(group, selectedRegion);
 
   return (
-    <PageLayout>
+    <PageLayout data-component="RegionsIndex">
       <PageHeader title="Regions" description="Compare archetypes, Champions, card composition, keywords, and venues across countries or broader competitive regions." />
 
       <FilterBar>

@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import type { DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import {
   computeAllyPower, computeDamageComposition, computeDeckComposition, computeDeckIdentity,
-  computeDeckRating, computeFloatingMemory, computeKeywordComposition, computeMemoryCostCurve,
-  computeRarityBreakdown, computeReserveCostCurve, formatAllyPower, type RatingPillar,
+  computeFloatingMemory, computeKeywordComposition, computeMemoryCostCurve,
+  computeRarityBreakdown, computeReserveCostCurve, formatAllyPower,
 } from "../../lib/deckIdentity";
 import { computeAggressionForecast } from "../../lib/aggressionForecast";
 import { buildDeckBuilderPath, deckBuilderParamsFromDecklist } from "../../lib/deckBuilderLink";
@@ -46,9 +46,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
   const cardNames = useMemo(() => [...identityLines, ...namedSections.sideboard].map((line) => line.name), [identityLines, namedSections.sideboard]);
   const cardsByName = useCardsByNames(cardNames);
   const catalog = useCardCatalog();
-  const catalogByName = useMemo(() => new Map(catalog.map((card) => [card.name, card])), [catalog]);
   const identity = useMemo(() => computeDeckIdentity(identityLines, cardsByName), [identityLines, cardsByName]);
-  const rating = useMemo(() => computeDeckRating(identityLines, cardsByName, championName, identity.classes), [identityLines, cardsByName, championName, identity.classes]);
   const aggressionForecast = useMemo(
     () => computeAggressionForecast(namedSections.main, cardsByName, namedSections.material),
     [namedSections.main, namedSections.material, cardsByName],
@@ -104,7 +102,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
     return { unresolved, uniqueTotal: uniqueNames.length, uniqueResolved: uniqueNames.length - unresolved.length, totalCopies, resolvedCopies };
   }, [cardNames, cardsByName, namedSections]);
   const versionChange = useMemo(() => {
-    if (!previousDecklist || catalogByName.size === 0) return null;
+    if (!previousDecklist) return null;
     const before = deckQuantities(previousDecklist);
     const after = deckQuantities(decklist);
     const names = new Set([...before.keys(), ...after.keys()]);
@@ -115,11 +113,8 @@ export default function UserDeckStats({ decklist, championName, format, title, o
       changedCards++;
       if (delta > 0) added += delta; else removed -= delta;
     }
-    const previousLines = [...previousDecklist.main, ...previousDecklist.material].map((line) => ({ name: line.card, quantity: line.quantity }));
-    const previousIdentity = computeDeckIdentity(previousLines, catalogByName);
-    const previousRating = computeDeckRating(previousLines, catalogByName, championName, previousIdentity.classes);
-    return { added, removed, changedCards, scoreDelta: rating.composite - previousRating.composite };
-  }, [catalogByName, championName, decklist, previousDecklist, rating.composite]);
+    return { added, removed, changedCards };
+  }, [decklist, previousDecklist]);
   const findings = useMemo<Finding[]>(() => {
     const result: Finding[] = [];
     if (coverage.unresolved.length > 0) result.push({ tone: "yellow", title: "Incomplete card data", detail: `${coverage.unresolved.length} card name${coverage.unresolved.length === 1 ? " is" : "s are"} unresolved, so computed scores and charts may be incomplete.` });
@@ -133,10 +128,10 @@ export default function UserDeckStats({ decklist, championName, format, title, o
     return result.slice(0, 5);
   }, [coverage.unresolved.length, dependencyReadiness, synergyReadiness, validation, trimPlans.main]);
 
-  if (cardNames.length > 0 && cardsByName.size === 0 && catalog.length === 0) return <Panel className="mt-6"><InlineState className="text-sm">Resolving card data and calculating deck analytics…</InlineState></Panel>;
+  if (cardNames.length > 0 && cardsByName.size === 0 && catalog.length === 0) return <Panel data-component="UserDeckStats" className="mt-6"><InlineState className="text-sm">Resolving card data and calculating deck analytics…</InlineState></Panel>;
 
   const validationTone = validation.status === "Legal" ? "border-ctp-green/50 bg-ctp-green/10 text-ctp-green" : validation.status === "Illegal" ? "border-ctp-red/50 bg-ctp-red/10 text-ctp-red" : "border-ctp-yellow/50 bg-ctp-yellow/10 text-ctp-yellow";
-  return <div className="mt-6 space-y-6">
+  return <div data-component="UserDeckStats" className="mt-6 space-y-6">
     <Panel aria-labelledby="analysis-findings">
       <div className="flex flex-wrap items-start justify-between gap-3"><div><h2 id="analysis-findings" className="font-semibold text-ctp-text">Key findings</h2><p className="mt-1 text-xs text-ctp-subtext0">Prioritized structural signals from this exact list.</p></div>{ownerDeckId && builderParams && canImprove && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, { mode: "improve", sourceDeckId: ownerDeckId })} className="rounded-md bg-ctp-blue px-3 py-1.5 text-sm text-ctp-base">Review improvements</Link>}</div>
       <div className="mt-3 grid gap-2 sm:grid-cols-2">{findings.map((finding) => <Panel key={`${finding.title}:${finding.detail}`} tone={FINDING_TONE[finding.tone]} padding="sm"><p className="text-sm font-semibold text-ctp-text">{finding.title}</p><p className="mt-1 text-xs text-ctp-subtext1">{finding.detail}</p></Panel>)}</div>
@@ -146,7 +141,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
       <Section heading="dense" title="Analysis coverage" actions={<span className="text-sm font-semibold text-ctp-text">{coverage.resolvedCopies}/{coverage.totalCopies} copies resolved</span>}>
         <p className="mt-1 text-xs text-ctp-subtext1">{coverage.uniqueResolved}/{coverage.uniqueTotal} unique cards matched the local card catalog. Composition analytics use main + material; sideboard cards are included only in legality and coverage.</p>
         {coverage.unresolved.length > 0 && <p className="mt-2 text-xs text-ctp-yellow">Not resolved: {coverage.unresolved.join(", ")}. Fix these names before relying on scores or charts.</p>}
-        {versionChange && <p className="mt-2 border-t border-current/10 pt-2 text-xs text-ctp-subtext1">Since the previous version: {versionChange.added} copies added · {versionChange.removed} removed · {versionChange.changedCards} card entries changed · DIAO {versionChange.scoreDelta > 0 ? "+" : ""}{versionChange.scoreDelta.toFixed(2)}.</p>}
+        {versionChange && <p className="mt-2 border-t border-current/10 pt-2 text-xs text-ctp-subtext1">Since the previous version: {versionChange.added} copies added · {versionChange.removed} removed · {versionChange.changedCards} card entries changed.</p>}
       </Section>
     </Panel>
 
@@ -177,11 +172,8 @@ export default function UserDeckStats({ decklist, championName, format, title, o
       {builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, ownerDeckId && canImprove ? { mode: "improve", sourceDeckId: ownerDeckId } : undefined)} className="mt-3 inline-block text-sm text-ctp-blue hover:underline">Full guardrail-aware review in the Deck Builder →</Link>}
     </Section>}
 
-    <Panel aria-labelledby="user-deck-score">
-      <Section heading="dense" title="DIAO Score" description="Calculated from this exact decklist." actions={<span className="text-2xl font-bold text-ctp-blue">{rating.composite.toFixed(2)}</span>}>
-        <div className="mt-3 space-y-2">{(["durability", "interaction", "aggro", "opportunity"] as RatingPillar[]).map((pillar) => <div key={pillar} className="flex items-center gap-2 text-sm"><span className="w-24 shrink-0 capitalize text-ctp-subtext1">{pillar}</span><div className="h-2 flex-1 rounded-full bg-ctp-surface0"><div className="h-2 rounded-full bg-ctp-blue" style={{ width: `${rating.scores[pillar] * 10}%` }} /></div><span className="w-6 shrink-0 text-right text-ctp-subtext0">{rating.scores[pillar]}</span></div>)}</div>
-        <AggressionForecast forecast={aggressionForecast} />
-      </Section>
+    <Panel>
+      <AggressionForecast forecast={aggressionForecast} />
     </Panel>
 
     <Section heading="compact" collapsible defaultOpen={false} title="Composition" description={`Floating Memory: ${floatingMemory.base}${floatingMemory.classBonus > 0 ? ` + ${floatingMemory.classBonus} class bonus` : ""} · Average Ally Power: ${allyPower.allyCopies > 0 ? formatAllyPower(allyPower) : "—"} · Champion damage: ${damage.championRange.min}–${damage.championRange.max} · Ally damage: ${damage.allyRange.min}–${damage.allyRange.max}`}>

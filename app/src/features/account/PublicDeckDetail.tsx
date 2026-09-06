@@ -54,10 +54,10 @@ export default function PublicDeckDetail() {
     return () => { if (created) meta?.remove(); else if (meta) meta.content = "index,follow"; };
   }, [deck?.visibility]);
 
-  if (deck === undefined) return <PageLayout><InlineState className="mt-10">Loading deck…</InlineState></PageLayout>;
-  if (!deck) return <PageLayout><EmptyState title="Deck unavailable" description={error} action={<Link to="/" className="text-ctp-blue hover:underline">Back home</Link>} /></PageLayout>;
+  if (deck === undefined) return <PageLayout data-component="PublicDeckDetail"><InlineState className="mt-10">Loading deck…</InlineState></PageLayout>;
+  if (!deck) return <PageLayout data-component="PublicDeckDetail"><EmptyState title="Deck unavailable" description={error} action={<Link to="/" className="text-ctp-blue hover:underline">Back home</Link>} /></PageLayout>;
 
-  return <PageLayout>
+  return <PageLayout data-component="PublicDeckDetail">
     <UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} versionNumber={deck.versionNumber} visibility={deck.visibility} description={deck.description} eyebrow={<>Shared by <Link to={`/users/${deck.owner.profileSlug}`} className="text-ctp-blue hover:underline">{deck.owner.displayName}</Link></>} />
     <DeckTags tags={deck.tags} />
     <div className="mt-5 flex flex-wrap items-center gap-2">

@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 export default function PageHeader({ title, description, eyebrow, actions }: { title: string; description?: ReactNode; eyebrow?: ReactNode; actions?: ReactNode }) {
   return (
-    <header className="mb-6">
+    <header data-component="PageHeader" className="mb-6">
       {eyebrow && <div className="mb-2 text-sm text-ctp-blue">{eyebrow}</div>}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="max-w-2xl">

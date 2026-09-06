@@ -6,7 +6,7 @@ import CardImpactTable from "../../../components/CardImpactTable";
 import ElementIcon from "../../../components/ElementIcon";
 import Tabs from "../../../components/ui/Tabs";
 import { formatUsd } from "../../../lib/format";
-import { CardRow, DiaoMetricBadges, SuggestionRow } from "../components/BuilderCardRows";
+import { CardRow, SuggestionRow } from "../components/BuilderCardRows";
 import { BuilderSuggestionGrid } from "../components/BuilderCardGrid";
 import type { ReviewGroups } from "../engine/builderSelectors";
 import type { SuggestedBuild, SuggestedCard } from "../useSuggestedBuild";
@@ -73,7 +73,7 @@ export default function BuilderReviewPanel({
   const [subTab, setSubTab] = useState<ReviewSubTab>("suggestions");
   const activeSubTab: ReviewSubTab = subTabs.some((t) => t.key === subTab) ? subTab : subTabs[0].key;
   return (
-    <div role="tabpanel" id="deck-builder-panel-review" aria-labelledby="deck-builder-tab-review" className="mt-4">
+    <div data-component="BuilderReviewPanel" role="tabpanel" id="deck-builder-panel-review" aria-labelledby="deck-builder-tab-review" className="mt-4">
       <div className="flex flex-wrap items-end justify-between gap-2">
         <div>
           <h2 className="text-sm font-semibold text-ctp-text">Review recommendations</h2>
@@ -215,7 +215,6 @@ export default function BuilderReviewPanel({
                         </div>
                         <span className="text-xs text-ctp-subtext0">{addition.adjustedLift === null ? "Ranked candidate" : `+${(addition.adjustedLift * 100).toFixed(1)}% observed lift`} · {addition.quantity}x {addition.section}</span>
                         {addition.readinessReasons?.map((reason) => <span key={reason} className="ml-1 inline-block rounded-full border border-ctp-teal/50 bg-ctp-teal/10 px-1.5 text-[10px] font-medium text-ctp-teal">{reason}</span>)}
-                        <span className="ml-1 inline-flex flex-wrap gap-1"><DiaoMetricBadges card={addition} /></span>
                       </div>
                       <div className="flex gap-1.5 sm:justify-end">
                         <button type="button" onClick={() => onApplySwap(removal, addition)} className="rounded-md border border-ctp-blue px-2 py-1 text-xs text-ctp-blue hover:bg-ctp-blue/10">Swap</button>

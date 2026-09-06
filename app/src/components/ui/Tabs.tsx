@@ -27,7 +27,7 @@ export default function Tabs<T extends string>({ tabs, active, onChange, label =
   }
 
   return (
-    <div ref={tablistRef} className="flex max-w-full gap-1 overflow-x-auto overscroll-x-contain scroll-smooth border-b border-ctp-surface1" role="tablist" aria-label={label}>
+    <div data-component="Tabs" ref={tablistRef} className="flex max-w-full gap-1 overflow-x-auto overscroll-x-contain scroll-smooth border-b border-ctp-surface1" role="tablist" aria-label={label}>
       {tabs.map((tab, index) => {
         const selected = active === tab.key;
         return (

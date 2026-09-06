@@ -40,7 +40,7 @@ export default function StatsPanel({
   if (lines.length === 0) return <InlineState className="mt-6 text-sm">Nothing in the build yet.</InlineState>;
 
   return (
-    <div className="mt-6">
+    <div data-component="BuilderStatsPanel" className="mt-6">
       {decayReport && decayReport.signals.length > 0 && (
         <div className="mt-4 rounded-lg border border-ctp-mauve/50 bg-ctp-mantle p-4">
           {/* Kept as a hand-rolled <details> rather than Section — this header's mauve title

@@ -9,7 +9,7 @@ export default function DecklistCoverageNotice() {
   if (coverage.loading || coverage.totalEvents === 0) return null;
 
   return (
-    <p className="mt-2 text-xs text-ctp-subtext0">
+    <p data-component="DecklistCoverageNotice" className="mt-2 text-xs text-ctp-subtext0">
       Built from the {(coverage.coverageRate * 100).toFixed(0)}% of tracked tournaments with public decklists
       {coverage.latestSeasonName && coverage.latestSeasonCoverageRate !== null && (
         <> ({(coverage.latestSeasonCoverageRate * 100).toFixed(0)}% in {coverage.latestSeasonName})</>

@@ -18,7 +18,7 @@ export default function CompositionChartGrid({
   reserveCurve: BarChartBar[];
 }) {
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
+    <div data-component="CompositionChartGrid" className="grid gap-4 sm:grid-cols-2">
       <BarChart title="Memory Cost Curve" bars={memoryCurve} />
       <BarChart title="Reserve Cost Curve" bars={reserveCurve} />
       <RankedCompositionChart title="Card Types" segments={buildChartSegments(composition.types)} />

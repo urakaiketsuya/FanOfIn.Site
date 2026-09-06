@@ -74,6 +74,7 @@ export default function EventPairings({
 
   return (
     <Section
+      data-component="EventPairings"
       heading="compact"
       title="Pairings"
       actions={

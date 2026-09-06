@@ -29,7 +29,7 @@ export default function FilterSearchGroup({ label, options, selected, onToggle }
   }
 
   return (
-    <fieldset>
+    <fieldset data-component="FilterSearchGroup">
       <legend className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">{label}</legend>
       <div className="mt-2 flex flex-wrap gap-1.5">
         {options

@@ -212,7 +212,7 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
   const keywordChartRows = useMemo<DivergingBarRow[]>(() => keywordDiff.largestDifferences.map((r) => ({ key: r.name, label: r.name, valueA: r.rateA, valueB: r.rateB })), [keywordDiff]);
 
   return (
-    <div>
+    <div data-component="RegionCompareView">
       <FilterBar className="mt-4 text-sm">
         <div className="flex items-center gap-2">
           <span className="text-ctp-subtext0">Region A:</span>

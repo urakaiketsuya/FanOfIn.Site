@@ -164,7 +164,7 @@ export default function PlayerProfile() {
 
   if (playersData && judgesData && !player && !judge) {
     return (
-      <PageLayout>
+      <PageLayout data-component="PlayerProfile">
         <EmptyState
           title="Player not found"
           description={`Player ${playerId} isn't in the ingested roster yet.`}
@@ -175,7 +175,7 @@ export default function PlayerProfile() {
   }
 
   return (
-    <PageLayout>
+    <PageLayout data-component="PlayerProfile">
       <Link to="/players" className="text-sm text-ctp-blue hover:underline">
         &larr; All players
       </Link>

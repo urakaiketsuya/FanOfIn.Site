@@ -6,7 +6,7 @@ import { parseDecklist } from "../compare/parseDecklist";
 import { useCardsByNames } from "../events/useCardsByNames";
 import StaleDataNotice from "../../components/StaleDataNotice";
 import DecklistCoverageNotice from "../../components/DecklistCoverageNotice";
-import { computeDeckIdentity, computeDeckRating, type RatingPillar } from "../../lib/deckIdentity";
+import type { RatingPillar } from "../../lib/deckIdentity";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import NotificationBanner from "../../components/ui/NotificationBanner";
 import PageHeader from "../../components/ui/PageHeader";
@@ -954,11 +954,6 @@ export default function DeckBuilderIndex() {
     () => validateDeck({ main: build.main, material: build.material, sideboard: build.sideboard }, catalogByName, identityElements, deckFormat),
     [build.main, build.material, build.sideboard, catalogByName, identityElements, deckFormat],
   );
-  const deckIdentity = useMemo(() => computeDeckIdentity(buildLines, cardsByName), [buildLines, cardsByName]);
-  const rating = useMemo(
-    () => computeDeckRating(buildLines, cardsByName, championName, deckIdentity.classes),
-    [buildLines, cardsByName, championName, deckIdentity.classes],
-  );
   function resetBuilder(): void {
     // Clear the persisted snapshot as well as component state. This matters when the user resets
     // and immediately navigates away before React's autosave effect gets a chance to run.
@@ -1008,7 +1003,7 @@ export default function DeckBuilderIndex() {
   });
 
   return (
-    <PageLayout>
+    <PageLayout data-component="DeckBuilderIndex">
       <PageHeader
         title={isImproving ? "Improve your deck" : "Guided Deck Builder"}
         description={(
@@ -1429,7 +1424,6 @@ export default function DeckBuilderIndex() {
 
           <TabPanel baseId="deck-builder" tab="tools" active={tab}>
               <ToolsPanel
-                rating={rating}
                 mainLines={mainOnlyLines}
                 materialLines={materialOnlyLines}
                 catalogByName={catalogByName}

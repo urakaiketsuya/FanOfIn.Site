@@ -41,7 +41,7 @@ export default function BuilderCopyPanel({
   shareCopyState: "idle" | "copied" | "failed";
 }) {
   return (
-    <div role="tabpanel" id="deck-builder-panel-copy" aria-labelledby="deck-builder-tab-copy" className="mt-4">
+    <div data-component="BuilderCopyPanel" role="tabpanel" id="deck-builder-panel-copy" aria-labelledby="deck-builder-tab-copy" className="mt-4">
       <section className={`mb-4 rounded-lg border p-4 ${validationComplete ? "border-ctp-green/50 bg-ctp-green/5" : "border-ctp-yellow/50 bg-ctp-yellow/5"}`} aria-labelledby="validate-and-save">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>

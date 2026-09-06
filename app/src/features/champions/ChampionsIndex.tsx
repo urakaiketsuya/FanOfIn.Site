@@ -53,7 +53,7 @@ export default function ChampionsIndex() {
   const latestSeasonName = trendsData?.seasonOrder[trendsData.seasonOrder.length - 1];
 
   return (
-    <PageLayout>
+    <PageLayout data-component="ChampionsIndex">
       <PageHeader title="Champions" description="Compare current metagame position, tournament performance, season movement, and the builds defining each Champion." />
 
       {!data && <InlineState className="mt-6">Loading…</InlineState>}

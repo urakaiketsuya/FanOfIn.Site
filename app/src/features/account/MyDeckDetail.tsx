@@ -209,10 +209,10 @@ export default function MyDeckDetail() {
     setPrimerMarkdown((current) => `${current}${current.trim() ? "\n\n" : ""}${template}`);
   }
 
-  if (deck === undefined) return <PageLayout><InlineState className="mt-10">Loading deck…</InlineState></PageLayout>;
-  if (!deck) return <PageLayout><EmptyState title="Deck unavailable" description={error} action={<Link to="/my-decks" className="text-ctp-blue hover:underline">Back to My Decks</Link>} /></PageLayout>;
+  if (deck === undefined) return <PageLayout data-component="MyDeckDetail"><InlineState className="mt-10">Loading deck…</InlineState></PageLayout>;
+  if (!deck) return <PageLayout data-component="MyDeckDetail"><EmptyState title="Deck unavailable" description={error} action={<Link to="/my-decks" className="text-ctp-blue hover:underline">Back to My Decks</Link>} /></PageLayout>;
 
-  return <PageLayout>
+  return <PageLayout data-component="MyDeckDetail">
     <Link to="/my-decks" className="text-sm text-ctp-blue hover:underline">← My Decks</Link>
     <div className="mt-4"><UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} description={deck.description} visibility={deck.visibility} /><DeckTags tags={deck.tags} /><div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2"><p className="text-xs text-ctp-subtext0">Updated {new Date(deck.updatedAt).toLocaleDateString()} · {deck.versions.length} version{deck.versions.length === 1 ? "" : "s"}</p>{deck.publicSlug && deck.visibility !== "private" && <Link to={`/decklists/${deck.publicSlug}`} className="text-sm font-medium text-ctp-blue hover:underline">{deck.visibility === "public" ? "View public deck →" : "View shared deck →"}</Link>}</div></div>
     <div className="mt-6"><Tabs tabs={DECK_TABS} active={tab} onChange={setTab} label="Deck details" baseId="owned-deck" /></div>

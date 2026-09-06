@@ -10,7 +10,7 @@ export default function SeasonsIndex() {
   const index = useOmnidexIndex();
 
   return (
-    <PageLayout>
+    <PageLayout data-component="SeasonsIndex">
       <PageHeader title="Seasons" description="Card-legality windows, each with its own set of ingested events." />
 
       {!index && <InlineState className="mt-6">Loading…</InlineState>}

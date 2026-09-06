@@ -8,7 +8,7 @@ import { isDataStale } from "../lib/dataFreshness";
 export default function StaleDataNotice({ generatedAt }: { generatedAt: (string | undefined)[] }) {
   if (!generatedAt.some(isDataStale)) return null;
   return (
-    <p className="mt-2 text-xs text-ctp-yellow">
+    <p data-component="StaleDataNotice" className="mt-2 text-xs text-ctp-yellow">
       Some of this page's data is from a pipeline run before a recent accuracy fix (archetype
       clustering, card-name matching) — a few entries may look slightly off until the site's data
       is next regenerated.{" "}

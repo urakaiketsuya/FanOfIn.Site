@@ -60,7 +60,7 @@ export default function Section({
   </div>;
 
   if (collapsible) {
-    return <Tag className={className} {...props}>
+    return <Tag data-component="Section" className={className} {...props}>
       <details
         open={defaultOpen}
         className="group"
@@ -79,7 +79,7 @@ export default function Section({
     </Tag>;
   }
 
-  return <Tag className={className} {...props}>
+  return <Tag data-component="Section" className={className} {...props}>
     {(title || description || actions) && <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
       {header}
       {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}

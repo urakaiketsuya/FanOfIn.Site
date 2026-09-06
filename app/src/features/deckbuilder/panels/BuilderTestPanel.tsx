@@ -47,7 +47,7 @@ export default function BuilderTestPanel({
 
   if (loading || !deckTestResult) {
     return (
-      <div role="tabpanel" id="deck-builder-panel-test" aria-labelledby="deck-builder-tab-test">
+      <div data-component="BuilderTestPanel" role="tabpanel" id="deck-builder-panel-test" aria-labelledby="deck-builder-tab-test">
         <InlineState className="mt-4 text-sm">Loading historical data…</InlineState>
       </div>
     );
@@ -57,7 +57,7 @@ export default function BuilderTestPanel({
   const cluster = classification.cluster;
 
   return (
-    <div role="tabpanel" id="deck-builder-panel-test" aria-labelledby="deck-builder-tab-test">
+    <div data-component="BuilderTestPanel" role="tabpanel" id="deck-builder-panel-test" aria-labelledby="deck-builder-tab-test">
       {cautions.length > 0 && (
         <ul className="mt-2 list-disc space-y-0.5 pl-4 text-xs text-ctp-subtext0">
           {cautions.map((c) => (

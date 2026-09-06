@@ -11,5 +11,5 @@ const ELEVATION_CLASSES: Record<SurfaceElevation, string> = {
 };
 
 export default function Surface({ as: Tag = "section", elevation = 0, children, className = "", ...props }: { as?: ElementType; elevation?: SurfaceElevation; children: ReactNode; className?: string } & HTMLAttributes<HTMLElement>) {
-  return <Tag className={`rounded-xl border ${ELEVATION_CLASSES[elevation]} ${className}`} {...props}>{children}</Tag>;
+  return <Tag data-component="Surface" className={`rounded-xl border ${ELEVATION_CLASSES[elevation]} ${className}`} {...props}>{children}</Tag>;
 }

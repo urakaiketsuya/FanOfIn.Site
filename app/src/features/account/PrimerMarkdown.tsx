@@ -106,5 +106,5 @@ export default function PrimerMarkdown({ markdown }: { markdown: string }) {
   flushCallout();
   if (code) blocks.push(<pre key={`code-${blocks.length}`} className="overflow-auto rounded-lg bg-ctp-base p-4 text-sm"><code>{code.join("\n")}</code></pre>);
 
-  return <article className="space-y-4 leading-7 text-ctp-text">{blocks}</article>;
+  return <article data-component="PrimerMarkdown" className="space-y-4 leading-7 text-ctp-text">{blocks}</article>;
 }

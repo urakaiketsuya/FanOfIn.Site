@@ -29,14 +29,14 @@ export default function PackOpener() {
   if (cards.length === 0) {
     if (phase === "error") {
       return (
-        <PageLayout className="py-10">
+        <PageLayout data-component="PackOpener" className="py-10">
           <InlineState tone="danger">Couldn't load the card catalog.</InlineState>
         </PageLayout>
       );
     }
     if (phase === "done") {
       return (
-        <PageLayout className="py-10">
+        <PageLayout data-component="PackOpener" className="py-10">
           <EmptyState
             title="No cards are available yet"
             action={<Link to="/cards?tab=sets" className="text-ctp-blue hover:underline">&larr; Back to Sets</Link>}
@@ -45,7 +45,7 @@ export default function PackOpener() {
       );
     }
     return (
-      <PageLayout className="py-10">
+      <PageLayout data-component="PackOpener" className="py-10">
         <InlineState>Loading…</InlineState>
       </PageLayout>
     );
@@ -53,7 +53,7 @@ export default function PackOpener() {
 
   if (!setInfo) {
     return (
-      <PageLayout className="py-10">
+      <PageLayout data-component="PackOpener" className="py-10">
         <EmptyState
           title={`Set "${prefix}" not found`}
           action={<Link to="/cards?tab=sets" className="text-ctp-blue hover:underline">&larr; Back to Sets</Link>}
@@ -63,7 +63,7 @@ export default function PackOpener() {
   }
 
   return (
-    <PageLayout>
+    <PageLayout data-component="PackOpener">
       <Link to="/cards?tab=sets" className="text-sm text-ctp-blue hover:underline">
         &larr; Back to Sets
       </Link>

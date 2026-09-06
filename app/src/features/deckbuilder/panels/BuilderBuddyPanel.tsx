@@ -266,6 +266,7 @@ export default function BuddyCardsList({
   if (groups.length === 0 && communityGroups.length === 0) {
     return (
       <Section
+        data-component="BuilderBuddyPanel"
         className="mt-6"
         heading="dense"
         title="Buddy cards"
@@ -281,6 +282,7 @@ export default function BuddyCardsList({
   const communityMerged = groupBuddiesByCard(communityGroups);
   return (
     <Section
+      data-component="BuilderBuddyPanel"
       className="mt-6"
       heading="dense"
       title="Buddy cards"

@@ -11,10 +11,9 @@ interface NavGroup { label: string; paths: string[]; links: NavLinkItem[] }
 
 const NAV_GROUPS: NavGroup[] = [
   { label: "Cards", paths: ["/cards", "/champions"], links: [{ to: "/cards", label: "Browse Cards" }, { to: "/cards/stats", label: "Card Stats" }, { to: "/cards/packages", label: "Card Packages" }, { to: "/champions", label: "Champions" }] },
-  { label: "Decks", paths: ["/decks", "/decklists", "/shared-decks", "/community-decks", "/users", "/official-decks", "/pantheon"], links: [{ to: "/decks", label: "Tournament Decks" }, { to: "/shared-decks", label: "Community Decks" }, { to: "/official-decks", label: "Official Decks" }, { to: "/pantheon", label: "Pantheon Decks" }, { to: "/community-decks", label: "Deck Trends" }] },
-  { label: "Competition", paths: ["/tournaments", "/seasons", "/players", "/teams", "/timelines"], links: [{ to: "/tournaments", label: "Tournaments" }, { to: "/seasons", label: "Seasons" }, { to: "/players", label: "Players" }, { to: "/players?tab=judges", label: "Judges" }, { to: "/teams", label: "Teams" }, { to: "/timelines", label: "Match Timelines" }] },
-  { label: "Tools", paths: ["/compare", "/deck-builder", "/card-discovery", "/looking-for", "/regions", "/simulator", "/diao-review"], links: [{ to: "/compare", label: "Compare Decks" }, { to: "/deck-builder", label: "Deck Builder" }, { to: "/card-discovery", label: "Find New Cards" }, { to: "/looking-for", label: "Looking For" }, { to: "/regions", label: "Regional Analysis" }, { to: "/simulator", label: "Simulator" }, { to: "/diao-review", label: "DIAO Score Review" }] },
-  { label: "More", paths: ["/achievements", "/changelog", "/media-kit", "/methodology"], links: [{ to: "/achievements", label: "Achievements" }, { to: "/media-kit", label: "Media Kit" }, { to: "/changelog", label: "Changelog" }, { to: "/methodology", label: "Methodology" }] },
+  { label: "Decks", paths: ["/decks", "/shared-decks"], links: [{ to: "/decks", label: "Tournament Decks" }, { to: "/shared-decks", label: "Community Decks" }] },
+  { label: "Competition", paths: ["/seasons", "/players", "/teams", "/timelines"], links: [{ to: "/seasons", label: "Seasons" }, { to: "/players", label: "Players" }, { to: "/players?tab=judges", label: "Judges" }, { to: "/teams", label: "Teams" }, { to: "/timelines", label: "Match Timelines" }] },
+  { label: "Tools", paths: ["/compare", "/deck-builder", "/card-discovery", "/looking-for", "/regions"], links: [{ to: "/compare", label: "Compare Decks" }, { to: "/deck-builder", label: "Deck Builder" }, { to: "/card-discovery", label: "Find New Cards" }, { to: "/looking-for", label: "Looking For" }, { to: "/regions", label: "Regional Analysis" }] },
   { label: "Account", paths: ["/my-decks", "/collection", "/settings"], links: [{ to: "/my-decks", label: "My Decks" }, { to: "/collection", label: "My Collection" }, { to: "/settings", label: "Settings" }] },
 ];
 
@@ -45,7 +44,7 @@ export default function App() {
     trackPageview(location.pathname + location.search);
   }, [location.pathname, location.search]);
 
-  return <div className="min-h-screen bg-ctp-base text-ctp-text">
+  return <div data-component="App" className="min-h-screen bg-ctp-base text-ctp-text">
     <header className="sticky top-0 z-40 border-b border-ctp-surface0 bg-ctp-base/95 backdrop-blur">
       <FeatureBanner />
       <div className="relative">

@@ -60,7 +60,7 @@ export default function ImportByPlayer({
   }, [selectedPlayer, index, eventSearch, sortMode, scoreByDeckId]);
 
   return (
-    <div>
+    <div data-component="ImportByPlayer">
       <p className="text-sm text-ctp-subtext1">Find a player, then pick one of their public decklists to compare.</p>
 
       <input

@@ -25,7 +25,7 @@ export default function PlayerEventDecklistRow({ event, playerId }: { event: Omn
   const topDecks = useTopDecksForChampion(championName, deckId);
 
   return (
-    <div>
+    <div data-component="PlayerEventDecklistRow">
       <div className="flex items-center gap-2">
         <div className="min-w-0 flex-1">
           <EventRow event={event} />

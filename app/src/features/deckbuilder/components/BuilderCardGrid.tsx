@@ -9,7 +9,6 @@ import type { SuggestedCard } from "../useSuggestedBuild";
 import type { SimulatorCardEvidence } from "../useSimulatorSuggestedBuild";
 import type { CardFieldVisibility } from "../useCardFieldVisibility";
 import type { PriceTrendEntry } from "../../pricing/usePriceTrendByName";
-import { DiaoMetricBadges } from "./BuilderCardRows";
 
 type BuilderSection = "main" | "material" | "sideboard";
 
@@ -163,7 +162,7 @@ export function CardTile({
             <span className="text-ctp-text">{card.sample.with} vs {card.sample.without}</span>
           </div>
         )}
-        {((card.readinessReasons?.length ?? 0) > 0 || card.diaoMetricChanges) && (
+        {(card.readinessReasons?.length ?? 0) > 0 && (
           <div className="flex flex-wrap gap-1 pt-0.5">
             {card.readinessReasons?.map((reason) => (
               <span
@@ -174,7 +173,6 @@ export function CardTile({
                 {reason}
               </span>
             ))}
-            <DiaoMetricBadges card={card} />
           </div>
         )}
         {visibleFields.quantityNote && card.optimizedFrom !== null && (
@@ -295,7 +293,7 @@ export default function BuilderCardGrid({
 }) {
   if (cards.length === 0) return null;
   return (
-    <div className="mt-2 grid grid-cols-2 gap-3">
+    <div data-component="BuilderCardGrid" className="mt-2 grid grid-cols-2 gap-3">
       {cards.map((card) => (
         <CardTile
           key={card.cardName}

@@ -98,7 +98,7 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, onBas
 
   if (decks.length < 2) return <InlineState className="text-sm">Add at least one more deck to see an overview.</InlineState>;
 
-  return <div className="space-y-8">
+  return <div data-component="ComparisonSummary" className="space-y-8">
     {mixedFormats && <Panel tone="warning" padding="sm" className="text-sm text-ctp-yellow">This comparison mixes Standard and Pantheon decks. Card overlap remains useful, but copy counts, legality, and format-specific recommendations are not directly comparable.</Panel>}
     {pantheonOnly && <div className="rounded-lg border border-ctp-mauve/40 bg-ctp-mauve/10 p-3 text-sm text-ctp-subtext1">Pantheon comparisons emphasize shared packages and singleton choices. Standard tournament results are not treated as Pantheon performance evidence.</div>}
     <Section heading="dense" title="Deck overview">

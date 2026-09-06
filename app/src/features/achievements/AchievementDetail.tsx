@@ -47,7 +47,7 @@ export default function AchievementDetail() {
 
   if (achievementsData && !definition) {
     return (
-      <PageLayout>
+      <PageLayout data-component="AchievementDetail">
         <EmptyState
           title="Achievement not found"
           description={`There's no achievement with id "${id}".`}
@@ -58,7 +58,7 @@ export default function AchievementDetail() {
   }
 
   return (
-    <PageLayout>
+    <PageLayout data-component="AchievementDetail">
       <Link to="/achievements" className="text-sm text-ctp-blue hover:underline">
         &larr; All achievements
       </Link>

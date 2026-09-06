@@ -8,7 +8,7 @@ export default function SyncStatus() {
 
   if (progress.phase === "syncing") {
     return (
-      <span className="text-xs text-ctp-subtext0">
+      <span data-component="SyncStatus" className="text-xs text-ctp-subtext0">
         syncing cards… {progress.fetched}
         {progress.total ? ` / ${progress.total}` : ""}
       </span>
@@ -16,11 +16,11 @@ export default function SyncStatus() {
   }
 
   if (progress.phase === "error") {
-    return <span className="text-xs text-ctp-red">card sync failed</span>;
+    return <span data-component="SyncStatus" className="text-xs text-ctp-red">card sync failed</span>;
   }
 
   return (
-    <span className="text-xs text-ctp-subtext0">
+    <span data-component="SyncStatus" className="text-xs text-ctp-subtext0">
       {cardsMeta ? `cards synced ${new Date(cardsMeta.lastSyncedAt).toLocaleString()}` : "cards not synced yet"}
     </span>
   );

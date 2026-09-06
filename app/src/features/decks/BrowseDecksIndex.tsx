@@ -72,7 +72,7 @@ export default function BrowseDecksIndex() {
   const [championName, setChampionName] = useState<string | null>(searchParams.get("champion"));
 
   return (
-    <PageLayout>
+    <PageLayout data-component="BrowseDecksIndex">
       <PageHeader
         title="Browse Decks"
         description={

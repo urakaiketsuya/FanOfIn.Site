@@ -8,6 +8,7 @@ export default function ElementIcon({ element, size = 16, className }: { element
 
   return (
     <img
+      data-component="ElementIcon"
       src={gatcgApi.iconUrl("elements", element)}
       alt={element}
       title={element}

@@ -18,7 +18,7 @@ export default function ThemaSparkline({ values, width = 640, height = 160 }: Th
     .join(" ");
 
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="w-full text-ctp-blue">
+    <svg data-component="ThemaSparkline" viewBox={`0 0 ${width} ${height}`} className="w-full text-ctp-blue">
       <polyline points={points} fill="none" stroke="currentColor" strokeWidth={2} />
     </svg>
   );

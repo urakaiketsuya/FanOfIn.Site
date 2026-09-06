@@ -19,7 +19,7 @@ export default function AggressionForecast({ forecast }: { forecast: Forecast })
     return null;
 
   return (
-    <div className="mt-4 border-t border-ctp-surface1 pt-4">
+    <div data-component="AggressionForecast" className="mt-4 border-t border-ctp-surface1 pt-4">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <div>
           <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Direct damage forecast</h3>

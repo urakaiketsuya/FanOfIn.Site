@@ -14,6 +14,7 @@ export default function Chip({
 }) {
   return (
     <button
+      data-component="Chip"
       type="button"
       onClick={onClick}
       className={`rounded-md border ${size === "sm" ? "px-1.5 py-0.5" : "px-2 py-1"} text-xs ${

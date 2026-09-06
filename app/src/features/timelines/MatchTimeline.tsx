@@ -118,7 +118,7 @@ export default function MatchTimeline({ match }: { match: BroadcastTimelineMatch
   const cardsByName = useCardsByMentions(allCardNames);
 
   return (
-    <div className="space-y-4">
+    <div data-component="MatchTimeline" className="space-y-4">
       {match.games.map((game) => {
         const notes = match.sideboardNotes?.filter((n) => n.beforeGame === game.gameNumber) ?? [];
         return (

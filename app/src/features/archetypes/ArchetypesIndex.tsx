@@ -183,7 +183,7 @@ export default function ArchetypesIndex() {
   const largestMaterialArchetype = materialArchetypes[0]?.playerCount ?? 1;
 
   return (
-    <PageLayout>
+    <PageLayout data-component="ArchetypesIndex">
       <PageHeader
         title="Archetypes"
         description="Choose a recurring material build path first, then explore its main-deck engine and win condition. Smaller but coherent paths remain visible as emerging evidence instead of being blended into the most common shell."

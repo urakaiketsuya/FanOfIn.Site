@@ -22,7 +22,6 @@ import {
   computeDamageComposition,
   computeDeckComposition,
   computeDeckIdentity,
-  computeDeckRating,
   computeFloatingMemory,
   computeKeywordComposition,
   computeMemoryCostCurve,
@@ -48,7 +47,6 @@ import CompositionChartGrid from "../../components/CompositionChartGrid";
 import AggressionForecast from "./AggressionForecast";
 import { computeAggressionForecast } from "../../lib/aggressionForecast";
 import { useDecklistDisplayPrefs } from "../../lib/decklistDisplayPrefs";
-import DiaoScoreCard from "../../components/DiaoScoreCard";
 import PageLayout from "../../components/layout/PageLayout";
 import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
@@ -215,11 +213,6 @@ export default function DeckDetail() {
     return computeFloatingMemory([...deck.main, ...deck.material], cardsByName, deck.championName, deck.classes);
   }, [deck, cardsByName]);
 
-  const rating = useMemo(() => {
-    if (!deck) return null;
-    return computeDeckRating([...deck.main, ...deck.material], cardsByName, deck.championName, deck.classes);
-  }, [deck, cardsByName]);
-
   const aggressionForecast = useMemo(() => {
     if (!deck) return null;
     return computeAggressionForecast(deck.main, cardsByName, deck.material);
@@ -366,7 +359,7 @@ export default function DeckDetail() {
 
   if (loading) {
     return (
-      <PageLayout>
+      <PageLayout data-component="DeckDetail">
         <InlineState className="mt-10">Loading…</InlineState>
       </PageLayout>
     );
@@ -374,7 +367,7 @@ export default function DeckDetail() {
 
   if (!deck) {
     return (
-      <PageLayout>
+      <PageLayout data-component="DeckDetail">
         <EmptyState
           title="Deck not found"
           description="This deck isn't in the ingested data."
@@ -385,7 +378,7 @@ export default function DeckDetail() {
   }
 
   return (
-    <PageLayout>
+    <PageLayout data-component="DeckDetail">
       <Link to="/decks?view=builds&minPlayers=2plus" className="text-sm text-ctp-blue hover:underline">
         &larr; Browse Decks
       </Link>
@@ -428,11 +421,11 @@ export default function DeckDetail() {
         <Tabs tabs={TABS} active={tab} onChange={setTab} label="Deck data" />
       </div>
 
-      {tab === "decklist" && rating && (
+      {tab === "decklist" && aggressionForecast && (
         <div className="mt-4">
-          <DiaoScoreCard rating={rating}>
-            {aggressionForecast && <AggressionForecast forecast={aggressionForecast} />}
-          </DiaoScoreCard>
+          <Panel>
+            <AggressionForecast forecast={aggressionForecast} />
+          </Panel>
         </div>
       )}
 

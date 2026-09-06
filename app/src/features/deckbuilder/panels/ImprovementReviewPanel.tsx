@@ -2,7 +2,7 @@ import Button from "../../../components/ui/Button";
 import Panel from "../../../components/ui/Panel";
 
 export default function ImprovementReviewPanel({ importedCardCount, reviewItemCount, onReview }: { importedCardCount: number; reviewItemCount: number; onReview: () => void }) {
-  return <Panel tone="info" className="mt-4" aria-labelledby="improvement-workflow">
+  return <Panel data-component="ImprovementReviewPanel" tone="info" className="mt-4" aria-labelledby="improvement-workflow">
     <div className="flex flex-wrap items-start justify-between gap-3">
       <div>
         <h2 id="improvement-workflow" className="font-semibold text-ctp-blue">Improvement review</h2>

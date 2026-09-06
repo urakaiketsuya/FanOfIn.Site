@@ -15,7 +15,7 @@ export default function UniqueDeckRow({ score, playerName }: { score: DeckHipste
   const cardsByName = useCardsByNames(allNames);
 
   return (
-    <div className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm">
+    <div data-component="UniqueDeckRow" className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm">
       <div className="flex items-center justify-between gap-2">
         <div>
           <PlayerLink id={score.player} username={playerName} className="text-ctp-text hover:text-ctp-blue" />{" "}

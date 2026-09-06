@@ -117,7 +117,7 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
   const loading = !cardInclusion && !popularity && !priceDistribution && !archetypes;
 
   return (
-    <PageLayout>
+    <PageLayout data-component="CommunityDecksIndex">
       <PageHeader
         title={isPantheon ? "Pantheon Decks" : "Deck Trends"}
         description={

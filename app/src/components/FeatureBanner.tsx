@@ -11,17 +11,14 @@ interface FeatureTip {
 // stumble onto from the nav alone (e.g. the Deck Builder's cut suggestions, the simulator/tournament
 // data split) over ones already obvious from top-level nav labels.
 const FEATURE_TIPS: FeatureTip[] = [
-  { message: "Quickly import your public decks from other sites.", to: "/my-decks", cta: "/my-decks" },
-  { message: "The Guided Deck Builder ranks cut suggestions by how much win rate they actually cost you.", to: "/deck-builder", cta: "Try the Deck Builder" },
+  { message: "Quickly import your public decks from other sites:", to: "/my-decks", cta: "Build Now" },
+  { message: "New to deck building? We have free tools:", to: "/deck-builder", cta: "Get Started" },
   { message: "Card Impact shows which cards move win rate the most within an archetype.", to: "/cards/stats", cta: "See Card Stats" },
-  { message: "Compare two decks side by side, card by card.", to: "/compare", cta: "Compare Decks" },
-  { message: "Get cards from the latest set recommended based on your decklist.", to: "card-discovery", cta: "See New Cards"},
-  { message: "Official livestream data at a glance.", to: "/timelines", cta: "See Play-by-Plays" },
-  { message: "Anonymous Clarent simulator telemetry — real playtest data, kept separate from tournament stats.", to: "/simulator", cta: "Simulator" },
-  { message: "See how each region's metagame differs from the overall field.", to: "/regions", cta: "Regional Analysis" },
-  { message: "Track your card collection against decks you're eyeing.", to: "/collection", cta: "My Collection" },
-  { message: "Curated Pantheon-format decks, hand-picked and explained.", to: "/pantheon", cta: "Pantheon Decks" },
-  { message: "Earn achievements for tournament milestones — deep runs, streaks, and more.", to: "/achievements", cta: "Achievements" },
+  { message: "Compare multiple decks at once:", to: "/compare", cta: "Compare Decks" },
+  { message: "Get cards from the latest set recommended based on your decklist:", to: "card-discovery", cta: "See New Cards"},
+  { message: "Official livestream data at a glance:", to: "/timelines", cta: "See Play-by-Plays" },
+  { message: "Travelling to play?", to: "/regions", cta: "See what's hot in another region" },
+  { message: "Track your cards across decks:", to: "/collection", cta: "Add to Collection" },
 ];
 
 function tipIndexForNow(): number {
@@ -49,7 +46,7 @@ export default function FeatureBanner() {
   const tip = FEATURE_TIPS[index];
 
   return (
-    <div className="border-b border-ctp-surface0 bg-ctp-mauve/10">
+    <div data-component="FeatureBanner" className="border-b border-ctp-surface0 bg-ctp-mauve/10">
       <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-2 gap-y-0.5 px-4 py-1.5 text-center text-xs text-ctp-subtext1 sm:text-sm">
         <span aria-hidden="true">💡</span>
         <span>{tip.message}</span>

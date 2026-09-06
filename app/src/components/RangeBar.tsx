@@ -25,7 +25,7 @@ export default function RangeBar({ title, subtitle, stats, format }: { title: st
   const medianPct = pct(stats.median);
 
   return (
-    <div className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+    <div data-component="RangeBar" className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
       <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">{title}</h3>
       {subtitle && <p className="mt-1 text-xs text-ctp-subtext0">{subtitle}</p>}
 

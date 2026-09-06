@@ -27,7 +27,7 @@ export default function ChangelogIndex() {
   }, [data]);
 
   return (
-    <PageLayout>
+    <PageLayout data-component="ChangelogIndex">
       <PageHeader
         title="Changelog"
         description="What's changed on the site, pulled from the commit history — for now this is just each change's own commit message, not a rewritten description."

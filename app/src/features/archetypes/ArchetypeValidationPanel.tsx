@@ -18,14 +18,14 @@ function MetricCard({ value, label, detail }: { value: string; label: string; de
 }
 
 export default function ArchetypeValidationPanel({ data }: { data: ArchetypeTaxonomyValidationData | undefined }) {
-  if (!data) return <InlineState className="mt-6 text-sm">Loading validation report…</InlineState>;
+  if (!data) return <InlineState data-component="ArchetypeValidationPanel" className="mt-6 text-sm">Loading validation report…</InlineState>;
 
   const baseline = data.thresholds.find((result) => result.threshold === data.baselineThreshold) ?? data.thresholds[0];
   const passedChecks = baseline.goldSet.filter((check) => check.passed).length;
   const overlappingChecks = baseline.goldSet.filter((check) => check.passed && check.separation < 0.05).length;
 
   return (
-    <section className="mt-5 space-y-5" aria-labelledby="validation-heading">
+    <section data-component="ArchetypeValidationPanel" className="mt-5 space-y-5" aria-labelledby="validation-heading">
       <Panel tone={overlappingChecks > 0 ? "warning" : "info"} padding="lg">
         <p className={`text-xs font-semibold tracking-wide uppercase ${overlappingChecks > 0 ? "text-ctp-yellow" : "text-ctp-blue"}`}>Current conclusion</p>
         <h2 id="validation-heading" className="mt-1 text-xl font-semibold text-ctp-text">

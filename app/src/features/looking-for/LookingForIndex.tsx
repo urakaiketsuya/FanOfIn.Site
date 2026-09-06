@@ -140,7 +140,7 @@ export default function LookingForIndex() {
   }, [resolved]);
 
   return (
-    <PageLayout width="wide">
+    <PageLayout data-component="LookingForIndex" width="wide">
       <PageHeader title={shared?.title ?? "Looking For"} description={isSharedView ? `${totalCards} cards across ${visibleEntries.length} requested items.` : "Paste a card list, choose acceptable printings, and send one link to traders or friends."} actions={isSharedView ? <Button variant="secondary" onClick={startNewList}>Create your own</Button> : undefined} />
 
       {!isSharedView && (

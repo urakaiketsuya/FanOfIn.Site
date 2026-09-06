@@ -22,7 +22,7 @@ export default function HorizontalBarChart({ title, subtitle, bars }: { title?: 
   if (max === 0) return null;
 
   return (
-    <div className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+    <div data-component="HorizontalBarChart" className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
       {title && <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">{title}</h3>}
       {subtitle && <p className="mt-1 text-xs text-ctp-subtext0">{subtitle}</p>}
       <ul className={`space-y-1 ${title || subtitle ? "mt-3" : ""}`}>

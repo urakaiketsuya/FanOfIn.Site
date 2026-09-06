@@ -85,7 +85,7 @@ export default function TeamsIndex() {
   );
 
   return (
-    <PageLayout>
+    <PageLayout data-component="TeamsIndex">
       <PageHeader
         title="Teams"
         description={`Team registrations from 3v3 team-format events. Each row is one team at one event — team names aren't a reliable identity (the same name can belong to unrelated teams, and generic names like "Team 1" repeat across unrelated local events), so this isn't deduplicated into one profile per team.`}

@@ -33,7 +33,7 @@ export default function HistoryChart({
   const ticks = [0, 0.25, 0.5, 0.75, 1];
 
   const chart = (
-    <svg viewBox={`0 0 ${width} ${height}`} className={`w-full ${compact ? "" : "min-w-[36rem]"}`} role="img" aria-label={`${label} over time`}>
+    <svg data-component="HistoryChart" viewBox={`0 0 ${width} ${height}`} className={`w-full ${compact ? "" : "min-w-[36rem]"}`} role="img" aria-label={`${label} over time`}>
       {!compact && ticks.map((tick) => {
         const value = min + tick * (max - min);
         const py = y(value);
@@ -48,5 +48,5 @@ export default function HistoryChart({
       </>}
     </svg>
   );
-  return compact ? chart : <div className="overflow-x-auto">{chart}</div>;
+  return compact ? chart : <div data-component="HistoryChart" className="overflow-x-auto">{chart}</div>;
 }

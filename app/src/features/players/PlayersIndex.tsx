@@ -54,7 +54,7 @@ export default function PlayersIndex() {
   }, [playerDecksData]);
 
   return (
-    <PageLayout>
+    <PageLayout data-component="PlayersIndex">
       <PageHeader
         title="Players"
         description={

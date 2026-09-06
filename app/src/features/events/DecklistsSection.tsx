@@ -52,6 +52,7 @@ export default function DecklistsSection({
 
   return (
     <Section
+      data-component="DecklistsSection"
       title={`Decklists (${decklists.length})`}
       heading="compact"
       actions={

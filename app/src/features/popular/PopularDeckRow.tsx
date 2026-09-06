@@ -90,7 +90,7 @@ export default function PopularDeckRow({
   const cardsByName = useCardsByNames(allNames);
 
   return (
-    <div className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm">
+    <div data-component="PopularDeckRow" className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm">
       <div className="flex items-center gap-3">
         <CardHoverPreview image={championCard?.editions[0]?.image} alt={deck.championName ?? "Unknown champion"}>
           {championCard?.editions[0] ? (

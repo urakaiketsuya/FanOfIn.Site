@@ -32,7 +32,7 @@ export default function DeckSightingRow({
   const cardsByName = useCardsByNames(allNames);
 
   return (
-    <div className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm">
+    <div data-component="DeckSightingRow" className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm">
       {/* Thumbnail + identity only in this row — stats and action buttons get their own full-width
           row below instead of competing with this one for space, which on a narrow viewport used to
           squeeze this row's flexible middle column down to almost nothing (badges wrapping onto top

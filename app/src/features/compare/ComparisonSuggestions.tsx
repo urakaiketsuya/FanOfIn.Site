@@ -71,7 +71,7 @@ export default function ComparisonSuggestions({ decks, decklists }: { decks: Com
   const loading = additionsResult.loading || weakestResult.loading;
   const hasEvidence = additions.length > 0 || review.length > 0;
 
-  return <div className="space-y-6">
+  return <div data-component="ComparisonSuggestions" className="space-y-6">
     <Section heading="dense" title="Choose a deck to tune">
       <div className="mt-2 flex flex-wrap gap-1.5">
         {decks.map((deck) => <button key={deck.key} type="button" onClick={() => setSelectedKey(deck.key)} title={deck.label} className={`max-w-64 truncate rounded-full border px-2.5 py-1 text-xs ${deck.key === selectedDeck?.key ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`}>{shortLabel(deck.label)}</button>)}

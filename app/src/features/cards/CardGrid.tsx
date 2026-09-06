@@ -11,11 +11,11 @@ interface CardGridProps {
 
 export default function CardGrid({ cards, pickEdition }: CardGridProps) {
   if (cards.length === 0) {
-    return <InlineState className="mt-8">No cards match these filters.</InlineState>;
+    return <InlineState data-component="CardGrid" className="mt-8">No cards match these filters.</InlineState>;
   }
 
   return (
-    <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+    <div data-component="CardGrid" className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
       {cards.map((card) => {
         const edition = pickEdition ? pickEdition(card) : card.editions[0];
         return (

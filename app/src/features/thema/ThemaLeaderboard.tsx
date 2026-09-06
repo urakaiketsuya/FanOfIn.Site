@@ -24,7 +24,7 @@ export default function ThemaLeaderboard() {
   const ranks = useQuery({ queryKey: ["thema-ranks", kind], queryFn: () => gatcgApi.getThemaRanks(kind) });
 
   return (
-    <PageLayout>
+    <PageLayout data-component="ThemaLeaderboard">
       <PageHeader title="Thema Rankings" description="Dynamic thema price-tier leaderboard, updated regularly." />
 
       <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">

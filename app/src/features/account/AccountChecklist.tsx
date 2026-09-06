@@ -22,7 +22,7 @@ export default function AccountChecklist({ user, decks }: Props) {
 
   if (dismissed || remaining === 0) return null;
 
-  return <Panel tone="info" className="mt-6" aria-labelledby="account-checklist-title">
+  return <Panel data-component="AccountChecklist" tone="info" className="mt-6" aria-labelledby="account-checklist-title">
     <div className="flex items-start justify-between gap-4">
       <div><h2 id="account-checklist-title" className="font-semibold text-ctp-text">Finish setting up your deck library</h2><p className="mt-1 text-xs text-ctp-subtext1">{remaining} optional step{remaining === 1 ? "" : "s"} remaining</p></div>
       <button type="button" onClick={() => { setDismissed(true); void accountApi.updateAccountPreferences({ deckChecklistDismissed: true }).catch(() => setDismissed(false)); }} className="text-xs text-ctp-subtext1 hover:text-ctp-text">Hide</button>

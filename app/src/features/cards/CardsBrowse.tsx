@@ -100,7 +100,7 @@ export default function CardsBrowse() {
   const bannerProduct = filters.sets.size === 1 ? PRODUCTS.find((p) => p.prefix === Array.from(filters.sets)[0] && p.banner) : undefined;
 
   return (
-    <PageLayout width="full">
+    <PageLayout data-component="CardsBrowse" width="full">
       <PageHeader
         title="Cards"
         actions={

@@ -17,7 +17,7 @@ export default function DeckChip({ deck, championCard, onRemove }: { deck: Compa
   const secondary = atIndex === -1 ? null : deck.label.slice(atIndex + 3);
 
   return (
-    <div className="flex items-center gap-2 rounded-lg border border-ctp-surface1 bg-ctp-surface0 py-1 pl-1 pr-2">
+    <div data-component="DeckChip" className="flex items-center gap-2 rounded-lg border border-ctp-surface1 bg-ctp-surface0 py-1 pl-1 pr-2">
       <CardHoverPreview image={championCard?.editions[0]?.image} alt={primary}>
         <div className="h-8 w-8 shrink-0 overflow-hidden rounded-full bg-ctp-mantle">
           {championCard?.editions[0] && (

@@ -7,7 +7,7 @@ export default function SavedDeckCard({ deck, onRename, onDelete }: { deck: Save
   const main = deck.decklist.main.reduce((sum, line) => sum + line.quantity, 0);
   const material = deck.decklist.material.reduce((sum, line) => sum + line.quantity, 0);
   const deckPath = `/my-decks/${encodeURIComponent(deck.id)}`;
-  return <Panel as="article" className="group relative transition-colors hover:border-ctp-blue">
+  return <Panel data-component="SavedDeckCard" as="article" className="group relative transition-colors hover:border-ctp-blue">
     <Link to={deckPath} aria-label={`Open ${deck.title}`} className="absolute inset-0 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ctp-blue" />
     <div className="pointer-events-none relative flex items-start justify-between gap-3">
       <div className="min-w-0"><span className="font-semibold text-ctp-blue group-hover:underline">{deck.title}</span><p className="mt-1 text-xs text-ctp-subtext1">{deck.championName ?? "Unknown champion"} · {deck.format}</p></div>

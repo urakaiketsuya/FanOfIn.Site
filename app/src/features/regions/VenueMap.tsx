@@ -28,7 +28,7 @@ export default function VenueMap({ rows }: { rows: RegionalVenueRow[] }) {
   if (!bounds) return null;
 
   return (
-    <div className="mt-3 h-96 overflow-hidden rounded-lg border border-ctp-surface1 [&_.leaflet-popup-close-button]:text-ctp-subtext1 [&_.leaflet-popup-content-wrapper]:bg-ctp-mantle [&_.leaflet-popup-content-wrapper]:text-ctp-text [&_.leaflet-popup-tip]:bg-ctp-mantle [&_.leaflet-tile-pane]:brightness-[.6] [&_.leaflet-tile-pane]:invert [&_.leaflet-tile-pane]:hue-rotate-180">
+    <div data-component="VenueMap" className="mt-3 h-96 overflow-hidden rounded-lg border border-ctp-surface1 [&_.leaflet-popup-close-button]:text-ctp-subtext1 [&_.leaflet-popup-content-wrapper]:bg-ctp-mantle [&_.leaflet-popup-content-wrapper]:text-ctp-text [&_.leaflet-popup-tip]:bg-ctp-mantle [&_.leaflet-tile-pane]:brightness-[.6] [&_.leaflet-tile-pane]:invert [&_.leaflet-tile-pane]:hue-rotate-180">
       <MapContainer
         key={points.map((p) => p.hostId).join(",")}
         bounds={bounds}

@@ -33,7 +33,7 @@ export default function CardComparisonTable({ names, onRemove }: { names: string
   );
 
   return (
-    <div className="overflow-x-auto">
+    <div data-component="CardComparisonTable" className="overflow-x-auto">
       <table className="w-max min-w-full text-sm">
         <thead>
           <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">

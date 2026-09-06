@@ -57,7 +57,7 @@ export default function ComparisonDifferences({
   );
 
   return (
-    <div>
+    <div data-component="ComparisonDifferences">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex gap-2 overflow-x-auto pb-1">
           {deckStats.map((s, i) => (

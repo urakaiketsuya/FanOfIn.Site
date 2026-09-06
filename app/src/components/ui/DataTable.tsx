@@ -9,7 +9,7 @@ export default function DataTable({ children, className = "" }: { children: Reac
     // floating over the first data row rather than pinned to the top. Tried `overflow-y-clip` to
     // suppress that without losing horizontal scroll; it didn't hold up across browsers in practice.
     // No other table on the site uses a sticky header, so plain (non-sticky) is the safe default here too.
-    <div className={`overflow-x-auto rounded-xl border border-ctp-surface1 ${className}`}>
+    <div data-component="DataTable" className={`overflow-x-auto rounded-xl border border-ctp-surface1 ${className}`}>
       <table className="w-max min-w-full text-sm [&_thead]:bg-ctp-mantle [&_th]:px-3 [&_th]:py-2 [&_td]:px-3 [&_td]:py-2">
         {children}
       </table>

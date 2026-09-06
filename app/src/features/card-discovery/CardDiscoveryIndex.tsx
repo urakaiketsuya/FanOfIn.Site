@@ -55,7 +55,7 @@ export default function CardDiscoveryIndex() {
     return `/deck-builder?${params.toString()}`;
   }, [championName, spiritName]);
 
-  return <PageLayout>
+  return <PageLayout data-component="CardDiscoveryIndex">
     <PageHeader
       title="Find new cards"
       description="Browse cards from the newest release that connect to your Champion, optional Spirit, or cards you already play. These are structural matches, not invented performance scores."

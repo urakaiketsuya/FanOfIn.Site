@@ -18,7 +18,7 @@ export default function UserDeckHeader({ title, championName, format, eyebrow, d
   const championImages = useChampionCardImages(championName ? [championName] : []);
   const championCard = championName ? championImages.get(championName) : undefined;
 
-  return <header>
+  return <header data-component="UserDeckHeader">
     {eyebrow && <div className="text-sm text-ctp-subtext1">{eyebrow}</div>}
     <div className="mt-2 flex items-center gap-3">
       <CardHoverPreview image={championCard?.editions[0]?.image} alt={championName ?? "Unknown champion"}>

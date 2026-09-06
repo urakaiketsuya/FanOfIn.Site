@@ -24,7 +24,7 @@ export default function CardArtTile({
   tags?: string[];
 }) {
   return (
-    <div className="relative aspect-[5/7] overflow-hidden rounded bg-ctp-surface0">
+    <div data-component="CardArtTile" className="relative aspect-[5/7] overflow-hidden rounded bg-ctp-surface0">
       {card?.editions[0] ? (
         <CardImage image={card.editions[0].image} alt={name} className="h-full w-full object-cover" />
       ) : (

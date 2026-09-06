@@ -36,7 +36,7 @@ export default function ArchetypeMetaMap({ builds, scopeLabel }: { builds: Arche
   const yTicks = Array.from({ length: Math.floor((maxRate - minRate) / 5) + 1 }, (_, index) => minRate + index * 5);
 
   return (
-    <Surface as="figure" className="mt-5 p-3">
+    <Surface data-component="ArchetypeMetaMap" as="figure" className="mt-5 p-3">
       <Section
         as="figcaption"
         heading="compact"

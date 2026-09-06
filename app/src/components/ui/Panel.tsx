@@ -53,5 +53,5 @@ export default function Panel({
   className?: string;
 } & HTMLAttributes<HTMLElement>) {
   const toneClass = tone === "default" ? DEFAULT_TONE_BY_ELEVATION[elevation] : TONE_CLASSES[tone];
-  return <Tag className={`rounded-xl border ${toneClass} ${ELEVATION_SHADOW[elevation]} ${PADDING_CLASSES[padding]} ${className}`} {...props}>{children}</Tag>;
+  return <Tag data-component="Panel" className={`rounded-xl border ${toneClass} ${ELEVATION_SHADOW[elevation]} ${PADDING_CLASSES[padding]} ${className}`} {...props}>{children}</Tag>;
 }

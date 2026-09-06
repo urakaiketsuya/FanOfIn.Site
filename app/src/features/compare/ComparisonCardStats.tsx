@@ -57,7 +57,7 @@ export default function ComparisonCardStats({
   if (rows.length === 0) return <InlineState className="text-sm">No cards to show yet.</InlineState>;
 
   return (
-    <div>
+    <div data-component="ComparisonCardStats">
       <p className="text-xs text-ctp-subtext0">
         Every card across the compared decks, with its own site-wide usage and win rate — not scoped to any one
         Champion or build, so a card that's great for one deck here may just be a staple everywhere.

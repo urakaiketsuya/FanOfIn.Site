@@ -37,7 +37,7 @@ export default function DonutChart({ title, segments }: { title: string; segment
   let cumulative = 0;
 
   return (
-    <div className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+    <div data-component="DonutChart" className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
       <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">{title}</h3>
       <div className="mt-3 flex flex-wrap items-center gap-4">
         <div className="relative h-40 w-40 shrink-0">

@@ -78,7 +78,7 @@ export default function CombosIndex() {
   }, [combos, search]);
 
   return (
-    <PageLayout>
+    <PageLayout data-component="CombosIndex">
       <Link to="/timelines" className="mb-4 inline-block text-sm text-ctp-subtext1 hover:text-ctp-blue hover:underline">
         &larr; Match Timelines
       </Link>

@@ -39,6 +39,7 @@ export default function CardHoverPreview({ image, alt, children }: CardHoverPrev
 
   return (
     <span
+      data-component="CardHoverPreview"
       className="relative"
       onMouseEnter={handleMove}
       onMouseMove={handleMove}

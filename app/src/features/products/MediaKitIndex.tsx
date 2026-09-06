@@ -140,7 +140,7 @@ export default function MediaKitIndex() {
   const sorted = useMemo(() => [...PRODUCTS].sort((a, b) => b.releaseDate.localeCompare(a.releaseDate)), []);
 
   return (
-    <PageLayout width="wide">
+    <PageLayout data-component="MediaKitIndex" width="wide">
       <PageHeader
         title="Media Kit"
         description="Every official Grand Archive TCG media-kit asset used on this site, grouped by product. Click any thumbnail to enlarge."

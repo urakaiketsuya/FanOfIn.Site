@@ -32,7 +32,7 @@ export default function TopDecksList({
   isSelected?: (deck: TopDecksListEntry) => boolean;
 }) {
   return (
-    <div className="space-y-1 text-sm">
+    <div data-component="TopDecksList" className="space-y-1 text-sm">
       {decks.map((s) => (
         <div key={s.deckId} className="flex items-center justify-between gap-2 text-ctp-subtext1">
           <div className="flex min-w-0 items-center gap-2">

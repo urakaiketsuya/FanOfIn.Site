@@ -28,7 +28,7 @@ export default function SettingsIndex() {
   const prefs = useDecklistDisplayPrefs();
 
   return (
-    <PageLayout>
+    <PageLayout data-component="SettingsIndex">
       <PageHeader
         title="Display Settings"
         description="These preferences are saved to this browser only — they don't follow you to another device, and they don't require an account. Used to be an inline 'Evidence settings' menu on decklist pages, moved here because that menu didn't work well on mobile."
@@ -36,12 +36,6 @@ export default function SettingsIndex() {
 
       <Section className="mt-6" title="Decklist stats" heading="compact">
         <div className="space-y-2">
-          <ToggleRow
-            label="DIAO score"
-            description="A computed 4-pillar style rating (Durability/Interaction/Aggro/Opportunity) for any decklist shown on the site — not just dedicated deck pages. Weak correlation with actual match win rate; a style profile, not a power ranking."
-            checked={prefs.diaoScore}
-            onChange={prefs.setDiaoScore}
-          />
           <ToggleRow
             label="Win rate"
             description="This specific decklist's own match record from the event it was played at, where available. Only shows on tournament decklists — there's no meaningful win rate for a decklist that's never been played in a tracked event."

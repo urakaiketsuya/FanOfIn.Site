@@ -25,7 +25,7 @@ export default function SimulatorIndex() {
   const turnStats = useMemo(() => [...(data?.turnStats ?? [])].sort((a, b) => a.turn - b.turn), [data]);
 
   return (
-    <PageLayout>
+    <PageLayout data-component="SimulatorIndex">
       <h1 className="text-2xl font-bold text-ctp-blue">Simulator Data</h1>
       <p className="mt-1 text-sm text-ctp-subtext1">
         Anonymous match telemetry submitted by{" "}

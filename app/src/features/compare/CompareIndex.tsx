@@ -202,7 +202,7 @@ export default function CompareIndex() {
   }
 
   return (
-    <PageLayout width="full">
+    <PageLayout data-component="CompareIndex" width="full">
       <PageHeader
         title="Compare"
         description={

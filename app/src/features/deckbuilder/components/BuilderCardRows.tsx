@@ -218,7 +218,6 @@ export function SuggestionRow({
           {reason}
         </span>
       ))}
-      <DiaoMetricBadges card={card} />
       <div className="ml-auto flex shrink-0 gap-1.5">
         <button
           type="button"

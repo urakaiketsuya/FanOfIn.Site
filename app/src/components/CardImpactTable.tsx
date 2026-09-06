@@ -16,7 +16,7 @@ export default function CardImpactTable({
   withoutLabel: string;
 }) {
   return (
-    <div className="mt-3 overflow-x-auto">
+    <div data-component="CardImpactTable" className="mt-3 overflow-x-auto">
       <table className="w-max min-w-full text-sm">
         <thead>
           <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">

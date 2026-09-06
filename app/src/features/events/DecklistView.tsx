@@ -20,8 +20,6 @@ import { copyDecklistAndOpen, deckBuilderDestinations } from "../../lib/deckBuil
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { extractProducedTokens } from "../../lib/cardIntent";
 import { useDecklistDisplayPrefs, type VisualCardSize } from "../../lib/decklistDisplayPrefs";
-import { computeDeckRating } from "../../lib/deckIdentity";
-import DiaoScoreCard from "../../components/DiaoScoreCard";
 import DecklistWinRate from "./DecklistWinRate";
 import Button from "../../components/ui/Button";
 import Section from "../../components/ui/Section";
@@ -254,12 +252,6 @@ export default function DecklistView({
       ),
     [decklist, cardsByName],
   );
-  const rating = useMemo(() => {
-    if (!showDeckStats || !displayPrefs.diaoScore) return null;
-    const championName = findDeckChampionName(decklist.material, cardsByName);
-    const lines = [...decklist.main, ...decklist.material].map((line) => ({ name: line.card, quantity: line.quantity }));
-    return computeDeckRating(lines, cardsByName, championName, identity.classes);
-  }, [showDeckStats, displayPrefs.diaoScore, decklist, cardsByName, identity.classes]);
   const referencedTokens = useMemo(() => {
     const catalogBySlug = new Map(catalog.map((card) => [card.slug, card]));
     const tokenByName = new Map(catalog.filter((card) => card.types.includes("TOKEN")).map((card) => [card.name.toLocaleLowerCase(), card]));
@@ -310,7 +302,7 @@ export default function DecklistView({
   }
 
   return (
-    <div>
+    <div data-component="DecklistView">
       {(identity.classes.length > 0 || identity.elements.length > 0) && (
         <div className="mb-2 flex flex-wrap gap-3 text-xs text-ctp-subtext1">
           {identity.classes.length > 0 && <span>Classes: {identity.classes.join("/")}</span>}
@@ -367,10 +359,9 @@ export default function DecklistView({
         <Link to="/settings" className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text">Display settings</Link>
         <div className="flex gap-1" role="group" aria-label="Decklist display">{(["compact", "visual", "detailed"] as const).map((mode) => <button key={mode} type="button" onClick={() => setDisplayMode(mode)} aria-pressed={displayMode === mode} className={`rounded-md border px-2 py-1 text-xs capitalize ${displayMode === mode ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`}>{mode}</button>)}</div>
       </div>
-      {showDeckStats && (rating || (displayPrefs.winRate && deckId)) && (
+      {showDeckStats && displayPrefs.winRate && deckId && (
         <div className="mb-4 space-y-3">
-          {displayPrefs.winRate && deckId && <DecklistWinRate deckId={deckId} />}
-          {rating && <DiaoScoreCard rating={rating} />}
+          <DecklistWinRate deckId={deckId} />
         </div>
       )}
       {displayMode === "compact" && <div className="space-y-5">{[...extraSections, { title: "Main", lines: decklist.main }, { title: "Material", lines: decklist.material }, { title: "Sideboard", lines: decklist.sideboard }, ...displayTrailingSections].map((section) => <CompactDeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} />)}</div>}

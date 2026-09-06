@@ -65,10 +65,10 @@ export default function MyDecksIndex() {
     finally { setBusy(false); }
   }
 
-  if (user === undefined) return <PageLayout width="wide"><InlineState className="mt-10">Loading your account…</InlineState></PageLayout>;
-  if (!user) return <PageLayout width="standard"><h1 className="text-2xl font-bold text-ctp-blue">My Decks</h1><p className="mt-2 text-ctp-subtext1">Sign in to save decklists and keep imported tournament and community builds together.</p><div className="mt-6"><GoogleSignInButton onCredential={(credential, nonce) => void run(async () => { const session = await accountApi.googleSignIn(credential, nonce); setUser(session.user); await refreshDecks(); })} /></div>{error && <InlineState tone="danger" className="mt-4 text-sm">{error}</InlineState>}</PageLayout>;
+  if (user === undefined) return <PageLayout data-component="MyDecksIndex" width="wide"><InlineState className="mt-10">Loading your account…</InlineState></PageLayout>;
+  if (!user) return <PageLayout data-component="MyDecksIndex" width="standard"><h1 className="text-2xl font-bold text-ctp-blue">My Decks</h1><p className="mt-2 text-ctp-subtext1">Sign in to save decklists and keep imported tournament and community builds together.</p><div className="mt-6"><GoogleSignInButton onCredential={(credential, nonce) => void run(async () => { const session = await accountApi.googleSignIn(credential, nonce); setUser(session.user); await refreshDecks(); })} /></div>{error && <InlineState tone="danger" className="mt-4 text-sm">{error}</InlineState>}</PageLayout>;
 
-  return <PageLayout width="wide">
+  return <PageLayout data-component="MyDecksIndex" width="wide">
     <div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-3xl font-bold text-ctp-blue">My Decks</h1><p className="mt-2 text-sm text-ctp-subtext1">Your editable builds and saved community decks in one library.</p><p className="mt-1 text-xs text-ctp-subtext0">{decks.length} editable build{decks.length === 1 ? "" : "s"} · {bookmarks.length} saved deck{bookmarks.length === 1 ? "" : "s"}</p></div><Button variant="primary" aria-expanded={addMode !== null} onClick={() => setAddMode((current) => current ? null : "choose")}>{addMode ? "Close" : "Add deck"}</Button></div>
     {error && <Panel tone="danger" padding="sm" className="mt-4 text-sm text-ctp-red">{error}</Panel>}
     {notice && <Panel tone="success" padding="sm" className="mt-4 text-sm text-ctp-green">{notice}</Panel>}

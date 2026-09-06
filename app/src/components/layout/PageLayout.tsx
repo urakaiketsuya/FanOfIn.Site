@@ -21,5 +21,5 @@ export default function PageLayout({
   children: ReactNode;
   className?: string;
 } & HTMLAttributes<HTMLElement>) {
-  return <Tag className={`mx-auto px-4 py-8 ${WIDTH_CLASSES[width]} ${className}`} {...props}>{children}</Tag>;
+  return <Tag data-component="PageLayout" className={`mx-auto px-4 py-8 ${WIDTH_CLASSES[width]} ${className}`} {...props}>{children}</Tag>;
 }

@@ -182,7 +182,7 @@ export default function OfficialProductsIndex() {
   }
 
   return (
-    <PageLayout width="wide">
+    <PageLayout data-component="OfficialProductsIndex" width="wide">
       <PageHeader title="Official Product Decks" description={<>Starter decks, Re:Collection lists, and Pantheon starters published by Grand Archive. Copy a list as printed or open it in the Guided Deck Builder to start tuning. Source data is attributed to <a href={officialProductsSource} target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">GrandArchive on Silvie.org</a>.</>} />
 
       <div className="mb-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1" role="tablist" aria-label="Official deck format">

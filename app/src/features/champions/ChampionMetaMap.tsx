@@ -31,7 +31,7 @@ export default function ChampionMetaMap({ champions, trends }: { champions: Arch
   const yTicks = Array.from({ length: Math.floor((maxRate - minRate) / 5) + 1 }, (_, index) => minRate + index * 5);
 
   return (
-    <Surface as="figure" className="mt-6 p-3">
+    <Surface data-component="ChampionMetaMap" as="figure" className="mt-6 p-3">
       <figcaption>
         <h2 className="text-sm font-semibold text-ctp-subtext0 uppercase tracking-wide">Current metagame map</h2>
         <p className="mt-1 text-xs text-ctp-subtext0">Further right means more popular; higher means a stronger current-season win rate. Bubble size represents deck count; Champions below 200 decks are omitted.</p>

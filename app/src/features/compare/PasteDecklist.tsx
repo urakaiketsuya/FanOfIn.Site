@@ -31,7 +31,7 @@ export default function PasteDecklist({ onAdd }: { onAdd: (deck: ComparedDeck) =
   }
 
   return (
-    <div>
+    <div data-component="PasteDecklist">
       <p className="text-sm text-ctp-subtext1">
         Paste a decklist — one card per line, e.g. "4x Card Name", with optional "Main" / "Material" / "Sideboard"
         section headers.

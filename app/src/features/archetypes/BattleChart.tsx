@@ -116,7 +116,7 @@ export default function BattleChart() {
   }
 
   return (
-    <PageLayout width="wide">
+    <PageLayout data-component="BattleChart" width="wide">
       <PageHeader title="Battle Chart" eyebrow={<Link to="/archetypes" className="hover:underline">&larr; Archetypes</Link>} description="Explore head-to-head Champion win rates from real tournament pairings, with sample-aware color intensity." />
 
       {!data && <InlineState className="mt-6">Loading…</InlineState>}
