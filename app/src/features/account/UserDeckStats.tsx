@@ -7,6 +7,8 @@ import {
   computeRarityBreakdown, computeReserveCostCurve, formatAllyPower,
 } from "../../lib/deckIdentity";
 import { computeAggressionForecast } from "../../lib/aggressionForecast";
+import { computeBreakthroughDamageVsAverage } from "../../lib/breakthroughDamage";
+import BreakthroughDamagePanel from "../compare/BreakthroughDamagePanel";
 import { buildDeckBuilderPath, deckBuilderParamsFromDecklist } from "../../lib/deckBuilderLink";
 import { encodeCustomDecks } from "../../lib/compareShareLink";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -85,6 +87,10 @@ export default function UserDeckStats({ decklist, championName, format, title, o
   const identity = useMemo(() => computeDeckIdentity(identityLines, cardsByName), [identityLines, cardsByName]);
   const aggressionForecast = useMemo(
     () => computeAggressionForecast(namedSections.main, cardsByName, namedSections.material),
+    [namedSections.main, namedSections.material, cardsByName],
+  );
+  const breakthroughVsAverage = useMemo(
+    () => computeBreakthroughDamageVsAverage([...namedSections.main, ...namedSections.material], cardsByName),
     [namedSections.main, namedSections.material, cardsByName],
   );
   const composition = useMemo(() => computeDeckComposition(identityLines, cardsByName), [identityLines, cardsByName]);
@@ -216,8 +222,9 @@ export default function UserDeckStats({ decklist, championName, format, title, o
   // as a true, checked answer. This is genuinely common: most decks in this game win through combat
   // (allies attacking, a champion swinging with a weapon), not burn — computeAggressionForecast
   // only ever parsed "Deal N damage" text, so "nothing found" here does NOT mean "this deck can't
-  // deal damage," and the copy below (and AggressionForecast's own) says so explicitly rather than
-  // implying total lethality the way the old wording did.
+  // deal damage." Rather than just disclaiming that in text, fall back to the Breakthrough damage
+  // estimate (against a calibrated "average deck" Intercept count, since there's no second decklist
+  // to compare against here) so a combat-plan deck still gets a real number instead of a shrug.
   const hasDamageForecast = aggressionForecast.fixedDamageCopies > 0 || aggressionForecast.variableDamageCopies > 0
     || aggressionForecast.scalingDamageCopies > 0 || aggressionForecast.ambiguousDamageCopies > 0 || aggressionForecast.recurringDamagePerTurn > 0;
   const probabilityTab: ReactNode = (
@@ -225,11 +232,21 @@ export default function UserDeckStats({ decklist, championName, format, title, o
       <Panel>
         {hasDamageForecast ? (
           <AggressionForecast forecast={aggressionForecast} />
+        ) : breakthroughVsAverage.attackerCount > 0 ? (
+          <div data-component="BreakthroughDamageFallback">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat damage forecast</h3>
+            <p className="mt-1 max-w-3xl text-xs text-ctp-subtext0">
+              No printed spell/ability damage in this list — here's how much Ally combat power would reach the champion against an average deck's Intercept count instead. Not a simulation: see the Compare tool's Breakthrough damage section for the full list of assumptions.
+            </p>
+            <div className="mt-3">
+              <BreakthroughDamagePanel attackerLabel={title} defenderLabel="an average deck" result={breakthroughVsAverage} />
+            </div>
+          </div>
         ) : (
-          <InlineState className="text-sm">No printed spell/ability damage found in this list — this deck's damage plan likely comes from combat instead.</InlineState>
+          <InlineState className="text-sm">No printed spell/ability damage and no attacking allies found in this list.</InlineState>
         )}
       </Panel>
-      {allyPower.allyCopies > 0 && (
+      {allyPower.allyCopies > 0 && hasDamageForecast && (
         <Panel className="mt-4">
           <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat potential</h3>
           <p className="mt-1 max-w-3xl text-xs text-ctp-subtext0">

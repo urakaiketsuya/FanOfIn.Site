@@ -10,7 +10,7 @@ import { InlineState } from "../../components/ui/ContentState";
 import HypergeometricCalculator from "../deckbuilder/HypergeometricCalculator";
 import AggressionForecast from "../decks/AggressionForecast";
 import { computeAggressionForecast } from "../../lib/aggressionForecast";
-import { computeBreakthroughDamage } from "../../lib/breakthroughDamage";
+import { computeBreakthroughDamage, computeBreakthroughDamageVsAverage } from "../../lib/breakthroughDamage";
 import BreakthroughDamagePanel from "./BreakthroughDamagePanel";
 
 const SECTION_LABEL = { main: "Main", material: "Material", sideboard: "Sideboard" } as const;
@@ -125,6 +125,8 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, onVie
           const mainLines = list.main.map((line) => ({ name: line.card, quantity: line.quantity }));
           const materialLines = list.material.map((line) => ({ name: line.card, quantity: line.quantity }));
           const damageForecast = computeAggressionForecast(mainLines, cardsByName, materialLines);
+          const hasDamageForecast = damageForecast.fixedDamageCopies > 0 || damageForecast.variableDamageCopies > 0 || damageForecast.scalingDamageCopies > 0 || damageForecast.ambiguousDamageCopies > 0 || damageForecast.recurringDamagePerTurn > 0;
+          const breakthroughVsAverage = hasDamageForecast ? null : computeBreakthroughDamageVsAverage([...mainLines, ...materialLines], cardsByName);
           return <div key={deck.key}>
             <h3 className="font-semibold text-ctp-text">{shortLabel(deck.label)}</h3>
             <HypergeometricCalculator
@@ -132,9 +134,17 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, onVie
               materialLines={materialLines}
               catalogByName={cardsByName}
             />
-            {damageForecast.fixedDamageCopies > 0 || damageForecast.variableDamageCopies > 0 || damageForecast.scalingDamageCopies > 0 || damageForecast.ambiguousDamageCopies > 0 || damageForecast.recurringDamagePerTurn > 0
-              ? <AggressionForecast forecast={damageForecast} />
-              : <div className="mt-4 border-t border-ctp-surface1 pt-4"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Printed damage forecast</h4><p className="mt-1 text-xs text-ctp-subtext0">No printed spell/ability damage found in this list — this deck's damage plan likely comes from combat instead.</p></div>}
+            {hasDamageForecast ? (
+              <AggressionForecast forecast={damageForecast} />
+            ) : breakthroughVsAverage && breakthroughVsAverage.attackerCount > 0 ? (
+              <div className="mt-4 border-t border-ctp-surface1 pt-4">
+                <h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat damage forecast</h4>
+                <p className="mt-1 text-xs text-ctp-subtext0">No printed spell/ability damage in this list — here's how much Ally combat power would reach the champion against an average deck's Intercept count instead.</p>
+                <div className="mt-3"><BreakthroughDamagePanel attackerLabel={shortLabel(deck.label)} defenderLabel="an average deck" result={breakthroughVsAverage} /></div>
+              </div>
+            ) : (
+              <div className="mt-4 border-t border-ctp-surface1 pt-4"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Printed damage forecast</h4><p className="mt-1 text-xs text-ctp-subtext0">No printed spell/ability damage and no attacking allies found in this list.</p></div>
+            )}
           </div>;
         })}
       </div>

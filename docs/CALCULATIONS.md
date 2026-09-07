@@ -1366,6 +1366,23 @@ convention as the Direct-damage forecast's own exclusion list):
 Like the Direct-damage forecast, this is a clearly-labeled reference estimate, not a claimed
 simulation, and it is not part of the calibrated DIAO score.
 
+**Fallback vs. an average deck.** A single deck's own Analysis tab (`UserDeckStats.tsx`, and the
+per-deck panel in Compare's "Deck forecasts" section) has no second decklist to run
+`computeBreakthroughDamage` against. Rather than showing a text-only disclaimer in place of the
+Direct-damage forecast for a deck with no printed damage — which previously read as "this deck
+can't deal damage," when really it just wins through combat — these surfaces call
+`computeBreakthroughDamageVsAverage` instead, which runs the identical algorithm against a fixed
+`AVERAGE_DECK_INTERCEPT_ALLY_COUNT = 4` constant standing in for a generic opponent's Intercept
+count. That constant is real, not guessed: the median count of Intercept-keyword Allies (main +
+material) across 57,713 real tournament deck sightings (`data/analysis/deck-card-index.json`
+cross-referenced against `pipeline/.cache/cards.json`'s effect text, computed 2026-09-07). The
+per-deck distribution — `{0: 15063, 1: 1565, 2: 2812, 3: 8129, 4: 19706, 5: 2606, 6: 2352, 7: 1931,
+8: 2232, 9+: ~1300}` — has 4 as both its median and its mode; the raw mean (≈3.27) was rejected as
+the constant because it's pulled around by a single corrupted-quantity outlier deck in the source
+data, while the median is robust to it. This is explicitly a rough stand-in, not a claim that "the
+average deck" is a real, well-defined thing — wherever an actual second decklist is available
+(Compare, once a baseline is picked), the real `computeBreakthroughDamage` figure is shown instead.
+
 ### Score bands
 
 Each pillar's raw points map to a 1–10 score via boundaries at the real min/p10/p25/median/p75/p90/max

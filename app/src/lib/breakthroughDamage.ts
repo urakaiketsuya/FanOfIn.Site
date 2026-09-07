@@ -55,6 +55,36 @@ export interface BreakthroughDamageResult {
   totalAttackPower: number;
 }
 
+function computeBreakthroughDamageCore(attackers: { power: number; unblockable: boolean }[], interceptAllyCount: number): BreakthroughDamageResult {
+  const totalAttackPower = attackers.reduce((sum, a) => sum + a.power, 0);
+  const unblockablePower = attackers.filter((a) => a.unblockable).reduce((sum, a) => sum + a.power, 0);
+  const interceptable = attackers.filter((a) => !a.unblockable).sort((a, b) => b.power - a.power);
+
+  const intercepted = interceptable.slice(0, interceptAllyCount);
+  const gotThrough = interceptable.slice(interceptAllyCount);
+  const interceptedPower = intercepted.reduce((sum, a) => sum + a.power, 0);
+  const unblockedPower = gotThrough.reduce((sum, a) => sum + a.power, 0);
+
+  return {
+    breakthroughTotal: unblockablePower + unblockedPower,
+    unblockablePower,
+    interceptedPower,
+    attackerCount: attackers.length,
+    interceptAllyCount,
+    totalAttackPower,
+  };
+}
+
+/** Median count of Intercept-keyword Allies (main + material) across 57,713 real tournament deck
+ * sightings — computed once from `data/analysis/deck-card-index.json` cross-referenced against
+ * `pipeline/.cache/cards.json`'s effect text (2026-09-07), not guessed. Per-deck distribution:
+ * {0: 15063, 1: 1565, 2: 2812, 3: 8129, 4: 19706, 5: 2606, 6: 2352, 7: 1931, 8: 2232, 9+: ~1300}
+ * — 4 is both the median and the mode; the raw mean (~3.27) is pulled down by the large 0-Intercept
+ * cohort and pulled around by a single corrupted-quantity outlier, so the median is the more
+ * trustworthy round number here. Used as a stand-in "average opponent" wherever there's no second
+ * deck to compute real breakthrough damage against (see `computeBreakthroughDamageVsAverage`). */
+export const AVERAGE_DECK_INTERCEPT_ALLY_COUNT = 4;
+
 /**
  * A single-direction combat estimate: if every Ally in `attackerLines` attacked the champion at
  * once, and every Intercept-keyword Ally in `defenderLines` redirected one attack each (biggest
@@ -82,22 +112,18 @@ export interface BreakthroughDamageResult {
 export function computeBreakthroughDamage(attackerLines: NamedLine[], defenderLines: NamedLine[], cardsByName: Map<string, Card>): BreakthroughDamageResult {
   const attackers = expandAllyPower(attackerLines, cardsByName);
   const interceptAllyCount = countIntercept(defenderLines, cardsByName);
+  return computeBreakthroughDamageCore(attackers, interceptAllyCount);
+}
 
-  const totalAttackPower = attackers.reduce((sum, a) => sum + a.power, 0);
-  const unblockablePower = attackers.filter((a) => a.unblockable).reduce((sum, a) => sum + a.power, 0);
-  const interceptable = attackers.filter((a) => !a.unblockable).sort((a, b) => b.power - a.power);
-
-  const intercepted = interceptable.slice(0, interceptAllyCount);
-  const gotThrough = interceptable.slice(interceptAllyCount);
-  const interceptedPower = intercepted.reduce((sum, a) => sum + a.power, 0);
-  const unblockedPower = gotThrough.reduce((sum, a) => sum + a.power, 0);
-
-  return {
-    breakthroughTotal: unblockablePower + unblockedPower,
-    unblockablePower,
-    interceptedPower,
-    attackerCount: attackers.length,
-    interceptAllyCount,
-    totalAttackPower,
-  };
+/**
+ * Same estimate as `computeBreakthroughDamage`, but against `AVERAGE_DECK_INTERCEPT_ALLY_COUNT`
+ * instead of a second real deck's actual Intercept count. Meant for contexts with only one deck to
+ * analyze — e.g. a deck's own Analysis tab, which has no second decklist to compare against, but
+ * where "this deck has no printed damage" would otherwise read as "this deck can't deal damage" when
+ * really its plan is combat. Not a substitute for `computeBreakthroughDamage` wherever a real
+ * opposing decklist is actually available (Compare) — the average is a rough stand-in only.
+ */
+export function computeBreakthroughDamageVsAverage(attackerLines: NamedLine[], cardsByName: Map<string, Card>): BreakthroughDamageResult {
+  const attackers = expandAllyPower(attackerLines, cardsByName);
+  return computeBreakthroughDamageCore(attackers, AVERAGE_DECK_INTERCEPT_ALLY_COUNT);
 }
