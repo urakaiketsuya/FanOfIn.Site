@@ -1,18 +1,17 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import type { Card, CardImpactEntry, CardImpactRole, OmnidexDecklist } from "@gatcg/shared";
-import CardHoverPreview from "../../components/CardHoverPreview";
-import ElementIcon from "../../components/ElementIcon";
+import { VisualCardTile, type VisualFieldVisibility } from "../../components/VisualCardTile";
 import { buildDeckBuilderPath, deckBuilderParamsFromDecklist } from "../../lib/deckBuilderLink";
 import { useChampionCardImpact } from "../decks/useChampionCardImpact";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useComparisonData } from "./useComparisonData";
 import type { ComparedDeck } from "./types";
 import Panel from "../../components/ui/Panel";
-import Section from "../../components/ui/Section";
 import { InlineState } from "../../components/ui/ContentState";
 
 const ROLE_LABEL: Record<CardImpactRole, string> = { main: "Main", material: "Material", sideboard: "Sideboard", mixed: "Mixed" };
+const TUNING_CARD_FIELDS: VisualFieldVisibility = { cost: false, price: false, priceTrend: false, tags: false, simulator: false, community: false };
 
 function shortLabel(label: string): string {
   const at = label.indexOf(" @ ");
@@ -20,31 +19,23 @@ function shortLabel(label: string): string {
 }
 
 function EvidenceList({ cards, cardsByName, tone }: { cards: CardImpactEntry[]; cardsByName: Map<string, Card>; tone: "add" | "review" }) {
-  return <ul className="mt-3 space-y-2">
+  return <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-4">
     {cards.map((entry) => {
       const card = cardsByName.get(entry.cardName);
-      return <li key={entry.cardName} className="rounded-lg border border-ctp-surface0 bg-ctp-base/40 p-2.5">
-        <div className="flex flex-wrap items-center gap-1.5 text-sm">
-          {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
-          {card ? <CardHoverPreview image={card.editions[0]?.image} alt={entry.cardName}><Link to={`/cards/${card.slug}`} className="font-medium text-ctp-text hover:text-ctp-blue">{entry.cardName}</Link></CardHoverPreview> : <span className="font-medium text-ctp-text">{entry.cardName}</span>}
-          <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">{ROLE_LABEL[entry.role]}</span>
-          <span className={`ml-auto text-xs font-semibold ${tone === "add" ? "text-ctp-blue" : "text-ctp-yellow"}`}>{entry.adjustedLift >= 0 ? "+" : ""}{(entry.adjustedLift * 100).toFixed(1)}pp</span>
+      return <VisualCardTile key={entry.cardName} line={{ card: entry.cardName, quantity: 1 }} card={card} unitPrice={undefined} priceTrend={undefined} simulatorEvidence={undefined} communityEntry={undefined} fields={TUNING_CARD_FIELDS} footer={<div className="mt-1.5 min-w-0">
+        <div className="truncate text-sm font-medium text-ctp-text" title={entry.cardName}>{entry.cardName}</div>
+        <div className="mt-1 flex items-center justify-between gap-2 border-t border-ctp-surface0 pt-1">
+          <span className="text-[10px] text-ctp-subtext0">{ROLE_LABEL[entry.role]} · {entry.deckCountWith} decks</span>
+          <span className={`shrink-0 text-xs font-semibold ${tone === "add" ? "text-ctp-blue" : "text-ctp-yellow"}`}>{entry.adjustedLift >= 0 ? "+" : ""}{(entry.adjustedLift * 100).toFixed(1)}pp</span>
         </div>
-        <p className="mt-1 text-[11px] text-ctp-subtext0">{entry.deckCountWith} decks with · {entry.deckCountWithout} without</p>
-      </li>;
+      </div>} />;
     })}
-  </ul>;
+  </div>;
 }
 
-export default function ComparisonSuggestions({ decks, decklists }: { decks: ComparedDeck[]; decklists: Map<string, OmnidexDecklist | null> }) {
+export default function ComparisonSuggestions({ decks, decklists, baselineKey }: { decks: ComparedDeck[]; decklists: Map<string, OmnidexDecklist | null>; baselineKey: string | null }) {
   const { cardsByName: comparisonCards, deckStats } = useComparisonData(decks, decklists);
-  const [selectedKey, setSelectedKey] = useState(decks[0]?.key ?? "");
-
-  useEffect(() => {
-    if (!decks.some((deck) => deck.key === selectedKey)) setSelectedKey(decks[0]?.key ?? "");
-  }, [decks, selectedKey]);
-
-  const selectedIndex = Math.max(0, decks.findIndex((deck) => deck.key === selectedKey));
+  const selectedIndex = Math.max(0, decks.findIndex((deck) => deck.key === baselineKey));
   const selectedDeck = decks[selectedIndex];
   const selectedList = selectedDeck ? decklists.get(selectedDeck.key) : null;
   const selectedStats = deckStats[selectedIndex];
@@ -57,8 +48,8 @@ export default function ComparisonSuggestions({ decks, decklists }: { decks: Com
   const weakestResult = useChampionCardImpact(champion, identityElements, noExclusions, "worst");
   const evidenceCards = useCardsByNames(useMemo(() => [...additionsResult.cards, ...weakestResult.cards].map((entry) => entry.cardName), [additionsResult.cards, weakestResult.cards]));
   const cardsByName = useMemo(() => new Map([...comparisonCards, ...evidenceCards]), [comparisonCards, evidenceCards]);
-  const additions = useMemo(() => additionsResult.cards.filter((entry) => entry.adjustedLift > 0 && !cardsByName.get(entry.cardName)?.types.includes("CHAMPION")).slice(0, 5), [additionsResult.cards, cardsByName]);
-  const review = useMemo(() => weakestResult.cards.filter((entry) => entry.adjustedLift < 0 && currentNames.has(entry.cardName) && !cardsByName.get(entry.cardName)?.types.includes("CHAMPION")).slice(0, 5), [weakestResult.cards, currentNames, cardsByName]);
+  const additions = useMemo(() => additionsResult.cards.filter((entry) => entry.adjustedLift > 0 && !cardsByName.get(entry.cardName)?.types.includes("CHAMPION")).slice(0, 4), [additionsResult.cards, cardsByName]);
+  const review = useMemo(() => weakestResult.cards.filter((entry) => entry.adjustedLift < 0 && currentNames.has(entry.cardName) && !cardsByName.get(entry.cardName)?.types.includes("CHAMPION")).slice(0, 4), [weakestResult.cards, currentNames, cardsByName]);
 
   const builderPath = useMemo(() => {
     if (!selectedList) return null;
@@ -72,11 +63,11 @@ export default function ComparisonSuggestions({ decks, decklists }: { decks: Com
   const hasEvidence = additions.length > 0 || review.length > 0;
 
   return <div data-component="ComparisonSuggestions" className="space-y-6">
-    <Section heading="dense" title="Choose a deck to tune">
-      <div className="mt-2 flex flex-wrap gap-1.5">
-        {decks.map((deck) => <button key={deck.key} type="button" onClick={() => setSelectedKey(deck.key)} title={deck.label} className={`max-w-64 truncate rounded-full border px-2.5 py-1 text-xs ${deck.key === selectedDeck?.key ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`}>{shortLabel(deck.label)}</button>)}
-      </div>
-    </Section>
+    <div>
+      <p className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Tuning baseline</p>
+      <h2 className="mt-0.5 text-xl font-semibold text-ctp-text">{selectedDeck ? shortLabel(selectedDeck.label) : "Deck unavailable"}</h2>
+      <p className="mt-1 text-sm text-ctp-subtext1">Choose a different baseline from the compared decks above to tune another list.</p>
+    </div>
 
     {!selectedList && <p className="rounded-xl border border-ctp-surface1 p-4 text-sm text-ctp-subtext1">This decklist is unavailable, so it can’t be tuned.</p>}
 
@@ -104,7 +95,7 @@ export default function ComparisonSuggestions({ decks, decklists }: { decks: Com
         <p className="mt-1 text-sm leading-6 text-ctp-subtext1">This Champion does not currently have enough with-versus-without samples for a reliable card recommendation. The deck remains available in the Guided Deck Builder for composition, synergy-readiness, and legality analysis.</p>
       </section>}
 
-      {!loading && hasEvidence && <div className="grid items-start gap-4 lg:grid-cols-2">
+      {!loading && hasEvidence && <div className="space-y-4">
         <Panel>
           <h2 className="font-semibold text-ctp-text">Evidence-backed additions</h2>
           <p className="mt-1 text-xs leading-5 text-ctp-subtext0">Cards not currently in this list that correlate with stronger results in other {champion} decks.</p>

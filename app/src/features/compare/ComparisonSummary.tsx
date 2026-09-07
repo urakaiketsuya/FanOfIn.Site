@@ -1,184 +1,139 @@
-import { useMemo } from "react";
-import { Link } from "react-router-dom";
-import type { Card, OmnidexDecklist } from "@gatcg/shared";
-import CardHoverPreview from "../../components/CardHoverPreview";
-import ElementIcon from "../../components/ElementIcon";
+import type { OmnidexDecklist } from "@gatcg/shared";
+import { VisualCardTile, type VisualFieldVisibility } from "../../components/VisualCardTile";
 import { formatUsd } from "../../lib/format";
-import type { RatingPillar } from "../../lib/deckIdentity";
-import { useComparisonData, type ComparisonCardEntry } from "./useComparisonData";
+import { useComparisonData, type ComparisonDeckStats } from "./useComparisonData";
 import { useComparisonSummary, type ComparisonCardChange } from "./useComparisonSummary";
 import type { ComparedDeck } from "./types";
 import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
 import { InlineState } from "../../components/ui/ContentState";
+import HypergeometricCalculator from "../deckbuilder/HypergeometricCalculator";
+import AggressionForecast from "../decks/AggressionForecast";
+import { computeAggressionForecast } from "../../lib/aggressionForecast";
 
-const SECTION_LABEL: Record<"main" | "material" | "sideboard", string> = { main: "Main", material: "Material", sideboard: "Sideboard" };
-const PILLARS: { key: RatingPillar; label: string }[] = [
-  { key: "durability", label: "Durability" },
-  { key: "interaction", label: "Interaction" },
-  { key: "aggro", label: "Aggro" },
-  { key: "opportunity", label: "Opportunity" },
-];
+const SECTION_LABEL = { main: "Main", material: "Material", sideboard: "Sideboard" } as const;
+const ANALYSIS_CARD_FIELDS: VisualFieldVisibility = { cost: false, price: false, priceTrend: false, tags: false, simulator: false, community: false };
 
 function shortLabel(label: string): string {
   const at = label.indexOf(" @ ");
   return at === -1 ? label : label.slice(0, at);
 }
 
-function changeLabel(change: ComparisonCardChange): string {
-  const delta = change.targetQty - change.baselineQty;
-  const signedDelta = `${delta >= 0 ? "+" : ""}${delta}`;
-  switch (change.kind) {
-    case "added": return `+${change.targetQty}x ${change.name} · ${SECTION_LABEL[change.targetSection!]}`;
-    case "removed": return `-${change.baselineQty}x ${change.name} · ${SECTION_LABEL[change.baselineSection!]}`;
-    case "quantity": return `${signedDelta} ${change.name} · ${SECTION_LABEL[change.baselineSection!]}`;
-    case "moved": return `${change.name} · ${SECTION_LABEL[change.baselineSection!]} → ${SECTION_LABEL[change.targetSection!]}`;
-    case "movedQuantity": return `${change.name} · ${SECTION_LABEL[change.baselineSection!]} → ${SECTION_LABEL[change.targetSection!]} (${signedDelta})`;
-  }
-}
-
 function featuredChanges(changes: ComparisonCardChange[]): ComparisonCardChange[] {
-  const featured = [
-    ...changes.filter((change) => change.kind === "moved" || change.kind === "movedQuantity" || change.kind === "quantity").slice(0, 2),
-    ...changes.filter((change) => change.kind === "added").slice(0, 3),
-    ...changes.filter((change) => change.kind === "removed").slice(0, 3),
-  ];
-  const included = new Set(featured);
-  for (const change of changes) {
-    if (featured.length >= 8) break;
-    if (!included.has(change)) featured.push(change);
+  return [
+    ...changes.filter((c) => c.kind === "moved" || c.kind === "movedQuantity"),
+    ...changes.filter((c) => c.kind === "quantity"),
+    ...changes.filter((c) => c.kind === "added"),
+    ...changes.filter((c) => c.kind === "removed"),
+  ].slice(0, 6);
+}
+
+function changeDetail(change: ComparisonCardChange): string {
+  const from = change.baselineSection ? SECTION_LABEL[change.baselineSection] : null;
+  const to = change.targetSection ? SECTION_LABEL[change.targetSection] : null;
+  switch (change.kind) {
+    case "added": return `Added ${change.targetQty}× to ${to}`;
+    case "removed": return `Removed ${change.baselineQty}× from ${from}`;
+    case "quantity": return `${from} · ${change.baselineQty}× → ${change.targetQty}×`;
+    case "moved": return `${from} → ${to} · ${change.targetQty}×`;
+    case "movedQuantity": return `${from} ${change.baselineQty}× → ${to} ${change.targetQty}×`;
   }
-  return featured;
 }
 
-function LinkedCard({ name, cardsByName }: { name: string; cardsByName: Map<string, Card> }) {
-  const card = cardsByName.get(name);
-  if (!card) return <span>{name}</span>;
-  return (
-    <span className="inline-flex items-center gap-1.5">
-      {card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
-      <CardHoverPreview image={card.editions[0]?.image} alt={name}><Link to={`/cards/${card.slug}`} className="hover:text-ctp-blue hover:underline">{name}</Link></CardHoverPreview>
-    </span>
-  );
+function changeTone(change: ComparisonCardChange): string {
+  return change.kind === "added" ? "text-ctp-blue" : change.kind === "removed" ? "text-ctp-yellow" : "text-ctp-mauve";
 }
 
-function CardNames({ entries, cardsByName, empty }: { entries: ComparisonCardEntry[]; cardsByName: Map<string, Card>; empty: string }) {
-  if (entries.length === 0) return <InlineState className="mt-2 text-sm">{empty}</InlineState>;
-  return <ul className="mt-2 space-y-1 text-sm text-ctp-subtext1">{entries.slice(0, 6).map((entry) => <li key={entry.name}><LinkedCard name={entry.name} cardsByName={cardsByName} /></li>)}</ul>;
+function signed(value: number, digits = 0): string {
+  return `${value > 0 ? "+" : ""}${value.toFixed(digits)}`;
 }
 
-export default function ComparisonSummary({ decks, decklists, baselineKey, onBaselineChange, onViewAllDifferences }: {
-  decks: ComparedDeck[];
-  decklists: Map<string, OmnidexDecklist | null>;
-  baselineKey: string | null;
-  onBaselineChange: (key: string) => void;
+function ProfileStat({ label, baseline, target, delta }: { label: string; baseline: string; target: string; delta?: string | null }) {
+  const changed = delta != null && delta !== "0" && delta !== "+0";
+  return <div className="flex min-w-0 items-baseline gap-2 text-sm">
+    <span className="text-xs text-ctp-subtext0">{label}</span>
+    <span className="tabular-nums text-ctp-subtext1">{baseline}</span>
+    <span aria-hidden="true" className="text-ctp-overlay1">→</span>
+    <span className="font-medium tabular-nums text-ctp-text">{target}</span>
+    {delta && <span className={`text-xs tabular-nums ${changed ? "font-semibold text-ctp-blue" : "text-ctp-overlay1"}`}>({delta})</span>}
+  </div>;
+}
+
+function DeckProfile({ baseline, target }: { baseline: ComparisonDeckStats; target: ComparisonDeckStats }) {
+  const priceDelta = baseline.price > 0 && target.price > 0 ? target.price - baseline.price : null;
+  const winDelta = baseline.winRate !== null && target.winRate !== null ? target.winRate - baseline.winRate : null;
+  return <div className="flex flex-wrap gap-x-6 gap-y-1.5">
+    <ProfileStat label="Price" baseline={baseline.price > 0 ? formatUsd(baseline.price) : "—"} target={target.price > 0 ? formatUsd(target.price) : "—"} delta={priceDelta === null ? null : `${priceDelta >= 0 ? "+" : "−"}${formatUsd(Math.abs(priceDelta))}`} />
+    <ProfileStat label="Win rate" baseline={baseline.winRate === null ? "—" : `${(baseline.winRate * 100).toFixed(0)}%`} target={target.winRate === null ? "—" : `${(target.winRate * 100).toFixed(0)}%`} delta={winDelta === null ? null : `${signed(winDelta * 100)}pp`} />
+  </div>;
+}
+
+export default function ComparisonSummary({ decks, decklists, baselineKey, onViewAllDifferences }: {
+  decks: ComparedDeck[]; decklists: Map<string, OmnidexDecklist | null>; baselineKey: string | null;
+  onBaselineChange?: (key: string) => void;
   onViewAllDifferences: () => void;
 }) {
-  const { deckStats, sections } = useComparisonData(decks, decklists);
+  const { deckStats } = useComparisonData(decks, decklists);
   const { baselineIndex, summaries, cardsByName } = useComparisonSummary(decks, decklists, baselineKey);
-  const formats = new Set(deckStats.map((stats) => stats.format).filter((format) => format !== "UNKNOWN"));
+  const formats = new Set(deckStats.map((s) => s.format).filter((format) => format !== "UNKNOWN"));
   const mixedFormats = formats.size > 1;
   const pantheonOnly = formats.size === 1 && formats.has("PANTHEON");
+  const baselineDeck = baselineIndex >= 0 ? decks[baselineIndex] : undefined;
+  const baselineStats = baselineIndex >= 0 ? deckStats[baselineIndex] : undefined;
 
-  const findings = useMemo(() => {
-    const allCards = sections.flatMap((section) => section.groups.flatMap((group) => group.cards));
-    const shared = allCards.filter((card) => card.quantities.every((quantity) => quantity > 0));
-    const majority = allCards.filter((card) => {
-      const present = card.quantities.filter((quantity) => quantity > 0).length;
-      return present > 1 && present < decks.length;
-    });
-    const unique = decks.map((_, deckIndex) => allCards.filter((card) => card.quantities[deckIndex] > 0 && card.quantities.filter((quantity) => quantity > 0).length === 1));
-    const quantitySplits = allCards
-      .filter((card) => card.quantities.filter((quantity) => quantity > 0).length > 1)
-      .map((card) => ({ card, spread: Math.max(...card.quantities) - Math.min(...card.quantities) }))
-      .filter(({ spread }) => spread > 0)
-      .sort((a, b) => b.spread - a.spread || a.card.name.localeCompare(b.card.name));
-    return { shared, majority, unique, quantitySplits };
-  }, [decks, sections]);
+  if (decks.length < 2) return <InlineState className="text-sm">Add at least one more deck to see an analysis.</InlineState>;
 
-  if (decks.length < 2) return <InlineState className="text-sm">Add at least one more deck to see an overview.</InlineState>;
+  return <div data-component="ComparisonSummary" className="space-y-6">
+    {mixedFormats && <Panel tone="warning" padding="sm" className="text-sm text-ctp-yellow">{/* COPY_PLACEHOLDER: mixed-format warning */}This comparison mixes formats. Card overlap remains useful, but construction rules and recommendations are not directly comparable.</Panel>}
+    {pantheonOnly && <Panel padding="sm" className="text-sm text-ctp-subtext1">{/* COPY_PLACEHOLDER: Pantheon framing */}Pantheon analysis emphasizes recurring packages and singleton choices rather than Standard tournament performance.</Panel>}
 
-  return <div data-component="ComparisonSummary" className="space-y-8">
-    {mixedFormats && <Panel tone="warning" padding="sm" className="text-sm text-ctp-yellow">This comparison mixes Standard and Pantheon decks. Card overlap remains useful, but copy counts, legality, and format-specific recommendations are not directly comparable.</Panel>}
-    {pantheonOnly && <div className="rounded-lg border border-ctp-mauve/40 bg-ctp-mauve/10 p-3 text-sm text-ctp-subtext1">Pantheon comparisons emphasize shared packages and singleton choices. Standard tournament results are not treated as Pantheon performance evidence.</div>}
-    <Section heading="dense" title="Deck overview">
-      <div className="mt-2 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-        {deckStats.map((stats, index) => {
-          const summary = summaries[index];
-          const spirit = summary?.targetSpirit ?? summary?.baselineSpirit;
-          return <Panel as="article" padding="sm" key={stats.key}>
-            <h3 className="truncate font-semibold text-ctp-text" title={decks[index].label}>{shortLabel(decks[index].label)}</h3>
-            <p className="mt-1 truncate text-xs text-ctp-subtext1">{stats.championName ?? "Unknown Champion"}{spirit ? ` · ${spirit}` : ""}</p>
-            <span className="mt-2 inline-flex rounded-full border border-ctp-surface1 px-2 py-0.5 text-[10px] font-semibold text-ctp-subtext1">{stats.format === "UNKNOWN" ? "Format unknown" : stats.format === "PANTHEON" ? "Pantheon" : "Standard"}</span>
-            <div className="mt-2 flex min-h-5 flex-wrap gap-1.5">{stats.elements.filter((element) => element !== "NORM").map((element) => <ElementIcon key={element} element={element} size={16} />)}</div>
-            <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
-              <div><span className="block text-ctp-subtext0">Price</span><span className="font-semibold text-ctp-text">{stats.price > 0 ? formatUsd(stats.price) : "—"}</span></div>
-              <div><span className="block text-ctp-subtext0">Power</span><span className="font-semibold text-ctp-text">{stats.rating?.composite.toFixed(1) ?? "—"}</span></div>
-              {PILLARS.map(({ key, label }) => <div key={key}><span className="block text-ctp-subtext0">{label}</span><span className="text-ctp-subtext1">{stats.rating?.scores[key] ?? "—"}</span></div>)}
-            </div>
-          </Panel>;
-        })}
-      </div>
-    </Section>
+    {summaries.map((summary, targetIndex) => {
+      if (targetIndex === baselineIndex) return null;
+      const targetStats = deckStats[targetIndex];
+      const changes = featuredChanges(summary.changes);
+      const baselineList = baselineDeck ? decklists.get(baselineDeck.key) : null;
+      const baselineCardCount = baselineList ? new Set([...baselineList.main, ...baselineList.material, ...baselineList.sideboard].map((line) => line.card)).size : 0;
+      const sharedPercent = baselineCardCount > 0 ? Math.round((summary.sharedCardCount / baselineCardCount) * 100) : null;
+      return <section key={summary.key} aria-labelledby={`analysis-${summary.key}`} className="space-y-5">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">{baselineDeck ? shortLabel(baselineDeck.label) : "Baseline"} →</p>
+          <h2 id={`analysis-${summary.key}`} className="mt-0.5 text-xl font-semibold text-ctp-text">{shortLabel(summary.label)}</h2>
+          {!summary.loading && !summary.unavailable && <p className="mt-1 text-sm text-ctp-subtext1">{/* COPY_PLACEHOLDER: package-aware takeaway */}{summary.changes.length} card changes with {summary.sharedCardCount} cards retained from the baseline{sharedPercent === null ? "." : ` (${sharedPercent}%).`}</p>}
+        </div>
+        {summary.loading && <InlineState className="text-sm">Loading analysis…</InlineState>}
+        {!summary.loading && summary.unavailable && <InlineState className="text-sm">A decklist is unavailable, so this comparison cannot be analyzed.</InlineState>}
+        {!summary.loading && !summary.unavailable && baselineStats && targetStats && <>
+          <Panel padding="sm">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2"><h3 className="font-semibold text-ctp-text">Deck profile</h3>{(summary.championChanged || summary.spiritChanged) && <div className="text-xs text-ctp-subtext0">{summary.championChanged && <span>Champion: {summary.baselineChampion ?? "—"} → {summary.targetChampion ?? "—"}</span>}{summary.championChanged && summary.spiritChanged && <span className="mx-2">·</span>}{summary.spiritChanged && <span>Spirit: {summary.baselineSpirit ?? "none"} → {summary.targetSpirit ?? "none"}</span>}</div>}</div>
+            <DeckProfile baseline={baselineStats} target={targetStats} />
+          </Panel>
+          <Section heading="dense" title="Key decisions" description="The most visible quantity, section, addition, and removal choices in this comparison." actions={summary.changes.length > changes.length ? <button type="button" onClick={onViewAllDifferences} className="text-xs font-medium text-ctp-blue hover:underline">View all {summary.changes.length} cards →</button> : undefined}>{/* COPY_PLACEHOLDER: key-decisions description */}
+            {changes.length === 0 ? <InlineState className="mt-2 text-sm">No card differences.</InlineState> : <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 lg:grid-cols-4">{changes.map((change) => <VisualCardTile key={`${change.name}-${change.baselineSection ?? ""}-${change.targetSection ?? ""}`} line={{ card: change.name, quantity: 1 }} card={cardsByName.get(change.name)} unitPrice={undefined} priceTrend={undefined} simulatorEvidence={undefined} communityEntry={undefined} fields={ANALYSIS_CARD_FIELDS} footer={<div className="mt-1.5 min-w-0"><div className="truncate text-sm font-medium text-ctp-text" title={change.name}>{change.name}</div><div className={`mt-1 border-t border-ctp-surface0 pt-1 text-[11px] ${changeTone(change)}`}>{changeDetail(change)}</div></div>} />)}</div>}
+          </Section>
+          <Panel padding="sm" className="flex flex-wrap items-center justify-between gap-3"><div><h3 className="font-semibold text-ctp-text">Shared core</h3><p className="mt-0.5 text-xs text-ctp-subtext0">{/* COPY_PLACEHOLDER: shared-core explanation */}{summary.sharedCardCount} cards are present in both decks{sharedPercent === null ? "." : `, retaining ${sharedPercent}% of the baseline.`}</p></div><button type="button" onClick={onViewAllDifferences} className="text-xs font-medium text-ctp-blue hover:underline">Explore all cards →</button></Panel>
+        </>}
+      </section>;
+    })}
 
-    <Section heading="dense" title="What separates these decks">
-      <div className="mt-2 grid gap-3 md:grid-cols-3">
-        <Panel as="article" padding="sm">
-          <h3 className="font-semibold text-ctp-text">{pantheonOnly ? "Shared package" : "Shared core"} <span className="text-sm font-normal text-ctp-subtext0">({findings.shared.length})</span></h3>
-          <p className="mt-1 text-xs text-ctp-subtext0">Cards present in every selected deck{pantheonOnly ? " — the clearest visible signal of a recurring singleton package" : ""}.</p>
-          <CardNames entries={findings.shared} cardsByName={cardsByName} empty="No cards are shared by every deck." />
-        </Panel>
-        <Panel as="article" padding="sm">
-          <h3 className="font-semibold text-ctp-text">Split decisions <span className="text-sm font-normal text-ctp-subtext0">({findings.majority.length})</span></h3>
-          <p className="mt-1 text-xs text-ctp-subtext0">Cards shared by some, but not all, decks.</p>
-          <CardNames entries={findings.majority} cardsByName={cardsByName} empty="No partial overlaps in this comparison." />
-        </Panel>
-        <Panel as="article" padding="sm">
-          <h3 className="font-semibold text-ctp-text">Largest quantity gaps</h3>
-          <p className="mt-1 text-xs text-ctp-subtext0">Shared cards with the widest copy-count disagreement.</p>
-          {findings.quantitySplits.length === 0 ? <InlineState className="mt-2 text-sm">Shared cards use matching quantities.</InlineState> : <ul className="mt-2 space-y-1 text-sm text-ctp-subtext1">{findings.quantitySplits.slice(0, 6).map(({ card }) => <li key={card.name} className="flex justify-between gap-2"><LinkedCard name={card.name} cardsByName={cardsByName} /><span className="shrink-0 tabular-nums text-ctp-subtext0">{card.quantities.join(" / ")}</span></li>)}</ul>}
-        </Panel>
-      </div>
-      <div className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-        {decks.map((deck, index) => {
-          const uniqueCards = findings.unique[index];
-          const hiddenCount = Math.max(0, uniqueCards.length - 6);
-          return <article key={deck.key} className="min-w-0 rounded-lg border border-ctp-surface0 p-3">
-            <p className="break-words text-sm font-semibold leading-5 text-ctp-text">{shortLabel(deck.label)}</p>
-            <h3 className="mt-1 text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Defining cards ({uniqueCards.length})</h3>
-            <p className="mt-1 text-xs text-ctp-overlay1">Cards found only in this deck within the current comparison.</p>
-            <CardNames entries={uniqueCards} cardsByName={cardsByName} empty="No cards unique to this deck." />
-            {hiddenCount > 0 && <button type="button" onClick={onViewAllDifferences} className="mt-2 text-xs font-medium text-ctp-blue hover:underline">View {hiddenCount} more in Table →</button>}
-          </article>;
-        })}
-      </div>
-    </Section>
-
-    <Section
-      heading="dense"
-      title="Baseline drill-down"
-      description="Choose the deck every change should be measured against."
-      actions={<div className="flex flex-wrap gap-1.5">{decks.map((deck) => <button key={deck.key} type="button" onClick={() => onBaselineChange(deck.key)} title={deck.label} className={`max-w-56 truncate rounded-full border px-2.5 py-1 text-xs ${deck.key === baselineKey ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`}>{shortLabel(deck.label)}</button>)}</div>}
-    >
-      <div className="mt-3 grid items-start gap-3 lg:grid-cols-3">
-        {summaries.map((summary, index) => {
-          if (index === baselineIndex) return null;
-          const visibleChanges = featuredChanges(summary.changes);
-          return <Panel as="article" padding="sm" key={summary.key}>
-            <h3 className="font-semibold text-ctp-text">{shortLabel(summary.label)}</h3>
-            {summary.loading && <InlineState className="mt-2 text-sm">Loading…</InlineState>}
-            {!summary.loading && summary.unavailable && <InlineState className="mt-2 text-sm">Decklist unavailable.</InlineState>}
-            {!summary.loading && !summary.unavailable && <>
-              <div className="mt-2 flex flex-wrap gap-1.5 text-[11px]">
-                <span className="rounded-full bg-ctp-surface0 px-2 py-1 text-ctp-subtext1">{summary.changes.length} changes</span>
-                {summary.priceDelta !== null && <span className="rounded-full bg-ctp-surface0 px-2 py-1 text-ctp-subtext1">{summary.priceDelta >= 0 ? "+" : "−"}{formatUsd(Math.abs(summary.priceDelta))}</span>}
-                {summary.compositeDelta !== null && <span className="rounded-full bg-ctp-surface0 px-2 py-1 text-ctp-subtext1">Power {summary.compositeDelta >= 0 ? "+" : ""}{summary.compositeDelta}</span>}
-              </div>
-              {(summary.championChanged || summary.spiritChanged) && <p className="mt-2 text-xs text-ctp-subtext0">{summary.championChanged && <>Champion: {summary.baselineChampion ?? "—"} → {summary.targetChampion ?? "—"}</>}{summary.championChanged && summary.spiritChanged && <br />}{summary.spiritChanged && <>Spirit: {summary.baselineSpirit ?? "none"} → {summary.targetSpirit ?? "none"}</>}</p>}
-              {summary.changes.length === 0 ? <InlineState className="mt-3 text-sm">No card differences.</InlineState> : <ul className="mt-3 space-y-1 text-sm">{visibleChanges.map((change) => <li key={`${change.name}-${change.baselineSection ?? ""}-${change.targetSection ?? ""}`} className={change.kind === "removed" ? "text-ctp-yellow" : change.kind === "added" ? "text-ctp-blue" : "text-ctp-subtext1"}>{changeLabel(change)}</li>)}</ul>}
-              {summary.changes.length > 8 && <button type="button" onClick={onViewAllDifferences} className="mt-3 text-xs font-medium text-ctp-blue hover:underline">View all {summary.changes.length} differences →</button>}
-            </>}
-          </Panel>;
+    <Section heading="dense" title="Deck forecasts" description="Test draw odds and estimate direct-damage output for each compared list.">
+      <div className="grid items-start gap-4 lg:grid-cols-2">
+        {decks.map((deck) => {
+          const list = decklists.get(deck.key);
+          if (!list) return <Panel key={deck.key} padding="sm"><h3 className="font-semibold text-ctp-text">{shortLabel(deck.label)}</h3><InlineState className="mt-2 text-sm">Decklist unavailable.</InlineState></Panel>;
+          const mainLines = list.main.map((line) => ({ name: line.card, quantity: line.quantity }));
+          const materialLines = list.material.map((line) => ({ name: line.card, quantity: line.quantity }));
+          const damageForecast = computeAggressionForecast(mainLines, cardsByName, materialLines);
+          return <div key={deck.key}>
+            <h3 className="font-semibold text-ctp-text">{shortLabel(deck.label)}</h3>
+            <HypergeometricCalculator
+              mainLines={mainLines}
+              materialLines={materialLines}
+              catalogByName={cardsByName}
+            />
+            {damageForecast.fixedDamageCopies > 0 || damageForecast.variableDamageCopies > 0 || damageForecast.scalingDamageCopies > 0 || damageForecast.ambiguousDamageCopies > 0 || damageForecast.recurringDamagePerTurn > 0
+              ? <AggressionForecast forecast={damageForecast} />
+              : <div className="mt-4 border-t border-ctp-surface1 pt-4"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Direct damage forecast</h4><p className="mt-1 text-xs text-ctp-subtext0">No direct-damage effects were detected in this list.</p></div>}
+          </div>;
         })}
       </div>
     </Section>

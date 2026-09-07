@@ -1,10 +1,6 @@
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 import type { OmnidexDecklist } from "@gatcg/shared";
-import CardHoverPreview from "../../components/CardHoverPreview";
-import CardImage from "../../components/CardImage";
-import ElementIcon from "../../components/ElementIcon";
-import { formatUsd } from "../../lib/format";
+import { VisualCardTile, type VisualFieldVisibility } from "../../components/VisualCardTile";
 import { useComparisonData, type ComparisonCardEntry } from "./useComparisonData";
 import type { ComparedDeck } from "./types";
 import { InlineState } from "../../components/ui/ContentState";
@@ -19,12 +15,19 @@ function isDifferent(card: ComparisonCardEntry): boolean {
   return card.quantities.some((q) => q !== card.quantities[0]);
 }
 
+const COMPARISON_CARD_FIELDS: VisualFieldVisibility = {
+  cost: false,
+  price: false,
+  priceTrend: false,
+  tags: false,
+  simulator: false,
+  community: false,
+};
+
 /**
- * Mobile-oriented alternative to the Table view: instead of a wide matrix that shrinks each deck's
- * column down to fit, this lists cards one at a time with each deck's quantity as a chip underneath
- * — the comparison a viewer actually wants ("what does each deck run for this card") stays readable
- * at phone width without horizontal scrolling. Reuses the same `useComparisonData` the Table/Cards
- * views already pull from, so there's no new dataset and nothing here can drift from them.
+ * Card-first comparison for every viewport. Each card uses the same visual tile as decklists, with
+ * the compared quantities in a purpose-built footer. This keeps the important question — "what does
+ * each deck run for this card?" — scannable without a wide matrix or a second data source.
  */
 export default function ComparisonDifferences({
   decks,
@@ -33,7 +36,7 @@ export default function ComparisonDifferences({
   decks: ComparedDeck[];
   decklists: Map<string, OmnidexDecklist | null>;
 }) {
-  const { cardsByName, deckStats, sections } = useComparisonData(decks, decklists);
+  const { cardsByName, sections } = useComparisonData(decks, decklists);
   const [showAll, setShowAll] = useState(false);
   const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set());
 
@@ -58,22 +61,7 @@ export default function ComparisonDifferences({
 
   return (
     <div data-component="ComparisonDifferences">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex gap-2 overflow-x-auto pb-1">
-          {deckStats.map((s, i) => (
-            <div
-              key={s.key}
-              className="shrink-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2.5 py-1.5 text-xs"
-            >
-              <div className="max-w-[9rem] truncate font-medium text-ctp-text">{shortLabel(decks[i])}</div>
-              <div className="mt-0.5 flex gap-2 text-ctp-subtext1">
-                <span>{s.winRate !== null ? `${(s.winRate * 100).toFixed(0)}%` : "—"}</span>
-                <span>{s.price > 0 ? formatUsd(s.price) : "—"}</span>
-                <span>{s.rating ? s.rating.composite.toFixed(1) : "—"}</span>
-              </div>
-            </div>
-          ))}
-        </div>
+      <div className="flex justify-end">
         <button
           type="button"
           onClick={() => setShowAll((v) => !v)}
@@ -94,6 +82,7 @@ export default function ComparisonDifferences({
               <button
                 type="button"
                 onClick={() => toggleSection(key)}
+                aria-expanded={!collapsed}
                 className="sticky top-14 z-20 flex w-full items-center justify-between gap-2 border-b border-ctp-surface1 bg-ctp-base py-1.5 text-left text-xs font-semibold uppercase tracking-wide text-ctp-subtext0"
               >
                 <span>
@@ -107,41 +96,50 @@ export default function ComparisonDifferences({
                   {shown.length === 0 ? (
                     <InlineState className="mt-2 text-sm">No differences in {label.toLowerCase()}.</InlineState>
                   ) : (
-                    <ul className="mt-2 grid grid-cols-2 gap-3">
+                    <ul className="mt-3 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
                       {shown.map((card) => {
                         const cardInfo = cardsByName.get(card.name);
-                        const image = cardInfo?.editions[0]?.image;
+                        const maxQuantity = Math.max(...card.quantities);
+                        const quantitySpread = new Set(card.quantities).size > 1;
                         return (
-                          <li key={card.name} className="rounded-md border border-ctp-surface1 p-2">
-                            <CardHoverPreview image={image} alt={card.name}>
-                              {image ? (
-                                <CardImage image={image} alt={card.name} className="aspect-[5/7] w-full rounded object-cover" />
-                              ) : (
-                                <div className="aspect-[5/7] w-full rounded bg-ctp-surface0" />
-                              )}
-                            </CardHoverPreview>
-                            <div className="mt-1.5 min-w-0">
-                              <div className="flex items-center gap-1 truncate">
-                                {cardInfo && cardInfo.element !== "NORM" && <ElementIcon element={cardInfo.element} size={14} />}
-                                {cardInfo?.slug ? (
-                                  <Link to={`/cards/${cardInfo.slug}`} className="truncate text-sm text-ctp-text hover:text-ctp-blue">
-                                    {card.name}
-                                  </Link>
-                                ) : (
-                                  <span className="truncate text-sm text-ctp-text">{card.name}</span>
-                                )}
-                              </div>
-                              <div className="mt-1 flex flex-col gap-0.5 text-xs">
-                                {card.quantities.map((q, i) => (
-                                  <span
-                                    key={decks[i].key}
-                                    className={q === 0 ? "text-ctp-surface1" : card.isCore ? "text-ctp-green" : card.isUnique ? "text-ctp-yellow" : "text-ctp-subtext1"}
-                                  >
-                                    {shortLabel(decks[i])} {q === 0 ? "—" : `${q}x`}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
+                          <li key={card.name} className="min-w-0">
+                            <VisualCardTile
+                              line={{ card: card.name, quantity: 1 }}
+                              card={cardInfo}
+                              unitPrice={undefined}
+                              priceTrend={undefined}
+                              simulatorEvidence={undefined}
+                              communityEntry={undefined}
+                              fields={COMPARISON_CARD_FIELDS}
+                              footer={
+                                <div className="mt-1.5 min-w-0">
+                                  <div className="truncate text-sm font-medium text-ctp-text" title={card.name}>{card.name}</div>
+                                  <div className="mt-1 space-y-0.5 border-t border-ctp-surface0 pt-1 text-[11px]">
+                                    {card.quantities.map((q, i) => (
+                                      <div
+                                        key={decks[i].key}
+                                        className="flex min-w-0 items-center justify-between gap-2"
+                                      >
+                                        <span className="truncate text-ctp-subtext1" title={shortLabel(decks[i])}>{shortLabel(decks[i])}</span>
+                                        <span className={`shrink-0 tabular-nums ${
+                                          q === 0
+                                            ? "text-ctp-overlay0"
+                                            : card.isCore
+                                              ? "text-ctp-green"
+                                              : card.isUnique
+                                                ? "text-ctp-yellow"
+                                                : quantitySpread && q === maxQuantity
+                                                  ? "font-semibold text-ctp-blue"
+                                                  : "text-ctp-text"
+                                        }`}>
+                                          {q === 0 ? "—" : `${q}×`}
+                                        </span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              }
+                            />
                           </li>
                         );
                       })}

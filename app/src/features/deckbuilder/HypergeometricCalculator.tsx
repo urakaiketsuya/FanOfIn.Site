@@ -113,7 +113,7 @@ export default function HypergeometricCalculator({
       <Section
         heading="dense"
         title="Hypergeometric calculator"
-        description={<>Chance of having seen at least a given number of copies of a card, given the deck size, copies in the deck, and cards drawn so far. A plain probability for whatever you're checking, not a verdict — unlike Synergy readiness above, nothing here is labeled "Reliable" or "Fragile."</>}
+        description={<>See how likely any card will see play.</>}
       >
       {mainLines.length > 0 && (
         <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
@@ -198,7 +198,7 @@ export default function HypergeometricCalculator({
 
       <div className="mt-4 flex flex-wrap items-baseline justify-between gap-2">
         <span className="text-xs text-ctp-subtext0">
-          Chance of at least {required} of {copies} copies, out of {deckSize}, after {seen} seen
+          Chance of seeing at least 1 copy.
         </span>
         <span className="text-2xl font-bold text-ctp-blue">{(probability * 100).toFixed(1)}%</span>
       </div>
@@ -217,7 +217,7 @@ export default function HypergeometricCalculator({
         <div className="mt-4 border-t border-ctp-surface1 pt-3">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <span className="text-xs text-ctp-subtext0">
-              With card draw (est.): {seenWithDraw} effective seen from this build's own draw effects
+              With card draw: {seenWithDraw}  
             </span>
             <span className="text-2xl font-bold text-ctp-mauve">{(probabilityWithDraw * 100).toFixed(1)}%</span>
           </div>
@@ -230,16 +230,6 @@ export default function HypergeometricCalculator({
               </div>
             </div>
           )}
-          <p className="mt-2 text-[10px] text-ctp-subtext0">
-            Estimate, not a guarantee — assumes every "Draw N card(s)" clause on{" "}
-            {drawEffectLines.reduce((sum, line) => sum + line.quantity, 0)} Main Deck card{drawEffectLines.reduce((sum, line) => sum + line.quantity, 0) === 1 ? "" : "s"}
-            {materialDrawEffectLines.length > 0 && (
-              <> and {materialDrawEffectLines.reduce((sum, line) => sum + line.quantity, 0)} Material Deck card{materialDrawEffectLines.reduce((sum, line) => sum + line.quantity, 0) === 1 ? "" : "s"}</>
-            )}{" "}
-            fires every time it's drawn or reachable, whether or not that trigger is actually conditional, and doesn't account for those extra cards
-            themselves containing further draw effects. Material Deck cards count in full regardless of {seen} seen — they're known and reachable from
-            the start of the game, not drawn at random.
-          </p>
         </div>
       )}
       </Section>

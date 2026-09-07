@@ -629,66 +629,11 @@ export default function About() {
             </div>
           </div>
 
-          <p className="mt-6 text-center text-xs text-ctp-subtext0">
-            These are the exact charts from the deck's own page — plus subtypes, rarity, keywords, damage
-            composition, priciest cards, and a popularity trend.{" "}
-            <Link to={`/decks/${WALKTHROUGH_HASH}`} className="hover:text-ctp-blue hover:underline">
-              Open the full page &rarr;
-            </Link>
-          </p>
-
-          <div className="mx-auto mt-16 max-w-2xl border-t border-ctp-surface0 pt-10">
-            <p className="text-center text-sm text-ctp-subtext1">
-              Card Impact goes further than composition — for a given build, it can tell you which cards actually
-              correlate with a higher win rate, from real recorded games. {WALKTHROUGH_CARD_IMPACT.clusterName},{" "}
-              {WALKTHROUGH_CARD_IMPACT.deckCount} decks:
-            </p>
-            <div className="mt-4 overflow-x-auto rounded-lg border border-ctp-surface1 bg-ctp-base">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                    <th className="px-3 py-2">Card</th>
-                    <th className="px-3 py-2">Role</th>
-                    <th className="px-3 py-2">Win rate (with)</th>
-                    <th className="px-3 py-2">Win rate (without)</th>
-                    <th className="px-3 py-2">Lift</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-ctp-surface0">
-                  {WALKTHROUGH_CARD_IMPACT.cards.map((c) => (
-                    <tr key={c.name}>
-                      <td className="px-3 py-2 whitespace-nowrap">
-                        <CardHoverPreview image={c.image} alt={c.name}>
-                          <Link to={`/cards/${c.slug}`} className="text-ctp-text hover:text-ctp-blue">
-                            {c.name}
-                          </Link>
-                        </CardHoverPreview>
-                      </td>
-                      <td className="px-3 py-2 text-ctp-subtext1">{c.role}</td>
-                      <td className="px-3 py-2 text-ctp-subtext1">{(c.winRateWith * 100).toFixed(0)}%</td>
-                      <td className="px-3 py-2 text-ctp-subtext1">{(c.winRateWithout * 100).toFixed(0)}%</td>
-                      <td className="px-3 py-2 font-semibold text-ctp-green">+{(c.lift * 100).toFixed(0)}%</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <p className="mt-3 text-center text-xs text-ctp-subtext0">
-              Correlational, not causal — and a genuinely small, "emerging" archetype (17 decks across 15 events), not
-              a headline sample size. Filter to a specific opponent for a matchup view, or browse the build's full
-              defining cards and sample decklists.{" "}
-              <Link to={`/archetypes/${WALKTHROUGH_CARD_IMPACT.clusterId}?tab=impact`} className="hover:text-ctp-blue hover:underline">
-                Open Card Impact &rarr;
-              </Link>
-            </p>
-          </div>
-
           <div className="mx-auto mt-16 max-w-3xl border-t border-ctp-surface0 pt-10">
             <p className="text-center text-sm text-ctp-subtext1">
-              These aren't screenshots either — the same live Direct Damage Forecast and Hypergeometric Calculator
-              from a deck's own Build tab, run right here against a real {WALKTHROUGH_CARD_IMPACT.clusterName}{" "}
-              decklist. Burst Asunder's bonus damage scales with how many Fractals this exact list runs.
+              Know how your deck performs before playtesting.
             </p>
+            <p className="text-left text-sm text-ctp-subtext2 mt-4">Water Diao Chan (Fractals)</p>
             {damageCardsByName.size > 0 ? (
               <>
                 <AggressionForecast forecast={damageForecast} />

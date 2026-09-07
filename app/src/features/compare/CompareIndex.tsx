@@ -5,7 +5,6 @@ import ImportByPlayer from "./ImportByPlayer";
 import ImportTopDecks from "./ImportTopDecks";
 import PasteDecklist from "./PasteDecklist";
 import ComparisonSummary from "./ComparisonSummary";
-import ComparisonGrid from "./ComparisonGrid";
 import ComparisonDifferences from "./ComparisonDifferences";
 import ComparisonCardStats from "./ComparisonCardStats";
 import ComparisonSuggestions from "./ComparisonSuggestions";
@@ -14,6 +13,8 @@ import DeckChip from "./DeckChip";
 import { useComparedDecklists } from "./useComparedDecklists";
 import { useDeckChampionCards } from "./useDeckChampionCards";
 import { useOmnidexIndex, useOmnidexPlayers } from "../tournaments/data";
+import { canonicalSignature } from "../popular/useDeckPopularity";
+import { shortHash } from "../../lib/hash";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import { useTabParam } from "../../lib/useTabParam";
@@ -33,12 +34,12 @@ const COMPARE_TYPE_KEYS = Object.keys(COMPARE_TYPE_LABELS) as CompareType[];
 type SourceTab = "cards" | "player" | "topDecks" | "paste";
 type ViewMode = "summary" | "table" | "cardStats" | "suggestions";
 const VIEW_MODE_LABELS: Record<ViewMode, string> = {
-  summary: "Overview",
-  table: "Table",
-  cardStats: "Card Stats",
+  summary: "Analysis",
+  table: "Cards",
+  cardStats: "Stats",
   suggestions: "Tuning",
 };
-const VIEW_MODE_KEYS = Object.keys(VIEW_MODE_LABELS) as ViewMode[];
+const VIEW_MODE_KEYS: ViewMode[] = ["table", "summary", "cardStats", "suggestions"];
 
 const TAB_LABELS: Record<SourceTab, string> = {
   cards: "Search by cards",
@@ -64,9 +65,9 @@ export default function CompareIndex() {
   const [decks, setDecks] = useState<ComparedDeck[]>([]);
   const [panel, setPanel] = useTabParam<PanelTab>("panel", PANEL_KEYS, "add");
   const [tab, setTab] = useTabParam("tab", SOURCE_TAB_KEYS, "cards");
-  // Summary answers "what's different" at a glance regardless of viewport — the other views are
-  // for drilling into the raw matrix once that question is answered.
-  const [viewMode, setViewMode] = useTabParam<ViewMode>("view", VIEW_MODE_KEYS, "summary");
+  // Lead with the cards themselves. Analysis and raw statistics remain available as supporting
+  // views, while old `view=summary` and `view=table` deep links keep their existing meanings.
+  const [viewMode, setViewMode] = useTabParam<ViewMode>("view", VIEW_MODE_KEYS, "table");
   const effectiveViewMode = viewMode;
   const [baselineKey, setBaselineKey] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -78,6 +79,18 @@ export default function CompareIndex() {
   const effectiveBaselineKey = baselineKey && comparedKeys.has(baselineKey) ? baselineKey : (decks[0]?.key ?? null);
   const decklists = useComparedDecklists(decks);
   const championCardsByDeckKey = useDeckChampionCards(decks, decklists);
+  const deckPageByKey = useMemo(() => {
+    const pages = new Map<string, string>();
+    for (const deck of decks) {
+      if (deck.source.kind !== "sighting") continue;
+      const list = decklists.get(deck.key);
+      if (!list) continue;
+      const main = list.main.map((line) => ({ name: line.card, quantity: line.quantity }));
+      const material = list.material.map((line) => ({ name: line.card, quantity: line.quantity }));
+      pages.set(deck.key, `/decks/${shortHash(canonicalSignature(main, material))}`);
+    }
+    return pages;
+  }, [decks, decklists]);
   const [shareCopyState, setShareCopyState] = useState<"idle" | "copied" | "failed">("idle");
   const [confirmClear, setConfirmClear] = useState(false);
   const confirmClearTimerRef = useRef<number | null>(null);
@@ -267,7 +280,15 @@ export default function CompareIndex() {
           {decks.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-2">
               {decks.map((d) => (
-                <DeckChip key={d.key} deck={d} championCard={championCardsByDeckKey.get(d.key)} onRemove={() => removeDeck(d.key)} />
+                <DeckChip
+                  key={d.key}
+                  deck={d}
+                  championCard={championCardsByDeckKey.get(d.key)}
+                  deckHref={d.source.kind === "sighting" ? deckPageByKey.get(d.key) : undefined}
+                  isBaseline={d.key === effectiveBaselineKey}
+                  onSetBaseline={() => setBaselineKey(d.key)}
+                  onRemove={() => removeDeck(d.key)}
+                />
               ))}
             </div>
           )}
@@ -370,25 +391,14 @@ export default function CompareIndex() {
                         decks={decks}
                         decklists={decklists}
                         baselineKey={effectiveBaselineKey}
-                        onBaselineChange={setBaselineKey}
                         onViewAllDifferences={() => setViewMode("table")}
                       />
                     )}
                     {effectiveViewMode === "table" && (
-                      <>
-                        {/* Below md, the desktop matrix shrinks each deck's column too far to stay
-                            readable, so the same Table tab shows a card-by-card diff list instead —
-                            same underlying data, no separate tab to discover. */}
-                        <div className="hidden md:block">
-                          <ComparisonGrid decks={decks} decklists={decklists} />
-                        </div>
-                        <div className="md:hidden">
-                          <ComparisonDifferences decks={decks} decklists={decklists} />
-                        </div>
-                      </>
+                      <ComparisonDifferences decks={decks} decklists={decklists} />
                     )}
                     {effectiveViewMode === "cardStats" && <ComparisonCardStats decks={decks} decklists={decklists} />}
-                    {effectiveViewMode === "suggestions" && <ComparisonSuggestions decks={decks} decklists={decklists} />}
+                    {effectiveViewMode === "suggestions" && <ComparisonSuggestions decks={decks} decklists={decklists} baselineKey={effectiveBaselineKey} />}
                   </div>
                 </>
               )}
