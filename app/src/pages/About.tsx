@@ -108,7 +108,7 @@ const FEATURES: FeatureGroup[] = [
       "Ranked by a tier-weighted placement score, not just raw finish, so a strong finish at a big event outranks a small one",
       "Flags netdecked lists (identical builds from other players) and \"tough finish\" upsets (a strong record that still missed the cut)",
       "Max-price filter and a cheapest-first sort, to find budget decks with strong finishes",
-      "Dedicated page per build: composition donuts, a DIAO score, priciest cards, a popularity trend, and similar decks — one click loads the whole decklist into a TCGplayer cart",
+      "Dedicated page per build: composition donuts, priciest cards, a popularity trend, and similar decks — one click loads the whole decklist into a TCGplayer cart",
     ],
     example: { to: "/decks/xenbr4", label: "A top Silvie build" },
   },
@@ -162,7 +162,7 @@ const FEATURES: FeatureGroup[] = [
     title: "Compare",
     items: [
       "Decks: search by cards they run, import any player's submitted decklist, browse top decks by placement or named build, or paste one that was never even submitted to Omnidex",
-      "Side-by-side grid highlighting shared vs. unique cards, with price, win rate, and DIAO score per deck, plus Tabletop Simulator export",
+      "Side-by-side grid highlighting shared vs. unique cards, with price and win rate per deck, plus Tabletop Simulator export",
       "Suggests cards for whichever compared deck has the lowest win rate, scoped to its own Champion",
       "Cards: line up any number of individual cards' usage, win rate, and price — one card is fine, it just shows its own numbers",
       "Share link: copies a URL that reopens the exact same compared decks for anyone you send it to",
@@ -207,34 +207,7 @@ const WALKTHROUGH_DECK = {
   bestPlacement: 4,
   avgWinRate: 0.37,
   championImage: "/cards/images/tiptrzblqr.jpg",
-  rating: { composite: 3.25, scores: { durability: 3, interaction: 3, aggro: 4, opportunity: 3 } },
 };
-
-const RATING_PILLARS: { key: keyof typeof WALKTHROUGH_DECK.rating.scores; label: string; description: string }[] = [
-  {
-    key: "durability",
-    label: "Durability",
-    description:
-      "How well this build survives and stabilizes: Recover (life gain) and protection effects (Spellshroud/Intercept/Prevent).",
-  },
-  {
-    key: "interaction",
-    label: "Interaction",
-    description: "How much this build can disrupt or answer the opponent: Banish, Destroy, Negate, Fast-speed access, and guaranteed damage.",
-  },
-  {
-    key: "aggro",
-    label: "Aggro",
-    description:
-      "How much pressure this build applies: average Ally power, evasion (Unblockable/Ranged), threat count, a cheap memory curve, and guaranteed damage.",
-  },
-  {
-    key: "opportunity",
-    label: "Opportunity",
-    description:
-      "How reliably this build creates access to its key plays: card draw (repeatable draw counts for more than a one-shot) plus Floating Memory.",
-  },
-];
 
 const WALKTHROUGH_TYPE_SEGMENTS = buildChartSegments(
   new Map([
