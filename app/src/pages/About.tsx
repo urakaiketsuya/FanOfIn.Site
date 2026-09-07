@@ -245,25 +245,26 @@ const WALKTHROUGH_RESERVE_BARS = [
 
 /**
  * Same "pre-baked, no live fetch" reasoning as WALKTHROUGH_DECK above — captured directly from
- * /archetypes/1oi8ut8?tab=impact (Tera Silvie vs. its Water Diao Chan matchup, real pairing data,
- * 52 games). This is a genuinely small matchup sample (most matchup-scoped Card Impact rows are —
- * see docs/CALCULATIONS.md's sample-size note), so the lift numbers here are modest by design,
- * not cherry-picked for a bigger-looking result. Archetype cluster IDs are re-derived by the
- * clustering pipeline and aren't stable long-term (this replaced a since-vanished "qnv8tz") — if
- * this example's own link ever breaks, re-capture from a currently-real cluster, don't just
- * refresh the numbers on the old id.
+ * /archetypes/gidbxg?tab=impact, this build's own full-field Card Impact (not matchup-scoped).
+ * "Water Diao Chan (Fractal of Insight)" is a genuinely small, "emerging"-confidence archetype (17
+ * decks, 10 players, 15 events) — picked for this walkthrough because its name is a nice callback
+ * to the site's own, not because it's the biggest sample available; the small-sample caveat below
+ * is real, not boilerplate. Archetype cluster IDs are re-derived by the clustering pipeline and
+ * aren't stable long-term — if this example's own link ever breaks, re-capture from a currently-real
+ * cluster (grep data/analysis/archetype-taxonomy.json for a "Fractal of Insight" name match first;
+ * don't just refresh the numbers on the old id).
  */
-const WALKTHROUGH_MATCHUP = {
-  clusterId: "1oi8ut8",
-  clusterName: "Tera Silvie",
-  opponentClusterName: "Water Diao Chan",
-  games: 52,
+const WALKTHROUGH_CARD_IMPACT = {
+  clusterId: "gidbxg",
+  clusterName: "Water Diao Chan (Fractal of Insight)",
+  deckCount: 17,
   cards: [
-    { name: "Resolute Stand", slug: "resolute-stand", image: "/cards/images/7ML4Ui4aoA.jpg", role: "Sideboard", winRateWith: 0.42, winRateWithout: 0.23, lift: 0.133 },
-    { name: "Blissful Calling", slug: "blissful-calling", image: "/cards/images/nacqadnk8i.jpg", role: "Main", winRateWith: 0.35, winRateWithout: 0.13, lift: 0.114 },
-    { name: "Fluffy Shopkeep", slug: "fluffy-shopkeep", image: "/cards/images/sl3h52hiqj.jpg", role: "Main", winRateWith: 0.5, winRateWithout: 0.28, lift: 0.108 },
-    { name: "Quicksilver Grail", slug: "quicksilver-grail", image: "/cards/images/6oyti67l58.jpg", role: "Material", winRateWith: 0.38, winRateWithout: 0.24, lift: 0.101 },
-    { name: "Mystic Purifier", slug: "mystic-purifier", image: "/cards/images/SEN9Zgyh2Y.jpg", role: "Sideboard", winRateWith: 0.5, winRateWithout: 0.29, lift: 0.098 },
+    { name: "Water Resonance Bauble", slug: "water-resonance-bauble", image: "/cards/images/vvmdvbkuht.jpg", role: "Mixed", winRateWith: 0.651, winRateWithout: 0.303, lift: 0.137 },
+    { name: "Dissonant Fractal", slug: "dissonant-fractal", image: "/cards/images/ve2xbe3gbp.jpg", role: "Main", winRateWith: 0.676, winRateWithout: 0.408, lift: 0.119 },
+    { name: "Quicksilver Grail", slug: "quicksilver-grail", image: "/cards/images/6oyti67l58.jpg", role: "Material", winRateWith: 0.660, winRateWithout: 0.424, lift: 0.105 },
+    { name: "Lost in Thought", slug: "lost-in-thought", image: "/cards/images/v0lut4793k.jpg", role: "Main", winRateWith: 0.673, winRateWithout: 0.441, lift: 0.102 },
+    { name: "Viridian Protective Trinket", slug: "viridian-protective-trinket", image: "/cards/images/ydupmu6gvm.jpg", role: "Sideboard", winRateWith: 0.643, winRateWithout: 0.441, lift: 0.090 },
+    { name: "Turbo Charge", slug: "turbo-charge", image: "/cards/images/c16bn55g9b.jpg", role: "Main", winRateWith: 0.662, winRateWithout: 0.488, lift: 0.068 },
   ],
 };
 
@@ -441,20 +442,20 @@ export default function About() {
           <h2 className="text-center text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">What do you want to do?</h2>
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <Link to="/decks" className="rounded-xl border border-ctp-surface1 bg-ctp-base p-4 hover:border-ctp-blue">
-              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Find a deck</p>
-              <p className="mt-2 text-sm text-ctp-subtext1">Browse proven tournament builds by Champion, results, cards, or budget.</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Manage Your Decks</p>
+              <p className="mt-2 text-sm text-ctp-subtext1">Create and browse decklists with all sorts of useful analysis tools for free.</p>
             </Link>
             <Link to="/deck-builder" className="rounded-xl border border-ctp-surface1 bg-ctp-base p-4 hover:border-ctp-mauve">
-              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-mauve">Build a deck</p>
-              <p className="mt-2 text-sm text-ctp-subtext1">Start with a Champion or paste a list, then tune it with real deck data.</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-mauve">Find Top Cards</p>
+              <p className="mt-2 text-sm text-ctp-subtext1">See the most used cards for each champion.</p>
             </Link>
             <Link to="/collection" className="rounded-xl border border-ctp-surface1 bg-ctp-base p-4 hover:border-ctp-green">
-              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-green">Use my cards</p>
-              <p className="mt-2 text-sm text-ctp-subtext1">Track your collection, add complete decks, and see exactly what you are missing.</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-green">Easy To Get Started</p>
+              <p className="mt-2 text-sm text-ctp-subtext1">Import your existing decks from other sites and omnidex.</p>
             </Link>
             <Link to="/my-decks" className="rounded-xl border border-ctp-surface1 bg-ctp-base p-4 hover:border-ctp-yellow">
-              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-yellow">Manage my decks</p>
-              <p className="mt-2 text-sm text-ctp-subtext1">Save versions, import Omnidex history in bulk, and share finished lists.</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-yellow">Free Tools For Better Decks</p>
+              <p className="mt-2 text-sm text-ctp-subtext1">Import your existing decks to get suggestions. Find out how much damage you can do each turn and if you'll see a given card.</p>
             </Link>
           </div>
         </div>
@@ -463,24 +464,21 @@ export default function About() {
       <section className="border-b border-ctp-surface0 px-4 py-10">
         <div className="mx-auto max-w-5xl">
           <div className="flex items-end justify-between gap-4">
-            <div>
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">New on Fan of Insight</h2>
-              <p className="mt-1 text-sm text-ctp-subtext1">The newest additions to the site.</p>
-            </div>
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">New on Fan of Insight</h2>
             <Link to="/changelog" className="shrink-0 text-xs text-ctp-blue hover:underline">Full changelog &rarr;</Link>
           </div>
           <div className="mt-4 grid gap-3 sm:grid-cols-3">
             <Link to="/deck-review" className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4 hover:border-ctp-blue">
               <p className="font-semibold text-ctp-text">Deck Review</p>
-              <p className="mt-1 text-xs text-ctp-subtext1">A lighter, suggestions-only builder — nothing is added for you, review and accept each card one at a time.</p>
+              <p className="mt-1 text-xs text-ctp-subtext1">Get suggestions as you build your deck.</p>
             </Link>
             <Link to="/champions" className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4 hover:border-ctp-mauve">
-              <p className="font-semibold text-ctp-text">Card-image-first Champion pages</p>
-              <p className="mt-1 text-xs text-ctp-subtext1">Every Champion page now leads with full card art — a Level/print selector, new releases, and archetype packages.</p>
+              <p className="font-semibold text-ctp-text">Champion Info</p>
+              <p className="mt-1 text-xs text-ctp-subtext1">The top cards of every champion for each element and level.</p>
             </Link>
             <Link to="/deck-builder" className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4 hover:border-ctp-green">
-              <p className="font-semibold text-ctp-text">Collection-aware building</p>
-              <p className="mt-1 text-xs text-ctp-subtext1">Prioritize cards you own, restrict suggestions, and catch shortages while you build.</p>
+              <p className="font-semibold text-ctp-text">Blended Collection Tracking</p>
+              <p className="mt-1 text-xs text-ctp-subtext1">Add decks to your collection, then highlight which cards you use across decks for easy tracking.</p>
             </Link>
           </div>
         </div>
@@ -489,10 +487,6 @@ export default function About() {
       <section className="border-t border-ctp-surface0 px-4 py-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-center text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">See it in action</h2>
-          <p className="mx-auto mt-2 max-w-xl text-center text-sm text-ctp-subtext1">
-            This isn't a mockup — it's a real deck's real page, rendered right here. {WALKTHROUGH_DECK.championName} was
-            independently played by {WALKTHROUGH_DECK.playerCount} players across {WALKTHROUGH_DECK.eventCount} events.
-          </p>
 
           <div className="mt-8 grid gap-6 lg:grid-cols-[220px_1fr] lg:items-center">
             <div className="flex flex-col items-center text-center">
@@ -533,9 +527,8 @@ export default function About() {
           <div className="mx-auto mt-16 max-w-2xl border-t border-ctp-surface0 pt-10">
             <p className="text-center text-sm text-ctp-subtext1">
               Card Impact goes further than composition — for a given build, it can tell you which cards actually
-              correlate with a higher win rate against a specific opponent, from real pairing outcomes.{" "}
-              {WALKTHROUGH_MATCHUP.clusterName} vs. {WALKTHROUGH_MATCHUP.opponentClusterName}, {WALKTHROUGH_MATCHUP.games}{" "}
-              recorded games:
+              correlate with a higher win rate, from real recorded games. {WALKTHROUGH_CARD_IMPACT.clusterName},{" "}
+              {WALKTHROUGH_CARD_IMPACT.deckCount} decks:
             </p>
             <div className="mt-4 overflow-x-auto rounded-lg border border-ctp-surface1 bg-ctp-base">
               <table className="w-full text-sm">
@@ -549,7 +542,7 @@ export default function About() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-ctp-surface0">
-                  {WALKTHROUGH_MATCHUP.cards.map((c) => (
+                  {WALKTHROUGH_CARD_IMPACT.cards.map((c) => (
                     <tr key={c.name}>
                       <td className="px-3 py-2 whitespace-nowrap">
                         <CardHoverPreview image={c.image} alt={c.name}>
@@ -568,9 +561,10 @@ export default function About() {
               </table>
             </div>
             <p className="mt-3 text-center text-xs text-ctp-subtext0">
-              Correlational, not causal — and a genuinely small sample, like most single matchups. Filter to a
-              different opponent, or drop the matchup filter entirely for the build's full-field numbers.{" "}
-              <Link to={`/archetypes/${WALKTHROUGH_MATCHUP.clusterId}?tab=impact`} className="hover:text-ctp-blue hover:underline">
+              Correlational, not causal — and a genuinely small, "emerging" archetype (17 decks across 15 events), not
+              a headline sample size. Filter to a specific opponent for a matchup view, or browse the build's full
+              defining cards and sample decklists.{" "}
+              <Link to={`/archetypes/${WALKTHROUGH_CARD_IMPACT.clusterId}?tab=impact`} className="hover:text-ctp-blue hover:underline">
                 Open Card Impact &rarr;
               </Link>
             </p>
