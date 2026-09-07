@@ -5,7 +5,7 @@ import Panel from "../../components/ui/Panel";
 
 export function PublicDeckCard({ deck }: { deck: PublicDeckSummary | BookmarkedDeck }) {
   return <Panel data-component="PublicDeckCard" as="article">
-    <Link to={`/decklists/${deck.publicSlug}`} className="font-semibold text-ctp-blue hover:underline">{deck.title}</Link>
+    <Link to={`/decks/shared/${deck.publicSlug}`} className="font-semibold text-ctp-blue hover:underline">{deck.title}</Link>
     <p className="mt-1 text-xs text-ctp-subtext1">{deck.championName ?? "Unknown champion"} · {deck.format} · v{deck.versionNumber}</p>
     {"decklist" in deck && <DeckVisualStrip decklist={deck.decklist} championName={deck.championName} />}
     {deck.description && <p className="mt-2 line-clamp-2 text-sm text-ctp-subtext1">{deck.description}</p>}

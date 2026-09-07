@@ -22,9 +22,9 @@ export default function AggressionForecast({ forecast }: { forecast: Forecast })
     <div data-component="AggressionForecast" className="mt-4 border-t border-ctp-surface1 pt-4">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <div>
-          <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Direct damage forecast</h3>
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Printed damage forecast</h3>
            <p className="mt-1 max-w-3xl text-xs text-ctp-subtext0">
-            See how quickly your deck can become lethal.
+            Damage from spells and abilities only — combat damage from attacking allies or a wielded weapon isn't included here.
           </p>
         </div>
       </div>

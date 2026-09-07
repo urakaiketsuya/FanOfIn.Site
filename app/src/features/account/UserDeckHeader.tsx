@@ -12,9 +12,13 @@ interface Props {
   description?: string;
   versionNumber?: number;
   visibility?: DeckVisibility;
+  /** Replaces the default "{championName} · {format}" line — for a caller with something more
+   * specific to say there (e.g. DeckDetail.tsx's tournament player/event/placement/win-rate line),
+   * rather than that caller hand-rolling a whole parallel header around this component. */
+  statLine?: ReactNode;
 }
 
-export default function UserDeckHeader({ title, championName, format, eyebrow, description, versionNumber, visibility }: Props) {
+export default function UserDeckHeader({ title, championName, format, eyebrow, description, versionNumber, visibility, statLine }: Props) {
   const championImages = useChampionCardImages(championName ? [championName] : []);
   const championCard = championName ? championImages.get(championName) : undefined;
 
@@ -24,7 +28,7 @@ export default function UserDeckHeader({ title, championName, format, eyebrow, d
       <CardHoverPreview image={championCard?.editions[0]?.image} alt={championName ?? "Unknown champion"}>
         {championCard?.editions[0] ? <CardImage image={championCard.editions[0].image} alt={championName ?? ""} className="h-20 w-14 shrink-0 rounded object-cover object-top" /> : <div className="h-20 w-14 shrink-0 rounded bg-ctp-surface0" />}
       </CardHoverPreview>
-      <div className="min-w-0 flex-1"><h1 className="text-2xl font-bold text-ctp-blue">{title}</h1><p className="mt-1 text-sm text-ctp-subtext1">{championName ?? "Unknown champion"} · {format}{versionNumber ? ` · Version ${versionNumber}` : ""}</p></div>
+      <div className="min-w-0 flex-1"><h1 className="text-2xl font-bold text-ctp-blue">{title}</h1><p className="mt-1 text-sm text-ctp-subtext1">{statLine ?? <>{championName ?? "Unknown champion"} · {format}{versionNumber ? ` · Version ${versionNumber}` : ""}</>}</p></div>
       {visibility && <span className="rounded-full border border-ctp-surface1 px-3 py-1 text-xs capitalize text-ctp-subtext1">{visibility}</span>}
     </div>
     {description && <p className="mt-5 whitespace-pre-wrap text-ctp-subtext1">{description}</p>}

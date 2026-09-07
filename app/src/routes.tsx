@@ -41,6 +41,18 @@ function ChampionSynergyRedirect() {
   return <Navigate to={`/champions/${name}`} replace />;
 }
 
+// Every deck-viewing page now lives under /decks — a publicly shared deck used to be a completely
+// differently-named route (/decklists/:publicSlug, browsed from /shared-decks), inconsistent with
+// /decks/:hash (tournament) and /pantheon/decks/:id right next to it. Old links/bookmarks/anything
+// already shared via "Copy link" keep working through these redirects.
+function PublicDeckDetailRedirect() {
+  const { publicSlug = "" } = useParams<{ publicSlug: string }>();
+  return <Navigate to={`/decks/shared/${encodeURIComponent(publicSlug)}`} replace />;
+}
+function SharedDecksRedirect() {
+  return <Navigate to="/decks/shared" replace />;
+}
+
 // Lazy-loaded so each route's JS is a separate chunk, fetched on demand — previously the whole
 // app (every page) shipped as one bundle regardless of which page a visitor actually opened.
 const CardsBrowse = lazy(() => import("./features/cards/CardsBrowse"));
@@ -143,6 +155,8 @@ export default function AppRoutes() {
         <Route path="/compare" element={<CompareIndex />} />
         <Route path="/popular-decks" element={<PopularDecksRedirect />} />
         <Route path="/decks" element={<BrowseDecksIndex />} />
+        <Route path="/decks/shared" element={<SharedDecksIndex />} />
+        <Route path="/decks/shared/:publicSlug" element={<PublicDeckDetail />} />
         <Route path="/decks/:hash" element={<DeckDetail />} />
         <Route path="/pantheon/decks/:id" element={<PantheonDeckDetail />} />
         <Route path="/deck-builder" element={<DeckBuilderIndex />} />
@@ -168,8 +182,8 @@ export default function AppRoutes() {
         <Route path="/account" element={<AccountIndex />} />
         <Route path="/settings" element={<SettingsIndex />} />
         <Route path="/my-decks/:deckId" element={<MyDeckDetail />} />
-        <Route path="/decklists/:publicSlug" element={<PublicDeckDetail />} />
-        <Route path="/shared-decks" element={<SharedDecksIndex />} />
+        <Route path="/decklists/:publicSlug" element={<PublicDeckDetailRedirect />} />
+        <Route path="/shared-decks" element={<SharedDecksRedirect />} />
         <Route path="/users/:profileSlug" element={<PublicUserProfile />} />
         <Route path="/about" element={<Navigate to="/" replace />} />
       </Routes>

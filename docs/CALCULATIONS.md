@@ -1317,6 +1317,55 @@ blockers, prevention, and game sequencing are not modeled. It therefore remains 
 from the calibrated DIAO score until an audit shows that adding consistency improves Aggro's
 usefulness.
 
+### Breakthrough damage
+
+The Compare tool's **Breakthrough damage** section (`app/src/lib/breakthroughDamage.ts`,
+`computeBreakthroughDamage`) is a combat-side companion to the Direct-damage forecast above: where
+that stat measures printed spell/ability damage, this one estimates how much Ally combat power
+would reach the defending champion if every Ally in both decks attacked at once. It is run once
+per direction for a compared pair (attacker deck → defender deck), since the two numbers are not
+symmetric — each deck's own Intercept-Ally count only affects incoming damage, not outgoing.
+
+The model is built directly on Grand Archive's actual combat rules, verified against real card
+text rather than assumed from prior TCG experience: attacks target the defending champion
+directly by default — there is no MTG-style universal ally-vs-ally blocking. The only redirect
+mechanism is the **Intercept** keyword ("Whenever your champion is attacked while this ally is
+awake, you may redirect that attack to this ally") — optional, per-ally, and requires the ally to
+be awake. **Unblockable** means "can't be intercepted and ignores taunt" (confirmed via
+Weiss Knight/Shadowstrike/Ominous Shadow's own reminder text). Note that **Ranged N** is *not* an
+evasion keyword despite the hidden, unused DIAO score's own `shared/src/diao.ts` treating it as
+one for its Aggro evasion signal — verified against the real card pool, Ranged N is purely a power
+buff ("as long as this unit is distant, its attacks get +N power"), so it is deliberately not
+checked here; this is a known discrepancy in the dormant DIAO score, left unfixed since DIAO is
+hidden site-wide and out of scope for this feature.
+
+For a given attacker→defender direction: every Ally in the attacker's main + material sections
+with a printed `power` becomes one attack instance, tagged Unblockable or not by the regex above.
+Unblockable instances add their power straight to `breakthroughTotal`. The remaining interceptable
+instances are sorted by power descending, and the defender's count of Intercept-keyword Allies
+(main + material) "intercepts" that many of the biggest hits first — a defender minimizing damage
+protects against its biggest threats, not its smallest. Whatever interceptable power is left after
+that also adds to `breakthroughTotal`.
+
+**Explicitly disclosed limitations** (surfaced in the UI copy alongside the numbers, same
+convention as the Direct-damage forecast's own exclusion list):
+- Assumes every Ally in both decks' main + material sections is simultaneously in play and awake —
+  a theoretical ceiling, not a real board state; no per-turn/board-size/tap-state data exists
+  anywhere in this codebase to ground a smaller number.
+- Assumes each Intercept ally redirects exactly one attack. Intercept's own text states no
+  once-per-turn limit, so a surviving ally could plausibly redirect more than one — modeling that
+  would need a life/damage simulation this function doesn't attempt. One-for-one is the simpler,
+  more conservative assumption (it doesn't overstate how much a small Intercept package can
+  absorb).
+- No removal, combat tricks, champion-side combat, or non-Intercept mitigation (e.g. flat
+  damage-prevention effects) is modeled — only printed Ally power vs. a count of Intercept-keyword
+  Allies.
+- Only Unblockable is modeled as bypassing Intercept. Taunt, Bulwark, Cleave, and every other
+  combat-relevant keyword are real and excluded, not silently ignored.
+
+Like the Direct-damage forecast, this is a clearly-labeled reference estimate, not a claimed
+simulation, and it is not part of the calibrated DIAO score.
+
 ### Score bands
 
 Each pillar's raw points map to a 1–10 score via boundaries at the real min/p10/p25/median/p75/p90/max

@@ -10,6 +10,8 @@ import { InlineState } from "../../components/ui/ContentState";
 import HypergeometricCalculator from "../deckbuilder/HypergeometricCalculator";
 import AggressionForecast from "../decks/AggressionForecast";
 import { computeAggressionForecast } from "../../lib/aggressionForecast";
+import { computeBreakthroughDamage } from "../../lib/breakthroughDamage";
+import BreakthroughDamagePanel from "./BreakthroughDamagePanel";
 
 const SECTION_LABEL = { main: "Main", material: "Material", sideboard: "Sideboard" } as const;
 const ANALYSIS_CARD_FIELDS: VisualFieldVisibility = { cost: false, price: false, priceTrend: false, tags: false, simulator: false, community: false };
@@ -132,10 +134,38 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, onVie
             />
             {damageForecast.fixedDamageCopies > 0 || damageForecast.variableDamageCopies > 0 || damageForecast.scalingDamageCopies > 0 || damageForecast.ambiguousDamageCopies > 0 || damageForecast.recurringDamagePerTurn > 0
               ? <AggressionForecast forecast={damageForecast} />
-              : <div className="mt-4 border-t border-ctp-surface1 pt-4"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Direct damage forecast</h4><p className="mt-1 text-xs text-ctp-subtext0">No direct-damage effects were detected in this list.</p></div>}
+              : <div className="mt-4 border-t border-ctp-surface1 pt-4"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Printed damage forecast</h4><p className="mt-1 text-xs text-ctp-subtext0">No printed spell/ability damage found in this list — this deck's damage plan likely comes from combat instead.</p></div>}
           </div>;
         })}
       </div>
     </Section>
+
+    {baselineDeck && (
+      <Section heading="dense" title="Breakthrough damage" description="If every attacking ally swung at once and the defender's Intercept allies redirected the biggest hits first, how much power reaches the champion — not a real-game prediction, see the caveats below.">
+        <div className="mt-3 space-y-4">
+          {decks.map((deck, index) => {
+            if (index === baselineIndex) return null;
+            const baselineList = decklists.get(baselineDeck.key);
+            const targetList = decklists.get(deck.key);
+            if (!baselineList || !targetList) return null;
+            const baselineLines = [...baselineList.main, ...baselineList.material].map((line) => ({ name: line.card, quantity: line.quantity }));
+            const targetLines = [...targetList.main, ...targetList.material].map((line) => ({ name: line.card, quantity: line.quantity }));
+            const baselineIntoTarget = computeBreakthroughDamage(baselineLines, targetLines, cardsByName);
+            const targetIntoBaseline = computeBreakthroughDamage(targetLines, baselineLines, cardsByName);
+            if (baselineIntoTarget.attackerCount === 0 && targetIntoBaseline.attackerCount === 0) return null;
+            return <div key={deck.key}>
+              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">{shortLabel(baselineDeck.label)} vs. {shortLabel(deck.label)}</p>
+              <div className="mt-2 grid gap-3 sm:grid-cols-2">
+                <BreakthroughDamagePanel attackerLabel={shortLabel(baselineDeck.label)} defenderLabel={shortLabel(deck.label)} result={baselineIntoTarget} />
+                <BreakthroughDamagePanel attackerLabel={shortLabel(deck.label)} defenderLabel={shortLabel(baselineDeck.label)} result={targetIntoBaseline} />
+              </div>
+            </div>;
+          })}
+        </div>
+        <p className="mt-4 text-[11px] text-ctp-subtext0">
+          A heuristic, not a simulation: assumes every ally in both decks is simultaneously in play and awake, each Intercept ally redirects exactly one attack, and ignores removal, combat tricks, champion-side combat, and every combat keyword except Unblockable (Taunt, Bulwark, Cleave, and others are real and unmodeled).
+        </p>
+      </Section>
+    )}
   </div>;
 }

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import {
@@ -15,6 +15,7 @@ import { computeTrimPlan, computeCurvePeakCardNames, TRIM_TARGET_SIZE, type Trim
 import { useChampionCardImpact } from "../decks/useChampionCardImpact";
 import { useCardStatsData, useCardQuantityStatsData } from "../archetypes/data";
 import AggressionForecast from "../decks/AggressionForecast";
+import HypergeometricCalculator from "../deckbuilder/HypergeometricCalculator";
 import CompositionChartGrid from "../../components/CompositionChartGrid";
 import { DependencyReadinessEntries, SynergyReadinessEntries } from "../../components/DeckReadinessSection";
 import DonutChart, { buildChartSegments } from "../../components/DonutChart";
@@ -29,6 +30,7 @@ import { InlineState } from "../../components/ui/ContentState";
 const FINDING_TONE = { red: "danger", yellow: "warning", green: "success", blue: "info" } as const;
 
 type Finding = { tone: "red" | "yellow" | "green" | "blue"; title: string; detail: string };
+export interface DeckStatsTab { key: string; label: string; content: ReactNode }
 
 function deckQuantities(decklist: OmnidexDecklist): Map<string, number> {
   const quantities = new Map<string, number>();
@@ -36,7 +38,41 @@ function deckQuantities(decklist: OmnidexDecklist): Map<string, number> {
   return quantities;
 }
 
-export default function UserDeckStats({ decklist, championName, format, title, ownerDeckId, previousDecklist }: { decklist: OmnidexDecklist; championName: string | null; format: DeckFormat; title: string; ownerDeckId?: string; previousDecklist?: OmnidexDecklist }) {
+/** The Composition/Probability/Trim tab bar, plus any page-specific `extraTabs` (e.g.
+ * DeckDetail.tsx's own tournament-only Matchups/Pricing) — one active panel at a time instead of a
+ * stack of collapsed accordions, with a real tonal-fill/elevation selected state per the site's
+ * Material Design convention rather than a plain border-color swap. */
+function DeckStatsTabs({ tabs }: { tabs: DeckStatsTab[] }) {
+  const [active, setActive] = useState(tabs[0]?.key);
+  const current = tabs.find((t) => t.key === active) ?? tabs[0];
+  if (!current) return null;
+  return <div data-component="DeckStatsTabs">
+    <div role="tablist" aria-label="Deck analysis" className="flex flex-wrap gap-2">
+      {tabs.map((t) => {
+        const selected = t.key === current.key;
+        return (
+          <button
+            key={t.key}
+            type="button"
+            role="tab"
+            aria-selected={selected}
+            onClick={() => setActive(t.key)}
+            className={`rounded-full px-3 py-1.5 text-sm font-medium transition-all duration-200 ease-out active:scale-[0.97] ${
+              selected
+                ? "bg-ctp-blue text-ctp-base shadow-md shadow-ctp-blue/20"
+                : "border border-ctp-surface1 text-ctp-subtext1 hover:-translate-y-0.5 hover:border-ctp-surface2 hover:text-ctp-text hover:shadow-md hover:shadow-black/20"
+            }`}
+          >
+            {t.label}
+          </button>
+        );
+      })}
+    </div>
+    <div role="tabpanel" className="mt-4">{current.content}</div>
+  </div>;
+}
+
+export default function UserDeckStats({ decklist, championName, format, title, ownerDeckId, previousDecklist, extraTabs = [] }: { decklist: OmnidexDecklist; championName: string | null; format: DeckFormat; title: string; ownerDeckId?: string; previousDecklist?: OmnidexDecklist; extraTabs?: DeckStatsTab[] }) {
   const namedSections = useMemo(() => ({
     main: decklist.main.map((line) => ({ name: line.card, quantity: line.quantity })),
     material: decklist.material.map((line) => ({ name: line.card, quantity: line.quantity })),
@@ -71,7 +107,10 @@ export default function UserDeckStats({ decklist, championName, format, title, o
   const canImprove = Boolean(builderParams?.spiritFilter);
   const [selectedTrimSection, setSelectedTrimSection] = useState<TrimSection | null>(null);
   const noExclusions = useMemo(() => new Set<string>(), []);
-  const impactResult = useChampionCardImpact(championName, identity.elements, noExclusions, "all");
+  // Tournament-only data — Pantheon decks share Champion names with Standard tournament decks but
+  // are a genuinely different population (different construction rules, no tournament results of
+  // their own), so never let Standard win-rate evidence leak into a Pantheon deck's trim suggestions.
+  const impactResult = useChampionCardImpact(format === "PANTHEON" ? null : championName, identity.elements, noExclusions, "all");
   const impactByName = useMemo(() => new Map(impactResult.cards.map((c) => [c.cardName, c])), [impactResult.cards]);
   const cardStatsData = useCardStatsData();
   const priceByName = useMemo(() => new Map((cardStatsData?.cards ?? []).map((c) => [c.name, c.marketPrice])), [cardStatsData]);
@@ -101,6 +140,17 @@ export default function UserDeckStats({ decklist, championName, format, title, o
     const resolvedCopies = [...namedSections.main, ...namedSections.material, ...namedSections.sideboard].reduce((sum, line) => sum + (cardsByName.has(line.name) ? line.quantity : 0), 0);
     return { unresolved, uniqueTotal: uniqueNames.length, uniqueResolved: uniqueNames.length - unresolved.length, totalCopies, resolvedCopies };
   }, [cardNames, cardsByName, namedSections]);
+  // `cardsByName` resolves via its own independent Dexie query, separate from whatever loaded
+  // `decklist` itself — on a cold cache it can lag several seconds behind, during which composition
+  // computes against an effectively empty card map, rendering genuinely empty charts with no
+  // indication anything was still loading. Same 90%-coverage gate used across every deck-viewing
+  // page.
+  const resolvedMainCount = useMemo(
+    () => namedSections.main.reduce((sum, line) => sum + (cardsByName.has(line.name) ? line.quantity : 0), 0),
+    [namedSections.main, cardsByName],
+  );
+  const catalogCoverage = totals.main > 0 ? resolvedMainCount / totals.main : 0;
+
   const versionChange = useMemo(() => {
     if (!previousDecklist) return null;
     const before = deckQuantities(previousDecklist);
@@ -119,7 +169,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
     const result: Finding[] = [];
     if (coverage.unresolved.length > 0) result.push({ tone: "yellow", title: "Incomplete card data", detail: `${coverage.unresolved.length} card name${coverage.unresolved.length === 1 ? " is" : "s are"} unresolved, so computed scores and charts may be incomplete.` });
     if (validation.status !== "Legal") result.push({ tone: "red", title: `${validation.status} construction`, detail: validation.reasons[0] ?? "Review the construction rules before playing this list." });
-    if (trimPlans.main) result.push({ tone: "yellow", title: `Main deck is ${trimPlans.main.overBy} card${trimPlans.main.overBy === 1 ? "" : "s"} over target`, detail: `${trimPlans.main.currentSize} cards vs. a 60-card target — extra cards dilute consistency. See "Trim to size" below for ranked cut suggestions.` });
+    if (trimPlans.main) result.push({ tone: "yellow", title: `Main deck is ${trimPlans.main.overBy} card${trimPlans.main.overBy === 1 ? "" : "s"} over target`, detail: `${trimPlans.main.currentSize} cards vs. a 60-card target — extra cards dilute consistency. See "Trim & packages" for ranked cut suggestions.` });
     const weakSynergy = synergyReadiness.find((entry) => entry.status === "Unlikely" || entry.status === "Fragile");
     if (weakSynergy) result.push({ tone: "yellow", title: `${weakSynergy.label} is ${weakSynergy.status.toLowerCase()}`, detail: `${weakSynergy.enablerCopies} eligible copies give a ${(weakSynergy.probabilityByTen * 100).toFixed(0)}% theoretical chance by 10 cards seen.` });
     const weakPackage = dependencyReadiness.find((entry) => entry.status !== "Supported");
@@ -128,9 +178,115 @@ export default function UserDeckStats({ decklist, championName, format, title, o
     return result.slice(0, 5);
   }, [coverage.unresolved.length, dependencyReadiness, synergyReadiness, validation, trimPlans.main]);
 
-  if (cardNames.length > 0 && cardsByName.size === 0 && catalog.length === 0) return <Panel data-component="UserDeckStats" className="mt-6"><InlineState className="text-sm">Resolving card data and calculating deck analytics…</InlineState></Panel>;
+  // `cardsByName` (a per-name Dexie query) and `catalog` (the full-list Dexie query) are two
+  // independent async queries against the same synced IndexedDB — nothing guarantees they resolve
+  // in lockstep. Gating on both being empty (an earlier version of this check) let `cardsByName`
+  // sit stale-empty any time `catalog` alone happened to load first, flashing "0 resolved"/
+  // "unresolved card names" findings and an "Incomplete" legality status on a cold cache. Gate on
+  // `cardsByName` alone instead — that's the one this whole component actually depends on.
+  if (cardNames.length > 0 && cardsByName.size === 0) return <Panel data-component="UserDeckStats" className="mt-6"><InlineState className="text-sm">Resolving card data and calculating deck analytics…</InlineState></Panel>;
 
   const validationTone = validation.status === "Legal" ? "border-ctp-green/50 bg-ctp-green/10 text-ctp-green" : validation.status === "Illegal" ? "border-ctp-red/50 bg-ctp-red/10 text-ctp-red" : "border-ctp-yellow/50 bg-ctp-yellow/10 text-ctp-yellow";
+
+  const compositionTab: ReactNode = catalogCoverage < 0.9 ? (
+    <Panel tone="warning" className="text-sm text-ctp-subtext1">
+      Composition is waiting for card data: {resolvedMainCount} of {totals.main} main-deck cards resolved. Charts appear at 90% coverage.
+    </Panel>
+  ) : (
+    <>
+      <p className="text-sm text-ctp-subtext1">
+        Floating Memory: {floatingMemory.base}{floatingMemory.classBonus > 0 ? ` + ${floatingMemory.classBonus} class bonus` : ""} · Average Ally Power: {allyPower.allyCopies > 0 ? formatAllyPower(allyPower) : "—"} · Champion damage: {damage.championRange.min}–{damage.championRange.max} · Ally damage: {damage.allyRange.min}–{damage.allyRange.max}
+      </p>
+      <div className="mt-3">
+        <CompositionChartGrid composition={composition} memoryCurve={memoryCurve} reserveCurve={reserveCurve} />
+      </div>
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        <RankedCompositionChart title="Rarity" segments={rarity} />
+        <RankedCompositionChart title="Ally Power" segments={allyPowerSegments} />
+        <RankedCompositionChart title="Keywords" segments={keywords} />
+        <DonutChart title="Damage Targets" segments={buildChartSegments(damage.targets)} />
+        <DonutChart title="Damage Type" segments={buildChartSegments(damage.conditionality)} />
+      </div>
+    </>
+  );
+
+  // Same emptiness check AggressionForecast.tsx uses internally to return null — mirrored here so
+  // a deck with no *printed* damage text (spells/abilities) shows an explicit, correctly-scoped
+  // note instead of the forecast just silently not being there, which reads as broken rather than
+  // as a true, checked answer. This is genuinely common: most decks in this game win through combat
+  // (allies attacking, a champion swinging with a weapon), not burn — computeAggressionForecast
+  // only ever parsed "Deal N damage" text, so "nothing found" here does NOT mean "this deck can't
+  // deal damage," and the copy below (and AggressionForecast's own) says so explicitly rather than
+  // implying total lethality the way the old wording did.
+  const hasDamageForecast = aggressionForecast.fixedDamageCopies > 0 || aggressionForecast.variableDamageCopies > 0
+    || aggressionForecast.scalingDamageCopies > 0 || aggressionForecast.ambiguousDamageCopies > 0 || aggressionForecast.recurringDamagePerTurn > 0;
+  const probabilityTab: ReactNode = (
+    <>
+      <Panel>
+        {hasDamageForecast ? (
+          <AggressionForecast forecast={aggressionForecast} />
+        ) : (
+          <InlineState className="text-sm">No printed spell/ability damage found in this list — this deck's damage plan likely comes from combat instead.</InlineState>
+        )}
+      </Panel>
+      {allyPower.allyCopies > 0 && (
+        <Panel className="mt-4">
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat potential</h3>
+          <p className="mt-1 max-w-3xl text-xs text-ctp-subtext0">
+            {allyPower.allyCopies} all{allyPower.allyCopies === 1 ? "y" : "ies"} averaging {formatAllyPower(allyPower)} power — a real damage source this forecast doesn't attempt to model (whether an attack actually connects depends on blockers, removal, and the board state on the day). Champion combat damage from a wielded weapon isn't modeled here either.
+          </p>
+        </Panel>
+      )}
+      <div className="mt-4">
+        <HypergeometricCalculator mainLines={namedSections.main} materialLines={namedSections.material} catalogByName={cardsByName} />
+      </div>
+    </>
+  );
+
+  const hasTrimOrPackages = overTrimSections.length > 0 || synergyReadiness.length > 0 || dependencyReadiness.length > 0;
+  const trimTab: ReactNode = (
+    <>
+      {overTrimSections.length > 0 && activeTrimPlan && (
+        <Section heading="compact" title="Trim to size" description="Ranked cut suggestions from quantity-vs-optimal, Champion-scoped win-rate lift, and cost-curve evidence already computed elsewhere on the site. Price is shown for reference and never used to rank a card.">
+          <div className="mt-3 flex flex-wrap gap-2">
+            {overTrimSections.map((section) => {
+              const plan = trimPlans[section];
+              if (!plan) return null;
+              return <button key={section} type="button" onClick={() => setSelectedTrimSection(section)} className={`rounded-md border px-3 py-1.5 text-sm capitalize transition-all duration-200 active:scale-[0.97] ${activeTrimSection === section ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue shadow-md shadow-ctp-blue/20" : "border-ctp-surface1 text-ctp-subtext1 hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/20"}`}>{section} ({plan.overBy} {plan.unit} over)</button>;
+            })}
+          </div>
+          <p className="mt-3 text-xs text-ctp-subtext1">{activeTrimPlan.currentSize}/{activeTrimPlan.targetSize} {activeTrimPlan.unit} — cut at least {activeTrimPlan.overBy} to reach target.</p>
+          <ul className="mt-3 space-y-2">
+            {activeTrimPlan.candidates.map((candidate) => <li key={candidate.cardName} className="rounded-md border border-ctp-surface1 p-2 text-sm">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="font-semibold text-ctp-text">{candidate.remainingQuantity > 0 ? `Cut ${candidate.cutQuantity}x (keep ${candidate.remainingQuantity}x)` : `Cut all ${candidate.cutQuantity}x`} {candidate.cardName}</span>
+                {candidate.priceEach !== null && <span className="text-xs text-ctp-subtext0">${(candidate.priceEach * candidate.cutQuantity).toFixed(2)} saved</span>}
+              </div>
+              <p className="mt-1 text-xs text-ctp-subtext1">{candidate.detail}</p>
+            </li>)}
+          </ul>
+          {builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, ownerDeckId && canImprove ? { mode: "improve", sourceDeckId: ownerDeckId } : undefined)} className="mt-3 inline-block text-sm text-ctp-blue hover:underline">Full guardrail-aware review in the Deck Builder →</Link>}
+        </Section>
+      )}
+      {(synergyReadiness.length > 0 || dependencyReadiness.length > 0) && (
+        <Section heading="compact" className={overTrimSections.length > 0 ? "mt-6" : undefined} title="Package readiness" description="Detected relationships in the main deck. Probabilities measure card availability, not guaranteed activation.">
+          <div className="mt-3 space-y-3">
+            <SynergyReadinessEntries items={synergyReadiness} variant="compact" />
+            <DependencyReadinessEntries items={dependencyReadiness} variant="compact" />
+          </div>
+        </Section>
+      )}
+      {!hasTrimOrPackages && <InlineState className="text-sm">No cuts needed and no card packages detected in this list.</InlineState>}
+    </>
+  );
+
+  const tabs: DeckStatsTab[] = [
+    { key: "composition", label: "Composition", content: compositionTab },
+    { key: "probability", label: "Probability", content: probabilityTab },
+    ...(hasTrimOrPackages ? [{ key: "trim", label: "Trim & packages", content: trimTab }] : []),
+    ...extraTabs,
+  ];
+
   return <div data-component="UserDeckStats" className="mt-6 space-y-6">
     <Panel aria-labelledby="analysis-findings">
       <div className="flex flex-wrap items-start justify-between gap-3"><div><h2 id="analysis-findings" className="font-semibold text-ctp-text">Key findings</h2><p className="mt-1 text-xs text-ctp-subtext0">Prioritized structural signals from this exact list.</p></div>{ownerDeckId && builderParams && canImprove && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, { mode: "improve", sourceDeckId: ownerDeckId })} className="rounded-md bg-ctp-blue px-3 py-1.5 text-sm text-ctp-base">Review improvements</Link>}</div>
@@ -151,49 +307,6 @@ export default function UserDeckStats({ decklist, championName, format, title, o
       <p className="mt-3 text-[11px] opacity-70">Static construction check only; event-specific rules and card-text exceptions still require an official source.</p>
     </section>
 
-    {overTrimSections.length > 0 && activeTrimPlan && <Section heading="compact" collapsible defaultOpen title="Trim to size" description="Ranked cut suggestions from quantity-vs-optimal, Champion-scoped win-rate lift, and cost-curve evidence already computed elsewhere on the site. Price is shown for reference and never used to rank a card.">
-      <div className="mt-3 flex flex-wrap gap-2">
-        {overTrimSections.map((section) => {
-          const plan = trimPlans[section];
-          if (!plan) return null;
-          return <button key={section} type="button" onClick={() => setSelectedTrimSection(section)} className={`rounded-md border px-3 py-1.5 text-sm capitalize ${activeTrimSection === section ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1"}`}>{section} ({plan.overBy} {plan.unit} over)</button>;
-        })}
-      </div>
-      <p className="mt-3 text-xs text-ctp-subtext1">{activeTrimPlan.currentSize}/{activeTrimPlan.targetSize} {activeTrimPlan.unit} — cut at least {activeTrimPlan.overBy} to reach target.</p>
-      <ul className="mt-3 space-y-2">
-        {activeTrimPlan.candidates.map((candidate) => <li key={candidate.cardName} className="rounded-md border border-ctp-surface1 p-2 text-sm">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="font-semibold text-ctp-text">{candidate.remainingQuantity > 0 ? `Cut ${candidate.cutQuantity}x (keep ${candidate.remainingQuantity}x)` : `Cut all ${candidate.cutQuantity}x`} {candidate.cardName}</span>
-            {candidate.priceEach !== null && <span className="text-xs text-ctp-subtext0">${(candidate.priceEach * candidate.cutQuantity).toFixed(2)} saved</span>}
-          </div>
-          <p className="mt-1 text-xs text-ctp-subtext1">{candidate.detail}</p>
-        </li>)}
-      </ul>
-      {builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, ownerDeckId && canImprove ? { mode: "improve", sourceDeckId: ownerDeckId } : undefined)} className="mt-3 inline-block text-sm text-ctp-blue hover:underline">Full guardrail-aware review in the Deck Builder →</Link>}
-    </Section>}
-
-    <Panel>
-      <AggressionForecast forecast={aggressionForecast} />
-    </Panel>
-
-    <Section heading="compact" collapsible defaultOpen={false} title="Composition" description={`Floating Memory: ${floatingMemory.base}${floatingMemory.classBonus > 0 ? ` + ${floatingMemory.classBonus} class bonus` : ""} · Average Ally Power: ${allyPower.allyCopies > 0 ? formatAllyPower(allyPower) : "—"} · Champion damage: ${damage.championRange.min}–${damage.championRange.max} · Ally damage: ${damage.allyRange.min}–${damage.allyRange.max}`}>
-      <div className="mt-3">
-        <CompositionChartGrid composition={composition} memoryCurve={memoryCurve} reserveCurve={reserveCurve} />
-      </div>
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <RankedCompositionChart title="Rarity" segments={rarity} />
-        <RankedCompositionChart title="Ally Power" segments={allyPowerSegments} />
-        <RankedCompositionChart title="Keywords" segments={keywords} />
-        <DonutChart title="Damage Targets" segments={buildChartSegments(damage.targets)} />
-        <DonutChart title="Damage Type" segments={buildChartSegments(damage.conditionality)} />
-      </div>
-    </Section>
-
-    {(synergyReadiness.length > 0 || dependencyReadiness.length > 0) && <Section heading="compact" collapsible defaultOpen={false} title="Package readiness" description="Detected relationships in the main deck. Probabilities measure card availability, not guaranteed activation.">
-      <div className="mt-3 space-y-3">
-        <SynergyReadinessEntries items={synergyReadiness} variant="compact" />
-        <DependencyReadinessEntries items={dependencyReadiness} variant="compact" />
-      </div>
-    </Section>}
+    <DeckStatsTabs tabs={tabs} />
   </div>;
 }

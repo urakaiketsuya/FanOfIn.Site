@@ -1,71 +1,60 @@
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 import { decodeCardLines, type OmnidexDecklist } from "@gatcg/shared";
-import { gatcgApi } from "../../lib/api/client";
 import { useDeckPopularity, buildPopularDeck } from "../popular/useDeckPopularity";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useOmnidexPlayers, useEventNameById } from "../tournaments/data";
 import { useCardImpactData, useMatchupCardImpactData, useSimilarityData, useDeckCardIndexData } from "../archetypes/data";
-import { useChampionCardImpact } from "./useChampionCardImpact";
-import { useChampionCardImages } from "../players/useChampionCardImages";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { useDeckWinConditions } from "./useDeckWinConditions";
 import DeckWinConditions from "./DeckWinConditions";
 import { useDeckTestResult } from "./useDeckTestResult";
-import DeckDecaySignals from "../events/DeckDecaySignals";
 import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
 import CardImpactTable from "../../components/CardImpactTable";
-import {
-  computeAllyPower,
-  computeDamageComposition,
-  computeDeckComposition,
-  computeDeckIdentity,
-  computeFloatingMemory,
-  computeKeywordComposition,
-  computeMemoryCostCurve,
-  computeRarityBreakdown,
-  computeReserveCostCurve,
-  formatAllyPower,
-} from "../../lib/deckIdentity";
 import { shortHash } from "../../lib/hash";
 import { formatUsd } from "../../lib/format";
-import DecklistView from "../events/DecklistView";
-import DeckCollectionTools from "../collection/DeckCollectionTools";
 import TopDecksList from "../../components/TopDecksList";
-import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import ElementIcon from "../../components/ElementIcon";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
-import Tabs from "../../components/ui/Tabs";
-import DonutChart, { buildChartSegments } from "../../components/DonutChart";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import BarChart from "../../components/BarChart";
-import RankedCompositionChart from "../../components/RankedCompositionChart";
-import CompositionChartGrid from "../../components/CompositionChartGrid";
-import AggressionForecast from "./AggressionForecast";
-import { computeAggressionForecast } from "../../lib/aggressionForecast";
-import { useDecklistDisplayPrefs } from "../../lib/decklistDisplayPrefs";
+import UserDeckHeader from "../account/UserDeckHeader";
+import UserDecklistPanel from "../account/UserDecklistPanel";
+import UserDeckStats, { type DeckStatsTab } from "../account/UserDeckStats";
 import PageLayout from "../../components/layout/PageLayout";
-import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
 import { InlineState, EmptyState } from "../../components/ui/ContentState";
 import MethodologyNote from "../../components/ui/MethodologyNote";
 
-type DeckTab = "decklist" | "composition" | "history" | "similar";
+type DeckTab = "decklist" | "analysis" | "history" | "similar";
 
 const TABS: { key: DeckTab; label: string }[] = [
   { key: "decklist", label: "Decklist" },
-  { key: "composition", label: "Composition" },
+  { key: "analysis", label: "Analysis" },
   { key: "history", label: "History" },
   { key: "similar", label: "Similar Decks" },
 ];
 const TAB_KEYS = TABS.map((t) => t.key);
 
+/**
+ * Same shared `UserDeckHeader`/`UserDecklistPanel`/`UserDeckStats` family `MyDeckDetail.tsx`/
+ * `PublicDeckDetail.tsx`/`PantheonDeckDetail.tsx` all use — composition, not parameterization,
+ * per the pattern established across the account decklist pages: this page just supplies its own
+ * genuinely tournament-only extras (matchup Card Impact, this build's historical performance, win
+ * conditions, priciest cards, sighting history, similar decks) alongside the shared core rather
+ * than each page hand-rolling its own composition/Card-Impact/Aggression-Forecast implementation.
+ * Omnidex tournament decks are always Standard format (Pantheon is a separate ShoutAtYourDecks-
+ * sourced page/data source entirely), so `format="STANDARD"` is passed as a constant; there is no
+ * single owner or `deckId` here (`deck.deckIds` is a many-to-one aggregation of every real
+ * player/event that produced this exact card signature), so `ownerDeckId`/`previousDecklist` are
+ * simply omitted, same as `PublicDeckDetail.tsx` already does for a deck it doesn't own.
+ */
 export default function DeckDetail() {
   const { hash = "" } = useParams<{ hash: string }>();
-  const [tab, setTab] = useTabParam("tab", TAB_KEYS, "decklist");
+  const [tab, setTab] = useTabParam<DeckTab>("tab", TAB_KEYS, "decklist");
 
   const popularityIndexData = useDeckPopularityIndexData();
   const eventNameById = useEventNameById();
@@ -112,9 +101,6 @@ export default function DeckDetail() {
     deck && `A popular ${deck.championName ?? "Grand Archive TCG"} decklist, independently played by ${deck.playerCount} players.`,
   );
 
-  const championImages = useChampionCardImages(deck?.championName ? [deck.championName] : []);
-  const championCard = deck?.championName ? championImages.get(deck.championName) : undefined;
-
   const decklist: OmnidexDecklist = useMemo(
     () => ({
       main: (deck?.main ?? []).map((l) => ({ card: l.name, quantity: l.quantity })),
@@ -134,12 +120,12 @@ export default function DeckDetail() {
     return counts;
   }, [deck]);
   const { result: deckTestResult } = useDeckTestResult({ deckCardCounts, cardsByName, deckId: deck?.deckIds[0], nearestDecks: [] });
-  const displayPrefs = useDecklistDisplayPrefs();
 
-  // Precise, cluster-scoped "Cards that might help" (Phase 21) only covers the ~128 named-build
+  // Precise, cluster-scoped "What beats this build" (Phase 21) only covers the ~128 named-build
   // clusters — most decks reachable from here (especially one-offs, since All Decks stopped
-  // gating deck pages behind Popular Decks' 2+-player bar) have no cluster match. Fall back to a
-  // broader Champion+Element-scoped recommendation in that case, never show both.
+  // gating deck pages behind Popular Decks' 2+-player bar) have no cluster match. `UserDeckStats`
+  // below already covers the broader Champion-wide fallback via its own `useChampionCardImpact`
+  // call, so this page only needs to add the matchup-scoped case on top, never both.
   const cardImpactData = useCardImpactData();
   const myClusterId = deck ? cardImpactData?.deckClusterIndex[deck.deckIds[0]] : undefined;
   const hasClusterMatch = !!myClusterId;
@@ -162,121 +148,6 @@ export default function DeckDetail() {
   const selectedMatchup = clusterMatchups.find((m) => m.opponentClusterId === (opponentClusterId ?? clusterMatchups[0]?.opponentClusterId));
   const hurtYouCards = selectedMatchup?.opponentCards ?? [];
   const hurtYouCardImages = useCardsByNames(useMemo(() => hurtYouCards.map((c) => c.cardName), [hurtYouCards]));
-
-  // Champion-scoped directly (same filter-before-decode pattern as useChampionCardImpact.ts)
-  // rather than scanning the full cross-Champion `decks` universe, which the fast path above
-  // deliberately avoids decoding for the common case.
-  const championElementsPresent = useMemo(() => {
-    if (!deck?.championName || !cardIndexData || !popularityIndexData) return [];
-    const deckIdsForChampion = new Set(
-      popularityIndexData.entries.filter((e) => e.championName === deck.championName).map((e) => e.deckId),
-    );
-    const elements = new Set<string>();
-    for (const entry of cardIndexData.decks) {
-      if (!deckIdsForChampion.has(entry.deckId)) continue;
-      const main = decodeCardLines(entry.main, cardIndexData.cardNames);
-      const material = decodeCardLines(entry.material, cardIndexData.cardNames);
-      for (const e of computeDeckIdentity([...main, ...material], catalogByName).elements) elements.add(e);
-    }
-    return Array.from(elements).sort();
-  }, [deck?.championName, cardIndexData, popularityIndexData, catalogByName]);
-
-  const [selectedElements, setSelectedElements] = useState<string[]>([]);
-  const [isRecommendationPending, startRecommendationTransition] = useTransition();
-  // Default to the viewed deck's own elements — the narrowest sensible starting point — only when
-  // the viewed deck itself changes (not on every render), same reset-on-identity-change pattern
-  // ArchetypeDetail/ChampionDetail already use for their own per-page state.
-  useEffect(() => {
-    if (deck) setSelectedElements(deck.elements);
-  }, [deck?.signature]);
-
-  function toggleElement(element: string) {
-    startRecommendationTransition(() => {
-      setSelectedElements((prev) => (prev.includes(element) ? prev.filter((e) => e !== element) : [...prev, element]));
-    });
-  }
-
-  const excludeCardNames = useMemo(
-    () => new Set([...(deck?.main ?? []), ...(deck?.material ?? [])].map((l) => l.name)),
-    [deck],
-  );
-  const championImpact = useChampionCardImpact(hasClusterMatch ? null : (deck?.championName ?? null), selectedElements, excludeCardNames);
-  const championImpactCardImages = useCardsByNames(useMemo(() => championImpact.cards.map((c) => c.cardName), [championImpact.cards]));
-
-  // `cardsByName` is its own async Dexie query, independent of `deck` itself resolving (the "fast
-  // path" above uses a separately-loaded `catalogByName`) — so composition can briefly (or, on a
-  // cold cache, not-so-briefly) compute against an still-mostly-empty map right after `deck` is
-  // ready, producing genuinely empty charts with no indication why. Same 90%-coverage gate + copy
-  // PantheonDeckDetail.tsx already uses for this identical race, so this page stops looking broken
-  // during that window.
-  const resolvedMainCount = useMemo(
-    () => (deck ? deck.main.reduce((sum, line) => sum + (cardsByName.has(line.name) ? line.quantity : 0), 0) : 0),
-    [deck, cardsByName],
-  );
-  const totalMainCount = useMemo(() => (deck ? deck.main.reduce((sum, line) => sum + line.quantity, 0) : 0), [deck]);
-  const catalogCoverage = totalMainCount > 0 ? resolvedMainCount / totalMainCount : 0;
-
-  const composition = useMemo(() => {
-    if (!deck) return null;
-    return computeDeckComposition([...deck.main, ...deck.material], cardsByName);
-  }, [deck, cardsByName]);
-
-  const floatingMemory = useMemo(() => {
-    if (!deck) return null;
-    return computeFloatingMemory([...deck.main, ...deck.material], cardsByName, deck.championName, deck.classes);
-  }, [deck, cardsByName]);
-
-  const aggressionForecast = useMemo(() => {
-    if (!deck) return null;
-    return computeAggressionForecast(deck.main, cardsByName, deck.material);
-  }, [deck, cardsByName]);
-
-  const allyPower = useMemo(() => {
-    if (!deck) return null;
-    return computeAllyPower([...deck.main, ...deck.material], cardsByName);
-  }, [deck, cardsByName]);
-
-  const allyPowerSegments = useMemo(() => {
-    if (!allyPower) return [];
-    const labeled = new Map(Array.from(allyPower.byPower.entries()).map(([power, count]) => [`Power ${power}`, count]));
-    return buildChartSegments(labeled);
-  }, [allyPower]);
-
-  const keywordSegments = useMemo(() => {
-    if (!deck) return [];
-    return buildChartSegments(computeKeywordComposition([...deck.main, ...deck.material], cardsByName));
-  }, [deck, cardsByName]);
-
-  const damage = useMemo(() => {
-    if (!deck) return null;
-    return computeDamageComposition([...deck.main, ...deck.material], cardsByName);
-  }, [deck, cardsByName]);
-
-  const damageTargetSegments = useMemo(() => (damage ? buildChartSegments(damage.targets) : []), [damage]);
-  const damageTypeSegments = useMemo(() => (damage ? buildChartSegments(damage.conditionality) : []), [damage]);
-
-  const memoryCurve = useMemo(() => {
-    if (!deck) return [];
-    return computeMemoryCostCurve([...deck.main, ...deck.material], cardsByName);
-  }, [deck, cardsByName]);
-
-  const reserveCurve = useMemo(() => {
-    if (!deck) return [];
-    return computeReserveCostCurve([...deck.main, ...deck.material], cardsByName);
-  }, [deck, cardsByName]);
-
-  const options = useQuery({ queryKey: ["option-definitions"], queryFn: gatcgApi.getOptionDefinitions });
-  const raritySegments = useMemo(() => {
-    if (!deck) return [];
-    const counts = computeRarityBreakdown([...deck.main, ...deck.material], cardsByName);
-    const labeled = new Map(
-      Array.from(counts.entries()).map(([rarity, count]) => [
-        options.data?.rarity.find((r) => r.value === String(rarity))?.display ?? `Rarity ${rarity}`,
-        count,
-      ]),
-    );
-    return buildChartSegments(labeled);
-  }, [deck, cardsByName, options.data]);
 
   const priceByName = useDeckPriceByName();
   const priciestCards = useMemo(() => {
@@ -390,28 +261,153 @@ export default function DeckDetail() {
     );
   }
 
+  // Tournament-only sections `UserDeckStats` itself has no equivalent for — grouped into two of
+  // its tab-switcher's tabs (via `extraTabs`) instead of stacking as their own accordions below it.
+  const hasHistoricalPerformance = Boolean(deckTestResult && deckTestResult.classification.status !== "unclassified" && deckTestResult.classification.cluster && deckTestResult.performance);
+  const hasMatchupData = hasClusterMatch && clusterMatchups.length > 0;
+  const deckStatsExtraTabs: DeckStatsTab[] = [];
+  if (hasHistoricalPerformance || winConditions.length > 0 || hasMatchupData) {
+    deckStatsExtraTabs.push({
+      key: "matchups",
+      label: "Matchups & history",
+      content: (
+        <>
+          {hasHistoricalPerformance && deckTestResult?.classification.cluster && deckTestResult.performance && (
+            <Section heading="compact" title="Historical performance" description="How this build's matched named archetype has actually performed across every recorded match — not a prediction for this exact decklist.">
+              <p className="mt-2 text-xs text-ctp-subtext0">
+                Matches{" "}
+                <Link to={`/archetypes/${deckTestResult.classification.cluster.id}`} className="text-ctp-blue hover:underline">
+                  {deckTestResult.classification.cluster.name}
+                </Link>{" "}
+                ({(deckTestResult.classification.similarity * 100).toFixed(0)}% similar{deckTestResult.classification.status === "borderline" ? ", borderline" : ""})
+              </p>
+              <p className="mt-1 text-xs text-ctp-subtext0">
+                {(deckTestResult.performance.winRate * 100).toFixed(0)}% avg win rate · {(deckTestResult.performance.topCutRate * 100).toFixed(0)}% top cut rate
+                {deckTestResult.performance.avgPlacement !== null && ` · avg placement #${deckTestResult.performance.avgPlacement.toFixed(0)}`}
+              </p>
+              <p className="mt-1 text-xs text-ctp-subtext0">
+                95% win-rate interval {(deckTestResult.performance.interval95.low * 100).toFixed(1)}–{(deckTestResult.performance.interval95.high * 100).toFixed(1)}%
+                {` across ${deckTestResult.performance.interval95.matches.toLocaleString()} matches`}
+                {` · ${deckTestResult.performance.deckCount} decks, ${deckTestResult.performance.playerCount} players, ${deckTestResult.performance.eventCount} events`}
+                {deckTestResult.performance.confidence === "emerging" ? " · emerging signal" : ""}
+              </p>
+              {deckTestResult.performance.trend && (
+                <p className="mt-1 text-xs text-ctp-subtext0">
+                  {deckTestResult.performance.trend.previousSeasonName} → {deckTestResult.performance.trend.latestSeasonName}:{" "}
+                  <span
+                    className={
+                      deckTestResult.performance.trend.playerCountChange > 0 ? "text-ctp-green" : deckTestResult.performance.trend.playerCountChange < 0 ? "text-ctp-red" : ""
+                    }
+                  >
+                    {deckTestResult.performance.trend.playerCountChange > 0 ? "+" : ""}
+                    {deckTestResult.performance.trend.playerCountChange} players
+                  </span>{" "}
+                  ·{" "}
+                  <span
+                    className={
+                      deckTestResult.performance.trend.winRateChangePct > 0 ? "text-ctp-green" : deckTestResult.performance.trend.winRateChangePct < 0 ? "text-ctp-red" : ""
+                    }
+                  >
+                    {deckTestResult.performance.trend.winRateChangePct > 0 ? "+" : ""}
+                    {deckTestResult.performance.trend.winRateChangePct.toFixed(1)}pp win rate
+                  </span>
+                </p>
+              )}
+              {deckTestResult.cautions.length > 0 && (
+                <ul className="mt-2 list-disc space-y-0.5 pl-4 text-xs text-ctp-subtext0">
+                  {deckTestResult.cautions.map((c) => (
+                    <li key={c}>{c}</li>
+                  ))}
+                </ul>
+              )}
+              <MethodologyNote anchor="classification">How this match and its confidence tier are determined.</MethodologyNote>
+            </Section>
+          )}
+
+          {winConditions.length > 0 && (
+            <Section heading="compact" className={hasHistoricalPerformance ? "mt-6" : undefined} title="How this deck wins" description="Card interactions detected from rules text and, where a real deck confirms them, cross-deck co-occurrence — not a win-rate claim, and not exclusive with the sections below.">
+              <DeckWinConditions interactions={winConditions} cardsByName={cardsByName} />
+            </Section>
+          )}
+
+          {hasMatchupData && (
+            <Section heading="compact" className={hasHistoricalPerformance || winConditions.length > 0 ? "mt-6" : undefined} title="What beats this build" description="Opponent cards that correlate with beating this build, from real pairing outcomes — correlational, not a guarantee.">
+              <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+                <span className="text-ctp-subtext0">Vs:</span>
+                <select
+                  value={opponentClusterId ?? clusterMatchups[0]?.opponentClusterId ?? ""}
+                  aria-label="Opponent build"
+                  onChange={(e) => setOpponentClusterId(e.target.value)}
+                  className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+                >
+                  {clusterMatchups.map((m) => (
+                    <option key={m.opponentClusterId} value={m.opponentClusterId}>
+                      {m.opponentClusterName} ({m.games} games)
+                    </option>
+                  ))}
+                </select>
+                {selectedMatchup && (
+                  <span className="text-ctp-subtext0">{(selectedMatchup.baselineWinRate * 100).toFixed(0)}% win rate in this matchup</span>
+                )}
+              </div>
+              {hurtYouCards.length === 0 ? (
+                <InlineState className="mt-3 text-sm">Not enough recorded games yet for a card-by-card breakdown.</InlineState>
+              ) : (
+                <CardImpactTable
+                  cards={hurtYouCards}
+                  cardImages={hurtYouCardImages}
+                  withLabel="Your win rate (they have it)"
+                  withoutLabel="Your win rate (they don't)"
+                />
+              )}
+            </Section>
+          )}
+        </>
+      ),
+    });
+  }
+  if (priciestCards.length > 0) {
+    deckStatsExtraTabs.push({
+      key: "pricing",
+      label: "Pricing",
+      content: (
+        <ul className="space-y-1 text-sm">
+          {priciestCards.map((c) => {
+            const card = cardsByName.get(c.name);
+            return (
+              <li key={c.name} className="flex items-baseline gap-1.5">
+                <span className="w-6 shrink-0 text-right text-ctp-subtext0">{c.quantity}x</span>
+                {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
+                {card ? (
+                  <CardHoverPreview image={card.editions[0]?.image} alt={c.name}>
+                    <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
+                      {c.name}
+                    </Link>
+                  </CardHoverPreview>
+                ) : (
+                  <span className="text-ctp-text">{c.name}</span>
+                )}
+                <span className="ml-auto shrink-0 text-ctp-subtext0">{formatUsd(c.total)}</span>
+              </li>
+            );
+          })}
+        </ul>
+      ),
+    });
+  }
+
   return (
     <PageLayout data-component="DeckDetail">
       <Link to="/decks?view=builds&minPlayers=2plus" className="text-sm text-ctp-blue hover:underline">
         &larr; Browse Decks
       </Link>
 
-      <div className="mt-2 flex items-center gap-3">
-        <CardHoverPreview image={championCard?.editions[0]?.image} alt={deck.championName ?? "Unknown champion"}>
-          {championCard?.editions[0] ? (
-            <CardImage
-              image={championCard.editions[0].image}
-              alt={deck.championName ?? ""}
-              className="h-20 w-14 shrink-0 rounded object-cover object-top"
-            />
-          ) : (
-            <div className="h-20 w-14 shrink-0 rounded bg-ctp-surface0" />
-          )}
-        </CardHoverPreview>
-
-        <div>
-          <h1 className="text-2xl font-bold text-ctp-blue">{deck.championName ?? "Unknown champion"}</h1>
-          <p className="mt-1 text-sm text-ctp-subtext1">
+      <UserDeckHeader
+        title={deck.championName ?? "Unknown champion"}
+        championName={deck.championName}
+        format="STANDARD"
+        statLine={
+          <>
             {deck.playerCount} player{deck.playerCount === 1 ? "" : "s"} · {deck.eventCount} event
             {deck.eventCount === 1 ? "" : "s"}
             {deck.bestPlacement !== null && ` · best finish #${deck.bestPlacement}`} ·{" "}
@@ -426,286 +422,40 @@ export default function DeckDetail() {
                 </Link>
               </>
             )}
-          </p>
-        </div>
+          </>
+        }
+      />
+
+      <div className="mt-6">
+        <Tabs tabs={TABS} active={tab} onChange={setTab} label="Deck data" baseId="deck-detail" />
       </div>
 
-      <div className="mt-4">
-        <Tabs tabs={TABS} active={tab} onChange={setTab} label="Deck data" />
-      </div>
+      <TabPanel baseId="deck-detail" tab="decklist" active={tab}>
+        <UserDecklistPanel decklist={decklist} format="STANDARD" collectionSource={`Tournament build: ${deck.championName ?? "Unknown Champion"}`} />
+      </TabPanel>
 
-      {tab === "decklist" && aggressionForecast && (
-        <div className="mt-4">
-          <Panel>
-            <AggressionForecast forecast={aggressionForecast} />
-          </Panel>
-        </div>
-      )}
+      <TabPanel baseId="deck-detail" tab="analysis" active={tab}>
+        <UserDeckStats decklist={decklist} championName={deck.championName} format="STANDARD" title={deck.championName ?? "Deck"} extraTabs={deckStatsExtraTabs} />
+      </TabPanel>
 
-      {tab === "decklist" && (
-        <div className="mt-6">
-          <DecklistView decklist={decklist} cardsByName={cardsByName} showThumbnails deckId={deck.deckIds[0]} championFallback={false} showDeckStats={false} />
-          {displayPrefs.metaGaps && <DeckDecaySignals decklist={decklist} cardsByName={cardsByName} />}
-          <DeckCollectionTools decklist={decklist} cardsByName={cardsByName} source={`Tournament build: ${deck.championName ?? "Unknown Champion"}`} />
-        </div>
-      )}
-
-      {tab === "decklist" && deckTestResult && deckTestResult.classification.status !== "unclassified" && deckTestResult.classification.cluster && deckTestResult.performance && (
-        <Panel padding="sm" className="mt-6">
-          <Section
-            heading="dense"
-            collapsible
-            defaultOpen={false}
-            title="Historical performance"
-            description="How this build's matched named archetype has actually performed across every recorded match — not a prediction for this exact decklist."
-          >
-            <p className="mt-2 text-xs text-ctp-subtext0">
-              Matches{" "}
-              <Link to={`/archetypes/${deckTestResult.classification.cluster.id}`} className="text-ctp-blue hover:underline">
-                {deckTestResult.classification.cluster.name}
-              </Link>{" "}
-              ({(deckTestResult.classification.similarity * 100).toFixed(0)}% similar{deckTestResult.classification.status === "borderline" ? ", borderline" : ""})
-            </p>
-            <p className="mt-1 text-xs text-ctp-subtext0">
-              {(deckTestResult.performance.winRate * 100).toFixed(0)}% avg win rate · {(deckTestResult.performance.topCutRate * 100).toFixed(0)}% top cut rate
-              {deckTestResult.performance.avgPlacement !== null && ` · avg placement #${deckTestResult.performance.avgPlacement.toFixed(0)}`}
-            </p>
-            <p className="mt-1 text-xs text-ctp-subtext0">
-              95% win-rate interval {(deckTestResult.performance.interval95.low * 100).toFixed(1)}–{(deckTestResult.performance.interval95.high * 100).toFixed(1)}%
-              {` across ${deckTestResult.performance.interval95.matches.toLocaleString()} matches`}
-              {` · ${deckTestResult.performance.deckCount} decks, ${deckTestResult.performance.playerCount} players, ${deckTestResult.performance.eventCount} events`}
-              {deckTestResult.performance.confidence === "emerging" ? " · emerging signal" : ""}
-            </p>
-            {deckTestResult.performance.trend && (
-              <p className="mt-1 text-xs text-ctp-subtext0">
-                {deckTestResult.performance.trend.previousSeasonName} → {deckTestResult.performance.trend.latestSeasonName}:{" "}
-                <span
-                  className={
-                    deckTestResult.performance.trend.playerCountChange > 0 ? "text-ctp-green" : deckTestResult.performance.trend.playerCountChange < 0 ? "text-ctp-red" : ""
-                  }
-                >
-                  {deckTestResult.performance.trend.playerCountChange > 0 ? "+" : ""}
-                  {deckTestResult.performance.trend.playerCountChange} players
-                </span>{" "}
-                ·{" "}
-                <span
-                  className={
-                    deckTestResult.performance.trend.winRateChangePct > 0 ? "text-ctp-green" : deckTestResult.performance.trend.winRateChangePct < 0 ? "text-ctp-red" : ""
-                  }
-                >
-                  {deckTestResult.performance.trend.winRateChangePct > 0 ? "+" : ""}
-                  {deckTestResult.performance.trend.winRateChangePct.toFixed(1)}pp win rate
-                </span>
-              </p>
-            )}
-            {deckTestResult.cautions.length > 0 && (
-              <ul className="mt-2 list-disc space-y-0.5 pl-4 text-xs text-ctp-subtext0">
-                {deckTestResult.cautions.map((c) => (
-                  <li key={c}>{c}</li>
-                ))}
-              </ul>
-            )}
-            <MethodologyNote anchor="classification">How this match and its confidence tier are determined.</MethodologyNote>
-          </Section>
-        </Panel>
-      )}
-
-      {tab === "decklist" && winConditions.length > 0 && (
-        <Panel padding="sm" className="mt-6">
-          <Section
-            heading="dense"
-            collapsible
-            defaultOpen={false}
-            title="How this deck wins"
-            description="Card interactions detected from rules text and, where a real deck confirms them, cross-deck co-occurrence — not a win-rate claim, and not exclusive with the sections below."
-          >
-            <DeckWinConditions interactions={winConditions} cardsByName={cardsByName} />
-          </Section>
-        </Panel>
-      )}
-
-      {tab === "decklist" && !hasClusterMatch && (
-        <Panel padding="sm" className="mt-6">
-          <Section
-            heading="dense"
-            collapsible
-            defaultOpen={false}
-            title="Cards that might help"
-            description={`Cards that correlate with a higher win rate among other ${deck.championName ?? "this Champion's"} decks — correlational, not a guarantee.`}
-          >
-          {championElementsPresent.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-3">
-              {championElementsPresent.map((element) => (
-                <label key={element} className="flex items-center gap-1.5 text-xs text-ctp-subtext1">
-                  <input
-                    type="checkbox"
-                    checked={selectedElements.includes(element)}
-                    onChange={() => toggleElement(element)}
-                    className="accent-ctp-blue"
-                  />
-                  {element}
-                </label>
-              ))}
+      <TabPanel baseId="deck-detail" tab="history" active={tab}>
+        {sightingsByMonth.length > 1 && (
+          <Section className="mt-8" heading="compact" title="Popularity Over Time">
+            <div className="mt-2">
+              <BarChart title="Sightings per Month" bars={sightingsByMonth} />
             </div>
-          )}
-          {championImpact.cards.length === 0 ? (
-            <InlineState className="mt-3 text-sm">
-              {championImpact.loading
-                ? "Loading…"
-                : championImpact.totalDecks === 0
-                  ? "No decks match these elements yet — try unchecking some."
-                  : `Not enough with/without samples yet among ${championImpact.totalDecks} matching decks.`}
-            </InlineState>
-          ) : (
-            <>
-              <p className="mt-3 text-xs text-ctp-subtext0">
-                Based on {championImpact.totalDecks} matching deck{championImpact.totalDecks === 1 ? "" : "s"}
-                {isRecommendationPending && " — recalculating…"}
-              </p>
-              <CardImpactTable
-                cards={championImpact.cards}
-                cardImages={championImpactCardImages}
-                withLabel="Win rate (with)"
-                withoutLabel="Win rate (without)"
-              />
-            </>
-          )}
           </Section>
-        </Panel>
-      )}
-
-      {tab === "decklist" && hasClusterMatch && clusterMatchups.length > 0 && (
-        <Panel padding="sm" className="mt-6">
-          <Section
-            heading="dense"
-            collapsible
-            defaultOpen={false}
-            title="What beats this build"
-            description="Opponent cards that correlate with beating this build, from real pairing outcomes — correlational, not a guarantee."
-          >
-            <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
-              <span className="text-ctp-subtext0">Vs:</span>
-              <select
-                value={opponentClusterId ?? clusterMatchups[0]?.opponentClusterId ?? ""}
-                aria-label="Opponent build"
-                onChange={(e) => setOpponentClusterId(e.target.value)}
-                className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
-              >
-                {clusterMatchups.map((m) => (
-                  <option key={m.opponentClusterId} value={m.opponentClusterId}>
-                    {m.opponentClusterName} ({m.games} games)
-                  </option>
-                ))}
-              </select>
-              {selectedMatchup && (
-                <span className="text-ctp-subtext0">{(selectedMatchup.baselineWinRate * 100).toFixed(0)}% win rate in this matchup</span>
-              )}
+        )}
+        {instances.length > 0 && (
+          <Section className="mt-8" heading="compact" title={`Played by (${instances.length})`}>
+            <div className="mt-2">
+              <TopDecksList decks={instancesForList} playerName={playerName} />
             </div>
-            {hurtYouCards.length === 0 ? (
-              <InlineState className="mt-3 text-sm">Not enough recorded games yet for a card-by-card breakdown.</InlineState>
-            ) : (
-              <CardImpactTable
-                cards={hurtYouCards}
-                cardImages={hurtYouCardImages}
-                withLabel="Your win rate (they have it)"
-                withoutLabel="Your win rate (they don't)"
-              />
-            )}
           </Section>
-        </Panel>
-      )}
+        )}
+      </TabPanel>
 
-      {tab === "composition" && composition && (
-        <Section className="mt-8" heading="compact" title="Composition">
-          {catalogCoverage < 0.9 ? (
-            <Panel tone="warning" className="mt-3 text-sm text-ctp-subtext1">
-              Composition is waiting for card data: {resolvedMainCount} of {totalMainCount} main-deck cards resolved. Charts appear at 90% coverage.
-            </Panel>
-          ) : (
-            <>
-              {(floatingMemory && (floatingMemory.base > 0 || floatingMemory.classBonus > 0)) ||
-              (allyPower && allyPower.allyCopies > 0) ||
-              (damage && (damage.championRange.max > 0 || damage.allyRange.max > 0)) ? (
-                <p className="mt-1 text-sm text-ctp-subtext1">
-                  {floatingMemory && (floatingMemory.base > 0 || floatingMemory.classBonus > 0) && (
-                    <>
-                      Floating Memory: {floatingMemory.base} · Class Bonus Floating Memory: {floatingMemory.classBonus}
-                      {(allyPower?.allyCopies || damage) && " · "}
-                    </>
-                  )}
-                  {allyPower && allyPower.allyCopies > 0 && (
-                    <>
-                      Average Ally Power: {formatAllyPower(allyPower)} (across {allyPower.allyCopies} allies)
-                      {damage && (damage.championRange.max > 0 || damage.allyRange.max > 0) && " · "}
-                    </>
-                  )}
-                  {damage && damage.championRange.max > 0 && (
-                    <>
-                      Direct Damage (champion): {damage.championRange.min}–{damage.championRange.max}
-                      {damage.allyRange.max > 0 && " · "}
-                    </>
-                  )}
-                  {damage && damage.allyRange.max > 0 && (
-                    <>
-                      Ally Damage: {damage.allyRange.min}–{damage.allyRange.max}
-                    </>
-                  )}
-                </p>
-              ) : null}
-
-              <div className="mt-3">
-                <CompositionChartGrid composition={composition} memoryCurve={memoryCurve} reserveCurve={reserveCurve} />
-              </div>
-
-              <Section className="mt-4" heading="dense" collapsible defaultOpen={false} title="Detailed breakdown" description="Rarity, ally power, keywords, and damage composition.">
-                <div className="mt-3 grid gap-4 sm:grid-cols-2">
-                  <RankedCompositionChart title="Rarity" segments={raritySegments} />
-                  <RankedCompositionChart title="Ally Power" segments={allyPowerSegments} />
-                  <RankedCompositionChart title="Keywords" segments={keywordSegments} />
-                  <DonutChart title="Damage Targets" segments={damageTargetSegments} />
-                  <DonutChart title="Damage Type" segments={damageTypeSegments} />
-                </div>
-              </Section>
-            </>
-          )}
-        </Section>
-      )}
-
-      {tab === "decklist" && priciestCards.length > 0 && (
-        <Section className="mt-8" heading="compact" collapsible defaultOpen={false} title="Priciest Cards">
-          <ul className="mt-2 space-y-1 text-sm">
-            {priciestCards.map((c) => {
-              const card = cardsByName.get(c.name);
-              return (
-                <li key={c.name} className="flex items-baseline gap-1.5">
-                  <span className="w-6 shrink-0 text-right text-ctp-subtext0">{c.quantity}x</span>
-                  {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
-                  {card ? (
-                    <CardHoverPreview image={card.editions[0]?.image} alt={c.name}>
-                      <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
-                        {c.name}
-                      </Link>
-                    </CardHoverPreview>
-                  ) : (
-                    <span className="text-ctp-text">{c.name}</span>
-                  )}
-                  <span className="ml-auto shrink-0 text-ctp-subtext0">{formatUsd(c.total)}</span>
-                </li>
-              );
-            })}
-          </ul>
-        </Section>
-      )}
-
-      {tab === "history" && sightingsByMonth.length > 1 && (
-        <Section className="mt-8" heading="compact" title="Popularity Over Time">
-          <div className="mt-2">
-            <BarChart title="Sightings per Month" bars={sightingsByMonth} />
-          </div>
-        </Section>
-      )}
-
-      {tab === "similar" && (
+      <TabPanel baseId="deck-detail" tab="similar" active={tab}>
         <Section className="mt-8" heading="compact" title="Similar Decks">
           {similarDecks.length > 0 ? (
             <div className="mt-2 space-y-1 text-sm">
@@ -727,15 +477,7 @@ export default function DeckDetail() {
             </InlineState>
           )}
         </Section>
-      )}
-
-      {tab === "history" && instances.length > 0 && (
-        <Section className="mt-8" heading="compact" title={`Played by (${instances.length})`}>
-          <div className="mt-2">
-            <TopDecksList decks={instancesForList} playerName={playerName} />
-          </div>
-        </Section>
-      )}
+      </TabPanel>
     </PageLayout>
   );
 }
