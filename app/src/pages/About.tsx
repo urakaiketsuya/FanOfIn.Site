@@ -248,31 +248,6 @@ const WALKTHROUGH_RESERVE_BARS = [
 ];
 
 /**
- * Same "pre-baked, no live fetch" reasoning as WALKTHROUGH_DECK above — captured directly from
- * /archetypes/gidbxg?tab=impact, this build's own full-field Card Impact (not matchup-scoped).
- * "Water Diao Chan (Fractal of Insight)" is a genuinely small, "emerging"-confidence archetype (17
- * decks, 10 players, 15 events) — picked for this walkthrough because its name is a nice callback
- * to the site's own, not because it's the biggest sample available; the small-sample caveat below
- * is real, not boilerplate. Archetype cluster IDs are re-derived by the clustering pipeline and
- * aren't stable long-term — if this example's own link ever breaks, re-capture from a currently-real
- * cluster (grep data/analysis/archetype-taxonomy.json for a "Fractal of Insight" name match first;
- * don't just refresh the numbers on the old id).
- */
-const WALKTHROUGH_CARD_IMPACT = {
-  clusterId: "gidbxg",
-  clusterName: "Water Diao Chan (Fractal of Insight)",
-  deckCount: 17,
-  cards: [
-    { name: "Water Resonance Bauble", slug: "water-resonance-bauble", image: "/cards/images/vvmdvbkuht.jpg", role: "Mixed", winRateWith: 0.651, winRateWithout: 0.303, lift: 0.137 },
-    { name: "Dissonant Fractal", slug: "dissonant-fractal", image: "/cards/images/ve2xbe3gbp.jpg", role: "Main", winRateWith: 0.676, winRateWithout: 0.408, lift: 0.119 },
-    { name: "Quicksilver Grail", slug: "quicksilver-grail", image: "/cards/images/6oyti67l58.jpg", role: "Material", winRateWith: 0.660, winRateWithout: 0.424, lift: 0.105 },
-    { name: "Lost in Thought", slug: "lost-in-thought", image: "/cards/images/v0lut4793k.jpg", role: "Main", winRateWith: 0.673, winRateWithout: 0.441, lift: 0.102 },
-    { name: "Viridian Protective Trinket", slug: "viridian-protective-trinket", image: "/cards/images/ydupmu6gvm.jpg", role: "Sideboard", winRateWith: 0.643, winRateWithout: 0.441, lift: 0.090 },
-    { name: "Turbo Charge", slug: "turbo-charge", image: "/cards/images/c16bn55g9b.jpg", role: "Main", winRateWith: 0.662, winRateWithout: 0.488, lift: 0.068 },
-  ],
-};
-
-/**
  * A real decklist from the same "Water Diao Chan (Fractal of Insight)" cluster (deckId 32243:2150,
  * canonical hash 8qjzzs) — feeds the actual `computeAggressionForecast`/`HypergeometricCalculator`
  * live below, rather than faking their output. Deliberately not the cluster's best-performing
