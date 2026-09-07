@@ -203,6 +203,19 @@ export default function DeckDetail() {
   const championImpact = useChampionCardImpact(hasClusterMatch ? null : (deck?.championName ?? null), selectedElements, excludeCardNames);
   const championImpactCardImages = useCardsByNames(useMemo(() => championImpact.cards.map((c) => c.cardName), [championImpact.cards]));
 
+  // `cardsByName` is its own async Dexie query, independent of `deck` itself resolving (the "fast
+  // path" above uses a separately-loaded `catalogByName`) — so composition can briefly (or, on a
+  // cold cache, not-so-briefly) compute against an still-mostly-empty map right after `deck` is
+  // ready, producing genuinely empty charts with no indication why. Same 90%-coverage gate + copy
+  // PantheonDeckDetail.tsx already uses for this identical race, so this page stops looking broken
+  // during that window.
+  const resolvedMainCount = useMemo(
+    () => (deck ? deck.main.reduce((sum, line) => sum + (cardsByName.has(line.name) ? line.quantity : 0), 0) : 0),
+    [deck, cardsByName],
+  );
+  const totalMainCount = useMemo(() => (deck ? deck.main.reduce((sum, line) => sum + line.quantity, 0) : 0), [deck]);
+  const catalogCoverage = totalMainCount > 0 ? resolvedMainCount / totalMainCount : 0;
+
   const composition = useMemo(() => {
     if (!deck) return null;
     return computeDeckComposition([...deck.main, ...deck.material], cardsByName);
@@ -604,49 +617,57 @@ export default function DeckDetail() {
 
       {tab === "composition" && composition && (
         <Section className="mt-8" heading="compact" title="Composition">
-          {(floatingMemory && (floatingMemory.base > 0 || floatingMemory.classBonus > 0)) ||
-          (allyPower && allyPower.allyCopies > 0) ||
-          (damage && (damage.championRange.max > 0 || damage.allyRange.max > 0)) ? (
-            <p className="mt-1 text-sm text-ctp-subtext1">
-              {floatingMemory && (floatingMemory.base > 0 || floatingMemory.classBonus > 0) && (
-                <>
-                  Floating Memory: {floatingMemory.base} · Class Bonus Floating Memory: {floatingMemory.classBonus}
-                  {(allyPower?.allyCopies || damage) && " · "}
-                </>
-              )}
-              {allyPower && allyPower.allyCopies > 0 && (
-                <>
-                  Average Ally Power: {formatAllyPower(allyPower)} (across {allyPower.allyCopies} allies)
-                  {damage && (damage.championRange.max > 0 || damage.allyRange.max > 0) && " · "}
-                </>
-              )}
-              {damage && damage.championRange.max > 0 && (
-                <>
-                  Direct Damage (champion): {damage.championRange.min}–{damage.championRange.max}
-                  {damage.allyRange.max > 0 && " · "}
-                </>
-              )}
-              {damage && damage.allyRange.max > 0 && (
-                <>
-                  Ally Damage: {damage.allyRange.min}–{damage.allyRange.max}
-                </>
-              )}
-            </p>
-          ) : null}
+          {catalogCoverage < 0.9 ? (
+            <Panel tone="warning" className="mt-3 text-sm text-ctp-subtext1">
+              Composition is waiting for card data: {resolvedMainCount} of {totalMainCount} main-deck cards resolved. Charts appear at 90% coverage.
+            </Panel>
+          ) : (
+            <>
+              {(floatingMemory && (floatingMemory.base > 0 || floatingMemory.classBonus > 0)) ||
+              (allyPower && allyPower.allyCopies > 0) ||
+              (damage && (damage.championRange.max > 0 || damage.allyRange.max > 0)) ? (
+                <p className="mt-1 text-sm text-ctp-subtext1">
+                  {floatingMemory && (floatingMemory.base > 0 || floatingMemory.classBonus > 0) && (
+                    <>
+                      Floating Memory: {floatingMemory.base} · Class Bonus Floating Memory: {floatingMemory.classBonus}
+                      {(allyPower?.allyCopies || damage) && " · "}
+                    </>
+                  )}
+                  {allyPower && allyPower.allyCopies > 0 && (
+                    <>
+                      Average Ally Power: {formatAllyPower(allyPower)} (across {allyPower.allyCopies} allies)
+                      {damage && (damage.championRange.max > 0 || damage.allyRange.max > 0) && " · "}
+                    </>
+                  )}
+                  {damage && damage.championRange.max > 0 && (
+                    <>
+                      Direct Damage (champion): {damage.championRange.min}–{damage.championRange.max}
+                      {damage.allyRange.max > 0 && " · "}
+                    </>
+                  )}
+                  {damage && damage.allyRange.max > 0 && (
+                    <>
+                      Ally Damage: {damage.allyRange.min}–{damage.allyRange.max}
+                    </>
+                  )}
+                </p>
+              ) : null}
 
-          <div className="mt-3">
-            <CompositionChartGrid composition={composition} memoryCurve={memoryCurve} reserveCurve={reserveCurve} />
-          </div>
+              <div className="mt-3">
+                <CompositionChartGrid composition={composition} memoryCurve={memoryCurve} reserveCurve={reserveCurve} />
+              </div>
 
-          <Section className="mt-4" heading="dense" collapsible defaultOpen={false} title="Detailed breakdown" description="Rarity, ally power, keywords, and damage composition.">
-            <div className="mt-3 grid gap-4 sm:grid-cols-2">
-              <RankedCompositionChart title="Rarity" segments={raritySegments} />
-              <RankedCompositionChart title="Ally Power" segments={allyPowerSegments} />
-              <RankedCompositionChart title="Keywords" segments={keywordSegments} />
-              <DonutChart title="Damage Targets" segments={damageTargetSegments} />
-              <DonutChart title="Damage Type" segments={damageTypeSegments} />
-            </div>
-          </Section>
+              <Section className="mt-4" heading="dense" collapsible defaultOpen={false} title="Detailed breakdown" description="Rarity, ally power, keywords, and damage composition.">
+                <div className="mt-3 grid gap-4 sm:grid-cols-2">
+                  <RankedCompositionChart title="Rarity" segments={raritySegments} />
+                  <RankedCompositionChart title="Ally Power" segments={allyPowerSegments} />
+                  <RankedCompositionChart title="Keywords" segments={keywordSegments} />
+                  <DonutChart title="Damage Targets" segments={damageTargetSegments} />
+                  <DonutChart title="Damage Type" segments={damageTypeSegments} />
+                </div>
+              </Section>
+            </>
+          )}
         </Section>
       )}
 
