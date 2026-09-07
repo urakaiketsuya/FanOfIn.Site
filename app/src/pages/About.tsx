@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import type { AccountUser, OmnidexDecklist } from "@gatcg/shared";
 import ClassIcon from "../components/ClassIcon";
 import ElementIcon from "../components/ElementIcon";
@@ -7,7 +7,7 @@ import CardImage from "../components/CardImage";
 import CardHoverPreview from "../components/CardHoverPreview";
 import DonutChart, { buildChartSegments } from "../components/DonutChart";
 import BarChart from "../components/BarChart";
-import ComparisonGrid from "../features/compare/ComparisonGrid";
+import ComparisonSummary from "../features/compare/ComparisonSummary";
 import type { ComparedDeck } from "../features/compare/types";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 import { useFeaturedSets } from "../features/sets/useFeaturedSets";
@@ -338,89 +338,142 @@ const WALKTHROUGH_DECK_BUILDER = {
   ] as { name: string; slug: string; image: string; lift: number | null }[],
 };
 
-/** Same "pre-baked, no live fetch" reasoning as WALKTHROUGH_DECK above — captured from the two real, independently popular Silvie builds at /decks/xenbr4 and /decks/1xiwetk. */
-const COMPARE_CHAMPION_NAME = "Silvie";
+/**
+ * Same "pre-baked, no live fetch" reasoning as WALKTHROUGH_DECK above — two real Lorraine builds,
+ * decoded directly from deck-card-index.json (deckIds 60363:570 and 60488:4261). Deliberately not
+ * two similarly-successful lists: BobbyTortilla's Gauntlet 2026 build went 1-5 (43rd), while
+ * Zero0000000000's build finished 2nd at the 2026 World Championship (5-3) — a genuinely different
+ * outcome from two independent card choices, not two flavors of the same result. Keys are the real
+ * deckIds so the "Open Compare" link below reopens this exact comparison, not a placeholder.
+ */
+const COMPARE_CHAMPION_NAME = "Lorraine";
+const COMPARE_ADD_PARAM = "60363:570,60488:4261";
 
 const COMPARE_DECK_1: OmnidexDecklist = {
   main: [
-    { card: "Baby Gray Slime", quantity: 4 },
-    { card: "Blissful Calling", quantity: 4 },
+    { card: "Benediction Angel", quantity: 1 },
     { card: "Dungeon Guide", quantity: 4 },
     { card: "Escape the Wreckage", quantity: 3 },
-    { card: "Forest Cake", quantity: 4 },
-    { card: "Limitless Slime", quantity: 4 },
-    { card: "Baby Red Slime", quantity: 4 },
-    { card: "Gather Slimes", quantity: 4 },
-    { card: "Baby Green Slime", quantity: 4 },
-    { card: "Slimeshield", quantity: 3 },
-    { card: "Storm Slime", quantity: 4 },
-    { card: "Ethereal Slime", quantity: 4 },
-    { card: "Lustrous Slime", quantity: 3 },
-    { card: "Gaia's Songbird", quantity: 3 },
-    { card: "Ordinary Bear", quantity: 3 },
-    { card: "Twilight Slime", quantity: 1 },
-    { card: "Hymn of Gaia's Grace", quantity: 2 },
-    { card: "Slime King", quantity: 2 },
+    { card: "Fluffy Shopkeep", quantity: 4 },
+    { card: "Heavenly Guide", quantity: 1 },
+    { card: "Turbo Charge", quantity: 2 },
+    { card: "Alizarin Longbowman", quantity: 1 },
+    { card: "Chamberlain Toad", quantity: 1 },
+    { card: "Aella, Zephyr's Hand", quantity: 3 },
+    { card: "Aesan Protector", quantity: 2 },
+    { card: "Calming Breeze", quantity: 2 },
+    { card: "Dream Fairy", quantity: 2 },
+    { card: "Fairy Whispers", quantity: 4 },
+    { card: "Imperious Galebind", quantity: 3 },
+    { card: "Rally the Peasants", quantity: 3 },
+    { card: "Reclaim", quantity: 4 },
+    { card: "Rose, Eternal Paragon", quantity: 1 },
+    { card: "Stifling Trap", quantity: 2 },
+    { card: "Veiling Breeze", quantity: 3 },
+    { card: "Windmill Engineer", quantity: 4 },
+    { card: "Crux Sight", quantity: 2 },
+    { card: "Ghosts of Pendragon", quantity: 4 },
+    { card: "Spirit Blade: Ascension", quantity: 4 },
+    { card: "Spirit Blade: Retribution", quantity: 1 },
   ],
   material: [
-    { card: "Spirit of Slime", quantity: 1 },
-    { card: "Silvie, Wilds Whisperer", quantity: 1 },
-    { card: "Silvie, With the Pack", quantity: 1 },
-    { card: "Silvie, Slime Sovereign", quantity: 1 },
+    { card: "Spirit of Wind", quantity: 1 },
+    { card: "Lorraine, Wandering Warrior", quantity: 1 },
+    { card: "Lorraine, Blademaster", quantity: 1 },
+    { card: "Lorraine, Spirit Ruler", quantity: 1 },
     { card: "Backup Charger", quantity: 1 },
-    { card: "Beastbond Boots", quantity: 1 },
-    { card: "Quicksilver Grail", quantity: 1 },
-    { card: "Covenant of Thorns", quantity: 1 },
-    { card: "Gaia's Blessing", quantity: 1 },
-    { card: "Horn of Beastcalling", quantity: 1 },
-    { card: "Stonescale Band", quantity: 1 },
-    { card: "Verdant Scepter", quantity: 1 },
+    { card: "Clarent, Reimagined", quantity: 1 },
+    { card: "Clarent, Sword of Peace", quantity: 1 },
+    { card: "Drawn Blade", quantity: 1 },
+    { card: "Lost Providence", quantity: 1 },
+    { card: "Sword of Seeking", quantity: 1 },
+    { card: "Purifying Thurible", quantity: 1 },
+    { card: "Prismatic Edge", quantity: 1 },
   ],
-  sideboard: [],
+  sideboard: [
+    { card: "Orb of Sealing", quantity: 1 },
+    { card: "Annul Spell", quantity: 2 },
+    { card: "Crystallized Destiny", quantity: 2 },
+    { card: "Cry for Help", quantity: 1 },
+    { card: "Dream Fairy", quantity: 1 },
+    { card: "Ensnaring Fumes", quantity: 3 },
+    { card: "Psychopomp's Gale", quantity: 2 },
+    { card: "Stifling Trap", quantity: 1 },
+  ],
 };
 
 const COMPARE_DECK_2: OmnidexDecklist = {
   main: [
-    { card: "Baby Gray Slime", quantity: 4 },
-    { card: "Blissful Calling", quantity: 3 },
     { card: "Dungeon Guide", quantity: 4 },
-    { card: "Escape the Wreckage", quantity: 4 },
-    { card: "Forest Cake", quantity: 4 },
-    { card: "Limitless Slime", quantity: 4 },
-    { card: "Baby Red Slime", quantity: 4 },
-    { card: "Gather Slimes", quantity: 4 },
-    { card: "Baby Green Slime", quantity: 4 },
-    { card: "Slimeshield", quantity: 4 },
-    { card: "Storm Slime", quantity: 4 },
-    { card: "Ethereal Slime", quantity: 4 },
-    { card: "Lustrous Slime", quantity: 4 },
-    { card: "Gaia's Songbird", quantity: 3 },
-    { card: "Slime Eruption", quantity: 3 },
-    { card: "Scavenging Raccoon", quantity: 3 },
+    { card: "Escape the Wreckage", quantity: 2 },
+    { card: "Fluffy Shopkeep", quantity: 4 },
+    { card: "Turbo Charge", quantity: 2 },
+    { card: "Tyrannical Denigration", quantity: 1 },
+    { card: "Condemning Evisceration", quantity: 2 },
+    { card: "Aella, Zephyr's Hand", quantity: 3 },
+    { card: "Aesan Protector", quantity: 2 },
+    { card: "Calming Breeze", quantity: 2 },
+    { card: "Displace", quantity: 3 },
+    { card: "Fairy Whispers", quantity: 4 },
+    { card: "Imperious Galebind", quantity: 3 },
+    { card: "Reclaim", quantity: 4 },
+    { card: "Scout the Land", quantity: 2 },
+    { card: "Veiling Breeze", quantity: 3 },
+    { card: "Verdigris Decree", quantity: 2 },
+    { card: "Windmill Engineer", quantity: 4 },
+    { card: "Crux Sight", quantity: 3 },
+    { card: "Ghosts of Pendragon", quantity: 4 },
+    { card: "Spirit Blade: Ascension", quantity: 4 },
+    { card: "Spirit Blade: Retribution", quantity: 2 },
   ],
-  material: COMPARE_DECK_1.material,
-  sideboard: [],
+  material: [
+    { card: "Brissa, Spirit of Wind", quantity: 1 },
+    { card: "Lorraine, Wandering Warrior", quantity: 1 },
+    { card: "Lorraine, Blademaster", quantity: 1 },
+    { card: "Lorraine, Spirit Ruler", quantity: 1 },
+    { card: "Backup Charger", quantity: 1 },
+    { card: "Clarent, Reimagined", quantity: 1 },
+    { card: "Clarent, Sword of Peace", quantity: 1 },
+    { card: "Drawn Blade", quantity: 1 },
+    { card: "Lost Providence", quantity: 1 },
+    { card: "Sword of Seeking", quantity: 1 },
+    { card: "Purifying Thurible", quantity: 1 },
+    { card: "Prismatic Edge", quantity: 1 },
+  ],
+  sideboard: [
+    { card: "Blanche, Sheltering Saint", quantity: 2 },
+    { card: "Heavenly Guide", quantity: 1 },
+    { card: "Incapacitate", quantity: 2 },
+    { card: "Regal Inquisition", quantity: 2 },
+    { card: "Dream Fairy", quantity: 2 },
+    { card: "Innervate Agility", quantity: 1 },
+    { card: "Scatter Essence", quantity: 3 },
+    { card: "Stifling Gyre", quantity: 2 },
+  ],
 };
 
 const COMPARE_DECKS: ComparedDeck[] = [
-  { key: "xenbr4", label: "Silvie build 1", source: { kind: "custom", decklist: COMPARE_DECK_1 } },
-  { key: "1xiwetk", label: "Silvie build 2", source: { kind: "custom", decklist: COMPARE_DECK_2 } },
+  { key: "60363:570", label: "BobbyTortilla — Gauntlet 2026 (43rd)", source: { kind: "custom", decklist: COMPARE_DECK_1 } },
+  { key: "60488:4261", label: "Zero0000000000 — 2nd at 2026 Worlds", source: { kind: "custom", decklist: COMPARE_DECK_2 } },
 ];
 
 const COMPARE_DECKLISTS: Map<string, OmnidexDecklist | null> = new Map([
-  ["xenbr4", COMPARE_DECK_1],
-  ["1xiwetk", COMPARE_DECK_2],
+  ["60363:570", COMPARE_DECK_1],
+  ["60488:4261", COMPARE_DECK_2],
 ]);
 
 export default function About() {
   useDocumentTitle(null, "What Fan of Insight is, how it's built, and why it exists.");
+  const navigate = useNavigate();
   const featuredSets = useFeaturedSets();
   const latestSet = useMemo(() => latestBoosterSet(featuredSets ?? []), [featuredSets]);
   const [user, setUser] = useState<AccountUser | null | undefined>(undefined);
+  const [compareBaselineKey, setCompareBaselineKey] = useState<string | null>(null);
 
   // Real cards for the Projected Damage / Hypergeometric Calculator walkthrough — resolved from the
-  // locally-synced catalog (same lean per-name lookup ComparisonGrid's own card resolution already
-  // uses on this page), not the full 90MB+ deck-card-index just to redisplay one hardcoded decklist.
+  // locally-synced catalog (same lean per-name lookup ComparisonSummary's own card resolution
+  // already uses on this page), not the full 90MB+ deck-card-index just to redisplay one hardcoded
+  // decklist.
   const damageCardsByName = useCardsByNames(WALKTHROUGH_DAMAGE_ALL_NAMES);
   const damageForecast = useMemo(
     () => computeAggressionForecast(WALKTHROUGH_DAMAGE_MAIN, damageCardsByName, WALKTHROUGH_DAMAGE_MATERIAL),
@@ -659,28 +712,32 @@ export default function About() {
       </section>
 
       <section className="border-t border-ctp-surface0 bg-ctp-mantle/40 px-4 py-16">
-        <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[280px_1fr] lg:items-center">
-          <div>
+        <div className="mx-auto max-w-5xl">
+          <div className="max-w-2xl">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">Compare decks, for real</h2>
             <p className="mt-2 text-sm text-ctp-subtext1">
-              Two real, independently popular {COMPARE_CHAMPION_NAME} builds, lined up card by card — green is in
-              both, yellow is only in one. This is the live Compare tool, not a screenshot.
+              Two real {COMPARE_CHAMPION_NAME} builds from 2026 events, lined up in the same Overview the live
+              Compare tool shows — not a screenshot. One placed 2nd at the 2026 World Championship; the other didn't
+              make the cut, from the same Champion and much of the same shell.
             </p>
             <p className="mt-4 text-xs text-ctp-subtext0">
               Compare accepts far more than this — search decks by cards they run, import any player's submitted
               list, or paste in a decklist that was never even submitted to Omnidex — and a second mode compares
               individual cards' usage, win rate, and price side by side, not just whole decks.
             </p>
-            <Link to="/compare" className="mt-4 inline-block text-sm font-semibold text-ctp-blue hover:underline">
+            <Link to={`/compare?add=${COMPARE_ADD_PARAM}`} className="mt-4 inline-block text-sm font-semibold text-ctp-blue hover:underline">
               Open Compare &rarr;
             </Link>
           </div>
 
-          <div className="relative min-w-0 max-w-full">
-            <div className="max-h-[28rem] max-w-full overflow-y-auto rounded-lg border border-ctp-surface1">
-              <ComparisonGrid decks={COMPARE_DECKS} decklists={COMPARE_DECKLISTS} />
-            </div>
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 rounded-b-lg bg-gradient-to-t from-ctp-mantle/40 to-transparent" />
+          <div className="mt-8">
+            <ComparisonSummary
+              decks={COMPARE_DECKS}
+              decklists={COMPARE_DECKLISTS}
+              baselineKey={compareBaselineKey ?? COMPARE_DECKS[0].key}
+              onBaselineChange={setCompareBaselineKey}
+              onViewAllDifferences={() => navigate(`/compare?add=${COMPARE_ADD_PARAM}`)}
+            />
           </div>
         </div>
       </section>
