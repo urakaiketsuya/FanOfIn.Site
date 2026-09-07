@@ -81,8 +81,9 @@ const FEATURES: FeatureGroup[] = [
   {
     title: "Champions",
     items: [
-      "Most-played cards by deck section, per Champion",
-      "Performance broken down season by season",
+      "Card-image-first Synergy page: a Level/print selector, most-used cards by type, and champion-agnostic archetype Packages",
+      "New Releases: cards from the newest set connected to this Champion's own most-played cards",
+      "Deep-dive Stats tab: performance broken down season by season, most-played cards by deck section",
       "Named Spirit companions tracked with full Champion-style stats of their own",
       "Bonus Cards tab: every card with an effect that specifically triggers or improves for this Champion",
     ],
@@ -185,6 +186,16 @@ const FEATURES: FeatureGroup[] = [
       "Experimental Simulator source: a disclosed community shell with anonymous Clarent card evidence layered in only when enough games and resolvable card IDs exist",
     ],
     example: { to: "/deck-builder", label: "Open Guided Deck Builder" },
+  },
+  {
+    title: "Deck Review",
+    items: [
+      "A deliberately smaller sibling to the Guided Deck Builder — nothing is ever added for you automatically",
+      "Pick a Champion and Spirit, or paste a decklist you already have, then accept, swap, or dismiss one ranked suggestion at a time",
+      "Even the Champion print and Spirit themselves start as suggestions, not committed picks",
+      "Suggested additions default to the full card-art grid, so you can see exactly what you're adding",
+    ],
+    example: { to: "/deck-review", label: "Open Deck Review" },
   },
 ];
 
@@ -454,20 +465,20 @@ export default function About() {
           <div className="flex items-end justify-between gap-4">
             <div>
               <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">New on Fan of Insight</h2>
-              <p className="mt-1 text-sm text-ctp-subtext1">The newest ways to go from deck idea to cards in hand.</p>
+              <p className="mt-1 text-sm text-ctp-subtext1">The newest additions to the site.</p>
             </div>
             <Link to="/changelog" className="shrink-0 text-xs text-ctp-blue hover:underline">Full changelog &rarr;</Link>
           </div>
           <div className="mt-4 grid gap-3 sm:grid-cols-3">
-            <Link to="/my-decks" className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4 hover:border-ctp-blue">
-              <p className="font-semibold text-ctp-text">Bulk Omnidex import</p>
-              <p className="mt-1 text-xs text-ctp-subtext1">Preview a player's history, filter it, and bring in up to 50 selected decklists at once.</p>
+            <Link to="/deck-review" className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4 hover:border-ctp-blue">
+              <p className="font-semibold text-ctp-text">Deck Review</p>
+              <p className="mt-1 text-xs text-ctp-subtext1">A lighter, suggestions-only builder — nothing is added for you, review and accept each card one at a time.</p>
             </Link>
-            <Link to="/collection" className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4 hover:border-ctp-green">
-              <p className="font-semibold text-ctp-text">Fast collection backfill</p>
-              <p className="mt-1 text-xs text-ctp-subtext1">Add cards from imported decks or fill a set by rarity, safely capped at four copies.</p>
+            <Link to="/champions" className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4 hover:border-ctp-mauve">
+              <p className="font-semibold text-ctp-text">Card-image-first Champion pages</p>
+              <p className="mt-1 text-xs text-ctp-subtext1">Every Champion page now leads with full card art — a Level/print selector, new releases, and archetype packages.</p>
             </Link>
-            <Link to="/deck-builder" className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4 hover:border-ctp-mauve">
+            <Link to="/deck-builder" className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4 hover:border-ctp-green">
               <p className="font-semibold text-ctp-text">Collection-aware building</p>
               <p className="mt-1 text-xs text-ctp-subtext1">Prioritize cards you own, restrict suggestions, and catch shortages while you build.</p>
             </Link>
