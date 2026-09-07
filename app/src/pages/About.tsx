@@ -14,6 +14,10 @@ import { useFeaturedSets } from "../features/sets/useFeaturedSets";
 import { latestBoosterSet } from "../features/packs/boosterSets";
 import PackOpenerWidget from "../features/packs/PackOpenerWidget";
 import { accountApi } from "../lib/accountApi";
+import { useCardsByNames } from "../features/events/useCardsByNames";
+import { computeAggressionForecast } from "../lib/aggressionForecast";
+import AggressionForecast from "../features/decks/AggressionForecast";
+import HypergeometricCalculator from "../features/deckbuilder/HypergeometricCalculator";
 
 const CLASS_ROW = ["WARRIOR", "MAGE", "CLERIC", "ASSASSIN", "RANGER", "TAMER", "GUARDIAN"];
 const ELEMENT_ROW = ["FIRE", "WATER", "WIND", "CRUX", "UMBRA", "EXALTED", "LUXEM", "TERA"];
@@ -269,6 +273,53 @@ const WALKTHROUGH_CARD_IMPACT = {
 };
 
 /**
+ * A real decklist from the same "Water Diao Chan (Fractal of Insight)" cluster (deckId 32243:2150,
+ * canonical hash 8qjzzs) — feeds the actual `computeAggressionForecast`/`HypergeometricCalculator`
+ * live below, rather than faking their output. Deliberately not the cluster's best-performing
+ * sighting (8qjzzs's own real record is a modest 24th-place finish, 3 sightings) — picked because
+ * it's the deck this cluster's own defining-card list was captured from, so its Fractal count lines
+ * up with the "Burst Asunder off Fractals" scaling-damage example the forecast component calls out
+ * by name. Verified: this deck runs 4x Burst Asunder plus 18 total Fractal-subtype cards, so the
+ * forecast's "combo-scaling copies" callout is real for this exact list, not incidental.
+ */
+const WALKTHROUGH_DAMAGE_HASH = "8qjzzs";
+const WALKTHROUGH_DAMAGE_MAIN: { name: string; quantity: number }[] = [
+  { name: "Fast Cure", quantity: 4 },
+  { name: "Fractal of Insight", quantity: 4 },
+  { name: "Gildas, Chronicler of Aesa", quantity: 2 },
+  { name: "Shimmering Refraction", quantity: 4 },
+  { name: "Unstable Fractal", quantity: 3 },
+  { name: "Zhang Jiao, Way of Peace", quantity: 4 },
+  { name: "Burst Asunder", quantity: 4 },
+  { name: "Captivating Opulence", quantity: 1 },
+  { name: "Fractal of Intrusion", quantity: 3 },
+  { name: "Fractal of Rain", quantity: 4 },
+  { name: "Fractal of Refreshment", quantity: 3 },
+  { name: "Fractal of Snow", quantity: 4 },
+  { name: "Fracturize", quantity: 4 },
+  { name: "Frostsworn Paladin", quantity: 4 },
+  { name: "Glimmering Refusal", quantity: 4 },
+  { name: "Jianyu, Fate's Premonition", quantity: 1 },
+  { name: "Refracting Missile", quantity: 4 },
+  { name: "Throne-Keeper Bullfrog", quantity: 3 },
+];
+const WALKTHROUGH_DAMAGE_MATERIAL: { name: string; quantity: number }[] = [
+  { name: "Minthe, Spirit of Water", quantity: 1 },
+  { name: "Diao Chan, Enchantress", quantity: 1 },
+  { name: "Backup Charger", quantity: 1 },
+  { name: "Censer of Restful Peace", quantity: 1 },
+  { name: "Fire Resonance Bauble", quantity: 1 },
+  { name: "Nullifying Lantern", quantity: 1 },
+  { name: "Portentous Tanggu", quantity: 1 },
+  { name: "Sacramental Rite", quantity: 1 },
+  { name: "Scepter of Fascination", quantity: 1 },
+  { name: "Tariff Ring", quantity: 1 },
+  { name: "Crystalline Mirror", quantity: 1 },
+  { name: "Wand of Frost", quantity: 1 },
+];
+const WALKTHROUGH_DAMAGE_ALL_NAMES = [...WALKTHROUGH_DAMAGE_MAIN, ...WALKTHROUGH_DAMAGE_MATERIAL].map((l) => l.name);
+
+/**
  * Same "pre-baked, no live fetch" reasoning as every other walkthrough constant above — captured
  * directly from /deck-builder (Diao Chan + Spirit of Wind, 47 matching decks). The point of this
  * feature is that it assembles a build from real data rather than showing one example decklist, so
@@ -366,6 +417,15 @@ export default function About() {
   const featuredSets = useFeaturedSets();
   const latestSet = useMemo(() => latestBoosterSet(featuredSets ?? []), [featuredSets]);
   const [user, setUser] = useState<AccountUser | null | undefined>(undefined);
+
+  // Real cards for the Projected Damage / Hypergeometric Calculator walkthrough — resolved from the
+  // locally-synced catalog (same lean per-name lookup ComparisonGrid's own card resolution already
+  // uses on this page), not the full 90MB+ deck-card-index just to redisplay one hardcoded decklist.
+  const damageCardsByName = useCardsByNames(WALKTHROUGH_DAMAGE_ALL_NAMES);
+  const damageForecast = useMemo(
+    () => computeAggressionForecast(WALKTHROUGH_DAMAGE_MAIN, damageCardsByName, WALKTHROUGH_DAMAGE_MATERIAL),
+    [damageCardsByName],
+  );
 
   useEffect(() => {
     let active = true;
@@ -566,6 +626,32 @@ export default function About() {
               defining cards and sample decklists.{" "}
               <Link to={`/archetypes/${WALKTHROUGH_CARD_IMPACT.clusterId}?tab=impact`} className="hover:text-ctp-blue hover:underline">
                 Open Card Impact &rarr;
+              </Link>
+            </p>
+          </div>
+
+          <div className="mx-auto mt-16 max-w-3xl border-t border-ctp-surface0 pt-10">
+            <p className="text-center text-sm text-ctp-subtext1">
+              These aren't screenshots either — the same live Direct Damage Forecast and Hypergeometric Calculator
+              from a deck's own Build tab, run right here against a real {WALKTHROUGH_CARD_IMPACT.clusterName}{" "}
+              decklist. Burst Asunder's bonus damage scales with how many Fractals this exact list runs.
+            </p>
+            {damageCardsByName.size > 0 ? (
+              <>
+                <AggressionForecast forecast={damageForecast} />
+                <HypergeometricCalculator
+                  mainLines={WALKTHROUGH_DAMAGE_MAIN}
+                  materialLines={WALKTHROUGH_DAMAGE_MATERIAL}
+                  catalogByName={damageCardsByName}
+                />
+              </>
+            ) : (
+              <p className="mt-4 text-center text-xs text-ctp-subtext0">Loading card data…</p>
+            )}
+            <p className="mt-4 text-center text-xs text-ctp-subtext0">
+              Every field above is live and editable — pick a different card, not just this example.{" "}
+              <Link to={`/decks/${WALKTHROUGH_DAMAGE_HASH}`} className="hover:text-ctp-blue hover:underline">
+                Open the full deck page &rarr;
               </Link>
             </p>
           </div>
