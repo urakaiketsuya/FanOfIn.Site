@@ -47,10 +47,18 @@ function ChampionSynergyRedirect() {
 // already shared via "Copy link" keep working through these redirects.
 function PublicDeckDetailRedirect() {
   const { publicSlug = "" } = useParams<{ publicSlug: string }>();
-  return <Navigate to={`/decks/shared/${encodeURIComponent(publicSlug)}`} replace />;
+  return <Navigate to={`/decks/${encodeURIComponent(publicSlug)}`} replace />;
 }
 function SharedDecksRedirect() {
   return <Navigate to="/decks/shared" replace />;
+}
+// A shared deck's own detail page moved one level up again — /decks/shared/:publicSlug folded
+// directly into /decks/:id, right alongside tournament deck hashes, so every individual deck page
+// (shared or tournament) shares one flat URL shape. Links/bookmarks from the brief window that path
+// was live keep working.
+function SharedDeckDetailRedirect() {
+  const { publicSlug = "" } = useParams<{ publicSlug: string }>();
+  return <Navigate to={`/decks/${encodeURIComponent(publicSlug)}`} replace />;
 }
 
 // Lazy-loaded so each route's JS is a separate chunk, fetched on demand — previously the whole
@@ -107,6 +115,18 @@ const PublicUserProfile = lazy(() => import("./features/account/PublicUserProfil
 const CollectionIndex = lazy(() => import("./features/collection/CollectionIndex"));
 const SettingsIndex = lazy(() => import("./features/settings/SettingsIndex"));
 
+// /decks/:id serves both tournament decks and publicly shared decks from one flat namespace, so
+// this dispatches to whichever one actually owns the id — no network probe needed, since the two id
+// spaces never overlap by length. Tournament hashes (`shortHash()`, shared/src/hash.ts) are base-36
+// of a 32-bit int, at most 7 lowercase alphanumeric characters. Shared-deck slugs
+// (account-worker/src/decks.ts) are `crypto.randomUUID()` with dashes stripped — always exactly 32
+// lowercase hex characters.
+const PUBLIC_SLUG_PATTERN = /^[0-9a-f]{32}$/;
+function DeckOrPublicDeckDetail() {
+  const { id = "" } = useParams<{ id: string }>();
+  return PUBLIC_SLUG_PATTERN.test(id) ? <PublicDeckDetail /> : <DeckDetail />;
+}
+
 function RouteFallback() {
   useEffect(() => {
     beginLoading();
@@ -156,8 +176,8 @@ export default function AppRoutes() {
         <Route path="/popular-decks" element={<PopularDecksRedirect />} />
         <Route path="/decks" element={<BrowseDecksIndex />} />
         <Route path="/decks/shared" element={<SharedDecksIndex />} />
-        <Route path="/decks/shared/:publicSlug" element={<PublicDeckDetail />} />
-        <Route path="/decks/:hash" element={<DeckDetail />} />
+        <Route path="/decks/shared/:publicSlug" element={<SharedDeckDetailRedirect />} />
+        <Route path="/decks/:id" element={<DeckOrPublicDeckDetail />} />
         <Route path="/pantheon/decks/:id" element={<PantheonDeckDetail />} />
         <Route path="/deck-builder" element={<DeckBuilderIndex />} />
         <Route path="/deck-review" element={<DeckReviewIndex />} />

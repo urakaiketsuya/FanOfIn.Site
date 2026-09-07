@@ -17,7 +17,7 @@ type PublicDeckTab = "decklist" | "analysis" | "primer";
 const PUBLIC_TABS = [{ key: "decklist", label: "Decklist" }, { key: "analysis", label: "Analysis" }, { key: "primer", label: "Primer" }] satisfies { key: PublicDeckTab; label: string }[];
 
 export default function PublicDeckDetail() {
-  const { publicSlug = "" } = useParams<{ publicSlug: string }>();
+  const { id: publicSlug = "" } = useParams<{ id: string }>();
   const [deck, setDeck] = useState<PublicDeck | null>();
   const [error, setError] = useState<string | null>(null);
   const [social, setSocial] = useState<DeckSocialState | null>(null);

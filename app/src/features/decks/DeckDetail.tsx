@@ -53,7 +53,7 @@ const TAB_KEYS = TABS.map((t) => t.key);
  * simply omitted, same as `PublicDeckDetail.tsx` already does for a deck it doesn't own.
  */
 export default function DeckDetail() {
-  const { hash = "" } = useParams<{ hash: string }>();
+  const { id: hash = "" } = useParams<{ id: string }>();
   const [tab, setTab] = useTabParam<DeckTab>("tab", TAB_KEYS, "decklist");
 
   const popularityIndexData = useDeckPopularityIndexData();
