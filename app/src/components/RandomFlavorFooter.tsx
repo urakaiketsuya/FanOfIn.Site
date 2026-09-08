@@ -43,15 +43,11 @@ export default function RandomFlavorFooter() {
         )}
         <p className="mt-6 text-[11px] text-ctp-subtext0/70">
           Grand Archive is a trademark of Weebs of the Shore. This is an unofficial fan project and is not affiliated
-          with or endorsed by Weebs of the Shore.
+          with or endorsed by Weebs of the Shore. This site is built and maintained with AI assistance.
         </p>
-        <p className="mt-1 text-[11px] text-ctp-subtext0/70">
-          This site is built and maintained with AI assistance. Card data, stats, and analysis are generated
-          automatically — please verify anything important against official sources.
-        </p>
-        <div className="mt-3">
+        {/* <div className="mt-3">
           <SyncStatus />
-        </div>
+        </div> */}
         <Link to="/changelog" className="mt-3 inline-block text-[11px] text-ctp-subtext0/70 hover:text-ctp-blue">
           Changelog
         </Link>

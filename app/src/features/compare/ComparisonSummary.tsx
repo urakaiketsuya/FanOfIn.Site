@@ -118,7 +118,7 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, onVie
     })}
 
     <Section heading="dense" title="Deck forecasts" description="Test draw odds and estimate direct-damage output for each compared list.">
-      <div className="grid items-start gap-4 lg:grid-cols-2">
+      <div className="space-y-6">
         {decks.map((deck) => {
           const list = decklists.get(deck.key);
           if (!list) return <Panel key={deck.key} padding="sm"><h3 className="font-semibold text-ctp-text">{shortLabel(deck.label)}</h3><InlineState className="mt-2 text-sm">Decklist unavailable.</InlineState></Panel>;
@@ -127,25 +127,28 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, onVie
           const damageForecast = computeAggressionForecast(mainLines, cardsByName, materialLines);
           const hasDamageForecast = damageForecast.fixedDamageCopies > 0 || damageForecast.variableDamageCopies > 0 || damageForecast.scalingDamageCopies > 0 || damageForecast.ambiguousDamageCopies > 0 || damageForecast.recurringDamagePerTurn > 0;
           const breakthroughVsAverage = hasDamageForecast ? null : computeBreakthroughDamageVsAverage([...mainLines, ...materialLines], cardsByName);
-          return <div key={deck.key}>
-            <h3 className="font-semibold text-ctp-text">{shortLabel(deck.label)}</h3>
+          return <section key={deck.key} className="rounded-2xl bg-ctp-mantle/50 p-4 sm:p-5">
+            <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Deck forecast</p>
+            <h3 className="mt-0.5 text-lg font-semibold text-ctp-text">{shortLabel(deck.label)}</h3>
+            <div className="grid items-start gap-4 lg:grid-cols-2">
             <HypergeometricCalculator
               mainLines={mainLines}
               materialLines={materialLines}
               catalogByName={cardsByName}
             />
             {hasDamageForecast ? (
-              <AggressionForecast forecast={damageForecast} />
+              <Panel className="mt-4 shadow-sm"><AggressionForecast forecast={damageForecast} embedded /></Panel>
             ) : breakthroughVsAverage && breakthroughVsAverage.attackerCount > 0 ? (
-              <div className="mt-4 border-t border-ctp-surface1 pt-4">
+              <Panel className="mt-4 shadow-sm">
                 <h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat damage forecast</h4>
                 <p className="mt-1 text-xs text-ctp-subtext0">No printed spell/ability damage in this list — here's how much Ally combat power would reach the champion against an average deck's Intercept count instead.</p>
                 <div className="mt-3"><BreakthroughDamagePanel attackerLabel={shortLabel(deck.label)} defenderLabel="an average deck" result={breakthroughVsAverage} /></div>
-              </div>
+              </Panel>
             ) : (
-              <div className="mt-4 border-t border-ctp-surface1 pt-4"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Printed damage forecast</h4><p className="mt-1 text-xs text-ctp-subtext0">No printed spell/ability damage and no attacking allies found in this list.</p></div>
+              <Panel className="mt-4 shadow-sm"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Printed damage forecast</h4><p className="mt-1 text-xs text-ctp-subtext0">No printed spell/ability damage and no attacking allies found in this list.</p></Panel>
             )}
-          </div>;
+            </div>
+          </section>;
         })}
       </div>
     </Section>

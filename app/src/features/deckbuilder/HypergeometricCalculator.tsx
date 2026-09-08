@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react";
 import type { Card } from "@gatcg/shared";
-import ThemaSparkline from "../thema/ThemaSparkline";
 import { probabilityAtLeast } from "./synergyReadiness";
 import { drawnCardsPerCopy, expectedExtraDraws, materialDrawBonus } from "./drawEffects";
 import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
+import { ForecastChart, ForecastCheckpointSelector, ForecastHeadline } from "../../components/ui/ForecastVisual";
 
 /** Same range Synergy readiness's curves use (`CURVE_MAX_SEEN` in synergyReadiness.ts) — keeps the
  * two probability visualizations on this tab reading consistently. */
@@ -24,7 +24,7 @@ function clampInt(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, Math.round(value)));
 }
 
-const numberInputClass = "mt-1 block w-full rounded border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-sm text-ctp-text focus:border-ctp-blue focus:outline-none";
+const numberInputClass = "mt-1 block min-h-10 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text focus:border-ctp-blue focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/30";
 
 /**
  * A general-purpose front end onto `probabilityAtLeast` (the same hypergeometric function Synergy
@@ -109,19 +109,21 @@ export default function HypergeometricCalculator({
   );
 
   return (
-    <Panel data-component="HypergeometricCalculator" className="mt-4">
+    <Panel data-component="HypergeometricCalculator" className="mt-4 shadow-sm">
       <Section
         heading="dense"
         title="Hypergeometric calculator"
         description={<>See how likely any card will see play.</>}
       >
+      <div className="mt-3 rounded-xl bg-ctp-surface0/60 p-3">
+      <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Parameters</p>
       {mainLines.length > 0 && (
-        <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
+        <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
           <span className="text-ctp-subtext0">Card in build:</span>
           <select
             value={selectedCard}
             onChange={(e) => handleSelectCard(e.target.value)}
-            className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+            className="min-h-10 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-xs text-ctp-text focus:border-ctp-blue focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/30"
           >
             <option value="">Custom…</option>
             {mainLines.map((line) => (
@@ -180,32 +182,15 @@ export default function HypergeometricCalculator({
           />
         </label>
       </div>
-
-      <div className="mt-2 flex flex-wrap gap-1.5">
-        {SEEN_PRESETS.map((preset) => (
-          <button
-            key={preset.seen}
-            type="button"
-            onClick={() => setSeen(Math.min(preset.seen, deckSize))}
-            className={`rounded-md border px-2 py-1 text-xs ${
-              seen === preset.seen ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            {preset.label}
-          </button>
-        ))}
       </div>
 
-      <div className="mt-4 flex flex-wrap items-baseline justify-between gap-2">
-        <span className="text-xs text-ctp-subtext0">
-          Chance of seeing at least 1 copy.
-        </span>
-        <span className="text-2xl font-bold text-ctp-blue">{(probability * 100).toFixed(1)}%</span>
-      </div>
+      <div className="mt-3"><ForecastCheckpointSelector checkpoints={SEEN_PRESETS} selected={seen} onSelect={(value) => setSeen(Math.min(value, deckSize))} /></div>
+
+      <div className="mt-4"><ForecastHeadline label={`Chance of seeing at least ${required} ${required === 1 ? "copy" : "copies"}`} value={`${(probability * 100).toFixed(1)}%`} /></div>
 
       {curve.length >= 2 && (
         <div className="mt-2">
-          <ThemaSparkline values={curve} height={36} />
+          <ForecastChart values={curve} height={36} selectedIndex={Math.min(seen, curve.length) - 1} />
           <div className="mt-1 flex justify-between text-[10px] text-ctp-subtext0">
             <span>1 seen: {(curve[0] * 100).toFixed(0)}%</span>
             <span>{curve.length} seen: {(curve[curve.length - 1] * 100).toFixed(0)}%</span>
@@ -215,15 +200,10 @@ export default function HypergeometricCalculator({
 
       {hasDrawEngine && (
         <div className="mt-4 border-t border-ctp-surface1 pt-3">
-          <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <span className="text-xs text-ctp-subtext0">
-              With card draw: {seenWithDraw}  
-            </span>
-            <span className="text-2xl font-bold text-ctp-mauve">{(probabilityWithDraw * 100).toFixed(1)}%</span>
-          </div>
+          <ForecastHeadline label={`With card draw · ${seenWithDraw} cards seen`} value={`${(probabilityWithDraw * 100).toFixed(1)}%`} />
           {curveWithDraw.length >= 2 && (
             <div className="mt-2">
-              <ThemaSparkline values={curveWithDraw} height={36} />
+              <ForecastChart values={curveWithDraw} height={36} selectedIndex={Math.min(seenWithDraw, curveWithDraw.length) - 1} />
               <div className="mt-1 flex justify-between text-[10px] text-ctp-subtext0">
                 <span>1 seen: {(curveWithDraw[0] * 100).toFixed(0)}%</span>
                 <span>{curveWithDraw.length} seen: {(curveWithDraw[curveWithDraw.length - 1] * 100).toFixed(0)}%</span>

@@ -622,7 +622,6 @@ export default function About() {
               <p className="mt-4 text-center text-xs text-ctp-subtext0">Loading card data…</p>
             )}
             <p className="mt-4 text-center text-xs text-ctp-subtext0">
-              Every field above is live and editable — pick a different card, not just this example.{" "}
               <Link to={`/decks/${WALKTHROUGH_DAMAGE_HASH}`} className="hover:text-ctp-blue hover:underline">
                 Open the full deck page &rarr;
               </Link>
@@ -634,17 +633,7 @@ export default function About() {
       <section className="border-t border-ctp-surface0 bg-ctp-mantle/40 px-4 py-16">
         <div className="mx-auto max-w-5xl">
           <div className="max-w-2xl">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">Compare decks, for real</h2>
-            <p className="mt-2 text-sm text-ctp-subtext1">
-              Two real {COMPARE_CHAMPION_NAME} builds from 2026 events, lined up in the same Overview the live
-              Compare tool shows — not a screenshot. One placed 2nd at the 2026 World Championship; the other didn't
-              make the cut, from the same Champion and much of the same shell.
-            </p>
-            <p className="mt-4 text-xs text-ctp-subtext0">
-              Compare accepts far more than this — search decks by cards they run, import any player's submitted
-              list, or paste in a decklist that was never even submitted to Omnidex — and a second mode compares
-              individual cards' usage, win rate, and price side by side, not just whole decks.
-            </p>
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">Compare Decks</h2>
             <Link to={`/compare?add=${COMPARE_ADD_PARAM}`} className="mt-4 inline-block text-sm font-semibold text-ctp-blue hover:underline">
               Open Compare &rarr;
             </Link>
@@ -705,21 +694,14 @@ export default function About() {
         <section className="border-t border-ctp-surface0 px-4 py-16">
           <div className="mx-auto max-w-2xl">
             <h2 className="text-center text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">
-              Open a pack
+              Open a pack from {latestSet.name}
             </h2>
-            <p className="mx-auto mt-2 max-w-xl text-center text-sm text-ctp-subtext1">
-              A simulated 12-card {latestSet.name} booster, drawn live from its real card pool — not a mockup, and
-              not the same 12 cards twice.
-            </p>
 
             <div className="mt-8">
               <PackOpenerWidget setPrefix={latestSet.prefix} buttonLabel={`Open a ${latestSet.name} Pack`} />
             </div>
 
             <p className="mt-6 text-center text-xs text-ctp-subtext0">
-              Odds are a best-effort approximation built from publicly available guaranteed-per-box rates — Grand
-              Archive doesn't publish an official per-pack rarity table, so this isn't exact retail odds. Works for
-              every set, not just this one.{" "}
               <Link to="/cards?tab=sets" className="hover:text-ctp-blue hover:underline">
                 Open any set's pack &rarr;
               </Link>
@@ -728,7 +710,7 @@ export default function About() {
         </section>
       )}
 
-      <section className="border-t border-ctp-surface0 bg-ctp-mantle/40 py-12">
+      {/* <section className="border-t border-ctp-surface0 bg-ctp-mantle/40 py-12">
         <div className="mx-auto max-w-5xl px-4">
           <details>
             <summary className="cursor-pointer list-none text-center text-sm font-semibold uppercase tracking-wide text-ctp-blue hover:underline">
@@ -772,9 +754,9 @@ export default function About() {
           </div>
           </details>
         </div>
-      </section>
+      </section> */}
 
-      <section className="border-t border-ctp-surface0">
+      {/* <section className="border-t border-ctp-surface0">
         <div className="mx-auto max-w-3xl px-4 py-16 text-center">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">How it's built</h2>
           <p className="mt-4 text-ctp-subtext1">
@@ -787,7 +769,7 @@ export default function About() {
             How the stats work &rarr;
           </Link>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }
