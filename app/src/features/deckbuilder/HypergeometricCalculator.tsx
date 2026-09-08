@@ -42,10 +42,14 @@ export default function HypergeometricCalculator({
   mainLines,
   materialLines,
   catalogByName,
+  seen: controlledSeen,
+  onSeenChange,
 }: {
   mainLines: { name: string; quantity: number }[];
   materialLines: { name: string; quantity: number }[];
   catalogByName: Map<string, Card>;
+  seen?: number;
+  onSeenChange?: (seen: number) => void;
 }) {
   const mainDeckTotal = useMemo(() => mainLines.reduce((sum, line) => sum + line.quantity, 0), [mainLines]);
   const defaultDeckSize = Math.max(60, mainDeckTotal);
@@ -53,7 +57,9 @@ export default function HypergeometricCalculator({
   const [selectedCard, setSelectedCard] = useState("");
   const [deckSize, setDeckSize] = useState(defaultDeckSize);
   const [copies, setCopies] = useState(4);
-  const [seen, setSeen] = useState(10);
+  const [localSeen, setLocalSeen] = useState(10);
+  const seen = controlledSeen ?? localSeen;
+  const setSeen = onSeenChange ?? setLocalSeen;
   const [required, setRequired] = useState(1);
 
   function handleSelectCard(name: string) {

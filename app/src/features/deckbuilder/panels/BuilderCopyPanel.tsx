@@ -63,8 +63,8 @@ export default function BuilderCopyPanel({
         </div>
         {!hideFullDeckOption && <label className="mt-3 flex cursor-pointer items-center gap-2 text-xs text-ctp-subtext1"><input type="checkbox" checked={saveKeptOnly} onChange={(event) => onSaveKeptOnlyChange(event.target.checked)} /> Save only kept cards ({keptCopyCount})</label>}
         {saveKeptOnly && <p className="mt-1 text-xs text-ctp-yellow">This saves your explicit choices only; it can be a partial decklist.</p>}
-        {saveState === "saved" && savedDeckId && <p className="mt-2 text-sm text-ctp-green">{improveDeckId ? "New version saved." : "Deck saved."} <Link to={`/my-decks/${savedDeckId}`} className="font-medium underline">Open deck →</Link></p>}
-        {saveState === "sign-in" && <p className="mt-2 text-sm text-ctp-yellow">Sign in from <Link to="/my-decks" className="font-medium underline">My Decks</Link>, then return to save this build. Your builder choices are kept in this browser.</p>}
+        {saveState === "saved" && savedDeckId && <p className="mt-2 text-sm text-ctp-green">{improveDeckId ? "New version saved." : "Deck saved."} <Link to={`/decks/${savedDeckId}`} className="font-medium underline">Open deck →</Link></p>}
+        {saveState === "sign-in" && <p className="mt-2 text-sm text-ctp-yellow">Sign in from <Link to="/decks/edit" className="font-medium underline">My Decks</Link>, then return to save this build. Your builder choices are kept in this browser.</p>}
         {saveState === "failed" && <p className="mt-2 text-sm text-ctp-red">The deck could not be saved. Please try again.</p>}
       </div>
       <DeckCollectionTools decklist={decklist} cardsByName={catalogByName} source={`${championName ?? "Guided"} deck builder`} />

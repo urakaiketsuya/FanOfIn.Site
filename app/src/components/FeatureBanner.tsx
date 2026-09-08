@@ -11,7 +11,7 @@ interface FeatureTip {
 // stumble onto from the nav alone (e.g. the Deck Builder's cut suggestions, the simulator/tournament
 // data split) over ones already obvious from top-level nav labels.
 const FEATURE_TIPS: FeatureTip[] = [
-  { message: "Quickly import your public decks from other sites:", to: "/my-decks", cta: "Build Now" },
+  { message: "Quickly import your public decks from other sites:", to: "/decks/edit", cta: "Build Now" },
   { message: "New to deck building? We have free tools:", to: "/deck-builder", cta: "Get Started" },
   { message: "Card Impact shows which cards move win rate the most within an archetype.", to: "/cards/stats", cta: "See Card Stats" },
   { message: "Compare multiple decks at once:", to: "/compare", cta: "Compare Decks" },

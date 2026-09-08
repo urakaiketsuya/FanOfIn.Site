@@ -15,8 +15,8 @@ export default function AccountChecklist({ user, decks }: Props) {
   const importedDecks = decks.some((deck) => deck.sources.some((source) => source.provider !== "manual"));
   const tasks = [
     { label: "Open your display-name settings", complete: reviewedDisplayName, to: "/account", action: "Open" },
-    { label: "Import your public deck history", complete: importedDecks, to: "/my-decks", action: "Import" },
-    { label: "Create or save your first deck", complete: decks.length > 0, to: "/my-decks", action: "Add deck" },
+    { label: "Import your public deck history", complete: importedDecks, to: "/decks/edit", action: "Import" },
+    { label: "Create or save your first deck", complete: decks.length > 0, to: "/decks/edit", action: "Add deck" },
   ];
   const remaining = tasks.filter((task) => !task.complete).length;
 

@@ -37,7 +37,7 @@ export default function AccountIndex() {
   if (!user) return <PageLayout data-component="AccountIndex" width="standard"><h1 className="text-2xl font-bold text-ctp-blue">Account</h1><p className="mt-2 text-ctp-subtext1">Sign in to manage your profile and account.</p><div className="mt-6"><GoogleSignInButton onCredential={(credential, nonce) => void run(async () => setUser((await accountApi.googleSignIn(credential, nonce)).user))} /></div>{error && <InlineState tone="danger" className="mt-4 text-sm">{error}</InlineState>}</PageLayout>;
 
   return <PageLayout data-component="AccountIndex">
-    <div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-2xl font-bold text-ctp-blue">Account</h1><p className="mt-1 text-sm text-ctp-subtext1">Profile, privacy, sessions, and your data.</p></div><Link to="/my-decks" className="rounded-md border border-ctp-blue px-3 py-1.5 text-sm text-ctp-blue">My Decks</Link></div>
+    <div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-2xl font-bold text-ctp-blue">Account</h1><p className="mt-1 text-sm text-ctp-subtext1">Profile, privacy, sessions, and your data.</p></div><Link to="/decks/edit" className="rounded-md border border-ctp-blue px-3 py-1.5 text-sm text-ctp-blue">My Decks</Link></div>
     {error && <Panel tone="danger" padding="sm" className="mt-4 text-sm text-ctp-red">{error}</Panel>}
     {notice && <Panel tone="success" padding="sm" className="mt-4 text-sm text-ctp-green">{notice}</Panel>}
 

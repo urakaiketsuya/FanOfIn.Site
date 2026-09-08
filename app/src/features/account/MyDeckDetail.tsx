@@ -20,15 +20,18 @@ import Tabs from "../../components/ui/Tabs";
 import { useTabParam } from "../../lib/useTabParam";
 import Panel from "../../components/ui/Panel";
 import { EmptyState, InlineState } from "../../components/ui/ContentState";
+import DeckVisualStrip from "./DeckVisualStrip";
+import { encodeCustomDecks } from "../../lib/compareShareLink";
 
-type DeckTab = "decklist" | "analysis" | "primer" | "versions" | "settings";
-const DECK_TABS = [{ key: "decklist", label: "Decklist" }, { key: "analysis", label: "Analysis" }, { key: "primer", label: "Primer" }, { key: "versions", label: "Versions" }, { key: "settings", label: "Settings" }] satisfies { key: DeckTab; label: string }[];
+type DeckTab = "overview" | "decklist" | "analysis" | "primer" | "versions" | "settings";
+const DECK_TABS = [{ key: "overview", label: "Overview" }, { key: "decklist", label: "Decklist" }, { key: "analysis", label: "Analysis" }, { key: "primer", label: "Primer" }, { key: "versions", label: "History" }] satisfies { key: DeckTab; label: string }[];
+const DECK_TAB_KEYS: DeckTab[] = [...DECK_TABS.map(({ key }) => key), "settings"];
 
 type DeckSectionKey = keyof OmnidexDecklist;
 const EDIT_SECTIONS: { key: DeckSectionKey; title: string }[] = [{ key: "main", title: "Main" }, { key: "material", title: "Material" }, { key: "sideboard", title: "Sideboard" }];
 
 /** One card tile in the editable deck grid — same full-image tile as the Guided Deck Builder's CardTile, but with a plain quantity/remove editor instead of a suggestion-model footer. */
-function EditableCardTile({ line, card, onChangeQuantity, onRemove }: { line: OmnidexDecklistCardLine; card: Card | undefined; onChangeQuantity: (quantity: number) => void; onRemove: () => void }) {
+function EditableCardTile({ line, card, section, onChangeQuantity, onMove, onRemove }: { line: OmnidexDecklistCardLine; card: Card | undefined; section: DeckSectionKey; onChangeQuantity: (quantity: number) => void; onMove: (section: DeckSectionKey) => void; onRemove: () => void }) {
   const maxQuantity = Math.max(1, Math.min(card?.legality?.STANDARD?.limit ?? 4, 4));
   return (
     <div className="overflow-hidden rounded-lg border border-ctp-surface1">
@@ -52,13 +55,16 @@ function EditableCardTile({ line, card, onChangeQuantity, onRemove }: { line: Om
           className="absolute right-1.5 top-1.5 w-11 rounded border border-ctp-surface1 bg-ctp-base/90 px-1 py-0.5 text-right text-xs text-ctp-text focus:border-ctp-blue focus:outline-none"
         />
       </div>
-      <button type="button" onClick={onRemove} className="w-full border-t border-ctp-surface1 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-red">Remove</button>
+      <div className="grid grid-cols-[1fr_auto] border-t border-ctp-surface1">
+        <select value={section} onChange={(event) => onMove(event.target.value as DeckSectionKey)} aria-label={`Move ${line.card} to section`} className="min-w-0 bg-ctp-base px-2 py-2 text-xs text-ctp-subtext1 focus:outline-none"><option value="main">Main</option><option value="material">Material</option><option value="sideboard">Sideboard</option></select>
+        <button type="button" onClick={onRemove} className="border-l border-ctp-surface1 px-2 py-1.5 text-xs text-ctp-subtext1 hover:bg-ctp-red/10 hover:text-ctp-red" aria-label={`Remove ${line.card}`}>×</button>
+      </div>
     </div>
   );
 }
 
 /** Visual, click-to-edit alternative to hand-editing the raw decklist text — the same full-image grid used elsewhere in the app (BuilderCardGrid, DecklistView's Visual mode), wired directly to the "Add card" bar above it via `deckText`. */
-function EditableDecklistGrid({ decklist, cardsByName, onChangeQuantity, onRemove }: { decklist: OmnidexDecklist; cardsByName: Map<string, Card>; onChangeQuantity: (section: DeckSectionKey, name: string, quantity: number) => void; onRemove: (section: DeckSectionKey, name: string) => void }) {
+function EditableDecklistGrid({ decklist, cardsByName, onChangeQuantity, onMove, onRemove }: { decklist: OmnidexDecklist; cardsByName: Map<string, Card>; onChangeQuantity: (section: DeckSectionKey, name: string, quantity: number) => void; onMove: (from: DeckSectionKey, to: DeckSectionKey, name: string) => void; onRemove: (section: DeckSectionKey, name: string) => void }) {
   const sections = EDIT_SECTIONS.map((section) => ({ ...section, lines: decklist[section.key] })).filter((section) => section.lines.length > 0);
   if (sections.length === 0) return <p className="text-sm text-ctp-subtext1">No cards yet — add one above, or paste a decklist using "Edit as text" below.</p>;
   return (
@@ -68,7 +74,7 @@ function EditableDecklistGrid({ decklist, cardsByName, onChangeQuantity, onRemov
           <h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">{section.title} ({section.lines.reduce((n, l) => n + l.quantity, 0)})</h4>
           <div className="mt-2 grid grid-cols-3 gap-3 sm:grid-cols-4">
             {section.lines.map((line) => (
-              <EditableCardTile key={line.card} line={line} card={cardsByName.get(line.card)} onChangeQuantity={(quantity) => onChangeQuantity(section.key, line.card, quantity)} onRemove={() => onRemove(section.key, line.card)} />
+              <EditableCardTile key={line.card} line={line} card={cardsByName.get(line.card)} section={section.key} onChangeQuantity={(quantity) => onChangeQuantity(section.key, line.card, quantity)} onMove={(destination) => onMove(section.key, destination, line.card)} onRemove={() => onRemove(section.key, line.card)} />
             ))}
           </div>
         </div>
@@ -78,7 +84,7 @@ function EditableDecklistGrid({ decklist, cardsByName, onChangeQuantity, onRemov
 }
 
 export default function MyDeckDetail() {
-  const { deckId = "" } = useParams<{ deckId: string }>();
+  const { id: deckId = "" } = useParams<{ id: string }>();
   const [deck, setDeck] = useState<SavedDeckDetail | null>();
   const [error, setError] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
@@ -91,7 +97,7 @@ export default function MyDeckDetail() {
   const [tagsText, setTagsText] = useState("");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
-  const [tab, setTab] = useTabParam<DeckTab>("tab", DECK_TABS.map(({ key }) => key), "decklist");
+  const [tab, setTab] = useTabParam<DeckTab>("tab", DECK_TAB_KEYS, "overview");
   const [cardInput, setCardInput] = useState("");
   const [addDestination, setAddDestination] = useState<"automatic" | "sideboard" | "maybeboard">("automatic");
   const cardCatalog = useCardCatalog();
@@ -173,6 +179,19 @@ export default function MyDeckDetail() {
     setDeckText(buildDecklistText(decklist));
   }
 
+  function moveEditedCard(from: DeckSectionKey, to: DeckSectionKey, name: string) {
+    if (from === to) return;
+    const decklist = parseDecklist(deckText).decklist;
+    const line = decklist[from].find((candidate) => candidate.card === name);
+    if (!line) return;
+    decklist[from] = decklist[from].filter((candidate) => candidate.card !== name);
+    const existing = decklist[to].find((candidate) => candidate.card === name);
+    if (existing) existing.quantity += line.quantity;
+    else decklist[to].push({ ...line });
+    setDeckText(buildDecklistText(decklist));
+    setNotice(`${name} moved to ${to}.`);
+  }
+
   function removeEditedCard(section: DeckSectionKey, name: string) {
     const decklist = parseDecklist(deckText).decklist;
     decklist[section] = decklist[section].filter((l) => l.card !== name);
@@ -210,14 +229,26 @@ export default function MyDeckDetail() {
   }
 
   if (deck === undefined) return <PageLayout data-component="MyDeckDetail"><InlineState className="mt-10">Loading deck…</InlineState></PageLayout>;
-  if (!deck) return <PageLayout data-component="MyDeckDetail"><EmptyState title="Deck unavailable" description={error} action={<Link to="/my-decks" className="text-ctp-blue hover:underline">Back to My Decks</Link>} /></PageLayout>;
+  if (!deck) return <PageLayout data-component="MyDeckDetail"><EmptyState title="Deck unavailable" description={error} action={<Link to="/decks/edit" className="text-ctp-blue hover:underline">Back to My Decks</Link>} /></PageLayout>;
+  const comparePath = `/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: deck.title, decklist: deck.decklist, format: deck.format }]))}`;
+  const sectionCounts = {
+    main: deck.decklist.main.reduce((sum, line) => sum + line.quantity, 0),
+    material: deck.decklist.material.reduce((sum, line) => sum + line.quantity, 0),
+    sideboard: deck.decklist.sideboard.reduce((sum, line) => sum + line.quantity, 0),
+    maybeboard: deck.maybeboard.reduce((sum, line) => sum + line.quantity, 0),
+  };
 
   return <PageLayout data-component="MyDeckDetail">
-    <Link to="/my-decks" className="text-sm text-ctp-blue hover:underline">← My Decks</Link>
+    <Link to="/decks/edit" className="text-sm text-ctp-blue hover:underline">← My Decks</Link>
     <div className="mt-4"><UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} description={deck.description} visibility={deck.visibility} /><DeckTags tags={deck.tags} /><div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2"><p className="text-xs text-ctp-subtext0">Updated {new Date(deck.updatedAt).toLocaleDateString()} · {deck.versions.length} version{deck.versions.length === 1 ? "" : "s"}</p>{deck.publicSlug && deck.visibility !== "private" && <Link to={`/decks/${deck.publicSlug}`} className="text-sm font-medium text-ctp-blue hover:underline">{deck.visibility === "public" ? "View public deck →" : "View shared deck →"}</Link>}</div></div>
-    <div className="mt-6"><Tabs tabs={DECK_TABS} active={tab} onChange={setTab} label="Deck details" baseId="owned-deck" /></div>
+    <div className="mt-5 flex flex-wrap items-center gap-2"><button type="button" onClick={() => setTab("decklist")} className="rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base">Edit deck</button><Link to={`/deck-builder?improveDeck=${encodeURIComponent(deck.id)}`} className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm font-medium text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Tune in builder</Link><Link to={comparePath} className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm font-medium text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Compare</Link><button type="button" onClick={() => setTab("settings")} className="ml-auto rounded-md px-3 py-2 text-sm text-ctp-subtext1 hover:bg-ctp-mantle hover:text-ctp-text">Settings</button></div>
+    <div className="mt-6"><Tabs tabs={DECK_TABS} active={tab === "settings" ? "overview" : tab} onChange={setTab} label="Deck details" baseId="owned-deck" /></div>
     {error && <Panel tone="danger" padding="sm" className="mt-4 text-sm text-ctp-red">{error}</Panel>}
     {notice && <Panel tone="success" padding="sm" className="mt-4 text-sm text-ctp-green">{notice}</Panel>}
+    {tab === "overview" && <section id="owned-deck-panel-overview" role="tabpanel" aria-labelledby="owned-deck-tab-overview" tabIndex={0} className="mt-6 grid gap-5 lg:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.6fr)]">
+      <Panel><h2 className="text-lg font-semibold text-ctp-text">Deck at a glance</h2><DeckVisualStrip decklist={deck.decklist} championName={deck.championName} /><div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">{([['Main', sectionCounts.main], ['Material', sectionCounts.material], ['Sideboard', sectionCounts.sideboard], ['Maybeboard', sectionCounts.maybeboard]] as const).map(([label, count]) => <div key={label} className="rounded-lg bg-ctp-base p-3"><div className="text-xl font-semibold tabular-nums text-ctp-text">{count}</div><div className="text-xs text-ctp-subtext0">{label}</div></div>)}</div></Panel>
+      <Panel><h2 className="text-lg font-semibold text-ctp-text">Continue working</h2><div className="mt-3 space-y-2"><button type="button" onClick={() => setTab("decklist")} className="block w-full rounded-lg bg-ctp-blue px-3 py-2.5 text-left text-sm font-medium text-ctp-base">Edit cards</button><button type="button" onClick={() => setTab("analysis")} className="block w-full rounded-lg border border-ctp-surface1 px-3 py-2.5 text-left text-sm text-ctp-subtext1 hover:border-ctp-blue">Review analysis</button><Link to={`/deck-builder?improveDeck=${encodeURIComponent(deck.id)}`} className="block rounded-lg border border-ctp-surface1 px-3 py-2.5 text-sm text-ctp-subtext1 hover:border-ctp-blue">Tune with recommendations</Link><Link to={comparePath} className="block rounded-lg border border-ctp-surface1 px-3 py-2.5 text-sm text-ctp-subtext1 hover:border-ctp-blue">Compare with another deck</Link></div><p className="mt-4 text-xs text-ctp-subtext0">{deck.versions.length} version{deck.versions.length === 1 ? "" : "s"} · Updated {new Date(deck.updatedAt).toLocaleDateString()}</p></Panel>
+    </section>}
     {tab === "settings" && <section id="owned-deck-panel-settings" role="tabpanel" aria-labelledby="owned-deck-tab-settings" tabIndex={0} className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
       <h2 className="font-semibold text-ctp-text">Details and sharing</h2>
       <form className="mt-3 space-y-2" onSubmit={(event) => { event.preventDefault(); void run(async () => { const tags = tagsText.split(",").map((tag) => tag.trim()).filter(Boolean); if (tags.length > 8) throw new Error("Use no more than 8 tags."); if (tags.some((tag) => tag.length < 2 || tag.length > 24)) throw new Error("Each tag must be 2–24 characters."); await accountApi.updateDeckMetadata(deck.id, { title, description, tags }); await refresh(); }); }}>
@@ -251,12 +282,13 @@ export default function MyDeckDetail() {
           </div>
           <button type="button" disabled={!cardNameSet.has(cardInput)} onClick={() => addCard(cardInput)} className="rounded-md border border-ctp-green/60 px-3 py-2 text-sm text-ctp-green hover:bg-ctp-green/10 disabled:cursor-not-allowed disabled:opacity-50">Add card</button>
         </div>
-        <div className="mt-4"><EditableDecklistGrid decklist={editedDecklist} cardsByName={editedCardsByName} onChangeQuantity={changeEditedQuantity} onRemove={removeEditedCard} /></div>
+        <div className="mt-4"><EditableDecklistGrid decklist={editedDecklist} cardsByName={editedCardsByName} onChangeQuantity={changeEditedQuantity} onMove={moveEditedCard} onRemove={removeEditedCard} /></div>
         <details className="mt-4 rounded-md border border-ctp-surface1 bg-ctp-mantle p-3">
           <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Edit as text</summary>
           <textarea rows={18} required value={deckText} onChange={(event) => setDeckText(event.target.value)} className="mt-3 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-4 font-mono text-sm text-ctp-text" />
         </details>
-        <form className="mt-3" onSubmit={(event) => { event.preventDefault(); void run(async () => { if (editedChampionName !== deck.championName && !window.confirm(`Change Champion from ${deck.championName ?? "none"} to ${editedChampionName ?? "none"}?`)) return; await accountApi.createDeckVersion(deck.id, { decklist: editedDecklist, format: deck.format, championName: editedChampionName, changeNote }); await refresh(); setChangeNote(""); setEditing(false); }); }}>
+        <form className="sticky bottom-3 z-20 mt-4 rounded-xl border border-ctp-blue/40 bg-ctp-mantle/95 p-3 shadow-xl backdrop-blur" onSubmit={(event) => { event.preventDefault(); void run(async () => { if (editedChampionName !== deck.championName && !window.confirm(`Change Champion from ${deck.championName ?? "none"} to ${editedChampionName ?? "none"}?`)) return; await accountApi.createDeckVersion(deck.id, { decklist: editedDecklist, format: deck.format, championName: editedChampionName, changeNote }); await refresh(); setChangeNote(""); setEditing(false); }); }}>
+          <p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Unsaved deck changes</p>
           <p className={`text-sm ${editedChampionName ? editedChampionName === deck.championName ? "text-ctp-subtext1" : "text-ctp-yellow" : "text-ctp-yellow"}`}>{editedChampionName ? `Champion detected: ${editedChampionName}${editedChampionName !== deck.championName ? ` (currently ${deck.championName ?? "none"})` : ""}` : `No Champion detected${deck.championName ? ` (currently ${deck.championName})` : ""}.`}</p>
           <input value={changeNote} maxLength={240} onChange={(event) => setChangeNote(event.target.value)} placeholder="What changed? (optional)" className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm" />
           <button disabled={busy} type="submit" className="mt-3 rounded-md bg-ctp-blue px-3 py-2 text-sm text-ctp-base disabled:opacity-50">Save new version</button>

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { OmnidexDecklist } from "@gatcg/shared";
 import { VisualCardTile, type VisualFieldVisibility } from "../../components/VisualCardTile";
 import { formatUsd } from "../../lib/format";
@@ -70,8 +71,9 @@ function DeckProfile({ baseline, target }: { baseline: ComparisonDeckStats; targ
   </div>;
 }
 
-export default function ComparisonSummary({ decks, decklists, baselineKey, onViewAllDifferences }: {
+export default function ComparisonSummary({ decks, decklists, baselineKey, mode = "overview", onViewAllDifferences }: {
   decks: ComparedDeck[]; decklists: Map<string, OmnidexDecklist | null>; baselineKey: string | null;
+  mode?: "overview" | "forecasts";
   onBaselineChange?: (key: string) => void;
   onViewAllDifferences: () => void;
 }) {
@@ -82,6 +84,17 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, onVie
   const pantheonOnly = formats.size === 1 && formats.has("PANTHEON");
   const baselineDeck = baselineIndex >= 0 ? decks[baselineIndex] : undefined;
   const baselineStats = baselineIndex >= 0 ? deckStats[baselineIndex] : undefined;
+  const forecastDecks = decks.map((deck) => {
+    const list = decklists.get(deck.key);
+    if (!list) return { deck, list: null, mainLines: [], materialLines: [], damageForecast: null, breakthroughVsAverage: null };
+    const mainLines = list.main.map((line) => ({ name: line.card, quantity: line.quantity }));
+    const materialLines = list.material.map((line) => ({ name: line.card, quantity: line.quantity }));
+    const damageForecast = computeAggressionForecast(mainLines, cardsByName, materialLines);
+    const hasDamageForecast = damageForecast.fixedDamageCopies > 0 || damageForecast.variableDamageCopies > 0 || damageForecast.scalingDamageCopies > 0 || damageForecast.ambiguousDamageCopies > 0 || damageForecast.recurringDamagePerTurn > 0;
+    const breakthroughVsAverage = hasDamageForecast ? null : computeBreakthroughDamageVsAverage([...mainLines, ...materialLines], cardsByName);
+    return { deck, list, mainLines, materialLines, damageForecast: hasDamageForecast ? damageForecast : null, breakthroughVsAverage };
+  });
+  const [forecastSeen, setForecastSeen] = useState(10);
 
   if (decks.length < 2) return <InlineState className="text-sm">Add at least one more deck to see an analysis.</InlineState>;
 
@@ -89,13 +102,17 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, onVie
     {mixedFormats && <Panel tone="warning" padding="sm" className="text-sm text-ctp-yellow">{/* COPY_PLACEHOLDER: mixed-format warning */}This comparison mixes formats. Card overlap remains useful, but construction rules and recommendations are not directly comparable.</Panel>}
     {pantheonOnly && <Panel padding="sm" className="text-sm text-ctp-subtext1">{/* COPY_PLACEHOLDER: Pantheon framing */}Pantheon analysis emphasizes recurring packages and singleton choices rather than Standard tournament performance.</Panel>}
 
-    {summaries.map((summary, targetIndex) => {
+    {mode === "overview" && summaries.map((summary, targetIndex) => {
       if (targetIndex === baselineIndex) return null;
       const targetStats = deckStats[targetIndex];
       const changes = featuredChanges(summary.changes);
       const baselineList = baselineDeck ? decklists.get(baselineDeck.key) : null;
       const baselineCardCount = baselineList ? new Set([...baselineList.main, ...baselineList.material, ...baselineList.sideboard].map((line) => line.card)).size : 0;
       const sharedPercent = baselineCardCount > 0 ? Math.round((summary.sharedCardCount / baselineCardCount) * 100) : null;
+      const addedCount = summary.changes.filter((change) => change.kind === "added").length;
+      const removedCount = summary.changes.filter((change) => change.kind === "removed").length;
+      const quantityCount = summary.changes.filter((change) => change.kind === "quantity").length;
+      const movedCount = summary.changes.filter((change) => change.kind === "moved" || change.kind === "movedQuantity").length;
       return <section key={summary.key} aria-labelledby={`analysis-${summary.key}`} className="space-y-5">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">{baselineDeck ? shortLabel(baselineDeck.label) : "Baseline"} →</p>
@@ -105,6 +122,13 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, onVie
         {summary.loading && <InlineState className="text-sm">Loading analysis…</InlineState>}
         {!summary.loading && summary.unavailable && <InlineState className="text-sm">A decklist is unavailable, so this comparison cannot be analyzed.</InlineState>}
         {!summary.loading && !summary.unavailable && baselineStats && targetStats && <>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+            <Panel padding="sm"><div className="text-xl font-semibold tabular-nums text-ctp-text">{sharedPercent === null ? "—" : `${sharedPercent}%`}</div><div className="text-[11px] text-ctp-subtext0">Baseline retained</div></Panel>
+            <Panel padding="sm"><div className="text-xl font-semibold tabular-nums text-ctp-blue">+{addedCount}</div><div className="text-[11px] text-ctp-subtext0">Added</div></Panel>
+            <Panel padding="sm"><div className="text-xl font-semibold tabular-nums text-ctp-yellow">−{removedCount}</div><div className="text-[11px] text-ctp-subtext0">Removed</div></Panel>
+            <Panel padding="sm"><div className="text-xl font-semibold tabular-nums text-ctp-mauve">{quantityCount}</div><div className="text-[11px] text-ctp-subtext0">Quantity changes</div></Panel>
+            <Panel padding="sm" className="col-span-2 sm:col-span-1"><div className="text-xl font-semibold tabular-nums text-ctp-mauve">{movedCount}</div><div className="text-[11px] text-ctp-subtext0">Section moves</div></Panel>
+          </div>
           <Panel padding="sm">
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2"><h3 className="font-semibold text-ctp-text">Deck profile</h3>{(summary.championChanged || summary.spiritChanged) && <div className="text-xs text-ctp-subtext0">{summary.championChanged && <span>Champion: {summary.baselineChampion ?? "—"} → {summary.targetChampion ?? "—"}</span>}{summary.championChanged && summary.spiritChanged && <span className="mx-2">·</span>}{summary.spiritChanged && <span>Spirit: {summary.baselineSpirit ?? "none"} → {summary.targetSpirit ?? "none"}</span>}</div>}</div>
             <DeckProfile baseline={baselineStats} target={targetStats} />
@@ -117,42 +141,33 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, onVie
       </section>;
     })}
 
-    <Section heading="dense" title="Deck forecasts" description="Test draw odds and estimate direct-damage output for each compared list.">
-      <div className="space-y-6">
-        {decks.map((deck) => {
-          const list = decklists.get(deck.key);
-          if (!list) return <Panel key={deck.key} padding="sm"><h3 className="font-semibold text-ctp-text">{shortLabel(deck.label)}</h3><InlineState className="mt-2 text-sm">Decklist unavailable.</InlineState></Panel>;
-          const mainLines = list.main.map((line) => ({ name: line.card, quantity: line.quantity }));
-          const materialLines = list.material.map((line) => ({ name: line.card, quantity: line.quantity }));
-          const damageForecast = computeAggressionForecast(mainLines, cardsByName, materialLines);
-          const hasDamageForecast = damageForecast.fixedDamageCopies > 0 || damageForecast.variableDamageCopies > 0 || damageForecast.scalingDamageCopies > 0 || damageForecast.ambiguousDamageCopies > 0 || damageForecast.recurringDamagePerTurn > 0;
-          const breakthroughVsAverage = hasDamageForecast ? null : computeBreakthroughDamageVsAverage([...mainLines, ...materialLines], cardsByName);
-          return <section key={deck.key} className="rounded-2xl bg-ctp-mantle/50 p-4 sm:p-5">
-            <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Deck forecast</p>
-            <h3 className="mt-0.5 text-lg font-semibold text-ctp-text">{shortLabel(deck.label)}</h3>
-            <div className="grid items-start gap-4 lg:grid-cols-2">
-            <HypergeometricCalculator
-              mainLines={mainLines}
-              materialLines={materialLines}
-              catalogByName={cardsByName}
-            />
-            {hasDamageForecast ? (
-              <Panel className="mt-4 shadow-sm"><AggressionForecast forecast={damageForecast} embedded /></Panel>
+    {mode === "forecasts" && <div className="space-y-8">
+      <Section heading="dense" title="Draw probability" description="Compare the same cards-seen checkpoint across every deck.">
+        <div className="grid items-start gap-4 md:grid-cols-2">
+          {forecastDecks.map(({ deck, list, mainLines, materialLines }) => <section key={deck.key} className="min-w-0">
+            <h3 className="text-base font-semibold text-ctp-text">{shortLabel(deck.label)}</h3>
+            {!list ? <Panel padding="sm" className="mt-4"><InlineState className="text-sm">Decklist unavailable.</InlineState></Panel> : <HypergeometricCalculator mainLines={mainLines} materialLines={materialLines} catalogByName={cardsByName} seen={forecastSeen} onSeenChange={setForecastSeen} />}
+          </section>)}
+        </div>
+      </Section>
+
+      <Section heading="dense" title="Damage forecasts" description="Compare damage output at the same cards-seen checkpoint.">
+        <div className="grid items-start gap-4 md:grid-cols-2">
+          {forecastDecks.map(({ deck, list, damageForecast, breakthroughVsAverage }) => <section key={deck.key} className="min-w-0">
+            <h3 className="text-base font-semibold text-ctp-text">{shortLabel(deck.label)}</h3>
+            {!list ? <Panel padding="sm" className="mt-4"><InlineState className="text-sm">Decklist unavailable.</InlineState></Panel> : damageForecast ? (
+              <Panel className="mt-4 shadow-sm"><AggressionForecast forecast={damageForecast} embedded seen={forecastSeen} onSeenChange={setForecastSeen} /></Panel>
             ) : breakthroughVsAverage && breakthroughVsAverage.attackerCount > 0 ? (
-              <Panel className="mt-4 shadow-sm">
-                <h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat damage forecast</h4>
-                <div className="mt-3"><BreakthroughDamagePanel attackerLabel={shortLabel(deck.label)} defenderLabel="an average deck" result={breakthroughVsAverage} /></div>
-              </Panel>
+              <Panel className="mt-4 shadow-sm"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat damage forecast</h4><div className="mt-3"><BreakthroughDamagePanel attackerLabel={shortLabel(deck.label)} defenderLabel="an average deck" result={breakthroughVsAverage} /></div></Panel>
             ) : (
               <Panel className="mt-4 shadow-sm"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Printed damage forecast</h4><p className="mt-1 text-xs text-ctp-subtext0">No printed spell/ability damage and no attacking allies found in this list.</p></Panel>
             )}
-            </div>
-          </section>;
-        })}
-      </div>
-    </Section>
+          </section>)}
+        </div>
+      </Section>
+    </div>}
 
-    {baselineDeck && (
+    {mode === "forecasts" && baselineDeck && (
       <Section heading="dense" title="Breakthrough damage" description="How much ally combat power reaches the champion if every attacker swings and the defender blocks with its best Intercept allies first.">
         <div className="mt-3 space-y-4">
           {decks.map((deck, index) => {

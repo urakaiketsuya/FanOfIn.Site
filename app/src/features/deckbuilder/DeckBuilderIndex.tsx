@@ -1039,7 +1039,7 @@ export default function DeckBuilderIndex() {
             <h2 id="builder-start" className="font-semibold text-ctp-text">What do you want to do?</h2>
             <p className="mt-1 text-sm text-ctp-subtext1">Pick a starting point. You can change direction without losing your current build.</p>
           </div>
-          <Link to="/my-decks" className="text-sm text-ctp-blue hover:underline">Improve a saved deck →</Link>
+          <Link to="/decks/edit" className="text-sm text-ctp-blue hover:underline">Improve a saved deck →</Link>
         </div>
         <div className="mt-3 grid gap-3 sm:grid-cols-3">
           <Link to="/card-discovery" className="rounded-lg border border-ctp-surface1 bg-ctp-base p-3 text-left transition-colors hover:border-ctp-blue/60">

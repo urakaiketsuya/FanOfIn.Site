@@ -23,7 +23,6 @@ import type { OmnidexDecklist } from "@gatcg/shared";
 import type { ComparedDeck } from "./types";
 import PageLayout from "../../components/layout/PageLayout";
 import Panel from "../../components/ui/Panel";
-import Section from "../../components/ui/Section";
 import Button from "../../components/ui/Button";
 import { InlineState } from "../../components/ui/ContentState";
 
@@ -32,14 +31,14 @@ const COMPARE_TYPE_LABELS: Record<CompareType, string> = { decks: "Decks", cards
 const COMPARE_TYPE_KEYS = Object.keys(COMPARE_TYPE_LABELS) as CompareType[];
 
 type SourceTab = "cards" | "player" | "topDecks" | "paste";
-type ViewMode = "summary" | "table" | "cardStats" | "suggestions";
+type ViewMode = "summary" | "table" | "forecasts" | "suggestions";
 const VIEW_MODE_LABELS: Record<ViewMode, string> = {
-  summary: "Analysis",
+  summary: "Overview",
   table: "Cards",
-  cardStats: "Stats",
+  forecasts: "Forecasts",
   suggestions: "Tuning",
 };
-const VIEW_MODE_KEYS: ViewMode[] = ["table", "summary", "cardStats", "suggestions"];
+const VIEW_MODE_KEYS: ViewMode[] = ["summary", "table", "forecasts", "suggestions"];
 
 const TAB_LABELS: Record<SourceTab, string> = {
   cards: "Search by cards",
@@ -49,13 +48,6 @@ const TAB_LABELS: Record<SourceTab, string> = {
 };
 const SOURCE_TAB_KEYS = Object.keys(TAB_LABELS) as SourceTab[];
 
-// Nested under the "Decks" compareType — separates the (potentially long, scrolling) source
-// search/import panels from the comparison itself, so viewing the comparison never means
-// scrolling past a big result list first.
-type PanelTab = "add" | "compare";
-const PANEL_LABELS: Record<PanelTab, string> = { add: "Add Decks", compare: "Comparison" };
-const PANEL_KEYS = Object.keys(PANEL_LABELS) as PanelTab[];
-
 export default function CompareIndex() {
   useDocumentTitle(
     "Compare",
@@ -63,11 +55,12 @@ export default function CompareIndex() {
   );
   const [compareType, setCompareType] = useTabParam<CompareType>("type", COMPARE_TYPE_KEYS, "decks");
   const [decks, setDecks] = useState<ComparedDeck[]>([]);
-  const [panel, setPanel] = useTabParam<PanelTab>("panel", PANEL_KEYS, "add");
+  const [showAddDecks, setShowAddDecks] = useState(true);
   const [tab, setTab] = useTabParam("tab", SOURCE_TAB_KEYS, "cards");
-  // Lead with the cards themselves. Analysis and raw statistics remain available as supporting
-  // views, while old `view=summary` and `view=table` deep links keep their existing meanings.
-  const [viewMode, setViewMode] = useTabParam<ViewMode>("view", VIEW_MODE_KEYS, "table");
+  // Lead with a decision summary, then let cards, forecasts, and tuning progressively disclose
+  // detail. Older summary/table URLs retain their meaning below.
+  const [viewMode, setViewMode] = useTabParam<ViewMode>("view", VIEW_MODE_KEYS, "summary");
+  const [cardDataMode, setCardDataMode] = useState<"quantities" | "performance">("quantities");
   const effectiveViewMode = viewMode;
   const [baselineKey, setBaselineKey] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -95,10 +88,11 @@ export default function CompareIndex() {
   const [confirmClear, setConfirmClear] = useState(false);
   const confirmClearTimerRef = useRef<number | null>(null);
 
-  // The former stacked Cards view duplicated the Overview and responsive Table. Preserve old
-  // bookmarks/share links by moving them to the complete card-by-card Table instead.
+  // Preserve older view names while consolidating card quantities and performance into one tab.
   useEffect(() => {
-    if (searchParams.get("view") !== "cards") return;
+    const legacyView = searchParams.get("view");
+    if (legacyView !== "cards" && legacyView !== "cardStats") return;
+    if (legacyView === "cardStats") setCardDataMode("performance");
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
       next.set("view", "table");
@@ -134,10 +128,10 @@ export default function CompareIndex() {
     // One combined update, not a separate setPanel() call — two sequential setSearchParams calls
     // in the same effect can race (the second's `prev` may not see the first's write yet), silently
     // dropping the panel switch.
+    if (seeded.length > 0) setShowAddDecks(false);
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
       next.delete("add");
-      if (seeded.length > 0) next.set("panel", "compare");
       return next;
     });
   }, [searchParams, playersData, index, setSearchParams]);
@@ -161,10 +155,10 @@ export default function CompareIndex() {
 
     // Combined into one setSearchParams call for the same reason the ?add= effect above avoids a
     // separate setPanel() call — see that comment.
+    if (parsed.length > 0) setShowAddDecks(false);
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
       next.delete("custom");
-      if (parsed.length > 0) next.set("panel", "compare");
       return next;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -250,35 +244,21 @@ export default function CompareIndex() {
         </div>
       ) : (
         <div role="tabpanel" id="type-panel-decks" aria-labelledby="type-tab-decks">
-          <Section
-            className="mt-4"
-            heading="compact"
-            title={`Comparing ${decks.length} deck${decks.length === 1 ? "" : "s"}`}
-            actions={
-              <div className="flex items-center gap-2">
-                {decks.length > 0 && (
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={handleCopyShareLink}
-                    className={shareCopyState === "failed" ? "border-ctp-red text-ctp-red" : ""}
-                  >
-                    {shareCopyState === "copied" ? "Copied!" : shareCopyState === "failed" ? "Couldn't copy" : "Copy share link"}
-                  </Button>
-                )}
-                {decks.length > 0 && (
-                  <button type="button" onClick={handleClearAll} className={`text-xs ${confirmClear ? "font-semibold text-ctp-red" : "text-ctp-subtext0 hover:text-ctp-text"}`}>
-                    {confirmClear ? "Confirm clear all?" : "Clear all"}
-                  </button>
-                )}
+          <Panel className="sticky top-14 z-30 mt-4 shadow-sm">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Compare decks</p>
+                <p className="mt-0.5 text-sm text-ctp-subtext1">Select a deck to make it the baseline.</p>
               </div>
-            }
-          >
-            {null}
-          </Section>
-
-          {decks.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-2">
+              <div className="flex items-center gap-2">
+                <Button variant={showAddDecks ? "primary" : "secondary"} size="sm" onClick={() => setShowAddDecks((value) => !value)}>
+                  {showAddDecks ? "Close deck picker" : "+ Add deck"}
+                </Button>
+                {decks.length > 0 && <Button variant="ghost" size="sm" onClick={handleCopyShareLink} className={shareCopyState === "failed" ? "text-ctp-red" : ""}>{shareCopyState === "copied" ? "Copied!" : shareCopyState === "failed" ? "Couldn't copy" : "Share"}</Button>}
+                {decks.length > 0 && <button type="button" onClick={handleClearAll} className={`text-xs ${confirmClear ? "font-semibold text-ctp-red" : "text-ctp-subtext0 hover:text-ctp-text"}`}>{confirmClear ? "Confirm clear all?" : "Clear"}</button>}
+              </div>
+            </div>
+            {decks.length > 0 && <div className="mt-3 flex flex-wrap items-center gap-2">
               {decks.map((d) => (
                 <DeckChip
                   key={d.key}
@@ -290,33 +270,11 @@ export default function CompareIndex() {
                   onRemove={() => removeDeck(d.key)}
                 />
               ))}
-            </div>
-          )}
+            </div>}
+          </Panel>
 
-          {/* Nested tabs: search/import (potentially long result lists) kept separate from the
-              comparison itself, so switching to it never means scrolling past search results. */}
-          <div role="tablist" aria-label="Compare sections" className="mt-4 flex flex-wrap items-center gap-2">
-            {PANEL_KEYS.map((p) => (
-              <button
-                key={p}
-                type="button"
-                role="tab"
-                id={`panel-tab-${p}`}
-                aria-selected={panel === p}
-                aria-controls={`panel-${p}`}
-                onClick={() => setPanel(p)}
-                className={`rounded-md border px-3 py-1.5 text-sm font-medium ${
-                  panel === p ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                }`}
-              >
-                {PANEL_LABELS[p]}
-                {p === "compare" && decks.length > 0 ? ` (${decks.length})` : ""}
-              </button>
-            ))}
-          </div>
-
-          {panel === "add" && (
-            <div role="tabpanel" id="panel-add" aria-labelledby="panel-tab-add" className="mt-4">
+          {showAddDecks && (
+            <div className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle/40 p-3 sm:p-4">
               <div role="tablist" aria-label="Add decks source" className="flex flex-wrap items-center gap-2 text-sm">
                 <span className="text-xs text-ctp-subtext0">Source:</span>
                 {(Object.keys(TAB_LABELS) as SourceTab[]).map((t) => (
@@ -337,15 +295,6 @@ export default function CompareIndex() {
                 ))}
               </div>
 
-              {decks.length > 0 && (
-                <p className="mt-2 text-xs text-ctp-subtext0">
-                  {decks.length} deck{decks.length === 1 ? "" : "s"} selected —{" "}
-                  <button type="button" onClick={() => setPanel("compare")} className="text-ctp-blue hover:underline">
-                    view comparison &rarr;
-                  </button>
-                </p>
-              )}
-
               <Panel as="div" role="tabpanel" id="source-panel" aria-labelledby={`source-tab-${tab}`} className="mt-3">
                 {tab === "cards" && <DeckSearchByCards comparedKeys={comparedKeys} onToggle={toggleDeck} />}
                 {tab === "player" && <ImportByPlayer comparedKeys={comparedKeys} onToggle={toggleDeck} />}
@@ -355,18 +304,16 @@ export default function CompareIndex() {
             </div>
           )}
 
-          {panel === "compare" && (
-            <div role="tabpanel" id="panel-compare" aria-labelledby="panel-tab-compare" className="mt-4">
+            <div className="mt-5">
               {decks.length === 0 && (
                 <InlineState className="text-sm">
-                  Nothing to compare yet — switch to "Add Decks" to search, import, or paste one.
+                  Add at least two decks to start a comparison.
                 </InlineState>
               )}
 
               {decks.length > 0 && (
                 <>
-                  <div role="tablist" aria-label="Comparison view" className="flex flex-wrap items-center gap-1 text-xs">
-                    <span className="text-xs text-ctp-subtext0">View:</span>
+                  <div role="tablist" aria-label="Comparison view" className="flex flex-wrap items-center gap-1 border-b border-ctp-surface1">
                     {VIEW_MODE_KEYS.map((mode) => (
                       <button
                         key={mode}
@@ -376,8 +323,8 @@ export default function CompareIndex() {
                         aria-selected={effectiveViewMode === mode}
                         aria-controls="view-panel"
                         onClick={() => setViewMode(mode)}
-                        className={`rounded-md border px-2 py-1 ${
-                          effectiveViewMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+                        className={`min-h-10 border-b-2 px-3 py-2 text-sm font-medium ${
+                          effectiveViewMode === mode ? "border-ctp-blue text-ctp-blue" : "border-transparent text-ctp-subtext1 hover:text-ctp-text"
                         }`}
                       >
                         {VIEW_MODE_LABELS[mode]}
@@ -391,19 +338,25 @@ export default function CompareIndex() {
                         decks={decks}
                         decklists={decklists}
                         baselineKey={effectiveBaselineKey}
+                        mode="overview"
                         onViewAllDifferences={() => setViewMode("table")}
                       />
                     )}
                     {effectiveViewMode === "table" && (
-                      <ComparisonDifferences decks={decks} decklists={decklists} />
+                      <>
+                        <div className="mb-4 inline-flex rounded-lg bg-ctp-mantle p-1" aria-label="Card data">
+                          <button type="button" aria-pressed={cardDataMode === "quantities"} onClick={() => setCardDataMode("quantities")} className={`rounded-md px-3 py-1.5 text-xs font-medium ${cardDataMode === "quantities" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>Deck quantities</button>
+                          <button type="button" aria-pressed={cardDataMode === "performance"} onClick={() => setCardDataMode("performance")} className={`rounded-md px-3 py-1.5 text-xs font-medium ${cardDataMode === "performance" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>Performance</button>
+                        </div>
+                        {cardDataMode === "quantities" ? <ComparisonDifferences decks={decks} decklists={decklists} /> : <ComparisonCardStats decks={decks} decklists={decklists} />}
+                      </>
                     )}
-                    {effectiveViewMode === "cardStats" && <ComparisonCardStats decks={decks} decklists={decklists} />}
+                    {effectiveViewMode === "forecasts" && <ComparisonSummary decks={decks} decklists={decklists} baselineKey={effectiveBaselineKey} mode="forecasts" onViewAllDifferences={() => setViewMode("table")} />}
                     {effectiveViewMode === "suggestions" && <ComparisonSuggestions decks={decks} decklists={decklists} baselineKey={effectiveBaselineKey} />}
                   </div>
                 </>
               )}
             </div>
-          )}
         </div>
       )}
     </PageLayout>

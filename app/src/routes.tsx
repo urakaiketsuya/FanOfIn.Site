@@ -61,6 +61,18 @@ function SharedDeckDetailRedirect() {
   return <Navigate to={`/decks/${encodeURIComponent(publicSlug)}`} replace />;
 }
 
+// /my-decks moved under the same /decks namespace as every other deck page — the list at
+// /decks/edit (mirroring /decks/shared as an index), and each saved deck's own edit page folded
+// straight into /decks/:id, right alongside tournament and shared decks (see
+// SAVED_DECK_ID_PATTERN above). Old links/bookmarks keep working through these redirects.
+function MyDecksIndexRedirect() {
+  return <Navigate to="/decks/edit" replace />;
+}
+function MyDeckDetailRedirect() {
+  const { deckId = "" } = useParams<{ deckId: string }>();
+  return <Navigate to={`/decks/${encodeURIComponent(deckId)}`} replace />;
+}
+
 // Lazy-loaded so each route's JS is a separate chunk, fetched on demand — previously the whole
 // app (every page) shipped as one bundle regardless of which page a visitor actually opened.
 const CardsBrowse = lazy(() => import("./features/cards/CardsBrowse"));
@@ -115,15 +127,21 @@ const PublicUserProfile = lazy(() => import("./features/account/PublicUserProfil
 const CollectionIndex = lazy(() => import("./features/collection/CollectionIndex"));
 const SettingsIndex = lazy(() => import("./features/settings/SettingsIndex"));
 
-// /decks/:id serves both tournament decks and publicly shared decks from one flat namespace, so
-// this dispatches to whichever one actually owns the id — no network probe needed, since the two id
-// spaces never overlap by length. Tournament hashes (`shortHash()`, shared/src/hash.ts) are base-36
-// of a 32-bit int, at most 7 lowercase alphanumeric characters. Shared-deck slugs
-// (account-worker/src/decks.ts) are `crypto.randomUUID()` with dashes stripped — always exactly 32
-// lowercase hex characters.
+// /decks/:id serves tournament decks, publicly shared decks, and a signed-in user's own saved
+// decks from one flat namespace, dispatching to whichever one actually owns the id — no network
+// probe needed, since the three id spaces never overlap in shape. Tournament hashes (`shortHash()`,
+// shared/src/hash.ts) are base-36 of a 32-bit int, at most 7 lowercase alphanumeric characters, and
+// never contain a dash. Shared-deck slugs (account-worker/src/decks.ts) are `crypto.randomUUID()`
+// with dashes stripped — always exactly 32 lowercase hex characters, also never a dash. A saved
+// deck's own id is that same `crypto.randomUUID()` with its dashes intact, so it's the only one of
+// the three that ever matches a dash-containing pattern. Ownership itself is still enforced
+// server-side (account-worker's getDeck scopes every lookup to the signed-in user), so a saved-deck
+// id belonging to someone else just renders MyDeckDetail's own "not found" state, not a data leak.
 const PUBLIC_SLUG_PATTERN = /^[0-9a-f]{32}$/;
+const SAVED_DECK_ID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 function DeckOrPublicDeckDetail() {
   const { id = "" } = useParams<{ id: string }>();
+  if (SAVED_DECK_ID_PATTERN.test(id)) return <MyDeckDetail />;
   return PUBLIC_SLUG_PATTERN.test(id) ? <PublicDeckDetail /> : <DeckDetail />;
 }
 
@@ -177,6 +195,7 @@ export default function AppRoutes() {
         <Route path="/decks" element={<BrowseDecksIndex />} />
         <Route path="/decks/shared" element={<SharedDecksIndex />} />
         <Route path="/decks/shared/:publicSlug" element={<SharedDeckDetailRedirect />} />
+        <Route path="/decks/edit" element={<MyDecksIndex />} />
         <Route path="/decks/:id" element={<DeckOrPublicDeckDetail />} />
         <Route path="/pantheon/decks/:id" element={<PantheonDeckDetail />} />
         <Route path="/deck-builder" element={<DeckBuilderIndex />} />
@@ -197,11 +216,11 @@ export default function AppRoutes() {
         <Route path="/timelines/combos" element={<CombosIndex />} />
         <Route path="/timelines/:id" element={<TimelineDetail />} />
         <Route path="/diao-review" element={<DiaoReviewIndex />} />
-        <Route path="/my-decks" element={<MyDecksIndex />} />
         <Route path="/collection" element={<CollectionIndex />} />
         <Route path="/account" element={<AccountIndex />} />
         <Route path="/settings" element={<SettingsIndex />} />
-        <Route path="/my-decks/:deckId" element={<MyDeckDetail />} />
+        <Route path="/my-decks" element={<MyDecksIndexRedirect />} />
+        <Route path="/my-decks/:deckId" element={<MyDeckDetailRedirect />} />
         <Route path="/decklists/:publicSlug" element={<PublicDeckDetailRedirect />} />
         <Route path="/shared-decks" element={<SharedDecksRedirect />} />
         <Route path="/users/:profileSlug" element={<PublicUserProfile />} />

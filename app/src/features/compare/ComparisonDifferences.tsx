@@ -96,7 +96,7 @@ export default function ComparisonDifferences({
                   {shown.length === 0 ? (
                     <InlineState className="mt-2 text-sm">No differences in {label.toLowerCase()}.</InlineState>
                   ) : (
-                    <ul className="mt-3 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
+                    <ul className="mt-3 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 lg:grid-cols-4">
                       {shown.map((card) => {
                         const cardInfo = cardsByName.get(card.name);
                         const maxQuantity = Math.max(...card.quantities);

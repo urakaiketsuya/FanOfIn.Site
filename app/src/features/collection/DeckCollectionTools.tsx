@@ -41,7 +41,7 @@ export default function DeckCollectionTools({ decklist, cardsByName, source }: {
     return Array.from(quantities.values());
   }, [decklist, cardsByName, includeSideboard]);
 
-  if (signedOut) return <p data-component="DeckCollectionTools" className="mt-3 text-xs text-ctp-subtext1"><Link to="/my-decks" className="text-ctp-blue hover:underline">Sign in</Link> to compare this deck with your collection.</p>;
+  if (signedOut) return <p data-component="DeckCollectionTools" className="mt-3 text-xs text-ctp-subtext1"><Link to="/decks/edit" className="text-ctp-blue hover:underline">Sign in</Link> to compare this deck with your collection.</p>;
   if (!collection) return null;
 
   async function addDeck() {

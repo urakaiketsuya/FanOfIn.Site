@@ -12,7 +12,7 @@ function formatChance(min: number, max: number): string {
   return formatRange(Math.round(min * 100), Math.round(max * 100), "%");
 }
 
-export default function AggressionForecast({ forecast, embedded = false }: { forecast: Forecast; embedded?: boolean }) {
+export default function AggressionForecast({ forecast, embedded = false, seen, onSeenChange }: { forecast: Forecast; embedded?: boolean; seen?: number; onSeenChange?: (seen: number) => void }) {
   const hasDamage = !(
     forecast.fixedDamageCopies === 0 &&
     forecast.variableDamageCopies === 0 &&
@@ -20,7 +20,9 @@ export default function AggressionForecast({ forecast, embedded = false }: { for
     forecast.ambiguousDamageCopies === 0 &&
     forecast.recurringDamagePerTurn === 0
   );
-  const [selectedSeen, setSelectedSeen] = useState(forecast.points[1]?.seen ?? forecast.points[0]?.seen ?? 0);
+  const [localSelectedSeen, setLocalSelectedSeen] = useState(forecast.points[1]?.seen ?? forecast.points[0]?.seen ?? 0);
+  const selectedSeen = seen ?? localSelectedSeen;
+  const setSelectedSeen = onSeenChange ?? setLocalSelectedSeen;
   if (!hasDamage) return null;
   const selected = forecast.points.find((point) => point.seen === selectedSeen) ?? forecast.points[0];
   if (!selected) return null;

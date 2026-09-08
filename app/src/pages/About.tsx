@@ -338,7 +338,7 @@ export default function About() {
                 <p className="mt-0.5 text-sm text-ctp-subtext1">Pick up where you left off.</p>
               </div>
               <div className="flex flex-wrap gap-2">
-                <Link to="/my-decks" className="rounded-md bg-ctp-blue px-3 py-2 text-sm font-semibold text-ctp-base hover:opacity-90">My Decks</Link>
+                <Link to="/decks/edit" className="rounded-md bg-ctp-blue px-3 py-2 text-sm font-semibold text-ctp-base hover:opacity-90">My Decks</Link>
                 <Link to="/collection" className="rounded-md border border-ctp-green/60 px-3 py-2 text-sm font-semibold text-ctp-green hover:bg-ctp-green/5">My Collection</Link>
                 <Link to="/deck-builder" className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm font-semibold text-ctp-text hover:border-ctp-mauve">Continue Building</Link>
               </div>
@@ -359,7 +359,7 @@ export default function About() {
               <p className="text-xs font-semibold uppercase tracking-wide text-ctp-green">Easy To Get Started</p>
               <p className="mt-2 text-sm text-ctp-subtext1">Import your existing decks from other sites and omnidex.</p>
             </Link>
-            <Link to="/my-decks" className="rounded-xl border border-ctp-surface1 bg-ctp-base p-4 hover:border-ctp-yellow">
+            <Link to="/decks/edit" className="rounded-xl border border-ctp-surface1 bg-ctp-base p-4 hover:border-ctp-yellow">
               <p className="text-xs font-semibold uppercase tracking-wide text-ctp-yellow">Free Tools For Better Decks</p>
               <p className="mt-2 text-sm text-ctp-subtext1">Import your existing decks to get suggestions. Find out how much damage you can do each turn and if you'll see a given card.</p>
             </Link>
