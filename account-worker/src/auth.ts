@@ -34,6 +34,19 @@ interface GoogleClaims {
   nonce?: string;
 }
 
+/** Creates the deterministic account used by the localhost-only development sign-in route. */
+export async function createLocalUserSession(env: Env): Promise<{ user: AuthUser; cookie: string }> {
+  return createUserSession(env, {
+    iss: "local-development",
+    aud: env.GOOGLE_CLIENT_ID,
+    sub: "fanofin-local-test-user",
+    email: "local-test@fanofin.invalid",
+    email_verified: true,
+    name: "Local Test Player",
+    exp: Math.floor(Date.now() / 1000) + 60 * 60,
+  });
+}
+
 const SESSION_COOKIE = "fanofin_session";
 const SESSION_SECONDS = 60 * 60 * 24 * 30;
 const SESSION_IDLE_SECONDS = 60 * 60 * 24 * 7;

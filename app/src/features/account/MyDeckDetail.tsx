@@ -24,7 +24,7 @@ import DeckVisualStrip from "./DeckVisualStrip";
 import { encodeCustomDecks } from "../../lib/compareShareLink";
 
 type DeckTab = "overview" | "decklist" | "analysis" | "primer" | "versions" | "settings";
-const DECK_TABS = [{ key: "overview", label: "Overview" }, { key: "decklist", label: "Decklist" }, { key: "analysis", label: "Analysis" }, { key: "primer", label: "Primer" }, { key: "versions", label: "History" }] satisfies { key: DeckTab; label: string }[];
+const DECK_TABS = [{ key: "overview", label: "Overview" }, { key: "decklist", label: "Decklist" }, { key: "analysis", label: "Improve" }, { key: "primer", label: "Primer" }, { key: "versions", label: "History" }] satisfies { key: DeckTab; label: string }[];
 const DECK_TAB_KEYS: DeckTab[] = [...DECK_TABS.map(({ key }) => key), "settings"];
 
 type DeckSectionKey = keyof OmnidexDecklist;

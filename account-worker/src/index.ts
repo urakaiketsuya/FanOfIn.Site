@@ -1,4 +1,4 @@
-import { authenticatedUser, bffAllowed, consumeOAuthNonce, createOAuthNonce, createUserSession, destroyAllSessions, destroySession, normalizeDisplayName, originAllowed, rotateCurrentSession, verifyGoogleCredential, type Env } from "./auth";
+import { authenticatedUser, bffAllowed, consumeOAuthNonce, createLocalUserSession, createOAuthNonce, createUserSession, destroyAllSessions, destroySession, normalizeDisplayName, originAllowed, rotateCurrentSession, verifyGoogleCredential, type Env } from "./auth";
 import { createDeckVersion, deleteDeck, getDeck, getPublicDeck, listDecks, parseSaveInput, performImport, previewImport, publishDeck, restoreDeckVersion, saveDeck, updateDeckMetadata } from "./decks";
 import { ApiError, badRequest } from "./errors";
 import { copyPublishedDeck, getDeckSocialState, listBookmarks, setDeckBookmark, setDeckLike } from "./deck-social";
@@ -72,6 +72,14 @@ export default {
         return response(env, request, health, health.success ? 200 : 503);
       }
       if (request.method === "GET" && url.pathname === "/v1/auth/session") return response(env, request, { user: await authenticatedUser(request, env) });
+      if (request.method === "POST" && url.pathname === "/v1/auth/dev") {
+        const origin = request.headers.get("Origin");
+        const localOnly = url.hostname === "localhost" && origin === "http://localhost:5173" && env.ALLOWED_ORIGINS === origin;
+        if (!localOnly) return response(env, request, { error: "Development sign-in is only available on localhost" }, 404);
+        await rotateCurrentSession(request, env);
+        const session = await createLocalUserSession(env);
+        return response(env, request, { user: session.user }, 200, { "Set-Cookie": session.cookie });
+      }
       if (request.method === "POST" && url.pathname === "/v1/auth/google/nonce") {
         const clientIp = request.headers.get("X-Fanofin-Client-IP") ?? "unknown";
         if (await rateLimited(env.LOGIN_RATE_LIMITER, clientIp)) return tooManyRequests(env, request);

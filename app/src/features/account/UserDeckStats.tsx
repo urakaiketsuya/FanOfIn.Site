@@ -10,7 +10,6 @@ import { computeAggressionForecast } from "../../lib/aggressionForecast";
 import { computeBreakthroughDamageVsAverage } from "../../lib/breakthroughDamage";
 import BreakthroughDamagePanel from "../compare/BreakthroughDamagePanel";
 import { buildDeckBuilderPath, deckBuilderParamsFromDecklist } from "../../lib/deckBuilderLink";
-import { encodeCustomDecks } from "../../lib/compareShareLink";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { validateDeck, sideboardPointCost } from "../deckbuilder/validateDeck";
 import { computeTrimPlan, computeCurvePeakCardNames, TRIM_TARGET_SIZE, type TrimSection } from "../deckbuilder/deckTrimming";
@@ -49,7 +48,7 @@ function DeckStatsTabs({ tabs }: { tabs: DeckStatsTab[] }) {
   const current = tabs.find((t) => t.key === active) ?? tabs[0];
   if (!current) return null;
   return <div data-component="DeckStatsTabs">
-    <div role="tablist" aria-label="Deck analysis" className="flex flex-wrap gap-2">
+    <div role="tablist" aria-label="Deck improvement tools" className="flex flex-wrap gap-2">
       {tabs.map((t) => {
         const selected = t.key === current.key;
         return (
@@ -112,6 +111,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
   const builderParams = useMemo(() => deckBuilderParamsFromDecklist(decklist, cardsByName), [decklist, cardsByName]);
   const canImprove = Boolean(builderParams?.spiritFilter);
   const [selectedTrimSection, setSelectedTrimSection] = useState<TrimSection | null>(null);
+  const [stagedCuts, setStagedCuts] = useState<Set<string>>(new Set());
   const noExclusions = useMemo(() => new Set<string>(), []);
   // Tournament-only data — Pantheon decks share Champion names with Standard tournament decks but
   // are a genuinely different population (different construction rules, no tournament results of
@@ -260,6 +260,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
   const hasTrimOrPackages = overTrimSections.length > 0 || synergyReadiness.length > 0 || dependencyReadiness.length > 0;
   const trimTab: ReactNode = (
     <>
+      {stagedCuts.size > 0 && <Panel tone="info" className="mb-5 sticky top-16 z-20 shadow-lg"><div className="flex flex-wrap items-center justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Proposed changes</p><p className="mt-1 text-sm text-ctp-text">{stagedCuts.size} cut{stagedCuts.size === 1 ? "" : "s"} staged for review</p><p className="mt-1 text-xs text-ctp-subtext1">{[...stagedCuts].join(" · ")}</p></div><div className="flex gap-2"><button type="button" onClick={() => setStagedCuts(new Set())} className="rounded-md px-3 py-2 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">Clear</button>{builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, ownerDeckId && canImprove ? { mode: "improve", sourceDeckId: ownerDeckId } : undefined)} className="rounded-md bg-ctp-blue px-3 py-2 text-xs font-medium text-ctp-base">Review and apply →</Link>}</div></div></Panel>}
       {overTrimSections.length > 0 && activeTrimPlan && (
         <Section heading="compact" title="Trim to size" description="Ranked cut suggestions from quantity-vs-optimal, Champion-scoped win-rate lift, and cost-curve evidence already computed elsewhere on the site. Price is shown for reference and never used to rank a card.">
           <div className="mt-3 flex flex-wrap gap-2">
@@ -274,7 +275,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
             {activeTrimPlan.candidates.map((candidate) => <li key={candidate.cardName} className="rounded-md border border-ctp-surface1 p-2 text-sm">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="font-semibold text-ctp-text">{candidate.remainingQuantity > 0 ? `Cut ${candidate.cutQuantity}x (keep ${candidate.remainingQuantity}x)` : `Cut all ${candidate.cutQuantity}x`} {candidate.cardName}</span>
-                {candidate.priceEach !== null && <span className="text-xs text-ctp-subtext0">${(candidate.priceEach * candidate.cutQuantity).toFixed(2)} saved</span>}
+                <div className="flex items-center gap-2">{candidate.priceEach !== null && <span className="text-xs text-ctp-subtext0">${(candidate.priceEach * candidate.cutQuantity).toFixed(2)} saved</span>}<button type="button" aria-pressed={stagedCuts.has(candidate.cardName)} onClick={() => setStagedCuts((current) => { const next = new Set(current); if (next.has(candidate.cardName)) next.delete(candidate.cardName); else next.add(candidate.cardName); return next; })} className={`rounded-md border px-2.5 py-1.5 text-xs font-medium ${stagedCuts.has(candidate.cardName) ? "border-ctp-blue bg-ctp-blue text-ctp-base" : "border-ctp-surface1 text-ctp-subtext1 hover:border-ctp-blue"}`}>{stagedCuts.has(candidate.cardName) ? "Staged ✓" : "Stage cut"}</button></div>
               </div>
               <p className="mt-1 text-xs text-ctp-subtext1">{candidate.detail}</p>
             </li>)}
@@ -295,9 +296,9 @@ export default function UserDeckStats({ decklist, championName, format, title, o
   );
 
   const tabs: DeckStatsTab[] = [
+    { key: "improvements", label: "Improvements", content: trimTab },
     { key: "composition", label: "Composition", content: compositionTab },
-    { key: "probability", label: "Probability", content: probabilityTab },
-    ...(hasTrimOrPackages ? [{ key: "trim", label: "Trim & packages", content: trimTab }] : []),
+    { key: "forecasts", label: "Forecasts", content: probabilityTab },
     ...extraTabs,
   ];
 
@@ -305,20 +306,11 @@ export default function UserDeckStats({ decklist, championName, format, title, o
     <Panel aria-labelledby="analysis-findings">
       <div className="flex flex-wrap items-start justify-between gap-3"><div><h2 id="analysis-findings" className="font-semibold text-ctp-text">Key findings</h2><p className="mt-1 text-xs text-ctp-subtext0">Prioritized structural signals from this exact list.</p></div>{ownerDeckId && builderParams && canImprove && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, { mode: "improve", sourceDeckId: ownerDeckId })} className="rounded-md bg-ctp-blue px-3 py-1.5 text-sm text-ctp-base">Review improvements</Link>}</div>
       <div className="mt-3 grid gap-2 sm:grid-cols-2">{findings.map((finding) => <Panel key={`${finding.title}:${finding.detail}`} tone={FINDING_TONE[finding.tone]} padding="sm"><p className="text-sm font-semibold text-ctp-text">{finding.title}</p><p className="mt-1 text-xs text-ctp-subtext1">{finding.detail}</p></Panel>)}</div>
+      {versionChange && <p className="mt-3 border-t border-ctp-surface1 pt-2 text-xs text-ctp-subtext1">Since the previous version: {versionChange.added} copies added · {versionChange.removed} removed · {versionChange.changedCards} card entries changed.</p>}
     </Panel>
 
-    <Panel tone={coverage.unresolved.length > 0 ? "warning" : "default"}>
-      <Section heading="dense" title="Analysis coverage" actions={<span className="text-sm font-semibold text-ctp-text">{coverage.resolvedCopies}/{coverage.totalCopies} copies resolved</span>}>
-        <p className="mt-1 text-xs text-ctp-subtext1">{coverage.uniqueResolved}/{coverage.uniqueTotal} unique cards matched the local card catalog. Composition analytics use main + material; sideboard cards are included only in legality and coverage.</p>
-        {coverage.unresolved.length > 0 && <p className="mt-2 text-xs text-ctp-yellow">Not resolved: {coverage.unresolved.join(", ")}. Fix these names before relying on scores or charts.</p>}
-        {versionChange && <p className="mt-2 border-t border-current/10 pt-2 text-xs text-ctp-subtext1">Since the previous version: {versionChange.added} copies added · {versionChange.removed} removed · {versionChange.changedCards} card entries changed.</p>}
-      </Section>
-    </Panel>
-
-    <section className={`rounded-lg border p-4 ${validationTone}`}>
-      <div className="flex flex-wrap items-center justify-between gap-3"><div><h2 className="font-semibold">{validation.status}</h2><p className="mt-1 text-xs opacity-80">Main {totals.main} · Material {totals.material} · Sideboard {totals.sideboard}</p></div><div className="flex flex-wrap gap-2"><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: title, decklist, format }]))}`} className="rounded-md border border-current px-3 py-1.5 text-sm">Compare deck</Link>{builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections)} className="rounded-md border border-current px-3 py-1.5 text-sm">Continue in Deck Builder</Link>}{builderParams && ownerDeckId && canImprove && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, { mode: "improve", sourceDeckId: ownerDeckId })} className="rounded-md bg-current px-3 py-1.5 text-sm"><span className="text-ctp-base">Improve this deck</span></Link>}</div></div>
-      {validation.reasons.length > 0 && <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">{validation.reasons.map((reason) => <li key={reason}>{reason}</li>)}</ul>}
-      <p className="mt-3 text-[11px] opacity-70">Static construction check only; event-specific rules and card-text exceptions still require an official source.</p>
+    <section className={`rounded-lg border px-3 py-2.5 ${validationTone}`}>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1"><h2 className="text-sm font-semibold">{validation.status}</h2><p className="text-xs opacity-80">Main {totals.main} · Material {totals.material} · Sideboard {totals.sideboard}</p>{validation.reasons.length > 0 && <details className="ml-auto text-xs"><summary className="cursor-pointer font-medium">{validation.reasons.length} issue{validation.reasons.length === 1 ? "" : "s"}</summary><ul className="mt-2 max-w-2xl list-disc space-y-1 pl-5">{validation.reasons.map((reason) => <li key={reason}>{reason}</li>)}</ul></details>}</div>
     </section>
 
     <DeckStatsTabs tabs={tabs} />

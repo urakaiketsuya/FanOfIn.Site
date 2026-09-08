@@ -4,6 +4,20 @@ Authenticated saved-deck storage for the SPA. This Worker intentionally uses a s
 
 ## Local setup
 
+### Fast UI testing (no Google OAuth required)
+
+1. Apply the local database migrations from `account-worker/`:
+   `npx wrangler d1 migrations apply fanofin-accounts-dev --local`
+2. Run `npm run accounts:dev` from the repository root.
+3. In a second terminal, run `npm run dev`.
+4. Open `http://localhost:5173/decks/edit` and choose **Use local test account**.
+5. Use **Add deck → Paste a decklist** to create disposable local data.
+
+The development sign-in endpoint only responds when both the Worker URL and browser origin are the
+configured localhost addresses. It is unavailable through production or preview deployments.
+
+### Google sign-in setup
+
 1. Create development and production D1 databases and replace the placeholder IDs in `wrangler.jsonc`.
 2. Create a Google Web OAuth client. Add `http://localhost:5173` and `https://fanofin.site` as authorized JavaScript origins.
 3. Put the same client ID in the Worker's `GOOGLE_CLIENT_ID` variable and the app's `VITE_GOOGLE_CLIENT_ID` build variable.

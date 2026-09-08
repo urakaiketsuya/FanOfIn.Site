@@ -1,6 +1,6 @@
 import type { DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import type { ReactNode } from "react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import DecklistView from "../events/DecklistView";
 import DeckDecaySignals from "../events/DeckDecaySignals";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -18,11 +18,12 @@ export default function UserDecklistPanel({ decklist, format, actions, children,
   const cardsByName = useCardsByNames(cardNames);
   const builderParams = useMemo(() => deckBuilderParamsFromDecklist(decklist, cardsByName), [decklist, cardsByName]);
   const canImprove = Boolean(builderParams?.spiritFilter);
+  const [showCollection, setShowCollection] = useState(false);
 
   return <section data-component="UserDecklistPanel" className="mt-6">
     <h2 className="sr-only">Decklist</h2>
-    {(actions || builderParams) && <div className="mb-4 flex flex-wrap justify-end gap-2">{builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, canImprove && ownerDeckId ? { mode: "improve", sourceDeckId: ownerDeckId } : undefined)} className="rounded border border-ctp-blue px-2 py-1 text-xs text-ctp-blue">{canImprove && ownerDeckId ? "Improve this deck" : "Tune in Deck Builder"}</Link>}{ownerDeckId && !canImprove && <span className="self-center text-xs text-ctp-subtext0">Choose a Spirit in the decklist to unlock improvement review.</span>}{actions}</div>}
-    {collectionSource && <div className="mb-4"><DeckCollectionTools decklist={decklist} cardsByName={cardsByName} source={collectionSource} /></div>}
+    {(actions || builderParams || collectionSource) && <div className="mb-4 flex flex-wrap justify-end gap-2">{collectionSource && !children && <button type="button" aria-expanded={showCollection} onClick={() => setShowCollection((value) => !value)} className={`rounded border px-2 py-1 text-xs ${showCollection ? "border-ctp-green bg-ctp-green/10 text-ctp-green" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`}>Collection</button>}{builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, canImprove && ownerDeckId ? { mode: "improve", sourceDeckId: ownerDeckId } : undefined)} className="rounded border border-ctp-blue px-2 py-1 text-xs text-ctp-blue">{canImprove && ownerDeckId ? "Improve this deck" : "Tune in Deck Builder"}</Link>}{ownerDeckId && !canImprove && <span className="self-center text-xs text-ctp-subtext0">Choose a Spirit in the decklist to unlock improvement review.</span>}{actions}</div>}
+    {collectionSource && !children && showCollection && <div className="mb-4"><DeckCollectionTools decklist={decklist} cardsByName={cardsByName} source={collectionSource} /></div>}
     {children ?? <DecklistView decklist={decklist} cardsByName={cardsByName} showThumbnails format={format} />}
     {format !== "PANTHEON" && displayPrefs.metaGaps && <DeckDecaySignals decklist={decklist} cardsByName={cardsByName} />}
   </section>;
