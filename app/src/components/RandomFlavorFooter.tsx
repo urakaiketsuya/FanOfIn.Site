@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useRandomFlavorCard } from "../features/cards/useRandomFlavorCard";
 import { useCardsByNames } from "../features/events/useCardsByNames";
 import { CHARACTER_CUTOUTS } from "../features/products/characterArt";
-import SyncStatus from "./SyncStatus";
 
 // Hand-picked, not every CHARACTER_CUTOUTS entry (which also has a few non-Champion pieces —
 // Slime tokens, a Drone ally — and some champion art that just doesn't read as well small).
@@ -45,9 +44,6 @@ export default function RandomFlavorFooter() {
           Grand Archive is a trademark of Weebs of the Shore. This is an unofficial fan project and is not affiliated
           with or endorsed by Weebs of the Shore. This site is built and maintained with AI assistance.
         </p>
-        {/* <div className="mt-3">
-          <SyncStatus />
-        </div> */}
         <Link to="/changelog" className="mt-3 inline-block text-[11px] text-ctp-subtext0/70 hover:text-ctp-blue">
           Changelog
         </Link>

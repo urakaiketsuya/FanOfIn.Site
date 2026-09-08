@@ -243,12 +243,7 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
           title="Deck era"
           description={
             <>
-              When decks were likely built, inferred from the newest card each one requires — a floor, not a real
-              timestamp, since the source archive doesn't record a creation date. A deck built yesterday from only
-              year-old cards reads as year-old here. Hover a bar for the set(s) behind it.
-              {deckEra && deckEra.unresolvedDeckCount > 0 && (
-                <> {deckEra.unresolvedDeckCount.toLocaleString()} decks couldn't be dated and are excluded.</>
-              )}
+              When decks were likely built, based on the newest card each one requires. Hover a bar for the set(s) behind it.
             </>
           }
         >

@@ -185,8 +185,7 @@ function MatchDecklistsForEvent({ match, eventId }: { match: BroadcastTimelineMa
         <Link to={`/events/${eventId}?tab=decklists`} className="text-ctp-blue hover:underline">
           {bundle.event.name}
         </Link>
-        &rsquo;s public tournament decklists — a separate population from the broadcast commentary. Caster call-outs
-        don&rsquo;t always match the registered username exactly, so a match isn&rsquo;t always automatic.
+        &rsquo;s public tournament decklists.
       </p>
       <div className="mt-3 flex flex-col gap-4 sm:flex-row">
         <PlayerDecklistSlot caster={match.players[0]} eventId={eventId} decklists={decklists} players={players} accent="text-ctp-blue" />

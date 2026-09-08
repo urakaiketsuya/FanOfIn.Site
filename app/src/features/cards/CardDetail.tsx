@@ -720,8 +720,7 @@ export default function CardDetail() {
             <>
               <p className="mt-3 text-xs text-ctp-subtext0">
                 Cards with a matching ability template, for comparing cost and stats side by side — deltas are shown
-                relative to {card.name}. Not every difference is a straight upgrade (class/element restrictions and
-                cost type both matter for deckbuilding), and this is a comparison, not a verdict.
+                relative to {card.name}.
               </p>
               <div className="mt-3 overflow-x-auto">
             <table className="w-max min-w-full text-sm">

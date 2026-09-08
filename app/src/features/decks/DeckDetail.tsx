@@ -273,7 +273,7 @@ export default function DeckDetail() {
       content: (
         <>
           {hasHistoricalPerformance && deckTestResult?.classification.cluster && deckTestResult.performance && (
-            <Section heading="compact" title="Historical performance" description="How this build's matched named archetype has actually performed across every recorded match — not a prediction for this exact decklist.">
+            <Section heading="compact" title="Historical performance" description="How this build's matched named archetype has performed across every recorded match.">
               <p className="mt-2 text-xs text-ctp-subtext0">
                 Matches{" "}
                 <Link to={`/archetypes/${deckTestResult.classification.cluster.id}`} className="text-ctp-blue hover:underline">
@@ -331,7 +331,7 @@ export default function DeckDetail() {
           )}
 
           {hasMatchupData && (
-            <Section heading="compact" className={hasHistoricalPerformance || winConditions.length > 0 ? "mt-6" : undefined} title="What beats this build" description="Opponent cards that correlate with beating this build, from real pairing outcomes — correlational, not a guarantee.">
+            <Section heading="compact" className={hasHistoricalPerformance || winConditions.length > 0 ? "mt-6" : undefined} title="What beats this build" description="Opponent cards that correlate with beating this build, from real pairing outcomes.">
               <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
                 <span className="text-ctp-subtext0">Vs:</span>
                 <select

@@ -235,9 +235,6 @@ export default function UserDeckStats({ decklist, championName, format, title, o
         ) : breakthroughVsAverage.attackerCount > 0 ? (
           <div data-component="BreakthroughDamageFallback">
             <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat damage forecast</h3>
-            <p className="mt-1 max-w-3xl text-xs text-ctp-subtext0">
-              No printed spell/ability damage in this list — here's how much Ally combat power would reach the champion against an average deck's Intercept count instead. Not a simulation: see the Compare tool's Breakthrough damage section for the full list of assumptions.
-            </p>
             <div className="mt-3">
               <BreakthroughDamagePanel attackerLabel={title} defenderLabel="an average deck" result={breakthroughVsAverage} />
             </div>
@@ -250,7 +247,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
         <Panel className="mt-4">
           <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat potential</h3>
           <p className="mt-1 max-w-3xl text-xs text-ctp-subtext0">
-            {allyPower.allyCopies} all{allyPower.allyCopies === 1 ? "y" : "ies"} averaging {formatAllyPower(allyPower)} power — a real damage source this forecast doesn't attempt to model (whether an attack actually connects depends on blockers, removal, and the board state on the day). Champion combat damage from a wielded weapon isn't modeled here either.
+            {allyPower.allyCopies} all{allyPower.allyCopies === 1 ? "y" : "ies"} averaging {formatAllyPower(allyPower)} power.
           </p>
         </Panel>
       )}
@@ -286,7 +283,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
         </Section>
       )}
       {(synergyReadiness.length > 0 || dependencyReadiness.length > 0) && (
-        <Section heading="compact" className={overTrimSections.length > 0 ? "mt-6" : undefined} title="Package readiness" description="Detected relationships in the main deck. Probabilities measure card availability, not guaranteed activation.">
+        <Section heading="compact" className={overTrimSections.length > 0 ? "mt-6" : undefined} title="Package readiness" description="Detected relationships in the main deck.">
           <div className="mt-3 space-y-3">
             <SynergyReadinessEntries items={synergyReadiness} variant="compact" />
             <DependencyReadinessEntries items={dependencyReadiness} variant="compact" />

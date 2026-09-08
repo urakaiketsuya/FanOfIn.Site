@@ -103,7 +103,7 @@ export default function ComparisonSuggestions({ decks, decklists, baselineKey }:
         </Panel>
         <Panel>
           <h2 className="font-semibold text-ctp-text">Cards worth reviewing</h2>
-          <p className="mt-1 text-xs leading-5 text-ctp-subtext0">Cards already in this list that correlate with weaker results in other {champion} decks. This is a review signal, not an automatic cut.</p>
+          <p className="mt-1 text-xs leading-5 text-ctp-subtext0">Cards already in this list that correlate with weaker results in other {champion} decks.</p>
           {review.length > 0 ? <EvidenceList cards={review} cardsByName={cardsByName} tone="review" /> : <InlineState className="mt-3 text-sm">None of this deck’s cards appear among the strongest negative signals.</InlineState>}
         </Panel>
       </div>}

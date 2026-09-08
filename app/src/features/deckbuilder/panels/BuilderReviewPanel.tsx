@@ -100,7 +100,7 @@ export default function BuilderReviewPanel({
           <p className="text-[10px] text-ctp-subtext0">{simulatorMode ? `${simulatorMatchedCards} qualifying cards` : build.matchingDeckCount >= 30 ? "Strong sample" : build.matchingDeckCount >= 10 ? "Limited sample" : "Exploratory"}</p>
         </div>
         <div className="border-b border-ctp-surface1 px-3 py-2 sm:border-b-0 sm:border-r">
-          <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0" title="Win rate observed among matching decks — not guaranteed for this specific build.">Performance</p>
+          <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0" title="Win rate observed among matching decks.">Performance</p>
           <p className="mt-0.5 text-sm font-semibold text-ctp-text">{simulatorMode ? "Experimental" : build.conditionalWinRate === null ? "—" : `${(build.conditionalWinRate * 100).toFixed(0)}% observed`}</p>
           {build.baselineWinRate !== null && lockedCards.size > 0 && <p className="text-[10px] text-ctp-subtext0">{build.conditionalWinRate !== null && build.conditionalWinRate - build.baselineWinRate >= 0 ? "+" : ""}{build.conditionalWinRate === null ? "" : `${((build.conditionalWinRate - build.baselineWinRate) * 100).toFixed(1)}%`} vs. baseline</p>}
         </div>

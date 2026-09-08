@@ -70,7 +70,7 @@ function CardImpactRow({ entry, clusterName }: { entry: CardImpactEntry; cluster
       <span className="shrink-0">Win rate</span>
       <span
         className="text-ctp-text"
-        title={`${(entry.avgWinRateWith * 100).toFixed(0)}% across ${entry.deckCountWith} decks in ${clusterName} — tournament results, correlational not causal`}
+        title={`${(entry.avgWinRateWith * 100).toFixed(0)}% across ${entry.deckCountWith} decks in ${clusterName}`}
       >
         {(entry.avgWinRateWith * 100).toFixed(0)}%
       </span>

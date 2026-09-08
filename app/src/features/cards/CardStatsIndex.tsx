@@ -168,8 +168,7 @@ export default function CardStatsIndex() {
         description={
           <>
             Usage and win rate across every public decklist. Add cards to the filter below to see what's played
-            alongside them. "Adjusted" win rate is shrunk toward 50% for small samples —{" "}
-            <Link to="/methodology#small-samples" className="text-ctp-blue hover:underline">learn more</Link>.
+            alongside them.
           </>
         }
         actions={

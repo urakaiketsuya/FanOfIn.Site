@@ -141,7 +141,6 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, onVie
             ) : breakthroughVsAverage && breakthroughVsAverage.attackerCount > 0 ? (
               <Panel className="mt-4 shadow-sm">
                 <h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat damage forecast</h4>
-                <p className="mt-1 text-xs text-ctp-subtext0">No printed spell/ability damage in this list — here's how much Ally combat power would reach the champion against an average deck's Intercept count instead.</p>
                 <div className="mt-3"><BreakthroughDamagePanel attackerLabel={shortLabel(deck.label)} defenderLabel="an average deck" result={breakthroughVsAverage} /></div>
               </Panel>
             ) : (
@@ -154,7 +153,7 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, onVie
     </Section>
 
     {baselineDeck && (
-      <Section heading="dense" title="Breakthrough damage" description="If every attacking ally swung at once and the defender's Intercept allies redirected the biggest hits first, how much power reaches the champion — not a real-game prediction, see the caveats below.">
+      <Section heading="dense" title="Breakthrough damage" description="How much ally combat power reaches the champion if every attacker swings and the defender blocks with its best Intercept allies first.">
         <div className="mt-3 space-y-4">
           {decks.map((deck, index) => {
             if (index === baselineIndex) return null;
@@ -175,9 +174,6 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, onVie
             </div>;
           })}
         </div>
-        <p className="mt-4 text-[11px] text-ctp-subtext0">
-          A heuristic, not a simulation: assumes every ally in both decks is simultaneously in play and awake, each Intercept ally redirects exactly one attack, and ignores removal, combat tricks, champion-side combat, and every combat keyword except Unblockable (Taunt, Bulwark, Cleave, and others are real and unmodeled).
-        </p>
       </Section>
     )}
   </div>;

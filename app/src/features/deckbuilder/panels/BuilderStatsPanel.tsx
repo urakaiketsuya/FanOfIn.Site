@@ -181,7 +181,7 @@ export default function StatsPanel({
             heading="dense"
             collapsible
             title="Synergy readiness"
-            description="Probability of seeing enough eligible cards at several cards-seen checkpoints. This measures availability, not guaranteed activation—timing, reserve decisions, and spent cards can lower the real rate."
+            description="Probability of seeing enough eligible cards at several cards-seen checkpoints."
           >
           <div className="mt-3 space-y-3">
             <SynergyReadinessEntries items={synergyReadiness} variant="detailed" onAddCard={onAddCard} crossLinks={readinessCrossLinks} />

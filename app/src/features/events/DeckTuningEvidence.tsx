@@ -183,7 +183,7 @@ export default function DeckTuningEvidence({
           <Section
             heading="dense"
             title="Cards worth reviewing"
-            description={`Cards in this list that correlate with weaker results in other ${championName} decks. A review signal, not an automatic cut.`}
+            description={`Cards in this list that correlate with weaker results in other ${championName} decks.`}
           >
             <ul className="mt-2 space-y-1.5">
               {reviewCards.map((entry) => <EvidenceRow key={entry.cardName} entry={entry} cardsByName={mergedCardsByName} tone="review" />)}

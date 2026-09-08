@@ -75,12 +75,6 @@ export default function PackOpener() {
       <div className="mt-4">
         <PackOpenerWidget setPrefix={prefix} buttonLabel="Open Pack" />
       </div>
-
-      <p className="mt-6 text-xs text-ctp-subtext0">
-        Odds are a best-effort approximation built from publicly available guaranteed-per-box rates (e.g. one
-        Ultra Rare per 24-pack box) — Grand Archive doesn't publish an official per-pack rarity table, so this
-        isn't exact retail odds.
-      </p>
     </PageLayout>
   );
 }
