@@ -1383,6 +1383,74 @@ data, while the median is robust to it. This is explicitly a rough stand-in, not
 average deck" is a real, well-defined thing — wherever an actual second decklist is available
 (Compare, once a baseline is picked), the real `computeBreakthroughDamage` figure is shown instead.
 
+### Scavenge and Deluge forecasts (`app/src/lib/keywordForecast.ts`)
+
+A deck's Analysis tab (`UserDeckStats.tsx`, "Forecasts") shows a compact per-card readout for two
+keyword mechanics, whenever the deck runs a card with one. Unlike the Direct-damage/Breakthrough
+forecasts above, these numbers are shown with no explanatory prose in the UI (per the site's
+copy-trim pass) — the derivation and disclosed limitations live here instead.
+
+**Scavenge** ("reveal cards from the top of your deck until you reveal that many cards or until
+you reveal the specified card") only ever reveals from the Main deck — Material cards are always
+available and never shuffled in, so they never enter the matching-card count or the assumed
+60-card floor (same Main-only convention `synergyReadiness.ts`'s Imbue forecast uses). For a card
+with a fixed printed **Scavenge N** and a target phrase that reduces to a plain type/subtype/
+element match (e.g. "a Raccoon ally card", "a domain card", "an arcane element card", "a Kitchen
+or Food card"), `computeScavengeForecasts` counts how many *other* Main-deck cards satisfy that
+predicate and reports the exact hypergeometric chance of revealing at least one within the first N
+cards — `1 − C(deckSize − matches, N) / C(deckSize, N)`, the same "at least one success without
+replacement" formula `synergyReadiness.ts`'s `probabilityAtLeast` already uses elsewhere on this
+page, just phrased for a single one-shot reveal instead of a swept "cards seen" checkpoint.
+
+Verified against the real card pool (`pipeline/.cache/cards.json`, 2026-09-08): of 22 real
+Scavenge instances across 20 cards, this parser resolves 16 to a real hit-chance figure. The other
+6 are silently excluded rather than guessed at: a variable `Scavenge 2+X` amount (Devil's Lifeline,
+Stormblade Squire), a player-chosen target name or subtype fixed only at cast time (Business Card's
+two clauses, Musical Curator), or a target phrase carrying an extra qualifier this parser doesn't
+attempt (a reserve-cost clause on Forese, Fervid Cantor; a "twice" repeated-reveal modifier on Gear
+Haul).
+
+**Deluge** ("as long as you have N or more [element] cards in your graveyard...") was first shipped
+as a static composition ceiling (how much of the required element the deck carries, full stop) —
+flagged live as not actually answering the question ("not tracking how often cards can go into the
+graveyard") and reworked into an *expected count at a few "cards seen" checkpoints* (7/10/15/20,
+the same checkpoints `AggressionForecast`/`synergyReadiness.ts` already use), still explicitly not a
+probability or a claimed-exact simulation, but now at least tied to game progression instead of a
+frozen deck-list snapshot. For each **Deluge N** card the deck runs (N and the required element
+parsed from the bold keyword text and the sentence right after it, same as before), two additive
+sources feed the expected count, both using the same "expected copies drawn by checkpoint"
+approximation (`copies × seen / deckSize`) `AggressionForecast`'s own scaling-damage bonus already
+uses elsewhere on this page — not an exact joint distribution:
+1. Matching-element **Action/Attack** cards in Main — these resolve to the graveyard once played, so
+   a drawn copy is assumed played and counted. Ally/Item/etc. copies are *not* counted here: they
+   enter play and don't reliably die, so including them would overstate real graveyard contents.
+2. Any card (Main or Material) with a parsed, fixed "put the top N cards of your deck into your
+   graveyard" self-mill trigger (`SELF_MILL_RE`, "your deck"/"your graveyard" only — a card that
+   mills a *target player's* deck, e.g. Current Groover, could hit an opponent instead and isn't
+   counted). A Main copy of the mill source contributes once it's expected to have been drawn by
+   that checkpoint; a Material copy is in play from turn one, so its full trigger counts
+   unconditionally. Each trigger mills N cards off the top of Main, of which
+   `matchingMainCopies / mainDeckSize` are expected to be the required element. Real card text
+   spells the mill amount as a word ("Put the top three cards..."), not a digit — `WORD_NUMBERS`
+   covers one through twenty; a variable amount (**LV**/**X**, e.g. Claude, Fated Visionary) has no
+   matching word and is silently excluded, same as Scavenge's variable-X cards above.
+
+Both components draw from the same shuffled Main deck and are summed as if independent — the same
+simplification already documented for `AggressionForecast`'s own combo math — and the total is
+capped at the deck's real total matching-element count (Main + Material combined) so a late
+checkpoint can't report "more expected in the graveyard than exist in the deck."
+
+Verified against the real card pool (`pipeline/.cache/cards.json`, 2026-09-08): 18 of 19 real Deluge
+cards parse cleanly (all require Water, though the parser reads the element from text rather than
+assuming it) — the one exception, Ardus, Floodborne Deacon, buffs *other* Deluge abilities rather
+than checking a threshold of its own, so it has no N to report and is correctly absent from the
+list. Separately, 19 real cards carry a parseable self-mill trigger (`Ardus`, `Calculated
+Foresight`, `Carpsong Coda`, `Conniving Plans`, `Dormant Sacrificial Altar`, `Dynasty Chancellor`,
+`Fluvial Fatestone`, `Icebound Slam`, `Imperial Scout`, `Moontide Illusionist`, `Plage aux Homards`,
+`Pure Cytosynth`, `Shatterfall Keep`, `Surging Undertow`, `Tidebreaker Sentinel`, `Tidefate Brooch`,
+`Torrential Blast`), with 2 correctly excluded for a variable amount (`Claude, Fated Visionary`'s
+**LV**, `Lesser Boon of Permeation`'s **X**).
+
 ### Score bands
 
 Each pillar's raw points map to a 1–10 score via boundaries at the real min/p10/p25/median/p75/p90/max

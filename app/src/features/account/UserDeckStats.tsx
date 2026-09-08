@@ -9,6 +9,8 @@ import {
 import { computeAggressionForecast } from "../../lib/aggressionForecast";
 import { computeBreakthroughDamageVsAverage } from "../../lib/breakthroughDamage";
 import BreakthroughDamagePanel from "../compare/BreakthroughDamagePanel";
+import { computeDelugeForecasts, computeScavengeForecasts } from "../../lib/keywordForecast";
+import { DelugeForecastList, ScavengeForecastList } from "../../components/KeywordForecastPanels";
 import { buildDeckBuilderPath, deckBuilderParamsFromDecklist } from "../../lib/deckBuilderLink";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { validateDeck, sideboardPointCost } from "../deckbuilder/validateDeck";
@@ -92,6 +94,8 @@ export default function UserDeckStats({ decklist, championName, format, title, o
     () => computeBreakthroughDamageVsAverage([...namedSections.main, ...namedSections.material], cardsByName),
     [namedSections.main, namedSections.material, cardsByName],
   );
+  const scavengeForecasts = useMemo(() => computeScavengeForecasts(namedSections.main, cardsByName), [namedSections.main, cardsByName]);
+  const delugeForecasts = useMemo(() => computeDelugeForecasts(namedSections.main, namedSections.material, cardsByName), [namedSections.main, namedSections.material, cardsByName]);
   const composition = useMemo(() => computeDeckComposition(identityLines, cardsByName), [identityLines, cardsByName]);
   const memoryCurve = useMemo(() => computeMemoryCostCurve(identityLines, cardsByName), [identityLines, cardsByName]);
   const reserveCurve = useMemo(() => computeReserveCostCurve(identityLines, cardsByName), [identityLines, cardsByName]);
@@ -250,6 +254,18 @@ export default function UserDeckStats({ decklist, championName, format, title, o
             {allyPower.allyCopies} all{allyPower.allyCopies === 1 ? "y" : "ies"} averaging {formatAllyPower(allyPower)} power.
           </p>
         </Panel>
+      )}
+      {scavengeForecasts.length > 0 && (
+        <div className="mt-4">
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Scavenge</h3>
+          <div className="mt-2"><ScavengeForecastList forecasts={scavengeForecasts} /></div>
+        </div>
+      )}
+      {delugeForecasts.length > 0 && (
+        <div className="mt-4">
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Deluge</h3>
+          <div className="mt-2"><DelugeForecastList forecasts={delugeForecasts} /></div>
+        </div>
       )}
       <div className="mt-4">
         <HypergeometricCalculator mainLines={namedSections.main} materialLines={namedSections.material} catalogByName={cardsByName} />

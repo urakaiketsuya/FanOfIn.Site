@@ -3,6 +3,7 @@ import type { Card } from "@gatcg/shared";
 export type SpeedFilter = "any" | "fast" | "normal";
 
 export interface CardFilterState {
+  /** Matched against both the card's name and its rules text (`Card.effect`). */
   name: string;
   artist: string;
   classes: Set<string>;
@@ -34,7 +35,7 @@ export function filterCards(cards: Card[], filters: CardFilterState): Card[] {
   const name = filters.name.trim().toLowerCase();
   const artist = filters.artist.trim().toLowerCase();
   return cards.filter((card) => {
-    if (name && !card.name.toLowerCase().includes(name)) return false;
+    if (name && !card.name.toLowerCase().includes(name) && !card.effect?.toLowerCase().includes(name)) return false;
     if (artist && !card.editions.some((ed) => ed.illustrator?.toLowerCase().includes(artist))) return false;
     if (filters.classes.size && !card.classes.some((c) => filters.classes.has(c))) return false;
     if (filters.types.size && !card.types.some((t) => filters.types.has(t))) return false;

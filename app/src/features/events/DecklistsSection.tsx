@@ -7,6 +7,8 @@ import { useSimilarityData } from "../archetypes/data";
 import { useOmnidexPlayers } from "../tournaments/data";
 import PlayerLink from "../players/PlayerLink";
 import Section from "../../components/ui/Section";
+import { canonicalSignature } from "../popular/useDeckPopularity";
+import { shortHash } from "../../lib/hash";
 
 export default function DecklistsSection({
   eventId,
@@ -37,6 +39,16 @@ export default function DecklistsSection({
   const allPlayersData = useOmnidexPlayers();
   const similarDecks = selected ? similarityData?.decks.find((d) => d.deckId === `${eventId}:${selected.player}`) : undefined;
 
+  // Same signature/hash scheme every other deck-page link uses (PopularDeckRow, DeckDetail's own
+  // "similar decks", Compare's paste-in decks) — computed client-side from this exact decklist
+  // rather than looked up, so it resolves even before any async popularity data has loaded.
+  const deckPageHash = useMemo(() => {
+    if (!selected) return null;
+    const main = selected.decklist.main.map((line) => ({ name: line.card, quantity: line.quantity }));
+    const material = selected.decklist.material.map((line) => ({ name: line.card, quantity: line.quantity }));
+    return shortHash(canonicalSignature(main, material));
+  }, [selected]);
+
   function playerName(id: number): string {
     return players.find((p) => p.id === id)?.username ?? allPlayersData?.players.find((p) => p.id === id)?.username ?? `Player #${id}`;
   }
@@ -56,7 +68,12 @@ export default function DecklistsSection({
       title={`Decklists (${decklists.length})`}
       heading="compact"
       actions={
-        selected && <PlayerLink id={selected.player} username={playerName(selected.player)} className="text-xs text-ctp-blue hover:underline" />
+        selected && (
+          <>
+            <PlayerLink id={selected.player} username={playerName(selected.player)} className="text-xs text-ctp-blue hover:underline" />
+            {deckPageHash && <Link to={`/decks/${deckPageHash}`} className="text-xs text-ctp-blue hover:underline">Open deck page →</Link>}
+          </>
+        )
       }
     >
       <div className="relative mt-1 max-w-sm">

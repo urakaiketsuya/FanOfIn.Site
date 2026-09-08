@@ -168,8 +168,8 @@ export default function CardsBrowse() {
           <div className="mt-4 flex flex-wrap gap-3">
             <input
               type="text"
-              aria-label="Search by name"
-              placeholder="Search by name…"
+              aria-label="Search by name or card text"
+              placeholder="Search by name or card text…"
               value={filters.name}
               onChange={(e) => setFilters((f) => ({ ...f, name: e.target.value }))}
               className="w-full max-w-sm rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
