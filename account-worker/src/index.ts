@@ -201,7 +201,9 @@ export default {
       }
       if (deckMatch && request.method === "PATCH") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
-        return await updateDeckMetadata(env, user, deckMatch[1], await jsonBody(request)) ? response(env, request, { success: true }) : response(env, request, { error: "Deck not found" }, 404);
+        const body = await jsonBody(request);
+        if (body && typeof body === "object" && "decklist" in body) return response(env, request, await updateDeckDecklist(env, user, deckMatch[1], body));
+        return await updateDeckMetadata(env, user, deckMatch[1], body) ? response(env, request, { success: true }) : response(env, request, { error: "Deck not found" }, 404);
       }
       if (deckMatch && request.method === "DELETE") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);

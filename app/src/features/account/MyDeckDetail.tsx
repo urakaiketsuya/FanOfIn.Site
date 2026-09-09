@@ -65,6 +65,14 @@ function EditableCardTile({ line, card, section, onChangeQuantity, onMove, onRem
   );
 }
 
+function MaybeboardCardTile({ line, card, onChangeQuantity, onMove, onRemove }: { line: OmnidexDecklistCardLine; card: Card | undefined; onChangeQuantity: (quantity: number) => void; onMove: () => void; onRemove: () => void }) {
+  const maxQuantity = Math.max(1, Math.min(card?.legality?.STANDARD?.limit ?? 4, 4));
+  return <div className="overflow-hidden rounded-lg border border-ctp-yellow/40 bg-ctp-mantle">
+    <div className="relative aspect-[5/7] bg-ctp-surface0"><CardHoverPreview image={card?.editions[0]?.image} alt={line.card}>{card?.editions[0] ? <Link to={`/cards/${card.slug}`} className="block h-full w-full"><CardImage image={card.editions[0].image} alt={line.card} className="h-full w-full object-cover" /></Link> : <span className="flex h-full items-center justify-center p-2 text-center text-xs text-ctp-subtext0">{line.card}</span>}</CardHoverPreview><input type="number" min={1} max={maxQuantity} value={line.quantity} aria-label={`Maybeboard copies of ${line.card}`} onChange={(event) => { const quantity = Number(event.target.value); if (Number.isInteger(quantity) && quantity >= 1) onChangeQuantity(Math.min(quantity, maxQuantity)); }} className="absolute right-1.5 top-1.5 w-11 rounded border border-ctp-surface1 bg-ctp-base/90 px-1 py-0.5 text-right text-xs text-ctp-text" /></div>
+    <div className="grid grid-cols-[1fr_auto] border-t border-ctp-surface1"><button type="button" onClick={onMove} className="min-h-10 px-2 text-left text-xs font-medium text-ctp-blue hover:bg-ctp-blue/10">Move to editor</button><button type="button" onClick={onRemove} aria-label={`Remove ${line.card} from maybeboard`} className="min-h-10 min-w-10 border-l border-ctp-surface1 text-ctp-subtext1 hover:bg-ctp-red/10 hover:text-ctp-red">×</button></div>
+  </div>;
+}
+
 /** Visual, click-to-edit alternative to hand-editing the raw decklist text — the same full-image grid used elsewhere in the app (BuilderCardGrid, DecklistView's Visual mode), wired directly to the "Add card" bar above it via `deckText`. */
 function EditableDecklistGrid({ decklist, cardsByName, onChangeQuantity, onMove, onRemove }: { decklist: OmnidexDecklist; cardsByName: Map<string, Card>; onChangeQuantity: (section: DeckSectionKey, name: string, quantity: number) => void; onMove: (from: DeckSectionKey, to: DeckSectionKey, name: string) => void; onRemove: (section: DeckSectionKey, name: string) => void }) {
   const sections = EDIT_SECTIONS.map((section) => ({ ...section, lines: decklist[section.key] })).filter((section) => section.lines.length > 0);
@@ -94,6 +102,7 @@ export default function MyDeckDetail() {
   const [maybeboardText, setMaybeboardText] = useState("");
   const [changeNote, setChangeNote] = useState("");
   const [saveAsNewVersion, setSaveAsNewVersion] = useState(false);
+  const [saveDetailsOpen, setSaveDetailsOpen] = useState(false);
   const [trimMax, setTrimMax] = useState(3);
   const [renamingTitle, setRenamingTitle] = useState(false);
   const [title, setTitle] = useState("");
@@ -110,6 +119,7 @@ export default function MyDeckDetail() {
   const cardNames = useMemo(() => Array.from(new Set(cardCatalog.map((card) => card.name))).sort(), [cardCatalog]);
   const cardNameSet = useMemo(() => new Set(cardNames), [cardNames]);
   const editedDecklist = useMemo(() => parseDecklist(deckText).decklist, [deckText]);
+  const maybeboardLines = useMemo(() => parseDecklist(`Main\n${maybeboardText}`).decklist.main, [maybeboardText]);
   const trimPreview = useMemo(() => {
     const affected = EDIT_SECTIONS.flatMap((section) => editedDecklist[section.key]).filter((line) => line.quantity > trimMax);
     return { affected, copiesRemoved: affected.reduce((sum, line) => sum + line.quantity - trimMax, 0) };
@@ -117,6 +127,13 @@ export default function MyDeckDetail() {
   const editedCardNames = useMemo(() => [...editedDecklist.main, ...editedDecklist.material, ...editedDecklist.sideboard].map((line) => line.card), [editedDecklist]);
   const editedCardsByName = useCardsByNames(editedCardNames);
   const editedChampionName = useMemo(() => findDeckChampionName(editedDecklist.material, editedCardsByName)?.split(",")[0].trim() ?? null, [editedDecklist.material, editedCardsByName]);
+  const editedCardChangeCount = useMemo(() => {
+    if (!deck) return 0;
+    const quantities = (decklist: OmnidexDecklist) => new Map(EDIT_SECTIONS.flatMap(({ key }) => decklist[key].map((line) => [`${key}:${line.card}`, line.quantity] as const)));
+    const before = quantities(deck.decklist);
+    const after = quantities(editedDecklist);
+    return new Set([...before.keys(), ...after.keys()]).size === 0 ? 0 : [...new Set([...before.keys(), ...after.keys()])].filter((key) => before.get(key) !== after.get(key)).length;
+  }, [deck, editedDecklist]);
   const previousDecklist = useMemo(() => {
     if (!deck) return undefined;
     const current = deck.versions.find((version) => version.id === deck.currentVersionId);
@@ -138,12 +155,37 @@ export default function MyDeckDetail() {
   }, [deckId]);
 
   async function saveMaybeboard() {
-    const maybeboard = parseDecklist(`Main\n${maybeboardText}`).decklist.main;
+    const maybeboard = maybeboardLines;
     await run(async () => {
       await accountApi.updateDeckMetadata(deckId, { maybeboard });
       setDeck((current) => current ? { ...current, maybeboard } : current);
       setNotice("Maybeboard saved.");
     });
+  }
+
+  function setMaybeboardLines(lines: OmnidexDecklistCardLine[]) {
+    setMaybeboardText(lines.map((line) => `${line.quantity}x ${line.card}`).join("\n"));
+  }
+
+  function changeMaybeboardQuantity(name: string, quantity: number) {
+    setMaybeboardLines(maybeboardLines.map((line) => line.card === name ? { ...line, quantity } : line));
+  }
+
+  function removeMaybeboardCard(name: string) {
+    setMaybeboardLines(maybeboardLines.filter((line) => line.card !== name));
+  }
+
+  function moveMaybeboardCard(line: OmnidexDecklistCardLine) {
+    const nextDecklist = editing ? parseDecklist(deckText).decklist : structuredClone(deck!.decklist);
+    const card = catalogByName.get(line.card);
+    const section: DeckSectionKey = card && (card.types.includes("CHAMPION") || card.types.includes("REGALIA")) ? "material" : "main";
+    const existing = nextDecklist[section].find((candidate) => candidate.card === line.card);
+    if (existing) existing.quantity += line.quantity;
+    else nextDecklist[section].push({ ...line });
+    setDeckText(buildDecklistText(nextDecklist));
+    removeMaybeboardCard(line.card);
+    setEditing(true);
+    setNotice(`${line.card} moved to the ${section} editor. Save deck changes to apply it.`);
   }
 
   // Mirrors the Guided Deck Builder's "Destination: Automatic/Sideboard/Maybeboard" convention
@@ -230,11 +272,19 @@ export default function MyDeckDetail() {
   }
 
   function addMaybeboardToEditor() {
-    const lines = maybeboardText.trim();
-    if (!lines) return;
-    setDeckText(`${buildDecklistText(deck!.decklist).trim()}\n\nMain\n${lines}\n`);
+    if (maybeboardLines.length === 0) return;
+    const nextDecklist = editing ? parseDecklist(deckText).decklist : structuredClone(deck!.decklist);
+    for (const line of maybeboardLines) {
+      const card = catalogByName.get(line.card);
+      const section: DeckSectionKey = card && (card.types.includes("CHAMPION") || card.types.includes("REGALIA")) ? "material" : "main";
+      const existing = nextDecklist[section].find((candidate) => candidate.card === line.card);
+      if (existing) existing.quantity += line.quantity;
+      else nextDecklist[section].push({ ...line });
+    }
+    setDeckText(buildDecklistText(nextDecklist));
+    setMaybeboardLines([]);
     setEditing(true);
-    setNotice("Maybeboard cards were added to the deck editor. Save a new version when you are ready.");
+    setNotice("Maybeboard cards moved to the deck editor. Save deck changes to apply them.");
   }
 
   async function refresh() {
@@ -317,7 +367,7 @@ export default function MyDeckDetail() {
     </section>}
     {tab === "analysis" && <section id="owned-deck-panel-analysis" role="tabpanel" aria-labelledby="owned-deck-tab-analysis" tabIndex={0}><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} title={deck.title} ownerDeckId={deck.id} previousDecklist={previousDecklist} /></section>}
     {tab === "decklist" && <><UserDecklistPanel decklist={deck.decklist} format={deck.format} ownerDeckId={deck.id} collectionSource={`Deck: ${deck.title}`} actions={<button type="button" onClick={() => { setDeckText(buildDecklistText(deck.decklist)); setSaveAsNewVersion(false); setEditing((value) => !value); }} className={`rounded px-2 py-1 text-xs ${editing ? "border border-ctp-surface1 text-ctp-subtext1" : "bg-ctp-blue text-ctp-base"}`}>{editing ? "Cancel" : "Edit deck"}</button>}>
-      {editing ? <div className="mt-3">
+      {editing ? <div className="mt-3 pb-[calc(5rem+env(safe-area-inset-bottom))] sm:pb-0">
         <div className="mb-4 rounded-lg border border-ctp-surface1 bg-ctp-base p-3"><p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Section balance</p><DeckSectionBalance compact sideboardPoints={editedSideboardPoints} counts={{ main: editedDecklist.main.reduce((sum, line) => sum + line.quantity, 0), material: editedDecklist.material.reduce((sum, line) => sum + line.quantity, 0), sideboard: editedDecklist.sideboard.reduce((sum, line) => sum + line.quantity, 0) }} /></div>
         <div className="flex flex-wrap items-center gap-2">
           <input type="text" list="my-deck-card-options" value={cardInput} onChange={(event) => setCardInput(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); if (cardNameSet.has(cardInput)) addCard(cardInput); } }} placeholder="Add a card by name…" aria-label="Add a card by name" className="min-w-0 flex-1 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm" />
@@ -342,29 +392,38 @@ export default function MyDeckDetail() {
           <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Edit as text</summary>
           <textarea rows={18} required value={deckText} onChange={(event) => setDeckText(event.target.value)} className="mt-3 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-4 font-mono text-sm text-ctp-text" />
         </details>
-        <form className="sticky bottom-3 z-20 mt-4 rounded-xl border border-ctp-blue/40 bg-ctp-mantle/95 p-3 shadow-xl backdrop-blur" onSubmit={(event) => { event.preventDefault(); void run(async () => {
+        <form className="sticky bottom-[max(0.5rem,env(safe-area-inset-bottom))] z-20 mt-4 rounded-xl border border-ctp-blue/40 bg-ctp-mantle/95 p-2 shadow-xl backdrop-blur sm:bottom-3 sm:p-3" onSubmit={(event) => { event.preventDefault(); void run(async () => {
           if (editedChampionName !== deck.championName && !window.confirm(`Change Champion from ${deck.championName ?? "none"} to ${editedChampionName ?? "none"}?`)) return;
           if (saveAsNewVersion) await accountApi.createDeckVersion(deck.id, { decklist: editedDecklist, format: deck.format, championName: editedChampionName, changeNote });
           else await accountApi.updateDeckDecklist(deck.id, { decklist: editedDecklist, format: deck.format, championName: editedChampionName });
-          await refresh(); setChangeNote(""); setEditing(false);
+          await accountApi.updateDeckMetadata(deck.id, { maybeboard: maybeboardLines });
+          await refresh(); setChangeNote(""); setSaveDetailsOpen(false); setEditing(false);
           setNotice(saveAsNewVersion ? "Saved as a new version." : "Deck updated.");
         }); }}>
-          <p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Unsaved deck changes</p>
-          <p className={`text-sm ${editedChampionName ? editedChampionName === deck.championName ? "text-ctp-subtext1" : "text-ctp-yellow" : "text-ctp-yellow"}`}>{editedChampionName ? `Champion detected: ${editedChampionName}${editedChampionName !== deck.championName ? ` (currently ${deck.championName ?? "none"})` : ""}` : `No Champion detected${deck.championName ? ` (currently ${deck.championName})` : ""}.`}</p>
-          <div className="mt-3 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-base p-1" role="group" aria-label="Save mode">
-            <button type="button" aria-pressed={!saveAsNewVersion} onClick={() => setSaveAsNewVersion(false)} className={`min-h-10 rounded-md px-3 text-xs font-medium ${!saveAsNewVersion ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>Update current deck</button>
-            <button type="button" aria-pressed={saveAsNewVersion} onClick={() => setSaveAsNewVersion(true)} className={`min-h-10 rounded-md px-3 text-xs font-medium ${saveAsNewVersion ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>Create new version</button>
+          <div className="flex min-h-12 items-center gap-2">
+            <button type="button" aria-expanded={saveDetailsOpen} aria-controls="mobile-deck-save-details" onClick={() => setSaveDetailsOpen((open) => !open)} className="min-w-0 flex-1 rounded-md px-2 py-1 text-left sm:pointer-events-none sm:px-0">
+              <span className="block text-xs font-semibold uppercase tracking-wide text-ctp-blue">Unsaved deck changes</span>
+              <span className="block truncate text-xs text-ctp-subtext1 sm:hidden">{editedCardChangeCount} card {editedCardChangeCount === 1 ? "entry" : "entries"} changed · {saveDetailsOpen ? "Hide options" : "Show options"}</span>
+            </button>
+            <button disabled={busy} type="submit" className="min-h-10 shrink-0 rounded-md bg-ctp-blue px-4 py-2 text-sm font-medium text-ctp-base disabled:opacity-50">{saveAsNewVersion ? "Save version" : "Save"}</button>
           </div>
-          <p className="mt-1 text-xs text-ctp-subtext0">{saveAsNewVersion ? "Keeps the current snapshot in version history." : "Replaces the current deck without adding a history snapshot."}</p>
-          {saveAsNewVersion && <input value={changeNote} maxLength={240} onChange={(event) => setChangeNote(event.target.value)} placeholder="What changed? (optional)" className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm" />}
-          <button disabled={busy} type="submit" className="mt-3 rounded-md bg-ctp-blue px-3 py-2 text-sm text-ctp-base disabled:opacity-50">{saveAsNewVersion ? "Save new version" : "Save changes"}</button>
+          <div id="mobile-deck-save-details" className={`${saveDetailsOpen ? "block" : "hidden"} border-t border-ctp-surface1 px-2 pb-1 pt-3 sm:block sm:px-0 sm:pb-0`}>
+            <p className={`text-sm ${editedChampionName ? editedChampionName === deck.championName ? "text-ctp-subtext1" : "text-ctp-yellow" : "text-ctp-yellow"}`}>{editedChampionName ? `Champion detected: ${editedChampionName}${editedChampionName !== deck.championName ? ` (currently ${deck.championName ?? "none"})` : ""}` : `No Champion detected${deck.championName ? ` (currently ${deck.championName})` : ""}.`}</p>
+            <div className="mt-3 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-base p-1" role="group" aria-label="Save mode">
+              <button type="button" aria-pressed={!saveAsNewVersion} onClick={() => setSaveAsNewVersion(false)} className={`min-h-10 rounded-md px-3 text-xs font-medium ${!saveAsNewVersion ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>Update current deck</button>
+              <button type="button" aria-pressed={saveAsNewVersion} onClick={() => setSaveAsNewVersion(true)} className={`min-h-10 rounded-md px-3 text-xs font-medium ${saveAsNewVersion ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>Create new version</button>
+            </div>
+            <p className="mt-1 text-xs text-ctp-subtext0">{saveAsNewVersion ? "Keeps the current snapshot in version history." : "Replaces the current deck without adding a history snapshot."}</p>
+            {saveAsNewVersion && <input value={changeNote} maxLength={240} onChange={(event) => setChangeNote(event.target.value)} placeholder="What changed? (optional)" className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm" />}
+          </div>
         </form>
       </div> : undefined}
     </UserDecklistPanel>
       {/* Supplement the decklist; panel children replace it with the editor while editing. */}
       <section className="mt-5 rounded-lg border border-dashed border-ctp-yellow/60 bg-ctp-yellow/5 p-4">
-        <div className="flex flex-wrap items-start justify-between gap-3"><div><h3 className="font-medium text-ctp-yellow">Maybeboard</h3><p className="mt-1 text-xs text-ctp-subtext1">Keep cards under consideration outside the deck. One line per card, for example <span className="font-mono">2x Card Name</span>.</p></div><button type="button" disabled={!maybeboardText.trim()} onClick={addMaybeboardToEditor} className="rounded border border-ctp-blue px-2 py-1 text-xs text-ctp-blue disabled:opacity-50">Add to deck editor</button></div>
-        <textarea rows={5} value={maybeboardText} onChange={(event) => setMaybeboardText(event.target.value)} onBlur={() => void saveMaybeboard()} placeholder={"2x Card to test\n4x Another option"} aria-label="Maybeboard" className="mt-3 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-3 font-mono text-sm" />
+        <div className="flex flex-wrap items-start justify-between gap-3"><div><h3 className="font-medium text-ctp-yellow">Maybeboard <span className="text-sm font-normal text-ctp-subtext0">({maybeboardLines.reduce((sum, line) => sum + line.quantity, 0)})</span></h3><p className="mt-1 text-xs text-ctp-subtext1">Cards under consideration, outside construction and analysis.</p></div><div className="flex gap-2"><button type="button" disabled={!maybeboardText.trim()} onClick={addMaybeboardToEditor} className="min-h-10 rounded border border-ctp-blue px-2 text-xs text-ctp-blue disabled:opacity-50">Move all to editor</button><button type="button" disabled={busy} onClick={() => void saveMaybeboard()} className="min-h-10 rounded bg-ctp-yellow px-3 text-xs font-medium text-ctp-base disabled:opacity-50">Save maybeboard</button></div></div>
+        {maybeboardLines.length > 0 ? <div className="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-4">{maybeboardLines.map((line) => <MaybeboardCardTile key={line.card} line={line} card={catalogByName.get(line.card)} onChangeQuantity={(quantity) => changeMaybeboardQuantity(line.card, quantity)} onMove={() => moveMaybeboardCard(line)} onRemove={() => removeMaybeboardCard(line.card)} />)}</div> : <InlineState className="mt-3">No cards in the maybeboard.</InlineState>}
+        <details className="mt-3"><summary className="cursor-pointer text-xs text-ctp-subtext0">Edit maybeboard as text</summary><textarea rows={5} value={maybeboardText} onChange={(event) => setMaybeboardText(event.target.value)} placeholder={"2x Card to test\n4x Another option"} aria-label="Maybeboard" className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-3 font-mono text-sm" /></details>
         <p className="mt-2 text-xs text-ctp-subtext0">Saved to this deck, independently of version history. It never affects legality, statistics, exports, or publishing.</p>
       </section>
     </>}
