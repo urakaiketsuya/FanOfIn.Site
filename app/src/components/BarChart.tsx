@@ -9,11 +9,12 @@ export interface BarChartBar {
 export default function BarChart({ title, bars }: { title?: string; bars: BarChartBar[] }) {
   const max = Math.max(0, ...bars.map((b) => b.value));
   if (max === 0) return null;
+  const summary = bars.map((bar) => `${bar.label}: ${bar.value}`).join(", ");
 
   return (
-    <div data-component="BarChart" className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
+    <div data-component="BarChart" role="img" aria-label={`${title ?? "Bar chart"}. ${summary}`} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
       {title && <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">{title}</h3>}
-      <div className={`flex h-32 items-end gap-1.5 ${title ? "mt-4" : ""}`}>
+      <div aria-hidden="true" className={`flex h-32 items-end gap-1.5 ${title ? "mt-4" : ""}`}>
         {bars.map((b, i) => {
           const pct = (b.value / max) * 100;
           return (
@@ -42,7 +43,7 @@ export default function BarChart({ title, bars }: { title?: string; bars: BarCha
           );
         })}
       </div>
-      <div className="mt-1 flex gap-1.5">
+      <div aria-hidden="true" className="mt-1 flex gap-1.5">
         {bars.map((b, i) => (
           <div key={i} className="flex-1 text-center text-[10px] text-ctp-subtext1">
             {b.label}

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { useSearchParams } from "react-router-dom";
 import DeckSearchByCards from "./DeckSearchByCards";
 import ImportByPlayer from "./ImportByPlayer";
@@ -27,6 +27,7 @@ import PageLayout from "../../components/layout/PageLayout";
 import Panel from "../../components/ui/Panel";
 import Button from "../../components/ui/Button";
 import { InlineState } from "../../components/ui/ContentState";
+import { trackEvent } from "../../lib/analytics";
 
 type CompareType = "decks" | "cards";
 const COMPARE_TYPE_LABELS: Record<CompareType, string> = { decks: "Decks", cards: "Cards" };
@@ -51,6 +52,17 @@ const TAB_LABELS: Record<SourceTab, string> = {
   paste: "Paste a decklist",
 };
 const SOURCE_TAB_KEYS = Object.keys(TAB_LABELS) as SourceTab[];
+
+function handleTabArrow<T extends string>(event: KeyboardEvent<HTMLElement>, keys: readonly T[], active: T, select: (key: T) => void) {
+  if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+  event.preventDefault();
+  const index = keys.indexOf(active);
+  const nextIndex = event.key === "Home" ? 0 : event.key === "End" ? keys.length - 1 : (index + (event.key === "ArrowRight" ? 1 : -1) + keys.length) % keys.length;
+  const next = keys[nextIndex];
+  select(next);
+  const tablist = event.currentTarget;
+  window.requestAnimationFrame(() => tablist.querySelector<HTMLElement>(`[data-tab-key="${next}"]`)?.focus());
+}
 
 export default function CompareIndex() {
   useDocumentTitle(
@@ -169,14 +181,18 @@ export default function CompareIndex() {
   }, []);
 
   function toggleDeck(deck: ComparedDeck) {
+    const adding = !comparedKeys.has(deck.key);
+    trackEvent(adding ? "compare_deck_added" : "compare_deck_removed", { source: deck.source.kind, resulting_count: decks.length + (adding ? 1 : -1) });
     setDecks((prev) => (prev.some((d) => d.key === deck.key) ? prev.filter((d) => d.key !== deck.key) : [...prev, deck]));
   }
 
   function addDeck(deck: ComparedDeck) {
+    trackEvent("compare_deck_added", { source: deck.source.kind, resulting_count: decks.length + 1 });
     setDecks((prev) => [...prev, deck]);
   }
 
   function removeDeck(key: string) {
+    trackEvent("compare_deck_removed", { source: decks.find((deck) => deck.key === key)?.source.kind ?? "unknown", resulting_count: Math.max(0, decks.length - 1) });
     setDecks((prev) => prev.filter((d) => d.key !== key));
   }
 
@@ -223,7 +239,7 @@ export default function CompareIndex() {
         }
       />
 
-      <div role="tablist" aria-label="Comparison type" className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1">
+      <div role="tablist" aria-label="Comparison type" onKeyDown={(event) => handleTabArrow(event, COMPARE_TYPE_KEYS, compareType, setCompareType)} className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1">
         {COMPARE_TYPE_KEYS.map((t) => (
           <button
             key={t}
@@ -232,8 +248,10 @@ export default function CompareIndex() {
             id={`type-tab-${t}`}
             aria-selected={compareType === t}
             aria-controls={`type-panel-${t}`}
+            data-tab-key={t}
+            tabIndex={compareType === t ? 0 : -1}
             onClick={() => setCompareType(t)}
-            className={`rounded-md px-3 py-1.5 text-sm font-medium ${
+            className={`min-h-10 rounded-md px-3 py-1.5 text-sm font-medium ${
               compareType === t ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
             }`}
           >
@@ -262,7 +280,7 @@ export default function CompareIndex() {
                 {decks.length > 0 && <button type="button" onClick={handleClearAll} className={`text-xs ${confirmClear ? "font-semibold text-ctp-red" : "text-ctp-subtext0 hover:text-ctp-text"}`}>{confirmClear ? "Confirm clear all?" : "Clear"}</button>}
               </div>
             </div>
-            {decks.length > 0 && <div className="mt-3 flex flex-wrap items-center gap-2">
+            {decks.length > 0 && <div className="mt-3 flex flex-wrap items-center gap-2" aria-live="polite" aria-label={`${decks.length} decks selected`}>
               {decks.map((d) => (
                 <DeckChip
                   key={d.key}
@@ -270,7 +288,7 @@ export default function CompareIndex() {
                   championCard={championCardsByDeckKey.get(d.key)}
                   deckHref={d.source.kind === "sighting" ? deckPageByKey.get(d.key) : undefined}
                   isBaseline={d.key === effectiveBaselineKey}
-                  onSetBaseline={() => setBaselineKey(d.key)}
+                  onSetBaseline={() => { setBaselineKey(d.key); trackEvent("compare_baseline_selected", { deck_count: decks.length }); }}
                   onRemove={() => removeDeck(d.key)}
                 />
               ))}
@@ -279,7 +297,7 @@ export default function CompareIndex() {
 
           {showAddDecks && (
             <div className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle/40 p-3 sm:p-4">
-              <div role="tablist" aria-label="Add decks source" className="flex flex-wrap items-center gap-2 text-sm">
+                  <div role="tablist" aria-label="Add decks source" onKeyDown={(event) => handleTabArrow(event, SOURCE_TAB_KEYS, tab, setTab)} className="flex flex-wrap items-center gap-2 text-sm">
                 <span className="text-xs text-ctp-subtext0">Source:</span>
                 {(Object.keys(TAB_LABELS) as SourceTab[]).map((t) => (
                   <button
@@ -289,8 +307,10 @@ export default function CompareIndex() {
                     id={`source-tab-${t}`}
                     aria-selected={tab === t}
                     aria-controls="source-panel"
+                    data-tab-key={t}
+                    tabIndex={tab === t ? 0 : -1}
                     onClick={() => setTab(t)}
-                    className={`rounded-md border px-2 py-1 text-xs ${
+                    className={`min-h-10 rounded-md border px-3 py-1 text-xs ${
                       tab === t ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
                     }`}
                   >
@@ -319,7 +339,7 @@ export default function CompareIndex() {
 
               {decks.length > 0 && (
                 <>
-                  <div role="tablist" aria-label="Comparison view" className="flex flex-wrap items-center gap-1 border-b border-ctp-surface1">
+                  <div role="tablist" aria-label="Comparison view" onKeyDown={(event) => handleTabArrow(event, VIEW_MODE_KEYS, effectiveViewMode, (mode) => { setViewMode(mode); trackEvent("compare_view_selected", { view: mode, deck_count: decks.length }); })} className="flex flex-wrap items-center gap-1 border-b border-ctp-surface1">
                     {VIEW_MODE_KEYS.map((mode) => (
                       <button
                         key={mode}
@@ -328,7 +348,9 @@ export default function CompareIndex() {
                         id={`view-tab-${mode}`}
                         aria-selected={effectiveViewMode === mode}
                         aria-controls="view-panel"
-                        onClick={() => setViewMode(mode)}
+                        data-tab-key={mode}
+                        tabIndex={effectiveViewMode === mode ? 0 : -1}
+                        onClick={() => { setViewMode(mode); trackEvent("compare_view_selected", { view: mode, deck_count: decks.length }); }}
                         className={`min-h-10 border-b-2 px-3 py-2 text-sm font-medium ${
                           effectiveViewMode === mode ? "border-ctp-blue text-ctp-blue" : "border-transparent text-ctp-subtext1 hover:text-ctp-text"
                         }`}

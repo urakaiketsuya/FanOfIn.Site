@@ -3,7 +3,7 @@ import test from "node:test";
 import { bffAllowed, clearGoogleKeyCacheForTest, consumeOAuthNonce, createOAuthNonce, normalizeDisplayName, verifyGoogleCredential, type Env } from "../src/auth";
 import { assetJson, deleteDeck, getPublicDeck, normalizeDeckTags, parseSaveInput, renameDeck, selectImportCandidates } from "../src/decks";
 import { getDeckSocialState, setDeckBookmark, setDeckLike } from "../src/deck-social";
-import { discoverDecks, getPublicProfile } from "../src/discovery";
+import { discoverDecks, discoverProfiles, getPublicProfile } from "../src/discovery";
 import { reportDeck } from "../src/moderation";
 import { REQUIRED_SCHEMA_VERSION, serviceHealth } from "../src/health";
 import { computeDeckCollectionStatus } from "@gatcg/shared";
@@ -231,6 +231,21 @@ test("discovery returns summaries and explicitly filters to public decks", async
   assert.equal("decklist" in result.decks[0], false);
   assert.deepEqual(result.decks[0].owner, { displayName: "Pilot", profileSlug: "b".repeat(24) });
   await assert.rejects(discoverDecks({ ACCOUNT_DB: database } as Env, new URLSearchParams(`q=${"x".repeat(81)}`)), /Search is too long/);
+});
+
+test("profile discovery exposes only discoverable users with active public decks", async () => {
+  let discoverySql = "";
+  let boundQuery = "";
+  const database = { prepare(query: string) { discoverySql = query; return { bind(value: string) { boundQuery = value; return this; }, async all() { return { results: [{ display_name: "Pilot", profile_slug: "b".repeat(24) }] }; } }; } } as unknown as D1Database;
+  const result = await discoverProfiles({ ACCOUNT_DB: database } as Env, new URLSearchParams("q=Pi%_"));
+  assert.match(discoverySql, /profile_discoverable = 1/);
+  assert.match(discoverySql, /ud\.visibility = 'public'/);
+  assert.match(discoverySql, /ud\.published_version_id IS NOT NULL/);
+  assert.match(discoverySql, /ud\.moderation_status = 'active'/);
+  assert.equal(discoverySql.includes("email"), false);
+  assert.equal(boundQuery, "%Pi\\%\\_%");
+  assert.deepEqual(result.profiles, [{ displayName: "Pilot", profileSlug: "b".repeat(24) }]);
+  assert.deepEqual(await discoverProfiles({ ACCOUNT_DB: database } as Env, new URLSearchParams()), { profiles: [] });
 });
 
 test("public profiles include only their public deck summaries", async () => {

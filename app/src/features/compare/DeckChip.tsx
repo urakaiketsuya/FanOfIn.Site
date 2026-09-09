@@ -26,7 +26,7 @@ export default function DeckChip({ deck, championCard, deckHref, isBaseline, onS
 
   return (
     <div data-component="DeckChip" className={`flex items-center rounded-lg border py-1 pl-1 pr-2 transition-colors ${isBaseline ? "border-ctp-blue bg-ctp-blue/10 shadow-sm" : "border-ctp-surface1 bg-ctp-surface0"}`}>
-      <button type="button" onClick={onSetBaseline} aria-pressed={isBaseline} aria-label={`${deck.label}${isBaseline ? ", comparison baseline" : ", set as comparison baseline"}`} className="flex min-w-0 items-center gap-2 text-left">
+      <button type="button" onClick={onSetBaseline} aria-pressed={isBaseline} aria-label={`${deck.label}${isBaseline ? ", comparison baseline" : ", set as comparison baseline"}`} className="flex min-h-10 min-w-0 items-center gap-2 text-left">
         <CardHoverPreview image={championCard?.editions[0]?.image} alt={primary}>
           <div className="h-8 w-8 shrink-0 overflow-hidden rounded-full bg-ctp-mantle">
             {championCard?.editions[0] && (
@@ -44,13 +44,13 @@ export default function DeckChip({ deck, championCard, deckHref, isBaseline, onS
         </div>
         {isBaseline && <span className="shrink-0 rounded bg-ctp-blue px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-ctp-crust">Baseline</span>}
       </button>
-      {deckHref && <Link to={deckHref} aria-label={`Open deck page for ${deck.label}`} title="Open deck page" className="ml-2 shrink-0 text-sm text-ctp-subtext0 hover:text-ctp-blue">↗</Link>}
+      {deckHref && <Link to={deckHref} aria-label={`Open deck page for ${deck.label}`} title="Open deck page" className="ml-1 inline-flex min-h-10 min-w-10 shrink-0 items-center justify-center text-sm text-ctp-subtext0 hover:text-ctp-blue">↗</Link>}
       <button
         type="button"
         onClick={onRemove}
         aria-label={`Remove ${deck.label}`}
         title={`Remove ${deck.label}`}
-        className="ml-2 shrink-0 text-ctp-subtext0 hover:text-ctp-red"
+        className="ml-1 min-h-10 min-w-10 shrink-0 text-ctp-subtext0 hover:text-ctp-red"
       >
         &times;
       </button>

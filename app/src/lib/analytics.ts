@@ -43,3 +43,9 @@ export function trackPageview(path: string): void {
   if (!analyticsEnabled() || !window.gtag) return;
   window.gtag("event", "page_view", { page_path: path, page_location: window.location.href });
 }
+
+/** Records coarse product interactions without card, deck, player, or account identifiers. */
+export function trackEvent(name: string, parameters: Record<string, string | number | boolean> = {}): void {
+  if (!analyticsEnabled() || !window.gtag) return;
+  window.gtag("event", name, parameters);
+}
