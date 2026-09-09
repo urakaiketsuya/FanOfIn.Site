@@ -19,6 +19,7 @@ import { useChampionCardImpact } from "../decks/useChampionCardImpact";
 import { useCardStatsData, useCardQuantityStatsData } from "../archetypes/data";
 import AggressionForecast from "../decks/AggressionForecast";
 import HypergeometricCalculator from "../deckbuilder/HypergeometricCalculator";
+import TurnToPlayCalculator from "../deckbuilder/TurnToPlayCalculator";
 import InteractiveCompositionProfile from "../../components/InteractiveCompositionProfile";
 import CardPackageMap from "../../components/CardPackageMap";
 import DonutChart, { buildChartSegments } from "../../components/DonutChart";
@@ -290,6 +291,9 @@ export default function UserDeckStats({ decklist, championName, format, title, o
       )}
       <div className="mt-4">
         <HypergeometricCalculator mainLines={namedSections.main} materialLines={namedSections.material} catalogByName={cardsByName} />
+      </div>
+      <div className="mt-4">
+        <TurnToPlayCalculator mainLines={namedSections.main} catalogByName={cardsByName} />
       </div>
     </>
   );

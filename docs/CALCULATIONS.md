@@ -1379,6 +1379,57 @@ reasoning as the damage classifier. Overflow buckets: memory costs above 6 are r
 against the catalog — only a handful of non-champion cards exceed 3, topping out at 12), folded
 into `"6+"`; reserve costs above 8 fold into `"8+"` (real range runs 0–16 with a long thin tail).
 
+## Turns to play (`app/src/lib/turnToPlay.ts`, `TurnToPlayCalculator.tsx`)
+
+"Earliest turn could I play this card" — bounded by two independent gates, both verified against
+the official comprehensive rules (rules.gatcg.com) rather than assumed, since neither is derivable
+from card data alone:
+
+- **Champion level, if the card needs one.** No card in the catalog carries a "requires champion
+  level N" field (confirmed directly — this is always a manual input in the UI), but the *pace* of
+  reaching a level is a real, checkable rule: leveling happens by materializing the next-level
+  champion print during the Materialize Phase, and "the materialize phase is skipped on each
+  player's first turn." So a champion starts at level 1 and, with no acceleration, first reaches
+  level N on turn N. `naturalLevelByTurn`/`earliestLevelTurn` model exactly this, plus one extra
+  level per turn for every checked "level up your champion" accelerant the deck runs (see below).
+- **The card's own Reserve cost.** Reserve costs are paid by moving that many cards from hand into
+  memory (the "Costs and Memory" rules page) — a real, checkable resource question, unlike a Memory
+  cost (see below). `earliestReserveCostTurn` uses a disclosed heuristic hand-size ceiling
+  (`startingHandSize + 1 per turn`, ignoring anything already spent that turn on other costs) rather
+  than a full simulation — an upper bound, not a promise; a real game very likely runs later than
+  this, never earlier. Ordinary Main Deck cards are never gated by a Memory cost of their own in
+  this game's card pool — confirmed directly against the catalog: `cost_memory` only ever appears
+  on Champion/Regalia prints (always equal to that print's own level, a Materialize Phase
+  turn-based action, not a paid cost), never on an Ally/Action/Item/etc.'s activation cost. `-1`
+  (the X-cost sentinel `computeMemoryCostCurve`/`computeReserveCostCurve` above also handle) is
+  treated as "no fixed floor" here (returns turn 1) rather than parsed further — an X-cost card's
+  minimum real payment is usually small or zero, and this tool doesn't attempt to model a variable
+  cost's actual chosen value.
+
+**Level-up accelerants**: cards whose own printed text reads "level up your champion" are auto-
+detected in the deck's Main section and offered as checkboxes, each contributing one extra level
+starting from whichever turn its own Reserve cost becomes payable (same heuristic as above).
+Verified against every real "level up your champion" card in the corpus
+(`pipeline/.cache/cards.json`, 13 total) and split into two groups:
+- **Modeled as immediately usable** once their own Reserve cost is payable: Dungeon Guide ("banish
+  two cards at random from your memory. If you do, level up") and Flagrant Guide (no extra cost at
+  all beyond the Ally itself). Dungeon Guide's own memory-banish requirement is self-satisfied by
+  its own Reserve payment (paying Reserve 3 puts 3 cards into memory, covering the 2 it needs to
+  banish) — not separately modeled, just relied on, since Memory always empties back to hand every
+  turn during the Recollection Phase (verified: "the turn player returns all cards in their memory
+  zone to their hand," unconditionally), so a Memory-cost sub-ability can only ever draw on *that
+  same turn's* own Reserve payments.
+- **Surfaced but not turn-modeled** (real dependency this tool can't verify): the five Radiant
+  Origin cards and Discover the Divine (all need counters built up over several prior turns),
+  Fireblooded Oath (needs 3 fire cards already in a graveyard), Eminence in Fury and Heavenly Guide
+  (both conditioned on board state — an ally dying this turn, an opponent's lineage — not a resource
+  question at all). `NOT_SIMPLE_RE` in `turnToPlay.ts` is the exclusion regex behind this split;
+  re-run against the corpus if a new "level up your champion" card ships, since it isn't a hardcoded
+  card-name list.
+
+Surfaced on every deck-viewing page's Analysis/Forecasts tab via `UserDeckStats.tsx`, next to the
+Hypergeometric calculator, using the same "Card in build" autofill convention.
+
 ## Deck DIAO score (`shared/src/diao.ts` — `computeDeckRating`)
 
 A four-pillar deck-style profile — **Durability / Interaction / Aggro / Opportunity** (DIAO), each
