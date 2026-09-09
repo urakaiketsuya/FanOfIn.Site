@@ -50,6 +50,9 @@ export const accountApi = {
   setSharedCardWatch: (cardUuid: string, input: { cardName?: string; watched: boolean }) => accountRequest<{ success: true }>(`/v1/me/collection/shared-cards/${encodeURIComponent(cardUuid)}`, { method: "PATCH", body: JSON.stringify(input) }),
   createDeckVersion: (id: string, input: { decklist: OmnidexDecklist; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; changeNote?: string }) =>
     accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}/versions`, { method: "POST", body: JSON.stringify(input) }),
+  /** Updates the deck's current decklist content in place — no new entry in version history, unlike `createDeckVersion`. */
+  updateDeckDecklist: (id: string, input: { decklist: OmnidexDecklist; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null }) =>
+    accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}/decklist`, { method: "PATCH", body: JSON.stringify(input) }),
   restoreDeckVersion: (id: string, versionId: string) => accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}/versions/${encodeURIComponent(versionId)}/restore`, { method: "POST" }),
   saveDeck: (input: { title: string; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; decklist: OmnidexDecklist; maybeboard?: { card: string; quantity: number }[]; source: { provider: "manual"; externalDeckId: string; label: string } }) =>
     accountRequest<{ id: string; created: boolean }>("/v1/me/decks", { method: "POST", body: JSON.stringify(input) }),

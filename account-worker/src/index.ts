@@ -1,5 +1,5 @@
 import { authenticatedUser, bffAllowed, consumeOAuthNonce, createLocalUserSession, createOAuthNonce, createUserSession, destroyAllSessions, destroySession, normalizeDisplayName, originAllowed, rotateCurrentSession, verifyGoogleCredential, type Env } from "./auth";
-import { createDeckVersion, deleteDeck, getDeck, getPublicDeck, listDecks, parseSaveInput, performImport, previewImport, publishDeck, restoreDeckVersion, saveDeck, updateDeckMetadata } from "./decks";
+import { createDeckVersion, deleteDeck, getDeck, getPublicDeck, listDecks, parseSaveInput, performImport, previewImport, publishDeck, restoreDeckVersion, saveDeck, updateDeckDecklist, updateDeckMetadata } from "./decks";
 import { ApiError, badRequest } from "./errors";
 import { copyPublishedDeck, getDeckSocialState, listBookmarks, setDeckBookmark, setDeckLike } from "./deck-social";
 import { discoverDecks, discoverProfiles, getPublicProfile } from "./discovery";
@@ -211,6 +211,11 @@ export default {
       if (versionsMatch && request.method === "POST") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
         return response(env, request, await createDeckVersion(env, user, versionsMatch[1], await jsonBody(request)), 201);
+      }
+      const decklistMatch = url.pathname.match(/^\/v1\/me\/decks\/([^/]+)\/decklist$/);
+      if (decklistMatch && request.method === "PATCH") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        return response(env, request, await updateDeckDecklist(env, user, decklistMatch[1], await jsonBody(request)));
       }
       const publishMatch = url.pathname.match(/^\/v1\/me\/decks\/([^/]+)\/publish$/);
       if (publishMatch && request.method === "POST") {

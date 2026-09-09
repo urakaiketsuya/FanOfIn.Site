@@ -389,6 +389,55 @@ export async function createDeckVersion(env: Env, user: AuthUser, deckId: string
   return { id: versionId, versionNumber };
 }
 
+/**
+ * Updates the deck's current decklist content in place — same validation as `createDeckVersion`,
+ * but rewrites the existing current version's `canonical_build_id` pointer instead of inserting a
+ * new `deck_versions` row, so routine edits don't stack version history the user never asked for.
+ * Never mutates an existing `canonical_builds` row (that table is content-addressed and can be
+ * shared across decks/versions by hash) — a changed decklist always gets its own build row via the
+ * same `ON CONFLICT(full_identity_hash) DO NOTHING` insert `createDeckVersion` uses, only the
+ * *pointer* to it moves. `deck_versions.version_number`/`created_at` are left untouched, so
+ * `getDeck`'s `previousDecklist`-style diff (the version immediately before the current one)
+ * keeps comparing against the last version the user explicitly chose to save, not this edit.
+ */
+export async function updateDeckDecklist(env: Env, user: AuthUser, deckId: string, value: unknown): Promise<{ id: string; versionNumber: number }> {
+  if (!value || typeof value !== "object") throw badRequest("Invalid decklist update");
+  const input = value as { decklist?: unknown; format?: unknown; championName?: unknown };
+  if (!validDecklist(input.decklist)) throw badRequest("Invalid decklist");
+  if (input.format !== "STANDARD" && input.format !== "PANTHEON" && input.format !== "UNKNOWN") throw badRequest("Invalid deck format");
+  if (input.championName != null && (typeof input.championName !== "string" || input.championName.length > 200)) throw badRequest("Invalid champion name");
+  const owned = await env.ACCOUNT_DB.prepare("SELECT id, current_version_id FROM user_decks WHERE id = ? AND owner_user_id = ?")
+    .bind(deckId, user.id).first<{ id: string; current_version_id: string | null }>();
+  if (!owned) throw new ApiError("Deck not found", 404, "deck_not_found");
+  if (!owned.current_version_id) throw badRequest("Deck has no version to update");
+  const currentVersion = await env.ACCOUNT_DB.prepare("SELECT version_number FROM deck_versions WHERE id = ? AND deck_id = ?")
+    .bind(owned.current_version_id, deckId).first<{ version_number: number }>();
+  if (!currentVersion) throw new Error("Current version record is missing");
+  const canonical = canonicalizeSavedDecklist(input.decklist);
+  if (canonical.main.length + canonical.material.length === 0) throw badRequest("A deck needs main or material cards");
+  const coreHash = await identityHash(canonical);
+  const championName = typeof input.championName === "string" ? input.championName : null;
+  const fullHash = await fullIdentityHash(canonical, input.format, championName);
+  const duplicateOwned = await env.ACCOUNT_DB.prepare("SELECT id FROM saved_decks WHERE user_id = ? AND identity_hash = ? AND id <> ?")
+    .bind(user.id, coreHash, deckId).first<{ id: string }>();
+  if (duplicateOwned) throw badRequest("This build already exists in your decks", "owned_duplicate_deck");
+  const now = new Date().toISOString();
+  await env.ACCOUNT_DB.prepare(`INSERT INTO canonical_builds (id, core_identity_hash, full_identity_hash, format, champion_name, decklist_json, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT(full_identity_hash) DO NOTHING`)
+    .bind(fullHash, coreHash, fullHash, input.format, championName, JSON.stringify(canonical), now).run();
+  const build = await env.ACCOUNT_DB.prepare("SELECT id FROM canonical_builds WHERE full_identity_hash = ?").bind(fullHash).first<{ id: string }>();
+  if (!build) throw new Error("Canonical build was not created");
+  await env.ACCOUNT_DB.batch([
+    env.ACCOUNT_DB.prepare("UPDATE deck_versions SET canonical_build_id = ? WHERE id = ? AND deck_id = ?")
+      .bind(build.id, owned.current_version_id, deckId),
+    env.ACCOUNT_DB.prepare("UPDATE user_decks SET format = ?, champion_name = ?, updated_at = ? WHERE id = ? AND owner_user_id = ?")
+      .bind(input.format, championName, now, deckId, user.id),
+    env.ACCOUNT_DB.prepare("UPDATE saved_decks SET identity_hash = ?, format = ?, champion_name = ?, decklist_json = ?, updated_at = ? WHERE id = ? AND user_id = ?")
+      .bind(coreHash, input.format, championName, JSON.stringify({ ...canonical, sideboard: [] }), now, deckId, user.id),
+  ]);
+  return { id: owned.current_version_id, versionNumber: currentVersion.version_number };
+}
+
 export async function restoreDeckVersion(env: Env, user: AuthUser, deckId: string, versionId: string): Promise<{ id: string; versionNumber: number }> {
   const source = await env.ACCOUNT_DB.prepare(`SELECT cb.decklist_json, cb.format, cb.champion_name
     FROM deck_versions dv JOIN canonical_builds cb ON cb.id = dv.canonical_build_id

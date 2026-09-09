@@ -93,6 +93,9 @@ export default function MyDeckDetail() {
   const [deckText, setDeckText] = useState("");
   const [maybeboardText, setMaybeboardText] = useState("");
   const [changeNote, setChangeNote] = useState("");
+  const [saveAsNewVersion, setSaveAsNewVersion] = useState(false);
+  const [trimMax, setTrimMax] = useState(3);
+  const [renamingTitle, setRenamingTitle] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [primerMarkdown, setPrimerMarkdown] = useState("");
@@ -201,6 +204,27 @@ export default function MyDeckDetail() {
     setDeckText(buildDecklistText(decklist));
   }
 
+  // Only ever lowers a count (min, never max) — a card whose own legal limit is already below
+  // `max` (e.g. a UNIQUE 1-of) is left untouched, never bumped up to match.
+  function trimToMaxCopies(max: number) {
+    const decklist = parseDecklist(deckText).decklist;
+    for (const section of EDIT_SECTIONS) for (const line of decklist[section.key]) line.quantity = Math.min(line.quantity, max);
+    setDeckText(buildDecklistText(decklist));
+    setNotice(`Trimmed every card to at most ${max}x.`);
+  }
+
+  async function saveTitle() {
+    if (!deck) return;
+    const trimmed = title.trim();
+    if (!trimmed || trimmed === deck.title) { setTitle(deck.title); setRenamingTitle(false); return; }
+    await run(async () => {
+      await accountApi.updateDeckMetadata(deck.id, { title: trimmed });
+      await refresh();
+      setNotice("Deck renamed.");
+      setRenamingTitle(false);
+    });
+  }
+
   function addMaybeboardToEditor() {
     const lines = maybeboardText.trim();
     if (!lines) return;
@@ -245,7 +269,19 @@ export default function MyDeckDetail() {
 
   return <PageLayout data-component="MyDeckDetail">
     <Link to="/decks/edit" className="text-sm text-ctp-blue hover:underline">← My Decks</Link>
-    <div className="mt-4"><UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} description={deck.description} visibility={deck.visibility} /><DeckTags tags={deck.tags} /><div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2"><p className="text-xs text-ctp-subtext0">Updated {new Date(deck.updatedAt).toLocaleDateString()} · {deck.versions.length} version{deck.versions.length === 1 ? "" : "s"}</p>{deck.publicSlug && deck.visibility !== "private" && <Link to={`/decks/${deck.publicSlug}`} className="text-sm font-medium text-ctp-blue hover:underline">{deck.visibility === "public" ? "View public deck →" : "View shared deck →"}</Link>}</div></div>
+    <div className="mt-4">
+      <UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} description={deck.description} visibility={deck.visibility} />
+      {renamingTitle ? (
+        <form className="mt-2 flex flex-wrap items-center gap-2" onSubmit={(event) => { event.preventDefault(); void saveTitle(); }}>
+          <input autoFocus required maxLength={160} value={title} onChange={(event) => setTitle(event.target.value)} aria-label="Deck title" className="min-w-0 flex-1 max-w-sm rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1 text-sm text-ctp-text" />
+          <button disabled={busy} type="submit" className="rounded bg-ctp-blue px-2.5 py-1 text-xs font-medium text-ctp-base disabled:opacity-50">Save</button>
+          <button type="button" onClick={() => { setTitle(deck.title); setRenamingTitle(false); }} className="rounded border border-ctp-surface1 px-2.5 py-1 text-xs text-ctp-subtext1">Cancel</button>
+        </form>
+      ) : (
+        <button type="button" onClick={() => setRenamingTitle(true)} className="mt-2 text-xs font-medium text-ctp-blue hover:underline">Rename deck</button>
+      )}
+      <DeckTags tags={deck.tags} /><div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2"><p className="text-xs text-ctp-subtext0">Updated {new Date(deck.updatedAt).toLocaleDateString()} · {deck.versions.length} version{deck.versions.length === 1 ? "" : "s"}</p>{deck.publicSlug && deck.visibility !== "private" && <Link to={`/decks/${deck.publicSlug}`} className="text-sm font-medium text-ctp-blue hover:underline">{deck.visibility === "public" ? "View public deck →" : "View shared deck →"}</Link>}</div>
+    </div>
     <div className="mt-5 flex flex-wrap items-center gap-2"><button type="button" onClick={() => setTab("decklist")} className="rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base">Edit deck</button><Link to={`/deck-builder?improveDeck=${encodeURIComponent(deck.id)}`} className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm font-medium text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Tune in builder</Link><Link to={comparePath} className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm font-medium text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Compare</Link><button type="button" onClick={() => setTab("settings")} className="ml-auto rounded-md px-3 py-2 text-sm text-ctp-subtext1 hover:bg-ctp-mantle hover:text-ctp-text">Settings</button></div>
     <div className="mt-6"><Tabs tabs={DECK_TABS} active={tab === "settings" ? "overview" : tab} onChange={setTab} label="Deck details" baseId="owned-deck" /></div>
     {error && <Panel tone="danger" padding="sm" className="mt-4 text-sm text-ctp-red">{error}</Panel>}
@@ -275,7 +311,7 @@ export default function MyDeckDetail() {
       </div>
     </section>}
     {tab === "analysis" && <section id="owned-deck-panel-analysis" role="tabpanel" aria-labelledby="owned-deck-tab-analysis" tabIndex={0}><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} title={deck.title} ownerDeckId={deck.id} previousDecklist={previousDecklist} /></section>}
-    {tab === "decklist" && <><UserDecklistPanel decklist={deck.decklist} format={deck.format} ownerDeckId={deck.id} collectionSource={`Deck: ${deck.title}`} actions={<button type="button" onClick={() => { setDeckText(buildDecklistText(deck.decklist)); setEditing((value) => !value); }} className={`rounded px-2 py-1 text-xs ${editing ? "border border-ctp-surface1 text-ctp-subtext1" : "bg-ctp-blue text-ctp-base"}`}>{editing ? "Cancel" : "Edit deck"}</button>}>
+    {tab === "decklist" && <><UserDecklistPanel decklist={deck.decklist} format={deck.format} ownerDeckId={deck.id} collectionSource={`Deck: ${deck.title}`} actions={<button type="button" onClick={() => { setDeckText(buildDecklistText(deck.decklist)); setSaveAsNewVersion(false); setEditing((value) => !value); }} className={`rounded px-2 py-1 text-xs ${editing ? "border border-ctp-surface1 text-ctp-subtext1" : "bg-ctp-blue text-ctp-base"}`}>{editing ? "Cancel" : "Edit deck"}</button>}>
       {editing ? <div className="mt-3">
         <div className="mb-4 rounded-lg border border-ctp-surface1 bg-ctp-base p-3"><p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Section balance</p><DeckSectionBalance compact sideboardPoints={editedSideboardPoints} counts={{ main: editedDecklist.main.reduce((sum, line) => sum + line.quantity, 0), material: editedDecklist.material.reduce((sum, line) => sum + line.quantity, 0), sideboard: editedDecklist.sideboard.reduce((sum, line) => sum + line.quantity, 0) }} /></div>
         <div className="flex flex-wrap items-center gap-2">
@@ -288,16 +324,32 @@ export default function MyDeckDetail() {
           </div>
           <button type="button" disabled={!cardNameSet.has(cardInput)} onClick={() => addCard(cardInput)} className="rounded-md border border-ctp-green/60 px-3 py-2 text-sm text-ctp-green hover:bg-ctp-green/10 disabled:cursor-not-allowed disabled:opacity-50">Add card</button>
         </div>
+        <div className="mt-2 flex flex-wrap items-center gap-2">
+          <label className="text-xs text-ctp-subtext1" htmlFor="my-deck-trim-max">Trim every card to at most</label>
+          <input id="my-deck-trim-max" type="number" min={1} max={4} value={trimMax} onChange={(event) => { const next = Number(event.target.value); if (Number.isInteger(next)) setTrimMax(Math.max(1, Math.min(4, next))); }} className="w-14 rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1 text-xs text-ctp-text" />
+          <button type="button" onClick={() => trimToMaxCopies(trimMax)} className="rounded-md border border-ctp-surface1 px-2.5 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Trim to {trimMax}x</button>
+          <span className="text-xs text-ctp-subtext0">Only lowers counts — a card already below that stays as-is.</span>
+        </div>
         <div className="mt-4"><EditableDecklistGrid decklist={editedDecklist} cardsByName={editedCardsByName} onChangeQuantity={changeEditedQuantity} onMove={moveEditedCard} onRemove={removeEditedCard} /></div>
         <details className="mt-4 rounded-md border border-ctp-surface1 bg-ctp-mantle p-3">
           <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Edit as text</summary>
           <textarea rows={18} required value={deckText} onChange={(event) => setDeckText(event.target.value)} className="mt-3 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-4 font-mono text-sm text-ctp-text" />
         </details>
-        <form className="sticky bottom-3 z-20 mt-4 rounded-xl border border-ctp-blue/40 bg-ctp-mantle/95 p-3 shadow-xl backdrop-blur" onSubmit={(event) => { event.preventDefault(); void run(async () => { if (editedChampionName !== deck.championName && !window.confirm(`Change Champion from ${deck.championName ?? "none"} to ${editedChampionName ?? "none"}?`)) return; await accountApi.createDeckVersion(deck.id, { decklist: editedDecklist, format: deck.format, championName: editedChampionName, changeNote }); await refresh(); setChangeNote(""); setEditing(false); }); }}>
+        <form className="sticky bottom-3 z-20 mt-4 rounded-xl border border-ctp-blue/40 bg-ctp-mantle/95 p-3 shadow-xl backdrop-blur" onSubmit={(event) => { event.preventDefault(); void run(async () => {
+          if (editedChampionName !== deck.championName && !window.confirm(`Change Champion from ${deck.championName ?? "none"} to ${editedChampionName ?? "none"}?`)) return;
+          if (saveAsNewVersion) await accountApi.createDeckVersion(deck.id, { decklist: editedDecklist, format: deck.format, championName: editedChampionName, changeNote });
+          else await accountApi.updateDeckDecklist(deck.id, { decklist: editedDecklist, format: deck.format, championName: editedChampionName });
+          await refresh(); setChangeNote(""); setEditing(false);
+          setNotice(saveAsNewVersion ? "Saved as a new version." : "Deck updated.");
+        }); }}>
           <p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Unsaved deck changes</p>
           <p className={`text-sm ${editedChampionName ? editedChampionName === deck.championName ? "text-ctp-subtext1" : "text-ctp-yellow" : "text-ctp-yellow"}`}>{editedChampionName ? `Champion detected: ${editedChampionName}${editedChampionName !== deck.championName ? ` (currently ${deck.championName ?? "none"})` : ""}` : `No Champion detected${deck.championName ? ` (currently ${deck.championName})` : ""}.`}</p>
-          <input value={changeNote} maxLength={240} onChange={(event) => setChangeNote(event.target.value)} placeholder="What changed? (optional)" className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm" />
-          <button disabled={busy} type="submit" className="mt-3 rounded-md bg-ctp-blue px-3 py-2 text-sm text-ctp-base disabled:opacity-50">Save new version</button>
+          <label className="mt-2 flex items-center gap-2 text-sm text-ctp-subtext1">
+            <input type="checkbox" checked={saveAsNewVersion} onChange={(event) => setSaveAsNewVersion(event.target.checked)} />
+            Save as a new version (keeps this snapshot in your version history)
+          </label>
+          {saveAsNewVersion && <input value={changeNote} maxLength={240} onChange={(event) => setChangeNote(event.target.value)} placeholder="What changed? (optional)" className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm" />}
+          <button disabled={busy} type="submit" className="mt-3 rounded-md bg-ctp-blue px-3 py-2 text-sm text-ctp-base disabled:opacity-50">{saveAsNewVersion ? "Save new version" : "Save changes"}</button>
         </form>
       </div> : undefined}
     </UserDecklistPanel>
