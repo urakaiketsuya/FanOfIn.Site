@@ -111,6 +111,42 @@ keys (not `cardIndex.get` directly) — these modules read `bundle.decklists` in
 `decklists.ts`, so without this they'd be exposed to the same mis-cased/curly-quote identity-split
 bug documented under "Card name resolution" below.
 
+## Per-Champion card win rates (`cardStatsByChampion.ts`, `data/analysis/card-stats-by-champion.json`)
+
+Answers "what's the win rate of this card specifically when played with this Champion" — an
+absolute number, distinct from both `computeCardStats` above (pools every Champion meta-wide, so a
+card that's great on one Champion and mediocre on another washes out to one flat figure) and Card
+Impact (`cardImpact.ts`/`useChampionCardImpact.ts`, a with/without *lift*, not a plain win rate).
+
+Unlike the four modules above, this one reuses `AnalysisContext.getEventSignatures` (the same
+cached per-bundle `DeckSignature` — Champion identity, resolved main/material card lines — that
+`archetypes.ts` already computes) instead of re-walking raw decklists, so Champion detection stays
+byte-identical to every other Champion-scoped feature in the codebase rather than a second,
+independently-drifting implementation.
+
+**Shrinkage target is the Champion's own average win rate, not a flat 50%** — same reasoning
+`cardImpact.ts`'s `ClusterCardImpact.baselineWinRate` documents: a Champion's own decks can sit off
+50% due to Swiss/tournament dynamics, so its own baseline is the honest prior, not the site-wide
+flat one every other stat in the section above uses. `ChampionCardStats.baselineWinRate` is that
+Champion's own raw average (large real samples for every Champion that's actually played, so no
+shrinkage needed on the baseline itself); each card's `adjustedWinRate` shrinks toward it
+proportional to sample size, using the standard `(sum + prior × baseline) / (n + prior)` shape
+(`shrinkWinRate`'s own formula, just with a custom target instead of a hardcoded 0.5).
+
+No minimum-sample floor is applied before publishing (same convention `computeCardStats` itself
+uses — a 1-deck row is still published, just barely different from the Champion's own baseline
+after shrinkage) — a display-time floor, if wanted, is a client concern, same division of
+responsibility `pickBetterQuantity`'s `MIN_QUANTITY_SAMPLE` already establishes for
+`card-quantity-stats.json`.
+
+**Surfaced on**: `ChampionDetail.tsx`'s "Most Used Cards" tab and `ChampionSynergy.tsx`'s
+Archetypes tab, both via `TopCardsSections`' new optional `winRateByName` prop (a plain
+`Map<cardName, adjustedWinRate>`, so every other caller of that shared component — Player/Card
+pages — is unaffected by omitting it). Champion-wide only: a Spirit/Element-filtered card list on
+those pages still shows the Champion-wide win rate for each card, since this dataset doesn't slice
+that finely — a reasonable simplification, not a bug, since the number is still meaningful at the
+Champion level regardless of which breakdown's card list happens to be showing.
+
 ## Quantity-optimization significance test (`app/src/lib/cardQuantityAdvice.ts`)
 
 `pickBetterQuantity` reads `computeCardQuantityStats`'s per-(card, copy-count) buckets above and

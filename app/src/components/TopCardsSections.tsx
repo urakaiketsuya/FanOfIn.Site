@@ -9,7 +9,7 @@ import { usePriceTrendByName } from "../features/pricing/usePriceTrendByName";
 import { useSimulatorEvidenceByName } from "../features/simulator/useSimulatorEvidenceByName";
 import { useDecklistDisplayPrefs } from "../lib/decklistDisplayPrefs";
 
-function CardRow({ card: topCard, resolved }: { card: PlayerTopCard; resolved: Card | undefined }) {
+function CardRow({ card: topCard, resolved, winRate }: { card: PlayerTopCard; resolved: Card | undefined; winRate: number | undefined }) {
   const inner = (
     <>
       {resolved?.editions[0] ? (
@@ -19,6 +19,7 @@ function CardRow({ card: topCard, resolved }: { card: PlayerTopCard; resolved: C
       )}
       {resolved && resolved.element !== "NORM" && <ElementIcon element={resolved.element} size={14} />}
       <span className="flex-1 text-ctp-text">{topCard.name}</span>
+      {winRate !== undefined && <span className="text-ctp-blue">{(winRate * 100).toFixed(0)}% win rate</span>}
       <span className="text-ctp-subtext0">{topCard.deckCount} decks</span>
     </>
   );
@@ -42,6 +43,8 @@ type TopCardsSectionsProps = {
   mainOverride?: PlayerTopCard[];
   /** "grid" shows full card art with the same cost/price/trend/simulator/community footer as DecklistView's Visual mode, instead of CardRow's text list. Defaults to "list" so every other caller of this component is unaffected. */
   layout?: "list" | "grid";
+  /** Card name -> adjusted win rate, scoped to whatever population this card list itself represents (e.g. `data/analysis/card-stats-by-champion.json` for a Champion page). Omitted by every caller that doesn't have a matching win-rate dataset, which is unaffected. */
+  winRateByName?: Map<string, number>;
 };
 
 /** Card usage split by deck section — main/material/sideboard are structurally different card pools, so lumping them together buries a defining material-deck piece among 40-card mainboard staples. */
@@ -49,7 +52,7 @@ export default function TopCardsSections(props: TopCardsSectionsProps) {
   return props.layout === "grid" ? <GridTopCardsSections {...props} /> : <ListTopCardsSections {...props} />;
 }
 
-function ListTopCardsSections({ topCards, cardImages, mainOverride }: TopCardsSectionsProps) {
+function ListTopCardsSections({ topCards, cardImages, mainOverride, winRateByName }: TopCardsSectionsProps) {
   const sections = [
     { label: "Main", cards: mainOverride ?? topCards.main },
     { label: "Material", cards: topCards.material },
@@ -63,7 +66,7 @@ function ListTopCardsSections({ topCards, cardImages, mainOverride }: TopCardsSe
             <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">{label}</h3>
             <div className="mt-2 space-y-2">
               {cards.map((c) => (
-                <CardRow key={c.name} card={c} resolved={cardImages.get(c.name)} />
+                <CardRow key={c.name} card={c} resolved={cardImages.get(c.name)} winRate={winRateByName?.get(c.name)} />
               ))}
             </div>
           </div>
@@ -80,7 +83,7 @@ function ListTopCardsSections({ topCards, cardImages, mainOverride }: TopCardsSe
  * community data itself (gated the same way DecklistView gates them) rather than in the "list"
  * layout, so pages using the plain text-list layout don't pay for stats they don't show.
  */
-function GridTopCardsSections({ topCards, cardImages, mainOverride }: TopCardsSectionsProps) {
+function GridTopCardsSections({ topCards, cardImages, mainOverride, winRateByName }: TopCardsSectionsProps) {
   const priceByName = useDeckPriceByName();
   const priceTrendByName = usePriceTrendByName();
   const simulatorEvidenceByName = useSimulatorEvidenceByName();
@@ -122,6 +125,12 @@ function GridTopCardsSections({ topCards, cardImages, mainOverride }: TopCardsSe
                       <span>Popularity</span>
                       <span className="text-ctp-text">{c.deckCount} decks</span>
                     </div>
+                    {winRateByName?.has(c.name) && (
+                      <div className="flex items-center justify-between text-[10px] text-ctp-subtext1">
+                        <span>Win rate</span>
+                        <span className="text-ctp-blue">{((winRateByName.get(c.name) ?? 0) * 100).toFixed(0)}%</span>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

@@ -435,6 +435,35 @@ export interface CardQuantityStatsData {
   cards: CardQuantityStat[];
 }
 
+/** One card's win rate specifically among one Champion's own decks — an absolute number, not a with/without lift (that's Card Impact). */
+export interface CardStatByChampion {
+  name: string;
+  slug: string | null;
+  /** Decks of this Champion containing this card at least once. */
+  deckCount: number;
+  totalCopies: number;
+  avgWinRate: number;
+  /** avgWinRate shrunk toward this Champion's own `baselineWinRate` (not a flat 50%) proportional to sample size — same reasoning `cardImpact.ts`'s `ClusterCardImpact.baselineWinRate` shrinkage uses, since a Champion's own decks can sit off 50% due to Swiss/tournament dynamics. */
+  adjustedWinRate: number;
+}
+
+/** Every card win rate for one Champion's own decks (main + material only — same "deck identity" convention as everywhere else in this codebase). */
+export interface ChampionCardStats {
+  championName: string;
+  /** Decks of this Champion with a known win rate — the sample size `baselineWinRate` and every card's `adjustedWinRate` shrinkage is computed from. */
+  deckCount: number;
+  /** This Champion's own average win rate across `deckCount` decks — the shrinkage target for every card below, not a flat 50%. */
+  baselineWinRate: number;
+  /** Sorted by deckCount descending, same convention as `CardStatsData.cards`. */
+  cards: CardStatByChampion[];
+}
+
+export interface CardStatsByChampionData {
+  generatedAt: string;
+  /** Sorted by deckCount descending. */
+  champions: ChampionCardStats[];
+}
+
 /** One main-deck card type (Ally, Action, Attack, ...) at one 10-percentage-point share-of-deck bucket (e.g. "20-30%"), and the average win rate among decks whose main deck fell in that bucket for that type — weighted by copies, main deck only (material/sideboard excluded; this is a "how much of your gameplan is X" question, not a full decklist tally). */
 export interface CompositionWinRateStat {
   type: string;

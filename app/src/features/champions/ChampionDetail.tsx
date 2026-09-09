@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { championNameToSlug, slugToChampionName } from "../../lib/championSlug";
-import { useArchetypeData, useArchetypeTaxonomyData, useChampionTrendsData, useCompositionWinRateData, useSimilarityData } from "../archetypes/data";
+import { useArchetypeData, useArchetypeTaxonomyData, useCardStatsByChampionData, useChampionTrendsData, useCompositionWinRateData, useSimilarityData } from "../archetypes/data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useHipsterData } from "../players/data";
 import { useOmnidexPlayers, useEventNameById } from "../tournaments/data";
@@ -61,6 +61,7 @@ export default function ChampionDetail() {
   const playersData = useOmnidexPlayers();
   const similarityData = useSimilarityData();
   const compositionData = useCompositionWinRateData();
+  const cardStatsByChampionData = useCardStatsByChampionData();
 
   // Named Spirits (e.g. "Kaze, Spirit of Wind") are tracked as their own Champion-like entry in a
   // separate list, not merged into `archetypes` — fall back to it so this page works for either.
@@ -106,6 +107,12 @@ export default function ChampionDetail() {
     }
     return champion.topCards;
   }, [champion, spiritFilter]);
+
+  /** Card win rate specifically among this Champion's own decks (`data/analysis/card-stats-by-champion.json`) — Champion-wide, not re-scoped per Spirit/Element filter above (that dataset doesn't slice that finely; still meaningful at the Champion level regardless of which breakdown's card list is currently shown). */
+  const winRateByName = useMemo(() => {
+    const entry = cardStatsByChampionData?.champions.find((c) => c.championName === championName);
+    return entry ? new Map(entry.cards.map((c) => [c.name, c.adjustedWinRate])) : undefined;
+  }, [cardStatsByChampionData, championName]);
 
   const displayedMainByType = useMemo(() => {
     if (!champion) return null;
@@ -411,7 +418,7 @@ export default function ChampionDetail() {
 
               {displayedTopCards && (
                 <div className="mt-3">
-                  <TopCardsSections topCards={displayedTopCards} cardImages={cardImages} mainOverride={displayedMainCards} />
+                  <TopCardsSections topCards={displayedTopCards} cardImages={cardImages} mainOverride={displayedMainCards} winRateByName={winRateByName} />
                 </div>
               )}
             </Section>

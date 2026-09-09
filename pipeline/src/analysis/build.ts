@@ -9,6 +9,7 @@ import { computeRivals } from "./rivals.js";
 import { computeCardStats } from "./cardStats.js";
 import { computeKeywordStats } from "./keywordStats.js";
 import { computeCardQuantityStats } from "./cardQuantityStats.js";
+import { computeCardStatsByChampion } from "./cardStatsByChampion.js";
 import { computeCompositionWinRates } from "./deckCompositionStats.js";
 import { computeArchetypeAnalysis } from "./archetypes.js";
 import { computeHipsterScores } from "./hipster.js";
@@ -140,6 +141,13 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
   await writeFile(
     path.join(DATA_DIR, "card-quantity-stats.json"),
     JSON.stringify({ generatedAt: new Date().toISOString(), cards: cardQuantityStats }),
+    "utf-8",
+  );
+
+  const cardStatsByChampion = computeCardStatsByChampion(completed, ctx);
+  await writeFile(
+    path.join(DATA_DIR, "card-stats-by-champion.json"),
+    JSON.stringify({ generatedAt: new Date().toISOString(), champions: cardStatsByChampion }),
     "utf-8",
   );
 

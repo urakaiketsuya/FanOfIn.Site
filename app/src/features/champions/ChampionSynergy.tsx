@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { Card, CardImpactEntry, CardInclusionEntry, PlayerTopCard, TopCardsBySection } from "@gatcg/shared";
-import { useArchetypeData, useArchetypeTaxonomyData, useCardImpactData } from "../archetypes/data";
+import { useArchetypeData, useArchetypeTaxonomyData, useCardImpactData, useCardStatsByChampionData } from "../archetypes/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { computeNewReleaseCards, type NewReleaseCombo } from "../deckbuilder/newReleaseCards";
@@ -198,6 +198,13 @@ export default function ChampionSynergy() {
   const champion =
     archetypeData?.archetypes.find((a) => a.signature === championName) ??
     archetypeData?.namedSpirits?.find((s) => s.signature === championName);
+
+  const cardStatsByChampionData = useCardStatsByChampionData();
+  /** Card win rate specifically among this Champion's own decks — Champion-wide, not re-scoped per Spirit/Element (that dataset doesn't slice that finely). */
+  const winRateByName = useMemo(() => {
+    const entry = cardStatsByChampionData?.champions.find((c) => c.championName === championName);
+    return entry ? new Map(entry.cards.map((c) => [c.name, c.adjustedWinRate])) : undefined;
+  }, [cardStatsByChampionData, championName]);
 
   const catalogByName = useMemo(() => new Map(catalog.map((c) => [c.name, c])), [catalog]);
 
@@ -569,7 +576,7 @@ export default function ChampionSynergy() {
               )}
               {displayed && (
                 <div className="mt-3">
-                  <TopCardsSections topCards={displayed.topCards} cardImages={cardImages} mainOverride={displayedMainCards} layout="grid" />
+                  <TopCardsSections topCards={displayed.topCards} cardImages={cardImages} mainOverride={displayedMainCards} layout="grid" winRateByName={winRateByName} />
                 </div>
               )}
             </Section>

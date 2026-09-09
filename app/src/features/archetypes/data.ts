@@ -4,6 +4,7 @@ import type {
   ArchetypeTaxonomyValidationData,
   CardImpactData,
   CardQuantityStatsData,
+  CardStatsByChampionData,
   CardStatsData,
   ChampionTrendsData,
   CompositionWinRateData,
@@ -63,4 +64,8 @@ export function useCardQuantityStatsData(): CardQuantityStatsData | undefined {
 
 export function useCompositionWinRateData(): CompositionWinRateData | undefined {
   return usePublishedData<CompositionWinRateData>("analysis-composition-win-rates", "/data/analysis/composition-win-rates.json");
+}
+
+export function useCardStatsByChampionData(): CardStatsByChampionData | undefined {
+  return usePublishedData<CardStatsByChampionData>("analysis-card-stats-by-champion", "/data/analysis/card-stats-by-champion.json");
 }
