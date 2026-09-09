@@ -1430,6 +1430,35 @@ Verified against every real "level up your champion" card in the corpus
 Surfaced on every deck-viewing page's Analysis/Forecasts tab via `UserDeckStats.tsx`, next to the
 Hypergeometric calculator, using the same "Card in build" autofill convention.
 
+## Goldfish simulator (`app/src/lib/goldfishSimulator.ts`, `features/goldfish/GoldfishIndex.tsx`)
+
+A starting hand + draw-through-the-deck tool, deliberately *manually-assisted* rather than a rules
+engine — checked against the real card corpus before deciding this (`pipeline/.cache/cards.json`,
+2,495 cards): only 0.37% of real Main Deck cards (6 of 1,635) have a completely empty effect field,
+so "parse every card's mechanical text" would be a much bigger lift than "cover the payoff cards,"
+and a fully-automated simulator isn't a credible promise. Every zone this tracks is deliberately
+minimal — Library (shuffled Main Deck instances only; Material Deck is materialized, not drawn,
+same distinction `lib/deckIdentity.ts` establishes elsewhere) → Hand (revealed) → one "played" pile
+— no Field/Graveyard/Memory split, since the actual ask ("removing them from hand each time") is
+about hand-tracking, not full board simulation.
+
+The one mechanic ever auto-suggested is a "draw N cards" trigger, reusing `drawEffects.ts`'s own
+detector (`suggestedExtraDraws` calls `drawnCardsPerCopy` directly rather than a second
+implementation of the same regex) — and even that is never applied automatically. Playing a
+matched card surfaces a "+1 card?" stepper the viewer clicks 0 to N times themselves, since
+conditional wording ("If you do," "you may," "if you have no cards in your hand") can't be
+verified from text alone — the same reasoning `drawEffects.ts` already documents for why it treats
+every draw clause as an upper-bound estimate rather than a guarantee. Discard, reveal, hand-size
+effects, combat, and leveling are left for the viewer to resolve by eye — not detected, not
+suggested, not modeled.
+
+Starting hand size defaults to `turnToPlay.ts`'s own `DEFAULT_STARTING_HAND_SIZE` (6) for
+consistency between the two tools, editable in the UI — carried forward as an assumption, not a
+verified rule: two direct fetches of the official rules site's "Starting the Game" page found no
+explicit number (only "resolve the On Enter abilities for obtaining their starting hands," and
+confirmed directly that this isn't a per-Champion printed ability — no level-1 Champion's own
+effect text grants a starting hand).
+
 ## Deck DIAO score (`shared/src/diao.ts` — `computeDeckRating`)
 
 A four-pillar deck-style profile — **Durability / Interaction / Aggro / Opportunity** (DIAO), each
