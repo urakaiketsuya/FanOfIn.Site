@@ -20,7 +20,7 @@ import { useCardStatsData, useCardQuantityStatsData } from "../archetypes/data";
 import AggressionForecast from "../decks/AggressionForecast";
 import HypergeometricCalculator from "../deckbuilder/HypergeometricCalculator";
 import InteractiveCompositionProfile from "../../components/InteractiveCompositionProfile";
-import { DependencyReadinessEntries, SynergyReadinessEntries } from "../../components/DeckReadinessSection";
+import CardPackageMap from "../../components/CardPackageMap";
 import DonutChart, { buildChartSegments } from "../../components/DonutChart";
 import RankedCompositionChart from "../../components/RankedCompositionChart";
 import { useCardCatalog } from "../cards/useCardCatalog";
@@ -30,7 +30,7 @@ import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
 import { InlineState } from "../../components/ui/ContentState";
 import DeckChangeImpactPreview from "./DeckChangeImpactPreview";
-import type { DeckQuantityChange } from "../../lib/deckChangePreview";
+import { applyDeckQuantityChanges, type DeckQuantityChange } from "../../lib/deckChangePreview";
 
 const FINDING_TONE = { red: "danger", yellow: "warning", green: "success", blue: "info" } as const;
 
@@ -108,7 +108,10 @@ export default function UserDeckStats({ decklist, championName, format, title, o
   const floatingMemory = useMemo(() => computeFloatingMemory(identityLines, cardsByName, championName, identity.classes), [identityLines, cardsByName, championName, identity.classes]);
   const rarity = useMemo(() => buildChartSegments(new Map(Array.from(computeRarityBreakdown(identityLines, cardsByName), ([value, count]) => [RARITY_LABELS[value] ?? `Rarity ${value}`, count]))), [identityLines, cardsByName]);
   const synergyReadiness = useMemo(() => computeSynergyReadiness(namedSections.main, cardsByName, catalog, new Set(identity.elements)), [namedSections.main, cardsByName, catalog, identity.elements]);
-  const dependencyReadiness = useMemo(() => computeDependencyReadiness(namedSections.main, cardsByName, catalog, new Set(identity.elements)), [namedSections.main, cardsByName, catalog, identity.elements]);
+  const dependencyReadiness = useMemo(() => computeDependencyReadiness([
+    ...namedSections.main.map((line) => ({ ...line, section: "main" as const })),
+    ...namedSections.material.map((line) => ({ ...line, section: "material" as const })),
+  ], cardsByName, catalog, new Set(identity.elements)), [namedSections.main, namedSections.material, cardsByName, catalog, identity.elements]);
   const validation = useMemo(() => validateDeck({
     main: decklist.main.map((line) => ({ cardName: line.card, quantity: line.quantity })),
     material: decklist.material.map((line) => ({ cardName: line.card, quantity: line.quantity })),
@@ -118,6 +121,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
   const canImprove = Boolean(builderParams?.spiritFilter);
   const [selectedTrimSection, setSelectedTrimSection] = useState<TrimSection | null>(null);
   const [stagedCuts, setStagedCuts] = useState<Set<string>>(new Set());
+  const [stagedAdditions, setStagedAdditions] = useState<Set<string>>(new Set());
   const noExclusions = useMemo(() => new Set<string>(), []);
   // Tournament-only data — Pantheon decks share Champion names with Standard tournament decks but
   // are a genuinely different population (different construction rules, no tournament results of
@@ -140,11 +144,21 @@ export default function UserDeckStats({ decklist, championName, format, title, o
   const overTrimSections = (["main", "material", "sideboard"] as TrimSection[]).filter((s) => trimPlans[s] !== null);
   const activeTrimSection = selectedTrimSection && trimPlans[selectedTrimSection] ? selectedTrimSection : (overTrimSections[0] ?? null);
   const activeTrimPlan = activeTrimSection ? trimPlans[activeTrimSection] : null;
-  const stagedChanges = useMemo<DeckQuantityChange[]>(() => (["main", "material", "sideboard"] as TrimSection[]).flatMap((section) =>
-    (trimPlans[section]?.candidates ?? [])
-      .filter((candidate) => stagedCuts.has(candidate.cardName))
-      .map((candidate) => ({ cardName: candidate.cardName, section, delta: -candidate.cutQuantity })),
-  ), [stagedCuts, trimPlans]);
+  const previewCardsByName = useMemo(() => new Map([...cardsByName, ...catalog.map((card) => [card.name, card] as const)]), [cardsByName, catalog]);
+  const stagedChanges = useMemo<DeckQuantityChange[]>(() => [
+    ...(["main", "material", "sideboard"] as TrimSection[]).flatMap((section) =>
+      (trimPlans[section]?.candidates ?? [])
+        .filter((candidate) => stagedCuts.has(candidate.cardName))
+        .map((candidate) => ({ cardName: candidate.cardName, section, delta: -candidate.cutQuantity })),
+    ),
+    ...[...stagedAdditions].map((cardName) => {
+      const card = previewCardsByName.get(cardName);
+      const section = card?.types.some((type) => type === "CHAMPION" || type === "REGALIA") ? "material" as const : "main" as const;
+      return { cardName, section, delta: 1 };
+    }),
+  ], [previewCardsByName, stagedAdditions, stagedCuts, trimPlans]);
+  const stagedDecklist = useMemo(() => applyDeckQuantityChanges(decklist, stagedChanges), [decklist, stagedChanges]);
+  const stagedBuilderParams = useMemo(() => deckBuilderParamsFromDecklist(stagedDecklist, previewCardsByName), [previewCardsByName, stagedDecklist]);
   const totals = useMemo(() => ({
     main: decklist.main.reduce((sum, line) => sum + line.quantity, 0),
     material: decklist.material.reduce((sum, line) => sum + line.quantity, 0),
@@ -283,8 +297,8 @@ export default function UserDeckStats({ decklist, championName, format, title, o
   const hasTrimOrPackages = overTrimSections.length > 0 || synergyReadiness.length > 0 || dependencyReadiness.length > 0;
   const trimTab: ReactNode = (
     <>
-      {stagedChanges.length > 0 && <DeckChangeImpactPreview decklist={decklist} changes={stagedChanges} cardsByName={cardsByName} format={format} />}
-      {stagedCuts.size > 0 && <Panel tone="info" className="mb-5 sticky top-16 z-20 shadow-lg"><div className="flex flex-wrap items-center justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Proposed changes</p><p className="mt-1 text-sm text-ctp-text">{stagedCuts.size} cut{stagedCuts.size === 1 ? "" : "s"} staged for review</p><p className="mt-1 text-xs text-ctp-subtext1">{[...stagedCuts].join(" · ")}</p></div><div className="flex gap-2"><button type="button" onClick={() => setStagedCuts(new Set())} className="rounded-md px-3 py-2 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">Clear</button>{builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, ownerDeckId && canImprove ? { mode: "improve", sourceDeckId: ownerDeckId } : undefined)} className="rounded-md bg-ctp-blue px-3 py-2 text-xs font-medium text-ctp-base">Review and apply →</Link>}</div></div></Panel>}
+      {stagedChanges.length > 0 && <DeckChangeImpactPreview decklist={decklist} changes={stagedChanges} cardsByName={previewCardsByName} format={format} />}
+      {stagedChanges.length > 0 && <Panel tone="info" className="mb-5 sticky top-16 z-20 shadow-lg"><div className="flex flex-wrap items-center justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Proposed changes</p><p className="mt-1 text-sm text-ctp-text">{stagedCuts.size} cut{stagedCuts.size === 1 ? "" : "s"} · {stagedAdditions.size} addition{stagedAdditions.size === 1 ? "" : "s"} staged</p><p className="mt-1 text-xs text-ctp-subtext1">{[...stagedCuts, ...stagedAdditions].join(" · ")}</p></div><div className="flex gap-2"><button type="button" onClick={() => { setStagedCuts(new Set()); setStagedAdditions(new Set()); }} className="rounded-md px-3 py-2 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">Clear</button>{stagedBuilderParams && <Link to={buildDeckBuilderPath(stagedBuilderParams.championName, stagedBuilderParams.spiritFilter, stagedBuilderParams.lockedCards, stagedBuilderParams.lockedSections, ownerDeckId && canImprove ? { mode: "improve", sourceDeckId: ownerDeckId } : undefined)} className="rounded-md bg-ctp-blue px-3 py-2 text-xs font-medium text-ctp-base">Review and apply →</Link>}</div></div></Panel>}
       {overTrimSections.length > 0 && activeTrimPlan && (
         <Section heading="compact" title="Trim to size" description="Ranked cut suggestions from quantity-vs-optimal, Champion-scoped win-rate lift, and cost-curve evidence already computed elsewhere on the site. Price is shown for reference and never used to rank a card.">
           <div className="mt-3 flex flex-wrap gap-2">
@@ -308,11 +322,8 @@ export default function UserDeckStats({ decklist, championName, format, title, o
         </Section>
       )}
       {(synergyReadiness.length > 0 || dependencyReadiness.length > 0) && (
-        <Section heading="compact" className={overTrimSections.length > 0 ? "mt-6" : undefined} title="Package readiness" description="Detected relationships in the main deck.">
-          <div className="mt-3 space-y-3">
-            <SynergyReadinessEntries items={synergyReadiness} variant="compact" />
-            <DependencyReadinessEntries items={dependencyReadiness} variant="compact" />
-          </div>
+        <Section heading="compact" className={overTrimSections.length > 0 ? "mt-6" : undefined} title="Package map" description="Detected relationships across Main and Material.">
+          <div className="mt-3"><CardPackageMap synergies={synergyReadiness} dependencies={dependencyReadiness} cardsByName={previewCardsByName} previewedCards={stagedAdditions} onTogglePreview={(cardName) => setStagedAdditions((current) => { const next = new Set(current); if (next.has(cardName)) next.delete(cardName); else next.add(cardName); return next; })} /></div>
         </Section>
       )}
       {!hasTrimOrPackages && <InlineState className="text-sm">No cuts needed and no card packages detected in this list.</InlineState>}

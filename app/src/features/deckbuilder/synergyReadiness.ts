@@ -170,10 +170,12 @@ export function computeDependencyReadiness(lines: SynergyLine[], cards: Map<stri
   // function already needed one full pass over it (for `knownSubtypes`) before any `candidates()`
   // call ever ran, which silently exhausted it before recommendations were ever computed.
   const allCards = Array.from(catalog);
+  const activeLines = lines.filter((line) => line.section !== "sideboard");
+  const mainLines = activeLines.filter((line) => line.section !== "material");
   const knownSubtypes = new Set(allCards.flatMap((card) => card.subtypes.map((value) => value.toLowerCase())));
   const groups = new Map<string, Group>();
   const ensure = (key: string, make: () => Group) => { const group = groups.get(key) ?? make(); groups.set(key, group); return group; };
-  for (const line of lines) {
+  for (const line of activeLines) {
     const card = cards.get(line.name); if (!card) continue;
     for (const token of extractConsumedTokens(card)) ensure(`token:${token}`, () => ({ key: `token:${token}`, label: `${token} token economy`, kind: "Token", producers: [], consumers: [], confidence: "Validated pattern", note: "Compares copies that summon this token with copies that sacrifice it." })).consumers.push(line);
     for (const token of extractProducedTokens(card)) ensure(`token:${token}`, () => ({ key: `token:${token}`, label: `${token} token economy`, kind: "Token", producers: [], consumers: [], confidence: "Validated pattern", note: "Compares copies that summon this token with copies that sacrifice it." })).producers.push(line);
@@ -183,14 +185,16 @@ export function computeDependencyReadiness(lines: SynergyLine[], cards: Map<stri
   }
   for (const group of groups.values()) if (group.kind === "Subtype") {
     const subtype = group.key.slice(8);
-    for (const line of lines) if (cards.get(line.name)?.subtypes.some((value) => value.toLowerCase() === subtype)) group.producers.push(line);
+    for (const line of activeLines) if (cards.get(line.name)?.subtypes.some((value) => value.toLowerCase() === subtype)) group.producers.push(line);
   }
   const consumedTokenNames = new Set(Array.from(groups.keys()).filter((key) => key.startsWith("token:")).map((key) => key.slice(6)));
-  const deckSize = Math.max(60, lines.reduce((sum, line) => sum + line.quantity, 0));
+  const deckSize = Math.max(60, mainLines.reduce((sum, line) => sum + line.quantity, 0));
   return Array.from(groups.values()).filter((group) =>
     group.consumers.length > 0 && !(group.kind === "Subtype" && consumedTokenNames.has(group.key.slice(8))),
   ).map((group) => {
     const producerCopies = group.producers.reduce((sum, line) => sum + line.quantity, 0);
+    const materialProducerCopies = group.producers.filter((line) => line.section === "material").reduce((sum, line) => sum + line.quantity, 0);
+    const drawableProducerCopies = group.producers.filter((line) => line.section !== "material").reduce((sum, line) => sum + line.quantity, 0);
     const consumerCopies = group.consumers.reduce((sum, line) => sum + line.quantity, 0);
     // Chance of having drawn at least 1 producer copy by a given number of cards seen — same
     // hypergeometric math Synergy readiness uses, just "need >=1" instead of an Imbue-style
@@ -198,11 +202,11 @@ export function computeDependencyReadiness(lines: SynergyLine[], cards: Map<stri
     // reveal-and-count check.
     const producerCurve: ReadinessCurvePoint[] = Array.from({ length: Math.min(deckSize, CURVE_MAX_SEEN) }, (_, i) => {
       const seen = i + 1;
-      return { seen, probability: probabilityAtLeast(deckSize, producerCopies, seen, 1) };
+      return { seen, probability: materialProducerCopies > 0 ? 1 : probabilityAtLeast(deckSize, drawableProducerCopies, seen, 1) };
     });
     const predicate = (card: Card) => group.kind === "Token" ? extractProducedTokens(card).has(group.key.slice(6)) : group.kind === "Subtype" ? card.subtypes.some((value) => value.toLowerCase() === group.key.slice(8)) : extractsEmpowerGrant(card);
     return { ...group, producerCopies, consumerCopies, deckSize, producerCurve,
       status: producerCopies === 0 ? "Missing support" as const : producerCopies < consumerCopies ? "Thin" as const : "Supported" as const,
-      recommendations: producerCopies < consumerCopies ? candidates(allCards, lines, identity, predicate, preferred) : [] };
+      recommendations: producerCopies < consumerCopies ? candidates(allCards, activeLines, identity, predicate, preferred) : [] };
   }).sort((a, b) => ({ "Missing support": 0, Thin: 1, Supported: 2 })[a.status] - ({ "Missing support": 0, Thin: 1, Supported: 2 })[b.status] || a.label.localeCompare(b.label));
 }
