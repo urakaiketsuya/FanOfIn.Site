@@ -1502,7 +1502,7 @@ export default function DeckBuilderIndex() {
               </p>
               {build.hasQuantityOptimizations && (
                 <p>
-                  Starred quantities use global copy-count evidence only when at least 30 decks support a meaningful difference.{" "}
+                  Starred quantities use copy-count evidence only when the gap is statistically significant, not just numerically different — checked first against this build's own population, then against the global copy-count dataset.{" "}
                   <Link to="/methodology#small-samples" className="text-ctp-blue hover:underline">Learn more</Link>
                 </p>
               )}

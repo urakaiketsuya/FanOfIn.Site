@@ -17,7 +17,7 @@ import { computeDependencyReadiness, computeSynergyReadiness, type SynergyLine }
 import { getDeckPackageCatalog, type ActiveDeckPackage, type DeckPackageCatalogEntry } from "./packageGuardrails";
 import { findContextualMaterialReplacement } from "./contextualMaterialGuardrail";
 import { SIDEBOARD_POINT_BUDGET, sideboardPointCost } from "./validateDeck";
-import { legalMaxCopies, pickBetterQuantity } from "../../lib/cardQuantityAdvice";
+import { computeLocalQuantityBuckets, legalMaxCopies, pickBetterQuantityScoped, type QuantitySample } from "../../lib/cardQuantityAdvice";
 
 /** Same reasoning as useAllDecodedDecks' CATALOG_SETTLE_MS (app/src/lib/decodedDecks.ts) — the
  * catalog sync writes in batches, and this hook's own `cardsByName` feeds the big `useMemo` below
@@ -92,9 +92,10 @@ export interface SuggestedCard {
   /** null when there's no lift number to show — either it's the viewer's picked Spirit, or a structural identity card that does not need an isolated with/without result. */
   adjustedLift: number | null;
   sample: { with: number; without: number } | null;
-  /** Set only when the global card-quantity data (win rate by copy count, not scoped to this Champion) meaningfully beat the population's own modal quantity for this card — the quantity this slot *would* have gotten otherwise. Never applies to a locked card (its quantity is the viewer's own choice, including via manual edits). */
+  /** Set only when a card-quantity win-rate comparison (see `quantityEvidence.source`) meaningfully beat the population's own modal quantity for this card — the quantity this slot *would* have gotten otherwise. Never applies to a locked card (its quantity is the viewer's own choice, including via manual edits). */
   optimizedFrom: number | null;
-  quantityEvidence: { source: "matching population" | "global"; sampleSize: number };
+  /** "matching population" = no quantity override, just the modal count. "narrowed population" = overridden using a significance-tested comparison scoped to this build's own ranking population (Champion/Spirit/lock-conditioned, or a selected archetype's own decks) — a real quantity effect within *this* context, not confounded by which archetypes happen to run the card at which count. "global" = the same test, but only the flat meta-wide fallback cleared it. */
+  quantityEvidence: { source: "matching population" | "narrowed population" | "global"; sampleSize: number };
   /** "spirit" = the viewer's own Spirit pick. "staple" = a structural Champion print. "identity-staple" = a card explicitly tied to the selected Champion by its rules text and supported by observed prevalence, or a deterministic Champion+Spirit identity card. "ranked" = a normal lift-ranked suggestion. */
   reason: "spirit" | "staple" | "identity-staple" | "ranked";
   /** Active construction packages this card helps stabilize. These are deterministic readiness
@@ -339,12 +340,14 @@ function toSuggested(
 }
 
 /**
- * Picks a slot's quantity from the population's own modal count, unless the card's global
- * win-rate-by-quantity data (not scoped to this Champion — a card's copy-count curve is a
- * card-level property, e.g. "Dungeon Guide wins more at 4x than 2x" holds regardless of who's
- * playing it) shows a clearly better quantity within the legal max. Returns the chosen quantity
- * plus, when it differs from modal, what it was optimized *from* — for the UI to disclose the
- * override rather than silently showing a number that doesn't match "what people actually run."
+ * Picks a slot's quantity from the population's own modal count, unless a card-quantity win-rate
+ * comparison shows a clearly better quantity within the legal max. Tries `localQuantityBuckets`
+ * first — this build's own ranking population (Champion/Spirit/lock-conditioned, or a selected
+ * archetype's own decks), which sidesteps the flat global dataset's archetype-selection confound —
+ * before falling back to the flat `quantityBucketsByName` every card publishes meta-wide. Returns
+ * the chosen quantity plus, when it differs from modal, what it was optimized *from* — for the UI
+ * to disclose the override rather than silently showing a number that doesn't match "what people
+ * actually run."
  */
 function pickQuantity(
   rows: DeckBuilderRow[],
@@ -352,12 +355,14 @@ function pickQuantity(
   cardName: string,
   card: Card | undefined,
   quantityBucketsByName: Map<string, CardQuantityBucket[]>,
+  localQuantityBuckets: Map<string, CardQuantityBucket[]>,
 ): { quantity: number; optimizedFrom: number | null; evidence: SuggestedCard["quantityEvidence"] } {
   const modal = modalQuantity(rows, section, cardName, card);
   const localSample = rows.filter((r) => r[section].has(cardName)).length;
-  const advice = pickBetterQuantity(modal, quantityBucketsByName.get(cardName), legalMaxCopies(card));
+  const advice = pickBetterQuantityScoped(modal, localQuantityBuckets.get(cardName), quantityBucketsByName.get(cardName), legalMaxCopies(card));
   if (!advice) return { quantity: modal, optimizedFrom: null, evidence: { source: "matching population", sampleSize: localSample } };
-  return { quantity: advice.quantity, optimizedFrom: advice.optimizedFrom, evidence: { source: "global", sampleSize: advice.sampleSize } };
+  const source = advice.scope === "local" ? "narrowed population" : "global";
+  return { quantity: advice.quantity, optimizedFrom: advice.optimizedFrom, evidence: { source, sampleSize: advice.sampleSize } };
 }
 
 /**
@@ -535,6 +540,17 @@ export function buildTournamentSuggestedDeck(
 
     const usedFallback = lockedNames.size > 0 && conditionalRows.length < MIN_RANKING_POPULATION;
     const rankingRows = usedFallback ? spiritRows : conditionalRows;
+
+    // Card-quantity win-rate buckets scoped to this same ranking population, not the flat global
+    // dataset — sidesteps the archetype-selection confound a meta-wide (card, quantity) pool can't
+    // separate from a real quantity effect (see cardQuantityAdvice.ts's pickBetterQuantityScoped).
+    // Falls back to the global buckets on its own whenever a given card's local cells are too thin.
+    const localQuantitySamples: QuantitySample[] = rankingRows.map((r) => {
+      const copiesByName = new Map(r.main);
+      for (const [name, qty] of r.material) copiesByName.set(name, (copiesByName.get(name) ?? 0) + qty);
+      return { copiesByName, winRate: r.winRate };
+    });
+    const localQuantityBuckets = computeLocalQuantityBuckets(localQuantitySamples);
 
     // A locked card's OWN with/without split, independent of every other lock — `rankingRows` is
     // the wrong population for this (once conditioned on this exact card, its own "without" bucket
@@ -756,7 +772,7 @@ export function buildTournamentSuggestedDeck(
         materialTotal += 1;
       } else if (section === "sideboard") {
         if (sideboardTotal >= sideboardTarget || sideboardPoints >= SIDEBOARD_POINT_BUDGET) continue;
-        const picked = pickQuantity(rankingRows, "sideboard", entry.cardName, card, quantityBucketsByName);
+        const picked = pickQuantity(rankingRows, "sideboard", entry.cardName, card, quantityBucketsByName, localQuantityBuckets);
         const pointCost = sideboardPointCost(card);
         const affordableQty = Math.floor((SIDEBOARD_POINT_BUDGET - sideboardPoints) / pointCost);
         const ownedCap = collectionMode === "owned-only" ? (collectionOwnedByName?.get(entry.cardName) ?? 0) : Number.POSITIVE_INFINITY;
@@ -767,7 +783,7 @@ export function buildTournamentSuggestedDeck(
         sideboardPoints += qty * pointCost;
       } else {
         if (mainTotal >= mainTarget) continue;
-        const picked = pickQuantity(rankingRows, "main", entry.cardName, card, quantityBucketsByName);
+        const picked = pickQuantity(rankingRows, "main", entry.cardName, card, quantityBucketsByName, localQuantityBuckets);
         const ownedCap = collectionMode === "owned-only" ? (collectionOwnedByName?.get(entry.cardName) ?? 0) : Number.POSITIVE_INFINITY;
         const qty = Math.min(picked.quantity, mainTarget - mainTotal, ownedCap);
         main.push(toSuggested(entry.cardName, qty, false, entry, "ranked", "main", qty === picked.quantity ? picked.optimizedFrom : null, picked.evidence));
@@ -791,7 +807,7 @@ export function buildTournamentSuggestedDeck(
         const card = cardsByName.get(e.cardName);
         const section: DeckSection = e.role === "mixed" ? pluralitySection(rankingRows, e.cardName) : e.role;
         if (section === "material") return toSuggested(e.cardName, 1, false, e, "ranked", section);
-        const picked = pickQuantity(rankingRows, section, e.cardName, card, quantityBucketsByName);
+        const picked = pickQuantity(rankingRows, section, e.cardName, card, quantityBucketsByName, localQuantityBuckets);
         return toSuggested(e.cardName, picked.quantity, false, e, "ranked", section, picked.optimizedFrom, picked.evidence);
       }),
     ];

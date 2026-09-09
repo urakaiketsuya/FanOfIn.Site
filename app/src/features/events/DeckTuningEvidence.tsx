@@ -5,9 +5,10 @@ import CardHoverPreview from "../../components/CardHoverPreview";
 import ElementIcon from "../../components/ElementIcon";
 import { computeDeckIdentity } from "../../lib/deckIdentity";
 import { findDeckChampionName } from "../../lib/ttsExport";
-import { legalMaxCopies, pickBetterQuantity, type QuantityAdvice } from "../../lib/cardQuantityAdvice";
+import { legalMaxCopies, pickBetterQuantityScoped, type ScopedQuantityAdvice } from "../../lib/cardQuantityAdvice";
 import { useCardImpactData, useCardQuantityStatsData } from "../archetypes/data";
 import { useChampionCardImpact } from "../decks/useChampionCardImpact";
+import { useClusterCardQuantityStats } from "../decks/useClusterCardQuantityStats";
 import { useCardsByNames } from "./useCardsByNames";
 import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
@@ -16,7 +17,7 @@ const MIN_SUGGESTED_LIFT = 0.02;
 const MAX_SUGGESTIONS = 5;
 const ROLE_LABEL: Record<CardImpactRole, string> = { main: "Main", material: "Material", sideboard: "Sideboard", mixed: "Mixed" };
 
-interface QuantitySuggestion extends QuantityAdvice {
+interface QuantitySuggestion extends ScopedQuantityAdvice {
   cardName: string;
 }
 
@@ -38,7 +39,8 @@ function QuantityRow({ suggestion, cardsByName }: { suggestion: QuantitySuggesti
         {suggestion.optimizedFrom}x &rarr; <span className="font-semibold text-ctp-blue">{suggestion.quantity}x</span>
       </span>
       <span className="shrink-0 text-xs text-ctp-subtext0">
-        ({(suggestion.adjustedWinRate * 100).toFixed(0)}% win rate, {suggestion.sampleSize} decks)
+        ({(suggestion.adjustedWinRate * 100).toFixed(0)}% win rate, {suggestion.sampleSize} decks
+        {suggestion.scope === "local" ? " in this build" : ""})
       </span>
     </li>
   );
@@ -116,14 +118,17 @@ export default function DeckTuningEvidence({
   );
   const noExclusions = useMemo(() => new Set<string>(), []);
 
+  const clusterId = useMemo(() => {
+    if (!deckId || !cardImpactData) return null;
+    return cardImpactData.deckClusterIndex[deckId] ?? null;
+  }, [deckId, cardImpactData]);
+
   const clusterSuggestions = useMemo(() => {
-    if (!deckId || !cardImpactData) return [];
-    const clusterId = cardImpactData.deckClusterIndex[deckId];
-    if (!clusterId) return [];
+    if (!clusterId || !cardImpactData) return [];
     const cluster = cardImpactData.clusters.find((c) => c.clusterId === clusterId);
     if (!cluster) return [];
     return cluster.cards.filter((c) => c.adjustedLift >= MIN_SUGGESTED_LIFT && !currentNames.has(c.cardName)).slice(0, MAX_SUGGESTIONS);
-  }, [deckId, cardImpactData, currentNames]);
+  }, [clusterId, cardImpactData, currentNames]);
 
   const fallbackAddChampion = championFallback && !isPantheon && clusterSuggestions.length === 0 ? championName : null;
   const fallbackAdd = useChampionCardImpact(fallbackAddChampion, identityElements, currentNames, "best");
@@ -139,17 +144,18 @@ export default function DeckTuningEvidence({
   );
 
   const cardQuantityStatsData = useCardQuantityStatsData();
+  const clusterQuantityBuckets = useClusterCardQuantityStats(clusterId, cardImpactData?.deckClusterIndex);
   const quantitySuggestions = useMemo((): QuantitySuggestion[] => {
     if (!cardQuantityStatsData) return [];
     const bucketsByName = new Map(cardQuantityStatsData.cards.map((c) => [c.name, c.quantities]));
     const suggestions: QuantitySuggestion[] = [];
     for (const line of [...decklist.main, ...decklist.material, ...decklist.sideboard]) {
       const card = cardsByName.get(line.card);
-      const advice = pickBetterQuantity(line.quantity, bucketsByName.get(line.card), legalMaxCopies(card));
+      const advice = pickBetterQuantityScoped(line.quantity, clusterQuantityBuckets?.get(line.card), bucketsByName.get(line.card), legalMaxCopies(card));
       if (advice) suggestions.push({ ...advice, cardName: line.card });
     }
     return suggestions.sort((a, b) => b.adjustedWinRate - a.adjustedWinRate).slice(0, MAX_SUGGESTIONS);
-  }, [decklist, cardsByName, cardQuantityStatsData]);
+  }, [decklist, cardsByName, cardQuantityStatsData, clusterQuantityBuckets]);
 
   const evidenceCardsByName = useCardsByNames(useMemo(() => [...addCards, ...reviewCards].map((entry) => entry.cardName), [addCards, reviewCards]));
   const mergedCardsByName = useMemo(() => new Map([...cardsByName, ...evidenceCardsByName]), [cardsByName, evidenceCardsByName]);
@@ -196,7 +202,11 @@ export default function DeckTuningEvidence({
           <Section
             heading="dense"
             title="Quantities worth adjusting"
-            description="This card's own win rate by copy count (any Champion, any deck) supports a different count than this list runs."
+            description={
+              quantitySuggestions.some((s) => s.scope === "local")
+                ? "This card's own win rate by copy count, within decks matching this build, supports a different count than this list runs."
+                : "This card's own win rate by copy count (any Champion, any deck) supports a different count than this list runs."
+            }
           >
             <ul className="mt-2 space-y-1.5">
               {quantitySuggestions.map((suggestion) => <QuantityRow key={suggestion.cardName} suggestion={suggestion} cardsByName={mergedCardsByName} />)}

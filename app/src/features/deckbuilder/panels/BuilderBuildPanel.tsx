@@ -226,8 +226,8 @@ export default function BuilderBuildPanel({
       <>
       {build.hasQuantityOptimizations && (
         <p className="mt-3 text-[11px] text-ctp-subtext0">
-          A <span className="text-ctp-blue">*</span> next to a copy count marks a quantity tuned by global
-          copy-count evidence (hover the count for its source).
+          A <span className="text-ctp-blue">*</span> next to a copy count marks a quantity tuned by
+          copy-count evidence (hover the count for its source and population).
         </p>
       )}
       <div className={`mt-3 grid items-start gap-4 sm:grid-cols-2 transition-opacity ${isPending ? "opacity-50" : ""}`}>

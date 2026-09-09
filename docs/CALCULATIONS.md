@@ -111,6 +111,87 @@ keys (not `cardIndex.get` directly) — these modules read `bundle.decklists` in
 `decklists.ts`, so without this they'd be exposed to the same mis-cased/curly-quote identity-split
 bug documented under "Card name resolution" below.
 
+## Quantity-optimization significance test (`app/src/lib/cardQuantityAdvice.ts`)
+
+`pickBetterQuantity` reads `computeCardQuantityStats`'s per-(card, copy-count) buckets above and
+decides whether one count is genuinely better-supported than another — powering the Guided Deck
+Builder's quantity picks and `DeckTuningEvidence.tsx`'s "quantity surplus" suggestions. Originally a
+flat rule (`≥30 decks` in a bucket, `≥1pp` win-rate gap over the current count). That heuristic
+treated a 1pp gap the same whether it sat on 30 decks or 3,000 — a real bug, since a 1pp gap on 30
+decks is well within noise while the same gap on 3,000 decks is not.
+
+Replaced with a real significance test: build a 95% Wilson score confidence interval (not the naive
+`p ± z√(p(1-p)/n)` interval, which degenerates at small `n` or `p` near 0/1) around each bucket's
+raw (unshrunk) win rate, using that bucket's own `deckCount` as `n`. A candidate quantity is only
+recommended over the current one when its interval sits *entirely above* the current quantity's
+interval — i.e. the two counts' win rates are unlikely to be a coincidence of sample noise, not just
+numerically different. `MIN_QUANTITY_SAMPLE = 8` is a sanity floor underneath this (guards against
+building an interval from a near-single-digit sample at all); it can sit far below the old flat-30
+threshold because the interval itself already widens automatically as `n` shrinks, doing the real
+work the flat threshold was trying to approximate. Both the current quantity and any candidate must
+individually clear this floor — a current count with too few decks behind it to build a meaningful
+interval is treated as "nothing to compare," not silently allowed through as before.
+
+**What this test alone still cannot do**: separate a genuine quantity effect from
+archetype-selection confounding. `computeCardQuantityStats` pools every deck meta-wide per (card,
+quantity) with no control for Champion or archetype — a card that "wins more at 4x" globally might
+just be run at 4x disproportionately by an already-stronger archetype, not because 4 copies is
+mechanically better than 2. The significance test above only rules out *noise* as the explanation
+for a gap; it says nothing about *confounding*.
+
+### Narrower-population comparison (`computeLocalQuantityBuckets`, `pickBetterQuantityScoped`)
+
+Addresses the confounding gap directly, without a new pipeline dataset: build the exact same
+per-(card, quantity) bucket shape as `computeCardQuantityStats`, but computed on the fly over a
+caller-chosen, already-narrower population instead of the whole tournament field. `pickBetterQuantity`
+runs the Wilson-interval significance test above against this narrower bucket set first; only when it
+finds nothing (the common case — narrower cells are sparse) does it fall back to the flat global
+buckets. This can never do *worse* than the global-only test, since global is always the fallback.
+
+Two populations feed this, both already computed client-side for other reasons — no new published
+dataset:
+- **`DeckTuningEvidence.tsx`** (an existing decklist page) — `useClusterCardQuantityStats` scopes to
+  one named-build cluster's own decks, via the same `CardImpactData.deckClusterIndex` join
+  `cardImpact.ts`'s cluster-scoped Card Impact already uses for this page's "Cards that might help"
+  section. Decodes `deck-card-index.json` client-side (mirroring `useChampionCardImpact.ts`'s own
+  pattern), filtered to the matched cluster's deck ids.
+- **The Guided Deck Builder** (`useSuggestedBuild.ts`) — reuses `rankingRows`, the population the
+  builder is *already* ranking suggestions against (Champion+Spirit, lock-conditioned, or narrowed
+  further to a selected archetype's own decks via `archetypePrevalence`'s `deckIds`). No separate
+  cluster join needed: whenever an archetype is selected, `rankingRows` already only contains that
+  cluster's own decks.
+
+Both shrink each bucket toward the *population's own* average win rate (`computeLocalQuantityBuckets`),
+not a flat 50% — same reasoning `cardImpact.ts`/`useChampionCardImpact.ts` document for why a flat
+prior is wrong once the population is no longer the whole tournament field. The UI discloses which
+comparison actually fired: `DeckTuningEvidence.tsx`'s "Quantities worth adjusting" row appends
+"in this build" when the narrower comparison won; the Guided Deck Builder's per-card tooltip says
+"narrowed population evidence" instead of "global evidence" for the same reason.
+
+This does not need a real cluster to help — even the builder's default (no archetype selected)
+Champion+Spirit population is already narrower than the flat meta-wide pool, so it reduces
+confounding somewhat even then. It is also not a complete fix: a named-build cluster is itself a
+fuzzy grouping, and a population narrow enough to control for archetype is often too small to clear
+the significance floor at all — in which case this silently falls back to the same global,
+noise-controlled-but-confounded test as before, which is still strictly better than the original flat
+threshold.
+
+**Real yield, checked directly against published data rather than assumed**: at named-build-cluster
+granularity (the `DeckTuningEvidence.tsx` path — ~236 clusters with 20+ decks each), the local
+comparison currently wins zero times across every card in every cluster checked. Not a bug — within
+a single cluster, a card's quantity is either overwhelmingly one value (too few decks at any other
+count to clear `MIN_QUANTITY_SAMPLE`) or, on the handful of clusters large enough to have two
+genuinely populous quantity buckets, the win-rate gap between them turns out to be genuinely small
+(e.g. Water Diao Chan's "Unstable Fractal": 52% at 2x on 529 decks vs. 48% at 4x on 988 decks —
+numerically different, but their Wilson intervals overlap). At the coarser Champion-wide granularity
+the Guided Deck Builder's default (no-archetype) population already sits at, the comparison does find
+real, significant local overrides — checked directly against `deck-card-index.json`/
+`deck-sightings.json`: 11 of 20 Champions with 50+ decks have at least one card where the
+Champion-scoped comparison disagrees with the flat global one (e.g. Tristan: "Sadi, Blood Harvester"
+1x → 4x on 3,726 decks; Guo Jia: "Fatestone of Heaven" 4x → 2x on 400 decks) — so this genuinely
+changes real suggestions for the builder's most common case, while the cluster-scoped path currently
+acts as a safety net that (for now) never overrides, only ever falls back.
+
 ## Archetypes / Battle Chart (`pipeline/src/analysis/archetypes.ts`)
 
 The older, coarser per-Champion rollup (`archetypes.json`, `ArchetypeSummary`) — still published
