@@ -29,6 +29,8 @@ import { computeDependencyReadiness, computeSynergyReadiness } from "../deckbuil
 import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
 import { InlineState } from "../../components/ui/ContentState";
+import DeckChangeImpactPreview from "./DeckChangeImpactPreview";
+import type { DeckQuantityChange } from "../../lib/deckChangePreview";
 
 const FINDING_TONE = { red: "danger", yellow: "warning", green: "success", blue: "info" } as const;
 
@@ -138,6 +140,11 @@ export default function UserDeckStats({ decklist, championName, format, title, o
   const overTrimSections = (["main", "material", "sideboard"] as TrimSection[]).filter((s) => trimPlans[s] !== null);
   const activeTrimSection = selectedTrimSection && trimPlans[selectedTrimSection] ? selectedTrimSection : (overTrimSections[0] ?? null);
   const activeTrimPlan = activeTrimSection ? trimPlans[activeTrimSection] : null;
+  const stagedChanges = useMemo<DeckQuantityChange[]>(() => (["main", "material", "sideboard"] as TrimSection[]).flatMap((section) =>
+    (trimPlans[section]?.candidates ?? [])
+      .filter((candidate) => stagedCuts.has(candidate.cardName))
+      .map((candidate) => ({ cardName: candidate.cardName, section, delta: -candidate.cutQuantity })),
+  ), [stagedCuts, trimPlans]);
   const totals = useMemo(() => ({
     main: decklist.main.reduce((sum, line) => sum + line.quantity, 0),
     material: decklist.material.reduce((sum, line) => sum + line.quantity, 0),
@@ -276,6 +283,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
   const hasTrimOrPackages = overTrimSections.length > 0 || synergyReadiness.length > 0 || dependencyReadiness.length > 0;
   const trimTab: ReactNode = (
     <>
+      {stagedChanges.length > 0 && <DeckChangeImpactPreview decklist={decklist} changes={stagedChanges} cardsByName={cardsByName} format={format} />}
       {stagedCuts.size > 0 && <Panel tone="info" className="mb-5 sticky top-16 z-20 shadow-lg"><div className="flex flex-wrap items-center justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Proposed changes</p><p className="mt-1 text-sm text-ctp-text">{stagedCuts.size} cut{stagedCuts.size === 1 ? "" : "s"} staged for review</p><p className="mt-1 text-xs text-ctp-subtext1">{[...stagedCuts].join(" · ")}</p></div><div className="flex gap-2"><button type="button" onClick={() => setStagedCuts(new Set())} className="rounded-md px-3 py-2 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">Clear</button>{builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, ownerDeckId && canImprove ? { mode: "improve", sourceDeckId: ownerDeckId } : undefined)} className="rounded-md bg-ctp-blue px-3 py-2 text-xs font-medium text-ctp-base">Review and apply →</Link>}</div></div></Panel>}
       {overTrimSections.length > 0 && activeTrimPlan && (
         <Section heading="compact" title="Trim to size" description="Ranked cut suggestions from quantity-vs-optimal, Champion-scoped win-rate lift, and cost-curve evidence already computed elsewhere on the site. Price is shown for reference and never used to rank a card.">
