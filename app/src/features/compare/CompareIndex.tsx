@@ -4,6 +4,8 @@ import DeckSearchByCards from "./DeckSearchByCards";
 import ImportByPlayer from "./ImportByPlayer";
 import ImportTopDecks from "./ImportTopDecks";
 import PasteDecklist from "./PasteDecklist";
+import ImportMyDecks from "./ImportMyDecks";
+import ImportByUser from "./ImportByUser";
 import ComparisonSummary from "./ComparisonSummary";
 import ComparisonDifferences from "./ComparisonDifferences";
 import ComparisonCardStats from "./ComparisonCardStats";
@@ -30,7 +32,7 @@ type CompareType = "decks" | "cards";
 const COMPARE_TYPE_LABELS: Record<CompareType, string> = { decks: "Decks", cards: "Cards" };
 const COMPARE_TYPE_KEYS = Object.keys(COMPARE_TYPE_LABELS) as CompareType[];
 
-type SourceTab = "cards" | "player" | "topDecks" | "paste";
+type SourceTab = "myDecks" | "users" | "cards" | "player" | "topDecks" | "paste";
 type ViewMode = "summary" | "table" | "forecasts" | "suggestions";
 const VIEW_MODE_LABELS: Record<ViewMode, string> = {
   summary: "Overview",
@@ -41,8 +43,10 @@ const VIEW_MODE_LABELS: Record<ViewMode, string> = {
 const VIEW_MODE_KEYS: ViewMode[] = ["summary", "table", "forecasts", "suggestions"];
 
 const TAB_LABELS: Record<SourceTab, string> = {
+  myDecks: "My Decks",
+  users: "User search",
   cards: "Search by cards",
-  player: "Import by player",
+  player: "Tournament player",
   topDecks: "Top decks",
   paste: "Paste a decklist",
 };
@@ -56,7 +60,7 @@ export default function CompareIndex() {
   const [compareType, setCompareType] = useTabParam<CompareType>("type", COMPARE_TYPE_KEYS, "decks");
   const [decks, setDecks] = useState<ComparedDeck[]>([]);
   const [showAddDecks, setShowAddDecks] = useState(true);
-  const [tab, setTab] = useTabParam("tab", SOURCE_TAB_KEYS, "cards");
+  const [tab, setTab] = useTabParam("tab", SOURCE_TAB_KEYS, "myDecks");
   // Lead with a decision summary, then let cards, forecasts, and tuning progressively disclose
   // detail. Older summary/table URLs retain their meaning below.
   const [viewMode, setViewMode] = useTabParam<ViewMode>("view", VIEW_MODE_KEYS, "summary");
@@ -296,6 +300,8 @@ export default function CompareIndex() {
               </div>
 
               <Panel as="div" role="tabpanel" id="source-panel" aria-labelledby={`source-tab-${tab}`} className="mt-3">
+                {tab === "myDecks" && <ImportMyDecks comparedKeys={comparedKeys} onToggle={toggleDeck} />}
+                {tab === "users" && <ImportByUser comparedKeys={comparedKeys} onToggle={toggleDeck} />}
                 {tab === "cards" && <DeckSearchByCards comparedKeys={comparedKeys} onToggle={toggleDeck} />}
                 {tab === "player" && <ImportByPlayer comparedKeys={comparedKeys} onToggle={toggleDeck} />}
                 {tab === "topDecks" && <ImportTopDecks comparedKeys={comparedKeys} onToggle={toggleDeck} />}

@@ -19,7 +19,7 @@ function shortLabel(label: string): string {
 }
 
 function EvidenceList({ cards, cardsByName, tone }: { cards: CardImpactEntry[]; cardsByName: Map<string, Card>; tone: "add" | "review" }) {
-  return <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-4">
+  return <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-5 xl:grid-cols-4">
     {cards.map((entry) => {
       const card = cardsByName.get(entry.cardName);
       return <VisualCardTile key={entry.cardName} line={{ card: entry.cardName, quantity: 1 }} card={card} unitPrice={undefined} priceTrend={undefined} simulatorEvidence={undefined} communityEntry={undefined} fields={TUNING_CARD_FIELDS} footer={<div className="mt-1.5 min-w-0">
@@ -31,6 +31,24 @@ function EvidenceList({ cards, cardsByName, tone }: { cards: CardImpactEntry[]; 
       </div>} />;
     })}
   </div>;
+}
+
+function TuningChangeSet({ additions, review, cardsByName }: { additions: CardImpactEntry[]; review: CardImpactEntry[]; cardsByName: Map<string, Card> }) {
+  const columns = [
+    { key: "review", eyebrow: "Review or remove", description: "Current cards with the weakest tournament signal.", cards: review, tone: "review" as const, empty: "No current card clears the review threshold." },
+    { key: "add", eyebrow: "Consider adding", description: "Absent cards with the strongest positive signal.", cards: additions, tone: "add" as const, empty: "No absent card clears the addition threshold." },
+  ];
+  return <Panel data-component="TuningChangeSet">
+    <h2 className="font-semibold text-ctp-text">Visual change set</h2>
+    <p className="mt-1 text-xs text-ctp-subtext0">Evaluate cuts and additions together before opening the guided builder.</p>
+    <div className="mt-4 grid gap-6 lg:grid-cols-2">
+      {columns.map((column, index) => <section key={column.key} className={index > 0 ? "border-t border-ctp-surface1 pt-5 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0" : undefined}>
+        <p className={`text-xs font-semibold uppercase tracking-wide ${column.tone === "add" ? "text-ctp-blue" : "text-ctp-yellow"}`}>{column.tone === "add" ? "+ " : "− "}{column.eyebrow}</p>
+        <p className="mt-1 text-xs text-ctp-subtext0">{column.description}</p>
+        {column.cards.length > 0 ? <EvidenceList cards={column.cards} cardsByName={cardsByName} tone={column.tone} /> : <InlineState className="mt-3 text-sm">{column.empty}</InlineState>}
+      </section>)}
+    </div>
+  </Panel>;
 }
 
 export default function ComparisonSuggestions({ decks, decklists, baselineKey }: { decks: ComparedDeck[]; decklists: Map<string, OmnidexDecklist | null>; baselineKey: string | null }) {
@@ -95,18 +113,7 @@ export default function ComparisonSuggestions({ decks, decklists, baselineKey }:
         <p className="mt-1 text-sm leading-6 text-ctp-subtext1">This Champion does not currently have enough with-versus-without samples for a reliable card recommendation. The deck remains available in the Guided Deck Builder for composition, synergy-readiness, and legality analysis.</p>
       </section>}
 
-      {!loading && hasEvidence && <div className="space-y-4">
-        <Panel>
-          <h2 className="font-semibold text-ctp-text">Evidence-backed additions</h2>
-          <p className="mt-1 text-xs leading-5 text-ctp-subtext0">Cards not currently in this list that correlate with stronger results in other {champion} decks.</p>
-          {additions.length > 0 ? <EvidenceList cards={additions} cardsByName={cardsByName} tone="add" /> : <InlineState className="mt-3 text-sm">No absent card clears the positive-evidence bar.</InlineState>}
-        </Panel>
-        <Panel>
-          <h2 className="font-semibold text-ctp-text">Cards worth reviewing</h2>
-          <p className="mt-1 text-xs leading-5 text-ctp-subtext0">Cards already in this list that correlate with weaker results in other {champion} decks.</p>
-          {review.length > 0 ? <EvidenceList cards={review} cardsByName={cardsByName} tone="review" /> : <InlineState className="mt-3 text-sm">None of this deck’s cards appear among the strongest negative signals.</InlineState>}
-        </Panel>
-      </div>}
+      {!loading && hasEvidence && <TuningChangeSet additions={additions} review={review} cardsByName={cardsByName} />}
     </>}
 
     {selectedStats?.format !== "PANTHEON" && <p className="text-xs leading-5 text-ctp-overlay1">Tuning evidence describes other decks using the same Champion — it does not prove a change will improve this list. <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link></p>}

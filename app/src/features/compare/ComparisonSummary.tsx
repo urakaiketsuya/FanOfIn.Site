@@ -13,6 +13,7 @@ import AggressionForecast from "../decks/AggressionForecast";
 import { computeAggressionForecast } from "../../lib/aggressionForecast";
 import { computeBreakthroughDamage, computeBreakthroughDamageVsAverage } from "../../lib/breakthroughDamage";
 import BreakthroughDamagePanel from "./BreakthroughDamagePanel";
+import DeckOverlapVisualization from "./DeckOverlapVisualization";
 
 const SECTION_LABEL = { main: "Main", material: "Material", sideboard: "Sideboard" } as const;
 const ANALYSIS_CARD_FIELDS: VisualFieldVisibility = { cost: false, price: false, priceTrend: false, tags: false, simulator: false, community: false };
@@ -107,6 +108,7 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
       const targetStats = deckStats[targetIndex];
       const changes = featuredChanges(summary.changes);
       const baselineList = baselineDeck ? decklists.get(baselineDeck.key) : null;
+      const targetList = decklists.get(summary.key);
       const baselineCardCount = baselineList ? new Set([...baselineList.main, ...baselineList.material, ...baselineList.sideboard].map((line) => line.card)).size : 0;
       const sharedPercent = baselineCardCount > 0 ? Math.round((summary.sharedCardCount / baselineCardCount) * 100) : null;
       const addedCount = summary.changes.filter((change) => change.kind === "added").length;
@@ -136,7 +138,7 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
           <Section heading="dense" title="Key decisions" description="The most visible quantity, section, addition, and removal choices in this comparison." actions={summary.changes.length > changes.length ? <button type="button" onClick={onViewAllDifferences} className="text-xs font-medium text-ctp-blue hover:underline">View all {summary.changes.length} cards →</button> : undefined}>{/* COPY_PLACEHOLDER: key-decisions description */}
             {changes.length === 0 ? <InlineState className="mt-2 text-sm">No card differences.</InlineState> : <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 lg:grid-cols-4">{changes.map((change) => <VisualCardTile key={`${change.name}-${change.baselineSection ?? ""}-${change.targetSection ?? ""}`} line={{ card: change.name, quantity: 1 }} card={cardsByName.get(change.name)} unitPrice={undefined} priceTrend={undefined} simulatorEvidence={undefined} communityEntry={undefined} fields={ANALYSIS_CARD_FIELDS} footer={<div className="mt-1.5 min-w-0"><div className="truncate text-sm font-medium text-ctp-text" title={change.name}>{change.name}</div><div className={`mt-1 border-t border-ctp-surface0 pt-1 text-[11px] ${changeTone(change)}`}>{changeDetail(change)}</div></div>} />)}</div>}
           </Section>
-          <Panel padding="sm" className="flex flex-wrap items-center justify-between gap-3"><div><h3 className="font-semibold text-ctp-text">Shared core</h3><p className="mt-0.5 text-xs text-ctp-subtext0">{/* COPY_PLACEHOLDER: shared-core explanation */}{summary.sharedCardCount} cards are present in both decks{sharedPercent === null ? "." : `, retaining ${sharedPercent}% of the baseline.`}</p></div><button type="button" onClick={onViewAllDifferences} className="text-xs font-medium text-ctp-blue hover:underline">Explore all cards →</button></Panel>
+          {baselineList && targetList && <DeckOverlapVisualization baseline={baselineList} target={targetList} cardsByName={cardsByName} onViewAll={onViewAllDifferences} />}
         </>}
       </section>;
     })}

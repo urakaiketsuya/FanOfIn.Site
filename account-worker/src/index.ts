@@ -2,7 +2,7 @@ import { authenticatedUser, bffAllowed, consumeOAuthNonce, createLocalUserSessio
 import { createDeckVersion, deleteDeck, getDeck, getPublicDeck, listDecks, parseSaveInput, performImport, previewImport, publishDeck, restoreDeckVersion, saveDeck, updateDeckMetadata } from "./decks";
 import { ApiError, badRequest } from "./errors";
 import { copyPublishedDeck, getDeckSocialState, listBookmarks, setDeckBookmark, setDeckLike } from "./deck-social";
-import { discoverDecks, getPublicProfile } from "./discovery";
+import { discoverDecks, discoverProfiles, getPublicProfile } from "./discovery";
 import { reportDeck } from "./moderation";
 import { serviceHealth } from "./health";
 import { listCollection, listSharedCardWatches, setSharedCardWatch, undoCollectionTransaction, updateCollection } from "./collection";
@@ -110,6 +110,7 @@ export default {
         return deck ? response(env, request, { deck }) : response(env, request, { error: "Deck not found" }, 404);
       }
       if (request.method === "GET" && url.pathname === "/v1/discover/decklists") return response(env, request, await discoverDecks(env, url.searchParams));
+      if (request.method === "GET" && url.pathname === "/v1/discover/profiles") return response(env, request, await discoverProfiles(env, url.searchParams));
       const publicProfileMatch = url.pathname.match(/^\/v1\/profiles\/([a-f0-9]{24})$/);
       if (publicProfileMatch && request.method === "GET") {
         const profile = await getPublicProfile(env, publicProfileMatch[1]);

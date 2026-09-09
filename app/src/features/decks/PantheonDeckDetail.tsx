@@ -10,6 +10,7 @@ import UserDeckStats from "../account/UserDeckStats";
 import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import PageLayout from "../../components/layout/PageLayout";
 import { EmptyState, InlineState } from "../../components/ui/ContentState";
+import { encodeCustomDecks } from "../../lib/compareShareLink";
 
 interface CardLine { name: string; quantity: number }
 interface PantheonDeckRecord {
@@ -67,6 +68,7 @@ export default function PantheonDeckDetail() {
   return <PageLayout data-component="PantheonDeckDetail">
     <Link to="/decks?view=pantheon" className="text-sm text-ctp-blue hover:underline">← Browse Decks</Link>
     <UserDeckHeader title={title} championName={deck.champion ? championName : null} format="PANTHEON" eyebrow="Community Pantheon deck" />
+    <div className="mt-5"><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: title, decklist, format: "PANTHEON" }]))}`} className="inline-flex rounded-md border border-ctp-surface1 px-3 py-2 text-sm font-medium text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Compare deck</Link></div>
     <div className="mt-6"><Tabs tabs={PANTHEON_TABS} active={tab} onChange={setTab} label="Pantheon deck details" baseId="pantheon-deck" /></div>
     <TabPanel baseId="pantheon-deck" tab="decklist" active={tab}><UserDecklistPanel decklist={decklist} format="PANTHEON" collectionSource={`Pantheon deck: ${championName}`} /></TabPanel>
     <TabPanel baseId="pantheon-deck" tab="analysis" active={tab}><UserDeckStats decklist={decklist} championName={deck.champion ? championName : null} format="PANTHEON" title={title} /></TabPanel>

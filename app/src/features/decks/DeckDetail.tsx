@@ -28,6 +28,7 @@ import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
 import { InlineState, EmptyState } from "../../components/ui/ContentState";
 import MethodologyNote from "../../components/ui/MethodologyNote";
+import { encodeCustomDecks } from "../../lib/compareShareLink";
 
 type DeckTab = "decklist" | "analysis" | "history" | "similar";
 
@@ -425,6 +426,8 @@ export default function DeckDetail() {
           </>
         }
       />
+
+      <div className="mt-5"><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="inline-flex rounded-md border border-ctp-surface1 px-3 py-2 text-sm font-medium text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Compare deck</Link></div>
 
       <div className="mt-6">
         <Tabs tabs={TABS} active={tab} onChange={setTab} label="Deck data" baseId="deck-detail" />

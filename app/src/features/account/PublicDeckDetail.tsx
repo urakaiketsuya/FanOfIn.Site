@@ -12,6 +12,7 @@ import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import { useTabParam } from "../../lib/useTabParam";
 import PageLayout from "../../components/layout/PageLayout";
 import { EmptyState, InlineState } from "../../components/ui/ContentState";
+import { encodeCustomDecks } from "../../lib/compareShareLink";
 
 type PublicDeckTab = "decklist" | "analysis" | "primer";
 const PUBLIC_TABS = [{ key: "decklist", label: "Decklist" }, { key: "analysis", label: "Analysis" }, { key: "primer", label: "Primer" }] satisfies { key: PublicDeckTab; label: string }[];
@@ -61,6 +62,7 @@ export default function PublicDeckDetail() {
     <UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} versionNumber={deck.versionNumber} visibility={deck.visibility} description={deck.description} eyebrow={<>Shared by <Link to={`/users/${deck.owner.profileSlug}`} className="text-ctp-blue hover:underline">{deck.owner.displayName}</Link></>} />
     <DeckTags tags={deck.tags} />
     <div className="mt-5 flex flex-wrap items-center gap-2">
+      <Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.title} by ${deck.owner.displayName}`, decklist: deck.decklist, format: deck.format }]))}`} className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-sm font-medium text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Compare deck</Link>
       <button type="button" disabled={busy || !social} onClick={() => void run(async () => { const result = await accountApi.likeDeck(publicSlug, !social?.liked); setSocial((current) => current ? { ...current, liked: result.liked } : current); setDeck((current) => current ? { ...current, likeCount: result.likeCount } : current); })} className="rounded-md border border-ctp-pink/60 px-3 py-1.5 text-sm text-ctp-pink disabled:opacity-50">{social?.liked ? "Liked" : "Like"} · {deck.likeCount}</button>
       <button type="button" disabled={busy || !social} onClick={() => void run(async () => { const result = await accountApi.bookmarkDeck(publicSlug, !social?.bookmarked); setSocial((current) => current ? { ...current, bookmarked: result.bookmarked, bookmarkedVersionNumber: result.versionNumber } : current); })} className="rounded-md border border-ctp-blue px-3 py-1.5 text-sm text-ctp-blue disabled:opacity-50">{social?.bookmarked ? `Saved v${social.bookmarkedVersionNumber}` : "Save deck"}</button>
       <button type="button" disabled={busy || !social} onClick={() => void run(async () => { const result = await accountApi.copyDeck(publicSlug); navigate(`/decks/${encodeURIComponent(result.id)}`, { state: { notice: result.created ? "Copied to your decks." : "You already had this build; opened the existing deck." } }); })} className="rounded-md bg-ctp-blue px-3 py-1.5 text-sm text-ctp-base disabled:opacity-50">Copy to my decks</button>

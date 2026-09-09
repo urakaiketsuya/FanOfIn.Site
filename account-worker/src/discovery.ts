@@ -6,6 +6,22 @@ const PROFILE_SLUG = /^[a-f0-9]{24}$/;
 const MAX_QUERY_LENGTH = 80;
 const PAGE_SIZE = 24;
 
+export interface PublicProfileSearchResult { displayName: string; profileSlug: string }
+
+export async function discoverProfiles(env: Env, params: URLSearchParams): Promise<{ profiles: PublicProfileSearchResult[] }> {
+  const query = (params.get("q") ?? "").trim();
+  if (!query) return { profiles: [] };
+  if (query.length > MAX_QUERY_LENGTH) throw badRequest("Search is too long");
+  const escaped = `%${query.replace(/[\\%_]/g, "\\$&")}%`;
+  const rows = await env.ACCOUNT_DB.prepare(`SELECT users.display_name, users.profile_slug
+    FROM users
+    WHERE users.profile_discoverable = 1 AND users.display_name LIKE ? ESCAPE '\\'
+      AND EXISTS (SELECT 1 FROM user_decks ud WHERE ud.owner_user_id = users.id AND ud.visibility = 'public'
+        AND ud.published_version_id IS NOT NULL AND ud.moderation_status = 'active')
+    ORDER BY users.display_name ASC LIMIT 20`).bind(escaped).all<{ display_name: string; profile_slug: string }>();
+  return { profiles: rows.results.map((row) => ({ displayName: row.display_name, profileSlug: row.profile_slug })) };
+}
+
 function summary(row: Record<string, string | number | null>): PublicDeckSummary {
   return {
     publicSlug: String(row.public_slug), title: String(row.published_title), description: String(row.published_description),
