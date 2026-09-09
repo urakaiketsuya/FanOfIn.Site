@@ -1,5 +1,5 @@
 import type { Card } from "@gatcg/shared";
-import { benefitsFromEmpower, extractConsumedSubtypes, extractConsumedTokens, extractProducedTokens, extractsEmpowerGrant } from "../../lib/cardIntent";
+import { benefitsFromEmpower, extractConsumedSubtypes, extractConsumedTokens, extractProducedSubtypes, extractProducedTokens, extractsEmpowerGrant, tokenSubtypesByName } from "../../lib/cardIntent";
 
 /** `section` is optional for callers that already pass Main-only lines. When present, only Main
  * lines enter draw/reveal math: Material and sideboard cards are not shuffled into the deck. */
@@ -173,25 +173,44 @@ export function computeDependencyReadiness(lines: SynergyLine[], cards: Map<stri
   const activeLines = lines.filter((line) => line.section !== "sideboard");
   const mainLines = activeLines.filter((line) => line.section !== "material");
   const knownSubtypes = new Set(allCards.flatMap((card) => card.subtypes.map((value) => value.toLowerCase())));
+  const tokenSubtypes = tokenSubtypesByName(allCards);
   const groups = new Map<string, Group>();
   const ensure = (key: string, make: () => Group) => { const group = groups.get(key) ?? make(); groups.set(key, group); return group; };
   for (const line of activeLines) {
     const card = cards.get(line.name); if (!card) continue;
-    for (const token of extractConsumedTokens(card)) ensure(`token:${token}`, () => ({ key: `token:${token}`, label: `${token} token economy`, kind: "Token", producers: [], consumers: [], confidence: "Validated pattern", note: "Compares copies that summon this token with copies that sacrifice it." })).consumers.push(line);
-    for (const token of extractProducedTokens(card)) ensure(`token:${token}`, () => ({ key: `token:${token}`, label: `${token} token economy`, kind: "Token", producers: [], consumers: [], confidence: "Validated pattern", note: "Compares copies that summon this token with copies that sacrifice it." })).producers.push(line);
+    // A "Summon"/"sacrifice" capture whose name IS a real subtype (e.g. "sacrifice any amount of
+    // Fractals") is a tribal-category reference, not a distinct named token — skip it here so it's
+    // handled once, correctly, by the Subtype track below. Without this, real cards like Burst
+    // Asunder ("sacrifice any amount of Fractals") formed a phantom `token:fractal` group with real
+    // consumers but zero producers (every producer actually summons "Core Fractal", a different
+    // name), which read as "Fractal token economy: Missing support" even in decks running Fractal
+    // cards — the correct, fully-populated Subtype group existed but was masked by the exclusion
+    // this replaces (see the removed `consumedTokenNames` check below).
+    for (const token of extractConsumedTokens(card)) {
+      if (knownSubtypes.has(token)) continue;
+      ensure(`token:${token}`, () => ({ key: `token:${token}`, label: `${token} token economy`, kind: "Token", producers: [], consumers: [], confidence: "Validated pattern", note: "Compares copies that summon this token with copies that sacrifice it." })).consumers.push(line);
+    }
+    for (const token of extractProducedTokens(card)) {
+      if (knownSubtypes.has(token)) continue;
+      ensure(`token:${token}`, () => ({ key: `token:${token}`, label: `${token} token economy`, kind: "Token", producers: [], consumers: [], confidence: "Validated pattern", note: "Compares copies that summon this token with copies that sacrifice it." })).producers.push(line);
+    }
     for (const [subtype, tier] of extractConsumedSubtypes(card, knownSubtypes)) ensure(`subtype:${subtype}`, () => ({ key: `subtype:${subtype}`, label: `${subtype} support`, kind: "Subtype", producers: [], consumers: [], confidence: tier === "validated" ? "Validated pattern" : "Experimental pattern", note: "Compares cards carrying this subtype with effects that explicitly require it." })).consumers.push(line);
     if (extractsEmpowerGrant(card)) ensure("empower", () => ({ key: "empower", label: "Empower package", kind: "Empower", producers: [], consumers: [], confidence: "Validated pattern", note: "Compares Empower grants with Spells whose damage scales with champion level." })).producers.push(line);
     if (benefitsFromEmpower(card)) ensure("empower", () => ({ key: "empower", label: "Empower package", kind: "Empower", producers: [], consumers: [], confidence: "Validated pattern", note: "Compares Empower grants with Spells whose damage scales with champion level." })).consumers.push(line);
   }
   for (const group of groups.values()) if (group.kind === "Subtype") {
     const subtype = group.key.slice(8);
-    for (const line of activeLines) if (cards.get(line.name)?.subtypes.some((value) => value.toLowerCase() === subtype)) group.producers.push(line);
+    // Extended past a card's own printed subtypes to cover a card whose only tie to this tribe is
+    // summoning a token of it (e.g. Cryogenic Ritual never carries the FRACTAL subtype itself, but
+    // "Summon a Core Fractal token" puts a real Fractal object into play) — see
+    // `extractProducedSubtypes`'s own doc comment.
+    for (const line of activeLines) {
+      const card = cards.get(line.name);
+      if (card && extractProducedSubtypes(card, tokenSubtypes).has(subtype)) group.producers.push(line);
+    }
   }
-  const consumedTokenNames = new Set(Array.from(groups.keys()).filter((key) => key.startsWith("token:")).map((key) => key.slice(6)));
   const deckSize = Math.max(60, mainLines.reduce((sum, line) => sum + line.quantity, 0));
-  return Array.from(groups.values()).filter((group) =>
-    group.consumers.length > 0 && !(group.kind === "Subtype" && consumedTokenNames.has(group.key.slice(8))),
-  ).map((group) => {
+  return Array.from(groups.values()).filter((group) => group.consumers.length > 0).map((group) => {
     const producerCopies = group.producers.reduce((sum, line) => sum + line.quantity, 0);
     const materialProducerCopies = group.producers.filter((line) => line.section === "material").reduce((sum, line) => sum + line.quantity, 0);
     const drawableProducerCopies = group.producers.filter((line) => line.section !== "material").reduce((sum, line) => sum + line.quantity, 0);
@@ -204,7 +223,7 @@ export function computeDependencyReadiness(lines: SynergyLine[], cards: Map<stri
       const seen = i + 1;
       return { seen, probability: materialProducerCopies > 0 ? 1 : probabilityAtLeast(deckSize, drawableProducerCopies, seen, 1) };
     });
-    const predicate = (card: Card) => group.kind === "Token" ? extractProducedTokens(card).has(group.key.slice(6)) : group.kind === "Subtype" ? card.subtypes.some((value) => value.toLowerCase() === group.key.slice(8)) : extractsEmpowerGrant(card);
+    const predicate = (card: Card) => group.kind === "Token" ? extractProducedTokens(card).has(group.key.slice(6)) : group.kind === "Subtype" ? extractProducedSubtypes(card, tokenSubtypes).has(group.key.slice(8)) : extractsEmpowerGrant(card);
     return { ...group, producerCopies, consumerCopies, deckSize, producerCurve,
       status: producerCopies === 0 ? "Missing support" as const : producerCopies < consumerCopies ? "Thin" as const : "Supported" as const,
       recommendations: producerCopies < consumerCopies ? candidates(allCards, activeLines, identity, predicate, preferred) : [] };

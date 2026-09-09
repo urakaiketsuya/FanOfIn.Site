@@ -48,6 +48,41 @@ export function extractConsumedTokens(card: Card): Set<string> {
   return tokens;
 }
 
+/**
+ * Card name -> its own normalized subtypes, for every TOKEN-type card in the catalog. Lets a card
+ * that summons a named token be credited with that token's subtypes too — e.g. a card that
+ * "**Summon** a Core Fractal token" grants the FRACTAL subtype just as surely as a card that IS a
+ * Fractal itself, since the object it puts onto the field carries that subtype. Needed because a
+ * card's own `subtypes` only describes its own face, not what it can place onto the battlefield.
+ * Real bug this fixes: a card like Cryogenic Ritual never carries the FRACTAL subtype itself, but
+ * its "Summon a Core Fractal token" effect does grant Fractal support — without this, it was
+ * invisible to `extractProducedSubtypes` below and the Fractal economy under-counted its real
+ * producers.
+ */
+export function tokenSubtypesByName(catalog: Card[]): Map<string, Set<string>> {
+  const result = new Map<string, Set<string>>();
+  for (const c of catalog) {
+    if (!c.types.includes("TOKEN")) continue;
+    result.set(normalizeTokenName(c.name), new Set(c.subtypes.map(normalizeSubtype)));
+  }
+  return result;
+}
+
+/**
+ * Every subtype `card` carries on its own face, plus every subtype granted by a token it summons
+ * (via `tokenSubtypesByName`) — the full producer side of a subtype economy, extended past "this
+ * card's own printed subtypes" to cover cards that only participate in a tribal economy by making
+ * tokens of that tribe.
+ */
+export function extractProducedSubtypes(card: Card, tokenSubtypes: ReadonlyMap<string, Set<string>>): Set<string> {
+  const result = new Set(card.subtypes.map(normalizeSubtype));
+  for (const token of extractProducedTokens(card)) {
+    const extra = tokenSubtypes.get(token);
+    if (extra) for (const s of extra) result.add(s);
+  }
+  return result;
+}
+
 export type IntentTier = "validated" | "experimental";
 
 /**
@@ -219,9 +254,10 @@ export function intentCards(card: Card, catalog: Card[]): IntentCards {
     for (const s of c.subtypes) knownSubtypes.add(normalizeSubtype(s));
     catalogBySlug.set(c.slug, c);
   }
+  const tokenSubtypes = tokenSubtypesByName(catalog);
 
   const myProducedTokens = extractProducedTokens(card);
-  const myOwnSubtypes = new Set(card.subtypes.map(normalizeSubtype));
+  const myProducedSubtypes = extractProducedSubtypes(card, tokenSubtypes);
   const myConsumedTokens = extractConsumedTokens(card);
   const myConsumedSubtypes = extractConsumedSubtypes(card, knownSubtypes);
   const myGrantsEmpower = extractsEmpowerGrant(card);
@@ -264,7 +300,7 @@ export function intentCards(card: Card, catalog: Card[]): IntentCards {
       if (otherConsumedTokens.has(t)) feeds.push({ card: other, via: t, tier: "validated" });
     }
     const otherConsumedSubtypes = extractConsumedSubtypes(other, knownSubtypes);
-    for (const s of myOwnSubtypes) {
+    for (const s of myProducedSubtypes) {
       const tier = otherConsumedSubtypes.get(s);
       if (tier) feeds.push({ card: other, via: s, tier });
     }
@@ -274,9 +310,13 @@ export function intentCards(card: Card, catalog: Card[]): IntentCards {
     for (const t of myConsumedTokens) {
       if (otherProducedTokens.has(t)) poweredBy.push({ card: other, via: t, tier: "validated" });
     }
-    const otherSubtypes = new Set(other.subtypes.map(normalizeSubtype));
+    // Extended past `other`'s own printed subtypes to cover a card whose only tie to this tribe is
+    // summoning a token of it (e.g. Cryogenic Ritual "powers" a Fractal-sacrifice card by summoning
+    // a Core Fractal token, despite never carrying the FRACTAL subtype itself) — see
+    // `extractProducedSubtypes`'s own doc comment.
+    const otherProducedSubtypes = extractProducedSubtypes(other, tokenSubtypes);
     for (const [s, tier] of myConsumedSubtypes) {
-      if (otherSubtypes.has(s)) poweredBy.push({ card: other, via: s, tier });
+      if (otherProducedSubtypes.has(s)) poweredBy.push({ card: other, via: s, tier });
     }
     if (myBenefitsFromEmpower && extractsEmpowerGrant(other)) poweredBy.push({ card: other, via: "Empower", tier: "validated" });
 

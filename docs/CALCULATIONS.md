@@ -1071,6 +1071,29 @@ before building (2,495 cards, `pipeline/.cache/cards.json`):
   the consumer side needs a regex: `sacrifice|control(s)?|banish ... from` + a subtype string,
   matched against the real subtype vocabulary collected from the loaded catalog (not hardcoded).
   Validated: "sacrifice/control a Chessman [piece]" alone appears on 10+ real cards.
+- **Token-name-vs-subtype collision** (`tokenSubtypesByName`, `extractProducedSubtypes`): some
+  card text names a token differently from how *other* cards refer to the same real object — e.g.
+  producers say "**Summon** a Core Fractal token" (a two-word name) while consumers say "sacrifice
+  ... Fractal(s)" (the one-word subtype the token itself carries, FRACTAL, rather than its full
+  name). `normalizeTokenName`'s naive plural-stripping can't unify "core fractal" and "fractal" —
+  they're genuinely different strings — so the two sides landed in separate, mismatched token-track
+  groups: a producer-only "core fractal" group (correctly hidden — no group is shown with zero
+  consumers) and a **consumer-only "fractal" group with zero producers**, which read as "Fractal
+  token economy: Missing support" even in a deck running four different real Fractal cards. Fixed
+  two ways: (1) a Summon/sacrifice capture whose name coincides with a real subtype string is
+  skipped from the token track entirely (`computeDependencyReadiness` in `synergyReadiness.ts`) —
+  it's a tribal reference, not a distinct token, and the Subtype track already handles it
+  correctly; (2) the Subtype track's own producer detection is extended past a card's own printed
+  subtypes to also credit a card for a token it summons that carries the subtype
+  (`extractProducedSubtypes`) — needed because a card like Cryogenic Ritual never has the FRACTAL
+  subtype itself, only its "Summon a Core Fractal token" effect does. Verified against the real
+  corpus (`pipeline/.cache/cards.json`): before the fix, a deck with Burst Asunder ("sacrifice any
+  amount of Fractals") and any real Fractal-subtype card (Fractal of Insight, Unstable Fractal,
+  etc.) still showed "Missing support"; after, it correctly shows "Supported," and Powercell (the
+  one case where the producer and consumer sides happen to use the same word, so both tracks always
+  agreed) is unaffected. `useIntentCards`/`CardDetail.tsx`'s own producer-side checks got the same
+  `extractProducedSubtypes` treatment for consistency, though that surface never had the masking bug
+  (it lists relationships pairwise, with no "supported/missing" verdict to get wrong).
 - **Why `subtypes`, never `types`**: the false-positive risk here is generic sacrifice costs —
   "sacrifice an ally" / "sacrifice an item" appear as unrelated boilerplate on many unconnected
   cards. Matching against the 5 broad `types` values (ALLY/ITEM/WEAPON/ACTION/...) would pair every
