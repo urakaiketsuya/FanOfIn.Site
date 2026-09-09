@@ -9,7 +9,15 @@ import { usePriceTrendByName } from "../features/pricing/usePriceTrendByName";
 import { useSimulatorEvidenceByName } from "../features/simulator/useSimulatorEvidenceByName";
 import { useDecklistDisplayPrefs } from "../lib/decklistDisplayPrefs";
 
-function CardRow({ card: topCard, resolved, winRate }: { card: PlayerTopCard; resolved: Card | undefined; winRate: number | undefined }) {
+export interface ChampionWinRateContext { adjustedWinRate: number; deckCount: number; baselineWinRate: number }
+
+function WinRateSignal({ value }: { value: ChampionWinRateContext }) {
+  const delta = value.adjustedWinRate - value.baselineWinRate;
+  const width = Math.min(50, Math.abs(delta) * 500);
+  return <div className="min-w-24" title={`${value.deckCount} Champion decks; Champion baseline ${(value.baselineWinRate * 100).toFixed(0)}%`}><div className="flex items-center justify-between gap-2 text-[10px]"><span className="tabular-nums text-ctp-text">{(value.adjustedWinRate * 100).toFixed(0)}%</span><span className={delta >= 0 ? "text-ctp-green" : "text-ctp-red"}>{delta >= 0 ? "+" : ""}{(delta * 100).toFixed(0)}pp</span></div><div className="relative mt-1 h-px bg-ctp-surface1"><span className={`absolute top-0 h-0.5 ${delta >= 0 ? "bg-ctp-green" : "bg-ctp-red"}`} style={delta >= 0 ? { left: "50%", width: `${width}%` } : { right: "50%", width: `${width}%` }} /></div><div className="mt-1 text-[9px] text-ctp-subtext0">n={value.deckCount}</div></div>;
+}
+
+function CardRow({ card: topCard, resolved, winRate }: { card: PlayerTopCard; resolved: Card | undefined; winRate: ChampionWinRateContext | undefined }) {
   const inner = (
     <>
       {resolved?.editions[0] ? (
@@ -19,7 +27,7 @@ function CardRow({ card: topCard, resolved, winRate }: { card: PlayerTopCard; re
       )}
       {resolved && resolved.element !== "NORM" && <ElementIcon element={resolved.element} size={14} />}
       <span className="flex-1 text-ctp-text">{topCard.name}</span>
-      {winRate !== undefined && <span className="text-ctp-blue">{(winRate * 100).toFixed(0)}% win rate</span>}
+      {winRate && <WinRateSignal value={winRate} />}
       <span className="text-ctp-subtext0">{topCard.deckCount} decks</span>
     </>
   );
@@ -44,7 +52,7 @@ type TopCardsSectionsProps = {
   /** "grid" shows full card art with the same cost/price/trend/simulator/community footer as DecklistView's Visual mode, instead of CardRow's text list. Defaults to "list" so every other caller of this component is unaffected. */
   layout?: "list" | "grid";
   /** Card name -> adjusted win rate, scoped to whatever population this card list itself represents (e.g. `data/analysis/card-stats-by-champion.json` for a Champion page). Omitted by every caller that doesn't have a matching win-rate dataset, which is unaffected. */
-  winRateByName?: Map<string, number>;
+  winRateByName?: Map<string, ChampionWinRateContext>;
 };
 
 /** Card usage split by deck section — main/material/sideboard are structurally different card pools, so lumping them together buries a defining material-deck piece among 40-card mainboard staples. */
@@ -125,12 +133,7 @@ function GridTopCardsSections({ topCards, cardImages, mainOverride, winRateByNam
                       <span>Popularity</span>
                       <span className="text-ctp-text">{c.deckCount} decks</span>
                     </div>
-                    {winRateByName?.has(c.name) && (
-                      <div className="flex items-center justify-between text-[10px] text-ctp-subtext1">
-                        <span>Win rate</span>
-                        <span className="text-ctp-blue">{((winRateByName.get(c.name) ?? 0) * 100).toFixed(0)}%</span>
-                      </div>
-                    )}
+                    {winRateByName?.get(c.name) && <div className="mt-1"><WinRateSignal value={winRateByName.get(c.name)!} /></div>}
                   </div>
                 ))}
               </div>

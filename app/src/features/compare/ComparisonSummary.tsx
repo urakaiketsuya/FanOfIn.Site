@@ -124,13 +124,10 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
         {summary.loading && <InlineState className="text-sm">Loading analysis…</InlineState>}
         {!summary.loading && summary.unavailable && <InlineState className="text-sm">A decklist is unavailable, so this comparison cannot be analyzed.</InlineState>}
         {!summary.loading && !summary.unavailable && baselineStats && targetStats && <>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
-            <Panel padding="sm"><div className="text-xl font-semibold tabular-nums text-ctp-text">{sharedPercent === null ? "—" : `${sharedPercent}%`}</div><div className="text-[11px] text-ctp-subtext0">Baseline retained</div></Panel>
-            <Panel padding="sm"><div className="text-xl font-semibold tabular-nums text-ctp-blue">+{addedCount}</div><div className="text-[11px] text-ctp-subtext0">Added</div></Panel>
-            <Panel padding="sm"><div className="text-xl font-semibold tabular-nums text-ctp-yellow">−{removedCount}</div><div className="text-[11px] text-ctp-subtext0">Removed</div></Panel>
-            <Panel padding="sm"><div className="text-xl font-semibold tabular-nums text-ctp-mauve">{quantityCount}</div><div className="text-[11px] text-ctp-subtext0">Quantity changes</div></Panel>
-            <Panel padding="sm" className="col-span-2 sm:col-span-1"><div className="text-xl font-semibold tabular-nums text-ctp-mauve">{movedCount}</div><div className="text-[11px] text-ctp-subtext0">Section moves</div></Panel>
-          </div>
+          <Panel padding="sm">
+            <div className="flex flex-wrap items-end justify-between gap-3"><div><div className="text-2xl font-semibold tabular-nums text-ctp-text">{sharedPercent === null ? "—" : `${sharedPercent}%`}</div><div className="text-[11px] text-ctp-subtext0">Baseline retained</div></div><div className="flex flex-wrap gap-x-4 gap-y-2 text-xs"><span className="text-ctp-blue"><strong className="tabular-nums">+{addedCount}</strong> added</span><span className="text-ctp-yellow"><strong className="tabular-nums">−{removedCount}</strong> removed</span><span className="text-ctp-mauve"><strong className="tabular-nums">{quantityCount}</strong> quantity</span><span className="text-ctp-peach"><strong className="tabular-nums">{movedCount}</strong> moved</span></div></div>
+            <div className="mt-3 flex h-2 overflow-hidden rounded-full bg-ctp-surface0" aria-hidden="true"><span className="bg-ctp-green" style={{ width: `${sharedPercent ?? 0}%` }} /><span className="flex-1 bg-ctp-blue/50" /></div>
+          </Panel>
           <Panel padding="sm">
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2"><h3 className="font-semibold text-ctp-text">Deck profile</h3>{(summary.championChanged || summary.spiritChanged) && <div className="text-xs text-ctp-subtext0">{summary.championChanged && <span>Champion: {summary.baselineChampion ?? "—"} → {summary.targetChampion ?? "—"}</span>}{summary.championChanged && summary.spiritChanged && <span className="mx-2">·</span>}{summary.spiritChanged && <span>Spirit: {summary.baselineSpirit ?? "none"} → {summary.targetSpirit ?? "none"}</span>}</div>}</div>
             <DeckProfile baseline={baselineStats} target={targetStats} />

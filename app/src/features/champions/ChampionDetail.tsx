@@ -111,7 +111,7 @@ export default function ChampionDetail() {
   /** Card win rate specifically among this Champion's own decks (`data/analysis/card-stats-by-champion.json`) — Champion-wide, not re-scoped per Spirit/Element filter above (that dataset doesn't slice that finely; still meaningful at the Champion level regardless of which breakdown's card list is currently shown). */
   const winRateByName = useMemo(() => {
     const entry = cardStatsByChampionData?.champions.find((c) => c.championName === championName);
-    return entry ? new Map(entry.cards.map((c) => [c.name, c.adjustedWinRate])) : undefined;
+    return entry ? new Map(entry.cards.map((c) => [c.name, { adjustedWinRate: c.adjustedWinRate, deckCount: c.deckCount, baselineWinRate: entry.baselineWinRate }])) : undefined;
   }, [cardStatsByChampionData, championName]);
 
   const displayedMainByType = useMemo(() => {

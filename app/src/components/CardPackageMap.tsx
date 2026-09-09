@@ -63,10 +63,12 @@ function asEntries(synergies: SynergyReadiness[], dependencies: DependencyReadin
 }
 
 function CardCluster({ title, lines, cardsByName }: { title: string; lines: SynergyLine[]; cardsByName: Map<string, Card> }) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? lines : lines.slice(0, 4);
   return <section className="min-w-0" aria-label={title}>
     <div className="mb-2 flex items-center justify-between gap-2"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">{title}</h4><span className="text-xs tabular-nums text-ctp-subtext0">{lines.reduce((sum, line) => sum + line.quantity, 0)} copies</span></div>
-    {lines.length > 0 ? <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">{lines.slice(0, 4).map((line) => <VisualCardTile key={line.name} line={{ card: line.name, quantity: line.quantity }} card={cardsByName.get(line.name)} unitPrice={undefined} priceTrend={undefined} simulatorEvidence={undefined} communityEntry={undefined} fields={CARD_FIELDS} />)}</div> : <div className="flex min-h-32 items-center justify-center rounded-lg border border-dashed border-ctp-red/50 bg-ctp-red/5 p-4 text-center text-xs text-ctp-red">No support cards detected</div>}
-    {lines.length > 4 && <p className="mt-2 text-xs text-ctp-subtext0">+{lines.length - 4} more cards in this role</p>}
+    {lines.length > 0 ? <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">{visible.map((line) => <VisualCardTile key={line.name} line={{ card: line.name, quantity: line.quantity }} card={cardsByName.get(line.name)} unitPrice={undefined} priceTrend={undefined} simulatorEvidence={undefined} communityEntry={undefined} fields={CARD_FIELDS} />)}</div> : <div className="flex min-h-32 items-center justify-center rounded-lg border border-dashed border-ctp-red/50 bg-ctp-red/5 p-4 text-center text-xs text-ctp-red">No support cards detected</div>}
+    {lines.length > 4 && <button type="button" onClick={() => setExpanded((value) => !value)} className="mt-2 min-h-10 text-xs font-medium text-ctp-blue">{expanded ? "Show fewer cards" : `Show all ${lines.length} cards`}</button>}
   </section>;
 }
 
@@ -83,12 +85,15 @@ export default function CardPackageMap({ synergies, dependencies, cardsByName, p
   if (!active) return null;
   const style = TONE[active.tone];
   const membership = new Map<string, number>();
-  for (const entry of entries) for (const line of [...entry.support, ...entry.payoffs]) membership.set(line.name, (membership.get(line.name) ?? 0) + 1);
+  for (const entry of entries) {
+    const names = new Set([...entry.support, ...entry.payoffs].map((line) => line.name));
+    for (const name of names) membership.set(name, (membership.get(name) ?? 0) + 1);
+  }
   const shared = new Set([...membership].filter(([, count]) => count > 1).map(([name]) => name));
   const activeShared = new Set([...active.support, ...active.payoffs].map((line) => line.name).filter((name) => shared.has(name)));
 
   return <div data-component="CardPackageMap" className="grid gap-4 lg:grid-cols-[minmax(13rem,0.35fr)_minmax(0,1fr)]">
-    <div className="space-y-2" role="group" aria-label="Detected card packages">
+    <div className="space-y-2 lg:max-h-[38rem] lg:overflow-y-auto lg:pr-1" role="group" aria-label="Detected card packages">
       {entries.map((entry) => {
         const selected = entry.id === active.id;
         const entryStyle = TONE[entry.tone];
@@ -107,7 +112,7 @@ export default function CardPackageMap({ synergies, dependencies, cardsByName, p
 
       <div className="mt-4 grid items-center gap-4 md:grid-cols-[minmax(0,1fr)_3rem_minmax(0,1fr)]">
         <CardCluster title={active.supportLabel} lines={active.support} cardsByName={cardsByName} />
-        <div className="flex items-center justify-center text-2xl text-ctp-subtext0" aria-hidden="true"><span className="md:hidden">↓</span><span className="hidden md:inline">→</span></div>
+        <div className="flex items-center justify-center text-ctp-subtext0" aria-hidden="true"><span className="text-center text-[10px] font-semibold uppercase tracking-wide"><span className="block text-xl md:hidden">↓</span><span className="hidden text-xl md:block">→</span>Enables</span></div>
         <CardCluster title={active.payoffLabel} lines={active.payoffs} cardsByName={cardsByName} />
       </div>
       {activeShared.size > 0 && <p className="mt-4 rounded-md bg-ctp-mauve/10 px-3 py-2 text-xs text-ctp-mauve">{activeShared.size} card{activeShared.size === 1 ? "" : "s"} in this view also support another detected package.</p>}

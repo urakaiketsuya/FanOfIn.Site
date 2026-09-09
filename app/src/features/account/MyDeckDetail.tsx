@@ -110,6 +110,10 @@ export default function MyDeckDetail() {
   const cardNames = useMemo(() => Array.from(new Set(cardCatalog.map((card) => card.name))).sort(), [cardCatalog]);
   const cardNameSet = useMemo(() => new Set(cardNames), [cardNames]);
   const editedDecklist = useMemo(() => parseDecklist(deckText).decklist, [deckText]);
+  const trimPreview = useMemo(() => {
+    const affected = EDIT_SECTIONS.flatMap((section) => editedDecklist[section.key]).filter((line) => line.quantity > trimMax);
+    return { affected, copiesRemoved: affected.reduce((sum, line) => sum + line.quantity - trimMax, 0) };
+  }, [editedDecklist, trimMax]);
   const editedCardNames = useMemo(() => [...editedDecklist.main, ...editedDecklist.material, ...editedDecklist.sideboard].map((line) => line.card), [editedDecklist]);
   const editedCardsByName = useCardsByNames(editedCardNames);
   const editedChampionName = useMemo(() => findDeckChampionName(editedDecklist.material, editedCardsByName)?.split(",")[0].trim() ?? null, [editedDecklist.material, editedCardsByName]);
@@ -325,11 +329,13 @@ export default function MyDeckDetail() {
           </div>
           <button type="button" disabled={!cardNameSet.has(cardInput)} onClick={() => addCard(cardInput)} className="rounded-md border border-ctp-green/60 px-3 py-2 text-sm text-ctp-green hover:bg-ctp-green/10 disabled:cursor-not-allowed disabled:opacity-50">Add card</button>
         </div>
-        <div className="mt-2 flex flex-wrap items-center gap-2">
+        <div className="mt-3 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3">
+          <div className="flex flex-wrap items-center gap-2">
           <label className="text-xs text-ctp-subtext1" htmlFor="my-deck-trim-max">Trim every card to at most</label>
           <input id="my-deck-trim-max" type="number" min={1} max={4} value={trimMax} onChange={(event) => { const next = Number(event.target.value); if (Number.isInteger(next)) setTrimMax(Math.max(1, Math.min(4, next))); }} className="w-14 rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1 text-xs text-ctp-text" />
-          <button type="button" onClick={() => trimToMaxCopies(trimMax)} className="rounded-md border border-ctp-surface1 px-2.5 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Trim to {trimMax}x</button>
-          <span className="text-xs text-ctp-subtext0">Only lowers counts — a card already below that stays as-is.</span>
+          <button type="button" disabled={trimPreview.affected.length === 0} onClick={() => trimToMaxCopies(trimMax)} className="min-h-10 rounded-md border border-ctp-surface1 px-2.5 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text disabled:opacity-40">Apply trim</button>
+          </div>
+          <p className="mt-2 text-xs text-ctp-subtext0">{trimPreview.affected.length === 0 ? `No cards exceed ${trimMax}×.` : `${trimPreview.affected.length} card${trimPreview.affected.length === 1 ? "" : "s"} will lose ${trimPreview.copiesRemoved} total cop${trimPreview.copiesRemoved === 1 ? "y" : "ies"}: ${trimPreview.affected.slice(0, 4).map((line) => `${line.card} ${line.quantity}×→${trimMax}×`).join(" · ")}${trimPreview.affected.length > 4 ? ` · +${trimPreview.affected.length - 4} more` : ""}`}</p>
         </div>
         <div className="mt-4"><EditableDecklistGrid decklist={editedDecklist} cardsByName={editedCardsByName} onChangeQuantity={changeEditedQuantity} onMove={moveEditedCard} onRemove={removeEditedCard} /></div>
         <details className="mt-4 rounded-md border border-ctp-surface1 bg-ctp-mantle p-3">
@@ -345,10 +351,11 @@ export default function MyDeckDetail() {
         }); }}>
           <p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Unsaved deck changes</p>
           <p className={`text-sm ${editedChampionName ? editedChampionName === deck.championName ? "text-ctp-subtext1" : "text-ctp-yellow" : "text-ctp-yellow"}`}>{editedChampionName ? `Champion detected: ${editedChampionName}${editedChampionName !== deck.championName ? ` (currently ${deck.championName ?? "none"})` : ""}` : `No Champion detected${deck.championName ? ` (currently ${deck.championName})` : ""}.`}</p>
-          <label className="mt-2 flex items-center gap-2 text-sm text-ctp-subtext1">
-            <input type="checkbox" checked={saveAsNewVersion} onChange={(event) => setSaveAsNewVersion(event.target.checked)} />
-            Save as a new version (keeps this snapshot in your version history)
-          </label>
+          <div className="mt-3 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-base p-1" role="group" aria-label="Save mode">
+            <button type="button" aria-pressed={!saveAsNewVersion} onClick={() => setSaveAsNewVersion(false)} className={`min-h-10 rounded-md px-3 text-xs font-medium ${!saveAsNewVersion ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>Update current deck</button>
+            <button type="button" aria-pressed={saveAsNewVersion} onClick={() => setSaveAsNewVersion(true)} className={`min-h-10 rounded-md px-3 text-xs font-medium ${saveAsNewVersion ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>Create new version</button>
+          </div>
+          <p className="mt-1 text-xs text-ctp-subtext0">{saveAsNewVersion ? "Keeps the current snapshot in version history." : "Replaces the current deck without adding a history snapshot."}</p>
           {saveAsNewVersion && <input value={changeNote} maxLength={240} onChange={(event) => setChangeNote(event.target.value)} placeholder="What changed? (optional)" className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm" />}
           <button disabled={busy} type="submit" className="mt-3 rounded-md bg-ctp-blue px-3 py-2 text-sm text-ctp-base disabled:opacity-50">{saveAsNewVersion ? "Save new version" : "Save changes"}</button>
         </form>

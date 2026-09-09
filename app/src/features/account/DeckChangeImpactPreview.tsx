@@ -86,7 +86,7 @@ export default function DeckChangeImpactPreview({ decklist, changes, cardsByName
       <div>
         <div className="grid grid-cols-[minmax(0,1fr)_auto_auto] gap-x-3 gap-y-2 text-xs" role="table" aria-label="Projected metric changes">
           <div className="font-semibold uppercase tracking-wide text-ctp-subtext0" role="columnheader">Metric</div><div className="font-semibold uppercase tracking-wide text-ctp-subtext0" role="columnheader">Current</div><div className="font-semibold uppercase tracking-wide text-ctp-blue" role="columnheader">Projected</div>
-          {metrics.map((metric) => <div key={metric.label} className="contents" role="row"><div className="border-t border-ctp-surface1 py-2 text-ctp-subtext1" role="cell">{metric.label}</div><div className="border-t border-ctp-surface1 py-2 text-right tabular-nums text-ctp-subtext1" role="cell">{metric.before}</div><div className="border-t border-ctp-surface1 py-2 text-right font-medium tabular-nums text-ctp-text" role="cell">{metric.after}</div></div>)}
+          {metrics.map((metric) => <div key={metric.label} className="contents" role="row"><div className="border-t border-ctp-surface1 py-2 text-ctp-subtext1" role="cell">{metric.label}</div><div className="border-t border-ctp-surface1 py-2 text-right tabular-nums text-ctp-subtext1" role="cell">{metric.before}</div><div className={`border-t border-ctp-surface1 py-2 text-right font-medium tabular-nums ${metric.before === metric.after ? "text-ctp-subtext0" : "text-ctp-blue"}`} role="cell"><span className="mr-1" aria-hidden="true">{metric.before === metric.after ? "=" : "→"}</span>{metric.after}</div></div>)}
         </div>
         <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {changes.slice(0, 4).map((change) => {
@@ -95,6 +95,7 @@ export default function DeckChangeImpactPreview({ decklist, changes, cardsByName
             return <VisualCardTile key={`${change.section}:${change.cardName}`} line={{ card: change.cardName, quantity: before }} card={cardsByName.get(change.cardName)} unitPrice={undefined} priceTrend={undefined} simulatorEvidence={undefined} communityEntry={undefined} fields={CARD_FIELDS} footer={<div className="mt-1.5"><p className="truncate text-xs font-medium text-ctp-text">{change.cardName}</p><p className="mt-1 border-t border-ctp-surface0 pt-1 text-[11px] text-ctp-yellow">{before}× → {after}×</p></div>} />;
           })}
         </div>
+        {changes.length > 4 && <p className="mt-3 text-xs text-ctp-subtext0">+{changes.length - 4} more staged card change{changes.length - 4 === 1 ? "" : "s"} included in the projection.</p>}
       </div>
     </div>
   </Panel>;

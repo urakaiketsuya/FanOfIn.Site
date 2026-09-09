@@ -230,7 +230,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
         Floating Memory: {floatingMemory.base}{floatingMemory.classBonus > 0 ? ` + ${floatingMemory.classBonus} class bonus` : ""} · Average Ally Power: {allyPower.allyCopies > 0 ? formatAllyPower(allyPower) : "—"} · Champion damage: {damage.championRange.min}–{damage.championRange.max} · Ally damage: {damage.allyRange.min}–{damage.allyRange.max}
       </p>
       <div className="mt-3">
-        <InteractiveCompositionProfile composition={composition} memoryCurve={memoryCurve} reserveCurve={reserveCurve} lines={decklist.main} cardsByName={cardsByName} />
+        <InteractiveCompositionProfile composition={composition} memoryCurve={memoryCurve} reserveCurve={reserveCurve} lines={[...decklist.main, ...decklist.material]} cardsByName={cardsByName} />
       </div>
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <RankedCompositionChart title="Rarity" segments={rarity} />

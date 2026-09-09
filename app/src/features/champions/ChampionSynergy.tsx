@@ -203,7 +203,7 @@ export default function ChampionSynergy() {
   /** Card win rate specifically among this Champion's own decks — Champion-wide, not re-scoped per Spirit/Element (that dataset doesn't slice that finely). */
   const winRateByName = useMemo(() => {
     const entry = cardStatsByChampionData?.champions.find((c) => c.championName === championName);
-    return entry ? new Map(entry.cards.map((c) => [c.name, c.adjustedWinRate])) : undefined;
+    return entry ? new Map(entry.cards.map((c) => [c.name, { adjustedWinRate: c.adjustedWinRate, deckCount: c.deckCount, baselineWinRate: entry.baselineWinRate }])) : undefined;
   }, [cardStatsByChampionData, championName]);
 
   const catalogByName = useMemo(() => new Map(catalog.map((c) => [c.name, c])), [catalog]);

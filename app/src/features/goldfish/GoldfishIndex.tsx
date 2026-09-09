@@ -23,21 +23,19 @@ interface PendingConfirm {
 function HandCard({ card, resolved, onPlay }: { card: GoldfishCardInstance; resolved: Card | undefined; onPlay: () => void }) {
   return (
     <div className="flex flex-col overflow-hidden rounded-lg border border-ctp-surface1 bg-ctp-mantle">
-      <div className="flex gap-3 p-3">
+      <div className="p-2">
         <CardHoverPreview image={resolved?.editions[0]?.image} alt={card.name}>
           {resolved?.editions[0] ? (
-            <CardImage image={resolved.editions[0].image} alt={card.name} className="h-24 w-[4.3rem] shrink-0 rounded object-cover object-top" />
+            <CardImage image={resolved.editions[0].image} alt={card.name} className="aspect-[5/7] w-full rounded-md object-cover object-top" />
           ) : (
-            <div className="h-24 w-[4.3rem] shrink-0 rounded bg-ctp-surface0" />
+            <div className="aspect-[5/7] w-full rounded-md bg-ctp-surface0" />
           )}
         </CardHoverPreview>
-        <div className="min-w-0 flex-1">
-          <p className="text-sm font-medium text-ctp-text">{card.name}</p>
-          {resolved?.effect && <p className="mt-1 whitespace-pre-wrap text-xs text-ctp-subtext1">{resolved.effect.replace(/\*\*/g, "")}</p>}
-        </div>
+        <p className="mt-2 truncate text-sm font-medium text-ctp-text" title={card.name}>{card.name}</p>
+        {resolved?.effect && <details className="mt-1"><summary className="cursor-pointer text-xs text-ctp-blue">Read effect</summary><p className="mt-1 whitespace-pre-wrap text-xs leading-5 text-ctp-subtext1">{resolved.effect.replace(/\*\*/g, "")}</p></details>}
       </div>
       <div className="border-t border-ctp-surface1 px-3 py-2">
-        <button type="button" onClick={onPlay} className="rounded-md border border-ctp-blue px-2.5 py-1 text-xs font-medium text-ctp-blue hover:bg-ctp-blue/10">Play</button>
+        <button type="button" onClick={onPlay} className="min-h-10 w-full rounded-md border border-ctp-blue px-2.5 py-1 text-xs font-medium text-ctp-blue hover:bg-ctp-blue/10">Play card</button>
       </div>
     </div>
   );
@@ -65,12 +63,14 @@ export default function GoldfishIndex() {
   const [decklist, setDecklist] = useState<OmnidexDecklist | null>(initialDecklist);
   const [pasteText, setPasteText] = useState("");
   const [handSize, setHandSize] = useState(DEFAULT_STARTING_HAND_SIZE);
-  const [state, setState] = useState<GoldfishState | null>(null);
+  const [state, setState] = useState<GoldfishState | null>(() => initialDecklist ? newGame(initialDecklist, DEFAULT_STARTING_HAND_SIZE) : null);
+  const [turn, setTurn] = useState(1);
   const [pendingConfirm, setPendingConfirm] = useState<PendingConfirm | null>(null);
 
   function startNewHand(list: OmnidexDecklist) {
     setDecklist(list);
     setState(newGame(list, handSize));
+    setTurn(1);
     setPendingConfirm(null);
   }
 
@@ -124,11 +124,9 @@ export default function GoldfishIndex() {
           </div>
         }
       />
-      <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-ctp-subtext1">
-        <span>Library: <strong className="text-ctp-text">{state.library.length}</strong></span>
-        <span>Hand: <strong className="text-ctp-text">{state.hand.length}</strong></span>
-        <span>Played: <strong className="text-ctp-text">{state.played.length}</strong></span>
-        <button type="button" disabled={state.library.length === 0} onClick={() => setState((current) => (current ? drawCards(current, 1) : current))} className="rounded-md bg-ctp-blue px-3 py-1.5 text-sm font-medium text-ctp-base disabled:cursor-not-allowed disabled:opacity-40">Draw a card</button>
+      <div className="mt-4 grid gap-2 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-center">
+        {([['Library', state.library.length], ['Hand', state.hand.length], ['Played', state.played.length]] as const).map(([label, count]) => <div key={label} className="rounded-lg bg-ctp-base px-3 py-2"><div className="text-xl font-semibold tabular-nums text-ctp-text">{count}</div><div className="text-xs text-ctp-subtext0">{label}</div></div>)}
+        <div className="flex gap-2 sm:block"><button type="button" disabled={state.library.length === 0} onClick={() => setState((current) => (current ? drawCards(current, 1) : current))} className="min-h-12 flex-1 rounded-md bg-ctp-blue px-4 py-2 text-sm font-medium text-ctp-base disabled:cursor-not-allowed disabled:opacity-40">Draw</button><button type="button" disabled={state.library.length === 0} onClick={() => { setTurn((value) => value + 1); setState((current) => current ? drawCards(current, 1) : current); }} className="min-h-12 flex-1 rounded-md border border-ctp-surface1 px-3 py-2 text-xs font-medium text-ctp-subtext1 sm:mt-2 sm:block">Next turn + draw</button></div>
       </div>
 
       {pendingConfirm && (
@@ -145,7 +143,8 @@ export default function GoldfishIndex() {
         </Panel>
       )}
 
-      <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      <h2 className="mt-6 text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Turn {turn} · Hand</h2>
+      <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
         {state.hand.map((card) => (
           <HandCard key={card.id} card={card} resolved={cardsByName.get(card.name)} onPlay={() => handlePlay(card)} />
         ))}
@@ -155,7 +154,7 @@ export default function GoldfishIndex() {
       {state.played.length > 0 && (
         <details className="mt-6 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3">
           <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Played this hand ({state.played.length})</summary>
-          <p className="mt-2 text-sm text-ctp-subtext1">{state.played.map((c) => c.name).join(", ")}</p>
+          <div className="mt-3 flex gap-2 overflow-x-auto pb-1">{state.played.map((card, index) => { const resolved = cardsByName.get(card.name); return <div key={card.id} className="w-20 shrink-0"><div className="relative">{resolved?.editions[0] ? <CardImage image={resolved.editions[0].image} alt={card.name} className="aspect-[5/7] w-full rounded object-cover object-top" /> : <div className="aspect-[5/7] rounded bg-ctp-surface0" />}<span className="absolute left-1 top-1 rounded bg-ctp-crust/90 px-1 text-[10px] text-ctp-text">{index + 1}</span></div><p className="mt-1 truncate text-[10px] text-ctp-subtext1" title={card.name}>{card.name}</p></div>; })}</div>
         </details>
       )}
     </PageLayout>
