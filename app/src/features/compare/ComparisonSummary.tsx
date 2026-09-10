@@ -91,7 +91,8 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
     const mainLines = list.main.map((line) => ({ name: line.card, quantity: line.quantity }));
     const materialLines = list.material.map((line) => ({ name: line.card, quantity: line.quantity }));
     const damageForecast = computeAggressionForecast(mainLines, cardsByName, materialLines);
-    const hasDamageForecast = damageForecast.fixedDamageCopies > 0 || damageForecast.variableDamageCopies > 0 || damageForecast.scalingDamageCopies > 0 || damageForecast.ambiguousDamageCopies > 0 || damageForecast.awakeningBloomComboCopies > 0 || damageForecast.recurringDamagePerTurn > 0;
+    const hasDamageForecast = damageForecast.fixedDamageCopies > 0 || damageForecast.variableDamageCopies > 0 || damageForecast.scalingDamageCopies > 0 || damageForecast.ambiguousDamageCopies > 0 || damageForecast.awakeningBloomComboCopies > 0 || damageForecast.recurringDamagePerTurn > 0
+      || damageForecast.audit.some((entry) => entry.status === "review" || entry.status === "partial");
     const breakthroughVsAverage = hasDamageForecast ? null : computeBreakthroughDamageVsAverage([...mainLines, ...materialLines], cardsByName);
     return { deck, list, mainLines, materialLines, damageForecast: hasDamageForecast ? damageForecast : null, breakthroughVsAverage };
   });

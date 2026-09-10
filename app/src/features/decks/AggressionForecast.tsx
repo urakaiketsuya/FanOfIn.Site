@@ -13,13 +13,15 @@ function formatChance(min: number, max: number): string {
 }
 
 export default function AggressionForecast({ forecast, embedded = false, seen, onSeenChange }: { forecast: Forecast; embedded?: boolean; seen?: number; onSeenChange?: (seen: number) => void }) {
+  const auditAttention = forecast.audit.filter((entry) => entry.status === "review" || entry.status === "partial");
   const hasDamage = !(
     forecast.fixedDamageCopies === 0 &&
     forecast.variableDamageCopies === 0 &&
     forecast.scalingDamageCopies === 0 &&
     forecast.ambiguousDamageCopies === 0 &&
     forecast.awakeningBloomComboCopies === 0 &&
-    forecast.recurringDamagePerTurn === 0
+    forecast.recurringDamagePerTurn === 0 &&
+    auditAttention.length === 0
   );
   const [localSelectedSeen, setLocalSelectedSeen] = useState(forecast.points[1]?.seen ?? forecast.points[0]?.seen ?? 0);
   const selectedSeen = seen ?? localSelectedSeen;
@@ -52,6 +54,10 @@ export default function AggressionForecast({ forecast, embedded = false, seen, o
         {forecast.recurringDamagePerTurn > 0 && <span>{forecast.recurringDamagePerTurn} recurring damage/turn</span>}
         {forecast.awakeningBloomComboCopies > 0 && <span>{forecast.awakeningBloomComboCopies} Diao phantasia combo copies</span>}
       </div>
+      <details className={`mt-3 overflow-hidden rounded-xl border text-xs ${auditAttention.length > 0 ? "border-ctp-yellow/50 bg-ctp-yellow/5" : "border-ctp-surface1 bg-ctp-surface0/40"}`}>
+        <summary className="flex min-h-11 cursor-pointer items-center justify-between gap-3 px-3 py-2.5 font-medium text-ctp-text hover:bg-ctp-surface0/60"><span>Damage coverage audit</span><span className={auditAttention.length > 0 ? "text-ctp-yellow" : "text-ctp-green"}>{auditAttention.length > 0 ? `${auditAttention.length} need review` : "All damage text classified"}</span></summary>
+        <div className="border-t border-ctp-surface1 px-3 pb-3"><p className="py-3 text-ctp-subtext1">Every Main and Material card is classified so likely parser gaps are visible rather than silently omitted.</p><div className="overflow-x-auto"><table className="w-full min-w-[38rem] text-left"><thead><tr className="border-b border-ctp-surface1 text-ctp-subtext0"><th className="pb-2 pr-3">Card</th><th className="px-3 pb-2">Section</th><th className="px-3 pb-2">Coverage</th><th className="pl-3 pb-2">Reason</th></tr></thead><tbody>{forecast.audit.map((entry) => <tr key={`${entry.section}-${entry.name}`} className="border-b border-ctp-surface0 align-top last:border-0"><td className="py-2 pr-3 font-medium text-ctp-text">{entry.quantity}× {entry.name}</td><td className="px-3 py-2 text-ctp-subtext1">{entry.section}</td><td className={`px-3 py-2 font-medium ${entry.status === "review" ? "text-ctp-red" : entry.status === "partial" ? "text-ctp-yellow" : entry.status === "modeled" ? "text-ctp-green" : "text-ctp-subtext0"}`}>{entry.classification}</td><td className="py-2 pl-3 text-ctp-subtext1">{entry.reason}</td></tr>)}</tbody></table></div></div>
+      </details>
       <details className="mt-3 overflow-hidden rounded-xl bg-ctp-surface0/50 text-xs text-ctp-subtext0">
         <summary className="min-h-10 cursor-pointer px-3 py-2.5 font-medium hover:bg-ctp-surface0 hover:text-ctp-text focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-ctp-blue">View exact forecast data</summary>
         <div className="overflow-x-auto px-3 pb-3"><table className="w-full min-w-[32rem] text-left">

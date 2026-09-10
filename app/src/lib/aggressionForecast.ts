@@ -20,6 +20,15 @@ export interface AggressionForecastPoint {
   chanceAtLeastTenMax: number;
 }
 
+export interface DamageAuditEntry {
+  name: string;
+  quantity: number;
+  section: "Main" | "Material";
+  status: "modeled" | "partial" | "excluded" | "review";
+  classification: string;
+  reason: string;
+}
+
 export interface AggressionForecast {
   deckSize: number;
   fixedDamageCopies: number;
@@ -36,10 +45,18 @@ export interface AggressionForecast {
   symmetricDamageCopies: number;
   /** Fixed champion-reach damage from Material Deck cards with an unconditional per-turn trigger (e.g. Fabled Ruby Fatestone), summed across copies. Material Deck cards are known and in play from the start of the game, not drawn — so this is a flat per-turn figure, deliberately kept separate from `points`' "cards seen" checkpoints rather than folded into them. 0 if the deck runs no such cards. */
   recurringDamagePerTurn: number;
+  /** Per-card coverage ledger used to expose likely parser gaps instead of silently omitting them. */
+  audit: DamageAuditEntry[];
   points: AggressionForecastPoint[];
 }
 
 const CHECKPOINTS = [7, 10, 15, 20] as const;
+const ADVANCED_ELEMENT_READY_SEEN = 10;
+const BASIC_ELEMENTS = new Set(["NORM", "FIRE", "WATER", "WIND"]);
+
+function isAdvancedElementCard(card: Card): boolean {
+  return (card.elements ?? []).some((element) => !BASIC_ELEMENTS.has(element));
+}
 
 function choose(n: number, k: number): number {
   if (k < 0 || k > n) return 0;
@@ -50,7 +67,8 @@ function choose(n: number, k: number): number {
 }
 
 /** Exact damage distribution for drawing `seen` cards without replacement. */
-function damageDistribution(groups: { copies: number; damage: number }[], deckSize: number, seen: number): Map<number, number> {
+function damageDistribution(groups: { copies: number; damage: number; unlockSeen?: number }[], deckSize: number, seen: number): Map<number, number> {
+  groups = groups.map((group) => seen >= (group.unlockSeen ?? 0) ? group : { ...group, damage: 0 });
   const draws = Math.min(seen, deckSize);
   const accountedFor = groups.reduce((sum, group) => sum + group.copies, 0);
   const allGroups = [...groups];
@@ -122,14 +140,17 @@ export function computeAggressionForecast(
 ): AggressionForecast {
   const listedTotal = mainLines.reduce((sum, line) => sum + line.quantity, 0);
   const deckSize = Math.max(60, listedTotal);
-  const minGroups: { copies: number; damage: number }[] = [];
-  const maxGroups: { copies: number; damage: number }[] = [];
+  const minGroups: { copies: number; damage: number; unlockSeen?: number }[] = [];
+  const maxGroups: { copies: number; damage: number; unlockSeen?: number }[] = [];
   let fixedDamageCopies = 0;
   let variableDamageCopies = 0;
   let scalingDamageCopies = 0;
   let ambiguousDamageCopies = 0;
   let awakeningBloomComboCopies = 0;
   let symmetricDamageCopies = 0;
+  const modeledReasons = new Map<string, string[]>();
+  const partialReasons = new Map<string, string>();
+  const markModeled = (name: string, reason: string) => modeledReasons.set(name, [...(modeledReasons.get(name) ?? []), reason]);
 
   let recurringDamagePerTurn = 0;
   const hasScepterOfAwakening = materialLines.some((line) => line.quantity > 0 && line.name === "Scepter of Awakening");
@@ -138,8 +159,12 @@ export function computeAggressionForecast(
     const card = cardsByName.get(line.name);
     if (!card) continue;
     const recurring = parseRecurringChampionDamage(card);
-    if (recurring !== null) recurringDamagePerTurn += recurring * line.quantity;
+    if (recurring !== null) {
+      recurringDamagePerTurn += recurring * line.quantity;
+      markModeled(line.name, `${recurring} recurring champion damage per turn`);
+    }
   }
+  if (hasScepterOfAwakening && hasDiaoChan) markModeled("Scepter of Awakening", "animates the strongest non-Ally phantasia seen");
 
   // Real subtype vocabulary for this deck's own cards, gating `parseSubtypeScalingDamage` the same
   // way `cardIntent.ts`'s subtype detection is gated — see that function's doc comment.
@@ -159,37 +184,45 @@ export function computeAggressionForecast(
     }
   }
 
-  const scalingSources: { copies: number; perUnitDamage: number; fodderCopies: number }[] = [];
-  const scepterTargets: { copies: number; power: number }[] = [];
-  const flowerbudSources: { copies: number; flowerbuds: number }[] = [];
+  const scalingSources: { copies: number; perUnitDamage: number; fodderCopies: number; unlockSeen: number }[] = [];
+  const scepterTargets: { copies: number; power: number; unlockSeen: number }[] = [];
+  const flowerbudSources: { copies: number; flowerbuds: number; unlockSeen: number }[] = [];
   const fullBloomCopies = hasDiaoChan ? (mainLines.find((line) => line.name === "Full Bloom")?.quantity ?? 0) : 0;
+  const fullBloomUnlockSeen = fullBloomCopies > 0 ? ADVANCED_ELEMENT_READY_SEEN : 0;
 
   for (const line of mainLines) {
     const card = cardsByName.get(line.name);
     if (!card) continue;
+    const unlockSeen = isAdvancedElementCard(card) ? ADVANCED_ELEMENT_READY_SEEN : 0;
+    const timingReason = unlockSeen > 0 ? "; advanced element held until turn 4 (10 cards seen)" : "";
     if (hasDiaoChan && line.name === "Full Bloom") {
       awakeningBloomComboCopies += line.quantity;
       // Four Flowerbuds trigger Full Bloom for 8 On Enter damage. If Scepter is available, it
       // then gives Full Bloom a 7-power body for the ceiling's same-turn attack.
-      minGroups.push({ copies: line.quantity, damage: 8 });
-      maxGroups.push({ copies: line.quantity, damage: hasScepterOfAwakening ? 15 : 8 });
+      const comboUnlockSeen = Math.max(unlockSeen, ADVANCED_ELEMENT_READY_SEEN);
+      minGroups.push({ copies: line.quantity, damage: 8, unlockSeen: comboUnlockSeen });
+      maxGroups.push({ copies: line.quantity, damage: hasScepterOfAwakening ? 15 : 8, unlockSeen: comboUnlockSeen });
+      markModeled(line.name, `${hasScepterOfAwakening ? "8 Flowerbud-trigger damage plus a 7-power Scepter attack ceiling" : "8 damage from four Flowerbud triggers"}${timingReason}`);
       continue;
     }
     if (hasDiaoChan && hasScepterOfAwakening && card.types.includes("PHANTASIA") && !card.types.includes("ALLY") && typeof card.cost_reserve === "number" && card.cost_reserve > 0) {
-      scepterTargets.push({ copies: line.quantity, power: card.cost_reserve });
+      scepterTargets.push({ copies: line.quantity, power: card.cost_reserve, unlockSeen: Math.max(unlockSeen, ADVANCED_ELEMENT_READY_SEEN) });
       awakeningBloomComboCopies += line.quantity;
+      markModeled(line.name, `Scepter attack candidate at ${card.cost_reserve} power`);
     }
     const flowerbuds = hasDiaoChan ? opponentFlowerbudsSummoned(card) : 0;
     if (flowerbuds > 0) {
-      flowerbudSources.push({ copies: line.quantity, flowerbuds });
+      flowerbudSources.push({ copies: line.quantity, flowerbuds, unlockSeen });
       awakeningBloomComboCopies += line.quantity;
+      markModeled(line.name, `${flowerbuds} opponent Flowerbuds can trigger Full Bloom for ${flowerbuds * 2} damage`);
     }
     const range = fixedChampionDamageRange(card);
     if (range) {
       fixedDamageCopies += line.quantity;
       if (isSymmetricChampionDamage(card)) symmetricDamageCopies += line.quantity;
-      minGroups.push({ copies: line.quantity, damage: range.min });
-      maxGroups.push({ copies: line.quantity, damage: range.max });
+      minGroups.push({ copies: line.quantity, damage: range.min, unlockSeen });
+      maxGroups.push({ copies: line.quantity, damage: range.max, unlockSeen });
+      markModeled(line.name, `fixed champion damage ${range.min === range.max ? range.min : `${range.min}–${range.max}`}${timingReason}`);
       continue;
     }
 
@@ -199,9 +232,10 @@ export function computeAggressionForecast(
       // Base clause targets the ambiguous "unit" bucket (may hit an ally instead), so it's not
       // guaranteed — 0 on the Min side, its printed value on the Max side, same as the rest of this
       // group's combinatorics. The fodder-scaled bonus on top is handled separately below.
-      minGroups.push({ copies: line.quantity, damage: 0 });
-      maxGroups.push({ copies: line.quantity, damage: scaling.baseDamage });
-      scalingSources.push({ copies: line.quantity, perUnitDamage: scaling.perUnitDamage, fodderCopies: subtypeCopyCounts.get(scaling.subtype) ?? 0 });
+      minGroups.push({ copies: line.quantity, damage: 0, unlockSeen });
+      maxGroups.push({ copies: line.quantity, damage: scaling.baseDamage, unlockSeen });
+      scalingSources.push({ copies: line.quantity, perUnitDamage: scaling.perUnitDamage, fodderCopies: subtypeCopyCounts.get(scaling.subtype) ?? 0, unlockSeen });
+      markModeled(line.name, `scaling ${scaling.subtype} damage ceiling`);
       continue;
     }
 
@@ -210,15 +244,32 @@ export function computeAggressionForecast(
       ambiguousDamageCopies += line.quantity;
       // Not guaranteed — could land on an ally instead of the champion, or (for a modal card) never
       // get chosen at all — so 0 on the Min side, its printed value on the Max side.
-      minGroups.push({ copies: line.quantity, damage: 0 });
-      maxGroups.push({ copies: line.quantity, damage: ambiguous });
+      minGroups.push({ copies: line.quantity, damage: 0, unlockSeen });
+      maxGroups.push({ copies: line.quantity, damage: ambiguous, unlockSeen });
+      markModeled(line.name, `${ambiguous} conditional or modal damage ceiling`);
       continue;
     }
 
     if (hasUnquantifiedChampionDamage(card)) {
       variableDamageCopies += line.quantity;
+      partialReasons.set(line.name, `damage is detected, but its variable amount needs game state${timingReason}`);
+    } else if (/\bdeal damage\b[^.]*\bequal to\b/i.test(card.effect ?? "")) {
+      variableDamageCopies += line.quantity;
+      partialReasons.set(line.name, `damage is variable and depends on game state${timingReason}`);
     }
   }
+
+  const audit = [...mainLines.map((line) => ({ ...line, section: "Main" as const })), ...materialLines.map((line) => ({ ...line, section: "Material" as const }))].map((line): DamageAuditEntry | null => {
+    const card = cardsByName.get(line.name);
+    const reasons = modeledReasons.get(line.name);
+    if (reasons?.length) return { name: line.name, quantity: line.quantity, section: line.section, status: "modeled", classification: "Included", reason: reasons.join("; ") };
+    const partial = partialReasons.get(line.name);
+    if (partial) return { name: line.name, quantity: line.quantity, section: line.section, status: "partial", classification: "Variable damage", reason: partial };
+    if (!card) return { name: line.name, quantity: line.quantity, section: line.section, status: "review", classification: "Missing card data", reason: "The card could not be resolved, so its damage contribution was not inspected." };
+    if (card.types.includes("ALLY") || typeof card.power === "number") return { name: line.name, quantity: line.quantity, section: line.section, status: "excluded", classification: "Combat damage", reason: "Regular attacks belong to the separate combat forecast." };
+    if (/\bdamage\b/i.test(card.effect ?? "")) return { name: line.name, quantity: line.quantity, section: line.section, status: "review", classification: "Unmodeled damage text", reason: "The rules text mentions damage, but no current calculation classified it." };
+    return null;
+  }).filter((entry): entry is DamageAuditEntry => entry !== null);
 
   const points = CHECKPOINTS.map((seen) => {
     const minDistribution = damageDistribution(minGroups, deckSize, seen);
@@ -232,6 +283,7 @@ export function computeAggressionForecast(
     // doesn't model turn sequencing or fodder shared across multiple combo sources competing for the
     // same sacrifices. Ceiling-only — never added to `expectedMin`/`low`.
     const scalingBonus = scalingSources.reduce((sum, source) => {
+      if (seen < source.unlockSeen) return sum;
       const sourceSeen = (source.copies * Math.min(seen, deckSize)) / deckSize;
       const fodderSeen = (source.fodderCopies * Math.min(seen, deckSize)) / deckSize;
       return sum + sourceSeen * source.perUnitDamage * fodderSeen;
@@ -241,13 +293,13 @@ export function computeAggressionForecast(
     const maxScepterPower = Math.max(0, ...scepterTargets.map((target) => target.power));
     let scepterBonus = 0;
     for (let power = 1; power <= maxScepterPower; power++) {
-      const qualifyingCopies = scepterTargets.filter((target) => target.power >= power).reduce((sum, target) => sum + target.copies, 0);
+      const qualifyingCopies = scepterTargets.filter((target) => target.power >= power && seen >= target.unlockSeen).reduce((sum, target) => sum + target.copies, 0);
       scepterBonus += chanceToSeeAtLeastOne(deckSize, qualifyingCopies, seen);
     }
     // Other Flowerbud generators only deal damage while Full Bloom is also available. This is a
     // joint-draw ceiling estimate; Full Bloom's own four tokens are already in its 8-damage group.
-    const bloomSeen = (fullBloomCopies * Math.min(seen, deckSize)) / deckSize;
-    const flowerbudBonus = flowerbudSources.reduce((sum, source) => sum + bloomSeen * ((source.copies * Math.min(seen, deckSize)) / deckSize) * source.flowerbuds * 2, 0);
+    const bloomSeen = seen < fullBloomUnlockSeen ? 0 : (fullBloomCopies * Math.min(seen, deckSize)) / deckSize;
+    const flowerbudBonus = flowerbudSources.reduce((sum, source) => seen < source.unlockSeen ? sum : sum + bloomSeen * ((source.copies * Math.min(seen, deckSize)) / deckSize) * source.flowerbuds * 2, 0);
     const comboBonus = scepterBonus + flowerbudBonus;
     const roundedBonus = Math.round(scalingBonus + comboBonus);
 
@@ -273,6 +325,7 @@ export function computeAggressionForecast(
     awakeningBloomComboCopies,
     symmetricDamageCopies,
     recurringDamagePerTurn,
+    audit,
     points,
   };
 }

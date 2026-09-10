@@ -1546,6 +1546,14 @@ cards such as Maiden of Waning Bloom add Flowerbud-trigger damage only when Full
 seen. These conditional additions affect the optimistic side of the range; Full Bloom's own
 four-Flowerbud sequence is the exception included on the conservative side.
 
+The forecast emits a filtered coverage ledger for damage-bearing Main and Material entries.
+Recognized direct, recurring, scaling, and supported combo effects are marked modeled; variable
+amounts such as Refracting Missile are partial; ordinary ally attacks are explicitly delegated to
+the combat forecast; unresolved rules text containing “damage” is flagged for review; and cards
+with no damage signal are omitted. Advanced-element damage, including Diao's Tera package, is
+conservatively held until turn four (the 10-cards-seen checkpoint). Deck pages expose this ledger
+in a Damage coverage audit so new card templates fail visibly instead of disappearing.
+
 ### Breakthrough damage
 
 The Compare tool's **Breakthrough damage** section (`app/src/lib/breakthroughDamage.ts`,

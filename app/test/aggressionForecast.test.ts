@@ -17,10 +17,12 @@ test("Full Bloom and Scepter of Awakening forecast 8 to 15 same-turn damage", ()
   );
 
   assert.equal(forecast.awakeningBloomComboCopies, 1);
-  assert.equal(forecast.points[0].expectedMin, 0.9);
-  assert.equal(forecast.points[0].expectedMax, 1.8);
+  assert.equal(forecast.points[0].expectedMin, 0);
+  assert.equal(forecast.points[0].expectedMax, 0);
   assert.equal(forecast.points[0].chanceAtLeastTenMin, 0);
-  assert.equal(forecast.points[0].chanceAtLeastTenMax, 0.117);
+  assert.equal(forecast.points[0].chanceAtLeastTenMax, 0);
+  assert.equal(forecast.points[1].expectedMin, 1.3);
+  assert.equal(forecast.points[1].expectedMax, 2.5);
 });
 
 test("Full Bloom does not receive the combo ceiling without both Material pieces", () => {
@@ -54,7 +56,45 @@ test("Diao reference deck includes Maiden Flowerbuds and the strongest available
   );
 
   assert.equal(forecast.awakeningBloomComboCopies, 22);
-  assert.ok(forecast.points[0].expectedMax > bloomOnly.points[0].expectedMax);
-  assert.ok(forecast.points[0].expectedMin < forecast.points[0].expectedMax);
-  assert.ok(forecast.points[0].chanceAtLeastTenMax > 0.35);
+  assert.ok(forecast.points[1].expectedMax > bloomOnly.points[1].expectedMax);
+  assert.ok(forecast.points[1].expectedMin < forecast.points[1].expectedMax);
+  assert.ok(forecast.points[2].chanceAtLeastTenMax > 0.35);
+  assert.match(forecast.audit.find((entry) => entry.name === "Full Bloom")?.reason ?? "", /Flowerbud/);
+  assert.match(forecast.audit.find((entry) => entry.name === "Fractal of Waves")?.reason ?? "", /Scepter/);
+  assert.match(forecast.audit.find((entry) => entry.name === "Maiden of Waning Bloom")?.reason ?? "", /Flowerbuds/);
+});
+
+test("damage coverage audit flags unresolved damage text instead of silently dropping it", () => {
+  const unknownPattern = card("Unclassified Blast", "Whenever this awakens, damage dealt this way is doubled.");
+  const forecast = computeAggressionForecast([{ name: unknownPattern.name, quantity: 2 }], new Map([[unknownPattern.name, unknownPattern]]));
+  assert.deepEqual(forecast.audit[0], {
+    name: "Unclassified Blast",
+    quantity: 2,
+    section: "Main",
+    status: "review",
+    classification: "Unmodeled damage text",
+    reason: "The rules text mentions damage, but no current calculation classified it.",
+  });
+});
+
+test("damage audit omits no-signal cards and classifies variable and combat cards", () => {
+  const cards = new Map<string, Card>([
+    ["Plain Utility", card("Plain Utility", "Draw a card.", { types: ["ACTION"], elements: ["NORM"] })],
+    ["Refracting Missile", card("Refracting Missile", "Deal damage to target unit equal to the amount of Fractal objects you control plus 1.", { types: ["ACTION"], elements: ["WATER"] })],
+    ["Shademist Priestess", card("Shademist Priestess", "Whenever your champion is dealt damage, recover 1.", { types: ["ALLY"], elements: ["WATER"], power: 0 })],
+  ]);
+  const forecast = computeAggressionForecast(Array.from(cards.keys(), (name) => ({ name, quantity: 1 })), cards);
+
+  assert.equal(forecast.audit.some((entry) => entry.name === "Plain Utility"), false);
+  assert.equal(forecast.audit.find((entry) => entry.name === "Refracting Missile")?.classification, "Variable damage");
+  assert.equal(forecast.audit.find((entry) => entry.name === "Shademist Priestess")?.classification, "Combat damage");
+});
+
+test("advanced-element damage waits until the turn-four checkpoint", () => {
+  const advanced = card("Tera Bolt", "Deal 6 damage to target champion.", { types: ["ACTION"], elements: ["TERA"] });
+  const forecast = computeAggressionForecast([{ name: advanced.name, quantity: 4 }], new Map([[advanced.name, advanced]]));
+
+  assert.equal(forecast.points[0].expectedMax, 0);
+  assert.ok(forecast.points[1].expectedMax > 0);
+  assert.match(forecast.audit[0]?.reason ?? "", /turn 4/);
 });
