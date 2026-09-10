@@ -27,6 +27,15 @@ configured localhost addresses. It is unavailable through production or preview 
 
 Production traffic goes through the Vercel BFF in `account-bff/`, served from `accounts.fanofin.site`. The session uses a `Secure`, `HttpOnly`, `SameSite=Lax` cookie. Set the same random `BFF_SHARED_SECRET` as a Wrangler secret and as a Vercel environment variable; once configured, the Worker rejects direct account requests that bypass the BFF.
 
+### Discord sign-in setup
+
+1. Create a Discord application and OAuth2 redirect for `http://localhost:8788/v1/auth/discord/callback` locally and `https://accounts.fanofin.site/api/v1/auth/discord/callback` in production.
+2. Replace `DISCORD_CLIENT_ID` in `wrangler.jsonc` and set the matching `DISCORD_REDIRECT_URI` for each environment.
+3. Store the client secret with `npx wrangler secret put DISCORD_CLIENT_SECRET` (add `--env production` for production). Never put it in `wrangler.jsonc`.
+4. Apply migration `0013_auth_identities.sql`. It moves existing Google subjects into the provider-neutral `auth_identities` table without changing user IDs, decks, collections, or sessions.
+
+Discord sign-in requests only the `identify` and `email` scopes and requires Discord to report a verified email. The Account page lets signed-in users link or remove providers, but the final sign-in method cannot be removed.
+
 Imports read the pipeline-published archive at `ASSET_BASE_URL`. Shout At Your Decks summaries without a fetched full list are skipped. Public identifiers are import sources, not proof of profile ownership.
 
 Production monitoring, backup/restore, privacy lifecycle, incident response, and the prerequisite for disabling `workers.dev` are documented in `docs/ACCOUNT_SERVICE_OPERATIONS.md`.

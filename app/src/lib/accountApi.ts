@@ -1,4 +1,4 @@
-import type { AccountSession, AccountUser, BookmarkedDeck, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, DeckImportPreview, DeckImportResult, DeckReportReason, DeckSocialState, DeckVisibility, OmnidexDecklist, PublicDeck, PublicDeckSummary, PublicProfile, SavedDeck, SavedDeckDetail, SharedCardWatch } from "@gatcg/shared";
+import type { AccountSession, AccountUser, AuthIdentity, AuthProvider, BookmarkedDeck, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, DeckImportPreview, DeckImportResult, DeckReportReason, DeckSocialState, DeckVisibility, OmnidexDecklist, PublicDeck, PublicDeckSummary, PublicProfile, SavedDeck, SavedDeckDetail, SharedCardWatch } from "@gatcg/shared";
 
 const ACCOUNT_API_URL = (import.meta.env.VITE_ACCOUNT_API_URL as string | undefined)?.replace(/\/$/, "")
   ?? (import.meta.env.PROD ? "https://accounts.fanofin.site/api" : "http://localhost:8788");
@@ -23,9 +23,12 @@ export const accountApi = {
   session: () => accountRequest<AccountSession>("/v1/auth/session"),
   googleNonce: () => accountRequest<{ nonce: string }>("/v1/auth/google/nonce", { method: "POST" }),
   googleSignIn: (credential: string, nonce: string) => accountRequest<AccountSession>("/v1/auth/google", { method: "POST", body: JSON.stringify({ credential, nonce }) }),
+  discordStart: (purpose: "sign-in" | "link") => accountRequest<{ url: string }>("/v1/auth/discord/start", { method: "POST", body: JSON.stringify({ purpose }) }),
   devSignIn: () => accountRequest<AccountSession>("/v1/auth/dev", { method: "POST", body: "{}" }),
   logout: () => accountRequest<{ success: true }>("/v1/auth/logout", { method: "POST" }),
   logoutAll: () => accountRequest<{ success: true }>("/v1/auth/logout-all", { method: "POST" }),
+  authIdentities: () => accountRequest<{ identities: AuthIdentity[] }>("/v1/me/auth/identities"),
+  removeAuthIdentity: (provider: AuthProvider) => accountRequest<{ success: true }>(`/v1/me/auth/identities/${provider}`, { method: "DELETE" }),
   exportAccount: () => accountRequest<Record<string, unknown>>("/v1/me/export"),
   updateUsername: (displayName: string) => accountRequest<{ user: AccountUser }>("/v1/me", { method: "PATCH", body: JSON.stringify({ displayName }) }),
   updateProfileDiscoverability: (profileDiscoverable: boolean) => accountRequest<{ user: AccountUser }>("/v1/me", { method: "PATCH", body: JSON.stringify({ profileDiscoverable }) }),

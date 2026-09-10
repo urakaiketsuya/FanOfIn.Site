@@ -104,6 +104,14 @@ export interface AccountSession {
   user: AccountUser | null;
 }
 
+export type AuthProvider = "google" | "discord";
+
+export interface AuthIdentity {
+  provider: AuthProvider;
+  email: string;
+  createdAt: string;
+}
+
 export interface DeckImportCandidate {
   provider: Exclude<SavedDeckSourceProvider, "manual">;
   externalDeckId: string;

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { bffAllowed, clearGoogleKeyCacheForTest, consumeOAuthNonce, createOAuthNonce, normalizeDisplayName, verifyGoogleCredential, type Env } from "../src/auth";
+import { bffAllowed, clearGoogleKeyCacheForTest, consumeDiscordOAuthState, consumeOAuthNonce, createDiscordOAuthState, createOAuthNonce, discordAuthorizeUrl, exchangeDiscordCode, normalizeDisplayName, verifyGoogleCredential, type Env } from "../src/auth";
 import { assetJson, deleteDeck, getPublicDeck, normalizeDeckTags, parseSaveInput, renameDeck, selectImportCandidates } from "../src/decks";
 import { getDeckSocialState, setDeckBookmark, setDeckLike } from "../src/deck-social";
 import { discoverDecks, discoverProfiles, getPublicProfile } from "../src/discovery";
@@ -357,6 +357,50 @@ test("OAuth nonces are random and can only be consumed once", async () => {
   assert.notEqual(first, second);
   assert.equal(await consumeOAuthNonce(env, first), true);
   assert.equal(await consumeOAuthNonce(env, first), false);
+});
+
+test("Discord OAuth states are single-use and retain link intent", async () => {
+  const rows = new Map<string, { purpose: "sign-in" | "link"; user_id: string | null }>();
+  const database = {
+    prepare(query: string) {
+      let values: unknown[] = [];
+      return {
+        bind(...bound: unknown[]) { values = bound; return this; },
+        async run() {
+          if (query.startsWith("INSERT INTO oauth_states")) rows.set(String(values[0]), { purpose: values[1] as "link", user_id: String(values[2]) });
+          if (query.startsWith("DELETE FROM oauth_states WHERE state_hash")) rows.delete(String(values[0]));
+          return { meta: { changes: 1 } };
+        },
+        async first() {
+          const row = rows.get(String(values[0])) ?? null;
+          if (query.startsWith("DELETE FROM oauth_states WHERE state_hash")) rows.delete(String(values[0]));
+          return row;
+        },
+      };
+    },
+  } as unknown as D1Database;
+  const env = { ACCOUNT_DB: database } as Env;
+  const state = await createDiscordOAuthState(env, "link", "user-a");
+  assert.deepEqual(await consumeDiscordOAuthState(env, state), { purpose: "link", userId: "user-a" });
+  assert.equal(await consumeDiscordOAuthState(env, state), null);
+});
+
+test("Discord authorization requests only identity and email scopes", () => {
+  const url = new URL(discordAuthorizeUrl({ DISCORD_CLIENT_ID: "client", DISCORD_REDIRECT_URI: "https://accounts.example/callback" } as Env, "state-value"));
+  assert.equal(url.origin, "https://discord.com");
+  assert.equal(url.searchParams.get("scope"), "identify email");
+  assert.equal(url.searchParams.get("state"), "state-value");
+});
+
+test("Discord code exchange requires a verified email", async () => {
+  const originalFetch = globalThis.fetch;
+  let requestCount = 0;
+  globalThis.fetch = async () => ++requestCount === 1
+    ? Response.json({ access_token: "token", token_type: "Bearer" })
+    : Response.json({ id: "discord-user", username: "Player", email: "player@example.com", verified: false });
+  try {
+    await assert.rejects(exchangeDiscordCode({ DISCORD_CLIENT_ID: "client", DISCORD_CLIENT_SECRET: "secret", DISCORD_REDIRECT_URI: "https://accounts.example/callback" } as Env, "code"), /verified email/);
+  } finally { globalThis.fetch = originalFetch; }
 });
 
 function base64Url(value: Uint8Array | string): string {

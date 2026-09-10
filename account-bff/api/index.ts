@@ -87,7 +87,9 @@ async function requestBody(request: VercelRequest): Promise<BufferedBody | undef
 export default async function handler(request: VercelRequest, response: ServerResponse): Promise<void> {
   applyCors(response);
   const origin = request.headers.origin;
-  if (origin !== ALLOWED_ORIGIN) {
+  const incomingUrl = new URL(request.url ?? "/", "https://accounts.fanofin.site");
+  const isDiscordCallback = request.method === "GET" && incomingUrl.searchParams.get("_path") === "v1/auth/discord/callback";
+  if (origin !== ALLOWED_ORIGIN && !(isDiscordCallback && origin === undefined)) {
     sendJson(response, 403, { error: "Origin is not allowed" });
     return;
   }
@@ -101,7 +103,6 @@ export default async function handler(request: VercelRequest, response: ServerRe
     return;
   }
 
-  const incomingUrl = new URL(request.url ?? "/", "https://accounts.fanofin.site");
   const routedPath = incomingUrl.searchParams.get("_path") ?? "";
   incomingUrl.searchParams.delete("_path");
   const workerPath = `/${routedPath}`.replace(/\/{2,}/g, "/");
@@ -141,6 +142,8 @@ export default async function handler(request: VercelRequest, response: ServerRe
     response.setHeader("Content-Type", upstream.headers.get("Content-Type") ?? "application/json");
     const setCookie = upstream.headers.get("Set-Cookie");
     if (setCookie) response.setHeader("Set-Cookie", setCookie);
+    const location = upstream.headers.get("Location");
+    if (location) response.setHeader("Location", location);
     const requestId = upstream.headers.get("X-Request-ID");
     if (requestId) response.setHeader("X-Request-ID", requestId);
     response.end(Buffer.from(await upstream.arrayBuffer()));

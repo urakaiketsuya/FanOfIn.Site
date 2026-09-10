@@ -3,6 +3,10 @@ import { validUserFacingName } from "./content-policy";
 export interface Env {
   ACCOUNT_DB: D1Database;
   GOOGLE_CLIENT_ID: string;
+  DISCORD_CLIENT_ID: string;
+  DISCORD_CLIENT_SECRET: string;
+  DISCORD_REDIRECT_URI: string;
+  APP_BASE_URL: string;
   ASSET_BASE_URL: string;
   ALLOWED_ORIGINS: string;
   BFF_SHARED_SECRET: string;
@@ -22,7 +26,7 @@ export interface AuthUser {
   displayNameReviewed: boolean;
 }
 
-interface GoogleClaims {
+interface IdentityClaims {
   iss: string;
   aud: string;
   sub: string;
@@ -34,9 +38,26 @@ interface GoogleClaims {
   nonce?: string;
 }
 
+export type AuthProvider = "google" | "discord";
+
+export interface AuthIdentity {
+  provider: AuthProvider;
+  email: string;
+  createdAt: string;
+}
+
+interface DiscordUser {
+  id: string;
+  username: string;
+  global_name?: string | null;
+  avatar?: string | null;
+  email?: string | null;
+  verified?: boolean;
+}
+
 /** Creates the deterministic account used by the localhost-only development sign-in route. */
 export async function createLocalUserSession(env: Env): Promise<{ user: AuthUser; cookie: string }> {
-  return createUserSession(env, {
+  return createUserSession(env, "google", {
     iss: "local-development",
     aud: env.GOOGLE_CLIENT_ID,
     sub: "fanofin-local-test-user",
@@ -80,7 +101,7 @@ export function clearGoogleKeyCacheForTest(): void {
   cachedKeys = null;
 }
 
-export async function verifyGoogleCredential(credential: string, clientId: string, expectedNonce: string): Promise<GoogleClaims> {
+export async function verifyGoogleCredential(credential: string, clientId: string, expectedNonce: string): Promise<IdentityClaims> {
   const parts = credential.split(".");
   if (parts.length !== 3) throw new Error("Malformed Google credential");
   const header = JSON.parse(new TextDecoder().decode(decodeBase64Url(parts[0]))) as { alg?: string; kid?: string };
@@ -96,7 +117,7 @@ export async function verifyGoogleCredential(credential: string, clientId: strin
     new TextEncoder().encode(`${parts[0]}.${parts[1]}`),
   );
   if (!valid) throw new Error("Invalid Google credential signature");
-  const claims = JSON.parse(new TextDecoder().decode(decodeBase64Url(parts[1]))) as GoogleClaims;
+  const claims = JSON.parse(new TextDecoder().decode(decodeBase64Url(parts[1]))) as IdentityClaims;
   if (!(["https://accounts.google.com", "accounts.google.com"].includes(claims.iss))) throw new Error("Invalid Google issuer");
   if (claims.aud !== clientId || claims.exp <= Math.floor(Date.now() / 1000)) throw new Error("Expired or misdirected Google credential");
   if (!claims.sub || !claims.email || claims.email_verified === false) throw new Error("Google account email is not verified");
@@ -121,27 +142,105 @@ function cookieValue(request: Request, name: string): string | null {
   return null;
 }
 
-export async function createUserSession(env: Env, claims: GoogleClaims): Promise<{ user: AuthUser; cookie: string }> {
+export async function createUserSession(env: Env, provider: AuthProvider, claims: IdentityClaims, linkUser?: AuthUser | null): Promise<{ user: AuthUser; cookie: string }> {
   const now = new Date().toISOString();
-  const existing = await env.ACCOUNT_DB.prepare("SELECT id, display_name, profile_slug, profile_discoverable, deck_checklist_dismissed, display_name_reviewed FROM users WHERE google_subject = ?").bind(claims.sub).first<{ id: string; display_name: string; profile_slug: string; profile_discoverable: number; deck_checklist_dismissed: number; display_name_reviewed: number }>();
-  const userId = existing?.id ?? crypto.randomUUID();
+  const existing = await env.ACCOUNT_DB.prepare(`SELECT users.id, users.display_name, users.profile_slug, users.profile_discoverable,
+    users.deck_checklist_dismissed, users.display_name_reviewed
+    FROM auth_identities JOIN users ON users.id = auth_identities.user_id
+    WHERE auth_identities.provider = ? AND auth_identities.provider_subject = ?`).bind(provider, claims.sub)
+    .first<{ id: string; display_name: string; profile_slug: string; profile_discoverable: number; deck_checklist_dismissed: number; display_name_reviewed: number }>();
+  if (linkUser && existing && existing.id !== linkUser.id) throw new Error("That sign-in method is already linked to another account");
+  if (linkUser) {
+    const linkedProvider = await env.ACCOUNT_DB.prepare("SELECT provider_subject FROM auth_identities WHERE user_id = ? AND provider = ?")
+      .bind(linkUser.id, provider).first<{ provider_subject: string }>();
+    if (linkedProvider && linkedProvider.provider_subject !== claims.sub) throw new Error(`A different ${provider} account is already linked`);
+  }
+  const userId = linkUser?.id ?? existing?.id ?? crypto.randomUUID();
   const suggestedName = normalizeDisplayName(claims.name) ?? normalizeDisplayName(claims.email.split("@")[0]);
-  const displayName = existing?.display_name ?? suggestedName ?? "Deck Player";
-  const profileSlug = existing?.profile_slug ?? crypto.randomUUID().replace(/-/g, "").slice(0, 24);
+  const displayName = linkUser?.displayName ?? existing?.display_name ?? suggestedName ?? "Deck Player";
+  const profileSlug = linkUser?.profileSlug ?? existing?.profile_slug ?? crypto.randomUUID().replace(/-/g, "").slice(0, 24);
+  // google_subject remains as a compatibility column until a future full users-table rebuild.
+  // All authentication lookups use auth_identities; new non-Google users receive an inert unique value.
   await env.ACCOUNT_DB.prepare(`INSERT INTO users (id, google_subject, email, display_name, avatar_url, profile_slug, created_at, updated_at)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    ON CONFLICT(google_subject) DO UPDATE SET email = excluded.email,
-      avatar_url = excluded.avatar_url, updated_at = excluded.updated_at`)
-    .bind(userId, claims.sub, claims.email, displayName, claims.picture ?? null, profileSlug, now, now).run();
+    ON CONFLICT(id) DO UPDATE SET updated_at = excluded.updated_at`)
+    .bind(userId, provider === "google" ? claims.sub : `${provider}:${claims.sub}`, claims.email, displayName, claims.picture ?? null, profileSlug, now, now).run();
+  await env.ACCOUNT_DB.prepare(`INSERT INTO auth_identities (id, user_id, provider, provider_subject, provider_email, email_verified, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, 1, ?, ?)
+    ON CONFLICT(provider, provider_subject) DO UPDATE SET provider_email = excluded.provider_email, updated_at = excluded.updated_at`)
+    .bind(crypto.randomUUID(), userId, provider, claims.sub, claims.email, now, now).run();
+  const identityOwner = await env.ACCOUNT_DB.prepare("SELECT user_id FROM auth_identities WHERE provider = ? AND provider_subject = ?")
+    .bind(provider, claims.sub).first<{ user_id: string }>();
+  if (identityOwner?.user_id !== userId) {
+    if (!linkUser && !existing) await env.ACCOUNT_DB.prepare("DELETE FROM users WHERE id = ?").bind(userId).run();
+    throw new Error("That sign-in method is already linked to another account");
+  }
   const rawToken = `${crypto.randomUUID()}${crypto.randomUUID()}`.replace(/-/g, "");
   const expires = new Date(Date.now() + SESSION_SECONDS * 1000).toISOString();
   await env.ACCOUNT_DB.prepare("INSERT INTO sessions (id, user_id, token_hash, expires_at, created_at, last_seen_at) VALUES (?, ?, ?, ?, ?, ?)")
     .bind(crypto.randomUUID(), userId, await sha256(rawToken), expires, now, now).run();
   return {
-    user: { id: userId, email: claims.email, displayName, avatarUrl: claims.picture ?? null, profileSlug, profileDiscoverable: existing ? Boolean(existing.profile_discoverable) : true,
-      deckChecklistDismissed: Boolean(existing?.deck_checklist_dismissed), displayNameReviewed: Boolean(existing?.display_name_reviewed) },
+    user: { id: userId, email: linkUser?.email ?? claims.email, displayName, avatarUrl: linkUser?.avatarUrl ?? claims.picture ?? null, profileSlug, profileDiscoverable: linkUser?.profileDiscoverable ?? (existing ? Boolean(existing.profile_discoverable) : true),
+      deckChecklistDismissed: linkUser?.deckChecklistDismissed ?? Boolean(existing?.deck_checklist_dismissed), displayNameReviewed: linkUser?.displayNameReviewed ?? Boolean(existing?.display_name_reviewed) },
     cookie: `${SESSION_COOKIE}=${rawToken}; Path=/; HttpOnly; ${env.ALLOWED_ORIGINS.includes("https://") ? "Secure; " : ""}SameSite=Lax; Max-Age=${SESSION_SECONDS}`,
   };
+}
+
+export async function listAuthIdentities(env: Env, userId: string): Promise<AuthIdentity[]> {
+  const rows = await env.ACCOUNT_DB.prepare("SELECT provider, provider_email, created_at FROM auth_identities WHERE user_id = ? ORDER BY created_at")
+    .bind(userId).all<{ provider: AuthProvider; provider_email: string; created_at: string }>();
+  return rows.results.map((row) => ({ provider: row.provider, email: row.provider_email, createdAt: row.created_at }));
+}
+
+export async function removeAuthIdentity(env: Env, userId: string, provider: AuthProvider): Promise<void> {
+  const result = await env.ACCOUNT_DB.prepare(`DELETE FROM auth_identities
+    WHERE user_id = ? AND provider = ?
+      AND EXISTS (SELECT 1 FROM auth_identities AS other WHERE other.user_id = ? AND other.provider <> ?)`)
+    .bind(userId, provider, userId, provider).run();
+  if (result.meta.changes === 1) return;
+  const linked = await env.ACCOUNT_DB.prepare("SELECT 1 AS linked FROM auth_identities WHERE user_id = ? AND provider = ?")
+    .bind(userId, provider).first<{ linked: number }>();
+  if (!linked) throw new Error("Sign-in method is not linked");
+  throw new Error("Add another sign-in method before removing this one");
+}
+
+export async function createDiscordOAuthState(env: Env, purpose: "sign-in" | "link", userId: string | null): Promise<string> {
+  const state = `${crypto.randomUUID()}${crypto.randomUUID()}`.replace(/-/g, "");
+  const now = new Date();
+  await env.ACCOUNT_DB.prepare("DELETE FROM oauth_states WHERE expires_at <= ?").bind(now.toISOString()).run();
+  await env.ACCOUNT_DB.prepare("INSERT INTO oauth_states (state_hash, provider, purpose, user_id, expires_at, created_at) VALUES (?, 'discord', ?, ?, ?, ?)")
+    .bind(await sha256(state), purpose, userId, new Date(now.getTime() + OAUTH_NONCE_SECONDS * 1000).toISOString(), now.toISOString()).run();
+  return state;
+}
+
+export async function consumeDiscordOAuthState(env: Env, state: string): Promise<{ purpose: "sign-in" | "link"; userId: string | null } | null> {
+  const hash = await sha256(state);
+  const row = await env.ACCOUNT_DB.prepare("DELETE FROM oauth_states WHERE state_hash = ? AND provider = 'discord' AND expires_at > ? RETURNING purpose, user_id")
+    .bind(hash, new Date().toISOString()).first<{ purpose: "sign-in" | "link"; user_id: string | null }>();
+  if (!row) return null;
+  return { purpose: row.purpose, userId: row.user_id };
+}
+
+export function discordAuthorizeUrl(env: Env, state: string): string {
+  const params = new URLSearchParams({ client_id: env.DISCORD_CLIENT_ID, response_type: "code", redirect_uri: env.DISCORD_REDIRECT_URI, scope: "identify email", state, prompt: "consent" });
+  return `https://discord.com/oauth2/authorize?${params}`;
+}
+
+export async function exchangeDiscordCode(env: Env, code: string): Promise<IdentityClaims> {
+  const tokenResponse = await fetch("https://discord.com/api/v10/oauth2/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ client_id: env.DISCORD_CLIENT_ID, client_secret: env.DISCORD_CLIENT_SECRET, grant_type: "authorization_code", code, redirect_uri: env.DISCORD_REDIRECT_URI }),
+  });
+  if (!tokenResponse.ok) throw new Error("Discord authorization code was rejected");
+  const token = await tokenResponse.json<{ access_token?: string; token_type?: string }>();
+  if (!token.access_token || token.token_type?.toLowerCase() !== "bearer") throw new Error("Discord token response is malformed");
+  const userResponse = await fetch("https://discord.com/api/v10/users/@me", { headers: { Authorization: `Bearer ${token.access_token}` } });
+  if (!userResponse.ok) throw new Error("Discord profile is unavailable");
+  const user = await userResponse.json<DiscordUser>();
+  if (!user.id || !user.email || user.verified !== true) throw new Error("Discord account must have a verified email");
+  const picture = user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` : undefined;
+  return { iss: "https://discord.com", aud: env.DISCORD_CLIENT_ID, sub: user.id, email: user.email, email_verified: true, name: user.global_name ?? user.username, picture, exp: Math.floor(Date.now() / 1000) + 300 };
 }
 
 export function normalizeDisplayName(value: unknown): string | null {

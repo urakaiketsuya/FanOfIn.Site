@@ -1,4 +1,4 @@
-import { authenticatedUser, bffAllowed, consumeOAuthNonce, createLocalUserSession, createOAuthNonce, createUserSession, destroyAllSessions, destroySession, normalizeDisplayName, originAllowed, rotateCurrentSession, verifyGoogleCredential, type Env } from "./auth";
+import { authenticatedUser, bffAllowed, consumeDiscordOAuthState, consumeOAuthNonce, createDiscordOAuthState, createLocalUserSession, createOAuthNonce, createUserSession, destroyAllSessions, destroySession, discordAuthorizeUrl, exchangeDiscordCode, listAuthIdentities, normalizeDisplayName, originAllowed, removeAuthIdentity, rotateCurrentSession, verifyGoogleCredential, type AuthProvider, type Env } from "./auth";
 import { createDeckVersion, deleteDeck, getDeck, getPublicDeck, listDecks, parseSaveInput, performImport, previewImport, publishDeck, restoreDeckVersion, saveDeck, updateDeckDecklist, updateDeckMetadata } from "./decks";
 import { ApiError, badRequest } from "./errors";
 import { copyPublishedDeck, getDeckSocialState, listBookmarks, setDeckBookmark, setDeckLike } from "./deck-social";
@@ -19,6 +19,12 @@ function response(env: Env, request: Request, body: unknown, status = 200, extra
     headers.set("Vary", "Origin");
   }
   return new Response(JSON.stringify(body), { status, headers });
+}
+
+function appRedirect(env: Env, path: string, cookie?: string): Response {
+  const headers = new Headers({ Location: `${env.APP_BASE_URL.replace(/\/$/, "")}${path}`, "Cache-Control": "no-store", "Referrer-Policy": "no-referrer", "X-Content-Type-Options": "nosniff" });
+  if (cookie) headers.set("Set-Cookie", cookie);
+  return new Response(null, { status: 302, headers });
 }
 
 async function rateLimited(limiter: RateLimit, key: string): Promise<boolean> {
@@ -97,9 +103,44 @@ export default {
           throw new ApiError("Google sign-in failed", 401, "google_sign_in_failed", { cause: error });
         }
         if (!await consumeOAuthNonce(env, body.nonce)) return response(env, request, { error: "Google sign-in nonce is expired or already used" }, 400);
+        const currentUser = await authenticatedUser(request, env);
+        let session;
+        try {
+          session = await createUserSession(env, "google", claims, currentUser);
+        } catch (error) {
+          throw new ApiError(error instanceof Error ? error.message : "Google sign-in failed", 409, "identity_conflict");
+        }
         await rotateCurrentSession(request, env);
-        const session = await createUserSession(env, claims);
         return response(env, request, { user: session.user }, 200, { "Set-Cookie": session.cookie });
+      }
+      if (request.method === "POST" && url.pathname === "/v1/auth/discord/start") {
+        const clientIp = request.headers.get("X-Fanofin-Client-IP") ?? "unknown";
+        if (await rateLimited(env.LOGIN_RATE_LIMITER, clientIp)) return tooManyRequests(env, request);
+        if (!env.DISCORD_CLIENT_ID || !env.DISCORD_CLIENT_SECRET || !env.DISCORD_REDIRECT_URI) return response(env, request, { error: "Discord sign-in is not configured" }, 503);
+        const body = await jsonBody(request) as { purpose?: unknown };
+        const currentUser = await authenticatedUser(request, env);
+        const purpose = body.purpose === "link" ? "link" : "sign-in";
+        if (purpose === "link" && !currentUser) return response(env, request, { error: "Sign in is required before linking Discord" }, 401);
+        const state = await createDiscordOAuthState(env, purpose, purpose === "link" ? currentUser!.id : null);
+        return response(env, request, { url: discordAuthorizeUrl(env, state) });
+      }
+      if (request.method === "GET" && url.pathname === "/v1/auth/discord/callback") {
+        const code = url.searchParams.get("code");
+        const state = url.searchParams.get("state");
+        if (!code || !state || url.searchParams.has("error")) return appRedirect(env, "/account?auth=discord-cancelled");
+        const oauthState = await consumeDiscordOAuthState(env, state);
+        if (!oauthState) return appRedirect(env, "/account?auth=discord-state-invalid");
+        const currentUser = await authenticatedUser(request, env);
+        if (oauthState.purpose === "link" && (!currentUser || currentUser.id !== oauthState.userId)) return appRedirect(env, "/account?auth=discord-link-session-expired");
+        try {
+          const claims = await exchangeDiscordCode(env, code);
+          const session = await createUserSession(env, "discord", claims, oauthState.purpose === "link" ? currentUser : null);
+          await rotateCurrentSession(request, env);
+          return appRedirect(env, `/account?auth=${oauthState.purpose === "link" ? "discord-linked" : "discord-signed-in"}`, session.cookie);
+        } catch (error) {
+          console.error("Discord OAuth callback failed", error instanceof Error ? error.message : "Unknown error");
+          return appRedirect(env, "/account?auth=discord-failed");
+        }
       }
       if (request.method === "POST" && url.pathname === "/v1/auth/logout") return response(env, request, { success: true }, 200, { "Set-Cookie": await destroySession(request, env) });
       if (request.method === "POST" && url.pathname === "/v1/auth/logout-all") return response(env, request, { success: true }, 200, { "Set-Cookie": await destroyAllSessions(request, env) });
@@ -119,6 +160,15 @@ export default {
 
       const user = await authenticatedUser(request, env);
       if (!user) return response(env, request, { error: "Sign in is required" }, 401);
+
+      if (request.method === "GET" && url.pathname === "/v1/me/auth/identities") return response(env, request, { identities: await listAuthIdentities(env, user.id) });
+      const identityMatch = url.pathname.match(/^\/v1\/me\/auth\/identities\/(google|discord)$/);
+      if (identityMatch && request.method === "DELETE") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        try { await removeAuthIdentity(env, user.id, identityMatch[1] as AuthProvider); }
+        catch (error) { throw new ApiError(error instanceof Error ? error.message : "Could not remove sign-in method", 400, "identity_removal_failed"); }
+        return response(env, request, { success: true });
+      }
 
       const socialMatch = url.pathname.match(/^\/v1\/me\/decklists\/([a-f0-9]{32})\/(social|like|bookmark|copy|report)$/);
       if (socialMatch) {
