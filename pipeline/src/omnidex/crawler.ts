@@ -127,9 +127,16 @@ export async function crawlEvents(mode: CrawlMode): Promise<CrawlResult> {
 
     if (!event) {
       consecutive404s++;
-      if (consecutive404s >= config.new404StreakLimit) {
-        console.log(`omnidex: ${consecutive404s} consecutive missing ids at ${id} — reached the frontier, stopping.`);
-        break;
+      // Purely informational now — a long streak of missing ids (deleted/draft events, a batch of
+      // canceled ids, whatever) is not proof we've reached the real frontier. Real bug this fixed:
+      // a routine 21-id gap around id 60738-60758 tripped the old "stop after 20 consecutive 404s"
+      // heuristic and silently froze every Omnidex-derived dataset for ~11 days, even though
+      // findMaxEventId() (below, via `endId`) correctly knew ~2,500 more real events existed past
+      // the gap. `endId` is already the real, independently-computed bound (findMaxEventId for
+      // incremental/current-year, a year-boundary estimate for past-year backfill) — the loop's own
+      // `id <= endId` condition is the only stopping criterion that's actually trustworthy.
+      if (consecutive404s === config.new404StreakLimit) {
+        console.log(`omnidex: ${consecutive404s} consecutive missing ids at ${id} — continuing to scan up to the real frontier (id ${endId}) instead of stopping early.`);
       }
       continue;
     }
