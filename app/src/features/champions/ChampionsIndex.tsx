@@ -76,7 +76,7 @@ export default function ChampionsIndex() {
                   {c.classes.map((cls) => (
                     <ClassIcon key={cls} cardClass={cls} size={11} />
                   ))}
-                  {c.elements.filter((element) => element !== "NORM").map((element) => (
+                  {c.elements.map((element) => (
                     <ElementIcon key={element} element={element} size={11} />
                   ))}
                   <span className="truncate">{c.classes.join("/")} · {c.elements.join("/")}</span>
@@ -125,7 +125,7 @@ export default function ChampionsIndex() {
                     <CardArtTile card={card} name={s.signature} />
                     <p className="mt-2 truncate text-sm font-semibold text-ctp-text group-hover:text-ctp-blue">{s.signature}</p>
                     <p className="mt-0.5 flex items-center gap-1 text-[10px] text-ctp-subtext0">
-                      {s.elements.filter((element) => element !== "NORM").map((element) => (
+                      {s.elements.map((element) => (
                         <ElementIcon key={element} element={element} size={11} />
                       ))}
                       <span className="truncate">{s.elements.join("/")}</span>

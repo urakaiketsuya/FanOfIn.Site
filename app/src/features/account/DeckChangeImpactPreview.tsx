@@ -29,7 +29,7 @@ function named(decklist: OmnidexDecklist, section: "main" | "material") {
 function expectedAtTen(decklist: OmnidexDecklist, cardsByName: Map<string, Card>): string {
   const forecast = computeAggressionForecast(named(decklist, "main"), cardsByName, named(decklist, "material"));
   const hasDamage = forecast.fixedDamageCopies > 0 || forecast.variableDamageCopies > 0 || forecast.scalingDamageCopies > 0
-    || forecast.ambiguousDamageCopies > 0 || forecast.recurringDamagePerTurn > 0;
+    || forecast.ambiguousDamageCopies > 0 || forecast.awakeningBloomComboCopies > 0 || forecast.recurringDamagePerTurn > 0;
   if (!hasDamage) return "—";
   const point = forecast.points.find((candidate) => candidate.seen === 10);
   if (!point) return "—";

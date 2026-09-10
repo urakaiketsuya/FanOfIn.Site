@@ -28,6 +28,10 @@ export interface AggressionForecast {
   scalingDamageCopies: number;
   /** Copies with a fixed printed damage value that isn't guaranteed to reach the champion — either an ambiguous "target unit" clause (e.g. Blazing Throw) or one mode of a "Choose one" modal card (e.g. Vermilion Decree). Folded into the Max side only, same as `scalingDamageCopies`. */
   ambiguousDamageCopies: number;
+  /** Copies participating in the Diao Chan phantasia package: Full Bloom, Flowerbud generators,
+   * and phantasias Scepter of Awakening can animate. Their conditional output is ceiling-only
+   * except Full Bloom's own four-Flowerbud On Enter sequence. */
+  awakeningBloomComboCopies: number;
   /** Of `fixedDamageCopies`, how many also hit the deck's own champion (e.g. Embercrypt Burn's "each champion") — informational only, doesn't change any guaranteed value. */
   symmetricDamageCopies: number;
   /** Fixed champion-reach damage from Material Deck cards with an unconditional per-turn trigger (e.g. Fabled Ruby Fatestone), summed across copies. Material Deck cards are known and in play from the start of the game, not drawn — so this is a flat per-turn figure, deliberately kept separate from `points`' "cards seen" checkpoints rather than folded into them. 0 if the deck runs no such cards. */
@@ -97,6 +101,20 @@ function round(value: number, digits = 1): number {
   return Math.round(value * scale) / scale;
 }
 
+const NUMBER_WORDS: Record<string, number> = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8 };
+
+function opponentFlowerbudsSummoned(card: Card): number {
+  const match = (card.effect ?? "").match(/opponent[^.]*\bsummons?\s+(one|two|three|four|five|six|seven|eight|\d+)\s+Flowerbud tokens?/i);
+  if (!match) return 0;
+  return /^\d+$/.test(match[1]) ? Number(match[1]) : (NUMBER_WORDS[match[1].toLowerCase()] ?? 0);
+}
+
+function chanceToSeeAtLeastOne(deckSize: number, copies: number, seen: number): number {
+  if (copies <= 0 || seen <= 0) return 0;
+  const draws = Math.min(seen, deckSize);
+  return 1 - choose(deckSize - Math.min(copies, deckSize), draws) / choose(deckSize, draws);
+}
+
 export function computeAggressionForecast(
   mainLines: { name: string; quantity: number }[],
   cardsByName: Map<string, Card>,
@@ -110,9 +128,12 @@ export function computeAggressionForecast(
   let variableDamageCopies = 0;
   let scalingDamageCopies = 0;
   let ambiguousDamageCopies = 0;
+  let awakeningBloomComboCopies = 0;
   let symmetricDamageCopies = 0;
 
   let recurringDamagePerTurn = 0;
+  const hasScepterOfAwakening = materialLines.some((line) => line.quantity > 0 && line.name === "Scepter of Awakening");
+  const hasDiaoChan = materialLines.some((line) => line.quantity > 0 && line.name.startsWith("Diao Chan,"));
   for (const line of materialLines) {
     const card = cardsByName.get(line.name);
     if (!card) continue;
@@ -139,10 +160,30 @@ export function computeAggressionForecast(
   }
 
   const scalingSources: { copies: number; perUnitDamage: number; fodderCopies: number }[] = [];
+  const scepterTargets: { copies: number; power: number }[] = [];
+  const flowerbudSources: { copies: number; flowerbuds: number }[] = [];
+  const fullBloomCopies = hasDiaoChan ? (mainLines.find((line) => line.name === "Full Bloom")?.quantity ?? 0) : 0;
 
   for (const line of mainLines) {
     const card = cardsByName.get(line.name);
     if (!card) continue;
+    if (hasDiaoChan && line.name === "Full Bloom") {
+      awakeningBloomComboCopies += line.quantity;
+      // Four Flowerbuds trigger Full Bloom for 8 On Enter damage. If Scepter is available, it
+      // then gives Full Bloom a 7-power body for the ceiling's same-turn attack.
+      minGroups.push({ copies: line.quantity, damage: 8 });
+      maxGroups.push({ copies: line.quantity, damage: hasScepterOfAwakening ? 15 : 8 });
+      continue;
+    }
+    if (hasDiaoChan && hasScepterOfAwakening && card.types.includes("PHANTASIA") && !card.types.includes("ALLY") && typeof card.cost_reserve === "number" && card.cost_reserve > 0) {
+      scepterTargets.push({ copies: line.quantity, power: card.cost_reserve });
+      awakeningBloomComboCopies += line.quantity;
+    }
+    const flowerbuds = hasDiaoChan ? opponentFlowerbudsSummoned(card) : 0;
+    if (flowerbuds > 0) {
+      flowerbudSources.push({ copies: line.quantity, flowerbuds });
+      awakeningBloomComboCopies += line.quantity;
+    }
     const range = fixedChampionDamageRange(card);
     if (range) {
       fixedDamageCopies += line.quantity;
@@ -195,12 +236,25 @@ export function computeAggressionForecast(
       const fodderSeen = (source.fodderCopies * Math.min(seen, deckSize)) / deckSize;
       return sum + sourceSeen * source.perUnitDamage * fodderSeen;
     }, 0);
-    const roundedBonus = Math.round(scalingBonus);
+    // Scepter can rest once, so use the expected strongest eligible phantasia seen rather than
+    // adding every phantasia's reserve cost. Full Bloom is already modeled exactly above.
+    const maxScepterPower = Math.max(0, ...scepterTargets.map((target) => target.power));
+    let scepterBonus = 0;
+    for (let power = 1; power <= maxScepterPower; power++) {
+      const qualifyingCopies = scepterTargets.filter((target) => target.power >= power).reduce((sum, target) => sum + target.copies, 0);
+      scepterBonus += chanceToSeeAtLeastOne(deckSize, qualifyingCopies, seen);
+    }
+    // Other Flowerbud generators only deal damage while Full Bloom is also available. This is a
+    // joint-draw ceiling estimate; Full Bloom's own four tokens are already in its 8-damage group.
+    const bloomSeen = (fullBloomCopies * Math.min(seen, deckSize)) / deckSize;
+    const flowerbudBonus = flowerbudSources.reduce((sum, source) => sum + bloomSeen * ((source.copies * Math.min(seen, deckSize)) / deckSize) * source.flowerbuds * 2, 0);
+    const comboBonus = scepterBonus + flowerbudBonus;
+    const roundedBonus = Math.round(scalingBonus + comboBonus);
 
     return {
       seen,
       expectedMin: round(expected(minDistribution)),
-      expectedMax: round(expected(maxDistribution) + scalingBonus),
+      expectedMax: round(expected(maxDistribution) + scalingBonus + comboBonus),
       low: quantile(minDistribution, 0.1),
       high: quantile(maxDistribution, 0.9) + roundedBonus,
       chanceAtLeastFiveMin: round(chanceAtLeast(minDistribution, 5), 3),
@@ -216,6 +270,7 @@ export function computeAggressionForecast(
     variableDamageCopies,
     scalingDamageCopies,
     ambiguousDamageCopies,
+    awakeningBloomComboCopies,
     symmetricDamageCopies,
     recurringDamagePerTurn,
     points,

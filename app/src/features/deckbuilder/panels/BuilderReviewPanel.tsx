@@ -197,7 +197,7 @@ export default function BuilderReviewPanel({
                       <div className="min-w-0">
                         <span className="text-[10px] font-semibold uppercase tracking-wide text-ctp-red">Review</span>
                         <div className="flex items-center gap-1 truncate">
-                          {removalInfo && removalInfo.element !== "NORM" && <ElementIcon element={removalInfo.element} size={14} />}
+                          {removalInfo && <ElementIcon element={removalInfo.element} size={14} />}
                           <CardHoverPreview image={removalInfo?.editions[0]?.image} alt={removal.cardName}>
                             {removalInfo ? <Link to={`/cards/${removalInfo.slug}`} className="truncate text-sm text-ctp-text hover:text-ctp-blue">{removal.cardName}</Link> : <span className="truncate text-sm text-ctp-text">{removal.cardName}</span>}
                           </CardHoverPreview>
@@ -209,7 +209,7 @@ export default function BuilderReviewPanel({
                       <div className="min-w-0">
                         <span className="text-[10px] font-semibold uppercase tracking-wide text-ctp-green">Suggested addition</span>
                         <div className="flex items-center gap-1 truncate">
-                          {additionInfo && additionInfo.element !== "NORM" && <ElementIcon element={additionInfo.element} size={14} />}
+                          {additionInfo && <ElementIcon element={additionInfo.element} size={14} />}
                           <CardHoverPreview image={additionInfo?.editions[0]?.image} alt={addition.cardName}>
                             {additionInfo ? <Link to={`/cards/${additionInfo.slug}`} className="truncate text-sm text-ctp-text hover:text-ctp-blue">{addition.cardName}</Link> : <span className="truncate text-sm text-ctp-text">{addition.cardName}</span>}
                           </CardHoverPreview>

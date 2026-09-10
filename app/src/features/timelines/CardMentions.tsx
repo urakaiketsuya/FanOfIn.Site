@@ -27,7 +27,7 @@ export default function CardMentions({ names, cardsByName }: { names: string[]; 
               className="flex items-center gap-1.5 rounded-md border border-ctp-surface1 bg-ctp-base/40 py-1 pl-1 pr-2 text-xs font-medium text-ctp-text hover:border-ctp-blue/60"
             >
               <CardImage image={image} alt={name} className="h-7 w-5 shrink-0 rounded-sm object-cover object-top" />
-              {card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
+              <ElementIcon element={card.element} size={14} />
               {name}
             </Link>
           </CardHoverPreview>

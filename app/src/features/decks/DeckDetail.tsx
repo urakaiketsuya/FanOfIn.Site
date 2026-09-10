@@ -378,7 +378,7 @@ export default function DeckDetail() {
             return (
               <li key={c.name} className="flex items-baseline gap-1.5">
                 <span className="w-6 shrink-0 text-right text-ctp-subtext0">{c.quantity}x</span>
-                {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
+                {card && <ElementIcon element={card.element} size={14} />}
                 {card ? (
                   <CardHoverPreview image={card.editions[0]?.image} alt={c.name}>
                     <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">

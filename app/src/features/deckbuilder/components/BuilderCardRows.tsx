@@ -74,7 +74,7 @@ export function CardRow({
           {card.quantity}x{card.optimizedFrom !== null && <span className="text-ctp-blue">*</span>}
         </span>
       )}
-      {cardInfo && cardInfo.element !== "NORM" && <ElementIcon element={cardInfo.element} size={14} />}
+      {cardInfo && <ElementIcon element={cardInfo.element} size={14} />}
       <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={card.cardName}>
         {cardInfo ? (
           <Link to={`/cards/${cardInfo.slug}`} className="text-ctp-text hover:text-ctp-blue">
@@ -187,7 +187,7 @@ export function SuggestionRow({
       >
         {card.quantity}x{card.optimizedFrom !== null && <span className="text-ctp-blue">*</span>}
       </span>
-      {cardInfo && cardInfo.element !== "NORM" && <ElementIcon element={cardInfo.element} size={14} />}
+      {cardInfo && <ElementIcon element={cardInfo.element} size={14} />}
       <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={card.cardName}>
         {cardInfo ? (
           <Link to={`/cards/${cardInfo.slug}`} className="text-ctp-text hover:text-ctp-blue">

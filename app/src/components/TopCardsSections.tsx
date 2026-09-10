@@ -25,7 +25,7 @@ function CardRow({ card: topCard, resolved, winRate }: { card: PlayerTopCard; re
       ) : (
         <div className="h-14 w-10 shrink-0 rounded bg-ctp-surface0" />
       )}
-      {resolved && resolved.element !== "NORM" && <ElementIcon element={resolved.element} size={14} />}
+      {resolved && <ElementIcon element={resolved.element} size={14} />}
       <span className="flex-1 text-ctp-text">{topCard.name}</span>
       {winRate && <WinRateSignal value={winRate} />}
       <span className="text-ctp-subtext0">{topCard.deckCount} decks</span>

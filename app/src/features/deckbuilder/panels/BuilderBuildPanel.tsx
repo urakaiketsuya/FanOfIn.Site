@@ -375,7 +375,7 @@ export default function BuilderBuildPanel({
               return <li key={name} className="relative flex flex-wrap items-center gap-1.5 overflow-hidden rounded-md border border-ctp-yellow/30 bg-ctp-base py-1 pl-3 pr-2 text-sm">
                 <ElementRail elements={card?.elements} />
                 <input type="number" min={1} max={4} value={quantity} aria-label={`Copies of ${name} in maybeboard`} onChange={(event) => onMaybeQuantityChange(name, Number(event.target.value))} className="w-11 rounded border border-ctp-surface1 bg-ctp-mantle px-1 py-0.5 text-right text-xs text-ctp-text" />
-                {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
+                {card && <ElementIcon element={card.element} size={14} />}
                 <CardHoverPreview image={card?.editions[0]?.image} alt={name}>{card ? <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">{name}</Link> : <span className="text-ctp-text">{name}</span>}</CardHoverPreview>
                 <div className="ml-auto flex gap-1.5"><button type="button" disabled={lockedCards.has(name)} onClick={() => onPromoteMaybeCard(name)} className="rounded-md border border-ctp-blue px-2 py-1 text-xs text-ctp-blue disabled:opacity-40">Add to deck</button><button type="button" onClick={() => onRemoveMaybeCard(name)} className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-red">Remove</button></div>
               </li>;

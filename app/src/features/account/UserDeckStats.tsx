@@ -252,7 +252,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
   // estimate (against a calibrated "average deck" Intercept count, since there's no second decklist
   // to compare against here) so a combat-plan deck still gets a real number instead of a shrug.
   const hasDamageForecast = aggressionForecast.fixedDamageCopies > 0 || aggressionForecast.variableDamageCopies > 0
-    || aggressionForecast.scalingDamageCopies > 0 || aggressionForecast.ambiguousDamageCopies > 0 || aggressionForecast.recurringDamagePerTurn > 0;
+    || aggressionForecast.scalingDamageCopies > 0 || aggressionForecast.ambiguousDamageCopies > 0 || aggressionForecast.awakeningBloomComboCopies > 0 || aggressionForecast.recurringDamagePerTurn > 0;
   const probabilityTab: ReactNode = (
     <>
       <Panel>

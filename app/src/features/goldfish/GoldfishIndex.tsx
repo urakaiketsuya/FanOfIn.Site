@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import type { Card, OmnidexDecklist } from "@gatcg/shared";
-import { drawCards, newGame, playCard, suggestedExtraDraws, type GoldfishCardInstance, type GoldfishState } from "../../lib/goldfishSimulator";
+import { drawCards, newGame, playCard, resolveGlimpse, suggestedExtraDraws, suggestedGlimpse, type GoldfishCardInstance, type GoldfishState } from "../../lib/goldfishSimulator";
 import { DEFAULT_STARTING_HAND_SIZE } from "../../lib/turnToPlay";
 import { decodeCustomDecks } from "../../lib/compareShareLink";
 import { parseDecklist } from "../compare/parseDecklist";
@@ -20,7 +20,7 @@ interface PendingConfirm {
   confirmed: number;
 }
 
-function HandCard({ card, resolved, onPlay }: { card: GoldfishCardInstance; resolved: Card | undefined; onPlay: () => void }) {
+function HandCard({ card, resolved, disabled, onPlay }: { card: GoldfishCardInstance; resolved: Card | undefined; disabled?: boolean; onPlay: () => void }) {
   return (
     <div className="flex flex-col overflow-hidden rounded-lg border border-ctp-surface1 bg-ctp-mantle">
       <div className="p-2">
@@ -35,7 +35,7 @@ function HandCard({ card, resolved, onPlay }: { card: GoldfishCardInstance; reso
         {resolved?.effect && <details className="mt-1"><summary className="cursor-pointer text-xs text-ctp-blue">Read effect</summary><p className="mt-1 whitespace-pre-wrap text-xs leading-5 text-ctp-subtext1">{resolved.effect.replace(/\*\*/g, "")}</p></details>}
       </div>
       <div className="border-t border-ctp-surface1 px-3 py-2">
-        <button type="button" onClick={onPlay} className="min-h-10 w-full rounded-md border border-ctp-blue px-2.5 py-1 text-xs font-medium text-ctp-blue hover:bg-ctp-blue/10">Play card</button>
+        <button type="button" disabled={disabled} onClick={onPlay} className="min-h-10 w-full rounded-md border border-ctp-blue px-2.5 py-1 text-xs font-medium text-ctp-blue hover:bg-ctp-blue/10 disabled:cursor-not-allowed disabled:opacity-40">Play card</button>
       </div>
     </div>
   );
@@ -66,18 +66,38 @@ export default function GoldfishIndex() {
   const [state, setState] = useState<GoldfishState | null>(() => initialDecklist ? newGame(initialDecklist, DEFAULT_STARTING_HAND_SIZE) : null);
   const [turn, setTurn] = useState(1);
   const [pendingConfirm, setPendingConfirm] = useState<PendingConfirm | null>(null);
+  const [glimpseSize, setGlimpseSize] = useState(3);
+  const [activeGlimpse, setActiveGlimpse] = useState<{ name: string; count: number } | null>(null);
+  const [keptGlimpseIds, setKeptGlimpseIds] = useState<Set<string>>(() => new Set());
 
   function startNewHand(list: OmnidexDecklist) {
     setDecklist(list);
     setState(newGame(list, handSize));
     setTurn(1);
     setPendingConfirm(null);
+    setActiveGlimpse(null);
+    setKeptGlimpseIds(new Set());
+  }
+
+  function beginGlimpse(count: number, name = "Manual glimpse") {
+    if (!state || state.library.length === 0) return;
+    setActiveGlimpse({ name, count: Math.min(Math.max(1, Math.floor(count)), state.library.length) });
+    setKeptGlimpseIds(new Set());
+  }
+
+  function finishGlimpse() {
+    if (!activeGlimpse) return;
+    setState((current) => current ? resolveGlimpse(current, activeGlimpse.count, keptGlimpseIds) : current);
+    setActiveGlimpse(null);
+    setKeptGlimpseIds(new Set());
   }
 
   function handlePlay(card: GoldfishCardInstance) {
     setState((current) => (current ? playCard(current, card.id) : current));
     const extraDraws = suggestedExtraDraws(cardsByName.get(card.name));
     setPendingConfirm(extraDraws > 0 ? { name: card.name, extraDraws, confirmed: 0 } : null);
+    const glimpse = suggestedGlimpse(cardsByName.get(card.name));
+    if (glimpse > 0) beginGlimpse(glimpse, card.name);
   }
 
   function confirmOneDraw() {
@@ -120,14 +140,30 @@ export default function GoldfishIndex() {
               <input type="number" min={1} max={12} value={handSize} onChange={(event) => setHandSize(Math.max(1, Math.min(12, Number(event.target.value) || 1)))} className="ml-1.5 w-14 rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1 text-xs text-ctp-text" />
             </label>
             <button type="button" onClick={() => startNewHand(decklist)} className="rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs font-medium text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">New hand</button>
-            <button type="button" onClick={() => { setDecklist(null); setState(null); setPendingConfirm(null); }} className="rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Change deck</button>
+            <button type="button" onClick={() => { setDecklist(null); setState(null); setPendingConfirm(null); setActiveGlimpse(null); }} className="rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Change deck</button>
           </div>
         }
       />
       <div className="mt-4 grid gap-2 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-center">
         {([['Library', state.library.length], ['Hand', state.hand.length], ['Played', state.played.length]] as const).map(([label, count]) => <div key={label} className="rounded-lg bg-ctp-base px-3 py-2"><div className="text-xl font-semibold tabular-nums text-ctp-text">{count}</div><div className="text-xs text-ctp-subtext0">{label}</div></div>)}
-        <div className="flex gap-2 sm:block"><button type="button" disabled={state.library.length === 0} onClick={() => setState((current) => (current ? drawCards(current, 1) : current))} className="min-h-12 flex-1 rounded-md bg-ctp-blue px-4 py-2 text-sm font-medium text-ctp-base disabled:cursor-not-allowed disabled:opacity-40">Draw</button><button type="button" disabled={state.library.length === 0} onClick={() => { setTurn((value) => value + 1); setState((current) => current ? drawCards(current, 1) : current); }} className="min-h-12 flex-1 rounded-md border border-ctp-surface1 px-3 py-2 text-xs font-medium text-ctp-subtext1 sm:mt-2 sm:block">Next turn + draw</button></div>
+        <div className="flex gap-2 sm:block"><button type="button" disabled={state.library.length === 0 || activeGlimpse !== null} onClick={() => setState((current) => (current ? drawCards(current, 1) : current))} className="min-h-12 flex-1 rounded-md bg-ctp-blue px-4 py-2 text-sm font-medium text-ctp-base disabled:cursor-not-allowed disabled:opacity-40">Draw</button><button type="button" disabled={state.library.length === 0 || activeGlimpse !== null} onClick={() => { setTurn((value) => value + 1); setState((current) => current ? drawCards(current, 1) : current); }} className="min-h-12 flex-1 rounded-md border border-ctp-surface1 px-3 py-2 text-xs font-medium text-ctp-subtext1 disabled:cursor-not-allowed disabled:opacity-40 sm:mt-2 sm:block">Next turn + draw</button></div>
       </div>
+
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <label className="text-xs text-ctp-subtext1" htmlFor="goldfish-glimpse-size">Glimpse</label>
+        <input id="goldfish-glimpse-size" type="number" min={1} max={Math.max(1, state.library.length)} value={glimpseSize} onChange={(event) => setGlimpseSize(Math.max(1, Number(event.target.value) || 1))} className="w-14 rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1.5 text-xs text-ctp-text" />
+        <button type="button" disabled={state.library.length === 0 || activeGlimpse !== null} onClick={() => beginGlimpse(glimpseSize)} className="rounded-md border border-ctp-mauve/60 px-3 py-1.5 text-xs font-medium text-ctp-mauve hover:bg-ctp-mauve/10 disabled:opacity-40">Look at top cards</button>
+        <span className="text-xs text-ctp-subtext0">Use for variable or manually triggered Glimpse effects.</span>
+      </div>
+
+      {activeGlimpse && (
+        <Panel className="mt-4 border-ctp-mauve/50">
+          <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-wide text-ctp-mauve">{activeGlimpse.name} · Glimpse {activeGlimpse.count}</p><p className="mt-1 text-sm text-ctp-subtext1">Select cards to keep on top. Unselected cards will be randomized and moved to the bottom.</p></div><button type="button" onClick={finishGlimpse} className="rounded-md bg-ctp-mauve px-3 py-2 text-sm font-medium text-ctp-base">Keep {keptGlimpseIds.size} · randomize rest</button></div>
+          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            {state.library.slice(0, activeGlimpse.count).map((card) => { const resolved = cardsByName.get(card.name); const kept = keptGlimpseIds.has(card.id); return <button key={card.id} type="button" aria-pressed={kept} onClick={() => setKeptGlimpseIds((current) => { const next = new Set(current); if (next.has(card.id)) next.delete(card.id); else next.add(card.id); return next; })} className={`overflow-hidden rounded-lg border p-2 text-left ${kept ? "border-ctp-green bg-ctp-green/10 ring-2 ring-ctp-green/30" : "border-ctp-surface1 bg-ctp-base"}`}><div className="relative">{resolved?.editions[0] ? <CardImage image={resolved.editions[0].image} alt={card.name} className="aspect-[5/7] w-full rounded-md object-cover object-top" /> : <div className="aspect-[5/7] rounded-md bg-ctp-surface0" />}<span className={`absolute right-1.5 top-1.5 rounded px-2 py-1 text-xs font-semibold ${kept ? "bg-ctp-green text-ctp-base" : "bg-ctp-crust/90 text-ctp-subtext1"}`}>{kept ? "Keep" : "Bottom"}</span></div><span className="mt-2 block truncate text-xs font-medium text-ctp-text">{card.name}</span></button>; })}
+          </div>
+        </Panel>
+      )}
 
       {pendingConfirm && (
         <Panel tone="info" padding="sm" className="mt-4">
@@ -146,7 +182,7 @@ export default function GoldfishIndex() {
       <h2 className="mt-6 text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Turn {turn} · Hand</h2>
       <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
         {state.hand.map((card) => (
-          <HandCard key={card.id} card={card} resolved={cardsByName.get(card.name)} onPlay={() => handlePlay(card)} />
+          <HandCard key={card.id} card={card} resolved={cardsByName.get(card.name)} disabled={activeGlimpse !== null} onPlay={() => handlePlay(card)} />
         ))}
         {state.hand.length === 0 && <InlineState>Hand is empty — draw a card to continue.</InlineState>}
       </div>

@@ -38,7 +38,7 @@ function ProductCardLine({ line, cardsByName }: { line: OfficialProductCardLine;
   return (
     <li className="flex min-w-0 items-center gap-1.5 py-0.5 text-sm">
       <span className="w-6 shrink-0 text-right tabular-nums text-ctp-subtext0">{line.quantity}x</span>
-      {card?.element && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
+      {card?.element && <ElementIcon element={card.element} size={14} />}
       {card ? (
         <CardHoverPreview image={card.editions[0]?.image} alt={line.name}>
           <Link to={`/cards/${card.slug}`} className="truncate text-ctp-text hover:text-ctp-blue">{line.name}</Link>

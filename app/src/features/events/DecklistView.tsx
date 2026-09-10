@@ -80,7 +80,7 @@ function DeckSection({
                 ) : (
                   <div className="h-8 w-6 shrink-0 rounded bg-ctp-surface0" />
                 ))}
-              {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
+              {card && <ElementIcon element={card.element} size={14} />}
               {card ? (
                 <CardHoverPreview image={card.editions[0]?.image} alt={line.card}>
                   <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">

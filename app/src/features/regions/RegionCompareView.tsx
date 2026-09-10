@@ -135,7 +135,7 @@ function CardDiffList({ rows, labelA, labelB, sign }: { rows: CardDiffRow[]; lab
         const card = cardsByName.get(r.name);
         return (
           <li key={r.name} className="flex flex-wrap items-center gap-1.5 text-sm">
-            {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
+            {card && <ElementIcon element={card.element} size={14} />}
             {card ? (
               <CardHoverPreview image={card.editions[0]?.image} alt={r.name}>
                 <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">

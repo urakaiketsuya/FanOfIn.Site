@@ -1442,11 +1442,12 @@ same distinction `lib/deckIdentity.ts` establishes elsewhere) → Hand (revealed
 — no Field/Graveyard/Memory split, since the actual ask ("removing them from hand each time") is
 about hand-tracking, not full board simulation.
 
-The one mechanic ever auto-suggested is a "draw N cards" trigger, reusing `drawEffects.ts`'s own
-detector (`suggestedExtraDraws` calls `drawnCardsPerCopy` directly rather than a second
-implementation of the same regex) — and even that is never applied automatically. Playing a
-matched card surfaces a "+1 card?" stepper the viewer clicks 0 to N times themselves, since
-conditional wording ("If you do," "you may," "if you have no cards in your hand") can't be
+The simulator auto-suggests fixed numeric "draw N cards" and "Glimpse N" triggers. Draw detection
+reuses `drawEffects.ts`'s detector; fixed Glimpse detection skips variable X/LV clauses and leaves
+those to the manual Glimpse control. A Glimpse reveals the top N library instances, lets the player
+select cards to keep on top, then randomizes the unselected cards onto the bottom of the library.
+Nothing is applied without player confirmation, since conditional wording ("If you do," "you
+may," "if you have no cards in your hand") can't be
 verified from text alone — the same reasoning `drawEffects.ts` already documents for why it treats
 every draw clause as an upper-bound estimate rather than a guarantee. Discard, reveal, hand-size
 effects, combat, and leveling are left for the viewer to resolve by eye — not detected, not
@@ -1536,6 +1537,14 @@ access to printed damage, not damage that resolves: costs, legal targets, condit
 blockers, prevention, and game sequencing are not modeled. It therefore remains visibly separate
 from the calibrated DIAO score until an audit shows that adding consistency improves Aggro's
 usefulness.
+
+One explicit deck-aware exception models Diao Chan's phantasia package. With a Diao Chan lineage
+and Scepter of Awakening in Material, Full Bloom contributes 8 damage from its four Flowerbuds and
+a 7-power same-turn attack ceiling. Other non-Ally phantasias contribute the strongest single
+reserve-cost attack Scepter could enable (Scepter rests once, so their power is not summed), and
+cards such as Maiden of Waning Bloom add Flowerbud-trigger damage only when Full Bloom is also
+seen. These conditional additions affect the optimistic side of the range; Full Bloom's own
+four-Flowerbud sequence is the exception included on the conservative side.
 
 ### Breakthrough damage
 

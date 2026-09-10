@@ -166,7 +166,7 @@ export default function PackagesIndex() {
                     const content = (
                       <div className="flex items-center gap-3 rounded-lg border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text hover:border-ctp-blue/50 hover:text-ctp-blue">
                         {card?.editions[0] ? <CardImage image={card.editions[0].image} alt={name} className="h-12 w-9 rounded object-cover object-top" /> : <div className="h-12 w-9 rounded bg-ctp-surface0" />}
-                        {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
+                        {card && <ElementIcon element={card.element} size={14} />}
                         <span className="font-medium">{name}</span>
                       </div>
                     );
@@ -233,7 +233,7 @@ export default function PackagesIndex() {
                     <CardHoverPreview key={name} image={card.editions[0]?.image} alt={name}>
                       <Link to={`/cards/${card.slug}`} className="flex items-center gap-2 rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1.5 text-xs text-ctp-text hover:border-ctp-blue/50 hover:text-ctp-blue">
                         {card.editions[0] && <CardImage image={card.editions[0].image} alt={name} className="h-9 w-6 rounded object-cover object-top" />}
-                        {card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
+                        <ElementIcon element={card.element} size={14} />
                         {name}
                       </Link>
                     </CardHoverPreview>
@@ -286,7 +286,7 @@ export default function PackagesIndex() {
                       <div className="rounded-lg border border-ctp-surface0 bg-ctp-base/50 px-4 py-3"><h5 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Required</h5><p className="mt-1 text-sm text-ctp-text">{[family.anchorCard, ...family.coreCards].join(" + ")}</p></div>
                       <div className="rounded-lg border border-ctp-surface0 bg-ctp-base/50 px-4 py-3"><h5 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Options</h5><p className="mt-1 text-sm text-ctp-text">At least {family.minOptions} of {family.optionCards.length}: {family.optionCards.join(", ")}</p></div>
                     </div>
-                    <div className="mt-4 flex flex-wrap gap-2">{names.map((name) => { const card = cardsByName.get(name); return card ? <CardHoverPreview key={name} image={card.editions[0]?.image} alt={name}><Link to={`/cards/${card.slug}`} className="flex items-center gap-2 rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1.5 text-xs text-ctp-text hover:border-ctp-blue/50 hover:text-ctp-blue">{card.editions[0] && <CardImage image={card.editions[0].image} alt={name} className="h-9 w-6 rounded object-cover object-top" />}{card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}{name}</Link></CardHoverPreview> : <span key={name} className="rounded-md border border-ctp-surface1 px-2 py-1.5 text-xs">{name}</span>; })}</div>
+                    <div className="mt-4 flex flex-wrap gap-2">{names.map((name) => { const card = cardsByName.get(name); return card ? <CardHoverPreview key={name} image={card.editions[0]?.image} alt={name}><Link to={`/cards/${card.slug}`} className="flex items-center gap-2 rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1.5 text-xs text-ctp-text hover:border-ctp-blue/50 hover:text-ctp-blue">{card.editions[0] && <CardImage image={card.editions[0].image} alt={name} className="h-9 w-6 rounded object-cover object-top" />}<ElementIcon element={card.element} size={14} />{name}</Link></CardHoverPreview> : <span key={name} className="rounded-md border border-ctp-surface1 px-2 py-1.5 text-xs">{name}</span>; })}</div>
                   </article>
                 );
               })}
@@ -339,7 +339,7 @@ export default function PackagesIndex() {
                       <CardHoverPreview key={name} image={card.editions[0]?.image} alt={name}>
                         <Link to={`/cards/${card.slug}`} className="flex items-center gap-2 rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1.5 text-xs text-ctp-text hover:border-ctp-blue/50 hover:text-ctp-blue">
                           {card.editions[0] && <CardImage image={card.editions[0].image} alt={name} className="h-9 w-6 rounded object-cover object-top" />}
-                          {card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
+                          <ElementIcon element={card.element} size={14} />
                           {name}
                         </Link>
                       </CardHoverPreview>

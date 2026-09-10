@@ -66,7 +66,7 @@ function CardLiftList({ rows, sign }: { rows: RegionalCardRow[]; sign: "positive
         const card = cardsByName.get(r.cardName);
         return (
           <li key={r.cardName} className="flex flex-wrap items-center gap-1.5 text-sm">
-            {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
+            {card && <ElementIcon element={card.element} size={14} />}
             {card ? (
               <CardHoverPreview image={card.editions[0]?.image} alt={r.cardName}>
                 <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">

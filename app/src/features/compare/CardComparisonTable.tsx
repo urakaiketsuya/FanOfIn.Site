@@ -83,7 +83,7 @@ export default function CardComparisonTable({ names, onRemove }: { names: string
               <td key={r.name} className="py-1.5 pr-6 text-ctp-subtext1">
                 {r.card ? (
                   <span className="flex items-center gap-1">
-                    {r.card.element !== "NORM" && <ElementIcon element={r.card.element} size={14} />}
+                    <ElementIcon element={r.card.element} size={14} />
                     {r.card.elements.length > 0 ? r.card.elements.join("/") : r.card.element}
                   </span>
                 ) : (

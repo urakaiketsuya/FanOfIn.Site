@@ -18,6 +18,7 @@ export default function AggressionForecast({ forecast, embedded = false, seen, o
     forecast.variableDamageCopies === 0 &&
     forecast.scalingDamageCopies === 0 &&
     forecast.ambiguousDamageCopies === 0 &&
+    forecast.awakeningBloomComboCopies === 0 &&
     forecast.recurringDamagePerTurn === 0
   );
   const [localSelectedSeen, setLocalSelectedSeen] = useState(forecast.points[1]?.seen ?? forecast.points[0]?.seen ?? 0);
@@ -30,7 +31,7 @@ export default function AggressionForecast({ forecast, embedded = false, seen, o
   const expectedValues = forecast.points.map((point) => (point.expectedMin + point.expectedMax) / 2);
   const fiveChance = (selected.chanceAtLeastFiveMin + selected.chanceAtLeastFiveMax) / 2;
   const tenChance = (selected.chanceAtLeastTenMin + selected.chanceAtLeastTenMax) / 2;
-  const damageCopies = forecast.fixedDamageCopies + forecast.variableDamageCopies + forecast.scalingDamageCopies + forecast.ambiguousDamageCopies;
+  const damageCopies = forecast.fixedDamageCopies + forecast.variableDamageCopies + forecast.scalingDamageCopies + forecast.ambiguousDamageCopies + forecast.awakeningBloomComboCopies;
 
   return (
     <div data-component="AggressionForecast" className={embedded ? "" : "mt-4 border-t border-ctp-surface1 pt-4"}>
@@ -49,6 +50,7 @@ export default function AggressionForecast({ forecast, embedded = false, seen, o
       <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-ctp-subtext0">
         <span>{damageCopies} detected damage {damageCopies === 1 ? "copy" : "copies"}</span>
         {forecast.recurringDamagePerTurn > 0 && <span>{forecast.recurringDamagePerTurn} recurring damage/turn</span>}
+        {forecast.awakeningBloomComboCopies > 0 && <span>{forecast.awakeningBloomComboCopies} Diao phantasia combo copies</span>}
       </div>
       <details className="mt-3 overflow-hidden rounded-xl bg-ctp-surface0/50 text-xs text-ctp-subtext0">
         <summary className="min-h-10 cursor-pointer px-3 py-2.5 font-medium hover:bg-ctp-surface0 hover:text-ctp-text focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-ctp-blue">View exact forecast data</summary>

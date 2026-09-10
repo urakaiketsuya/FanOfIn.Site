@@ -30,7 +30,7 @@ export default function CardArtTile({
       ) : (
         <span className="flex h-full items-center p-1 text-center text-[9px] text-ctp-subtext0">{name}</span>
       )}
-      {card && card.element !== "NORM" && (
+      {card && (
         <span className="absolute left-1 top-1">
           <ElementIcon element={card.element} size={14} />
         </span>

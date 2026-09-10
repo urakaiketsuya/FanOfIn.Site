@@ -326,7 +326,7 @@ export default function CardStatsIndex() {
                         {card?.editions[0] && (
                           <CardImage image={card.editions[0].image} alt={c.name} className="h-10 w-7 rounded object-cover object-top" />
                         )}
-                        {card && card.element !== "NORM" && <ElementIcon element={card.element} size={14} />}
+                        {card && <ElementIcon element={card.element} size={14} />}
                         {c.name}
                       </Link>
                     ) : (
