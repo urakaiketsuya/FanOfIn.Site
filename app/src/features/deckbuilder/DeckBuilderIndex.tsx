@@ -10,7 +10,7 @@ import type { RatingPillar } from "../../lib/deckIdentity";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import NotificationBanner from "../../components/ui/NotificationBanner";
 import PageHeader from "../../components/ui/PageHeader";
-import Tabs, { TabPanel } from "../../components/ui/Tabs";
+import { TabPanel } from "../../components/ui/Tabs";
 import { useTabParam } from "../../lib/useTabParam";
 import { encodeCustomDecks } from "../../lib/compareShareLink";
 import { useNearestDecks, type NearestDeck } from "./useNearestDecks";
@@ -46,8 +46,10 @@ import BuilderBuildPanel from "./panels/BuilderBuildPanel";
 import BuilderReviewPanel from "./panels/BuilderReviewPanel";
 import BuilderTestPanel from "./panels/BuilderTestPanel";
 import { useDeckTestResult } from "../decks/useDeckTestResult";
+import BuilderWorkbenchNav, { type BuilderWorkbenchView } from "./components/BuilderWorkbenchNav";
+import BuilderStageHandoff from "./components/BuilderStageHandoff";
 
-type BuilderTab = "build" | "review" | "test" | "stats" | "tools" | "buddies" | "copy" | "log";
+type BuilderTab = BuilderWorkbenchView;
 const TAB_KEYS: BuilderTab[] = ["build", "review", "test", "stats", "tools", "buddies", "copy", "log"];
 
 type BuilderIntent = "seed" | "scratch";
@@ -136,8 +138,8 @@ function loadSessionSeed(): SessionSeed | null {
 
 export default function DeckBuilderIndex() {
   useDocumentTitle(
-    "Guided Deck Builder",
-    "Build a Grand Archive deck from tournament win-rate, blended community-usage, or balanced recommendations, then tune, validate, share, buy, export, or playtest it.",
+    "Deck Workbench",
+    "Find an idea, build a Grand Archive deck, tune evidence-backed recommendations, test it against the field, then validate, save, and export it.",
   );
   const [searchParams, setSearchParams] = useSearchParams();
   const improveDeckId = searchParams.get("improveDeck");
@@ -915,9 +917,8 @@ export default function DeckBuilderIndex() {
   const sideboardLines = useMemo(() => build.sideboard.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.sideboard]);
 
   // Lifted out of StatsPanel (rather than computed only when that tab is active) so a tab-label
-  // badge can reflect these findings even while the user is looking at the Build tab — otherwise
-  // discovery-worthy signals (a card decaying out of the meta, a new-set combo, an under-supported
-  // package) stay invisible behind a tab most users never click.
+  // Compute insight counts outside the panel so the supporting-tool affordance can advertise
+  // useful findings without making Deck Insights a peer of the primary workflow stages.
   const preferredSuggestionNames = useMemo(() => build.suggestions.map((card) => card.cardName), [build.suggestions]);
   const synergyReadiness = useMemo(
     () => computeSynergyReadiness(mainOnlyLines, catalogByName, catalogByName.values(), identityElements, preferredSuggestionNames),
@@ -989,14 +990,9 @@ export default function DeckBuilderIndex() {
   const sideboardPrice = useMemo(() => calculateLinePrice(sideboardLines, priceByName), [sideboardLines, priceByName]);
   const importedCardCount = Array.from(lockedCards.values()).reduce((sum, quantity) => sum + quantity, 0);
   const identityComplete = Boolean(championName && spiritFilter);
-  const startingCardsComplete = isImproving ? importedCardCount > 0 : builderIntent === "seed" ? lockedCards.size > 0 : identityComplete;
   const buildComplete = identityComplete && mainTotal > 0;
   const reviewComplete = buildComplete && reviewItemCount === 0;
   const validationComplete = validation.status === "Legal";
-  function focusBuilderStep(id: string, destination?: BuilderTab) {
-    if (destination) setTab(destination);
-    requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" }));
-  }
   const copyPanel = useBuilderCopyState({
     build, buildLines, sideboardLines, decklist, keptDecklist, cardsByName, championName, spiritFilter,
     archetypeId, deckFormat, lockedCards, lockedSections, improveDeckId, maybeboard,
@@ -1005,33 +1001,14 @@ export default function DeckBuilderIndex() {
   return (
     <PageLayout data-component="DeckBuilderIndex">
       <PageHeader
-        title={isImproving ? "Improve your deck" : "Guided Deck Builder"}
+        eyebrow="Connected deck tools"
+        title={isImproving ? "Improve your deck" : "Deck Workbench"}
         description={(
           isImproving
             ? <>Your saved list is the baseline. Review evidence-backed changes, keep only the ones you want, then save a new version when you are ready.</>
             : <>Start from a Champion, an Element, and a Spirit to generate a suggested deck from real decklists. You can also paste a list to tune cards you already have.</>
         )}
       />
-
-      <nav className="mt-5 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3" aria-label="Guided deck-building steps">
-        <p className="px-1 text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Your deck-building path</p>
-        <ol className="mt-2 grid gap-1 sm:grid-cols-5">
-          {[
-            { label: "Identity", summary: identityComplete ? `${championName} · ${spiritFilter}` : "Choose Champion and Spirit", complete: identityComplete, id: "deck-builder-identity" },
-            { label: "Starting cards", summary: startingCardsComplete ? (isImproving ? `${importedCardCount} baseline cards` : builderIntent === "seed" ? `${lockedCards.size} cards locked` : "Fresh suggested shell") : "Choose your starting point", complete: startingCardsComplete, id: "deck-builder-starting" },
-            { label: "Build", summary: buildComplete ? `${mainTotal} main cards` : "Shape your deck", complete: buildComplete, id: "deck-builder-panel-build", tab: "build" as BuilderTab },
-            { label: "Review", summary: reviewComplete ? "Changes reviewed" : reviewItemCount > 0 ? `${reviewItemCount} changes to review` : "Review recommendations", complete: reviewComplete, id: "deck-builder-panel-review", tab: "review" as BuilderTab },
-            { label: "Validate & save", summary: validationComplete ? "Ready to save" : validation.status, complete: validationComplete, id: "deck-builder-panel-copy", tab: "copy" as BuilderTab },
-          ].map((step, index) => (
-            <li key={step.label}>
-              <button type="button" onClick={() => focusBuilderStep(step.id, step.tab)} className={`flex w-full items-start gap-2 rounded-lg px-2 py-2 text-left transition-colors ${step.tab === tab ? "bg-ctp-blue/10" : "hover:bg-ctp-surface0"}`}>
-                <span className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold ${step.complete ? "bg-ctp-green text-ctp-base" : step.tab === tab ? "bg-ctp-blue text-ctp-base" : "border border-ctp-surface1 text-ctp-subtext0"}`}>{step.complete ? "✓" : index + 1}</span>
-                <span className="min-w-0"><span className="block text-xs font-semibold text-ctp-text">{step.label}</span><span className="mt-0.5 block truncate text-[10px] text-ctp-subtext0">{step.summary}</span></span>
-              </button>
-            </li>
-          ))}
-        </ol>
-      </nav>
 
       {!isImproving && !identityComplete && <section className="mt-5 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4" aria-labelledby="builder-start">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -1268,24 +1245,18 @@ export default function DeckBuilderIndex() {
             </div>
           </section>
 
-          <div className="mt-4">
-            <Tabs<BuilderTab>
-              tabs={[
-                { key: "build", label: "Build" },
-                { key: "review", label: reviewItemCount > 0 ? `Review & decide (${reviewItemCount})` : "Review & decide" },
-                { key: "test", label: "Test" },
-                { key: "stats", label: statsSignalCount > 0 ? `Stats (${statsSignalCount})` : "Stats" },
-                { key: "tools", label: "Advanced" },
-                { key: "buddies", label: "Buddy Cards" },
-                { key: "copy", label: "Validate & save" },
-                { key: "log", label: `Log (${changeLog.length})` },
-              ]}
-              active={tab}
-              onChange={setTab}
-              label="Deck builder sections"
-              baseId="deck-builder"
-            />
-          </div>
+          <BuilderWorkbenchNav
+            activeView={tab}
+            onViewChange={setTab}
+            championName={championName}
+            spiritName={spiritFilter}
+            deckFormat={deckFormat}
+            mainTotal={mainTotal}
+            validationStatus={validation.status}
+            reviewItemCount={reviewItemCount}
+            statsSignalCount={statsSignalCount}
+            changeLogCount={changeLog.length}
+          />
 
           {newReleaseCards.length > 0 && (
             <div className="mt-4">
@@ -1297,16 +1268,7 @@ export default function DeckBuilderIndex() {
               />
             </div>
           )}
-          {reviewItemCount > 0 && tab !== "review" && (
-            <div className="mt-4">
-              <NotificationBanner
-                tone="warning"
-                title={`${reviewItemCount} recommendation${reviewItemCount === 1 ? "" : "s"} ready`}
-                description="Review suggested additions, cuts, and section-compatible swaps."
-                action={{ label: "Review recommendations", onClick: () => setTab("review") }}
-              />
-            </div>
-          )}
+          <BuilderStageHandoff view={tab} onContinue={setTab} />
           {tab === "build" && (
             <BuilderBuildPanel
               builderIntent={builderIntent}
