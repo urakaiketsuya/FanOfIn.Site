@@ -474,15 +474,12 @@ export default function About() {
           <div>
             <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">Guided Deck Builder</h2>
             <p className="mt-2 text-sm text-ctp-subtext1">
-              Start with a Champion and Spirit, then get data-informed card and quantity suggestions from comparable
-              tournament decks.{" "}
+              Pick a champion and spirit, then get automatic recommendations for an optimal deck.{" "}
               {WALKTHROUGH_DECK_BUILDER.championName} + {WALKTHROUGH_DECK_BUILDER.spiritName},{" "}
               {WALKTHROUGH_DECK_BUILDER.matchingDecks} matching decks:
             </p>
             <p className="mt-4 text-xs text-ctp-subtext0">
-              Lock in your own picks (or paste a decklist to start from) and the rest adapts around them, with
-              editable quantities, "buddy cards," swap-in ideas, composition guidance, and a running log of what
-              changed with each choice.
+              You can also paste in a decklist to review suggestions.
             </p>
             <Link to="/deck-builder" className="mt-4 inline-block text-sm font-semibold text-ctp-blue hover:underline">
               Open Guided Deck Builder &rarr;

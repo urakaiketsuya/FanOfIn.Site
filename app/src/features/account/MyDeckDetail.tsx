@@ -76,7 +76,7 @@ function MaybeboardCardTile({ line, card, onChangeQuantity, onMove, onRemove }: 
 /** Visual, click-to-edit alternative to hand-editing the raw decklist text — the same full-image grid used elsewhere in the app (BuilderCardGrid, DecklistView's Visual mode), wired directly to the "Add card" bar above it via `deckText`. */
 function EditableDecklistGrid({ decklist, cardsByName, onChangeQuantity, onMove, onRemove }: { decklist: OmnidexDecklist; cardsByName: Map<string, Card>; onChangeQuantity: (section: DeckSectionKey, name: string, quantity: number) => void; onMove: (from: DeckSectionKey, to: DeckSectionKey, name: string) => void; onRemove: (section: DeckSectionKey, name: string) => void }) {
   const sections = EDIT_SECTIONS.map((section) => ({ ...section, lines: decklist[section.key] })).filter((section) => section.lines.length > 0);
-  if (sections.length === 0) return <p className="text-sm text-ctp-subtext1">No cards yet — add one above, or paste a decklist using "Edit as text" below.</p>;
+  if (sections.length === 0) return <p className="text-sm text-ctp-subtext1">No cards yet. Click edit to begin building.</p>;
   return (
     <div className="space-y-5">
       {sections.map((section) => (
