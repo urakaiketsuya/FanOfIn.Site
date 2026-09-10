@@ -104,7 +104,7 @@ export interface AccountSession {
   user: AccountUser | null;
 }
 
-export type AuthProvider = "google" | "discord";
+export type AuthProvider = "google" | "discord" | "password";
 
 export interface AuthIdentity {
   provider: AuthProvider;

@@ -1,4 +1,4 @@
-import { authenticatedUser, bffAllowed, consumeDiscordOAuthState, consumeOAuthNonce, createDiscordOAuthState, createLocalUserSession, createOAuthNonce, createUserSession, destroyAllSessions, destroySession, discordAuthorizeUrl, exchangeDiscordCode, listAuthIdentities, normalizeDisplayName, originAllowed, removeAuthIdentity, rotateCurrentSession, verifyGoogleCredential, type AuthProvider, type Env } from "./auth";
+import { authenticatedUser, bffAllowed, consumeDiscordOAuthState, consumeOAuthNonce, createDiscordOAuthState, createLocalUserSession, createOAuthNonce, createUserSession, destroyAllSessions, destroySession, discordAuthorizeUrl, exchangeDiscordCode, listAuthIdentities, normalizeDisplayName, originAllowed, recentlyAuthenticated, removeAuthIdentity, rotateCurrentSession, verifyGoogleCredential, type AuthProvider, type Env } from "./auth";
 import { createDeckVersion, deleteDeck, getDeck, getPublicDeck, listDecks, parseSaveInput, performImport, previewImport, publishDeck, restoreDeckVersion, saveDeck, updateDeckDecklist, updateDeckMetadata } from "./decks";
 import { ApiError, badRequest } from "./errors";
 import { copyPublishedDeck, getDeckSocialState, listBookmarks, setDeckBookmark, setDeckLike } from "./deck-social";
@@ -6,6 +6,7 @@ import { discoverDecks, discoverProfiles, getPublicProfile } from "./discovery";
 import { reportDeck } from "./moderation";
 import { serviceHealth } from "./health";
 import { listCollection, listSharedCardWatches, setSharedCardWatch, undoCollectionTransaction, updateCollection } from "./collection";
+import { changePassword, handleResendWebhook, loginPassword, recordPrivateResourceMiss, registerPassword, removePasswordCredential, requestPasswordReset, resetPassword, verifyEmailToken, verifyTurnstile } from "./password-auth";
 
 function response(env: Env, request: Request, body: unknown, status = 200, extra: HeadersInit = {}): Response {
   const origin = request.headers.get("Origin");
@@ -33,6 +34,12 @@ async function rateLimited(limiter: RateLimit, key: string): Promise<boolean> {
 
 function tooManyRequests(env: Env, request: Request): Response {
   return response(env, request, { error: "Too many requests. Try again in a minute." }, 429, { "Retry-After": "60" });
+}
+
+async function loginIdentifierKey(value: unknown): Promise<string> {
+  const normalized = typeof value === "string" ? value.trim().toLowerCase().slice(0, 254) : "invalid";
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(normalized));
+  return `identifier:${Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("")}`;
 }
 
 async function jsonBody(request: Request): Promise<unknown> {
@@ -63,6 +70,10 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     const requestId = request.headers.get("CF-Ray") ?? crypto.randomUUID();
+    if (request.method === "POST" && url.pathname === "/v1/webhooks/resend") {
+      try { return await handleResendWebhook(env, request) ? response(env, request, { success: true }) : response(env, request, { error: "Invalid webhook signature" }, 401); }
+      catch (error) { logError(request, requestId, error, 500, "resend_webhook_failed"); return response(env, request, { error: "Webhook processing failed" }, 500); }
+    }
     if (request.method === "OPTIONS") {
       if (!originAllowed(request, env)) return response(env, request, { error: "Origin is not allowed" }, 403);
       return response(env, request, {}, 200, { "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS", "Access-Control-Allow-Headers": "Content-Type" });
@@ -124,6 +135,52 @@ export default {
         const state = await createDiscordOAuthState(env, purpose, purpose === "link" ? currentUser!.id : null);
         return response(env, request, { url: discordAuthorizeUrl(env, state) });
       }
+      if (request.method === "POST" && url.pathname === "/v1/auth/password/register") {
+        const clientIp = request.headers.get("X-Fanofin-Client-IP") ?? "unknown";
+        if (await rateLimited(env.LOGIN_RATE_LIMITER, clientIp)) return tooManyRequests(env, request);
+        const body = await jsonBody(request) as { email?: unknown; password?: unknown; turnstileToken?: unknown };
+        if (await rateLimited(env.LOGIN_RATE_LIMITER, await loginIdentifierKey(body.email))) return tooManyRequests(env, request);
+        if (!await verifyTurnstile(env, body.turnstileToken, clientIp)) return response(env, request, { error: "Human verification failed" }, 400);
+        const currentUser = await authenticatedUser(request, env);
+        if (currentUser && !await recentlyAuthenticated(request, env)) return response(env, request, { error: "Sign in again before adding a password" }, 403);
+        await registerPassword(env, body.email, body.password, currentUser, requestId);
+        return response(env, request, { success: true, message: "If registration can continue, check your email for a verification link." }, 202);
+      }
+      if (request.method === "POST" && url.pathname === "/v1/auth/password/verify-email") {
+        const body = await jsonBody(request) as { token?: unknown };
+        if (typeof body.token !== "string") throw badRequest("Verification token is required");
+        const session = await verifyEmailToken(env, body.token, requestId, await authenticatedUser(request, env));
+        if (session.cookie) await rotateCurrentSession(request, env);
+        return response(env, request, { user: session.user }, 200, session.cookie ? { "Set-Cookie": session.cookie } : {});
+      }
+      if (request.method === "POST" && url.pathname === "/v1/auth/password/login") {
+        const clientIp = request.headers.get("X-Fanofin-Client-IP") ?? "unknown";
+        if (await rateLimited(env.LOGIN_RATE_LIMITER, clientIp)) return tooManyRequests(env, request);
+        const body = await jsonBody(request) as { email?: unknown; password?: unknown; turnstileToken?: unknown };
+        if (await rateLimited(env.LOGIN_RATE_LIMITER, await loginIdentifierKey(body.email))) return tooManyRequests(env, request);
+        if (!await verifyTurnstile(env, body.turnstileToken, clientIp)) return response(env, request, { error: "Human verification failed" }, 400);
+        const session = await loginPassword(env, body.email, body.password, requestId);
+        await rotateCurrentSession(request, env);
+        return response(env, request, { user: session.user }, 200, { "Set-Cookie": session.cookie });
+      }
+      if (request.method === "POST" && url.pathname === "/v1/auth/password/forgot") {
+        const clientIp = request.headers.get("X-Fanofin-Client-IP") ?? "unknown";
+        if (await rateLimited(env.LOGIN_RATE_LIMITER, clientIp)) return tooManyRequests(env, request);
+        const body = await jsonBody(request) as { email?: unknown; turnstileToken?: unknown };
+        if (await rateLimited(env.LOGIN_RATE_LIMITER, await loginIdentifierKey(body.email))) return tooManyRequests(env, request);
+        if (!await verifyTurnstile(env, body.turnstileToken, clientIp)) return response(env, request, { error: "Human verification failed" }, 400);
+        await requestPasswordReset(env, body.email, requestId);
+        return response(env, request, { success: true, message: "If that email has a verified account, a reset link has been sent." }, 202);
+      }
+      if (request.method === "POST" && url.pathname === "/v1/auth/password/reset") {
+        const clientIp = request.headers.get("X-Fanofin-Client-IP") ?? "unknown";
+        if (await rateLimited(env.LOGIN_RATE_LIMITER, clientIp)) return tooManyRequests(env, request);
+        const body = await jsonBody(request) as { token?: unknown; password?: unknown; turnstileToken?: unknown };
+        if (!await verifyTurnstile(env, body.turnstileToken, clientIp)) return response(env, request, { error: "Human verification failed" }, 400);
+        if (typeof body.token !== "string") throw badRequest("Reset token is required");
+        await resetPassword(env, body.token, body.password, requestId);
+        return response(env, request, { success: true });
+      }
       if (request.method === "GET" && url.pathname === "/v1/auth/discord/callback") {
         const code = url.searchParams.get("code");
         const state = url.searchParams.get("state");
@@ -162,10 +219,21 @@ export default {
       if (!user) return response(env, request, { error: "Sign in is required" }, 401);
 
       if (request.method === "GET" && url.pathname === "/v1/me/auth/identities") return response(env, request, { identities: await listAuthIdentities(env, user.id) });
-      const identityMatch = url.pathname.match(/^\/v1\/me\/auth\/identities\/(google|discord)$/);
+      if (request.method === "POST" && url.pathname === "/v1/me/auth/password/change") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        if (!await recentlyAuthenticated(request, env)) return response(env, request, { error: "Sign in again before changing your password" }, 403);
+        const body = await jsonBody(request) as { currentPassword?: unknown; newPassword?: unknown };
+        const session = await changePassword(env, user.id, body.currentPassword, body.newPassword, requestId);
+        return response(env, request, { user: session.user }, 200, { "Set-Cookie": session.cookie });
+      }
+      const identityMatch = url.pathname.match(/^\/v1\/me\/auth\/identities\/(google|discord|password)$/);
       if (identityMatch && request.method === "DELETE") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
-        try { await removeAuthIdentity(env, user.id, identityMatch[1] as AuthProvider); }
+        if (!await recentlyAuthenticated(request, env)) return response(env, request, { error: "Sign in again before changing sign-in methods" }, 403);
+        try {
+          if (identityMatch[1] === "password") await removePasswordCredential(env, user.id);
+          else await removeAuthIdentity(env, user.id, identityMatch[1] as Exclude<AuthProvider, "password">);
+        }
         catch (error) { throw new ApiError(error instanceof Error ? error.message : "Could not remove sign-in method", 400, "identity_removal_failed"); }
         return response(env, request, { success: true });
       }
@@ -296,6 +364,10 @@ export default {
       const known = error instanceof ApiError;
       const status = known ? error.status : 500;
       const code = known ? error.code : "internal_error";
+      if (status === 404 && url.pathname.startsWith("/v1/me/")) {
+        const actor = await authenticatedUser(request, env);
+        if (actor) await recordPrivateResourceMiss(env, actor.id, url.pathname, requestId).catch(() => undefined);
+      }
       logError(request, requestId, known && error.cause ? error.cause : error, status, code);
       return response(env, request, { error: known ? error.publicMessage : "Unexpected account service error", requestId }, status, { "X-Request-ID": requestId });
     }

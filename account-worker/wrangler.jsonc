@@ -9,6 +9,7 @@
     "GOOGLE_CLIENT_ID": "33283325780-takrrvtrs2qb8pshdkukog52le87b76k.apps.googleusercontent.com",
     "DISCORD_CLIENT_ID": "1545234657791049758",
     "DISCORD_REDIRECT_URI": "http://localhost:8788/v1/auth/discord/callback",
+    "EMAIL_FROM": "Fan of Insight <accounts@fanofin.site>",
     "APP_BASE_URL": "http://localhost:5173"
   },
   "ratelimits": [
@@ -34,6 +35,7 @@
         "GOOGLE_CLIENT_ID": "33283325780-takrrvtrs2qb8pshdkukog52le87b76k.apps.googleusercontent.com",
         "DISCORD_CLIENT_ID": "1545234657791049758",
         "DISCORD_REDIRECT_URI": "https://accounts.fanofin.site/api/v1/auth/discord/callback",
+        "EMAIL_FROM": "Fan of Insight <accounts@fanofin.site>",
         "APP_BASE_URL": "https://fanofin.site"
       },
       "ratelimits": [

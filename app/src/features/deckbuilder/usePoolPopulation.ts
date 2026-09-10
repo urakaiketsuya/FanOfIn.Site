@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import type { ArchetypeTaxonomyData, Card } from "@gatcg/shared";
 import { decodedDeckToRow, type DecodedDeck } from "../../lib/decodedDecks";
-import type { DeckBuilderRow } from "./useDeckBuilderPopulation";
+import { canonicalizeSpiritCardMap, type DeckBuilderRow } from "./useDeckBuilderPopulation";
 
 /** The three cross-Champion pools that still feed the same `computeCardImpactEntries`-based ranking `useSuggestedBuild.ts` already does — "this Champion + Spirit"/"this Champion, any Spirit" stay handled by `useDeckBuilderPopulation` directly, and "nearest similar decks"/"global element stats" are different enough in shape (see `useNearestDecks.ts`/`useGlobalElementSuggestions.ts`) to need their own hooks. */
 export type CrossChampionPool = "spiritAnyChampion" | "closestCluster" | "sameClass";
@@ -52,7 +52,10 @@ export function usePoolPopulation(
 
     if (pool === "spiritAnyChampion") {
       if (!spiritFilter) return { rows: [], label: "Pick a Spirit to use this pool." };
-      const rows = decks.filter((d) => d.spiritName !== null && (spiritCanonicalNames.get(d.spiritName) ?? d.spiritName) === spiritFilter).map(decodedDeckToRow);
+      const rows = decks
+        .filter((d) => d.spiritName !== null && (spiritCanonicalNames.get(d.spiritName) ?? d.spiritName) === spiritFilter)
+        .map(decodedDeckToRow)
+        .map((row) => ({ ...row, material: canonicalizeSpiritCardMap(row.material, spiritCanonicalNames) }));
       return { rows, label: `Everyone who ran ${spiritFilter}, any Champion (${rows.length} decks)` };
     }
 
@@ -65,7 +68,8 @@ export function usePoolPopulation(
           for (const c of classes) if (championClasses.has(c)) return true;
           return false;
         })
-        .map(decodedDeckToRow);
+        .map(decodedDeckToRow)
+        .map((row) => ({ ...row, material: canonicalizeSpiritCardMap(row.material, spiritCanonicalNames) }));
       return { rows, label: `Decks sharing ${Array.from(championClasses).join("/")}, any Champion/element (${rows.length} decks)` };
     }
 
@@ -91,7 +95,10 @@ export function usePoolPopulation(
     if (!best) return { rows: [], label: "No matching archetype found for these elements." };
 
     const deckIdSet = new Set(best.deckIds);
-    const rows = decks.filter((d) => deckIdSet.has(d.deckId)).map(decodedDeckToRow);
+    const rows = decks
+      .filter((d) => deckIdSet.has(d.deckId))
+      .map(decodedDeckToRow)
+      .map((row) => ({ ...row, material: canonicalizeSpiritCardMap(row.material, spiritCanonicalNames) }));
     return { rows, label: `Borrowed from ${best.name} (${best.championName}, ${rows.length} decks)` };
   }, [pool, decks, championName, spiritFilter, championCard, cardsByName, archetypeTaxonomyData, spiritCanonicalNames]);
 }

@@ -5,6 +5,8 @@ import { accountApi } from "../../lib/accountApi";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import GoogleSignInButton from "./GoogleSignInButton";
 import DiscordSignInButton from "./DiscordSignInButton";
+import PasswordSignInPanel from "./PasswordSignInPanel";
+import PasswordChangePanel from "./PasswordChangePanel";
 import PageLayout from "../../components/layout/PageLayout";
 import Panel from "../../components/ui/Panel";
 import Button from "../../components/ui/Button";
@@ -56,7 +58,7 @@ export default function AccountIndex() {
   }
 
   if (user === undefined) return <PageLayout data-component="AccountIndex"><InlineState className="mt-10">Loading your account…</InlineState></PageLayout>;
-  if (!user) return <PageLayout data-component="AccountIndex" width="standard"><h1 className="text-2xl font-bold text-ctp-blue">Account</h1><p className="mt-2 text-ctp-subtext1">Sign in to manage your profile and account.</p><div className="mt-6 flex flex-wrap items-center gap-3"><GoogleSignInButton onCredential={(credential, nonce) => void run(async () => { setUser((await accountApi.googleSignIn(credential, nonce)).user); setIdentities((await accountApi.authIdentities()).identities); })} /><DiscordSignInButton /></div>{error && <InlineState tone="danger" className="mt-4 text-sm">{error}</InlineState>}</PageLayout>;
+  if (!user) return <PageLayout data-component="AccountIndex" width="standard"><h1 className="text-2xl font-bold text-ctp-blue">Account</h1><p className="mt-2 text-ctp-subtext1">Sign in to manage your profile and account.</p><div className="mt-6 flex flex-wrap items-center gap-3"><GoogleSignInButton onCredential={(credential, nonce) => void run(async () => { setUser((await accountApi.googleSignIn(credential, nonce)).user); setIdentities((await accountApi.authIdentities()).identities); })} /><DiscordSignInButton /><PasswordSignInPanel onSignedIn={(signedInUser) => { setUser(signedInUser); void accountApi.authIdentities().then((result) => setIdentities(result.identities)); }} /></div>{error && <InlineState tone="danger" className="mt-4 text-sm">{error}</InlineState>}</PageLayout>;
 
   return <PageLayout data-component="AccountIndex">
     <div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-2xl font-bold text-ctp-blue">Account</h1><p className="mt-1 text-sm text-ctp-subtext1">Profile, privacy, sessions, and your data.</p></div><Link to="/decks/edit" className="rounded-md border border-ctp-blue px-3 py-1.5 text-sm text-ctp-blue">My Decks</Link></div>
@@ -79,15 +81,17 @@ export default function AccountIndex() {
       <h2 className="font-semibold text-ctp-text">Sign-in methods</h2>
       <p className="mt-1 text-xs text-ctp-subtext1">Connect more than one method so you can still reach your decks if one provider is unavailable.</p>
       <div className="mt-4 space-y-3">
-        {(["google", "discord"] as AuthProvider[]).map((provider) => {
+        {(["google", "discord", "password"] as AuthProvider[]).map((provider) => {
           const identity = identities.find((item) => item.provider === provider);
-          const label = provider === "google" ? "Google" : "Discord";
+          const label = provider === "google" ? "Google" : provider === "discord" ? "Discord" : "Email and password";
           return <div key={provider} className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-ctp-surface1 bg-ctp-base px-4 py-3">
             <div><p className="text-sm font-medium text-ctp-text">{label}</p><p className="text-xs text-ctp-subtext1">{identity ? identity.email : "Not connected"}</p></div>
             {identity
-              ? <Button variant="secondary" disabled={busy || identities.length <= 1} title={identities.length <= 1 ? "Connect another method before removing this one" : undefined} onClick={() => void run(async () => { await accountApi.removeAuthIdentity(provider); setIdentities((await accountApi.authIdentities()).identities); setNotice(`${label} disconnected.`); })}>Disconnect</Button>
+              ? <div className="flex flex-wrap items-start gap-2">{provider === "password" && <PasswordChangePanel />}<Button variant="secondary" disabled={busy || identities.length <= 1} title={identities.length <= 1 ? "Connect another method before removing this one" : undefined} onClick={() => void run(async () => { await accountApi.removeAuthIdentity(provider); setIdentities((await accountApi.authIdentities()).identities); setNotice(`${label} disconnected.`); })}>Disconnect</Button></div>
               : provider === "discord"
                 ? <DiscordSignInButton purpose="link" disabled={busy} />
+                : provider === "password"
+                  ? <PasswordSignInPanel link />
                 : <GoogleSignInButton onCredential={(credential, nonce) => void run(async () => { const result = await accountApi.googleSignIn(credential, nonce); setUser(result.user); setIdentities((await accountApi.authIdentities()).identities); setNotice("Google is now connected to your account."); })} />}
           </div>;
         })}

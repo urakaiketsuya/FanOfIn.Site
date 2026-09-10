@@ -5,6 +5,7 @@ import { useCardCatalog } from "../cards/useCardCatalog";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import GoogleSignInButton from "../account/GoogleSignInButton";
 import DiscordSignInButton from "../account/DiscordSignInButton";
+import PasswordSignInPanel from "../account/PasswordSignInPanel";
 import { COLLECTION_RARITY_LABELS, DEFAULT_SET_RARITY_QUANTITIES, deckCollectionLines, setRarityCollectionLines, summarizeAtLeastChanges, watchedCardUsage } from "./collectionBatch";
 import PageLayout from "../../components/layout/PageLayout";
 import Panel from "../../components/ui/Panel";
@@ -86,7 +87,7 @@ export default function CollectionIndex() {
   }
 
   if (user === undefined) return <PageLayout data-component="CollectionIndex" width="wide"><InlineState className="mt-10">Loading collection…</InlineState></PageLayout>;
-  if (!user) return <PageLayout data-component="CollectionIndex" width="standard"><h1 className="text-2xl font-bold text-ctp-blue">My Collection</h1><p className="mt-2 text-ctp-subtext1">Sign in to track your cards and build decks from what you own.</p><div className="mt-6 flex flex-wrap items-center gap-3"><GoogleSignInButton onCredential={(credential, nonce) => void accountApi.googleSignIn(credential, nonce).then(async (result) => { setUser(result.user); await refresh(); })} /><DiscordSignInButton /></div></PageLayout>;
+  if (!user) return <PageLayout data-component="CollectionIndex" width="standard"><h1 className="text-2xl font-bold text-ctp-blue">My Collection</h1><p className="mt-2 text-ctp-subtext1">Sign in to track your cards and build decks from what you own.</p><div className="mt-6 flex flex-wrap items-center gap-3"><GoogleSignInButton onCredential={(credential, nonce) => void accountApi.googleSignIn(credential, nonce).then(async (result) => { setUser(result.user); await refresh(); })} /><DiscordSignInButton /><PasswordSignInPanel onSignedIn={(signedInUser) => { setUser(signedInUser); void refresh(); }} /></div></PageLayout>;
 
   return <PageLayout data-component="CollectionIndex" width="wide"><div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-3xl font-bold text-ctp-blue">My Collection</h1><p className="mt-2 text-sm text-ctp-subtext1">{entries.length} unique card{entries.length === 1 ? "" : "s"} · {entries.reduce((sum, entry) => sum + entry.ownedQuantity, 0)} physical copies</p></div><button type="button" disabled={!entries.length} onClick={() => downloadCsv(entries)} className="rounded border border-ctp-surface1 px-3 py-2 text-sm disabled:opacity-50">Export CSV</button></div>
     {notice && <Panel tone="info" padding="sm" className="mt-4 text-sm text-ctp-subtext1">{notice}</Panel>}

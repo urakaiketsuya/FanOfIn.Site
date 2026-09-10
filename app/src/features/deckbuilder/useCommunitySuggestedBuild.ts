@@ -189,7 +189,7 @@ export function buildCommunitySuggestedDeck(
     const suggestions = [
       ...deferredIdentityStaples,
       ...champData.cards
-      .filter((c) => !placed.has(c.name) && !rejectedCards.has(c.name) && isElementCompatible(cardsByName.get(c.name), identityElements))
+      .filter((c) => !placed.has(c.name) && !rejectedCards.has(c.name) && !cardsByName.get(c.name)?.subtypes.includes("SPIRIT") && isElementCompatible(cardsByName.get(c.name), identityElements))
       .slice(0, MAX_EXTRA_SUGGESTIONS)
       .map((entry) => {
         const card = cardsByName.get(entry.name);

@@ -121,6 +121,8 @@ const LookingForIndex = lazy(() => import("./features/looking-for/LookingForInde
 const DiaoReviewIndex = lazy(() => import("./features/diao-review/DiaoReviewIndex"));
 const MyDecksIndex = lazy(() => import("./features/account/MyDecksIndex"));
 const AccountIndex = lazy(() => import("./features/account/AccountIndex"));
+const VerifyEmailPage = lazy(() => import("./features/account/PasswordTokenPage").then((module) => ({ default: module.VerifyEmailPage })));
+const ResetPasswordPage = lazy(() => import("./features/account/PasswordTokenPage").then((module) => ({ default: module.ResetPasswordPage })));
 const MyDeckDetail = lazy(() => import("./features/account/MyDeckDetail"));
 const PublicDeckDetail = lazy(() => import("./features/account/PublicDeckDetail"));
 const SharedDecksIndex = lazy(() => import("./features/account/SharedDecksIndex"));
@@ -220,6 +222,8 @@ export default function AppRoutes() {
         <Route path="/diao-review" element={<DiaoReviewIndex />} />
         <Route path="/collection" element={<CollectionIndex />} />
         <Route path="/account" element={<AccountIndex />} />
+        <Route path="/account/verify-email" element={<VerifyEmailPage />} />
+        <Route path="/account/reset-password" element={<ResetPasswordPage />} />
         <Route path="/settings" element={<SettingsIndex />} />
         <Route path="/my-decks" element={<MyDecksIndexRedirect />} />
         <Route path="/my-decks/:deckId" element={<MyDeckDetailRedirect />} />

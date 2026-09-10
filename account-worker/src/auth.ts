@@ -10,6 +10,10 @@ export interface Env {
   ASSET_BASE_URL: string;
   ALLOWED_ORIGINS: string;
   BFF_SHARED_SECRET: string;
+  RESEND_API_KEY: string;
+  RESEND_WEBHOOK_SECRET: string;
+  EMAIL_FROM: string;
+  TURNSTILE_SECRET_KEY: string;
   LOGIN_RATE_LIMITER: RateLimit;
   WRITE_RATE_LIMITER: RateLimit;
   IMPORT_RATE_LIMITER: RateLimit;
@@ -38,7 +42,7 @@ interface IdentityClaims {
   nonce?: string;
 }
 
-export type AuthProvider = "google" | "discord";
+export type AuthProvider = "google" | "discord" | "password";
 
 export interface AuthIdentity {
   provider: AuthProvider;
@@ -143,6 +147,7 @@ function cookieValue(request: Request, name: string): string | null {
 }
 
 export async function createUserSession(env: Env, provider: AuthProvider, claims: IdentityClaims, linkUser?: AuthUser | null): Promise<{ user: AuthUser; cookie: string }> {
+  if (provider === "password") throw new Error("Password sessions must use createSessionForUser");
   const now = new Date().toISOString();
   const existing = await env.ACCOUNT_DB.prepare(`SELECT users.id, users.display_name, users.profile_slug, users.profile_discoverable,
     users.deck_checklist_dismissed, users.display_name_reviewed
@@ -175,28 +180,41 @@ export async function createUserSession(env: Env, provider: AuthProvider, claims
     if (!linkUser && !existing) await env.ACCOUNT_DB.prepare("DELETE FROM users WHERE id = ?").bind(userId).run();
     throw new Error("That sign-in method is already linked to another account");
   }
+  return createSessionForUser(env, userId, { id: userId, email: linkUser?.email ?? claims.email, displayName, avatarUrl: linkUser?.avatarUrl ?? claims.picture ?? null, profileSlug, profileDiscoverable: linkUser?.profileDiscoverable ?? (existing ? Boolean(existing.profile_discoverable) : true),
+    deckChecklistDismissed: linkUser?.deckChecklistDismissed ?? Boolean(existing?.deck_checklist_dismissed), displayNameReviewed: linkUser?.displayNameReviewed ?? Boolean(existing?.display_name_reviewed) });
+}
+
+export async function createSessionForUser(env: Env, userId: string, knownUser?: AuthUser): Promise<{ user: AuthUser; cookie: string }> {
+  const user = knownUser ?? await env.ACCOUNT_DB.prepare(`SELECT id, email, display_name, avatar_url, profile_slug, profile_discoverable,
+    deck_checklist_dismissed, display_name_reviewed FROM users WHERE id = ?`).bind(userId)
+    .first<{ id: string; email: string; display_name: string; avatar_url: string | null; profile_slug: string; profile_discoverable: number; deck_checklist_dismissed: number; display_name_reviewed: number }>();
+  if (!user) throw new Error("Session user was not found");
+  const authUser: AuthUser = "displayName" in user ? user : { id: user.id, email: user.email, displayName: user.display_name, avatarUrl: user.avatar_url,
+    profileSlug: user.profile_slug, profileDiscoverable: Boolean(user.profile_discoverable), deckChecklistDismissed: Boolean(user.deck_checklist_dismissed), displayNameReviewed: Boolean(user.display_name_reviewed) };
   const rawToken = `${crypto.randomUUID()}${crypto.randomUUID()}`.replace(/-/g, "");
+  const now = new Date().toISOString();
   const expires = new Date(Date.now() + SESSION_SECONDS * 1000).toISOString();
-  await env.ACCOUNT_DB.prepare("INSERT INTO sessions (id, user_id, token_hash, expires_at, created_at, last_seen_at) VALUES (?, ?, ?, ?, ?, ?)")
-    .bind(crypto.randomUUID(), userId, await sha256(rawToken), expires, now, now).run();
+  await env.ACCOUNT_DB.prepare("INSERT INTO sessions (id, user_id, token_hash, expires_at, created_at, last_seen_at, authenticated_at) VALUES (?, ?, ?, ?, ?, ?, ?)")
+    .bind(crypto.randomUUID(), userId, await sha256(rawToken), expires, now, now, now).run();
   return {
-    user: { id: userId, email: linkUser?.email ?? claims.email, displayName, avatarUrl: linkUser?.avatarUrl ?? claims.picture ?? null, profileSlug, profileDiscoverable: linkUser?.profileDiscoverable ?? (existing ? Boolean(existing.profile_discoverable) : true),
-      deckChecklistDismissed: linkUser?.deckChecklistDismissed ?? Boolean(existing?.deck_checklist_dismissed), displayNameReviewed: linkUser?.displayNameReviewed ?? Boolean(existing?.display_name_reviewed) },
+    user: authUser,
     cookie: `${SESSION_COOKIE}=${rawToken}; Path=/; HttpOnly; ${env.ALLOWED_ORIGINS.includes("https://") ? "Secure; " : ""}SameSite=Lax; Max-Age=${SESSION_SECONDS}`,
   };
 }
 
 export async function listAuthIdentities(env: Env, userId: string): Promise<AuthIdentity[]> {
-  const rows = await env.ACCOUNT_DB.prepare("SELECT provider, provider_email, created_at FROM auth_identities WHERE user_id = ? ORDER BY created_at")
-    .bind(userId).all<{ provider: AuthProvider; provider_email: string; created_at: string }>();
+  const rows = await env.ACCOUNT_DB.prepare(`SELECT provider, provider_email, created_at FROM auth_identities WHERE user_id = ?
+    UNION ALL SELECT 'password' AS provider, normalized_email AS provider_email, created_at FROM password_credentials WHERE user_id = ?
+    ORDER BY created_at`).bind(userId, userId).all<{ provider: AuthProvider; provider_email: string; created_at: string }>();
   return rows.results.map((row) => ({ provider: row.provider, email: row.provider_email, createdAt: row.created_at }));
 }
 
-export async function removeAuthIdentity(env: Env, userId: string, provider: AuthProvider): Promise<void> {
+export async function removeAuthIdentity(env: Env, userId: string, provider: Exclude<AuthProvider, "password">): Promise<void> {
   const result = await env.ACCOUNT_DB.prepare(`DELETE FROM auth_identities
     WHERE user_id = ? AND provider = ?
-      AND EXISTS (SELECT 1 FROM auth_identities AS other WHERE other.user_id = ? AND other.provider <> ?)`)
-    .bind(userId, provider, userId, provider).run();
+      AND ((SELECT COUNT(*) FROM auth_identities AS other WHERE other.user_id = ?) +
+           (SELECT COUNT(*) FROM password_credentials WHERE user_id = ?)) > 1`)
+    .bind(userId, provider, userId, userId).run();
   if (result.meta.changes === 1) return;
   const linked = await env.ACCOUNT_DB.prepare("SELECT 1 AS linked FROM auth_identities WHERE user_id = ? AND provider = ?")
     .bind(userId, provider).first<{ linked: number }>();
@@ -290,6 +308,15 @@ export async function authenticatedUser(request: Request, env: Env): Promise<Aut
   }
   return { id: row.id, email: row.email, displayName: row.display_name, avatarUrl: row.avatar_url, profileSlug: row.profile_slug,
     profileDiscoverable: Boolean(row.profile_discoverable), deckChecklistDismissed: Boolean(row.deck_checklist_dismissed), displayNameReviewed: Boolean(row.display_name_reviewed) };
+}
+
+export async function recentlyAuthenticated(request: Request, env: Env, seconds = 10 * 60): Promise<boolean> {
+  const token = cookieValue(request, SESSION_COOKIE);
+  if (!token) return false;
+  const cutoff = new Date(Date.now() - seconds * 1000).toISOString();
+  const row = await env.ACCOUNT_DB.prepare("SELECT 1 AS recent FROM sessions WHERE token_hash = ? AND authenticated_at >= ? AND expires_at > ?")
+    .bind(await sha256(token), cutoff, new Date().toISOString()).first<{ recent: number }>();
+  return Boolean(row);
 }
 
 export async function destroySession(request: Request, env: Env): Promise<string> {

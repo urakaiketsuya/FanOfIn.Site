@@ -1,12 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { bffAllowed, clearGoogleKeyCacheForTest, consumeDiscordOAuthState, consumeOAuthNonce, createDiscordOAuthState, createOAuthNonce, discordAuthorizeUrl, exchangeDiscordCode, normalizeDisplayName, verifyGoogleCredential, type Env } from "../src/auth";
-import { assetJson, deleteDeck, getPublicDeck, normalizeDeckTags, parseSaveInput, renameDeck, selectImportCandidates } from "../src/decks";
+import { assetJson, deleteDeck, getDeck, getPublicDeck, normalizeDeckTags, parseSaveInput, renameDeck, selectImportCandidates } from "../src/decks";
 import { getDeckSocialState, setDeckBookmark, setDeckLike } from "../src/deck-social";
 import { discoverDecks, discoverProfiles, getPublicProfile } from "../src/discovery";
 import { reportDeck } from "../src/moderation";
 import { REQUIRED_SCHEMA_VERSION, serviceHealth } from "../src/health";
 import { computeDeckCollectionStatus } from "@gatcg/shared";
+import { handleResendWebhook, hashPassword, normalizeLoginEmail, removePasswordCredential, validatePassword, verifyEmailToken, verifyPassword } from "../src/password-auth";
 
 function envWithSecret(secret: string): Env {
   return { BFF_SHARED_SECRET: secret } as Env;
@@ -136,6 +137,23 @@ test("usernames are normalized and bounded", () => {
   assert.equal(normalizeDisplayName("Classic Assassin"), "Classic Assassin");
 });
 
+test("password credentials normalize email and enforce modern length rules", () => {
+  assert.equal(normalizeLoginEmail("  Player@Example.COM "), "player@example.com");
+  assert.equal(normalizeLoginEmail("missing-domain@example"), null);
+  assert.equal(validatePassword("correct horse battery staple"), "correct horse battery staple");
+  assert.throws(() => validatePassword("too short"), /15–128/);
+  assert.throws(() => validatePassword("x".repeat(129)), /15–128/);
+});
+
+test("password hashes use unique salts and constant-time verification", async () => {
+  const first = await hashPassword("correct horse battery staple");
+  const second = await hashPassword("correct horse battery staple");
+  assert.notEqual(first.salt, second.salt);
+  assert.notEqual(first.hash, second.hash);
+  assert.equal(await verifyPassword("correct horse battery staple", { password_hash: first.hash, password_salt: first.salt, hash_iterations: first.iterations }), true);
+  assert.equal(await verifyPassword("incorrect horse battery staple", { password_hash: first.hash, password_salt: first.salt, hash_iterations: first.iterations }), false);
+});
+
 test("deck names reject blocked language without substring false positives", () => {
   const input = (title: string) => ({
     title,
@@ -190,6 +208,47 @@ test("deck mutations cannot cross user boundaries", async () => {
   assert.equal(await renameDeck(env, otherUser, "deck-a", "Stolen"), false);
   assert.equal(await deleteDeck(env, otherUser, "deck-a"), false);
   assert.equal(rows.get("deck-a")?.title, "Original");
+});
+
+test("private deck reads stop before loading child records for another user", async () => {
+  const queries: string[] = [];
+  const database = { prepare(query: string) { queries.push(query); return { bind() { return this; }, async first() { return null; } }; } } as unknown as D1Database;
+  const otherUser = { id: "user-b", email: "b@example.com", displayName: "B", avatarUrl: null, profileSlug: "b".repeat(24), profileDiscoverable: true, deckChecklistDismissed: false, displayNameReviewed: true };
+  assert.equal(await getDeck({ ACCOUNT_DB: database } as Env, otherUser, "alice-private-deck"), null);
+  assert.equal(queries.length, 1);
+  assert.match(queries[0], /ud\.id = \? AND ud\.owner_user_id = \?/);
+});
+
+test("password credential removal is conditional on another sign-in method", async () => {
+  let sql = "";
+  const database = { prepare(query: string) { sql = query; return { bind() { return this; }, async run() { return { meta: { changes: 1 } }; } }; } } as unknown as D1Database;
+  await removePasswordCredential({ ACCOUNT_DB: database } as Env, "user-a");
+  assert.match(sql, /DELETE FROM password_credentials WHERE user_id = \?/);
+  assert.match(sql, /EXISTS \(SELECT 1 FROM auth_identities WHERE user_id = \?\)/);
+});
+
+test("an OAuth-linked password verification token cannot authenticate a different browser", async () => {
+  let deleteAttempted = false;
+  const credential = { id: "credential-a", user_id: "user-a", normalized_email: "a@example.com", password_hash: "hash", password_salt: "salt", hash_iterations: 600000, email_verified: 0, has_oauth: 1 };
+  const database = { prepare(query: string) { return { bind() { return this; }, async first() { if (query.startsWith("SELECT pc.*")) return credential; if (query.startsWith("DELETE FROM password_auth_tokens")) deleteAttempted = true; return null; } }; } } as unknown as D1Database;
+  await assert.rejects(verifyEmailToken({ ACCOUNT_DB: database } as Env, "a".repeat(43), "request-a", null), /Sign in to the account/);
+  assert.equal(deleteAttempted, false);
+});
+
+test("Resend webhooks require a fresh valid signature and suppress bounced recipients", async () => {
+  const secretBytes = crypto.getRandomValues(new Uint8Array(32));
+  const secret = `whsec_${btoa(String.fromCharCode(...secretBytes))}`;
+  const payload = JSON.stringify({ type: "email.bounced", created_at: "2026-09-10T12:00:00.000Z", data: { to: ["Player@Example.com"] } });
+  const id = "msg_test"; const timestamp = Math.floor(Date.now() / 1000).toString();
+  const key = await crypto.subtle.importKey("raw", secretBytes, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const signature = btoa(String.fromCharCode(...new Uint8Array(await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(`${id}.${timestamp}.${payload}`)))));
+  const batches: unknown[][] = [];
+  const database = { prepare() { return { bind(...values: unknown[]) { return { ...this, values }; }, async first() { return null; } }; }, async batch(statements: unknown[]) { batches.push(statements); return []; } } as unknown as D1Database;
+  const request = new Request("https://worker.example/v1/webhooks/resend", { method: "POST", body: payload, headers: { "svix-id": id, "svix-timestamp": timestamp, "svix-signature": `v1,${signature}` } });
+  assert.equal(await handleResendWebhook({ ACCOUNT_DB: database, RESEND_WEBHOOK_SECRET: secret } as Env, request), true);
+  assert.equal(batches.length, 1);
+  const tampered = new Request("https://worker.example/v1/webhooks/resend", { method: "POST", body: `${payload} `, headers: { "svix-id": id, "svix-timestamp": timestamp, "svix-signature": `v1,${signature}` } });
+  assert.equal(await handleResendWebhook({ ACCOUNT_DB: database, RESEND_WEBHOOK_SECRET: secret } as Env, tampered), false);
 });
 
 test("public decks expose only published card data and a display name", async () => {

@@ -36,6 +36,18 @@ Production traffic goes through the Vercel BFF in `account-bff/`, served from `a
 
 Discord sign-in requests only the `identify` and `email` scopes and requires Discord to report a verified email. The Account page lets signed-in users link or remove providers, but the final sign-in method cannot be removed.
 
+### Email and password setup
+
+Password credentials live in D1 and use PBKDF2-HMAC-SHA-256 with unique salts and 600,000 iterations. Apply migration `0014_password_auth.sql` before deploying the Worker. Passwords must be 15–128 characters and are checked against the Pwned Passwords range API without sending the password or full hash.
+
+1. Add and verify a dedicated sending subdomain in Resend, then set `EMAIL_FROM` in `wrangler.jsonc` to an address on that domain.
+2. Store `RESEND_API_KEY`, `RESEND_WEBHOOK_SECRET`, and `TURNSTILE_SECRET_KEY` with `npx wrangler secret put NAME --env production`.
+3. Create a Turnstile widget for `fanofin.site` and set the public site key as the GitHub Actions variable `VITE_TURNSTILE_SITE_KEY`.
+4. Register a Resend webhook at the account Worker's deployment URL plus `/v1/webhooks/resend` for `email.bounced`, `email.complained`, and `email.suppressed`, and use its signing secret as `RESEND_WEBHOOK_SECRET`. This endpoint deliberately bypasses the browser BFF and accepts only fresh, correctly signed Resend payloads so the raw body is preserved for verification.
+5. For local development, add `RESEND_API_KEY` and `EMAIL_FROM` to `account-worker/.dev.vars`. Turnstile is bypassed only for the exact localhost configuration; set `VITE_ACCOUNT_API_URL=http://localhost:8788` in `app/.env.local`.
+
+Verification and reset tokens are random, stored only as hashes, single-use, and delivered in URL fragments so they are not included in HTTP access logs or referrer headers. Password reset invalidates all sessions and does not automatically sign the user in. Matching OAuth and password emails never merge accounts automatically.
+
 Imports read the pipeline-published archive at `ASSET_BASE_URL`. Shout At Your Decks summaries without a fetched full list are skipped. Public identifiers are import sources, not proof of profile ownership.
 
 Production monitoring, backup/restore, privacy lifecycle, incident response, and the prerequisite for disabling `workers.dev` are documented in `docs/ACCOUNT_SERVICE_OPERATIONS.md`.

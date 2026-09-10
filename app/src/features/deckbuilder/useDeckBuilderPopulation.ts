@@ -24,6 +24,19 @@ export interface DeckBuilderPopulation {
   loading: boolean;
 }
 
+/** Collapse cosmetic named Spirit printings into the base Spirit identity inside deck rows. */
+export function canonicalizeSpiritCardMap(
+  lines: Iterable<readonly [string, number]>,
+  canonicalNames: ReadonlyMap<string, string>,
+): Map<string, number> {
+  const result = new Map<string, number>();
+  for (const [name, quantity] of lines) {
+    const canonicalName = canonicalNames.get(name) ?? name;
+    result.set(canonicalName, (result.get(canonicalName) ?? 0) + quantity);
+  }
+  return result;
+}
+
 /** Same detection rule as pipeline/src/analysis/decklists.ts's findSpirit — CHAMPION type, SPIRIT subtype, lives in the Material Deck. */
 export function findSpiritName(material: { name: string; quantity: number }[], cardsByName: Map<string, Card>): string | null {
   for (const line of material) {
@@ -85,7 +98,7 @@ export function useDeckBuilderPopulation(championName: string | null, minEventDa
       rows.push({
         deckId: entry.deckId,
         main: new Map(mainLines.map((l) => [l.name, l.quantity])),
-        material: new Map(materialLines.map((l) => [l.name, l.quantity])),
+        material: canonicalizeSpiritCardMap(materialLines.map((l) => [l.name, l.quantity] as const), spiritCanonicalNames),
         sideboard: new Map(sideboardLines.map((l) => [l.name, l.quantity])),
         spiritName,
         winRate: info.winRate,

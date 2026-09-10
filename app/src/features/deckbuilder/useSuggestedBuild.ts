@@ -575,6 +575,7 @@ export function buildTournamentSuggestedDeck(
     const ranked = computeCardImpactEntries(sectionRows, baseline, PRIOR_WEIGHT, MIN_SAMPLE_SIZE).filter(
       (e) =>
         e.adjustedLift > 0 &&
+        !cardsByName.get(e.cardName)?.subtypes.includes("SPIRIT") &&
         cardsByName.get(e.cardName)?.legality?.STANDARD?.limit !== 0 &&
         !lockedNames.has(e.cardName) &&
         !rejectedCards.has(e.cardName) &&
