@@ -5,6 +5,7 @@ import { drawnCardsPerCopy, expectedExtraDraws, materialDrawBonus } from "./draw
 import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
 import { ForecastChart, ForecastCheckpointSelector, ForecastHeadline } from "../../components/ui/ForecastVisual";
+import { conditionalComboOdds } from "../../lib/comboOdds";
 
 /** Same range Synergy readiness's curves use (`CURVE_MAX_SEEN` in synergyReadiness.ts) — keeps the
  * two probability visualizations on this tab reading consistently. */
@@ -61,6 +62,11 @@ export default function HypergeometricCalculator({
   const seen = controlledSeen ?? localSeen;
   const setSeen = onSeenChange ?? setLocalSeen;
   const [required, setRequired] = useState(1);
+  const [mode, setMode] = useState<"single" | "combo">("single");
+  const [anchorCard, setAnchorCard] = useState("");
+  const [optionCards, setOptionCards] = useState<string[]>([]);
+  const anchorCopies = mainLines.find((line) => line.name === anchorCard)?.quantity ?? 0;
+  const optionCopies = optionCards.reduce((sum, name) => sum + (mainLines.find((line) => line.name === name)?.quantity ?? 0), 0);
 
   function handleSelectCard(name: string) {
     setSelectedCard(name);
@@ -71,10 +77,12 @@ export default function HypergeometricCalculator({
     setCopies(line.quantity);
   }
 
-  const probability = probabilityAtLeast(deckSize, copies, seen, required);
+  const probability = mode === "combo"
+    ? conditionalComboOdds(deckSize, anchorCopies, optionCopies, seen).probability
+    : probabilityAtLeast(deckSize, copies, seen, required);
   const curve = useMemo(
-    () => Array.from({ length: Math.min(deckSize, CURVE_MAX_SEEN) }, (_, i) => probabilityAtLeast(deckSize, copies, i + 1, required)),
-    [deckSize, copies, required],
+    () => Array.from({ length: Math.min(deckSize, CURVE_MAX_SEEN) }, (_, i) => mode === "combo" ? conditionalComboOdds(deckSize, anchorCopies, optionCopies, i + 1).probability : probabilityAtLeast(deckSize, copies, i + 1, required)),
+    [deckSize, copies, required, mode, anchorCopies, optionCopies],
   );
 
   /** Main Deck cards whose own effect text draws cards — the source of the "with card draw"
@@ -103,15 +111,15 @@ export default function HypergeometricCalculator({
     () => Math.min(deckSize, Math.round(seen + expectedExtraDraws(drawEffectLines, deckSize, seen) + materialBonus)),
     [drawEffectLines, deckSize, seen, materialBonus],
   );
-  const probabilityWithDraw = probabilityAtLeast(deckSize, copies, seenWithDraw, required);
+  const probabilityWithDraw = mode === "combo" ? conditionalComboOdds(deckSize, anchorCopies, optionCopies, seenWithDraw).probability : probabilityAtLeast(deckSize, copies, seenWithDraw, required);
   const curveWithDraw = useMemo(
     () =>
       Array.from({ length: Math.min(deckSize, CURVE_MAX_SEEN) }, (_, i) => {
         const baseSeen = i + 1;
         const adjustedSeen = Math.min(deckSize, Math.round(baseSeen + expectedExtraDraws(drawEffectLines, deckSize, baseSeen) + materialBonus));
-        return probabilityAtLeast(deckSize, copies, adjustedSeen, required);
+        return mode === "combo" ? conditionalComboOdds(deckSize, anchorCopies, optionCopies, adjustedSeen).probability : probabilityAtLeast(deckSize, copies, adjustedSeen, required);
       }),
-    [drawEffectLines, deckSize, copies, required, materialBonus],
+    [drawEffectLines, deckSize, copies, required, materialBonus, mode, anchorCopies, optionCopies],
   );
 
   return (
@@ -123,7 +131,8 @@ export default function HypergeometricCalculator({
       >
       <div className="mt-3 rounded-xl bg-ctp-surface0/60 p-3">
       <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Parameters</p>
-      {mainLines.length > 0 && (
+      <div className="mt-2 inline-flex rounded-md border border-ctp-surface1 bg-ctp-mantle p-0.5" role="group" aria-label="Probability question"><button type="button" aria-pressed={mode === "single"} onClick={() => setMode("single")} className={`rounded px-2.5 py-1 text-xs ${mode === "single" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>Single card</button><button type="button" aria-pressed={mode === "combo"} onClick={() => setMode("combo")} className={`rounded px-2.5 py-1 text-xs ${mode === "combo" ? "bg-ctp-mauve text-ctp-base" : "text-ctp-subtext1"}`}>Card + one of…</button></div>
+      {mode === "single" && mainLines.length > 0 && (
         <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
           <span className="text-ctp-subtext0">Card in build:</span>
           <select
@@ -142,7 +151,9 @@ export default function HypergeometricCalculator({
         </div>
       )}
 
-      <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      {mode === "combo" && mainLines.length > 0 && <div className="mt-3 grid gap-3 sm:grid-cols-2"><label className="text-xs text-ctp-subtext0">Required card<select value={anchorCard} onChange={(event) => { setAnchorCard(event.target.value); setOptionCards((current) => current.filter((name) => name !== event.target.value)); }} className="mt-1 block min-h-10 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-xs text-ctp-text"><option value="">Choose a card…</option>{mainLines.map((line) => <option key={line.name} value={line.name}>{line.name} ({line.quantity})</option>)}</select></label><label className="text-xs text-ctp-subtext0">At least one of<select multiple size={4} value={optionCards} onChange={(event) => setOptionCards(Array.from(event.target.selectedOptions, (option) => option.value))} className="mt-1 block w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-xs text-ctp-text">{mainLines.filter((line) => line.name !== anchorCard).map((line) => <option key={line.name} value={line.name}>{line.name} ({line.quantity})</option>)}</select></label></div>}
+
+      <div className={`mt-3 grid grid-cols-2 gap-3 ${mode === "single" ? "sm:grid-cols-4" : "sm:grid-cols-2"}`}>
         <label className="text-xs text-ctp-subtext0">
           Deck size
           <input
@@ -154,7 +165,7 @@ export default function HypergeometricCalculator({
             className={numberInputClass}
           />
         </label>
-        <label className="text-xs text-ctp-subtext0">
+        {mode === "single" && <label className="text-xs text-ctp-subtext0">
           Copies in deck
           <input
             type="number"
@@ -164,7 +175,7 @@ export default function HypergeometricCalculator({
             onChange={(e) => setCopies(clampInt(Number(e.target.value), 0, deckSize))}
             className={numberInputClass}
           />
-        </label>
+        </label>}
         <label className="text-xs text-ctp-subtext0">
           Cards seen
           <input
@@ -176,7 +187,7 @@ export default function HypergeometricCalculator({
             className={numberInputClass}
           />
         </label>
-        <label className="text-xs text-ctp-subtext0">
+        {mode === "single" && <label className="text-xs text-ctp-subtext0">
           At least
           <input
             type="number"
@@ -186,13 +197,13 @@ export default function HypergeometricCalculator({
             onChange={(e) => setRequired(clampInt(Number(e.target.value), 1, deckSize))}
             className={numberInputClass}
           />
-        </label>
+        </label>}
       </div>
       </div>
 
       <div className="mt-3"><ForecastCheckpointSelector checkpoints={SEEN_PRESETS} selected={seen} onSelect={(value) => setSeen(Math.min(value, deckSize))} /></div>
 
-      <div className="mt-4"><ForecastHeadline label={`Chance of seeing at least ${required} ${required === 1 ? "copy" : "copies"}`} value={`${(probability * 100).toFixed(1)}%`} /></div>
+      <div className="mt-4"><ForecastHeadline label={mode === "combo" ? `Chance of ${anchorCard || "required card"} + one option` : `Chance of seeing at least ${required} ${required === 1 ? "copy" : "copies"}`} value={`${(probability * 100).toFixed(1)}%`} detail={mode === "combo" ? `${anchorCopies} required-card copies + ${optionCopies} option copies` : undefined} /></div>
 
       {curve.length >= 2 && (
         <div className="mt-2">

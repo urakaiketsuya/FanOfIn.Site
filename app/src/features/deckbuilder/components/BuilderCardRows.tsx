@@ -9,6 +9,7 @@ import type { RatingPillar } from "../../../lib/deckIdentity";
 import type { SuggestedCard } from "../useSuggestedBuild";
 import type { SimulatorCardEvidence } from "../useSimulatorSuggestedBuild";
 import type { CardFieldVisibility } from "../useCardFieldVisibility";
+import { computeCardPlayOdds } from "../cardPlayOdds";
 
 export function CardRow({
   card,
@@ -24,6 +25,8 @@ export function CardRow({
   simulatorEvidence,
   visibleFields,
   needsReview = false,
+  section = "sideboard",
+  mainDeckSize = 0,
 }: {
   card: SuggestedCard;
   onToggleLock: () => void;
@@ -45,9 +48,14 @@ export function CardRow({
   visibleFields: CardFieldVisibility;
   /** Marks a placed card that has a data-backed cut recommendation in the Review tab. */
   needsReview?: boolean;
+  section?: "main" | "material" | "sideboard";
+  mainDeckSize?: number;
 }) {
   const cardInfo = cardsByName.get(card.cardName);
   const unitPrice = priceByName.get(card.cardName);
+  const playOdds = section === "main" && cardInfo?.cost.type === "reserve"
+    ? computeCardPlayOdds(mainDeckSize, card.quantity, cardInfo.cost_reserve)
+    : null;
   const maxQuantity = Math.max(1, Math.min(cardInfo?.legality?.STANDARD?.limit ?? 4, 4));
   return (
     <li className={`relative flex flex-wrap items-center gap-1.5 overflow-hidden rounded-md border py-1 pl-3 pr-2 text-sm ${card.locked ? "border-ctp-blue/70 bg-ctp-blue/5" : "border-ctp-surface1"}`}>
@@ -85,10 +93,13 @@ export function CardRow({
         )}
       </CardHoverPreview>
       {visibleFields.cost && cardInfo && cardInfo.cost.type !== "none" && cardInfo.cost.value !== null && (
-        <span className="flex shrink-0 items-center gap-0.5 text-xs text-ctp-subtext0">
-          <CostIcon kind={cardInfo.cost.type} size={12} />
-          {cardInfo.cost.value}
-        </span>
+        <>
+          <span className="flex shrink-0 items-center gap-0.5 text-xs text-ctp-subtext0">
+            <CostIcon kind={cardInfo.cost.type} size={12} />
+            {cardInfo.cost.value}
+          </span>
+          {playOdds && <span className="shrink-0 rounded-full border border-ctp-surface1 px-1.5 text-[10px] tabular-nums text-ctp-teal" title={`Chance to see at least one of ${card.quantity} copies among ${playOdds.cardsSeen} cards by the first Reserve-ready turn. Does not include mulligans, draw effects, champion-level requirements, or cards already spent.`}>{Math.round(playOdds.probability * 100)}% by T{playOdds.turn}</span>}
+        </>
       )}
       {visibleFields.price && unitPrice !== undefined && <span className="shrink-0 text-xs text-ctp-subtext0">{formatUsd(unitPrice * card.quantity)}</span>}
       {visibleFields.winRate && (card.adjustedLift !== null ? (

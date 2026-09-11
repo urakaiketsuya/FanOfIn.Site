@@ -109,6 +109,10 @@ export default function MyDeckDetail() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [primerMarkdown, setPrimerMarkdown] = useState("");
+  const [comboBuilderOpen, setComboBuilderOpen] = useState(false);
+  const [comboTitle, setComboTitle] = useState("");
+  const [comboAnchor, setComboAnchor] = useState("");
+  const [comboOptions, setComboOptions] = useState<string[]>([]);
   const [tagsText, setTagsText] = useState("");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
@@ -119,6 +123,7 @@ export default function MyDeckDetail() {
   const catalogByName = useMemo(() => new Map(cardCatalog.map((card) => [card.name, card])), [cardCatalog]);
   const cardNames = useMemo(() => Array.from(new Set(cardCatalog.map((card) => card.name))).sort(), [cardCatalog]);
   const cardNameSet = useMemo(() => new Set(cardNames), [cardNames]);
+  const primerMainCardNames = useMemo(() => deck?.decklist.main.map((line) => line.card).sort() ?? [], [deck]);
   const editedDecklist = useMemo(() => parseDecklist(deckText).decklist, [deckText]);
   const maybeboardLines = useMemo(() => parseDecklist(`Main\n${maybeboardText}`).decklist.main, [maybeboardText]);
   const trimPreview = useMemo(() => {
@@ -312,6 +317,18 @@ export default function MyDeckDetail() {
     setPrimerMarkdown((current) => `${current}${current.trim() ? "\n\n" : ""}${template}`);
   }
 
+  function insertConditionalCombo() {
+    const options = comboOptions.filter((name) => name !== comboAnchor);
+    if (!comboAnchor || options.length === 0) return;
+    const title = comboTitle.trim() || `${comboAnchor} combo`;
+    const block = `:::combo ${title}\n- ${comboAnchor}\n- one of: ${options.join(" | ")}\n\nExplain how the interaction works.\n:::`;
+    setPrimerMarkdown((current) => `${current}${current.trim() ? "\n\n" : ""}${block}`);
+    setComboBuilderOpen(false);
+    setComboTitle("");
+    setComboAnchor("");
+    setComboOptions([]);
+  }
+
   if (deck === undefined) return <PageLayout data-component="MyDeckDetail"><InlineState className="mt-10">Loading deck…</InlineState></PageLayout>;
   if (!deck) return <PageLayout data-component="MyDeckDetail"><EmptyState title="Deck unavailable" description={error} action={<Link to="/decks/edit" className="text-ctp-blue hover:underline">Back to My Decks</Link>} /></PageLayout>;
   const comparePath = `/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: deck.title, decklist: deck.decklist, format: deck.format }]))}`;
@@ -434,11 +451,12 @@ export default function MyDeckDetail() {
     {tab === "primer" && <section id="owned-deck-panel-primer" role="tabpanel" aria-labelledby="owned-deck-tab-primer" tabIndex={0} className="mt-6 grid gap-5 lg:grid-cols-2">
       <form className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4" onSubmit={(event) => { event.preventDefault(); void run(async () => { await accountApi.updateDeckMetadata(deck.id, { primerMarkdown }); await refresh(); }); }}>
         <h2 className="font-semibold text-ctp-text">Edit primer</h2><p className="mt-1 text-xs text-ctp-subtext1">Markdown supports headings, lists, links, emphasis, quotes, code blocks, and highlighted deck concepts.</p>
-        <div className="mt-3 flex flex-wrap gap-2" aria-label="Insert primer highlight"><button type="button" onClick={() => addPrimerHighlight("combo")} className="rounded-md border border-ctp-mauve/60 bg-ctp-mauve/10 px-2.5 py-1.5 text-xs text-ctp-mauve">+ Combo</button><button type="button" onClick={() => addPrimerHighlight("package")} className="rounded-md border border-ctp-teal/60 bg-ctp-teal/10 px-2.5 py-1.5 text-xs text-ctp-teal">+ Card package</button></div>
+        <div className="mt-3 flex flex-wrap gap-2" aria-label="Insert primer highlight"><button type="button" onClick={() => setComboBuilderOpen((open) => !open)} className="rounded-md border border-ctp-mauve/60 bg-ctp-mauve/10 px-2.5 py-1.5 text-xs text-ctp-mauve">+ Combo</button><button type="button" onClick={() => addPrimerHighlight("package")} className="rounded-md border border-ctp-teal/60 bg-ctp-teal/10 px-2.5 py-1.5 text-xs text-ctp-teal">+ Card package</button></div>
+        {comboBuilderOpen && <div className="mt-3 rounded-lg border border-ctp-mauve/40 bg-ctp-mauve/5 p-3"><div className="grid gap-3 sm:grid-cols-2"><label className="text-xs text-ctp-subtext1">Combo name<input value={comboTitle} onChange={(event) => setComboTitle(event.target.value)} placeholder="Bloom setup" className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-2.5 py-2 text-sm text-ctp-text" /></label><label className="text-xs text-ctp-subtext1">Required card<select value={comboAnchor} onChange={(event) => { setComboAnchor(event.target.value); setComboOptions((current) => current.filter((name) => name !== event.target.value)); }} className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-2.5 py-2 text-sm text-ctp-text"><option value="">Choose a card…</option>{primerMainCardNames.map((name) => <option key={name} value={name}>{name}</option>)}</select></label></div><label className="mt-3 block text-xs text-ctp-subtext1">Pair with one or more of<select multiple size={Math.min(6, Math.max(3, primerMainCardNames.length))} value={comboOptions} onChange={(event) => setComboOptions(Array.from(event.target.selectedOptions, (option) => option.value))} className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-2.5 py-2 text-sm text-ctp-text">{primerMainCardNames.filter((name) => name !== comboAnchor).map((name) => <option key={name} value={name}>{name}</option>)}</select><span className="mt-1 block text-[10px] text-ctp-subtext0">Use Shift or Command/Ctrl to select several alternatives.</span></label><div className="mt-3 flex gap-2"><button type="button" disabled={!comboAnchor || comboOptions.length === 0} onClick={insertConditionalCombo} className="rounded-md bg-ctp-mauve px-3 py-1.5 text-xs font-medium text-ctp-base disabled:opacity-40">Insert combo</button><button type="button" onClick={() => addPrimerHighlight("combo")} className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-xs text-ctp-subtext1">Insert simple template</button></div></div>}
         <textarea rows={24} maxLength={50000} value={primerMarkdown} onChange={(event) => setPrimerMarkdown(event.target.value)} placeholder={"# Game plan\n\nExplain opening turns, key interactions, matchups, and substitutions."} className="mt-3 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-4 font-mono text-sm" />
         <div className="mt-2 flex items-center justify-between gap-3"><span className="text-xs text-ctp-subtext0">{primerMarkdown.length.toLocaleString()} / 50,000</span><button disabled={busy || primerMarkdown === deck.primerMarkdown} type="submit" className="rounded-md bg-ctp-blue px-3 py-2 text-sm text-ctp-base disabled:opacity-50">Save primer</button></div>
       </form>
-      <section className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><h2 className="font-semibold text-ctp-text">Preview</h2><div className="mt-4">{primerMarkdown.trim() ? <PrimerMarkdown markdown={primerMarkdown} /> : <p className="text-sm text-ctp-subtext1">Your primer preview will appear here.</p>}</div></section>
+      <section className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><h2 className="font-semibold text-ctp-text">Preview</h2><div className="mt-4">{primerMarkdown.trim() ? <PrimerMarkdown markdown={primerMarkdown} decklist={deck.decklist} /> : <p className="text-sm text-ctp-subtext1">Your primer preview will appear here.</p>}</div></section>
     </section>}
     {tab === "versions" && <section id="owned-deck-panel-versions" role="tabpanel" aria-labelledby="owned-deck-tab-versions" tabIndex={0} className="mt-6">
       <h2 className="text-lg font-semibold text-ctp-text">Version history</h2>

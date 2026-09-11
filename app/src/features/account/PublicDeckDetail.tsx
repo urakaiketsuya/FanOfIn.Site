@@ -73,7 +73,7 @@ export default function PublicDeckDetail() {
     <div className="mt-6"><Tabs tabs={PUBLIC_TABS} active={tab} onChange={setTab} label="Published deck details" baseId="public-deck" /></div>
     <TabPanel baseId="public-deck" tab="decklist" active={tab}><UserDecklistPanel decklist={deck.decklist} format={deck.format} collectionSource={`Shared deck: ${deck.title}`} /></TabPanel>
     <TabPanel baseId="public-deck" tab="analysis" active={tab}><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} title={deck.title} /></TabPanel>
-    <TabPanel baseId="public-deck" tab="primer" active={tab} className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-5">{deck.primerMarkdown.trim() ? <PrimerMarkdown markdown={deck.primerMarkdown} /> : <p className="text-sm text-ctp-subtext1">The author has not added a primer yet.</p>}</TabPanel>
+    <TabPanel baseId="public-deck" tab="primer" active={tab} className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-5">{deck.primerMarkdown.trim() ? <PrimerMarkdown markdown={deck.primerMarkdown} decklist={deck.decklist} /> : <p className="text-sm text-ctp-subtext1">The author has not added a primer yet.</p>}</TabPanel>
     <p className="mt-4 text-xs text-ctp-subtext0">Published {new Date(deck.publishedAt).toLocaleDateString()} · Updated {new Date(deck.updatedAt).toLocaleDateString()}</p>
   </PageLayout>;
 }

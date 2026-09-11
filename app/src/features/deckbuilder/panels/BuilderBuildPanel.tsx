@@ -230,12 +230,14 @@ export default function BuilderBuildPanel({
           copy-count evidence (hover the count for its source and population).
         </p>
       )}
+      {visibleFields.cost && <p className="mt-2 text-[11px] text-ctp-subtext0">Reserve odds show the chance of seeing at least one copy by its first cost-ready turn. Mulligans, extra draws, level requirements, and earlier spending are not modeled.</p>}
       <div className={`mt-3 grid items-start gap-4 sm:grid-cols-2 transition-opacity ${isPending ? "opacity-50" : ""}`}>
         <Panel elevation={1} padding="sm">
           <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Material Deck ({materialTotal})</h2>
           {viewMode === "grid" ? (
             <BuilderCardGrid
               section="material"
+              mainDeckSize={mainTotal}
               cards={build.material}
               cardsByName={cardsByName}
               priceByName={priceByName}
@@ -262,6 +264,8 @@ export default function BuilderBuildPanel({
                   simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorEvidenceByName?.get(c.cardName) : undefined}
                   visibleFields={visibleFields}
                   needsReview={reviewRemovalNames.has(c.cardName)}
+                  section="material"
+                  mainDeckSize={mainTotal}
                   communityMode={communityMode}
                   onToggleLock={() => onToggleLock(c.cardName, c.quantity, "material")}
                   onRemove={() => onRemoveCard(c.cardName, c.locked)}
@@ -275,6 +279,7 @@ export default function BuilderBuildPanel({
           {viewMode === "grid" ? (
             <BuilderCardGrid
               section="main"
+              mainDeckSize={mainTotal}
               cards={build.main}
               cardsByName={cardsByName}
               priceByName={priceByName}
@@ -302,6 +307,8 @@ export default function BuilderBuildPanel({
                   simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorEvidenceByName?.get(c.cardName) : undefined}
                   visibleFields={visibleFields}
                   needsReview={reviewRemovalNames.has(c.cardName)}
+                  section="main"
+                  mainDeckSize={mainTotal}
                   communityMode={communityMode}
                   onToggleLock={() => onToggleLock(c.cardName, c.quantity, "main")}
                   onChangeQuantity={(qty) => onChangeQuantity(c.cardName, qty)}
@@ -323,6 +330,7 @@ export default function BuilderBuildPanel({
           {viewMode === "grid" ? (
             <BuilderCardGrid
               section="sideboard"
+              mainDeckSize={mainTotal}
               cards={build.sideboard}
               cardsByName={cardsByName}
               priceByName={priceByName}
@@ -350,6 +358,8 @@ export default function BuilderBuildPanel({
                   simulatorEvidence={effectivePopulationSource === "simulator" ? simulatorEvidenceByName?.get(c.cardName) : undefined}
                   visibleFields={visibleFields}
                   needsReview={reviewRemovalNames.has(c.cardName)}
+                  section="sideboard"
+                  mainDeckSize={mainTotal}
                   communityMode={communityMode}
                   onToggleLock={() => onToggleLock(c.cardName, c.quantity, "sideboard")}
                   onChangeQuantity={(qty) => onChangeQuantity(c.cardName, qty)}

@@ -9,6 +9,7 @@ import type { SuggestedCard } from "../useSuggestedBuild";
 import type { SimulatorCardEvidence } from "../useSimulatorSuggestedBuild";
 import type { CardFieldVisibility } from "../useCardFieldVisibility";
 import type { PriceTrendEntry } from "../../pricing/usePriceTrendByName";
+import { computeCardPlayOdds } from "../cardPlayOdds";
 
 type BuilderSection = "main" | "material" | "sideboard";
 
@@ -29,6 +30,8 @@ export function CardTile({
   onRemove,
   onAdd,
   onDismiss,
+  section = "sideboard",
+  mainDeckSize = 0,
 }: {
   card: SuggestedCard;
   cardInfo: Card | undefined;
@@ -49,9 +52,14 @@ export function CardTile({
   /** Not-yet-placed suggestion footer (Add/Dismiss) — set instead of `onToggleLock`/`onRemove` for a card that isn't in the build yet. */
   onAdd?: () => void;
   onDismiss?: () => void;
+  section?: BuilderSection;
+  mainDeckSize?: number;
 }) {
   const maxQuantity = Math.max(1, Math.min(cardInfo?.legality?.STANDARD?.limit ?? 4, 4));
   const tags = [...(cardInfo?.elements.filter((e) => e !== "NORM") ?? []), ...(cardInfo?.classes ?? [])];
+  const playOdds = section === "main" && cardInfo?.cost.type === "reserve"
+    ? computeCardPlayOdds(mainDeckSize, card.quantity, cardInfo.cost_reserve)
+    : null;
 
   return (
     <div className={`overflow-hidden rounded-lg border ${card.locked ? "border-ctp-blue/70 bg-ctp-blue/5" : "border-ctp-surface1"}`}>
@@ -109,13 +117,16 @@ export function CardTile({
 
       <div className="space-y-1 p-2 text-xs">
         {visibleFields.cost && cardInfo && cardInfo.cost.type !== "none" && cardInfo.cost.value !== null && (
-          <div className="flex items-center justify-between text-ctp-subtext1">
-            <span>Cost</span>
-            <span className="flex items-center gap-0.5 text-ctp-text">
-              <CostIcon kind={cardInfo.cost.type} size={12} />
-              {cardInfo.cost.value}
-            </span>
-          </div>
+          <>
+            <div className="flex items-center justify-between text-ctp-subtext1">
+              <span>Cost</span>
+              <span className="flex items-center gap-0.5 text-ctp-text">
+                <CostIcon kind={cardInfo.cost.type} size={12} />
+                {cardInfo.cost.value}
+              </span>
+            </div>
+            {playOdds && <div className="flex items-center justify-between text-ctp-subtext1" title={`Chance to see at least one of ${card.quantity} copies among ${playOdds.cardsSeen} cards by the first Reserve-ready turn. Does not include mulligans, draw effects, champion-level requirements, or cards already spent.`}><span>Playable draw</span><span className="font-medium tabular-nums text-ctp-teal">{Math.round(playOdds.probability * 100)}% by T{playOdds.turn}</span></div>}
+          </>
         )}
         {visibleFields.price && unitPrice !== undefined && (
           <div className="flex items-center justify-between text-ctp-subtext1">
@@ -271,6 +282,7 @@ export default function BuilderCardGrid({
   visibleFields,
   communityMode = false,
   reviewRemovalNames,
+  mainDeckSize,
   onToggleLock,
   onChangeQuantity,
   onRemove,
@@ -287,11 +299,13 @@ export default function BuilderCardGrid({
   visibleFields: CardFieldVisibility;
   communityMode?: boolean;
   reviewRemovalNames?: Set<string>;
+  mainDeckSize?: number;
   onToggleLock: (cardName: string, quantity: number, section: BuilderSection) => void;
   onChangeQuantity?: (cardName: string, quantity: number) => void;
   onRemove: (cardName: string, locked: boolean) => void;
 }) {
   if (cards.length === 0) return null;
+  const resolvedMainDeckSize = mainDeckSize ?? (section === "main" ? cards.reduce((sum, card) => sum + card.quantity, 0) : 0);
   return (
     <div data-component="BuilderCardGrid" className="mt-2 grid grid-cols-2 gap-3">
       {cards.map((card) => (
@@ -308,6 +322,8 @@ export default function BuilderCardGrid({
           visibleFields={visibleFields}
           communityMode={communityMode}
           needsReview={reviewRemovalNames?.has(card.cardName) ?? false}
+          section={section}
+          mainDeckSize={resolvedMainDeckSize}
           onToggleLock={() => onToggleLock(card.cardName, card.quantity, section)}
           onChangeQuantity={onChangeQuantity ? (quantity) => onChangeQuantity(card.cardName, quantity) : undefined}
           onRemove={() => onRemove(card.cardName, card.locked)}
