@@ -48,6 +48,7 @@ import BuilderTestPanel from "./panels/BuilderTestPanel";
 import { useDeckTestResult } from "../decks/useDeckTestResult";
 import BuilderWorkbenchNav, { type BuilderWorkbenchView } from "./components/BuilderWorkbenchNav";
 import BuilderStageHandoff from "./components/BuilderStageHandoff";
+import ChampionLineagePicker from "./components/ChampionLineagePicker";
 
 type BuilderTab = BuilderWorkbenchView;
 const TAB_KEYS: BuilderTab[] = ["build", "review", "test", "stats", "tools", "buddies", "copy", "log"];
@@ -684,6 +685,62 @@ export default function DeckBuilderIndex() {
     });
   }
 
+  function chooseChampionLineagePrint(name: string) {
+    const selected = catalogByName.get(name);
+    if (!selected || selected.level == null) return;
+    const selectedIdentity = selected.name.split(",")[0].trim();
+    pendingActionRef.current = { label: `Chose ${selected.name} for Level ${selected.level}`, subject: selected.name };
+    startTransition(() => {
+      setLockedCards((previous) => {
+        const next = new Map(previous);
+        for (const lockedName of previous.keys()) {
+          const card = catalogByName.get(lockedName);
+          if (card?.types.includes("CHAMPION") && !card.subtypes.includes("SPIRIT") && card.level === selected.level && card.name.split(",")[0].trim() === selectedIdentity) next.delete(lockedName);
+        }
+        next.set(selected.name, 1);
+        return next;
+      });
+      setLockedSections((previous) => {
+        const next = new Map(previous);
+        for (const lockedName of previous.keys()) {
+          const card = catalogByName.get(lockedName);
+          if (card?.types.includes("CHAMPION") && !card.subtypes.includes("SPIRIT") && card.level === selected.level && card.name.split(",")[0].trim() === selectedIdentity) next.delete(lockedName);
+        }
+        next.set(selected.name, "material");
+        return next;
+      });
+      setRejectedCards((previous) => {
+        if (!previous.has(selected.name)) return previous;
+        const next = new Set(previous);
+        next.delete(selected.name);
+        return next;
+      });
+    });
+  }
+
+  function restoreSuggestedChampionLevel(level: number) {
+    if (!championName) return;
+    pendingActionRef.current = { label: `Restored suggested Level ${level} Champion print`, subject: null };
+    startTransition(() => {
+      setLockedCards((previous) => {
+        const next = new Map(previous);
+        for (const lockedName of previous.keys()) {
+          const card = catalogByName.get(lockedName);
+          if (card?.types.includes("CHAMPION") && !card.subtypes.includes("SPIRIT") && card.level === level && card.name.split(",")[0].trim() === championName) next.delete(lockedName);
+        }
+        return next;
+      });
+      setLockedSections((previous) => {
+        const next = new Map(previous);
+        for (const lockedName of previous.keys()) {
+          const card = catalogByName.get(lockedName);
+          if (card?.types.includes("CHAMPION") && !card.subtypes.includes("SPIRIT") && card.level === level && card.name.split(",")[0].trim() === championName) next.delete(lockedName);
+        }
+        return next;
+      });
+    });
+  }
+
   /** Editing a locked card's own copy count — doesn't touch lock state or section, just the quantity. No changelog entry: this is a fine-tune, not a suggestion-changing action, and firing one per keystroke on the number input would spam the log. */
   function setLockedQuantity(name: string, quantity: number) {
     startTransition(() =>
@@ -1167,6 +1224,18 @@ export default function DeckBuilderIndex() {
           </div>
         )}
       </div>}
+
+      {championName && spiritFilter && (builderIntent !== "seed" || lockedCards.size > 0) && (
+        <ChampionLineagePicker
+          championName={championName}
+          cardsByName={catalogByName}
+          material={build.material}
+          lockedCards={lockedCards}
+          format={deckFormat}
+          onSelect={chooseChampionLineagePrint}
+          onUseSuggested={restoreSuggestedChampionLevel}
+        />
+      )}
 
       {builderIntent === "seed" && (!championName || !spiritFilter || gateLoading || !gateHasData || lockedCards.size === 0) && <section className="mt-5 rounded-lg border border-ctp-green/40 bg-ctp-green/5 p-3" aria-labelledby="seed-cards">
         <h2 id="seed-cards" className="text-sm font-semibold text-ctp-text">Start with your cards</h2>
