@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { Card, OmnidexDecklist, OmnidexDecklistCardLine, SavedDeckDetail } from "@gatcg/shared";
 import { accountApi, AccountApiError } from "../../lib/accountApi";
+import { trackEvent } from "../../lib/analytics";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { buildDecklistText } from "../events/DecklistView";
 import { parseDecklist } from "../compare/parseDecklist";
@@ -257,6 +258,7 @@ export default function MyDeckDetail() {
     for (const section of EDIT_SECTIONS) for (const line of decklist[section.key]) line.quantity = Math.min(line.quantity, max);
     setDeckText(buildDecklistText(decklist));
     setNotice(`Trimmed every card to at most ${max}x.`);
+    trackEvent("deck_trimmed", { max });
   }
 
   async function saveTitle() {
@@ -265,6 +267,7 @@ export default function MyDeckDetail() {
     if (!trimmed || trimmed === deck.title) { setTitle(deck.title); setRenamingTitle(false); return; }
     await run(async () => {
       await accountApi.updateDeckMetadata(deck.id, { title: trimmed });
+      trackEvent("deck_renamed");
       await refresh();
       setNotice("Deck renamed.");
       setRenamingTitle(false);
@@ -357,7 +360,7 @@ export default function MyDeckDetail() {
       <div className="mt-4 border-t border-ctp-surface1 pt-4">
         <label className="text-sm text-ctp-subtext1" htmlFor="deck-visibility">Who can view this deck?</label>
         <div className="mt-2 flex flex-wrap items-center gap-2">
-          <select id="deck-visibility" value={deck.visibility} disabled={busy} onChange={(event) => void run(async () => { await accountApi.publishDeck(deck.id, event.target.value as SavedDeckDetail["visibility"]); await refresh(); })} className="rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm">
+          <select id="deck-visibility" value={deck.visibility} disabled={busy} onChange={(event) => void run(async () => { const visibility = event.target.value as SavedDeckDetail["visibility"]; await accountApi.publishDeck(deck.id, visibility); trackEvent("deck_published", { visibility }); await refresh(); })} className="rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm">
             <option value="private">Private</option><option value="unlisted">Unlisted — link only</option><option value="public">Public</option>
           </select>
           {deck.publicSlug && deck.visibility !== "private" && <><Link to={`/decks/${deck.publicSlug}`} className="rounded border border-ctp-blue px-3 py-1.5 text-sm text-ctp-blue">View published deck</Link><button type="button" onClick={() => void navigator.clipboard.writeText(`${window.location.origin}/decks/${deck.publicSlug}`).then(() => setNotice("Deck link copied."), () => setError("Could not copy the deck link. Please copy it from the address bar."))} className="rounded border border-ctp-surface1 px-3 py-1.5 text-sm">Copy link</button></>}
@@ -397,6 +400,7 @@ export default function MyDeckDetail() {
           if (saveAsNewVersion) await accountApi.createDeckVersion(deck.id, { decklist: editedDecklist, format: deck.format, championName: editedChampionName, changeNote });
           else await accountApi.updateDeckDecklist(deck.id, { decklist: editedDecklist, format: deck.format, championName: editedChampionName });
           await accountApi.updateDeckMetadata(deck.id, { maybeboard: maybeboardLines });
+          trackEvent(saveAsNewVersion ? "deck_version_saved" : "deck_updated");
           await refresh(); setChangeNote(""); setSaveDetailsOpen(false); setEditing(false);
           setNotice(saveAsNewVersion ? "Saved as a new version." : "Deck updated.");
         }); }}>

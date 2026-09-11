@@ -3,6 +3,7 @@ import type { Card, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import { buildTcgplayerMassEntryUrl } from "../../../lib/tcgplayerMassEntry";
 import { buildClarentPlaytestUrl } from "../../../lib/clarentPlaytest";
 import { AccountApiError } from "../../../lib/accountApi";
+import { trackEvent } from "../../../lib/analytics";
 import { saveBuilderDeck } from "../services/builderDeckService";
 import { copyBuilderDecklist, copyBuilderDecklistAndOpen, copyBuilderShareLink, exportBuilderTts } from "../services/builderExportService";
 import type { SuggestedBuild } from "../useSuggestedBuild";
@@ -117,6 +118,7 @@ export function useBuilderCopyState({
       });
       setSavedDeckId(result.id);
       setSaveState("saved");
+      trackEvent("deck_builder_saved", { improving: Boolean(improveDeckId), kept_only: saveKeptOnly, format: deckFormat });
     } catch (reason) {
       setSaveState(reason instanceof AccountApiError && reason.status === 401 ? "sign-in" : "failed");
     }
