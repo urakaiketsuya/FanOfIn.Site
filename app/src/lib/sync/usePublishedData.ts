@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "../db";
+import { db, type PublishedDataRow } from "../db";
 import { beginLoading, endLoading } from "../useGlobalLoading";
 
 interface Generated {
@@ -72,16 +72,21 @@ function refresh(key: string, url: string): Promise<void> {
  * data/analysis/*.json). Each dataset carries its own `generatedAt`, so a refresh is a cheap
  * no-op once the cached copy matches what's currently published. Same pattern as usePriceLookup.
  */
-export function usePublishedData<T extends Generated>(key: string, url: string): T | undefined {
+export function usePublishedData<T extends Generated>(key: string, url: string, enabled = true): T | undefined {
   useEffect(() => {
+    if (!enabled) return;
     refresh(key, url).catch((err: unknown) => console.error(`failed to refresh ${key}`, err));
-  }, [key, url]);
+  }, [key, url, enabled]);
 
   // `useLiveQuery`'s defaultResult distinguishes "still resolving the IndexedDB read" from
   // "resolved to nothing" (the dataset is genuinely absent) — the latter must not keep the nav
   // progress bar spinning forever.
-  const row = useLiveQuery(() => db.published.get(key), [key], PENDING as never);
-  const loading = (row as unknown) === PENDING;
+  const row = useLiveQuery(
+    async (): Promise<PublishedDataRow | undefined> => enabled ? await db.published.get(key) : undefined,
+    [key, enabled],
+    PENDING as never,
+  );
+  const loading = enabled && (row as unknown) === PENDING;
 
   useEffect(() => {
     if (!loading) return;
@@ -89,5 +94,5 @@ export function usePublishedData<T extends Generated>(key: string, url: string):
     return endLoading;
   }, [loading]);
 
-  return loading ? undefined : (row?.data as T | undefined);
+  return !enabled || loading ? undefined : (row?.data as T | undefined);
 }

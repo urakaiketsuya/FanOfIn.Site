@@ -18,9 +18,9 @@ const TREND_WINDOW_POINTS = 4;
  * as useDeckPriceByName — so a card's trend badge lines up with whichever price is shown next to
  * it. Omits a card with fewer than 2 published snapshots for that edition.
  */
-export function usePriceTrendByName(): Map<string, PriceTrendEntry> {
-  const prices = usePriceLookup();
-  const priceHistoryData = usePriceHistoryData();
+export function usePriceTrendByName(enabled = true): Map<string, PriceTrendEntry> {
+  const prices = usePriceLookup(enabled);
+  const priceHistoryData = usePriceHistoryData(enabled);
 
   return useMemo(() => {
     const byName = new Map<string, PriceTrendEntry>();

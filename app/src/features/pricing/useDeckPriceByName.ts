@@ -6,8 +6,8 @@ import { usePriceLookup } from "./usePriceLookup";
  * just a card name with no specific edition, so the cheapest printing is the realistic "what
  * would it cost to acquire this card" figure for a deck price estimate.
  */
-export function useDeckPriceByName(): Map<string, number> {
-  const prices = usePriceLookup();
+export function useDeckPriceByName(enabled = true): Map<string, number> {
+  const prices = usePriceLookup(enabled);
 
   return useMemo(() => {
     const byName = new Map<string, number>();

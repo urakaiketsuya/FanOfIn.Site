@@ -106,9 +106,9 @@ export interface AllDecodedDecks {
  * entirely rather than paying its cost on every page visit regardless of whether it's used.
  */
 export function useAllDecodedDecks(enabled = true): AllDecodedDecks {
-  const rawCardIndexData = useDeckCardIndexData();
+  const rawCardIndexData = useDeckCardIndexData(enabled);
   const cardIndexData = enabled && rawCardIndexData?.cardNames ? rawCardIndexData : undefined;
-  const rawPopularityIndexData = useDeckPopularityIndexData();
+  const rawPopularityIndexData = useDeckPopularityIndexData(enabled);
   const popularityIndexData = enabled ? rawPopularityIndexData : undefined;
   const cardCatalog = useCardCatalog();
   const settledCardCatalog = useDebouncedValue(cardCatalog, CATALOG_SETTLE_MS);

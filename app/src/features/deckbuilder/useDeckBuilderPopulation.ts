@@ -3,7 +3,6 @@ import { buildSpiritCanonicalNames, decodeCardLines, type Card } from "@gatcg/sh
 import { useDeckCardIndexData } from "../archetypes/data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
-import { useDebouncedValue } from "../../lib/useDebouncedValue";
 
 export interface DeckBuilderRow {
   deckId: string;
@@ -62,16 +61,18 @@ export function findSpiritName(material: { name: string; quantity: number }[], c
  * don't accidentally bust this hook's own memoization with a new object reference every time.
  */
 export function useDeckBuilderPopulation(championName: string | null, minEventDate?: string, maxEventDate?: string): DeckBuilderPopulation {
-  const rawCardIndexData = useDeckCardIndexData();
+  const enabled = championName !== null;
+  const rawCardIndexData = useDeckCardIndexData(enabled);
   const cardIndexData = rawCardIndexData?.cardNames ? rawCardIndexData : undefined;
-  const popularityIndexData = useDeckPopularityIndexData();
-  const cardCatalog = useDebouncedValue(useCardCatalog(), 500);
+  const popularityIndexData = useDeckPopularityIndexData(enabled);
+  const cardCatalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
   const spiritCanonicalNames = useMemo(() => buildSpiritCanonicalNames(cardCatalog), [cardCatalog]);
 
   return useMemo((): DeckBuilderPopulation => {
-    if (!championName || !cardIndexData || !popularityIndexData)
-      return { rows: [], spiritsPresent: [], loading: !cardIndexData || !popularityIndexData };
+    if (!championName) return { rows: [], spiritsPresent: [], loading: false };
+    if (!cardIndexData || !popularityIndexData)
+      return { rows: [], spiritsPresent: [], loading: true };
 
     const infoByDeckId = new Map<string, { winRate: number; eventDate: string }>();
     for (const s of popularityIndexData.entries) {

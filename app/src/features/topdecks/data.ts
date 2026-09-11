@@ -6,6 +6,6 @@ export function useDeckSightingsData(): DeckSightingsData | undefined {
 }
 
 /** Lean championName/winRate/event-context projection of deck-sightings.json — see DeckPopularityEntry's doc comment. Use this instead of useDeckSightingsData() wherever the full per-sighting detail (keywords, price, etc.) isn't actually needed. */
-export function useDeckPopularityIndexData(): DeckPopularityIndexData | undefined {
-  return usePublishedData<DeckPopularityIndexData>("analysis-deck-popularity-index", "/data/analysis/deck-popularity-index.json");
+export function useDeckPopularityIndexData(enabled = true): DeckPopularityIndexData | undefined {
+  return usePublishedData<DeckPopularityIndexData>("analysis-deck-popularity-index", "/data/analysis/deck-popularity-index.json", enabled);
 }

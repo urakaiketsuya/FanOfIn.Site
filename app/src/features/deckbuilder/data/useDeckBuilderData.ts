@@ -7,16 +7,34 @@ import { useCardCatalog } from "../../cards/useCardCatalog";
 import { useSimulatorSummaryData } from "../../simulator/data";
 import { useDeckPriceByName } from "../../pricing/useDeckPriceByName";
 import { useAllDecodedDecks } from "../../../lib/decodedDecks";
-import { useDebouncedValue } from "../../../lib/useDebouncedValue";
 import { accountApi } from "../../../lib/accountApi";
 import { useDeckBuilderPopulation } from "../useDeckBuilderPopulation";
 
+export interface DeckBuilderDataNeeds {
+  archetypes?: boolean;
+  cardImpact?: boolean;
+  coOccurrence?: boolean;
+  composition?: boolean;
+  prices?: boolean;
+  simulator?: boolean;
+}
+
+const ALL_DATA_NEEDS: Required<DeckBuilderDataNeeds> = {
+  archetypes: true,
+  cardImpact: true,
+  coOccurrence: true,
+  composition: true,
+  prices: true,
+  simulator: true,
+};
+
 /** External evidence gateway for the builder. It owns retrieval and source fallback policy, not selections or recommendation logic. */
-export function useDeckBuilderData({ championName, format, includeDecodedDecks }: { championName: string | null; format: DeckFormat; includeDecodedDecks: boolean }) {
-  const popularityIndex = useDeckPopularityIndexData();
+export function useDeckBuilderData({ championName, format, includeDecodedDecks, needs = ALL_DATA_NEEDS }: { championName: string | null; format: DeckFormat; includeDecodedDecks: boolean; needs?: DeckBuilderDataNeeds }) {
+  const hasChampion = championName !== null;
+  const popularityIndex = useDeckPopularityIndexData(hasChampion);
   const liveCatalog = useCardCatalog();
   const liveCatalogByName = useMemo(() => new Map(liveCatalog.map((card) => [card.name, card])), [liveCatalog]);
-  const catalog = useDebouncedValue(liveCatalog, 500);
+  const catalog = liveCatalog;
   const catalogByName = useMemo(() => new Map(catalog.map((card) => [card.name, card])), [catalog]);
   const spiritCanonicalNames = useMemo(() => buildSpiritCanonicalNames(catalog), [catalog]);
 
@@ -30,16 +48,19 @@ export function useDeckBuilderData({ championName, format, includeDecodedDecks }
   const collectionOwnedByName = useMemo(() => new Map(collection.map((entry) => [entry.cardName, entry.ownedQuantity])), [collection]);
 
   const population = useDeckBuilderPopulation(championName);
-  const cardQuantityStats = useCardQuantityStatsData();
-  const compositionWinRates = useCompositionWinRateData();
-  const archetypeTaxonomy = useArchetypeTaxonomyData();
+  const cardQuantityStats = useCardQuantityStatsData(hasChampion);
+  const compositionWinRates = useCompositionWinRateData(hasChampion && needs.composition === true);
+  const archetypeTaxonomy = useArchetypeTaxonomyData(hasChampion && needs.archetypes === true);
   const decodedDecks = useAllDecodedDecks(includeDecodedDecks);
 
-  const blendedInclusion = useCommunityBlendedCardInclusion(format);
-  const standaloneInclusion = useCommunityCardInclusion(format);
+  const blendedInclusion = useCommunityBlendedCardInclusion(format, hasChampion);
+  const needsStandaloneInclusion = hasChampion && blendedInclusion !== undefined && Object.keys(blendedInclusion.byChampion).length === 0;
+  const standaloneInclusion = useCommunityCardInclusion(format, needsStandaloneInclusion);
   const communityInclusion = blendedInclusion && Object.keys(blendedInclusion.byChampion).length > 0 ? blendedInclusion : standaloneInclusion;
-  const blendedCoOccurrence = useCommunityBlendedCoOccurrence(format);
-  const standaloneCoOccurrence = useCommunityCoOccurrence(format);
+  const loadCoOccurrence = hasChampion && needs.coOccurrence === true;
+  const blendedCoOccurrence = useCommunityBlendedCoOccurrence(format, loadCoOccurrence);
+  const needsStandaloneCoOccurrence = loadCoOccurrence && blendedCoOccurrence !== undefined && Object.keys(blendedCoOccurrence.byChampion).length === 0;
+  const standaloneCoOccurrence = useCommunityCoOccurrence(format, needsStandaloneCoOccurrence);
   const communityCoOccurrence = blendedCoOccurrence && Object.keys(blendedCoOccurrence.byChampion).length > 0 ? blendedCoOccurrence : standaloneCoOccurrence;
 
   return {
@@ -55,12 +76,12 @@ export function useDeckBuilderData({ championName, format, includeDecodedDecks }
     cardQuantityStats,
     compositionWinRates,
     archetypeTaxonomy,
-    cardImpact: useCardImpactData(),
-    matchupCardImpact: useMatchupCardImpactData(),
+    cardImpact: useCardImpactData(hasChampion && needs.cardImpact === true),
+    matchupCardImpact: useMatchupCardImpactData(hasChampion && needs.cardImpact === true),
     decodedDecks: decodedDecks.decks,
     communityInclusion,
     communityCoOccurrence,
-    simulatorSummary: useSimulatorSummaryData(),
-    priceByName: useDeckPriceByName(),
+    simulatorSummary: useSimulatorSummaryData(hasChampion && needs.simulator === true),
+    priceByName: useDeckPriceByName(hasChampion && needs.prices === true),
   };
 }

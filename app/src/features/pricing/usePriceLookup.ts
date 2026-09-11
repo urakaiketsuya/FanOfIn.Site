@@ -16,12 +16,22 @@ async function refreshPrices(): Promise<void> {
   await db.syncMeta.put({ key: "prices", lastSyncedAt: new Date().toISOString(), cursor: data.generatedAt });
 }
 
-/** Cached in Dexie (keyed by `priceKey`); refreshes from the pipeline's published data/prices.json in the background. */
-export function usePriceLookup(): Map<string, PriceRow> {
-  useEffect(() => {
-    refreshPrices().catch((err: unknown) => console.error("failed to refresh prices", err));
-  }, []);
+let inFlightPriceRefresh: Promise<void> | null = null;
 
-  const rows = useLiveQuery(() => db.prices.toArray(), [], []) ?? [];
+function refreshPricesOnce(): Promise<void> {
+  if (!inFlightPriceRefresh) {
+    inFlightPriceRefresh = refreshPrices().finally(() => { inFlightPriceRefresh = null; });
+  }
+  return inFlightPriceRefresh;
+}
+
+/** Cached in Dexie (keyed by `priceKey`); refreshes from the pipeline's published data/prices.json in the background. */
+export function usePriceLookup(enabled = true): Map<string, PriceRow> {
+  useEffect(() => {
+    if (!enabled) return;
+    refreshPricesOnce().catch((err: unknown) => console.error("failed to refresh prices", err));
+  }, [enabled]);
+
+  const rows = useLiveQuery(() => enabled ? db.prices.toArray() : Promise.resolve<PriceRow[]>([]), [enabled], []) ?? [];
   return useMemo(() => new Map(rows.map((r) => [r.key, r])), [rows]);
 }

@@ -188,10 +188,11 @@ export default function DeckBuilderIndex() {
   const [visibleFields, setVisibleField] = useCardFieldVisibility();
   const [customizeOpen, setCustomizeOpen] = useState(false);
   const [viewMode, setViewMode] = useBuilderViewMode();
-  const priceTrendByName = usePriceTrendByName();
+  const [tab, setTab] = useTabParam<BuilderTab>("tab", TAB_KEYS, "build");
+  const loadPrices = Boolean(championName && spiritFilter && (tab === "build" || tab === "review"));
+  const priceTrendByName = usePriceTrendByName(loadPrices && tab === "build");
   const [dismissedReviewCards, setDismissedReviewCards] = useState<Set<string>>(new Set());
   const [showProtectedCuts, setShowProtectedCuts] = useState(false);
-  const [tab, setTab] = useTabParam<BuilderTab>("tab", TAB_KEYS, "build");
   const [identityEditorOpen, setIdentityEditorOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [pasteOpen, setPasteOpen] = useState(false);
@@ -225,7 +226,19 @@ export default function DeckBuilderIndex() {
   }
 
   const showNearestDecks = lockedCards.size >= 2;
-  const builderData = useDeckBuilderData({ championName, format: deckFormat, includeDecodedDecks: showNearestDecks });
+  const builderData = useDeckBuilderData({
+    championName,
+    format: deckFormat,
+    includeDecodedDecks: showNearestDecks && (tab === "review" || tab === "test"),
+    needs: {
+      archetypes: tab === "tools" || archetypeId !== null,
+      cardImpact: tab === "review" && showNearestDecks,
+      coOccurrence: tab === "buddies",
+      composition: tab === "stats",
+      prices: loadPrices,
+      simulator: populationSource === "simulator",
+    },
+  });
   const {
     popularityIndex: popularityIndexData,
     liveCatalogByName,
@@ -245,6 +258,13 @@ export default function DeckBuilderIndex() {
     simulatorSummary,
     priceByName,
   } = builderData;
+  const seedLockedCards = useMemo(() => {
+    const entries = Array.from(lockedCards.entries()).filter(([name]) => {
+      const card = catalogByName.get(name);
+      return !card?.types.includes("CHAMPION");
+    });
+    return new Map(entries);
+  }, [lockedCards, catalogByName]);
   // Shared links and pasted decks can name a cosmetic equivalent. Store the canonical Spirit so
   // it uses the same population as the picker (Miao, Spirit of Water = Spirit of Water).
   useEffect(() => {
@@ -486,9 +506,11 @@ export default function DeckBuilderIndex() {
   }, [build, setChangeLog]);
 
   const championsPresent = useMemo(() => {
-    if (!popularityIndexData) return [];
-    return Array.from(new Set(popularityIndexData.entries.map((s) => s.championName).filter((n): n is string => n !== null))).sort();
-  }, [popularityIndexData]);
+    const names = cardCatalog
+      .filter((card) => card.types.includes("CHAMPION") && !card.subtypes.includes("SPIRIT") && card.legality?.[deckFormat]?.limit !== 0)
+      .map((card) => card.name.split(",")[0].trim());
+    return Array.from(new Set(names)).sort();
+  }, [cardCatalog, deckFormat]);
 
   const cardNames = useMemo(() => Array.from(new Set(cardCatalog.map((c) => c.name))).sort(), [cardCatalog]);
   const cardNameSet = useMemo(() => new Set(cardNames), [cardNames]);
@@ -1225,7 +1247,7 @@ export default function DeckBuilderIndex() {
         )}
       </div>}
 
-      {championName && spiritFilter && (builderIntent !== "seed" || lockedCards.size > 0) && (
+      {championName && (
         <ChampionLineagePicker
           championName={championName}
           cardsByName={catalogByName}
@@ -1237,7 +1259,7 @@ export default function DeckBuilderIndex() {
         />
       )}
 
-      {builderIntent === "seed" && (!championName || !spiritFilter || gateLoading || !gateHasData || lockedCards.size === 0) && <section className="mt-5 rounded-lg border border-ctp-green/40 bg-ctp-green/5 p-3" aria-labelledby="seed-cards">
+      {builderIntent === "seed" && (!championName || !spiritFilter || gateLoading || !gateHasData || seedLockedCards.size === 0) && <section className="mt-5 rounded-lg border border-ctp-green/40 bg-ctp-green/5 p-3" aria-labelledby="seed-cards">
         <h2 id="seed-cards" className="text-sm font-semibold text-ctp-text">Start with your cards</h2>
         <p className="mt-1 text-xs text-ctp-subtext1">Add one or more cards, then choose the Champion and Spirit that should support them. Your selected cards stay locked as the deck fills in.</p>
         <div className="mt-3 flex max-w-xl flex-wrap gap-2">
@@ -1253,12 +1275,12 @@ export default function DeckBuilderIndex() {
           <button type="button" disabled={!cardNameSet.has(cardInput) || lockedCards.has(cardInput)} onClick={() => addCard(cardInput)} className="rounded-md border border-ctp-green/60 px-3 py-1.5 text-sm text-ctp-green hover:bg-ctp-green/10 disabled:cursor-not-allowed disabled:opacity-50">Add card</button>
         </div>
         <datalist id="deck-builder-card-options">{cardNames.map((name) => <option key={name} value={name} />)}</datalist>
-        {lockedCards.size > 0 && <div className="mt-3 flex flex-wrap gap-1.5">{Array.from(lockedCards.keys()).map((name) => <button key={name} type="button" onClick={() => removeCard(name, true)} className="rounded-full border border-ctp-green/40 px-2 py-0.5 text-xs text-ctp-green hover:border-ctp-red hover:text-ctp-red" title="Remove seed card">{name} ×</button>)}</div>}
+        {seedLockedCards.size > 0 && <div className="mt-3 flex flex-wrap gap-1.5">{Array.from(seedLockedCards.keys()).map((name) => <button key={name} type="button" onClick={() => removeCard(name, true)} className="rounded-full border border-ctp-green/40 px-2 py-0.5 text-xs text-ctp-green hover:border-ctp-red hover:text-ctp-red" title="Remove seed card">{name} ×</button>)}</div>}
       </section>}
 
       {!championName && <p className="mt-6 text-ctp-subtext1">Choose a Champion to see a suggested build.</p>}
 
-      {builderIntent === "seed" && championName && spiritFilter && lockedCards.size === 0 && !gateLoading && gateHasData && <p className="mt-6 rounded-lg border border-ctp-green/40 bg-ctp-green/5 px-4 py-3 text-sm text-ctp-subtext1">Add at least one card you want to build around. We’ll use it with {championName} and {spiritFilter} to shape the suggested deck.</p>}
+      {builderIntent === "seed" && championName && spiritFilter && seedLockedCards.size === 0 && !gateLoading && gateHasData && <p className="mt-6 rounded-lg border border-ctp-green/40 bg-ctp-green/5 px-4 py-3 text-sm text-ctp-subtext1">Add at least one card you want to build around. We’ll use it with {championName} and {spiritFilter} to shape the suggested deck.</p>}
 
       {championName && gateLoading && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
 
@@ -1275,7 +1297,7 @@ export default function DeckBuilderIndex() {
         </p>
       )}
 
-      {championName && spiritFilter && !gateLoading && gateHasData && (builderIntent !== "seed" || lockedCards.size > 0) && (
+      {championName && spiritFilter && !gateLoading && gateHasData && (builderIntent !== "seed" || seedLockedCards.size > 0) && (
         <>
           {effectivePopulationSource === "simulator" && <div className="mt-2 rounded-lg border border-ctp-mauve/50 bg-ctp-mauve/10 px-3 py-2 text-xs text-ctp-subtext1">
             <span className="font-semibold text-ctp-mauve">Experimental:</span>{" "}
@@ -1291,19 +1313,6 @@ export default function DeckBuilderIndex() {
               {championName} decks with a same-element Spirit ({build.spiritElementFallbackSpirits.join(", ")}).
             </p>
           )}
-          {build.usedFallback && (
-            <p className="mt-1 text-xs text-ctp-yellow">
-              Not enough decks have every card you've chosen — remaining suggestions are based on the broader{" "}
-              {spiritFilter ?? "any Spirit"} {championName} population instead.
-            </p>
-          )}
-          {build.matchingDeckCount > 0 && build.matchingDeckCount < 10 && (
-            <p className="mt-1 text-xs text-ctp-yellow">
-              Insufficient sample for a stable summary (n={build.matchingDeckCount}). Treat this as a statistical shell;
-              the observed rate and card ordering may be highly sensitive to a few decks.
-            </p>
-          )}
-
           <section className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3" aria-labelledby="deck-builder-checklist">
             <h2 id="deck-builder-checklist" className="text-sm font-semibold text-ctp-text">Deck-building checklist</h2>
             <div className="mt-2 grid gap-2 text-xs sm:grid-cols-4">

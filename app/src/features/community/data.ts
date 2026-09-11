@@ -30,12 +30,12 @@ function blendedPath(format: DeckFormat, file: string): string {
   return `/data/community/${format === "PANTHEON" ? "pantheon/" : ""}${file}.json`;
 }
 
-export function useCommunityBlendedCardInclusion(format: DeckFormat = "STANDARD") {
-  return usePublishedData<CardInclusionData>(`community-blended-card-inclusion-${format}`, blendedPath(format, "card-inclusion"));
+export function useCommunityBlendedCardInclusion(format: DeckFormat = "STANDARD", enabled = true) {
+  return usePublishedData<CardInclusionData>(`community-blended-card-inclusion-${format}`, blendedPath(format, "card-inclusion"), enabled);
 }
 
-export function useCommunityBlendedCoOccurrence(format: DeckFormat = "STANDARD") {
-  return usePublishedData<CommunityCoOccurrenceData>(`community-blended-co-occurrence-${format}`, blendedPath(format, "co-occurrence"));
+export function useCommunityBlendedCoOccurrence(format: DeckFormat = "STANDARD", enabled = true) {
+  return usePublishedData<CommunityCoOccurrenceData>(`community-blended-co-occurrence-${format}`, blendedPath(format, "co-occurrence"), enabled);
 }
 
 export function useCommunityBlendedDeckReferences() {
@@ -46,12 +46,12 @@ export function useCommunitySourceCounts() {
   return usePublishedData<CommunitySourceCounts>("community-source-counts", "/data/community/sources.json");
 }
 
-export function useCommunityCardInclusion(format: DeckFormat = "STANDARD") {
-  return usePublishedData<CardInclusionData>(`shoutatyourdecks-card-inclusion-${format}`, formatPath(format, "card-inclusion"));
+export function useCommunityCardInclusion(format: DeckFormat = "STANDARD", enabled = true) {
+  return usePublishedData<CardInclusionData>(`shoutatyourdecks-card-inclusion-${format}`, formatPath(format, "card-inclusion"), enabled);
 }
 
-export function useCommunityCoOccurrence(format: DeckFormat = "STANDARD") {
-  return usePublishedData<CommunityCoOccurrenceData>(`shoutatyourdecks-co-occurrence-${format}`, formatPath(format, "co-occurrence"));
+export function useCommunityCoOccurrence(format: DeckFormat = "STANDARD", enabled = true) {
+  return usePublishedData<CommunityCoOccurrenceData>(`shoutatyourdecks-co-occurrence-${format}`, formatPath(format, "co-occurrence"), enabled);
 }
 
 export function useCommunityPopularity(format: DeckFormat = "STANDARD") {
