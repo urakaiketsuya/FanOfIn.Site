@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "source": "GrandArchiveSim",
-  "generatedAt": "2026-09-12T10:08:00.872Z",
-  "games": 14,
+  "generatedAt": "2026-09-13T11:06:56.499Z",
+  "games": 15,
   "firstPlayer": {
-    "games": 14,
-    "wins": 5,
-    "winRate": 0.35714285714285715
+    "games": 15,
+    "wins": 6,
+    "winRate": 0.4
   },
-  "avgTurns": 3.2857142857142856,
+  "avgTurns": 3.933333333333333,
   "champions": [
     {
       "championId": "tafqldAGRF",
@@ -43,6 +43,14 @@
       "winRate": 0
     },
     {
+      "championId": "4FtNBFaOJp",
+      "championName": "Dante, Hemomancer",
+      "element": "EXIA",
+      "games": 2,
+      "wins": 1,
+      "winRate": 0.5
+    },
+    {
       "championId": "6R8XmWoKLn",
       "championName": null,
       "element": "NORM",
@@ -67,9 +75,9 @@
       "winRate": 0
     },
     {
-      "championId": "4FtNBFaOJp",
-      "championName": null,
-      "element": "EXIA",
+      "championId": "7x2v4tdop1",
+      "championName": "Kongming, Fel Eidolon",
+      "element": "TERA",
       "games": 1,
       "wins": 0,
       "winRate": 0
@@ -174,6 +182,15 @@
       "games": 1,
       "champion1Wins": 0,
       "champion2Wins": 1
+    },
+    {
+      "champion1": "4FtNBFaOJp",
+      "champion1Name": "Dante, Hemomancer",
+      "champion2": "7x2v4tdop1",
+      "champion2Name": "Kongming, Fel Eidolon",
+      "games": 1,
+      "champion1Wins": 1,
+      "champion2Wins": 0
     },
     {
       "champion1": "4FtNBFaOJp",
@@ -347,6 +364,20 @@
       "lethalHits": 0
     },
     {
+      "cardId": "io7maIjC4u",
+      "games": 5,
+      "avgDrawn": 1,
+      "avgDrawnToMemory": 0.2,
+      "avgMaterialized": 0,
+      "avgReserved": 1.4,
+      "avgDiscarded": 0,
+      "avgActivated": 0,
+      "winRate": 0.8,
+      "attackEvents": 0,
+      "avgDamageDealt": 0,
+      "lethalHits": 0
+    },
+    {
       "cardId": "mb3iqw3kc6",
       "games": 5,
       "avgDrawn": 0,
@@ -365,48 +396,48 @@
   "turnStats": [
     {
       "turn": 1,
-      "games": 13,
-      "avgCardsPlayed": 1.0384615384615385,
+      "games": 14,
+      "avgCardsPlayed": 1,
       "avgMemorySpent": 0,
-      "avgReserveSpent": 2.6538461538461537,
-      "avgDamageDealt": 0.34615384615384615,
-      "avgDamageTaken": 0,
+      "avgReserveSpent": 2.5714285714285716,
+      "avgDamageDealt": 0.32142857142857145,
+      "avgDamageTaken": 0.10714285714285714,
       "avgHealed": 0,
       "avgLevel": 0,
       "avgHp": 15
     },
     {
       "turn": 2,
-      "games": 13,
-      "avgCardsPlayed": 1.565217391304348,
-      "avgMemorySpent": 0.43478260869565216,
-      "avgReserveSpent": 3.4782608695652173,
-      "avgDamageDealt": 1.5217391304347827,
-      "avgDamageTaken": 1.1304347826086956,
-      "avgHealed": 0,
-      "avgLevel": 0.6521739130434783,
-      "avgHp": 17.608695652173914
+      "games": 14,
+      "avgCardsPlayed": 1.6,
+      "avgMemorySpent": 0.44,
+      "avgReserveSpent": 3.72,
+      "avgDamageDealt": 1.64,
+      "avgDamageTaken": 1.08,
+      "avgHealed": 0.16,
+      "avgLevel": 0.68,
+      "avgHp": 17.72
     },
     {
       "turn": 3,
-      "games": 8,
-      "avgCardsPlayed": 1.5555555555555556,
-      "avgMemorySpent": 0.16666666666666666,
-      "avgReserveSpent": 4,
-      "avgDamageDealt": 3.111111111111111,
-      "avgDamageTaken": 2.7777777777777777,
-      "avgHealed": 0.05555555555555555,
-      "avgLevel": 1.2222222222222223,
-      "avgHp": 19.77777777777778
+      "games": 9,
+      "avgCardsPlayed": 1.55,
+      "avgMemorySpent": 0.2,
+      "avgReserveSpent": 3.8,
+      "avgDamageDealt": 2.95,
+      "avgDamageTaken": 2.65,
+      "avgHealed": 0.05,
+      "avgLevel": 1.4,
+      "avgHp": 19.85
     },
     {
       "turn": 4,
-      "games": 5,
-      "avgCardsPlayed": 1.4444444444444444,
-      "avgMemorySpent": 0.5555555555555556,
-      "avgReserveSpent": 4,
-      "avgDamageDealt": 1.7777777777777777,
-      "avgDamageTaken": 4,
+      "games": 6,
+      "avgCardsPlayed": 1.3636363636363635,
+      "avgMemorySpent": 0.45454545454545453,
+      "avgReserveSpent": 4.090909090909091,
+      "avgDamageDealt": 2.3636363636363638,
+      "avgDamageTaken": 3.909090909090909,
       "avgHealed": 0,
       "avgLevel": 2,
       "avgHp": 22
