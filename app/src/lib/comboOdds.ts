@@ -59,6 +59,14 @@ export function cardsSeenForRecipeTarget(deckSize: number, groups: ProbabilityRe
   return null;
 }
 
+/** Expected cards seen before every recipe requirement is satisfied (tail-sum expectation). */
+export function expectedCardsSeenForRecipe(deckSize: number, groups: ProbabilityRequirementGroup[]): number | null {
+  if (deckSize <= 0 || groups.length === 0 || groups.some((group) => group.copies < group.required)) return null;
+  let expected = 0;
+  for (let seen = 0; seen < deckSize; seen++) expected += 1 - probabilityOfRecipe(deckSize, groups, seen);
+  return expected;
+}
+
 /** Exact without-replacement chance of seeing anchor A and at least one card from option group B. */
 export function conditionalComboOdds(deckSize: number, anchorCopies: number, optionCopies: number, seen: number): ConditionalComboOdds {
   const draws = Math.max(0, Math.min(seen, deckSize));

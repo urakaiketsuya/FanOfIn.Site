@@ -1446,6 +1446,12 @@ threshold. A card may belong to more than one role, but is counted only once ins
 role. The UI lists every included card so false positives remain inspectable; grouping means the
 cards can satisfy the same broad need, not that their costs, timing, or strategic value are equal.
 
+Probability recipes also report the expected cards seen before every AND/OR requirement is met.
+This uses the exact tail-sum identity `E[T] = sum(P(T > s))` over `s = 0…N-1`, with each survival
+probability supplied by the same multivariate-hypergeometric recipe engine. The approximate turn is
+`ceil(expectedSeen - startingHandSize + 1)`, floored at turn 1, assuming only the normal one-card-
+per-turn draw; the cards-seen value remains the authoritative result when extra draw effects exist.
+
 ### Resource-curve reliability (`features/deckbuilder/resourceCurve.ts`)
 
 For each fixed Reserve-cost value represented in the Main Deck, this groups the quantities of every
