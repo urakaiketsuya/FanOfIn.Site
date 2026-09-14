@@ -1494,6 +1494,24 @@ one additional copy. Its selectable sideboard plan recommends one copy of a Side
 that role in exchange for a high-quantity Main card outside the role, and reports only the resulting
 role-availability delta. It does not infer matchup win rate or automatically change the deck.
 
+### Selection-adjusted Glimpse odds (`features/deckbuilder/glimpseOdds.ts`)
+
+The probability calculator detects fixed numeric `Glimpse N` text on Main Deck cards; variable
+`X`/`LV` values are excluded rather than guessed. For a selected source and target group it keeps
+two outcomes separate: the target is already among `s` cards seen, or at least one source is among
+those cards while no target is, then its Glimpse reveals a target in the remaining library. For
+disjoint target/source sets, that incremental probability is:
+
+`[C(N-K,s) - C(N-K-E,s)] / C(N,s) × [1 - C(N-s-K,g) / C(N-s,g)]`
+
+where `N` is Main Deck size, `K` target copies, `E` source copies, and `g` the fixed Glimpse value.
+This is exact for one activation. It reports the result as “by next draw,” because Glimpse only
+reorders cards; it does not draw them. Printed reserve cost is shown, but affordability, conditional
+text, champion level, repeated activations, and the subsequent value of bottomed cards are not
+assumed. If the selected source is itself in the target group, no incremental probability is
+credited because missing the target necessarily means missing that source too. Recipe mode applies
+the view to its lowest-copy requirement and does not label that as full recipe completion.
+
 ## Goldfish simulator (`app/src/lib/goldfishSimulator.ts`, `features/goldfish/GoldfishIndex.tsx`)
 
 A starting hand + draw-through-the-deck tool, deliberately *manually-assisted* rather than a rules

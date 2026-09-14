@@ -8,6 +8,7 @@ import { ForecastChart, ForecastCheckpointSelector, ForecastHeadline } from "../
 import { cardsSeenForRecipeTarget, expectedCardsSeenForRecipe, probabilityOfRecipe } from "../../lib/comboOdds";
 import { inferStartingHandSize } from "../../lib/turnToPlay";
 import { FUNCTIONAL_ROLE_LABELS, functionalRoleLines, type FunctionalRole } from "./functionalCopies";
+import { glimpseAdjustedOdds, glimpseSources } from "./glimpseOdds";
 
 /** Same range Synergy readiness's curves use (`CURVE_MAX_SEEN` in synergyReadiness.ts) — keeps the
  * two probability visualizations on this tab reading consistently. */
@@ -65,6 +66,7 @@ export default function HypergeometricCalculator({
   const [required, setRequired] = useState(1);
   const [mode, setMode] = useState<"single" | "functional" | "recipe">("single");
   const [functionalRole, setFunctionalRole] = useState<FunctionalRole>("draw");
+  const [selectedGlimpseSource, setSelectedGlimpseSource] = useState("");
   const [recipeGroups, setRecipeGroups] = useState<RecipeGroup[]>([{ id: 1, cards: [], required: 1 }, { id: 2, cards: [], required: 1 }]);
   const [nextGroupId, setNextGroupId] = useState(3);
   const copiesByName = useMemo(() => new Map(mainLines.map((line) => [line.name, line.quantity])), [mainLines]);
@@ -83,6 +85,8 @@ export default function HypergeometricCalculator({
   const recipeLabel = recipeGroups.map((group) => group.cards.length > 1 ? `one of (${group.cards.join(" / ")})` : group.cards[0] || "choose cards").join(" + ");
   const functionalLines = useMemo(() => functionalRoleLines(mainLines, catalogByName, functionalRole), [mainLines, catalogByName, functionalRole]);
   const functionalCopies = functionalLines.reduce((sum, line) => sum + line.quantity, 0);
+  const detectedGlimpseSources = useMemo(() => glimpseSources(mainLines, catalogByName), [mainLines, catalogByName]);
+  const activeGlimpseSource = detectedGlimpseSources.find((source) => source.name === selectedGlimpseSource) ?? detectedGlimpseSources[0];
 
   function handleSelectCard(name: string) {
     setSelectedCard(name);
@@ -111,6 +115,9 @@ export default function HypergeometricCalculator({
   const weakestGroupIndex = probabilityGroups.reduce((weakest, group, index, groups) => group.copies < groups[weakest].copies ? index : weakest, 0);
   const plusOneGroups = probabilityGroups.map((group, index) => index === weakestGroupIndex ? { ...group, copies: group.copies + 1 } : group);
   const plusOneProbability = mode === "recipe" && recipeReady && probabilityGroups.reduce((sum, group) => sum + group.copies, 0) < deckSize ? probabilityOfRecipe(deckSize, plusOneGroups, seen) : null;
+  const glimpseTargetCopies = mode === "single" ? copies : mode === "functional" ? functionalCopies : probabilityGroups[weakestGroupIndex]?.copies ?? 0;
+  const glimpseTargetNames = mode === "single" ? [selectedCard].filter(Boolean) : mode === "functional" ? functionalLines.map((line) => line.name) : recipeGroups[weakestGroupIndex]?.cards ?? [];
+  const glimpseOdds = activeGlimpseSource ? glimpseAdjustedOdds(deckSize, glimpseTargetCopies, activeGlimpseSource.copies, seen, activeGlimpseSource.glimpse, glimpseTargetNames.includes(activeGlimpseSource.name)) : null;
 
   /** Main Deck cards whose own effect text draws cards — the source of the "with card draw"
    * estimate below. Nothing excludes the target card itself: if it also draws cards, a copy of it
@@ -238,6 +245,14 @@ export default function HypergeometricCalculator({
 
       {mode === "recipe" && recipeReady && <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-5"><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Opening hand</div><div className="font-semibold tabular-nums text-ctp-text">{(openingProbability * 100).toFixed(1)}%</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Average complete</div><div className="font-semibold tabular-nums text-ctp-text">{expectedRecipeSeen === null ? "—" : `${expectedRecipeSeen.toFixed(1)} seen · ~T${expectedRecipeTurn}`}</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">50% consistency</div><div className="font-semibold tabular-nums text-ctp-text">{fiftySeen ? `${fiftySeen} seen` : "Not reached"}</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">80% consistency</div><div className="font-semibold tabular-nums text-ctp-text">{eightySeen ? `${eightySeen} seen` : "Not reached"}</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">+1 weakest-group copy</div><div className="font-semibold tabular-nums text-ctp-teal">{plusOneProbability === null ? "—" : `+${((plusOneProbability - probability) * 100).toFixed(1)} pts`}</div></div></div>}
       {mode === "recipe" && <p className="mt-2 text-[10px] text-ctp-subtext0">Grand Archive has no general mulligan; opening odds use the starting cards seen directly.</p>}
+
+      {activeGlimpseSource && glimpseOdds && glimpseTargetCopies > 0 && (
+        <div className="mt-4 rounded-xl border border-ctp-mauve/35 bg-ctp-mauve/5 p-3">
+          <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-mauve">Selection-adjusted odds</p><p className="mt-1 text-xs text-ctp-subtext1">Natural access plus a Glimpse card positioned for your next draw.</p></div><label className="text-[10px] text-ctp-subtext0">Glimpse source<select value={activeGlimpseSource.name} onChange={(event) => setSelectedGlimpseSource(event.target.value)} className="mt-1 block min-h-9 max-w-64 rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text">{detectedGlimpseSources.map((source) => <option key={source.name} value={source.name}>{source.name} · Glimpse {source.glimpse}</option>)}</select></label></div>
+          <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4"><div className="rounded-lg border border-ctp-surface1 bg-ctp-base/35 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">In hand now</div><div className="font-semibold tabular-nums text-ctp-text">{(glimpseOdds.natural * 100).toFixed(1)}%</div></div><div className="rounded-lg border border-ctp-surface1 bg-ctp-base/35 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Glimpse finds</div><div className="font-semibold tabular-nums text-ctp-text">{(glimpseOdds.revealHit * 100).toFixed(1)}%</div></div><div className="rounded-lg border border-ctp-surface1 bg-ctp-base/35 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Setup gain</div><div className="font-semibold tabular-nums text-ctp-teal">+{(glimpseOdds.setup * 100).toFixed(1)} pts</div></div><div className="rounded-lg border border-ctp-mauve/40 bg-ctp-base/35 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">By next draw</div><div className="font-semibold tabular-nums text-ctp-mauve">{(glimpseOdds.combined * 100).toFixed(1)}%</div></div></div>
+          <p className="mt-2 text-[10px] leading-4 text-ctp-subtext0">Exact for one activation: {activeGlimpseSource.copies}× {activeGlimpseSource.name} seen within the selected {seen} cards, then Glimpse {activeGlimpseSource.glimpse}. {activeGlimpseSource.reserveCost === null ? "Activation cost and timing are not inferred." : `Printed reserve cost ${activeGlimpseSource.reserveCost}; affordability and conditional text are not assumed.`} Glimpse sets the next draw—it does not put the card in hand. {mode === "recipe" ? "For recipes, this targets the requirement with the fewest copies and does not claim the entire recipe is complete." : ""}</p>
+        </div>
+      )}
 
       {curve.length >= 2 && (
         <div className="mt-2">
