@@ -13,9 +13,9 @@
     "@gatcg/shared": "*"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^5.20260823.1",
-    "tsx": "^4.20.5",
-    "typescript": "~5.9.2",
+    "@cloudflare/workers-types": "^5.20260911.1",
+    "tsx": "^4.23.13",
+    "typescript": "~7.0.2",
     "wrangler": "^4.131.0"
   }
 }
