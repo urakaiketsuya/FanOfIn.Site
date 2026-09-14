@@ -1484,6 +1484,16 @@ It also shows how the incoming card's own chance of appearing 2+ times among the
 The preview deliberately does not mutate the deck or claim matchup strength; role membership is the
 same inspectable printed-text classification used by Functional copies.
 
+### Consistency dashboard (`features/deckbuilder/ConsistencyDashboard.tsx`)
+
+The dashboard is a decision summary over existing calculations, not a new scoring model. It reports
+the functional role with the strongest opening availability, the role with the lowest one-or-more
+chance by 10 cards seen, the parsed synergy package with the lowest readiness by 10, the card with
+the highest 2+ clumping probability by 10, and the role receiving the largest probability gain from
+one additional copy. Its selectable sideboard plan recommends one copy of a Sideboard card carrying
+that role in exchange for a high-quantity Main card outside the role, and reports only the resulting
+role-availability delta. It does not infer matchup win rate or automatically change the deck.
+
 ## Goldfish simulator (`app/src/lib/goldfishSimulator.ts`, `features/goldfish/GoldfishIndex.tsx`)
 
 A starting hand + draw-through-the-deck tool, deliberately *manually-assisted* rather than a rules

@@ -4,6 +4,8 @@ import HypergeometricCalculator from "../HypergeometricCalculator";
 import ResourceCurveReliability from "../ResourceCurveReliability";
 import CopyClumpingRisk from "../CopyClumpingRisk";
 import SideboardImpact from "../SideboardImpact";
+import ConsistencyDashboard from "../ConsistencyDashboard";
+import type { SynergyReadiness } from "../synergyReadiness";
 import type { RatingPillar } from "../../../lib/deckIdentity";
 import type { DeckValidationResult } from "../validateDeck";
 import type { ArchetypeTuningOption, CollectionMode, PopulationSource } from "../model/builderTypes";
@@ -17,6 +19,7 @@ export default function ToolsPanel({
   materialLines,
   sideboardLines,
   catalogByName,
+  synergyReadiness,
   pillarBias,
   onPillarBiasChange,
   archetypeId,
@@ -36,6 +39,7 @@ export default function ToolsPanel({
   materialLines: { name: string; quantity: number }[];
   sideboardLines: { name: string; quantity: number }[];
   catalogByName: Map<string, Card>;
+  synergyReadiness: SynergyReadiness[];
   pillarBias: RatingPillar | null;
   onPillarBiasChange: (pillar: RatingPillar | null) => void;
   archetypeId: string | null;
@@ -223,6 +227,7 @@ export default function ToolsPanel({
         </div>
       </div>
 
+      <ConsistencyDashboard mainLines={mainLines} materialLines={materialLines} sideboardLines={sideboardLines} catalogByName={catalogByName} synergyReadiness={synergyReadiness} />
       <HypergeometricCalculator mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
       <ResourceCurveReliability mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
       <CopyClumpingRisk mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />

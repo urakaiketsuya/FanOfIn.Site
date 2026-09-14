@@ -1468,6 +1468,7 @@ export default function DeckBuilderIndex() {
                 materialLines={materialOnlyLines}
                 sideboardLines={sideboardLines}
                 catalogByName={catalogByName}
+                synergyReadiness={synergyReadiness}
                 pillarBias={pillarBias}
                 onPillarBiasChange={changePillarBias}
                 archetypeId={archetypeId}
