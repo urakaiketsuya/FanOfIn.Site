@@ -9,12 +9,15 @@ export interface ComboRequirement {
 }
 
 export function printedKeywords(card: Card): string[] {
-  const keywords = new Set<string>();
+  const keywords = new Map<string, string>();
   for (const match of (card.effect ?? "").matchAll(/\*\*([^*]+)\*\*/g)) {
-    const keyword = match[1].replace(/:\s*$/, "").replace(/\s+(?:\d+(?:\+X)?|X|LV)$/i, "").trim();
-    if (keyword) keywords.add(keyword);
+    const keyword = match[1].replace(/^:\s*/, "").replace(/:\s*$/, "").replace(/\s+(?:\d+(?:\+X)?|X|LV)$/i, "").trim();
+    if (!keyword || keyword.length > 40 || !/^[A-Za-z][A-Za-z ]*$/.test(keyword)) continue;
+    const key = keyword.toLowerCase();
+    const existing = keywords.get(key);
+    if (!existing || (/^[a-z]/.test(existing) && /^[A-Z]/.test(keyword))) keywords.set(key, keyword);
   }
-  return [...keywords];
+  return [...keywords.values()];
 }
 
 export function matchesComboRequirement(card: Card, requirement: ComboRequirement): boolean {

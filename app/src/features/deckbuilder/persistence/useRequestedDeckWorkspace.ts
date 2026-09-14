@@ -5,7 +5,7 @@ import { accountApi, AccountApiError } from "../../../lib/accountApi";
 import { decklistToWorkspace } from "./deckWorkspaceImport";
 import type { DeckWorkspace } from "./deckWorkspace";
 
-type WorkspaceSource = Extract<DeckWorkspace["source"], "analysis" | "review">;
+type WorkspaceSource = Extract<DeckWorkspace["source"], "analysis" | "review" | "combo">;
 
 export interface RequestedDeckState {
   pending: boolean;

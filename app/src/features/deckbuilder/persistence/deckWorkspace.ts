@@ -10,7 +10,7 @@ export interface WorkspaceCardLine {
 export interface DeckWorkspace {
   version: 1;
   updatedAt: string;
-  source: "builder" | "analysis" | "review";
+  source: "builder" | "analysis" | "review" | "combo";
   title: string | null;
   sourceLabel: string | null;
   format: DeckFormat;
@@ -34,7 +34,7 @@ export function loadActiveDeckWorkspace(storage: StorageLike): DeckWorkspace | n
     return {
       version: 1,
       updatedAt: typeof parsed.updatedAt === "string" ? parsed.updatedAt : new Date(0).toISOString(),
-      source: parsed.source === "analysis" || parsed.source === "review" ? parsed.source : "builder",
+      source: parsed.source === "analysis" || parsed.source === "review" || parsed.source === "combo" ? parsed.source : "builder",
       title: typeof parsed.title === "string" ? parsed.title : null,
       sourceLabel: typeof parsed.sourceLabel === "string" ? parsed.sourceLabel : null,
       format: parsed.format === "PANTHEON" ? "PANTHEON" : "STANDARD",

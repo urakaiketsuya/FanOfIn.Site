@@ -83,7 +83,7 @@ export default function PackagesIndex() {
       <PageHeader
         title="Card Packages"
         description="Explicit groups of cards whose construction relationship should be reviewed together. Packages guide suggestions without redefining a deck's archetype."
-        actions={<Link to="/cards/stats" className="text-sm text-ctp-blue hover:underline">Card stats &rarr;</Link>}
+        actions={<div className="flex gap-3"><Link to="/combo-lab" className="text-sm font-semibold text-ctp-mauve hover:underline">Open Combo Lab &rarr;</Link><Link to="/cards/stats" className="text-sm text-ctp-blue hover:underline">Card stats &rarr;</Link></div>}
       />
 
       <div className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">

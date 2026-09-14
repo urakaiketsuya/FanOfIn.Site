@@ -19,6 +19,11 @@ test("printed keywords ignore numeric parameters", () => {
   assert.equal(matchesComboRequirement(glimpse, { kind: "keyword", value: "glimpse", cards: [] }), true);
 });
 
+test("printed keywords collapse casing variants and omit formatted costs", () => {
+  const reservable = card({ effect: "**Reservable**. **reservable**. **(3), [REST], Sacrifice CARDNAME**: Draw a card." });
+  assert.deepEqual(printedKeywords(reservable), ["Reservable"]);
+});
+
 test("specific-card requirements can contain multiple alternatives", () => {
   const target = card({ name: "Second option" });
   assert.equal(matchesComboRequirement(target, { kind: "cards", value: "", cards: ["First option", "Second option"] }), true);

@@ -1482,6 +1482,59 @@ bold printed keyword. Numeric keyword parameters are normalized (`Glimpse 3` bec
 requirement's minimum can be greater than one, meaning any that many copies from its matched pool.
 The multivariate calculation requires disjoint pools; when a card matches more than one requirement,
 the UI names the overlap and withholds the probability until the recipe is made unambiguous.
+The recipe sensitivity list tests adding one copy to each matched card currently below four copies,
+while holding deck size fixed by assuming an unrelated card is removed. It reports the resulting
+percentage-point gain, sorted highest first. Four-copy cards are never suggested; if no eligible
+card produces a gain, the suggestion section is omitted.
+
+The same calculator is available as the standalone `/combo-lab` route. It uses the shared active
+deck workspace, including pasted, saved, and public deck intake. Its package explorer reads the
+published package-candidate families and scored candidates, can restrict results to relationships
+touching the active Main Deck, and converts a selected package into a recipe. Package-seeded recipes
+are serialized in the URL; the decklist itself is deliberately not embedded in that share link.
+
+### Combo Lab level-goal analysis (`app/src/lib/levelGoal.ts`)
+
+The first goal-oriented evaluator asks whether a deck can reach Champion level N by a selected
+turn. It keeps three routes distinct. Normal materialization follows `naturalLevelByTurn`. Direct
+level-up cards are detected with `isSimpleLevelUpAccelerant`; the required count is
+`targetLevel - naturalLevelByTurn(targetTurn)`, floored at zero, and card access uses the exact
+without-replacement probability. A direct route is resource-blocked when the natural hand ceiling
+cannot contain both the required enabler cards and their combined Reserve payments. For Dungeon
+Guide, the Reserve payment is also recognized as supplying the memory its trigger banishes.
+
+Fractal-payment effects are detected from their explicit “sacrifice two Fractal phantasias rather
+than pay the memory cost” text. They never receive acceleration credit: replacing a Champion's
+Memory cost does not create another Materialize Phase. Their percentage is the exact access chance
+of the payment card plus two Fractal cards by the preceding turn, deliberately labeled an upper
+bound because activating those cards, paying their Reserve costs, and keeping the objects on the
+field requires sequence state the current evaluator does not simulate. Quantity suggestions
+recompute the relevant route after adding one eligible sub-four-copy card while holding deck size
+fixed, and explain which goal bottleneck that card affects.
+
+### Combo Lab goal rule contracts (`app/src/lib/comboGoals.ts`)
+
+Combo Lab defaults to **Level up my Champion** and also offers goals for activating a key card,
+assembling a combo package, finding extra draw, and enabling a Mastery payoff. Each selectable goal
+is a declarative rule contract containing its comprehensive-rules sources, calculator mode, what the
+result measures, and what remains outside the model.
+
+There are two evidence levels:
+
+- **Rules-exact routes** combine a closed rule model with exact card-access odds. The Champion-level
+  evaluator qualifies because normal materialization timing and its supported alternative routes
+  are explicitly modeled.
+- **Access ceiling** means the probability is exact only for finding the named cards or functional
+  copies. It is not the probability of successfully performing the game action. Activation legality,
+  elements, costs, modes, targets, zones, timing permission, opponent responses, trigger conditions,
+  and resolution stay outside the claim unless a future evaluator models them explicitly.
+
+When adding a future goal, start from the official table of contents and link the narrowest relevant
+rules pages. Classify every requirement as deck-static, deterministic turn/resource state, tracked
+game state, opponent-dependent state, or choice/response state. Only the first two categories may be
+promoted to a rules-exact calculator without a simulator. Requirements from the other categories must
+either be modeled as state transitions or be disclosed in `doesNotMeasure`; card-text pattern matching
+alone never upgrades an access ceiling into a success probability.
 
 ### Resource-curve reliability (`features/deckbuilder/resourceCurve.ts`)
 

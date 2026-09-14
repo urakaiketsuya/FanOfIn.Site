@@ -1,7 +1,7 @@
 import type { Card, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import type { DeckWorkspace } from "./deckWorkspace";
 
-type WorkspaceSource = Extract<DeckWorkspace["source"], "analysis" | "review">;
+type WorkspaceSource = Extract<DeckWorkspace["source"], "analysis" | "review" | "combo">;
 
 export function decklistToWorkspace(
   decklist: OmnidexDecklist,
