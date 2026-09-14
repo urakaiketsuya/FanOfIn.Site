@@ -27,6 +27,7 @@ export function CardRow({
   needsReview = false,
   section = "sideboard",
   mainDeckSize = 0,
+  startingHandSize,
 }: {
   card: SuggestedCard;
   onToggleLock: () => void;
@@ -50,11 +51,12 @@ export function CardRow({
   needsReview?: boolean;
   section?: "main" | "material" | "sideboard";
   mainDeckSize?: number;
+  startingHandSize?: number;
 }) {
   const cardInfo = cardsByName.get(card.cardName);
   const unitPrice = priceByName.get(card.cardName);
   const playOdds = section === "main" && cardInfo?.cost.type === "reserve"
-    ? computeCardPlayOdds(mainDeckSize, card.quantity, cardInfo.cost_reserve)
+    ? computeCardPlayOdds(mainDeckSize, card.quantity, cardInfo.cost_reserve, startingHandSize)
     : null;
   const maxQuantity = Math.max(1, Math.min(cardInfo?.legality?.STANDARD?.limit ?? 4, 4));
   return (

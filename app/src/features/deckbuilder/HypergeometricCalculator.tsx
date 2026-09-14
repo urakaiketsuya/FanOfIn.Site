@@ -5,7 +5,8 @@ import { drawnCardsPerCopy, expectedExtraDraws, materialDrawBonus } from "./draw
 import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
 import { ForecastChart, ForecastCheckpointSelector, ForecastHeadline } from "../../components/ui/ForecastVisual";
-import { conditionalComboOdds } from "../../lib/comboOdds";
+import { cardsSeenForRecipeTarget, probabilityOfRecipe } from "../../lib/comboOdds";
+import { inferStartingHandSize } from "../../lib/turnToPlay";
 
 /** Same range Synergy readiness's curves use (`CURVE_MAX_SEEN` in synergyReadiness.ts) — keeps the
  * two probability visualizations on this tab reading consistently. */
@@ -13,19 +14,18 @@ const CURVE_MAX_SEEN = 25;
 
 /** Same "cards seen" vocabulary as Synergy readiness's `CHECKPOINTS` — reused here as quick-select
  * presets rather than inventing a second set of labels for the same idea. */
-const SEEN_PRESETS = [
-  { label: "Opening (7)", seen: 7 },
-  { label: "Early (10)", seen: 10 },
-  { label: "Mid (15)", seen: 15 },
-  { label: "Late (20)", seen: 20 },
-] as const;
-
 function clampInt(value: number, min: number, max: number): number {
   if (!Number.isFinite(value)) return min;
   return Math.min(max, Math.max(min, Math.round(value)));
 }
 
 const numberInputClass = "mt-1 block min-h-10 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text focus:border-ctp-blue focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/30";
+
+interface RecipeGroup {
+  id: number;
+  cards: string[];
+  required: number;
+}
 
 /**
  * A general-purpose front end onto `probabilityAtLeast` (the same hypergeometric function Synergy
@@ -62,11 +62,23 @@ export default function HypergeometricCalculator({
   const seen = controlledSeen ?? localSeen;
   const setSeen = onSeenChange ?? setLocalSeen;
   const [required, setRequired] = useState(1);
-  const [mode, setMode] = useState<"single" | "combo">("single");
-  const [anchorCard, setAnchorCard] = useState("");
-  const [optionCards, setOptionCards] = useState<string[]>([]);
-  const anchorCopies = mainLines.find((line) => line.name === anchorCard)?.quantity ?? 0;
-  const optionCopies = optionCards.reduce((sum, name) => sum + (mainLines.find((line) => line.name === name)?.quantity ?? 0), 0);
+  const [mode, setMode] = useState<"single" | "recipe">("single");
+  const [recipeGroups, setRecipeGroups] = useState<RecipeGroup[]>([{ id: 1, cards: [], required: 1 }, { id: 2, cards: [], required: 1 }]);
+  const [nextGroupId, setNextGroupId] = useState(3);
+  const copiesByName = useMemo(() => new Map(mainLines.map((line) => [line.name, line.quantity])), [mainLines]);
+  const startingHandSize = useMemo(() => inferStartingHandSize(materialLines, catalogByName), [materialLines, catalogByName]);
+  const seenPresets = useMemo(() => [
+    { label: `Opening (${startingHandSize})`, seen: startingHandSize },
+    { label: "Early (10)", seen: 10 },
+    { label: "Mid (15)", seen: 15 },
+    { label: "Late (20)", seen: 20 },
+  ], [startingHandSize]);
+  const probabilityGroups = useMemo(() => recipeGroups.map((group) => ({
+    copies: group.cards.reduce((sum, name) => sum + (copiesByName.get(name) ?? 0), 0),
+    required: group.required,
+  })), [recipeGroups, copiesByName]);
+  const recipeReady = probabilityGroups.length >= 2 && probabilityGroups.every((group) => group.copies >= group.required);
+  const recipeLabel = recipeGroups.map((group) => group.cards.length > 1 ? `one of (${group.cards.join(" / ")})` : group.cards[0] || "choose cards").join(" + ");
 
   function handleSelectCard(name: string) {
     setSelectedCard(name);
@@ -77,13 +89,20 @@ export default function HypergeometricCalculator({
     setCopies(line.quantity);
   }
 
-  const probability = mode === "combo"
-    ? conditionalComboOdds(deckSize, anchorCopies, optionCopies, seen).probability
+  const probability = mode === "recipe"
+    ? probabilityOfRecipe(deckSize, probabilityGroups, seen)
     : probabilityAtLeast(deckSize, copies, seen, required);
   const curve = useMemo(
-    () => Array.from({ length: Math.min(deckSize, CURVE_MAX_SEEN) }, (_, i) => mode === "combo" ? conditionalComboOdds(deckSize, anchorCopies, optionCopies, i + 1).probability : probabilityAtLeast(deckSize, copies, i + 1, required)),
-    [deckSize, copies, required, mode, anchorCopies, optionCopies],
+    () => Array.from({ length: Math.min(deckSize, CURVE_MAX_SEEN) }, (_, i) => mode === "recipe" ? probabilityOfRecipe(deckSize, probabilityGroups, i + 1) : probabilityAtLeast(deckSize, copies, i + 1, required)),
+    [deckSize, copies, required, mode, probabilityGroups],
   );
+  const openingSeen = Math.min(startingHandSize, deckSize);
+  const openingProbability = mode === "recipe" ? probabilityOfRecipe(deckSize, probabilityGroups, openingSeen) : probabilityAtLeast(deckSize, copies, openingSeen, required);
+  const fiftySeen = mode === "recipe" && recipeReady ? cardsSeenForRecipeTarget(deckSize, probabilityGroups, 0.5) : null;
+  const eightySeen = mode === "recipe" && recipeReady ? cardsSeenForRecipeTarget(deckSize, probabilityGroups, 0.8) : null;
+  const weakestGroupIndex = probabilityGroups.reduce((weakest, group, index, groups) => group.copies < groups[weakest].copies ? index : weakest, 0);
+  const plusOneGroups = probabilityGroups.map((group, index) => index === weakestGroupIndex ? { ...group, copies: group.copies + 1 } : group);
+  const plusOneProbability = mode === "recipe" && recipeReady && probabilityGroups.reduce((sum, group) => sum + group.copies, 0) < deckSize ? probabilityOfRecipe(deckSize, plusOneGroups, seen) : null;
 
   /** Main Deck cards whose own effect text draws cards — the source of the "with card draw"
    * estimate below. Nothing excludes the target card itself: if it also draws cards, a copy of it
@@ -111,15 +130,15 @@ export default function HypergeometricCalculator({
     () => Math.min(deckSize, Math.round(seen + expectedExtraDraws(drawEffectLines, deckSize, seen) + materialBonus)),
     [drawEffectLines, deckSize, seen, materialBonus],
   );
-  const probabilityWithDraw = mode === "combo" ? conditionalComboOdds(deckSize, anchorCopies, optionCopies, seenWithDraw).probability : probabilityAtLeast(deckSize, copies, seenWithDraw, required);
+  const probabilityWithDraw = mode === "recipe" ? probabilityOfRecipe(deckSize, probabilityGroups, seenWithDraw) : probabilityAtLeast(deckSize, copies, seenWithDraw, required);
   const curveWithDraw = useMemo(
     () =>
       Array.from({ length: Math.min(deckSize, CURVE_MAX_SEEN) }, (_, i) => {
         const baseSeen = i + 1;
         const adjustedSeen = Math.min(deckSize, Math.round(baseSeen + expectedExtraDraws(drawEffectLines, deckSize, baseSeen) + materialBonus));
-        return mode === "combo" ? conditionalComboOdds(deckSize, anchorCopies, optionCopies, adjustedSeen).probability : probabilityAtLeast(deckSize, copies, adjustedSeen, required);
+        return mode === "recipe" ? probabilityOfRecipe(deckSize, probabilityGroups, adjustedSeen) : probabilityAtLeast(deckSize, copies, adjustedSeen, required);
       }),
-    [drawEffectLines, deckSize, copies, required, materialBonus, mode, anchorCopies, optionCopies],
+    [drawEffectLines, deckSize, copies, required, materialBonus, mode, probabilityGroups],
   );
 
   return (
@@ -131,7 +150,7 @@ export default function HypergeometricCalculator({
       >
       <div className="mt-3 rounded-xl bg-ctp-surface0/60 p-3">
       <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Parameters</p>
-      <div className="mt-2 inline-flex rounded-md border border-ctp-surface1 bg-ctp-mantle p-0.5" role="group" aria-label="Probability question"><button type="button" aria-pressed={mode === "single"} onClick={() => setMode("single")} className={`rounded px-2.5 py-1 text-xs ${mode === "single" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>Single card</button><button type="button" aria-pressed={mode === "combo"} onClick={() => setMode("combo")} className={`rounded px-2.5 py-1 text-xs ${mode === "combo" ? "bg-ctp-mauve text-ctp-base" : "text-ctp-subtext1"}`}>Card + one of…</button></div>
+      <div className="mt-2 inline-flex rounded-md border border-ctp-surface1 bg-ctp-mantle p-0.5" role="group" aria-label="Probability question"><button type="button" aria-pressed={mode === "single"} onClick={() => setMode("single")} className={`rounded px-2.5 py-1 text-xs ${mode === "single" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>Single card</button><button type="button" aria-pressed={mode === "recipe"} onClick={() => setMode("recipe")} className={`rounded px-2.5 py-1 text-xs ${mode === "recipe" ? "bg-ctp-mauve text-ctp-base" : "text-ctp-subtext1"}`}>Probability recipe</button></div>
       {mode === "single" && mainLines.length > 0 && (
         <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
           <span className="text-ctp-subtext0">Card in build:</span>
@@ -151,7 +170,7 @@ export default function HypergeometricCalculator({
         </div>
       )}
 
-      {mode === "combo" && mainLines.length > 0 && <div className="mt-3 grid gap-3 sm:grid-cols-2"><label className="text-xs text-ctp-subtext0">Required card<select value={anchorCard} onChange={(event) => { setAnchorCard(event.target.value); setOptionCards((current) => current.filter((name) => name !== event.target.value)); }} className="mt-1 block min-h-10 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-xs text-ctp-text"><option value="">Choose a card…</option>{mainLines.map((line) => <option key={line.name} value={line.name}>{line.name} ({line.quantity})</option>)}</select></label><label className="text-xs text-ctp-subtext0">At least one of<select multiple size={4} value={optionCards} onChange={(event) => setOptionCards(Array.from(event.target.selectedOptions, (option) => option.value))} className="mt-1 block w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-xs text-ctp-text">{mainLines.filter((line) => line.name !== anchorCard).map((line) => <option key={line.name} value={line.name}>{line.name} ({line.quantity})</option>)}</select></label></div>}
+      {mode === "recipe" && mainLines.length > 0 && <div className="mt-3 space-y-2">{recipeGroups.map((group, groupIndex) => { const usedElsewhere = new Set(recipeGroups.filter((candidate) => candidate.id !== group.id).flatMap((candidate) => candidate.cards)); return <div key={group.id} className="rounded-lg border border-ctp-surface1 bg-ctp-base/40 p-2.5"><div className="flex items-center justify-between gap-2"><span className="text-[10px] font-semibold uppercase tracking-wide text-ctp-mauve">Requirement {groupIndex + 1}{groupIndex > 0 ? " · AND" : ""}</span>{recipeGroups.length > 2 && <button type="button" onClick={() => setRecipeGroups((groups) => groups.filter((candidate) => candidate.id !== group.id))} className="text-[10px] text-ctp-subtext0 hover:text-ctp-red">Remove</button>}</div><div className="mt-2 grid gap-2 sm:grid-cols-[1fr_7rem]"><label className="text-xs text-ctp-subtext0">One of these cards<select multiple size={3} value={group.cards} onChange={(event) => setRecipeGroups((groups) => groups.map((candidate) => candidate.id === group.id ? { ...candidate, cards: Array.from(event.target.selectedOptions, (option) => option.value) } : candidate))} className="mt-1 block w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-1.5 text-xs text-ctp-text">{mainLines.filter((line) => !usedElsewhere.has(line.name)).map((line) => <option key={line.name} value={line.name}>{line.name} ({line.quantity})</option>)}</select></label><label className="text-xs text-ctp-subtext0">Need at least<input type="number" min={1} max={Math.max(1, group.cards.reduce((sum, name) => sum + (copiesByName.get(name) ?? 0), 0))} value={group.required} onChange={(event) => setRecipeGroups((groups) => groups.map((candidate) => candidate.id === group.id ? { ...candidate, required: clampInt(Number(event.target.value), 1, deckSize) } : candidate))} className={numberInputClass} /></label></div></div>; })}<button type="button" disabled={recipeGroups.length >= 4} onClick={() => { setRecipeGroups((groups) => [...groups, { id: nextGroupId, cards: [], required: 1 }]); setNextGroupId((id) => id + 1); }} className="rounded-md border border-ctp-mauve/50 px-2.5 py-1 text-xs text-ctp-mauve disabled:opacity-40">+ AND requirement</button><p className="text-[10px] text-ctp-subtext0">Cards within a requirement are OR alternatives. Every requirement must be satisfied.</p></div>}
 
       <div className={`mt-3 grid grid-cols-2 gap-3 ${mode === "single" ? "sm:grid-cols-4" : "sm:grid-cols-2"}`}>
         <label className="text-xs text-ctp-subtext0">
@@ -201,9 +220,12 @@ export default function HypergeometricCalculator({
       </div>
       </div>
 
-      <div className="mt-3"><ForecastCheckpointSelector checkpoints={SEEN_PRESETS} selected={seen} onSelect={(value) => setSeen(Math.min(value, deckSize))} /></div>
+      <div className="mt-3"><ForecastCheckpointSelector checkpoints={seenPresets} selected={seen} onSelect={(value) => setSeen(Math.min(value, deckSize))} /></div>
 
-      <div className="mt-4"><ForecastHeadline label={mode === "combo" ? `Chance of ${anchorCard || "required card"} + one option` : `Chance of seeing at least ${required} ${required === 1 ? "copy" : "copies"}`} value={`${(probability * 100).toFixed(1)}%`} detail={mode === "combo" ? `${anchorCopies} required-card copies + ${optionCopies} option copies` : undefined} /></div>
+      <div className="mt-4"><ForecastHeadline label={mode === "recipe" ? `Chance of ${recipeLabel}` : `Chance of seeing at least ${required} ${required === 1 ? "copy" : "copies"}`} value={`${(probability * 100).toFixed(1)}%`} detail={mode === "recipe" ? `${probabilityGroups.map((group) => `${group.required} of ${group.copies}`).join(" + ")} copies` : undefined} /></div>
+
+      {mode === "recipe" && recipeReady && <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4"><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Opening hand</div><div className="font-semibold tabular-nums text-ctp-text">{(openingProbability * 100).toFixed(1)}%</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">50% consistency</div><div className="font-semibold tabular-nums text-ctp-text">{fiftySeen ? `${fiftySeen} seen` : "Not reached"}</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">80% consistency</div><div className="font-semibold tabular-nums text-ctp-text">{eightySeen ? `${eightySeen} seen` : "Not reached"}</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">+1 weakest-group copy</div><div className="font-semibold tabular-nums text-ctp-teal">{plusOneProbability === null ? "—" : `+${((plusOneProbability - probability) * 100).toFixed(1)} pts`}</div></div></div>}
+      {mode === "recipe" && <p className="mt-2 text-[10px] text-ctp-subtext0">Grand Archive has no general mulligan; opening odds use the starting cards seen directly.</p>}
 
       {curve.length >= 2 && (
         <div className="mt-2">

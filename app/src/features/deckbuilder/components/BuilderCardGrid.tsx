@@ -32,6 +32,7 @@ export function CardTile({
   onDismiss,
   section = "sideboard",
   mainDeckSize = 0,
+  startingHandSize,
 }: {
   card: SuggestedCard;
   cardInfo: Card | undefined;
@@ -54,11 +55,12 @@ export function CardTile({
   onDismiss?: () => void;
   section?: BuilderSection;
   mainDeckSize?: number;
+  startingHandSize?: number;
 }) {
   const maxQuantity = Math.max(1, Math.min(cardInfo?.legality?.STANDARD?.limit ?? 4, 4));
   const tags = [...(cardInfo?.elements.filter((e) => e !== "NORM") ?? []), ...(cardInfo?.classes ?? [])];
   const playOdds = section === "main" && cardInfo?.cost.type === "reserve"
-    ? computeCardPlayOdds(mainDeckSize, card.quantity, cardInfo.cost_reserve)
+    ? computeCardPlayOdds(mainDeckSize, card.quantity, cardInfo.cost_reserve, startingHandSize)
     : null;
 
   return (
@@ -283,6 +285,7 @@ export default function BuilderCardGrid({
   communityMode = false,
   reviewRemovalNames,
   mainDeckSize,
+  startingHandSize,
   onToggleLock,
   onChangeQuantity,
   onRemove,
@@ -300,6 +303,7 @@ export default function BuilderCardGrid({
   communityMode?: boolean;
   reviewRemovalNames?: Set<string>;
   mainDeckSize?: number;
+  startingHandSize?: number;
   onToggleLock: (cardName: string, quantity: number, section: BuilderSection) => void;
   onChangeQuantity?: (cardName: string, quantity: number) => void;
   onRemove: (cardName: string, locked: boolean) => void;
@@ -324,6 +328,7 @@ export default function BuilderCardGrid({
           needsReview={reviewRemovalNames?.has(card.cardName) ?? false}
           section={section}
           mainDeckSize={resolvedMainDeckSize}
+          startingHandSize={startingHandSize}
           onToggleLock={() => onToggleLock(card.cardName, card.quantity, section)}
           onChangeQuantity={onChangeQuantity ? (quantity) => onChangeQuantity(card.cardName, quantity) : undefined}
           onRemove={() => onRemove(card.cardName, card.locked)}

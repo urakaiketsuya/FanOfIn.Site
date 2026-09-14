@@ -15,6 +15,7 @@ import type { CardFieldVisibility } from "../useCardFieldVisibility";
 import type { PriceTrendEntry } from "../../pricing/usePriceTrendByName";
 import type { PopulationSource } from "../model/builderTypes";
 import type { RatingPillar } from "../../../lib/deckIdentity";
+import { inferStartingHandSize } from "../../../lib/turnToPlay";
 
 type BuilderIntent = "seed" | "scratch";
 type AddDestination = "automatic" | "sideboard" | "maybeboard";
@@ -74,6 +75,7 @@ export default function BuilderBuildPanel({
   onRemoveMaybeCard: (name: string) => void;
 }) {
   const communityMode = effectivePopulationSource !== "tournament" && effectivePopulationSource !== "balanced";
+  const startingHandSize = inferStartingHandSize(build.material.map((card) => ({ name: card.cardName })), catalogByName);
   return (
     <div data-component="BuilderBuildPanel" role="tabpanel" id="deck-builder-panel-build" aria-labelledby="deck-builder-tab-build" className="mt-4">
       <span className="text-sm text-ctp-subtext0">{builderIntent === "seed" ? "Cards to build around:" : "Add a card:"}</span>
@@ -238,6 +240,7 @@ export default function BuilderBuildPanel({
             <BuilderCardGrid
               section="material"
               mainDeckSize={mainTotal}
+              startingHandSize={startingHandSize}
               cards={build.material}
               cardsByName={cardsByName}
               priceByName={priceByName}
@@ -266,6 +269,7 @@ export default function BuilderBuildPanel({
                   needsReview={reviewRemovalNames.has(c.cardName)}
                   section="material"
                   mainDeckSize={mainTotal}
+                  startingHandSize={startingHandSize}
                   communityMode={communityMode}
                   onToggleLock={() => onToggleLock(c.cardName, c.quantity, "material")}
                   onRemove={() => onRemoveCard(c.cardName, c.locked)}
@@ -280,6 +284,7 @@ export default function BuilderBuildPanel({
             <BuilderCardGrid
               section="main"
               mainDeckSize={mainTotal}
+              startingHandSize={startingHandSize}
               cards={build.main}
               cardsByName={cardsByName}
               priceByName={priceByName}
@@ -309,6 +314,7 @@ export default function BuilderBuildPanel({
                   needsReview={reviewRemovalNames.has(c.cardName)}
                   section="main"
                   mainDeckSize={mainTotal}
+                  startingHandSize={startingHandSize}
                   communityMode={communityMode}
                   onToggleLock={() => onToggleLock(c.cardName, c.quantity, "main")}
                   onChangeQuantity={(qty) => onChangeQuantity(c.cardName, qty)}
@@ -331,6 +337,7 @@ export default function BuilderBuildPanel({
             <BuilderCardGrid
               section="sideboard"
               mainDeckSize={mainTotal}
+              startingHandSize={startingHandSize}
               cards={build.sideboard}
               cardsByName={cardsByName}
               priceByName={priceByName}
@@ -360,6 +367,7 @@ export default function BuilderBuildPanel({
                   needsReview={reviewRemovalNames.has(c.cardName)}
                   section="sideboard"
                   mainDeckSize={mainTotal}
+                  startingHandSize={startingHandSize}
                   communityMode={communityMode}
                   onToggleLock={() => onToggleLock(c.cardName, c.quantity, "sideboard")}
                   onChangeQuantity={(qty) => onChangeQuantity(c.cardName, qty)}

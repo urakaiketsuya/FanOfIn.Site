@@ -1,11 +1,25 @@
 import type { Card } from "@gatcg/shared";
 
 /**
- * Grand Archive's starting hand size — not encoded in any card data, so this is a plain constant
- * rather than something derived. Kept as an exported default so the UI can still let a viewer
- * override it (e.g. after a mulligan) rather than baking it in silently.
+ * Most current Lv 0 Champions draw seven cards with their start-of-game On Enter ability. Some
+ * printings explicitly draw another amount (notably Fragmented Spirits draw six), so calculators
+ * keep this as an editable fallback rather than claiming every lineage uses seven.
  */
-export const DEFAULT_STARTING_HAND_SIZE = 6;
+export const DEFAULT_STARTING_HAND_SIZE = 7;
+
+const DRAW_NUMBER_WORDS: Record<string, number> = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10 };
+
+/** Reads the starting Lv 0 Champion's On Enter draw amount, falling back to the usual seven. */
+export function inferStartingHandSize(materialLines: { name: string }[], cardsByName: ReadonlyMap<string, Card>): number {
+  for (const line of materialLines) {
+    const card = cardsByName.get(line.name);
+    if (!card?.types.includes("CHAMPION") || card.level !== 0) continue;
+    const match = (card.effect ?? "").match(/\bdraw\s+(\d+|one|two|three|four|five|six|seven|eight|nine|ten)\s+cards?\b/i);
+    if (!match) continue;
+    return /^\d+$/.test(match[1]) ? Number(match[1]) : (DRAW_NUMBER_WORDS[match[1].toLowerCase()] ?? DEFAULT_STARTING_HAND_SIZE);
+  }
+  return DEFAULT_STARTING_HAND_SIZE;
+}
 
 /** How far ahead this ever bothers projecting — well past any real game's relevant turn range. */
 const MAX_TURN = 20;
