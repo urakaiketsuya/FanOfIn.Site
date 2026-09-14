@@ -1430,6 +1430,22 @@ Verified against every real "level up your champion" card in the corpus
 Surfaced on every deck-viewing page's Analysis/Forecasts tab via `UserDeckStats.tsx`, next to the
 Hypergeometric calculator, using the same "Card in build" autofill convention.
 
+### Functional-copy probability (`features/deckbuilder/functionalCopies.ts`)
+
+The Guided Builder's Hypergeometric calculator can treat every Main Deck card serving one detected
+role as interchangeable copies, then compute the exact chance of seeing at least one. The role
+groups are intentionally conservative and derived only from printed card data already used by
+other calculations: fixed draw clauses (`drawEffects.ts`), printed Floating Memory, fixed opposing-
+champion damage (`fixedChampionDamageRange`), and bounded interaction verbs targeting a unit/card/
+opponent. Level 0 Champion opening-hand setup is excluded from Card draw.
+
+If a role contains quantities `q1…qn`, its functional-copy count is `K = sum(q)`. At `s` cards seen
+from an `N`-card Main Deck, the displayed probability is the ordinary without-replacement result
+`1 - C(N-K, s) / C(N, s)`. The 50% and 80% milestones scan forward for the first `s` meeting each
+threshold. A card may belong to more than one role, but is counted only once inside any selected
+role. The UI lists every included card so false positives remain inspectable; grouping means the
+cards can satisfy the same broad need, not that their costs, timing, or strategic value are equal.
+
 ## Goldfish simulator (`app/src/lib/goldfishSimulator.ts`, `features/goldfish/GoldfishIndex.tsx`)
 
 A starting hand + draw-through-the-deck tool, deliberately *manually-assisted* rather than a rules

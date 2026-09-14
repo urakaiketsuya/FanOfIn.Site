@@ -7,6 +7,7 @@ import Section from "../../components/ui/Section";
 import { ForecastChart, ForecastCheckpointSelector, ForecastHeadline } from "../../components/ui/ForecastVisual";
 import { cardsSeenForRecipeTarget, probabilityOfRecipe } from "../../lib/comboOdds";
 import { inferStartingHandSize } from "../../lib/turnToPlay";
+import { FUNCTIONAL_ROLE_LABELS, functionalRoleLines, type FunctionalRole } from "./functionalCopies";
 
 /** Same range Synergy readiness's curves use (`CURVE_MAX_SEEN` in synergyReadiness.ts) — keeps the
  * two probability visualizations on this tab reading consistently. */
@@ -62,7 +63,8 @@ export default function HypergeometricCalculator({
   const seen = controlledSeen ?? localSeen;
   const setSeen = onSeenChange ?? setLocalSeen;
   const [required, setRequired] = useState(1);
-  const [mode, setMode] = useState<"single" | "recipe">("single");
+  const [mode, setMode] = useState<"single" | "functional" | "recipe">("single");
+  const [functionalRole, setFunctionalRole] = useState<FunctionalRole>("draw");
   const [recipeGroups, setRecipeGroups] = useState<RecipeGroup[]>([{ id: 1, cards: [], required: 1 }, { id: 2, cards: [], required: 1 }]);
   const [nextGroupId, setNextGroupId] = useState(3);
   const copiesByName = useMemo(() => new Map(mainLines.map((line) => [line.name, line.quantity])), [mainLines]);
@@ -79,6 +81,8 @@ export default function HypergeometricCalculator({
   })), [recipeGroups, copiesByName]);
   const recipeReady = probabilityGroups.length >= 2 && probabilityGroups.every((group) => group.copies >= group.required);
   const recipeLabel = recipeGroups.map((group) => group.cards.length > 1 ? `one of (${group.cards.join(" / ")})` : group.cards[0] || "choose cards").join(" + ");
+  const functionalLines = useMemo(() => functionalRoleLines(mainLines, catalogByName, functionalRole), [mainLines, catalogByName, functionalRole]);
+  const functionalCopies = functionalLines.reduce((sum, line) => sum + line.quantity, 0);
 
   function handleSelectCard(name: string) {
     setSelectedCard(name);
@@ -91,13 +95,15 @@ export default function HypergeometricCalculator({
 
   const probability = mode === "recipe"
     ? probabilityOfRecipe(deckSize, probabilityGroups, seen)
-    : probabilityAtLeast(deckSize, copies, seen, required);
+    : probabilityAtLeast(deckSize, mode === "functional" ? functionalCopies : copies, seen, mode === "functional" ? 1 : required);
   const curve = useMemo(
-    () => Array.from({ length: Math.min(deckSize, CURVE_MAX_SEEN) }, (_, i) => mode === "recipe" ? probabilityOfRecipe(deckSize, probabilityGroups, i + 1) : probabilityAtLeast(deckSize, copies, i + 1, required)),
-    [deckSize, copies, required, mode, probabilityGroups],
+    () => Array.from({ length: Math.min(deckSize, CURVE_MAX_SEEN) }, (_, i) => mode === "recipe" ? probabilityOfRecipe(deckSize, probabilityGroups, i + 1) : probabilityAtLeast(deckSize, mode === "functional" ? functionalCopies : copies, i + 1, mode === "functional" ? 1 : required)),
+    [deckSize, copies, required, mode, probabilityGroups, functionalCopies],
   );
   const openingSeen = Math.min(startingHandSize, deckSize);
-  const openingProbability = mode === "recipe" ? probabilityOfRecipe(deckSize, probabilityGroups, openingSeen) : probabilityAtLeast(deckSize, copies, openingSeen, required);
+  const openingProbability = mode === "recipe" ? probabilityOfRecipe(deckSize, probabilityGroups, openingSeen) : probabilityAtLeast(deckSize, mode === "functional" ? functionalCopies : copies, openingSeen, mode === "functional" ? 1 : required);
+  const functionalFiftySeen = mode === "functional" && functionalCopies > 0 ? cardsSeenForRecipeTarget(deckSize, [{ copies: functionalCopies, required: 1 }], 0.5) : null;
+  const functionalEightySeen = mode === "functional" && functionalCopies > 0 ? cardsSeenForRecipeTarget(deckSize, [{ copies: functionalCopies, required: 1 }], 0.8) : null;
   const fiftySeen = mode === "recipe" && recipeReady ? cardsSeenForRecipeTarget(deckSize, probabilityGroups, 0.5) : null;
   const eightySeen = mode === "recipe" && recipeReady ? cardsSeenForRecipeTarget(deckSize, probabilityGroups, 0.8) : null;
   const weakestGroupIndex = probabilityGroups.reduce((weakest, group, index, groups) => group.copies < groups[weakest].copies ? index : weakest, 0);
@@ -130,15 +136,15 @@ export default function HypergeometricCalculator({
     () => Math.min(deckSize, Math.round(seen + expectedExtraDraws(drawEffectLines, deckSize, seen) + materialBonus)),
     [drawEffectLines, deckSize, seen, materialBonus],
   );
-  const probabilityWithDraw = mode === "recipe" ? probabilityOfRecipe(deckSize, probabilityGroups, seenWithDraw) : probabilityAtLeast(deckSize, copies, seenWithDraw, required);
+  const probabilityWithDraw = mode === "recipe" ? probabilityOfRecipe(deckSize, probabilityGroups, seenWithDraw) : probabilityAtLeast(deckSize, mode === "functional" ? functionalCopies : copies, seenWithDraw, mode === "functional" ? 1 : required);
   const curveWithDraw = useMemo(
     () =>
       Array.from({ length: Math.min(deckSize, CURVE_MAX_SEEN) }, (_, i) => {
         const baseSeen = i + 1;
         const adjustedSeen = Math.min(deckSize, Math.round(baseSeen + expectedExtraDraws(drawEffectLines, deckSize, baseSeen) + materialBonus));
-        return mode === "recipe" ? probabilityOfRecipe(deckSize, probabilityGroups, adjustedSeen) : probabilityAtLeast(deckSize, copies, adjustedSeen, required);
+        return mode === "recipe" ? probabilityOfRecipe(deckSize, probabilityGroups, adjustedSeen) : probabilityAtLeast(deckSize, mode === "functional" ? functionalCopies : copies, adjustedSeen, mode === "functional" ? 1 : required);
       }),
-    [drawEffectLines, deckSize, copies, required, materialBonus, mode, probabilityGroups],
+    [drawEffectLines, deckSize, copies, required, materialBonus, mode, probabilityGroups, functionalCopies],
   );
 
   return (
@@ -150,7 +156,7 @@ export default function HypergeometricCalculator({
       >
       <div className="mt-3 rounded-xl bg-ctp-surface0/60 p-3">
       <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Parameters</p>
-      <div className="mt-2 inline-flex rounded-md border border-ctp-surface1 bg-ctp-mantle p-0.5" role="group" aria-label="Probability question"><button type="button" aria-pressed={mode === "single"} onClick={() => setMode("single")} className={`rounded px-2.5 py-1 text-xs ${mode === "single" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>Single card</button><button type="button" aria-pressed={mode === "recipe"} onClick={() => setMode("recipe")} className={`rounded px-2.5 py-1 text-xs ${mode === "recipe" ? "bg-ctp-mauve text-ctp-base" : "text-ctp-subtext1"}`}>Probability recipe</button></div>
+      <div className="mt-2 inline-flex flex-wrap rounded-md border border-ctp-surface1 bg-ctp-mantle p-0.5" role="group" aria-label="Probability question"><button type="button" aria-pressed={mode === "single"} onClick={() => setMode("single")} className={`rounded px-2.5 py-1 text-xs ${mode === "single" ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>Single card</button><button type="button" aria-pressed={mode === "functional"} onClick={() => setMode("functional")} className={`rounded px-2.5 py-1 text-xs ${mode === "functional" ? "bg-ctp-teal text-ctp-base" : "text-ctp-subtext1"}`}>Functional copies</button><button type="button" aria-pressed={mode === "recipe"} onClick={() => setMode("recipe")} className={`rounded px-2.5 py-1 text-xs ${mode === "recipe" ? "bg-ctp-mauve text-ctp-base" : "text-ctp-subtext1"}`}>Probability recipe</button></div>
       {mode === "single" && mainLines.length > 0 && (
         <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
           <span className="text-ctp-subtext0">Card in build:</span>
@@ -169,6 +175,8 @@ export default function HypergeometricCalculator({
           <span className="text-[10px] text-ctp-subtext0">Fills in deck size and copies below — still editable after.</span>
         </div>
       )}
+
+      {mode === "functional" && <div className="mt-3"><label className="text-xs text-ctp-subtext0">Role<select value={functionalRole} onChange={(event) => setFunctionalRole(event.target.value as FunctionalRole)} className="mt-1 block min-h-10 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text">{(Object.keys(FUNCTIONAL_ROLE_LABELS) as FunctionalRole[]).map((role) => <option key={role} value={role}>{FUNCTIONAL_ROLE_LABELS[role]}</option>)}</select></label><div className="mt-2 flex flex-wrap gap-1.5">{functionalLines.length > 0 ? functionalLines.map((line) => <span key={line.name} className="rounded-full border border-ctp-teal/40 bg-ctp-teal/10 px-2 py-1 text-[10px] text-ctp-text">{line.name} · {line.quantity}</span>) : <span className="text-xs text-ctp-subtext0">No cards with this detected role.</span>}</div><p className="mt-2 text-[10px] text-ctp-subtext0">Detected conservatively from printed rules text. These are alternatives for finding the role, not claims that the cards are strategically identical.</p></div>}
 
       {mode === "recipe" && mainLines.length > 0 && <div className="mt-3 space-y-2">{recipeGroups.map((group, groupIndex) => { const usedElsewhere = new Set(recipeGroups.filter((candidate) => candidate.id !== group.id).flatMap((candidate) => candidate.cards)); return <div key={group.id} className="rounded-lg border border-ctp-surface1 bg-ctp-base/40 p-2.5"><div className="flex items-center justify-between gap-2"><span className="text-[10px] font-semibold uppercase tracking-wide text-ctp-mauve">Requirement {groupIndex + 1}{groupIndex > 0 ? " · AND" : ""}</span>{recipeGroups.length > 2 && <button type="button" onClick={() => setRecipeGroups((groups) => groups.filter((candidate) => candidate.id !== group.id))} className="text-[10px] text-ctp-subtext0 hover:text-ctp-red">Remove</button>}</div><div className="mt-2 grid gap-2 sm:grid-cols-[1fr_7rem]"><label className="text-xs text-ctp-subtext0">One of these cards<select multiple size={3} value={group.cards} onChange={(event) => setRecipeGroups((groups) => groups.map((candidate) => candidate.id === group.id ? { ...candidate, cards: Array.from(event.target.selectedOptions, (option) => option.value) } : candidate))} className="mt-1 block w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-1.5 text-xs text-ctp-text">{mainLines.filter((line) => !usedElsewhere.has(line.name)).map((line) => <option key={line.name} value={line.name}>{line.name} ({line.quantity})</option>)}</select></label><label className="text-xs text-ctp-subtext0">Need at least<input type="number" min={1} max={Math.max(1, group.cards.reduce((sum, name) => sum + (copiesByName.get(name) ?? 0), 0))} value={group.required} onChange={(event) => setRecipeGroups((groups) => groups.map((candidate) => candidate.id === group.id ? { ...candidate, required: clampInt(Number(event.target.value), 1, deckSize) } : candidate))} className={numberInputClass} /></label></div></div>; })}<button type="button" disabled={recipeGroups.length >= 4} onClick={() => { setRecipeGroups((groups) => [...groups, { id: nextGroupId, cards: [], required: 1 }]); setNextGroupId((id) => id + 1); }} className="rounded-md border border-ctp-mauve/50 px-2.5 py-1 text-xs text-ctp-mauve disabled:opacity-40">+ AND requirement</button><p className="text-[10px] text-ctp-subtext0">Cards within a requirement are OR alternatives. Every requirement must be satisfied.</p></div>}
 
@@ -222,7 +230,9 @@ export default function HypergeometricCalculator({
 
       <div className="mt-3"><ForecastCheckpointSelector checkpoints={seenPresets} selected={seen} onSelect={(value) => setSeen(Math.min(value, deckSize))} /></div>
 
-      <div className="mt-4"><ForecastHeadline label={mode === "recipe" ? `Chance of ${recipeLabel}` : `Chance of seeing at least ${required} ${required === 1 ? "copy" : "copies"}`} value={`${(probability * 100).toFixed(1)}%`} detail={mode === "recipe" ? `${probabilityGroups.map((group) => `${group.required} of ${group.copies}`).join(" + ")} copies` : undefined} /></div>
+      <div className="mt-4"><ForecastHeadline label={mode === "recipe" ? `Chance of ${recipeLabel}` : mode === "functional" ? `Chance of finding ${FUNCTIONAL_ROLE_LABELS[functionalRole].toLowerCase()}` : `Chance of seeing at least ${required} ${required === 1 ? "copy" : "copies"}`} value={`${(probability * 100).toFixed(1)}%`} detail={mode === "recipe" ? `${probabilityGroups.map((group) => `${group.required} of ${group.copies}`).join(" + ")} copies` : mode === "functional" ? `${functionalCopies} functional copies across ${functionalLines.length} cards` : undefined} /></div>
+
+      {mode === "functional" && functionalCopies > 0 && <div className="mt-3 grid gap-2 sm:grid-cols-3"><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Opening hand</div><div className="font-semibold tabular-nums text-ctp-text">{(openingProbability * 100).toFixed(1)}%</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">50% consistency</div><div className="font-semibold tabular-nums text-ctp-text">{functionalFiftySeen ? `${functionalFiftySeen} seen` : "Not reached"}</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">80% consistency</div><div className="font-semibold tabular-nums text-ctp-text">{functionalEightySeen ? `${functionalEightySeen} seen` : "Not reached"}</div></div></div>}
 
       {mode === "recipe" && recipeReady && <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4"><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Opening hand</div><div className="font-semibold tabular-nums text-ctp-text">{(openingProbability * 100).toFixed(1)}%</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">50% consistency</div><div className="font-semibold tabular-nums text-ctp-text">{fiftySeen ? `${fiftySeen} seen` : "Not reached"}</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">80% consistency</div><div className="font-semibold tabular-nums text-ctp-text">{eightySeen ? `${eightySeen} seen` : "Not reached"}</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">+1 weakest-group copy</div><div className="font-semibold tabular-nums text-ctp-teal">{plusOneProbability === null ? "—" : `+${((plusOneProbability - probability) * 100).toFixed(1)} pts`}</div></div></div>}
       {mode === "recipe" && <p className="mt-2 text-[10px] text-ctp-subtext0">Grand Archive has no general mulligan; opening odds use the starting cards seen directly.</p>}
@@ -237,7 +247,7 @@ export default function HypergeometricCalculator({
         </div>
       )}
 
-      {hasDrawEngine && (
+      {hasDrawEngine && !(mode === "functional" && functionalRole === "draw") && (
         <div className="mt-4 border-t border-ctp-surface1 pt-3">
           <ForecastHeadline label={`With card draw · ${seenWithDraw} cards seen`} value={`${(probabilityWithDraw * 100).toFixed(1)}%`} />
           {curveWithDraw.length >= 2 && (
