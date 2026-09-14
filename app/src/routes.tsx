@@ -102,6 +102,7 @@ const BrowseDecksIndex = lazy(() => import("./features/decks/BrowseDecksIndex"))
 const DeckDetail = lazy(() => import("./features/decks/DeckDetail"));
 const PantheonDeckDetail = lazy(() => import("./features/decks/PantheonDeckDetail"));
 const DeckBuilderIndex = lazy(() => import("./features/deckbuilder/DeckBuilderIndex"));
+const DeckAnalysisIndex = lazy(() => import("./features/deck-analysis/DeckAnalysisIndex"));
 const DeckReviewIndex = lazy(() => import("./features/deck-review/DeckReviewIndex"));
 const GoldfishIndex = lazy(() => import("./features/goldfish/GoldfishIndex"));
 const CardDiscoveryIndex = lazy(() => import("./features/card-discovery/CardDiscoveryIndex"));
@@ -202,6 +203,7 @@ export default function AppRoutes() {
         <Route path="/decks/:id" element={<DeckOrPublicDeckDetail />} />
         <Route path="/pantheon/decks/:id" element={<PantheonDeckDetail />} />
         <Route path="/deck-builder" element={<DeckBuilderIndex />} />
+        <Route path="/deck-analysis" element={<DeckAnalysisIndex />} />
         <Route path="/deck-review" element={<DeckReviewIndex />} />
         <Route path="/goldfish" element={<GoldfishIndex />} />
         <Route path="/card-discovery" element={<CardDiscoveryIndex />} />

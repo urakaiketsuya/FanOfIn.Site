@@ -63,6 +63,8 @@ export default function BuilderWorkbenchNav({
           <span className={`rounded-full px-2 py-1 ${mainTotal >= 60 || deckFormat === "PANTHEON" && mainTotal > 0 ? "bg-ctp-green/10 text-ctp-green" : "bg-ctp-surface0 text-ctp-subtext1"}`}>{mainTotal} main</span>
           <span className={`rounded-full px-2 py-1 ${finishComplete ? "bg-ctp-green/10 text-ctp-green" : "bg-ctp-yellow/10 text-ctp-yellow"}`}>{validationStatus}</span>
           <span className="rounded-full bg-ctp-surface0 px-2 py-1 text-ctp-subtext1">Saved in this tab</span>
+          {mainTotal > 0 && <Link to="/deck-analysis" className="rounded-md border border-ctp-blue/50 px-2 py-1 font-medium text-ctp-blue hover:bg-ctp-blue/10">Analyze deck</Link>}
+          {mainTotal > 0 && <Link to="/deck-review" className="rounded-md border border-ctp-surface1 px-2 py-1 font-medium text-ctp-subtext1 hover:text-ctp-text">Review suggestions</Link>}
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import type { Card } from "@gatcg/shared";
 import { parseDecklist } from "../compare/parseDecklist";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -19,6 +19,7 @@ import { computeCardDecay } from "../../lib/cardDecay";
 import { championSlugsFor, mergeCardInclusionBuckets } from "../community/data";
 import { buildToDecklist, calculateLinePrice, derivePendingSuggestions, deriveReviewGroups } from "../deckbuilder/engine/builderSelectors";
 import { DECK_REVIEW_SESSION_KEY, loadBuilderSession } from "../deckbuilder/persistence/builderPersistence";
+import { loadActiveDeckWorkspace, saveActiveDeckWorkspace } from "../deckbuilder/persistence/deckWorkspace";
 import { selectionsToMaps, type LockedSection } from "../deckbuilder/model/builderTypes";
 import { formatUsd } from "../../lib/format";
 import type { BuildCounters } from "../deckbuilder/useBuildCounters";
@@ -40,6 +41,22 @@ const EMPTY_BUILD_COUNTERS: BuildCounters = {
 
 /** Same shape/functions as the full Guided Deck Builder's own session restore — just its own storage key, so the two tools' in-progress work never collide. */
 function loadSessionSeed() {
+  const workspace = loadActiveDeckWorkspace(sessionStorage);
+  if (workspace?.championName && (workspace.main.length > 0 || workspace.material.length > 0)) {
+    const selections = [
+      ...workspace.main.map((line) => ({ ...line, section: "main" as const })),
+      ...workspace.material.map((line) => ({ ...line, section: "material" as const })),
+      ...workspace.sideboard.map((line) => ({ ...line, section: "sideboard" as const })),
+    ];
+    return {
+      championName: workspace.championName,
+      spiritFilter: workspace.spiritName,
+      lockedCards: new Map(selections.map((line) => [line.name, line.quantity])),
+      lockedSections: new Map(selections.map((line) => [line.name, line.section])),
+      rejectedCards: new Set<string>(),
+      populationSource: "balanced" as ReviewPopulationSource,
+    };
+  }
   const session = loadBuilderSession(sessionStorage, "STANDARD", DECK_REVIEW_SESSION_KEY);
   if (!session?.selection.championName) return null;
   const locked = selectionsToMaps(session.selection.lockedCards);
@@ -86,6 +103,20 @@ export default function DeckReviewIndex() {
   const { championName, spiritFilter, lockedCards, lockedSections, rejectedCards, populationSource } = workflow.state;
   const { setChampionName, setSpiritFilter, setLockedCards, setLockedSections, setRejectedCards, setPopulationSource } = workflow;
   useBuilderSessionPersistence("STANDARD", workflow.state, DECK_REVIEW_SESSION_KEY);
+  useEffect(() => {
+    if (!championName || lockedCards.size === 0) return;
+    const lines = Array.from(lockedCards, ([name, quantity]) => ({ name, quantity, section: lockedSections.get(name) ?? "main" }));
+    saveActiveDeckWorkspace(sessionStorage, {
+      source: "review",
+      format: "STANDARD",
+      championName,
+      spiritName: spiritFilter,
+      main: lines.filter((line) => line.section === "main").map(({ name, quantity }) => ({ name, quantity })),
+      material: lines.filter((line) => line.section === "material").map(({ name, quantity }) => ({ name, quantity })),
+      sideboard: lines.filter((line) => line.section === "sideboard").map(({ name, quantity }) => ({ name, quantity })),
+      maybeboard: [],
+    });
+  }, [championName, spiritFilter, lockedCards, lockedSections]);
 
   const [tab, setTab] = useState<DeckReviewTab>("review");
   const [spiritElement, setSpiritElement] = useState<string | null>(null);

@@ -28,6 +28,7 @@ import { computeNewReleaseCards } from "./newReleaseCards";
 import { computeCardDecay } from "../../lib/cardDecay";
 import { accountApi } from "../../lib/accountApi";
 import { clearBuilderSession, loadBuilderSession, parseBuilderShareParams } from "./persistence/builderPersistence";
+import { loadActiveDeckWorkspace, saveActiveDeckWorkspace } from "./persistence/deckWorkspace";
 import { selectionsToMaps, type ChangeLogEntry, type LockedSection, type PopulationSource } from "./model/builderTypes";
 import { buildToDecklist, calculateLinePrice, deriveArchetypeOptions, deriveReviewGroups } from "./engine/builderSelectors";
 import { buildSuggestedDeck } from "./engine/buildSuggestedDeck";
@@ -117,6 +118,29 @@ interface SessionSeed {
  * `?champion=` param.
  */
 function loadSessionSeed(): SessionSeed | null {
+  const workspace = loadActiveDeckWorkspace(sessionStorage);
+  if (workspace?.source === "review" && workspace.championName) {
+    const selections = [
+      ...workspace.main.map((line) => ({ ...line, section: "main" as const })),
+      ...workspace.material.map((line) => ({ ...line, section: "material" as const })),
+      ...workspace.sideboard.map((line) => ({ ...line, section: "sideboard" as const })),
+    ];
+    const locked = selectionsToMaps(selections);
+    return {
+      championName: workspace.championName,
+      spiritFilter: workspace.spiritName,
+      lockedCards: locked.cards,
+      lockedSections: locked.sections,
+      rejectedCards: new Set(),
+      pillarBias: null,
+      archetypeId: null,
+      populationSource: "balanced",
+      championLevelCap: null,
+      collectionMode: "all",
+      changeLog: [],
+      maybeboard: new Map(workspace.maybeboard.map((line) => [line.name, line.quantity])),
+    };
+  }
   const session = loadBuilderSession(sessionStorage);
   if (!session?.selection.championName) return null;
   const locked = selectionsToMaps(session.selection.lockedCards);
@@ -994,6 +1018,19 @@ export default function DeckBuilderIndex() {
   const mainOnlyLines = useMemo(() => build.main.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.main]);
   const materialOnlyLines = useMemo(() => build.material.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.material]);
   const sideboardLines = useMemo(() => build.sideboard.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.sideboard]);
+  useEffect(() => {
+    if (!championName || mainOnlyLines.length === 0) return;
+    saveActiveDeckWorkspace(sessionStorage, {
+      source: "builder",
+      format: deckFormat,
+      championName,
+      spiritName: spiritFilter,
+      main: mainOnlyLines,
+      material: materialOnlyLines,
+      sideboard: sideboardLines,
+      maybeboard: Array.from(maybeboard, ([name, quantity]) => ({ name, quantity })),
+    });
+  }, [championName, spiritFilter, deckFormat, mainOnlyLines, materialOnlyLines, sideboardLines, maybeboard]);
 
   // Lifted out of StatsPanel (rather than computed only when that tab is active) so a tab-label
   // Compute insight counts outside the panel so the supporting-tool affordance can advertise
