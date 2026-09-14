@@ -1,7 +1,7 @@
 import type { Card } from "@gatcg/shared";
 
 export interface GlimpseSource { name: string; copies: number; glimpse: number; reserveCost: number | null; }
-export interface GlimpseAdjustedOdds { natural: number; setup: number; combined: number; sourceAvailable: number; revealHit: number; }
+export interface GlimpseAdjustedOdds { natural: number; setup: number; combined: number; sourceAvailable: number; revealHit: number; expectedActivations: number; }
 
 function choose(n: number, k: number): number {
   if (k < 0 || k > n) return 0;
@@ -27,21 +27,33 @@ export function glimpseSources(lines: { name: string; quantity: number }[], card
   }).sort((a, b) => b.glimpse - a.glimpse || b.copies - a.copies || a.name.localeCompare(b.name));
 }
 
-/** Exact one-activation setup odds for disjoint target and Glimpse-source cards. */
-export function glimpseAdjustedOdds(deckSize: number, targetCopies: number, sourceCopies: number, seen: number, glimpse: number, overlaps = false): GlimpseAdjustedOdds {
+/** Exact capped multi-activation setup odds for disjoint target and Glimpse-source cards. */
+export function glimpseAdjustedOdds(deckSize: number, targetCopies: number, sourceCopies: number, seen: number, glimpse: number, overlaps = false, maxActivations = 1): GlimpseAdjustedOdds {
   const n = Math.max(0, Math.floor(deckSize));
   const s = Math.max(0, Math.min(n, Math.floor(seen)));
   const targets = Math.max(0, Math.min(n, Math.floor(targetCopies)));
   const sources = Math.max(0, Math.min(n - targets, Math.floor(sourceCopies)));
   const denominator = choose(n, s);
-  if (n === 0 || denominator === 0 || targets === 0) return { natural: 0, setup: 0, combined: 0, sourceAvailable: 0, revealHit: 0 };
+  if (n === 0 || denominator === 0 || targets === 0) return { natural: 0, setup: 0, combined: 0, sourceAvailable: 0, revealHit: 0, expectedActivations: 0 };
 
   const noTarget = choose(n - targets, s) / denominator;
   const natural = 1 - noTarget;
   const sourceAvailable = overlaps ? 0 : Math.max(0, (choose(n - targets, s) - choose(n - targets - sources, s)) / denominator);
   const remaining = n - s;
-  const reveal = Math.max(0, Math.min(remaining, Math.floor(glimpse)));
-  const revealHit = remaining > 0 ? 1 - choose(remaining - targets, reveal) / choose(remaining, reveal) : 0;
-  const setup = sourceAvailable * revealHit;
-  return { natural, setup, combined: Math.min(1, natural + setup), sourceAvailable, revealHit };
+  const activationCap = Math.max(1, Math.min(sources, Math.floor(maxActivations)));
+  let setup = 0;
+  let weightedActivations = 0;
+  if (!overlaps && remaining > 0) {
+    for (let drawnSources = 1; drawnSources <= Math.min(sources, s); drawnSources++) {
+      const stateProbability = choose(sources, drawnSources) * choose(n - targets - sources, s - drawnSources) / denominator;
+      const activations = Math.min(drawnSources, activationCap);
+      const inspected = Math.min(remaining, Math.floor(glimpse) * activations);
+      const hit = 1 - choose(remaining - targets, inspected) / choose(remaining, inspected);
+      setup += stateProbability * hit;
+      weightedActivations += stateProbability * activations;
+    }
+  }
+  const revealHit = sourceAvailable > 0 ? setup / sourceAvailable : 0;
+  const expectedActivations = sourceAvailable > 0 ? weightedActivations / sourceAvailable : 0;
+  return { natural, setup, combined: Math.min(1, natural + setup), sourceAvailable, revealHit, expectedActivations };
 }

@@ -1557,10 +1557,18 @@ disjoint target/source sets, that incremental probability is:
 `[C(N-K,s) - C(N-K-E,s)] / C(N,s) × [1 - C(N-s-K,g) / C(N-s,g)]`
 
 where `N` is Main Deck size, `K` target copies, `E` source copies, and `g` the fixed Glimpse value.
-This is exact for one activation. It reports the result as “by next draw,” because Glimpse only
-reorders cards; it does not draw them. Printed reserve cost is shown, but affordability, conditional
-text, champion level, repeated activations, and the subsequent value of bottomed cards are not
-assumed. If the selected source is itself in the target group, no incremental probability is
+For multiple activations, the tool sums over the exact probability that `j` source copies occur in
+the target-free cards already seen. It applies up to the selected activation cap and treats each
+missed Glimpse as inspecting fresh cards, so the reveal size for that state is
+`min(remaining library, Glimpse N × min(j, cap))`. This models the player bottoming inspected misses.
+The displayed reveal-hit rate and expected activations are conditional on at least one source being
+available; setup gain remains an unconditional probability and is therefore safe to add to natural
+access.
+
+It reports the result as “by next draw,” because Glimpse only reorders cards; it does not draw them.
+Each source copy activates at most once. Printed reserve cost is shown, but total affordability,
+conditional text, champion level, intervening shuffles, and the subsequent value of bottomed cards
+are not assumed. If the selected source is itself in the target group, no incremental probability is
 credited because missing the target necessarily means missing that source too. Recipe mode applies
 the view to its lowest-copy requirement and does not label that as full recipe completion.
 
