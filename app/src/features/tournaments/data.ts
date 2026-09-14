@@ -2,8 +2,8 @@ import { useMemo } from "react";
 import type { OmnidexIndexData, OmnidexJudgesData, OmnidexPlayersData, OmnidexTeamsData, OmnidexVenueGeocodeData } from "@gatcg/shared";
 import { usePublishedData } from "../../lib/sync/usePublishedData";
 
-export function useOmnidexIndex(): OmnidexIndexData | undefined {
-  return usePublishedData<OmnidexIndexData>("omnidex-index", "/data/omnidex/index.json");
+export function useOmnidexIndex(enabled = true): OmnidexIndexData | undefined {
+  return usePublishedData<OmnidexIndexData>("omnidex-index", "/data/omnidex/index.json", enabled);
 }
 
 /**
@@ -11,13 +11,13 @@ export function useOmnidexIndex(): OmnidexIndexData | undefined {
  * index, which deliberately doesn't carry event name — see DeckPopularityEntry's doc comment) and
  * need to join it back for display rather than duplicating the string per entry.
  */
-export function useEventNameById(): Map<number, string> {
-  const index = useOmnidexIndex();
+export function useEventNameById(enabled = true): Map<number, string> {
+  const index = useOmnidexIndex(enabled);
   return useMemo(() => new Map(index?.events.map((e) => [e.id, e.name]) ?? []), [index]);
 }
 
-export function useOmnidexPlayers(): OmnidexPlayersData | undefined {
-  return usePublishedData<OmnidexPlayersData>("omnidex-players", "/data/omnidex/players.json");
+export function useOmnidexPlayers(enabled = true): OmnidexPlayersData | undefined {
+  return usePublishedData<OmnidexPlayersData>("omnidex-players", "/data/omnidex/players.json", enabled);
 }
 
 export function useOmnidexJudges(): OmnidexJudgesData | undefined {

@@ -64,8 +64,8 @@ function topN(counts: Map<number, RawCardCount>, limit: number): RawCardCount[] 
  * All computed client-side against the published deck-card-index dataset, so arbitrary
  * combinations work without a server round-trip.
  */
-export function useCardCombination(selectedCards: string[]): CardCombinationResult {
-  const presence = useDeckCardPresenceIndex();
+export function useCardCombination(selectedCards: string[], enabled = true): CardCombinationResult {
+  const presence = useDeckCardPresenceIndex(enabled);
   const data = presence?.data;
   const nameToIndex = presence?.nameToIndex;
   const presenceIndex = presence?.presenceIndex;

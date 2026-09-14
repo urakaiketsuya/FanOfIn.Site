@@ -13,8 +13,8 @@ export function useRivalsData(): RivalsData | undefined {
   return usePublishedData<RivalsData>("analysis-rivals", "/data/analysis/rivals.json");
 }
 
-export function useHipsterData(): HipsterData | undefined {
-  return usePublishedData<HipsterData>("analysis-hipster", "/data/analysis/hipster.json");
+export function useHipsterData(enabled = true): HipsterData | undefined {
+  return usePublishedData<HipsterData>("analysis-hipster", "/data/analysis/hipster.json", enabled);
 }
 
 export function usePlayerDecksData(): PlayerDecksData | undefined {

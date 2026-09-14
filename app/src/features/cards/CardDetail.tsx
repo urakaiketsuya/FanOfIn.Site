@@ -175,13 +175,24 @@ export default function CardDetail() {
   const options = useQuery({ queryKey: ["option-definitions"], queryFn: gatcgApi.getOptionDefinitions });
   const rarityDisplay = (rarity: number) =>
     options.data?.rarity.find((r) => r.value === String(rarity))?.display ?? String(rarity);
+  // Gate every large published dataset behind the tab that actually needs it — CardDetail used to
+  // eagerly fetch every dataset below (roughly 60MB+ combined: deck-card-index, deck-popularity-index,
+  // hipster, omnidex index/players, archetype-taxonomy, community deck-references) on every page
+  // load regardless of which of the 7 tabs (if any) the visitor opened, since "info" is the default.
+  // Only "info"/"similar" need cardStatsData/quantity/community-inclusion; the rest are per-tab.
+  const needsDecksTab = tab === "decks";
+  const needsUsedWithTab = tab === "usedWith";
+  const needsSynergyTab = tab === "synergy";
+  const needsIntentTab = tab === "intent";
+  const needsPopularityIndex = needsDecksTab || needsSynergyTab;
+
   const prices = usePriceLookup();
   const priceHistoryData = usePriceHistoryData();
-  const cardStatsData = useCardStatsData();
+  const cardStatsData = useCardStatsData(tab === "info" || tab === "similar");
   const cardStat = cardStatsData?.cards.find((c) => c.name === card?.name);
-  const communityCardInclusion = useCommunityBlendedCardInclusion();
+  const communityCardInclusion = useCommunityBlendedCardInclusion("STANDARD", tab === "info");
   const communityInclusion = communityCardInclusion?.overall.find((c) => c.name === card?.name);
-  const cardQuantityStatsData = useCardQuantityStatsData();
+  const cardQuantityStatsData = useCardQuantityStatsData(tab === "info");
   const cardQuantityStat = cardQuantityStatsData?.cards.find((c) => c.name === card?.name);
   // Below this many decks, a quantity bucket is more likely a one-off brew or data quirk than a
   // real signal — same MIN_SAMPLE_SIZE magnitude used everywhere else in this codebase.
@@ -216,16 +227,16 @@ export default function CardDetail() {
     setCompareWith((prev) => prev.filter((n) => n !== name));
   }
 
-  const archetypeTaxonomyData = useArchetypeTaxonomyData();
-  const popularityIndexData = useDeckPopularityIndexData();
-  const eventNameById = useEventNameById();
-  const hipsterData = useHipsterData();
-  const playersData = useOmnidexPlayers();
-  const cardDeckReferences = useCommunityBlendedDeckReferences();
+  const archetypeTaxonomyData = useArchetypeTaxonomyData(needsDecksTab);
+  const popularityIndexData = useDeckPopularityIndexData(needsPopularityIndex);
+  const eventNameById = useEventNameById(needsDecksTab);
+  const hipsterData = useHipsterData(needsDecksTab);
+  const playersData = useOmnidexPlayers(needsDecksTab);
+  const cardDeckReferences = useCommunityBlendedDeckReferences(needsDecksTab);
   const communityDeckRefs = card ? (cardDeckReferences?.byCardName[card.name] ?? []) : [];
 
   const selectedCardNames = useMemo(() => (card ? [card.name] : []), [card]);
-  const combination = useCardCombination(selectedCardNames);
+  const combination = useCardCombination(selectedCardNames, needsDecksTab || needsUsedWithTab);
   const comboNames = useMemo(
     () => [...combination.main, ...combination.material, ...combination.sideboard].map((c) => c.name),
     [combination],
@@ -242,7 +253,7 @@ export default function CardDetail() {
 
   const deckIdSet = useMemo(() => new Set(combination.deckIds), [combination.deckIds]);
 
-  const synergy = useCardSynergy(card?.name ?? null);
+  const synergy = useCardSynergy(card?.name ?? null, needsSynergyTab);
   const synergyCardImages = useCardsByNames(useMemo(() => synergy.cards.map((c) => c.cardName), [synergy.cards]));
 
   const similarCardsList = useSimilarCards(card ?? null);
@@ -269,7 +280,7 @@ export default function CardDetail() {
   // same kind of relationship against actual deck data, and (via `archetypeSources`) ties some of
   // it to specific concrete builds. Only pair-level candidates (memberCards.length === 1) apply
   // here — a multi-card family candidate doesn't confirm any one pair by itself.
-  const minedPackages = useMinedPackageCandidates();
+  const minedPackages = useMinedPackageCandidates(needsIntentTab);
   const packageEvidenceByPair = useMemo(() => {
     const map = new Map<string, PackageCandidateEvidence>();
     for (const candidate of minedPackages?.candidates ?? []) {

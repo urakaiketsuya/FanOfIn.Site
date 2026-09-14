@@ -38,8 +38,8 @@ export function useCommunityBlendedCoOccurrence(format: DeckFormat = "STANDARD",
   return usePublishedData<CommunityCoOccurrenceData>(`community-blended-co-occurrence-${format}`, blendedPath(format, "co-occurrence"), enabled);
 }
 
-export function useCommunityBlendedDeckReferences() {
-  return usePublishedData<CardDeckReferencesData>("community-blended-deck-references", "/data/community/deck-references.json");
+export function useCommunityBlendedDeckReferences(enabled = true) {
+  return usePublishedData<CardDeckReferencesData>("community-blended-deck-references", "/data/community/deck-references.json", enabled);
 }
 
 export function useCommunitySourceCounts() {

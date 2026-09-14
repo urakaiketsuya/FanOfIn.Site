@@ -34,8 +34,8 @@ function buildPresenceIndex(decks: DeckCardIndexEntry[]): Map<number, Set<number
  * every one of the ~57k decks (see useCardSynergy's original implementation, before this was
  * extracted from useCardCombination.ts where the same structure was already being built).
  */
-export function useDeckCardPresenceIndex(): DeckCardPresenceIndex | undefined {
-  const rawData = useDeckCardIndexData();
+export function useDeckCardPresenceIndex(enabled = true): DeckCardPresenceIndex | undefined {
+  const rawData = useDeckCardIndexData(enabled);
   // `cardNames` guards against a stale IndexedDB copy from before dictionary-encoding shipped —
   // during the rollout window, a returning visitor's cache briefly holds the old `{name,quantity}`
   // shape until usePublishedData's generatedAt check catches up and refetches. Treating it the

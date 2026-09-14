@@ -23,9 +23,9 @@ export interface CardSynergyResult {
  * population already has it, so its own "without" bucket is always empty and fails the sample bar
  * automatically, no special-casing needed.
  */
-export function useCardSynergy(cardName: string | null): CardSynergyResult {
-  const presence = useDeckCardPresenceIndex();
-  const popularityIndexData = useDeckPopularityIndexData();
+export function useCardSynergy(cardName: string | null, enabled = true): CardSynergyResult {
+  const presence = useDeckCardPresenceIndex(enabled);
+  const popularityIndexData = useDeckPopularityIndexData(enabled);
 
   return useMemo((): CardSynergyResult => {
     if (!cardName || !presence || !popularityIndexData)

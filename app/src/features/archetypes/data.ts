@@ -38,8 +38,8 @@ export function useChampionTrendsData(): ChampionTrendsData | undefined {
   return usePublishedData<ChampionTrendsData>("analysis-champion-trends", "/data/analysis/champion-trends.json");
 }
 
-export function useCardStatsData(): CardStatsData | undefined {
-  return usePublishedData<CardStatsData>("analysis-cards", "/data/analysis/cards.json");
+export function useCardStatsData(enabled = true): CardStatsData | undefined {
+  return usePublishedData<CardStatsData>("analysis-cards", "/data/analysis/cards.json", enabled);
 }
 
 export function useDeckCardIndexData(enabled = true): DeckCardIndexData | undefined {
