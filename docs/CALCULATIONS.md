@@ -1537,8 +1537,16 @@ This is a read-only, one-copy swap preview: the selected Main Deck card loses on
 selected Sideboard card gains one while total Main Deck size stays fixed. For each functional role,
 it recomputes combined copies and the exact chance of seeing at least one among the first 10 cards.
 It also shows how the incoming card's own chance of appearing 2+ times among the first 10 changes.
-The preview deliberately does not mutate the deck or claim matchup strength; role membership is the
-same inspectable printed-text classification used by Functional copies.
+It also shows the incoming card's one-or-more availability before and after the swap.
+
+When the build has a historical taxonomy match, the tool filters that build's published matchup
+`myCards` and `answers` evidence to cards physically present in the current Sideboard. Candidates
+are ranked by their strongest positive signal: matchup-adjusted lift or mitigation against a named
+harmful opponent card. These values are never added because their game populations can overlap.
+Champion-wide fallback answers retain that label. Clicking a recommendation fills the preview and
+provisionally selects a high-quantity Main card with no positive matchup evidence as the cut; the
+viewer can replace it. The preview never mutates the deck, and correlations are not causal claims.
+Role membership remains the same inspectable printed-text classification used by Functional copies.
 
 ### Consistency dashboard (`features/deckbuilder/ConsistencyDashboard.tsx`)
 

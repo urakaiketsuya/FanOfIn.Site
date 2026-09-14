@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import type { Card, DeckFormat } from "@gatcg/shared";
+import type { DeckTestResult } from "../../../lib/deckTestResult";
 import HypergeometricCalculator from "../HypergeometricCalculator";
 import ResourceCurveReliability from "../ResourceCurveReliability";
 import ReserveSequencePressure from "../ReserveSequencePressure";
@@ -36,6 +37,7 @@ export default function ToolsPanel({
   onChangePopulationSource,
   collectionMode,
   onCollectionModeChange,
+  deckTestResult,
 }: {
   mainLines: { name: string; quantity: number }[];
   materialLines: { name: string; quantity: number }[];
@@ -56,6 +58,7 @@ export default function ToolsPanel({
   onChangePopulationSource: (source: PopulationSource, label: string) => void;
   collectionMode: CollectionMode;
   onCollectionModeChange: (mode: CollectionMode) => void;
+  deckTestResult: DeckTestResult | null;
 }) {
   return (
     <div data-component="BuilderToolsPanel" className="mt-6">
@@ -235,7 +238,7 @@ export default function ToolsPanel({
       <ReserveSequencePressure mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
       <CopyClumpingRisk mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
       <ConditionalHandPressure mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
-      <SideboardImpact mainLines={mainLines} sideboardLines={sideboardLines} catalogByName={catalogByName} />
+      <SideboardImpact mainLines={mainLines} sideboardLines={sideboardLines} catalogByName={catalogByName} matchups={deckTestResult?.matchups} />
     </div>
   );
 }

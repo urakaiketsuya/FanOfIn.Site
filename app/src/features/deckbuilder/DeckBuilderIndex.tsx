@@ -1483,6 +1483,7 @@ export default function DeckBuilderIndex() {
                 onChangePopulationSource={changePopulationSource}
                 collectionMode={collectionMode}
                 onCollectionModeChange={(mode) => startTransition(() => setCollectionMode(mode))}
+                deckTestResult={deckTestResult}
               />
           </TabPanel>
 
