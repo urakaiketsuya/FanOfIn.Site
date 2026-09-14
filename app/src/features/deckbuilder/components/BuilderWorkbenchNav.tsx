@@ -3,17 +3,13 @@ import type { DeckFormat } from "@gatcg/shared";
 
 export type BuilderWorkbenchView = "build" | "review" | "test" | "stats" | "tools" | "buddies" | "copy" | "log";
 
-const PRIMARY_STAGES: { view: Exclude<BuilderWorkbenchView, "stats" | "tools" | "buddies" | "log">; label: string }[] = [
+const PRIMARY_STAGES: { view: Extract<BuilderWorkbenchView, "build" | "copy">; label: string }[] = [
   { view: "build", label: "Build" },
-  { view: "review", label: "Tune" },
-  { view: "test", label: "Test" },
   { view: "copy", label: "Finish" },
 ];
 
-const SUPPORTING_TOOLS: { view: Extract<BuilderWorkbenchView, "stats" | "tools" | "buddies" | "log">; label: string }[] = [
-  { view: "stats", label: "Deck insights" },
+const SUPPORTING_TOOLS: { view: Extract<BuilderWorkbenchView, "tools" | "log">; label: string }[] = [
   { view: "tools", label: "Build settings" },
-  { view: "buddies", label: "Buddy cards" },
   { view: "log", label: "Change history" },
 ];
 
@@ -25,8 +21,6 @@ export default function BuilderWorkbenchNav({
   deckFormat,
   mainTotal,
   validationStatus,
-  reviewItemCount,
-  statsSignalCount,
   changeLogCount,
 }: {
   activeView: BuilderWorkbenchView;
@@ -36,18 +30,14 @@ export default function BuilderWorkbenchNav({
   deckFormat: DeckFormat;
   mainTotal: number;
   validationStatus: string;
-  reviewItemCount: number;
-  statsSignalCount: number;
   changeLogCount: number;
 }) {
   const primaryActive = PRIMARY_STAGES.some((stage) => stage.view === activeView);
   const activeSupport = SUPPORTING_TOOLS.find((tool) => tool.view === activeView);
   const buildComplete = mainTotal > 0;
-  const tuneComplete = buildComplete && reviewItemCount === 0;
   const finishComplete = validationStatus === "Legal";
   const stageComplete = (view: (typeof PRIMARY_STAGES)[number]["view"]) => {
     if (view === "build") return buildComplete;
-    if (view === "review") return tuneComplete;
     if (view === "copy") return finishComplete;
     return false;
   };
@@ -68,7 +58,7 @@ export default function BuilderWorkbenchNav({
         </div>
       </div>
 
-      <nav aria-label="Deck workflow" className="grid grid-cols-2 border-b border-ctp-surface1 sm:grid-cols-5">
+      <nav aria-label="Deck workflow" className="grid grid-cols-2 border-b border-ctp-surface1 sm:grid-cols-3">
         <Link to="/card-discovery" className="border-b-2 border-transparent px-3 py-3 text-left text-ctp-green hover:bg-ctp-surface0">
           <span className="block text-xs font-semibold">✓ Find</span>
           <span className="mt-0.5 block truncate text-[10px] text-ctp-subtext0">Idea chosen</span>
@@ -78,11 +68,7 @@ export default function BuilderWorkbenchNav({
           const complete = stageComplete(stage.view);
           const summary = stage.view === "build"
             ? buildComplete ? `${mainTotal} main cards` : "Shape the deck"
-            : stage.view === "review"
-              ? reviewItemCount > 0 ? `${reviewItemCount} decisions left` : "Decisions complete"
-              : stage.view === "test"
-                ? "Check performance"
-                : finishComplete ? "Ready to save" : validationStatus;
+            : finishComplete ? "Ready to save" : validationStatus;
           return (
             <button
               key={stage.view}
@@ -106,7 +92,7 @@ export default function BuilderWorkbenchNav({
         <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label="Supporting deck tools">
           {SUPPORTING_TOOLS.map((tool) => {
             const active = tool.view === activeView;
-            const suffix = tool.view === "stats" && statsSignalCount > 0 ? ` (${statsSignalCount})` : tool.view === "log" ? ` (${changeLogCount})` : "";
+            const suffix = tool.view === "log" ? ` (${changeLogCount})` : "";
             return <button key={tool.view} id={`deck-builder-tab-${tool.view}`} type="button" aria-pressed={active} onClick={() => onViewChange(tool.view)} className={`rounded-md border px-2.5 py-1.5 text-xs ${active ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text"}`}>{tool.label}{suffix}</button>;
           })}
         </div>

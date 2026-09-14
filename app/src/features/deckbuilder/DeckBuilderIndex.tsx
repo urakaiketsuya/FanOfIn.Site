@@ -1049,11 +1049,6 @@ export default function DeckBuilderIndex() {
     const deckCards = buildLines.map((line) => catalogByName.get(line.name)).filter((c): c is Card => c !== undefined);
     return computeNewReleaseCards(catalogByName.values(), deckCards, identityElements, includedNames);
   }, [buildLines, catalogByName, identityElements]);
-  const statsSignalCount = buildLines.length === 0 ? 0 :
-    (decayReport?.signals.length ?? 0) + newReleaseCards.length +
-    synergyReadiness.filter((s) => s.recommendations.length > 0).length +
-    dependencyReadiness.filter((d) => d.recommendations.length > 0).length;
-
   const decklist: OmnidexDecklist = useMemo(() => buildToDecklist(build), [build]);
   const keptDecklist: OmnidexDecklist = useMemo(() => buildToDecklist(build, true), [build]);
   /** Link to `/compare` seeding the current in-progress build (as a `?custom=` deck) alongside one
@@ -1368,8 +1363,6 @@ export default function DeckBuilderIndex() {
             deckFormat={deckFormat}
             mainTotal={mainTotal}
             validationStatus={validation.status}
-            reviewItemCount={reviewItemCount}
-            statsSignalCount={statsSignalCount}
             changeLogCount={changeLog.length}
           />
 
@@ -1501,11 +1494,6 @@ export default function DeckBuilderIndex() {
 
           <TabPanel baseId="deck-builder" tab="tools" active={tab}>
               <ToolsPanel
-                mainLines={mainOnlyLines}
-                materialLines={materialOnlyLines}
-                sideboardLines={sideboardLines}
-                catalogByName={catalogByName}
-                synergyReadiness={synergyReadiness}
                 pillarBias={pillarBias}
                 onPillarBiasChange={changePillarBias}
                 archetypeId={archetypeId}
@@ -1520,7 +1508,6 @@ export default function DeckBuilderIndex() {
                 onChangePopulationSource={changePopulationSource}
                 collectionMode={collectionMode}
                 onCollectionModeChange={(mode) => startTransition(() => setCollectionMode(mode))}
-                deckTestResult={deckTestResult}
               />
           </TabPanel>
 

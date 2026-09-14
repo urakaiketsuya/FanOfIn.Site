@@ -1,14 +1,5 @@
 import { Link } from "react-router-dom";
-import type { Card, DeckFormat } from "@gatcg/shared";
-import type { DeckTestResult } from "../../../lib/deckTestResult";
-import HypergeometricCalculator from "../HypergeometricCalculator";
-import ResourceCurveReliability from "../ResourceCurveReliability";
-import ReserveSequencePressure from "../ReserveSequencePressure";
-import CopyClumpingRisk from "../CopyClumpingRisk";
-import ConditionalHandPressure from "../ConditionalHandPressure";
-import SideboardImpact from "../SideboardImpact";
-import ConsistencyDashboard from "../ConsistencyDashboard";
-import type { SynergyReadiness } from "../synergyReadiness";
+import type { DeckFormat } from "@gatcg/shared";
 import type { RatingPillar } from "../../../lib/deckIdentity";
 import type { DeckValidationResult } from "../validateDeck";
 import type { ArchetypeTuningOption, CollectionMode, PopulationSource } from "../model/builderTypes";
@@ -18,11 +9,6 @@ import Section from "../../../components/ui/Section";
 const PILLAR_OPTIONS: RatingPillar[] = ["durability", "interaction", "aggro", "opportunity"];
 
 export default function ToolsPanel({
-  mainLines,
-  materialLines,
-  sideboardLines,
-  catalogByName,
-  synergyReadiness,
   pillarBias,
   onPillarBiasChange,
   archetypeId,
@@ -37,13 +23,7 @@ export default function ToolsPanel({
   onChangePopulationSource,
   collectionMode,
   onCollectionModeChange,
-  deckTestResult,
 }: {
-  mainLines: { name: string; quantity: number }[];
-  materialLines: { name: string; quantity: number }[];
-  sideboardLines: { name: string; quantity: number }[];
-  catalogByName: Map<string, Card>;
-  synergyReadiness: SynergyReadiness[];
   pillarBias: RatingPillar | null;
   onPillarBiasChange: (pillar: RatingPillar | null) => void;
   archetypeId: string | null;
@@ -58,7 +38,6 @@ export default function ToolsPanel({
   onChangePopulationSource: (source: PopulationSource, label: string) => void;
   collectionMode: CollectionMode;
   onCollectionModeChange: (mode: CollectionMode) => void;
-  deckTestResult: DeckTestResult | null;
 }) {
   return (
     <div data-component="BuilderToolsPanel" className="mt-6">
@@ -232,13 +211,6 @@ export default function ToolsPanel({
         </div>
       </div>
 
-      <ConsistencyDashboard mainLines={mainLines} materialLines={materialLines} sideboardLines={sideboardLines} catalogByName={catalogByName} synergyReadiness={synergyReadiness} />
-      <HypergeometricCalculator mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
-      <ResourceCurveReliability mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
-      <ReserveSequencePressure mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
-      <CopyClumpingRisk mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
-      <ConditionalHandPressure mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
-      <SideboardImpact mainLines={mainLines} sideboardLines={sideboardLines} catalogByName={catalogByName} matchups={deckTestResult?.matchups} />
     </div>
   );
 }
