@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState, useTransition } from "react";
 import type { Card } from "@gatcg/shared";
-import { parseDecklist } from "../compare/parseDecklist";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
@@ -19,7 +18,8 @@ import { computeCardDecay } from "../../lib/cardDecay";
 import { championSlugsFor, mergeCardInclusionBuckets } from "../community/data";
 import { buildToDecklist, calculateLinePrice, derivePendingSuggestions, deriveReviewGroups } from "../deckbuilder/engine/builderSelectors";
 import { DECK_REVIEW_SESSION_KEY, loadBuilderSession } from "../deckbuilder/persistence/builderPersistence";
-import { loadActiveDeckWorkspace, saveActiveDeckWorkspace } from "../deckbuilder/persistence/deckWorkspace";
+import { loadActiveDeckWorkspace, saveActiveDeckWorkspace, type DeckWorkspace } from "../deckbuilder/persistence/deckWorkspace";
+import DeckWorkspacePicker from "../deckbuilder/components/DeckWorkspacePicker";
 import { selectionsToMaps, type LockedSection } from "../deckbuilder/model/builderTypes";
 import { formatUsd } from "../../lib/format";
 import type { BuildCounters } from "../deckbuilder/useBuildCounters";
@@ -57,6 +57,7 @@ function loadSessionSeed() {
       lockedSections: new Map(selections.map((line) => [line.name, line.section])),
       rejectedCards: new Set<string>(),
       populationSource: "balanced" as ReviewPopulationSource,
+      format: workspace.format,
     };
   }
   const session = loadBuilderSession(sessionStorage, "STANDARD", DECK_REVIEW_SESSION_KEY);
@@ -69,6 +70,7 @@ function loadSessionSeed() {
     lockedSections: locked.sections,
     rejectedCards: new Set(session.selection.rejectedCards),
     populationSource: (session.selection.populationSource === "tournament" ? "tournament" : "balanced") as ReviewPopulationSource,
+    format: "STANDARD" as const,
   };
 }
 
@@ -104,13 +106,14 @@ export default function DeckReviewIndex() {
   });
   const { championName, spiritFilter, lockedCards, lockedSections, rejectedCards, populationSource } = workflow.state;
   const { setChampionName, setSpiritFilter, setLockedCards, setLockedSections, setRejectedCards, setPopulationSource } = workflow;
-  useBuilderSessionPersistence("STANDARD", workflow.state, DECK_REVIEW_SESSION_KEY);
+  const [deckFormat, setDeckFormat] = useState(sessionSeed?.format ?? "STANDARD");
+  useBuilderSessionPersistence(deckFormat, workflow.state, DECK_REVIEW_SESSION_KEY);
   useEffect(() => {
     if (!championName || lockedCards.size === 0) return;
     const lines = Array.from(lockedCards, ([name, quantity]) => ({ name, quantity, section: lockedSections.get(name) ?? "main" }));
     saveActiveDeckWorkspace(sessionStorage, {
       source: "review",
-      format: "STANDARD",
+      format: deckFormat,
       championName,
       spiritName: spiritFilter,
       main: lines.filter((line) => line.section === "main").map(({ name, quantity }) => ({ name, quantity })),
@@ -118,13 +121,10 @@ export default function DeckReviewIndex() {
       sideboard: lines.filter((line) => line.section === "sideboard").map(({ name, quantity }) => ({ name, quantity })),
       maybeboard: [],
     });
-  }, [championName, spiritFilter, lockedCards, lockedSections]);
+  }, [championName, spiritFilter, lockedCards, lockedSections, deckFormat]);
 
   const [tab, setTab] = useState<DeckReviewTab>("review");
   const [spiritElement, setSpiritElement] = useState<string | null>(null);
-  const [pasteOpen, setPasteOpen] = useState(false);
-  const [pasteText, setPasteText] = useState("");
-  const [pasteError, setPasteError] = useState<string | null>(null);
   const [dismissedReviewCards, setDismissedReviewCards] = useState<Set<string>>(new Set());
   const [showProtectedCuts, setShowProtectedCuts] = useState(false);
   // Card art is the point of this page — default to the visual grid instead of the Guided Deck
@@ -133,7 +133,7 @@ export default function DeckReviewIndex() {
   const [visibleFields] = useCardFieldVisibility();
   const [isPending, startTransition] = useTransition();
 
-  const builderData = useDeckBuilderData({ championName, format: "STANDARD", includeDecodedDecks: false });
+  const builderData = useDeckBuilderData({ championName, format: deckFormat, includeDecodedDecks: false });
   const {
     catalogByName, liveCatalogByName, priceByName, popularityIndex: popularityIndexData,
     population: { rows, spiritsPresent, loading: populationLoading },
@@ -230,13 +230,13 @@ export default function DeckReviewIndex() {
   const totalPrice = useMemo(() => calculateLinePrice(keptLines, priceByName), [keptLines, priceByName]);
   const sideboardPrice = useMemo(() => calculateLinePrice(keptSideboardLines, priceByName), [keptSideboardLines, priceByName]);
   const validation = useMemo(
-    () => validateDeck({ main: keptMain, material: keptMaterial, sideboard: keptSideboard }, catalogByName, identityElements, "STANDARD"),
-    [keptMain, keptMaterial, keptSideboard, catalogByName, identityElements],
+    () => validateDeck({ main: keptMain, material: keptMaterial, sideboard: keptSideboard }, catalogByName, identityElements, deckFormat),
+    [keptMain, keptMaterial, keptSideboard, catalogByName, identityElements, deckFormat],
   );
 
   const copyState = useBuilderCopyState({
     build, buildLines: keptLines, sideboardLines: keptSideboardLines, decklist: keptDecklist, keptDecklist,
-    cardsByName: catalogByName, championName, spiritFilter, archetypeId: null, deckFormat: "STANDARD",
+    cardsByName: catalogByName, championName, spiritFilter, archetypeId: null, deckFormat,
     lockedCards, lockedSections, improveDeckId: null, maybeboard: new Map(),
   });
 
@@ -328,42 +328,22 @@ export default function DeckReviewIndex() {
     });
   }
 
-  function loadPastedDecklist() {
-    const { decklist, skippedLines } = parseDecklist(pasteText);
-    const lines = [...decklist.main, ...decklist.material, ...decklist.sideboard];
-    if (lines.length === 0) {
-      setPasteError(skippedLines.length > 0 ? "Couldn't recognize any card lines in that paste." : "Paste a decklist first.");
-      return;
-    }
-    let detectedChampion: string | null = null;
-    let detectedSpirit: string | null = null;
-    const newLocked = new Map<string, number>();
-    const newSections = new Map<string, LockedSection>();
-    for (const section of ["main", "material", "sideboard"] as const) {
-      for (const line of decklist[section]) {
-        const card = catalogByName.get(line.card);
-        if (card?.types.includes("CHAMPION")) {
-          if (card.subtypes.includes("SPIRIT")) { detectedSpirit = line.card; continue; }
-          if (!detectedChampion) detectedChampion = card.name.split(",")[0].trim();
-        }
-        newLocked.set(line.card, (newLocked.get(line.card) ?? 0) + line.quantity);
-        newSections.set(line.card, section);
-      }
-    }
-    if (!detectedChampion) {
-      setPasteError("Couldn't find a Champion card in this decklist.");
-      return;
-    }
-    setChampionName(detectedChampion);
-    setSpiritFilter(detectedSpirit);
-    setLockedCards(newLocked);
-    setLockedSections(newSections);
-    setRejectedCards(new Set());
-    setDismissedReviewCards(new Set());
-    setPasteText("");
-    setPasteError(null);
-    setPasteOpen(false);
-    setTab("review");
+  function loadWorkspace(workspace: Omit<DeckWorkspace, "version" | "updatedAt">) {
+    const selections = [
+      ...workspace.main.map((line) => ({ ...line, section: "main" as const })),
+      ...workspace.material.map((line) => ({ ...line, section: "material" as const })),
+      ...workspace.sideboard.map((line) => ({ ...line, section: "sideboard" as const })),
+    ];
+    startTransition(() => {
+      setDeckFormat(workspace.format);
+      setChampionName(workspace.championName);
+      setSpiritFilter(workspace.spiritName);
+      setLockedCards(new Map(selections.map((line) => [line.name, line.quantity])));
+      setLockedSections(new Map(selections.map((line) => [line.name, line.section])));
+      setRejectedCards(new Set());
+      setDismissedReviewCards(new Set());
+      setTab("review");
+    });
   }
 
   function startOver() {
@@ -438,35 +418,8 @@ export default function DeckReviewIndex() {
           )}
         </div>
 
-        <div className="mt-2">
-          {!pasteOpen ? (
-            <button type="button" onClick={() => setPasteOpen(true)} className="text-xs text-ctp-blue hover:underline">
-              Or paste a decklist you already have &rarr;
-            </button>
-          ) : (
-            <div className="mt-1 max-w-sm">
-              <p className="text-xs text-ctp-subtext0">
-                Paste a decklist — one card per line, e.g. "4x Card Name". The Champion (and Spirit, if run) are
-                detected automatically and everything else becomes your accepted baseline.
-              </p>
-              <textarea
-                value={pasteText}
-                onChange={(e) => setPasteText(e.target.value)}
-                placeholder={"Main\n4x Dungeon Guide\n...\n\nMaterial\n1x Spirit of Water"}
-                rows={6}
-                className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
-              />
-              <div className="mt-2 flex flex-wrap gap-2">
-                <button type="button" onClick={loadPastedDecklist} disabled={pasteText.trim().length === 0} className="rounded-md border border-ctp-blue px-2 py-1 text-xs text-ctp-blue hover:bg-ctp-surface0 disabled:cursor-not-allowed disabled:opacity-50">
-                  Use this decklist
-                </button>
-                <button type="button" onClick={() => { setPasteOpen(false); setPasteText(""); setPasteError(null); }} className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text">
-                  Cancel
-                </button>
-              </div>
-              {pasteError && <p className="mt-1.5 text-xs text-ctp-red">{pasteError}</p>}
-            </div>
-          )}
+        <div className="mt-3">
+          <DeckWorkspacePicker compact={Boolean(championName)} catalogByName={catalogByName} source="review" onLoad={loadWorkspace} />
         </div>
 
         {championName && (
