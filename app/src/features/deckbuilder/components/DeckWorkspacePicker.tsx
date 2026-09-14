@@ -9,6 +9,17 @@ import { decklistToWorkspace } from "../persistence/deckWorkspaceImport";
 
 type WorkspaceSource = Extract<DeckWorkspace["source"], "analysis" | "review">;
 type PendingWorkspace = Omit<DeckWorkspace, "version" | "updatedAt">;
+const LIBRARY_REQUEST_TIMEOUT_MS = 12_000;
+
+function withLibraryTimeout<T>(request: Promise<T>): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const timeout = window.setTimeout(() => reject(new Error("Deck library request timed out")), LIBRARY_REQUEST_TIMEOUT_MS);
+    request.then(
+      (value) => { window.clearTimeout(timeout); resolve(value); },
+      (reason: unknown) => { window.clearTimeout(timeout); reject(reason); },
+    );
+  });
+}
 
 export default function DeckWorkspacePicker({ catalogByName, source, onLoad, compact = false }: { catalogByName: Map<string, Card>; source: WorkspaceSource; onLoad: (workspace: PendingWorkspace) => void; compact?: boolean }) {
   const [open, setOpen] = useState(!compact);
@@ -26,8 +37,16 @@ export default function DeckWorkspacePicker({ catalogByName, source, onLoad, com
     if (!open || mode !== "library" || libraryState !== "idle") return;
     let active = true;
     setLibraryState("loading");
-    void Promise.all([accountApi.decks(), accountApi.bookmarks()])
-      .then(([mine, bookmarks]) => { if (active) { setOwned(mine.decks); setSaved(bookmarks.decks); setLibraryState("ready"); } })
+    const bookmarksRequest = withLibraryTimeout(accountApi.bookmarks()).catch(() => null);
+    void withLibraryTimeout(accountApi.decks())
+      .then((mine) => {
+        if (!active) return;
+        setOwned(mine.decks);
+        setLibraryState("ready");
+        // Bookmarks supplement the user's own library, but a slow or unavailable bookmarks
+        // endpoint must not prevent owned decks from becoming selectable.
+        void bookmarksRequest.then((bookmarks) => { if (active && bookmarks) setSaved(bookmarks.decks); });
+      })
       .catch((reason: unknown) => { if (active) setLibraryState(reason instanceof AccountApiError && reason.status === 401 ? "signed-out" : "error"); });
     return () => { active = false; };
   }, [open, mode, libraryState]);
