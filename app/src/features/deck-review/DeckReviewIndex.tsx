@@ -590,7 +590,6 @@ export default function DeckReviewIndex() {
               validation={validation}
               validationComplete={validation.status === "Legal"}
               reviewComplete={reviewComplete}
-              onReviewFirst={() => setTab("review")}
               improveDeckId={null}
               championName={championName}
               saveNote={copyState.saveNote}

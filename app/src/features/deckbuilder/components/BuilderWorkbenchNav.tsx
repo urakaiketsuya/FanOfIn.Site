@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import type { DeckFormat } from "@gatcg/shared";
 
-export type BuilderWorkbenchView = "build" | "review" | "test" | "stats" | "tools" | "buddies" | "copy" | "log";
+export type BuilderWorkbenchView = "build" | "tools" | "copy" | "log";
 
 const PRIMARY_STAGES: { view: Extract<BuilderWorkbenchView, "build" | "copy">; label: string }[] = [
   { view: "build", label: "Build" },

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
-import { Link, useSearchParams } from "react-router-dom";
-import type { Card, CommunityCoOccurrenceEntry, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
-import { championSlugsFor, mergeCardInclusionBuckets, mergeCoOccurrenceForCard } from "../community/data";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import type { Card, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
+import { championSlugsFor, mergeCardInclusionBuckets } from "../community/data";
 import { parseDecklist } from "../compare/parseDecklist";
 import { useCardsByNames } from "../events/useCardsByNames";
 import StaleDataNotice from "../../components/StaleDataNotice";
@@ -12,47 +12,36 @@ import NotificationBanner from "../../components/ui/NotificationBanner";
 import PageHeader from "../../components/ui/PageHeader";
 import { TabPanel } from "../../components/ui/Tabs";
 import { useTabParam } from "../../lib/useTabParam";
-import { encodeCustomDecks } from "../../lib/compareShareLink";
-import { useNearestDecks, type NearestDeck } from "./useNearestDecks";
-import { useBuildCounters } from "./useBuildCounters";
-import { computeIdentityElements, findChampionCard, useSuggestedBuild, type SuggestedCard } from "./useSuggestedBuild";
+import { computeIdentityElements, findChampionCard, useSuggestedBuild } from "./useSuggestedBuild";
 import { useCommunitySuggestedBuild } from "./useCommunitySuggestedBuild";
 import { useSimulatorSuggestedBuild } from "./useSimulatorSuggestedBuild";
 import { useCardFieldVisibility } from "./useCardFieldVisibility";
 import { useBuilderViewMode } from "./useBuilderViewMode";
 import { usePriceTrendByName } from "../pricing/usePriceTrendByName";
-import { useBuddyCards } from "./useBuddyCards";
 import { SIDEBOARD_POINT_BUDGET, sideboardPointCost, validateDeck } from "./validateDeck";
-import { computeDependencyReadiness, computeSynergyReadiness } from "./synergyReadiness";
 import { computeNewReleaseCards } from "./newReleaseCards";
 import { computeCardDecay } from "../../lib/cardDecay";
 import { accountApi } from "../../lib/accountApi";
 import { clearBuilderSession, loadBuilderSession, parseBuilderShareParams } from "./persistence/builderPersistence";
 import { loadActiveDeckWorkspace, saveActiveDeckWorkspace } from "./persistence/deckWorkspace";
 import { selectionsToMaps, type ChangeLogEntry, type LockedSection, type PopulationSource } from "./model/builderTypes";
-import { buildToDecklist, calculateLinePrice, deriveArchetypeOptions, deriveReviewGroups } from "./engine/builderSelectors";
+import { buildToDecklist, deriveArchetypeOptions, deriveReviewGroups } from "./engine/builderSelectors";
 import { buildSuggestedDeck } from "./engine/buildSuggestedDeck";
 import { useDeckBuilderData } from "./data/useDeckBuilderData";
 import PageLayout from "../../components/layout/PageLayout";
 import BuilderChangeLog from "./panels/BuilderChangeLog";
 import ImprovementReviewPanel from "./panels/ImprovementReviewPanel";
 import ToolsPanel from "./panels/BuilderToolsPanel";
-import StatsPanel from "./panels/BuilderStatsPanel";
-import BuddyCardsList from "./panels/BuilderBuddyPanel";
 import { useBuilderWorkflowState } from "./controller/useBuilderWorkflowState";
 import { useBuilderSessionPersistence } from "./controller/useBuilderSessionPersistence";
 import { useBuilderCopyState } from "./controller/useBuilderCopyState";
 import BuilderCopyPanel from "./panels/BuilderCopyPanel";
 import BuilderBuildPanel from "./panels/BuilderBuildPanel";
-import BuilderReviewPanel from "./panels/BuilderReviewPanel";
-import BuilderTestPanel from "./panels/BuilderTestPanel";
-import { useDeckTestResult } from "../decks/useDeckTestResult";
 import BuilderWorkbenchNav, { type BuilderWorkbenchView } from "./components/BuilderWorkbenchNav";
-import BuilderStageHandoff from "./components/BuilderStageHandoff";
 import ChampionLineagePicker from "./components/ChampionLineagePicker";
 
 type BuilderTab = BuilderWorkbenchView;
-const TAB_KEYS: BuilderTab[] = ["build", "review", "test", "stats", "tools", "buddies", "copy", "log"];
+const TAB_KEYS: BuilderTab[] = ["build", "tools", "copy", "log"];
 
 type BuilderIntent = "seed" | "scratch";
 
@@ -163,10 +152,17 @@ function loadSessionSeed(): SessionSeed | null {
 
 export default function DeckBuilderIndex() {
   useDocumentTitle(
-    "Deck Workbench",
-    "Find an idea, build a Grand Archive deck, tune evidence-backed recommendations, test it against the field, then validate, save, and export it.",
+    "Guided Deck Builder",
+    "Build, validate, save, and export a Grand Archive deck, then continue to dedicated analysis and review tools.",
   );
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const legacyTab = searchParams.get("tab");
+  useEffect(() => {
+    if (legacyTab === "review") navigate("/deck-review", { replace: true });
+    if (legacyTab === "test") navigate("/deck-analysis?tab=matchups", { replace: true });
+    if (legacyTab === "stats" || legacyTab === "buddies") navigate("/deck-analysis", { replace: true });
+  }, [legacyTab, navigate]);
   const improveDeckId = searchParams.get("improveDeck");
   const isImproving = Boolean(improveDeckId);
   const intentParam = searchParams.get("intent");
@@ -213,10 +209,9 @@ export default function DeckBuilderIndex() {
   const [customizeOpen, setCustomizeOpen] = useState(false);
   const [viewMode, setViewMode] = useBuilderViewMode();
   const [tab, setTab] = useTabParam<BuilderTab>("tab", TAB_KEYS, "build");
-  const loadPrices = Boolean(championName && spiritFilter && (tab === "build" || tab === "review"));
+  const loadPrices = Boolean(championName && spiritFilter && tab === "build");
   const priceTrendByName = usePriceTrendByName(loadPrices && tab === "build");
   const [dismissedReviewCards, setDismissedReviewCards] = useState<Set<string>>(new Set());
-  const [showProtectedCuts, setShowProtectedCuts] = useState(false);
   const [identityEditorOpen, setIdentityEditorOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [pasteOpen, setPasteOpen] = useState(false);
@@ -249,16 +244,15 @@ export default function DeckBuilderIndex() {
     setSearchParams(next, { replace: true });
   }
 
-  const showNearestDecks = lockedCards.size >= 2;
   const builderData = useDeckBuilderData({
     championName,
     format: deckFormat,
-    includeDecodedDecks: showNearestDecks && (tab === "review" || tab === "test"),
+    includeDecodedDecks: false,
     needs: {
       archetypes: tab === "tools" || archetypeId !== null,
-      cardImpact: tab === "review" && showNearestDecks,
-      coOccurrence: tab === "buddies",
-      composition: tab === "stats",
+      cardImpact: false,
+      coOccurrence: false,
+      composition: false,
       prices: loadPrices,
       simulator: populationSource === "simulator",
     },
@@ -272,13 +266,8 @@ export default function DeckBuilderIndex() {
     collectionOwnedByName,
     population: { rows, spiritsPresent, loading: populationLoading },
     cardQuantityStats: cardQuantityStatsData,
-    compositionWinRates: compositionWinRateData,
     archetypeTaxonomy: archetypeTaxonomyData,
-    cardImpact: cardImpactData,
-    matchupCardImpact: matchupCardImpactData,
-    decodedDecks: allDecks,
     communityInclusion: communityCardInclusion,
-    communityCoOccurrence,
     simulatorSummary,
     priceByName,
   } = builderData;
@@ -451,9 +440,9 @@ export default function DeckBuilderIndex() {
     [build.suggestions, dismissedReviewCards],
   );
   const reviewRemovals = useMemo(
-    () => [...build.removalSuggestions, ...(showProtectedCuts ? build.protectedRemovalSuggestions : [])]
+    () => build.removalSuggestions
       .filter((card) => !dismissedReviewCards.has(card.cardName)),
-    [build.removalSuggestions, build.protectedRemovalSuggestions, dismissedReviewCards, showProtectedCuts],
+    [build.removalSuggestions, dismissedReviewCards],
   );
   const reviewGroups = useMemo(() => deriveReviewGroups(reviewRemovals, reviewSuggestions), [reviewRemovals, reviewSuggestions]);
   const reviewItemCount = reviewGroups.pairs.length + reviewGroups.unpairedRemovals.length + reviewGroups.unpairedSuggestions.length;
@@ -463,13 +452,7 @@ export default function DeckBuilderIndex() {
   // tuning can produce materially different evidence for the same card, so surface it again.
   useEffect(() => {
     setDismissedReviewCards(new Set());
-    setShowProtectedCuts(false);
   }, [championName, spiritFilter, effectivePopulationSource, pillarBias, archetypeId]);
-
-  const nearestDecks = useNearestDecks(allDecks, lockedCards);
-  const buildCounters = useBuildCounters(nearestDecks, cardImpactData, matchupCardImpactData);
-  const hurtYouCards = buildCounters.selectedMatchup?.opponentCards ?? [];
-  const hurtYouCardImages = useCardsByNames(useMemo(() => hurtYouCards.map((c) => c.cardName), [hurtYouCards]));
   const gateLoading = deckFormat === "PANTHEON"
     ? !communityCardInclusion
     : effectivePopulationSource === "community"
@@ -543,33 +526,8 @@ export default function DeckBuilderIndex() {
     () => [...build.material, ...build.main, ...build.sideboard].map((c) => c.cardName),
     [build.material, build.main, build.sideboard],
   );
-  // Buddy Cards' own exclusion set — everything actually in the deck, plus everything already
-  // recommended under "Cards that might help" (build.suggestions). Not the same as allNames (the
-  // real decklist used for price/export/etc.): a card only suggested, not yet added, shouldn't be
-  // hidden from the export, but showing it again as a "buddy" is redundant with a suggestion the
-  // tool is already making through the ranked lens.
-  const placedNames = useMemo(
-    () => new Set([...allNames, ...build.suggestions.map((c) => c.cardName)]),
-    [allNames, build.suggestions],
-  );
-  const buddyCards = useBuddyCards(rows, spiritFilter, lockedCards, placedNames);
-  const communityBuddyCards = useMemo(() => {
-    const result = new Map<string, CommunityCoOccurrenceEntry[]>();
-    if (!communityCoOccurrence || !championName) return result;
-    const slugs = championSlugsFor(Object.keys(communityCoOccurrence.byChampion), championName);
-    if (slugs.length === 0) return result;
-    const buckets = slugs.map((slug) => communityCoOccurrence.byChampion[slug]);
-    // Same exclusion as useBuddyCards's own excludeNames — a card already in the assembled build
-    // isn't a useful "buddy" suggestion (there's nowhere to add it).
-    for (const name of lockedCards.keys()) {
-      const keyCardDeckCount = communityInclusionByName?.get(name)?.deckCount ?? 0;
-      result.set(name, mergeCoOccurrenceForCard(buckets, name, keyCardDeckCount).filter((b) => !placedNames.has(b.cardName)));
-    }
-    return result;
-  }, [communityCoOccurrence, championName, communityInclusionByName, lockedCards, placedNames]);
-  const buddyNames = useMemo(() => Array.from(buddyCards.values()).flatMap((list) => list.map((b) => b.cardName)), [buddyCards]);
   const suggestionNames = useMemo(() => build.suggestions.map((c) => c.cardName), [build.suggestions]);
-  const cardsByName = useCardsByNames(useMemo(() => [...allNames, ...buddyNames, ...suggestionNames, ...maybeboard.keys()], [allNames, buddyNames, suggestionNames, maybeboard]));
+  const cardsByName = useCardsByNames(useMemo(() => [...allNames, ...suggestionNames, ...maybeboard.keys()], [allNames, suggestionNames, maybeboard]));
 
   useEffect(() => {
     if (lastResetChampionRef.current === championName) {
@@ -680,35 +638,7 @@ export default function DeckBuilderIndex() {
     setPasteText("");
     setPasteError(null);
     setPasteOpen(false);
-    setTab("review");
-  }
-
-  /** Loads a `useNearestDecks` result as the new starting point — same shape as `loadPastedDecklist`, just sourced from an already-decoded real deck instead of re-parsing text. */
-  function loadNearestDeck(deck: NearestDeck) {
-    const newLocked = new Map<string, number>();
-    const newSections = new Map<string, LockedSection>();
-    for (const [section, lines] of [
-      ["main", deck.main],
-      ["material", deck.material],
-      ["sideboard", deck.sideboard],
-    ] as const) {
-      for (const [name, qty] of lines) {
-        newLocked.set(name, qty);
-        newSections.set(name, section);
-      }
-    }
-
-    if (deck.championName && deck.championName !== championName) skipNextResetRef.current = true;
-    if (deck.championName) setChampionName(deck.championName);
-    setSpiritFilter(deck.spiritName ? (spiritCanonicalNames.get(deck.spiritName) ?? deck.spiritName) : null);
-    setLockedCards(newLocked);
-    setLockedSections(newSections);
-    setMaybeboard(new Map());
-    setRejectedCards(new Set());
-    setChangeLog([]);
-    pendingActionRef.current = null;
-    prevSuggestedRef.current = null;
-    prevWinRateRef.current = null;
+    setTab("build");
   }
 
   /** `section` is the section this card is being locked FROM (known for sure, since it's the list the click came from) — recorded so the section survives even if the current population barely plays this card (see lockedSections' doc comment). Omitted when unlocking. */
@@ -904,44 +834,6 @@ export default function DeckBuilderIndex() {
     });
   }
 
-  /** "Add" from the "Cards that might help" list — same as toggleLock, just with the section/quantity the suggestion already carries instead of guessing. */
-  function addSuggestion(card: SuggestedCard) {
-    toggleLock(card.cardName, card.quantity, card.section);
-  }
-
-  function dismissReview(...cardNames: string[]) {
-    setDismissedReviewCards((previous) => {
-      const next = new Set(previous);
-      for (const name of cardNames) next.add(name);
-      return next;
-    });
-  }
-
-  function applyRecommendationSwap(removal: SuggestedCard, addition: SuggestedCard) {
-    pendingActionRef.current = { label: `Swapped ${removal.cardName} for ${addition.cardName}`, subject: null };
-    startTransition(() => {
-      setLockedCards((previous) => {
-        const next = new Map(previous);
-        next.delete(removal.cardName);
-        next.set(addition.cardName, addition.quantity);
-        return next;
-      });
-      setLockedSections((previous) => {
-        const next = new Map(previous);
-        next.delete(removal.cardName);
-        next.set(addition.cardName, addition.section);
-        return next;
-      });
-      setRejectedCards((previous) => new Set(previous).add(removal.cardName));
-      setDismissedReviewCards((previous) => {
-        const next = new Set(previous);
-        next.add(removal.cardName);
-        next.add(addition.cardName);
-        return next;
-      });
-    });
-  }
-
   /** Re-ranking the suggested build by switching data source or tuning bias is itself a
    * suggestion-changing action, same as locking/excluding a card — logged the same way so the
    * change log reflects what actually moved instead of only crediting direct card clicks. Guarded
@@ -1001,20 +893,6 @@ export default function DeckBuilderIndex() {
     () => [...build.material, ...build.main].map((c) => ({ name: c.cardName, quantity: c.quantity })),
     [build.material, build.main],
   );
-  // "Test This Deck" — classifies the build-in-progress against the taxonomy and reports how that
-  // matched build has actually performed, its matchup spread, and how it wins. No deckId (this
-  // isn't a real decklist yet), so classification is a best guess against every cluster's centroid.
-  const deckCardCounts = useMemo(() => new Map(buildLines.map((l) => [l.name, l.quantity])), [buildLines]);
-  const deckTestNearestDecks = useMemo(
-    () =>
-      nearestDecks.map((d) => ({
-        deckId: d.deckId,
-        label: `${d.championName ?? "Unknown Champion"}${d.spiritName ? ` (${d.spiritName})` : ""}`,
-        similarity: d.similarity,
-      })),
-    [nearestDecks],
-  );
-  const { result: deckTestResult, loading: deckTestLoading } = useDeckTestResult({ deckCardCounts, cardsByName, nearestDecks: deckTestNearestDecks });
   const mainOnlyLines = useMemo(() => build.main.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.main]);
   const materialOnlyLines = useMemo(() => build.material.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.material]);
   const sideboardLines = useMemo(() => build.sideboard.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.sideboard]);
@@ -1032,18 +910,6 @@ export default function DeckBuilderIndex() {
     });
   }, [championName, spiritFilter, deckFormat, mainOnlyLines, materialOnlyLines, sideboardLines, maybeboard]);
 
-  // Lifted out of StatsPanel (rather than computed only when that tab is active) so a tab-label
-  // Compute insight counts outside the panel so the supporting-tool affordance can advertise
-  // useful findings without making Deck Insights a peer of the primary workflow stages.
-  const preferredSuggestionNames = useMemo(() => build.suggestions.map((card) => card.cardName), [build.suggestions]);
-  const synergyReadiness = useMemo(
-    () => computeSynergyReadiness(mainOnlyLines, catalogByName, catalogByName.values(), identityElements, preferredSuggestionNames),
-    [mainOnlyLines, catalogByName, identityElements, preferredSuggestionNames],
-  );
-  const dependencyReadiness = useMemo(
-    () => computeDependencyReadiness(mainOnlyLines, catalogByName, catalogByName.values(), identityElements, preferredSuggestionNames),
-    [mainOnlyLines, catalogByName, identityElements, preferredSuggestionNames],
-  );
   const newReleaseCards = useMemo(() => {
     const includedNames = new Set(buildLines.map((line) => line.name));
     const deckCards = buildLines.map((line) => catalogByName.get(line.name)).filter((c): c is Card => c !== undefined);
@@ -1051,17 +917,6 @@ export default function DeckBuilderIndex() {
   }, [buildLines, catalogByName, identityElements]);
   const decklist: OmnidexDecklist = useMemo(() => buildToDecklist(build), [build]);
   const keptDecklist: OmnidexDecklist = useMemo(() => buildToDecklist(build, true), [build]);
-  /** Link to `/compare` seeding the current in-progress build (as a `?custom=` deck) alongside one
-   * real deck (as a `?add=eventId:player`, reusing `NearestDeck.deckId`'s existing format) — lets the
-   * viewer see exactly where their build overlaps/diverges from a real result, not just the
-   * similarity percentage `useNearestDecks` already scores it with. */
-  function nearestDeckCompareLink(d: NearestDeck): string {
-    const label = `${championName ?? "My build"}${spiritFilter ? ` (${spiritFilter})` : ""}`;
-    const params = new URLSearchParams();
-    params.set("add", d.deckId);
-    params.set("custom", encodeCustomDecks([{ label, decklist, format: deckFormat }]));
-    return `/compare?${params.toString()}`;
-  }
   const validation = useMemo(
     () => validateDeck({ main: build.main, material: build.material, sideboard: build.sideboard }, catalogByName, identityElements, deckFormat),
     [build.main, build.material, build.sideboard, catalogByName, identityElements, deckFormat],
@@ -1090,15 +945,11 @@ export default function DeckBuilderIndex() {
       setPopulationSource("balanced");
       setChangeLog([]);
       setDismissedReviewCards(new Set());
-      setShowProtectedCuts(false);
       setPasteOpen(false);
       setPasteText("");
       setPasteError(null);
     });
   }
-  // Buying/exporting covers the whole deck including sideboard tech, same as DecklistView.tsx.
-  const totalPrice = useMemo(() => calculateLinePrice(buildLines, priceByName), [buildLines, priceByName]);
-  const sideboardPrice = useMemo(() => calculateLinePrice(sideboardLines, priceByName), [sideboardLines, priceByName]);
   const importedCardCount = Array.from(lockedCards.values()).reduce((sum, quantity) => sum + quantity, 0);
   const identityComplete = Boolean(championName && spiritFilter);
   const buildComplete = identityComplete && mainTotal > 0;
@@ -1146,10 +997,10 @@ export default function DeckBuilderIndex() {
           </button>)}
         </div>
         {builderIntent === "seed" && <p className="mt-3 rounded-md border border-ctp-green/40 bg-ctp-green/10 px-3 py-2 text-xs text-ctp-subtext1">Choose your Champion and Spirit, then add the cards you already want to play. They stay locked while recommendations fill the remaining slots.</p>}
-        {builderIntent === "scratch" && <p className="mt-3 rounded-md border border-ctp-blue/40 bg-ctp-blue/10 px-3 py-2 text-xs text-ctp-subtext1">Choose a Champion, Element, and Spirit to generate an evidence-backed shell. Use the Review tab to decide which changes to keep.</p>}
+        {builderIntent === "scratch" && <p className="mt-3 rounded-md border border-ctp-blue/40 bg-ctp-blue/10 px-3 py-2 text-xs text-ctp-subtext1">Choose a Champion, Element, and Spirit to generate an evidence-backed shell. Continue to Deck Review when you want suggestions.</p>}
       </section>}
 
-      {isImproving && <ImprovementReviewPanel importedCardCount={importedCardCount} reviewItemCount={reviewItemCount} onReview={() => setTab("review")} />}
+      {isImproving && <ImprovementReviewPanel importedCardCount={importedCardCount} reviewItemCount={reviewItemCount} />}
 
       {!identityComplete && <div id="deck-builder-starting" className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1 text-sm" role="group" aria-label="Deck format">
         {(["STANDARD", "PANTHEON"] as const).map((format) => <button key={format} type="button" aria-pressed={deckFormat === format} onClick={() => { setDeckFormat(format); if (format === "PANTHEON") setPopulationSource("community"); const next = new URLSearchParams(searchParams); if (format === "PANTHEON") next.set("format", "pantheon"); else next.delete("format"); setSearchParams(next, { replace: true }); }} className={`rounded-md px-3 py-1.5 ${deckFormat === format ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>{format === "PANTHEON" ? "Pantheon" : "Standard"}</button>)}
@@ -1376,7 +1227,6 @@ export default function DeckBuilderIndex() {
               />
             </div>
           )}
-          <BuilderStageHandoff view={tab} onContinue={setTab} />
           {tab === "build" && (
             <BuilderBuildPanel
               builderIntent={builderIntent}
@@ -1425,73 +1275,6 @@ export default function DeckBuilderIndex() {
             />
           )}
 
-          {tab === "review" && (
-            <BuilderReviewPanel
-              build={build}
-              effectivePopulationSource={effectivePopulationSource}
-              simulatorMatchedCards={simulatorResult.matchedCards}
-              simulatorEvidenceByName={simulatorResult.evidenceByName}
-              lockedCards={lockedCards}
-              mainTotal={mainTotal}
-              totalPrice={totalPrice}
-              sideboardPrice={sideboardPrice}
-              dismissedReviewCards={dismissedReviewCards}
-              onRestoreDismissed={() => setDismissedReviewCards(new Set())}
-              showProtectedCuts={showProtectedCuts}
-              onToggleShowProtectedCuts={() => setShowProtectedCuts((shown) => !shown)}
-              reviewItemCount={reviewItemCount}
-              reviewGroups={reviewGroups}
-              cardsByName={cardsByName}
-              priceByName={priceByName}
-              visibleFields={visibleFields}
-              communityInclusionByName={communityInclusionByName}
-              onApplySwap={applyRecommendationSwap}
-              onDismissReview={dismissReview}
-              onAddSuggestion={addSuggestion}
-              onRemoveCard={removeCard}
-              showNearestDecks={showNearestDecks}
-              nearestDecks={nearestDecks}
-              nearestDeckCompareLink={nearestDeckCompareLink}
-              onLoadNearestDeck={loadNearestDeck}
-              buildCounters={buildCounters}
-              hurtYouCards={hurtYouCards}
-              hurtYouCardImages={hurtYouCardImages}
-              viewMode={viewMode}
-              onViewModeChange={setViewMode}
-              onBackToBuild={() => setTab("build")}
-              onContinueToValidation={() => setTab("copy")}
-              reviewComplete={reviewComplete}
-            />
-          )}
-
-          <TabPanel baseId="deck-builder" tab="test" active={tab}>
-            <BuilderTestPanel
-              deckTestResult={deckTestResult}
-              loading={deckTestLoading}
-              cardsByName={cardsByName}
-              nearestDecks={nearestDecks}
-              nearestDeckCompareLink={nearestDeckCompareLink}
-              onLoadNearestDeck={loadNearestDeck}
-            />
-          </TabPanel>
-
-          {tab === "stats" && (
-            <div role="tabpanel" id="deck-builder-panel-stats" aria-labelledby="deck-builder-tab-stats">
-              <StatsPanel
-                lines={buildLines}
-                mainLines={mainOnlyLines}
-                cardsByName={cardsByName}
-                catalogByName={catalogByName}
-                synergyReadiness={synergyReadiness}
-                dependencyReadiness={dependencyReadiness}
-                newReleaseCards={newReleaseCards}
-                compositionWinRateData={compositionWinRateData}
-                onAddCard={addCard}
-                decayReport={decayReport}
-              />
-            </div>
-          )}
-
           <TabPanel baseId="deck-builder" tab="tools" active={tab}>
               <ToolsPanel
                 pillarBias={pillarBias}
@@ -1511,22 +1294,11 @@ export default function DeckBuilderIndex() {
               />
           </TabPanel>
 
-          <TabPanel baseId="deck-builder" tab="buddies" active={tab}>
-              <BuddyCardsList
-                lockedNames={Array.from(lockedCards.keys())}
-                buddyCards={buddyCards}
-                communityBuddyCards={communityBuddyCards}
-                cardsByName={cardsByName}
-                onAdd={addCard}
-              />
-          </TabPanel>
-
           {tab === "copy" && (
             <BuilderCopyPanel
               validation={validation}
               validationComplete={validationComplete}
               reviewComplete={reviewComplete}
-              onReviewFirst={() => setTab("review")}
               improveDeckId={improveDeckId}
               championName={championName}
               saveNote={copyPanel.saveNote}

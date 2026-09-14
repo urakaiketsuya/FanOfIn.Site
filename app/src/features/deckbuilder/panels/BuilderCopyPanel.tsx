@@ -5,7 +5,7 @@ import { deckBuilderDestinations } from "../../../lib/deckBuilderDestinations";
 import DeckCollectionTools from "../../collection/DeckCollectionTools";
 
 export default function BuilderCopyPanel({
-  validation, validationComplete, reviewComplete, onReviewFirst, improveDeckId, championName,
+  validation, validationComplete, reviewComplete, improveDeckId, championName,
   saveNote, onSaveNoteChange, saveTitle, onSaveTitleChange, saveCopyCount, saveState, onSave,
   savedDeckId, saveKeptOnly, onSaveKeptOnlyChange, keptCopyCount, decklist, catalogByName,
   onCopy, copyState, fullCopyCount, onCopyAndOpen, massEntryUrl, clarentUrl, onExportTts,
@@ -14,7 +14,6 @@ export default function BuilderCopyPanel({
   validation: DeckValidationResult;
   validationComplete: boolean;
   reviewComplete: boolean;
-  onReviewFirst: () => void;
   improveDeckId: string | null;
   championName: string | null;
   saveNote: string;
@@ -50,7 +49,7 @@ export default function BuilderCopyPanel({
             <h2 id="validate-and-save" className="font-semibold text-ctp-text">Validate & save</h2>
             <p className={`mt-1 text-sm ${validationComplete ? "text-ctp-green" : "text-ctp-yellow"}`}>{validationComplete ? "Construction checks pass. This version is ready to save, export, or playtest." : `${validation.status}: ${validation.reasons[0] ?? "review the deck before saving."}`}</p>
           </div>
-          {!reviewComplete && <button type="button" onClick={onReviewFirst} className="rounded-md border border-ctp-yellow/60 px-3 py-1.5 text-xs font-medium text-ctp-yellow hover:bg-ctp-yellow/10">Review changes first</button>}
+          {!reviewComplete && <Link to="/deck-review" className="rounded-md border border-ctp-yellow/60 px-3 py-1.5 text-xs font-medium text-ctp-yellow hover:bg-ctp-yellow/10">Review suggestions first</Link>}
         </div>
         {validation.reasons.length > 1 && <ul className="mt-2 list-disc pl-5 text-xs text-ctp-subtext1">{validation.reasons.slice(1, 4).map((reason) => <li key={reason}>{reason}</li>)}</ul>}
       </section>
