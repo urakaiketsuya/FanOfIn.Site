@@ -46,16 +46,23 @@ const TAB_KEYS: DetailTab[] = ["overview", "impact", "decklist", "playedBy", "va
 export default function ArchetypeDetail() {
   const { id = "" } = useParams<{ id: string }>();
 
-  const data = useArchetypeTaxonomyData();
-  const popularityIndexData = useDeckPopularityIndexData();
-  const eventNameById = useEventNameById();
-  const playersData = useOmnidexPlayers();
-  const cardImpactData = useCardImpactData();
-  const matchupCardImpactData = useMatchupCardImpactData();
-  const cardQuantityStatsData = useCardQuantityStatsData();
   const [roleFilter, setRoleFilter] = useState<CardImpactRole | "all">("all");
   const [opponentClusterId, setOpponentClusterId] = useState<string>("all");
   const [tab, setTab] = useTabParam("tab", TAB_KEYS, "overview");
+
+  // Gate every large per-tab dataset behind the tab that actually needs it — this page used to
+  // eagerly fetch playedBy's popularity-index/omnidex-index/players data (~25.7MB) and impact's
+  // card-impact/matchup-card-impact/quantity-stats data (matchup-card-impact.json alone is 24MB)
+  // on every visit regardless of which tab (if any) the visitor opened, same class of bug just
+  // fixed on CardDetail.tsx. Same `enabled` pattern already used by useAllDecodedDecks below for
+  // the Variants tab.
+  const data = useArchetypeTaxonomyData();
+  const popularityIndexData = useDeckPopularityIndexData(tab === "playedBy");
+  const eventNameById = useEventNameById(tab === "playedBy");
+  const playersData = useOmnidexPlayers(tab === "playedBy");
+  const cardImpactData = useCardImpactData(tab === "impact");
+  const matchupCardImpactData = useMatchupCardImpactData(tab === "impact");
+  const cardQuantityStatsData = useCardQuantityStatsData(tab === "impact");
   // Only reset when navigating from one build's page to a different one (same component instance
   // reused by the router) — not on initial mount, which would otherwise clobber a `?tab=` deep link.
   const prevIdRef = useRef(id);
@@ -314,7 +321,7 @@ export default function ArchetypeDetail() {
                   { key: "overview", label: "Overview" },
                   { key: "impact", label: "Card Impact" },
                   { key: "decklist", label: "Sample Decklist" },
-                  { key: "playedBy", label: `Played By (${instances.length})` },
+                  { key: "playedBy", label: tab === "playedBy" ? `Played By (${instances.length})` : "Played By" },
                   { key: "variants", label: tab === "variants" ? `Variants (${variants.length})` : "Variants" },
                 ] as { key: DetailTab; label: string }[]
               }

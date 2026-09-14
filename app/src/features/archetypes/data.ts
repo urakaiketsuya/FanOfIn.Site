@@ -46,8 +46,8 @@ export function useDeckCardIndexData(enabled = true): DeckCardIndexData | undefi
   return usePublishedData<DeckCardIndexData>("analysis-deck-card-index", "/data/analysis/deck-card-index.json", enabled);
 }
 
-export function useSimilarityData(): SimilarityData | undefined {
-  return usePublishedData<SimilarityData>("analysis-similarity", "/data/analysis/similarity.json");
+export function useSimilarityData(enabled = true): SimilarityData | undefined {
+  return usePublishedData<SimilarityData>("analysis-similarity", "/data/analysis/similarity.json", enabled);
 }
 
 export function useCardImpactData(enabled = true): CardImpactData | undefined {
@@ -66,6 +66,6 @@ export function useCompositionWinRateData(enabled = true): CompositionWinRateDat
   return usePublishedData<CompositionWinRateData>("analysis-composition-win-rates", "/data/analysis/composition-win-rates.json", enabled);
 }
 
-export function useCardStatsByChampionData(): CardStatsByChampionData | undefined {
-  return usePublishedData<CardStatsByChampionData>("analysis-card-stats-by-champion", "/data/analysis/card-stats-by-champion.json");
+export function useCardStatsByChampionData(enabled = true): CardStatsByChampionData | undefined {
+  return usePublishedData<CardStatsByChampionData>("analysis-card-stats-by-champion", "/data/analysis/card-stats-by-champion.json", enabled);
 }

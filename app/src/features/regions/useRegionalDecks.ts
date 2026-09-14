@@ -24,9 +24,9 @@ export interface RegionalDecksResult {
  * `analysis/deck-popularity-index.json`, no new pipeline dataset. Same "join two lean, already-
  * published datasets in a useMemo" pattern as `useSeasonMeta.ts`.
  */
-export function useRegionalDecks(mode: RegionGroupMode): RegionalDecksResult {
-  const index = useOmnidexIndex();
-  const deckPopularity = useDeckPopularityIndexData();
+export function useRegionalDecks(mode: RegionGroupMode, enabled = true): RegionalDecksResult {
+  const index = useOmnidexIndex(enabled);
+  const deckPopularity = useDeckPopularityIndexData(enabled);
 
   return useMemo((): RegionalDecksResult => {
     if (!index || !deckPopularity) return { loading: true, options: [], regionByDeckId: new Map() };

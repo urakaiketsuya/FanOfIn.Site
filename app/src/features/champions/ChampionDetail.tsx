@@ -52,16 +52,23 @@ export default function ChampionDetail() {
   const championName = slugToChampionName(name);
   useDocumentTitle(`${championName} — Stats`, `${championName} deck builds, win rates, and season trends in Grand Archive TCG.`);
 
+  const [tab, setTab] = useTabParam("tab", TAB_KEYS, "season");
+
+  // Gate every large per-tab dataset behind the tab that actually needs it — this page used to
+  // eagerly fetch every dataset below (similarity.json alone is 28MB, the single biggest dataset
+  // this page touches) on every visit regardless of which of the 7 tabs the visitor opened, same
+  // class of bug just fixed on CardDetail.tsx/ArchetypeDetail.tsx. archetypeData/trendsData stay
+  // eager — the header and default "By Season" tab need them immediately.
   const archetypeData = useArchetypeData();
-  const taxonomyData = useArchetypeTaxonomyData();
+  const taxonomyData = useArchetypeTaxonomyData(tab === "builds");
   const trendsData = useChampionTrendsData();
-  const popularityIndexData = useDeckPopularityIndexData();
-  const eventNameById = useEventNameById();
-  const hipsterData = useHipsterData();
-  const playersData = useOmnidexPlayers();
-  const similarityData = useSimilarityData();
-  const compositionData = useCompositionWinRateData();
-  const cardStatsByChampionData = useCardStatsByChampionData();
+  const popularityIndexData = useDeckPopularityIndexData(tab === "decks" || tab === "similar");
+  const eventNameById = useEventNameById(tab === "decks" || tab === "similar");
+  const hipsterData = useHipsterData(tab === "decks");
+  const playersData = useOmnidexPlayers(tab === "decks");
+  const similarityData = useSimilarityData(tab === "similar");
+  const compositionData = useCompositionWinRateData(tab === "similar");
+  const cardStatsByChampionData = useCardStatsByChampionData(tab === "cards");
 
   // Named Spirits (e.g. "Kaze, Spirit of Wind") are tracked as their own Champion-like entry in a
   // separate list, not merged into `archetypes` — fall back to it so this page works for either.
@@ -77,7 +84,6 @@ export default function ChampionDetail() {
 
   const [spiritFilter, setSpiritFilter] = useState<SpiritFilter>({ kind: "all" });
   const [typeFilter, setTypeFilter] = useState<string | "all">("all");
-  const [tab, setTab] = useTabParam("tab", TAB_KEYS, "season");
   // Only reset when navigating from one Champion's page to a different one (same component
   // instance reused by the router) — not on initial mount, which would otherwise clobber a
   // `?tab=` deep link.
@@ -172,7 +178,7 @@ export default function ChampionDetail() {
   const cutouts = useMemo(() => cutoutsForChampion(championName), [championName]);
   const cutoutCards = useCardsByNames(useMemo(() => cutouts.map((c) => c.cardName), [cutouts]));
   const bonusCards = useChampionBonusCards(champion ? championName : null);
-  const regionalBreakdown = useChampionRegionalBreakdown(champion ? championName : null);
+  const regionalBreakdown = useChampionRegionalBreakdown(champion ? championName : null, tab === "regions");
 
   const uniqueDecks = useMemo(() => {
     if (!hipsterData) return [];

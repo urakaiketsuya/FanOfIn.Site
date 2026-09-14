@@ -22,9 +22,9 @@ export interface ChampionRegionalBreakdown {
  * broader region grouping) since a per-champion breakdown is naturally finer-grained than the
  * top-level Regions page's own region/country toggle.
  */
-export function useChampionRegionalBreakdown(championName: string | null): ChampionRegionalBreakdown {
-  const { loading, options, regionByDeckId } = useRegionalDecks("country");
-  const deckPopularity = useDeckPopularityIndexData();
+export function useChampionRegionalBreakdown(championName: string | null, enabled = true): ChampionRegionalBreakdown {
+  const { loading, options, regionByDeckId } = useRegionalDecks("country", enabled);
+  const deckPopularity = useDeckPopularityIndexData(enabled);
 
   return useMemo((): ChampionRegionalBreakdown => {
     if (loading || !deckPopularity || !championName) return { rows: [], loading: loading || !deckPopularity };
