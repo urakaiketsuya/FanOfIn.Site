@@ -1476,6 +1476,13 @@ probability supplied by the same multivariate-hypergeometric recipe engine. The 
 `ceil(expectedSeen - startingHandSize + 1)`, floored at turn 1, assuming only the normal one-card-
 per-turn draw; the cards-seen value remains the authoritative result when extra draw effects exist.
 
+Each recipe requirement can be populated by explicitly selected cards, every Main Deck card with a
+selected API `type`/`subtype` (for example `FRACTAL`), or every Main Deck card carrying a selected
+bold printed keyword. Numeric keyword parameters are normalized (`Glimpse 3` becomes `Glimpse`). A
+requirement's minimum can be greater than one, meaning any that many copies from its matched pool.
+The multivariate calculation requires disjoint pools; when a card matches more than one requirement,
+the UI names the overlap and withholds the probability until the recipe is made unambiguous.
+
 ### Resource-curve reliability (`features/deckbuilder/resourceCurve.ts`)
 
 For each fixed Reserve-cost value represented in the Main Deck, this groups the quantities of every
