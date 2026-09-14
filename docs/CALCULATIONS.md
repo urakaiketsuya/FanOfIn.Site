@@ -1513,6 +1513,20 @@ to keep the tool compact. This is explicitly a review signal rather than a dead-
 redundancy can be desirable, while uniqueness rules, high costs, and situational effects make some
 duplicate draws more consequential than others.
 
+### Conditional hand pressure (`features/deckbuilder/ConditionalHandPressure.tsx`)
+
+Main Deck cards are conservatively marked potentially conditional when their printed effect has an
+explicit external requirement: a named bonus, Level/Sheen or champion state, a controlled object,
+graveyard state, or opponent state. Self-contained follow-up clauses such as “if you do” are not
+marked. The classifier is deliberately narrow and inspectable in
+`conditionalPressureCalculation.ts`; it does not infer strategy or claim a marked card is unusable.
+
+For the inferred opening hand or first 10 cards seen, all marked copies form one success pool. The
+tool reports exact hypergeometric probabilities of drawing at least one, two, or three marked cards.
+The display calls the 2+ result Low below 25%, Moderate from 25% through 49.9%, and High at 50% or
+above. These labels flag hands worth reviewing; they do not model whether the relevant conditions
+are already online, mulligans, or the severity of any individual card being inactive.
+
 ### Sideboard substitution impact (`features/deckbuilder/SideboardImpact.tsx`)
 
 This is a read-only, one-copy swap preview: the selected Main Deck card loses one copy and the

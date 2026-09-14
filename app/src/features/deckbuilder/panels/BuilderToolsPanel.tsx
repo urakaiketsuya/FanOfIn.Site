@@ -4,6 +4,7 @@ import HypergeometricCalculator from "../HypergeometricCalculator";
 import ResourceCurveReliability from "../ResourceCurveReliability";
 import ReserveSequencePressure from "../ReserveSequencePressure";
 import CopyClumpingRisk from "../CopyClumpingRisk";
+import ConditionalHandPressure from "../ConditionalHandPressure";
 import SideboardImpact from "../SideboardImpact";
 import ConsistencyDashboard from "../ConsistencyDashboard";
 import type { SynergyReadiness } from "../synergyReadiness";
@@ -233,6 +234,7 @@ export default function ToolsPanel({
       <ResourceCurveReliability mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
       <ReserveSequencePressure mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
       <CopyClumpingRisk mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
+      <ConditionalHandPressure mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
       <SideboardImpact mainLines={mainLines} sideboardLines={sideboardLines} catalogByName={catalogByName} />
     </div>
   );
