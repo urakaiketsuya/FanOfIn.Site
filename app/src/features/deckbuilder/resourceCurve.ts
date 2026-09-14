@@ -1,13 +1,19 @@
 import type { Card } from "@gatcg/shared";
-import { earliestReserveCostTurn } from "../../lib/turnToPlay";
+import { earliestReserveCostTurn, naturalCardsSeenByTurn, type PlayOrder } from "../../lib/turnToPlay";
 import { probabilityAtLeast } from "./synergyReadiness";
+
+export interface ResourceCurveTiming {
+  order: PlayOrder;
+  turn: number;
+  seen: number;
+  probability: number;
+}
 
 export interface ResourceCurvePoint {
   cost: number;
   copies: number;
-  turn: number;
-  seen: number;
-  probability: number;
+  first: ResourceCurveTiming;
+  second: ResourceCurveTiming;
 }
 
 export function computeResourceCurveReliability(
@@ -23,8 +29,11 @@ export function computeResourceCurveReliability(
     copiesByCost.set(card.cost_reserve, (copiesByCost.get(card.cost_reserve) ?? 0) + line.quantity);
   }
   return Array.from(copiesByCost, ([cost, copies]) => {
-    const turn = earliestReserveCostTurn(cost, startingHandSize);
-    const seen = Math.min(deckSize, startingHandSize + Math.max(0, turn - 1));
-    return { cost, copies, turn, seen, probability: probabilityAtLeast(deckSize, copies, seen, 1) };
+    const timing = (order: PlayOrder): ResourceCurveTiming => {
+      const turn = earliestReserveCostTurn(cost, startingHandSize, order);
+      const seen = Math.min(deckSize, naturalCardsSeenByTurn(turn, startingHandSize, order));
+      return { order, turn, seen, probability: probabilityAtLeast(deckSize, copies, seen, 1) };
+    };
+    return { cost, copies, first: timing("first"), second: timing("second") };
   }).sort((a, b) => a.cost - b.cost);
 }

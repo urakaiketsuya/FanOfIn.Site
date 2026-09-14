@@ -7,6 +7,8 @@ import type { Card } from "@gatcg/shared";
  */
 export const DEFAULT_STARTING_HAND_SIZE = 7;
 
+export type PlayOrder = "first" | "second";
+
 const DRAW_NUMBER_WORDS: Record<string, number> = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10 };
 
 /** Reads the starting Lv 0 Champion's On Enter draw amount, falling back to the usual seven. */
@@ -61,8 +63,13 @@ export function earliestLevelTurn(requiredLevel: number, accelerantAvailableTurn
  * already spent that turn on other costs. A real upper bound, not a promise — the actual hand at
  * any specific moment in a real game is usually smaller once other plays are accounted for.
  */
-function handSizeCeiling(turn: number, startingHandSize: number): number {
-  return startingHandSize + Math.max(0, turn - 1);
+export function naturalCardsSeenByTurn(turn: number, startingHandSize: number, playOrder: PlayOrder = "first"): number {
+  const normalDraws = Math.max(0, turn - (playOrder === "first" ? 1 : 0));
+  return startingHandSize + normalDraws;
+}
+
+function handSizeCeiling(turn: number, startingHandSize: number, playOrder: PlayOrder): number {
+  return naturalCardsSeenByTurn(turn, startingHandSize, playOrder);
 }
 
 /**
@@ -75,9 +82,9 @@ function handSizeCeiling(turn: number, startingHandSize: number): number {
  * free); `cost_memory` only ever appears on Champion/Regalia prints, always equal to that print's
  * own level, which is a Materialize Phase turn-based action rather than a paid activation cost.
  */
-export function earliestReserveCostTurn(reserveCost: number | null, startingHandSize: number): number {
+export function earliestReserveCostTurn(reserveCost: number | null, startingHandSize: number, playOrder: PlayOrder = "first"): number {
   if (!reserveCost || reserveCost <= 0) return 1;
-  for (let turn = 1; turn <= MAX_TURN; turn++) if (handSizeCeiling(turn, startingHandSize) >= reserveCost) return turn;
+  for (let turn = 1; turn <= MAX_TURN; turn++) if (handSizeCeiling(turn, startingHandSize, playOrder) >= reserveCost) return turn;
   return MAX_TURN;
 }
 

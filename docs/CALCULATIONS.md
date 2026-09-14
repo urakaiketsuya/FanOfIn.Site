@@ -1473,9 +1473,13 @@ per-turn draw; the cards-seen value remains the authoritative result when extra 
 
 For each fixed Reserve-cost value represented in the Main Deck, this groups the quantities of every
 card at that cost and reports the chance of having drawn at least one by the first turn that cost is
-affordable under `earliestReserveCostTurn`. The cards-seen checkpoint is the selected level-0
-Champion's inferred starting hand plus one normal draw for each subsequent turn. With `K` cards at
-the cost, `s` cards seen, and Main Deck size `N`, the probability is
+affordable under `earliestReserveCostTurn`. Going-first and going-second results are shown together.
+Under the official two-player starting-game rules, the first player skips their first Draw Phase
+while the second player does not. Therefore natural cards seen on personal turn `t` are inferred
+starting hand `+ max(0, t - 1)` going first and starting hand `+ t` going second. The same counts
+form the conservative hand ceiling used to find the first affordable turn, so a high cost may move
+one turn earlier going second. With `K` cards at the cost, `s` cards seen, and Main Deck size `N`,
+the probability is
 `1 - C(N-K, s) / C(N, s)`. X costs are excluded because they have no single curve position.
 
 The labels are presentation bands: Reliable at 80%+, Playable at 60%+, otherwise Thin. This is an
