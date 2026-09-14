@@ -1466,6 +1466,7 @@ export default function DeckBuilderIndex() {
               <ToolsPanel
                 mainLines={mainOnlyLines}
                 materialLines={materialOnlyLines}
+                sideboardLines={sideboardLines}
                 catalogByName={catalogByName}
                 pillarBias={pillarBias}
                 onPillarBiasChange={changePillarBias}

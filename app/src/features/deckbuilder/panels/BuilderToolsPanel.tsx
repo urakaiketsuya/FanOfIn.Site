@@ -3,6 +3,7 @@ import type { Card, DeckFormat } from "@gatcg/shared";
 import HypergeometricCalculator from "../HypergeometricCalculator";
 import ResourceCurveReliability from "../ResourceCurveReliability";
 import CopyClumpingRisk from "../CopyClumpingRisk";
+import SideboardImpact from "../SideboardImpact";
 import type { RatingPillar } from "../../../lib/deckIdentity";
 import type { DeckValidationResult } from "../validateDeck";
 import type { ArchetypeTuningOption, CollectionMode, PopulationSource } from "../model/builderTypes";
@@ -14,6 +15,7 @@ const PILLAR_OPTIONS: RatingPillar[] = ["durability", "interaction", "aggro", "o
 export default function ToolsPanel({
   mainLines,
   materialLines,
+  sideboardLines,
   catalogByName,
   pillarBias,
   onPillarBiasChange,
@@ -32,6 +34,7 @@ export default function ToolsPanel({
 }: {
   mainLines: { name: string; quantity: number }[];
   materialLines: { name: string; quantity: number }[];
+  sideboardLines: { name: string; quantity: number }[];
   catalogByName: Map<string, Card>;
   pillarBias: RatingPillar | null;
   onPillarBiasChange: (pillar: RatingPillar | null) => void;
@@ -223,6 +226,7 @@ export default function ToolsPanel({
       <HypergeometricCalculator mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
       <ResourceCurveReliability mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
       <CopyClumpingRisk mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
+      <SideboardImpact mainLines={mainLines} sideboardLines={sideboardLines} catalogByName={catalogByName} />
     </div>
   );
 }

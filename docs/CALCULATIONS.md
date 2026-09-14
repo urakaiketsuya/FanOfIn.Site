@@ -1469,6 +1469,15 @@ to keep the tool compact. This is explicitly a review signal rather than a dead-
 redundancy can be desirable, while uniqueness rules, high costs, and situational effects make some
 duplicate draws more consequential than others.
 
+### Sideboard substitution impact (`features/deckbuilder/SideboardImpact.tsx`)
+
+This is a read-only, one-copy swap preview: the selected Main Deck card loses one copy and the
+selected Sideboard card gains one while total Main Deck size stays fixed. For each functional role,
+it recomputes combined copies and the exact chance of seeing at least one among the first 10 cards.
+It also shows how the incoming card's own chance of appearing 2+ times among the first 10 changes.
+The preview deliberately does not mutate the deck or claim matchup strength; role membership is the
+same inspectable printed-text classification used by Functional copies.
+
 ## Goldfish simulator (`app/src/lib/goldfishSimulator.ts`, `features/goldfish/GoldfishIndex.tsx`)
 
 A starting hand + draw-through-the-deck tool, deliberately *manually-assisted* rather than a rules
