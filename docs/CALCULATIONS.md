@@ -6,6 +6,23 @@ who need to know whether a number can be trusted for a new use case, not just wh
 displays as. Source of truth is always the linked file; if this doc and the code disagree, the code
 is right and this doc is stale.
 
+## Guided Builder draw-engine activation timing (`app/src/features/deckbuilder/drawEffects.ts`)
+
+The Hypergeometric calculator separates a deck's total printed draw potential from draw effects
+that could plausibly be active at the selected cards-seen checkpoint. It infers checkpoint turn as
+`max(1, ceil(seen - startingHand + 1))`. A source is eligible only when its printed Reserve cost is
+affordable by that turn. An eligible Main Deck source contributes `copies × seen / deckSize ×
+printedDrawsPerCopy` expected active draws; an eligible Material source contributes its full printed
+amount because it is known from game start rather than randomly drawn. The chance that an engine is
+online is the exact hypergeometric chance of finding at least one eligible Main source, or 100% when
+any eligible Material source exists.
+
+The probability forecast adds the rounded expected active draws to natural cards seen. This is a
+single-pass estimate: bonus draws do not recursively find and activate more engines. Rules text
+containing common conditional markers is labeled conditional but remains included as an upper
+bound; trigger satisfaction, champion-level requirements, competing Reserve spending, and timing
+within a turn are not inferred.
+
 ## Elo ratings (`pipeline/src/analysis/elo.ts`)
 
 Not a self-implemented Elo formula — Omnidex already returns a per-match `eloChange` for each

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import type { Card } from "@gatcg/shared";
 import { probabilityAtLeast } from "./synergyReadiness";
-import { drawnCardsPerCopy, expectedExtraDraws, materialDrawBonus } from "./drawEffects";
+import { computeDrawEngineTiming, drawEngineSources } from "./drawEffects";
 import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
 import { ForecastChart, ForecastCheckpointSelector, ForecastHeadline } from "../../components/ui/ForecastVisual";
@@ -119,41 +119,23 @@ export default function HypergeometricCalculator({
   const glimpseTargetNames = mode === "single" ? [selectedCard].filter(Boolean) : mode === "functional" ? functionalLines.map((line) => line.name) : recipeGroups[weakestGroupIndex]?.cards ?? [];
   const glimpseOdds = activeGlimpseSource ? glimpseAdjustedOdds(deckSize, glimpseTargetCopies, activeGlimpseSource.copies, seen, activeGlimpseSource.glimpse, glimpseTargetNames.includes(activeGlimpseSource.name)) : null;
 
-  /** Main Deck cards whose own effect text draws cards — the source of the "with card draw"
-   * estimate below. Nothing excludes the target card itself: if it also draws cards, a copy of it
-   * being drawn genuinely does help you see more of the deck, same as any other draw-effect card. */
-  const drawEffectLines = useMemo(
-    () =>
-      mainLines
-        .map((line) => ({ quantity: line.quantity, perCopy: catalogByName.get(line.name) ? drawnCardsPerCopy(catalogByName.get(line.name)!) : 0 }))
-        .filter((line) => line.perCopy > 0),
-    [mainLines, catalogByName],
-  );
-  /** Material Deck cards whose own effect text draws cards. Unlike `drawEffectLines`, these
-   * contribute a flat bonus rather than one scaled by `seen` — see `materialDrawBonus`'s note on
-   * why the Material Deck isn't subject to draw-probability the way the Main Deck is. */
-  const materialDrawEffectLines = useMemo(
-    () =>
-      materialLines
-        .map((line) => ({ quantity: line.quantity, perCopy: catalogByName.get(line.name) ? drawnCardsPerCopy(catalogByName.get(line.name)!) : 0 }))
-        .filter((line) => line.perCopy > 0),
-    [materialLines, catalogByName],
-  );
-  const materialBonus = useMemo(() => materialDrawBonus(materialDrawEffectLines), [materialDrawEffectLines]);
-  const hasDrawEngine = drawEffectLines.length > 0 || materialDrawEffectLines.length > 0;
+  const drawSources = useMemo(() => drawEngineSources(mainLines, materialLines, catalogByName), [mainLines, materialLines, catalogByName]);
+  const drawTiming = useMemo(() => computeDrawEngineTiming(drawSources, deckSize, seen, startingHandSize), [drawSources, deckSize, seen, startingHandSize]);
+  const hasDrawEngine = drawSources.length > 0;
   const seenWithDraw = useMemo(
-    () => Math.min(deckSize, Math.round(seen + expectedExtraDraws(drawEffectLines, deckSize, seen) + materialBonus)),
-    [drawEffectLines, deckSize, seen, materialBonus],
+    () => Math.min(deckSize, Math.round(seen + drawTiming.expectedActiveDraws)),
+    [deckSize, seen, drawTiming.expectedActiveDraws],
   );
   const probabilityWithDraw = mode === "recipe" ? probabilityOfRecipe(deckSize, probabilityGroups, seenWithDraw) : probabilityAtLeast(deckSize, mode === "functional" ? functionalCopies : copies, seenWithDraw, mode === "functional" ? 1 : required);
   const curveWithDraw = useMemo(
     () =>
       Array.from({ length: Math.min(deckSize, CURVE_MAX_SEEN) }, (_, i) => {
         const baseSeen = i + 1;
-        const adjustedSeen = Math.min(deckSize, Math.round(baseSeen + expectedExtraDraws(drawEffectLines, deckSize, baseSeen) + materialBonus));
+        const timing = computeDrawEngineTiming(drawSources, deckSize, baseSeen, startingHandSize);
+        const adjustedSeen = Math.min(deckSize, Math.round(baseSeen + timing.expectedActiveDraws));
         return mode === "recipe" ? probabilityOfRecipe(deckSize, probabilityGroups, adjustedSeen) : probabilityAtLeast(deckSize, mode === "functional" ? functionalCopies : copies, adjustedSeen, mode === "functional" ? 1 : required);
       }),
-    [drawEffectLines, deckSize, copies, required, materialBonus, mode, probabilityGroups, functionalCopies],
+    [drawSources, deckSize, copies, required, startingHandSize, mode, probabilityGroups, functionalCopies],
   );
 
   return (
@@ -266,7 +248,8 @@ export default function HypergeometricCalculator({
 
       {hasDrawEngine && !(mode === "functional" && functionalRole === "draw") && (
         <div className="mt-4 border-t border-ctp-surface1 pt-3">
-          <ForecastHeadline label={`With card draw · ${seenWithDraw} cards seen`} value={`${(probabilityWithDraw * 100).toFixed(1)}%`} />
+          <div className="grid gap-2 sm:grid-cols-3"><div className="rounded-lg border border-ctp-surface1 bg-ctp-base/35 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Engine online by T{drawTiming.turn}</div><div className="font-semibold tabular-nums text-ctp-text">{(drawTiming.onlineByTurn * 100).toFixed(1)}%</div></div><div className="rounded-lg border border-ctp-surface1 bg-ctp-base/35 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Expected active draws</div><div className="font-semibold tabular-nums text-ctp-teal">+{drawTiming.expectedActiveDraws.toFixed(1)}</div></div><div className="rounded-lg border border-ctp-surface1 bg-ctp-base/35 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Printed potential</div><div className="font-semibold tabular-nums text-ctp-subtext1">{drawTiming.printedPotential.toFixed(0)}</div></div></div>
+          <div className="mt-3"><ForecastHeadline label={`Timing-adjusted draw · ${seenWithDraw} cards seen`} value={`${(probabilityWithDraw * 100).toFixed(1)}%`} /></div>
           {curveWithDraw.length >= 2 && (
             <div className="mt-2">
               <ForecastChart values={curveWithDraw} height={36} selectedIndex={Math.min(seenWithDraw, curveWithDraw.length) - 1} />
@@ -276,6 +259,8 @@ export default function HypergeometricCalculator({
               </div>
             </div>
           )}
+          <details className="mt-2 rounded-lg border border-ctp-surface1 bg-ctp-base/25 px-3 py-2"><summary className="cursor-pointer text-xs font-medium text-ctp-subtext1">Draw source breakdown</summary><div className="mt-2 space-y-1.5">{drawTiming.sources.map((source) => <div key={`${source.section}:${source.name}`} className="flex flex-wrap items-center justify-between gap-2 text-[11px]"><span className="text-ctp-text">{source.quantity}× {source.name}{source.conditional ? <span className="ml-1 text-ctp-yellow">conditional</span> : null}</span><span className="tabular-nums text-ctp-subtext0">{source.section === "material" ? "Material" : `${(source.onlineByTurn * 100).toFixed(0)}% found`} · ready T{source.firstAffordableTurn} · +{source.expectedActiveDraws.toFixed(1)}</span></div>)}</div></details>
+          <p className="mt-2 text-[10px] leading-4 text-ctp-subtext0">Main sources must be drawn and Reserve-ready by T{drawTiming.turn}; Material sources are known but still cost-gated. Expected draws are single-pass and do not recursively find more engines. Conditional triggers and level requirements are not verified, so marked effects remain upper-bound estimates.</p>
         </div>
       )}
       </Section>
