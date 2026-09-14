@@ -30,6 +30,7 @@ import BuilderCopyPanel from "../deckbuilder/panels/BuilderCopyPanel";
 import BuilderCardGrid from "../deckbuilder/components/BuilderCardGrid";
 import SideboardImpact from "../deckbuilder/SideboardImpact";
 import { useDeckTestResult } from "../decks/useDeckTestResult";
+import { useRequestedDeckWorkspace } from "../deckbuilder/persistence/useRequestedDeckWorkspace";
 
 type DeckReviewTab = "review" | "matchups" | "save";
 type ReviewPopulationSource = "tournament" | "balanced";
@@ -362,6 +363,11 @@ export default function DeckReviewIndex() {
       setDismissedReviewCards(new Set());
     });
   }
+
+  const requestedDeck = useRequestedDeckWorkspace(catalogByName, "review", loadWorkspace);
+
+  if (requestedDeck.pending) return <PageLayout data-component="DeckReviewIndex"><PageHeader title="Deck Review" description="Loading the selected deck without changing its saved copy." /><Panel className="mt-6"><InlineState>Loading deck…</InlineState></Panel></PageLayout>;
+  if (requestedDeck.error) return <PageLayout data-component="DeckReviewIndex"><PageHeader title="Deck Review" description="The selected deck could not be opened." /><Panel className="mt-6"><InlineState tone="danger">{requestedDeck.error}</InlineState><button type="button" onClick={requestedDeck.retry} className="mt-4 rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base">Try again</button></Panel></PageLayout>;
 
   const nearestDeckCompareLink = (_deck: NearestDeck) => "/compare";
   const activeWorkspace = loadActiveDeckWorkspace(sessionStorage);
