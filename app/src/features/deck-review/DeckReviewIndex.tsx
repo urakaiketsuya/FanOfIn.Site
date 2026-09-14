@@ -27,8 +27,10 @@ import type { NearestDeck } from "../deckbuilder/useNearestDecks";
 import BuilderReviewPanel from "../deckbuilder/panels/BuilderReviewPanel";
 import BuilderCopyPanel from "../deckbuilder/panels/BuilderCopyPanel";
 import BuilderCardGrid from "../deckbuilder/components/BuilderCardGrid";
+import SideboardImpact from "../deckbuilder/SideboardImpact";
+import { useDeckTestResult } from "../decks/useDeckTestResult";
 
-type DeckReviewTab = "review" | "save";
+type DeckReviewTab = "review" | "matchups" | "save";
 type ReviewPopulationSource = "tournament" | "balanced";
 
 const EMPTY_BUILD_COUNTERS: BuildCounters = {
@@ -219,6 +221,9 @@ export default function DeckReviewIndex() {
   const keptDecklist = useMemo(() => buildToDecklist(build, true), [build]);
   const keptLines = useMemo(() => [...keptDecklist.material, ...keptDecklist.main].map((l) => ({ name: l.card, quantity: l.quantity })), [keptDecklist]);
   const keptSideboardLines = useMemo(() => keptDecklist.sideboard.map((l) => ({ name: l.card, quantity: l.quantity })), [keptDecklist]);
+  const keptMainLines = useMemo(() => keptDecklist.main.map((line) => ({ name: line.card, quantity: line.quantity })), [keptDecklist]);
+  const deckTestCounts = useMemo(() => new Map(keptLines.map((line) => [line.name, line.quantity])), [keptLines]);
+  const { result: deckTestResult } = useDeckTestResult({ deckCardCounts: deckTestCounts, cardsByName: catalogByName, nearestDecks: [] });
   const mainTotal = useMemo(() => keptMain.reduce((sum, c) => sum + c.quantity, 0), [keptMain]);
   const materialTotal = useMemo(() => keptMaterial.reduce((sum, c) => sum + c.quantity, 0), [keptMaterial]);
   const sideboardTotal = useMemo(() => keptSideboard.reduce((sum, c) => sum + c.quantity, 0), [keptSideboard]);
@@ -526,6 +531,7 @@ export default function DeckReviewIndex() {
             <Tabs
               tabs={[
                 { key: "review", label: reviewItemCount > 0 ? `Suggestions (${reviewItemCount})` : "Suggestions" },
+                { key: "matchups", label: "Matchup plans" },
                 { key: "save", label: "Save & export" },
               ]}
               active={tab}
@@ -571,6 +577,12 @@ export default function DeckReviewIndex() {
               viewMode={viewMode}
               onViewModeChange={setViewMode}
             />
+          )}
+
+          {tab === "matchups" && (
+            keptSideboardLines.length > 0
+              ? <SideboardImpact mainLines={keptMainLines} sideboardLines={keptSideboardLines} catalogByName={catalogByName} matchups={deckTestResult?.matchups} />
+              : <Panel className="mt-4"><InlineState>Add or accept Sideboard cards before building a matchup plan.</InlineState></Panel>
           )}
 
           {tab === "save" && (
