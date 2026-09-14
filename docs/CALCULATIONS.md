@@ -1446,6 +1446,20 @@ threshold. A card may belong to more than one role, but is counted only once ins
 role. The UI lists every included card so false positives remain inspectable; grouping means the
 cards can satisfy the same broad need, not that their costs, timing, or strategic value are equal.
 
+### Resource-curve reliability (`features/deckbuilder/resourceCurve.ts`)
+
+For each fixed Reserve-cost value represented in the Main Deck, this groups the quantities of every
+card at that cost and reports the chance of having drawn at least one by the first turn that cost is
+affordable under `earliestReserveCostTurn`. The cards-seen checkpoint is the selected level-0
+Champion's inferred starting hand plus one normal draw for each subsequent turn. With `K` cards at
+the cost, `s` cards seen, and Main Deck size `N`, the probability is
+`1 - C(N-K, s) / C(N, s)`. X costs are excluded because they have no single curve position.
+
+The labels are presentation bands: Reliable at 80%+, Playable at 60%+, otherwise Thin. This is an
+availability diagnostic, not a full sequencing simulation: it does not assert that earlier cards
+were played, reserve was preserved, a required champion level was reached, or a board-state clause
+is satisfied.
+
 ## Goldfish simulator (`app/src/lib/goldfishSimulator.ts`, `features/goldfish/GoldfishIndex.tsx`)
 
 A starting hand + draw-through-the-deck tool, deliberately *manually-assisted* rather than a rules
