@@ -55,17 +55,21 @@ export default function ComboLabIndex() {
     setTab("build");
   }
 
-  function applySuggestion(cardName: string) {
-    if (!workspace || !cutCard || cutCard === cardName) return;
+  function applyDeckReplacement(cardName: string, removedCard: string) {
+    if (!workspace || !removedCard || removedCard === cardName) return;
     const nextMain = workspace.main
-      .map((line) => line.name === cardName ? { ...line, quantity: line.quantity + 1 } : line.name === cutCard ? { ...line, quantity: line.quantity - 1 } : line)
+      .map((line) => line.name === cardName ? { ...line, quantity: line.quantity + 1 } : line.name === removedCard ? { ...line, quantity: line.quantity - 1 } : line)
       .filter((line) => line.quantity > 0);
     const { version: _version, updatedAt: _updatedAt, ...stored } = workspace;
     saveActiveDeckWorkspace(sessionStorage, { ...stored, source: "combo", sourceLabel: "Combo Lab working copy", main: nextMain });
     setWorkspace(loadActiveDeckWorkspace(sessionStorage));
     setPendingSuggestion(null);
     setCutCard("");
-    setNotice(`Applied: +1 ${cardName}, −1 ${cutCard}. Calculations updated.`);
+    setNotice(`Applied: +1 ${cardName}, −1 ${removedCard}. Calculations updated.`);
+  }
+
+  function applySuggestion(cardName: string) {
+    applyDeckReplacement(cardName, cutCard);
   }
 
   const requestedDeck = useRequestedDeckWorkspace(catalogByName, "combo", loadWorkspace);
@@ -228,13 +232,13 @@ export default function ComboLabIndex() {
 </div> : <button type="button" onClick={() => { setPendingSuggestion(suggestionKey); setCutCard(""); }} className="mt-3 rounded-md border border-ctp-blue/60 px-3 py-1.5 text-xs font-semibold text-ctp-blue hover:bg-ctp-blue/10">Review change</button>}</article>; })}</div>
 </Panel>}<details className="mt-4">
 <summary className="cursor-pointer rounded-lg border border-ctp-surface1 bg-ctp-mantle px-4 py-3 text-sm font-semibold text-ctp-text">Open custom probability calculations</summary>
-<HypergeometricCalculator key={`${workspace.updatedAt}:${preset?.key ?? "custom"}`} mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} defaultMode="recipe" initialRecipe={preset?.requirements} />
+<HypergeometricCalculator key={`${workspace.updatedAt}:${preset?.key ?? "custom"}`} mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} defaultMode="recipe" initialRecipe={preset?.requirements} onApplyRecipeSuggestion={applyDeckReplacement} />
 </details>
 <p className="mt-3 text-xs text-ctp-subtext0">Direct-route percentages are exact card-access odds at the selected checkpoint. Fractal-route percentages are access ceilings: matched cards still need enough Reserve, legal sequencing, and time to enter and remain on the field.</p>
 </>}
       {tab === "calculations" && goalId !== "level" && <>
 <Panel className="mt-4"><RuleContract goal={selectedGoal} /></Panel>
-<HypergeometricCalculator key={`${workspace.updatedAt}:${goalId}:${preset?.key ?? "custom"}`} mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} defaultMode={selectedGoal.calculatorMode} initialRecipe={preset?.requirements} />
+<HypergeometricCalculator key={`${workspace.updatedAt}:${goalId}:${preset?.key ?? "custom"}`} mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} defaultMode={selectedGoal.calculatorMode} initialRecipe={preset?.requirements} onApplyRecipeSuggestion={applyDeckReplacement} />
 </>}
       {tab === "explore" && <Panel className="mt-4">
 <div className="flex flex-wrap items-end gap-3">
