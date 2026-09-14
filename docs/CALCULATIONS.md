@@ -1460,6 +1460,15 @@ availability diagnostic, not a full sequencing simulation: it does not assert th
 were played, reserve was preserved, a required champion level was reached, or a board-state clause
 is satisfied.
 
+### Copy clumping (`features/deckbuilder/CopyClumpingRisk.tsx`)
+
+For every Main Deck card with at least two copies, this calculates the exact hypergeometric chance
+of drawing 2+ copies in the inferred opening hand, 2+ among the first 10 cards, and 3+ among the
+first 10. Rows are ranked by the early 2+ probability and capped at the 12 highest-risk inclusions
+to keep the tool compact. This is explicitly a review signal rather than a dead-card verdict:
+redundancy can be desirable, while uniqueness rules, high costs, and situational effects make some
+duplicate draws more consequential than others.
+
 ## Goldfish simulator (`app/src/lib/goldfishSimulator.ts`, `features/goldfish/GoldfishIndex.tsx`)
 
 A starting hand + draw-through-the-deck tool, deliberately *manually-assisted* rather than a rules

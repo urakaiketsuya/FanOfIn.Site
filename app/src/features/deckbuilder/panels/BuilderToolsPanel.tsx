@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import type { Card, DeckFormat } from "@gatcg/shared";
 import HypergeometricCalculator from "../HypergeometricCalculator";
 import ResourceCurveReliability from "../ResourceCurveReliability";
+import CopyClumpingRisk from "../CopyClumpingRisk";
 import type { RatingPillar } from "../../../lib/deckIdentity";
 import type { DeckValidationResult } from "../validateDeck";
 import type { ArchetypeTuningOption, CollectionMode, PopulationSource } from "../model/builderTypes";
@@ -221,6 +222,7 @@ export default function ToolsPanel({
 
       <HypergeometricCalculator mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
       <ResourceCurveReliability mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
+      <CopyClumpingRisk mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
     </div>
   );
 }
