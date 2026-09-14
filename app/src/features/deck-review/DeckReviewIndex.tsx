@@ -20,6 +20,7 @@ import { buildToDecklist, calculateLinePrice, derivePendingSuggestions, deriveRe
 import { DECK_REVIEW_SESSION_KEY, loadBuilderSession } from "../deckbuilder/persistence/builderPersistence";
 import { loadActiveDeckWorkspace, saveActiveDeckWorkspace, type DeckWorkspace } from "../deckbuilder/persistence/deckWorkspace";
 import DeckWorkspacePicker from "../deckbuilder/components/DeckWorkspacePicker";
+import DeckToolWorkspaceHeader from "../deckbuilder/components/DeckToolWorkspaceHeader";
 import { selectionsToMaps, type LockedSection } from "../deckbuilder/model/builderTypes";
 import { formatUsd } from "../../lib/format";
 import type { BuildCounters } from "../deckbuilder/useBuildCounters";
@@ -113,6 +114,8 @@ export default function DeckReviewIndex() {
     const lines = Array.from(lockedCards, ([name, quantity]) => ({ name, quantity, section: lockedSections.get(name) ?? "main" }));
     saveActiveDeckWorkspace(sessionStorage, {
       source: "review",
+      title: loadActiveDeckWorkspace(sessionStorage)?.title ?? null,
+      sourceLabel: loadActiveDeckWorkspace(sessionStorage)?.sourceLabel ?? "Deck Review",
       format: deckFormat,
       championName,
       spiritName: spiritFilter,
@@ -334,6 +337,7 @@ export default function DeckReviewIndex() {
       ...workspace.material.map((line) => ({ ...line, section: "material" as const })),
       ...workspace.sideboard.map((line) => ({ ...line, section: "sideboard" as const })),
     ];
+    saveActiveDeckWorkspace(sessionStorage, workspace);
     startTransition(() => {
       setDeckFormat(workspace.format);
       setChampionName(workspace.championName);
@@ -359,6 +363,7 @@ export default function DeckReviewIndex() {
   }
 
   const nearestDeckCompareLink = (_deck: NearestDeck) => "/compare";
+  const activeWorkspace = loadActiveDeckWorkspace(sessionStorage);
 
   return (
     <PageLayout data-component="DeckReviewIndex">
@@ -366,6 +371,8 @@ export default function DeckReviewIndex() {
         title="Deck Review"
         description="Nothing is added for you here. Start from a Champion and Spirit — or paste a decklist you already have — then accept, swap, or dismiss one ranked suggestion at a time."
       />
+
+      {championName && <DeckToolWorkspaceHeader activeTool="review" title={activeWorkspace?.title} championName={championName} spiritName={spiritFilter} format={deckFormat} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel={activeWorkspace?.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="review" onLoad={loadWorkspace} />} />}
 
       <Panel className="mt-5">
         <div className="flex flex-wrap items-center gap-2 text-sm">
@@ -418,9 +425,7 @@ export default function DeckReviewIndex() {
           )}
         </div>
 
-        <div className="mt-3">
-          <DeckWorkspacePicker compact={Boolean(championName)} catalogByName={catalogByName} source="review" onLoad={loadWorkspace} />
-        </div>
+        {!championName && <div className="mt-3"><DeckWorkspacePicker catalogByName={catalogByName} source="review" onLoad={loadWorkspace} /></div>}
 
         {championName && (
           <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-ctp-surface1 pt-3 text-xs">

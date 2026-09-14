@@ -9,6 +9,8 @@ export function decklistToWorkspace(
   source: WorkspaceSource,
   format: DeckFormat = "STANDARD",
   suppliedChampionName: string | null = null,
+  title: string | null = null,
+  sourceLabel: string | null = null,
 ): Omit<DeckWorkspace, "version" | "updatedAt"> {
   let championName = suppliedChampionName;
   let spiritName: string | null = null;
@@ -21,6 +23,8 @@ export function decklistToWorkspace(
   const lines = (section: keyof OmnidexDecklist) => decklist[section].map(({ card: name, quantity }) => ({ name, quantity }));
   return {
     source,
+    title,
+    sourceLabel,
     format: format === "PANTHEON" ? "PANTHEON" : "STANDARD",
     championName,
     spiritName,

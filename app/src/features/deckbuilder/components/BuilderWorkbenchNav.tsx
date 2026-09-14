@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import type { DeckFormat } from "@gatcg/shared";
+import DeckToolWorkspaceHeader from "./DeckToolWorkspaceHeader";
 
 export type BuilderWorkbenchView = "build" | "tools" | "copy" | "log";
 
@@ -20,6 +21,8 @@ export default function BuilderWorkbenchNav({
   spiritName,
   deckFormat,
   mainTotal,
+  materialTotal,
+  sideboardTotal,
   validationStatus,
   changeLogCount,
 }: {
@@ -29,6 +32,8 @@ export default function BuilderWorkbenchNav({
   spiritName: string;
   deckFormat: DeckFormat;
   mainTotal: number;
+  materialTotal: number;
+  sideboardTotal: number;
   validationStatus: string;
   changeLogCount: number;
 }) {
@@ -44,19 +49,7 @@ export default function BuilderWorkbenchNav({
 
   return (
     <section data-component="BuilderWorkbenchNav" className="mt-5 overflow-hidden rounded-xl border border-ctp-surface1 bg-ctp-mantle">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-ctp-surface1 bg-ctp-base px-4 py-3">
-        <div className="min-w-0">
-          <p className="truncate text-sm font-semibold text-ctp-text">{championName} deck</p>
-          <p className="mt-0.5 truncate text-xs text-ctp-subtext0">{championName} · {spiritName} · {deckFormat === "PANTHEON" ? "Pantheon" : "Standard"}</p>
-        </div>
-        <div className="flex flex-wrap items-center gap-1.5 text-xs">
-          <span className={`rounded-full px-2 py-1 ${mainTotal >= 60 || deckFormat === "PANTHEON" && mainTotal > 0 ? "bg-ctp-green/10 text-ctp-green" : "bg-ctp-surface0 text-ctp-subtext1"}`}>{mainTotal} main</span>
-          <span className={`rounded-full px-2 py-1 ${finishComplete ? "bg-ctp-green/10 text-ctp-green" : "bg-ctp-yellow/10 text-ctp-yellow"}`}>{validationStatus}</span>
-          <span className="rounded-full bg-ctp-surface0 px-2 py-1 text-ctp-subtext1">Saved in this tab</span>
-          {mainTotal > 0 && <Link to="/deck-analysis" className="rounded-md border border-ctp-blue/50 px-2 py-1 font-medium text-ctp-blue hover:bg-ctp-blue/10">Analyze deck</Link>}
-          {mainTotal > 0 && <Link to="/deck-review" className="rounded-md border border-ctp-surface1 px-2 py-1 font-medium text-ctp-subtext1 hover:text-ctp-text">Review suggestions</Link>}
-        </div>
-      </div>
+      <DeckToolWorkspaceHeader embedded activeTool="builder" championName={championName} spiritName={spiritName} format={deckFormat} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel="Guided Deck Builder" actions={<span className={`rounded-full px-2 py-1 ${finishComplete ? "bg-ctp-green/10 text-ctp-green" : "bg-ctp-yellow/10 text-ctp-yellow"}`}>{validationStatus}</span>} />
 
       <nav aria-label="Deck workflow" className="grid grid-cols-2 border-b border-ctp-surface1 sm:grid-cols-3">
         <Link to="/card-discovery" className="border-b-2 border-transparent px-3 py-3 text-left text-ctp-green hover:bg-ctp-surface0">

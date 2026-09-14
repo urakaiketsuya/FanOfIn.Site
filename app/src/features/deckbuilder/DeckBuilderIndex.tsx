@@ -900,6 +900,8 @@ export default function DeckBuilderIndex() {
     if (!championName || mainOnlyLines.length === 0) return;
     saveActiveDeckWorkspace(sessionStorage, {
       source: "builder",
+      title: championName ? `${championName} guided build` : null,
+      sourceLabel: "Guided Deck Builder",
       format: deckFormat,
       championName,
       spiritName: spiritFilter,
@@ -1213,6 +1215,8 @@ export default function DeckBuilderIndex() {
             spiritName={spiritFilter}
             deckFormat={deckFormat}
             mainTotal={mainTotal}
+            materialTotal={materialTotal}
+            sideboardTotal={sideboardTotal}
             validationStatus={validation.status}
             changeLogCount={changeLog.length}
           />
