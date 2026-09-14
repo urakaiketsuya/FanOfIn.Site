@@ -44,6 +44,7 @@ import Section from "../../components/ui/Section";
 import { InlineState, EmptyState } from "../../components/ui/ContentState";
 
 const MAX_TOP_DECKS_SHOWN = 5;
+const MAX_RECENT_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
 const MAX_CHAMPIONS_SHOWN = 8;
 /** Below this many decks, adjustedWinRate is shrunk close enough to a flat 50% to not be worth
@@ -77,9 +78,9 @@ type CardTab = "info" | "usedWith" | "synergy" | "similar" | "intent" | "decks" 
 
 const TABS: { key: CardTab; label: string }[] = [
   { key: "info", label: "Info" },
-  { key: "usedWith", label: "Most Used With" },
-  { key: "synergy", label: "Win-Rate Synergy" },
-  { key: "similar", label: "Same Effect Shape" },
+  { key: "usedWith", label: "Played With" },
+  { key: "synergy", label: "Synergy" },
+  { key: "similar", label: "Similar Effects" },
   { key: "intent", label: "Intent Cards" },
   { key: "decks", label: "Decks" },
   { key: "compare", label: "Compare" },
@@ -109,40 +110,22 @@ function Badge({ children, to }: { children: ReactNode; to?: string }) {
 function IntentMatchRow({ match, evidence }: { match: IntentMatch; evidence: PackageCandidateEvidence | undefined }) {
   const archetype = evidence?.archetypeSources?.[0];
   return (
-    <li className="flex flex-wrap items-center gap-1.5 text-sm">
-      <CardHoverPreview image={match.card.editions[0]?.image} alt={match.card.name}>
-        <Link to={`/cards/${match.card.slug}`} className="text-ctp-text hover:text-ctp-blue">
-          {match.card.name}
-        </Link>
-      </CardHoverPreview>
-      <span className="rounded-full border border-ctp-mauve/50 bg-ctp-mauve/10 px-1.5 text-[10px] font-medium text-ctp-mauve">
-        combo: {match.via}
-      </span>
-      {match.tier === "experimental" && (
-        <span
-          className="rounded-full border border-ctp-yellow px-1.5 text-[10px] text-ctp-yellow"
-          title="Broader trigger, not yet checked against the full card corpus"
-        >
-          experimental
+    <li className="group rounded-xl bg-ctp-surface0/70 transition-colors hover:bg-ctp-surface1/70">
+      <Link to={`/cards/${match.card.slug}`} className="flex min-h-20 items-center gap-3 p-2.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">
+        <CardHoverPreview image={match.card.editions[0]?.image} alt={match.card.name}>
+          <CardImage image={match.card.editions[0]?.image} alt="" className="h-16 w-12 shrink-0 rounded-md object-cover shadow-sm" />
+        </CardHoverPreview>
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-sm font-semibold text-ctp-text group-hover:text-ctp-blue">{match.card.name}</span>
+          <span className="mt-1 flex flex-wrap gap-1.5">
+            <span className="rounded-full bg-ctp-mauve/15 px-2 py-0.5 text-[10px] font-medium capitalize text-ctp-mauve">{match.via}</span>
+            {match.tier === "experimental" && <span className="rounded-full border border-ctp-yellow/60 px-2 py-0.5 text-[10px] text-ctp-yellow">Experimental</span>}
+            {evidence && <span className="rounded-full bg-ctp-green/15 px-2 py-0.5 text-[10px] font-medium text-ctp-green">{evidence.matchingDecks} decks</span>}
+          </span>
+          {archetype && <span className="mt-1 block truncate text-[10px] text-ctp-blue">{archetype.buildName}</span>}
         </span>
-      )}
-      {evidence && (
-        <span
-          className="rounded-full border border-ctp-green/50 bg-ctp-green/10 px-1.5 text-[10px] font-medium text-ctp-green"
-          title={`Also found together in ${evidence.matchingDecks} real tournament decks (${Math.round((evidence.confidence ?? 0) * 100)}% confidence)`}
-        >
-          {evidence.matchingDecks} decks
-        </span>
-      )}
-      {archetype && (
-        <Link
-          to={`/archetypes/${archetype.buildId}`}
-          className="rounded-full border border-ctp-blue/50 bg-ctp-blue/10 px-1.5 text-[10px] font-medium text-ctp-blue hover:bg-ctp-blue/20"
-          title={`Seen together in the ${archetype.buildName} build`}
-        >
-          {archetype.buildName}
-        </Link>
-      )}
+        <span aria-hidden="true" className="text-lg text-ctp-overlay1 transition-transform group-hover:translate-x-0.5 group-hover:text-ctp-blue">›</span>
+      </Link>
     </li>
   );
 }
@@ -150,14 +133,22 @@ function IntentMatchRow({ match, evidence }: { match: IntentMatch; evidence: Pac
 function Stat({ label, value, icon }: { label: string; value: number | string | null; icon?: ReactNode }) {
   if (value === null) return null;
   return (
-    <div className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-center">
-      <div className="flex items-center justify-center gap-1 text-xs text-ctp-subtext0">
+    <div className="min-w-20 rounded-xl bg-ctp-surface1/70 px-4 py-2.5 text-center">
+      <div className="flex items-center justify-center gap-1 text-[11px] font-medium uppercase tracking-wide text-ctp-subtext0">
         {icon}
         {label}
       </div>
-      <div className="font-semibold text-ctp-text">{value}</div>
+      <div className="mt-0.5 text-xl font-bold leading-none text-ctp-text">{value}</div>
     </div>
   );
+}
+
+function Metric({ label, value, detail, tone = "default" }: { label: string; value: string | number; detail: string; tone?: "default" | "success" }) {
+  return <div className={`rounded-xl p-4 ${tone === "success" ? "bg-ctp-green/10" : "bg-ctp-surface0"}`}>
+    <p className="text-[11px] font-semibold uppercase tracking-wide text-ctp-subtext0">{label}</p>
+    <p className={`mt-1 text-2xl font-bold ${tone === "success" ? "text-ctp-green" : "text-ctp-text"}`}>{value}</p>
+    <p className="mt-0.5 text-xs text-ctp-subtext0">{detail}</p>
+  </div>;
 }
 
 export default function CardDetail() {
@@ -305,11 +296,34 @@ export default function CardDetail() {
         player: e.player,
         eventId: e.eventId,
         eventName: eventNameById.get(e.eventId) ?? `Event #${e.eventId}`,
+        eventDate: e.eventDate,
         placement: e.placement,
         wins: e.wins,
         losses: e.losses,
         ties: e.ties,
         underplaced: e.underplaced,
+        deckHash: e.deckHash,
+      }));
+  }, [popularityIndexData, deckIdSet, eventNameById]);
+
+  const recentDecks = useMemo(() => {
+    if (!popularityIndexData) return [];
+    return popularityIndexData.entries
+      .filter((entry) => deckIdSet.has(entry.deckId))
+      .sort((a, b) => b.eventDate.localeCompare(a.eventDate) || b.weightedScore - a.weightedScore)
+      .slice(0, MAX_RECENT_DECKS_SHOWN)
+      .map((entry) => ({
+        deckId: entry.deckId,
+        player: entry.player,
+        eventId: entry.eventId,
+        eventName: eventNameById.get(entry.eventId) ?? `Event #${entry.eventId}`,
+        eventDate: entry.eventDate,
+        placement: entry.placement,
+        wins: entry.wins,
+        losses: entry.losses,
+        ties: entry.ties,
+        underplaced: entry.underplaced,
+        deckHash: entry.deckHash,
       }));
   }, [popularityIndexData, deckIdSet, eventNameById]);
 
@@ -375,10 +389,11 @@ export default function CardDetail() {
         &larr; Back to Cards
       </Link>
 
-      <div className="mt-4 grid grid-cols-1 gap-8 md:grid-cols-[280px_1fr]">
-        <div>
+      <Panel elevation={1} padding="lg" className="mt-4 overflow-hidden">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-[280px_1fr]">
+        <div className="mx-auto w-full max-w-[280px] md:mx-0">
           {edition ? (
-            <CardImage image={edition.image} alt={card.name} className="aspect-[5/7] w-full rounded-lg border border-ctp-surface1 object-cover" />
+            <CardImage image={edition.image} alt={card.name} className="aspect-[5/7] w-full rounded-xl border border-ctp-surface2 object-cover shadow-xl shadow-black/30" />
           ) : (
             <div className="flex aspect-[5/7] items-center justify-center rounded-lg border border-ctp-surface1 bg-ctp-mantle text-ctp-subtext0">
               No image
@@ -425,8 +440,8 @@ export default function CardDetail() {
           )}
         </div>
 
-        <div>
-          <h1 className="text-3xl font-bold text-ctp-blue">{card.name}</h1>
+        <div className="min-w-0">
+          <h1 className="text-3xl font-bold tracking-tight text-ctp-blue sm:text-4xl">{card.name}</h1>
 
           <div className="mt-2 flex flex-wrap gap-1.5">
             {card.classes.map((c) => (
@@ -454,7 +469,7 @@ export default function CardDetail() {
             ))}
           </div>
 
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-5 flex flex-wrap gap-2">
             <Stat label="Memory" value={card.cost_memory} icon={<CostIcon kind="memory" size={12} />} />
             <Stat label="Reserve" value={card.cost_reserve} icon={<CostIcon kind="reserve" size={12} />} />
             <Stat label="Level" value={card.level} />
@@ -463,17 +478,19 @@ export default function CardDetail() {
             <Stat label="Durability" value={card.durability} />
           </div>
 
-          {card.effect && (
-            <p className="mt-4 whitespace-pre-wrap text-sm text-ctp-text">{card.effect.replace(/\*\*/g, "")}</p>
-          )}
+          {card.effect && <div className="mt-5 rounded-xl bg-ctp-base/55 p-4 text-sm leading-relaxed text-ctp-text"><p className="whitespace-pre-wrap">{card.effect.replace(/\*\*/g, "")}</p></div>}
           {card.flavor && <p className="mt-3 text-sm text-ctp-subtext0 italic">{card.flavor}</p>}
 
           {price && (
-            <div className="mt-4">
-              <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
-                TCGplayer price ({edition?.set.name})
-              </h2>
-              <div className="mt-1 flex flex-wrap gap-4 text-sm">
+            <div className="mt-5 rounded-xl border border-ctp-surface2/70 bg-ctp-base/45 p-4">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Market price</h2>
+                  <p className="mt-0.5 text-xs text-ctp-subtext0">{edition?.set.name}</p>
+                </div>
+                <a href={price.tcgplayerUrl} target="_blank" rel="noreferrer" className="rounded-full px-3 py-1.5 text-xs font-semibold text-ctp-blue hover:bg-ctp-blue/10">View on TCGplayer ↗</a>
+              </div>
+              <div className="mt-3 flex flex-wrap gap-6 text-sm">
                 {price.normal && (
                   <span className="text-ctp-subtext1">
                     Normal: {formatUsd(price.normal.market)}
@@ -490,17 +507,9 @@ export default function CardDetail() {
                     )}
                   </span>
                 )}
-                <a
-                  href={price.tcgplayerUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-ctp-blue hover:underline"
-                >
-                  View on TCGplayer &rarr;
-                </a>
               </div>
               {priceSeries && (
-                <div className="mt-2 max-w-sm rounded-md border border-ctp-surface1 p-3">
+                <div className="mt-3 max-w-md rounded-lg bg-ctp-mantle/60 p-3">
                   <p className="text-xs text-ctp-subtext0">
                     {priceSeries.label} price, last {priceSeries.dated.length} weeks
                   </p>
@@ -516,25 +525,23 @@ export default function CardDetail() {
 
         </div>
       </div>
+      </Panel>
 
-      <div className="mt-4">
-        <Tabs tabs={TABS} active={tab} onChange={setTab} label="Card data" />
+      <div className="sticky top-0 z-20 -mx-2 mt-5 rounded-xl border border-ctp-surface1/70 bg-ctp-base/95 px-2 pt-1 shadow-md shadow-black/20 backdrop-blur">
+        <Tabs tabs={TABS} active={tab} onChange={setTab} label="Card data" variant="pill" />
       </div>
 
       {tab === "info" && (
         <>
           {cardStat && (
             <Section className="mt-4" heading="dense" title="Tournament usage">
-              <div className="mt-1 flex flex-wrap gap-4 text-sm text-ctp-subtext1">
-                <span>
-                  {cardStat.deckCount} decks across {cardStat.eventCount} events
-                </span>
-                <span>{(cardStat.avgWinRate * 100).toFixed(0)}% avg win rate</span>
-                <span>{(cardStat.adjustedWinRate * 100).toFixed(0)}% adjusted win rate</span>
-                {cardStat.recentDeckCount > cardStat.priorDeckCount && cardStat.priorDeckCount > 0 && (
-                  <span className="text-ctp-green">Trending up</span>
-                )}
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                <Metric label="Decks" value={cardStat.deckCount} detail="Tournament lists" />
+                <Metric label="Events" value={cardStat.eventCount} detail="Distinct events" />
+                <Metric label="Win rate" value={`${(cardStat.avgWinRate * 100).toFixed(0)}%`} detail="Raw results" />
+                <Metric label="Adjusted" value={`${(cardStat.adjustedWinRate * 100).toFixed(0)}%`} detail="Strength-adjusted" tone={cardStat.adjustedWinRate >= 0.5 ? "success" : "default"} />
               </div>
+              {cardStat.recentDeckCount > cardStat.priorDeckCount && cardStat.priorDeckCount > 0 && <p className="mt-2 inline-flex rounded-full bg-ctp-green/10 px-2.5 py-1 text-xs font-medium text-ctp-green">↗ Trending up</p>}
               {communityInclusion && (
                 <p className="mt-1 text-xs text-ctp-mauve">
                   {(communityInclusion.percentOfDecks * 100).toFixed(0)}% of community decks include this — popularity
@@ -802,12 +809,8 @@ export default function CardDetail() {
           title="Intent cards"
           description={
             <>
-              Cards designed to work with {card.name} — a shared token economy (e.g. summons/sacrifices a Powercell), a
-              tribal category {card.name} either belongs to or explicitly references as a cost or condition, Empower
-              feeding a Spell that deals damage scaled by your champion's level, or an explicit named reference to
-              another card's text. Most cards aren't part of one of these — an empty list here is normal, not a sign
-              anything's broken. A green deck count means the pairing is also confirmed by real tournament decks, not
-              just text; a blue tag names the specific archetype build that evidence came from.
+              Text-detected cards designed to enable or benefit from {card.name}. Relationship chips show why they
+              match; green deck counts add tournament evidence.
             </>
           }
         >
@@ -845,13 +848,13 @@ export default function CardDetail() {
               No text-detected token, tribal, Empower, or named-reference relationship for {card.name} yet.
             </InlineState>
           ) : (
-            <div className="mt-3 grid gap-6 sm:grid-cols-2">
+            <div className="mt-4 grid gap-6 lg:grid-cols-2">
               {visibleIntentFeeds.length > 0 && (
                 <div>
-                  <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
+                  <h3 className="mb-2 text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
                     Feeds ({visibleIntentFeeds.length})
                   </h3>
-                  <ul className="mt-2 space-y-1">
+                  <ul className="space-y-2">
                     {visibleIntentFeeds.map((m) => (
                       <IntentMatchRow key={`${m.card.uuid}-${m.via}`} match={m} evidence={intentPackageEvidence(m.card.name)} />
                     ))}
@@ -860,10 +863,10 @@ export default function CardDetail() {
               )}
               {visibleIntentPoweredBy.length > 0 && (
                 <div>
-                  <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
+                  <h3 className="mb-2 text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
                     Powered by ({visibleIntentPoweredBy.length})
                   </h3>
-                  <ul className="mt-2 space-y-1">
+                  <ul className="space-y-2">
                     {visibleIntentPoweredBy.map((m) => (
                       <IntentMatchRow key={`${m.card.uuid}-${m.via}`} match={m} evidence={intentPackageEvidence(m.card.name)} />
                     ))}
@@ -872,6 +875,19 @@ export default function CardDetail() {
               )}
             </div>
           )}
+        </Section>
+      )}
+
+      {tab === "decks" && recentDecks.length > 0 && (
+        <Section
+          className="mt-8"
+          heading="compact"
+          title="Recent decks"
+          description={`The latest recorded tournament decklists featuring ${card.name}.`}
+        >
+          <div className="mt-2">
+            <TopDecksList decks={recentDecks} playerName={playerName} />
+          </div>
         </Section>
       )}
 

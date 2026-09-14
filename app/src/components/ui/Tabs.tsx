@@ -2,7 +2,7 @@ import { useRef, type KeyboardEvent, type ReactNode } from "react";
 
 export interface TabOption<T extends string> { key: T; label: string }
 
-export default function Tabs<T extends string>({ tabs, active, onChange, label = "View", baseId }: { tabs: TabOption<T>[]; active: T; onChange: (tab: T) => void; label?: string; baseId?: string }) {
+export default function Tabs<T extends string>({ tabs, active, onChange, label = "View", baseId, variant = "underline" }: { tabs: TabOption<T>[]; active: T; onChange: (tab: T) => void; label?: string; baseId?: string; variant?: "underline" | "pill" }) {
   const tablistRef = useRef<HTMLDivElement>(null);
 
   // Roving-tabindex tabs per the WAI-ARIA pattern: only the active tab is in the tab order, and
@@ -27,7 +27,7 @@ export default function Tabs<T extends string>({ tabs, active, onChange, label =
   }
 
   return (
-    <div data-component="Tabs" ref={tablistRef} className="flex max-w-full gap-1 overflow-x-auto overscroll-x-contain scroll-smooth border-b border-ctp-surface1" role="tablist" aria-label={label}>
+    <div data-component="Tabs" ref={tablistRef} className={`flex max-w-full gap-1 overflow-x-auto overscroll-x-contain scroll-smooth ${variant === "underline" ? "border-b border-ctp-surface1" : ""}`} role="tablist" aria-label={label}>
       {tabs.map((tab, index) => {
         const selected = active === tab.key;
         return (
@@ -41,7 +41,9 @@ export default function Tabs<T extends string>({ tabs, active, onChange, label =
             tabIndex={selected ? 0 : -1}
             onClick={(event) => { onChange(tab.key); event.currentTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" }); }}
             onKeyDown={(e) => handleKeyDown(e, index)}
-            className={`shrink-0 border-b-2 px-3 py-2 text-sm font-medium transition-colors ${selected ? "border-ctp-blue text-ctp-blue" : "border-transparent text-ctp-subtext1 hover:border-ctp-surface2 hover:text-ctp-text"}`}
+            className={variant === "pill"
+              ? `mb-1 min-h-10 shrink-0 rounded-full px-3.5 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ctp-blue ${selected ? "bg-ctp-blue/15 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text"}`
+              : `shrink-0 border-b-2 px-3 py-2 text-sm font-medium transition-colors ${selected ? "border-ctp-blue text-ctp-blue" : "border-transparent text-ctp-subtext1 hover:border-ctp-surface2 hover:text-ctp-text"}`}
           >
             {tab.label}
           </button>

@@ -146,6 +146,25 @@ function experimentalSubtypeRegexes(s: string): RegExp[] {
 }
 
 /**
+ * Reveal effects sometimes name the eligible subtype only after the reveal itself ("reveal the
+ * top card. If that card is a Harmony or Melody card..."). They can also offer a subtype list
+ * ("reveal an Animal or Beast card from among them"), where the generic reveal regex above only
+ * sees the first member. These bounded shapes keep the reveal and its eligibility clause tied
+ * together while recognizing every subtype in the list.
+ */
+function revealsSubtypeChoice(effect: string, s: string): boolean {
+  const directChoice = new RegExp(
+    `\\breveal\\s+(?:a|an|\\d+)\\s+(?=[^.]{0,60}\\b${s}s?\\b${NOT_CHAMPION_QUALIFIED})[^.]{0,60}\\bcards?\\s+(?:from|among)\\b`,
+    "i",
+  );
+  const revealedTopCard = new RegExp(
+    `\\breveal\\s+the\\s+top\\s+card\\b[^.]{0,80}\\.\\s*if\\s+that\\s+card\\s+is\\s+(?=[^.]{0,60}\\b${s}s?\\b${NOT_CHAMPION_QUALIFIED})[^.]{0,60}\\bcards?(?:[,.]|$)`,
+    "i",
+  );
+  return directChoice.test(effect) || revealedTopCard.test(effect);
+}
+
+/**
  * Which of the given real subtype strings this card's own effect text sacrifices, requires
  * controlling, banishes from a zone, or (experimental tier) reveals/discards/returns from the
  * discard pile — e.g. "sacrifice a Chessman ally" or "control a Beast ally". Deliberately checked
@@ -161,7 +180,7 @@ export function extractConsumedSubtypes(card: Card, knownSubtypes: ReadonlySet<s
   const effect = card.effect ?? "";
   for (const subtype of knownSubtypes) {
     const s = escapeRegExp(subtype);
-    if (validatedSubtypeRegexes(s).some((re) => re.test(effect))) {
+    if (validatedSubtypeRegexes(s).some((re) => re.test(effect)) || revealsSubtypeChoice(effect, s)) {
       found.set(subtype, "validated");
     } else if (experimentalSubtypeRegexes(s).some((re) => re.test(effect))) {
       found.set(subtype, "experimental");

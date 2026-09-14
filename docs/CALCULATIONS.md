@@ -1199,6 +1199,13 @@ opt-in behind a checkbox naming the count and the risk, and are visually tagged 
 an experimental trigger to validated only after doing the same real-corpus check the original three
 got.
 
+Two tightly bounded reveal-choice forms are validated separately: a direct list followed by
+`card(s) from/among` (for example, “reveal an Animal or Beast card from among them”), and the
+two-clause top-card form “reveal the top card. If that card is a Harmony or Melody card.” Unlike the
+broader experimental reveal regex, these preserve the grammatical link between the revealed card
+and every eligible subtype in an `or` list; this is what lets Allen, Beast Beckoner surface both
+Harmony and Melody cards without treating an unrelated subtype later in the effect as a target.
+
 **Subtype normalization is non-destructive**: `normalizeSubtype` only lowercases — it does *not*
 strip a trailing "s" the way `normalizeTokenName` does. Subtypes have a canonical spelling straight
 from `card.subtypes` (a real API field), so there's nothing to unify the way token names (discovered
