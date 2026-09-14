@@ -127,6 +127,7 @@ export default function DeckReviewIndex() {
   }, [championName, spiritFilter, lockedCards, lockedSections, deckFormat]);
 
   const [tab, setTab] = useState<DeckReviewTab>("review");
+  const [deckSummaryOpen, setDeckSummaryOpen] = useState(true);
   const [spiritElement, setSpiritElement] = useState<string | null>(null);
   const [dismissedReviewCards, setDismissedReviewCards] = useState<Set<string>>(new Set());
   const [showProtectedCuts, setShowProtectedCuts] = useState(false);
@@ -450,16 +451,16 @@ export default function DeckReviewIndex() {
         <InlineState className="mt-6">Choose a Champion above (or paste a decklist) to see ranked suggestions.</InlineState>
       ) : (
         <div className="mt-4">
-          <Panel>
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <h2 className="text-sm font-semibold text-ctp-text">Your deck so far</h2>
+          <details open={deckSummaryOpen} onToggle={(event) => setDeckSummaryOpen(event.currentTarget.open)} className="group rounded-xl border border-ctp-surface1 bg-ctp-mantle">
+            <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-2 rounded-xl p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ctp-blue">
+              <span className="flex items-center gap-2 text-sm font-semibold text-ctp-text"><span aria-hidden="true" className="inline-block text-ctp-subtext0 transition-transform group-open:rotate-90">›</span>Your deck so far</span>
               <span className="text-xs text-ctp-subtext0">
                 {keptCount === 0
                   ? "Nothing accepted yet"
                   : `${mainTotal} main · ${materialTotal} material${sideboardTotal > 0 ? ` · ${sideboardTotal} sideboard` : ""} · ${formatUsd(totalPrice.sum + sideboardPrice.sum)}`}
               </span>
-            </div>
-            {keptCount === 0 ? (
+            </summary>
+            <div className="border-t border-ctp-surface1 p-4">{keptCount === 0 ? (
               <InlineState className="mt-2 text-sm">Nothing here yet — accept a suggestion below to start building.</InlineState>
             ) : (
               <div className="mt-2 space-y-4">
@@ -482,8 +483,8 @@ export default function DeckReviewIndex() {
                   </div>
                 )}
               </div>
-            )}
-          </Panel>
+            )}</div>
+          </details>
 
           <div className="mt-4">
             <Tabs
