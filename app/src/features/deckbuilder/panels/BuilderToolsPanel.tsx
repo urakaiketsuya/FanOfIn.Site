@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import type { Card, DeckFormat } from "@gatcg/shared";
 import HypergeometricCalculator from "../HypergeometricCalculator";
 import ResourceCurveReliability from "../ResourceCurveReliability";
+import ReserveSequencePressure from "../ReserveSequencePressure";
 import CopyClumpingRisk from "../CopyClumpingRisk";
 import SideboardImpact from "../SideboardImpact";
 import ConsistencyDashboard from "../ConsistencyDashboard";
@@ -230,6 +231,7 @@ export default function ToolsPanel({
       <ConsistencyDashboard mainLines={mainLines} materialLines={materialLines} sideboardLines={sideboardLines} catalogByName={catalogByName} synergyReadiness={synergyReadiness} />
       <HypergeometricCalculator mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
       <ResourceCurveReliability mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
+      <ReserveSequencePressure mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
       <CopyClumpingRisk mainLines={mainLines} materialLines={materialLines} catalogByName={catalogByName} />
       <SideboardImpact mainLines={mainLines} sideboardLines={sideboardLines} catalogByName={catalogByName} />
     </div>

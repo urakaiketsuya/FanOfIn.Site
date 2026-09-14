@@ -1,0 +1,34 @@
+import { useMemo, useState } from "react";
+import type { Card } from "@gatcg/shared";
+import Panel from "../../components/ui/Panel";
+import Section from "../../components/ui/Section";
+import { inferStartingHandSize } from "../../lib/turnToPlay";
+import { computeReserveSequence, type ReserveSequenceStep } from "./reserveSequence";
+
+const inputClass = "min-h-9 rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text";
+const percent = (value: number) => `${(value * 100).toFixed(1)}%`;
+
+export default function ReserveSequencePressure({ mainLines, materialLines, catalogByName }: { mainLines: { name: string; quantity: number }[]; materialLines: { name: string; quantity: number }[]; catalogByName: Map<string, Card>; }) {
+  const options = useMemo(() => mainLines.filter((line) => catalogByName.get(line.name)?.cost.type === "reserve"), [mainLines, catalogByName]);
+  const [steps, setSteps] = useState<ReserveSequenceStep[]>([]);
+  const startingHandSize = useMemo(() => inferStartingHandSize(materialLines, catalogByName), [materialLines, catalogByName]);
+  const result = useMemo(() => computeReserveSequence(mainLines, catalogByName, steps, startingHandSize), [mainLines, catalogByName, steps, startingHandSize]);
+  const delayed = useMemo(() => computeReserveSequence(mainLines, catalogByName, steps.map((step) => ({ ...step, turn: step.turn + 1 })), startingHandSize), [mainLines, catalogByName, steps, startingHandSize]);
+  const conditionalDiscounts = steps.filter((step) => /\bcosts?\s+\d+\s+less\b/i.test(catalogByName.get(step.name)?.effect ?? ""));
+  if (options.length === 0) return null;
+
+  function addStep(name: string) {
+    if (!name || steps.length >= 4) return;
+    const cost = Math.max(0, catalogByName.get(name)?.cost_reserve ?? 0);
+    const turn = Math.max(1, steps.length + 1, cost - startingHandSize + 1);
+    setSteps((current) => [...current, { name, turn }]);
+  }
+
+  return <Panel data-component="ReserveSequencePressure" className="mt-4 shadow-sm"><Section heading="dense" title="Reserve sequence pressure" description="Can your hand contain the selected plays by their deadlines and still pay their Reserve costs?"><div className="mt-3 flex flex-wrap items-end gap-2"><label className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Add a play<select defaultValue="" onChange={(event) => { addStep(event.target.value); event.target.value = ""; }} className={`mt-1 block max-w-72 ${inputClass}`}><option value="">Choose a card…</option>{options.map((line) => <option key={line.name} value={line.name}>{line.name} · R{catalogByName.get(line.name)?.cost_reserve ?? 0} · {line.quantity}×</option>)}</select></label><span className="pb-2 text-[10px] text-ctp-subtext0">Up to four cards; repeat a name to require another copy.</span></div>
+  {steps.length === 0 ? <p className="mt-3 rounded-lg border border-dashed border-ctp-surface1 p-4 text-center text-xs text-ctp-subtext0">Add cards in the order you want to play them.</p> : <><div className="mt-3 space-y-2">{steps.map((step, index) => { const card = catalogByName.get(step.name); return <div key={`${step.name}-${index}`} className="grid grid-cols-[1fr_5rem_auto] items-center gap-2 rounded-lg border border-ctp-surface1 bg-ctp-base/35 p-2"><div className="min-w-0"><div className="truncate text-xs font-medium text-ctp-text">{index + 1}. {step.name}</div><div className="text-[10px] text-ctp-subtext0">Reserve {card?.cost_reserve ?? 0}</div></div><label className="text-[10px] text-ctp-subtext0">Turn<input type="number" min={1} max={20} value={step.turn} onChange={(event) => setSteps((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, turn: Math.max(1, Math.min(20, Math.round(Number(event.target.value) || 1))) } : item))} className={`mt-1 w-full ${inputClass}`} /></label><button type="button" onClick={() => setSteps((current) => current.filter((_, itemIndex) => itemIndex !== index))} className="rounded px-2 py-1 text-xs text-ctp-subtext0 hover:text-ctp-red">Remove</button></div>; })}</div>
+  <div className="mt-3 grid gap-2 sm:grid-cols-3"><Metric label="Drawn by deadlines" value={percent(result.probability)} /><Metric label="Sequence playable" value={percent(result.playableProbability)} tone={result.feasible ? "good" : "warn"} /><Metric label="Delay every play 1 turn" value={percent(delayed.playableProbability)} detail={`${((delayed.playableProbability - result.playableProbability) * 100).toFixed(1)} pt change`} tone="good" /></div>
+  <div className="mt-3 overflow-x-auto"><table className="w-full min-w-[34rem] text-left text-xs"><thead className="text-[10px] uppercase tracking-wide text-ctp-subtext0"><tr><th className="pb-2">Turn</th><th className="pb-2">Plays</th><th className="pb-2">Reserve</th><th className="pb-2">Hand ceiling</th><th className="pb-2">Cards needed</th><th className="pb-2">Pressure</th></tr></thead><tbody>{result.pressure.map((point) => <tr key={point.turn} className="border-t border-ctp-surface1"><td className="py-2 font-semibold text-ctp-text">T{point.turn}</td><td className="max-w-64 py-2 text-ctp-subtext1">{point.cards.join(" + ")}</td><td className="py-2 tabular-nums text-ctp-subtext1">{point.reserveCost}</td><td className="py-2 tabular-nums text-ctp-subtext1">{point.handCeiling}</td><td className="py-2 tabular-nums text-ctp-subtext1">{point.cardsNeeded}</td><td className={`py-2 font-medium ${point.margin >= 0 ? "text-ctp-green" : "text-ctp-red"}`}>{point.margin >= 0 ? `${point.margin} spare` : `${Math.abs(point.margin)} short`}{point.floatingPotential > 0 ? ` · up to ${point.floatingPotential} FM` : ""}</td></tr>)}</tbody></table></div>
+  {conditionalDiscounts.length > 0 && <p className="mt-2 text-[10px] text-ctp-yellow">Conditional discounts excluded: {[...new Set(conditionalDiscounts.map((step) => step.name))].join(", ")}.</p>}<p className="mt-2 text-[10px] leading-4 text-ctp-subtext0">Exact deadline draw odds; no mulligan. Hand ceiling starts at {startingHandSize}, adds one normal draw each turn, subtracts earlier selected plays, and assumes no other cards are spent. Cards paid into memory are available again on a later turn. Printed Floating Memory is shown only as potential relief and is not applied because the card may not be in the graveyard or its condition may be inactive.</p></>}</Section></Panel>;
+}
+
+function Metric({ label, value, detail, tone }: { label: string; value: string; detail?: string; tone?: "good" | "warn"; }) { return <div className="rounded-lg border border-ctp-surface1 bg-ctp-base/35 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">{label}</div><div className={`font-semibold tabular-nums ${tone === "good" ? "text-ctp-teal" : tone === "warn" ? "text-ctp-red" : "text-ctp-text"}`}>{value}</div>{detail && <div className="text-[10px] text-ctp-subtext0">{detail}</div>}</div>; }

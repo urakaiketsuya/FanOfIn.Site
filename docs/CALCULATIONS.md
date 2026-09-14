@@ -1466,6 +1466,27 @@ availability diagnostic, not a full sequencing simulation: it does not assert th
 were played, reserve was preserved, a required champion level was reached, or a board-state clause
 is satisfied.
 
+### Reserve sequence pressure (`features/deckbuilder/reserveSequence.ts`)
+
+The sequence tool accepts up to four Main Deck plays and an assigned turn for each. A small
+without-replacement state calculation tracks each selected card name through the inferred opening
+hand and subsequent one-card-per-turn draws, discarding probability states that fail a card's
+deadline. Repeating a name requires another physical copy. This produces the exact probability of
+drawing the whole selected sequence by its staggered deadlines.
+
+Reserve feasibility is kept separate from draw probability. Before each selected turn, the
+conservative hand ceiling is `starting hand + turns elapsed - earlier selected cards played`.
+Cards needed that turn are `sum of printed Reserve costs + number of selected cards activated`.
+Reserve cards paid into memory are not permanently subtracted across turns, reflecting their return
+on a later recollection; other real-game spending is excluded, so the result remains a ceiling. If
+any turn is short, “sequence playable” is zero even when the necessary named cards could be drawn.
+The comparison shifts every selected play one turn later and reruns both tests.
+
+Printed Floating Memory on an earlier selected Action is shown as potential relief but never
+applied to the total, because a static list cannot prove that card reached the graveyard or that a
+qualifier is active. Printed `cost N less` clauses are flagged and likewise excluded. Draw effects,
+discard, opponent effects, level requirements, and board-state conditions are not simulated.
+
 ### Copy clumping (`features/deckbuilder/CopyClumpingRisk.tsx`)
 
 For every Main Deck card with at least two copies, this calculates the exact hypergeometric chance
