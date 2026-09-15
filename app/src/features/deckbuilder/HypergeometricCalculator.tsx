@@ -106,7 +106,6 @@ export default function HypergeometricCalculator({
   });
   const [nextGroupId, setNextGroupId] = useState((initialRecipe?.length ?? 2) + 1);
   const [activeRecipePicker, setActiveRecipePicker] = useState<number | null>(null);
-  const [activeAvoidPicker, setActiveAvoidPicker] = useState<number | null>(null);
   const [recipeSearch, setRecipeSearch] = useState("");
   const [pendingRecipeSuggestion, setPendingRecipeSuggestion] = useState<string | null>(null);
   const [recipeCutCard, setRecipeCutCard] = useState("");
@@ -196,19 +195,6 @@ export default function HypergeometricCalculator({
     setActiveRecipePicker(null);
   }
 
-  function addAvoidSelection(groupId: number, option: RecipePickerOption) {
-    setRecipeGroups((groups) => groups.map((group) => {
-      if (group.id !== groupId) return group;
-      if (option.kind === "cards") {
-        const cards = group.avoid?.kind === "cards" ? group.avoid.cards : [];
-        return { ...group, avoid: { kind: "cards", value: "", maximum: group.avoid?.maximum ?? 0, cards: cards.includes(option.value) ? cards : [...cards, option.value] } };
-      }
-      return { ...group, avoid: { kind: option.kind, value: option.value, cards: [], maximum: group.avoid?.maximum ?? 0 } };
-    }));
-    setRecipeSearch("");
-    setActiveAvoidPicker(null);
-  }
-
   function clearRecipeSelection(groupId: number) {
     setRecipeGroups((groups) => groups.map((group) => group.id !== groupId ? group : {
       ...group,
@@ -230,6 +216,26 @@ export default function HypergeometricCalculator({
       if (group.id !== groupId || group.avoid?.kind !== "cards") return group;
       const cards = group.avoid.cards.filter((name) => name !== cardName);
       return { ...group, avoid: cards.length ? { ...group.avoid, cards } : null };
+    }));
+  }
+
+  function toggleSelectionAvoided(groupId: number, value: string, avoided: boolean) {
+    setRecipeGroups((groups) => groups.map((group) => {
+      if (group.id !== groupId) return group;
+      if (avoided) {
+        if (group.kind === "cards") {
+          const avoidCards = group.avoid?.kind === "cards" ? group.avoid.cards : [];
+          return { ...group, cards: group.cards.filter((name) => name !== value), avoid: { kind: "cards", cards: avoidCards.includes(value) ? avoidCards : [...avoidCards, value], value: "", maximum: group.avoid?.maximum ?? 0 } };
+        }
+        return { ...group, kind: "cards", cards: [], value: "", avoid: { kind: group.kind, cards: [], value: group.value, maximum: group.avoid?.maximum ?? 0 } };
+      }
+      if (!group.avoid) return group;
+      if (group.avoid.kind === "cards") {
+        const remaining = group.avoid.cards.filter((name) => name !== value);
+        const wantedCards = group.kind === "cards" ? group.cards : [];
+        return { ...group, kind: "cards", cards: wantedCards.includes(value) ? wantedCards : [...wantedCards, value], value: "", avoid: remaining.length ? { ...group.avoid, cards: remaining } : null };
+      }
+      return { ...group, kind: group.avoid.kind, cards: [], value: group.avoid.value, avoid: null };
     }));
   }
 
@@ -333,7 +339,6 @@ export default function HypergeometricCalculator({
           const selectedLabels = group.kind === "cards" ? group.cards.map((name) => ({ value: name, label: name })) : group.value ? [{ value: group.value, label: recipePickerOptions.find((option) => option.kind === group.kind && option.value === group.value)?.label ?? group.value }] : [];
           const avoidSelectedLabels = group.avoid?.kind === "cards" ? group.avoid.cards.map((name) => ({ value: name, label: name })) : group.avoid?.value ? [{ value: group.avoid.value, label: recipePickerOptions.find((option) => option.kind === group.avoid?.kind && option.value === group.avoid?.value)?.label ?? group.avoid.value }] : [];
           const filteredOptions = recipePickerOptions.filter((option) => option.label.toLowerCase().includes(recipeSearch.trim().toLowerCase()) && !(group.kind === "cards" && option.kind === "cards" && group.cards.includes(option.value)));
-          const filteredAvoidOptions = recipePickerOptions.filter((option) => option.label.toLowerCase().includes(recipeSearch.trim().toLowerCase()) && !(group.avoid?.kind === "cards" && option.kind === "cards" && group.avoid.cards.includes(option.value)));
           const pieceName = selectedLabels.length
             ? `${group.required}× ${selectedLabels.length > 1 ? "Any of " : ""}${selectedLabels.map((selection) => selection.label).join(" or ")}`
             : "Choose a card or group";
@@ -349,32 +354,33 @@ export default function HypergeometricCalculator({
                       const selectionLabel = group.kind === "cards" && selectedLabels.length > 1 ? selection.label : pieceName;
                       return <span key={selection.value} className="inline-flex max-w-full items-center rounded-full border border-ctp-mauve/40 bg-ctp-mauve/10 pl-3 text-sm font-semibold text-ctp-text shadow-sm">
                         <span className="truncate py-1.5">{selectionLabel}</span>
+                        <button type="button" aria-label={`Avoid ${selection.label}`} onClick={() => toggleSelectionAvoided(group.id, selection.value, true)} className="ml-1 min-h-8 rounded-full px-2 text-[10px] font-bold uppercase tracking-wide text-ctp-subtext0 transition-colors hover:bg-ctp-red/10 hover:text-ctp-red">Avoid</button>
                         <button type="button" aria-label={`Remove ${selection.label}`} onClick={() => group.kind === "cards" ? removeRecipeCard(group.id, selection.value) : clearRecipeSelection(group.id)} className="ml-1 inline-flex min-h-9 min-w-9 shrink-0 items-center justify-center rounded-full text-lg leading-none text-ctp-subtext0 transition-colors hover:bg-ctp-mauve/15 hover:text-ctp-red focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-mauve/50">×</button>
                       </span>;
                     })}
                   </div> : <p className="text-sm font-semibold text-ctp-subtext0">{pieceName}</p>}
                   <p className={`mt-1 text-[10px] ${matches.length ? "text-ctp-subtext0" : "text-ctp-yellow"}`}>{matches.length ? `${probabilityGroups[groupIndex].copies} matching copies across ${matches.length} card${matches.length === 1 ? "" : "s"}` : "No piece selected yet."}</p>
                 </div>
-                <button type="button" onClick={() => { setActiveAvoidPicker(null); setActiveRecipePicker(activeRecipePicker === group.id ? null : group.id); setRecipeSearch(""); }} className="min-h-10 shrink-0 px-2 text-xs font-semibold text-ctp-blue">
+                <button type="button" onClick={() => { setActiveRecipePicker(activeRecipePicker === group.id ? null : group.id); setRecipeSearch(""); }} className="min-h-10 shrink-0 px-2 text-xs font-semibold text-ctp-blue">
                   Add
                 </button>
               </div>
 
-              <div className="mt-3 rounded-lg border border-ctp-surface1 bg-ctp-base/45 p-2.5">
+              {avoidSelectedLabels.length > 0 && <div className="mt-3 rounded-lg border border-ctp-red/30 bg-ctp-red/5 p-2.5">
                 <div className="flex flex-wrap items-center gap-1.5">
                   <span className="mr-1 text-[10px] font-bold uppercase tracking-wide text-ctp-red">Avoid</span>
                   {avoidSelectedLabels.map((selection) => <span key={selection.value} className="inline-flex max-w-full items-center rounded-full border border-ctp-red/40 bg-ctp-red/10 pl-2.5 text-xs font-medium text-ctp-text">
                     <span className="truncate py-1.5">{selection.label}</span>
+                    <button type="button" aria-label={`Want ${selection.label}`} onClick={() => toggleSelectionAvoided(group.id, selection.value, false)} className="ml-1 min-h-8 rounded-full px-2 text-[10px] font-bold uppercase tracking-wide text-ctp-subtext0 hover:bg-ctp-mauve/10 hover:text-ctp-mauve">Want</button>
                     <button type="button" aria-label={`Remove avoided ${selection.label}`} onClick={() => group.avoid?.kind === "cards" ? removeAvoidCard(group.id, selection.value) : setRecipeGroups((groups) => groups.map((candidate) => candidate.id === group.id ? { ...candidate, avoid: null } : candidate))} className="ml-1 inline-flex min-h-8 min-w-8 items-center justify-center rounded-full text-base text-ctp-subtext0 hover:bg-ctp-red/15 hover:text-ctp-red">×</button>
                   </span>)}
-                  <button type="button" onClick={() => { setActiveRecipePicker(null); setActiveAvoidPicker(activeAvoidPicker === group.id ? null : group.id); setRecipeSearch(""); }} className="min-h-9 rounded-full border border-dashed border-ctp-red/50 px-2.5 text-xs font-semibold text-ctp-red hover:bg-ctp-red/10">+ {avoidSelectedLabels.length ? "Add" : "Add condition"}</button>
                 </div>
-                {avoidSelectedLabels.length > 0 && <label className="mt-2 flex items-center justify-between gap-3 text-[10px] text-ctp-subtext0">Maximum allowed
+                <label className="mt-2 flex items-center justify-between gap-3 text-[10px] text-ctp-subtext0">Maximum allowed
                   <select value={group.avoid?.maximum ?? 0} onChange={(event) => setRecipeGroups((groups) => groups.map((candidate) => candidate.id === group.id && candidate.avoid ? { ...candidate, avoid: { ...candidate.avoid, maximum: Number(event.target.value) } } : candidate))} className="min-h-9 rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 text-xs text-ctp-text">
                     {[0, 1, 2, 3].map((maximum) => <option key={maximum} value={maximum}>{maximum}</option>)}
                   </select>
-                </label>}
-              </div>
+                </label>
+              </div>}
 
               <div className="mt-3 grid grid-cols-2 gap-2 border-t border-ctp-surface1 pt-3">
                 <label className="text-[10px] text-ctp-subtext0">
@@ -395,7 +401,6 @@ export default function HypergeometricCalculator({
               </div>
 
               {activeRecipePicker === group.id && <div className="absolute z-20 mt-2 w-[min(34rem,calc(100%-1.5rem))] rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><input autoFocus type="search" value={recipeSearch} onChange={(event) => setRecipeSearch(event.target.value)} placeholder="Search cards, Fractal, Ally, Reservable…" className="block min-h-10 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text focus:border-ctp-blue focus:outline-none" /><div className="mt-2 max-h-64 overflow-y-auto">{filteredOptions.length ? (["Types and subtypes", "Keywords", "Cards"] as const).map((optionGroup) => { const options = filteredOptions.filter((option) => option.group === optionGroup).slice(0, optionGroup === "Cards" ? 30 : 15); return options.length ? <div key={optionGroup}><p className="px-2 pb-1 pt-2 text-[9px] font-bold uppercase tracking-wide text-ctp-subtext0">{optionGroup}</p>{options.map((option) => <button key={`${option.kind}:${option.value}`} type="button" onClick={() => addRecipeSelection(group.id, option)} className="flex w-full items-center justify-between rounded-md px-2 py-2 text-left text-xs text-ctp-text hover:bg-ctp-surface0"><span>{option.label}</span><span className="text-[10px] text-ctp-subtext0">{option.copies} {option.copies === 1 ? "copy" : "copies"}</span></button>)}</div> : null; }) : <p className="px-2 py-4 text-center text-xs text-ctp-subtext0">No matches in this Main Deck.</p>}</div><button type="button" onClick={() => setActiveRecipePicker(null)} className="mt-2 w-full rounded-md border border-ctp-surface1 py-1.5 text-xs text-ctp-subtext1">Done</button></div>}
-              {activeAvoidPicker === group.id && <div className="absolute z-20 mt-2 w-[min(34rem,calc(100%-1.5rem))] rounded-xl border border-ctp-red/40 bg-ctp-base p-2 shadow-xl"><input autoFocus type="search" value={recipeSearch} onChange={(event) => setRecipeSearch(event.target.value)} placeholder="Search for a card or group to avoid…" className="block min-h-10 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text focus:border-ctp-red focus:outline-none" /><div className="mt-2 max-h-64 overflow-y-auto">{filteredAvoidOptions.length ? (["Types and subtypes", "Keywords", "Cards"] as const).map((optionGroup) => { const options = filteredAvoidOptions.filter((option) => option.group === optionGroup).slice(0, optionGroup === "Cards" ? 30 : 15); return options.length ? <div key={optionGroup}><p className="px-2 pb-1 pt-2 text-[9px] font-bold uppercase tracking-wide text-ctp-subtext0">{optionGroup}</p>{options.map((option) => <button key={`${option.kind}:${option.value}`} type="button" onClick={() => addAvoidSelection(group.id, option)} className="flex w-full items-center justify-between rounded-md px-2 py-2 text-left text-xs text-ctp-text hover:bg-ctp-surface0"><span>{option.label}</span><span className="text-[10px] text-ctp-subtext0">{option.copies} {option.copies === 1 ? "copy" : "copies"}</span></button>)}</div> : null; }) : <p className="px-2 py-4 text-center text-xs text-ctp-subtext0">No matches in this Main Deck.</p>}</div><button type="button" onClick={() => setActiveAvoidPicker(null)} className="mt-2 w-full rounded-md border border-ctp-surface1 py-1.5 text-xs text-ctp-subtext1">Done</button></div>}
               {recipeGroups.length > 2 && <button type="button" onClick={() => setRecipeGroups((groups) => groups.filter((candidate) => candidate.id !== group.id))} className="mt-3 text-[10px] text-ctp-subtext0 hover:text-ctp-red">Remove piece</button>}
             </div>
           </div>;

@@ -16,6 +16,7 @@ import { getCardPackageMembership } from "../deckbuilder/packageGuardrails";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
 import { InlineState } from "../../components/ui/ContentState";
+import { useCardCatalog } from "./useCardCatalog";
 
 type SortMode = "usage" | "adjusted" | "raw" | "hot" | "hype";
 
@@ -33,6 +34,8 @@ const PAGE_SIZE = 50;
 export default function CardStatsIndex() {
   useDocumentTitle("Card Stats", "Card usage and win-rate stats across ranked Grand Archive TCG tournaments.");
   const cardStatsData = useCardStatsData();
+  const cardCatalog = useCardCatalog();
+  const searchableTextByName = useMemo(() => new Map(cardCatalog.map((card) => [card.name, `${card.name} ${card.effect ?? ""}`.replace(/\*\*/g, "").toLowerCase()])), [cardCatalog]);
   const keywordStatsData = useKeywordStatsData();
   const compositionData = useCompositionWinRateData();
   const communityCardInclusion = useCommunityBlendedCardInclusion();
@@ -106,7 +109,7 @@ export default function CardStatsIndex() {
     if (!cardStatsData) return [];
     const source = category ? (cardStatsData.byCategory[category] ?? []) : cardStatsData.cards;
     const query = search.trim().toLowerCase();
-    const filtered = source.filter((c) => c.deckCount >= minDecks && (query === "" || c.name.toLowerCase().includes(query)));
+    const filtered = source.filter((c) => c.deckCount >= minDecks && (query === "" || (searchableTextByName.get(c.name) ?? c.name.toLowerCase()).includes(query)));
     // "Hype gap" — community popularity minus tournament popularity, two different real
     // percentages of two different populations (brewers optimizing for fun/budget/theme vs
     // tournament players optimizing for winning), not a performance judgment. Community usage
@@ -133,7 +136,7 @@ export default function CardStatsIndex() {
           return b.deckCount - a.deckCount;
       }
     });
-  }, [cardStatsData, sortMode, minDecks, category, search, communityByName, totalTournamentDecks]);
+  }, [cardStatsData, sortMode, minDecks, category, search, searchableTextByName, communityByName, totalTournamentDecks]);
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
@@ -223,10 +226,10 @@ export default function CardStatsIndex() {
 
       <input
         type="text"
-        aria-label="Search by card name"
+        aria-label="Search by card name or effect text"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        placeholder="Search by card name…"
+        placeholder="Search by card name or effect text…"
         className="mt-4 w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
       />
 

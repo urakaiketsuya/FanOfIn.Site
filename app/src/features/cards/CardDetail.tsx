@@ -181,6 +181,7 @@ export default function CardDetail() {
   const priceHistoryData = usePriceHistoryData();
   const cardStatsData = useCardStatsData(tab === "info" || tab === "similar");
   const cardStat = cardStatsData?.cards.find((c) => c.name === card?.name);
+  const metaShare = cardStat && cardStatsData && cardStatsData.decksConsidered > 0 ? cardStat.deckCount / cardStatsData.decksConsidered : null;
   const communityCardInclusion = useCommunityBlendedCardInclusion("STANDARD", tab === "info");
   const communityInclusion = communityCardInclusion?.overall.find((c) => c.name === card?.name);
   const cardQuantityStatsData = useCardQuantityStatsData(tab === "info");
@@ -535,8 +536,9 @@ export default function CardDetail() {
         <>
           {cardStat && (
             <Section className="mt-4" heading="dense" title="Tournament usage">
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
                 <Metric label="Decks" value={cardStat.deckCount} detail="Tournament lists" />
+                {metaShare !== null && <Metric label="Meta share" value={`${(metaShare * 100).toFixed(1)}%`} detail="Tracked tournament decks" />}
                 <Metric label="Events" value={cardStat.eventCount} detail="Distinct events" />
                 <Metric label="Win rate" value={`${(cardStat.avgWinRate * 100).toFixed(0)}%`} detail="Raw results" />
                 <Metric label="Adjusted" value={`${(cardStat.adjustedWinRate * 100).toFixed(0)}%`} detail="Strength-adjusted" tone={cardStat.adjustedWinRate >= 0.5 ? "success" : "default"} />
