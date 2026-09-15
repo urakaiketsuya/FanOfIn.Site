@@ -25,7 +25,19 @@ function definition(value: unknown): ComboDefinition {
     const cards = item.cards.map((card) => cleanText(card, "Card name", 120, true));
     if (item.kind === "cards" && cards.length < 1) throw badRequest("Card requirements need at least one card");
     if (item.kind !== "cards" && !item.value.trim()) throw badRequest("Type and keyword requirements need a value");
-    return { kind: item.kind as "cards" | "attribute" | "keyword", cards, value: item.value.trim(), required: Number(item.required) };
+    const byTurn = item.byTurn === null || item.byTurn === undefined ? null : Number(item.byTurn);
+    if (byTurn !== null && (!Number.isInteger(byTurn) || byTurn < 1 || byTurn > 20)) throw badRequest("Invalid combo requirement deadline");
+    let avoid: ComboDefinition["requirements"][number]["avoid"] = null;
+    if (item.avoid !== null && item.avoid !== undefined) {
+      if (typeof item.avoid !== "object") throw badRequest("Invalid avoid condition");
+      const rawAvoid = item.avoid as Record<string, unknown>;
+      if (!( ["cards", "attribute", "keyword"] as unknown[]).includes(rawAvoid.kind) || !Array.isArray(rawAvoid.cards) || rawAvoid.cards.length > 24 || typeof rawAvoid.value !== "string" || rawAvoid.value.length > 80 || !Number.isInteger(rawAvoid.maximum) || Number(rawAvoid.maximum) < 0 || Number(rawAvoid.maximum) > 20) throw badRequest("Invalid avoid condition");
+      const avoidCards = rawAvoid.cards.map((card) => cleanText(card, "Avoided card name", 120, true));
+      if (rawAvoid.kind === "cards" && avoidCards.length < 1) throw badRequest("Avoid conditions need at least one card");
+      if (rawAvoid.kind !== "cards" && !rawAvoid.value.trim()) throw badRequest("Avoided type and keyword conditions need a value");
+      avoid = { kind: rawAvoid.kind as "cards" | "attribute" | "keyword", cards: avoidCards, value: rawAvoid.value.trim(), maximum: Number(rawAvoid.maximum) };
+    }
+    return { kind: item.kind as "cards" | "attribute" | "keyword", cards, value: item.value.trim(), required: Number(item.required), byTurn, avoid };
   });
   const damage = Number(raw.damage ?? 0);
   const targetTurn = raw.targetTurn === null || raw.targetTurn === undefined ? null : Number(raw.targetTurn);

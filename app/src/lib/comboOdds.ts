@@ -12,6 +12,13 @@ export interface ProbabilityRequirementGroup {
   required: number;
 }
 
+export interface TimedProbabilityRequirementGroup extends ProbabilityRequirementGroup {
+  /** Number of cards that may be seen before this requirement's deadline. */
+  seen: number;
+  /** Optional upper bound. Used by Avoid conditions; omitted means no upper bound. */
+  maximum?: number;
+}
+
 function choose(n: number, k: number): number {
   if (k < 0 || k > n) return 0;
   const smaller = Math.min(k, n - k);
@@ -51,6 +58,67 @@ export function probabilityOfRecipe(deckSize: number, groups: ProbabilityRequire
   };
   visit(0, 0, 1);
   return Math.max(0, Math.min(1, successfulWays / denominator));
+}
+
+/**
+ * Exact probability for disjoint requirements that may have different access deadlines. The deck
+ * is exposed one card at a time; when a group's deadline passes, its successful states are folded
+ * into the undifferentiated remainder of the library. This preserves the dependency between groups
+ * without treating their individual odds as independent.
+ */
+export function probabilityOfTimedRecipe(deckSize: number, groups: TimedProbabilityRequirementGroup[]): number {
+  const n = Math.max(0, Math.floor(deckSize));
+  if (n === 0 || groups.length === 0) return 0;
+  const normalized = groups.map((group) => ({
+    copies: Math.max(0, Math.floor(group.copies)),
+    required: Math.max(0, Math.floor(group.required)),
+    maximum: group.maximum == null ? Number.POSITIVE_INFINITY : Math.max(0, Math.floor(group.maximum)),
+    seen: Math.max(0, Math.min(n, Math.floor(group.seen))),
+  }));
+  if (normalized.reduce((sum, group) => sum + group.copies, 0) > n || normalized.some((group) => group.copies < group.required || group.seen < group.required || group.maximum < group.required)) return 0;
+
+  const lastDraw = Math.max(...normalized.map((group) => group.seen));
+  let states = new Map<string, { counts: number[]; probability: number }>([[normalized.map(() => 0).join(","), { counts: normalized.map(() => 0), probability: 1 }]]);
+  for (let draw = 1; draw <= lastDraw; draw++) {
+    const remainingCards = n - draw + 1;
+    const next = new Map<string, { counts: number[]; probability: number }>();
+    const add = (counts: number[], probability: number) => {
+      const key = counts.join(",");
+      const prior = next.get(key);
+      next.set(key, { counts, probability: (prior?.probability ?? 0) + probability });
+    };
+    for (const state of states.values()) {
+      let explicitRemaining = 0;
+      for (let index = 0; index < normalized.length; index++) if (normalized[index].seen >= draw) explicitRemaining += normalized[index].copies - state.counts[index];
+      const otherRemaining = remainingCards - explicitRemaining;
+      if (otherRemaining > 0) add([...state.counts], state.probability * otherRemaining / remainingCards);
+      for (let index = 0; index < normalized.length; index++) {
+        const group = normalized[index];
+        if (group.seen < draw) continue;
+        const available = group.copies - state.counts[index];
+        if (available <= 0) continue;
+        const counts = [...state.counts];
+        counts[index]++;
+        add(counts, state.probability * available / remainingCards);
+      }
+    }
+    states = new Map();
+    for (const state of next.values()) {
+      let valid = true;
+      const counts = [...state.counts];
+      for (let index = 0; index < normalized.length; index++) {
+        const group = normalized[index];
+        if (group.seen !== draw) continue;
+        if (counts[index] < group.required || counts[index] > group.maximum) { valid = false; break; }
+        counts[index] = group.required;
+      }
+      if (!valid) continue;
+      const key = counts.join(",");
+      const prior = states.get(key);
+      states.set(key, { counts, probability: (prior?.probability ?? 0) + state.probability });
+    }
+  }
+  return Math.max(0, Math.min(1, [...states.values()].reduce((sum, state) => sum + state.probability, 0)));
 }
 
 /** First number of cards seen at which a recipe reaches the requested consistency target. */

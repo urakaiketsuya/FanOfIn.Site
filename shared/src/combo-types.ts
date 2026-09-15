@@ -3,11 +3,23 @@ import type { DeckFormat } from "./shoutatyourdecks-types.js";
 export type ComboVisibility = "private" | "unlisted" | "public";
 export type ComboGoal = "level" | "lethal" | "board" | "resources" | "cards" | "custom";
 
+export interface ComboAvoidance {
+  kind: "cards" | "attribute" | "keyword";
+  cards: string[];
+  value: string;
+  /** Most matching cards that may be seen at the block's checkpoint. Defaults to zero. */
+  maximum: number;
+}
+
 export interface ComboRequirement {
   kind: "cards" | "attribute" | "keyword";
   cards: string[];
   value: string;
   required: number;
+  /** Optional per-piece deadline. Null/omitted means the active combo checkpoint applies. */
+  byTurn?: number | null;
+  /** Optional exclusion evaluated jointly with this wanted piece at the same deadline. */
+  avoid?: ComboAvoidance | null;
 }
 
 export interface ComboDefinition {

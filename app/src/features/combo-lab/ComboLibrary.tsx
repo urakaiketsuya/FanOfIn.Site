@@ -9,7 +9,11 @@ type View = "new" | "mine" | "saved" | "browse";
 type LocalCombo = { id: string; name: string; requirements: ComboRecipeRequirement[]; damage: number; goal?: ComboGoal; targetTurn?: number | null };
 
 function summary(combo: SavedCombo | PublicCombo): string {
-  return combo.definition.requirements.map((requirement) => requirement.kind === "cards" ? `${requirement.required}× ${requirement.cards.join(" or ")}` : `${requirement.required}× ${requirement.value}`).join(" + ");
+  return combo.definition.requirements.map((requirement) => {
+    const wanted = requirement.kind === "cards" ? `${requirement.required}× ${requirement.cards.join(" or ")}` : `${requirement.required}× ${requirement.value}`;
+    const avoided = requirement.avoid ? ` while avoiding ${requirement.avoid.kind === "cards" ? requirement.avoid.cards.join(" or ") : requirement.avoid.value}` : "";
+    return `${wanted}${avoided}${requirement.byTurn != null ? ` by T${requirement.byTurn}` : ""}`;
+  }).join(" + ");
 }
 
 function Card({ combo, mine, bookmarked, onLoad, onDelete, onEdit, onDuplicate, onVisibility, onBookmark }: { combo: SavedCombo | PublicCombo; mine?: boolean; bookmarked?: boolean; onLoad: () => void; onDelete?: () => void; onEdit?: () => void; onDuplicate?: () => void; onVisibility?: (value: ComboVisibility) => void; onBookmark?: () => void }) {

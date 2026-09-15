@@ -1480,6 +1480,18 @@ Each recipe requirement can be populated by explicitly selected cards, every Mai
 selected API `type`/`subtype` (for example `FRACTAL`), or every Main Deck card carrying a selected
 bold printed keyword. Numeric keyword parameters are normalized (`Glimpse 3` becomes `Glimpse`). A
 requirement's minimum can be greater than one, meaning any that many copies from its matched pool.
+Each requirement also has an optional turn deadline. `None` applies the active cards-seen checkpoint
+as before. A `By turn N` deadline caps only that requirement at the deck's cards-seen value for turn
+N, so later draws can improve the other rows but cannot rescue the expired row. Mixed deadlines are
+evaluated together by an exact draw-by-draw multivariate state calculation; the UI does not multiply
+the requirements' individual probabilities as though they were independent. Turn deadlines assume
+the play-first natural draw schedule in the standalone calculator. The saved-combo turn forecast
+uses its selected play order and its automatically detected draw/selection access at each deadline.
+Each wanted requirement can also carry an Avoid condition in the same conditional block. The block
+shares one deadline and succeeds only when the wanted pool meets its minimum and the avoided pool
+does not exceed its configurable maximum (zero by default). These lower and upper bounds are
+evaluated in the same multivariate draw state, so `want A while seeing no B` is a joint probability,
+not `P(A)` multiplied by a separately rounded `P(no B)` result.
 The multivariate calculation requires disjoint pools; when a card matches more than one requirement,
 the UI names the overlap and withholds the probability until the recipe is made unambiguous.
 The recipe sensitivity list tests adding one copy to each matched card currently below four copies,
@@ -1492,11 +1504,16 @@ deck workspace, including pasted, saved, and public deck intake. Its package exp
 published package-candidate families and scored candidates, can restrict results to relationships
 touching the active Main Deck, and converts a selected package into a recipe. Package-seeded recipes
 are serialized in the URL; the decklist itself is deliberately not embedded in that share link.
+The primary Analyze workspace puts recipe selection before its derived forecasts; there is no
+separate Build step. Find Packages remains a secondary discovery view. On narrow screens, saved
+combo forecasts render as stacked cards rather than requiring a wide probability table.
 
 ### Combo Lab level-goal analysis (`app/src/lib/levelGoal.ts`)
 
-The first goal-oriented evaluator asks whether a deck can reach Champion level N by a selected
-turn. It keeps three routes distinct. Normal materialization follows `naturalLevelByTurn`. Direct
+The first goal-oriented evaluator semantically classifies the cards matched by the user's recipe,
+using their printed effects to detect level acceleration, selection, draw, Mastery, damage, and
+payment roles. A detected level package graphs the chance of reaching every Champion level from
+two through six across turns one through six. It keeps three routes distinct. Normal materialization follows `naturalLevelByTurn`. Direct
 level-up cards are detected with `isSimpleLevelUpAccelerant`; the required count is
 `targetLevel - naturalLevelByTurn(targetTurn)`, floored at zero, and card access uses the exact
 without-replacement probability. A direct route is resource-blocked when the natural hand ceiling
@@ -1505,8 +1522,8 @@ Guide, the Reserve payment is also recognized as supplying the memory its trigge
 
 When the Material Deck contains a level-zero Fragmented Spirit whose printed On Enter effect is
 `Glimpse 6` followed by drawing six cards, the direct route expands only its enabler search pool.
-The viewer may model inspecting 6–12 opening-library cards: keeping hits from the first six and
-bottoming misses lets the following six-card draw reach a maximum of twelve inspected cards.
+The forecast automatically models the useful maximum of 12 opening-library cards inspected:
+keeping hits from the first six and bottoming misses lets the following six-card draw reach twelve.
 Natural Draw Phase cards are added after that opening selection. This shortcut is exact when the
 route needs one level-up enabler. Routes needing multiple hits retain natural access odds because
 their optimal keep/bottom sequence is conditional on how many hits appear in the first six. Actual
@@ -1529,8 +1546,8 @@ turn, natural cards seen come from `naturalCardsSeenByTurn`; timing-weighted exp
 from `computeDrawEngineTiming`; and a detected level-zero Fragmented Spirit contributes its Glimpse
 depth as additional inspected cards. Its printed six-card draw is excluded from the draw-engine list
 to prevent double counting because those six cards already define its inferred opening hand.
-Recipe odds continue to use `probabilityOfRecipe` and are withheld for overlapping or incomplete
-requirement pools. A saved combo may carry a user-entered damage result; it is marked lethal only
+Recipe odds continue to use the timed multivariate recipe calculation, including optional Avoid
+bounds, and are withheld for overlapping or incomplete requirement pools. A saved combo may carry a user-entered damage result; it is marked lethal only
 when that value reaches the user's selected threshold. The tool does not infer combo damage from
 unstructured rules text.
 
@@ -1542,8 +1559,8 @@ stable share slug, and bookmarks point to the definition rather than copying a c
 
 ### Combo Lab goal rule contracts (`app/src/lib/comboGoals.ts`)
 
-Combo Lab defaults to **Level up my Champion** and also offers goals for activating a key card,
-assembling a combo package, finding extra draw, and enabling a Mastery payoff. Each selectable goal
+Combo Lab semantically routes the chosen cards and their printed effects to **Level up my Champion**,
+activating a key card, assembling a combo package, finding extra draw, or enabling a Mastery payoff. Each matched goal
 is a declarative rule contract containing its comprehensive-rules sources, calculator mode, what the
 result measures, and what remains outside the model.
 
