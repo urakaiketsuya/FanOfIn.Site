@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Card } from "@gatcg/shared";
 import { probabilityAtLeast } from "./synergyReadiness";
 import { computeDrawEngineTiming, drawEngineSources } from "./drawEffects";
@@ -64,6 +64,7 @@ export default function HypergeometricCalculator({
   defaultMode = "single",
   initialRecipe,
   onApplyRecipeSuggestion,
+  onRecipeChange,
 }: {
   mainLines: { name: string; quantity: number }[];
   materialLines: { name: string; quantity: number }[];
@@ -73,6 +74,7 @@ export default function HypergeometricCalculator({
   defaultMode?: "single" | "functional" | "recipe";
   initialRecipe?: ComboRecipeRequirement[];
   onApplyRecipeSuggestion?: (addCard: string, removeCard: string) => void;
+  onRecipeChange?: (requirements: ComboRecipeRequirement[]) => void;
 }) {
   const mainDeckTotal = useMemo(() => mainLines.reduce((sum, line) => sum + line.quantity, 0), [mainLines]);
   const defaultDeckSize = Math.max(60, mainDeckTotal);
@@ -100,6 +102,7 @@ export default function HypergeometricCalculator({
   const [recipeSearch, setRecipeSearch] = useState("");
   const [pendingRecipeSuggestion, setPendingRecipeSuggestion] = useState<string | null>(null);
   const [recipeCutCard, setRecipeCutCard] = useState("");
+  useEffect(() => { onRecipeChange?.(recipeGroups.map(({ kind, cards, value, required }) => ({ kind, cards, value, required }))); }, [recipeGroups, onRecipeChange]);
   const startingHandSize = useMemo(() => inferStartingHandSize(materialLines, catalogByName), [materialLines, catalogByName]);
   const seenPresets = useMemo(() => [
     { label: `Opening (${startingHandSize})`, seen: startingHandSize },
@@ -199,12 +202,14 @@ export default function HypergeometricCalculator({
   const glimpseTargetNames = mode === "single" ? [selectedCard].filter(Boolean) : mode === "functional" ? functionalLines.map((line) => line.name) : recipeMatches[weakestGroupIndex]?.map((line) => line.name) ?? [];
   const glimpseOdds = activeGlimpseSource ? glimpseAdjustedOdds(deckSize, glimpseTargetCopies, activeGlimpseSource.copies, seen, activeGlimpseSource.glimpse, glimpseTargetNames.includes(activeGlimpseSource.name), glimpseActivationCap) : null;
 
-  const drawSources = useMemo(() => drawEngineSources(mainLines, materialLines, catalogByName), [mainLines, materialLines, catalogByName]);
+  const fragmentedSpiritName = useMemo(() => materialLines.find((line) => { const card = catalogByName.get(line.name); return card?.level === 0 && /\bGlimpse\s+6\b/i.test(card.effect ?? "") && /\bDraw\s+(?:six|6)\s+cards\b/i.test(card.effect ?? ""); })?.name ?? null, [materialLines, catalogByName]);
+  const fragmentedSpiritSelection = fragmentedSpiritName ? 6 : 0;
+  const drawSources = useMemo(() => drawEngineSources(mainLines, materialLines, catalogByName).filter((source) => source.name !== fragmentedSpiritName), [mainLines, materialLines, catalogByName, fragmentedSpiritName]);
   const drawTiming = useMemo(() => computeDrawEngineTiming(drawSources, deckSize, seen, startingHandSize), [drawSources, deckSize, seen, startingHandSize]);
   const hasDrawEngine = drawSources.length > 0;
   const seenWithDraw = useMemo(
-    () => Math.min(deckSize, Math.round(seen + drawTiming.expectedActiveDraws)),
-    [deckSize, seen, drawTiming.expectedActiveDraws],
+    () => Math.min(deckSize, Math.round(seen + drawTiming.expectedActiveDraws + fragmentedSpiritSelection)),
+    [deckSize, seen, drawTiming.expectedActiveDraws, fragmentedSpiritSelection],
   );
   const probabilityWithDraw = mode === "recipe" ? probabilityOfRecipe(deckSize, probabilityGroups, seenWithDraw) : probabilityAtLeast(deckSize, mode === "functional" ? functionalCopies : copies, seenWithDraw, mode === "functional" ? 1 : required);
   const curveWithDraw = useMemo(
@@ -223,7 +228,7 @@ export default function HypergeometricCalculator({
       <Section
         heading="dense"
         title="Hypergeometric calculator"
-        description={<>See how likely any card will see play.</>}
+        description={<>See combo access by checkpoint.</>}
       >
       <div className="mt-3 rounded-xl bg-ctp-surface0/60 p-3">
       <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Parameters</p>
@@ -247,7 +252,7 @@ export default function HypergeometricCalculator({
         </div>
       )}
 
-      {mode === "functional" && <div className="mt-3"><label className="text-xs text-ctp-subtext0">Role<select value={functionalRole} onChange={(event) => setFunctionalRole(event.target.value as FunctionalRole)} className="mt-1 block min-h-10 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text">{(Object.keys(FUNCTIONAL_ROLE_LABELS) as FunctionalRole[]).map((role) => <option key={role} value={role}>{FUNCTIONAL_ROLE_LABELS[role]}</option>)}</select></label><div className="mt-2 flex flex-wrap gap-1.5">{functionalLines.length > 0 ? functionalLines.map((line) => <span key={line.name} className="rounded-full border border-ctp-teal/40 bg-ctp-teal/10 px-2 py-1 text-[10px] text-ctp-text">{line.name} · {line.quantity}</span>) : <span className="text-xs text-ctp-subtext0">No cards with this detected role.</span>}</div><p className="mt-2 text-[10px] text-ctp-subtext0">Detected conservatively from printed rules text. These are alternatives for finding the role, not claims that the cards are strategically identical.</p></div>}
+      {mode === "functional" && <div className="mt-3"><label className="text-xs text-ctp-subtext0">Role<select value={functionalRole} onChange={(event) => setFunctionalRole(event.target.value as FunctionalRole)} className="mt-1 block min-h-10 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text">{(Object.keys(FUNCTIONAL_ROLE_LABELS) as FunctionalRole[]).map((role) => <option key={role} value={role}>{FUNCTIONAL_ROLE_LABELS[role]}</option>)}</select></label><div className="mt-2 flex flex-wrap gap-1.5">{functionalLines.length > 0 ? functionalLines.map((line) => <span key={line.name} className="rounded-full border border-ctp-teal/40 bg-ctp-teal/10 px-2 py-1 text-[10px] text-ctp-text">{line.name} · {line.quantity}</span>) : <span className="text-xs text-ctp-subtext0">No cards with this role.</span>}</div></div>}
 
       {mode === "recipe" && mainLines.length > 0 && <div className="mt-4 rounded-xl border border-ctp-mauve/30 bg-ctp-base/45 p-3 sm:p-4">
         <div className="flex flex-wrap items-center justify-between gap-3"><div><p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-mauve">By this checkpoint, I want to see…</p><p className="mt-1 text-xs text-ctp-subtext0">Selections in one row are alternatives. Every row must be satisfied.</p></div><ForecastCheckpointSelector checkpoints={seenPresets} selected={seen} onSelect={(value) => setSeen(Math.min(value, deckSize))} /></div>
@@ -328,13 +333,11 @@ export default function HypergeometricCalculator({
 
       {mode === "recipe" && recipeReady && <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4"><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Opening hand</div><div className="font-semibold tabular-nums text-ctp-text">{(openingProbability * 100).toFixed(1)}%</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Average complete</div><div className="font-semibold tabular-nums text-ctp-text">{expectedRecipeSeen === null ? "—" : `${expectedRecipeSeen.toFixed(1)} seen · ~T${expectedRecipeTurn}`}</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">50% consistency</div><div className="font-semibold tabular-nums text-ctp-text">{fiftySeen ? `${fiftySeen} seen` : "Not reached"}</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">80% consistency</div><div className="font-semibold tabular-nums text-ctp-text">{eightySeen ? `${eightySeen} seen` : "Not reached"}</div></div></div>}
       {recipeCopySuggestions.length > 0 && <div className="mt-3 rounded-xl border border-ctp-teal/30 bg-ctp-teal/5 p-3"><p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-teal">Copies that improve this recipe</p><div className="mt-2 grid gap-2 sm:grid-cols-2">{recipeCopySuggestions.slice(0, 4).map((suggestion) => { const isPending = pendingRecipeSuggestion === suggestion.cardName; return <div key={suggestion.cardName} className="rounded-lg border border-ctp-surface1 bg-ctp-base/40 px-3 py-2 text-xs"><div className="flex items-center justify-between gap-3"><span className="text-ctp-text">Add 1× {suggestion.cardName} <span className="text-ctp-subtext0">({suggestion.currentCopies} → {suggestion.currentCopies + 1})</span></span><span className="shrink-0 font-semibold tabular-nums text-ctp-teal">+{(suggestion.gain * 100).toFixed(1)} pts</span></div>{onApplyRecipeSuggestion && (isPending ? <div className="mt-2"><label className="text-[10px] text-ctp-subtext0">Replace<select value={recipeCutCard} onChange={(event) => setRecipeCutCard(event.target.value)} className="mt-1 block min-h-9 w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1.5 text-xs text-ctp-text"><option value="">Choose a Main Deck card…</option>{mainLines.filter((line) => line.name !== suggestion.cardName).map((line) => <option key={line.name} value={line.name}>{line.quantity}× {line.name}</option>)}</select></label><div className="mt-2 flex gap-2"><button type="button" disabled={!recipeCutCard} onClick={() => { onApplyRecipeSuggestion(suggestion.cardName, recipeCutCard); setPendingRecipeSuggestion(null); setRecipeCutCard(""); }} className="rounded-md bg-ctp-blue px-2.5 py-1.5 font-semibold text-ctp-base disabled:cursor-not-allowed disabled:opacity-50">Apply and recalculate</button><button type="button" onClick={() => { setPendingRecipeSuggestion(null); setRecipeCutCard(""); }} className="rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-ctp-subtext1">Cancel</button></div></div> : <button type="button" onClick={() => { setPendingRecipeSuggestion(suggestion.cardName); setRecipeCutCard(""); }} className="mt-2 rounded-md border border-ctp-blue/60 px-2.5 py-1.5 font-semibold text-ctp-blue hover:bg-ctp-blue/10">Review change</button>)}</div>; })}</div><p className="mt-2 text-[10px] text-ctp-subtext0">Assumes one unrelated Main Deck card is replaced, keeping deck size fixed. Only recipe cards currently below four copies are considered.</p></div>}
-      {mode === "recipe" && <p className="mt-2 text-[10px] text-ctp-subtext0">Grand Archive has no general mulligan; opening odds use the starting cards seen directly.</p>}
 
       {activeGlimpseSource && glimpseOdds && glimpseTargetCopies > 0 && (
         <div className="mt-4 rounded-xl border border-ctp-mauve/35 bg-ctp-mauve/5 p-3">
-          <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-mauve">Selection-adjusted odds</p><p className="mt-1 text-xs text-ctp-subtext1">Natural access plus Glimpse cards positioning the target for your next draw.</p></div><div className="flex flex-wrap gap-2"><label className="text-[10px] text-ctp-subtext0">Glimpse source<select value={activeGlimpseSource.name} onChange={(event) => setSelectedGlimpseSource(event.target.value)} className="mt-1 block min-h-9 max-w-64 rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text">{detectedGlimpseSources.map((source) => <option key={source.name} value={source.name}>{source.name} · Glimpse {source.glimpse}</option>)}</select></label>{activeGlimpseSource.copies > 1 && <label className="text-[10px] text-ctp-subtext0">Max activations<select value={Math.min(glimpseActivationCap, activeGlimpseSource.copies)} onChange={(event) => setGlimpseActivationCap(Number(event.target.value))} className="mt-1 block min-h-9 rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text">{Array.from({ length: activeGlimpseSource.copies }, (_, index) => index + 1).map((count) => <option key={count} value={count}>{count}</option>)}</select></label>}</div></div>
+          <div className="flex flex-wrap items-start justify-between gap-3"><p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-mauve">Selection-adjusted odds</p><div className="flex flex-wrap gap-2"><label className="text-[10px] text-ctp-subtext0">Glimpse source<select value={activeGlimpseSource.name} onChange={(event) => setSelectedGlimpseSource(event.target.value)} className="mt-1 block min-h-9 max-w-64 rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text">{detectedGlimpseSources.map((source) => <option key={source.name} value={source.name}>{source.name} · Glimpse {source.glimpse}</option>)}</select></label>{activeGlimpseSource.copies > 1 && <label className="text-[10px] text-ctp-subtext0">Max activations<select value={Math.min(glimpseActivationCap, activeGlimpseSource.copies)} onChange={(event) => setGlimpseActivationCap(Number(event.target.value))} className="mt-1 block min-h-9 rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text">{Array.from({ length: activeGlimpseSource.copies }, (_, index) => index + 1).map((count) => <option key={count} value={count}>{count}</option>)}</select></label>}</div></div>
           <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4"><div className="rounded-lg border border-ctp-surface1 bg-ctp-base/35 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">In hand now</div><div className="font-semibold tabular-nums text-ctp-text">{(glimpseOdds.natural * 100).toFixed(1)}%</div></div><div className="rounded-lg border border-ctp-surface1 bg-ctp-base/35 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Glimpse finds</div><div className="font-semibold tabular-nums text-ctp-text">{(glimpseOdds.revealHit * 100).toFixed(1)}%</div></div><div className="rounded-lg border border-ctp-surface1 bg-ctp-base/35 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Setup gain</div><div className="font-semibold tabular-nums text-ctp-teal">+{(glimpseOdds.setup * 100).toFixed(1)} pts</div></div><div className="rounded-lg border border-ctp-mauve/40 bg-ctp-base/35 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">By next draw</div><div className="font-semibold tabular-nums text-ctp-mauve">{(glimpseOdds.combined * 100).toFixed(1)}%</div></div></div>
-          <p className="mt-2 text-[10px] leading-4 text-ctp-subtext0">Exact for up to {Math.min(glimpseActivationCap, activeGlimpseSource.copies)} activation{Math.min(glimpseActivationCap, activeGlimpseSource.copies) === 1 ? "" : "s"}: the calculation weights how many of the {activeGlimpseSource.copies}× {activeGlimpseSource.name} are within the selected {seen} cards (averaging {glimpseOdds.expectedActivations.toFixed(1)} uses when at least one is available), then applies Glimpse {activeGlimpseSource.glimpse} to fresh cards after each miss. {activeGlimpseSource.reserveCost === null ? "Activation cost and timing are not inferred." : `Printed reserve cost ${activeGlimpseSource.reserveCost} each; total affordability and conditional text are not assumed.`} Glimpse sets the next draw—it does not put the card in hand. {mode === "recipe" ? "For recipes, this targets the requirement with the fewest copies and does not claim the entire recipe is complete." : ""}</p>
         </div>
       )}
 
@@ -362,7 +365,6 @@ export default function HypergeometricCalculator({
             </div>
           )}
           <details className="mt-2 rounded-lg border border-ctp-surface1 bg-ctp-base/25 px-3 py-2"><summary className="cursor-pointer text-xs font-medium text-ctp-subtext1">Draw source breakdown</summary><div className="mt-2 space-y-1.5">{drawTiming.sources.map((source) => <div key={`${source.section}:${source.name}`} className="flex flex-wrap items-center justify-between gap-2 text-[11px]"><span className="text-ctp-text">{source.quantity}× {source.name}{source.conditional ? <span className="ml-1 text-ctp-yellow">conditional</span> : null}</span><span className="tabular-nums text-ctp-subtext0">{source.section === "material" ? "Material" : `${(source.onlineByTurn * 100).toFixed(0)}% found`} · ready T{source.firstAffordableTurn} · +{source.expectedActiveDraws.toFixed(1)}</span></div>)}</div></details>
-          <p className="mt-2 text-[10px] leading-4 text-ctp-subtext0">Main sources must be drawn and Reserve-ready by T{drawTiming.turn}; Material sources are known but still cost-gated. Expected draws are single-pass and do not recursively find more engines. Conditional triggers and level requirements are not verified, so marked effects remain upper-bound estimates.</p>
         </div>
       )}
       </Section>

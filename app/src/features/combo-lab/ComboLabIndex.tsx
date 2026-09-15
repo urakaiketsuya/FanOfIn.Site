@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import PageLayout from "../../components/layout/PageLayout";
 import PageHeader from "../../components/ui/PageHeader";
@@ -14,9 +14,20 @@ import { useRequestedDeckWorkspace } from "../deckbuilder/persistence/useRequest
 import { useMinedPackageCandidates } from "../deckbuilder/useMinedPackageCandidates";
 import { computeLevelGoalAnalysis, type LevelGoalConfig } from "../../lib/levelGoal";
 import { COMBO_GOALS, comboGoal, type ComboGoalId } from "../../lib/comboGoals";
+import { forecastComboByTurn } from "../../lib/comboTurnForecast";
 
 type LabTab = "build" | "calculations" | "explore";
 type RecipePreset = { key: string; label: string; requirements: ComboRecipeRequirement[] };
+type SavedCombo = { id: string; name: string; requirements: ComboRecipeRequirement[]; damage: number };
+
+const COMBO_LAB_SCENARIOS_KEY = "combo-lab-scenarios-v1";
+
+function loadSavedCombos(): SavedCombo[] {
+  try {
+    const value = JSON.parse(localStorage.getItem(COMBO_LAB_SCENARIOS_KEY) ?? "[]") as SavedCombo[];
+    return Array.isArray(value) ? value.filter((combo) => combo && typeof combo.id === "string" && typeof combo.name === "string" && Array.isArray(combo.requirements)) : [];
+  } catch { return []; }
+}
 
 const cardRequirement = (cards: string[], required = 1): ComboRecipeRequirement => ({ kind: "cards", cards, value: "", required });
 
@@ -43,8 +54,16 @@ export default function ComboLabIndex() {
   const [notice, setNotice] = useState<string | null>(null);
   const [pendingSuggestion, setPendingSuggestion] = useState<string | null>(null);
   const [cutCard, setCutCard] = useState("");
-  const [goal, setGoal] = useState<LevelGoalConfig>({ targetLevel: 3, targetTurn: 2, playOrder: "first", useDirectLevelUp: true, useFractalPayment: true });
+  const [goal, setGoal] = useState<LevelGoalConfig>({ targetLevel: 3, targetTurn: 2, playOrder: "first", useDirectLevelUp: true, useFractalPayment: true, fragmentedSpiritDepth: 12 });
   const [goalId, setGoalId] = useState<ComboGoalId>("level");
+  const [savedCombos, setSavedCombos] = useState<SavedCombo[]>(loadSavedCombos);
+  const [currentRecipe, setCurrentRecipe] = useState<ComboRecipeRequirement[]>([]);
+  const [comboName, setComboName] = useState("Combo 1");
+  const [comboDamage, setComboDamage] = useState(0);
+  const [lethalThreshold, setLethalThreshold] = useState(20);
+  const [forecastOrder, setForecastOrder] = useState<"first" | "second">("first");
+  const [editingDeck, setEditingDeck] = useState(false);
+  const [cardToAdd, setCardToAdd] = useState("");
   const data = useDeckBuilderData({ championName: workspace?.championName ?? null, format: workspace?.format ?? "STANDARD", includeDecodedDecks: false });
   const mined = useMinedPackageCandidates(tab === "explore");
   const { catalogByName } = data;
@@ -79,6 +98,27 @@ export default function ComboLabIndex() {
   const deckNames = useMemo(() => new Set(workspace?.main.map((line) => line.name) ?? []), [workspace]);
   const levelAnalysis = useMemo(() => workspace ? computeLevelGoalAnalysis(workspace.main, workspace.material, catalogByName, goal) : null, [workspace, catalogByName, goal]);
   const selectedGoal = comboGoal(goalId);
+  useEffect(() => { try { localStorage.setItem(COMBO_LAB_SCENARIOS_KEY, JSON.stringify(savedCombos)); } catch { /* Storage can be unavailable in private contexts. */ } }, [savedCombos]);
+
+  const comboForecasts = useMemo(() => workspace ? savedCombos.map((combo) => ({ combo, points: forecastComboByTurn(workspace.main, workspace.material, catalogByName, combo.requirements, forecastOrder) })) : [], [workspace, savedCombos, catalogByName, forecastOrder]);
+  const fastestCombo = useMemo(() => comboForecasts.map(({ combo, points }) => ({ combo, point: points.find((point) => (point.probability ?? 0) >= 0.5) })).filter((entry) => entry.point).sort((a, b) => a.point!.turn - b.point!.turn || (b.point!.probability ?? 0) - (a.point!.probability ?? 0))[0] ?? null, [comboForecasts]);
+
+  function updateMainQuantity(name: string, quantity: number) {
+    if (!workspace) return;
+    const nextMain = workspace.main.map((line) => line.name === name ? { ...line, quantity } : line).filter((line) => line.quantity > 0);
+    if (!workspace.main.some((line) => line.name === name) && quantity > 0) nextMain.push({ name, quantity });
+    const { version: _version, updatedAt: _updatedAt, ...stored } = workspace;
+    saveActiveDeckWorkspace(sessionStorage, { ...stored, source: "combo", sourceLabel: "Combo Lab working copy", main: nextMain });
+    setWorkspace(loadActiveDeckWorkspace(sessionStorage));
+  }
+
+  function saveCurrentCombo() {
+    if (currentRecipe.length < 2) return;
+    const combo: SavedCombo = { id: `${Date.now()}`, name: comboName.trim() || `Combo ${savedCombos.length + 1}`, requirements: currentRecipe, damage: Math.max(0, comboDamage) };
+    setSavedCombos((current) => [...current, combo]);
+    setComboName(`Combo ${savedCombos.length + 2}`);
+    setNotice(`${combo.name} saved.`);
+  }
 
   const packages = useMemo(() => {
     const needle = search.trim().toLowerCase();
@@ -143,10 +183,10 @@ export default function ComboLabIndex() {
 <div>
 <p className="font-semibold text-ctp-text">{workspace.title ?? "Active deck"}</p>
 <p className="text-xs text-ctp-subtext0">{workspace.championName ?? "Unknown Champion"} · {workspace.main.reduce((sum, line) => sum + line.quantity, 0)} Main · working copy</p>
-</div>{preset && <div className="text-right">
+</div><div className="flex items-center gap-3"><button type="button" onClick={() => setEditingDeck((value) => !value)} className="text-xs font-semibold text-ctp-blue">{editingDeck ? "Done editing" : "Edit deck"}</button>{preset && <div className="text-right">
 <p className="text-xs font-medium text-ctp-mauve">Loaded recipe: {preset.label}</p>
 <button type="button" onClick={() => { void navigator.clipboard.writeText(window.location.href).then(() => setNotice("Share link copied.")); }} className="text-xs text-ctp-blue hover:underline">Copy recipe link</button>
-</div>}</div>{notice && <p className="mt-2 text-xs text-ctp-green">{notice}</p>}</Panel>
+</div>}</div></div>{editingDeck && <div className="mt-3 border-t border-ctp-surface1 pt-3"><div className="grid max-h-64 gap-1 overflow-y-auto sm:grid-cols-2 lg:grid-cols-3">{workspace.main.map((line) => <div key={line.name} className="flex items-center justify-between rounded-md bg-ctp-base/50 px-2 py-1.5 text-xs"><span className="truncate text-ctp-text">{line.name}</span><span className="ml-2 flex items-center gap-1"><button type="button" aria-label={`Remove one ${line.name}`} onClick={() => updateMainQuantity(line.name, line.quantity - 1)} className="h-7 w-7 rounded border border-ctp-surface1">−</button><span className="w-5 text-center tabular-nums">{line.quantity}</span><button type="button" aria-label={`Add one ${line.name}`} disabled={line.quantity >= 4} onClick={() => updateMainQuantity(line.name, line.quantity + 1)} className="h-7 w-7 rounded border border-ctp-surface1 disabled:opacity-35">+</button></span></div>)}</div><div className="mt-2 flex gap-2"><select value={cardToAdd} onChange={(event) => setCardToAdd(event.target.value)} className="min-h-9 min-w-0 flex-1 rounded-md border border-ctp-surface1 bg-ctp-base px-2 text-xs text-ctp-text"><option value="">Add a card…</option>{[...catalogByName.keys()].filter((name) => !workspace.main.some((line) => line.name === name) && !catalogByName.get(name)?.types.includes("CHAMPION")).sort().map((name) => <option key={name} value={name}>{name}</option>)}</select><button type="button" disabled={!cardToAdd} onClick={() => { updateMainQuantity(cardToAdd, 1); setCardToAdd(""); }} className="rounded-md bg-ctp-blue px-3 text-xs font-semibold text-ctp-base disabled:opacity-40">Add</button></div></div>}{notice && <p className="mt-2 text-xs text-ctp-green">{notice}</p>}</Panel>
       <div className="mt-4">
 <Tabs tabs={[{ key: "build", label: "Build" }, { key: "calculations", label: "Calculations" }, { key: "explore", label: "Explore packages" }]} active={tab} onChange={(next) => { setTab(next); setParams((current) => { const updated = new URLSearchParams(current); if (next === "build") updated.delete("tab"); else updated.set("tab", next); return updated; }, { replace: true }); }} label="Combo Lab sections" baseId="combo-lab" />
 </div>
@@ -181,6 +221,7 @@ export default function ComboLabIndex() {
 <span className="block text-xs text-ctp-subtext0">Can advance faster than the normal Materialize Phase schedule.</span>
 </span>
 </label>
+{levelAnalysis.detected.fragmentedSpirit && <label className="block rounded-lg border border-ctp-mauve/40 bg-ctp-mauve/5 p-3 text-sm"><span className="font-medium text-ctp-text">Fragmented Spirit opening selection</span><span className="mt-1 block text-xs text-ctp-subtext0">{levelAnalysis.detected.fragmentedSpirit} uses Glimpse 6 before drawing six. Choose how deeply you expect to inspect after bottoming misses.</span><select value={goal.fragmentedSpiritDepth ?? 12} onChange={(event) => setGoal((current) => ({ ...current, fragmentedSpiritDepth: Number(event.target.value) }))} className="mt-2 block min-h-10 w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text">{[6, 7, 8, 9, 10, 11, 12].map((depth) => <option key={depth} value={depth}>Inspect up to {depth} cards{depth === 12 ? " · maximum selection" : ""}</option>)}</select><span className="mt-1 block text-[10px] text-ctp-subtext0">This improves enabler access only. Your opening hand remains six cards.</span></label>}
 <label className="flex items-start gap-2 rounded-lg border border-ctp-surface1 p-3 text-sm">
 <input type="checkbox" checked={goal.useFractalPayment} onChange={(event) => setGoal((current) => ({ ...current, useFractalPayment: event.target.checked }))} className="mt-1" />
 <span>
@@ -196,22 +237,21 @@ export default function ComboLabIndex() {
 <h2 className="text-sm font-semibold uppercase tracking-wide text-ctp-subtext0">Detected purpose graph</h2>
 <div className="mt-3 space-y-3 text-sm">
 <Purpose label="Accelerates level" cards={levelAnalysis.detected.directLevelCards} detail="Produces an extra level-up outside normal materialization." />
+<Purpose label="Selects the opening six" cards={levelAnalysis.detected.fragmentedSpirit ? [levelAnalysis.detected.fragmentedSpirit] : []} detail="Glimpse 6 can bottom misses before drawing six, expanding the inspected pool without expanding hand size." />
 <Purpose label="Replaces Memory payment" cards={levelAnalysis.detected.fractalPaymentCards} detail="Consumes two established Fractal phantasias." />
 <Purpose label="Resource / sacrifice pool" cards={levelAnalysis.detected.fractalCards} detail="Fractals may provide Reservable and/or become payment fodder; individual timing still matters." />
 </div>
 </Panel>
 </div>}
       {tab === "build" && goalId !== "level" && <Panel className="mt-4">
-<RuleContract goal={selectedGoal} />
+<h2 className="text-lg font-semibold text-ctp-text">{selectedGoal.label}</h2>
 <button type="button" onClick={() => setTab("calculations")} className="mt-5 rounded-md bg-ctp-blue px-4 py-2 text-sm font-semibold text-ctp-base">Set requirements</button>
 </Panel>}
+      {tab === "calculations" && <Panel className="mt-4">{fastestCombo && <div className="mb-3 rounded-lg bg-ctp-teal/10 px-3 py-2 text-sm text-ctp-text"><span className="font-semibold">Fastest consistent combo:</span> {fastestCombo.combo.name} by turn {fastestCombo.point!.turn} ({((fastestCombo.point!.probability ?? 0) * 100).toFixed(0)}%)</div>}<div className="flex flex-wrap items-end gap-2"><label className="min-w-44 flex-1 text-xs text-ctp-subtext0">Combo name<input value={comboName} onChange={(event) => setComboName(event.target.value)} className="mt-1 block min-h-9 w-full rounded-md border border-ctp-surface1 bg-ctp-base px-2 text-sm text-ctp-text" /></label><label className="w-32 text-xs text-ctp-subtext0">Combo damage<input type="number" min={0} value={comboDamage} onChange={(event) => setComboDamage(Number(event.target.value))} className="mt-1 block min-h-9 w-full rounded-md border border-ctp-surface1 bg-ctp-base px-2 text-sm text-ctp-text" /></label><button type="button" disabled={currentRecipe.length < 2} onClick={saveCurrentCombo} className="min-h-9 rounded-md bg-ctp-mauve px-3 text-xs font-semibold text-ctp-base disabled:opacity-40">Save current combo</button><label className="w-28 text-xs text-ctp-subtext0">Play order<select value={forecastOrder} onChange={(event) => setForecastOrder(event.target.value as "first" | "second")} className="mt-1 block min-h-9 w-full rounded-md border border-ctp-surface1 bg-ctp-base px-2 text-xs text-ctp-text"><option value="first">First</option><option value="second">Second</option></select></label><label className="w-28 text-xs text-ctp-subtext0">Lethal at<input type="number" min={1} value={lethalThreshold} onChange={(event) => setLethalThreshold(Math.max(1, Number(event.target.value)))} className="mt-1 block min-h-9 w-full rounded-md border border-ctp-surface1 bg-ctp-base px-2 text-sm text-ctp-text" /></label></div>{comboForecasts.length > 0 && <div className="mt-4 overflow-x-auto"><table className="w-full min-w-[42rem] text-left text-xs"><thead className="text-[10px] uppercase text-ctp-subtext0"><tr><th className="pb-2">Combo</th>{[1, 2, 3, 4, 5, 6].map((turn) => <th key={turn} className="pb-2 text-center">T{turn}</th>)}<th className="pb-2 text-center">50% by</th><th /></tr></thead><tbody>{comboForecasts.map(({ combo, points }) => { const fifty = points.find((point) => (point.probability ?? 0) >= 0.5); return <tr key={combo.id} className="border-t border-ctp-surface1"><td className="py-2 font-medium text-ctp-text">{combo.name}{combo.damage >= lethalThreshold && <span className="ml-1 rounded bg-ctp-red/15 px-1.5 py-0.5 text-[9px] font-bold text-ctp-red">LETHAL {combo.damage}</span>}</td>{points.map((point) => <td key={point.turn} className="py-2 text-center tabular-nums text-ctp-subtext1">{point.probability === null ? "—" : `${(point.probability * 100).toFixed(0)}%`}</td>)}<td className="py-2 text-center font-semibold text-ctp-teal">{fifty ? `T${fifty.turn}` : "—"}</td><td className="py-2 text-right"><button type="button" onClick={() => { setParams((current) => { const next = new URLSearchParams(current); next.set("recipe", JSON.stringify(combo.requirements)); next.set("label", combo.name); next.set("tab", "calculations"); return next; }, { replace: true }); setComboName(combo.name); setComboDamage(combo.damage); }} className="text-ctp-blue">Open</button><button type="button" onClick={() => setSavedCombos((current) => current.filter((candidate) => candidate.id !== combo.id))} className="ml-2 text-ctp-red">Remove</button></td></tr>; })}</tbody></table></div>}</Panel>}
       {tab === "calculations" && levelAnalysis && goalId === "level" && <>
 <div className="mt-4 grid gap-3 lg:grid-cols-3">{levelAnalysis.routes.map((route) => <Panel key={route.id} padding="sm">
 <div className="flex items-start justify-between gap-2">
 <h2 className="font-semibold text-ctp-text">{route.label}</h2>{route.probability !== null && <span className={`text-lg font-bold tabular-nums ${route.status === "blocked" ? "text-ctp-red" : "text-ctp-teal"}`}>{(route.probability * 100).toFixed(1)}%</span>}</div>
-<p className="mt-2 text-xs text-ctp-subtext1">{route.detail}</p>
-<p className="mt-2 text-[10px] text-ctp-subtext0">
-<span className="font-semibold uppercase">Bottleneck:</span> {route.bottleneck}</p>
 </Panel>)}</div>{levelAnalysis.suggestions.length > 0 && <Panel className="mt-4">
 <h2 className="font-semibold text-ctp-text">Changes that improve this goal</h2>
 <p className="mt-1 text-xs text-ctp-subtext0">Each test adds one copy and replaces one Main Deck card, keeping deck size constant.</p>
@@ -230,15 +270,12 @@ export default function ComboLabIndex() {
 <button type="button" onClick={() => { setPendingSuggestion(null); setCutCard(""); }} className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-xs text-ctp-subtext1">Cancel</button>
 </div>
 </div> : <button type="button" onClick={() => { setPendingSuggestion(suggestionKey); setCutCard(""); }} className="mt-3 rounded-md border border-ctp-blue/60 px-3 py-1.5 text-xs font-semibold text-ctp-blue hover:bg-ctp-blue/10">Review change</button>}</article>; })}</div>
-</Panel>}<details className="mt-4">
-<summary className="cursor-pointer rounded-lg border border-ctp-surface1 bg-ctp-mantle px-4 py-3 text-sm font-semibold text-ctp-text">Open custom probability calculations</summary>
-<HypergeometricCalculator key={`${workspace.updatedAt}:${preset?.key ?? "custom"}`} mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} defaultMode="recipe" initialRecipe={preset?.requirements} onApplyRecipeSuggestion={applyDeckReplacement} />
-</details>
-<p className="mt-3 text-xs text-ctp-subtext0">Direct-route percentages are exact card-access odds at the selected checkpoint. Fractal-route percentages are access ceilings: matched cards still need enough Reserve, legal sequencing, and time to enter and remain on the field.</p>
+</Panel>}<div className="mt-4">
+<HypergeometricCalculator key={`level:${preset?.key ?? "custom"}`} mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} defaultMode="recipe" initialRecipe={preset?.requirements} onApplyRecipeSuggestion={applyDeckReplacement} onRecipeChange={setCurrentRecipe} />
+</div>
 </>}
       {tab === "calculations" && goalId !== "level" && <>
-<Panel className="mt-4"><RuleContract goal={selectedGoal} /></Panel>
-<HypergeometricCalculator key={`${workspace.updatedAt}:${goalId}:${preset?.key ?? "custom"}`} mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} defaultMode={selectedGoal.calculatorMode} initialRecipe={preset?.requirements} onApplyRecipeSuggestion={applyDeckReplacement} />
+<HypergeometricCalculator key={`${goalId}:${preset?.key ?? "custom"}`} mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} defaultMode={selectedGoal.calculatorMode} initialRecipe={preset?.requirements} onApplyRecipeSuggestion={applyDeckReplacement} onRecipeChange={setCurrentRecipe} />
 </>}
       {tab === "explore" && <Panel className="mt-4">
 <div className="flex flex-wrap items-end gap-3">
@@ -266,14 +303,5 @@ function Purpose({ label, cards, detail }: { label: string; cards: string[]; det
 <p className="font-medium text-ctp-text">{label}</p>
 <p className="mt-1 text-xs text-ctp-subtext1">{detail}</p>
 <div className="mt-2 flex flex-wrap gap-1">{cards.length ? cards.map((name) => <span key={name} className="rounded-full bg-ctp-mauve/10 px-2 py-0.5 text-[10px] text-ctp-mauve">{name}</span>) : <span className="text-[10px] text-ctp-subtext0">None detected in this deck</span>}</div>
-</div>;
-}
-
-function RuleContract({ goal }: { goal: ReturnType<typeof comboGoal> }) {
-  return <div>
-<div className="flex flex-wrap items-center gap-2"><h2 className="font-semibold text-ctp-text">{goal.label}</h2><span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${goal.evidence === "rules-exact" ? "bg-ctp-green/10 text-ctp-green" : "bg-ctp-yellow/10 text-ctp-yellow"}`}>{goal.evidence === "rules-exact" ? "Rules-exact routes" : "Access ceiling"}</span></div>
-<p className="mt-2 text-sm text-ctp-subtext1"><span className="font-medium text-ctp-text">Measures:</span> {goal.measures}</p>
-<p className="mt-1 text-sm text-ctp-subtext1"><span className="font-medium text-ctp-text">Still requires game-state validation:</span> {goal.doesNotMeasure}</p>
-<p className="mt-3 text-xs text-ctp-subtext0">Rules: {goal.ruleLinks.map((link, index) => <span key={link.href}>{index > 0 && " · "}<a href={link.href} target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">{link.label}</a></span>)}</p>
 </div>;
 }

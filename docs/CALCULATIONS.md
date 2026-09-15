@@ -1503,6 +1503,16 @@ without-replacement probability. A direct route is resource-blocked when the nat
 cannot contain both the required enabler cards and their combined Reserve payments. For Dungeon
 Guide, the Reserve payment is also recognized as supplying the memory its trigger banishes.
 
+When the Material Deck contains a level-zero Fragmented Spirit whose printed On Enter effect is
+`Glimpse 6` followed by drawing six cards, the direct route expands only its enabler search pool.
+The viewer may model inspecting 6–12 opening-library cards: keeping hits from the first six and
+bottoming misses lets the following six-card draw reach a maximum of twelve inspected cards.
+Natural Draw Phase cards are added after that opening selection. This shortcut is exact when the
+route needs one level-up enabler. Routes needing multiple hits retain natural access odds because
+their optimal keep/bottom sequence is conditional on how many hits appear in the first six. Actual
+hand and resource capacity remains six opening cards plus natural draws; selection does not create
+cards or Reserve capacity.
+
 Fractal-payment effects are detected from their explicit “sacrifice two Fractal phantasias rather
 than pay the memory cost” text. They never receive acceleration credit: replacing a Champion's
 Memory cost does not create another Materialize Phase. Their percentage is the exact access chance
@@ -1511,6 +1521,18 @@ bound because activating those cards, paying their Reserve costs, and keeping th
 field requires sequence state the current evaluator does not simulate. Quantity suggestions
 recompute the relevant route after adding one eligible sub-four-copy card while holding deck size
 fixed, and explain which goal bottleneck that card affects.
+
+### Saved combo turn forecasts (`app/src/lib/comboTurnForecast.ts`)
+
+Combo Lab can persist multiple named recipes and evaluates each from turns one through six. At each
+turn, natural cards seen come from `naturalCardsSeenByTurn`; timing-weighted expected draws come
+from `computeDrawEngineTiming`; and a detected level-zero Fragmented Spirit contributes its Glimpse
+depth as additional inspected cards. Its printed six-card draw is excluded from the draw-engine list
+to prevent double counting because those six cards already define its inferred opening hand.
+Recipe odds continue to use `probabilityOfRecipe` and are withheld for overlapping or incomplete
+requirement pools. A saved combo may carry a user-entered damage result; it is marked lethal only
+when that value reaches the user's selected threshold. The tool does not infer combo damage from
+unstructured rules text.
 
 ### Combo Lab goal rule contracts (`app/src/lib/comboGoals.ts`)
 
