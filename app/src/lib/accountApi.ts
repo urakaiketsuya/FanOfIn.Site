@@ -1,4 +1,4 @@
-import type { AccountSession, AccountUser, AuthIdentity, AuthProvider, BookmarkedDeck, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, DeckImportPreview, DeckImportResult, DeckReportReason, DeckSocialState, DeckVisibility, OmnidexDecklist, PublicDeck, PublicDeckSummary, PublicProfile, SavedDeck, SavedDeckDetail, SharedCardWatch } from "@gatcg/shared";
+import type { AccountSession, AccountUser, AuthIdentity, AuthProvider, BookmarkedCombo, BookmarkedDeck, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, ComboDefinition, ComboVisibility, DeckFormat, DeckImportPreview, DeckImportResult, DeckReportReason, DeckSocialState, DeckVisibility, OmnidexDecklist, PublicCombo, PublicDeck, PublicDeckSummary, PublicProfile, SavedCombo, SavedDeck, SavedDeckDetail, SharedCardWatch } from "@gatcg/shared";
 
 const ACCOUNT_API_URL = (import.meta.env.VITE_ACCOUNT_API_URL as string | undefined)?.replace(/\/$/, "")
   ?? (import.meta.env.PROD ? "https://accounts.fanofin.site/api" : "http://localhost:8788");
@@ -52,6 +52,14 @@ export const accountApi = {
   copyDeck: (slug: string) => accountRequest<{ id: string; created: boolean }>(`/v1/me/decklists/${encodeURIComponent(slug)}/copy`, { method: "POST", body: "{}" }),
   reportDeck: (slug: string, reason: DeckReportReason, details: string) => accountRequest<{ reported: true }>(`/v1/me/decklists/${encodeURIComponent(slug)}/report`, { method: "POST", body: JSON.stringify({ reason, details }) }),
   bookmarks: () => accountRequest<{ decks: BookmarkedDeck[] }>("/v1/me/bookmarks"),
+  combos: () => accountRequest<{ combos: SavedCombo[] }>("/v1/me/combos"),
+  saveCombo: (input: { name: string; description?: string; tags?: string[]; visibility?: ComboVisibility; definition: ComboDefinition; format?: DeckFormat; championName?: string | null; exampleDeckId?: string | null; deduplicate?: boolean }) => accountRequest<{ combo: SavedCombo; created: boolean }>("/v1/me/combos", { method: "POST", body: JSON.stringify(input) }),
+  updateCombo: (id: string, input: Partial<{ name: string; description: string; tags: string[]; visibility: ComboVisibility; definition: ComboDefinition }>) => accountRequest<{ combo: SavedCombo }>(`/v1/me/combos/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify(input) }),
+  deleteCombo: (id: string) => accountRequest<{ success: true }>(`/v1/me/combos/${encodeURIComponent(id)}`, { method: "DELETE" }),
+  publicCombo: (slug: string) => accountRequest<{ combo: PublicCombo }>(`/v1/combos/${encodeURIComponent(slug)}`),
+  discoverCombos: (query = "") => accountRequest<{ combos: PublicCombo[] }>(`/v1/discover/combos?q=${encodeURIComponent(query)}`),
+  comboBookmarks: () => accountRequest<{ combos: BookmarkedCombo[] }>("/v1/me/combo-bookmarks"),
+  bookmarkCombo: (slug: string, bookmarked: boolean) => accountRequest<{ bookmarked: boolean }>(`/v1/me/combos/${encodeURIComponent(slug)}/bookmark`, { method: "POST", body: JSON.stringify({ bookmarked }) }),
   collection: () => accountRequest<{ entries: CollectionEntry[]; transactions: CollectionTransaction[] }>("/v1/me/collection"),
   updateCollection: (input: { mode: CollectionUpdateMode; source: string; lines: CollectionUpdateLine[] }) => accountRequest<{ transactionId: string; changed: number }>("/v1/me/collection", { method: "POST", body: JSON.stringify(input) }),
   undoCollectionTransaction: (id: string) => accountRequest<{ success: true }>(`/v1/me/collection/transactions/${encodeURIComponent(id)}/undo`, { method: "POST", body: "{}" }),

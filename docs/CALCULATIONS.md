@@ -1534,6 +1534,12 @@ requirement pools. A saved combo may carry a user-entered damage result; it is m
 when that value reaches the user's selected threshold. The tool does not infer combo damage from
 unstructured rules text.
 
+Saved combo definitions use schema version 1 and are stored independently of decks. Only the
+requirements, declared goal/target turn, and user-entered damage are persisted; forecast percentages
+are always recomputed against the active deck. Signed-out recipes remain in browser storage and are
+migrated to the user's private account library after sign-in. Public and unlisted definitions use a
+stable share slug, and bookmarks point to the definition rather than copying a cached forecast.
+
 ### Combo Lab goal rule contracts (`app/src/lib/comboGoals.ts`)
 
 Combo Lab defaults to **Level up my Champion** and also offers goals for activating a key card,

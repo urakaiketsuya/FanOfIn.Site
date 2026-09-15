@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import PageLayout from "../../components/layout/PageLayout";
 import PageHeader from "../../components/ui/PageHeader";
@@ -15,10 +15,11 @@ import { useMinedPackageCandidates } from "../deckbuilder/useMinedPackageCandida
 import { computeLevelGoalAnalysis, type LevelGoalConfig } from "../../lib/levelGoal";
 import { COMBO_GOALS, comboGoal, type ComboGoalId } from "../../lib/comboGoals";
 import { forecastComboByTurn } from "../../lib/comboTurnForecast";
+import ComboLibrary from "./ComboLibrary";
 
 type LabTab = "build" | "calculations" | "explore";
 type RecipePreset = { key: string; label: string; requirements: ComboRecipeRequirement[] };
-type SavedCombo = { id: string; name: string; requirements: ComboRecipeRequirement[]; damage: number };
+type SavedCombo = { id: string; name: string; requirements: ComboRecipeRequirement[]; damage: number; goal?: "level" | "cards" | "custom"; targetTurn?: number | null };
 
 const COMBO_LAB_SCENARIOS_KEY = "combo-lab-scenarios-v1";
 
@@ -114,10 +115,17 @@ export default function ComboLabIndex() {
 
   function saveCurrentCombo() {
     if (currentRecipe.length < 2) return;
-    const combo: SavedCombo = { id: `${Date.now()}`, name: comboName.trim() || `Combo ${savedCombos.length + 1}`, requirements: currentRecipe, damage: Math.max(0, comboDamage) };
+    const combo: SavedCombo = { id: `${Date.now()}`, name: comboName.trim() || `Combo ${savedCombos.length + 1}`, requirements: currentRecipe, damage: Math.max(0, comboDamage), goal: goalId === "level" ? "level" : goalId === "draw" ? "cards" : "custom", targetTurn: goalId === "level" ? goal.targetTurn : null };
     setSavedCombos((current) => [...current, combo]);
     setComboName(`Combo ${savedCombos.length + 2}`);
     setNotice(`${combo.name} saved.`);
+  }
+
+  const finishLocalMigration = useCallback(() => setSavedCombos([]), []);
+  function openLibraryCombo(combo: { name: string; requirements: ComboRecipeRequirement[]; damage: number }) {
+    setLocalPreset({ key: `library:${combo.name}`, label: combo.name, requirements: combo.requirements });
+    setCurrentRecipe(combo.requirements); setComboName(combo.name); setComboDamage(combo.damage); setTab("calculations");
+    setParams((current) => { const next = new URLSearchParams(current); next.set("recipe", JSON.stringify(combo.requirements)); next.set("label", combo.name); next.set("tab", "calculations"); return next; }, { replace: true });
   }
 
   const packages = useMemo(() => {
@@ -174,6 +182,7 @@ export default function ComboLabIndex() {
   return <PageLayout data-component="ComboLabIndex" width="wide">
     <PageHeader title="Combo Lab" description="Define what your combo needs, calculate exact access odds, and start from packages found in real tournament decks." actions={<div className="flex gap-2">
 <Link to="/cards/packages" className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm text-ctp-subtext1 hover:border-ctp-blue">Package catalog</Link>{workspace && <DeckWorkspacePicker compact catalogByName={catalogByName} source="combo" onLoad={loadWorkspace} />}</div>} />
+    <ComboLibrary localCombos={savedCombos} format={workspace?.format} championName={workspace?.championName} onMigrated={finishLocalMigration} onLoad={openLibraryCombo} />
     {!workspace || workspace.main.length === 0 ? <Panel>
 <InlineState className="mb-4">Load a deck before constructing a combo recipe. The calculator evaluates cards in its shuffled Main Deck.</InlineState>
 <DeckWorkspacePicker catalogByName={catalogByName} source="combo" onLoad={loadWorkspace} />

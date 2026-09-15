@@ -7,6 +7,7 @@ import { reportDeck } from "./moderation";
 import { serviceHealth } from "./health";
 import { listCollection, listSharedCardWatches, setSharedCardWatch, undoCollectionTransaction, updateCollection } from "./collection";
 import { changePassword, handleResendWebhook, loginPassword, recordPrivateResourceMiss, registerPassword, removePasswordCredential, requestPasswordReset, resetPassword, verifyEmailToken, verifyTurnstile } from "./password-auth";
+import { createCombo, deleteCombo, discoverCombos, getPublicCombo, listComboBookmarks, listCombos, setComboBookmark, updateCombo } from "./combos";
 
 function response(env: Env, request: Request, body: unknown, status = 200, extra: HeadersInit = {}): Response {
   const origin = request.headers.get("Origin");
@@ -208,6 +209,12 @@ export default {
         return deck ? response(env, request, { deck }) : response(env, request, { error: "Deck not found" }, 404);
       }
       if (request.method === "GET" && url.pathname === "/v1/discover/decklists") return response(env, request, await discoverDecks(env, url.searchParams));
+      if (request.method === "GET" && url.pathname === "/v1/discover/combos") return response(env, request, await discoverCombos(env, url.searchParams));
+      const publicComboMatch = url.pathname.match(/^\/v1\/combos\/([a-f0-9]{32})$/);
+      if (publicComboMatch && request.method === "GET") {
+        const combo = await getPublicCombo(env, publicComboMatch[1]);
+        return combo ? response(env, request, { combo }) : response(env, request, { error: "Combo not found" }, 404);
+      }
       if (request.method === "GET" && url.pathname === "/v1/discover/profiles") return response(env, request, await discoverProfiles(env, url.searchParams));
       const publicProfileMatch = url.pathname.match(/^\/v1\/profiles\/([a-f0-9]{24})$/);
       if (publicProfileMatch && request.method === "GET") {
@@ -258,6 +265,31 @@ export default {
       }
       if (request.method === "GET" && url.pathname === "/v1/me/bookmarks") return response(env, request, { decks: await listBookmarks(env, user) });
 
+      if (request.method === "GET" && url.pathname === "/v1/me/combos") return response(env, request, { combos: await listCombos(env, user) });
+      if (request.method === "POST" && url.pathname === "/v1/me/combos") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        const result = await createCombo(env, user, await jsonBody(request));
+        return response(env, request, result, result.created ? 201 : 200);
+      }
+      if (request.method === "GET" && url.pathname === "/v1/me/combo-bookmarks") return response(env, request, { combos: await listComboBookmarks(env, user) });
+      const comboBookmarkMatch = url.pathname.match(/^\/v1\/me\/combos\/([a-f0-9]{32})\/bookmark$/);
+      if (comboBookmarkMatch && request.method === "POST") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        const bookmarked = (await jsonBody(request) as { bookmarked?: unknown }).bookmarked;
+        if (typeof bookmarked !== "boolean") throw badRequest("Bookmarked must be a boolean");
+        return response(env, request, await setComboBookmark(env, user, comboBookmarkMatch[1], bookmarked));
+      }
+      const comboMatch = url.pathname.match(/^\/v1\/me\/combos\/([^/]+)$/);
+      if (comboMatch && request.method === "PATCH") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        const combo = await updateCombo(env, user, comboMatch[1], await jsonBody(request));
+        return combo ? response(env, request, { combo }) : response(env, request, { error: "Combo not found" }, 404);
+      }
+      if (comboMatch && request.method === "DELETE") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        return await deleteCombo(env, user, comboMatch[1]) ? response(env, request, { success: true }) : response(env, request, { error: "Combo not found" }, 404);
+      }
+
       if (request.method === "GET" && url.pathname === "/v1/me/decks") return response(env, request, { decks: await listDecks(env, user) });
       if (request.method === "GET" && url.pathname === "/v1/me/collection") return response(env, request, await listCollection(env, user));
       if (request.method === "POST" && url.pathname === "/v1/me/collection") {
@@ -282,7 +314,7 @@ export default {
         const deckSummaries = await listDecks(env, user);
         const decks = (await Promise.all(deckSummaries.map((deck) => getDeck(env, user, deck.id)))).filter((deck) => deck !== null);
         const collection = await listCollection(env, user);
-        return response(env, request, { exportedAt: new Date().toISOString(), user, profiles: profiles.results, decks, collection: collection.entries });
+        return response(env, request, { exportedAt: new Date().toISOString(), user, profiles: profiles.results, decks, combos: await listCombos(env, user), collection: collection.entries });
       }
       if (request.method === "PATCH" && url.pathname === "/v1/me") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);

@@ -15,6 +15,7 @@ export * from "./simulator-types.js";
 export * from "./sleeved-types.js";
 export * from "./tcgarchitect-types.js";
 export * from "./saved-deck-types.js";
+export * from "./combo-types.js";
 export * from "./collection-types.js";
 export * from "./community-types.js";
 export * from "./diao.js";

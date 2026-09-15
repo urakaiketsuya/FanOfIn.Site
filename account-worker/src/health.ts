@@ -1,6 +1,6 @@
 import type { Env } from "./auth";
 
-export const REQUIRED_SCHEMA_VERSION = "0014";
+export const REQUIRED_SCHEMA_VERSION = "0015";
 
 export interface ServiceHealth {
   success: boolean;
@@ -27,6 +27,8 @@ export async function serviceHealth(env: Env): Promise<ServiceHealth> {
     await env.ACCOUNT_DB.prepare("SELECT user_id, normalized_email, email_verified FROM password_credentials LIMIT 0").all();
     await env.ACCOUNT_DB.prepare("SELECT credential_id, purpose, expires_at FROM password_auth_tokens LIMIT 0").all();
     await env.ACCOUNT_DB.prepare("SELECT normalized_email, reason FROM email_suppressions LIMIT 0").all();
+    await env.ACCOUNT_DB.prepare("SELECT owner_user_id, definition_hash, visibility FROM user_combos LIMIT 0").all();
+    await env.ACCOUNT_DB.prepare("SELECT user_id, combo_id FROM combo_bookmarks LIMIT 0").all();
     return {
       success: true,
       service: "fanofin-accounts",
