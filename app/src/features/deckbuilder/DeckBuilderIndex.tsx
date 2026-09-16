@@ -22,9 +22,8 @@ import { SIDEBOARD_POINT_BUDGET, sideboardPointCost, validateDeck } from "./vali
 import { computeNewReleaseCards } from "./newReleaseCards";
 import { computeCardDecay } from "../../lib/cardDecay";
 import { accountApi } from "../../lib/accountApi";
-import { clearBuilderSession, loadBuilderSession, parseBuilderShareParams } from "./persistence/builderPersistence";
-import { loadActiveDeckWorkspace, saveActiveDeckWorkspace } from "./persistence/deckWorkspace";
-import { selectionsToMaps, type ChangeLogEntry, type LockedSection, type PopulationSource } from "./model/builderTypes";
+import { clearBuilderSession } from "./persistence/builderPersistence";
+import { type LockedSection, type PopulationSource } from "./model/builderTypes";
 import { buildToDecklist, deriveArchetypeOptions, deriveReviewGroups } from "./engine/builderSelectors";
 import { buildSuggestedDeck } from "./engine/buildSuggestedDeck";
 import { useDeckBuilderData } from "./data/useDeckBuilderData";
@@ -39,6 +38,8 @@ import BuilderCopyPanel from "./panels/BuilderCopyPanel";
 import BuilderBuildPanel from "./panels/BuilderBuildPanel";
 import BuilderWorkbenchNav, { type BuilderWorkbenchView } from "./components/BuilderWorkbenchNav";
 import ChampionLineagePicker from "./components/ChampionLineagePicker";
+import { loadBuilderSessionSeed, parseBuilderUrlSeed } from "./persistence/builderSeed";
+import { useBuilderWorkspacePersistence } from "./controller/useBuilderWorkspacePersistence";
 
 type BuilderTab = BuilderWorkbenchView;
 const TAB_KEYS: BuilderTab[] = ["build", "tools", "copy", "log"];
@@ -49,106 +50,6 @@ const BUILDER_INTENTS: { key: BuilderIntent; title: string; description: string 
   { key: "seed", title: "Build around cards", description: "Choose a Champion and Spirit, lock the cards you care about, and fill the rest." },
   { key: "scratch", title: "Start from scratch", description: "Choose a Champion and Spirit, then optimize a full suggested list." },
 ];
-
-interface UrlSeed {
-  championName: string;
-  spiritFilter: string | null;
-  archetypeId: string | null;
-  lockedCards: Map<string, number>;
-  lockedSections: Map<string, LockedSection>;
-}
-
-/**
- * Parses a shared link's ?champion=&spirit=&locked= params, for use as the *initial* state itself
- * (see the useState calls below) rather than seeding via an effect after mount. An effect-based
- * approach was tried first and had a real bug: the champion-reset effect (keyed on championName)
- * and a "seed from URL" effect both run on mount, in declaration order, and the reset effect's
- * very first run has no way to know a seed is coming a moment later — it queues a transition that
- * clears lockedCards, which then lands *after* the seed effect's own (higher-priority) update,
- * silently wiping the shared cards back out. Computing the seed before first render sidesteps the
- * race entirely: there's no reset-then-reseed dance because the state is correct from render one.
- */
-function parseUrlSeed(searchParams: URLSearchParams): UrlSeed | null {
-  const selection = parseBuilderShareParams(searchParams);
-  if (!selection?.championName) return null;
-  const { cards: lockedCards, sections: lockedSections } = selectionsToMaps(selection.lockedCards ?? []);
-  return {
-    championName: selection.championName,
-    spiritFilter: selection.spiritName ?? null,
-    archetypeId: selection.archetypeId ?? null,
-    lockedCards,
-    lockedSections,
-  };
-}
-
-interface SessionSeed {
-  championName: string;
-  spiritFilter: string | null;
-  lockedCards: Map<string, number>;
-  lockedSections: Map<string, LockedSection>;
-  rejectedCards: Set<string>;
-  pillarBias: RatingPillar | null;
-  archetypeId: string | null;
-  populationSource: PopulationSource;
-  championLevelCap: number | null;
-  collectionMode: "all" | "prioritize" | "owned-only";
-  changeLog: ChangeLogEntry[];
-  maybeboard: Map<string, number>;
-}
-
-/**
- * Restores the last in-progress session from this browser tab, so navigating away (e.g. clicking
- * a suggested card's own page) and back via the browser Back button doesn't reset every choice —
- * sessionStorage survives that unmount/remount, unlike plain component state. Scoped to the tab
- * (cleared when it closes) — distinct from the deliberate, on-demand "Copy share link" snapshot
- * (handleCopyShareLink below), which stays untouched. Wrapped in try/catch: a corrupted or
- * outdated-shape blob (e.g. from a future version of this file) should read as "no saved session,"
- * never crash the page — same defensive posture parseUrlSeed's callers already get from a missing
- * `?champion=` param.
- */
-function loadSessionSeed(): SessionSeed | null {
-  const workspace = loadActiveDeckWorkspace(sessionStorage);
-  if (workspace?.source === "review" && workspace.championName) {
-    const selections = [
-      ...workspace.main.map((line) => ({ ...line, section: "main" as const })),
-      ...workspace.material.map((line) => ({ ...line, section: "material" as const })),
-      ...workspace.sideboard.map((line) => ({ ...line, section: "sideboard" as const })),
-    ];
-    const locked = selectionsToMaps(selections);
-    return {
-      championName: workspace.championName,
-      spiritFilter: workspace.spiritName,
-      lockedCards: locked.cards,
-      lockedSections: locked.sections,
-      rejectedCards: new Set(),
-      pillarBias: null,
-      archetypeId: null,
-      populationSource: "balanced",
-      championLevelCap: null,
-      collectionMode: "all",
-      changeLog: [],
-      maybeboard: new Map(workspace.maybeboard.map((line) => [line.name, line.quantity])),
-    };
-  }
-  const session = loadBuilderSession(sessionStorage);
-  if (!session?.selection.championName) return null;
-  const locked = selectionsToMaps(session.selection.lockedCards);
-  const maybeboard = selectionsToMaps(session.selection.maybeboard);
-  return {
-    championName: session.selection.championName,
-    spiritFilter: session.selection.spiritName,
-    lockedCards: locked.cards,
-    lockedSections: locked.sections,
-    rejectedCards: new Set(session.selection.rejectedCards),
-    pillarBias: session.selection.pillarBias,
-    archetypeId: session.selection.archetypeId,
-    populationSource: session.selection.populationSource,
-    championLevelCap: session.selection.championLevelCap,
-    collectionMode: session.selection.collectionMode,
-    changeLog: session.changeLog,
-    maybeboard: maybeboard.cards,
-  };
-}
 
 export default function DeckBuilderIndex() {
   useDocumentTitle(
@@ -171,12 +72,12 @@ export default function DeckBuilderIndex() {
   // Computed fresh each render (cheap — parsing a couple of query params), but only its value on
   // the very first render actually matters: every useState below that reads from it only consults
   // its initializer once, on mount, same as React already guarantees for lazy useState.
-  const urlSeed = parseUrlSeed(searchParams);
+  const urlSeed = parseBuilderUrlSeed(searchParams);
   // An explicit shared link always wins over a leftover session — someone opening a shared link
   // wants *that* state, not whatever this tab happened to have saved from before. Only consulted
   // once (mount), same as urlSeed itself — see loadSessionSeed's own doc comment for why a lazy
   // initializer, not an effect, is what avoids the reset-then-reseed race parseUrlSeed warns about.
-  const sessionSeed = urlSeed ? null : loadSessionSeed();
+  const sessionSeed = urlSeed ? null : loadBuilderSessionSeed(sessionStorage);
 
   const workflow = useBuilderWorkflowState({
     championName: urlSeed?.championName ?? sessionSeed?.championName ?? null,
@@ -896,21 +797,7 @@ export default function DeckBuilderIndex() {
   const mainOnlyLines = useMemo(() => build.main.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.main]);
   const materialOnlyLines = useMemo(() => build.material.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.material]);
   const sideboardLines = useMemo(() => build.sideboard.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.sideboard]);
-  useEffect(() => {
-    if (!championName || mainOnlyLines.length === 0) return;
-    saveActiveDeckWorkspace(sessionStorage, {
-      source: "builder",
-      title: championName ? `${championName} guided build` : null,
-      sourceLabel: "Guided Deck Builder",
-      format: deckFormat,
-      championName,
-      spiritName: spiritFilter,
-      main: mainOnlyLines,
-      material: materialOnlyLines,
-      sideboard: sideboardLines,
-      maybeboard: Array.from(maybeboard, ([name, quantity]) => ({ name, quantity })),
-    });
-  }, [championName, spiritFilter, deckFormat, mainOnlyLines, materialOnlyLines, sideboardLines, maybeboard]);
+  useBuilderWorkspacePersistence({ championName, spiritName: spiritFilter, format: deckFormat, main: mainOnlyLines, material: materialOnlyLines, sideboard: sideboardLines, maybeboard });
 
   const newReleaseCards = useMemo(() => {
     const includedNames = new Set(buildLines.map((line) => line.name));
