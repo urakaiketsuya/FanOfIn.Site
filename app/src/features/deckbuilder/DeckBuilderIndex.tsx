@@ -23,7 +23,7 @@ import { computeNewReleaseCards } from "./newReleaseCards";
 import { computeCardDecay } from "../../lib/cardDecay";
 import { accountApi } from "../../lib/accountApi";
 import { clearBuilderSession } from "./persistence/builderPersistence";
-import { type LockedSection, type PopulationSource } from "./model/builderTypes";
+import { type PopulationSource } from "./model/builderTypes";
 import { buildToDecklist, deriveArchetypeOptions, deriveReviewGroups } from "./engine/builderSelectors";
 import { buildSuggestedDeck } from "./engine/buildSuggestedDeck";
 import { useDeckBuilderData } from "./data/useDeckBuilderData";
@@ -40,6 +40,7 @@ import BuilderWorkbenchNav, { type BuilderWorkbenchView } from "./components/Bui
 import ChampionLineagePicker from "./components/ChampionLineagePicker";
 import { loadBuilderSessionSeed, parseBuilderUrlSeed } from "./persistence/builderSeed";
 import { useBuilderWorkspacePersistence } from "./controller/useBuilderWorkspacePersistence";
+import { promoteMaybeboardCard, removeLockedCard, restoreChampionLevel, selectChampionPrint, toggleLockedCard } from "./controller/builderCardMutations";
 
 type BuilderTab = BuilderWorkbenchView;
 const TAB_KEYS: BuilderTab[] = ["build", "tools", "copy", "log"];
@@ -547,75 +548,28 @@ export default function DeckBuilderIndex() {
     const willLock = !lockedCards.has(name);
     pendingActionRef.current = { label: willLock ? `Chose ${name}` : `Released ${name}`, subject: name };
     startTransition(() => {
-      setLockedCards((prev) => {
-        const next = new Map(prev);
-        if (next.has(name)) next.delete(name);
-        else next.set(name, quantity);
-        return next;
-      });
-      setLockedSections((prev) => {
-        const next = new Map(prev);
-        if (willLock && section) next.set(name, section);
-        else next.delete(name);
-        return next;
-      });
+      const next = toggleLockedCard(lockedCards, lockedSections, name, quantity, section);
+      setLockedCards(next.cards);
+      setLockedSections(next.sections);
     });
   }
 
   function chooseChampionLineagePrint(name: string) {
     const selected = catalogByName.get(name);
     if (!selected || selected.level == null) return;
-    const selectedIdentity = selected.name.split(",")[0].trim();
     pendingActionRef.current = { label: `Chose ${selected.name} for Level ${selected.level}`, subject: selected.name };
     startTransition(() => {
-      setLockedCards((previous) => {
-        const next = new Map(previous);
-        for (const lockedName of previous.keys()) {
-          const card = catalogByName.get(lockedName);
-          if (card?.types.includes("CHAMPION") && !card.subtypes.includes("SPIRIT") && card.level === selected.level && card.name.split(",")[0].trim() === selectedIdentity) next.delete(lockedName);
-        }
-        next.set(selected.name, 1);
-        return next;
-      });
-      setLockedSections((previous) => {
-        const next = new Map(previous);
-        for (const lockedName of previous.keys()) {
-          const card = catalogByName.get(lockedName);
-          if (card?.types.includes("CHAMPION") && !card.subtypes.includes("SPIRIT") && card.level === selected.level && card.name.split(",")[0].trim() === selectedIdentity) next.delete(lockedName);
-        }
-        next.set(selected.name, "material");
-        return next;
-      });
-      setRejectedCards((previous) => {
-        if (!previous.has(selected.name)) return previous;
-        const next = new Set(previous);
-        next.delete(selected.name);
-        return next;
-      });
+      const next = selectChampionPrint(lockedCards, lockedSections, rejectedCards, selected, catalogByName);
+      setLockedCards(next.cards);
+      setLockedSections(next.sections);
+      setRejectedCards(next.rejected);
     });
   }
 
   function restoreSuggestedChampionLevel(level: number) {
     if (!championName) return;
     pendingActionRef.current = { label: `Restored suggested Level ${level} Champion print`, subject: null };
-    startTransition(() => {
-      setLockedCards((previous) => {
-        const next = new Map(previous);
-        for (const lockedName of previous.keys()) {
-          const card = catalogByName.get(lockedName);
-          if (card?.types.includes("CHAMPION") && !card.subtypes.includes("SPIRIT") && card.level === level && card.name.split(",")[0].trim() === championName) next.delete(lockedName);
-        }
-        return next;
-      });
-      setLockedSections((previous) => {
-        const next = new Map(previous);
-        for (const lockedName of previous.keys()) {
-          const card = catalogByName.get(lockedName);
-          if (card?.types.includes("CHAMPION") && !card.subtypes.includes("SPIRIT") && card.level === level && card.name.split(",")[0].trim() === championName) next.delete(lockedName);
-        }
-        return next;
-      });
-    });
+    startTransition(() => { const next = restoreChampionLevel(lockedCards, lockedSections, level, championName, catalogByName); setLockedCards(next.cards); setLockedSections(next.sections); });
   }
 
   /** Editing a locked card's own copy count — doesn't touch lock state or section, just the quantity. No changelog entry: this is a fine-tune, not a suggestion-changing action, and firing one per keystroke on the number input would spam the log. */
@@ -635,34 +589,9 @@ export default function DeckBuilderIndex() {
     pendingActionRef.current = { label: locked ? `Removed ${name}` : `Excluded ${name} from suggestions`, subject: name };
     startTransition(() => {
       if (locked) {
-        setLockedCards((prev) => {
-          const next = new Map(prev);
-          const removed = catalogByName.get(name);
-          // Champion levels are a progression: removing level 2 must also remove any later
-          // locked levels for that same Champion, otherwise the material deck is invalid.
-          if (removed?.types.includes("CHAMPION") && !removed.subtypes.includes("SPIRIT") && removed.level !== null && removed.level !== undefined) {
-            const identity = removed.name.split(",")[0].trim();
-            for (const lockedName of next.keys()) {
-              const candidate = catalogByName.get(lockedName);
-              if (candidate?.types.includes("CHAMPION") && !candidate.subtypes.includes("SPIRIT") && candidate.level !== null && candidate.level !== undefined && candidate.level > removed.level && candidate.name.split(",")[0].trim() === identity) next.delete(lockedName);
-            }
-          }
-          next.delete(name);
-          return next;
-        });
-        setLockedSections((prev) => {
-          const next = new Map(prev);
-          const removed = catalogByName.get(name);
-          if (removed?.types.includes("CHAMPION") && !removed.subtypes.includes("SPIRIT") && removed.level !== null && removed.level !== undefined) {
-            const identity = removed.name.split(",")[0].trim();
-            for (const lockedName of next.keys()) {
-              const candidate = catalogByName.get(lockedName);
-              if (candidate?.types.includes("CHAMPION") && !candidate.subtypes.includes("SPIRIT") && candidate.level !== null && candidate.level !== undefined && candidate.level > removed.level && candidate.name.split(",")[0].trim() === identity) next.delete(lockedName);
-            }
-          }
-          next.delete(name);
-          return next;
-        });
+        const next = removeLockedCard(lockedCards, lockedSections, name, catalogByName);
+        setLockedCards(next.cards);
+        setLockedSections(next.sections);
       } else {
         setRejectedCards((prev) => new Set(prev).add(name));
       }
@@ -719,19 +648,13 @@ export default function DeckBuilderIndex() {
   }
 
   function promoteMaybeCard(name: string) {
-    const quantity = maybeboard.get(name);
-    if (!quantity || lockedCards.has(name)) return;
-    const card = catalogByName.get(name);
-    const section: LockedSection = card?.types.some((type) => type === "CHAMPION" || type === "REGALIA") ? "material" : "main";
+    const next = promoteMaybeboardCard(lockedCards, lockedSections, maybeboard, name, catalogByName);
+    if (!next) return;
     pendingActionRef.current = { label: `Added ${name} from maybeboard`, subject: name };
     startTransition(() => {
-      setLockedCards((previous) => new Map(previous).set(name, quantity));
-      setLockedSections((previous) => new Map(previous).set(name, section));
-      setMaybeboard((previous) => {
-        const next = new Map(previous);
-        next.delete(name);
-        return next;
-      });
+      setLockedCards(next.cards);
+      setLockedSections(next.sections);
+      setMaybeboard(next.maybeboard);
     });
   }
 
