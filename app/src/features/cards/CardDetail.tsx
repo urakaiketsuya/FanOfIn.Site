@@ -8,8 +8,6 @@ import ElementIcon from "../../components/ElementIcon";
 import CostIcon from "../../components/CostIcon";
 import ClassIcon from "../../components/ClassIcon";
 import TypeIcon from "../../components/TypeIcon";
-import TopCardsSections from "../../components/TopCardsSections";
-import CardImpactTable from "../../components/CardImpactTable";
 import TopDecksList from "../../components/TopDecksList";
 import { typeIconKey } from "../../lib/cardTypeIcon";
 import { useCard } from "./useCard";
@@ -27,7 +25,6 @@ import type { IntentMatch } from "../../lib/cardIntent";
 import { getCardPackageMembership } from "../deckbuilder/packageGuardrails";
 import { useMinedPackageCandidates } from "../deckbuilder/useMinedPackageCandidates";
 import CardHoverPreview from "../../components/CardHoverPreview";
-import CardComparisonTable from "../compare/CardComparisonTable";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCommunityBlendedCardInclusion, useCommunityBlendedDeckReferences } from "../community/data";
@@ -42,6 +39,7 @@ import PageLayout from "../../components/layout/PageLayout";
 import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
 import { InlineState, EmptyState } from "../../components/ui/ContentState";
+import { CardComparePanel, CardPlayedWithPanel, CardSynergyPanel } from "./CardRelationshipPanels";
 
 const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_RECENT_DECKS_SHOWN = 5;
@@ -199,7 +197,6 @@ export default function CardDetail() {
     return catalogBySlug.get(ref.slug) ?? cardCatalog.find((c) => c.name === ref.name);
   }
   const compareCardNames = useMemo(() => Array.from(new Set(cardCatalog.map((c) => c.name))).sort(), [cardCatalog]);
-  const compareCardNameSet = useMemo(() => new Set(compareCardNames), [compareCardNames]);
   const [compareWith, setCompareWith] = useState<string[]>([]);
   const [compareInput, setCompareInput] = useState("");
   // Reseeds to just this page's card whenever it changes (navigating to a different card) —
@@ -210,7 +207,7 @@ export default function CardDetail() {
   }, [card?.name]);
 
   function addCompareCard(name: string) {
-    if (!compareCardNameSet.has(name) || compareWith.includes(name)) return;
+    if (!compareCardNames.includes(name) || compareWith.includes(name)) return;
     setCompareWith((prev) => [...prev, name]);
     setCompareInput("");
   }
@@ -659,39 +656,11 @@ export default function CardDetail() {
       )}
 
       {tab === "usedWith" && (
-        <Section className="mt-4" heading="compact" title={`Most used with ${card.name}`}>
-          {combination.main.length > 0 || combination.material.length > 0 || combination.sideboard.length > 0 ? (
-            <>
-              <p className="mt-1 text-xs text-ctp-subtext0">
-                {combination.deckCount !== undefined && `Across ${combination.deckCount} decks. `}Other cards most often
-                played alongside this one.
-              </p>
-              <div className="mt-3">
-                <TopCardsSections topCards={comboTopCards} cardImages={comboCardImages} />
-              </div>
-            </>
-          ) : (
-            <InlineState className="mt-4 text-sm">Not enough decks running {card.name} to say what's played alongside it yet.</InlineState>
-          )}
-        </Section>
+        <CardPlayedWithPanel cardName={card.name} deckCount={combination.deckCount} topCards={comboTopCards} cardImages={comboCardImages} />
       )}
 
       {tab === "synergy" && (
-        <Section className="mt-4" heading="compact" title="Win-rate synergy">
-          {synergy.cards.length > 0 ? (
-            <>
-              <p className="mt-1 text-xs text-ctp-subtext0">
-                Across {synergy.totalDecks} decks running {card.name}, cards that correlate with an even higher win rate
-                when also included — different from "Most Used With" (that's ranked by how often cards appear
-                together; this is ranked by whether the pairing actually wins more).{" "}
-                <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link>
-              </p>
-              <CardImpactTable cards={synergy.cards} cardImages={synergyCardImages} withLabel="Win rate (with)" withoutLabel="Win rate (without)" />
-            </>
-          ) : (
-            <InlineState className="mt-4 text-sm">No card clears the sample bar for a win-rate synergy with {card.name} yet.</InlineState>
-          )}
-        </Section>
+        <CardSynergyPanel cardName={card.name} cards={synergy.cards} totalDecks={synergy.totalDecks} cardImages={synergyCardImages} />
       )}
 
       {tab === "similar" && (
@@ -960,48 +929,7 @@ export default function CardDetail() {
       )}
 
       {tab === "compare" && (
-        <Section
-          className="mt-4"
-          heading="compact"
-          title="Compare with other cards"
-          description="Add any card to see usage, win rate, and price side by side — a quick way to decide between two options without leaving this page."
-        >
-          <input
-            type="text"
-            list="card-detail-compare-options"
-            aria-label="Card name"
-            value={compareInput}
-            onChange={(e) => {
-              setCompareInput(e.target.value);
-              if (compareCardNameSet.has(e.target.value)) addCompareCard(e.target.value);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && compareCardNameSet.has(compareInput)) addCompareCard(compareInput);
-            }}
-            placeholder="Type a card name to add…"
-            className="mt-2 w-full max-w-sm rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
-          />
-          <datalist id="card-detail-compare-options">
-            {compareCardNames.map((n) => (
-              <option key={n} value={n} />
-            ))}
-          </datalist>
-
-          {compareWith.length > 0 && (
-            <div className="mt-3">
-              <CardComparisonTable names={compareWith} onRemove={removeCompareCard} />
-            </div>
-          )}
-
-          {compareWith.length > 1 && (
-            <Link
-              to={`/compare?type=cards&cards=${encodeURIComponent(compareWith.join(","))}`}
-              className="mt-2 inline-block text-xs text-ctp-blue hover:underline"
-            >
-              Open in full Compare tool &rarr;
-            </Link>
-          )}
-        </Section>
+        <CardComparePanel options={compareCardNames} input={compareInput} selected={compareWith} onInputChange={setCompareInput} onAdd={addCompareCard} onRemove={removeCompareCard} />
       )}
     </PageLayout>
   );
