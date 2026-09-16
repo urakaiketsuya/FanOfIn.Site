@@ -40,6 +40,7 @@ import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
 import { InlineState, EmptyState } from "../../components/ui/ContentState";
 import { CardComparePanel, CardPlayedWithPanel, CardSynergyPanel } from "./CardRelationshipPanels";
+import CardInfoPanel from "./CardInfoPanel";
 
 const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_RECENT_DECKS_SHOWN = 5;
@@ -139,14 +140,6 @@ function Stat({ label, value, icon }: { label: string; value: number | string | 
       <div className="mt-0.5 text-xl font-bold leading-none text-ctp-text">{value}</div>
     </div>
   );
-}
-
-function Metric({ label, value, detail, tone = "default" }: { label: string; value: string | number; detail: string; tone?: "default" | "success" }) {
-  return <div className={`rounded-xl p-4 ${tone === "success" ? "bg-ctp-green/10" : "bg-ctp-surface0"}`}>
-    <p className="text-[11px] font-semibold uppercase tracking-wide text-ctp-subtext0">{label}</p>
-    <p className={`mt-1 text-2xl font-bold ${tone === "success" ? "text-ctp-green" : "text-ctp-text"}`}>{value}</p>
-    <p className="mt-0.5 text-xs text-ctp-subtext0">{detail}</p>
-  </div>;
 }
 
 export default function CardDetail() {
@@ -530,110 +523,7 @@ export default function CardDetail() {
       </div>
 
       {tab === "info" && (
-        <>
-          {cardStat && (
-            <Section className="mt-4" heading="dense" title="Tournament usage">
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
-                <Metric label="Decks" value={cardStat.deckCount} detail="Tournament lists" />
-                {metaShare !== null && <Metric label="Meta share" value={`${(metaShare * 100).toFixed(1)}%`} detail="Tracked tournament decks" />}
-                <Metric label="Events" value={cardStat.eventCount} detail="Distinct events" />
-                <Metric label="Win rate" value={`${(cardStat.avgWinRate * 100).toFixed(0)}%`} detail="Raw results" />
-                <Metric label="Adjusted" value={`${(cardStat.adjustedWinRate * 100).toFixed(0)}%`} detail="Strength-adjusted" tone={cardStat.adjustedWinRate >= 0.5 ? "success" : "default"} />
-              </div>
-              {cardStat.recentDeckCount > cardStat.priorDeckCount && cardStat.priorDeckCount > 0 && <p className="mt-2 inline-flex rounded-full bg-ctp-green/10 px-2.5 py-1 text-xs font-medium text-ctp-green">↗ Trending up</p>}
-              {communityInclusion && (
-                <p className="mt-1 text-xs text-ctp-mauve">
-                  {(communityInclusion.percentOfDecks * 100).toFixed(0)}% of community decks include this — popularity
-                  in community brews, not a performance figure like the stats above.
-                </p>
-              )}
-            </Section>
-          )}
-
-          {quantityBuckets.length >= 2 && (
-            <Section className="mt-4" heading="dense" collapsible defaultOpen={false} title="Win rate by quantity" description="Does running more (or fewer) copies actually change the outcome?">
-              <div className="mt-1 flex flex-wrap gap-4 text-sm text-ctp-subtext1">
-                {quantityBuckets.map((q) => (
-                  <span key={q.quantity}>
-                    {q.quantity}x: <span className="font-semibold text-ctp-text">{(q.adjustedWinRate * 100).toFixed(0)}%</span>{" "}
-                    <span className="text-xs text-ctp-subtext0">({q.deckCount} decks)</span>
-                  </span>
-                ))}
-              </div>
-            </Section>
-          )}
-
-          {edition?.illustrator && (
-            <Section className="mt-4" heading="dense" collapsible defaultOpen={false} title="Illustrator">
-              <Link
-                to={`/cards?artist=${encodeURIComponent(edition.illustrator)}`}
-                className="mt-1 inline-block text-sm text-ctp-blue hover:underline"
-              >
-                {edition.illustrator}
-              </Link>
-            </Section>
-          )}
-
-          <Section className="mt-4" heading="dense" title="Legality">
-            <div className="mt-1 flex flex-wrap gap-2 text-sm">
-              {(["STANDARD", "PANTHEON"] as const).map((format) => {
-                // The API only publishes an entry for a card once it's been individually
-                // banned/restricted — most of the catalog (including entire recently-released sets)
-                // has no record at all, which means "no restriction," not "unconfirmed." Falling
-                // back to the same default copy limit validateDeck.ts/useSuggestedBuild.ts already
-                // assume elsewhere, rather than hiding the section, so a real, legal card doesn't
-                // read as having unknown/unconfirmed legality.
-                const limit = card.legality?.[format]?.limit;
-                const inferred = limit === undefined;
-                const effectiveLimit = limit ?? (format === "PANTHEON" ? 1 : 4);
-                return (
-                  <span key={format} className="text-ctp-subtext1">
-                    {format}:{" "}
-                    {effectiveLimit === 0 ? (
-                      <span className="text-ctp-red">Banned</span>
-                    ) : (
-                      <>
-                        Max {effectiveLimit}
-                        {inferred && <span className="text-ctp-subtext0"> (assumed)</span>}
-                      </>
-                    )}
-                  </span>
-                );
-              })}
-            </div>
-          </Section>
-
-          {(card.references.length > 0 || card.referenced_by.length > 0) && (
-            <div className="mt-4 space-y-2">
-              {card.references.length > 0 && (
-                <Section heading="dense" collapsible defaultOpen={false} title="References">
-                  <div className="mt-1 flex flex-wrap gap-2 text-sm">
-                    {card.references.map((ref) => (
-                      <CardHoverPreview key={ref.slug} image={resolveReference(ref)?.editions[0]?.image} alt={ref.name}>
-                        <Link to={`/cards/${ref.slug}`} className="text-ctp-blue hover:underline">
-                          {ref.name} <span className="text-ctp-subtext0">({ref.kind.toLowerCase()})</span>
-                        </Link>
-                      </CardHoverPreview>
-                    ))}
-                  </div>
-                </Section>
-              )}
-              {card.referenced_by.length > 0 && (
-                <Section heading="dense" collapsible defaultOpen={false} title="Referenced by">
-                  <div className="mt-1 flex flex-wrap gap-2 text-sm">
-                    {card.referenced_by.map((ref) => (
-                      <CardHoverPreview key={ref.slug} image={resolveReference(ref)?.editions[0]?.image} alt={ref.name}>
-                        <Link to={`/cards/${ref.slug}`} className="text-ctp-blue hover:underline">
-                          {ref.name}
-                        </Link>
-                      </CardHoverPreview>
-                    ))}
-                  </div>
-                </Section>
-              )}
-            </div>
-          )}
-        </>
+        <CardInfoPanel card={card} illustrator={edition?.illustrator} cardStat={cardStat} metaShare={metaShare} communityShare={communityInclusion?.percentOfDecks} quantityBuckets={quantityBuckets} resolveReference={resolveReference} />
       )}
 
       {tab === "decks" && playedByArchetypes.length > 0 && (
