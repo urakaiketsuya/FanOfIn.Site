@@ -1,21 +1,17 @@
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import type { Card, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
+import type { DeckFormat } from "@gatcg/shared";
 import { useTabParam } from "../../lib/useTabParam";
 import { useCardFieldVisibility } from "./useCardFieldVisibility";
 import { useBuilderViewMode } from "./useBuilderViewMode";
-import { SIDEBOARD_POINT_BUDGET, sideboardPointCost, validateDeck } from "./validateDeck";
-import { computeNewReleaseCards } from "./newReleaseCards";
-import { buildToDecklist } from "./engine/builderSelectors";
 import { useBuilderWorkflowState } from "./controller/useBuilderWorkflowState";
 import { useBuilderSessionPersistence } from "./controller/useBuilderSessionPersistence";
-import { useBuilderCopyState } from "./controller/useBuilderCopyState";
 import { loadBuilderSessionSeed, parseBuilderUrlSeed } from "./persistence/builderSeed";
-import { useBuilderWorkspacePersistence } from "./controller/useBuilderWorkspacePersistence";
 import { useBuilderRecommendationModel } from "./controller/useBuilderRecommendationModel";
 import { useBuilderChangeTracking } from "./controller/useBuilderChangeTracking";
 import { useBuilderCardActions } from "./controller/useBuilderCardActions";
 import { useBuilderLifecycle } from "./controller/useBuilderLifecycle";
+import { useBuilderPresentationModel } from "./controller/useBuilderPresentationModel";
 
 export type BuilderTab = BuilderWorkbenchView;
 export type BuilderIntent = "seed" | "scratch";
@@ -138,51 +134,10 @@ export function useDeckBuilderController() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const mainTotal = build.main.reduce((sum, c) => sum + c.quantity, 0);
-  const materialTotal = build.material.reduce((sum, c) => sum + c.quantity, 0);
-  const sideboardTotal = build.sideboard.reduce((sum, c) => sum + c.quantity, 0);
-  const selectedAddCard = cardNameSet.has(cardInput) && !lockedCards.has(cardInput)
-    ? catalogByName.get(cardInput)
-    : undefined;
-  const selectedAddQuantity = selectedAddCard?.types.some((type) => type === "CHAMPION" || type === "REGALIA") ? 1 : 4;
-  const currentSideboardPoints = build.sideboard.reduce(
-    (sum, card) => sum + card.quantity * sideboardPointCost(catalogByName.get(card.cardName)),
-    0,
-  );
-  const selectedSideboardPoints = selectedAddCard ? selectedAddQuantity * sideboardPointCost(selectedAddCard) : 0;
-  const canAddToSideboard = Boolean(selectedAddCard) && currentSideboardPoints + selectedSideboardPoints <= SIDEBOARD_POINT_BUDGET;
-  const sideboardDestinationSelected = addDestination === "sideboard" && canAddToSideboard;
-  // Deck price/Stats stay scoped to material+main — same "sideboard is situational tech, not part
-  // of deck identity" convention as everywhere else in this codebase (Popular Decks, Archetypes,
-  // etc.); sideboard gets its own separate price line below instead, matching DecklistView.tsx.
-  const buildLines = useMemo(
-    () => [...build.material, ...build.main].map((c) => ({ name: c.cardName, quantity: c.quantity })),
-    [build.material, build.main],
-  );
-  const mainOnlyLines = useMemo(() => build.main.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.main]);
-  const materialOnlyLines = useMemo(() => build.material.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.material]);
-  const sideboardLines = useMemo(() => build.sideboard.map((c) => ({ name: c.cardName, quantity: c.quantity })), [build.sideboard]);
-  useBuilderWorkspacePersistence({ championName, spiritName: spiritFilter, format: deckFormat, main: mainOnlyLines, material: materialOnlyLines, sideboard: sideboardLines, maybeboard });
-
-  const newReleaseCards = useMemo(() => {
-    const includedNames = new Set(buildLines.map((line) => line.name));
-    const deckCards = buildLines.map((line) => catalogByName.get(line.name)).filter((c): c is Card => c !== undefined);
-    return computeNewReleaseCards(catalogByName.values(), deckCards, identityElements, includedNames);
-  }, [buildLines, catalogByName, identityElements]);
-  const decklist: OmnidexDecklist = useMemo(() => buildToDecklist(build), [build]);
-  const keptDecklist: OmnidexDecklist = useMemo(() => buildToDecklist(build, true), [build]);
-  const validation = useMemo(
-    () => validateDeck({ main: build.main, material: build.material, sideboard: build.sideboard }, catalogByName, identityElements, deckFormat),
-    [build.main, build.material, build.sideboard, catalogByName, identityElements, deckFormat],
-  );
-  const importedCardCount = Array.from(lockedCards.values()).reduce((sum, quantity) => sum + quantity, 0);
-  const identityComplete = Boolean(championName && spiritFilter);
-  const buildComplete = identityComplete && mainTotal > 0;
-  const reviewComplete = buildComplete && reviewItemCount === 0;
-  const validationComplete = validation.status === "Legal";
-  const copyPanel = useBuilderCopyState({
-    build, buildLines, sideboardLines, decklist, keptDecklist, cardsByName, championName, spiritFilter,
-    archetypeId, deckFormat, lockedCards, lockedSections, improveDeckId, maybeboard,
+  const presentation = useBuilderPresentationModel({
+    build, catalogByName, cardsByName, identityElements, deckFormat, championName, spiritFilter,
+    archetypeId, lockedCards, lockedSections, maybeboard, improveDeckId, reviewItemCount, cardInput,
+    cardNameSet, addDestination,
   });
 
 
@@ -271,22 +226,22 @@ export function useDeckBuilderController() {
     changePillarBias,
     changeArchetype,
     changeChampionLevelCap,
-    mainTotal,
-    materialTotal,
-    sideboardTotal,
-    selectedSideboardPoints,
-    currentSideboardPoints,
-    canAddToSideboard,
-    sideboardDestinationSelected,
-    newReleaseCards,
-    decklist,
-    validation,
+    mainTotal: presentation.mainTotal,
+    materialTotal: presentation.materialTotal,
+    sideboardTotal: presentation.sideboardTotal,
+    selectedSideboardPoints: presentation.selectedSideboardPoints,
+    currentSideboardPoints: presentation.currentSideboardPoints,
+    canAddToSideboard: presentation.canAddToSideboard,
+    sideboardDestinationSelected: presentation.sideboardDestinationSelected,
+    newReleaseCards: presentation.newReleaseCards,
+    decklist: presentation.decklist,
+    validation: presentation.validation,
     resetBuilder,
-    importedCardCount,
-    identityComplete,
-    reviewComplete,
-    validationComplete,
-    copyPanel,
+    importedCardCount: presentation.importedCardCount,
+    identityComplete: presentation.identityComplete,
+    reviewComplete: presentation.reviewComplete,
+    validationComplete: presentation.validationComplete,
+    copyPanel: presentation.copyPanel,
     effectivePopulationSource,
     simulatorResult,
     archetypeOptions,
