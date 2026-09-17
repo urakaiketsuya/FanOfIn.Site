@@ -1,18 +1,11 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { priceKey, type PackageCandidateEvidence, type PriceHistoryPoint, type TopCardsBySection } from "@gatcg/shared";
 import { gatcgApi } from "../../lib/api/client";
-import CardImage from "../../components/CardImage";
-import ElementIcon from "../../components/ElementIcon";
-import CostIcon from "../../components/CostIcon";
-import ClassIcon from "../../components/ClassIcon";
-import TypeIcon from "../../components/TypeIcon";
-import { typeIconKey } from "../../lib/cardTypeIcon";
 import { useCard } from "./useCard";
 import { usePriceLookup } from "../pricing/usePriceLookup";
 import { usePriceHistoryData } from "../pricing/usePriceHistory";
-import HistoryChart from "../../components/HistoryChart";
 import { useCardStatsData, useArchetypeTaxonomyData, useCardQuantityStatsData } from "../archetypes/data";
 import { useCardCatalog } from "./useCardCatalog";
 import { useCardCombination } from "./useCardCombination";
@@ -20,27 +13,24 @@ import { useCardSynergy } from "./useCardSynergy";
 import { useSimilarCards } from "./useSimilarCards";
 import { earliestReleaseDate } from "../../lib/cardSimilarity";
 import { useIntentCards } from "./useIntentCards";
-import type { IntentMatch } from "../../lib/cardIntent";
 import { getCardPackageMembership } from "../deckbuilder/packageGuardrails";
 import { useMinedPackageCandidates } from "../deckbuilder/useMinedPackageCandidates";
-import CardHoverPreview from "../../components/CardHoverPreview";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCommunityBlendedCardInclusion, useCommunityBlendedDeckReferences } from "../community/data";
 import { useHipsterData } from "../players/data";
 import { useOmnidexPlayers, useEventNameById } from "../tournaments/data";
-import { formatUsd } from "../../lib/format";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import Tabs from "../../components/ui/Tabs";
 import PageLayout from "../../components/layout/PageLayout";
-import Panel from "../../components/ui/Panel";
-import Section from "../../components/ui/Section";
 import { InlineState, EmptyState } from "../../components/ui/ContentState";
 import { CardComparePanel, CardPlayedWithPanel, CardSynergyPanel } from "./CardRelationshipPanels";
 import CardInfoPanel from "./CardInfoPanel";
 import CardDecksPanel from "./CardDecksPanel";
 import CardSimilarEffectsPanel from "./CardSimilarEffectsPanel";
+import CardIntentPanel from "./CardIntentPanel";
+import CardHero from "./CardHero";
 
 const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_RECENT_DECKS_SHOWN = 5;
@@ -67,62 +57,6 @@ const TABS: { key: CardTab; label: string }[] = [
   { key: "compare", label: "Compare" },
 ];
 const TAB_KEYS = TABS.map((t) => t.key);
-
-const BADGE_CLASS =
-  "flex items-center gap-1 rounded-full border border-ctp-surface1 bg-ctp-surface0 px-2 py-0.5 text-xs text-ctp-subtext1";
-
-/** `to` makes it a link to that attribute's search results (e.g. every Warrior card, every Regalia) — same badge look either way. */
-function Badge({ children, to }: { children: ReactNode; to?: string }) {
-  if (to) {
-    return (
-      <Link to={to} className={`${BADGE_CLASS} hover:border-ctp-blue hover:text-ctp-blue`}>
-        {children}
-      </Link>
-    );
-  }
-  return <span className={BADGE_CLASS}>{children}</span>;
-}
-
-/** One Intent Cards list row. `evidence`, when present, is a real package-candidate record (scored
- * against actual deck data) for this exact pair — corroboration for a text-detected relationship,
- * not just another guess. `evidence.archetypeSources` ties it to a specific concrete build when the
- * evidence came from archetype defining-card overlap, giving the match real archetype scope instead
- * of an unscoped "somewhere in the whole catalog" match. */
-function IntentMatchRow({ match, evidence }: { match: IntentMatch; evidence: PackageCandidateEvidence | undefined }) {
-  const archetype = evidence?.archetypeSources?.[0];
-  return (
-    <li className="group rounded-xl bg-ctp-surface0/70 transition-colors hover:bg-ctp-surface1/70">
-      <Link to={`/cards/${match.card.slug}`} className="flex min-h-20 items-center gap-3 p-2.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">
-        <CardHoverPreview image={match.card.editions[0]?.image} alt={match.card.name}>
-          <CardImage image={match.card.editions[0]?.image} alt="" className="h-16 w-12 shrink-0 rounded-md object-cover shadow-sm" />
-        </CardHoverPreview>
-        <span className="min-w-0 flex-1">
-          <span className="block truncate text-sm font-semibold text-ctp-text group-hover:text-ctp-blue">{match.card.name}</span>
-          <span className="mt-1 flex flex-wrap gap-1.5">
-            <span className="rounded-full bg-ctp-mauve/15 px-2 py-0.5 text-[10px] font-medium capitalize text-ctp-mauve">{match.via}</span>
-            {match.tier === "experimental" && <span className="rounded-full border border-ctp-yellow/60 px-2 py-0.5 text-[10px] text-ctp-yellow">Experimental</span>}
-            {evidence && <span className="rounded-full bg-ctp-green/15 px-2 py-0.5 text-[10px] font-medium text-ctp-green">{evidence.matchingDecks} decks</span>}
-          </span>
-          {archetype && <span className="mt-1 block truncate text-[10px] text-ctp-blue">{archetype.buildName}</span>}
-        </span>
-        <span aria-hidden="true" className="text-lg text-ctp-overlay1 transition-transform group-hover:translate-x-0.5 group-hover:text-ctp-blue">›</span>
-      </Link>
-    </li>
-  );
-}
-
-function Stat({ label, value, icon }: { label: string; value: number | string | null; icon?: ReactNode }) {
-  if (value === null) return null;
-  return (
-    <div className="min-w-20 rounded-xl bg-ctp-surface1/70 px-4 py-2.5 text-center">
-      <div className="flex items-center justify-center gap-1 text-[11px] font-medium uppercase tracking-wide text-ctp-subtext0">
-        {icon}
-        {label}
-      </div>
-      <div className="mt-0.5 text-xl font-bold leading-none text-ctp-text">{value}</div>
-    </div>
-  );
-}
 
 export default function CardDetail() {
   const { slug = "" } = useParams<{ slug: string }>();
@@ -362,143 +296,7 @@ export default function CardDetail() {
         &larr; Back to Cards
       </Link>
 
-      <Panel elevation={1} padding="lg" className="mt-4 overflow-hidden">
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-[280px_1fr]">
-        <div className="mx-auto w-full max-w-[280px] md:mx-0">
-          {edition ? (
-            <CardImage image={edition.image} alt={card.name} className="aspect-[5/7] w-full rounded-xl border border-ctp-surface2 object-cover shadow-xl shadow-black/30" />
-          ) : (
-            <div className="flex aspect-[5/7] items-center justify-center rounded-lg border border-ctp-surface1 bg-ctp-mantle text-ctp-subtext0">
-              No image
-            </div>
-          )}
-
-          {card.editions.length > 1 && (
-            <div className="mt-3">
-              <button
-                type="button"
-                onClick={() => setEditionsExpanded((v) => !v)}
-                aria-expanded={editionsExpanded}
-                className="flex w-full items-center justify-between text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide hover:text-ctp-text"
-              >
-                <span>Editions ({card.editions.length})</span>
-                <span aria-hidden="true">{editionsExpanded ? "▲" : "▼"}</span>
-              </button>
-              {editionsExpanded && (
-                <div className="mt-2 grid grid-cols-3 gap-2">
-                  {card.editions.map((ed, i) => (
-                    <button
-                      key={ed.uuid}
-                      type="button"
-                      onClick={() => setEditionIndex(i)}
-                      aria-pressed={i === editionIndex}
-                      className={`rounded-md border p-1 text-left ${
-                        i === editionIndex ? "border-ctp-blue" : "border-ctp-surface1"
-                      }`}
-                    >
-                      <CardImage
-                        image={ed.image}
-                        alt={`${card.name} — ${ed.set.name}`}
-                        className="aspect-[5/7] w-full rounded object-cover"
-                      />
-                      <p className="mt-1 truncate text-[10px] text-ctp-subtext1">{ed.set.name}</p>
-                      <p className="truncate text-[10px] text-ctp-subtext0">
-                        #{ed.collector_number} · {rarityDisplay(ed.rarity)}
-                      </p>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-
-        <div className="min-w-0">
-          <h1 className="text-3xl font-bold tracking-tight text-ctp-blue sm:text-4xl">{card.name}</h1>
-
-          <div className="mt-2 flex flex-wrap gap-1.5">
-            {card.classes.map((c) => (
-              <Badge key={c} to={`/cards?class=${encodeURIComponent(c)}`}>
-                <ClassIcon cardClass={c} size={14} />
-                {c}
-              </Badge>
-            ))}
-            {card.types.map((t) => (
-              <Badge key={t} to={`/cards?type=${encodeURIComponent(t)}`}>
-                <TypeIcon type={typeIconKey(t, card.types)} size={14} />
-                {t}
-              </Badge>
-            ))}
-            {card.subtypes.map((s) => (
-              <Badge key={s} to={`/cards?subtype=${encodeURIComponent(s)}`}>
-                {s}
-              </Badge>
-            ))}
-            {card.elements.map((e) => (
-              <Badge key={e} to={`/cards?element=${encodeURIComponent(e)}`}>
-                <ElementIcon element={e} size={14} />
-                {e}
-              </Badge>
-            ))}
-          </div>
-
-          <div className="mt-5 flex flex-wrap gap-2">
-            <Stat label="Memory" value={card.cost_memory} icon={<CostIcon kind="memory" size={12} />} />
-            <Stat label="Reserve" value={card.cost_reserve} icon={<CostIcon kind="reserve" size={12} />} />
-            <Stat label="Level" value={card.level} />
-            <Stat label="Power" value={card.power} />
-            <Stat label="Life" value={card.life} />
-            <Stat label="Durability" value={card.durability} />
-          </div>
-
-          {card.effect && <div className="mt-5 rounded-xl bg-ctp-base/55 p-4 text-sm leading-relaxed text-ctp-text"><p className="whitespace-pre-wrap">{card.effect.replace(/\*\*/g, "")}</p></div>}
-          {card.flavor && <p className="mt-3 text-sm text-ctp-subtext0 italic">{card.flavor}</p>}
-
-          {price && (
-            <div className="mt-5 rounded-xl border border-ctp-surface2/70 bg-ctp-base/45 p-4">
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Market price</h2>
-                  <p className="mt-0.5 text-xs text-ctp-subtext0">{edition?.set.name}</p>
-                </div>
-                <a href={price.tcgplayerUrl} target="_blank" rel="noreferrer" className="rounded-full px-3 py-1.5 text-xs font-semibold text-ctp-blue hover:bg-ctp-blue/10">View on TCGplayer ↗</a>
-              </div>
-              <div className="mt-3 flex flex-wrap gap-6 text-sm">
-                {price.normal && (
-                  <span className="text-ctp-subtext1">
-                    Normal: {formatUsd(price.normal.market)}
-                    {price.normal.low !== null && price.normal.high !== null && (
-                      <span className="text-xs text-ctp-subtext0"> ({formatUsd(price.normal.low)}–{formatUsd(price.normal.high)})</span>
-                    )}
-                  </span>
-                )}
-                {price.foil && (
-                  <span className="text-ctp-subtext1">
-                    Foil: {formatUsd(price.foil.market)}
-                    {price.foil.low !== null && price.foil.high !== null && (
-                      <span className="text-xs text-ctp-subtext0"> ({formatUsd(price.foil.low)}–{formatUsd(price.foil.high)})</span>
-                    )}
-                  </span>
-                )}
-              </div>
-              {priceSeries && (
-                <div className="mt-3 max-w-md rounded-lg bg-ctp-mantle/60 p-3">
-                  <p className="text-xs text-ctp-subtext0">
-                    {priceSeries.label} price, last {priceSeries.dated.length} weeks
-                  </p>
-                  <HistoryChart points={priceSeries.dated.map((d) => ({ date: d.date, value: d.value }))} label={`${priceSeries.label} price`} formatValue={formatUsd} compact />
-                  <div className="mt-1 flex justify-between text-[10px] text-ctp-subtext0">
-                    <span>{new Date(priceSeries.dated[0].date).toLocaleDateString()}</span>
-                    <span>{new Date(priceSeries.dated[priceSeries.dated.length - 1].date).toLocaleDateString()}</span>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-        </div>
-      </div>
-      </Panel>
+      <CardHero card={card} edition={edition} editionIndex={editionIndex} editionsExpanded={editionsExpanded} price={price} priceSeries={priceSeries} rarityLabel={rarityDisplay} onEditionChange={setEditionIndex} onEditionsExpandedChange={setEditionsExpanded} />
 
       <div className="sticky top-0 z-20 -mx-2 mt-5 rounded-xl border border-ctp-surface1/70 bg-ctp-base/95 px-2 pt-1 shadow-md shadow-black/20 backdrop-blur">
         <Tabs tabs={TABS} active={tab} onChange={setTab} label="Card data" variant="pill" />
@@ -523,79 +321,7 @@ export default function CardDetail() {
       )}
 
       {tab === "intent" && (
-        <Section
-          className="mt-4"
-          heading="compact"
-          title="Intent cards"
-          description={
-            <>
-              Text-detected cards designed to enable or benefit from {card.name}. Relationship chips show why they
-              match; green deck counts add tournament evidence.
-            </>
-          }
-        >
-          {cardPackages.length > 0 && (
-            <div className="mt-3 rounded-lg border border-ctp-teal/40 bg-ctp-teal/10 p-3">
-              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-teal">Explicit construction package{cardPackages.length === 1 ? "" : "s"}</p>
-              <ul className="mt-1.5 space-y-1 text-sm text-ctp-subtext1">
-                {cardPackages.map((deckPackage) => (
-                  <li key={deckPackage.id}>
-                    <Link to={`/cards/packages#${deckPackage.id}`} className="font-medium text-ctp-text hover:text-ctp-blue">
-                      {deckPackage.label}
-                    </Link>
-                    <span className="text-ctp-subtext0"> — {deckPackage.explanation}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {experimentalIntentCount > 0 && (
-            <label className="mt-2 flex items-center gap-1.5 text-xs text-ctp-subtext0">
-              <input
-                type="checkbox"
-                checked={showExperimentalIntent}
-                onChange={(e) => setShowExperimentalIntent(e.target.checked)}
-              />
-              Show {experimentalIntentCount} experimental match{experimentalIntentCount === 1 ? "" : "es"} (broader
-              reveal/discard/return-from-discard triggers — not yet checked against the full card corpus the way the
-              default set was, so may include false positives)
-            </label>
-          )}
-
-          {visibleIntentFeeds.length === 0 && visibleIntentPoweredBy.length === 0 ? (
-            <InlineState className="mt-4 text-sm">
-              No text-detected token, tribal, Empower, or named-reference relationship for {card.name} yet.
-            </InlineState>
-          ) : (
-            <div className="mt-4 grid gap-6 lg:grid-cols-2">
-              {visibleIntentFeeds.length > 0 && (
-                <div>
-                  <h3 className="mb-2 text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
-                    Feeds ({visibleIntentFeeds.length})
-                  </h3>
-                  <ul className="space-y-2">
-                    {visibleIntentFeeds.map((m) => (
-                      <IntentMatchRow key={`${m.card.uuid}-${m.via}`} match={m} evidence={intentPackageEvidence(m.card.name)} />
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {visibleIntentPoweredBy.length > 0 && (
-                <div>
-                  <h3 className="mb-2 text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">
-                    Powered by ({visibleIntentPoweredBy.length})
-                  </h3>
-                  <ul className="space-y-2">
-                    {visibleIntentPoweredBy.map((m) => (
-                      <IntentMatchRow key={`${m.card.uuid}-${m.via}`} match={m} evidence={intentPackageEvidence(m.card.name)} />
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          )}
-        </Section>
+        <CardIntentPanel cardName={card.name} packages={cardPackages} feeds={visibleIntentFeeds} poweredBy={visibleIntentPoweredBy} experimentalCount={experimentalIntentCount} showExperimental={showExperimentalIntent} onShowExperimentalChange={setShowExperimentalIntent} evidenceFor={intentPackageEvidence} />
       )}
 
 
