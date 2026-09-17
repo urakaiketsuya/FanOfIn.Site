@@ -1,32 +1,25 @@
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import type { Card, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
-import { championSlugsFor, mergeCardInclusionBuckets } from "../community/data";
 import { parseDecklist } from "../compare/parseDecklist";
-import { useCardsByNames } from "../events/useCardsByNames";
 import type { RatingPillar } from "../../lib/deckIdentity";
 import { useTabParam } from "../../lib/useTabParam";
-import { computeIdentityElements, findChampionCard, useSuggestedBuild } from "./useSuggestedBuild";
-import { useCommunitySuggestedBuild } from "./useCommunitySuggestedBuild";
-import { useSimulatorSuggestedBuild } from "./useSimulatorSuggestedBuild";
 import { useCardFieldVisibility } from "./useCardFieldVisibility";
 import { useBuilderViewMode } from "./useBuilderViewMode";
-import { usePriceTrendByName } from "../pricing/usePriceTrendByName";
 import { SIDEBOARD_POINT_BUDGET, sideboardPointCost, validateDeck } from "./validateDeck";
 import { computeNewReleaseCards } from "./newReleaseCards";
-import { computeCardDecay } from "../../lib/cardDecay";
 import { accountApi } from "../../lib/accountApi";
 import { clearBuilderSession } from "./persistence/builderPersistence";
 import { type PopulationSource } from "./model/builderTypes";
-import { buildToDecklist, deriveArchetypeOptions, deriveReviewGroups } from "./engine/builderSelectors";
-import { buildSuggestedDeck } from "./engine/buildSuggestedDeck";
-import { useDeckBuilderData } from "./data/useDeckBuilderData";
+import { buildToDecklist } from "./engine/builderSelectors";
 import { useBuilderWorkflowState } from "./controller/useBuilderWorkflowState";
 import { useBuilderSessionPersistence } from "./controller/useBuilderSessionPersistence";
 import { useBuilderCopyState } from "./controller/useBuilderCopyState";
 import { loadBuilderSessionSeed, parseBuilderUrlSeed } from "./persistence/builderSeed";
 import { useBuilderWorkspacePersistence } from "./controller/useBuilderWorkspacePersistence";
 import { promoteMaybeboardCard, removeLockedCard, restoreChampionLevel, selectChampionPrint, toggleLockedCard } from "./controller/builderCardMutations";
+import { useBuilderRecommendationModel } from "./controller/useBuilderRecommendationModel";
+import { useBuilderChangeTracking } from "./controller/useBuilderChangeTracking";
 
 export type BuilderTab = BuilderWorkbenchView;
 export type BuilderIntent = "seed" | "scratch";
@@ -89,21 +82,11 @@ export function useDeckBuilderController() {
   const [customizeOpen, setCustomizeOpen] = useState(false);
   const [viewMode, setViewMode] = useBuilderViewMode();
   const [tab, setTab] = useTabParam<BuilderTab>("tab", TAB_KEYS, "build");
-  const loadPrices = Boolean(championName && spiritFilter && tab === "build");
-  const priceTrendByName = usePriceTrendByName(loadPrices && tab === "build");
-  const [dismissedReviewCards, setDismissedReviewCards] = useState<Set<string>>(new Set());
   const [identityEditorOpen, setIdentityEditorOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [pasteOpen, setPasteOpen] = useState(false);
   const [pasteText, setPasteText] = useState("");
   const [pasteError, setPasteError] = useState<string | null>(null);
-  // Set right before a state change that'll cause a recompute, read (and cleared) by the effect
-  // below once that recompute lands — pairs the resulting suggestion diff with the action that
-  // caused it. `subject` is excluded from the diff itself since "I locked X" already says X
-  // changed; the log is about the ripple effect on everything else.
-  const pendingActionRef = useRef<{ label: string; subject: string | null } | null>(null);
-  const prevSuggestedRef = useRef<Set<string> | null>(null);
-  const prevWinRateRef = useRef<number | null>(null);
   // Set right before setChampionName() by loadPastedDecklist() so the reset effect below doesn't
   // clobber the Spirit/locks it just derived — a normal Champion-dropdown change still resets to a
   // blank slate as usual. (Not used for the URL-seed case below — see lastResetChampionRef.)
@@ -124,291 +107,25 @@ export function useDeckBuilderController() {
     setSearchParams(next, { replace: true });
   }
 
-  const builderData = useDeckBuilderData({
-    championName,
-    format: deckFormat,
-    includeDecodedDecks: false,
-    needs: {
-      archetypes: tab === "tools" || archetypeId !== null,
-      cardImpact: false,
-      coOccurrence: false,
-      composition: false,
-      prices: loadPrices,
-      simulator: populationSource === "simulator",
-    },
-  });
   const {
-    popularityIndex: popularityIndexData,
-    liveCatalogByName,
-    catalog: cardCatalog,
-    catalogByName,
-    spiritCanonicalNames,
-    collectionOwnedByName,
-    population: { rows, spiritsPresent, loading: populationLoading },
-    cardQuantityStats: cardQuantityStatsData,
-    archetypeTaxonomy: archetypeTaxonomyData,
-    communityInclusion: communityCardInclusion,
-    simulatorSummary,
-    priceByName,
-  } = builderData;
-  const seedLockedCards = useMemo(() => {
-    const entries = Array.from(lockedCards.entries()).filter(([name]) => {
-      const card = catalogByName.get(name);
-      return !card?.types.includes("CHAMPION");
-    });
-    return new Map(entries);
-  }, [lockedCards, catalogByName]);
-  // Shared links and pasted decks can name a cosmetic equivalent. Store the canonical Spirit so
-  // it uses the same population as the picker (Miao, Spirit of Water = Spirit of Water).
-  useEffect(() => {
-    if (!spiritFilter) return;
-    const canonical = spiritCanonicalNames.get(spiritFilter);
-    if (canonical && canonical !== spiritFilter) setSpiritFilter(canonical);
-  }, [spiritFilter, spiritCanonicalNames, setSpiritFilter]);
+    popularityIndexData, liveCatalogByName, cardCatalog, catalogByName, spiritCanonicalNames,
+    simulatorSummary, priceByName, priceTrendByName, seedLockedCards, communityInclusionByName,
+    hypeGapByName, decaySignalByName, build, reviewItemCount, reviewRemovalNames, gateLoading,
+    gateHasData, spiritElements, spiritsForElement, spiritOptionLabel, championsPresent, cardNames,
+    cardNameSet, cardsByName, identityElements, effectivePopulationSource, simulatorResult,
+    archetypeOptions, setDismissedReviewCards,
+  } = useBuilderRecommendationModel({
+    championName, spiritFilter, setSpiritFilter, deckFormat, tab, lockedCards, lockedSections,
+    rejectedCards, pillarBias, archetypeId, championLevelCap, populationSource, collectionMode,
+    maybeboard, spiritElement,
+  });
+  const { pendingActionRef, resetChangeTracking } = useBuilderChangeTracking(build, setChangeLog);
   useEffect(() => {
     if (!improveDeckId) return;
     void accountApi.deck(improveDeckId).then(({ deck }) => {
       setMaybeboard(new Map(deck.maybeboard.map((line) => [line.card, line.quantity])));
     }).catch(() => undefined);
   }, [improveDeckId, setMaybeboard]);
-  const collectionRejectedCards = useMemo(() => {
-    if (collectionMode !== "owned-only") return rejectedCards;
-    const next = new Set(rejectedCards);
-    for (const card of cardCatalog) if ((collectionOwnedByName.get(card.name) ?? 0) === 0 && !lockedCards.has(card.name)) next.add(card.name);
-    return next;
-  }, [collectionMode, rejectedCards, cardCatalog, collectionOwnedByName, lockedCards]);
-  const archetypeOptions = useMemo(() => deriveArchetypeOptions(championName, archetypeTaxonomyData), [championName, archetypeTaxonomyData]);
-  const selectedArchetype = useMemo(
-    () => archetypeOptions.some((option) => option.id === archetypeId)
-      ? archetypeTaxonomyData?.clusters.find((cluster) => cluster.id === archetypeId)
-      : undefined,
-    [archetypeTaxonomyData, archetypeId, archetypeOptions],
-  );
-  const archetypePrevalence = useMemo(() => {
-    if (!selectedArchetype) return undefined;
-    return new Map(selectedArchetype.definingCards.map((card) => [card.name, card.prevalence]));
-  }, [selectedArchetype]);
-  // A selected build path is evidence, not merely decoration: keep the original Champion pool
-  // but use only the path's observed decks for tournament/balanced recommendations. A Spirit
-  // selection below further narrows that path, preventing a broad family from mixing Spirits.
-  const recommendationRows = useMemo(() => {
-    if (!selectedArchetype) return rows;
-    const deckIds = new Set(selectedArchetype.deckIds);
-    return rows.filter((row) => deckIds.has(row.deckId));
-  }, [rows, selectedArchetype]);
-  // Similar real decks become useful only once the viewer has expressed enough intent through
-  // locks. Keep the expensive all-deck decode off the default path until then.
-
-  // Resolved against the *stable* single-Champion population (`rows`, not whichever pool is
-  // active) — see `useSuggestedBuild`'s `championCardOverride` doc comment for why this matters
-  // once a cross-Champion pool is in play: without it, the Champion-print anchor and granted
-  // elements would be guessed from whichever Champion happens to be common in a borrowed
-  // population, not the one the viewer actually picked.
-  const championCard = useMemo(() => findChampionCard(recommendationRows, lockedCards, catalogByName), [recommendationRows, lockedCards, catalogByName]);
-  const spiritCardForIdentity = spiritFilter ? catalogByName.get(spiritFilter) : undefined;
-  const identityElements = useMemo(
-    () => computeIdentityElements(championCard, spiritCardForIdentity),
-    [championCard, spiritCardForIdentity],
-  );
-
-  const communityChampData = useMemo(() => {
-    if (!communityCardInclusion || !championName) return undefined;
-    const slugs = championSlugsFor(Object.keys(communityCardInclusion.byChampion), championName);
-    if (slugs.length === 0) return undefined;
-    return mergeCardInclusionBuckets(slugs.map((slug) => communityCardInclusion.byChampion[slug]));
-  }, [communityCardInclusion, championName]);
-  const communityInclusionByName = useMemo(() => {
-    if (!communityChampData) return undefined;
-    return new Map(communityChampData.cards.map((c) => [c.name, c]));
-  }, [communityChampData]);
-  const communityLockedCards = useMemo(() => {
-    if (deckFormat !== "PANTHEON" || !spiritFilter) return lockedCards;
-    const next = new Map(lockedCards);
-    next.set(spiritFilter, 1);
-    return next;
-  }, [deckFormat, spiritFilter, lockedCards]);
-
-  // Computed here (rather than down with sortedSpirits/spiritStats below) so its top signals can
-  // feed the "balanced" source's decay nudge right below — see DECAY_PENALTY_WEIGHT's doc comment.
-  const decayReport = useMemo(
-    () => computeCardDecay(recommendationRows, spiritFilter, catalogByName),
-    [recommendationRows, spiritFilter, catalogByName],
-  );
-  const decayingCardBoost = useMemo(
-    () => (decayReport ? new Map(decayReport.signals.map((s) => [s.cardName, s.decay])) : undefined),
-    [decayReport],
-  );
-  // Grid-view "Meta trend" toggle wants the full signal (recent/prior rate, replacement
-  // suggestion), not just decayingCardBoost's single ranking-nudge number. computeCardDecay only
-  // returns its top 6 flagged decliners (see its own doc comment), so most cards have no entry here.
-  const decaySignalByName = useMemo(
-    () => (decayReport ? new Map(decayReport.signals.map((s) => [s.cardName, s])) : undefined),
-    [decayReport],
-  );
-  // Champion-scoped real tournament inclusion rate per card, for the grid's "Hype gap" toggle —
-  // mirrors CardStatsIndex.tsx's hypeGap idea (community brew rate minus tournament share) but
-  // recomputed against this Champion's own population rather than the whole card pool, since that's
-  // the more relevant denominator for "is this overhyped for THIS Champion specifically".
-  const tournamentInclusionByName = useMemo(() => {
-    if (recommendationRows.length === 0) return undefined;
-    const counts = new Map<string, number>();
-    for (const row of recommendationRows) {
-      for (const name of row.main.keys()) counts.set(name, (counts.get(name) ?? 0) + 1);
-      for (const name of row.material.keys()) counts.set(name, (counts.get(name) ?? 0) + 1);
-    }
-    const byName = new Map<string, number>();
-    for (const [name, count] of counts) byName.set(name, count / recommendationRows.length);
-    return byName;
-  }, [recommendationRows]);
-  const hypeGapByName = useMemo(() => {
-    if (!communityInclusionByName || !tournamentInclusionByName) return undefined;
-    const byName = new Map<string, number>();
-    for (const [name, entry] of communityInclusionByName) {
-      byName.set(name, entry.percentOfDecks - (tournamentInclusionByName.get(name) ?? 0));
-    }
-    return byName;
-  }, [communityInclusionByName, tournamentInclusionByName]);
-
-  const tournamentBuild = useSuggestedBuild(
-    recommendationRows,
-    spiritFilter,
-    lockedCards,
-    collectionRejectedCards,
-    populationLoading,
-    lockedSections,
-    cardQuantityStatsData,
-    championCard,
-    pillarBias,
-    undefined,
-    undefined,
-    archetypePrevalence,
-    collectionOwnedByName,
-    collectionMode,
-    championLevelCap,
-  );
-  // Same real tournament ranking as tournamentBuild above, plus a community-popularity nudge and a
-  // decay penalty — see COMMUNITY_BOOST_WEIGHT's and DECAY_PENALTY_WEIGHT's doc comments. Computed
-  // unconditionally (same pattern as tournamentBuild/communityBuild/simulatorResult below) so
-  // switching sources doesn't need a recompute.
-  const balancedBuild = useSuggestedBuild(
-    recommendationRows,
-    spiritFilter,
-    lockedCards,
-    collectionRejectedCards,
-    populationLoading,
-    lockedSections,
-    cardQuantityStatsData,
-    championCard,
-    pillarBias,
-    communityInclusionByName,
-    decayingCardBoost,
-    archetypePrevalence,
-    collectionOwnedByName,
-    collectionMode,
-    championLevelCap,
-  );
-  const communityBuild = useCommunitySuggestedBuild(communityChampData, communityLockedCards, lockedSections, collectionRejectedCards, catalogByName, !communityCardInclusion, identityElements, deckFormat, championCard, spiritCardForIdentity);
-  const simulatorResult = useSimulatorSuggestedBuild(communityBuild, simulatorSummary, cardCatalog);
-  const effectivePopulationSource: PopulationSource = deckFormat === "PANTHEON" ? "community" : populationSource;
-  const build = useMemo(() => buildSuggestedDeck(
-    { format: deckFormat, populationSource, collectionMode },
-    { tournament: tournamentBuild, balanced: balancedBuild, community: communityBuild, simulator: simulatorResult.build, collectionOwnedByName },
-  ), [deckFormat, populationSource, collectionMode, tournamentBuild, balancedBuild, communityBuild, simulatorResult.build, collectionOwnedByName]);
-
-  const reviewSuggestions = useMemo(
-    () => build.suggestions.filter((card) => !dismissedReviewCards.has(card.cardName)),
-    [build.suggestions, dismissedReviewCards],
-  );
-  const reviewRemovals = useMemo(
-    () => build.removalSuggestions
-      .filter((card) => !dismissedReviewCards.has(card.cardName)),
-    [build.removalSuggestions, dismissedReviewCards],
-  );
-  const reviewGroups = useMemo(() => deriveReviewGroups(reviewRemovals, reviewSuggestions), [reviewRemovals, reviewSuggestions]);
-  const reviewItemCount = reviewGroups.pairs.length + reviewGroups.unpairedRemovals.length + reviewGroups.unpairedSuggestions.length;
-  const reviewRemovalNames = useMemo(() => new Set(reviewRemovals.map((card) => card.cardName)), [reviewRemovals]);
-
-  // A dismissal belongs to the current recommendation lens. Changing the Spirit, source, or
-  // tuning can produce materially different evidence for the same card, so surface it again.
-  useEffect(() => {
-    setDismissedReviewCards(new Set());
-  }, [championName, spiritFilter, effectivePopulationSource, pillarBias, archetypeId]);
-  const gateLoading = deckFormat === "PANTHEON"
-    ? !communityCardInclusion
-    : effectivePopulationSource === "community"
-      ? !communityCardInclusion
-      : effectivePopulationSource === "simulator"
-        ? !communityCardInclusion || !simulatorSummary
-        : populationLoading;
-  const gateHasData = deckFormat === "PANTHEON" || effectivePopulationSource === "community" || effectivePopulationSource === "simulator"
-    ? Boolean(communityChampData)
-    : rows.length > 0;
-
-  const spiritStats = useMemo(() => {
-    const stats = new Map<string, { decks: number }>();
-    for (const spirit of spiritsPresent) {
-      const matching = rows.filter((row) => row.spiritName === spirit);
-      stats.set(spirit, { decks: matching.length });
-    }
-    return stats;
-  }, [rows, spiritsPresent]);
-  const sortedSpirits = useMemo(
-    () => [...spiritsPresent].sort((a, b) => (spiritStats.get(b)?.decks ?? 0) - (spiritStats.get(a)?.decks ?? 0) || a.localeCompare(b)),
-    [spiritsPresent, spiritStats],
-  );
-  const spiritElements = useMemo(
-    () => Array.from(new Set(sortedSpirits.flatMap((name) => liveCatalogByName.get(name)?.elements ?? [])))
-      .filter((element) => element !== "NORM")
-      .sort(),
-    [sortedSpirits, liveCatalogByName],
-  );
-  const spiritsForElement = useMemo(
-    () => spiritElement ? sortedSpirits.filter((name) => liveCatalogByName.get(name)?.elements.includes(spiritElement)) : sortedSpirits,
-    [spiritElement, sortedSpirits, liveCatalogByName],
-  );
-  function spiritOptionLabel(name: string): string {
-    const stats = spiritStats.get(name);
-    if (!stats) return name;
-    return `${name} — ${stats.decks} ${stats.decks === 1 ? "deck" : "decks"}`;
-  }
-
-  useEffect(() => {
-    const current = new Set(
-      [...build.material, ...build.main].filter((c) => !c.locked).map((c) => c.cardName),
-    );
-    const pending = pendingActionRef.current;
-    const prev = prevSuggestedRef.current;
-    const prevWinRate = prevWinRateRef.current;
-    if (prev && pending) {
-      const subject = pending.subject;
-      const added = Array.from(current).filter((n) => !prev.has(n) && n !== subject);
-      const removed = Array.from(prev).filter((n) => !current.has(n) && n !== subject);
-      const winRateDelta =
-        prevWinRate !== null && build.conditionalWinRate !== null ? build.conditionalWinRate - prevWinRate : null;
-      setChangeLog((log) => [{ label: pending.label, added, removed, winRateDelta }, ...log].slice(0, 25));
-    }
-    prevSuggestedRef.current = current;
-    prevWinRateRef.current = build.conditionalWinRate;
-    pendingActionRef.current = null;
-  }, [build, setChangeLog]);
-
-  const championsPresent = useMemo(() => {
-    const names = cardCatalog
-      .filter((card) => card.types.includes("CHAMPION") && !card.subtypes.includes("SPIRIT") && card.legality?.[deckFormat]?.limit !== 0)
-      .map((card) => card.name.split(",")[0].trim());
-    return Array.from(new Set(names)).sort();
-  }, [cardCatalog, deckFormat]);
-
-  const cardNames = useMemo(() => Array.from(new Set(cardCatalog.map((c) => c.name))).sort(), [cardCatalog]);
-  const cardNameSet = useMemo(() => new Set(cardNames), [cardNames]);
-
-  const allNames = useMemo(
-    () => [...build.material, ...build.main, ...build.sideboard].map((c) => c.cardName),
-    [build.material, build.main, build.sideboard],
-  );
-  const suggestionNames = useMemo(() => build.suggestions.map((c) => c.cardName), [build.suggestions]);
-  const cardsByName = useCardsByNames(useMemo(() => [...allNames, ...suggestionNames, ...maybeboard.keys()], [allNames, suggestionNames, maybeboard]));
-
   useEffect(() => {
     if (lastResetChampionRef.current === championName) {
       // Already handled this exact championName (the seeded initial value, or a StrictMode
@@ -435,9 +152,7 @@ export function useDeckBuilderController() {
         setChangeLog([]);
       });
     }
-    pendingActionRef.current = null;
-    prevSuggestedRef.current = null;
-    prevWinRateRef.current = null;
+    resetChangeTracking();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [championName, builderIntent]);
 
@@ -511,9 +226,7 @@ export function useDeckBuilderController() {
     setRejectedCards(new Set());
     setDismissedReviewCards(new Set());
     setChangeLog([]);
-    pendingActionRef.current = null;
-    prevSuggestedRef.current = null;
-    prevWinRateRef.current = null;
+    resetChangeTracking();
 
     setPasteText("");
     setPasteError(null);
@@ -715,9 +428,7 @@ export function useDeckBuilderController() {
     // Clear the persisted snapshot as well as component state. This matters when the user resets
     // and immediately navigates away before React's autosave effect gets a chance to run.
     clearBuilderSession(sessionStorage);
-    pendingActionRef.current = null;
-    prevSuggestedRef.current = null;
-    prevWinRateRef.current = null;
+    resetChangeTracking();
     skipNextResetRef.current = false;
     lastResetChampionRef.current = null;
     startTransition(() => {
