@@ -1,15 +1,17 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { Card } from "@gatcg/shared";
 import { probabilityAtLeast } from "./synergyReadiness";
 import { computeDrawEngineTiming, drawEngineSources } from "./drawEffects";
 import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
-import { ForecastChart, ForecastCheckpointSelector, ForecastHeadline } from "../../components/ui/ForecastVisual";
+import { ForecastChart, ForecastHeadline } from "../../components/ui/ForecastVisual";
 import { cardsSeenForRecipeTarget, probabilityOfTimedRecipe } from "../../lib/comboOdds";
 import { inferStartingHandSize, naturalCardsSeenByTurn } from "../../lib/turnToPlay";
 import { FUNCTIONAL_ROLE_LABELS, functionalRoleLines, type FunctionalRole } from "./functionalCopies";
 import { glimpseAdjustedOdds, glimpseSources } from "./glimpseOdds";
-import { matchesComboRequirement, printedKeywords, type ComboRequirementKind } from "../../lib/comboRequirements";
+import { useComboRecipe, type ComboRecipeRequirement, type RecipePickerOption } from "./useComboRecipe";
+import { ProbabilityCheckpointPicker, ProbabilityCurve, ProbabilityHeadline } from "./ProbabilityForecast";
+import { RecipeGroupEditor } from "./RecipeGroupEditor";
 
 /** Same range Synergy readiness's curves use (`CURVE_MAX_SEEN` in synergyReadiness.ts) — keeps the
  * two probability visualizations on this tab reading consistently. */
@@ -24,31 +26,7 @@ function clampInt(value: number, min: number, max: number): number {
 
 const numberInputClass = "mt-1 block min-h-10 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text focus:border-ctp-blue focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/30";
 
-export interface ComboRecipeRequirement {
-  kind: ComboRequirementKind;
-  cards: string[];
-  value: string;
-  required: number;
-  byTurn?: number | null;
-  avoid?: {
-    kind: ComboRequirementKind;
-    cards: string[];
-    value: string;
-    maximum: number;
-  } | null;
-}
-
-interface RecipeGroup extends ComboRecipeRequirement {
-  id: number;
-}
-
-interface RecipePickerOption {
-  kind: ComboRequirementKind;
-  value: string;
-  label: string;
-  group: "Cards" | "Types and subtypes" | "Keywords";
-  copies: number;
-}
+export type { ComboRecipeRequirement } from "./useComboRecipe";
 
 /**
  * A general-purpose front end onto `probabilityAtLeast` (the same hypergeometric function Synergy
@@ -97,19 +75,12 @@ export default function HypergeometricCalculator({
   const [functionalRole, setFunctionalRole] = useState<FunctionalRole>("draw");
   const [selectedGlimpseSource, setSelectedGlimpseSource] = useState("");
   const [glimpseActivationCap, setGlimpseActivationCap] = useState(2);
-  const [recipeGroups, setRecipeGroups] = useState<RecipeGroup[]>(() => {
-    const seed: ComboRecipeRequirement[] = initialRecipe?.length ? initialRecipe : [
-      { kind: "cards", cards: [], value: "", required: 1 },
-      { kind: "cards", cards: [], value: "", required: 1 },
-    ];
-    return seed.map((group, index) => ({ ...group, id: index + 1 }));
-  });
-  const [nextGroupId, setNextGroupId] = useState((initialRecipe?.length ?? 2) + 1);
   const [activeRecipePicker, setActiveRecipePicker] = useState<number | null>(null);
   const [recipeSearch, setRecipeSearch] = useState("");
   const [pendingRecipeSuggestion, setPendingRecipeSuggestion] = useState<string | null>(null);
   const [recipeCutCard, setRecipeCutCard] = useState("");
-  useEffect(() => { onRecipeChange?.(recipeGroups.map(({ kind, cards, value, required, byTurn, avoid }) => ({ kind, cards, value, required, byTurn: byTurn ?? null, avoid: avoid ?? null }))); }, [recipeGroups, onRecipeChange]);
+  const recipe = useComboRecipe({ mainLines, catalogByName, initialRecipe, onRecipeChange });
+  const { groups: recipeGroups, setGroups: setRecipeGroups, options: recipePickerOptions, matches: recipeMatches, avoidMatches, overlappingCards: overlappingRecipeCards } = recipe;
   const startingHandSize = useMemo(() => inferStartingHandSize(materialLines, catalogByName), [materialLines, catalogByName]);
   const seenPresets = useMemo(() => [
     { label: `Opening (${startingHandSize})`, seen: startingHandSize },
@@ -117,37 +88,6 @@ export default function HypergeometricCalculator({
     { label: "Mid (15)", seen: 15 },
     { label: "Late (20)", seen: 20 },
   ], [startingHandSize]);
-  const attributeOptions = useMemo(() => {
-    const values = new Map<string, string>();
-    for (const line of mainLines) {
-      const card = catalogByName.get(line.name);
-      for (const type of card?.types ?? []) values.set(`type:${type}`, `Type · ${type}`);
-      for (const subtype of card?.subtypes ?? []) values.set(`subtype:${subtype}`, `Subtype · ${subtype}`);
-    }
-    return [...values].map(([value, label]) => ({ value, label })).sort((a, b) => a.label.localeCompare(b.label));
-  }, [mainLines, catalogByName]);
-  const keywordOptions = useMemo(() => Array.from(new Set(mainLines.flatMap((line) => {
-    const card = catalogByName.get(line.name);
-    return card ? printedKeywords(card) : [];
-  }))).sort(), [mainLines, catalogByName]);
-  const recipePickerOptions = useMemo<RecipePickerOption[]>(() => [
-    ...mainLines.map((line) => ({ kind: "cards" as const, value: line.name, label: line.name, group: "Cards" as const, copies: line.quantity })),
-    ...attributeOptions.map((option) => ({ kind: "attribute" as const, value: option.value, label: option.label.replace("Subtype · ", "Any ").replace("Type · ", "Any "), group: "Types and subtypes" as const, copies: mainLines.reduce((sum, line) => { const card = catalogByName.get(line.name); return card && matchesComboRequirement(card, { kind: "attribute", cards: [], value: option.value }) ? sum + line.quantity : sum; }, 0) })),
-    ...keywordOptions.map((keyword) => ({ kind: "keyword" as const, value: keyword, label: `Keyword · ${keyword}`, group: "Keywords" as const, copies: mainLines.reduce((sum, line) => { const card = catalogByName.get(line.name); return card && matchesComboRequirement(card, { kind: "keyword", cards: [], value: keyword }) ? sum + line.quantity : sum; }, 0) })),
-  ], [mainLines, attributeOptions, keywordOptions, catalogByName]);
-  const recipeMatches = useMemo(() => recipeGroups.map((group) => mainLines.filter((line) => {
-    const card = catalogByName.get(line.name);
-    return card ? matchesComboRequirement(card, group) : false;
-  })), [recipeGroups, mainLines, catalogByName]);
-  const avoidMatches = useMemo(() => recipeGroups.map((group) => group.avoid ? mainLines.filter((line) => {
-    const card = catalogByName.get(line.name);
-    return card ? matchesComboRequirement(card, group.avoid!) : false;
-  }) : []), [recipeGroups, mainLines, catalogByName]);
-  const overlappingRecipeCards = useMemo(() => {
-    const counts = new Map<string, number>();
-    for (const lines of [...recipeMatches, ...avoidMatches]) for (const line of lines) counts.set(line.name, (counts.get(line.name) ?? 0) + 1);
-    return [...counts].filter(([, count]) => count > 1).map(([name]) => name);
-  }, [recipeMatches, avoidMatches]);
   const wantedProbabilityGroups = useMemo(() => recipeGroups.map((group, index) => ({
     copies: recipeMatches[index].reduce((sum, line) => sum + line.quantity, 0),
     required: group.required,
@@ -183,60 +123,25 @@ export default function HypergeometricCalculator({
   }
 
   function addRecipeSelection(groupId: number, option: RecipePickerOption) {
-    setRecipeGroups((groups) => groups.map((group) => {
-      if (group.id !== groupId) return group;
-      if (option.kind === "cards") {
-        const cards = group.kind === "cards" ? group.cards : [];
-        return { ...group, kind: "cards", value: "", cards: cards.includes(option.value) ? cards : [...cards, option.value] };
-      }
-      return { ...group, kind: option.kind, value: option.value, cards: [] };
-    }));
+    recipe.addSelection(groupId, option);
     setRecipeSearch("");
     setActiveRecipePicker(null);
   }
 
   function clearRecipeSelection(groupId: number) {
-    setRecipeGroups((groups) => groups.map((group) => group.id !== groupId ? group : {
-      ...group,
-      kind: "cards",
-      cards: [],
-      value: "",
-    }));
+    recipe.clearSelection(groupId);
   }
 
   function removeRecipeCard(groupId: number, cardName: string) {
-    setRecipeGroups((groups) => groups.map((group) => group.id !== groupId || group.kind !== "cards" ? group : {
-      ...group,
-      cards: group.cards.filter((name) => name !== cardName),
-    }));
+    recipe.removeCard(groupId, cardName);
   }
 
   function removeAvoidCard(groupId: number, cardName: string) {
-    setRecipeGroups((groups) => groups.map((group) => {
-      if (group.id !== groupId || group.avoid?.kind !== "cards") return group;
-      const cards = group.avoid.cards.filter((name) => name !== cardName);
-      return { ...group, avoid: cards.length ? { ...group.avoid, cards } : null };
-    }));
+    recipe.removeAvoidCard(groupId, cardName);
   }
 
   function toggleSelectionAvoided(groupId: number, value: string, avoided: boolean) {
-    setRecipeGroups((groups) => groups.map((group) => {
-      if (group.id !== groupId) return group;
-      if (avoided) {
-        if (group.kind === "cards") {
-          const avoidCards = group.avoid?.kind === "cards" ? group.avoid.cards : [];
-          return { ...group, cards: group.cards.filter((name) => name !== value), avoid: { kind: "cards", cards: avoidCards.includes(value) ? avoidCards : [...avoidCards, value], value: "", maximum: group.avoid?.maximum ?? 0 } };
-        }
-        return { ...group, kind: "cards", cards: [], value: "", avoid: { kind: group.kind, cards: [], value: group.value, maximum: group.avoid?.maximum ?? 0 } };
-      }
-      if (!group.avoid) return group;
-      if (group.avoid.kind === "cards") {
-        const remaining = group.avoid.cards.filter((name) => name !== value);
-        const wantedCards = group.kind === "cards" ? group.cards : [];
-        return { ...group, kind: "cards", cards: wantedCards.includes(value) ? wantedCards : [...wantedCards, value], value: "", avoid: remaining.length ? { ...group.avoid, cards: remaining } : null };
-      }
-      return { ...group, kind: group.avoid.kind, cards: [], value: group.avoid.value, avoid: null };
-    }));
+    recipe.toggleAvoided(groupId, value, avoided);
   }
 
   const recipeProbabilityAt = useCallback((cardsSeen: number, groups = probabilityGroups) => probabilityOfTimedRecipe(deckSize, groups.map((group) => ({
@@ -334,79 +239,27 @@ export default function HypergeometricCalculator({
           <p className="mt-1 text-xs text-ctp-subtext0">Choose cards or groups that work together. Timing is optional.</p>
         </div>
         <div className="mt-3 space-y-2">
-        {recipeGroups.map((group, groupIndex) => {
-          const matches = recipeMatches[groupIndex];
-          const selectedLabels = group.kind === "cards" ? group.cards.map((name) => ({ value: name, label: name })) : group.value ? [{ value: group.value, label: recipePickerOptions.find((option) => option.kind === group.kind && option.value === group.value)?.label ?? group.value }] : [];
-          const avoidSelectedLabels = group.avoid?.kind === "cards" ? group.avoid.cards.map((name) => ({ value: name, label: name })) : group.avoid?.value ? [{ value: group.avoid.value, label: recipePickerOptions.find((option) => option.kind === group.avoid?.kind && option.value === group.avoid?.value)?.label ?? group.avoid.value }] : [];
-          const filteredOptions = recipePickerOptions.filter((option) => option.label.toLowerCase().includes(recipeSearch.trim().toLowerCase()) && !(group.kind === "cards" && option.kind === "cards" && group.cards.includes(option.value)));
-          const pieceName = selectedLabels.length
-            ? `${group.required}× ${selectedLabels.length > 1 ? "Any of " : ""}${selectedLabels.map((selection) => selection.label).join(" or ")}`
-            : "Choose a card or group";
-          return <div key={group.id}>
-            {groupIndex > 0 && <p className="py-1 text-center text-[10px] font-bold uppercase tracking-[0.2em] text-ctp-subtext0">Then</p>}
-            <div className="relative rounded-xl border border-ctp-surface1 bg-ctp-mantle/65 p-3">
-              <p className="mb-2 text-[9px] font-bold uppercase tracking-wider text-ctp-subtext0">Conditional block {groupIndex + 1}</p>
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  {selectedLabels.length ? <div className="flex flex-wrap items-center gap-1.5">
-                    {group.kind === "cards" && selectedLabels.length > 1 && <span className="text-xs font-semibold text-ctp-subtext1">{group.required}× any of:</span>}
-                    {selectedLabels.map((selection) => {
-                      const selectionLabel = group.kind === "cards" && selectedLabels.length > 1 ? selection.label : pieceName;
-                      return <span key={selection.value} className="inline-flex max-w-full items-center rounded-full border border-ctp-mauve/40 bg-ctp-mauve/10 pl-3 text-sm font-semibold text-ctp-text shadow-sm">
-                        <span className="truncate py-1.5">{selectionLabel}</span>
-                        <button type="button" aria-label={`Avoid ${selection.label}`} onClick={() => toggleSelectionAvoided(group.id, selection.value, true)} className="ml-1 min-h-8 rounded-full px-2 text-[10px] font-bold uppercase tracking-wide text-ctp-subtext0 transition-colors hover:bg-ctp-red/10 hover:text-ctp-red">Avoid</button>
-                        <button type="button" aria-label={`Remove ${selection.label}`} onClick={() => group.kind === "cards" ? removeRecipeCard(group.id, selection.value) : clearRecipeSelection(group.id)} className="ml-1 inline-flex min-h-9 min-w-9 shrink-0 items-center justify-center rounded-full text-lg leading-none text-ctp-subtext0 transition-colors hover:bg-ctp-mauve/15 hover:text-ctp-red focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-mauve/50">×</button>
-                      </span>;
-                    })}
-                  </div> : <p className="text-sm font-semibold text-ctp-subtext0">{pieceName}</p>}
-                  <p className={`mt-1 text-[10px] ${matches.length ? "text-ctp-subtext0" : "text-ctp-yellow"}`}>{matches.length ? `${probabilityGroups[groupIndex].copies} matching copies across ${matches.length} card${matches.length === 1 ? "" : "s"}` : "No piece selected yet."}</p>
-                </div>
-                <button type="button" onClick={() => { setActiveRecipePicker(activeRecipePicker === group.id ? null : group.id); setRecipeSearch(""); }} className="min-h-10 shrink-0 px-2 text-xs font-semibold text-ctp-blue">
-                  Add
-                </button>
-              </div>
-
-              {avoidSelectedLabels.length > 0 && <div className="mt-3 rounded-lg border border-ctp-red/30 bg-ctp-red/5 p-2.5">
-                <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="mr-1 text-[10px] font-bold uppercase tracking-wide text-ctp-red">Avoid</span>
-                  {avoidSelectedLabels.map((selection) => <span key={selection.value} className="inline-flex max-w-full items-center rounded-full border border-ctp-red/40 bg-ctp-red/10 pl-2.5 text-xs font-medium text-ctp-text">
-                    <span className="truncate py-1.5">{selection.label}</span>
-                    <button type="button" aria-label={`Want ${selection.label}`} onClick={() => toggleSelectionAvoided(group.id, selection.value, false)} className="ml-1 min-h-8 rounded-full px-2 text-[10px] font-bold uppercase tracking-wide text-ctp-subtext0 hover:bg-ctp-mauve/10 hover:text-ctp-mauve">Want</button>
-                    <button type="button" aria-label={`Remove avoided ${selection.label}`} onClick={() => group.avoid?.kind === "cards" ? removeAvoidCard(group.id, selection.value) : setRecipeGroups((groups) => groups.map((candidate) => candidate.id === group.id ? { ...candidate, avoid: null } : candidate))} className="ml-1 inline-flex min-h-8 min-w-8 items-center justify-center rounded-full text-base text-ctp-subtext0 hover:bg-ctp-red/15 hover:text-ctp-red">×</button>
-                  </span>)}
-                </div>
-                <label className="mt-2 flex items-center justify-between gap-3 text-[10px] text-ctp-subtext0">Maximum allowed
-                  <select value={group.avoid?.maximum ?? 0} onChange={(event) => setRecipeGroups((groups) => groups.map((candidate) => candidate.id === group.id && candidate.avoid ? { ...candidate, avoid: { ...candidate.avoid, maximum: Number(event.target.value) } } : candidate))} className="min-h-9 rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 text-xs text-ctp-text">
-                    {[0, 1, 2, 3].map((maximum) => <option key={maximum} value={maximum}>{maximum}</option>)}
-                  </select>
-                </label>
-              </div>}
-
-              <div className="mt-3 grid grid-cols-2 gap-2 border-t border-ctp-surface1 pt-3">
-                <label className="text-[10px] text-ctp-subtext0">
-                  Copies needed
-                  <span className="mt-1 flex min-h-10 items-center justify-between rounded-lg border border-ctp-surface1 bg-ctp-base px-1">
-                    <button type="button" aria-label={`Decrease copies needed for piece ${groupIndex + 1}`} disabled={group.required <= 1} onClick={() => setRecipeGroups((groups) => groups.map((candidate) => candidate.id === group.id ? { ...candidate, required: Math.max(1, candidate.required - 1) } : candidate))} className="min-h-9 min-w-9 rounded text-base text-ctp-subtext1 disabled:opacity-35">−</button>
-                    <span className="font-semibold tabular-nums text-ctp-text">{group.required}</span>
-                    <button type="button" aria-label={`Increase copies needed for piece ${groupIndex + 1}`} disabled={group.required >= Math.max(1, probabilityGroups[groupIndex]?.copies ?? deckSize)} onClick={() => setRecipeGroups((groups) => groups.map((candidate) => candidate.id === group.id ? { ...candidate, required: Math.min(Math.max(1, probabilityGroups[groupIndex]?.copies ?? deckSize), candidate.required + 1) } : candidate))} className="min-h-9 min-w-9 rounded text-base text-ctp-subtext1 disabled:opacity-35">+</button>
-                  </span>
-                </label>
-                <label className="text-[10px] text-ctp-subtext0">
-                  Block timing
-                  <select aria-label={`Timing for piece ${groupIndex + 1}`} value={group.byTurn ?? ""} onChange={(event) => setRecipeGroups((groups) => groups.map((candidate) => candidate.id === group.id ? { ...candidate, byTurn: event.target.value ? Number(event.target.value) : null } : candidate))} className={`${numberInputClass} ${group.byTurn == null ? "" : "border-ctp-mauve text-ctp-mauve"}`}>
-                    <option value="">Any time</option>
-                    {[1, 2, 3, 4, 5, 6].map((turn) => <option key={turn} value={turn}>By turn {turn}</option>)}
-                  </select>
-                </label>
-              </div>
-
-              {activeRecipePicker === group.id && <div className="absolute z-20 mt-2 w-[min(34rem,calc(100%-1.5rem))] rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><input autoFocus type="search" value={recipeSearch} onChange={(event) => setRecipeSearch(event.target.value)} placeholder="Search cards, Fractal, Ally, Reservable…" className="block min-h-10 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text focus:border-ctp-blue focus:outline-none" /><div className="mt-2 max-h-64 overflow-y-auto">{filteredOptions.length ? (["Types and subtypes", "Keywords", "Cards"] as const).map((optionGroup) => { const options = filteredOptions.filter((option) => option.group === optionGroup).slice(0, optionGroup === "Cards" ? 30 : 15); return options.length ? <div key={optionGroup}><p className="px-2 pb-1 pt-2 text-[9px] font-bold uppercase tracking-wide text-ctp-subtext0">{optionGroup}</p>{options.map((option) => <button key={`${option.kind}:${option.value}`} type="button" onClick={() => addRecipeSelection(group.id, option)} className="flex w-full items-center justify-between rounded-md px-2 py-2 text-left text-xs text-ctp-text hover:bg-ctp-surface0"><span>{option.label}</span><span className="text-[10px] text-ctp-subtext0">{option.copies} {option.copies === 1 ? "copy" : "copies"}</span></button>)}</div> : null; }) : <p className="px-2 py-4 text-center text-xs text-ctp-subtext0">No matches in this Main Deck.</p>}</div><button type="button" onClick={() => setActiveRecipePicker(null)} className="mt-2 w-full rounded-md border border-ctp-surface1 py-1.5 text-xs text-ctp-subtext1">Done</button></div>}
-              {recipeGroups.length > 2 && <button type="button" onClick={() => setRecipeGroups((groups) => groups.filter((candidate) => candidate.id !== group.id))} className="mt-3 text-[10px] text-ctp-subtext0 hover:text-ctp-red">Remove piece</button>}
-            </div>
-          </div>;
-        })}
+        {recipeGroups.map((group, groupIndex) => <RecipeGroupEditor
+          key={group.id}
+          group={group}
+          groupIndex={groupIndex}
+          groupCount={recipeGroups.length}
+          matchingCopies={probabilityGroups[groupIndex].copies}
+          matchingCardCount={recipeMatches[groupIndex].length}
+          options={recipePickerOptions}
+          pickerOpen={activeRecipePicker === group.id}
+          search={recipeSearch}
+          onSearchChange={setRecipeSearch}
+          onTogglePicker={() => { setActiveRecipePicker(activeRecipePicker === group.id ? null : group.id); setRecipeSearch(""); }}
+          onAddSelection={(option) => addRecipeSelection(group.id, option)}
+          onClearSelection={() => clearRecipeSelection(group.id)}
+          onRemoveCard={(name) => removeRecipeCard(group.id, name)}
+          onRemoveAvoidCard={(name) => removeAvoidCard(group.id, name)}
+          onToggleAvoided={(value, avoided) => toggleSelectionAvoided(group.id, value, avoided)}
+          setGroups={setRecipeGroups}
+        />)}
         </div>
-        <button type="button" disabled={recipeGroups.length >= 6} onClick={() => { setRecipeGroups((groups) => [...groups, { id: nextGroupId, kind: "cards", cards: [], value: "", required: 1, byTurn: null }]); setActiveRecipePicker(nextGroupId); setRecipeSearch(""); setNextGroupId((id) => id + 1); }} className="mt-3 min-h-11 w-full rounded-xl border border-dashed border-ctp-blue/70 px-3 py-2 text-xs font-semibold text-ctp-blue disabled:opacity-40">+ Add another piece</button>
+        <button type="button" disabled={recipeGroups.length >= 6} onClick={() => { setActiveRecipePicker(recipe.addGroup()); setRecipeSearch(""); }} className="mt-3 min-h-11 w-full rounded-xl border border-dashed border-ctp-blue/70 px-3 py-2 text-xs font-semibold text-ctp-blue disabled:opacity-40">+ Add another piece</button>
         <div className="mt-4 border-t border-ctp-surface1 pt-3">
           <div className="mb-2 flex items-baseline justify-between gap-3">
             <p className="text-xs font-semibold text-ctp-text">Chance of finding the full combo</p>
@@ -472,9 +325,9 @@ export default function HypergeometricCalculator({
       </div>
       </div>
 
-      {mode !== "recipe" && <div className="mt-3"><ForecastCheckpointSelector checkpoints={seenPresets} selected={seen} onSelect={(value) => setSeen(Math.min(value, deckSize))} /></div>}
+      {mode !== "recipe" && <ProbabilityCheckpointPicker checkpoints={seenPresets} selected={seen} deckSize={deckSize} onSelect={setSeen} />}
 
-      <div className="mt-4"><ForecastHeadline label={mode === "recipe" ? `Chance of ${recipeLabel}` : mode === "functional" ? `Chance of finding ${FUNCTIONAL_ROLE_LABELS[functionalRole].toLowerCase()}` : `Chance of seeing at least ${required} ${required === 1 ? "copy" : "copies"}`} value={`${(probability * 100).toFixed(1)}%`} detail={mode === "recipe" ? `${wantedProbabilityGroups.map((group) => `${group.required} of ${group.copies}`).join(" + ")}${recipeGroups.some((group) => group.avoid) ? " · avoid conditions included" : ""}` : mode === "functional" ? `${functionalCopies} functional copies across ${functionalLines.length} cards` : undefined} /></div>
+      <ProbabilityHeadline label={mode === "recipe" ? `Chance of ${recipeLabel}` : mode === "functional" ? `Chance of finding ${FUNCTIONAL_ROLE_LABELS[functionalRole].toLowerCase()}` : `Chance of seeing at least ${required} ${required === 1 ? "copy" : "copies"}`} probability={probability} detail={mode === "recipe" ? `${wantedProbabilityGroups.map((group) => `${group.required} of ${group.copies}`).join(" + ")}${recipeGroups.some((group) => group.avoid) ? " · avoid conditions included" : ""}` : mode === "functional" ? `${functionalCopies} functional copies across ${functionalLines.length} cards` : undefined} />
 
       {mode === "functional" && functionalCopies > 0 && <div className="mt-3 grid gap-2 sm:grid-cols-3"><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Opening hand</div><div className="font-semibold tabular-nums text-ctp-text">{(openingProbability * 100).toFixed(1)}%</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">50% consistency</div><div className="font-semibold tabular-nums text-ctp-text">{functionalFiftySeen ? `${functionalFiftySeen} seen` : "Not reached"}</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">80% consistency</div><div className="font-semibold tabular-nums text-ctp-text">{functionalEightySeen ? `${functionalEightySeen} seen` : "Not reached"}</div></div></div>}
 
@@ -488,15 +341,7 @@ export default function HypergeometricCalculator({
         </div>
       )}
 
-      {mode !== "recipe" && curve.length >= 2 && (
-        <div className="mt-2">
-          <ForecastChart values={curve} height={36} selectedIndex={Math.min(seen, curve.length) - 1} />
-          <div className="mt-1 flex justify-between text-[10px] text-ctp-subtext0">
-            <span>1 seen: {(curve[0] * 100).toFixed(0)}%</span>
-            <span>{curve.length} seen: {(curve[curve.length - 1] * 100).toFixed(0)}%</span>
-          </div>
-        </div>
-      )}
+      {mode !== "recipe" && <ProbabilityCurve values={curve} selected={seen} />}
 
       {hasDrawEngine && !(mode === "functional" && functionalRole === "draw") && (
         <div className="mt-4 border-t border-ctp-surface1 pt-3">
