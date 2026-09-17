@@ -8,7 +8,6 @@ import ElementIcon from "../../components/ElementIcon";
 import CostIcon from "../../components/CostIcon";
 import ClassIcon from "../../components/ClassIcon";
 import TypeIcon from "../../components/TypeIcon";
-import TopDecksList from "../../components/TopDecksList";
 import { typeIconKey } from "../../lib/cardTypeIcon";
 import { useCard } from "./useCard";
 import { usePriceLookup } from "../pricing/usePriceLookup";
@@ -19,7 +18,7 @@ import { useCardCatalog } from "./useCardCatalog";
 import { useCardCombination } from "./useCardCombination";
 import { useCardSynergy } from "./useCardSynergy";
 import { useSimilarCards } from "./useSimilarCards";
-import { earliestReleaseDate, statDiff } from "../../lib/cardSimilarity";
+import { earliestReleaseDate } from "../../lib/cardSimilarity";
 import { useIntentCards } from "./useIntentCards";
 import type { IntentMatch } from "../../lib/cardIntent";
 import { getCardPackageMembership } from "../deckbuilder/packageGuardrails";
@@ -30,7 +29,6 @@ import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCommunityBlendedCardInclusion, useCommunityBlendedDeckReferences } from "../community/data";
 import { useHipsterData } from "../players/data";
 import { useOmnidexPlayers, useEventNameById } from "../tournaments/data";
-import UniqueDeckRow from "../champions/UniqueDeckRow";
 import { formatUsd } from "../../lib/format";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
@@ -41,29 +39,13 @@ import Section from "../../components/ui/Section";
 import { InlineState, EmptyState } from "../../components/ui/ContentState";
 import { CardComparePanel, CardPlayedWithPanel, CardSynergyPanel } from "./CardRelationshipPanels";
 import CardInfoPanel from "./CardInfoPanel";
+import CardDecksPanel from "./CardDecksPanel";
+import CardSimilarEffectsPanel from "./CardSimilarEffectsPanel";
 
 const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_RECENT_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
 const MAX_CHAMPIONS_SHOWN = 8;
-/** Below this many decks, adjustedWinRate is shrunk close enough to a flat 50% to not be worth
- * leading with — same "too few observations to trust" threshold as useChampionCardImpact.ts. */
-const MIN_SAMPLE_SIZE = 5;
-
-function formatDelta(n: number | null): string {
-  if (n === null || n === 0) return "";
-  return ` (${n > 0 ? "+" : ""}${n})`;
-}
-
-/** "diao-chan" -> "Diao Chan" — ShoutAtYourDecks champion slugs are lowercase, not display names.
- * Same small formatter CommunityDecksIndex.tsx's own formatChampionName already does. */
-function formatShoutAtYourDecksChampion(key: string): string {
-  return key
-    .split("-")
-    .map((w) => w[0].toUpperCase() + w.slice(1))
-    .join(" ");
-}
-
 /** Picks which market-price series to chart: Normal if it has enough real points, else Foil, else nothing (ThemaSparkline itself already no-ops under 2 points, but this also decides which label to show). */
 function selectPriceSeries(points: PriceHistoryPoint[]): { label: string; dated: { date: string; value: number }[] } | null {
   const normal = points.filter((p) => p.normalMarket !== null).map((p) => ({ date: p.date, value: p.normalMarket as number }));
@@ -526,24 +508,7 @@ export default function CardDetail() {
         <CardInfoPanel card={card} illustrator={edition?.illustrator} cardStat={cardStat} metaShare={metaShare} communityShare={communityInclusion?.percentOfDecks} quantityBuckets={quantityBuckets} resolveReference={resolveReference} />
       )}
 
-      {tab === "decks" && playedByArchetypes.length > 0 && (
-        <Section className="mt-4" heading="compact" title="Archetypes" description="Named builds this card helps define — not just decks that happen to include it.">
-          <div className="mt-2 flex flex-wrap gap-2 text-sm">
-            {playedByArchetypes.map(({ cluster, prevalence }) => (
-              <Link
-                key={cluster.id}
-                to={`/archetypes/${cluster.id}`}
-                className="rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-text hover:border-ctp-blue hover:text-ctp-blue"
-              >
-                {cluster.name}{" "}
-                <span className="text-ctp-subtext0">
-                  ({(prevalence * 100).toFixed(0)}% of {cluster.playerCount} players, {(cluster.avgWinRate * 100).toFixed(0)}% win rate)
-                </span>
-              </Link>
-            ))}
-          </div>
-        </Section>
-      )}
+      {tab === "decks" && <CardDecksPanel cardName={card.name} archetypes={playedByArchetypes} recentDecks={recentDecks} topDecks={topDecks} uniqueDecks={uniqueDecks} communityDecks={communityDeckRefs} playerName={playerName} />}
 
       {tab === "usedWith" && (
         <CardPlayedWithPanel cardName={card.name} deckCount={combination.deckCount} topCards={comboTopCards} cardImages={comboCardImages} />
@@ -554,113 +519,7 @@ export default function CardDetail() {
       )}
 
       {tab === "similar" && (
-        <Section className="mt-4" heading="compact" title="Same effect shape">
-          {(!cardStat || cardStat.deckCount < MIN_SAMPLE_SIZE) && (card.references.length > 0 || card.referenced_by.length > 0) && (
-            <Panel padding="sm" className="mt-2">
-              <p className="text-xs text-ctp-subtext0">
-                Too few recorded decks for a trustworthy win rate yet ({" "}
-                <Link to="/methodology#small-samples" className="text-ctp-blue hover:underline">learn more</Link>
-                ). This card's own explicit references are a more reliable signal in the meantime:
-              </p>
-              <div className="mt-2 space-y-2">
-                {card.references.length > 0 && (
-                  <div>
-                    <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">References</h3>
-                    <div className="mt-1 flex flex-wrap gap-2 text-sm">
-                      {card.references.map((ref) => (
-                        <CardHoverPreview key={ref.slug} image={resolveReference(ref)?.editions[0]?.image} alt={ref.name}>
-                          <Link to={`/cards/${ref.slug}`} className="text-ctp-blue hover:underline">
-                            {ref.name} <span className="text-ctp-subtext0">({ref.kind.toLowerCase()})</span>
-                          </Link>
-                        </CardHoverPreview>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {card.referenced_by.length > 0 && (
-                  <div>
-                    <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">Referenced by</h3>
-                    <div className="mt-1 flex flex-wrap gap-2 text-sm">
-                      {card.referenced_by.map((ref) => (
-                        <CardHoverPreview key={ref.slug} image={resolveReference(ref)?.editions[0]?.image} alt={ref.name}>
-                          <Link to={`/cards/${ref.slug}`} className="text-ctp-blue hover:underline">
-                            {ref.name}
-                          </Link>
-                        </CardHoverPreview>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </Panel>
-          )}
-
-          {similarCardsSorted.length > 0 ? (
-            <>
-              <p className="mt-3 text-xs text-ctp-subtext0">
-                Cards with a matching ability template, for comparing cost and stats side by side — deltas are shown
-                relative to {card.name}.
-              </p>
-              <div className="mt-3 overflow-x-auto">
-            <table className="w-max min-w-full text-sm">
-              <thead>
-                <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                  <th className="py-1 pr-6">Card</th>
-                  <th className="py-1 pr-6">Cost</th>
-                  <th className="py-1 pr-6">Power</th>
-                  <th className="py-1 pr-6">Life</th>
-                  <th className="py-1 pr-6">Durability</th>
-                  <th className="py-1 pr-6">Released</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-ctp-surface0">
-                {similarCardsSorted.map((c) => {
-                  const released = earliestReleaseDate(c);
-                  const diff = statDiff(card, c);
-                  return (
-                    <tr key={c.uuid}>
-                      <td className="py-1.5 pr-6 whitespace-nowrap">
-                        <CardHoverPreview image={c.editions[0]?.image} alt={c.name}>
-                          <Link to={`/cards/${c.slug}`} className="text-ctp-text hover:text-ctp-blue">
-                            {c.name}
-                          </Link>
-                        </CardHoverPreview>
-                      </td>
-                      <td className="py-1.5 pr-6 text-ctp-subtext1">
-                        {c.cost.type !== "none" && c.cost.value !== null ? (
-                          <span className="flex items-center gap-1">
-                            <CostIcon kind={c.cost.type} size={12} />
-                            {c.cost.value}
-                            {formatDelta(diff.cost)}
-                          </span>
-                        ) : (
-                          "—"
-                        )}
-                      </td>
-                      <td className="py-1.5 pr-6 text-ctp-subtext1">
-                        {c.power ?? "—"}
-                        {formatDelta(diff.power)}
-                      </td>
-                      <td className="py-1.5 pr-6 text-ctp-subtext1">
-                        {c.life ?? "—"}
-                        {formatDelta(diff.life)}
-                      </td>
-                      <td className="py-1.5 pr-6 text-ctp-subtext1">
-                        {c.durability ?? "—"}
-                        {formatDelta(diff.durability)}
-                      </td>
-                      <td className="py-1.5 pr-6 text-ctp-subtext1">{released ? new Date(released).toLocaleDateString() : "—"}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-              </div>
-            </>
-          ) : (
-            <InlineState className="mt-4 text-sm">No other cards share {card.name}'s ability template yet.</InlineState>
-          )}
-        </Section>
+        <CardSimilarEffectsPanel card={card} cardStat={cardStat} similarCards={similarCardsSorted} resolveReference={resolveReference} />
       )}
 
       {tab === "intent" && (
@@ -739,84 +598,6 @@ export default function CardDetail() {
         </Section>
       )}
 
-      {tab === "decks" && recentDecks.length > 0 && (
-        <Section
-          className="mt-8"
-          heading="compact"
-          title="Recent decks"
-          description={`The latest recorded tournament decklists featuring ${card.name}.`}
-        >
-          <div className="mt-2">
-            <TopDecksList decks={recentDecks} playerName={playerName} />
-          </div>
-        </Section>
-      )}
-
-      {tab === "decks" && topDecks.length > 0 && (
-        <Section className="mt-8" heading="compact" title="Top decks">
-          <div className="mt-2">
-            <TopDecksList decks={topDecks} playerName={playerName} />
-          </div>
-        </Section>
-      )}
-
-      {tab === "decks" && uniqueDecks.length > 0 && (
-        <Section
-          className="mt-8"
-          heading="compact"
-          title="Most unique decks"
-          description={`Builds featuring ${card.name} with the most uncommon card choices relative to other decks of the same Champion at the time they were played.`}
-        >
-          <div className="mt-2 space-y-2">
-            {uniqueDecks.map((d) => (
-              <UniqueDeckRow key={`${d.eventId}:${d.player}`} score={d} playerName={playerName(d.player)} />
-            ))}
-          </div>
-        </Section>
-      )}
-
-      {tab === "decks" && communityDeckRefs.length > 0 && (
-        <Section
-          className="mt-8"
-          heading="compact"
-          title="Community decks"
-          description={
-            <>
-              Community brews that include this card — not real tournament results and not ordered by recency because
-              the source archive does not consistently track when a deck was built or updated. Build your own on{" "}
-              <a href="https://sleeved.gg" target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">Sleeved.gg</a>.
-            </>
-          }
-        >
-          <ul className="mt-2 space-y-1 text-sm">
-            {communityDeckRefs.map((d) => {
-              // Sleeved and TcgArchitect decks already carry a proper display-name champion (e.g.
-              // "Diao Chan"); only ShoutAtYourDecks' champion field is a lowercase slug needing
-              // formatShoutAtYourDecksChampion.
-              const isShoutAtYourDecks = d.url.includes("shoutatyourdecks.com");
-              const championLabel = d.champion ? (isShoutAtYourDecks ? formatShoutAtYourDecksChampion(d.champion) : d.champion) : "";
-              return (
-                <li key={d.id} className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
-                  {isShoutAtYourDecks ? (
-                    <span className="text-ctp-text">{d.title || "(untitled)"}</span>
-                  ) : (
-                    <a href={d.url} target="_blank" rel="noreferrer" className="text-ctp-text hover:text-ctp-blue">
-                      {d.title || "(untitled)"}
-                    </a>
-                  )}
-                  {(d.author || championLabel) && (
-                    <span className="text-xs text-ctp-subtext0">
-                      {d.author ? `by ${d.author}` : ""}
-                      {d.author && championLabel ? " — " : ""}
-                      {championLabel}
-                    </span>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </Section>
-      )}
 
       {tab === "compare" && (
         <CardComparePanel options={compareCardNames} input={compareInput} selected={compareWith} onInputChange={setCompareInput} onAdd={addCompareCard} onRemove={removeCompareCard} />
