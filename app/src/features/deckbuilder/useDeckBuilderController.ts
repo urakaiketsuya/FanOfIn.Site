@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import type { Card, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import { parseDecklist } from "../compare/parseDecklist";
-import type { RatingPillar } from "../../lib/deckIdentity";
 import { useTabParam } from "../../lib/useTabParam";
 import { useCardFieldVisibility } from "./useCardFieldVisibility";
 import { useBuilderViewMode } from "./useBuilderViewMode";
@@ -10,16 +9,15 @@ import { SIDEBOARD_POINT_BUDGET, sideboardPointCost, validateDeck } from "./vali
 import { computeNewReleaseCards } from "./newReleaseCards";
 import { accountApi } from "../../lib/accountApi";
 import { clearBuilderSession } from "./persistence/builderPersistence";
-import { type PopulationSource } from "./model/builderTypes";
 import { buildToDecklist } from "./engine/builderSelectors";
 import { useBuilderWorkflowState } from "./controller/useBuilderWorkflowState";
 import { useBuilderSessionPersistence } from "./controller/useBuilderSessionPersistence";
 import { useBuilderCopyState } from "./controller/useBuilderCopyState";
 import { loadBuilderSessionSeed, parseBuilderUrlSeed } from "./persistence/builderSeed";
 import { useBuilderWorkspacePersistence } from "./controller/useBuilderWorkspacePersistence";
-import { promoteMaybeboardCard, removeLockedCard, restoreChampionLevel, selectChampionPrint, toggleLockedCard } from "./controller/builderCardMutations";
 import { useBuilderRecommendationModel } from "./controller/useBuilderRecommendationModel";
 import { useBuilderChangeTracking } from "./controller/useBuilderChangeTracking";
+import { useBuilderCardActions } from "./controller/useBuilderCardActions";
 
 export type BuilderTab = BuilderWorkbenchView;
 export type BuilderIntent = "seed" | "scratch";
@@ -71,7 +69,7 @@ export function useDeckBuilderController() {
   } = workflow.state;
   const {
     setChampionName, setSpiritFilter, setLockedCards, setMaybeboard, setLockedSections,
-    setRejectedCards, setPillarBias, setArchetypeId, setChampionLevelCap, setPopulationSource,
+    setRejectedCards, setPillarBias, setArchetypeId, setPopulationSource,
     setCollectionMode, setChangeLog,
   } = workflow;
   useBuilderSessionPersistence(deckFormat, workflow.state);
@@ -120,6 +118,14 @@ export function useDeckBuilderController() {
     maybeboard, spiritElement,
   });
   const { pendingActionRef, resetChangeTracking } = useBuilderChangeTracking(build, setChangeLog);
+  const {
+    toggleLock, chooseChampionLineagePrint, restoreSuggestedChampionLevel, setLockedQuantity,
+    removeCard, addCard, removeMaybeCard, setMaybeQuantity, promoteMaybeCard,
+    changePopulationSource, changePillarBias, changeArchetype, changeChampionLevelCap,
+  } = useBuilderCardActions({
+    workflow, build, catalogByName, cardCatalog, cardNameSet, archetypeOptions, addDestination,
+    setAddDestination, setCardInput, startTransition, pendingActionRef,
+  });
   useEffect(() => {
     if (!improveDeckId) return;
     void accountApi.deck(improveDeckId).then(({ deck }) => {
@@ -232,159 +238,6 @@ export function useDeckBuilderController() {
     setPasteError(null);
     setPasteOpen(false);
     setTab("build");
-  }
-
-  /** `section` is the section this card is being locked FROM (known for sure, since it's the list the click came from) — recorded so the section survives even if the current population barely plays this card (see lockedSections' doc comment). Omitted when unlocking. */
-  function toggleLock(name: string, quantity: number, section?: "main" | "material" | "sideboard") {
-    const willLock = !lockedCards.has(name);
-    pendingActionRef.current = { label: willLock ? `Chose ${name}` : `Released ${name}`, subject: name };
-    startTransition(() => {
-      const next = toggleLockedCard(lockedCards, lockedSections, name, quantity, section);
-      setLockedCards(next.cards);
-      setLockedSections(next.sections);
-    });
-  }
-
-  function chooseChampionLineagePrint(name: string) {
-    const selected = catalogByName.get(name);
-    if (!selected || selected.level == null) return;
-    pendingActionRef.current = { label: `Chose ${selected.name} for Level ${selected.level}`, subject: selected.name };
-    startTransition(() => {
-      const next = selectChampionPrint(lockedCards, lockedSections, rejectedCards, selected, catalogByName);
-      setLockedCards(next.cards);
-      setLockedSections(next.sections);
-      setRejectedCards(next.rejected);
-    });
-  }
-
-  function restoreSuggestedChampionLevel(level: number) {
-    if (!championName) return;
-    pendingActionRef.current = { label: `Restored suggested Level ${level} Champion print`, subject: null };
-    startTransition(() => { const next = restoreChampionLevel(lockedCards, lockedSections, level, championName, catalogByName); setLockedCards(next.cards); setLockedSections(next.sections); });
-  }
-
-  /** Editing a locked card's own copy count — doesn't touch lock state or section, just the quantity. No changelog entry: this is a fine-tune, not a suggestion-changing action, and firing one per keystroke on the number input would spam the log. */
-  function setLockedQuantity(name: string, quantity: number) {
-    startTransition(() =>
-      setLockedCards((prev) => {
-        if (!prev.has(name)) return prev;
-        const next = new Map(prev);
-        next.set(name, quantity);
-        return next;
-      }),
-    );
-  }
-
-  /** Locked cards are dropped from the deck entirely; a non-locked (suggested) card is instead excluded from future suggestions, so a different card fills that slot. */
-  function removeCard(name: string, locked: boolean) {
-    pendingActionRef.current = { label: locked ? `Removed ${name}` : `Excluded ${name} from suggestions`, subject: name };
-    startTransition(() => {
-      if (locked) {
-        const next = removeLockedCard(lockedCards, lockedSections, name, catalogByName);
-        setLockedCards(next.cards);
-        setLockedSections(next.sections);
-      } else {
-        setRejectedCards((prev) => new Set(prev).add(name));
-      }
-    });
-  }
-
-  function addCard(name: string) {
-    if (!cardNameSet.has(name) || (lockedCards.has(name) && addDestination !== "maybeboard")) return;
-    const card = cardCatalog.find((c) => c.name === name);
-    // Champion/Regalia cards are Material-deck-only and capped at 1 copy there regardless of the
-    // card's own UNIQUE/Standard limit (see useSuggestedBuild.ts's build-time precheck for the
-    // real-data verification) — computed here too so the stored quantity starts correct instead of
-    // only getting clamped once the build assembles.
-    const isMaterialOnly = card ? card.types.includes("CHAMPION") || card.types.includes("REGALIA") : false;
-    const defaultQty = isMaterialOnly ? 1 : 4;
-    const currentSideboardPoints = build.sideboard.reduce(
-      (sum, entry) => sum + entry.quantity * sideboardPointCost(catalogByName.get(entry.cardName)),
-      0,
-    );
-    const fitsSideboard = currentSideboardPoints + defaultQty * sideboardPointCost(card) <= SIDEBOARD_POINT_BUDGET;
-    if (addDestination === "maybeboard") {
-      setMaybeboard((previous) => new Map(previous).set(name, defaultQty));
-      setCardInput("");
-      setAddDestination("automatic");
-      return;
-    }
-    const placeInSideboard = addDestination === "sideboard" && fitsSideboard;
-    pendingActionRef.current = { label: `Added ${name}`, subject: name };
-    startTransition(() => {
-      setLockedCards((prev) => {
-        const next = new Map(prev);
-        next.set(name, defaultQty);
-        return next;
-      });
-      if (placeInSideboard) {
-        setLockedSections((prev) => new Map(prev).set(name, "sideboard"));
-      }
-    });
-    setCardInput("");
-    setAddDestination("automatic");
-  }
-
-  function removeMaybeCard(name: string) {
-    setMaybeboard((previous) => {
-      const next = new Map(previous);
-      next.delete(name);
-      return next;
-    });
-  }
-
-  function setMaybeQuantity(name: string, quantity: number) {
-    if (!Number.isInteger(quantity) || quantity < 1) return;
-    setMaybeboard((previous) => new Map(previous).set(name, Math.min(quantity, 4)));
-  }
-
-  function promoteMaybeCard(name: string) {
-    const next = promoteMaybeboardCard(lockedCards, lockedSections, maybeboard, name, catalogByName);
-    if (!next) return;
-    pendingActionRef.current = { label: `Added ${name} from maybeboard`, subject: name };
-    startTransition(() => {
-      setLockedCards(next.cards);
-      setLockedSections(next.sections);
-      setMaybeboard(next.maybeboard);
-    });
-  }
-
-  /** Re-ranking the suggested build by switching data source or tuning bias is itself a
-   * suggestion-changing action, same as locking/excluding a card — logged the same way so the
-   * change log reflects what actually moved instead of only crediting direct card clicks. Guarded
-   * on an actual value change so clicking the already-selected tab/pillar doesn't leave a stale
-   * pendingActionRef for the next real change to pick up. */
-  function changePopulationSource(source: PopulationSource, label: string) {
-    if (source !== populationSource) pendingActionRef.current = { label: `Switched to ${label} data`, subject: null };
-    setPopulationSource(source);
-  }
-
-  function changePillarBias(pillar: RatingPillar | null) {
-    if (pillar !== pillarBias) {
-      pendingActionRef.current = {
-        label: pillar === null ? "Reset tuning to Balanced" : `Tuned toward ${pillar[0].toUpperCase()}${pillar.slice(1)}`,
-        subject: null,
-      };
-    }
-    setPillarBias(pillar);
-  }
-
-  function changeArchetype(archetype: string | null) {
-    if (archetype !== archetypeId) {
-      const selected = archetypeOptions.find((option) => option.id === archetype);
-      pendingActionRef.current = {
-        label: selected ? `Inspired by ${selected.name}` : "Removed archetype inspiration",
-        subject: null,
-      };
-    }
-    startTransition(() => setArchetypeId(archetype));
-  }
-
-  function changeChampionLevelCap(cap: number | null) {
-    if (cap !== championLevelCap) {
-      pendingActionRef.current = { label: cap === null ? "Restored automatic Champion progression" : `Set Champion progression through Level ${cap}`, subject: null };
-    }
-    startTransition(() => setChampionLevelCap(cap));
   }
 
   const mainTotal = build.main.reduce((sum, c) => sum + c.quantity, 0);
