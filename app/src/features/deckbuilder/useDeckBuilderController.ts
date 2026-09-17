@@ -1,14 +1,11 @@
-import { useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import type { Card, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
-import { parseDecklist } from "../compare/parseDecklist";
 import { useTabParam } from "../../lib/useTabParam";
 import { useCardFieldVisibility } from "./useCardFieldVisibility";
 import { useBuilderViewMode } from "./useBuilderViewMode";
 import { SIDEBOARD_POINT_BUDGET, sideboardPointCost, validateDeck } from "./validateDeck";
 import { computeNewReleaseCards } from "./newReleaseCards";
-import { accountApi } from "../../lib/accountApi";
-import { clearBuilderSession } from "./persistence/builderPersistence";
 import { buildToDecklist } from "./engine/builderSelectors";
 import { useBuilderWorkflowState } from "./controller/useBuilderWorkflowState";
 import { useBuilderSessionPersistence } from "./controller/useBuilderSessionPersistence";
@@ -18,6 +15,7 @@ import { useBuilderWorkspacePersistence } from "./controller/useBuilderWorkspace
 import { useBuilderRecommendationModel } from "./controller/useBuilderRecommendationModel";
 import { useBuilderChangeTracking } from "./controller/useBuilderChangeTracking";
 import { useBuilderCardActions } from "./controller/useBuilderCardActions";
+import { useBuilderLifecycle } from "./controller/useBuilderLifecycle";
 
 export type BuilderTab = BuilderWorkbenchView;
 export type BuilderIntent = "seed" | "scratch";
@@ -68,8 +66,7 @@ export function useDeckBuilderController() {
     pillarBias, archetypeId, championLevelCap, populationSource, collectionMode, changeLog,
   } = workflow.state;
   const {
-    setChampionName, setSpiritFilter, setLockedCards, setMaybeboard, setLockedSections,
-    setRejectedCards, setPillarBias, setArchetypeId, setPopulationSource,
+    setChampionName, setSpiritFilter, setRejectedCards, setPopulationSource,
     setCollectionMode, setChangeLog,
   } = workflow;
   useBuilderSessionPersistence(deckFormat, workflow.state);
@@ -82,21 +79,6 @@ export function useDeckBuilderController() {
   const [tab, setTab] = useTabParam<BuilderTab>("tab", TAB_KEYS, "build");
   const [identityEditorOpen, setIdentityEditorOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const [pasteOpen, setPasteOpen] = useState(false);
-  const [pasteText, setPasteText] = useState("");
-  const [pasteError, setPasteError] = useState<string | null>(null);
-  // Set right before setChampionName() by loadPastedDecklist() so the reset effect below doesn't
-  // clobber the Spirit/locks it just derived — a normal Champion-dropdown change still resets to a
-  // blank slate as usual. (Not used for the URL-seed case below — see lastResetChampionRef.)
-  const skipNextResetRef = useRef(false);
-  // The championName the reset effect has already dealt with (by resetting or by skipping) —
-  // starts at the seeded Champion so its very first (mount) run is a no-op. This has to be an
-  // idempotent *comparison* rather than a one-shot flag: React 18 StrictMode double-invokes mount
-  // effects in dev, and a flag that gets flipped inside the effect body reads as "already
-  // consumed" on the second invocation, incorrectly falling through to a real reset that clobbers
-  // the just-seeded lockedCards a moment later. Comparing against a ref that's never mutated
-  // during a no-op run stays correct across as many redundant invocations as StrictMode throws at it.
-  const lastResetChampionRef = useRef(urlSeed?.championName ?? sessionSeed?.championName ?? null);
 
   function chooseIntent(intent: BuilderIntent) {
     const next = new URLSearchParams(searchParams);
@@ -126,42 +108,15 @@ export function useDeckBuilderController() {
     workflow, build, catalogByName, cardCatalog, cardNameSet, archetypeOptions, addDestination,
     setAddDestination, setCardInput, startTransition, pendingActionRef,
   });
-  useEffect(() => {
-    if (!improveDeckId) return;
-    void accountApi.deck(improveDeckId).then(({ deck }) => {
-      setMaybeboard(new Map(deck.maybeboard.map((line) => [line.card, line.quantity])));
-    }).catch(() => undefined);
-  }, [improveDeckId, setMaybeboard]);
-  useEffect(() => {
-    if (lastResetChampionRef.current === championName) {
-      // Already handled this exact championName (the seeded initial value, or a StrictMode
-      // dev double-invoke re-running this same effect) — idempotent no-op.
-      return;
-    }
-    lastResetChampionRef.current = championName;
-    if (skipNextResetRef.current) {
-      skipNextResetRef.current = false;
-    } else {
-      startTransition(() => {
-        setSpiritFilter(null);
-        setSpiritElement(null);
-        // A seed-card build intentionally starts with cards before its identity. Preserve those
-        // choices while the user tries compatible Champions; all other workflows reset normally.
-        if (builderIntent !== "seed") {
-          setLockedCards(new Map());
-          setLockedSections(new Map());
-        }
-        setMaybeboard(new Map());
-        setRejectedCards(new Set());
-        setDismissedReviewCards(new Set());
-        setArchetypeId(null);
-        setChangeLog([]);
-      });
-    }
-    resetChangeTracking();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [championName, builderIntent]);
-
+  const {
+    pasteOpen, setPasteOpen, pasteText, setPasteText, pasteError, setPasteError,
+    loadPastedDecklist, resetBuilder,
+  } = useBuilderLifecycle({
+    workflow, builderIntent, improveDeckId,
+    initialChampionName: urlSeed?.championName ?? sessionSeed?.championName ?? null,
+    catalogByName, spiritCanonicalNames, setDismissedReviewCards, setSpiritElement,
+    setCardInput, setAddDestination, setTab, startTransition, resetChangeTracking,
+  });
   // The shared link's params (see handleCopyShareLink below) already did their job as the
   // *initial* state above — this just clears them once mounted, so the URL doesn't look "stuck"
   // to the original shared state once the viewer starts editing.
@@ -182,63 +137,6 @@ export function useDeckBuilderController() {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  /**
-   * Bulk equivalent of picking a Champion+Spirit then locking every remaining card by hand —
-   * detects the Champion (material CHAMPION-type card, non-Spirit) and Spirit (material
-   * CHAMPION+SPIRIT card, same rule useDeckBuilderPopulation uses) from the pasted list, then
-   * locks everything else (including the specific Champion-level prints run, so the algorithm
-   * doesn't silently swap in a different print at that level).
-   */
-  function loadPastedDecklist() {
-    const { decklist, skippedLines } = parseDecklist(pasteText);
-    const lines = [...decklist.main, ...decklist.material, ...decklist.sideboard];
-    if (lines.length === 0) {
-      setPasteError(skippedLines.length > 0 ? "Couldn't recognize any card lines in that paste." : "Paste a decklist first.");
-      return;
-    }
-
-    let detectedChampion: string | null = null;
-    let detectedSpirit: string | null = null;
-    const newLocked = new Map<string, number>();
-    const newSections = new Map<string, "main" | "material" | "sideboard">();
-
-    for (const section of ["main", "material", "sideboard"] as const) {
-      for (const line of decklist[section]) {
-        const card = catalogByName.get(line.card);
-        if (card?.types.includes("CHAMPION")) {
-          if (card.subtypes.includes("SPIRIT")) {
-            detectedSpirit = line.card;
-            continue;
-          }
-          if (!detectedChampion) detectedChampion = card.name.split(",")[0].trim();
-        }
-        newLocked.set(line.card, (newLocked.get(line.card) ?? 0) + line.quantity);
-        newSections.set(line.card, section);
-      }
-    }
-
-    if (!detectedChampion) {
-      setPasteError("Couldn't find a Champion card in this decklist.");
-      return;
-    }
-
-    if (detectedChampion !== championName) skipNextResetRef.current = true;
-    setChampionName(detectedChampion);
-    setSpiritFilter(detectedSpirit ? (spiritCanonicalNames.get(detectedSpirit) ?? detectedSpirit) : null);
-    setLockedCards(newLocked);
-    setLockedSections(newSections);
-    setMaybeboard(new Map());
-    setRejectedCards(new Set());
-    setDismissedReviewCards(new Set());
-    setChangeLog([]);
-    resetChangeTracking();
-
-    setPasteText("");
-    setPasteError(null);
-    setPasteOpen(false);
-    setTab("build");
-  }
 
   const mainTotal = build.main.reduce((sum, c) => sum + c.quantity, 0);
   const materialTotal = build.material.reduce((sum, c) => sum + c.quantity, 0);
@@ -277,33 +175,6 @@ export function useDeckBuilderController() {
     () => validateDeck({ main: build.main, material: build.material, sideboard: build.sideboard }, catalogByName, identityElements, deckFormat),
     [build.main, build.material, build.sideboard, catalogByName, identityElements, deckFormat],
   );
-  function resetBuilder(): void {
-    // Clear the persisted snapshot as well as component state. This matters when the user resets
-    // and immediately navigates away before React's autosave effect gets a chance to run.
-    clearBuilderSession(sessionStorage);
-    resetChangeTracking();
-    skipNextResetRef.current = false;
-    lastResetChampionRef.current = null;
-    startTransition(() => {
-      setChampionName(null);
-      setSpiritFilter(null);
-      setSpiritElement(null);
-      setLockedCards(new Map());
-      setLockedSections(new Map());
-      setRejectedCards(new Set());
-      setCardInput("");
-      setAddDestination("automatic");
-      setMaybeboard(new Map());
-      setPillarBias(null);
-      setArchetypeId(null);
-      setPopulationSource("balanced");
-      setChangeLog([]);
-      setDismissedReviewCards(new Set());
-      setPasteOpen(false);
-      setPasteText("");
-      setPasteError(null);
-    });
-  }
   const importedCardCount = Array.from(lockedCards.values()).reduce((sum, quantity) => sum + quantity, 0);
   const identityComplete = Boolean(championName && spiritFilter);
   const buildComplete = identityComplete && mainTotal > 0;
