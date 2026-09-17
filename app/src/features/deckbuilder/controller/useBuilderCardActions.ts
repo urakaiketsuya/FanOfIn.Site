@@ -98,17 +98,18 @@ export function useBuilderCardActions(options: BuilderCardActionsOptions) {
     });
   }
 
-  function addCard(name: string) {
-    if (!cardNameSet.has(name) || (lockedCards.has(name) && addDestination !== "maybeboard")) return;
+  function addCard(name: string, suggestedQuantity?: number, destinationOverride?: "automatic" | "maybeboard") {
+    const destination = destinationOverride ?? addDestination;
+    if (!cardNameSet.has(name) || (lockedCards.has(name) && destination !== "maybeboard")) return;
     const card = cardCatalog.find((candidate) => candidate.name === name);
     const materialOnly = card?.types.some((type) => type === "CHAMPION" || type === "REGALIA") ?? false;
-    const quantity = materialOnly ? 1 : 4;
+    const quantity = materialOnly ? 1 : suggestedQuantity ?? 4;
     const sideboardPoints = build.sideboard.reduce(
       (sum, entry) => sum + entry.quantity * sideboardPointCost(catalogByName.get(entry.cardName)),
       0,
     );
     const fitsSideboard = sideboardPoints + quantity * sideboardPointCost(card) <= SIDEBOARD_POINT_BUDGET;
-    if (addDestination === "maybeboard") {
+    if (destination === "maybeboard") {
       setMaybeboard((previous) => new Map(previous).set(name, quantity));
       setCardInput("");
       setAddDestination("automatic");
@@ -117,7 +118,7 @@ export function useBuilderCardActions(options: BuilderCardActionsOptions) {
     pendingActionRef.current = { label: `Added ${name}`, subject: name };
     startTransition(() => {
       setLockedCards((previous) => new Map(previous).set(name, quantity));
-      if (addDestination === "sideboard" && fitsSideboard) {
+      if (destination === "sideboard" && fitsSideboard) {
         setLockedSections((previous) => new Map(previous).set(name, "sideboard"));
       }
     });

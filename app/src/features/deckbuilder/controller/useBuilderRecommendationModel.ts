@@ -13,6 +13,7 @@ import type { CollectionMode, LockedSection, PopulationSource } from "../model/b
 import { computeIdentityElements, findChampionCard, useSuggestedBuild } from "../useSuggestedBuild";
 import { useCommunitySuggestedBuild } from "../useCommunitySuggestedBuild";
 import { useSimulatorSuggestedBuild } from "../useSimulatorSuggestedBuild";
+import { buildCardCategoryRecommendations } from "../cardCategoryRecommendations";
 
 interface BuilderRecommendationModelOptions {
   championName: string | null;
@@ -178,6 +179,14 @@ export function useBuilderRecommendationModel(options: BuilderRecommendationMode
   );
   const simulatorResult = useSimulatorSuggestedBuild(communityBuild, simulatorSummary, cardCatalog);
   const effectivePopulationSource: PopulationSource = deckFormat === "PANTHEON" ? "community" : populationSource;
+  const cardCategoryRecommendations = useMemo(() => buildCardCategoryRecommendations({
+    catalog: cardCatalog,
+    rows: recommendationRows,
+    communityRateByName: communityInclusionByName && new Map(Array.from(communityInclusionByName, ([name, entry]) => [name, entry.percentOfDecks])),
+    identityElements,
+    format: deckFormat,
+    source: effectivePopulationSource,
+  }), [cardCatalog, recommendationRows, communityInclusionByName, identityElements, deckFormat, effectivePopulationSource]);
   const build = useMemo(() => buildSuggestedDeck(
     { format: deckFormat, populationSource, collectionMode },
     { tournament: tournamentBuild, balanced: balancedBuild, community: communityBuild, simulator: simulatorResult.build, collectionOwnedByName },
@@ -252,6 +261,6 @@ export function useBuilderRecommendationModel(options: BuilderRecommendationMode
     hypeGapByName, decaySignalByName, build, reviewItemCount, reviewRemovalNames, gateLoading,
     gateHasData, spiritElements, spiritsForElement, spiritOptionLabel, championsPresent, cardNames,
     cardNameSet, cardsByName, identityElements, effectivePopulationSource, simulatorResult,
-    archetypeOptions, dismissedReviewCards, setDismissedReviewCards,
+    archetypeOptions, cardCategoryRecommendations, dismissedReviewCards, setDismissedReviewCards,
   };
 }

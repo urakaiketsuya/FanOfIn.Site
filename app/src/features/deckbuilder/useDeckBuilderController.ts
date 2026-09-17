@@ -89,7 +89,7 @@ export function useDeckBuilderController() {
     hypeGapByName, decaySignalByName, build, reviewItemCount, reviewRemovalNames, gateLoading,
     gateHasData, spiritElements, spiritsForElement, spiritOptionLabel, championsPresent, cardNames,
     cardNameSet, cardsByName, identityElements, effectivePopulationSource, simulatorResult,
-    archetypeOptions, setDismissedReviewCards,
+    archetypeOptions, cardCategoryRecommendations, setDismissedReviewCards,
   } = useBuilderRecommendationModel({
     championName, spiritFilter, setSpiritFilter, deckFormat, tab, lockedCards, lockedSections,
     rejectedCards, pillarBias, archetypeId, championLevelCap, populationSource, collectionMode,
@@ -245,5 +245,6 @@ export function useDeckBuilderController() {
     effectivePopulationSource,
     simulatorResult,
     archetypeOptions,
+    cardCategoryRecommendations,
   };
 }

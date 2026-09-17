@@ -129,6 +129,7 @@ export default function DeckBuilderIndex() {
     effectivePopulationSource,
     simulatorResult,
     archetypeOptions,
+    cardCategoryRecommendations,
   } = useDeckBuilderController();
   return (
     <PageLayout data-component="DeckBuilderIndex">
@@ -444,6 +445,7 @@ export default function DeckBuilderIndex() {
               lockedCards={lockedCards}
               onPromoteMaybeCard={promoteMaybeCard}
               onRemoveMaybeCard={removeMaybeCard}
+              cardCategoryRecommendations={cardCategoryRecommendations}
             />
           )}
 

@@ -16,6 +16,8 @@ import type { PriceTrendEntry } from "../../pricing/usePriceTrendByName";
 import type { PopulationSource } from "../model/builderTypes";
 import type { RatingPillar } from "../../../lib/deckIdentity";
 import { inferStartingHandSize } from "../../../lib/turnToPlay";
+import BuilderCardExplorer from "../components/BuilderCardExplorer";
+import type { CardCategoryRecommendation } from "../cardCategoryRecommendations";
 
 type BuilderIntent = "seed" | "scratch";
 type AddDestination = "automatic" | "sideboard" | "maybeboard";
@@ -28,7 +30,7 @@ export default function BuilderBuildPanel({
   isPending, materialTotal, mainTotal, sideboardTotal, cardsByName, catalogByName, priceByName,
   priceTrendByName, communityInclusionByName, hypeGapByName, decaySignalByName, simulatorEvidenceByName,
   reviewRemovalNames, onToggleLock, onChangeQuantity, onRemoveCard, maybeboard, onMaybeQuantityChange,
-  lockedCards, onPromoteMaybeCard, onRemoveMaybeCard,
+  lockedCards, onPromoteMaybeCard, onRemoveMaybeCard, cardCategoryRecommendations,
 }: {
   builderIntent: BuilderIntent | null;
   cardInput: string;
@@ -37,7 +39,7 @@ export default function BuilderBuildPanel({
   onAddDestinationChange: (destination: AddDestination) => void;
   cardNameSet: Set<string>;
   cardNames: string[];
-  onAddCard: (name: string) => void;
+  onAddCard: (name: string, quantity?: number, destination?: "automatic" | "maybeboard") => void;
   canAddToSideboard: boolean;
   selectedSideboardPoints: number;
   currentSideboardPoints: number;
@@ -73,6 +75,7 @@ export default function BuilderBuildPanel({
   lockedCards: Map<string, number>;
   onPromoteMaybeCard: (name: string) => void;
   onRemoveMaybeCard: (name: string) => void;
+  cardCategoryRecommendations: CardCategoryRecommendation[];
 }) {
   const communityMode = effectivePopulationSource !== "tournament" && effectivePopulationSource !== "balanced";
   const startingHandSize = inferStartingHandSize(build.material.map((card) => ({ name: card.cardName })), catalogByName);
@@ -144,6 +147,7 @@ export default function BuilderBuildPanel({
             : "Automatic places the card in Main or Material."}
         </span>
       </div>
+      <BuilderCardExplorer recommendations={cardCategoryRecommendations} lockedCards={lockedCards} onAddCard={onAddCard} />
       <div className="mt-3 flex flex-wrap items-center gap-3">
         <button
           type="button"
