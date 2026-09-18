@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "source": "GrandArchiveSim",
-  "generatedAt": "2026-09-17T10:59:36.712Z",
-  "games": 16,
+  "generatedAt": "2026-09-18T10:36:17.999Z",
+  "games": 17,
   "firstPlayer": {
-    "games": 16,
-    "wins": 7,
-    "winRate": 0.4375
+    "games": 17,
+    "wins": 8,
+    "winRate": 0.47058823529411764
   },
-  "avgTurns": 4,
+  "avgTurns": 4.235294117647059,
   "champions": [
     {
       "championId": "tafqldAGRF",
@@ -121,6 +121,22 @@
       "games": 1,
       "wins": 1,
       "winRate": 1
+    },
+    {
+      "championId": "he6kd7hocc",
+      "championName": "Tristan, Shadowdancer",
+      "element": "UMBRA",
+      "games": 1,
+      "wins": 1,
+      "winRate": 1
+    },
+    {
+      "championId": "iq4d5vettc",
+      "championName": "Diana, Duskstalker",
+      "element": "UMBRA",
+      "games": 1,
+      "wins": 0,
+      "winRate": 0
     },
     {
       "championId": "m7f6r8f3y8",
@@ -241,6 +257,15 @@
       "champion1Name": null,
       "champion2": "j6dkdoxyqt",
       "champion2Name": null,
+      "games": 1,
+      "champion1Wins": 1,
+      "champion2Wins": 0
+    },
+    {
+      "champion1": "he6kd7hocc",
+      "champion1Name": "Tristan, Shadowdancer",
+      "champion2": "iq4d5vettc",
+      "champion2Name": "Diana, Duskstalker",
       "games": 1,
       "champion1Wins": 1,
       "champion2Wins": 0
@@ -441,51 +466,63 @@
   "turnStats": [
     {
       "turn": 1,
-      "games": 15,
-      "avgCardsPlayed": 0.9666666666666667,
+      "games": 16,
+      "avgCardsPlayed": 0.96875,
       "avgMemorySpent": 0,
-      "avgReserveSpent": 2.6333333333333333,
-      "avgDamageDealt": 0.36666666666666664,
-      "avgDamageTaken": 0.1,
+      "avgReserveSpent": 2.65625,
+      "avgDamageDealt": 0.375,
+      "avgDamageTaken": 0.125,
       "avgHealed": 0,
       "avgLevel": 0,
       "avgHp": 15
     },
     {
       "turn": 2,
-      "games": 15,
-      "avgCardsPlayed": 1.6296296296296295,
-      "avgMemorySpent": 0.4074074074074074,
-      "avgReserveSpent": 3.925925925925926,
-      "avgDamageDealt": 1.5185185185185186,
-      "avgDamageTaken": 1.0740740740740742,
-      "avgHealed": 0.14814814814814814,
-      "avgLevel": 0.6666666666666666,
-      "avgHp": 17.666666666666668
+      "games": 16,
+      "avgCardsPlayed": 1.6551724137931034,
+      "avgMemorySpent": 0.41379310344827586,
+      "avgReserveSpent": 3.896551724137931,
+      "avgDamageDealt": 1.5517241379310345,
+      "avgDamageTaken": 1.103448275862069,
+      "avgHealed": 0.13793103448275862,
+      "avgLevel": 0.6896551724137931,
+      "avgHp": 17.75862068965517
     },
     {
       "turn": 3,
-      "games": 10,
-      "avgCardsPlayed": 1.7727272727272727,
-      "avgMemorySpent": 0.2727272727272727,
-      "avgReserveSpent": 4.045454545454546,
-      "avgDamageDealt": 3.1363636363636362,
-      "avgDamageTaken": 2.8636363636363638,
-      "avgHealed": 0.045454545454545456,
+      "games": 11,
+      "avgCardsPlayed": 1.8333333333333333,
+      "avgMemorySpent": 0.2916666666666667,
+      "avgReserveSpent": 3.9166666666666665,
+      "avgDamageDealt": 3,
+      "avgDamageTaken": 2.7916666666666665,
+      "avgHealed": 0.041666666666666664,
       "avgLevel": 1.5,
-      "avgHp": 20.318181818181817
+      "avgHp": 20.333333333333332
     },
     {
       "turn": 4,
-      "games": 7,
-      "avgCardsPlayed": 1.6923076923076923,
-      "avgMemorySpent": 0.38461538461538464,
-      "avgReserveSpent": 4.384615384615385,
-      "avgDamageDealt": 2.6153846153846154,
-      "avgDamageTaken": 3.923076923076923,
+      "games": 8,
+      "avgCardsPlayed": 1.6,
+      "avgMemorySpent": 0.4,
+      "avgReserveSpent": 4.133333333333334,
+      "avgDamageDealt": 2.8666666666666667,
+      "avgDamageTaken": 3.7333333333333334,
       "avgHealed": 0,
-      "avgLevel": 2.1538461538461537,
-      "avgHp": 22.692307692307693
+      "avgLevel": 2.1333333333333333,
+      "avgHp": 22.6
+    },
+    {
+      "turn": 5,
+      "games": 5,
+      "avgCardsPlayed": 1.7,
+      "avgMemorySpent": 0.6,
+      "avgReserveSpent": 2,
+      "avgDamageDealt": 2.7,
+      "avgDamageTaken": 4.1,
+      "avgHealed": 0.3,
+      "avgLevel": 2.3,
+      "avgHp": 23.2
     }
   ]
 }
