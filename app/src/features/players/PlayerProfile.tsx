@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER, type AchievementDefinition, type AchievementUnlock } from "@gatcg/shared";
+import { EVENT_CATEGORY_ORDER, type AchievementDefinition, type AchievementUnlock } from "@gatcg/shared";
 import { useOmnidexIndex, useOmnidexJudges, useOmnidexPlayers } from "../tournaments/data";
 import { useEloData, useEloHistoryData, useHipsterData, usePlayerDecksData, useRivalsData } from "./data";
 import HistoryChart from "../../components/HistoryChart";
@@ -21,6 +21,7 @@ import { isProvisionalRating } from "../../lib/eloProvisional";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
 import { EmptyState } from "../../components/ui/ContentState";
+import PlayerEventFilters from "./PlayerEventFilters";
 
 type PlayerTab = "overview" | "events" | "judged";
 const PAGE_SIZE = 50;
@@ -359,66 +360,7 @@ export default function PlayerProfile() {
           heading="compact"
           title={`Events (${events.length}${events.length !== allEvents.length ? ` of ${allEvents.length}` : ""})`}
         >
-          {(categoriesPresent.length > 1 || championsPresent.length > 1 || seasonsPresent.length > 1) && (
-            <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
-              {categoriesPresent.length > 1 && (
-                <>
-                  <span className="text-ctp-subtext0">Type:</span>
-                  <select
-                    value={eventCategory ?? ""}
-                    aria-label="Type"
-                    onChange={(e) => setEventCategory(e.target.value || null)}
-                    className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
-                  >
-                    <option value="">All types</option>
-                    {categoriesPresent.map((c) => (
-                      <option key={c} value={c}>
-                        {EVENT_CATEGORY_LABELS[c] ?? c}
-                      </option>
-                    ))}
-                  </select>
-                </>
-              )}
-
-              {championsPresent.length > 1 && (
-                <>
-                  <span className="ml-2 text-ctp-subtext0">Champion:</span>
-                  <select
-                    value={eventChampion ?? ""}
-                    aria-label="Champion"
-                    onChange={(e) => setEventChampion(e.target.value || null)}
-                    className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
-                  >
-                    <option value="">All champions</option>
-                    {championsPresent.map((name) => (
-                      <option key={name} value={name}>
-                        {name}
-                      </option>
-                    ))}
-                  </select>
-                </>
-              )}
-
-              {seasonsPresent.length > 1 && (
-                <>
-                  <span className="ml-2 text-ctp-subtext0">Season:</span>
-                  <select
-                    value={eventSeasonId ?? ""}
-                    aria-label="Season"
-                    onChange={(e) => setEventSeasonId(e.target.value ? Number(e.target.value) : null)}
-                    className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
-                  >
-                    <option value="">All seasons</option>
-                    {seasonsPresent.map(([id, name]) => (
-                      <option key={id} value={id}>
-                        {name}
-                      </option>
-                    ))}
-                  </select>
-                </>
-              )}
-            </div>
-          )}
+          <PlayerEventFilters categories={categoriesPresent} champions={championsPresent} seasons={seasonsPresent} category={eventCategory} champion={eventChampion} seasonId={eventSeasonId} onCategoryChange={setEventCategory} onChampionChange={setEventChampion} onSeasonChange={setEventSeasonId} />
 
           <div className="mt-2 space-y-2">
             {visibleEvents.map((event) => (

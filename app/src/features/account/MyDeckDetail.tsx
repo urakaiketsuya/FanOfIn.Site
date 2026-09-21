@@ -19,13 +19,13 @@ import Tabs from "../../components/ui/Tabs";
 import { useTabParam } from "../../lib/useTabParam";
 import Panel from "../../components/ui/Panel";
 import { EmptyState, InlineState } from "../../components/ui/ContentState";
-import DeckVisualStrip from "./DeckVisualStrip";
 import { encodeCustomDecks } from "../../lib/compareShareLink";
 import DeckSectionBalance from "./DeckSectionBalance";
 import { sideboardPointCost } from "../deckbuilder/validateDeck";
 import CardSearchPicker from "../../components/CardSearchPicker";
 import { EditableDecklistGrid, EDIT_SECTIONS, MaybeboardCardTile, type DeckSectionKey } from "./SavedDeckCardEditor";
 import DeckSaveBar from "./DeckSaveBar";
+import { DeckVersionHistory, MyDeckOverview } from "./MyDeckDetailSections";
 
 type DeckTab = "overview" | "decklist" | "analysis" | "primer" | "versions" | "settings";
 const DECK_TABS = [{ key: "overview", label: "Overview" }, { key: "decklist", label: "Decklist" }, { key: "analysis", label: "Improve" }, { key: "primer", label: "Primer" }, { key: "versions", label: "History" }] satisfies { key: DeckTab; label: string }[];
@@ -325,10 +325,7 @@ export default function MyDeckDetail() {
     <div className="mt-6"><Tabs tabs={DECK_TABS} active={tab === "settings" ? "overview" : tab} onChange={setTab} label="Deck details" baseId="owned-deck" /></div>
     {error && <Panel tone="danger" padding="sm" className="mt-4 text-sm text-ctp-red">{error}</Panel>}
     {notice && <Panel tone="success" padding="sm" className="mt-4 text-sm text-ctp-green">{notice}</Panel>}
-    {tab === "overview" && <section id="owned-deck-panel-overview" role="tabpanel" aria-labelledby="owned-deck-tab-overview" tabIndex={0} className="mt-6 grid gap-5 lg:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.6fr)]">
-      <Panel><h2 className="text-lg font-semibold text-ctp-text">Deck at a glance</h2><DeckVisualStrip decklist={deck.decklist} championName={deck.championName} /><DeckSectionBalance counts={sectionCounts} sideboardPoints={sideboardPoints} maybeboard={sectionCounts.maybeboard} /></Panel>
-      <Panel><h2 className="text-lg font-semibold text-ctp-text">Explore this deck</h2><div className="mt-3 space-y-2"><Link to={`/deck-analysis?deck=${encodeURIComponent(deck.id)}`} className="block rounded-lg border border-ctp-surface1 px-3 py-2.5 text-sm text-ctp-subtext1 hover:border-ctp-blue">Analyze deck</Link><Link to={`/combo-lab?deck=${encodeURIComponent(deck.id)}`} className="block rounded-lg border border-ctp-surface1 px-3 py-2.5 text-sm text-ctp-subtext1 hover:border-ctp-mauve">Test combos</Link><Link to={`/deck-review?deck=${encodeURIComponent(deck.id)}`} className="block rounded-lg border border-ctp-surface1 px-3 py-2.5 text-sm text-ctp-subtext1 hover:border-ctp-blue">Review suggestions</Link></div><p className="mt-4 text-xs text-ctp-subtext0">{deck.versions.length} version{deck.versions.length === 1 ? "" : "s"} · Updated {new Date(deck.updatedAt).toLocaleDateString()}</p></Panel>
-    </section>}
+    {tab === "overview" && <MyDeckOverview deck={deck} sectionCounts={sectionCounts} sideboardPoints={sideboardPoints} />}
     {tab === "settings" && <section id="owned-deck-panel-settings" role="tabpanel" aria-labelledby="owned-deck-tab-settings" tabIndex={0} className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
       <h2 className="font-semibold text-ctp-text">Details and sharing</h2>
       <form className="mt-3 space-y-2" onSubmit={(event) => { event.preventDefault(); void run(async () => { const tags = tagsText.split(",").map((tag) => tag.trim()).filter(Boolean); if (tags.length > 8) throw new Error("Use no more than 8 tags."); if (tags.some((tag) => tag.length < 2 || tag.length > 24)) throw new Error("Each tag must be 2–24 characters."); await accountApi.updateDeckMetadata(deck.id, { title, description, tags }); await refresh(); }); }}>
@@ -388,13 +385,6 @@ export default function MyDeckDetail() {
       </form>
       <section className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><h2 className="font-semibold text-ctp-text">Preview</h2><div className="mt-4">{primerMarkdown.trim() ? <PrimerMarkdown markdown={primerMarkdown} decklist={deck.decklist} /> : <p className="text-sm text-ctp-subtext1">Your primer preview will appear here.</p>}</div></section>
     </section>}
-    {tab === "versions" && <section id="owned-deck-panel-versions" role="tabpanel" aria-labelledby="owned-deck-tab-versions" tabIndex={0} className="mt-6">
-      <h2 className="text-lg font-semibold text-ctp-text">Version history</h2>
-      <div className="mt-3 space-y-2">{deck.versions.map((version) => <details key={version.id} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3" open={version.id === deck.currentVersionId}>
-        <summary className="cursor-pointer text-sm"><span className="font-medium">Version {version.versionNumber}</span><span className="ml-2 text-ctp-subtext1">{new Date(version.createdAt).toLocaleString()} · {version.changeNote || "Deck updated"}</span>{version.id === deck.currentVersionId && <span className="ml-2 text-ctp-green">Current</span>}</summary>
-        <UserDecklistPanel decklist={version.decklist} format={version.format} />
-        {version.id !== deck.currentVersionId && <button disabled={busy} type="button" onClick={() => void run(async () => { await accountApi.restoreDeckVersion(deck.id, version.id); await refresh(); })} className="mt-2 rounded border border-ctp-blue px-2 py-1 text-xs text-ctp-blue disabled:opacity-50">Restore as new version</button>}
-      </details>)}</div>
-    </section>}
+    {tab === "versions" && <DeckVersionHistory deck={deck} busy={busy} onRestore={(versionId) => void run(async () => { await accountApi.restoreDeckVersion(deck.id, versionId); await refresh(); })} />}
   </PageLayout>;
 }

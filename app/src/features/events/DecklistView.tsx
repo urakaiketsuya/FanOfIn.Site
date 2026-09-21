@@ -1,14 +1,10 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import type { Card, CardInclusionEntry, DeckFormat, OmnidexDecklist, OmnidexDecklistCardLine } from "@gatcg/shared";
-import CardHoverPreview from "../../components/CardHoverPreview";
-import CardImage from "../../components/CardImage";
-import ElementIcon from "../../components/ElementIcon";
-import { VisualCardTile, VisualCommunityGate, type VisualFieldVisibility } from "../../components/VisualCardTile";
+import type { Card, DeckFormat, OmnidexDecklist, OmnidexDecklistCardLine } from "@gatcg/shared";
+import { VisualCommunityGate, type VisualFieldVisibility } from "../../components/VisualCardTile";
 import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
-import { usePriceTrendByName, type PriceTrendEntry } from "../pricing/usePriceTrendByName";
+import { usePriceTrendByName } from "../pricing/usePriceTrendByName";
 import { useSimulatorEvidenceByName } from "../simulator/useSimulatorEvidenceByName";
-import type { SimulatorCardEvidence } from "../deckbuilder/useSimulatorSuggestedBuild";
 import DeckTuningEvidence from "./DeckTuningEvidence";
 import { formatUsd } from "../../lib/format";
 import { computeSectionPrice } from "../../lib/deckPrice";
@@ -19,10 +15,10 @@ import { buildClarentPlaytestUrl } from "../../lib/clarentPlaytest";
 import { copyDecklistAndOpen, deckBuilderDestinations } from "../../lib/deckBuilderDestinations";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { extractProducedTokens } from "../../lib/cardIntent";
-import { useDecklistDisplayPrefs, type VisualCardSize } from "../../lib/decklistDisplayPrefs";
+import { useDecklistDisplayPrefs } from "../../lib/decklistDisplayPrefs";
 import DecklistWinRate from "./DecklistWinRate";
 import Button from "../../components/ui/Button";
-import Section from "../../components/ui/Section";
+import { CompactDeckSection as CompactSection, DetailedDeckSection, VisualDeckSections } from "./DecklistSections";
 
 type DeckDisplayMode = "compact" | "visual" | "detailed";
 
@@ -40,148 +36,6 @@ export function buildDecklistText(decklist: OmnidexDecklist, extraSections: { ti
     .join("\n\n");
 }
 
-function DeckSection({
-  title,
-  lines,
-  cardsByName,
-  priceByName,
-  showThumbnails,
-}: {
-  title: string;
-  lines: OmnidexDecklistCardLine[];
-  cardsByName: Map<string, Card>;
-  priceByName: Map<string, number>;
-  showThumbnails: boolean;
-}) {
-  if (lines.length === 0) return null;
-  const total = lines.reduce((n, l) => n + l.quantity, 0);
-  const price = computeSectionPrice(lines, priceByName);
-
-  return (
-    <Section
-      heading="dense"
-      title={<>{title} ({total}){price.total > 0 && <span className="ml-1 normal-case text-ctp-subtext1">· {formatUsd(price.total)}</span>}</>}
-    >
-      <ul className="mt-1 space-y-0.5">
-        {lines.map((line, i) => {
-          const card = cardsByName.get(line.card);
-          const isChampion = card?.types.includes("CHAMPION");
-          const unitPrice = priceByName.get(line.card);
-          return (
-            <li key={i} className="flex items-center gap-1.5 text-sm">
-              <span className="w-6 shrink-0 text-right text-ctp-subtext0">{line.quantity}x</span>
-              {showThumbnails &&
-                (card?.editions[0] ? (
-                  <CardImage
-                    image={card.editions[0].image}
-                    alt={line.card}
-                    className="h-8 w-6 shrink-0 rounded object-cover object-top"
-                  />
-                ) : (
-                  <div className="h-8 w-6 shrink-0 rounded bg-ctp-surface0" />
-                ))}
-              {card && <ElementIcon element={card.element} size={14} />}
-              {card ? (
-                <CardHoverPreview image={card.editions[0]?.image} alt={line.card}>
-                  <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
-                    {line.card}
-                  </Link>
-                </CardHoverPreview>
-              ) : (
-                <span className="text-ctp-text">{line.card}</span>
-              )}
-              {isChampion && (
-                <span className="shrink-0 rounded-full border border-ctp-blue px-1.5 text-[10px] text-ctp-blue">
-                  Champion
-                </span>
-              )}
-              {unitPrice !== undefined && (
-                <span className="ml-auto shrink-0 text-xs text-ctp-subtext0">{formatUsd(unitPrice * line.quantity)}</span>
-              )}
-            </li>
-          );
-        })}
-      </ul>
-    </Section>
-  );
-}
-
-function CompactDeckSection({ title, lines, cardsByName }: { title: string; lines: OmnidexDecklistCardLine[]; cardsByName: Map<string, Card> }) {
-  if (lines.length === 0) return null;
-  const total = lines.reduce((sum, line) => sum + line.quantity, 0);
-  const columns = title === "Main" ? "sm:grid-cols-2 lg:grid-cols-4" : title === "Material" ? "sm:grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-3";
-  return <Section heading="dense" title={`${title} (${total})`}><ul className={`mt-2 grid gap-x-4 gap-y-1.5 ${columns}`}>{lines.map((line) => { const card = cardsByName.get(line.card); return <li key={line.card} className="flex min-w-0 items-center gap-1.5 text-sm">{card?.editions[0] ? <CardImage image={card.editions[0].image} alt={line.card} className="h-7 w-5 shrink-0 rounded-sm object-cover object-top" /> : <div className="h-7 w-5 shrink-0 rounded-sm bg-ctp-surface0" />}{line.quantity > 1 && <span className="shrink-0 text-ctp-subtext0">{line.quantity}x</span>}<span className="min-w-0 truncate">{card ? <CardHoverPreview image={card.editions[0]?.image} alt={line.card}><Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">{line.card}</Link></CardHoverPreview> : <span className="text-ctp-text">{line.card}</span>}</span></li>; })}</ul></Section>;
-}
-
-const VISUAL_CARD_SIZE_CLASSES: Record<VisualCardSize, string> = {
-  large: "grid-cols-2 gap-3",
-  medium: "grid-cols-3 gap-2 sm:grid-cols-4",
-  compact: "grid-cols-4 gap-2",
-};
-
-function VisualDeckSection({
-  title,
-  lines,
-  cardsByName,
-  cardSize,
-  priceByName,
-  priceTrendByName,
-  simulatorEvidenceByName,
-  communityInclusionByName,
-  fields,
-}: {
-  title: string;
-  lines: OmnidexDecklistCardLine[];
-  cardsByName: Map<string, Card>;
-  cardSize: VisualCardSize;
-  priceByName: Map<string, number>;
-  priceTrendByName: Map<string, PriceTrendEntry>;
-  simulatorEvidenceByName: Map<string, SimulatorCardEvidence>;
-  communityInclusionByName: Map<string, CardInclusionEntry> | undefined;
-  fields: VisualFieldVisibility;
-}) {
-  if (lines.length === 0) return null;
-  const total = lines.reduce((sum, line) => sum + line.quantity, 0);
-  return (
-    <Section heading="dense" title={`${title} (${total})`}>
-      <div className={`mt-2 grid ${VISUAL_CARD_SIZE_CLASSES[cardSize]}`}>
-        {lines.map((line) => (
-          <VisualCardTile
-            key={line.card}
-            line={line}
-            card={cardsByName.get(line.card)}
-            unitPrice={priceByName.get(line.card)}
-            priceTrend={priceTrendByName.get(line.card)}
-            communityEntry={communityInclusionByName?.get(line.card)}
-            simulatorEvidence={simulatorEvidenceByName.get(line.card)}
-            fields={fields}
-          />
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-type VisualModeSectionsProps = {
-  sections: { title: string; lines: OmnidexDecklistCardLine[] }[];
-  cardsByName: Map<string, Card>;
-  cardSize: VisualCardSize;
-  priceByName: Map<string, number>;
-  priceTrendByName: Map<string, PriceTrendEntry>;
-  simulatorEvidenceByName: Map<string, SimulatorCardEvidence>;
-  communityInclusionByName: Map<string, CardInclusionEntry> | undefined;
-  fields: VisualFieldVisibility;
-};
-
-function VisualModeSections({ sections, communityInclusionByName, ...rest }: VisualModeSectionsProps) {
-  return (
-    <div className="space-y-6">
-      {sections.map((section) => (
-        <VisualDeckSection key={section.title} title={section.title} lines={section.lines} communityInclusionByName={communityInclusionByName} {...rest} />
-      ))}
-    </div>
-  );
-}
 
 export default function DecklistView({
   decklist,
@@ -364,7 +218,7 @@ export default function DecklistView({
           <DecklistWinRate deckId={deckId} />
         </div>
       )}
-      {displayMode === "compact" && <div className="space-y-5">{[...extraSections, { title: "Main", lines: decklist.main }, { title: "Material", lines: decklist.material }, { title: "Sideboard", lines: decklist.sideboard }, ...displayTrailingSections].map((section) => <CompactDeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} />)}</div>}
+      {displayMode === "compact" && <div className="space-y-5">{[...extraSections, { title: "Main", lines: decklist.main }, { title: "Material", lines: decklist.material }, { title: "Sideboard", lines: decklist.sideboard }, ...displayTrailingSections].map((section) => <CompactSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} />)}</div>}
       {displayMode === "visual" && (() => {
         const sections = [...extraSections, { title: "Main", lines: decklist.main }, { title: "Material", lines: decklist.material }, { title: "Sideboard", lines: decklist.sideboard }, ...displayTrailingSections];
         const fields: VisualFieldVisibility = {
@@ -378,31 +232,31 @@ export default function DecklistView({
         return displayPrefs.visualCommunity ? (
           <VisualCommunityGate format={format}>
             {(communityInclusionByName) => (
-              <VisualModeSections sections={sections} cardsByName={displayCardsByName} cardSize={displayPrefs.visualCardSize} priceByName={priceByName} priceTrendByName={priceTrendByName} simulatorEvidenceByName={simulatorEvidenceByName} communityInclusionByName={communityInclusionByName} fields={fields} />
+              <VisualDeckSections sections={sections} cardsByName={displayCardsByName} cardSize={displayPrefs.visualCardSize} priceByName={priceByName} priceTrendByName={priceTrendByName} simulatorEvidenceByName={simulatorEvidenceByName} communityInclusionByName={communityInclusionByName} fields={fields} />
             )}
           </VisualCommunityGate>
         ) : (
-          <VisualModeSections sections={sections} cardsByName={displayCardsByName} cardSize={displayPrefs.visualCardSize} priceByName={priceByName} priceTrendByName={priceTrendByName} simulatorEvidenceByName={simulatorEvidenceByName} communityInclusionByName={undefined} fields={fields} />
+          <VisualDeckSections sections={sections} cardsByName={displayCardsByName} cardSize={displayPrefs.visualCardSize} priceByName={priceByName} priceTrendByName={priceTrendByName} simulatorEvidenceByName={simulatorEvidenceByName} communityInclusionByName={undefined} fields={fields} />
         );
       })()}
       {displayMode === "detailed" && <div className="grid gap-4 sm:grid-cols-2">
-        {extraSections.map((section) => <DeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} />)}
-        <DeckSection title="Main" lines={decklist.main} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} />
-        <DeckSection
+        {extraSections.map((section) => <DetailedDeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} />)}
+        <DetailedDeckSection title="Main" lines={decklist.main} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} />
+        <DetailedDeckSection
           title="Material"
           lines={decklist.material}
           cardsByName={displayCardsByName}
           priceByName={priceByName}
           showThumbnails={showThumbnails}
         />
-        <DeckSection
+        <DetailedDeckSection
           title="Sideboard"
           lines={decklist.sideboard}
           cardsByName={displayCardsByName}
           priceByName={priceByName}
           showThumbnails={showThumbnails}
         />
-        {displayTrailingSections.map((section) => <DeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} />)}
+        {displayTrailingSections.map((section) => <DetailedDeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} />)}
       </div>}
 
       {displayPrefs.tuningEvidence && (

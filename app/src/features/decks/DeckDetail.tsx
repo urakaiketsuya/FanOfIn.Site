@@ -14,13 +14,11 @@ import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
 import CardImpactTable from "../../components/CardImpactTable";
 import { shortHash } from "../../lib/hash";
 import { formatUsd } from "../../lib/format";
-import TopDecksList from "../../components/TopDecksList";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import ElementIcon from "../../components/ElementIcon";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import Tabs, { TabPanel } from "../../components/ui/Tabs";
-import BarChart from "../../components/BarChart";
 import UserDeckHeader from "../account/UserDeckHeader";
 import UserDecklistPanel from "../account/UserDecklistPanel";
 import UserDeckStats, { type DeckStatsTab } from "../account/UserDeckStats";
@@ -29,6 +27,7 @@ import Section from "../../components/ui/Section";
 import { InlineState, EmptyState } from "../../components/ui/ContentState";
 import MethodologyNote from "../../components/ui/MethodologyNote";
 import { encodeCustomDecks } from "../../lib/compareShareLink";
+import { DeckSightingHistory, SimilarDecksSection } from "./DeckDetailSections";
 
 type DeckTab = "decklist" | "analysis" | "history" | "similar";
 
@@ -442,44 +441,11 @@ export default function DeckDetail() {
       </TabPanel>
 
       <TabPanel baseId="deck-detail" tab="history" active={tab}>
-        {sightingsByMonth.length > 1 && (
-          <Section className="mt-8" heading="compact" title="Popularity Over Time">
-            <div className="mt-2">
-              <BarChart title="Sightings per Month" bars={sightingsByMonth} />
-            </div>
-          </Section>
-        )}
-        {instances.length > 0 && (
-          <Section className="mt-8" heading="compact" title={`Played by (${instances.length})`}>
-            <div className="mt-2">
-              <TopDecksList decks={instancesForList} playerName={playerName} />
-            </div>
-          </Section>
-        )}
+        <DeckSightingHistory sightingsByMonth={sightingsByMonth} instances={instancesForList} playerName={playerName} />
       </TabPanel>
 
       <TabPanel baseId="deck-detail" tab="similar" active={tab}>
-        <Section className="mt-8" heading="compact" title="Similar Decks">
-          {similarDecks.length > 0 ? (
-            <div className="mt-2 space-y-1 text-sm">
-              {similarDecks.map(({ deck: match, score }) => (
-                <div key={match.signature} className="text-ctp-subtext1">
-                  <Link to={`/decks/${shortHash(match.signature)}`} className="text-ctp-blue hover:underline">
-                    {match.championName ?? "Unknown champion"}
-                  </Link>
-                  {match.elements.length > 0 && ` · ${match.elements.join("/")}`}
-                  {match.classes.length > 0 && ` · ${match.classes.join("/")}`}{" "}
-                  <span className="text-ctp-subtext0">({(score * 100).toFixed(0)}% similar)</span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <InlineState className="mt-2 text-sm">
-              No distinct similar decks found — every close match for this build turned out to be another copy of
-              the exact same list, which doesn't count as "similar."
-            </InlineState>
-          )}
-        </Section>
+        <SimilarDecksSection decks={similarDecks} />
       </TabPanel>
     </PageLayout>
   );

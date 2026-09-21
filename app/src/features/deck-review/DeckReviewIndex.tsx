@@ -31,9 +31,9 @@ import BuilderCardGrid from "../deckbuilder/components/BuilderCardGrid";
 import SideboardImpact from "../deckbuilder/SideboardImpact";
 import { useDeckTestResult } from "../decks/useDeckTestResult";
 import { useRequestedDeckWorkspace } from "../deckbuilder/persistence/useRequestedDeckWorkspace";
+import DeckReviewSetup, { type ReviewPopulationSource } from "./DeckReviewSetup";
 
 type DeckReviewTab = "review" | "matchups" | "save";
-type ReviewPopulationSource = "tournament" | "balanced";
 
 const EMPTY_BUILD_COUNTERS: BuildCounters = {
   sourceDeck: null,
@@ -381,77 +381,7 @@ export default function DeckReviewIndex() {
 
       {championName && <DeckToolWorkspaceHeader activeTool="review" title={activeWorkspace?.title} championName={championName} spiritName={spiritFilter} format={deckFormat} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel={activeWorkspace?.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="review" onLoad={loadWorkspace} />} />}
 
-      <Panel className="mt-5">
-        <div className="flex flex-wrap items-center gap-2 text-sm">
-          <label htmlFor="deck-review-champion" className="text-ctp-subtext0">Champion:</label>
-          <select
-            id="deck-review-champion"
-            value={championName ?? ""}
-            onChange={(e) => { setChampionName(e.target.value || null); setSpiritFilter(null); setSpiritElement(null); }}
-            className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
-          >
-            <option value="">Choose a Champion…</option>
-            {championsPresent.map((name) => <option key={name} value={name}>{name}</option>)}
-          </select>
-          {championName && (
-            <>
-              <label htmlFor="deck-review-element" className="ml-2 text-ctp-subtext0">Element:</label>
-              <select
-                id="deck-review-element"
-                value={spiritElement ?? liveCatalogByName.get(spiritFilter ?? "")?.elements.find((e) => e !== "NORM") ?? ""}
-                onChange={(e) => {
-                  const value = e.target.value || null;
-                  setSpiritElement(value);
-                  if (spiritFilter && value && !liveCatalogByName.get(spiritFilter)?.elements.includes(value)) setSpiritFilter(null);
-                }}
-                className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
-              >
-                <option value="">Choose an element…</option>
-                {spiritElements.map((element) => <option key={element} value={element}>{element}</option>)}
-              </select>
-              {(spiritElement || spiritFilter) && (
-                <>
-                  <label htmlFor="deck-review-spirit" className="ml-2 text-ctp-subtext0">Spirit:</label>
-                  <select
-                    id="deck-review-spirit"
-                    value={spiritFilter ?? ""}
-                    onChange={(e) => startTransition(() => setSpiritFilter(e.target.value || null))}
-                    className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
-                  >
-                    <option value="">Choose a Spirit…</option>
-                    {spiritsForElement.map((name) => <option key={name} value={name}>{spiritOptionLabel(name)}</option>)}
-                  </select>
-                </>
-              )}
-            </>
-          )}
-          {championName && (
-            <button type="button" onClick={startOver} className="ml-1 rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:border-ctp-red hover:text-ctp-red">
-              Start over
-            </button>
-          )}
-        </div>
-
-        {!championName && <div className="mt-3"><DeckWorkspacePicker catalogByName={catalogByName} source="review" onLoad={loadWorkspace} /></div>}
-
-        {championName && (
-          <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-ctp-surface1 pt-3 text-xs">
-            <span className="text-ctp-subtext0">Evidence source:</span>
-            {(["balanced", "tournament"] as const).map((source) => (
-              <button
-                key={source}
-                type="button"
-                aria-pressed={populationSource === source}
-                onClick={() => setPopulationSource(source)}
-                className={`rounded px-2 py-1 font-medium transition-colors duration-200 ${populationSource === source ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text"}`}
-              >
-                {source === "balanced" ? "Balanced" : "Tournament"}
-              </button>
-            ))}
-            {isPending && <span className="text-ctp-subtext0">Recalculating suggestions…</span>}
-          </div>
-        )}
-      </Panel>
+      <DeckReviewSetup championName={championName} spiritFilter={spiritFilter} spiritElement={spiritElement} champions={championsPresent} spiritElements={spiritElements} spirits={spiritsForElement} catalogByName={catalogByName} spiritCatalogByName={liveCatalogByName} populationSource={populationSource} pending={isPending} onChampionChange={(value) => { setChampionName(value); setSpiritFilter(null); setSpiritElement(null); }} onSpiritChange={(value) => startTransition(() => setSpiritFilter(value))} onElementChange={(value) => { setSpiritElement(value); if (spiritFilter && value && !liveCatalogByName.get(spiritFilter)?.elements.includes(value)) setSpiritFilter(null); }} onPopulationSourceChange={setPopulationSource} onStartOver={startOver} onLoadWorkspace={loadWorkspace} spiritLabel={spiritOptionLabel} />
 
       {!championName ? (
         <InlineState className="mt-6">Choose a Champion above (or paste a decklist) to see ranked suggestions.</InlineState>
