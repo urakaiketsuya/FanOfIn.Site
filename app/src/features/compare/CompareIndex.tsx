@@ -9,7 +9,6 @@ import ImportByUser from "./ImportByUser";
 import ComparisonSummary from "./ComparisonSummary";
 import ComparisonDifferences from "./ComparisonDifferences";
 import ComparisonCardStats from "./ComparisonCardStats";
-import ComparisonSuggestions from "./ComparisonSuggestions";
 import CardCompareIndex from "./CardCompareIndex";
 import DeckChip from "./DeckChip";
 import { useComparedDecklists } from "./useComparedDecklists";
@@ -35,14 +34,13 @@ const COMPARE_TYPE_LABELS: Record<CompareType, string> = { decks: "Decks", cards
 const COMPARE_TYPE_KEYS = Object.keys(COMPARE_TYPE_LABELS) as CompareType[];
 
 type SourceTab = "myDecks" | "users" | "cards" | "player" | "topDecks" | "paste";
-type ViewMode = "summary" | "table" | "forecasts" | "suggestions";
+type ViewMode = "summary" | "table" | "forecasts";
 const VIEW_MODE_LABELS: Record<ViewMode, string> = {
-  summary: "Overview",
+  summary: "Summary",
   table: "Cards",
   forecasts: "Forecasts",
-  suggestions: "Tuning",
 };
-const VIEW_MODE_KEYS: ViewMode[] = ["summary", "table", "forecasts", "suggestions"];
+const VIEW_MODE_KEYS: ViewMode[] = ["summary", "table", "forecasts"];
 
 const TAB_LABELS: Record<SourceTab, string> = {
   myDecks: "My Decks",
@@ -97,6 +95,14 @@ export default function CompareIndex() {
   // Preserve older view names while consolidating card quantities and performance into one tab.
   useEffect(() => {
     const legacyView = searchParams.get("view");
+    if (legacyView === "suggestions") {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.set("view", "summary");
+        return next;
+      }, { replace: true });
+      return;
+    }
     if (legacyView !== "cards" && legacyView !== "cardStats") return;
     if (legacyView === "cardStats") setCardDataMode("performance");
     setSearchParams((prev) => {
@@ -174,11 +180,13 @@ export default function CompareIndex() {
     const adding = !comparedKeys.has(deck.key);
     trackEvent(adding ? "compare_deck_added" : "compare_deck_removed", { source: deck.source.kind, resulting_count: decks.length + (adding ? 1 : -1) });
     setDecks((prev) => (prev.some((d) => d.key === deck.key) ? prev.filter((d) => d.key !== deck.key) : [...prev, deck]));
+    if (adding && decks.length >= 1) setShowAddDecks(false);
   }
 
   function addDeck(deck: ComparedDeck) {
     trackEvent("compare_deck_added", { source: deck.source.kind, resulting_count: decks.length + 1 });
     setDecks((prev) => [...prev, deck]);
+    if (decks.length >= 1) setShowAddDecks(false);
   }
 
   function removeDeck(key: string) {
@@ -220,14 +228,7 @@ export default function CompareIndex() {
 
   return (
     <PageLayout data-component="CompareIndex" width="full">
-      <PageHeader
-        title="Compare"
-        description={
-          compareType === "decks"
-            ? "Add any number of decks, then see exactly where they overlap and diverge."
-            : "Add any number of individual cards to compare their usage, win rate, and price."
-        }
-      />
+      <PageHeader title="Compare" />
 
       <AccessibleTabs active={compareType} keys={COMPARE_TYPE_KEYS} labels={COMPARE_TYPE_LABELS} label="Comparison type" idPrefix="type" onChange={setCompareType} className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1" buttonClassName={(active) => `min-h-10 rounded-md px-3 py-1.5 text-sm font-medium ${active ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`} />
 
@@ -239,10 +240,7 @@ export default function CompareIndex() {
         <div role="tabpanel" id="type-panel" aria-labelledby="type-tab-decks">
           <Panel className="sticky top-14 z-30 mt-4 shadow-sm">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Compare decks</p>
-                <p className="mt-0.5 text-sm text-ctp-subtext1">Select a deck to make it the baseline.</p>
-              </div>
+              <p className="text-sm font-semibold text-ctp-text">{decks.length === 0 ? "Choose decks" : `${decks.length} deck${decks.length === 1 ? "" : "s"} selected`}</p>
               <div className="flex items-center gap-2">
                 <Button variant={showAddDecks ? "primary" : "secondary"} size="sm" onClick={() => setShowAddDecks((value) => !value)}>
                   {showAddDecks ? "Close deck picker" : "+ Add deck"}
@@ -251,7 +249,7 @@ export default function CompareIndex() {
                 {decks.length > 0 && <button type="button" onClick={handleClearAll} className={`text-xs ${confirmClear ? "font-semibold text-ctp-red" : "text-ctp-subtext0 hover:text-ctp-text"}`}>{confirmClear ? "Confirm clear all?" : "Clear"}</button>}
               </div>
             </div>
-            {decks.length > 0 && <div className="mt-3 flex flex-wrap items-center gap-2" aria-live="polite" aria-label={`${decks.length} decks selected`}>
+            {decks.length > 0 && <div className="mt-3 flex snap-x gap-2 overflow-x-auto pb-1" aria-live="polite" aria-label={`${decks.length} decks selected`}>
               {decks.map((d) => (
                 <DeckChip
                   key={d.key}
@@ -269,8 +267,9 @@ export default function CompareIndex() {
           {showAddDecks && (
             <div className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle/40 p-3 sm:p-4">
                   <div className="flex flex-wrap items-center gap-2 text-sm">
-                <span className="text-xs text-ctp-subtext0">Source:</span>
-                <AccessibleTabs active={tab} keys={SOURCE_TAB_KEYS} labels={TAB_LABELS} label="Add decks source" idPrefix="source" onChange={setTab} className="flex flex-wrap items-center gap-2" buttonClassName={(active) => `min-h-10 rounded-md border px-3 py-1 text-xs ${active ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`} />
+                <label htmlFor="compare-deck-source" className="text-xs text-ctp-subtext0">Source:</label>
+                <select id="compare-deck-source" value={tab} onChange={(event) => setTab(event.target.value as SourceTab)} className="min-h-10 flex-1 rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text sm:hidden">{SOURCE_TAB_KEYS.map((key) => <option key={key} value={key}>{TAB_LABELS[key]}</option>)}</select>
+                <AccessibleTabs active={tab} keys={SOURCE_TAB_KEYS} labels={TAB_LABELS} label="Add decks source" idPrefix="source" onChange={setTab} className="hidden flex-wrap items-center gap-2 sm:flex" buttonClassName={(active) => `min-h-10 rounded-md border px-3 py-1 text-xs ${active ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`} />
               </div>
 
               <Panel as="div" role="tabpanel" id="source-panel" aria-labelledby={`source-tab-${tab}`} className="mt-3">
@@ -315,7 +314,6 @@ export default function CompareIndex() {
                       </>
                     )}
                     {effectiveViewMode === "forecasts" && <ComparisonSummary decks={decks} decklists={decklists} baselineKey={effectiveBaselineKey} mode="forecasts" onViewAllDifferences={() => setViewMode("table")} />}
-                    {effectiveViewMode === "suggestions" && <ComparisonSuggestions decks={decks} decklists={decklists} baselineKey={effectiveBaselineKey} />}
                   </div>
                 </>
               )}
