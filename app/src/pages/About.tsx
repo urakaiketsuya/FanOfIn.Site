@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import type { AccountUser, OmnidexDecklist } from "@gatcg/shared";
-import ClassIcon from "../components/ClassIcon";
-import ElementIcon from "../components/ElementIcon";
 import CardImage from "../components/CardImage";
 import CardHoverPreview from "../components/CardHoverPreview";
 import DonutChart, { buildChartSegments } from "../components/DonutChart";
@@ -18,9 +16,7 @@ import { useCardsByNames } from "../features/events/useCardsByNames";
 import { computeAggressionForecast } from "../lib/aggressionForecast";
 import AggressionForecast from "../features/decks/AggressionForecast";
 import HypergeometricCalculator from "../features/deckbuilder/HypergeometricCalculator";
-
-const CLASS_ROW = ["WARRIOR", "MAGE", "CLERIC", "ASSASSIN", "RANGER", "TAMER", "GUARDIAN"];
-const ELEMENT_ROW = ["FIRE", "WATER", "WIND", "CRUX", "UMBRA", "EXALTED", "LUXEM", "TERA"];
+import AboutIntro from "./AboutIntro";
 
 const WALKTHROUGH_HASH = "xenbr4";
 
@@ -283,6 +279,8 @@ export default function About() {
 
   return (
     <div data-component="About">
+      <AboutIntro user={user} />
+      {/*
       <section className="relative overflow-hidden border-b border-ctp-surface0">
         <div
           className="pointer-events-none absolute inset-0 bg-cover bg-[center_20%]"
@@ -389,6 +387,7 @@ export default function About() {
           </div>
         </div>
       </section>
+      */}
 
       <section className="border-t border-ctp-surface0 px-4 py-16">
         <div className="mx-auto max-w-5xl">

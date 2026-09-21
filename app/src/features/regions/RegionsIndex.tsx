@@ -1,21 +1,17 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useRegionalDecks } from "./useRegionalDecks";
 import { useRegionalArchetypes } from "./useRegionalArchetypes";
 import { useRegionalChampions } from "./useRegionalChampions";
-import { useRegionalCardComposition, type RegionalCardRow } from "./useRegionalCardComposition";
-import { useRegionalKeywords, type RegionalKeywordRow } from "./useRegionalKeywords";
+import { useRegionalCardComposition } from "./useRegionalCardComposition";
+import { useRegionalKeywords } from "./useRegionalKeywords";
 import { useRegionalVenues } from "./useRegionalVenues";
 import VenueMap from "./VenueMap";
 import { useRegionDecodedDecks } from "./useRegionDecodedDecks";
 import RegionCompareView from "./RegionCompareView";
-import { useCardsByNames } from "../events/useCardsByNames";
-import CardHoverPreview from "../../components/CardHoverPreview";
-import ElementIcon from "../../components/ElementIcon";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { championNameToSlug } from "../../lib/championSlug";
 import { useTabParam } from "../../lib/useTabParam";
-import { formatUsd } from "../../lib/format";
 import type { RegionGroupMode } from "../../lib/regions";
 import PageHeader from "../../components/ui/PageHeader";
 import FilterBar from "../../components/ui/FilterBar";
@@ -23,6 +19,7 @@ import Tabs from "../../components/ui/Tabs";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
 import { InlineState } from "../../components/ui/ContentState";
+import { CardLiftList, KeywordLiftList } from "./RegionalLiftLists";
 
 const GROUP_MODES: RegionGroupMode[] = ["country", "region"];
 const GROUP_LABELS: Record<RegionGroupMode, string> = { country: "Country", region: "Region" };
@@ -42,70 +39,6 @@ const CONTENT_LABELS: Record<ContentTab, string> = {
 };
 
 const MAX_VENUE_EVENTS_SHOWN = 3;
-
-function LiftBadges({ lift, sign, regionRate, globalRate }: { lift: number; sign: "positive" | "negative"; regionRate: number; globalRate: number }) {
-  return (
-    <>
-      <span className={`ml-auto shrink-0 text-xs ${sign === "positive" ? "text-ctp-green" : "text-ctp-red"}`}>
-        {lift >= 0 ? "+" : ""}
-        {(lift * 100).toFixed(1)}pp
-      </span>
-      <span className="shrink-0 text-xs text-ctp-subtext0">
-        {(regionRate * 100).toFixed(0)}% here vs {(globalRate * 100).toFixed(0)}% overall
-      </span>
-    </>
-  );
-}
-
-function CardLiftList({ rows, sign }: { rows: RegionalCardRow[]; sign: "positive" | "negative" }) {
-  const cardsByName = useCardsByNames(useMemo(() => rows.map((r) => r.cardName), [rows]));
-  if (rows.length === 0) return <InlineState className="text-sm">Nothing clears the sample bar yet.</InlineState>;
-  return (
-    <ul className="mt-2 space-y-1">
-      {rows.map((r) => {
-        const card = cardsByName.get(r.cardName);
-        return (
-          <li key={r.cardName} className="flex flex-wrap items-center gap-1.5 text-sm">
-            {card && <ElementIcon element={card.element} size={14} />}
-            {card ? (
-              <CardHoverPreview image={card.editions[0]?.image} alt={r.cardName}>
-                <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">
-                  {r.cardName}
-                </Link>
-              </CardHoverPreview>
-            ) : (
-              <span className="text-ctp-text">{r.cardName}</span>
-            )}
-            <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">
-              {(r.avgWinRate * 100).toFixed(0)}% win rate
-            </span>
-            {r.marketPrice !== null && (
-              <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">{formatUsd(r.marketPrice)}</span>
-            )}
-            <LiftBadges lift={r.lift} sign={sign} regionRate={r.regionRate} globalRate={r.globalRate} />
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
-
-function KeywordLiftList({ rows, sign }: { rows: RegionalKeywordRow[]; sign: "positive" | "negative" }) {
-  if (rows.length === 0) return <InlineState className="text-sm">Nothing clears the sample bar yet.</InlineState>;
-  return (
-    <ul className="mt-2 space-y-1">
-      {rows.map((r) => (
-        <li key={r.keyword} className="flex flex-wrap items-center gap-1.5 text-sm">
-          <span className="text-ctp-text">{r.keyword}</span>
-          <span className="rounded-full border border-ctp-surface1 px-1.5 text-[10px] text-ctp-subtext0">
-            {(r.avgWinRate * 100).toFixed(0)}% win rate
-          </span>
-          <LiftBadges lift={r.lift} sign={sign} regionRate={r.regionRate} globalRate={r.globalRate} />
-        </li>
-      ))}
-    </ul>
-  );
-}
 
 export default function RegionsIndex() {
   useDocumentTitle(

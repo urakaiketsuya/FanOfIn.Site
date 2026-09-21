@@ -14,9 +14,9 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import { getCardPackageMembership } from "../deckbuilder/packageGuardrails";
 import PageLayout from "../../components/layout/PageLayout";
-import Section from "../../components/ui/Section";
 import { InlineState } from "../../components/ui/ContentState";
 import { useCardCatalog } from "./useCardCatalog";
+import { CompositionStatsSection, KeywordStatsSection } from "./CardStatsSupplementalSections";
 
 type SortMode = "usage" | "adjusted" | "raw" | "hot" | "hype";
 
@@ -381,12 +381,10 @@ export default function CardStatsIndex() {
 
       <LoadMore remaining={rows.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
 
+      <KeywordStatsSection rows={keywordRows} loading={!keywordStatsData} sortMode={keywordSortMode} onSortChange={setKeywordSortMode} />
+      <CompositionStatsSection rows={compositionRows} types={compositionTypesPresent} activeType={activeCompositionType} bestIndex={compositionBestIndex} loading={!compositionData} onTypeChange={setCompositionType} />
+      {/* Legacy inline supplemental sections were extracted into focused components.
       <Section
-        className="mt-10"
-        heading="compact"
-        title="Keywords"
-        description="Ability keyword usage and win rate across every public decklist (main + material, weighted by copies)."
-      >
         <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
           <span className="text-ctp-subtext0">Sort by:</span>
           {(["usage", "adjusted", "raw"] as const).map((mode) => (
@@ -480,6 +478,7 @@ export default function CardStatsIndex() {
           </table>
         </div>
       </Section>
+      */}
     </PageLayout>
   );
 }

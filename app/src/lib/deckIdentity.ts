@@ -1,5 +1,6 @@
 import type { Card } from "@gatcg/shared";
 import { computeKeywordComposition } from "@gatcg/shared";
+import { memoryCostCurve, rarityBreakdown, reserveCostCurve } from "./deckCurves";
 
 export { computeKeywordComposition };
 export { cardPillarScore, computeDeckRating } from "@gatcg/shared";
@@ -467,19 +468,7 @@ export function parseSubtypeScalingDamage(card: Pick<Card, "effect">, knownSubty
  * the chart stays a fixed, readable width.
  */
 export function computeMemoryCostCurve(lines: NamedLine[], cardsByName: Map<string, Card>): { label: string; value: number }[] {
-  const counts = new Map<number, number>();
-  for (const line of lines) {
-    const card = cardsByName.get(line.name);
-    if (!card || card.types.includes("CHAMPION")) continue;
-    if (card.cost_memory === null || card.cost_memory < 0) continue;
-    const bucket = Math.min(card.cost_memory, 6);
-    counts.set(bucket, (counts.get(bucket) ?? 0) + line.quantity);
-  }
-
-  return Array.from({ length: 7 }, (_, cost) => ({
-    label: cost === 6 ? "6+" : String(cost),
-    value: counts.get(cost) ?? 0,
-  }));
+  return memoryCostCurve(lines, cardsByName);
 }
 
 /**
@@ -491,19 +480,7 @@ export function computeMemoryCostCurve(lines: NamedLine[], cardsByName: Map<stri
  * above 8 fold into an "8+" bucket.
  */
 export function computeReserveCostCurve(lines: NamedLine[], cardsByName: Map<string, Card>): { label: string; value: number }[] {
-  const counts = new Map<number, number>();
-  for (const line of lines) {
-    const card = cardsByName.get(line.name);
-    if (!card || card.types.includes("CHAMPION")) continue;
-    if (card.cost_reserve === null || card.cost_reserve < 0) continue;
-    const bucket = Math.min(card.cost_reserve, 8);
-    counts.set(bucket, (counts.get(bucket) ?? 0) + line.quantity);
-  }
-
-  return Array.from({ length: 9 }, (_, cost) => ({
-    label: cost === 8 ? "8+" : String(cost),
-    value: counts.get(cost) ?? 0,
-  }));
+  return reserveCostCurve(lines, cardsByName);
 }
 
 /**
@@ -513,14 +490,7 @@ export function computeReserveCostCurve(lines: NamedLine[], cardsByName: Map<str
  * specific printing a player owns.
  */
 export function computeRarityBreakdown(lines: NamedLine[], cardsByName: Map<string, Card>): Map<number, number> {
-  const counts = new Map<number, number>();
-  for (const line of lines) {
-    const card = cardsByName.get(line.name);
-    const rarity = card?.editions[0]?.rarity;
-    if (rarity === undefined) continue;
-    counts.set(rarity, (counts.get(rarity) ?? 0) + line.quantity);
-  }
-  return counts;
+  return rarityBreakdown(lines, cardsByName);
 }
 
 export interface DamageComposition {

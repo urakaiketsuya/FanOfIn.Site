@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import DeckSearchByCards from "./DeckSearchByCards";
 import ImportByPlayer from "./ImportByPlayer";
@@ -28,6 +28,7 @@ import Panel from "../../components/ui/Panel";
 import Button from "../../components/ui/Button";
 import { InlineState } from "../../components/ui/ContentState";
 import { trackEvent } from "../../lib/analytics";
+import AccessibleTabs from "../../components/ui/AccessibleTabs";
 
 type CompareType = "decks" | "cards";
 const COMPARE_TYPE_LABELS: Record<CompareType, string> = { decks: "Decks", cards: "Cards" };
@@ -52,17 +53,6 @@ const TAB_LABELS: Record<SourceTab, string> = {
   paste: "Paste a decklist",
 };
 const SOURCE_TAB_KEYS = Object.keys(TAB_LABELS) as SourceTab[];
-
-function handleTabArrow<T extends string>(event: KeyboardEvent<HTMLElement>, keys: readonly T[], active: T, select: (key: T) => void) {
-  if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
-  event.preventDefault();
-  const index = keys.indexOf(active);
-  const nextIndex = event.key === "Home" ? 0 : event.key === "End" ? keys.length - 1 : (index + (event.key === "ArrowRight" ? 1 : -1) + keys.length) % keys.length;
-  const next = keys[nextIndex];
-  select(next);
-  const tablist = event.currentTarget;
-  window.requestAnimationFrame(() => tablist.querySelector<HTMLElement>(`[data-tab-key="${next}"]`)?.focus());
-}
 
 export default function CompareIndex() {
   useDocumentTitle(
@@ -239,33 +229,14 @@ export default function CompareIndex() {
         }
       />
 
-      <div role="tablist" aria-label="Comparison type" onKeyDown={(event) => handleTabArrow(event, COMPARE_TYPE_KEYS, compareType, setCompareType)} className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1">
-        {COMPARE_TYPE_KEYS.map((t) => (
-          <button
-            key={t}
-            type="button"
-            role="tab"
-            id={`type-tab-${t}`}
-            aria-selected={compareType === t}
-            aria-controls={`type-panel-${t}`}
-            data-tab-key={t}
-            tabIndex={compareType === t ? 0 : -1}
-            onClick={() => setCompareType(t)}
-            className={`min-h-10 rounded-md px-3 py-1.5 text-sm font-medium ${
-              compareType === t ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            {COMPARE_TYPE_LABELS[t]}
-          </button>
-        ))}
-      </div>
+      <AccessibleTabs active={compareType} keys={COMPARE_TYPE_KEYS} labels={COMPARE_TYPE_LABELS} label="Comparison type" idPrefix="type" onChange={setCompareType} className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1" buttonClassName={(active) => `min-h-10 rounded-md px-3 py-1.5 text-sm font-medium ${active ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`} />
 
       {compareType === "cards" ? (
-        <div role="tabpanel" id="type-panel-cards" aria-labelledby="type-tab-cards" className="mt-4">
+        <div role="tabpanel" id="type-panel" aria-labelledby="type-tab-cards" className="mt-4">
           <CardCompareIndex />
         </div>
       ) : (
-        <div role="tabpanel" id="type-panel-decks" aria-labelledby="type-tab-decks">
+        <div role="tabpanel" id="type-panel" aria-labelledby="type-tab-decks">
           <Panel className="sticky top-14 z-30 mt-4 shadow-sm">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
@@ -297,26 +268,9 @@ export default function CompareIndex() {
 
           {showAddDecks && (
             <div className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle/40 p-3 sm:p-4">
-                  <div role="tablist" aria-label="Add decks source" onKeyDown={(event) => handleTabArrow(event, SOURCE_TAB_KEYS, tab, setTab)} className="flex flex-wrap items-center gap-2 text-sm">
+                  <div className="flex flex-wrap items-center gap-2 text-sm">
                 <span className="text-xs text-ctp-subtext0">Source:</span>
-                {(Object.keys(TAB_LABELS) as SourceTab[]).map((t) => (
-                  <button
-                    key={t}
-                    type="button"
-                    role="tab"
-                    id={`source-tab-${t}`}
-                    aria-selected={tab === t}
-                    aria-controls="source-panel"
-                    data-tab-key={t}
-                    tabIndex={tab === t ? 0 : -1}
-                    onClick={() => setTab(t)}
-                    className={`min-h-10 rounded-md border px-3 py-1 text-xs ${
-                      tab === t ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                    }`}
-                  >
-                    {TAB_LABELS[t]}
-                  </button>
-                ))}
+                <AccessibleTabs active={tab} keys={SOURCE_TAB_KEYS} labels={TAB_LABELS} label="Add decks source" idPrefix="source" onChange={setTab} className="flex flex-wrap items-center gap-2" buttonClassName={(active) => `min-h-10 rounded-md border px-3 py-1 text-xs ${active ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`} />
               </div>
 
               <Panel as="div" role="tabpanel" id="source-panel" aria-labelledby={`source-tab-${tab}`} className="mt-3">
@@ -339,26 +293,7 @@ export default function CompareIndex() {
 
               {decks.length > 0 && (
                 <>
-                  <div role="tablist" aria-label="Comparison view" onKeyDown={(event) => handleTabArrow(event, VIEW_MODE_KEYS, effectiveViewMode, (mode) => { setViewMode(mode); trackEvent("compare_view_selected", { view: mode, deck_count: decks.length }); })} className="flex flex-wrap items-center gap-1 border-b border-ctp-surface1">
-                    {VIEW_MODE_KEYS.map((mode) => (
-                      <button
-                        key={mode}
-                        type="button"
-                        role="tab"
-                        id={`view-tab-${mode}`}
-                        aria-selected={effectiveViewMode === mode}
-                        aria-controls="view-panel"
-                        data-tab-key={mode}
-                        tabIndex={effectiveViewMode === mode ? 0 : -1}
-                        onClick={() => { setViewMode(mode); trackEvent("compare_view_selected", { view: mode, deck_count: decks.length }); }}
-                        className={`min-h-10 border-b-2 px-3 py-2 text-sm font-medium ${
-                          effectiveViewMode === mode ? "border-ctp-blue text-ctp-blue" : "border-transparent text-ctp-subtext1 hover:text-ctp-text"
-                        }`}
-                      >
-                        {VIEW_MODE_LABELS[mode]}
-                      </button>
-                    ))}
-                  </div>
+                  <AccessibleTabs active={effectiveViewMode} keys={VIEW_MODE_KEYS} labels={VIEW_MODE_LABELS} label="Comparison view" idPrefix="view" onChange={(mode) => { setViewMode(mode); trackEvent("compare_view_selected", { view: mode, deck_count: decks.length }); }} className="flex flex-wrap items-center gap-1 border-b border-ctp-surface1" buttonClassName={(active) => `min-h-10 border-b-2 px-3 py-2 text-sm font-medium ${active ? "border-ctp-blue text-ctp-blue" : "border-transparent text-ctp-subtext1 hover:text-ctp-text"}`} />
 
                   <div role="tabpanel" id="view-panel" aria-labelledby={`view-tab-${effectiveViewMode}`} className="mt-4">
                     {effectiveViewMode === "summary" && (
