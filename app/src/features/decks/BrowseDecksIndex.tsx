@@ -1,20 +1,18 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Navigate, useSearchParams } from "react-router-dom";
 import PageLayout from "../../components/layout/PageLayout";
 import PageHeader from "../../components/ui/PageHeader";
 import Tabs from "../../components/ui/Tabs";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import DeckSightingsView from "./DeckSightingsView";
-import PantheonDecksView from "./PantheonDecksView";
 import TournamentBuildsView from "./TournamentBuildsView";
 
-type ViewMode = "builds" | "sightings" | "pantheon";
-const VIEW_TABS: readonly ViewMode[] = ["builds", "sightings", "pantheon"];
+type ViewMode = "builds" | "sightings";
+const VIEW_TABS: readonly ViewMode[] = ["builds", "sightings"];
 const VIEW_LABELS: Record<ViewMode, string> = {
   builds: "Unique Builds",
   sightings: "Tournament Results",
-  pantheon: "Community Decks",
 };
 
 export default function BrowseDecksIndex() {
@@ -26,6 +24,9 @@ export default function BrowseDecksIndex() {
   const [view, setView] = useTabParam<ViewMode>("view", VIEW_TABS, "sightings");
   const [championName, setChampionName] = useState<string | null>(searchParams.get("champion"));
 
+  // Preserve links from the brief period when Pantheon search lived as a third tab here.
+  if (searchParams.get("view") === "pantheon") return <Navigate to="/pantheon/decks" replace />;
+
   return (
     <PageLayout data-component="BrowseDecksIndex">
       <PageHeader
@@ -33,9 +34,7 @@ export default function BrowseDecksIndex() {
         description={
           view === "builds"
             ? "Distinct main + material decklists, grouped across every player who ran the same build."
-          : view === "sightings"
-            ? "Explore public tournament decklists with their player, event, date, and result at a glance."
-            : "Community Pantheon decklists, kept separate from tournament results."
+            : "Explore public tournament decklists with their player, event, date, and result at a glance."
         }
       />
 
@@ -45,10 +44,8 @@ export default function BrowseDecksIndex() {
 
       {view === "builds" ? (
         <TournamentBuildsView championName={championName} setChampionName={setChampionName} />
-      ) : view === "sightings" ? (
-        <DeckSightingsView championName={championName} setChampionName={setChampionName} />
       ) : (
-        <PantheonDecksView />
+        <DeckSightingsView championName={championName} setChampionName={setChampionName} />
       )}
     </PageLayout>
   );

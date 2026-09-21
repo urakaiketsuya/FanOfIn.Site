@@ -100,6 +100,7 @@ const ChampionSynergy = lazy(() => import("./features/champions/ChampionSynergy"
 const CompareIndex = lazy(() => import("./features/compare/CompareIndex"));
 const BrowseDecksIndex = lazy(() => import("./features/decks/BrowseDecksIndex"));
 const DeckDetail = lazy(() => import("./features/decks/DeckDetail"));
+const PantheonDecksIndex = lazy(() => import("./features/decks/PantheonDecksIndex"));
 const PantheonDeckDetail = lazy(() => import("./features/decks/PantheonDeckDetail"));
 const DeckBuilderIndex = lazy(() => import("./features/deckbuilder/DeckBuilderIndex"));
 const DeckAnalysisIndex = lazy(() => import("./features/deck-analysis/DeckAnalysisIndex"));
@@ -203,6 +204,7 @@ export default function AppRoutes() {
         <Route path="/decks/shared/:publicSlug" element={<SharedDeckDetailRedirect />} />
         <Route path="/decks/edit" element={<MyDecksIndex />} />
         <Route path="/decks/:id" element={<DeckOrPublicDeckDetail />} />
+        <Route path="/pantheon/decks" element={<PantheonDecksIndex />} />
         <Route path="/pantheon/decks/:id" element={<PantheonDeckDetail />} />
         <Route path="/deck-builder" element={<DeckBuilderIndex />} />
         <Route path="/deck-analysis" element={<DeckAnalysisIndex />} />
