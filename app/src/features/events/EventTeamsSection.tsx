@@ -7,9 +7,10 @@ import { InlineState } from "../../components/ui/ContentState";
 export default function EventTeamsSection({ teams, players }: { teams: OmnidexTeamsResponse; players: OmnidexPlayer[] }) {
   const [search, setSearch] = useState("");
 
-  function playerName(id: number): string {
-    return players.find((p) => p.id === id)?.username ?? `Player #${id}`;
-  }
+  const playerName = useMemo(() => {
+    const usernameById = new Map(players.map((player) => [player.id, player.username]));
+    return (id: number) => usernameById.get(id) ?? `Player #${id}`;
+  }, [players]);
 
   const sorted = useMemo(() => {
     const needle = search.trim().toLowerCase();
@@ -19,7 +20,7 @@ export default function EventTeamsSection({ teams, players }: { teams: OmnidexTe
           !needle || t.name.toLowerCase().includes(needle) || t.players.some((p) => playerName(p.id).toLowerCase().includes(needle)),
       )
       .sort((a, b) => (a.finalPlacement ?? Infinity) - (b.finalPlacement ?? Infinity) || a.name.localeCompare(b.name));
-  }, [teams, search, players]);
+  }, [teams, search, playerName]);
 
   if (teams.length === 0) return null;
 

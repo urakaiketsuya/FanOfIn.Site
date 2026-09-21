@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useDeckSightingsData } from "../topdecks/data";
 import { useArchetypeTaxonomyData } from "../archetypes/data";
-import { useOmnidexPlayers } from "../tournaments/data";
+import { usePlayerNameById } from "../tournaments/data";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import DeckSightingRow from "../topdecks/DeckSightingRow";
 import type { ComparedDeck } from "./types";
@@ -23,7 +23,7 @@ export default function ImportTopDecks({
 }) {
   const sightingsData = useDeckSightingsData();
   const taxonomyData = useArchetypeTaxonomyData();
-  const playersData = useOmnidexPlayers();
+  const playerName = usePlayerNameById();
 
   const [mode, setMode] = useState<Mode>("placement");
   const [championName, setChampionName] = useState<string | null>(null);
@@ -55,10 +55,6 @@ export default function ImportTopDecks({
 
   const visible = matches.slice(0, visibleCount);
   const championImages = useChampionCardImages(useMemo(() => (championName ? [championName] : []), [championName]));
-
-  function playerName(id: number): string {
-    return playersData?.players.find((p) => p.id === id)?.username ?? `Player #${id}`;
-  }
 
   function selectChampion(name: string | null) {
     setChampionName(name);

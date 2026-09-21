@@ -2,7 +2,7 @@ import type { Card } from "@gatcg/shared";
 import { Link } from "react-router-dom";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
-import type { ComparedDeck } from "./types";
+import { splitDeckLabel, type ComparedDeck } from "./types";
 
 /**
  * Compact selected-deck tile for the tray above the comparison — a champion thumbnail plus
@@ -20,9 +20,7 @@ export default function DeckChip({ deck, championCard, deckHref, isBaseline, onS
   onSetBaseline: () => void;
   onRemove: () => void;
 }) {
-  const atIndex = deck.label.indexOf(" @ ");
-  const primary = atIndex === -1 ? deck.label : deck.label.slice(0, atIndex);
-  const secondary = atIndex === -1 ? null : deck.label.slice(atIndex + 3);
+  const { primary, secondary } = splitDeckLabel(deck.label);
 
   return (
     <div data-component="DeckChip" className={`flex items-center rounded-lg border py-1 pl-1 pr-2 transition-colors ${isBaseline ? "border-ctp-blue bg-ctp-blue/10 shadow-sm" : "border-ctp-surface1 bg-ctp-surface0"}`}>

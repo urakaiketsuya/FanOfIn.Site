@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAchievementsData } from "./data";
-import { useOmnidexIndex, useOmnidexPlayers } from "../tournaments/data";
+import { useEventNameById, usePlayerNameById } from "../tournaments/data";
 import { buildCompareLink } from "../compare/deepLink";
 import PlayerLink from "../players/PlayerLink";
 import LoadMore from "../../components/LoadMore";
@@ -15,24 +15,12 @@ const PAGE_SIZE = 50;
 export default function AchievementDetail() {
   const { id = "" } = useParams<{ id: string }>();
   const achievementsData = useAchievementsData();
-  const playersData = useOmnidexPlayers();
-  const index = useOmnidexIndex();
+  const playerName = usePlayerNameById();
+  const eventNameById = useEventNameById();
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const definition = achievementsData?.definitions.find((d) => d.id === id);
   useDocumentTitle(definition?.name, definition?.description);
-
-  const usernameById = useMemo(() => {
-    const map = new Map<number, string>();
-    for (const p of playersData?.players ?? []) map.set(p.id, p.username);
-    return map;
-  }, [playersData]);
-
-  const eventNameById = useMemo(() => {
-    const map = new Map<number, string>();
-    for (const e of index?.events ?? []) map.set(e.id, e.name);
-    return map;
-  }, [index]);
 
   const unlocks = useMemo(
     () => achievementsData?.unlocks.filter((u) => u.achievementId === id) ?? [],
@@ -82,7 +70,7 @@ export default function AchievementDetail() {
                 >
                   <PlayerLink
                     id={u.playerId}
-                    username={usernameById.get(u.playerId) ?? `Player #${u.playerId}`}
+                    username={playerName(u.playerId)}
                     className="font-medium text-ctp-text hover:text-ctp-blue"
                   />
                   <span className="text-ctp-subtext0">{u.context}</span>

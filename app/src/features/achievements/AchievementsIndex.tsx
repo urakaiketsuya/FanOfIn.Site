@@ -7,7 +7,7 @@ import {
   type AchievementUnlock,
 } from "@gatcg/shared";
 import { useAchievementsData } from "./data";
-import { useOmnidexPlayers } from "../tournaments/data";
+import { usePlayerNameById } from "../tournaments/data";
 import PlayerLink from "../players/PlayerLink";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
@@ -21,13 +21,7 @@ const RECENT_HOLDERS_SHOWN = 5;
 export default function AchievementsIndex() {
   useDocumentTitle("Achievements", "Data-derived achievement badges earned across Grand Archive TCG tournament history.");
   const achievementsData = useAchievementsData();
-  const playersData = useOmnidexPlayers();
-
-  const usernameById = useMemo(() => {
-    const map = new Map<number, string>();
-    for (const p of playersData?.players ?? []) map.set(p.id, p.username);
-    return map;
-  }, [playersData]);
+  const playerName = usePlayerNameById();
 
   const unlocksByAchievement = useMemo(() => {
     const map = new Map<string, AchievementUnlock[]>();
@@ -88,7 +82,7 @@ export default function AchievementsIndex() {
                           <span key={i}>
                             <PlayerLink
                               id={u.playerId}
-                              username={usernameById.get(u.playerId) ?? `Player #${u.playerId}`}
+                              username={playerName(u.playerId)}
                               className="text-ctp-blue hover:underline"
                             />{" "}
                             <span className="text-ctp-subtext0">({u.context})</span>

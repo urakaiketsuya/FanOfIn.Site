@@ -32,6 +32,6 @@ export function usePriceLookup(enabled = true): Map<string, PriceRow> {
     refreshPricesOnce().catch((err: unknown) => console.error("failed to refresh prices", err));
   }, [enabled]);
 
-  const rows = useLiveQuery(() => enabled ? db.prices.toArray() : Promise.resolve<PriceRow[]>([]), [enabled], []) ?? [];
-  return useMemo(() => new Map(rows.map((r) => [r.key, r])), [rows]);
+  const rows = useLiveQuery(() => enabled ? db.prices.toArray() : Promise.resolve<PriceRow[]>([]), [enabled], []);
+  return useMemo(() => new Map((rows ?? []).map((r) => [r.key, r])), [rows]);
 }

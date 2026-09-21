@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { decodeCardLines, type OmnidexDecklist } from "@gatcg/shared";
 import { useDeckPopularity, buildPopularDeck } from "../popular/useDeckPopularity";
 import { useDeckPopularityIndexData } from "../topdecks/data";
-import { useOmnidexPlayers, useEventNameById } from "../tournaments/data";
+import { usePlayerNameById, useEventNameById } from "../tournaments/data";
 import { useCardImpactData, useMatchupCardImpactData, useSimilarityData, useDeckCardIndexData } from "../archetypes/data";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useCardCatalog } from "../cards/useCardCatalog";
@@ -22,6 +22,7 @@ import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import UserDeckHeader from "../account/UserDeckHeader";
 import UserDecklistPanel from "../account/UserDecklistPanel";
 import UserDeckStats, { type DeckStatsTab } from "../account/UserDeckStats";
+import { toTopDecksListEntry } from "../topdecks/topDecksListEntry";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
 import { InlineState, EmptyState } from "../../components/ui/ContentState";
@@ -58,7 +59,7 @@ export default function DeckDetail() {
 
   const popularityIndexData = useDeckPopularityIndexData();
   const eventNameById = useEventNameById();
-  const playersData = useOmnidexPlayers();
+  const playerName = usePlayerNameById();
 
   // Fast path: `deckHash` is precomputed pipeline-side for every deck with at least one duplicate
   // (see DeckPopularityEntry's own doc comment) — matching against the already-loaded lean index
@@ -146,7 +147,7 @@ export default function DeckDetail() {
     [matchupCardImpactData, myClusterId],
   );
   const selectedMatchup = clusterMatchups.find((m) => m.opponentClusterId === (opponentClusterId ?? clusterMatchups[0]?.opponentClusterId));
-  const hurtYouCards = selectedMatchup?.opponentCards ?? [];
+  const hurtYouCards = useMemo(() => selectedMatchup?.opponentCards ?? [], [selectedMatchup]);
   const hurtYouCardImages = useCardsByNames(useMemo(() => hurtYouCards.map((c) => c.cardName), [hurtYouCards]));
 
   const priceByName = useDeckPriceByName();
@@ -172,17 +173,7 @@ export default function DeckDetail() {
 
   const instancesForList = useMemo(
     () =>
-      instances.map((e) => ({
-        deckId: e.deckId,
-        player: e.player,
-        eventId: e.eventId,
-        eventName: eventNameById.get(e.eventId) ?? `Event #${e.eventId}`,
-        placement: e.placement,
-        wins: e.wins,
-        losses: e.losses,
-        ties: e.ties,
-        underplaced: e.underplaced,
-      })),
+      instances.map((entry) => toTopDecksListEntry(entry, eventNameById)),
     [instances, eventNameById],
   );
 
@@ -236,10 +227,6 @@ export default function DeckDetail() {
       .sort((a, b) => b.score - a.score)
       .slice(0, 5);
   }, [deck, similarityData, deckIdToSignature, decks]);
-
-  function playerName(id: number): string {
-    return playersData?.players.find((p) => p.id === id)?.username ?? `Player #${id}`;
-  }
 
   if (loading) {
     return (

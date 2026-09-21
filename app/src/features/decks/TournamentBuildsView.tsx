@@ -10,7 +10,7 @@ import { useChampionCardImages } from "../players/useChampionCardImages";
 import PopularDeckRow from "../popular/PopularDeckRow";
 import { useDeckPopularity } from "../popular/useDeckPopularity";
 import { useDeckPopularityIndexData } from "../topdecks/data";
-import { useEventNameById, useOmnidexPlayers } from "../tournaments/data";
+import { useEventNameById, usePlayerNameById } from "../tournaments/data";
 import DeckResultsSkeleton from "./DeckResultsSkeleton";
 
 const BUILDS_PAGE_SIZE = 30;
@@ -44,7 +44,7 @@ export default function TournamentBuildsView({
 
   const { decks: allDecks, loading } = useDeckPopularity(championName, 1);
   const popularityIndexData = useDeckPopularityIndexData();
-  const playersData = useOmnidexPlayers();
+  const playerName = usePlayerNameById();
   const eventNameById = useEventNameById();
   const cardCatalog = useCardCatalog();
   const combination = useCardCombination(selectedCards);
@@ -95,10 +95,6 @@ export default function TournamentBuildsView({
   useEffect(() => {
     setVisibleCount(BUILDS_PAGE_SIZE);
   }, [championName, minPlayers, elementFilter, sortMode, selectedCards]);
-
-  function playerName(id: number): string {
-    return playersData?.players.find((p) => p.id === id)?.username ?? `Player #${id}`;
-  }
 
   function addCard(name: string) {
     if (selectedCards.includes(name)) return;

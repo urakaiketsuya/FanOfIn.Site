@@ -26,10 +26,10 @@ export function normalizeCardMention(name: string): string {
  * mentions (a caster's shorthand or an ASR mishearing that isn't just whitespace/case) still won't
  * resolve — fix those in the dataset itself rather than guessing here. */
 export function useCardsByMentions(names: string[]): Map<string, Card> {
-  const key = useMemo(() => [...new Set(names.map(normalizeCardMention))].sort().join("|"), [names]);
+  const key = useMemo(() => [...new Set(names.map(normalizeCardMention))].sort().join("\0"), [names]);
 
   const rows = useLiveQuery(async () => {
-    const unique = [...new Set(names.map(normalizeCardMention))];
+    const unique = key ? key.split("\0") : [];
     if (unique.length === 0) return [];
     return db.cards.where("name").anyOfIgnoreCase(unique).toArray();
   }, [key]);
@@ -42,5 +42,5 @@ export function useCardsByMentions(names: string[]): Map<string, Card> {
       if (card) result.set(name, card);
     }
     return result;
-  }, [rows, key, names]);
+  }, [rows, names]);
 }

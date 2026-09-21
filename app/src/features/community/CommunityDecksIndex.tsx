@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { DeckFormat } from "@gatcg/shared";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
-import { championNameToSlug } from "../../lib/championSlug";
+import { championKeyToDisplayName, championNameToSlug } from "../../lib/championSlug";
 import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
@@ -22,16 +22,8 @@ import {
 const TOP_CARDS_SHOWN = 30;
 const TOP_ARCHETYPES_SHOWN = 20;
 
-function formatUsd(value: number): string {
+function formatWholeUsd(value: number): string {
   return `$${value.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
-}
-
-/** "diao-chan" -> "Diao Chan" — these keys are champion slugs, not display names. */
-function formatChampionName(key: string): string {
-  return key
-    .split("-")
-    .map((w) => w[0].toUpperCase() + w.slice(1))
-    .join(" ");
 }
 
 export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: DeckFormat }) {
@@ -53,10 +45,10 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
     () =>
       (popularity?.champion ?? []).map((b) => ({
         key: b.key,
-        label: formatChampionName(b.key),
+        label: championKeyToDisplayName(b.key),
         value: b.deckCount,
         valueLabel: `${(b.percentOfDecks * 100).toFixed(1)}%`,
-        href: `/champions/${championNameToSlug(formatChampionName(b.key))}`,
+        href: `/champions/${championNameToSlug(championKeyToDisplayName(b.key))}`,
       })),
     [popularity],
   );
@@ -161,9 +153,9 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
         <div className="mt-4">
           <RangeBar
             title="Price distribution"
-            subtitle={`TCGPlayer-low, across ${price.count.toLocaleString()} priced decks${championFilter ? ` · ${formatChampionName(championFilter)}` : ""}`}
+            subtitle={`TCGPlayer-low, across ${price.count.toLocaleString()} priced decks${championFilter ? ` · ${championKeyToDisplayName(championFilter)}` : ""}`}
             stats={price}
-            format={formatUsd}
+            format={formatWholeUsd}
           />
         </div>
       )}
@@ -176,7 +168,7 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
           description={
             <>
               % of decks running at least one copy, out of {cardsConsidered?.toLocaleString()} decks
-              {championFilter ? ` piloting ${formatChampionName(championFilter)}` : " with a fetched card list"}.
+              {championFilter ? ` piloting ${championKeyToDisplayName(championFilter)}` : " with a fetched card list"}.
             </>
           }
           actions={
@@ -191,7 +183,7 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
                 .sort((a, b) => cardInclusion.byChampion[b].deckCount - cardInclusion.byChampion[a].deckCount)
                 .map((key) => (
                   <option key={key} value={key}>
-                    {formatChampionName(key)} ({cardInclusion.byChampion[key].deckCount.toLocaleString()})
+                    {championKeyToDisplayName(key)} ({cardInclusion.byChampion[key].deckCount.toLocaleString()})
                   </option>
                 ))}
             </select>

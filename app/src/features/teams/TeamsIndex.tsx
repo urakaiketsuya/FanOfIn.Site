@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER } from "@gatcg/shared";
-import { useOmnidexTeams, useOmnidexPlayers } from "../tournaments/data";
+import { useOmnidexTeams, usePlayerNameById } from "../tournaments/data";
 import { usePlayerDecksData } from "../players/data";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import PlayerLink from "../players/PlayerLink";
@@ -21,18 +21,12 @@ export default function TeamsIndex() {
     "Grand Archive TCG team registrations from 3v3 team-format events, searchable by team name or player.",
   );
   const teamsData = useOmnidexTeams();
-  const playersData = useOmnidexPlayers();
+  const playerName = usePlayerNameById();
   const playerDecksData = usePlayerDecksData();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string | null>(null);
   const [seasonId, setSeasonId] = useState<number | null>(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-
-  const usernameById = useMemo(() => {
-    const map = new Map<number, string>();
-    for (const p of playersData?.players ?? []) map.set(p.id, p.username);
-    return map;
-  }, [playersData]);
 
   const topChampionById = useMemo(() => {
     const map = new Map<number, string>();
@@ -42,10 +36,6 @@ export default function TeamsIndex() {
     }
     return map;
   }, [playerDecksData]);
-
-  function playerName(id: number): string {
-    return usernameById.get(id) ?? `Player #${id}`;
-  }
 
   const categoriesPresent = useMemo(() => {
     const present = new Set((teamsData?.teams ?? []).map((t) => t.eventCategory));
@@ -69,7 +59,7 @@ export default function TeamsIndex() {
       if (!needle) return true;
       return t.teamName.toLowerCase().includes(needle) || t.players.some((p) => playerName(p.id).toLowerCase().includes(needle));
     });
-  }, [teamsData, search, category, seasonId, usernameById]);
+  }, [teamsData, search, category, seasonId, playerName]);
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);

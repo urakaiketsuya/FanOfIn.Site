@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import type { Card, OmnidexDecklist } from "@gatcg/shared";
 import DecklistView from "../events/DecklistView";
 import TopDecksList from "../../components/TopDecksList";
+import { toTopDecksListEntry } from "../topdecks/topDecksListEntry";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -41,17 +42,7 @@ function ExpandedDeckRow({
     return popularityIndexData.entries
       .filter((e) => deckIdSet.has(e.deckId))
       .sort((a, b) => (a.placement ?? Infinity) - (b.placement ?? Infinity))
-      .map((e) => ({
-        deckId: e.deckId,
-        player: e.player,
-        eventId: e.eventId,
-        eventName: eventNameById.get(e.eventId) ?? `Event #${e.eventId}`,
-        placement: e.placement,
-        wins: e.wins,
-        losses: e.losses,
-        ties: e.ties,
-        underplaced: e.underplaced,
-      }));
+      .map((entry) => toTopDecksListEntry(entry, eventNameById));
   }, [popularityIndexData, deck.deckIds, eventNameById]);
 
   return (

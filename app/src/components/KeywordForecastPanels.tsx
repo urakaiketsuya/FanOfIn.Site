@@ -1,8 +1,5 @@
 import type { DelugeForecast, ScavengeForecast } from "../lib/keywordForecast";
-
-function titleCase(word: string): string {
-  return word[0] + word.slice(1).toLowerCase();
-}
+import { titleCase } from "../lib/format";
 
 export function ScavengeForecastList({ forecasts }: { forecasts: ScavengeForecast[] }) {
   if (forecasts.length === 0) return null;

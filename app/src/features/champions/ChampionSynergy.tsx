@@ -13,6 +13,7 @@ import { usePriceTrendByName } from "../pricing/usePriceTrendByName";
 import { useSimulatorEvidenceByName } from "../simulator/useSimulatorEvidenceByName";
 import { useDecklistDisplayPrefs } from "../../lib/decklistDisplayPrefs";
 import { championNameToSlug, slugToChampionName } from "../../lib/championSlug";
+import { titleCase } from "../../lib/format";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 import ElementIcon from "../../components/ElementIcon";
 import ClassIcon from "../../components/ClassIcon";
@@ -31,10 +32,6 @@ const JUMP_SECTIONS = [
   { id: "cards", label: "Most Used Cards" },
   { id: "archetypes", label: "Packages" },
 ];
-
-function titleCase(s: string): string {
-  return s.charAt(0) + s.slice(1).toLowerCase();
-}
 
 /**
  * A single-page "pick a Champion, then narrow by Element/Spirit, see everything at once" view —

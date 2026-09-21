@@ -4,7 +4,7 @@ import { VisualCardTile, type VisualFieldVisibility } from "../../components/Vis
 import { formatUsd } from "../../lib/format";
 import { useComparisonData, type ComparisonDeckStats } from "./useComparisonData";
 import { useComparisonSummary, type ComparisonCardChange } from "./useComparisonSummary";
-import type { ComparedDeck } from "./types";
+import { shortDeckLabel, type ComparedDeck } from "./types";
 import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
 import { InlineState } from "../../components/ui/ContentState";
@@ -17,11 +17,6 @@ import DeckOverlapVisualization from "./DeckOverlapVisualization";
 
 const SECTION_LABEL = { main: "Main", material: "Material", sideboard: "Sideboard" } as const;
 const ANALYSIS_CARD_FIELDS: VisualFieldVisibility = { cost: false, price: false, priceTrend: false, tags: false, simulator: false, community: false };
-
-function shortLabel(label: string): string {
-  const at = label.indexOf(" @ ");
-  return at === -1 ? label : label.slice(0, at);
-}
 
 function featuredChanges(changes: ComparisonCardChange[]): ComparisonCardChange[] {
   return [
@@ -118,8 +113,8 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
       const movedCount = summary.changes.filter((change) => change.kind === "moved" || change.kind === "movedQuantity").length;
       return <section key={summary.key} aria-labelledby={`analysis-${summary.key}`} className="space-y-5">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">{baselineDeck ? shortLabel(baselineDeck.label) : "Baseline"} →</p>
-          <h2 id={`analysis-${summary.key}`} className="mt-0.5 text-xl font-semibold text-ctp-text">{shortLabel(summary.label)}</h2>
+          <p className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">{baselineDeck ? shortDeckLabel(baselineDeck.label) : "Baseline"} →</p>
+          <h2 id={`analysis-${summary.key}`} className="mt-0.5 text-xl font-semibold text-ctp-text">{shortDeckLabel(summary.label)}</h2>
           {!summary.loading && !summary.unavailable && <p className="mt-1 text-sm text-ctp-subtext1">{/* COPY_PLACEHOLDER: package-aware takeaway */}{summary.changes.length} card changes with {summary.sharedCardCount} cards retained from the baseline{sharedPercent === null ? "." : ` (${sharedPercent}%).`}</p>}
         </div>
         {summary.loading && <InlineState className="text-sm">Loading analysis…</InlineState>}
@@ -145,7 +140,7 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
       <Section heading="dense" title="Draw probability" description="Compare the same cards-seen checkpoint across every deck.">
         <div className="grid items-start gap-4 md:grid-cols-2">
           {forecastDecks.map(({ deck, list, mainLines, materialLines }) => <section key={deck.key} className="min-w-0">
-            <h3 className="text-base font-semibold text-ctp-text">{shortLabel(deck.label)}</h3>
+            <h3 className="text-base font-semibold text-ctp-text">{shortDeckLabel(deck.label)}</h3>
             {!list ? <Panel padding="sm" className="mt-4"><InlineState className="text-sm">Decklist unavailable.</InlineState></Panel> : <HypergeometricCalculator mainLines={mainLines} materialLines={materialLines} catalogByName={cardsByName} seen={forecastSeen} onSeenChange={setForecastSeen} />}
           </section>)}
         </div>
@@ -154,11 +149,11 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
       <Section heading="dense" title="Damage forecasts" description="Compare damage output at the same cards-seen checkpoint.">
         <div className="grid items-start gap-4 md:grid-cols-2">
           {forecastDecks.map(({ deck, list, damageForecast, breakthroughVsAverage }) => <section key={deck.key} className="min-w-0">
-            <h3 className="text-base font-semibold text-ctp-text">{shortLabel(deck.label)}</h3>
+            <h3 className="text-base font-semibold text-ctp-text">{shortDeckLabel(deck.label)}</h3>
             {!list ? <Panel padding="sm" className="mt-4"><InlineState className="text-sm">Decklist unavailable.</InlineState></Panel> : damageForecast ? (
               <Panel className="mt-4 shadow-sm"><AggressionForecast forecast={damageForecast} embedded seen={forecastSeen} onSeenChange={setForecastSeen} /></Panel>
             ) : breakthroughVsAverage && breakthroughVsAverage.attackerCount > 0 ? (
-              <Panel className="mt-4 shadow-sm"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat damage forecast</h4><div className="mt-3"><BreakthroughDamagePanel attackerLabel={shortLabel(deck.label)} defenderLabel="an average deck" result={breakthroughVsAverage} /></div></Panel>
+              <Panel className="mt-4 shadow-sm"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Combat damage forecast</h4><div className="mt-3"><BreakthroughDamagePanel attackerLabel={shortDeckLabel(deck.label)} defenderLabel="an average deck" result={breakthroughVsAverage} /></div></Panel>
             ) : (
               <Panel className="mt-4 shadow-sm"><h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Printed damage forecast</h4><p className="mt-1 text-xs text-ctp-subtext0">No printed spell/ability damage and no attacking allies found in this list.</p></Panel>
             )}
@@ -181,10 +176,10 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
             const targetIntoBaseline = computeBreakthroughDamage(targetLines, baselineLines, cardsByName);
             if (baselineIntoTarget.attackerCount === 0 && targetIntoBaseline.attackerCount === 0) return null;
             return <div key={deck.key}>
-              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">{shortLabel(baselineDeck.label)} vs. {shortLabel(deck.label)}</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">{shortDeckLabel(baselineDeck.label)} vs. {shortDeckLabel(deck.label)}</p>
               <div className="mt-2 grid gap-3 sm:grid-cols-2">
-                <BreakthroughDamagePanel attackerLabel={shortLabel(baselineDeck.label)} defenderLabel={shortLabel(deck.label)} result={baselineIntoTarget} />
-                <BreakthroughDamagePanel attackerLabel={shortLabel(deck.label)} defenderLabel={shortLabel(baselineDeck.label)} result={targetIntoBaseline} />
+                <BreakthroughDamagePanel attackerLabel={shortDeckLabel(baselineDeck.label)} defenderLabel={shortDeckLabel(deck.label)} result={baselineIntoTarget} />
+                <BreakthroughDamagePanel attackerLabel={shortDeckLabel(deck.label)} defenderLabel={shortDeckLabel(baselineDeck.label)} result={targetIntoBaseline} />
               </div>
             </div>;
           })}

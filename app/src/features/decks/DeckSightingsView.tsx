@@ -6,7 +6,7 @@ import { useArchetypeData } from "../archetypes/data";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import DeckSightingRow from "../topdecks/DeckSightingRow";
 import { useDeckSightingsData } from "../topdecks/data";
-import { useOmnidexPlayers } from "../tournaments/data";
+import { usePlayerNameById } from "../tournaments/data";
 import DeckResultsSkeleton from "./DeckResultsSkeleton";
 
 const SIGHTINGS_PAGE_SIZE = 50;
@@ -32,7 +32,7 @@ export default function DeckSightingsView({
   setChampionName: (v: string | null) => void;
 }) {
   const sightingsData = useDeckSightingsData();
-  const playersData = useOmnidexPlayers();
+  const playerName = usePlayerNameById();
   const archetypeData = useArchetypeData();
 
   const [category, setCategory] = useState<string | null>(null);
@@ -44,11 +44,6 @@ export default function DeckSightingsView({
   const [sortMode, setSortMode] = useState<SightingSortMode>("date");
   const [query, setQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(SIGHTINGS_PAGE_SIZE);
-
-  const usernameById = useMemo(
-    () => new Map(playersData?.players.map((player) => [player.id, player.username]) ?? []),
-    [playersData],
-  );
 
   const classesByChampion = useMemo(() => {
     const map = new Map<string, string[]>();
@@ -116,7 +111,7 @@ export default function DeckSightingsView({
         (!keyword || (s.keywords ?? []).some((k) => k.keyword === keyword)) &&
         (maxPrice === null || (s.price !== null && s.price <= maxPrice)) &&
         (outcome === "all" || (outcome === "winner" && s.winner) || (outcome === "topCut" && s.topCut) || (outcome === "high" && s.high)) &&
-        (!query || `${s.championName ?? ""} ${s.eventName} ${usernameById.get(s.player) ?? ""}`.toLowerCase().includes(query.toLowerCase())),
+        (!query || `${s.championName ?? ""} ${s.eventName} ${playerName(s.player)}`.toLowerCase().includes(query.toLowerCase())),
     );
     return [...rows].sort((a, b) => {
       if (sortMode === "best" && a.weightedScore !== b.weightedScore) {
@@ -137,7 +132,7 @@ export default function DeckSightingsView({
       }
       return b.eventDate.localeCompare(a.eventDate);
     });
-  }, [sightingsData, category, seasonId, championName, selectedClasses, classesByChampion, keyword, maxPrice, outcome, sortMode, query, usernameById]);
+  }, [sightingsData, category, seasonId, championName, selectedClasses, classesByChampion, keyword, maxPrice, outcome, sortMode, query, playerName]);
 
   useEffect(() => {
     setVisibleCount(SIGHTINGS_PAGE_SIZE);
@@ -145,10 +140,6 @@ export default function DeckSightingsView({
 
   const visible = filtered.slice(0, visibleCount);
   const championImages = useChampionCardImages(Array.from(new Set(visible.map((s) => s.championName).filter((n): n is string => n !== null))));
-
-  function playerName(id: number): string {
-    return usernameById.get(id) ?? `Player #${id}`;
-  }
 
   return (
     <>

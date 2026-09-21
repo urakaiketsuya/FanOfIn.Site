@@ -29,7 +29,7 @@ export default function PantheonDecksView() {
   const [champion, setChampion] = useState("");
   const [sort, setSort] = useState<"champion" | "main">("champion");
   const [visibleCount, setVisibleCount] = useState(30);
-  const decks = index?.decks ?? [];
+  const decks = useMemo(() => index?.decks ?? [], [index]);
   const champions = useMemo(() => Array.from(new Set(decks.map((deck) => deck.champion).filter((name): name is string => Boolean(name)))).sort(), [decks]);
   const championImages = useMemo(() => new Map(champions.map((name) => {
     const display = formatPantheonChampion(name);
@@ -71,4 +71,3 @@ function PantheonDeckRow({ deck, championCard, cardsByName }: { deck: ShoutAtYou
     {expanded && <div className="mt-2 grid gap-3 border-t border-ctp-surface0 pt-2 text-xs text-ctp-subtext1 sm:grid-cols-2">{detailStatus === "loaded" && detail ? <><div><p className="mb-1 font-semibold text-ctp-text">Boons</p>{boons.map((line) => <div key={line.name}>{line.quantity}× {line.name}</div>)}<p className="mb-1 mt-3 font-semibold text-ctp-text">Material</p>{material.map((line) => <div key={line.name}>{line.quantity}× {line.name}</div>)}{tokens.length > 0 && <><p className="mb-1 mt-3 font-semibold text-ctp-text">Tokens</p>{tokens.map((name) => <div key={name}>1× {name}</div>)}</>}</div><div><p className="mb-1 font-semibold text-ctp-text">Main deck</p>{detail.mainDeck.map((line) => <div key={line.name}>{line.quantity}× {line.name}</div>)}</div></> : detailStatus === "error" ? <div><InlineState tone="danger">Decklist unavailable.</InlineState><button type="button" onClick={() => setDetailStatus("idle")} className="mt-2 text-ctp-blue hover:underline">Retry</button></div> : <InlineState>Loading decklist…</InlineState>}</div>}
   </article>;
 }
-

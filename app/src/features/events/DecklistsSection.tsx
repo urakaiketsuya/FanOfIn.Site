@@ -4,7 +4,7 @@ import type { OmnidexDecklistEntry, OmnidexPlayer } from "@gatcg/shared";
 import { useCardsByNames } from "./useCardsByNames";
 import DecklistView from "./DecklistView";
 import { useSimilarityData } from "../archetypes/data";
-import { useOmnidexPlayers } from "../tournaments/data";
+import { usePlayerNameById } from "../tournaments/data";
 import PlayerLink from "../players/PlayerLink";
 import Section from "../../components/ui/Section";
 import { canonicalSignature } from "../popular/useDeckPopularity";
@@ -36,7 +36,7 @@ export default function DecklistsSection({
   const cardsByName = useCardsByNames(allNames);
 
   const similarityData = useSimilarityData();
-  const allPlayersData = useOmnidexPlayers();
+  const fallbackPlayerName = usePlayerNameById();
   const similarDecks = selected ? similarityData?.decks.find((d) => d.deckId === `${eventId}:${selected.player}`) : undefined;
 
   // Same signature/hash scheme every other deck-page link uses (PopularDeckRow, DeckDetail's own
@@ -49,16 +49,16 @@ export default function DecklistsSection({
     return shortHash(canonicalSignature(main, material));
   }, [selected]);
 
-  function playerName(id: number): string {
-    return players.find((p) => p.id === id)?.username ?? allPlayersData?.players.find((p) => p.id === id)?.username ?? `Player #${id}`;
-  }
+  const playerName = useMemo(() => {
+    const localUsernameById = new Map(players.map((player) => [player.id, player.username]));
+    return (id: number) => localUsernameById.get(id) ?? fallbackPlayerName(id);
+  }, [players, fallbackPlayerName]);
 
   const searchMatches = useMemo(() => {
     const needle = search.trim().toLowerCase();
     if (!needle) return [];
     return decklists.filter((d) => playerName(d.player).toLowerCase().includes(needle)).slice(0, 8);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [decklists, search, players, allPlayersData]);
+  }, [decklists, search, playerName]);
 
   if (decklists.length === 0) return null;
 

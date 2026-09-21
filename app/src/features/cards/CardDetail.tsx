@@ -19,7 +19,7 @@ import { useCardsByNames } from "../events/useCardsByNames";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCommunityBlendedCardInclusion, useCommunityBlendedDeckReferences } from "../community/data";
 import { useHipsterData } from "../players/data";
-import { useOmnidexPlayers, useEventNameById } from "../tournaments/data";
+import { usePlayerNameById, useEventNameById } from "../tournaments/data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import Tabs from "../../components/ui/Tabs";
@@ -31,6 +31,7 @@ import CardDecksPanel from "./CardDecksPanel";
 import CardSimilarEffectsPanel from "./CardSimilarEffectsPanel";
 import CardIntentPanel from "./CardIntentPanel";
 import CardHero from "./CardHero";
+import { toTopDecksListEntry } from "../topdecks/topDecksListEntry";
 
 const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_RECENT_DECKS_SHOWN = 5;
@@ -129,7 +130,7 @@ export default function CardDetail() {
   const popularityIndexData = useDeckPopularityIndexData(needsPopularityIndex);
   const eventNameById = useEventNameById(needsDecksTab);
   const hipsterData = useHipsterData(needsDecksTab);
-  const playersData = useOmnidexPlayers(needsDecksTab);
+  const playerName = usePlayerNameById(needsDecksTab);
   const cardDeckReferences = useCommunityBlendedDeckReferences(needsDecksTab);
   const communityDeckRefs = card ? (cardDeckReferences?.byCardName[card.name] ?? []) : [];
 
@@ -198,18 +199,10 @@ export default function CardDetail() {
       .filter((e) => deckIdSet.has(e.deckId))
       .sort((a, b) => b.weightedScore - a.weightedScore)
       .slice(0, MAX_TOP_DECKS_SHOWN)
-      .map((e) => ({
-        deckId: e.deckId,
-        player: e.player,
-        eventId: e.eventId,
-        eventName: eventNameById.get(e.eventId) ?? `Event #${e.eventId}`,
-        eventDate: e.eventDate,
-        placement: e.placement,
-        wins: e.wins,
-        losses: e.losses,
-        ties: e.ties,
-        underplaced: e.underplaced,
-        deckHash: e.deckHash,
+      .map((entry) => ({
+        ...toTopDecksListEntry(entry, eventNameById),
+        eventDate: entry.eventDate,
+        deckHash: entry.deckHash,
       }));
   }, [popularityIndexData, deckIdSet, eventNameById]);
 
@@ -220,16 +213,8 @@ export default function CardDetail() {
       .sort((a, b) => b.eventDate.localeCompare(a.eventDate) || b.weightedScore - a.weightedScore)
       .slice(0, MAX_RECENT_DECKS_SHOWN)
       .map((entry) => ({
-        deckId: entry.deckId,
-        player: entry.player,
-        eventId: entry.eventId,
-        eventName: eventNameById.get(entry.eventId) ?? `Event #${entry.eventId}`,
+        ...toTopDecksListEntry(entry, eventNameById),
         eventDate: entry.eventDate,
-        placement: entry.placement,
-        wins: entry.wins,
-        losses: entry.losses,
-        ties: entry.ties,
-        underplaced: entry.underplaced,
         deckHash: entry.deckHash,
       }));
   }, [popularityIndexData, deckIdSet, eventNameById]);
@@ -260,10 +245,6 @@ export default function CardDetail() {
       .sort((a, b) => b.cluster.playerCount - a.cluster.playerCount)
       .slice(0, MAX_CHAMPIONS_SHOWN);
   }, [archetypeTaxonomyData, card]);
-
-  function playerName(id: number): string {
-    return playersData?.players.find((p) => p.id === id)?.username ?? `Player #${id}`;
-  }
 
   if (loading) {
     return (

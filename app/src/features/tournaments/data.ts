@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import type { OmnidexIndexData, OmnidexJudgesData, OmnidexPlayersData, OmnidexTeamsData, OmnidexVenueGeocodeData } from "@gatcg/shared";
 import { usePublishedData } from "../../lib/sync/usePublishedData";
 
@@ -18,6 +18,16 @@ export function useEventNameById(enabled = true): Map<number, string> {
 
 export function useOmnidexPlayers(enabled = true): OmnidexPlayersData | undefined {
   return usePublishedData<OmnidexPlayersData>("omnidex-players", "/data/omnidex/players.json", enabled);
+}
+
+/** Stable player-id formatter with one shared fallback for missing or not-yet-loaded players. */
+export function usePlayerNameById(enabled = true): (id: number) => string {
+  const data = useOmnidexPlayers(enabled);
+  const usernameById = useMemo(
+    () => new Map(data?.players.map((player) => [player.id, player.username]) ?? []),
+    [data],
+  );
+  return useCallback((id: number) => usernameById.get(id) ?? `Player #${id}`, [usernameById]);
 }
 
 export function useOmnidexJudges(): OmnidexJudgesData | undefined {

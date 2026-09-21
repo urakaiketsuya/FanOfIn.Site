@@ -6,17 +6,12 @@ import { buildDeckBuilderPath, deckBuilderParamsFromDecklist } from "../../lib/d
 import { useChampionCardImpact } from "../decks/useChampionCardImpact";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useComparisonData } from "./useComparisonData";
-import type { ComparedDeck } from "./types";
+import { shortDeckLabel, type ComparedDeck } from "./types";
 import Panel from "../../components/ui/Panel";
 import { InlineState } from "../../components/ui/ContentState";
 
 const ROLE_LABEL: Record<CardImpactRole, string> = { main: "Main", material: "Material", sideboard: "Sideboard", mixed: "Mixed" };
 const TUNING_CARD_FIELDS: VisualFieldVisibility = { cost: false, price: false, priceTrend: false, tags: false, simulator: false, community: false };
-
-function shortLabel(label: string): string {
-  const at = label.indexOf(" @ ");
-  return at === -1 ? label : label.slice(0, at);
-}
 
 function EvidenceList({ cards, cardsByName, tone }: { cards: CardImpactEntry[]; cardsByName: Map<string, Card>; tone: "add" | "review" }) {
   return <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-5 xl:grid-cols-4">
@@ -83,7 +78,7 @@ export default function ComparisonSuggestions({ decks, decklists, baselineKey }:
   return <div data-component="ComparisonSuggestions" className="space-y-6">
     <div>
       <p className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Tuning baseline</p>
-      <h2 className="mt-0.5 text-xl font-semibold text-ctp-text">{selectedDeck ? shortLabel(selectedDeck.label) : "Deck unavailable"}</h2>
+      <h2 className="mt-0.5 text-xl font-semibold text-ctp-text">{selectedDeck ? shortDeckLabel(selectedDeck.label) : "Deck unavailable"}</h2>
       <p className="mt-1 text-sm text-ctp-subtext1">Choose a different baseline from the compared decks above to tune another list.</p>
     </div>
 
@@ -99,7 +94,7 @@ export default function ComparisonSuggestions({ decks, decklists, baselineKey }:
       <Panel>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h2 className="font-semibold text-ctp-text">{shortLabel(selectedDeck.label)}</h2>
+            <h2 className="font-semibold text-ctp-text">{shortDeckLabel(selectedDeck.label)}</h2>
             <p className="mt-1 text-xs text-ctp-subtext0">{champion ? `${champion} evidence across ${Math.max(additionsResult.totalDecks, weakestResult.totalDecks)} tournament decks` : "Champion could not be resolved"}</p>
           </div>
           {builderPath && <Link to={builderPath} className="rounded-md border border-ctp-blue px-2.5 py-1.5 text-xs font-medium text-ctp-blue hover:bg-ctp-surface0">Tune in Guided Deck Builder →</Link>}

@@ -1,13 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { championNameToSlug, slugToChampionName } from "../../lib/championSlug";
+import { titleCase } from "../../lib/format";
 import { useArchetypeData, useArchetypeTaxonomyData, useCardStatsByChampionData, useChampionTrendsData, useCompositionWinRateData, useSimilarityData } from "../archetypes/data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useHipsterData } from "../players/data";
-import { useOmnidexPlayers, useEventNameById } from "../tournaments/data";
+import { usePlayerNameById, useEventNameById } from "../tournaments/data";
 import { useCardsByNames } from "../events/useCardsByNames";
 import TopCardsSections from "../../components/TopCardsSections";
 import TopDecksList from "../../components/TopDecksList";
+import { toTopDecksListEntry } from "../topdecks/topDecksListEntry";
 import UniqueDeckRow from "./UniqueDeckRow";
 import CardGrid from "../cards/CardGrid";
 import { useChampionBonusCards } from "./useChampionBonusCards";
@@ -43,10 +45,6 @@ const TABS: { key: ChampionTab; label: string }[] = [
 const MAX_SIMILAR_DECKS_SHOWN = 10;
 const TAB_KEYS = TABS.map((t) => t.key);
 
-function titleCase(s: string): string {
-  return s.charAt(0) + s.slice(1).toLowerCase();
-}
-
 export default function ChampionDetail() {
   const { name = "" } = useParams<{ name: string }>();
   const championName = slugToChampionName(name);
@@ -65,7 +63,7 @@ export default function ChampionDetail() {
   const popularityIndexData = useDeckPopularityIndexData(tab === "decks" || tab === "similar");
   const eventNameById = useEventNameById(tab === "decks" || tab === "similar");
   const hipsterData = useHipsterData(tab === "decks");
-  const playersData = useOmnidexPlayers(tab === "decks");
+  const playerName = usePlayerNameById(tab === "decks");
   const similarityData = useSimilarityData(tab === "similar");
   const compositionData = useCompositionWinRateData(tab === "similar");
   const cardStatsByChampionData = useCardStatsByChampionData(tab === "cards");
@@ -162,17 +160,7 @@ export default function ChampionDetail() {
       .filter((e) => e.championName === championName)
       .sort((a, b) => b.weightedScore - a.weightedScore)
       .slice(0, MAX_TOP_DECKS_SHOWN)
-      .map((e) => ({
-        deckId: e.deckId,
-        player: e.player,
-        eventId: e.eventId,
-        eventName: eventNameById.get(e.eventId) ?? `Event #${e.eventId}`,
-        placement: e.placement,
-        wins: e.wins,
-        losses: e.losses,
-        ties: e.ties,
-        underplaced: e.underplaced,
-      }));
+      .map((entry) => toTopDecksListEntry(entry, eventNameById));
   }, [popularityIndexData, championName, eventNameById]);
 
   const cutouts = useMemo(() => cutoutsForChampion(championName), [championName]);
@@ -254,10 +242,6 @@ export default function ChampionDetail() {
     return Array.from(names);
   }, [displayedTopCards, displayedMainByType]);
   const cardImages = useCardsByNames(allTopCardNames);
-
-  function playerName(id: number): string {
-    return playersData?.players.find((p) => p.id === id)?.username ?? `Player #${id}`;
-  }
 
   if (archetypeData && !champion) {
     return (

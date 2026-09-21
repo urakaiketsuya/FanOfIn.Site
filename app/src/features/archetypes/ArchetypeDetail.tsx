@@ -3,11 +3,12 @@ import { Link, useParams } from "react-router-dom";
 import type { CardImpactRole } from "@gatcg/shared";
 import { useArchetypeTaxonomyData, useCardImpactData, useCardQuantityStatsData, useMatchupCardImpactData } from "./data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
-import { useOmnidexPlayers, useEventNameById } from "../tournaments/data";
+import { usePlayerNameById, useEventNameById } from "../tournaments/data";
 import { useSightingDecklist } from "../topdecks/useSightingDecklist";
 import { useCardsByNames } from "../events/useCardsByNames";
 import DecklistView from "../events/DecklistView";
 import TopDecksList from "../../components/TopDecksList";
+import { toTopDecksListEntry } from "../topdecks/topDecksListEntry";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CardImpactTable from "../../components/CardImpactTable";
 import StaleDataNotice from "../../components/StaleDataNotice";
@@ -54,7 +55,7 @@ export default function ArchetypeDetail() {
   const data = useArchetypeTaxonomyData();
   const popularityIndexData = useDeckPopularityIndexData(tab === "playedBy");
   const eventNameById = useEventNameById(tab === "playedBy");
-  const playersData = useOmnidexPlayers(tab === "playedBy");
+  const playerName = usePlayerNameById(tab === "playedBy");
   const cardImpactData = useCardImpactData(tab === "impact");
   const matchupCardImpactData = useMatchupCardImpactData(tab === "impact");
   const cardQuantityStatsData = useCardQuantityStatsData(tab === "impact");
@@ -88,7 +89,7 @@ export default function ArchetypeDetail() {
 
   // "myCards" is either the general (all-opponents) table or, with a matchup selected, that
   // matchup's card breakdown — same shape, same role filter, same table component either way.
-  const activeCards = selectedMatchup ? selectedMatchup.myCards : (impact?.cards ?? []);
+  const activeCards = useMemo(() => selectedMatchup ? selectedMatchup.myCards : (impact?.cards ?? []), [selectedMatchup, impact]);
   const hasActiveData = selectedMatchup ? selectedMatchup.games > 0 : !!impact && impact.cards.length > 0;
   const impactCards = useMemo(() => {
     return roleFilter === "all" ? activeCards : activeCards.filter((c) => c.role === roleFilter);
@@ -150,17 +151,7 @@ export default function ArchetypeDetail() {
     return popularityIndexData.entries
       .filter((e) => deckIdSet.has(e.deckId))
       .sort((a, b) => b.weightedScore - a.weightedScore)
-      .map((e) => ({
-        deckId: e.deckId,
-        player: e.player,
-        eventId: e.eventId,
-        eventName: eventNameById.get(e.eventId) ?? `Event #${e.eventId}`,
-        placement: e.placement,
-        wins: e.wins,
-        losses: e.losses,
-        ties: e.ties,
-        underplaced: e.underplaced,
-      }));
+      .map((entry) => toTopDecksListEntry(entry, eventNameById));
   }, [cluster, popularityIndexData, eventNameById]);
 
   const [selectedDeckIds, setSelectedDeckIds] = useState<Set<string>>(new Set());
@@ -199,10 +190,6 @@ export default function ArchetypeDetail() {
     return Array.from(names);
   }, [sample.decklist, definingCardNames, variants]);
   const cardImages = useCardsByNames(allSampleCardNames);
-
-  function playerName(pid: number): string {
-    return playersData?.players.find((p) => p.id === pid)?.username ?? `Player #${pid}`;
-  }
 
   if (data && !cluster) {
     return (

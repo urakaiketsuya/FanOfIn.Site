@@ -11,3 +11,15 @@ export interface ComparedDeck {
   source: ComparedDeckSource;
   format?: DeckFormat;
 }
+
+/** Sighting labels use `player @ event`; custom labels remain a single primary line. */
+export function splitDeckLabel(label: string): { primary: string; secondary: string | null } {
+  const at = label.indexOf(" @ ");
+  return at === -1
+    ? { primary: label, secondary: null }
+    : { primary: label.slice(0, at), secondary: label.slice(at + 3) };
+}
+
+export function shortDeckLabel(label: string): string {
+  return splitDeckLabel(label).primary;
+}

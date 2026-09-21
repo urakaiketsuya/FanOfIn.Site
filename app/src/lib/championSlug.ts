@@ -10,3 +10,11 @@ export function championNameToSlug(name: string): string {
 export function slugToChampionName(slug: string): string {
   return decodeURIComponent(slug).replace(/-/g, " ");
 }
+
+/** Converts lower-case external champion keys such as `diao-chan` into display names. */
+export function championKeyToDisplayName(key: string): string {
+  return slugToChampionName(key)
+    .split(" ")
+    .map((word) => word ? word.charAt(0).toUpperCase() + word.slice(1) : word)
+    .join(" ");
+}

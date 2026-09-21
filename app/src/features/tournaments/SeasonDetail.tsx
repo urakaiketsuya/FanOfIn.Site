@@ -10,6 +10,7 @@ import { championNameToSlug } from "../../lib/championSlug";
 import Tabs from "../../components/ui/Tabs";
 import { PRODUCTS } from "../products/data";
 import PageLayout from "../../components/layout/PageLayout";
+import { EmptyState, InlineState } from "../../components/ui/ContentState";
 
 const PAGE_SIZE = 50;
 
@@ -57,12 +58,13 @@ export default function SeasonDetail() {
 
   if (index && !season) {
     return (
-      <div data-component="SeasonDetail" className="mx-auto max-w-3xl px-4 py-10">
-        <p className="text-ctp-red">Season "{slug}" not found in the ingested data.</p>
-        <Link to="/seasons" className="mt-2 inline-block text-ctp-blue hover:underline">
-          &larr; All seasons
-        </Link>
-      </div>
+      <PageLayout data-component="SeasonDetail">
+        <EmptyState
+          title="Season not found"
+          description={`Season "${slug}" is not in the ingested data.`}
+          action={<Link to="/seasons" className="text-ctp-blue hover:underline">&larr; All seasons</Link>}
+        />
+      </PageLayout>
     );
   }
 
@@ -72,7 +74,7 @@ export default function SeasonDetail() {
         &larr; All seasons
       </Link>
 
-      {!index && <p className="mt-6 text-ctp-subtext1">Loading…</p>}
+      {!index && <InlineState className="mt-6">Loading…</InlineState>}
 
       {season && (
         <>

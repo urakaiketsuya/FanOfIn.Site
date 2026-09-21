@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import PlayerLink from "../features/players/PlayerLink";
+import type { TopDecksListEntry } from "../features/topdecks/topDecksListEntry";
+export type { TopDecksListEntry } from "../features/topdecks/topDecksListEntry";
 
 /**
  * Only the fields this list actually renders — a `Pick` of `DeckSighting` would also work, but
@@ -7,20 +9,6 @@ import PlayerLink from "../features/players/PlayerLink";
  * `useDeckPopularityIndexData`) joined with an event-name lookup, not the full 40MB+ dataset, so
  * the type stands on its own instead of implying a `DeckSighting` dependency that no longer exists.
  */
-export interface TopDecksListEntry {
-  deckId: string;
-  player: number;
-  eventId: number;
-  eventName: string;
-  placement: number | null;
-  wins: number;
-  losses: number;
-  ties: number;
-  underplaced: boolean;
-  eventDate?: string;
-  deckHash?: string | null;
-}
-
 function formatEventDate(value: string | undefined): string | null {
   if (!value) return null;
   // Date-only values are parsed as UTC by JavaScript, which can display as the previous day in

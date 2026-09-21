@@ -2,15 +2,10 @@ import { useMemo, useState } from "react";
 import type { OmnidexDecklist } from "@gatcg/shared";
 import { VisualCardTile, type VisualFieldVisibility } from "../../components/VisualCardTile";
 import { useComparisonData, type ComparisonCardEntry } from "./useComparisonData";
-import type { ComparedDeck } from "./types";
+import { shortDeckLabel, type ComparedDeck } from "./types";
 import { InlineState } from "../../components/ui/ContentState";
 
 /** Same " @ " split DeckChip uses, trimmed further for a compact per-card chip label. */
-function shortLabel(deck: ComparedDeck): string {
-  const atIndex = deck.label.indexOf(" @ ");
-  return atIndex === -1 ? deck.label : deck.label.slice(0, atIndex);
-}
-
 function isDifferent(card: ComparisonCardEntry): boolean {
   return card.quantities.some((q) => q !== card.quantities[0]);
 }
@@ -120,7 +115,7 @@ export default function ComparisonDifferences({
                                         key={decks[i].key}
                                         className="flex min-w-0 items-center justify-between gap-2"
                                       >
-                                        <span className="truncate text-ctp-subtext1" title={shortLabel(decks[i])}>{shortLabel(decks[i])}</span>
+                                        <span className="truncate text-ctp-subtext1" title={shortDeckLabel(decks[i].label)}>{shortDeckLabel(decks[i].label)}</span>
                                         <span className={`shrink-0 tabular-nums ${
                                           q === 0
                                             ? "text-ctp-overlay0"
