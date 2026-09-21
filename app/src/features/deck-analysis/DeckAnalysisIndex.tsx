@@ -1,8 +1,11 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import type { Card } from "@gatcg/shared";
 import PageLayout from "../../components/layout/PageLayout";
 import PageHeader from "../../components/ui/PageHeader";
 import Panel from "../../components/ui/Panel";
 import Tabs from "../../components/ui/Tabs";
+import CardImage from "../../components/CardImage";
 import { InlineState } from "../../components/ui/ContentState";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { inferStartingHandSize } from "../../lib/turnToPlay";
@@ -19,12 +22,15 @@ import SideboardImpact from "../deckbuilder/SideboardImpact";
 import BuilderTestPanel from "../deckbuilder/panels/BuilderTestPanel";
 import { useDeckTestResult } from "../decks/useDeckTestResult";
 import { useRequestedDeckWorkspace } from "../deckbuilder/persistence/useRequestedDeckWorkspace";
+import { probabilityAtLeast } from "../deckbuilder/synergyReadiness";
+import { computeResourceCurveReliability } from "../deckbuilder/resourceCurve";
+import { calculateConditionalPressure } from "../deckbuilder/conditionalPressureCalculation";
 
-type AnalysisTab = "overview" | "consistency" | "resources" | "matchups" | "sideboard";
+type AnalysisTab = "summary" | "explore" | "matchups";
 
 export default function DeckAnalysisIndex() {
   useDocumentTitle("Deck Analysis", "Understand the consistency, timing, resource pressure, and sideboard shape of the active deck.");
-  const [tab, setTab] = useState<AnalysisTab>("overview");
+  const [tab, setTab] = useState<AnalysisTab>("summary");
   const [workspace, setWorkspace] = useState<DeckWorkspace | null>(() => loadActiveDeckWorkspace(sessionStorage));
   const data = useDeckBuilderData({ championName: workspace?.championName ?? null, format: workspace?.format ?? "STANDARD", includeDecodedDecks: false });
   const { catalogByName } = data;
@@ -38,7 +44,7 @@ export default function DeckAnalysisIndex() {
   function loadWorkspace(next: Omit<DeckWorkspace, "version" | "updatedAt">) {
     saveActiveDeckWorkspace(sessionStorage, next);
     setWorkspace(loadActiveDeckWorkspace(sessionStorage));
-    setTab("overview");
+    setTab("summary");
   }
 
   const requestedDeck = useRequestedDeckWorkspace(catalogByName, "analysis", loadWorkspace);
@@ -48,17 +54,70 @@ export default function DeckAnalysisIndex() {
 
   if (!workspace || mainTotal === 0) return <PageLayout><PageHeader title="Deck Analysis" description="Facts about how a deck behaves. Recommendations remain in Deck Review." /><Panel className="mt-6"><InlineState className="mb-4">Choose a deck to analyze. Importing here does not modify the saved original.</InlineState><DeckWorkspacePicker catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} /></Panel></PageLayout>;
 
+  const deckSize = Math.max(1, mainTotal);
+  const clumping = workspace.main
+    .filter((line) => line.quantity >= 2)
+    .map((line) => ({ ...line, probability: probabilityAtLeast(deckSize, line.quantity, Math.min(10, deckSize), 2) }))
+    .sort((a, b) => b.probability - a.probability)[0];
+  const conditional = calculateConditionalPressure(workspace.main, catalogByName, opening);
+  const conditionalCard = conditional.rows[0];
+  const resourcePoints = computeResourceCurveReliability(workspace.main, catalogByName, opening);
+  const weakestResource = [...resourcePoints].sort((a, b) => a.first.probability - b.first.probability)[0];
+  const weakestResourceCard = weakestResource
+    ? workspace.main.find((line) => catalogByName.get(line.name)?.cost_reserve === weakestResource.cost)?.name
+    : undefined;
+
   return <PageLayout>
-    <PageHeader title="Deck Analysis" description="Facts about how the active deck behaves. Recommendations remain in Deck Review." />
+    <PageHeader title="Deck Analysis" />
     <DeckToolWorkspaceHeader activeTool="analysis" title={workspace.title} championName={workspace.championName} spiritName={workspace.spiritName} format={workspace.format} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel={workspace.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} />} />
-    <div className="mt-4"><Tabs tabs={[{ key: "overview", label: "Overview" }, { key: "consistency", label: "Consistency" }, { key: "resources", label: "Resources" }, { key: "matchups", label: "Matchups" }, { key: "sideboard", label: "Sideboard" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" /></div>
-    {tab === "overview" && <Panel className="mt-4"><div className="grid gap-3 sm:grid-cols-3"><Summary label="Opening cards" value={String(opening)} detail="From the selected level-0 Champion" /><Summary label="Main deck" value={String(mainTotal)} detail="Cards used by probability calculations" /><Summary label="Analysis scope" value="Descriptive" detail="No changes are applied here" /></div><p className="mt-3 text-xs text-ctp-subtext0">Use Consistency for access and clumping odds, Resources for cost and sequence timing, Matchups for historical evidence, and Sideboard for substitution impact.</p></Panel>}
-    {tab === "consistency" && <><HypergeometricCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /><CopyClumpingRisk mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /><ConditionalHandPressure mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></>}
-    {tab === "resources" && <><ResourceCurveReliability mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /><ReserveSequencePressure mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></>}
+    <DeckArtworkPreview material={workspace.material} main={workspace.main} catalogByName={catalogByName} />
+    <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Summary" }, { key: "explore", label: "Explore" }, { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" /></div>
+    {tab === "summary" && <div className="mt-4">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2"><h2 className="text-base font-semibold text-ctp-text">What stands out</h2><span className="rounded-full bg-ctp-surface0 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-ctp-subtext0">Descriptive</span></div>
+      <div className="grid gap-3 md:grid-cols-3">
+        <InsightCard title="Opening hand" value={`${opening} cards`} detail="Set by your level-0 Champion" tone="text-ctp-blue" onExplore={() => setTab("explore")} />
+        {clumping && <InsightCard title="Highest clumping chance" value={`${(clumping.probability * 100).toFixed(1)}%`} detail={`2+ copies of ${clumping.name} by 10 cards`} card={catalogByName.get(clumping.name)} tone={clumping.probability >= 0.25 ? "text-ctp-yellow" : "text-ctp-green"} onExplore={() => setTab("explore")} />}
+        {weakestResource && <InsightCard title={`Reserve ${weakestResource.cost} access`} value={`${(weakestResource.first.probability * 100).toFixed(1)}%`} detail={`Going first · ready by turn ${weakestResource.first.turn}`} card={weakestResourceCard ? catalogByName.get(weakestResourceCard) : undefined} tone={weakestResource.first.probability >= 0.8 ? "text-ctp-green" : weakestResource.first.probability >= 0.6 ? "text-ctp-blue" : "text-ctp-yellow"} onExplore={() => setTab("explore")} />}
+        {conditional.conditionalCopies > 0 && <InsightCard title="Conditional hand pressure" value={`${(conditional.chanceTwo * 100).toFixed(1)}%`} detail={`Chance of 2+ conditional cards in the opening ${opening}`} card={conditionalCard ? catalogByName.get(conditionalCard.name) : undefined} tone={conditional.chanceTwo >= 0.5 ? "text-ctp-red" : conditional.chanceTwo >= 0.25 ? "text-ctp-yellow" : "text-ctp-green"} onExplore={() => setTab("explore")} />}
+      </div>
+      <p className="mt-3 text-xs text-ctp-subtext0">These are measurements, not change recommendations. Use Deck Review when you want suggested edits.</p>
+    </div>}
+    {tab === "explore" && <div className="mt-4 space-y-3">
+      <AnalysisDisclosure title="Card access and probability" summary="Find a card, functional role, or complete combo."><HypergeometricCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
+      <AnalysisDisclosure title="Consistency details" summary="Inspect duplicate draws and conditional cards."><CopyClumpingRisk mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /><ConditionalHandPressure mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
+      <AnalysisDisclosure title="Resource timing" summary="See when Reserve costs become reliably available."><ResourceCurveReliability mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
+      <AnalysisDisclosure title="Advanced sequence analysis" summary="Test a specific sequence of plays and deadlines."><ReserveSequencePressure mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
+      <AnalysisDisclosure title="Sideboard impact" summary={workspace.sideboard.length > 0 ? "Preview substitutions without changing the deck." : "No Sideboard cards in this deck."}>{workspace.sideboard.length > 0 ? <SideboardImpact mainLines={workspace.main} sideboardLines={workspace.sideboard} catalogByName={catalogByName} /> : <InlineState>Add cards to the Sideboard in Deck Builder to analyze substitutions.</InlineState>}</AnalysisDisclosure>
+    </div>}
     {tab === "matchups" && <BuilderTestPanel deckTestResult={deckTestResult} loading={deckTestLoading} cardsByName={catalogByName} nearestDecks={[]} nearestDeckCompareLink={() => "#"} onLoadNearestDeck={() => undefined} />}
-    {tab === "sideboard" && (workspace.sideboard.length > 0 ? <SideboardImpact mainLines={workspace.main} sideboardLines={workspace.sideboard} catalogByName={catalogByName} /> : <Panel className="mt-4"><InlineState>Add cards to the Sideboard in Deck Builder to analyze substitutions.</InlineState></Panel>)}
   </PageLayout>;
 }
 
 function total(lines: { quantity: number }[] | undefined) { return lines?.reduce((sum, line) => sum + line.quantity, 0) ?? 0; }
-function Summary({ label, value, detail }: { label: string; value: string; detail: string }) { return <div className="rounded-lg border border-ctp-surface1 bg-ctp-base/35 p-3"><div className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">{label}</div><div className="mt-1 text-xl font-semibold text-ctp-text">{value}</div><div className="text-[11px] text-ctp-subtext0">{detail}</div></div>; }
+
+function DeckArtworkPreview({ material, main, catalogByName }: { material: { name: string; quantity: number }[]; main: { name: string; quantity: number }[]; catalogByName: Map<string, Card> }) {
+  return <section aria-labelledby="analysis-deck-heading" className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 shadow-sm">
+    <div className="flex items-center justify-between gap-2"><h2 id="analysis-deck-heading" className="text-sm font-semibold text-ctp-text">Deck at a glance</h2><span className="text-xs text-ctp-subtext0">{main.reduce((sum, line) => sum + line.quantity, 0)} main</span></div>
+    <div className="mt-3 flex snap-x gap-2 overflow-x-auto pb-1">
+      {[...material, ...main].slice(0, 14).map((line, index) => {
+        const card = catalogByName.get(line.name);
+        const tile = <div className={`relative aspect-[5/7] w-20 shrink-0 snap-start overflow-hidden rounded-lg bg-ctp-surface0 ${index < material.length ? "ring-1 ring-ctp-blue/60" : ""}`}>{card?.editions[0] ? <CardImage image={card.editions[0].image} alt={line.name} className="h-full w-full object-cover" /> : <span className="flex h-full items-center justify-center p-2 text-center text-[10px] text-ctp-subtext0">{line.name}</span>}<span className="absolute right-1 top-1 rounded-full bg-ctp-base/90 px-1.5 py-0.5 text-[10px] font-medium text-ctp-text">{line.quantity}x</span></div>;
+        return card ? <Link key={`${line.name}:${index}`} to={`/cards/${card.slug}`} title={line.name}>{tile}</Link> : <div key={`${line.name}:${index}`}>{tile}</div>;
+      })}
+    </div>
+  </section>;
+}
+
+function InsightCard({ title, value, detail, card, tone, onExplore }: { title: string; value: string; detail: string; card?: Card; tone: string; onExplore: () => void }) {
+  return <article className="flex min-h-28 gap-3 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 shadow-sm">
+    {card?.editions[0] && <Link to={`/cards/${card.slug}`} className="w-16 shrink-0 overflow-hidden rounded-md"><CardImage image={card.editions[0].image} alt={card.name} className="aspect-[5/7] h-full w-full object-cover" /></Link>}
+    <div className="flex min-w-0 flex-1 flex-col"><p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">{title}</p><p className={`mt-1 text-xl font-bold tabular-nums ${tone}`}>{value}</p><p className="mt-1 text-xs text-ctp-subtext0">{detail}</p><button type="button" onClick={onExplore} className="mt-auto self-start pt-2 text-xs font-medium text-ctp-blue hover:underline">Explore →</button></div>
+  </article>;
+}
+
+function AnalysisDisclosure({ title, summary, children }: { title: string; summary: string; children: React.ReactNode }) {
+  return <details className="group rounded-xl border border-ctp-surface1 bg-ctp-mantle">
+    <summary className="cursor-pointer list-none p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ctp-blue"><span className="flex items-center justify-between gap-3"><span><span className="block text-sm font-semibold text-ctp-text">{title}</span><span className="mt-0.5 block text-xs text-ctp-subtext0">{summary}</span></span><span aria-hidden="true" className="text-xl text-ctp-subtext0 transition-transform group-open:rotate-90">›</span></span></summary>
+    <div className="border-t border-ctp-surface1 px-3 pb-3">{children}</div>
+  </details>;
+}

@@ -44,37 +44,14 @@ function deckQuantities(decklist: OmnidexDecklist): Map<string, number> {
   return quantities;
 }
 
-/** The Composition/Probability/Trim tab bar, plus any page-specific `extraTabs` (e.g.
- * DeckDetail.tsx's own tournament-only Matchups/Pricing) — one active panel at a time instead of a
- * stack of collapsed accordions, with a real tonal-fill/elevation selected state per the site's
- * Material Design convention rather than a plain border-color swap. */
+/** Specialist analysis stays available without making a dense tool the default deck view. */
 function DeckStatsTabs({ tabs }: { tabs: DeckStatsTab[] }) {
-  const [active, setActive] = useState(tabs[0]?.key);
-  const current = tabs.find((t) => t.key === active) ?? tabs[0];
-  if (!current) return null;
-  return <div data-component="DeckStatsTabs">
-    <div role="tablist" aria-label="Deck improvement tools" className="flex flex-wrap gap-2">
-      {tabs.map((t) => {
-        const selected = t.key === current.key;
-        return (
-          <button
-            key={t.key}
-            type="button"
-            role="tab"
-            aria-selected={selected}
-            onClick={() => setActive(t.key)}
-            className={`rounded-full px-3 py-1.5 text-sm font-medium transition-all duration-200 ease-out active:scale-[0.97] ${
-              selected
-                ? "bg-ctp-blue text-ctp-base shadow-md shadow-ctp-blue/20"
-                : "border border-ctp-surface1 text-ctp-subtext1 hover:-translate-y-0.5 hover:border-ctp-surface2 hover:text-ctp-text hover:shadow-md hover:shadow-black/20"
-            }`}
-          >
-            {t.label}
-          </button>
-        );
-      })}
-    </div>
-    <div role="tabpanel" className="mt-4">{current.content}</div>
+  return <div data-component="DeckStatsTabs" className="space-y-3">
+    <div><h2 className="font-semibold text-ctp-text">Explore analysis</h2><p className="mt-1 text-xs text-ctp-subtext0">Open a specialist view when you need its supporting detail.</p></div>
+    {tabs.map((tab) => <details key={tab.key} className="group rounded-xl border border-ctp-surface1 bg-ctp-mantle">
+      <summary className="cursor-pointer list-none p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ctp-blue"><span className="flex items-center justify-between gap-3"><span className="text-sm font-semibold text-ctp-text">{tab.label}</span><span aria-hidden="true" className="text-xl text-ctp-subtext0 transition-transform group-open:rotate-90">›</span></span></summary>
+      <div className="border-t border-ctp-surface1 p-3 sm:p-4">{tab.content}</div>
+    </details>)}
   </div>;
 }
 
@@ -336,22 +313,19 @@ export default function UserDeckStats({ decklist, championName, format, title, o
   );
 
   const tabs: DeckStatsTab[] = [
-    { key: "improvements", label: "Improvements", content: trimTab },
-    { key: "composition", label: "Composition", content: compositionTab },
-    { key: "forecasts", label: "Forecasts", content: probabilityTab },
+    { key: "composition", label: "Deck composition", content: compositionTab },
+    { key: "forecasts", label: "Probability & damage", content: probabilityTab },
+    { key: "improvements", label: "Advanced change planning", content: trimTab },
     ...extraTabs,
   ];
 
-  return <div data-component="UserDeckStats" className="mt-6 space-y-6">
-    <Panel aria-labelledby="analysis-findings">
-      <div className="flex flex-wrap items-start justify-between gap-3"><div><h2 id="analysis-findings" className="font-semibold text-ctp-text">Key findings</h2><p className="mt-1 text-xs text-ctp-subtext0">Prioritized structural signals from this exact list.</p></div>{ownerDeckId && builderParams && canImprove && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, { mode: "improve", sourceDeckId: ownerDeckId })} className="rounded-md bg-ctp-blue px-3 py-1.5 text-sm text-ctp-base">Review improvements</Link>}</div>
-      <div className="mt-3 grid gap-2 sm:grid-cols-2">{findings.map((finding) => <Panel key={`${finding.title}:${finding.detail}`} tone={FINDING_TONE[finding.tone]} padding="sm"><p className="text-sm font-semibold text-ctp-text">{finding.title}</p><p className="mt-1 text-xs text-ctp-subtext1">{finding.detail}</p></Panel>)}</div>
-      {versionChange && <p className="mt-3 border-t border-ctp-surface1 pt-2 text-xs text-ctp-subtext1">Since the previous version: {versionChange.added} copies added · {versionChange.removed} removed · {versionChange.changedCards} card entries changed.</p>}
+  return <div data-component="UserDeckStats" className="mt-6 space-y-5">
+    <Panel aria-labelledby="analysis-findings" elevation={1}>
+      <div className="flex flex-wrap items-start justify-between gap-3"><div><div className="flex flex-wrap items-center gap-2"><h2 id="analysis-findings" className="font-semibold text-ctp-text">What stands out</h2><span className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold ${validationTone}`}>{validation.status}</span></div><p className="mt-1 text-xs text-ctp-subtext0">The highest-priority structural signals from this list.</p></div>{ownerDeckId && builderParams && canImprove && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, { mode: "improve", sourceDeckId: ownerDeckId })} className="min-h-10 rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base">Open Deck Review</Link>}</div>
+      <div className="mt-3 grid gap-2 sm:grid-cols-2">{findings.slice(0, 3).map((finding) => <Panel key={`${finding.title}:${finding.detail}`} tone={FINDING_TONE[finding.tone]} padding="sm"><p className="text-sm font-semibold text-ctp-text">{finding.title}</p><p className="mt-1 text-xs text-ctp-subtext1">{finding.detail}</p></Panel>)}</div>
+      {(findings.length > 3 || validation.reasons.length > 0) && <details className="mt-3 border-t border-ctp-surface1 pt-2 text-xs text-ctp-subtext1"><summary className="cursor-pointer font-medium">More checks ({Math.max(0, findings.length - 3) + validation.reasons.length})</summary><div className="mt-2 space-y-2">{findings.slice(3).map((finding) => <div key={`${finding.title}:${finding.detail}`}><p className="font-medium text-ctp-text">{finding.title}</p><p>{finding.detail}</p></div>)}{validation.reasons.length > 0 && <ul className="list-disc space-y-1 pl-5">{validation.reasons.map((reason) => <li key={reason}>{reason}</li>)}</ul>}</div></details>}
+      <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 border-t border-ctp-surface1 pt-2 text-[10px] text-ctp-subtext0"><span>Main {totals.main}</span><span>Material {totals.material}</span><span>Sideboard {totals.sideboard}</span>{versionChange && <span>Since last version: {versionChange.changedCards} cards changed</span>}</div>
     </Panel>
-
-    <section className={`rounded-lg border px-3 py-2.5 ${validationTone}`}>
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1"><h2 className="text-sm font-semibold">{validation.status}</h2><p className="text-xs opacity-80">Main {totals.main} · Material {totals.material} · Sideboard {totals.sideboard}</p>{validation.reasons.length > 0 && <details className="ml-auto text-xs"><summary className="cursor-pointer font-medium">{validation.reasons.length} issue{validation.reasons.length === 1 ? "" : "s"}</summary><ul className="mt-2 max-w-2xl list-disc space-y-1 pl-5">{validation.reasons.map((reason) => <li key={reason}>{reason}</li>)}</ul></details>}</div>
-    </section>
 
     <DeckStatsTabs tabs={tabs} />
   </div>;
