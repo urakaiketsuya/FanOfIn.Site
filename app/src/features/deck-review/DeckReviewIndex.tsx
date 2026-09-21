@@ -128,7 +128,6 @@ export default function DeckReviewIndex() {
   }, [championName, spiritFilter, lockedCards, lockedSections, deckFormat]);
 
   const [tab, setTab] = useState<DeckReviewTab>("review");
-  const [deckSummaryOpen, setDeckSummaryOpen] = useState(true);
   const [spiritElement, setSpiritElement] = useState<string | null>(null);
   const [dismissedReviewCards, setDismissedReviewCards] = useState<Set<string>>(new Set());
   const [showProtectedCuts, setShowProtectedCuts] = useState(false);
@@ -211,6 +210,7 @@ export default function DeckReviewIndex() {
     [build, dismissedReviewCards, showProtectedCuts],
   );
   const reviewGroups = useMemo(() => deriveReviewGroups(reviewRemovals, reviewSuggestions), [reviewRemovals, reviewSuggestions]);
+  const reviewRemovalNames = useMemo(() => new Set(reviewRemovals.map((card) => card.cardName)), [reviewRemovals]);
   const reviewItemCount = reviewGroups.pairs.length + reviewGroups.unpairedRemovals.length + reviewGroups.unpairedSuggestions.length;
   const reviewComplete = reviewItemCount === 0;
 
@@ -376,7 +376,6 @@ export default function DeckReviewIndex() {
     <PageLayout data-component="DeckReviewIndex">
       <PageHeader
         title="Deck Review"
-        description="Nothing is added for you here. Start from a Champion and Spirit — or paste a decklist you already have — then accept, swap, or dismiss one ranked suggestion at a time."
       />
 
       {championName && <DeckToolWorkspaceHeader activeTool="review" title={activeWorkspace?.title} championName={championName} spiritName={spiritFilter} format={deckFormat} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel={activeWorkspace?.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="review" onLoad={loadWorkspace} />} />}
@@ -387,47 +386,47 @@ export default function DeckReviewIndex() {
         <InlineState className="mt-6">Choose a Champion above (or paste a decklist) to see ranked suggestions.</InlineState>
       ) : (
         <div className="mt-4">
-          <details open={deckSummaryOpen} onToggle={(event) => setDeckSummaryOpen(event.currentTarget.open)} className="group rounded-xl border border-ctp-surface1 bg-ctp-mantle">
-            <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-2 rounded-xl p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ctp-blue">
-              <span className="flex items-center gap-2 text-sm font-semibold text-ctp-text"><span aria-hidden="true" className="inline-block text-ctp-subtext0 transition-transform group-open:rotate-90">›</span>Your deck so far</span>
+          <section aria-labelledby="deck-review-deck-heading" className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 shadow-sm sm:p-4">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h2 id="deck-review-deck-heading" className="text-base font-semibold text-ctp-text">Your deck</h2>
               <span className="text-xs text-ctp-subtext0">
                 {keptCount === 0
                   ? "Nothing accepted yet"
                   : `${mainTotal} main · ${materialTotal} material${sideboardTotal > 0 ? ` · ${sideboardTotal} sideboard` : ""} · ${formatUsd(totalPrice.sum + sideboardPrice.sum)}`}
               </span>
-            </summary>
-            <div className="border-t border-ctp-surface1 p-4">{keptCount === 0 ? (
+            </div>
+            <div>{keptCount === 0 ? (
               <InlineState className="mt-2 text-sm">Nothing here yet — accept a suggestion below to start building.</InlineState>
             ) : (
               <div className="mt-2 space-y-4">
                 {keptMaterial.length > 0 && (
                   <div>
                     <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Material ({materialTotal})</h3>
-                    <BuilderCardGrid section="material" cards={keptMaterial} cardsByName={catalogByName} priceByName={priceByName} visibleFields={visibleFields} onToggleLock={toggleLock} onChangeQuantity={setLockedQuantity} onRemove={removeCard} />
+                    <BuilderCardGrid section="material" cards={keptMaterial} cardsByName={catalogByName} priceByName={priceByName} visibleFields={visibleFields} reviewRemovalNames={reviewRemovalNames} onToggleLock={toggleLock} onChangeQuantity={setLockedQuantity} onRemove={removeCard} />
                   </div>
                 )}
                 {keptMain.length > 0 && (
                   <div>
                     <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Main ({mainTotal})</h3>
-                    <BuilderCardGrid section="main" cards={keptMain} cardsByName={catalogByName} priceByName={priceByName} visibleFields={visibleFields} onToggleLock={toggleLock} onChangeQuantity={setLockedQuantity} onRemove={removeCard} />
+                    <BuilderCardGrid section="main" cards={keptMain} cardsByName={catalogByName} priceByName={priceByName} visibleFields={visibleFields} reviewRemovalNames={reviewRemovalNames} onToggleLock={toggleLock} onChangeQuantity={setLockedQuantity} onRemove={removeCard} />
                   </div>
                 )}
                 {keptSideboard.length > 0 && (
                   <div>
                     <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Sideboard ({sideboardTotal})</h3>
-                    <BuilderCardGrid section="sideboard" cards={keptSideboard} cardsByName={catalogByName} priceByName={priceByName} visibleFields={visibleFields} onToggleLock={toggleLock} onChangeQuantity={setLockedQuantity} onRemove={removeCard} />
+                    <BuilderCardGrid section="sideboard" cards={keptSideboard} cardsByName={catalogByName} priceByName={priceByName} visibleFields={visibleFields} reviewRemovalNames={reviewRemovalNames} onToggleLock={toggleLock} onChangeQuantity={setLockedQuantity} onRemove={removeCard} />
                   </div>
                 )}
               </div>
             )}</div>
-          </details>
+          </section>
 
           <div className="mt-4">
             <Tabs
               tabs={[
-                { key: "review", label: reviewItemCount > 0 ? `Suggestions (${reviewItemCount})` : "Suggestions" },
-                { key: "matchups", label: "Matchup plans" },
-                { key: "save", label: "Save & export" },
+                { key: "review", label: reviewItemCount > 0 ? `Review (${reviewItemCount})` : "Review" },
+                { key: "matchups", label: "Matchups" },
+                { key: "save", label: "Finish" },
               ]}
               active={tab}
               onChange={setTab}

@@ -18,25 +18,28 @@ export default function BuilderReviewOverview({
 }) {
   return (
     <>
-      <div className="mt-4 grid overflow-hidden rounded-lg border border-ctp-surface1 bg-ctp-mantle sm:grid-cols-4">
-        <Metric label="Evidence" value={`${build.matchingDeckCount} ${simulatorMode ? `game${build.matchingDeckCount === 1 ? "" : "s"}` : `deck${build.matchingDeckCount === 1 ? "" : "s"}`}`} detail={simulatorMode ? `${simulatorMatchedCards} qualifying cards` : build.matchingDeckCount >= 30 ? "Strong sample" : build.matchingDeckCount >= 10 ? "Limited sample" : "Exploratory"} />
-        <Metric label="Performance" labelTitle="Win rate observed among matching decks." value={simulatorMode ? "Experimental" : build.conditionalWinRate === null ? "—" : `${(build.conditionalWinRate * 100).toFixed(0)}% observed`} detail={build.baselineWinRate !== null && lockedCardCount > 0 && build.conditionalWinRate !== null ? `${build.conditionalWinRate - build.baselineWinRate >= 0 ? "+" : ""}${((build.conditionalWinRate - build.baselineWinRate) * 100).toFixed(1)}% vs. baseline` : undefined} />
-        <Metric label="Completion" value={`${mainTotal}/${mainTotal + build.unresolved.main} main`} detail={`${build.unresolved.main} flex slot${build.unresolved.main === 1 ? "" : "s"} open`} />
-        <Metric label="Cost" value={formatUsd(totalPrice.sum)} detail={sideboardPrice.sum > 0 ? `+ ${formatUsd(sideboardPrice.sum)} sideboard` : totalPrice.missing > 0 ? `${totalPrice.missing} price${totalPrice.missing === 1 ? "" : "s"} missing` : "Main + material"} last />
-      </div>
+      <details className="mt-3 rounded-lg border border-ctp-surface1 bg-ctp-mantle">
+        <summary className="cursor-pointer px-3 py-2 text-xs font-medium text-ctp-subtext1 hover:text-ctp-text">Why these recommendations?</summary>
+        <div className="grid border-t border-ctp-surface1 sm:grid-cols-4">
+          <Metric label="Evidence" value={`${build.matchingDeckCount} ${simulatorMode ? `game${build.matchingDeckCount === 1 ? "" : "s"}` : `deck${build.matchingDeckCount === 1 ? "" : "s"}`}`} detail={simulatorMode ? `${simulatorMatchedCards} qualifying cards` : build.matchingDeckCount >= 30 ? "Strong sample" : build.matchingDeckCount >= 10 ? "Limited sample" : "Exploratory"} />
+          <Metric label="Performance" labelTitle="Win rate observed among matching decks." value={simulatorMode ? "Experimental" : build.conditionalWinRate === null ? "—" : `${(build.conditionalWinRate * 100).toFixed(0)}% observed`} detail={build.baselineWinRate !== null && lockedCardCount > 0 && build.conditionalWinRate !== null ? `${build.conditionalWinRate - build.baselineWinRate >= 0 ? "+" : ""}${((build.conditionalWinRate - build.baselineWinRate) * 100).toFixed(1)}% vs. baseline` : undefined} />
+          <Metric label="Completion" value={`${mainTotal}/${mainTotal + build.unresolved.main} main`} detail={`${build.unresolved.main} flex slot${build.unresolved.main === 1 ? "" : "s"} open`} />
+          <Metric label="Cost" value={formatUsd(totalPrice.sum)} detail={sideboardPrice.sum > 0 ? `+ ${formatUsd(sideboardPrice.sum)} sideboard` : totalPrice.missing > 0 ? `${totalPrice.missing} price${totalPrice.missing === 1 ? "" : "s"} missing` : "Main + material"} last />
+        </div>
+      </details>
 
       {build.protectedPackages.length > 0 && (
-        <div className="mt-4 rounded-lg border border-ctp-teal/40 bg-ctp-teal/10 px-4 py-3">
-          <p className="text-xs font-semibold uppercase tracking-wide text-ctp-teal">Protected packages</p>
+        <details className="mt-3 rounded-lg border border-ctp-teal/40 bg-ctp-teal/10 px-3 py-2">
+          <summary className="cursor-pointer text-xs font-medium text-ctp-teal">{build.protectedPackages.length} protected package{build.protectedPackages.length === 1 ? "" : "s"}</summary>
           <ul className="mt-1 space-y-1.5">
             {build.protectedPackages.map((deckPackage) => <li key={deckPackage.id} className="text-xs text-ctp-subtext1"><span className="font-medium text-ctp-text">{deckPackage.label}</span>{" — "}{deckPackage.explanation} Individual cuts are hidden for {deckPackage.protectedCards.join(", ")}.</li>)}
           </ul>
           {build.protectedRemovalSuggestions.length > 0 && <button type="button" onClick={onToggleShowProtectedCuts} className="mt-2 rounded-md border border-ctp-teal/50 px-2 py-1 text-xs text-ctp-teal hover:bg-ctp-teal/10" aria-pressed={showProtectedCuts}>{showProtectedCuts ? "Hide protected cuts" : `Review anyway (${build.protectedRemovalSuggestions.length})`}</button>}
-        </div>
+        </details>
       )}
 
-      <details className="mt-3 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-4 py-3">
-        <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-ctp-subtext1 hover:text-ctp-text">Package catalog ({build.packageCatalog.filter((entry) => entry.active).length}/{build.packageCatalog.length} active)</summary>
+      <details className="mt-2 px-1 py-1">
+        <summary className="cursor-pointer text-xs text-ctp-subtext0 hover:text-ctp-text">Package details ({build.packageCatalog.filter((entry) => entry.active).length}/{build.packageCatalog.length} active)</summary>
         <p className="mt-2 text-xs text-ctp-subtext0">Construction packages are explicit review guardrails and do not define the deck&apos;s archetype. <Link to="/cards/packages" className="text-ctp-blue hover:underline">Browse package definitions.</Link></p>
         <ul className="mt-3 space-y-2">
           {build.packageCatalog.map((entry) => (
