@@ -10,7 +10,7 @@ import { useChampionCardImages } from "../players/useChampionCardImages";
 import PopularDeckRow from "../popular/PopularDeckRow";
 import { useDeckPopularity } from "../popular/useDeckPopularity";
 import { useDeckPopularityIndexData } from "../topdecks/data";
-import { useOmnidexPlayers } from "../tournaments/data";
+import { useEventNameById, useOmnidexPlayers } from "../tournaments/data";
 import DeckResultsSkeleton from "./DeckResultsSkeleton";
 
 const BUILDS_PAGE_SIZE = 30;
@@ -31,7 +31,7 @@ export default function TournamentBuildsView({
   setChampionName: (v: string | null) => void;
 }) {
   const [searchParams] = useSearchParams();
-  const [minPlayers, setMinPlayers] = useState<MinPlayers>(searchParams.get("minPlayers") === "2plus" ? "2plus" : "any");
+  const [minPlayers, setMinPlayers] = useState<MinPlayers>(searchParams.get("minPlayers") === "any" ? "any" : "2plus");
   const [elementFilter, setElementFilter] = useState<string[]>([]);
   const [sortMode, setSortMode] = useState<BuildSortMode>("mostRecent");
   const [visibleCount, setVisibleCount] = useState(BUILDS_PAGE_SIZE);
@@ -45,6 +45,7 @@ export default function TournamentBuildsView({
   const { decks: allDecks, loading } = useDeckPopularity(championName, 1);
   const popularityIndexData = useDeckPopularityIndexData();
   const playersData = useOmnidexPlayers();
+  const eventNameById = useEventNameById();
   const cardCatalog = useCardCatalog();
   const combination = useCardCombination(selectedCards);
 
@@ -117,7 +118,6 @@ export default function TournamentBuildsView({
   return (
     <>
       <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
-        <span className="text-ctp-subtext0">Champion:</span>
         <select
           value={championName ?? ""}
           aria-label="Champion"
@@ -132,23 +132,40 @@ export default function TournamentBuildsView({
           ))}
         </select>
 
-        <span className="ml-2 text-ctp-subtext0">Players:</span>
-        {(["any", "2plus"] as const).map((mode) => (
-          <button
-            key={mode}
-            type="button"
-            onClick={() => setMinPlayers(mode)}
-            aria-pressed={minPlayers === mode}
-            className={`rounded-md border px-2 py-1 text-xs ${
-              minPlayers === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            {mode === "any" ? "Any (incl. one-offs)" : "2+ (independently played)"}
-          </button>
-        ))}
+        <select
+          value={sortMode}
+          aria-label="Sort builds"
+          onChange={(e) => setSortMode(e.target.value as BuildSortMode)}
+          className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+        >
+          {(Object.keys(BUILD_SORT_LABELS) as BuildSortMode[]).map((mode) => (
+            <option key={mode} value={mode}>{mode === "mostRecent" ? "Newest" : BUILD_SORT_LABELS[mode]}</option>
+          ))}
+        </select>
       </div>
 
-      <fieldset className="mt-3" aria-labelledby="browse-decks-elements-label">
+      <details className="mt-3 rounded-md border border-ctp-surface1 bg-ctp-mantle/40 px-3 py-2">
+        <summary className="cursor-pointer select-none text-sm font-medium text-ctp-subtext1 hover:text-ctp-text">
+          Filters{minPlayers === "2plus" || elementFilter.length > 0 || selectedCards.length > 0 ? ` (${(minPlayers === "2plus" ? 1 : 0) + elementFilter.length + selectedCards.length})` : ""}
+        </summary>
+        <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
+          <span className="text-ctp-subtext0">Players:</span>
+          {(["2plus", "any"] as const).map((mode) => (
+            <button
+              key={mode}
+              type="button"
+              onClick={() => setMinPlayers(mode)}
+              aria-pressed={minPlayers === mode}
+              className={`rounded-md border px-2 py-1 text-xs ${
+                minPlayers === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
+              }`}
+            >
+              {mode === "any" ? "Include one-offs" : "Played by 2+ people"}
+            </button>
+          ))}
+        </div>
+
+        <fieldset className="mt-3" aria-labelledby="browse-decks-elements-label">
         <div className="flex min-h-6 items-center gap-2">
           <span id="browse-decks-elements-label" className="text-sm text-ctp-subtext0">Elements</span>
           {elementFilter.length > 1 && <span className="text-[11px] text-ctp-overlay1">Match all selected</span>}
@@ -187,9 +204,9 @@ export default function TournamentBuildsView({
             );
           })}
         </div>
-      </fieldset>
+        </fieldset>
 
-      <div className="mt-3">
+        <div className="mt-3">
         <span className="text-sm text-ctp-subtext0">Cards in deck:</span>
         <div className="mt-1 flex flex-wrap items-center gap-2">
           {selectedCards.map((name) => (
@@ -213,29 +230,15 @@ export default function TournamentBuildsView({
           ariaLabel="Cards in deck"
           className="mt-1 w-full max-w-sm"
         />
-      </div>
+        </div>
 
-      <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
-        <span className="text-ctp-subtext0">Sort by:</span>
-        {(Object.keys(BUILD_SORT_LABELS) as BuildSortMode[]).map((mode) => (
-          <button
-            key={mode}
-            onClick={() => setSortMode(mode)}
-            aria-pressed={sortMode === mode}
-            className={`rounded-md border px-2 py-1 text-xs ${
-              sortMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            {BUILD_SORT_LABELS[mode]}
-          </button>
-        ))}
-      </div>
+      </details>
 
       {loading && <DeckResultsSkeleton />}
       {!loading && sorted.length === 0 && <InlineState className="mt-6">No decks match these filters.</InlineState>}
       {sorted.length > 0 && (
         <p className="mt-4 text-xs text-ctp-subtext0">
-          {sorted.length} distinct deck{sorted.length === 1 ? "" : "s"} match
+          Showing {visible.length.toLocaleString()} of {sorted.length.toLocaleString()} build{sorted.length === 1 ? "" : "s"}
           {isPending && " — recalculating…"}
         </p>
       )}
@@ -247,6 +250,7 @@ export default function TournamentBuildsView({
             deck={deck}
             playerName={playerName}
             championCard={deck.championName ? championImages.get(deck.championName) : undefined}
+            latestEventName={deck.lastEventId ? eventNameById.get(deck.lastEventId) : undefined}
           />
         ))}
       </div>
@@ -255,4 +259,3 @@ export default function TournamentBuildsView({
     </>
   );
 }
-

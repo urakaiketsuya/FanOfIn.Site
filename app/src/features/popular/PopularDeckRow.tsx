@@ -71,10 +71,12 @@ export default function PopularDeckRow({
   deck,
   playerName,
   championCard,
+  latestEventName,
 }: {
   deck: PopularDeck;
   playerName: (id: number) => string;
   championCard: Card | undefined;
+  latestEventName?: string;
 }) {
   const [expanded, setExpanded] = useState(false);
 
@@ -91,7 +93,7 @@ export default function PopularDeckRow({
 
   return (
     <div data-component="PopularDeckRow" className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm">
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3 sm:flex-nowrap">
         <CardHoverPreview image={championCard?.editions[0]?.image} alt={deck.championName ?? "Unknown champion"}>
           {championCard?.editions[0] ? (
             <CardImage
@@ -115,24 +117,35 @@ export default function PopularDeckRow({
           ) : (
             <span className="text-ctp-subtext0">Unknown champion</span>
           )}
-          <div className="mt-0.5 text-xs text-ctp-subtext0">
-            {deck.playerCount} player{deck.playerCount === 1 ? "" : "s"} · {deck.eventCount} event
-            {deck.eventCount === 1 ? "" : "s"}
-            {deck.bestPlacement !== null && ` · best finish #${deck.bestPlacement}`} ·{" "}
-            {(deck.avgWinRate * 100).toFixed(0)}% avg win rate
-            {deck.elements.length > 0 && ` · ${deck.elements.join("/")}`}
-            {deck.classes.length > 0 && ` · ${deck.classes.join("/")}`}
+          {deck.lastPlayedDate && (
+            <div className="mt-0.5 truncate text-xs text-ctp-subtext0">
+              Most recently played{deck.lastEventId && latestEventName ? (
+                <> at <Link to={`/events/${deck.lastEventId}`} className="hover:text-ctp-blue hover:underline">{latestEventName}</Link></>
+              ) : null} · {new Date(deck.lastPlayedDate).toLocaleDateString()}
+            </div>
+          )}
+          <div className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-ctp-subtext1">
+            <span>{deck.playerCount} player{deck.playerCount === 1 ? "" : "s"}</span>
+            <span aria-hidden="true">·</span>
+            <span>{deck.sightingCount} appearance{deck.sightingCount === 1 ? "" : "s"}</span>
+            {deck.bestPlacement !== null && <><span aria-hidden="true">·</span><span>Best #{deck.bestPlacement}</span></>}
+            {deck.sightingCount > 1 && <><span aria-hidden="true">·</span><span>{(deck.avgWinRate * 100).toFixed(0)}% win rate</span></>}
+            {[...deck.elements, ...deck.classes].map((label) => (
+              <span key={label} className="rounded-full border border-ctp-surface1 px-1.5 py-0.5 text-[10px] capitalize text-ctp-subtext0">{label.toLowerCase()}</span>
+            ))}
           </div>
         </div>
-        <Link
-          to={`/decks/${shortHash(deck.signature)}`}
-          className="shrink-0 rounded-md border border-ctp-blue px-2 py-1.5 text-xs text-ctp-blue hover:bg-ctp-surface0"
-        >
-          View stats &rarr;
-        </Link>
-        <Button variant="secondary" size="sm" onClick={() => setExpanded((v) => !v)} aria-expanded={expanded} className="shrink-0">
-          {expanded ? "Hide" : "Decklist"}
-        </Button>
+        <div className="flex w-full items-center justify-end gap-2 sm:w-auto">
+          <Button variant="ghost" size="sm" onClick={() => setExpanded((v) => !v)} aria-expanded={expanded} className="shrink-0">
+            {expanded ? "Hide preview" : "Preview"}
+          </Button>
+          <Link
+            to={`/decks/${shortHash(deck.signature)}`}
+            className="shrink-0 rounded-md border border-ctp-blue px-2 py-1.5 text-xs text-ctp-blue hover:bg-ctp-surface0"
+          >
+            View build &rarr;
+          </Link>
+        </div>
       </div>
 
       {expanded && <ExpandedDeckRow deck={deck} decklist={decklist} cardsByName={cardsByName} playerName={playerName} />}

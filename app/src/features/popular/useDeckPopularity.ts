@@ -21,6 +21,7 @@ export interface PopularDeck {
   /** Average of each instance's Phase-18 weightedScore (placement percentile x event tier) — how well this exact list tends to perform, not just how often it's played. */
   avgWeightedScore: number;
   lastPlayedDate: string;
+  lastEventId: number | null;
 }
 
 /** Popular Decks' own default — "netdecked more than once" bar. Callers that want every distinct decklist (e.g. the deck-page hash lookup, or the all-decks search page) pass `minPlayers: 1` instead. */
@@ -57,6 +58,10 @@ export function buildPopularDeck(
   const events = new Set(sightings.map((s) => s.eventId));
   const placements = sightings.map((s) => s.placement).filter((p): p is number => p !== null);
   const lastPlayedDate = sightings.reduce((max, s) => (s.eventDate > max ? s.eventDate : max), "");
+  const latestSighting = sightings.reduce<(typeof sightings)[number] | null>(
+    (latest, sighting) => (!latest || sighting.eventDate > latest.eventDate ? sighting : latest),
+    null,
+  );
   const identity = computeDeckIdentity([...main, ...material], cardsByName);
   return {
     signature: canonicalSignature(main, material),
@@ -73,6 +78,7 @@ export function buildPopularDeck(
     avgWinRate: sightings.reduce((sum, s) => sum + s.winRate, 0) / sightings.length,
     avgWeightedScore: sightings.reduce((sum, s) => sum + s.weightedScore, 0) / sightings.length,
     lastPlayedDate,
+    lastEventId: latestSighting?.eventId ?? null,
   };
 }
 
