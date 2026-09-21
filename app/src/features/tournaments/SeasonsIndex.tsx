@@ -11,7 +11,7 @@ export default function SeasonsIndex() {
 
   return (
     <PageLayout data-component="SeasonsIndex">
-      <PageHeader title="Seasons" description="Card-legality windows, each with its own set of ingested events." />
+      <PageHeader title="Seasons" />
 
       {!index && <InlineState className="mt-6">Loading…</InlineState>}
       {index && index.seasons.length === 0 && <EmptyState className="mt-6" title="No seasons found yet" />}

@@ -37,9 +37,14 @@ export default function BuilderCardGrid({
   if (cards.length === 0) return null;
   const resolvedMainDeckSize = mainDeckSize ?? (section === "main" ? cards.reduce((sum, card) => sum + card.quantity, 0) : 0);
   return (
-    <div data-component="BuilderCardGrid" className="mt-2 grid grid-cols-2 gap-3">
+    <div
+      data-component="BuilderCardGrid"
+      className={section === "material"
+        ? "-mx-3 mt-2 flex snap-x gap-2 overflow-x-auto px-3 pb-2 sm:mx-0 sm:grid sm:grid-cols-4 sm:overflow-visible sm:px-0 lg:grid-cols-6 xl:grid-cols-8"
+        : "mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"}
+    >
       {cards.map((card) => (
-        <CardTile key={card.cardName} card={card} cardInfo={cardsByName.get(card.cardName)} unitPrice={priceByName.get(card.cardName)} priceTrend={priceTrendByName?.get(card.cardName)} communityEntry={communityInclusion?.get(card.cardName)} hypeGap={hypeGapByName?.get(card.cardName)} decaySignal={decayByName?.get(card.cardName)} simulatorEvidence={simulatorEvidenceByName?.get(card.cardName)} visibleFields={visibleFields} communityMode={communityMode} needsReview={reviewRemovalNames?.has(card.cardName) ?? false} section={section} mainDeckSize={resolvedMainDeckSize} startingHandSize={startingHandSize} onToggleLock={() => onToggleLock(card.cardName, card.quantity, section)} onChangeQuantity={onChangeQuantity ? (quantity) => onChangeQuantity(card.cardName, quantity) : undefined} onRemove={() => onRemove(card.cardName, card.locked)} />
+        <CardTile key={card.cardName} className={section === "material" ? "w-32 shrink-0 snap-start sm:w-auto" : undefined} card={card} cardInfo={cardsByName.get(card.cardName)} unitPrice={priceByName.get(card.cardName)} priceTrend={priceTrendByName?.get(card.cardName)} communityEntry={communityInclusion?.get(card.cardName)} hypeGap={hypeGapByName?.get(card.cardName)} decaySignal={decayByName?.get(card.cardName)} simulatorEvidence={simulatorEvidenceByName?.get(card.cardName)} visibleFields={visibleFields} communityMode={communityMode} needsReview={reviewRemovalNames?.has(card.cardName) ?? false} section={section} mainDeckSize={resolvedMainDeckSize} startingHandSize={startingHandSize} onToggleLock={() => onToggleLock(card.cardName, card.quantity, section)} onChangeQuantity={onChangeQuantity ? (quantity) => onChangeQuantity(card.cardName, quantity) : undefined} onRemove={() => onRemove(card.cardName, card.locked)} />
       ))}
     </div>
   );

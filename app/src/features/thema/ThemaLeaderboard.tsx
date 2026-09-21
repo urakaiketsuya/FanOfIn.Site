@@ -25,7 +25,7 @@ export default function ThemaLeaderboard() {
 
   return (
     <PageLayout data-component="ThemaLeaderboard">
-      <PageHeader title="Thema Rankings" description="Dynamic thema price-tier leaderboard, updated regularly." />
+      <PageHeader title="Thema Rankings" />
 
       <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
         {(["FOIL", "NONFOIL"] as const).map((k) => (

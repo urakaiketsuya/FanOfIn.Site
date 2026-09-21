@@ -17,9 +17,8 @@ export default function BuilderMaybeboard({
   if (cards.size === 0) return null;
 
   return (
-    <div className="mt-4 rounded-lg border border-dashed border-ctp-yellow/60 bg-ctp-yellow/5 p-3">
-      <h2 className="text-xs font-semibold uppercase tracking-wide text-ctp-yellow">Maybeboard ({cards.size})</h2>
-      <p className="mt-1 text-xs text-ctp-subtext0">Cards you are considering. They are not part of the deck, so they do not affect legality, stats, exports, or saved versions.</p>
+    <details className="mt-4 rounded-lg border border-dashed border-ctp-yellow/60 bg-ctp-yellow/5 p-3">
+      <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-ctp-yellow">Maybeboard ({cards.size})</summary>
       <ul className="mt-2 space-y-1">
         {Array.from(cards.entries()).map(([name, quantity]) => {
           const card = catalogByName.get(name);
@@ -39,6 +38,6 @@ export default function BuilderMaybeboard({
           );
         })}
       </ul>
-    </div>
+    </details>
   );
 }

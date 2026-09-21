@@ -33,7 +33,7 @@ export default function TopDecksList({
     <div data-component="TopDecksList" className="space-y-1 text-sm">
       {decks.map((s) => {
         const eventDate = formatEventDate(s.eventDate);
-        return <div key={s.deckId} className="flex items-center justify-between gap-2 text-ctp-subtext1">
+        return <div key={s.deckId} className="flex min-h-10 items-center justify-between gap-2 rounded-lg px-2 py-1 text-ctp-subtext1 transition-colors duration-200 hover:bg-ctp-surface0/70">
           <div className="flex min-w-0 items-center gap-2">
             {onToggleSelect && (
               <input
@@ -52,10 +52,11 @@ export default function TopDecksList({
               </Link>
               {s.underplaced && (
                 <span
-                  className="ml-1.5 shrink-0 rounded-full border border-ctp-peach px-1.5 text-[10px] text-ctp-peach"
+                  className="ml-1.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-ctp-peach/10 text-xs text-ctp-peach"
                   title="Strong match record, but still finished outside the top 30% of the field — likely tiebreakers, not a bad build."
+                  aria-label="Tough finish"
                 >
-                  Tough finish
+                  !
                 </span>
               )}
             </div>
@@ -65,7 +66,7 @@ export default function TopDecksList({
                 fetched before the next scheduled data-refresh run publishes them (see the field's
                 addition in DeckPopularityEntry) — falls back to placement-only rather than
                 rendering "undefined-undefined-undefined" during that window. */}
-            {eventDate && <span className="mr-2 text-xs text-ctp-subtext0">{eventDate}</span>}
+            {eventDate && <span className="mr-2 hidden text-xs text-ctp-subtext0 sm:inline">{eventDate}</span>}
             {s.deckHash ? (
               <Link to={`/decks/${s.deckHash}`} className="text-ctp-blue hover:underline">
                 {s.placement !== null ? `#${s.placement}` : "View deck"}

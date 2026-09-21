@@ -6,13 +6,13 @@ import Section from "../../components/ui/Section";
 
 function ToggleRow({ label, description, checked, onChange }: { label: string; description: string; checked: boolean; onChange: (value: boolean) => void }) {
   return (
-    <label className="flex items-start gap-3 rounded-md border border-ctp-surface1 p-3 text-sm">
-      <input type="checkbox" checked={checked} onChange={(event) => onChange(event.target.checked)} className="mt-0.5" />
-      <span>
-        <span className="font-medium text-ctp-text">{label}</span>
-        <br />
-        <span className="text-xs text-ctp-subtext1">{description}</span>
-      </span>
+    <label
+      title={description}
+      className={`flex min-h-11 cursor-pointer items-center justify-between gap-3 rounded-lg border px-3 py-2 text-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md active:scale-[0.97] ${checked ? "border-ctp-blue/60 bg-ctp-blue/10 font-semibold text-ctp-blue shadow-sm" : "border-ctp-surface1 bg-ctp-mantle text-ctp-subtext1"}`}
+    >
+      <input type="checkbox" checked={checked} onChange={(event) => onChange(event.target.checked)} className="sr-only" />
+      <span>{label}<span className="sr-only">. {description}</span></span>
+      <span aria-hidden="true" className={`inline-flex h-5 w-5 items-center justify-center rounded-full text-xs ${checked ? "bg-ctp-blue text-ctp-base" : "border border-ctp-overlay0"}`}>{checked ? "✓" : ""}</span>
     </label>
   );
 }
@@ -31,11 +31,11 @@ export default function SettingsIndex() {
     <PageLayout data-component="SettingsIndex">
       <PageHeader
         title="Display Settings"
-        description="These preferences are saved to this browser only — they don't follow you to another device, and they don't require an account. Used to be an inline 'Evidence settings' menu on decklist pages, moved here because that menu didn't work well on mobile."
+        description="Saved on this device."
       />
 
       <Section className="mt-6" title="Decklist stats" heading="compact">
-        <div className="space-y-2">
+        <div className="grid gap-2 sm:grid-cols-2">
           <ToggleRow
             label="Win rate"
             description="This specific decklist's own match record from the event it was played at, where available. Only shows on tournament decklists — there's no meaningful win rate for a decklist that's never been played in a tracked event."
@@ -46,15 +46,12 @@ export default function SettingsIndex() {
       </Section>
 
       <Section className="mt-6" title="Visual mode card size" heading="compact">
-        <p className="mb-2 text-xs text-ctp-subtext1">
-          Controls how many cards fit per row in a decklist's "Visual" display mode (the full-thumbnail grid toggle above any decklist).
-        </p>
         <div role="radiogroup" aria-label="Visual mode card size" className="flex flex-wrap gap-2">
           {VISUAL_CARD_SIZE_OPTIONS.map((option) => (
             <label
               key={option.value}
               title={option.description}
-              className={`cursor-pointer rounded-md border px-3 py-2 text-sm ${prefs.visualCardSize === option.value ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`}
+              className={`cursor-pointer rounded-lg border px-3 py-2 text-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md active:scale-[0.97] ${prefs.visualCardSize === option.value ? "border-ctp-blue bg-ctp-blue/10 font-semibold text-ctp-blue shadow-sm" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`}
             >
               <input
                 type="radio"
@@ -71,8 +68,7 @@ export default function SettingsIndex() {
       </Section>
 
       <Section className="mt-6" title="Visual mode card fields" heading="compact">
-        <p className="mb-2 text-xs text-ctp-subtext1">Optional fields shown under each card's art in Visual mode.</p>
-        <div className="space-y-2">
+        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
           <ToggleRow label="Cost" description="Memory/Reserve cost badge." checked={prefs.visualCost} onChange={prefs.setVisualCost} />
           <ToggleRow label="Price" description="Cheapest current market price for this card." checked={prefs.visualPrice} onChange={prefs.setVisualPrice} />
           <ToggleRow label="Price trend" description="Recent change in that price, from the last ~30 days of published history." checked={prefs.visualPriceTrend} onChange={prefs.setVisualPriceTrend} />
@@ -83,7 +79,7 @@ export default function SettingsIndex() {
       </Section>
 
       <Section className="mt-6" title="Decklist evidence panels" heading="compact">
-        <div className="space-y-2">
+        <div className="grid gap-2 sm:grid-cols-2">
           <ToggleRow
             label="Tuning suggestions"
             description="Cards that might help, cards worth reviewing, and quantity advice — drawn from tournament data for this decklist's named-build cluster (or its Champion, as a fallback)."

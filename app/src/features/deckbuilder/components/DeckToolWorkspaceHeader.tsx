@@ -10,7 +10,7 @@ const TOOLS: { key: DeckTool; label: string; verb: string; to: string }[] = [
   { key: "review", label: "Review", verb: "Review suggestions", to: "/deck-review" },
 ];
 
-export default function DeckToolWorkspaceHeader({ activeTool, title, championName, spiritName, format, mainTotal, materialTotal, sideboardTotal, sourceLabel, actions, embedded = false }: {
+export default function DeckToolWorkspaceHeader({ activeTool, title, championName, spiritName, format, mainTotal, materialTotal, sideboardTotal, sourceLabel, actions, embedded = false, showToolNav = true }: {
   activeTool: DeckTool;
   title?: string | null;
   championName: string | null;
@@ -22,6 +22,7 @@ export default function DeckToolWorkspaceHeader({ activeTool, title, championNam
   sourceLabel?: string | null;
   actions?: ReactNode;
   embedded?: boolean;
+  showToolNav?: boolean;
 }) {
   return <section data-component="DeckToolWorkspaceHeader" className={embedded ? "" : "mt-5 overflow-hidden rounded-xl border border-ctp-surface1 bg-ctp-mantle"} aria-label="Active deck workspace">
     <div className="flex flex-wrap items-start justify-between gap-3 border-b border-ctp-surface1 bg-ctp-base px-4 py-3">
@@ -37,11 +38,11 @@ export default function DeckToolWorkspaceHeader({ activeTool, title, championNam
         {actions}
       </div>
     </div>
-    <nav aria-label="Deck tools" className="grid grid-cols-3">
+    {showToolNav && <nav aria-label="Deck tools" className="grid grid-cols-3">
       {TOOLS.map((tool) => {
         const active = tool.key === activeTool;
         return <Link key={tool.key} to={tool.to} aria-current={active ? "page" : undefined} className={`border-b-2 px-3 py-3 text-center text-xs font-semibold transition-colors ${active ? "border-ctp-blue bg-ctp-blue/5 text-ctp-blue" : "border-transparent text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text"}`}><span className="hidden sm:inline">{tool.verb}</span><span className="sm:hidden">{tool.label}</span></Link>;
       })}
-    </nav>
+    </nav>}
   </section>;
 }

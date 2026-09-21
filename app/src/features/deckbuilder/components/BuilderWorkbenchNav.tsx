@@ -49,13 +49,9 @@ export default function BuilderWorkbenchNav({
 
   return (
     <section data-component="BuilderWorkbenchNav" className="mt-5 overflow-hidden rounded-xl border border-ctp-surface1 bg-ctp-mantle">
-      <DeckToolWorkspaceHeader embedded activeTool="builder" championName={championName} spiritName={spiritName} format={deckFormat} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel="Guided Deck Builder" actions={<span className={`rounded-full px-2 py-1 ${finishComplete ? "bg-ctp-green/10 text-ctp-green" : "bg-ctp-yellow/10 text-ctp-yellow"}`}>{validationStatus}</span>} />
+      <DeckToolWorkspaceHeader embedded showToolNav={false} activeTool="builder" championName={championName} spiritName={spiritName} format={deckFormat} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} actions={<span className={`rounded-full px-2 py-1 ${finishComplete ? "bg-ctp-green/10 text-ctp-green" : "bg-ctp-yellow/10 text-ctp-yellow"}`}>{validationStatus}</span>} />
 
-      <nav aria-label="Deck workflow" className="grid grid-cols-2 border-b border-ctp-surface1 sm:grid-cols-3">
-        <Link to="/card-discovery" className="border-b-2 border-transparent px-3 py-3 text-left text-ctp-green hover:bg-ctp-surface0">
-          <span className="block text-xs font-semibold">✓ Find</span>
-          <span className="mt-0.5 block truncate text-[10px] text-ctp-subtext0">Idea chosen</span>
-        </Link>
+      <nav aria-label="Deck workflow" className="grid grid-cols-2 border-b border-ctp-surface1">
         {PRIMARY_STAGES.map((stage, index) => {
           const active = activeView === stage.view;
           const complete = stageComplete(stage.view);
@@ -71,7 +67,7 @@ export default function BuilderWorkbenchNav({
               aria-current={active ? "step" : undefined}
               className={`border-b-2 px-3 py-3 text-left transition-colors ${active ? "border-ctp-blue bg-ctp-blue/5 text-ctp-blue" : complete ? "border-transparent text-ctp-green hover:bg-ctp-surface0" : "border-transparent text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text"}`}
             >
-              <span className="block text-xs font-semibold">{complete ? "✓" : index + 2} {stage.label}</span>
+              <span className="block text-xs font-semibold">{complete ? "✓" : index + 1} {stage.label}</span>
               <span className="mt-0.5 block truncate text-[10px] text-ctp-subtext0">{summary}</span>
             </button>
           );
@@ -80,7 +76,7 @@ export default function BuilderWorkbenchNav({
 
       <details className="group px-4 py-2" open={!primaryActive}>
         <summary className="cursor-pointer list-none text-xs font-medium text-ctp-subtext1 hover:text-ctp-text">
-          {activeSupport ? `Supporting tool: ${activeSupport.label}` : "More tools for this deck"} <span aria-hidden="true" className="group-open:hidden">▾</span><span aria-hidden="true" className="hidden group-open:inline">▴</span>
+          {activeSupport ? activeSupport.label : "More"} <span aria-hidden="true" className="group-open:hidden">▾</span><span aria-hidden="true" className="hidden group-open:inline">▴</span>
         </summary>
         <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label="Supporting deck tools">
           {SUPPORTING_TOOLS.map((tool) => {
@@ -88,6 +84,8 @@ export default function BuilderWorkbenchNav({
             const suffix = tool.view === "log" ? ` (${changeLogCount})` : "";
             return <button key={tool.view} id={`deck-builder-tab-${tool.view}`} type="button" aria-pressed={active} onClick={() => onViewChange(tool.view)} className={`rounded-md border px-2.5 py-1.5 text-xs ${active ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text"}`}>{tool.label}{suffix}</button>;
           })}
+          <Link to="/deck-analysis" className="rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Analyze deck</Link>
+          <Link to="/deck-review" className="rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Review suggestions</Link>
         </div>
       </details>
     </section>

@@ -23,11 +23,11 @@ function saveViewMode(mode: BuilderViewMode, storageKey: string): void {
 }
 
 /** List vs. full-image grid for Material/Main/Sideboard on the Build tab — a durable per-browser
- * preference. Defaults to the existing list layout so this doesn't change anyone's view; a caller
+ * preference. Defaults to the visual grid so cards are the primary way to scan a deck; a caller
  * with a different default surface (e.g. Deck Review, where the suggestion feed is the whole page
  * rather than one tab among several) can pass its own storage key and default without affecting
  * the Guided Deck Builder's own saved preference. */
-export function useBuilderViewMode(storageKey: string = VIEW_MODE_STORAGE_KEY, defaultMode: BuilderViewMode = "list"): [BuilderViewMode, (mode: BuilderViewMode) => void] {
+export function useBuilderViewMode(storageKey: string = VIEW_MODE_STORAGE_KEY, defaultMode: BuilderViewMode = "grid"): [BuilderViewMode, (mode: BuilderViewMode) => void] {
   const [mode, setMode] = useState<BuilderViewMode>(() => loadViewMode(storageKey, defaultMode));
 
   const setPersisted = useCallback((next: BuilderViewMode) => {

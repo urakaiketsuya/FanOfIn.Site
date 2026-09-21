@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
 import DecklistCoverageNotice from "../../../components/DecklistCoverageNotice";
 import StaleDataNotice from "../../../components/StaleDataNotice";
-import NotificationBanner from "../../../components/ui/NotificationBanner";
 import { useDeckBuilder } from "../useDeckBuilder";
 import BuilderWorkbenchNav from "./BuilderWorkbenchNav";
 
 export function DeckBuilderWorkbenchStatus() {
   const {
-    build, changeLog, championName, deckFormat, effectivePopulationSource, importedCardCount,
-    isImproving, isPending, mainTotal, materialTotal, newReleaseCards, pendingActionRef,
+    build, changeLog, championName, deckFormat, effectivePopulationSource,
+    isPending, mainTotal, materialTotal, pendingActionRef,
     rejectedCards, setRejectedCards, setTab, sideboardTotal, simulatorResult, simulatorSummary,
     spiritFilter, startTransition, tab, validation,
   } = useDeckBuilder();
@@ -34,15 +33,6 @@ export function DeckBuilderWorkbenchStatus() {
           Too few {championName} decks run {spiritFilter} specifically — suggestions also draw on other {championName} decks with a same-element Spirit ({build.spiritElementFallbackSpirits.join(", ")}).
         </p>
       )}
-      <section className="mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3" aria-labelledby="deck-builder-checklist">
-        <h2 id="deck-builder-checklist" className="text-sm font-semibold text-ctp-text">Deck-building checklist</h2>
-        <div className="mt-2 grid gap-2 text-xs sm:grid-cols-4">
-          {isImproving && <p className={importedCardCount > 0 ? "text-ctp-green" : "text-ctp-yellow"}>{importedCardCount > 0 ? `✓ ${importedCardCount} baseline cards loaded` : "○ Imported deck is empty"}</p>}
-          <p className="text-ctp-green">✓ Champion selected</p>
-          <p className="text-ctp-green">✓ Spirit selected</p>
-          <p className={validation.status === "Legal" ? "text-ctp-green" : "text-ctp-yellow"}>{validation.status === "Legal" ? "✓ Construction checks pass" : `○ ${validation.status}: review deck size and legality`}</p>
-        </div>
-      </section>
       <BuilderWorkbenchNav
         activeView={tab}
         onViewChange={setTab}
@@ -55,11 +45,6 @@ export function DeckBuilderWorkbenchStatus() {
         validationStatus={validation.status}
         changeLogCount={changeLog.length}
       />
-      {newReleaseCards.length > 0 && (
-        <div className="mt-4">
-          <NotificationBanner tone="highlight" title="New cards available" description={`${newReleaseCards.length} new card${newReleaseCards.length === 1 ? "" : "s"} from recent sets`} action={{ label: "Explore new cards", to: "/card-discovery" }} />
-        </div>
-      )}
     </>
   );
 }

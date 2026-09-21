@@ -210,8 +210,8 @@ export default function DecklistView({
         </div>
       )}
       <div className="mb-4 flex flex-wrap items-center justify-end gap-2">
-        <Link to="/settings" className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text">Display settings</Link>
-        <div className="flex gap-1" role="group" aria-label="Decklist display">{(["compact", "visual", "detailed"] as const).map((mode) => <button key={mode} type="button" onClick={() => setDisplayMode(mode)} aria-pressed={displayMode === mode} className={`rounded-md border px-2 py-1 text-xs capitalize ${displayMode === mode ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`}>{mode}</button>)}</div>
+        <Link to="/settings" className="inline-flex min-h-9 items-center rounded-md px-2 text-xs text-ctp-subtext1 transition-colors hover:bg-ctp-surface0 hover:text-ctp-text">Display</Link>
+        <div className="flex gap-1 rounded-lg bg-ctp-mantle p-1" role="group" aria-label="Decklist display">{(["compact", "visual", "detailed"] as const).map((mode) => <button key={mode} type="button" onClick={() => setDisplayMode(mode)} aria-pressed={displayMode === mode} className={`min-h-8 rounded-md px-2 text-xs capitalize transition-all duration-200 active:scale-[0.97] ${displayMode === mode ? "bg-ctp-blue/15 font-semibold text-ctp-blue shadow-sm" : "text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text"}`}>{displayMode === mode && <span aria-hidden="true">✓ </span>}{mode}</button>)}</div>
       </div>
       {showDeckStats && displayPrefs.winRate && deckId && (
         <div className="mb-4 space-y-3">

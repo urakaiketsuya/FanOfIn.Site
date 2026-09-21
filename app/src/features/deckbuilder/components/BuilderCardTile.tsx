@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import type { Card, CardInclusionEntry } from "@gatcg/shared";
 import CardImage from "../../../components/CardImage";
 import CardHoverPreview from "../../../components/CardHoverPreview";
@@ -33,6 +34,7 @@ export function CardTile({
   section = "sideboard",
   mainDeckSize = 0,
   startingHandSize,
+  className,
 }: {
   card: SuggestedCard;
   cardInfo: Card | undefined;
@@ -56,7 +58,9 @@ export function CardTile({
   section?: BuilderSection;
   mainDeckSize?: number;
   startingHandSize?: number;
+  className?: string;
 }) {
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const maxQuantity = Math.max(1, Math.min(cardInfo?.legality?.STANDARD?.limit ?? 4, 4));
   const tags = [...(cardInfo?.elements.filter((e) => e !== "NORM") ?? []), ...(cardInfo?.classes ?? [])];
   const playOdds = section === "main" && cardInfo?.cost.type === "reserve"
@@ -64,20 +68,22 @@ export function CardTile({
     : null;
 
   return (
-    <div className={`overflow-hidden rounded-lg border ${card.locked ? "border-ctp-blue/70 bg-ctp-blue/5" : "border-ctp-surface1"}`}>
+    <div className={`${className ?? ""} overflow-hidden rounded-lg border bg-ctp-mantle shadow-sm transition-shadow hover:shadow-md ${card.locked ? "border-ctp-blue/70" : "border-ctp-surface1"}`}>
       <div className="relative aspect-[5/7] bg-ctp-surface0">
         <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={card.cardName}>
+          <button type="button" onClick={() => setDetailsOpen(true)} aria-label={`View ${card.cardName} details`} className="block h-full w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ctp-blue">
           {cardInfo ? (
-            <Link to={`/cards/${cardInfo.slug}`} title={card.cardName} className="block h-full w-full">
+            <span className="block h-full w-full">
               {cardInfo.editions[0] ? (
                 <CardImage image={cardInfo.editions[0].image} alt={card.cardName} className="h-full w-full object-cover" />
               ) : (
                 <span className="flex h-full items-center justify-center p-2 text-center text-xs text-ctp-subtext0">{card.cardName}</span>
               )}
-            </Link>
+            </span>
           ) : (
             <span className="flex h-full items-center justify-center p-2 text-center text-xs text-ctp-subtext0">{card.cardName}</span>
           )}
+          </button>
         </CardHoverPreview>
         {card.locked && onChangeQuantity ? (
           <input
@@ -117,7 +123,17 @@ export function CardTile({
         )}
       </div>
 
-      <div className="space-y-1 p-2 text-xs">
+      {detailsOpen && <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-stretch sm:justify-end" role="dialog" aria-modal="true" aria-label={`${card.cardName} details`}>
+      <button type="button" className="absolute inset-0 bg-ctp-crust/70" onClick={() => setDetailsOpen(false)} aria-label="Close card details" />
+      <div className="relative max-h-[82dvh] w-full overflow-y-auto rounded-t-2xl border border-ctp-surface1 bg-ctp-base p-4 shadow-2xl sm:h-full sm:max-h-none sm:max-w-sm sm:rounded-none sm:border-y-0 sm:border-r-0">
+        <div className="mb-4 flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h3 className="text-base font-semibold text-ctp-text">{card.cardName}</h3>
+            {cardInfo && <Link to={`/cards/${cardInfo.slug}`} className="mt-1 inline-block text-xs text-ctp-blue hover:underline">Open card page</Link>}
+          </div>
+          <button type="button" onClick={() => setDetailsOpen(false)} className="min-h-11 min-w-11 rounded-full border border-ctp-surface1 text-lg text-ctp-subtext1 hover:text-ctp-text" aria-label="Close card details">×</button>
+        </div>
+      <div className="space-y-2 text-sm">
         {visibleFields.cost && cardInfo && cardInfo.cost.type !== "none" && cardInfo.cost.value !== null && (
           <>
             <div className="flex items-center justify-between text-ctp-subtext1">
@@ -235,18 +251,18 @@ export function CardTile({
         )}
       </div>
 
-      <div className="flex border-t border-ctp-surface1">
+      <div className="mt-5 flex gap-2 border-t border-ctp-surface1 pt-4">
         {onAdd ? (
           <>
             <button
               type="button"
               onClick={onAdd}
-              className={`flex-1 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-blue ${onDismiss ? "border-r border-ctp-surface1" : ""}`}
+              className="min-h-11 flex-1 rounded-lg bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base"
             >
               Add
             </button>
             {onDismiss && (
-              <button type="button" onClick={onDismiss} className="flex-1 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-text">
+              <button type="button" onClick={onDismiss} className="min-h-11 flex-1 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-subtext1 hover:text-ctp-text">
                 Dismiss
               </button>
             )}
@@ -256,16 +272,18 @@ export function CardTile({
             <button
               type="button"
               onClick={onToggleLock}
-              className={`flex-1 border-r border-ctp-surface1 py-1.5 text-xs ${card.locked ? "text-ctp-blue" : "text-ctp-subtext1 hover:text-ctp-text"}`}
+              className={`min-h-11 flex-1 rounded-lg border px-3 py-2 text-sm ${card.locked ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`}
             >
               {card.locked ? "Kept" : "Keep"}
             </button>
-            <button type="button" onClick={onRemove} className="flex-1 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-red">
+            <button type="button" onClick={onRemove} className="min-h-11 flex-1 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-subtext1 hover:border-ctp-red hover:text-ctp-red">
               Remove
             </button>
           </>
         )}
       </div>
+      </div>
+      </div>}
     </div>
   );
 }

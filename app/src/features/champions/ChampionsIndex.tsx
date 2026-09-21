@@ -54,7 +54,7 @@ export default function ChampionsIndex() {
 
   return (
     <PageLayout data-component="ChampionsIndex">
-      <PageHeader title="Champions" description="See the top cards for each champion." />
+      <PageHeader title="Champions" />
 
       {!data && <InlineState className="mt-6">Loading…</InlineState>}
 

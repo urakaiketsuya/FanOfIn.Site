@@ -27,7 +27,7 @@ const DEFAULTS: DecklistDisplayPrefs = {
   winRate: false,
   visualCardSize: "large",
   visualCost: true,
-  visualPrice: true,
+  visualPrice: false,
   visualPriceTrend: false,
   visualTags: false,
   visualSimulator: false,

@@ -25,18 +25,25 @@ export default function BuilderCardExplorer({
     [recommendations, subtype],
   );
 
+  if (!open) {
+    return (
+      <button type="button" onClick={() => setOpen(true)} className="mt-2 text-xs text-ctp-blue hover:underline">
+        Browse by subtype
+      </button>
+    );
+  }
+
   return (
     <section className="mt-3 rounded-lg border border-ctp-surface1 bg-ctp-base p-3" aria-labelledby="builder-card-explorer-title">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h2 id="builder-card-explorer-title" className="text-sm font-semibold text-ctp-text">Explore cards for this deck</h2>
-          <p className="mt-0.5 text-xs text-ctp-subtext1">Browse a family such as Horse, Ally, or Weapon, ranked for the current Champion and Spirit.</p>
         </div>
         <button type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open} className="rounded-md border border-ctp-blue/60 px-2.5 py-1 text-xs text-ctp-blue hover:bg-ctp-blue/10">
-          {open ? "Close explorer" : "Browse by subtype"}
+          Close
         </button>
       </div>
-      {open && <>
+      <>
         <label className="mt-3 block max-w-sm text-xs font-medium text-ctp-subtext1">
           Card family
           <select value={subtype} onChange={(event) => setSubtype(event.target.value)} className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text focus:border-ctp-blue focus:outline-none">
@@ -69,7 +76,7 @@ export default function BuilderCardExplorer({
           })}
           {matches.length === 0 && <p className="text-xs text-ctp-subtext0">No supported {subtype} cards were found for this identity.</p>}
         </div>}
-      </>}
+      </>
     </section>
   );
 }

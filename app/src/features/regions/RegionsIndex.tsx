@@ -77,7 +77,7 @@ export default function RegionsIndex() {
 
   return (
     <PageLayout data-component="RegionsIndex">
-      <PageHeader title="Regions" description="Compare archetypes, Champions, card composition, keywords, and venues across countries or broader competitive regions." />
+      <PageHeader title="Regions" />
 
       <FilterBar>
         <div><div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-ctp-subtext0">Group events by</div><div className="flex flex-wrap items-center gap-2">

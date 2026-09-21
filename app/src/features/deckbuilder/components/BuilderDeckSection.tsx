@@ -33,17 +33,18 @@ type BuilderDeckSectionProps = {
   onRemove: (name: string, locked: boolean) => void;
   panel?: boolean;
   description?: string;
+  hideTitle?: boolean;
 };
 
 export default function BuilderDeckSection({
   section, title, total, cards, viewMode, mainDeckSize, startingHandSize, cardsByName,
   priceByName, priceTrendByName, communityInclusion, hypeGapByName, decayByName,
   simulatorEvidenceByName, visibleFields, reviewRemovalNames, communityMode,
-  onToggleLock, onChangeQuantity, onRemove, panel = false, description,
+  onToggleLock, onChangeQuantity, onRemove, panel = false, description, hideTitle = false,
 }: BuilderDeckSectionProps) {
   const content = (
     <>
-      <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">{title} ({total})</h2>
+      {!hideTitle && <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">{title} ({total})</h2>}
       {description && <p className="mt-1 text-xs text-ctp-subtext0">{description}</p>}
       {viewMode === "grid" ? (
         <BuilderCardGrid
