@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import type { CardImpactRole, OmnidexDecklist } from "@gatcg/shared";
+import type { CardImpactRole } from "@gatcg/shared";
 import { useArchetypeTaxonomyData, useCardImpactData, useCardQuantityStatsData, useMatchupCardImpactData } from "./data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useOmnidexPlayers, useEventNameById } from "../tournaments/data";
@@ -18,7 +18,8 @@ import Tabs from "../../components/ui/Tabs";
 import { formatUsd } from "../../lib/format";
 import { buildCompareLink } from "../compare/deepLink";
 import { useAllDecodedDecks } from "../../lib/decodedDecks";
-import { useArchetypeVariants, type ArchetypeVariant } from "./useArchetypeVariants";
+import { useArchetypeVariants } from "./useArchetypeVariants";
+import { DefiningCardList, QuantityStatsSection, variantToDecklist } from "./ArchetypeDetailViews";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 import PageLayout from "../../components/layout/PageLayout";
 import Panel from "../../components/ui/Panel";
@@ -33,12 +34,6 @@ const ROLE_FILTERS: { key: CardImpactRole | "all"; label: string }[] = [
   { key: "sideboard", label: "Sideboard" },
   { key: "mixed", label: "Mixed" },
 ];
-
-/** A variant's already-decoded card maps, reshaped into the `OmnidexDecklist` shape `DecklistView` expects — no fetch needed, it's presentational-only and everything's already in memory. */
-function variantToDecklist(variant: ArchetypeVariant): OmnidexDecklist {
-  const toLines = (m: Map<string, number>) => Array.from(m.entries()).map(([card, quantity]) => ({ card, quantity }));
-  return { main: toLines(variant.main), material: toLines(variant.material), sideboard: toLines(variant.sideboard) };
-}
 
 type DetailTab = "overview" | "impact" | "decklist" | "playedBy" | "variants";
 const TAB_KEYS: DetailTab[] = ["overview", "impact", "decklist", "playedBy", "variants"];
@@ -339,22 +334,7 @@ export default function ArchetypeDetail() {
                   title="Material build path"
                   description="The recurring material package for this exact path. Choose this before using the main-deck card suggestions below."
                 >
-                  <div className="mt-2 flex flex-wrap gap-2 text-sm">
-                    {cluster.materialDefiningCards.map((dc) => {
-                      const card = cardImages.get(dc.name);
-                      return (
-                        <CardHoverPreview key={dc.name} image={card?.editions[0]?.image} alt={dc.name}>
-                          {card ? (
-                            <Link to={`/cards/${card.slug}`} className="rounded-md border border-ctp-mauve/60 bg-ctp-mauve/5 px-2 py-1 text-ctp-text hover:border-ctp-mauve hover:text-ctp-mauve">
-                              {dc.name} <span className="text-ctp-subtext0">({(dc.prevalence * 100).toFixed(0)}%)</span>
-                            </Link>
-                          ) : (
-                            <span className="rounded-md border border-ctp-mauve/60 bg-ctp-mauve/5 px-2 py-1 text-ctp-text">{dc.name} <span className="text-ctp-subtext0">({(dc.prevalence * 100).toFixed(0)}%)</span></span>
-                          )}
-                        </CardHoverPreview>
-                      );
-                    })}
-                  </div>
+                  <DefiningCardList cards={cluster.materialDefiningCards} cardImages={cardImages} tone="material" />
                 </Section>
               )}
               <Section
@@ -363,27 +343,7 @@ export default function ArchetypeDetail() {
                 title="Defining cards"
                 description="Cards common in this build but not typical of decks generally — what actually distinguishes it."
               >
-                <div className="mt-2 flex flex-wrap gap-2 text-sm">
-                  {cluster.definingCards.map((dc) => {
-                    const card = cardImages.get(dc.name);
-                    return (
-                      <CardHoverPreview key={dc.name} image={card?.editions[0]?.image} alt={dc.name}>
-                        {card ? (
-                          <Link
-                            to={`/cards/${card.slug}`}
-                            className="rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-text hover:border-ctp-blue hover:text-ctp-blue"
-                          >
-                            {dc.name} <span className="text-ctp-subtext0">({(dc.prevalence * 100).toFixed(0)}%)</span>
-                          </Link>
-                        ) : (
-                          <span className="rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-text">
-                            {dc.name} <span className="text-ctp-subtext0">({(dc.prevalence * 100).toFixed(0)}%)</span>
-                          </span>
-                        )}
-                      </CardHoverPreview>
-                    );
-                  })}
-                </div>
+                <DefiningCardList cards={cluster.definingCards} cardImages={cardImages} />
               </Section>
             </div>
           )}
@@ -561,32 +521,7 @@ export default function ArchetypeDetail() {
             </Section>
           )}
 
-          {tab === "impact" && definingQuantityStats.length > 0 && (
-            <Section
-              className="mt-6"
-              heading="dense"
-              collapsible
-              defaultOpen={false}
-              title="Quantity vs. win rate"
-              description="For this build's defining cards, does running more (or fewer) copies actually change the outcome? Figures are across all public decklists running the card, not scoped to this build alone."
-            >
-              <div className="mt-2 space-y-2">
-                {definingQuantityStats.map((c) => (
-                  <div key={c.name} className="text-sm">
-                    <span className="text-ctp-text">{c.name}</span>
-                    <div className="mt-0.5 flex flex-wrap gap-4 text-ctp-subtext1">
-                      {c.quantities.map((q) => (
-                        <span key={q.quantity}>
-                          {q.quantity}x: <span className="font-semibold text-ctp-text">{(q.adjustedWinRate * 100).toFixed(0)}%</span>{" "}
-                          <span className="text-xs text-ctp-subtext0">({q.deckCount} decks)</span>
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Section>
-          )}
+          {tab === "impact" && <QuantityStatsSection cards={definingQuantityStats} />}
 
           {tab === "decklist" && (
             <Section className="mt-6" heading="compact" title="Sample decklist" description="One representative instance of this build.">

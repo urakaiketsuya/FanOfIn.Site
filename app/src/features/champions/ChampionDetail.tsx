@@ -14,7 +14,6 @@ import { useChampionBonusCards } from "./useChampionBonusCards";
 import { useChampionRegionalBreakdown } from "../regions/useChampionRegionalBreakdown";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
-import ChampionSeasonChart from "./ChampionSeasonChart";
 import PageHeader from "../../components/ui/PageHeader";
 import Tabs from "../../components/ui/Tabs";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
@@ -23,6 +22,7 @@ import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
 import Chip from "../../components/ui/Chip";
 import { EmptyState, InlineState } from "../../components/ui/ContentState";
+import { ChampionSeasonSection, SimilarDecksSection } from "./ChampionDetailViews";
 
 const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_UNIQUE_DECKS_SHOWN = 3;
@@ -301,67 +301,7 @@ export default function ChampionDetail() {
 
           <Tabs tabs={TABS} active={tab} onChange={setTab} label={`${champion.signature} details`} />
 
-          {tab === "season" && seasonHistory.length > 0 && (
-            <Section
-              className="mt-6"
-              heading="compact"
-              title="By season"
-              description="Share of season = this Champion's weighted placement score as a fraction of every Champion's combined score that season — comparable across seasons regardless of how many events were played."
-              actions={trend && trend.trend !== "insufficient-data" && (
-                <span
-                  className={`text-xs ${
-                    trend.trend === "rising"
-                      ? "text-ctp-green"
-                      : trend.trend === "falling"
-                        ? "text-ctp-red"
-                        : trend.trend === "new"
-                          ? "text-ctp-blue"
-                          : "text-ctp-subtext0"
-                  }`}
-                >
-                  {trend.trend === "rising" && "▲ Rising"}
-                  {trend.trend === "falling" && "▼ Falling"}
-                  {trend.trend === "stable" && "— Stable"}
-                  {trend.trend === "new" && "★ New this season"}
-                  {trend.trend === "absent" && "Absent last season"}
-                  {trend.trendDeltaPct !== null && (
-                    <span className="ml-1 text-ctp-subtext0">
-                      ({trend.trendDeltaPct > 0 ? "+" : ""}
-                      {trend.trendDeltaPct.toFixed(1)}pp share)
-                    </span>
-                  )}
-                </span>
-              )}
-            >
-              <ChampionSeasonChart seasons={seasonHistory} />
-              <div className="overflow-x-auto">
-                <table className="w-max min-w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                      <th className="py-1 pr-6">Season</th>
-                      <th className="py-1 pr-6">Decks</th>
-                      <th className="py-1 pr-6">Wins</th>
-                      <th className="py-1 pr-6">Top cut</th>
-                      <th className="py-1 pr-6">Win rate</th>
-                      <th className="py-1 pr-6">Share</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-                    {seasonHistory.map((s) => (
-                      <tr key={s.seasonId}>
-                        <td className="py-1 pr-6 text-ctp-text">{s.seasonName}</td>
-                        <td className="py-1 pr-6 text-ctp-subtext1">{s.deckCount}</td>
-                        <td className="py-1 pr-6 text-ctp-subtext1">{s.winCount}</td>
-                        <td className="py-1 pr-6 text-ctp-subtext1">{s.topCutCount}</td>
-                        <td className="py-1 pr-6 text-ctp-subtext1">{s.deckCount > 0 ? `${(s.avgWinRate * 100).toFixed(0)}%` : "—"}</td>
-                        <td className="py-1 pr-6 text-ctp-subtext1">{(s.shareOfSeason * 100).toFixed(1)}%</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </Section>
-          )}
+          {tab === "season" && <ChampionSeasonSection seasons={seasonHistory} trend={trend} />}
 
           {tab === "cards" && champion.topCards.main.length > 0 && (
             <Section className="mt-6" heading="compact" title="Most used cards">
@@ -555,29 +495,7 @@ export default function ChampionDetail() {
             </Section>
           )}
 
-          {tab === "similar" && (
-            <Section
-              className="mt-6"
-              heading="compact"
-              title="Similar Decks"
-              description={<>Real decks with a similar card shell to a {championName} build.</>}
-            >
-              {similarDecks.length === 0 ? (
-                <InlineState className="mt-4 text-sm">No similar decks found yet.</InlineState>
-              ) : (
-                <ul className="mt-2 space-y-1">
-                  {similarDecks.map((s) => (
-                    <li key={s.hash} className="flex flex-wrap items-center gap-1.5 text-sm">
-                      <Link to={`/decks/${s.hash}`} className="text-ctp-text hover:text-ctp-blue">
-                        {s.championName ?? "Unknown Champion"} &middot; {s.eventName}
-                      </Link>
-                      <span className="text-xs text-ctp-subtext0">({(s.score * 100).toFixed(0)}% similar)</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </Section>
-          )}
+          {tab === "similar" && <SimilarDecksSection championName={championName} decks={similarDecks} />}
 
           {tab === "similar" && compositionBestByType.length > 0 && (
             <Section
