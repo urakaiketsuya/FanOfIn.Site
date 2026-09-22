@@ -1,20 +1,19 @@
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { useSearchParams } from "react-router-dom";
-import CardSearchPicker from "../../components/CardSearchPicker";
 import LoadMore from "../../components/LoadMore";
 import { InlineState } from "../../components/ui/ContentState";
-import FilterGroup from "../../components/filters/FilterGroup";
 import FilterPanel from "../../components/filters/FilterPanel";
 import MultiSelectFilter from "../../components/filters/MultiSelectFilter";
 import SegmentedFilter from "../../components/filters/SegmentedFilter";
 import { useCardCatalog } from "../cards/useCardCatalog";
-import { useCardCombination } from "../cards/useCardCombination";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import PopularDeckRow from "../popular/PopularDeckRow";
 import { useDeckPopularity } from "../popular/useDeckPopularity";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useEventNameById, usePlayerNameById } from "../tournaments/data";
 import DeckResultsSkeleton from "./DeckResultsSkeleton";
+import DeckContentFilterControls from "./DeckContentFilterControls";
+import { deckContentFilterCount, deckMatchesContentFilters, emptyDeckContentFilters, type DeckContentFilterState } from "./deckContentFilters";
 
 const BUILDS_PAGE_SIZE = 30;
 
@@ -29,17 +28,19 @@ type MinPlayers = "any" | "2plus";
 export default function TournamentBuildsView({
   championName,
   setChampionName,
+  contentFilters,
+  setContentFilters,
 }: {
   championName: string | null;
   setChampionName: (v: string | null) => void;
+  contentFilters: DeckContentFilterState;
+  setContentFilters: (update: (previous: DeckContentFilterState) => DeckContentFilterState) => void;
 }) {
   const [searchParams] = useSearchParams();
   const [minPlayers, setMinPlayers] = useState<MinPlayers>(searchParams.get("minPlayers") === "any" ? "any" : "2plus");
   const [elementFilter, setElementFilter] = useState<string[]>([]);
   const [sortMode, setSortMode] = useState<BuildSortMode>("mostRecent");
   const [visibleCount, setVisibleCount] = useState(BUILDS_PAGE_SIZE);
-  const [selectedCards, setSelectedCards] = useState<string[]>([]);
-  const [cardInput, setCardInput] = useState("");
   // Every filter here re-runs a synchronous decode over the (20MB+) deck-card-index dataset —
   // wrapped in a transition so inputs stay responsive and the page can show a "recalculating"
   // state instead of appearing to hang.
@@ -50,10 +51,7 @@ export default function TournamentBuildsView({
   const playerName = usePlayerNameById();
   const eventNameById = useEventNameById();
   const cardCatalog = useCardCatalog();
-  const combination = useCardCombination(selectedCards);
-
-  const cardNames = useMemo(() => Array.from(new Set(cardCatalog.map((c) => c.name))).sort(), [cardCatalog]);
-  const combinationDeckIds = useMemo(() => new Set(combination.deckIds), [combination.deckIds]);
+  const cardsByName = useMemo(() => new Map(cardCatalog.map((card) => [card.name, card])), [cardCatalog]);
 
   const decks = useMemo(
     () => (minPlayers === "2plus" ? allDecks.filter((d) => d.playerCount >= 2) : allDecks),
@@ -74,12 +72,9 @@ export default function TournamentBuildsView({
   const filtered = useMemo(() => {
     let result = decks;
     if (elementFilter.length > 0) result = result.filter((d) => elementFilter.every((e) => d.elements.includes(e)));
-    // A group's card content is identical across its main+material, so any member sighting
-    // matching the combination search means the whole group matches — sideboard can differ
-    // between members, so this is "played with this card at least once", not "always".
-    if (selectedCards.length > 0) result = result.filter((d) => d.deckIds.some((id) => combinationDeckIds.has(id)));
+    if (deckContentFilterCount(contentFilters) > 0) result = result.filter((d) => deckMatchesContentFilters([...d.main, ...d.material], contentFilters, cardsByName));
     return result;
-  }, [decks, elementFilter, selectedCards, combinationDeckIds]);
+  }, [decks, elementFilter, contentFilters, cardsByName]);
 
   function toggleElement(element: string) {
     startTransition(() =>
@@ -97,20 +92,10 @@ export default function TournamentBuildsView({
 
   useEffect(() => {
     setVisibleCount(BUILDS_PAGE_SIZE);
-  }, [championName, minPlayers, elementFilter, sortMode, selectedCards]);
-
-  function addCard(name: string) {
-    if (selectedCards.includes(name)) return;
-    startTransition(() => setSelectedCards((prev) => [...prev, name]));
-    setCardInput("");
-  }
-
-  function removeCard(name: string) {
-    startTransition(() => setSelectedCards((prev) => prev.filter((n) => n !== name)));
-  }
+  }, [championName, minPlayers, elementFilter, sortMode, contentFilters]);
 
   const visible = sorted.slice(0, visibleCount);
-  const activeFilterCount = (minPlayers === "2plus" ? 1 : 0) + elementFilter.length + selectedCards.length;
+  const activeFilterCount = (minPlayers === "2plus" ? 1 : 0) + elementFilter.length + deckContentFilterCount(contentFilters);
   const championImages = useChampionCardImages(
     Array.from(new Set(visible.map((d) => d.championName).filter((n): n is string => n !== null))),
   );
@@ -144,33 +129,10 @@ export default function TournamentBuildsView({
         </select>
       </div>
 
-      <FilterPanel activeCount={activeFilterCount} onClear={() => startTransition(() => { setMinPlayers("any"); setElementFilter([]); setSelectedCards([]); })}>
+      <FilterPanel activeCount={activeFilterCount} onClear={() => startTransition(() => { setMinPlayers("any"); setElementFilter([]); setContentFilters(() => emptyDeckContentFilters()); })}>
         <SegmentedFilter label="Players" options={[{ value: "2plus", label: "Played by 2+ people" }, { value: "any", label: "Include one-offs" }]} value={minPlayers} onChange={setMinPlayers} />
         <MultiSelectFilter label="Elements" hint={elementFilter.length > 1 ? "Match all selected" : undefined} options={elementsPresent.map((element) => ({ value: element, text: element.toLowerCase() }))} selected={new Set(elementFilter)} onToggle={toggleElement} iconKind="elements" />
-        <FilterGroup label="Cards in deck" onClear={selectedCards.length > 0 ? () => startTransition(() => setSelectedCards([])) : undefined}>
-        <div className="flex flex-wrap items-center gap-2">
-          {selectedCards.map((name) => (
-            <button
-              key={name}
-              type="button"
-              onClick={() => removeCard(name)}
-              className="flex items-center gap-1 rounded-full border border-ctp-blue bg-ctp-surface0 px-2 py-0.5 text-xs text-ctp-blue"
-            >
-              {name}
-              <span aria-hidden="true">&times;</span>
-            </button>
-          ))}
-        </div>
-        <CardSearchPicker
-          options={cardNames.filter((name) => !selectedCards.includes(name))}
-          value={cardInput}
-          onChange={setCardInput}
-          onSelect={addCard}
-          placeholder="Type a card name…"
-          ariaLabel="Cards in deck"
-          className="mt-1 w-full max-w-sm"
-        />
-        </FilterGroup>
+        <DeckContentFilterControls filters={contentFilters} setFilters={setContentFilters} />
       </FilterPanel>
 
       {loading && <DeckResultsSkeleton />}

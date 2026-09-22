@@ -7,6 +7,7 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import DeckSightingsView from "./DeckSightingsView";
 import TournamentBuildsView from "./TournamentBuildsView";
+import { emptyDeckContentFilters, type DeckContentFilterState } from "./deckContentFilters";
 
 type ViewMode = "builds" | "sightings";
 const VIEW_TABS: readonly ViewMode[] = ["builds", "sightings"];
@@ -23,6 +24,7 @@ export default function BrowseDecksIndex() {
   const [searchParams] = useSearchParams();
   const [view, setView] = useTabParam<ViewMode>("view", VIEW_TABS, "sightings");
   const [championName, setChampionName] = useState<string | null>(searchParams.get("champion"));
+  const [contentFilters, setContentFilters] = useState<DeckContentFilterState>(emptyDeckContentFilters);
 
   // Preserve links from the brief period when Pantheon search lived as a third tab here.
   if (searchParams.get("view") === "pantheon") return <Navigate to="/pantheon/decks" replace />;
@@ -43,9 +45,9 @@ export default function BrowseDecksIndex() {
       </div>
 
       {view === "builds" ? (
-        <TournamentBuildsView championName={championName} setChampionName={setChampionName} />
+        <TournamentBuildsView championName={championName} setChampionName={setChampionName} contentFilters={contentFilters} setContentFilters={setContentFilters} />
       ) : (
-        <DeckSightingsView championName={championName} setChampionName={setChampionName} />
+        <DeckSightingsView championName={championName} setChampionName={setChampionName} contentFilters={contentFilters} setContentFilters={setContentFilters} />
       )}
     </PageLayout>
   );

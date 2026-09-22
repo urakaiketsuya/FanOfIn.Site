@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER } from "@gatcg/shared";
+import { decodeCardLines, EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER } from "@gatcg/shared";
 import LoadMore from "../../components/LoadMore";
 import { InlineState } from "../../components/ui/ContentState";
-import { useArchetypeData } from "../archetypes/data";
+import { useArchetypeData, useDeckCardIndexData } from "../archetypes/data";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import DeckSightingRow from "../topdecks/DeckSightingRow";
 import { useDeckSightingsData } from "../topdecks/data";
@@ -12,6 +12,9 @@ import FilterGroup from "../../components/filters/FilterGroup";
 import FilterPanel from "../../components/filters/FilterPanel";
 import MultiSelectFilter from "../../components/filters/MultiSelectFilter";
 import SegmentedFilter from "../../components/filters/SegmentedFilter";
+import { useCardCatalog } from "../cards/useCardCatalog";
+import DeckContentFilterControls from "./DeckContentFilterControls";
+import { deckContentFilterCount, deckMatchesContentFilters, emptyDeckContentFilters, type DeckContentFilterState } from "./deckContentFilters";
 
 const SIGHTINGS_PAGE_SIZE = 50;
 
@@ -31,13 +34,32 @@ const MAX_PRICE_OPTIONS = [25, 50, 100, 250];
 export default function DeckSightingsView({
   championName,
   setChampionName,
+  contentFilters,
+  setContentFilters,
 }: {
   championName: string | null;
   setChampionName: (v: string | null) => void;
+  contentFilters: DeckContentFilterState;
+  setContentFilters: (update: (previous: DeckContentFilterState) => DeckContentFilterState) => void;
 }) {
   const sightingsData = useDeckSightingsData();
   const playerName = usePlayerNameById();
   const archetypeData = useArchetypeData();
+  const cardIndexData = useDeckCardIndexData(deckContentFilterCount(contentFilters) > 0);
+  const contentFiltersLoading = deckContentFilterCount(contentFilters) > 0 && !cardIndexData?.cardNames;
+  const cardCatalog = useCardCatalog();
+  const cardsByName = useMemo(() => new Map(cardCatalog.map((card) => [card.name, card])), [cardCatalog]);
+
+  const contentMatchingDeckIds = useMemo(() => {
+    if (deckContentFilterCount(contentFilters) === 0) return null;
+    if (!cardIndexData?.cardNames) return new Set<string>();
+    const matches = new Set<string>();
+    for (const deck of cardIndexData.decks) {
+      const lines = decodeCardLines([...deck.main, ...deck.material], cardIndexData.cardNames);
+      if (deckMatchesContentFilters(lines, contentFilters, cardsByName)) matches.add(deck.deckId);
+    }
+    return matches;
+  }, [cardIndexData, contentFilters, cardsByName]);
 
   const [category, setCategory] = useState<string | null>(null);
   const [seasonId, setSeasonId] = useState<number | null>(null);
@@ -110,6 +132,7 @@ export default function DeckSightingsView({
         (!category || s.eventCategory === category) &&
         (seasonId === null || s.seasonId === seasonId) &&
         (!championName || s.championName === championName) &&
+        (!contentMatchingDeckIds || contentMatchingDeckIds.has(s.deckId)) &&
         (selectedClasses.size === 0 ||
           (s.championName && (classesByChampion.get(s.championName) ?? []).some((c) => selectedClasses.has(c)))) &&
         (!keyword || (s.keywords ?? []).some((k) => k.keyword === keyword)) &&
@@ -136,14 +159,14 @@ export default function DeckSightingsView({
       }
       return b.eventDate.localeCompare(a.eventDate);
     });
-  }, [sightingsData, category, seasonId, championName, selectedClasses, classesByChampion, keyword, maxPrice, outcome, sortMode, query, playerName]);
+  }, [sightingsData, category, seasonId, championName, contentMatchingDeckIds, selectedClasses, classesByChampion, keyword, maxPrice, outcome, sortMode, query, playerName]);
 
   useEffect(() => {
     setVisibleCount(SIGHTINGS_PAGE_SIZE);
-  }, [category, seasonId, championName, selectedClasses, keyword, maxPrice, outcome, sortMode, query]);
+  }, [category, seasonId, championName, contentFilters, selectedClasses, keyword, maxPrice, outcome, sortMode, query]);
 
   const visible = filtered.slice(0, visibleCount);
-  const activeFilterCount = (category ? 1 : 0) + (seasonId !== null ? 1 : 0) + selectedClasses.size + (keyword ? 1 : 0) + (maxPrice !== null ? 1 : 0) + (outcome !== "all" ? 1 : 0);
+  const activeFilterCount = (category ? 1 : 0) + (seasonId !== null ? 1 : 0) + selectedClasses.size + (keyword ? 1 : 0) + (maxPrice !== null ? 1 : 0) + (outcome !== "all" ? 1 : 0) + deckContentFilterCount(contentFilters);
   const championImages = useChampionCardImages(Array.from(new Set(visible.map((s) => s.championName).filter((n): n is string => n !== null))));
 
   return (
@@ -179,7 +202,7 @@ export default function DeckSightingsView({
         </select>
       </div>
 
-      <FilterPanel activeCount={activeFilterCount} onClear={() => { setCategory(null); setSeasonId(null); setSelectedClasses(new Set()); setKeyword(null); setMaxPrice(null); setOutcome("all"); }}>
+      <FilterPanel activeCount={activeFilterCount} onClear={() => { setCategory(null); setSeasonId(null); setSelectedClasses(new Set()); setKeyword(null); setMaxPrice(null); setOutcome("all"); setContentFilters(() => emptyDeckContentFilters()); }}>
         <SegmentedFilter label="Type" options={[{ value: "", label: "All" }, ...categoriesPresent.map((value) => ({ value, label: EVENT_CATEGORY_LABELS[value] ?? value }))]} value={category ?? ""} onChange={(value) => setCategory(value || null)} />
         <FilterGroup label="Season">
           <select
@@ -220,17 +243,18 @@ export default function DeckSightingsView({
       )}
         <SegmentedFilter label="Max price" options={[{ value: 0, label: "Any" }, ...MAX_PRICE_OPTIONS.map((value) => ({ value, label: `$${value}` }))]} value={maxPrice ?? 0} onChange={(value) => setMaxPrice(value || null)} />
         <SegmentedFilter label="Outcome" options={(Object.keys(OUTCOME_LABELS) as Outcome[]).map((value) => ({ value, label: OUTCOME_LABELS[value] }))} value={outcome} onChange={setOutcome} />
+        <DeckContentFilterControls filters={contentFilters} setFilters={setContentFilters} />
       </FilterPanel>
 
-      {!sightingsData && <DeckResultsSkeleton />}
-      {sightingsData && filtered.length === 0 && <InlineState className="mt-6">No decks match this filter yet.</InlineState>}
-      {sightingsData && filtered.length > 0 && (
+      {(!sightingsData || contentFiltersLoading) && <DeckResultsSkeleton />}
+      {sightingsData && !contentFiltersLoading && filtered.length === 0 && <InlineState className="mt-6">No decks match this filter yet.</InlineState>}
+      {sightingsData && !contentFiltersLoading && filtered.length > 0 && (
         <p className="mt-4 text-xs text-ctp-subtext0">
           Showing {visible.length.toLocaleString()} of {filtered.length.toLocaleString()} result{filtered.length === 1 ? "" : "s"}
         </p>
       )}
 
-      <div className="mt-2 space-y-2">
+      <div className={`mt-2 space-y-2 ${contentFiltersLoading ? "hidden" : ""}`}>
         {visible.map((sighting) => (
           <DeckSightingRow
             key={sighting.deckId}
