@@ -25,10 +25,11 @@ export interface RegionDecodedDecks {
  * runs once per call site, not once per distinct input — only lifting the decode to a single
  * shared call actually dedupes it.
  */
-export function useRegionDecodedDecks(regionByDeckId: Map<string, string> | undefined, regionKey: string | null): RegionDecodedDecks {
-  const cardIndexData = useDeckCardIndexData();
+export function useRegionDecodedDecks(regionByDeckId: Map<string, string> | undefined, regionKey: string | null, enabled = true): RegionDecodedDecks {
+  const cardIndexData = useDeckCardIndexData(enabled);
 
   return useMemo((): RegionDecodedDecks => {
+    if (!enabled) return { decks: [], globalDeckTotal: 0, loading: false };
     if (!cardIndexData) return { decks: [], globalDeckTotal: 0, loading: true };
     const globalDeckTotal = cardIndexData.decks.length;
     if (!regionByDeckId || !regionKey) return { decks: [], globalDeckTotal, loading: false };
@@ -45,5 +46,5 @@ export function useRegionDecodedDecks(regionByDeckId: Map<string, string> | unde
     }
 
     return { decks, globalDeckTotal, loading: false };
-  }, [cardIndexData, regionByDeckId, regionKey]);
+  }, [cardIndexData, regionByDeckId, regionKey, enabled]);
 }

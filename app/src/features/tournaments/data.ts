@@ -39,6 +39,6 @@ export function useOmnidexTeams(): OmnidexTeamsData | undefined {
 }
 
 /** Geocoded venue coordinates (Nominatim, via pipeline/src/omnidex/geocode.ts) — only venues Nominatim could resolve are present, keyed by the same `hostId` join `OmnidexEventSummary` uses. */
-export function useVenueGeocodes(): OmnidexVenueGeocodeData | undefined {
-  return usePublishedData<OmnidexVenueGeocodeData>("omnidex-venue-geocodes", "/data/omnidex/venues.json");
+export function useVenueGeocodes(enabled = true): OmnidexVenueGeocodeData | undefined {
+  return usePublishedData<OmnidexVenueGeocodeData>("omnidex-venue-geocodes", "/data/omnidex/venues.json", enabled);
 }

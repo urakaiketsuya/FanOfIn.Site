@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useRegionalDecks } from "./useRegionalDecks";
-import { useRegionalArchetypes } from "./useRegionalArchetypes";
-import { useRegionalChampions } from "./useRegionalChampions";
+import { useRegionalArchetypes, type RegionalArchetypeRow } from "./useRegionalArchetypes";
+import { useRegionalChampions, type RegionalChampionRow } from "./useRegionalChampions";
 import { useRegionalCardComposition } from "./useRegionalCardComposition";
 import { useRegionalKeywords } from "./useRegionalKeywords";
 import { useRegionalVenues } from "./useRegionalVenues";
@@ -16,301 +16,201 @@ import type { RegionGroupMode } from "../../lib/regions";
 import PageHeader from "../../components/ui/PageHeader";
 import FilterBar from "../../components/ui/FilterBar";
 import Tabs from "../../components/ui/Tabs";
+import Chip from "../../components/ui/Chip";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
-import { InlineState } from "../../components/ui/ContentState";
+import { EmptyState, InlineState } from "../../components/ui/ContentState";
 import { CardLiftList, KeywordLiftList } from "./RegionalLiftLists";
 
 const GROUP_MODES: RegionGroupMode[] = ["country", "region"];
-const GROUP_LABELS: Record<RegionGroupMode, string> = { country: "Country", region: "Region" };
-
+const GROUP_LABELS: Record<RegionGroupMode, string> = { country: "Countries", region: "Regions" };
 type ViewMode = "single" | "compare";
 const VIEW_MODES: ViewMode[] = ["single", "compare"];
-const VIEW_LABELS: Record<ViewMode, string> = { single: "Single Region", compare: "Compare Regions" };
-
 type ContentTab = "archetypes" | "champions" | "cards" | "keywords" | "venues";
 const CONTENT_TABS: ContentTab[] = ["archetypes", "champions", "cards", "keywords", "venues"];
-const CONTENT_LABELS: Record<ContentTab, string> = {
-  archetypes: "Archetypes",
-  champions: "Champions",
-  cards: "Card Composition",
-  keywords: "Keywords",
-  venues: "Venues",
-};
-
+type Surface = "overview" | "insights" | "places" | "compare";
+const SURFACES: { key: Surface; label: string }[] = [
+  { key: "overview", label: "Overview" },
+  { key: "insights", label: "Insights" },
+  { key: "places", label: "Places" },
+  { key: "compare", label: "Compare" },
+];
 const MAX_VENUE_EVENTS_SHOWN = 3;
 
-export default function RegionsIndex() {
-  useDocumentTitle(
-    "Regions",
-    "Grand Archive TCG meta stats broken out by region — archetypes, champions, card composition, and keywords.",
+function BuildCards({ rows }: { rows: RegionalArchetypeRow[] }) {
+  return (
+    <div className="grid gap-2 sm:grid-cols-2">
+      {rows.map((row, index) => (
+        <Link key={row.id} to={`/archetypes/${row.id}`} className="group flex min-w-0 items-center gap-3 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 hover:border-ctp-blue">
+          <span className="w-6 shrink-0 text-center text-sm font-medium text-ctp-subtext0">{index + 1}</span>
+          <div className="min-w-0 flex-1">
+            <div className="truncate font-medium text-ctp-text group-hover:text-ctp-blue">{row.name}</div>
+            <div className="truncate text-xs text-ctp-subtext0">{row.championName}</div>
+            <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-ctp-surface0"><div className="h-full rounded-full bg-ctp-mauve" style={{ width: `${Math.max(2, row.share * 100)}%` }} /></div>
+          </div>
+          <div className="shrink-0 text-right">
+            <div className="text-sm font-medium text-ctp-text">{(row.share * 100).toFixed(1)}%</div>
+            <div className="text-xs text-ctp-subtext0">{row.deckCount} decks · {(row.avgWinRate * 100).toFixed(0)}% WR</div>
+          </div>
+        </Link>
+      ))}
+    </div>
   );
+}
+
+function ChampionCards({ rows }: { rows: RegionalChampionRow[] }) {
+  return (
+    <div className="grid gap-2 sm:grid-cols-2">
+      {rows.map((row, index) => (
+        <Link key={row.championName} to={`/champions/${championNameToSlug(row.championName)}`} className="group flex min-w-0 items-center gap-3 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 hover:border-ctp-blue">
+          <span className="w-6 shrink-0 text-center text-sm font-medium text-ctp-subtext0">{index + 1}</span>
+          <div className="min-w-0 flex-1">
+            <div className="truncate font-medium text-ctp-text group-hover:text-ctp-blue">{row.championName}</div>
+            <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-ctp-surface0"><div className="h-full rounded-full bg-ctp-blue" style={{ width: `${Math.max(2, row.share * 100)}%` }} /></div>
+          </div>
+          <div className="shrink-0 text-right">
+            <div className="text-sm font-medium text-ctp-text">{(row.share * 100).toFixed(1)}%</div>
+            <div className="text-xs text-ctp-subtext0">{row.deckCount} decks · {(row.avgWinRate * 100).toFixed(0)}% WR</div>
+          </div>
+        </Link>
+      ))}
+    </div>
+  );
+}
+
+export default function RegionsIndex() {
+  useDocumentTitle("Regions", "Grand Archive TCG meta stats broken out by region.");
   const [group, setGroup] = useTabParam<RegionGroupMode>("group", GROUP_MODES, "country");
   const [view, setView] = useTabParam<ViewMode>("view", VIEW_MODES, "single");
   const [tab, setTab] = useTabParam<ContentTab>("tab", CONTENT_TABS, "archetypes");
   const [searchParams, setSearchParams] = useSearchParams();
-  // Backed by `?region=` (not useTabParam — its valid-values list is dynamic, one per loaded
-  // region/country) so a link from another page (e.g. a player's country) can land here already
-  // pointed at the right region, and the current selection stays in the URL to share.
   const [regionOverride, setRegionOverride] = useState<string | null>(() => searchParams.get("region"));
 
   const { loading, options, regionByDeckId } = useRegionalDecks(group);
-  const selectedRegion =
-    regionOverride && options.some((o) => o.code === regionOverride) ? regionOverride : (options[0]?.code ?? null);
-  const selectedOption = options.find((o) => o.code === selectedRegion);
+  const selectedRegion = regionOverride && options.some((option) => option.code === regionOverride) ? regionOverride : (options[0]?.code ?? null);
+  const selectedOption = options.find((option) => option.code === selectedRegion);
+  const surface: Surface = view === "compare" ? "compare" : tab === "cards" || tab === "keywords" ? "insights" : tab === "venues" ? "places" : "overview";
+  const overviewTab: "archetypes" | "champions" = tab === "champions" ? "champions" : "archetypes";
+  const insightTab: "cards" | "keywords" = tab === "keywords" ? "keywords" : "cards";
 
   function selectRegion(code: string) {
     setRegionOverride(code);
-    setSearchParams((prev) => {
-      const next = new URLSearchParams(prev);
+    setSearchParams((previous) => {
+      const next = new URLSearchParams(previous);
       next.set("region", code);
       return next;
     });
   }
 
-  const archetypes = useRegionalArchetypes(regionByDeckId, selectedRegion);
-  const champions = useRegionalChampions(regionByDeckId, selectedRegion);
-  const regionDecks = useRegionDecodedDecks(regionByDeckId, selectedRegion);
-  const cards = useRegionalCardComposition(regionDecks);
-  const keywords = useRegionalKeywords(regionDecks);
-  const venues = useRegionalVenues(group, selectedRegion);
+  function selectSurface(next: Surface) {
+    if (next === "compare") {
+      setView("compare");
+      return;
+    }
+    setView("single");
+    setTab(next === "overview" ? "archetypes" : next === "insights" ? "cards" : "venues");
+  }
+
+  const archetypes = useRegionalArchetypes(regionByDeckId, selectedRegion, surface === "overview");
+  const champions = useRegionalChampions(regionByDeckId, selectedRegion, surface === "overview");
+  const needsDeckContents = surface === "insights";
+  const regionDecks = useRegionDecodedDecks(regionByDeckId, selectedRegion, needsDeckContents);
+  const cards = useRegionalCardComposition(regionDecks, needsDeckContents);
+  const keywords = useRegionalKeywords(regionDecks, needsDeckContents);
+  const venues = useRegionalVenues(group, selectedRegion, surface === "places");
 
   return (
     <PageLayout data-component="RegionsIndex">
-      <PageHeader title="Regions" />
+      <PageHeader title="Regions" description="See what players bring, then compare local metas." />
 
       <FilterBar>
-        <div><div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-ctp-subtext0">Group events by</div><div className="flex flex-wrap items-center gap-2">
-        {GROUP_MODES.map((m) => (
-          <button
-            key={m}
-            type="button"
-            onClick={() => {
-              setGroup(m);
+        <label className="min-w-0 flex-1 text-xs text-ctp-subtext0">
+          Area
+          <select value={selectedRegion ?? ""} onChange={(event) => selectRegion(event.target.value)} className="mt-1 block w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text sm:max-w-xs">
+            {options.map((option) => <option key={option.code} value={option.code}>{option.label} · {option.deckCount} decks</option>)}
+          </select>
+        </label>
+        <div className="flex gap-2">
+          {GROUP_MODES.map((mode) => (
+            <Chip key={mode} active={group === mode} onClick={() => {
+              setGroup(mode);
               setRegionOverride(null);
-              setSearchParams((prev) => {
-                const next = new URLSearchParams(prev);
+              setSearchParams((previous) => {
+                const next = new URLSearchParams(previous);
                 next.delete("region");
                 return next;
               });
-            }}
-            className={`rounded-md border px-3 py-1.5 text-sm font-medium ${
-              group === m ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            By {GROUP_LABELS[m]}
-          </button>
-        ))}
-        </div></div>
+            }}>{GROUP_LABELS[mode]}</Chip>
+          ))}
+        </div>
       </FilterBar>
 
       {loading && <InlineState className="mt-6">Loading…</InlineState>}
-
-      {!loading && options.length === 0 && <InlineState className="mt-6">Not enough data yet.</InlineState>}
+      {!loading && options.length === 0 && <EmptyState className="mt-6" title="Not enough regional data yet" />}
 
       {!loading && options.length > 0 && (
         <>
-          <div className="mt-4"><Tabs tabs={VIEW_MODES.map((key) => ({ key, label: VIEW_LABELS[key] }))} active={view} onChange={setView} label="Regional analysis mode" /></div>
+          <div className="mt-4"><Tabs tabs={SURFACES} active={surface} onChange={selectSurface} label="Regional analysis" variant="pill" /></div>
 
-          {view === "compare" && <RegionCompareView options={options} regionByDeckId={regionByDeckId} />}
+          {surface === "compare" && <RegionCompareView options={options} regionByDeckId={regionByDeckId} />}
 
-          {view === "single" && (
-          <>
-          <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
-            <span className="text-ctp-subtext0">{GROUP_LABELS[group]}:</span>
-            <select
-              value={selectedRegion ?? ""}
-              onChange={(e) => selectRegion(e.target.value)}
-              className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
-            >
-              {options.map((o) => (
-                <option key={o.code} value={o.code}>
-                  {o.label} ({o.deckCount} decks)
-                </option>
-              ))}
-            </select>
-          </div>
+          {surface === "overview" && (
+            <div className="mt-4">
+              <div className="mb-4 flex gap-2">
+                <Chip active={overviewTab === "archetypes"} onClick={() => setTab("archetypes")}>Builds</Chip>
+                <Chip active={overviewTab === "champions"} onClick={() => setTab("champions")}>Champions</Chip>
+              </div>
+              {overviewTab === "archetypes" && archetypes.loading && <InlineState>Loading builds…</InlineState>}
+              {overviewTab === "champions" && champions.loading && <InlineState>Loading Champions…</InlineState>}
+              {overviewTab === "archetypes" && !archetypes.loading && archetypes.rows.length === 0 && <EmptyState title={`No builds in ${selectedOption?.label ?? "this area"} yet`} />}
+              {overviewTab === "champions" && !champions.loading && champions.rows.length === 0 && <EmptyState title={`No Champions in ${selectedOption?.label ?? "this area"} yet`} />}
+              {overviewTab === "archetypes" && archetypes.rows.length > 0 && <BuildCards rows={archetypes.rows} />}
+              {overviewTab === "champions" && champions.rows.length > 0 && <ChampionCards rows={champions.rows} />}
+            </div>
+          )}
 
-          <div className="mt-4 flex flex-wrap gap-1 text-xs">
-            {CONTENT_TABS.map((t) => (
-              <button
-                key={t}
-                type="button"
-                onClick={() => setTab(t)}
-                className={`rounded-md border px-2 py-1 ${
-                  tab === t ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                }`}
-              >
-                {CONTENT_LABELS[t]}
-              </button>
-            ))}
-          </div>
+          {surface === "insights" && (
+            <div className="mt-4">
+              <div className="mb-4 flex gap-2">
+                <Chip active={insightTab === "cards"} onClick={() => setTab("cards")}>Cards</Chip>
+                <Chip active={insightTab === "keywords"} onClick={() => setTab("keywords")}>Keywords</Chip>
+              </div>
+              {insightTab === "cards" && cards.loading && <InlineState>Loading cards…</InlineState>}
+              {insightTab === "keywords" && keywords.loading && <InlineState>Loading keywords…</InlineState>}
+              {insightTab === "cards" && !cards.loading && <>
+                <Section heading="dense" title="More common here"><CardLiftList rows={cards.overRepresented} sign="positive" /></Section>
+                <Section className="mt-6" heading="dense" title="Less common here"><CardLiftList rows={cards.underRepresented} sign="negative" /></Section>
+              </>}
+              {insightTab === "keywords" && !keywords.loading && <>
+                <Section heading="dense" title="More common here"><KeywordLiftList rows={keywords.overRepresented} sign="positive" /></Section>
+                <Section className="mt-6" heading="dense" title="Less common here"><KeywordLiftList rows={keywords.underRepresented} sign="negative" /></Section>
+              </>}
+              <div className="mt-6 text-xs text-ctp-subtext0"><Link to="/methodology#classification" className="text-ctp-blue hover:underline">How regional differences are calculated</Link></div>
+            </div>
+          )}
 
-          <div className="mt-4">
-            {tab === "archetypes" && (
-              <>
-                {archetypes.loading && <InlineState>Loading…</InlineState>}
-                {!archetypes.loading && archetypes.rows.length === 0 && (
-                  <InlineState className="text-sm">No named builds have enough decks in {selectedOption?.label} yet.</InlineState>
-                )}
-                {archetypes.rows.length > 0 && (
-                  <div className="overflow-x-auto">
-                    <table className="w-max min-w-full text-sm">
-                      <thead>
-                        <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                          <th className="py-1 pr-6">Build</th>
-                          <th className="py-1 pr-6">Champion</th>
-                          <th className="py-1 pr-6">Decks</th>
-                          <th className="py-1 pr-6">Share</th>
-                          <th className="py-1">Win rate</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-                        {archetypes.rows.map((r) => (
-                          <tr key={r.id}>
-                            <td className="py-1.5 pr-6 whitespace-nowrap">
-                              <Link to={`/archetypes/${r.id}`} className="text-ctp-text hover:text-ctp-blue">
-                                {r.name}
-                              </Link>
-                            </td>
-                            <td className="py-1.5 pr-6 whitespace-nowrap">
-                              <Link to={`/champions/${championNameToSlug(r.championName)}`} className="text-ctp-subtext1 hover:text-ctp-blue">
-                                {r.championName}
-                              </Link>
-                            </td>
-                            <td className="py-1.5 pr-6 text-ctp-subtext1">{r.deckCount}</td>
-                            <td className="py-1.5 pr-6 text-ctp-subtext1">{(r.share * 100).toFixed(1)}%</td>
-                            <td className="py-1.5 text-ctp-subtext1">{(r.avgWinRate * 100).toFixed(0)}%</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </>
-            )}
-
-            {tab === "champions" && (
-              <>
-                {champions.loading && <InlineState>Loading…</InlineState>}
-                {!champions.loading && champions.rows.length === 0 && (
-                  <InlineState className="text-sm">Not enough decks in {selectedOption?.label} yet.</InlineState>
-                )}
-                {champions.rows.length > 0 && (
-                  <div className="overflow-x-auto">
-                    <table className="w-max min-w-full text-sm">
-                      <thead>
-                        <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                          <th className="py-1 pr-6">Champion</th>
-                          <th className="py-1 pr-6">Decks</th>
-                          <th className="py-1 pr-6">Share</th>
-                          <th className="py-1">Win rate</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-                        {champions.rows.map((r) => (
-                          <tr key={r.championName}>
-                            <td className="py-1.5 pr-6 whitespace-nowrap">
-                              <Link to={`/champions/${championNameToSlug(r.championName)}`} className="text-ctp-text hover:text-ctp-blue">
-                                {r.championName}
-                              </Link>
-                            </td>
-                            <td className="py-1.5 pr-6 text-ctp-subtext1">{r.deckCount}</td>
-                            <td className="py-1.5 pr-6 text-ctp-subtext1">{(r.share * 100).toFixed(1)}%</td>
-                            <td className="py-1.5 text-ctp-subtext1">{(r.avgWinRate * 100).toFixed(0)}%</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </>
-            )}
-
-            {tab === "cards" && (
-              <>
-                {cards.loading && <InlineState>Loading…</InlineState>}
-                {!cards.loading && (
-                  <>
-                    <p className="text-xs text-ctp-subtext0">
-                      Cards used more or less often in {selectedOption?.label} than in the overall meta.{" "}
-                      <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link>
-                    </p>
-                    <Section className="mt-4" heading="dense" title="Over-represented">
-                      <CardLiftList rows={cards.overRepresented} sign="positive" />
-                    </Section>
-                    <Section className="mt-6" heading="dense" title="Under-represented">
-                      <CardLiftList rows={cards.underRepresented} sign="negative" />
-                    </Section>
-                  </>
-                )}
-              </>
-            )}
-
-            {tab === "keywords" && (
-              <>
-                {keywords.loading && <InlineState>Loading…</InlineState>}
-                {!keywords.loading && (
-                  <>
-                    <p className="text-xs text-ctp-subtext0">
-                      Ability keywords (Ranged, Swift, Bulwark, ...) used more or less often in {selectedOption?.label}'s
-                      main+material decklists than in the overall meta.{" "}
-                      <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link>
-                    </p>
-                    <Section className="mt-4" heading="dense" title="Over-represented">
-                      <KeywordLiftList rows={keywords.overRepresented} sign="positive" />
-                    </Section>
-                    <Section className="mt-6" heading="dense" title="Under-represented">
-                      <KeywordLiftList rows={keywords.underRepresented} sign="negative" />
-                    </Section>
-                  </>
-                )}
-              </>
-            )}
-
-            {tab === "venues" && (
-              <>
-                {venues.loading && <InlineState>Loading…</InlineState>}
-                {!venues.loading && venues.rows.length === 0 && (
-                  <InlineState className="text-sm">No venue records for {selectedOption?.label} yet.</InlineState>
-                )}
-                {venues.rows.length > 0 && (
-                  <>
-                    <p className="text-xs text-ctp-subtext0">
-                      Omnidex venue records with events in {selectedOption?.label} — grouped by venue id, not name, since some venues rename over time. Coordinates are geocoded from each venue's address (OpenStreetMap Nominatim) — not every venue resolves to a real address, so a venue can be missing from the map below while still listed.
-                    </p>
-                    <VenueMap rows={venues.rows} />
-                    <ul className="mt-3 space-y-3">
-                      {venues.rows.map((v) => (
-                        <li key={v.hostId} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2">
-                          <div className="flex flex-wrap items-baseline justify-between gap-2">
-                            <span className="text-sm font-medium text-ctp-text">{v.hostName}</span>
-                            <span className="text-xs text-ctp-subtext0">{v.eventCount} event{v.eventCount === 1 ? "" : "s"}</span>
-                          </div>
-                          {v.hostAddress && <p className="mt-0.5 text-xs text-ctp-subtext0">{v.hostAddress}</p>}
-                          <div className="mt-2 flex flex-wrap gap-2 text-xs">
-                            {v.events.slice(0, MAX_VENUE_EVENTS_SHOWN).map((e) => (
-                              <Link
-                                key={e.id}
-                                to={`/events/${e.id}`}
-                                className="rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-blue"
-                              >
-                                {e.name} <span className="text-ctp-subtext0">({new Date(e.date).toLocaleDateString()})</span>
-                              </Link>
-                            ))}
-                            {v.events.length > MAX_VENUE_EVENTS_SHOWN && (
-                              <span className="px-2 py-1 text-ctp-subtext0">+{v.events.length - MAX_VENUE_EVENTS_SHOWN} more</span>
-                            )}
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </>
-                )}
-              </>
-            )}
-          </div>
-          </>
+          {surface === "places" && (
+            <div className="mt-4">
+              {venues.loading && <InlineState>Loading places…</InlineState>}
+              {!venues.loading && venues.rows.length === 0 && <EmptyState title={`No venues in ${selectedOption?.label ?? "this area"} yet`} />}
+              {venues.rows.length > 0 && <>
+                <VenueMap rows={venues.rows} />
+                <ul className="mt-3 grid gap-3 sm:grid-cols-2">
+                  {venues.rows.map((venue) => (
+                    <li key={venue.hostId} className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0"><div className="truncate font-medium text-ctp-text">{venue.hostName}</div>{venue.hostAddress && <div className="mt-0.5 line-clamp-2 text-xs text-ctp-subtext0">{venue.hostAddress}</div>}</div>
+                        <span className="shrink-0 text-xs text-ctp-subtext0">{venue.eventCount} events</span>
+                      </div>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {venue.events.slice(0, MAX_VENUE_EVENTS_SHOWN).map((event) => <Link key={event.id} to={`/events/${event.id}`} className="rounded-md bg-ctp-surface0 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-blue">{event.name}</Link>)}
+                        {venue.events.length > MAX_VENUE_EVENTS_SHOWN && <span className="px-2 py-1 text-xs text-ctp-subtext0">+{venue.events.length - MAX_VENUE_EVENTS_SHOWN}</span>}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </>}
+            </div>
           )}
         </>
       )}

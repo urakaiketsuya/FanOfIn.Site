@@ -32,11 +32,12 @@ export interface RegionalVenuesResult {
  * joined against the pipeline's geocoded venues.json (Nominatim, see pipeline/src/omnidex/geocode.ts)
  * for lat/lng when available.
  */
-export function useRegionalVenues(mode: RegionGroupMode, selectedRegion: string | null): RegionalVenuesResult {
-  const index = useOmnidexIndex();
-  const geocodes = useVenueGeocodes();
+export function useRegionalVenues(mode: RegionGroupMode, selectedRegion: string | null, enabled = true): RegionalVenuesResult {
+  const index = useOmnidexIndex(enabled);
+  const geocodes = useVenueGeocodes(enabled);
 
   return useMemo((): RegionalVenuesResult => {
+    if (!enabled) return { loading: false, rows: [] };
     if (!index) return { loading: true, rows: [] };
     if (!selectedRegion) return { loading: false, rows: [] };
 
@@ -71,5 +72,5 @@ export function useRegionalVenues(mode: RegionGroupMode, selectedRegion: string 
       .sort((a, b) => b.eventCount - a.eventCount);
 
     return { loading: false, rows };
-  }, [index, geocodes, mode, selectedRegion]);
+  }, [index, geocodes, mode, selectedRegion, enabled]);
 }

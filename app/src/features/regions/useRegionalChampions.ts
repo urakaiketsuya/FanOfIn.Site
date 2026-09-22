@@ -16,10 +16,11 @@ export interface RegionalChampions {
 }
 
 /** Champion popularity for the selected region — covers every deck sighting, not just clustered ones (unlike the Archetypes breakdown), since it doesn't need a named build to group by. */
-export function useRegionalChampions(regionByDeckId: Map<string, string>, regionKey: string | null): RegionalChampions {
-  const deckPopularity = useDeckPopularityIndexData();
+export function useRegionalChampions(regionByDeckId: Map<string, string>, regionKey: string | null, enabled = true): RegionalChampions {
+  const deckPopularity = useDeckPopularityIndexData(enabled);
 
   return useMemo((): RegionalChampions => {
+    if (!enabled) return { rows: [], loading: false };
     if (!deckPopularity || !regionKey) return { rows: [], loading: !deckPopularity };
 
     const byChampion = new Map<string, { deckCount: number; winRateSum: number }>();
@@ -44,5 +45,5 @@ export function useRegionalChampions(regionByDeckId: Map<string, string>, region
       .sort((a, b) => b.deckCount - a.deckCount);
 
     return { rows, loading: false };
-  }, [deckPopularity, regionByDeckId, regionKey]);
+  }, [deckPopularity, regionByDeckId, regionKey, enabled]);
 }

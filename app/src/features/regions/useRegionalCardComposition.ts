@@ -36,10 +36,11 @@ export interface RegionalCardComposition {
  * decode pass, same "filter before decode" optimization useChampionCardImpact.ts uses for its
  * champion filter.
  */
-export function useRegionalCardComposition(regionDecks: RegionDecodedDecks): RegionalCardComposition {
-  const cardStatsData = useCardStatsData();
+export function useRegionalCardComposition(regionDecks: RegionDecodedDecks, enabled = true): RegionalCardComposition {
+  const cardStatsData = useCardStatsData(enabled);
 
   return useMemo((): RegionalCardComposition => {
+    if (!enabled) return { overRepresented: [], underRepresented: [], allEntries: [], regionDeckCount: 0, loading: false };
     if (regionDecks.loading || !cardStatsData) {
       return { overRepresented: [], underRepresented: [], allEntries: [], regionDeckCount: 0, loading: regionDecks.loading || !cardStatsData };
     }
@@ -88,5 +89,5 @@ export function useRegionalCardComposition(regionDecks: RegionDecodedDecks): Reg
     const underRepresented = entries.slice(-MAX_RESULTS).reverse();
 
     return { overRepresented, underRepresented, allEntries: entries, regionDeckCount, loading: false };
-  }, [regionDecks, cardStatsData]);
+  }, [regionDecks, cardStatsData, enabled]);
 }

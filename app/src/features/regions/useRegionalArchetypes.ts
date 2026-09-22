@@ -25,11 +25,12 @@ export interface RegionalArchetypes {
  * taxonomy for what's really the same build). Scoped to clustered decks only, same as the
  * global Archetypes page.
  */
-export function useRegionalArchetypes(regionByDeckId: Map<string, string>, regionKey: string | null): RegionalArchetypes {
-  const taxonomy = useArchetypeTaxonomyData();
-  const deckPopularity = useDeckPopularityIndexData();
+export function useRegionalArchetypes(regionByDeckId: Map<string, string>, regionKey: string | null, enabled = true): RegionalArchetypes {
+  const taxonomy = useArchetypeTaxonomyData(enabled);
+  const deckPopularity = useDeckPopularityIndexData(enabled);
 
   return useMemo((): RegionalArchetypes => {
+    if (!enabled) return { rows: [], loading: false };
     if (!taxonomy || !deckPopularity || !regionKey) return { rows: [], loading: !taxonomy || !deckPopularity };
 
     const winRateByDeckId = new Map<string, number>();
@@ -51,5 +52,5 @@ export function useRegionalArchetypes(regionByDeckId: Map<string, string>, regio
       .sort((a, b) => b.deckCount - a.deckCount);
 
     return { rows, loading: false };
-  }, [taxonomy, deckPopularity, regionByDeckId, regionKey]);
+  }, [taxonomy, deckPopularity, regionByDeckId, regionKey, enabled]);
 }

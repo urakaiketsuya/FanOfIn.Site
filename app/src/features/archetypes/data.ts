@@ -19,8 +19,8 @@ export function useArchetypeData(): ArchetypeData | undefined {
   return usePublishedData<ArchetypeData>("analysis-archetypes", "/data/analysis/archetypes.json");
 }
 
-export function useKeywordStatsData(): KeywordStatsData | undefined {
-  return usePublishedData<KeywordStatsData>("analysis-keyword-stats", "/data/analysis/keyword-stats.json");
+export function useKeywordStatsData(enabled = true): KeywordStatsData | undefined {
+  return usePublishedData<KeywordStatsData>("analysis-keyword-stats", "/data/analysis/keyword-stats.json", enabled);
 }
 
 export function useArchetypeTaxonomyData(enabled = true): ArchetypeTaxonomyData | undefined {

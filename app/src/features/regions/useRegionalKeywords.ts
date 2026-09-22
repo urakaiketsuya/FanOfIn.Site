@@ -37,13 +37,14 @@ export interface RegionalKeywords {
  * own copy — only each card's effect text (from the local card catalog) is needed on top of that
  * to re-derive keyword composition client-side.
  */
-export function useRegionalKeywords(regionDecks: RegionDecodedDecks): RegionalKeywords {
-  const keywordStatsData = useKeywordStatsData();
-  const cardCatalog = useCardCatalog();
+export function useRegionalKeywords(regionDecks: RegionDecodedDecks, enabled = true): RegionalKeywords {
+  const keywordStatsData = useKeywordStatsData(enabled);
+  const cardCatalog = useCardCatalog(enabled);
 
   const cardsByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
 
   return useMemo((): RegionalKeywords => {
+    if (!enabled) return { overRepresented: [], underRepresented: [], allEntries: [], regionDeckCount: 0, loading: false };
     if (regionDecks.loading || !keywordStatsData || cardsByName.size === 0) {
       return {
         overRepresented: [],
@@ -91,5 +92,5 @@ export function useRegionalKeywords(regionDecks: RegionDecodedDecks): RegionalKe
     const underRepresented = entries.slice(-MAX_RESULTS).reverse();
 
     return { overRepresented, underRepresented, allEntries: entries, regionDeckCount, loading: false };
-  }, [regionDecks, keywordStatsData, cardsByName]);
+  }, [regionDecks, keywordStatsData, cardsByName, enabled]);
 }
