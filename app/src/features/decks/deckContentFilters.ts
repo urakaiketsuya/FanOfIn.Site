@@ -20,6 +20,18 @@ export function deckContentFilterCount(filters: DeckContentFilterState): number 
   return filters.cards.length + filters.classes.size + filters.types.size + filters.subtypes.size + filters.elements.size + filters.sets.size + (filters.speed === "any" ? 0 : 1);
 }
 
+export function deckContentFilterLabels(filters: DeckContentFilterState): string[] {
+  return [
+    ...filters.cards,
+    ...Array.from(filters.classes, (value) => `Class: ${value}`),
+    ...Array.from(filters.types, (value) => `Type: ${value}`),
+    ...Array.from(filters.subtypes, (value) => `Subtype: ${value}`),
+    ...Array.from(filters.elements, (value) => `Element: ${value}`),
+    ...Array.from(filters.sets, (value) => `Set: ${value}`),
+    ...(filters.speed === "any" ? [] : [`Speed: ${filters.speed}`]),
+  ];
+}
+
 /** Deck-content facets use main + material only, the same sections that define deck identity. */
 export function deckMatchesContentFilters(
   lines: DeckCardIndexLine[],

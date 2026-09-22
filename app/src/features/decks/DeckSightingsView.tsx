@@ -14,7 +14,7 @@ import MultiSelectFilter from "../../components/filters/MultiSelectFilter";
 import SegmentedFilter from "../../components/filters/SegmentedFilter";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import DeckContentFilterControls from "./DeckContentFilterControls";
-import { deckContentFilterCount, deckContentRelevance, deckMatchesContentFilters, emptyDeckContentFilters, type DeckContentFilterState } from "./deckContentFilters";
+import { deckContentFilterCount, deckContentFilterLabels, deckContentRelevance, deckMatchesContentFilters, emptyDeckContentFilters, type DeckContentFilterState } from "./deckContentFilters";
 
 const SIGHTINGS_PAGE_SIZE = 50;
 
@@ -68,6 +68,7 @@ export default function DeckSightingsView({
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
   const [outcome, setOutcome] = useState<Outcome>("all");
   const [sortMode, setSortMode] = useState<SightingSortMode>("date");
+  const [secondarySortMode, setSecondarySortMode] = useState<SightingSortMode | null>(null);
   const [query, setQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(SIGHTINGS_PAGE_SIZE);
 
@@ -140,34 +141,43 @@ export default function DeckSightingsView({
         (outcome === "all" || (outcome === "winner" && s.winner) || (outcome === "topCut" && s.topCut) || (outcome === "high" && s.high)) &&
         (!query || `${s.championName ?? ""} ${s.eventName} ${playerName(s.player)}`.toLowerCase().includes(query.toLowerCase())),
     );
-    return [...rows].sort((a, b) => {
-      if (sortMode === "relevance") {
-        const delta = (contentRelevanceByDeckId?.get(b.deckId) ?? 0) - (contentRelevanceByDeckId?.get(a.deckId) ?? 0);
-        if (delta !== 0) return delta;
+    const compare = (mode: SightingSortMode, a: (typeof rows)[number], b: (typeof rows)[number]) => {
+      if (mode === "relevance") {
+        const aBand = Math.round((contentRelevanceByDeckId?.get(a.deckId) ?? 0) * 20);
+        const bBand = Math.round((contentRelevanceByDeckId?.get(b.deckId) ?? 0) * 20);
+        return bBand - aBand;
       }
-      if (sortMode === "best" && a.weightedScore !== b.weightedScore) {
-        return b.weightedScore - a.weightedScore;
-      }
-      if (sortMode === "placement") {
+      if (mode === "best") return b.weightedScore - a.weightedScore;
+      if (mode === "placement") {
         const aP = a.placement ?? Infinity;
         const bP = b.placement ?? Infinity;
-        if (aP !== bP) return aP - bP;
+        return aP === bP ? 0 : aP - bP;
       }
-      if (sortMode === "duplicated" && a.duplicateCount !== b.duplicateCount) {
-        return b.duplicateCount - a.duplicateCount;
-      }
-      if (sortMode === "cheapest") {
+      if (mode === "duplicated") return b.duplicateCount - a.duplicateCount;
+      if (mode === "cheapest") {
         const aPrice = a.price ?? Infinity;
         const bPrice = b.price ?? Infinity;
-        if (aPrice !== bPrice) return aPrice - bPrice;
+        return aPrice === bPrice ? 0 : aPrice - bPrice;
+      }
+      return b.eventDate.localeCompare(a.eventDate);
+    };
+    return [...rows].sort((a, b) => {
+      const primary = compare(sortMode, a, b);
+      if (primary !== 0) return primary;
+      if (secondarySortMode) {
+        const secondary = compare(secondarySortMode, a, b);
+        if (secondary !== 0) return secondary;
       }
       return b.eventDate.localeCompare(a.eventDate);
     });
-  }, [sightingsData, category, seasonId, championName, contentRelevanceByDeckId, selectedClasses, classesByChampion, keyword, maxPrice, outcome, sortMode, query, playerName]);
+  }, [sightingsData, category, seasonId, championName, contentRelevanceByDeckId, selectedClasses, classesByChampion, keyword, maxPrice, outcome, sortMode, secondarySortMode, query, playerName]);
 
   useEffect(() => {
-    if (sortMode === "relevance" && deckContentFilterCount(contentFilters) === 0) setSortMode("date");
-  }, [sortMode, contentFilters]);
+    if (secondarySortMode === sortMode) setSecondarySortMode(null);
+    if (deckContentFilterCount(contentFilters) > 0) return;
+    if (sortMode === "relevance") setSortMode("date");
+    if (secondarySortMode === "relevance") setSecondarySortMode(null);
+  }, [sortMode, secondarySortMode, contentFilters]);
 
   useEffect(() => {
     setVisibleCount(SIGHTINGS_PAGE_SIZE);
@@ -175,6 +185,16 @@ export default function DeckSightingsView({
 
   const visible = filtered.slice(0, visibleCount);
   const activeFilterCount = (category ? 1 : 0) + (seasonId !== null ? 1 : 0) + selectedClasses.size + (keyword ? 1 : 0) + (maxPrice !== null ? 1 : 0) + (outcome !== "all" ? 1 : 0) + deckContentFilterCount(contentFilters);
+  const activeFilterLabels = [
+    ...(championName ? [`Champion: ${championName}`] : []),
+    ...(category ? [EVENT_CATEGORY_LABELS[category] ?? category] : []),
+    ...(seasonId !== null ? [seasonsPresent.find(([id]) => id === seasonId)?.[1] ?? `Season ${seasonId}`] : []),
+    ...Array.from(selectedClasses, (value) => `Champion class: ${value}`),
+    ...(keyword ? [`Keyword: ${keyword}`] : []),
+    ...(maxPrice !== null ? [`Up to $${maxPrice}`] : []),
+    ...(outcome === "all" ? [] : [OUTCOME_LABELS[outcome]]),
+    ...deckContentFilterLabels(contentFilters),
+  ];
   const championImages = useChampionCardImages(Array.from(new Set(visible.map((s) => s.championName).filter((n): n is string => n !== null))));
 
   return (
@@ -197,6 +217,20 @@ export default function DeckSightingsView({
           {championsPresent.map((name) => <option key={name} value={name}>{name}</option>)}
         </select>
         <select
+          value={secondarySortMode ?? ""}
+          aria-label="Then sort tournament results by"
+          onChange={(e) => setSecondarySortMode((e.target.value || null) as SightingSortMode | null)}
+          className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1.5 text-xs text-ctp-text"
+        >
+          <option value="">No secondary sort</option>
+          {sortMode !== "date" && <option value="date">Then: Newest</option>}
+          {sortMode !== "best" && <option value="best">Then: Best results</option>}
+          {sortMode !== "placement" && <option value="placement">Then: Best placement</option>}
+          {sortMode !== "duplicated" && <option value="duplicated">Then: Most played build</option>}
+          {sortMode !== "cheapest" && <option value="cheapest">Then: Lowest price</option>}
+          {sortMode !== "relevance" && deckContentFilterCount(contentFilters) > 0 && <option value="relevance">Then: Relevance</option>}
+        </select>
+        <select
           value={sortMode}
           aria-label="Sort tournament results"
           onChange={(e) => setSortMode(e.target.value as SightingSortMode)}
@@ -211,7 +245,7 @@ export default function DeckSightingsView({
         </select>
       </div>
 
-      <FilterPanel activeCount={activeFilterCount} onClear={() => { setCategory(null); setSeasonId(null); setSelectedClasses(new Set()); setKeyword(null); setMaxPrice(null); setOutcome("all"); setContentFilters(() => emptyDeckContentFilters()); }}>
+      <FilterPanel activeCount={activeFilterCount} activeLabels={activeFilterLabels} resultLabel={`Show ${filtered.length.toLocaleString()} result${filtered.length === 1 ? "" : "s"}`} onClear={() => { setCategory(null); setSeasonId(null); setSelectedClasses(new Set()); setKeyword(null); setMaxPrice(null); setOutcome("all"); setContentFilters(() => emptyDeckContentFilters()); }}>
         <SegmentedFilter label="Type" options={[{ value: "", label: "All" }, ...categoriesPresent.map((value) => ({ value, label: EVENT_CATEGORY_LABELS[value] ?? value }))]} value={category ?? ""} onChange={(value) => setCategory(value || null)} />
         <FilterGroup label="Season">
           <select

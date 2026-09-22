@@ -13,7 +13,7 @@ import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useEventNameById, usePlayerNameById } from "../tournaments/data";
 import DeckResultsSkeleton from "./DeckResultsSkeleton";
 import DeckContentFilterControls from "./DeckContentFilterControls";
-import { deckContentFilterCount, deckContentRelevance, deckMatchesContentFilters, emptyDeckContentFilters, type DeckContentFilterState } from "./deckContentFilters";
+import { deckContentFilterCount, deckContentFilterLabels, deckContentRelevance, deckMatchesContentFilters, emptyDeckContentFilters, type DeckContentFilterState } from "./deckContentFilters";
 
 const BUILDS_PAGE_SIZE = 30;
 
@@ -41,6 +41,7 @@ export default function TournamentBuildsView({
   const [minPlayers, setMinPlayers] = useState<MinPlayers>(searchParams.get("minPlayers") === "any" ? "any" : "2plus");
   const [elementFilter, setElementFilter] = useState<string[]>([]);
   const [sortMode, setSortMode] = useState<BuildSortMode>("mostRecent");
+  const [secondarySortMode, setSecondarySortMode] = useState<BuildSortMode | null>(null);
   const [visibleCount, setVisibleCount] = useState(BUILDS_PAGE_SIZE);
   // Every filter here re-runs a synchronous decode over the (20MB+) deck-card-index dataset —
   // wrapped in a transition so inputs stay responsive and the page can show a "recalculating"
@@ -84,21 +85,34 @@ export default function TournamentBuildsView({
   }
 
   const sorted = useMemo(() => {
-    return [...filtered].sort((a, b) => {
-      if (sortMode === "relevance") {
-        const delta = deckContentRelevance([...b.main, ...b.material], contentFilters, cardsByName) - deckContentRelevance([...a.main, ...a.material], contentFilters, cardsByName);
-        if (delta !== 0) return delta;
-        return b.lastPlayedDate.localeCompare(a.lastPlayedDate);
+    const compare = (mode: BuildSortMode, a: (typeof filtered)[number], b: (typeof filtered)[number]) => {
+      if (mode === "relevance") {
+        // Group into 5% bands so a meaningful secondary sort can order near-equivalent matches.
+        const aBand = Math.round(deckContentRelevance([...a.main, ...a.material], contentFilters, cardsByName) * 20);
+        const bBand = Math.round(deckContentRelevance([...b.main, ...b.material], contentFilters, cardsByName) * 20);
+        return bBand - aBand;
       }
-      if (sortMode === "bestPerforming") return b.avgWeightedScore - a.avgWeightedScore;
-      if (sortMode === "mostRecent") return b.lastPlayedDate.localeCompare(a.lastPlayedDate);
+      if (mode === "bestPerforming") return b.avgWeightedScore - a.avgWeightedScore;
+      if (mode === "mostRecent") return b.lastPlayedDate.localeCompare(a.lastPlayedDate);
       return b.playerCount - a.playerCount;
+    };
+    return [...filtered].sort((a, b) => {
+      const primary = compare(sortMode, a, b);
+      if (primary !== 0) return primary;
+      if (secondarySortMode) {
+        const secondary = compare(secondarySortMode, a, b);
+        if (secondary !== 0) return secondary;
+      }
+      return b.lastPlayedDate.localeCompare(a.lastPlayedDate);
     });
-  }, [filtered, sortMode, contentFilters, cardsByName]);
+  }, [filtered, sortMode, secondarySortMode, contentFilters, cardsByName]);
 
   useEffect(() => {
-    if (sortMode === "relevance" && deckContentFilterCount(contentFilters) === 0) setSortMode("mostRecent");
-  }, [sortMode, contentFilters]);
+    if (secondarySortMode === sortMode) setSecondarySortMode(null);
+    if (deckContentFilterCount(contentFilters) > 0) return;
+    if (sortMode === "relevance") setSortMode("mostRecent");
+    if (secondarySortMode === "relevance") setSecondarySortMode(null);
+  }, [sortMode, secondarySortMode, contentFilters]);
 
   useEffect(() => {
     setVisibleCount(BUILDS_PAGE_SIZE);
@@ -106,6 +120,11 @@ export default function TournamentBuildsView({
 
   const visible = sorted.slice(0, visibleCount);
   const activeFilterCount = (minPlayers === "2plus" ? 1 : 0) + elementFilter.length + deckContentFilterCount(contentFilters);
+  const activeFilterLabels = [
+    ...(minPlayers === "2plus" ? ["2+ players"] : []),
+    ...elementFilter.map((element) => `Deck element: ${element}`),
+    ...deckContentFilterLabels(contentFilters),
+  ];
   const championImages = useChampionCardImages(
     Array.from(new Set(visible.map((d) => d.championName).filter((n): n is string => n !== null))),
   );
@@ -126,6 +145,17 @@ export default function TournamentBuildsView({
             </option>
           ))}
         </select>
+        <select
+          value={secondarySortMode ?? ""}
+          aria-label="Then sort builds by"
+          onChange={(e) => setSecondarySortMode((e.target.value || null) as BuildSortMode | null)}
+          className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+        >
+          <option value="">No secondary sort</option>
+          {(Object.keys(BUILD_SORT_LABELS) as BuildSortMode[]).filter((mode) => mode !== sortMode && (mode !== "relevance" || deckContentFilterCount(contentFilters) > 0)).map((mode) => (
+            <option key={mode} value={mode}>Then: {mode === "mostRecent" ? "Newest" : BUILD_SORT_LABELS[mode]}</option>
+          ))}
+        </select>
 
         <select
           value={sortMode}
@@ -139,7 +169,7 @@ export default function TournamentBuildsView({
         </select>
       </div>
 
-      <FilterPanel activeCount={activeFilterCount} onClear={() => startTransition(() => { setMinPlayers("any"); setElementFilter([]); setContentFilters(() => emptyDeckContentFilters()); })}>
+      <FilterPanel activeCount={activeFilterCount} activeLabels={activeFilterLabels} resultLabel={`Show ${sorted.length.toLocaleString()} build${sorted.length === 1 ? "" : "s"}`} onClear={() => startTransition(() => { setMinPlayers("any"); setElementFilter([]); setContentFilters(() => emptyDeckContentFilters()); })}>
         <SegmentedFilter label="Players" options={[{ value: "2plus", label: "Played by 2+ people" }, { value: "any", label: "Include one-offs" }]} value={minPlayers} onChange={setMinPlayers} />
         <MultiSelectFilter label="Elements" hint={elementFilter.length > 1 ? "Match all selected" : undefined} options={elementsPresent.map((element) => ({ value: element, text: element.toLowerCase() }))} selected={new Set(elementFilter)} onToggle={toggleElement} iconKind="elements" />
         <DeckContentFilterControls filters={contentFilters} setFilters={setContentFilters} />
