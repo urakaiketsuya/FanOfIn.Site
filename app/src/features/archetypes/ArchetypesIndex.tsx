@@ -1,18 +1,16 @@
 import { lazy, Suspense, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useArchetypeTaxonomyData } from "./data";
+import { useCardsByNames } from "../events/useCardsByNames";
 import LoadMore from "../../components/LoadMore";
 import StaleDataNotice from "../../components/StaleDataNotice";
 import DecklistCoverageNotice from "../../components/DecklistCoverageNotice";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import { InlineState } from "../../components/ui/ContentState";
-import { formatUsd } from "../../lib/format";
-import { championNameToSlug } from "../../lib/championSlug";
-import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 import ArchetypeMetaMap from "./ArchetypeMetaMap";
 import PageLayout from "../../components/layout/PageLayout";
-import { ArchetypeComparisonBar, MaterialRouteCard } from "./ArchetypeIndexViews";
+import { ArchetypeComparisonBar, BuildResultCard, MaterialRouteCard } from "./ArchetypeIndexViews";
 
 const ArchetypeValidationView = lazy(() => import("./ArchetypeValidationView"));
 const ArchetypeHurtYouView = lazy(() => import("./ArchetypeHurtYouView"));
@@ -32,12 +30,13 @@ type ViewMode = "archetypes" | "builds" | "validation" | "hurtYou";
 type ConfidenceFilter = "established" | "all";
 const BUILD_PAGE_SIZE = 40;
 
-interface DisplayRow {
+export interface DisplayRow {
   id: string;
   name: string;
   championName: string;
   /** Other Champions besides `championName` this build was also played under, if any — e.g. [] for a single-Champion build. Guarded with `?? []` at read sites for a stale IndexedDB copy from before this field shipped. */
   otherChampions: { championName: string; deckCount: number; playerCount: number }[];
+  definingCards: string[];
   playerCount: number;
   deckCount: number;
   eventCount: number;
@@ -123,6 +122,7 @@ export default function ArchetypesIndex() {
             name: c.name,
             championName: c.championName,
             otherChampions: (c.championBreakdown ?? []).filter((b) => b.championName !== c.championName),
+            definingCards: c.definingCards.map((card) => card.name),
             playerCount: season.playerCount,
             deckCount: season.deckCount,
             eventCount: season.eventCount,
@@ -138,6 +138,7 @@ export default function ArchetypesIndex() {
         name: c.name,
         championName: c.championName,
         otherChampions: (c.championBreakdown ?? []).filter((b) => b.championName !== c.championName),
+        definingCards: c.definingCards.map((card) => card.name),
         playerCount: c.playerCount,
         deckCount: c.deckCount,
         eventCount: c.eventCount,
@@ -181,13 +182,14 @@ export default function ArchetypesIndex() {
       )
       .sort((a, b) => b.playerCount - a.playerCount);
   }, [data, championFilter, confidenceFilter]);
-  const largestMaterialArchetype = materialArchetypes[0]?.playerCount ?? 1;
+  const cardImages = useCardsByNames(view === "archetypes"
+    ? materialArchetypes.flatMap((route) => route.definingCards.slice(0, 3).map((card) => card.name))
+    : view === "builds" ? visibleRows.flatMap((row) => row.definingCards.slice(0, 3)) : []);
 
   return (
-    <PageLayout data-component="ArchetypesIndex">
+    <PageLayout data-component="ArchetypesIndex" width="wide">
       <PageHeader
         title="Archetypes"
-        description="Choose a recurring material build path first, then explore its main-deck engine and win condition. Smaller but coherent paths remain visible as emerging evidence instead of being blended into the most common shell."
         actions={
           <Link to="/battle-chart" className="text-sm text-ctp-blue hover:underline">
             Battle chart &rarr;
@@ -196,14 +198,9 @@ export default function ArchetypesIndex() {
       />
       <DecklistCoverageNotice />
       <StaleDataNotice generatedAt={[data?.generatedAt]} />
-      {data?.coverage && (
-        <p className="mt-2 text-xs text-ctp-subtext0">
-          {(data.coverage.classificationRate * 100).toFixed(1)}% of public deck sightings are classified
-          ({data.coverage.classifiedDeckCount.toLocaleString()} of {data.coverage.totalDeckCount.toLocaleString()}).
-        </p>
-      )}
+      {data?.coverage && <details className="mt-2 text-xs text-ctp-subtext0"><summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">Data coverage</summary><p className="mt-1">{(data.coverage.classificationRate * 100).toFixed(1)}% of public deck sightings are classified ({data.coverage.classifiedDeckCount.toLocaleString()} of {data.coverage.totalDeckCount.toLocaleString()}).</p></details>}
 
-      <div className="mt-4 flex flex-wrap items-center gap-2">
+      <div className="mt-4 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
         {(["archetypes", "builds", "validation", "hurtYou"] as ViewMode[]).map((v) => (
           <button
             key={v}
@@ -224,33 +221,17 @@ export default function ArchetypesIndex() {
 
       {view === "archetypes" && (
         <>
-          <div className="mt-5 grid gap-2 rounded-xl border border-ctp-surface1 bg-ctp-mantle/50 p-3 text-xs sm:grid-cols-3">
-            <div className="rounded-lg bg-ctp-base p-3">
-              <span className="font-semibold text-ctp-mauve">1 · Material route</span>
-              <p className="mt-1 text-ctp-subtext0">The Champion path and material cards you commit to.</p>
-            </div>
-            <div className="rounded-lg bg-ctp-base p-3">
-              <span className="font-semibold text-ctp-blue">2 · Spirit</span>
-              <p className="mt-1 text-ctp-subtext0">The Spirit version played within that route.</p>
-            </div>
-            <div className="rounded-lg bg-ctp-base p-3">
-              <span className="font-semibold text-ctp-green">3 · Build</span>
-              <p className="mt-1 text-ctp-subtext0">The distinct main-deck package you want to explore.</p>
-            </div>
-          </div>
-          <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
-            <label className="flex items-center gap-2 text-ctp-subtext0">Champion
-              <select value={championFilter ?? ""} aria-label="Champion" onChange={(event) => setChampionFilter(event.target.value || null)} className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text">
-                <option value="">All champions</option>
-                {championsPresent.map((name) => <option key={name} value={name}>{name}</option>)}
-              </select>
-            </label>
-            <label className="flex items-center gap-2 text-ctp-subtext0">Confidence
-              <select value={confidenceFilter} aria-label="Confidence" onChange={(event) => setConfidenceFilter(event.target.value as ConfidenceFilter)} className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text">
-                <option value="established">Established</option>
-                <option value="all">Established + emerging</option>
-              </select>
-            </label>
+          <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
+            <label className="sr-only" htmlFor="archetype-champion">Champion</label>
+            <select id="archetype-champion" value={championFilter ?? ""} onChange={(event) => setChampionFilter(event.target.value || null)} className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text">
+              <option value="">All champions</option>
+              {championsPresent.map((name) => <option key={name} value={name}>{name}</option>)}
+            </select>
+            <label className="sr-only" htmlFor="archetype-confidence">Confidence</label>
+            <select id="archetype-confidence" value={confidenceFilter} onChange={(event) => setConfidenceFilter(event.target.value as ConfidenceFilter)} className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text">
+              <option value="established">Established</option>
+              <option value="all">Established + emerging</option>
+            </select>
           </div>
           {!data && <InlineState className="mt-6">Loading…</InlineState>}
           {data && materialArchetypes.length === 0 && <InlineState className="mt-6">No material archetypes match these filters.</InlineState>}
@@ -261,7 +242,7 @@ export default function ArchetypesIndex() {
                 .filter((build): build is NonNullable<typeof data>['clusters'][number] => !!build)
                 .sort((a, b) => b.playerCount - a.playerCount);
               return (
-                <MaterialRouteCard key={route.id} route={route} childBuilds={childBuilds} largestPlayerCount={largestMaterialArchetype} selected={selectedCompareIds.has(route.id)} onToggleCompare={() => toggleCompare(route.id)} />
+                <MaterialRouteCard key={route.id} route={route} childBuilds={childBuilds} cardImages={cardImages} selected={selectedCompareIds.has(route.id)} onToggleCompare={() => toggleCompare(route.id)} />
               );
             })}
           </div>
@@ -270,8 +251,7 @@ export default function ArchetypesIndex() {
 
       {view === "builds" && (
         <>
-      <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
-        <span className="text-ctp-subtext0">Champion:</span>
+      <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
         <select
           value={championFilter ?? ""}
           aria-label="Champion"
@@ -279,7 +259,7 @@ export default function ArchetypesIndex() {
             setChampionFilter(e.target.value || null);
             setBuildVisibleCount(BUILD_PAGE_SIZE);
           }}
-          className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+          className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"
         >
           <option value="">All champions</option>
           {championsPresent.map((name) => (
@@ -289,7 +269,13 @@ export default function ArchetypesIndex() {
           ))}
         </select>
 
-        <span className="ml-2 text-ctp-subtext0">Season:</span>
+        <select value={sortMode} aria-label="Sort builds" onChange={(event) => { setSortMode(event.target.value as SortMode); setBuildVisibleCount(BUILD_PAGE_SIZE); }} className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text">
+          {(Object.keys(SORT_LABELS) as SortMode[]).map((mode) => <option key={mode} value={mode}>{SORT_LABELS[mode]}</option>)}
+        </select>
+      </div>
+      <details className="mt-2 text-xs text-ctp-subtext0">
+        <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">More filters{seasonId !== null || confidenceFilter === "all" ? " · active" : ""}</summary>
+        <div className="mt-2 flex flex-wrap gap-2">
         <select
           value={seasonId ?? ""}
           aria-label="Season"
@@ -297,7 +283,7 @@ export default function ArchetypesIndex() {
             setSeasonId(e.target.value ? Number(e.target.value) : null);
             setBuildVisibleCount(BUILD_PAGE_SIZE);
           }}
-          className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+          className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text"
         >
           <option value="">All seasons</option>
           {seasonsPresent.map(([id, name]) => (
@@ -307,7 +293,6 @@ export default function ArchetypesIndex() {
           ))}
         </select>
 
-        <span className="ml-2 text-ctp-subtext0">Confidence:</span>
         <select
           value={confidenceFilter}
           aria-label="Confidence"
@@ -315,42 +300,23 @@ export default function ArchetypesIndex() {
             setConfidenceFilter(e.target.value as ConfidenceFilter);
             setBuildVisibleCount(BUILD_PAGE_SIZE);
           }}
-          className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+          className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text"
         >
           <option value="established">Established</option>
           <option value="all">Established + emerging</option>
         </select>
 
-        <span className="ml-2 text-ctp-subtext0">Sort by:</span>
-        {(["players", "winRate", "metaShare", "topCutRate", "avgPlacement", "avgPrice"] as SortMode[]).map((mode) => (
-          <button
-            key={mode}
-            type="button"
-            onClick={() => {
-              setSortMode(mode);
-              setBuildVisibleCount(BUILD_PAGE_SIZE);
-            }}
-            aria-pressed={sortMode === mode}
-            className={`rounded-md border px-2 py-1 text-xs ${
-              sortMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            {SORT_LABELS[mode]}
-          </button>
-        ))}
-      </div>
+        </div>
+      </details>
       {seasonId !== null && (
-        <p className="mt-2 text-xs text-ctp-subtext0">
-          Build share is calculated within this season's clustered deck population. Top cut rate, avg placement, and
-          avg price remain "—" because those figures aren't published per season.
-        </p>
+        <p className="mt-2 text-xs text-ctp-subtext0">Season view uses season-specific results; top cut, placement, and price are only available all-time.</p>
       )}
 
       {rows.length > 1 && (
-        <ArchetypeMetaMap
+        <details className="mt-4 text-xs text-ctp-subtext0"><summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">Build metagame map</summary><ArchetypeMetaMap
           builds={rows}
           scopeLabel={`${seasonId === null ? "all seasons" : seasonsPresent.find(([id]) => id === seasonId)?.[1] ?? "selected season"}${championFilter ? ` · ${championFilter}` : ""}`}
-        />
+        /></details>
       )}
 
       {!data && <InlineState className="mt-6">Loading…</InlineState>}
@@ -360,76 +326,9 @@ export default function ArchetypesIndex() {
         </InlineState>
       )}
 
-      <div className="mt-6 overflow-x-auto">
-        <table className="w-max min-w-full text-sm">
-          <thead>
-            <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-              <th className="w-16 py-1 pr-3">Compare</th>
-              <th className="py-1 pr-6">Build</th>
-              <th className="py-1 pr-6">Champion</th>
-              <th className="py-1 pr-6">Players</th>
-              <th className="py-1 pr-6">Events</th>
-              <th className="py-1 pr-6">Win rate</th>
-              <th className="py-1 pr-6">Meta share</th>
-              <th className="py-1 pr-6">Top cut rate</th>
-              <th className="py-1 pr-6">Avg placement</th>
-              <th className="py-1">Avg price</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-            {visibleRows.map((c) => {
-              return (
-              <tr key={c.id}>
-                <td className="py-1.5 pr-3">
-                  <button type="button" onClick={() => toggleCompare(c.id)} aria-label={`${selectedCompareIds.has(c.id) ? "Remove" : "Add"} ${c.name} ${selectedCompareIds.has(c.id) ? "from" : "to"} comparison`} aria-pressed={selectedCompareIds.has(c.id)} className={`grid h-6 w-6 place-items-center rounded border text-xs ${selectedCompareIds.has(c.id) ? "border-ctp-green bg-ctp-green/10 text-ctp-green" : "border-ctp-surface1 text-ctp-subtext0 hover:border-ctp-blue hover:text-ctp-blue"}`}>
-                    {selectedCompareIds.has(c.id) ? "✓" : "+"}
-                  </button>
-                </td>
-                <td className="py-1.5 pr-6 whitespace-nowrap">
-                  <span className="inline-flex items-center gap-1.5">
-                    <ArchetypeElementIcon name={c.name} />
-                    <Link to={`/archetypes/${c.id}`} className="text-ctp-text hover:text-ctp-blue">
-                      {c.name}
-                    </Link>
-                    {c.confidence === "emerging" && (
-                      <span className="rounded-full bg-ctp-yellow/15 px-1.5 py-0.5 text-[10px] font-medium text-ctp-yellow">Emerging</span>
-                    )}
-                  </span>
-                </td>
-                <td className="py-1.5 pr-6 whitespace-nowrap">
-                  <Link to={`/champions/${championNameToSlug(c.championName)}`} className="text-ctp-subtext1 hover:text-ctp-blue">
-                    {c.championName}
-                  </Link>
-                  {c.otherChampions.length > 0 && (
-                    <span
-                      className="ml-1 text-xs text-ctp-subtext0"
-                      title={`Also played under: ${c.otherChampions.map((b) => `${b.championName} (${b.playerCount}p)`).join(", ")}`}
-                    >
-                      +{c.otherChampions.length}
-                    </span>
-                  )}
-                </td>
-                <td className="py-1.5 pr-6 text-ctp-subtext1">{c.playerCount}</td>
-                <td className="py-1.5 pr-6 text-ctp-subtext1">{c.eventCount}</td>
-                <td
-                  className="py-1.5 pr-6 text-ctp-subtext1"
-                  title={c.winRateInterval ? `95% interval: ${(c.winRateInterval.low * 100).toFixed(1)}–${(c.winRateInterval.high * 100).toFixed(1)}% across ${c.winRateInterval.matches} matches${c.quality ? ` · ${(c.quality.meanSimilarity * 100).toFixed(0)}% mean cohesion` : ""}` : undefined}
-                >
-                  {(c.avgWinRate * 100).toFixed(0)}%
-                </td>
-                <td className="py-1.5 pr-6 text-ctp-subtext1">{c.metaShare !== undefined ? `${(c.metaShare * 100).toFixed(1)}%` : "—"}</td>
-                <td className="py-1.5 pr-6 text-ctp-subtext1">{c.topCutRate !== undefined ? `${(c.topCutRate * 100).toFixed(0)}%` : "—"}</td>
-                <td className="py-1.5 pr-6 text-ctp-subtext1">
-                  {c.avgPlacement !== undefined && c.avgPlacement !== null ? `#${c.avgPlacement.toFixed(0)}` : "—"}
-                </td>
-                <td className="py-1.5 text-ctp-subtext1">
-                  {c.avgPrice !== undefined && c.avgPrice !== null ? formatUsd(c.avgPrice) : "—"}
-                </td>
-              </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      {data && rows.length > 0 && <p className="mt-4 text-xs text-ctp-subtext0">Showing {visibleRows.length.toLocaleString()} of {rows.length.toLocaleString()} builds</p>}
+      <div className="mt-2 grid gap-3 sm:grid-cols-2 sm:items-start">
+        {visibleRows.map((build) => <BuildResultCard key={build.id} build={build} cardImages={cardImages} selected={selectedCompareIds.has(build.id)} onToggleCompare={() => toggleCompare(build.id)} />)}
       </div>
       <LoadMore
         remaining={rows.length - buildVisibleCount}
