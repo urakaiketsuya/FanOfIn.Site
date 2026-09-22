@@ -10,7 +10,7 @@ import CardComparisonTable from "../compare/CardComparisonTable";
 export function CardPlayedWithPanel({ cardName, deckCount, topCards, cardImages }: { cardName: string; deckCount?: number; topCards: TopCardsBySection; cardImages: Map<string, Card> }) {
   const hasCards = topCards.main.length > 0 || topCards.material.length > 0 || topCards.sideboard.length > 0;
   return <Section className="mt-5" heading="compact" title="Often played together" actions={deckCount !== undefined && <span className="text-xs text-ctp-subtext0">{deckCount} decks</span>}>
-    {hasCards ? <TopCardsSections topCards={topCards} cardImages={cardImages} layout="grid" /> : <InlineState className="mt-4 text-sm">Not enough decks running {cardName} to show common pairings yet.</InlineState>}
+    {hasCards ? <TopCardsSections topCards={topCards} cardImages={cardImages} layout="grid" initialVisible={6} /> : <InlineState className="mt-4 text-sm">Not enough decks running {cardName} to show common pairings yet.</InlineState>}
   </Section>;
 }
 

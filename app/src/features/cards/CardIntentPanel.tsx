@@ -1,10 +1,9 @@
 import type { PackageCandidateEvidence } from "@gatcg/shared";
 import { Link } from "react-router-dom";
-import CardHoverPreview from "../../components/CardHoverPreview";
-import CardImage from "../../components/CardImage";
 import { InlineState } from "../../components/ui/ContentState";
 import Section from "../../components/ui/Section";
 import type { IntentMatch } from "../../lib/cardIntent";
+import CardRelatedRow from "./CardRelatedRow";
 
 interface CardPackage {
   id: string;
@@ -14,7 +13,7 @@ interface CardPackage {
 
 function IntentMatchRow({ match, evidence }: { match: IntentMatch; evidence?: PackageCandidateEvidence }) {
   const archetype = evidence?.archetypeSources?.[0];
-  return <li className="group rounded-xl bg-ctp-surface0/70 transition-colors hover:bg-ctp-surface1/70"><Link to={`/cards/${match.card.slug}`} className="flex min-h-20 items-center gap-3 p-2.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue"><CardHoverPreview image={match.card.editions[0]?.image} alt={match.card.name}><CardImage image={match.card.editions[0]?.image} alt="" className="h-16 w-12 shrink-0 rounded-md object-cover shadow-sm" /></CardHoverPreview><span className="min-w-0 flex-1"><span className="block truncate text-sm font-semibold text-ctp-text group-hover:text-ctp-blue">{match.card.name}</span><span className="mt-1 flex flex-wrap gap-1.5"><span className="rounded-full bg-ctp-mauve/15 px-2 py-0.5 text-[10px] font-medium capitalize text-ctp-mauve">{match.via}</span>{match.tier === "experimental" && <span className="rounded-full border border-ctp-yellow/60 px-2 py-0.5 text-[10px] text-ctp-yellow">Experimental</span>}{evidence && <span className="rounded-full bg-ctp-green/15 px-2 py-0.5 text-[10px] font-medium text-ctp-green">{evidence.matchingDecks} decks</span>}</span>{archetype && <span className="mt-1 block truncate text-[10px] text-ctp-blue">{archetype.buildName}</span>}</span><span aria-hidden="true" className="text-lg text-ctp-overlay1 transition-transform group-hover:translate-x-0.5 group-hover:text-ctp-blue">›</span></Link></li>;
+  return <CardRelatedRow card={match.card} summary={<><span className="capitalize">{match.via}</span>{evidence && <> · {evidence.matchingDecks} decks</>}{match.tier === "experimental" && <> · Experimental</>}</>} detail={archetype && <>Seen in {archetype.buildName}</>} />;
 }
 
 export default function CardIntentPanel({ cardName, packages, feeds, poweredBy, experimentalCount, showExperimental, onShowExperimentalChange, evidenceFor }: { cardName: string; packages: CardPackage[]; feeds: IntentMatch[]; poweredBy: IntentMatch[]; experimentalCount: number; showExperimental: boolean; onShowExperimentalChange: (value: boolean) => void; evidenceFor: (cardName: string) => PackageCandidateEvidence | undefined }) {
