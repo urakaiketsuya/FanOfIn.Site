@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import type { Card, CardInclusionEntry, PlayerTopCard, TopCardsBySection } from "@gatcg/shared";
 import CardImage from "./CardImage";
@@ -53,6 +54,8 @@ type TopCardsSectionsProps = {
   layout?: "list" | "grid";
   /** Card name -> adjusted win rate, scoped to whatever population this card list itself represents (e.g. `data/analysis/card-stats-by-champion.json` for a Champion page). Omitted by every caller that doesn't have a matching win-rate dataset, which is unaffected. */
   winRateByName?: Map<string, ChampionWinRateContext>;
+  /** Keep the first screen scannable while retaining the full set on demand. Grid layout only. */
+  initialVisible?: number;
 };
 
 /** Card usage split by deck section — main/material/sideboard are structurally different card pools, so lumping them together buries a defining material-deck piece among 40-card mainboard staples. */
@@ -91,7 +94,8 @@ function ListTopCardsSections({ topCards, cardImages, mainOverride, winRateByNam
  * community data itself (gated the same way DecklistView gates them) rather than in the "list"
  * layout, so pages using the plain text-list layout don't pay for stats they don't show.
  */
-function GridTopCardsSections({ topCards, cardImages, mainOverride, winRateByName }: TopCardsSectionsProps) {
+function GridTopCardsSections({ topCards, cardImages, mainOverride, winRateByName, initialVisible }: TopCardsSectionsProps) {
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const priceByName = useDeckPriceByName();
   const priceTrendByName = usePriceTrendByName();
   const simulatorEvidenceByName = useSimulatorEvidenceByName();
@@ -118,7 +122,7 @@ function GridTopCardsSections({ topCards, cardImages, mainOverride, winRateByNam
             <div key={label}>
               <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">{label}</h3>
               <div className="mt-2 grid grid-cols-3 gap-2 sm:grid-cols-4">
-                {cards.map((c) => (
+                {(initialVisible && !expandedSections.has(label) ? cards.slice(0, initialVisible) : cards).map((c) => (
                   <div key={c.name}>
                     <VisualCardTile
                       line={{ card: c.name, quantity: 1 }}
@@ -137,6 +141,16 @@ function GridTopCardsSections({ topCards, cardImages, mainOverride, winRateByNam
                   </div>
                 ))}
               </div>
+              {initialVisible && cards.length > initialVisible && (
+                <button type="button" onClick={() => setExpandedSections((previous) => {
+                  const next = new Set(previous);
+                  if (next.has(label)) next.delete(label);
+                  else next.add(label);
+                  return next;
+                })} aria-expanded={expandedSections.has(label)} className="mt-3 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">
+                  {expandedSections.has(label) ? `Show fewer ${label.toLowerCase()} cards` : `Show all ${cards.length} ${label.toLowerCase()} cards`}
+                </button>
+              )}
             </div>
           ) : null,
         )}

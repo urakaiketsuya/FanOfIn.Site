@@ -6,7 +6,7 @@ import { useCardCatalog } from "../cards/useCardCatalog";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { computeNewReleaseCards } from "../deckbuilder/newReleaseCards";
 import TopCardsSections from "../../components/TopCardsSections";
-import CardHoverPreview from "../../components/CardHoverPreview";
+import CardImage from "../../components/CardImage";
 import { VisualCardTile, VisualCommunityGate, type VisualFieldVisibility } from "../../components/VisualCardTile";
 import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
 import { usePriceTrendByName } from "../pricing/usePriceTrendByName";
@@ -28,8 +28,8 @@ import { NewReleaseComboFooter } from "./ChampionSynergyCards";
 type SpiritFilter = { kind: "all" } | { kind: "element"; element: string } | { kind: "spirit"; spiritName: string };
 
 const JUMP_SECTIONS = [
-  { id: "new", label: "New Releases" },
   { id: "cards", label: "Most Used Cards" },
+  { id: "new", label: "New Releases" },
   { id: "archetypes", label: "Packages" },
 ];
 
@@ -91,6 +91,8 @@ export default function ChampionSynergy() {
   );
 
   const [level, setLevel] = useState<number | null>(null);
+  const [showAllReleases, setShowAllReleases] = useState(false);
+  const [showAllPackages, setShowAllPackages] = useState(false);
   const [spiritFilter, setSpiritFilter] = useState<SpiritFilter>({ kind: "all" });
   const [typeFilter, setTypeFilter] = useState<string | "all">("all");
 
@@ -318,9 +320,9 @@ export default function ChampionSynergy() {
           />
 
           {championPrints.length > 1 && (
-            <div className="mb-4">
-              <div className="mb-2 text-sm font-semibold text-ctp-subtext0">Level</div>
-              <div className="grid grid-cols-4 gap-2 text-sm">
+            <details className="mb-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3">
+              <summary className="cursor-pointer text-sm text-ctp-subtext1 hover:text-ctp-blue">Champion print · Lv{selectedPrint?.level ?? "?"}</summary>
+              <div className="mt-3 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
                 {championPrints.map((c) => {
                   const selected = selectedPrint?.name === c.name;
                   return (
@@ -359,8 +361,8 @@ export default function ChampionSynergy() {
                   );
                 })}
               </div>
-              <div className="mt-1 text-xs text-ctp-subtext0">(picks which print is linked below — deck stats aren't tracked per level)</div>
-            </div>
+              <div className="mt-2 text-xs text-ctp-subtext0">Changes the linked print, not the deck statistics.</div>
+            </details>
           )}
 
           {champ.elementBreakdown.length > 1 && (
@@ -403,6 +405,29 @@ export default function ChampionSynergy() {
           </nav>
 
           <div className="space-y-8">
+            <Section id="cards" heading="compact" title={cardsSectionTitle}>
+              {typeFilterOptions.length > 0 && (
+                <details className="text-xs text-ctp-subtext0">
+                  <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">Filter by card type{typeFilter !== "all" ? ` · ${titleCase(typeFilter)}` : ""}</summary>
+                  <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                    <Chip size="sm" active={typeFilter === "all"} onClick={() => setTypeFilter("all")}>
+                      All
+                    </Chip>
+                    {typeFilterOptions.map(({ type }) => (
+                      <Chip key={type} size="sm" active={typeFilter === type} onClick={() => setTypeFilter(type)}>
+                        {titleCase(type)}
+                      </Chip>
+                    ))}
+                  </div>
+                </details>
+              )}
+              {displayed && (
+                <div className="mt-3">
+                  <TopCardsSections topCards={displayed.topCards} cardImages={cardImages} mainOverride={displayedMainCards} layout="grid" winRateByName={winRateByName} initialVisible={6} />
+                </div>
+              )}
+            </Section>
+
             <Section
               id="new"
               heading="compact"
@@ -412,7 +437,7 @@ export default function ChampionSynergy() {
                 <InlineState className="mt-2 text-sm">No new-set cards connect to {champ.signature}'s most-played cards yet.</InlineState>
               ) : (
                 <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                  {newReleaseCards.map(({ card, combos }) => (
+                  {(showAllReleases ? newReleaseCards : newReleaseCards.slice(0, 4)).map(({ card, combos }) => (
                     <VisualCardTile
                       key={card.name}
                       line={{ card: card.name, quantity: 1 }}
@@ -432,27 +457,7 @@ export default function ChampionSynergy() {
                   ))}
                 </div>
               )}
-            </Section>
-
-            <Section id="cards" heading="compact" title={cardsSectionTitle}>
-              {typeFilterOptions.length > 0 && (
-                <div className="flex flex-wrap items-center gap-1.5 text-xs">
-                  <span className="text-ctp-subtext0">Main card type:</span>
-                  <Chip size="sm" active={typeFilter === "all"} onClick={() => setTypeFilter("all")}>
-                    All
-                  </Chip>
-                  {typeFilterOptions.map(({ type }) => (
-                    <Chip key={type} size="sm" active={typeFilter === type} onClick={() => setTypeFilter(type)}>
-                      {titleCase(type)}
-                    </Chip>
-                  ))}
-                </div>
-              )}
-              {displayed && (
-                <div className="mt-3">
-                  <TopCardsSections topCards={displayed.topCards} cardImages={cardImages} mainOverride={displayedMainCards} layout="grid" winRateByName={winRateByName} />
-                </div>
-              )}
+              {newReleaseCards.length > 4 && <button type="button" onClick={() => setShowAllReleases((value) => !value)} aria-expanded={showAllReleases} className="mt-3 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{showAllReleases ? "Show fewer new cards" : `Show all ${newReleaseCards.length} new cards`}</button>}
             </Section>
 
             <Section
@@ -464,77 +469,46 @@ export default function ChampionSynergy() {
               {engines.length === 0 ? (
                 <InlineState className="mt-2 text-sm">No named packages have cleared the sample-size threshold yet.</InlineState>
               ) : (
-                <div className="mt-2 overflow-x-auto">
-                  <table className="w-max min-w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                        <th className="py-1 pr-6">Package</th>
-                        <th className="py-1 pr-6">Defining cards</th>
-                        <th className="py-1 pr-6">Also played by</th>
-                        <th className="py-1 pr-6">Players</th>
-                        <th className="py-1 pr-6">Win rate</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-                      {engines.map((e) => {
-                        const others = e.championBreakdown.filter((c) => c.championName !== championName);
-                        return (
-                          <tr key={e.id}>
-                            <td className="py-1.5 pr-6 whitespace-nowrap align-top">
-                              <span className="inline-flex items-center gap-1.5">
-                                <ArchetypeElementIcon name={e.name} />
-                                <Link to={`/archetypes/${e.seedBuildId}`} className="text-ctp-text hover:text-ctp-blue">
-                                  {e.name}
-                                </Link>
-                              </span>
-                            </td>
-                            <td className="py-1.5 pr-6 align-top">
-                              <div className="flex max-w-xs flex-wrap gap-x-2 gap-y-1 text-xs">
-                                {e.definingCards.length === 0 ? (
-                                  <span className="text-ctp-subtext0">—</span>
-                                ) : (
-                                  e.definingCards.slice(0, 5).map((dc) => {
-                                    const card = catalogByName.get(dc.name);
-                                    return (
-                                      <CardHoverPreview key={dc.name} image={card?.editions[0]?.image} alt={dc.name}>
-                                        {card ? (
-                                          <Link to={`/cards/${card.slug}`} className="text-ctp-mauve hover:underline">
-                                            {dc.name}
-                                          </Link>
-                                        ) : (
-                                          <span className="text-ctp-subtext1">{dc.name}</span>
-                                        )}
-                                      </CardHoverPreview>
-                                    );
-                                  })
-                                )}
-                              </div>
-                            </td>
-                            <td className="py-1.5 pr-6 align-top text-xs text-ctp-subtext1">
-                              {others.length === 0 ? (
-                                <span className="text-ctp-subtext0">—</span>
-                              ) : (
-                                others.map((c, i) => (
-                                  <span key={c.championName}>
-                                    <Link to={`/champions/${championNameToSlug(c.championName)}`} className="text-ctp-blue hover:underline">
-                                      {c.championName}
-                                    </Link>
-                                    {i < others.length - 1 ? ", " : ""}
-                                  </span>
-                                ))
-                              )}
-                            </td>
-                            <td className="py-1.5 pr-6 align-top text-ctp-subtext1">{e.playerCount}</td>
-                            <td className="py-1.5 pr-6 align-top text-ctp-subtext1" title="Across every Champion running this package">
-                              {(e.avgWinRate * 100).toFixed(0)}%
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
+                <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                  {(showAllPackages ? engines : engines.slice(0, 6)).map((engine) => {
+                    const others = engine.championBreakdown.filter((entry) => entry.championName !== championName);
+                    const definingCards = engine.definingCards.slice(0, 3);
+                    return (
+                      <article key={engine.id} className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
+                        <div className="grid grid-cols-3 gap-2">
+                          {Array.from({ length: 3 }, (_, index) => {
+                            const definingCard = definingCards[index];
+                            const card = definingCard ? catalogByName.get(definingCard.name) : undefined;
+                            return card?.editions[0]?.image ? (
+                              <Link key={definingCard.name} to={`/cards/${card.slug}`} aria-label={`View ${card.name}`} className="min-w-0">
+                                <CardImage image={card.editions[0].image} alt={card.name} className="aspect-[5/7] w-full rounded-md object-cover object-top" />
+                              </Link>
+                            ) : (
+                              <div key={definingCard?.name ?? index} className="aspect-[5/7] rounded-md bg-ctp-surface0" />
+                            );
+                          })}
+                        </div>
+                        <div className="mt-3 flex items-center gap-2">
+                          <ArchetypeElementIcon name={engine.name} />
+                          <Link to={`/archetypes/${engine.seedBuildId}`} className="font-medium text-ctp-text hover:text-ctp-blue">{engine.name}</Link>
+                        </div>
+                        <p className="mt-1 text-xs text-ctp-subtext1">{engine.playerCount} players · {(engine.avgWinRate * 100).toFixed(0)}% win rate</p>
+                        {(engine.definingCards.length > 3 || others.length > 0) && (
+                          <details className="mt-2 text-xs text-ctp-subtext0">
+                            <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">Package details</summary>
+                            {engine.definingCards.length > 3 && <p className="mt-2">Also: {engine.definingCards.slice(3, 5).map((entry, index) => {
+                              const card = catalogByName.get(entry.name);
+                              return <span key={entry.name}>{index > 0 && ", "}{card ? <Link to={`/cards/${card.slug}`} className="text-ctp-blue hover:underline">{entry.name}</Link> : entry.name}</span>;
+                            })}</p>}
+                            {others.length > 0 && <p className="mt-1">Also played by {others.map((entry, index) => <span key={entry.championName}>{index > 0 && ", "}<Link to={`/champions/${championNameToSlug(entry.championName)}`} className="text-ctp-blue hover:underline">{entry.championName}</Link></span>)}</p>}
+                          </details>
+                        )}
+                      </article>
+                    );
+                  })}
                 </div>
               )}
+              {engines.length > 6 && <button type="button" onClick={() => setShowAllPackages((value) => !value)} aria-expanded={showAllPackages} className="mt-3 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{showAllPackages ? "Show fewer packages" : `Show all ${engines.length} packages`}</button>}
             </Section>
           </div>
         </>
