@@ -14,11 +14,11 @@ import MultiSelectFilter from "../../components/filters/MultiSelectFilter";
 import SegmentedFilter from "../../components/filters/SegmentedFilter";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import DeckContentFilterControls from "./DeckContentFilterControls";
-import { deckContentFilterCount, deckMatchesContentFilters, emptyDeckContentFilters, type DeckContentFilterState } from "./deckContentFilters";
+import { deckContentFilterCount, deckContentRelevance, deckMatchesContentFilters, emptyDeckContentFilters, type DeckContentFilterState } from "./deckContentFilters";
 
 const SIGHTINGS_PAGE_SIZE = 50;
 
-type SightingSortMode = "best" | "date" | "placement" | "duplicated" | "cheapest";
+type SightingSortMode = "best" | "date" | "placement" | "duplicated" | "cheapest" | "relevance";
 type Outcome = "all" | "winner" | "topCut" | "high";
 
 const OUTCOME_LABELS: Record<Outcome, string> = {
@@ -50,13 +50,13 @@ export default function DeckSightingsView({
   const cardCatalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(cardCatalog.map((card) => [card.name, card])), [cardCatalog]);
 
-  const contentMatchingDeckIds = useMemo(() => {
+  const contentRelevanceByDeckId = useMemo(() => {
     if (deckContentFilterCount(contentFilters) === 0) return null;
-    if (!cardIndexData?.cardNames) return new Set<string>();
-    const matches = new Set<string>();
+    if (!cardIndexData?.cardNames) return new Map<string, number>();
+    const matches = new Map<string, number>();
     for (const deck of cardIndexData.decks) {
       const lines = decodeCardLines([...deck.main, ...deck.material], cardIndexData.cardNames);
-      if (deckMatchesContentFilters(lines, contentFilters, cardsByName)) matches.add(deck.deckId);
+      if (deckMatchesContentFilters(lines, contentFilters, cardsByName)) matches.set(deck.deckId, deckContentRelevance(lines, contentFilters, cardsByName));
     }
     return matches;
   }, [cardIndexData, contentFilters, cardsByName]);
@@ -132,7 +132,7 @@ export default function DeckSightingsView({
         (!category || s.eventCategory === category) &&
         (seasonId === null || s.seasonId === seasonId) &&
         (!championName || s.championName === championName) &&
-        (!contentMatchingDeckIds || contentMatchingDeckIds.has(s.deckId)) &&
+        (!contentRelevanceByDeckId || contentRelevanceByDeckId.has(s.deckId)) &&
         (selectedClasses.size === 0 ||
           (s.championName && (classesByChampion.get(s.championName) ?? []).some((c) => selectedClasses.has(c)))) &&
         (!keyword || (s.keywords ?? []).some((k) => k.keyword === keyword)) &&
@@ -141,6 +141,10 @@ export default function DeckSightingsView({
         (!query || `${s.championName ?? ""} ${s.eventName} ${playerName(s.player)}`.toLowerCase().includes(query.toLowerCase())),
     );
     return [...rows].sort((a, b) => {
+      if (sortMode === "relevance") {
+        const delta = (contentRelevanceByDeckId?.get(b.deckId) ?? 0) - (contentRelevanceByDeckId?.get(a.deckId) ?? 0);
+        if (delta !== 0) return delta;
+      }
       if (sortMode === "best" && a.weightedScore !== b.weightedScore) {
         return b.weightedScore - a.weightedScore;
       }
@@ -159,7 +163,11 @@ export default function DeckSightingsView({
       }
       return b.eventDate.localeCompare(a.eventDate);
     });
-  }, [sightingsData, category, seasonId, championName, contentMatchingDeckIds, selectedClasses, classesByChampion, keyword, maxPrice, outcome, sortMode, query, playerName]);
+  }, [sightingsData, category, seasonId, championName, contentRelevanceByDeckId, selectedClasses, classesByChampion, keyword, maxPrice, outcome, sortMode, query, playerName]);
+
+  useEffect(() => {
+    if (sortMode === "relevance" && deckContentFilterCount(contentFilters) === 0) setSortMode("date");
+  }, [sortMode, contentFilters]);
 
   useEffect(() => {
     setVisibleCount(SIGHTINGS_PAGE_SIZE);
@@ -199,6 +207,7 @@ export default function DeckSightingsView({
           <option value="placement">Best placement</option>
           <option value="duplicated">Most played build</option>
           <option value="cheapest">Lowest price</option>
+          {deckContentFilterCount(contentFilters) > 0 && <option value="relevance">Relevance</option>}
         </select>
       </div>
 

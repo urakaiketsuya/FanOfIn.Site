@@ -38,3 +38,33 @@ export function deckMatchesContentFilters(
   if (filters.speed === "normal" && !cards.some((card) => card.speed === false)) return false;
   return true;
 }
+
+/**
+ * Quantity-weighted relevance for the active content facets. Each facet contributes equally, so
+ * a broad selection such as Element does not drown out a narrower Subtype selection. Multiple
+ * values inside one facet remain OR choices, matching the eligibility behavior above.
+ */
+export function deckContentRelevance(
+  lines: DeckCardIndexLine[],
+  filters: DeckContentFilterState,
+  cardsByName: ReadonlyMap<string, Card>,
+): number {
+  const totalCopies = lines.reduce((sum, line) => sum + line.quantity, 0);
+  if (totalCopies === 0) return 0;
+
+  const facets: Array<(name: string, card: Card | undefined) => boolean> = [];
+  if (filters.cards.length) facets.push((name) => filters.cards.includes(name));
+  if (filters.classes.size) facets.push((_name, card) => !!card?.classes.some((value) => filters.classes.has(value)));
+  if (filters.types.size) facets.push((_name, card) => !!card?.types.some((value) => filters.types.has(value)));
+  if (filters.subtypes.size) facets.push((_name, card) => !!card?.subtypes.some((value) => filters.subtypes.has(value)));
+  if (filters.elements.size) facets.push((_name, card) => !!card?.elements.some((value) => filters.elements.has(value)));
+  if (filters.sets.size) facets.push((_name, card) => !!card?.editions.some((edition) => filters.sets.has(edition.set.prefix)));
+  if (filters.speed !== "any") facets.push((_name, card) => card?.speed === (filters.speed === "fast"));
+  if (facets.length === 0) return 0;
+
+  const combinedShare = facets.reduce((sum, matches) => {
+    const matchingCopies = lines.reduce((copies, line) => copies + (matches(line.name, cardsByName.get(line.name)) ? line.quantity : 0), 0);
+    return sum + matchingCopies / totalCopies;
+  }, 0);
+  return combinedShare / facets.length;
+}

@@ -13,15 +13,16 @@ import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useEventNameById, usePlayerNameById } from "../tournaments/data";
 import DeckResultsSkeleton from "./DeckResultsSkeleton";
 import DeckContentFilterControls from "./DeckContentFilterControls";
-import { deckContentFilterCount, deckMatchesContentFilters, emptyDeckContentFilters, type DeckContentFilterState } from "./deckContentFilters";
+import { deckContentFilterCount, deckContentRelevance, deckMatchesContentFilters, emptyDeckContentFilters, type DeckContentFilterState } from "./deckContentFilters";
 
 const BUILDS_PAGE_SIZE = 30;
 
-type BuildSortMode = "mostPlayed" | "bestPerforming" | "mostRecent";
+type BuildSortMode = "mostPlayed" | "bestPerforming" | "mostRecent" | "relevance";
 const BUILD_SORT_LABELS: Record<BuildSortMode, string> = {
   mostPlayed: "Most Played",
   bestPerforming: "Best Performing",
   mostRecent: "Most Recent",
+  relevance: "Relevance",
 };
 type MinPlayers = "any" | "2plus";
 
@@ -84,11 +85,20 @@ export default function TournamentBuildsView({
 
   const sorted = useMemo(() => {
     return [...filtered].sort((a, b) => {
+      if (sortMode === "relevance") {
+        const delta = deckContentRelevance([...b.main, ...b.material], contentFilters, cardsByName) - deckContentRelevance([...a.main, ...a.material], contentFilters, cardsByName);
+        if (delta !== 0) return delta;
+        return b.lastPlayedDate.localeCompare(a.lastPlayedDate);
+      }
       if (sortMode === "bestPerforming") return b.avgWeightedScore - a.avgWeightedScore;
       if (sortMode === "mostRecent") return b.lastPlayedDate.localeCompare(a.lastPlayedDate);
       return b.playerCount - a.playerCount;
     });
-  }, [filtered, sortMode]);
+  }, [filtered, sortMode, contentFilters, cardsByName]);
+
+  useEffect(() => {
+    if (sortMode === "relevance" && deckContentFilterCount(contentFilters) === 0) setSortMode("mostRecent");
+  }, [sortMode, contentFilters]);
 
   useEffect(() => {
     setVisibleCount(BUILDS_PAGE_SIZE);
@@ -123,7 +133,7 @@ export default function TournamentBuildsView({
           onChange={(e) => setSortMode(e.target.value as BuildSortMode)}
           className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
         >
-          {(Object.keys(BUILD_SORT_LABELS) as BuildSortMode[]).map((mode) => (
+          {(Object.keys(BUILD_SORT_LABELS) as BuildSortMode[]).filter((mode) => mode !== "relevance" || deckContentFilterCount(contentFilters) > 0).map((mode) => (
             <option key={mode} value={mode}>{mode === "mostRecent" ? "Newest" : BUILD_SORT_LABELS[mode]}</option>
           ))}
         </select>
