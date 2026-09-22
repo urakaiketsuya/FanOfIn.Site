@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { championNameToSlug, slugToChampionName } from "../../lib/championSlug";
+import { slugToChampionName } from "../../lib/championSlug";
 import { titleCase } from "../../lib/format";
 import { useArchetypeData, useArchetypeTaxonomyData, useCardStatsByChampionData, useChampionTrendsData, useCompositionWinRateData, useSimilarityData } from "../archetypes/data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
@@ -31,19 +31,22 @@ const MAX_UNIQUE_DECKS_SHOWN = 3;
 
 type SpiritFilter = { kind: "all" } | { kind: "element"; element: string } | { kind: "spirit"; spiritName: string };
 type ChampionTab = "season" | "cards" | "builds" | "decks" | "bonus" | "regions" | "similar";
+type ChampionSurface = "overview" | "decks" | "more";
 
-const TABS: { key: ChampionTab; label: string }[] = [
-  { key: "season", label: "By Season" },
-  { key: "cards", label: "Most Used Cards" },
-  { key: "builds", label: "Builds" },
+const SURFACES: { key: ChampionSurface; label: string }[] = [
+  { key: "overview", label: "Overview" },
   { key: "decks", label: "Decks" },
-  { key: "bonus", label: "Bonus Cards" },
+  { key: "more", label: "More" },
+];
+const OVERVIEW_TABS: ChampionTab[] = ["season", "cards", "builds"];
+const MORE_TABS: { key: Extract<ChampionTab, "bonus" | "regions" | "similar">; label: string }[] = [
+  { key: "bonus", label: "Bonus cards" },
   { key: "regions", label: "Regions" },
-  { key: "similar", label: "Similar Decks" },
+  { key: "similar", label: "Similar decks" },
 ];
 
 const MAX_SIMILAR_DECKS_SHOWN = 10;
-const TAB_KEYS = TABS.map((t) => t.key);
+const TAB_KEYS: ChampionTab[] = [...OVERVIEW_TABS, "decks", ...MORE_TABS.map((tab) => tab.key)];
 
 export default function ChampionDetail() {
   const { name = "" } = useParams<{ name: string }>();
@@ -51,6 +54,9 @@ export default function ChampionDetail() {
   useDocumentTitle(`${championName} — Stats`, `${championName} deck builds, win rates, and season trends in Grand Archive TCG.`);
 
   const [tab, setTab] = useTabParam("tab", TAB_KEYS, "season");
+  const surface: ChampionSurface = OVERVIEW_TABS.includes(tab) ? "overview" : tab === "decks" ? "decks" : "more";
+  const moreTab = MORE_TABS.some((item) => item.key === tab) ? tab as "bonus" | "regions" | "similar" : "bonus";
+  const showOverview = surface === "overview";
 
   // Gate every large per-tab dataset behind the tab that actually needs it — this page used to
   // eagerly fetch every dataset below (similarity.json alone is 28MB, the single biggest dataset
@@ -58,7 +64,7 @@ export default function ChampionDetail() {
   // class of bug just fixed on CardDetail.tsx/ArchetypeDetail.tsx. archetypeData/trendsData stay
   // eager — the header and default "By Season" tab need them immediately.
   const archetypeData = useArchetypeData();
-  const taxonomyData = useArchetypeTaxonomyData(tab === "builds");
+  const taxonomyData = useArchetypeTaxonomyData(showOverview);
   const trendsData = useChampionTrendsData();
   const popularityIndexData = useDeckPopularityIndexData(tab === "decks" || tab === "similar");
   const eventNameById = useEventNameById(tab === "decks" || tab === "similar");
@@ -66,7 +72,7 @@ export default function ChampionDetail() {
   const playerName = usePlayerNameById(tab === "decks");
   const similarityData = useSimilarityData(tab === "similar");
   const compositionData = useCompositionWinRateData(tab === "similar");
-  const cardStatsByChampionData = useCardStatsByChampionData(tab === "cards");
+  const cardStatsByChampionData = useCardStatsByChampionData(showOverview);
 
   // Named Spirits (e.g. "Kaze, Spirit of Wind") are tracked as their own Champion-like entry in a
   // separate list, not merged into `archetypes` — fall back to it so this page works for either.
@@ -166,7 +172,7 @@ export default function ChampionDetail() {
   const cutouts = useMemo(() => cutoutsForChampion(championName), [championName]);
   const cutoutCards = useCardsByNames(useMemo(() => cutouts.map((c) => c.cardName), [cutouts]));
   const bonusCards = useChampionBonusCards(champion ? championName : null);
-  const regionalBreakdown = useChampionRegionalBreakdown(champion ? championName : null, tab === "regions");
+  const regionalBreakdown = useChampionRegionalBreakdown(champion ? championName : null, moreTab === "regions" && surface === "more");
 
   const uniqueDecks = useMemo(() => {
     if (!hipsterData) return [];
@@ -261,8 +267,9 @@ export default function ChampionDetail() {
         <>
           <PageHeader
             title={champion.signature}
-            eyebrow={<Link to={`/champions/${championNameToSlug(championName)}`} className="hover:underline">&larr; {champion.signature}</Link>}
-            description={<>{champion.classes.join("/")} · {champion.elements.join("/")} · <strong className="font-semibold text-ctp-text">{champion.deckCount.toLocaleString()}</strong> decks across {champion.eventCount.toLocaleString()} events · <strong className="font-semibold text-ctp-text">{(champion.avgWinRate * 100).toFixed(0)}%</strong> average win rate</>}
+            eyebrow={<Link to="/champions" className="hover:underline">&larr; All champions</Link>}
+            description={<span className="flex flex-wrap gap-2"><span>{champion.classes.join(" / ")}</span><span aria-hidden="true">·</span><span>{champion.elements.join(" / ")}</span></span>}
+            actions={<div className="grid grid-cols-3 gap-2 text-center"><div className="rounded-lg bg-ctp-mantle px-3 py-2"><strong className="block text-base text-ctp-text">{(champion.avgWinRate * 100).toFixed(0)}%</strong><span className="text-[10px] uppercase text-ctp-subtext0">Win rate</span></div><div className="rounded-lg bg-ctp-mantle px-3 py-2"><strong className="block text-base text-ctp-text">{champion.deckCount.toLocaleString()}</strong><span className="text-[10px] uppercase text-ctp-subtext0">Decks</span></div><div className="rounded-lg bg-ctp-mantle px-3 py-2"><strong className="block text-base text-ctp-text">{champion.eventCount.toLocaleString()}</strong><span className="text-[10px] uppercase text-ctp-subtext0">Events</span></div></div>}
           />
 
           {cutouts.length > 0 && (
@@ -283,11 +290,11 @@ export default function ChampionDetail() {
             </div>
           )}
 
-          <Tabs tabs={TABS} active={tab} onChange={setTab} label={`${champion.signature} details`} />
+          <Tabs tabs={SURFACES} active={surface} onChange={(next) => setTab(next === "overview" ? "season" : next === "decks" ? "decks" : moreTab)} label={`${champion.signature} details`} variant="pill" />
 
-          {tab === "season" && <ChampionSeasonSection seasons={seasonHistory} trend={trend} />}
+          {showOverview && <ChampionSeasonSection seasons={seasonHistory} trend={trend} />}
 
-          {tab === "cards" && champion.topCards.main.length > 0 && (
+          {showOverview && champion.topCards.main.length > 0 && (
             <Section className="mt-6" heading="compact" title="Most used cards">
               {champion.elementBreakdown.length > 0 && (
                 <>
@@ -348,46 +355,26 @@ export default function ChampionDetail() {
 
               {displayedTopCards && (
                 <div className="mt-3">
-                  <TopCardsSections topCards={displayedTopCards} cardImages={cardImages} mainOverride={displayedMainCards} winRateByName={winRateByName} />
+                  <TopCardsSections topCards={displayedTopCards} cardImages={cardImages} mainOverride={displayedMainCards} winRateByName={winRateByName} layout="grid" />
                 </div>
               )}
             </Section>
           )}
 
-          {tab === "builds" && builds.length > 0 && (
+          {showOverview && builds.length > 0 && (
             <Section
               className="mt-6"
               heading="compact"
               title="Builds"
-              description={<>Named builds within {championName}, derived from real decklists.</>}
               actions={<Link to="/archetypes" className="text-xs text-ctp-blue hover:underline">All archetypes &rarr;</Link>}
             >
-              <div className="overflow-x-auto">
-                <table className="w-max min-w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                      <th className="py-1 pr-6">Build</th>
-                      <th className="py-1 pr-6">Players</th>
-                      <th className="py-1 pr-6">Win rate</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-                    {builds.map((b) => (
-                      <tr key={b.id}>
-                        <td className="py-1.5 pr-6 whitespace-nowrap">
-                          <span className="inline-flex items-center gap-1.5">
-                            <ArchetypeElementIcon name={b.name} />
-                            <Link to={`/archetypes/${b.id}`} className="text-ctp-text hover:text-ctp-blue">
-                              {b.name}
-                            </Link>
-                          </span>
-                        </td>
-                        <td className="py-1.5 pr-6 text-ctp-subtext1">{b.playerCount}</td>
-                        <td className="py-1.5 pr-6 text-ctp-subtext1">{(b.avgWinRate * 100).toFixed(0)}%</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                {builds.map((b) => (
+                  <Link key={b.id} to={`/archetypes/${b.id}`} className="flex min-h-20 items-center gap-3 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 transition-colors hover:border-ctp-blue">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-ctp-base"><ArchetypeElementIcon name={b.name} /></span>
+                    <span className="min-w-0"><strong className="block truncate text-sm text-ctp-text">{b.name}</strong><span className="mt-1 block text-xs text-ctp-subtext0">{b.playerCount} players · {(b.avgWinRate * 100).toFixed(0)}% win rate</span></span>
+                  </Link>
+                ))}
               </div>
             </Section>
           )}
@@ -420,7 +407,13 @@ export default function ChampionDetail() {
             </Section>
           )}
 
-          {tab === "bonus" && (
+          {surface === "more" && (
+            <div className="mt-5 flex flex-wrap gap-2" aria-label="More champion data">
+              {MORE_TABS.map((item) => <Chip key={item.key} active={moreTab === item.key} onClick={() => setTab(item.key)}>{item.label}</Chip>)}
+            </div>
+          )}
+
+          {surface === "more" && moreTab === "bonus" && (
             <Section
               className="mt-6"
               heading="compact"
@@ -435,12 +428,11 @@ export default function ChampionDetail() {
             </Section>
           )}
 
-          {tab === "regions" && (
+          {surface === "more" && moreTab === "regions" && (
             <Section
               className="mt-6"
               heading="compact"
               title="Regional popularity"
-              description={<>Where {championName} gets played the most.</>}
               actions={<Link to="/regions?tab=champions" className="text-xs text-ctp-blue hover:underline">Full Regions page &rarr;</Link>}
             >
               {regionalBreakdown.loading && <InlineState className="mt-4">Loading…</InlineState>}
@@ -448,40 +440,21 @@ export default function ChampionDetail() {
                 <InlineState className="mt-4 text-sm">Not enough regional data for {championName} yet.</InlineState>
               )}
               {regionalBreakdown.rows.length > 0 && (
-                <div className="mt-2 overflow-x-auto">
-                  <table className="w-max min-w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                        <th className="py-1 pr-6">Country</th>
-                        <th className="py-1 pr-6">Decks</th>
-                        <th className="py-1">Win rate</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-                      {regionalBreakdown.rows.map((r) => (
-                        <tr key={r.code}>
-                          <td className="py-1.5 pr-6 whitespace-nowrap">
-                            <Link
-                              to={`/regions?group=country&region=${r.code}&tab=champions`}
-                              className="text-ctp-text hover:text-ctp-blue"
-                            >
-                              {r.label}
-                            </Link>
-                          </td>
-                          <td className="py-1.5 pr-6 text-ctp-subtext1">{r.deckCount}</td>
-                          <td className="py-1.5 text-ctp-subtext1">{(r.avgWinRate * 100).toFixed(0)}%</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                  {regionalBreakdown.rows.map((r) => (
+                    <Link key={r.code} to={`/regions?group=country&region=${r.code}&tab=champions`} className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 transition-colors hover:border-ctp-blue">
+                      <strong className="text-sm text-ctp-text">{r.label}</strong>
+                      <span className="mt-2 flex justify-between text-xs text-ctp-subtext0"><span>{r.deckCount} decks</span><span>{(r.avgWinRate * 100).toFixed(0)}% win rate</span></span>
+                    </Link>
+                  ))}
                 </div>
               )}
             </Section>
           )}
 
-          {tab === "similar" && <SimilarDecksSection championName={championName} decks={similarDecks} />}
+          {surface === "more" && moreTab === "similar" && <SimilarDecksSection championName={championName} decks={similarDecks} />}
 
-          {tab === "similar" && compositionBestByType.length > 0 && (
+          {surface === "more" && moreTab === "similar" && compositionBestByType.length > 0 && (
             <Section
               className="mt-6"
               heading="compact"
