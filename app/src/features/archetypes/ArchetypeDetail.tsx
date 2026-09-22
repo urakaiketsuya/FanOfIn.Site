@@ -26,6 +26,8 @@ import PageLayout from "../../components/layout/PageLayout";
 import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
 import Button from "../../components/ui/Button";
+import Chip from "../../components/ui/Chip";
+import PageHeader from "../../components/ui/PageHeader";
 import { InlineState, EmptyState } from "../../components/ui/ContentState";
 
 const ROLE_FILTERS: { key: CardImpactRole | "all"; label: string }[] = [
@@ -37,7 +39,18 @@ const ROLE_FILTERS: { key: CardImpactRole | "all"; label: string }[] = [
 ];
 
 type DetailTab = "overview" | "impact" | "decklist" | "playedBy" | "variants";
+type DetailSurface = "overview" | "decks" | "more";
 const TAB_KEYS: DetailTab[] = ["overview", "impact", "decklist", "playedBy", "variants"];
+const SURFACES: { key: DetailSurface; label: string }[] = [
+  { key: "overview", label: "Overview" },
+  { key: "decks", label: "Decks" },
+  { key: "more", label: "More" },
+];
+const OVERVIEW_TABS: DetailTab[] = ["overview", "decklist"];
+const MORE_TABS: { key: Extract<DetailTab, "impact" | "variants">; label: string }[] = [
+  { key: "impact", label: "Card impact" },
+  { key: "variants", label: "Variants" },
+];
 
 export default function ArchetypeDetail() {
   const { id = "" } = useParams<{ id: string }>();
@@ -45,6 +58,9 @@ export default function ArchetypeDetail() {
   const [roleFilter, setRoleFilter] = useState<CardImpactRole | "all">("all");
   const [opponentClusterId, setOpponentClusterId] = useState<string>("all");
   const [tab, setTab] = useTabParam("tab", TAB_KEYS, "overview");
+  const surface: DetailSurface = OVERVIEW_TABS.includes(tab) ? "overview" : tab === "playedBy" ? "decks" : "more";
+  const moreTab = MORE_TABS.some((item) => item.key === tab) ? tab as "impact" | "variants" : "impact";
+  const showOverview = surface === "overview";
 
   // Gate every large per-tab dataset behind the tab that actually needs it — this page used to
   // eagerly fetch playedBy's popularity-index/omnidex-index/players data (~25.7MB) and impact's
@@ -53,12 +69,12 @@ export default function ArchetypeDetail() {
   // fixed on CardDetail.tsx. Same `enabled` pattern already used by useAllDecodedDecks below for
   // the Variants tab.
   const data = useArchetypeTaxonomyData();
-  const popularityIndexData = useDeckPopularityIndexData(tab === "playedBy");
-  const eventNameById = useEventNameById(tab === "playedBy");
-  const playerName = usePlayerNameById(tab === "playedBy");
-  const cardImpactData = useCardImpactData(tab === "impact");
-  const matchupCardImpactData = useMatchupCardImpactData(tab === "impact");
-  const cardQuantityStatsData = useCardQuantityStatsData(tab === "impact");
+  const popularityIndexData = useDeckPopularityIndexData(surface === "decks");
+  const eventNameById = useEventNameById(surface === "decks");
+  const playerName = usePlayerNameById(surface === "decks");
+  const cardImpactData = useCardImpactData(surface === "more" && moreTab === "impact");
+  const matchupCardImpactData = useMatchupCardImpactData(surface === "more" && moreTab === "impact");
+  const cardQuantityStatsData = useCardQuantityStatsData(surface === "more" && moreTab === "impact");
   // Only reset when navigating from one build's page to a different one (same component instance
   // reused by the router) — not on initial mount, which would otherwise clobber a `?tab=` deep link.
   const prevIdRef = useRef(id);
@@ -122,13 +138,13 @@ export default function ArchetypeDetail() {
     const [eventId, player] = first.split(":").map(Number);
     return [eventId, player];
   }, [cluster]);
-  const sample = useSightingDecklist(sampleEventId, samplePlayer, !!cluster);
+  const sample = useSightingDecklist(sampleEventId, samplePlayer, !!cluster && showOverview);
 
   // Only decoded once the Variants tab is actually open — this is a genuinely expensive decode of
   // the full ~57k-deck universe (deck-card-index.json is 93MB+), so paying it on every archetype
   // page visit regardless of which tab is open was itself a real memory-pressure bug; see
   // useAllDecodedDecks's own doc comment.
-  const allDecodedDecks = useAllDecodedDecks(tab === "variants");
+  const allDecodedDecks = useAllDecodedDecks(surface === "more" && moreTab === "variants");
   const variants = useArchetypeVariants(cluster, allDecodedDecks.decks);
   const [expandedVariantDeckId, setExpandedVariantDeckId] = useState<string | null>(null);
   const [variantMinSimilarity, setVariantMinSimilarity] = useState(0.45);
@@ -205,121 +221,54 @@ export default function ArchetypeDetail() {
 
   return (
     <PageLayout data-component="ArchetypeDetail">
-      <Link to="/archetypes" className="text-sm text-ctp-blue hover:underline">
-        &larr; All archetypes
-      </Link>
-
       {cluster && (
         <>
-          <h1 className="mt-2 flex items-center gap-2 text-2xl font-bold text-ctp-blue">
-            <ArchetypeElementIcon name={cluster.name} size={24} />
-            {cluster.name}
-            {cluster.confidence === "emerging" && (
-              <span className="rounded-full bg-ctp-yellow/15 px-2 py-1 text-xs font-medium text-ctp-yellow">Emerging</span>
-            )}
-          </h1>
-          <p className="mt-1 text-sm text-ctp-subtext1">
-            <Link to={`/champions/${championNameToSlug(cluster.championName)}`} className="text-ctp-blue hover:underline">
-              {cluster.championName}
-            </Link>{" "}
-            · {cluster.playerCount} player{cluster.playerCount === 1 ? "" : "s"} · {cluster.deckCount} deck
-            {cluster.deckCount === 1 ? "" : "s"} across {cluster.eventCount} event{cluster.eventCount === 1 ? "" : "s"} ·{" "}
-            {(cluster.avgWinRate * 100).toFixed(0)}% avg win rate
-          </p>
-          {materialArchetype && (
-            <Panel tone="info" className="mt-4">
-              <p className="text-xs font-semibold tracking-wide text-ctp-blue uppercase">Material archetype</p>
-              <p className="mt-1 font-semibold text-ctp-text">{materialArchetype.name}</p>
-              <p className="mt-1 text-xs text-ctp-subtext1">
-                {materialArchetype.deckCount} appearances across {materialArchetype.spiritBreakdown.length} {materialArchetype.spiritBreakdown.length === 1 ? "Spirit" : "Spirits"}; this is one of {siblingBuilds.length} discovered main-deck {siblingBuilds.length === 1 ? "build" : "builds"} beneath that route.
-              </p>
-              <div className="mt-2 flex flex-wrap gap-1.5">
-                {materialArchetype.definingCards.slice(0, 6).map((card) => (
-                  <span key={card.name} className="rounded-md bg-ctp-mantle px-2 py-1 text-xs text-ctp-subtext1">{card.name} <span className="text-ctp-subtext0">{(card.prevalence * 100).toFixed(0)}%</span></span>
-                ))}
-              </div>
-              {siblingBuilds.length > 1 && (
-                <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs">
-                  {siblingBuilds.map((build) => build.id === cluster.id ? <span key={build.id} className="font-medium text-ctp-text">{build.name}</span> : <Link key={build.id} to={`/archetypes/${build.id}`} className="text-ctp-blue hover:underline">{build.name}</Link>)}
-                </div>
-              )}
-            </Panel>
-          )}
-          {strategyArchetype && <p className="mt-2 text-xs text-ctp-subtext0">Main-deck package: {strategyArchetype.name}</p>}
-          {(cluster.championBreakdown ?? []).length > 1 && (
-            <p className="mt-1 text-xs text-ctp-subtext0">
-              Also played as{" "}
-              {cluster.championBreakdown
-                .filter((b) => b.championName !== cluster.championName)
-                .map((b, i, arr) => (
-                  <span key={b.championName}>
-                    <Link to={`/champions/${championNameToSlug(b.championName)}`} className="text-ctp-blue hover:underline">
-                      {b.championName}
-                    </Link>{" "}
-                    ({b.playerCount}p){i < arr.length - 1 ? ", " : ""}
-                  </span>
-                ))}{" "}
-              — same card shell, different Champion.
-            </p>
-          )}
-          <p className="mt-1 text-xs text-ctp-subtext0">
-            {(cluster.metaShare * 100).toFixed(1)}% meta share · {(cluster.topCutRate * 100).toFixed(0)}% top cut rate
-            {cluster.avgPlacement !== null && ` · avg placement #${cluster.avgPlacement.toFixed(0)}`}
-            {cluster.avgPrice !== null && ` · avg deck price ${formatUsd(cluster.avgPrice)}`}
-            {" · "}
-            <Link to="/regions?tab=archetypes" className="text-ctp-blue hover:underline">
-              Regional breakdown &rarr;
-            </Link>
-          </p>
-          {cluster.winRateInterval && cluster.quality && (
-            <p className="mt-1 text-xs text-ctp-subtext0">
-              95% win-rate interval {(cluster.winRateInterval.low * 100).toFixed(1)}–{(cluster.winRateInterval.high * 100).toFixed(1)}%
-              {` across ${cluster.winRateInterval.matches.toLocaleString()} matches`}
-              {` · ${(cluster.quality.meanSimilarity * 100).toFixed(0)}% mean shell cohesion`}
-              {` · ${(cluster.quality.meanAssignmentMargin * 100).toFixed(0)}pt assignment margin`}
-            </p>
-          )}
-          <StaleDataNotice generatedAt={[data?.generatedAt]} />
-
-          {cluster.trend && (
-            <p className="mt-1 text-xs text-ctp-subtext0">
-              {cluster.trend.previousSeasonName} &rarr; {cluster.trend.latestSeasonName}:{" "}
-              <span className={cluster.trend.playerCountChange > 0 ? "text-ctp-green" : cluster.trend.playerCountChange < 0 ? "text-ctp-red" : ""}>
-                {cluster.trend.playerCountChange > 0 ? "+" : ""}
-                {cluster.trend.playerCountChange} players
-              </span>{" "}
-              ·{" "}
-              <span className={cluster.trend.winRateChangePct > 0 ? "text-ctp-green" : cluster.trend.winRateChangePct < 0 ? "text-ctp-red" : ""}>
-                {cluster.trend.winRateChangePct > 0 ? "+" : ""}
-                {cluster.trend.winRateChangePct.toFixed(1)}pp win rate
+          <PageHeader
+            title={cluster.name}
+            eyebrow={<Link to="/archetypes" className="hover:underline">&larr; All archetypes</Link>}
+            description={
+              <span className="flex flex-wrap items-center gap-2">
+                <ArchetypeElementIcon name={cluster.name} size={20} />
+                <Link to={`/champions/${championNameToSlug(cluster.championName)}`} className="text-ctp-blue hover:underline">{cluster.championName}</Link>
+                {cluster.confidence === "emerging" && <span className="rounded-full bg-ctp-yellow/15 px-2 py-0.5 text-xs font-medium text-ctp-yellow">Emerging</span>}
               </span>
-            </p>
-          )}
+            }
+            actions={
+              <div className="grid grid-cols-3 gap-2 text-center">
+                <div className="rounded-lg bg-ctp-mantle px-3 py-2"><strong className="block text-base text-ctp-text">{(cluster.avgWinRate * 100).toFixed(0)}%</strong><span className="text-[10px] uppercase text-ctp-subtext0">Win rate</span></div>
+                <div className="rounded-lg bg-ctp-mantle px-3 py-2"><strong className="block text-base text-ctp-text">{cluster.deckCount}</strong><span className="text-[10px] uppercase text-ctp-subtext0">Decks</span></div>
+                <div className="rounded-lg bg-ctp-mantle px-3 py-2"><strong className="block text-base text-ctp-text">{cluster.eventCount}</strong><span className="text-[10px] uppercase text-ctp-subtext0">Events</span></div>
+              </div>
+            }
+          />
+          <StaleDataNotice generatedAt={[data?.generatedAt]} />
+          <Tabs tabs={SURFACES} active={surface} onChange={(next) => setTab(next === "overview" ? "overview" : next === "decks" ? "playedBy" : moreTab)} label={`${cluster.name} details`} variant="pill" />
 
-          <div className="mt-4">
-            <Tabs
-              tabs={
-                [
-                  { key: "overview", label: "Overview" },
-                  { key: "impact", label: "Card Impact" },
-                  { key: "decklist", label: "Sample Decklist" },
-                  { key: "playedBy", label: tab === "playedBy" ? `Played By (${instances.length})` : "Played By" },
-                  { key: "variants", label: tab === "variants" ? `Variants (${variants.length})` : "Variants" },
-                ] as { key: DetailTab; label: string }[]
-              }
-              active={tab}
-              onChange={setTab}
-              label="Build data"
-            />
-          </div>
-
-          {tab === "overview" && (
+          {showOverview && (
             <div className="mt-6">
+              <Panel className="mb-6">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-ctp-subtext1">
+                  <span><strong className="text-ctp-text">{(cluster.metaShare * 100).toFixed(1)}%</strong> meta</span>
+                  <span><strong className="text-ctp-text">{(cluster.topCutRate * 100).toFixed(0)}%</strong> top cut</span>
+                  <span><strong className="text-ctp-text">{cluster.playerCount}</strong> players</span>
+                  {cluster.avgPrice !== null && <span><strong className="text-ctp-text">{formatUsd(cluster.avgPrice)}</strong> average price</span>}
+                  <Link to="/regions?tab=archetypes" className="ml-auto text-ctp-blue hover:underline">Regions &rarr;</Link>
+                </div>
+                {(materialArchetype || strategyArchetype || siblingBuilds.length > 1) && (
+                  <details className="group mt-3 border-t border-ctp-surface0 pt-3">
+                    <summary className="cursor-pointer text-xs text-ctp-blue">Build family</summary>
+                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-xs text-ctp-subtext1">
+                      {materialArchetype && <span>Material: <strong className="text-ctp-text">{materialArchetype.name}</strong></span>}
+                      {strategyArchetype && <span>Main: <strong className="text-ctp-text">{strategyArchetype.name}</strong></span>}
+                      {siblingBuilds.length > 1 && siblingBuilds.map((build) => build.id === cluster.id ? <span key={build.id} className="font-medium text-ctp-text">{build.name}</span> : <Link key={build.id} to={`/archetypes/${build.id}`} className="text-ctp-blue hover:underline">{build.name}</Link>)}
+                    </div>
+                  </details>
+                )}
+              </Panel>
               {(cluster.materialDefiningCards ?? []).length > 0 && (
                 <Section
                   heading="compact"
                   title="Material build path"
-                  description="The recurring material package for this exact path. Choose this before using the main-deck card suggestions below."
                 >
                   <DefiningCardList cards={cluster.materialDefiningCards} cardImages={cardImages} tone="material" />
                 </Section>
@@ -328,14 +277,28 @@ export default function ArchetypeDetail() {
                 heading="compact"
                 className={(cluster.materialDefiningCards ?? []).length > 0 ? "mt-6" : ""}
                 title="Defining cards"
-                description="Cards common in this build but not typical of decks generally — what actually distinguishes it."
               >
                 <DefiningCardList cards={cluster.definingCards} cardImages={cardImages} />
+              </Section>
+              <Section className="mt-6" heading="compact" title="Representative decklist">
+                <div className="mt-2">
+                  {sample.decklist ? (
+                    <DecklistView decklist={sample.decklist} cardsByName={cardImages} showThumbnails />
+                  ) : (
+                    <InlineState className="text-sm">{sample.loading ? "Loading…" : "No representative decklist is available."}</InlineState>
+                  )}
+                </div>
               </Section>
             </div>
           )}
 
-          {tab === "impact" && (
+          {surface === "more" && (
+            <div className="mt-5 flex flex-wrap gap-2" aria-label="More build data">
+              {MORE_TABS.map((item) => <Chip key={item.key} active={moreTab === item.key} onClick={() => setTab(item.key)}>{item.label}</Chip>)}
+            </div>
+          )}
+
+          {surface === "more" && moreTab === "impact" && (
             <Section
               className="mt-6"
               heading="compact"
@@ -508,21 +471,9 @@ export default function ArchetypeDetail() {
             </Section>
           )}
 
-          {tab === "impact" && <QuantityStatsSection cards={definingQuantityStats} />}
+          {surface === "more" && moreTab === "impact" && <QuantityStatsSection cards={definingQuantityStats} />}
 
-          {tab === "decklist" && (
-            <Section className="mt-6" heading="compact" title="Sample decklist" description="One representative instance of this build.">
-              <div className="mt-2">
-                {sample.decklist ? (
-                  <DecklistView decklist={sample.decklist} cardsByName={cardImages} showThumbnails />
-                ) : (
-                  <InlineState className="text-sm">Loading…</InlineState>
-                )}
-              </div>
-            </Section>
-          )}
-
-          {tab === "playedBy" && (
+          {surface === "decks" && (
             <Section
               className="mt-6"
               heading="compact"
@@ -548,7 +499,7 @@ export default function ArchetypeDetail() {
             </Section>
           )}
 
-          {tab === "variants" && (
+          {surface === "more" && moreTab === "variants" && (
             <Section
               className="mt-6"
               heading="compact"

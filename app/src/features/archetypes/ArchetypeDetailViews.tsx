@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import type { Card, OmnidexDecklist } from "@gatcg/shared";
-import CardHoverPreview from "../../components/CardHoverPreview";
+import CardImage from "../../components/CardImage";
 import Section from "../../components/ui/Section";
 import type { ArchetypeVariant } from "./useArchetypeVariants";
 
@@ -15,18 +15,20 @@ export function DefiningCardList({ cards, cardImages, tone = "default" }: {
   tone?: "default" | "material";
 }) {
   const classes = tone === "material"
-    ? "rounded-md border border-ctp-mauve/60 bg-ctp-mauve/5 px-2 py-1 text-ctp-text hover:border-ctp-mauve hover:text-ctp-mauve"
-    : "rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-text hover:border-ctp-blue hover:text-ctp-blue";
+    ? "border-ctp-mauve/50 hover:border-ctp-mauve"
+    : "border-ctp-surface1 hover:border-ctp-blue";
   return (
-    <div className="mt-2 flex flex-wrap gap-2 text-sm">
+    <div className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-4">
       {cards.map((entry) => {
         const card = cardImages.get(entry.name);
-        const content = <>{entry.name} <span className="text-ctp-subtext0">({(entry.prevalence * 100).toFixed(0)}%)</span></>;
-        return (
-          <CardHoverPreview key={entry.name} image={card?.editions[0]?.image} alt={entry.name}>
-            {card ? <Link to={`/cards/${card.slug}`} className={classes}>{content}</Link> : <span className={classes.replace(/ hover:[^ ]+/g, "")}>{content}</span>}
-          </CardHoverPreview>
+        const content = (
+          <>
+            {card?.editions[0]?.image ? <CardImage image={card.editions[0].image} alt={entry.name} className="aspect-[5/7] w-full rounded-lg object-cover object-top" /> : <div className="aspect-[5/7] w-full rounded-lg bg-ctp-surface0" />}
+            <span className="mt-2 block truncate text-xs font-medium text-ctp-text">{entry.name}</span>
+            <span className="block text-[10px] text-ctp-subtext0">{(entry.prevalence * 100).toFixed(0)}% of decks</span>
+          </>
         );
+        return card ? <Link key={entry.name} to={`/cards/${card.slug}`} className={`min-w-0 rounded-xl border bg-ctp-mantle p-2 transition-colors ${classes}`}>{content}</Link> : <div key={entry.name} className={`min-w-0 rounded-xl border bg-ctp-mantle p-2 ${classes}`}>{content}</div>;
       })}
     </div>
   );
