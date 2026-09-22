@@ -8,6 +8,7 @@ import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
 import { InlineState } from "../../components/ui/ContentState";
 import { useCardsByNames } from "../events/useCardsByNames";
+import CardImage from "../../components/CardImage";
 import HorizontalBarChart, { type HorizontalBarChartBar } from "../../components/HorizontalBarChart";
 import RangeBar from "../../components/RangeBar";
 import BarChart, { type BarChartBar } from "../../components/BarChart";
@@ -40,6 +41,8 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
   const deckEra = useCommunityDeckEra(format);
 
   const [championFilter, setChampionFilter] = useState<string>("");
+  const [showAllTopCards, setShowAllTopCards] = useState(false);
+  const [showAllClusters, setShowAllClusters] = useState(false);
 
   const championBars = useMemo<HorizontalBarChartBar[]>(
     () =>
@@ -66,18 +69,10 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
   const cardsForFilter = championFilter ? cardInclusion?.byChampion[championFilter]?.cards : cardInclusion?.overall;
   const cardsConsidered = championFilter ? cardInclusion?.byChampion[championFilter]?.deckCount : cardInclusion?.decksConsidered;
   const topCards = (cardsForFilter ?? []).slice(0, TOP_CARDS_SHOWN);
-  const cardImages = useCardsByNames(topCards.map((c) => c.name));
-  const topCardBars = useMemo<HorizontalBarChartBar[]>(
-    () =>
-      topCards.map((c) => ({
-        key: c.name,
-        label: c.name,
-        value: c.percentOfDecks,
-        valueLabel: `${(c.percentOfDecks * 100).toFixed(1)}%`,
-        href: cardImages.get(c.name)?.slug ? `/cards/${cardImages.get(c.name)!.slug}` : undefined,
-      })),
-    [topCards, cardImages],
-  );
+  const cardImages = useCardsByNames([
+    ...topCards.map((card) => card.name),
+    ...(archetypes?.clusters.slice(0, showAllClusters ? TOP_ARCHETYPES_SHOWN : 6).flatMap((cluster) => (cluster.definingCards?.length ? cluster.definingCards : cluster.mainDeck.map((card) => card.name)).slice(0, 3)) ?? []),
+  ]);
 
   const price = championFilter ? priceDistribution?.byChampion[championFilter] : priceDistribution?.overall;
 
@@ -109,14 +104,10 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
   const loading = !cardInclusion && !popularity && !priceDistribution && !archetypes;
 
   return (
-    <PageLayout data-component="CommunityDecksIndex">
+    <PageLayout data-component="CommunityDecksIndex" width="wide">
       <PageHeader
         title={isPantheon ? "Pantheon Decks" : "Deck Trends"}
-        description={
-          <>
-            See what other users have been brewing, or try our <Link to="/deck-builder" className="text-ctp-blue hover:underline">Guided Deck Builder</Link> to make your own.
-          </>
-        }
+        actions={<Link to="/deck-builder" className="text-sm text-ctp-blue hover:underline">Build a deck →</Link>}
       />
 
       <div className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1 text-sm">
@@ -132,7 +123,31 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
 
       {loading && <InlineState className="mt-6">Loading…</InlineState>}
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+      {cardInclusion && (
+        <Section className="mt-6" heading="compact" title="Most played cards" actions={
+          <select value={championFilter} aria-label="Champion" onChange={(event) => { setChampionFilter(event.target.value); setShowAllTopCards(false); }} className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-sm text-ctp-text">
+            <option value="">All champions</option>
+            {Object.keys(cardInclusion.byChampion).sort((a, b) => cardInclusion.byChampion[b].deckCount - cardInclusion.byChampion[a].deckCount).map((key) => <option key={key} value={key}>{championKeyToDisplayName(key)} ({cardInclusion.byChampion[key].deckCount.toLocaleString()})</option>)}
+          </select>
+        }>
+          <p className="mb-3 text-xs text-ctp-subtext0">Share of {cardsConsidered?.toLocaleString()} community decks with a fetched card list</p>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            {(showAllTopCards ? topCards : topCards.slice(0, 8)).map((entry) => {
+              const card = cardImages.get(entry.name);
+              return <article key={entry.name} className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-2">
+                {card?.editions[0]?.image ? <Link to={`/cards/${card.slug}`}><CardImage image={card.editions[0].image} alt={entry.name} className="aspect-[5/7] w-full rounded-md object-cover object-top" /></Link> : <div className="aspect-[5/7] rounded-md bg-ctp-surface0" />}
+                <div className="mt-2 truncate text-xs font-medium text-ctp-text" title={entry.name}>{entry.name}</div>
+                <div className="mt-1 text-sm font-semibold text-ctp-blue">{(entry.percentOfDecks * 100).toFixed(1)}% <span className="text-xs font-normal text-ctp-subtext0">of decks</span></div>
+              </article>;
+            })}
+          </div>
+          {topCards.length > 8 && <button type="button" onClick={() => setShowAllTopCards((value) => !value)} aria-expanded={showAllTopCards} className="mt-3 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{showAllTopCards ? "Show fewer cards" : `Show all ${topCards.length} cards`}</button>}
+        </Section>
+      )}
+
+      <details className="mt-6 text-sm text-ctp-subtext1">
+        <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">Popularity and price trends</summary>
+      <div className="mt-3 grid gap-4 sm:grid-cols-2">
         {championBars.length > 0 && (
           <HorizontalBarChart
             title="Champion popularity"
@@ -159,72 +174,31 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
           />
         </div>
       )}
-
-      {cardInclusion && (
-        <Section
-          className="mt-8"
-          heading="compact"
-          title="Top cards by inclusion rate"
-          description={
-            <>
-              % of decks running at least one copy, out of {cardsConsidered?.toLocaleString()} decks
-              {championFilter ? ` piloting ${championKeyToDisplayName(championFilter)}` : " with a fetched card list"}.
-            </>
-          }
-          actions={
-            <select
-              value={championFilter}
-              aria-label="Champion"
-              onChange={(e) => setChampionFilter(e.target.value)}
-              className="rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1 text-xs text-ctp-text focus:border-ctp-blue focus:outline-none"
-            >
-              <option value="">All champions</option>
-              {Object.keys(cardInclusion.byChampion)
-                .sort((a, b) => cardInclusion.byChampion[b].deckCount - cardInclusion.byChampion[a].deckCount)
-                .map((key) => (
-                  <option key={key} value={key}>
-                    {championKeyToDisplayName(key)} ({cardInclusion.byChampion[key].deckCount.toLocaleString()})
-                  </option>
-                ))}
-            </select>
-          }
-        >
-          <div className="mt-2">{topCardBars.length > 0 && <HorizontalBarChart bars={topCardBars} />}</div>
-        </Section>
-      )}
+      </details>
 
       {archetypes && archetypes.clusters.length > 0 && (
         <Section
           className="mt-8"
           heading="compact"
           title={isPantheon ? "Recurring strategy shells" : "Recurring exact builds"}
-          description={isPantheon ? "Singleton lists grouped by meaningful main-deck overlap. Defining cards describe the shared shell; this is community adoption, not a performance ranking." : "Decks sharing the literal same champion + card list — real copies of a known build, not a fuzzy similar-archetype grouping. Most decks are one-offs and aren't shown here."}
         >
-          <div className="mt-2 overflow-x-auto">
-            <table className="w-max min-w-full text-sm">
-              <thead>
-                <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                  <th className="py-1 pr-6">Copies</th>
-                  <th className="py-1 pr-6">Champion</th>
-                  <th className="py-1">Example</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-                {archetypes.clusters.slice(0, TOP_ARCHETYPES_SHOWN).map((cluster) => (
-                  <tr key={`${cluster.champion}-${cluster.signature}`}>
-                    <td className="py-1.5 pr-6 text-ctp-subtext1">{cluster.size}</td>
-                    <td className="py-1.5 pr-6 text-ctp-subtext1 capitalize">{cluster.champion}</td>
-                    <td className="py-1.5">
-                      <span className="text-ctp-text">
-                        {cluster.representative.title || "(untitled)"}
-                      </span>
-                      {isPantheon && cluster.definingCards && cluster.definingCards.length > 0 && <p className="mt-0.5 max-w-md text-xs text-ctp-subtext0">{cluster.definingCards.join(" · ")}</p>}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+            {archetypes.clusters.slice(0, showAllClusters ? TOP_ARCHETYPES_SHOWN : 6).map((cluster) => {
+              const names = (cluster.definingCards?.length ? cluster.definingCards : cluster.mainDeck.map((card) => card.name)).slice(0, 3);
+              return <article key={`${cluster.champion}-${cluster.signature}`} className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
+                <div className="grid grid-cols-3 gap-2">{Array.from({ length: 3 }, (_, index) => {
+                  const name = names[index];
+                  const card = name ? cardImages.get(name) : undefined;
+                  return card?.editions[0]?.image ? <Link key={name} to={`/cards/${card.slug}`} aria-label={`View ${name}`}><CardImage image={card.editions[0].image} alt={name} className="aspect-[5/7] w-full rounded-md object-cover object-top" /></Link> : <div key={name ?? index} className="aspect-[5/7] rounded-md bg-ctp-surface0" />;
+                })}</div>
+                <div className="mt-3 font-medium capitalize text-ctp-text">{championKeyToDisplayName(cluster.champion)}</div>
+                <div className="mt-1 truncate text-xs text-ctp-subtext1" title={cluster.representative.title}>{cluster.representative.title || "Untitled deck"}</div>
+                <div className="mt-2 text-sm text-ctp-subtext1">{cluster.size} community {cluster.size === 1 ? "deck" : "decks"}</div>
+                <a href={cluster.representative.url} target="_blank" rel="noopener noreferrer" className="mt-3 flex min-h-10 items-center justify-center rounded-lg border border-ctp-blue px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">View example ↗</a>
+              </article>;
+            })}
           </div>
+          {archetypes.clusters.length > 6 && <button type="button" onClick={() => setShowAllClusters((value) => !value)} aria-expanded={showAllClusters} className="mt-3 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{showAllClusters ? "Show fewer builds" : `Show ${Math.min(TOP_ARCHETYPES_SHOWN, archetypes.clusters.length)} builds`}</button>}
         </Section>
       )}
 
@@ -233,11 +207,8 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
           className="mt-8"
           heading="compact"
           title="Deck era"
-          description={
-            <>
-              When decks were likely built, based on the newest card each one requires. Hover a bar for the set(s) behind it.
-            </>
-          }
+          collapsible
+          defaultOpen={false}
         >
           <div className="mt-2">
             <BarChart bars={eraBars} />

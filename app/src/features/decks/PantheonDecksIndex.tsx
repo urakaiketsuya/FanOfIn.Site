@@ -10,10 +10,9 @@ export default function PantheonDecksIndex() {
   );
 
   return (
-    <PageLayout data-component="PantheonDecksIndex">
+    <PageLayout data-component="PantheonDecksIndex" width="wide">
       <PageHeader
         title="Browse Pantheon Decks"
-        description="Search community decklists by Champion, card, or Boon. These lists are separate from tournament results."
       />
       <PantheonDecksView />
     </PageLayout>
