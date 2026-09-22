@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { useSearchParams } from "react-router-dom";
 import CardSearchPicker from "../../components/CardSearchPicker";
-import ElementIcon from "../../components/ElementIcon";
 import LoadMore from "../../components/LoadMore";
 import { InlineState } from "../../components/ui/ContentState";
+import FilterGroup from "../../components/filters/FilterGroup";
+import FilterPanel from "../../components/filters/FilterPanel";
+import MultiSelectFilter from "../../components/filters/MultiSelectFilter";
+import SegmentedFilter from "../../components/filters/SegmentedFilter";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { useCardCombination } from "../cards/useCardCombination";
 import { useChampionCardImages } from "../players/useChampionCardImages";
@@ -107,6 +110,7 @@ export default function TournamentBuildsView({
   }
 
   const visible = sorted.slice(0, visibleCount);
+  const activeFilterCount = (minPlayers === "2plus" ? 1 : 0) + elementFilter.length + selectedCards.length;
   const championImages = useChampionCardImages(
     Array.from(new Set(visible.map((d) => d.championName).filter((n): n is string => n !== null))),
   );
@@ -140,71 +144,11 @@ export default function TournamentBuildsView({
         </select>
       </div>
 
-      <details className="mt-3 rounded-md border border-ctp-surface1 bg-ctp-mantle/40 px-3 py-2">
-        <summary className="cursor-pointer select-none text-sm font-medium text-ctp-subtext1 hover:text-ctp-text">
-          Filters{minPlayers === "2plus" || elementFilter.length > 0 || selectedCards.length > 0 ? ` (${(minPlayers === "2plus" ? 1 : 0) + elementFilter.length + selectedCards.length})` : ""}
-        </summary>
-        <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
-          <span className="text-ctp-subtext0">Players:</span>
-          {(["2plus", "any"] as const).map((mode) => (
-            <button
-              key={mode}
-              type="button"
-              onClick={() => setMinPlayers(mode)}
-              aria-pressed={minPlayers === mode}
-              className={`rounded-md border px-2 py-1 text-xs ${
-                minPlayers === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-              }`}
-            >
-              {mode === "any" ? "Include one-offs" : "Played by 2+ people"}
-            </button>
-          ))}
-        </div>
-
-        <fieldset className="mt-3" aria-labelledby="browse-decks-elements-label">
-        <div className="flex min-h-6 items-center gap-2">
-          <span id="browse-decks-elements-label" className="text-sm text-ctp-subtext0">Elements</span>
-          {elementFilter.length > 1 && <span className="text-[11px] text-ctp-overlay1">Match all selected</span>}
-          {elementFilter.length > 0 && (
-            <button
-              type="button"
-              onClick={() => startTransition(() => setElementFilter([]))}
-              className="ml-auto rounded px-1.5 py-0.5 text-xs text-ctp-subtext0 hover:bg-ctp-surface0 hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue"
-            >
-              Clear
-            </button>
-          )}
-        </div>
-        <div className="mt-1.5 flex flex-wrap gap-1.5">
-          {elementsPresent.map((element) => {
-            const selected = elementFilter.includes(element);
-            return (
-              <label
-                key={element}
-                className={`flex cursor-pointer select-none items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-xs font-medium transition-colors focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-ctp-blue ${
-                  selected
-                    ? "border-ctp-blue bg-ctp-blue/15 text-ctp-blue"
-                    : "border-ctp-surface1 bg-ctp-mantle text-ctp-subtext1 hover:border-ctp-overlay0 hover:bg-ctp-surface0 hover:text-ctp-text"
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  checked={selected}
-                  onChange={() => toggleElement(element)}
-                  className="sr-only"
-                />
-                <span aria-hidden="true"><ElementIcon element={element} size={18} className="shrink-0" /></span>
-                <span className="capitalize">{element.toLowerCase()}</span>
-                {selected && <span aria-hidden="true" className="ml-0.5 text-sm leading-none">✓</span>}
-              </label>
-            );
-          })}
-        </div>
-        </fieldset>
-
-        <div className="mt-3">
-        <span className="text-sm text-ctp-subtext0">Cards in deck:</span>
-        <div className="mt-1 flex flex-wrap items-center gap-2">
+      <FilterPanel activeCount={activeFilterCount} onClear={() => startTransition(() => { setMinPlayers("any"); setElementFilter([]); setSelectedCards([]); })}>
+        <SegmentedFilter label="Players" options={[{ value: "2plus", label: "Played by 2+ people" }, { value: "any", label: "Include one-offs" }]} value={minPlayers} onChange={setMinPlayers} />
+        <MultiSelectFilter label="Elements" hint={elementFilter.length > 1 ? "Match all selected" : undefined} options={elementsPresent.map((element) => ({ value: element, text: element.toLowerCase() }))} selected={new Set(elementFilter)} onToggle={toggleElement} iconKind="elements" />
+        <FilterGroup label="Cards in deck" onClear={selectedCards.length > 0 ? () => startTransition(() => setSelectedCards([])) : undefined}>
+        <div className="flex flex-wrap items-center gap-2">
           {selectedCards.map((name) => (
             <button
               key={name}
@@ -226,9 +170,8 @@ export default function TournamentBuildsView({
           ariaLabel="Cards in deck"
           className="mt-1 w-full max-w-sm"
         />
-        </div>
-
-      </details>
+        </FilterGroup>
+      </FilterPanel>
 
       {loading && <DeckResultsSkeleton />}
       {!loading && sorted.length === 0 && <InlineState className="mt-6">No decks match these filters.</InlineState>}

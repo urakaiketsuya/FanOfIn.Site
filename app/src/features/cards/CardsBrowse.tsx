@@ -10,8 +10,11 @@ import Tabs from "../../components/ui/Tabs";
 import PageHeader from "../../components/ui/PageHeader";
 import { useCardCatalog } from "./useCardCatalog";
 import { emptyFilterState, filterCards, type CardFilterState } from "./filters";
-import FilterCheckboxGroup from "./FilterCheckboxGroup";
-import FilterSearchGroup from "./FilterSearchGroup";
+import FilterPanel from "../../components/filters/FilterPanel";
+import MultiSelectFilter from "../../components/filters/MultiSelectFilter";
+import SearchSelectFilter from "../../components/filters/SearchSelectFilter";
+import SegmentedFilter from "../../components/filters/SegmentedFilter";
+import { toggleSetValue } from "../../components/filters/filterUtils";
 import CardGrid from "./CardGrid";
 import LoadMore from "../../components/LoadMore";
 import { useFeaturedSets } from "../sets/useFeaturedSets";
@@ -25,13 +28,6 @@ const PAGE_SIZE = 60;
 type TabMode = "browse" | "sets";
 const TABS: readonly TabMode[] = ["browse", "sets"];
 const TAB_LABELS: Record<TabMode, string> = { browse: "Browse", sets: "By Set" };
-
-function toggleInSet(set: Set<string>, value: string): Set<string> {
-  const next = new Set(set);
-  if (next.has(value)) next.delete(value);
-  else next.add(value);
-  return next;
-}
 
 export default function CardsBrowse() {
   useDocumentTitle("Cards", "Browse and search the full Grand Archive TCG card database — filter by class, element, type, and set.");
@@ -59,6 +55,7 @@ export default function CardsBrowse() {
   }, [filters]);
 
   const visible = filtered.slice(0, visibleCount);
+  const activeFilterCount = (filters.name.trim() ? 1 : 0) + (filters.artist.trim() ? 1 : 0) + filters.classes.size + filters.types.size + filters.subtypes.size + filters.elements.size + filters.sets.size + (filters.speed === "any" ? 0 : 1);
 
   const artistOptions = useMemo(() => {
     const set = new Set<string>();
@@ -191,59 +188,42 @@ export default function CardsBrowse() {
           </div>
 
           {options.data && (
-            <div className="mt-4 space-y-4">
-              <FilterCheckboxGroup
+            <FilterPanel activeCount={activeFilterCount} onClear={() => setFilters(emptyFilterState())}>
+              <MultiSelectFilter
                 label="Class"
                 options={options.data.class}
                 selected={filters.classes}
-                onToggle={(v) => setFilters((f) => ({ ...f, classes: toggleInSet(f.classes, v) }))}
+                onToggle={(v) => setFilters((f) => ({ ...f, classes: toggleSetValue(f.classes, v) }))}
                 iconKind="classes"
               />
-              <FilterCheckboxGroup
+              <MultiSelectFilter
                 label="Type"
                 options={options.data.type}
                 selected={filters.types}
-                onToggle={(v) => setFilters((f) => ({ ...f, types: toggleInSet(f.types, v) }))}
+                onToggle={(v) => setFilters((f) => ({ ...f, types: toggleSetValue(f.types, v) }))}
                 iconKind="types"
               />
-              <FilterSearchGroup
+              <SearchSelectFilter
                 label="Subtype"
                 options={options.data.subtype}
                 selected={filters.subtypes}
-                onToggle={(v) => setFilters((f) => ({ ...f, subtypes: toggleInSet(f.subtypes, v) }))}
+                onToggle={(v) => setFilters((f) => ({ ...f, subtypes: toggleSetValue(f.subtypes, v) }))}
               />
-              <FilterCheckboxGroup
+              <MultiSelectFilter
                 label="Element"
                 options={options.data.element}
                 selected={filters.elements}
-                onToggle={(v) => setFilters((f) => ({ ...f, elements: toggleInSet(f.elements, v) }))}
+                onToggle={(v) => setFilters((f) => ({ ...f, elements: toggleSetValue(f.elements, v) }))}
                 iconKind="elements"
               />
-              <FilterSearchGroup
+              <SearchSelectFilter
                 label="Set"
                 options={setOptions}
                 selected={filters.sets}
-                onToggle={(v) => setFilters((f) => ({ ...f, sets: toggleInSet(f.sets, v) }))}
+                onToggle={(v) => setFilters((f) => ({ ...f, sets: toggleSetValue(f.sets, v) }))}
               />
-              <div>
-                <span className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Speed</span>
-                <div className="mt-1 flex flex-wrap gap-2">
-                  {(["any", "fast", "normal"] as const).map((s) => (
-                    <button
-                      key={s}
-                      type="button"
-                      onClick={() => setFilters((f) => ({ ...f, speed: s }))}
-                      aria-pressed={filters.speed === s}
-                      className={`rounded-md border px-2 py-1 text-xs capitalize ${
-                        filters.speed === s ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                      }`}
-                    >
-                      {s === "any" ? "All" : s}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
+              <SegmentedFilter label="Speed" options={[{ value: "any", label: "All" }, { value: "fast", label: "Fast" }, { value: "normal", label: "Normal" }]} value={filters.speed} onChange={(speed) => setFilters((f) => ({ ...f, speed }))} />
+            </FilterPanel>
           )}
 
           {bannerProduct && (

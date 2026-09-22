@@ -8,6 +8,10 @@ import DeckSightingRow from "../topdecks/DeckSightingRow";
 import { useDeckSightingsData } from "../topdecks/data";
 import { usePlayerNameById } from "../tournaments/data";
 import DeckResultsSkeleton from "./DeckResultsSkeleton";
+import FilterGroup from "../../components/filters/FilterGroup";
+import FilterPanel from "../../components/filters/FilterPanel";
+import MultiSelectFilter from "../../components/filters/MultiSelectFilter";
+import SegmentedFilter from "../../components/filters/SegmentedFilter";
 
 const SIGHTINGS_PAGE_SIZE = 50;
 
@@ -139,6 +143,7 @@ export default function DeckSightingsView({
   }, [category, seasonId, championName, selectedClasses, keyword, maxPrice, outcome, sortMode, query]);
 
   const visible = filtered.slice(0, visibleCount);
+  const activeFilterCount = (category ? 1 : 0) + (seasonId !== null ? 1 : 0) + selectedClasses.size + (keyword ? 1 : 0) + (maxPrice !== null ? 1 : 0) + (outcome !== "all" ? 1 : 0);
   const championImages = useChampionCardImages(Array.from(new Set(visible.map((s) => s.championName).filter((n): n is string => n !== null))));
 
   return (
@@ -174,38 +179,10 @@ export default function DeckSightingsView({
         </select>
       </div>
 
-      <details className="mt-3 rounded-md border border-ctp-surface1 bg-ctp-mantle/40 px-3 py-2">
-        <summary className="cursor-pointer select-none text-sm font-medium text-ctp-subtext1 hover:text-ctp-text">
-          Filters{category || seasonId !== null || selectedClasses.size > 0 || keyword || maxPrice !== null || outcome !== "all" ? ` (${(category ? 1 : 0) + (seasonId !== null ? 1 : 0) + selectedClasses.size + (keyword ? 1 : 0) + (maxPrice !== null ? 1 : 0) + (outcome !== "all" ? 1 : 0)})` : ""}
-        </summary>
-        <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
-        <span className="text-ctp-subtext0">Type:</span>
-        <button
-          onClick={() => setCategory(null)}
-          aria-pressed={category === null}
-          className={`rounded-md border px-2 py-1 text-xs ${
-            category === null ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-          }`}
-        >
-          All
-        </button>
-        {categoriesPresent.map((c) => (
-          <button
-            key={c}
-            onClick={() => setCategory(c)}
-            aria-pressed={category === c}
-            className={`rounded-md border px-2 py-1 text-xs ${
-              category === c ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            {EVENT_CATEGORY_LABELS[c] ?? c}
-          </button>
-        ))}
-        </div>
-
-      <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
-        <span className="text-ctp-subtext0">Season:</span>
-        <select
+      <FilterPanel activeCount={activeFilterCount} onClear={() => { setCategory(null); setSeasonId(null); setSelectedClasses(new Set()); setKeyword(null); setMaxPrice(null); setOutcome("all"); }}>
+        <SegmentedFilter label="Type" options={[{ value: "", label: "All" }, ...categoriesPresent.map((value) => ({ value, label: EVENT_CATEGORY_LABELS[value] ?? value }))]} value={category ?? ""} onChange={(value) => setCategory(value || null)} />
+        <FilterGroup label="Season">
+          <select
           value={seasonId ?? ""}
           aria-label="Season"
           onChange={(e) => setSeasonId(e.target.value ? Number(e.target.value) : null)}
@@ -217,31 +194,15 @@ export default function DeckSightingsView({
               {name}
             </option>
           ))}
-        </select>
-
-      </div>
+          </select>
+        </FilterGroup>
 
       {classesPresent.length > 0 && (
-        <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
-          <span className="text-ctp-subtext0">Class:</span>
-          {classesPresent.map((cls) => (
-            <button
-              key={cls}
-              onClick={() => toggleClass(cls)}
-              aria-pressed={selectedClasses.has(cls)}
-              className={`rounded-md border px-2 py-1 text-xs ${
-                selectedClasses.has(cls) ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-              }`}
-            >
-              {cls}
-            </button>
-          ))}
-        </div>
+        <MultiSelectFilter label="Class" options={classesPresent.map((value) => ({ value, text: value }))} selected={selectedClasses} onToggle={toggleClass} iconKind="classes" />
       )}
 
       {keywordsPresent.length > 0 && (
-        <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
-          <span className="text-ctp-subtext0">Keyword:</span>
+        <FilterGroup label="Keyword">
           <select
             value={keyword ?? ""}
             aria-label="Keyword"
@@ -255,51 +216,11 @@ export default function DeckSightingsView({
               </option>
             ))}
           </select>
-        </div>
+        </FilterGroup>
       )}
-
-      <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
-        <span className="text-ctp-subtext0">Max price:</span>
-        <button
-          onClick={() => setMaxPrice(null)}
-          aria-pressed={maxPrice === null}
-          className={`rounded-md border px-2 py-1 text-xs ${
-            maxPrice === null ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-          }`}
-        >
-          Any
-        </button>
-        {MAX_PRICE_OPTIONS.map((p) => (
-          <button
-            key={p}
-            onClick={() => setMaxPrice(p)}
-            aria-pressed={maxPrice === p}
-            className={`rounded-md border px-2 py-1 text-xs ${
-              maxPrice === p ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            ${p}
-          </button>
-        ))}
-      </div>
-
-      <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
-        <span className="text-ctp-subtext0">Outcome:</span>
-        {(Object.keys(OUTCOME_LABELS) as Outcome[]).map((o) => (
-          <button
-            key={o}
-            onClick={() => setOutcome(o)}
-            aria-pressed={outcome === o}
-            className={`rounded-md border px-2 py-1 text-xs ${
-              outcome === o ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            {OUTCOME_LABELS[o]}
-          </button>
-        ))}
-      </div>
-
-      </details>
+        <SegmentedFilter label="Max price" options={[{ value: 0, label: "Any" }, ...MAX_PRICE_OPTIONS.map((value) => ({ value, label: `$${value}` }))]} value={maxPrice ?? 0} onChange={(value) => setMaxPrice(value || null)} />
+        <SegmentedFilter label="Outcome" options={(Object.keys(OUTCOME_LABELS) as Outcome[]).map((value) => ({ value, label: OUTCOME_LABELS[value] }))} value={outcome} onChange={setOutcome} />
+      </FilterPanel>
 
       {!sightingsData && <DeckResultsSkeleton />}
       {sightingsData && filtered.length === 0 && <InlineState className="mt-6">No decks match this filter yet.</InlineState>}
