@@ -2,6 +2,8 @@ import { useMemo, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import type { BattleChartEntry } from "@gatcg/shared";
 import { useArchetypeData } from "./data";
+import { useChampionCardImages } from "../players/useChampionCardImages";
+import CardImage from "../../components/CardImage";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import PageHeader from "../../components/ui/PageHeader";
@@ -13,9 +15,9 @@ import { InlineState } from "../../components/ui/ContentState";
 type ViewTab = "matrix" | "champion" | "highlights";
 
 const TABS: { key: ViewTab; label: string }[] = [
-  { key: "matrix", label: "Matrix" },
   { key: "champion", label: "By Champion" },
   { key: "highlights", label: "Highlights" },
+  { key: "matrix", label: "Full Matrix" },
 ];
 const TAB_KEYS = TABS.map((t) => t.key);
 
@@ -65,8 +67,9 @@ function matchupsFor(champion: string, battleChart: BattleChartEntry[]): Matchup
 export default function BattleChart() {
   useDocumentTitle("Battle Chart", "Archetype-vs-archetype win rate matrix for Grand Archive TCG.");
   const data = useArchetypeData();
-  const [tab, setTab] = useTabParam("tab", TAB_KEYS, "matrix");
+  const [tab, setTab] = useTabParam("tab", TAB_KEYS, "champion");
   const [champion, setChampion] = useState<string | null>(null);
+  const [showAllMatchups, setShowAllMatchups] = useState(false);
 
   const signatures = useMemo(() => {
     if (!data) return [];
@@ -99,6 +102,7 @@ export default function BattleChart() {
     () => (activeChampion && data ? matchupsFor(activeChampion, data.battleChart) : []),
     [activeChampion, data],
   );
+  const championImages = useChampionCardImages(tab === "champion" ? [activeChampion, ...championMatchups.map((matchup) => matchup.opponent)].filter((name): name is string => !!name) : []);
 
   const highlights = useMemo(() => {
     if (!data) return { lopsided: [], closest: [] };
@@ -112,12 +116,13 @@ export default function BattleChart() {
 
   function goToChampion(name: string) {
     setChampion(name);
+    setShowAllMatchups(false);
     setTab("champion");
   }
 
   return (
     <PageLayout data-component="BattleChart" width="wide">
-      <PageHeader title="Battle Chart" eyebrow={<Link to="/archetypes" className="hover:underline">&larr; Archetypes</Link>} description="Explore head-to-head Champion win rates from real tournament pairings, with sample-aware color intensity." />
+      <PageHeader title="Battle Chart" eyebrow={<Link to="/archetypes" className="hover:underline">&larr; Archetypes</Link>} />
 
       {!data && <InlineState className="mt-6">Loading…</InlineState>}
       {data && signatures.length === 0 && <InlineState className="mt-6">No matchups have cleared the sample-size threshold yet.</InlineState>}
@@ -187,13 +192,18 @@ export default function BattleChart() {
 
           {tab === "champion" && activeChampion && (
             <div className="mt-6">
-              <div className="flex flex-wrap items-center gap-2 text-sm">
-                <span className="text-ctp-subtext0">Champion:</span>
+              <div className="flex items-start gap-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
+                {championImages.get(activeChampion)?.editions[0]?.image ? (
+                  <CardImage image={championImages.get(activeChampion)!.editions[0].image} alt={activeChampion} className="h-32 w-24 shrink-0 rounded-md object-cover object-top" />
+                ) : <div className="h-32 w-24 shrink-0 rounded-md bg-ctp-surface0" />}
+                <div className="min-w-0 flex-1">
+                  <div className="text-xs text-ctp-subtext0">Matchups for</div>
+                  <div className="mt-1 font-semibold text-ctp-text">{activeChampion}</div>
                 <select
                   value={activeChampion}
                   aria-label="Champion"
-                  onChange={(e) => setChampion(e.target.value)}
-                  className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+                  onChange={(e) => { setChampion(e.target.value); setShowAllMatchups(false); }}
+                  className="mt-3 w-full min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 py-2 text-sm text-ctp-text"
                 >
                   {signatures.map((s) => (
                     <option key={s} value={s}>
@@ -201,42 +211,35 @@ export default function BattleChart() {
                     </option>
                   ))}
                 </select>
+                </div>
               </div>
 
               {championMatchups.length === 0 ? (
                 <p className="mt-4 text-sm text-ctp-subtext1">No matchups have cleared the sample-size threshold for {activeChampion} yet.</p>
               ) : (
-                <div className="mt-4 overflow-x-auto">
-                  <table className="w-max min-w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                        <th className="py-1 pr-6">Opponent</th>
-                        <th className="py-1 pr-6">Record</th>
-                        <th className="py-1 pr-6">Win rate</th>
-                        <th className="py-1 pr-6">Games</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-                      {championMatchups.map((m) => (
-                        <tr key={m.opponent}>
-                          <td className="py-1.5 pr-6 whitespace-nowrap">
-                            <button type="button" onClick={() => goToChampion(m.opponent)} className="text-ctp-text hover:text-ctp-blue">
-                              {m.opponent}
-                            </button>
-                          </td>
-                          <td className="py-1.5 pr-6 text-ctp-subtext1">
-                            {m.wins}-{m.losses}-{m.ties}
-                          </td>
-                          <td className={`py-1.5 pr-6 font-semibold ${winRateColor(m.winRate)}`}>
-                            {m.winRate !== null ? `${(m.winRate * 100).toFixed(0)}%` : "—"}
-                          </td>
-                          <td className="py-1.5 pr-6 text-ctp-subtext1">{m.games}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                <>
+                {championMatchups.length > 8 && !showAllMatchups && <p className="mt-4 text-xs text-ctp-subtext0">Four most favorable and four least favorable matchups</p>}
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  {(showAllMatchups || championMatchups.length <= 8 ? championMatchups : [...championMatchups.slice(0, 4), ...championMatchups.slice(-4)]).map((matchup) => {
+                    const opponentCard = championImages.get(matchup.opponent);
+                    return (
+                      <article key={matchup.opponent} className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
+                        <div className="flex items-start gap-3">
+                          {opponentCard?.editions[0]?.image ? <CardImage image={opponentCard.editions[0].image} alt={matchup.opponent} className="h-24 w-16 shrink-0 rounded-md object-cover object-top" /> : <div className="h-24 w-16 shrink-0 rounded-md bg-ctp-surface0" />}
+                          <div className="min-w-0 flex-1">
+                            <button type="button" onClick={() => goToChampion(matchup.opponent)} className="font-medium text-ctp-text hover:text-ctp-blue">{matchup.opponent}</button>
+                            <div className={`mt-2 text-lg font-semibold ${winRateColor(matchup.winRate)}`}>{matchup.winRate !== null ? `${(matchup.winRate * 100).toFixed(0)}%` : "—"} <span className="text-xs font-normal text-ctp-subtext0">win rate</span></div>
+                            <div className="mt-1 text-xs text-ctp-subtext1">{matchup.games.toLocaleString()} games</div>
+                          </div>
+                        </div>
+                        <details className="mt-2 border-t border-ctp-surface1 pt-2 text-xs text-ctp-subtext0"><summary className="w-fit cursor-pointer hover:text-ctp-blue">Match record</summary><p className="mt-1">{matchup.wins} wins · {matchup.losses} losses · {matchup.ties} ties</p></details>
+                      </article>
+                    );
+                  })}
                 </div>
+                </>
               )}
+              {championMatchups.length > 8 && <button type="button" onClick={() => setShowAllMatchups((value) => !value)} aria-expanded={showAllMatchups} className="mt-3 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{showAllMatchups ? "Show fewer matchups" : `Show all ${championMatchups.length} matchups`}</button>}
             </div>
           )}
 
