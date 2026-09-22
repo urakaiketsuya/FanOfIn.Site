@@ -23,6 +23,7 @@ import { usePlayerNameById, useEventNameById } from "../tournaments/data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import Tabs from "../../components/ui/Tabs";
+import Chip from "../../components/ui/Chip";
 import PageLayout from "../../components/layout/PageLayout";
 import { InlineState, EmptyState } from "../../components/ui/ContentState";
 import { CardComparePanel, CardPlayedWithPanel, CardSynergyPanel } from "./CardRelationshipPanels";
@@ -47,17 +48,21 @@ function selectPriceSeries(points: PriceHistoryPoint[]): { label: string; dated:
 }
 
 type CardTab = "info" | "usedWith" | "synergy" | "similar" | "intent" | "decks" | "compare";
+type CardSurface = "overview" | "decks" | "more";
 
-const TABS: { key: CardTab; label: string }[] = [
-  { key: "info", label: "Info" },
-  { key: "usedWith", label: "Played With" },
-  { key: "synergy", label: "Synergy" },
-  { key: "similar", label: "Similar Effects" },
-  { key: "intent", label: "Intent Cards" },
+const SURFACES: { key: CardSurface; label: string }[] = [
+  { key: "overview", label: "Overview" },
   { key: "decks", label: "Decks" },
+  { key: "more", label: "More" },
+];
+const OVERVIEW_TABS: CardTab[] = ["info", "usedWith"];
+const MORE_TABS: { key: Extract<CardTab, "synergy" | "similar" | "intent" | "compare">; label: string }[] = [
+  { key: "synergy", label: "Synergy" },
+  { key: "similar", label: "Similar effects" },
+  { key: "intent", label: "Intent cards" },
   { key: "compare", label: "Compare" },
 ];
-const TAB_KEYS = TABS.map((t) => t.key);
+const TAB_KEYS: CardTab[] = [...OVERVIEW_TABS, "decks", ...MORE_TABS.map((tab) => tab.key)];
 
 export default function CardDetail() {
   const { slug = "" } = useParams<{ slug: string }>();
@@ -71,28 +76,28 @@ export default function CardDetail() {
   const [editionIndex, setEditionIndex] = useState(0);
   const [editionsExpanded, setEditionsExpanded] = useState(false);
   const [tab, setTab] = useTabParam("tab", TAB_KEYS, "info");
+  const surface: CardSurface = OVERVIEW_TABS.includes(tab) ? "overview" : tab === "decks" ? "decks" : "more";
+  const moreTab = MORE_TABS.some((item) => item.key === tab) ? tab as "synergy" | "similar" | "intent" | "compare" : "synergy";
+  const showOverview = surface === "overview";
   const options = useQuery({ queryKey: ["option-definitions"], queryFn: gatcgApi.getOptionDefinitions });
   const rarityDisplay = (rarity: number) =>
     options.data?.rarity.find((r) => r.value === String(rarity))?.display ?? String(rarity);
-  // Gate every large published dataset behind the tab that actually needs it — CardDetail used to
-  // eagerly fetch every dataset below (roughly 60MB+ combined: deck-card-index, deck-popularity-index,
-  // hipster, omnidex index/players, archetype-taxonomy, community deck-references) on every page
-  // load regardless of which of the 7 tabs (if any) the visitor opened, since "info" is the default.
-  // Only "info"/"similar" need cardStatsData/quantity/community-inclusion; the rest are per-tab.
+  // Keep the large published datasets behind the grouped surface that needs them. Overview loads
+  // usage and common pairings; Decks and each secondary analysis still load only when selected.
   const needsDecksTab = tab === "decks";
-  const needsUsedWithTab = tab === "usedWith";
-  const needsSynergyTab = tab === "synergy";
-  const needsIntentTab = tab === "intent";
+  const needsUsedWithTab = showOverview;
+  const needsSynergyTab = surface === "more" && moreTab === "synergy";
+  const needsIntentTab = surface === "more" && moreTab === "intent";
   const needsPopularityIndex = needsDecksTab || needsSynergyTab;
 
   const prices = usePriceLookup();
   const priceHistoryData = usePriceHistoryData();
-  const cardStatsData = useCardStatsData(tab === "info" || tab === "similar");
+  const cardStatsData = useCardStatsData(showOverview || (surface === "more" && moreTab === "similar"));
   const cardStat = cardStatsData?.cards.find((c) => c.name === card?.name);
   const metaShare = cardStat && cardStatsData && cardStatsData.decksConsidered > 0 ? cardStat.deckCount / cardStatsData.decksConsidered : null;
-  const communityCardInclusion = useCommunityBlendedCardInclusion("STANDARD", tab === "info");
+  const communityCardInclusion = useCommunityBlendedCardInclusion("STANDARD", showOverview);
   const communityInclusion = communityCardInclusion?.overall.find((c) => c.name === card?.name);
-  const cardQuantityStatsData = useCardQuantityStatsData(tab === "info");
+  const cardQuantityStatsData = useCardQuantityStatsData(showOverview);
   const cardQuantityStat = cardQuantityStatsData?.cards.find((c) => c.name === card?.name);
   // Below this many decks, a quantity bucket is more likely a one-off brew or data quirk than a
   // real signal — same MIN_SAMPLE_SIZE magnitude used everywhere else in this codebase.
@@ -280,33 +285,39 @@ export default function CardDetail() {
       <CardHero card={card} edition={edition} editionIndex={editionIndex} editionsExpanded={editionsExpanded} price={price} priceSeries={priceSeries} rarityLabel={rarityDisplay} onEditionChange={setEditionIndex} onEditionsExpandedChange={setEditionsExpanded} />
 
       <div className="sticky top-0 z-20 -mx-2 mt-5 rounded-xl border border-ctp-surface1/70 bg-ctp-base/95 px-2 pt-1 shadow-md shadow-black/20 backdrop-blur">
-        <Tabs tabs={TABS} active={tab} onChange={setTab} label="Card data" variant="pill" />
+        <Tabs tabs={SURFACES} active={surface} onChange={(next) => setTab(next === "overview" ? "info" : next === "decks" ? "decks" : moreTab)} label="Card data" variant="pill" />
       </div>
 
-      {tab === "info" && (
+      {showOverview && (
         <CardInfoPanel card={card} illustrator={edition?.illustrator} cardStat={cardStat} metaShare={metaShare} communityShare={communityInclusion?.percentOfDecks} quantityBuckets={quantityBuckets} resolveReference={resolveReference} />
+      )}
+
+      {showOverview && (
+        <CardPlayedWithPanel cardName={card.name} deckCount={combination.deckCount} topCards={comboTopCards} cardImages={comboCardImages} />
       )}
 
       {tab === "decks" && <CardDecksPanel cardName={card.name} archetypes={playedByArchetypes} recentDecks={recentDecks} topDecks={topDecks} uniqueDecks={uniqueDecks} communityDecks={communityDeckRefs} playerName={playerName} />}
 
-      {tab === "usedWith" && (
-        <CardPlayedWithPanel cardName={card.name} deckCount={combination.deckCount} topCards={comboTopCards} cardImages={comboCardImages} />
+      {surface === "more" && (
+        <div className="mt-5 flex flex-wrap gap-2" aria-label="More card data">
+          {MORE_TABS.map((item) => <Chip key={item.key} active={moreTab === item.key} onClick={() => setTab(item.key)}>{item.label}</Chip>)}
+        </div>
       )}
 
-      {tab === "synergy" && (
+      {surface === "more" && moreTab === "synergy" && (
         <CardSynergyPanel cardName={card.name} cards={synergy.cards} totalDecks={synergy.totalDecks} cardImages={synergyCardImages} />
       )}
 
-      {tab === "similar" && (
+      {surface === "more" && moreTab === "similar" && (
         <CardSimilarEffectsPanel card={card} cardStat={cardStat} similarCards={similarCardsSorted} resolveReference={resolveReference} />
       )}
 
-      {tab === "intent" && (
+      {surface === "more" && moreTab === "intent" && (
         <CardIntentPanel cardName={card.name} packages={cardPackages} feeds={visibleIntentFeeds} poweredBy={visibleIntentPoweredBy} experimentalCount={experimentalIntentCount} showExperimental={showExperimentalIntent} onShowExperimentalChange={setShowExperimentalIntent} evidenceFor={intentPackageEvidence} />
       )}
 
 
-      {tab === "compare" && (
+      {surface === "more" && moreTab === "compare" && (
         <CardComparePanel options={compareCardNames} input={compareInput} selected={compareWith} onInputChange={setCompareInput} onAdd={addCompareCard} onRemove={removeCompareCard} />
       )}
     </PageLayout>

@@ -9,8 +9,8 @@ import CardComparisonTable from "../compare/CardComparisonTable";
 
 export function CardPlayedWithPanel({ cardName, deckCount, topCards, cardImages }: { cardName: string; deckCount?: number; topCards: TopCardsBySection; cardImages: Map<string, Card> }) {
   const hasCards = topCards.main.length > 0 || topCards.material.length > 0 || topCards.sideboard.length > 0;
-  return <Section className="mt-4" heading="compact" title={`Most used with ${cardName}`}>
-    {hasCards ? <><p className="mt-1 text-xs text-ctp-subtext0">{deckCount !== undefined && `Across ${deckCount} decks. `}Other cards most often played alongside this one.</p><div className="mt-3"><TopCardsSections topCards={topCards} cardImages={cardImages} /></div></> : <InlineState className="mt-4 text-sm">Not enough decks running {cardName} to say what's played alongside it yet.</InlineState>}
+  return <Section className="mt-5" heading="compact" title="Often played together" actions={deckCount !== undefined && <span className="text-xs text-ctp-subtext0">{deckCount} decks</span>}>
+    {hasCards ? <TopCardsSections topCards={topCards} cardImages={cardImages} layout="grid" /> : <InlineState className="mt-4 text-sm">Not enough decks running {cardName} to show common pairings yet.</InlineState>}
   </Section>;
 }
 
