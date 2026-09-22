@@ -19,7 +19,9 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { formatCountry } from "../../lib/format";
 import { isProvisionalRating } from "../../lib/eloProvisional";
 import PageLayout from "../../components/layout/PageLayout";
+import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import { EmptyState } from "../../components/ui/ContentState";
 import PlayerEventFilters from "./PlayerEventFilters";
 
@@ -127,6 +129,7 @@ export default function PlayerProfile() {
   }, [eventCategory, eventChampion, eventSeasonId]);
 
   const visibleEvents = events.slice(0, eventsVisibleCount);
+  const recentEvents = allEvents.slice(0, 3);
 
   const judgedEvents = useMemo(
     () =>
@@ -183,140 +186,76 @@ export default function PlayerProfile() {
 
       {(player || judge) && (
         <>
-          <h1 className="mt-2 text-2xl font-bold text-ctp-blue">{player?.username ?? judge?.username}</h1>
-          {(() => {
-            const code = player?.country ?? judge?.country ?? "";
-            const region = formatCountry(code);
-            return (
-              region && (
-                <p className="mt-1 text-sm text-ctp-subtext0">
-                  <Link to={`/regions?group=country&region=${code}`} className="hover:text-ctp-blue hover:underline">
-                    {region}
-                  </Link>
-                </p>
-              )
-            );
-          })()}
-          {rating && (
-            <p className="mt-1 text-sm text-ctp-subtext1">
-              Rating {Math.round(rating.rating)} · {rating.wins}-{rating.losses}-{rating.ties} across{" "}
-              {rating.matches} matches
-              {isProvisionalRating(rating.matches) && (
-                <span className="ml-1.5 text-xs text-ctp-yellow">
-                  (provisional — <Link to="/methodology#elo" className="hover:underline">learn more</Link>)
-                </span>
-              )}
-            </p>
-          )}
-          {ratingHistory && ratingHistory.length >= 2 && (
-            <div className="mt-2 max-w-sm rounded-md border border-ctp-surface1 p-3">
-              <p className="text-xs text-ctp-subtext0">Rating over time, {ratingHistory.length} events</p>
-              <HistoryChart points={ratingHistory.map((p) => ({ date: p.date, value: p.rating, detail: `${new Date(p.date).toLocaleDateString()}: ${Math.round(p.rating)} rating` }))} label="Rating" formatValue={(value) => Math.round(value).toString()} compact />
-              <div className="mt-1 flex justify-between text-[10px] text-ctp-subtext0">
-                <span>{new Date(ratingHistory[0].date).toLocaleDateString()}</span>
-                <span>{new Date(ratingHistory[ratingHistory.length - 1].date).toLocaleDateString()}</span>
+          <Panel elevation={1} className="mt-3 overflow-hidden">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <h1 className="text-2xl font-bold text-ctp-text">{player?.username ?? judge?.username}</h1>
+                {(() => {
+                  const code = player?.country ?? judge?.country ?? "";
+                  const region = formatCountry(code);
+                  return region && (
+                    <Link to={`/regions?group=country&region=${code}`} className="mt-1 inline-block text-sm text-ctp-subtext0 hover:text-ctp-blue hover:underline">
+                      {region}
+                    </Link>
+                  );
+                })()}
               </div>
+              {isProvisionalRating(rating?.matches ?? 0) && rating && (
+                <Link to="/methodology#elo" className="rounded-full bg-ctp-yellow/10 px-2.5 py-1 text-xs font-medium text-ctp-yellow hover:underline">
+                  Provisional rating
+                </Link>
+              )}
             </div>
-          )}
-          {hipster && (
-            <p className="mt-1 text-sm text-ctp-subtext1">
-              Novelty score {(hipster.avgScore * 100).toFixed(0)}
-              <span className="text-ctp-subtext0">
-                {" "}
-                — how unusual their builds are relative to other decks of the same Champion, averaged
-                across {hipster.deckCount} deck{hipster.deckCount === 1 ? "" : "s"}
-              </span>
-            </p>
-          )}
-          {judge && (
-            <p className="mt-1 text-sm text-ctp-subtext1">
-              Judge level {judge.judgeLevel} · {judge.judgeExperience.toLocaleString()} experience
-            </p>
-          )}
-          {!player && judge && (
-            <p className="mt-1 text-sm text-ctp-subtext0">Not in the ingested player roster — judge only.</p>
-          )}
-          {playerAchievements.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-1.5">
-              {playerAchievements.map(({ unlock, definition }) => (
-                <span
-                  key={definition.id}
-                  title={`${definition.description} (${unlock.context})`}
-                  className="rounded-full border border-ctp-yellow px-2 py-0.5 text-xs text-ctp-yellow"
-                >
-                  {definition.name}
-                </span>
-              ))}
+
+            <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
+              {rating && <ProfileMetric label="Rating" value={Math.round(rating.rating).toLocaleString()} />}
+              {rating && <ProfileMetric label="Record" value={`${rating.wins}-${rating.losses}${rating.ties ? `-${rating.ties}` : ""}`} />}
+              {player && <ProfileMetric label="Events" value={allEvents.length.toLocaleString()} />}
+              {judge && <ProfileMetric label="Judge level" value={judge.judgeLevel} />}
             </div>
-          )}
+
+            {ratingHistory && ratingHistory.length >= 2 && (
+              <div className="mt-4 border-t border-ctp-surface1 pt-3">
+                <p className="text-xs font-medium text-ctp-subtext0">Rating trend</p>
+                <HistoryChart points={ratingHistory.map((p) => ({ date: p.date, value: p.rating, detail: `${new Date(p.date).toLocaleDateString()}: ${Math.round(p.rating)} rating` }))} label="Rating" formatValue={(value) => Math.round(value).toString()} compact />
+              </div>
+            )}
+
+            {(hipster || judge || (!player && judge) || playerAchievements.length > 0) && (
+              <details className="mt-4 border-t border-ctp-surface1 pt-3">
+                <summary className="cursor-pointer text-sm font-medium text-ctp-blue">More profile details</summary>
+                <div className="mt-3 space-y-2 text-sm text-ctp-subtext1">
+                  {hipster && <p>Build novelty {(hipster.avgScore * 100).toFixed(0)} across {hipster.deckCount} deck{hipster.deckCount === 1 ? "" : "s"}.</p>}
+                  {judge && <p>{judge.judgeExperience.toLocaleString()} judge experience.</p>}
+                  {!player && judge && <p className="text-ctp-subtext0">This judge is not in the ingested player roster.</p>}
+                  {playerAchievements.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {playerAchievements.map(({ unlock, definition }) => (
+                        <span key={definition.id} title={`${definition.description} (${unlock.context})`} className="rounded-full border border-ctp-yellow px-2 py-0.5 text-xs text-ctp-yellow">
+                          {definition.name}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </details>
+            )}
+          </Panel>
         </>
       )}
 
       {availableTabs.length > 1 && (
-        <div className="mt-4 flex flex-wrap gap-2 border-b border-ctp-surface1 pb-2">
-          {availableTabs.map((t) => (
-            <button
-              key={t.key}
-              type="button"
-              onClick={() => setManualTab(t.key)}
-              aria-pressed={tab === t.key}
-              className={`rounded-md border px-2.5 py-1 text-xs ${
-                tab === t.key ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
+        <div className="mt-5"><Tabs tabs={availableTabs} active={tab} onChange={setManualTab} label="Player profile view" baseId="player-profile" variant="pill" /></div>
       )}
 
-      {tab === "overview" && upsets.length > 0 && (
-        <Section className="mt-6" heading="compact" collapsible defaultOpen={false} title="Notable upsets">
-          <div className="mt-2 space-y-1 text-sm">
-            {upsets.map((u, i) => (
-              <div key={i} className="text-ctp-subtext1">
-                {u.winnerId === playerId ? (
-                  <span className="text-ctp-green">Won</span>
-                ) : (
-                  <span className="text-ctp-red">Lost</span>
-                )}{" "}
-                a {Math.abs(u.eloSwing).toFixed(0)}-point swing at{" "}
-                <Link to={`/events/${u.eventId}`} className="text-ctp-blue hover:underline">
-                  {u.eventName}
-                </Link>
-              </div>
-            ))}
-          </div>
+      <TabPanel baseId="player-profile" tab="overview" active={tab}>
+      {recentEvents.length > 0 && (
+        <Section className="mt-6" heading="compact" title="Recent events" actions={allEvents.length > recentEvents.length ? <button type="button" onClick={() => setManualTab("events")} className="text-xs font-medium text-ctp-blue hover:underline">View all {allEvents.length}</button> : undefined}>
+          <div className="space-y-2">{recentEvents.map((event) => <PlayerEventDecklistRow key={event.id} event={event} playerId={playerId} />)}</div>
         </Section>
       )}
 
-      {tab === "overview" && rivalsProfile && rivalsProfile.rivals.length > 0 && (
-        <Section className="mt-6" heading="compact" collapsible defaultOpen={false} title="Rivals" description="Most-played opponents, worst matchup first.">
-          <div className="mt-2 space-y-1">
-            {rivalsProfile.rivals.map((r) => {
-              const opponent = playersData?.players.find((p) => p.id === r.opponentId);
-              return (
-                <Link
-                  key={r.opponentId}
-                  to={`/players/${r.opponentId}`}
-                  className="flex items-center gap-2 text-sm hover:text-ctp-blue"
-                >
-                  <span className="flex-1 truncate text-ctp-text">{opponent?.username ?? `Player #${r.opponentId}`}</span>
-                  <span className="text-ctp-subtext0">
-                    {r.wins}-{r.losses}
-                    {r.ties > 0 ? `-${r.ties}` : ""}
-                  </span>
-                  <span className={r.winRate < 0.5 ? "text-ctp-red" : r.winRate > 0.5 ? "text-ctp-green" : "text-ctp-subtext1"}>
-                    {(r.winRate * 100).toFixed(0)}%
-                  </span>
-                </Link>
-              );
-            })}
-          </div>
-        </Section>
-      )}
-
-      {tab === "overview" && deckProfile && deckProfile.topChampions.length > 0 && (
+      {deckProfile && deckProfile.topChampions.length > 0 && (
         <Section className="mt-6" heading="compact" title={`Most played champions (${deckProfile.totalDecks} decks)`}>
           <div className="mt-2 grid gap-2 sm:grid-cols-2">
             {deckProfile.topChampions.map((c) => {
@@ -346,15 +285,39 @@ export default function PlayerProfile() {
         </Section>
       )}
 
-      {tab === "overview" && allTopCardNames.length > 0 && deckProfile && (
-        <Section className="mt-6" heading="compact" title="Most played cards">
+      {allTopCardNames.length > 0 && deckProfile && (
+        <Section className="mt-6" heading="compact" collapsible defaultOpen={false} title="Most played cards">
           <div className="mt-2">
             <TopCardsSections topCards={deckProfile.topCards} cardImages={cardImages} />
           </div>
         </Section>
       )}
 
-      {tab === "events" && player && (
+      {(upsets.length > 0 || (rivalsProfile && rivalsProfile.rivals.length > 0)) && (
+        <Section className="mt-6" heading="compact" collapsible defaultOpen={false} title="Competitive context" description="Notable rating swings and frequently faced opponents.">
+          {upsets.length > 0 && (
+            <div className="space-y-1 text-sm">
+              <h3 className="mb-2 font-medium text-ctp-text">Notable upsets</h3>
+              {upsets.map((u, i) => <div key={i} className="text-ctp-subtext1"><span className={u.winnerId === playerId ? "text-ctp-green" : "text-ctp-red"}>{u.winnerId === playerId ? "Won" : "Lost"}</span>{" "}a {Math.abs(u.eloSwing).toFixed(0)}-point swing at <Link to={`/events/${u.eventId}`} className="text-ctp-blue hover:underline">{u.eventName}</Link></div>)}
+            </div>
+          )}
+          {rivalsProfile && rivalsProfile.rivals.length > 0 && (
+            <div className={upsets.length > 0 ? "mt-5 border-t border-ctp-surface1 pt-4" : ""}>
+              <h3 className="mb-2 text-sm font-medium text-ctp-text">Rivals</h3>
+              <div className="space-y-1">
+                {rivalsProfile.rivals.map((r) => {
+                  const opponent = playersData?.players.find((p) => p.id === r.opponentId);
+                  return <Link key={r.opponentId} to={`/players/${r.opponentId}`} className="flex items-center gap-2 text-sm hover:text-ctp-blue"><span className="flex-1 truncate text-ctp-text">{opponent?.username ?? `Player #${r.opponentId}`}</span><span className="text-ctp-subtext0">{r.wins}-{r.losses}{r.ties > 0 ? `-${r.ties}` : ""}</span><span className={r.winRate < 0.5 ? "text-ctp-red" : r.winRate > 0.5 ? "text-ctp-green" : "text-ctp-subtext1"}>{(r.winRate * 100).toFixed(0)}%</span></Link>;
+                })}
+              </div>
+            </div>
+          )}
+        </Section>
+      )}
+      </TabPanel>
+
+      <TabPanel baseId="player-profile" tab="events" active={tab}>
+      {player && (
         <Section
           className="mt-6"
           heading="compact"
@@ -371,8 +334,10 @@ export default function PlayerProfile() {
           <LoadMore remaining={events.length - eventsVisibleCount} onLoadMore={() => setEventsVisibleCount((v) => v + PAGE_SIZE)} />
         </Section>
       )}
+      </TabPanel>
 
-      {tab === "judged" && judge && (
+      <TabPanel baseId="player-profile" tab="judged" active={tab}>
+      {judge && (
         <Section className="mt-6" heading="compact" title={`Judged events (${judgedEvents.length})`}>
           <div className="mt-2 space-y-2">
             {visibleJudgedEvents.map((event) => (
@@ -386,6 +351,11 @@ export default function PlayerProfile() {
           />
         </Section>
       )}
+      </TabPanel>
     </PageLayout>
   );
+}
+
+function ProfileMetric({ label, value }: { label: string; value: string | number }) {
+  return <div className="rounded-lg bg-ctp-base/70 px-3 py-2"><div className="text-lg font-semibold tabular-nums text-ctp-text">{value}</div><div className="text-xs text-ctp-subtext0">{label}</div></div>;
 }
