@@ -13,7 +13,6 @@ import UserDeckHeader from "./UserDeckHeader";
 import UserDecklistPanel from "./UserDecklistPanel";
 import PageLayout from "../../components/layout/PageLayout";
 import UserDeckStats from "./UserDeckStats";
-import DeckTags from "./DeckTags";
 import PrimerMarkdown from "./PrimerMarkdown";
 import Tabs from "../../components/ui/Tabs";
 import { useTabParam } from "../../lib/useTabParam";
@@ -25,10 +24,10 @@ import { sideboardPointCost } from "../deckbuilder/validateDeck";
 import CardSearchPicker from "../../components/CardSearchPicker";
 import { EditableDecklistGrid, EDIT_SECTIONS, MaybeboardCardTile, type DeckSectionKey } from "./SavedDeckCardEditor";
 import DeckSaveBar from "./DeckSaveBar";
-import { DeckVersionHistory, MyDeckOverview } from "./MyDeckDetailSections";
+import { DeckVersionHistory } from "./MyDeckDetailSections";
 
-type DeckTab = "overview" | "decklist" | "analysis" | "primer" | "versions" | "settings";
-const DECK_TABS = [{ key: "overview", label: "Overview" }, { key: "decklist", label: "Decklist" }, { key: "analysis", label: "Improve" }, { key: "primer", label: "Primer" }, { key: "versions", label: "History" }] satisfies { key: DeckTab; label: string }[];
+type DeckTab = "decklist" | "analysis" | "primer" | "versions" | "settings";
+const DECK_TABS = [{ key: "decklist", label: "Cards" }, { key: "analysis", label: "Insights" }, { key: "primer", label: "Primer" }, { key: "versions", label: "History" }] satisfies { key: DeckTab; label: string }[];
 const DECK_TAB_KEYS: DeckTab[] = [...DECK_TABS.map(({ key }) => key), "settings"];
 
 export default function MyDeckDetail() {
@@ -53,7 +52,7 @@ export default function MyDeckDetail() {
   const [tagsText, setTagsText] = useState("");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
-  const [tab, setTab] = useTabParam<DeckTab>("tab", DECK_TAB_KEYS, "overview");
+  const [tab, setTab] = useTabParam<DeckTab>("tab", DECK_TAB_KEYS, "decklist");
   const [cardInput, setCardInput] = useState("");
   const [addDestination, setAddDestination] = useState<"automatic" | "sideboard" | "maybeboard">("automatic");
   const cardCatalog = useCardCatalog();
@@ -303,29 +302,25 @@ export default function MyDeckDetail() {
     sideboard: deck.decklist.sideboard.reduce((sum, line) => sum + line.quantity, 0),
     maybeboard: deck.maybeboard.reduce((sum, line) => sum + line.quantity, 0),
   };
-  const sideboardPoints = cardCatalog.length === 0 ? undefined : deck.decklist.sideboard.reduce((sum, line) => sum + line.quantity * sideboardPointCost(catalogByName.get(line.card)), 0);
   const editedSideboardPoints = cardCatalog.length === 0 ? undefined : editedDecklist.sideboard.reduce((sum, line) => sum + line.quantity * sideboardPointCost(catalogByName.get(line.card)), 0);
 
   return <PageLayout data-component="MyDeckDetail">
     <Link to="/decks/edit" className="text-sm text-ctp-blue hover:underline">← My Decks</Link>
     <div className="mt-4">
-      <UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} description={deck.description} visibility={deck.visibility} />
+      <UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} visibility={deck.visibility} prominent />
       {renamingTitle ? (
         <form className="mt-2 flex flex-wrap items-center gap-2" onSubmit={(event) => { event.preventDefault(); void saveTitle(); }}>
           <input autoFocus required maxLength={160} value={title} onChange={(event) => setTitle(event.target.value)} aria-label="Deck title" className="min-w-0 flex-1 max-w-sm rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1 text-sm text-ctp-text" />
           <button disabled={busy} type="submit" className="rounded bg-ctp-blue px-2.5 py-1 text-xs font-medium text-ctp-base disabled:opacity-50">Save</button>
           <button type="button" onClick={() => { setTitle(deck.title); setRenamingTitle(false); }} className="rounded border border-ctp-surface1 px-2.5 py-1 text-xs text-ctp-subtext1">Cancel</button>
         </form>
-      ) : (
-        <button type="button" onClick={() => setRenamingTitle(true)} className="mt-2 text-xs font-medium text-ctp-blue hover:underline">Rename deck</button>
-      )}
-      <DeckTags tags={deck.tags} /><div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2"><p className="text-xs text-ctp-subtext0">Updated {new Date(deck.updatedAt).toLocaleDateString()} · {deck.versions.length} version{deck.versions.length === 1 ? "" : "s"}</p>{deck.publicSlug && deck.visibility !== "private" && <Link to={`/decks/${deck.publicSlug}`} className="text-sm font-medium text-ctp-blue hover:underline">{deck.visibility === "public" ? "View public deck →" : "View shared deck →"}</Link>}</div>
+      ) : null}
+      <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-ctp-subtext0"><span>{sectionCounts.main} main</span><span>{sectionCounts.material} material</span>{sectionCounts.sideboard > 0 && <span>{sectionCounts.sideboard} sideboard</span>}<span>Updated {new Date(deck.updatedAt).toLocaleDateString()}</span></div>
     </div>
-    <div className="mt-5 flex items-center gap-2">{!editing && <button type="button" onClick={startEditing} className="shrink-0 rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base">Edit deck</button>}<details className="relative"><summary className="cursor-pointer list-none rounded-md border border-ctp-surface1 px-3 py-2 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More</summary><div className="absolute left-0 top-full z-30 mt-2 grid min-w-48 gap-1 rounded-lg border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><Link to={`/deck-builder?improveDeck=${encodeURIComponent(deck.id)}`} className="rounded px-3 py-2 text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Tune in builder</Link><Link to={comparePath} className="rounded px-3 py-2 text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Compare</Link><Link to={goldfishPath} className="rounded px-3 py-2 text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Goldfish test</Link></div></details><button type="button" onClick={() => setTab("settings")} className="ml-auto rounded-md px-3 py-2 text-sm text-ctp-subtext1 hover:bg-ctp-mantle hover:text-ctp-text">Settings</button></div>
-    <div className="mt-6"><Tabs tabs={DECK_TABS} active={tab === "settings" ? "overview" : tab} onChange={setTab} label="Deck details" baseId="owned-deck" /></div>
+    <div className="mt-5 flex items-center gap-2">{!editing && <button type="button" onClick={startEditing} className="min-h-11 shrink-0 rounded-lg bg-ctp-blue px-4 py-2 text-sm font-medium text-ctp-base">Edit deck</button>}<details className="relative"><summary className="flex min-h-11 cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-4 py-2 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More</summary><div className="absolute left-0 top-full z-30 mt-2 grid min-w-52 gap-1 rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><Link to={`/deck-builder?improveDeck=${encodeURIComponent(deck.id)}`} className="rounded-lg px-3 py-2.5 text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Tune in builder</Link><Link to={comparePath} className="rounded-lg px-3 py-2.5 text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Compare decks</Link><Link to={goldfishPath} className="rounded-lg px-3 py-2.5 text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Goldfish test</Link>{deck.publicSlug && deck.visibility !== "private" && <Link to={`/decks/${deck.publicSlug}`} className="rounded-lg px-3 py-2.5 text-sm text-ctp-subtext1 hover:bg-ctp-mantle">View shared deck</Link>}<div className="my-1 border-t border-ctp-surface1" /><button type="button" onClick={() => setRenamingTitle(true)} className="rounded-lg px-3 py-2.5 text-left text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Rename</button><button type="button" onClick={() => setTab("settings")} className="rounded-lg px-3 py-2.5 text-left text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Details &amp; sharing</button></div></details></div>
+    <div className="mt-6"><Tabs tabs={DECK_TABS} active={tab === "settings" ? "decklist" : tab} onChange={setTab} label="Deck details" baseId="owned-deck" /></div>
     {error && <Panel tone="danger" padding="sm" className="mt-4 text-sm text-ctp-red">{error}</Panel>}
     {notice && <Panel tone="success" padding="sm" className="mt-4 text-sm text-ctp-green">{notice}</Panel>}
-    {tab === "overview" && <MyDeckOverview deck={deck} sectionCounts={sectionCounts} sideboardPoints={sideboardPoints} />}
     {tab === "settings" && <section id="owned-deck-panel-settings" role="tabpanel" aria-labelledby="owned-deck-tab-settings" tabIndex={0} className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
       <h2 className="font-semibold text-ctp-text">Details and sharing</h2>
       <form className="mt-3 space-y-2" onSubmit={(event) => { event.preventDefault(); void run(async () => { const tags = tagsText.split(",").map((tag) => tag.trim()).filter(Boolean); if (tags.length > 8) throw new Error("Use no more than 8 tags."); if (tags.some((tag) => tag.length < 2 || tag.length > 24)) throw new Error("Each tag must be 2–24 characters."); await accountApi.updateDeckMetadata(deck.id, { title, description, tags }); await refresh(); }); }}>
@@ -347,7 +342,7 @@ export default function MyDeckDetail() {
       </div>
     </section>}
     {tab === "analysis" && <section id="owned-deck-panel-analysis" role="tabpanel" aria-labelledby="owned-deck-tab-analysis" tabIndex={0}><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} title={deck.title} ownerDeckId={deck.id} previousDecklist={previousDecklist} /></section>}
-    {tab === "decklist" && <><UserDecklistPanel decklist={deck.decklist} format={deck.format} ownerDeckId={editing ? undefined : deck.id} collectionSource={editing ? undefined : `Deck: ${deck.title}`}>
+    {tab === "decklist" && <><UserDecklistPanel decklist={deck.decklist} format={deck.format} ownerDeckId={editing ? undefined : deck.id} collectionSource={editing ? undefined : `Deck: ${deck.title}`} showBuilderAction={false}>
       {editing ? <div className="mt-3 pb-[calc(5rem+env(safe-area-inset-bottom))] sm:pb-0">
         <div className="mb-3"><h2 className="text-lg font-semibold text-ctp-text">Edit cards</h2><p className="mt-1 text-xs text-ctp-subtext1">Search for a card, then adjust quantities directly in each section.</p></div>
         <div className="mb-4 rounded-lg border border-ctp-surface1 bg-ctp-base p-3"><p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Section balance</p><DeckSectionBalance compact sideboardPoints={editedSideboardPoints} counts={{ main: editedDecklist.main.reduce((sum, line) => sum + line.quantity, 0), material: editedDecklist.material.reduce((sum, line) => sum + line.quantity, 0), sideboard: editedDecklist.sideboard.reduce((sum, line) => sum + line.quantity, 0) }} /></div>
@@ -368,12 +363,13 @@ export default function MyDeckDetail() {
       </div> : undefined}
     </UserDecklistPanel>
       {/* Supplement the decklist; panel children replace it with the editor while editing. */}
-      <section className="mt-5 rounded-lg border border-dashed border-ctp-yellow/60 bg-ctp-yellow/5 p-4">
-        <div className="flex flex-wrap items-start justify-between gap-3"><div><h3 className="font-medium text-ctp-yellow">Maybeboard <span className="text-sm font-normal text-ctp-subtext0">({maybeboardLines.reduce((sum, line) => sum + line.quantity, 0)})</span></h3><p className="mt-1 text-xs text-ctp-subtext1">Cards under consideration, outside construction and analysis.</p></div><div className="flex gap-2"><button type="button" disabled={!maybeboardText.trim()} onClick={addMaybeboardToEditor} className="min-h-10 rounded border border-ctp-blue px-2 text-xs text-ctp-blue disabled:opacity-50">Move all to editor</button><button type="button" disabled={busy} onClick={() => void saveMaybeboard()} className="min-h-10 rounded bg-ctp-yellow px-3 text-xs font-medium text-ctp-base disabled:opacity-50">Save maybeboard</button></div></div>
+      <details className="group mt-5 rounded-xl border border-dashed border-ctp-yellow/50 bg-ctp-yellow/5 p-3">
+        <summary className="flex min-h-10 cursor-pointer list-none items-center justify-between gap-3 text-sm font-medium text-ctp-yellow [&::-webkit-details-marker]:hidden"><span>Maybeboard <span className="font-normal text-ctp-subtext0">({maybeboardLines.reduce((sum, line) => sum + line.quantity, 0)})</span></span><span aria-hidden="true" className="text-ctp-subtext0 transition-transform group-open:rotate-180">⌄</span></summary>
+        <div className="mt-3 flex flex-wrap justify-end gap-2"><button type="button" disabled={!maybeboardText.trim()} onClick={addMaybeboardToEditor} className="min-h-10 rounded-lg border border-ctp-blue px-3 text-xs text-ctp-blue disabled:opacity-50">Move all to editor</button><button type="button" disabled={busy} onClick={() => void saveMaybeboard()} className="min-h-10 rounded-lg bg-ctp-yellow px-3 text-xs font-medium text-ctp-base disabled:opacity-50">Save</button></div>
         {maybeboardLines.length > 0 ? <div className="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-4">{maybeboardLines.map((line) => <MaybeboardCardTile key={line.card} line={line} card={catalogByName.get(line.card)} onChangeQuantity={(quantity) => changeMaybeboardQuantity(line.card, quantity)} onMove={() => moveMaybeboardCard(line)} onRemove={() => removeMaybeboardCard(line.card)} />)}</div> : <InlineState className="mt-3">No cards in the maybeboard.</InlineState>}
         <details className="mt-3"><summary className="cursor-pointer text-xs text-ctp-subtext0">Edit maybeboard as text</summary><textarea rows={5} value={maybeboardText} onChange={(event) => setMaybeboardText(event.target.value)} placeholder={"2x Card to test\n4x Another option"} aria-label="Maybeboard" className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-3 font-mono text-sm" /></details>
-        <p className="mt-2 text-xs text-ctp-subtext0">Saved to this deck, independently of version history. It never affects legality, statistics, exports, or publishing.</p>
-      </section>
+        <p className="mt-2 text-xs text-ctp-subtext0">Maybeboard cards do not affect the deck or its analysis.</p>
+      </details>
     </>}
     {tab === "primer" && <section id="owned-deck-panel-primer" role="tabpanel" aria-labelledby="owned-deck-tab-primer" tabIndex={0} className="mt-6 grid gap-5 lg:grid-cols-2">
       <form className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4" onSubmit={(event) => { event.preventDefault(); void run(async () => { await accountApi.updateDeckMetadata(deck.id, { primerMarkdown }); await refresh(); }); }}>
