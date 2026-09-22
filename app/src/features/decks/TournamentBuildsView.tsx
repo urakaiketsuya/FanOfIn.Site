@@ -116,7 +116,7 @@ export default function TournamentBuildsView({
 
   useEffect(() => {
     setVisibleCount(BUILDS_PAGE_SIZE);
-  }, [championName, minPlayers, elementFilter, sortMode, contentFilters]);
+  }, [championName, minPlayers, elementFilter, sortMode, secondarySortMode, contentFilters]);
 
   const visible = sorted.slice(0, visibleCount);
   const activeFilterCount = (minPlayers === "2plus" ? 1 : 0) + elementFilter.length + deckContentFilterCount(contentFilters);
@@ -125,18 +125,16 @@ export default function TournamentBuildsView({
     ...elementFilter.map((element) => `Deck element: ${element}`),
     ...deckContentFilterLabels(contentFilters),
   ];
-  const championImages = useChampionCardImages(
-    Array.from(new Set(visible.map((d) => d.championName).filter((n): n is string => n !== null))),
-  );
+  const championImages = useChampionCardImages(Array.from(new Set(visible.map((d) => d.championName).filter((n): n is string => n !== null))));
 
   return (
     <>
-      <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
+      <div className="mt-4 grid grid-cols-2 gap-2 text-sm sm:flex sm:flex-wrap sm:items-center">
         <select
           value={championName ?? ""}
           aria-label="Champion"
           onChange={(e) => setChampionName(e.target.value || null)}
-          className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+          className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text sm:flex-1"
         >
           <option value="">All champions</option>
           {championsPresent.map((name) => (
@@ -146,28 +144,27 @@ export default function TournamentBuildsView({
           ))}
         </select>
         <select
-          value={secondarySortMode ?? ""}
-          aria-label="Then sort builds by"
-          onChange={(e) => setSecondarySortMode((e.target.value || null) as BuildSortMode | null)}
-          className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
-        >
-          <option value="">No secondary sort</option>
-          {(Object.keys(BUILD_SORT_LABELS) as BuildSortMode[]).filter((mode) => mode !== sortMode && (mode !== "relevance" || deckContentFilterCount(contentFilters) > 0)).map((mode) => (
-            <option key={mode} value={mode}>Then: {mode === "mostRecent" ? "Newest" : BUILD_SORT_LABELS[mode]}</option>
-          ))}
-        </select>
-
-        <select
           value={sortMode}
           aria-label="Sort builds"
           onChange={(e) => setSortMode(e.target.value as BuildSortMode)}
-          className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+          className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text sm:flex-1"
         >
           {(Object.keys(BUILD_SORT_LABELS) as BuildSortMode[]).filter((mode) => mode !== "relevance" || deckContentFilterCount(contentFilters) > 0).map((mode) => (
             <option key={mode} value={mode}>{mode === "mostRecent" ? "Newest" : BUILD_SORT_LABELS[mode]}</option>
           ))}
         </select>
       </div>
+
+      <details className="mt-2 text-xs text-ctp-subtext0">
+        <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">More sorting options</summary>
+        <label className="mt-2 flex items-center gap-2">
+          <span>Then sort by</span>
+          <select value={secondarySortMode ?? ""} onChange={(e) => setSecondarySortMode((e.target.value || null) as BuildSortMode | null)} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text">
+            <option value="">None</option>
+            {(Object.keys(BUILD_SORT_LABELS) as BuildSortMode[]).filter((mode) => mode !== sortMode && (mode !== "relevance" || deckContentFilterCount(contentFilters) > 0)).map((mode) => <option key={mode} value={mode}>{mode === "mostRecent" ? "Newest" : BUILD_SORT_LABELS[mode]}</option>)}
+          </select>
+        </label>
+      </details>
 
       <FilterPanel activeCount={activeFilterCount} activeLabels={activeFilterLabels} resultLabel={`Show ${sorted.length.toLocaleString()} build${sorted.length === 1 ? "" : "s"}`} onClear={() => startTransition(() => { setMinPlayers("any"); setElementFilter([]); setContentFilters(() => emptyDeckContentFilters()); })}>
         <SegmentedFilter label="Players" options={[{ value: "2plus", label: "Played by 2+ people" }, { value: "any", label: "Include one-offs" }]} value={minPlayers} onChange={setMinPlayers} />
@@ -184,7 +181,7 @@ export default function TournamentBuildsView({
         </p>
       )}
 
-      <div className={`mt-2 space-y-2 transition-opacity ${isPending ? "opacity-50" : ""}`}>
+      <div className={`mt-2 grid gap-3 transition-opacity lg:grid-cols-2 lg:items-start ${isPending ? "opacity-50" : ""}`}>
         {visible.map((deck) => (
           <PopularDeckRow
             key={deck.signature}

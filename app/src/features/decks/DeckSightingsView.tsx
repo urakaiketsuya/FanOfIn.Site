@@ -181,7 +181,7 @@ export default function DeckSightingsView({
 
   useEffect(() => {
     setVisibleCount(SIGHTINGS_PAGE_SIZE);
-  }, [category, seasonId, championName, contentFilters, selectedClasses, keyword, maxPrice, outcome, sortMode, query]);
+  }, [category, seasonId, championName, contentFilters, selectedClasses, keyword, maxPrice, outcome, sortMode, secondarySortMode, query]);
 
   const visible = filtered.slice(0, visibleCount);
   const activeFilterCount = (category ? 1 : 0) + (seasonId !== null ? 1 : 0) + selectedClasses.size + (keyword ? 1 : 0) + (maxPrice !== null ? 1 : 0) + (outcome !== "all" ? 1 : 0) + deckContentFilterCount(contentFilters);
@@ -199,42 +199,28 @@ export default function DeckSightingsView({
 
   return (
     <>
-      <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
+      <div className="mt-4 grid grid-cols-2 gap-2 text-sm sm:flex sm:flex-wrap sm:items-center">
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search player, event, or champion…"
           aria-label="Search tournament results"
-          className="min-w-64 flex-1 rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0"
+          className="col-span-2 min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 sm:min-w-64 sm:flex-1"
         />
         <select
           value={championName ?? ""}
           aria-label="Champion"
           onChange={(e) => setChampionName(e.target.value || null)}
-          className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1.5 text-xs text-ctp-text"
+          className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"
         >
           <option value="">All champions</option>
           {championsPresent.map((name) => <option key={name} value={name}>{name}</option>)}
         </select>
         <select
-          value={secondarySortMode ?? ""}
-          aria-label="Then sort tournament results by"
-          onChange={(e) => setSecondarySortMode((e.target.value || null) as SightingSortMode | null)}
-          className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1.5 text-xs text-ctp-text"
-        >
-          <option value="">No secondary sort</option>
-          {sortMode !== "date" && <option value="date">Then: Newest</option>}
-          {sortMode !== "best" && <option value="best">Then: Best results</option>}
-          {sortMode !== "placement" && <option value="placement">Then: Best placement</option>}
-          {sortMode !== "duplicated" && <option value="duplicated">Then: Most played build</option>}
-          {sortMode !== "cheapest" && <option value="cheapest">Then: Lowest price</option>}
-          {sortMode !== "relevance" && deckContentFilterCount(contentFilters) > 0 && <option value="relevance">Then: Relevance</option>}
-        </select>
-        <select
           value={sortMode}
           aria-label="Sort tournament results"
           onChange={(e) => setSortMode(e.target.value as SightingSortMode)}
-          className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1.5 text-xs text-ctp-text"
+          className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"
         >
           <option value="date">Newest</option>
           <option value="best">Best results</option>
@@ -244,6 +230,22 @@ export default function DeckSightingsView({
           {deckContentFilterCount(contentFilters) > 0 && <option value="relevance">Relevance</option>}
         </select>
       </div>
+
+      <details className="mt-2 text-xs text-ctp-subtext0">
+        <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">More sorting options</summary>
+        <label className="mt-2 flex items-center gap-2">
+          <span>Then sort by</span>
+          <select value={secondarySortMode ?? ""} onChange={(e) => setSecondarySortMode((e.target.value || null) as SightingSortMode | null)} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text">
+            <option value="">None</option>
+            {sortMode !== "date" && <option value="date">Newest</option>}
+            {sortMode !== "best" && <option value="best">Best results</option>}
+            {sortMode !== "placement" && <option value="placement">Best placement</option>}
+            {sortMode !== "duplicated" && <option value="duplicated">Most played build</option>}
+            {sortMode !== "cheapest" && <option value="cheapest">Lowest price</option>}
+            {sortMode !== "relevance" && deckContentFilterCount(contentFilters) > 0 && <option value="relevance">Relevance</option>}
+          </select>
+        </label>
+      </details>
 
       <FilterPanel activeCount={activeFilterCount} activeLabels={activeFilterLabels} resultLabel={`Show ${filtered.length.toLocaleString()} result${filtered.length === 1 ? "" : "s"}`} onClear={() => { setCategory(null); setSeasonId(null); setSelectedClasses(new Set()); setKeyword(null); setMaxPrice(null); setOutcome("all"); setContentFilters(() => emptyDeckContentFilters()); }}>
         <SegmentedFilter label="Type" options={[{ value: "", label: "All" }, ...categoriesPresent.map((value) => ({ value, label: EVENT_CATEGORY_LABELS[value] ?? value }))]} value={category ?? ""} onChange={(value) => setCategory(value || null)} />
@@ -297,13 +299,14 @@ export default function DeckSightingsView({
         </p>
       )}
 
-      <div className={`mt-2 space-y-2 ${contentFiltersLoading ? "hidden" : ""}`}>
+      <div className={`mt-2 grid gap-3 lg:grid-cols-2 lg:items-start ${contentFiltersLoading ? "hidden" : ""}`}>
         {visible.map((sighting) => (
           <DeckSightingRow
             key={sighting.deckId}
             sighting={sighting}
             playerName={playerName(sighting.player)}
             championCard={sighting.championName ? championImages.get(sighting.championName) : undefined}
+            browseCard
           />
         ))}
       </div>

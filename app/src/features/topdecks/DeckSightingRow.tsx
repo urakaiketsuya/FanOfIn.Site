@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Card, DeckSighting } from "@gatcg/shared";
 import { EVENT_CATEGORY_LABELS } from "@gatcg/shared";
@@ -11,6 +11,7 @@ import { useSightingDecklist } from "./useSightingDecklist";
 import { formatUsd } from "../../lib/format";
 import Button from "../../components/ui/Button";
 import { InlineState } from "../../components/ui/ContentState";
+import DeckCardPreview from "../decks/DeckCardPreview";
 
 export default function DeckSightingRow({
   sighting,
@@ -18,6 +19,7 @@ export default function DeckSightingRow({
   championCard,
   onAdd,
   added,
+  browseCard = false,
 }: {
   sighting: DeckSighting;
   playerName: string;
@@ -25,20 +27,32 @@ export default function DeckSightingRow({
   /** When provided, renders an extra "+ Compare"/"− Remove" toggle button (used by the deck comparison tool). */
   onAdd?: () => void;
   added?: boolean;
+  browseCard?: boolean;
 }) {
   const [expanded, setExpanded] = useState(false);
-  const { loading, decklist, error } = useSightingDecklist(sighting.eventId, sighting.player, expanded && !sighting.deckHash);
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const rowRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!browseCard || !rowRef.current) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setPreviewVisible(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: "200px" });
+    observer.observe(rowRef.current);
+    return () => observer.disconnect();
+  }, [browseCard]);
+  const { loading, decklist, error } = useSightingDecklist(sighting.eventId, sighting.player, expanded || (browseCard && previewVisible));
   const allNames = decklist ? [...decklist.main, ...decklist.material, ...decklist.sideboard].map((l) => l.card) : [];
   const cardsByName = useCardsByNames(allNames);
 
   return (
-    <div data-component="DeckSightingRow" className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm">
-      {/* Thumbnail + identity only in this row — stats and action buttons get their own full-width
-          row below instead of competing with this one for space, which on a narrow viewport used to
-          squeeze this row's flexible middle column down to almost nothing (badges wrapping onto top
-          of each other, buttons overlapping the price line). */}
-      <div className="flex items-start gap-3">
-        <CardHoverPreview image={championCard?.editions[0]?.image} alt={sighting.championName ?? "Unknown champion"}>
+    <div ref={rowRef} data-component="DeckSightingRow" className={browseCard ? "min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 text-sm shadow-sm shadow-black/20" : "rounded-md border border-ctp-surface1 px-3 py-2 text-sm"}>
+      {browseCard && <DeckCardPreview names={decklist?.main.map((line) => line.card) ?? []} cardsByName={cardsByName} championCard={championCard} seed={sighting.deckId} loading={!error && (!decklist || (decklist.main.length > 0 && cardsByName.size === 0))} />}
+      <div className={browseCard ? "mt-3" : "flex items-start gap-3"}>
+        {!browseCard && (
+          <CardHoverPreview image={championCard?.editions[0]?.image} alt={sighting.championName ?? "Unknown champion"}>
           {sighting.deckHash ? (
             <Link to={`/decks/${sighting.deckHash}`} title="Open this deck's own page" className="block shrink-0">
               {championCard?.editions[0] ? (
@@ -72,7 +86,8 @@ export default function DeckSightingRow({
               )}
             </button>
           )}
-        </CardHoverPreview>
+          </CardHoverPreview>
+        )}
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-1.5">
@@ -95,24 +110,24 @@ export default function DeckSightingRow({
             ) : (
               <span className="text-ctp-subtext0">Unknown champion</span>
             )}
-            <PlayerLink id={sighting.player} username={playerName} className="text-ctp-subtext1 hover:text-ctp-blue" />
+            {!browseCard && <PlayerLink id={sighting.player} username={playerName} className="text-ctp-subtext1 hover:text-ctp-blue" />}
             {sighting.winner && (
               <span className="rounded-full border border-ctp-yellow px-1.5 text-[10px] text-ctp-yellow">Winner</span>
             )}
             {sighting.topCut && !sighting.winner && (
               <span className="rounded-full border border-ctp-blue px-1.5 text-[10px] text-ctp-blue">Top Cut</span>
             )}
-            {sighting.placementPercentile !== null && (
+            {!browseCard && sighting.placementPercentile !== null && (
               <span className="rounded-full border border-ctp-green px-1.5 text-[10px] text-ctp-green">
                 Top {sighting.placementPercentile < 0.01 ? "<1" : Math.round(sighting.placementPercentile * 100)}%
               </span>
             )}
-            {sighting.duplicateCount > 0 && (
+            {!browseCard && sighting.duplicateCount > 0 && (
               <span className="rounded-full border border-ctp-mauve px-1.5 text-[10px] text-ctp-mauve">
                 Netdecked ({sighting.duplicateCount} other{sighting.duplicateCount === 1 ? "" : "s"})
               </span>
             )}
-            {sighting.underplaced && (
+            {!browseCard && sighting.underplaced && (
               <span
                 className="rounded-full border border-ctp-peach px-1.5 text-[10px] text-ctp-peach"
                 title="Strong match record, but still finished outside the top 30% of the field — likely tiebreakers, not a bad build."
@@ -121,24 +136,30 @@ export default function DeckSightingRow({
               </span>
             )}
           </div>
-          <div className="mt-0.5 text-xs text-ctp-subtext0">
+          {browseCard && <div className="mt-1 truncate text-xs text-ctp-subtext1">by <PlayerLink id={sighting.player} username={playerName} className="hover:text-ctp-blue" /></div>}
+          {browseCard && (
+            <div className="mt-2 font-semibold text-ctp-text">
+              {sighting.placement ? `#${sighting.placement}` : "Unranked"}
+              <span className="font-normal text-ctp-subtext1"> · {sighting.wins}–{sighting.losses}–{sighting.ties}</span>
+            </div>
+          )}
+          <div className="mt-1 text-xs text-ctp-subtext0">
             <Link to={`/events/${sighting.eventId}`} className="hover:text-ctp-blue hover:underline">
               {sighting.eventName}
             </Link>{" "}
-            · {EVENT_CATEGORY_LABELS[sighting.eventCategory] ?? sighting.eventCategory} ·{" "}
-            {new Date(sighting.eventDate).toLocaleDateString()}
-            {sighting.seasonName && ` · ${sighting.seasonName}`}
+            · {new Date(sighting.eventDate).toLocaleDateString()}
+            {!browseCard && <> · {EVENT_CATEGORY_LABELS[sighting.eventCategory] ?? sighting.eventCategory}{sighting.seasonName && ` · ${sighting.seasonName}`}</>}
           </div>
         </div>
       </div>
 
-      <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-        <div className="text-xs text-ctp-subtext1">
+      <div className={browseCard ? "mt-3 border-t border-ctp-surface1 pt-3" : "mt-2 flex flex-wrap items-center justify-between gap-2"}>
+        {!browseCard && <div className="text-xs text-ctp-subtext1">
           {sighting.placement ? `#${sighting.placement}` : "—"} · {sighting.wins}-{sighting.losses}-{sighting.ties}
-          {sighting.price !== null && <span className="text-ctp-subtext0"> · {formatUsd(sighting.price)}</span>}
-        </div>
+          {!browseCard && sighting.price !== null && <span className="text-ctp-subtext0"> · {formatUsd(sighting.price)}</span>}
+        </div>}
 
-        <div className="flex shrink-0 items-center gap-2">
+        <div className={browseCard ? "flex flex-wrap items-center gap-2" : "flex shrink-0 items-center gap-2"}>
           {onAdd && (
             <button
               type="button"
@@ -154,23 +175,38 @@ export default function DeckSightingRow({
           {sighting.deckHash ? (
             <Link
               to={`/decks/${sighting.deckHash}`}
-              className="rounded-md border border-ctp-surface1 px-2 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-text"
+              className={browseCard ? "flex min-h-10 flex-1 items-center justify-center rounded-lg bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base hover:opacity-90" : "rounded-md border border-ctp-surface1 px-2 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-text"}
             >
-              Decklist &rarr;
+              {browseCard ? "View deck →" : "Decklist →"}
             </Link>
           ) : (
             <Button
-              variant="secondary"
+              variant={browseCard ? "primary" : "secondary"}
               size="sm"
+              className={browseCard ? "min-h-10 flex-1 text-sm" : ""}
               onClick={() => setExpanded((v) => !v)}
               aria-expanded={expanded}
               aria-controls={`decklist-${sighting.deckId}`}
             >
-              {expanded ? "Hide" : "Decklist"}
+              {expanded ? "Hide decklist" : browseCard ? "Preview decklist" : "Decklist"}
             </Button>
           )}
         </div>
       </div>
+
+      {browseCard && (
+        <details className="mt-2 text-xs text-ctp-subtext0">
+          <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">Result details</summary>
+          <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1">
+            <span>{EVENT_CATEGORY_LABELS[sighting.eventCategory] ?? sighting.eventCategory}</span>
+            {sighting.seasonName && <span>{sighting.seasonName}</span>}
+            {sighting.price !== null && <span>Estimated price {formatUsd(sighting.price)}</span>}
+            {sighting.placementPercentile !== null && <span>Top {sighting.placementPercentile < 0.01 ? "<1" : Math.round(sighting.placementPercentile * 100)}% of field</span>}
+            {sighting.duplicateCount > 0 && <span>Played by {sighting.duplicateCount + 1} players</span>}
+            {sighting.underplaced && <span>Tough finish</span>}
+          </div>
+        </details>
+      )}
 
       {expanded && !sighting.deckHash && (
         <div id={`decklist-${sighting.deckId}`} className="mt-2 border-t border-ctp-surface0 pt-2">

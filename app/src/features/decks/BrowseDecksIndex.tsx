@@ -30,14 +30,9 @@ export default function BrowseDecksIndex() {
   if (searchParams.get("view") === "pantheon") return <Navigate to="/pantheon/decks" replace />;
 
   return (
-    <PageLayout data-component="BrowseDecksIndex">
+    <PageLayout data-component="BrowseDecksIndex" width="wide">
       <PageHeader
         title="Browse Decks"
-        description={
-          view === "builds"
-            ? "Distinct main + material decklists, grouped across every player who ran the same build."
-            : "Explore public tournament decklists with their player, event, date, and result at a glance."
-        }
       />
 
       <div className="mt-4">
