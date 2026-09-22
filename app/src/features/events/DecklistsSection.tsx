@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { OmnidexDecklistEntry, OmnidexPlayer } from "@gatcg/shared";
 import { useCardsByNames } from "./useCardsByNames";
@@ -21,10 +21,18 @@ export default function DecklistsSection({
   players: OmnidexPlayer[];
   initialPlayer?: number;
 }) {
-  const [selectedPlayer, setSelectedPlayer] = useState(initialPlayer ?? decklists[0]?.player);
+  const rankedDecklists = useMemo(() => [...decklists].sort((a, b) => {
+    const placement = (playerId: number) => players.find((player) => player.id === playerId)?.finalPlacement ?? Infinity;
+    return placement(a.player) - placement(b.player);
+  }), [decklists, players]);
+  const [selectedPlayer, setSelectedPlayer] = useState(initialPlayer ?? rankedDecklists[0]?.player);
   const [search, setSearch] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
-  const selected = decklists.find((d) => d.player === selectedPlayer) ?? decklists[0];
+  const selected = rankedDecklists.find((d) => d.player === selectedPlayer) ?? rankedDecklists[0];
+
+  useEffect(() => {
+    if (initialPlayer !== undefined && rankedDecklists.some((entry) => entry.player === initialPlayer)) setSelectedPlayer(initialPlayer);
+  }, [initialPlayer, rankedDecklists]);
 
   const allNames = useMemo(
     () =>
@@ -57,8 +65,8 @@ export default function DecklistsSection({
   const searchMatches = useMemo(() => {
     const needle = search.trim().toLowerCase();
     if (!needle) return [];
-    return decklists.filter((d) => playerName(d.player).toLowerCase().includes(needle)).slice(0, 8);
-  }, [decklists, search, playerName]);
+    return rankedDecklists.filter((d) => playerName(d.player).toLowerCase().includes(needle)).slice(0, 8);
+  }, [rankedDecklists, search, playerName]);
 
   if (decklists.length === 0) return null;
 
