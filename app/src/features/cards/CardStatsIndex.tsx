@@ -7,7 +7,6 @@ import { useCardCombination } from "./useCardCombination";
 import { useCommunityBlendedCardInclusion, useCommunitySourceCounts } from "../community/data";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
-import ElementIcon from "../../components/ElementIcon";
 import TopCardsSections from "../../components/TopCardsSections";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -168,12 +167,6 @@ export default function CardStatsIndex() {
     <PageLayout data-component="CardStatsIndex">
       <PageHeader
         title="Card Stats"
-        description={
-          <>
-            Usage and win rate across every public decklist. Add cards to the filter below to see what's played
-            alongside them.
-          </>
-        }
         actions={
           <Link to="/cards" className="text-sm text-ctp-blue hover:underline">
             Browse the catalog &rarr;
@@ -224,261 +217,84 @@ export default function CardStatsIndex() {
         </div>
       )}
 
-      <input
-        type="text"
-        aria-label="Search by card name or effect text"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        placeholder="Search by card name or effect text…"
-        className="mt-4 w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
-      />
-
-      <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
-        <span className="text-ctp-subtext0">Type:</span>
-        <button
-          onClick={() => setCategory(null)}
-          aria-pressed={category === null}
-          className={`rounded-md border px-2 py-1 text-xs ${
-            category === null ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-          }`}
-        >
-          All
-        </button>
-        {categoriesPresent.map((c) => (
-          <button
-            key={c}
-            onClick={() => setCategory(c)}
-            aria-pressed={category === c}
-            className={`rounded-md border px-2 py-1 text-xs ${
-              category === c ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            {EVENT_CATEGORY_LABELS[c] ?? c}
-          </button>
-        ))}
-      </div>
-
-      <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
-        <span className="text-ctp-subtext0">Sort by:</span>
-        {(Object.keys(SORT_LABELS) as SortMode[]).map((mode) => (
-          <button
-            key={mode}
-            onClick={() => setSortMode(mode)}
-            aria-pressed={sortMode === mode}
-            className={`rounded-md border px-2 py-1 text-xs ${
-              sortMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            {SORT_LABELS[mode]}
-          </button>
-        ))}
+      <div className="mt-4 grid grid-cols-2 gap-2">
+        <input
+          type="text"
+          aria-label="Search by card name or effect text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search cards…"
+          className="col-span-2 min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
+        />
+        <select value={sortMode} onChange={(e) => setSortMode(e.target.value as SortMode)} aria-label="Sort cards" className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text">
+          {(Object.keys(SORT_LABELS) as SortMode[]).map((mode) => <option key={mode} value={mode}>{SORT_LABELS[mode]}</option>)}
+        </select>
+        <select value={category ?? ""} onChange={(e) => setCategory(e.target.value || null)} aria-label="Tournament type" className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text">
+          <option value="">All tournaments</option>
+          {categoriesPresent.map((value) => <option key={value} value={value}>{EVENT_CATEGORY_LABELS[value] ?? value}</option>)}
+        </select>
       </div>
 
       {sortMode === "hype" && (
-        <p className="mt-2 text-xs text-ctp-subtext0">
-          Community usage (blended brew lists from {communitySourceLabel}) minus tournament share of decks — sorted
-          highest first: cards brewers reach for far more than tournament players do. Two different populations
-          optimizing for different things (fun/budget/theme vs. winning), not a performance verdict on either.
-        </p>
+        <details className="mt-2 text-xs text-ctp-subtext0"><summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">What is the hype gap?</summary><p className="mt-1">Community usage from {communitySourceLabel} minus tournament usage. These populations have different goals; the gap is not a performance rating.</p></details>
       )}
 
-      <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
-        <span className="text-ctp-subtext0">Min decks:</span>
-        {MIN_DECKS_OPTIONS.map((n) => (
-          <button
-            key={n}
-            onClick={() => setMinDecks(n)}
-            aria-pressed={minDecks === n}
-            className={`rounded-md border px-2 py-1 text-xs ${
-              minDecks === n ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-            }`}
-          >
-            {n === 0 ? "Any" : `${n}+`}
-          </button>
-        ))}
-      </div>
+      <details className="mt-2 text-xs text-ctp-subtext0">
+        <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">Minimum sample · {minDecks === 0 ? "Any" : `${minDecks}+ decks`}</summary>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {MIN_DECKS_OPTIONS.map((count) => <button key={count} type="button" onClick={() => setMinDecks(count)} aria-pressed={minDecks === count} className={`rounded-lg border px-3 py-1.5 text-xs ${minDecks === count ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1"}`}>{count === 0 ? "Any" : `${count}+ decks`}</button>)}
+        </div>
+      </details>
 
       {!cardStatsData && <InlineState className="mt-6">Loading…</InlineState>}
       {cardStatsData && rows.length === 0 && <InlineState className="mt-6">No cards match this filter yet.</InlineState>}
 
-      <div className="mt-6 overflow-x-auto">
-        <table className="w-max min-w-full text-sm">
-          <thead>
-            <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-              <th className="py-1 pr-6">Card</th>
-              <th className="py-1 pr-6">Decks</th>
-              <th className="py-1 pr-6">Events</th>
-              <th className="py-1 pr-6">Win rate</th>
-              <th className="py-1 pr-6">Adjusted</th>
-              <th className="py-1 pr-6" title={`Share of blended community decks (${communitySourceLabel}) that include this card`}>Community usage</th>
-              <th className="py-1 pr-6">Packages</th>
-              <th className="py-1"></th>
-            </tr>
-          </thead>
-        <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-          {visibleRows.map((c) => {
-            const card = cardImages.get(c.name);
-            const isSelected = selectedCards.includes(c.name);
-            const packages = getCardPackageMembership(c.name);
-            return (
-              <tr key={c.name}>
-                <td className="py-1.5 pr-6">
-                  <CardHoverPreview image={card?.editions[0]?.image} alt={c.name}>
-                    {c.slug ? (
-                      <Link to={`/cards/${c.slug}`} className="flex items-center gap-2 text-ctp-text hover:text-ctp-blue">
-                        {card?.editions[0] && (
-                          <CardImage image={card.editions[0].image} alt={c.name} className="h-10 w-7 rounded object-cover object-top" />
-                        )}
-                        {card && <ElementIcon element={card.element} size={14} />}
-                        {c.name}
-                      </Link>
-                    ) : (
-                      <span className="text-ctp-text">{c.name}</span>
-                    )}
-                  </CardHoverPreview>
-                </td>
-                <td className="py-1.5 pr-6 text-ctp-subtext1">{c.deckCount}</td>
-                <td className="py-1.5 pr-6 text-ctp-subtext1">{c.eventCount}</td>
-                <td className="py-1.5 pr-6 text-ctp-subtext1">{(c.avgWinRate * 100).toFixed(0)}%</td>
-                <td className="py-1.5 pr-6 text-ctp-subtext1">{(c.adjustedWinRate * 100).toFixed(0)}%</td>
-                <td className="py-1.5 pr-6 text-ctp-mauve">{c.communityPercent !== null ? `${(c.communityPercent * 100).toFixed(0)}%` : "—"}</td>
-                <td className="py-1.5 pr-6">
-                  {packages.length === 0 ? <span className="text-ctp-overlay0">—</span> : (
-                    <div className="flex flex-wrap gap-1">
-                      {packages.map((entry) => (
-                        <Link
-                          key={entry.id}
-                          to={`/cards/packages#${entry.id}`}
-                          className="rounded-full border border-ctp-teal/40 bg-ctp-teal/10 px-1.5 py-0.5 text-[10px] font-medium text-ctp-teal"
-                          title={`${entry.activation} Registry membership does not mean the package is active in every deck containing this card.`}
-                        >
-                          {entry.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </td>
-                <td className="py-1.5 text-right">
-                  <button
-                    type="button"
-                    onClick={() => toggleSelected(c.name)}
-                    aria-pressed={isSelected}
-                    className={`rounded-md border px-2 py-1 text-xs ${
-                      isSelected
-                        ? "border-ctp-blue text-ctp-blue"
-                        : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                    }`}
-                  >
-                    {isSelected ? "− Remove" : "+ Filter"}
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      {cardStatsData && rows.length > 0 && <p className="mt-4 text-xs text-ctp-subtext0">Showing {visibleRows.length.toLocaleString()} of {rows.length.toLocaleString()} cards</p>}
+      <div className="mt-2 grid gap-3 sm:grid-cols-2 sm:items-start">
+        {visibleRows.map((entry) => {
+          const card = cardImages.get(entry.name);
+          const isSelected = selectedCards.includes(entry.name);
+          const packages = getCardPackageMembership(entry.name);
+          return (
+            <article key={entry.name} className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 shadow-sm shadow-black/20">
+              <div className="flex items-start gap-3">
+                <CardHoverPreview image={card?.editions[0]?.image} alt={entry.name}>
+                  {card?.editions[0]?.image ? (
+                    <Link to={`/cards/${entry.slug ?? card.slug}`} className="block shrink-0" aria-label={`View ${entry.name}`}>
+                      <CardImage image={card.editions[0].image} alt={entry.name} className="h-32 w-24 rounded-md object-cover object-top" />
+                    </Link>
+                  ) : <div className="h-32 w-24 shrink-0 rounded-md bg-ctp-surface0" />}
+                </CardHoverPreview>
+                <div className="min-w-0 flex-1">
+                  {entry.slug ? <Link to={`/cards/${entry.slug}`} className="font-medium text-ctp-text hover:text-ctp-blue">{entry.name}</Link> : <span className="font-medium text-ctp-text">{entry.name}</span>}
+                  <div className="mt-2 text-sm font-semibold text-ctp-text">{entry.deckCount.toLocaleString()} decks</div>
+                  <div className="mt-1 text-xs text-ctp-subtext1">{(entry.adjustedWinRate * 100).toFixed(0)}% adjusted win rate</div>
+                </div>
+              </div>
+              <div className="mt-3 flex items-center justify-between gap-2 border-t border-ctp-surface1 pt-3">
+                <button type="button" onClick={() => toggleSelected(entry.name)} aria-pressed={isSelected} className={`min-h-10 rounded-lg border px-3 py-2 text-xs font-medium ${isSelected ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-blue"}`}>
+                  {isSelected ? "Remove from filter" : "Filter with card"}
+                </button>
+                {entry.slug && <Link to={`/cards/${entry.slug}`} className="text-xs text-ctp-blue hover:underline">View card →</Link>}
+              </div>
+              <details className="mt-2 text-xs text-ctp-subtext0">
+                <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">More statistics</summary>
+                <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1">
+                  <span>{entry.eventCount.toLocaleString()} events</span>
+                  <span>{(entry.avgWinRate * 100).toFixed(0)}% raw win rate</span>
+                  {entry.communityPercent !== null && <span>{(entry.communityPercent * 100).toFixed(0)}% community usage</span>}
+                </div>
+                {packages.length > 0 && <div className="mt-2 flex flex-wrap gap-1">{packages.map((packageEntry) => <Link key={packageEntry.id} to={`/cards/packages#${packageEntry.id}`} className="rounded-full border border-ctp-teal/40 bg-ctp-teal/10 px-2 py-1 text-ctp-teal" title={`${packageEntry.activation} Registry membership does not mean the package is active in every deck containing this card.`}>{packageEntry.label}</Link>)}</div>}
+              </details>
+            </article>
+          );
+        })}
       </div>
 
       <LoadMore remaining={rows.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
 
       <KeywordStatsSection rows={keywordRows} loading={!keywordStatsData} sortMode={keywordSortMode} onSortChange={setKeywordSortMode} />
       <CompositionStatsSection rows={compositionRows} types={compositionTypesPresent} activeType={activeCompositionType} bestIndex={compositionBestIndex} loading={!compositionData} onTypeChange={setCompositionType} />
-      {/* Legacy inline supplemental sections were extracted into focused components.
-      <Section
-        <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
-          <span className="text-ctp-subtext0">Sort by:</span>
-          {(["usage", "adjusted", "raw"] as const).map((mode) => (
-            <button
-              key={mode}
-              onClick={() => setKeywordSortMode(mode)}
-              className={`rounded-md border px-2 py-1 text-xs ${
-                keywordSortMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-              }`}
-            >
-              {mode === "usage" ? "Usage" : mode === "adjusted" ? "Win rate (adjusted)" : "Win rate (raw)"}
-            </button>
-          ))}
-        </div>
-
-        {!keywordStatsData && <InlineState className="mt-4">Loading…</InlineState>}
-
-        <div className="mt-2 overflow-x-auto">
-          <table className="w-max min-w-full text-sm">
-            <thead>
-              <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                <th className="py-1 pr-6">Keyword</th>
-                <th className="py-1 pr-6">Decks</th>
-                <th className="py-1 pr-6">Events</th>
-                <th className="py-1 pr-6">Win rate</th>
-                <th className="py-1">Adjusted</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-              {keywordRows.map((k) => (
-                <tr key={k.keyword}>
-                  <td className="py-1.5 pr-6 whitespace-nowrap text-ctp-text">{k.keyword}</td>
-                  <td className="py-1.5 pr-6 text-ctp-subtext1">{k.deckCount}</td>
-                  <td className="py-1.5 pr-6 text-ctp-subtext1">{k.eventCount}</td>
-                  <td className="py-1.5 pr-6 text-ctp-subtext1">{(k.avgWinRate * 100).toFixed(0)}%</td>
-                  <td className="py-1.5 text-ctp-subtext1">{(k.adjustedWinRate * 100).toFixed(0)}%</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Section>
-
-      <Section
-        className="mt-10"
-        heading="compact"
-        title="Deck Composition"
-        description="Does running more of a card type change your odds? Every public main deck (weighted by copies), bucketed by what share of it one type makes up, with the average win rate in each bucket."
-      >
-        {compositionTypesPresent.length > 0 && (
-          <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
-            <span className="text-ctp-subtext0">Type:</span>
-            {compositionTypesPresent.map((t) => (
-              <button
-                key={t}
-                onClick={() => setCompositionType(t)}
-                className={`rounded-md border px-2 py-1 text-xs ${
-                  activeCompositionType === t ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-                }`}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {!compositionData && <InlineState className="mt-4">Loading…</InlineState>}
-
-        <div className="mt-2 overflow-x-auto">
-          <table className="w-max min-w-full text-sm">
-            <thead>
-              <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                <th className="py-1 pr-6">Share of main deck</th>
-                <th className="py-1 pr-6">Decks</th>
-                <th className="py-1 pr-6">Win rate</th>
-                <th className="py-1">Adjusted</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-              {compositionRows.map((r, i) => (
-                <tr key={r.bucket}>
-                  <td className="py-1.5 pr-6 whitespace-nowrap text-ctp-text">{r.bucket}</td>
-                  <td className="py-1.5 pr-6 text-ctp-subtext1">{r.deckCount}</td>
-                  <td className="py-1.5 pr-6 text-ctp-subtext1">{(r.avgWinRate * 100).toFixed(0)}%</td>
-                  <td className={`py-1.5 font-semibold ${i === compositionBestIndex ? "text-ctp-green" : "text-ctp-subtext1"}`}>
-                    {(r.adjustedWinRate * 100).toFixed(0)}%
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Section>
-      */}
     </PageLayout>
   );
 }
