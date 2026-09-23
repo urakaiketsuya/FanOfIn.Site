@@ -1542,6 +1542,19 @@ online-probability gain. These are access relationships only: the viewer's role 
 semantically verified, and activation, payment, sequencing, board state, and opponent interaction
 remain outside the calculation.
 
+### Interaction Coverage Matrix (`features/deckbuilder/InteractionCoverageMatrix.tsx`, `lib/interactionCoverage.ts`)
+
+Each user-named opposing plan has a critical turn and an independently selected answer pool. Main
+Deck copies use the ordinary exact chance of seeing at least one by the natural cards-seen deadline.
+Selected Sideboard copies are then added to that answer pool while total Main Deck size remains
+fixed, modeling equal-count unrelated cuts; the difference is shown as postboard access gain. Since
+each scenario is calculated independently, the same versatile card may legitimately answer several
+rows without being double-counted within any row.
+
+Scenario names and answer relationships are player-authored and are not semantically verified. The
+matrix measures access, not whether an answer can legally resolve in the expected game state, how
+much of the opposing plan it mitigates, or any causal change in matchup win rate.
+
 ### Functional-copy probability (`features/deckbuilder/functionalCopies.ts`)
 
 The Guided Builder's Hypergeometric calculator can treat every Main Deck card serving one detected
