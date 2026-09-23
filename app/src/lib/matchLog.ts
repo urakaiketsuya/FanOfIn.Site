@@ -3,7 +3,7 @@ export type MatchOrder = "first" | "second" | "unknown";
 
 export type MatchProvenance =
   | { kind: "manual"; enteredAt: string }
-  | { kind: "clarent"; schemaVersion: 1; submissionId: string; matchId: string; gameNumber: number; importedAt: string; sourceVersion: string; playerSeat: 1 | 2; playerChampionId: string; opponentChampionId: string; cardIds: string[] };
+  | { kind: "clarent"; schemaVersion: 1; submissionId: string; matchId: string; gameNumber: number; importedAt: string; sourceVersion: string; playerSeat: 1 | 2; playerChampionId: string; opponentChampionId: string; cardIds: string[]; cardIdMappings?: Record<string, string> };
 
 export interface MatchLogRecord {
   version: 1;
@@ -15,6 +15,7 @@ export interface MatchLogRecord {
   mulligans: number | null;
   opponent: string;
   deckLabel: string;
+  savedDeckId?: string | null;
   sideboardPlan: string;
   gamePlanTurn: number | null;
   notableCards: string[];
@@ -27,6 +28,39 @@ export interface ClarentImportPreview {
   record: MatchLogRecord;
   duplicate: boolean;
   unresolvedCardIds: string[];
+}
+
+export interface MatchLogSummary {
+  games: number;
+  wins: number;
+  matchPointRate: number | null;
+  confidence: "none" | "early" | "developing" | "useful";
+  warning: string;
+}
+
+export function summarizeMatchLog(records: readonly MatchLogRecord[]): MatchLogSummary {
+  const games = records.length;
+  const wins = records.filter((record) => record.result === "win").length;
+  const points = records.reduce((total, record) => total + (record.result === "win" ? 1 : record.result === "draw" ? 0.5 : 0), 0);
+  const confidence = games === 0 ? "none" : games < 5 ? "early" : games < 15 ? "developing" : "useful";
+  const warning = games === 0 ? "Log games before interpreting results." : games < 5 ? "Very small sample — individual games dominate this result." : games < 15 ? "Developing sample — use patterns as prompts, not conclusions." : "Useful testing sample, but opponent selection and incomplete logging can still bias it.";
+  return { games, wins, matchPointRate: games ? points / games : null, confidence, warning };
+}
+
+export function applyClarentCardMappings(previews: readonly ClarentImportPreview[], mappings: Readonly<Record<string, { uuid: string; name: string }>>): ClarentImportPreview[] {
+  return previews.map((preview) => {
+    const resolved = preview.unresolvedCardIds.filter((id) => mappings[id]);
+    if (!resolved.length || preview.record.provenance.kind !== "clarent") return preview;
+    return {
+      ...preview,
+      unresolvedCardIds: preview.unresolvedCardIds.filter((id) => !mappings[id]),
+      record: {
+        ...preview.record,
+        notableCards: [...new Set([...preview.record.notableCards, ...resolved.map((id) => mappings[id].name)])],
+        provenance: { ...preview.record.provenance, cardIdMappings: Object.fromEntries(resolved.map((id) => [id, mappings[id].uuid])) },
+      },
+    };
+  });
 }
 
 const text = (value: unknown): string | null => typeof value === "string" && value.trim() ? value.trim() : null;

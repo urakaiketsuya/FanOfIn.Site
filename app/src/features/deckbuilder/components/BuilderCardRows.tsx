@@ -10,6 +10,7 @@ import type { SuggestedCard } from "../useSuggestedBuild";
 import type { SimulatorCardEvidence } from "../useSimulatorSuggestedBuild";
 import type { CardFieldVisibility } from "../useCardFieldVisibility";
 import { computeCardPlayOdds } from "../cardPlayOdds";
+import { primaryAlternateFace } from "../../../lib/cardFaces";
 
 export function CardRow({
   card,
@@ -54,6 +55,7 @@ export function CardRow({
   startingHandSize?: number;
 }) {
   const cardInfo = cardsByName.get(card.cardName);
+  const reverseFace = primaryAlternateFace(cardInfo);
   const unitPrice = priceByName.get(card.cardName);
   const playOdds = section === "main" && cardInfo?.cost.type === "reserve"
     ? computeCardPlayOdds(mainDeckSize, card.quantity, cardInfo.cost_reserve, startingHandSize)
@@ -85,7 +87,7 @@ export function CardRow({
         </span>
       )}
       {cardInfo && <ElementIcon element={cardInfo.element} size={14} />}
-      <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={card.cardName}>
+      <CardHoverPreview image={cardInfo?.editions[0]?.image} backImage={reverseFace?.edition.image} backAlt={reverseFace?.name} alt={card.cardName}>
         {cardInfo ? (
           <Link to={`/cards/${cardInfo.slug}`} className="text-ctp-text hover:text-ctp-blue">
             {card.cardName}
@@ -190,6 +192,7 @@ export function SuggestionRow({
   visibleFields: CardFieldVisibility;
 }) {
   const cardInfo = cardsByName.get(card.cardName);
+  const reverseFace = primaryAlternateFace(cardInfo);
   const unitPrice = priceByName.get(card.cardName);
   return (
     <li className="relative flex flex-wrap items-center gap-1.5 overflow-hidden rounded-md border border-ctp-surface1 py-1 pl-3 pr-2 text-sm">
@@ -201,7 +204,7 @@ export function SuggestionRow({
         {card.quantity}x{card.optimizedFrom !== null && <span className="text-ctp-blue">*</span>}
       </span>
       {cardInfo && <ElementIcon element={cardInfo.element} size={14} />}
-      <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={card.cardName}>
+      <CardHoverPreview image={cardInfo?.editions[0]?.image} backImage={reverseFace?.edition.image} backAlt={reverseFace?.name} alt={card.cardName}>
         {cardInfo ? (
           <Link to={`/cards/${cardInfo.slug}`} className="text-ctp-text hover:text-ctp-blue">
             {card.cardName}

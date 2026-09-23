@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { addImportedMatches, loadMatchLog, previewClarentImport, type MatchLogRecord } from "../src/lib/matchLog";
+import { addImportedMatches, applyClarentCardMappings, loadMatchLog, previewClarentImport, summarizeMatchLog, type MatchLogRecord } from "../src/lib/matchLog";
 
 const submission = {
   schemaVersion: 1, submissionId: "match-7:1", submittedAt: "2026-09-20T12:00:00.000Z",
@@ -41,4 +41,22 @@ test("malformed imports and storage fail safely", () => {
   assert.equal(previewClarentImport("not json", 1, []).errors.length, 1);
   assert.equal(previewClarentImport(JSON.stringify({ schemaVersion: 2 }), 1, []).errors.length, 1);
   assert.deepEqual(loadMatchLog("not json"), []);
+});
+
+test("Clarent mappings preserve the correction and make the card useful in the log", () => {
+  const result = previewClarentImport(JSON.stringify(submission), 1, [], new Set(["known"]));
+  const [mapped] = applyClarentCardMappings(result.previews, { mystery: { uuid: "canonical-id", name: "Dungeon Guide" } });
+  assert.deepEqual(mapped.unresolvedCardIds, []);
+  assert.deepEqual(mapped.record.notableCards, ["Dungeon Guide"]);
+  assert.equal(mapped.record.provenance.kind, "clarent");
+  if (mapped.record.provenance.kind === "clarent") assert.deepEqual(mapped.record.provenance.cardIdMappings, { mystery: "canonical-id" });
+});
+
+test("match summaries label small samples without overstating confidence", () => {
+  const record = previewClarentImport(JSON.stringify(submission), 2, []).previews[0].record;
+  assert.equal(summarizeMatchLog([]).confidence, "none");
+  assert.equal(summarizeMatchLog([record]).confidence, "early");
+  assert.equal(summarizeMatchLog(Array.from({ length: 5 }, () => record)).confidence, "developing");
+  assert.equal(summarizeMatchLog(Array.from({ length: 15 }, () => record)).confidence, "useful");
+  assert.equal(summarizeMatchLog([record]).matchPointRate, 1);
 });

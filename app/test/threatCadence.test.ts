@@ -24,3 +24,20 @@ test("pressure packages separate live access from effective-cost affordability",
   assert.equal(points[2].affordableCopies, 4);
   assert.ok(points[2].accessProbability > points[2].affordableProbability);
 });
+test("pressure packages expose cumulative no-gap odds across turns", () => {
+  const points = computePressurePackageCadence(60, [
+    { name: "Threat", copies: 12, earliestTurn: 1, repeatable: false, effectiveReserveCost: 0 },
+  ], 7, 2, 4, "first");
+  assert.equal(points.length, 3);
+  assert.ok(points[1].continuousProbability < points[0].continuousProbability);
+  assert.ok(points[2].continuousProbability < points[1].continuousProbability);
+  assert.equal(points[2].gapProbability, 1 - points[2].continuousProbability);
+});
+
+test("unaffordable packages cannot satisfy continuous pressure", () => {
+  const points = computePressurePackageCadence(60, [
+    { name: "Too expensive", copies: 20, earliestTurn: 1, repeatable: false, effectiveReserveCost: 30 },
+  ], 7, 2, 3, "first");
+  assert.equal(points[0].continuousProbability, 0);
+  assert.equal(points[1].continuousProbability, 0);
+});

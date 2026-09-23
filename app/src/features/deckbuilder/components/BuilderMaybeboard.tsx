@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import CardHoverPreview from "../../../components/CardHoverPreview";
 import ElementIcon from "../../../components/ElementIcon";
 import ElementRail from "../../../components/ElementRail";
+import { primaryAlternateFace } from "../../../lib/cardFaces";
 
 export default function BuilderMaybeboard({
   cards, catalogByName, lockedCards, onQuantityChange, onPromote, onRemove,
@@ -22,12 +23,13 @@ export default function BuilderMaybeboard({
       <ul className="mt-2 space-y-1">
         {Array.from(cards.entries()).map(([name, quantity]) => {
           const card = catalogByName.get(name);
+          const reverseFace = primaryAlternateFace(card);
           return (
             <li key={name} className="relative flex flex-wrap items-center gap-1.5 overflow-hidden rounded-md border border-ctp-yellow/30 bg-ctp-base py-1 pl-3 pr-2 text-sm">
               <ElementRail elements={card?.elements} />
               <input type="number" min={1} max={4} value={quantity} aria-label={`Copies of ${name} in maybeboard`} onChange={(event) => onQuantityChange(name, Number(event.target.value))} className="w-11 rounded border border-ctp-surface1 bg-ctp-mantle px-1 py-0.5 text-right text-xs text-ctp-text" />
               {card && <ElementIcon element={card.element} size={14} />}
-              <CardHoverPreview image={card?.editions[0]?.image} alt={name}>
+              <CardHoverPreview image={card?.editions[0]?.image} backImage={reverseFace?.edition.image} backAlt={reverseFace?.name} alt={name}>
                 {card ? <Link to={`/cards/${card.slug}`} className="text-ctp-text hover:text-ctp-blue">{name}</Link> : <span className="text-ctp-text">{name}</span>}
               </CardHoverPreview>
               <div className="ml-auto flex gap-1.5">

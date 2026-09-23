@@ -1562,12 +1562,11 @@ For every turn, **access cadence** is the exact chance of seeing at least one co
 earliest-useful turn has arrived. **Affordable cadence** applies the same access calculation only to packages
 whose entered effective cost plus the played card fits the natural cards-seen ceiling. This intentionally
 does not subtract earlier payments or model Floating Memory, extra draws, board state, level gates, or
-opponent responses. Repeatable metadata is retained for future sequence work but never fabricates extra
-copies in the current per-turn calculation.
-
-The older cumulative-deadline helper remains available for historical callers and tests, but the UI no
-longer labels that single pooled calculation as overall threat cadence because it cannot represent package
-timing, repeatability, or effective-cost assumptions honestly.
+opponent responses. The cumulative **no gap** value fixes a conservative pool at the first selected turn:
+only packages live and affordable at that turn qualify, and the calculation requires one distinct qualifying
+copy by the first deadline, two by the next, and so on. Later-unlocking packages improve their own per-turn
+access but cannot retroactively satisfy an earlier deadline. Repeatable metadata remains descriptive and
+never fabricates extra copies because recurrence depends on unmodeled game state.
 
 ### Setup-to-Payoff Timing (`features/deckbuilder/EnginePayoffBalance.tsx`, `lib/engineBalance.ts`)
 
@@ -1629,6 +1628,13 @@ and play order from the explicitly selected seat, surfaces catalog-unresolved ca
 `clarent:<submissionId>:seat<seat>` as its stable record ID. Re-importing the same game for that seat is
 therefore skipped; manual records have unrelated UUIDs and are not replaced or removed. This is not live
 Clarent synchronization and these observations are never blended into tournament statistics.
+
+Manual records may retain the stable account saved-deck ID and title selected at entry time. Clarent preview
+allows each unresolved source card ID to be mapped to one canonical catalog card before import; the raw ID,
+chosen UUID, and chosen name remain in provenance so the correction is inspectable rather than silently
+rewriting source data. Summary match-point rate counts a draw as half a win. Sample guidance is deliberately
+coarse: no games, **early** below 5 games, **developing** from 5 through 19, and **useful** at 20 or more.
+These labels describe sample quantity only and do not correct selection bias or make results predictive.
 
 ### Test Session Tracker (`features/deckbuilder/PlaytestSessionTracker.tsx`, `lib/playtestTracker.ts`)
 
@@ -1819,6 +1825,9 @@ alone never upgrades an access ceiling into a success probability.
 For each fixed Reserve-cost value represented in the Main Deck, this groups the quantities of every
 card at that cost and reports the chance of having drawn at least one by the first turn that cost is
 affordable under `earliestReserveCostTurn`. Going-first and going-second results are shown together.
+Cards with detected conditional activation-cost reductions expose a user-entered effective Reserve cost.
+That visible override moves the card into the corresponding cost band, but does not assert that its printed
+condition will be satisfied; cards without an override remain at printed cost.
 Under the official two-player starting-game rules, the first player skips their first Draw Phase
 while the second player does not. Therefore natural cards seen on personal turn `t` are inferred
 starting hand `+ max(0, t - 1)` going first and starting hand `+ t` going second. The same counts
@@ -1864,6 +1873,9 @@ first 10. Since card identity cannot change those odds, cards are grouped by reg
 and each probability is displayed once beside a card-art strip. This is explicitly a review signal rather than a dead-card verdict:
 redundancy can be desirable, while uniqueness rules, high costs, and situational effects make some
 duplicate draws more consequential than others.
+The grouped presentation also exposes a screen-reader-accessible exact-value table with one row per card and
+a CSV copy action. Repeated copy counts therefore remain compact visually without making the underlying
+card-level values unavailable or difficult to export.
 
 ### Conditional hand pressure (`features/deckbuilder/ConditionalHandPressure.tsx`)
 

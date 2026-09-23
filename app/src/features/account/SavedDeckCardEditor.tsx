@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CardImage from "../../components/CardImage";
 import { deckDestinationEligibility } from "../../lib/deckSectionEligibility";
+import { primaryAlternateFace } from "../../lib/cardFaces";
 
 export type DeckSectionKey = keyof OmnidexDecklist;
 export type DeckCardDestination = DeckSectionKey | "maybeboard";
@@ -32,9 +33,10 @@ function DestinationOptions({ cards }: { cards: (Card | undefined)[] }) {
 
 function EditableCardTile({ line, card, section, selected, onSelect, onChangeQuantity, onMove, onRemove }: { line: OmnidexDecklistCardLine; card: Card | undefined; section: DeckSectionKey; selected: boolean; onSelect: () => void; onChangeQuantity: (quantity: number) => void; onMove: (section: DeckCardDestination) => void; onRemove: () => void }) {
   const maxQuantity = Math.max(1, Math.min(card?.legality?.STANDARD?.limit ?? 4, 4));
+  const reverseFace = primaryAlternateFace(card);
   return <article aria-label={`${line.quantity} copies of ${line.card} in ${section}`} className={`overflow-hidden rounded-xl border bg-ctp-mantle shadow-sm transition-[border-color,box-shadow] ${selected ? "border-ctp-blue ring-2 ring-ctp-blue/40" : "border-ctp-surface1"}`}>
     <div className="relative aspect-[5/7] bg-ctp-surface0">
-      <CardHoverPreview image={card?.editions[0]?.image} alt={line.card}>
+      <CardHoverPreview image={card?.editions[0]?.image} backImage={reverseFace?.edition.image} backAlt={reverseFace?.name} alt={line.card}>
         <button type="button" aria-pressed={selected} aria-label={`${selected ? "Deselect" : "Select"} ${line.card} for quick actions`} onClick={onSelect} className="block h-full w-full text-left">
           {card?.editions[0] ? <CardImage image={card.editions[0].image} alt={line.card} className="h-full w-full object-cover" /> : <span className="flex h-full items-center justify-center p-2 text-center text-xs text-ctp-subtext0">{line.card}</span>}
         </button>
@@ -58,9 +60,10 @@ function EditableCardTile({ line, card, section, selected, onSelect, onChangeQua
 
 export function MaybeboardCardTile({ line, card, onChangeQuantity, onMove, onRemove }: { line: OmnidexDecklistCardLine; card: Card | undefined; onChangeQuantity: (quantity: number) => void; onMove: (destination: DeckCardDestination) => void; onRemove: () => void }) {
   const maxQuantity = Math.max(1, Math.min(card?.legality?.STANDARD?.limit ?? 4, 4));
+  const reverseFace = primaryAlternateFace(card);
   return <div className="overflow-hidden rounded-lg border border-ctp-yellow/40 bg-ctp-mantle">
-    <div className="relative aspect-[5/7] bg-ctp-surface0"><CardHoverPreview image={card?.editions[0]?.image} alt={line.card}>{card?.editions[0] ? <Link to={`/cards/${card.slug}`} className="block h-full w-full"><CardImage image={card.editions[0].image} alt={line.card} className="h-full w-full object-cover" /></Link> : <span className="flex h-full items-center justify-center p-2 text-center text-xs text-ctp-subtext0">{line.card}</span>}</CardHoverPreview><input type="number" min={1} max={maxQuantity} value={line.quantity} aria-label={`Maybeboard copies of ${line.card}`} onChange={(event) => { const quantity = Number(event.target.value); if (Number.isInteger(quantity) && quantity >= 1) onChangeQuantity(Math.min(quantity, maxQuantity)); }} className="absolute right-1.5 top-1.5 w-11 rounded border border-ctp-surface1 bg-ctp-base/90 px-1 py-0.5 text-right text-xs text-ctp-text" /></div>
-    <div className="space-y-2 border-t border-ctp-surface1 p-2.5"><label className="block text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Move card to<select value="maybeboard" onChange={(event) => onMove(event.target.value as DeckCardDestination)} aria-label={`Move ${line.card} to deck section`} className="mt-1 block min-h-11 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-xs font-medium normal-case tracking-normal text-ctp-text focus:border-ctp-blue focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/40"><DestinationOptions cards={[card]} /></select></label><button type="button" onClick={onRemove} className="min-h-10 w-full rounded-lg border border-ctp-red/40 px-2 text-xs font-medium text-ctp-red hover:bg-ctp-red/10" aria-label={`Remove ${line.card} from maybeboard`}>Remove</button></div>
+    <div className="relative aspect-[5/7] bg-ctp-surface0"><CardHoverPreview image={card?.editions[0]?.image} backImage={reverseFace?.edition.image} backAlt={reverseFace?.name} alt={line.card}>{card?.editions[0] ? <Link to={`/cards/${card.slug}`} className="block h-full w-full"><CardImage image={card.editions[0].image} alt={line.card} className="h-full w-full object-cover" /></Link> : <span className="flex h-full items-center justify-center p-2 text-center text-xs text-ctp-subtext0">{line.card}</span>}</CardHoverPreview><input type="number" min={1} max={maxQuantity} value={line.quantity} aria-label={`Maybeboard copies of ${line.card}`} onChange={(event) => { const quantity = Number(event.target.value); if (Number.isInteger(quantity) && quantity >= 1) onChangeQuantity(Math.min(quantity, maxQuantity)); }} className="absolute right-1.5 top-1.5 min-h-11 w-11 rounded border border-ctp-surface1 bg-ctp-base/90 px-1 text-right text-xs text-ctp-text" /></div>
+    <div className="space-y-3 border-t border-ctp-surface1 p-3"><label className="block text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Move card to<select value="maybeboard" onChange={(event) => onMove(event.target.value as DeckCardDestination)} aria-label={`Move ${line.card} to deck section`} className="mt-1 block min-h-11 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-xs font-medium normal-case tracking-normal text-ctp-text focus:border-ctp-blue focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/40"><DestinationOptions cards={[card]} /></select></label><button type="button" onClick={onRemove} className="min-h-11 w-full rounded-lg border border-ctp-red/40 px-2 text-xs font-medium text-ctp-red hover:bg-ctp-red/10" aria-label={`Remove ${line.card} from maybeboard`}>Remove</button></div>
   </div>;
 }
 
@@ -79,11 +82,11 @@ export function EditableDecklistGrid({ decklist, cardsByName, onChangeQuantity, 
   return <div className="space-y-5">
     <div className="sticky top-2 z-20 flex flex-wrap items-center gap-2 rounded-xl border border-ctp-blue/40 bg-ctp-base/95 p-2.5 shadow-lg backdrop-blur">
       <span className="mr-auto text-xs text-ctp-subtext1">{selectedCards.length ? `${selectedCards.length} card${selectedCards.length === 1 ? "" : "s"} selected` : "Tap card images to select several"}</span>
-      {selectedCards.length > 0 && <button type="button" onClick={() => setSelected(new Set())} className="min-h-10 rounded-lg px-2.5 text-xs text-ctp-subtext1">Clear</button>}
-      <button type="button" disabled={selectedCards.length === 0} onClick={() => onAdjustSelected(selectedCards, -1)} className="min-h-10 rounded-lg border border-ctp-surface1 px-3 text-sm font-medium text-ctp-text disabled:opacity-40">−1 each</button>
-      <button type="button" disabled={selectedCards.length === 0} onClick={() => onAdjustSelected(selectedCards, 1)} className="min-h-10 rounded-lg bg-ctp-blue px-3 text-sm font-medium text-ctp-base disabled:opacity-40">+1 each</button>
+      {selectedCards.length > 0 && <button type="button" onClick={() => setSelected(new Set())} className="min-h-11 rounded-lg px-2.5 text-xs text-ctp-subtext1">Clear</button>}
+      <button type="button" disabled={selectedCards.length === 0} onClick={() => onAdjustSelected(selectedCards, -1)} className="min-h-11 rounded-lg border border-ctp-surface1 px-3 text-sm font-medium text-ctp-text disabled:opacity-40">−1 each</button>
+      <button type="button" disabled={selectedCards.length === 0} onClick={() => onAdjustSelected(selectedCards, 1)} className="min-h-11 rounded-lg bg-ctp-blue px-3 text-sm font-medium text-ctp-base disabled:opacity-40">+1 each</button>
       <details className="relative">
-        <summary className="flex min-h-10 cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-3 text-sm text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More ▾</summary>
+        <summary className="flex min-h-11 cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-3 text-sm text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More ▾</summary>
         <div className="absolute right-0 top-full z-30 mt-2 w-60 rounded-xl border border-ctp-surface1 bg-ctp-base p-3 shadow-xl">
           <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Selection</p>
           <div className="mt-2 grid grid-cols-2 gap-2"><button type="button" onClick={() => setSelected(new Set(sections.flatMap((section) => section.lines.map((line) => keyFor(section.key, line.card)))))} className="min-h-10 rounded-lg border border-ctp-surface1 px-2 text-xs">Select all</button><button type="button" onClick={() => setSelected(new Set(sections.flatMap((section) => section.lines.filter((line) => line.quantity < Math.max(1, Math.min(cardsByName.get(line.card)?.legality?.STANDARD?.limit ?? 4, 4))).map((line) => keyFor(section.key, line.card)))))} className="min-h-10 rounded-lg border border-ctp-surface1 px-2 text-xs">Below limit</button></div>

@@ -44,6 +44,14 @@ export default function CardHoverPreview({ image, backImage, backAlt, alt, child
     setPos(clamp(rect.right + CURSOR_OFFSET, rect.top));
   }
 
+  function showFace(event: MouseEvent<HTMLButtonElement>, back: boolean) {
+    event.preventDefault();
+    event.stopPropagation();
+    const rect = event.currentTarget.getBoundingClientRect();
+    setShowBack(back);
+    setPos(clamp(rect.right + CURSOR_OFFSET, rect.top));
+  }
+
   return (
     <span
       data-component="CardHoverPreview"
@@ -57,6 +65,15 @@ export default function CardHoverPreview({ image, backImage, backAlt, alt, child
       }}
     >
       {children}
+      {backImage && <button
+        type="button"
+        onClick={(event) => showFace(event, !showBack)}
+        aria-label={`Show ${showBack ? "front" : "reverse"} face of ${alt}`}
+        title={`Show ${showBack ? "front" : "reverse"} face`}
+        className="absolute bottom-1 right-1 z-10 flex min-h-11 min-w-11 items-center justify-center rounded-full border border-ctp-surface1 bg-ctp-base/95 px-2 text-[10px] font-semibold text-ctp-blue shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/50"
+      >
+        <span aria-hidden="true">{showBack ? "Front" : "Flip"}</span>
+      </button>}
       {pos && <span className="fixed z-50" style={{ left: pos.x, top: pos.y, width: PREVIEW_WIDTH }}>
         <img
           src={gatcgApi.imageUrl(showBack && backImage ? backImage : image)}

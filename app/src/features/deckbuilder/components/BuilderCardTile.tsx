@@ -11,6 +11,7 @@ import type { SimulatorCardEvidence } from "../useSimulatorSuggestedBuild";
 import type { CardFieldVisibility } from "../useCardFieldVisibility";
 import type { PriceTrendEntry } from "../../pricing/usePriceTrendByName";
 import { computeCardPlayOdds } from "../cardPlayOdds";
+import { primaryAlternateFace } from "../../../lib/cardFaces";
 
 export type BuilderSection = "main" | "material" | "sideboard";
 
@@ -61,6 +62,7 @@ export function CardTile({
   className?: string;
 }) {
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const reverseFace = primaryAlternateFace(cardInfo);
   const maxQuantity = Math.max(1, Math.min(cardInfo?.legality?.STANDARD?.limit ?? 4, 4));
   const tags = [...(cardInfo?.elements.filter((e) => e !== "NORM") ?? []), ...(cardInfo?.classes ?? [])];
   const playOdds = section === "main" && cardInfo?.cost.type === "reserve"
@@ -70,7 +72,7 @@ export function CardTile({
   return (
     <div className={`${className ?? ""} overflow-hidden rounded-lg border bg-ctp-mantle shadow-sm transition-shadow hover:shadow-md ${card.locked ? "border-ctp-blue/70" : "border-ctp-surface1"}`}>
       <div className="relative aspect-[5/7] bg-ctp-surface0">
-        <CardHoverPreview image={cardInfo?.editions[0]?.image} alt={card.cardName}>
+        <CardHoverPreview image={cardInfo?.editions[0]?.image} backImage={reverseFace?.edition.image} backAlt={reverseFace?.name} alt={card.cardName}>
           <button type="button" onClick={() => setDetailsOpen(true)} aria-label={`View ${card.cardName} details`} className="block h-full w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ctp-blue">
           {cardInfo ? (
             <span className="block h-full w-full">

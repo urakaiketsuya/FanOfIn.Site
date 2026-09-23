@@ -27,6 +27,11 @@ export interface OmnidexEventSummary {
   /** "physical" | "online" (verified against live data; treat as open-ended like `category`). */
   setting: string;
   url: string;
+  /** Compact discovery fields derived from the already-cached event bundle. */
+  participantNames?: string[];
+  championNames?: string[];
+  /** Number of event players whose public decklist was present in the bundle. */
+  publicDecklistCount?: number;
 }
 
 /** Human-readable labels for Omnidex's event `category` values, in tier order (highest first). */

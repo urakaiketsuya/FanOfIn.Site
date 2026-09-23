@@ -1,5 +1,8 @@
 # Fan of Insight Product Roadmap
 
+> **Status rule:** an implementation note records delivered foundation work, not completion. A roadmap item
+> is complete only when every listed acceptance criterion has been verified in the integrated product.
+
 This roadmap turns current product feedback into an ordered delivery plan. It favors shared foundations
 over one-off calculator changes, keeps probability claims explicit, and separates features that can ship
 with existing data from features that require new data, moderation, or account infrastructure.
@@ -193,6 +196,10 @@ current section and legal destinations; moving a card is reversible without re-s
 
 ### 1.2 Card backsides and transform navigation
 
+**In progress:** exact-edition front/reverse controls now appear in card detail, shared hover previews,
+Deck Builder rows and tiles, saved-deck editing, maybeboard, and tournament deck lists. A final call-site and
+image-failure accessibility audit is still required before this item is complete.
+
 - Add a front/back toggle on card detail, card preview, deck-builder card details, and other shared card
   displays.
 - Show a two-face affordance on the image itself rather than relying only on effect text.
@@ -203,6 +210,9 @@ current section and legal destinations; moving a card is reversible without re-s
 shown, without navigating away from their current deck workflow.
 
 ### 1.3 Card-tab loading placeholders
+
+**In progress:** current lazy and asynchronous card-stat panels use layout-matched skeletons. Completion still
+requires verifying distinct loading, empty, and failed states for every card tab and its underlying data hook.
 
 - Give each lazy card-detail tab a layout-matched skeleton for image, metrics, lists, and charts.
 - Preserve the panel’s height during tab changes to reduce layout shift.
@@ -319,7 +329,8 @@ affordability remain follow-up work.
 **Implemented foundation:** pressure is now defined as named, card-backed packages with earliest-useful
 turn, repeatable/single-use metadata, printed-cost defaults, editable effective-cost assumptions, and
 conditional-reducer detection. Per-turn access and natural-ceiling affordability are displayed separately.
-Full multi-turn resource sequencing and a most-common-gap calculation remain future work.
+The tool also reports a conservative cumulative no-gap probability across the selected turn window. Full
+game-state-aware multi-turn resource sequencing and recurrence remain future work.
 
 Rebuild this around the question “How often can this deck present meaningful pressure on schedule?”
 
@@ -350,8 +361,9 @@ Rebuild this around the question “How often can this deck present meaningful p
 
 ### 3.6 Consistency and clumping presentation
 
-**Partially implemented:** identical copy-count rows are grouped and use compact probability strips, with
-card identities presented once per group. A fully copyable accessible matrix remains future work.
+**Implemented presentation foundation:** identical copy-count rows are grouped and use compact probability
+strips, with card identities presented once per group. An accessible per-card exact-value table and CSV copy
+action preserve the repeated values for assistive technology and export.
 
 - Replace repetitive probability tables with a compact curve or heat strip: copies on one axis, cards seen
   on the other, probability encoded consistently.
@@ -360,9 +372,9 @@ card identities presented once per group. A fully copyable accessible matrix rem
 
 ### 3.7 Resource timing visualization
 
-**Partially implemented:** printed-cost bands use compact access bars and disclose exact first/second-player
-values plus their card lists. Effective-cost overlays remain in the sequence and Threat Cadence tools rather
-than being silently inferred for every card.
+**Implemented presentation foundation:** printed-cost bands use compact access bars and disclose exact
+first/second-player values plus their card lists. Cards with detected conditional activation reductions expose
+a user-confirmed effective-cost overlay; the UI does not silently assume the condition is active.
 
 - Use a turn-by-turn readiness curve or timeline showing natural Reserve, effective cost, and the turn each
   selected card becomes affordable.
@@ -391,8 +403,9 @@ Replace the `/events` redirect with a real browse experience while preserving se
 
 Implemented: cross-season search by event, organizer, address, country, and season; shareable date, country,
 setting, type, attendance, and decklist-availability filters; date/size/type sorting; list and month-grouped
-calendar views; and direct event/deck-list navigation. Player/champion search and deeper completeness filters
-remain dependent on a compact event-level participant/deck index rather than loading every event bundle.
+calendar views; direct event/deck-list navigation; compact participant/champion discovery fields; player and
+Champion search; and shareable public-deck coverage filters for any, some, complete, or none. The generated
+event index must be rebuilt and deployed before the new discovery fields are available in production.
 
 **Acceptance criteria:** a user can find an event without knowing its season and can share the filtered view.
 
@@ -410,9 +423,11 @@ content or action from the previous player remains active.
 ### 4.3 Unified game log
 
 **Foundation implemented:** `/match-log` now provides versioned local manual records, explicit provenance,
-Clarent v1 JSON preview/import, source-ID retention, unresolved card-ID disclosure, and idempotency by
-submission ID plus selected player seat. This is intentionally a paste/file-contract importer, not a claimed
-live Clarent connection. Saved-deck embedding, mapping correction tools, and broader summaries remain.
+Clarent v1 JSON preview/import, source-ID retention, correctable unresolved card mappings, and idempotency by
+submission ID plus selected player seat. Manual records can be associated with a signed-in saved deck, and
+the summary discloses coarse sample-size guidance. This is intentionally a paste/file-contract importer, not
+a claimed live Clarent connection. Account persistence, direct saved-deck-page embedding, and broader
+opponent/plan summaries remain.
 
 - Replace the calculator-local test tracker with a standalone Match Log that is also embedded in saved decks.
 - Support manual entry for result, opponent/deck or archetype, play/draw, mulligan, turns, sideboard plan,

@@ -1,6 +1,7 @@
 import type { OmnidexEventSummary } from "@gatcg/shared";
 
 export type EventDecklistFilter = "any" | "available" | "unavailable";
+export type EventCoverageFilter = "any" | "some" | "complete" | "none";
 export type EventSortMode = "date" | "size" | "type" | "relevance";
 
 export interface EventBrowserFilters {
@@ -13,6 +14,7 @@ export interface EventBrowserFilters {
   dateFrom: string;
   dateTo: string;
   decklists: EventDecklistFilter;
+  coverage: EventCoverageFilter;
   sort: EventSortMode;
 }
 
@@ -31,12 +33,19 @@ export function filterAndSortEvents(events: OmnidexEventSummary[], filters: Even
     && (!from || event.date >= from)
     && (!to || event.date <= to)
     && (filters.decklists === "any" || (filters.decklists === "available" ? event.decklists : !event.decklists))
-    && (!needle || [event.name, event.hostName, event.hostAddress, event.hostCountry, event.seasonName ?? ""].some((value) => normalize(value).includes(needle)))
+    && (filters.coverage === "any" || (() => {
+      const count = event.publicDecklistCount ?? 0;
+      if (filters.coverage === "none") return count === 0;
+      if (filters.coverage === "complete") return event.playerCount > 0 && count >= event.playerCount;
+      return count > 0;
+    })())
+    && (!needle || [event.name, event.hostName, event.hostAddress, event.hostCountry, event.seasonName ?? "", ...(event.participantNames ?? []), ...(event.championNames ?? [])].some((value) => normalize(value).includes(needle)))
   ).sort((a, b) => {
     if (filters.sort === "relevance" && needle) {
       const score = (event: OmnidexEventSummary) => {
         const name = normalize(event.name); const host = normalize(event.hostName); const address = normalize(event.hostAddress);
-        return name === needle ? 4 : name.startsWith(needle) ? 3 : name.includes(needle) ? 2 : host.includes(needle) ? 1 : address.includes(needle) ? 0 : -1;
+        const people = event.participantNames ?? []; const champions = event.championNames ?? [];
+        return name === needle ? 6 : name.startsWith(needle) ? 5 : people.some((value) => normalize(value) === needle) ? 4 : champions.some((value) => normalize(value) === needle) ? 3 : name.includes(needle) ? 2 : people.concat(champions).some((value) => normalize(value).includes(needle)) || host.includes(needle) ? 1 : address.includes(needle) ? 0 : -1;
       };
       const difference = score(b) - score(a);
       if (difference !== 0) return difference;

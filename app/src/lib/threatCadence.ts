@@ -10,19 +10,26 @@ export interface PressurePackage {
   repeatable: boolean;
   effectiveReserveCost: number;
 }
-export interface PressureCadencePoint { turn: number; seen: number; accessCopies: number; affordableCopies: number; accessProbability: number; affordableProbability: number; }
+export interface PressureCadencePoint { turn: number; seen: number; accessCopies: number; affordableCopies: number; accessProbability: number; affordableProbability: number; continuousProbability: number; gapProbability: number; }
 
 /** Per-turn access and affordability are intentionally separate. Affordability is only a natural
  * hand-ceiling screen (`effective cost + the played card`), not a resource/board simulation. */
 export function computePressurePackageCadence(deckSize: number, packages: readonly PressurePackage[], startingHandSize: number, startTurn: number, endTurn: number, playOrder: PlayOrder): PressureCadencePoint[] {
   const start = Math.max(1, Math.floor(startTurn)); const end = Math.max(start, Math.floor(endTurn));
+  const startSeen = Math.min(deckSize, naturalCardsSeenByTurn(start, startingHandSize, playOrder));
+  // Keep one stable pool across cumulative deadlines. Allowing cards that unlock later into the
+  // earlier draw pool would incorrectly let them satisfy a deadline before they are live.
+  const continuousCopies = packages.filter((item) => item.earliestTurn <= start && item.effectiveReserveCost + 1 <= startSeen).reduce((sum, item) => sum + item.copies, 0);
+  const deadlines: { seen: number; required: number }[] = [];
   return Array.from({ length: end - start + 1 }, (_, index) => {
     const turn = start + index; const seen = Math.min(deckSize, naturalCardsSeenByTurn(turn, startingHandSize, playOrder));
     const available = packages.filter((item) => item.earliestTurn <= turn);
     const affordable = available.filter((item) => item.effectiveReserveCost + 1 <= seen);
     const accessCopies = available.reduce((sum, item) => sum + item.copies, 0);
     const affordableCopies = affordable.reduce((sum, item) => sum + item.copies, 0);
-    return { turn, seen, accessCopies, affordableCopies, accessProbability: probabilityOfCumulativeDeadlines(deckSize, accessCopies, [{ seen, required: 1 }]), affordableProbability: probabilityOfCumulativeDeadlines(deckSize, affordableCopies, [{ seen, required: 1 }]) };
+    deadlines.push({ seen, required: index + 1 });
+    const continuousProbability = probabilityOfCumulativeDeadlines(deckSize, continuousCopies, deadlines);
+    return { turn, seen, accessCopies, affordableCopies, accessProbability: probabilityOfCumulativeDeadlines(deckSize, accessCopies, [{ seen, required: 1 }]), affordableProbability: probabilityOfCumulativeDeadlines(deckSize, affordableCopies, [{ seen, required: 1 }]), continuousProbability, gapProbability: 1 - continuousProbability };
   });
 }
 

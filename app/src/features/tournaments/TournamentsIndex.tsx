@@ -9,7 +9,7 @@ import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
 import Button from "../../components/ui/Button";
 import { InlineState } from "../../components/ui/ContentState";
-import { filterAndSortEvents, groupEventsByMonth, type EventDecklistFilter, type EventSortMode } from "./eventBrowser";
+import { filterAndSortEvents, groupEventsByMonth, type EventCoverageFilter, type EventDecklistFilter, type EventSortMode } from "./eventBrowser";
 
 const MIN_PLAYERS_OPTIONS = [0, 8, 16, 32];
 const PAGE_SIZE = 50;
@@ -35,6 +35,10 @@ export default function TournamentsIndex() {
   const [dateFrom, setDateFrom] = useState(() => searchParams.get("from") ?? "");
   const [dateTo, setDateTo] = useState(() => searchParams.get("to") ?? "");
   const [decklists, setDecklists] = useState<EventDecklistFilter>(() => searchParams.get("decklists") === "available" ? "available" : searchParams.get("decklists") === "unavailable" ? "unavailable" : "any");
+  const [coverage, setCoverage] = useState<EventCoverageFilter>(() => {
+    const value = searchParams.get("coverage");
+    return value === "some" || value === "complete" || value === "none" ? value : "any";
+  });
   const [sortMode, setSortMode] = useState<EventSortMode>(() => searchParams.get("sort") === "type" ? "type" : searchParams.get("sort") === "size" ? "size" : searchParams.get("sort") === "relevance" ? "relevance" : "date");
   const [viewMode, setViewMode] = useState<ViewMode>(() => searchParams.get("view") === "calendar" ? "calendar" : "list");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -57,12 +61,12 @@ export default function TournamentsIndex() {
 
   const events = useMemo(() => {
     if (!index) return [];
-    return filterAndSortEvents(index.events, { search, minPlayers, category, setting, seasonId, country, dateFrom, dateTo, decklists, sort: sortMode }, categoryRank);
-  }, [index, search, minPlayers, category, setting, seasonId, country, dateFrom, dateTo, decklists, sortMode]);
+    return filterAndSortEvents(index.events, { search, minPlayers, category, setting, seasonId, country, dateFrom, dateTo, decklists, coverage, sort: sortMode }, categoryRank);
+  }, [index, search, minPlayers, category, setting, seasonId, country, dateFrom, dateTo, decklists, coverage, sortMode]);
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [minPlayers, category, setting, seasonId, country, dateFrom, dateTo, decklists, sortMode, search, viewMode]);
+  }, [minPlayers, category, setting, seasonId, country, dateFrom, dateTo, decklists, coverage, sortMode, search, viewMode]);
 
   useEffect(() => {
     const next = new URLSearchParams();
@@ -74,11 +78,12 @@ export default function TournamentsIndex() {
     if (dateFrom) next.set("from", dateFrom);
     if (dateTo) next.set("to", dateTo);
     if (decklists !== "any") next.set("decklists", decklists);
+    if (coverage !== "any") next.set("coverage", coverage);
     if (minPlayers > 0) next.set("minPlayers", String(minPlayers));
     if (sortMode !== "date") next.set("sort", sortMode);
     if (viewMode !== "list") next.set("view", viewMode);
     if (next.toString() !== searchParams.toString()) setSearchParams(next, { replace: true });
-  }, [category, country, dateFrom, dateTo, decklists, minPlayers, search, searchParams, seasonId, setSearchParams, setting, sortMode, viewMode]);
+  }, [category, country, coverage, dateFrom, dateTo, decklists, minPlayers, search, searchParams, seasonId, setSearchParams, setting, sortMode, viewMode]);
 
   const visibleEvents = events.slice(0, visibleCount);
   const calendarGroups = useMemo(() => groupEventsByMonth(visibleEvents), [visibleEvents]);
@@ -99,8 +104,8 @@ export default function TournamentsIndex() {
       <div className="mt-4 flex flex-col gap-2 sm:flex-row">
         <input
           type="text"
-          aria-label="Search by event, organizer, or location"
-          placeholder="Search event, organizer, or location…"
+          aria-label="Search by event, player, champion, organizer, or location"
+          placeholder="Search event, player, Champion, or location…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="min-h-11 flex-1 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-base text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none sm:text-sm"
@@ -200,6 +205,11 @@ export default function TournamentsIndex() {
       </div>
 
       <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
+        <span className="text-ctp-subtext0">Public deck coverage:</span>
+        {(["any", "some", "complete", "none"] as const).map((value) => <button key={value} type="button" onClick={() => setCoverage(value)} aria-pressed={coverage === value} className={`min-h-9 rounded-lg border px-3 text-xs capitalize ${coverage === value ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1"}`}>{value}</button>)}
+      </div>
+
+      <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Min players:</span>
         {MIN_PLAYERS_OPTIONS.map((n) => (
           <button
@@ -230,7 +240,7 @@ export default function TournamentsIndex() {
           </button>
         ))}
       </div>
-      <button type="button" onClick={() => { setSearch(""); setCategory(null); setSetting(null); setSeasonId(null); setCountry(null); setDateFrom(""); setDateTo(""); setDecklists("any"); setMinPlayers(0); setSortMode("date"); }} className="mt-3 min-h-11 rounded-lg px-3 text-xs font-medium text-ctp-blue hover:bg-ctp-blue/10">Clear all filters</button>
+      <button type="button" onClick={() => { setSearch(""); setCategory(null); setSetting(null); setSeasonId(null); setCountry(null); setDateFrom(""); setDateTo(""); setDecklists("any"); setCoverage("any"); setMinPlayers(0); setSortMode("date"); }} className="mt-3 min-h-11 rounded-lg px-3 text-xs font-medium text-ctp-blue hover:bg-ctp-blue/10">Clear all filters</button>
       </details>
 
       {!index && <InlineState className="mt-6">Loading…</InlineState>}
