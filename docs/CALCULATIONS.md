@@ -1531,9 +1531,10 @@ stays fixed. Classification is player-authored. This is explicitly an access cal
 claim that the cards are disposable, interactive, affordable, or legally playable. Costs, cost
 reductions, activation timing, board state, extra draws, and opponent responses are not modeled.
 
-### Engine-to-Payoff Balance (`features/deckbuilder/EnginePayoffBalance.tsx`, `lib/engineBalance.ts`)
+### Setup-to-Payoff Timing (`features/deckbuilder/EnginePayoffBalance.tsx`, `lib/engineBalance.ts`)
 
-The viewer assigns disjoint Producer and Payoff pools, minimum quantities for each, a setup deadline,
+Unlike Game Plan Readiness, which tests roles at one shared checkpoint, this staged view assigns
+disjoint Producer and Payoff pools, minimum quantities for each, an earlier setup deadline,
 and a later payoff deadline. `probabilityOfTimedRecipe` evaluates both requirements in the same
 without-replacement draw state. “Stranded payoff” is the probability of meeting the payoff access
 requirement by its deadline minus the joint online probability; “unused setup” similarly subtracts
