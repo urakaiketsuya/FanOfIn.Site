@@ -275,8 +275,8 @@ and clearly bounded affordability information.
   one unwanted early card.” Do not describe cards from a competing plan as liabilities.
 - **Draw Quality by Game Stage:** merge with named game plans as described above rather than maintaining a
   second independent classification.
-- **Advanced Sequence Analysis:** move complex card-by-card sequences into Combo Lab. Keep only a compact
-  “Can I afford this curve?” view in Deck Analysis.
+- **Curve Affordability Check:** Deck Analysis now keeps a compact, card-first “Can I afford this curve?”
+  view and sends flexible, branching, saved, or shared combo questions to Combo Lab.
 
 ### 3.3 Threat cadence
 

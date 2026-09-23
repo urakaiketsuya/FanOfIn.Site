@@ -40,7 +40,7 @@ import { analysisProfileKey, loadAnalysisProfile, saveAnalysisProfile } from "..
 import type { GamePlanRole } from "../../lib/gamePlanReadiness";
 
 type AnalysisTab = "summary" | "explore" | "matchups";
-const CALCULATORS = ["Game plan readiness", "Opening hand recipe", "Level-up runway", "Pressure continuity", "Setup-to-payoff timing", "Matchup answer access", "Resilience and rebuild", "Test session tracker", "Draw quality by game stage", "Post-sideboard plan", "Card access and probability", "Clumping and conditional pressure", "Resource timing", "Advanced sequence analysis"];
+const CALCULATORS = ["Game plan readiness", "Opening hand recipe", "Level-up runway", "Pressure continuity", "Setup-to-payoff timing", "Matchup answer access", "Resilience and rebuild", "Test session tracker", "Draw quality by game stage", "Post-sideboard plan", "Card access and probability", "Clumping and conditional pressure", "Resource timing", "Curve affordability check"];
 
 export default function DeckAnalysisIndex() {
   useDocumentTitle("Deck Analysis", "Understand the consistency, timing, resource pressure, and sideboard shape of the active deck.");
@@ -120,7 +120,7 @@ export default function DeckAnalysisIndex() {
       <AnalysisDisclosure title="Card access and probability" summary="Find a card, functional role, or complete combo."><HypergeometricCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Consistency details" summary="Inspect duplicate draws and conditional cards."><CopyClumpingRisk mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /><ConditionalHandPressure mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Resource timing" summary="See when Reserve costs become reliably available."><ResourceCurveReliability mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Advanced sequence analysis" summary="Test a specific sequence of plays and deadlines."><ReserveSequencePressure mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
+      <AnalysisDisclosure title="Curve affordability check" summary="Quickly test whether up to four named plays can be drawn and paid for; use Combo Lab for flexible or branching lines."><ReserveSequencePressure mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Sideboard impact" summary={workspace.sideboard.length > 0 ? "Preview substitutions without changing the deck." : "No Sideboard cards in this deck."}>{workspace.sideboard.length > 0 ? <SideboardImpact mainLines={workspace.main} sideboardLines={workspace.sideboard} catalogByName={catalogByName} /> : <InlineState>Add cards to the Sideboard in Deck Builder to analyze substitutions.</InlineState>}</AnalysisDisclosure>
     </div>}
     {tab === "matchups" && <BuilderTestPanel deckTestResult={deckTestResult} loading={deckTestLoading} cardsByName={catalogByName} nearestDecks={[]} nearestDeckCompareLink={() => "#"} onLoadNearestDeck={() => undefined} />}
