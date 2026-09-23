@@ -1875,15 +1875,22 @@ the view to its lowest-copy requirement and does not label that as full recipe c
 
 ## Goldfish simulator (`app/src/lib/goldfishSimulator.ts`, `features/goldfish/GoldfishIndex.tsx`)
 
-A starting hand + draw-through-the-deck tool, deliberately *manually-assisted* rather than a rules
-engine — checked against the real card corpus before deciding this (`pipeline/.cache/cards.json`,
+A starting hand + draw-through-the-deck tool with explicit zones and deterministic random actions,
+still deliberately *manually-assisted* rather than a general rules engine — checked against the real card corpus before deciding this (`pipeline/.cache/cards.json`,
 2,495 cards): only 0.37% of real Main Deck cards (6 of 1,635) have a completely empty effect field,
 so "parse every card's mechanical text" would be a much bigger lift than "cover the payoff cards,"
 and a fully-automated simulator isn't a credible promise. Every zone this tracks is deliberately
-minimal — Library (shuffled Main Deck instances only; Material Deck is materialized, not drawn,
-same distinction `lib/deckIdentity.ts` establishes elsewhere) → Hand (revealed) → one "played" pile
-— no Field/Graveyard/Memory split, since the actual ask ("removing them from hand each time") is
-about hand-tracking, not full board simulation.
+explicit: Library (shuffled Main Deck instances only), Hand, Memory, Banished, Played, Material Deck,
+Materialized, and Tokens. Reservable cards can move from Hand to Memory; Recollection is an explicit
+phase and action that returns Memory to Hand. Material cards remain outside the Library and can be
+materialized individually. Token creation/removal remains player-confirmed because most conditions
+cannot be safely inferred from effect text.
+
+Each game records a visible numeric seed, deterministic RNG state, and action history. Glimpse
+bottom randomization and random Memory banishment consume that seeded generator, so repeating the
+same starting seed and actions produces the same result. The log records outcomes, including the
+names selected by random Memory banishment. Saved-session serialization and automatic replay of
+the action log are still future work.
 
 The simulator auto-suggests fixed numeric "draw N cards" and "Glimpse N" triggers. Draw detection
 reuses `drawEffects.ts`'s detector; fixed Glimpse detection skips variable X/LV clauses and leaves
