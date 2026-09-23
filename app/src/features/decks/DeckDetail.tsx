@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { decodeCardLines, type OmnidexDecklist } from "@gatcg/shared";
 import { useDeckPopularity, buildPopularDeck } from "../popular/useDeckPopularity";
@@ -30,6 +30,7 @@ import MethodologyNote from "../../components/ui/MethodologyNote";
 import { encodeCustomDecks } from "../../lib/compareShareLink";
 import { DeckSightingHistory, SimilarDecksSection } from "./DeckDetailSections";
 import PlayerLink from "../players/PlayerLink";
+import { accountApi } from "../../lib/accountApi";
 
 type DeckTab = "decklist" | "analysis" | "history" | "similar";
 
@@ -57,6 +58,9 @@ const TAB_KEYS = TABS.map((t) => t.key);
 export default function DeckDetail() {
   const { id: hash = "" } = useParams<{ id: string }>();
   const [tab, setTab] = useTabParam<DeckTab>("tab", TAB_KEYS, "decklist");
+  const [favorited, setFavorited] = useState<boolean | null>(null);
+  const [favoriteBusy, setFavoriteBusy] = useState(false);
+  const [favoriteNotice, setFavoriteNotice] = useState<string | null>(null);
 
   const popularityIndexData = useDeckPopularityIndexData();
   const eventNameById = useEventNameById();
@@ -130,6 +134,12 @@ export default function DeckDetail() {
     }),
     [deck, sideboardSelection],
   );
+  useEffect(() => {
+    let active = true;
+    setFavorited(null);
+    void accountApi.tournamentFavoriteState(hash).then((result) => { if (active) setFavorited(result.favorited); }, () => { if (active) setFavorited(null); });
+    return () => { active = false; };
+  }, [hash]);
   const allNames = useMemo(() => [...(deck?.main ?? []), ...(deck?.material ?? []), ...(sideboardSelection?.lines ?? [])].map((l) => l.name), [deck, sideboardSelection]);
   const cardsByName = useCardsByNames(allNames);
   const { interactions: winConditions } = useDeckWinConditions(allNames, cardsByName);
@@ -196,6 +206,7 @@ export default function DeckDetail() {
       instances.map((entry) => toTopDecksListEntry(entry, eventNameById)),
     [instances, eventNameById],
   );
+  const favoriteSource = sideboardSelection?.sighting ?? instances[0] ?? null;
 
   const sightingsByMonth = useMemo(() => {
     if (instances.length === 0) return [];
@@ -433,7 +444,18 @@ export default function DeckDetail() {
         }
       />
 
-      <div className="mt-5"><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="inline-flex rounded-md border border-ctp-surface1 px-3 py-2 text-sm font-medium text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Compare deck</Link></div>
+      <div className="mt-5 flex flex-wrap gap-2">
+        <Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="inline-flex min-h-11 items-center rounded-lg border border-ctp-surface1 px-3 text-sm font-medium text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Compare deck</Link>
+        {favorited !== null ? <button type="button" disabled={favoriteBusy} aria-pressed={favorited} onClick={() => {
+          setFavoriteBusy(true); setFavoriteNotice(null);
+          void accountApi.favoriteTournamentDeck(hash, {
+            favorited: !favorited, title: `${deck.championName ?? "Unknown Champion"} tournament build`, championName: deck.championName,
+            decklist, sourceEventId: favoriteSource?.eventId ?? null, sourceEventName: favoriteSource ? (eventNameById.get(favoriteSource.eventId) ?? `Event #${favoriteSource.eventId}`) : null,
+            sourcePlayerId: favoriteSource?.player ?? null, sourcePlayerName: favoriteSource ? playerName(favoriteSource.player) : null,
+          }).then((result) => { setFavorited(result.favorited); setFavoriteNotice(result.favorited ? "Added to My Decks favorites." : "Removed from favorites."); }, (reason: Error) => setFavoriteNotice(reason.message)).finally(() => setFavoriteBusy(false));
+        }} className={`min-h-11 rounded-lg border px-3 text-sm font-medium disabled:opacity-50 ${favorited ? "border-ctp-yellow bg-ctp-yellow/10 text-ctp-yellow" : "border-ctp-surface1 text-ctp-subtext1 hover:border-ctp-yellow hover:text-ctp-yellow"}`}>{favorited ? "★ Favorited" : "☆ Add to favorites"}</button> : <Link to="/decks/edit" className="inline-flex min-h-11 items-center px-2 text-sm text-ctp-blue hover:underline">Sign in to favorite</Link>}
+      </div>
+      {favoriteNotice && <p className="mt-2 text-xs text-ctp-subtext1" role="status">{favoriteNotice}</p>}
 
       <div className="mt-6">
         <Tabs tabs={TABS} active={tab} onChange={setTab} label="Deck data" baseId="deck-detail" />

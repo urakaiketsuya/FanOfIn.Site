@@ -416,8 +416,8 @@ moderation, notifications, and authoring infrastructure.
 - Treat favorites as a private library action unless a user explicitly opts into public likes; define whether
   a public like count is shown before shipping it.
 - Add a dedicated **Favorites** section under My Decks, separate from decks the user owns or authored.
-  **Implemented for published community decks; tournament build favorites still require a stable account-side
-  reference and snapshot model.**
+  **Implemented for published community decks and tournament builds; tournament favorites retain an account-side
+  deck and source snapshot so they remain recognizable across pipeline refreshes.**
 - Preserve the source deck identity and handle deleted, private, or superseded decks without silently removing
   the saved reference.
 - Prevent duplicate favorites and keep favorite state synchronized across every deck-list surface.

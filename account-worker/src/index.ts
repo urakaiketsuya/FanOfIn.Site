@@ -8,6 +8,7 @@ import { serviceHealth } from "./health";
 import { listCollection, listSharedCardWatches, setSharedCardWatch, undoCollectionTransaction, updateCollection } from "./collection";
 import { changePassword, handleResendWebhook, loginPassword, recordPrivateResourceMiss, registerPassword, removePasswordCredential, requestPasswordReset, resetPassword, verifyEmailToken, verifyTurnstile } from "./password-auth";
 import { createCombo, deleteCombo, discoverCombos, getPublicCombo, listComboBookmarks, listCombos, setComboBookmark, updateCombo } from "./combos";
+import { listTournamentFavorites, parseTournamentFavoriteInput, setTournamentFavorite, tournamentFavoriteState } from "./tournament-favorites";
 
 function response(env: Env, request: Request, body: unknown, status = 200, extra: HeadersInit = {}): Response {
   const origin = request.headers.get("Origin");
@@ -264,6 +265,15 @@ export default {
         if (socialMatch[2] === "copy") { const result = await copyPublishedDeck(env, user, socialMatch[1]); return response(env, request, result, result.created ? 201 : 200); }
       }
       if (request.method === "GET" && url.pathname === "/v1/me/bookmarks") return response(env, request, { decks: await listBookmarks(env, user) });
+      if (request.method === "GET" && url.pathname === "/v1/me/tournament-favorites") return response(env, request, { decks: await listTournamentFavorites(env, user) });
+      const tournamentFavoriteMatch = url.pathname.match(/^\/v1\/me\/tournament-decks\/([a-z0-9]{1,7})\/favorite$/);
+      if (tournamentFavoriteMatch && request.method === "GET") return response(env, request, await tournamentFavoriteState(env, user, tournamentFavoriteMatch[1]));
+      if (tournamentFavoriteMatch && request.method === "POST") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        const body = await jsonBody(request) as Record<string, unknown>;
+        if (typeof body.favorited !== "boolean") throw badRequest("Favorited must be a boolean");
+        return response(env, request, await setTournamentFavorite(env, user, tournamentFavoriteMatch[1], body.favorited, body.favorited ? parseTournamentFavoriteInput(body) : undefined));
+      }
 
       if (request.method === "GET" && url.pathname === "/v1/me/combos") return response(env, request, { combos: await listCombos(env, user) });
       if (request.method === "POST" && url.pathname === "/v1/me/combos") {

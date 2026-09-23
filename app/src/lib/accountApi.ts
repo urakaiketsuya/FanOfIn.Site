@@ -1,4 +1,4 @@
-import type { AccountSession, AccountUser, AuthIdentity, AuthProvider, BookmarkedCombo, BookmarkedDeck, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, ComboDefinition, ComboVisibility, DeckFormat, DeckImportPreview, DeckImportResult, DeckReportReason, DeckSocialState, DeckVisibility, OmnidexDecklist, PublicCombo, PublicDeck, PublicDeckSummary, PublicProfile, SavedCombo, SavedDeck, SavedDeckDetail, SharedCardWatch } from "@gatcg/shared";
+import type { AccountSession, AccountUser, AuthIdentity, AuthProvider, BookmarkedCombo, BookmarkedDeck, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, ComboDefinition, ComboVisibility, DeckFormat, DeckImportPreview, DeckImportResult, DeckReportReason, DeckSocialState, DeckVisibility, OmnidexDecklist, PublicCombo, PublicDeck, PublicDeckSummary, PublicProfile, SavedCombo, SavedDeck, SavedDeckDetail, SharedCardWatch, TournamentDeckFavorite } from "@gatcg/shared";
 
 const ACCOUNT_API_URL = (import.meta.env.VITE_ACCOUNT_API_URL as string | undefined)?.replace(/\/$/, "")
   ?? (import.meta.env.PROD ? "https://accounts.fanofin.site/api" : "http://localhost:8788");
@@ -52,6 +52,9 @@ export const accountApi = {
   copyDeck: (slug: string) => accountRequest<{ id: string; created: boolean }>(`/v1/me/decklists/${encodeURIComponent(slug)}/copy`, { method: "POST", body: "{}" }),
   reportDeck: (slug: string, reason: DeckReportReason, details: string) => accountRequest<{ reported: true }>(`/v1/me/decklists/${encodeURIComponent(slug)}/report`, { method: "POST", body: JSON.stringify({ reason, details }) }),
   bookmarks: () => accountRequest<{ decks: BookmarkedDeck[] }>("/v1/me/bookmarks"),
+  tournamentFavorites: () => accountRequest<{ decks: TournamentDeckFavorite[] }>("/v1/me/tournament-favorites"),
+  tournamentFavoriteState: (deckHash: string) => accountRequest<{ favorited: boolean }>(`/v1/me/tournament-decks/${encodeURIComponent(deckHash)}/favorite`),
+  favoriteTournamentDeck: (deckHash: string, input: { favorited: boolean; title?: string; championName?: string | null; decklist?: OmnidexDecklist; sourceEventId?: number | null; sourceEventName?: string | null; sourcePlayerId?: number | null; sourcePlayerName?: string | null }) => accountRequest<{ favorited: boolean }>(`/v1/me/tournament-decks/${encodeURIComponent(deckHash)}/favorite`, { method: "POST", body: JSON.stringify(input) }),
   combos: () => accountRequest<{ combos: SavedCombo[] }>("/v1/me/combos"),
   saveCombo: (input: { name: string; description?: string; tags?: string[]; visibility?: ComboVisibility; definition: ComboDefinition; format?: DeckFormat; championName?: string | null; exampleDeckId?: string | null; deduplicate?: boolean }) => accountRequest<{ combo: SavedCombo; created: boolean }>("/v1/me/combos", { method: "POST", body: JSON.stringify(input) }),
   updateCombo: (id: string, input: Partial<{ name: string; description: string; tags: string[]; visibility: ComboVisibility; definition: ComboDefinition }>) => accountRequest<{ combo: SavedCombo }>(`/v1/me/combos/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify(input) }),

@@ -8,6 +8,7 @@ import { reportDeck } from "../src/moderation";
 import { REQUIRED_SCHEMA_VERSION, serviceHealth } from "../src/health";
 import { computeDeckCollectionStatus } from "@gatcg/shared";
 import { handleResendWebhook, hashPassword, normalizeLoginEmail, removePasswordCredential, validatePassword, verifyEmailToken, verifyPassword } from "../src/password-auth";
+import { parseTournamentFavoriteInput } from "../src/tournament-favorites";
 
 function envWithSecret(secret: string): Env {
   return { BFF_SHARED_SECRET: secret } as Env;
@@ -116,6 +117,28 @@ test("manual saves accept a bounded maybeboard outside the decklist", () => {
   });
   assert.deepEqual(input.maybeboard, [{ card: "Maybe Card", quantity: 2 }]);
   assert.throws(() => parseSaveInput({ ...input, maybeboard: [{ card: "Maybe Card", quantity: 0 }] }), /Invalid maybeboard/);
+});
+
+test("tournament favorites accept a bounded source snapshot", () => {
+  assert.deepEqual(parseTournamentFavoriteInput({
+    title: "Silvie tournament build",
+    championName: "Silvie, Loved by All",
+    decklist: { main: [{ card: "Dungeon Guide", quantity: 4 }], material: [{ card: "Spirit of Water", quantity: 1 }], sideboard: [] },
+    sourceEventId: 42,
+    sourceEventName: "Regional Championship",
+    sourcePlayerId: 7,
+    sourcePlayerName: "Player",
+  }), {
+    title: "Silvie tournament build",
+    championName: "Silvie, Loved by All",
+    decklist: { main: [{ card: "Dungeon Guide", quantity: 4 }], material: [{ card: "Spirit of Water", quantity: 1 }], sideboard: [] },
+    sourceEventId: 42,
+    sourceEventName: "Regional Championship",
+    sourcePlayerId: 7,
+    sourcePlayerName: "Player",
+  });
+  assert.throws(() => parseTournamentFavoriteInput({ title: "Empty", decklist: { main: [], material: [], sideboard: [] } }), /empty/);
+  assert.throws(() => parseTournamentFavoriteInput({ title: "Bad quantity", decklist: { main: [{ card: "Card", quantity: 0 }], material: [], sideboard: [] } }), /quantity/);
 });
 
 test("deck imports accept only selected candidates and deduplicate IDs", () => {

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { AccountUser, BookmarkedDeck, DeckFormat, SavedDeck } from "@gatcg/shared";
+import type { AccountUser, BookmarkedDeck, DeckFormat, SavedDeck, TournamentDeckFavorite } from "@gatcg/shared";
 import { accountApi } from "../../lib/accountApi";
 import { trackEvent } from "../../lib/analytics";
 import { parseDecklist } from "../compare/parseDecklist";
@@ -27,6 +27,7 @@ export default function MyDecksIndex() {
   const [user, setUser] = useState<AccountUser | null | undefined>(undefined);
   const [decks, setDecks] = useState<SavedDeck[]>([]);
   const [bookmarks, setBookmarks] = useState<BookmarkedDeck[]>([]);
+  const [tournamentFavorites, setTournamentFavorites] = useState<TournamentDeckFavorite[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -60,10 +61,15 @@ export default function MyDecksIndex() {
     const query = favoriteSearch.trim().toLowerCase();
     return bookmarks.filter((deck) => !query || deck.title.toLowerCase().includes(query) || (deck.championName?.toLowerCase().includes(query) ?? false));
   }, [bookmarks, favoriteSearch]);
+  const visibleTournamentFavorites = useMemo(() => {
+    const query = favoriteSearch.trim().toLowerCase();
+    return tournamentFavorites.filter((deck) => !query || deck.title.toLowerCase().includes(query) || (deck.championName?.toLowerCase().includes(query) ?? false) || (deck.sourceEventName?.toLowerCase().includes(query) ?? false));
+  }, [tournamentFavorites, favoriteSearch]);
+  const favoriteCount = bookmarks.length + tournamentFavorites.length;
 
   const refreshDecks = useCallback(async () => {
-    const [owned, saved] = await Promise.all([accountApi.decks(), accountApi.bookmarks()]);
-    setDecks(owned.decks); setBookmarks(saved.decks);
+    const [owned, saved, tournament] = await Promise.all([accountApi.decks(), accountApi.bookmarks(), accountApi.tournamentFavorites()]);
+    setDecks(owned.decks); setBookmarks(saved.decks); setTournamentFavorites(tournament.decks);
   }, []);
   useEffect(() => { void accountApi.session().then((session) => { setUser(session.user); if (session.user) void refreshDecks(); }).catch((reason: Error) => { setError(reason.message); setUser(null); }); }, [refreshDecks]);
 
@@ -77,7 +83,7 @@ export default function MyDecksIndex() {
   if (!user) return <PageLayout data-component="MyDecksIndex" width="standard"><Panel className="mt-8 text-center"><h1 className="text-2xl font-bold text-ctp-blue">Make My Decks your deck-building home</h1><p className="mx-auto mt-2 max-w-xl text-ctp-subtext1">Sign in to save builds, track versions, compare lists, and keep imported tournament and community decks together.</p><div className="mt-6 flex flex-wrap items-center justify-center gap-3"><GoogleSignInButton onCredential={(credential, nonce) => void run(async () => { const session = await accountApi.googleSignIn(credential, nonce); setUser(session.user); await refreshDecks(); })} /><DiscordSignInButton /><PasswordSignInPanel onSignedIn={(signedInUser) => { setUser(signedInUser); void refreshDecks(); }} />{import.meta.env.DEV && <Button variant="primary" onClick={() => void run(async () => { const session = await accountApi.devSignIn(); setUser(session.user); await refreshDecks(); })}>Use local test account</Button>}<Link to="/deck-builder" className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm font-medium text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Try Guided Deck Builder</Link></div>{error && error !== "Failed to fetch" && <InlineState tone="danger" className="mt-4 text-sm">{error}</InlineState>}</Panel></PageLayout>;
 
   return <PageLayout data-component="MyDecksIndex" width="wide">
-    <div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-3xl font-bold text-ctp-blue">My Decks</h1><p className="mt-2 text-sm text-ctp-subtext1">Your editable builds and favorite community decks.</p><p className="mt-1 text-xs text-ctp-subtext0">{decks.length} editable build{decks.length === 1 ? "" : "s"} · {bookmarks.length} favorite{bookmarks.length === 1 ? "" : "s"}</p></div><Button variant="primary" aria-expanded={addMode !== null} onClick={() => setAddMode((current) => current ? null : "choose")}>{addMode ? "Close" : "Add deck"}</Button></div>
+    <div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-3xl font-bold text-ctp-blue">My Decks</h1><p className="mt-2 text-sm text-ctp-subtext1">Your editable builds and favorite community or tournament decks.</p><p className="mt-1 text-xs text-ctp-subtext0">{decks.length} editable build{decks.length === 1 ? "" : "s"} · {favoriteCount} favorite{favoriteCount === 1 ? "" : "s"}</p></div><Button variant="primary" aria-expanded={addMode !== null} onClick={() => setAddMode((current) => current ? null : "choose")}>{addMode ? "Close" : "Add deck"}</Button></div>
     {error && <Panel tone="danger" padding="sm" className="mt-4 text-sm text-ctp-red">{error}</Panel>}
     {notice && <Panel tone="success" padding="sm" className="mt-4 text-sm text-ctp-green">{notice}</Panel>}
 
@@ -119,8 +125,8 @@ export default function MyDecksIndex() {
           </div>}
       </>}
     </Section>
-    <Section className="mt-10" title={`Favorites (${bookmarks.length})`} description="Community decks you want to revisit. A favorite keeps the published version you selected.">
-      {bookmarks.length === 0 ? <p className="mt-4 rounded-lg border border-dashed border-ctp-surface1 p-8 text-center text-sm text-ctp-subtext1">No favorites yet. Add one from a shared community deck page.</p> : <><input value={favoriteSearch} onChange={(event) => setFavoriteSearch(event.target.value)} placeholder="Search favorite decks or Champions" aria-label="Search favorite decks" className="mt-4 min-h-11 w-full max-w-md rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 text-sm focus:border-ctp-yellow focus:outline-none" />{visibleBookmarks.length === 0 ? <p className="mt-4 rounded-lg border border-dashed border-ctp-surface1 p-6 text-center text-sm text-ctp-subtext1">No favorites match your search.</p> : <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">{visibleBookmarks.map((deck) => <PublicDeckCard key={deck.publicSlug} deck={deck} onRemoveFavorite={() => void run(async () => { await accountApi.bookmarkDeck(deck.publicSlug, false); await refreshDecks(); setNotice(`${deck.title} removed from favorites.`); })} />)}</div>}</>}
+    <Section className="mt-10" title={`Favorites (${favoriteCount})`} description="Community publications and tournament builds you want to revisit. Favorites preserve the deck snapshot you selected.">
+      {favoriteCount === 0 ? <p className="mt-4 rounded-lg border border-dashed border-ctp-surface1 p-8 text-center text-sm text-ctp-subtext1">No favorites yet. Add one from a community or tournament deck page.</p> : <><input value={favoriteSearch} onChange={(event) => setFavoriteSearch(event.target.value)} placeholder="Search favorites, Champions, or events" aria-label="Search favorite decks" className="mt-4 min-h-11 w-full max-w-md rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 text-sm focus:border-ctp-yellow focus:outline-none" />{visibleBookmarks.length + visibleTournamentFavorites.length === 0 ? <p className="mt-4 rounded-lg border border-dashed border-ctp-surface1 p-6 text-center text-sm text-ctp-subtext1">No favorites match your search.</p> : <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">{visibleTournamentFavorites.map((deck) => <article key={`tournament-${deck.deckHash}`} className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><div className="flex items-start justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-wide text-ctp-yellow">Tournament build</p><h3 className="mt-1 font-semibold text-ctp-text">{deck.title}</h3>{deck.sourceEventName && <p className="mt-1 text-xs text-ctp-subtext0">{deck.sourcePlayerName ? `${deck.sourcePlayerName} · ` : ""}{deck.sourceEventName}</p>}</div><span aria-hidden="true" className="text-ctp-yellow">★</span></div><div className="mt-4 flex flex-wrap gap-2"><Link to={`/decks/${deck.deckHash}`} className="inline-flex min-h-11 items-center rounded-lg bg-ctp-blue px-3 text-sm font-semibold text-ctp-base">Open deck</Link><button type="button" onClick={() => void run(async () => { await accountApi.favoriteTournamentDeck(deck.deckHash, { favorited: false }); await refreshDecks(); setNotice(`${deck.title} removed from favorites.`); })} className="min-h-11 rounded-lg px-3 text-xs font-medium text-ctp-red hover:bg-ctp-red/10">Remove favorite</button></div></article>)}{visibleBookmarks.map((deck) => <PublicDeckCard key={deck.publicSlug} deck={deck} onRemoveFavorite={() => void run(async () => { await accountApi.bookmarkDeck(deck.publicSlug, false); await refreshDecks(); setNotice(`${deck.title} removed from favorites.`); })} />)}</div>}</>}
     </Section>
   </PageLayout>;
 }

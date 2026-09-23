@@ -87,6 +87,19 @@ export interface BookmarkedDeck extends PublicDeck {
   bookmarkedAt: string;
 }
 
+/** A private snapshot of a tournament build, whose source data is not stored in the account database. */
+export interface TournamentDeckFavorite {
+  deckHash: string;
+  title: string;
+  championName: string | null;
+  decklist: OmnidexDecklist;
+  sourceEventId: number | null;
+  sourceEventName: string | null;
+  sourcePlayerId: number | null;
+  sourcePlayerName: string | null;
+  favoritedAt: string;
+}
+
 export interface AccountUser {
   id: string;
   email: string;
