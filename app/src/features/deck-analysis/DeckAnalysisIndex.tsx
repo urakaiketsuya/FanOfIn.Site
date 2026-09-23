@@ -25,6 +25,8 @@ import { useRequestedDeckWorkspace } from "../deckbuilder/persistence/useRequest
 import { probabilityAtLeast } from "../deckbuilder/synergyReadiness";
 import { computeResourceCurveReliability } from "../deckbuilder/resourceCurve";
 import { calculateConditionalPressure } from "../deckbuilder/conditionalPressureCalculation";
+import GamePlanReadiness from "../deckbuilder/GamePlanReadiness";
+import FunctionalHandCalculator from "../deckbuilder/FunctionalHandCalculator";
 
 type AnalysisTab = "summary" | "explore" | "matchups";
 
@@ -83,6 +85,8 @@ export default function DeckAnalysisIndex() {
       <p className="mt-3 text-xs text-ctp-subtext0">These are measurements, not change recommendations. Use Deck Review when you want suggested edits.</p>
     </div>}
     {tab === "explore" && <div className="mt-4 space-y-3">
+      <AnalysisDisclosure title="Game plan readiness" summary="Measure when setup, payoff, and protection are likely to come together."><GamePlanReadiness mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
+      <AnalysisDisclosure title="Functional hand" summary="Require useful roles while limiting awkward or redundant cards."><FunctionalHandCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Card access and probability" summary="Find a card, functional role, or complete combo."><HypergeometricCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Consistency details" summary="Inspect duplicate draws and conditional cards."><CopyClumpingRisk mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /><ConditionalHandPressure mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Resource timing" summary="See when Reserve costs become reliably available."><ResourceCurveReliability mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>

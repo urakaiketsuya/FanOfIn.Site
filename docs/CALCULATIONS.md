@@ -1461,6 +1461,41 @@ Verified against every real "level up your champion" card in the corpus
 Surfaced on every deck-viewing page's Analysis/Forecasts tab via `UserDeckStats.tsx`, next to the
 Hypergeometric calculator, using the same "Card in build" autofill convention.
 
+### Game Plan Readiness (`features/deckbuilder/GamePlanReadiness.tsx`, `lib/gamePlanReadiness.ts`)
+
+Deck Analysis lets the viewer assign each Main Deck card name to one of three mutually exclusive
+roles: Enabler, Payoff, or Protection. The viewer also chooses the minimum number required from each
+role, a target turn, and whether the deck is going first or second. Exclusive assignment keeps the
+role pools disjoint, so the existing multivariate-hypergeometric recipe engine calculates the exact
+chance of seeing the required Enabler cards **and** Payoff cards without multiplying rounded
+independent odds or counting one physical card twice.
+
+The turn curve uses the level-zero Champion's detected opening-hand size plus natural one-card draw
+phases from `naturalCardsSeenByTurn`. “Core ready” requires Enabler and Payoff; “Protected plan” adds
+the selected Protection requirement when that role has enough copies. The panel also reports each
+one-sided failure state (`P(Payoff) - P(Core)` and `P(Enabler) - P(Core)`), the lowest-access role at
+the target turn, the tail-sum expected cards seen before the core is assembled, and which core role
+gains more from one additional copy while deck size remains fixed.
+
+This is an access calculator, not a play-success simulation. It does not model Reserve payment,
+activation permission, card sequencing, extra draws, board state, targets, opponent responses, or
+whether cards placed in the same player-declared role are strategically interchangeable.
+
+### Functional Hand (`features/deckbuilder/FunctionalHandCalculator.tsx`, `lib/functionalHand.ts`)
+
+The viewer assigns Main Deck card names to mutually exclusive Proactive Play, Setup, Interaction,
+or Liability pools. Any of the first three roles can be required; the Liability pool instead has a
+configurable maximum. At each natural-draw checkpoint, all lower and upper bounds are evaluated in
+one multivariate state calculation through `probabilityOfTimedRecipe`. This makes a result such as
+“at least one proactive play, setup card, and interaction card, with no more than one liability” a
+single exact without-replacement probability rather than a product of independently rounded odds.
+
+The panel reports opening-hand, selected-turn, and first-ten probabilities; a turn curve; the
+required role with the lowest individual access at the selected turn; and which required role gains
+the most from one additional copy while total deck size stays fixed. Player classification remains
+authoritative: the calculator does not infer that cards assigned to a role are strategically equal,
+nor does meeting the selected counts prove that a hand is affordable, legal, or well sequenced.
+
 ### Functional-copy probability (`features/deckbuilder/functionalCopies.ts`)
 
 The Guided Builder's Hypergeometric calculator can treat every Main Deck card serving one detected
