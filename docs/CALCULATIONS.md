@@ -1051,15 +1051,19 @@ directly by the user: not "what's commonly played alongside this card" but "does
 given other card correlate with actually winning more" — a real win-rate interaction, not just
 popularity. Reuses `computeCardImpactEntries` a fourth time (general Card Impact, matchup Card
 Impact, Guided Deck Builder — see above), this time scoped globally: the population is simply every
-deck (any Champion) containing the page's card, baseline is that population's own mean win rate, and
-candidates are every other card seen in it. The card itself never appears in its own results without
+deck containing the page's card, with outcomes centered within each Champion population before the
+with/without calculation. This removes the most direct Champion/archetype baseline confound: a
+material Champion card should not rank merely because that Champion's decks win more overall.
+Candidates are every other card seen in the population, and only positive adjusted lift is shown.
+The card itself never appears in its own results without
 special-casing — every row in the population already contains it, so its "without" bucket is always
 empty and automatically fails the minimum-sample gate.
 
 ## Same effect shape (`app/src/lib/cardSimilarity.ts`, `useSimilarCards.ts`)
 
-Groups cards by `sorted(types) | sorted(subtypes) | numbers-normalized effect text` (digits replaced
-with `#`, `**` bold markers stripped, `**Preserved?**` handled like every other keyword regex
+Groups cards by `sorted(types) | sorted(subtypes) | numbers-normalized effect text` (digits and
+number words replaced with `#`, `**` bold markers stripped, whitespace/case normalized,
+`**Preserved?**` handled like every other keyword regex
 elsewhere). Templates under 15 characters are excluded — otherwise every blank-effect stat-stick in
 the catalog collapses into one meaningless mega-group. Deliberately does **not** rank or declare an
 upgrade: spot-checked against real data before shipping and found genuine same-day cost/stat
@@ -1104,7 +1108,8 @@ corpus: 51 groups / 181 cards share a core-effect key, comparable in size to `si
 groups. Used by `computeNewReleaseCards` (`app/src/features/deckbuilder/newReleaseCards.ts`) as a fourth
 connection track, reported with `via: "same effect"` — it's the only track there that can flag a
 genuinely new effect template (not just a token/tribal/named-reference relationship) as worth a
-look.
+look. The card detail page shows these as a separate "Same core effect" tier beneath exact-template
+matches, so the broader comparison is visible without presenting it as identical rules text.
 
 ## Intent cards (`app/src/lib/cardIntent.ts`, `useIntentCards.ts`)
 
@@ -1113,7 +1118,9 @@ to work together** — one card produces a resource/condition, another's text ex
 cares about that same thing. Three detection tracks, all validated against the real card corpus
 before building (2,495 cards, `pipeline/.cache/cards.json`):
 
-- **Named token economies**: `extractProducedTokens` matches `**Summon** a/an/N <Name> token(s)` in
+- **Named token economies**: `extractProducedTokens` case-insensitively matches `**Summon**`
+  followed by a fixed or open quantity (`a`/`an`/N, number words, `any number of`, or `that many`)
+  and `<Name> token(s)` in
   effect text; `extractConsumedTokens` matches `sacrifice a/an/N <Name>`. Matched by the token's own
   name, not a hardcoded list — Powercell is the validated case (18 cards summon one, 10 separately
   sacrifice one, a genuine shared resource economy), and the same pattern picks up any future shared

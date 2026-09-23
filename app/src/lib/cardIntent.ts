@@ -1,7 +1,8 @@
 import type { Card } from "@gatcg/shared";
 
-const SUMMON_TOKEN_RE = /\*\*Summon\*\*\s+(?:a|an|\d+|two|three)\s+([A-Z][A-Za-z ]*?)\s+tokens?\b/g;
-const SACRIFICE_TOKEN_RE = /[Ss]acrifice\s+(?:a|an|\d+|any amount of)\s+([A-Z][A-Za-z ]*?)\b/g;
+const TOKEN_QUANTITY = "(?:a|an|\\d+|one|two|three|four|five|six|any number of|any amount of|that many)";
+const SUMMON_TOKEN_RE = new RegExp(`\\*\\*summon\\*\\*\\s+${TOKEN_QUANTITY}\\s+([a-z][a-z ]*?)\\s+tokens?\\b`, "gi");
+const SACRIFICE_TOKEN_RE = new RegExp(`\\bsacrifice\\s+${TOKEN_QUANTITY}\\s+([a-z][a-z ]*?)\\b`, "gi");
 
 /**
  * Token names are discovered dynamically from free effect text with no canonical list to check
@@ -296,14 +297,14 @@ export function intentCards(card: Card, catalog: Card[]): IntentCards {
   // `referenced_by`) — the strongest possible signal, since it isn't inferred from text at all.
   // Sparse today (most real named relationships aren't curated yet), so this is additive to, not a
   // replacement for, the rules-text scan below.
-  for (const ref of card.references) {
+  for (const ref of card.references ?? []) {
     const target = catalogBySlug.get(ref.slug);
     if (target && !namedRefPoweredBy.has(target.uuid)) {
       namedRefPoweredBy.add(target.uuid);
       poweredBy.push({ card: target, via: "named reference", tier: "validated" });
     }
   }
-  for (const ref of card.referenced_by) {
+  for (const ref of card.referenced_by ?? []) {
     const source = catalogBySlug.get(ref.slug);
     if (source && !namedRefFeeds.has(source.uuid)) {
       namedRefFeeds.add(source.uuid);

@@ -8,6 +8,35 @@ const PRIOR_WEIGHT = 10;
 const MIN_SAMPLE_SIZE = 5;
 const MAX_RESULTS = 15;
 
+export interface CardSynergyRow extends CardSectionRow {
+  championName: string | null;
+}
+
+/**
+ * Compare cards after centering every Champion population on the same baseline. Without this,
+ * Champion/material cards and archetype staples mostly measure that one Champion's overall win
+ * rate rather than whether the candidate helps decks that already run the page card.
+ */
+export function computeChampionAdjustedSynergy(rows: CardSynergyRow[]): CardImpactEntry[] {
+  if (rows.length === 0) return [];
+  const baseline = rows.reduce((sum, row) => sum + row.outcome, 0) / rows.length;
+  const byChampion = new Map<string, { sum: number; count: number }>();
+  for (const row of rows) {
+    const key = row.championName ?? "__unknown__";
+    const bucket = byChampion.get(key) ?? { sum: 0, count: 0 };
+    bucket.sum += row.outcome;
+    bucket.count += 1;
+    byChampion.set(key, bucket);
+  }
+  const adjustedRows = rows.map((row): CardSectionRow => {
+    const bucket = byChampion.get(row.championName ?? "__unknown__")!;
+    return { sections: row.sections, outcome: row.outcome - bucket.sum / bucket.count + baseline };
+  });
+  return computeCardImpactEntries(adjustedRows, baseline, PRIOR_WEIGHT, MIN_SAMPLE_SIZE)
+    .filter((entry) => entry.adjustedLift > 0)
+    .slice(0, MAX_RESULTS);
+}
+
 export interface CardSynergyResult {
   cards: CardImpactEntry[];
   totalDecks: number;
@@ -32,7 +61,7 @@ export function useCardSynergy(cardName: string | null, enabled = true): CardSyn
       return { cards: [], totalDecks: 0, loading: !presence || !popularityIndexData };
 
     const { data: cardIndexData, nameToIndex, presenceIndex } = presence;
-    const winRateByDeckId = new Map(popularityIndexData.entries.map((s) => [s.deckId, s.winRate]));
+    const resultByDeckId = new Map(popularityIndexData.entries.map((s) => [s.deckId, s]));
 
     // Candidate decks come straight from the presence index — no need to decode and string-match
     // every one of the ~57k published decks just to find the (typically far smaller) subset that
@@ -40,11 +69,11 @@ export function useCardSynergy(cardName: string | null, enabled = true): CardSyn
     const cardNameIndex = nameToIndex.get(cardName);
     const matchingDeckIndices = cardNameIndex === undefined ? [] : presenceIndex.get(cardNameIndex);
 
-    const rows: CardSectionRow[] = [];
+    const rows: CardSynergyRow[] = [];
     for (const idx of matchingDeckIndices ?? []) {
       const entry = cardIndexData.decks[idx];
-      const winRate = winRateByDeckId.get(entry.deckId);
-      if (winRate === undefined) continue;
+      const result = resultByDeckId.get(entry.deckId);
+      if (!result) continue;
 
       const main = decodeCardLines(entry.main, cardIndexData.cardNames);
       const material = decodeCardLines(entry.material, cardIndexData.cardNames);
@@ -55,13 +84,12 @@ export function useCardSynergy(cardName: string | null, enabled = true): CardSyn
         material: new Set(material.map((l) => l.name)),
         sideboard: new Set(sideboard.map((l) => l.name)),
       };
-      rows.push({ sections, outcome: winRate });
+      rows.push({ sections, outcome: result.winRate, championName: result.championName });
     }
 
     if (rows.length === 0) return { cards: [], totalDecks: 0, loading: false };
 
-    const baseline = rows.reduce((sum, r) => sum + r.outcome, 0) / rows.length;
-    const cards = computeCardImpactEntries(rows, baseline, PRIOR_WEIGHT, MIN_SAMPLE_SIZE).slice(0, MAX_RESULTS);
+    const cards = computeChampionAdjustedSynergy(rows);
 
     return { cards, totalDecks: rows.length, loading: false };
   }, [cardName, presence, popularityIndexData]);

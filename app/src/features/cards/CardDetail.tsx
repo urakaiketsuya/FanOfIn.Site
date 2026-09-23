@@ -11,7 +11,6 @@ import { useCardCatalog } from "./useCardCatalog";
 import { useCardCombination } from "./useCardCombination";
 import { useCardSynergy } from "./useCardSynergy";
 import { useSimilarCards } from "./useSimilarCards";
-import { earliestReleaseDate } from "../../lib/cardSimilarity";
 import { useIntentCards } from "./useIntentCards";
 import { getCardPackageMembership } from "../deckbuilder/packageGuardrails";
 import { useMinedPackageCandidates } from "../deckbuilder/useMinedPackageCandidates";
@@ -160,13 +159,9 @@ export default function CardDetail() {
   const synergy = useCardSynergy(card?.name ?? null, needsSynergyTab);
   const synergyCardImages = useCardsByNames(useMemo(() => synergy.cards.map((c) => c.cardName), [synergy.cards]));
 
-  const similarCardsList = useSimilarCards(card ?? null);
-  const similarCardsSorted = useMemo(
-    () => [...similarCardsList].sort((a, b) => (earliestReleaseDate(a) ?? "").localeCompare(earliestReleaseDate(b) ?? "")),
-    [similarCardsList],
-  );
+  const similarCards = useSimilarCards(card ?? null);
 
-  const intent = useIntentCards(card ?? null);
+  const intent = useIntentCards(card ?? null, needsIntentTab);
   const cardPackages = useMemo(() => (card ? getCardPackageMembership(card.name) : []), [card]);
   const [showExperimentalIntent, setShowExperimentalIntent] = useState(false);
   const visibleIntentFeeds = useMemo(
@@ -309,7 +304,7 @@ export default function CardDetail() {
       )}
 
       {surface === "more" && moreTab === "similar" && (
-        <CardSimilarEffectsPanel card={card} cardStat={cardStat} similarCards={similarCardsSorted} resolveReference={resolveReference} />
+        <CardSimilarEffectsPanel card={card} cardStat={cardStat} similarCards={similarCards} resolveReference={resolveReference} />
       )}
 
       {surface === "more" && moreTab === "intent" && (

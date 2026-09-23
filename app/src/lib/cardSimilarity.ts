@@ -4,13 +4,17 @@ import type { Card, CardCost } from "@gatcg/shared";
  * little/no effect text) to mean anything as a "same effect shape" match — without this floor,
  * every blank-effect card in the catalog would collapse into one meaningless giant group. */
 const MIN_TEMPLATE_LENGTH = 15;
+const NUMBER_WORD_RE = /\b(?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen)\b/gi;
 
 function normalizeEffectTemplate(effectRaw: string | null): string {
   if (!effectRaw) return "";
   return effectRaw
     .replace(/\*\*/g, "")
     .replace(/\d+/g, "#")
-    .trim();
+    .replace(NUMBER_WORD_RE, "#")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
 }
 
 function templateKey(card: Card): string | null {
@@ -52,6 +56,7 @@ function normalizeCoreEffect(effectRaw: string | null): string {
     .replace(REMINDER_TEXT_RE, "")
     .replace(/\*\*/g, "")
     .replace(/\d+/g, "#")
+    .replace(NUMBER_WORD_RE, "#")
     .replace(/\s+/g, " ")
     .trim()
     .toLowerCase();
@@ -78,6 +83,19 @@ export function sameCoreEffectCards(card: Card, catalog: Card[]): Card[] {
   const key = normalizeCoreEffect(card.effect);
   if (key.length < MIN_TEMPLATE_LENGTH) return [];
   return catalog.filter((c) => c.uuid !== card.uuid && normalizeCoreEffect(c.effect) === key);
+}
+
+export interface SimilarEffectCards {
+  exact: Card[];
+  core: Card[];
+}
+
+/** Exact template siblings plus looser core-effect siblings, without repeating exact matches. */
+export function effectRelatedCards(card: Card, catalog: Card[]): SimilarEffectCards {
+  const exact = similarCards(card, catalog);
+  const exactIds = new Set(exact.map((candidate) => candidate.uuid));
+  const core = sameCoreEffectCards(card, catalog).filter((candidate) => !exactIds.has(candidate.uuid));
+  return { exact, core };
 }
 
 /** Earliest print date across every edition — used to sort siblings oldest-to-newest. */

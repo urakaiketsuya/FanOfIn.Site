@@ -16,7 +16,7 @@ export function CardPlayedWithPanel({ cardName, deckCount, topCards, cardImages 
 
 export function CardSynergyPanel({ cardName, cards, totalDecks, cardImages }: { cardName: string; cards: CardImpactEntry[]; totalDecks: number; cardImages: Map<string, Card> }) {
   return <Section className="mt-4" heading="compact" title="Win-rate synergy">
-    {cards.length > 0 ? <><p className="mt-1 text-xs text-ctp-subtext0">Across {totalDecks} decks running {cardName}, cards that correlate with a higher win rate when also included. This differs from “Most Used With,” which ranks frequency. <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link></p><CardImpactTable cards={cards} cardImages={cardImages} withLabel="Win rate (with)" withoutLabel="Win rate (without)" /></> : <InlineState className="mt-4 text-sm">No card clears the sample bar for a win-rate synergy with {cardName} yet.</InlineState>}
+    {cards.length > 0 ? <><p className="mt-1 text-xs text-ctp-subtext0">Across {totalDecks} decks running {cardName}, positive with-versus-without correlations after adjusting each Champion population to the same baseline. This differs from “Most Used With,” which ranks frequency. <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link></p><CardImpactTable cards={cards} cardImages={cardImages} withLabel="Win rate (with)" withoutLabel="Win rate (without)" /></> : <InlineState className="mt-4 text-sm">No positive Champion-adjusted card relationship clears the sample bar for {cardName} yet.</InlineState>}
   </Section>;
 }
 

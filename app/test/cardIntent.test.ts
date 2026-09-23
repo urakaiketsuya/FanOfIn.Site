@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type { Card } from "@gatcg/shared";
-import { extractConsumedSubtypes } from "../src/lib/cardIntent";
+import { extractConsumedSubtypes, extractProducedTokens, intentCards } from "../src/lib/cardIntent";
 
 const card = (effect: string): Card => ({ name: "Test card", effect, subtypes: [], types: [] } as unknown as Card);
 const knownSubtypes = new Set(["harmony", "melody", "animal", "beast"]);
@@ -33,4 +33,16 @@ test("an unrelated subtype later in the effect is not treated as a reveal choice
   );
 
   assert.equal(consumed.has("animal"), false);
+});
+
+test("token producers accept lowercase keywords and flexible quantities", () => {
+  assert.deepEqual([...extractProducedTokens(card("**summon** any number of Powercell tokens."))], ["powercell"]);
+  assert.deepEqual([...extractProducedTokens(card("**Summon** that many Core Fractal tokens rested."))], ["core fractal"]);
+});
+
+test("intent matching tolerates absent reference arrays", () => {
+  const producer = { ...card("**summon** a Powercell token."), uuid: "producer", slug: "producer", name: "Producer", references: null, referenced_by: null } as unknown as Card;
+  const consumer = { ...card("As an additional cost, sacrifice a Powercell."), uuid: "consumer", slug: "consumer", name: "Consumer", references: null, referenced_by: null } as unknown as Card;
+  const result = intentCards(producer, [producer, consumer]);
+  assert.equal(result.feeds.some((match) => match.card.name === "Consumer" && match.via === "powercell"), true);
 });
