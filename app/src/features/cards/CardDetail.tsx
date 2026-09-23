@@ -17,6 +17,7 @@ import { useMinedPackageCandidates } from "../deckbuilder/useMinedPackageCandida
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCommunityBlendedCardInclusion, useCommunityBlendedDeckReferences } from "../community/data";
+import { useDeckCardPresenceIndex } from "./useDeckCardPresenceIndex";
 import { useHipsterData } from "../players/data";
 import { usePlayerNameById, useEventNameById } from "../tournaments/data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -140,6 +141,7 @@ export default function CardDetail() {
 
   const selectedCardNames = useMemo(() => (card ? [card.name] : []), [card]);
   const combination = useCardCombination(selectedCardNames, needsDecksTab || needsUsedWithTab);
+  const deckCardPresence = useDeckCardPresenceIndex(needsDecksTab);
   const comboNames = useMemo(
     () => [...combination.main, ...combination.material, ...combination.sideboard].map((c) => c.name),
     [combination],
@@ -155,6 +157,21 @@ export default function CardDetail() {
   );
 
   const deckIdSet = useMemo(() => new Set(combination.deckIds), [combination.deckIds]);
+  const cardSectionsByDeck = useMemo(() => {
+    const result = new Map<string, ("main" | "material" | "sideboard")[]>();
+    if (!card || !deckCardPresence) return result;
+    const nameIndex = deckCardPresence.nameToIndex.get(card.name);
+    if (nameIndex === undefined) return result;
+    for (const deckIndex of deckCardPresence.presenceIndex.get(nameIndex) ?? []) {
+      const deck = deckCardPresence.data.decks[deckIndex];
+      const sections: ("main" | "material" | "sideboard")[] = [];
+      if (deck.main.some(([index]) => index === nameIndex)) sections.push("main");
+      if (deck.material.some(([index]) => index === nameIndex)) sections.push("material");
+      if (deck.sideboard.some(([index]) => index === nameIndex)) sections.push("sideboard");
+      result.set(deck.deckId, sections);
+    }
+    return result;
+  }, [card, deckCardPresence]);
 
   const synergy = useCardSynergy(card?.name ?? null, needsSynergyTab);
   const synergyCardImages = useCardsByNames(useMemo(() => synergy.cards.map((c) => c.cardName), [synergy.cards]));
@@ -203,8 +220,9 @@ export default function CardDetail() {
         ...toTopDecksListEntry(entry, eventNameById),
         eventDate: entry.eventDate,
         deckHash: entry.deckHash,
+        cardSections: cardSectionsByDeck.get(entry.deckId),
       }));
-  }, [popularityIndexData, deckIdSet, eventNameById]);
+  }, [popularityIndexData, deckIdSet, eventNameById, cardSectionsByDeck]);
 
   const recentDecks = useMemo(() => {
     if (!popularityIndexData) return [];
@@ -216,8 +234,9 @@ export default function CardDetail() {
         ...toTopDecksListEntry(entry, eventNameById),
         eventDate: entry.eventDate,
         deckHash: entry.deckHash,
+        cardSections: cardSectionsByDeck.get(entry.deckId),
       }));
-  }, [popularityIndexData, deckIdSet, eventNameById]);
+  }, [popularityIndexData, deckIdSet, eventNameById, cardSectionsByDeck]);
 
   const uniqueDecks = useMemo(() => {
     if (!hipsterData) return [];

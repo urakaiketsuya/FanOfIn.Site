@@ -12,6 +12,7 @@ export interface TopDecksListEntry {
   underplaced: boolean;
   eventDate?: string;
   deckHash?: string | null;
+  cardSections?: ("main" | "material" | "sideboard")[];
 }
 
 /** Adds the event display name that the lean popularity index deliberately omits. */

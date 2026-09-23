@@ -229,9 +229,10 @@ Review, and Deck Analysis; shared copies are not incorrectly allocated to every 
 - Audit ingestion, stored deck data, and page rendering separately so a display fix does not conceal missing
   upstream Sideboard records.
 - In Card Stats deck lists, make the deck link a visually clear primary row action with a descriptive label,
-  full keyboard focus treatment, and an adequately sized mobile target.
+  full keyboard focus treatment, and an adequately sized mobile target. **Implemented.**
 - On card-detail “Recent decks,” mark whether the card appears in Main, Material, Sideboard, or more than one
   section. Keep Sideboard-only appearances visually distinct and accessible without relying on color alone.
+  **Implemented.**
 
 **Acceptance criteria:** tournament decks render every available section and disclose unavailable source
 data; users can recognize and open a deck from Card Stats; recent-deck appearances state the card’s section.
