@@ -1801,8 +1801,8 @@ discard, opponent effects, level requirements, and board-state conditions are no
 
 For every Main Deck card with at least two copies, this calculates the exact hypergeometric chance
 of drawing 2+ copies in the inferred opening hand, 2+ among the first 10 cards, and 3+ among the
-first 10. Rows are ranked by the early 2+ probability and capped at the 12 highest-risk inclusions
-to keep the tool compact. This is explicitly a review signal rather than a dead-card verdict:
+first 10. Since card identity cannot change those odds, cards are grouped by registered copy count
+and each probability is displayed once beside a card-art strip. This is explicitly a review signal rather than a dead-card verdict:
 redundancy can be desirable, while uniqueness rules, high costs, and situational effects make some
 duplicate draws more consequential than others.
 
