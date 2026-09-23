@@ -403,8 +403,9 @@ unresolved mappings; deleting an import does not delete manually entered games.
 
 **Foundation implemented:** Goldfish now keeps card identity across Library, Hand, Memory, Banished,
 Played, Material Deck, and Materialized zones; exposes Reservable moves and Recollection; supports manual
-token lifecycle; and uses a visible deterministic seed for Glimpse and random Memory banishment. Persisted
-session serialization/replay and broader effect-specific legality remain outstanding.
+token lifecycle; and uses a visible deterministic seed for Glimpse and random Memory banishment. Versioned
+local sessions preserve every modeled zone, tokens, history, and RNG state, with safe migration defaults for
+older minimal snapshots. Broader effect-specific legality remains outstanding.
 
 **Acceptance criteria:** representative fixtures cover reserving, token creation, Recollection, Material Deck
 use, and seeded random Memory banishment; replaying a session produces the same state and random outcomes.

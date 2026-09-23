@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type { Card } from "@gatcg/shared";
-import { banishRandomFromMemory, beginRecollection, createTokens, materializeCard, newGame, recollectMemory, reserveCard, resolveGlimpse, suggestedGlimpse, type GoldfishState } from "../src/lib/goldfishSimulator";
+import { banishRandomFromMemory, beginRecollection, createTokens, materializeCard, newGame, parseGoldfishSession, recollectMemory, reserveCard, resolveGlimpse, serializeGoldfishSession, suggestedGlimpse, type GoldfishState } from "../src/lib/goldfishSimulator";
 
 const card = (effect: string): Card => ({ effect } as Card);
 
@@ -50,4 +50,39 @@ test("glimpse suggestion recognizes fixed amounts and skips variable additions",
   assert.equal(suggestedGlimpse(card("Glimpse 2, then Glimpse 4.")), 6);
   assert.equal(suggestedGlimpse(card("Glimpse 1+X.")), 0);
   assert.equal(suggestedGlimpse(card("Glimpse LV.")), 0);
+});
+
+test("saved sessions round-trip every modeled zone and deterministic RNG state", () => {
+  const decklist = { main: ["A", "B", "C", "D"].map((name) => ({ card: name, quantity: 1 })), material: [{ card: "Champion", quantity: 1 }], sideboard: [] };
+  let state = newGame(decklist, 4, 42);
+  state = state.hand.reduce((current, entry) => reserveCard(current, entry.id), state);
+  state = createTokens(state, "Powercell", 2, true);
+  state = materializeCard(state, state.materialDeck[0].id);
+  const restored = parseGoldfishSession(serializeGoldfishSession(decklist, 7, state));
+  assert.ok(restored);
+  assert.deepEqual(restored.decklist, decklist);
+  assert.deepEqual(restored.state, state);
+  assert.equal(restored.handSize, 7);
+  assert.deepEqual(banishRandomFromMemory(restored.state, 2), banishRandomFromMemory(state, 2));
+});
+
+test("older minimal Goldfish sessions migrate new zones with safe defaults", () => {
+  const restored = parseGoldfishSession(JSON.stringify({
+    version: 1,
+    decklist: { main: [{ card: "A", quantity: 1 }], material: [], sideboard: [] },
+    state: { version: 1, seed: 12, turn: 2, library: [{ id: "A#0", name: "A" }], hand: [], played: [], history: [] },
+  }));
+  assert.ok(restored);
+  assert.equal(restored.version, 2);
+  assert.equal(restored.state.version, 2);
+  assert.equal(restored.state.phase, "main");
+  assert.deepEqual(restored.state.memory, []);
+  assert.deepEqual(restored.state.materialDeck, []);
+  assert.deepEqual(restored.state.tokens, []);
+  assert.equal(restored.state.rngState, 12);
+});
+
+test("malformed Goldfish sessions are rejected", () => {
+  assert.equal(parseGoldfishSession("not json"), null);
+  assert.equal(parseGoldfishSession(JSON.stringify({ decklist: {}, state: { seed: "nope", turn: 1 } })), null);
 });

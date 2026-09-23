@@ -35,6 +35,71 @@ export interface GoldfishState {
   history: GoldfishAction[];
 }
 
+export interface GoldfishSession {
+  version: 2;
+  engineVersion: 2;
+  savedAt: string;
+  handSize: number;
+  decklist: OmnidexDecklist;
+  state: GoldfishState;
+}
+
+const cardInstances = (value: unknown): GoldfishCardInstance[] => Array.isArray(value) ? value.filter((entry): entry is GoldfishCardInstance => Boolean(entry && typeof entry === "object" && typeof (entry as GoldfishCardInstance).id === "string" && typeof (entry as GoldfishCardInstance).name === "string")) : [];
+const tokens = (value: unknown): GoldfishToken[] => Array.isArray(value) ? value.filter((entry): entry is GoldfishToken => Boolean(entry && typeof entry === "object" && typeof (entry as GoldfishToken).id === "string" && typeof (entry as GoldfishToken).name === "string" && typeof (entry as GoldfishToken).rested === "boolean")) : [];
+const history = (value: unknown): GoldfishAction[] => Array.isArray(value) ? value.filter((entry): entry is GoldfishAction => Boolean(entry && typeof entry === "object" && Number.isInteger((entry as GoldfishAction).id) && Number.isInteger((entry as GoldfishAction).turn) && typeof (entry as GoldfishAction).label === "string")) : [];
+const deckLines = (value: unknown) => Array.isArray(value) ? value.filter((entry): entry is OmnidexDecklist["main"][number] => Boolean(entry && typeof entry === "object" && typeof (entry as { card?: unknown }).card === "string" && Number.isInteger((entry as { quantity?: unknown }).quantity) && Number((entry as { quantity?: unknown }).quantity) > 0)).map((entry) => ({ card: entry.card, quantity: entry.quantity })) : [];
+
+/** Serializes the complete assisted-rules state rather than only the visible hand. RNG state is part
+ * of the contract so continuing a restored session produces the same future random outcomes. */
+export function serializeGoldfishSession(decklist: OmnidexDecklist, handSize: number, state: GoldfishState): string {
+  const session: GoldfishSession = { version: 2, engineVersion: state.version, savedAt: new Date().toISOString(), handSize, decklist: structuredClone(decklist), state: structuredClone(state) };
+  return JSON.stringify(session);
+}
+
+/** Reads current sessions and the earlier minimal v1 snapshot shape. Unknown or malformed data is
+ * rejected; zones introduced in engine v2 receive empty defaults during migration. */
+export function parseGoldfishSession(raw: string | null): GoldfishSession | null {
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    if (!parsed || typeof parsed !== "object" || !parsed.decklist || typeof parsed.decklist !== "object" || !parsed.state || typeof parsed.state !== "object") return null;
+    const deck = parsed.decklist as Record<string, unknown>;
+    const source = parsed.state as Record<string, unknown>;
+    const seed = Number(source.seed);
+    const rngState = Number(source.rngState ?? source.seed);
+    const turn = Number(source.turn);
+    if (!Number.isInteger(seed) || seed < 0 || !Number.isInteger(rngState) || rngState < 0 || !Number.isInteger(turn) || turn < 1) return null;
+    const state: GoldfishState = {
+      version: 2,
+      seed: seed >>> 0,
+      rngState: rngState >>> 0,
+      turn,
+      phase: source.phase === "recollection" ? "recollection" : "main",
+      library: cardInstances(source.library),
+      hand: cardInstances(source.hand),
+      memory: cardInstances(source.memory),
+      banished: cardInstances(source.banished),
+      played: cardInstances(source.played),
+      materialDeck: cardInstances(source.materialDeck),
+      materialized: cardInstances(source.materialized),
+      tokens: tokens(source.tokens),
+      history: history(source.history),
+    };
+    const savedAt = typeof parsed.savedAt === "string" && !Number.isNaN(Date.parse(parsed.savedAt)) ? parsed.savedAt : new Date(0).toISOString();
+    const handSize = Number(parsed.handSize);
+    return {
+      version: 2,
+      engineVersion: 2,
+      savedAt,
+      handSize: Number.isInteger(handSize) && handSize >= 1 && handSize <= 12 ? handSize : Math.max(1, state.hand.length),
+      decklist: { main: deckLines(deck.main), material: deckLines(deck.material), sideboard: deckLines(deck.sideboard) },
+      state,
+    };
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Expands a decklist's `{card, quantity}` Main Deck lines into individually-drawable instances —
  * Material Deck cards are materialized, not drawn, so they're excluded here, same Main-vs-Material

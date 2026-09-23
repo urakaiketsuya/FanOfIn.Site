@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import type { Card, OmnidexDecklist } from "@gatcg/shared";
-import { banishRandomFromMemory, beginRecollection, createTokens, drawCards, isReservable, materializeCard, newGame, nextTurn, playCard, recollectMemory, removeToken, reserveCard, resolveGlimpse, suggestedExtraDraws, suggestedGlimpse, type GoldfishCardInstance, type GoldfishState } from "../../lib/goldfishSimulator";
+import { banishRandomFromMemory, beginRecollection, createTokens, drawCards, isReservable, materializeCard, newGame, nextTurn, parseGoldfishSession, playCard, recollectMemory, removeToken, reserveCard, resolveGlimpse, serializeGoldfishSession, suggestedExtraDraws, suggestedGlimpse, type GoldfishCardInstance, type GoldfishSession, type GoldfishState } from "../../lib/goldfishSimulator";
 import { DEFAULT_STARTING_HAND_SIZE } from "../../lib/turnToPlay";
 import { decodeCustomDecks } from "../../lib/compareShareLink";
 import { parseDecklist } from "../compare/parseDecklist";
@@ -18,6 +18,13 @@ interface PendingConfirm {
   name: string;
   extraDraws: number;
   confirmed: number;
+}
+
+const GOLD_FISH_SESSION_KEY = "fanofin:goldfish-session:v2";
+
+function readSavedSession(): GoldfishSession | null {
+  try { return parseGoldfishSession(localStorage.getItem(GOLD_FISH_SESSION_KEY)); }
+  catch { return null; }
 }
 
 function HandCard({ card, resolved, disabled, onPlay, onReserve }: { card: GoldfishCardInstance; resolved: Card | undefined; disabled?: boolean; onPlay: () => void; onReserve?: () => void }) {
@@ -71,6 +78,8 @@ export default function GoldfishIndex() {
   const [keptGlimpseIds, setKeptGlimpseIds] = useState<Set<string>>(() => new Set());
   const [tokenName, setTokenName] = useState("");
   const [tokenCount, setTokenCount] = useState(1);
+  const [savedSession, setSavedSession] = useState<GoldfishSession | null>(readSavedSession);
+  const [sessionNotice, setSessionNotice] = useState<string | null>(null);
 
   function startNewHand(list: OmnidexDecklist) {
     setDecklist(list);
@@ -106,6 +115,35 @@ export default function GoldfishIndex() {
     setPendingConfirm((current) => (current ? { ...current, confirmed: current.confirmed + 1 } : current));
   }
 
+  function saveSession() {
+    if (!decklist || !state) return;
+    try {
+      const raw = serializeGoldfishSession(decklist, handSize, state);
+      localStorage.setItem(GOLD_FISH_SESSION_KEY, raw);
+      setSavedSession(parseGoldfishSession(raw));
+      setSessionNotice("Session saved on this device.");
+    } catch {
+      setSessionNotice("This browser could not save the session.");
+    }
+  }
+
+  function resumeSession(session = savedSession) {
+    if (!session) return;
+    setDecklist(session.decklist);
+    setState(session.state);
+    setHandSize(session.handSize);
+    setPendingConfirm(null);
+    setActiveGlimpse(null);
+    setKeptGlimpseIds(new Set());
+    setSessionNotice("Saved session restored.");
+  }
+
+  function forgetSession() {
+    try { localStorage.removeItem(GOLD_FISH_SESSION_KEY); } catch { /* Best effort. */ }
+    setSavedSession(null);
+    setSessionNotice("Saved session removed.");
+  }
+
   if (!decklist) {
     return (
       <PageLayout data-component="GoldfishIndex">
@@ -123,6 +161,8 @@ export default function GoldfishIndex() {
           >
             Deal opening hand
           </button>
+          {savedSession && <div className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><p className="text-sm font-medium text-ctp-text">Resume saved test</p><p className="mt-1 text-xs text-ctp-subtext0">Turn {savedSession.state.turn} · {savedSession.state.hand.length} in hand · saved {new Date(savedSession.savedAt).toLocaleString()}</p><div className="mt-3 flex flex-wrap gap-2"><button type="button" onClick={() => resumeSession()} className="min-h-11 rounded-lg bg-ctp-green px-3 text-sm font-semibold text-ctp-base">Resume session</button><button type="button" onClick={forgetSession} className="min-h-11 rounded-lg border border-ctp-red/50 px-3 text-sm text-ctp-red">Forget</button></div></div>}
+          {sessionNotice && <p role="status" className="mt-3 text-xs text-ctp-subtext1">{sessionNotice}</p>}
         </Panel>
       </PageLayout>
     );
@@ -145,6 +185,7 @@ export default function GoldfishIndex() {
           </div>
         }
       />
+      <details className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-ctp-text [&::-webkit-details-marker]:hidden"><span>Saved session</span><span className="text-xs font-normal text-ctp-subtext0">{savedSession ? `Turn ${savedSession.state.turn}` : "Not saved"}</span></summary><p className="mt-2 text-xs leading-5 text-ctp-subtext1">Save every modeled zone, token, random seed, and replay-log entry on this device. Saving replaces the previous Goldfish session.</p><div className="mt-3 flex flex-wrap gap-2"><button type="button" onClick={saveSession} className="min-h-11 rounded-lg bg-ctp-green px-3 text-sm font-semibold text-ctp-base">Save current session</button>{savedSession && <><button type="button" onClick={() => resumeSession()} className="min-h-11 rounded-lg border border-ctp-blue/60 px-3 text-sm text-ctp-blue">Restore saved</button><button type="button" onClick={forgetSession} className="min-h-11 rounded-lg border border-ctp-red/50 px-3 text-sm text-ctp-red">Forget saved session</button></>}</div>{sessionNotice && <p role="status" className="mt-3 text-xs text-ctp-subtext1">{sessionNotice}</p>}</details>
       <div className="mt-4 grid gap-2 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-center">
         {([['Library', state.library.length], ['Hand', state.hand.length], ['Memory', state.memory.length]] as const).map(([label, count]) => <div key={label} className="rounded-lg bg-ctp-base px-3 py-2"><div className="text-xl font-semibold tabular-nums text-ctp-text">{count}</div><div className="text-xs text-ctp-subtext0">{label}</div></div>)}
         <div className="flex gap-2 sm:block"><button type="button" disabled={state.library.length === 0 || activeGlimpse !== null} onClick={() => setState((current) => (current ? drawCards(current, 1) : current))} className="min-h-12 flex-1 rounded-md bg-ctp-blue px-4 py-2 text-sm font-medium text-ctp-base disabled:cursor-not-allowed disabled:opacity-40">Draw</button><button type="button" disabled={activeGlimpse !== null} onClick={() => setState((current) => current ? nextTurn(current) : current)} className="min-h-12 flex-1 rounded-md border border-ctp-surface1 px-3 py-2 text-xs font-medium text-ctp-subtext1 disabled:cursor-not-allowed disabled:opacity-40 sm:mt-2 sm:block">Next turn + draw</button></div>

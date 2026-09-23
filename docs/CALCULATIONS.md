@@ -1889,8 +1889,11 @@ cannot be safely inferred from effect text.
 Each game records a visible numeric seed, deterministic RNG state, and action history. Glimpse
 bottom randomization and random Memory banishment consume that seeded generator, so repeating the
 same starting seed and actions produces the same result. The log records outcomes, including the
-names selected by random Memory banishment. Saved-session serialization and automatic replay of
-the action log are still future work.
+names selected by random Memory banishment. A versioned local session snapshot stores the source
+decklist, hand size, every modeled zone, tokens, log, and RNG state. Restoring that snapshot resumes
+from the same state and preserves subsequent seeded outcomes; the parser migrates the earlier
+minimal snapshot shape with empty defaults for newly introduced zones. Automatic re-execution of
+the human-readable action log remains future work.
 
 The simulator auto-suggests fixed numeric "draw N cards" and "Glimpse N" triggers. Draw detection
 reuses `drawEffects.ts`'s detector; fixed Glimpse detection skips variable X/LV clauses and leaves
