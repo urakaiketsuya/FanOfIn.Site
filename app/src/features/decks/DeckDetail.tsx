@@ -58,6 +58,7 @@ const TAB_KEYS = TABS.map((t) => t.key);
 export default function DeckDetail() {
   const { id: hash = "" } = useParams<{ id: string }>();
   const [tab, setTab] = useTabParam<DeckTab>("tab", TAB_KEYS, "decklist");
+  const [signedIn, setSignedIn] = useState<boolean | null>(null);
   const [favorited, setFavorited] = useState<boolean | null>(null);
   const [favoriteBusy, setFavoriteBusy] = useState(false);
   const [favoriteNotice, setFavoriteNotice] = useState<string | null>(null);
@@ -136,8 +137,30 @@ export default function DeckDetail() {
   );
   useEffect(() => {
     let active = true;
+    setSignedIn(null);
     setFavorited(null);
-    void accountApi.tournamentFavoriteState(hash).then((result) => { if (active) setFavorited(result.favorited); }, () => { if (active) setFavorited(null); });
+    setFavoriteNotice(null);
+    void accountApi.session().then(async (session) => {
+      if (!active) return;
+      if (!session.user) {
+        setSignedIn(false);
+        return;
+      }
+      setSignedIn(true);
+      try {
+        const result = await accountApi.tournamentFavoriteState(hash);
+        if (active) setFavorited(result.favorited);
+      } catch {
+        // Authentication is established independently from favorite-state loading. Keep the
+        // action available so a temporary/read-side failure is never mislabeled as signed out.
+        if (active) {
+          setFavorited(false);
+          setFavoriteNotice("Your account is signed in, but the current favorite status could not be loaded.");
+        }
+      }
+    }, () => {
+      if (active) setSignedIn(false);
+    });
     return () => { active = false; };
   }, [hash]);
   const allNames = useMemo(() => [...(deck?.main ?? []), ...(deck?.material ?? []), ...(sideboardSelection?.lines ?? [])].map((l) => l.name), [deck, sideboardSelection]);
@@ -446,14 +469,15 @@ export default function DeckDetail() {
 
       <div className="mt-5 flex flex-wrap gap-2">
         <Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="inline-flex min-h-11 items-center rounded-lg border border-ctp-surface1 px-3 text-sm font-medium text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Compare deck</Link>
-        {favorited !== null ? <button type="button" disabled={favoriteBusy} aria-pressed={favorited} onClick={() => {
+        {signedIn === true ? <button type="button" disabled={favoriteBusy || favorited === null} aria-pressed={favorited ?? false} onClick={() => {
+          if (favorited === null) return;
           setFavoriteBusy(true); setFavoriteNotice(null);
           void accountApi.favoriteTournamentDeck(hash, {
             favorited: !favorited, title: `${deck.championName ?? "Unknown Champion"} tournament build`, championName: deck.championName,
             decklist, sourceEventId: favoriteSource?.eventId ?? null, sourceEventName: favoriteSource ? (eventNameById.get(favoriteSource.eventId) ?? `Event #${favoriteSource.eventId}`) : null,
             sourcePlayerId: favoriteSource?.player ?? null, sourcePlayerName: favoriteSource ? playerName(favoriteSource.player) : null,
           }).then((result) => { setFavorited(result.favorited); setFavoriteNotice(result.favorited ? "Added to My Decks favorites." : "Removed from favorites."); }, (reason: Error) => setFavoriteNotice(reason.message)).finally(() => setFavoriteBusy(false));
-        }} className={`min-h-11 rounded-lg border px-3 text-sm font-medium disabled:opacity-50 ${favorited ? "border-ctp-yellow bg-ctp-yellow/10 text-ctp-yellow" : "border-ctp-surface1 text-ctp-subtext1 hover:border-ctp-yellow hover:text-ctp-yellow"}`}>{favorited ? "★ Favorited" : "☆ Add to favorites"}</button> : <Link to="/decks/edit" className="inline-flex min-h-11 items-center px-2 text-sm text-ctp-blue hover:underline">Sign in to favorite</Link>}
+        }} className={`min-h-11 rounded-lg border px-3 text-sm font-medium disabled:opacity-50 ${favorited ? "border-ctp-yellow bg-ctp-yellow/10 text-ctp-yellow" : "border-ctp-surface1 text-ctp-subtext1 hover:border-ctp-yellow hover:text-ctp-yellow"}`}>{favorited === null ? "Loading favorite…" : favorited ? "★ Favorited" : "☆ Add to favorites"}</button> : signedIn === false ? <Link to="/decks/edit" className="inline-flex min-h-11 items-center px-2 text-sm text-ctp-blue hover:underline">Sign in to favorite</Link> : <span className="inline-flex min-h-11 items-center px-2 text-sm text-ctp-subtext0">Checking account…</span>}
       </div>
       {favoriteNotice && <p className="mt-2 text-xs text-ctp-subtext1" role="status">{favoriteNotice}</p>}
 
