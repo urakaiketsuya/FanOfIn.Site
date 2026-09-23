@@ -177,9 +177,9 @@ export default function AppRoutes() {
         <Route path="/sets/:prefix" element={<SetDetailRedirect />} />
         <Route path="/thema" element={<ThemaLeaderboard />} />
         <Route path="/thema/:editionUuid" element={<ThemaHistory />} />
-        <Route path="/events" element={<Navigate to="/tournaments" replace />} />
+        <Route path="/events" element={<TournamentsIndex />} />
         <Route path="/events/:id" element={<EventDetail />} />
-        <Route path="/tournaments" element={<TournamentsIndex />} />
+        <Route path="/tournaments" element={<Navigate to="/events" replace />} />
         <Route path="/seasons" element={<SeasonsIndex />} />
         <Route path="/seasons/:slug" element={<SeasonDetail />} />
         <Route path="/players" element={<PlayersIndex />} />

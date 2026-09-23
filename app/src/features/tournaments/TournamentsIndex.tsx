@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER } from "@gatcg/shared";
 import { useOmnidexIndex } from "./data";
 import EventRow from "./EventRow";
@@ -23,13 +23,14 @@ export default function TournamentsIndex() {
   useDocumentTitle("Tournaments", "Browse Grand Archive TCG tournament results from Store Championships to Worlds.");
   const index = useOmnidexIndex();
   const navigate = useNavigate();
-  const [search, setSearch] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState(() => searchParams.get("q") ?? "");
   const [idLookup, setIdLookup] = useState("");
-  const [minPlayers, setMinPlayers] = useState(0);
-  const [category, setCategory] = useState<string | null>(null);
-  const [setting, setSetting] = useState<string | null>(null);
-  const [seasonId, setSeasonId] = useState<number | null>(null);
-  const [sortMode, setSortMode] = useState<SortMode>("date");
+  const [minPlayers, setMinPlayers] = useState(() => Number(searchParams.get("minPlayers")) || 0);
+  const [category, setCategory] = useState<string | null>(() => searchParams.get("category"));
+  const [setting, setSetting] = useState<string | null>(() => searchParams.get("setting"));
+  const [seasonId, setSeasonId] = useState<number | null>(() => { const value = Number(searchParams.get("season")); return Number.isInteger(value) && value > 0 ? value : null; });
+  const [sortMode, setSortMode] = useState<SortMode>(() => searchParams.get("sort") === "type" ? "type" : "date");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const categoriesPresent = useMemo(() => {
@@ -67,6 +68,17 @@ export default function TournamentsIndex() {
     setVisibleCount(PAGE_SIZE);
   }, [minPlayers, category, setting, seasonId, sortMode, search]);
 
+  useEffect(() => {
+    const next = new URLSearchParams();
+    if (search.trim()) next.set("q", search.trim());
+    if (category) next.set("category", category);
+    if (setting) next.set("setting", setting);
+    if (seasonId !== null) next.set("season", String(seasonId));
+    if (minPlayers > 0) next.set("minPlayers", String(minPlayers));
+    if (sortMode !== "date") next.set("sort", sortMode);
+    if (next.toString() !== searchParams.toString()) setSearchParams(next, { replace: true });
+  }, [category, minPlayers, search, searchParams, seasonId, setSearchParams, setting, sortMode]);
+
   const visibleEvents = events.slice(0, visibleCount);
 
   function handleIdLookup(e: FormEvent) {
@@ -78,8 +90,8 @@ export default function TournamentsIndex() {
   return (
     <PageLayout data-component="TournamentsIndex">
       <PageHeader
-        title="Tournaments"
-        description="Events ingested by the tournament data pipeline. Only a subset of Omnidex events are deep-fetched — most are small weekly leagues below the pipeline's size threshold."
+        title="Browse Events"
+        description="Find an event directly across every season. Search and filters stay in the URL so this view can be shared."
       />
 
       <div className="mt-4 flex flex-col gap-2 sm:flex-row">
@@ -89,7 +101,7 @@ export default function TournamentsIndex() {
           placeholder="Search by event or host name…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
+          className="min-h-11 flex-1 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-base text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none sm:text-sm"
         />
         <form onSubmit={handleIdLookup} className="flex gap-2">
           <input
@@ -99,13 +111,15 @@ export default function TournamentsIndex() {
             placeholder="Or jump to event ID…"
             value={idLookup}
             onChange={(e) => setIdLookup(e.target.value)}
-            className="w-40 rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
+            className="min-h-11 min-w-0 flex-1 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-base text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none sm:w-44 sm:text-sm"
           />
           <Button type="submit" variant="secondary">Go</Button>
         </form>
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
+      <details className="group mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 sm:p-4">
+        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between text-sm font-semibold text-ctp-text [&::-webkit-details-marker]:hidden"><span>Filter and sort{[category, setting, seasonId, minPlayers > 0 ? minPlayers : null].filter(Boolean).length ? ` · ${[category, setting, seasonId, minPlayers > 0 ? minPlayers : null].filter(Boolean).length} active` : ""}</span><span aria-hidden="true" className="text-ctp-subtext0 transition-transform group-open:rotate-180">⌄</span></summary>
+      <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Type:</span>
         <button
           onClick={() => setCategory(null)}
@@ -194,6 +208,8 @@ export default function TournamentsIndex() {
           </button>
         ))}
       </div>
+      <button type="button" onClick={() => { setSearch(""); setCategory(null); setSetting(null); setSeasonId(null); setMinPlayers(0); setSortMode("date"); }} className="mt-3 min-h-11 rounded-lg px-3 text-xs font-medium text-ctp-blue hover:bg-ctp-blue/10">Clear all filters</button>
+      </details>
 
       {!index && <InlineState className="mt-6">Loading…</InlineState>}
       {index && events.length === 0 && (
