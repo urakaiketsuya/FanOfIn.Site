@@ -1755,7 +1755,7 @@ promoted to a rules-exact calculator without a simulator. Requirements from the 
 either be modeled as state transitions or be disclosed in `doesNotMeasure`; card-text pattern matching
 alone never upgrades an access ceiling into a success probability.
 
-### Resource-curve reliability (`features/deckbuilder/resourceCurve.ts`)
+### Resource timing (`features/deckbuilder/resourceCurve.ts`)
 
 For each fixed Reserve-cost value represented in the Main Deck, this groups the quantities of every
 card at that cost and reports the chance of having drawn at least one by the first turn that cost is
