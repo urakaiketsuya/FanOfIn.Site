@@ -12,15 +12,25 @@ export function decklistToWorkspace(
   title: string | null = null,
   sourceLabel: string | null = null,
 ): Omit<DeckWorkspace, "version" | "updatedAt"> {
+  // Archive imports can outlive small capitalization or whitespace corrections in the catalog.
+  // Canonicalize their labels here because all downstream tools deliberately use exact names.
+  const canonicalByLooseName = new Map(
+    [...catalogByName.values()].map((card) => [looseCardName(card.name), card.name]),
+  );
+  const canonicalName = (name: string) => catalogByName.has(name)
+    ? name
+    : canonicalByLooseName.get(looseCardName(name)) ?? name.trim().replace(/\s+/g, " ");
   let championName = suppliedChampionName;
   let spiritName: string | null = null;
+  let highestLevelChampion: Card | null = null;
   for (const line of decklist.material) {
-    const card = catalogByName.get(line.card);
+    const card = catalogByName.get(canonicalName(line.card));
     if (!card?.types.includes("CHAMPION")) continue;
-    if (card.subtypes.includes("SPIRIT")) spiritName = line.card;
-    else if (!championName) championName = card.name.split(",")[0].trim();
+    if (card.subtypes.includes("SPIRIT")) spiritName = card.name;
+    else if (!highestLevelChampion || (card.level ?? 0) > (highestLevelChampion.level ?? 0)) highestLevelChampion = card;
   }
-  const lines = (section: keyof OmnidexDecklist) => decklist[section].map(({ card: name, quantity }) => ({ name, quantity }));
+  if (!championName && highestLevelChampion) championName = highestLevelChampion.name.split(",")[0].trim();
+  const lines = (section: keyof OmnidexDecklist) => decklist[section].map(({ card, quantity }) => ({ name: canonicalName(card), quantity }));
   return {
     source,
     title,
@@ -33,4 +43,8 @@ export function decklistToWorkspace(
     sideboard: lines("sideboard"),
     maybeboard: [],
   };
+}
+
+function looseCardName(name: string): string {
+  return name.trim().replace(/\s+/g, " ").toLocaleLowerCase("en-US");
 }

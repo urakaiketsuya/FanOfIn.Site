@@ -192,15 +192,34 @@ export async function saveDeck(env: Env, user: AuthUser, input: SaveInput): Prom
 
 export async function listDecks(env: Env, user: AuthUser): Promise<SavedDeck[]> {
   const decks = await env.ACCOUNT_DB.prepare("SELECT * FROM saved_decks WHERE user_id = ? ORDER BY updated_at DESC").bind(user.id).all<Record<string, string | null>>();
+  const sourcesByDeckId = new Map<string, Record<string, string | null>[]>();
+  if (decks.results.length > 0) {
+    // Fetch the library's sources in bounded batches. Imported users can have hundreds of decks; the
+    // former query-per-deck path made every library consumer (Analysis, Review, Compare, etc.)
+    // wait on an avoidable N+1 sequence and could exceed the client's request timeout.
+    const deckIds = decks.results.map((row) => row.id!);
+    for (let offset = 0; offset < deckIds.length; offset += 75) {
+      const batch = deckIds.slice(offset, offset + 75);
+      const placeholders = batch.map(() => "?").join(", ");
+      const sources = await env.ACCOUNT_DB.prepare(
+        `SELECT * FROM saved_deck_sources WHERE saved_deck_id IN (${placeholders}) ORDER BY imported_at DESC`,
+      ).bind(...batch).all<Record<string, string | null>>();
+      for (const source of sources.results) {
+        const rows = sourcesByDeckId.get(source.saved_deck_id!) ?? [];
+        rows.push(source);
+        sourcesByDeckId.set(source.saved_deck_id!, rows);
+      }
+    }
+  }
   const output: SavedDeck[] = [];
   for (const row of decks.results) {
-    const sources = await env.ACCOUNT_DB.prepare("SELECT * FROM saved_deck_sources WHERE saved_deck_id = ? ORDER BY imported_at DESC").bind(row.id).all<Record<string, string | null>>();
+    const sources = sourcesByDeckId.get(row.id!) ?? [];
     const base = JSON.parse(row.decklist_json!) as OmnidexDecklist;
-    const newestSideboard = sources.results[0]?.sideboard_json ? JSON.parse(sources.results[0].sideboard_json) : [];
+    const newestSideboard = sources[0]?.sideboard_json ? JSON.parse(sources[0].sideboard_json) : [];
     output.push({
       id: row.id!, identityHash: row.identity_hash!, title: row.title!, format: row.format as DeckFormat,
       championName: row.champion_name, decklist: { ...base, sideboard: newestSideboard }, createdAt: row.created_at!, updatedAt: row.updated_at!,
-      sources: sources.results.map((source) => ({ id: source.id!, provider: source.provider as "manual" | "omnidex" | "shoutatyourdecks",
+      sources: sources.map((source) => ({ id: source.id!, provider: source.provider as "manual" | "omnidex" | "shoutatyourdecks",
         externalDeckId: source.external_deck_id!, sourceUrl: source.source_url, label: source.label!, metadata: JSON.parse(source.metadata_json!),
         sideboard: JSON.parse(source.sideboard_json!), importedAt: source.imported_at! })),
     });
