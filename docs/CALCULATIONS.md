@@ -1599,6 +1599,20 @@ and the chance of seeing at least two Early-only cards by the late checkpoint. C
 player judgment; the model does not infer contextual card value or model cards being spent, extra
 draws, Reserve costs, or changing game state.
 
+### Post-Sideboard Plan (`features/deckbuilder/PostSideboardPlan.tsx`, `lib/sideboardPlan.ts`)
+
+The viewer selects any number of registered Main Deck copies to move out and Sideboard copies to
+move in. A plan is valid only when at least one card is selected, the total moving in equals the
+total moving out, and neither side exceeds its registered quantities. The resulting Main Deck is a
+preview; the stored workspace is never changed.
+
+For each conservatively detected functional role from `functionalCopies.ts`, the panel compares
+preboard and postboard copy counts and exact hypergeometric access to at least one role card at 7,
+10, or 13 cards seen. Total deck size remains fixed because only balanced plans are evaluated. A
+card may contribute to more than one printed-text role, so these role rows should not be added
+together. The calculation does not infer matchup relevance, enforce format or combined copy
+limits, or model costs, sequencing, opponent configuration, or causal win-rate effects.
+
 ### Functional-copy probability (`features/deckbuilder/functionalCopies.ts`)
 
 The Guided Builder's Hypergeometric calculator can treat every Main Deck card serving one detected
