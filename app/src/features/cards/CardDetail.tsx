@@ -24,7 +24,7 @@ import { useTabParam } from "../../lib/useTabParam";
 import Tabs from "../../components/ui/Tabs";
 import Chip from "../../components/ui/Chip";
 import PageLayout from "../../components/layout/PageLayout";
-import { InlineState, EmptyState } from "../../components/ui/ContentState";
+import { EmptyState } from "../../components/ui/ContentState";
 import { CardComparePanel, CardPlayedWithPanel, CardSynergyPanel } from "./CardRelationshipPanels";
 import CardInfoPanel from "./CardInfoPanel";
 import CardDecksPanel from "./CardDecksPanel";
@@ -249,7 +249,7 @@ export default function CardDetail() {
   if (loading) {
     return (
       <PageLayout data-component="CardDetail" width="standard">
-        <InlineState className="mt-10">Loading…</InlineState>
+        <CardDetailSkeleton />
       </PageLayout>
     );
   }
@@ -284,7 +284,7 @@ export default function CardDetail() {
       </div>
 
       {showOverview && (
-        <CardInfoPanel card={card} illustrator={edition?.illustrator} cardStat={cardStat} metaShare={metaShare} communityShare={communityInclusion?.percentOfDecks} quantityBuckets={quantityBuckets} resolveReference={resolveReference} />
+        <CardInfoPanel card={card} cardStat={cardStat} metaShare={metaShare} communityShare={communityInclusion?.percentOfDecks} quantityBuckets={quantityBuckets} resolveReference={resolveReference} />
       )}
 
       {showOverview && (
@@ -317,4 +317,22 @@ export default function CardDetail() {
       )}
     </PageLayout>
   );
+}
+
+function CardDetailSkeleton() {
+  return <div className="mt-4 animate-pulse motion-reduce:animate-none" role="status" aria-label="Loading card details">
+    <span className="sr-only">Loading card details…</span>
+    <div className="h-5 w-28 rounded bg-ctp-surface1" />
+    <div className="mt-4 grid grid-cols-1 gap-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4 sm:p-6 md:grid-cols-[280px_1fr]">
+      <div className="mx-auto aspect-[5/7] w-full max-w-[280px] rounded-xl bg-ctp-surface1" />
+      <div className="min-w-0 space-y-5">
+        <div><div className="h-9 w-3/4 max-w-sm rounded bg-ctp-surface1" /><div className="mt-2 h-4 w-44 rounded bg-ctp-surface0" /></div>
+        <div className="flex gap-2"><div className="h-7 w-20 rounded-full bg-ctp-surface1" /><div className="h-7 w-24 rounded-full bg-ctp-surface1" /><div className="h-7 w-16 rounded-full bg-ctp-surface1" /></div>
+        <div className="grid grid-cols-3 gap-3 border-y border-ctp-surface1 py-4"><div className="h-11 rounded bg-ctp-surface0" /><div className="h-11 rounded bg-ctp-surface0" /><div className="h-11 rounded bg-ctp-surface0" /></div>
+        <div className="space-y-2 rounded-xl bg-ctp-base/55 p-4"><div className="h-4 w-full rounded bg-ctp-surface1" /><div className="h-4 w-5/6 rounded bg-ctp-surface1" /><div className="h-4 w-2/3 rounded bg-ctp-surface1" /></div>
+      </div>
+    </div>
+    <div className="mt-5 h-12 rounded-xl border border-ctp-surface1 bg-ctp-mantle" />
+    <div className="mt-4 grid gap-3 sm:grid-cols-2"><div className="h-28 rounded-xl bg-ctp-surface0" /><div className="h-28 rounded-xl bg-ctp-surface0" /></div>
+  </div>;
 }

@@ -14,7 +14,7 @@ const EDIT_SECTIONS: { key: DeckSectionKey; title: string }[] = [
 
 function EditableCardTile({ line, card, section, selected, onSelect, onChangeQuantity, onMove, onRemove }: { line: OmnidexDecklistCardLine; card: Card | undefined; section: DeckSectionKey; selected: boolean; onSelect: () => void; onChangeQuantity: (quantity: number) => void; onMove: (section: DeckSectionKey) => void; onRemove: () => void }) {
   const maxQuantity = Math.max(1, Math.min(card?.legality?.STANDARD?.limit ?? 4, 4));
-  return <div className={`overflow-hidden rounded-lg border transition-colors ${selected ? "border-ctp-blue ring-2 ring-ctp-blue/40" : "border-ctp-surface1"}`}>
+  return <article aria-label={`${line.quantity} copies of ${line.card} in ${section}`} className={`overflow-hidden rounded-xl border bg-ctp-mantle shadow-sm transition-[border-color,box-shadow] ${selected ? "border-ctp-blue ring-2 ring-ctp-blue/40" : "border-ctp-surface1"}`}>
     <div className="relative aspect-[5/7] bg-ctp-surface0">
       <CardHoverPreview image={card?.editions[0]?.image} alt={line.card}>
         <button type="button" aria-pressed={selected} aria-label={`${selected ? "Deselect" : "Select"} ${line.card} for quick actions`} onClick={onSelect} className="block h-full w-full text-left">
@@ -28,12 +28,14 @@ function EditableCardTile({ line, card, section, selected, onSelect, onChangeQua
       <input type="number" inputMode="numeric" min={1} max={maxQuantity} value={line.quantity} aria-label={`Copies of ${line.card}`} onFocus={(event) => event.currentTarget.select()} onChange={(event) => { const next = Number(event.target.value); if (Number.isInteger(next) && next >= 1) onChangeQuantity(Math.min(next, maxQuantity)); }} className="min-w-0 bg-ctp-base px-1 text-center text-sm font-semibold tabular-nums text-ctp-text focus:outline-none" />
       <button type="button" disabled={line.quantity >= maxQuantity} onClick={() => onChangeQuantity(line.quantity + 1)} aria-label={`Add one copy of ${line.card}`} className="min-h-11 border-l border-ctp-surface1 text-lg text-ctp-subtext1 hover:bg-ctp-surface0 disabled:opacity-30">+</button>
     </div>
-    <div className="grid grid-cols-[1fr_auto_auto] border-t border-ctp-surface1">
-      <select value={section} onChange={(event) => onMove(event.target.value as DeckSectionKey)} aria-label={`Move ${line.card} to section`} className="min-w-0 bg-ctp-base px-2 py-2 text-xs text-ctp-subtext1 focus:outline-none"><option value="main">Main</option><option value="material">Material</option><option value="sideboard">Sideboard</option></select>
-      {card && <Link to={`/cards/${card.slug}`} target="_blank" rel="noreferrer" aria-label={`Open details for ${line.card} in a new tab`} className="flex min-h-10 items-center border-l border-ctp-surface1 px-2 text-[10px] text-ctp-blue">Details ↗</Link>}
-      <button type="button" onClick={onRemove} className="border-l border-ctp-surface1 px-2 py-1.5 text-xs text-ctp-subtext1 hover:bg-ctp-red/10 hover:text-ctp-red" aria-label={`Remove ${line.card}`}>×</button>
+    <div className="space-y-2 border-t border-ctp-surface1 p-2.5">
+      <label className="block text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Move card to<select value={section} onChange={(event) => onMove(event.target.value as DeckSectionKey)} aria-label={`Move ${line.card} to deck section`} className="mt-1 block min-h-11 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-sm font-medium normal-case tracking-normal text-ctp-text focus:border-ctp-blue focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/40"><option value="main">Main Deck</option><option value="material">Material Deck</option><option value="sideboard">Sideboard</option></select></label>
+      <div className="grid grid-cols-2 gap-2">
+        {card ? <Link to={`/cards/${card.slug}`} target="_blank" rel="noreferrer" aria-label={`Open details for ${line.card} in a new tab`} className="flex min-h-11 items-center justify-center rounded-lg border border-ctp-surface1 px-3 text-xs font-medium text-ctp-blue hover:bg-ctp-blue/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/40">Card details ↗</Link> : <span />}
+        <button type="button" onClick={onRemove} className="min-h-11 rounded-lg border border-ctp-red/40 px-3 text-xs font-medium text-ctp-red hover:bg-ctp-red/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-red/40" aria-label={`Remove ${line.card}`}>Remove</button>
+      </div>
     </div>
-  </div>;
+  </article>;
 }
 
 export function MaybeboardCardTile({ line, card, onChangeQuantity, onMove, onRemove }: { line: OmnidexDecklistCardLine; card: Card | undefined; onChangeQuantity: (quantity: number) => void; onMove: () => void; onRemove: () => void }) {
@@ -74,9 +76,9 @@ export function EditableDecklistGrid({ decklist, cardsByName, onChangeQuantity, 
         </div>
       </details>
     </div>
-    {sections.map((section) => <details key={section.key} open className="group rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
-    <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-ctp-text [&::-webkit-details-marker]:hidden"><span>{section.title}</span><span className="flex items-center gap-2"><span className="rounded-full bg-ctp-surface0 px-2 py-0.5 text-xs font-normal text-ctp-subtext1">{section.lines.reduce((total, line) => total + line.quantity, 0)} cards</span><span aria-hidden="true" className="text-ctp-subtext0 transition-transform group-open:rotate-180">⌄</span></span></summary>
-    <div className="mt-2 grid grid-cols-2 gap-3 min-[430px]:grid-cols-3 sm:grid-cols-4">{section.lines.map((line) => { const selectionKey = keyFor(section.key, line.card); return <EditableCardTile key={line.card} line={line} card={cardsByName.get(line.card)} section={section.key} selected={selected.has(selectionKey)} onSelect={() => setSelected((current) => { const next = new Set(current); if (next.has(selectionKey)) next.delete(selectionKey); else next.add(selectionKey); return next; })} onChangeQuantity={(quantity) => onChangeQuantity(section.key, line.card, quantity)} onMove={(destination) => onMove(section.key, destination, line.card)} onRemove={() => onRemove(section.key, line.card)} />; })}</div>
+    {sections.map((section) => <details key={section.key} open className="group rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 sm:p-4">
+    <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-ctp-text focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/40 [&::-webkit-details-marker]:hidden"><span>{section.title} Deck</span><span className="flex items-center gap-2"><span className="rounded-full bg-ctp-surface0 px-2 py-0.5 text-xs font-normal text-ctp-subtext1">{section.lines.reduce((total, line) => total + line.quantity, 0)} cards</span><span aria-hidden="true" className="text-ctp-subtext0 transition-transform group-open:rotate-180">⌄</span></span></summary>
+    <div className="mt-3 grid grid-cols-1 gap-4 min-[360px]:grid-cols-2 min-[560px]:grid-cols-3 lg:grid-cols-4">{section.lines.map((line) => { const selectionKey = keyFor(section.key, line.card); return <EditableCardTile key={line.card} line={line} card={cardsByName.get(line.card)} section={section.key} selected={selected.has(selectionKey)} onSelect={() => setSelected((current) => { const next = new Set(current); if (next.has(selectionKey)) next.delete(selectionKey); else next.add(selectionKey); return next; })} onChangeQuantity={(quantity) => onChangeQuantity(section.key, line.card, quantity)} onMove={(destination) => onMove(section.key, destination, line.card)} onRemove={() => onRemove(section.key, line.card)} />; })}</div>
   </details>)}</div>;
 }
 

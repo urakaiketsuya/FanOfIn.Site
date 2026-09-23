@@ -31,12 +31,39 @@ export interface CardEdition {
   illustrator: string | null;
   image: string;
   set: CardSet;
+  other_orientations?: CardOrientation[];
   effect: string | null;
   effect_html: string | null;
   effect_raw: string | null;
   flavor: string | null;
   last_update: string;
   created_at: string;
+}
+
+/** Alternate printed face returned for flip/transform editions. */
+export interface CardOrientation {
+  uuid: string;
+  slug: string;
+  name: string;
+  classes: string[];
+  types: string[];
+  subtypes: string[];
+  elements: string[];
+  element: string;
+  cost: CardCost;
+  cost_memory: number | null;
+  cost_reserve: number | null;
+  power: number | null;
+  speed: boolean | null;
+  life: number | null;
+  level: number | null;
+  durability: number | null;
+  effect: string | null;
+  effect_html: string | null;
+  effect_raw: string | null;
+  flavor: string | null;
+  edition_id: string;
+  edition: CardEdition;
 }
 
 export interface CardReference {
