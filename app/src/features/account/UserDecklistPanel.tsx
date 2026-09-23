@@ -1,6 +1,6 @@
-import type { DeckFormat, OmnidexDecklist } from "@gatcg/shared";
+import { computeDeckCollectionStatus, type CollectionEntry, type DeckFormat, type OmnidexDecklist } from "@gatcg/shared";
 import type { ReactNode } from "react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import DecklistView from "../events/DecklistView";
 import DeckDecaySignals from "../events/DeckDecaySignals";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { buildDeckBuilderPath, deckBuilderParamsFromDecklist } from "../../lib/deckBuilderLink";
 import DeckCollectionTools from "../collection/DeckCollectionTools";
 import { useDecklistDisplayPrefs } from "../../lib/decklistDisplayPrefs";
+import { accountApi } from "../../lib/accountApi";
 
 export default function UserDecklistPanel({ decklist, format, actions, children, ownerDeckId, collectionSource, showBuilderAction = true }: { decklist: OmnidexDecklist; format?: DeckFormat; actions?: ReactNode; children?: ReactNode; ownerDeckId?: string; collectionSource?: string; showBuilderAction?: boolean }) {
   const displayPrefs = useDecklistDisplayPrefs();
@@ -19,12 +20,25 @@ export default function UserDecklistPanel({ decklist, format, actions, children,
   const builderParams = useMemo(() => deckBuilderParamsFromDecklist(decklist, cardsByName), [decklist, cardsByName]);
   const canImprove = Boolean(builderParams?.spiritFilter);
   const [showCollection, setShowCollection] = useState(false);
+  const [collection, setCollection] = useState<CollectionEntry[] | null>(null);
+  useEffect(() => {
+    if (!ownerDeckId) return;
+    let active = true;
+    const refresh = () => { void accountApi.collection().then((result) => { if (active) setCollection(result.entries); }).catch(() => { if (active) setCollection(null); }); };
+    refresh();
+    window.addEventListener("fanofin:collection-updated", refresh);
+    return () => { active = false; window.removeEventListener("fanofin:collection-updated", refresh); };
+  }, [ownerDeckId]);
+  const ownershipByName = useMemo(() => {
+    if (!collection) return undefined;
+    return new Map(computeDeckCollectionStatus(decklist, collection, true).lines.map((line) => [line.card, line]));
+  }, [collection, decklist]);
 
   return <section data-component="UserDecklistPanel" className="mt-6">
     <h2 className="sr-only">Decklist</h2>
     {(actions || (showBuilderAction && builderParams) || collectionSource) && <div className="mb-4 flex flex-wrap justify-end gap-2">{collectionSource && !children && <button type="button" aria-expanded={showCollection} onClick={() => setShowCollection((value) => !value)} className={`rounded border px-2 py-1 text-xs ${showCollection ? "border-ctp-green bg-ctp-green/10 text-ctp-green" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`}>Collection</button>}{showBuilderAction && builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, canImprove && ownerDeckId ? { mode: "improve", sourceDeckId: ownerDeckId } : undefined)} className="rounded border border-ctp-blue px-2 py-1 text-xs text-ctp-blue">{canImprove && ownerDeckId ? "Improve this deck" : "Tune in Deck Builder"}</Link>}{showBuilderAction && ownerDeckId && !canImprove && <span className="self-center text-xs text-ctp-subtext0">Choose a Spirit in the decklist to unlock improvement review.</span>}{actions}</div>}
     {collectionSource && !children && showCollection && <div className="mb-4"><DeckCollectionTools decklist={decklist} cardsByName={cardsByName} source={collectionSource} /></div>}
-    {children ?? <DecklistView decklist={decklist} cardsByName={cardsByName} showThumbnails format={format} />}
+    {children ?? <DecklistView decklist={decklist} cardsByName={cardsByName} showThumbnails format={format} ownershipByName={ownershipByName} />}
     {format !== "PANTHEON" && displayPrefs.metaGaps && <DeckDecaySignals decklist={decklist} cardsByName={cardsByName} />}
   </section>;
 }

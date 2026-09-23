@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import type { Card, DeckFormat, OmnidexDecklist, OmnidexDecklistCardLine } from "@gatcg/shared";
+import type { Card, DeckCollectionLine, DeckFormat, OmnidexDecklist, OmnidexDecklistCardLine } from "@gatcg/shared";
 import { VisualCommunityGate, type VisualFieldVisibility } from "../../components/VisualCardTile";
 import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
 import { usePriceTrendByName } from "../pricing/usePriceTrendByName";
@@ -48,6 +48,7 @@ export default function DecklistView({
   trailingSections = [],
   defaultDisplayMode = "detailed",
   showDeckStats = true,
+  ownershipByName,
 }: {
   decklist: OmnidexDecklist;
   cardsByName: Map<string, Card>;
@@ -63,6 +64,8 @@ export default function DecklistView({
   defaultDisplayMode?: DeckDisplayMode;
   /** Set false on a page that already renders its own DIAO score / win rate (currently only `DeckDetail.tsx`, which shows a cluster-level average win rate rather than this one sighting's record) to avoid a redundant, differently-scoped second copy. */
   showDeckStats?: boolean;
+  /** Ownership status for the signed-in viewer. When supplied, shortages are visible in every display mode. */
+  ownershipByName?: Map<string, DeckCollectionLine>;
 }) {
   const priceByName = useDeckPriceByName();
   const priceTrendByName = usePriceTrendByName();
@@ -213,12 +216,13 @@ export default function DecklistView({
         <Link to="/settings" className="inline-flex min-h-9 items-center rounded-md px-2 text-xs text-ctp-subtext1 transition-colors hover:bg-ctp-surface0 hover:text-ctp-text">Display</Link>
         <div className="flex gap-1 rounded-lg bg-ctp-mantle p-1" role="group" aria-label="Decklist display">{(["compact", "visual", "detailed"] as const).map((mode) => <button key={mode} type="button" onClick={() => setDisplayMode(mode)} aria-pressed={displayMode === mode} className={`min-h-8 rounded-md px-2 text-xs capitalize transition-all duration-200 active:scale-[0.97] ${displayMode === mode ? "bg-ctp-blue/15 font-semibold text-ctp-blue shadow-sm" : "text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text"}`}>{displayMode === mode && <span aria-hidden="true">✓ </span>}{mode}</button>)}</div>
       </div>
+      {ownershipByName && (() => { const missing = [...ownershipByName.values()].filter((line) => line.missing > 0); const missingCopies = missing.reduce((sum, line) => sum + line.missing, 0); return missingCopies > 0 ? <div className="mb-4 flex items-center justify-between gap-3 rounded-xl border border-ctp-yellow/40 bg-ctp-yellow/10 px-3 py-2 text-sm"><span className="text-ctp-text"><strong className="text-ctp-yellow">{missingCopies} missing cop{missingCopies === 1 ? "y" : "ies"}</strong> across {missing.length} card{missing.length === 1 ? "" : "s"}</span><Link to="/collection" className="shrink-0 text-xs font-medium text-ctp-blue hover:underline">Open collection</Link></div> : <div className="mb-4 rounded-xl border border-ctp-green/30 bg-ctp-green/10 px-3 py-2 text-sm text-ctp-green">Collection complete for this deck.</div>; })()}
       {showDeckStats && displayPrefs.winRate && deckId && (
         <div className="mb-4 space-y-3">
           <DecklistWinRate deckId={deckId} />
         </div>
       )}
-      {displayMode === "compact" && <div className="space-y-5">{[...extraSections, { title: "Main", lines: decklist.main }, { title: "Material", lines: decklist.material }, { title: "Sideboard", lines: decklist.sideboard }, ...displayTrailingSections].map((section) => <CompactSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} />)}</div>}
+      {displayMode === "compact" && <div className="space-y-5">{[...extraSections, { title: "Main", lines: decklist.main }, { title: "Material", lines: decklist.material }, { title: "Sideboard", lines: decklist.sideboard }, ...displayTrailingSections].map((section) => <CompactSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} ownershipByName={ownershipByName} />)}</div>}
       {displayMode === "visual" && (() => {
         const sections = [...extraSections, { title: "Main", lines: decklist.main }, { title: "Material", lines: decklist.material }, { title: "Sideboard", lines: decklist.sideboard }, ...displayTrailingSections];
         const fields: VisualFieldVisibility = {
@@ -232,22 +236,23 @@ export default function DecklistView({
         return displayPrefs.visualCommunity ? (
           <VisualCommunityGate format={format}>
             {(communityInclusionByName) => (
-              <VisualDeckSections sections={sections} cardsByName={displayCardsByName} cardSize={displayPrefs.visualCardSize} priceByName={priceByName} priceTrendByName={priceTrendByName} simulatorEvidenceByName={simulatorEvidenceByName} communityInclusionByName={communityInclusionByName} fields={fields} />
+              <VisualDeckSections sections={sections} cardsByName={displayCardsByName} cardSize={displayPrefs.visualCardSize} priceByName={priceByName} priceTrendByName={priceTrendByName} simulatorEvidenceByName={simulatorEvidenceByName} communityInclusionByName={communityInclusionByName} fields={fields} ownershipByName={ownershipByName} />
             )}
           </VisualCommunityGate>
         ) : (
-          <VisualDeckSections sections={sections} cardsByName={displayCardsByName} cardSize={displayPrefs.visualCardSize} priceByName={priceByName} priceTrendByName={priceTrendByName} simulatorEvidenceByName={simulatorEvidenceByName} communityInclusionByName={undefined} fields={fields} />
+          <VisualDeckSections sections={sections} cardsByName={displayCardsByName} cardSize={displayPrefs.visualCardSize} priceByName={priceByName} priceTrendByName={priceTrendByName} simulatorEvidenceByName={simulatorEvidenceByName} communityInclusionByName={undefined} fields={fields} ownershipByName={ownershipByName} />
         );
       })()}
       {displayMode === "detailed" && <div className="grid gap-4 sm:grid-cols-2">
-        {extraSections.map((section) => <DetailedDeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} />)}
-        <DetailedDeckSection title="Main" lines={decklist.main} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} />
+        {extraSections.map((section) => <DetailedDeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} ownershipByName={ownershipByName} />)}
+        <DetailedDeckSection title="Main" lines={decklist.main} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} ownershipByName={ownershipByName} />
         <DetailedDeckSection
           title="Material"
           lines={decklist.material}
           cardsByName={displayCardsByName}
           priceByName={priceByName}
           showThumbnails={showThumbnails}
+          ownershipByName={ownershipByName}
         />
         <DetailedDeckSection
           title="Sideboard"
@@ -255,8 +260,9 @@ export default function DecklistView({
           cardsByName={displayCardsByName}
           priceByName={priceByName}
           showThumbnails={showThumbnails}
+          ownershipByName={ownershipByName}
         />
-        {displayTrailingSections.map((section) => <DetailedDeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} />)}
+        {displayTrailingSections.map((section) => <DetailedDeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} ownershipByName={ownershipByName} />)}
       </div>}
 
       {displayPrefs.tuningEvidence && (
