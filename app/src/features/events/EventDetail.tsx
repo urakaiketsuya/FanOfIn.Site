@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, type OmnidexDecklistEntry, type OmnidexPlayer, type OmnidexStanding } from "@gatcg/shared";
 import { isApiErrorBody } from "../../lib/api/client";
 import { useEventBundle } from "./useEventBundle";
@@ -79,11 +79,6 @@ export default function EventDetail() {
       .filter((e) => e.hostId === hostId && e.id !== eventId)
       .sort((a, b) => b.date.localeCompare(a.date));
   }, [omnidexIndex, bundle?.event.host?.id, eventId]);
-  // A "?player=" link (e.g. from an achievement's "View deck") jumps straight to that player's
-  // decklist instead of landing on Standings — read once on mount, same as the tab default.
-  const [searchParams] = useSearchParams();
-  const initialPlayerParam = searchParams.get("player");
-  const initialPlayer = initialPlayerParam ? Number(initialPlayerParam) : undefined;
   const [tab, setTab] = useTabParam("tab", ALL_EVENT_TABS, "decklists");
 
   // Individual-format events key each standing by numeric player `id`. Team-format events (e.g.
@@ -270,7 +265,7 @@ export default function EventDetail() {
 
       {activeTab === "decklists" && !isApiErrorBody(bundle.decklists) && (
         <div className="mt-6">
-          <DecklistsSection eventId={eventId} decklists={bundle.decklists} players={players} initialPlayer={initialPlayer} />
+          <DecklistsSection eventId={eventId} decklists={bundle.decklists} players={players} />
         </div>
       )}
 

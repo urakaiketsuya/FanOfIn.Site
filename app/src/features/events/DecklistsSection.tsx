@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { useMemo, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import type { OmnidexDecklistEntry, OmnidexPlayer } from "@gatcg/shared";
 import { useCardsByNames } from "./useCardsByNames";
 import DecklistView from "./DecklistView";
@@ -14,25 +14,30 @@ export default function DecklistsSection({
   eventId,
   decklists,
   players,
-  initialPlayer,
 }: {
   eventId: number;
   decklists: OmnidexDecklistEntry[];
   players: OmnidexPlayer[];
-  initialPlayer?: number;
 }) {
   const rankedDecklists = useMemo(() => [...decklists].sort((a, b) => {
     const placement = (playerId: number) => players.find((player) => player.id === playerId)?.finalPlacement ?? Infinity;
     return placement(a.player) - placement(b.player);
   }), [decklists, players]);
-  const [selectedPlayer, setSelectedPlayer] = useState(initialPlayer ?? rankedDecklists[0]?.player);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedPlayer = Number(searchParams.get("player"));
+  const selectedPlayer = rankedDecklists.some((entry) => entry.player === requestedPlayer) ? requestedPlayer : rankedDecklists[0]?.player;
   const [search, setSearch] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const selected = rankedDecklists.find((d) => d.player === selectedPlayer) ?? rankedDecklists[0];
 
-  useEffect(() => {
-    if (initialPlayer !== undefined && rankedDecklists.some((entry) => entry.player === initialPlayer)) setSelectedPlayer(initialPlayer);
-  }, [initialPlayer, rankedDecklists]);
+  function selectPlayer(player: number) {
+    setSearchParams((current) => {
+      const next = new URLSearchParams(current);
+      next.set("tab", "decklists");
+      next.set("player", String(player));
+      return next;
+    }, { replace: true });
+  }
 
   const allNames = useMemo(
     () =>
@@ -107,7 +112,7 @@ export default function DecklistsSection({
                   type="button"
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={() => {
-                    setSelectedPlayer(d.player);
+                    selectPlayer(d.player);
                     setSearch("");
                     setSearchOpen(false);
                   }}
