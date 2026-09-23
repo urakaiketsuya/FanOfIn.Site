@@ -40,7 +40,7 @@ import { analysisProfileKey, loadAnalysisProfile, saveAnalysisProfile } from "..
 import type { GamePlanRole } from "../../lib/gamePlanReadiness";
 
 type AnalysisTab = "summary" | "explore" | "matchups";
-const CALCULATORS = ["Game plan readiness", "Functional hand", "Level-up runway", "Threat cadence", "Engine-to-payoff balance", "Interaction coverage", "Resilience and rebuild", "Test session tracker", "Draw quality by game stage", "Post-sideboard plan", "Card access and probability", "Clumping and conditional pressure", "Resource timing", "Advanced sequence analysis"];
+const CALCULATORS = ["Game plan readiness", "Opening hand recipe", "Level-up runway", "Threat cadence", "Engine-to-payoff balance", "Interaction coverage", "Resilience and rebuild", "Test session tracker", "Draw quality by game stage", "Post-sideboard plan", "Card access and probability", "Clumping and conditional pressure", "Resource timing", "Advanced sequence analysis"];
 
 export default function DeckAnalysisIndex() {
   useDocumentTitle("Deck Analysis", "Understand the consistency, timing, resource pressure, and sideboard shape of the active deck.");
@@ -108,7 +108,7 @@ export default function DeckAnalysisIndex() {
     {tab === "explore" && <div className="mt-4 space-y-3">
       <PrepareAnalysis lines={workspace.main} catalogByName={catalogByName} roles={analysisRoles} onRolesChange={updateAnalysisRoles} />
       <AnalysisDisclosure title="Game plan readiness" summary="Measure when setup, payoff, and protection are likely to come together."><GamePlanReadiness mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} onSharedAssignmentsChange={updateAnalysisRoles} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Functional hand" summary="Require useful roles while limiting awkward or redundant cards."><FunctionalHandCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
+      <AnalysisDisclosure title="Opening hand recipe" summary="Define what this deck wants early without treating every competing plan as a liability."><FunctionalHandCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Level-up runway" summary="Forecast level timing, acceleration access, and post-level hand pressure."><LevelUpRunway mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Threat cadence" summary="Measure the chance of presenting a fresh threat across consecutive turns."><ThreatCadence mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Engine-to-payoff balance" summary="Check whether setup arrives before the cards that depend on it."><EnginePayoffBalance mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} onSharedAssignmentsChange={updateAnalysisRoles} /></AnalysisDisclosure>

@@ -1481,13 +1481,15 @@ This is an access calculator, not a play-success simulation. It does not model R
 activation permission, card sequencing, extra draws, board state, targets, opponent responses, or
 whether cards placed in the same player-declared role are strategically interchangeable.
 
-### Functional Hand (`features/deckbuilder/FunctionalHandCalculator.tsx`, `lib/functionalHand.ts`)
+### Opening Hand Recipe (`features/deckbuilder/FunctionalHandCalculator.tsx`, `lib/functionalHand.ts`)
 
-The viewer assigns Main Deck card names to mutually exclusive Proactive Play, Setup, Interaction,
-or Liability pools. Any of the first three roles can be required; the Liability pool instead has a
-configurable maximum. At each natural-draw checkpoint, all lower and upper bounds are evaluated in
+The viewer assigns Main Deck card names to mutually exclusive Early Action, Setup Piece, Interaction,
+or Unwanted Early Draw pools. Any of the first three categories can be required; the Unwanted Early
+Draw pool instead has a configurable maximum. Setup and Interaction can be seeded from the deck's
+shared analysis profile, but Payoffs are not automatically treated as unwanted early draws. At each
+natural-draw checkpoint, all lower and upper bounds are evaluated in
 one multivariate state calculation through `probabilityOfTimedRecipe`. This makes a result such as
-“at least one proactive play, setup card, and interaction card, with no more than one liability” a
+“at least one early action and setup piece, with no more than one unwanted early draw” a
 single exact without-replacement probability rather than a product of independently rounded odds.
 
 The panel reports opening-hand, selected-turn, and first-ten probabilities; a turn curve; the
