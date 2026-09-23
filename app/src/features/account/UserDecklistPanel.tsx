@@ -22,13 +22,16 @@ export default function UserDecklistPanel({ decklist, format, actions, children,
   const [showCollection, setShowCollection] = useState(false);
   const [collection, setCollection] = useState<CollectionEntry[] | null>(null);
   useEffect(() => {
-    if (!ownerDeckId) return;
+    // Collection comparison is useful anywhere a real decklist is shown, not only on the
+    // owner's editable deck page. Signed-out requests fail quietly; signed-in viewers then get
+    // the same shortage highlighting on tournament, Pantheon, and shared community lists.
+    if (!ownerDeckId && !collectionSource) return;
     let active = true;
     const refresh = () => { void accountApi.collection().then((result) => { if (active) setCollection(result.entries); }).catch(() => { if (active) setCollection(null); }); };
     refresh();
     window.addEventListener("fanofin:collection-updated", refresh);
     return () => { active = false; window.removeEventListener("fanofin:collection-updated", refresh); };
-  }, [ownerDeckId]);
+  }, [collectionSource, ownerDeckId]);
   const ownershipByName = useMemo(() => {
     if (!collection) return undefined;
     return new Map(computeDeckCollectionStatus(decklist, collection, true).lines.map((line) => [line.card, line]));

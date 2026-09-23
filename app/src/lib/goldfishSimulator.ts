@@ -12,10 +12,25 @@ export interface GoldfishToken {
   rested: boolean;
 }
 
+export type GoldfishCommand =
+  | { type: "open"; handSize: number }
+  | { type: "draw" }
+  | { type: "glimpse"; count: number; keptIds: string[] }
+  | { type: "play"; instanceId: string }
+  | { type: "reserve"; instanceId: string }
+  | { type: "begin-recollection" }
+  | { type: "recollect" }
+  | { type: "next-turn" }
+  | { type: "materialize"; instanceId: string }
+  | { type: "banish-random-memory"; count: number }
+  | { type: "create-tokens"; name: string; count: number; rested: boolean }
+  | { type: "remove-token"; tokenId: string };
+
 export interface GoldfishAction {
   id: number;
   turn: number;
   label: string;
+  command?: GoldfishCommand;
 }
 
 export interface GoldfishState {
@@ -46,7 +61,21 @@ export interface GoldfishSession {
 
 const cardInstances = (value: unknown): GoldfishCardInstance[] => Array.isArray(value) ? value.filter((entry): entry is GoldfishCardInstance => Boolean(entry && typeof entry === "object" && typeof (entry as GoldfishCardInstance).id === "string" && typeof (entry as GoldfishCardInstance).name === "string")) : [];
 const tokens = (value: unknown): GoldfishToken[] => Array.isArray(value) ? value.filter((entry): entry is GoldfishToken => Boolean(entry && typeof entry === "object" && typeof (entry as GoldfishToken).id === "string" && typeof (entry as GoldfishToken).name === "string" && typeof (entry as GoldfishToken).rested === "boolean")) : [];
-const history = (value: unknown): GoldfishAction[] => Array.isArray(value) ? value.filter((entry): entry is GoldfishAction => Boolean(entry && typeof entry === "object" && Number.isInteger((entry as GoldfishAction).id) && Number.isInteger((entry as GoldfishAction).turn) && typeof (entry as GoldfishAction).label === "string")) : [];
+const command = (value: unknown): GoldfishCommand | undefined => {
+  if (!value || typeof value !== "object" || typeof (value as { type?: unknown }).type !== "string") return undefined;
+  const candidate = value as GoldfishCommand;
+  switch (candidate.type) {
+    case "open": return Number.isInteger(candidate.handSize) && candidate.handSize >= 0 ? candidate : undefined;
+    case "draw": case "begin-recollection": case "recollect": case "next-turn": return candidate;
+    case "glimpse": return Number.isInteger(candidate.count) && Array.isArray(candidate.keptIds) && candidate.keptIds.every((id) => typeof id === "string") ? candidate : undefined;
+    case "play": case "reserve": case "materialize": return typeof candidate.instanceId === "string" ? candidate : undefined;
+    case "banish-random-memory": return Number.isInteger(candidate.count) ? candidate : undefined;
+    case "create-tokens": return typeof candidate.name === "string" && Number.isInteger(candidate.count) && typeof candidate.rested === "boolean" ? candidate : undefined;
+    case "remove-token": return typeof candidate.tokenId === "string" ? candidate : undefined;
+    default: return undefined;
+  }
+};
+const history = (value: unknown): GoldfishAction[] => Array.isArray(value) ? value.filter((entry): entry is GoldfishAction => Boolean(entry && typeof entry === "object" && Number.isInteger((entry as GoldfishAction).id) && Number.isInteger((entry as GoldfishAction).turn) && typeof (entry as GoldfishAction).label === "string")).map((entry) => ({ ...entry, command: command(entry.command) })) : [];
 const deckLines = (value: unknown) => Array.isArray(value) ? value.filter((entry): entry is OmnidexDecklist["main"][number] => Boolean(entry && typeof entry === "object" && typeof (entry as { card?: unknown }).card === "string" && Number.isInteger((entry as { quantity?: unknown }).quantity) && Number((entry as { quantity?: unknown }).quantity) > 0)).map((entry) => ({ card: entry.card, quantity: entry.quantity })) : [];
 
 /** Serializes the complete assisted-rules state rather than only the visible hand. RNG state is part
@@ -142,8 +171,8 @@ function shuffle<T>(items: T[], seed: number): { items: T[]; rngState: number } 
   return { items: result, rngState };
 }
 
-function record(state: GoldfishState, label: string): GoldfishState {
-  return { ...state, history: [...state.history, { id: state.history.length + 1, turn: state.turn, label }] };
+function record(state: GoldfishState, label: string, actionCommand: GoldfishCommand): GoldfishState {
+  return { ...state, history: [...state.history, { id: state.history.length + 1, turn: state.turn, label, command: actionCommand }] };
 }
 
 export function newGame(decklist: OmnidexDecklist, handSize: number, seed = (Date.now() ^ Math.floor(Math.random() * 0xffffffff)) >>> 0): GoldfishState {
@@ -152,14 +181,14 @@ export function newGame(decklist: OmnidexDecklist, handSize: number, seed = (Dat
     version: 2, seed: seed >>> 0, rngState: shuffled.rngState, turn: 1, phase: "main",
     library: shuffled.items.slice(handSize), hand: shuffled.items.slice(0, handSize), memory: [], banished: [], played: [],
     materialDeck: expandMaterialDeck(decklist), materialized: [], tokens: [],
-    history: [{ id: 1, turn: 1, label: `Opened ${Math.min(handSize, shuffled.items.length)} cards (seed ${seed >>> 0})` }],
+    history: [{ id: 1, turn: 1, label: `Opened ${Math.min(handSize, shuffled.items.length)} cards (seed ${seed >>> 0})`, command: { type: "open", handSize } }],
   };
 }
 
 export function drawCard(state: GoldfishState): GoldfishState {
   if (state.library.length === 0) return state;
   const [drawn, ...rest] = state.library;
-  return record({ ...state, library: rest, hand: [...state.hand, drawn] }, `Drew ${drawn.name}`);
+  return record({ ...state, library: rest, hand: [...state.hand, drawn] }, `Drew ${drawn.name}`, { type: "draw" });
 }
 
 export function drawCards(state: GoldfishState, count: number): GoldfishState {
@@ -177,7 +206,7 @@ export function resolveGlimpse(state: GoldfishState, count: number, keptIds: Rea
   const unseen = state.library.slice(glimpseCount);
   const kept = revealed.filter((card) => keptIds.has(card.id));
   const bottomed = shuffle(revealed.filter((card) => !keptIds.has(card.id)), state.rngState);
-  return record({ ...state, rngState: bottomed.rngState, library: [...kept, ...unseen, ...bottomed.items] }, `Resolved Glimpse ${glimpseCount}; kept ${kept.length} on top`);
+  return record({ ...state, rngState: bottomed.rngState, library: [...kept, ...unseen, ...bottomed.items] }, `Resolved Glimpse ${glimpseCount}; kept ${kept.length} on top`, { type: "glimpse", count, keptIds: [...keptIds] });
 }
 
 /**
@@ -190,27 +219,27 @@ export function resolveGlimpse(state: GoldfishState, count: number, keptIds: Rea
 export function playCard(state: GoldfishState, instanceId: string): GoldfishState {
   const card = state.hand.find((c) => c.id === instanceId);
   if (!card) return state;
-  return record({ ...state, hand: state.hand.filter((c) => c.id !== instanceId), played: [...state.played, card] }, `Played ${card.name}`);
+  return record({ ...state, hand: state.hand.filter((c) => c.id !== instanceId), played: [...state.played, card] }, `Played ${card.name}`, { type: "play", instanceId });
 }
 
 export function reserveCard(state: GoldfishState, instanceId: string): GoldfishState {
   const card = state.hand.find((entry) => entry.id === instanceId);
   if (!card) return state;
-  return record({ ...state, hand: state.hand.filter((entry) => entry.id !== instanceId), memory: [...state.memory, card] }, `Reserved ${card.name} to Memory`);
+  return record({ ...state, hand: state.hand.filter((entry) => entry.id !== instanceId), memory: [...state.memory, card] }, `Reserved ${card.name} to Memory`, { type: "reserve", instanceId });
 }
 
 export function beginRecollection(state: GoldfishState): GoldfishState {
-  return state.phase === "recollection" ? state : record({ ...state, phase: "recollection" }, "Began Recollection Phase");
+  return state.phase === "recollection" ? state : record({ ...state, phase: "recollection" }, "Began Recollection Phase", { type: "begin-recollection" });
 }
 
 export function recollectMemory(state: GoldfishState): GoldfishState {
   if (state.phase !== "recollection" || state.memory.length === 0) return state;
   const count = state.memory.length;
-  return record({ ...state, hand: [...state.hand, ...state.memory], memory: [] }, `Recollected ${count} card${count === 1 ? "" : "s"} from Memory`);
+  return record({ ...state, hand: [...state.hand, ...state.memory], memory: [] }, `Recollected ${count} card${count === 1 ? "" : "s"} from Memory`, { type: "recollect" });
 }
 
 export function nextTurn(state: GoldfishState, draw = true): GoldfishState {
-  let next = record({ ...state, turn: state.turn + 1, phase: "main" }, `Started turn ${state.turn + 1}`);
+  let next = record({ ...state, turn: state.turn + 1, phase: "main" }, `Started turn ${state.turn + 1}`, { type: "next-turn" });
   if (draw) next = drawCard(next);
   return next;
 }
@@ -218,7 +247,7 @@ export function nextTurn(state: GoldfishState, draw = true): GoldfishState {
 export function materializeCard(state: GoldfishState, instanceId: string): GoldfishState {
   const card = state.materialDeck.find((entry) => entry.id === instanceId);
   if (!card) return state;
-  return record({ ...state, materialDeck: state.materialDeck.filter((entry) => entry.id !== instanceId), materialized: [...state.materialized, card] }, `Materialized ${card.name}`);
+  return record({ ...state, materialDeck: state.materialDeck.filter((entry) => entry.id !== instanceId), materialized: [...state.materialized, card] }, `Materialized ${card.name}`, { type: "materialize", instanceId });
 }
 
 export function banishRandomFromMemory(state: GoldfishState, count: number): GoldfishState {
@@ -227,7 +256,7 @@ export function banishRandomFromMemory(state: GoldfishState, count: number): Gol
   const shuffled = shuffle(state.memory, state.rngState);
   const selected = shuffled.items.slice(0, total);
   const ids = new Set(selected.map((card) => card.id));
-  return record({ ...state, rngState: shuffled.rngState, memory: state.memory.filter((card) => !ids.has(card.id)), banished: [...state.banished, ...selected] }, `Randomly banished ${selected.map((card) => card.name).join(", ")} from Memory`);
+  return record({ ...state, rngState: shuffled.rngState, memory: state.memory.filter((card) => !ids.has(card.id)), banished: [...state.banished, ...selected] }, `Randomly banished ${selected.map((card) => card.name).join(", ")} from Memory`, { type: "banish-random-memory", count });
 }
 
 export function createTokens(state: GoldfishState, name: string, count: number, rested = false): GoldfishState {
@@ -236,12 +265,41 @@ export function createTokens(state: GoldfishState, name: string, count: number, 
   if (!normalized || total === 0) return state;
   const offset = state.tokens.length;
   const tokens = Array.from({ length: total }, (_, index) => ({ id: `token:${state.history.length + 1}:${offset + index}`, name: normalized, rested }));
-  return record({ ...state, tokens: [...state.tokens, ...tokens] }, `Created ${total} ${normalized} token${total === 1 ? "" : "s"}${rested ? " rested" : ""}`);
+  return record({ ...state, tokens: [...state.tokens, ...tokens] }, `Created ${total} ${normalized} token${total === 1 ? "" : "s"}${rested ? " rested" : ""}`, { type: "create-tokens", name: normalized, count, rested });
 }
 
 export function removeToken(state: GoldfishState, tokenId: string): GoldfishState {
   const token = state.tokens.find((entry) => entry.id === tokenId);
-  return token ? record({ ...state, tokens: state.tokens.filter((entry) => entry.id !== tokenId) }, `Removed ${token.name} token`) : state;
+  return token ? record({ ...state, tokens: state.tokens.filter((entry) => entry.id !== tokenId) }, `Removed ${token.name} token`, { type: "remove-token", tokenId }) : state;
+}
+
+export function isReplayableHistory(actions: readonly GoldfishAction[]): boolean {
+  return actions.length > 0 && actions[0].command?.type === "open" && actions.every((action) => action.command !== undefined);
+}
+
+/** Rebuilds a game from its seed and intent log. Legacy label-only logs deliberately return null. */
+export function replayGoldfishHistory(decklist: OmnidexDecklist, seed: number, actions: readonly GoldfishAction[]): GoldfishState | null {
+  if (!isReplayableHistory(actions)) return null;
+  const opening = actions[0].command as Extract<GoldfishCommand, { type: "open" }>;
+  let state = newGame(decklist, opening.handSize, seed);
+  for (const action of actions.slice(1)) {
+    const item = action.command!;
+    switch (item.type) {
+      case "open": return null;
+      case "draw": state = drawCard(state); break;
+      case "glimpse": state = resolveGlimpse(state, item.count, new Set(item.keptIds)); break;
+      case "play": state = playCard(state, item.instanceId); break;
+      case "reserve": state = reserveCard(state, item.instanceId); break;
+      case "begin-recollection": state = beginRecollection(state); break;
+      case "recollect": state = recollectMemory(state); break;
+      case "next-turn": state = nextTurn(state, false); break;
+      case "materialize": state = materializeCard(state, item.instanceId); break;
+      case "banish-random-memory": state = banishRandomFromMemory(state, item.count); break;
+      case "create-tokens": state = createTokens(state, item.name, item.count, item.rested); break;
+      case "remove-token": state = removeToken(state, item.tokenId); break;
+    }
+  }
+  return state;
 }
 
 export function isReservable(card: Card | undefined): boolean {

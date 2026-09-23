@@ -310,7 +310,7 @@ export default function CardDetail() {
         <CardPlayedWithPanel cardName={card.name} deckCount={combination.deckCount} topCards={comboTopCards} cardImages={comboCardImages} />
       )}
 
-      {tab === "decks" && <CardDecksPanel cardName={card.name} archetypes={playedByArchetypes} recentDecks={recentDecks} topDecks={topDecks} uniqueDecks={uniqueDecks} communityDecks={communityDeckRefs} playerName={playerName} />}
+      {tab === "decks" && <CardDecksPanel cardName={card.name} archetypes={playedByArchetypes} recentDecks={recentDecks} topDecks={topDecks} uniqueDecks={uniqueDecks} communityDecks={communityDeckRefs} playerName={playerName} loading={!archetypeTaxonomyData || !popularityIndexData || !hipsterData || !cardDeckReferences || combination.deckCount === undefined} />}
 
       {surface === "more" && (
         <div className="mt-5 flex flex-wrap gap-2" aria-label="More card data">
@@ -319,7 +319,7 @@ export default function CardDetail() {
       )}
 
       {surface === "more" && moreTab === "synergy" && (
-        <CardSynergyPanel cardName={card.name} cards={synergy.cards} totalDecks={synergy.totalDecks} cardImages={synergyCardImages} />
+        <CardSynergyPanel cardName={card.name} cards={synergy.cards} totalDecks={synergy.totalDecks} cardImages={synergyCardImages} loading={synergy.loading} />
       )}
 
       {surface === "more" && moreTab === "similar" && (

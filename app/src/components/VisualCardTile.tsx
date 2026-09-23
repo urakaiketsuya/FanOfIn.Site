@@ -123,7 +123,7 @@ export function VisualCardTile({
   );
 
   return (
-    <CardHoverPreview image={card?.editions[0]?.image} alt={line.card}>
+    <CardHoverPreview image={card?.editions[0]?.image} backImage={card?.editions[0]?.other_orientations?.[0]?.edition.image} backAlt={card?.editions[0]?.other_orientations?.[0]?.name} alt={line.card}>
       <div title={line.card}>
         {linkToCard && card ? <Link to={`/cards/${card.slug}`} className="block">{image}</Link> : image}
         <CardStatRows

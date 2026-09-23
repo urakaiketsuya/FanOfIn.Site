@@ -5,8 +5,10 @@ import TopDecksList from "../../components/TopDecksList";
 import Section from "../../components/ui/Section";
 import UniqueDeckRow from "../champions/UniqueDeckRow";
 import { championKeyToDisplayName } from "../../lib/championSlug";
+import CardTabSkeleton from "./CardTabSkeleton";
 
-export default function CardDecksPanel({ cardName, archetypes, recentDecks, topDecks, uniqueDecks, communityDecks, playerName }: { cardName: string; archetypes: { cluster: ArchetypeCluster; prevalence: number }[]; recentDecks: TopDecksListEntry[]; topDecks: TopDecksListEntry[]; uniqueDecks: DeckHipsterScore[]; communityDecks: ShoutAtYourDecksDeckSummary[]; playerName: (id: number) => string }) {
+export default function CardDecksPanel({ cardName, archetypes, recentDecks, topDecks, uniqueDecks, communityDecks, playerName, loading = false }: { cardName: string; archetypes: { cluster: ArchetypeCluster; prevalence: number }[]; recentDecks: TopDecksListEntry[]; topDecks: TopDecksListEntry[]; uniqueDecks: DeckHipsterScore[]; communityDecks: ShoutAtYourDecksDeckSummary[]; playerName: (id: number) => string; loading?: boolean }) {
+  if (loading) return <CardTabSkeleton label="Loading decks featuring this card" />;
   return <>
     {archetypes.length > 0 && <Section className="mt-4" heading="compact" title="Archetypes"><div className="mt-2 grid gap-2 sm:grid-cols-2">{archetypes.map(({ cluster, prevalence }) => <Link key={cluster.id} to={`/archetypes/${cluster.id}`} className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 hover:border-ctp-blue"><span className="block text-sm font-semibold text-ctp-text">{cluster.name}</span><span className="mt-1 block text-xs text-ctp-subtext0">{(prevalence * 100).toFixed(0)}% of {cluster.playerCount} players · {(cluster.avgWinRate * 100).toFixed(0)}% win rate</span></Link>)}</div></Section>}
     {recentDecks.length > 0 && <Section className="mt-8" heading="compact" title="Recent decks"><div className="mt-2"><TopDecksList decks={recentDecks} playerName={playerName} /></div></Section>}

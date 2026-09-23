@@ -33,7 +33,7 @@ function CardRow({ card: topCard, resolved, winRate }: { card: PlayerTopCard; re
     </>
   );
   return (
-    <CardHoverPreview image={resolved?.editions[0]?.image} alt={topCard.name}>
+    <CardHoverPreview image={resolved?.editions[0]?.image} backImage={resolved?.editions[0]?.other_orientations?.[0]?.edition.image} backAlt={resolved?.editions[0]?.other_orientations?.[0]?.name} alt={topCard.name}>
       {topCard.slug ? (
         <Link to={`/cards/${topCard.slug}`} className="flex items-center gap-2 text-sm hover:text-ctp-blue">
           {inner}

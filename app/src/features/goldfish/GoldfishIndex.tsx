@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import type { Card, OmnidexDecklist } from "@gatcg/shared";
-import { banishRandomFromMemory, beginRecollection, createTokens, drawCards, isReservable, materializeCard, newGame, nextTurn, parseGoldfishSession, playCard, recollectMemory, removeToken, reserveCard, resolveGlimpse, serializeGoldfishSession, suggestedExtraDraws, suggestedGlimpse, type GoldfishCardInstance, type GoldfishSession, type GoldfishState } from "../../lib/goldfishSimulator";
+import { banishRandomFromMemory, beginRecollection, createTokens, drawCards, isReplayableHistory, isReservable, materializeCard, newGame, nextTurn, parseGoldfishSession, playCard, recollectMemory, removeToken, replayGoldfishHistory, reserveCard, resolveGlimpse, serializeGoldfishSession, suggestedExtraDraws, suggestedGlimpse, type GoldfishCardInstance, type GoldfishSession, type GoldfishState } from "../../lib/goldfishSimulator";
 import { DEFAULT_STARTING_HAND_SIZE } from "../../lib/turnToPlay";
 import { decodeCustomDecks } from "../../lib/compareShareLink";
 import { parseDecklist } from "../compare/parseDecklist";
@@ -144,6 +144,17 @@ export default function GoldfishIndex() {
     setSessionNotice("Saved session removed.");
   }
 
+  function replayFromStart() {
+    if (!decklist || !state) return;
+    const replayed = replayGoldfishHistory(decklist, state.seed, state.history);
+    if (!replayed) return;
+    setState(replayed);
+    setPendingConfirm(null);
+    setActiveGlimpse(null);
+    setKeptGlimpseIds(new Set());
+    setSessionNotice("Replay rebuilt the current game from its opening seed and action history.");
+  }
+
   if (!decklist) {
     return (
       <PageLayout data-component="GoldfishIndex">
@@ -245,7 +256,7 @@ export default function GoldfishIndex() {
           <div className="mt-3 flex gap-2 overflow-x-auto pb-1">{state.played.map((card, index) => { const resolved = cardsByName.get(card.name); return <div key={card.id} className="w-20 shrink-0"><div className="relative">{resolved?.editions[0] ? <CardImage image={resolved.editions[0].image} alt={card.name} className="aspect-[5/7] w-full rounded object-cover object-top" /> : <div className="aspect-[5/7] rounded bg-ctp-surface0" />}<span className="absolute left-1 top-1 rounded bg-ctp-crust/90 px-1 text-[10px] text-ctp-text">{index + 1}</span></div><p className="mt-1 truncate text-[10px] text-ctp-subtext1" title={card.name}>{card.name}</p></div>; })}</div>
         </details>
       )}
-      <details className="mt-6 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3"><summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Replay log · seed {state.seed} ({state.history.length})</summary><ol className="mt-3 space-y-1 text-xs text-ctp-subtext1">{state.history.map((action) => <li key={action.id}><span className="mr-2 text-ctp-subtext0">T{action.turn}</span>{action.label}</li>)}</ol></details>
+      <details className="mt-6 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3"><summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 text-xs font-semibold uppercase tracking-wide text-ctp-subtext0 [&::-webkit-details-marker]:hidden"><span>Replay log · seed {state.seed}</span><span>{state.history.length} actions</span></summary>{isReplayableHistory(state.history) && <div className="mt-3 rounded-lg border border-ctp-surface1 bg-ctp-base p-3"><p className="text-xs leading-5 text-ctp-subtext1">Rebuild this position from the original shuffled deck and every recorded action.</p><button type="button" onClick={replayFromStart} className="mt-2 min-h-11 w-full rounded-lg border border-ctp-blue/60 px-3 text-sm font-medium text-ctp-blue sm:w-auto">Replay from start</button></div>}<ol className="mt-3 space-y-1 text-xs text-ctp-subtext1">{state.history.map((action) => <li key={action.id}><span className="mr-2 text-ctp-subtext0">T{action.turn}</span>{action.label}</li>)}</ol></details>
     </PageLayout>
   );
 }

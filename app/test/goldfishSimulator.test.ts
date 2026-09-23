@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type { Card } from "@gatcg/shared";
-import { banishRandomFromMemory, beginRecollection, createTokens, materializeCard, newGame, parseGoldfishSession, recollectMemory, reserveCard, resolveGlimpse, serializeGoldfishSession, suggestedGlimpse, type GoldfishState } from "../src/lib/goldfishSimulator";
+import { banishRandomFromMemory, beginRecollection, createTokens, isReplayableHistory, materializeCard, newGame, nextTurn, parseGoldfishSession, playCard, recollectMemory, removeToken, replayGoldfishHistory, reserveCard, resolveGlimpse, serializeGoldfishSession, suggestedGlimpse, type GoldfishState } from "../src/lib/goldfishSimulator";
 
 const card = (effect: string): Card => ({ effect } as Card);
 
@@ -66,6 +66,22 @@ test("saved sessions round-trip every modeled zone and deterministic RNG state",
   assert.deepEqual(banishRandomFromMemory(restored.state, 2), banishRandomFromMemory(state, 2));
 });
 
+test("structured actions replay the full position from its opening seed", () => {
+  const decklist = { main: ["A", "B", "C", "D", "E", "F"].map((name) => ({ card: name, quantity: 1 })), material: [{ card: "Champion", quantity: 1 }], sideboard: [] };
+  let state = newGame(decklist, 4, 8675309);
+  state = reserveCard(state, state.hand[0].id);
+  state = playCard(state, state.hand[0].id);
+  state = materializeCard(state, state.materialDeck[0].id);
+  state = createTokens(state, "Powercell", 2, true);
+  state = removeToken(state, state.tokens[0].id);
+  state = banishRandomFromMemory(state, 1);
+  state = nextTurn(state);
+  state = resolveGlimpse(state, 1, new Set(state.library[0] ? [state.library[0].id] : []));
+
+  assert.equal(isReplayableHistory(state.history), true);
+  assert.deepEqual(replayGoldfishHistory(decklist, state.seed, state.history), state);
+});
+
 test("older minimal Goldfish sessions migrate new zones with safe defaults", () => {
   const restored = parseGoldfishSession(JSON.stringify({
     version: 1,
@@ -80,6 +96,8 @@ test("older minimal Goldfish sessions migrate new zones with safe defaults", () 
   assert.deepEqual(restored.state.materialDeck, []);
   assert.deepEqual(restored.state.tokens, []);
   assert.equal(restored.state.rngState, 12);
+  assert.equal(isReplayableHistory(restored.state.history), false);
+  assert.equal(replayGoldfishHistory(restored.decklist, restored.state.seed, restored.state.history), null);
 });
 
 test("malformed Goldfish sessions are rejected", () => {
