@@ -1594,6 +1594,10 @@ opponent selection, repeated partners, player learning, and selective recording 
 
 ### Draw Quality by Game Stage (`features/deckbuilder/StageDrawQuality.tsx`, `lib/stageDrawQuality.ts`)
 
+The viewer can seed its editable stage classifications from the shared analysis profile: Setup maps
+to Setup-focused, Payoff to Payoff-focused, and Protection to Useful anytime. This mapping is a
+starting assumption rather than a rules claim; changing a stage role does not rewrite the shared profile.
+
 The viewer assigns each categorized Main Deck card exclusively to Early-only, Late-only, Flexible,
 or Conditional. An ordered without-replacement state calculation divides the library positions into
 an early window and a later draw window. The combined “both stages” event requires at least one
