@@ -32,6 +32,17 @@ function Evidence({ source, limit }: { source: string; limit: string }) {
   </div>;
 }
 
+function ToolExplanation({ to, name, does, evidence, limit }: { to: string; name: string; does: string; evidence: string; limit: string }) {
+  return <article className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4 sm:p-5">
+    <h3 className="font-semibold text-ctp-text"><Link to={to} className="text-ctp-blue hover:underline">{name} →</Link></h3>
+    <p className="mt-1">{does}</p>
+    <dl className="mt-3 grid gap-3 border-t border-ctp-surface0 pt-3 text-xs leading-5 sm:grid-cols-2">
+      <div><dt className="font-semibold text-ctp-text">Uses</dt><dd className="text-ctp-subtext1">{evidence}</dd></div>
+      <div><dt className="font-semibold text-ctp-text">Keep in mind</dt><dd className="text-ctp-subtext1">{limit}</dd></div>
+    </dl>
+  </article>;
+}
+
 function Detail({ title, children }: { title: string; children: ReactNode }) {
   return <details className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle/50 p-4 text-sm leading-6 text-ctp-subtext1">
     <summary className="cursor-pointer font-semibold text-ctp-text">{title}</summary>
@@ -93,15 +104,24 @@ export default function Methodology() {
         </Topic>
         <Topic id="competition" title="Competition">
           <p><Link to="/seasons" className="text-ctp-blue hover:underline">Seasons</Link>, <Link to="/players" className="text-ctp-blue hover:underline">Players and Judges</Link>, <Link to="/teams" className="text-ctp-blue hover:underline">Teams</Link>, and <Link to="/regions" className="text-ctp-blue hover:underline">Regional Analysis</Link> organize recorded competition. <Link to="/timelines" className="text-ctp-blue hover:underline">Match Timelines</Link> reconstruct selected broadcast matches.</p>
-          <Evidence source="Event, standing, pairing, and rating-change data come from the tournament source. Regional views depend on recorded event locations. Broadcast timelines are human annotations of selected VODs." limit="Tracked events are not every Grand Archive event. Regional comparisons reflect the recorded field, and a timeline is not a complete match log or official ruling record." />
+          <Evidence source="Event, standing, pairing, and rating-change data come from the tournament source. Regional views depend on recorded event locations. Broadcast timelines draw on VOD transcripts and caster commentary, not tournament game logs." limit="Tracked events are not every Grand Archive event. Regional comparisons reflect the recorded field, and a timeline is not a complete match log or official ruling record." />
           <Anchor id="elo" />
           <Detail title="How do player ratings work?"><p>Players start at 1500. The site replays rating changes supplied for each match by Omnidex in event-date order; it does not compute those changes from its own Elo formula. Ratings with fewer than 10 recorded matches are marked <strong>Provisional</strong>.</p></Detail>
           <Anchor id="broadcast-data" />
-          <Detail title="What is a match timeline?"><p>A timeline is a human reconstruction of an on-stream feature match, including notable plays and commentary. It covers selected broadcasts rather than every table, and on-camera actions can be misread. User-created recipes in Combo Lab are a different source.</p></Detail>
+          <Detail title="What is a match timeline?"><p>Timelines turn broadcast transcripts and caster commentary into ordered recaps of selected on-stream feature matches. They are commentary-derived, not direct game logs or human transcriptions. Only broadcast matches are covered; automatic speech recognition and commentary can miss or misstate plays, card names, and life totals. User-created recipes in Combo Lab are a different source.</p></Detail>
         </Topic>
         <Topic id="tools" title="Tools">
-          <p><Link to="/compare" className="text-ctp-blue hover:underline">Compare Decks</Link> shows differences between lists. <Link to="/deck-builder" className="text-ctp-blue hover:underline">Deck Builder</Link> creates and edits a list; <Link to="/deck-analysis" className="text-ctp-blue hover:underline">Deck Analysis</Link> measures its consistency and timing; <Link to="/deck-review" className="text-ctp-blue hover:underline">Deck Review</Link> suggests changes. <Link to="/combo-lab" className="text-ctp-blue hover:underline">Combo Lab</Link> and <Link to="/goldfish" className="text-ctp-blue hover:underline">Goldfish Test</Link> test access and draws. <Link to="/card-discovery" className="text-ctp-blue hover:underline">Find New Cards</Link> explores candidates, while <Link to="/looking-for" className="text-ctp-blue hover:underline">Looking For</Link> makes a shareable wishlist.</p>
-          <Evidence source="The tools combine your selected deck, card-catalog facts, probability calculations, and—where labeled—tournament or experimental simulator evidence. Each tool has a different input and purpose." limit="Draw odds and resource forecasts are models of a specified deck and assumptions, not predicted match wins. Suggestions are candidates to test, not guarantees that an edit improves your deck." />
+          <p>Each tool answers a different question. The input, evidence, and limitation matter as much as the result.</p>
+          <div className="mt-4 space-y-3">
+            <ToolExplanation to="/compare" name="Compare Decks" does="Put decklists or cards side by side to see what they share, what changed, and how their published stats differ." evidence="The selected lists, card catalog, and available tournament statistics." limit="A difference in observed results does not show that the changed cards caused it." />
+            <ToolExplanation to="/deck-builder" name="Deck Builder" does="Create, validate, save, and export a legal deck, with optional guided card suggestions." evidence="Your chosen cards, catalog and format rules, tournament deck patterns, and clearly marked experimental simulator evidence." limit="A valid or suggested build is not a forecast of match wins; review and playtest its choices." />
+            <ToolExplanation to="/deck-analysis" name="Deck Analysis" does="Measure card access, opening-hand consistency, resource timing, and sideboard effects for the active deck." evidence="The deck you load, card details, and probability or timing calculations." limit="These are model-based measurements under stated assumptions, not recommendations or simulated match outcomes." />
+            <ToolExplanation to="/deck-review" name="Deck Review" does="Inspect ranked suggestions and accept or reject edits one at a time." evidence="Your current deck, catalog rules, and available tournament-backed comparisons." limit="Suggestions can be sparse or confounded by differences between players and builds; nothing is added automatically." />
+            <ToolExplanation to="/combo-lab" name="Combo Lab" does="Specify the cards or functional roles a combo needs and calculate the chance of finding them by a chosen checkpoint." evidence="Your decklist, the requirements you enter, and card-access probability calculations." limit="Finding the pieces is not the same as being able to play them or win; conditions and opposing interaction may matter." />
+            <ToolExplanation to="/goldfish" name="Goldfish Test" does="Deal an opening hand and draw through a decklist to practice how it feels." evidence="The list you provide and a randomized draw sequence." limit="It does not play an opponent or resolve every game action; you confirm draw triggers and handle the rest." />
+            <ToolExplanation to="/card-discovery" name="Find New Cards" does="Find newly released cards with structural connections to your Champion, Spirit, or chosen cards." evidence="Catalog attributes such as shared tokens, subtypes, Empower, and named references." limit="A structural match is an idea to explore, not a performance score or tournament endorsement." />
+            <ToolExplanation to="/looking-for" name="Looking For" does="Make a shareable card wishlist with acceptable printings and sets." evidence="The cards and preferences you enter, plus catalog printing data." limit="A wishlist does not verify availability, ownership, or a trade." />
+          </div>
           <Anchor id="simulator-data" />
           <Detail title="Where does simulator evidence appear?"><p>Anonymous Clarent telemetry is experimental and kept separate from tournament win rates and Card Impact. In the Guided Deck Builder it can reorder eligible card options inside a tournament-derived legal shell; it does not supply tournament outcomes or establish that a card is best for a particular Champion. Look for the experimental label where it appears.</p></Detail>
         </Topic>

@@ -1496,6 +1496,22 @@ the most from one additional copy while total deck size stays fixed. Player clas
 authoritative: the calculator does not infer that cards assigned to a role are strategically equal,
 nor does meeting the selected counts prove that a hand is affordable, legal, or well sequenced.
 
+### Level-Up Runway (`features/deckbuilder/LevelUpRunway.tsx`, `lib/levelRunway.ts`)
+
+This Deck Analysis panel presents the existing rules-aware Champion-level evaluator as a turn-one
+through turn-eight runway. For a selected target level, each turn shows the strongest supported
+normal-materialization or direct-level-up access result from `computeLevelGoalAnalysis`; Fractal
+payment remains separate because replacing a Memory cost cannot create an extra Materialize Phase.
+The panel also exposes the detected Material Deck lineage and the selected route's own bottleneck.
+
+The follow-up margin is deliberately simpler and separately labeled. For a user-selected Reserve
+cost, cards needed are `Reserve cost + 1` (the played card itself), compared with the natural hand
+ceiling from `naturalCardsSeenByTurn`. The reported recovery turn is the first turn at or after the
+chosen level deadline where that ceiling fits the follow-up. It does not subtract prior plays or
+payments, apply Floating Memory, or prove that the level route and follow-up can coexist in one real
+sequence. It is a pressure ceiling intended to make the vulnerable window visible, not a resource
+simulation.
+
 ### Functional-copy probability (`features/deckbuilder/functionalCopies.ts`)
 
 The Guided Builder's Hypergeometric calculator can treat every Main Deck card serving one detected
