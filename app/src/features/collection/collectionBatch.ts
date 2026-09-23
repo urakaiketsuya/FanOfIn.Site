@@ -120,6 +120,23 @@ export function watchedCardUsage(cardNames: string[], decks: SavedDeck[], entrie
   return usage.sort((a, b) => b.missing - a.missing || b.totalRequired - a.totalRequired || a.card.localeCompare(b.card));
 }
 
+/**
+ * Build one deduplicated shopping/shortage view across every saved deck. Quantities represent
+ * simultaneously sleeving all lists: each card appears once, while repeated use across decks is
+ * added together and compared with the user's one physical pool.
+ */
+export function crossDeckCollectionShortages(decks: SavedDeck[], entries: CollectionEntry[], includeSideboard = true): SharedCardUsage[] {
+  const names = new Map<string, string>();
+  for (const deck of decks) {
+    const sections = includeSideboard ? [deck.decklist.main, deck.decklist.material, deck.decklist.sideboard] : [deck.decklist.main, deck.decklist.material];
+    for (const line of sections.flat()) {
+      const key = cardKey(line.card);
+      if (!names.has(key)) names.set(key, line.card.trim().replace(/\s+/g, " "));
+    }
+  }
+  return watchedCardUsage([...names.values()], decks, entries, includeSideboard).filter((entry) => entry.missing > 0);
+}
+
 export function summarizeAtLeastChanges(lines: CollectionUpdateLine[], entries: CollectionEntry[]): { affectedCards: number; addedCopies: number; coveredCards: number } {
   const owned = new Map(entries.map((entry) => [entry.cardUuid, entry.ownedQuantity]));
   let affectedCards = 0; let addedCopies = 0; let coveredCards = 0;

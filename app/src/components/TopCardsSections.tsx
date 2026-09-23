@@ -9,6 +9,7 @@ import { useDeckPriceByName } from "../features/pricing/useDeckPriceByName";
 import { usePriceTrendByName } from "../features/pricing/usePriceTrendByName";
 import { useSimulatorEvidenceByName } from "../features/simulator/useSimulatorEvidenceByName";
 import { useDecklistDisplayPrefs } from "../lib/decklistDisplayPrefs";
+import { primaryAlternateFace } from "../lib/cardFaces";
 
 export interface ChampionWinRateContext { adjustedWinRate: number; deckCount: number; baselineWinRate: number }
 
@@ -19,6 +20,7 @@ function WinRateSignal({ value }: { value: ChampionWinRateContext }) {
 }
 
 function CardRow({ card: topCard, resolved, winRate }: { card: PlayerTopCard; resolved: Card | undefined; winRate: ChampionWinRateContext | undefined }) {
+  const alternateFace = primaryAlternateFace(resolved);
   const inner = (
     <>
       {resolved?.editions[0] ? (
@@ -33,7 +35,7 @@ function CardRow({ card: topCard, resolved, winRate }: { card: PlayerTopCard; re
     </>
   );
   return (
-    <CardHoverPreview image={resolved?.editions[0]?.image} backImage={resolved?.editions[0]?.other_orientations?.[0]?.edition.image} backAlt={resolved?.editions[0]?.other_orientations?.[0]?.name} alt={topCard.name}>
+    <CardHoverPreview image={resolved?.editions[0]?.image} backImage={alternateFace?.edition.image} backAlt={alternateFace?.name} alt={topCard.name}>
       {topCard.slug ? (
         <Link to={`/cards/${topCard.slug}`} className="flex items-center gap-2 text-sm hover:text-ctp-blue">
           {inner}

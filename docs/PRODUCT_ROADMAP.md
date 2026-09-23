@@ -159,6 +159,11 @@ and a clear explanation of where the classification is reused.
 
 ### Transform/backside data audit
 
+**Implemented.** The 2026-09-23 catalog audit found 21 true transforming cards; every current printing
+has a valid metadata-linked reverse face. `Auspicious Manifestation` is the only other card containing
+“transform” and correctly has no reverse face because it transforms another card. See
+`docs/CARD_BACKSIDE_AUDIT.md`.
+
 - Determine whether the catalog exposes relationships between front and back card editions.
 - Verify whether “transform” text always identifies a backside and whether tokens or alternate forms are
   represented differently.
@@ -210,6 +215,8 @@ shown, without navigating away from their current deck workflow.
 - Loosen “Similar effects” from exact text-pattern matching into a layered similarity model:
   structured mechanic tags first, normalized effect concepts second, and text similarity last.
 - Explain why a result is similar and let users filter by similarity dimension.
+  **Implemented with Text, Mechanic, and Concept layers.** Concept matches use documented explicit-effect
+  categories, disclose their shared concepts, and are discovery aids rather than interchangeability claims.
 
 ### 1.5 Collection-aware deck views
 
@@ -220,6 +227,9 @@ shown, without navigating away from their current deck workflow.
   shortages without treating alternate editions as different gameplay cards unless the user chooses
   edition-specific inventory mode.
 - Add a “missing cards only” filter and a shopping/export list that deduplicates shortages across decks.
+  **Implemented at the canonical-card level, including a pooled “build every saved deck” shortage view,
+  per-deck provenance, text export, and missing-only shopping export.** Edition-specific inventory remains
+  deferred because the persisted collection schema does not currently identify printings.
 
 **Acceptance criteria:** the same ownership calculation powers Collection, My Decks, Deck Builder, Deck
 Review, and Deck Analysis; shared copies are not incorrectly allocated to every deck simultaneously.

@@ -88,6 +88,39 @@ export function sameCoreEffectCards(card: Card, catalog: Card[]): Card[] {
 export interface SimilarEffectCards {
   exact: Card[];
   core: Card[];
+  concept: SimilarConceptCard[];
+}
+
+export interface SimilarConceptCard {
+  card: Card;
+  sharedConcepts: EffectConcept[];
+}
+
+export interface EffectConcept {
+  id: string;
+  label: string;
+}
+
+const EFFECT_CONCEPTS: readonly (EffectConcept & { pattern: RegExp })[] = [
+  { id: "draw", label: "Draw cards", pattern: /\bdraw(?:s|n)?\b/i },
+  { id: "damage", label: "Deal damage", pattern: /\bdeal(?:s|t)?\b[^.\n]{0,45}\bdamage\b/i },
+  { id: "recover", label: "Recover", pattern: /\brecover\b/i },
+  { id: "banish", label: "Banish", pattern: /\bbanish(?:ed|es|ing)?\b/i },
+  { id: "negate", label: "Negate", pattern: /\bnegat(?:e|ed|es|ing)\b/i },
+  { id: "glimpse", label: "Glimpse", pattern: /\bglimpse\b/i },
+  { id: "memory", label: "Memory", pattern: /\bmemory\b/i },
+  { id: "graveyard", label: "Graveyard", pattern: /\bgraveyard\b/i },
+  { id: "token", label: "Create tokens", pattern: /\b(?:summon|create|put onto the field)\b[^.\n]{0,55}\btoken(?:s)?\b/i },
+  { id: "counter", label: "Add counters", pattern: /\bput\b[^.\n]{0,55}\bcounter(?:s)?\b/i },
+  { id: "cost", label: "Reduce costs", pattern: /\bcosts?\b[^.\n]{0,35}\bless\b/i },
+  { id: "materialize", label: "Materialize", pattern: /\bmaterialize\b/i },
+  { id: "power", label: "Increase power", pattern: /(?:\bgets?\b|\bgain(?:s)?\b)[^.\n]{0,35}\+\s*\d+\s*(?:\[power\]|power)/i },
+  { id: "protection", label: "Protection", pattern: /\b(?:spellshroud|immortality|prevent|can't be targeted)\b/i },
+];
+
+export function effectConcepts(card: Card): EffectConcept[] {
+  const effect = card.effect ?? card.effect_raw ?? "";
+  return EFFECT_CONCEPTS.filter((concept) => concept.pattern.test(effect)).map(({ id, label }) => ({ id, label }));
 }
 
 /** Exact template siblings plus looser core-effect siblings, without repeating exact matches. */
@@ -95,7 +128,17 @@ export function effectRelatedCards(card: Card, catalog: Card[]): SimilarEffectCa
   const exact = similarCards(card, catalog);
   const exactIds = new Set(exact.map((candidate) => candidate.uuid));
   const core = sameCoreEffectCards(card, catalog).filter((candidate) => !exactIds.has(candidate.uuid));
-  return { exact, core };
+  const excludedIds = new Set([card.uuid, ...exactIds, ...core.map((candidate) => candidate.uuid)]);
+  const viewedConcepts = effectConcepts(card);
+  const viewedIds = new Set(viewedConcepts.map((concept) => concept.id));
+  const concept = viewedConcepts.length === 0 ? [] : catalog.flatMap((candidate): SimilarConceptCard[] => {
+    if (excludedIds.has(candidate.uuid)) return [];
+    const sharedConcepts = effectConcepts(candidate).filter((item) => viewedIds.has(item.id));
+    const samePrimaryType = candidate.types.some((type) => card.types.includes(type));
+    if (sharedConcepts.length < 2 && !(viewedConcepts.length === 1 && sharedConcepts.length === 1 && samePrimaryType)) return [];
+    return [{ card: candidate, sharedConcepts }];
+  }).sort((a, b) => b.sharedConcepts.length - a.sharedConcepts.length || a.card.name.localeCompare(b.card.name));
+  return { exact, core, concept };
 }
 
 /** Earliest print date across every edition — used to sort siblings oldest-to-newest. */

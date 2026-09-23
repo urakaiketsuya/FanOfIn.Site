@@ -28,3 +28,13 @@ test("effect relationships expose looser core matches separately", () => {
   assert.deepEqual(result.exact, []);
   assert.deepEqual(result.core.map((candidate) => candidate.uuid), ["core"]);
 });
+
+test("concept relationships require explicit shared effect language", () => {
+  const viewed = card("viewed", "Draw two cards, then banish a card from your graveyard.");
+  const concept = card("concept", "Banish the top card of your deck. Then draw a card.", ["SKILL"]);
+  const tooBroad = card("too-broad", "Draw a card.");
+  const unrelated = card("unrelated", "Target ally gets +2 power.");
+  const result = effectRelatedCards(viewed, [viewed, concept, tooBroad, unrelated]);
+  assert.deepEqual(result.concept.map((candidate) => candidate.card.uuid), ["concept"]);
+  assert.deepEqual(result.concept[0].sharedConcepts.map((item) => item.label), ["Draw cards", "Banish"]);
+});

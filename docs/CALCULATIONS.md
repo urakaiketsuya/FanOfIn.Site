@@ -1111,6 +1111,16 @@ genuinely new effect template (not just a token/tribal/named-reference relations
 look. The card detail page shows these as a separate "Same core effect" tier beneath exact-template
 matches, so the broader comparison is visible without presenting it as identical rules text.
 
+**Layered card-page discovery**: the card page presents these relationships as three explicitly
+different filters. **Text** is the existing full-template plus type/subtype match. **Mechanic** is
+the existing identical core-effect match after a conditional bonus is removed. **Concept** is a
+broader discovery aid based only on explicit phrases in printed effect text (currently draw,
+damage, recover, banish, negate, glimpse, memory, graveyard, token creation, adding counters, cost
+reduction, materialize, power increases, and protection). A concept result normally needs two
+shared concepts; a card with only one detected concept may match another card of the same broad
+card type. Exact and core matches are removed from this tier. Concept matches are therefore leads
+to read, not claims that cards are functionally interchangeable, and the UI says so directly.
+
 ## Intent cards (`app/src/lib/cardIntent.ts`, `useIntentCards.ts`)
 
 A different relationship than "same effect shape": not near-identical cards, but cards **designed

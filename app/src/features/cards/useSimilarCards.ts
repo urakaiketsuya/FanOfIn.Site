@@ -7,5 +7,5 @@ import { effectRelatedCards, type SimilarEffectCards } from "../../lib/cardSimil
  * normalized away) — for comparing cost/stats side by side, not an "upgrade" verdict. */
 export function useSimilarCards(card: Card | null): SimilarEffectCards {
   const catalog = useCardCatalog();
-  return useMemo(() => (card ? effectRelatedCards(card, catalog) : { exact: [], core: [] }), [card, catalog]);
+  return useMemo(() => (card ? effectRelatedCards(card, catalog) : { exact: [], core: [], concept: [] }), [card, catalog]);
 }

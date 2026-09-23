@@ -8,6 +8,7 @@ import type { PriceTrendEntry } from "../features/pricing/usePriceTrendByName";
 import type { SimulatorCardEvidence } from "../features/deckbuilder/useSimulatorSuggestedBuild";
 import { useCommunityBlendedCardInclusion } from "../features/community/data";
 import { formatUsd } from "../lib/format";
+import { primaryAlternateFace } from "../lib/cardFaces";
 
 export interface VisualFieldVisibility {
   cost: boolean;
@@ -112,6 +113,7 @@ export function VisualCardTile({
   /** Page-specific rows rendered after the standard visual-decklist stats. */
   footer?: ReactNode;
 }) {
+  const alternateFace = primaryAlternateFace(card);
   const tags = [...(card?.elements.filter((e) => e !== "NORM") ?? []), ...(card?.classes ?? [])];
   const image = (
     <CardArtTile
@@ -123,7 +125,7 @@ export function VisualCardTile({
   );
 
   return (
-    <CardHoverPreview image={card?.editions[0]?.image} backImage={card?.editions[0]?.other_orientations?.[0]?.edition.image} backAlt={card?.editions[0]?.other_orientations?.[0]?.name} alt={line.card}>
+    <CardHoverPreview image={card?.editions[0]?.image} backImage={alternateFace?.edition.image} backAlt={alternateFace?.name} alt={line.card}>
       <div title={line.card}>
         {linkToCard && card ? <Link to={`/cards/${card.slug}`} className="block">{image}</Link> : image}
         <CardStatRows

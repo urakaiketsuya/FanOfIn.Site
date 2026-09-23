@@ -323,7 +323,7 @@ export default function CardDetail() {
       )}
 
       {surface === "more" && moreTab === "similar" && (
-        <CardSimilarEffectsPanel card={card} cardStat={cardStat} similarCards={similarCards} resolveReference={resolveReference} />
+        <CardSimilarEffectsPanel key={card.uuid} card={card} cardStat={cardStat} similarCards={similarCards} resolveReference={resolveReference} />
       )}
 
       {surface === "more" && moreTab === "intent" && (
