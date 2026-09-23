@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CardImage from "../../components/CardImage";
+import { deckDestinationEligibility } from "../../lib/deckSectionEligibility";
 
 export type DeckSectionKey = keyof OmnidexDecklist;
 export type DeckCardDestination = DeckSectionKey | "maybeboard";
@@ -19,6 +20,15 @@ const MOVE_DESTINATIONS: { key: DeckCardDestination; title: string }[] = [
   { key: "sideboard", title: "Sideboard" },
   { key: "maybeboard", title: "Maybeboard" },
 ];
+
+function DestinationOptions({ cards }: { cards: (Card | undefined)[] }) {
+  return MOVE_DESTINATIONS.map((destination) => {
+    const blocked = cards.map((card) => deckDestinationEligibility(card, destination.key)).filter((result) => !result.allowed);
+    const reason = blocked[0]?.reason;
+    const suffix = reason ? cards.length > 1 ? ` — unavailable for ${blocked.length} selected` : ` — ${reason}` : "";
+    return <option key={destination.key} value={destination.key} disabled={blocked.length > 0}>{destination.title}{suffix}</option>;
+  });
+}
 
 function EditableCardTile({ line, card, section, selected, onSelect, onChangeQuantity, onMove, onRemove }: { line: OmnidexDecklistCardLine; card: Card | undefined; section: DeckSectionKey; selected: boolean; onSelect: () => void; onChangeQuantity: (quantity: number) => void; onMove: (section: DeckCardDestination) => void; onRemove: () => void }) {
   const maxQuantity = Math.max(1, Math.min(card?.legality?.STANDARD?.limit ?? 4, 4));
@@ -37,7 +47,7 @@ function EditableCardTile({ line, card, section, selected, onSelect, onChangeQua
       <button type="button" disabled={line.quantity >= maxQuantity} onClick={() => onChangeQuantity(line.quantity + 1)} aria-label={`Add one copy of ${line.card}`} className="min-h-11 border-l border-ctp-surface1 text-lg text-ctp-subtext1 hover:bg-ctp-surface0 disabled:opacity-30">+</button>
     </div>
     <div className="space-y-2 border-t border-ctp-surface1 p-2.5">
-      <label className="block text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Move card to<select value={section} onChange={(event) => onMove(event.target.value as DeckCardDestination)} aria-label={`Move ${line.card} to deck section`} className="mt-1 block min-h-11 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-sm font-medium normal-case tracking-normal text-ctp-text focus:border-ctp-blue focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/40">{MOVE_DESTINATIONS.map((destination) => <option key={destination.key} value={destination.key}>{destination.title}</option>)}</select></label>
+      <label className="block text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Move card to<select value={section} onChange={(event) => onMove(event.target.value as DeckCardDestination)} aria-label={`Move ${line.card} to deck section`} className="mt-1 block min-h-11 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-sm font-medium normal-case tracking-normal text-ctp-text focus:border-ctp-blue focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/40"><DestinationOptions cards={[card]} /></select></label>
       <div className="grid grid-cols-2 gap-2">
         {card ? <Link to={`/cards/${card.slug}`} target="_blank" rel="noreferrer" aria-label={`Open details for ${line.card} in a new tab`} className="flex min-h-11 items-center justify-center rounded-lg border border-ctp-surface1 px-3 text-xs font-medium text-ctp-blue hover:bg-ctp-blue/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/40">Card details ↗</Link> : <span />}
         <button type="button" onClick={onRemove} className="min-h-11 rounded-lg border border-ctp-red/40 px-3 text-xs font-medium text-ctp-red hover:bg-ctp-red/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-red/40" aria-label={`Remove ${line.card}`}>Remove</button>
@@ -50,7 +60,7 @@ export function MaybeboardCardTile({ line, card, onChangeQuantity, onMove, onRem
   const maxQuantity = Math.max(1, Math.min(card?.legality?.STANDARD?.limit ?? 4, 4));
   return <div className="overflow-hidden rounded-lg border border-ctp-yellow/40 bg-ctp-mantle">
     <div className="relative aspect-[5/7] bg-ctp-surface0"><CardHoverPreview image={card?.editions[0]?.image} alt={line.card}>{card?.editions[0] ? <Link to={`/cards/${card.slug}`} className="block h-full w-full"><CardImage image={card.editions[0].image} alt={line.card} className="h-full w-full object-cover" /></Link> : <span className="flex h-full items-center justify-center p-2 text-center text-xs text-ctp-subtext0">{line.card}</span>}</CardHoverPreview><input type="number" min={1} max={maxQuantity} value={line.quantity} aria-label={`Maybeboard copies of ${line.card}`} onChange={(event) => { const quantity = Number(event.target.value); if (Number.isInteger(quantity) && quantity >= 1) onChangeQuantity(Math.min(quantity, maxQuantity)); }} className="absolute right-1.5 top-1.5 w-11 rounded border border-ctp-surface1 bg-ctp-base/90 px-1 py-0.5 text-right text-xs text-ctp-text" /></div>
-    <div className="space-y-2 border-t border-ctp-surface1 p-2.5"><label className="block text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Move card to<select value="maybeboard" onChange={(event) => onMove(event.target.value as DeckCardDestination)} aria-label={`Move ${line.card} to deck section`} className="mt-1 block min-h-11 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-xs font-medium normal-case tracking-normal text-ctp-text focus:border-ctp-blue focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/40">{MOVE_DESTINATIONS.map((destination) => <option key={destination.key} value={destination.key}>{destination.title}</option>)}</select></label><button type="button" onClick={onRemove} className="min-h-10 w-full rounded-lg border border-ctp-red/40 px-2 text-xs font-medium text-ctp-red hover:bg-ctp-red/10" aria-label={`Remove ${line.card} from maybeboard`}>Remove</button></div>
+    <div className="space-y-2 border-t border-ctp-surface1 p-2.5"><label className="block text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Move card to<select value="maybeboard" onChange={(event) => onMove(event.target.value as DeckCardDestination)} aria-label={`Move ${line.card} to deck section`} className="mt-1 block min-h-11 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-xs font-medium normal-case tracking-normal text-ctp-text focus:border-ctp-blue focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/40"><DestinationOptions cards={[card]} /></select></label><button type="button" onClick={onRemove} className="min-h-10 w-full rounded-lg border border-ctp-red/40 px-2 text-xs font-medium text-ctp-red hover:bg-ctp-red/10" aria-label={`Remove ${line.card} from maybeboard`}>Remove</button></div>
   </div>;
 }
 
@@ -79,7 +89,7 @@ export function EditableDecklistGrid({ decklist, cardsByName, onChangeQuantity, 
           <div className="mt-2 grid grid-cols-2 gap-2"><button type="button" onClick={() => setSelected(new Set(sections.flatMap((section) => section.lines.map((line) => keyFor(section.key, line.card)))))} className="min-h-10 rounded-lg border border-ctp-surface1 px-2 text-xs">Select all</button><button type="button" onClick={() => setSelected(new Set(sections.flatMap((section) => section.lines.filter((line) => line.quantity < Math.max(1, Math.min(cardsByName.get(line.card)?.legality?.STANDARD?.limit ?? 4, 4))).map((line) => keyFor(section.key, line.card)))))} className="min-h-10 rounded-lg border border-ctp-surface1 px-2 text-xs">Below limit</button></div>
           <p className="mt-3 text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Set copies</p>
           <div className="mt-2 grid grid-cols-4 gap-1">{[1, 2, 3, 4].map((quantity) => <button key={quantity} type="button" disabled={selectedCards.length === 0} onClick={() => onSetSelected(selectedCards, quantity)} className="min-h-10 rounded-lg border border-ctp-surface1 text-sm disabled:opacity-40">{quantity}</button>)}</div>
-          <label className="mt-3 block text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Move selected<select disabled={selectedCards.length === 0} defaultValue="" onChange={(event) => { if (event.target.value) { onMoveSelected(selectedCards, event.target.value as DeckCardDestination); event.target.value = ""; } }} className="mt-1 min-h-10 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-xs font-normal normal-case text-ctp-text disabled:opacity-40"><option value="">Choose section…</option>{MOVE_DESTINATIONS.map((destination) => <option key={destination.key} value={destination.key}>{destination.title}</option>)}</select></label>
+          <label className="mt-3 block text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Move selected<select disabled={selectedCards.length === 0} defaultValue="" onChange={(event) => { if (event.target.value) { onMoveSelected(selectedCards, event.target.value as DeckCardDestination); event.target.value = ""; } }} className="mt-1 min-h-10 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-xs font-normal normal-case text-ctp-text disabled:opacity-40"><option value="">Choose section…</option><DestinationOptions cards={selectedCards.map((selectedCard) => cardsByName.get(selectedCard.name))} /></select></label>
           <button type="button" disabled={selectedCards.length === 0} onClick={() => { if (window.confirm(`Remove ${selectedCards.length} selected card${selectedCards.length === 1 ? "" : "s"}?`)) { onRemoveSelected(selectedCards); setSelected(new Set()); } }} className="mt-3 min-h-10 w-full rounded-lg border border-ctp-red/50 text-xs text-ctp-red disabled:opacity-40">Remove selected</button>
         </div>
       </details>

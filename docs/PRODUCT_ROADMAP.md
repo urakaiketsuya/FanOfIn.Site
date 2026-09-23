@@ -179,6 +179,8 @@ These are visible, bounded improvements that should ship before the larger analy
 - Rename or redesign the card move action so its destination is explicit.
 - Include **Main Deck**, **Material Deck**, **Sideboard**, and **Maybeboard** as valid destinations where
   format rules permit them; disable illegal destinations with a reason instead of hiding them.
+  **Implemented for static Champion/Regalia section rules, including mixed-card bulk selections; full-deck
+  copy, identity, Material-size, and Sideboard-point constraints remain in deck validation.**
 - Preserve keyboard operation and announce moves to assistive technology.
 
 **Acceptance criteria:** controls do not overlap at supported mobile widths; every card row exposes its
