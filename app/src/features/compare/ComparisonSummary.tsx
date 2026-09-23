@@ -145,7 +145,7 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
         </div>
       </Section>
 
-      <Section heading="dense" title="Damage forecasts" description="Compare damage output at the same cards-seen checkpoint.">
+      <Section heading="dense" title="Damage forecasts" description="Compare access to printed direct damage at the same checkpoint. These values do not claim the effects resolve.">
         <div className="grid items-start gap-4 md:grid-cols-2">
           {forecastDecks.map(({ deck, list, damageForecast, breakthroughVsAverage }) => <section key={deck.key} className="min-w-0">
             <h3 className="text-base font-semibold text-ctp-text">{shortDeckLabel(deck.label)}</h3>
@@ -162,7 +162,7 @@ export default function ComparisonSummary({ decks, decklists, baselineKey, mode 
     </div>}
 
     {mode === "forecasts" && baselineDeck && (
-      <Section heading="dense" title="Breakthrough damage" description="How much ally combat power reaches the champion if every attacker swings and the defender blocks with its best Intercept allies first.">
+      <Section heading="dense" title="All-allies combat ceiling" description="A theoretical deck-composition ceiling if every listed ally is in play and attacks while the defender uses its best Intercept allies first.">
         <div className="mt-3 space-y-4">
           {decks.map((deck, index) => {
             if (index === baselineIndex) return null;

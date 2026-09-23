@@ -4,7 +4,7 @@ export default function BreakthroughDamagePanel({ attackerLabel, defenderLabel, 
   if (result.attackerCount === 0) return null;
   return (
     <div data-component="BreakthroughDamagePanel" className="rounded-lg border border-ctp-surface1 p-3">
-      <h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">{attackerLabel} attacking → {defenderLabel}</h4>
+      <h4 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">All-allies combat ceiling · {attackerLabel} → {defenderLabel}</h4>
       <p className="mt-2 text-2xl font-semibold text-ctp-text">
         {result.breakthroughTotal} <span className="text-sm font-normal text-ctp-subtext0">of {result.totalAttackPower} power gets through</span>
       </p>
@@ -13,6 +13,7 @@ export default function BreakthroughDamagePanel({ attackerLabel, defenderLabel, 
         <span>{result.interceptedPower} power intercepted ({result.interceptAllyCount} Intercept {result.interceptAllyCount === 1 ? "ally" : "allies"})</span>
         {result.unblockablePower > 0 && <span className="text-ctp-mauve">{result.unblockablePower} unblockable</span>}
       </div>
+      <p className="mt-2 text-[10px] leading-4 text-ctp-subtext0">Theoretical ceiling: assumes every listed ally is simultaneously in play, awake, and attacking. It does not model turns, costs, removal, combat tricks, or damage prevention.</p>
     </div>
   );
 }

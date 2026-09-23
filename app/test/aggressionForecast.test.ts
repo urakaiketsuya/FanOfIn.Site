@@ -98,3 +98,24 @@ test("advanced-element damage waits until the turn-four checkpoint", () => {
   assert.ok(forecast.points[1].expectedMax > 0);
   assert.match(forecast.audit[0]?.reason ?? "", /turn 4/);
 });
+
+test("fixed damage exposes separate conservative and optimistic medians", () => {
+  const bolt = card("Reliable Bolt", "Deal 5 damage to target champion.", { types: ["ACTION"], elements: ["FIRE"] });
+  const forecast = computeAggressionForecast([{ name: bolt.name, quantity: 4 }], new Map([[bolt.name, bolt]]));
+
+  for (const point of forecast.points) {
+    assert.equal(point.medianMin, point.medianMax);
+    assert.ok(point.low <= point.medianMin);
+    assert.ok(point.medianMax <= point.high);
+    assert.ok(point.chanceAtLeastFiveMin >= 0 && point.chanceAtLeastFiveMin <= 1);
+    assert.ok(point.chanceAtLeastFiveMax >= 0 && point.chanceAtLeastFiveMax <= 1);
+  }
+});
+
+test("recurring material damage is disclosed separately from cards-seen totals", () => {
+  const ruby = card("Fabled Ruby Fatestone", "At the beginning of your recollection phase, deal 1 damage to target champion.", { types: ["REGALIA"] });
+  const forecast = computeAggressionForecast([], new Map([[ruby.name, ruby]]), [{ name: ruby.name, quantity: 1 }]);
+
+  assert.equal(forecast.recurringDamagePerTurn, 1);
+  assert.ok(forecast.points.every((point) => point.expectedMin === 0 && point.expectedMax === 0));
+});

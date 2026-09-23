@@ -12,7 +12,14 @@ export interface AggressionForecastPoint {
   seen: number;
   expectedMin: number;
   expectedMax: number;
+  /** Median printed damage available in the conservative model. */
+  medianMin: number;
+  /** Median printed damage available in the optimistic model. */
+  medianMax: number;
+  /** 10th percentile of the conservative model. Kept separately from the optimistic percentile
+   * so the UI does not present two different models as one conventional confidence interval. */
   low: number;
+  /** 90th percentile of the optimistic model. */
   high: number;
   chanceAtLeastFiveMin: number;
   chanceAtLeastFiveMax: number;
@@ -307,6 +314,8 @@ export function computeAggressionForecast(
       seen,
       expectedMin: round(expected(minDistribution)),
       expectedMax: round(expected(maxDistribution) + scalingBonus + comboBonus),
+      medianMin: quantile(minDistribution, 0.5),
+      medianMax: quantile(maxDistribution, 0.5) + roundedBonus,
       low: quantile(minDistribution, 0.1),
       high: quantile(maxDistribution, 0.9) + roundedBonus,
       chanceAtLeastFiveMin: round(chanceAtLeast(minDistribution, 5), 3),

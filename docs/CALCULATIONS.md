@@ -1801,8 +1801,13 @@ category, and the probability mass for drawing each possible combination is weig
 product of its binomial coefficients divided by `choose(deckSize, cardsSeen)`. Deck size is the
 larger of the listed Main total and 60, matching the Guided Builder calculator convention.
 
-For every checkpoint the UI reports expected printed damage, the 10th–90th percentile range, and
-the probability of having at least 5 or 10 printed damage available. Cards with multiple fixed
+For every checkpoint the UI reports expected and median printed damage, the conservative model's
+10th percentile and the optimistic model's 90th percentile as separately labeled values, and the
+probability of having at least 5 or 10 printed damage available. These two percentiles are not
+presented as one conventional confidence interval because they come from different scenarios.
+The UI maps checkpoints onto personal turns using the disclosed seven-card default schedule and
+lets the user switch between playing first and second while retaining the exact cards-seen value.
+Cards with multiple fixed
 champion-damage clauses produce separate lower/upper distributions from their smallest/largest
 printed value. Variable-X clauses are counted for disclosure but excluded from the arithmetic;
 Material cards are excluded because they are not drawn from the Main Deck. The result measures
