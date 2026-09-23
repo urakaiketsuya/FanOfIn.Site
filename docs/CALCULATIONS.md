@@ -1527,6 +1527,21 @@ stays fixed. Classification is player-authored. The tool does not claim the sele
 equally threatening or model their costs, activation timing, board state, extra draws, or opponent
 responses.
 
+### Engine-to-Payoff Balance (`features/deckbuilder/EnginePayoffBalance.tsx`, `lib/engineBalance.ts`)
+
+The viewer assigns disjoint Producer and Payoff pools, minimum quantities for each, a setup deadline,
+and a later payoff deadline. `probabilityOfTimedRecipe` evaluates both requirements in the same
+without-replacement draw state. “Stranded payoff” is the probability of meeting the payoff access
+requirement by its deadline minus the joint online probability; “unused setup” similarly subtracts
+online probability from Producer access by the setup deadline. Conditional payoff reliability is
+`P(online) / P(setup)` when setup has nonzero probability.
+
+The lower individual access probability identifies the displayed ratio bottleneck. Adding one copy
+to each role in turn, while holding total deck size fixed, identifies which side produces the larger
+online-probability gain. These are access relationships only: the viewer's role assignments are not
+semantically verified, and activation, payment, sequencing, board state, and opponent interaction
+remain outside the calculation.
+
 ### Functional-copy probability (`features/deckbuilder/functionalCopies.ts`)
 
 The Guided Builder's Hypergeometric calculator can treat every Main Deck card serving one detected
