@@ -14,10 +14,10 @@ export default function PrepareAnalysis({ lines, catalogByName, profile, onRoles
   const ready = counts.enabler > 0 && counts.payoff > 0;
   const tools = [
     { name: "Game Plan Readiness", ready, missing: !counts.enabler ? "Setup" : !counts.payoff ? "Payoff" : null },
-    { name: "Setup-to-Payoff Timing", ready, missing: !counts.enabler ? "Setup" : !counts.payoff ? "Payoff" : null },
+    { name: "Game Plan · Timing", ready, missing: !counts.enabler ? "Setup" : !counts.payoff ? "Payoff" : null },
     { name: "Opening Hand Recipe", ready: counts.enabler > 0 || counts.protection > 0, missing: "Setup or Protection seed" },
     { name: "Pressure Continuity", ready: counts.payoff > 0, missing: "Payoff seed" },
-    { name: "Draw Quality by Stage", ready, missing: !counts.enabler ? "Setup" : !counts.payoff ? "Payoff" : null },
+    { name: "Game Plan · Stage draws", ready, missing: !counts.enabler ? "Setup" : !counts.payoff ? "Payoff" : null },
   ];
   return <details className="group rounded-xl border border-ctp-blue/40 bg-ctp-blue/5" open={!ready || !profile.reviewedAt}>
     <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 p-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ctp-blue [&::-webkit-details-marker]:hidden"><span><span className="block text-sm font-semibold text-ctp-text">Prepare analysis</span><span className="mt-0.5 block text-xs text-ctp-subtext0">{ready ? `${assigned} cards classified · ${tools.filter((tool) => tool.ready).length} shared tools ready` : "Classify setup and payoff cards once to unlock shared calculators"}</span></span><span className={`shrink-0 rounded-full px-2 py-1 text-[10px] font-semibold ${ready && profile.reviewedAt ? "bg-ctp-green/15 text-ctp-green" : "bg-ctp-yellow/15 text-ctp-yellow"}`}>{ready && profile.reviewedAt ? "Reviewed" : "Needs review"}</span></summary>

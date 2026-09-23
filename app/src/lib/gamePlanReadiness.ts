@@ -1,5 +1,7 @@
 import { expectedCardsSeenForRecipe, probabilityOfRecipe } from "./comboOdds";
 import { naturalCardsSeenByTurn, type PlayOrder } from "./turnToPlay";
+import { computeEngineBalance, type EngineBalanceResult } from "./engineBalance";
+import { computeStageDrawQuality, type StageDrawResult } from "./stageDrawQuality";
 
 export type GamePlanRole = "enabler" | "payoff" | "protection";
 export interface GamePlanRoleInput { role: GamePlanRole; copies: number; required: number }
@@ -10,6 +12,7 @@ export interface GamePlanReadinessResult {
   payoffWithoutEnabler: number; enablerWithoutPayoff: number; bottleneck: GamePlanRole | null;
   bestAdditionalCopy: { role: GamePlanRole; gain: number } | null;
 }
+export interface GamePlanViewsResult { readiness: GamePlanReadinessResult; timing: EngineBalanceResult; stages: StageDrawResult }
 
 const normalize = (input: GamePlanRoleInput) => ({ copies: Math.max(0, Math.floor(input.copies)), required: Math.max(1, Math.floor(input.required)) });
 
@@ -44,5 +47,19 @@ export function computeGamePlanReadiness(deckSize: number, startingHandSize: num
     payoffWithoutEnabler: Math.max(0, payoffOdds - core), enablerWithoutPayoff: Math.max(0, enablerOdds - core),
     bottleneck: roleOdds.sort((a, b) => a[1] - b[1])[0]?.[0] ?? null,
     bestAdditionalCopy: sensitivity && sensitivity.gain > 0 ? sensitivity : null,
+  };
+}
+
+/** Three views over the same mutually exclusive Setup/Payoff/Protection classification. */
+export function computeGamePlanViews(deckSize: number, startingHandSize: number, roles: GamePlanRoleInput[], setupTurn: number, payoffTurn: number, playOrder: PlayOrder, maximumEarlyPayoffs: number): GamePlanViewsResult {
+  const byRole = new Map(roles.map((role) => [role.role, normalize(role)]));
+  const setup = byRole.get("enabler") ?? { copies: 0, required: 1 };
+  const payoff = byRole.get("payoff") ?? { copies: 0, required: 1 };
+  const protection = byRole.get("protection") ?? { copies: 0, required: 1 };
+  const earlyTurn = Math.min(setupTurn, payoffTurn);
+  return {
+    readiness: computeGamePlanReadiness(deckSize, startingHandSize, roles, payoffTurn, playOrder),
+    timing: computeEngineBalance(deckSize, startingHandSize, { producerCopies: setup.copies, producerRequired: setup.required, payoffCopies: payoff.copies, payoffRequired: payoff.required }, earlyTurn, payoffTurn, playOrder),
+    stages: computeStageDrawQuality(deckSize, startingHandSize, { earlyCopies: setup.copies, lateCopies: payoff.copies, flexibleCopies: protection.copies, conditionalCopies: 0 }, earlyTurn, payoffTurn, playOrder, maximumEarlyPayoffs),
   };
 }

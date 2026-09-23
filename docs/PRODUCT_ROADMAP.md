@@ -286,7 +286,10 @@ and why; the same classification is never requested twice for one deck version.
 ### 3.1 Game Plan Readiness as the primary workflow
 
 Make Game Plan Readiness the main setup/payoff/protection analysis. It should combine access, stage quality,
-and clearly bounded affordability information.
+setup-to-payoff timing, balance, and clearly bounded affordability information. **Partially implemented in
+Deck Analysis:** the former Engine Balance and Stage Draw Quality panels now live as Timing and Stage draws
+views behind one named plan using the same disjoint prepared roles. Multiple independent named plans and
+affordability remain follow-up work.
 
 - Add named plans so a deck with competing strategies can analyze each plan separately.
 - Let one card serve different roles in different named plans while keeping exact probability pools
@@ -303,13 +306,20 @@ and clearly bounded affordability information.
   workflow.
 - **Functional Hand:** replace the fixed Proactive/Setup/Interaction/Liability recipe with user-defined
   hand recipes. Examples: “one early action plus one setup piece” or “either Plan A or Plan B, with at most
-  one unwanted early card.” Do not describe cards from a competing plan as liabilities.
+  one unwanted early card.” Do not describe cards from a competing plan as liabilities. **Implemented:
+  user-named disjoint requirement pools support alternative cards, configurable minimums, an optional
+  capped Avoid Early pool, exact without-replacement odds, and shared Setup/Protection seeding.**
 - **Draw Quality by Game Stage:** merge with named game plans as described above rather than maintaining a
   second independent classification.
 - **Curve Affordability Check:** Deck Analysis now keeps a compact, card-first “Can I afford this curve?”
   view and sends flexible, branching, saved, or shared combo questions to Combo Lab.
 
 ### 3.3 Threat cadence
+
+**Implemented foundation:** pressure is now defined as named, card-backed packages with earliest-useful
+turn, repeatable/single-use metadata, printed-cost defaults, editable effective-cost assumptions, and
+conditional-reducer detection. Per-turn access and natural-ceiling affordability are displayed separately.
+Full multi-turn resource sequencing and a most-common-gap calculation remain future work.
 
 Rebuild this around the question “How often can this deck present meaningful pressure on schedule?”
 
@@ -340,12 +350,19 @@ Rebuild this around the question “How often can this deck present meaningful p
 
 ### 3.6 Consistency and clumping presentation
 
+**Partially implemented:** identical copy-count rows are grouped and use compact probability strips, with
+card identities presented once per group. A fully copyable accessible matrix remains future work.
+
 - Replace repetitive probability tables with a compact curve or heat strip: copies on one axis, cards seen
   on the other, probability encoded consistently.
 - Collapse identical values and call out only meaningful thresholds or changes.
 - Keep an accessible table behind “View exact values” and provide copyable numbers.
 
 ### 3.7 Resource timing visualization
+
+**Partially implemented:** printed-cost bands use compact access bars and disclose exact first/second-player
+values plus their card lists. Effective-cost overlays remain in the sequence and Threat Cadence tools rather
+than being silently inferred for every card.
 
 - Use a turn-by-turn readiness curve or timeline showing natural Reserve, effective cost, and the turn each
   selected card becomes affordable.

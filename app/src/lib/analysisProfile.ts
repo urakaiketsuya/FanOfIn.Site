@@ -7,6 +7,7 @@ export interface DeckAnalysisProfile {
   version: 2;
   deckFingerprint: string;
   revision: number;
+  planName: string;
   roles: Record<string, GamePlanRole | "">;
   reviewedAt: string | null;
   inheritedFrom: string | null;
@@ -32,14 +33,14 @@ function validRoles(value: unknown, names: Set<string>): Record<string, GamePlan
 }
 
 function emptyProfile(deckFingerprint: string): DeckAnalysisProfile {
-  return { version: 2, deckFingerprint, revision: 1, roles: {}, reviewedAt: null, inheritedFrom: null, updatedAt: new Date(0).toISOString() };
+  return { version: 2, deckFingerprint, revision: 1, planName: "Primary plan", roles: {}, reviewedAt: null, inheritedFrom: null, updatedAt: new Date(0).toISOString() };
 }
 
 function parseProfile(raw: string | null, names: Set<string>, deckFingerprint: string): DeckAnalysisProfile | null {
   try {
     const parsed = JSON.parse(raw ?? "null") as Partial<DeckAnalysisProfile> | null;
     if (!parsed || parsed.version !== 2) return null;
-    return { version: 2, deckFingerprint, revision: Number.isInteger(parsed.revision) && (parsed.revision ?? 0) > 0 ? parsed.revision! : 1, roles: validRoles(parsed.roles, names), reviewedAt: typeof parsed.reviewedAt === "string" ? parsed.reviewedAt : null, inheritedFrom: typeof parsed.inheritedFrom === "string" ? parsed.inheritedFrom : null, updatedAt: typeof parsed.updatedAt === "string" ? parsed.updatedAt : new Date(0).toISOString() };
+    return { version: 2, deckFingerprint, revision: Number.isInteger(parsed.revision) && (parsed.revision ?? 0) > 0 ? parsed.revision! : 1, planName: typeof parsed.planName === "string" && parsed.planName.trim() ? parsed.planName.trim().slice(0, 80) : "Primary plan", roles: validRoles(parsed.roles, names), reviewedAt: typeof parsed.reviewedAt === "string" ? parsed.reviewedAt : null, inheritedFrom: typeof parsed.inheritedFrom === "string" ? parsed.inheritedFrom : null, updatedAt: typeof parsed.updatedAt === "string" ? parsed.updatedAt : new Date(0).toISOString() };
   } catch { return null; }
 }
 
@@ -62,10 +63,10 @@ export function loadAnalysisProfile(storage: Storage, championName: string | nul
   return { ...previousStored, deckFingerprint, revision: previousStored.revision + 1, reviewedAt: null, inheritedFrom: previousFingerprint, updatedAt: new Date(0).toISOString() };
 }
 
-export function saveAnalysisProfile(storage: Storage, championName: string | null, mainLines: Line[], profile: Pick<DeckAnalysisProfile, "roles" | "reviewedAt" | "revision" | "inheritedFrom">, identity?: string | null): DeckAnalysisProfile {
+export function saveAnalysisProfile(storage: Storage, championName: string | null, mainLines: Line[], profile: Pick<DeckAnalysisProfile, "roles" | "reviewedAt" | "revision" | "inheritedFrom"> & Partial<Pick<DeckAnalysisProfile, "planName">>, identity?: string | null): DeckAnalysisProfile {
   const deckFingerprint = fingerprint(championName, mainLines);
   const names = new Set(mainLines.map((line) => line.name));
-  const saved: DeckAnalysisProfile = { version: 2, deckFingerprint, revision: Math.max(1, Math.floor(profile.revision || 1)), roles: validRoles(profile.roles, names), reviewedAt: profile.reviewedAt, inheritedFrom: profile.inheritedFrom, updatedAt: new Date().toISOString() };
+  const saved: DeckAnalysisProfile = { version: 2, deckFingerprint, revision: Math.max(1, Math.floor(profile.revision || 1)), planName: profile.planName?.trim().slice(0, 80) || "Primary plan", roles: validRoles(profile.roles, names), reviewedAt: profile.reviewedAt, inheritedFrom: profile.inheritedFrom, updatedAt: new Date().toISOString() };
   const serialized = JSON.stringify(saved);
   storage.setItem(analysisProfileKey(championName, mainLines), serialized);
   if (identity?.trim()) storage.setItem(latestKey(identity), serialized);

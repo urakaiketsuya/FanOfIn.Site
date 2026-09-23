@@ -43,3 +43,9 @@ test("unnamed imports never inherit classifications from another list", () => {
   saveAnalysisProfile(storage, "Champion", lines, { roles: { "Setup Card": "enabler" }, reviewedAt: null, revision: 1, inheritedFrom: null }, "Named deck");
   assert.deepEqual(loadAnalysisProfile(storage, "Champion", [{ name: "Setup Card", quantity: 2 }]).roles, {});
 });
+
+test("named plans persist with the deck profile", () => {
+  const storage = new MemoryStorage() as Storage;
+  saveAnalysisProfile(storage, "Champion", lines, { planName: "Fractal finish", roles: {}, reviewedAt: null, revision: 1, inheritedFrom: null });
+  assert.equal(loadAnalysisProfile(storage, "Champion", lines).planName, "Fractal finish");
+});

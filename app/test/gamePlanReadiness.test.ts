@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { computeGamePlanReadiness } from "../src/lib/gamePlanReadiness";
+import { computeGamePlanReadiness, computeGamePlanViews } from "../src/lib/gamePlanReadiness";
 
 const roles = [
   { role: "enabler" as const, copies: 8, required: 1 },
@@ -24,4 +24,11 @@ test("going second improves same-turn access", () => {
 test("a missing required role keeps the plan offline", () => {
   const result = computeGamePlanReadiness(60, 7, roles.map((role) => role.role === "payoff" ? { ...role, copies: 0 } : role), 3, "first");
   assert.equal(result.targetCoreProbability, 0); assert.equal(result.expectedCoreCardsSeen, null);
+});
+
+test("consolidated views reuse the same disjoint role counts", () => {
+  const result = computeGamePlanViews(60, 7, roles, 2, 4, "first", 1);
+  assert.equal(result.readiness.targetCoreProbability, computeGamePlanReadiness(60, 7, roles, 4, "first").targetCoreProbability);
+  assert.ok(result.timing.onlineProbability <= result.readiness.targetCoreProbability);
+  assert.ok(result.stages.stagedPlan <= result.stages.openingFunctional);
 });

@@ -1480,6 +1480,23 @@ names still present are carried into a new unreviewed revision, while removed ca
 Anonymous imports do not inherit from unrelated lists. Editing a shared assignment clears review
 status, and the preparation panel states which calculators are ready and which role is missing.
 
+Game Plan Readiness is the primary plan workflow and stores a player-authored plan name. Its three
+views reuse one mutually exclusive Setup/Payoff/Protection assignment:
+
+- **Readiness** uses `probabilityOfRecipe` at one shared checkpoint.
+- **Timing** uses `probabilityOfTimedRecipe`: Setup must be present by the earlier deadline, while
+  Payoff may arrive by the later deadline. It retains the former Engine-to-Payoff balance outputs
+  (online, stranded Payoff, unused Setup, conditional Payoff access, and ratio bottleneck).
+- **Stage draws** uses the ordered-position dynamic program from `computeStageDrawQuality`. Setup is
+  early-useful, Payoff is late-useful, and Protection is flexible; the user controls how many Payoff
+  cards are tolerated in the early window. It reports early function, fresh late injection, both
+  stages, and early Payoff clog.
+
+The views do not sum overlapping inferred categories or assign a card to multiple pools. They are
+different questions over the same disjoint physical-card counts, so switching views cannot
+double-count one card. The standalone Engine Balance and Stage Draw Quality panels are no longer
+shown in Deck Analysis.
+
 Deck Analysis lets the viewer assign each Main Deck card name to one of three mutually exclusive
 roles: Enabler, Payoff, or Protection. The viewer also chooses the minimum number required from each
 role, a target turn, and whether the deck is going first or second. Exclusive assignment keeps the
@@ -1500,20 +1517,25 @@ whether cards placed in the same player-declared role are strategically intercha
 
 ### Opening Hand Recipe (`features/deckbuilder/FunctionalHandCalculator.tsx`, `lib/functionalHand.ts`)
 
-The viewer assigns Main Deck card names to mutually exclusive Early Action, Setup Piece, Interaction,
-or Unwanted Early Draw pools. Any of the first three categories can be required; the Unwanted Early
-Draw pool instead has a configurable maximum. Setup and Interaction can be seeded from the deck's
-shared analysis profile, but Payoffs are not automatically treated as unwanted early draws. At each
+The viewer creates and names up to five mutually exclusive requirement groups, sets how many cards
+each group needs, and assigns Main Deck card names to them. Cards inside one group are alternatives:
+for example, four copies of one setup card and four copies of another form one eight-copy “Setup”
+pool. Every named group is required. A separate optional “Avoid early” pool has a configurable maximum.
+Setup and Protection groups can be seeded from the deck's shared analysis profile, but Payoffs and
+cards from competing plans are left neutral rather than classified as unwanted. At each
 natural-draw checkpoint, all lower and upper bounds are evaluated in
 one multivariate state calculation through `probabilityOfTimedRecipe`. This makes a result such as
 “at least one early action and setup piece, with no more than one unwanted early draw” a
 single exact without-replacement probability rather than a product of independently rounded odds.
 
-The panel reports opening-hand, selected-turn, and first-ten probabilities; a turn curve; the
-required role with the lowest individual access at the selected turn; and which required role gains
+The panel reports opening-hand, selected-turn, and first-ten probabilities; a progressively disclosed
+turn curve; the named requirement with the lowest individual access at the selected turn; and which group gains
 the most from one additional copy while total deck size stays fixed. Player classification remains
 authoritative: the calculator does not infer that cards assigned to a role are strategically equal,
 nor does meeting the selected counts prove that a hand is affordable, legal, or well sequenced.
+Groups are disjoint: one physical card is assigned to at most one requirement, so the exact engine
+never double-counts it. Overlapping semantic roles require a different overlap-aware model and are
+not approximated here.
 
 ### Level-Up Runway (`features/deckbuilder/LevelUpRunway.tsx`, `lib/levelRunway.ts`)
 
@@ -1533,20 +1555,19 @@ simulation.
 
 ### Pressure Continuity (`features/deckbuilder/ThreatCadence.tsx`, `lib/threatCadence.ts`)
 
-The viewer declares one pool of Main Deck cards that would be welcome as the deck's primary
-proactive play and selects a start and end turn. Prepared Payoff classifications can seed this pool,
-but the viewer can freely revise it without changing the shared analysis profile. The first deadline
-requires one selected card, the next requires two cumulative cards, and so on, representing one
-selected card consumed on each turn of the pressure window. A draw-by-draw
-without-replacement state calculation tracks hits from the shared pool and discards states that miss
-any cumulative deadline. This differs from multiplying single-turn access odds: every checkpoint
-depends on the same shuffled deck and the threats consumed by earlier deadlines.
+The current card-first UI treats each selected card as a named pressure package. The viewer records its
+earliest useful turn, whether it is repeatable once established, and an effective Reserve-cost assumption;
+printed cost is the default and printed `costs N/X/LV less to activate` language is flagged for review.
+For every turn, **access cadence** is the exact chance of seeing at least one copy among packages whose
+earliest-useful turn has arrived. **Affordable cadence** applies the same access calculation only to packages
+whose entered effective cost plus the played card fits the natural cards-seen ceiling. This intentionally
+does not subtract earlier payments or model Floating Memory, extra draws, board state, level gates, or
+opponent responses. Repeatable metadata is retained for future sequence work but never fabricates extra
+copies in the current per-turn calculation.
 
-The display reports the chance of satisfying every deadline, the complementary chance of at least
-one gap, each cumulative checkpoint, and the gain from one additional selected copy while deck size
-stays fixed. Classification is player-authored. This is explicitly an access calculation, not a
-claim that the cards are disposable, interactive, affordable, or legally playable. Costs, cost
-reductions, activation timing, board state, extra draws, and opponent responses are not modeled.
+The older cumulative-deadline helper remains available for historical callers and tests, but the UI no
+longer labels that single pooled calculation as overall threat cadence because it cannot represent package
+timing, repeatability, or effective-cost assumptions honestly.
 
 ### Setup-to-Payoff Timing (`features/deckbuilder/EnginePayoffBalance.tsx`, `lib/engineBalance.ts`)
 
