@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Card } from "@gatcg/shared";
 import PageLayout from "../../components/layout/PageLayout";
@@ -35,6 +35,9 @@ import ResilienceRebuild from "../deckbuilder/ResilienceRebuild";
 import PlaytestSessionTracker from "../deckbuilder/PlaytestSessionTracker";
 import StageDrawQuality from "../deckbuilder/StageDrawQuality";
 import PostSideboardPlan from "../deckbuilder/PostSideboardPlan";
+import PrepareAnalysis from "./PrepareAnalysis";
+import { analysisProfileKey, loadAnalysisProfile, saveAnalysisProfile } from "../../lib/analysisProfile";
+import type { GamePlanRole } from "../../lib/gamePlanReadiness";
 
 type AnalysisTab = "summary" | "explore" | "matchups";
 const CALCULATORS = ["Game plan readiness", "Functional hand", "Level-up runway", "Threat cadence", "Engine-to-payoff balance", "Interaction coverage", "Resilience and rebuild", "Test session tracker", "Draw quality by game stage", "Post-sideboard plan", "Card access and probability", "Clumping and conditional pressure", "Resource timing", "Advanced sequence analysis"];
@@ -43,6 +46,9 @@ export default function DeckAnalysisIndex() {
   useDocumentTitle("Deck Analysis", "Understand the consistency, timing, resource pressure, and sideboard shape of the active deck.");
   const [tab, setTab] = useState<AnalysisTab>("summary");
   const [workspace, setWorkspace] = useState<DeckWorkspace | null>(() => loadActiveDeckWorkspace(sessionStorage));
+  const profileStorageKey = workspace ? analysisProfileKey(workspace.championName, workspace.main) : "";
+  const [analysisRoles, setAnalysisRoles] = useState<Record<string, GamePlanRole | "">>(() => workspace ? loadAnalysisProfile(localStorage, workspace.championName, workspace.main).roles : {});
+  useEffect(() => { setAnalysisRoles(workspace ? loadAnalysisProfile(localStorage, workspace.championName, workspace.main).roles : {}); }, [profileStorageKey, workspace, workspace?.championName, workspace?.main]);
   const data = useDeckBuilderData({ championName: workspace?.championName ?? null, format: workspace?.format ?? "STANDARD", includeDecodedDecks: false });
   const { catalogByName } = data;
   const mainTotal = total(workspace?.main);
@@ -59,6 +65,11 @@ export default function DeckAnalysisIndex() {
   }
 
   const requestedDeck = useRequestedDeckWorkspace(catalogByName, "analysis", loadWorkspace);
+  function updateAnalysisRoles(roles: Record<string, GamePlanRole | "">) {
+    if (!workspace) return;
+    setAnalysisRoles(roles);
+    saveAnalysisProfile(localStorage, workspace.championName, workspace.main, roles);
+  }
 
   if (requestedDeck.pending) return <PageLayout><PageHeader title="Deck Analysis" description="Loading the selected deck without changing its saved copy." /><Panel className="mt-6"><InlineState>Loading deck…</InlineState></Panel></PageLayout>;
   if (requestedDeck.error) return <PageLayout><PageHeader title="Deck Analysis" description="The selected deck could not be opened." /><Panel className="mt-6"><InlineState tone="danger">{requestedDeck.error}</InlineState><button type="button" onClick={requestedDeck.retry} className="mt-4 rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base">Try again</button></Panel></PageLayout>;
@@ -95,11 +106,12 @@ export default function DeckAnalysisIndex() {
       <p className="mt-3 text-xs text-ctp-subtext0">These are measurements, not change recommendations. Use Deck Review when you want suggested edits.</p>
     </div>}
     {tab === "explore" && <div className="mt-4 space-y-3">
-      <AnalysisDisclosure title="Game plan readiness" summary="Measure when setup, payoff, and protection are likely to come together."><GamePlanReadiness mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
+      <PrepareAnalysis lines={workspace.main} catalogByName={catalogByName} roles={analysisRoles} onRolesChange={updateAnalysisRoles} />
+      <AnalysisDisclosure title="Game plan readiness" summary="Measure when setup, payoff, and protection are likely to come together."><GamePlanReadiness mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} onSharedAssignmentsChange={updateAnalysisRoles} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Functional hand" summary="Require useful roles while limiting awkward or redundant cards."><FunctionalHandCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Level-up runway" summary="Forecast level timing, acceleration access, and post-level hand pressure."><LevelUpRunway mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Threat cadence" summary="Measure the chance of presenting a fresh threat across consecutive turns."><ThreatCadence mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Engine-to-payoff balance" summary="Check whether setup arrives before the cards that depend on it."><EnginePayoffBalance mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
+      <AnalysisDisclosure title="Engine-to-payoff balance" summary="Check whether setup arrives before the cards that depend on it."><EnginePayoffBalance mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} onSharedAssignmentsChange={updateAnalysisRoles} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Interaction coverage" summary="Compare answer access across opposing plans and postboard configurations."><InteractionCoverageMatrix mainLines={workspace.main} materialLines={workspace.material} sideboardLines={workspace.sideboard} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Resilience and rebuild" summary="Test protection and recovery access around a declared disruption turn."><ResilienceRebuild mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Test session tracker" summary="Record actual games and compare observed performance for this deck version."><PlaytestSessionTracker key={`${workspace.championName}:${workspace.main.map((line) => `${line.quantity}x${line.name}`).sort().join("|")}`} title={workspace.title} championName={workspace.championName} mainLines={workspace.main} /></AnalysisDisclosure>
