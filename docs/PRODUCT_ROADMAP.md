@@ -177,8 +177,8 @@ These are visible, bounded improvements that should ship before the larger analy
   remove, and move controls.
 - Keep controls usable at narrow widths without shrinking tap targets below 44×44 CSS pixels.
 - Rename or redesign the card move action so its destination is explicit.
-- Include **Main Deck**, **Material Deck**, and **Sideboard** as valid destinations where format rules
-  permit them; disable illegal destinations with a reason instead of hiding them.
+- Include **Main Deck**, **Material Deck**, **Sideboard**, and **Maybeboard** as valid destinations where
+  format rules permit them; disable illegal destinations with a reason instead of hiding them.
 - Preserve keyboard operation and announce moves to assistive technology.
 
 **Acceptance criteria:** controls do not overlap at supported mobile widths; every card row exposes its

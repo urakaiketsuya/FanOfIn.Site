@@ -22,7 +22,7 @@ import { encodeCustomDecks } from "../../lib/compareShareLink";
 import DeckSectionBalance from "./DeckSectionBalance";
 import { sideboardPointCost } from "../deckbuilder/validateDeck";
 import CardSearchPicker from "../../components/CardSearchPicker";
-import { EditableDecklistGrid, EDIT_SECTIONS, MaybeboardCardTile, type DeckSectionKey } from "./SavedDeckCardEditor";
+import { EditableDecklistGrid, EDIT_SECTIONS, MaybeboardCardTile, type DeckCardDestination, type DeckSectionKey } from "./SavedDeckCardEditor";
 import DeckSaveBar from "./DeckSaveBar";
 import { DeckVersionHistory } from "./MyDeckDetailSections";
 
@@ -159,16 +159,15 @@ export default function MyDeckDetail() {
     setMaybeboardLines(maybeboardLines.filter((line) => line.card !== name));
   }
 
-  function moveMaybeboardCard(line: OmnidexDecklistCardLine) {
+  function moveMaybeboardCard(line: OmnidexDecklistCardLine, destination: DeckCardDestination) {
+    if (destination === "maybeboard") return;
     const nextDecklist = editing ? parseDecklist(deckText).decklist : structuredClone(deck!.decklist);
-    const card = catalogByName.get(line.card);
-    const section: DeckSectionKey = card && (card.types.includes("CHAMPION") || card.types.includes("REGALIA")) ? "material" : "main";
-    const existing = nextDecklist[section].find((candidate) => candidate.card === line.card);
+    const existing = nextDecklist[destination].find((candidate) => candidate.card === line.card);
     if (existing) existing.quantity += line.quantity;
-    else nextDecklist[section].push({ ...line });
+    else nextDecklist[destination].push({ ...line });
     commitEdit(buildDecklistText(nextDecklist), maybeboardLines.filter((candidate) => candidate.card !== line.card).map((candidate) => `${candidate.quantity}x ${candidate.card}`).join("\n"));
     setEditing(true);
-    setNotice(`${line.card} moved to the ${section} editor. Save deck changes to apply it.`);
+    setNotice(`${line.card} moved to ${destination}. Save deck changes to apply it.`);
   }
 
   // Mirrors the Guided Deck Builder's "Destination: Automatic/Sideboard/Maybeboard" convention
@@ -290,21 +289,23 @@ export default function MyDeckDetail() {
     setNotice(`Updated ${changed} selected card${changed === 1 ? "" : "s"}.`);
   }
 
-  function moveSelectedCards(cards: { section: DeckSectionKey; name: string }[], destination: DeckSectionKey) {
+  function moveSelectedCards(cards: { section: DeckSectionKey; name: string }[], destination: DeckCardDestination) {
     const decklist = parseDecklist(deckText).decklist;
+    const maybeboard = [...maybeboardLines];
     let changed = 0;
     for (const selected of cards) {
       if (selected.section === destination) continue;
       const line = decklist[selected.section].find((candidate) => candidate.card === selected.name);
       if (!line) continue;
       decklist[selected.section] = decklist[selected.section].filter((candidate) => candidate.card !== selected.name);
-      const existing = decklist[destination].find((candidate) => candidate.card === selected.name);
+      const target = destination === "maybeboard" ? maybeboard : decklist[destination];
+      const existing = target.find((candidate) => candidate.card === selected.name);
       if (existing) existing.quantity += line.quantity;
-      else decklist[destination].push({ ...line });
+      else target.push({ ...line });
       changed += 1;
     }
     if (!changed) { setNotice(`All selected cards are already in ${destination}.`); return; }
-    commitEdit(buildDecklistText(decklist));
+    commitEdit(buildDecklistText(decklist), maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n"));
     setNotice(`Moved ${changed} selected card${changed === 1 ? "" : "s"} to ${destination}.`);
   }
 
@@ -315,16 +316,17 @@ export default function MyDeckDetail() {
     setNotice(`Removed ${cards.length} selected card${cards.length === 1 ? "" : "s"}. Undo is available.`);
   }
 
-  function moveEditedCard(from: DeckSectionKey, to: DeckSectionKey, name: string) {
+  function moveEditedCard(from: DeckSectionKey, to: DeckCardDestination, name: string) {
     if (from === to) return;
     const decklist = parseDecklist(deckText).decklist;
     const line = decklist[from].find((candidate) => candidate.card === name);
     if (!line) return;
     decklist[from] = decklist[from].filter((candidate) => candidate.card !== name);
-    const existing = decklist[to].find((candidate) => candidate.card === name);
+    const target = to === "maybeboard" ? [...maybeboardLines] : decklist[to];
+    const existing = target.find((candidate) => candidate.card === name);
     if (existing) existing.quantity += line.quantity;
-    else decklist[to].push({ ...line });
-    commitEdit(buildDecklistText(decklist));
+    else target.push({ ...line });
+    commitEdit(buildDecklistText(decklist), to === "maybeboard" ? target.map((candidate) => `${candidate.quantity}x ${candidate.card}`).join("\n") : maybeboardText);
     setNotice(`${name} moved to ${to}.`);
   }
 
@@ -485,7 +487,7 @@ export default function MyDeckDetail() {
       <details className="group mt-5 rounded-xl border border-dashed border-ctp-yellow/50 bg-ctp-yellow/5 p-3">
         <summary className="flex min-h-10 cursor-pointer list-none items-center justify-between gap-3 text-sm font-medium text-ctp-yellow [&::-webkit-details-marker]:hidden"><span>Maybeboard <span className="font-normal text-ctp-subtext0">({maybeboardLines.reduce((sum, line) => sum + line.quantity, 0)})</span></span><span aria-hidden="true" className="text-ctp-subtext0 transition-transform group-open:rotate-180">⌄</span></summary>
         <div className="mt-3 flex flex-wrap items-center justify-end gap-2">{editing && <span className="mr-auto text-xs text-ctp-subtext0">Maybeboard changes save with the deck.</span>}<button type="button" disabled={!maybeboardText.trim()} onClick={addMaybeboardToEditor} className="min-h-10 rounded-lg border border-ctp-blue px-3 text-xs text-ctp-blue disabled:opacity-50">Move all to editor</button>{!editing && <button type="button" disabled={busy} onClick={() => void saveMaybeboard()} className="min-h-10 rounded-lg bg-ctp-yellow px-3 text-xs font-medium text-ctp-base disabled:opacity-50">Save</button>}</div>
-        {maybeboardLines.length > 0 ? <div className="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-4">{maybeboardLines.map((line) => <MaybeboardCardTile key={line.card} line={line} card={catalogByName.get(line.card)} onChangeQuantity={(quantity) => changeMaybeboardQuantity(line.card, quantity)} onMove={() => moveMaybeboardCard(line)} onRemove={() => removeMaybeboardCard(line.card)} />)}</div> : <InlineState className="mt-3">No cards in the maybeboard.</InlineState>}
+        {maybeboardLines.length > 0 ? <div className="mt-3 grid grid-cols-1 gap-4 min-[360px]:grid-cols-2 min-[560px]:grid-cols-3 lg:grid-cols-4">{maybeboardLines.map((line) => <MaybeboardCardTile key={line.card} line={line} card={catalogByName.get(line.card)} onChangeQuantity={(quantity) => changeMaybeboardQuantity(line.card, quantity)} onMove={(destination) => moveMaybeboardCard(line, destination)} onRemove={() => removeMaybeboardCard(line.card)} />)}</div> : <InlineState className="mt-3">No cards in the maybeboard.</InlineState>}
         <details className="mt-3"><summary className="cursor-pointer text-xs text-ctp-subtext0">Edit maybeboard as text</summary><textarea rows={5} value={maybeboardText} onChange={(event) => editing ? commitEdit(deckText, event.target.value) : setMaybeboardText(event.target.value)} placeholder={"2x Card to test\n4x Another option"} aria-label="Maybeboard" className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-3 font-mono text-sm" /></details>
         <p className="mt-2 text-xs text-ctp-subtext0">Maybeboard cards do not affect the deck or its analysis.</p>
       </details>
