@@ -29,16 +29,14 @@ import GamePlanReadiness from "../deckbuilder/GamePlanReadiness";
 import FunctionalHandCalculator from "../deckbuilder/FunctionalHandCalculator";
 import LevelUpRunway from "../deckbuilder/LevelUpRunway";
 import ThreatCadence from "../deckbuilder/ThreatCadence";
-import InteractionCoverageMatrix from "../deckbuilder/InteractionCoverageMatrix";
 import ResilienceRebuild from "../deckbuilder/ResilienceRebuild";
 import PlaytestSessionTracker from "../deckbuilder/PlaytestSessionTracker";
-import PostSideboardPlan from "../deckbuilder/PostSideboardPlan";
 import PrepareAnalysis from "./PrepareAnalysis";
 import { analysisProfileKey, loadAnalysisProfile, saveAnalysisProfile, type DeckAnalysisProfile } from "../../lib/analysisProfile";
 import type { GamePlanRole } from "../../lib/gamePlanReadiness";
 
 type AnalysisTab = "summary" | "explore" | "matchups";
-const CALCULATORS = ["Game plan readiness", "Opening hand recipe", "Level-up runway", "Pressure continuity", "Matchup answer access", "Resilience and rebuild", "Test session tracker", "Post-sideboard plan", "Card access and probability", "Clumping and conditional pressure", "Resource timing", "Curve affordability check"];
+const CALCULATORS = ["Game plan readiness", "Opening hand recipe", "Level-up runway", "Pressure continuity", "Resilience and rebuild", "Test session tracker", "Card access and probability", "Clumping and conditional pressure", "Resource timing", "Curve affordability check"];
 
 export default function DeckAnalysisIndex() {
   useDocumentTitle("Deck Analysis", "Understand the consistency, timing, resource pressure, and sideboard shape of the active deck.");
@@ -120,10 +118,8 @@ export default function DeckAnalysisIndex() {
       <AnalysisDisclosure title="Opening hand recipe" summary="Define what this deck wants early without treating every competing plan as a liability."><FunctionalHandCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Level-up runway" summary="Forecast level timing, acceleration access, and post-level hand pressure."><LevelUpRunway mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Pressure continuity" summary="Measure access to a primary proactive play on every turn in a chosen window."><ThreatCadence mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Matchup answer access" summary="Name an opposing deck or plan, then measure access to the cards you believe answer it."><InteractionCoverageMatrix mainLines={workspace.main} materialLines={workspace.material} sideboardLines={workspace.sideboard} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Resilience and rebuild" summary="Test protection and recovery access around a declared disruption turn."><ResilienceRebuild mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Test session tracker" summary="Record actual games and compare observed performance for this deck version."><PlaytestSessionTracker key={`${workspace.championName}:${workspace.main.map((line) => `${line.quantity}x${line.name}`).sort().join("|")}`} title={workspace.title} championName={workspace.championName} mainLines={workspace.main} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Post-sideboard plan" summary={workspace.sideboard.length > 0 ? "Build, save, and evaluate complete matchup swap packages." : "No Sideboard cards in this deck."}>{workspace.sideboard.length > 0 ? <PostSideboardPlan key={`${workspace.championName}:${workspace.main.map((line) => `${line.quantity}x${line.name}`).sort().join("|")}:${workspace.sideboard.map((line) => `${line.quantity}x${line.name}`).sort().join("|")}`} championName={workspace.championName} mainLines={workspace.main} sideboardLines={workspace.sideboard} catalogByName={catalogByName} /> : <InlineState>Add cards to the Sideboard in Deck Builder to create a postboard plan.</InlineState>}</AnalysisDisclosure>
       <AnalysisDisclosure title="Card access and probability" summary="Find a card, functional role, or complete combo."><HypergeometricCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Consistency details" summary="Inspect duplicate draws and conditional cards."><CopyClumpingRisk mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /><ConditionalHandPressure mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Resource timing" summary="See when Reserve costs become reliably available."><ResourceCurveReliability mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>

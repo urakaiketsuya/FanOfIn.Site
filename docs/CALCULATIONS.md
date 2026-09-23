@@ -1585,7 +1585,12 @@ online-probability gain. These are access relationships only: the viewer's role 
 semantically verified, and activation, payment, sequencing, board state, and opponent interaction
 remain outside the calculation.
 
-### Matchup Answer Access (`features/deckbuilder/InteractionCoverageMatrix.tsx`, `lib/interactionCoverage.ts`)
+### Matchup Answer Access (`features/compare/MatchupPlanning.tsx`, `features/deckbuilder/InteractionCoverageMatrix.tsx`, `lib/interactionCoverage.ts`)
+
+This calculator is surfaced in Compare's Matchup view. The chosen baseline supplies the deck being
+planned, while another compared list supplies the opponent label and a small package of cards that
+are distinctive from the baseline. Those opposing cards are context only: the user must still
+confirm which cards in their own Main Deck and Sideboard are real answers.
 
 Each explicitly user-named opposing deck or plan has a critical turn and an independently selected
 answer pool; no generic matchup or answer relationship is assumed. Results remain hidden until the
@@ -1659,7 +1664,12 @@ and the chance of seeing at least two Early-only cards by the late checkpoint. C
 player judgment; the model does not infer contextual card value or model cards being spent, extra
 draws, Reserve costs, or changing game state.
 
-### Post-Sideboard Plan (`features/deckbuilder/PostSideboardPlan.tsx`, `lib/sideboardPlan.ts`)
+### Post-Sideboard Plan (`features/compare/MatchupPlanning.tsx`, `features/deckbuilder/PostSideboardPlan.tsx`, `lib/sideboardPlan.ts`)
+
+The planner is surfaced in Compare after a baseline and opposing deck are selected. In addition to
+functional-role access, it shows the preboard-to-postboard change in average printed Reserve cost,
+the number of Reserve 4+ cards, and (for a signed-in user with collection data) missing copies. A
+valid postboard Main Deck can be opened in Deck Builder without changing the saved source deck.
 
 The viewer selects any number of registered Main Deck copies to move out and Sideboard copies to
 move in. A plan is valid only when at least one card is selected, the total moving in equals the

@@ -8,8 +8,8 @@ interface Line { name: string; quantity: number }
 interface Scenario { id: string; name: string; turn: number; answers: string[] }
 const percent = (value: number) => `${(value * 100).toFixed(1)}%`;
 
-export default function InteractionCoverageMatrix({ mainLines, materialLines, sideboardLines, catalogByName }: { mainLines: Line[]; materialLines: Line[]; sideboardLines: Line[]; catalogByName: Map<string, Card> }) {
-  const [scenarios, setScenarios] = useState<Scenario[]>([{ id: "1", name: "", turn: 3, answers: [] }]);
+export default function InteractionCoverageMatrix({ mainLines, materialLines, sideboardLines, catalogByName, initialMatchup = "" }: { mainLines: Line[]; materialLines: Line[]; sideboardLines: Line[]; catalogByName: Map<string, Card>; initialMatchup?: string }) {
+  const [scenarios, setScenarios] = useState<Scenario[]>([{ id: "1", name: initialMatchup, turn: 3, answers: [] }]);
   const [activeId, setActiveId] = useState("1");
   const [playOrder, setPlayOrder] = useState<PlayOrder>("first");
   const [query, setQuery] = useState("");

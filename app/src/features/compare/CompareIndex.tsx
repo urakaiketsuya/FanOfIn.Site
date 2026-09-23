@@ -28,19 +28,21 @@ import Button from "../../components/ui/Button";
 import { InlineState } from "../../components/ui/ContentState";
 import { trackEvent } from "../../lib/analytics";
 import AccessibleTabs from "../../components/ui/AccessibleTabs";
+import MatchupPlanning from "./MatchupPlanning";
 
 type CompareType = "decks" | "cards";
 const COMPARE_TYPE_LABELS: Record<CompareType, string> = { decks: "Decks", cards: "Cards" };
 const COMPARE_TYPE_KEYS = Object.keys(COMPARE_TYPE_LABELS) as CompareType[];
 
 type SourceTab = "myDecks" | "users" | "cards" | "player" | "topDecks" | "paste";
-type ViewMode = "summary" | "table" | "forecasts";
+type ViewMode = "summary" | "table" | "forecasts" | "matchup";
 const VIEW_MODE_LABELS: Record<ViewMode, string> = {
   summary: "Summary",
   table: "Cards",
   forecasts: "Forecasts",
+  matchup: "Matchup",
 };
-const VIEW_MODE_KEYS: ViewMode[] = ["summary", "table", "forecasts"];
+const VIEW_MODE_KEYS: ViewMode[] = ["summary", "table", "forecasts", "matchup"];
 
 const TAB_LABELS: Record<SourceTab, string> = {
   myDecks: "My Decks",
@@ -314,6 +316,7 @@ export default function CompareIndex() {
                       </>
                     )}
                     {effectiveViewMode === "forecasts" && <ComparisonSummary decks={decks} decklists={decklists} baselineKey={effectiveBaselineKey} mode="forecasts" onViewAllDifferences={() => setViewMode("table")} />}
+                    {effectiveViewMode === "matchup" && <MatchupPlanning decks={decks} decklists={decklists} baselineKey={effectiveBaselineKey} />}
                   </div>
                 </>
               )}
