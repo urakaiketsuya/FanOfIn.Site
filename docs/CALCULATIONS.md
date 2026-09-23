@@ -1555,6 +1555,20 @@ Scenario names and answer relationships are player-authored and are not semantic
 matrix measures access, not whether an answer can legally resolve in the expected game state, how
 much of the opposing plan it mitigates, or any causal change in matchup win rate.
 
+### Resilience / Rebuild (`features/deckbuilder/ResilienceRebuild.tsx`, `lib/resilienceForecast.ts`)
+
+The viewer assigns disjoint Establish, Protection, and Rebuild pools with minimum quantities, then
+chooses a disruption turn and a recovery deadline. The protected route requires Establish and
+Protection by the disruption turn. The rebuild route requires Establish by disruption and Rebuild
+by recovery. Their union is exact inclusion-exclusion:
+
+`P(protected OR rebuilt) = P(protected) + P(rebuilt) - P(establish AND protect AND rebuild)`.
+
+“Established but exposed” subtracts that union from Establish access. Each possible one-copy role
+increase is recomputed against the union to identify the largest access gain while deck size stays
+fixed. The result is still an access ceiling: it assumes found cards remain available and does not
+simulate activation costs, zones, what the opposing effect actually removes, or responses.
+
 ### Functional-copy probability (`features/deckbuilder/functionalCopies.ts`)
 
 The Guided Builder's Hypergeometric calculator can treat every Main Deck card serving one detected
