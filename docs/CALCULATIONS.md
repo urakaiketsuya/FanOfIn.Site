@@ -1615,12 +1615,14 @@ draws, Reserve costs, or changing game state.
 The viewer selects any number of registered Main Deck copies to move out and Sideboard copies to
 move in. A plan is valid only when at least one card is selected, the total moving in equals the
 total moving out, and neither side exceeds its registered quantities. The resulting Main Deck is a
-preview; the stored workspace is never changed. Named plans and optional matchup labels can be
-saved locally. They are keyed to a stable fingerprint of Champion, Main Deck, and Sideboard, so
+preview; the stored workspace is never changed. The matchup is named before configuration, and a
+card-art swap preview makes the exact cards moving out and in inspectable before showing derived
+role changes. Named plans and matchup labels can be saved locally. They are keyed to a stable
+fingerprint of Champion, Main Deck, and Sideboard, so
 line reordering preserves them while changing either registered section starts a separate set.
 
-For each conservatively detected functional role from `functionalCopies.ts`, the panel compares
-preboard and postboard copy counts and exact hypergeometric access to at least one role card at 7,
+For each conservatively detected functional role from `functionalCopies.ts`, before/after bars compare
+preboard and postboard copy counts, alongside exact hypergeometric access to at least one role card at 7,
 10, or 13 cards seen. Total deck size remains fixed because only balanced plans are evaluated. A
 card may contribute to more than one printed-text role, so these role rows should not be added
 together. The calculation does not infer matchup relevance, enforce format or combined copy
