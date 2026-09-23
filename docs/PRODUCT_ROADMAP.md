@@ -225,7 +225,8 @@ Review, and Deck Analysis; shared copies are not incorrectly allocated to every 
 ### 1.6 Tournament deck completeness and card context
 
 - Restore Sideboard sections on tournament deck pages, including older or partially imported lists such as
-  `/decks/1r8hg2p`; distinguish a genuinely empty Sideboard from unavailable source data.
+  `/decks/1r8hg2p`; grouped build pages show the newest recorded Sideboard intact with its player/event source
+  rather than merging different registrations. **Implemented.**
 - Audit ingestion, stored deck data, and page rendering separately so a display fix does not conceal missing
   upstream Sideboard records.
 - In Card Stats deck lists, make the deck link a visually clear primary row action with a descriptive label,

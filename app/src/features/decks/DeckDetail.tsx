@@ -29,6 +29,7 @@ import { InlineState, EmptyState } from "../../components/ui/ContentState";
 import MethodologyNote from "../../components/ui/MethodologyNote";
 import { encodeCustomDecks } from "../../lib/compareShareLink";
 import { DeckSightingHistory, SimilarDecksSection } from "./DeckDetailSections";
+import PlayerLink from "../players/PlayerLink";
 
 type DeckTab = "decklist" | "analysis" | "history" | "similar";
 
@@ -102,15 +103,34 @@ export default function DeckDetail() {
     deck && `A popular ${deck.championName ?? "Grand Archive TCG"} decklist, independently played by ${deck.playerCount} players.`,
   );
 
+  // Deck pages group sightings by Main + Material identity, while Sideboards remain specific to
+  // an individual tournament entry. Show the newest recorded Sideboard intact rather than either
+  // dropping it (the old behavior) or merging several players' situational choices into a list
+  // nobody actually registered.
+  const sideboardSelection = useMemo(() => {
+    if (!deck || !cardIndexData || !popularityIndexData) return null;
+    const deckIds = new Set(deck.deckIds);
+    const candidates = popularityIndexData.entries
+      .filter((entry) => deckIds.has(entry.deckId))
+      .sort((a, b) => b.eventDate.localeCompare(a.eventDate) || (a.placement ?? Infinity) - (b.placement ?? Infinity));
+    for (const sighting of candidates) {
+      const indexed = cardIndexData.decks.find((entry) => entry.deckId === sighting.deckId);
+      if (indexed && indexed.sideboard.length > 0) {
+        return { sighting, lines: decodeCardLines(indexed.sideboard, cardIndexData.cardNames) };
+      }
+    }
+    return null;
+  }, [deck, cardIndexData, popularityIndexData]);
+
   const decklist: OmnidexDecklist = useMemo(
     () => ({
       main: (deck?.main ?? []).map((l) => ({ card: l.name, quantity: l.quantity })),
       material: (deck?.material ?? []).map((l) => ({ card: l.name, quantity: l.quantity })),
-      sideboard: [],
+      sideboard: (sideboardSelection?.lines ?? []).map((l) => ({ card: l.name, quantity: l.quantity })),
     }),
-    [deck],
+    [deck, sideboardSelection],
   );
-  const allNames = useMemo(() => [...(deck?.main ?? []), ...(deck?.material ?? [])].map((l) => l.name), [deck]);
+  const allNames = useMemo(() => [...(deck?.main ?? []), ...(deck?.material ?? []), ...(sideboardSelection?.lines ?? [])].map((l) => l.name), [deck, sideboardSelection]);
   const cardsByName = useCardsByNames(allNames);
   const { interactions: winConditions } = useDeckWinConditions(allNames, cardsByName);
   // "Similar Decks" is already its own tab on this page, so nearestDecks is left empty here — only
@@ -420,6 +440,9 @@ export default function DeckDetail() {
       </div>
 
       <TabPanel baseId="deck-detail" tab="decklist" active={tab}>
+        <div className={`mb-3 rounded-lg border p-3 text-xs ${sideboardSelection ? "border-ctp-blue/30 bg-ctp-blue/5 text-ctp-subtext1" : "border-ctp-yellow/30 bg-ctp-yellow/5 text-ctp-yellow"}`}>
+          {sideboardSelection ? <>Sideboards vary between players sharing this Main and Material list. Showing the most recent recorded Sideboard from <PlayerLink id={sideboardSelection.sighting.player} username={playerName(sideboardSelection.sighting.player)} className="font-medium text-ctp-text hover:text-ctp-blue" /> at <Link to={`/events/${sideboardSelection.sighting.eventId}?tab=decklists&player=${sideboardSelection.sighting.player}`} className="font-medium text-ctp-blue hover:underline">{eventNameById.get(sideboardSelection.sighting.eventId) ?? `Event #${sideboardSelection.sighting.eventId}`}</Link>.</> : <>No Sideboard cards were recorded for the tournament sightings grouped on this page.</>}
+        </div>
         <UserDecklistPanel decklist={decklist} format="STANDARD" collectionSource={`Tournament build: ${deck.championName ?? "Unknown Champion"}`} />
       </TabPanel>
 
