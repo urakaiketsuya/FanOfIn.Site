@@ -54,7 +54,13 @@ export default function CollectionIndex() {
   const [selectedSet, setSelectedSet] = useState(""); const [rarityQuantities, setRarityQuantities] = useState<Record<number, number>>({ ...DEFAULT_SET_RARITY_QUANTITIES });
   const [notice, setNotice] = useState<string | null>(null); const [busy, setBusy] = useState(false);
 
-  async function refresh() { const [result, deckResult, watchResult] = await Promise.all([accountApi.collection(), accountApi.decks(), accountApi.sharedCardWatches()]); setEntries(result.entries); setTransactions(result.transactions); setDecks(deckResult.decks); setSharedWatches(watchResult.cards); }
+  async function refresh() {
+    const [collectionResult, deckResult, watchResult] = await Promise.allSettled([accountApi.collection(), accountApi.decks(), accountApi.sharedCardWatches()]);
+    if (collectionResult.status === "fulfilled") { setEntries(collectionResult.value.entries); setTransactions(collectionResult.value.transactions); }
+    if (deckResult.status === "fulfilled") setDecks(deckResult.value.decks);
+    if (watchResult.status === "fulfilled") setSharedWatches(watchResult.value.cards);
+    if (collectionResult.status === "rejected" && deckResult.status === "rejected" && watchResult.status === "rejected") throw collectionResult.reason;
+  }
   useEffect(() => { void accountApi.session().then((result) => { setUser(result.user); if (result.user) void refresh(); }).catch(() => setUser(null)); }, []);
   const entryByUuid = useMemo(() => new Map(entries.map((entry) => [entry.cardUuid, entry])), [entries]);
   const watchedUuids = useMemo(() => new Set(sharedWatches.map((watch) => watch.cardUuid)), [sharedWatches]);

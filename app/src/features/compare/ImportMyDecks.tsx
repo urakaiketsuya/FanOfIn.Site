@@ -14,9 +14,17 @@ export default function ImportMyDecks({ comparedKeys, onToggle }: { comparedKeys
   useEffect(() => {
     let active = true;
     setState("loading");
-    void Promise.all([accountApi.decks(), accountApi.bookmarks()])
-      .then(([myDecks, bookmarks]) => { if (active) { setOwned(myDecks.decks); setSaved(bookmarks.decks); setState("ready"); } })
-      .catch((reason: unknown) => { if (active) setState(reason instanceof AccountApiError && reason.status === 401 ? "signed-out" : "error"); });
+    void Promise.allSettled([accountApi.decks(), accountApi.bookmarks()])
+      .then(([myDecks, bookmarks]) => {
+        if (!active) return;
+        if (myDecks.status === "rejected") {
+          setState(myDecks.reason instanceof AccountApiError && myDecks.reason.status === 401 ? "signed-out" : "error");
+          return;
+        }
+        setOwned(myDecks.value.decks);
+        setSaved(bookmarks.status === "fulfilled" ? bookmarks.value.decks : []);
+        setState("ready");
+      });
     return () => { active = false; };
   }, [reload]);
 

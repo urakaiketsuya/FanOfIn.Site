@@ -19,6 +19,7 @@ import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
 import Button from "../../components/ui/Button";
 import { InlineState } from "../../components/ui/ContentState";
+import { loadDeckLibrary } from "./loadDeckLibrary";
 
 type AddMode = "choose" | "import" | "paste" | null;
 
@@ -68,8 +69,11 @@ export default function MyDecksIndex() {
   const favoriteCount = bookmarks.length + tournamentFavorites.length;
 
   const refreshDecks = useCallback(async () => {
-    const [owned, saved, tournament] = await Promise.all([accountApi.decks(), accountApi.bookmarks(), accountApi.tournamentFavorites()]);
-    setDecks(owned.decks); setBookmarks(saved.decks); setTournamentFavorites(tournament.decks);
+    const library = await loadDeckLibrary(accountApi);
+    setDecks(library.decks);
+    setBookmarks(library.bookmarks);
+    setTournamentFavorites(library.tournamentFavorites);
+    if (library.optionalLoadFailed) setError("Your decks loaded, but some favorites are temporarily unavailable.");
   }, []);
   useEffect(() => { void accountApi.session().then((session) => { setUser(session.user); if (session.user) void refreshDecks(); }).catch((reason: Error) => { setError(reason.message); setUser(null); }); }, [refreshDecks]);
 
