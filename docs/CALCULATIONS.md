@@ -1514,20 +1514,22 @@ payments, apply Floating Memory, or prove that the level route and follow-up can
 sequence. It is a pressure ceiling intended to make the vulnerable window visible, not a resource
 simulation.
 
-### Threat Cadence (`features/deckbuilder/ThreatCadence.tsx`, `lib/threatCadence.ts`)
+### Pressure Continuity (`features/deckbuilder/ThreatCadence.tsx`, `lib/threatCadence.ts`)
 
-The viewer declares one disjoint pool of Main Deck cards that count as threats and selects a start
-and end turn. The first deadline requires one threat, the next requires two cumulative threats, and
-so on, representing one selected card consumed on each turn of the pressure window. A draw-by-draw
+The viewer declares one pool of Main Deck cards that would be welcome as the deck's primary
+proactive play and selects a start and end turn. Prepared Payoff classifications can seed this pool,
+but the viewer can freely revise it without changing the shared analysis profile. The first deadline
+requires one selected card, the next requires two cumulative cards, and so on, representing one
+selected card consumed on each turn of the pressure window. A draw-by-draw
 without-replacement state calculation tracks hits from the shared pool and discards states that miss
 any cumulative deadline. This differs from multiplying single-turn access odds: every checkpoint
 depends on the same shuffled deck and the threats consumed by earlier deadlines.
 
 The display reports the chance of satisfying every deadline, the complementary chance of at least
-one gap, each cumulative checkpoint, and the gain from one additional threat copy while deck size
-stays fixed. Classification is player-authored. The tool does not claim the selected cards are
-equally threatening or model their costs, activation timing, board state, extra draws, or opponent
-responses.
+one gap, each cumulative checkpoint, and the gain from one additional selected copy while deck size
+stays fixed. Classification is player-authored. This is explicitly an access calculation, not a
+claim that the cards are disposable, interactive, affordable, or legally playable. Costs, cost
+reductions, activation timing, board state, extra draws, and opponent responses are not modeled.
 
 ### Engine-to-Payoff Balance (`features/deckbuilder/EnginePayoffBalance.tsx`, `lib/engineBalance.ts`)
 
