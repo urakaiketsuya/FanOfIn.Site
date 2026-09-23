@@ -1,6 +1,6 @@
 import type { Card } from "@gatcg/shared";
 
-export interface ReserveSequenceStep { name: string; turn: number; }
+export interface ReserveSequenceStep { name: string; turn: number; effectiveReserveCost?: number; }
 export interface ReservePressureTurn { turn: number; cards: string[]; reserveCost: number; handCeiling: number; cardsNeeded: number; margin: number; floatingPotential: number; }
 export interface ReserveSequenceResult { probability: number; playableProbability: number; feasible: boolean; pressure: ReservePressureTurn[]; }
 
@@ -67,7 +67,7 @@ export function computeReserveSequence(mainLines: { name: string; quantity: numb
   const priorSteps: ReserveSequenceStep[] = [];
   const pressure = turns.map((turn) => {
     const current = steps.filter((step) => step.turn === turn);
-    const reserveCost = current.reduce((sum, step) => sum + Math.max(0, cardsByName.get(step.name)?.cost_reserve ?? 0), 0);
+    const reserveCost = current.reduce((sum, step) => sum + Math.max(0, step.effectiveReserveCost ?? cardsByName.get(step.name)?.cost_reserve ?? 0), 0);
     const handCeiling = startingHandSize + Math.max(0, turn - 1) - previouslyPlayed;
     const cardsNeeded = reserveCost + current.length;
     const floatingPotential = priorSteps.filter((step) => {

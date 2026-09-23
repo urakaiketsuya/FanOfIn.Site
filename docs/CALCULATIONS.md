@@ -1775,7 +1775,10 @@ drawing the whole selected sequence by its staggered deadlines.
 
 Reserve feasibility is kept separate from draw probability. Before each selected turn, the
 conservative hand ceiling is `starting hand + turns elapsed - earlier selected cards played`.
-Cards needed that turn are `sum of printed Reserve costs + number of selected cards activated`.
+Cards needed that turn are `sum of effective Reserve costs + number of selected cards activated`.
+Each play starts at its printed cost, but the viewer can enter the effective cost for that activation
+when a conditional `costs N/X/LV less to activate` effect is satisfied. This makes the assumption
+visible and local to the affected step instead of silently treating every conditional discount as active.
 Reserve cards paid into memory are not permanently subtracted across turns, reflecting their return
 on a later recollection; other real-game spending is excluded, so the result remains a ceiling. If
 any turn is short, “sequence playable” is zero even when the necessary named cards could be drawn.
@@ -1783,7 +1786,7 @@ The comparison shifts every selected play one turn later and reruns both tests.
 
 Printed Floating Memory on an earlier selected Action is shown as potential relief but never
 applied to the total, because a static list cannot prove that card reached the graveyard or that a
-qualifier is active. Printed `cost N less` clauses are flagged and likewise excluded. Draw effects,
+qualifier is active. Printed activation-cost reductions are flagged for user confirmation. Draw effects,
 discard, opponent effects, level requirements, and board-state conditions are not simulated.
 
 ### Copy clumping (`features/deckbuilder/CopyClumpingRisk.tsx`)
