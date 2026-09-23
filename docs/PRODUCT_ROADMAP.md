@@ -323,9 +323,10 @@ Rebuild this around the question “How often can this deck present meaningful p
 
 ### 3.8 Sideboard impact without manual option picking
 
-- Default to a visual summary of every registered sideboard card: affected roles, curve changes, overlapping
-  functionality, and evidence-backed matchup signals when available.
+- Default to a visual summary of every registered sideboard card: affected roles, Reserve cost, overlapping
+  functionality, and evidence-backed matchup signals when available. **Implemented.**
 - Let users click a card to preview sensible one-for-one swaps; reserve manual selectors for advanced edits.
+  **Implemented; evidence-backed matchups suggest the outgoing card, while manual selection stays disclosed.**
 - Never label a swap “better” from access probability alone.
 
 ## Phase 4 — Events, match logging, and simulator evidence
