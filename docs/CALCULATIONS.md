@@ -1547,9 +1547,11 @@ online-probability gain. These are access relationships only: the viewer's role 
 semantically verified, and activation, payment, sequencing, board state, and opponent interaction
 remain outside the calculation.
 
-### Interaction Coverage Matrix (`features/deckbuilder/InteractionCoverageMatrix.tsx`, `lib/interactionCoverage.ts`)
+### Matchup Answer Access (`features/deckbuilder/InteractionCoverageMatrix.tsx`, `lib/interactionCoverage.ts`)
 
-Each user-named opposing plan has a critical turn and an independently selected answer pool. Main
+Each explicitly user-named opposing deck or plan has a critical turn and an independently selected
+answer pool; no generic matchup or answer relationship is assumed. Results remain hidden until the
+user names the matchup and selects at least one answer. Main
 Deck copies use the ordinary exact chance of seeing at least one by the natural cards-seen deadline.
 Selected Sideboard copies are then added to that answer pool while total Main Deck size remains
 fixed, modeling equal-count unrelated cuts; the difference is shown as postboard access gain. Since
