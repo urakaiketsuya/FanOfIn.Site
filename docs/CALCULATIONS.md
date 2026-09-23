@@ -1585,6 +1585,20 @@ These summaries are descriptive self-recorded evidence. They are not blended int
 simulator statistics, and they receive no causal or predictive interpretation. Small samples,
 opponent selection, repeated partners, player learning, and selective recording can dominate them.
 
+### Draw Quality by Game Stage (`features/deckbuilder/StageDrawQuality.tsx`, `lib/stageDrawQuality.ts`)
+
+The viewer assigns each categorized Main Deck card exclusively to Early-only, Late-only, Flexible,
+or Conditional. An ordered without-replacement state calculation divides the library positions into
+an early window and a later draw window. The combined “both stages” event requires at least one
+Early-only or Flexible card by the early checkpoint, no more than the selected number of Late-only
+or Conditional opening clunk cards, and at least one Late-only or Flexible card specifically drawn
+after the early checkpoint and by the late checkpoint.
+
+The panel also exposes each component probability, the chance of exceeding the opening clunk cap,
+and the chance of seeing at least two Early-only cards by the late checkpoint. Categorization is a
+player judgment; the model does not infer contextual card value or model cards being spent, extra
+draws, Reserve costs, or changing game state.
+
 ### Functional-copy probability (`features/deckbuilder/functionalCopies.ts`)
 
 The Guided Builder's Hypergeometric calculator can treat every Main Deck card serving one detected

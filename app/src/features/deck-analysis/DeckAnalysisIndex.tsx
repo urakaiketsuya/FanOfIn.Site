@@ -33,6 +33,7 @@ import EnginePayoffBalance from "../deckbuilder/EnginePayoffBalance";
 import InteractionCoverageMatrix from "../deckbuilder/InteractionCoverageMatrix";
 import ResilienceRebuild from "../deckbuilder/ResilienceRebuild";
 import PlaytestSessionTracker from "../deckbuilder/PlaytestSessionTracker";
+import StageDrawQuality from "../deckbuilder/StageDrawQuality";
 
 type AnalysisTab = "summary" | "explore" | "matchups";
 
@@ -99,6 +100,7 @@ export default function DeckAnalysisIndex() {
       <AnalysisDisclosure title="Interaction coverage" summary="Compare answer access across opposing plans and postboard configurations."><InteractionCoverageMatrix mainLines={workspace.main} materialLines={workspace.material} sideboardLines={workspace.sideboard} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Resilience and rebuild" summary="Test protection and recovery access around a declared disruption turn."><ResilienceRebuild mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Test session tracker" summary="Record actual games and compare observed performance for this deck version."><PlaytestSessionTracker key={`${workspace.championName}:${workspace.main.map((line) => `${line.quantity}x${line.name}`).sort().join("|")}`} title={workspace.title} championName={workspace.championName} mainLines={workspace.main} /></AnalysisDisclosure>
+      <AnalysisDisclosure title="Draw quality by game stage" summary="Measure early usefulness, later impact, and stage-specific clunk."><StageDrawQuality mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Card access and probability" summary="Find a card, functional role, or complete combo."><HypergeometricCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Consistency details" summary="Inspect duplicate draws and conditional cards."><CopyClumpingRisk mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /><ConditionalHandPressure mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Resource timing" summary="See when Reserve costs become reliably available."><ResourceCurveReliability mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
