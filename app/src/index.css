@@ -11,6 +11,30 @@
 @theme {
   --font-sans: "Merriweather Sans", ui-sans-serif, system-ui, sans-serif;
   --font-heading: "PT Sans", ui-sans-serif, system-ui, sans-serif;
+  --color-forest-surface: #1b3a57;
+}
+
+/* Charcoal surfaces keep Dark Forest blue for emphasis instead of tinting every panel. */
+:root {
+  color-scheme: dark;
+  --catppuccin-color-blue: #a4c8e1;
+  --catppuccin-color-blue-500: #a4c8e1;
+  --catppuccin-color-mauve: #d2c2e8;
+  --catppuccin-color-mauve-500: #d2c2e8;
+  --catppuccin-color-pink: #f4bbcb;
+  --catppuccin-color-pink-500: #f4bbcb;
+  --catppuccin-color-text: #f0f0f0;
+  --catppuccin-color-subtext1: #d6dbe0;
+  --catppuccin-color-subtext0: #b9c2ca;
+  --catppuccin-color-overlay2: #afbac2;
+  --catppuccin-color-overlay1: #9ca8b1;
+  --catppuccin-color-overlay0: #87949e;
+  --catppuccin-color-surface2: #5c6873;
+  --catppuccin-color-surface1: #45515b;
+  --catppuccin-color-surface0: #343b42;
+  --catppuccin-color-base: #17191b;
+  --catppuccin-color-mantle: #25292d;
+  --catppuccin-color-crust: #101214;
 }
 
 body {
@@ -28,7 +52,9 @@ h1, h2, h3, h4, h5, h6 {
 
 button, a, select, summary { @apply transition-colors duration-150; }
 
-select { @apply rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text shadow-sm; }
+select { @apply rounded-lg border border-ctp-overlay0 bg-ctp-mantle px-3 py-2 text-sm text-ctp-text shadow-sm; }
+
+:is(input, textarea, select).border-ctp-surface1 { border-color: var(--catppuccin-color-overlay0); }
 
 table { @apply tabular-nums; }
 

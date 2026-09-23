@@ -121,7 +121,7 @@ export default function ComboLabIndex() {
     }));
   }, [workspace, catalogByName, inferredPurpose.goalId]);
   const levelForecastSeries = useMemo<GoalForecastSeries[]>(() => {
-    const colors = ["#89b4fa", "#cba6f7", "#94e2d5", "#f9e2af", "#f38ba8"];
+    const colors = ["#a4c8e1", "#d2c2e8", "#94e2d5", "#f9e2af", "#f38ba8"];
     return levelForecast.map(({ level, points }, index) => ({
       label: `Level ${level}`,
       color: colors[index],
