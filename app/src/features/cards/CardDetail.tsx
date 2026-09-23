@@ -33,6 +33,7 @@ import CardSimilarEffectsPanel from "./CardSimilarEffectsPanel";
 import CardIntentPanel from "./CardIntentPanel";
 import CardHero from "./CardHero";
 import { toTopDecksListEntry } from "../topdecks/topDecksListEntry";
+import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 
 const MAX_TOP_DECKS_SHOWN = 5;
 const MAX_RECENT_DECKS_SHOWN = 5;
@@ -89,6 +90,12 @@ export default function CardDetail() {
   const needsSynergyTab = surface === "more" && moreTab === "synergy";
   const needsIntentTab = surface === "more" && moreTab === "intent";
   const needsPopularityIndex = needsDecksTab || needsSynergyTab;
+  const deckIndexStatus = usePublishedDataStatus("analysis-deck-card-index", "/data/analysis/deck-card-index.json", needsDecksTab || needsUsedWithTab || needsSynergyTab);
+  const popularityStatus = usePublishedDataStatus("analysis-deck-popularity-index", "/data/analysis/deck-popularity-index.json", needsPopularityIndex);
+  const taxonomyStatus = usePublishedDataStatus("analysis-archetype-taxonomy", "/data/analysis/archetype-taxonomy.json", needsDecksTab);
+  const hipsterStatus = usePublishedDataStatus("analysis-hipster", "/data/analysis/hipster.json", needsDecksTab);
+  const communityDeckStatus = usePublishedDataStatus("community-blended-deck-references", "/data/community/deck-references.json", needsDecksTab);
+  const packageStatus = usePublishedDataStatus("analysis-package-candidates", "/data/analysis/package-candidates.json", needsIntentTab);
 
   const prices = usePriceLookup();
   const priceHistoryData = usePriceHistoryData();
@@ -210,6 +217,16 @@ export default function CardDetail() {
   const intentPackageEvidence = (otherCardName: string): PackageCandidateEvidence | undefined =>
     card ? packageEvidenceByPair.get([card.name, otherCardName].sort().join("\u0000")) : undefined;
 
+  const tabFailure = (tab === "decks"
+    ? [deckIndexStatus, popularityStatus, taxonomyStatus, hipsterStatus, communityDeckStatus]
+    : tab === "info" || tab === "usedWith"
+      ? [deckIndexStatus]
+      : tab === "synergy"
+        ? [deckIndexStatus, popularityStatus]
+        : tab === "intent"
+          ? [packageStatus]
+          : []).find((status) => status.phase === "error");
+
   const topDecks = useMemo(() => {
     if (!popularityIndexData) return [];
     return popularityIndexData.entries
@@ -314,15 +331,17 @@ export default function CardDetail() {
         <Tabs tabs={SURFACES} active={surface} onChange={(next) => setTab(next === "overview" ? "info" : next === "decks" ? "decks" : moreTab)} label="Card data" variant="pill" />
       </div>
 
-      {showOverview && (
+      {tabFailure && <div role="alert" className="mt-4 rounded-xl border border-ctp-red/40 bg-ctp-red/10 p-4 text-sm text-ctp-text"><p className="font-semibold">This card analysis could not be loaded.</p><p className="mt-1 text-ctp-subtext0">{tabFailure.error}</p><button type="button" onClick={tabFailure.retry} className="mt-3 min-h-11 rounded-lg bg-ctp-red px-4 font-semibold text-ctp-base">Try again</button></div>}
+
+      {showOverview && !tabFailure && (
         <CardInfoPanel card={card} cardStat={cardStat} metaShare={metaShare} communityShare={communityInclusion?.percentOfDecks} quantityBuckets={quantityBuckets} resolveReference={resolveReference} />
       )}
 
-      {showOverview && (
+      {showOverview && !tabFailure && (
         <CardPlayedWithPanel cardName={card.name} deckCount={combination.deckCount} topCards={comboTopCards} cardImages={comboCardImages} />
       )}
 
-      {tab === "decks" && <CardDecksPanel cardName={card.name} archetypes={playedByArchetypes} recentDecks={recentDecks} topDecks={topDecks} uniqueDecks={uniqueDecks} communityDecks={communityDeckRefs} playerName={playerName} loading={!archetypeTaxonomyData || !popularityIndexData || !hipsterData || !cardDeckReferences || combination.deckCount === undefined} />}
+      {tab === "decks" && !tabFailure && <CardDecksPanel cardName={card.name} archetypes={playedByArchetypes} recentDecks={recentDecks} topDecks={topDecks} uniqueDecks={uniqueDecks} communityDecks={communityDeckRefs} playerName={playerName} loading={!archetypeTaxonomyData || !popularityIndexData || !hipsterData || !cardDeckReferences || combination.deckCount === undefined} />}
 
       {surface === "more" && (
         <div className="mt-5 flex flex-wrap gap-2" aria-label="More card data">
@@ -330,7 +349,7 @@ export default function CardDetail() {
         </div>
       )}
 
-      {surface === "more" && moreTab === "synergy" && (
+      {surface === "more" && moreTab === "synergy" && !tabFailure && (
         <CardSynergyPanel cardName={card.name} cards={synergy.cards} totalDecks={synergy.totalDecks} cardImages={synergyCardImages} loading={synergy.loading} />
       )}
 
@@ -338,7 +357,7 @@ export default function CardDetail() {
         <CardSimilarEffectsPanel key={card.uuid} card={card} cardStat={cardStat} similarCards={similarCards} resolveReference={resolveReference} />
       )}
 
-      {surface === "more" && moreTab === "intent" && (
+      {surface === "more" && moreTab === "intent" && !tabFailure && (
         <CardIntentPanel cardName={card.name} packages={cardPackages} feeds={visibleIntentFeeds} poweredBy={visibleIntentPoweredBy} experimentalCount={experimentalIntentCount} showExperimental={showExperimentalIntent} onShowExperimentalChange={setShowExperimentalIntent} evidenceFor={intentPackageEvidence} />
       )}
 

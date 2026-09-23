@@ -1960,16 +1960,26 @@ phase and action that returns Memory to Hand. Material cards remain outside the 
 materialized individually. Token creation/removal remains player-confirmed because most conditions
 cannot be safely inferred from effect text.
 
+Main Deck play/reserve actions and Materialization are legal only during the modeled Main phase;
+the UI disables them during Recollection and the state-transition functions reject them as well.
+The per-card support boundary recognizes only fixed numeric draw, fixed numeric Glimpse, fixed
+numeric token summons, fixed-count random Memory banishment, and Reservable. The card UI labels
+those assists and explicitly marks all remaining costs, targets, conditions, timing, and effects as
+player-resolved. Word quantities beyond `a`/`an`/`one`, variable values, and conditional legality are
+not guessed.
+
 Each game records a visible numeric seed, deterministic RNG state, and action history. Glimpse
 bottom randomization and random Memory banishment consume that seeded generator, so repeating the
 same starting seed and actions produces the same result. The log records outcomes, including the
 names selected by random Memory banishment. A versioned local session snapshot stores the source
 decklist, hand size, every modeled zone, tokens, log, and RNG state. Restoring that snapshot resumes
 from the same state and preserves subsequent seeded outcomes; the parser migrates the earlier
-minimal snapshot shape with empty defaults for newly introduced zones. Automatic re-execution of
-the human-readable action log remains future work.
+minimal snapshot shape with empty defaults for newly introduced zones. Every current action also
+stores a structured command; replay rebuilds the position from the original deck, seed, and command
+history. Legacy label-only histories remain viewable but are deliberately not replayed.
 
-The simulator auto-suggests fixed numeric "draw N cards" and "Glimpse N" triggers. Draw detection
+The simulator auto-suggests fixed numeric "draw N cards" and "Glimpse N" triggers and identifies
+fixed token-summon and random-Memory-banish clauses as supported manual assists. Draw detection
 reuses `drawEffects.ts`'s detector; fixed Glimpse detection skips variable X/LV clauses and leaves
 those to the manual Glimpse control. A Glimpse reveals the top N library instances, lets the player
 select cards to keep on top, then randomizes the unselected cards onto the bottom of the library.

@@ -21,6 +21,7 @@ export * from "./community-types.js";
 export * from "./diao.js";
 export * from "./broadcast-timeline-types.js";
 export * from "./match-log-types.js";
+export * from "./analysis-profile-types.js";
 export * from "./packageConfidence.js";
 export * from "./packageSeeds.js";
 export * from "./similarity.js";

@@ -1,11 +1,12 @@
 import type { GamePlanRole } from "./gamePlanReadiness";
+import type { SyncedAnalysisProfile } from "@gatcg/shared";
 import { playtestDeckFingerprint } from "./playtestTracker";
 
 type Line = { name: string; quantity: number };
 export type StageUsefulness = "early" | "late" | "flexible" | "conditional";
 export interface PressureMetadata { earliestTurn: number; repeatable: boolean; effectiveReserveCost: number }
 export interface AnalysisPlan { id: string; name: string; roles: Record<string, GamePlanRole | "">; stageUsefulness: Record<string, StageUsefulness | "">; pressure: Record<string, PressureMetadata> }
-export interface DeckAnalysisProfile { version: 3; deckFingerprint: string; revision: number; activePlanId: string; plans: AnalysisPlan[]; effectiveCosts: Record<string, number>; reviewedAt: string | null; inheritedFrom: string | null; updatedAt: string }
+export interface DeckAnalysisProfile extends SyncedAnalysisProfile { plans: AnalysisPlan[] }
 
 const PREFIX = "fanofin:analysis-profile:v3:";
 const V2_PREFIX = "fanofin:analysis-profile:v2:";
@@ -48,6 +49,18 @@ function parseProfile(raw: string | null, names: Set<string>, deckFingerprint: s
     const activePlanId = typeof parsed.activePlanId === "string" && safePlans.some((plan) => plan.id === parsed.activePlanId) ? parsed.activePlanId : safePlans[0].id;
     return { ...base, revision: Number.isInteger(parsed.revision) && Number(parsed.revision) > 0 ? Number(parsed.revision) : 1, activePlanId, plans: safePlans, effectiveCosts: validCosts(parsed.effectiveCosts, names), reviewedAt: typeof parsed.reviewedAt === "string" ? parsed.reviewedAt : null, inheritedFrom: typeof parsed.inheritedFrom === "string" ? parsed.inheritedFrom : null, updatedAt: typeof parsed.updatedAt === "string" ? parsed.updatedAt : base.updatedAt };
   } catch { return null; }
+}
+
+export function cacheSyncedAnalysisProfile(storage: Storage, championName: string | null, mainLines: Line[], value: unknown, identity?: string | null): DeckAnalysisProfile | null {
+  const deckFingerprint = fingerprint(championName, mainLines); const remoteFingerprint = value && typeof value === "object" && typeof (value as { deckFingerprint?: unknown }).deckFingerprint === "string" ? (value as { deckFingerprint: string }).deckFingerprint : null; const profile = parseProfile(JSON.stringify(value), new Set(mainLines.map((line) => line.name)), deckFingerprint);
+  if (!profile) return null;
+  const exact = { ...profile, deckFingerprint, inheritedFrom: remoteFingerprint === deckFingerprint ? profile.inheritedFrom : remoteFingerprint, reviewedAt: remoteFingerprint === deckFingerprint ? profile.reviewedAt : null, revision: remoteFingerprint === deckFingerprint ? profile.revision : profile.revision + 1 };
+  const serialized = JSON.stringify(exact); storage.setItem(analysisProfileKey(championName, mainLines), serialized); if (identity?.trim()) storage.setItem(latestKey(identity), serialized);
+  return exact;
+}
+
+export function newerAnalysisProfile(local: DeckAnalysisProfile, remote: DeckAnalysisProfile): DeckAnalysisProfile {
+  return Date.parse(remote.updatedAt) > Date.parse(local.updatedAt) ? remote : local;
 }
 
 /** Exact deck version first; then unchanged card metadata from the same named saved/imported deck. */

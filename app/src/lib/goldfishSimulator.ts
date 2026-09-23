@@ -59,6 +59,18 @@ export interface GoldfishSession {
   state: GoldfishState;
 }
 
+export type GoldfishEffectAssist =
+  | { type: "draw"; count: number }
+  | { type: "glimpse"; count: number }
+  | { type: "create-tokens"; name: string; count: number }
+  | { type: "banish-random-memory"; count: number };
+
+export interface GoldfishEffectSupport {
+  assists: GoldfishEffectAssist[];
+  /** True when the printed text includes game actions outside the deliberately small assisted set. */
+  hasUnsupportedText: boolean;
+}
+
 const cardInstances = (value: unknown): GoldfishCardInstance[] => Array.isArray(value) ? value.filter((entry): entry is GoldfishCardInstance => Boolean(entry && typeof entry === "object" && typeof (entry as GoldfishCardInstance).id === "string" && typeof (entry as GoldfishCardInstance).name === "string")) : [];
 const tokens = (value: unknown): GoldfishToken[] => Array.isArray(value) ? value.filter((entry): entry is GoldfishToken => Boolean(entry && typeof entry === "object" && typeof (entry as GoldfishToken).id === "string" && typeof (entry as GoldfishToken).name === "string" && typeof (entry as GoldfishToken).rested === "boolean")) : [];
 const command = (value: unknown): GoldfishCommand | undefined => {
@@ -217,12 +229,14 @@ export function resolveGlimpse(state: GoldfishState, count: number, keptIds: Rea
  * reasoning `drawEffects.ts` already documents for its own probability-estimate context.
  */
 export function playCard(state: GoldfishState, instanceId: string): GoldfishState {
+  if (state.phase !== "main") return state;
   const card = state.hand.find((c) => c.id === instanceId);
   if (!card) return state;
   return record({ ...state, hand: state.hand.filter((c) => c.id !== instanceId), played: [...state.played, card] }, `Played ${card.name}`, { type: "play", instanceId });
 }
 
 export function reserveCard(state: GoldfishState, instanceId: string): GoldfishState {
+  if (state.phase !== "main") return state;
   const card = state.hand.find((entry) => entry.id === instanceId);
   if (!card) return state;
   return record({ ...state, hand: state.hand.filter((entry) => entry.id !== instanceId), memory: [...state.memory, card] }, `Reserved ${card.name} to Memory`, { type: "reserve", instanceId });
@@ -245,6 +259,7 @@ export function nextTurn(state: GoldfishState, draw = true): GoldfishState {
 }
 
 export function materializeCard(state: GoldfishState, instanceId: string): GoldfishState {
+  if (state.phase !== "main") return state;
   const card = state.materialDeck.find((entry) => entry.id === instanceId);
   if (!card) return state;
   return record({ ...state, materialDeck: state.materialDeck.filter((entry) => entry.id !== instanceId), materialized: [...state.materialized, card] }, `Materialized ${card.name}`, { type: "materialize", instanceId });
@@ -319,4 +334,45 @@ export function suggestedGlimpse(card: Card | undefined): number {
   let total = 0;
   for (const match of card.effect.matchAll(/\bglimpse\s+(\d+)\b(?!\s*\+)/gi)) total += Number(match[1]);
   return total;
+}
+
+const fixedAmount = (value: string): number | null => {
+  if (/^(?:a|an|one)$/i.test(value)) return 1;
+  const parsed = Number(value);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : null;
+};
+
+/**
+ * Detects only effect clauses that the assisted simulator can represent without inferring targets,
+ * costs, conditions, or timing. The result is advisory: the player still confirms that a printed
+ * condition was met. Any other non-reminder effect text is explicitly reported as unsupported.
+ */
+export function goldfishEffectSupport(card: Card | undefined): GoldfishEffectSupport {
+  const effect = (card?.effect ?? "").replace(/\*\*/g, " ").replace(/\s+/g, " ").trim();
+  if (!effect) return { assists: [], hasUnsupportedText: false };
+
+  const assists: GoldfishEffectAssist[] = [];
+  const draws = suggestedExtraDraws(card);
+  const glimpse = suggestedGlimpse(card);
+  if (draws > 0) assists.push({ type: "draw", count: draws });
+  if (glimpse > 0) assists.push({ type: "glimpse", count: glimpse });
+
+  for (const match of effect.matchAll(/\bsummon\s+(a|an|one|\d+)\s+([a-z][a-z0-9 '-]{0,40}?)\s+tokens?\b/gi)) {
+    const count = fixedAmount(match[1]);
+    if (count) assists.push({ type: "create-tokens", name: match[2].trim(), count });
+  }
+  for (const match of effect.matchAll(/\bbanish\s+(a|one|\d+)\s+(?:card(?:s)?\s+)?(?:at\s+)?random\s+from\s+(?:your\s+)?memory\b/gi)) {
+    const count = fixedAmount(match[1]);
+    if (count) assists.push({ type: "banish-random-memory", count });
+  }
+
+  // Remove exactly the bounded templates above. Remaining rules text is intentionally player-run.
+  const unsupported = effect
+    .replace(/\bdraw\s+\d+\s+cards?\b/gi, "")
+    .replace(/\bglimpse\s+\d+\b(?!\s*\+)/gi, "")
+    .replace(/\bsummon\s+(?:a|an|one|\d+)\s+[a-z][a-z0-9 '-]{0,40}?\s+tokens?\b/gi, "")
+    .replace(/\bbanish\s+(?:a|one|\d+)\s+(?:card(?:s)?\s+)?(?:at\s+)?random\s+from\s+(?:your\s+)?memory\b/gi, "")
+    .replace(/\breservable\b/gi, "")
+    .replace(/[^\p{L}\p{N}]+/gu, "");
+  return { assists, hasUnsupportedText: unsupported.length > 0 };
 }

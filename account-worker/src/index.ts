@@ -10,6 +10,7 @@ import { changePassword, handleResendWebhook, loginPassword, recordPrivateResour
 import { createCombo, deleteCombo, discoverCombos, getPublicCombo, listComboBookmarks, listCombos, setComboBookmark, updateCombo } from "./combos";
 import { listTournamentFavorites, parseTournamentFavoriteInput, setTournamentFavorite, tournamentFavoriteState } from "./tournament-favorites";
 import { deleteMatchLogRecord, listMatchLog, upsertMatchLog } from "./match-log";
+import { getAnalysisProfile, listAnalysisProfiles, upsertAnalysisProfile } from "./analysis-profiles";
 
 function response(env: Env, request: Request, body: unknown, status = 200, extra: HeadersInit = {}): Response {
   const origin = request.headers.get("Origin");
@@ -302,6 +303,13 @@ export default {
       }
 
       if (request.method === "GET" && url.pathname === "/v1/me/decks") return response(env, request, { decks: await listDecks(env, user) });
+      if (request.method === "GET" && url.pathname === "/v1/me/analysis-profiles") return response(env, request, { profiles: await listAnalysisProfiles(env, user) });
+      if (request.method === "PUT" && url.pathname === "/v1/me/analysis-profiles") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        return response(env, request, await upsertAnalysisProfile(env, user, await jsonBody(request)));
+      }
+      const analysisProfileMatch = url.pathname.match(/^\/v1\/me\/analysis-profiles\/([a-z0-9]{1,64})$/i);
+      if (analysisProfileMatch && request.method === "GET") return response(env, request, { profile: await getAnalysisProfile(env, user, analysisProfileMatch[1], url.searchParams.get("identity")) });
       if (request.method === "GET" && url.pathname === "/v1/me/match-log") return response(env, request, { records: await listMatchLog(env, user, url.searchParams.get("savedDeckId")) });
       if (request.method === "PUT" && url.pathname === "/v1/me/match-log") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
@@ -336,7 +344,7 @@ export default {
         const deckSummaries = await listDecks(env, user);
         const decks = (await Promise.all(deckSummaries.map((deck) => getDeck(env, user, deck.id)))).filter((deck) => deck !== null);
         const collection = await listCollection(env, user);
-        return response(env, request, { exportedAt: new Date().toISOString(), user, profiles: profiles.results, decks, combos: await listCombos(env, user), collection: collection.entries, matchLog: await listMatchLog(env, user) });
+        return response(env, request, { exportedAt: new Date().toISOString(), user, profiles: profiles.results, decks, combos: await listCombos(env, user), collection: collection.entries, matchLog: await listMatchLog(env, user), analysisProfiles: await listAnalysisProfiles(env, user) });
       }
       if (request.method === "PATCH" && url.pathname === "/v1/me") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);

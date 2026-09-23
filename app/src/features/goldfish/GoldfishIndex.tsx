@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import type { Card, OmnidexDecklist } from "@gatcg/shared";
-import { banishRandomFromMemory, beginRecollection, createTokens, drawCards, isReplayableHistory, isReservable, materializeCard, newGame, nextTurn, parseGoldfishSession, playCard, recollectMemory, removeToken, replayGoldfishHistory, reserveCard, resolveGlimpse, serializeGoldfishSession, suggestedExtraDraws, suggestedGlimpse, type GoldfishCardInstance, type GoldfishSession, type GoldfishState } from "../../lib/goldfishSimulator";
+import { banishRandomFromMemory, beginRecollection, createTokens, drawCards, goldfishEffectSupport, isReplayableHistory, isReservable, materializeCard, newGame, nextTurn, parseGoldfishSession, playCard, recollectMemory, removeToken, replayGoldfishHistory, reserveCard, resolveGlimpse, serializeGoldfishSession, suggestedExtraDraws, suggestedGlimpse, type GoldfishCardInstance, type GoldfishSession, type GoldfishState } from "../../lib/goldfishSimulator";
 import { DEFAULT_STARTING_HAND_SIZE } from "../../lib/turnToPlay";
 import { decodeCustomDecks } from "../../lib/compareShareLink";
 import { parseDecklist } from "../compare/parseDecklist";
@@ -28,6 +28,8 @@ function readSavedSession(): GoldfishSession | null {
 }
 
 function HandCard({ card, resolved, disabled, onPlay, onReserve }: { card: GoldfishCardInstance; resolved: Card | undefined; disabled?: boolean; onPlay: () => void; onReserve?: () => void }) {
+  const support = goldfishEffectSupport(resolved);
+  const assistedLabels = support.assists.map((assist) => assist.type === "draw" ? `draw ${assist.count}` : assist.type === "glimpse" ? `Glimpse ${assist.count}` : assist.type === "create-tokens" ? `summon ${assist.count} ${assist.name}` : `randomly banish ${assist.count} from Memory`);
   return (
     <div className="flex flex-col overflow-hidden rounded-lg border border-ctp-surface1 bg-ctp-mantle">
       <div className="p-2">
@@ -40,6 +42,7 @@ function HandCard({ card, resolved, disabled, onPlay, onReserve }: { card: Goldf
         </CardHoverPreview>
         <p className="mt-2 truncate text-sm font-medium text-ctp-text" title={card.name}>{card.name}</p>
         {resolved?.effect && <details className="mt-1"><summary className="cursor-pointer text-xs text-ctp-blue">Read effect</summary><p className="mt-1 whitespace-pre-wrap text-xs leading-5 text-ctp-subtext1">{resolved.effect.replace(/\*\*/g, "")}</p></details>}
+        {resolved?.effect && <div className="mt-2 text-[10px] leading-4 text-ctp-subtext0">{assistedLabels.length > 0 && <p><span className="font-semibold text-ctp-green">Assisted:</span> {assistedLabels.join(" · ")}</p>}{support.hasUnsupportedText && <p><span className="font-semibold text-ctp-yellow">Player-resolved:</span> remaining costs, targets, conditions, timing, and effects.</p>}</div>}
       </div>
       <div className="grid gap-2 border-t border-ctp-surface1 px-3 py-2">
         <button type="button" disabled={disabled} onClick={onPlay} className="min-h-11 w-full rounded-md border border-ctp-blue px-2.5 py-1 text-xs font-medium text-ctp-blue hover:bg-ctp-blue/10 disabled:cursor-not-allowed disabled:opacity-40">Play card</button>
@@ -196,6 +199,7 @@ export default function GoldfishIndex() {
           </div>
         }
       />
+      <details className="mt-4 rounded-xl border border-ctp-yellow/30 bg-ctp-yellow/5 p-3"><summary className="flex min-h-11 cursor-pointer items-center text-sm font-semibold text-ctp-yellow">What the rules assistant supports</summary><p className="mt-2 text-xs leading-5 text-ctp-subtext1">Goldfish tracks zones and enforces Main-versus-Recollection actions. It recognizes fixed draws, fixed Glimpse, fixed token summons, and fixed random Memory banishment. Printed costs, targets, optional or conditional clauses, combat, leveling, and all other effects remain player-resolved; each card labels that boundary before you play it.</p></details>
       <details className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-ctp-text [&::-webkit-details-marker]:hidden"><span>Saved session</span><span className="text-xs font-normal text-ctp-subtext0">{savedSession ? `Turn ${savedSession.state.turn}` : "Not saved"}</span></summary><p className="mt-2 text-xs leading-5 text-ctp-subtext1">Save every modeled zone, token, random seed, and replay-log entry on this device. Saving replaces the previous Goldfish session.</p><div className="mt-3 flex flex-wrap gap-2"><button type="button" onClick={saveSession} className="min-h-11 rounded-lg bg-ctp-green px-3 text-sm font-semibold text-ctp-base">Save current session</button>{savedSession && <><button type="button" onClick={() => resumeSession()} className="min-h-11 rounded-lg border border-ctp-blue/60 px-3 text-sm text-ctp-blue">Restore saved</button><button type="button" onClick={forgetSession} className="min-h-11 rounded-lg border border-ctp-red/50 px-3 text-sm text-ctp-red">Forget saved session</button></>}</div>{sessionNotice && <p role="status" className="mt-3 text-xs text-ctp-subtext1">{sessionNotice}</p>}</details>
       <div className="mt-4 grid gap-2 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-center">
         {([['Library', state.library.length], ['Hand', state.hand.length], ['Memory', state.memory.length]] as const).map(([label, count]) => <div key={label} className="rounded-lg bg-ctp-base px-3 py-2"><div className="text-xl font-semibold tabular-nums text-ctp-text">{count}</div><div className="text-xs text-ctp-subtext0">{label}</div></div>)}
@@ -208,7 +212,7 @@ export default function GoldfishIndex() {
         {state.banished.length > 0 && <p className="mt-2 text-xs text-ctp-red">Banished: {state.banished.map((card) => card.name).join(" · ")}</p>}
       </Panel>
 
-      {(state.materialDeck.length > 0 || state.materialized.length > 0) && <details className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><summary className="cursor-pointer text-sm font-semibold text-ctp-text">Material Deck ({state.materialDeck.length} remaining · {state.materialized.length} in play)</summary><div className="mt-3 grid gap-2 sm:grid-cols-2">{state.materialDeck.map((card) => <button key={card.id} type="button" onClick={() => setState((current) => current ? materializeCard(current, card.id) : current)} className="min-h-11 rounded-lg border border-ctp-mauve/50 px-3 text-left text-sm text-ctp-mauve hover:bg-ctp-mauve/10">Materialize {card.name}</button>)}</div>{state.materialized.length > 0 && <p className="mt-3 text-xs text-ctp-subtext1">Materialized: {state.materialized.map((card) => card.name).join(" · ")}</p>}</details>}
+      {(state.materialDeck.length > 0 || state.materialized.length > 0) && <details className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><summary className="cursor-pointer text-sm font-semibold text-ctp-text">Material Deck ({state.materialDeck.length} remaining · {state.materialized.length} in play)</summary><div className="mt-3 grid gap-2 sm:grid-cols-2">{state.materialDeck.map((card) => <button key={card.id} type="button" disabled={state.phase !== "main"} onClick={() => setState((current) => current ? materializeCard(current, card.id) : current)} className="min-h-11 rounded-lg border border-ctp-mauve/50 px-3 text-left text-sm text-ctp-mauve hover:bg-ctp-mauve/10 disabled:cursor-not-allowed disabled:opacity-40">Materialize {card.name}</button>)}</div>{state.materialized.length > 0 && <p className="mt-3 text-xs text-ctp-subtext1">Materialized: {state.materialized.map((card) => card.name).join(" · ")}</p>}</details>}
 
       <details className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><summary className="cursor-pointer text-sm font-semibold text-ctp-text">Tokens ({state.tokens.length})</summary><div className="mt-3 flex flex-wrap gap-2"><input value={tokenName} onChange={(event) => setTokenName(event.target.value)} placeholder="Token name" aria-label="Token name" className="min-h-11 min-w-0 flex-1 rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-sm"/><input type="number" min={1} max={20} value={tokenCount} onChange={(event) => setTokenCount(Math.max(1, Math.min(20, Number(event.target.value) || 1)))} aria-label="Token quantity" className="min-h-11 w-16 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-sm"/><button type="button" disabled={!tokenName.trim()} onClick={() => { setState((current) => current ? createTokens(current, tokenName, tokenCount) : current); setTokenName(""); }} className="min-h-11 rounded-lg border border-ctp-green/60 px-3 text-sm font-medium text-ctp-green disabled:opacity-40">Create</button></div>{state.tokens.length > 0 && <div className="mt-3 flex flex-wrap gap-2">{state.tokens.map((token) => <button key={token.id} type="button" title="Remove token" onClick={() => setState((current) => current ? removeToken(current, token.id) : current)} className="min-h-11 rounded-full border border-ctp-green/50 px-3 text-xs text-ctp-green">{token.name}{token.rested ? " · rested" : ""} ×</button>)}</div>}</details>
 
@@ -245,7 +249,7 @@ export default function GoldfishIndex() {
       <h2 className="mt-6 text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Turn {state.turn} · Hand</h2>
       <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
         {state.hand.map((card) => (
-          <HandCard key={card.id} card={card} resolved={cardsByName.get(card.name)} disabled={activeGlimpse !== null} onPlay={() => handlePlay(card)} onReserve={isReservable(cardsByName.get(card.name)) ? () => setState((current) => current ? reserveCard(current, card.id) : current) : undefined} />
+          <HandCard key={card.id} card={card} resolved={cardsByName.get(card.name)} disabled={activeGlimpse !== null || state.phase !== "main"} onPlay={() => handlePlay(card)} onReserve={isReservable(cardsByName.get(card.name)) ? () => setState((current) => current ? reserveCard(current, card.id) : current) : undefined} />
         ))}
         {state.hand.length === 0 && <InlineState>Hand is empty — draw a card to continue.</InlineState>}
       </div>

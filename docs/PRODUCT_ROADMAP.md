@@ -477,10 +477,14 @@ unresolved mappings; deleting an import does not delete manually entered games.
 Played, Material Deck, and Materialized zones; exposes Reservable moves and Recollection; supports manual
 token lifecycle; and uses a visible deterministic seed for Glimpse and random Memory banishment. Versioned
 local sessions preserve every modeled zone, tokens, history, and RNG state, with safe migration defaults for
-older minimal snapshots. Broader effect-specific legality remains outstanding.
+older minimal snapshots. Structured action histories replay from the original seed. Main-only moves are
+rejected during Recollection, and cards distinguish bounded fixed draw/Glimpse/token/random-banish assists
+from player-resolved rules text. Broader card-specific costs, targets, conditions, combat, and timing remain
+outstanding; this is intentionally not presented as a complete rules engine.
 
-**Acceptance criteria:** representative fixtures cover reserving, token creation, Recollection, Material Deck
-use, and seeded random Memory banishment; replaying a session produces the same state and random outcomes.
+**Acceptance criteria met for the assisted foundation:** representative fixtures cover reserving, token
+creation and removal, Recollection, Material Deck use, seeded random Memory banishment, session
+round-trips, and full structured-history replay with identical state and random outcomes.
 
 ## Phase 5 — Social publishing
 
@@ -580,6 +584,10 @@ Collection visual refresh, deck usage counts, shortage highlighting, and missing
 ### Slice C — Analysis profiles
 
 Saved shared classifications, Prepare Analysis workflow, named plans, and readiness indicators.
+
+Named-plan profiles now persist locally for offline use and synchronize across signed-in devices. Account
+sync uses the deck fingerprint for exact revisions and the saved-deck identity to carry unchanged card
+classifications forward when a named deck changes. Deployment requires account migration `0018`.
 
 ### Slice D — Calculator cleanup
 

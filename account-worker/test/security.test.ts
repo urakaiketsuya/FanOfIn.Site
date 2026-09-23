@@ -9,6 +9,7 @@ import { REQUIRED_SCHEMA_VERSION, serviceHealth } from "../src/health";
 import { computeDeckCollectionStatus } from "@gatcg/shared";
 import { handleResendWebhook, hashPassword, normalizeLoginEmail, removePasswordCredential, validatePassword, verifyEmailToken, verifyPassword } from "../src/password-auth";
 import { parseTournamentFavoriteInput } from "../src/tournament-favorites";
+import { parseAnalysisProfileInput } from "../src/analysis-profiles";
 
 function envWithSecret(secret: string): Env {
   return { BFF_SHARED_SECRET: secret } as Env;
@@ -28,6 +29,17 @@ test("deck collection status counts physical copies, sideboard, and proxies dist
   assert.equal(status.missingCopies, 2);
   assert.equal(status.proxyCopies, 2);
   assert.equal(status.complete, false);
+});
+
+test("analysis profile sync accepts versioned named plans and normalizes deck identity", () => {
+  const record = parseAnalysisProfileInput({ identity: "  Saved Deck 42 ", profile: {
+    version: 3, deckFingerprint: "abc123", revision: 2, activePlanId: "primary",
+    plans: [{ id: "primary", name: "Primary plan", roles: {}, stageUsefulness: {}, pressure: {} }],
+    effectiveCosts: {}, reviewedAt: null, inheritedFrom: null, updatedAt: "2026-09-23T12:00:00.000Z",
+  } });
+  assert.equal(record.identity, "saved deck 42");
+  assert.equal(record.profile.revision, 2);
+  assert.throws(() => parseAnalysisProfileInput({ profile: { ...record.profile, plans: [] } }), /Invalid analysis profile/);
 });
 
 test("health verifies the latest required account schema without exposing data", async () => {

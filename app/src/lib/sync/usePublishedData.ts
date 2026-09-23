@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useSyncExternalStore } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db, type PublishedDataRow } from "../db";
 import { beginLoading, endLoading } from "../useGlobalLoading";
@@ -29,6 +29,15 @@ function loadManifest(): Promise<Record<string, string>> {
 }
 
 const inFlightRefreshes = new Map<string, Promise<void>>();
+type RefreshStatus = { phase: "idle" | "loading" | "ready" | "error"; error: string | null };
+const IDLE_REFRESH_STATUS: RefreshStatus = { phase: "idle", error: null };
+const refreshStatuses = new Map<string, RefreshStatus>();
+const refreshListeners = new Map<string, Set<() => void>>();
+
+function setRefreshStatus(key: string, status: RefreshStatus): void {
+  refreshStatuses.set(key, status);
+  for (const listener of refreshListeners.get(key) ?? []) listener();
+}
 
 async function doRefresh(key: string, url: string): Promise<void> {
   const existing = await db.published.get(key);
@@ -41,7 +50,7 @@ async function doRefresh(key: string, url: string): Promise<void> {
   if (manifest[key] && existing?.generatedAt === manifest[key]) return;
 
   const res = await fetch(url);
-  if (!res.ok) return; // pipeline hasn't published this dataset yet
+  if (!res.ok) throw new Error(res.status === 404 ? "This dataset has not been published yet." : `Request failed (${res.status}).`);
 
   const data = (await res.json()) as Generated;
   if (existing?.generatedAt === data.generatedAt) return; // already have this exact generation
@@ -61,10 +70,40 @@ async function doRefresh(key: string, url: string): Promise<void> {
 function refresh(key: string, url: string): Promise<void> {
   let inFlight = inFlightRefreshes.get(key);
   if (!inFlight) {
-    inFlight = doRefresh(key, url).finally(() => inFlightRefreshes.delete(key));
+    setRefreshStatus(key, { phase: "loading", error: null });
+    inFlight = doRefresh(key, url)
+      .then(() => setRefreshStatus(key, { phase: "ready", error: null }))
+      .catch((reason: unknown) => {
+        const message = reason instanceof Error ? reason.message : "The published dataset could not be loaded.";
+        setRefreshStatus(key, { phase: "error", error: message });
+        throw reason;
+      })
+      .finally(() => inFlightRefreshes.delete(key));
     inFlightRefreshes.set(key, inFlight);
   }
   return inFlight;
+}
+
+/** Network refresh state for a published dataset. Pair with `usePublishedData` when a surface
+ * must distinguish a slow first load from an absent/failed dataset instead of rendering both as
+ * an empty result. Cached data remains usable while a background refresh fails. */
+export function usePublishedDataStatus(key: string, url: string, enabled = true): RefreshStatus & { retry: () => void } {
+  const subscribe = useCallback((listener: () => void) => {
+    let listeners = refreshListeners.get(key);
+    if (!listeners) refreshListeners.set(key, listeners = new Set());
+    listeners.add(listener);
+    return () => {
+      listeners?.delete(listener);
+      if (listeners?.size === 0) refreshListeners.delete(key);
+    };
+  }, [key]);
+  const getSnapshot = useCallback(() => refreshStatuses.get(key) ?? IDLE_REFRESH_STATUS, [key]);
+  const status = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
+  const retry = useCallback(() => {
+    if (!enabled) return;
+    void refresh(key, url).catch((err: unknown) => console.error(`failed to refresh ${key}`, err));
+  }, [enabled, key, url]);
+  return { ...status, retry };
 }
 
 /**

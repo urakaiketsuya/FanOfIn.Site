@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Card } from "@gatcg/shared";
 import PageLayout from "../../components/layout/PageLayout";
@@ -32,8 +32,9 @@ import ThreatCadence from "../deckbuilder/ThreatCadence";
 import ResilienceRebuild from "../deckbuilder/ResilienceRebuild";
 import PlaytestSessionTracker from "../deckbuilder/PlaytestSessionTracker";
 import PrepareAnalysis from "./PrepareAnalysis";
-import { activeAnalysisPlan, analysisProfileKey, loadAnalysisProfile, saveAnalysisProfile, type DeckAnalysisProfile } from "../../lib/analysisProfile";
+import { activeAnalysisPlan, analysisProfileKey, cacheSyncedAnalysisProfile, loadAnalysisProfile, newerAnalysisProfile, saveAnalysisProfile, type DeckAnalysisProfile } from "../../lib/analysisProfile";
 import type { GamePlanRole } from "../../lib/gamePlanReadiness";
+import { accountApi } from "../../lib/accountApi";
 
 type AnalysisTab = "summary" | "explore" | "matchups";
 const CALCULATORS = ["Game plan readiness", "Opening hand recipe", "Level-up runway", "Pressure continuity", "Resilience and rebuild", "Test session tracker", "Card access and probability", "Clumping and conditional pressure", "Resource timing", "Curve affordability check"];
@@ -45,7 +46,34 @@ export default function DeckAnalysisIndex() {
   const profileStorageKey = workspace ? analysisProfileKey(workspace.championName, workspace.main) : "";
   const profileIdentity = workspace?.deckIdentity ?? workspace?.title ?? workspace?.sourceLabel ?? null;
   const [analysisProfile, setAnalysisProfile] = useState<DeckAnalysisProfile | null>(() => workspace ? loadAnalysisProfile(localStorage, workspace.championName, workspace.main, workspace.deckIdentity ?? workspace.title ?? workspace.sourceLabel) : null);
-  useEffect(() => { setAnalysisProfile(workspace ? loadAnalysisProfile(localStorage, workspace.championName, workspace.main, workspace.deckIdentity ?? workspace.title ?? workspace.sourceLabel) : null); }, [profileStorageKey, profileIdentity, workspace]);
+  const [profileSync, setProfileSync] = useState<"local" | "syncing" | "synced" | "offline">("local");
+  const syncTimer = useRef<number | null>(null);
+  const profileAccount = useRef(false);
+  useEffect(() => {
+    if (!workspace) { setAnalysisProfile(null); setProfileSync("local"); return; }
+    let cancelled = false;
+    const local = loadAnalysisProfile(localStorage, workspace.championName, workspace.main, profileIdentity);
+    setAnalysisProfile(local); setProfileSync("syncing");
+    void accountApi.session().then(async ({ user }) => {
+      if (!user || cancelled) { profileAccount.current = false; if (!cancelled) setProfileSync("local"); return; }
+      profileAccount.current = true;
+      const result = await accountApi.analysisProfile(local.deckFingerprint, profileIdentity);
+      if (cancelled) return;
+      if (!result.profile) {
+        if (local.updatedAt !== new Date(0).toISOString()) await accountApi.saveAnalysisProfile(local, profileIdentity);
+        if (!cancelled) setProfileSync("synced"); return;
+      }
+      const current = loadAnalysisProfile(localStorage, workspace.championName, workspace.main, profileIdentity);
+      const remote = cacheSyncedAnalysisProfile(localStorage, workspace.championName, workspace.main, result.profile.profile, profileIdentity);
+      if (!remote) { setProfileSync("offline"); return; }
+      const selected = newerAnalysisProfile(current, remote);
+      if (selected === current) { cacheSyncedAnalysisProfile(localStorage, workspace.championName, workspace.main, current, profileIdentity); setAnalysisProfile(current); await accountApi.saveAnalysisProfile(current, profileIdentity); }
+      else setAnalysisProfile(remote);
+      if (!cancelled) setProfileSync("synced");
+    }).catch(() => { profileAccount.current = false; if (!cancelled) setProfileSync("offline"); });
+    return () => { cancelled = true; };
+  }, [profileStorageKey, profileIdentity, workspace]);
+  useEffect(() => () => { if (syncTimer.current !== null) window.clearTimeout(syncTimer.current); }, []);
   const analysisPlan = analysisProfile ? activeAnalysisPlan(analysisProfile) : null;
   const analysisRoles = analysisPlan?.roles ?? {};
   const data = useDeckBuilderData({ championName: workspace?.championName ?? null, format: workspace?.format ?? "STANDARD", includeDecodedDecks: false });
@@ -66,7 +94,12 @@ export default function DeckAnalysisIndex() {
   const requestedDeck = useRequestedDeckWorkspace(catalogByName, "analysis", loadWorkspace);
   function persistAnalysisProfile(next: DeckAnalysisProfile) {
     if (!workspace || !analysisProfile) return;
-    setAnalysisProfile(saveAnalysisProfile(localStorage, workspace.championName, workspace.main, next, profileIdentity));
+    const saved = saveAnalysisProfile(localStorage, workspace.championName, workspace.main, next, profileIdentity);
+    setAnalysisProfile(saved);
+    if (!profileAccount.current) { setProfileSync("local"); return; }
+    setProfileSync("syncing");
+    if (syncTimer.current !== null) window.clearTimeout(syncTimer.current);
+    syncTimer.current = window.setTimeout(() => { void accountApi.saveAnalysisProfile(saved, profileIdentity).then(() => setProfileSync("synced")).catch(() => setProfileSync("offline")); }, 500);
   }
   function updateAnalysisRoles(roles: Record<string, GamePlanRole | "">) {
     if (!analysisProfile) return;
@@ -100,7 +133,7 @@ export default function DeckAnalysisIndex() {
     <PageHeader title="Deck Analysis" />
     <DeckToolWorkspaceHeader activeTool="analysis" title={workspace.title} championName={workspace.championName} spiritName={workspace.spiritName} format={workspace.format} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel={workspace.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} />} />
     <DeckArtworkPreview material={workspace.material} main={workspace.main} catalogByName={catalogByName} />
-    {analysisProfile && <div className="mt-4"><PrepareAnalysis lines={workspace.main} catalogByName={catalogByName} profile={analysisProfile} onProfileChange={persistAnalysisProfile} onReviewed={markAnalysisReviewed} /></div>}
+    {analysisProfile && <div className="mt-4"><PrepareAnalysis lines={workspace.main} catalogByName={catalogByName} profile={analysisProfile} onProfileChange={persistAnalysisProfile} onReviewed={markAnalysisReviewed} /><p className="mt-1 px-1 text-[10px] text-ctp-subtext0" aria-live="polite">{profileSync === "synced" ? "Analysis profile synced to your account." : profileSync === "syncing" ? "Syncing analysis profile…" : profileSync === "offline" ? "Saved on this device. Account sync will retry when this page is reopened." : "Analysis profile saved on this device."}</p></div>}
     <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Summary" }, { key: "explore", label: `Calculators (${CALCULATORS.length})` }, { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" /></div>
     {tab === "summary" && <div className="mt-4">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2"><h2 className="text-base font-semibold text-ctp-text">What stands out</h2><span className="rounded-full bg-ctp-surface0 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-ctp-subtext0">Descriptive</span></div>

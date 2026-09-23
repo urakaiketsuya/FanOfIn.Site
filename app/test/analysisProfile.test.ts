@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { activeAnalysisPlan, addAnalysisPlan, analysisProfileKey, loadAnalysisProfile, removeAnalysisPlan, saveAnalysisProfile } from "../src/lib/analysisProfile";
+import { activeAnalysisPlan, addAnalysisPlan, analysisProfileKey, cacheSyncedAnalysisProfile, loadAnalysisProfile, newerAnalysisProfile, removeAnalysisPlan, saveAnalysisProfile } from "../src/lib/analysisProfile";
 
 class MemoryStorage { private values = new Map<string, string>(); getItem(key: string) { return this.values.get(key) ?? null; } setItem(key: string, value: string) { this.values.set(key, value); } removeItem(key: string) { this.values.delete(key); } clear() { this.values.clear(); } key(index: number) { return [...this.values.keys()][index] ?? null; } get length() { return this.values.size; } }
 const lines = [{ name: "Setup Card", quantity: 4 }, { name: "Payoff Card", quantity: 3 }];
@@ -35,4 +35,21 @@ test("changed named decks carry unchanged assignments and metadata into an unrev
 
 test("unnamed imports do not inherit and the final plan cannot be removed", () => {
   const storage = new MemoryStorage() as Storage; save(storage, {}, "Named deck"); const fresh = loadAnalysisProfile(storage, "Champion", [{ name: "Setup Card", quantity: 2 }]); assert.deepEqual(activeAnalysisPlan(fresh).roles, {}); assert.equal(removeAnalysisPlan(fresh, fresh.activePlanId), fresh);
+});
+
+test("account profiles cache locally and newer edits win device merges", () => {
+  const storage = new MemoryStorage() as Storage;
+  const local = { ...save(storage, {}, "Named deck"), updatedAt: "2026-09-22T00:00:00.000Z" };
+  const remote = { ...local, plans: [{ ...local.plans[0], name: "Remote plan" }], updatedAt: "2026-09-23T00:00:00.000Z" };
+  const cached = cacheSyncedAnalysisProfile(storage, "Champion", lines, remote, "Named deck");
+  assert.ok(cached); assert.equal(activeAnalysisPlan(cached).name, "Remote plan"); assert.equal(newerAnalysisProfile(local, cached), cached);
+  assert.equal(activeAnalysisPlan(loadAnalysisProfile(storage, "Champion", lines, "Named deck")).name, "Remote plan");
+});
+
+test("an account profile from a prior named-deck revision carries only current cards", () => {
+  const storage = new MemoryStorage() as Storage; const source = save(storage, {}, "Named deck");
+  source.plans[0].roles = { "Setup Card": "enabler", "Payoff Card": "payoff" };
+  const changed = [{ name: "Setup Card", quantity: 4 }, { name: "Replacement", quantity: 3 }];
+  const cached = cacheSyncedAnalysisProfile(storage, "Champion", changed, source, "Named deck");
+  assert.ok(cached); assert.deepEqual(activeAnalysisPlan(cached).roles, { "Setup Card": "enabler" }); assert.equal(cached.reviewedAt, null); assert.equal(cached.inheritedFrom, source.deckFingerprint);
 });

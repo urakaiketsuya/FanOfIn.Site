@@ -1,4 +1,4 @@
-import type { AccountSession, AccountUser, AuthIdentity, AuthProvider, BookmarkedCombo, BookmarkedDeck, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, ComboDefinition, ComboVisibility, DeckFormat, DeckImportPreview, DeckImportResult, DeckReportReason, DeckSocialState, DeckVisibility, MatchLogRecord, OmnidexDecklist, PublicCombo, PublicDeck, PublicDeckSummary, PublicProfile, SavedCombo, SavedDeck, SavedDeckDetail, SharedCardWatch, TournamentDeckFavorite } from "@gatcg/shared";
+import type { AccountSession, AccountUser, AnalysisProfileSyncRecord, AuthIdentity, AuthProvider, BookmarkedCombo, BookmarkedDeck, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, ComboDefinition, ComboVisibility, DeckFormat, DeckImportPreview, DeckImportResult, DeckReportReason, DeckSocialState, DeckVisibility, MatchLogRecord, OmnidexDecklist, PublicCombo, PublicDeck, PublicDeckSummary, PublicProfile, SavedCombo, SavedDeck, SavedDeckDetail, SharedCardWatch, SyncedAnalysisProfile, TournamentDeckFavorite } from "@gatcg/shared";
 
 const ACCOUNT_API_URL = (import.meta.env.VITE_ACCOUNT_API_URL as string | undefined)?.replace(/\/$/, "")
   ?? (import.meta.env.PROD ? "https://accounts.fanofin.site/api" : "http://localhost:8788");
@@ -41,6 +41,8 @@ export const accountApi = {
   updateAccountPreferences: (preferences: { deckChecklistDismissed?: boolean; displayNameReviewed?: boolean }) => accountRequest<{ user: AccountUser }>("/v1/me", { method: "PATCH", body: JSON.stringify(preferences) }),
   deleteAccount: () => accountRequest<{ success: true }>("/v1/me", { method: "DELETE", body: JSON.stringify({ confirmation: "DELETE" }) }),
   decks: () => accountRequest<{ decks: SavedDeck[] }>("/v1/me/decks"),
+  analysisProfile: (fingerprint: string, identity?: string | null) => accountRequest<{ profile: AnalysisProfileSyncRecord | null }>(`/v1/me/analysis-profiles/${encodeURIComponent(fingerprint)}${identity ? `?identity=${encodeURIComponent(identity)}` : ""}`),
+  saveAnalysisProfile: (profile: SyncedAnalysisProfile, identity?: string | null) => accountRequest<AnalysisProfileSyncRecord>("/v1/me/analysis-profiles", { method: "PUT", body: JSON.stringify({ identity, profile }) }),
   matchLog: (savedDeckId?: string) => accountRequest<{ records: MatchLogRecord[] }>(`/v1/me/match-log${savedDeckId ? `?savedDeckId=${encodeURIComponent(savedDeckId)}` : ""}`),
   saveMatchLog: async (records: MatchLogRecord[]) => {
     let saved = 0;

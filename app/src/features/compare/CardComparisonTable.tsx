@@ -5,6 +5,7 @@ import CostIcon from "../../components/CostIcon";
 import ElementIcon from "../../components/ElementIcon";
 import { formatUsd } from "../../lib/format";
 import { useCardComparison } from "./useCardComparison";
+import { primaryAlternateFace } from "../../lib/cardFaces";
 
 /** Index of the best value in `values`, or -1 if there's nothing to compare (fewer than 2 real values, or a tie). `direction: "min"` is for stats where lower is better (price). */
 function bestIndex(values: (number | null)[], direction: "max" | "min" = "max"): number {
@@ -41,7 +42,7 @@ export default function CardComparisonTable({ names, onRemove }: { names: string
             {rows.map((r) => (
               <th key={r.name} className="min-w-[8rem] py-1 pr-6 font-medium normal-case text-ctp-text">
                 <div className="flex items-center gap-1.5">
-                  <CardHoverPreview image={r.card?.editions[0]?.image} alt={r.name}>
+                  <CardHoverPreview image={r.card?.editions[0]?.image} backImage={primaryAlternateFace(r.card)?.edition.image} backAlt={primaryAlternateFace(r.card)?.name} alt={r.name}>
                     {r.card?.slug ? (
                       <Link to={`/cards/${r.card.slug}`} className="flex items-center gap-1.5 text-ctp-text hover:text-ctp-blue">
                         {r.card.editions[0] && (

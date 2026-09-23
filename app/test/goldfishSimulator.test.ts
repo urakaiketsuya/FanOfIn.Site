@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type { Card } from "@gatcg/shared";
-import { banishRandomFromMemory, beginRecollection, createTokens, isReplayableHistory, materializeCard, newGame, nextTurn, parseGoldfishSession, playCard, recollectMemory, removeToken, replayGoldfishHistory, reserveCard, resolveGlimpse, serializeGoldfishSession, suggestedGlimpse, type GoldfishState } from "../src/lib/goldfishSimulator";
+import { banishRandomFromMemory, beginRecollection, createTokens, goldfishEffectSupport, isReplayableHistory, materializeCard, newGame, nextTurn, parseGoldfishSession, playCard, recollectMemory, removeToken, replayGoldfishHistory, reserveCard, resolveGlimpse, serializeGoldfishSession, suggestedGlimpse, type GoldfishState } from "../src/lib/goldfishSimulator";
 
 const card = (effect: string): Card => ({ effect } as Card);
 
@@ -33,7 +33,7 @@ test("Recollection returns reserved cards and Material cards stay outside the Li
   const recollected = recollectMemory(beginRecollection(reserved));
   assert.equal(recollected.memory.length, 0);
   assert.equal(recollected.hand[0].name, "Reservable");
-  const materialized = materializeCard(recollected, recollected.materialDeck[0].id);
+  const materialized = materializeCard(nextTurn(recollected, false), recollected.materialDeck[0].id);
   assert.equal(materialized.materialized[0].name, "Champion");
   assert.equal(materialized.library.length, 0);
 });
@@ -43,6 +43,31 @@ test("tokens have explicit identities and can coexist", () => {
   assert.equal(state.tokens.length, 2);
   assert.equal(state.tokens.every((token) => token.rested), true);
   assert.notEqual(state.tokens[0].id, state.tokens[1].id);
+});
+
+test("Main Deck and Material Deck actions are blocked during Recollection", () => {
+  const state = newGame({ main: [{ card: "Main card", quantity: 2 }], material: [{ card: "Material card", quantity: 1 }], sideboard: [] }, 2, 11);
+  const recollection = beginRecollection(state);
+  assert.equal(playCard(recollection, recollection.hand[0].id), recollection);
+  assert.equal(reserveCard(recollection, recollection.hand[0].id), recollection);
+  assert.equal(materializeCard(recollection, recollection.materialDeck[0].id), recollection);
+});
+
+test("effect support recognizes only bounded deterministic assists", () => {
+  const supported = goldfishEffectSupport(card("Draw 2 cards. Glimpse 3. Summon two Powercell tokens. Banish a card at random from your memory."));
+  // Word quantities beyond one are deliberately not inferred.
+  assert.deepEqual(supported.assists, [
+    { type: "draw", count: 2 },
+    { type: "glimpse", count: 3 },
+    { type: "banish-random-memory", count: 1 },
+  ]);
+  assert.equal(supported.hasUnsupportedText, true);
+
+  assert.deepEqual(goldfishEffectSupport(card("Summon 2 Powercell tokens.")).assists, [
+    { type: "create-tokens", name: "Powercell", count: 2 },
+  ]);
+  assert.equal(goldfishEffectSupport(card("If you control an ally, draw 1 card.")).hasUnsupportedText, true);
+  assert.equal(goldfishEffectSupport(card("Reservable")).hasUnsupportedText, false);
 });
 
 test("glimpse suggestion recognizes fixed amounts and skips variable additions", () => {
