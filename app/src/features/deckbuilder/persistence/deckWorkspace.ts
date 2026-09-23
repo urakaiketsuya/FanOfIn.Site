@@ -13,6 +13,8 @@ export interface DeckWorkspace {
   source: "builder" | "analysis" | "review" | "combo";
   title: string | null;
   sourceLabel: string | null;
+  /** Stable account/public identity when the workspace came from a saved deck. */
+  deckIdentity?: string | null;
   format: DeckFormat;
   championName: string | null;
   spiritName: string | null;
@@ -37,6 +39,7 @@ export function loadActiveDeckWorkspace(storage: StorageLike): DeckWorkspace | n
       source: parsed.source === "analysis" || parsed.source === "review" || parsed.source === "combo" ? parsed.source : "builder",
       title: typeof parsed.title === "string" ? parsed.title : null,
       sourceLabel: typeof parsed.sourceLabel === "string" ? parsed.sourceLabel : null,
+      deckIdentity: typeof parsed.deckIdentity === "string" ? parsed.deckIdentity : null,
       format: parsed.format === "PANTHEON" ? "PANTHEON" : "STANDARD",
       championName: parsed.championName ?? null,
       spiritName: parsed.spiritName ?? null,

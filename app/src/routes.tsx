@@ -108,6 +108,7 @@ const DeckReviewIndex = lazy(() => import("./features/deck-review/DeckReviewInde
 const ComboLabIndex = lazy(() => import("./features/combo-lab/ComboLabIndex"));
 const PublicComboDetail = lazy(() => import("./features/combo-lab/PublicComboDetail"));
 const GoldfishIndex = lazy(() => import("./features/goldfish/GoldfishIndex"));
+const MatchLogIndex = lazy(() => import("./features/match-log/MatchLogIndex"));
 const CardDiscoveryIndex = lazy(() => import("./features/card-discovery/CardDiscoveryIndex"));
 const RegionsIndex = lazy(() => import("./features/regions/RegionsIndex"));
 const PackOpener = lazy(() => import("./features/packs/PackOpener"));
@@ -212,6 +213,7 @@ export default function AppRoutes() {
         <Route path="/combo-lab" element={<ComboLabIndex />} />
         <Route path="/combos/:publicSlug" element={<PublicComboDetail />} />
         <Route path="/goldfish" element={<GoldfishIndex />} />
+        <Route path="/match-log" element={<MatchLogIndex />} />
         <Route path="/card-discovery" element={<CardDiscoveryIndex />} />
         <Route path="/regions" element={<RegionsIndex />} />
         <Route path="/packs/:prefix" element={<PackOpener />} />

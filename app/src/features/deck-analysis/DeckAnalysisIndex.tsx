@@ -36,7 +36,7 @@ import PlaytestSessionTracker from "../deckbuilder/PlaytestSessionTracker";
 import StageDrawQuality from "../deckbuilder/StageDrawQuality";
 import PostSideboardPlan from "../deckbuilder/PostSideboardPlan";
 import PrepareAnalysis from "./PrepareAnalysis";
-import { analysisProfileKey, loadAnalysisProfile, saveAnalysisProfile } from "../../lib/analysisProfile";
+import { analysisProfileKey, loadAnalysisProfile, saveAnalysisProfile, type DeckAnalysisProfile } from "../../lib/analysisProfile";
 import type { GamePlanRole } from "../../lib/gamePlanReadiness";
 
 type AnalysisTab = "summary" | "explore" | "matchups";
@@ -47,8 +47,10 @@ export default function DeckAnalysisIndex() {
   const [tab, setTab] = useState<AnalysisTab>("summary");
   const [workspace, setWorkspace] = useState<DeckWorkspace | null>(() => loadActiveDeckWorkspace(sessionStorage));
   const profileStorageKey = workspace ? analysisProfileKey(workspace.championName, workspace.main) : "";
-  const [analysisRoles, setAnalysisRoles] = useState<Record<string, GamePlanRole | "">>(() => workspace ? loadAnalysisProfile(localStorage, workspace.championName, workspace.main).roles : {});
-  useEffect(() => { setAnalysisRoles(workspace ? loadAnalysisProfile(localStorage, workspace.championName, workspace.main).roles : {}); }, [profileStorageKey, workspace, workspace?.championName, workspace?.main]);
+  const profileIdentity = workspace?.deckIdentity ?? workspace?.title ?? workspace?.sourceLabel ?? null;
+  const [analysisProfile, setAnalysisProfile] = useState<DeckAnalysisProfile | null>(() => workspace ? loadAnalysisProfile(localStorage, workspace.championName, workspace.main, workspace.deckIdentity ?? workspace.title ?? workspace.sourceLabel) : null);
+  useEffect(() => { setAnalysisProfile(workspace ? loadAnalysisProfile(localStorage, workspace.championName, workspace.main, workspace.deckIdentity ?? workspace.title ?? workspace.sourceLabel) : null); }, [profileStorageKey, profileIdentity, workspace]);
+  const analysisRoles = analysisProfile?.roles ?? {};
   const data = useDeckBuilderData({ championName: workspace?.championName ?? null, format: workspace?.format ?? "STANDARD", includeDecodedDecks: false });
   const { catalogByName } = data;
   const mainTotal = total(workspace?.main);
@@ -66,9 +68,13 @@ export default function DeckAnalysisIndex() {
 
   const requestedDeck = useRequestedDeckWorkspace(catalogByName, "analysis", loadWorkspace);
   function updateAnalysisRoles(roles: Record<string, GamePlanRole | "">) {
-    if (!workspace) return;
-    setAnalysisRoles(roles);
-    saveAnalysisProfile(localStorage, workspace.championName, workspace.main, roles);
+    if (!workspace || !analysisProfile) return;
+    setAnalysisProfile(saveAnalysisProfile(localStorage, workspace.championName, workspace.main, { ...analysisProfile, roles, reviewedAt: null }, profileIdentity));
+  }
+
+  function markAnalysisReviewed() {
+    if (!workspace || !analysisProfile) return;
+    setAnalysisProfile(saveAnalysisProfile(localStorage, workspace.championName, workspace.main, { ...analysisProfile, reviewedAt: new Date().toISOString() }, profileIdentity));
   }
 
   if (requestedDeck.pending) return <PageLayout><PageHeader title="Deck Analysis" description="Loading the selected deck without changing its saved copy." /><Panel className="mt-6"><InlineState>Loading deck…</InlineState></Panel></PageLayout>;
@@ -93,6 +99,7 @@ export default function DeckAnalysisIndex() {
     <PageHeader title="Deck Analysis" />
     <DeckToolWorkspaceHeader activeTool="analysis" title={workspace.title} championName={workspace.championName} spiritName={workspace.spiritName} format={workspace.format} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel={workspace.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} />} />
     <DeckArtworkPreview material={workspace.material} main={workspace.main} catalogByName={catalogByName} />
+    {analysisProfile && <div className="mt-4"><PrepareAnalysis lines={workspace.main} catalogByName={catalogByName} profile={analysisProfile} onRolesChange={updateAnalysisRoles} onReviewed={markAnalysisReviewed} /></div>}
     <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Summary" }, { key: "explore", label: `Calculators (${CALCULATORS.length})` }, { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" /></div>
     {tab === "summary" && <div className="mt-4">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2"><h2 className="text-base font-semibold text-ctp-text">What stands out</h2><span className="rounded-full bg-ctp-surface0 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-ctp-subtext0">Descriptive</span></div>
@@ -106,7 +113,6 @@ export default function DeckAnalysisIndex() {
       <p className="mt-3 text-xs text-ctp-subtext0">These are measurements, not change recommendations. Use Deck Review when you want suggested edits.</p>
     </div>}
     {tab === "explore" && <div className="mt-4 space-y-3">
-      <PrepareAnalysis lines={workspace.main} catalogByName={catalogByName} roles={analysisRoles} onRolesChange={updateAnalysisRoles} />
       <AnalysisDisclosure title="Game plan readiness" summary="Measure when setup, payoff, and protection are likely to come together."><GamePlanReadiness mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} onSharedAssignmentsChange={updateAnalysisRoles} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Opening hand recipe" summary="Define what this deck wants early without treating every competing plan as a liability."><FunctionalHandCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Level-up runway" summary="Forecast level timing, acceleration access, and post-level hand pressure."><LevelUpRunway mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>

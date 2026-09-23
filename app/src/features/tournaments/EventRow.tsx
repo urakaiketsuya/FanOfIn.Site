@@ -30,16 +30,16 @@ function CategoryBadge({ category }: { category: string }) {
 
 export default function EventRow({ event }: { event: OmnidexEventSummary }) {
   return (
-    <Link
+    <article
       data-component="EventRow"
-      to={`/events/${event.id}`}
-      className={`flex items-center justify-between gap-4 rounded-md border border-l-4 border-ctp-surface1 px-3 py-2 text-sm hover:border-t-ctp-blue hover:border-r-ctp-blue hover:border-b-ctp-blue ${
+      className={`rounded-xl border border-l-4 border-ctp-surface1 p-3 text-sm transition-colors hover:border-t-ctp-blue hover:border-r-ctp-blue hover:border-b-ctp-blue ${
         CATEGORY_BORDER[event.category] ?? "border-l-ctp-surface1"
       }`}
     >
-      <div className="min-w-0">
+      <div className="flex items-start justify-between gap-3">
+      <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <span className="truncate text-ctp-text">{event.name}</span>
+          <Link to={`/events/${event.id}`} className="truncate font-medium text-ctp-text hover:text-ctp-blue">{event.name}</Link>
           <CategoryBadge category={event.category} />
         </div>
         <div className="text-xs text-ctp-subtext0">
@@ -49,7 +49,13 @@ export default function EventRow({ event }: { event: OmnidexEventSummary }) {
           {event.seasonName && ` · ${event.seasonName}`}
         </div>
       </div>
-      <div className="shrink-0 text-xs text-ctp-subtext1">{event.playerCount} players</div>
-    </Link>
+      <div className="shrink-0 rounded-full bg-ctp-surface0 px-2 py-1 text-xs text-ctp-subtext1">{event.playerCount} players</div>
+      </div>
+      <div className="mt-3 flex flex-wrap gap-2 border-t border-ctp-surface0 pt-2">
+        <Link to={`/events/${event.id}`} className="inline-flex min-h-9 items-center rounded-lg px-2 text-xs font-medium text-ctp-blue">Event details →</Link>
+        {event.decklists && <Link to={`/events/${event.id}?tab=decklists`} className="inline-flex min-h-9 items-center rounded-lg bg-ctp-blue/10 px-3 text-xs font-medium text-ctp-blue">Browse deck lists</Link>}
+        {!event.decklists && <span className="inline-flex min-h-9 items-center px-2 text-xs text-ctp-subtext0">No submitted deck lists</span>}
+      </div>
+    </article>
   );
 }

@@ -78,7 +78,7 @@ export default function DeckWorkspacePicker({ catalogByName, source, onLoad, com
     setPending(decklistToWorkspace(parsed.decklist, catalogByName, source, format, null, "Pasted deck", "Pasted decklist"));
     setNotice(parsed.skippedLines.length ? `${parsed.skippedLines.length} line${parsed.skippedLines.length === 1 ? " was" : "s were"} skipped.` : null);
   }
-  function prepareLibraryDeck(deck: (typeof libraryDecks)[number]) { setPending(decklistToWorkspace(deck.decklist, catalogByName, source, deck.format, deck.championName, deck.title, deck.subtitle)); setNotice(null); }
+  function prepareLibraryDeck(deck: (typeof libraryDecks)[number]) { setPending(decklistToWorkspace(deck.decklist, catalogByName, source, deck.format, deck.championName, deck.title, deck.subtitle, deck.key)); setNotice(null); }
   function confirm() { if (!pending?.championName) return; onLoad(pending); setText(""); if (compact) close(); else setPending(null); }
 
   if (!open) return <button type="button" onClick={() => setOpen(true)} className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Change deck</button>;

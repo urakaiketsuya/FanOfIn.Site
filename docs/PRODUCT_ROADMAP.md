@@ -267,12 +267,14 @@ Several calculators currently ask the user to classify the same cards independen
 ### Interaction design
 
 - Add a **Prepare analysis** step above the calculator list that shows every required selection in one
-  place, explains which calculators consume it, and highlights missing inputs.
+  place, explains which calculators consume it, and highlights missing inputs. **Implemented for shared
+  Setup, Payoff, and Protection roles, including readiness states and explicit review.**
 - Seed selections with conservative suggestions from structured card data, but require users to review
   uncertain classifications.
 - Make edits from any calculator update the shared profile immediately.
 - Persist profiles with saved decks and version them when the deck list changes; carry forward assignments
-  for unchanged card names.
+  for unchanged card names. **Implemented locally for named saved/imported deck workspaces; account sync
+  and the remaining profile categories are follow-up work.**
 - Offer presets for common archetypes only when backed by a real saved or tournament list, never as hidden
   defaults.
 
@@ -370,6 +372,11 @@ Replace the `/events` redirect with a real browse experience while preserving se
 - Offer calendar and dense-list views, followed later by a map only if location quality is sufficient.
 - Link directly to event detail, standings, deck lists, and coverage-quality notes.
 
+Implemented: cross-season search by event, organizer, address, country, and season; shareable date, country,
+setting, type, attendance, and decklist-availability filters; date/size/type sorting; list and month-grouped
+calendar views; and direct event/deck-list navigation. Player/champion search and deeper completeness filters
+remain dependent on a compact event-level participant/deck index rather than loading every event bundle.
+
 **Acceptance criteria:** a user can find an event without knowing its season and can share the filtered view.
 
 ### 4.2 Event player-to-deck navigation correctness
@@ -384,6 +391,11 @@ Replace the `/events` redirect with a real browse experience while preserving se
 content or action from the previous player remains active.
 
 ### 4.3 Unified game log
+
+**Foundation implemented:** `/match-log` now provides versioned local manual records, explicit provenance,
+Clarent v1 JSON preview/import, source-ID retention, unresolved card-ID disclosure, and idempotency by
+submission ID plus selected player seat. This is intentionally a paste/file-contract importer, not a claimed
+live Clarent connection. Saved-deck embedding, mapping correction tools, and broader summaries remain.
 
 - Replace the calculator-local test tracker with a standalone Match Log that is also embedded in saved decks.
 - Support manual entry for result, opponent/deck or archetype, play/draw, mulligan, turns, sideboard plan,

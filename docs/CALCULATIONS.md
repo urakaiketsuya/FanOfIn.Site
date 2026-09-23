@@ -1473,6 +1473,13 @@ Hypergeometric calculator, using the same "Card in build" autofill convention.
 
 ### Game Plan Readiness (`features/deckbuilder/GamePlanReadiness.tsx`, `lib/gamePlanReadiness.ts`)
 
+Deck Analysis presents a versioned **Prepare analysis** profile before its calculator tabs. Setup,
+Payoff, and Protection assignments are stored against the exact Main Deck fingerprint. A named saved
+or imported deck also keeps a latest-revision pointer: when its list changes, assignments for card
+names still present are carried into a new unreviewed revision, while removed cards are discarded.
+Anonymous imports do not inherit from unrelated lists. Editing a shared assignment clears review
+status, and the preparation panel states which calculators are ready and which role is missing.
+
 Deck Analysis lets the viewer assign each Main Deck card name to one of three mutually exclusive
 roles: Enabler, Payoff, or Protection. The viewer also chooses the minimum number required from each
 role, a target turn, and whether the deck is going first or second. Exclusive assignment keeps the
@@ -1585,6 +1592,17 @@ by recovery. Their union is exact inclusion-exclusion:
 increase is recomputed against the union to identify the largest access gain while deck size stays
 fixed. The result is still an access ceiling: it assumes found cards remain available and does not
 simulate activation costs, zones, what the opposing effect actually removes, or responses.
+
+### Standalone Match Log (`features/match-log/MatchLogIndex.tsx`, `lib/matchLog.ts`)
+
+Match Log records are versioned local observations and always retain provenance. Manual records store their
+entry timestamp. Clarent records retain schema version, submission/match/game identifiers, selected player
+seat, source version, both raw Champion IDs, card IDs, and import time. The importer accepts one submission
+or an array using the Worker's `gameSubmissionV1Schema` contract. It previews before writing, derives result
+and play order from the explicitly selected seat, surfaces catalog-unresolved card IDs, and uses
+`clarent:<submissionId>:seat<seat>` as its stable record ID. Re-importing the same game for that seat is
+therefore skipped; manual records have unrelated UUIDs and are not replaced or removed. This is not live
+Clarent synchronization and these observations are never blended into tournament statistics.
 
 ### Test Session Tracker (`features/deckbuilder/PlaytestSessionTracker.tsx`, `lib/playtestTracker.ts`)
 

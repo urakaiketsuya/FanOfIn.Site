@@ -11,6 +11,7 @@ export function decklistToWorkspace(
   suppliedChampionName: string | null = null,
   title: string | null = null,
   sourceLabel: string | null = null,
+  deckIdentity: string | null = null,
 ): Omit<DeckWorkspace, "version" | "updatedAt"> {
   // Archive imports can outlive small capitalization or whitespace corrections in the catalog.
   // Canonicalize their labels here because all downstream tools deliberately use exact names.
@@ -35,6 +36,7 @@ export function decklistToWorkspace(
     source,
     title,
     sourceLabel,
+    deckIdentity,
     format: format === "PANTHEON" ? "PANTHEON" : "STANDARD",
     championName,
     spiritName,

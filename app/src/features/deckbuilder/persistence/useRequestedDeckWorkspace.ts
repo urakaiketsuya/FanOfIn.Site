@@ -50,6 +50,7 @@ export function useRequestedDeckWorkspace(
         deck.championName,
         deck.title,
         sourceLabel,
+        savedDeckId ? `saved:${savedDeckId}` : `public:${publicDeckSlug}`,
       );
       if ("maybeboard" in deck) workspace.maybeboard = deck.maybeboard.map(({ card: name, quantity }) => ({ name, quantity }));
       onLoadRef.current(workspace);
