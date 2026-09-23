@@ -29,8 +29,9 @@ test("does not infer a backside from the word transform", () => {
   assert.equal(primaryAlternateFace(card), undefined);
 });
 
-test("filters incomplete orientation records and preserves all valid faces", () => {
+test("preserves named orientations when their image is missing for text-only navigation", () => {
   const valid = orientation("Reverse face", "/cards/images/reverse.jpg");
   const missingImage = { ...orientation("Missing image", ""), edition: { image: "" } } as CardOrientation;
-  assert.deepEqual(alternateFacesForEdition(edition("front", [missingImage, valid])), [valid]);
+  const unnamed = { ...orientation("", "/cards/images/unnamed.jpg"), name: "" } as CardOrientation;
+  assert.deepEqual(alternateFacesForEdition(edition("front", [missingImage, unnamed, valid])), [missingImage, valid]);
 });

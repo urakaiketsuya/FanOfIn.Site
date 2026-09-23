@@ -1,28 +1,5 @@
-export type MatchResult = "win" | "loss" | "draw";
-export type MatchOrder = "first" | "second" | "unknown";
-
-export type MatchProvenance =
-  | { kind: "manual"; enteredAt: string }
-  | { kind: "clarent"; schemaVersion: 1; submissionId: string; matchId: string; gameNumber: number; importedAt: string; sourceVersion: string; playerSeat: 1 | 2; playerChampionId: string; opponentChampionId: string; cardIds: string[]; cardIdMappings?: Record<string, string> };
-
-export interface MatchLogRecord {
-  version: 1;
-  id: string;
-  playedAt: string;
-  result: MatchResult;
-  order: MatchOrder;
-  turns: number | null;
-  mulligans: number | null;
-  opponent: string;
-  deckLabel: string;
-  savedDeckId?: string | null;
-  sideboardPlan: string;
-  gamePlanTurn: number | null;
-  notableCards: string[];
-  bottlenecks: string[];
-  notes: string;
-  provenance: MatchProvenance;
-}
+import type { MatchLogRecord } from "@gatcg/shared";
+export type { MatchLogRecord, MatchOrder, MatchProvenance, MatchResult } from "@gatcg/shared";
 
 export interface ClarentImportPreview {
   record: MatchLogRecord;
@@ -38,6 +15,8 @@ export interface MatchLogSummary {
   warning: string;
 }
 
+export interface MatchLogGroupSummary { label: string; games: number; wins: number; matchPointRate: number; }
+
 export function summarizeMatchLog(records: readonly MatchLogRecord[]): MatchLogSummary {
   const games = records.length;
   const wins = records.filter((record) => record.result === "win").length;
@@ -45,6 +24,19 @@ export function summarizeMatchLog(records: readonly MatchLogRecord[]): MatchLogS
   const confidence = games === 0 ? "none" : games < 5 ? "early" : games < 15 ? "developing" : "useful";
   const warning = games === 0 ? "Log games before interpreting results." : games < 5 ? "Very small sample — individual games dominate this result." : games < 15 ? "Developing sample — use patterns as prompts, not conclusions." : "Useful testing sample, but opponent selection and incomplete logging can still bias it.";
   return { games, wins, matchPointRate: games ? points / games : null, confidence, warning };
+}
+
+export function summarizeMatchLogGroups(records: readonly MatchLogRecord[], field: "opponent" | "sideboardPlan"): MatchLogGroupSummary[] {
+  const groups = new Map<string, MatchLogRecord[]>();
+  for (const record of records) {
+    const label = record[field].trim();
+    if (!label) continue;
+    groups.set(label, [...(groups.get(label) ?? []), record]);
+  }
+  return [...groups].map(([label, matches]) => {
+    const points = matches.reduce((total, record) => total + (record.result === "win" ? 1 : record.result === "draw" ? 0.5 : 0), 0);
+    return { label, games: matches.length, wins: matches.filter((record) => record.result === "win").length, matchPointRate: points / matches.length };
+  }).sort((a, b) => b.games - a.games || a.label.localeCompare(b.label));
 }
 
 export function applyClarentCardMappings(previews: readonly ClarentImportPreview[], mappings: Readonly<Record<string, { uuid: string; name: string }>>): ClarentImportPreview[] {
@@ -73,6 +65,14 @@ export function loadMatchLog(raw: string | null): MatchLogRecord[] {
     if (!Array.isArray(parsed)) return [];
     return parsed.filter((item): item is MatchLogRecord => Boolean(item && typeof item === "object" && (item as MatchLogRecord).version === 1 && typeof (item as MatchLogRecord).id === "string" && ["win", "loss", "draw"].includes((item as MatchLogRecord).result) && (item as MatchLogRecord).provenance && ["manual", "clarent"].includes((item as MatchLogRecord).provenance.kind)));
   } catch { return []; }
+}
+
+/** Combines device and account records without duplicating Clarent submissions. Account data wins
+ * for matching IDs so corrections made on another device remain authoritative. */
+export function mergeMatchLogs(local: readonly MatchLogRecord[], account: readonly MatchLogRecord[]): MatchLogRecord[] {
+  const records = new Map(local.map((record) => [record.id, record]));
+  for (const record of account) records.set(record.id, record);
+  return [...records.values()].sort((a, b) => b.playedAt.localeCompare(a.playedAt));
 }
 
 export function clarentRecordId(submissionId: string, playerSeat: 1 | 2): string {

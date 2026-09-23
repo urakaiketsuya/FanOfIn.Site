@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import type { SavedDeck } from "@gatcg/shared";
 import PageLayout from "../../components/layout/PageLayout";
 import PageHeader from "../../components/ui/PageHeader";
 import Panel from "../../components/ui/Panel";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
-import { addImportedMatches, applyClarentCardMappings, loadMatchLog, previewClarentImport, summarizeMatchLog, type ClarentImportPreview, type MatchLogRecord, type MatchOrder, type MatchResult } from "../../lib/matchLog";
+import { addImportedMatches, applyClarentCardMappings, loadMatchLog, mergeMatchLogs, previewClarentImport, summarizeMatchLog, type ClarentImportPreview, type MatchLogRecord, type MatchOrder, type MatchResult } from "../../lib/matchLog";
 import { accountApi } from "../../lib/accountApi";
 import { useCardCatalog } from "../cards/useCardCatalog";
 
@@ -14,19 +14,37 @@ const readRecords = () => { try { return loadMatchLog(localStorage.getItem(STORA
 const splitList = (value: string) => value.split(",").map((item) => item.trim()).filter(Boolean);
 
 export default function MatchLogIndex() {
+  const [searchParams] = useSearchParams();
   useDocumentTitle("Match Log", "Record manual games and preview Clarent simulator imports with their evidence source preserved.");
   const catalog = useCardCatalog();
   const knownCardIds = useMemo(() => new Set(catalog.map((card) => card.uuid)), [catalog]);
   const cardsByName = useMemo(() => new Map(catalog.map((card) => [card.name.toLowerCase(), card])), [catalog]);
   const [records, setRecordsState] = useState<MatchLogRecord[]>(readRecords);
-  const [savedDecks, setSavedDecks] = useState<SavedDeck[]>([]); const [savedDeckId, setSavedDeckId] = useState("");
+  const [savedDecks, setSavedDecks] = useState<SavedDeck[]>([]); const [savedDeckId, setSavedDeckId] = useState(() => searchParams.get("deck") ?? "");
+  const [accountSync, setAccountSync] = useState<"checking" | "synced" | "local">("checking");
   const [result, setResult] = useState<MatchResult>("win"); const [order, setOrder] = useState<MatchOrder>("first");
   const [opponent, setOpponent] = useState(""); const [deckLabel, setDeckLabel] = useState(""); const [turns, setTurns] = useState(""); const [mulligans, setMulligans] = useState("");
   const [sideboardPlan, setSideboardPlan] = useState(""); const [gamePlanTurn, setGamePlanTurn] = useState(""); const [notableCards, setNotableCards] = useState(""); const [bottlenecks, setBottlenecks] = useState(""); const [notes, setNotes] = useState("");
   const [importText, setImportText] = useState(""); const [playerSeat, setPlayerSeat] = useState<1 | 2>(1); const [preview, setPreview] = useState<{ previews: ClarentImportPreview[]; errors: string[] } | null>(null);
-  const save = (next: MatchLogRecord[]) => { setRecordsState(next); try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch { /* Best effort. */ } };
+  const save = (next: MatchLogRecord[]) => {
+    setRecordsState(next);
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch { /* Best effort. */ }
+    if (accountSync === "synced") void accountApi.saveMatchLog(next).catch(() => setAccountSync("local"));
+  };
   const summary = summarizeMatchLog(records);
-  useEffect(() => { void accountApi.decks().then(({ decks }) => setSavedDecks(decks), () => setSavedDecks([])); }, []);
+  useEffect(() => {
+    let active = true;
+    void Promise.all([accountApi.decks(), accountApi.matchLog()]).then(async ([{ decks }, { records: accountRecords }]) => {
+      if (!active) return;
+      setSavedDecks(decks);
+      const merged = mergeMatchLogs(readRecords(), accountRecords);
+      setRecordsState(merged);
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(merged)); } catch { /* Best effort. */ }
+      if (merged.some((record) => !accountRecords.some((accountRecord) => accountRecord.id === record.id))) await accountApi.saveMatchLog(merged);
+      if (active) setAccountSync("synced");
+    }).catch(() => { if (active) { setSavedDecks([]); setAccountSync("local"); } });
+    return () => { active = false; };
+  }, []);
 
   function addManual() {
     const now = new Date().toISOString();
@@ -37,6 +55,7 @@ export default function MatchLogIndex() {
 
   return <PageLayout data-component="MatchLogIndex">
     <PageHeader title="Match Log" description="Keep self-recorded testing separate from tournament results, with the source of every game attached." />
+    <p className="mt-2 text-xs text-ctp-subtext0">{accountSync === "checking" ? "Checking account sync…" : accountSync === "synced" ? "Synced to your account and this device." : "Saved on this device. Sign in to sync across devices."}</p>
     <div className="mt-4 grid grid-cols-3 gap-2"><Metric label="Games" value={`${summary.games}`} /><Metric label="Wins" value={`${summary.wins}`} /><Metric label="Match points" value={summary.matchPointRate == null ? "—" : `${Math.round(summary.matchPointRate * 100)}%`} /></div>
     <p className={`mt-2 rounded-lg px-3 py-2 text-xs ${summary.confidence === "useful" ? "bg-ctp-green/10 text-ctp-green" : "bg-ctp-yellow/10 text-ctp-yellow"}`}>{summary.warning}</p>
     <Panel className="mt-4"><h2 className="text-base font-semibold text-ctp-text">Log a game</h2><p className="mt-1 text-xs text-ctp-subtext0">Only result and play order are required. Add testing context when it will help explain the outcome later.</p>
@@ -45,7 +64,7 @@ export default function MatchLogIndex() {
       <button type="button" onClick={addManual} className="mt-3 min-h-11 w-full rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base sm:w-auto">Add manual game</button>
     </Panel>
     <details className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 font-semibold text-ctp-text [&::-webkit-details-marker]:hidden"><span>Import from Clarent</span><span className="text-xs font-normal text-ctp-mauve">JSON preview</span></summary><p className="mt-2 text-xs leading-5 text-ctp-subtext1">Paste one Clarent/TCGEngine v1 game submission or an array. This is a local file/text import, not a live Clarent connection. Choose which seat was yours before previewing.</p><Select label="My seat" value={`${playerSeat}`} onChange={(value) => setPlayerSeat(value === "2" ? 2 : 1)} options={[["1","Player 1"],["2","Player 2"]]} /><textarea value={importText} onChange={(event) => setImportText(event.target.value)} rows={7} placeholder="Paste Clarent submission JSON" className="mt-3 block w-full rounded-lg border border-ctp-surface1 bg-ctp-base p-3 font-mono text-xs text-ctp-text"/><button type="button" disabled={!importText.trim()} onClick={() => setPreview(previewClarentImport(importText, playerSeat, records, knownCardIds))} className="mt-3 min-h-11 w-full rounded-lg border border-ctp-mauve/60 px-4 text-sm font-semibold text-ctp-mauve disabled:opacity-40 sm:w-auto">Preview import</button>{preview && <ImportPreview value={preview} cardOptions={catalog.map((card) => ({ uuid: card.uuid, name: card.name }))} onImport={(previews) => { save(addImportedMatches(records, previews)); setPreview(null); setImportText(""); }} />}</details>
-    <section className="mt-6"><h2 className="text-base font-semibold text-ctp-text">Recent games</h2>{records.length === 0 ? <p className="mt-3 rounded-xl border border-dashed border-ctp-surface1 p-6 text-center text-sm text-ctp-subtext0">No games logged yet.</p> : <div className="mt-3 space-y-3">{records.map((record) => <article key={record.id} className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><div className="flex items-start justify-between gap-3"><div><p className="font-semibold text-ctp-text">{record.deckLabel || "Unspecified deck"} <span className="font-normal text-ctp-subtext0">vs.</span> {record.opponent || "unspecified opponent"}</p><p className="mt-1 text-xs text-ctp-subtext0">{new Date(record.playedAt).toLocaleDateString()} · {record.order === "first" ? "First" : record.order === "second" ? "Second" : "Order unknown"}{record.turns != null ? ` · ${record.turns} turns` : ""}</p></div><span className={`rounded-full px-2 py-1 text-[10px] font-bold uppercase ${record.result === "win" ? "bg-ctp-green/10 text-ctp-green" : record.result === "loss" ? "bg-ctp-red/10 text-ctp-red" : "bg-ctp-yellow/10 text-ctp-yellow"}`}>{record.result}</span></div>{record.notableCards.length > 0 && <div className="mt-3 flex flex-wrap gap-2">{record.notableCards.map((name) => { const card = cardsByName.get(name.toLowerCase()); return card ? <Link key={name} to={`/cards/${card.slug}`} className="rounded-full bg-ctp-blue/10 px-2 py-1 text-xs text-ctp-blue">{card.name}</Link> : <span key={name} className="rounded-full bg-ctp-surface0 px-2 py-1 text-xs text-ctp-subtext1">{name}</span>; })}</div>}<details className="mt-2"><summary className="cursor-pointer text-xs text-ctp-blue">Details and source</summary><div className="mt-2 space-y-1 text-xs text-ctp-subtext1">{record.sideboardPlan && <p>Sideboard: {record.sideboardPlan}</p>}{record.bottlenecks.length > 0 && <p>Bottlenecks: {record.bottlenecks.join(", ")}</p>}{record.notes && <p>{record.notes}</p>}<p className="text-ctp-subtext0">Source: {record.provenance.kind === "manual" ? "Manual entry" : `Clarent ${record.provenance.submissionId} · imported ${new Date(record.provenance.importedAt).toLocaleString()}`}</p></div></details><button type="button" onClick={() => save(records.filter((item) => item.id !== record.id))} className="mt-3 min-h-11 text-xs text-ctp-red">Remove</button></article>)}</div>}</section>
+    <section className="mt-6"><h2 className="text-base font-semibold text-ctp-text">Recent games</h2>{records.length === 0 ? <p className="mt-3 rounded-xl border border-dashed border-ctp-surface1 p-6 text-center text-sm text-ctp-subtext0">No games logged yet.</p> : <div className="mt-3 space-y-3">{records.map((record) => <article key={record.id} className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><div className="flex items-start justify-between gap-3"><div><p className="font-semibold text-ctp-text">{record.deckLabel || "Unspecified deck"} <span className="font-normal text-ctp-subtext0">vs.</span> {record.opponent || "unspecified opponent"}</p><p className="mt-1 text-xs text-ctp-subtext0">{new Date(record.playedAt).toLocaleDateString()} · {record.order === "first" ? "First" : record.order === "second" ? "Second" : "Order unknown"}{record.turns != null ? ` · ${record.turns} turns` : ""}</p></div><span className={`rounded-full px-2 py-1 text-[10px] font-bold uppercase ${record.result === "win" ? "bg-ctp-green/10 text-ctp-green" : record.result === "loss" ? "bg-ctp-red/10 text-ctp-red" : "bg-ctp-yellow/10 text-ctp-yellow"}`}>{record.result}</span></div>{record.notableCards.length > 0 && <div className="mt-3 flex flex-wrap gap-2">{record.notableCards.map((name) => { const card = cardsByName.get(name.toLowerCase()); return card ? <Link key={name} to={`/cards/${card.slug}`} className="rounded-full bg-ctp-blue/10 px-2 py-1 text-xs text-ctp-blue">{card.name}</Link> : <span key={name} className="rounded-full bg-ctp-surface0 px-2 py-1 text-xs text-ctp-subtext1">{name}</span>; })}</div>}<details className="mt-2"><summary className="cursor-pointer text-xs text-ctp-blue">Details and source</summary><div className="mt-2 space-y-1 text-xs text-ctp-subtext1">{record.sideboardPlan && <p>Sideboard: {record.sideboardPlan}</p>}{record.bottlenecks.length > 0 && <p>Bottlenecks: {record.bottlenecks.join(", ")}</p>}{record.notes && <p>{record.notes}</p>}<p className="text-ctp-subtext0">Source: {record.provenance.kind === "manual" ? "Manual entry" : `Clarent ${record.provenance.submissionId} · imported ${new Date(record.provenance.importedAt).toLocaleString()}`}</p></div></details><button type="button" onClick={() => { const next = records.filter((item) => item.id !== record.id); save(next); if (accountSync === "synced") void accountApi.deleteMatchLogRecord(record.id).catch(() => setAccountSync("local")); }} className="mt-3 min-h-11 text-xs text-ctp-red">Remove</button></article>)}</div>}</section>
     <p className="mt-4 text-xs leading-5 text-ctp-subtext0">This is descriptive self-recorded evidence. Small samples, opponent selection, familiarity, and incomplete logging can strongly bias it; it is never blended into tournament win rates.</p>
   </PageLayout>;
 }

@@ -66,7 +66,7 @@ const TAB_KEYS: CardTab[] = [...OVERVIEW_TABS, "decks", ...MORE_TABS.map((tab) =
 
 export default function CardDetail() {
   const { slug = "" } = useParams<{ slug: string }>();
-  const { card, loading } = useCard(slug);
+  const { card, loading, error } = useCard(slug);
   useDocumentTitle(
     card?.name,
     card && `${[card.types.join("/"), card.classes.join("/"), card.elements.join("/")].filter(Boolean).join(" · ")}${
@@ -269,6 +269,18 @@ export default function CardDetail() {
     return (
       <PageLayout data-component="CardDetail" width="standard">
         <CardDetailSkeleton />
+      </PageLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <PageLayout data-component="CardDetail" width="standard">
+        <EmptyState
+          title="Card data unavailable"
+          description={error}
+          action={<button type="button" onClick={() => window.location.reload()} className="min-h-11 rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base">Try again</button>}
+        />
       </PageLayout>
     );
   }

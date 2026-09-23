@@ -20,13 +20,18 @@ interface CardHoverPreviewProps {
 export default function CardHoverPreview({ image, backImage, backAlt, alt, children }: CardHoverPreviewProps) {
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
   const [showBack, setShowBack] = useState(false);
+  const [failedFaces, setFailedFaces] = useState<Set<"front" | "back">>(new Set());
+  const hasBack = Boolean(backImage || backAlt);
 
-  useEffect(() => setShowBack(false), [image, backImage]);
+  useEffect(() => {
+    setShowBack(false);
+    setFailedFaces(new Set());
+  }, [image, backImage, backAlt]);
 
   if (!image) return <>{children}</>;
 
   function clamp(x: number, y: number) {
-    const previewHeight = PREVIEW_HEIGHT + (backImage ? 44 : 0);
+    const previewHeight = PREVIEW_HEIGHT + (hasBack ? 44 : 0);
     return {
       x: Math.max(VIEWPORT_MARGIN, Math.min(x, window.innerWidth - PREVIEW_WIDTH - VIEWPORT_MARGIN)),
       y: Math.max(VIEWPORT_MARGIN, Math.min(y, window.innerHeight - previewHeight - VIEWPORT_MARGIN)),
@@ -65,7 +70,7 @@ export default function CardHoverPreview({ image, backImage, backAlt, alt, child
       }}
     >
       {children}
-      {backImage && <button
+      {hasBack && <button
         type="button"
         onClick={(event) => showFace(event, !showBack)}
         aria-label={`Show ${showBack ? "front" : "reverse"} face of ${alt}`}
@@ -75,13 +80,15 @@ export default function CardHoverPreview({ image, backImage, backAlt, alt, child
         <span aria-hidden="true">{showBack ? "Front" : "Flip"}</span>
       </button>}
       {pos && <span className="fixed z-50" style={{ left: pos.x, top: pos.y, width: PREVIEW_WIDTH }}>
-        <img
+        {failedFaces.has(showBack ? "back" : "front") || (showBack && !backImage) ? <span className="flex aspect-[5/7] w-full items-center justify-center rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4 text-center text-sm text-ctp-subtext1 shadow-xl" role="img" aria-label={`${showBack ? backAlt ?? `${alt} reverse face` : alt} image unavailable`}>
+          <span><span className="block font-semibold text-ctp-text">{showBack ? backAlt ?? `${alt} reverse face` : alt}</span><span className="mt-1 block">Image unavailable</span></span>
+        </span> : <img
           src={gatcgApi.imageUrl(showBack && backImage ? backImage : image)}
           alt={showBack ? backAlt ?? `${alt} reverse face` : alt}
-          onError={() => setPos(null)}
-          className="pointer-events-none w-full rounded-lg border border-ctp-surface1 shadow-xl"
-        />
-        {backImage && <span className="mt-1 grid grid-cols-2 gap-1 rounded-lg border border-ctp-surface1 bg-ctp-base/95 p-1 shadow-lg" role="group" aria-label={`${alt} card face`}>
+          onError={() => setFailedFaces((current) => new Set(current).add(showBack ? "back" : "front"))}
+          className="pointer-events-none aspect-[5/7] w-full rounded-lg border border-ctp-surface1 bg-ctp-surface0 object-cover shadow-xl"
+        />}
+        {hasBack && <span className="mt-1 grid grid-cols-2 gap-1 rounded-lg border border-ctp-surface1 bg-ctp-base/95 p-1 shadow-lg" role="group" aria-label={`${alt} card face`}>
           <button type="button" aria-pressed={!showBack} onClick={() => setShowBack(false)} className={`min-h-9 rounded-md px-2 text-xs font-medium ${!showBack ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>Front</button>
           <button type="button" aria-pressed={showBack} onClick={() => setShowBack(true)} className={`min-h-9 rounded-md px-2 text-xs font-medium ${showBack ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>Back</button>
         </span>}

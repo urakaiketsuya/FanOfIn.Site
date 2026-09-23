@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { gatcgApi } from "../lib/api/client";
 
 interface CardImageProps {
@@ -18,6 +18,18 @@ interface CardImageProps {
  */
 export default function CardImage({ image, alt, rounded, className }: CardImageProps) {
   const [status, setStatus] = useState<"loading" | "loaded" | "error">("loading");
+  useEffect(() => setStatus("loading"), [image]);
+
+  if (status === "error") {
+    return <div
+      data-component="CardImage"
+      role="img"
+      aria-label={`${alt} image unavailable`}
+      className={`flex items-center justify-center bg-ctp-surface0 p-1 text-center text-[10px] leading-tight text-ctp-subtext0 ${className ?? "rounded-md"}`}
+    >
+      <span className="line-clamp-3">{alt}<span className="sr-only"> — image unavailable</span></span>
+    </div>;
+  }
 
   return (
     <img
@@ -27,9 +39,7 @@ export default function CardImage({ image, alt, rounded, className }: CardImageP
       loading="lazy"
       onLoad={() => setStatus("loaded")}
       onError={() => setStatus("error")}
-      className={`bg-ctp-surface0 transition-opacity duration-300 ${
-        status === "loading" ? "animate-pulse opacity-0" : status === "error" ? "opacity-40" : "opacity-100"
-      } ${className ?? "rounded-md"}`}
+      className={`bg-ctp-surface0 transition-opacity duration-300 ${status === "loading" ? "animate-pulse opacity-0" : "opacity-100"} ${className ?? "rounded-md"}`}
     />
   );
 }

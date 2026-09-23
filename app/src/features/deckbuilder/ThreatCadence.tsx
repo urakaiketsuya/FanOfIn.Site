@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import type { Card } from "@gatcg/shared";
 import CardImage from "../../components/CardImage";
 import type { GamePlanRole } from "../../lib/gamePlanReadiness";
+import type { PressureMetadata } from "../../lib/analysisProfile";
 import { computePressurePackageCadence, type PressurePackage } from "../../lib/threatCadence";
 import { inferStartingHandSize, type PlayOrder } from "../../lib/turnToPlay";
 
@@ -11,8 +12,10 @@ interface PackageInput { label: string; earliestTurn: number; repeatable: boolea
 const percent = (value: number) => `${(value * 100).toFixed(1)}%`;
 const hasDiscount = (card: Card | undefined) => /\bcosts?\s+(?:\d+|x|lv)\s+less\s+to\s+activate\b/i.test((card?.effect ?? "").replace(/\*\*/g, ""));
 
-export default function ThreatCadence({ mainLines, materialLines, catalogByName, sharedAssignments = {} }: { mainLines: Line[]; materialLines: Line[]; catalogByName: Map<string, Card>; sharedAssignments?: Record<string, GamePlanRole | ""> }) {
-  const [packages, setPackages] = useState<Record<string, PackageInput>>({});
+export default function ThreatCadence({ mainLines, materialLines, catalogByName, sharedAssignments = {}, sharedPackages, onSharedPackagesChange }: { mainLines: Line[]; materialLines: Line[]; catalogByName: Map<string, Card>; sharedAssignments?: Record<string, GamePlanRole | "">; sharedPackages?: Record<string, PressureMetadata>; onSharedPackagesChange?: (packages: Record<string, PressureMetadata>) => void }) {
+  const [localPackages, setLocalPackages] = useState<Record<string, PackageInput>>({});
+  const packages: Record<string, PackageInput> = sharedPackages ? Object.fromEntries(Object.entries(sharedPackages).map(([name, value]) => [name, { ...value, label: name }])) : localPackages;
+  const setPackages = (update: Record<string, PackageInput> | ((current: Record<string, PackageInput>) => Record<string, PackageInput>)) => { const next = typeof update === "function" ? update(packages) : update; if (onSharedPackagesChange) onSharedPackagesChange(Object.fromEntries(Object.entries(next).map(([name, { earliestTurn, repeatable, effectiveReserveCost }]) => [name, { earliestTurn, repeatable, effectiveReserveCost }]))); else setLocalPackages(next); };
   const [startTurn, setStartTurn] = useState(2); const [endTurn, setEndTurn] = useState(4); const [playOrder, setPlayOrder] = useState<PlayOrder>("first"); const [query, setQuery] = useState("");
   const deckSize = mainLines.reduce((sum, line) => sum + line.quantity, 0); const opening = inferStartingHandSize(materialLines, catalogByName);
   const selectedPackages = useMemo<PressurePackage[]>(() => mainLines.flatMap((line) => { const input = packages[line.name]; return input ? [{ name: input.label || line.name, copies: line.quantity, earliestTurn: input.earliestTurn, repeatable: input.repeatable, effectiveReserveCost: input.effectiveReserveCost }] : []; }), [mainLines, packages]);

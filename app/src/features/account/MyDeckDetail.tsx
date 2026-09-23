@@ -25,6 +25,7 @@ import CardSearchPicker from "../../components/CardSearchPicker";
 import { EditableDecklistGrid, EDIT_SECTIONS, MaybeboardCardTile, type DeckCardDestination, type DeckSectionKey } from "./SavedDeckCardEditor";
 import DeckSaveBar from "./DeckSaveBar";
 import { DeckVersionHistory } from "./MyDeckDetailSections";
+import DeckMatchLogSummary from "./DeckMatchLogSummary";
 
 type DeckTab = "decklist" | "analysis" | "primer" | "versions" | "settings";
 type EditSnapshot = { deckText: string; maybeboardText: string };
@@ -461,7 +462,7 @@ export default function MyDeckDetail() {
         <p className="mt-2 text-xs text-ctp-subtext0">New decks are public by default. Once a deck is Public or Unlisted, its link always reflects your latest saved edits — set it to Private to take it down.</p>
       </div>
     </section>}
-    {tab === "analysis" && <section id="owned-deck-panel-analysis" role="tabpanel" aria-labelledby="owned-deck-tab-analysis" tabIndex={0}><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} title={deck.title} ownerDeckId={deck.id} previousDecklist={previousDecklist} /></section>}
+    {tab === "analysis" && <section id="owned-deck-panel-analysis" role="tabpanel" aria-labelledby="owned-deck-tab-analysis" tabIndex={0}><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} title={deck.title} ownerDeckId={deck.id} previousDecklist={previousDecklist} /><DeckMatchLogSummary deckId={deck.id} /></section>}
     {tab === "decklist" && <><UserDecklistPanel decklist={deck.decklist} format={deck.format} ownerDeckId={editing ? undefined : deck.id} collectionSource={editing ? undefined : `Deck: ${deck.title}`} showBuilderAction={false}>
       {editing ? <div className="mt-3 pb-[calc(5rem+env(safe-area-inset-bottom))] sm:pb-0">
         <div className="mb-3"><h2 className="text-lg font-semibold text-ctp-text">Edit cards</h2><p className="mt-1 text-xs text-ctp-subtext1">Use −/+ for one card, or tap several card images and update them together.</p></div>

@@ -7,7 +7,10 @@ import type { Card, CardEdition, CardOrientation } from "@gatcg/shared";
  */
 export function alternateFacesForEdition(edition: CardEdition | undefined): CardOrientation[] {
   if (!edition) return [];
-  return (edition.other_orientations ?? []).filter((face) => Boolean(face.name && face.edition?.image));
+  // Keep a named face even when its image is absent. The name/effect/stats are still useful and,
+  // more importantly, let image-based callers expose the required text-only face switch instead
+  // of making the reverse face undiscoverable because one asset failed to publish.
+  return (edition.other_orientations ?? []).filter((face) => Boolean(face.name));
 }
 
 /** The first alternate face for compact previews. Current official data has at most one per face. */

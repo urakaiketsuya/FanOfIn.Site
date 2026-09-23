@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import type { OmnidexDecklistEntry, OmnidexPlayer } from "@gatcg/shared";
 import { useCardsByNames } from "./useCardsByNames";
@@ -9,6 +9,7 @@ import PlayerLink from "../players/PlayerLink";
 import Section from "../../components/ui/Section";
 import { canonicalSignature } from "../popular/useDeckPopularity";
 import { shortHash } from "../../lib/hash";
+import { eventDeckSearchParams, nextEventDeckSearchIndex, resolveEventDeckSelection } from "./eventDeckSelection";
 
 export default function DecklistsSection({
   eventId,
@@ -24,19 +25,20 @@ export default function DecklistsSection({
     return placement(a.player) - placement(b.player);
   }), [decklists, players]);
   const [searchParams, setSearchParams] = useSearchParams();
-  const requestedPlayer = Number(searchParams.get("player"));
-  const selectedPlayer = rankedDecklists.some((entry) => entry.player === requestedPlayer) ? requestedPlayer : rankedDecklists[0]?.player;
+  const selection = useMemo(
+    () => resolveEventDeckSelection(eventId, rankedDecklists, searchParams.get("player")),
+    [eventId, rankedDecklists, searchParams],
+  );
   const [search, setSearch] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
-  const selected = rankedDecklists.find((d) => d.player === selectedPlayer) ?? rankedDecklists[0];
+  const [activeSearchIndex, setActiveSearchIndex] = useState(-1);
+  const selected = selection?.deck;
 
   function selectPlayer(player: number) {
-    setSearchParams((current) => {
-      const next = new URLSearchParams(current);
-      next.set("tab", "decklists");
-      next.set("player", String(player));
-      return next;
-    }, { replace: true });
+    setSearchParams((current) => eventDeckSearchParams(current, player));
+    setSearch("");
+    setSearchOpen(false);
+    setActiveSearchIndex(-1);
   }
 
   const allNames = useMemo(
@@ -50,7 +52,7 @@ export default function DecklistsSection({
 
   const similarityData = useSimilarityData();
   const fallbackPlayerName = usePlayerNameById();
-  const similarDecks = selected ? similarityData?.decks.find((d) => d.deckId === `${eventId}:${selected.player}`) : undefined;
+  const similarDecks = selection ? similarityData?.decks.find((d) => d.deckId === selection.deckId) : undefined;
 
   // Same signature/hash scheme every other deck-page link uses (PopularDeckRow, DeckDetail's own
   // "similar decks", Compare's paste-in decks) — computed client-side from this exact decklist
@@ -73,6 +75,8 @@ export default function DecklistsSection({
     return rankedDecklists.filter((d) => playerName(d.player).toLowerCase().includes(needle)).slice(0, 8);
   }, [rankedDecklists, search, playerName]);
 
+  useEffect(() => setActiveSearchIndex(-1), [search]);
+
   if (decklists.length === 0) return null;
 
   return (
@@ -81,9 +85,9 @@ export default function DecklistsSection({
       title={`Decklists (${decklists.length})`}
       heading="compact"
       actions={
-        selected && (
+        selection && (
           <>
-            <PlayerLink id={selected.player} username={playerName(selected.player)} className="text-xs text-ctp-blue hover:underline" />
+            <PlayerLink id={selection.player} username={playerName(selection.player)} className="text-xs text-ctp-blue hover:underline" />
             {deckPageHash && <Link to={`/decks/${deckPageHash}`} className="text-xs text-ctp-blue hover:underline">Open deck page →</Link>}
           </>
         )
@@ -98,26 +102,44 @@ export default function DecklistsSection({
             setSearch(e.target.value);
             setSearchOpen(true);
           }}
+          onKeyDown={(event) => {
+            if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+              event.preventDefault();
+              setSearchOpen(true);
+              setActiveSearchIndex((current) => nextEventDeckSearchIndex(current, searchMatches.length, event.key === "ArrowDown" ? 1 : -1));
+            } else if (event.key === "Enter" && activeSearchIndex >= 0) {
+              event.preventDefault();
+              const match = searchMatches[activeSearchIndex];
+              if (match) selectPlayer(match.player);
+            } else if (event.key === "Escape") {
+              setSearchOpen(false);
+              setActiveSearchIndex(-1);
+            }
+          }}
           onFocus={() => setSearchOpen(true)}
           onBlur={() => setTimeout(() => setSearchOpen(false), 100)}
           placeholder="Search players…"
+          role="combobox"
+          aria-expanded={searchOpen && search.trim() !== ""}
+          aria-controls="event-deck-player-options"
+          aria-activedescendant={activeSearchIndex >= 0 ? `event-deck-player-${searchMatches[activeSearchIndex]?.player}` : undefined}
           className="w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-1.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none"
         />
         {searchOpen && search.trim() !== "" && (
-          <div className="absolute z-10 mt-1 max-h-64 w-full overflow-y-auto rounded-md border border-ctp-surface1 bg-ctp-mantle shadow-lg">
+          <div id="event-deck-player-options" role="listbox" className="absolute z-10 mt-1 max-h-64 w-full overflow-y-auto rounded-md border border-ctp-surface1 bg-ctp-mantle shadow-lg">
             {searchMatches.length > 0 ? (
-              searchMatches.map((d) => (
+              searchMatches.map((d, index) => (
                 <button
                   key={d.player}
+                  id={`event-deck-player-${d.player}`}
+                  role="option"
+                  aria-selected={d.player === selection?.player}
                   type="button"
                   onMouseDown={(e) => e.preventDefault()}
-                  onClick={() => {
-                    selectPlayer(d.player);
-                    setSearch("");
-                    setSearchOpen(false);
-                  }}
-                  className={`block w-full px-3 py-1.5 text-left text-sm hover:bg-ctp-surface0 ${
-                    d.player === selectedPlayer ? "text-ctp-blue" : "text-ctp-text"
+                  onMouseEnter={() => setActiveSearchIndex(index)}
+                  onClick={() => selectPlayer(d.player)}
+                  className={`block min-h-11 w-full px-3 py-2 text-left text-sm hover:bg-ctp-surface0 ${
+                    d.player === selection?.player || index === activeSearchIndex ? "bg-ctp-surface0 text-ctp-blue" : "text-ctp-text"
                   }`}
                 >
                   {playerName(d.player)}
@@ -132,7 +154,8 @@ export default function DecklistsSection({
 
       {selected && (
         <div className="mt-3">
-          <DecklistView decklist={selected.decklist} cardsByName={cardsByName} deckId={`${eventId}:${selected.player}`} showThumbnails />
+          <p className="sr-only" aria-live="polite">Showing deck for {playerName(selected.player)}</p>
+          <DecklistView decklist={selected.decklist} cardsByName={cardsByName} deckId={selection?.deckId} showThumbnails />
         </div>
       )}
       {similarDecks && similarDecks.topMatches.length > 0 && (

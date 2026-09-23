@@ -197,8 +197,10 @@ current section and legal destinations; moving a card is reversible without re-s
 ### 1.2 Card backsides and transform navigation
 
 **In progress:** exact-edition front/reverse controls now appear in card detail, shared hover previews,
-Deck Builder rows and tiles, saved-deck editing, maybeboard, and tournament deck lists. A final call-site and
-image-failure accessibility audit is still required before this item is complete.
+Deck Builder rows and tiles, saved-deck editing, maybeboard, and tournament deck lists. Named reverse-face
+metadata is retained even when its image is unavailable, and shared card images/previews now expose an
+accessible text fallback without removing face controls. A final audit of card displays that do not yet use
+the shared preview remains before this item is complete.
 
 - Add a front/back toggle on card detail, card preview, deck-builder card details, and other shared card
   displays.
@@ -211,8 +213,10 @@ shown, without navigating away from their current deck workflow.
 
 ### 1.3 Card-tab loading placeholders
 
-**In progress:** current lazy and asynchronous card-stat panels use layout-matched skeletons. Completion still
-requires verifying distinct loading, empty, and failed states for every card tab and its underlying data hook.
+**In progress:** current lazy and asynchronous card-stat panels use layout-matched skeletons, empty results
+have explicit copy, and the card record itself now distinguishes a failed request from a missing card.
+Completion still requires propagating published-dataset failures (rather than only absence) through every
+card-tab data hook.
 
 - Give each lazy card-detail tab a layout-matched skeleton for image, metrics, lists, and charts.
 - Preserve the panel’s height during tab changes to reduce layout shift.
@@ -277,14 +281,15 @@ Several calculators currently ask the user to classify the same cards independen
 ### Interaction design
 
 - Add a **Prepare analysis** step above the calculator list that shows every required selection in one
-  place, explains which calculators consume it, and highlights missing inputs. **Implemented for shared
-  Setup, Payoff, and Protection roles, including readiness states and explicit review.**
+  place, explains which calculators consume it, and highlights missing inputs. **Implemented for multiple
+  named plans with shared Setup, Payoff, Protection, stage-usefulness, pressure, and effective-cost inputs,
+  including readiness states and explicit review.**
 - Seed selections with conservative suggestions from structured card data, but require users to review
   uncertain classifications.
 - Make edits from any calculator update the shared profile immediately.
 - Persist profiles with saved decks and version them when the deck list changes; carry forward assignments
-  for unchanged card names. **Implemented locally for named saved/imported deck workspaces; account sync
-  and the remaining profile categories are follow-up work.**
+  for unchanged card names. **Implemented locally for named saved/imported deck workspaces, including all
+  named plans and their surviving per-card metadata; account sync and matchup/rebuild categories remain.**
 - Offer presets for common archetypes only when backed by a real saved or tournament list, never as hidden
   defaults.
 
@@ -298,12 +303,14 @@ and why; the same classification is never requested twice for one deck version.
 Make Game Plan Readiness the main setup/payoff/protection analysis. It should combine access, stage quality,
 setup-to-payoff timing, balance, and clearly bounded affordability information. **Partially implemented in
 Deck Analysis:** the former Engine Balance and Stage Draw Quality panels now live as Timing and Stage draws
-views behind one named plan using the same disjoint prepared roles. Multiple independent named plans and
-affordability remain follow-up work.
+views behind the active named plan using the same disjoint prepared roles. Multiple independent named plans,
+per-plan stage/pressure metadata, and shared effective-cost assumptions now persist locally; account sync
+and a bounded affordability view inside Game Plan Readiness remain follow-up work.
 
-- Add named plans so a deck with competing strategies can analyze each plan separately.
+- Add named plans so a deck with competing strategies can analyze each plan separately. **Implemented locally.**
 - Let one card serve different roles in different named plans while keeping exact probability pools
-  disjoint within a single calculation, or clearly use an overlap-aware state model.
+  disjoint within a single calculation, or clearly use an overlap-aware state model. **Implemented with
+  per-plan disjoint roles.**
 - Integrate “Draw quality by game stage” as the plan’s stage view: setup cards matter before setup, payoff
   cards matter after setup, and flexible cards span both.
 - Report plan readiness, payoff-before-setup, setup-without-payoff, protection access, and stage draw quality
@@ -407,6 +414,9 @@ calendar views; direct event/deck-list navigation; compact participant/champion 
 Champion search; and shareable public-deck coverage filters for any, some, complete, or none. The generated
 event index must be rebuilt and deployed before the new discovery fields are available in production.
 
+Local index regenerated: the checked-in event index now includes participant discovery for every published
+event and Champion discovery where public decklists resolve a Champion. Production still requires deployment.
+
 **Acceptance criteria:** a user can find an event without knowing its season and can share the filtered view.
 
 ### 4.2 Event player-to-deck navigation correctness
@@ -420,14 +430,20 @@ event index must be rebuilt and deployed before the new discovery fields are ava
 **Acceptance criteria:** after any player selection change, Open Deck always opens that player’s deck and no
 content or action from the previous player remains active.
 
+Implemented: the URL-selected player now resolves once into the active deck, deck identifier, preview, player
+link, similarity evidence, and Open Deck destination. Pointer and keyboard selections write canonical,
+history-preserving query state; direct links, invalid-player fallback, and back/forward query restoration have
+regression coverage. This item is code-complete pending the intentionally deferred visual QA pass.
+
 ### 4.3 Unified game log
 
-**Foundation implemented:** `/match-log` now provides versioned local manual records, explicit provenance,
-Clarent v1 JSON preview/import, source-ID retention, correctable unresolved card mappings, and idempotency by
-submission ID plus selected player seat. Manual records can be associated with a signed-in saved deck, and
-the summary discloses coarse sample-size guidance. This is intentionally a paste/file-contract importer, not
-a claimed live Clarent connection. Account persistence, direct saved-deck-page embedding, and broader
-opponent/plan summaries remain.
+**In progress:** `/match-log` provides versioned manual records, explicit provenance, Clarent v1 JSON
+preview/import, source-ID retention, correctable unresolved card mappings, and idempotency by submission ID
+plus selected player seat. Signed-in records merge into account-backed storage while retaining an offline
+device copy; account deletion/export include the log. Saved-deck Insights embeds a deck-filtered summary with
+sample guidance plus opponent and sideboard-plan breakdowns. This remains a paste/file-contract importer,
+not a claimed live Clarent connection; the new account migration must be deployed, and broader canonical
+deck mapping remains follow-up work.
 
 - Replace the calculator-local test tracker with a standalone Match Log that is also embedded in saved decks.
 - Support manual entry for result, opponent/deck or archetype, play/draw, mulligan, turns, sideboard plan,

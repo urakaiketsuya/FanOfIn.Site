@@ -32,7 +32,7 @@ import ThreatCadence from "../deckbuilder/ThreatCadence";
 import ResilienceRebuild from "../deckbuilder/ResilienceRebuild";
 import PlaytestSessionTracker from "../deckbuilder/PlaytestSessionTracker";
 import PrepareAnalysis from "./PrepareAnalysis";
-import { analysisProfileKey, loadAnalysisProfile, saveAnalysisProfile, type DeckAnalysisProfile } from "../../lib/analysisProfile";
+import { activeAnalysisPlan, analysisProfileKey, loadAnalysisProfile, saveAnalysisProfile, type DeckAnalysisProfile } from "../../lib/analysisProfile";
 import type { GamePlanRole } from "../../lib/gamePlanReadiness";
 
 type AnalysisTab = "summary" | "explore" | "matchups";
@@ -46,7 +46,8 @@ export default function DeckAnalysisIndex() {
   const profileIdentity = workspace?.deckIdentity ?? workspace?.title ?? workspace?.sourceLabel ?? null;
   const [analysisProfile, setAnalysisProfile] = useState<DeckAnalysisProfile | null>(() => workspace ? loadAnalysisProfile(localStorage, workspace.championName, workspace.main, workspace.deckIdentity ?? workspace.title ?? workspace.sourceLabel) : null);
   useEffect(() => { setAnalysisProfile(workspace ? loadAnalysisProfile(localStorage, workspace.championName, workspace.main, workspace.deckIdentity ?? workspace.title ?? workspace.sourceLabel) : null); }, [profileStorageKey, profileIdentity, workspace]);
-  const analysisRoles = analysisProfile?.roles ?? {};
+  const analysisPlan = analysisProfile ? activeAnalysisPlan(analysisProfile) : null;
+  const analysisRoles = analysisPlan?.roles ?? {};
   const data = useDeckBuilderData({ championName: workspace?.championName ?? null, format: workspace?.format ?? "STANDARD", includeDecodedDecks: false });
   const { catalogByName } = data;
   const mainTotal = total(workspace?.main);
@@ -63,19 +64,18 @@ export default function DeckAnalysisIndex() {
   }
 
   const requestedDeck = useRequestedDeckWorkspace(catalogByName, "analysis", loadWorkspace);
-  function updateAnalysisRoles(roles: Record<string, GamePlanRole | "">) {
+  function persistAnalysisProfile(next: DeckAnalysisProfile) {
     if (!workspace || !analysisProfile) return;
-    setAnalysisProfile(saveAnalysisProfile(localStorage, workspace.championName, workspace.main, { ...analysisProfile, roles, reviewedAt: null }, profileIdentity));
+    setAnalysisProfile(saveAnalysisProfile(localStorage, workspace.championName, workspace.main, next, profileIdentity));
+  }
+  function updateAnalysisRoles(roles: Record<string, GamePlanRole | "">) {
+    if (!analysisProfile) return;
+    persistAnalysisProfile({ ...analysisProfile, plans: analysisProfile.plans.map((plan) => plan.id === analysisProfile.activePlanId ? { ...plan, roles } : plan), reviewedAt: null });
   }
 
   function markAnalysisReviewed() {
     if (!workspace || !analysisProfile) return;
-    setAnalysisProfile(saveAnalysisProfile(localStorage, workspace.championName, workspace.main, { ...analysisProfile, reviewedAt: new Date().toISOString() }, profileIdentity));
-  }
-
-  function updatePlanName(planName: string) {
-    if (!workspace || !analysisProfile) return;
-    setAnalysisProfile(saveAnalysisProfile(localStorage, workspace.championName, workspace.main, { ...analysisProfile, planName, reviewedAt: null }, profileIdentity));
+    persistAnalysisProfile({ ...analysisProfile, reviewedAt: new Date().toISOString() });
   }
 
   if (requestedDeck.pending) return <PageLayout><PageHeader title="Deck Analysis" description="Loading the selected deck without changing its saved copy." /><Panel className="mt-6"><InlineState>Loading deck…</InlineState></Panel></PageLayout>;
@@ -100,7 +100,7 @@ export default function DeckAnalysisIndex() {
     <PageHeader title="Deck Analysis" />
     <DeckToolWorkspaceHeader activeTool="analysis" title={workspace.title} championName={workspace.championName} spiritName={workspace.spiritName} format={workspace.format} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel={workspace.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} />} />
     <DeckArtworkPreview material={workspace.material} main={workspace.main} catalogByName={catalogByName} />
-    {analysisProfile && <div className="mt-4"><PrepareAnalysis lines={workspace.main} catalogByName={catalogByName} profile={analysisProfile} onRolesChange={updateAnalysisRoles} onReviewed={markAnalysisReviewed} /></div>}
+    {analysisProfile && <div className="mt-4"><PrepareAnalysis lines={workspace.main} catalogByName={catalogByName} profile={analysisProfile} onProfileChange={persistAnalysisProfile} onReviewed={markAnalysisReviewed} /></div>}
     <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Summary" }, { key: "explore", label: `Calculators (${CALCULATORS.length})` }, { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" /></div>
     {tab === "summary" && <div className="mt-4">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2"><h2 className="text-base font-semibold text-ctp-text">What stands out</h2><span className="rounded-full bg-ctp-surface0 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-ctp-subtext0">Descriptive</span></div>
@@ -114,15 +114,15 @@ export default function DeckAnalysisIndex() {
       <p className="mt-3 text-xs text-ctp-subtext0">These are measurements, not change recommendations. Use Deck Review when you want suggested edits.</p>
     </div>}
     {tab === "explore" && <div className="mt-4 space-y-3">
-      <AnalysisDisclosure title="Game plan readiness" summary="Name one plan, then inspect same-turn readiness, setup-to-payoff timing, and stage draw quality with the same card roles."><GamePlanReadiness mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} onSharedAssignmentsChange={updateAnalysisRoles} planName={analysisProfile?.planName} onPlanNameChange={updatePlanName} /></AnalysisDisclosure>
+      <AnalysisDisclosure title="Game plan readiness" summary="Inspect the selected named plan without classifying its cards again."><GamePlanReadiness mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} sharedStageUsefulness={analysisPlan?.stageUsefulness} onSharedAssignmentsChange={updateAnalysisRoles} planName={analysisPlan?.name} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Opening hand recipe" summary="Define what this deck wants early without treating every competing plan as a liability."><FunctionalHandCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Level-up runway" summary="Forecast level timing, acceleration access, and post-level hand pressure."><LevelUpRunway mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Pressure continuity" summary="Measure access to a primary proactive play on every turn in a chosen window."><ThreatCadence mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} /></AnalysisDisclosure>
+      <AnalysisDisclosure title="Pressure continuity" summary="Measure access to the selected plan's saved pressure packages."><ThreatCadence mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} sharedPackages={analysisPlan?.pressure} onSharedPackagesChange={(pressure) => analysisProfile && persistAnalysisProfile({ ...analysisProfile, plans: analysisProfile.plans.map((plan) => plan.id === analysisProfile.activePlanId ? { ...plan, pressure } : plan), reviewedAt: null })} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Resilience and rebuild" summary="Test protection and recovery access around a declared disruption turn."><ResilienceRebuild mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Test session tracker" summary="Record actual games and compare observed performance for this deck version."><PlaytestSessionTracker key={`${workspace.championName}:${workspace.main.map((line) => `${line.quantity}x${line.name}`).sort().join("|")}`} title={workspace.title} championName={workspace.championName} mainLines={workspace.main} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Card access and probability" summary="Find a card, functional role, or complete combo."><HypergeometricCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Consistency details" summary="Inspect duplicate draws and conditional cards."><CopyClumpingRisk mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /><ConditionalHandPressure mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Resource timing" summary="See when Reserve costs become reliably available."><ResourceCurveReliability mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
+      <AnalysisDisclosure title="Resource timing" summary="See when Reserve costs become reliably available."><ResourceCurveReliability mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedEffectiveCosts={analysisProfile?.effectiveCosts} onSharedEffectiveCostsChange={(effectiveCosts) => analysisProfile && persistAnalysisProfile({ ...analysisProfile, effectiveCosts, reviewedAt: null })} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Curve affordability check" summary="Quickly test whether up to four named plays can be drawn and paid for; use Combo Lab for flexible or branching lines."><ReserveSequencePressure mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Sideboard impact" summary={workspace.sideboard.length > 0 ? "Preview substitutions without changing the deck." : "No Sideboard cards in this deck."}>{workspace.sideboard.length > 0 ? <SideboardImpact mainLines={workspace.main} sideboardLines={workspace.sideboard} catalogByName={catalogByName} /> : <InlineState>Add cards to the Sideboard in Deck Builder to analyze substitutions.</InlineState>}</AnalysisDisclosure>
     </div>}

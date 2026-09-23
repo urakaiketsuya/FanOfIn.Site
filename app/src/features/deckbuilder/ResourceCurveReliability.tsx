@@ -13,12 +13,16 @@ function status(probability: number): { label: string; className: string } {
   return { label: "Thin", className: "text-ctp-yellow" };
 }
 
-export default function ResourceCurveReliability({ mainLines, materialLines, catalogByName }: {
+export default function ResourceCurveReliability({ mainLines, materialLines, catalogByName, sharedEffectiveCosts, onSharedEffectiveCostsChange }: {
   mainLines: { name: string; quantity: number }[];
   materialLines: { name: string; quantity: number }[];
   catalogByName: Map<string, Card>;
+  sharedEffectiveCosts?: Record<string, number>;
+  onSharedEffectiveCostsChange?: (costs: Record<string, number>) => void;
 }) {
-  const [effectiveCosts, setEffectiveCosts] = useState<Record<string, number>>({});
+  const [localEffectiveCosts, setLocalEffectiveCosts] = useState<Record<string, number>>({});
+  const effectiveCosts = sharedEffectiveCosts ?? localEffectiveCosts;
+  const setEffectiveCosts = (updater: (current: Record<string, number>) => Record<string, number>) => onSharedEffectiveCostsChange ? onSharedEffectiveCostsChange(updater(effectiveCosts)) : setLocalEffectiveCosts(updater);
   const startingHandSize = useMemo(() => inferStartingHandSize(materialLines, catalogByName), [materialLines, catalogByName]);
   const points = useMemo(() => computeResourceCurveReliability(mainLines, catalogByName, startingHandSize, effectiveCosts), [mainLines, catalogByName, startingHandSize, effectiveCosts]);
   const cardsByCost = useMemo(() => new Map(points.map((point) => [point.cost, mainLines.filter((line) => (effectiveCosts[line.name] ?? catalogByName.get(line.name)?.cost_reserve) === point.cost)])), [points, mainLines, catalogByName, effectiveCosts]);

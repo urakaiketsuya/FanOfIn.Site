@@ -1473,14 +1473,16 @@ Hypergeometric calculator, using the same "Card in build" autofill convention.
 
 ### Game Plan Readiness (`features/deckbuilder/GamePlanReadiness.tsx`, `lib/gamePlanReadiness.ts`)
 
-Deck Analysis presents a versioned **Prepare analysis** profile before its calculator tabs. Setup,
-Payoff, and Protection assignments are stored against the exact Main Deck fingerprint. A named saved
+Deck Analysis presents a versioned **Prepare analysis** profile before its calculator tabs. Each profile
+can contain up to twelve named plans; every plan stores its own mutually exclusive Setup, Payoff, and
+Protection roles, stage-usefulness overrides, and pressure-package assumptions. Effective-cost overrides
+are shared across the deck version. A named saved
 or imported deck also keeps a latest-revision pointer: when its list changes, assignments for card
 names still present are carried into a new unreviewed revision, while removed cards are discarded.
 Anonymous imports do not inherit from unrelated lists. Editing a shared assignment clears review
-status, and the preparation panel states which calculators are ready and which role is missing.
+status. Switching plans changes every consuming calculator without asking for the same roles again.
 
-Game Plan Readiness is the primary plan workflow and stores a player-authored plan name. Its three
+Game Plan Readiness is the primary plan workflow and consumes the active player-authored plan. Its three
 views reuse one mutually exclusive Setup/Payoff/Protection assignment:
 
 - **Readiness** uses `probabilityOfRecipe` at one shared checkpoint.
@@ -1555,7 +1557,8 @@ simulation.
 
 ### Pressure Continuity (`features/deckbuilder/ThreatCadence.tsx`, `lib/threatCadence.ts`)
 
-The current card-first UI treats each selected card as a named pressure package. The viewer records its
+The current card-first UI treats each selected card as a named pressure package. In Deck Analysis these
+packages are read from and written back to the active named plan. The viewer records its
 earliest useful turn, whether it is repeatable once established, and an effective Reserve-cost assumption;
 printed cost is the default and printed `costs N/X/LV less to activate` language is flagged for review.
 For every turn, **access cadence** is the exact chance of seeing at least one copy among packages whose

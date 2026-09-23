@@ -9,6 +9,7 @@ import { listCollection, listSharedCardWatches, setSharedCardWatch, undoCollecti
 import { changePassword, handleResendWebhook, loginPassword, recordPrivateResourceMiss, registerPassword, removePasswordCredential, requestPasswordReset, resetPassword, verifyEmailToken, verifyTurnstile } from "./password-auth";
 import { createCombo, deleteCombo, discoverCombos, getPublicCombo, listComboBookmarks, listCombos, setComboBookmark, updateCombo } from "./combos";
 import { listTournamentFavorites, parseTournamentFavoriteInput, setTournamentFavorite, tournamentFavoriteState } from "./tournament-favorites";
+import { deleteMatchLogRecord, listMatchLog, upsertMatchLog } from "./match-log";
 
 function response(env: Env, request: Request, body: unknown, status = 200, extra: HeadersInit = {}): Response {
   const origin = request.headers.get("Origin");
@@ -78,7 +79,7 @@ export default {
     }
     if (request.method === "OPTIONS") {
       if (!originAllowed(request, env)) return response(env, request, { error: "Origin is not allowed" }, 403);
-      return response(env, request, {}, 200, { "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS", "Access-Control-Allow-Headers": "Content-Type" });
+      return response(env, request, {}, 200, { "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS", "Access-Control-Allow-Headers": "Content-Type" });
     }
     if (url.pathname !== "/health" && !await bffAllowed(request, env)) {
       return response(env, request, { error: "Account service gateway is required" }, 403);
@@ -301,6 +302,17 @@ export default {
       }
 
       if (request.method === "GET" && url.pathname === "/v1/me/decks") return response(env, request, { decks: await listDecks(env, user) });
+      if (request.method === "GET" && url.pathname === "/v1/me/match-log") return response(env, request, { records: await listMatchLog(env, user, url.searchParams.get("savedDeckId")) });
+      if (request.method === "PUT" && url.pathname === "/v1/me/match-log") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        return response(env, request, await upsertMatchLog(env, user, await jsonBody(request)));
+      }
+      const matchLogRecordMatch = url.pathname.match(/^\/v1\/me\/match-log\/([^/]+)$/);
+      if (matchLogRecordMatch && request.method === "DELETE") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        return await deleteMatchLogRecord(env, user, decodeURIComponent(matchLogRecordMatch[1]))
+          ? response(env, request, { success: true }) : response(env, request, { error: "Match record not found" }, 404);
+      }
       if (request.method === "GET" && url.pathname === "/v1/me/collection") return response(env, request, await listCollection(env, user));
       if (request.method === "POST" && url.pathname === "/v1/me/collection") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
@@ -324,7 +336,7 @@ export default {
         const deckSummaries = await listDecks(env, user);
         const decks = (await Promise.all(deckSummaries.map((deck) => getDeck(env, user, deck.id)))).filter((deck) => deck !== null);
         const collection = await listCollection(env, user);
-        return response(env, request, { exportedAt: new Date().toISOString(), user, profiles: profiles.results, decks, combos: await listCombos(env, user), collection: collection.entries });
+        return response(env, request, { exportedAt: new Date().toISOString(), user, profiles: profiles.results, decks, combos: await listCombos(env, user), collection: collection.entries, matchLog: await listMatchLog(env, user) });
       }
       if (request.method === "PATCH" && url.pathname === "/v1/me") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);

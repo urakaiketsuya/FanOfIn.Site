@@ -6,6 +6,7 @@
   "scripts": {
     "start": "tsx src/index.ts",
     "repl": "tsx src/repl.ts",
+    "omnidex:build-index": "tsx src/omnidex/rebuildIndex.ts",
     "test": "tsx --test src/**/*.test.ts",
     "validate:archetypes": "tsx src/analysis/archetypeTaxonomyValidation.ts",
     "audit:diao": "tsx src/analysis/diaoModelAudit.ts",

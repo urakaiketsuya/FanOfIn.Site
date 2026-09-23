@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { addImportedMatches, applyClarentCardMappings, loadMatchLog, previewClarentImport, summarizeMatchLog, type MatchLogRecord } from "../src/lib/matchLog";
+import { addImportedMatches, applyClarentCardMappings, loadMatchLog, mergeMatchLogs, previewClarentImport, summarizeMatchLog, summarizeMatchLogGroups, type MatchLogRecord } from "../src/lib/matchLog";
 
 const submission = {
   schemaVersion: 1, submissionId: "match-7:1", submittedAt: "2026-09-20T12:00:00.000Z",
@@ -59,4 +59,20 @@ test("match summaries label small samples without overstating confidence", () =>
   assert.equal(summarizeMatchLog(Array.from({ length: 5 }, () => record)).confidence, "developing");
   assert.equal(summarizeMatchLog(Array.from({ length: 15 }, () => record)).confidence, "useful");
   assert.equal(summarizeMatchLog([record]).matchPointRate, 1);
+});
+
+test("account records win when device and account logs share an id", () => {
+  const local = previewClarentImport(JSON.stringify(submission), 1, []).previews[0].record;
+  const account = { ...local, opponent: "Corrected opponent" };
+  const extra: MatchLogRecord = { ...local, id: "manual-extra", playedAt: "2026-09-21T00:00:00.000Z", provenance: { kind: "manual", enteredAt: "2026-09-21T00:00:00.000Z" } };
+  const merged = mergeMatchLogs([local, extra], [account]);
+  assert.equal(merged.length, 2);
+  assert.equal(merged.find((record) => record.id === local.id)?.opponent, "Corrected opponent");
+  assert.equal(merged[0].id, "manual-extra");
+});
+
+test("match groups summarize opponents without inventing empty labels", () => {
+  const base = previewClarentImport(JSON.stringify(submission), 2, []).previews[0].record;
+  const groups = summarizeMatchLogGroups([base, { ...base, id: "second", result: "loss" }, { ...base, id: "empty", opponent: "" }], "opponent");
+  assert.deepEqual(groups, [{ label: "Alice", games: 2, wins: 1, matchPointRate: 0.5 }]);
 });

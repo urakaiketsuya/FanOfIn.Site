@@ -1,4 +1,4 @@
-import type { AccountSession, AccountUser, AuthIdentity, AuthProvider, BookmarkedCombo, BookmarkedDeck, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, ComboDefinition, ComboVisibility, DeckFormat, DeckImportPreview, DeckImportResult, DeckReportReason, DeckSocialState, DeckVisibility, OmnidexDecklist, PublicCombo, PublicDeck, PublicDeckSummary, PublicProfile, SavedCombo, SavedDeck, SavedDeckDetail, SharedCardWatch, TournamentDeckFavorite } from "@gatcg/shared";
+import type { AccountSession, AccountUser, AuthIdentity, AuthProvider, BookmarkedCombo, BookmarkedDeck, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, ComboDefinition, ComboVisibility, DeckFormat, DeckImportPreview, DeckImportResult, DeckReportReason, DeckSocialState, DeckVisibility, MatchLogRecord, OmnidexDecklist, PublicCombo, PublicDeck, PublicDeckSummary, PublicProfile, SavedCombo, SavedDeck, SavedDeckDetail, SharedCardWatch, TournamentDeckFavorite } from "@gatcg/shared";
 
 const ACCOUNT_API_URL = (import.meta.env.VITE_ACCOUNT_API_URL as string | undefined)?.replace(/\/$/, "")
   ?? (import.meta.env.PROD ? "https://accounts.fanofin.site/api" : "http://localhost:8788");
@@ -41,6 +41,13 @@ export const accountApi = {
   updateAccountPreferences: (preferences: { deckChecklistDismissed?: boolean; displayNameReviewed?: boolean }) => accountRequest<{ user: AccountUser }>("/v1/me", { method: "PATCH", body: JSON.stringify(preferences) }),
   deleteAccount: () => accountRequest<{ success: true }>("/v1/me", { method: "DELETE", body: JSON.stringify({ confirmation: "DELETE" }) }),
   decks: () => accountRequest<{ decks: SavedDeck[] }>("/v1/me/decks"),
+  matchLog: (savedDeckId?: string) => accountRequest<{ records: MatchLogRecord[] }>(`/v1/me/match-log${savedDeckId ? `?savedDeckId=${encodeURIComponent(savedDeckId)}` : ""}`),
+  saveMatchLog: async (records: MatchLogRecord[]) => {
+    let saved = 0;
+    for (let offset = 0; offset < records.length; offset += 500) saved += (await accountRequest<{ saved: number }>("/v1/me/match-log", { method: "PUT", body: JSON.stringify({ records: records.slice(offset, offset + 500) }) })).saved;
+    return { saved };
+  },
+  deleteMatchLogRecord: (id: string) => accountRequest<{ success: true }>(`/v1/me/match-log/${encodeURIComponent(id)}`, { method: "DELETE" }),
   deck: (id: string) => accountRequest<{ deck: SavedDeckDetail }>(`/v1/me/decks/${encodeURIComponent(id)}`),
   publicDeck: (slug: string) => accountRequest<{ deck: PublicDeck }>(`/v1/decklists/${encodeURIComponent(slug)}`),
   discoverDecks: (params: URLSearchParams) => accountRequest<{ decks: PublicDeckSummary[]; nextPage: number | null }>(`/v1/discover/decklists?${params.toString()}`),
