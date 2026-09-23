@@ -9,6 +9,16 @@ export interface SideboardPlanResult {
   postboardMain: DeckLine[];
 }
 
+export interface SavedSideboardPlan {
+  id: string;
+  name: string;
+  matchup: string;
+  createdAt: string;
+  updatedAt: string;
+  outs: Record<string, number>;
+  ins: Record<string, number>;
+}
+
 function selectedTotal(selection: Record<string, number>) {
   return Object.values(selection).reduce((sum, quantity) => sum + Math.max(0, Math.floor(quantity || 0)), 0);
 }
@@ -30,4 +40,25 @@ export function buildSideboardPlan(main: DeckLine[], sideboard: DeckLine[], outs
   const postboardMain = order.map((name) => ({ name, quantity: quantities.get(name) ?? 0 })).filter((line) => line.quantity > 0);
 
   return { cardsOut, cardsIn, balanced: cardsOut === cardsIn, valid: cardsOut > 0 && errors.length === 0, errors, postboardMain };
+}
+
+export function sideboardPlanDeckFingerprint(championName: string | null, main: DeckLine[], sideboard: DeckLine[]): string {
+  const canonicalLines = (lines: DeckLine[]) => [...lines].sort((a, b) => a.name.localeCompare(b.name)).map((line) => `${line.quantity}x${line.name}`).join("|");
+  const canonical = `${championName ?? "unknown"}|main:${canonicalLines(main)}|side:${canonicalLines(sideboard)}`;
+  let hash = 2166136261;
+  for (let index = 0; index < canonical.length; index++) { hash ^= canonical.charCodeAt(index); hash = Math.imul(hash, 16777619); }
+  return (hash >>> 0).toString(36);
+}
+
+export function parseSavedSideboardPlans(value: string | null): SavedSideboardPlan[] {
+  if (!value) return [];
+  try {
+    const parsed = JSON.parse(value) as unknown;
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((plan): plan is SavedSideboardPlan => Boolean(plan && typeof plan === "object" && typeof (plan as SavedSideboardPlan).id === "string" && typeof (plan as SavedSideboardPlan).name === "string" && typeof (plan as SavedSideboardPlan).matchup === "string" && typeof (plan as SavedSideboardPlan).createdAt === "string" && typeof (plan as SavedSideboardPlan).updatedAt === "string" && isSelection((plan as SavedSideboardPlan).outs) && isSelection((plan as SavedSideboardPlan).ins)));
+  } catch { return []; }
+}
+
+function isSelection(value: unknown): value is Record<string, number> {
+  return Boolean(value && typeof value === "object" && Object.entries(value).every(([name, quantity]) => name.length > 0 && typeof quantity === "number" && Number.isInteger(quantity) && quantity >= 0));
 }

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildSideboardPlan } from "../src/lib/sideboardPlan";
+import { buildSideboardPlan, parseSavedSideboardPlans, sideboardPlanDeckFingerprint } from "../src/lib/sideboardPlan";
 
 const main = [{ name: "Alpha", quantity: 4 }, { name: "Beta", quantity: 2 }];
 const sideboard = [{ name: "Gamma", quantity: 3 }, { name: "Alpha", quantity: 1 }];
@@ -24,4 +24,18 @@ test("rejects quantities beyond registered copies", () => {
   const result = buildSideboardPlan(main, sideboard, { Beta: 3 }, { Gamma: 3 });
   assert.equal(result.valid, false);
   assert.ok(result.errors.includes("Cannot remove 3 copies of Beta."));
+});
+
+test("deck fingerprints ignore line order but include the sideboard", () => {
+  const first = sideboardPlanDeckFingerprint("Lorraine", main, sideboard);
+  const reordered = sideboardPlanDeckFingerprint("Lorraine", [...main].reverse(), [...sideboard].reverse());
+  const changed = sideboardPlanDeckFingerprint("Lorraine", main, [{ name: "Gamma", quantity: 2 }]);
+  assert.equal(first, reordered);
+  assert.notEqual(first, changed);
+});
+
+test("saved plan parsing rejects malformed local data", () => {
+  const valid = { id: "1", name: "Control", matchup: "Alice", createdAt: "2026-01-01", updatedAt: "2026-01-01", outs: { Alpha: 2 }, ins: { Gamma: 2 } };
+  assert.deepEqual(parseSavedSideboardPlans(JSON.stringify([valid, { name: "broken" }])), [valid]);
+  assert.deepEqual(parseSavedSideboardPlans("not json"), []);
 });
