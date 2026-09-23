@@ -126,7 +126,8 @@ Use three consistent information layers:
 | 2 | Shared deck annotations | Let users classify cards and plans once, review them up front, and reuse them across calculators |
 | 3 | Calculator consolidation | Rework overlapping calculators into a smaller, clearer analysis workflow |
 | 4 | Events, matches, and simulator evidence | Add true event discovery and a unified match log that can ingest Clarent data |
-| 5 | Social publishing | Add comments, authored articles, and discussion spaces with moderation and discovery |
+| 5 | Accounts and social publishing | Add deck favorites, comments, authored articles, and discussion spaces with moderation and discovery |
+| 6 | Trading binder | Turn Looking For into a public, inventory-aware offer and trade-completion workflow |
 
 ## Phase 0 — Research and definitions
 
@@ -220,6 +221,20 @@ shown, without navigating away from their current deck workflow.
 
 **Acceptance criteria:** the same ownership calculation powers Collection, My Decks, Deck Builder, Deck
 Review, and Deck Analysis; shared copies are not incorrectly allocated to every deck simultaneously.
+
+### 1.6 Tournament deck completeness and card context
+
+- Restore Sideboard sections on tournament deck pages, including older or partially imported lists such as
+  `/decks/1r8hg2p`; distinguish a genuinely empty Sideboard from unavailable source data.
+- Audit ingestion, stored deck data, and page rendering separately so a display fix does not conceal missing
+  upstream Sideboard records.
+- In Card Stats deck lists, make the deck link a visually clear primary row action with a descriptive label,
+  full keyboard focus treatment, and an adequately sized mobile target.
+- On card-detail “Recent decks,” mark whether the card appears in Main, Material, Sideboard, or more than one
+  section. Keep Sideboard-only appearances visually distinct and accessible without relying on color alone.
+
+**Acceptance criteria:** tournament decks render every available section and disclose unavailable source
+data; users can recognize and open a deck from Card Stats; recent-deck appearances state the card’s section.
 
 ## Phase 2 — Shared deck annotations
 
@@ -343,7 +358,18 @@ Replace the `/events` redirect with a real browse experience while preserving se
 
 **Acceptance criteria:** a user can find an event without knowing its season and can share the filtered view.
 
-### 4.2 Unified game log
+### 4.2 Event player-to-deck navigation correctness
+
+- Fix event detail so changing the selected player also updates the Open Deck destination, deck preview, and
+  any player-derived actions in the same render.
+- Use the selected player or deck identifier as the single source of truth rather than preserving a stale
+  link from the initially selected player.
+- Add regression coverage for keyboard, pointer, browser-history, and direct-link player changes.
+
+**Acceptance criteria:** after any player selection change, Open Deck always opens that player’s deck and no
+content or action from the previous player remains active.
+
+### 4.3 Unified game log
 
 - Replace the calculator-local test tracker with a standalone Match Log that is also embedded in saved decks.
 - Support manual entry for result, opponent/deck or archetype, play/draw, mulligan, turns, sideboard plan,
@@ -359,38 +385,105 @@ Replace the `/events` redirect with a real browse experience while preserving se
 **Acceptance criteria:** importing the same Clarent session twice creates no duplicates; users can correct
 unresolved mappings; deleting an import does not delete manually entered games.
 
+### 4.4 Rules-aware Goldfish
+
+- Model reservable cards as explicit choices, preserving card identity and zone changes rather than treating
+  Reserve as an abstract counter.
+- Create and track tokens produced by card effects, including their relevant characteristics, zones, and
+  lifecycle when supported by the rules data.
+- Add the Recollection Phase and its legal actions to the turn sequence.
+- Make the Material Deck available to legal effects and actions, with visible Material-zone state.
+- Support effects that banish cards randomly from Memory using a reproducible random seed, visible result,
+  and replayable action history.
+- Keep unsupported rules text explicit; never silently resolve an effect as if the full rule were modeled.
+- Extend saved/replayable goldfish sessions so new zones, tokens, random outcomes, and rules-engine version
+  round-trip without corrupting older sessions.
+
+**Acceptance criteria:** representative fixtures cover reserving, token creation, Recollection, Material Deck
+use, and seeded random Memory banishment; replaying a session produces the same state and random outcomes.
+
 ## Phase 5 — Social publishing
 
 Ship incrementally. “Comments, a forum, and a blog” are three product surfaces sharing identity,
 moderation, notifications, and authoring infrastructure.
 
-### 5.1 Social foundation
+### 5.1 Deck likes and favorites
+
+- Let signed-in users like or favorite public tournament and community deck lists from deck cards and deck
+  detail pages, with optimistic feedback and a recoverable error state.
+- Treat favorites as a private library action unless a user explicitly opts into public likes; define whether
+  a public like count is shown before shipping it.
+- Add a dedicated **Favorites** section under My Decks, separate from decks the user owns or authored.
+- Preserve the source deck identity and handle deleted, private, or superseded decks without silently removing
+  the saved reference.
+- Prevent duplicate favorites and keep favorite state synchronized across every deck-list surface.
+
+**Acceptance criteria:** favorite/unfavorite is idempotent, appears consistently across devices, and the My
+Decks Favorites section can filter and open saved tournament and community decks.
+
+### 5.2 Social foundation
 
 - Public profiles, display-name and visibility controls, blocks/mutes, reporting, moderation audit log,
   rate limits, spam controls, notification preferences, and community guidelines.
 - Reusable reactions, subscriptions, mentions, safe rich text, link handling, edit history, and soft deletion.
 - Staff roles and queues before public posting is enabled.
 
-### 5.2 Comments
+### 5.3 Comments
 
 - Start with comments on public deck lists and authored articles.
 - Use shallow threading, sorting, permalink/share support, author editing, reporting, and locked discussions.
 - Make comments opt-in per deck/article owner initially.
 
-### 5.3 Blog / articles
+### 5.4 Blog / articles
 
 - Add authored strategy articles with drafts, preview, cover image, tags, deck embeds, card references,
   calculator-result embeds, scheduled publication, and revision history.
 - Separate official/editorial posts from community articles visually and in permissions.
 - Add feeds by tag, champion, archetype, and author plus search and RSS/Atom.
 
-### 5.4 Forum / discussions
+### 5.5 Forum / discussions
 
 - Launch after moderation and comments have proven reliable.
 - Prefer focused categories, searchable topics, accepted/featured replies, deck/card embeds, and duplicate-topic
   guidance over a large empty category tree.
 - Evaluate whether article comments plus tagged discussions satisfy the need before building traditional
   forum-specific mechanics.
+
+## Phase 6 — Trading binder
+
+Replace Looking For with a card-first binder that separates owned inventory, items available to trade, and
+cards wanted. Treat a trade as an explicit agreement between two accounts, not merely a direct message.
+
+### 6.1 Public binder and discovery
+
+- Let users publish selected card printings and quantities as available, and maintain a wanted list with
+  preferred editions, condition, language, quantity, and acceptable substitutes.
+- Keep collection quantities private by default; users choose exactly what and how many copies appear in
+  their public binder.
+- Add public binder profiles, search and filters, trade-location/shipping preferences, and freshness status.
+- Show potential matches between one user’s available cards and another user’s wanted cards without exposing
+  private collection data.
+
+### 6.2 Offers and agreement
+
+- Let a user compose an offer from both binders, propose quantities and printings, add a message, and revise,
+  accept, decline, cancel, or counter the offer.
+- Lock an accepted offer to immutable card snapshots while retaining a clear audit trail of revisions.
+- Prevent either party from promising more publicly available copies than remain after other accepted or
+  pending commitments, while allowing them to resolve conflicts explicitly.
+- Add reporting, blocking, rate limits, privacy controls, and safety guidance before public offers launch.
+- Do not add payments, escrow, shipping labels, or guarantees without a separate legal and operational review.
+
+### 6.3 Completion and binder updates
+
+- Let both parties mark a trade sent, received, disputed, cancelled, or complete; define which combinations
+  constitute completion without implying platform-guaranteed fulfillment.
+- On completion, show an explicit confirmation of collection and binder quantity changes for each user.
+  Apply changes transactionally and provide a correction path rather than silently mutating inventory.
+- Retain completed trade history and provenance for resulting collection adjustments.
+
+**Acceptance criteria:** users can publish a limited binder, find reciprocal matches, negotiate an auditable
+offer, confirm completion, and update both collection and public availability without overselling quantities.
 
 ## Suggested delivery slices
 
@@ -423,6 +516,16 @@ Event browser, standalone Match Log, and Clarent imports.
 
 Moderation foundation, comments, articles, then forum-style discussions.
 
+### Slice H — Deck discovery and rules correctness
+
+Tournament Sideboards, clearer Card Stats deck links, recent-deck section badges, event player-link regression,
+deck favorites, and rules-aware Goldfish state.
+
+### Slice I — Trading binder
+
+Public binder and wants, reciprocal discovery, offers/counters, completion states, and confirmed inventory
+updates after the account and moderation foundations exist.
+
 ## Measurement
 
 Track product outcomes without treating engagement alone as success:
@@ -434,6 +537,9 @@ Track product outcomes without treating engagement alone as success:
 - Event searches that reach an event detail page.
 - Match-import resolution rate and duplicate-import rate.
 - Reports per 1,000 social posts, moderation response time, and percentage of discussions receiving a reply.
+- Favorite conversion and return-to-favorite rate without using public like totals as a quality proxy.
+- Goldfish unsupported-action rate, replay determinism, and completion rate by rules-engine version.
+- Binder match rate, offer acceptance/completion rate, stale-listing rate, disputes, and quantity conflicts.
 
 ## Deferred until foundations exist
 
@@ -442,3 +548,5 @@ Track product outcomes without treating engagement alone as success:
 - A geographic event map before location data is normalized.
 - Public social posting before reporting and moderation tools ship.
 - Simulator-derived conclusions mixed with tournament or manual logs without visible provenance.
+- Payments, escrow, shipping guarantees, or reputation scores before trading safety and support requirements
+  receive separate legal, fraud, privacy, and operations review.
