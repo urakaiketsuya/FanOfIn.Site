@@ -35,10 +35,10 @@ export default function MyDecksIndex() {
   const [deckText, setDeckText] = useState("");
   const [addMode, setAddMode] = useState<AddMode>(null);
   const [deckSearch, setDeckSearch] = useState("");
+  const [favoriteSearch, setFavoriteSearch] = useState("");
   const [deckFormatFilter, setDeckFormatFilter] = useState<"ALL" | DeckFormat>("ALL");
   const [deckChampionFilter, setDeckChampionFilter] = useState("ALL");
   const [deckSort, setDeckSort] = useState<"updated" | "created" | "title">("updated");
-  const [libraryScope, setLibraryScope] = useState<"all" | "mine" | "saved">("all");
   const pastedDeck = useMemo(() => parseDecklist(deckText).decklist, [deckText]);
   const pastedCardNames = useMemo(() => [...pastedDeck.main, ...pastedDeck.material, ...pastedDeck.sideboard].map((line) => line.card), [pastedDeck]);
   const pastedCardsByName = useCardsByNames(pastedCardNames);
@@ -57,9 +57,9 @@ export default function MyDecksIndex() {
       .sort((a, b) => deckSort === "title" ? a.title.localeCompare(b.title) : deckSort === "created" ? b.createdAt.localeCompare(a.createdAt) : b.updatedAt.localeCompare(a.updatedAt));
   }, [decks, deckSearch, deckFormatFilter, deckChampionFilter, deckSort]);
   const visibleBookmarks = useMemo(() => {
-    const query = deckSearch.trim().toLowerCase();
+    const query = favoriteSearch.trim().toLowerCase();
     return bookmarks.filter((deck) => !query || deck.title.toLowerCase().includes(query) || (deck.championName?.toLowerCase().includes(query) ?? false));
-  }, [bookmarks, deckSearch]);
+  }, [bookmarks, favoriteSearch]);
 
   const refreshDecks = useCallback(async () => {
     const [owned, saved] = await Promise.all([accountApi.decks(), accountApi.bookmarks()]);
@@ -77,7 +77,7 @@ export default function MyDecksIndex() {
   if (!user) return <PageLayout data-component="MyDecksIndex" width="standard"><Panel className="mt-8 text-center"><h1 className="text-2xl font-bold text-ctp-blue">Make My Decks your deck-building home</h1><p className="mx-auto mt-2 max-w-xl text-ctp-subtext1">Sign in to save builds, track versions, compare lists, and keep imported tournament and community decks together.</p><div className="mt-6 flex flex-wrap items-center justify-center gap-3"><GoogleSignInButton onCredential={(credential, nonce) => void run(async () => { const session = await accountApi.googleSignIn(credential, nonce); setUser(session.user); await refreshDecks(); })} /><DiscordSignInButton /><PasswordSignInPanel onSignedIn={(signedInUser) => { setUser(signedInUser); void refreshDecks(); }} />{import.meta.env.DEV && <Button variant="primary" onClick={() => void run(async () => { const session = await accountApi.devSignIn(); setUser(session.user); await refreshDecks(); })}>Use local test account</Button>}<Link to="/deck-builder" className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm font-medium text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Try Guided Deck Builder</Link></div>{error && error !== "Failed to fetch" && <InlineState tone="danger" className="mt-4 text-sm">{error}</InlineState>}</Panel></PageLayout>;
 
   return <PageLayout data-component="MyDecksIndex" width="wide">
-    <div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-3xl font-bold text-ctp-blue">My Decks</h1><p className="mt-2 text-sm text-ctp-subtext1">All your decks in one place.</p><p className="mt-1 text-xs text-ctp-subtext0">{decks.length} editable build{decks.length === 1 ? "" : "s"} · {bookmarks.length} saved deck{bookmarks.length === 1 ? "" : "s"}</p></div><Button variant="primary" aria-expanded={addMode !== null} onClick={() => setAddMode((current) => current ? null : "choose")}>{addMode ? "Close" : "Add deck"}</Button></div>
+    <div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-3xl font-bold text-ctp-blue">My Decks</h1><p className="mt-2 text-sm text-ctp-subtext1">Your editable builds and favorite community decks.</p><p className="mt-1 text-xs text-ctp-subtext0">{decks.length} editable build{decks.length === 1 ? "" : "s"} · {bookmarks.length} favorite{bookmarks.length === 1 ? "" : "s"}</p></div><Button variant="primary" aria-expanded={addMode !== null} onClick={() => setAddMode((current) => current ? null : "choose")}>{addMode ? "Close" : "Add deck"}</Button></div>
     {error && <Panel tone="danger" padding="sm" className="mt-4 text-sm text-ctp-red">{error}</Panel>}
     {notice && <Panel tone="success" padding="sm" className="mt-4 text-sm text-ctp-green">{notice}</Panel>}
 
@@ -92,14 +92,10 @@ export default function MyDecksIndex() {
     {addMode === "paste" && <section><div><h2 className="text-xl font-semibold text-ctp-text">Add a pasted decklist</h2><p className="mt-1 text-xs text-ctp-subtext1">Paste a list formatted for Omnidex.</p></div><div className="mt-4 grid gap-3 md:grid-cols-[minmax(0,1fr)_10rem]"><input value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Deck name" aria-label="Deck name" className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm" /><select value={format} onChange={(event) => setFormat(event.target.value as DeckFormat)} aria-label="Deck format" className="rounded-md border border--surface1 bg-ctp-mantle px-2 py-2 text-sm"><option value="STANDARD">Standard</option><option value="PANTHEON">Pantheon</option><option value="UNKNOWN">Unknown</option></select></div><textarea rows={9} value={deckText} onChange={(event) => setDeckText(event.target.value)} placeholder={"Main\n4x Dungeon Guide\n\nMaterial\n1x Spirit of Water"} aria-label="Decklist" className="mt-3 w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-2 font-mono text-sm" />{deckText.trim() && <p className={`mt-2 text-sm ${pastedChampionName ? "text-ctp-green" : "text-ctp-yellow"}`}>{pastedChampionName ? `Champion detected: ${pastedChampionName}` : "No Champion detected in the Material section."}</p>}<Button disabled={busy || !deckText.trim()} type="button" onClick={() => void run(async () => { const parsed = parseDecklist(deckText); if (parsed.decklist.main.length + parsed.decklist.material.length === 0) throw new Error("No main or material cards were recognized"); await accountApi.saveDeck({ title: title.trim() || "Untitled deck", format, championName: pastedChampionName, decklist: parsed.decklist, source: { provider: "manual", externalDeckId: crypto.randomUUID(), label: "Pasted decklist" } }); trackEvent("deck_created", { source: "paste" }); setTitle(""); setDeckText(""); setAddMode(null); await refreshDecks(); setNotice("Deck added to your library."); })} className="mt-3" variant="primary">Save deck</Button></section>}
     </div></div>}
 
-    <Section className="mt-10" title="Deck library" description={`${decks.length + bookmarks.length} deck${decks.length + bookmarks.length === 1 ? "" : "s"} across your builds and saved community lists.`}>
-      <div role="tablist" aria-label="Library scope" className="mt-3 inline-flex rounded-lg bg-ctp-mantle p-1">
-        {([['all', 'All'], ['mine', 'Mine'], ['saved', 'Saved']] as const).map(([value, label]) => <button key={value} type="button" role="tab" aria-selected={libraryScope === value} onClick={() => setLibraryScope(value)} className={`rounded-md px-3 py-1.5 text-sm font-medium ${libraryScope === value ? "bg-ctp-blue text-ctp-base shadow-sm" : "text-ctp-subtext1 hover:text-ctp-text"}`}>{label} <span className="ml-1 opacity-70">{value === "all" ? decks.length + bookmarks.length : value === "mine" ? decks.length : bookmarks.length}</span></button>)}
-      </div>
-      {decks.length + bookmarks.length === 0 ? <p className="mt-4 rounded-lg border border-dashed border-ctp-surface1 p-8 text-center text-sm text-ctp-subtext1">Build, import, or save a community deck to start your library.</p> : <>
+    <Section className="mt-10" title="Your builds" description={`${decks.length} editable deck${decks.length === 1 ? "" : "s"} that you own and version.`}>
+      {decks.length === 0 ? <p className="mt-4 rounded-lg border border-dashed border-ctp-surface1 p-8 text-center text-sm text-ctp-subtext1">Build, import, or paste a deck to start your library.</p> : <>
         <div className="mt-4 flex flex-wrap items-center gap-2">
           <input value={deckSearch} onChange={(event) => setDeckSearch(event.target.value)} placeholder="Search decks or Champions" aria-label="Search my decks" className="min-w-0 flex-1 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm focus:border-ctp-blue focus:outline-none" />
-          {libraryScope !== "saved" && <>
           <select value={deckFormatFilter} onChange={(event) => setDeckFormatFilter(event.target.value as "ALL" | DeckFormat)} aria-label="Filter by format" className="rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-2 text-sm">
             <option value="ALL">All formats</option>
             <option value="STANDARD">Standard</option>
@@ -115,15 +111,16 @@ export default function MyDecksIndex() {
             <option value="created">Recently created</option>
             <option value="title">Name (A-Z)</option>
           </select>
-          </>}
         </div>
-        {(libraryScope === "saved" ? visibleBookmarks.length === 0 : libraryScope === "mine" ? visibleDecks.length === 0 : visibleDecks.length + visibleBookmarks.length === 0)
-          ? <p className="mt-4 rounded-lg border border-dashed border-ctp-surface1 p-6 text-center text-sm text-ctp-subtext1">No decks match this view.</p>
+        {visibleDecks.length === 0
+          ? <p className="mt-4 rounded-lg border border-dashed border-ctp-surface1 p-6 text-center text-sm text-ctp-subtext1">No decks match these filters.</p>
           : <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {libraryScope !== "saved" && visibleDecks.map((deck) => <SavedDeckCard key={deck.id} deck={deck} onRename={() => { const next = window.prompt("Deck name", deck.title); if (next?.trim()) void run(async () => { await accountApi.renameDeck(deck.id, next); trackEvent("deck_renamed"); await refreshDecks(); }); }} onDelete={() => { if (window.confirm(`Delete ${deck.title}?`)) void run(async () => { await accountApi.deleteDeck(deck.id); trackEvent("deck_deleted"); await refreshDecks(); }); }} />)}
-            {libraryScope !== "mine" && visibleBookmarks.map((deck) => <PublicDeckCard key={deck.publicSlug} deck={deck} />)}
+            {visibleDecks.map((deck) => <SavedDeckCard key={deck.id} deck={deck} onRename={() => { const next = window.prompt("Deck name", deck.title); if (next?.trim()) void run(async () => { await accountApi.renameDeck(deck.id, next); trackEvent("deck_renamed"); await refreshDecks(); }); }} onDelete={() => { if (window.confirm(`Delete ${deck.title}?`)) void run(async () => { await accountApi.deleteDeck(deck.id); trackEvent("deck_deleted"); await refreshDecks(); }); }} />)}
           </div>}
       </>}
+    </Section>
+    <Section className="mt-10" title={`Favorites (${bookmarks.length})`} description="Community decks you want to revisit. A favorite keeps the published version you selected.">
+      {bookmarks.length === 0 ? <p className="mt-4 rounded-lg border border-dashed border-ctp-surface1 p-8 text-center text-sm text-ctp-subtext1">No favorites yet. Add one from a shared community deck page.</p> : <><input value={favoriteSearch} onChange={(event) => setFavoriteSearch(event.target.value)} placeholder="Search favorite decks or Champions" aria-label="Search favorite decks" className="mt-4 min-h-11 w-full max-w-md rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 text-sm focus:border-ctp-yellow focus:outline-none" />{visibleBookmarks.length === 0 ? <p className="mt-4 rounded-lg border border-dashed border-ctp-surface1 p-6 text-center text-sm text-ctp-subtext1">No favorites match your search.</p> : <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">{visibleBookmarks.map((deck) => <PublicDeckCard key={deck.publicSlug} deck={deck} onRemoveFavorite={() => void run(async () => { await accountApi.bookmarkDeck(deck.publicSlug, false); await refreshDecks(); setNotice(`${deck.title} removed from favorites.`); })} />)}</div>}</>}
     </Section>
   </PageLayout>;
 }
