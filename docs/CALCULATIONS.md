@@ -1569,6 +1569,22 @@ increase is recomputed against the union to identify the largest access gain whi
 fixed. The result is still an access ceiling: it assumes found cards remain available and does not
 simulate activation costs, zones, what the opposing effect actually removes, or responses.
 
+### Test Session Tracker (`features/deckbuilder/PlaytestSessionTracker.tsx`, `lib/playtestTracker.ts`)
+
+Playtest records are stored locally under a stable fingerprint of Champion identity plus sorted Main
+Deck names and quantities. Changing the Main Deck therefore starts or restores a distinct history;
+reordering lines does not. Each record can include result, play order, opponent label, the turn the
+plan came online, whether the declared win condition was reached, a bottleneck label, and notes.
+
+Observed win rate treats a draw as half a win, matching the site's tournament convention. The same
+calculation is split by going first/second. Average online turn excludes games where no turn was
+entered. Win-condition rate is the share of games marked reached; conversion is observed match
+points only among those games. Bottlenecks are literal normalized user labels ranked by frequency.
+
+These summaries are descriptive self-recorded evidence. They are not blended into tournament or
+simulator statistics, and they receive no causal or predictive interpretation. Small samples,
+opponent selection, repeated partners, player learning, and selective recording can dominate them.
+
 ### Functional-copy probability (`features/deckbuilder/functionalCopies.ts`)
 
 The Guided Builder's Hypergeometric calculator can treat every Main Deck card serving one detected
