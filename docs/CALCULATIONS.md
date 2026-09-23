@@ -1512,6 +1512,21 @@ payments, apply Floating Memory, or prove that the level route and follow-up can
 sequence. It is a pressure ceiling intended to make the vulnerable window visible, not a resource
 simulation.
 
+### Threat Cadence (`features/deckbuilder/ThreatCadence.tsx`, `lib/threatCadence.ts`)
+
+The viewer declares one disjoint pool of Main Deck cards that count as threats and selects a start
+and end turn. The first deadline requires one threat, the next requires two cumulative threats, and
+so on, representing one selected card consumed on each turn of the pressure window. A draw-by-draw
+without-replacement state calculation tracks hits from the shared pool and discards states that miss
+any cumulative deadline. This differs from multiplying single-turn access odds: every checkpoint
+depends on the same shuffled deck and the threats consumed by earlier deadlines.
+
+The display reports the chance of satisfying every deadline, the complementary chance of at least
+one gap, each cumulative checkpoint, and the gain from one additional threat copy while deck size
+stays fixed. Classification is player-authored. The tool does not claim the selected cards are
+equally threatening or model their costs, activation timing, board state, extra draws, or opponent
+responses.
+
 ### Functional-copy probability (`features/deckbuilder/functionalCopies.ts`)
 
 The Guided Builder's Hypergeometric calculator can treat every Main Deck card serving one detected
