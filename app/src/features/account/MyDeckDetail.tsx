@@ -27,8 +27,11 @@ import DeckSaveBar from "./DeckSaveBar";
 import { DeckVersionHistory } from "./MyDeckDetailSections";
 
 type DeckTab = "decklist" | "analysis" | "primer" | "versions" | "settings";
+type EditSnapshot = { deckText: string; maybeboardText: string };
+type EditHistory = { past: EditSnapshot[]; future: EditSnapshot[] };
 const DECK_TABS = [{ key: "decklist", label: "Cards" }, { key: "analysis", label: "Insights" }, { key: "primer", label: "Primer" }, { key: "versions", label: "History" }] satisfies { key: DeckTab; label: string }[];
 const DECK_TAB_KEYS: DeckTab[] = [...DECK_TABS.map(({ key }) => key), "settings"];
+const deckDraftKey = (deckId: string) => `fanofin:saved-deck-draft:${deckId}`;
 
 export default function MyDeckDetail() {
   const { id: deckId = "" } = useParams<{ id: string }>();
@@ -37,6 +40,7 @@ export default function MyDeckDetail() {
   const [editing, setEditing] = useState(false);
   const [deckText, setDeckText] = useState("");
   const [maybeboardText, setMaybeboardText] = useState("");
+  const [editHistory, setEditHistory] = useState<EditHistory>({ past: [], future: [] });
   const [changeNote, setChangeNote] = useState("");
   const [saveAsNewVersion, setSaveAsNewVersion] = useState(false);
   const [saveDetailsOpen, setSaveDetailsOpen] = useState(false);
@@ -76,6 +80,21 @@ export default function MyDeckDetail() {
     const after = quantities(editedDecklist);
     return new Set([...before.keys(), ...after.keys()]).size === 0 ? 0 : [...new Set([...before.keys(), ...after.keys()])].filter((key) => before.get(key) !== after.get(key)).length;
   }, [deck, editedDecklist]);
+  const savedMaybeboardText = useMemo(() => deck?.maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n") ?? "", [deck]);
+  const hasUnsavedChanges = editedCardChangeCount > 0 || maybeboardText !== savedMaybeboardText;
+  useEffect(() => {
+    if (!editing || !hasUnsavedChanges) return;
+    const warnBeforeLeaving = (event: BeforeUnloadEvent) => { event.preventDefault(); };
+    window.addEventListener("beforeunload", warnBeforeLeaving);
+    return () => window.removeEventListener("beforeunload", warnBeforeLeaving);
+  }, [editing, hasUnsavedChanges]);
+  useEffect(() => {
+    if (!deck || !editing) return;
+    try {
+      if (hasUnsavedChanges) localStorage.setItem(deckDraftKey(deck.id), JSON.stringify({ deckText, maybeboardText, baseUpdatedAt: deck.updatedAt }));
+      else localStorage.removeItem(deckDraftKey(deck.id));
+    } catch { /* Draft persistence is best-effort when storage is unavailable. */ }
+  }, [deck, deckText, editing, hasUnsavedChanges, maybeboardText]);
   const previousDecklist = useMemo(() => {
     if (!deck) return undefined;
     const current = deck.versions.find((version) => version.id === deck.currentVersionId);
@@ -87,7 +106,7 @@ export default function MyDeckDetail() {
   useEffect(() => {
     let active = true;
     void accountApi.deck(deckId).then(({ deck: result }) => {
-      if (active) { setDeck(result); setTitle(result.title); setDescription(result.description); setPrimerMarkdown(result.primerMarkdown); setTagsText(result.tags.join(", ")); setMaybeboardText(result.maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n")); }
+      if (active) { setDeck(result); setTitle(result.title); setDescription(result.description); setPrimerMarkdown(result.primerMarkdown); setTagsText(result.tags.join(", ")); setDeckText(buildDecklistText(result.decklist)); setMaybeboardText(result.maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n")); }
     }).catch((reason: unknown) => {
       if (!active) return;
       setError(reason instanceof AccountApiError && reason.status === 401 ? "Sign in to view this deck." : reason instanceof Error ? reason.message : "Deck could not be loaded");
@@ -106,7 +125,30 @@ export default function MyDeckDetail() {
   }
 
   function setMaybeboardLines(lines: OmnidexDecklistCardLine[]) {
-    setMaybeboardText(lines.map((line) => `${line.quantity}x ${line.card}`).join("\n"));
+    const next = lines.map((line) => `${line.quantity}x ${line.card}`).join("\n");
+    if (editing) commitEdit(deckText, next);
+    else setMaybeboardText(next);
+  }
+
+  function commitEdit(nextDeckText: string, nextMaybeboardText = maybeboardText) {
+    if (nextDeckText === deckText && nextMaybeboardText === maybeboardText) return;
+    setEditHistory((current) => ({ past: [...current.past.slice(-49), { deckText, maybeboardText }], future: [] }));
+    setDeckText(nextDeckText);
+    setMaybeboardText(nextMaybeboardText);
+  }
+
+  function undoEdit() {
+    const previous = editHistory.past.at(-1);
+    if (!previous) return;
+    setEditHistory((current) => ({ past: current.past.slice(0, -1), future: [{ deckText, maybeboardText }, ...current.future].slice(0, 50) }));
+    setDeckText(previous.deckText); setMaybeboardText(previous.maybeboardText);
+  }
+
+  function redoEdit() {
+    const next = editHistory.future[0];
+    if (!next) return;
+    setEditHistory((current) => ({ past: [...current.past.slice(-49), { deckText, maybeboardText }], future: current.future.slice(1) }));
+    setDeckText(next.deckText); setMaybeboardText(next.maybeboardText);
   }
 
   function changeMaybeboardQuantity(name: string, quantity: number) {
@@ -124,16 +166,15 @@ export default function MyDeckDetail() {
     const existing = nextDecklist[section].find((candidate) => candidate.card === line.card);
     if (existing) existing.quantity += line.quantity;
     else nextDecklist[section].push({ ...line });
-    setDeckText(buildDecklistText(nextDecklist));
-    removeMaybeboardCard(line.card);
+    commitEdit(buildDecklistText(nextDecklist), maybeboardLines.filter((candidate) => candidate.card !== line.card).map((candidate) => `${candidate.quantity}x ${candidate.card}`).join("\n"));
     setEditing(true);
     setNotice(`${line.card} moved to the ${section} editor. Save deck changes to apply it.`);
   }
 
   // Mirrors the Guided Deck Builder's "Destination: Automatic/Sideboard/Maybeboard" convention
   // (DeckBuilderIndex.tsx's own addCard) so the same choice means the same thing in both editors.
-  // Maybeboard has its own persistence path (updateDeckMetadata), independent of decklist version
-  // history, matching saveMaybeboard()/addMaybeboardToEditor() below.
+  // Outside edit mode the maybeboard keeps its lightweight metadata save path. While editing, it
+  // joins the same local draft, undo history, and Save action as the main decklist.
   function addCard(name: string) {
     if (!cardNameSet.has(name)) return;
     const card = cardCatalog.find((candidate) => candidate.name === name);
@@ -144,10 +185,11 @@ export default function MyDeckDetail() {
       const existing = maybeboard.find((line) => line.card === name);
       if (existing) existing.quantity += defaultQty;
       else maybeboard.push({ card: name, quantity: defaultQty });
-      setMaybeboardText(maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n"));
+      const nextMaybeboardText = maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n");
+      if (editing) commitEdit(deckText, nextMaybeboardText);
+      else setMaybeboardText(nextMaybeboardText);
       setCardInput("");
-      setAddDestination("automatic");
-      void run(async () => {
+      if (!editing) void run(async () => {
         await accountApi.updateDeckMetadata(deckId, { maybeboard });
         setDeck((current) => (current ? { ...current, maybeboard } : current));
         setNotice(`${name} added to the maybeboard.`);
@@ -159,13 +201,23 @@ export default function MyDeckDetail() {
     const existing = decklist[section].find((line) => line.card === name);
     if (existing) existing.quantity += defaultQty;
     else decklist[section].push({ card: name, quantity: defaultQty });
-    setDeckText(buildDecklistText(decklist));
+    commitEdit(buildDecklistText(decklist));
     setCardInput("");
-    setAddDestination("automatic");
   }
 
   function startEditing() {
-    setDeckText(buildDecklistText(deck!.decklist));
+    const savedDeckText = buildDecklistText(deck!.decklist);
+    let initial = { deckText: savedDeckText, maybeboardText: savedMaybeboardText };
+    try {
+      const raw = localStorage.getItem(deckDraftKey(deck!.id));
+      if (raw) {
+        const draft = JSON.parse(raw) as Partial<EditSnapshot> & { baseUpdatedAt?: string };
+        if (draft.baseUpdatedAt === deck!.updatedAt && typeof draft.deckText === "string" && typeof draft.maybeboardText === "string" && window.confirm("Resume your unsaved deck draft?")) initial = { deckText: draft.deckText, maybeboardText: draft.maybeboardText };
+        else if (draft.baseUpdatedAt !== deck!.updatedAt) localStorage.removeItem(deckDraftKey(deck!.id));
+      }
+    } catch { /* Ignore malformed or unavailable draft storage. */ }
+    setDeckText(initial.deckText); setMaybeboardText(initial.maybeboardText);
+    setEditHistory({ past: [], future: [] });
     setSaveAsNewVersion(false);
     setSaveDetailsOpen(false);
     setEditing(true);
@@ -173,10 +225,14 @@ export default function MyDeckDetail() {
   }
 
   function cancelEditing() {
+    if (hasUnsavedChanges && !window.confirm(`Discard ${editedCardChangeCount || "the"} unsaved deck change${editedCardChangeCount === 1 ? "" : "s"}?`)) return;
     setDeckText(buildDecklistText(deck!.decklist));
+    setMaybeboardText(savedMaybeboardText);
+    setEditHistory({ past: [], future: [] });
     setCardInput("");
     setAddDestination("automatic");
     setEditing(false);
+    try { localStorage.removeItem(deckDraftKey(deck!.id)); } catch { /* Best effort. */ }
   }
 
   function saveEditedDeck() {
@@ -187,6 +243,8 @@ export default function MyDeckDetail() {
       await accountApi.updateDeckMetadata(deck!.id, { maybeboard: maybeboardLines });
       trackEvent(saveAsNewVersion ? "deck_version_saved" : "deck_updated");
       await refresh(); setChangeNote(""); setSaveDetailsOpen(false); setEditing(false);
+      setEditHistory({ past: [], future: [] });
+      try { localStorage.removeItem(deckDraftKey(deck!.id)); } catch { /* Best effort. */ }
       setNotice(saveAsNewVersion ? "Saved as a new version." : "Deck updated.");
     });
   }
@@ -197,7 +255,64 @@ export default function MyDeckDetail() {
     const decklist = parseDecklist(deckText).decklist;
     const line = decklist[section].find((l) => l.card === name);
     if (line) line.quantity = quantity;
-    setDeckText(buildDecklistText(decklist));
+    commitEdit(buildDecklistText(decklist));
+  }
+
+  function adjustSelectedCards(cards: { section: DeckSectionKey; name: string }[], delta: number) {
+    const decklist = parseDecklist(deckText).decklist;
+    let changed = 0;
+    for (const selected of cards) {
+      const line = decklist[selected.section].find((candidate) => candidate.card === selected.name);
+      if (!line) continue;
+      const card = catalogByName.get(selected.name);
+      const maxQuantity = Math.max(1, Math.min(card?.legality?.STANDARD?.limit ?? 4, 4));
+      const next = Math.max(1, Math.min(maxQuantity, line.quantity + delta));
+      if (next !== line.quantity) { line.quantity = next; changed += 1; }
+    }
+    if (changed === 0) { setNotice(delta > 0 ? "Selected cards are already at their copy limits." : "Selected cards are already at one copy."); return; }
+    commitEdit(buildDecklistText(decklist));
+    setNotice(`${delta > 0 ? "Added" : "Removed"} one copy ${delta > 0 ? "to" : "from"} ${changed} selected card${changed === 1 ? "" : "s"}.`);
+  }
+
+  function setSelectedCardsQuantity(cards: { section: DeckSectionKey; name: string }[], quantity: number) {
+    const decklist = parseDecklist(deckText).decklist;
+    let changed = 0;
+    for (const selected of cards) {
+      const line = decklist[selected.section].find((candidate) => candidate.card === selected.name);
+      if (!line) continue;
+      const card = catalogByName.get(selected.name);
+      const maxQuantity = Math.max(1, Math.min(card?.legality?.STANDARD?.limit ?? 4, 4));
+      const next = Math.min(quantity, maxQuantity);
+      if (line.quantity !== next) { line.quantity = next; changed += 1; }
+    }
+    if (!changed) { setNotice("The selected cards already have that quantity or copy limit."); return; }
+    commitEdit(buildDecklistText(decklist));
+    setNotice(`Updated ${changed} selected card${changed === 1 ? "" : "s"}.`);
+  }
+
+  function moveSelectedCards(cards: { section: DeckSectionKey; name: string }[], destination: DeckSectionKey) {
+    const decklist = parseDecklist(deckText).decklist;
+    let changed = 0;
+    for (const selected of cards) {
+      if (selected.section === destination) continue;
+      const line = decklist[selected.section].find((candidate) => candidate.card === selected.name);
+      if (!line) continue;
+      decklist[selected.section] = decklist[selected.section].filter((candidate) => candidate.card !== selected.name);
+      const existing = decklist[destination].find((candidate) => candidate.card === selected.name);
+      if (existing) existing.quantity += line.quantity;
+      else decklist[destination].push({ ...line });
+      changed += 1;
+    }
+    if (!changed) { setNotice(`All selected cards are already in ${destination}.`); return; }
+    commitEdit(buildDecklistText(decklist));
+    setNotice(`Moved ${changed} selected card${changed === 1 ? "" : "s"} to ${destination}.`);
+  }
+
+  function removeSelectedCards(cards: { section: DeckSectionKey; name: string }[]) {
+    const decklist = parseDecklist(deckText).decklist;
+    for (const selected of cards) decklist[selected.section] = decklist[selected.section].filter((line) => line.card !== selected.name);
+    commitEdit(buildDecklistText(decklist));
+    setNotice(`Removed ${cards.length} selected card${cards.length === 1 ? "" : "s"}. Undo is available.`);
   }
 
   function moveEditedCard(from: DeckSectionKey, to: DeckSectionKey, name: string) {
@@ -209,14 +324,14 @@ export default function MyDeckDetail() {
     const existing = decklist[to].find((candidate) => candidate.card === name);
     if (existing) existing.quantity += line.quantity;
     else decklist[to].push({ ...line });
-    setDeckText(buildDecklistText(decklist));
+    commitEdit(buildDecklistText(decklist));
     setNotice(`${name} moved to ${to}.`);
   }
 
   function removeEditedCard(section: DeckSectionKey, name: string) {
     const decklist = parseDecklist(deckText).decklist;
     decklist[section] = decklist[section].filter((l) => l.card !== name);
-    setDeckText(buildDecklistText(decklist));
+    commitEdit(buildDecklistText(decklist));
   }
 
   // Only ever lowers a count (min, never max) — a card whose own legal limit is already below
@@ -224,7 +339,7 @@ export default function MyDeckDetail() {
   function trimToMaxCopies(max: number) {
     const decklist = parseDecklist(deckText).decklist;
     for (const section of EDIT_SECTIONS) for (const line of decklist[section.key]) line.quantity = Math.min(line.quantity, max);
-    setDeckText(buildDecklistText(decklist));
+    commitEdit(buildDecklistText(decklist));
     setNotice(`Trimmed every card to at most ${max}x.`);
     trackEvent("deck_trimmed", { max });
   }
@@ -252,8 +367,7 @@ export default function MyDeckDetail() {
       if (existing) existing.quantity += line.quantity;
       else nextDecklist[section].push({ ...line });
     }
-    setDeckText(buildDecklistText(nextDecklist));
-    setMaybeboardLines([]);
+    commitEdit(buildDecklistText(nextDecklist), "");
     setEditing(true);
     setNotice("Maybeboard cards moved to the deck editor. Save deck changes to apply them.");
   }
@@ -273,6 +387,10 @@ export default function MyDeckDetail() {
     setBusy(true); setError(null);
     try { await action(); } catch (reason) { setError(reason instanceof Error ? reason.message : "Something went wrong"); }
     finally { setBusy(false); }
+  }
+
+  function allowNavigation() {
+    return !editing || !hasUnsavedChanges || window.confirm("Leave this page? Your draft will be kept so you can resume it later.");
   }
 
   function addPrimerHighlight(kind: "combo" | "package") {
@@ -305,7 +423,7 @@ export default function MyDeckDetail() {
   const editedSideboardPoints = cardCatalog.length === 0 ? undefined : editedDecklist.sideboard.reduce((sum, line) => sum + line.quantity * sideboardPointCost(catalogByName.get(line.card)), 0);
 
   return <PageLayout data-component="MyDeckDetail">
-    <Link to="/decks/edit" className="text-sm text-ctp-blue hover:underline">← My Decks</Link>
+    <Link to="/decks/edit" onClick={(event) => { if (!allowNavigation()) event.preventDefault(); }} className="text-sm text-ctp-blue hover:underline">← My Decks</Link>
     <div className="mt-4">
       <UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} visibility={deck.visibility} prominent />
       {renamingTitle ? (
@@ -344,7 +462,8 @@ export default function MyDeckDetail() {
     {tab === "analysis" && <section id="owned-deck-panel-analysis" role="tabpanel" aria-labelledby="owned-deck-tab-analysis" tabIndex={0}><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} title={deck.title} ownerDeckId={deck.id} previousDecklist={previousDecklist} /></section>}
     {tab === "decklist" && <><UserDecklistPanel decklist={deck.decklist} format={deck.format} ownerDeckId={editing ? undefined : deck.id} collectionSource={editing ? undefined : `Deck: ${deck.title}`} showBuilderAction={false}>
       {editing ? <div className="mt-3 pb-[calc(5rem+env(safe-area-inset-bottom))] sm:pb-0">
-        <div className="mb-3"><h2 className="text-lg font-semibold text-ctp-text">Edit cards</h2><p className="mt-1 text-xs text-ctp-subtext1">Search for a card, then adjust quantities directly in each section.</p></div>
+        <div className="mb-3"><h2 className="text-lg font-semibold text-ctp-text">Edit cards</h2><p className="mt-1 text-xs text-ctp-subtext1">Use −/+ for one card, or tap several card images and update them together.</p></div>
+        <div className="mb-3 flex items-center gap-2 rounded-lg border border-ctp-surface1 bg-ctp-base p-2"><span className="mr-auto text-xs text-ctp-subtext1">{hasUnsavedChanges ? "Draft saved on this device" : "No unsaved changes"}</span><button type="button" disabled={editHistory.past.length === 0} onClick={undoEdit} className="min-h-10 rounded-md border border-ctp-surface1 px-3 text-xs disabled:opacity-40">Undo</button><button type="button" disabled={editHistory.future.length === 0} onClick={redoEdit} className="min-h-10 rounded-md border border-ctp-surface1 px-3 text-xs disabled:opacity-40">Redo</button></div>
         <div className="mb-4 rounded-lg border border-ctp-surface1 bg-ctp-base p-3"><p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Section balance</p><DeckSectionBalance compact sideboardPoints={editedSideboardPoints} counts={{ main: editedDecklist.main.reduce((sum, line) => sum + line.quantity, 0), material: editedDecklist.material.reduce((sum, line) => sum + line.quantity, 0), sideboard: editedDecklist.sideboard.reduce((sum, line) => sum + line.quantity, 0) }} /></div>
         <CardSearchPicker options={cardNames} value={cardInput} onChange={setCardInput} onSelect={addCard} placeholder="Search cards to add…" ariaLabel="Search cards to add" />
         <label className="mt-2 flex items-center justify-between gap-3 text-xs text-ctp-subtext1">Add to<select value={addDestination} onChange={(event) => setAddDestination(event.target.value as typeof addDestination)} aria-label="Card destination" className="rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-2 text-sm text-ctp-text"><option value="automatic">Automatic (recommended)</option><option value="sideboard">Sideboard</option><option value="maybeboard">Maybeboard</option></select></label>
@@ -356,18 +475,18 @@ export default function MyDeckDetail() {
           <button type="button" disabled={trimPreview.affected.length === 0} onClick={() => trimToMaxCopies(trimMax)} className="min-h-10 rounded-md border border-ctp-surface1 px-2.5 py-1 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text disabled:opacity-40">Apply trim</button>
           </div>
           <p className="mt-2 text-xs text-ctp-subtext0">{trimPreview.affected.length === 0 ? `No cards exceed ${trimMax}×.` : `${trimPreview.affected.length} card${trimPreview.affected.length === 1 ? "" : "s"} will lose ${trimPreview.copiesRemoved} total cop${trimPreview.copiesRemoved === 1 ? "y" : "ies"}: ${trimPreview.affected.slice(0, 4).map((line) => `${line.card} ${line.quantity}×→${trimMax}×`).join(" · ")}${trimPreview.affected.length > 4 ? ` · +${trimPreview.affected.length - 4} more` : ""}`}</p>
-          <details className="mt-3 border-t border-ctp-surface1 pt-3"><summary className="cursor-pointer text-xs text-ctp-subtext1">Edit as text</summary><textarea rows={18} required value={deckText} onChange={(event) => setDeckText(event.target.value)} className="mt-3 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-4 font-mono text-sm text-ctp-text" /></details>
+          <details className="mt-3 border-t border-ctp-surface1 pt-3"><summary className="cursor-pointer text-xs text-ctp-subtext1">Edit as text</summary><textarea rows={18} required value={deckText} onChange={(event) => commitEdit(event.target.value)} className="mt-3 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-4 font-mono text-sm text-ctp-text" /></details>
         </details>
-        <div className="mt-4"><EditableDecklistGrid decklist={editedDecklist} cardsByName={editedCardsByName} onChangeQuantity={changeEditedQuantity} onMove={moveEditedCard} onRemove={removeEditedCard} /></div>
-        <DeckSaveBar busy={busy} changedEntries={editedCardChangeCount} currentChampion={deck.championName} detectedChampion={editedChampionName} detailsOpen={saveDetailsOpen} saveAsNewVersion={saveAsNewVersion} changeNote={changeNote} onDetailsOpenChange={setSaveDetailsOpen} onSaveModeChange={setSaveAsNewVersion} onChangeNote={setChangeNote} onCancel={cancelEditing} onSave={saveEditedDeck} />
+        <div className="mt-4"><EditableDecklistGrid decklist={editedDecklist} cardsByName={editedCardsByName} onChangeQuantity={changeEditedQuantity} onAdjustSelected={adjustSelectedCards} onSetSelected={setSelectedCardsQuantity} onMoveSelected={moveSelectedCards} onRemoveSelected={removeSelectedCards} onMove={moveEditedCard} onRemove={removeEditedCard} /></div>
+        <DeckSaveBar busy={busy} changedEntries={editedCardChangeCount + (maybeboardText !== savedMaybeboardText ? 1 : 0)} currentChampion={deck.championName} detectedChampion={editedChampionName} detailsOpen={saveDetailsOpen} saveAsNewVersion={saveAsNewVersion} changeNote={changeNote} onDetailsOpenChange={setSaveDetailsOpen} onSaveModeChange={setSaveAsNewVersion} onChangeNote={setChangeNote} onCancel={cancelEditing} onSave={saveEditedDeck} />
       </div> : undefined}
     </UserDecklistPanel>
       {/* Supplement the decklist; panel children replace it with the editor while editing. */}
       <details className="group mt-5 rounded-xl border border-dashed border-ctp-yellow/50 bg-ctp-yellow/5 p-3">
         <summary className="flex min-h-10 cursor-pointer list-none items-center justify-between gap-3 text-sm font-medium text-ctp-yellow [&::-webkit-details-marker]:hidden"><span>Maybeboard <span className="font-normal text-ctp-subtext0">({maybeboardLines.reduce((sum, line) => sum + line.quantity, 0)})</span></span><span aria-hidden="true" className="text-ctp-subtext0 transition-transform group-open:rotate-180">⌄</span></summary>
-        <div className="mt-3 flex flex-wrap justify-end gap-2"><button type="button" disabled={!maybeboardText.trim()} onClick={addMaybeboardToEditor} className="min-h-10 rounded-lg border border-ctp-blue px-3 text-xs text-ctp-blue disabled:opacity-50">Move all to editor</button><button type="button" disabled={busy} onClick={() => void saveMaybeboard()} className="min-h-10 rounded-lg bg-ctp-yellow px-3 text-xs font-medium text-ctp-base disabled:opacity-50">Save</button></div>
+        <div className="mt-3 flex flex-wrap items-center justify-end gap-2">{editing && <span className="mr-auto text-xs text-ctp-subtext0">Maybeboard changes save with the deck.</span>}<button type="button" disabled={!maybeboardText.trim()} onClick={addMaybeboardToEditor} className="min-h-10 rounded-lg border border-ctp-blue px-3 text-xs text-ctp-blue disabled:opacity-50">Move all to editor</button>{!editing && <button type="button" disabled={busy} onClick={() => void saveMaybeboard()} className="min-h-10 rounded-lg bg-ctp-yellow px-3 text-xs font-medium text-ctp-base disabled:opacity-50">Save</button>}</div>
         {maybeboardLines.length > 0 ? <div className="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-4">{maybeboardLines.map((line) => <MaybeboardCardTile key={line.card} line={line} card={catalogByName.get(line.card)} onChangeQuantity={(quantity) => changeMaybeboardQuantity(line.card, quantity)} onMove={() => moveMaybeboardCard(line)} onRemove={() => removeMaybeboardCard(line.card)} />)}</div> : <InlineState className="mt-3">No cards in the maybeboard.</InlineState>}
-        <details className="mt-3"><summary className="cursor-pointer text-xs text-ctp-subtext0">Edit maybeboard as text</summary><textarea rows={5} value={maybeboardText} onChange={(event) => setMaybeboardText(event.target.value)} placeholder={"2x Card to test\n4x Another option"} aria-label="Maybeboard" className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-3 font-mono text-sm" /></details>
+        <details className="mt-3"><summary className="cursor-pointer text-xs text-ctp-subtext0">Edit maybeboard as text</summary><textarea rows={5} value={maybeboardText} onChange={(event) => editing ? commitEdit(deckText, event.target.value) : setMaybeboardText(event.target.value)} placeholder={"2x Card to test\n4x Another option"} aria-label="Maybeboard" className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-3 font-mono text-sm" /></details>
         <p className="mt-2 text-xs text-ctp-subtext0">Maybeboard cards do not affect the deck or its analysis.</p>
       </details>
     </>}
