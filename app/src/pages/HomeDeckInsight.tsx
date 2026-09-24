@@ -55,7 +55,7 @@ export default function HomeDeckInsight() {
           </div>
           <div className="flex flex-col justify-between rounded-xl border border-forest-surface bg-forest-surface/30 p-5">
             <div><p className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext1">With four copies, you are</p><p className="mt-2 text-4xl font-bold tabular-nums text-ctp-blue">+{relativeGain}%</p><p className="mt-3 text-sm leading-relaxed text-ctp-subtext1">more likely to find Dungeon Guide within {seen} cards seen than with three copies.</p></div>
-            <Link to="/decks/xenbr4?tab=analysis" className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg border border-ctp-blue/60 px-4 py-2 text-center text-sm font-semibold text-ctp-blue hover:bg-forest-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">Open the full deck analysis <span aria-hidden="true" className="ml-2">→</span></Link>
+            <Link to="/decks/xenbr4?tab=performance" className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg border border-ctp-blue/60 px-4 py-2 text-center text-sm font-semibold text-ctp-blue hover:bg-forest-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">Open the full deck analysis <span aria-hidden="true" className="ml-2">→</span></Link>
           </div>
         </div>
 

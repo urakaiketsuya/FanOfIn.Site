@@ -33,13 +33,12 @@ import PlayerLink from "../players/PlayerLink";
 import { accountApi } from "../../lib/accountApi";
 import DeckComments from "../social/DeckComments";
 
-type DeckTab = "decklist" | "analysis" | "history" | "similar";
+type DeckTab = "performance" | "related" | "discussion";
 
 const TABS: { key: DeckTab; label: string }[] = [
-  { key: "decklist", label: "Decklist" },
-  { key: "analysis", label: "Analysis" },
-  { key: "history", label: "History" },
-  { key: "similar", label: "Similar Decks" },
+  { key: "performance", label: "Performance" },
+  { key: "related", label: "History & Similar" },
+  { key: "discussion", label: "Discussion" },
 ];
 const TAB_KEYS = TABS.map((t) => t.key);
 
@@ -58,7 +57,7 @@ const TAB_KEYS = TABS.map((t) => t.key);
  */
 export default function DeckDetail() {
   const { id: hash = "" } = useParams<{ id: string }>();
-  const [tab, setTab] = useTabParam<DeckTab>("tab", TAB_KEYS, "decklist");
+  const [tab, setTab] = useTabParam<DeckTab>("tab", TAB_KEYS, "performance");
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
   const [favorited, setFavorited] = useState<boolean | null>(null);
   const [favoriteBusy, setFavoriteBusy] = useState(false);
@@ -99,7 +98,7 @@ export default function DeckDetail() {
   // Only decode + group the full universe when the fast path can't resolve this hash (a genuinely
   // unique, one-player decklist has no precomputed deckHash) or the Similar Decks tab needs the
   // broader universe to find other decks to compare against.
-  const needsFullUniverse = matchingSightings !== null && (matchingSightings.length === 0 || tab === "similar");
+  const needsFullUniverse = matchingSightings !== null && (matchingSightings.length === 0 || tab === "related");
   const { decks, loading: fullUniverseLoading } = useDeckPopularity(null, 1, needsFullUniverse);
   const deck = fastDeck ?? decks.find((d) => shortHash(d.signature) === hash);
   const loading =
@@ -454,22 +453,11 @@ export default function DeckDetail() {
             {deck.eventCount === 1 ? "" : "s"}
             {deck.bestPlacement !== null && ` · best finish #${deck.bestPlacement}`} ·{" "}
             {(deck.avgWinRate * 100).toFixed(0)}% avg win rate
-            {deck.elements.length > 0 && ` · ${deck.elements.join("/")}`}
-            {deck.classes.length > 0 && ` · ${deck.classes.join("/")}`}
-            {deck.championName && (
-              <>
-                {" · "}
-                <Link to="/regions?tab=champions" className="text-ctp-blue hover:underline">
-                  Regional breakdown &rarr;
-                </Link>
-              </>
-            )}
           </>
         }
       />
 
       <div className="mt-5 flex flex-wrap gap-2">
-        <Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="inline-flex min-h-11 items-center rounded-lg border border-ctp-surface1 px-3 text-sm font-medium text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Compare deck</Link>
         {signedIn === true ? <button type="button" disabled={favoriteBusy || favorited === null} aria-pressed={favorited ?? false} onClick={() => {
           if (favorited === null) return;
           setFavoriteBusy(true); setFavoriteNotice(null);
@@ -478,33 +466,26 @@ export default function DeckDetail() {
             decklist, sourceEventId: favoriteSource?.eventId ?? null, sourceEventName: favoriteSource ? (eventNameById.get(favoriteSource.eventId) ?? `Event #${favoriteSource.eventId}`) : null,
             sourcePlayerId: favoriteSource?.player ?? null, sourcePlayerName: favoriteSource ? playerName(favoriteSource.player) : null,
           }).then((result) => { setFavorited(result.favorited); setFavoriteNotice(result.favorited ? "Added to My Decks favorites." : "Removed from favorites."); }, (reason: Error) => setFavoriteNotice(reason.message)).finally(() => setFavoriteBusy(false));
-        }} className={`min-h-11 rounded-lg border px-3 text-sm font-medium disabled:opacity-50 ${favorited ? "border-ctp-yellow bg-ctp-yellow/10 text-ctp-yellow" : "border-ctp-surface1 text-ctp-subtext1 hover:border-ctp-yellow hover:text-ctp-yellow"}`}>{favorited === null ? "Loading favorite…" : favorited ? "★ Favorited" : "☆ Add to favorites"}</button> : signedIn === false ? <Link to="/decks/edit" className="inline-flex min-h-11 items-center px-2 text-sm text-ctp-blue hover:underline">Sign in to favorite</Link> : <span className="inline-flex min-h-11 items-center px-2 text-sm text-ctp-subtext0">Checking account…</span>}
+        }} className={`min-h-11 rounded-lg border px-4 text-sm font-semibold disabled:opacity-50 ${favorited ? "border-ctp-yellow bg-ctp-yellow/10 text-ctp-yellow" : "border-ctp-blue bg-ctp-blue text-ctp-base"}`}>{favorited === null ? "Loading…" : favorited ? "★ Saved" : "Save deck"}</button> : signedIn === false ? <Link to="/account" className="inline-flex min-h-11 items-center rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base">Sign in to save</Link> : <span className="inline-flex min-h-11 items-center px-2 text-sm text-ctp-subtext0">Checking account…</span>}
+        <details className="relative"><summary className="flex min-h-11 cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-4 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More</summary><div className="absolute left-0 top-full z-30 mt-2 grid min-w-52 gap-1 rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><Link to={`/goldfish?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="rounded-lg px-3 py-2.5 text-sm hover:bg-ctp-mantle">Open in Goldfish</Link><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="rounded-lg px-3 py-2.5 text-sm hover:bg-ctp-mantle">Compare deck</Link><button type="button" onClick={() => setTab("related")} className="rounded-lg px-3 py-2.5 text-left text-sm hover:bg-ctp-mantle">View history &amp; similar decks</button></div></details>
       </div>
       {favoriteNotice && <p className="mt-2 text-xs text-ctp-subtext1" role="status">{favoriteNotice}</p>}
 
-      <div className="mt-6">
-        <Tabs tabs={TABS} active={tab} onChange={setTab} label="Deck data" baseId="deck-detail" />
-      </div>
-
-      <TabPanel baseId="deck-detail" tab="decklist" active={tab}>
-        <div className={`mb-3 rounded-lg border p-3 text-xs ${sideboardSelection ? "border-ctp-blue/30 bg-ctp-blue/5 text-ctp-subtext1" : "border-ctp-yellow/30 bg-ctp-yellow/5 text-ctp-yellow"}`}>
+      <div className={`mt-5 rounded-lg border p-3 text-xs ${sideboardSelection ? "border-ctp-blue/30 bg-ctp-blue/5 text-ctp-subtext1" : "border-ctp-yellow/30 bg-ctp-yellow/5 text-ctp-yellow"}`}>
           {sideboardSelection ? <>Sideboards vary between players sharing this Main and Material list. Showing the most recent recorded Sideboard from <PlayerLink id={sideboardSelection.sighting.player} username={playerName(sideboardSelection.sighting.player)} className="font-medium text-ctp-text hover:text-ctp-blue" /> at <Link to={`/events/${sideboardSelection.sighting.eventId}?tab=decklists&player=${sideboardSelection.sighting.player}`} className="font-medium text-ctp-blue hover:underline">{eventNameById.get(sideboardSelection.sighting.eventId) ?? `Event #${sideboardSelection.sighting.eventId}`}</Link>.</> : <>No Sideboard cards were recorded for the tournament sightings grouped on this page.</>}
-        </div>
-        <UserDecklistPanel decklist={decklist} format="STANDARD" collectionSource={`Tournament build: ${deck.championName ?? "Unknown Champion"}`} />
-      </TabPanel>
+      </div>
+      <UserDecklistPanel decklist={decklist} format="STANDARD" collectionSource={`Tournament build: ${deck.championName ?? "Unknown Champion"}`} />
 
-      <TabPanel baseId="deck-detail" tab="analysis" active={tab}>
+      <div className="mt-10"><Tabs tabs={TABS} active={tab} onChange={setTab} label="Deck data" baseId="deck-detail" /></div>
+
+      <TabPanel baseId="deck-detail" tab="performance" active={tab}>
         <UserDeckStats decklist={decklist} championName={deck.championName} format="STANDARD" title={deck.championName ?? "Deck"} extraTabs={deckStatsExtraTabs} />
       </TabPanel>
 
-      <TabPanel baseId="deck-detail" tab="history" active={tab}>
-        <DeckSightingHistory sightingsByMonth={sightingsByMonth} instances={instancesForList} playerName={playerName} />
+      <TabPanel baseId="deck-detail" tab="related" active={tab}>
+        <div className="space-y-8"><DeckSightingHistory sightingsByMonth={sightingsByMonth} instances={instancesForList} playerName={playerName} /><SimilarDecksSection decks={similarDecks} /></div>
       </TabPanel>
-
-      <TabPanel baseId="deck-detail" tab="similar" active={tab}>
-        <SimilarDecksSection decks={similarDecks} />
-      </TabPanel>
-      <DeckComments target={{ kind: "tournament", id: hash }} />
+      <TabPanel baseId="deck-detail" tab="discussion" active={tab}><DeckComments target={{ kind: "tournament", id: hash }} /></TabPanel>
     </PageLayout>
   );
 }

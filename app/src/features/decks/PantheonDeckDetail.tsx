@@ -2,12 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { OmnidexDecklist } from "@gatcg/shared";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
-import { useTabParam } from "../../lib/useTabParam";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import UserDeckHeader from "../account/UserDeckHeader";
 import UserDecklistPanel from "../account/UserDecklistPanel";
 import UserDeckStats from "../account/UserDeckStats";
-import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import PageLayout from "../../components/layout/PageLayout";
 import { EmptyState, InlineState } from "../../components/ui/ContentState";
 import { encodeCustomDecks } from "../../lib/compareShareLink";
@@ -21,9 +19,6 @@ interface PantheonDeckRecord {
   mainDeck: CardLine[];
   sideDeck: CardLine[];
 }
-
-type PantheonDeckTab = "decklist" | "analysis";
-const PANTHEON_TABS = [{ key: "decklist", label: "Decklist" }, { key: "analysis", label: "Analysis" }] satisfies { key: PantheonDeckTab; label: string }[];
 
 function displayName(name: string | null): string {
   return name ? name.replace(/[-_]+/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase()) : "Unknown Champion";
@@ -43,7 +38,6 @@ function displayName(name: string | null): string {
 export default function PantheonDeckDetail() {
   const { id = "" } = useParams();
   const [deck, setDeck] = useState<PantheonDeckRecord | null | undefined>();
-  const [tab, setTab] = useTabParam<PantheonDeckTab>("tab", PANTHEON_TABS.map(({ key }) => key), "decklist");
   const catalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(catalog.map((card) => [card.name, card])), [catalog]);
   useEffect(() => { void fetch(`/data/shoutatyourdecks/decks/${id}.json`).then((response) => response.ok ? response.json() : null).then(setDeck).catch(() => setDeck(null)); }, [id]);
@@ -68,9 +62,8 @@ export default function PantheonDeckDetail() {
   return <PageLayout data-component="PantheonDeckDetail">
     <Link to="/pantheon/decks" className="text-sm text-ctp-blue hover:underline">← Browse Pantheon decks</Link>
     <UserDeckHeader title={title} championName={deck.champion ? championName : null} format="PANTHEON" eyebrow="Community Pantheon deck" />
-    <div className="mt-5"><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: title, decklist, format: "PANTHEON" }]))}`} className="inline-flex rounded-md border border-ctp-surface1 px-3 py-2 text-sm font-medium text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Compare deck</Link></div>
-    <div className="mt-6"><Tabs tabs={PANTHEON_TABS} active={tab} onChange={setTab} label="Pantheon deck details" baseId="pantheon-deck" /></div>
-    <TabPanel baseId="pantheon-deck" tab="decklist" active={tab}><UserDecklistPanel decklist={decklist} format="PANTHEON" collectionSource={`Pantheon deck: ${championName}`} /></TabPanel>
-    <TabPanel baseId="pantheon-deck" tab="analysis" active={tab}><UserDeckStats decklist={decklist} championName={deck.champion ? championName : null} format="PANTHEON" title={title} /></TabPanel>
+    <div className="mt-5"><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: title, decklist, format: "PANTHEON" }]))}`} className="inline-flex min-h-11 items-center rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base">Compare deck</Link></div>
+    <UserDecklistPanel decklist={decklist} format="PANTHEON" collectionSource={`Pantheon deck: ${championName}`} />
+    <details className="group mt-10 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><summary className="flex min-h-11 cursor-pointer list-none items-center justify-between text-lg font-semibold [&::-webkit-details-marker]:hidden"><span>Performance and composition</span><span aria-hidden="true" className="transition-transform group-open:rotate-180">⌄</span></summary><UserDeckStats decklist={decklist} championName={deck.champion ? championName : null} format="PANTHEON" title={title} /></details>
   </PageLayout>;
 }
