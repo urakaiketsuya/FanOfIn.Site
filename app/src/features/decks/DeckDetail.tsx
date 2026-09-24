@@ -31,6 +31,7 @@ import { encodeCustomDecks } from "../../lib/compareShareLink";
 import { DeckSightingHistory, SimilarDecksSection } from "./DeckDetailSections";
 import PlayerLink from "../players/PlayerLink";
 import { accountApi } from "../../lib/accountApi";
+import DeckComments from "../social/DeckComments";
 
 type DeckTab = "decklist" | "analysis" | "history" | "similar";
 
@@ -503,6 +504,7 @@ export default function DeckDetail() {
       <TabPanel baseId="deck-detail" tab="similar" active={tab}>
         <SimilarDecksSection decks={similarDecks} />
       </TabPanel>
+      <DeckComments target={{ kind: "tournament", id: hash }} />
     </PageLayout>
   );
 }

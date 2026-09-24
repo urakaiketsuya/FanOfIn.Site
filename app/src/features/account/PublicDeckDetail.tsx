@@ -13,6 +13,7 @@ import { useTabParam } from "../../lib/useTabParam";
 import PageLayout from "../../components/layout/PageLayout";
 import { EmptyState, InlineState } from "../../components/ui/ContentState";
 import { encodeCustomDecks } from "../../lib/compareShareLink";
+import DeckComments from "../social/DeckComments";
 
 type PublicDeckTab = "decklist" | "analysis" | "primer";
 const PUBLIC_TABS = [{ key: "decklist", label: "Decklist" }, { key: "analysis", label: "Analysis" }, { key: "primer", label: "Primer" }] satisfies { key: PublicDeckTab; label: string }[];
@@ -77,5 +78,6 @@ export default function PublicDeckDetail() {
     <TabPanel baseId="public-deck" tab="analysis" active={tab}><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} title={deck.title} /></TabPanel>
     <TabPanel baseId="public-deck" tab="primer" active={tab} className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-5">{deck.primerMarkdown.trim() ? <PrimerMarkdown markdown={deck.primerMarkdown} decklist={deck.decklist} /> : <p className="text-sm text-ctp-subtext1">The author has not added a primer yet.</p>}</TabPanel>
     <p className="mt-4 text-xs text-ctp-subtext0">Published {new Date(deck.publishedAt).toLocaleDateString()} · Updated {new Date(deck.updatedAt).toLocaleDateString()}</p>
+    <DeckComments target={{ kind: "community", id: publicSlug }} />
   </PageLayout>;
 }

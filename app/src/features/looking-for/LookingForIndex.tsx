@@ -11,6 +11,7 @@ import { useCardCatalog } from "../cards/useCardCatalog";
 import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
 import Button from "../../components/ui/Button";
+import TradingBinder from "./TradingBinder";
 
 type ViewMode = "cards" | "sets";
 
@@ -78,8 +79,9 @@ export default function LookingForIndex() {
   const cards = useCardCatalog();
   const [searchParams, setSearchParams] = useSearchParams();
   const shared = useMemo(() => searchParams.get("v") === "1" && searchParams.get("list") ? decodeLookingForShare(searchParams.get("list") as string) : null, [searchParams]);
+  const publicBinderSlug = searchParams.get("binder") ?? undefined;
   const isSharedView = shared !== null;
-  useDocumentTitle(shared?.title ?? "Looking For", "Create and share a Grand Archive card wishlist with printing and set preferences.");
+  useDocumentTitle(shared?.title ?? (publicBinderSlug ? "Public Trading Binder" : "Trading Binder"), "Publish cards for trade, track wants, find matches, and manage offers.");
 
   const cardsByLowerName = useMemo(() => new Map(cards.map((card) => [card.name.toLocaleLowerCase(), card])), [cards]);
   const [title, setTitle] = useState("");
@@ -141,15 +143,17 @@ export default function LookingForIndex() {
 
   return (
     <PageLayout data-component="LookingForIndex" width="wide">
-      <PageHeader title={shared?.title ?? "Looking For"} description={isSharedView ? `${totalCards} cards across ${visibleEntries.length} requested items.` : "Paste a card list, choose acceptable printings, and send one link to traders or friends."} actions={isSharedView ? <Button variant="secondary" onClick={startNewList}>Create your own</Button> : undefined} />
+      <PageHeader title={shared?.title ?? (publicBinderSlug ? "Public Trading Binder" : "Trading Binder")} description={isSharedView ? `${totalCards} cards across ${visibleEntries.length} requested items.` : publicBinderSlug ? "Cards this player has made public for trading." : "Publish only the cards you choose, find reciprocal wants, and manage trade offers without exposing your private collection."} actions={(isSharedView || publicBinderSlug) ? <Button variant="secondary" onClick={startNewList}>Open your binder</Button> : undefined} />
 
-      {!isSharedView && (
-        <Panel>
+      {!isSharedView && <TradingBinder publicSlug={publicBinderSlug} />}
+
+      {!isSharedView && !publicBinderSlug && (
+        <details className="mt-8 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><summary className="cursor-pointer font-semibold text-ctp-text">Quick share list <span className="ml-2 text-xs font-normal text-ctp-subtext0">No account required</span></summary><Panel className="mt-4">
           <label className="block text-sm font-medium text-ctp-text">List title <span className="font-normal text-ctp-subtext0">(optional)</span><input value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Looking For List" className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text" /></label>
           <label className="mt-4 block text-sm font-medium text-ctp-text">Card list<textarea value={pasteText} onChange={(event) => setPasteText(event.target.value)} rows={9} placeholder={'# Main Deck\n1 Aenean Ward\n2 Angel Attendant\n4 Fireball'} className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 font-mono text-sm text-ctp-text" /></label>
           <p className="mt-2 text-xs text-ctp-subtext0">Use one card per line: “4 Fireball” or “4x Fireball”. Main, Material, and Sideboard headers are accepted but combined into one wishlist.</p>
           <Button variant="primary" onClick={importList} disabled={!pasteText.trim()} className="mt-4">Review list</Button>
-        </Panel>
+        </Panel></details>
       )}
 
       {skippedLines.length > 0 && !isSharedView && <Panel tone="warning" padding="sm" className="mt-4 text-sm text-ctp-subtext1"><p className="font-medium text-ctp-yellow">Some lines could not be imported:</p><p className="mt-1 font-mono text-xs">{skippedLines.join(" · ")}</p></Panel>}

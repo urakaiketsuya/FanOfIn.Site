@@ -1,4 +1,4 @@
-import type { AccountSession, AccountUser, AnalysisProfileSyncRecord, AuthIdentity, AuthProvider, BookmarkedCombo, BookmarkedDeck, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, ComboDefinition, ComboVisibility, DeckFormat, DeckImportPreview, DeckImportResult, DeckReportReason, DeckSocialState, DeckVisibility, MatchLogRecord, OmnidexDecklist, PublicCombo, PublicDeck, PublicDeckSummary, PublicProfile, SavedCombo, SavedDeck, SavedDeckDetail, SharedCardWatch, SyncedAnalysisProfile, TournamentDeckFavorite } from "@gatcg/shared";
+import type { AccountSession, AccountUser, AnalysisProfileSyncRecord, AuthIdentity, AuthProvider, BinderItem, BinderSettings, BookmarkedCombo, BookmarkedDeck, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, CommentReportReason, ComboDefinition, ComboVisibility, DeckCommentTarget, DeckCommentThread, DeckFormat, DeckImportPreview, DeckImportResult, DeckReportReason, DeckSocialState, DeckVisibility, MatchLogRecord, OmnidexDecklist, PublicBinder, PublicCombo, PublicDeck, PublicDeckSummary, PublicProfile, SavedCombo, SavedDeck, SavedDeckDetail, SharedCardWatch, SyncedAnalysisProfile, Trade, TradeLine, TradeStatus, TournamentDeckFavorite } from "@gatcg/shared";
 
 const ACCOUNT_API_URL = (import.meta.env.VITE_ACCOUNT_API_URL as string | undefined)?.replace(/\/$/, "")
   ?? (import.meta.env.PROD ? "https://accounts.fanofin.site/api" : "http://localhost:8788");
@@ -77,6 +77,24 @@ export const accountApi = {
   undoCollectionTransaction: (id: string) => accountRequest<{ success: true }>(`/v1/me/collection/transactions/${encodeURIComponent(id)}/undo`, { method: "POST", body: "{}" }),
   sharedCardWatches: () => accountRequest<{ cards: SharedCardWatch[] }>("/v1/me/collection/shared-cards"),
   setSharedCardWatch: (cardUuid: string, input: { cardName?: string; watched: boolean }) => accountRequest<{ success: true }>(`/v1/me/collection/shared-cards/${encodeURIComponent(cardUuid)}`, { method: "PATCH", body: JSON.stringify(input) }),
+  deckComments: (target: DeckCommentTarget, sort: "oldest" | "newest" = "oldest") => accountRequest<DeckCommentThread>(`/v1/deck-comments/${target.kind}/${encodeURIComponent(target.id)}?sort=${sort}`),
+  addDeckComment: (target: DeckCommentTarget, body: string, parentId?: string) => accountRequest<{ id: string }>(`/v1/deck-comments/${target.kind}/${encodeURIComponent(target.id)}`, { method: "POST", body: JSON.stringify({ body, parentId }) }),
+  editComment: (id: string, body: string) => accountRequest<{ success: true }>(`/v1/me/comments/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify({ body }) }),
+  deleteComment: (id: string) => accountRequest<{ success: true }>(`/v1/me/comments/${encodeURIComponent(id)}`, { method: "DELETE" }),
+  reportComment: (id: string, reason: CommentReportReason, details = "") => accountRequest<{ reported: true }>(`/v1/me/comments/${encodeURIComponent(id)}/report`, { method: "POST", body: JSON.stringify({ reason, details }) }),
+  lockDeckComments: (target: DeckCommentTarget, locked: boolean) => accountRequest<{ success: true }>(`/v1/deck-comments/${target.kind}/${encodeURIComponent(target.id)}`, { method: "PATCH", body: JSON.stringify({ locked }) }),
+  setBlock: (profileSlug: string, blocked: boolean) => accountRequest<{ success: true }>(`/v1/me/blocks/${encodeURIComponent(profileSlug)}`, { method: "PUT", body: JSON.stringify({ blocked }) }),
+  binder: () => accountRequest<{ settings: BinderSettings; items: BinderItem[] }>("/v1/me/binder"),
+  publicBinder: (profileSlug: string) => accountRequest<{ binder: PublicBinder }>(`/v1/binders/${encodeURIComponent(profileSlug)}`),
+  saveBinderSettings: (settings: BinderSettings) => accountRequest<{ settings: BinderSettings }>("/v1/me/binder/settings", { method: "PUT", body: JSON.stringify(settings) }),
+  addBinderItem: (item: Omit<BinderItem, "id" | "reservedQuantity" | "updatedAt">) => accountRequest<{ id: string }>("/v1/me/binder/items", { method: "POST", body: JSON.stringify(item) }),
+  updateBinderItem: (id: string, item: Omit<BinderItem, "id" | "reservedQuantity" | "updatedAt">) => accountRequest<{ success: true }>(`/v1/me/binder/items/${encodeURIComponent(id)}`, { method: "PUT", body: JSON.stringify(item) }),
+  deleteBinderItem: (id: string) => accountRequest<{ success: true }>(`/v1/me/binder/items/${encodeURIComponent(id)}`, { method: "DELETE" }),
+  binderMatches: () => accountRequest<{ binders: PublicBinder[] }>("/v1/me/binder/matches"),
+  trades: () => accountRequest<{ trades: Trade[] }>("/v1/me/trades"),
+  createTrade: (recipientProfileSlug: string, lines: Pick<TradeLine, "binderItemId" | "quantity">[], message = "") => accountRequest<{ id: string }>("/v1/me/trades", { method: "POST", body: JSON.stringify({ recipientProfileSlug, lines, message }) }),
+  counterTrade: (id: string, lines: Pick<TradeLine, "binderItemId" | "quantity">[], message = "") => accountRequest<{ success: true }>(`/v1/me/trades/${encodeURIComponent(id)}`, { method: "PUT", body: JSON.stringify({ lines, message }) }),
+  updateTradeStatus: (id: string, status: TradeStatus | "sent" | "received") => accountRequest<{ success: true }>(`/v1/me/trades/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify({ status }) }),
   createDeckVersion: (id: string, input: { decklist: OmnidexDecklist; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; changeNote?: string }) =>
     accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}/versions`, { method: "POST", body: JSON.stringify(input) }),
   /** Updates the deck's current decklist content in place — no new entry in version history, unlike `createDeckVersion`. */

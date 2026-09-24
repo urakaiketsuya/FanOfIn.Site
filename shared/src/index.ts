@@ -22,6 +22,8 @@ export * from "./diao.js";
 export * from "./broadcast-timeline-types.js";
 export * from "./match-log-types.js";
 export * from "./analysis-profile-types.js";
+export * from "./social-types.js";
+export * from "./trade-types.js";
 export * from "./costModifiers.js";
 export * from "./packageConfidence.js";
 export * from "./packageSeeds.js";

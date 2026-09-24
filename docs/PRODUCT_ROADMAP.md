@@ -562,6 +562,11 @@ Decks Favorites section can filter and open saved tournament and community decks
 - Use shallow threading, sorting, permalink/share support, author editing, reporting, and locked discussions.
 - Make comments opt-in per deck/article owner initially.
 
+**Implemented for public community and tournament deck pages:** signed-in posting, one-level replies,
+oldest/newest sorting, permalinks, author editing, soft deletion, reporting, user blocking, owner locks,
+revision storage, moderation records, staff roles, and shared write-rate limiting. Tournament discussions use
+the stable deck hash and can be locked by moderators; article integration remains deferred with articles.
+
 ### 5.4 Blog / articles
 
 - Add authored strategy articles with drafts, preview, cover image, tags, deck embeds, card references,
@@ -612,6 +617,12 @@ cards wanted. Treat a trade as an explicit agreement between two accounts, not m
 
 **Acceptance criteria:** users can publish a limited binder, find reciprocal matches, negotiate an auditable
 offer, confirm completion, and update both collection and public availability without overselling quantities.
+
+**Implemented:** printing-aware Available and Wanted lists, explicitly public binder settings, public profile
+links, reciprocal matching, offer composition, immutable revisions and counters, accept/decline/cancel/dispute
+states, reservation-aware availability, separate sent/received confirmations, and atomic completion updates to
+both binders and collection transaction histories. The original account-free share-list format remains under
+progressive disclosure for lightweight sharing and old links.
 
 ## Suggested delivery slices
 

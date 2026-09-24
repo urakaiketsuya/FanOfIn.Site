@@ -1,6 +1,6 @@
 import type { Env } from "./auth";
 
-export const REQUIRED_SCHEMA_VERSION = "0019";
+export const REQUIRED_SCHEMA_VERSION = "0020";
 
 export interface ServiceHealth {
   success: boolean;
@@ -17,7 +17,7 @@ export interface ServiceHealth {
  */
 export async function serviceHealth(env: Env): Promise<ServiceHealth> {
   try {
-    await env.ACCOUNT_DB.prepare(`SELECT users.profile_discoverable, users.deck_checklist_dismissed, users.display_name_reviewed,
+    await env.ACCOUNT_DB.prepare(`SELECT users.profile_discoverable, users.deck_checklist_dismissed, users.display_name_reviewed, users.community_role,
       user_decks.moderation_status, user_decks.primer_markdown, user_decks.tags_json, user_decks.published_title, user_decks.maybeboard_json
       FROM users CROSS JOIN user_decks LIMIT 0`).all();
     await env.ACCOUNT_DB.prepare("SELECT id FROM deck_reports LIMIT 0").all();
@@ -33,6 +33,10 @@ export async function serviceHealth(env: Env): Promise<ServiceHealth> {
     await env.ACCOUNT_DB.prepare("SELECT user_id, deck_hash, decklist_json FROM tournament_deck_favorites LIMIT 0").all();
     await env.ACCOUNT_DB.prepare("SELECT user_id, id, saved_deck_id, provenance_kind FROM match_log_records LIMIT 0").all();
     await env.ACCOUNT_DB.prepare("SELECT user_id, deck_fingerprint, deck_identity, revision FROM analysis_profiles LIMIT 0").all();
+    await env.ACCOUNT_DB.prepare("SELECT target_kind, target_id, locked FROM deck_comment_threads LIMIT 0").all();
+    await env.ACCOUNT_DB.prepare("SELECT id, parent_id, status FROM deck_comments LIMIT 0").all();
+    await env.ACCOUNT_DB.prepare("SELECT user_id, kind, card_uuid, edition_uuid, quantity FROM binder_items LIMIT 0").all();
+    await env.ACCOUNT_DB.prepare("SELECT id, status, current_revision, sender_received, recipient_received FROM trades LIMIT 0").all();
     return {
       success: true,
       service: "fanofin-accounts",

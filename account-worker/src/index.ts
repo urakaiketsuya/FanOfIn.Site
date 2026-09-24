@@ -11,6 +11,8 @@ import { createCombo, deleteCombo, discoverCombos, getPublicCombo, listComboBook
 import { listTournamentFavorites, parseTournamentFavoriteInput, setTournamentFavorite, tournamentFavoriteState } from "./tournament-favorites";
 import { deleteMatchLogRecord, listMatchLog, upsertMatchLog } from "./match-log";
 import { getAnalysisProfile, listAnalysisProfiles, upsertAnalysisProfile } from "./analysis-profiles";
+import { createComment, deleteComment, editComment, getComments, parseCommentTarget, reportComment, setBlock, setThreadLocked } from "./comments";
+import { binderMatches, counterTrade, createBinderItem, createTrade, deleteBinderItem, listTrades, myBinder, publicBinder, saveBinderSettings, updateBinderItem, updateTradeStatus } from "./trading";
 
 function response(env: Env, request: Request, body: unknown, status = 200, extra: HeadersInit = {}): Response {
   const origin = request.headers.get("Origin");
@@ -224,9 +226,49 @@ export default {
         const profile = await getPublicProfile(env, publicProfileMatch[1]);
         return profile ? response(env, request, { profile }) : response(env, request, { error: "Profile not found" }, 404);
       }
+      const publicBinderMatch = url.pathname.match(/^\/v1\/binders\/([a-f0-9]{24})$/);
+      if (publicBinderMatch && request.method === "GET") {
+        const binder = await publicBinder(env, publicBinderMatch[1]);
+        return binder ? response(env, request, { binder }) : response(env, request, { error: "Binder not found" }, 404);
+      }
+      const commentThreadMatch = url.pathname.match(/^\/v1\/deck-comments\/(community|tournament)\/([a-z0-9]+)$/i);
+      if (commentThreadMatch && request.method === "GET") {
+        const viewer = await authenticatedUser(request, env);
+        return response(env, request, await getComments(env, parseCommentTarget(commentThreadMatch[1], commentThreadMatch[2]), viewer, url.searchParams.get("sort") ?? "oldest"));
+      }
 
       const user = await authenticatedUser(request, env);
       if (!user) return response(env, request, { error: "Sign in is required" }, 401);
+
+      if (commentThreadMatch && request.method === "POST") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        return response(env, request, await createComment(env, user, parseCommentTarget(commentThreadMatch[1], commentThreadMatch[2]), await jsonBody(request)), 201);
+      }
+      if (commentThreadMatch && request.method === "PATCH") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        await setThreadLocked(env, user, parseCommentTarget(commentThreadMatch[1], commentThreadMatch[2]), (await jsonBody(request) as { locked?: unknown }).locked);
+        return response(env, request, { success: true });
+      }
+      const commentMatch = url.pathname.match(/^\/v1\/me\/comments\/([^/]+)$/);
+      if (commentMatch && request.method === "PATCH") { if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request); await editComment(env, user, commentMatch[1], await jsonBody(request)); return response(env, request, { success: true }); }
+      if (commentMatch && request.method === "DELETE") { if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request); await deleteComment(env, user, commentMatch[1]); return response(env, request, { success: true }); }
+      const commentReportMatch = url.pathname.match(/^\/v1\/me\/comments\/([^/]+)\/report$/);
+      if (commentReportMatch && request.method === "POST") { if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request); await reportComment(env, user, commentReportMatch[1], await jsonBody(request)); return response(env, request, { reported: true }, 201); }
+      const blockMatch = url.pathname.match(/^\/v1\/me\/blocks\/([a-f0-9]{24})$/);
+      if (blockMatch && request.method === "PUT") { if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request); await setBlock(env, user, blockMatch[1], (await jsonBody(request) as { blocked?: unknown }).blocked); return response(env, request, { success: true }); }
+
+      if (url.pathname === "/v1/me/binder" && request.method === "GET") return response(env, request, await myBinder(env, user));
+      if (url.pathname === "/v1/me/binder/settings" && request.method === "PUT") { if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request); return response(env, request, { settings: await saveBinderSettings(env, user, await jsonBody(request)) }); }
+      if (url.pathname === "/v1/me/binder/items" && request.method === "POST") { if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request); return response(env, request, await createBinderItem(env, user, await jsonBody(request)), 201); }
+      const binderItemMatch = url.pathname.match(/^\/v1\/me\/binder\/items\/([^/]+)$/);
+      if (binderItemMatch && request.method === "PUT") { if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request); await updateBinderItem(env, user, binderItemMatch[1], await jsonBody(request)); return response(env, request, { success: true }); }
+      if (binderItemMatch && request.method === "DELETE") { if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request); await deleteBinderItem(env, user, binderItemMatch[1]); return response(env, request, { success: true }); }
+      if (url.pathname === "/v1/me/binder/matches" && request.method === "GET") return response(env, request, { binders: await binderMatches(env, user) });
+      if (url.pathname === "/v1/me/trades" && request.method === "GET") return response(env, request, { trades: await listTrades(env, user) });
+      if (url.pathname === "/v1/me/trades" && request.method === "POST") { if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request); return response(env, request, await createTrade(env, user, await jsonBody(request)), 201); }
+      const tradeMatch = url.pathname.match(/^\/v1\/me\/trades\/([^/]+)$/);
+      if (tradeMatch && request.method === "PUT") { if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request); await counterTrade(env, user, tradeMatch[1], await jsonBody(request)); return response(env, request, { success: true }); }
+      if (tradeMatch && request.method === "PATCH") { if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request); await updateTradeStatus(env, user, tradeMatch[1], (await jsonBody(request) as { status?: unknown }).status); return response(env, request, { success: true }); }
 
       if (request.method === "GET" && url.pathname === "/v1/me/auth/identities") return response(env, request, { identities: await listAuthIdentities(env, user.id) });
       if (request.method === "POST" && url.pathname === "/v1/me/auth/password/change") {
@@ -344,7 +386,8 @@ export default {
         const deckSummaries = await listDecks(env, user);
         const decks = (await Promise.all(deckSummaries.map((deck) => getDeck(env, user, deck.id)))).filter((deck) => deck !== null);
         const collection = await listCollection(env, user);
-        return response(env, request, { exportedAt: new Date().toISOString(), user, profiles: profiles.results, decks, combos: await listCombos(env, user), collection: collection.entries, matchLog: await listMatchLog(env, user), analysisProfiles: await listAnalysisProfiles(env, user) });
+        const comments = await env.ACCOUNT_DB.prepare("SELECT id, target_kind, target_id, parent_id, body, status, created_at, updated_at FROM deck_comments WHERE author_user_id=? ORDER BY created_at").bind(user.id).all();
+        return response(env, request, { exportedAt: new Date().toISOString(), user, profiles: profiles.results, decks, combos: await listCombos(env, user), collection: collection.entries, matchLog: await listMatchLog(env, user), analysisProfiles: await listAnalysisProfiles(env, user), comments: comments.results, binder: await myBinder(env, user), trades: await listTrades(env, user) });
       }
       if (request.method === "PATCH" && url.pathname === "/v1/me") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);

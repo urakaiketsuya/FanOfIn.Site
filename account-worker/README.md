@@ -54,3 +54,7 @@ Production monitoring, backup/restore, privacy lifecycle, incident response, and
 
 Migration `0019_collection_printings.sql` adds exact-printing inventory without rewriting legacy
 card-level quantities. Apply it before deploying a Worker that reports schema version `0019`.
+
+Migration `0020_comments_and_binder.sql` adds shallow deck discussions, comment moderation and blocking,
+public trading binders, versioned offers, fulfillment receipts, and auditable trade events. Apply it before
+deploying a Worker that reports schema version `0020`.
