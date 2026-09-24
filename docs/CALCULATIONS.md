@@ -1471,6 +1471,24 @@ Verified against every real "level up your champion" card in the corpus
 Surfaced on every deck-viewing page's Analysis/Forecasts tab via `UserDeckStats.tsx`, next to the
 Hypergeometric calculator, using the same "Card in build" autofill convention.
 
+### User-facing role vocabulary
+
+Roles describe a declared plan or hand recipe, not permanent facts about a card.
+
+| Role | Definition | Real card contexts | Counterexample | Reused by |
+| --- | --- | --- | --- | --- |
+| Early action | A card the player is willing and able to use during the opening turns without assembling the named plan first. | `Eternal Directive` in an Automaton opening; `Rally the Peasants` when the opposing-board reduction is expected. | `Rally the Peasants` is not automatically early action when its condition is unlikely. | Opening Hand Recipe only. |
+| Setup | A card that establishes a resource, permanent, or state required by a later payoff. | Phantasias counted toward `Scepter of Awakening`; an Automaton that can later perform `Eternal Directive`. | A useful card is not Setup unless the selected payoff depends on it. | Readiness, Timing, Stage draws, and seeded recipes. |
+| Payoff | A card whose intended value in the named plan depends on Setup arriving first. | `Scepter of Awakening` in a Diao Phantasia plan; `Eternal Directive` in a plan specifically built around an established Automaton. | `Eternal Directive` can instead be Early action in another named plan. | Readiness, Timing, Stage draws, and affordability. |
+| Protection | A card held to preserve the established plan or answer disruption during its declared window. | `Fluffy Shopkeep` protecting a Champion through Intercept; interaction reserved for an opponent's critical turn. | An ally is not Protection merely because it can block in some board states. | Readiness, Resilience, and optional recipes. |
+| Flexible | A card considered useful both before Setup and after the payoff window begins. | `Creative Shock` when filtering advances both stages; interaction with valid early and late targets. | A late payoff is not Flexible merely because it can be reserved early. | Stage draws. |
+| Unwanted early | A recipe-specific pool for which an opening hand may contain no more than the chosen maximum. | `Full Bloom` before its seven-cost window; a redundant second payoff when a recipe needs only one. | A card from a competing named plan is not inherently unwanted; analyze that plan separately. | Opening Hand Recipe only. |
+
+The universal labels **Proactive Play**, **Liability**, and **willing to spend as threats** are retired.
+Pressure is configured separately as a card-backed package with a turn, recurrence, and effective-cost
+assumption. Diao Phantasia, Automaton attack, and conditional Human-search contexts demonstrate why Early
+action and Unwanted early remain recipe-specific while Setup, Payoff, and Protection belong to a named plan.
+
 ### Game Plan Readiness (`features/deckbuilder/GamePlanReadiness.tsx`, `lib/gamePlanReadiness.ts`)
 
 Deck Analysis presents a versioned **Prepare analysis** profile before its calculator tabs. Each profile

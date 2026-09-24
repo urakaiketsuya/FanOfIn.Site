@@ -158,6 +158,11 @@ effective cost, and the assumptions that make each modifier active.
 
 ### Calculator vocabulary study
 
+**Implemented:** Early action, Setup, Payoff, Protection, Flexible, and Unwanted early have plan-specific
+definitions. `Proactive Play`, universal `Liability`, and “willing to spend as threats” are retired.
+`docs/CALCULATIONS.md` records real card contexts, counterexamples, and every consumer, checked against Diao
+Phantasia, Automaton attack, and conditional Human-search plans.
+
 - Replace unclear labels with questions users naturally answer while deckbuilding.
 - Test the following candidate vocabulary with several real deck lists:
   - “Proactive Play” → “Early action” or remove it as a universal role.
@@ -165,7 +170,7 @@ effective cost, and the assumptions that make each modifier active.
   - “Willing to spend as threats” → remove; classify repeatable pressure by turn and affordability.
 - Identify which classifications are universal deck facts and which are scenario-specific judgments.
 
-**Exit criterion:** each role has a one-sentence definition, at least two card examples, a counterexample,
+**Exit criterion met:** each role has a one-sentence definition, at least two card examples, a counterexample,
 and a clear explanation of where the classification is reused.
 
 ### Transform/backside data audit
@@ -189,6 +194,11 @@ These are visible, bounded improvements that should ship before the larger analy
 
 ### 1.1 Deck editor spacing and move controls
 
+**Implemented:** card tiles separate quantity, move, detail, and removal regions; every interactive control
+and bulk action has a 44px minimum target. Main Deck, Material Deck, Sideboard, and Maybeboard are explicit
+destinations with reasons on illegal options. Moves, quantity changes, bulk changes, and removals enter the
+editor's Undo/Redo history before saving.
+
 - Increase vertical separation between deck rows and create consistent space between quantity, edit,
   remove, and move controls.
 - Keep controls usable at narrow widths without shrinking tap targets below 44×44 CSS pixels.
@@ -199,7 +209,7 @@ These are visible, bounded improvements that should ship before the larger analy
   copy, identity, Material-size, and Sideboard-point constraints remain in deck validation.**
 - Preserve keyboard operation and announce moves to assistive technology.
 
-**Acceptance criteria:** controls do not overlap at supported mobile widths; every card row exposes its
+**Acceptance criteria met:** controls do not overlap at supported mobile widths; every card row exposes its
 current section and legal destinations; moving a card is reversible without re-searching for it.
 
 ### 1.2 Card backsides and transform navigation
@@ -387,7 +397,7 @@ and can open the result in Deck Builder without mutating the source deck.
 
 ### 3.6 Consistency and clumping presentation
 
-**Implemented presentation foundation:** identical copy-count rows are grouped and use compact probability
+**Implemented:** identical copy-count rows are grouped and use compact probability
 strips, with card identities presented once per group. An accessible per-card exact-value table and CSV copy
 action preserve the repeated values for assistive technology and export.
 
@@ -398,7 +408,7 @@ action preserve the repeated values for assistive technology and export.
 
 ### 3.7 Resource timing visualization
 
-**Implemented presentation foundation:** printed-cost bands use compact access bars and disclose exact
+**Implemented:** printed-cost bands use compact access bars and disclose exact
 first/second-player values plus their card lists. Cards with detected conditional activation reductions expose
 a user-confirmed effective-cost overlay; the UI does not silently assume the condition is active.
 
@@ -431,10 +441,14 @@ Implemented: cross-season search by event, organizer, address, country, and seas
 setting, type, attendance, and decklist-availability filters; date/size/type sorting; list and month-grouped
 calendar views; direct event/deck-list navigation; compact participant/champion discovery fields; player and
 Champion search; and shareable public-deck coverage filters for any, some, complete, or none. The generated
-event index must be rebuilt and deployed before the new discovery fields are available in production.
+event index is rebuilt and deployed with the new discovery fields.
 
-Local index regenerated: the checked-in event index now includes participant discovery for every published
-event and Champion discovery where public decklists resolve a Champion. Production still requires deployment.
+The checked-in and production event index includes participant discovery for every published event and
+Champion discovery where public decklists resolve a Champion.
+
+Production validation completed on 2026-09-24: `/events` loaded the regenerated 21,609-event index, combined
+event/player/Champion/organizer/location search, URL-backed filters, list/calendar selector, deck-list
+coverage, and direct event actions at the 320px mobile breakpoint after the GitHub Pages release.
 
 **Acceptance criteria:** a user can find an event without knowing its season and can share the filtered view.
 

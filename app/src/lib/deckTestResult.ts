@@ -63,8 +63,11 @@ export interface DeckTestResult {
 /** A cluster's own published centroid (average copies per sighting, main+material combined) — cheap to build client-side, no need to re-scan the deck universe. */
 export function buildClusterCentroid(cluster: ArchetypeCluster): Map<string, number> {
   const centroid = new Map<string, number>();
-  for (const { name, quantity } of cluster.mainDeckAverageCards) centroid.set(name, quantity);
-  for (const { name, quantity } of cluster.materialDeckAverageCards) centroid.set(name, (centroid.get(name) ?? 0) + quantity);
+  // Published taxonomy artifacts can briefly lag the current schema during a rolling Pages/data
+  // deployment. Treat absent centroid sections as empty instead of crashing every deck tool that
+  // consumes the shared report.
+  for (const { name, quantity } of cluster.mainDeckAverageCards ?? []) centroid.set(name, quantity);
+  for (const { name, quantity } of cluster.materialDeckAverageCards ?? []) centroid.set(name, (centroid.get(name) ?? 0) + quantity);
   return centroid;
 }
 

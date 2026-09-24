@@ -52,9 +52,9 @@ export default function EventRow({ event }: { event: OmnidexEventSummary }) {
       <div className="shrink-0 rounded-full bg-ctp-surface0 px-2 py-1 text-xs text-ctp-subtext1">{event.playerCount} players</div>
       </div>
       <div className="mt-3 flex flex-wrap gap-2 border-t border-ctp-surface0 pt-2">
-        <Link to={`/events/${event.id}`} className="inline-flex min-h-9 items-center rounded-lg px-2 text-xs font-medium text-ctp-blue">Event details →</Link>
-        {event.decklists && <Link to={`/events/${event.id}?tab=decklists`} className="inline-flex min-h-9 items-center rounded-lg bg-ctp-blue/10 px-3 text-xs font-medium text-ctp-blue">Browse deck lists</Link>}
-        {!event.decklists && <span className="inline-flex min-h-9 items-center px-2 text-xs text-ctp-subtext0">No submitted deck lists</span>}
+        <Link to={`/events/${event.id}`} className="inline-flex min-h-11 items-center rounded-lg px-3 text-xs font-medium text-ctp-blue">Event details →</Link>
+        {event.decklists && <Link to={`/events/${event.id}?tab=decklists`} className="inline-flex min-h-11 items-center rounded-lg bg-ctp-blue/10 px-3 text-xs font-medium text-ctp-blue">Browse deck lists</Link>}
+        {!event.decklists && <span className="inline-flex min-h-11 items-center px-2 text-xs text-ctp-subtext0">No submitted deck lists</span>}
       </div>
     </article>
   );

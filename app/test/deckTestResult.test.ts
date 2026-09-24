@@ -121,6 +121,15 @@ test("a deck sharing no cards with any cluster is unclassified", () => {
   assert.equal(classification.assignmentMargin, null);
 });
 
+test("legacy taxonomy rows without average-card sections do not crash deck analysis", () => {
+  const legacy = cluster("legacy") as ArchetypeCluster & { mainDeckAverageCards?: never; materialDeckAverageCards?: never };
+  delete legacy.mainDeckAverageCards;
+  delete legacy.materialDeckAverageCards;
+  const classification = classifyDeckAgainstTaxonomy(new Map([["Card A", 4]]), [legacy]);
+  assert.equal(classification.status, "unclassified");
+  assert.equal(classification.cluster, null);
+});
+
 test("assignmentMargin is the gap between the best and second-best cluster", () => {
   const clusterA = cluster("a", { mainDeckAverageCards: [{ name: "Card A", quantity: 4 }] });
   const clusterB = cluster("b", {

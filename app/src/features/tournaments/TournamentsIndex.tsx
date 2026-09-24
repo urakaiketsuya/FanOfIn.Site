@@ -108,7 +108,7 @@ export default function TournamentsIndex() {
           placeholder="Search event, player, Champion, or location…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="min-h-11 flex-1 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-base text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none sm:text-sm"
+          className="min-h-11 flex-1 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-base text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/40 sm:text-sm"
         />
         <form onSubmit={handleIdLookup} className="flex gap-2">
           <input
@@ -118,7 +118,7 @@ export default function TournamentsIndex() {
             placeholder="Or jump to event ID…"
             value={idLookup}
             onChange={(e) => setIdLookup(e.target.value)}
-            className="min-h-11 min-w-0 flex-1 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-base text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none sm:w-44 sm:text-sm"
+            className="min-h-11 min-w-0 flex-1 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-base text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/40 sm:w-44 sm:text-sm"
           />
           <Button type="submit" variant="secondary">Go</Button>
         </form>
@@ -131,7 +131,7 @@ export default function TournamentsIndex() {
         <button
           onClick={() => setCategory(null)}
           aria-pressed={category === null}
-          className={`rounded-md border px-2 py-1 text-xs ${
+          className={`min-h-11 min-w-11 rounded-md border px-3 text-xs ${
             category === null ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
           }`}
         >
@@ -142,7 +142,7 @@ export default function TournamentsIndex() {
             key={c}
             onClick={() => setCategory(c)}
             aria-pressed={category === c}
-            className={`rounded-md border px-2 py-1 text-xs ${
+            className={`min-h-11 rounded-md border px-3 text-xs ${
               category === c ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
           >
@@ -158,7 +158,7 @@ export default function TournamentsIndex() {
             key={s ?? "all"}
             onClick={() => setSetting(s)}
             aria-pressed={setting === s}
-            className={`rounded-md border px-2 py-1 text-xs capitalize ${
+            className={`min-h-11 min-w-11 rounded-md border px-3 text-xs capitalize ${
               setting === s ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
           >
@@ -173,7 +173,7 @@ export default function TournamentsIndex() {
           value={seasonId ?? ""}
           aria-label="Season"
           onChange={(e) => setSeasonId(e.target.value ? Number(e.target.value) : null)}
-          className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+          className="min-h-11 rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 text-xs text-ctp-text"
         >
           <option value="">All seasons</option>
           {seasonsPresent.map((s) => (
@@ -201,12 +201,12 @@ export default function TournamentsIndex() {
 
       <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Deck lists:</span>
-        {(["any", "available", "unavailable"] as const).map((value) => <button key={value} type="button" onClick={() => setDecklists(value)} aria-pressed={decklists === value} className={`min-h-9 rounded-lg border px-3 text-xs capitalize ${decklists === value ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1"}`}>{value}</button>)}
+        {(["any", "available", "unavailable"] as const).map((value) => <button key={value} type="button" onClick={() => setDecklists(value)} aria-pressed={decklists === value} className={`min-h-11 rounded-lg border px-3 text-xs capitalize ${decklists === value ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1"}`}>{value}</button>)}
       </div>
 
       <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Public deck coverage:</span>
-        {(["any", "some", "complete", "none"] as const).map((value) => <button key={value} type="button" onClick={() => setCoverage(value)} aria-pressed={coverage === value} className={`min-h-9 rounded-lg border px-3 text-xs capitalize ${coverage === value ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1"}`}>{value}</button>)}
+        {(["any", "some", "complete", "none"] as const).map((value) => <button key={value} type="button" onClick={() => setCoverage(value)} aria-pressed={coverage === value} className={`min-h-11 rounded-lg border px-3 text-xs capitalize ${coverage === value ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1"}`}>{value}</button>)}
       </div>
 
       <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
@@ -216,7 +216,7 @@ export default function TournamentsIndex() {
             key={n}
             onClick={() => setMinPlayers(n)}
             aria-pressed={minPlayers === n}
-            className={`rounded-md border px-2 py-1 text-xs ${
+            className={`min-h-11 min-w-11 rounded-md border px-3 text-xs ${
               minPlayers === n ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
           >
@@ -232,7 +232,7 @@ export default function TournamentsIndex() {
             key={mode}
             onClick={() => setSortMode(mode)}
             aria-pressed={sortMode === mode}
-            className={`rounded-md border px-2 py-1 text-xs capitalize ${
+            className={`min-h-11 rounded-md border px-3 text-xs capitalize ${
               sortMode === mode ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
             }`}
           >
@@ -251,7 +251,7 @@ export default function TournamentsIndex() {
         </InlineState>
       )}
 
-      {index && events.length > 0 && <div className="mt-4 flex items-center justify-between gap-3"><p className="text-xs text-ctp-subtext0">{events.length} event{events.length === 1 ? "" : "s"} match</p><div role="group" aria-label="Event results view" className="flex rounded-lg bg-ctp-mantle p-1">{(["list", "calendar"] as const).map((mode) => <button key={mode} type="button" aria-pressed={viewMode === mode} onClick={() => setViewMode(mode)} className={`min-h-9 rounded-md px-3 text-xs capitalize ${viewMode === mode ? "bg-ctp-blue/15 font-semibold text-ctp-blue" : "text-ctp-subtext1"}`}>{mode}</button>)}</div></div>}
+      {index && events.length > 0 && <div className="mt-4 flex items-center justify-between gap-3"><p className="text-xs text-ctp-subtext0">{events.length} event{events.length === 1 ? "" : "s"} match</p><div role="group" aria-label="Event results view" className="flex rounded-lg bg-ctp-mantle p-1">{(["list", "calendar"] as const).map((mode) => <button key={mode} type="button" aria-pressed={viewMode === mode} onClick={() => setViewMode(mode)} className={`min-h-11 rounded-md px-3 text-xs capitalize ${viewMode === mode ? "bg-ctp-blue/15 font-semibold text-ctp-blue" : "text-ctp-subtext1"}`}>{mode}</button>)}</div></div>}
 
       {viewMode === "list" ? <div className="mt-2 space-y-2">{visibleEvents.map((event) => <EventRow key={event.id} event={event} />)}</div> : <div className="mt-4 space-y-6">{calendarGroups.map((group) => <section key={group.key}><h2 className="sticky top-0 z-10 border-b border-ctp-surface1 bg-ctp-base/95 py-2 text-sm font-semibold text-ctp-text backdrop-blur">{group.label} <span className="font-normal text-ctp-subtext0">· {group.events.length}</span></h2><div className="mt-2 space-y-2">{group.events.map((event) => <EventRow key={event.id} event={event} />)}</div></section>)}</div>}
 
