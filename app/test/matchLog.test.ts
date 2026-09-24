@@ -1,13 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { addImportedMatches, applyClarentCardMappings, loadMatchLog, mergeMatchLogs, previewClarentImport, summarizeMatchLog, summarizeMatchLogGroups, type MatchLogRecord } from "../src/lib/matchLog";
+import { addImportedMatches, applyClarentCardMappings, applyClarentDeckMappings, loadMatchLog, mergeMatchLogs, previewClarentImport, resolveClarentMappings, summarizeMatchLog, summarizeMatchLogGroups, type MatchLogRecord } from "../src/lib/matchLog";
 
 const submission = {
   schemaVersion: 1, submissionId: "match-7:1", submittedAt: "2026-09-20T12:00:00.000Z",
   source: { application: "TCGEngine", game: "GrandArchiveSim", version: "1.2.3" },
   matchId: "match-7", gameNumber: 1, winner: 2, firstPlayer: 1, turns: 8,
   players: {
-    "1": { championId: "champ-a", championName: "Alice", cardStats: { known: {}, mystery: {} } },
+    "1": { championId: "champ-a", championName: "Alice", deckLink: "Main\n4x Dungeon Guide\n\nMaterial\n1x Spirit of Water", cardStats: { known: {}, mystery: {} } },
     "2": { championId: "champ-b", championName: "Bob", cardStats: {} },
   },
 };
@@ -20,6 +20,36 @@ test("Clarent preview preserves provenance and derives the selected seat result"
   assert.equal(result.previews[0].record.deckLabel, "Bob");
   assert.equal(result.previews[0].record.opponent, "Alice");
   assert.equal(result.previews[0].record.provenance.kind, "clarent");
+});
+
+test("Clarent mapping resolves exact card IDs and an exact saved deck without losing raw input", () => {
+  const parsed = previewClarentImport(JSON.stringify(submission), 1, [], new Set());
+  const cards = [{ uuid: "known", name: "Dungeon Guide" }, { uuid: "spirit", name: "Spirit of Water" }];
+  const savedDecks = [{ id: "deck-1", title: "Water list", decklist: { main: [{ card: "Dungeon Guide", quantity: 4 }], material: [{ card: "Spirit of Water", quantity: 1 }], sideboard: [] } }];
+  const [mapped] = resolveClarentMappings(parsed.previews, savedDecks as never, cards);
+  assert.equal(mapped.deckMapping, "exact");
+  assert.equal(mapped.record.savedDeckId, "deck-1");
+  assert.deepEqual(mapped.record.notableCards, ["Dungeon Guide"]);
+  assert.equal(mapped.record.provenance.kind, "clarent");
+  if (mapped.record.provenance.kind === "clarent") {
+    assert.match(mapped.record.provenance.rawDeckInput ?? "", /Dungeon Guide/);
+    assert.deepEqual(mapped.record.provenance.deckMapping, { savedDeckId: "deck-1", method: "exact" });
+  }
+});
+
+test("ambiguous card and deck mappings stay visible until explicitly corrected", () => {
+  const parsed = previewClarentImport(JSON.stringify({ ...submission, players: { ...submission.players, "1": { ...submission.players["1"], cardStats: { "Dungeon Guide": {} } } } }), 1, []);
+  const cards = [{ uuid: "printing-a", name: "Dungeon Guide" }, { uuid: "printing-b", name: "Dungeon Guide" }];
+  const decklist = { main: [{ card: "Dungeon Guide", quantity: 4 }], material: [{ card: "Spirit of Water", quantity: 1 }], sideboard: [] };
+  const decks = [{ id: "deck-a", title: "A", decklist }, { id: "deck-b", title: "B", decklist }];
+  const [ambiguous] = resolveClarentMappings(parsed.previews, decks as never, cards);
+  assert.equal(ambiguous.deckMapping, "ambiguous");
+  assert.equal(ambiguous.deckCandidates.length, 2);
+  assert.deepEqual(ambiguous.ambiguousCardIds["Dungeon Guide"].map((card) => card.name), ["printing-a", "printing-b"]);
+  const [corrected] = applyClarentDeckMappings(applyClarentCardMappings([ambiguous], { "Dungeon Guide": cards[1] }), { [ambiguous.record.id]: { id: "deck-b", title: "B" } });
+  assert.equal(corrected.record.savedDeckId, "deck-b");
+  assert.deepEqual(corrected.unresolvedCardIds, []);
+  assert.deepEqual(corrected.ambiguousCardIds, {});
 });
 
 test("Clarent imports are idempotent without affecting manual records", () => {

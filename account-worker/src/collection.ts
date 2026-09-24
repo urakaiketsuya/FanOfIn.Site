@@ -10,6 +10,9 @@ const MAX_SHARED_WATCHES = 200;
 interface StoredChange {
   cardUuid: string;
   cardName: string;
+  editionUuid?: string;
+  setPrefix?: string;
+  collectorNumber?: string;
   beforeOwned: number;
   beforeProxy: number;
   afterOwned: number;
@@ -24,22 +27,28 @@ function parseLines(value: unknown): CollectionUpdateLine[] {
     const line = raw as Partial<CollectionUpdateLine>;
     const cardUuid = typeof line.cardUuid === "string" ? line.cardUuid.trim() : "";
     const cardName = typeof line.cardName === "string" ? line.cardName.trim().replace(/\s+/g, " ") : "";
-    if (!cardUuid || cardUuid.length > 200 || !cardName || cardName.length > 200 || seen.has(cardUuid)) throw badRequest("Invalid or duplicate collection card");
+    const editionUuid = typeof line.editionUuid === "string" ? line.editionUuid.trim() : undefined;
+    const key = `${cardUuid}:${editionUuid ?? "canonical"}`;
+    if (!cardUuid || cardUuid.length > 200 || !cardName || cardName.length > 200 || (editionUuid?.length ?? 0) > 200 || seen.has(key)) throw badRequest("Invalid or duplicate collection card");
     if (!Number.isInteger(line.quantity) || line.quantity! < 0 || line.quantity! > MAX_QUANTITY) throw badRequest("Invalid collection quantity");
     const proxyQuantity = line.proxyQuantity ?? 0;
     if (!Number.isInteger(proxyQuantity) || proxyQuantity < 0 || proxyQuantity > MAX_QUANTITY) throw badRequest("Invalid proxy quantity");
-    seen.add(cardUuid);
-    return { cardUuid, cardName, quantity: line.quantity!, proxyQuantity };
+    seen.add(key);
+    return { cardUuid, cardName, editionUuid, setPrefix: typeof line.setPrefix === "string" ? line.setPrefix.trim().slice(0, 40) : undefined, collectorNumber: typeof line.collectorNumber === "string" ? line.collectorNumber.trim().slice(0, 80) : undefined, quantity: line.quantity!, proxyQuantity };
   });
 }
 
 export async function listCollection(env: Env, user: AuthUser): Promise<{ entries: CollectionEntry[]; transactions: CollectionTransaction[] }> {
-  const [entries, transactions] = await Promise.all([
+  const [entries, printings, transactions] = await Promise.all([
     env.ACCOUNT_DB.prepare("SELECT * FROM collection_entries WHERE user_id = ? ORDER BY card_name COLLATE NOCASE").bind(user.id).all<Record<string, string | number | null>>(),
+    env.ACCOUNT_DB.prepare("SELECT * FROM collection_printing_entries WHERE user_id = ? ORDER BY card_name COLLATE NOCASE, set_prefix, collector_number").bind(user.id).all<Record<string, string | number | null>>(),
     env.ACCOUNT_DB.prepare("SELECT id, source, changes_json, created_at, undone_at FROM collection_transactions WHERE user_id = ? ORDER BY created_at DESC LIMIT 20").bind(user.id).all<Record<string, string | null>>(),
   ]);
   return {
-    entries: entries.results.map((row) => ({ cardUuid: String(row.card_uuid), cardName: String(row.card_name), ownedQuantity: Number(row.owned_quantity), proxyQuantity: Number(row.proxy_quantity), updatedAt: String(row.updated_at) })),
+    entries: [
+      ...entries.results.map((row) => ({ cardUuid: String(row.card_uuid), cardName: String(row.card_name), ownedQuantity: Number(row.owned_quantity), proxyQuantity: Number(row.proxy_quantity), updatedAt: String(row.updated_at) })),
+      ...printings.results.map((row) => ({ cardUuid: String(row.card_uuid), cardName: String(row.card_name), editionUuid: String(row.edition_uuid), setPrefix: row.set_prefix ? String(row.set_prefix) : undefined, collectorNumber: row.collector_number ? String(row.collector_number) : undefined, ownedQuantity: Number(row.owned_quantity), proxyQuantity: Number(row.proxy_quantity), updatedAt: String(row.updated_at) })),
+    ],
     transactions: transactions.results.map((row) => ({ id: row.id!, source: row.source!, lineCount: (JSON.parse(row.changes_json!) as unknown[]).length, createdAt: row.created_at!, undoneAt: row.undone_at })),
   };
 }
@@ -54,19 +63,28 @@ export async function updateCollection(env: Env, user: AuthUser, value: unknown)
   const lines = parseLines(input.lines);
   const changes: StoredChange[] = [];
   for (const line of lines) {
-    const current = await env.ACCOUNT_DB.prepare("SELECT owned_quantity, proxy_quantity FROM collection_entries WHERE user_id = ? AND card_uuid = ?")
-      .bind(user.id, line.cardUuid).first<{ owned_quantity: number; proxy_quantity: number }>();
+    const current = line.editionUuid
+      ? await env.ACCOUNT_DB.prepare("SELECT owned_quantity, proxy_quantity FROM collection_printing_entries WHERE user_id = ? AND edition_uuid = ?").bind(user.id, line.editionUuid).first<{ owned_quantity: number; proxy_quantity: number }>()
+      : await env.ACCOUNT_DB.prepare("SELECT owned_quantity, proxy_quantity FROM collection_entries WHERE user_id = ? AND card_uuid = ?").bind(user.id, line.cardUuid).first<{ owned_quantity: number; proxy_quantity: number }>();
     const beforeOwned = Number(current?.owned_quantity ?? 0);
     const beforeProxy = Number(current?.proxy_quantity ?? 0);
     const afterOwned = mode === "add" ? Math.min(MAX_QUANTITY, beforeOwned + line.quantity) : mode === "at-least" ? Math.max(beforeOwned, line.quantity) : line.quantity;
     const afterProxy = mode === "add" ? Math.min(MAX_QUANTITY, beforeProxy + (line.proxyQuantity ?? 0)) : mode === "at-least" ? Math.max(beforeProxy, line.proxyQuantity ?? 0) : (line.proxyQuantity ?? 0);
-    if (afterOwned !== beforeOwned || afterProxy !== beforeProxy || !current) changes.push({ cardUuid: line.cardUuid, cardName: line.cardName, beforeOwned, beforeProxy, afterOwned, afterProxy });
+    if (afterOwned !== beforeOwned || afterProxy !== beforeProxy || !current) changes.push({ cardUuid: line.cardUuid, cardName: line.cardName, editionUuid: line.editionUuid, setPrefix: line.setPrefix, collectorNumber: line.collectorNumber, beforeOwned, beforeProxy, afterOwned, afterProxy });
   }
   if (changes.length === 0) return { transactionId: "", changed: 0 };
   const transactionId = crypto.randomUUID();
   const now = new Date().toISOString();
   await env.ACCOUNT_DB.batch([
-    ...changes.map((change) => change.afterOwned === 0 && change.afterProxy === 0
+    ...changes.map((change) => change.editionUuid
+      ? change.afterOwned === 0 && change.afterProxy === 0
+        ? env.ACCOUNT_DB.prepare("DELETE FROM collection_printing_entries WHERE user_id = ? AND edition_uuid = ?").bind(user.id, change.editionUuid)
+        : env.ACCOUNT_DB.prepare(`INSERT INTO collection_printing_entries
+          (user_id, card_uuid, card_name, edition_uuid, set_prefix, collector_number, owned_quantity, proxy_quantity, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+          ON CONFLICT(user_id, edition_uuid) DO UPDATE SET card_name = excluded.card_name, set_prefix = excluded.set_prefix,
+          collector_number = excluded.collector_number, owned_quantity = excluded.owned_quantity, proxy_quantity = excluded.proxy_quantity, updated_at = excluded.updated_at`)
+          .bind(user.id, change.cardUuid, change.cardName, change.editionUuid, change.setPrefix ?? null, change.collectorNumber ?? null, change.afterOwned, change.afterProxy, now)
+      : change.afterOwned === 0 && change.afterProxy === 0
       ? env.ACCOUNT_DB.prepare("DELETE FROM collection_entries WHERE user_id = ? AND card_uuid = ?").bind(user.id, change.cardUuid)
       : env.ACCOUNT_DB.prepare(`INSERT INTO collection_entries
         (user_id, card_uuid, card_name, owned_quantity, proxy_quantity, updated_at) VALUES (?, ?, ?, ?, ?, ?)
@@ -113,7 +131,15 @@ export async function undoCollectionTransaction(env: Env, user: AuthUser, transa
   const changes = JSON.parse(transaction.changes_json) as StoredChange[];
   const now = new Date().toISOString();
   await env.ACCOUNT_DB.batch([
-    ...changes.map((change) => change.beforeOwned === 0 && change.beforeProxy === 0
+    ...changes.map((change) => change.editionUuid
+      ? change.beforeOwned === 0 && change.beforeProxy === 0
+        ? env.ACCOUNT_DB.prepare("DELETE FROM collection_printing_entries WHERE user_id = ? AND edition_uuid = ?").bind(user.id, change.editionUuid)
+        : env.ACCOUNT_DB.prepare(`INSERT INTO collection_printing_entries
+          (user_id, card_uuid, card_name, edition_uuid, set_prefix, collector_number, owned_quantity, proxy_quantity, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+          ON CONFLICT(user_id, edition_uuid) DO UPDATE SET card_name = excluded.card_name, set_prefix = excluded.set_prefix,
+          collector_number = excluded.collector_number, owned_quantity = excluded.owned_quantity, proxy_quantity = excluded.proxy_quantity, updated_at = excluded.updated_at`)
+          .bind(user.id, change.cardUuid, change.cardName, change.editionUuid, change.setPrefix ?? null, change.collectorNumber ?? null, change.beforeOwned, change.beforeProxy, now)
+      : change.beforeOwned === 0 && change.beforeProxy === 0
       ? env.ACCOUNT_DB.prepare("DELETE FROM collection_entries WHERE user_id = ? AND card_uuid = ?").bind(user.id, change.cardUuid)
       : env.ACCOUNT_DB.prepare(`INSERT INTO collection_entries
         (user_id, card_uuid, card_name, owned_quantity, proxy_quantity, updated_at) VALUES (?, ?, ?, ?, ?, ?)

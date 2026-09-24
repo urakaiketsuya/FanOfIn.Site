@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import type { Card } from "@gatcg/shared";
+import { evaluateCardCost, parseCostModifierRules, type Card } from "@gatcg/shared";
 import { computeGamePlanViews, type GamePlanRole } from "../../lib/gamePlanReadiness";
 import { inferStartingHandSize, naturalCardsSeenByTurn, type PlayOrder } from "../../lib/turnToPlay";
 import { computeStageDrawQuality } from "../../lib/stageDrawQuality";
@@ -39,7 +39,8 @@ export default function GamePlanReadiness({ mainLines, materialLines, catalogByN
     const override = sharedEffectiveCosts[name];
     if (Number.isFinite(override)) return Math.max(0, Math.floor(override));
     const printed = catalogByName.get(name)?.cost_reserve;
-    return printed != null && printed >= 0 ? printed : null;
+    if (printed == null || printed < 0) return null;
+    return evaluateCardCost(printed, parseCostModifierRules(catalogByName.get(name)!)).effectiveCost;
   };
   const individuallyAffordable = (name: string) => { const cost = costFor(name); return cost != null && cost + 1 <= cardsSeenAtTarget; };
   const affordableRoles = (Object.keys(roleLines) as GamePlanRole[]).map((role) => ({ role, copies: roleLines[role].filter((line) => individuallyAffordable(line.name)).reduce((sum, line) => sum + line.quantity, 0), required: required[role] }));

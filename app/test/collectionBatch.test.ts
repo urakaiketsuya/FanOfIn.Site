@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { computeDeckCollectionStatus, type Card } from "@gatcg/shared";
-import { crossDeckCollectionShortages, deckCollectionLines, decklistsCollectionBackfillLines, setRarityCollectionLines, summarizeAtLeastChanges } from "../src/features/collection/collectionBatch";
+import { collectionCsv, crossDeckCollectionShortages, deckCollectionLines, decklistsCollectionBackfillLines, missingCollectionList, setRarityCollectionLines, summarizeAtLeastChanges } from "../src/features/collection/collectionBatch";
 
 function card(uuid: string, name: string, editions: Array<[string, number]> = []): Card {
   return { uuid, name, slug: name, classes: [], types: [], subtypes: [], elements: [], element: "", cost: { type: "none", value: null }, cost_memory: null, cost_reserve: null, power: null, speed: null, life: null, level: null, durability: null, effect: null, effect_html: null, effect_raw: null, flavor: null, references: [], referenced_by: [], legality: null, last_update: "", editions: editions.map(([prefix, rarity], index) => ({ uuid: `${uuid}-${index}`, card_id: uuid, slug: name, collector_number: String(index), configuration: "normal", orientation: null, rarity, illustrator: null, image: "", set: { id: prefix, name: prefix, prefix, language: "EN", release_date: "", created_at: "", last_update: "" }, effect: null, effect_html: null, effect_raw: null, flavor: null, last_update: "", created_at: "" })) };
@@ -67,4 +67,32 @@ test("deck-surface ownership normalizes names and includes sideboard demand", ()
   assert.equal(withSideboard.proxyCopies, 1);
   assert.equal(withSideboard.lines.find((line) => line.card.trim().startsWith("Alpha"))?.missing, 2);
   assert.equal(computeDeckCollectionStatus(deck, collection, false).missingCopies, 1);
+});
+
+test("canonical coverage pools legacy quantities and alternate printing quantities", () => {
+  const deck = { main: [{ card: "Alpha", quantity: 4 }], material: [], sideboard: [] };
+  const collection = [
+    { cardUuid: "a", cardName: "Alpha", ownedQuantity: 1, proxyQuantity: 0, updatedAt: "" },
+    { cardUuid: "a", cardName: "ALPHA", editionUuid: "set-a", setPrefix: "A", collectorNumber: "1", ownedQuantity: 2, proxyQuantity: 0, updatedAt: "" },
+    { cardUuid: "a", cardName: "Alpha", editionUuid: "set-b", setPrefix: "B", collectorNumber: "9", ownedQuantity: 1, proxyQuantity: 0, updatedAt: "" },
+  ];
+  assert.equal(computeDeckCollectionStatus(deck, collection).missingCopies, 0);
+});
+
+test("build-every-deck allocates one pooled printing inventory across simultaneous demand", () => {
+  const decks = [
+    { id: "one", title: "One", decklist: { main: [{ card: "Alpha", quantity: 3 }], material: [], sideboard: [] } },
+    { id: "two", title: "Two", decklist: { main: [{ card: "Alpha", quantity: 3 }], material: [], sideboard: [] } },
+  ] as never;
+  const entries = [
+    { cardUuid: "a", cardName: "Alpha", editionUuid: "first", ownedQuantity: 2, proxyQuantity: 0, updatedAt: "" },
+    { cardUuid: "a", cardName: "Alpha", editionUuid: "second", ownedQuantity: 2, proxyQuantity: 0, updatedAt: "" },
+  ];
+  assert.deepEqual(crossDeckCollectionShortages(decks, entries), [{ card: "Alpha", totalRequired: 6, owned: 4, missing: 2, decks: [{ deckId: "one", title: "One", quantity: 3 }, { deckId: "two", title: "Two", quantity: 3 }] }]);
+});
+
+test("collection exports retain printing identity and shortage exports stay deduplicated", () => {
+  const csv = collectionCsv([{ cardUuid: "a", cardName: "Alpha", editionUuid: "print-1", setPrefix: "SET", collectorNumber: "007", ownedQuantity: 2, proxyQuantity: 1, updatedAt: "" }]);
+  assert.match(csv, /a,"Alpha",print-1,SET,007,2,1/);
+  assert.equal(missingCollectionList([{ card: "Alpha", missing: 2 }, { card: "Beta", missing: 1 }]), "2 Alpha\n1 Beta");
 });

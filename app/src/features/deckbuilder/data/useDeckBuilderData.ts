@@ -39,13 +39,19 @@ export function useDeckBuilderData({ championName, format, includeDecodedDecks, 
   const spiritCanonicalNames = useMemo(() => buildSpiritCanonicalNames(catalog), [catalog]);
 
   const [collection, setCollection] = useState<CollectionEntry[]>([]);
+  const [collectionLoaded, setCollectionLoaded] = useState(false);
   useEffect(() => {
-    const refresh = () => { void accountApi.collection().then((result) => setCollection(result.entries)).catch(() => undefined); };
+    const refresh = () => {
+      setCollectionLoaded(false);
+      void accountApi.collection()
+        .then((result) => { setCollection(result.entries); setCollectionLoaded(true); })
+        .catch(() => { setCollection([]); setCollectionLoaded(false); });
+    };
     refresh();
     window.addEventListener("fanofin:collection-updated", refresh);
     return () => window.removeEventListener("fanofin:collection-updated", refresh);
   }, []);
-  const collectionOwnedByName = useMemo(() => new Map(collection.map((entry) => [entry.cardName, entry.ownedQuantity])), [collection]);
+  const collectionOwnedByName = useMemo(() => { const totals = new Map<string, number>(); for (const entry of collection) totals.set(entry.cardName, (totals.get(entry.cardName) ?? 0) + entry.ownedQuantity); return totals; }, [collection]);
 
   const population = useDeckBuilderPopulation(championName);
   const cardQuantityStats = useCardQuantityStatsData(hasChampion);
@@ -71,6 +77,7 @@ export function useDeckBuilderData({ championName, format, includeDecodedDecks, 
     catalogByName,
     spiritCanonicalNames,
     collection,
+    collectionLoaded,
     collectionOwnedByName,
     population,
     cardQuantityStats,

@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
-import type { AccountUser, Card, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, SavedDeck, SharedCardWatch } from "@gatcg/shared";
+import { collectionTotalsByCard, type AccountUser, type Card, type CollectionEntry, type CollectionInventoryMode, type CollectionTransaction, type CollectionUpdateLine, type CollectionUpdateMode, type SavedDeck, type SharedCardWatch } from "@gatcg/shared";
 import { accountApi } from "../../lib/accountApi";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import GoogleSignInButton from "../account/GoogleSignInButton";
 import DiscordSignInButton from "../account/DiscordSignInButton";
 import PasswordSignInPanel from "../account/PasswordSignInPanel";
-import { COLLECTION_RARITY_LABELS, DEFAULT_SET_RARITY_QUANTITIES, crossDeckCollectionShortages, deckCollectionLines, setRarityCollectionLines, summarizeAtLeastChanges, watchedCardUsage } from "./collectionBatch";
+import { COLLECTION_RARITY_LABELS, DEFAULT_SET_RARITY_QUANTITIES, collectionCsv, crossDeckCollectionShortages, deckCollectionLines, missingCollectionList, setRarityCollectionLines, summarizeAtLeastChanges, watchedCardUsage } from "./collectionBatch";
 import PageLayout from "../../components/layout/PageLayout";
 import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
@@ -14,13 +14,13 @@ import { InlineState } from "../../components/ui/ContentState";
 import { buildTcgplayerMassEntryUrl } from "../../lib/tcgplayerMassEntry";
 
 function downloadCsv(entries: CollectionEntry[]) {
-  const csv = ["card_uuid,card_name,owned_quantity,proxy_quantity", ...entries.map((entry) => [entry.cardUuid, JSON.stringify(entry.cardName), entry.ownedQuantity, entry.proxyQuantity].join(","))].join("\n");
+  const csv = collectionCsv(entries);
   const url = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
   const anchor = document.createElement("a"); anchor.href = url; anchor.download = "fanofin-collection.csv"; anchor.click(); URL.revokeObjectURL(url);
 }
 
 function downloadMissingList(lines: { card: string; missing: number }[]) {
-  const text = lines.map((line) => `${line.missing} ${line.card}`).join("\n");
+  const text = missingCollectionList(lines);
   const url = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
   const anchor = document.createElement("a"); anchor.href = url; anchor.download = "fanofin-missing-cards.txt"; anchor.click(); URL.revokeObjectURL(url);
 }
@@ -33,16 +33,24 @@ function parseCsv(text: string, cards: Card[]): { lines: CollectionUpdateLine[];
     if (!raw.trim() || (index === 0 && /card|quantity/i.test(raw))) continue;
     const columns = raw.match(/(?:"([^"]*(?:""[^"]*)*)"|([^,]*))(?:,|$)/g)?.map((part) => part.replace(/,$/, "").replace(/^"|"$/g, "").replace(/""/g, '"').trim()) ?? [];
     let card: Card | undefined; let quantity = 0; let proxyQuantity = 0;
-    if (columns.length >= 3 && byUuid.has(columns[0])) { card = byUuid.get(columns[0]); quantity = Number(columns[2]); proxyQuantity = Number(columns[3] ?? 0); }
+    if (columns.length >= 3 && byUuid.has(columns[0])) {
+      card = byUuid.get(columns[0]);
+      const edition = card?.editions.find((item) => item.uuid === columns[2]);
+      if (columns.length >= 7) { quantity = Number(columns[5]); proxyQuantity = Number(columns[6] ?? 0); }
+      else { quantity = Number(columns[2]); proxyQuantity = Number(columns[3] ?? 0); }
+      if (edition) lines.push({ cardUuid: card!.uuid, cardName: card!.name, editionUuid: edition.uuid, setPrefix: edition.set.prefix, collectorNumber: edition.collector_number, quantity, proxyQuantity: Number.isInteger(proxyQuantity) && proxyQuantity >= 0 ? proxyQuantity : 0 });
+      if (edition) continue;
+    }
     else { quantity = Number(columns[0]); card = byName.get((columns[1] ?? "").toLocaleLowerCase("en-US")); proxyQuantity = Number(columns[2] ?? 0); }
     if (!card || !Number.isInteger(quantity) || quantity < 0) { unresolved.push(raw); continue; }
     lines.push({ cardUuid: card.uuid, cardName: card.name, quantity, proxyQuantity: Number.isInteger(proxyQuantity) && proxyQuantity >= 0 ? proxyQuantity : 0 });
   }
   const merged = new Map<string, CollectionUpdateLine>();
   for (const line of lines) {
-    const current = merged.get(line.cardUuid);
+    const key = `${line.cardUuid}:${line.editionUuid ?? "canonical"}`;
+    const current = merged.get(key);
     if (current) { current.quantity += line.quantity; current.proxyQuantity = (current.proxyQuantity ?? 0) + (line.proxyQuantity ?? 0); }
-    else merged.set(line.cardUuid, { ...line });
+    else merged.set(key, { ...line });
   }
   return { lines: Array.from(merged.values()), unresolved };
 }
@@ -60,6 +68,9 @@ export default function CollectionIndex() {
   const [selectedDeckId, setSelectedDeckId] = useState(""); const [includeSideboard, setIncludeSideboard] = useState(false); const [deckMode, setDeckMode] = useState<"at-least" | "add">("at-least");
   const [selectedSet, setSelectedSet] = useState(""); const [rarityQuantities, setRarityQuantities] = useState<Record<number, number>>({ ...DEFAULT_SET_RARITY_QUANTITIES });
   const [notice, setNotice] = useState<string | null>(null); const [busy, setBusy] = useState(false);
+  const [inventoryMode, setInventoryMode] = useState<CollectionInventoryMode>(() => localStorage.getItem("collection-inventory-mode") === "edition" ? "edition" : "canonical");
+  const [printingCardUuid, setPrintingCardUuid] = useState("");
+  const [printingEditionUuid, setPrintingEditionUuid] = useState("");
 
   async function refresh() {
     const [collectionResult, deckResult, watchResult] = await Promise.allSettled([accountApi.collection(), accountApi.decks(), accountApi.sharedCardWatches()]);
@@ -69,10 +80,11 @@ export default function CollectionIndex() {
     if (collectionResult.status === "rejected" && deckResult.status === "rejected" && watchResult.status === "rejected") throw collectionResult.reason;
   }
   useEffect(() => { void accountApi.session().then((result) => { setUser(result.user); if (result.user) void refresh(); }).catch(() => setUser(null)); }, []);
-  const entryByUuid = useMemo(() => new Map(entries.map((entry) => [entry.cardUuid, entry])), [entries]);
+  const entryByUuid = useMemo(() => new Map(entries.filter((entry) => !entry.editionUuid).map((entry) => [entry.cardUuid, entry])), [entries]);
+  const totalsByName = useMemo(() => collectionTotalsByCard(entries), [entries]);
   const watchedUuids = useMemo(() => new Set(sharedWatches.map((watch) => watch.cardUuid)), [sharedWatches]);
   const matchingCards = useMemo(() => query.trim().length < 2 ? [] : cards.filter((card) => card.name.toLocaleLowerCase("en-US").includes(query.trim().toLocaleLowerCase("en-US"))).slice(0, 12), [cards, query]);
-  const filteredEntries = useMemo(() => entries.filter((entry) => entry.cardName.toLocaleLowerCase("en-US").includes(query.trim().toLocaleLowerCase("en-US"))), [entries, query]);
+  const filteredEntries = useMemo(() => entries.filter((entry) => !entry.editionUuid && entry.cardName.toLocaleLowerCase("en-US").includes(query.trim().toLocaleLowerCase("en-US"))), [entries, query]);
   const setOptions = useMemo(() => {
     const byPrefix = new Map<string, string>();
     for (const card of cards) for (const edition of card.editions) if (!byPrefix.has(edition.set.prefix)) byPrefix.set(edition.set.prefix, edition.set.name);
@@ -105,6 +117,9 @@ export default function CollectionIndex() {
     return usage;
   }, [decks]);
   const usageFor = (cardName: string) => deckUsageByCardName.get(cardName.trim().replace(/\s+/g, " ").toLocaleLowerCase("en-US")) ?? [];
+  const printingCard = cards.find((card) => card.uuid === printingCardUuid);
+  const printingEdition = printingCard?.editions.find((edition) => edition.uuid === printingEditionUuid);
+  const printingEntry = entries.find((entry) => entry.editionUuid === printingEditionUuid);
 
   async function update(lines: CollectionUpdateLine[], source: string, updateMode: CollectionUpdateMode = "set") { setBusy(true); setNotice(null); try { const result = await accountApi.updateCollection({ mode: updateMode, source, lines }); await refresh(); setNotice(result.changed ? `${result.changed} card entr${result.changed === 1 ? "y" : "ies"} updated.` : "No quantities changed."); } catch (reason) { setNotice(reason instanceof Error ? reason.message : "Collection update failed"); } finally { setBusy(false); } }
   async function toggleSharedWatch(cardUuid: string, cardName: string, watched: boolean) {
@@ -118,8 +133,9 @@ export default function CollectionIndex() {
   if (user === undefined) return <PageLayout data-component="CollectionIndex" width="wide"><InlineState className="mt-10">Loading collection…</InlineState></PageLayout>;
   if (!user) return <PageLayout data-component="CollectionIndex" width="standard"><h1 className="text-2xl font-bold text-ctp-blue">My Collection</h1><p className="mt-2 text-ctp-subtext1">Sign in to track your cards and build decks from what you own.</p><div className="mt-6 flex flex-wrap items-center gap-3"><GoogleSignInButton onCredential={(credential, nonce) => void accountApi.googleSignIn(credential, nonce).then(async (result) => { setUser(result.user); await refresh(); })} /><DiscordSignInButton /><PasswordSignInPanel onSignedIn={(signedInUser) => { setUser(signedInUser); void refresh(); }} /></div></PageLayout>;
 
-  return <PageLayout data-component="CollectionIndex" width="wide"><div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-3xl font-bold text-ctp-blue">My Collection</h1><p className="mt-2 text-sm text-ctp-subtext1">{entries.length} unique card{entries.length === 1 ? "" : "s"} · {entries.reduce((sum, entry) => sum + entry.ownedQuantity, 0)} physical copies</p></div><button type="button" disabled={!entries.length} onClick={() => downloadCsv(entries)} className="rounded border border-ctp-surface1 px-3 py-2 text-sm disabled:opacity-50">Export CSV</button></div>
+  return <PageLayout data-component="CollectionIndex" width="wide"><div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-3xl font-bold text-ctp-blue">My Collection</h1><p className="mt-2 text-sm text-ctp-subtext1">{totalsByName.size} unique card{totalsByName.size === 1 ? "" : "s"} · {entries.reduce((sum, entry) => sum + entry.ownedQuantity, 0)} physical copies</p><div className="mt-3 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1" role="group" aria-label="Inventory detail">{(["canonical", "edition"] as const).map((value) => <button key={value} type="button" aria-pressed={inventoryMode === value} onClick={() => { setInventoryMode(value); localStorage.setItem("collection-inventory-mode", value); }} className={`min-h-10 rounded-md px-3 text-xs font-medium ${inventoryMode === value ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>{value === "canonical" ? "Cards" : "Printings"}</button>)}</div><p className="mt-2 max-w-xl text-xs text-ctp-subtext0">Deck coverage always pools every printing. Use Printings when the exact set or collector number matters.</p></div><button type="button" disabled={!entries.length} onClick={() => downloadCsv(entries)} className="min-h-11 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm disabled:opacity-50">Export CSV</button></div>
     {notice && <Panel tone="info" padding="sm" className="mt-4 text-sm text-ctp-subtext1">{notice}</Panel>}
+    {inventoryMode === "edition" && <Panel className="mt-6"><h2 className="font-semibold">Add an exact printing</h2><p className="mt-1 text-xs text-ctp-subtext1">Choose a card and printing. These copies also count toward card-level deck coverage.</p><div className="mt-3 grid gap-3 sm:grid-cols-2"><select value={printingCardUuid} onChange={(event) => { setPrintingCardUuid(event.target.value); setPrintingEditionUuid(""); }} className="min-h-11 rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-sm"><option value="">Choose a card</option>{cards.map((card) => <option key={card.uuid} value={card.uuid}>{card.name}</option>)}</select><select value={printingEditionUuid} disabled={!printingCard} onChange={(event) => setPrintingEditionUuid(event.target.value)} className="min-h-11 rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-sm disabled:opacity-50"><option value="">Choose a printing</option>{printingCard?.editions.map((edition) => <option key={edition.uuid} value={edition.uuid}>{edition.set.prefix} #{edition.collector_number} · rarity {edition.rarity}</option>)}</select></div>{printingEdition && <div className="mt-3 flex items-center justify-between gap-3 rounded-lg border border-ctp-surface0 p-3 text-sm"><span><strong>{printingCard?.name}</strong><span className="ml-2 text-xs text-ctp-subtext0">{printingEdition.set.prefix} #{printingEdition.collector_number} · {printingEntry?.ownedQuantity ?? 0} owned</span></span><div className="flex gap-2"><button type="button" disabled={busy} aria-label="Remove one printing" onClick={() => void update([{ cardUuid: printingCard!.uuid, cardName: printingCard!.name, editionUuid: printingEdition.uuid, setPrefix: printingEdition.set.prefix, collectorNumber: printingEdition.collector_number, quantity: Math.max(0, (printingEntry?.ownedQuantity ?? 0) - 1), proxyQuantity: printingEntry?.proxyQuantity ?? 0 }], "Printing adjustment")} className="min-h-11 min-w-11 rounded-lg border border-ctp-surface1">−</button><button type="button" disabled={busy} aria-label="Add one printing" onClick={() => void update([{ cardUuid: printingCard!.uuid, cardName: printingCard!.name, editionUuid: printingEdition.uuid, setPrefix: printingEdition.set.prefix, collectorNumber: printingEdition.collector_number, quantity: (printingEntry?.ownedQuantity ?? 0) + 1, proxyQuantity: printingEntry?.proxyQuantity ?? 0 }], "Printing adjustment")} className="min-h-11 min-w-11 rounded-lg bg-ctp-blue font-semibold text-ctp-base">+</button></div></div>}</Panel>}
     <Panel className="mt-6"><h2 className="font-semibold">Quick add</h2><p className="mt-1 text-xs text-ctp-subtext1">Build your collection from a deck or a set. Every batch appears in Recent changes and can be undone.</p><div className="mt-4 grid gap-4 lg:grid-cols-2">
       <div className="rounded-lg border border-ctp-surface0 bg-ctp-base/40 p-4"><h3 className="font-medium">Add a deck</h3>{decks.length ? <><select value={selectedDeckId} onChange={(event) => setSelectedDeckId(event.target.value)} className="mt-3 w-full rounded border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm"><option value="">Choose a saved deck</option>{decks.map((deck) => <option key={deck.id} value={deck.id}>{deck.title}</option>)}</select><div className="mt-3 flex flex-wrap gap-3"><label className="flex items-center gap-1.5 text-xs text-ctp-subtext1"><input type="checkbox" checked={includeSideboard} onChange={(event) => setIncludeSideboard(event.target.checked)} /> Include sideboard</label><label className="text-xs text-ctp-subtext1">Intent <select value={deckMode} onChange={(event) => setDeckMode(event.target.value as "at-least" | "add")} className="ml-1 rounded border border-ctp-surface1 bg-ctp-base px-2 py-1"><option value="at-least">Make sure I own this deck</option><option value="add">I bought another copy</option></select></label></div>{selectedDeck && <div className="mt-3 rounded bg-ctp-mantle p-3 text-xs text-ctp-subtext1"><p>{deckLines.length} cards · {deckLines.reduce((sum, line) => sum + line.quantity, 0)} listed copies</p>{deckMode === "at-least" && <p className="mt-1">{deckPreview.addedCopies} copies would be added across {deckPreview.affectedCards} cards · {deckPreview.coveredCards} already covered</p>}<details className="mt-2"><summary className="cursor-pointer text-ctp-blue">Preview cards</summary><ul className="mt-2 max-h-44 columns-1 overflow-auto sm:columns-2">{deckLines.map((line) => <li key={line.cardUuid}>{line.quantity}× {line.cardName}</li>)}</ul></details></div>}<button type="button" disabled={busy || !selectedDeck || !deckLines.length} onClick={() => { if (!selectedDeck) return; const copies = deckLines.reduce((sum, line) => sum + line.quantity, 0); if (!window.confirm(`${deckMode === "add" ? "Add another copy of" : "Make sure your collection covers"} ${selectedDeck.title} (${copies} listed copies across ${deckLines.length} cards)?`)) return; void update(deckLines, `Deck: ${selectedDeck.title}`, deckMode); }} className="mt-3 rounded bg-ctp-green px-3 py-1.5 text-sm font-medium text-ctp-base disabled:opacity-50">Add deck to collection</button></> : <p className="mt-3 text-sm text-ctp-subtext1">Save a deck first, then it will appear here.</p>}</div>
       <div className="rounded-lg border border-ctp-surface0 bg-ctp-base/40 p-4"><h3 className="font-medium">Add by set and rarity</h3><p className="mt-1 text-xs text-ctp-subtext1">Card-level tracking: alternate printings of the same card are counted once.</p><select value={selectedSet} onChange={(event) => { setSelectedSet(event.target.value); setRarityQuantities({ ...DEFAULT_SET_RARITY_QUANTITIES }); }} className="mt-3 w-full rounded border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm"><option value="">Choose a set</option>{setOptions.map((set) => <option key={set.prefix} value={set.prefix}>{set.name} ({set.prefix})</option>)}</select>{selectedSet && <><div className="mt-3 grid grid-cols-[minmax(0,1fr)_5rem] gap-2 text-xs">{setRarities.map((rarity) => <label key={rarity} className="contents"><span className="self-center text-ctp-subtext1">{COLLECTION_RARITY_LABELS[rarity] ?? `Rarity ${rarity}`}{rarity === 6 || rarity === 9 ? " (promo)" : ""}</span><input aria-label={`${COLLECTION_RARITY_LABELS[rarity] ?? `Rarity ${rarity}`} copies per card`} type="number" min={0} max={99} value={rarityQuantities[rarity] ?? 0} onChange={(event) => setRarityQuantities((current) => ({ ...current, [rarity]: Math.max(0, Number(event.target.value) || 0) }))} className="rounded border border-ctp-surface1 bg-ctp-base px-2 py-1 text-right" /></label>)}</div><div className="mt-3 rounded bg-ctp-mantle p-3 text-xs text-ctp-subtext1"><p>{setLines.length} cards selected · {setLines.reduce((sum, line) => sum + line.quantity, 0)} target copies</p><p className="mt-1">{setPreview.addedCopies} copies would be added across {setPreview.affectedCards} cards · {setPreview.coveredCards} already covered</p><details className="mt-2"><summary className="cursor-pointer text-ctp-blue">Preview cards</summary><ul className="mt-2 max-h-44 columns-1 overflow-auto sm:columns-2">{setLines.map((line) => <li key={line.cardUuid}>{line.quantity}× {line.cardName}</li>)}</ul></details></div></>}<button type="button" disabled={busy || !selectedSet || !setLines.length} onClick={() => { const set = setOptions.find((option) => option.prefix === selectedSet); if (!set || !window.confirm(`Set your collection to at least the selected quantities for ${setLines.length} cards from ${set.name}?`)) return; void update(setLines, `Set playset: ${set.name}`, "at-least"); }} className="mt-3 rounded bg-ctp-blue px-3 py-1.5 text-sm font-medium text-ctp-base disabled:opacity-50">Add set cards</button></div>

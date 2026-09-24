@@ -1835,6 +1835,20 @@ alone never upgrades an access ceiling into a success probability.
 
 ### Resource timing (`features/deckbuilder/resourceCurve.ts`)
 
+Cost reductions are parsed by `shared/src/costModifiers.ts` into a common contract: affected cost
+(card activation, materialization, activated ability, or the next activation), fixed/Champion-level/
+variable amount, condition, source zone, additive stacking, zero floor, and usage limit. The parser
+retains the exact card-text sentence as evidence. Fixed reductions can be evaluated when their condition
+is explicitly known; per-object and other variable reductions remain unsupported until the viewer supplies
+an amount. Ability, materialization, and next-card reducers are deliberately excluded from a card's own
+Reserve activation cost. Multiple applicable reductions add and the result cannot fall below zero.
+
+Resource Timing, Game Plan Readiness Affordability, Threat Cadence, and Combo Lab consume this contract.
+They display printed and selected effective costs and disclose the scenario assumption. Resource Timing
+stores the deck-level effective-cost selection; the other surfaces either reuse that selection or keep a
+scenario-local one. These are per-card affordability ceilings, not a game-state simulation: condition
+truth, payment order, shared resources, limited-use consumption, targets, and previous plays are not inferred.
+
 For each fixed Reserve-cost value represented in the Main Deck, this groups the quantities of every
 card at that cost and reports the chance of having drawn at least one by the first turn that cost is
 affordable under `earliestReserveCostTurn`. Going-first and going-second results are shown together.

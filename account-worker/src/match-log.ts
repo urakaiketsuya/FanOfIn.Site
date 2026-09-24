@@ -2,13 +2,18 @@ import type { MatchLogRecord } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
 import { badRequest } from "./errors";
 
-function parseRecord(value: unknown): MatchLogRecord {
+export function parseMatchLogRecord(value: unknown): MatchLogRecord {
   if (!value || typeof value !== "object") throw badRequest("Invalid match record");
   const record = value as MatchLogRecord;
   if (record.version !== 1 || typeof record.id !== "string" || record.id.length < 1 || record.id.length > 200
     || typeof record.playedAt !== "string" || Number.isNaN(Date.parse(record.playedAt))
     || !["win", "loss", "draw"].includes(record.result) || !["first", "second", "unknown"].includes(record.order)
     || !record.provenance || !["manual", "clarent"].includes(record.provenance.kind)) throw badRequest("Invalid match record");
+  if (record.provenance.kind === "clarent") {
+    const expectedId = `clarent:${record.provenance.submissionId}:seat${record.provenance.playerSeat}`;
+    if (record.provenance.schemaVersion !== 1 || record.id !== expectedId || record.provenance.submissionId !== `${record.provenance.matchId}:${record.provenance.gameNumber}`
+      || !record.provenance.importedAt || Number.isNaN(Date.parse(record.provenance.importedAt))) throw badRequest("Invalid Clarent provenance");
+  } else if (record.id.startsWith("clarent:")) throw badRequest("Manual records cannot use a Clarent import identifier");
   const encoded = JSON.stringify(record);
   if (encoded.length > 64_000) throw badRequest("Match record is too large");
   return JSON.parse(encoded) as MatchLogRecord;
@@ -19,13 +24,13 @@ export async function listMatchLog(env: Env, user: AuthUser, savedDeckId?: strin
     ? env.ACCOUNT_DB.prepare("SELECT payload_json, saved_deck_id FROM match_log_records WHERE user_id = ? AND saved_deck_id = ? ORDER BY played_at DESC").bind(user.id, savedDeckId)
     : env.ACCOUNT_DB.prepare("SELECT payload_json, saved_deck_id FROM match_log_records WHERE user_id = ? ORDER BY played_at DESC").bind(user.id);
   const rows = await query.all<{ payload_json: string; saved_deck_id: string | null }>();
-  return rows.results.flatMap((row) => { try { return [{ ...parseRecord(JSON.parse(row.payload_json)), savedDeckId: row.saved_deck_id }]; } catch { return []; } });
+  return rows.results.flatMap((row) => { try { return [{ ...parseMatchLogRecord(JSON.parse(row.payload_json)), savedDeckId: row.saved_deck_id }]; } catch { return []; } });
 }
 
 export async function upsertMatchLog(env: Env, user: AuthUser, input: unknown): Promise<{ saved: number }> {
   const body = input && typeof input === "object" ? input as { records?: unknown } : {};
   if (!Array.isArray(body.records) || body.records.length > 500) throw badRequest("Provide no more than 500 match records");
-  const records = body.records.map(parseRecord);
+  const records = body.records.map(parseMatchLogRecord);
   const now = new Date().toISOString();
   for (const record of records) {
     if (record.savedDeckId) {

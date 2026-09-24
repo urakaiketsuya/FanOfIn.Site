@@ -59,6 +59,12 @@ Verify user, session, deck, source, profile, and nonce row counts; sign-in and d
 
 Authenticated users can download their account data from **My Decks → Export my data**. **Delete account** removes the user row; D1 foreign-key cascades remove sessions, external profiles, saved decks, and sources, and the session cookie is cleared.
 
+Match Log records are included in that export and are removed by the same user-row cascade. Before enabling
+Match Log in production, verify migration `0017_match_log.sql` appears as applied. After deployment, create one
+manual game and import the same Clarent v1 payload twice: the export should contain one manual record and one
+Clarent record. Delete only the Clarent record and verify the manual record remains. The importer is a supported
+paste/file contract; this release does not require or advertise a live Clarent account connection.
+
 Account records remain until the user deletes the account. OAuth nonces expire after ten minutes and are pruned during nonce creation. Sessions have a 30-day absolute lifetime and a seven-day idle lifetime. Define and publish the operational log and encrypted-backup retention periods before describing deletion as immediate removal from backups.
 
 ## Release checklist

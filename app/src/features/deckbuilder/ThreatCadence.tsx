@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import type { Card } from "@gatcg/shared";
+import { parseCostModifierRules, type Card } from "@gatcg/shared";
 import CardImage from "../../components/CardImage";
 import type { GamePlanRole } from "../../lib/gamePlanReadiness";
 import type { PressureMetadata } from "../../lib/analysisProfile";
@@ -10,7 +10,7 @@ import { inferStartingHandSize, type PlayOrder } from "../../lib/turnToPlay";
 interface Line { name: string; quantity: number }
 interface PackageInput { label: string; earliestTurn: number; repeatable: boolean; effectiveReserveCost: number }
 const percent = (value: number) => `${(value * 100).toFixed(1)}%`;
-const hasDiscount = (card: Card | undefined) => /\bcosts?\s+(?:\d+|x|lv)\s+less\s+to\s+activate\b/i.test((card?.effect ?? "").replace(/\*\*/g, ""));
+const hasDiscount = (card: Card | undefined) => card ? parseCostModifierRules(card).some((rule) => rule.costKind === "reserve-activation") : false;
 
 export default function ThreatCadence({ mainLines, materialLines, catalogByName, sharedAssignments = {}, sharedPackages, onSharedPackagesChange }: { mainLines: Line[]; materialLines: Line[]; catalogByName: Map<string, Card>; sharedAssignments?: Record<string, GamePlanRole | "">; sharedPackages?: Record<string, PressureMetadata>; onSharedPackagesChange?: (packages: Record<string, PressureMetadata>) => void }) {
   const [localPackages, setLocalPackages] = useState<Record<string, PackageInput>>({});

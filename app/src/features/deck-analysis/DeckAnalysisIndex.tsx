@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import type { Card } from "@gatcg/shared";
+import { computeDeckCollectionStatus, type Card, type OmnidexDecklist } from "@gatcg/shared";
 import PageLayout from "../../components/layout/PageLayout";
 import PageHeader from "../../components/ui/PageHeader";
 import Panel from "../../components/ui/Panel";
@@ -76,13 +76,22 @@ export default function DeckAnalysisIndex() {
   const analysisPlan = analysisProfile ? activeAnalysisPlan(analysisProfile) : null;
   const analysisRoles = analysisPlan?.roles ?? {};
   const data = useDeckBuilderData({ championName: workspace?.championName ?? null, format: workspace?.format ?? "STANDARD", includeDecodedDecks: false });
-  const { catalogByName } = data;
+  const { catalogByName, collection, collectionLoaded } = data;
   const mainTotal = total(workspace?.main);
   const materialTotal = total(workspace?.material);
   const sideboardTotal = total(workspace?.sideboard);
   const opening = workspace ? inferStartingHandSize(workspace.material, catalogByName) : 0;
   const deckCardCounts = useMemo(() => new Map([...(workspace?.main ?? []), ...(workspace?.material ?? [])].map((line) => [line.name, line.quantity])), [workspace]);
   const { result: deckTestResult, loading: deckTestLoading } = useDeckTestResult({ deckCardCounts, cardsByName: catalogByName, nearestDecks: [] });
+  const collectionDecklist = useMemo<OmnidexDecklist>(() => ({
+    main: (workspace?.main ?? []).map((line) => ({ card: line.name, quantity: line.quantity })),
+    material: (workspace?.material ?? []).map((line) => ({ card: line.name, quantity: line.quantity })),
+    sideboard: (workspace?.sideboard ?? []).map((line) => ({ card: line.name, quantity: line.quantity })),
+  }), [workspace]);
+  const collectionStatus = useMemo(
+    () => workspace && collectionLoaded ? computeDeckCollectionStatus(collectionDecklist, collection, true) : null,
+    [collection, collectionDecklist, collectionLoaded, workspace],
+  );
 
   function loadWorkspace(next: Omit<DeckWorkspace, "version" | "updatedAt">) {
     saveActiveDeckWorkspace(sessionStorage, next);
@@ -132,6 +141,7 @@ export default function DeckAnalysisIndex() {
     <PageHeader title="Deck Analysis" />
     <DeckToolWorkspaceHeader activeTool="analysis" title={workspace.title} championName={workspace.championName} spiritName={workspace.spiritName} format={workspace.format} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel={workspace.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} />} />
     <DeckArtworkPreview material={workspace.material} main={workspace.main} catalogByName={catalogByName} />
+    {collectionStatus && <CollectionShortageSummary status={collectionStatus} />}
     {analysisProfile && <div className="mt-4"><PrepareAnalysis lines={workspace.main} catalogByName={catalogByName} profile={analysisProfile} onProfileChange={persistAnalysisProfile} onReviewed={markAnalysisReviewed} /><p className="mt-1 px-1 text-[10px] text-ctp-subtext0" aria-live="polite">{profileSync === "synced" ? "Analysis profile synced to your account." : profileSync === "syncing" ? "Syncing analysis profile…" : profileSync === "offline" ? "Saved on this device. Account sync will retry when this page is reopened." : "Analysis profile saved on this device."}</p></div>}
     <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Summary" }, { key: "explore", label: `Calculators (${CALCULATORS.length})` }, { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" /></div>
     {tab === "summary" && <div className="mt-4">
@@ -159,6 +169,16 @@ export default function DeckAnalysisIndex() {
     </div>}
     {tab === "matchups" && <BuilderTestPanel deckTestResult={deckTestResult} loading={deckTestLoading} cardsByName={catalogByName} nearestDecks={[]} nearestDeckCompareLink={() => "#"} onLoadNearestDeck={() => undefined} />}
   </PageLayout>;
+}
+
+function CollectionShortageSummary({ status }: { status: ReturnType<typeof computeDeckCollectionStatus> }) {
+  const missing = status.lines.filter((line) => line.missing > 0);
+  if (missing.length === 0) return <section className="mt-4 rounded-xl border border-ctp-green/35 bg-ctp-green/10 p-3" aria-label="Collection coverage"><p className="text-sm font-semibold text-ctp-green">Collection covers this deck</p><p className="mt-1 text-xs text-ctp-subtext1">All Main, Material, and Sideboard copies are recorded as owned.</p></section>;
+  return <details className="mt-4 rounded-xl border border-ctp-yellow/35 bg-ctp-yellow/10 p-3" open>
+    <summary className="min-h-11 cursor-pointer list-none py-2 text-sm font-semibold text-ctp-yellow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue">Missing {status.missingCopies} cop{status.missingCopies === 1 ? "y" : "ies"} from collection</summary>
+    <p className="text-xs text-ctp-subtext1">Deck recipes identify gameplay cards, so every recorded printing is pooled for coverage.</p>
+    <ul className="mt-2 space-y-1" aria-label="Missing cards only">{missing.map((line) => <li key={line.card} className="flex min-h-11 items-center justify-between gap-3 rounded-lg bg-ctp-base/40 px-3 text-sm"><span className="text-ctp-text">{line.card}</span><span className="shrink-0 font-semibold text-ctp-yellow">{line.missing} missing</span></li>)}</ul>
+  </details>;
 }
 
 function total(lines: { quantity: number }[] | undefined) { return lines?.reduce((sum, line) => sum + line.quantity, 0) ?? 0; }

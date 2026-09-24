@@ -1,4 +1,4 @@
-import type { Card, CollectionEntry, CollectionUpdateLine, OmnidexDecklist, SavedDeck } from "@gatcg/shared";
+import { collectionTotalsByCard, type Card, type CollectionEntry, type CollectionUpdateLine, type OmnidexDecklist, type SavedDeck } from "@gatcg/shared";
 
 export const COLLECTION_RARITY_LABELS: Record<number, string> = {
   1: "Common",
@@ -23,6 +23,14 @@ export const DEFAULT_SET_RARITY_QUANTITIES: Record<number, number> = {
   8: 0,
   9: 0,
 };
+
+export function collectionCsv(entries: CollectionEntry[]): string {
+  return ["card_uuid,card_name,edition_uuid,set_prefix,collector_number,owned_quantity,proxy_quantity", ...entries.map((entry) => [entry.cardUuid, JSON.stringify(entry.cardName), entry.editionUuid ?? "", entry.setPrefix ?? "", entry.collectorNumber ?? "", entry.ownedQuantity, entry.proxyQuantity].join(","))].join("\n");
+}
+
+export function missingCollectionList(lines: { card: string; missing: number }[]): string {
+  return lines.map((line) => `${line.missing} ${line.card}`).join("\n");
+}
 
 function cardKey(name: string): string {
   return name.trim().replace(/\s+/g, " ").toLocaleLowerCase("en-US");
@@ -92,7 +100,7 @@ export interface SharedCardUsage {
  * cards to ask about (typically the user's own "watched" list), not this function.
  */
 export function watchedCardUsage(cardNames: string[], decks: SavedDeck[], entries: CollectionEntry[], includeSideboard = true): SharedCardUsage[] {
-  const owned = new Map(entries.map((entry) => [cardKey(entry.cardName), entry.ownedQuantity]));
+  const owned = new Map(Array.from(collectionTotalsByCard(entries), ([key, value]) => [key, value.ownedQuantity]));
   const usageByKey = new Map<string, SharedCardUsage>();
   for (const name of cardNames) {
     const key = cardKey(name);
@@ -138,7 +146,8 @@ export function crossDeckCollectionShortages(decks: SavedDeck[], entries: Collec
 }
 
 export function summarizeAtLeastChanges(lines: CollectionUpdateLine[], entries: CollectionEntry[]): { affectedCards: number; addedCopies: number; coveredCards: number } {
-  const owned = new Map(entries.map((entry) => [entry.cardUuid, entry.ownedQuantity]));
+  const owned = new Map<string, number>();
+  for (const entry of entries) owned.set(entry.cardUuid, (owned.get(entry.cardUuid) ?? 0) + entry.ownedQuantity);
   let affectedCards = 0; let addedCopies = 0; let coveredCards = 0;
   for (const line of lines) {
     const current = owned.get(line.cardUuid) ?? 0;

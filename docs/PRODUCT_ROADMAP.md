@@ -138,6 +138,14 @@ Complete these short design investigations before changing the underlying calcul
 
 ### Cost modifiers
 
+**Implemented:** a shared catalog-text parser distinguishes Reserve activation, materialization,
+activated-ability, and next-card reductions; records fixed, Champion-level, and player-supplied variable
+amounts; and carries condition, zone, additive stacking, zero-floor, and usage-limit metadata. Resource
+Timing, Game Plan Readiness Affordability, Threat Cadence, and Combo Lab now show printed/effective costs
+with progressively disclosed evidence and assumptions. Unsupported variable effects remain visible and are
+never silently applied. Catalog-backed regression fixtures cover class bonuses, Efficiency, per-object
+reducers, ability/next-card exclusions, stacking, and the zero floor. Goldfish is intentionally unaffected.
+
 - Audit real card text for “costs X less to activate” and related wording, including whether reductions
   affect Reserve, Memory, action costs, activation costs, or only named abilities.
 - Define a structured cost-modifier representation in shared card logic rather than applying regexes
@@ -145,8 +153,8 @@ Complete these short design investigations before changing the underlying calcul
 - Document stacking, floors, conditional reductions, once-per-turn limits, and zone requirements.
 - Add fixtures from the card catalog for every supported wording and explicitly mark unsupported effects.
 
-**Exit criterion:** resource and sequence tools can show the printed cost, applied modifiers, effective
-cost, and the assumptions that made each modifier active.
+**Exit criterion met:** resource and sequence tools show the printed cost, selected modifier effect,
+effective cost, and the assumptions that make each modifier active.
 
 ### Calculator vocabulary study
 
@@ -240,9 +248,11 @@ dataset used by a card-detail tab now contributes an explicit failed state with 
   shortages without treating alternate editions as different gameplay cards unless the user chooses
   edition-specific inventory mode.
 - Add a “missing cards only” filter and a shopping/export list that deduplicates shortages across decks.
-  **Implemented at the canonical-card level, including a pooled “build every saved deck” shortage view,
-  per-deck provenance, text export, and missing-only shopping export.** Edition-specific inventory remains
-  deferred because the persisted collection schema does not currently identify printings.
+  **Implemented.** Canonical card quantities remain the default, while the Printings inventory stores set,
+  collector number, and edition UUID without guessing printings for migrated rows. Deck coverage pools all
+  printings through one shared calculation across Collection, My Decks, Deck Builder, Deck Review, and Deck
+  Analysis. The pooled “build every saved deck” view allocates the physical inventory once across simultaneous
+  demand, with per-deck provenance, missing-only shopping, text export, and printing-preserving CSV round trips.
 
 **Acceptance criteria:** the same ownership calculation powers Collection, My Decks, Deck Builder, Deck
 Review, and Deck Analysis; shared copies are not incorrectly allocated to every deck simultaneously.
@@ -333,11 +343,12 @@ effective-cost assumptions persist locally and through account sync.
 
 ### 3.3 Threat cadence
 
-**Implemented foundation:** pressure is now defined as named, card-backed packages with earliest-useful
+**Implemented:** pressure is now defined as named, card-backed packages with earliest-useful
 turn, repeatable/single-use metadata, printed-cost defaults, editable effective-cost assumptions, and
-conditional-reducer detection. Per-turn access and natural-ceiling affordability are displayed separately.
+structured conditional-reducer detection and printed-versus-effective cost disclosure. Per-turn access and natural-ceiling affordability are displayed separately.
 The tool also reports a conservative cumulative no-gap probability across the selected turn window. Full
-game-state-aware multi-turn resource sequencing and recurrence remain future work.
+Game-state-aware multi-turn resource sequencing and recurrence are explicitly outside this calculator's
+scope; its completed contract is an access-and-affordability ceiling.
 
 Rebuild this around the question “How often can this deck present meaningful pressure on schedule?”
 
@@ -445,13 +456,16 @@ regression coverage. This item is code-complete pending the intentionally deferr
 
 ### 4.3 Unified game log
 
-**In progress:** `/match-log` provides versioned manual records, explicit provenance, Clarent v1 JSON
-preview/import, source-ID retention, correctable unresolved card mappings, and idempotency by submission ID
-plus selected player seat. Signed-in records merge into account-backed storage while retaining an offline
-device copy; account deletion/export include the log. Saved-deck Insights embeds a deck-filtered summary with
-sample guidance plus opponent and sideboard-plan breakdowns. This remains a paste/file-contract importer,
-not a claimed live Clarent connection; the new account migration must be deployed, and broader canonical
-deck mapping remains follow-up work.
+**Implemented:** `/match-log` provides versioned manual records, explicit provenance, and a Clarent v1
+paste/file-contract importer. Imports retain source IDs, source version, timestamps, raw deck input, seat,
+Champion IDs, and corrected card/deck mappings. Exact pasted decklists link to one saved deck automatically;
+zero or multiple matches stay visible for manual correction. Exact card UUIDs resolve automatically, while
+unknown and ambiguous card identifiers remain visible until corrected. The stable submission-plus-seat key
+makes retry imports idempotent, and provenance-specific validation prevents a manual record from occupying an
+import ID. Signed-in records merge into account storage while retaining an offline device copy; account export
+and deletion include the log. Saved-deck Insights embeds deck-filtered summaries with confidence, opponent,
+and sideboard-plan context. This intentionally does not claim a live Clarent connection. Account migration
+`0017_match_log.sql` must be applied before deploying the feature.
 
 - Replace the calculator-local test tracker with a standalone Match Log that is also embedded in saved decks.
 - Support manual entry for result, opponent/deck or archetype, play/draw, mulligan, turns, sideboard plan,
@@ -466,6 +480,9 @@ deck mapping remains follow-up work.
 
 **Acceptance criteria:** importing the same Clarent session twice creates no duplicates; users can correct
 unresolved mappings; deleting an import does not delete manually entered games.
+
+**Acceptance status:** complete. Regression coverage verifies repeat imports, manual-record preservation,
+raw provenance, exact mappings, ambiguous mappings, correction, account merge precedence, and sample guidance.
 
 ### 4.4 Rules-aware Goldfish
 

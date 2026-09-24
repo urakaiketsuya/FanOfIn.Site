@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import type { Card, CollectionEntry, DeckFormat } from "@gatcg/shared";
+import { collectionTotalsByCard, type Card, type CollectionEntry, type DeckFormat } from "@gatcg/shared";
 import CardImage from "../../components/CardImage";
 import { buildSideboardPlan, parseSavedSideboardPlans, sideboardPlanDeckFingerprint, type DeckLine, type SavedSideboardPlan } from "../../lib/sideboardPlan";
 import { probabilityAtLeast } from "./synergyReadiness";
@@ -69,7 +69,7 @@ function DeltaMetric({ label, before, after }: { label: string; before: string; 
 
 function resourceProfile(lines: DeckLine[], catalogByName: Map<string, Card>) { let total = 0; let cost = 0; let expensive = 0; for (const line of lines) { const value = catalogByName.get(line.name)?.cost_reserve; if (typeof value !== "number") continue; total += line.quantity; cost += value * line.quantity; if (value >= 4) expensive += line.quantity; } return { average: total ? cost / total : 0, expensive }; }
 
-function missingCopies(lines: DeckLine[], entries: CollectionEntry[]) { const owned = new Map(entries.map((entry) => [entry.cardName, entry.ownedQuantity + entry.proxyQuantity])); return lines.reduce((sum, line) => sum + Math.max(0, line.quantity - (owned.get(line.name) ?? 0)), 0); }
+function missingCopies(lines: DeckLine[], entries: CollectionEntry[]) { const totals = collectionTotalsByCard(entries); return lines.reduce((sum, line) => { const owned = totals.get(line.name.trim().replace(/\s+/g, " ").toLocaleLowerCase("en-US")); return sum + Math.max(0, line.quantity - ((owned?.ownedQuantity ?? 0) + (owned?.proxyQuantity ?? 0))); }, 0); }
 
 function remainingSideboard(main: DeckLine[], sideboard: DeckLine[], outs: Record<string, number>, ins: Record<string, number>): DeckLine[] { const quantities = new Map(sideboard.map((line) => [line.name, line.quantity - Math.max(0, ins[line.name] ?? 0)])); for (const line of main) { const quantity = Math.max(0, outs[line.name] ?? 0); if (quantity > 0) quantities.set(line.name, (quantities.get(line.name) ?? 0) + quantity); } return [...quantities].filter(([, quantity]) => quantity > 0).map(([name, quantity]) => ({ name, quantity })); }
 

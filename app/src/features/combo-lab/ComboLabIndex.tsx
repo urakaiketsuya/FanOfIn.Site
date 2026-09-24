@@ -17,6 +17,7 @@ import type { ComboGoalId } from "../../lib/comboGoals";
 import { inferComboPurpose } from "../../lib/comboPurpose";
 import { forecastComboByTurn } from "../../lib/comboTurnForecast";
 import ComboLibrary from "./ComboLibrary";
+import ComboCostAssumptions from "./ComboCostAssumptions";
 import GoalForecastChart, { type GoalForecastSeries } from "./GoalForecastChart";
 import CardSearchPicker from "../../components/CardSearchPicker";
 import CardImage from "../../components/CardImage";
@@ -64,6 +65,7 @@ export default function ComboLabIndex() {
   const [goalId, setGoalId] = useState<ComboGoalId>("level");
   const [savedCombos, setSavedCombos] = useState<SavedCombo[]>(loadSavedCombos);
   const [currentRecipe, setCurrentRecipe] = useState<ComboRecipeRequirement[]>([]);
+  const [comboEffectiveCosts, setComboEffectiveCosts] = useState<Record<string, number>>({});
   const [comboName, setComboName] = useState("Combo 1");
   const [comboDamage, setComboDamage] = useState(0);
   const [lethalThreshold, setLethalThreshold] = useState(20);
@@ -231,6 +233,7 @@ export default function ComboLabIndex() {
       {tab === "analyze" && inferredPurpose.purposes.length > 0 && <div className="mt-4 flex gap-2 overflow-x-auto pb-1" aria-label="Detected combo purposes">{inferredPurpose.purposes.map((purpose) => <span key={purpose.id} className="shrink-0 rounded-full bg-ctp-mauve/10 px-2.5 py-1 text-xs font-medium text-ctp-mauve">{purpose.label}</span>)}</div>}
       {tab === "analyze" && <div className="mt-4">
 <HypergeometricCalculator key={preset?.key ?? "custom"} mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} defaultMode="recipe" initialRecipe={preset?.requirements} onApplyRecipeSuggestion={applyDeckReplacement} onRecipeChange={setCurrentRecipe} />
+<ComboCostAssumptions requirements={currentRecipe} catalogByName={catalogByName} costs={comboEffectiveCosts} onChange={setComboEffectiveCosts} />
 </div>}
       {tab === "analyze" && levelAnalysis && goalId === "level" && <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.6fr)]">
 <GoalForecastChart title="Chance by turn" subtitle="The strongest supported route is shown for each Champion level." turns={[1, 2, 3, 4, 5, 6]} series={levelForecastSeries} />

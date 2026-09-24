@@ -51,3 +51,6 @@ Verification and reset tokens are random, stored only as hashes, single-use, and
 Imports read the pipeline-published archive at `ASSET_BASE_URL`. Shout At Your Decks summaries without a fetched full list are skipped. Public identifiers are import sources, not proof of profile ownership.
 
 Production monitoring, backup/restore, privacy lifecycle, incident response, and the prerequisite for disabling `workers.dev` are documented in `docs/ACCOUNT_SERVICE_OPERATIONS.md`.
+
+Migration `0019_collection_printings.sql` adds exact-printing inventory without rewriting legacy
+card-level quantities. Apply it before deploying a Worker that reports schema version `0019`.

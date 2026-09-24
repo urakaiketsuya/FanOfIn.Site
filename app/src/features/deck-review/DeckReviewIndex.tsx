@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useTransition } from "react";
-import type { Card } from "@gatcg/shared";
+import { computeDeckCollectionStatus, type Card } from "@gatcg/shared";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
@@ -141,7 +141,7 @@ export default function DeckReviewIndex() {
   const {
     catalogByName, liveCatalogByName, priceByName, popularityIndex: popularityIndexData,
     population: { rows, spiritsPresent, loading: populationLoading },
-    cardQuantityStats: cardQuantityStatsData, communityInclusion: communityCardInclusion,
+    cardQuantityStats: cardQuantityStatsData, communityInclusion: communityCardInclusion, collection,
   } = builderData;
 
   const championsPresent = useMemo(() => {
@@ -234,6 +234,7 @@ export default function DeckReviewIndex() {
   const sideboardTotal = useMemo(() => keptSideboard.reduce((sum, c) => sum + c.quantity, 0), [keptSideboard]);
   const totalPrice = useMemo(() => calculateLinePrice(keptLines, priceByName), [keptLines, priceByName]);
   const sideboardPrice = useMemo(() => calculateLinePrice(keptSideboardLines, priceByName), [keptSideboardLines, priceByName]);
+  const collectionStatus = useMemo(() => keptCount ? computeDeckCollectionStatus(keptDecklist, collection, true) : null, [keptCount, keptDecklist, collection]);
   const validation = useMemo(
     () => validateDeck({ main: keptMain, material: keptMaterial, sideboard: keptSideboard }, catalogByName, identityElements, deckFormat),
     [keptMain, keptMaterial, keptSideboard, catalogByName, identityElements, deckFormat],
@@ -395,6 +396,7 @@ export default function DeckReviewIndex() {
                   : `${mainTotal} main · ${materialTotal} material${sideboardTotal > 0 ? ` · ${sideboardTotal} sideboard` : ""} · ${formatUsd(totalPrice.sum + sideboardPrice.sum)}`}
               </span>
             </div>
+            {collectionStatus && collectionStatus.missingCopies > 0 && <details className="mt-3 rounded-lg border border-ctp-yellow/35 bg-ctp-yellow/10 p-3 text-sm"><summary className="cursor-pointer font-medium text-ctp-yellow">{collectionStatus.missingCopies} missing cop{collectionStatus.missingCopies === 1 ? "y" : "ies"}</summary><ul className="mt-2 space-y-1 text-xs text-ctp-subtext1">{collectionStatus.lines.filter((line) => line.missing > 0).map((line) => <li key={line.card}>{line.missing}× {line.card}</li>)}</ul></details>}
             <div>{keptCount === 0 ? (
               <InlineState className="mt-2 text-sm">Nothing here yet — accept a suggestion below to start building.</InlineState>
             ) : (

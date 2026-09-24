@@ -1,10 +1,14 @@
-import type { MatchLogRecord } from "@gatcg/shared";
+import type { MatchLogRecord, OmnidexDecklist, SavedDeck } from "@gatcg/shared";
+import { parseDecklist } from "../features/compare/parseDecklist";
 export type { MatchLogRecord, MatchOrder, MatchProvenance, MatchResult } from "@gatcg/shared";
 
 export interface ClarentImportPreview {
   record: MatchLogRecord;
   duplicate: boolean;
   unresolvedCardIds: string[];
+  ambiguousCardIds: Record<string, { uuid: string; name: string }[]>;
+  deckMapping: "exact" | "unresolved" | "ambiguous";
+  deckCandidates: { id: string; title: string }[];
 }
 
 export interface MatchLogSummary {
@@ -41,17 +45,69 @@ export function summarizeMatchLogGroups(records: readonly MatchLogRecord[], fiel
 
 export function applyClarentCardMappings(previews: readonly ClarentImportPreview[], mappings: Readonly<Record<string, { uuid: string; name: string }>>): ClarentImportPreview[] {
   return previews.map((preview) => {
-    const resolved = preview.unresolvedCardIds.filter((id) => mappings[id]);
-    if (!resolved.length || preview.record.provenance.kind !== "clarent") return preview;
+    if (preview.record.provenance.kind !== "clarent") return preview;
+    const resolved = preview.record.provenance.cardIds.filter((id) => mappings[id]);
+    if (!resolved.length) return preview;
     return {
       ...preview,
       unresolvedCardIds: preview.unresolvedCardIds.filter((id) => !mappings[id]),
+      ambiguousCardIds: Object.fromEntries(Object.entries(preview.ambiguousCardIds).filter(([id]) => !mappings[id])),
       record: {
         ...preview.record,
         notableCards: [...new Set([...preview.record.notableCards, ...resolved.map((id) => mappings[id].name)])],
         provenance: { ...preview.record.provenance, cardIdMappings: Object.fromEntries(resolved.map((id) => [id, mappings[id].uuid])) },
       },
     };
+  });
+}
+
+export function applyClarentDeckMappings(previews: readonly ClarentImportPreview[], mappings: Readonly<Record<string, { id: string; title: string }>>): ClarentImportPreview[] {
+  return previews.map((preview) => {
+    const mapping = mappings[preview.record.id];
+    if (!mapping || preview.record.provenance.kind !== "clarent") return preview;
+    return { ...preview, deckMapping: "exact", deckCandidates: [mapping], record: { ...preview.record, savedDeckId: mapping.id, deckLabel: mapping.title, provenance: { ...preview.record.provenance, deckMapping: { savedDeckId: mapping.id, method: "manual" } } } };
+  });
+}
+
+const normalizedDeck = (deck: OmnidexDecklist): string => [...deck.main, ...deck.material]
+  .map((line) => [line.card.trim().toLocaleLowerCase(), line.quantity] as const)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([name, quantity]) => `${quantity}:${name}`).join("|");
+
+export function resolveClarentMappings(previews: readonly ClarentImportPreview[], savedDecks: readonly SavedDeck[], cards: readonly { uuid: string; name: string }[]): ClarentImportPreview[] {
+  const byId = new Map(cards.map((card) => [card.uuid, card]));
+  const byName = new Map<string, { uuid: string; name: string }[]>();
+  for (const card of cards) byName.set(card.name.trim().toLocaleLowerCase(), [...(byName.get(card.name.trim().toLocaleLowerCase()) ?? []), card]);
+  return previews.map((preview) => {
+    if (preview.record.provenance.kind !== "clarent") return preview;
+    const mappings: Record<string, { uuid: string; name: string }> = {};
+    const ambiguousCardIds: Record<string, { uuid: string; name: string }[]> = {};
+    for (const id of preview.record.provenance.cardIds) {
+      const exact = byId.get(id);
+      const names = byName.get(id.trim().toLocaleLowerCase()) ?? [];
+      if (exact) mappings[id] = exact;
+      else if (names.length === 1) mappings[id] = names[0];
+      // The choice value must be unique even when every printing has the same display name.
+      // The UI already labels the raw ID/name, so expose UUIDs as the selectable values.
+      else if (names.length > 1) ambiguousCardIds[id] = names.map((card) => ({ uuid: card.uuid, name: card.uuid }));
+    }
+    const rawDeckInput = preview.record.provenance.rawDeckInput?.trim() ?? "";
+    let deckCandidates: { id: string; title: string }[] = [];
+    if (rawDeckInput && !/^https?:\/\//i.test(rawDeckInput)) {
+      const parsed = parseDecklist(rawDeckInput).decklist;
+      if (parsed.main.length + parsed.material.length > 0) {
+        const key = normalizedDeck(parsed);
+        deckCandidates = savedDecks.filter((deck) => normalizedDeck(deck.decklist) === key).map(({ id, title }) => ({ id, title }));
+      }
+    }
+    let resolved: ClarentImportPreview = { ...preview, ambiguousCardIds, unresolvedCardIds: preview.record.provenance.cardIds.filter((id) => !mappings[id] && !ambiguousCardIds[id]), deckCandidates, deckMapping: deckCandidates.length === 1 ? "exact" : deckCandidates.length > 1 ? "ambiguous" : "unresolved" };
+    resolved = applyClarentCardMappings([resolved], mappings)[0];
+    if (deckCandidates.length === 1) {
+      const deck = deckCandidates[0];
+      const provenance = resolved.record.provenance.kind === "clarent" ? { ...resolved.record.provenance, deckMapping: { savedDeckId: deck.id, method: "exact" as const } } : resolved.record.provenance;
+      resolved = { ...resolved, record: { ...resolved.record, savedDeckId: deck.id, deckLabel: deck.title, provenance } };
+    }
+    return resolved;
   });
 }
 
@@ -111,9 +167,9 @@ export function previewClarentImport(raw: string, playerSeat: 1 | 2, existing: r
       order: firstPlayer === playerSeat ? "first" : "second", turns, mulligans: null,
       opponent: text(opponent.championName) ?? opponentChampionId, deckLabel: text(own.championName) ?? ownChampionId,
       sideboardPlan: "", gamePlanTurn: null, notableCards: [], bottlenecks: [], notes: "",
-      provenance: { kind: "clarent", schemaVersion: 1, submissionId, matchId, gameNumber, importedAt, sourceVersion: text(sourceMeta.version) ?? "unknown", playerSeat, playerChampionId: ownChampionId, opponentChampionId, cardIds },
+      provenance: { kind: "clarent", schemaVersion: 1, submissionId, matchId, gameNumber, importedAt, sourceVersion: text(sourceMeta.version) ?? "unknown", playerSeat, playerChampionId: ownChampionId, opponentChampionId, cardIds, rawDeckInput: typeof own.deckLink === "string" ? own.deckLink : "" },
     };
-    previews.push({ record, duplicate: existingIds.has(id) || previews.some((entry) => entry.record.id === id), unresolvedCardIds: cardIds.filter((cardId) => !knownCardIds.has(cardId)) });
+    previews.push({ record, duplicate: existingIds.has(id) || previews.some((entry) => entry.record.id === id), unresolvedCardIds: cardIds.filter((cardId) => !knownCardIds.has(cardId)), ambiguousCardIds: {}, deckMapping: "unresolved", deckCandidates: [] });
   });
   return { previews, errors };
 }

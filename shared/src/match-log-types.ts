@@ -3,7 +3,7 @@ export type MatchOrder = "first" | "second" | "unknown";
 
 export type MatchProvenance =
   | { kind: "manual"; enteredAt: string }
-  | { kind: "clarent"; schemaVersion: 1; submissionId: string; matchId: string; gameNumber: number; importedAt: string; sourceVersion: string; playerSeat: 1 | 2; playerChampionId: string; opponentChampionId: string; cardIds: string[]; cardIdMappings?: Record<string, string> };
+  | { kind: "clarent"; schemaVersion: 1; submissionId: string; matchId: string; gameNumber: number; importedAt: string; sourceVersion: string; playerSeat: 1 | 2; playerChampionId: string; opponentChampionId: string; cardIds: string[]; cardIdMappings?: Record<string, string>; rawDeckInput?: string; deckMapping?: { savedDeckId: string; method: "exact" | "manual" } };
 
 export interface MatchLogRecord {
   version: 1;

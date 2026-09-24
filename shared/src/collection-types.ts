@@ -3,6 +3,10 @@ import type { OmnidexDecklist } from "./omnidex-types.js";
 export interface CollectionEntry {
   cardUuid: string;
   cardName: string;
+  /** Printing UUID. Omitted for the legacy/canonical card-level pool. */
+  editionUuid?: string;
+  setPrefix?: string;
+  collectorNumber?: string;
   ownedQuantity: number;
   proxyQuantity: number;
   updatedAt: string;
@@ -13,8 +17,30 @@ export type CollectionUpdateMode = "add" | "at-least" | "set";
 export interface CollectionUpdateLine {
   cardUuid: string;
   cardName: string;
+  editionUuid?: string;
+  setPrefix?: string;
+  collectorNumber?: string;
   quantity: number;
   proxyQuantity?: number;
+}
+
+export type CollectionInventoryMode = "canonical" | "edition";
+
+export function collectionEntryKey(entry: Pick<CollectionEntry, "cardUuid" | "editionUuid">): string {
+  return `${entry.cardUuid}:${entry.editionUuid ?? "canonical"}`;
+}
+
+/** Pool every printing with the legacy canonical quantity. Deck recipes identify cards, not printings. */
+export function collectionTotalsByCard(collection: CollectionEntry[]): Map<string, { ownedQuantity: number; proxyQuantity: number }> {
+  const totals = new Map<string, { ownedQuantity: number; proxyQuantity: number }>();
+  for (const entry of collection) {
+    const key = collectionKey(entry.cardName);
+    const total = totals.get(key) ?? { ownedQuantity: 0, proxyQuantity: 0 };
+    total.ownedQuantity += entry.ownedQuantity;
+    total.proxyQuantity += entry.proxyQuantity;
+    totals.set(key, total);
+  }
+  return totals;
 }
 
 export interface CollectionTransaction {
@@ -58,7 +84,7 @@ export function computeDeckCollectionStatus(
   collection: CollectionEntry[],
   includeSideboard = true,
 ): DeckCollectionStatus {
-  const owned = new Map(collection.map((entry) => [collectionKey(entry.cardName), entry]));
+  const owned = collectionTotalsByCard(collection);
   const required = new Map<string, { card: string; quantity: number }>();
   const sections = includeSideboard ? [decklist.main, decklist.material, decklist.sideboard] : [decklist.main, decklist.material];
   for (const section of sections) {
