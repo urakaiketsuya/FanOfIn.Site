@@ -1,0 +1,576 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Fan of Insight Public API",
+    "version": "1.0.0",
+    "description": "Read-only published Omnidex analysis. No date, format, category, or arbitrary SQL filters. Archetypes are coarse champion-character rollups. Cached up to 60 seconds. Pagination restarts with HTTP 409 after a dataset change."
+  },
+  "paths": {
+    "/v1/meta": {
+      "get": {
+        "parameters": [
+          {
+            "in": "header",
+            "name": "If-None-Match",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Published data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Metadata"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "ETag matches"
+          },
+          "400": {
+            "description": "Invalid or unsupported query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Dataset changed; restart pagination",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Unpublished dataset, database unavailable, or quota exhausted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/cards": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "description": "Opaque cursor from the preceding page. Use URLSearchParams to encode.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "If-None-Match",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Published data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/CardStats"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/Metadata"
+                    },
+                    "nextCursor": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "meta",
+                    "nextCursor"
+                  ]
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "ETag matches"
+          },
+          "400": {
+            "description": "Invalid or unsupported query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Dataset changed; restart pagination",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Unpublished dataset, database unavailable, or quota exhausted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/cards/{slug}/stats": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "If-None-Match",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Published data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/CardStats"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/Metadata"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "meta"
+                  ]
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "ETag matches"
+          },
+          "400": {
+            "description": "Invalid or unsupported query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Dataset changed; restart pagination",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Unpublished dataset, database unavailable, or quota exhausted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/archetypes": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "description": "Opaque cursor from the preceding page. Use URLSearchParams to encode.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "If-None-Match",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Published data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Archetype"
+                      }
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/Metadata"
+                    },
+                    "nextCursor": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "meta",
+                    "nextCursor"
+                  ]
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "ETag matches"
+          },
+          "400": {
+            "description": "Invalid or unsupported query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Dataset changed; restart pagination",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Unpublished dataset, database unavailable, or quota exhausted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Metadata": {
+        "type": "object",
+        "properties": {
+          "apiVersion": {
+            "type": "string",
+            "enum": [
+              "v1"
+            ]
+          },
+          "datasetVersion": {
+            "type": "string"
+          },
+          "sources": {
+            "type": "object",
+            "properties": {
+              "cards": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "archetypes": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "cards",
+              "archetypes"
+            ]
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "published-omnidex-analysis"
+            ]
+          },
+          "decksConsidered": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "counts": {
+            "type": "object",
+            "properties": {
+              "cards": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "archetypes": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "cards",
+              "archetypes"
+            ]
+          },
+          "cardsWithoutSlug": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "apiVersion",
+          "datasetVersion",
+          "sources",
+          "scope",
+          "decksConsidered",
+          "counts",
+          "cardsWithoutSlug"
+        ]
+      },
+      "CardStats": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "deckCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "totalCopies": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "eventCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "recentDeckCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "priorDeckCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "avgWinRate": {
+            "type": "number"
+          },
+          "adjustedWinRate": {
+            "type": "number"
+          },
+          "marketPrice": {
+            "type": "number",
+            "nullable": true
+          }
+        },
+        "required": [
+          "name",
+          "slug",
+          "deckCount",
+          "totalCopies",
+          "eventCount",
+          "recentDeckCount",
+          "priorDeckCount",
+          "avgWinRate",
+          "adjustedWinRate",
+          "marketPrice"
+        ]
+      },
+      "Archetype": {
+        "type": "object",
+        "properties": {
+          "signature": {
+            "type": "string"
+          },
+          "classes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "elements": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "deckCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "eventCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "avgWinRate": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "signature",
+          "classes",
+          "elements",
+          "deckCount",
+          "eventCount",
+          "avgWinRate"
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      }
+    }
+  }
+}

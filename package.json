@@ -9,7 +9,8 @@
     "pipeline",
     "worker",
     "account-worker",
-    "account-bff"
+    "account-bff",
+    "api-worker"
   ],
   "scripts": {
     "dev": "npm run dev --workspace=app",
@@ -32,6 +33,10 @@
     "worker:test": "npm run test --workspace=worker",
     "accounts:dev": "npm run dev --workspace=account-worker",
     "accounts:typecheck": "npm run typecheck --workspace=account-worker",
-    "accounts:bff:typecheck": "npm run typecheck --workspace=account-bff"
+    "accounts:bff:typecheck": "npm run typecheck --workspace=account-bff",
+    "api:dev": "npm run dev --workspace=@fanofin/public-api",
+    "api:test": "npm run test --workspace=@fanofin/public-api",
+    "api:typecheck": "npm run typecheck --workspace=@fanofin/public-api",
+    "pipeline:api:publish": "npm run api:publish --workspace=@gatcg/pipeline --"
   }
 }

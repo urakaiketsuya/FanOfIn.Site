@@ -12,7 +12,8 @@
     "audit:diao": "tsx src/analysis/diaoModelAudit.ts",
     "audit:diao:migration": "tsx src/analysis/diaoMigrationAudit.ts",
     "audit:packages": "tsx src/analysis/packageCandidateAudit.ts",
-    "clean:similarity-cache": "rm -rf .cache/similarity-cache"
+    "clean:similarity-cache": "rm -rf .cache/similarity-cache",
+    "api:publish": "tsx src/public-api/publish.ts"
   },
   "dependencies": {
     "@gatcg/shared": "*",
