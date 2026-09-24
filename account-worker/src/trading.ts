@@ -174,6 +174,7 @@ export async function counterTrade(env: Env, user: AuthUser, id: string, value: 
 export async function updateTradeStatus(env: Env, user: AuthUser, id: string, next: unknown): Promise<void> {
   if (typeof next !== "string") throw badRequest("Trade status is required");
   const trade = await tradeFor(env, user, id), current = String(trade.status) as TradeStatus;
+  if (next === "received" && current === "completed") return;
   const sender = String(trade.sender_user_id) === user.id;
   let status: TradeStatus;
   if (next === "accepted" && ["sent", "countered"].includes(current)) status = "accepted";
@@ -183,7 +184,7 @@ export async function updateTradeStatus(env: Env, user: AuthUser, id: string, ne
   else if (next === "sent" && ACTIVE_RESERVATIONS.includes(current)) status = current === "both_sent" ? current : current === (sender ? "recipient_sent" : "sender_sent") ? "both_sent" : sender ? "sender_sent" : "recipient_sent";
   else if (next === "received" && current === "both_sent") {
     const column = sender ? "sender_received" : "recipient_received";
-    await env.ACCOUNT_DB.prepare(`UPDATE trades SET ${column}=1, updated_at=? WHERE id=?`).bind(new Date().toISOString(), id).run();
+    await env.ACCOUNT_DB.prepare(`UPDATE trades SET ${column}=1, updated_at=? WHERE id=? AND status='both_sent'`).bind(new Date().toISOString(), id).run();
     const receipt = await env.ACCOUNT_DB.prepare("SELECT sender_received, recipient_received FROM trades WHERE id=?").bind(id).first<{ sender_received: number; recipient_received: number }>();
     if (!receipt?.sender_received || !receipt.recipient_received) {
       await env.ACCOUNT_DB.prepare("INSERT INTO trade_events (id, trade_id, actor_user_id, event_type, created_at) VALUES (?, ?, ?, 'received', ?)").bind(crypto.randomUUID(), id, user.id, new Date().toISOString()).run();
@@ -212,41 +213,83 @@ async function applyCompletedTrade(env: Env, trade: Record<string, unknown>, act
   const revision = await env.ACCOUNT_DB.prepare("SELECT lines_json FROM trade_revisions WHERE trade_id=? AND revision_number=?").bind(trade.id, trade.current_revision).first<{ lines_json: string }>();
   if (!revision) throw badRequest("Trade revision is unavailable");
   const lines = JSON.parse(revision.lines_json) as TradeLine[];
-  const statements: D1PreparedStatement[] = [];
-  const changes = new Map<string, Array<Record<string, unknown>>>();
+  const balances = new Map<string, { userId: string; line: TradeLine; incoming: number; outgoing: number }>();
   for (const line of lines) {
     const giver = line.direction === "sender_gives" ? String(trade.sender_user_id) : String(trade.recipient_user_id);
     const receiver = line.direction === "sender_gives" ? String(trade.recipient_user_id) : String(trade.sender_user_id);
+    for (const userId of [giver, receiver]) {
+      const key = JSON.stringify([userId, line.editionUuid ? "printing" : "canonical", line.editionUuid ?? line.cardUuid]);
+      const balance = balances.get(key) ?? { userId, line, incoming: 0, outgoing: 0 };
+      if (userId === giver) balance.outgoing += line.quantity;
+      else balance.incoming += line.quantity;
+      balances.set(key, balance);
+    }
+  }
+
+  // The claim and every side effect share one D1 batch transaction. Only the request
+  // that creates this unique event may write inventory. Snapshot predicates prevent
+  // overwriting collection edits or other trades that committed during our reads.
+  const eventId = crypto.randomUUID();
+  const claimed = "EXISTS (SELECT 1 FROM trade_events WHERE id=?)";
+  const guards: D1PreparedStatement[] = [];
+  const statements: D1PreparedStatement[] = [];
+  const changes = new Map<string, Array<Record<string, unknown>>>();
+  for (const { userId, line, incoming, outgoing } of balances.values()) {
     const table = line.editionUuid ? "collection_printing_entries" : "collection_entries";
     const keyColumn = line.editionUuid ? "edition_uuid" : "card_uuid";
     const key = line.editionUuid ?? line.cardUuid;
-    const giverRow = await env.ACCOUNT_DB.prepare(`SELECT owned_quantity, proxy_quantity FROM ${table} WHERE user_id=? AND ${keyColumn}=?`).bind(giver, key).first<{ owned_quantity: number; proxy_quantity: number }>();
-    if (!giverRow || giverRow.owned_quantity < line.quantity) throw badRequest(`${line.cardName} is no longer available in the giver's collection`);
-    const receiverRow = await env.ACCOUNT_DB.prepare(`SELECT owned_quantity, proxy_quantity FROM ${table} WHERE user_id=? AND ${keyColumn}=?`).bind(receiver, key).first<{ owned_quantity: number; proxy_quantity: number }>();
-    const giverAfter = giverRow.owned_quantity - line.quantity, receiverBefore = receiverRow?.owned_quantity ?? 0, receiverAfter = receiverBefore + line.quantity;
-    if (line.editionUuid) {
-      statements.push(env.ACCOUNT_DB.prepare(`UPDATE collection_printing_entries SET owned_quantity=?, updated_at=? WHERE user_id=? AND edition_uuid=?`).bind(giverAfter, now, giver, key));
-      statements.push(env.ACCOUNT_DB.prepare(`INSERT INTO collection_printing_entries (user_id, card_uuid, card_name, edition_uuid, set_prefix, collector_number, owned_quantity, proxy_quantity, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?)
-        ON CONFLICT(user_id, edition_uuid) DO UPDATE SET owned_quantity=excluded.owned_quantity, updated_at=excluded.updated_at`).bind(receiver, line.cardUuid, line.cardName, line.editionUuid, line.setPrefix, line.collectorNumber, receiverAfter, now));
+    const row = await env.ACCOUNT_DB.prepare(`SELECT owned_quantity, proxy_quantity FROM ${table} WHERE user_id=? AND ${keyColumn}=?`).bind(userId, key).first<{ owned_quantity: number; proxy_quantity: number }>();
+    const before = row?.owned_quantity ?? 0, proxy = row?.proxy_quantity ?? 0;
+    const after = before - outgoing + incoming;
+    if (before < outgoing || after > 9999) {
+      if ((await tradeFor(env, { id: actorUserId } as AuthUser, String(trade.id))).status === "completed") return;
+      throw badRequest(`${line.cardName} cannot be transferred with the current collection quantities`);
+    }
+    if (row) {
+      guards.push(env.ACCOUNT_DB.prepare(`DELETE FROM trade_events WHERE id=? AND NOT EXISTS (SELECT 1 FROM ${table} WHERE user_id=? AND ${keyColumn}=? AND owned_quantity=? AND proxy_quantity=?)`).bind(eventId, userId, key, before, proxy));
     } else {
-      statements.push(env.ACCOUNT_DB.prepare(`UPDATE collection_entries SET owned_quantity=?, updated_at=? WHERE user_id=? AND card_uuid=?`).bind(giverAfter, now, giver, key));
-      statements.push(env.ACCOUNT_DB.prepare(`INSERT INTO collection_entries (user_id, card_uuid, card_name, owned_quantity, proxy_quantity, updated_at) VALUES (?, ?, ?, ?, 0, ?)
-        ON CONFLICT(user_id, card_uuid) DO UPDATE SET owned_quantity=excluded.owned_quantity, updated_at=excluded.updated_at`).bind(receiver, line.cardUuid, line.cardName, receiverAfter, now));
+      guards.push(env.ACCOUNT_DB.prepare(`DELETE FROM trade_events WHERE id=? AND EXISTS (SELECT 1 FROM ${table} WHERE user_id=? AND ${keyColumn}=?)`).bind(eventId, userId, key));
     }
-    const binderItem = await env.ACCOUNT_DB.prepare("SELECT quantity FROM binder_items WHERE id=?").bind(line.binderItemId).first<{ quantity: number }>();
-    if (!binderItem || binderItem.quantity < line.quantity) throw badRequest(`${line.cardName} is no longer available in the binder`);
-    statements.push(binderItem.quantity === line.quantity
-      ? env.ACCOUNT_DB.prepare("DELETE FROM binder_items WHERE id=?").bind(line.binderItemId)
-      : env.ACCOUNT_DB.prepare("UPDATE binder_items SET quantity=quantity-?, updated_at=? WHERE id=?").bind(line.quantity, now, line.binderItemId));
-    for (const [userId, before, after] of [[giver, giverRow.owned_quantity, giverAfter], [receiver, receiverBefore, receiverAfter]] as const) {
-      const list = changes.get(userId) ?? [];
-      const proxy = userId === giver ? giverRow.proxy_quantity : (receiverRow?.proxy_quantity ?? 0);
-      list.push({ cardUuid: line.cardUuid, cardName: line.cardName, editionUuid: line.editionUuid ?? undefined, setPrefix: line.setPrefix ?? undefined, collectorNumber: line.collectorNumber ?? undefined, beforeOwned: before, beforeProxy: proxy, afterOwned: after, afterProxy: proxy });
-      changes.set(userId, list);
+    if (line.editionUuid) {
+      statements.push(env.ACCOUNT_DB.prepare(`INSERT INTO collection_printing_entries (user_id, card_uuid, card_name, edition_uuid, set_prefix, collector_number, owned_quantity, proxy_quantity, updated_at)
+        SELECT ?, ?, ?, ?, ?, ?, ?, ?, ? WHERE ${claimed}
+        ON CONFLICT(user_id, edition_uuid) DO UPDATE SET owned_quantity=excluded.owned_quantity, updated_at=excluded.updated_at`)
+        .bind(userId, line.cardUuid, line.cardName, key, line.setPrefix, line.collectorNumber, after, proxy, now, eventId));
+    } else {
+      statements.push(env.ACCOUNT_DB.prepare(`INSERT INTO collection_entries (user_id, card_uuid, card_name, owned_quantity, proxy_quantity, updated_at)
+        SELECT ?, ?, ?, ?, ?, ? WHERE ${claimed}
+        ON CONFLICT(user_id, card_uuid) DO UPDATE SET owned_quantity=excluded.owned_quantity, updated_at=excluded.updated_at`)
+        .bind(userId, line.cardUuid, line.cardName, after, proxy, now, eventId));
     }
+    const list = changes.get(userId) ?? [];
+    list.push({ cardUuid: line.cardUuid, cardName: line.cardName, editionUuid: line.editionUuid ?? undefined, setPrefix: line.setPrefix ?? undefined, collectorNumber: line.collectorNumber ?? undefined, beforeOwned: before, beforeProxy: proxy, afterOwned: after, afterProxy: proxy });
+    changes.set(userId, list);
   }
-  for (const [userId, userChanges] of changes) statements.push(env.ACCOUNT_DB.prepare("INSERT INTO collection_transactions (id, user_id, source, changes_json, created_at) VALUES (?, ?, ?, ?, ?)").bind(crypto.randomUUID(), userId, `Completed trade ${String(trade.id).slice(0, 8)}`, JSON.stringify(userChanges), now));
-  statements.push(env.ACCOUNT_DB.prepare("UPDATE trades SET status='completed', updated_at=? WHERE id=? AND status='both_sent'").bind(now, trade.id));
-  statements.push(env.ACCOUNT_DB.prepare("INSERT INTO trade_events (id, trade_id, actor_user_id, event_type, created_at) VALUES (?, ?, ?, 'completed', ?)").bind(crypto.randomUUID(), trade.id, actorUserId, now));
-  await env.ACCOUNT_DB.batch(statements);
+  for (const line of lines) {
+    const binderItem = await env.ACCOUNT_DB.prepare("SELECT quantity FROM binder_items WHERE id=?").bind(line.binderItemId).first<{ quantity: number }>();
+    if (!binderItem || binderItem.quantity < line.quantity) {
+      if ((await tradeFor(env, { id: actorUserId } as AuthUser, String(trade.id))).status === "completed") return;
+      throw badRequest(`${line.cardName} is no longer available in the binder`);
+    }
+    guards.push(env.ACCOUNT_DB.prepare("DELETE FROM trade_events WHERE id=? AND NOT EXISTS (SELECT 1 FROM binder_items WHERE id=? AND quantity=?)").bind(eventId, line.binderItemId, binderItem.quantity));
+    statements.push(binderItem.quantity === line.quantity
+      ? env.ACCOUNT_DB.prepare(`DELETE FROM binder_items WHERE id=? AND ${claimed}`).bind(line.binderItemId, eventId)
+      : env.ACCOUNT_DB.prepare(`UPDATE binder_items SET quantity=quantity-?, updated_at=? WHERE id=? AND ${claimed}`).bind(line.quantity, now, line.binderItemId, eventId));
+  }
+  for (const [userId, userChanges] of changes) statements.push(env.ACCOUNT_DB.prepare(`INSERT INTO collection_transactions (id, user_id, source, changes_json, created_at)
+    SELECT ?, ?, ?, ?, ? WHERE ${claimed}`).bind(crypto.randomUUID(), userId, `Completed trade ${String(trade.id).slice(0, 8)}`, JSON.stringify(userChanges), now, eventId));
+  const result = await env.ACCOUNT_DB.batch([
+    env.ACCOUNT_DB.prepare(`INSERT INTO trade_events (id, trade_id, actor_user_id, event_type, created_at)
+      SELECT ?, id, ?, 'completed', ? FROM trades WHERE id=? AND status='both_sent'
+      AND current_revision=? AND sender_received=1 AND recipient_received=1`)
+      .bind(eventId, actorUserId, now, trade.id, trade.current_revision),
+    // Separate guards keep every statement within D1's bound-parameter limit.
+    ...guards,
+    env.ACCOUNT_DB.prepare(`UPDATE trades SET status='completed', updated_at=? WHERE id=? AND ${claimed}`)
+      .bind(now, trade.id, eventId),
+    ...statements,
+  ]);
+  if (result[guards.length + 1].meta.changes !== 1 && (await tradeFor(env, { id: actorUserId } as AuthUser, String(trade.id))).status !== "completed") {
+    throw new ApiError("Trade inventory changed; retry receipt confirmation", 409, "trade_inventory_changed");
+  }
 }

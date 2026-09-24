@@ -5,6 +5,7 @@ import type {
   CommunityCoOccurrenceData,
   CommunityCoOccurrenceEntry,
   CommunitySourceCounts,
+  CommunityDeckSearchIndex,
   DeckEraData,
   PopularityData,
   PriceDistributionData,
@@ -44,6 +45,13 @@ export function useCommunityBlendedDeckReferences(enabled = true) {
 
 export function useCommunitySourceCounts() {
   return usePublishedData<CommunitySourceCounts>("community-source-counts", "/data/community/sources.json");
+}
+
+export function useCommunityDeckSearchIndex(format: DeckFormat = "STANDARD") {
+  return usePublishedData<CommunityDeckSearchIndex>(
+    `community-decks-${format}`,
+    blendedPath(format, "decks"),
+  );
 }
 
 export function useCommunityCardInclusion(format: DeckFormat = "STANDARD", enabled = true) {

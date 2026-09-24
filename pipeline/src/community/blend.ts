@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import type { CommunitySourceCounts, ShoutAtYourDecksDeck, ShoutAtYourDecksDeckSummary, SleevedDeck, TcgArchitectDeck } from "@gatcg/shared";
+import type { CommunityDeckSearchIndex, CommunityDeckSource, CommunitySourceCounts, ShoutAtYourDecksDeck, ShoutAtYourDecksDeckSummary, SleevedDeck, TcgArchitectDeck } from "@gatcg/shared";
 import { slugify } from "@gatcg/shared";
 import { loadCardCatalog, buildCardIndex } from "../cards/catalog.js";
 import { listCachedDecks } from "../shoutatyourdecks/cache.js";
@@ -89,6 +89,30 @@ export async function writeGeneratedJsonIfChanged<T extends { generatedAt: strin
   return true;
 }
 
+export function buildCommunityDeckSearchIndex(
+  groups: Array<{ source: CommunityDeckSource; decks: ShoutAtYourDecksDeck[] }>,
+): CommunityDeckSearchIndex {
+  const allNames = new Set<string>();
+  for (const { decks } of groups) for (const deck of decks) {
+    for (const line of [...deck.mainDeck, ...deck.materialDeck]) allNames.add(line.name);
+  }
+  const cardNames = Array.from(allNames).sort((a, b) => a.localeCompare(b));
+  const nameIndex = new Map(cardNames.map((name, index) => [name, index]));
+  const decks = groups.flatMap(({ source, decks: sourceDecks }) => sourceDecks.map((deck) => ({
+    id: deck.id,
+    source,
+    url: deck.url,
+    title: deck.title,
+    author: deck.author,
+    champion: deck.champion,
+    mainCount: deck.mainCount,
+    materialCount: deck.materialCount,
+    cardIndexes: Array.from(new Set([...deck.mainDeck, ...deck.materialDeck].map((line) => nameIndex.get(line.name)!))).sort((a, b) => a - b),
+  })));
+  decks.sort((a, b) => a.title.localeCompare(b.title) || a.id.localeCompare(b.id));
+  return { generatedAt: new Date().toISOString(), cardNames, decks };
+}
+
 export async function runCommunityBlend(): Promise<void> {
   const [saydRecords, cachedSleevedRecords, publishedSleevedRecords, cachedTcgaRecords, publishedTcgaRecords] = await Promise.all([
     listCachedDecks(),
@@ -159,6 +183,11 @@ export async function runCommunityBlend(): Promise<void> {
     const coOccurrence = computeCoOccurrence(normalizedDecks, cardIndex);
     // Unnormalized: this one displays champion as text (CardDetail.tsx), never groups by it.
     const deckReferences = computeCardDeckReferences(decksWithLists, cardIndex);
+    const deckSearch = buildCommunityDeckSearchIndex([
+      { source: "shoutatyourdecks", decks: saydDecks.filter((d) => d.format === format) },
+      { source: "sleeved", decks: sleevedDecks.filter((d) => d.format === format) },
+      { source: "tcgarchitect", decks: tcgaDecks.filter((d) => d.format === format) },
+    ]);
 
     const dir = format === "STANDARD" ? DATA_DIR : path.join(DATA_DIR, "pantheon");
     await mkdir(dir, { recursive: true });
@@ -169,6 +198,7 @@ export async function runCommunityBlend(): Promise<void> {
       writeGeneratedJsonIfChanged(path.join(dir, "deck-era.json"), deckEra),
       writeGeneratedJsonIfChanged(path.join(dir, "co-occurrence.json"), coOccurrence),
       writeGeneratedJsonIfChanged(path.join(dir, "deck-references.json"), deckReferences),
+      writeGeneratedJsonIfChanged(path.join(dir, "decks.json"), deckSearch),
     ]);
     console.log(`community: ${format.toLowerCase()} — ${decksWithLists.length} lists blended, ${cardInclusion.overall.length} cards`);
   }

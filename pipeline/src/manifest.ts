@@ -42,6 +42,8 @@ export const MANIFEST_ENTRIES: { key: string; file: string }[] = [
   { key: "shoutatyourdecks-pantheon-decks", file: "shoutatyourdecks/analytics/pantheon/decks.json" },
   { key: "community-source-counts", file: "community/sources.json" },
   { key: "community-blended-deck-references", file: "community/deck-references.json" },
+  { key: "community-decks-STANDARD", file: "community/decks.json" },
+  { key: "community-decks-PANTHEON", file: "community/pantheon/decks.json" },
   ...["card-inclusion", "co-occurrence"].flatMap((name) => [
     { key: `community-blended-${name}-STANDARD`, file: `community/${name}.json` },
     { key: `community-blended-${name}-PANTHEON`, file: `community/pantheon/${name}.json` },
