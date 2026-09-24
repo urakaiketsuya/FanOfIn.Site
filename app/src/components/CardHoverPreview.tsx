@@ -12,12 +12,14 @@ interface CardHoverPreviewProps {
   /** Alternate printed face from an edition's `other_orientations`. */
   backImage?: string;
   backAlt?: string;
+  /** Use only when children fill a card-art box, with no name or statistics below it. */
+  artOnly?: boolean;
   alt: string;
   children: ReactNode;
 }
 
 /** Wraps text (a decklist card name, etc.) with a floating card image that follows the cursor on hover. */
-export default function CardHoverPreview({ image, backImage, backAlt, alt, children }: CardHoverPreviewProps) {
+export default function CardHoverPreview({ image, backImage, backAlt, artOnly = false, alt, children }: CardHoverPreviewProps) {
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
   const [showBack, setShowBack] = useState(false);
   const [failedFaces, setFailedFaces] = useState<Set<"front" | "back">>(new Set());
@@ -60,7 +62,7 @@ export default function CardHoverPreview({ image, backImage, backAlt, alt, child
   return (
     <span
       data-component="CardHoverPreview"
-      className="relative"
+      className={artOnly ? "relative block h-full" : "relative"}
       onMouseEnter={handleMove}
       onMouseMove={handleMove}
       onMouseLeave={() => setPos(null)}
@@ -75,11 +77,11 @@ export default function CardHoverPreview({ image, backImage, backAlt, alt, child
         onClick={(event) => showFace(event, !showBack)}
         aria-label={`Show ${showBack ? "front" : "reverse"} face of ${alt}`}
         title={`Show ${showBack ? "front" : "reverse"} face`}
-        className="absolute bottom-1 right-1 z-10 flex min-h-11 min-w-11 items-center justify-center rounded-full border border-ctp-surface1 bg-ctp-base/95 px-2 text-[10px] font-semibold text-ctp-blue shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/50"
+        className={`${artOnly ? "absolute bottom-1 right-1 z-10" : "relative ml-1 align-middle"} inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-ctp-surface1 bg-ctp-base/95 px-2 text-[10px] font-semibold text-ctp-blue shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/50`}
       >
         <span aria-hidden="true">{showBack ? "Front" : "Flip"}</span>
       </button>}
-      {pos && <span className="fixed z-50" style={{ left: pos.x, top: pos.y, width: PREVIEW_WIDTH }}>
+      {pos && <span className="pointer-events-none fixed z-50" style={{ left: pos.x, top: pos.y, width: PREVIEW_WIDTH }}>
         {failedFaces.has(showBack ? "back" : "front") || (showBack && !backImage) ? <span className="flex aspect-[5/7] w-full items-center justify-center rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4 text-center text-sm text-ctp-subtext1 shadow-xl" role="img" aria-label={`${showBack ? backAlt ?? `${alt} reverse face` : alt} image unavailable`}>
           <span><span className="block font-semibold text-ctp-text">{showBack ? backAlt ?? `${alt} reverse face` : alt}</span><span className="mt-1 block">Image unavailable</span></span>
         </span> : <img
@@ -88,7 +90,7 @@ export default function CardHoverPreview({ image, backImage, backAlt, alt, child
           onError={() => setFailedFaces((current) => new Set(current).add(showBack ? "back" : "front"))}
           className="pointer-events-none aspect-[5/7] w-full rounded-lg border border-ctp-surface1 bg-ctp-surface0 object-cover shadow-xl"
         />}
-        {hasBack && <span className="mt-1 grid grid-cols-2 gap-1 rounded-lg border border-ctp-surface1 bg-ctp-base/95 p-1 shadow-lg" role="group" aria-label={`${alt} card face`}>
+        {hasBack && <span onMouseMove={(event) => event.stopPropagation()} onFocus={(event) => event.stopPropagation()} className="pointer-events-auto mt-1 grid grid-cols-2 gap-1 rounded-lg border border-ctp-surface1 bg-ctp-base/95 p-1 shadow-lg" role="group" aria-label={`${alt} card face`}>
           <button type="button" aria-pressed={!showBack} onClick={() => setShowBack(false)} className={`min-h-9 rounded-md px-2 text-xs font-medium ${!showBack ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>Front</button>
           <button type="button" aria-pressed={showBack} onClick={() => setShowBack(true)} className={`min-h-9 rounded-md px-2 text-xs font-medium ${showBack ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>Back</button>
         </span>}

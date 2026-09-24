@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect } from "react";
 import { Navigate, Route, Routes, useParams, useSearchParams } from "react-router-dom";
+import NotFound from "./pages/NotFound";
 import About from "./pages/About";
 import { beginLoading, endLoading } from "./lib/useGlobalLoading";
 
@@ -243,6 +244,7 @@ export default function AppRoutes() {
         <Route path="/shared-decks" element={<SharedDecksRedirect />} />
         <Route path="/users/:profileSlug" element={<PublicUserProfile />} />
         <Route path="/about" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
   );
