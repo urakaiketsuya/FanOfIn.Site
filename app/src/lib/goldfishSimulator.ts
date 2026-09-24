@@ -16,7 +16,7 @@ export type GoldfishCommand =
   | { type: "open"; handSize: number }
   | { type: "draw" }
   | { type: "glimpse"; count: number; keptIds: string[] }
-  | { type: "play"; instanceId: string }
+  | { type: "play"; instanceId: string; paymentIds?: string[]; reserveCost?: number }
   | { type: "reserve"; instanceId: string }
   | { type: "begin-recollection" }
   | { type: "recollect" }
@@ -80,7 +80,10 @@ const command = (value: unknown): GoldfishCommand | undefined => {
     case "open": return Number.isInteger(candidate.handSize) && candidate.handSize >= 0 ? candidate : undefined;
     case "draw": case "begin-recollection": case "recollect": case "next-turn": return candidate;
     case "glimpse": return Number.isInteger(candidate.count) && Array.isArray(candidate.keptIds) && candidate.keptIds.every((id) => typeof id === "string") ? candidate : undefined;
-    case "play": case "reserve": case "materialize": return typeof candidate.instanceId === "string" ? candidate : undefined;
+    case "play": return typeof candidate.instanceId === "string"
+      && (candidate.paymentIds === undefined || (Array.isArray(candidate.paymentIds) && candidate.paymentIds.every((id) => typeof id === "string")))
+      && (candidate.reserveCost === undefined || (Number.isInteger(candidate.reserveCost) && candidate.reserveCost >= 0)) ? candidate : undefined;
+    case "reserve": case "materialize": return typeof candidate.instanceId === "string" ? candidate : undefined;
     case "banish-random-memory": return Number.isInteger(candidate.count) ? candidate : undefined;
     case "create-tokens": return typeof candidate.name === "string" && Number.isInteger(candidate.count) && typeof candidate.rested === "boolean" ? candidate : undefined;
     case "remove-token": return typeof candidate.tokenId === "string" ? candidate : undefined;
@@ -228,11 +231,16 @@ export function resolveGlimpse(state: GoldfishState, count: number, keptIds: Rea
  * since conditional wording ("If you do," "you may") can't be verified from text alone — same
  * reasoning `drawEffects.ts` already documents for its own probability-estimate context.
  */
-export function playCard(state: GoldfishState, instanceId: string): GoldfishState {
+export function playCard(state: GoldfishState, instanceId: string, paymentIds: readonly string[] = [], reserveCost = paymentIds.length): GoldfishState {
   if (state.phase !== "main") return state;
   const card = state.hand.find((c) => c.id === instanceId);
-  if (!card) return state;
-  return record({ ...state, hand: state.hand.filter((c) => c.id !== instanceId), played: [...state.played, card] }, `Played ${card.name}`, { type: "play", instanceId });
+  const uniquePaymentIds = new Set(paymentIds);
+  if (!card || !Number.isInteger(reserveCost) || reserveCost < 0 || uniquePaymentIds.size !== reserveCost || uniquePaymentIds.has(instanceId)) return state;
+  const payments = state.hand.filter((entry) => uniquePaymentIds.has(entry.id));
+  if (payments.length !== reserveCost) return state;
+  const movedIds = new Set([instanceId, ...uniquePaymentIds]);
+  const label = reserveCost > 0 ? `Played ${card.name}; paid Reserve ${reserveCost} with ${payments.map((entry) => entry.name).join(", ")}` : `Played ${card.name}`;
+  return record({ ...state, hand: state.hand.filter((entry) => !movedIds.has(entry.id)), memory: [...state.memory, ...payments], played: [...state.played, card] }, label, { type: "play", instanceId, paymentIds: [...uniquePaymentIds], reserveCost });
 }
 
 export function reserveCard(state: GoldfishState, instanceId: string): GoldfishState {
@@ -303,7 +311,7 @@ export function replayGoldfishHistory(decklist: OmnidexDecklist, seed: number, a
       case "open": return null;
       case "draw": state = drawCard(state); break;
       case "glimpse": state = resolveGlimpse(state, item.count, new Set(item.keptIds)); break;
-      case "play": state = playCard(state, item.instanceId); break;
+      case "play": state = playCard(state, item.instanceId, item.paymentIds ?? [], item.reserveCost ?? 0); break;
       case "reserve": state = reserveCard(state, item.instanceId); break;
       case "begin-recollection": state = beginRecollection(state); break;
       case "recollect": state = recollectMemory(state); break;

@@ -1,6 +1,7 @@
 import type { Card } from "@gatcg/shared";
 import CardImage from "../../components/CardImage";
 import CardHoverPreview from "../../components/CardHoverPreview";
+import { primaryAlternateFace } from "../../lib/cardFaces";
 
 function stableRank(seed: string, name: string): number {
   let hash = 2166136261;
@@ -22,9 +23,10 @@ export default function DeckCardPreview({ names, cardsByName, championCard, seed
     <div className="grid grid-cols-3 gap-2" aria-label="Sample cards from this deck">
       {Array.from({ length: 3 }, (_, index) => {
         const card = cards[index];
+        const reverseFace = primaryAlternateFace(card);
         return card ? (
           <div key={card.name} className="min-w-0">
-            <CardHoverPreview image={card.editions[0].image} alt={card.name}>
+            <CardHoverPreview image={card.editions[0].image} backImage={reverseFace?.edition.image} backAlt={reverseFace?.name} alt={card.name}>
               <CardImage image={card.editions[0].image} alt={card.name} className="aspect-[5/7] w-full rounded-md object-cover object-top" />
             </CardHoverPreview>
           </div>

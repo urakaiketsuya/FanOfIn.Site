@@ -1475,7 +1475,8 @@ Hypergeometric calculator, using the same "Card in build" autofill convention.
 
 Deck Analysis presents a versioned **Prepare analysis** profile before its calculator tabs. Each profile
 can contain up to twelve named plans; every plan stores its own mutually exclusive Setup, Payoff, and
-Protection roles, stage-usefulness overrides, and pressure-package assumptions. Effective-cost overrides
+Protection roles, stage-usefulness overrides, pressure-package assumptions, and disjoint Establish,
+Protect, and Rebuild recovery roles. Effective-cost overrides
 are shared across the deck version. A named saved
 or imported deck also keeps a latest-revision pointer: when its list changes, assignments for card
 names still present are carried into a new unreviewed revision, while removed cards are discarded.
@@ -1493,6 +1494,10 @@ views reuse one mutually exclusive Setup/Payoff/Protection assignment:
   early-useful, Payoff is late-useful, and Protection is flexible; the user controls how many Payoff
   cards are tolerated in the early window. It reports early function, fresh late injection, both
   stages, and early Payoff clog.
+- **Affordability** filters each role pool to cards whose effective Reserve cost plus the played card
+  itself fits the natural cards-seen ceiling at the selected target turn, then recomputes the same exact
+  recipe probability. This is an intentionally bounded, per-card ceiling: it does not claim that Setup
+  and Payoff can both be paid in sequence or that a conditional reduction is active.
 
 The views do not sum overlapping inferred categories or assign a card to multiple pools. They are
 different questions over the same disjoint physical-card counts, so switching views cannot
@@ -1618,7 +1623,8 @@ by recovery. Their union is exact inclusion-exclusion:
 
 “Established but exposed” subtracts that union from Establish access. Each possible one-copy role
 increase is recomputed against the union to identify the largest access gain while deck size stays
-fixed. The result is still an access ceiling: it assumes found cards remain available and does not
+fixed. In Deck Analysis, these roles are stored on the active named analysis plan and reused by the
+Prepare Analysis workflow instead of being requested again. The result is still an access ceiling: it assumes found cards remain available and does not
 simulate activation costs, zones, what the opposing effect actually removes, or responses.
 
 ### Standalone Match Log (`features/match-log/MatchLogIndex.tsx`, `lib/matchLog.ts`)
@@ -1639,7 +1645,11 @@ rewriting source data. Summary match-point rate counts a draw as half a win. Sam
 coarse: no games, **early** below 5 games, **developing** from 5 through 19, and **useful** at 20 or more.
 These labels describe sample quantity only and do not correct selection bias or make results predictive.
 
-### Test Session Tracker (`features/deckbuilder/PlaytestSessionTracker.tsx`, `lib/playtestTracker.ts`)
+### Legacy Test Session Tracker (`features/deckbuilder/PlaytestSessionTracker.tsx`, `lib/playtestTracker.ts`)
+
+This local-only calculator surface is retired from Deck Analysis. New observations belong in the
+standalone Match Log so provenance, account sync, Clarent imports, and deck filtering use one record.
+The legacy storage reader remains temporarily available for migration compatibility.
 
 Playtest records are stored locally under a stable fingerprint of Champion identity plus sorted Main
 Deck names and quantities. Changing the Main Deck therefore starts or restores a distinct history;
@@ -1960,6 +1970,14 @@ phase and action that returns Memory to Hand. Material cards remain outside the 
 materialized individually. Token creation/removal remains player-confirmed because most conditions
 cannot be safely inferred from effect text.
 
+Playing a Main Deck card is a zone-and-payment simulation, not effect resolution. For a fixed
+printed Reserve cost, the player must select exactly that many *other* card instances from Hand;
+confirmation atomically moves those payment cards to Memory and the played card to Played. The
+transition rejects duplicate identifiers, the played card as its own payment, missing cards, and
+incorrect payment counts. Cards printed with Reserve X ask the player to enter X first. Cost
+reducers and alternate/replacement costs are deliberately user-resolved, so the entered payment is
+the amount the player says actually applies rather than a rules-engine conclusion.
+
 Main Deck play/reserve actions and Materialization are legal only during the modeled Main phase;
 the UI disables them during Recollection and the state-transition functions reject them as well.
 The per-card support boundary recognizes only fixed numeric draw, fixed numeric Glimpse, fixed
@@ -1975,8 +1993,9 @@ names selected by random Memory banishment. A versioned local session snapshot s
 decklist, hand size, every modeled zone, tokens, log, and RNG state. Restoring that snapshot resumes
 from the same state and preserves subsequent seeded outcomes; the parser migrates the earlier
 minimal snapshot shape with empty defaults for newly introduced zones. Every current action also
-stores a structured command; replay rebuilds the position from the original deck, seed, and command
-history. Legacy label-only histories remain viewable but are deliberately not replayed.
+stores a structured command, including the exact payment-card identifiers and chosen X value;
+replay rebuilds the position from the original deck, seed, and command history. Legacy label-only
+histories remain viewable but are deliberately not replayed.
 
 The simulator auto-suggests fixed numeric "draw N cards" and "Glimpse N" triggers and identifies
 fixed token-summon and random-Memory-banish clauses as supported manual assists. Draw detection

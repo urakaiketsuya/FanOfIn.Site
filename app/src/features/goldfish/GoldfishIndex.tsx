@@ -20,6 +20,13 @@ interface PendingConfirm {
   confirmed: number;
 }
 
+interface PendingPayment {
+  card: GoldfishCardInstance;
+  reserveCost: number;
+  variable: boolean;
+  selectedIds: Set<string>;
+}
+
 const GOLD_FISH_SESSION_KEY = "fanofin:goldfish-session:v2";
 
 function readSavedSession(): GoldfishSession | null {
@@ -45,7 +52,7 @@ function HandCard({ card, resolved, disabled, onPlay, onReserve }: { card: Goldf
         {resolved?.effect && <div className="mt-2 text-[10px] leading-4 text-ctp-subtext0">{assistedLabels.length > 0 && <p><span className="font-semibold text-ctp-green">Assisted:</span> {assistedLabels.join(" · ")}</p>}{support.hasUnsupportedText && <p><span className="font-semibold text-ctp-yellow">Player-resolved:</span> remaining costs, targets, conditions, timing, and effects.</p>}</div>}
       </div>
       <div className="grid gap-2 border-t border-ctp-surface1 px-3 py-2">
-        <button type="button" disabled={disabled} onClick={onPlay} className="min-h-11 w-full rounded-md border border-ctp-blue px-2.5 py-1 text-xs font-medium text-ctp-blue hover:bg-ctp-blue/10 disabled:cursor-not-allowed disabled:opacity-40">Play card</button>
+        <button type="button" disabled={disabled} onClick={onPlay} className="min-h-11 w-full rounded-md border border-ctp-blue px-2.5 py-1 text-xs font-medium text-ctp-blue hover:bg-ctp-blue/10 disabled:cursor-not-allowed disabled:opacity-40">Play · Reserve {resolved?.cost_reserve === -1 ? "X" : Math.max(0, resolved?.cost_reserve ?? 0)}</button>
         {onReserve && <button type="button" disabled={disabled} onClick={onReserve} className="min-h-11 w-full rounded-md border border-ctp-yellow/60 px-2.5 py-1 text-xs font-medium text-ctp-yellow hover:bg-ctp-yellow/10 disabled:opacity-40">Reserve to Memory</button>}
       </div>
     </div>
@@ -76,6 +83,7 @@ export default function GoldfishIndex() {
   const [handSize, setHandSize] = useState(DEFAULT_STARTING_HAND_SIZE);
   const [state, setState] = useState<GoldfishState | null>(() => initialDecklist ? newGame(initialDecklist, DEFAULT_STARTING_HAND_SIZE) : null);
   const [pendingConfirm, setPendingConfirm] = useState<PendingConfirm | null>(null);
+  const [pendingPayment, setPendingPayment] = useState<PendingPayment | null>(null);
   const [glimpseSize, setGlimpseSize] = useState(3);
   const [activeGlimpse, setActiveGlimpse] = useState<{ name: string; count: number } | null>(null);
   const [keptGlimpseIds, setKeptGlimpseIds] = useState<Set<string>>(() => new Set());
@@ -88,6 +96,7 @@ export default function GoldfishIndex() {
     setDecklist(list);
     setState(newGame(list, handSize));
     setPendingConfirm(null);
+    setPendingPayment(null);
     setActiveGlimpse(null);
     setKeptGlimpseIds(new Set());
   }
@@ -105,12 +114,31 @@ export default function GoldfishIndex() {
     setKeptGlimpseIds(new Set());
   }
 
-  function handlePlay(card: GoldfishCardInstance) {
-    setState((current) => (current ? playCard(current, card.id) : current));
+  function finishPlayedCard(card: GoldfishCardInstance) {
     const extraDraws = suggestedExtraDraws(cardsByName.get(card.name));
     setPendingConfirm(extraDraws > 0 ? { name: card.name, extraDraws, confirmed: 0 } : null);
     const glimpse = suggestedGlimpse(cardsByName.get(card.name));
     if (glimpse > 0) beginGlimpse(glimpse, card.name);
+  }
+
+  function handlePlay(card: GoldfishCardInstance) {
+    const printedCost = cardsByName.get(card.name)?.cost_reserve;
+    const variable = printedCost === -1;
+    const reserveCost = variable ? 0 : Math.max(0, printedCost ?? 0);
+    if (reserveCost === 0 && !variable) {
+      setState((current) => (current ? playCard(current, card.id) : current));
+      finishPlayedCard(card);
+      return;
+    }
+    setPendingPayment({ card, reserveCost, variable, selectedIds: new Set() });
+  }
+
+  function confirmPayment() {
+    if (!pendingPayment || pendingPayment.selectedIds.size !== pendingPayment.reserveCost) return;
+    const { card, reserveCost, selectedIds } = pendingPayment;
+    setState((current) => current ? playCard(current, card.id, [...selectedIds], reserveCost) : current);
+    setPendingPayment(null);
+    finishPlayedCard(card);
   }
 
   function confirmOneDraw() {
@@ -136,6 +164,7 @@ export default function GoldfishIndex() {
     setState(session.state);
     setHandSize(session.handSize);
     setPendingConfirm(null);
+    setPendingPayment(null);
     setActiveGlimpse(null);
     setKeptGlimpseIds(new Set());
     setSessionNotice("Saved session restored.");
@@ -153,6 +182,7 @@ export default function GoldfishIndex() {
     if (!replayed) return;
     setState(replayed);
     setPendingConfirm(null);
+    setPendingPayment(null);
     setActiveGlimpse(null);
     setKeptGlimpseIds(new Set());
     setSessionNotice("Replay rebuilt the current game from its opening seed and action history.");
@@ -195,11 +225,11 @@ export default function GoldfishIndex() {
               <input type="number" min={1} max={12} value={handSize} onChange={(event) => setHandSize(Math.max(1, Math.min(12, Number(event.target.value) || 1)))} className="ml-1.5 w-14 rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1 text-xs text-ctp-text" />
             </label>
             <button type="button" onClick={() => startNewHand(decklist)} className="rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs font-medium text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">New hand</button>
-            <button type="button" onClick={() => { setDecklist(null); setState(null); setPendingConfirm(null); setActiveGlimpse(null); }} className="rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Change deck</button>
+            <button type="button" onClick={() => { setDecklist(null); setState(null); setPendingConfirm(null); setPendingPayment(null); setActiveGlimpse(null); }} className="rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Change deck</button>
           </div>
         }
       />
-      <details className="mt-4 rounded-xl border border-ctp-yellow/30 bg-ctp-yellow/5 p-3"><summary className="flex min-h-11 cursor-pointer items-center text-sm font-semibold text-ctp-yellow">What the rules assistant supports</summary><p className="mt-2 text-xs leading-5 text-ctp-subtext1">Goldfish tracks zones and enforces Main-versus-Recollection actions. It recognizes fixed draws, fixed Glimpse, fixed token summons, and fixed random Memory banishment. Printed costs, targets, optional or conditional clauses, combat, leveling, and all other effects remain player-resolved; each card labels that boundary before you play it.</p></details>
+      <details className="mt-4 rounded-xl border border-ctp-yellow/30 bg-ctp-yellow/5 p-3"><summary className="flex min-h-11 cursor-pointer items-center text-sm font-semibold text-ctp-yellow">What the rules assistant supports</summary><p className="mt-2 text-xs leading-5 text-ctp-subtext1">Goldfish tracks zones, enforces Main-versus-Recollection actions, and pays printed Reserve costs by moving the exact cards you select from Hand to Memory. Variable X costs ask you for the amount. Cost reductions, targets, conditions, combat, leveling, and effects remain player-resolved.</p></details>
       <details className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-ctp-text [&::-webkit-details-marker]:hidden"><span>Saved session</span><span className="text-xs font-normal text-ctp-subtext0">{savedSession ? `Turn ${savedSession.state.turn}` : "Not saved"}</span></summary><p className="mt-2 text-xs leading-5 text-ctp-subtext1">Save every modeled zone, token, random seed, and replay-log entry on this device. Saving replaces the previous Goldfish session.</p><div className="mt-3 flex flex-wrap gap-2"><button type="button" onClick={saveSession} className="min-h-11 rounded-lg bg-ctp-green px-3 text-sm font-semibold text-ctp-base">Save current session</button>{savedSession && <><button type="button" onClick={() => resumeSession()} className="min-h-11 rounded-lg border border-ctp-blue/60 px-3 text-sm text-ctp-blue">Restore saved</button><button type="button" onClick={forgetSession} className="min-h-11 rounded-lg border border-ctp-red/50 px-3 text-sm text-ctp-red">Forget saved session</button></>}</div>{sessionNotice && <p role="status" className="mt-3 text-xs text-ctp-subtext1">{sessionNotice}</p>}</details>
       <div className="mt-4 grid gap-2 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-center">
         {([['Library', state.library.length], ['Hand', state.hand.length], ['Memory', state.memory.length]] as const).map(([label, count]) => <div key={label} className="rounded-lg bg-ctp-base px-3 py-2"><div className="text-xl font-semibold tabular-nums text-ctp-text">{count}</div><div className="text-xs text-ctp-subtext0">{label}</div></div>)}
@@ -232,6 +262,22 @@ export default function GoldfishIndex() {
         </Panel>
       )}
 
+      {pendingPayment && <Panel tone="info" padding="sm" className="mt-4">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div><p className="text-sm font-semibold text-ctp-text">Pay for {pendingPayment.card.name}</p><p className="mt-1 text-xs leading-5 text-ctp-subtext1">Select exactly {pendingPayment.reserveCost} other card{pendingPayment.reserveCost === 1 ? "" : "s"} from Hand. Confirming moves those cards to Memory and the played card to the played zone.</p></div>
+          {pendingPayment.variable && <label className="text-xs text-ctp-subtext0">Reserve X<input type="number" min={0} max={Math.max(0, state.hand.length - 1)} value={pendingPayment.reserveCost} onChange={(event) => setPendingPayment((current) => current ? { ...current, reserveCost: Math.max(0, Math.min(state.hand.length - 1, Number(event.target.value) || 0)), selectedIds: new Set() } : current)} className="ml-2 min-h-11 w-16 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-sm text-ctp-text" /></label>}
+        </div>
+        <div className="mt-3 grid gap-2 sm:grid-cols-2">
+          {state.hand.filter((candidate) => candidate.id !== pendingPayment.card.id).map((candidate) => {
+            const selected = pendingPayment.selectedIds.has(candidate.id);
+            const selectionFull = !selected && pendingPayment.selectedIds.size >= pendingPayment.reserveCost;
+            return <button key={candidate.id} type="button" disabled={selectionFull} aria-pressed={selected} onClick={() => setPendingPayment((current) => { if (!current) return current; const selectedIds = new Set(current.selectedIds); if (selectedIds.has(candidate.id)) selectedIds.delete(candidate.id); else selectedIds.add(candidate.id); return { ...current, selectedIds }; })} className={`min-h-11 rounded-lg border px-3 py-2 text-left text-sm ${selected ? "border-ctp-yellow bg-ctp-yellow/10 text-ctp-yellow" : "border-ctp-surface1 text-ctp-subtext1"} disabled:cursor-not-allowed disabled:opacity-40`}><span className="font-medium">{candidate.name}</span>{selected && <span className="ml-2 text-[10px] uppercase tracking-wide">to Memory</span>}</button>;
+          })}
+        </div>
+        {state.hand.length - 1 < pendingPayment.reserveCost && <p role="alert" className="mt-3 text-xs text-ctp-red">Not enough other cards remain in Hand to pay this cost.</p>}
+        <div className="mt-3 flex flex-wrap gap-2"><button type="button" disabled={pendingPayment.selectedIds.size !== pendingPayment.reserveCost} onClick={confirmPayment} className="min-h-11 rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base disabled:cursor-not-allowed disabled:opacity-40">Confirm payment ({pendingPayment.selectedIds.size}/{pendingPayment.reserveCost})</button><button type="button" onClick={() => setPendingPayment(null)} className="min-h-11 rounded-lg border border-ctp-surface1 px-4 text-sm text-ctp-subtext1">Cancel</button></div>
+      </Panel>}
+
       {pendingConfirm && (
         <Panel tone="info" padding="sm" className="mt-4">
           <p className="text-sm text-ctp-text">
@@ -249,7 +295,7 @@ export default function GoldfishIndex() {
       <h2 className="mt-6 text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Turn {state.turn} · Hand</h2>
       <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
         {state.hand.map((card) => (
-          <HandCard key={card.id} card={card} resolved={cardsByName.get(card.name)} disabled={activeGlimpse !== null || state.phase !== "main"} onPlay={() => handlePlay(card)} onReserve={isReservable(cardsByName.get(card.name)) ? () => setState((current) => current ? reserveCard(current, card.id) : current) : undefined} />
+          <HandCard key={card.id} card={card} resolved={cardsByName.get(card.name)} disabled={activeGlimpse !== null || pendingPayment !== null || state.phase !== "main"} onPlay={() => handlePlay(card)} onReserve={isReservable(cardsByName.get(card.name)) ? () => setState((current) => current ? reserveCard(current, card.id) : current) : undefined} />
         ))}
         {state.hand.length === 0 && <InlineState>Hand is empty — draw a card to continue.</InlineState>}
       </div>

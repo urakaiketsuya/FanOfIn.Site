@@ -96,6 +96,11 @@ export default function CardDetail() {
   const hipsterStatus = usePublishedDataStatus("analysis-hipster", "/data/analysis/hipster.json", needsDecksTab);
   const communityDeckStatus = usePublishedDataStatus("community-blended-deck-references", "/data/community/deck-references.json", needsDecksTab);
   const packageStatus = usePublishedDataStatus("analysis-package-candidates", "/data/analysis/package-candidates.json", needsIntentTab);
+  const cardStatsStatus = usePublishedDataStatus("analysis-cards", "/data/analysis/cards.json", showOverview || (surface === "more" && moreTab === "similar"));
+  const quantityStatsStatus = usePublishedDataStatus("analysis-card-quantity-stats", "/data/analysis/card-quantity-stats.json", showOverview);
+  const communityInclusionStatus = usePublishedDataStatus("community-blended-card-inclusion-STANDARD", "/data/community/card-inclusion.json", showOverview);
+  const eventIndexStatus = usePublishedDataStatus("omnidex-index", "/data/omnidex/index.json", needsDecksTab);
+  const playersStatus = usePublishedDataStatus("omnidex-players", "/data/omnidex/players.json", needsDecksTab);
 
   const prices = usePriceLookup();
   const priceHistoryData = usePriceHistoryData();
@@ -218,11 +223,13 @@ export default function CardDetail() {
     card ? packageEvidenceByPair.get([card.name, otherCardName].sort().join("\u0000")) : undefined;
 
   const tabFailure = (tab === "decks"
-    ? [deckIndexStatus, popularityStatus, taxonomyStatus, hipsterStatus, communityDeckStatus]
+    ? [deckIndexStatus, popularityStatus, taxonomyStatus, hipsterStatus, communityDeckStatus, eventIndexStatus, playersStatus]
     : tab === "info" || tab === "usedWith"
-      ? [deckIndexStatus]
+      ? [deckIndexStatus, cardStatsStatus, quantityStatsStatus, communityInclusionStatus]
       : tab === "synergy"
         ? [deckIndexStatus, popularityStatus]
+        : tab === "similar"
+          ? [cardStatsStatus]
         : tab === "intent"
           ? [packageStatus]
           : []).find((status) => status.phase === "error");

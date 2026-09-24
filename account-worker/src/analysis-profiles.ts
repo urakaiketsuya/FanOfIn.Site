@@ -14,7 +14,7 @@ export function parseAnalysisProfileInput(value: unknown): AnalysisProfileSyncRe
   if (profile.version !== 3 || !validFingerprint(profile.deckFingerprint) || !Number.isInteger(profile.revision) || profile.revision < 1 || !Array.isArray(profile.plans) || profile.plans.length < 1 || profile.plans.length > 12) throw badRequest("Invalid analysis profile");
   if (typeof profile.activePlanId !== "string" || !profile.plans.some((plan) => plan?.id === profile.activePlanId) || typeof profile.updatedAt !== "string" || !Number.isFinite(Date.parse(profile.updatedAt))) throw badRequest("Invalid analysis profile metadata");
   for (const plan of profile.plans) {
-    if (!plan || typeof plan.id !== "string" || !plan.id || plan.id.length > 80 || typeof plan.name !== "string" || !plan.name.trim() || plan.name.length > 80 || !plan.roles || typeof plan.roles !== "object" || !plan.stageUsefulness || typeof plan.stageUsefulness !== "object" || !plan.pressure || typeof plan.pressure !== "object") throw badRequest("Invalid analysis plan");
+    if (!plan || typeof plan.id !== "string" || !plan.id || plan.id.length > 80 || typeof plan.name !== "string" || !plan.name.trim() || plan.name.length > 80 || !plan.roles || typeof plan.roles !== "object" || !plan.stageUsefulness || typeof plan.stageUsefulness !== "object" || !plan.pressure || typeof plan.pressure !== "object" || (plan.resilience != null && typeof plan.resilience !== "object")) throw badRequest("Invalid analysis plan");
   }
   if (!profile.effectiveCosts || typeof profile.effectiveCosts !== "object" || JSON.stringify(profile).length > MAX_PROFILE_BYTES) throw badRequest("Analysis profile is too large");
   return { identity: cleanIdentity(input.identity), profile };

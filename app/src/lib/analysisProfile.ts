@@ -4,8 +4,9 @@ import { playtestDeckFingerprint } from "./playtestTracker";
 
 type Line = { name: string; quantity: number };
 export type StageUsefulness = "early" | "late" | "flexible" | "conditional";
+export type ResilienceRole = "establish" | "protection" | "rebuild";
 export interface PressureMetadata { earliestTurn: number; repeatable: boolean; effectiveReserveCost: number }
-export interface AnalysisPlan { id: string; name: string; roles: Record<string, GamePlanRole | "">; stageUsefulness: Record<string, StageUsefulness | "">; pressure: Record<string, PressureMetadata> }
+export interface AnalysisPlan { id: string; name: string; roles: Record<string, GamePlanRole | "">; stageUsefulness: Record<string, StageUsefulness | "">; pressure: Record<string, PressureMetadata>; resilience: Record<string, ResilienceRole | ""> }
 export interface DeckAnalysisProfile extends SyncedAnalysisProfile { plans: AnalysisPlan[] }
 
 const PREFIX = "fanofin:analysis-profile:v3:";
@@ -28,6 +29,10 @@ function validStages(value: unknown, names: Set<string>): Record<string, StageUs
   if (!value || typeof value !== "object") return {};
   return Object.fromEntries(Object.entries(value).filter(([name, role]) => names.has(name) && ["early", "late", "flexible", "conditional"].includes(String(role)))) as Record<string, StageUsefulness | "">;
 }
+function validResilience(value: unknown, names: Set<string>): Record<string, ResilienceRole | ""> {
+  if (!value || typeof value !== "object") return {};
+  return Object.fromEntries(Object.entries(value).filter(([name, role]) => names.has(name) && ["establish", "protection", "rebuild"].includes(String(role)))) as Record<string, ResilienceRole | "">;
+}
 function validPressure(value: unknown, names: Set<string>): Record<string, PressureMetadata> {
   if (!value || typeof value !== "object") return {};
   const result: Record<string, PressureMetadata> = {};
@@ -38,13 +43,13 @@ function validCosts(value: unknown, names: Set<string>): Record<string, number> 
   if (!value || typeof value !== "object") return {};
   return Object.fromEntries(Object.entries(value).filter(([name, cost]) => names.has(name) && Number.isFinite(cost)).map(([name, cost]) => [name, Math.max(0, Math.round(Number(cost)))]));
 }
-function emptyProfile(deckFingerprint: string): DeckAnalysisProfile { const id = "primary"; return { version: 3, deckFingerprint, revision: 1, activePlanId: id, plans: [{ id, name: "Primary plan", roles: {}, stageUsefulness: {}, pressure: {} }], effectiveCosts: {}, reviewedAt: null, inheritedFrom: null, updatedAt: new Date(0).toISOString() }; }
+function emptyProfile(deckFingerprint: string): DeckAnalysisProfile { const id = "primary"; return { version: 3, deckFingerprint, revision: 1, activePlanId: id, plans: [{ id, name: "Primary plan", roles: {}, stageUsefulness: {}, pressure: {}, resilience: {} }], effectiveCosts: {}, reviewedAt: null, inheritedFrom: null, updatedAt: new Date(0).toISOString() }; }
 function parseProfile(raw: string | null, names: Set<string>, deckFingerprint: string): DeckAnalysisProfile | null {
   try {
     const parsed = JSON.parse(raw ?? "null") as Record<string, unknown> | null;
     if (!parsed || (parsed.version !== 3 && parsed.version !== 2)) return null;
     const base = emptyProfile(deckFingerprint);
-    const plans: AnalysisPlan[] = parsed.version === 2 ? [{ id: "primary", name: cleanName(parsed.planName), roles: validRoles(parsed.roles, names), stageUsefulness: {}, pressure: {} }] : (Array.isArray(parsed.plans) ? parsed.plans : []).slice(0, 12).flatMap((rawPlan, index) => { if (!rawPlan || typeof rawPlan !== "object") return []; const plan = rawPlan as Record<string, unknown>; return [{ id: typeof plan.id === "string" && plan.id ? plan.id.slice(0, 80) : `plan-${index + 1}`, name: cleanName(plan.name, `Plan ${index + 1}`), roles: validRoles(plan.roles, names), stageUsefulness: validStages(plan.stageUsefulness, names), pressure: validPressure(plan.pressure, names) }]; });
+    const plans: AnalysisPlan[] = parsed.version === 2 ? [{ id: "primary", name: cleanName(parsed.planName), roles: validRoles(parsed.roles, names), stageUsefulness: {}, pressure: {}, resilience: {} }] : (Array.isArray(parsed.plans) ? parsed.plans : []).slice(0, 12).flatMap((rawPlan, index) => { if (!rawPlan || typeof rawPlan !== "object") return []; const plan = rawPlan as Record<string, unknown>; return [{ id: typeof plan.id === "string" && plan.id ? plan.id.slice(0, 80) : `plan-${index + 1}`, name: cleanName(plan.name, `Plan ${index + 1}`), roles: validRoles(plan.roles, names), stageUsefulness: validStages(plan.stageUsefulness, names), pressure: validPressure(plan.pressure, names), resilience: validResilience(plan.resilience, names) }]; });
     const safePlans = plans.length ? plans : base.plans;
     const activePlanId = typeof parsed.activePlanId === "string" && safePlans.some((plan) => plan.id === parsed.activePlanId) ? parsed.activePlanId : safePlans[0].id;
     return { ...base, revision: Number.isInteger(parsed.revision) && Number(parsed.revision) > 0 ? Number(parsed.revision) : 1, activePlanId, plans: safePlans, effectiveCosts: validCosts(parsed.effectiveCosts, names), reviewedAt: typeof parsed.reviewedAt === "string" ? parsed.reviewedAt : null, inheritedFrom: typeof parsed.inheritedFrom === "string" ? parsed.inheritedFrom : null, updatedAt: typeof parsed.updatedAt === "string" ? parsed.updatedAt : base.updatedAt };
@@ -78,5 +83,5 @@ export function loadAnalysisProfile(storage: Storage, championName: string | nul
 export function saveAnalysisProfile(storage: Storage, championName: string | null, mainLines: Line[], profile: Omit<DeckAnalysisProfile, "version" | "deckFingerprint" | "updatedAt">, identity?: string | null): DeckAnalysisProfile {
   const deckFingerprint = fingerprint(championName, mainLines); const names = new Set(mainLines.map((line) => line.name)); const parsed = parseProfile(JSON.stringify({ ...profile, version: 3 }), names, deckFingerprint) ?? emptyProfile(deckFingerprint); const saved = { ...parsed, deckFingerprint, updatedAt: new Date().toISOString() }; const serialized = JSON.stringify(saved); storage.setItem(analysisProfileKey(championName, mainLines), serialized); if (identity?.trim()) storage.setItem(latestKey(identity), serialized); return saved;
 }
-export function addAnalysisPlan(profile: DeckAnalysisProfile, name = "New plan"): DeckAnalysisProfile { const id = planId(); return { ...profile, activePlanId: id, plans: [...profile.plans, { id, name: cleanName(name), roles: {}, stageUsefulness: {}, pressure: {} }], reviewedAt: null }; }
+export function addAnalysisPlan(profile: DeckAnalysisProfile, name = "New plan"): DeckAnalysisProfile { const id = planId(); return { ...profile, activePlanId: id, plans: [...profile.plans, { id, name: cleanName(name), roles: {}, stageUsefulness: {}, pressure: {}, resilience: {} }], reviewedAt: null }; }
 export function removeAnalysisPlan(profile: DeckAnalysisProfile, id: string): DeckAnalysisProfile { if (profile.plans.length <= 1) return profile; const plans = profile.plans.filter((plan) => plan.id !== id); return { ...profile, plans, activePlanId: profile.activePlanId === id ? plans[0].id : profile.activePlanId, reviewedAt: null }; }

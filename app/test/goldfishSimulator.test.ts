@@ -53,6 +53,36 @@ test("Main Deck and Material Deck actions are blocked during Recollection", () =
   assert.equal(materializeCard(recollection, recollection.materialDeck[0].id), recollection);
 });
 
+test("playing a card pays its exact Reserve cost with selected hand cards", () => {
+  const state: GoldfishState = {
+    ...newGame({ main: [], material: [], sideboard: [] }, 0, 13),
+    hand: ["spell", "one", "two", "extra"].map((id) => ({ id, name: id.toUpperCase() })),
+  };
+  const paid = playCard(state, "spell", ["one", "two"], 2);
+  assert.deepEqual(paid.played.map(({ id }) => id), ["spell"]);
+  assert.deepEqual(paid.memory.map(({ id }) => id), ["one", "two"]);
+  assert.deepEqual(paid.hand.map(({ id }) => id), ["extra"]);
+  assert.match(paid.history.at(-1)?.label ?? "", /paid Reserve 2/);
+});
+
+test("resource payment rejects the played card, duplicates, missing cards, and the wrong count", () => {
+  const state: GoldfishState = {
+    ...newGame({ main: [], material: [], sideboard: [] }, 0, 14),
+    hand: ["spell", "one", "two"].map((id) => ({ id, name: id.toUpperCase() })),
+  };
+  assert.equal(playCard(state, "spell", ["spell"], 1), state);
+  assert.equal(playCard(state, "spell", ["one", "one"], 2), state);
+  assert.equal(playCard(state, "spell", ["missing"], 1), state);
+  assert.equal(playCard(state, "spell", ["one"], 2), state);
+});
+
+test("replay preserves the exact cards chosen for Reserve payment", () => {
+  const decklist = { main: ["A", "B", "C", "D"].map((name) => ({ card: name, quantity: 1 })), material: [], sideboard: [] };
+  const opened = newGame(decklist, 4, 99);
+  const played = playCard(opened, opened.hand[0].id, [opened.hand[1].id, opened.hand[2].id], 2);
+  assert.deepEqual(replayGoldfishHistory(decklist, played.seed, played.history), played);
+});
+
 test("effect support recognizes only bounded deterministic assists", () => {
   const supported = goldfishEffectSupport(card("Draw 2 cards. Glimpse 3. Summon two Powercell tokens. Banish a card at random from your memory."));
   // Word quantities beyond one are deliberately not inferred.

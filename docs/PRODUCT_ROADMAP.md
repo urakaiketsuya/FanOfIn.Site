@@ -196,11 +196,11 @@ current section and legal destinations; moving a card is reversible without re-s
 
 ### 1.2 Card backsides and transform navigation
 
-**In progress:** exact-edition front/reverse controls now appear in card detail, shared hover previews,
-Deck Builder rows and tiles, saved-deck editing, maybeboard, and tournament deck lists. Named reverse-face
-metadata is retained even when its image is unavailable, and shared card images/previews now expose an
-accessible text fallback without removing face controls. A final audit of card displays that do not yet use
-the shared preview remains before this item is complete.
+**Implemented.** Exact-edition front/reverse controls appear in card detail, the card browser, shared hover
+previews, deck preview strips, Deck Builder rows and tiles, saved-deck editing, maybeboard, and tournament
+deck lists. Named reverse-face metadata is retained even when its image is unavailable, and shared card
+images/previews expose an accessible text fallback without removing face controls. Decorative art and
+non-card product/set images are intentionally excluded.
 
 - Add a front/back toggle on card detail, card preview, deck-builder card details, and other shared card
   displays.
@@ -213,10 +213,9 @@ shown, without navigating away from their current deck workflow.
 
 ### 1.3 Card-tab loading placeholders
 
-**In progress:** current lazy and asynchronous card-stat panels use layout-matched skeletons, empty results
-have explicit copy, and the card record itself now distinguishes a failed request from a missing card.
-Completion still requires propagating published-dataset failures (rather than only absence) through every
-card-tab data hook.
+**Implemented.** Current lazy and asynchronous card-stat panels use layout-matched skeletons, empty results
+have explicit copy, and the card record distinguishes a failed request from a missing card. Every published
+dataset used by a card-detail tab now contributes an explicit failed state with a retry action.
 
 - Give each lazy card-detail tab a layout-matched skeleton for image, metrics, lists, and charts.
 - Preserve the panel’s height during tab changes to reduce layout shift.
@@ -288,8 +287,8 @@ Several calculators currently ask the user to classify the same cards independen
   uncertain classifications.
 - Make edits from any calculator update the shared profile immediately.
 - Persist profiles with saved decks and version them when the deck list changes; carry forward assignments
-  for unchanged card names. **Implemented locally for named saved/imported deck workspaces, including all
-  named plans and their surviving per-card metadata; account sync and matchup/rebuild categories remain.**
+  for unchanged card names. **Implemented for named saved/imported deck workspaces and account sync,
+  including all named plans, surviving per-card metadata, and per-plan resilience/rebuild categories.**
 - Offer presets for common archetypes only when backed by a real saved or tournament list, never as hidden
   defaults.
 
@@ -301,11 +300,12 @@ and why; the same classification is never requested twice for one deck version.
 ### 3.1 Game Plan Readiness as the primary workflow
 
 Make Game Plan Readiness the main setup/payoff/protection analysis. It should combine access, stage quality,
-setup-to-payoff timing, balance, and clearly bounded affordability information. **Partially implemented in
-Deck Analysis:** the former Engine Balance and Stage Draw Quality panels now live as Timing and Stage draws
-views behind the active named plan using the same disjoint prepared roles. Multiple independent named plans,
-per-plan stage/pressure metadata, and shared effective-cost assumptions now persist locally; account sync
-and a bounded affordability view inside Game Plan Readiness remain follow-up work.
+setup-to-payoff timing, balance, and clearly bounded affordability information. **Implemented in Deck
+Analysis:** the former Engine Balance and Stage Draw Quality panels now live as Timing and Stage draws
+views behind the active named plan using the same disjoint prepared roles. The Affordability view compares
+raw role access with an individually payable effective-cost ceiling and explicitly excludes multi-card
+sequence payment. Multiple independent named plans, per-plan stage/pressure/recovery metadata, and shared
+effective-cost assumptions persist locally and through account sync.
 
 - Add named plans so a deck with competing strategies can analyze each plan separately. **Implemented locally.**
 - Let one card serve different roles in different named plans while keeping exact probability pools
@@ -350,6 +350,10 @@ Rebuild this around the question “How often can this deck present meaningful p
 
 ### 3.4 Interaction coverage belongs in Compare
 
+**Implemented:** Compare's Matchup view requires a baseline and opposing deck, suggests distinctive opposing
+cards as context, and lets the user confirm critical turns and answer pools. It reports preboard and
+postboard access without claiming matchup effectiveness or win-rate impact.
+
 - Move the decision-oriented version to Compare, where a deck can be evaluated against another deck,
   champion, or archetype.
 - Derive candidate opposing plans and timings from the selected comparison target; let the user confirm or
@@ -359,6 +363,10 @@ Rebuild this around the question “How often can this deck present meaningful p
 - Keep an optional generic checklist in Deck Analysis only for users who have not selected an opponent.
 
 ### 3.5 Post-sideboard planning belongs in Compare
+
+**Implemented:** Compare treats the configured postboard list as a matchup-specific variant, validates
+balanced swaps and construction, compares roles/resources/collection shortages, saves named matchup plans,
+and can open the result in Deck Builder without mutating the source deck.
 
 - Treat a sideboard plan as a matchup-specific deck variant: baseline main deck versus postboard main deck.
 - Add balanced in/out validation, copy/legality checks, named plan notes, and saved plans per archetype.
@@ -473,14 +481,17 @@ unresolved mappings; deleting an import does not delete manually entered games.
 - Extend saved/replayable goldfish sessions so new zones, tokens, random outcomes, and rules-engine version
   round-trip without corrupting older sessions.
 
-**Foundation implemented:** Goldfish now keeps card identity across Library, Hand, Memory, Banished,
+**Implemented at the intended assisted-play scope:** Goldfish keeps card identity across Library, Hand, Memory, Banished,
 Played, Material Deck, and Materialized zones; exposes Reservable moves and Recollection; supports manual
 token lifecycle; and uses a visible deterministic seed for Glimpse and random Memory banishment. Versioned
 local sessions preserve every modeled zone, tokens, history, and RNG state, with safe migration defaults for
 older minimal snapshots. Structured action histories replay from the original seed. Main-only moves are
 rejected during Recollection, and cards distinguish bounded fixed draw/Glimpse/token/random-banish assists
-from player-resolved rules text. Broader card-specific costs, targets, conditions, combat, and timing remain
-outstanding; this is intentionally not presented as a complete rules engine.
+from player-resolved rules text. Playing a card now requires the player to choose the exact Hand cards used
+to pay its printed Reserve cost; those instances move to Memory atomically, X costs accept a player-entered
+amount, invalid payments are rejected, and replay preserves the choice. Cost modifiers, targets, conditions,
+combat, and effect resolution are intentionally player-resolved rather than implied by the Goldfish. No
+additional automated rules-engine expansion is planned for this tool.
 
 **Acceptance criteria met for the assisted foundation:** representative fixtures cover reserving, token
 creation and removal, Recollection, Material Deck use, seeded random Memory banishment, session

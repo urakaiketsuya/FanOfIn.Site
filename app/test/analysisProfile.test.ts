@@ -11,12 +11,12 @@ const save = (storage: Storage, overrides: Record<string, unknown> = {}, identit
 
 test("profiles persist multiple named plans and shared metadata", () => {
   const storage = new MemoryStorage() as Storage; let profile = loadAnalysisProfile(storage, "Champion", lines); profile = addAnalysisPlan(profile, "Alternate finish");
-  profile = { ...profile, plans: profile.plans.map((plan) => plan.id === profile.activePlanId ? { ...plan, roles: { "Payoff Card": "payoff" }, stageUsefulness: { "Payoff Card": "late" }, pressure: { "Payoff Card": { earliestTurn: 4, repeatable: true, effectiveReserveCost: 2 } } } : plan), effectiveCosts: { "Payoff Card": 2 } };
+  profile = { ...profile, plans: profile.plans.map((plan) => plan.id === profile.activePlanId ? { ...plan, roles: { "Payoff Card": "payoff" }, stageUsefulness: { "Payoff Card": "late" }, pressure: { "Payoff Card": { earliestTurn: 4, repeatable: true, effectiveReserveCost: 2 } }, resilience: { "Setup Card": "establish", "Payoff Card": "rebuild" } } : plan), effectiveCosts: { "Payoff Card": 2 } };
   const loaded = loadAnalysisProfile(storage, "Champion", lines); // unsaved remains empty
   assert.equal(loaded.plans.length, 1);
   const saved = saveAnalysisProfile(storage, "Champion", lines, profile);
   const restored = loadAnalysisProfile(storage, "Champion", [...lines].reverse());
-  assert.equal(restored.plans.length, 2); assert.equal(activeAnalysisPlan(restored).name, "Alternate finish"); assert.deepEqual(activeAnalysisPlan(restored).pressure, activeAnalysisPlan(saved).pressure); assert.deepEqual(restored.effectiveCosts, { "Payoff Card": 2 });
+  assert.equal(restored.plans.length, 2); assert.equal(activeAnalysisPlan(restored).name, "Alternate finish"); assert.deepEqual(activeAnalysisPlan(restored).pressure, activeAnalysisPlan(saved).pressure); assert.deepEqual(activeAnalysisPlan(restored).resilience, activeAnalysisPlan(saved).resilience); assert.deepEqual(restored.effectiveCosts, { "Payoff Card": 2 });
   assert.equal(analysisProfileKey("Champion", lines), analysisProfileKey("Champion", [...lines].reverse()));
 });
 
@@ -28,9 +28,9 @@ test("v2 profiles migrate into a primary named plan", () => {
 
 test("changed named decks carry unchanged assignments and metadata into an unreviewed revision", () => {
   const storage = new MemoryStorage() as Storage; const original = loadAnalysisProfile(storage, "Champion", lines); const plan = activeAnalysisPlan(original);
-  const saved = saveAnalysisProfile(storage, "Champion", lines, { ...original, plans: [{ ...plan, roles: { "Setup Card": "enabler", "Payoff Card": "payoff" }, stageUsefulness: { "Setup Card": "early" }, pressure: { "Payoff Card": { earliestTurn: 3, repeatable: false, effectiveReserveCost: 2 } } }], effectiveCosts: { "Setup Card": 1 }, reviewedAt: "2026-09-01T00:00:00.000Z" }, "Saved deck 42");
+  const saved = saveAnalysisProfile(storage, "Champion", lines, { ...original, plans: [{ ...plan, roles: { "Setup Card": "enabler", "Payoff Card": "payoff" }, stageUsefulness: { "Setup Card": "early" }, pressure: { "Payoff Card": { earliestTurn: 3, repeatable: false, effectiveReserveCost: 2 } }, resilience: { "Setup Card": "establish", "Payoff Card": "rebuild" } }], effectiveCosts: { "Setup Card": 1 }, reviewedAt: "2026-09-01T00:00:00.000Z" }, "Saved deck 42");
   const changed = [{ name: "Setup Card", quantity: 4 }, { name: "New Card", quantity: 3 }]; const carried = loadAnalysisProfile(storage, "Champion", changed, "Saved deck 42");
-  assert.deepEqual(activeAnalysisPlan(carried).roles, { "Setup Card": "enabler" }); assert.deepEqual(activeAnalysisPlan(carried).stageUsefulness, { "Setup Card": "early" }); assert.deepEqual(activeAnalysisPlan(carried).pressure, {}); assert.deepEqual(carried.effectiveCosts, { "Setup Card": 1 }); assert.equal(carried.revision, 2); assert.equal(carried.reviewedAt, null); assert.equal(carried.inheritedFrom, saved.deckFingerprint);
+  assert.deepEqual(activeAnalysisPlan(carried).roles, { "Setup Card": "enabler" }); assert.deepEqual(activeAnalysisPlan(carried).stageUsefulness, { "Setup Card": "early" }); assert.deepEqual(activeAnalysisPlan(carried).pressure, {}); assert.deepEqual(activeAnalysisPlan(carried).resilience, { "Setup Card": "establish" }); assert.deepEqual(carried.effectiveCosts, { "Setup Card": 1 }); assert.equal(carried.revision, 2); assert.equal(carried.reviewedAt, null); assert.equal(carried.inheritedFrom, saved.deckFingerprint);
 });
 
 test("unnamed imports do not inherit and the final plan cannot be removed", () => {

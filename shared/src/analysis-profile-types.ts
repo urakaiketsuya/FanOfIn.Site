@@ -9,6 +9,7 @@ export interface SyncedAnalysisProfile {
     roles: Record<string, "enabler" | "payoff" | "protection" | "">;
     stageUsefulness: Record<string, "early" | "late" | "flexible" | "conditional" | "">;
     pressure: Record<string, { earliestTurn: number; repeatable: boolean; effectiveReserveCost: number }>;
+    resilience: Record<string, "establish" | "protection" | "rebuild" | "">;
   }>;
   effectiveCosts: Record<string, number>;
   reviewedAt: string | null;
