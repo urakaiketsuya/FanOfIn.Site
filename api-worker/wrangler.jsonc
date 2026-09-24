@@ -1,0 +1,27 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "fanofin-public-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-24",
+  "d1_databases": [
+    {
+      "binding": "PUBLIC_DB",
+      "database_name": "fanofin-public-api-dev",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "env": {
+    "production": {
+      "name": "fanofin-public-api-production",
+      "d1_databases": [
+        {
+          "binding": "PUBLIC_DB",
+          "database_name": "fanofin-public-api-prod",
+          "database_id": "9444cc64-7b15-43ce-8454-1939924af2cb",
+          "migrations_dir": "migrations"
+        }
+      ]
+    }
+  }
+}

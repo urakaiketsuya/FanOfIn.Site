@@ -73,3 +73,12 @@ jobs:
             git commit -m "chore: daily data refresh $(date -u +%Y-%m-%d)"
             git push
           fi
+
+  publish-api:
+    needs: refresh
+    permissions:
+      contents: read
+    uses: ./.github/workflows/public-api-publish.yml
+    secrets:
+      CLOUDFLARE_PUBLIC_API_TOKEN: ${{ secrets.CLOUDFLARE_PUBLIC_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
