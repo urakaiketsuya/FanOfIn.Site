@@ -14,6 +14,7 @@ import ClassIcon from "../../components/ClassIcon";
 import CardArtTile from "../../components/CardArtTile";
 import PageLayout from "../../components/layout/PageLayout";
 import { InlineState } from "../../components/ui/ContentState";
+import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import Section from "../../components/ui/Section";
 
 const TREND_LABEL: Record<ChampionTrendDirection, string> = {
@@ -38,6 +39,8 @@ export default function ChampionsIndex() {
   useDocumentTitle("Champions", "Grand Archive TCG Champion performance stats and season trends.");
   const data = useArchetypeData();
   const trendsData = useChampionTrendsData();
+  const dataStatus = usePublishedDataStatus("analysis-archetypes", "/data/analysis/archetypes.json");
+  const trendStatus = usePublishedDataStatus("analysis-champion-trends", "/data/analysis/champion-trends.json");
   // Several distinct draft-only identities all share the literal signature "Nameless Champion"
   // (different classes/elements), so dedupe by signature or React sees duplicate keys.
   const archetypes = useMemo(() => {
@@ -56,7 +59,11 @@ export default function ChampionsIndex() {
     <PageLayout data-component="ChampionsIndex">
       <PageHeader title="Champions" />
 
-      {!data && <InlineState className="mt-6">Loading…</InlineState>}
+      {dataStatus.phase === "error" ? <div role="alert" className="mt-6 rounded-lg border border-ctp-red/30 p-4 text-sm">
+        <p>{data ? "Showing cached champion statistics. The latest update could not be loaded." : "Champion statistics could not be loaded."}</p>
+        <button type="button" onClick={dataStatus.retry} className="mt-2 min-h-11 text-ctp-blue underline">Try again</button>
+      </div> : !data && <InlineState className="mt-6">Loading champion statistics…</InlineState>}
+      {trendStatus.phase === "error" && <div role="alert" className="mt-3 text-sm text-ctp-subtext1">{trendsData ? "Showing cached season trends." : "Season trends are unavailable."} <button type="button" onClick={trendStatus.retry} className="min-h-11 text-ctp-blue underline">Retry trends</button></div>}
 
       {archetypes && trendsData && <ChampionMetaMap champions={archetypes} trends={trendsData.champions} />}
 
@@ -72,7 +79,7 @@ export default function ChampionsIndex() {
               >
                 <CardArtTile card={card} name={c.signature} />
                 <p className="mt-2 truncate text-sm font-semibold text-ctp-text group-hover:text-ctp-blue">{c.signature}</p>
-                <p className="mt-0.5 flex items-center gap-1 text-[10px] text-ctp-subtext0">
+                <p className="mt-0.5 flex items-center gap-1 text-xs text-ctp-subtext0">
                   {c.classes.map((cls) => (
                     <ClassIcon key={cls} cardClass={cls} size={11} />
                   ))}
@@ -81,11 +88,11 @@ export default function ChampionsIndex() {
                   ))}
                   <span className="truncate">{c.classes.join("/")} · {c.elements.join("/")}</span>
                 </p>
-                <div className="mt-1.5 flex items-center justify-between text-[10px] text-ctp-subtext1">
+                <div className="mt-1.5 flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-xs text-ctp-subtext1">
                   <span>{c.deckCount.toLocaleString()} decks</span>
-                  <span className="font-medium text-ctp-text">{(c.avgWinRate * 100).toFixed(0)}% WR</span>
+                  <span className="font-medium text-ctp-text">{(c.avgWinRate * 100).toFixed(0)}% avg. win rate</span>
                 </div>
-                <div className="mt-0.5 flex items-center justify-between text-[10px]">
+                <div className="mt-0.5 flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-xs">
                   <span className="text-ctp-subtext0">{c.eventCount.toLocaleString()} events</span>
                   <span
                     className={trend ? TREND_CLASS[trend.trend] : "text-ctp-subtext0"}
@@ -124,17 +131,17 @@ export default function ChampionsIndex() {
                   >
                     <CardArtTile card={card} name={s.signature} />
                     <p className="mt-2 truncate text-sm font-semibold text-ctp-text group-hover:text-ctp-blue">{s.signature}</p>
-                    <p className="mt-0.5 flex items-center gap-1 text-[10px] text-ctp-subtext0">
+                    <p className="mt-0.5 flex items-center gap-1 text-xs text-ctp-subtext0">
                       {s.elements.map((element) => (
                         <ElementIcon key={element} element={element} size={11} />
                       ))}
                       <span className="truncate">{s.elements.join("/")}</span>
                     </p>
-                    <div className="mt-1.5 flex items-center justify-between text-[10px] text-ctp-subtext1">
+                    <div className="mt-1.5 flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-xs text-ctp-subtext1">
                       <span>{s.deckCount.toLocaleString()} decks</span>
-                      <span className="font-medium text-ctp-text">{(s.avgWinRate * 100).toFixed(0)}% WR</span>
+                      <span className="font-medium text-ctp-text">{(s.avgWinRate * 100).toFixed(0)}% avg. win rate</span>
                     </div>
-                    <div className="mt-0.5 text-[10px] text-ctp-subtext0">{s.eventCount.toLocaleString()} events</div>
+                    <div className="mt-0.5 text-xs text-ctp-subtext0">{s.eventCount.toLocaleString()} events</div>
                   </Link>
                 </CardHoverPreview>
               );

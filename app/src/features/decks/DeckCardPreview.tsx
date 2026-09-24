@@ -26,7 +26,7 @@ export default function DeckCardPreview({ names, cardsByName, championCard, seed
         const reverseFace = primaryAlternateFace(card);
         return card ? (
           <div key={card.name} className="min-w-0">
-            <CardHoverPreview image={card.editions[0].image} backImage={reverseFace?.edition.image} backAlt={reverseFace?.name} alt={card.name}>
+            <CardHoverPreview artOnly image={card.editions[0].image} backImage={reverseFace?.edition.image} backAlt={reverseFace?.name} alt={card.name}>
               <CardImage image={card.editions[0].image} alt={card.name} className="aspect-[5/7] w-full rounded-md object-cover object-top" />
             </CardHoverPreview>
           </div>
