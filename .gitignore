@@ -35,3 +35,9 @@ npm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# In-progress community deck search artifacts (temporary)
+app/src/features/community/CommunityDeckSearch.tsx
+app/src/features/community/CommunityDeckSearchIndex.tsx
+data/community/decks.json
+data/community/pantheon/decks.json

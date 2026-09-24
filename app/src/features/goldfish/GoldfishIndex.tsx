@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import type { Card, OmnidexDecklist } from "@gatcg/shared";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import type { Card, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import { banishRandomFromMemory, beginRecollection, createTokens, drawCards, goldfishEffectSupport, isReplayableHistory, isReservable, materializeCard, newGame, nextTurn, parseGoldfishSession, playCard, recollectMemory, removeToken, replayGoldfishHistory, reserveCard, resolveGlimpse, serializeGoldfishSession, suggestedExtraDraws, suggestedGlimpse, type GoldfishCardInstance, type GoldfishSession, type GoldfishState } from "../../lib/goldfishSimulator";
 import { DEFAULT_STARTING_HAND_SIZE } from "../../lib/turnToPlay";
 import { decodeCustomDecks } from "../../lib/compareShareLink";
@@ -13,6 +13,8 @@ import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
 import Panel from "../../components/ui/Panel";
 import { InlineState } from "../../components/ui/ContentState";
+import { accountApi, AccountApiError } from "../../lib/accountApi";
+import { loadDeckLibrary } from "../account/loadDeckLibrary";
 
 interface PendingConfirm {
   name: string;
@@ -25,6 +27,14 @@ interface PendingPayment {
   reserveCost: number;
   variable: boolean;
   selectedIds: Set<string>;
+}
+
+interface GoldfishDeckOption {
+  key: string;
+  title: string;
+  subtitle: string;
+  format: DeckFormat;
+  decklist: OmnidexDecklist;
 }
 
 const GOLD_FISH_SESSION_KEY = "fanofin:goldfish-session:v2";
@@ -79,7 +89,13 @@ export default function GoldfishIndex() {
   }, [searchParams]);
 
   const [decklist, setDecklist] = useState<OmnidexDecklist | null>(initialDecklist);
+  const [deckLabel, setDeckLabel] = useState(() => searchParams.get("custom") ? decodeCustomDecks(searchParams.get("custom")!)[0]?.label ?? "Imported deck" : "Imported deck");
   const [pasteText, setPasteText] = useState("");
+  const [importMode, setImportMode] = useState<"library" | "paste">("library");
+  const [libraryState, setLibraryState] = useState<"idle" | "loading" | "ready" | "signed-out" | "error">("idle");
+  const [libraryDecks, setLibraryDecks] = useState<GoldfishDeckOption[]>([]);
+  const [libraryQuery, setLibraryQuery] = useState("");
+  const directImportAttempted = useRef(false);
   const [handSize, setHandSize] = useState(DEFAULT_STARTING_HAND_SIZE);
   const [state, setState] = useState<GoldfishState | null>(() => initialDecklist ? newGame(initialDecklist, DEFAULT_STARTING_HAND_SIZE) : null);
   const [pendingConfirm, setPendingConfirm] = useState<PendingConfirm | null>(null);
@@ -92,14 +108,50 @@ export default function GoldfishIndex() {
   const [savedSession, setSavedSession] = useState<GoldfishSession | null>(readSavedSession);
   const [sessionNotice, setSessionNotice] = useState<string | null>(null);
 
-  function startNewHand(list: OmnidexDecklist) {
+  function startNewHand(list: OmnidexDecklist, label?: string) {
     setDecklist(list);
+    if (label) setDeckLabel(label);
     setState(newGame(list, handSize));
     setPendingConfirm(null);
     setPendingPayment(null);
     setActiveGlimpse(null);
     setKeptGlimpseIds(new Set());
   }
+
+  useEffect(() => {
+    if (decklist || libraryState !== "idle" || importMode !== "library") return;
+    let active = true;
+    setLibraryState("loading");
+    void loadDeckLibrary(accountApi).then((library) => {
+      if (!active) return;
+      setLibraryDecks([
+        ...library.decks.map((deck) => ({ key: `owned:${deck.id}`, title: deck.title, subtitle: "My Deck", format: deck.format, decklist: deck.decklist })),
+        ...library.bookmarks.map((deck) => ({ key: `community:${deck.publicSlug}`, title: deck.title, subtitle: `Favorite · ${deck.owner.displayName}`, format: deck.format, decklist: deck.decklist })),
+        ...library.tournamentFavorites.map((deck) => ({ key: `tournament:${deck.deckHash}`, title: deck.title, subtitle: deck.sourceEventName ? `Tournament · ${deck.sourceEventName}` : "Tournament favorite", format: "STANDARD" as const, decklist: deck.decklist })),
+      ]);
+      setLibraryState("ready");
+      if (library.optionalLoadFailed) setSessionNotice("Your decks loaded, but some favorites are temporarily unavailable.");
+    }).catch((reason: unknown) => {
+      if (!active) return;
+      setLibraryState(reason instanceof AccountApiError && reason.status === 401 ? "signed-out" : "error");
+    });
+    return () => { active = false; };
+  }, [decklist, importMode, libraryState]);
+
+  useEffect(() => {
+    if (initialDecklist || decklist || directImportAttempted.current) return;
+    const savedDeckId = searchParams.get("deck");
+    const publicDeckSlug = savedDeckId ? null : searchParams.get("publicDeck");
+    if (!savedDeckId && !publicDeckSlug) return;
+    directImportAttempted.current = true;
+    const request = savedDeckId ? accountApi.deck(savedDeckId).then(({ deck }) => ({ decklist: deck.decklist, label: deck.title })) : accountApi.publicDeck(publicDeckSlug!).then(({ deck }) => ({ decklist: deck.decklist, label: deck.title }));
+    void request.then((result) => { setDecklist(result.decklist); setDeckLabel(result.label); setState(newGame(result.decklist, DEFAULT_STARTING_HAND_SIZE)); }).catch((reason: unknown) => setSessionNotice(reason instanceof Error ? reason.message : "That deck could not be imported."));
+  }, [decklist, initialDecklist, searchParams]);
+
+  const visibleLibraryDecks = useMemo(() => {
+    const query = libraryQuery.trim().toLocaleLowerCase();
+    return libraryDecks.filter((deck) => !query || `${deck.title} ${deck.subtitle}`.toLocaleLowerCase().includes(query));
+  }, [libraryDecks, libraryQuery]);
 
   function beginGlimpse(count: number, name = "Manual glimpse") {
     if (!state || state.library.length === 0) return;
@@ -161,6 +213,7 @@ export default function GoldfishIndex() {
   function resumeSession(session = savedSession) {
     if (!session) return;
     setDecklist(session.decklist);
+    setDeckLabel("Saved session");
     setState(session.state);
     setHandSize(session.handSize);
     setPendingConfirm(null);
@@ -191,20 +244,11 @@ export default function GoldfishIndex() {
   if (!decklist) {
     return (
       <PageLayout data-component="GoldfishIndex">
-        <PageHeader title="Goldfish Test" description="Paste a decklist to deal an opening hand and draw through it, reading each card as you go." />
+        <PageHeader title="Goldfish Test" description="Choose one of your decks or paste a list to deal an opening hand and play through draws." />
         <Panel className="mt-4">
-          <textarea rows={16} value={pasteText} onChange={(event) => setPasteText(event.target.value)} placeholder={"Main\n4x Card Name\n..."} className="w-full rounded-md border border-ctp-surface1 bg-ctp-base p-3 font-mono text-sm text-ctp-text" />
-          <button
-            type="button"
-            disabled={!pasteText.trim()}
-            onClick={() => {
-              const parsed = parseDecklist(pasteText).decklist;
-              if (parsed.main.length > 0) startNewHand(parsed);
-            }}
-            className="mt-3 rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base disabled:opacity-50"
-          >
-            Deal opening hand
-          </button>
+          <div className="flex gap-2 overflow-x-auto" role="tablist" aria-label="Deck import source"><button type="button" role="tab" aria-selected={importMode === "library"} onClick={() => setImportMode("library")} className={`min-h-11 whitespace-nowrap rounded-lg px-4 text-sm font-medium ${importMode === "library" ? "bg-ctp-blue text-ctp-base" : "border border-ctp-surface1 text-ctp-subtext1"}`}>My Decks &amp; Favorites</button><button type="button" role="tab" aria-selected={importMode === "paste"} onClick={() => setImportMode("paste")} className={`min-h-11 whitespace-nowrap rounded-lg px-4 text-sm font-medium ${importMode === "paste" ? "bg-ctp-blue text-ctp-base" : "border border-ctp-surface1 text-ctp-subtext1"}`}>Paste decklist</button></div>
+          {importMode === "library" && <div className="mt-4">{libraryState === "loading" && <InlineState>Loading your deck library…</InlineState>}{libraryState === "signed-out" && <InlineState><Link to="/account" className="font-medium text-ctp-blue hover:underline">Sign in</Link> to choose from your decks and favorites, or use Paste decklist.</InlineState>}{libraryState === "error" && <InlineState tone="danger">Your deck library could not be loaded. <button type="button" onClick={() => setLibraryState("idle")} className="text-ctp-blue hover:underline">Try again</button></InlineState>}{libraryState === "ready" && <><input value={libraryQuery} onChange={(event) => setLibraryQuery(event.target.value)} placeholder="Search decks, owners, or events…" aria-label="Search deck library" className="min-h-11 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-sm sm:max-w-md" />{visibleLibraryDecks.length > 0 ? <div className="mt-3 grid gap-3 sm:grid-cols-2">{visibleLibraryDecks.map((deck) => <button key={deck.key} type="button" onClick={() => startNewHand(deck.decklist, deck.title)} className="min-h-20 rounded-xl border border-ctp-surface1 bg-ctp-base p-3 text-left transition-colors hover:border-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue"><span className="block font-semibold text-ctp-text">{deck.title}</span><span className="mt-1 block text-xs text-ctp-subtext0">{deck.subtitle} · {deck.format === "PANTHEON" ? "Pantheon" : "Standard"}</span><span className="mt-2 block text-xs text-ctp-blue">Deal opening hand →</span></button>)}</div> : <InlineState className="mt-3">No decks match this search.</InlineState>}</>}</div>}
+          {importMode === "paste" && <div className="mt-4"><textarea rows={12} value={pasteText} onChange={(event) => setPasteText(event.target.value)} placeholder={"Main\n4x Card Name\n\nMaterial\n1x Champion Name"} className="w-full rounded-lg border border-ctp-surface1 bg-ctp-base p-3 font-mono text-sm text-ctp-text" /><button type="button" disabled={!pasteText.trim()} onClick={() => { const parsed = parseDecklist(pasteText).decklist; if (parsed.main.length > 0) startNewHand(parsed, "Pasted deck"); else setSessionNotice("No Main Deck cards were recognized."); }} className="mt-3 min-h-11 rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base disabled:opacity-50">Deal opening hand</button></div>}
           {savedSession && <div className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><p className="text-sm font-medium text-ctp-text">Resume saved test</p><p className="mt-1 text-xs text-ctp-subtext0">Turn {savedSession.state.turn} · {savedSession.state.hand.length} in hand · saved {new Date(savedSession.savedAt).toLocaleString()}</p><div className="mt-3 flex flex-wrap gap-2"><button type="button" onClick={() => resumeSession()} className="min-h-11 rounded-lg bg-ctp-green px-3 text-sm font-semibold text-ctp-base">Resume session</button><button type="button" onClick={forgetSession} className="min-h-11 rounded-lg border border-ctp-red/50 px-3 text-sm text-ctp-red">Forget</button></div></div>}
           {sessionNotice && <p role="status" className="mt-3 text-xs text-ctp-subtext1">{sessionNotice}</p>}
         </Panel>
@@ -218,7 +262,7 @@ export default function GoldfishIndex() {
     <PageLayout data-component="GoldfishIndex">
       <PageHeader
         title="Goldfish Test"
-        description="Track Hand, Memory, Material cards, tokens, and seeded random outcomes. Conditional effects, combat, and broader card legality remain player-confirmed."
+        description={`${deckLabel} · Track Hand, Memory, Material cards, tokens, and seeded random outcomes. Conditional effects, combat, and broader card legality remain player-confirmed.`}
         actions={
           <div className="flex items-center gap-2">
             <label className="text-xs text-ctp-subtext1">Hand size
