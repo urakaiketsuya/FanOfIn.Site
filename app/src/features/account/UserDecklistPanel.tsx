@@ -25,23 +25,26 @@ export default function UserDecklistPanel({ decklist, format, actions, children,
     // Collection comparison is useful anywhere a real decklist is shown, not only on the
     // owner's editable deck page. Signed-out requests fail quietly; signed-in viewers then get
     // the same shortage highlighting on tournament, Pantheon, and shared community lists.
-    if (!ownerDeckId && !collectionSource) return;
+    if (!showCollection || (!ownerDeckId && !collectionSource)) return;
     let active = true;
     const refresh = () => { void accountApi.collection().then((result) => { if (active) setCollection(result.entries); }).catch(() => { if (active) setCollection(null); }); };
     refresh();
     window.addEventListener("fanofin:collection-updated", refresh);
     return () => { active = false; window.removeEventListener("fanofin:collection-updated", refresh); };
-  }, [collectionSource, ownerDeckId]);
+  }, [collectionSource, ownerDeckId, showCollection]);
   const ownershipByName = useMemo(() => {
-    if (!collection) return undefined;
+    if (!showCollection || !collection) return undefined;
     return new Map(computeDeckCollectionStatus(decklist, collection, true).lines.map((line) => [line.card, line]));
-  }, [collection, decklist]);
+  }, [collection, decklist, showCollection]);
 
   return <section data-component="UserDecklistPanel" className="mt-6">
     <h2 className="sr-only">Decklist</h2>
-    {(actions || (showBuilderAction && builderParams) || collectionSource) && <div className="mb-4 flex flex-wrap justify-end gap-2">{collectionSource && !children && <button type="button" aria-expanded={showCollection} onClick={() => setShowCollection((value) => !value)} className={`rounded border px-2 py-1 text-xs ${showCollection ? "border-ctp-green bg-ctp-green/10 text-ctp-green" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`}>Collection</button>}{showBuilderAction && builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, canImprove && ownerDeckId ? { mode: "improve", sourceDeckId: ownerDeckId } : undefined)} className="rounded border border-ctp-blue px-2 py-1 text-xs text-ctp-blue">{canImprove && ownerDeckId ? "Improve this deck" : "Tune in Deck Builder"}</Link>}{showBuilderAction && ownerDeckId && !canImprove && <span className="self-center text-xs text-ctp-subtext0">Choose a Spirit in the decklist to unlock improvement review.</span>}{actions}</div>}
-    {collectionSource && !children && showCollection && <div className="mb-4"><DeckCollectionTools decklist={decklist} cardsByName={cardsByName} source={collectionSource} /></div>}
-    {children ?? <DecklistView decklist={decklist} cardsByName={cardsByName} showThumbnails format={format} ownershipByName={ownershipByName} />}
+    {children ?? <DecklistView
+      decklist={decklist} cardsByName={cardsByName} showThumbnails format={format} ownershipByName={ownershipByName}
+      collectionControl={collectionSource && <button type="button" aria-expanded={showCollection} onClick={() => setShowCollection((value) => !value)} className={`inline-flex min-h-11 items-center rounded-md px-3 text-xs ${showCollection ? "bg-ctp-green/10 text-ctp-green" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>Collection</button>}
+      collectionPanel={collectionSource && showCollection && <DeckCollectionTools decklist={decklist} cardsByName={cardsByName} source={collectionSource} />}
+      toolbarActions={<>{showBuilderAction && builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, canImprove && ownerDeckId ? { mode: "improve", sourceDeckId: ownerDeckId } : undefined)} className="rounded px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{canImprove && ownerDeckId ? "Improve this deck" : "Tune in Deck Builder"}</Link>}{actions}</>}
+    />}
     {format !== "PANTHEON" && displayPrefs.metaGaps && <DeckDecaySignals decklist={decklist} cardsByName={cardsByName} />}
   </section>;
 }

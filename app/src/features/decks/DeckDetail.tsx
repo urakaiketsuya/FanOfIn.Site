@@ -468,7 +468,6 @@ export default function DeckDetail() {
         }
       />
 
-      <p className="mt-4 text-sm text-ctp-subtext1">Save an editable copy to tune this list, test your changes, and record matches. Favorites keep a link to the tournament build.</p>
       <div className="mt-5 flex flex-wrap gap-2">
         {signedIn === true ? <button type="button" disabled={favoriteBusy || favorited === null} aria-pressed={favorited ?? false} onClick={() => {
           if (favorited === null) return;
@@ -487,14 +486,14 @@ export default function DeckDetail() {
             .finally(() => setCopyBusy(false));
         }} className="min-h-11 rounded-lg border border-ctp-blue px-4 text-sm font-semibold text-ctp-blue disabled:opacity-50">{copyBusy ? "Saving copy…" : "Save editable copy"}</button>}
         <Link to={`/goldfish?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="inline-flex min-h-11 items-center border border-ctp-surface1 rounded-lg px-3 py-2.5 text-sm hover:bg-ctp-mantle">Open in Goldfish</Link>
-        <Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="inline-flex min-h-11 items-center border border-ctp-surface1 rounded-lg px-3 py-2.5 text-sm hover:bg-ctp-mantle">Compare deck</Link>
-        <details className="relative"><summary className="flex min-h-11 cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-4 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More</summary><div className="absolute left-0 top-full z-30 mt-2 grid min-w-52 gap-1 rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><button type="button" onClick={() => setTab("related")} className="rounded-lg px-3 py-2.5 text-left text-sm hover:bg-ctp-mantle">View history &amp; similar decks</button></div></details>
+
+        <details className="relative"><summary className="flex min-h-11 cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-4 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More</summary><div className="absolute left-0 top-full z-30 mt-2 grid min-w-52 gap-1 rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.championName ?? "Unknown Champion"} tournament build`, decklist, format: "STANDARD" }]))}`} className="rounded-lg px-3 py-2.5 text-sm hover:bg-ctp-mantle">Compare deck</Link><button type="button" onClick={() => setTab("related")} className="rounded-lg px-3 py-2.5 text-left text-sm hover:bg-ctp-mantle">View history &amp; similar decks</button></div></details>
       </div>
       {favoriteNotice && <p className="mt-2 text-xs text-ctp-subtext1" role="status">{favoriteNotice}</p>}
 
-      <div className={`mt-5 rounded-lg border p-3 text-xs ${sideboardSelection ? "border-ctp-blue/30 bg-ctp-blue/5 text-ctp-subtext1" : "border-ctp-yellow/30 bg-ctp-yellow/5 text-ctp-yellow"}`}>
+      <details className="mt-3 text-xs text-ctp-subtext1"><summary className="inline-flex min-h-9 cursor-pointer items-center text-ctp-blue">Sideboard source ▾</summary><div className="pb-2">
           {sideboardSelection ? <>Sideboards vary between players sharing this Main and Material list. Showing the most recent recorded Sideboard from <PlayerLink id={sideboardSelection.sighting.player} username={playerName(sideboardSelection.sighting.player)} className="font-medium text-ctp-text hover:text-ctp-blue" /> at <Link to={`/events/${sideboardSelection.sighting.eventId}?tab=decklists&player=${sideboardSelection.sighting.player}`} className="font-medium text-ctp-blue hover:underline">{eventNameById.get(sideboardSelection.sighting.eventId) ?? `Event #${sideboardSelection.sighting.eventId}`}</Link>.</> : <>No Sideboard cards were recorded for the tournament sightings grouped on this page.</>}
-      </div>
+      </div></details>
       <UserDecklistPanel decklist={decklist} format="STANDARD" collectionSource={`Tournament build: ${deck.championName ?? "Unknown Champion"}`} />
 
       <div className="mt-10"><Tabs tabs={TABS} active={tab} onChange={setTab} label="Deck data" baseId="deck-detail" /></div>

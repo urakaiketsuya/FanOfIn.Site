@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { Card, DeckCollectionLine, DeckFormat, OmnidexDecklist, OmnidexDecklistCardLine } from "@gatcg/shared";
 import { VisualCommunityGate, type VisualFieldVisibility } from "../../components/VisualCardTile";
@@ -15,12 +15,10 @@ import { buildClarentPlaytestUrl } from "../../lib/clarentPlaytest";
 import { copyDecklistAndOpen, deckBuilderDestinations } from "../../lib/deckBuilderDestinations";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { extractProducedTokens } from "../../lib/cardIntent";
-import { useDecklistDisplayPrefs } from "../../lib/decklistDisplayPrefs";
+import { useDecklistDisplayPrefs, type DeckDisplayMode } from "../../lib/decklistDisplayPrefs";
 import DecklistWinRate from "./DecklistWinRate";
 import Button from "../../components/ui/Button";
 import { CompactDeckSection as CompactSection, DetailedDeckSection, VisualDeckSections } from "./DecklistSections";
-
-type DeckDisplayMode = "compact" | "visual" | "detailed";
 
 /** Plain-text export with "# Section" headers and "4 Card Name" lines — round-trips with the Compare tool's paste parser. */
 export function buildDecklistText(decklist: OmnidexDecklist, extraSections: { title: string; lines: OmnidexDecklistCardLine[] }[] = []): string {
@@ -49,6 +47,9 @@ export default function DecklistView({
   defaultDisplayMode = "detailed",
   showDeckStats = true,
   ownershipByName,
+  toolbarActions,
+  collectionControl,
+  collectionPanel,
 }: {
   decklist: OmnidexDecklist;
   cardsByName: Map<string, Card>;
@@ -66,16 +67,20 @@ export default function DecklistView({
   showDeckStats?: boolean;
   /** Ownership status for the signed-in viewer. When supplied, shortages are visible in every display mode. */
   ownershipByName?: Map<string, DeckCollectionLine>;
+  toolbarActions?: ReactNode;
+  collectionControl?: ReactNode;
+  collectionPanel?: ReactNode;
 }) {
-  const priceByName = useDeckPriceByName();
-  const priceTrendByName = usePriceTrendByName();
-  const catalog = useCardCatalog();
   const displayPrefs = useDecklistDisplayPrefs();
+  const priceByName = useDeckPriceByName(displayPrefs.showPrices);
+  const priceTrendByName = usePriceTrendByName(displayPrefs.showPrices && displayPrefs.visualPriceTrend);
+  const catalog = useCardCatalog();
   // Visual mode's optional "sim games" field only — cardId isn't Champion-scoped like the Guided
   // Deck Builder's own evidence map, so this works for any decklist, not just a suggested build.
   const simulatorEvidenceByName = useSimulatorEvidenceByName();
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
-  const [displayMode, setDisplayMode] = useState<DeckDisplayMode>(() => defaultDisplayMode === "detailed" && typeof window !== "undefined" && window.matchMedia?.("(max-width: 639px)").matches ? "compact" : defaultDisplayMode);
+  const displayMode = displayPrefs.displayMode ?? (defaultDisplayMode === "detailed" && typeof window !== "undefined" && window.matchMedia?.("(max-width: 639px)").matches ? "compact" : defaultDisplayMode);
+  const setDisplayMode = displayPrefs.setDisplayMode;
   const [showMissingOnly, setShowMissingOnly] = useState(false);
 
   async function handleCopy() {
@@ -148,7 +153,7 @@ export default function DecklistView({
   const missingCardNames = useMemo(() => new Set(missingOwnershipLines.map((line) => line.card)), [missingOwnershipLines]);
   const missingMassEntryUrl = useMemo(() => buildTcgplayerMassEntryUrl(missingOwnershipLines.map((line) => ({ name: line.card, quantity: line.missing }))), [missingOwnershipLines]);
   const visibleSections = useMemo(() => {
-    const filter = (lines: OmnidexDecklistCardLine[]) => showMissingOnly ? lines.filter((line) => missingCardNames.has(line.card)) : lines;
+    const filter = (lines: OmnidexDecklistCardLine[]) => showMissingOnly && ownershipByName ? lines.filter((line) => missingCardNames.has(line.card)) : lines;
     return {
       extra: extraSections.map((section) => ({ ...section, lines: filter(section.lines) })),
       main: filter(decklist.main),
@@ -156,7 +161,7 @@ export default function DecklistView({
       sideboard: filter(decklist.sideboard),
       trailing: displayTrailingSections.map((section) => ({ ...section, lines: filter(section.lines) })),
     };
-  }, [decklist, displayTrailingSections, extraSections, missingCardNames, showMissingOnly]);
+  }, [decklist, displayTrailingSections, extraSections, missingCardNames, showMissingOnly, ownershipByName]);
 
   function handleExportTts() {
     const championName = findDeckChampionName(decklist.material, cardsByName);
@@ -175,76 +180,53 @@ export default function DecklistView({
 
   return (
     <div data-component="DecklistView">
-      {(identity.classes.length > 0 || identity.elements.length > 0) && (
-        <div className="mb-2 flex flex-wrap gap-3 text-xs text-ctp-subtext1">
-          {identity.classes.length > 0 && <span>Classes: {identity.classes.join("/")}</span>}
-          {identity.elements.length > 0 && <span>Elements: {identity.elements.join("/")}</span>}
-        </div>
-      )}
-      {(deckPrice.total > 0 || allLines.length > 0) && (
-        <div className="mb-3 flex flex-wrap items-center gap-2 text-sm">
-          {deckPrice.total > 0 && (
-            <>
-              <span className="font-semibold text-ctp-text">Deck price: {formatUsd(deckPrice.total)}</span>
-              {sideboardPrice.total > 0 && (
-                <span className="text-ctp-subtext1">+ {formatUsd(sideboardPrice.total)} sideboard</span>
-              )}
-              {missingCount > 0 && (
-                <span className="text-xs text-ctp-subtext0">
-                  ({missingCount} card{missingCount === 1 ? "" : "s"} missing price data)
-                </span>
-              )}
-            </>
-          )}
-          {allLines.length > 0 && (
-            <div className="flex w-full flex-wrap gap-2 sm:ml-auto sm:w-auto">
-              <a
-                href={clarentUrl}
-                target="_blank"
-                rel="noreferrer"
-                title="Opens this deck in Clarent's solo Goldfish playtest mode"
-                className="rounded-md border border-ctp-green px-2 py-1 text-xs text-ctp-green hover:bg-ctp-surface0"
-              >
-                Playtest in Clarent &rarr;
-              </a>
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={handleCopy}
-                className={copyState === "failed" ? "border-ctp-red text-ctp-red" : ""}
-              >
-                {copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy decklist"}
-              </Button>
-              <details className="relative">
-                <summary className="cursor-pointer list-none rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text">More actions</summary>
-                <div className="absolute right-0 z-30 mt-2 grid w-64 gap-1 rounded-lg border border-ctp-surface1 bg-ctp-base p-2 shadow-xl">
+      <div className="relative mb-3 flex flex-wrap items-center gap-1 border-b border-ctp-surface0 pb-2">
+        <details className="group">
+          <summary className="flex min-h-11 cursor-pointer list-none items-center rounded-md px-3 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">Display <span aria-hidden="true" className="ml-1">▾</span></summary>
+          <div className="absolute left-0 top-full z-30 mt-1 max-h-[60dvh] w-72 max-w-full space-y-3 overflow-y-auto rounded-xl border border-ctp-surface1 bg-ctp-base p-3 shadow-xl">
+            <div className="flex gap-1" role="group" aria-label="Decklist display">{(["compact", "visual", "detailed"] as const).map((mode) => <button key={mode} type="button" onClick={() => setDisplayMode(mode)} aria-pressed={displayMode === mode} className={`min-h-11 flex-1 rounded-md px-2 text-xs capitalize ${displayMode === mode ? "bg-ctp-blue/15 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>{mode}</button>)}</div>
+            {displayMode === "visual" && <>
+              <label className="flex items-center justify-between text-xs text-ctp-subtext1">Card size<select aria-label="Card size" value={displayPrefs.visualCardSize} onChange={(event) => displayPrefs.setVisualCardSize(event.target.value as "large" | "medium" | "compact")} className="min-h-11 rounded border border-ctp-surface1 bg-ctp-base px-2"><option value="large">Large</option><option value="medium">Medium</option><option value="compact">Compact</option></select></label>
+              {[
+                { label: "Cost", checked: displayPrefs.visualCost, change: displayPrefs.setVisualCost },
+                { label: "Price trend", checked: displayPrefs.visualPriceTrend, change: displayPrefs.setVisualPriceTrend },
+                { label: "Tags", checked: displayPrefs.visualTags, change: displayPrefs.setVisualTags },
+                { label: "Simulator games", checked: displayPrefs.visualSimulator, change: displayPrefs.setVisualSimulator },
+                { label: "Community usage", checked: displayPrefs.visualCommunity, change: displayPrefs.setVisualCommunity },
+              ].map((field) => <label key={field.label} className="flex min-h-9 items-center gap-2 text-xs text-ctp-subtext1"><input type="checkbox" checked={field.checked} onChange={(event) => field.change(event.target.checked)} />{field.label}</label>)}
+            </>}
+            {(identity.classes.length > 0 || identity.elements.length > 0) && <p className="text-xs text-ctp-subtext0">{identity.classes.join("/")} · {identity.elements.join("/")}</p>}
+            <Link to="/settings" className="inline-flex min-h-11 items-center text-xs text-ctp-blue">More display settings →</Link>
+          </div>
+        </details>
+        <button type="button" aria-pressed={displayPrefs.showPrices} onClick={() => displayPrefs.setShowPrices(!displayPrefs.showPrices)} className={`min-h-11 rounded-md px-3 text-xs ${displayPrefs.showPrices ? "bg-ctp-blue/10 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>Price</button>
+        {collectionControl}
+        {allLines.length > 0 && <>
+          <Button variant="secondary" size="sm" onClick={handleCopy} className={`ml-auto min-h-11 ${copyState === "failed" ? "border-ctp-red text-ctp-red" : ""}`}>{copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy"}</Button>
+          <details>
+            <summary className="flex min-h-11 cursor-pointer list-none items-center rounded-md px-3 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">More</summary>
+            <div className="absolute right-0 top-full z-30 mt-1 grid max-h-[60dvh] w-64 max-w-full gap-1 overflow-y-auto rounded-lg border border-ctp-surface1 bg-ctp-base p-2 shadow-xl">
+              {toolbarActions}
+              <a href={clarentUrl} target="_blank" rel="noreferrer" className="rounded px-3 py-2 text-sm text-ctp-green hover:bg-ctp-surface0">Playtest in Clarent →</a>
                   {deckBuilderDestinations.map((destination) => <button key={destination.id} type="button" onClick={() => void handleCopyAndOpen(destination.url)} title={`Copies this decklist, then opens ${destination.label} so you can paste it into a new deck`} className="rounded px-3 py-2 text-left text-sm text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Copy & open {destination.label} &rarr;</button>)}
                   <a href={massEntryUrl} target="_blank" rel="noreferrer" className="rounded px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">Buy on TCGplayer &rarr;</a>
                   <button type="button" onClick={handleExportTts} title="Downloads a .json file — in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it" className="rounded px-3 py-2 text-left text-sm text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Export to TTS</button>
-                </div>
-              </details>
+
             </div>
-          )}
-        </div>
-      )}
-      <div className="mb-4 flex flex-wrap items-center justify-end gap-2">
-        <Link to="/settings" className="inline-flex min-h-9 items-center rounded-md px-2 text-xs text-ctp-subtext1 transition-colors hover:bg-ctp-surface0 hover:text-ctp-text">Display</Link>
-        <div className="flex gap-1 rounded-lg bg-ctp-mantle p-1" role="group" aria-label="Decklist display">{(["compact", "visual", "detailed"] as const).map((mode) => <button key={mode} type="button" onClick={() => setDisplayMode(mode)} aria-pressed={displayMode === mode} className={`min-h-8 rounded-md px-2 text-xs capitalize transition-all duration-200 active:scale-[0.97] ${displayMode === mode ? "bg-ctp-blue/15 font-semibold text-ctp-blue shadow-sm" : "text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text"}`}>{displayMode === mode && <span aria-hidden="true">✓ </span>}{mode}</button>)}</div>
+          </details>
+        </>}
       </div>
+      {displayPrefs.showPrices && <div className="mb-3 text-sm text-ctp-subtext1"><span className="font-medium text-ctp-text">Estimated price: {formatUsd(deckPrice.total + sideboardPrice.total)}</span><span className="ml-2 text-xs">Main + Material {formatUsd(deckPrice.total)} · Sideboard {formatUsd(sideboardPrice.total)}</span>{missingCount > 0 && <span className="ml-2 text-xs">{missingCount} card{missingCount === 1 ? "" : "s"} without prices</span>}</div>}
+      {collectionPanel && <div className="mb-3">{collectionPanel}</div>}
       {ownershipByName && (missingCopies > 0 ? <div className="mb-4 rounded-xl border border-ctp-yellow/40 bg-ctp-yellow/10 p-3 text-sm"><p className="text-ctp-text"><strong className="text-ctp-yellow">{missingCopies} missing cop{missingCopies === 1 ? "y" : "ies"}</strong> across {missingOwnershipLines.length} card{missingOwnershipLines.length === 1 ? "" : "s"}</p><div className="mt-3 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap"><button type="button" aria-pressed={showMissingOnly} onClick={() => setShowMissingOnly((value) => !value)} className={`min-h-10 rounded-lg border px-3 text-xs font-medium ${showMissingOnly ? "border-ctp-yellow bg-ctp-yellow/15 text-ctp-yellow" : "border-ctp-surface1 text-ctp-subtext1"}`}>{showMissingOnly ? "Show full deck" : "Show missing only"}</button><a href={missingMassEntryUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-10 items-center justify-center rounded-lg border border-ctp-blue px-3 text-xs font-medium text-ctp-blue">Shop missing ↗</a><Link to="/collection" className="col-span-2 inline-flex min-h-10 items-center justify-center rounded-lg px-3 text-xs font-medium text-ctp-blue sm:min-h-0">Open collection</Link></div></div> : <div className="mb-4 rounded-xl border border-ctp-green/30 bg-ctp-green/10 px-3 py-2 text-sm text-ctp-green">Collection complete for this deck.</div>)}
-      {showDeckStats && displayPrefs.winRate && deckId && (
-        <div className="mb-4 space-y-3">
-          <DecklistWinRate deckId={deckId} />
-        </div>
-      )}
-      {showMissingOnly && missingCopies > 0 && <p className="mb-3 text-xs text-ctp-subtext1">Showing only cards your collection does not fully cover. Section totals reflect this filtered view.</p>}
-      {displayMode === "compact" && <div className="space-y-5">{[...visibleSections.extra, { title: "Main", lines: visibleSections.main }, { title: "Material", lines: visibleSections.material }, { title: "Sideboard", lines: visibleSections.sideboard }, ...visibleSections.trailing].map((section) => <CompactSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} ownershipByName={ownershipByName} />)}</div>}
+      {ownershipByName && showMissingOnly && missingCopies > 0 && <p className="mb-3 text-xs text-ctp-subtext1">Showing only cards your collection does not fully cover. Section totals reflect this filtered view.</p>}
+      {displayMode === "compact" && <div className="space-y-5">{[...visibleSections.extra, { title: "Main", lines: visibleSections.main }, { title: "Material", lines: visibleSections.material }, { title: "Sideboard", lines: visibleSections.sideboard }, ...visibleSections.trailing].map((section) => <CompactSection priceByName={displayPrefs.showPrices ? priceByName : undefined} key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} ownershipByName={ownershipByName} />)}</div>}
       {displayMode === "visual" && (() => {
         const sections = [...visibleSections.extra, { title: "Main", lines: visibleSections.main }, { title: "Material", lines: visibleSections.material }, { title: "Sideboard", lines: visibleSections.sideboard }, ...visibleSections.trailing];
         const fields: VisualFieldVisibility = {
           cost: displayPrefs.visualCost,
-          price: displayPrefs.visualPrice,
-          priceTrend: displayPrefs.visualPriceTrend,
+          price: displayPrefs.showPrices,
+          priceTrend: displayPrefs.showPrices && displayPrefs.visualPriceTrend,
           tags: displayPrefs.visualTags,
           simulator: displayPrefs.visualSimulator,
           community: displayPrefs.visualCommunity,
@@ -281,6 +263,11 @@ export default function DecklistView({
         {visibleSections.trailing.map((section) => <DetailedDeckSection key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} priceByName={priceByName} showThumbnails={showThumbnails} ownershipByName={ownershipByName} />)}
       </div>}
 
+      {showDeckStats && displayPrefs.winRate && deckId && (
+        <div className="mb-4 space-y-3">
+          <DecklistWinRate deckId={deckId} />
+        </div>
+      )}
       {displayPrefs.tuningEvidence && (
         <DeckTuningEvidence decklist={decklist} cardsByName={displayCardsByName} deckId={deckId} format={format} championFallback={championFallback} />
       )}

@@ -34,6 +34,8 @@ export default function SettingsIndex() {
         description="Saved on this device."
       />
 
+      <Section className="mt-6" title="Decklist pricing" heading="compact"><ToggleRow label="Show prices" description="Show the deck estimate, section totals, and card prices in decklists." checked={prefs.showPrices} onChange={prefs.setShowPrices} /></Section>
+
       <Section className="mt-6" title="Decklist stats" heading="compact">
         <div className="grid gap-2 sm:grid-cols-2">
           <ToggleRow
