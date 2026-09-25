@@ -20,7 +20,9 @@ export default function DeckCollectionTools({ decklist, cardsByName, source }: {
   useEffect(() => {
     let active = true;
     void accountApi.collection().then((result) => { if (active) setCollection(result.entries); }).catch((reason: unknown) => {
-      if (active && reason instanceof AccountApiError && reason.status === 401) setSignedOut(true);
+      if (!active) return;
+      if (reason instanceof AccountApiError && reason.status === 401) setSignedOut(true);
+      else setNotice("Collection could not be loaded. Close and reopen Collection to retry.");
     });
     return () => { active = false; };
   }, []);
@@ -42,7 +44,7 @@ export default function DeckCollectionTools({ decklist, cardsByName, source }: {
   }, [decklist, cardsByName, includeSideboard]);
 
   if (signedOut) return <p data-component="DeckCollectionTools" className="mt-3 text-xs text-ctp-subtext1"><Link to="/decks/edit" className="text-ctp-blue hover:underline">Sign in</Link> to compare this deck with your collection.</p>;
-  if (!collection) return null;
+  if (!collection) return <p role="status" className="text-xs text-ctp-subtext1">{notice ?? "Loading collection…"}</p>;
 
   async function addDeck() {
     if (!updateLines.length) return;

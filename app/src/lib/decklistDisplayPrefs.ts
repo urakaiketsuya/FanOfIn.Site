@@ -2,9 +2,13 @@ import { useEffect, useState } from "react";
 
 const STORAGE_KEY = "decklist-display-prefs-v1";
 
+export type DeckDisplayMode = "compact" | "visual" | "detailed";
+
 export type VisualCardSize = "large" | "medium" | "compact";
 
 interface DecklistDisplayPrefs {
+  displayMode: DeckDisplayMode | null;
+  showPrices: boolean;
   tuningEvidence: boolean;
   metaGaps: boolean;
   diaoScore: boolean;
@@ -21,6 +25,8 @@ interface DecklistDisplayPrefs {
 }
 
 const DEFAULTS: DecklistDisplayPrefs = {
+  displayMode: null,
+  showPrices: false,
   tuningEvidence: true,
   metaGaps: true,
   diaoScore: false,
@@ -40,6 +46,8 @@ function load(): DecklistDisplayPrefs {
     if (!raw) return DEFAULTS;
     const parsed = JSON.parse(raw) as Partial<DecklistDisplayPrefs>;
     return {
+      displayMode: ["compact", "visual", "detailed"].includes(parsed.displayMode ?? "") ? parsed.displayMode! : null,
+      showPrices: parsed.showPrices === true,
       tuningEvidence: parsed.tuningEvidence ?? DEFAULTS.tuningEvidence,
       metaGaps: parsed.metaGaps ?? DEFAULTS.metaGaps,
       diaoScore: parsed.diaoScore ?? DEFAULTS.diaoScore,
@@ -80,8 +88,8 @@ function setPrefs(next: DecklistDisplayPrefs) {
 
 /** Per-browser (not per-account) preferences for the optional sections on decklist pages —
  * evidence panels (DeckTuningEvidence, DeckDecaySignals) plus the DIAO score and per-sighting win
- * rate sections in DecklistView. Managed from the `/settings` page rather than inline per-decklist
- * controls, since the inline "Evidence settings" disclosure didn't work well on mobile. Several are
+ * rate sections in DecklistView. Layout and pricing are also managed from the decklist toolbar;
+ * evidence preferences remain on `/settings`. Several are
  * real computational or fetch costs (useChampionCardImpact / useDeckBuilderPopulation / the deck
  * popularity index), so callers should skip rendering those components entirely when the relevant
  * flag is off rather than rendering and hiding them. */
@@ -98,6 +106,8 @@ export function useDecklistDisplayPrefs() {
 
   return {
     ...prefs,
+    setDisplayMode: (value: DeckDisplayMode) => setPrefs({ ...getPrefs(), displayMode: value }),
+    setShowPrices: (value: boolean) => setPrefs({ ...getPrefs(), showPrices: value }),
     setTuningEvidence: (value: boolean) => setPrefs({ ...getPrefs(), tuningEvidence: value }),
     setMetaGaps: (value: boolean) => setPrefs({ ...getPrefs(), metaGaps: value }),
     setDiaoScore: (value: boolean) => setPrefs({ ...getPrefs(), diaoScore: value }),

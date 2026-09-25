@@ -27,7 +27,7 @@ export default function UserDeckHeader({ title, championName, format, eyebrow, d
     {eyebrow && <div className="text-sm text-ctp-subtext1">{eyebrow}</div>}
     <div className={`mt-2 flex items-center ${prominent ? "gap-4" : "gap-3"}`}>
       <CardHoverPreview image={championCard?.editions[0]?.image} alt={championName ?? "Unknown champion"}>
-        {championCard?.editions[0] ? <CardImage image={championCard.editions[0].image} alt={championName ?? ""} className={`${prominent ? "h-28 w-20 rounded-lg" : "h-20 w-14 rounded"} shrink-0 object-cover object-top`} /> : <div className={`${prominent ? "h-28 w-20 rounded-lg" : "h-20 w-14 rounded"} shrink-0 bg-ctp-surface0`} />}
+        {championCard?.editions[0] ? <CardImage image={championCard.editions[0].image} alt={championName ?? ""} className={`${prominent ? "h-16 w-11 rounded-lg sm:h-20 sm:w-14" : "h-16 w-11 rounded"} shrink-0 object-cover object-top`} /> : <div className={`${prominent ? "h-16 w-11 rounded-lg sm:h-20 sm:w-14" : "h-16 w-11 rounded"} shrink-0 bg-ctp-surface0`} />}
       </CardHoverPreview>
       <div className="min-w-0 flex-1"><h1 className={`${prominent ? "text-2xl sm:text-3xl" : "text-2xl"} font-bold text-ctp-blue`}>{title}</h1><p className="mt-1 text-sm text-ctp-subtext1">{statLine ?? <>{championName ?? "Unknown champion"} · {format}{versionNumber ? ` · Version ${versionNumber}` : ""}</>}</p></div>
       {visibility && <span className="rounded-full border border-ctp-surface1 px-3 py-1 text-xs capitalize text-ctp-subtext1">{visibility}</span>}
