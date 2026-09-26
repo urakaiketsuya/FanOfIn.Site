@@ -21,6 +21,7 @@ export default function SharedDecksIndex() {
   const format = params.get("format") ?? "";
   return <PageLayout data-component="SharedDecksIndex" width="wide">
     <PageHeader title="Shared Decks" />
+    <p className="mt-2 text-sm text-ctp-subtext1">Explore builds, copy a starting point, and share your own. Starter Library decks are curated by Fan of Insight.</p>
     <form className="mt-6 flex flex-wrap gap-2" onSubmit={(event) => { event.preventDefault(); const next = new URLSearchParams(); if (query.trim()) next.set("q", query.trim()); if (format) next.set("format", format); setParams(next); }}>
       <TextInput maxLength={80} value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Deck, champion, or author" className="min-w-64 flex-1" />
       <Select value={format} onChange={(event) => { const next = new URLSearchParams(params); if (event.target.value) next.set("format", event.target.value); else next.delete("format"); next.delete("page"); setParams(next); }}><option value="">All formats</option><option value="STANDARD">Standard</option><option value="PANTHEON">Pantheon</option></Select>

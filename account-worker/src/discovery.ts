@@ -15,7 +15,7 @@ export async function discoverProfiles(env: Env, params: URLSearchParams): Promi
   const escaped = `%${query.replace(/[\\%_]/g, "\\$&")}%`;
   const rows = await env.ACCOUNT_DB.prepare(`SELECT users.display_name, users.profile_slug
     FROM users
-    WHERE users.profile_discoverable = 1 AND users.display_name LIKE ? ESCAPE '\\'
+    WHERE users.is_system = 0 AND users.profile_discoverable = 1 AND users.display_name LIKE ? ESCAPE '\\'
       AND EXISTS (SELECT 1 FROM user_decks ud WHERE ud.owner_user_id = users.id AND ud.visibility = 'public'
         AND ud.published_version_id IS NOT NULL AND ud.moderation_status = 'active')
     ORDER BY users.display_name ASC LIMIT 20`).bind(escaped).all<{ display_name: string; profile_slug: string }>();
@@ -29,11 +29,12 @@ function summary(row: Record<string, string | number | null>): PublicDeckSummary
     format: row.format as DeckFormat, championName: row.champion_name ? String(row.champion_name) : null,
     versionNumber: Number(row.version_number), publishedAt: String(row.published_at),
     owner: { displayName: String(row.display_name), profileSlug: String(row.profile_slug) },
+    isSeed: Number(row.is_seed ?? 0) === 1,
     likeCount: Number(row.like_count ?? 0),
   };
 }
 
-const SELECT = `SELECT ud.public_slug, ud.published_title, ud.published_description, ud.published_primer_markdown,
+const SELECT = `SELECT ud.is_seed, ud.public_slug, ud.published_title, ud.published_description, ud.published_primer_markdown,
   ud.published_tags_json, ud.published_at,
   users.display_name, users.profile_slug, dv.version_number, cb.format, cb.champion_name,
   (SELECT COUNT(*) FROM deck_likes dl WHERE dl.deck_id = ud.id) AS like_count
@@ -49,19 +50,19 @@ export async function discoverDecks(env: Env, params: URLSearchParams): Promise<
   if (format && format !== "STANDARD" && format !== "PANTHEON" && format !== "UNKNOWN") throw badRequest("Invalid deck format");
   const page = Number(params.get("page") ?? "1");
   if (!Number.isInteger(page) || page < 1 || page > 100) throw badRequest("Invalid page");
-  const where = ["ud.visibility = 'public'", "ud.published_version_id IS NOT NULL", "ud.moderation_status = 'active'", "users.profile_discoverable = 1"];
+  const where = ["ud.visibility = 'public'", "ud.published_version_id IS NOT NULL", "ud.moderation_status = 'active'", "users.profile_discoverable = 1", "(ud.is_seed = 0 OR ud.seed_discoverable = 1)"];
   const bindings: unknown[] = [];
   if (query) { where.push("(ud.published_title LIKE ? ESCAPE '\\' OR ud.published_tags_json LIKE ? ESCAPE '\\' OR cb.champion_name LIKE ? ESCAPE '\\' OR users.display_name LIKE ? ESCAPE '\\')"); const escaped = `%${query.replace(/[\\%_]/g, "\\$&")}%`; bindings.push(escaped, escaped, escaped, escaped); }
   if (format) { where.push("cb.format = ?"); bindings.push(format); }
   const rows = await env.ACCOUNT_DB.prepare(`${SELECT} WHERE ${where.join(" AND ")}
-    ORDER BY like_count DESC, ud.published_at DESC LIMIT ? OFFSET ?`)
+    ORDER BY ud.is_seed ASC, like_count DESC, ud.published_at DESC, ud.id ASC LIMIT ? OFFSET ?`)
     .bind(...bindings, PAGE_SIZE + 1, (page - 1) * PAGE_SIZE).all<Record<string, string | number | null>>();
   return { decks: rows.results.slice(0, PAGE_SIZE).map(summary), nextPage: rows.results.length > PAGE_SIZE ? page + 1 : null };
 }
 
 export async function getPublicProfile(env: Env, slug: string): Promise<PublicProfile | null> {
   if (!PROFILE_SLUG.test(slug)) return null;
-  const user = await env.ACCOUNT_DB.prepare("SELECT display_name, profile_slug FROM users WHERE profile_slug = ? AND profile_discoverable = 1")
+  const user = await env.ACCOUNT_DB.prepare("SELECT display_name, profile_slug FROM users WHERE profile_slug = ? AND profile_discoverable = 1 AND is_system = 0")
     .bind(slug).first<{ display_name: string; profile_slug: string }>();
   if (!user) return null;
   const rows = await env.ACCOUNT_DB.prepare(`${SELECT} WHERE users.profile_slug = ? AND ud.visibility = 'public' AND ud.moderation_status = 'active'

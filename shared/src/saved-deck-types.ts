@@ -53,6 +53,8 @@ export interface SavedDeckDetail extends SavedDeck {
 }
 
 export interface PublicDeck {
+  /** Site-managed starter content; never inherited by user copies. */
+  isSeed?: boolean;
   publicSlug: string;
   title: string;
   description: string;

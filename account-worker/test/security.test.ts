@@ -305,7 +305,7 @@ test("public decks expose only published card data and a display name", async ()
     },
   } as unknown as D1Database;
   const deck = await getPublicDeck({ ACCOUNT_DB: database } as Env, "a".repeat(32));
-  assert.deepEqual(Object.keys(deck!).sort(), ["championName", "decklist", "description", "format", "likeCount", "owner", "primerMarkdown", "publicSlug", "publishedAt", "tags", "title", "updatedAt", "versionNumber", "visibility"]);
+  assert.deepEqual(Object.keys(deck!).sort(), ["championName", "decklist", "description", "format", "isSeed", "likeCount", "owner", "primerMarkdown", "publicSlug", "publishedAt", "tags", "title", "updatedAt", "versionNumber", "visibility"]);
   assert.equal(deck!.primerMarkdown, "# Game plan");
   assert.deepEqual(deck!.tags, ["Control"]);
   assert.deepEqual(deck!.owner, { displayName: "Deck Pilot", profileSlug: "b".repeat(24) });
