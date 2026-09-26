@@ -14,7 +14,8 @@
     "audit:diao:migration": "tsx src/analysis/diaoMigrationAudit.ts",
     "audit:packages": "tsx src/analysis/packageCandidateAudit.ts",
     "clean:similarity-cache": "rm -rf .cache/similarity-cache",
-    "api:publish": "tsx src/public-api/publish.ts"
+    "api:publish": "tsx src/public-api/publish.ts",
+    "audit:win-rate-packages": "node --import tsx src/analysis/winRatePackageAudit.ts"
   },
   "dependencies": {
     "@gatcg/shared": "*",

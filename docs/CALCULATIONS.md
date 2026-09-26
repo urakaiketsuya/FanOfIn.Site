@@ -2983,8 +2983,7 @@ mechanical subtype references nominate pair and multi-card relationships; `deck-
 then measures support, confidence, lift, and
 champion-cohort coverage. The score combines conditional confidence (42%), capped log lift (28%),
 sample strength (18%), and cross-champion coverage (12%). The Packages page hides scores below 40
-and relationships already represented by a curated or registered package. Promotion remains a
-manual decision because co-occurrence cannot establish gameplay intent. Single-member candidates
+and relationships already represented by a curated or registered package. Promotion requires manual review or the explicitly enabled, mechanically verified rule policy described below; co-occurrence alone cannot establish gameplay intent. Single-member candidates
 anchored by a Champion receive a 15-point penalty so the queue favors actionable engines and
 toolboxes over the obvious champion-to-signature-card relationships.
 
@@ -3033,12 +3032,11 @@ labels remain visible to identify what each headline measures.
 ### Package condition review
 
 Package mining uses main + material only. Family `ruleEvidence` is measured against the complete
-required-card and option rule; the existing family score remains labeled as best source evidence.
-The expandable family reviewer preserves original findings and shows other anchors sharing at
-least two options. This is a review aid, not an automatic merge. Drafts support any number of AND
+required-card and option rule; the existing family score remains best-source audit evidence, never an auto-approval criterion.
+The expandable family reviewer preserves original findings and uses the cross-package overlap thresholds below. This is a review aid, not an automatic merge. Drafts support any number of AND
 groups, each requiring a minimum number of distinct names from its own option pool. A name may
 satisfy multiple groups when explicitly included in each. Required cards remain fixed to the
-family core. Drafts persist locally and only explicit approval creates a local guardrail.
+family core. Drafts persist locally. Manual approval or an explicitly enabled qualifying auto-approval policy creates a local guardrail.
 
 The reviewer compares original and draft support, conditional confidence, and lift using all
 indexed main + material decks. Confidence is matching decks / required-card decks; lift divides
@@ -3051,7 +3049,7 @@ have rule-specific IDs so different conditions on the same card set remain disti
 
 `shared/src/packageRelationships.ts` compares complete, deduplicated card-name sets, ignoring
 anchor designation but preserving every source rule. Exact sets share a deterministic pool ID
-and one display listing. No partial overlap ever joins a pool, so transitive overlap chains
+and one display listing. No partial overlap automatically joins a pool, so transitive overlap chains
 cannot create a large automatic family.
 
 Pairs with at least two shared names are classified as fully contained (the smaller pool is a
@@ -3060,23 +3058,96 @@ possible subgroup), strong overlap (at least three shared names and either Jacca
 union names; containment is shared names / smaller pool size. Loose links require explicit
 opt-in. These are review heuristics, not synergy or confidence scores.
 
-The Packages Relationships view compares registered rules, local approvals, curated candidates,
-mined families, and mined findings with confidence scores ≥ 40. Unlike the old candidate list,
-it does not suppress relationships already represented by registered or curated card sets.
-Search matches any pool member or rule label. Families in Candidates use the same exact-pool
-grouping. Original activation rules, source labels, and published counts remain separate.
+Suggested packages now combine the former Candidates and Relationships views. Registered rules,
+curated nominations, mined families and original source findings keep distinct rule identities.
+Identical primary pools share one package. A contained mined source finding is attached to one
+deterministic smallest enclosing package and shown under Source findings rather than repeated as
+another tile. Partial overlaps remain suggestions with shared/unique card and retained-rule previews.
+Merging is explicit and retains rule statuses and conditions. Strictly smaller contained pools can
+be saved as independently activated subpackages; parent approval never approves a child. Organization
+has a one-step undo, cleared by subsequent manual edits to avoid reverting later approval decisions.
+The optional joint-rule comparison and shared-card prevalence check remain available in Related packages.
 
-Relationship review displays shared and unique names, direction of containment, and available
-shared mechanical nominations, reported champion cohorts, and reported build labels. Generic
-"Named rules-text link" and "Multi-card cluster" labels do not establish a shared mechanic.
-Absent overlap in reported top-cohort summaries is not evidence of disjoint populations.
-An optional joint-deck check evaluates the two selected structured rules against all indexed
-main + material decks, counting both, each alone, and both / either. It excludes sideboards and
-zero-quantity lines. Prose-only section-sensitive rules are not approximated. The check is
-pooled descriptive evidence and cannot establish synergy, causality, or staple-adjusted affinity.
+### Saved package rules and approvals
 
-Approving mined families now uses complete-rule IDs, preventing different anchor requirements
-on the same pool from overwriting one another. Existing approvals are retained as saved; previously
-overwritten rules cannot be recovered automatically. Visual grouping itself never adds an approval.
-The optional joint check also shows each shared card's prevalence across the same index, giving
-reviewers context for staple-driven overlaps without treating a fixed prevalence as proof of one.
+`shared/src/savedPackages.ts` defines package pools with alternative rules. Every condition within
+an executable rule is AND; alternative approved rules are OR. Only present cards belonging to
+satisfied approved rules are protected. Registered section-aware rules keep their registry evaluator,
+including when organized into a saved package. New manual rules evaluate main + material only.
+
+Browser-local `fan-of-insight-packages-v2` stores names, pools, source identities, subpackage links,
+conditions, evidence snapshots, and individual suggested/manual/auto/registered statuses. Legacy v1
+approvals migrate by identical member set, preserving every saved condition, legacy ID and original
+any-section evaluation (including sideboard presence). The v1 storage remains an untouched backup.
+Corrupt v2 storage fails closed and is never silently overwritten. Edited rules have canonical
+condition-based IDs and do not inherit the old rule's automatic eligibility evidence.
+
+### Automatic package approval policy v1
+
+Automatic approval defaults OFF (dry run). Explicit enabling applies to individual rules, never to
+all alternatives in a family. It is evaluated when the Packages page loads a published audit. A
+qualifying champion cohort must independently have **30 matches across 3 distinct events**, **80%
+conditional confidence**, and **2× lift**. All thresholds must pass in the same cohort. Event identity
+is the event prefix in `${eventId}:${player}`; only positive main/material quantities are counted.
+Confidence is exact-rule matching decks / anchor-containing decks within the cohort. Lift divides
+that rate by non-anchor requirements' prevalence in that same cohort. Required Material members
+are also checked in both the exact-match count and the baseline. These are descriptive associations,
+not estimates of win-rate improvement or significance.
+
+The exact canonical condition key must match current evidence, mechanics must be verified, and no
+ambiguities may remain. The initial mechanical verification set is deliberately narrow: Argus,
+All-Seeing Giant with Crystal of Argus and/or Eye of Argus, checked against the catalog's explicit
+material-deck cost-contribution text. A changed clause invalidates verification. Mere name/subtype
+text nominations and inferred merged families are NOT verified. Other rules remain eligible for
+manual review, but cannot auto-approve solely from a high discovery score. Catalog Champion names
+provide exact Material-deck context cards for qualifying cohorts; missing mappings fail closed.
+
+Automatic guards apply only with a qualifying champion card present in Material and required
+Material members present there. Disabling the policy removes automatic approvals, retaining manual
+ones. Revocation records a per-rule block against reapproval until explicitly reconsidered. A new
+audit rechecks automatic decisions; missing or mismatched evidence downgrades them to review. Manual
+approvals are not downgraded by the policy. Source snapshots and reasons for every failure are visible.
+
+## Win-rate package findings
+
+`shared/src/winRatePackages.ts` and `pipeline/src/analysis/winRatePackageAudit.ts` mine
+outcome-based groups of 2–4 Main/Material cards independently of semantic/co-occurrence
+nominations. Run `npm run audit:win-rate-packages --workspace=pipeline` to refresh
+`data/analysis/win-rate-packages.json`, its manifest entry, and
+`docs/WIN_RATE_PACKAGES_AUDIT.md` (the detailed method and limitations).
+
+The Packages page's **Win-rate findings** tab loads this published snapshot on demand.
+It defaults to positive later-event results; failed and insufficient-data candidates remain
+available through the result filter. Search includes card, Champion, and season; size filtering
+and incremental display keep the list manageable. Findings are ranked by the weakest discovery
+member difference, never by later results. Raw player-balanced rates and sample sizes are distinct
+from shrunk percentage-point differences. Expanded evidence exposes exact missing-one groups,
+earlier discovery differences, the later-period cutoff, and overlap with mined co-occurrence
+candidates. Insufficient results suppress the headline adjusted differences. These exploratory
+findings neither establish statistical significance nor create package approvals or guardrails.
+The displayed source date is the audit's source snapshot, not a claim of current-format validity.
+
+### Shared package organization for performance findings
+
+`shared/src/packagePerformance.ts` connects outcome findings to the saved-package model.
+Evidence is a read-time join on the canonical activation conditions and Main/Material scope;
+it is never stored in the mechanical approval-evidence field. Legacy any-section, optional-card,
+and additional Material/Champion-gated rules do not inherit all-required Main/Material statistics.
+Renaming or merging packages preserves exact rules; changing conditions changes the evidence
+lookup even if a stale rule id is retained. Published performance remains separate by cohort.
+
+Existing exact rules are reused. Unmatched exact card sets become suggested rules, deduplicated
+across cohorts. A deterministic discovery-ranked greedy pass groups up to eight variants with a
+common Champion/format/season cohort and a common core of at least largest-variant-size minus
+one. Every addition must preserve that global core and cohort intersection; transitive chains
+cannot form a giant family. The pool is an organizational label, not a newly tested AND/OR rule.
+Subsets and supersets keep independent required-card conditions and missing-one evidence.
+Saved organization is applied first so renamed/merged packages retain ownership across reloads.
+
+The Win-rate tab defaults to the same package objects shown in Suggested/Approved, filtered by
+performance result. Each tile shows a discovery-ranked example with its own cohort and sample
+counts, never an aggregate family win rate. “All findings” retains the individual audit view.
+Both views open the shared package editor at the exact rule. The rule's performance section
+selects among separate cohorts; manual approval and mechanical auto-approval remain independent.
+When a rule occurs in multiple saved packages, the smallest pool (then package id) is its stable
+single display owner in the Win-rate list; evidence remains available in every exact-rule review.

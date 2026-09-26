@@ -1,3 +1,4 @@
+import { attachPackageApprovalEvidence } from "./packageApprovalAudit.js";
 import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -244,6 +245,7 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
     new Map(deckSightings.flatMap((s) => s.championName ? [[s.deckId, s.championName] as const] : [])),
     [...namedRulesTextSeeds(catalog), ...subtypeRulesTextSeeds(catalog), ...archetypeOverlapSeeds(archetypeTaxonomy.clusters)],
   );
+  attachPackageApprovalEvidence(packageCandidates, deckCardIndex, deckCardIndexNames, new Map(deckSightings.flatMap((s) => s.championName ? [[s.deckId, s.championName] as const] : [])), catalog);
   await writeFile(path.join(DATA_DIR, "package-candidates.json"), JSON.stringify(packageCandidates), "utf-8");
 
   const matchupCardImpact = computeMatchupCardImpact(completed, ctx, archetypeTaxonomy.clusters);

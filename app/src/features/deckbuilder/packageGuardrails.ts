@@ -55,28 +55,27 @@ const PACKAGE_DEFINITIONS: DeckPackageDefinition[] = [
   },
 ];
 
-export function getDeckPackageCatalog(cards: PackageCard[]): DeckPackageCatalogEntry[] {
-  const registered = PACKAGE_DEFINITIONS.map((definition) => {
+export function getRegisteredDeckPackageCatalog(cards: PackageCard[] = []): DeckPackageCatalogEntry[] {
+  return PACKAGE_DEFINITIONS.map((definition) => {
     const protectedCards = definition.evaluate(cards);
     return { id: definition.id, label: definition.label, explanation: definition.explanation,
       activation: definition.activation, observedSupport: definition.observedSupport,
       memberCards: definition.memberCards, active: protectedCards.length > 0, protectedCards };
   });
-  const local = getLocalPackageApprovals().map((approval): DeckPackageCatalogEntry => {
-    const presentCards = new Set(cards.filter((card) => card.quantity > 0).map((card) => card.cardName));
-    const protectedCards = evaluateLocalPackageApproval(approval, presentCards);
-    const active = protectedCards.length > 0;
-    return {
-      id: approval.id,
-      label: approval.label,
-      explanation: "Locally approved mined relationship. Review these cards together when suggesting cuts.",
-      activation: approval.groups ? `Requires ${approval.requiredCards.join(" + ")} AND ${approval.groups.map((group) => `${group.minimum} of (${group.cards.join(", ")})`).join(" AND ")}` : approval.optionCards.length > 0
-        ? `All required members and at least ${approval.minOptions} of ${approval.optionCards.length} options are present in the deck.`
-        : "All package members are present in the deck.",
-      memberCards: approval.memberCards,
-      active,
-      protectedCards,
-    };
+}
+
+export function getDeckPackageCatalog(cards: PackageCard[]): DeckPackageCatalogEntry[] {
+  const savedPackages = readPackageStore().packages;
+  const consumedRegistry = new Set(savedPackages.flatMap((pkg) => pkg.rules.filter((rule) => rule.status === "registered").flatMap((rule) => rule.sourceIds)));
+  const registered = getRegisteredDeckPackageCatalog(cards).filter((entry) => !consumedRegistry.has(`registered:${entry.id}`));
+  const mainMaterial = new Set(cards.filter((card) => card.quantity > 0 && card.section !== "sideboard").map((card) => card.cardName));
+  const material = new Set(cards.filter((card) => card.quantity > 0 && card.section === "material").map((card) => card.cardName));
+  const all = new Set(cards.filter((card) => card.quantity > 0).map((card) => card.cardName));
+  const local = savedPackages.filter((pkg) => pkg.rules.some((rule) => rule.status !== "suggested")).map((pkg): DeckPackageCatalogEntry => {
+    const registeredSources = new Set(pkg.rules.filter((rule) => rule.status === "registered").flatMap((rule) => rule.sourceIds));
+    const registeredProtection = PACKAGE_DEFINITIONS.filter((definition) => registeredSources.has(`registered:${definition.id}`)).flatMap((definition) => definition.evaluate(cards));
+    const protectedCards = [...new Set([...evaluateSavedPackage(pkg, mainMaterial, material, all), ...registeredProtection])];
+    return { id: pkg.id, label: pkg.name, explanation: "Approved alternative rules. Only members of satisfied rules are protected.", activation: pkg.rules.filter((rule) => rule.status !== "suggested").map((rule) => rule.conditions ? `${rule.conditions.requiredCards.join(" + ")}${rule.conditions.groups.map((group) => ` AND ${group.minimum} of (${group.cards.join(", ")})`).join("")}` : rule.activation).join(" OR "), memberCards: pkg.cards, active: protectedCards.length > 0, protectedCards };
   });
   return [...registered, ...local];
 }
@@ -92,4 +91,5 @@ export function getCardPackageMembership(cardName: string): Omit<DeckPackageCata
     .filter((definition) => definition.memberCards.includes(cardName))
     .map(({ id, label, explanation, activation, observedSupport, memberCards }) => ({ id, label, explanation, activation, observedSupport, memberCards }));
 }
-import { evaluateLocalPackageApproval, getLocalPackageApprovals } from "./localPackageApprovals";
+import { evaluateSavedPackage } from "@gatcg/shared";
+import { readPackageStore } from "./savedPackages";

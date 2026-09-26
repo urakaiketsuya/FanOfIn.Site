@@ -32,3 +32,6 @@ export * from "./spiritNames.js";
 export * from "./public-api-types.js";
 export * from "./recommendationEligibility.js";
 export * from "./packageRelationships.js";
+export * from "./winRatePackages.js";
+export * from "./savedPackages.js";
+export * from "./packagePerformance.js";

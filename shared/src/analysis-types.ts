@@ -814,6 +814,7 @@ export interface TieredPackageMatch {
 }
 
 export interface PackageCandidateEvidence extends TieredPackageMatch {
+  approvalEvidence?: import("./savedPackages.js").PackageApprovalEvidence;
   anchorDecks: number;
   memberDecks: number;
   support: number;
@@ -825,6 +826,7 @@ export interface PackageCandidateEvidence extends TieredPackageMatch {
 }
 
 export interface PackageCandidateFamily {
+  approvalEvidence?: import("./savedPackages.js").PackageApprovalEvidence;
   sourceFindings?: PackageCandidateEvidence[];
   ruleEvidence?: { matchingDecks: number; anchorDecks: number; populationDecks: number; confidence: number | null; lift: number | null };
   anchorCard: string;

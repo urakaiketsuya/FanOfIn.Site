@@ -1,4 +1,4 @@
-import type { PackageCandidateEvidence, PackageCandidateFamily, PackageCandidatesData, PackagePoolEntry, PackageReviewRule } from "@gatcg/shared";
+import type { PackageCandidateEvidence, PackageCandidateFamily, PackageCandidatesData, PackagePoolEntry, PackageReviewRule, PackageApprovalEvidence } from "@gatcg/shared";
 import type { DeckPackageCatalogEntry } from "../deckbuilder/packageGuardrails";
 import type { DeckPackageCandidate } from "../deckbuilder/packageCandidates";
 import type { LocalPackageApproval } from "../deckbuilder/localPackageApprovals";
@@ -13,6 +13,7 @@ export interface PackageRelationshipEntry extends PackagePoolEntry {
   matches?: number;
   rule?: PackageReviewRule;
   family?: PackageCandidateFamily;
+  approvalEvidence?: PackageApprovalEvidence;
 }
 
 export function describePackageRule(rule: PackageReviewRule) {
@@ -37,11 +38,11 @@ export function packageRelationshipEntries(registered: DeckPackageCatalogEntry[]
     }),
     ...(mined?.families ?? []).map((family): PackageRelationshipEntry => {
       const rule = { requiredCards: [family.anchorCard, ...family.coreCards], groups: [{ cards: family.optionCards, minimum: family.minOptions }] };
-      return { id: `family:${JSON.stringify(rule)}`, label: family.anchorCard, source: "Mined family", cards: [...rule.requiredCards, ...family.optionCards], activation: describePackageRule(rule), ...context(family.sourceFindings ?? []), matches: family.ruleEvidence?.matchingDecks, rule, family };
+      return { id: `family:${JSON.stringify(rule)}`, label: family.anchorCard, source: "Mined family", cards: [...rule.requiredCards, ...family.optionCards], activation: describePackageRule(rule), ...context(family.sourceFindings ?? []), matches: family.ruleEvidence?.matchingDecks, rule, family, approvalEvidence: family.approvalEvidence };
     }),
     ...(mined?.candidates ?? []).filter((entry) => entry.confidenceScore >= 40).map((entry): PackageRelationshipEntry => {
       const rule = { requiredCards: [entry.anchorCard, ...entry.memberCards], groups: [] };
-      return { id: `finding:${JSON.stringify(rule)}`, label: entry.anchorCard, source: "Mined finding", cards: rule.requiredCards, activation: describePackageRule(rule), ...context([entry]), matches: entry.matchingDecks, rule };
+      return { id: `finding:${JSON.stringify(rule)}`, label: entry.anchorCard, source: "Mined finding", cards: rule.requiredCards, activation: describePackageRule(rule), ...context([entry]), matches: entry.matchingDecks, rule, approvalEvidence: entry.approvalEvidence };
     }),
   ];
 }

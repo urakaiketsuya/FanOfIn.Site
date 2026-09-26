@@ -1,356 +1,160 @@
-import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
-import PackagePoolReview from "./PackagePoolReview";
-import { packageRelationshipEntries } from "./packageRelationshipEntries";
-import { useEffect, useMemo, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import CardHoverPreview from "../../components/CardHoverPreview";
-import CardImage from "../../components/CardImage";
-import ElementIcon from "../../components/ElementIcon";
-import Tabs, { TabPanel } from "../../components/ui/Tabs";
-import PageHeader from "../../components/ui/PageHeader";
-import { useDocumentTitle } from "../../lib/useDocumentTitle";
-import { getDeckPackageCatalog } from "../deckbuilder/packageGuardrails";
-import { localPackageApprovalId, useLocalPackageApprovals } from "../deckbuilder/localPackageApprovals";
-import { DECK_PACKAGE_CANDIDATES } from "../deckbuilder/packageCandidates";
-import { PACKAGE_CONFIDENCE_TIER_LABELS, type ConfidenceTier } from "@gatcg/shared";
-import { useMinedPackageCandidates } from "../deckbuilder/useMinedPackageCandidates";
+import RulePerformance from "./RulePerformance";
+import { useWinRatePackages } from "./useWinRatePackages";
+import { JointEvidence } from "./PackagePoolReview";
+import WinRatePackages from "./WinRatePackages";
 import { useCardCatalog } from "./useCardCatalog";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { includeWinRatePackages, indexPackagePerformance, type PackagePerformanceIndex, type Card, applyPackageAutoPolicy, comparePackagePools, packageAutoEligibility, packageRuleKey, type SavedCardPackage, type SavedPackageRule } from "@gatcg/shared";
 import PageLayout from "../../components/layout/PageLayout";
-import { InlineState } from "../../components/ui/ContentState";
+import PageHeader from "../../components/ui/PageHeader";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
+import DisclosureChevron from "../../components/DisclosureChevron";
+import { useDocumentTitle } from "../../lib/useDocumentTitle";
+import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
+import { getRegisteredDeckPackageCatalog } from "../deckbuilder/packageGuardrails";
+import { DECK_PACKAGE_CANDIDATES } from "../deckbuilder/packageCandidates";
+import { useMinedPackageCandidates } from "../deckbuilder/useMinedPackageCandidates";
+import { mergeSavedPackages, overlaySavedPackages, useSavedPackages, type PackageStore } from "../deckbuilder/savedPackages";
+import { buildSuggestedPackages } from "./suggestedPackages";
+import { describePackageRule } from "./packageRelationshipEntries";
+import { PackageRuleEditor } from "./PackageFamilyReview";
 
-const TIER_BADGE_CLASS: Record<ConfidenceTier, string> = {
-  strong: "border-ctp-green/50 bg-ctp-green/10 text-ctp-green",
-  limited: "border-ctp-blue/50 bg-ctp-blue/10 text-ctp-blue",
-  exploratory: "border-ctp-subtext1/50 bg-ctp-surface0 text-ctp-subtext1",
-  textOnly: "border-dashed border-ctp-overlay1 text-ctp-overlay1",
-};
+const control = "min-h-12 rounded-lg border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm focus-visible:outline-2 focus-visible:outline-ctp-teal";
+const statusLabel = { suggested: "Needs review", manual: "Manually approved", auto: "Auto-approved", registered: "Registered" };
+const approved = (pkg: SavedCardPackage) => pkg.rules.some((rule) => rule.status !== "suggested");
 
 export default function PackagesIndex() {
-  useDocumentTitle("Card Packages", "Browse explicit card packages used by Fan of Insight deck-review guardrails.");
-  const cards = useCardCatalog();
+  useDocumentTitle("Card Packages", "Review packages, alternative activation rules, and approval evidence.");
   const location = useLocation();
+  const cards = useCardCatalog();
   const cardsByName = useMemo(() => new Map(cards.map((card) => [card.name, card])), [cards]);
-  const minedData = useMinedPackageCandidates();
-  const minedStatus = usePublishedDataStatus("analysis-package-candidates", "/data/analysis/package-candidates.json");
-  const { approvals: localApprovals, approve, approveFamily, revoke } = useLocalPackageApprovals();
-  const approvedIds = useMemo(() => new Set(localApprovals.map((entry) => entry.id)), [localApprovals]);
-  const packages = useMemo(() => getDeckPackageCatalog([]).filter((entry) => !approvedIds.has(entry.id)), [approvedIds]);
-  const [view, setView] = useState<"registered" | "approved" | "candidates" | "relationships">(() => localApprovals.some((entry) => `#${entry.id}` === location.hash) ? "approved" : DECK_PACKAGE_CANDIDATES.some((entry) => `#${entry.id}` === location.hash) ? "candidates" : "registered");
-  const [search, setSearch] = useState("");
-  const query = search.trim().toLowerCase();
-  const visibleApprovals = localApprovals.filter((entry) => !query || [entry.label, ...entry.memberCards, ...entry.requiredCards, ...entry.optionCards].some((value) => value.toLowerCase().includes(query)));
-  const visiblePackages = packages.filter((entry) =>
-    query === "" || entry.label.toLowerCase().includes(query) || entry.memberCards.some((name) => name.toLowerCase().includes(query)),
-  );
-  const visibleCandidates = DECK_PACKAGE_CANDIDATES.filter((entry) =>
-    query === "" || entry.label.toLowerCase().includes(query) || entry.memberCards.some((name) => name.toLowerCase().includes(query)),
-  );
-  const reviewedCardSets = useMemo(() => [
-    ...packages.map((entry) => new Set(entry.memberCards)),
-    ...DECK_PACKAGE_CANDIDATES.map((entry) => new Set(entry.memberCards)),
-  ], [packages]);
-  const minedCandidates = (minedData?.candidates ?? []).filter((entry) => {
-    const cards = [entry.anchorCard, ...entry.memberCards];
-    return entry.confidenceScore >= 40 && !reviewedCardSets.some((known) => cards.every((card) => known.has(card)));
-  });
-  const visibleMinedCandidates = minedCandidates.filter((entry) => {
-    const cards = [entry.anchorCard, ...entry.memberCards];
-    return query === "" || cards.some((name) => name.toLowerCase().includes(query));
-  });
-  const minedFamilies = (minedData?.families ?? []).filter((entry) => {
-    const names = [entry.anchorCard, ...entry.coreCards, ...entry.optionCards];
-    return names.length > 3 && !reviewedCardSets.some((known) => names.every((card) => known.has(card)));
-  });
-  const relationshipEntries = useMemo(() => packageRelationshipEntries(packages, DECK_PACKAGE_CANDIDATES, localApprovals, minedData), [packages, localApprovals, minedData]);
-  const familyEntries = relationshipEntries.filter((entry) => entry.family && minedFamilies.includes(entry.family));
-  const visibleMinedFamilies = minedFamilies.filter((entry) => !query || [entry.anchorCard, ...entry.coreCards, ...entry.optionCards].some((name) => name.toLowerCase().includes(query)));
-  const approveAllMined = () => {
-    for (const family of minedFamilies) {
-      approveFamily(`${family.anchorCard} family`, family.anchorCard, family.coreCards, family.optionCards, family.minOptions);
+  const data = useMinedPackageCandidates();
+  const { data: winRateData, status: winRateStatus } = useWinRatePackages();
+  const performance = useMemo(() => indexPackagePerformance(winRateData), [winRateData]);
+  const loading = usePublishedDataStatus("analysis-package-candidates", "/data/analysis/package-candidates.json");
+  const { store, save } = useSavedPackages();
+  const [error, setError] = useState("");
+  const [query, setQuery] = useState("");
+  const [view, setView] = useState<"suggested" | "approved" | "win-rates">(() => location.hash === "#win-rates" ? "win-rates" : "suggested");
+  useEffect(() => {
+    if (location.hash === "#win-rates") setView("win-rates");
+  }, [location.hash]);
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [focusPerformanceCohort, setFocusPerformanceCohort] = useState<string | undefined>();
+  const [focusRuleId, setFocusRuleId] = useState<string | undefined>();
+  const [policyOpen, setPolicyOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pending, startTransition] = useTransition();
+  const registered = useMemo(() => getRegisteredDeckPackageCatalog(), []);
+  const suggestions = useMemo(() => buildSuggestedPackages(registered, DECK_PACKAGE_CANDIDATES, data), [registered, data]);
+  const packages = useMemo(() => includeWinRatePackages(overlaySavedPackages(suggestions, store), winRateData), [suggestions, store, winRateData]);
+  const handledHash = useRef("");
+  useEffect(() => {
+    if (!location.hash || location.hash === "#win-rates" || handledHash.current === location.hash) return;
+    let id: string;
+    try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
+    const target = packages.find((pkg) => pkg.id === id || pkg.sourcePackageIds.includes(id) || pkg.rules.some((rule) => rule.legacyId === id || rule.sourceIds.some((source) => source === id || source === `registered:${id}` || source === `curated:${id}`)));
+    if (!target) return;
+    handledHash.current = location.hash;
+    setView(approved(target) ? "approved" : "suggested"); setQuery(target.name); setOpenId(target.id);
+    requestAnimationFrame(() => document.getElementById(`saved-${encodeURIComponent(target.id)}`)?.scrollIntoView({ block: "start" }));
+  }, [location.hash, packages]);
+  const eligible = packages.flatMap((pkg) => pkg.rules.filter((rule) => rule.status !== "registered" && rule.status !== "manual" && packageAutoEligibility(rule).eligible).map((rule) => ({ pkg, rule })));
+  const persist = (next: PackageStore) => { try { save(next); setError(""); } catch (reason) { setError(reason instanceof Error ? reason.message : "Could not save packages."); } };
+  // Enabled policy is re-evaluated when a fresh published audit arrives, and when locally revoked.
+  useEffect(() => {
+    if (!data || !store.autoEnabled || store.error) return;
+    const evaluated = applyPackageAutoPolicy(packages, true);
+    const toSave = evaluated.filter((pkg) => store.packages.some((saved) => saved.id === pkg.id) || pkg.rules.some((rule) => rule.status === "auto"));
+    if (JSON.stringify(toSave) !== JSON.stringify(store.packages)) {
+      try { save({ ...store, packages: toSave }); } catch { setError("Automatic approvals could not be saved. Check browser storage."); }
     }
-    for (const entry of minedCandidates) {
-      const names = [entry.anchorCard, ...entry.memberCards];
-      const coveredByFamily = minedFamilies.some((family) => {
-        const familyNames = new Set([family.anchorCard, ...family.coreCards, ...family.optionCards]);
-        return names.every((name) => familyNames.has(name));
-      });
-      if (!coveredByFamily) approve(`${entry.anchorCard} package`, names);
+  }, [data, packages, save, store]);
+  const updatePackage = (pkg: SavedCardPackage) => persist({ ...store, undo: undefined, packages: [...store.packages.filter((item) => item.id !== pkg.id), pkg] });
+  const changeRule = (pkg: SavedCardPackage, rule: SavedPackageRule, status: "manual" | "suggested") => updatePackage({ ...pkg, rules: pkg.rules.map((item) => item.id === rule.id ? { ...item, status, autoBlocked: status === "suggested", autoChampionCards: undefined, autoMaterialCards: undefined, scope: item.scope ?? "main-material", approvedAt: status === "manual" ? new Date().toISOString() : undefined } : item) });
+  const filtered = packages.filter((pkg) => (view === "approved" ? approved(pkg) : pkg.rules.some((rule) => rule.status === "suggested")) && (!query.trim() || [pkg.name, ...pkg.cards, ...pkg.rules.map((rule) => rule.label)].some((value) => value.toLowerCase().includes(query.trim().toLowerCase()))));
+  const organize = (left: SavedCardPackage, right: SavedCardPackage, action: "merge" | "subpackage") => {
+    if (action === "merge") {
+      const merged = mergeSavedPackages(left, right);
+      // Repoint any parent links, without making child approval inherit from its parent.
+      const others = store.packages.filter((pkg) => pkg.id !== left.id && pkg.id !== right.id).map((pkg) => ({ ...pkg, subpackageIds: [...new Set(pkg.subpackageIds.map((id) => id === right.id ? left.id : id))].filter((id) => id !== pkg.id) }));
+      persist({ ...store, undo: store.packages, packages: [...others, merged] });
+    } else {
+      if (right.cards.length >= left.cards.length || !right.cards.every((card) => left.cards.includes(card))) { setError("A subpackage must be a strictly smaller contained card pool."); return; }
+      persist({ ...store, undo: store.packages, packages: [...store.packages.filter((pkg) => pkg.id !== left.id && pkg.id !== right.id), { ...left, subpackageIds: [...new Set([...left.subpackageIds, right.id])] }, right] });
     }
   };
+  return <PageLayout width="wide"><PageHeader title="Card Packages" description="One package, with independently reviewed ways to activate it." actions={<Link className="min-h-12 py-3 text-ctp-teal" to="/combo-lab">Open Combo Lab</Link>} />
+    {(store.error || error) && <p role="alert" className="rounded-lg border border-ctp-red p-3">{store.error || error}</p>}
+    <label className="block text-sm">Find a package or card<input type="search" className={`${control} mt-2 w-full`} value={query} onChange={(event) => { setQuery(event.target.value); setPage(1); }} placeholder="Portly Raccoon, Argus…" /></label>
+    <section hidden={view === "win-rates"} className="mt-4 rounded-lg border border-ctp-surface1 p-3"><button className="flex min-h-12 w-full items-center justify-between gap-3 text-left text-sm font-semibold" aria-expanded={policyOpen} onClick={() => setPolicyOpen(!policyOpen)}>Automatic approval · {store.autoEnabled ? "Enabled" : "Dry run"} · {eligible.length} qualifying rules<DisclosureChevron className={policyOpen ? "rotate-180" : ""} /></button>
+      {policyOpen && <div className="space-y-3 text-sm"><p>Requires verified mechanics and exact-rule evidence: 30 matching decks across 3 events, at least 80% conditional confidence and 2× lift within the same champion cohort. A high discovery score alone does not qualify.</p><p>Approvals apply only to qualifying rules and champion contexts. Inferred or ambiguous rules remain in review. The first verification set covers the catalog-checked Argus cost-contribution rules; other nominations are not silently treated as verified.</p><p>The policy runs when this page loads a package audit. Open a package’s rule to see its eligibility and all reasons for staying in review. Disabling the policy removes automatic approvals while keeping manual approvals.</p>{eligible.length > 0 ? <div className="space-y-2"><h3 className="font-semibold">Qualifying rules</h3>{eligible.map(({ pkg, rule }) => <button key={`${pkg.id}:${rule.id}`} className={`${control} block w-full break-words text-left`} onClick={() => { setQuery(pkg.name); setView("suggested"); setOpenId(pkg.id); setFocusRuleId(rule.id); setPolicyOpen(false); }}>Review {pkg.name}: {rule.conditions ? describePackageRule(rule.conditions) : rule.activation}</button>)}</div> : <p>No new rules currently qualify. Each rule explains which policy gates are missing.</p>}<button disabled={!data || !!store.error} className={`${control} text-ctp-teal disabled:opacity-40`} onClick={() => startTransition(() => {
+        const enabled = !store.autoEnabled;
+        const evaluated = applyPackageAutoPolicy(packages, enabled);
+        persist({ ...store, undo: undefined, autoEnabled: enabled, packages: evaluated.filter((pkg) => store.packages.some((saved) => saved.id === pkg.id) || pkg.rules.some((rule) => rule.status === "auto")) });
+      })}>{store.autoEnabled ? "Disable automatic approval" : "Enable automatic approval"}</button>{pending && <p role="status">Recalculating approvals…</p>}</div>}
+    </section>
+    {store.undo && <button className={`${control} mt-3`} onClick={() => persist({ ...store, packages: store.undo!, undo: undefined })}>Undo last organization change</button>}
+    <div className="mt-4 [&_[role=tab]]:min-h-12 [&_[role=tablist]]:flex-wrap"><Tabs baseId="packages" label="Package review status" tabs={[{ key: "suggested", label: "Suggested packages" }, { key: "approved", label: "Approved packages" }, { key: "win-rates", label: "Win-rate findings" }]} active={view} onChange={(next) => { setView(next); setPage(1); }} /></div>
+    {view !== "win-rates" && !data && (loading.phase === "error" ? <p role="alert">{loading.error}<button className={control} onClick={loading.retry}>Retry package evidence</button></p> : <p role="status" className="mt-3">Loading mined package evidence… Saved and registered packages remain available.</p>)}
+    <TabPanel baseId="packages" tab="win-rates" active={view}>
+      <WinRatePackages query={query.trim().toLowerCase()} cardsByName={cardsByName} packages={packages} onReview={(pkg, rule, cohort) => {
+        setView(rule.status === "suggested" ? "suggested" : "approved"); setQuery(pkg.name); setPage(1); setOpenId(pkg.id); setFocusRuleId(rule.id); setFocusPerformanceCohort(cohort);
+        requestAnimationFrame(() => document.getElementById(`saved-${encodeURIComponent(pkg.id)}`)?.scrollIntoView({ block: "start" }));
+      }} />
+    </TabPanel>
+    {view !== "win-rates" && !winRateData && (winRateStatus.phase === "error" ? <p role="alert">Win-rate evidence unavailable. {winRateStatus.error} <button className={control} onClick={winRateStatus.retry}>Retry findings</button></p> : <p role="status">Loading win-rate package suggestions and evidence…</p>)}
+    {view !== "win-rates" && <TabPanel baseId="packages" tab={view} active={view} className="mt-4 space-y-4">
+      <p className="text-sm text-ctp-subtext0">{filtered.length} packages. AND conditions apply within a rule; approved alternative rules use OR. Source findings stay inside their package.</p>
+      {!filtered.length && <p role="status">No packages match this view and search.</p>}
+      {filtered.slice(0, page * 12).map((pkg) => <article id={`saved-${encodeURIComponent(pkg.id)}`} key={pkg.id} className="scroll-mt-32 min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
+        <h2 className="break-words text-lg font-semibold">{pkg.name}</h2><p className="mt-1 text-sm text-ctp-subtext0">{pkg.cards.length} cards · {pkg.rules.filter((rule) => rule.status !== "suggested").length} approved rules · {pkg.rules.filter((rule) => rule.status === "suggested").length} need review</p>
+        <button className={`${control} mt-3 flex w-full items-center justify-between text-left text-ctp-teal`} aria-expanded={openId === pkg.id} onClick={() => setOpenId(openId === pkg.id ? null : pkg.id)}>Review package<DisclosureChevron className={openId === pkg.id ? "rotate-180" : ""} /></button>
+        {openId === pkg.id && <PackageDetails key={`${pkg.id}:${focusRuleId ?? ""}:${focusPerformanceCohort ?? ""}`} initialPerformanceCohort={focusPerformanceCohort} initialRuleId={focusRuleId} performance={performance} cardsByName={cardsByName} pkg={pkg} packages={packages} data={data} onSave={updatePackage} onRule={changeRule} onOrganize={organize} />}
+      </article>)}
+      {filtered.length > page * 12 && <button className={control} onClick={() => setPage(page + 1)}>Show 12 more packages</button>}
+    </TabPanel>}
+  </PageLayout>;
+}
 
-  useEffect(() => {
-    if (!location.hash) return;
-    const id = decodeURIComponent(location.hash.slice(1));
-    setView(localApprovals.some((entry) => entry.id === id) ? "approved" : DECK_PACKAGE_CANDIDATES.some((entry) => entry.id === id) ? "candidates" : "registered");
-    requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ block: "start" }));
-  }, [location.hash, localApprovals]);
-
-  return (
-    <PageLayout data-component="PackagesIndex" width="wide">
-      <PageHeader
-        title="Card Packages"
-        description="Find cards that work together."
-        actions={<div className="flex gap-3"><Link to="/combo-lab" className="text-sm font-semibold text-ctp-mauve hover:underline">Open Combo Lab &rarr;</Link><Link to="/cards/stats" className="text-sm text-ctp-blue hover:underline">Card stats &rarr;</Link></div>}
-      />
-
-      <div className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <label className="block min-w-0 flex-1 text-xs font-medium uppercase tracking-wide text-ctp-subtext0">
-            Find a package or member card
-            <input
-              type="search"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder="Fluffy Shopkeep, Resonance Bauble…"
-              className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm normal-case tracking-normal text-ctp-text placeholder:text-ctp-overlay0 focus:border-ctp-blue focus:outline-none"
-            />
-          </label>
-          <p className="text-sm text-ctp-subtext0">{visiblePackages.length} registered · {localApprovals.length} locally approved · {visibleCandidates.length} curated · {visibleMinedCandidates.length} newly mined</p>
-        </div>
-      </div>
-
-      <div className="mt-4 [&_[role=tab]]:min-h-12"><Tabs tabs={[{ key: "registered", label: `Registered (${visiblePackages.length})` }, { key: "approved", label: `My approvals (${visibleApprovals.length})` }, { key: "candidates", label: `Candidates (${visibleCandidates.length + visibleMinedCandidates.length})` }, { key: "relationships", label: "Relationships" }]} active={view} onChange={setView} label="Package category" baseId="packages" /></div>
-      <TabPanel baseId="packages" tab="registered" active={view}>
-      {visiblePackages.length === 0 && <InlineState className="mt-6 text-sm">No packages match that search.</InlineState>}
-
-      <div className="mt-6 space-y-5">
-        {visiblePackages.map((entry) => {
-          const prevalence = entry.observedSupport
-            ? entry.observedSupport.matchingDecks / entry.observedSupport.populationDecks
-            : null;
-          return (
-            <article id={entry.id} key={entry.id} className="scroll-mt-20 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-5">
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h2 className="text-xl font-semibold text-ctp-text">{entry.label}</h2>
-                    <span className="rounded-full border border-ctp-teal/40 bg-ctp-teal/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-ctp-teal">Registered</span>
-                  </div>
-                  <p className="mt-1 text-sm text-ctp-subtext1">{entry.explanation}</p>
-                </div>
-                {entry.observedSupport && prevalence !== null && (
-                  <div className="rounded-lg bg-ctp-base px-3 py-2 text-right">
-                    <p className="text-lg font-semibold text-ctp-mauve">{(prevalence * 100).toFixed(1)}%</p>
-                    <p className="text-[10px] text-ctp-subtext0">historical prevalence</p>
-                  </div>
-                )}
-              </div>
-
-              <details className="mt-2 text-sm"><summary className="min-h-11 cursor-pointer py-3 text-ctp-subtext1">Activation and evidence</summary><p>{entry.activation}</p>{entry.observedSupport && <p className="mt-2 text-xs text-ctp-subtext0">{entry.observedSupport.matchingDecks.toLocaleString()} of {entry.observedSupport.populationDecks.toLocaleString()} decks · {entry.observedSupport.auditLabel}</p>}</details>
-
-              <div className="mt-4">
-                <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Member cards</h3>
-                <div className="mt-2 grid gap-2 sm:grid-cols-2">
-                  {entry.memberCards.map((name) => {
-                    const card = cardsByName.get(name);
-                    const content = (
-                      <div className="flex items-center gap-3 rounded-lg border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text hover:border-ctp-blue/50 hover:text-ctp-blue">
-                        {card?.editions[0] ? <CardImage image={card.editions[0].image} alt={name} className="h-12 w-9 rounded object-cover object-top" /> : <div className="h-12 w-9 rounded bg-ctp-surface0" />}
-                        {card && <ElementIcon element={card.element} size={14} />}
-                        <span className="font-medium">{name}</span>
-                      </div>
-                    );
-                    return card ? (
-                      <CardHoverPreview key={name} image={card.editions[0]?.image} alt={name}>
-                        <Link to={`/cards/${card.slug}`}>{content}</Link>
-                      </CardHoverPreview>
-                    ) : <div key={name}>{content}</div>;
-                  })}
-                </div>
-              </div>
-
-
-            </article>
-          );
-        })}
-      </div>
-
-      </TabPanel>
-      <TabPanel baseId="packages" tab="approved" active={view}>
-      {visibleApprovals.length > 0 && (
-        <section className="mt-4">
-          <div className="mb-4">
-            <h2 className="text-2xl font-bold tracking-tight text-ctp-text">Locally approved</h2>
-            <p className="mt-2 text-sm text-ctp-subtext1">Stored only in this browser. These packages protect their present members in Guided Deck Builder reviews when their saved activation rule is met.</p>
-          </div>
-          <div className="space-y-3">
-            {visibleApprovals.map((entry) => (
-              <article id={entry.id} key={entry.id} className="scroll-mt-20 rounded-xl border border-ctp-green/30 bg-ctp-mantle p-4">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div>
-                    <div className="flex flex-wrap items-center gap-2"><h3 className="font-semibold text-ctp-text">{entry.label}</h3><span className="rounded-full bg-ctp-green/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-ctp-green">Local guardrail</span></div>
-                    <p className="mt-1 text-xs text-ctp-subtext1">
-                      {entry.groups ? `Requires ${entry.requiredCards.join(" + ")} AND ${entry.groups.map((group) => `${group.minimum} of (${group.cards.join(", ")})`).join(" AND ")}` : entry.optionCards.length > 0
-                        ? `Requires ${entry.requiredCards.join(" + ")} and ${entry.minOptions} of: ${entry.optionCards.join(", ")}`
-                        : entry.memberCards.join(" · ")}
-                    </p>
-                  </div>
-                  <button type="button" onClick={() => revoke(entry.id)} className="rounded-md border border-ctp-red/40 px-3 py-1.5 text-xs font-medium text-ctp-red hover:bg-ctp-red/10">Revoke</button>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      )}
-
-{visibleApprovals.length === 0 && <InlineState className="mt-4">No approvals match this view.</InlineState>}</TabPanel>
-      <TabPanel baseId="packages" tab="candidates" active={view}>
-      <section className="mt-4">
-        <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
-          <div className="max-w-2xl">
-            <h2 className="text-2xl font-bold tracking-tight text-ctp-text">Candidates for review</h2>
-            <p className="mt-2 text-sm leading-6 text-ctp-subtext1">Data-mined nominations with a verified rules-text relationship. These do not protect cards or change deck suggestions unless they are reviewed and promoted into the registered package rules.</p>
-          </div>
-          <span className="rounded-full bg-ctp-peach/10 px-2.5 py-1 text-xs font-semibold text-ctp-peach">{visibleCandidates.length} candidates</span>
-        </div>
-        {visibleCandidates.length === 0 && <InlineState className="text-sm">No review candidates match that search.</InlineState>}
-        <div className="space-y-4">
-          {visibleCandidates.map((entry) => (
-            <article id={entry.id} key={entry.id} className="scroll-mt-20 rounded-xl border border-ctp-peach/30 bg-ctp-mantle p-5">
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div className="max-w-2xl">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h2 className="text-lg font-semibold text-ctp-text">{entry.label}</h2>
-                    <span className="rounded-full border border-ctp-peach/40 bg-ctp-peach/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-ctp-peach">Needs review</span>
-                  </div>
-                  <p className="mt-1 text-sm text-ctp-subtext1">{entry.rationale}</p>
-                </div>
-                <div className="rounded-lg bg-ctp-base px-3 py-2 text-right">
-                  <p className="text-lg font-semibold text-ctp-peach">{entry.evidence.matchingDecks.toLocaleString()}</p>
-                  <p className="text-[10px] text-ctp-subtext0">matching decks</p>
-                </div>
-              </div>
-
-              <div className="mt-4 grid gap-3 md:grid-cols-2">
-                <div className="rounded-lg border border-ctp-surface0 bg-ctp-base/50 px-4 py-3">
-                  <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Proposed activation</h3>
-                  <p className="mt-1 text-sm text-ctp-text">{entry.proposedActivation}</p>
-                </div>
-                <div className="rounded-lg border border-ctp-surface0 bg-ctp-base/50 px-4 py-3">
-                  <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Proposed protection</h3>
-                  <p className="mt-1 text-sm text-ctp-text">{entry.proposedProtection}</p>
-                </div>
-              </div>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                {entry.memberCards.map((name) => {
-                  const card = cardsByName.get(name);
-                  return card ? (
-                    <CardHoverPreview key={name} image={card.editions[0]?.image} alt={name}>
-                      <Link to={`/cards/${card.slug}`} className="flex items-center gap-2 rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1.5 text-xs text-ctp-text hover:border-ctp-blue/50 hover:text-ctp-blue">
-                        {card.editions[0] && <CardImage image={card.editions[0].image} alt={name} className="h-9 w-6 rounded object-cover object-top" />}
-                        <ElementIcon element={card.element} size={14} />
-                        {name}
-                      </Link>
-                    </CardHoverPreview>
-                  ) : <span key={name} className="rounded-md border border-ctp-surface1 px-2 py-1.5 text-xs">{name}</span>;
-                })}
-              </div>
-
-              <p className="mt-4 text-xs text-ctp-overlay1">
-                {entry.evidence.kind} · {entry.evidence.sectionPattern} · {entry.evidence.matchingDecks.toLocaleString()} matches among {entry.evidence.anchorDecks.toLocaleString()} decks containing the anchor card.
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-4">
-        <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
-          <div className="max-w-3xl">
-            <h2 className="text-2xl font-bold tracking-tight text-ctp-text">Newly mined relationships</h2>
-            <p className="mt-2 text-sm leading-6 text-ctp-subtext1">
-              Rules-text and archetype defining-card nominations scored against champion-stratified deck data. Candidates below 40 confidence, and relationships already covered above, stay in the audit data but are hidden here. Archetype overlap is discovery evidence, not proof that cards are mechanically inseparable. Local approvals can be revoked and refined later.
-            </p>
-          </div>
-          {(minedFamilies.length > 0 || minedCandidates.length > 0) && (
-            <button type="button" onClick={approveAllMined} className="rounded-md border border-ctp-teal/50 bg-ctp-teal/10 px-3 py-2 text-xs font-semibold text-ctp-teal hover:bg-ctp-teal/20">
-              Approve all mined
-            </button>
-          )}
-        </div>
-        {!minedData && <InlineState className="text-sm">Loading the latest package audit…</InlineState>}
-        {minedData && visibleMinedCandidates.length === 0 && visibleMinedFamilies.length === 0 && <InlineState className="text-sm">No newly mined relationships match that search.</InlineState>}
-        {familyEntries.length > 0 && <section className="mb-7"><h3 className="mb-3 text-lg font-semibold">Package families by card pool</h3><PackagePoolReview entries={familyEntries} query={query} minedData={minedData} /></section>}
-        <div className="space-y-4">
-          {visibleMinedCandidates.map((entry) => {
-            const names = [entry.anchorCard, ...entry.memberCards];
-            const approvalId = localPackageApprovalId(names);
-            const isApproved = approvedIds.has(approvalId);
-            return (
-              <article key={`${entry.anchorCard}:${entry.memberCards.join("|")}`} className="rounded-xl border border-ctp-mauve/30 bg-ctp-mantle p-5">
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="text-lg font-semibold text-ctp-text">{entry.anchorCard} package</h3>
-                      <span className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${TIER_BADGE_CLASS[entry.confidenceTier]}`}>
-                        {PACKAGE_CONFIDENCE_TIER_LABELS[entry.confidenceTier]}
-                      </span>
-                      {entry.evidenceKinds.map((kind) => <span key={kind} className="rounded-full bg-ctp-surface0 px-2 py-0.5 text-[10px] text-ctp-subtext1">{kind}</span>)}
-                    </div>
-                    <p className="mt-1 text-sm text-ctp-subtext1">{entry.anchorCard} with {entry.memberCards.join(", ")}</p>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="rounded-lg bg-ctp-base px-3 py-2 text-right">
-                      <p className="text-lg font-semibold text-ctp-mauve">{entry.confidenceScore}/100</p>
-                      <p className="text-[10px] text-ctp-subtext0">review confidence</p>
-                    </div>
-                    {isApproved ? (
-                      <button type="button" onClick={() => revoke(approvalId)} className="rounded-md border border-ctp-green/50 bg-ctp-green/10 px-3 py-2 text-xs font-semibold text-ctp-green hover:bg-ctp-red/10 hover:text-ctp-red">Approved locally</button>
-                    ) : (
-                      <button type="button" onClick={() => approve(`${entry.anchorCard} package`, names)} className="rounded-md border border-ctp-mauve/50 px-3 py-2 text-xs font-semibold text-ctp-mauve hover:bg-ctp-mauve/10">Approve locally</button>
-                    )}
-                  </div>
-                </div>
-                <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
-                  {[
-                    ["Matches", entry.matchingDecks.toLocaleString()],
-                    ["Given anchor", entry.confidence === null ? "—" : `${(entry.confidence * 100).toFixed(1)}%`],
-                    ["Lift", entry.lift === null ? "—" : `${entry.lift.toFixed(1)}×`],
-                    ["Cohorts", String(entry.championCoverage)],
-                  ].map(([label, value]) => <div key={label} className="rounded-lg bg-ctp-base px-3 py-2"><p className="font-semibold text-ctp-text">{value}</p><p className="text-[10px] text-ctp-subtext0">{label}</p></div>)}
-                </div>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {names.map((name) => {
-                    const card = cardsByName.get(name);
-                    if (!card) return <span key={name} className="rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1.5 text-xs text-ctp-text">{name}</span>;
-                    return (
-                      <CardHoverPreview key={name} image={card.editions[0]?.image} alt={name}>
-                        <Link to={`/cards/${card.slug}`} className="flex items-center gap-2 rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1.5 text-xs text-ctp-text hover:border-ctp-blue/50 hover:text-ctp-blue">
-                          {card.editions[0] && <CardImage image={card.editions[0].image} alt={name} className="h-9 w-6 rounded object-cover object-top" />}
-                          <ElementIcon element={card.element} size={14} />
-                          {name}
-                        </Link>
-                      </CardHoverPreview>
-                    );
-                  })}
-                </div>
-                {entry.strongestChampions.length > 0 && <p className="mt-4 text-xs text-ctp-overlay1">Strongest cohorts: {entry.strongestChampions.map((cohort) => `${cohort.championName} (${cohort.matchingDecks})`).join(" · ")}</p>}
-                {entry.archetypeSources && entry.archetypeSources.length > 0 && (
-                  <div className="mt-3 rounded-lg border border-ctp-surface0 bg-ctp-base/50 px-3 py-2">
-                    <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Defining-card overlap seen in</p>
-                    <div className="mt-1 flex flex-wrap gap-1.5">
-                      {entry.archetypeSources.map((source) => (
-                        <Link key={`${source.buildId}:${source.sectionPattern}`} to={`/archetypes/${source.buildId}`} className="rounded-md bg-ctp-surface0 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-blue">
-                          {source.buildName} · {source.sectionPattern} · {(source.prevalence * 100).toFixed(0)}%
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {entry.cautions.length > 0 && <p className="mt-2 text-xs text-ctp-peach">Review caution: {entry.cautions.join("; ")}.</p>}
-              </article>
-            );
-          })}
-        </div>
-      </section>
-      </TabPanel>
-      <TabPanel baseId="packages" tab="relationships" active={view}>
-        <section className="mt-4"><h2 className="mb-3 text-xl font-semibold">Relationships across packages</h2>
-          {!minedData && (minedStatus.phase === "error" ? <p role="alert" className="mb-3 text-sm">{minedStatus.error} Registered, curated, and local rules remain available. <button className="min-h-12 px-3 underline" onClick={minedStatus.retry}>Retry mined packages</button></p> : <p role="status" className="mb-3 text-sm text-ctp-subtext0">Loading mined packages… Registered, curated, and local rules are available below.</p>)}
-          <PackagePoolReview entries={relationshipEntries} query={query} minedData={minedData} />
-        </section>
-      </TabPanel>
-    </PageLayout>
-  );
+function PackageDetails({ pkg, packages, data, onSave, onRule, onOrganize, initialRuleId, performance, cardsByName, initialPerformanceCohort }: { initialPerformanceCohort?: string; performance: PackagePerformanceIndex; cardsByName: ReadonlyMap<string, Card>; initialRuleId?: string; pkg: SavedCardPackage; packages: SavedCardPackage[]; data: ReturnType<typeof useMinedPackageCandidates>; onSave: (pkg: SavedCardPackage) => void; onRule: (pkg: SavedCardPackage, rule: SavedPackageRule, status: "manual" | "suggested") => void; onOrganize: (left: SavedCardPackage, right: SavedCardPackage, action: "merge" | "subpackage") => void }) {
+  const [name, setName] = useState(pkg.name);
+  const [selected, setSelected] = useState(initialRuleId ?? pkg.rules[0]?.id);
+  const [sourceFindings, setSourceFindings] = useState(!!pkg.rules.find((item) => item.id === initialRuleId)?.supporting);
+  const [editing, setEditing] = useState(false);
+  const [relatedId, setRelatedId] = useState("");
+  const [comparisonRuleId, setComparisonRuleId] = useState("");
+  const [joint, setJoint] = useState(false);
+  const [mode, setMode] = useState<"rules" | "relationships">("rules");
+  const rules = pkg.rules.filter((rule) => sourceFindings || !rule.supporting || rule.status !== "suggested");
+  const available = rules.length ? rules : pkg.rules;
+  const rule = available.find((item) => item.id === selected) ?? available[0];
+  const eligibility = rule ? packageAutoEligibility(rule) : null;
+  const family = data?.families.find((item) => rule?.conditions && packageRuleKey({ requiredCards: [item.anchorCard, ...item.coreCards], groups: [{ cards: item.optionCards, minimum: item.minOptions }] }) === packageRuleKey(rule.conditions));
+  const related = packages.filter((other) => other.id !== pkg.id).map((other) => ({ other, relationship: comparePackagePools({ id: pkg.id, cards: pkg.cards }, { id: other.id, cards: other.cards }) })).filter((item) => item.relationship);
+  const target = related.find((item) => item.other.id === relatedId);
+  const comparisonRule = target?.other.rules.find((item) => item.id === comparisonRuleId) ?? target?.other.rules[0];
+  return <div className="mt-4 space-y-4 text-sm">
+    <label className="block">Package name<input className={`${control} mt-1 w-full`} value={name} onChange={(event) => setName(event.target.value)} /></label><button className={control} disabled={!name.trim()} onClick={() => onSave({ ...pkg, name: name.trim() })}>Save package name</button>
+    <ul className="grid gap-2 sm:grid-cols-2">{pkg.cards.map((card) => <li key={card} className="min-w-0 break-words rounded bg-ctp-base p-2">{card}</li>)}</ul>
+    <div className="flex flex-wrap gap-2" role="group" aria-label="Package detail view"><button className={control} aria-pressed={mode === "rules"} onClick={() => setMode("rules")}>Rules and evidence</button><button className={control} aria-pressed={mode === "relationships"} onClick={() => setMode("relationships")}>Related packages ({related.length})</button></div>
+    {mode === "rules" && rule && <>
+      <label className="flex min-h-12 items-center gap-3"><input type="checkbox" checked={sourceFindings} onChange={(event) => setSourceFindings(event.target.checked)} />Show source findings ({pkg.rules.filter((item) => item.supporting).length})</label>
+      <label className="block">Activation rule<select aria-label="Activation rule" className={`${control} mt-1 w-full max-w-full`} value={rule.id} onChange={(event) => { setSelected(event.target.value); setEditing(false); }}>{available.map((item, index) => <option key={item.id} value={item.id}>{index + 1}. {item.label} · {statusLabel[item.status]}</option>)}</select></label>
+      <div className="space-y-2 rounded-lg bg-ctp-base p-3"><p className="font-semibold">{statusLabel[rule.status]} · {rule.source}</p><p>{rule.conditions ? describePackageRule(rule.conditions) : rule.activation}</p>{rule.scope === "legacy-any-section" && <p>Legacy approval: its original section behavior is preserved, including sideboard presence.</p>}{rule.status === "auto" && <p>Automatic protection is limited to qualifying champion cards in Material: {rule.autoChampionCards?.join(", ")}. Required Material members: {rule.autoMaterialCards?.join(", ") || "None"}.</p>}</div>
+      <RulePerformance key={rule.id} initialCohort={initialPerformanceCohort} rule={rule} index={performance} cardsByName={cardsByName} />
+      {rule.status !== "registered" && <div className="space-y-2"><h3 className="font-semibold">Auto-approval eligibility</h3><p>{eligibility?.eligible ? "Qualifies under policy v1" : "Does not qualify for automatic approval"}</p><ul className="list-inside list-disc">{eligibility?.reasons.map((reason) => <li key={reason}>{reason}</li>)}</ul>{rule.evidence && <><p>{rule.evidence.verification}</p><p>Evidence generated {rule.evidence.generatedAt}. Conditional confidence uses decks containing the anchor within each champion cohort.</p><div className="grid gap-2 sm:grid-cols-2">{rule.evidence.cohorts.filter((cohort) => cohort.matchingDecks > 0).slice(0, 6).map((cohort) => <div className="rounded bg-ctp-base p-3" key={cohort.championName}>{cohort.championName}: {cohort.matchingDecks} matches / {cohort.matchingEvents} events · {(100 * cohort.confidence).toFixed(1)}% · {cohort.lift.toFixed(2)}× lift</div>)}</div></>}</div>}
+      <div className="flex flex-wrap gap-2">{rule.conditions && rule.status === "suggested" && <button className={`${control} text-ctp-teal`} onClick={() => onRule(pkg, rule, "manual")}>Approve this rule manually</button>}{(rule.status === "manual" || rule.status === "auto") && <button className={`${control} text-ctp-red`} onClick={() => onRule(pkg, rule, "suggested")}>Revoke this rule</button>}{rule.autoBlocked && <button className={control} onClick={() => onSave({ ...pkg, rules: pkg.rules.map((item) => item.id === rule.id ? { ...item, autoBlocked: false } : item) })}>Allow policy to reconsider this rule</button>}</div>
+      {!rule.conditions && rule.status !== "registered" && <p>This source has section-sensitive prose conditions. It remains review-only until an executable rule is defined.</p>}
+      {family && <><button className={control} aria-expanded={editing} onClick={() => setEditing(!editing)}>{editing ? "Close condition editor" : "Edit conditions"}</button>{editing && <PackageRuleEditor key={rule.id} family={family} families={data?.families ?? []} candidates={data?.candidates ?? []} hideRelated packageId={pkg.id} />}</>}
+    </>}
+    {mode === "relationships" && <>
+      <p>Choose a related package to preview organization. Merging preserves each rule and its status. Subpackages activate independently; approval never flows from a parent.</p>
+      {pkg.subpackageIds.length > 0 && <div><h3 className="font-semibold">Saved subpackages</h3>{pkg.subpackageIds.map((id) => <div key={id} className="flex flex-wrap items-center gap-2"><span>{packages.find((item) => item.id === id)?.name ?? "Unavailable package"}</span><button className={control} onClick={() => onSave({ ...pkg, subpackageIds: pkg.subpackageIds.filter((child) => child !== id) })}>Unlink subpackage</button></div>)}</div>}
+      {related.length === 0 ? <p>No related packages found.</p> : <label className="block">Compare package<select aria-label="Compare package" className={`${control} mt-1 w-full max-w-full`} value={target ? relatedId : ""} onChange={(event) => { setRelatedId(event.target.value); setComparisonRuleId(""); setJoint(false); }}><option value="">Choose a package…</option>{related.map(({ other, relationship }) => <option key={other.id} value={other.id}>{other.name} · {relationship!.kind === "contained" ? "Possible subpackage" : relationship!.kind === "strong" ? "Strong overlap" : "Related only"} · {relationship!.sharedCards.length} shared</option>)}</select></label>}
+      {target && <div className="space-y-3 rounded-lg border border-ctp-surface1 p-3"><p>{target.relationship!.sharedCards.length} shared · {(100 * target.relationship!.similarity).toFixed(0)}% overall similarity · {(100 * target.relationship!.containment).toFixed(0)}% smaller-pool containment</p><p>Shared: {target.relationship!.sharedCards.join(", ")}</p><p>Only in this package: {target.relationship!.leftOnly.join(", ") || "None"}</p><p>Only in comparison: {target.relationship!.rightOnly.join(", ") || "None"}</p>{comparisonRule && <><label className="block">Comparison activation rule<select aria-label="Comparison activation rule" className={`${control} mt-1 w-full max-w-full`} value={comparisonRule.id} onChange={(event) => { setComparisonRuleId(event.target.value); setJoint(false); }}>{target.other.rules.map((item, index) => <option key={item.id} value={item.id}>{index + 1}. {item.label} · {statusLabel[item.status]}</option>)}</select></label><p>{comparisonRule.conditions ? describePackageRule(comparisonRule.conditions) : comparisonRule.activation}</p>{rule?.conditions && comparisonRule.conditions && <><button className={control} aria-expanded={joint} onClick={() => setJoint(!joint)}>{joint ? "Hide joint evidence" : "Check joint deck evidence"}</button>{joint && <JointEvidence left={{ cards: rule.cards, rule: rule.conditions }} right={{ cards: comparisonRule.cards, rule: comparisonRule.conditions }} />}</>}</>}
+      <h3 className="font-semibold">Merge preview</h3><p>{mergeSavedPackages(pkg, target.other).cards.length} cards · {mergeSavedPackages(pkg, target.other).rules.length} distinct rules. Existing approvals and original conditions are retained.</p><ul className="max-h-64 space-y-2 overflow-auto" tabIndex={0} aria-label="Rules retained after merge">{target.other.rules.map((item) => <li key={item.id}>{item.conditions ? describePackageRule(item.conditions) : item.activation} — {statusLabel[item.status]}</li>)}</ul><div className="flex flex-wrap gap-2">{target.relationship!.kind !== "loose" && <button className={control} onClick={() => { onOrganize(pkg, target.other, "merge"); setRelatedId(""); }}>Merge these packages</button>}{target.other.cards.length < pkg.cards.length && target.other.cards.every((card) => pkg.cards.includes(card)) && <button className={control} onClick={() => onOrganize(pkg, target.other, "subpackage")}>Save as subpackage</button>}</div>{target.relationship!.kind === "loose" && <p>Loose overlap is a related-package link only. It does not qualify for a merge suggestion.</p>}</div>}
+    </>}
+  </div>;
 }

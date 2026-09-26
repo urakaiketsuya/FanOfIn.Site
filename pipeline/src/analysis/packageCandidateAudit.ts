@@ -1,3 +1,4 @@
+import { attachPackageApprovalEvidence } from "./packageApprovalAudit.js";
 import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -20,6 +21,7 @@ async function main() {
     new Map(popularity.entries.flatMap((entry) => entry.championName ? [[entry.deckId, entry.championName] as const] : [])),
     [...namedRulesTextSeeds(cachedCards.cards), ...subtypeRulesTextSeeds(cachedCards.cards), ...archetypeOverlapSeeds(taxonomy.clusters)],
   );
+  attachPackageApprovalEvidence(result, deckIndex.decks, deckIndex.cardNames, new Map(popularity.entries.flatMap((entry) => entry.championName ? [[entry.deckId, entry.championName] as const] : [])), cachedCards.cards);
   await writeFile(path.join(ROOT, "data/analysis/package-candidates.json"), JSON.stringify(result), "utf8");
   await writeManifest();
   console.log(`package candidate audit: ${result.candidates.length} candidates and ${result.families.length} overlapping families`);

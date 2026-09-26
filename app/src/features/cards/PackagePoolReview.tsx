@@ -87,7 +87,7 @@ function RelationshipDetails({ relation, current, other, entry }: { relation: Pa
   </div>;
 }
 
-function JointEvidence({ left, right }: { left: PackageRelationshipEntry; right: PackageRelationshipEntry }) {
+export function JointEvidence({ left, right }: { left: Pick<PackageRelationshipEntry, "cards" | "rule">; right: Pick<PackageRelationshipEntry, "cards" | "rule"> }) {
   const data = useDeckCardIndexData();
   const status = usePublishedDataStatus("analysis-deck-card-index", "/data/analysis/deck-card-index.json");
   const result = useMemo(() => {
