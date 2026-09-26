@@ -32,7 +32,6 @@ export function useDeckBuilderController() {
   const isImproving = Boolean(improveDeckId);
   const intentParam = searchParams.get("intent");
   const builderIntent: BuilderIntent | null = intentParam === "seed" || intentParam === "scratch" ? intentParam : null;
-  const [deckFormat, setDeckFormat] = useState<DeckFormat>(() => searchParams.get("format")?.toUpperCase() === "PANTHEON" ? "PANTHEON" : "STANDARD");
   // Computed fresh each render (cheap — parsing a couple of query params), but only its value on
   // the very first render actually matters: every useState below that reads from it only consults
   // its initializer once, on mount, same as React already guarantees for lazy useState.
@@ -42,18 +41,26 @@ export function useDeckBuilderController() {
   // once (mount), same as urlSeed itself — see loadSessionSeed's own doc comment for why a lazy
   // initializer, not an effect, is what avoids the reset-then-reseed race parseUrlSeed warns about.
   const sessionSeed = urlSeed ? null : loadBuilderSessionSeed(sessionStorage);
+  const [deckFormat, setDeckFormat] = useState<DeckFormat>(() => searchParams.has("format") || urlSeed ? (searchParams.get("format")?.toUpperCase() === "PANTHEON" ? "PANTHEON" : "STANDARD") : sessionSeed?.format ?? "STANDARD");
 
+  const initialSpirit = urlSeed?.spiritFilter ?? sessionSeed?.spiritFilter ?? null;
+  const initialCards = new Map(urlSeed?.lockedCards ?? sessionSeed?.lockedCards ?? []);
+  const initialSections = new Map(urlSeed?.lockedSections ?? sessionSeed?.lockedSections ?? []);
+  if (initialSpirit && !initialCards.has(initialSpirit)) {
+    initialCards.set(initialSpirit, 1);
+    initialSections.set(initialSpirit, "material");
+  }
   const workflow = useBuilderWorkflowState({
     championName: urlSeed?.championName ?? sessionSeed?.championName ?? null,
     spiritFilter: urlSeed?.spiritFilter ?? sessionSeed?.spiritFilter ?? null,
-    lockedCards: urlSeed?.lockedCards ?? sessionSeed?.lockedCards ?? new Map(),
+    lockedCards: initialCards,
     maybeboard: sessionSeed?.maybeboard ?? new Map(),
-    lockedSections: urlSeed?.lockedSections ?? sessionSeed?.lockedSections ?? new Map(),
+    lockedSections: initialSections,
     rejectedCards: sessionSeed?.rejectedCards ?? new Set(),
     pillarBias: sessionSeed?.pillarBias ?? null,
     archetypeId: urlSeed?.archetypeId ?? sessionSeed?.archetypeId ?? null,
     championLevelCap: sessionSeed?.championLevelCap ?? null,
-    populationSource: sessionSeed?.populationSource ?? "balanced",
+    populationSource: sessionSeed?.populationSource === "simulator" ? "balanced" : sessionSeed?.populationSource ?? "balanced",
     collectionMode: sessionSeed?.collectionMode ?? "all",
     changeLog: sessionSeed?.changeLog ?? [],
   });
@@ -73,6 +80,7 @@ export function useDeckBuilderController() {
   const [customizeOpen, setCustomizeOpen] = useState(false);
   const [viewMode, setViewMode] = useBuilderViewMode();
   const [tab, setTab] = useTabParam<BuilderTab>("tab", TAB_KEYS, "build");
+  const [recommendationsEnabled, setRecommendationsEnabled] = useState(false);
   const [identityEditorOpen, setIdentityEditorOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -93,15 +101,27 @@ export function useDeckBuilderController() {
   } = useBuilderRecommendationModel({
     championName, spiritFilter, setSpiritFilter, deckFormat, tab, lockedCards, lockedSections,
     rejectedCards, pillarBias, archetypeId, championLevelCap, populationSource, collectionMode,
-    maybeboard, spiritElement,
+    maybeboard, spiritElement, recommendationsEnabled,
   });
+  // Identity follows the actual cards; sideboard and maybeboard never define it.
+  useEffect(() => {
+    if (catalogByName.size === 0) return;
+    const identityCards = Array.from(lockedCards.keys())
+      .filter((name) => lockedSections.get(name) !== "sideboard")
+      .map((name) => catalogByName.get(name))
+      .filter((card) => card?.types.includes("CHAMPION"));
+    const champion = identityCards.find((card) => !card?.subtypes.includes("SPIRIT"));
+    const spirit = identityCards.find((card) => card?.subtypes.includes("SPIRIT"));
+    setChampionName(champion?.name.split(",")[0].trim() ?? null);
+    setSpiritFilter(spirit?.name ?? null);
+  }, [lockedCards, lockedSections, catalogByName, setChampionName, setSpiritFilter]);
   const { pendingActionRef, resetChangeTracking } = useBuilderChangeTracking(build, setChangeLog);
   const {
     toggleLock, chooseChampionLineagePrint, restoreSuggestedChampionLevel, setLockedQuantity,
     removeCard, addCard, removeMaybeCard, setMaybeQuantity, promoteMaybeCard,
     changePopulationSource, changePillarBias, changeArchetype, changeChampionLevelCap,
   } = useBuilderCardActions({
-    workflow, build, catalogByName, cardCatalog, cardNameSet, archetypeOptions, addDestination,
+    workflow, deckFormat, build, catalogByName, cardCatalog, cardNameSet, archetypeOptions, addDestination,
     setAddDestination, setCardInput, startTransition, pendingActionRef,
   });
   const {
@@ -142,6 +162,8 @@ export function useDeckBuilderController() {
 
 
   return {
+    recommendationsEnabled,
+    setRecommendationsEnabled,
     searchParams,
     setSearchParams,
     isImproving,
@@ -236,7 +258,7 @@ export function useDeckBuilderController() {
     newReleaseCards: presentation.newReleaseCards,
     decklist: presentation.decklist,
     validation: presentation.validation,
-    resetBuilder,
+    resetBuilder: () => { setRecommendationsEnabled(false); resetBuilder(); },
     importedCardCount: presentation.importedCardCount,
     identityComplete: presentation.identityComplete,
     reviewComplete: presentation.reviewComplete,

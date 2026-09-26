@@ -8,13 +8,12 @@ import BuilderBuildPanel from "./panels/BuilderBuildPanel";
 import { useDeckBuilderController } from "./useDeckBuilderController";
 import { DeckBuilderProvider } from "./DeckBuilderContext";
 import { useDeckBuilder } from "./useDeckBuilder";
-import { BuilderIntentChooser, DeckBuilderHeader, DeckIdentitySetup } from "./components/DeckBuilderSetup";
-import { BuilderReadinessMessage, SeedCardPrompt } from "./components/DeckBuilderReadiness";
+import { DeckBuilderHeader, DeckFormatPicker } from "./components/DeckBuilderSetup";
 import { DeckBuilderMethodology, DeckBuilderWorkbenchStatus } from "./components/DeckBuilderWorkbenchStatus";
 
 export default function DeckBuilderIndex() {
   useDocumentTitle(
-    "Guided Deck Builder",
+    "Deck Workbench",
     "Build, validate, save, and export a Grand Archive deck, then continue to dedicated analysis and review tools.",
   );
   const controller = useDeckBuilderController();
@@ -27,15 +26,13 @@ export default function DeckBuilderIndex() {
 
 function DeckBuilderPage() {
   const {
-    builderIntent,
+    recommendationsEnabled,
+    setRecommendationsEnabled,
     deckFormat,
     championName,
-    spiritFilter,
     lockedCards,
     maybeboard,
-    pillarBias,
     archetypeId,
-    championLevelCap,
     collectionMode,
     setCollectionMode,
     changeLog,
@@ -50,21 +47,17 @@ function DeckBuilderPage() {
     viewMode,
     setViewMode,
     tab,
-    setTab,
     isPending,
     startTransition,
     catalogByName,
     priceByName,
     priceTrendByName,
     improveDeckId,
-    seedLockedCards,
     communityInclusionByName,
     hypeGapByName,
     decaySignalByName,
     build,
     reviewRemovalNames,
-    gateLoading,
-    gateHasData,
     cardNames,
     cardNameSet,
     cardsByName,
@@ -76,9 +69,7 @@ function DeckBuilderPage() {
     setMaybeQuantity,
     promoteMaybeCard,
     changePopulationSource,
-    changePillarBias,
     changeArchetype,
-    changeChampionLevelCap,
     mainTotal,
     materialTotal,
     sideboardTotal,
@@ -97,21 +88,15 @@ function DeckBuilderPage() {
     cardCategoryRecommendations,
   } = useDeckBuilder();
   return (
-    <PageLayout data-component="DeckBuilderIndex">
+    <PageLayout data-component="DeckBuilderIndex" className="[&_input]:min-h-12 [&_input]:min-w-12 [&_button]:min-h-12 [&_button]:min-w-12 [&_select]:min-h-12 [&_summary]:min-h-12 [&_summary]:content-center [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-ctp-blue">
       <DeckBuilderHeader />
-      <BuilderIntentChooser />
-
-      <DeckIdentitySetup />
-
-      <SeedCardPrompt />
-      <BuilderReadinessMessage />
-
-      {championName && spiritFilter && !gateLoading && gateHasData && (builderIntent !== "seed" || seedLockedCards.size > 0) && (
+      <div className="mt-4"><DeckFormatPicker /></div>
         <>
           <DeckBuilderWorkbenchStatus />
           {tab === "build" && (
             <BuilderBuildPanel
-              builderIntent={builderIntent}
+              recommendationsEnabled={recommendationsEnabled}
+              onToggleRecommendations={() => startTransition(() => setRecommendationsEnabled((enabled) => !enabled))}
               cardInput={cardInput}
               onCardInputChange={setCardInput}
               addDestination={addDestination}
@@ -129,9 +114,7 @@ function DeckBuilderPage() {
               onViewModeChange={setViewMode}
               visibleFields={visibleFields}
               onVisibleFieldChange={setVisibleField}
-              pillarBias={pillarBias}
               effectivePopulationSource={effectivePopulationSource}
-              onJumpToTools={() => setTab("tools")}
               build={build}
               isPending={isPending}
               materialTotal={materialTotal}
@@ -160,15 +143,9 @@ function DeckBuilderPage() {
 
           <TabPanel baseId="deck-builder" tab="tools" active={tab}>
               <ToolsPanel
-                pillarBias={pillarBias}
-                onPillarBiasChange={changePillarBias}
                 archetypeId={archetypeId}
                 archetypeOptions={archetypeOptions}
                 onArchetypeChange={changeArchetype}
-                championLevelCap={championLevelCap}
-                onChampionLevelCapChange={changeChampionLevelCap}
-                validation={validation}
-                unresolvedMain={build.unresolved.main}
                 deckFormat={deckFormat}
                 populationSource={effectivePopulationSource}
                 onChangePopulationSource={changePopulationSource}
@@ -179,6 +156,7 @@ function DeckBuilderPage() {
 
           {tab === "copy" && (
             <BuilderCopyPanel
+              hideFullDeckOption
               validation={validation}
               validationComplete={validationComplete}
               reviewComplete={reviewComplete}
@@ -215,7 +193,6 @@ function DeckBuilderPage() {
 
           <DeckBuilderMethodology />
         </>
-      )}
     </PageLayout>
   );
 }

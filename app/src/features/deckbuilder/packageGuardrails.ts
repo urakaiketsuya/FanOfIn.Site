@@ -70,7 +70,7 @@ export function getDeckPackageCatalog(cards: PackageCard[]): DeckPackageCatalogE
       id: approval.id,
       label: approval.label,
       explanation: "Locally approved mined relationship. Review these cards together when suggesting cuts.",
-      activation: approval.optionCards.length > 0
+      activation: approval.groups ? `Requires ${approval.requiredCards.join(" + ")} AND ${approval.groups.map((group) => `${group.minimum} of (${group.cards.join(", ")})`).join(" AND ")}` : approval.optionCards.length > 0
         ? `All required members and at least ${approval.minOptions} of ${approval.optionCards.length} options are present in the deck.`
         : "All package members are present in the deck.",
       memberCards: approval.memberCards,

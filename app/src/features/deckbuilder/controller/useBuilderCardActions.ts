@@ -1,4 +1,4 @@
-import type { Card } from "@gatcg/shared";
+import type { Card, DeckFormat } from "@gatcg/shared";
 import type { Dispatch, MutableRefObject, SetStateAction } from "react";
 import type { RatingPillar } from "../../../lib/deckIdentity";
 import type { SuggestedBuild } from "../useSuggestedBuild";
@@ -6,7 +6,6 @@ import type { ArchetypeTuningOption, PopulationSource } from "../model/builderTy
 import { SIDEBOARD_POINT_BUDGET, sideboardPointCost } from "../validateDeck";
 import {
   promoteMaybeboardCard,
-  removeLockedCard,
   restoreChampionLevel,
   selectChampionPrint,
   toggleLockedCard,
@@ -19,6 +18,7 @@ type Workflow = ReturnType<typeof useBuilderWorkflowState>;
 
 interface BuilderCardActionsOptions {
   workflow: Workflow;
+  deckFormat: DeckFormat;
   build: SuggestedBuild;
   catalogByName: Map<string, Card>;
   cardCatalog: Card[];
@@ -42,9 +42,16 @@ export function useBuilderCardActions(options: BuilderCardActionsOptions) {
     pillarBias, archetypeId, championLevelCap,
   } = workflow.state;
   const {
-    setLockedCards, setLockedSections, setRejectedCards, setMaybeboard, setPopulationSource,
+    setChampionName, setSpiritFilter, setLockedCards, setLockedSections, setRejectedCards, setMaybeboard, setPopulationSource,
     setPillarBias, setArchetypeId, setChampionLevelCap,
   } = workflow;
+
+  function adoptIdentity(name: string) {
+    const card = catalogByName.get(name);
+    if (!card?.types.includes("CHAMPION")) return;
+    if (card.subtypes.includes("SPIRIT")) setSpiritFilter(name);
+    else setChampionName(card.name.split(",")[0].trim());
+  }
 
   function toggleLock(name: string, quantity: number, section?: "main" | "material" | "sideboard") {
     const willLock = !lockedCards.has(name);
@@ -65,6 +72,7 @@ export function useBuilderCardActions(options: BuilderCardActionsOptions) {
       setLockedCards(next.cards);
       setLockedSections(next.sections);
       setRejectedCards(next.rejected);
+      adoptIdentity(name);
     });
   }
 
@@ -89,9 +97,16 @@ export function useBuilderCardActions(options: BuilderCardActionsOptions) {
     pendingActionRef.current = { label: locked ? `Removed ${name}` : `Excluded ${name} from suggestions`, subject: name };
     startTransition(() => {
       if (locked) {
-        const next = removeLockedCard(lockedCards, lockedSections, name, catalogByName);
+        const next = { cards: new Map(lockedCards), sections: new Map(lockedSections) };
+        next.cards.delete(name);
+        next.sections.delete(name);
         setLockedCards(next.cards);
         setLockedSections(next.sections);
+        if (workflow.state.spiritFilter === name) setSpiritFilter(null);
+        if (catalogByName.get(name)?.types.includes("CHAMPION") && !catalogByName.get(name)?.subtypes.includes("SPIRIT")) {
+          const remaining = Array.from(next.cards.keys()).map((key) => catalogByName.get(key)).find((card) => card?.types.includes("CHAMPION") && !card.subtypes.includes("SPIRIT"));
+          setChampionName(remaining?.name.split(",")[0].trim() ?? null);
+        }
       } else {
         setRejectedCards((previous) => new Set(previous).add(name));
       }
@@ -103,7 +118,7 @@ export function useBuilderCardActions(options: BuilderCardActionsOptions) {
     if (!cardNameSet.has(name) || (lockedCards.has(name) && destination !== "maybeboard")) return;
     const card = cardCatalog.find((candidate) => candidate.name === name);
     const materialOnly = card?.types.some((type) => type === "CHAMPION" || type === "REGALIA") ?? false;
-    const quantity = materialOnly ? 1 : suggestedQuantity ?? 4;
+    const quantity = materialOnly ? 1 : suggestedQuantity ?? (options.deckFormat === "PANTHEON" ? 1 : 4);
     const sideboardPoints = build.sideboard.reduce(
       (sum, entry) => sum + entry.quantity * sideboardPointCost(catalogByName.get(entry.cardName)),
       0,
@@ -118,9 +133,8 @@ export function useBuilderCardActions(options: BuilderCardActionsOptions) {
     pendingActionRef.current = { label: `Added ${name}`, subject: name };
     startTransition(() => {
       setLockedCards((previous) => new Map(previous).set(name, quantity));
-      if (destination === "sideboard" && fitsSideboard) {
-        setLockedSections((previous) => new Map(previous).set(name, "sideboard"));
-      }
+      if (destination !== "sideboard") adoptIdentity(name);
+      setLockedSections((previous) => new Map(previous).set(name, destination === "sideboard" && fitsSideboard ? "sideboard" : materialOnly ? "material" : "main"));
     });
     setCardInput("");
     setAddDestination("automatic");
@@ -147,6 +161,7 @@ export function useBuilderCardActions(options: BuilderCardActionsOptions) {
       setLockedCards(next.cards);
       setLockedSections(next.sections);
       setMaybeboard(next.maybeboard);
+      adoptIdentity(name);
     });
   }
 

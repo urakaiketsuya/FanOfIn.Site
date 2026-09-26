@@ -1,3 +1,4 @@
+import DisclosureChevron from "../../components/DisclosureChevron";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { OmnidexDecklist } from "@gatcg/shared";
@@ -64,6 +65,6 @@ export default function PantheonDeckDetail() {
     <UserDeckHeader title={title} championName={deck.champion ? championName : null} format="PANTHEON" eyebrow="Community Pantheon deck" />
     <div className="mt-5"><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: title, decklist, format: "PANTHEON" }]))}`} className="inline-flex min-h-11 items-center rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base">Compare deck</Link></div>
     <UserDecklistPanel decklist={decklist} format="PANTHEON" collectionSource={`Pantheon deck: ${championName}`} />
-    <details className="group mt-10 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><summary className="flex min-h-11 cursor-pointer list-none items-center justify-between text-lg font-semibold [&::-webkit-details-marker]:hidden"><span>Performance and composition</span><span aria-hidden="true" className="transition-transform group-open:rotate-180">⌄</span></summary><UserDeckStats decklist={decklist} championName={deck.champion ? championName : null} format="PANTHEON" title={title} /></details>
+    <details className="group mt-10 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><summary className="flex min-h-11 cursor-pointer list-none items-center justify-between text-lg font-semibold [&::-webkit-details-marker]:hidden"><span>Performance and composition</span><DisclosureChevron className="transition-transform group-open:rotate-180" /></summary><UserDeckStats decklist={decklist} championName={deck.champion ? championName : null} format="PANTHEON" title={title} /></details>
   </PageLayout>;
 }

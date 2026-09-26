@@ -6,7 +6,7 @@ export interface SaveBuilderDeckRequest {
   title: string;
   changeNote: string;
   format: DeckFormat;
-  championName: string;
+  championName: string | null;
   decklist: OmnidexDecklist;
   maybeboard: ReadonlyMap<string, number>;
 }
@@ -25,7 +25,7 @@ export async function saveBuilderDeck(request: SaveBuilderDeckRequest): Promise<
     return { id: request.improveDeckId };
   }
   return accountApi.saveDeck({
-    title: request.title.trim() || `${request.championName} guided build`,
+    title: request.title.trim() || (request.championName ? `${request.championName} deck` : "Untitled deck"),
     format: request.format,
     championName: request.championName,
     decklist: request.decklist,

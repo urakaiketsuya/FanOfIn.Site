@@ -1,3 +1,4 @@
+import DisclosureChevron from "../../components/DisclosureChevron";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { decodeCardLines, type OmnidexDecklist } from "@gatcg/shared";
@@ -491,7 +492,7 @@ export default function DeckDetail() {
       </div>
       {favoriteNotice && <p className="mt-2 text-xs text-ctp-subtext1" role="status">{favoriteNotice}</p>}
 
-      <details className="mt-3 text-xs text-ctp-subtext1"><summary className="inline-flex min-h-9 cursor-pointer items-center text-ctp-blue">Sideboard source ▾</summary><div className="pb-2">
+      <details className="mt-3 text-xs text-ctp-subtext1"><summary className="inline-flex min-h-12 cursor-pointer list-none items-center text-ctp-blue">Sideboard source <DisclosureChevron className="ml-1" /></summary><div className="pb-2">
           {sideboardSelection ? <>Sideboards vary between players sharing this Main and Material list. Showing the most recent recorded Sideboard from <PlayerLink id={sideboardSelection.sighting.player} username={playerName(sideboardSelection.sighting.player)} className="font-medium text-ctp-text hover:text-ctp-blue" /> at <Link to={`/events/${sideboardSelection.sighting.eventId}?tab=decklists&player=${sideboardSelection.sighting.player}`} className="font-medium text-ctp-blue hover:underline">{eventNameById.get(sideboardSelection.sighting.eventId) ?? `Event #${sideboardSelection.sighting.eventId}`}</Link>.</> : <>No Sideboard cards were recorded for the tournament sightings grouped on this page.</>}
       </div></details>
       <UserDecklistPanel decklist={decklist} format="STANDARD" collectionSource={`Tournament build: ${deck.championName ?? "Unknown Champion"}`} />

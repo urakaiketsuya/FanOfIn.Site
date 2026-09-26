@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gatcgApi } from "../lib/api/client";
 
 interface CardImageProps {
@@ -17,8 +17,19 @@ interface CardImageProps {
  * placeholder shape matters there.
  */
 export default function CardImage({ image, alt, rounded, className }: CardImageProps) {
+  const src = gatcgApi.imageUrl(image, rounded);
+  return <CardImageSource key={src} src={src} alt={alt} className={className} />;
+}
+
+function CardImageSource({ src, alt, className }: { src: string; alt: string; className?: string }) {
+  const imageRef = useRef<HTMLImageElement>(null);
   const [status, setStatus] = useState<"loading" | "loaded" | "error">("loading");
-  useEffect(() => setStatus("loading"), [image]);
+  // Cached images can finish before React observes their load event. Never reset
+  // a completed image to loading after its onLoad handler has already run.
+  useEffect(() => {
+    const img = imageRef.current;
+    if (img?.complete) setStatus(img.naturalWidth > 0 ? "loaded" : "error");
+  }, []);
 
   if (status === "error") {
     return <div
@@ -34,12 +45,13 @@ export default function CardImage({ image, alt, rounded, className }: CardImageP
   return (
     <img
       data-component="CardImage"
-      src={gatcgApi.imageUrl(image, rounded)}
+      ref={imageRef}
+      src={src}
       alt={alt}
       loading="lazy"
       onLoad={() => setStatus("loaded")}
       onError={() => setStatus("error")}
-      className={`bg-ctp-surface0 transition-opacity duration-300 ${status === "loading" ? "animate-pulse opacity-0" : "opacity-100"} ${className ?? "rounded-md"}`}
+      className={`bg-ctp-surface0 transition-opacity duration-300 ${status === "loading" ? "opacity-0" : "opacity-100"} ${className ?? "rounded-md"}`}
     />
   );
 }

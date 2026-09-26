@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import type { Card } from "@gatcg/shared";
 import { accountApi } from "../../../lib/accountApi";
 import { parseDecklist } from "../../compare/parseDecklist";
@@ -28,13 +28,10 @@ interface BuilderLifecycleOptions {
 /** Owns builder import, hydration, and reset transitions. */
 export function useBuilderLifecycle(options: BuilderLifecycleOptions) {
   const {
-    workflow, builderIntent, improveDeckId, initialChampionName, catalogByName,
-    spiritCanonicalNames, setDismissedReviewCards, setSpiritElement, setCardInput,
+    workflow, improveDeckId, catalogByName,
+    setDismissedReviewCards, setSpiritElement, setCardInput,
     setAddDestination, setTab, startTransition, resetChangeTracking,
   } = options;
-  const {
-    championName,
-  } = workflow.state;
   const {
     setChampionName, setSpiritFilter, setLockedCards, setMaybeboard, setLockedSections,
     setRejectedCards, setPillarBias, setArchetypeId, setPopulationSource, setChangeLog,
@@ -42,8 +39,6 @@ export function useBuilderLifecycle(options: BuilderLifecycleOptions) {
   const [pasteOpen, setPasteOpen] = useState(false);
   const [pasteText, setPasteText] = useState("");
   const [pasteError, setPasteError] = useState<string | null>(null);
-  const skipNextResetRef = useRef(false);
-  const lastResetChampionRef = useRef(initialChampionName);
 
   useEffect(() => {
     if (!improveDeckId) return;
@@ -51,31 +46,6 @@ export function useBuilderLifecycle(options: BuilderLifecycleOptions) {
       setMaybeboard(new Map(deck.maybeboard.map((line) => [line.card, line.quantity])));
     }).catch(() => undefined);
   }, [improveDeckId, setMaybeboard]);
-
-  useEffect(() => {
-    if (lastResetChampionRef.current === championName) return;
-    lastResetChampionRef.current = championName;
-    if (skipNextResetRef.current) {
-      skipNextResetRef.current = false;
-    } else {
-      startTransition(() => {
-        setSpiritFilter(null);
-        setSpiritElement(null);
-        if (builderIntent !== "seed") {
-          setLockedCards(new Map());
-          setLockedSections(new Map());
-        }
-        setMaybeboard(new Map());
-        setRejectedCards(new Set());
-        setDismissedReviewCards(new Set());
-        setArchetypeId(null);
-        setChangeLog([]);
-      });
-    }
-    resetChangeTracking();
-    // Setters and callbacks are stable; this reset is intentionally keyed only to identity changes.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [championName, builderIntent]);
 
   function loadPastedDecklist() {
     const { decklist, skippedLines } = parseDecklist(pasteText);
@@ -92,25 +62,19 @@ export function useBuilderLifecycle(options: BuilderLifecycleOptions) {
     for (const section of ["main", "material", "sideboard"] as const) {
       for (const line of decklist[section]) {
         const card = catalogByName.get(line.card);
-        if (card?.types.includes("CHAMPION")) {
+        if (section !== "sideboard" && card?.types.includes("CHAMPION")) {
           if (card.subtypes.includes("SPIRIT")) {
             detectedSpirit = line.card;
-            continue;
+
           }
-          if (!detectedChampion) detectedChampion = card.name.split(",")[0].trim();
+          if (!card.subtypes.includes("SPIRIT") && !detectedChampion) detectedChampion = card.name.split(",")[0].trim();
         }
         newLocked.set(line.card, (newLocked.get(line.card) ?? 0) + line.quantity);
         newSections.set(line.card, section);
       }
     }
-    if (!detectedChampion) {
-      setPasteError("Couldn't find a Champion card in this decklist.");
-      return;
-    }
-
-    if (detectedChampion !== championName) skipNextResetRef.current = true;
     setChampionName(detectedChampion);
-    setSpiritFilter(detectedSpirit ? (spiritCanonicalNames.get(detectedSpirit) ?? detectedSpirit) : null);
+    setSpiritFilter(detectedSpirit);
     setLockedCards(newLocked);
     setLockedSections(newSections);
     setMaybeboard(new Map());
@@ -127,8 +91,6 @@ export function useBuilderLifecycle(options: BuilderLifecycleOptions) {
   function resetBuilder() {
     clearBuilderSession(sessionStorage);
     resetChangeTracking();
-    skipNextResetRef.current = false;
-    lastResetChampionRef.current = null;
     startTransition(() => {
       setChampionName(null);
       setSpiritFilter(null);

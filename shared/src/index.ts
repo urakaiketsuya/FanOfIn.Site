@@ -30,3 +30,4 @@ export * from "./packageSeeds.js";
 export * from "./similarity.js";
 export * from "./spiritNames.js";
 export * from "./public-api-types.js";
+export * from "./recommendationEligibility.js";

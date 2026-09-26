@@ -1,21 +1,20 @@
 import { useEffect, useMemo, useState, type Dispatch, type SetStateAction } from "react";
-import type { DeckFormat } from "@gatcg/shared";
+import { availableDeckElements, type DeckFormat } from "@gatcg/shared";
 import { championSlugsFor, mergeCardInclusionBuckets } from "../../community/data";
 import { useCardsByNames } from "../../events/useCardsByNames";
 import { usePriceTrendByName } from "../../pricing/usePriceTrendByName";
 import type { RatingPillar } from "../../../lib/deckIdentity";
 import { computeCardDecay } from "../../../lib/cardDecay";
-import { buildSuggestedDeck } from "../engine/buildSuggestedDeck";
+import { buildChosenDeck } from "../engine/buildChosenDeck";
 import { deriveArchetypeOptions, deriveReviewGroups } from "../engine/builderSelectors";
 import { useDeckBuilderData } from "../data/useDeckBuilderData";
 import type { BuilderWorkbenchView } from "../components/BuilderWorkbenchNav";
 import type { CollectionMode, LockedSection, PopulationSource } from "../model/builderTypes";
-import { computeIdentityElements, findChampionCard, useSuggestedBuild } from "../useSuggestedBuild";
-import { useCommunitySuggestedBuild } from "../useCommunitySuggestedBuild";
 import { useSimulatorSuggestedBuild } from "../useSimulatorSuggestedBuild";
 import { buildCardCategoryRecommendations } from "../cardCategoryRecommendations";
 
 interface BuilderRecommendationModelOptions {
+  recommendationsEnabled: boolean;
   championName: string | null;
   spiritFilter: string | null;
   setSpiritFilter: Dispatch<SetStateAction<string | null>>;
@@ -36,15 +35,15 @@ interface BuilderRecommendationModelOptions {
 /** Loads recommendation evidence and turns the current selections into a complete suggested build. */
 export function useBuilderRecommendationModel(options: BuilderRecommendationModelOptions) {
   const {
-    championName, spiritFilter, setSpiritFilter, deckFormat, tab, lockedCards, lockedSections,
-    rejectedCards, pillarBias, archetypeId, championLevelCap, populationSource, collectionMode,
-    maybeboard, spiritElement,
+    championName, spiritFilter, deckFormat, tab, lockedCards, lockedSections,
+    rejectedCards, pillarBias, archetypeId, populationSource, collectionMode,
+    maybeboard, spiritElement, recommendationsEnabled,
   } = options;
   const loadPrices = Boolean(championName && spiritFilter && tab === "build");
   const priceTrendByName = usePriceTrendByName(loadPrices);
   const [dismissedReviewCards, setDismissedReviewCards] = useState<Set<string>>(new Set());
   const builderData = useDeckBuilderData({
-    championName,
+    championName: recommendationsEnabled ? championName : null,
     format: deckFormat,
     includeDecodedDecks: false,
     needs: {
@@ -64,7 +63,6 @@ export function useBuilderRecommendationModel(options: BuilderRecommendationMode
     spiritCanonicalNames,
     collectionOwnedByName,
     population: { rows, spiritsPresent, loading: populationLoading },
-    cardQuantityStats: cardQuantityStatsData,
     archetypeTaxonomy: archetypeTaxonomyData,
     communityInclusion: communityCardInclusion,
     simulatorSummary,
@@ -75,20 +73,6 @@ export function useBuilderRecommendationModel(options: BuilderRecommendationMode
     Array.from(lockedCards.entries()).filter(([name]) => !catalogByName.get(name)?.types.includes("CHAMPION")),
   ), [lockedCards, catalogByName]);
 
-  useEffect(() => {
-    if (!spiritFilter) return;
-    const canonical = spiritCanonicalNames.get(spiritFilter);
-    if (canonical && canonical !== spiritFilter) setSpiritFilter(canonical);
-  }, [spiritFilter, spiritCanonicalNames, setSpiritFilter]);
-
-  const collectionRejectedCards = useMemo(() => {
-    if (collectionMode !== "owned-only") return rejectedCards;
-    const next = new Set(rejectedCards);
-    for (const card of cardCatalog) {
-      if ((collectionOwnedByName.get(card.name) ?? 0) === 0 && !lockedCards.has(card.name)) next.add(card.name);
-    }
-    return next;
-  }, [collectionMode, rejectedCards, cardCatalog, collectionOwnedByName, lockedCards]);
   const archetypeOptions = useMemo(
     () => deriveArchetypeOptions(championName, archetypeTaxonomyData),
     [championName, archetypeTaxonomyData],
@@ -99,25 +83,15 @@ export function useBuilderRecommendationModel(options: BuilderRecommendationMode
       : undefined,
     [archetypeTaxonomyData, archetypeId, archetypeOptions],
   );
-  const archetypePrevalence = useMemo(
-    () => selectedArchetype
-      ? new Map(selectedArchetype.definingCards.map((card) => [card.name, card.prevalence]))
-      : undefined,
-    [selectedArchetype],
-  );
   const recommendationRows = useMemo(() => {
     if (!selectedArchetype) return rows;
     const deckIds = new Set(selectedArchetype.deckIds);
     return rows.filter((row) => deckIds.has(row.deckId));
   }, [rows, selectedArchetype]);
-  const championCard = useMemo(
-    () => findChampionCard(recommendationRows, lockedCards, catalogByName),
-    [recommendationRows, lockedCards, catalogByName],
-  );
-  const spiritCardForIdentity = spiritFilter ? catalogByName.get(spiritFilter) : undefined;
   const identityElements = useMemo(
-    () => computeIdentityElements(championCard, spiritCardForIdentity),
-    [championCard, spiritCardForIdentity],
+    () => availableDeckElements(Array.from(lockedCards).filter(([name, quantity]) => quantity > 0 && (lockedSections.get(name) === "material" || !lockedSections.has(name)))
+      .map(([name]) => catalogByName.get(name)).filter((card) => card?.types.includes("CHAMPION"))),
+    [lockedCards, lockedSections, catalogByName],
   );
   const communityChampData = useMemo(() => {
     if (!communityCardInclusion || !championName) return undefined;
@@ -130,17 +104,9 @@ export function useBuilderRecommendationModel(options: BuilderRecommendationMode
     () => communityChampData ? new Map(communityChampData.cards.map((card) => [card.name, card])) : undefined,
     [communityChampData],
   );
-  const communityLockedCards = useMemo(() => {
-    if (deckFormat !== "PANTHEON" || !spiritFilter) return lockedCards;
-    return new Map(lockedCards).set(spiritFilter, 1);
-  }, [deckFormat, spiritFilter, lockedCards]);
   const decayReport = useMemo(
     () => computeCardDecay(recommendationRows, spiritFilter, catalogByName),
     [recommendationRows, spiritFilter, catalogByName],
-  );
-  const decayingCardBoost = useMemo(
-    () => decayReport ? new Map(decayReport.signals.map((signal) => [signal.cardName, signal.decay])) : undefined,
-    [decayReport],
   );
   const decaySignalByName = useMemo(
     () => decayReport ? new Map(decayReport.signals.map((signal) => [signal.cardName, signal])) : undefined,
@@ -163,34 +129,21 @@ export function useBuilderRecommendationModel(options: BuilderRecommendationMode
     ]));
   }, [communityInclusionByName, tournamentInclusionByName]);
 
-  const tournamentBuild = useSuggestedBuild(
-    recommendationRows, spiritFilter, lockedCards, collectionRejectedCards, populationLoading,
-    lockedSections, cardQuantityStatsData, championCard, pillarBias, undefined, undefined,
-    archetypePrevalence, collectionOwnedByName, collectionMode, championLevelCap,
-  );
-  const balancedBuild = useSuggestedBuild(
-    recommendationRows, spiritFilter, lockedCards, collectionRejectedCards, populationLoading,
-    lockedSections, cardQuantityStatsData, championCard, pillarBias, communityInclusionByName,
-    decayingCardBoost, archetypePrevalence, collectionOwnedByName, collectionMode, championLevelCap,
-  );
-  const communityBuild = useCommunitySuggestedBuild(
-    communityChampData, communityLockedCards, lockedSections, collectionRejectedCards, catalogByName,
-    !communityCardInclusion, identityElements, deckFormat, championCard, spiritCardForIdentity,
-  );
-  const simulatorResult = useSimulatorSuggestedBuild(communityBuild, simulatorSummary, cardCatalog);
+  const build = useMemo(() => buildChosenDeck(lockedCards, lockedSections, spiritFilter, catalogByName),
+    [lockedCards, lockedSections, spiritFilter, catalogByName]);
+  const simulatorResult = useSimulatorSuggestedBuild(build, simulatorSummary, cardCatalog);
   const effectivePopulationSource: PopulationSource = deckFormat === "PANTHEON" ? "community" : populationSource;
-  const cardCategoryRecommendations = useMemo(() => buildCardCategoryRecommendations({
+  const cardCategoryRecommendations = useMemo(() => recommendationsEnabled && championName && spiritFilter ? buildCardCategoryRecommendations({
     catalog: cardCatalog,
-    rows: recommendationRows,
+    rows: recommendationRows.filter((row) => row.spiritName === spiritFilter),
     communityRateByName: communityInclusionByName && new Map(Array.from(communityInclusionByName, ([name, entry]) => [name, entry.percentOfDecks])),
     identityElements,
     format: deckFormat,
     source: effectivePopulationSource,
-  }), [cardCatalog, recommendationRows, communityInclusionByName, identityElements, deckFormat, effectivePopulationSource]);
-  const build = useMemo(() => buildSuggestedDeck(
-    { format: deckFormat, populationSource, collectionMode },
-    { tournament: tournamentBuild, balanced: balancedBuild, community: communityBuild, simulator: simulatorResult.build, collectionOwnedByName },
-  ), [deckFormat, populationSource, collectionMode, tournamentBuild, balancedBuild, communityBuild, simulatorResult.build, collectionOwnedByName]);
+  }).filter((item) => !rejectedCards.has(item.card.name) && (collectionMode !== "owned-only" || (collectionOwnedByName.get(item.card.name) ?? 0) > 0))
+    .map((item) => collectionMode === "owned-only" ? { ...item, recommendedQuantity: Math.min(item.recommendedQuantity, collectionOwnedByName.get(item.card.name) ?? 0) } : item)
+    .sort((a, b) => collectionMode === "prioritize" ? Number((collectionOwnedByName.get(b.card.name) ?? 0) > 0) - Number((collectionOwnedByName.get(a.card.name) ?? 0) > 0) || b.score - a.score : b.score - a.score)
+    : [], [rejectedCards, collectionMode, collectionOwnedByName, recommendationsEnabled, championName, spiritFilter, cardCatalog, recommendationRows, communityInclusionByName, identityElements, deckFormat, effectivePopulationSource]);
   const reviewSuggestions = useMemo(
     () => build.suggestions.filter((card) => !dismissedReviewCards.has(card.cardName)),
     [build.suggestions, dismissedReviewCards],
@@ -224,8 +177,8 @@ export function useBuilderRecommendationModel(options: BuilderRecommendationMode
     return stats;
   }, [rows, spiritsPresent]);
   const sortedSpirits = useMemo(
-    () => [...spiritsPresent].sort((a, b) => (spiritStats.get(b)?.decks ?? 0) - (spiritStats.get(a)?.decks ?? 0) || a.localeCompare(b)),
-    [spiritsPresent, spiritStats],
+    () => Array.from(new Set([...spiritsPresent, ...cardCatalog.filter((card) => card.subtypes.includes("SPIRIT") && card.legality?.[deckFormat]?.limit !== 0).map((card) => card.name)])).sort((a, b) => (spiritStats.get(b)?.decks ?? 0) - (spiritStats.get(a)?.decks ?? 0) || a.localeCompare(b)),
+    [spiritsPresent, spiritStats, cardCatalog, deckFormat],
   );
   const spiritElements = useMemo(
     () => Array.from(new Set(sortedSpirits.flatMap((name) => liveCatalogByName.get(name)?.elements ?? [])))

@@ -1,3 +1,4 @@
+import DisclosureChevron from "../../components/DisclosureChevron";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER } from "@gatcg/shared";
@@ -125,7 +126,7 @@ export default function TournamentsIndex() {
       </div>
 
       <details className="group mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 sm:p-4">
-        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between text-sm font-semibold text-ctp-text [&::-webkit-details-marker]:hidden"><span>Filter and sort{[category, setting, seasonId, country, dateFrom, dateTo, decklists !== "any" ? decklists : null, minPlayers > 0 ? minPlayers : null].filter(Boolean).length ? ` · ${[category, setting, seasonId, country, dateFrom, dateTo, decklists !== "any" ? decklists : null, minPlayers > 0 ? minPlayers : null].filter(Boolean).length} active` : ""}</span><span aria-hidden="true" className="text-ctp-subtext0 transition-transform group-open:rotate-180">⌄</span></summary>
+        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between text-sm font-semibold text-ctp-text [&::-webkit-details-marker]:hidden"><span>Filter and sort{[category, setting, seasonId, country, dateFrom, dateTo, decklists !== "any" ? decklists : null, minPlayers > 0 ? minPlayers : null].filter(Boolean).length ? ` · ${[category, setting, seasonId, country, dateFrom, dateTo, decklists !== "any" ? decklists : null, minPlayers > 0 ? minPlayers : null].filter(Boolean).length} active` : ""}</span><DisclosureChevron className="text-ctp-subtext0 transition-transform group-open:rotate-180" /></summary>
       <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
         <span className="text-ctp-subtext0">Type:</span>
         <button

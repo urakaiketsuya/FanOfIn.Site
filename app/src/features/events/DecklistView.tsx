@@ -1,3 +1,4 @@
+import DisclosureChevron from "../../components/DisclosureChevron";
 import { useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { Card, DeckCollectionLine, DeckFormat, OmnidexDecklist, OmnidexDecklistCardLine } from "@gatcg/shared";
@@ -185,7 +186,7 @@ export default function DecklistView({
     <div data-component="DecklistView">
       <div className="relative mb-3 flex flex-wrap items-center gap-1 border-b border-ctp-surface0 pb-2">
         <details className="group">
-          <summary className="flex min-h-11 cursor-pointer list-none items-center rounded-md px-3 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">Display <span aria-hidden="true" className="ml-1">▾</span></summary>
+          <summary className="flex min-h-11 cursor-pointer list-none items-center rounded-md px-3 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">Display <DisclosureChevron className="ml-1" /></summary>
           <div className="absolute left-0 top-full z-30 mt-1 max-h-[60dvh] w-72 max-w-full space-y-3 overflow-y-auto rounded-xl border border-ctp-surface1 bg-ctp-base p-3 shadow-xl">
             <div className="flex gap-1" role="group" aria-label="Decklist display">{(["compact", "visual", "detailed"] as const).map((mode) => <button key={mode} type="button" onClick={() => setDisplayMode(mode)} aria-pressed={displayMode === mode} className={`min-h-11 flex-1 rounded-md px-2 text-xs capitalize ${displayMode === mode ? "bg-ctp-blue/15 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>{mode}</button>)}</div>
             {displayMode === "visual" && <>

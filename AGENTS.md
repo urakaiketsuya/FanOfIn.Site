@@ -41,6 +41,20 @@ cd app && npm run lint
 - Cross-workspace reusable logic goes in `shared/`, not duplicated in app or pipeline.
 - Pages that recompute over large datasets use `useTransition` for "recalculating…" UX.
 
+## UX/UI defaults — apply without prompting
+
+All new or revised user interfaces must be mobile-first, follow Material Design interaction principles, and use progressive disclosure. Treat these as standing acceptance criteria, including when a task only asks for a feature or bug fix that changes UI.
+
+- Start with a single-column layout at 360–390px. Add desktop enhancements after the mobile flow works. Preserve the site's existing theme and shared components; this rule does not require adopting a new component library.
+- Make the user's immediate task and primary action obvious. Let users begin with minimal setup; ask for information only when the next action requires it. Preserve unfinished work and support drafts.
+- Show essential content and common actions first. Reveal optional recommendations, advanced filters, tuning, evidence, and methodology on demand through clearly labeled controls. Keep errors, required fields, and important status visible.
+- Use the shared `DisclosureChevron` for dropdown/disclosure indicators (20px with consistent stroke and alignment), rather than small text glyphs.
+- Use consistent Material-style hierarchy, spacing, surfaces, and action emphasis. Prefer an inline expansion for local details and a dialog or bottom sheet for a focused secondary task. Avoid nested disclosure and competing primary buttons.
+- Provide touch targets of at least 48×48 CSS pixels for mobile controls, readable labels, visible keyboard focus, accessible names, and appropriate expanded/selected states. Do not rely on hover, color, or icons alone to communicate actions or state.
+- Keep frequent actions reachable while scrolling, but ensure sticky controls and overlays do not cover content, focused fields, or actions when the on-screen keyboard is open. Avoid horizontal page scrolling.
+- Recommendations are opt-in assistance. Keep suggestions distinct from the user's actual selections; add or replace content only through an explicit user action. Ask for missing recommendation context when recommendations are requested, rather than blocking manual work.
+- Before calling a UI change complete, verify the main flow at a narrow mobile viewport and a desktop viewport. Check empty, loading, error, and expanded states relevant to the change, plus touch target sizes, keyboard access, and overflow. Report any verification that could not be performed.
+
 ## Gotchas
 
 - **cwd doesn't persist** between tool calls — always `cd` explicitly before commands.

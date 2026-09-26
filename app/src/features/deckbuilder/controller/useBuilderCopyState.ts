@@ -104,7 +104,7 @@ export function useBuilderCopyState({
   }, [decklist]);
 
   async function handleSaveToMyDecks() {
-    if (!championName || saveCopyCount === 0) return;
+    if (saveCopyCount === 0) return;
     setSaveState("saving");
     try {
       const result = await saveBuilderDeck({

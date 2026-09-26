@@ -1,10 +1,11 @@
+import type { DeckFormat } from "@gatcg/shared";
 import type { RatingPillar } from "../../../lib/deckIdentity";
 import { selectionsToMaps, type ChangeLogEntry, type LockedSection, type PopulationSource } from "../model/builderTypes";
 import { loadBuilderSession, parseBuilderShareParams } from "./builderPersistence";
 import { loadActiveDeckWorkspace } from "./deckWorkspace";
 
 export interface BuilderSeed {
-  championName: string;
+  championName: string | null;
   spiritFilter: string | null;
   lockedCards: Map<string, number>;
   lockedSections: Map<string, LockedSection>;
@@ -12,6 +13,7 @@ export interface BuilderSeed {
 }
 
 export interface BuilderSessionSeed extends BuilderSeed {
+  format: DeckFormat;
   rejectedCards: Set<string>;
   pillarBias: RatingPillar | null;
   populationSource: PopulationSource;
@@ -25,10 +27,10 @@ export interface BuilderSessionSeed extends BuilderSeed {
  * briefly initialize and then erase locked-card selections. */
 export function parseBuilderUrlSeed(searchParams: URLSearchParams): BuilderSeed | null {
   const selection = parseBuilderShareParams(searchParams);
-  if (!selection?.championName) return null;
+  if (!selection) return null;
   const { cards: lockedCards, sections: lockedSections } = selectionsToMaps(selection.lockedCards ?? []);
   return {
-    championName: selection.championName,
+    championName: selection.championName ?? null,
     spiritFilter: selection.spiritName ?? null,
     archetypeId: selection.archetypeId ?? null,
     lockedCards,
@@ -47,6 +49,7 @@ export function loadBuilderSessionSeed(storage: Storage): BuilderSessionSeed | n
       ...workspace.sideboard.map((line) => ({ ...line, section: "sideboard" as const })),
     ]);
     return {
+      format: workspace.format,
       championName: workspace.championName,
       spiritFilter: workspace.spiritName,
       lockedCards: locked.cards,
@@ -63,10 +66,11 @@ export function loadBuilderSessionSeed(storage: Storage): BuilderSessionSeed | n
   }
 
   const session = loadBuilderSession(storage);
-  if (!session?.selection.championName) return null;
+  if (!session) return null;
   const locked = selectionsToMaps(session.selection.lockedCards);
   const maybeboard = selectionsToMaps(session.selection.maybeboard);
   return {
+    format: session.selection.format,
     championName: session.selection.championName,
     spiritFilter: session.selection.spiritName,
     lockedCards: locked.cards,

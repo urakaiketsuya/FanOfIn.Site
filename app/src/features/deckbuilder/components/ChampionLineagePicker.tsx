@@ -1,3 +1,4 @@
+import DisclosureChevron from "../../../components/DisclosureChevron";
 import { useMemo } from "react";
 import type { Card, DeckFormat } from "@gatcg/shared";
 import type { SuggestedCard } from "../useSuggestedBuild";
@@ -82,7 +83,7 @@ export default function ChampionLineagePicker({
           <span className="block text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Champion lineage</span>
           <span className="mt-0.5 block truncate text-xs text-ctp-text">{summary || "Suggested path is loading…"}</span>
         </span>
-        <span className="shrink-0 text-xs font-medium text-ctp-blue">Change <span aria-hidden="true">▾</span></span>
+        <span className="shrink-0 text-xs font-medium text-ctp-blue">Change <DisclosureChevron /></span>
       </summary>
 
       <div className="border-t border-ctp-surface1 px-3 py-3">

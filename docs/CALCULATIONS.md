@@ -803,6 +803,22 @@ follow-up UI phase.
 
 ## Guided Deck Builder (`app/src/features/deckbuilder/useDeckBuilderPopulation.ts`, `useSuggestedBuild.ts`)
 
+### Manual workbench and recommendation eligibility
+
+The Deck Workbench now contains only explicit card selections; the automatic-construction
+engine described below remains separate from the editable deck. Recommendations are opt-in.
+Deck-page "Cards that might help", comparison additions, and workbench card recommendations
+use `shared/src/recommendationEligibility.ts` before applying their result limits. Available
+elements come from the actual Material-deck Champion/Spirit cards, not the most frequent
+elements in Main or cards in Sideboard. Normal is always available; another advanced element
+also enables Exalted, according to its printed reminder text. A candidate must satisfy every
+printed element requirement. Unresolved candidates, tokens, and Champion/Spirit replacements
+are excluded from these add-card suggestions. Unrecorded element choices, such as Prismatic
+Spirit's chosen elements, do not grant speculative access. Evidence about cards already in the
+deck remains available for review even when those cards would not qualify as additions.
+
+### Automatic construction engine
+
 Assembles a suggested build for a Champion (+ optional Spirit filter) from real decks — not one
 example decklist, but the actual highest-win-rate card at each slot — and lets the viewer lock in
 their own picks, re-ranking the rest against a population conditioned on those locks. Fully
@@ -3013,3 +3029,20 @@ smaller than 60; Material and Sideboard are excluded from draw pools.
 
 Explanatory prose is collapsed under Details. Access-only, supported-route, and resource-ceiling
 labels remain visible to identify what each headline measures.
+
+### Package condition review
+
+Package mining uses main + material only. Family `ruleEvidence` is measured against the complete
+required-card and option rule; the existing family score remains labeled as best source evidence.
+The expandable family reviewer preserves original findings and shows other anchors sharing at
+least two options. This is a review aid, not an automatic merge. Drafts support any number of AND
+groups, each requiring a minimum number of distinct names from its own option pool. A name may
+satisfy multiple groups when explicitly included in each. Required cards remain fixed to the
+family core. Drafts persist locally and only explicit approval creates a local guardrail.
+
+The reviewer compares original and draft support, conditional confidence, and lift using all
+indexed main + material decks. Confidence is matching decks / required-card decks; lift divides
+that confidence by group-only prevalence across the index. These pooled descriptive metrics do
+not estimate win-rate improvement or establish causation. Missing denominators display unavailable.
+Existing one-pool approvals retain their behavior; reviewed approvals store the complete rule and
+have rule-specific IDs so different conditions on the same card set remain distinct.

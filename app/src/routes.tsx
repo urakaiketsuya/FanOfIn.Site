@@ -114,6 +114,7 @@ const CardDiscoveryIndex = lazy(() => import("./features/card-discovery/CardDisc
 const RegionsIndex = lazy(() => import("./features/regions/RegionsIndex"));
 const PackOpener = lazy(() => import("./features/packs/PackOpener"));
 const ChangelogIndex = lazy(() => import("./features/changelog/ChangelogIndex"));
+const ApiDocs = lazy(() => import("./pages/ApiDocs"));
 const Methodology = lazy(() => import("./pages/Methodology"));
 const CommunityDecksIndex = lazy(() => import("./features/community/CommunityDecksIndex"));
 const CommunityDeckSearchIndex = lazy(() => import("./features/community/CommunityDeckSearchIndex"));
@@ -220,6 +221,7 @@ export default function AppRoutes() {
         <Route path="/regions" element={<RegionsIndex />} />
         <Route path="/packs/:prefix" element={<PackOpener />} />
         <Route path="/changelog" element={<ChangelogIndex />} />
+        <Route path="/docs/api" element={<ApiDocs />} />
         <Route path="/methodology" element={<Methodology />} />
         <Route path="/community-decks" element={<CommunityDecksIndex />} />
         <Route path="/community-decks/search" element={<CommunityDeckSearchIndex />} />

@@ -1,5 +1,6 @@
 import {
   decodeCardLines,
+  measurePackageRule,
   scoreTieredPackageConfidence,
   DEFAULT_PACKAGE_CONFIDENCE_TIERS,
   PACKAGE_CONFIDENCE_TIER_LABELS,
@@ -100,7 +101,7 @@ export function computePackageCandidates(
     if (!championName) return [];
     return [{
       championName,
-      cards: new Set([...entry.main, ...entry.material, ...entry.sideboard].map(([index]) => cardNames[index])),
+      cards: new Set([...entry.main, ...entry.material].map(([index]) => cardNames[index])),
     }];
   });
   const deckIndexesByCard = new Map<string, number[]>();
@@ -192,7 +193,7 @@ export function computePackageCandidates(
   return {
     generatedAt: new Date().toISOString(),
     candidates: [...deduped.values()].sort((a, b) => b.confidenceScore - a.confidenceScore),
-    families: buildPackageCandidateFamilies(candidates),
+    families: buildPackageCandidateFamilies(candidates).map((family) => ({ ...family, ruleEvidence: measurePackageRule(decks.map((deck) => deck.cards), { requiredCards: [family.anchorCard, ...family.coreCards], groups: [{ cards: family.optionCards, minimum: family.minOptions }] }) })),
   };
 }
 
@@ -238,6 +239,7 @@ export function buildPackageCandidateFamilies(candidates: PackageCandidateEviden
       const strongest = component.filter((candidate) => candidate.confidenceScore >= strongestScore - 5);
       const minOptions = Math.max(1, ...strongest.map((candidate) => candidate.memberCards.filter((card) => optionCards.includes(card)).length));
       families.push({
+        sourceFindings: component,
         anchorCard: first.anchorCard,
         coreCards,
         optionCards,

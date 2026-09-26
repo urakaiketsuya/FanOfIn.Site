@@ -1,82 +1,55 @@
+import DisclosureChevron from "../../../components/DisclosureChevron";
 import { Link } from "react-router-dom";
-import type { DeckFormat } from "@gatcg/shared";
-import DeckToolWorkspaceHeader from "./DeckToolWorkspaceHeader";
 
 export type BuilderWorkbenchView = "build" | "tools" | "copy" | "log";
 
 const PRIMARY_STAGES: { view: Extract<BuilderWorkbenchView, "build" | "copy">; label: string }[] = [
-  { view: "build", label: "Build" },
-  { view: "copy", label: "Finish" },
+  { view: "build", label: "Deck" },
+  { view: "copy", label: "Save & export" },
 ];
 
 const SUPPORTING_TOOLS: { view: Extract<BuilderWorkbenchView, "tools" | "log">; label: string }[] = [
-  { view: "tools", label: "Build settings" },
+  { view: "tools", label: "Recommendation settings" },
   { view: "log", label: "Change history" },
 ];
 
 export default function BuilderWorkbenchNav({
   activeView,
   onViewChange,
-  championName,
-  spiritName,
-  deckFormat,
-  mainTotal,
-  materialTotal,
-  sideboardTotal,
-  validationStatus,
   changeLogCount,
+  onOpenDisplay,
 }: {
   activeView: BuilderWorkbenchView;
   onViewChange: (view: BuilderWorkbenchView) => void;
-  championName: string;
-  spiritName: string;
-  deckFormat: DeckFormat;
-  mainTotal: number;
-  materialTotal: number;
-  sideboardTotal: number;
-  validationStatus: string;
   changeLogCount: number;
+  onOpenDisplay: () => void;
 }) {
   const primaryActive = PRIMARY_STAGES.some((stage) => stage.view === activeView);
   const activeSupport = SUPPORTING_TOOLS.find((tool) => tool.view === activeView);
-  const buildComplete = mainTotal > 0;
-  const finishComplete = validationStatus === "Legal";
-  const stageComplete = (view: (typeof PRIMARY_STAGES)[number]["view"]) => {
-    if (view === "build") return buildComplete;
-    if (view === "copy") return finishComplete;
-    return false;
-  };
-
   return (
     <section data-component="BuilderWorkbenchNav" className="mt-5 overflow-hidden rounded-xl border border-ctp-surface1 bg-ctp-mantle">
-      <DeckToolWorkspaceHeader embedded showToolNav={false} activeTool="builder" championName={championName} spiritName={spiritName} format={deckFormat} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} actions={<span className={`rounded-full px-2 py-1 ${finishComplete ? "bg-ctp-green/10 text-ctp-green" : "bg-ctp-yellow/10 text-ctp-yellow"}`}>{validationStatus}</span>} />
 
-      <nav aria-label="Deck workflow" className="grid grid-cols-2 border-b border-ctp-surface1">
-        {PRIMARY_STAGES.map((stage, index) => {
+      <nav aria-label="Deck workspace" className="grid grid-cols-2 border-b border-ctp-surface1">
+        {PRIMARY_STAGES.map((stage) => {
           const active = activeView === stage.view;
-          const complete = stageComplete(stage.view);
-          const summary = stage.view === "build"
-            ? buildComplete ? `${mainTotal} main cards` : "Shape the deck"
-            : finishComplete ? "Ready to save" : validationStatus;
           return (
             <button
               key={stage.view}
               id={`deck-builder-tab-${stage.view}`}
               type="button"
               onClick={() => onViewChange(stage.view)}
-              aria-current={active ? "step" : undefined}
-              className={`border-b-2 px-3 py-3 text-left transition-colors ${active ? "border-ctp-blue bg-ctp-blue/5 text-ctp-blue" : complete ? "border-transparent text-ctp-green hover:bg-ctp-surface0" : "border-transparent text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text"}`}
+              aria-current={active ? "page" : undefined}
+              className={`border-b-2 px-3 py-3 text-left transition-colors ${active ? "border-ctp-blue bg-ctp-blue/5 text-ctp-blue" : "border-transparent text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text"}`}
             >
-              <span className="block text-xs font-semibold">{complete ? "✓" : index + 1} {stage.label}</span>
-              <span className="mt-0.5 block truncate text-[10px] text-ctp-subtext0">{summary}</span>
+              <span className="block text-sm font-semibold">{stage.label}</span>
             </button>
           );
         })}
       </nav>
 
       <details className="group px-4 py-2" open={!primaryActive}>
-        <summary className="cursor-pointer list-none text-xs font-medium text-ctp-subtext1 hover:text-ctp-text">
-          {activeSupport ? activeSupport.label : "More"} <span aria-hidden="true" className="group-open:hidden">▾</span><span aria-hidden="true" className="hidden group-open:inline">▴</span>
+        <summary className="flex min-h-12 cursor-pointer list-none items-center text-xs font-medium text-ctp-subtext1 hover:text-ctp-text">
+          {activeSupport ? activeSupport.label : "More"} <DisclosureChevron className="ml-1 group-open:rotate-180" />
         </summary>
         <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label="Supporting deck tools">
           {SUPPORTING_TOOLS.map((tool) => {
@@ -84,8 +57,9 @@ export default function BuilderWorkbenchNav({
             const suffix = tool.view === "log" ? ` (${changeLogCount})` : "";
             return <button key={tool.view} id={`deck-builder-tab-${tool.view}`} type="button" aria-pressed={active} onClick={() => onViewChange(tool.view)} className={`rounded-md border px-2.5 py-1.5 text-xs ${active ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text"}`}>{tool.label}{suffix}</button>;
           })}
-          <Link to="/deck-analysis" className="rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Analyze deck</Link>
-          <Link to="/deck-review" className="rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Review suggestions</Link>
+          <button type="button" onClick={onOpenDisplay} className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-text">Card display</button>
+          <Link to="/deck-analysis" className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Analyze deck</Link>
+          <Link to="/deck-review" className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Review suggestions</Link>
         </div>
       </details>
     </section>

@@ -1,7 +1,7 @@
 import type { Card, DeckFormat } from "@gatcg/shared";
 import type { PopulationSource } from "./model/builderTypes";
 import type { DeckBuilderRow } from "./useDeckBuilderPopulation";
-import { isElementCompatible } from "./suggestedBuild/identityRules";
+import { isAvailableDeckRecommendation } from "@gatcg/shared";
 
 export interface CardCategoryRecommendation {
   card: Card;
@@ -50,9 +50,9 @@ export function buildCardCategoryRecommendations({
   }
 
   return catalog.flatMap((card) => {
-    if (card.types.includes("CHAMPION") || card.subtypes.includes("SPIRIT")) return [];
+    if (card.types.includes("CHAMPION")) return [];
     const limit = legalLimit(card, format);
-    if (limit === 0 || !isElementCompatible(card, identityElements)) return [];
+    if (limit === 0 || !isAvailableDeckRecommendation(card, identityElements)) return [];
     const tournament = appearances.get(card.name);
     const tournamentRate = rows.length > 0 ? (tournament?.decks ?? 0) / rows.length : 0;
     const communityRate = communityRateByName?.get(card.name) ?? 0;

@@ -1,3 +1,4 @@
+import DisclosureChevron from "./components/DisclosureChevron";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AppRoutes from "./routes";
@@ -73,7 +74,7 @@ export default function App() {
               const open = openGroup === group.label;
               const menuId = `nav-links-${group.label.toLowerCase()}`;
               return <div key={group.label} className="relative" onMouseEnter={() => setOpenGroup(group.label)} onMouseLeave={() => setOpenGroup(null)} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setOpenGroup(null); }} onKeyDown={(event) => { if (event.key === "Escape") setOpenGroup(null); }}>
-                <button type="button" aria-expanded={open} aria-controls={menuId} onClick={() => setOpenGroup(open ? null : group.label)} className={`min-h-11 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${active ? "bg-forest-surface text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-mantle hover:text-ctp-text"}`}>{group.label}<span aria-hidden="true" className="ml-1 text-[10px] text-ctp-subtext0">▾</span></button>
+                <button type="button" aria-expanded={open} aria-controls={menuId} onClick={() => setOpenGroup(open ? null : group.label)} className={`min-h-11 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${active ? "bg-forest-surface text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-mantle hover:text-ctp-text"}`}>{group.label}<DisclosureChevron className={`ml-1 ${open ? "rotate-180" : ""}`} /></button>
                 <div id={menuId} className={`absolute right-0 top-full z-50 min-w-52 pt-2 transition-opacity duration-150 ${open ? "visible opacity-100" : "invisible opacity-0"}`}>
                   <div className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-1.5 shadow-xl shadow-black/20">{group.links.map((link) => <Link key={link.to} to={link.to} aria-current={isActive(link.to) ? "page" : undefined} className={linkClass(isActive(link.to))} onClick={() => setOpenGroup(null)}>{link.label}</Link>)}</div>
                 </div>

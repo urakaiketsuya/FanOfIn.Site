@@ -1,3 +1,4 @@
+import DisclosureChevron from "../../components/DisclosureChevron";
 import { useMemo, useState } from "react";
 import type { OmnidexDecklist } from "@gatcg/shared";
 import { VisualCardTile, type VisualFieldVisibility } from "../../components/VisualCardTile";
@@ -83,7 +84,7 @@ export default function ComparisonDifferences({
                 <span>
                   {label} · {showAll ? `${all.length} card${all.length === 1 ? "" : "s"}` : `${diffCount} difference${diffCount === 1 ? "" : "s"}`}
                 </span>
-                <span className="text-ctp-subtext1">{collapsed ? "▸" : "▾"}</span>
+                <DisclosureChevron className={`text-ctp-subtext1 ${collapsed ? "-rotate-90" : ""}`} />
               </button>
 
               {!collapsed && (

@@ -1,3 +1,4 @@
+import DisclosureChevron from "../../components/DisclosureChevron";
 import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, type OmnidexDecklistEntry, type OmnidexPlayer, type OmnidexStanding } from "@gatcg/shared";
@@ -190,7 +191,7 @@ export default function EventDetail() {
       {secondaryActive && <button type="button" onClick={() => setTab(primaryTabs[0].key)} className="mt-5 text-sm font-medium text-ctp-blue">← Back to event results</button>}
 
       {(event.description || vods.length > 0 || venueEvents.length > 0 || secondaryTabs.length > 0) && <details className="group mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2">
-        <summary className="flex min-h-9 cursor-pointer list-none items-center justify-between gap-3 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden"><span>More event data</span><span aria-hidden="true" className="transition-transform group-open:rotate-180">⌄</span></summary>
+        <summary className="flex min-h-9 cursor-pointer list-none items-center justify-between gap-3 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden"><span>More event data</span><DisclosureChevron className="transition-transform group-open:rotate-180" /></summary>
         <div className="border-t border-ctp-surface1 pb-2 pt-3">
           {event.description && <p className="text-sm text-ctp-subtext0">{event.description}</p>}
           {vods.length > 0 && <div className="mt-3 flex flex-wrap gap-2">{vods.map((vod, i) => <a key={i} href={vod.url} target="_blank" rel="noreferrer" className="rounded-md border border-ctp-blue px-2.5 py-1.5 text-xs text-ctp-blue">▶ {vod.label}</a>)}</div>}

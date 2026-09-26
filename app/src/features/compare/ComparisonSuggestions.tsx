@@ -1,3 +1,4 @@
+import { availableDeckElements } from "@gatcg/shared";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import type { Card, CardImpactEntry, CardImpactRole, OmnidexDecklist } from "@gatcg/shared";
@@ -55,9 +56,10 @@ export default function ComparisonSuggestions({ decks, decklists, baselineKey }:
   const champion = selectedStats?.championName?.split(",")[0].trim() ?? null;
   const currentNames = useMemo(() => selectedList ? new Set([...selectedList.main, ...selectedList.material, ...selectedList.sideboard].map((line) => line.card)) : new Set<string>(), [selectedList]);
   const noExclusions = useMemo(() => new Set<string>(), []);
-  const identityElements = useMemo(() => selectedStats?.elements.filter((element) => element !== "NORM") ?? [], [selectedStats]);
+  const availableElements = useMemo(() => availableDeckElements((selectedList?.material ?? []).filter((line) => line.quantity > 0).map((line) => comparisonCards.get(line.card))), [selectedList, comparisonCards]);
+  const identityElements = useMemo(() => Array.from(availableElements).filter((element) => element !== "NORM"), [availableElements]);
 
-  const additionsResult = useChampionCardImpact(champion, identityElements, currentNames, "best");
+  const additionsResult = useChampionCardImpact(champion, identityElements, currentNames, "best", availableElements);
   const weakestResult = useChampionCardImpact(champion, identityElements, noExclusions, "worst");
   const evidenceCards = useCardsByNames(useMemo(() => [...additionsResult.cards, ...weakestResult.cards].map((entry) => entry.cardName), [additionsResult.cards, weakestResult.cards]));
   const cardsByName = useMemo(() => new Map([...comparisonCards, ...evidenceCards]), [comparisonCards, evidenceCards]);

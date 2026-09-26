@@ -52,3 +52,23 @@ test("share params contain only the portable recipe", () => {
   assert.equal(params.get("locked"), "main:4:Creative Shock");
   assert.equal(params.has("populationSource"), false);
 });
+
+test("partial drafts without Champion or Spirit survive session and share round-trips", async () => {
+  const { parseBuilderUrlSeed, loadBuilderSessionSeed } = await import("../src/features/deckbuilder/persistence/builderSeed");
+  const storage = new MemoryStorage();
+  const session: BuilderSession = {
+    selection: {
+      format: "PANTHEON", championName: null, spiritName: null, archetypeId: null,
+      populationSource: "community", pillarBias: null, championLevelCap: null, collectionMode: "all",
+      lockedCards: [{ name: "Dungeon Guide", quantity: 1, section: "main" }], rejectedCards: [], maybeboard: [],
+    }, changeLog: [],
+  };
+  saveBuilderSession(storage, session);
+  assert.deepEqual(loadBuilderSession(storage), session);
+  const restored = loadBuilderSessionSeed(storage as unknown as Storage);
+  assert.equal(restored?.format, "PANTHEON");
+  assert.equal(restored?.lockedCards.get("Dungeon Guide"), 1);
+  const shared = parseBuilderUrlSeed(createBuilderShareParams(session.selection));
+  assert.equal(shared?.championName, null);
+  assert.equal(shared?.lockedCards.get("Dungeon Guide"), 1);
+});

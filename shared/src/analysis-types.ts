@@ -825,6 +825,8 @@ export interface PackageCandidateEvidence extends TieredPackageMatch {
 }
 
 export interface PackageCandidateFamily {
+  sourceFindings?: PackageCandidateEvidence[];
+  ruleEvidence?: { matchingDecks: number; anchorDecks: number; populationDecks: number; confidence: number | null; lift: number | null };
   anchorCard: string;
   coreCards: string[];
   optionCards: string[];

@@ -1,3 +1,4 @@
+import PackageFamilyReview from "./PackageFamilyReview";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import CardHoverPreview from "../../components/CardHoverPreview";
@@ -177,7 +178,7 @@ export default function PackagesIndex() {
                   <div>
                     <div className="flex flex-wrap items-center gap-2"><h3 className="font-semibold text-ctp-text">{entry.label}</h3><span className="rounded-full bg-ctp-green/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-ctp-green">Local guardrail</span></div>
                     <p className="mt-1 text-xs text-ctp-subtext1">
-                      {entry.optionCards.length > 0
+                      {entry.groups ? `Requires ${entry.requiredCards.join(" + ")} AND ${entry.groups.map((group) => `${group.minimum} of (${group.cards.join(", ")})`).join(" AND ")}` : entry.optionCards.length > 0
                         ? `Requires ${entry.requiredCards.join(" + ")} and ${entry.minOptions} of: ${entry.optionCards.join(", ")}`
                         : entry.memberCards.join(" · ")}
                     </p>
@@ -271,7 +272,7 @@ export default function PackagesIndex() {
         {visibleMinedFamilies.length > 0 && (
           <div className="mb-7">
             <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
-              <div><h3 className="text-lg font-semibold text-ctp-text">Overlapping package families</h3><p className="mt-1 text-xs text-ctp-subtext1">Related candidates merged into required cards and interchangeable options.</p></div>
+              <div><h3 className="text-lg font-semibold text-ctp-text">Overlapping package families</h3><p className="mt-1 text-xs text-ctp-subtext1">Proposed families. Review original findings and test extra conditions before approving.</p></div>
               <span className="rounded-full bg-ctp-teal/10 px-2.5 py-1 text-xs font-semibold text-ctp-teal">{visibleMinedFamilies.length} families</span>
             </div>
             <div className="space-y-4">
@@ -282,9 +283,10 @@ export default function PackagesIndex() {
                 return (
                   <article key={`${family.anchorCard}:${family.optionCards.join("|")}`} className="rounded-xl border border-ctp-teal/30 bg-ctp-mantle p-5">
                     <div className="flex flex-wrap items-start justify-between gap-3">
-                      <div><div className="flex flex-wrap items-center gap-2"><h4 className="text-lg font-semibold text-ctp-text">{family.anchorCard} family</h4><span className="rounded-full bg-ctp-teal/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-ctp-teal">{names.length} cards</span></div><p className="mt-1 text-sm text-ctp-subtext1">Merged from {family.candidateCount} overlapping relationships · {family.matchingDecks.toLocaleString()} strongest matches</p></div>
-                      <div className="flex items-center gap-3"><div className="rounded-lg bg-ctp-base px-3 py-2 text-right"><p className="text-lg font-semibold text-ctp-teal">{family.confidenceScore}/100</p><p className="text-[10px] text-ctp-subtext0">best evidence</p></div>{isApproved ? <button type="button" onClick={() => revoke(approvalId)} className="rounded-md border border-ctp-green/50 bg-ctp-green/10 px-3 py-2 text-xs font-semibold text-ctp-green hover:bg-ctp-red/10 hover:text-ctp-red">Approved locally</button> : <button type="button" onClick={() => approveFamily(`${family.anchorCard} family`, family.anchorCard, family.coreCards, family.optionCards, family.minOptions)} className="rounded-md border border-ctp-teal/50 px-3 py-2 text-xs font-semibold text-ctp-teal hover:bg-ctp-teal/10">Approve family</button>}</div>
+                      <div><div className="flex flex-wrap items-center gap-2"><h4 className="text-lg font-semibold text-ctp-text">{family.anchorCard} family</h4><span className="rounded-full bg-ctp-teal/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-ctp-teal">{names.length} cards</span></div><p className="mt-1 text-sm text-ctp-subtext1">Merged from {family.candidateCount} overlapping relationships · {family.ruleEvidence?.matchingDecks.toLocaleString() ?? "Unmeasured"} complete-rule matches</p></div>
+                      <div className="flex items-center gap-3"><div className="rounded-lg bg-ctp-base px-3 py-2 text-right"><p className="text-lg font-semibold text-ctp-teal">{family.confidenceScore}/100</p><p className="text-[10px] text-ctp-subtext0">best source evidence</p></div>{isApproved ? <button type="button" onClick={() => revoke(approvalId)} className="rounded-md border border-ctp-green/50 bg-ctp-green/10 px-3 py-2 text-xs font-semibold text-ctp-green hover:bg-ctp-red/10 hover:text-ctp-red">Approved locally</button> : <button type="button" onClick={() => approveFamily(`${family.anchorCard} family`, family.anchorCard, family.coreCards, family.optionCards, family.minOptions)} className="rounded-md border border-ctp-teal/50 px-3 py-2 text-xs font-semibold text-ctp-teal hover:bg-ctp-teal/10">Approve family</button>}</div>
                     </div>
+                    <PackageFamilyReview family={family} families={minedFamilies} candidates={minedData?.candidates ?? []} />
                     <div className="mt-4 grid gap-3 md:grid-cols-2">
                       <div className="rounded-lg border border-ctp-surface0 bg-ctp-base/50 px-4 py-3"><h5 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Required</h5><p className="mt-1 text-sm text-ctp-text">{[family.anchorCard, ...family.coreCards].join(" + ")}</p></div>
                       <div className="rounded-lg border border-ctp-surface0 bg-ctp-base/50 px-4 py-3"><h5 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Options</h5><p className="mt-1 text-sm text-ctp-text">At least {family.minOptions} of {family.optionCards.length}: {family.optionCards.join(", ")}</p></div>

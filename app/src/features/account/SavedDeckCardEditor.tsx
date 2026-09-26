@@ -1,3 +1,4 @@
+import DisclosureChevron from "../../components/DisclosureChevron";
 import type { Card, OmnidexDecklist, OmnidexDecklistCardLine } from "@gatcg/shared";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -86,7 +87,7 @@ export function EditableDecklistGrid({ decklist, cardsByName, onChangeQuantity, 
       <button type="button" disabled={selectedCards.length === 0} onClick={() => onAdjustSelected(selectedCards, -1)} className="min-h-11 rounded-lg border border-ctp-surface1 px-3 text-sm font-medium text-ctp-text disabled:opacity-40">−1 each</button>
       <button type="button" disabled={selectedCards.length === 0} onClick={() => onAdjustSelected(selectedCards, 1)} className="min-h-11 rounded-lg bg-ctp-blue px-3 text-sm font-medium text-ctp-base disabled:opacity-40">+1 each</button>
       <details className="relative">
-        <summary className="flex min-h-11 cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-3 text-sm text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More ▾</summary>
+        <summary className="flex min-h-11 cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-3 text-sm text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More <DisclosureChevron className="ml-1" /></summary>
         <div className="absolute right-0 top-full z-30 mt-2 w-60 rounded-xl border border-ctp-surface1 bg-ctp-base p-3 shadow-xl">
           <p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">Selection</p>
           <div className="mt-2 grid grid-cols-2 gap-2"><button type="button" onClick={() => setSelected(new Set(sections.flatMap((section) => section.lines.map((line) => keyFor(section.key, line.card)))))} className="min-h-11 rounded-lg border border-ctp-surface1 px-2 text-xs">Select all</button><button type="button" onClick={() => setSelected(new Set(sections.flatMap((section) => section.lines.filter((line) => line.quantity < Math.max(1, Math.min(cardsByName.get(line.card)?.legality?.STANDARD?.limit ?? 4, 4))).map((line) => keyFor(section.key, line.card)))))} className="min-h-11 rounded-lg border border-ctp-surface1 px-2 text-xs">Below limit</button></div>
@@ -98,7 +99,7 @@ export function EditableDecklistGrid({ decklist, cardsByName, onChangeQuantity, 
       </details>
     </div>
     {sections.map((section) => <details key={section.key} open className="group rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 sm:p-4">
-    <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-ctp-text focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/40 [&::-webkit-details-marker]:hidden"><span>{section.title} Deck</span><span className="flex items-center gap-2"><span className="rounded-full bg-ctp-surface0 px-2 py-0.5 text-xs font-normal text-ctp-subtext1">{section.lines.reduce((total, line) => total + line.quantity, 0)} cards</span><span aria-hidden="true" className="text-ctp-subtext0 transition-transform group-open:rotate-180">⌄</span></span></summary>
+    <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-ctp-text focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/40 [&::-webkit-details-marker]:hidden"><span>{section.title} Deck</span><span className="flex items-center gap-2"><span className="rounded-full bg-ctp-surface0 px-2 py-0.5 text-xs font-normal text-ctp-subtext1">{section.lines.reduce((total, line) => total + line.quantity, 0)} cards</span><DisclosureChevron className="text-ctp-subtext0 group-open:rotate-180" /></span></summary>
     <div className="mt-3 grid grid-cols-1 gap-4 min-[360px]:grid-cols-2 min-[560px]:grid-cols-3 lg:grid-cols-4">{section.lines.map((line) => { const selectionKey = keyFor(section.key, line.card); return <EditableCardTile key={line.card} line={line} card={cardsByName.get(line.card)} section={section.key} selected={selected.has(selectionKey)} onSelect={() => setSelected((current) => { const next = new Set(current); if (next.has(selectionKey)) next.delete(selectionKey); else next.add(selectionKey); return next; })} onChangeQuantity={(quantity) => onChangeQuantity(section.key, line.card, quantity)} onMove={(destination) => onMove(section.key, destination, line.card)} onRemove={() => onRemove(section.key, line.card)} />; })}</div>
   </details>)}</div>;
 }

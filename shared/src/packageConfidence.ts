@@ -43,3 +43,22 @@ export function scoreTieredPackageConfidence(
   const baseline = populationCount > 0 ? memberCount / populationCount : 0;
   return { confidence, lift: baseline > 0 ? confidence / baseline : 0, tier: cleared.tier };
 }
+
+export interface PackageConditionGroup { cards: string[]; minimum: number }
+export interface PackageReviewRule { requiredCards: string[]; groups: PackageConditionGroup[] }
+
+/** Groups are independent requirements; a shared card can satisfy each group containing it. */
+export function matchesPackageRule(cards: ReadonlySet<string>, rule: PackageReviewRule): boolean {
+  return rule.requiredCards.every((card) => cards.has(card)) && rule.groups.every((group) =>
+    new Set(group.cards.filter((card) => cards.has(card))).size >= group.minimum);
+}
+
+export function measurePackageRule(decks: ReadonlySet<string>[], rule: PackageReviewRule) {
+  const anchorDecks = decks.filter((cards) => rule.requiredCards.every((card) => cards.has(card))).length;
+  const optionDecks = decks.filter((cards) => matchesPackageRule(cards, { ...rule, requiredCards: [] })).length;
+  const matchingDecks = decks.filter((cards) => matchesPackageRule(cards, rule)).length;
+  const confidence = anchorDecks ? matchingDecks / anchorDecks : null;
+  const baseline = decks.length ? optionDecks / decks.length : 0;
+  return { matchingDecks, anchorDecks, populationDecks: decks.length, confidence,
+    lift: confidence !== null && baseline > 0 ? confidence / baseline : null };
+}

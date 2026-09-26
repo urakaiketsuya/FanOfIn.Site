@@ -5,48 +5,12 @@ import { useDeckBuilder } from "../useDeckBuilder";
 import BuilderWorkbenchNav from "./BuilderWorkbenchNav";
 
 export function DeckBuilderWorkbenchStatus() {
-  const {
-    build, changeLog, championName, deckFormat, effectivePopulationSource,
-    isPending, mainTotal, materialTotal, pendingActionRef,
-    rejectedCards, setRejectedCards, setTab, sideboardTotal, simulatorResult, simulatorSummary,
-    spiritFilter, startTransition, tab, validation,
-  } = useDeckBuilder();
-
-  return (
-    <>
-      {effectivePopulationSource === "simulator" && (
-        <div className="mt-2 rounded-lg border border-ctp-mauve/50 bg-ctp-mauve/10 px-3 py-2 text-xs text-ctp-subtext1">
-          <span className="font-semibold text-ctp-mauve">Experimental:</span>{" "}
-          Clarent currently reports {simulatorSummary?.games ?? 0} game{simulatorSummary?.games === 1 ? "" : "s"} and {simulatorResult.matchedCards} catalog-resolved card sample{simulatorResult.matchedCards === 1 ? "" : "s"}. Community construction still supplies the legal shell — simulator rows only reorder card priority within it.{" "}
-          <Link to="/methodology#simulator-data" className="text-ctp-blue hover:underline">Learn more</Link>
-        </div>
-      )}
-      {isPending && <p role="status" className="mt-1 text-xs text-ctp-subtext0">Recalculating suggestions…</p>}
-      {rejectedCards.size > 0 && (
-        <p className="mt-1 text-xs text-ctp-subtext0">
-          {rejectedCards.size} card{rejectedCards.size === 1 ? "" : "s"} excluded ·{" "}
-          <button type="button" onClick={() => { pendingActionRef.current = { label: "Reset excluded cards", subject: null }; startTransition(() => setRejectedCards(new Set())); }} className="hover:text-ctp-blue hover:underline">reset</button>
-        </p>
-      )}
-      {build.usedSpiritElementFallback && (
-        <p className="mt-1 text-xs text-ctp-yellow">
-          Too few {championName} decks run {spiritFilter} specifically — suggestions also draw on other {championName} decks with a same-element Spirit ({build.spiritElementFallbackSpirits.join(", ")}).
-        </p>
-      )}
-      <BuilderWorkbenchNav
-        activeView={tab}
-        onViewChange={setTab}
-        championName={championName!}
-        spiritName={spiritFilter!}
-        deckFormat={deckFormat}
-        mainTotal={mainTotal}
-        materialTotal={materialTotal}
-        sideboardTotal={sideboardTotal}
-        validationStatus={validation.status}
-        changeLogCount={changeLog.length}
-      />
-    </>
-  );
+  const { changeLog, isPending, setTab, tab, setCustomizeOpen } = useDeckBuilder();
+  return <>
+    {isPending && <p role="status" className="mt-1 text-sm text-ctp-subtext0">Updating deck…</p>}
+    <BuilderWorkbenchNav activeView={tab} onViewChange={setTab} changeLogCount={changeLog.length}
+      onOpenDisplay={() => { setTab("build"); setCustomizeOpen(true); }} />
+  </>;
 }
 
 export function DeckBuilderMethodology() {

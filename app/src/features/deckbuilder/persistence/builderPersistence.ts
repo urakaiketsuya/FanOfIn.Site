@@ -60,7 +60,7 @@ export function decodeCardSelections(encoded: string): CardSelection[] {
 
 export function parseBuilderShareParams(params: URLSearchParams): Partial<BuilderSelection> | null {
   const championName = params.get("champion");
-  if (!championName) return null;
+  if (!championName && !params.has("locked") && !params.has("spirit")) return null;
   return {
     championName,
     spiritName: params.get("spirit"),
@@ -86,7 +86,7 @@ export function loadBuilderSession(storage: StorageLike, fallbackFormat: DeckFor
     const current = storage.getItem(storageKey);
     if (current) {
       const parsed = JSON.parse(current) as Partial<StoredSessionV2>;
-      if (parsed.version === 2 && parsed.session?.selection?.championName) return parsed.session;
+      if (parsed.version === 2 && parsed.session?.selection && Array.isArray(parsed.session.selection.lockedCards) && Array.isArray(parsed.session.selection.maybeboard)) return parsed.session;
     }
     // Legacy (pre-v2) sessions only ever existed under the main builder's own key.
     if (storageKey !== BUILDER_SESSION_KEY) return null;
@@ -117,7 +117,7 @@ export function loadBuilderSession(storage: StorageLike, fallbackFormat: DeckFor
 
 export function saveBuilderSession(storage: StorageLike, session: BuilderSession, storageKey: string = BUILDER_SESSION_KEY): void {
   try {
-    if (!session.selection.championName) {
+    if (!session.selection.championName && !session.selection.spiritName && session.selection.lockedCards.length === 0 && session.selection.maybeboard.length === 0) {
       clearBuilderSession(storage, storageKey);
       return;
     }

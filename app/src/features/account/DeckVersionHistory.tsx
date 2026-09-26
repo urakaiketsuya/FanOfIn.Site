@@ -1,3 +1,4 @@
+import DisclosureChevron from "../../components/DisclosureChevron";
 import * as React from "react";
 import type { SavedDeckDetail } from "@gatcg/shared";
 
@@ -12,7 +13,7 @@ export function DeckVersionHistory({ deck, busy, onRestore }: { deck: SavedDeckD
   return <section className="mt-5 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4" aria-label="Version history">
     <button type="button" aria-expanded={open} onClick={() => setOpen((value) => !value)} className="flex min-h-11 w-full items-center justify-between text-left font-semibold">
       <span>Version history <span className="font-normal text-ctp-subtext0">({deck.versions.length})</span></span>
-      <span aria-hidden="true">{open ? "⌃" : "⌄"}</span>
+      <DisclosureChevron className={open ? "rotate-180" : ""} />
     </button>
     {open && <div className="mt-3 space-y-2">{deck.versions.map((version) => {
       const expanded = expandedVersionId === version.id;

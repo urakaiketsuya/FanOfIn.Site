@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import type { Card, CardImpactEntry, CardImpactRole, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import ElementIcon from "../../components/ElementIcon";
-import { computeDeckIdentity } from "../../lib/deckIdentity";
+import { availableDeckElements, isAvailableDeckRecommendation } from "@gatcg/shared";
+import { useCardCatalog } from "../cards/useCardCatalog";
 import { findDeckChampionName } from "../../lib/ttsExport";
 import { legalMaxCopies, pickBetterQuantityScoped, type ScopedQuantityAdvice } from "../../lib/cardQuantityAdvice";
 import { useCardImpactData, useCardQuantityStatsData } from "../archetypes/data";
@@ -109,13 +110,10 @@ export default function DeckTuningEvidence({
     () => findDeckChampionName(decklist.material, cardsByName)?.split(",")[0].trim() ?? null,
     [decklist.material, cardsByName],
   );
-  const identityElements = useMemo(
-    () =>
-      computeDeckIdentity([...decklist.main, ...decklist.material].map((line) => ({ name: line.card, quantity: line.quantity })), cardsByName).elements.filter(
-        (element) => element !== "NORM",
-      ),
-    [decklist, cardsByName],
-  );
+  const catalog = useCardCatalog();
+  const recommendationCatalog = useMemo(() => new Map([...catalog.map((card) => [card.name, card] as const), ...cardsByName]), [catalog, cardsByName]);
+  const availableElements = useMemo(() => availableDeckElements(decklist.material.filter((line) => line.quantity > 0).map((line) => recommendationCatalog.get(line.card))), [decklist.material, recommendationCatalog]);
+  const identityElements = useMemo(() => Array.from(availableElements).filter((element) => element !== "NORM"), [availableElements]);
   const noExclusions = useMemo(() => new Set<string>(), []);
 
   const clusterId = useMemo(() => {
@@ -127,11 +125,11 @@ export default function DeckTuningEvidence({
     if (!clusterId || !cardImpactData) return [];
     const cluster = cardImpactData.clusters.find((c) => c.clusterId === clusterId);
     if (!cluster) return [];
-    return cluster.cards.filter((c) => c.adjustedLift >= MIN_SUGGESTED_LIFT && !currentNames.has(c.cardName)).slice(0, MAX_SUGGESTIONS);
-  }, [clusterId, cardImpactData, currentNames]);
+    return cluster.cards.filter((c) => c.adjustedLift >= MIN_SUGGESTED_LIFT && !currentNames.has(c.cardName) && isAvailableDeckRecommendation(recommendationCatalog.get(c.cardName), availableElements)).slice(0, MAX_SUGGESTIONS);
+  }, [clusterId, cardImpactData, currentNames, recommendationCatalog, availableElements]);
 
   const fallbackAddChampion = championFallback && !isPantheon && clusterSuggestions.length === 0 ? championName : null;
-  const fallbackAdd = useChampionCardImpact(fallbackAddChampion, identityElements, currentNames, "best");
+  const fallbackAdd = useChampionCardImpact(fallbackAddChampion, identityElements, currentNames, "best", availableElements);
   const review = useChampionCardImpact(isPantheon ? null : championName, identityElements, noExclusions, "worst");
 
   const addCards =

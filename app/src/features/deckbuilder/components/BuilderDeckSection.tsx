@@ -34,20 +34,23 @@ type BuilderDeckSectionProps = {
   panel?: boolean;
   description?: string;
   hideTitle?: boolean;
+  showLockToggle?: boolean;
 };
 
 export default function BuilderDeckSection({
   section, title, total, cards, viewMode, mainDeckSize, startingHandSize, cardsByName,
   priceByName, priceTrendByName, communityInclusion, hypeGapByName, decayByName,
   simulatorEvidenceByName, visibleFields, reviewRemovalNames, communityMode,
-  onToggleLock, onChangeQuantity, onRemove, panel = false, description, hideTitle = false,
+  onToggleLock, onChangeQuantity, onRemove, panel = false, description, hideTitle = false, showLockToggle = true,
 }: BuilderDeckSectionProps) {
   const content = (
     <>
       {!hideTitle && <h2 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">{title} ({total})</h2>}
+      {cards.length === 0 && <p className="mt-3 text-sm text-ctp-subtext0">{section === "main" ? "Your main deck starts here. Search for a card above to add it." : "Add Champion, Spirit, and Regalia cards using search above."}</p>}
       {description && <p className="mt-1 text-xs text-ctp-subtext0">{description}</p>}
       {viewMode === "grid" ? (
         <BuilderCardGrid
+          showLockToggle={showLockToggle}
           section={section}
           mainDeckSize={mainDeckSize}
           startingHandSize={startingHandSize}
@@ -82,6 +85,7 @@ export default function BuilderDeckSection({
               mainDeckSize={mainDeckSize}
               startingHandSize={startingHandSize}
               communityMode={communityMode}
+              showLockToggle={showLockToggle}
               onToggleLock={() => onToggleLock(card.cardName, card.quantity, section)}
               onChangeQuantity={onChangeQuantity ? (quantity) => onChangeQuantity(card.cardName, quantity) : undefined}
               onRemove={() => onRemove(card.cardName, card.locked)}

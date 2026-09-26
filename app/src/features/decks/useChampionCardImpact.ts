@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { computeCardImpactEntries, decodeCardLines, type CardImpactEntry, type CardSectionRow, type DeckSections } from "@gatcg/shared";
+import { computeCardImpactEntries, decodeCardLines, isAvailableDeckRecommendation, type CardImpactEntry, type CardSectionRow, type DeckSections } from "@gatcg/shared";
 import { useDeckCardIndexData } from "../archetypes/data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
@@ -35,6 +35,7 @@ export function useChampionCardImpact(
    * scored card, unsliced and in descending-lift order — for a caller that needs to look up a
    * specific set of card names (e.g. deckTrimming.ts) rather than show a top-N list. */
   direction: "best" | "worst" | "all" = "best",
+  availableElements?: ReadonlySet<string>,
 ): ChampionCardImpactResult {
   const rawCardIndexData = useDeckCardIndexData();
   // Guards against a stale IndexedDB copy from before dictionary-encoding shipped — see the same
@@ -85,13 +86,13 @@ export function useChampionCardImpact(
     // cardImpact.ts documents for its cluster-scoped version.
     const baseline = rows.reduce((sum, r) => sum + r.outcome, 0) / rows.length;
     const entries = computeCardImpactEntries(rows, baseline, PRIOR_WEIGHT, MIN_SAMPLE_SIZE);
-    const filtered = entries.filter((c) => !excludeCardNames.has(c.cardName));
+    const filtered = entries.filter((c) => !excludeCardNames.has(c.cardName) && (!availableElements || isAvailableDeckRecommendation(cardsByName.get(c.cardName), availableElements)));
     // `entries` is already sorted best-first (adjustedLift descending) — the worst cards are the
     // tail end, in ascending order, so reverse to get most-negative-first.
     const cards = direction === "worst" ? filtered.slice(-MAX_RESULTS).reverse() : direction === "all" ? filtered : filtered.slice(0, MAX_RESULTS);
 
     return { cards, totalDecks: rows.length, loading: false };
-  }, [championName, selectedElements, excludeCardNames, cardIndexData, popularityIndexData, cardsByName, direction]);
+  }, [championName, selectedElements, excludeCardNames, cardIndexData, popularityIndexData, cardsByName, direction, availableElements]);
 
   return result;
 }

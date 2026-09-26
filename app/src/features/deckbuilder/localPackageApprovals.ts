@@ -1,3 +1,4 @@
+import { matchesPackageRule, type PackageConditionGroup, type PackageReviewRule } from "@gatcg/shared";
 import { useCallback, useEffect, useState } from "react";
 
 export interface LocalPackageApproval {
@@ -8,6 +9,7 @@ export interface LocalPackageApproval {
   optionCards: string[];
   minOptions: number;
   approvedAt: string;
+  groups?: PackageConditionGroup[];
 }
 
 const STORAGE_KEY = "fan-of-insight-approved-packages-v1";
@@ -38,7 +40,9 @@ export function parseLocalPackageApprovals(raw: string | null): LocalPackageAppr
         : memberCards.filter((name) => !optionCards.includes(name)));
       const requestedMinimum = typeof candidate.minOptions === "number" ? candidate.minOptions : 0;
       const minOptions = Math.max(0, Math.min(optionCards.length, Math.floor(requestedMinimum)));
-      return [{ id: candidate.id, label: candidate.label, memberCards, requiredCards, optionCards, minOptions, approvedAt: typeof candidate.approvedAt === "string" ? candidate.approvedAt : "" }];
+      const groups = Array.isArray(candidate.groups) ? candidate.groups.filter((g) => g && Array.isArray(g.cards) && g.cards.every((c) => typeof c === "string") && Number.isInteger(g.minimum) && g.minimum >= 1 && g.minimum <= new Set(g.cards).size) : undefined;
+      if (candidate.groups && groups?.length !== candidate.groups.length) return [];
+      return [{ ...(groups ? { groups } : {}), id: candidate.id, label: candidate.label, memberCards, requiredCards, optionCards, minOptions, approvedAt: typeof candidate.approvedAt === "string" ? candidate.approvedAt : "" }];
     });
   } catch {
     return [];
@@ -52,7 +56,7 @@ export function getLocalPackageApprovals(): LocalPackageApproval[] {
 
 export function evaluateLocalPackageApproval(approval: LocalPackageApproval, presentCards: ReadonlySet<string>): string[] {
   const presentOptions = approval.optionCards.filter((name) => presentCards.has(name));
-  const active = approval.requiredCards.every((name) => presentCards.has(name)) && presentOptions.length >= approval.minOptions;
+  const active = approval.groups ? matchesPackageRule(presentCards, { requiredCards: approval.requiredCards, groups: approval.groups }) : approval.requiredCards.every((name) => presentCards.has(name)) && presentOptions.length >= approval.minOptions;
   return active ? approval.memberCards.filter((name) => presentCards.has(name)) : [];
 }
 
@@ -105,4 +109,12 @@ export function useLocalPackageApprovals() {
     approveFamily: useCallback((label: string, anchorCard: string, coreCards: string[], optionCards: string[], minOptions: number) => approveLocalPackageFamily(label, anchorCard, coreCards, optionCards, minOptions), []),
     revoke: useCallback((id: string) => revokeLocalPackage(id), []),
   };
+}
+
+export function approveReviewedPackage(label: string, rule: PackageReviewRule) {
+  const memberCards = normalizeMemberCards([...rule.requiredCards, ...rule.groups.flatMap((group) => group.cards)]);
+  const id = `review:${encodeURIComponent(JSON.stringify(rule))}`;
+  const next = getLocalPackageApprovals().filter((entry) => entry.id !== id);
+  next.push({ id, label, memberCards, requiredCards: rule.requiredCards, optionCards: [], minOptions: 0, groups: rule.groups, approvedAt: new Date().toISOString() });
+  saveLocalPackageApprovals(next);
 }

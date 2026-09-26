@@ -86,7 +86,7 @@ export default function AboutIntro({ user }: { user: AccountUser | null }) {
           <div><h2 id="home-trust-heading" className="text-lg font-semibold text-ctp-text">Know what the numbers mean.</h2><p className="mt-1 max-w-2xl text-sm leading-relaxed text-ctp-subtext1">Our analysis uses real event decklists. Results depend on the available sample, so we show the context behind the numbers.</p></div>
           <Link to="/methodology" className="inline-flex min-h-11 shrink-0 items-center text-sm font-semibold text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">How we calculate results <span aria-hidden="true" className="ml-2">→</span></Link>
         </div>
-        <div className="mx-auto mt-8 max-w-5xl border-t border-ctp-surface0 pt-5 text-sm text-ctp-subtext0">Looking for the latest additions? <Link to="/changelog" className="text-ctp-blue hover:underline">See what’s new</Link>.</div>
+        <div className="mx-auto mt-8 max-w-5xl border-t border-ctp-surface0 pt-5 text-sm text-ctp-subtext0">Looking for the latest additions? <Link to="/changelog" className="text-ctp-blue hover:underline">See what’s new</Link>. <Link to="/docs/api" className="inline-flex min-h-11 items-center text-ctp-blue hover:underline">Build with our API →</Link></div>
       </section>
     </div>
   );

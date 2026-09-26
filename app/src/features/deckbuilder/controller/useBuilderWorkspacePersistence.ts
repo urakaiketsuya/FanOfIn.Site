@@ -17,10 +17,9 @@ export function useBuilderWorkspacePersistence({ championName, spiritName, forma
   maybeboard: Map<string, number>;
 }) {
   useEffect(() => {
-    if (!championName || main.length === 0) return;
     saveActiveDeckWorkspace(sessionStorage, {
       source: "builder",
-      title: `${championName} guided build`,
+      title: championName ? `${championName} deck` : "Untitled deck",
       sourceLabel: "Guided Deck Builder",
       format,
       championName,

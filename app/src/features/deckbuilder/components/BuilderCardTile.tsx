@@ -271,13 +271,13 @@ export function CardTile({
           </>
         ) : (
           <>
-            <button
+            {onToggleLock && <button
               type="button"
               onClick={onToggleLock}
               className={`min-h-11 flex-1 rounded-lg border px-3 py-2 text-sm ${card.locked ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`}
             >
               {card.locked ? "Kept" : "Keep"}
-            </button>
+            </button>}
             <button type="button" onClick={onRemove} className="min-h-11 flex-1 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-subtext1 hover:border-ctp-red hover:text-ctp-red">
               Remove
             </button>
