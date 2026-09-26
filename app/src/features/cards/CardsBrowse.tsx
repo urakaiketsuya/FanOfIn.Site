@@ -101,7 +101,7 @@ export default function CardsBrowse() {
       <PageHeader
         title="Cards"
         actions={
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
             <Link to="/cards/packages" className="text-sm text-ctp-blue hover:underline">
               Packages &rarr;
             </Link>
@@ -128,7 +128,7 @@ export default function CardsBrowse() {
           {featuredSets && featuredSets.length === 0 && <InlineState className="mt-6">No sets found.</InlineState>}
           {(featuredSets ?? []).map((group) => (
             <div key={group.uuid}>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
                 <img src={gatcgApi.imageUrl(group.image)} alt={group.name} className="h-10 w-10 rounded object-contain" />
                 <h2 className="text-lg font-semibold text-ctp-text">{group.name}</h2>
               </div>

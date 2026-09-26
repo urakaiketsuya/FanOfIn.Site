@@ -503,6 +503,6 @@ export default function MyDeckDetail() {
       </form>
       <section className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><h2 className="font-semibold text-ctp-text">Preview</h2><div className="mt-4">{primerMarkdown.trim() ? <PrimerMarkdown markdown={primerMarkdown} decklist={deck.decklist} /> : <p className="text-sm text-ctp-subtext1">Your primer preview will appear here.</p>}</div></section>
     </section>}
-    {tab === "manage" && <details className="group mt-5 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><summary className="flex min-h-11 cursor-pointer list-none items-center justify-between font-semibold [&::-webkit-details-marker]:hidden"><span>Version history <span className="font-normal text-ctp-subtext0">({deck.versions.length})</span></span><span aria-hidden="true" className="transition-transform group-open:rotate-180">⌄</span></summary><DeckVersionHistory deck={deck} busy={busy} onRestore={(versionId) => void run(async () => { await accountApi.restoreDeckVersion(deck.id, versionId); await refresh(); })} /></details>}
+    {tab === "manage" && <DeckVersionHistory deck={deck} busy={busy} onRestore={(versionId) => void run(async () => { await accountApi.restoreDeckVersion(deck.id, versionId); await refresh(); })} />}
   </PageLayout>;
 }

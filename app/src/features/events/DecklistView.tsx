@@ -46,6 +46,7 @@ export default function DecklistView({
   trailingSections = [],
   defaultDisplayMode = "detailed",
   showDeckStats = true,
+  showAnalysis = true,
   ownershipByName,
   toolbarActions,
   collectionControl,
@@ -65,6 +66,8 @@ export default function DecklistView({
   defaultDisplayMode?: DeckDisplayMode;
   /** Set false on a page that already renders its own DIAO score / win rate (currently only `DeckDetail.tsx`, which shows a cluster-level average win rate rather than this one sighting's record) to avoid a redundant, differently-scoped second copy. */
   showDeckStats?: boolean;
+  /** Disable expensive recommendation analysis in historical previews. */
+  showAnalysis?: boolean;
   /** Ownership status for the signed-in viewer. When supplied, shortages are visible in every display mode. */
   ownershipByName?: Map<string, DeckCollectionLine>;
   toolbarActions?: ReactNode;
@@ -268,7 +271,7 @@ export default function DecklistView({
           <DecklistWinRate deckId={deckId} />
         </div>
       )}
-      {displayPrefs.tuningEvidence && (
+      {showAnalysis && displayPrefs.tuningEvidence && (
         <DeckTuningEvidence decklist={decklist} cardsByName={displayCardsByName} deckId={deckId} format={format} championFallback={championFallback} />
       )}
     </div>
