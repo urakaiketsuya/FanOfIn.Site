@@ -1,10 +1,12 @@
 # Win-rate package experiment
 
-Generated 2026-09-26T18:04:33.964Z. Source snapshot: 2026-09-26T11:15:15.754Z.
+Generated 2026-09-26T18:57:12.523Z. Source snapshot: 2026-09-26T11:15:15.754Z.
 
 Tested 528,763 group/cohort combinations across 93 Champion/format/season cohorts. Nominated 920 groups from discovery data: 112 remained positive in every supported later-event comparison, 52 did not repeat, and 756 lacked enough later data.
 
 ## Method and limits
+
+The JSON also includes later-event member/core interaction contrasts across complete, core-only, member-only and neither buckets. Each cell must meet the same support gates. Approximate 95% intervals account for repeat players, not event clustering or multiple testing. These exploratory associations do not establish causality. See CALCULATIONS.md for the synergy status rules and formulas.
 
 Main + Material presence only; quantities and sideboards excluded. Cohorts require 100 deck-events and 10 dates. Within each cohort the first 70% of distinct dates discover candidates; the remaining dates evaluate them. Events cannot cross the split. Every complete, incomplete, and exact missing-one bucket needs 10 decks, 5 players, and 3 events. Each player's average gets equal weight within a bucket; adjusted differences shrink toward the period's cohort average with a 10-player prior. Raw win rates are reported separately.
 

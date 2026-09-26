@@ -35,3 +35,4 @@ export * from "./packageRelationships.js";
 export * from "./winRatePackages.js";
 export * from "./savedPackages.js";
 export * from "./packagePerformance.js";
+export * from "./packageSynergy.js";

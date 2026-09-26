@@ -693,6 +693,41 @@ Verified against real output: 302 of 1,247 published answers resolved at the pre
 963 needed the Champion-level fallback — confirming the fallback is the common case, not an edge
 case, exactly as the sample-size math above predicts.
 
+## Package synergy review (`shared/src/packageSynergy.ts`)
+
+Synergy is assessed for exact executable rules and their Champion/format/season cohorts, never
+for the union of alternatives in a package family. Existing section, condition, and dependency
+checks in `packageRulePerformance` still gate evidence joins. Approval does not establish synergy.
+
+The audit computes interactions only for discovery-nominated combinations on held-out later events.
+For a pair A/B, the interaction is `WR(AB) - WR(A only) - WR(B only) + WR(neither)`.
+For larger rules, each member is A and the entire remaining core is B. Decks containing only part
+of that core are excluded. This tests complementarity with the remaining core, not a pure
+higher-order interaction or all possible sub-combinations. Each of the four buckets requires
+10 deck-events, 5 players and 3 events; unsupported tests have null estimates and intervals.
+As elsewhere, deck presence uses Main + Material, not sideboard or quantities.
+
+Each cell's WR is the mean of player means (unshrunk for the additive contrast). The approximate
+95% interval uses a player-clustered delta-method standard error: sum each player's signed
+`(player cell mean - cell WR) / cell player count` contributions across cells, then compute
+`variance = N/(N-1) * sum(player contribution²)` over the N distinct included players. The interval
+is the interaction plus/minus `1.96 * sqrt(variance)`. This accounts for repeat players and
+cross-cell covariance, but not event clustering, deck/archetype confounding or multiple testing.
+The interval is exploratory, not a causal or multiplicity-adjusted validation claim.
+
+- **Supported**: sufficient later missing-member evidence, positive overall and every member
+  difference, and every required interaction's lower interval endpoint exceeds zero (1e-9 tolerance).
+- **Mixed**: supported overall/member evidence is nonpositive, or an interaction's entire interval
+  is negative. A family also receives Mixed when supported rules/cohorts coexist with unknown ones.
+- **Unproven**: other outcomes, including insufficient samples, intervals crossing zero, no exact
+  rule match, and old snapshots without interaction data. Missing evidence never means invalid.
+
+Family summaries include every rule and all its cohorts, regardless of the current findings filter.
+Mechanical verification is independent: only matching, unambiguous exact-rule approval evidence
+sets Verified. Catalog name references are labeled Text links found, not verified mechanics.
+Required/choose-N roles come from rule conditions; performance does not silently change roles,
+approval, package contents, or deck recommendations. Detailed evidence is disclosed on demand.
+
 ## Package candidates (`pipeline/src/analysis/packageCandidates.ts`, `shared/src/packageConfidence.ts`, `shared/src/packageSeeds.ts`, `app/src/lib/deckWinConditions.ts`)
 
 Nominates card-pair "packages" — construction relationships worth reviewing together — and scores

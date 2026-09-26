@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { compareWinRatePackage, discoverWinRatePackages, splitPackageOutcomes, WIN_RATE_PACKAGE_DEFAULTS,
+import { comparePackageInteractions, compareWinRatePackage, discoverWinRatePackages, splitPackageOutcomes, WIN_RATE_PACKAGE_DEFAULTS,
   type WinRatePackageFinding, type WinRatePackagesData, type DeckCardIndexData, type DeckSightingsData, type PackageCandidatesData, type PackageOutcomeRow } from "@gatcg/shared";
 
 import { writeManifest } from "../manifest.js";
@@ -37,7 +37,7 @@ for (const [key, cohort] of [...cohorts].sort(([a], [b]) => a.localeCompare(b)))
   for (const finding of mined.findings) {
     const validation = compareWinRatePackage(split.validation, finding.cards);
     results.push({ cohort: key, champion: cohort.champion, format: cohort.format, season: cohort.season,
-      validationStarts: split.cutoff, ...finding, validation,
+      validationStarts: split.cutoff, ...finding, validation, interactions: comparePackageInteractions(split.validation, finding.cards),
       status: !validation.sufficient ? "insufficient-later-data" : validation.lift! > 0 && validation.weakestMemberLift! > 0 ? "positive-in-later-events" : "not-repeated",
       existingCandidateOverlap: existingSets.some((names) => JSON.stringify(names) === JSON.stringify(finding.cards)) ? "exact" :
         existingSets.some((names) => finding.cards.every((card) => names.includes(card)) || names.every((card) => finding.cards.includes(card))) ? "subset-or-superset" : "none",
@@ -55,6 +55,7 @@ const positive = results.filter((r) => r.status === "positive-in-later-events");
 const lines = ["# Win-rate package experiment", "", `Generated ${output.generatedAt}. Source snapshot: ${output.sourceGeneratedAt}.`, "",
   `Tested ${totalTested.toLocaleString()} group/cohort combinations across ${cohortsTested} Champion/format/season cohorts. Nominated ${results.length} groups from discovery data: ${positive.length} remained positive in every supported later-event comparison, ${results.filter((r) => r.status === "not-repeated").length} did not repeat, and ${results.filter((r) => r.status === "insufficient-later-data").length} lacked enough later data.`, "",
   "## Method and limits", "",
+  "The JSON also includes later-event member/core interaction contrasts across complete, core-only, member-only and neither buckets. Each cell must meet the same support gates. Approximate 95% intervals account for repeat players, not event clustering or multiple testing. These exploratory associations do not establish causality. See CALCULATIONS.md for the synergy status rules and formulas.", "",
   "Main + Material presence only; quantities and sideboards excluded. Cohorts require 100 deck-events and 10 dates. Within each cohort the first 70% of distinct dates discover candidates; the remaining dates evaluate them. Events cannot cross the split. Every complete, incomplete, and exact missing-one bucket needs 10 decks, 5 players, and 3 events. Each player's average gets equal weight within a bucket; adjusted differences shrink toward the period's cohort average with a 10-player prior. Raw win rates are reported separately.", "",
   "Search covers up to 60 frequent cards, all pairs, then a 40-subset beam through triples and quadruples. Discovery requires at least +2 percentage points versus incomplete decks AND every exact missing-one group. Up to 10 candidates per cohort are retained by their weakest member difference. This bounded search can miss rare groups and groups with weak subsets. Later results never choose discovery candidates, and negative/unsupported later results remain in the JSON.", "",
   "Positive later differences are exploratory replication, not statistical significance or proof of synergy beyond individual card effects. No multiple-testing-adjusted confidence claim is made. Players may recur between periods; opponent strength, other deck choices, and within-season balance changes remain confounders. Comparisons are historical and may span different card legalities between seasons. Missing-one comparisons do not isolate a causal effect. Overlap compares the published mined co-occurrence candidates only, not registered rules or optional-member families.", "",

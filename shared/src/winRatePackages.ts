@@ -28,6 +28,8 @@ export const WIN_RATE_PACKAGE_DEFAULTS = {
 
 export type WinRatePackageStatus = "positive-in-later-events" | "not-repeated" | "insufficient-later-data";
 export interface WinRatePackageFinding {
+  /** Optional for older published snapshots; absence means interaction is untested. */
+  interactions?: import("./packageSynergy.js").PackageInteraction[];
   cohort: string;
   champion: string;
   format: string;
