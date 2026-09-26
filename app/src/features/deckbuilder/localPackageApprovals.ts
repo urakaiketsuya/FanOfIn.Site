@@ -79,12 +79,8 @@ export function approveLocalPackageFamily(label: string, anchorCard: string, cor
   if (typeof window === "undefined") return;
   const requiredCards = normalizeMemberCards([anchorCard, ...coreCards]);
   const options = normalizeMemberCards(optionCards).filter((name) => !requiredCards.includes(name));
-  const memberCards = normalizeMemberCards([...requiredCards, ...options]);
   if (requiredCards.length === 0 || options.length === 0) return;
-  const id = localPackageApprovalId(memberCards);
-  const next = getLocalPackageApprovals().filter((entry) => entry.id !== id);
-  next.push({ id, label, memberCards, requiredCards, optionCards: options, minOptions: Math.max(1, Math.min(options.length, Math.floor(minOptions))), approvedAt: new Date().toISOString() });
-  saveLocalPackageApprovals(next);
+  approveReviewedPackage(label, { requiredCards, groups: [{ cards: options, minimum: Math.max(1, Math.min(options.length, Math.floor(minOptions))) }] });
 }
 
 export function revokeLocalPackage(id: string) {

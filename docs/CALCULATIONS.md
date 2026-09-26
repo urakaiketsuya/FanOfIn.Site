@@ -3046,3 +3046,37 @@ that confidence by group-only prevalence across the index. These pooled descript
 not estimate win-rate improvement or establish causation. Missing denominators display unavailable.
 Existing one-pool approvals retain their behavior; reviewed approvals store the complete rule and
 have rule-specific IDs so different conditions on the same card set remain distinct.
+
+### Cross-package card-pool relationships
+
+`shared/src/packageRelationships.ts` compares complete, deduplicated card-name sets, ignoring
+anchor designation but preserving every source rule. Exact sets share a deterministic pool ID
+and one display listing. No partial overlap ever joins a pool, so transitive overlap chains
+cannot create a large automatic family.
+
+Pairs with at least two shared names are classified as fully contained (the smaller pool is a
+possible subgroup), strong overlap (at least three shared names and either Jaccard similarity
+≥ 70% or smaller-pool containment ≥ 90%), or loose overlap. Jaccard similarity is shared names /
+union names; containment is shared names / smaller pool size. Loose links require explicit
+opt-in. These are review heuristics, not synergy or confidence scores.
+
+The Packages Relationships view compares registered rules, local approvals, curated candidates,
+mined families, and mined findings with confidence scores ≥ 40. Unlike the old candidate list,
+it does not suppress relationships already represented by registered or curated card sets.
+Search matches any pool member or rule label. Families in Candidates use the same exact-pool
+grouping. Original activation rules, source labels, and published counts remain separate.
+
+Relationship review displays shared and unique names, direction of containment, and available
+shared mechanical nominations, reported champion cohorts, and reported build labels. Generic
+"Named rules-text link" and "Multi-card cluster" labels do not establish a shared mechanic.
+Absent overlap in reported top-cohort summaries is not evidence of disjoint populations.
+An optional joint-deck check evaluates the two selected structured rules against all indexed
+main + material decks, counting both, each alone, and both / either. It excludes sideboards and
+zero-quantity lines. Prose-only section-sensitive rules are not approximated. The check is
+pooled descriptive evidence and cannot establish synergy, causality, or staple-adjusted affinity.
+
+Approving mined families now uses complete-rule IDs, preventing different anchor requirements
+on the same pool from overwriting one another. Existing approvals are retained as saved; previously
+overwritten rules cannot be recovered automatically. Visual grouping itself never adds an approval.
+The optional joint check also shows each shared card's prevalence across the same index, giving
+reviewers context for staple-driven overlaps without treating a fixed prevalence as proof of one.

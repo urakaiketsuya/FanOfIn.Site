@@ -1,4 +1,6 @@
-import PackageFamilyReview from "./PackageFamilyReview";
+import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
+import PackagePoolReview from "./PackagePoolReview";
+import { packageRelationshipEntries } from "./packageRelationshipEntries";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import CardHoverPreview from "../../components/CardHoverPreview";
@@ -29,10 +31,11 @@ export default function PackagesIndex() {
   const location = useLocation();
   const cardsByName = useMemo(() => new Map(cards.map((card) => [card.name, card])), [cards]);
   const minedData = useMinedPackageCandidates();
+  const minedStatus = usePublishedDataStatus("analysis-package-candidates", "/data/analysis/package-candidates.json");
   const { approvals: localApprovals, approve, approveFamily, revoke } = useLocalPackageApprovals();
   const approvedIds = useMemo(() => new Set(localApprovals.map((entry) => entry.id)), [localApprovals]);
   const packages = useMemo(() => getDeckPackageCatalog([]).filter((entry) => !approvedIds.has(entry.id)), [approvedIds]);
-  const [view, setView] = useState<"registered" | "approved" | "candidates">(() => localApprovals.some((entry) => `#${entry.id}` === location.hash) ? "approved" : DECK_PACKAGE_CANDIDATES.some((entry) => `#${entry.id}` === location.hash) ? "candidates" : "registered");
+  const [view, setView] = useState<"registered" | "approved" | "candidates" | "relationships">(() => localApprovals.some((entry) => `#${entry.id}` === location.hash) ? "approved" : DECK_PACKAGE_CANDIDATES.some((entry) => `#${entry.id}` === location.hash) ? "candidates" : "registered");
   const [search, setSearch] = useState("");
   const query = search.trim().toLowerCase();
   const visibleApprovals = localApprovals.filter((entry) => !query || [entry.label, ...entry.memberCards, ...entry.requiredCards, ...entry.optionCards].some((value) => value.toLowerCase().includes(query)));
@@ -58,10 +61,9 @@ export default function PackagesIndex() {
     const names = [entry.anchorCard, ...entry.coreCards, ...entry.optionCards];
     return names.length > 3 && !reviewedCardSets.some((known) => names.every((card) => known.has(card)));
   });
-  const visibleMinedFamilies = minedFamilies.filter((entry) => {
-    const names = [entry.anchorCard, ...entry.coreCards, ...entry.optionCards];
-    return query === "" || names.some((name) => name.toLowerCase().includes(query));
-  });
+  const relationshipEntries = useMemo(() => packageRelationshipEntries(packages, DECK_PACKAGE_CANDIDATES, localApprovals, minedData), [packages, localApprovals, minedData]);
+  const familyEntries = relationshipEntries.filter((entry) => entry.family && minedFamilies.includes(entry.family));
+  const visibleMinedFamilies = minedFamilies.filter((entry) => !query || [entry.anchorCard, ...entry.coreCards, ...entry.optionCards].some((name) => name.toLowerCase().includes(query)));
   const approveAllMined = () => {
     for (const family of minedFamilies) {
       approveFamily(`${family.anchorCard} family`, family.anchorCard, family.coreCards, family.optionCards, family.minOptions);
@@ -107,7 +109,7 @@ export default function PackagesIndex() {
         </div>
       </div>
 
-      <div className="mt-4"><Tabs tabs={[{ key: "registered", label: `Registered (${visiblePackages.length})` }, { key: "approved", label: `My approvals (${visibleApprovals.length})` }, { key: "candidates", label: `Candidates (${visibleCandidates.length + visibleMinedCandidates.length})` }]} active={view} onChange={setView} label="Package category" baseId="packages" /></div>
+      <div className="mt-4 [&_[role=tab]]:min-h-12"><Tabs tabs={[{ key: "registered", label: `Registered (${visiblePackages.length})` }, { key: "approved", label: `My approvals (${visibleApprovals.length})` }, { key: "candidates", label: `Candidates (${visibleCandidates.length + visibleMinedCandidates.length})` }, { key: "relationships", label: "Relationships" }]} active={view} onChange={setView} label="Package category" baseId="packages" /></div>
       <TabPanel baseId="packages" tab="registered" active={view}>
       {visiblePackages.length === 0 && <InlineState className="mt-6 text-sm">No packages match that search.</InlineState>}
 
@@ -269,35 +271,7 @@ export default function PackagesIndex() {
         </div>
         {!minedData && <InlineState className="text-sm">Loading the latest package audit…</InlineState>}
         {minedData && visibleMinedCandidates.length === 0 && visibleMinedFamilies.length === 0 && <InlineState className="text-sm">No newly mined relationships match that search.</InlineState>}
-        {visibleMinedFamilies.length > 0 && (
-          <div className="mb-7">
-            <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
-              <div><h3 className="text-lg font-semibold text-ctp-text">Overlapping package families</h3><p className="mt-1 text-xs text-ctp-subtext1">Proposed families. Review original findings and test extra conditions before approving.</p></div>
-              <span className="rounded-full bg-ctp-teal/10 px-2.5 py-1 text-xs font-semibold text-ctp-teal">{visibleMinedFamilies.length} families</span>
-            </div>
-            <div className="space-y-4">
-              {visibleMinedFamilies.map((family) => {
-                const names = [family.anchorCard, ...family.coreCards, ...family.optionCards];
-                const approvalId = localPackageApprovalId(names);
-                const isApproved = approvedIds.has(approvalId);
-                return (
-                  <article key={`${family.anchorCard}:${family.optionCards.join("|")}`} className="rounded-xl border border-ctp-teal/30 bg-ctp-mantle p-5">
-                    <div className="flex flex-wrap items-start justify-between gap-3">
-                      <div><div className="flex flex-wrap items-center gap-2"><h4 className="text-lg font-semibold text-ctp-text">{family.anchorCard} family</h4><span className="rounded-full bg-ctp-teal/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-ctp-teal">{names.length} cards</span></div><p className="mt-1 text-sm text-ctp-subtext1">Merged from {family.candidateCount} overlapping relationships · {family.ruleEvidence?.matchingDecks.toLocaleString() ?? "Unmeasured"} complete-rule matches</p></div>
-                      <div className="flex items-center gap-3"><div className="rounded-lg bg-ctp-base px-3 py-2 text-right"><p className="text-lg font-semibold text-ctp-teal">{family.confidenceScore}/100</p><p className="text-[10px] text-ctp-subtext0">best source evidence</p></div>{isApproved ? <button type="button" onClick={() => revoke(approvalId)} className="rounded-md border border-ctp-green/50 bg-ctp-green/10 px-3 py-2 text-xs font-semibold text-ctp-green hover:bg-ctp-red/10 hover:text-ctp-red">Approved locally</button> : <button type="button" onClick={() => approveFamily(`${family.anchorCard} family`, family.anchorCard, family.coreCards, family.optionCards, family.minOptions)} className="rounded-md border border-ctp-teal/50 px-3 py-2 text-xs font-semibold text-ctp-teal hover:bg-ctp-teal/10">Approve family</button>}</div>
-                    </div>
-                    <PackageFamilyReview family={family} families={minedFamilies} candidates={minedData?.candidates ?? []} />
-                    <div className="mt-4 grid gap-3 md:grid-cols-2">
-                      <div className="rounded-lg border border-ctp-surface0 bg-ctp-base/50 px-4 py-3"><h5 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Required</h5><p className="mt-1 text-sm text-ctp-text">{[family.anchorCard, ...family.coreCards].join(" + ")}</p></div>
-                      <div className="rounded-lg border border-ctp-surface0 bg-ctp-base/50 px-4 py-3"><h5 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Options</h5><p className="mt-1 text-sm text-ctp-text">At least {family.minOptions} of {family.optionCards.length}: {family.optionCards.join(", ")}</p></div>
-                    </div>
-                    <div className="mt-4 flex flex-wrap gap-2">{names.map((name) => { const card = cardsByName.get(name); return card ? <CardHoverPreview key={name} image={card.editions[0]?.image} alt={name}><Link to={`/cards/${card.slug}`} className="flex items-center gap-2 rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1.5 text-xs text-ctp-text hover:border-ctp-blue/50 hover:text-ctp-blue">{card.editions[0] && <CardImage image={card.editions[0].image} alt={name} className="h-9 w-6 rounded object-cover object-top" />}<ElementIcon element={card.element} size={14} />{name}</Link></CardHoverPreview> : <span key={name} className="rounded-md border border-ctp-surface1 px-2 py-1.5 text-xs">{name}</span>; })}</div>
-                  </article>
-                );
-              })}
-            </div>
-          </div>
-        )}
+        {familyEntries.length > 0 && <section className="mb-7"><h3 className="mb-3 text-lg font-semibold">Package families by card pool</h3><PackagePoolReview entries={familyEntries} query={query} minedData={minedData} /></section>}
         <div className="space-y-4">
           {visibleMinedCandidates.map((entry) => {
             const names = [entry.anchorCard, ...entry.memberCards];
@@ -370,6 +344,12 @@ export default function PackagesIndex() {
           })}
         </div>
       </section>
+      </TabPanel>
+      <TabPanel baseId="packages" tab="relationships" active={view}>
+        <section className="mt-4"><h2 className="mb-3 text-xl font-semibold">Relationships across packages</h2>
+          {!minedData && (minedStatus.phase === "error" ? <p role="alert" className="mb-3 text-sm">{minedStatus.error} Registered, curated, and local rules remain available. <button className="min-h-12 px-3 underline" onClick={minedStatus.retry}>Retry mined packages</button></p> : <p role="status" className="mb-3 text-sm text-ctp-subtext0">Loading mined packages… Registered, curated, and local rules are available below.</p>)}
+          <PackagePoolReview entries={relationshipEntries} query={query} minedData={minedData} />
+        </section>
       </TabPanel>
     </PageLayout>
   );
