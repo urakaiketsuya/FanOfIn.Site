@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import CardImage from "../../components/CardImage";
 import ElementIcon from "../../components/ElementIcon";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import PageHeader from "../../components/ui/PageHeader";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { getDeckPackageCatalog } from "../deckbuilder/packageGuardrails";
@@ -26,12 +27,14 @@ export default function PackagesIndex() {
   const cards = useCardCatalog();
   const location = useLocation();
   const cardsByName = useMemo(() => new Map(cards.map((card) => [card.name, card])), [cards]);
-  const packages = useMemo(() => getDeckPackageCatalog([]), []);
   const minedData = useMinedPackageCandidates();
   const { approvals: localApprovals, approve, approveFamily, revoke } = useLocalPackageApprovals();
   const approvedIds = useMemo(() => new Set(localApprovals.map((entry) => entry.id)), [localApprovals]);
+  const packages = useMemo(() => getDeckPackageCatalog([]).filter((entry) => !approvedIds.has(entry.id)), [approvedIds]);
+  const [view, setView] = useState<"registered" | "approved" | "candidates">(() => localApprovals.some((entry) => `#${entry.id}` === location.hash) ? "approved" : DECK_PACKAGE_CANDIDATES.some((entry) => `#${entry.id}` === location.hash) ? "candidates" : "registered");
   const [search, setSearch] = useState("");
   const query = search.trim().toLowerCase();
+  const visibleApprovals = localApprovals.filter((entry) => !query || [entry.label, ...entry.memberCards, ...entry.requiredCards, ...entry.optionCards].some((value) => value.toLowerCase().includes(query)));
   const visiblePackages = packages.filter((entry) =>
     query === "" || entry.label.toLowerCase().includes(query) || entry.memberCards.some((name) => name.toLowerCase().includes(query)),
   );
@@ -75,20 +78,21 @@ export default function PackagesIndex() {
   useEffect(() => {
     if (!location.hash) return;
     const id = decodeURIComponent(location.hash.slice(1));
+    setView(localApprovals.some((entry) => entry.id === id) ? "approved" : DECK_PACKAGE_CANDIDATES.some((entry) => entry.id === id) ? "candidates" : "registered");
     requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ block: "start" }));
-  }, [location.hash]);
+  }, [location.hash, localApprovals]);
 
   return (
     <PageLayout data-component="PackagesIndex" width="wide">
       <PageHeader
         title="Card Packages"
-        description="Explicit groups of cards whose construction relationship should be reviewed together. Packages guide suggestions without redefining a deck's archetype."
+        description="Find cards that work together."
         actions={<div className="flex gap-3"><Link to="/combo-lab" className="text-sm font-semibold text-ctp-mauve hover:underline">Open Combo Lab &rarr;</Link><Link to="/cards/stats" className="text-sm text-ctp-blue hover:underline">Card stats &rarr;</Link></div>}
       />
 
       <div className="rounded-lg border border-ctp-surface1 bg-ctp-mantle p-4">
         <div className="flex flex-wrap items-end justify-between gap-3">
-          <label className="block min-w-64 flex-1 text-xs font-medium uppercase tracking-wide text-ctp-subtext0">
+          <label className="block min-w-0 flex-1 text-xs font-medium uppercase tracking-wide text-ctp-subtext0">
             Find a package or member card
             <input
               type="search"
@@ -102,32 +106,8 @@ export default function PackagesIndex() {
         </div>
       </div>
 
-      {localApprovals.length > 0 && (
-        <section className="mt-10 border-t border-ctp-surface1 pt-8">
-          <div className="mb-4">
-            <h2 className="text-2xl font-bold tracking-tight text-ctp-text">Locally approved</h2>
-            <p className="mt-2 text-sm text-ctp-subtext1">Stored only in this browser. These packages protect their present members in Guided Deck Builder reviews when their saved activation rule is met.</p>
-          </div>
-          <div className="space-y-3">
-            {localApprovals.map((entry) => (
-              <article key={entry.id} className="rounded-xl border border-ctp-green/30 bg-ctp-mantle p-4">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div>
-                    <div className="flex flex-wrap items-center gap-2"><h3 className="font-semibold text-ctp-text">{entry.label}</h3><span className="rounded-full bg-ctp-green/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-ctp-green">Local guardrail</span></div>
-                    <p className="mt-1 text-xs text-ctp-subtext1">
-                      {entry.optionCards.length > 0
-                        ? `Requires ${entry.requiredCards.join(" + ")} and ${entry.minOptions} of: ${entry.optionCards.join(", ")}`
-                        : entry.memberCards.join(" · ")}
-                    </p>
-                  </div>
-                  <button type="button" onClick={() => revoke(entry.id)} className="rounded-md border border-ctp-red/40 px-3 py-1.5 text-xs font-medium text-ctp-red hover:bg-ctp-red/10">Revoke</button>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      )}
-
+      <div className="mt-4"><Tabs tabs={[{ key: "registered", label: `Registered (${visiblePackages.length})` }, { key: "approved", label: `My approvals (${visibleApprovals.length})` }, { key: "candidates", label: `Candidates (${visibleCandidates.length + visibleMinedCandidates.length})` }]} active={view} onChange={setView} label="Package category" baseId="packages" /></div>
+      <TabPanel baseId="packages" tab="registered" active={view}>
       {visiblePackages.length === 0 && <InlineState className="mt-6 text-sm">No packages match that search.</InlineState>}
 
       <div className="mt-6 space-y-5">
@@ -153,10 +133,7 @@ export default function PackagesIndex() {
                 )}
               </div>
 
-              <div className="mt-4 rounded-lg border border-ctp-surface0 bg-ctp-base/50 px-4 py-3">
-                <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Activation rule</h3>
-                <p className="mt-1 text-sm text-ctp-text">{entry.activation}</p>
-              </div>
+              <details className="mt-2 text-sm"><summary className="min-h-11 cursor-pointer py-3 text-ctp-subtext1">Activation and evidence</summary><p>{entry.activation}</p>{entry.observedSupport && <p className="mt-2 text-xs text-ctp-subtext0">{entry.observedSupport.matchingDecks.toLocaleString()} of {entry.observedSupport.populationDecks.toLocaleString()} decks · {entry.observedSupport.auditLabel}</p>}</details>
 
               <div className="mt-4">
                 <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Member cards</h3>
@@ -179,17 +156,43 @@ export default function PackagesIndex() {
                 </div>
               </div>
 
-              {entry.observedSupport && (
-                <p className="mt-4 text-xs text-ctp-overlay1">
-                  Observed in {entry.observedSupport.matchingDecks.toLocaleString()} of {entry.observedSupport.populationDecks.toLocaleString()} decks in the {entry.observedSupport.auditLabel}. This historical audit documents support; it is not a live activation threshold.
-                </p>
-              )}
+
             </article>
           );
         })}
       </div>
 
-      <section className="mt-10 border-t border-ctp-surface1 pt-8">
+      </TabPanel>
+      <TabPanel baseId="packages" tab="approved" active={view}>
+      {visibleApprovals.length > 0 && (
+        <section className="mt-4">
+          <div className="mb-4">
+            <h2 className="text-2xl font-bold tracking-tight text-ctp-text">Locally approved</h2>
+            <p className="mt-2 text-sm text-ctp-subtext1">Stored only in this browser. These packages protect their present members in Guided Deck Builder reviews when their saved activation rule is met.</p>
+          </div>
+          <div className="space-y-3">
+            {visibleApprovals.map((entry) => (
+              <article id={entry.id} key={entry.id} className="scroll-mt-20 rounded-xl border border-ctp-green/30 bg-ctp-mantle p-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2"><h3 className="font-semibold text-ctp-text">{entry.label}</h3><span className="rounded-full bg-ctp-green/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-ctp-green">Local guardrail</span></div>
+                    <p className="mt-1 text-xs text-ctp-subtext1">
+                      {entry.optionCards.length > 0
+                        ? `Requires ${entry.requiredCards.join(" + ")} and ${entry.minOptions} of: ${entry.optionCards.join(", ")}`
+                        : entry.memberCards.join(" · ")}
+                    </p>
+                  </div>
+                  <button type="button" onClick={() => revoke(entry.id)} className="rounded-md border border-ctp-red/40 px-3 py-1.5 text-xs font-medium text-ctp-red hover:bg-ctp-red/10">Revoke</button>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+
+{visibleApprovals.length === 0 && <InlineState className="mt-4">No approvals match this view.</InlineState>}</TabPanel>
+      <TabPanel baseId="packages" tab="candidates" active={view}>
+      <section className="mt-4">
         <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
           <div className="max-w-2xl">
             <h2 className="text-2xl font-bold tracking-tight text-ctp-text">Candidates for review</h2>
@@ -249,7 +252,7 @@ export default function PackagesIndex() {
         </div>
       </section>
 
-      <section className="mt-10 border-t border-ctp-surface1 pt-8">
+      <section className="mt-4">
         <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
           <div className="max-w-3xl">
             <h2 className="text-2xl font-bold tracking-tight text-ctp-text">Newly mined relationships</h2>
@@ -365,6 +368,7 @@ export default function PackagesIndex() {
           })}
         </div>
       </section>
+      </TabPanel>
     </PageLayout>
   );
 }
