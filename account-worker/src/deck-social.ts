@@ -75,7 +75,7 @@ export async function copyPublishedDeck(env: Env, user: AuthUser, slug: string):
 }
 
 export async function listBookmarks(env: Env, user: AuthUser): Promise<BookmarkedDeck[]> {
-  const rows = await env.ACCOUNT_DB.prepare(`SELECT ud.public_slug, ud.published_title AS title, ud.published_description AS description,
+  const rows = await env.ACCOUNT_DB.prepare(`SELECT ud.is_seed, ud.public_slug, ud.published_title AS title, ud.published_description AS description,
     ud.published_primer_markdown AS primer_markdown, ud.published_tags_json AS tags_json, ud.visibility, ud.published_at, ud.updated_at,
     users.display_name, users.profile_slug, dv.version_number, cb.format, cb.champion_name, cb.decklist_json, db.created_at AS bookmarked_at,
     (SELECT COUNT(*) FROM deck_likes dl WHERE dl.deck_id = ud.id) AS like_count
@@ -87,5 +87,6 @@ export async function listBookmarks(env: Env, user: AuthUser): Promise<Bookmarke
     visibility: row.visibility as "public" | "unlisted", format: row.format as "STANDARD" | "PANTHEON" | "UNKNOWN",
     championName: row.champion_name as string | null, decklist: JSON.parse(String(row.decklist_json)) as OmnidexDecklist,
     versionNumber: Number(row.version_number), publishedAt: String(row.published_at), updatedAt: String(row.updated_at),
-    owner: { displayName: String(row.display_name), profileSlug: String(row.profile_slug) }, likeCount: Number(row.like_count), bookmarkedAt: String(row.bookmarked_at) }));
+    owner: { displayName: String(row.display_name), profileSlug: String(row.profile_slug) }, isSeed: Number(row.is_seed ?? 0) === 1,
+    likeCount: Number(row.like_count), bookmarkedAt: String(row.bookmarked_at) }));
 }

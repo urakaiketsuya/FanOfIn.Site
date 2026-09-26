@@ -303,7 +303,7 @@ export async function publishDeck(env: Env, user: AuthUser, deckId: string, valu
 
 export async function getPublicDeck(env: Env, publicSlug: string): Promise<PublicDeck | null> {
   if (!/^[a-f0-9]{32}$/.test(publicSlug)) return null;
-  const row = await env.ACCOUNT_DB.prepare(`SELECT ud.public_slug, ud.published_title, ud.published_description, ud.published_primer_markdown,
+  const row = await env.ACCOUNT_DB.prepare(`SELECT ud.is_seed, ud.public_slug, ud.published_title, ud.published_description, ud.published_primer_markdown,
     ud.published_tags_json, ud.visibility, ud.published_at,
     ud.updated_at, users.display_name, users.profile_slug, dv.version_number, cb.format, cb.champion_name, cb.decklist_json,
     (SELECT COUNT(*) FROM deck_likes dl WHERE dl.deck_id = ud.id) AS like_count
@@ -321,6 +321,7 @@ export async function getPublicDeck(env: Env, publicSlug: string): Promise<Publi
     championName: row.champion_name, decklist: JSON.parse(row.decklist_json!) as OmnidexDecklist,
     versionNumber: Number(row.version_number), publishedAt: row.published_at!, updatedAt: row.updated_at!,
     owner: { displayName: row.display_name!, profileSlug: row.profile_slug! },
+    isSeed: Number(row.is_seed ?? 0) === 1,
     likeCount: Number(row.like_count ?? 0),
   };
 }

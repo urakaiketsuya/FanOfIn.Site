@@ -60,7 +60,7 @@ export default function PublicDeckDetail() {
   if (!deck) return <PageLayout data-component="PublicDeckDetail"><EmptyState title="Deck unavailable" description={error} action={<Link to="/" className="text-ctp-blue hover:underline">Back home</Link>} /></PageLayout>;
 
   return <PageLayout data-component="PublicDeckDetail">
-    <UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} versionNumber={deck.versionNumber} visibility={deck.visibility} description={deck.description} eyebrow={<>Shared by <Link to={`/users/${deck.owner.profileSlug}`} className="text-ctp-blue hover:underline">{deck.owner.displayName}</Link></>} />
+    <UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} versionNumber={deck.versionNumber} visibility={deck.visibility} description={deck.description} eyebrow={deck.isSeed ? <>Starter Library · Curated by Fan of Insight</> : <>Shared by <Link to={`/users/${deck.owner.profileSlug}`} className="text-ctp-blue hover:underline">{deck.owner.displayName}</Link></>} />
     <DeckTags tags={deck.tags} />
     <div className="mt-5 flex flex-wrap items-center gap-2">
       <button type="button" disabled={busy || !social} onClick={() => void run(async () => { const result = await accountApi.copyDeck(publicSlug); navigate(`/decks/${encodeURIComponent(result.id)}`, { state: { notice: result.created ? "Copied to your decks." : "You already had this build; opened the existing deck." } }); })} className="min-h-11 rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base disabled:opacity-50">Copy deck</button>
