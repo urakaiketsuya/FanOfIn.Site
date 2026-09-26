@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import PageHeader from "../../../components/ui/PageHeader";
 import { useDeckBuilder } from "../useDeckBuilder";
 
 export function DeckBuilderHeader() {
-  return <PageHeader title="Deck Workbench" description="Add cards in any order, or paste a decklist. Get recommendations whenever you want ideas." />;
+  const { deckFormat } = useDeckBuilder();
+  return <header className="flex items-center justify-between gap-3"><h1 className="text-xl font-bold tracking-tight text-ctp-text">Deck Workbench</h1><span className="text-xs text-ctp-subtext0">{deckFormat === "PANTHEON" ? "Pantheon" : "Standard"}</span></header>;
 }
 
 export function DeckFormatPicker() {

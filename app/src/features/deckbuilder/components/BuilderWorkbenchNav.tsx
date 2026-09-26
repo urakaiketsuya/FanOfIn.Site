@@ -1,4 +1,5 @@
 import DisclosureChevron from "../../../components/DisclosureChevron";
+import { DeckFormatPicker } from "./DeckBuilderSetup";
 import { Link } from "react-router-dom";
 
 export type BuilderWorkbenchView = "build" | "tools" | "copy" | "log";
@@ -24,12 +25,10 @@ export default function BuilderWorkbenchNav({
   changeLogCount: number;
   onOpenDisplay: () => void;
 }) {
-  const primaryActive = PRIMARY_STAGES.some((stage) => stage.view === activeView);
-  const activeSupport = SUPPORTING_TOOLS.find((tool) => tool.view === activeView);
   return (
-    <section data-component="BuilderWorkbenchNav" className="mt-5 overflow-hidden rounded-xl border border-ctp-surface1 bg-ctp-mantle">
+    <section data-component="BuilderWorkbenchNav" className="relative mt-3 flex items-start rounded-xl border border-ctp-surface1 bg-ctp-mantle">
 
-      <nav aria-label="Deck workspace" className="grid grid-cols-2 border-b border-ctp-surface1">
+      <nav aria-label="Deck workspace" className="grid min-w-0 flex-1 grid-cols-2">
         {PRIMARY_STAGES.map((stage) => {
           const active = activeView === stage.view;
           return (
@@ -47,11 +46,12 @@ export default function BuilderWorkbenchNav({
         })}
       </nav>
 
-      <details className="group px-4 py-2" open={!primaryActive}>
+      <details className="group px-3" onClick={(event) => { const target = event.target as HTMLElement; if (target.closest("a") || target.closest("button")?.id.startsWith("deck-builder-tab-") || target.closest("button")?.textContent === "Card display") event.currentTarget.open = false; }}>
         <summary className="flex min-h-12 cursor-pointer list-none items-center text-xs font-medium text-ctp-subtext1 hover:text-ctp-text">
-          {activeSupport ? activeSupport.label : "More"} <DisclosureChevron className="ml-1 group-open:rotate-180" />
+          More <DisclosureChevron className="ml-1 group-open:rotate-180" />
         </summary>
-        <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label="Supporting deck tools">
+        <div className="absolute inset-x-0 top-full z-30 mt-1 flex flex-wrap gap-2 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 shadow-xl" role="group" aria-label="Supporting deck tools">
+          <div className="w-full"><p className="mb-1 text-xs text-ctp-subtext0">Deck format</p><DeckFormatPicker /></div>
           {SUPPORTING_TOOLS.map((tool) => {
             const active = tool.view === activeView;
             const suffix = tool.view === "log" ? ` (${changeLogCount})` : "";

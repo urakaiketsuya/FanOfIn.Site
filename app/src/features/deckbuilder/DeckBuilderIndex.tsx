@@ -8,7 +8,7 @@ import BuilderBuildPanel from "./panels/BuilderBuildPanel";
 import { useDeckBuilderController } from "./useDeckBuilderController";
 import { DeckBuilderProvider } from "./DeckBuilderContext";
 import { useDeckBuilder } from "./useDeckBuilder";
-import { DeckBuilderHeader, DeckFormatPicker } from "./components/DeckBuilderSetup";
+import { DeckBuilderHeader } from "./components/DeckBuilderSetup";
 import { DeckBuilderMethodology, DeckBuilderWorkbenchStatus } from "./components/DeckBuilderWorkbenchStatus";
 
 export default function DeckBuilderIndex() {
@@ -90,7 +90,6 @@ function DeckBuilderPage() {
   return (
     <PageLayout data-component="DeckBuilderIndex" className="[&_input]:min-h-12 [&_input]:min-w-12 [&_button]:min-h-12 [&_button]:min-w-12 [&_select]:min-h-12 [&_summary]:min-h-12 [&_summary]:content-center [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-ctp-blue">
       <DeckBuilderHeader />
-      <div className="mt-4"><DeckFormatPicker /></div>
         <>
           <DeckBuilderWorkbenchStatus />
           {tab === "build" && (

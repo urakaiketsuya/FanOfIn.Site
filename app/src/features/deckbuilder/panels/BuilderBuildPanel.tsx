@@ -1,3 +1,4 @@
+import BuilderCardSearch from "../components/BuilderCardSearch";
 import DisclosureChevron from "../../../components/DisclosureChevron";
 import { BuilderStartActions, DecklistPaste } from "../components/DeckBuilderSetup";
 import { useDeckBuilder } from "../useDeckBuilder";
@@ -82,29 +83,23 @@ export default function BuilderBuildPanel({
       <input
         id="deck-builder-card-input"
         type="text"
-        list="deck-builder-card-options"
         value={cardInput}
         onChange={(e) => {
           onCardInputChange(e.target.value);
           onAddDestinationChange("automatic");
         }}
         onKeyDown={(e) => {
-          if (e.key === "Enter" && cardNameSet.has(cardInput)) onAddCard(cardInput);
+          if (e.key === "Enter" && cardNameSet.has(cardInput)) onAddCard(cardInput, 1);
         }}
         placeholder="Search by card name…"
         className="block w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2.5 text-base text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none sm:max-w-md sm:text-sm"
       />
       {cardNames.length === 0 && <p role="status" className="mt-2 text-sm text-ctp-subtext1">Loading the card catalog…</p>}
-      <datalist id="deck-builder-card-options">
-        {cardNames.map((n) => (
-          <option key={n} value={n} />
-        ))}
-      </datalist>
       <div className="mt-2 flex flex-wrap items-center gap-2">
         <button
           type="button"
           disabled={!cardNameSet.has(cardInput) || (lockedCards.has(cardInput) && addDestination !== "maybeboard")}
-          onClick={() => onAddCard(cardInput)}
+          onClick={() => onAddCard(cardInput, 1)}
           className="min-h-12 rounded-lg bg-ctp-blue px-4 py-2 text-sm font-medium text-ctp-base disabled:cursor-not-allowed disabled:opacity-40 sm:min-h-0 sm:py-1.5 sm:text-xs"
         >
           {addDestination === "maybeboard" ? "Add to maybeboard" : sideboardDestinationSelected ? "Add to sideboard" : "Add card"}
@@ -145,10 +140,8 @@ export default function BuilderBuildPanel({
         {sideboardDestinationSelected && <span className="text-xs text-ctp-subtext0">{selectedSideboardPoints} points · {SIDEBOARD_POINT_BUDGET - currentSideboardPoints} available</span>}
       </div>
       </div>
-      {!hasCards && <>
-        <DecklistPaste />
-        <BuilderStartActions />
-      </>}
+      {(!hasCards || cardInput.trim()) && cardNames.length > 0 && <BuilderCardSearch key={cardInput.trim().toLocaleLowerCase()} query={cardInput} names={cardNames} catalog={catalogByName} chosen={addDestination === "maybeboard" ? maybeboard : lockedCards} onAdd={onAddCard} />}
+
       {customizeOpen && (
         <div className="mt-3 space-y-2 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3">
           <div className="flex items-center justify-between gap-2"><h2 className="text-sm font-semibold text-ctp-text">Card display</h2><button type="button" onClick={onToggleCustomizeOpen} className="rounded-lg px-3 text-sm text-ctp-blue">Done</button></div>
@@ -189,8 +182,8 @@ export default function BuilderBuildPanel({
       )}
       <>
       <div className={`mt-3 space-y-4 transition-opacity ${isPending ? "opacity-50" : ""}`}>
-        <BuilderDeckSection showLockToggle={false} panel section="material" title="Material Deck" total={materialTotal} cards={build.material} viewMode={viewMode} mainDeckSize={mainTotal} startingHandSize={startingHandSize} cardsByName={cardsByName} priceByName={priceByName} priceTrendByName={priceTrendByName} communityInclusion={communityInclusionByName} hypeGapByName={hypeGapByName} decayByName={decaySignalByName} simulatorEvidenceByName={effectivePopulationSource === "simulator" ? simulatorEvidenceByName : undefined} visibleFields={visibleFields} reviewRemovalNames={reviewRemovalNames} communityMode={communityMode} onToggleLock={onToggleLock} onRemove={onRemoveCard} />
-        <BuilderDeckSection showLockToggle={false} panel section="main" title="Main Deck" total={mainTotal} cards={build.main} viewMode={viewMode} mainDeckSize={mainTotal} startingHandSize={startingHandSize} cardsByName={cardsByName} priceByName={priceByName} priceTrendByName={priceTrendByName} communityInclusion={communityInclusionByName} hypeGapByName={hypeGapByName} decayByName={decaySignalByName} simulatorEvidenceByName={effectivePopulationSource === "simulator" ? simulatorEvidenceByName : undefined} visibleFields={visibleFields} reviewRemovalNames={reviewRemovalNames} communityMode={communityMode} onToggleLock={onToggleLock} onChangeQuantity={onChangeQuantity} onRemove={onRemoveCard} />
+        {build.material.length > 0 && <BuilderDeckSection showLockToggle={false} panel section="material" title="Material Deck" total={materialTotal} cards={build.material} viewMode={viewMode} mainDeckSize={mainTotal} startingHandSize={startingHandSize} cardsByName={cardsByName} priceByName={priceByName} priceTrendByName={priceTrendByName} communityInclusion={communityInclusionByName} hypeGapByName={hypeGapByName} decayByName={decaySignalByName} simulatorEvidenceByName={effectivePopulationSource === "simulator" ? simulatorEvidenceByName : undefined} visibleFields={visibleFields} reviewRemovalNames={reviewRemovalNames} communityMode={communityMode} onToggleLock={onToggleLock} onRemove={onRemoveCard} />}
+        {build.main.length > 0 && <BuilderDeckSection showLockToggle={false} panel section="main" title="Main Deck" total={mainTotal} cards={build.main} viewMode={viewMode} mainDeckSize={mainTotal} startingHandSize={startingHandSize} cardsByName={cardsByName} priceByName={priceByName} priceTrendByName={priceTrendByName} communityInclusion={communityInclusionByName} hypeGapByName={hypeGapByName} decayByName={decaySignalByName} simulatorEvidenceByName={effectivePopulationSource === "simulator" ? simulatorEvidenceByName : undefined} visibleFields={visibleFields} reviewRemovalNames={reviewRemovalNames} communityMode={communityMode} onToggleLock={onToggleLock} onChangeQuantity={onChangeQuantity} onRemove={onRemoveCard} />}
       </div>
 
       {build.sideboard.length > 0 && (
@@ -201,6 +194,7 @@ export default function BuilderBuildPanel({
       )}
 
       <BuilderMaybeboard cards={maybeboard} catalogByName={catalogByName} lockedCards={lockedCards} onQuantityChange={onMaybeQuantityChange} onPromote={onPromoteMaybeCard} onRemove={onRemoveMaybeCard} />
+      {!hasCards && <><DecklistPaste /><BuilderStartActions /></>}
       <section className="mt-4" aria-label="Optional card recommendations">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <button type="button" onClick={onToggleRecommendations} aria-expanded={recommendationsEnabled} aria-controls="builder-recommendations" className="rounded-lg border border-ctp-blue px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-blue/10">
