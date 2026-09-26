@@ -47,7 +47,10 @@ export default function CardsBrowse() {
     sets: new Set(searchParams.getAll("set")),
   }));
 
-  const filtered = useMemo(() => filterCards(cards, filters), [cards, filters]);
+  const filtered = useMemo(
+    () => filterCards(cards, filters).sort((a, b) => a.name.localeCompare(b.name)),
+    [cards, filters],
+  );
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   useEffect(() => {
