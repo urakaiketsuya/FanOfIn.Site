@@ -35,3 +35,10 @@ npm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Local-only deck workshop
+/app/src/features/local-workshop/
+/app/workshop.html
+/app/test/localWorkshop.test.ts
+/app/test/mtgWorkshop.test.ts
+/app/test/weissWorkshop.test.ts
