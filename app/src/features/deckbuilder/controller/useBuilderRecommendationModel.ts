@@ -70,8 +70,8 @@ export function useBuilderRecommendationModel(options: BuilderRecommendationMode
   } = builderData;
 
   const seedLockedCards = useMemo(() => new Map(
-    Array.from(lockedCards.entries()).filter(([name]) => !catalogByName.get(name)?.types.includes("CHAMPION")),
-  ), [lockedCards, catalogByName]);
+    Array.from(lockedCards.entries()).filter(([name]) => lockedSections.get(name) !== "sideboard" && !catalogByName.get(name)?.types.includes("CHAMPION")),
+  ), [lockedCards, lockedSections, catalogByName]);
 
   const archetypeOptions = useMemo(
     () => deriveArchetypeOptions(championName, archetypeTaxonomyData),

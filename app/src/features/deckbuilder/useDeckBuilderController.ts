@@ -1,3 +1,5 @@
+import { automaticDeckSection } from "../../lib/deckEditing";
+import { useBuilderEditing } from "./controller/useBuilderEditing";
 import { useEffect, useState, useTransition } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import type { DeckFormat } from "@gatcg/shared";
@@ -103,6 +105,16 @@ export function useDeckBuilderController() {
     rejectedCards, pillarBias, archetypeId, championLevelCap, populationSource, collectionMode,
     maybeboard, spiritElement, recommendationsEnabled,
   });
+  const editor = useBuilderEditing(workflow, catalogByName);
+  function addCard(name: string, quantity = 1, override?: "automatic" | "maybeboard") {
+    if (!cardNameSet.has(name)) return;
+    const destination = override ?? addDestination;
+    const section = destination === "automatic" ? automaticDeckSection(catalogByName.get(name)) : destination;
+    const existing = editor.deck[section].find((line) => line.card === name)?.quantity ?? 0;
+    editor.edit({ type: "quantity", section, name, quantity: existing + quantity });
+    setCardInput("");
+    setAddDestination("automatic");
+  }
   // Identity follows the actual cards; sideboard and maybeboard never define it.
   useEffect(() => {
     if (catalogByName.size === 0) return;
@@ -118,7 +130,7 @@ export function useDeckBuilderController() {
   const { pendingActionRef, resetChangeTracking } = useBuilderChangeTracking(build, setChangeLog);
   const {
     toggleLock, chooseChampionLineagePrint, restoreSuggestedChampionLevel, setLockedQuantity,
-    removeCard, addCard, removeMaybeCard, setMaybeQuantity, promoteMaybeCard,
+    removeCard, removeMaybeCard, setMaybeQuantity, promoteMaybeCard,
     changePopulationSource, changePillarBias, changeArchetype, changeChampionLevelCap,
   } = useBuilderCardActions({
     workflow, deckFormat, build, catalogByName, cardCatalog, cardNameSet, archetypeOptions, addDestination,
@@ -162,6 +174,7 @@ export function useDeckBuilderController() {
 
 
   return {
+    editor,
     recommendationsEnabled,
     setRecommendationsEnabled,
     searchParams,

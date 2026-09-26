@@ -51,12 +51,21 @@ export function selectionsToMaps(selections: CardSelection[]): {
   cards: Map<string, number>;
   sections: Map<string, LockedSection>;
 } {
-  return {
-    cards: new Map(selections.map(({ name, quantity }) => [name, quantity])),
-    sections: new Map(selections.map(({ name, section }) => [name, section])),
-  };
+  const cards = new Map<string, number>();
+  const sections = new Map<string, LockedSection>();
+  // Preserve the legacy plain-name key for the primary section; duplicates get
+  // a section-qualified key so Main and Sideboard copies survive round trips.
+  const ordered = [...selections].sort((a, b) => Number(a.section === "sideboard") - Number(b.section === "sideboard"));
+  for (const { name, quantity, section } of ordered) {
+    const key = cards.has(name) && sections.get(name) !== section ? `${section}\0${name}` : name;
+    cards.set(key, (cards.get(key) ?? 0) + quantity);
+    sections.set(key, section);
+  }
+  return { cards, sections };
 }
 
 export function mapsToSelections(cards: ReadonlyMap<string, number>, sections: ReadonlyMap<string, LockedSection>): CardSelection[] {
-  return Array.from(cards, ([name, quantity]) => ({ name, quantity, section: sections.get(name) ?? "main" }));
+  return Array.from(cards, ([name, quantity]) => ({ name: selectionCardName(name), quantity, section: sections.get(name) ?? "main" }));
 }
+
+export function selectionCardName(key: string): string { return key.includes("\0") ? key.slice(key.indexOf("\0") + 1) : key; }

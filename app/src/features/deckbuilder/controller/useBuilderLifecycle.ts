@@ -1,3 +1,4 @@
+import { selectionsToMaps } from "../model/builderTypes";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import type { Card } from "@gatcg/shared";
 import { accountApi } from "../../../lib/accountApi";
@@ -57,8 +58,6 @@ export function useBuilderLifecycle(options: BuilderLifecycleOptions) {
 
     let detectedChampion: string | null = null;
     let detectedSpirit: string | null = null;
-    const newLocked = new Map<string, number>();
-    const newSections = new Map<string, "main" | "material" | "sideboard">();
     for (const section of ["main", "material", "sideboard"] as const) {
       for (const line of decklist[section]) {
         const card = catalogByName.get(line.card);
@@ -69,14 +68,13 @@ export function useBuilderLifecycle(options: BuilderLifecycleOptions) {
           }
           if (!card.subtypes.includes("SPIRIT") && !detectedChampion) detectedChampion = card.name.split(",")[0].trim();
         }
-        newLocked.set(line.card, (newLocked.get(line.card) ?? 0) + line.quantity);
-        newSections.set(line.card, section);
       }
     }
     setChampionName(detectedChampion);
     setSpiritFilter(detectedSpirit);
-    setLockedCards(newLocked);
-    setLockedSections(newSections);
+    const selections = selectionsToMaps((["main", "material", "sideboard"] as const).flatMap((section) => decklist[section].map((line) => ({ name: line.card, quantity: line.quantity, section }))));
+    setLockedCards(selections.cards);
+    setLockedSections(selections.sections);
     setMaybeboard(new Map());
     setRejectedCards(new Set());
     setDismissedReviewCards(new Set());
