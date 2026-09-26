@@ -387,16 +387,19 @@ export default function DeckReviewIndex() {
         <InlineState className="mt-6">Choose a Champion above (or paste a decklist) to see ranked suggestions.</InlineState>
       ) : (
         <div className="mt-4">
-          <section aria-labelledby="deck-review-deck-heading" className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 shadow-sm sm:p-4">
+          <details className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 shadow-sm sm:p-4">
+            <summary className="min-h-11 cursor-pointer py-3 text-sm font-semibold text-ctp-text">Your deck · {mainTotal} main · {materialTotal} material · {sideboardTotal} sideboard</summary>
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h2 id="deck-review-deck-heading" className="text-base font-semibold text-ctp-text">Your deck</h2>
               <span className="text-xs text-ctp-subtext0">
                 {keptCount === 0
                   ? "Nothing accepted yet"
-                  : `${mainTotal} main · ${materialTotal} material${sideboardTotal > 0 ? ` · ${sideboardTotal} sideboard` : ""} · ${formatUsd(totalPrice.sum + sideboardPrice.sum)}`}
+                  : `${mainTotal} main · ${materialTotal} material${sideboardTotal > 0 ? ` · ${sideboardTotal} sideboard` : ""}`}
               </span>
             </div>
+            <details className="mt-2 text-sm"><summary className="min-h-11 cursor-pointer py-3 text-ctp-subtext1">Price and collection</summary><p>Estimated total: {formatUsd(totalPrice.sum + sideboardPrice.sum)}</p>
             {collectionStatus && collectionStatus.missingCopies > 0 && <details className="mt-3 rounded-lg border border-ctp-yellow/35 bg-ctp-yellow/10 p-3 text-sm"><summary className="cursor-pointer font-medium text-ctp-yellow">{collectionStatus.missingCopies} missing cop{collectionStatus.missingCopies === 1 ? "y" : "ies"}</summary><ul className="mt-2 space-y-1 text-xs text-ctp-subtext1">{collectionStatus.lines.filter((line) => line.missing > 0).map((line) => <li key={line.card}>{line.missing}× {line.card}</li>)}</ul></details>}
+            </details>
             <div>{keptCount === 0 ? (
               <InlineState className="mt-2 text-sm">Nothing here yet — accept a suggestion below to start building.</InlineState>
             ) : (
@@ -421,7 +424,7 @@ export default function DeckReviewIndex() {
                 )}
               </div>
             )}</div>
-          </section>
+          </details>
 
           <div className="mt-4">
             <Tabs
