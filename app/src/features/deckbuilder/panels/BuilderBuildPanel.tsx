@@ -1,3 +1,5 @@
+import { useState } from "react";
+import BuilderCardBrowserDialog from "../components/BuilderCardBrowserDialog";
 import BuilderCardSearch from "../components/BuilderCardSearch";
 import DisclosureChevron from "../../../components/DisclosureChevron";
 import { BuilderStartActions, DecklistPaste } from "../components/DeckBuilderSetup";
@@ -76,8 +78,17 @@ export default function BuilderBuildPanel({
   const hasCards = lockedCards.size > 0 || maybeboard.size > 0 || materialTotal + mainTotal + sideboardTotal > 0;
   const communityMode = effectivePopulationSource !== "tournament" && effectivePopulationSource !== "balanced";
   const startingHandSize = inferStartingHandSize(build.material.map((card) => ({ name: card.cardName })), catalogByName);
-  return (
-    <div data-component="BuilderBuildPanel" role="tabpanel" id="deck-builder-panel-build" aria-labelledby="deck-builder-tab-build" className="mt-4">
+  const [browserOpen, setBrowserOpen] = useState(false);
+  const deckCount = materialTotal + mainTotal + sideboardTotal;
+  function addFromBrowser(name: string, quantity = 1) {
+    onAddCard(name, quantity);
+    if (browserOpen) {
+      // Keep the current search and destination while adding several cards.
+      onCardInputChange(cardInput);
+      onAddDestinationChange(addDestination);
+    }
+  }
+  const cardBrowser = <>
       <div className="rounded-xl border border-ctp-surface1 bg-ctp-base/95 p-2 shadow-sm backdrop-blur">
       <label htmlFor="deck-builder-card-input" className="mb-2 block text-sm font-semibold text-ctp-text">Add cards</label>
       <input
@@ -89,7 +100,7 @@ export default function BuilderBuildPanel({
           onAddDestinationChange("automatic");
         }}
         onKeyDown={(e) => {
-          if (e.key === "Enter" && cardNameSet.has(cardInput)) onAddCard(cardInput, 1);
+          if (e.key === "Enter" && cardNameSet.has(cardInput)) addFromBrowser(cardInput, 1);
         }}
         placeholder="Search by card name…"
         className="block w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2.5 text-base text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none sm:max-w-md sm:text-sm"
@@ -99,7 +110,7 @@ export default function BuilderBuildPanel({
         <button
           type="button"
           disabled={!cardNameSet.has(cardInput) || (lockedCards.has(cardInput) && addDestination !== "maybeboard")}
-          onClick={() => onAddCard(cardInput, 1)}
+          onClick={() => addFromBrowser(cardInput, 1)}
           className="min-h-12 rounded-lg bg-ctp-blue px-4 py-2 text-sm font-medium text-ctp-base disabled:cursor-not-allowed disabled:opacity-40 sm:min-h-0 sm:py-1.5 sm:text-xs"
         >
           {addDestination === "maybeboard" ? "Add to maybeboard" : sideboardDestinationSelected ? "Add to sideboard" : "Add card"}
@@ -140,7 +151,15 @@ export default function BuilderBuildPanel({
         {sideboardDestinationSelected && <span className="text-xs text-ctp-subtext0">{selectedSideboardPoints} points · {SIDEBOARD_POINT_BUDGET - currentSideboardPoints} available</span>}
       </div>
       </div>
-      {(!hasCards || cardInput.trim()) && cardNames.length > 0 && <BuilderCardSearch key={cardInput.trim().toLocaleLowerCase()} query={cardInput} names={cardNames} catalog={catalogByName} chosen={addDestination === "maybeboard" ? maybeboard : lockedCards} onAdd={onAddCard} />}
+      {cardNames.length > 0 && <BuilderCardSearch key={cardInput.trim().toLocaleLowerCase()} query={cardInput} names={cardNames} catalog={catalogByName} chosen={addDestination === "maybeboard" ? maybeboard : lockedCards} onAdd={addFromBrowser} />}
+  </>;
+  return (
+    <div data-component="BuilderBuildPanel" role="tabpanel" id="deck-builder-panel-build" aria-labelledby="deck-builder-tab-build" className="mt-4">
+      {hasCards ? <div className="flex items-center justify-between gap-3">
+        <p className="text-sm text-ctp-subtext1">Your deck · {deckCount} {deckCount === 1 ? "card" : "cards"}</p>
+        <button type="button" onClick={() => { onCardInputChange(""); setBrowserOpen(true); }} className="rounded-lg bg-ctp-blue px-4 py-2 text-sm font-medium text-ctp-base">Add cards</button>
+      </div> : !browserOpen && cardBrowser}
+      {browserOpen && <BuilderCardBrowserDialog count={deckCount} onDismiss={() => setBrowserOpen(false)}>{cardBrowser}</BuilderCardBrowserDialog>}
 
       {customizeOpen && (
         <div className="mt-3 space-y-2 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3">
@@ -203,7 +222,7 @@ export default function BuilderBuildPanel({
         </div>
         {recommendationsEnabled && <div id="builder-recommendations">
           <p className="mt-3 text-sm text-ctp-subtext1">Cards enter your deck only when you add them.</p>
-          {(!championName || !spiritFilter) ? <div className="mt-3 text-sm text-ctp-subtext1"><p>Add {!championName && !spiritFilter ? "Champion and Spirit cards" : !championName ? "a Champion card" : "a Spirit card"} to your Material deck to focus recommendations. You can keep building without them.</p><button type="button" onClick={() => document.getElementById("deck-builder-card-input")?.focus()} className="mt-2 min-h-12 rounded-lg px-3 text-ctp-blue">Search for cards</button></div> : gateLoading ? <p role="status" className="mt-3 text-sm text-ctp-subtext1">Loading recommendations…</p> : <BuilderCardExplorer recommendations={cardCategoryRecommendations} lockedCards={lockedCards} onAddCard={onAddCard} />}
+          {(!championName || !spiritFilter) ? <div className="mt-3 text-sm text-ctp-subtext1"><p>Add {!championName && !spiritFilter ? "Champion and Spirit cards" : !championName ? "a Champion card" : "a Spirit card"} to your Material deck to focus recommendations. You can keep building without them.</p><button type="button" onClick={() => setBrowserOpen(true)} className="mt-2 min-h-12 rounded-lg px-3 text-ctp-blue">Search for cards</button></div> : gateLoading ? <p role="status" className="mt-3 text-sm text-ctp-subtext1">Loading recommendations…</p> : <BuilderCardExplorer recommendations={cardCategoryRecommendations} lockedCards={lockedCards} onAddCard={onAddCard} />}
           {championName && spiritFilter && !gateLoading && cardCategoryRecommendations.length === 0 && <p className="mt-3 text-xs text-ctp-subtext0">No recommendations available for this identity yet. You can keep adding cards by name.</p>}
         </div>}
       </section>
