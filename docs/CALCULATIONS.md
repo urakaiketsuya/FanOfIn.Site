@@ -2977,3 +2977,39 @@ through overlapping members are clustered into required core cards plus intercha
 cards. A family records the minimum number of options supported by its strongest underlying
 candidate, rather than requiring every option. This allows packages larger than three cards while
 preserving toolbox semantics; families remain review-only until approved.
+
+## Results-first deck calculators
+
+Deck Analysis now opens a compact calculator dashboard. Natural-draw deadlines and play order
+are shared across its tools; selections, two-group opening recipes, and up to four named plays
+are stored locally per analysis-profile deck fingerprint. Advanced calculators retain their
+full configurations separately. Main Deck size is the actual imported total, including lists
+smaller than 60; Material and Sideboard are excluded from draw pools.
+
+- **Copies needed** searches integer pool sizes at fixed deck size for the first probability
+  meeting the requested percentage using `probabilityAtLeast`. It returns no solution when the
+  draw count cannot satisfy the requirement. Copies are interchangeable pool members, not a
+  recommendation to exceed a card's legal copy limit.
+- **Swap comparison** replaces an available number of one card with the same number of another
+  in a temporary list. It reports opening and deadline access to a selected pool, joint access
+  to the saved Setup/Payoff groups, and opening access to two or more user-marked unwanted cards.
+  Missing tracking groups show no result. Saved role assignments stay fixed; an incoming card
+  is not automatically assigned a strategic role. The original deck is never mutated.
+- **Opening hand** requires one card from each of two disjoint groups. Unedited recipes reuse
+  prepared Setup and Protection groups; custom groups are saved independently. Overlap produces
+  an input error instead of an approximation. Advanced opening recipes retain configurable
+  minima and an unwanted-card cap.
+- **Target turn** is the first natural-draw checkpoint in turns 1–8 meeting the access target.
+  Failure to reach it is reported as “Not reached by turn 8,” not a prediction of a later turn.
+- **Next draw** is `(matching copies - matching removed) / (deck size - total removed)`.
+  Invalid known-card counts or an empty remaining deck produce no result.
+- **Plan**, **Pressure**, and **Recovery access** reuse the active saved plan. Pressure filters
+  packages by earliest-useful turn; Recovery counts the saved Rebuild pool. These compact
+  measurements do not model recurrence, board state, or successful recovery after disruption.
+- **Level timing** uses the strongest supported non-Fractal route from `computeLevelGoalAnalysis`,
+  rather than adding route probabilities. **Play sequence** uses `computeReserveSequence` with
+  the natural first-turn hand ceiling for the selected play order; its payment result remains
+  a resource ceiling, not a full legality or gameplay simulation.
+
+Explanatory prose is collapsed under Details. Access-only, supported-route, and resource-ceiling
+labels remain visible to identify what each headline measures.

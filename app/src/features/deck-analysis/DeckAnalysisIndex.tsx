@@ -23,7 +23,6 @@ import BuilderTestPanel from "../deckbuilder/panels/BuilderTestPanel";
 import { useDeckTestResult } from "../decks/useDeckTestResult";
 import { useRequestedDeckWorkspace } from "../deckbuilder/persistence/useRequestedDeckWorkspace";
 import { probabilityAtLeast } from "../deckbuilder/synergyReadiness";
-import { computeResourceCurveReliability } from "../deckbuilder/resourceCurve";
 import { calculateConditionalPressure } from "../deckbuilder/conditionalPressureCalculation";
 import GamePlanReadiness from "../deckbuilder/GamePlanReadiness";
 import FunctionalHandCalculator from "../deckbuilder/FunctionalHandCalculator";
@@ -31,15 +30,17 @@ import LevelUpRunway from "../deckbuilder/LevelUpRunway";
 import ThreatCadence from "../deckbuilder/ThreatCadence";
 import ResilienceRebuild from "../deckbuilder/ResilienceRebuild";
 import PrepareAnalysis from "./PrepareAnalysis";
+import CalculatorDashboard from "./CalculatorDashboard";
 import { activeAnalysisPlan, analysisProfileKey, cacheSyncedAnalysisProfile, loadAnalysisProfile, newerAnalysisProfile, saveAnalysisProfile, type DeckAnalysisProfile } from "../../lib/analysisProfile";
 import type { GamePlanRole } from "../../lib/gamePlanReadiness";
 import { accountApi } from "../../lib/accountApi";
 
 type AnalysisTab = "summary" | "explore" | "matchups";
-const CALCULATORS = ["Game plan readiness", "Opening hand recipe", "Level-up runway", "Pressure continuity", "Resilience and rebuild", "Card access and probability", "Clumping and conditional pressure", "Resource timing", "Curve affordability check"];
+
 
 export default function DeckAnalysisIndex() {
   useDocumentTitle("Deck Analysis", "Understand the consistency, timing, resource pressure, and sideboard shape of the active deck.");
+  const setupRef = useRef<HTMLDetailsElement>(null);
   const [tab, setTab] = useState<AnalysisTab>("summary");
   const [workspace, setWorkspace] = useState<DeckWorkspace | null>(() => loadActiveDeckWorkspace(sessionStorage));
   const profileStorageKey = workspace ? analysisProfileKey(workspace.championName, workspace.main) : "";
@@ -130,44 +131,36 @@ export default function DeckAnalysisIndex() {
     .map((line) => ({ ...line, probability: probabilityAtLeast(deckSize, line.quantity, Math.min(10, deckSize), 2) }))
     .sort((a, b) => b.probability - a.probability)[0];
   const conditional = calculateConditionalPressure(workspace.main, catalogByName, opening);
-  const conditionalCard = conditional.rows[0];
-  const resourcePoints = computeResourceCurveReliability(workspace.main, catalogByName, opening);
-  const weakestResource = [...resourcePoints].sort((a, b) => a.first.probability - b.first.probability)[0];
-  const weakestResourceCard = weakestResource
-    ? workspace.main.find((line) => catalogByName.get(line.name)?.cost_reserve === weakestResource.cost)?.name
-    : undefined;
+
 
   return <PageLayout>
     <PageHeader title="Deck Analysis" />
     <DeckToolWorkspaceHeader activeTool="analysis" title={workspace.title} championName={workspace.championName} spiritName={workspace.spiritName} format={workspace.format} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel={workspace.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} />} />
-    <details className="mt-3"><summary className="min-h-11 cursor-pointer py-3 text-sm font-medium text-ctp-blue">Deck and analysis setup</summary>
+    <details ref={setupRef} className="mt-3"><summary className="min-h-11 cursor-pointer py-3 text-sm font-medium text-ctp-blue">Deck and analysis setup</summary>
       <DeckArtworkPreview material={workspace.material} main={workspace.main} catalogByName={catalogByName} />
     {collectionStatus && <CollectionShortageSummary status={collectionStatus} />}
     {analysisProfile && <div className="mt-4"><PrepareAnalysis lines={workspace.main} catalogByName={catalogByName} profile={analysisProfile} onProfileChange={persistAnalysisProfile} onReviewed={markAnalysisReviewed} /><p className="mt-1 px-1 text-[10px] text-ctp-subtext0" aria-live="polite">{profileSync === "synced" ? "Analysis profile synced to your account." : profileSync === "syncing" ? "Syncing analysis profile…" : profileSync === "offline" ? "Saved on this device. Account sync will retry when this page is reopened." : "Analysis profile saved on this device."}</p></div>}
     </details>
-    <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Summary" }, { key: "explore", label: `Calculators (${CALCULATORS.length})` }, { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" /></div>
+    <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Calculators" }, { key: "explore", label: "Advanced calculators" }, { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" /></div>
     {tab === "summary" && <div className="mt-4">
-      <div className="mb-3 flex flex-wrap items-center justify-between gap-2"><h2 className="text-base font-semibold text-ctp-text">What stands out</h2><span className="rounded-full bg-ctp-surface0 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-ctp-subtext0">Descriptive</span></div>
-      <div className="grid gap-3 md:grid-cols-3">
-        <InsightCard title="Opening hand" value={`${opening} cards`} detail="Set by your level-0 Champion" tone="text-ctp-blue" onExplore={() => setTab("explore")} />
-        {clumping && <InsightCard title="Highest clumping chance" value={`${(clumping.probability * 100).toFixed(1)}%`} detail={`2+ copies of ${clumping.name} by 10 cards`} card={catalogByName.get(clumping.name)} tone={clumping.probability >= 0.25 ? "text-ctp-yellow" : "text-ctp-green"} onExplore={() => setTab("explore")} />}
-        {weakestResource && <InsightCard title={`Reserve ${weakestResource.cost} access`} value={`${(weakestResource.first.probability * 100).toFixed(1)}%`} detail={`Going first · ready by turn ${weakestResource.first.turn}`} card={weakestResourceCard ? catalogByName.get(weakestResourceCard) : undefined} tone={weakestResource.first.probability >= 0.8 ? "text-ctp-green" : weakestResource.first.probability >= 0.6 ? "text-ctp-blue" : "text-ctp-yellow"} onExplore={() => setTab("explore")} />}
-        {conditional.conditionalCopies > 0 && <InsightCard title="Conditional hand pressure" value={`${(conditional.chanceTwo * 100).toFixed(1)}%`} detail={`Chance of 2+ conditional cards in the opening ${opening}`} card={conditionalCard ? catalogByName.get(conditionalCard.name) : undefined} tone={conditional.chanceTwo >= 0.5 ? "text-ctp-red" : conditional.chanceTwo >= 0.25 ? "text-ctp-yellow" : "text-ctp-green"} onExplore={() => setTab("explore")} />}
-      </div>
-      <section className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><div className="flex flex-wrap items-start justify-between gap-3"><div><h2 className="text-base font-semibold text-ctp-text">Deck calculator directory</h2><p className="mt-1 text-xs text-ctp-subtext0">{CALCULATORS.length} focused workflows cover consistency, pacing, resources, and resilience. Game Plan combines Readiness, Timing, Stage draws, and Affordability.</p></div><button type="button" onClick={() => setTab("explore")} className="rounded-md bg-ctp-blue px-4 py-2 text-sm font-semibold text-ctp-base">Open calculators</button></div><div className="mt-3 flex flex-wrap gap-1.5">{CALCULATORS.map((name) => <span key={name} className="rounded-full border border-ctp-surface1 bg-ctp-base/40 px-2 py-1 text-[10px] text-ctp-subtext1">{name}</span>)}</div><Link to="/match-log" className="mt-3 inline-flex min-h-11 items-center text-xs font-semibold text-ctp-blue hover:underline">Record and review real games in Match Log →</Link></section>
-      <p className="mt-3 text-xs text-ctp-subtext0">These are measurements, not change recommendations. Use Deck Review when you want suggested edits.</p>
+      <CalculatorDashboard key={profileStorageKey} storageKey={profileStorageKey} main={workspace.main} sideboard={workspace.sideboard} material={workspace.material} catalog={catalogByName} opening={opening} plan={analysisPlan} onEditPlan={() => { if (setupRef.current) { setupRef.current.open = true; const inner = setupRef.current.querySelector("details.group"); if (inner instanceof HTMLDetailsElement) inner.open = true; setupRef.current.scrollIntoView({ behavior: "smooth", block: "start" }); } }} />
+      <details className="mt-4"><summary className="min-h-11 cursor-pointer py-3 text-sm text-ctp-blue">Deck snapshot</summary><div className="grid gap-3 md:grid-cols-3">
+        <InsightCard title="Opening hand" value={`${opening} cards`} detail="Opening size" tone="text-ctp-blue" onExplore={() => setTab("explore")} />
+        {clumping && <InsightCard title="Duplicate draws" value={`${(clumping.probability * 100).toFixed(1)}%`} detail={`2+ ${clumping.name} in 10 cards`} tone="text-ctp-blue" onExplore={() => setTab("explore")} />}
+        {conditional.conditionalCopies > 0 && <InsightCard title="Conditional draws" value={`${(conditional.chanceTwo * 100).toFixed(1)}%`} detail={`2+ in opening ${opening}`} tone="text-ctp-blue" onExplore={() => setTab("explore")} />}
+      </div></details>
     </div>}
     {tab === "explore" && <div className="mt-4 space-y-3">
-      <AnalysisDisclosure title="Game plan readiness" summary="Inspect readiness, timing, stage quality, and bounded affordability without classifying cards again."><GamePlanReadiness mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} sharedStageUsefulness={analysisPlan?.stageUsefulness} sharedEffectiveCosts={analysisProfile?.effectiveCosts} onSharedAssignmentsChange={updateAnalysisRoles} planName={analysisPlan?.name} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Opening hand recipe" summary="Define what this deck wants early without treating every competing plan as a liability."><FunctionalHandCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Level-up runway" summary="Forecast level timing, acceleration access, and post-level hand pressure."><LevelUpRunway mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Pressure continuity" summary="Measure access to the selected plan's saved pressure packages."><ThreatCadence mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} sharedPackages={analysisPlan?.pressure} onSharedPackagesChange={(pressure) => analysisProfile && persistAnalysisProfile({ ...analysisProfile, plans: analysisProfile.plans.map((plan) => plan.id === analysisProfile.activePlanId ? { ...plan, pressure } : plan), reviewedAt: null })} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Resilience and rebuild" summary="Test the active plan's saved protection and recovery roles around a declared disruption turn."><ResilienceRebuild mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisPlan?.resilience} onSharedAssignmentsChange={(resilience) => analysisProfile && persistAnalysisProfile({ ...analysisProfile, plans: analysisProfile.plans.map((plan) => plan.id === analysisProfile.activePlanId ? { ...plan, resilience } : plan), reviewedAt: null })} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Card access and probability" summary="Find a card, functional role, or complete combo."><HypergeometricCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Consistency details" summary="Inspect duplicate draws and conditional cards."><CopyClumpingRisk mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /><ConditionalHandPressure mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
+      <AnalysisDisclosure title="Plan consistency" summary="Inspect readiness, timing, stage quality, and bounded affordability without classifying cards again."><GamePlanReadiness mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} sharedStageUsefulness={analysisPlan?.stageUsefulness} sharedEffectiveCosts={analysisProfile?.effectiveCosts} onSharedAssignmentsChange={updateAnalysisRoles} planName={analysisPlan?.name} /></AnalysisDisclosure>
+      <AnalysisDisclosure title="Opening hand" summary="Define what this deck wants early without treating every competing plan as a liability."><FunctionalHandCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} /></AnalysisDisclosure>
+      <AnalysisDisclosure title="Level timing" summary="Forecast level timing, acceleration access, and post-level hand pressure."><LevelUpRunway mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
+      <AnalysisDisclosure title="Pressure access" summary="Measure access to the selected plan's saved pressure packages."><ThreatCadence mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} sharedPackages={analysisPlan?.pressure} onSharedPackagesChange={(pressure) => analysisProfile && persistAnalysisProfile({ ...analysisProfile, plans: analysisProfile.plans.map((plan) => plan.id === analysisProfile.activePlanId ? { ...plan, pressure } : plan), reviewedAt: null })} /></AnalysisDisclosure>
+      <AnalysisDisclosure title="Recovery access" summary="Test the active plan's saved protection and recovery roles around a declared disruption turn."><ResilienceRebuild mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisPlan?.resilience} onSharedAssignmentsChange={(resilience) => analysisProfile && persistAnalysisProfile({ ...analysisProfile, plans: analysisProfile.plans.map((plan) => plan.id === analysisProfile.activePlanId ? { ...plan, resilience } : plan), reviewedAt: null })} /></AnalysisDisclosure>
+      <AnalysisDisclosure title="Find cards and combos" summary="Find a card, functional role, or complete combo."><HypergeometricCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
+      <AnalysisDisclosure title="Unwanted draws" summary="Inspect duplicate draws and conditional cards."><CopyClumpingRisk mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /><ConditionalHandPressure mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Resource timing" summary="See when Reserve costs become reliably available."><ResourceCurveReliability mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedEffectiveCosts={analysisProfile?.effectiveCosts} onSharedEffectiveCostsChange={(effectiveCosts) => analysisProfile && persistAnalysisProfile({ ...analysisProfile, effectiveCosts, reviewedAt: null })} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Curve affordability check" summary="Quickly test whether up to four named plays can be drawn and paid for; use Combo Lab for flexible or branching lines."><ReserveSequencePressure mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Sideboard impact" summary={workspace.sideboard.length > 0 ? "Preview substitutions without changing the deck." : "No Sideboard cards in this deck."}>{workspace.sideboard.length > 0 ? <SideboardImpact mainLines={workspace.main} sideboardLines={workspace.sideboard} catalogByName={catalogByName} /> : <InlineState>Add cards to the Sideboard in Deck Builder to analyze substitutions.</InlineState>}</AnalysisDisclosure>
+      <AnalysisDisclosure title="Play sequence" summary="Quickly test whether up to four named plays can be drawn and paid for; use Combo Lab for flexible or branching lines."><ReserveSequencePressure mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
+      <AnalysisDisclosure title="Sideboard comparison" summary={workspace.sideboard.length > 0 ? "Preview substitutions without changing the deck." : "No Sideboard cards in this deck."}>{workspace.sideboard.length > 0 ? <SideboardImpact mainLines={workspace.main} sideboardLines={workspace.sideboard} catalogByName={catalogByName} /> : <InlineState>Add cards to the Sideboard in Deck Builder to analyze substitutions.</InlineState>}</AnalysisDisclosure>
     </div>}
     {tab === "matchups" && <BuilderTestPanel deckTestResult={deckTestResult} loading={deckTestLoading} cardsByName={catalogByName} nearestDecks={[]} nearestDeckCompareLink={() => "#"} onLoadNearestDeck={() => undefined} />}
   </PageLayout>;
@@ -207,7 +200,7 @@ function InsightCard({ title, value, detail, card, tone, onExplore }: { title: s
 
 function AnalysisDisclosure({ title, summary, children }: { title: string; summary: string; children: React.ReactNode }) {
   return <details className="group rounded-xl border border-ctp-surface1 bg-ctp-mantle">
-    <summary className="cursor-pointer list-none p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ctp-blue"><span className="flex items-center justify-between gap-3"><span><span className="block text-sm font-semibold text-ctp-text">{title}</span><span className="mt-0.5 block text-xs text-ctp-subtext0">{summary}</span></span><span aria-hidden="true" className="text-xl text-ctp-subtext0 transition-transform group-open:rotate-90">›</span></span></summary>
-    <div className="border-t border-ctp-surface1 px-3 pb-3">{children}</div>
+    <summary className="cursor-pointer list-none p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ctp-blue"><span className="flex items-center justify-between gap-3"><span><span className="block text-sm font-semibold text-ctp-text">{title}</span></span><span aria-hidden="true" className="text-xl text-ctp-subtext0 transition-transform group-open:rotate-90">›</span></span></summary>
+    <div className="border-t border-ctp-surface1 px-3 pb-3">{children}<details className="mt-3"><summary className="min-h-11 cursor-pointer py-3 text-xs text-ctp-subtext0">Details</summary><p className="text-xs text-ctp-subtext0">{summary}</p></details></div>
   </details>;
 }
