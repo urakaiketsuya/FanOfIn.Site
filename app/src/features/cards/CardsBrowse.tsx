@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import type { OptionValue } from "@gatcg/shared";
+import { setFamily, setFamilyPrefix, type OptionValue } from "@gatcg/shared";
 import { gatcgApi } from "../../lib/api/client";
 import { useSyncProgress } from "../../lib/sync/SyncProvider";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -44,7 +44,7 @@ export default function CardsBrowse() {
     types: new Set(searchParams.getAll("type")),
     subtypes: new Set(searchParams.getAll("subtype")),
     elements: new Set(searchParams.getAll("element")),
-    sets: new Set(searchParams.getAll("set")),
+    sets: new Set(searchParams.getAll("set").map(setFamilyPrefix)),
   }));
 
   const filtered = useMemo(
@@ -58,7 +58,7 @@ export default function CardsBrowse() {
   }, [filters]);
 
   const visible = filtered.slice(0, visibleCount);
-  const activeFilterCount = (filters.name.trim() ? 1 : 0) + (filters.artist.trim() ? 1 : 0) + filters.classes.size + filters.types.size + filters.subtypes.size + filters.elements.size + filters.sets.size + (filters.speed === "any" ? 0 : 1);
+  const activeFilterCount = (filters.name.trim() ? 1 : 0) + (filters.artist.trim() ? 1 : 0) + filters.classes.size + filters.types.size + filters.subtypes.size + filters.elements.size + filters.sets.size + (filters.speed === "any" ? 0 : 1) + (filters.printingSets?.size ?? 0);
 
   const artistOptions = useMemo(() => {
     const set = new Set<string>();
@@ -70,11 +70,14 @@ export default function CardsBrowse() {
     return Array.from(set).sort();
   }, [cards]);
 
+  const printingOptions = useMemo(() => [...new Map(cards.flatMap(card => card.editions.map(ed => [ed.set.prefix, ed.set.name] as const)))].map(([value, text]) => ({ value, text })), [cards]);
+
   const setOptions = useMemo<OptionValue[]>(() => {
     const byPrefix = new Map<string, { name: string; releaseDate: string }>();
     for (const card of cards) {
       for (const ed of card.editions) {
-        if (!byPrefix.has(ed.set.prefix)) byPrefix.set(ed.set.prefix, { name: ed.set.name, releaseDate: ed.set.release_date });
+        const family = setFamily(ed.set);
+        if (!byPrefix.has(family.prefix)) byPrefix.set(family.prefix, { name: family.name, releaseDate: ed.set.release_date });
       }
     }
     return Array.from(byPrefix.entries())
@@ -86,12 +89,12 @@ export default function CardsBrowse() {
   // show that set's specific art (same behavior the old dedicated /sets/:prefix page had) instead
   // of always defaulting to a card's first-ever printing.
   const pickEdition = useMemo(() => {
-    if (filters.sets.size === 0) return undefined;
-    return (card: (typeof cards)[number]) => card.editions.find((ed) => filters.sets.has(ed.set.prefix)) ?? card.editions[0];
-  }, [filters.sets]);
+    if (filters.sets.size === 0 && !filters.printingSets?.size) return undefined;
+    return (card: (typeof cards)[number]) => card.editions.find((ed) => (!filters.sets.size || filters.sets.has(setFamilyPrefix(ed.set.prefix))) && (!filters.printingSets?.size || filters.printingSets.has(ed.set.prefix))) ?? card.editions[0];
+  }, [filters.sets, filters.printingSets]);
 
   function browseSet(prefix: string) {
-    setFilters((f) => ({ ...f, sets: new Set([prefix]) }));
+    setFilters((f) => ({ ...f, sets: new Set([prefix]), printingSets: new Set() }));
     setTab("browse");
   }
 
@@ -101,6 +104,7 @@ export default function CardsBrowse() {
 
   return (
     <PageLayout data-component="CardsBrowse" width="full">
+      <div className="[&_input]:min-h-12 [&_button]:min-h-12 [&_button]:min-w-12">
       <PageHeader
         title="Cards"
         actions={
@@ -136,22 +140,26 @@ export default function CardsBrowse() {
                 <h2 className="text-lg font-semibold text-ctp-text">{group.name}</h2>
               </div>
               <div className="mt-3 flex flex-wrap gap-2">
-                {group.sets.map((set) => {
+                {group.sets.filter((set, index, all) => {
+                  const family = setFamilyPrefix(set.prefix);
+                  const representative = all.find(candidate => candidate.prefix === family) ?? all.find(candidate => setFamilyPrefix(candidate.prefix) === family);
+                  return all.indexOf(representative!) === index;
+                }).map((set) => {
                   const isBooster = isBoosterSet(set, group);
                   return (
                     <div key={set.id} className="flex items-center overflow-hidden rounded-md border border-ctp-surface1">
                       <button
                         type="button"
-                        onClick={() => browseSet(set.prefix)}
-                        className="px-3 py-1.5 text-sm text-ctp-subtext1 hover:text-ctp-text"
+                        onClick={() => browseSet(setFamilyPrefix(set.prefix))}
+                        className="min-h-12 px-3 py-1.5 text-sm text-ctp-subtext1 hover:text-ctp-text"
                       >
-                        {set.name}
-                        <span className="ml-2 text-xs text-ctp-subtext0">{set.prefix}</span>
+                        {setFamily(set).name}
+                        <span className="ml-2 text-xs text-ctp-subtext0">{setFamilyPrefix(set.prefix)}</span>
                       </button>
                       {isBooster && (
                         <Link
                           to={`/packs/${set.prefix}`}
-                          className="border-l border-ctp-surface1 px-2 py-1.5 text-xs text-ctp-subtext0 hover:bg-ctp-surface0 hover:text-ctp-blue"
+                          className="flex min-h-12 items-center border-l border-ctp-surface1 px-2 py-1.5 text-xs text-ctp-subtext0 hover:bg-ctp-surface0 hover:text-ctp-blue"
                         >
                           Open a Pack
                         </Link>
@@ -225,6 +233,7 @@ export default function CardsBrowse() {
                 selected={filters.sets}
                 onToggle={(v) => setFilters((f) => ({ ...f, sets: toggleSetValue(f.sets, v) }))}
               />
+              <SearchSelectFilter label="Printing edition (optional)" options={printingOptions} selected={filters.printingSets ?? new Set()} onToggle={value => setFilters(f => ({ ...f, printingSets: toggleSetValue(f.printingSets ?? new Set(), value) }))} />
               <SegmentedFilter label="Speed" options={[{ value: "any", label: "All" }, { value: "fast", label: "Fast" }, { value: "normal", label: "Normal" }]} value={filters.speed} onChange={(speed) => setFilters((f) => ({ ...f, speed }))} />
             </FilterPanel>
           )}
@@ -251,6 +260,7 @@ export default function CardsBrowse() {
           <LoadMore remaining={filtered.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
         </>
       )}
+    </div>
     </PageLayout>
   );
 }

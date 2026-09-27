@@ -1,4 +1,4 @@
-import type { Card } from "@gatcg/shared";
+import { setFamilyPrefix, type Card } from "@gatcg/shared";
 
 export type SpeedFilter = "any" | "fast" | "normal";
 
@@ -10,12 +10,14 @@ export interface CardFilterState {
   types: Set<string>;
   subtypes: Set<string>;
   elements: Set<string>;
-  /** Set prefixes (e.g. "ROTX"), matched against any of a card's editions — same convention as the former SetDetail page. */
+  /** Set-family prefixes; historical edition prefixes also resolve to their family. */
   sets: Set<string>;
   /** `Card.speed` — true/false is a printed characteristic of Action/Reaction-type cards (Reactions
    * are always fast); other types don't have one at all (null), so "normal" only ever matches
    * Action cards explicitly printed as normal-speed, not every non-fast card in the catalog. */
   speed: SpeedFilter;
+  /** Optional exact printing-set restriction, independent of the family filter. */
+  printingSets?: Set<string>;
 }
 
 export function emptyFilterState(): CardFilterState {
@@ -34,6 +36,7 @@ export function emptyFilterState(): CardFilterState {
 export function filterCards(cards: Card[], filters: CardFilterState): Card[] {
   const name = filters.name.trim().toLowerCase();
   const artist = filters.artist.trim().toLowerCase();
+  const families = new Set([...filters.sets].map(setFamilyPrefix));
   return cards.filter((card) => {
     if (name && !card.name.toLowerCase().includes(name) && !card.effect?.toLowerCase().includes(name)) return false;
     if (artist && !card.editions.some((ed) => ed.illustrator?.toLowerCase().includes(artist))) return false;
@@ -41,7 +44,8 @@ export function filterCards(cards: Card[], filters: CardFilterState): Card[] {
     if (filters.types.size && !card.types.some((t) => filters.types.has(t))) return false;
     if (filters.subtypes.size && !card.subtypes.some((s) => filters.subtypes.has(s))) return false;
     if (filters.elements.size && !card.elements.some((e) => filters.elements.has(e))) return false;
-    if (filters.sets.size && !card.editions.some((ed) => filters.sets.has(ed.set.prefix))) return false;
+    if (filters.sets.size && !card.editions.some((ed) => families.has(setFamilyPrefix(ed.set.prefix)))) return false;
+    if (filters.printingSets?.size && !card.editions.some(ed => filters.printingSets!.has(ed.set.prefix) && (!filters.sets.size || families.has(setFamilyPrefix(ed.set.prefix))))) return false;
     if (filters.speed === "fast" && card.speed !== true) return false;
     if (filters.speed === "normal" && card.speed !== false) return false;
     return true;

@@ -24,3 +24,14 @@ test("milestones follow actual thresholds and regress when cards are removed", (
  const [set] = collectionSetProgress([card("A", ["ONE"])], [entry("A", 0)]);
  assert.equal(collectionMilestone(set.owned, set.total), "Ready to begin");
 });
+test("set families union cards without merging separate products or changing inventory", () => {
+ const inventory = [entry("A", 2, 0, "first-printing"), entry("B", 0, 3)];
+ const before = JSON.stringify(inventory);
+ const result = collectionSetProgress([card("A", ["ALC", "ALC 1st", "ALC Alter"]), card("B", ["ALC 1st"]), card("C", ["ALCSD"]), card("D", ["UNKNOWN 1st"])], inventory);
+ const family = result.find(set => set.prefix === "ALC")!;
+ assert.equal(family.total, 2); assert.equal(family.owned, 1); assert.equal(family.percent, 50);
+ assert.equal(result.length, 3); assert.equal(family.name, "Alchemical Revolution");
+ assert.equal(JSON.stringify(inventory), before);
+ const [doa] = collectionSetProgress([card("A", ["DOA 1st", "DOA Alter"])], []);
+ assert.equal(doa.prefix, "DOA"); assert.equal(doa.total, 1);
+});

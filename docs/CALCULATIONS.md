@@ -3273,7 +3273,7 @@ packages stay covered by the existing discovery method rather than this variatio
 
 ## Collection set progress
 
-Set membership comes from catalog edition set prefixes. Each distinct card UUID counts once
+Set membership comes from catalog edition set prefixes grouped by the shared set-family mapping. Each distinct card UUID counts once
 per set, regardless of alternate editions. Owned quantity sums physical `ownedQuantity`
 across unspecified and exact-printing entries for the card; proxies do not count. Any
 printing counts toward every set containing that card. This measures card coverage, not
@@ -3284,3 +3284,7 @@ ownership milestones are First card, Quarter complete (25%), Halfway (50%), Thre
 quarters (75%), and Set complete (100%); empty sets show Ready to begin. These are
 current-state labels, not permanently earned achievements: removing cards recalculates
 progress, and catalog changes can change the denominator.
+
+### Collection set families
+
+Collection progress and card browsing group explicitly mapped base, First Edition, and Alter Edition prefixes via `shared/src/setFamilies.ts`. Membership is the union of card UUIDs across those printings; every distinct card counts once. Any physical printing still satisfies card coverage. Starter decks, promotional and event products, and unknown prefixes remain independent. Exact edition UUIDs and inventory quantities are unchanged. Optional printing-edition filters restrict the displayed card pool, not ownership to that printing; set completion remains family-wide.

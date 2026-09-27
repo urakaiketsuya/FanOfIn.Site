@@ -1,12 +1,12 @@
-import type { Card, CollectionEntry } from "@gatcg/shared";
+import { setFamily, type Card, type CollectionEntry } from "@gatcg/shared";
 
 export function collectionSetProgress(cards: Card[], entries: CollectionEntry[]) {
   const owned = new Map<string, number>();
   for (const entry of entries) owned.set(entry.cardUuid, (owned.get(entry.cardUuid) ?? 0) + Math.max(0, entry.ownedQuantity));
   const sets = new Map<string, { prefix: string; name: string; cards: Map<string, Card> }>();
   for (const card of cards) for (const edition of card.editions) {
-    const prefix = edition.set.prefix;
-    if (!sets.has(prefix)) sets.set(prefix, { prefix, name: edition.set.name, cards: new Map() });
+    const { prefix, name } = setFamily(edition.set);
+    if (!sets.has(prefix)) sets.set(prefix, { prefix, name, cards: new Map() });
     sets.get(prefix)!.cards.set(card.uuid, card);
   }
   return Array.from(sets.values(), (set) => {
