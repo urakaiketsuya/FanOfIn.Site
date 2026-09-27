@@ -20,7 +20,7 @@ export function useBuilderWorkspacePersistence({ championName, spiritName, forma
     saveActiveDeckWorkspace(sessionStorage, {
       source: "builder",
       title: championName ? `${championName} deck` : "Untitled deck",
-      sourceLabel: "Guided Deck Builder",
+      sourceLabel: "Deck Workbench",
       format,
       championName,
       spiritName,

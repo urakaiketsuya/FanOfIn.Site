@@ -1,119 +1,47 @@
+import { useMemo, useState } from "react";
 import CardBrowser from "../../../components/deck-editor/CardBrowser";
 import DeckEditor from "../../../components/deck-editor/DeckEditor";
-import { useState } from "react";
-import BuilderCardBrowserDialog from "../components/BuilderCardBrowserDialog";
+import DisclosureChevron from "../../../components/DisclosureChevron";
+import { EDITOR_SECTIONS } from "../../../lib/deckEditing";
 import { BuilderStartActions, DecklistPaste } from "../components/DeckBuilderSetup";
 import { useDeckBuilder } from "../useDeckBuilder";
-import type { Card, CardInclusionEntry } from "@gatcg/shared";
-import type { CardDecaySignal } from "../../../lib/cardDecay";
-import type { SuggestedBuild } from "../useSuggestedBuild";
-import type { SimulatorCardEvidence } from "../useSimulatorSuggestedBuild";
-import type { CardFieldVisibility } from "../useCardFieldVisibility";
-import type { PriceTrendEntry } from "../../pricing/usePriceTrendByName";
-import type { PopulationSource } from "../model/builderTypes";
-import BuilderCardExplorer from "../components/BuilderCardExplorer";
-import type { CardCategoryRecommendation } from "../cardCategoryRecommendations";
+import ToolsPanel from "./BuilderToolsPanel";
 
-type AddDestination = "automatic" | "sideboard" | "maybeboard";
-
-export default function BuilderBuildPanel({
-  recommendationsEnabled, onToggleRecommendations, cardInput, onCardInputChange, addDestination, onAddDestinationChange, cardNames, onAddCard, customizeOpen, onToggleCustomizeOpen, viewMode, onViewModeChange,
-  materialTotal, mainTotal, sideboardTotal, catalogByName, maybeboard, lockedCards, cardCategoryRecommendations,
-}: {
-  recommendationsEnabled: boolean;
-  onToggleRecommendations: () => void;
-  cardInput: string;
-  onCardInputChange: (value: string) => void;
-  addDestination: AddDestination;
-  onAddDestinationChange: (destination: AddDestination) => void;
-  cardNameSet: Set<string>;
-  cardNames: string[];
-  onAddCard: (name: string, quantity?: number, destination?: "automatic" | "maybeboard") => void;
-  canAddToSideboard: boolean;
-  selectedSideboardPoints: number;
-  currentSideboardPoints: number;
-  sideboardDestinationSelected: boolean;
-  customizeOpen: boolean;
-  onToggleCustomizeOpen: () => void;
-  viewMode: "list" | "grid";
-  onViewModeChange: (mode: "list" | "grid") => void;
-  visibleFields: CardFieldVisibility;
-  onVisibleFieldChange: (field: keyof CardFieldVisibility, value: boolean) => void;
-  effectivePopulationSource: PopulationSource;
-  build: SuggestedBuild;
-  isPending: boolean;
-  materialTotal: number;
-  mainTotal: number;
-  sideboardTotal: number;
-  cardsByName: Map<string, Card>;
-  catalogByName: Map<string, Card>;
-  priceByName: Map<string, number>;
-  priceTrendByName: Map<string, PriceTrendEntry>;
-  communityInclusionByName: Map<string, CardInclusionEntry> | undefined;
-  hypeGapByName: Map<string, number> | undefined;
-  decaySignalByName: Map<string, CardDecaySignal> | undefined;
-  simulatorEvidenceByName: Map<string, SimulatorCardEvidence> | undefined;
-  reviewRemovalNames: Set<string>;
-  onToggleLock: (name: string, quantity: number, section?: "main" | "material" | "sideboard") => void;
-  onChangeQuantity: (name: string, quantity: number) => void;
-  onRemoveCard: (name: string, locked: boolean) => void;
-  maybeboard: Map<string, number>;
-  onMaybeQuantityChange: (name: string, quantity: number) => void;
-  lockedCards: Map<string, number>;
-  onPromoteMaybeCard: (name: string) => void;
-  onRemoveMaybeCard: (name: string) => void;
-  cardCategoryRecommendations: CardCategoryRecommendation[];
-}) {
-  const { championName, spiritFilter, gateLoading, editor, validation } = useDeckBuilder();
-  const hasCards = lockedCards.size > 0 || maybeboard.size > 0 || materialTotal + mainTotal + sideboardTotal > 0;
-  const [browserOpen, setBrowserOpen] = useState(false);
-  const deckCount = materialTotal + mainTotal + sideboardTotal;
-  const cardBrowser = <CardBrowser query={cardInput} onQuery={onCardInputChange} destination={addDestination} onDestination={onAddDestinationChange} names={cardNames} catalog={catalogByName} deck={editor.deck} onEdit={editor.edit} onAdded={() => { if (!browserOpen) onCardInputChange(""); }} />;
-  return (
-    <div data-component="BuilderBuildPanel" role="tabpanel" id="deck-builder-panel-build" aria-labelledby="deck-builder-tab-build" className="mt-4">
-      {hasCards ? <div className="flex items-center justify-between gap-3">
-        <p className="text-sm text-ctp-subtext1">Your deck · {deckCount} {deckCount === 1 ? "card" : "cards"}</p>
-        <button type="button" onClick={() => { onCardInputChange(""); setBrowserOpen(true); }} className="rounded-lg bg-ctp-blue px-4 py-2 text-sm font-medium text-ctp-base">Add cards</button>
-      </div> : !browserOpen && cardBrowser}
-      {browserOpen && <BuilderCardBrowserDialog count={deckCount} onDismiss={() => setBrowserOpen(false)}>{cardBrowser}</BuilderCardBrowserDialog>}
-
-      {customizeOpen && (
-        <div className="mt-3 space-y-2 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3">
-          <div className="flex items-center justify-between gap-2"><h2 className="text-sm font-semibold text-ctp-text">Card display</h2><button type="button" onClick={onToggleCustomizeOpen} className="rounded-lg px-3 text-sm text-ctp-blue">Done</button></div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-24 shrink-0 text-[11px] text-ctp-subtext0">Layout</span>
-            {(["list", "grid"] as const).map((mode) => (
-              <button key={mode} type="button" onClick={() => onViewModeChange(mode)} aria-pressed={viewMode === mode} className={`rounded-md border px-2 py-1 text-xs capitalize ${viewMode === mode ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"}`}>{mode}</button>
-            ))}
-          </div>
-
-        </div>
-      )}
-      <>
-      <div className="mt-3 flex flex-wrap items-center gap-2">
-        <button type="button" disabled={!editor.canUndo} onClick={editor.undo} className="min-h-12 rounded-lg border border-ctp-surface1 px-3 text-sm disabled:opacity-40">Undo</button>
-        <button type="button" disabled={!editor.canRedo} onClick={editor.redo} className="min-h-12 rounded-lg border border-ctp-surface1 px-3 text-sm disabled:opacity-40">Redo</button>
-        {editor.notice && <p role="status" className="text-xs text-ctp-subtext1">{editor.notice}</p>}
-      </div>
-      {validation.status === "Illegal" && <div role="status" className="mt-3 rounded-lg border border-ctp-yellow/40 p-3 text-sm text-ctp-yellow">{validation.reasons.map((reason) => <p key={reason}>{reason}</p>)}</div>}
-      <DeckEditor deck={editor.deck} catalog={catalogByName} onEdit={editor.edit} viewMode={viewMode} />
-
-      {!hasCards && <><DecklistPaste /><BuilderStartActions /></>}
-      <section className="mt-4" aria-label="Optional card recommendations">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <button type="button" onClick={onToggleRecommendations} aria-expanded={recommendationsEnabled} aria-controls="builder-recommendations" className="rounded-lg border border-ctp-blue px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-blue/10">
-            {recommendationsEnabled ? "Hide recommendations" : "Recommend cards"}
-          </button>
-        </div>
-        {recommendationsEnabled && <div id="builder-recommendations">
-          <p className="mt-3 text-sm text-ctp-subtext1">Cards enter your deck only when you add them.</p>
-          {(!championName || !spiritFilter) ? <div className="mt-3 text-sm text-ctp-subtext1"><p>Add {!championName && !spiritFilter ? "Champion and Spirit cards" : !championName ? "a Champion card" : "a Spirit card"} to your Material deck to focus recommendations. You can keep building without them.</p><button type="button" onClick={() => setBrowserOpen(true)} className="mt-2 min-h-12 rounded-lg px-3 text-ctp-blue">Search for cards</button></div> : gateLoading ? <p role="status" className="mt-3 text-sm text-ctp-subtext1">Loading recommendations…</p> : <BuilderCardExplorer recommendations={cardCategoryRecommendations} lockedCards={lockedCards} onAddCard={onAddCard} />}
-          {championName && spiritFilter && !gateLoading && cardCategoryRecommendations.length === 0 && <p className="mt-3 text-xs text-ctp-subtext0">No recommendations available for this identity yet. You can keep adding cards by name.</p>}
-        </div>}
-      </section>
-
-
-        </>
+export default function BuilderBuildPanel() {
+  const b = useDeckBuilder();
+  const [surface, setSurface] = useState<"cards" | "deck">("cards");
+  const hasCards = EDITOR_SECTIONS.some(({key})=>b.editor.deck[key].length > 0);
+  const total = EDITOR_SECTIONS.reduce((sum,{key})=>sum+b.editor.deck[key].reduce((n,line)=>n+line.quantity,0),0);
+  const evidence = useMemo(()=>new Map(b.cardCategoryRecommendations.map(item=>[item.card.name, `${item.recommendedQuantity} copies suggested. ${item.tournamentDecks > 0 ? `${Math.round(item.tournamentRate*100)}% of matching tournament decks` : `${Math.round(item.communityRate*100)}% community adoption`}.`])),[b.cardCategoryRecommendations]);
+  const suggestedNames = useMemo(()=>[...new Set(b.cardCategoryRecommendations.map(item=>item.card.name))],[b.cardCategoryRecommendations]);
+  return <section aria-label="Deck building workspace" className="mt-3">
+    {!hasCards && <div className="mb-3 flex flex-wrap items-start gap-x-3"><DecklistPaste /><BuilderStartActions /></div>}
+    <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+      <div role="group" aria-label="Workbench surface" className="flex rounded-lg border border-ctp-surface1 lg:hidden">{(["cards","deck"] as const).map(value=><button key={value} type="button" aria-pressed={surface===value} aria-controls={`workbench-${value}`} onClick={()=>setSurface(value)} className={`min-h-12 rounded-lg px-4 text-sm font-semibold ${surface===value ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1"}`}>{value==="cards" ? "Cards" : `Deck (${total})`}</button>)}</div>
+      <div className="flex flex-wrap items-center gap-1"><button type="button" disabled={!b.editor.canUndo} onClick={b.editor.undo} className="min-h-12 rounded-lg px-3 text-sm text-ctp-blue disabled:opacity-40">Undo</button><button type="button" disabled={!b.editor.canRedo} onClick={b.editor.redo} className="min-h-12 rounded-lg px-3 text-sm text-ctp-blue disabled:opacity-40">Redo</button></div>
     </div>
-  );
+    <p role="status" className="text-xs text-ctp-subtext1">{b.editor.notice}</p>
+    <div className="grid gap-4 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
+      <section id="workbench-cards" aria-label="Find cards" className={`${surface==="cards" ? "" : "hidden"} min-w-0 rounded-xl border border-ctp-surface1 lg:block`}>
+        <h2 className="hidden border-b border-ctp-surface1 px-3 py-3 text-sm font-semibold lg:block">Cards</h2>
+        <div className="h-[65dvh] overflow-y-auto overscroll-contain p-3 [scrollbar-gutter:stable]">
+
+          {b.recommendationsEnabled && <>
+            <details className="mb-3"><summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 text-sm">Suggestion settings<DisclosureChevron /></summary><ToolsPanel archetypeId={b.archetypeId} archetypeOptions={b.archetypeOptions} onArchetypeChange={b.changeArchetype} deckFormat={b.deckFormat} populationSource={b.effectivePopulationSource} onChangePopulationSource={b.changePopulationSource} collectionMode={b.collectionMode} onCollectionModeChange={b.setCollectionMode} /></details>
+            {(!b.championName || !b.spiritFilter) ? <p className="mb-3 text-sm text-ctp-subtext1">Add {!b.championName && !b.spiritFilter ? "Champion and Spirit cards" : !b.championName ? "a Champion card" : "a Spirit card"} to Material to focus suggestions. Use All cards to find them.</p> : b.gateLoading ? <p role="status" className="mb-3 text-sm">Loading suggestions…</p> : <p className="mb-3 text-xs text-ctp-subtext1">Suggestions use your deck’s available elements. Nothing is added until you choose it.</p>}
+          </>}
+          <CardBrowser sourceControl={<select aria-label="Card source" value={b.recommendationsEnabled ? "suggestions" : "all"} onChange={event=>b.setRecommendationsEnabled(event.target.value==="suggestions")} className="min-h-12 w-full min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-xs"><option value="all">All cards</option><option value="suggestions">Suggestions</option></select>} suppressResults={b.recommendationsEnabled && (!b.championName || !b.spiritFilter || b.gateLoading)} query={b.cardInput} onQuery={b.setCardInput} destination={b.addDestination} onDestination={b.setAddDestination} names={b.cardNames} catalog={b.catalogByName} deck={b.editor.deck} onEdit={b.editor.edit} owned={b.collectionLoaded ? b.collectionOwnedByName : undefined} collectionStatus={b.collectionError ?? "Loading collection…"} identityElements={b.identityElements} suggestedNames={b.recommendationsEnabled ? suggestedNames : undefined} evidence={b.recommendationsEnabled ? evidence : undefined} />
+        </div>
+      </section>
+      <section id="workbench-deck" aria-label="Edit deck" className={`${surface==="deck" ? "" : "hidden"} min-w-0 rounded-xl border border-ctp-surface1 lg:block`}>
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-ctp-surface1 px-3 py-2"><h2 className="text-sm font-semibold">Deck · {total} cards</h2><label className="flex items-center gap-2 text-xs">Layout<select aria-label="Deck layout" value={b.viewMode} onChange={e=>b.setViewMode(e.target.value as "list"|"grid")} className="min-h-12 rounded-lg border border-ctp-surface1 bg-ctp-base px-2"><option value="list">Compact</option><option value="grid">Card art</option></select></label></div>
+        <div className="h-[65dvh] overflow-y-auto overscroll-contain p-3 [scrollbar-gutter:stable]">
+          <div className="flex flex-wrap gap-2 text-xs text-ctp-subtext1">{EDITOR_SECTIONS.map(({key,title})=><span key={key}>{title} {b.editor.deck[key].reduce((sum,line)=>sum+line.quantity,0)}</span>)}</div>
+          <details className="mt-2 rounded-lg border border-ctp-surface1 px-3"><summary className={`flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 text-sm ${b.validation.status==="Illegal" ? "text-ctp-yellow" : "text-ctp-subtext1"}`}>{b.validation.status==="Legal" ? "Construction checks pass" : b.validation.status==="Illegal" ? "Construction issues" : "Draft · construction incomplete"}<DisclosureChevron /></summary><div className="pb-3 text-xs text-ctp-subtext1">{b.validation.reasons.map(reason=><p className="mb-2" key={reason}>{reason}</p>)}<p>Incomplete decks can be saved. These checks do not cover every card-text exception.</p></div></details>
+          {!hasCards && <div className="py-8 text-sm text-ctp-subtext1"><p>Your deck is empty. Add cards from the catalog to get started.</p><button type="button" onClick={()=>setSurface("cards")} className="mt-3 min-h-12 rounded-lg border border-ctp-blue px-4 text-ctp-blue lg:hidden">Find cards</button></div>}
+          <DeckEditor deck={b.editor.deck} catalog={b.catalogByName} onEdit={b.editor.edit} viewMode={b.viewMode} />
+        </div>
+      </section>
+    </div>
+  </section>;
 }

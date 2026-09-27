@@ -39,13 +39,15 @@ export function useDeckBuilderData({ championName, format, includeDecodedDecks, 
   const spiritCanonicalNames = useMemo(() => buildSpiritCanonicalNames(catalog), [catalog]);
 
   const [collection, setCollection] = useState<CollectionEntry[]>([]);
+  const [collectionError, setCollectionError] = useState<string | null>(null);
   const [collectionLoaded, setCollectionLoaded] = useState(false);
   useEffect(() => {
     const refresh = () => {
       setCollectionLoaded(false);
+      setCollectionError(null);
       void accountApi.collection()
         .then((result) => { setCollection(result.entries); setCollectionLoaded(true); })
-        .catch(() => { setCollection([]); setCollectionLoaded(false); });
+        .catch(() => { setCollection([]); setCollectionLoaded(false); setCollectionError("Collection unavailable. Sign in or open your collection to try again."); });
     };
     refresh();
     window.addEventListener("fanofin:collection-updated", refresh);
@@ -78,6 +80,7 @@ export function useDeckBuilderData({ championName, format, includeDecodedDecks, 
     spiritCanonicalNames,
     collection,
     collectionLoaded,
+    collectionError,
     collectionOwnedByName,
     population,
     cardQuantityStats,

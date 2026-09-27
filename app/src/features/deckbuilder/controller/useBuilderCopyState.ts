@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Card, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import { buildTcgplayerMassEntryUrl } from "../../../lib/tcgplayerMassEntry";
 import { buildClarentPlaytestUrl } from "../../../lib/clarentPlaytest";
@@ -26,11 +26,7 @@ interface UseBuilderCopyStateArgs {
   maybeboard: Map<string, number>;
 }
 
-/**
- * Owns everything exclusive to the Validate & save (Copy) tab — copy/share/export/save state and
- * their handlers, plus the TCGplayer/Clarent URLs. Genuinely self-contained: nothing here is read
- * outside that tab's own JSX, unlike most of DeckBuilderIndex's other local state.
- */
+/** Save/versioning and export state shared by the workbench header and export sheet. */
 export function useBuilderCopyState({
   build, buildLines, sideboardLines, decklist, keptDecklist, cardsByName, championName, spiritFilter,
   archetypeId, deckFormat, lockedCards, lockedSections, improveDeckId, maybeboard,
@@ -39,7 +35,9 @@ export function useBuilderCopyState({
   const clarentUrl = buildClarentPlaytestUrl(decklist);
   const [copyState, setCopyState] = useState<"idle" | "full-copied" | "kept-copied" | "full-failed" | "kept-failed">("idle");
   const [shareCopyState, setShareCopyState] = useState<"idle" | "copied" | "failed">("idle");
-  const [saveTitle, setSaveTitle] = useState("");
+  const titleKey = `workbench-title:${improveDeckId ?? "draft"}`;
+  const [saveTitle, setSaveTitle] = useState(() => { try { return new URLSearchParams(window.location.search).has("locked") ? "" : sessionStorage.getItem(titleKey) ?? ""; } catch { return ""; } });
+  useEffect(() => { try { sessionStorage.setItem(titleKey, saveTitle); } catch { /* Editing remains available without storage. */ } }, [saveTitle, titleKey]);
   const [saveNote, setSaveNote] = useState("");
   const [saveKeptOnly, setSaveKeptOnly] = useState(false);
   const [saveState, setSaveState] = useState<"idle" | "saving" | "saved" | "sign-in" | "failed">("idle");
@@ -98,17 +96,18 @@ export function useBuilderCopyState({
     exportBuilderTts(decklist, cardsByName, championName);
   }
 
-  useEffect(() => {
-    setSaveState("idle");
-    setSavedDeckId(null);
-  }, [decklist]);
+  const signature = JSON.stringify([deckToSave, deckFormat, saveTitle, saveNote, [...maybeboard]]);
+  const currentSignature = useRef(signature);
+  currentSignature.current = signature;
+  useEffect(() => { setSaveState(state => state === "saving" ? state : "idle"); }, [signature]);
 
   async function handleSaveToMyDecks() {
     if (saveCopyCount === 0) return;
+    const savingSignature = signature;
     setSaveState("saving");
     try {
       const result = await saveBuilderDeck({
-        improveDeckId,
+        improveDeckId: improveDeckId ?? savedDeckId,
         title: saveTitle,
         changeNote: saveNote,
         format: deckFormat,
@@ -117,7 +116,7 @@ export function useBuilderCopyState({
         maybeboard,
       });
       setSavedDeckId(result.id);
-      setSaveState("saved");
+      setSaveState(currentSignature.current === savingSignature ? "saved" : "idle");
       trackEvent("deck_builder_saved", { improving: Boolean(improveDeckId), kept_only: saveKeptOnly, format: deckFormat });
     } catch (reason) {
       setSaveState(reason instanceof AccountApiError && reason.status === 401 ? "sign-in" : "failed");

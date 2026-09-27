@@ -19,9 +19,9 @@ export async function saveBuilderDeck(request: SaveBuilderDeckRequest): Promise<
       format: request.format,
       championName: request.championName,
       decklist: request.decklist,
-      changeNote: request.changeNote.trim() || "Improved in Guided Deck Builder",
+      changeNote: request.changeNote.trim() || "Edited in Deck Workbench",
     });
-    await accountApi.updateDeckMetadata(request.improveDeckId, { maybeboard });
+    await accountApi.updateDeckMetadata(request.improveDeckId, { maybeboard, ...(request.title.trim() ? { title: request.title.trim() } : {}) });
     return { id: request.improveDeckId };
   }
   return accountApi.saveDeck({
@@ -30,6 +30,6 @@ export async function saveBuilderDeck(request: SaveBuilderDeckRequest): Promise<
     championName: request.championName,
     decklist: request.decklist,
     maybeboard,
-    source: { provider: "manual", externalDeckId: crypto.randomUUID(), label: "Guided Deck Builder" },
+    source: { provider: "manual", externalDeckId: crypto.randomUUID(), label: "Deck Workbench" },
   });
 }

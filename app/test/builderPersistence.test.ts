@@ -72,3 +72,14 @@ test("partial drafts without Champion or Spirit survive session and share round-
   assert.equal(shared?.championName, null);
   assert.equal(shared?.lockedCards.get("Dungeon Guide"), 1);
 });
+
+test("draft persistence reports storage failures instead of claiming recovery is available", () => {
+  const session: BuilderSession = {
+    selection: { format: "STANDARD", championName: null, spiritName: null, archetypeId: null,
+      populationSource: "balanced", pillarBias: null, championLevelCap: null, collectionMode: "all",
+      lockedCards: [{ name: "Dungeon Guide", quantity: 1, section: "main" }], rejectedCards: [], maybeboard: [] }, changeLog: [],
+  };
+  const storage = new MemoryStorage();
+  assert.equal(saveBuilderSession(storage, session), true);
+  assert.equal(saveBuilderSession({ ...storage, getItem:()=>null, removeItem:()=>{}, setItem:()=>{throw new Error("Storage full");} }, session), false);
+});

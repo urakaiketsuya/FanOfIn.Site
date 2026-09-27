@@ -1,11 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { DeckFormat } from "@gatcg/shared";
 import { BUILDER_SESSION_KEY, legacyMapsToSelections, saveBuilderSession } from "../persistence/builderPersistence";
 import type { BuilderWorkflowState } from "./useBuilderWorkflowState";
 
-export function useBuilderSessionPersistence(format: DeckFormat, state: BuilderWorkflowState, storageKey: string = BUILDER_SESSION_KEY): void {
+export function useBuilderSessionPersistence(format: DeckFormat, state: BuilderWorkflowState, storageKey: string = BUILDER_SESSION_KEY) {
+  const [available, setAvailable] = useState<boolean | null>(null);
   useEffect(() => {
-    saveBuilderSession(sessionStorage, {
+    const saved = saveBuilderSession(sessionStorage, {
       selection: {
         format,
         championName: state.championName,
@@ -21,5 +22,7 @@ export function useBuilderSessionPersistence(format: DeckFormat, state: BuilderW
       },
       changeLog: state.changeLog,
     }, storageKey);
+    setAvailable(saved);
   }, [format, state, storageKey]);
+  return available;
 }

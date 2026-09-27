@@ -1,3 +1,4 @@
+import DisclosureChevron from "../../../components/DisclosureChevron";
 import { Link } from "react-router-dom";
 import type { Card, OmnidexDecklist } from "@gatcg/shared";
 import type { DeckValidationResult } from "../validateDeck";
@@ -5,7 +6,7 @@ import { deckBuilderDestinations } from "../../../lib/deckBuilderDestinations";
 import DeckCollectionTools from "../../collection/DeckCollectionTools";
 
 export default function BuilderCopyPanel({
-  validation, validationComplete, reviewComplete, improveDeckId, championName,
+  validation, validationComplete, improveDeckId, championName,
   saveNote, onSaveNoteChange, saveTitle, onSaveTitleChange, saveCopyCount, saveState, onSave,
   savedDeckId, saveKeptOnly, onSaveKeptOnlyChange, keptCopyCount, decklist, catalogByName,
   onCopy, copyState, fullCopyCount, onCopyAndOpen, massEntryUrl, clarentUrl, onExportTts,
@@ -42,26 +43,16 @@ export default function BuilderCopyPanel({
   hideFullDeckOption?: boolean;
 }) {
   return (
-    <div data-component="BuilderCopyPanel" role="tabpanel" id="deck-builder-panel-copy" aria-labelledby="deck-builder-tab-copy" className="mt-4">
-      <section className={`mb-4 rounded-lg border p-4 ${validationComplete ? "border-ctp-green/50 bg-ctp-green/5" : "border-ctp-yellow/50 bg-ctp-yellow/5"}`} aria-labelledby="validate-and-save">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h2 id="validate-and-save" className="font-semibold text-ctp-text">Validate & save</h2>
-            <p className={`mt-1 text-sm ${validationComplete ? "text-ctp-green" : "text-ctp-yellow"}`}>{validationComplete ? "Construction checks pass. This version is ready to save, export, or playtest." : `${validation.status}: ${validation.reasons[0] ?? "review the deck before saving."}`}</p>
-          </div>
-          {!hideFullDeckOption && !reviewComplete && <Link to="/deck-review" className="rounded-md border border-ctp-yellow/60 px-3 py-1.5 text-xs font-medium text-ctp-yellow hover:bg-ctp-yellow/10">Review suggestions first</Link>}
-        </div>
-        {validation.reasons.length > 1 && <ul className="mt-2 list-disc pl-5 text-xs text-ctp-subtext1">{validation.reasons.slice(1, 4).map((reason) => <li key={reason}>{reason}</li>)}</ul>}
-      </section>
+    <div data-component="BuilderCopyPanel" role="region" aria-label="Save and export deck" className="mt-4">
       <div className="mb-4 rounded-lg border border-ctp-blue/40 bg-ctp-blue/5 p-4">
-        <h3 className="font-semibold text-ctp-text">{improveDeckId ? "Save improved version" : "Save this build"}</h3>
-        <p className="mt-1 text-sm text-ctp-subtext1">{improveDeckId ? "Save the accepted changes as a new version. Your previous deck version remains available." : "Save your current cards to your private decks. Incomplete lists can be saved as drafts."}</p>
+        <h3 className="font-semibold text-ctp-text">{improveDeckId ? "Save deck version" : "Save this build"}</h3>
+        <p className="mt-1 text-sm text-ctp-subtext1">{improveDeckId ? "Save your edits as a new version. Your previous deck version remains available." : "Save your current cards to your private decks. Incomplete lists can be saved as drafts."}</p>
         <div className="mt-3 flex flex-wrap gap-2">
           {improveDeckId ? <input value={saveNote} onChange={(event) => onSaveNoteChange(event.target.value)} maxLength={240} placeholder="What changed? (optional)" aria-label="Version change note" className="min-w-56 flex-1 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text" /> : <input value={saveTitle} onChange={(event) => onSaveTitleChange(event.target.value)} maxLength={160} placeholder={championName ? `${championName} deck` : "Deck name"} aria-label="Saved deck name" className="min-w-56 flex-1 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text" />}
-          <button type="button" disabled={saveCopyCount === 0 || saveState === "saving"} onClick={onSave} className="rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base disabled:cursor-not-allowed disabled:opacity-50">{saveState === "saving" ? "Saving…" : savedDeckId ? "Saved" : improveDeckId ? "Save new version" : "Save to My Decks"}</button>
+          <button type="button" disabled={saveCopyCount === 0 || saveState === "saving" || saveState === "saved"} onClick={onSave} className="rounded-md bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base disabled:cursor-not-allowed disabled:opacity-50">{saveState === "saving" ? "Saving…" : saveState === "saved" ? "Saved" : improveDeckId ? "Save new version" : "Save to My Decks"}</button>
         </div>
         {!hideFullDeckOption && <label className="mt-3 flex cursor-pointer items-center gap-2 text-xs text-ctp-subtext1"><input type="checkbox" checked={saveKeptOnly} onChange={(event) => onSaveKeptOnlyChange(event.target.checked)} /> Save only kept cards ({keptCopyCount})</label>}
-        {saveKeptOnly && <p className="mt-1 text-xs text-ctp-yellow">This saves your explicit choices only; it can be a partial decklist.</p>}
+        {!hideFullDeckOption && saveKeptOnly && <p className="mt-1 text-xs text-ctp-yellow">This saves your explicit choices only; it can be a partial decklist.</p>}
         {saveState === "saved" && savedDeckId && <p className="mt-2 text-sm text-ctp-green">{improveDeckId ? "New version saved." : "Deck saved."} <Link to={`/decks/${savedDeckId}`} className="font-medium underline">Open deck →</Link></p>}
         {saveState === "sign-in" && <p className="mt-2 text-sm text-ctp-yellow">Sign in from <Link to="/decks/edit" className="font-medium underline">My Decks</Link>, then return to save this build. Your builder choices are kept in this browser.</p>}
         {saveState === "failed" && <p className="mt-2 text-sm text-ctp-red">The deck could not be saved. Please try again.</p>}
@@ -90,8 +81,9 @@ export default function BuilderCopyPanel({
           {copyState === "kept-copied" ? "Copied!" : copyState === "kept-failed" ? "Couldn't copy" : `${hideFullDeckOption ? "Copy decklist" : "Copy kept cards"} (${keptCopyCount})`}
         </button>
       </div>
+      <details className="mt-4 rounded-lg border border-ctp-surface1 p-3"><summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 text-sm">{validationComplete ? "Construction checks pass" : `Construction: ${validation.status.toLowerCase()}`}<DisclosureChevron /></summary><p className="mt-2 text-xs text-ctp-subtext1">You can save an incomplete draft.</p>{validation.reasons.map(reason=><p key={reason} className="mt-2 text-xs text-ctp-subtext1">{reason}</p>)}</details>
       <details className="mt-4 rounded-xl border border-ctp-surface1 p-3">
-        <summary className="cursor-pointer text-sm font-medium text-ctp-subtext1">More export & collection options</summary>
+        <summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 text-sm font-medium text-ctp-subtext1">More export & collection options<DisclosureChevron /></summary>
         <DeckCollectionTools decklist={decklist} cardsByName={catalogByName} source={`${championName ?? "Untitled"} deck builder`} />
         <div className="mt-2 flex flex-wrap gap-2">
         {deckBuilderDestinations.map((destination) => (

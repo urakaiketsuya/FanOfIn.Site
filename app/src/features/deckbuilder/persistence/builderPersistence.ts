@@ -115,15 +115,17 @@ export function loadBuilderSession(storage: StorageLike, fallbackFormat: DeckFor
   }
 }
 
-export function saveBuilderSession(storage: StorageLike, session: BuilderSession, storageKey: string = BUILDER_SESSION_KEY): void {
+export function saveBuilderSession(storage: StorageLike, session: BuilderSession, storageKey: string = BUILDER_SESSION_KEY): boolean {
   try {
     if (!session.selection.championName && !session.selection.spiritName && session.selection.lockedCards.length === 0 && session.selection.maybeboard.length === 0) {
       clearBuilderSession(storage, storageKey);
-      return;
+      return true;
     }
     storage.setItem(storageKey, JSON.stringify({ version: 2, session } satisfies StoredSessionV2));
     if (storageKey === BUILDER_SESSION_KEY) storage.removeItem(LEGACY_SESSION_KEY);
+    return true;
   } catch {
+    return false;
     // Storage may be unavailable or full; an in-progress build should remain usable in memory.
   }
 }

@@ -74,13 +74,13 @@ export function useDeckBuilderController() {
     setChampionName, setSpiritFilter, setRejectedCards, setPopulationSource,
     setCollectionMode, setChangeLog,
   } = workflow;
-  useBuilderSessionPersistence(deckFormat, workflow.state);
+  const sessionRecoveryAvailable = useBuilderSessionPersistence(deckFormat, workflow.state);
   const [spiritElement, setSpiritElement] = useState<string | null>(null);
   const [cardInput, setCardInput] = useState("");
   const [addDestination, setAddDestination] = useState<"automatic" | "sideboard" | "maybeboard">("automatic");
   const [visibleFields, setVisibleField] = useCardFieldVisibility();
   const [customizeOpen, setCustomizeOpen] = useState(false);
-  const [viewMode, setViewMode] = useBuilderViewMode();
+  const [viewMode, setViewMode] = useBuilderViewMode("deck-workbench-view-v2", "list");
   const [tab, setTab] = useTabParam<BuilderTab>("tab", TAB_KEYS, "build");
   const [recommendationsEnabled, setRecommendationsEnabled] = useState(false);
   const [identityEditorOpen, setIdentityEditorOpen] = useState(false);
@@ -94,6 +94,7 @@ export function useDeckBuilderController() {
   }
 
   const {
+    collectionOwnedByName, collectionLoaded, collectionError,
     popularityIndexData, liveCatalogByName, cardCatalog, catalogByName, spiritCanonicalNames,
     simulatorSummary, priceByName, priceTrendByName, seedLockedCards, communityInclusionByName,
     hypeGapByName, decaySignalByName, build, reviewItemCount, reviewRemovalNames, gateLoading,
@@ -174,6 +175,8 @@ export function useDeckBuilderController() {
 
 
   return {
+    sessionRecoveryAvailable,
+    collectionOwnedByName, collectionLoaded, collectionError, identityElements,
     editor,
     recommendationsEnabled,
     setRecommendationsEnabled,

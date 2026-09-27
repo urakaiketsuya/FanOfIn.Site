@@ -80,7 +80,7 @@ export function validateDeck(
 
   const materialCards = sections.material.map((line) => cardsByName.get(line.cardName)).filter((card): card is Card => Boolean(card));
   if (!materialCards.some((card) => card.types.includes("CHAMPION") && !card.subtypes.includes("SPIRIT"))) incomplete.push("Add the required Champion identity piece to the material deck.");
-  if (!materialCards.some((card) => card.types.includes("CHAMPION") && card.subtypes.includes("SPIRIT"))) incomplete.push("Choose and add a Spirit before treating this as a completed recommendation.");
+  if (!materialCards.some((card) => card.types.includes("CHAMPION") && card.subtypes.includes("SPIRIT"))) incomplete.push("Add a Spirit to the Material deck to complete the deck.");
 
   return {
     status: illegal.length > 0 ? "Illegal" : incomplete.length > 0 ? "Incomplete" : "Legal",

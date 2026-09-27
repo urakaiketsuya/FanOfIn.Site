@@ -47,7 +47,7 @@ export function useBuilderRecommendationModel(options: BuilderRecommendationMode
     format: deckFormat,
     includeDecodedDecks: false,
     needs: {
-      archetypes: tab === "tools" || archetypeId !== null,
+      archetypes: recommendationsEnabled || tab === "tools" || archetypeId !== null,
       cardImpact: false,
       coOccurrence: false,
       composition: false,
@@ -62,6 +62,7 @@ export function useBuilderRecommendationModel(options: BuilderRecommendationMode
     catalogByName,
     spiritCanonicalNames,
     collectionOwnedByName,
+    collectionLoaded, collectionError,
     population: { rows, spiritsPresent, loading: populationLoading },
     archetypeTaxonomy: archetypeTaxonomyData,
     communityInclusion: communityCardInclusion,
@@ -209,6 +210,7 @@ export function useBuilderRecommendationModel(options: BuilderRecommendationMode
   ));
 
   return {
+    collectionOwnedByName, collectionLoaded, collectionError,
     popularityIndexData, liveCatalogByName, cardCatalog, catalogByName, spiritCanonicalNames,
     simulatorSummary, priceByName, priceTrendByName, seedLockedCards, communityInclusionByName,
     hypeGapByName, decaySignalByName, build, reviewItemCount, reviewRemovalNames, gateLoading,
