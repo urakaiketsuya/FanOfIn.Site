@@ -1,0 +1,233 @@
+[
+  {
+    "name": "Banner Raccoon",
+    "types": [
+      "ALLY"
+    ],
+    "subtypes": [
+      "TAMER",
+      "ANIMAL",
+      "RACCOON"
+    ],
+    "elements": [
+      "NORM"
+    ],
+    "effect": "As long as an opponent has no cards in their graveyard, other Raccoon allies you control get +1[POWER].",
+    "cost_reserve": 2
+  },
+  {
+    "name": "Bleu, Ace of Diamonds",
+    "types": [
+      "UNIQUE",
+      "ALLY"
+    ],
+    "subtypes": [
+      "MAGE",
+      "SUITED",
+      "HUMAN"
+    ],
+    "elements": [
+      "WATER"
+    ],
+    "effect": "**On Enter:** Generate up to **X** Bolt of Diamonds cards and put them into your memory. **X** is 0. Depending on the total reserve cost of Suited objects you control\u2014 \n\u2022 6\u2014 **X** is 1 instead.\n\u2022 10\u2014 **X** is 2 instead.\n\u2022 21\u2014 **X** is 4 instead.\n\n**Floating Memory**",
+    "cost_reserve": 1
+  },
+  {
+    "name": "Bolt of Diamonds",
+    "types": [
+      "ACTION"
+    ],
+    "subtypes": [
+      "MAGE",
+      "SUITED",
+      "SPELL"
+    ],
+    "elements": [
+      "WATER"
+    ],
+    "effect": "[Level 2+] This card costs 2 less to activate.\n\nDeal 1 damage to target unit.",
+    "cost_reserve": 2
+  },
+  {
+    "name": "Chance, Seven of Spades",
+    "types": [
+      "UNIQUE",
+      "ALLY"
+    ],
+    "subtypes": [
+      "WARRIOR",
+      "SUITED",
+      "HUMAN"
+    ],
+    "elements": [
+      "NORM"
+    ],
+    "effect": "[Level 1+] This card costs 3 less to activate.\n\n***Cardistry \u2014*** (7): CARDNAME gains \"Other Suited allies you control get +1 [POWER] and have **vigor**.\" This ability costs (1) less to activate for each Suited object you control with different reserve costs. Activate this ability only once.\n",
+    "cost_reserve": 7
+  },
+  {
+    "name": "Duchess, Six of Hearts",
+    "types": [
+      "UNIQUE",
+      "ALLY"
+    ],
+    "subtypes": [
+      "ASSASSIN",
+      "SUITED",
+      "HUMAN"
+    ],
+    "elements": [
+      "FIRE"
+    ],
+    "effect": "**Kindle 6**\n\n***Cardistry*** \u2014 (6): Banish a fire element action card with reserve cost 2 or less from your graveyard. If you do, copy it and you may activate that copy without paying its reserve cost. This ability costs (1) less to activate for each Suited object you control with different reserve costs. Activate this ability only once.",
+    "cost_reserve": 6
+  },
+  {
+    "name": "Excitable Raccoon",
+    "types": [
+      "ALLY"
+    ],
+    "subtypes": [
+      "TAMER",
+      "ANIMAL",
+      "RACCOON"
+    ],
+    "elements": [
+      "NORM"
+    ],
+    "effect": "As long as an opponent has no cards in their graveyard, CARDNAME gets +1[POWER] and has **vigor**. *(At the beginning of the your end phase, wake up this ally with **vigor**.)*",
+    "cost_reserve": 2
+  },
+  {
+    "name": "Four of Hearts",
+    "types": [
+      "ALLY"
+    ],
+    "subtypes": [
+      "ASSASSIN",
+      "GUARDIAN",
+      "SUITED",
+      "HUMAN"
+    ],
+    "elements": [
+      "FIRE"
+    ],
+    "effect": "***Cardistry*** \u2014 (4): Draw a card into your memory, then put a fire or norm element Suited ally card with reserve cost 3 or less from your memory onto the field. This ability costs (1) less to activate for each Suited object you control with different reserve costs. Activate this ability only once.",
+    "cost_reserve": 4
+  },
+  {
+    "name": "Nipping Kicker",
+    "types": [
+      "ACTION"
+    ],
+    "subtypes": [
+      "CLERIC",
+      "MAGE",
+      "SUITED",
+      "SPELL"
+    ],
+    "elements": [
+      "WATER"
+    ],
+    "effect": "The next time target unit would take damage from a Suited Spell source you control this turn, it takes that much damage plus 3 instead.\n\n**Floating Memory**",
+    "cost_reserve": 2
+  },
+  {
+    "name": "Protector Raccoon",
+    "types": [
+      "ALLY"
+    ],
+    "subtypes": [
+      "TAMER",
+      "ANIMAL",
+      "RACCOON"
+    ],
+    "elements": [
+      "NORM"
+    ],
+    "effect": "**Fast Activation** *(You may activate this card at fast speed.)*\n\n[REST]: Prevent the next 2 damage that would be dealt to target Animal ally this turn.\n\n[REST]: Target opponent banishes a card from their graveyard.",
+    "cost_reserve": 2
+  },
+  {
+    "name": "Scavenging Raccoon",
+    "types": [
+      "ALLY"
+    ],
+    "subtypes": [
+      "TAMER",
+      "ANIMAL",
+      "RACCOON"
+    ],
+    "elements": [
+      "NORM"
+    ],
+    "effect": "**On Enter:** Banish up to two target cards from a single graveyard.",
+    "cost_reserve": 2
+  },
+  {
+    "name": "Senaris, Six of Diamonds",
+    "types": [
+      "UNIQUE",
+      "ALLY"
+    ],
+    "subtypes": [
+      "MAGE",
+      "SUITED",
+      "HUMAN"
+    ],
+    "elements": [
+      "WATER"
+    ],
+    "effect": "**Spellshroud**, **Stealth**\n\n***Cardistry*** \u2014 (6): The next three times a Suited Spell source you control would deal damage this turn, it deals that much plus 3 damage instead. This ability costs (1) less to activate for each Suited object you control with different reserve costs. Activate this ability only once.",
+    "cost_reserve": 6
+  },
+  {
+    "name": "Sneaky Raccoon",
+    "types": [
+      "ALLY"
+    ],
+    "subtypes": [
+      "TAMER",
+      "ANIMAL",
+      "RACCOON"
+    ],
+    "elements": [
+      "NORM"
+    ],
+    "effect": "As long as an opponent has no cards in their graveyard, CARDNAME has **stealth**. *(This unit can\u2019t be targeted by attacks unless permitted by **true sight**.)*",
+    "cost_reserve": 2
+  },
+  {
+    "name": "The Duchess's Thornes",
+    "types": [
+      "REGALIA",
+      "ITEM"
+    ],
+    "subtypes": [
+      "MAGE",
+      "SUITED",
+      "ACCESSORY"
+    ],
+    "elements": [
+      "FIRE"
+    ],
+    "effect": "**Hindered**\n\nWhenever you activate a **cardistry** ability of an ally, that ally gets +1[POWER] and gains **true sight** until end of turn.\n\n**[REST], Banish CARDNAME:** The next **cardistry** ability you activate this turn costs (6) less to activate.",
+    "cost_reserve": null
+  },
+  {
+    "name": "Two of Spades",
+    "types": [
+      "ALLY"
+    ],
+    "subtypes": [
+      "ASSASSIN",
+      "SUITED",
+      "HUMAN"
+    ],
+    "elements": [
+      "NORM"
+    ],
+    "effect": "**Fast Activation** *(You may activate this card at fast speed.)*\n\n***Cardistry*** \u2014 (2): Put a **buff** counter on Two of Spades. This ability costs (1) less to activate for each Suited object you control with different reserve costs. Activate this ability only once.",
+    "cost_reserve": 2
+  }
+]

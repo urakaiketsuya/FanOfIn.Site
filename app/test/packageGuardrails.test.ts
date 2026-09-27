@@ -47,7 +47,7 @@ test("requires Shopkeep in Main and baubles in Material", () => {
 
 test("catalog exposes inactive definitions and their audit metadata", () => {
   const catalog = getDeckPackageCatalog([]);
-  assert.equal(catalog.length, 1);
+  assert.equal(catalog.length, 4);
   assert.equal(catalog[0].active, false);
   assert.match(catalog[0].activation, /at least two distinct/i);
   assert.deepEqual(catalog[0].memberCards, ["Fluffy Shopkeep", "Fire Resonance Bauble", "Water Resonance Bauble", "Wind Resonance Bauble"]);
@@ -68,7 +68,45 @@ test("card membership includes every participant without claiming deck activatio
 });
 
 test("review candidates stay outside the active package registry", () => {
-  assert.equal(DECK_PACKAGE_CANDIDATES.length, 9);
-  assert.equal(getDeckPackageCatalog([]).length, 1);
-  assert.equal(getCardPackageMembership("Clarent, Reimagined").length, 0);
+  assert.equal(DECK_PACKAGE_CANDIDATES.length, 7);
+  assert.equal(getDeckPackageCatalog([]).length, 4);
+  assert.equal(getCardPackageMembership("Clarent, Reimagined").length, 1);
+});
+
+
+test("Argus is registered without browser approvals and protects only present Material fuel", () => {
+  for (const fuel of [["Crystal of Argus"], ["Eye of Argus"], ["Crystal of Argus", "Eye of Argus"]]) {
+    const active = findActiveDeckPackages([card("Argus, All-Seeing Giant", "main", 4), ...fuel.map(name => card(name))]);
+    assert.deepEqual(active.map(p => p.id), ["argus-material-fuel"]);
+    assert.deepEqual(active[0].protectedCards, ["Argus, All-Seeing Giant", ...fuel]);
+  }
+  assert.equal(getCardPackageMembership("Argus, All-Seeing Giant")[0].id, "argus-material-fuel");
+  for (const cards of [
+    [card("Argus, All-Seeing Giant", "sideboard"), card("Crystal of Argus")],
+    [card("Argus, All-Seeing Giant", "main"), card("Eye of Argus", "main")],
+    [card("Argus, All-Seeing Giant", "main"), card("Eye of Argus", "sideboard")],
+    [card("Argus, All-Seeing Giant", "main", 0), card("Eye of Argus")],
+    [card("Argus, All-Seeing Giant", "main"), card("Eye of Argus", "material", 0)],
+    [card("Crystal of Argus")],
+  ]) assert.deepEqual(findActiveDeckPackages(cards), []);
+});
+
+test("Argus appears in approved package suggestions without local storage", async () => {
+  const { getRegisteredDeckPackageCatalog } = await import("../src/features/deckbuilder/packageGuardrails");
+  const { buildSuggestedPackages } = await import("../src/features/cards/suggestedPackages");
+  const packages = buildSuggestedPackages(getRegisteredDeckPackageCatalog(), DECK_PACKAGE_CANDIDATES);
+  const argus = packages.find(pkg => pkg.cards.includes("Argus, All-Seeing Giant"));
+  assert.ok(argus);
+  assert.equal(argus.rules.some(rule => rule.status === "registered"), true);
+  assert.equal(argus.rules.some(rule => rule.source === "Curated"), false);
+});
+
+
+test("approved Turbo and Clarent packages enforce sections and Lorraine bonus", () => {
+  assert.ok(findActiveDeckPackages([card("Turbo Charge", "main"), card("Backup Charger")]).some(p => p.id === "turbo-charge-backup-charger"));
+  assert.deepEqual(findActiveDeckPackages([card("Turbo Charge", "sideboard"), card("Backup Charger")]), []);
+  const swords = [card("Clarent, Reimagined"), card("Clarent, Sword of Peace")];
+  assert.deepEqual(findActiveDeckPackages(swords), []);
+  assert.ok(findActiveDeckPackages([...swords, card("Lorraine, Blademaster")]).some(p => p.id === "clarent-reimagined-lineage"));
+  assert.deepEqual(findActiveDeckPackages([card("Clarent, Reimagined", "main"), swords[1], card("Lorraine, Blademaster")]), []);
 });

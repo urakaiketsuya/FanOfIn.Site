@@ -1,4 +1,5 @@
-import { packageRuleKey, type SavedPackageRule } from "./savedPackages.js";
+import { packageRuleKey, type SavedCardPackage, type SavedPackageRule } from "./savedPackages.js";
+import { packageRulePerformance, type PackagePerformanceIndex } from "./packagePerformance.js";
 import { packageOutcomeBucket, WIN_RATE_PACKAGE_DEFAULTS, type PackageOutcomeBucket, type PackageOutcomeRow, type WinRatePackageFinding } from "./winRatePackages.js";
 
 export type PackageSynergyStatus = "Supported" | "Mixed" | "Unproven";
@@ -70,6 +71,18 @@ export function summarizePackageSynergy(statuses: PackageSynergyStatus[]): Packa
   if (statuses.every((status) => status === "Supported")) return "Supported";
   if (statuses.includes("Mixed") || statuses.includes("Supported")) return "Mixed";
   return "Unproven";
+}
+
+export function packageStatisticalStatus(pkg: SavedCardPackage, index: PackagePerformanceIndex): PackageSynergyStatus {
+  return summarizePackageSynergy(pkg.rules.flatMap((rule) => {
+    const findings = packageRulePerformance(rule, index);
+    return findings.length ? findings.map(findingSynergyStatus) : ["Unproven" as const];
+  }));
+}
+
+/** A family may contain alternatives; one verified exact rule establishes an interaction. */
+export function hasVerifiedPackageInteraction(pkg: SavedCardPackage): boolean {
+  return pkg.rules.some(verifiedPackageMechanics);
 }
 
 export function verifiedPackageMechanics(rule: SavedPackageRule): boolean {

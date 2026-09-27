@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { comparePackageInteractions, compareWinRatePackage, findingSynergyStatus, packageRuleKey, summarizePackageSynergy, verifiedPackageMechanics, type PackageOutcomeRow, type SavedPackageRule, type WinRatePackageFinding } from "@gatcg/shared";
+import { readFileSync } from "node:fs";
+import { includeWinRatePackages, indexPackagePerformance, hasVerifiedPackageInteraction, packageStatisticalStatus, comparePackageInteractions, compareWinRatePackage, findingSynergyStatus, packageRuleKey, summarizePackageSynergy, verifiedPackageMechanics, type PackageOutcomeRow, type SavedPackageRule, type WinRatePackageFinding } from "@gatcg/shared";
 
 function group(cards: string[], outcome: number, offset: number): PackageOutcomeRow[] {
   return Array.from({ length: 12 }, (_, i) => ({ cards: new Set(cards), outcome, player: offset + i, eventId: i % 3, eventDate: `2026-01-0${i % 3 + 1}` }));
@@ -63,4 +64,31 @@ test("mechanical verification is bound to unchanged rule conditions, not manual 
   assert.equal(verifiedPackageMechanics(rule), true);
   assert.equal(verifiedPackageMechanics({ ...rule, conditions: { requiredCards: ["A", "C"], groups: [] } }), false);
   assert.equal(verifiedPackageMechanics({ ...rule, evidence: { ...rule.evidence, ambiguities: ["Unknown timing"] } }), false);
+});
+
+test("Diana and Ring statistical support cannot establish a synergistic package", () => {
+  const data = JSON.parse(readFileSync(new URL("../../../data/analysis/win-rate-packages.json", import.meta.url), "utf8"));
+  const index = indexPackagePerformance(data);
+  const pkg = includeWinRatePackages([], data).find((item) => item.cards.length === 2 && item.cards.includes("Diana, Keen Huntress") && item.cards.includes("Grand Crusader's Ring"))!;
+  assert.ok(pkg);
+  assert.equal(hasVerifiedPackageInteraction(pkg), false);
+  const rule = pkg.rules[0];
+  assert.equal(hasVerifiedPackageInteraction({ ...pkg, rules: [{ ...rule, status: "manual" }] }), false);
+  assert.equal(packageStatisticalStatus(pkg, index), "Supported");
+});
+test("verified mechanics qualify independently of sparse performance and unverified alternatives", () => {
+  const f = finding();
+  const data = { results: [f] } as Parameters<typeof indexPackagePerformance>[0];
+  const pkg = includeWinRatePackages([], data)[0];
+  const rule = pkg.rules[0];
+  assert.equal(hasVerifiedPackageInteraction(pkg), false);
+  rule.evidence = { ruleKey: packageRuleKey(rule.conditions!), generatedAt: "", mechanicsVerified: true, verification: "Synthetic test relationship", ambiguities: [], requiredMaterialCards: [], cohorts: [] };
+  assert.equal(hasVerifiedPackageInteraction(pkg), true);
+  assert.equal(packageStatisticalStatus(pkg, new Map()), "Unproven");
+  assert.equal(hasVerifiedPackageInteraction({ ...pkg, rules: [...pkg.rules, { ...rule, id: "alternative", evidence: undefined }] }), true);
+  rule.evidence.ambiguities.push("Unresolved relationship");
+  assert.equal(hasVerifiedPackageInteraction(pkg), false);
+  rule.evidence.ambiguities = [];
+  rule.conditions = { requiredCards: ["A", "C"], groups: [] };
+  assert.equal(hasVerifiedPackageInteraction(pkg), false);
 });

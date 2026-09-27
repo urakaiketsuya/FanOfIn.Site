@@ -722,6 +722,12 @@ The interval is exploratory, not a causal or multiplicity-adjusted validation cl
 - **Unproven**: other outcomes, including insufficient samples, intervals crossing zero, no exact
   rule match, and old snapshots without interaction data. Missing evidence never means invalid.
 
+The statuses above describe statistical performance only. The Synergistic tab admits packages
+with at least one exact rule whose mechanical relationship is verified, and excludes archived
+packages. Performance is shown independently and does not gate this tab. Unverified alternatives
+do not invalidate a verified rule or inherit its verification. The review defaults to a verified
+rule and displays the number of verified rules. Statistical-only candidates remain available in
+Win-rate findings.
 Family summaries include every rule and all its cohorts, regardless of the current findings filter.
 Mechanical verification is independent: only matching, unambiguous exact-rule approval evidence
 sets Verified. Catalog name references are labeled Text links found, not verified mechanics.
@@ -3186,3 +3192,81 @@ Both views open the shared package editor at the exact rule. The rule's performa
 selects among separate cohorts; manual approval and mechanical auto-approval remain independent.
 When a rule occurs in multiple saved packages, the smallest pool (then package id) is its stable
 single display owner in the Win-rate list; evidence remains available in every exact-rule review.
+
+## Experimental mechanics discovery
+
+`npm run pipeline:packages:experimental` writes `docs/experiments/package-mechanics.{json,md}` and the separate UI artifact
+`data/experiments/package-mechanics.json` for the Packages → Experimental tab.
+It does not alter the published package datasets, manifest, approvals, verified-interaction checks,
+or recommendations. Method ID: `mechanics-experiment-v1`.
+
+Nominations use narrowly matched catalog effects: ally Cardistry activation triggers; Four of
+Hearts' Fire/Norm Suited ally memory targets costing at most 3; Suited Spell damage modifiers
+paired with a direct damage spell; and graveyard removal paired with an empty-graveyard Raccoon
+payoff. Shared subtype alone never nominates a pair. Missing elements are excluded; combined
+non-Norm elements must contain at most one element. This is only an experimental scope restriction,
+not a complete legality validator. Board state, costs, class restrictions and timing still need review.
+
+Usage counts distinct deck IDs with positive quantities in Main + Material, ignoring sideboards.
+Quantities sum copies across those two sections. Each deck-event counts once; events use the deck ID
+prefix. Directional inclusion is together decks divided by source (or target) decks, null for a zero
+denominator. All nominated pairs remain in the report, including zero-use pairs, ordered by together
+deck count without an approval threshold. Historical pooled usage does not establish strength.
+
+Exact unordered card sets are compared with existing candidates and family source findings to
+retain discovery provenance. Existing win-rate experiment findings are attached on exact matches
+only, retaining their cohorts and uncertainty. This method does not itself evaluate performance;
+no match means untested, not poor performance. Source timestamps and printed text are retained so
+subsequent changes to the method can be compared against the same inputs.
+
+## Within-build construction experiment
+
+`npm run pipeline:packages:construction` generates the separate Construction discovery tab's
+`data/experiments/package-construction.json` and `docs/experiments/package-construction.md`.
+It never changes approval, synergy verification, existing miners or recommendation inputs.
+
+Deck IDs join the deck index to sightings and published build assignments. Cohorts are build ×
+champion × format × season ID. Unknown season/champion/date rows are excluded. Main and Material
+are separate quantity features; zero quantities, champions and sideboards are excluded. Duplicate
+deck IDs count once. Cohorts need 50 deck-events and eight distinct dates. The first 70% of distinct
+UTC dates (floor) discover groups; remaining dates evaluate construction recurrence. Same-date events
+stay together. Published taxonomy uses the full snapshot, so this is not an independently trained
+archetype assignment or a fully prospective validation.
+
+Discovery examines up to 50 most frequent features present in 10–80% of earlier decks. Pair
+association is phi: `(N × both − countA × countB) / sqrt(countA × countB × (N−countA) × (N−countB))`.
+Pairs need phi ≥ .60. Greedy extension adds features connected to every existing member at that
+threshold, up to four members. This is a bounded clique search, not exhaustive subset enumeration.
+Complete groups need at least eight decks, 15 players, five events and three unique
+section/quantity lists. Wholly absent groups need eight decks, five players, three events and
+three unique section/quantity lists. Partial groups are counted separately. Near-ubiquitous build cards
+cannot be core features, but published defining-card overlap is retained for review.
+
+Candidates also need an earlier with/without example from different players with ≥ .75 weighted
+Jaccard similarity of surrounding cards, excluding core features. Similarity sums minimum quantities
+over summed maximum quantities. Matching scans the first 100 complete and 200 absent decks in
+chronological order, retains up to three examples with distinct absent decks, and reports the full
+quantity differences. This bounded scan may miss valid matches. It is not causal matching.
+
+Associated options occur in 25–85% of complete decks and at least 20 percentage points more often
+than in absent decks; retain the four greatest differences. These are not verified interchangeable
+members. Core quantities show observed min, upper median and max among complete discovery decks.
+Main and Material slot costs are separately computed upper medians of total core copies.
+
+Later recurrence is `repeated` with eight complete decks, five players, three events, three distinct
+lists and at least three complete-group players absent from discovery. Fewer than 20 later decks or
+three later events yields `insufficient-data`; other cases are `not-repeated`. This measures recurring
+construction only, not renewed association, win rate, optimal ratios, or mechanical validity.
+
+Retain at most three groups per cohort, suppressing groups sharing two core features with an already
+retained result. Rank by weakest discovery pair phi then distinct complete-group players. Select ten
+unique section-aware cores with at most two per build, without using later results in ranking.
+Repeated appearances in other cohorts are not combined in this first report. The JSON retains associated options for analysis. The simplified UI displays only the exact
+core membership, labels observed median copies on each card, and hides candidates with a
+Standard-banned core card. Associated options are not displayed as package members.
+
+Players and copied lists still contribute deck-event weight to phi; distinct-player/event/list gates
+reduce but do not eliminate dependence. Taxonomy changes, temporal card availability, copied lists,
+and unobserved construction preferences remain possible explanations. Catalog text is attached for
+human review, not parsed into a claim of verified synergy. Roles remain unresolved. Mandatory named
+packages stay covered by the existing discovery method rather than this variation-based miner.

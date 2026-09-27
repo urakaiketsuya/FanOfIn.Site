@@ -1,4 +1,6 @@
 import { packageBannedCards } from "./packageArchive";
+import ConstructionPackages from "./ConstructionPackages";
+import ExperimentalPackages from "./ExperimentalPackages";
 import PackageCardGrid from "./PackageCardGrid";
 import PackageSynergyReview from "./PackageSynergyReview";
 import RulePerformance from "./RulePerformance";
@@ -8,7 +10,7 @@ import WinRatePackages from "./WinRatePackages";
 import { useCardCatalog } from "./useCardCatalog";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { includeWinRatePackages, indexPackagePerformance, type PackagePerformanceIndex, type Card, applyPackageAutoPolicy, comparePackagePools, packageAutoEligibility, packageRuleKey, type SavedCardPackage, type SavedPackageRule } from "@gatcg/shared";
+import { includeWinRatePackages, indexPackagePerformance, hasVerifiedPackageInteraction, type PackagePerformanceIndex, type Card, applyPackageAutoPolicy, comparePackagePools, packageAutoEligibility, packageRuleKey, type SavedCardPackage, type SavedPackageRule } from "@gatcg/shared";
 import PageLayout from "../../components/layout/PageLayout";
 import PageHeader from "../../components/ui/PageHeader";
 import Tabs, { TabPanel } from "../../components/ui/Tabs";
@@ -39,9 +41,12 @@ export default function PackagesIndex() {
   const { store, save } = useSavedPackages();
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
-  const [view, setView] = useState<"suggested" | "approved" | "win-rates" | "archived">(() => location.hash === "#archived" ? "archived" : location.hash === "#win-rates" ? "win-rates" : "suggested");
+  const [view, setView] = useState<"suggested" | "approved" | "win-rates" | "archived" | "synergistic" | "experimental" | "construction">(() => location.hash === "#construction" ? "construction" : location.hash === "#experimental" ? "experimental" : location.hash === "#synergistic" ? "synergistic" : location.hash === "#archived" ? "archived" : location.hash === "#win-rates" ? "win-rates" : "suggested");
   useEffect(() => {
+    if (location.hash === "#construction") setView("construction");
+    if (location.hash === "#experimental") setView("experimental");
     if (location.hash === "#win-rates") setView("win-rates");
+    if (location.hash === "#synergistic") setView("synergistic");
     if (location.hash === "#archived") setView("archived");
   }, [location.hash]);
   const [openId, setOpenId] = useState<string | null>(null);
@@ -56,7 +61,7 @@ export default function PackagesIndex() {
   const archived = useMemo(() => new Map(packages.map((pkg) => [pkg.id, packageBannedCards(pkg, cardsByName)] as const).filter(([, banned]) => banned.length)), [packages, cardsByName]);
   const handledHash = useRef("");
   useEffect(() => {
-    if (!cards.length || !location.hash || location.hash === "#archived" || location.hash === "#win-rates" || handledHash.current === location.hash) return;
+    if (!cards.length || !location.hash || location.hash === "#construction" || location.hash === "#experimental" || location.hash === "#synergistic" || location.hash === "#archived" || location.hash === "#win-rates" || handledHash.current === location.hash) return;
     let id: string;
     try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
     const target = packages.find((pkg) => pkg.id === id || pkg.sourcePackageIds.includes(id) || pkg.rules.some((rule) => rule.legacyId === id || rule.sourceIds.some((source) => source === id || source === `registered:${id}` || source === `curated:${id}`)));
@@ -78,7 +83,7 @@ export default function PackagesIndex() {
   }, [data, packages, save, store]);
   const updatePackage = (pkg: SavedCardPackage) => persist({ ...store, undo: undefined, packages: [...store.packages.filter((item) => item.id !== pkg.id), pkg] });
   const changeRule = (pkg: SavedCardPackage, rule: SavedPackageRule, status: "manual" | "suggested") => updatePackage({ ...pkg, rules: pkg.rules.map((item) => item.id === rule.id ? { ...item, status, autoBlocked: status === "suggested", autoChampionCards: undefined, autoMaterialCards: undefined, scope: item.scope ?? "main-material", approvedAt: status === "manual" ? new Date().toISOString() : undefined } : item) });
-  const filtered = packages.filter((pkg) => (view === "archived" ? archived.has(pkg.id) : !archived.has(pkg.id) && (view === "approved" ? approved(pkg) : pkg.rules.some((rule) => rule.status === "suggested"))) && (!query.trim() || [pkg.name, ...pkg.cards, ...pkg.rules.map((rule) => rule.label)].some((value) => value.toLowerCase().includes(query.trim().toLowerCase()))));
+  const filtered = packages.filter((pkg) => (view === "archived" ? archived.has(pkg.id) : !archived.has(pkg.id) && (view === "synergistic" ? hasVerifiedPackageInteraction(pkg) : view === "approved" ? approved(pkg) : pkg.rules.some((rule) => rule.status === "suggested"))) && (!query.trim() || [pkg.name, ...pkg.cards, ...pkg.rules.map((rule) => rule.label)].some((value) => value.toLowerCase().includes(query.trim().toLowerCase()))));
   const organize = (left: SavedCardPackage, right: SavedCardPackage, action: "merge" | "subpackage") => {
     if (action === "merge") {
       const merged = mergeSavedPackages(left, right);
@@ -93,7 +98,7 @@ export default function PackagesIndex() {
   return <PageLayout width="wide"><PageHeader title="Card Packages" actions={<Link className="min-h-12 py-3 text-ctp-teal" to="/combo-lab">Open Combo Lab</Link>} />
     {(store.error || error) && <p role="alert" className="rounded-lg border border-ctp-red p-3">{store.error || error}</p>}
     <label className="block text-sm">Find a package or card<input type="search" className={`${control} mt-2 w-full`} value={query} onChange={(event) => { setQuery(event.target.value); setPage(1); }} placeholder="Portly Raccoon, Argus…" /></label>
-    <section hidden={view === "win-rates" || view === "archived"} className="mt-4 rounded-lg border border-ctp-surface1 p-3"><button className="flex min-h-12 w-full items-center justify-between gap-3 text-left text-sm font-semibold" aria-expanded={policyOpen} onClick={() => setPolicyOpen(!policyOpen)}>Automatic approval · {store.autoEnabled ? "Enabled" : "Dry run"} · {eligible.length} qualifying rules<DisclosureChevron className={policyOpen ? "rotate-180" : ""} /></button>
+    <section hidden={view === "construction" || view === "experimental" || view === "win-rates" || view === "archived" || view === "synergistic"} className="mt-4 rounded-lg border border-ctp-surface1 p-3"><button className="flex min-h-12 w-full items-center justify-between gap-3 text-left text-sm font-semibold" aria-expanded={policyOpen} onClick={() => setPolicyOpen(!policyOpen)}>Automatic approval · {store.autoEnabled ? "Enabled" : "Dry run"} · {eligible.length} qualifying rules<DisclosureChevron className={policyOpen ? "rotate-180" : ""} /></button>
       {policyOpen && <div className="space-y-3 text-sm">{eligible.length > 0 ? <div className="space-y-2"><h3 className="font-semibold">Qualifying rules</h3>{eligible.map(({ pkg, rule }) => <button key={`${pkg.id}:${rule.id}`} className={`${control} block w-full break-words text-left`} onClick={() => { setQuery(pkg.name); setView(archived.has(pkg.id) ? "archived" : "suggested"); setOpenId(pkg.id); setFocusRuleId(rule.id); setPolicyOpen(false); }}>Review {pkg.name}: {rule.conditions ? describePackageRule(rule.conditions) : rule.activation}</button>)}</div> : <p>No qualifying rules.</p>}<button disabled={!data || !!store.error} className={`${control} text-ctp-teal disabled:opacity-40`} onClick={() => startTransition(() => {
         const enabled = !store.autoEnabled;
         const evaluated = applyPackageAutoPolicy(packages, enabled);
@@ -101,18 +106,24 @@ export default function PackagesIndex() {
       })}>{store.autoEnabled ? "Disable automatic approval" : "Enable automatic approval"}</button>{pending && <p role="status">Recalculating approvals…</p>}</div>}
     </section>
     {store.undo && <button className={`${control} mt-3`} onClick={() => persist({ ...store, packages: store.undo!, undo: undefined })}>Undo last organization change</button>}
-    <div className="mt-4 [&_[role=tab]]:min-h-12 [&_[role=tablist]]:flex-wrap"><Tabs baseId="packages" label="Package review status" tabs={[{ key: "suggested", label: "Suggested packages" }, { key: "approved", label: "Approved packages" }, { key: "win-rates", label: "Win-rate findings" }, { key: "archived", label: "Archived" }]} active={view} onChange={(next) => { setView(next); setPage(1); }} /></div>
-    {view !== "win-rates" && !data && (loading.phase === "error" ? <p role="alert">{loading.error}<button className={control} onClick={loading.retry}>Retry package evidence</button></p> : <p role="status" className="mt-3">Loading package evidence…</p>)}
+    <div className="mt-4 [&_[role=tab]]:min-h-12 [&_[role=tablist]]:flex-wrap"><Tabs baseId="packages" label="Package review status" tabs={[{ key: "suggested", label: "Suggested packages" }, { key: "approved", label: "Approved packages" }, { key: "win-rates", label: "Win-rate findings" }, { key: "synergistic", label: "Synergistic" }, { key: "experimental", label: "Experimental" }, { key: "construction", label: "Construction discovery" }, { key: "archived", label: "Archived" }]} active={view} onChange={(next) => { setView(next); setPage(1); }} /></div>
+    {view !== "construction" && view !== "experimental" && view !== "win-rates" && !data && (loading.phase === "error" ? <p role="alert">{loading.error}<button className={control} onClick={loading.retry}>Retry package evidence</button></p> : <p role="status" className="mt-3">Loading package evidence…</p>)}
+    <TabPanel baseId="packages" tab="construction" active={view}>
+      {view === "construction" && <ConstructionPackages query={query.trim().toLowerCase()} cardsByName={cardsByName} />}
+    </TabPanel>
+    <TabPanel baseId="packages" tab="experimental" active={view}>
+      {view === "experimental" && <ExperimentalPackages query={query.trim().toLowerCase()} cardsByName={cardsByName} />}
+    </TabPanel>
     <TabPanel baseId="packages" tab="win-rates" active={view}>
       <WinRatePackages query={query.trim().toLowerCase()} cardsByName={cardsByName} packages={packages} onReview={(pkg, rule, cohort) => {
         setView(archived.has(pkg.id) ? "archived" : rule.status === "suggested" ? "suggested" : "approved"); setQuery(pkg.name); setPage(1); setOpenId(pkg.id); setFocusRuleId(rule.id); setFocusPerformanceCohort(cohort);
         requestAnimationFrame(() => document.getElementById(`saved-${encodeURIComponent(pkg.id)}`)?.scrollIntoView({ block: "start" }));
       }} />
     </TabPanel>
-    {view !== "win-rates" && !winRateData && (winRateStatus.phase === "error" ? <p role="alert">Win-rate evidence unavailable. {winRateStatus.error} <button className={control} onClick={winRateStatus.retry}>Retry findings</button></p> : <p role="status">Loading win-rate package suggestions and evidence…</p>)}
-    {view !== "win-rates" && <TabPanel baseId="packages" tab={view} active={view} className="mt-4 space-y-4">
-      <p className="text-sm text-ctp-subtext0">{filtered.length} packages</p>
-      {!filtered.length && <p role="status">No packages match this view and search.</p>}
+    {view !== "construction" && view !== "experimental" && view !== "win-rates" && !winRateData && (winRateStatus.phase === "error" ? <p role="alert">Win-rate evidence unavailable. {winRateStatus.error} <button className={control} onClick={winRateStatus.retry}>Retry findings</button></p> : <p role="status">Loading win-rate package suggestions and evidence…</p>)}
+    {view !== "construction" && view !== "experimental" && view !== "win-rates" && <TabPanel baseId="packages" tab={view} active={view} className="mt-4 space-y-4">
+      <p className="text-sm text-ctp-subtext0">{filtered.length} {filtered.length === 1 ? "package" : "packages"}</p>
+      {!filtered.length && (view !== "synergistic" || !!data) && <p role="status">{view === "synergistic" ? (query.trim() ? "No verified synergistic packages match this search." : "No verified synergistic packages yet.") : "No packages match this view and search."}</p>}
       {filtered.slice(0, page * 12).map((pkg) => <article id={`saved-${encodeURIComponent(pkg.id)}`} key={pkg.id} className="scroll-mt-32 min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
         <h2 className="break-words text-lg font-semibold">{pkg.name}</h2><p className="mt-1 text-sm text-ctp-subtext0">{pkg.cards.length} cards · {pkg.rules.filter((rule) => rule.status !== "suggested").length} approved rules · {pkg.rules.filter((rule) => rule.status === "suggested").length} need review</p>
         {archived.has(pkg.id) && <p className="mt-2 break-words text-sm text-ctp-peach">Banned in Standard: {archived.get(pkg.id)!.join(", ")}</p>}

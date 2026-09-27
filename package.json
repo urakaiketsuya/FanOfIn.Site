@@ -38,6 +38,8 @@
     "api:dev": "npm run dev --workspace=@fanofin/public-api",
     "api:test": "npm run test --workspace=@fanofin/public-api",
     "api:typecheck": "npm run typecheck --workspace=@fanofin/public-api",
-    "pipeline:api:publish": "npm run api:publish --workspace=@gatcg/pipeline --"
+    "pipeline:api:publish": "npm run api:publish --workspace=@gatcg/pipeline --",
+    "pipeline:packages:experimental": "node --import tsx pipeline/src/analysis/experimentalPackageAudit.ts",
+    "pipeline:packages:construction": "node --import tsx pipeline/src/analysis/constructionPackageAudit.ts"
   }
 }

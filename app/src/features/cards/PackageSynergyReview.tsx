@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { findingSynergyStatus, hasPackageSupport, namedRulesTextSeeds, packageRulePerformance, summarizePackageSynergy, verifiedPackageMechanics, type Card, type PackagePerformanceIndex, type PackageSynergyStatus, type SavedCardPackage, type WinRatePackageFinding } from "@gatcg/shared";
+import { findingSynergyStatus, hasPackageSupport, namedRulesTextSeeds, packageRulePerformance, packageStatisticalStatus, verifiedPackageMechanics, type Card, type PackagePerformanceIndex, type PackageSynergyStatus, type SavedCardPackage, type WinRatePackageFinding } from "@gatcg/shared";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import { control, percent, points, summary } from "./winRatePresentation";
 
-export function SynergyBadge({ status }: { status: PackageSynergyStatus }) {
-  return <span className={`inline-block rounded-full border px-3 py-1 text-xs ${status === "Supported" ? "border-ctp-teal/40 text-ctp-teal" : status === "Mixed" ? "border-ctp-peach/40 text-ctp-peach" : "border-ctp-surface2 text-ctp-subtext1"}`}>Synergy evidence: {status}</span>;
+export function SynergyBadge({ status, label = "Statistical evidence" }: { status: PackageSynergyStatus; label?: string }) {
+  return <span className={`inline-block rounded-full border px-3 py-1 text-xs ${status === "Supported" ? "border-ctp-teal/40 text-ctp-teal" : status === "Mixed" ? "border-ctp-peach/40 text-ctp-peach" : "border-ctp-surface2 text-ctp-subtext1"}`}>{label}: {status}</span>;
 }
 
 export function SynergyFindingEvidence({ finding }: { finding: WinRatePackageFinding }) {
@@ -45,19 +45,17 @@ export default function PackageSynergyReview({ pkg, index, cardsByName, loading 
 }) {
   const [selectedRule, setSelectedRule] = useState("");
   const [selectedCohort, setSelectedCohort] = useState("");
-  const rule = pkg.rules.find((item) => item.id === selectedRule) ?? pkg.rules[0];
+  const rule = pkg.rules.find((item) => item.id === selectedRule) ?? pkg.rules.find(verifiedPackageMechanics) ?? pkg.rules[0];
   const findings = rule ? packageRulePerformance(rule, index) : [];
   const finding = findings.find((item) => item.cohort === selectedCohort) ?? findings[0];
-  const statuses = pkg.rules.flatMap((item) => {
-    const results = packageRulePerformance(item, index);
-    return results.length ? results.map(findingSynergyStatus) : ["Unproven" as const];
-  });
   const names = rule?.conditions ? [...new Set([...rule.conditions.requiredCards, ...rule.conditions.groups.flatMap((group) => group.cards)])] : rule?.cards ?? [];
   const catalog = names.flatMap((name) => { const card = cardsByName.get(name); return card ? [card] : []; });
   const links = namedRulesTextSeeds(catalog).filter((seed) => seed.memberCards.length === 1);
   const verified = rule && verifiedPackageMechanics(rule);
+  const verifiedCount = pkg.rules.filter(verifiedPackageMechanics).length;
   return <section className="mt-3" aria-label="Package synergy">
-    {loading ? <p role="status" className="text-sm">Loading synergy evidence…</p> : error ? <p className="text-sm text-ctp-peach">Synergy evidence unavailable</p> : <SynergyBadge status={summarizePackageSynergy(statuses)} />}
+    <p className="mb-2 text-sm">{verifiedCount ? `${verifiedCount} verified interaction ${verifiedCount === 1 ? "rule" : "rules"}` : "Interaction unverified"}</p>
+    {loading ? <p role="status" className="text-sm">Loading performance evidence…</p> : error ? <p className="text-sm text-ctp-peach">Performance evidence unavailable</p> : <SynergyBadge label="Performance" status={packageStatisticalStatus(pkg, index)} />}
     <details className="group mt-2 border-t border-ctp-surface1">
       <summary className={summary}>Review synergy<DisclosureChevron className="group-open:rotate-180" /></summary>
       <div className="space-y-4 pb-3 text-sm">

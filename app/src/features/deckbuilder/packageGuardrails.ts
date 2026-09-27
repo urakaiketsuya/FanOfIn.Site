@@ -53,6 +53,46 @@ const PACKAGE_DEFINITIONS: DeckPackageDefinition[] = [
       return baubles.length >= 2 ? baubles : [];
     },
   },
+  {
+    id: "argus-material-fuel",
+    label: "Argus material-fuel package",
+    explanation: "Each Crystal of Argus or Eye of Argus banished from Material pays 3 of Argus's reserve cost.",
+    activation: "Argus, All-Seeing Giant in Main and at least one Crystal of Argus or Eye of Argus in Material.",
+    memberCards: ["Argus, All-Seeing Giant", "Crystal of Argus", "Eye of Argus"],
+    evaluate(cards) {
+      if (!cards.some(card => card.cardName === "Argus, All-Seeing Giant" && card.section === "main" && card.quantity > 0)) return [];
+      const fuel = [...new Set(cards.filter(card => card.section === "material" && card.quantity > 0 &&
+        ["Crystal of Argus", "Eye of Argus"].includes(card.cardName)).map(card => card.cardName))];
+      return fuel.length ? ["Argus, All-Seeing Giant", ...fuel] : [];
+    },
+  },
+
+  {
+    id: "turbo-charge-backup-charger",
+    label: "Turbo Charge + Backup Charger",
+    explanation: "Backup Charger produces the Powercell that Turbo Charge sacrifices to draw two cards.",
+    activation: "Turbo Charge in Main and Backup Charger in Material.",
+    memberCards: ["Turbo Charge", "Backup Charger"],
+    evaluate(cards) {
+      return cards.some(c => c.cardName === "Turbo Charge" && c.section === "main" && c.quantity > 0) &&
+        cards.some(c => c.cardName === "Backup Charger" && c.section === "material" && c.quantity > 0)
+        ? ["Turbo Charge", "Backup Charger"] : [];
+    },
+  },
+  {
+    id: "clarent-reimagined-lineage",
+    label: "Clarent, Reimagined + Clarent, Sword of Peace",
+    explanation: "Lorraine can banish Clarent, Sword of Peace from Material to help pay for Clarent, Reimagined.",
+    activation: "A Lorraine champion and both Clarent, Reimagined and Clarent, Sword of Peace in Material.",
+    memberCards: ["Clarent, Reimagined", "Clarent, Sword of Peace"],
+    evaluate(cards) {
+      const material = cards.filter(c => c.section === "material" && c.quantity > 0);
+      return material.some(c => c.cardName.startsWith("Lorraine,")) &&
+        ["Clarent, Reimagined", "Clarent, Sword of Peace"].every(name => material.some(c => c.cardName === name))
+        ? ["Clarent, Reimagined", "Clarent, Sword of Peace"] : [];
+    },
+  },
+
 ];
 
 export function getRegisteredDeckPackageCatalog(cards: PackageCard[] = []): DeckPackageCatalogEntry[] {

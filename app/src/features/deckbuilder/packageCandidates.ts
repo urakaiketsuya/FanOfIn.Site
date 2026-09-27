@@ -17,15 +17,6 @@ export interface DeckPackageCandidate {
  * They are deliberately separate from PACKAGE_DEFINITIONS and cannot affect recommendations. */
 export const DECK_PACKAGE_CANDIDATES: DeckPackageCandidate[] = [
   {
-    id: "clarent-reimagined-lineage",
-    label: "Clarent replacement package",
-    rationale: "Clarent, Reimagined can banish Clarent, Sword of Peace from the material deck to help pay its memory cost.",
-    proposedActivation: "Both Clarent, Reimagined and Clarent, Sword of Peace are in Material.",
-    proposedProtection: "Keep Clarent, Sword of Peace while Clarent, Reimagined remains in Material.",
-    memberCards: ["Clarent, Reimagined", "Clarent, Sword of Peace"],
-    evidence: { matchingDecks: 4_075, anchorDecks: 4_424, sectionPattern: "Material → Material", kind: "Named rules-text link" },
-  },
-  {
     id: "incarnate-majesty-spirit",
     label: "Incarnate Majesty package",
     rationale: "Incarnate Majesty puts The Majestic Spirit directly onto the field from the material deck or banishment.",
@@ -42,15 +33,6 @@ export const DECK_PACKAGE_CANDIDATES: DeckPackageCandidate[] = [
     proposedProtection: "Review cuts to either card as a package change, especially cuts to Scry the Skies.",
     memberCards: ["Scry the Stars", "Scry the Skies"],
     evidence: { matchingDecks: 269, anchorDecks: 286, sectionPattern: "Main/Sideboard → Main/Sideboard", kind: "Named rules-text link" },
-  },
-  {
-    id: "argus-material-fuel",
-    label: "Argus material-fuel package",
-    rationale: "Argus can banish Crystal of Argus or Eye of Argus from the material deck, with each card paying three reserve cost.",
-    proposedActivation: "Argus is in Main or Sideboard with Crystal of Argus or Eye of Argus in Material.",
-    proposedProtection: "Keep the present Argus regalia while Argus remains available.",
-    memberCards: ["Argus, All-Seeing Giant", "Crystal of Argus", "Eye of Argus"],
-    evidence: { matchingDecks: 121, anchorDecks: 129, sectionPattern: "Main → Material", kind: "Named rules-text link" },
   },
   {
     id: "suzaku-ruby-fatestone",
