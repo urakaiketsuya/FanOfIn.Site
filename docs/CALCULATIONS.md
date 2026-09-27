@@ -3288,3 +3288,9 @@ progress, and catalog changes can change the denominator.
 ### Collection set families
 
 Collection progress and card browsing group explicitly mapped base, First Edition, and Alter Edition prefixes via `shared/src/setFamilies.ts`. Membership is the union of card UUIDs across those printings; every distinct card counts once. Any physical printing still satisfies card coverage. Starter decks, promotional and event products, and unknown prefixes remain independent. Exact edition UUIDs and inventory quantities are unchanged. Optional printing-edition filters restrict the displayed card pool, not ownership to that printing; set completion remains family-wide.
+
+### Collection playsets
+
+A collection playset targets one physical copy when a card has a non-null memory cost (including zero), or its catalog cost type is memory; all other cards target four. This is a collection goal, not a format-legality check. Physical copies across editions pool by card UUID; proxies do not count. A playset is complete when pooled ownership reaches its target. Progress is the percentage of distinct cards with complete playsets, floored to an integer. Missing copies sum each card's nonnegative shortfall, so surplus copies cannot offset another card.
+
+Quick completion adds only that shortfall to the unspecified-printing entry, preserving its proxies and every exact-printing entry. Current-state milestones are first playset, 25%, 50%, 75%, and all playsets complete; removals can reverse them. Filters apply before matching-playset counts, while the set-level goal includes the entire set family.
