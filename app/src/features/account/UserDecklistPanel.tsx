@@ -42,7 +42,7 @@ export default function UserDecklistPanel({ decklist, format, actions, children,
     {children ?? <DecklistView
       decklist={decklist} cardsByName={cardsByName} showAnalysis={showAnalysis} showThumbnails format={format} ownershipByName={ownershipByName}
       collectionControl={collectionSource && <button type="button" aria-expanded={showCollection} onClick={() => setShowCollection((value) => !value)} className={`inline-flex min-h-11 items-center rounded-md px-3 text-xs ${showCollection ? "bg-ctp-green/10 text-ctp-green" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>Collection</button>}
-      collectionPanel={collectionSource && showCollection && <DeckCollectionTools decklist={decklist} cardsByName={cardsByName} source={collectionSource} />}
+      collectionPanel={collectionSource && showCollection && <DeckCollectionTools ownerDeckId={ownerDeckId} decklist={decklist} cardsByName={cardsByName} source={collectionSource} />}
       toolbarActions={<>{showBuilderAction && builderParams && <Link to={buildDeckBuilderPath(builderParams.championName, builderParams.spiritFilter, builderParams.lockedCards, builderParams.lockedSections, canImprove && ownerDeckId ? { mode: "improve", sourceDeckId: ownerDeckId } : undefined)} className="rounded px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{canImprove && ownerDeckId ? "Improve this deck" : "Tune in Deck Builder"}</Link>}{actions}</>}
     />}
     {showAnalysis && format !== "PANTHEON" && displayPrefs.metaGaps && <DeckDecaySignals decklist={decklist} cardsByName={cardsByName} />}

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { CollectionCardTracking, CollectionCardTrackingUpdate } from "@gatcg/shared";
 import { accountApi } from "../../lib/accountApi";
 
-export function useCollectionTracking(enabled: boolean) {
+export function useCardLocations(enabled: boolean) {
   const [records, setRecords] = useState<CollectionCardTracking[]>([]);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);

@@ -64,3 +64,9 @@ of inventory quantities. Apply it before deploying the Worker reporting schema v
 The authenticated `/v1/me/collection/tracking` API and account export include these records;
 public profiles, binders and deck exports do not. Tracking updates use a revision check to reject
 stale writes. Loans do not reserve inventory or change deck coverage/trade availability.
+
+### Card locations (schema 0023)
+
+Apply `0023_card_locations.sql` before deploying the updated account worker. It adds private deck quantity assignments to the existing card tracking records; existing loans and uncertainty flags are retained. The health check now requires schema 0023.
+
+Location writes combine a revision check, account-owned deck validation, and pooled physical-capacity validation in one SQL statement. Proxies do not contribute capacity. Existing excess allocations (for example, after inventory was corrected) may be reduced and are displayed for reconciliation; inventory and loans are never silently rewritten. Assignments reference saved deck IDs but survive deck deletion as an unavailable location until the owner explicitly unassigns them. Account export includes assignments through collection tracking; no public deck response includes them.

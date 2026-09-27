@@ -121,12 +121,14 @@ export interface CollectionLoan {
   lentAt: string;
   returnedAt?: string;
 }
+export interface CollectionDeckAssignment { deckId: string; quantity: number; }
 export interface CollectionCardTracking {
   cardUuid: string;
   cardName: string;
   mightOwn: boolean;
   loans: CollectionLoan[];
+  assignments?: CollectionDeckAssignment[];
   revision: number;
   updatedAt: string;
 }
-export type CollectionCardTrackingUpdate = Pick<CollectionCardTracking, "cardName" | "mightOwn" | "loans" | "revision">;
+export type CollectionCardTrackingUpdate = Pick<CollectionCardTracking, "cardName" | "mightOwn" | "loans" | "revision" | "assignments">;

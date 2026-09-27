@@ -1,6 +1,6 @@
 import type { Env } from "./auth";
 
-export const REQUIRED_SCHEMA_VERSION = "0022";
+export const REQUIRED_SCHEMA_VERSION = "0023";
 
 export interface ServiceHealth {
   success: boolean;
@@ -24,7 +24,7 @@ export async function serviceHealth(env: Env): Promise<ServiceHealth> {
     await env.ACCOUNT_DB.prepare("SELECT user_id, card_uuid, owned_quantity, proxy_quantity FROM collection_entries LIMIT 0").all();
     await env.ACCOUNT_DB.prepare("SELECT user_id, card_uuid, edition_uuid, owned_quantity, proxy_quantity FROM collection_printing_entries LIMIT 0").all();
     await env.ACCOUNT_DB.prepare("SELECT user_id, card_uuid, card_name FROM shared_card_watches LIMIT 0").all();
-    await env.ACCOUNT_DB.prepare("SELECT user_id, card_uuid, might_own, loans_json, revision FROM collection_card_tracking LIMIT 0").all();
+    await env.ACCOUNT_DB.prepare("SELECT user_id, card_uuid, might_own, loans_json, assignments_json, revision FROM collection_card_tracking LIMIT 0").all();
     await env.ACCOUNT_DB.prepare("SELECT user_id, provider, provider_subject FROM auth_identities LIMIT 0").all();
     await env.ACCOUNT_DB.prepare("SELECT user_id, normalized_email, email_verified FROM password_credentials LIMIT 0").all();
     await env.ACCOUNT_DB.prepare("SELECT credential_id, purpose, expires_at FROM password_auth_tokens LIMIT 0").all();

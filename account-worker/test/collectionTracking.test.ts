@@ -9,6 +9,8 @@ function fixture() {
   const db = new DatabaseSync(":memory:");
   db.exec("PRAGMA foreign_keys=ON; CREATE TABLE users(id TEXT PRIMARY KEY); INSERT INTO users VALUES('a'),('b');");
   db.exec(readFileSync(new URL("../migrations/0022_collection_tracking.sql",import.meta.url),"utf8"));
+  db.exec(readFileSync(new URL("../migrations/0023_card_locations.sql",import.meta.url),"utf8"));
+  db.exec("CREATE TABLE collection_entries(user_id TEXT,card_uuid TEXT,owned_quantity INTEGER); CREATE TABLE collection_printing_entries(user_id TEXT,card_uuid TEXT,owned_quantity INTEGER); CREATE TABLE user_decks(id TEXT PRIMARY KEY,owner_user_id TEXT); INSERT INTO collection_entries VALUES('a','card',4); INSERT INTO user_decks VALUES('deck-a','a'),('deck-b','a'),('foreign','b');");
   const env = {ACCOUNT_DB:{prepare(sql: string) {
     let args: (string|number|null)[] = [];
     return {bind(...values: typeof args) {args=values;return this;}, async all(){return {results:db.prepare(sql).all(...args)};}, async run(){return {meta:db.prepare(sql).run(...args)};}};
@@ -19,9 +21,10 @@ function fixture() {
 }
 test("tracking persists without owned entries and is private to its user",async()=>{
   const {db,env,user,input}=fixture();
-  const saved=await saveCollectionTracking(env,user,"card",input);
+  db.exec("DELETE FROM collection_entries");
+  const saved=await saveCollectionTracking(env,user,"card",{...input,loans:[]});
   assert.equal(saved.revision,1);
-  assert.equal((await listCollectionTracking(env,user))[0].loans[0].borrower,"A friend");
+  assert.equal((await listCollectionTracking(env,user))[0].mightOwn,true);
   assert.deepEqual(await listCollectionTracking(env,{id:"b"} as AuthUser),[]);
   db.exec("DELETE FROM users WHERE id='a'");
   assert.deepEqual(await listCollectionTracking(env,user),[]);
@@ -46,4 +49,26 @@ test("invalid borrowers, quantities, duplicate loans and dates are rejected",asy
   for(const loan of [{...input.loans[0],borrower:" "},{...input.loans[0],quantity:0},{...input.loans[0],quantity:1.5},{...input.loans[0],lentAt:"invalid"},{...input.loans[0],returnedAt:"2020-01-01"}]) await assert.rejects(saveCollectionTracking(env,user,"card",{...input,loans:[loan]}));
   await assert.rejects(saveCollectionTracking(env,user,"card",{...input,loans:[input.loans[0],input.loans[0]]}));
   assert.deepEqual(await listCollectionTracking(env,user),[]);
+});
+
+test("assignments conserve pooled copies, include loans, and reject private foreign decks",async()=>{
+ const {db,env,user,input}=fixture();
+ db.exec("INSERT INTO collection_printing_entries VALUES('a','card',1)");
+ const first=await saveCollectionTracking(env,user,"card",{...input,assignments:[{deckId:'deck-a',quantity:3}]});
+ assert.equal(first.assignments?.[0].quantity,3);
+ await assert.rejects(saveCollectionTracking(env,user,"card",{...input,revision:1,assignments:[{deckId:'deck-a',quantity:4}]}),/exceed ownership/);
+ await assert.rejects(saveCollectionTracking(env,user,"card",{...input,revision:1,assignments:[{deckId:'foreign',quantity:1}]}));
+ const moved=await saveCollectionTracking(env,user,"card",{...input,revision:1,assignments:[{deckId:'deck-b',quantity:3}]});
+ assert.deepEqual(moved.assignments,[{deckId:'deck-b',quantity:3}]);
+ await assert.rejects(saveCollectionTracking(env,user,"card",{...input,revision:1,assignments:[{deckId:'deck-a',quantity:3}]}),/another tab/);
+});
+test("legacy excess can be reconciled without silently changing inventory or loans",async()=>{
+ const {db,env,user,input}=fixture();
+ await saveCollectionTracking(env,user,"card",{...input,assignments:[{deckId:'deck-a',quantity:2}]});
+ db.exec("UPDATE collection_entries SET owned_quantity=1");
+ const notes=await saveCollectionTracking(env,user,"card",{...input,revision:1,mightOwn:false});
+ assert.equal(notes.assignments?.[0].quantity,2);
+ await assert.rejects(saveCollectionTracking(env,user,"card",{...input,revision:2,assignments:[{deckId:'deck-b',quantity:3}]}));
+ const reduced=await saveCollectionTracking(env,user,"card",{...input,revision:2,assignments:[],loans:[]});
+ assert.deepEqual(reduced.assignments,[]);
 });
