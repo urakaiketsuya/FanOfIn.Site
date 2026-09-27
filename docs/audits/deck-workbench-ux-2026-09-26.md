@@ -90,3 +90,25 @@ Verified at 360px and 390px mobile widths and 1280px desktop: repeated additions
 The isolated save fixture verified initial save, subsequent version creation, failure, and edits during an in-flight save without writing to an account. Sixteen targeted tests cover catalog filtering, section-aware edits, manual builds and persistence, including storage failure. Typecheck and lint were also run.
 
 Limitations: real account writes, a physical mobile on-screen keyboard, and a forced catalog network failure were not exercised. Catalog failure messaging is implemented; unavailable collection feedback was observed. The temporary save fixture was removed after verification.
+
+## Correction after user review
+
+The split-pane implementation gave the catalog more prominence than the deck and changed the existing layout too far. The deck must remain the main object of this page. This supersedes the simultaneous desktop catalog/deck proposal above.
+
+Restored a full-width deck with normal page scrolling, the original saved layout preference and card-art default. An empty session still shows cards immediately and allows several additions before choosing View deck. Once building, Add cards opens a focused drawer that stays open for multiple additions and returns to the deck. Search, filters, optional suggestions, editing controls and save improvements remain available. The deck action bar stays below the measured site header while scrolling; sparse art grids retain card-sized columns.
+
+Verified empty mobile discovery, three additions, drawer return, mobile art layout at 360px with no horizontal overflow, and the full-width deck at 1280px. Physical mobile keyboard behavior remains untested.
+
+## Add-card selection follow-up
+
+Card art and names in the shared add-card browser now select cards instead of navigating to card details. Pending selections survive searches, filters, pagination and sort changes while the browser stays open. A selection summary exposes hidden selections, supports deselection/clearing, and explicitly adds one copy of each selected card to the current destination. Bulk additions are one immutable edit and one Undo step; incompatible destinations reject the entire operation. Normal deck card-detail links remain available outside this selection context.
+
+Sorting supports name in both directions, cost in both directions, and element, with unknown costs last. Verified keyboard selection, selections across search and element filters, existing-copy increments, automatic Main/Material placement, one-step Undo, and the drawer at 360px/390px mobile and 1280px desktop. No card links remain inside the modal. Ten focused mutation/filter/sort tests pass; app typecheck passes and lint reports only the six existing warnings. Live account editing and a physical mobile keyboard were not exercised.
+
+## Card statistics restored
+
+The shared editing tiles had dropped evidence previously available in the workbench. Deck cards and selectable catalog cards now show tournament popularity and adjusted win rates, independently of recommendation mode. Card stats controls can hide the rows or choose all Champions versus the current Champion (all Spirits). More stats exposes cost, per-copy pricing/trends, unadjusted win rate and available community/simulator/adoption evidence. Pricing and community data load on expansion. Selection remains separate from the statistics disclosure and never navigates away.
+
+The old tile's adjusted lift was labeled “Win rate”; the restored summary instead uses published absolute adjusted win rates from cards.json and card-stats-by-champion.json. ChampionCardStats.deckCount counts known outcomes while individual card deckCount includes all appearances. Therefore Champion popularity is a deck count, never a ratio between those incompatible populations. Global popularity uses cards.json's matching decksConsidered denominator. Counts are labeled as appearances, not an exact win-rate sample. Controls explain that tournament statistics are historical and not format/Spirit/archetype filtered.
+
+Verified the numbers against published data for Dungeon Guide (global: 32,187 appearances, 55.2% popularity, 47.8% adjusted wins; Lorraine: 3,887 appearances, 52.3% adjusted wins). Verified both deck and add-card surfaces, expanded pricing/community, and narrow mobile/desktop layouts. No live account writes were performed; physical mobile keyboard behavior remains untested.

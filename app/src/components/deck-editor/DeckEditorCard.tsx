@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { Card, OmnidexDecklistCardLine } from "@gatcg/shared";
 import CardArtTile from "../CardArtTile";
@@ -7,7 +7,8 @@ import QuantityControl from "./QuantityControl";
 import { deckDestinationEligibility } from "../../lib/deckSectionEligibility";
 import { EDITOR_SECTIONS, type DeckEditSection } from "../../lib/deckEditing";
 
-export default function DeckEditorCard({ line, card, section, onChangeQuantity, onMove, onRemove, selected, onSelect, list = false }: {
+export default function DeckEditorCard({ line, card, section, onChangeQuantity, onMove, onRemove, selected, onSelect, list = false, stats }: {
+  stats?: ReactNode;
   line: OmnidexDecklistCardLine; card?: Card; section: DeckEditSection;
   onChangeQuantity: (quantity: number) => void; onMove: (destination: DeckEditSection, quantity: number) => void;
   onRemove: () => void; selected?: boolean; onSelect?: () => void; list?: boolean;
@@ -20,7 +21,7 @@ export default function DeckEditorCard({ line, card, section, onChangeQuantity, 
   return <article className={`min-w-0 rounded-xl border bg-ctp-mantle p-2 ${selected ? "border-ctp-blue ring-2 ring-ctp-blue/30" : "border-ctp-surface1"}`}>
     <div className={list ? "flex items-start gap-3" : ""}>
       <div className={list ? "w-14 shrink-0" : ""}><CardArtTile card={card} name={line.card} /></div>
-      <div className="min-w-0 flex-1">{title}<QuantityControl stacked={!list} name={`${line.card} in ${section}`} quantity={line.quantity} min={0} onChange={quantity => quantity === 0 ? onRemove() : onChangeQuantity(quantity)} />
+      <div className="min-w-0 flex-1">{title}{stats}<QuantityControl stacked={!list} name={`${line.card} in ${section}`} quantity={line.quantity} min={0} onChange={quantity => quantity === 0 ? onRemove() : onChangeQuantity(quantity)} />
         <div className="mt-1 flex flex-wrap gap-1">
           <button type="button" disabled={!destinations.length} onClick={() => { setMoveQuantity(line.quantity); setDestination(destinations[0]?.key ?? "maybeboard"); setOpen(true); }} aria-label={`Move ${line.card} from ${section}`} className="min-h-12 rounded-lg px-3 text-sm text-ctp-blue">Move</button>
           <button type="button" onClick={onRemove} aria-label={`Remove ${line.card} from ${section}`} className="min-h-12 rounded-lg px-3 text-sm text-ctp-subtext1">Remove</button>

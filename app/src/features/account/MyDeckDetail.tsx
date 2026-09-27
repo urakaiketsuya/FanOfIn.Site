@@ -155,7 +155,7 @@ export default function MyDeckDetail() {
     if (next === current) return;
     commitEdit(buildDecklistText(next), next.maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n"));
     setEditing(true);
-    setNotice(`${action.type === "remove" ? "Removed" : action.type === "move" ? "Moved" : "Updated"} ${action.name}. Undo is available.`);
+    setNotice(action.type === "add-many" ? `Added ${action.additions.length} selected cards. Undo is available.` : `${action.type === "remove" ? "Removed" : action.type === "move" ? "Moved" : "Updated"} ${action.name}. Undo is available.`);
   }
   function changeMaybeboardQuantity(name: string, quantity: number) { applySharedEdit({ type: "quantity", section: "maybeboard", name, quantity }); }
   function removeMaybeboardCard(name: string) { applySharedEdit({ type: "remove", section: "maybeboard", name }); }

@@ -21,3 +21,19 @@ export function filterCatalog(cards: Card[], query: string, filters: CatalogFilt
     return true;
   });
 }
+
+export type CatalogSort = "name" | "name-desc" | "cost" | "cost-desc" | "element";
+export function sortCatalogNames(names: string[], catalog: ReadonlyMap<string, Card>, sort: CatalogSort): string[] {
+  const cost = (name: string) => { const card = catalog.get(name); return card?.cost_memory ?? card?.cost_reserve ?? null; };
+  return [...names].sort((a, b) => {
+    if (sort === "name-desc") return b.localeCompare(a);
+    if (sort === "element") return (catalog.get(a)?.elements.join(",") ?? "").localeCompare(catalog.get(b)?.elements.join(",") ?? "") || a.localeCompare(b);
+    if (sort === "cost" || sort === "cost-desc") {
+      const x = cost(a), y = cost(b);
+      if (x === null && y !== null) return 1;
+      if (y === null && x !== null) return -1;
+      return (x !== null && y !== null ? (x-y) * (sort === "cost-desc" ? -1 : 1) : 0) || a.localeCompare(b);
+    }
+    return a.localeCompare(b);
+  });
+}

@@ -51,3 +51,18 @@ test("split builder selections survive maps, assembled deck, share links and ses
   saveBuilderSession(adapter, { selection: { format: "STANDARD", championName: null, spiritName: null, archetypeId: null, populationSource: "balanced", pillarBias: null, championLevelCap: null, collectionMode: "all", lockedCards: selections, rejectedCards: [], maybeboard: [] }, changeLog: [] });
   assert.deepEqual(loadBuilderSession(adapter)?.selection.lockedCards, selections);
 });
+
+test("bulk additions accumulate existing copies across sections as one immutable edit", () => {
+  const before = initial();
+  const after = editDeck(before, {type:"add-many", additions:[{name:"Ally",section:"main",quantity:1},{name:"Spirit",section:"material",quantity:1}]}, catalog);
+  assert.equal(after.main[0].quantity,5);
+  assert.deepEqual(after.material,[{card:"Spirit",quantity:1}]);
+  assert.deepEqual(after.sideboard,before.sideboard);
+  assert.equal(before.main[0].quantity,4);
+  assert.deepEqual(before.material,[]);
+});
+test("bulk additions reject the entire action when any destination is invalid", () => {
+  const before = initial();
+  assert.equal(editDeck(before, {type:"add-many", additions:[{name:"Ally",section:"main",quantity:1},{name:"Ally",section:"material",quantity:1}]}, catalog),before);
+  assert.equal(editDeck(before, {type:"add-many", additions:[{name:"Ally",section:"main",quantity:0}]}, catalog),before);
+});

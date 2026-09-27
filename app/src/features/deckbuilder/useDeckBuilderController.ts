@@ -80,7 +80,7 @@ export function useDeckBuilderController() {
   const [addDestination, setAddDestination] = useState<"automatic" | "sideboard" | "maybeboard">("automatic");
   const [visibleFields, setVisibleField] = useCardFieldVisibility();
   const [customizeOpen, setCustomizeOpen] = useState(false);
-  const [viewMode, setViewMode] = useBuilderViewMode("deck-workbench-view-v2", "list");
+  const [viewMode, setViewMode] = useBuilderViewMode();
   const [tab, setTab] = useTabParam<BuilderTab>("tab", TAB_KEYS, "build");
   const [recommendationsEnabled, setRecommendationsEnabled] = useState(false);
   const [identityEditorOpen, setIdentityEditorOpen] = useState(false);

@@ -36,7 +36,7 @@ export function useBuilderEditing(workflow: ReturnType<typeof useBuilderWorkflow
     const next = editDeck(deck, action, catalog);
     if (next === deck) return;
     setPast((history) => [...history.slice(-49), deck]); setFuture([]); apply(next);
-    setNotice(`${action.type === "remove" ? "Removed" : action.type === "move" ? "Moved" : "Updated"} ${action.name}.`);
+    setNotice(action.type === "add-many" ? `Added ${action.additions.length} selected cards. Undo is available.` : `${action.type === "remove" ? "Removed" : action.type === "move" ? "Moved" : "Updated"} ${action.name}.`);
   }
   return { deck, edit, notice, canUndo: past.length > 0, canRedo: future.length > 0,
     undo: () => { const previous = past.at(-1); if (!previous) return; setPast(past.slice(0, -1)); setFuture([deck, ...future]); apply(previous); setNotice("Edit undone."); },

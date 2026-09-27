@@ -4,12 +4,23 @@ import { deckDestinationEligibility, type EditableDeckDestination } from "./deck
 export type DeckEditSection = EditableDeckDestination;
 export type EditableDeck = Record<DeckEditSection, OmnidexDecklistCardLine[]>;
 export type DeckEdit =
+  | { type: "add-many"; additions: { name: string; section: DeckEditSection; quantity: number }[] }
   | { type: "quantity"; section: DeckEditSection; name: string; quantity: number }
   | { type: "remove"; section: DeckEditSection; name: string }
   | { type: "move"; section: DeckEditSection; name: string; destination: DeckEditSection; quantity: number };
 
 /** Immutable, section-aware edits. Limits are validation feedback, never silent truncation. */
 export function editDeck(deck: EditableDeck, edit: DeckEdit, catalog: ReadonlyMap<string, Card>): EditableDeck {
+  if (edit.type === "add-many") {
+    let next = deck;
+    for (const item of edit.additions) {
+      if (!Number.isSafeInteger(item.quantity) || item.quantity < 1 || !deckDestinationEligibility(catalog.get(item.name), item.section).allowed) return deck;
+      const quantity = (next[item.section].find(line => line.card === item.name)?.quantity ?? 0) + item.quantity;
+      if (!Number.isSafeInteger(quantity)) return deck;
+      next = editDeck(next, { type: "quantity", ...item, quantity }, catalog);
+    }
+    return next;
+  }
   const current = deck[edit.section].find((line) => line.card === edit.name);
   if (edit.type !== "remove" && (!Number.isSafeInteger(edit.quantity) || edit.quantity < 1)) return deck;
   if (edit.type === "move" && (!current || edit.destination === edit.section || edit.quantity > current.quantity || !deckDestinationEligibility(catalog.get(edit.name), edit.destination).allowed)) return deck;
