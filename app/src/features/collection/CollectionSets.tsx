@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import type { Card, CollectionEntry, CollectionUpdateLine } from "@gatcg/shared";
 import CardArtTile from "../../components/CardArtTile";
 import DisclosureChevron from "../../components/DisclosureChevron";
+import MissingCardShopping from "./MissingCardShopping";
 import CollectionCardFilters from "./CollectionCardFilters";
 import { emptyFilterState, filterCards } from "../cards/filters";
 import { collectionMilestone, collectionSetProgress } from "./collectionProgress";
@@ -59,6 +60,7 @@ export default function CollectionSets({ cards, entries, busy = false, preview =
       <label className="mt-3 flex flex-wrap items-center gap-2 text-sm">Sort cards<select value={sort} onChange={event => { setSort(event.target.value); setLimit(24); }} className="min-h-12 rounded-lg border border-ctp-surface1 bg-ctp-base px-3"><option value="name">Name: A–Z</option><option value="name-desc">Name: Z–A</option>{!preview && <option value="owned">Most owned</option>}</select></label>
       <p role="status" className="mt-3 text-sm">{preview ? `${filteredPool.length} matching cards` : `${ownedMatches} of ${filteredPool.length} matching cards owned · ${filteredPool.length - ownedMatches} missing`}</p>
       {!preview && <div role="group" aria-label="Set card filter" className="my-3 flex flex-wrap gap-2">{(["all", "owned", "missing"] as const).map((value) => <button key={value} type="button" aria-pressed={filter === value} onClick={() => { setFilter(value); setLimit(24); }} className={`rounded-lg border px-3 text-sm capitalize ${filter === value ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1"}`}>{value}</button>)}</div>}
+      {!preview && <MissingCardShopping key={selected.prefix || "all"} cards={filteredPool.filter(card => (quantities.get(card.uuid) ?? 0) === 0)} />}
       {!matchingCards.length && <p role="status" className="my-4 text-sm">{filteredPool.length === 0 ? "No cards match these filters." : filter === "missing" ? "You own every matching card!" : "No owned cards match these filters yet."}</p>}
       <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{matchingCards.slice(0, limit).map((card) => {
         const quantity = selected.quantities.get(card.uuid) ?? 0;
