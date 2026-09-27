@@ -112,3 +112,21 @@ export function computeDeckCollectionStatus(
   const proxyCopies = lines.reduce((sum, line) => sum + line.proxies, 0);
   return { lines, requiredCopies, ownedCopies, missingCopies, proxyCopies, complete: missingCopies === 0 };
 }
+
+/** Private card-level reminders. Independent of confirmed inventory and printings. */
+export interface CollectionLoan {
+  id: string;
+  borrower: string;
+  quantity: number;
+  lentAt: string;
+  returnedAt?: string;
+}
+export interface CollectionCardTracking {
+  cardUuid: string;
+  cardName: string;
+  mightOwn: boolean;
+  loans: CollectionLoan[];
+  revision: number;
+  updatedAt: string;
+}
+export type CollectionCardTrackingUpdate = Pick<CollectionCardTracking, "cardName" | "mightOwn" | "loans" | "revision">;

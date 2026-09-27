@@ -58,3 +58,9 @@ card-level quantities. Apply it before deploying a Worker that reports schema ve
 Migration `0020_comments_and_binder.sql` adds shallow deck discussions, comment moderation and blocking,
 public trading binders, versioned offers, fulfillment receipts, and auditable trade events. Apply it before
 deploying a Worker that reports schema version `0020`.
+
+`0022_collection_tracking.sql` adds private ownership reminders and loan records independently
+of inventory quantities. Apply it before deploying the Worker reporting schema version `0022`.
+The authenticated `/v1/me/collection/tracking` API and account export include these records;
+public profiles, binders and deck exports do not. Tracking updates use a revision check to reject
+stale writes. Loans do not reserve inventory or change deck coverage/trade availability.

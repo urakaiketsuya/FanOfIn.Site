@@ -1,5 +1,5 @@
 import { setFamilyPrefix } from "@gatcg/shared";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { Card, CollectionEntry, CollectionUpdateLine } from "@gatcg/shared";
 import CardArtTile from "../../components/CardArtTile";
@@ -10,7 +10,8 @@ import { emptyFilterState, filterCards } from "../cards/filters";
 import { completePlaysetLine, playsetMilestone, playsetProgress, playsetTarget } from "./collectionPlaysets";
 import { collectionMilestone, collectionSetProgress } from "./collectionProgress";
 
-export default function CollectionSets({ cards, entries, busy = false, preview = false, onUpdate, onPrintings }: {
+export default function CollectionSets({ cards, entries, busy = false, preview = false, onUpdate, onPrintings, renderTracking }: {
+  renderTracking?: (uuid: string, name: string) => ReactNode;
   cards: Card[]; entries: CollectionEntry[]; busy?: boolean; preview?: boolean;
   onUpdate?: (lines: CollectionUpdateLine[], source: string) => Promise<void>;
   onPrintings?: (cardUuid: string) => void;
@@ -78,7 +79,7 @@ export default function CollectionSets({ cards, entries, busy = false, preview =
       <label className="mt-3 flex flex-wrap items-center gap-2 text-sm">Sort cards<select value={sort} onChange={event => { setSort(event.target.value); setLimit(24); }} className="min-h-12 rounded-lg border border-ctp-surface1 bg-ctp-base px-3"><option value="name">Name: A–Z</option><option value="name-desc">Name: Z–A</option>{!preview && <option value="owned">Most owned</option>}</select></label>
       <p role="status" className="mt-3 text-sm">{preview ? `${filteredPool.length} matching cards` : `${ownedMatches} of ${filteredPool.length} matching cards owned · ${filteredPool.length - ownedMatches} missing · ${matchingPlaysets.complete} playset${matchingPlaysets.complete === 1 ? "" : "s"} complete`}</p>
       {!preview && <div role="group" aria-label="Set card filter" className="my-3 flex flex-wrap gap-2">{(["all", "owned", "missing", "playsets", "incomplete"] as const).map((value) => <button key={value} type="button" aria-pressed={filter === value} onClick={() => { setFilter(value); setLimit(24); }} className={`rounded-lg border px-3 text-sm capitalize ${filter === value ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1"}`}>{value === "playsets" ? "Playsets complete" : value === "incomplete" ? "Needs copies" : value}</button>)}</div>}
-      {!preview && <MissingCardShopping key={selected.prefix || "all"} cards={filteredPool.filter(card => (quantities.get(card.uuid) ?? 0) === 0)} />}
+      {!preview && <MissingCardShopping key={selected.prefix || "all"} cards={matchingCards} />}
       {!matchingCards.length && <p role="status" className="my-4 text-sm">{filteredPool.length === 0 ? "No cards match these filters." : filter === "incomplete" ? "Every matching playset is complete!" : filter === "playsets" ? "No completed playsets match these filters yet." : filter === "missing" ? "You own every matching card!" : "No owned cards match these filters yet."}</p>}
       <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{matchingCards.slice(0, limit).map((card) => {
         const quantity = selected.quantities.get(card.uuid) ?? 0;
@@ -89,6 +90,7 @@ export default function CollectionSets({ cards, entries, busy = false, preview =
         const update = (delta: number) => onUpdate?.([{ cardUuid: card.uuid, cardName: card.name, quantity: Math.max(0, (canonical?.ownedQuantity ?? 0) + delta), proxyQuantity: canonical?.proxyQuantity ?? 0 }], "Set progress adjustment");
         return <article key={card.uuid} className={`rounded-xl border bg-ctp-mantle p-2 ${!preview && complete ? "border-ctp-green" : "border-ctp-surface1"}`}><Link to={`/cards/${card.slug}`} className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue"><CardArtTile card={art(card, selected.prefix, cardFilters.printingSets)} name={card.name} /><span className="mt-2 flex min-h-12 items-center text-sm font-medium">{card.name}</span></Link>
           {!preview && <><p className={`text-xs ${quantity ? "text-ctp-green" : "text-ctp-subtext0"}`}>{quantity ? `${quantity} owned` : "Missing"} · {complete ? "✓ Playset complete" : `${quantity}/${target} for a playset`}</p>
+          {renderTracking?.(card.uuid, card.name)}
           {quantity === 0 && <button type="button" disabled={busy} onClick={() => void update(1)} className="mt-2 w-full rounded-lg bg-ctp-blue px-2 text-sm text-ctp-base disabled:opacity-40" aria-label={`Add one ${card.name}`}>+ Add one</button>}
           {completionLine && target > 1 && <button type="button" disabled={busy || !onUpdate} onClick={() => void onUpdate?.([completionLine], `Complete playset: ${card.name}`)} className="mt-2 w-full rounded-lg border border-ctp-blue px-2 text-sm text-ctp-blue disabled:opacity-40" aria-label={`Add ${target - quantity} copies of ${card.name} to complete playset`}>{quantity ? "Complete playset" : "Add playset"} (+{target - quantity})</button>}
           <details className="mt-1"><summary className="flex min-h-12 cursor-pointer list-none items-center text-xs">Adjust copies<DisclosureChevron /></summary><p className="text-xs text-ctp-subtext0">Unspecified printing: {canonical?.ownedQuantity ?? 0}</p><div className="mt-2 flex gap-2"><button type="button" disabled={busy || !canonical?.ownedQuantity} onClick={() => void update(-1)} aria-label={`Remove one unspecified printing of ${card.name}`} className="flex-1 rounded-lg border border-ctp-surface1 disabled:opacity-40">−</button><button type="button" disabled={busy} onClick={() => void update(1)} aria-label={`Add one unspecified printing of ${card.name}`} className="flex-1 rounded-lg border border-ctp-surface1 disabled:opacity-40">+</button></div><button type="button" onClick={() => onPrintings?.(card.uuid)} className="mt-1 text-xs text-ctp-blue">Manage exact printings</button></details></>}

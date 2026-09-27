@@ -1,3 +1,4 @@
+import { listCollectionTracking, saveCollectionTracking } from "./collectionTracking";
 import { authenticatedUser, bffAllowed, consumeDiscordOAuthState, consumeOAuthNonce, createDiscordOAuthState, createLocalUserSession, createOAuthNonce, createUserSession, destroyAllSessions, destroySession, discordAuthorizeUrl, exchangeDiscordCode, listAuthIdentities, normalizeDisplayName, originAllowed, recentlyAuthenticated, removeAuthIdentity, rotateCurrentSession, verifyGoogleCredential, type AuthProvider, type Env } from "./auth";
 import { createDeckVersion, deleteDeck, getDeck, getPublicDeck, listDecks, parseSaveInput, performImport, previewImport, publishDeck, restoreDeckVersion, saveDeck, updateDeckDecklist, updateDeckMetadata } from "./decks";
 import { ApiError, badRequest } from "./errors";
@@ -374,6 +375,12 @@ export default {
         await undoCollectionTransaction(env, user, collectionUndoMatch[1]);
         return response(env, request, { success: true });
       }
+      if (request.method === "GET" && url.pathname === "/v1/me/collection/tracking") return response(env, request, {cards: await listCollectionTracking(env, user)});
+      const trackingMatch = url.pathname.match(/^\/v1\/me\/collection\/tracking\/([^/]+)$/);
+      if (trackingMatch && request.method === "PATCH") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        return response(env, request, {card: await saveCollectionTracking(env, user, decodeURIComponent(trackingMatch[1]), await jsonBody(request))});
+      }
       if (request.method === "GET" && url.pathname === "/v1/me/collection/shared-cards") return response(env, request, { cards: await listSharedCardWatches(env, user) });
       const sharedCardMatch = url.pathname.match(/^\/v1\/me\/collection\/shared-cards\/([^/]+)$/);
       if (sharedCardMatch && request.method === "PATCH") {
@@ -387,7 +394,7 @@ export default {
         const decks = (await Promise.all(deckSummaries.map((deck) => getDeck(env, user, deck.id)))).filter((deck) => deck !== null);
         const collection = await listCollection(env, user);
         const comments = await env.ACCOUNT_DB.prepare("SELECT id, target_kind, target_id, parent_id, body, status, created_at, updated_at FROM deck_comments WHERE author_user_id=? ORDER BY created_at").bind(user.id).all();
-        return response(env, request, { exportedAt: new Date().toISOString(), user, profiles: profiles.results, decks, combos: await listCombos(env, user), collection: collection.entries, matchLog: await listMatchLog(env, user), analysisProfiles: await listAnalysisProfiles(env, user), comments: comments.results, binder: await myBinder(env, user), trades: await listTrades(env, user) });
+        return response(env, request, { exportedAt: new Date().toISOString(), user, profiles: profiles.results, decks, combos: await listCombos(env, user), collection: collection.entries, collectionTracking: await listCollectionTracking(env, user), matchLog: await listMatchLog(env, user), analysisProfiles: await listAnalysisProfiles(env, user), comments: comments.results, binder: await myBinder(env, user), trades: await listTrades(env, user) });
       }
       if (request.method === "PATCH" && url.pathname === "/v1/me") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
