@@ -3270,3 +3270,17 @@ reduce but do not eliminate dependence. Taxonomy changes, temporal card availabi
 and unobserved construction preferences remain possible explanations. Catalog text is attached for
 human review, not parsed into a claim of verified synergy. Roles remain unresolved. Mandatory named
 packages stay covered by the existing discovery method rather than this variation-based miner.
+
+## Collection set progress
+
+Set membership comes from catalog edition set prefixes. Each distinct card UUID counts once
+per set, regardless of alternate editions. Owned quantity sums physical `ownedQuantity`
+across unspecified and exact-printing entries for the card; proxies do not count. Any
+printing counts toward every set containing that card. This measures card coverage, not
+completion of a particular printing series. Unknown inventory cards do not affect totals.
+
+Completion is `floor(100 × owned distinct cards / catalog distinct cards)`. Current
+ownership milestones are First card, Quarter complete (25%), Halfway (50%), Three
+quarters (75%), and Set complete (100%); empty sets show Ready to begin. These are
+current-state labels, not permanently earned achievements: removing cards recalculates
+progress, and catalog changes can change the denominator.

@@ -1,3 +1,4 @@
+import CollectionSets from "./CollectionSets";
 import { useEffect, useMemo, useState } from "react";
 import { collectionTotalsByCard, type AccountUser, type Card, type CollectionEntry, type CollectionInventoryMode, type CollectionTransaction, type CollectionUpdateLine, type CollectionUpdateMode, type SavedDeck, type SharedCardWatch } from "@gatcg/shared";
 import { accountApi } from "../../lib/accountApi";
@@ -59,8 +60,10 @@ function parseCsv(text: string, cards: Card[]): { lines: CollectionUpdateLine[];
 export default function CollectionIndex() {
   useDocumentTitle("My Collection", "Track cards you own and see which decks you can build.");
   const cards = useCardCatalog();
-  const [view, setView] = useState<"inventory" | "add" | "import" | "coverage" | "history">("inventory");
+  const [view, setView] = useState<"sets" | "inventory" | "add" | "import" | "coverage" | "history">("sets");
   const [user, setUser] = useState<AccountUser | null | undefined>();
+  const [collectionReady, setCollectionReady] = useState(false);
+  const [collectionError, setCollectionError] = useState<string | null>(null);
   const [entries, setEntries] = useState<CollectionEntry[]>([]);
   const [transactions, setTransactions] = useState<CollectionTransaction[]>([]);
   const [decks, setDecks] = useState<SavedDeck[]>([]);
@@ -77,12 +80,12 @@ export default function CollectionIndex() {
 
   async function refresh() {
     const [collectionResult, deckResult, watchResult] = await Promise.allSettled([accountApi.collection(), accountApi.decks(), accountApi.sharedCardWatches()]);
-    if (collectionResult.status === "fulfilled") { setEntries(collectionResult.value.entries); setTransactions(collectionResult.value.transactions); }
+    if (collectionResult.status === "fulfilled") { setEntries(collectionResult.value.entries); setTransactions(collectionResult.value.transactions); setCollectionReady(true); setCollectionError(null); }
     if (deckResult.status === "fulfilled") setDecks(deckResult.value.decks);
     if (watchResult.status === "fulfilled") setSharedWatches(watchResult.value.cards);
-    if (collectionResult.status === "rejected" && deckResult.status === "rejected" && watchResult.status === "rejected") throw collectionResult.reason;
+    if (collectionResult.status === "rejected") { setCollectionError("Could not load your collection. Your progress is unavailable until it loads."); throw collectionResult.reason; }
   }
-  useEffect(() => { void accountApi.session().then((result) => { setUser(result.user); if (result.user) void refresh(); }).catch(() => setUser(null)); }, []);
+  useEffect(() => { void accountApi.session().then((result) => { setUser(result.user); if (result.user) void refresh().catch(() => undefined); }).catch(() => setUser(null)); }, []);
   const entryByUuid = useMemo(() => new Map(entries.filter((entry) => !entry.editionUuid).map((entry) => [entry.cardUuid, entry])), [entries]);
   const totalsByName = useMemo(() => collectionTotalsByCard(entries), [entries]);
   const watchedUuids = useMemo(() => new Set(sharedWatches.map((watch) => watch.cardUuid)), [sharedWatches]);
@@ -134,11 +137,14 @@ export default function CollectionIndex() {
   }
 
   if (user === undefined) return <PageLayout data-component="CollectionIndex" width="wide"><InlineState className="mt-10">Loading collection…</InlineState></PageLayout>;
-  if (!user) return <PageLayout data-component="CollectionIndex" width="standard"><h1 className="text-2xl font-bold text-ctp-blue">My Collection</h1><p className="mt-2 text-ctp-subtext1">Sign in to track your cards and build decks from what you own.</p><div className="mt-6 flex flex-wrap items-center gap-3"><GoogleSignInButton onCredential={(credential, nonce) => void accountApi.googleSignIn(credential, nonce).then(async (result) => { setUser(result.user); await refresh(); })} /><DiscordSignInButton /><PasswordSignInPanel onSignedIn={(signedInUser) => { setUser(signedInUser); void refresh(); }} /></div></PageLayout>;
+  if (!user) return <PageLayout data-component="CollectionIndex" width="standard"><h1 className="text-2xl font-bold text-ctp-blue">My Collection</h1><p className="mt-2 text-ctp-subtext1">Sign in to track your cards and build decks from what you own.</p><div className="mt-6 flex flex-wrap items-center gap-3"><GoogleSignInButton onCredential={(credential, nonce) => void accountApi.googleSignIn(credential, nonce).then(async (result) => { setUser(result.user); await refresh(); })} /><DiscordSignInButton /><PasswordSignInPanel onSignedIn={(signedInUser) => { setUser(signedInUser); void refresh().catch(() => undefined); }} /></div><CollectionSets cards={cards} entries={[]} preview /></PageLayout>;
 
   return <PageLayout data-component="CollectionIndex" width="wide"><div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-3xl font-bold text-ctp-blue">My Collection</h1><p className="mt-2 text-sm text-ctp-subtext1">{totalsByName.size} unique card{totalsByName.size === 1 ? "" : "s"} · {entries.reduce((sum, entry) => sum + entry.ownedQuantity, 0)} physical copies</p></div><button type="button" disabled={!entries.length} onClick={() => downloadCsv(entries)} className="min-h-11 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm disabled:opacity-50">Export CSV</button></div>
     {notice && <Panel tone="info" padding="sm" className="mt-4 text-sm text-ctp-subtext1">{notice}</Panel>}
-    <div className="mt-5"><Tabs tabs={[{ key: "inventory", label: "Inventory" }, { key: "add", label: "Add cards" }, { key: "import", label: "Import" }, { key: "coverage", label: "Deck coverage" }, { key: "history", label: "Recent changes" }]} active={view} onChange={setView} label="Collection view" baseId="collection" /></div>
+    <div className="mt-5"><Tabs tabs={[{ key: "sets", label: "Sets" }, { key: "inventory", label: "Inventory" }, { key: "add", label: "Add cards" }, { key: "import", label: "Import" }, { key: "coverage", label: "Deck coverage" }, { key: "history", label: "Recent changes" }]} active={view} onChange={setView} label="Collection view" baseId="collection" /></div>
+    <TabPanel baseId="collection" tab="sets" active={view}>
+      {collectionError ? <div role="alert" className="mt-4 text-sm text-ctp-yellow"><p>{collectionError}</p><button type="button" onClick={() => void refresh().catch(() => undefined)} className="min-h-12 text-ctp-blue">Retry</button></div> : !collectionReady ? <p role="status" className="mt-4">Loading collection progress…</p> : <CollectionSets cards={cards} entries={entries} busy={busy} onUpdate={update} onPrintings={(uuid) => { setPrintingCardUuid(uuid); setPrintingEditionUuid(""); setInventoryMode("edition"); setView("add"); }} />}
+    </TabPanel>
     <TabPanel baseId="collection" tab="inventory" active={view}>
 <input aria-label="Search collection" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search your collection" className="mt-4 min-h-11 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-base sm:text-sm" />    <Section className="mt-8" title="Cards">{filteredEntries.length === 0 ? <InlineState className="mt-3 text-sm">No matching cards in your collection.</InlineState> : <div className="mt-3 divide-y divide-ctp-surface0 rounded-xl border border-ctp-surface1 bg-ctp-mantle">{filteredEntries.map((entry) => { const watched = watchedUuids.has(entry.cardUuid); const usage = usageFor(entry.cardName); return <div key={entry.cardUuid} className="grid gap-3 px-4 py-3 text-sm sm:grid-cols-[minmax(0,1fr)_auto_5rem_5rem] sm:items-center"><div className="min-w-0"><span className="block truncate font-medium">{entry.cardName}</span>{usage.length > 0 && <details className="mt-1 text-xs"><summary className="cursor-pointer list-none text-ctp-blue">Used in {usage.length} saved deck{usage.length === 1 ? "" : "s"}</summary><p className="mt-1 text-ctp-subtext0">{usage.map((deck) => `${deck.quantity}× ${deck.title}`).join(" · ")}</p></details>}</div><button type="button" disabled={busy} aria-label={`${watched ? "Stop" : "Start"} tracking sharing for ${entry.cardName}`} title={watched ? "Stop tracking sharing for this card" : "Track sharing for this card across your decks"} onClick={() => void toggleSharedWatch(entry.cardUuid, entry.cardName, !watched)} className={`min-h-11 min-w-11 rounded-full ${watched ? "text-ctp-mauve" : "text-ctp-subtext0 hover:text-ctp-subtext1"}`}>{watched ? "★" : "☆"}</button><label className="text-xs text-ctp-subtext1">Owned<input type="number" min={0} max={9999} value={entry.ownedQuantity} onChange={(event) => setEntries((current) => current.map((item) => item.cardUuid === entry.cardUuid ? { ...item, ownedQuantity: Math.max(0, Number(event.target.value)) } : item))} onBlur={() => void update([{ cardUuid: entry.cardUuid, cardName: entry.cardName, quantity: entry.ownedQuantity, proxyQuantity: entry.proxyQuantity }], "Manual adjustment")} className="mt-1 min-h-11 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2 py-1" /></label><label className="text-xs text-ctp-subtext1">Proxies<input type="number" min={0} max={9999} value={entry.proxyQuantity} onChange={(event) => setEntries((current) => current.map((item) => item.cardUuid === entry.cardUuid ? { ...item, proxyQuantity: Math.max(0, Number(event.target.value)) } : item))} onBlur={() => void update([{ cardUuid: entry.cardUuid, cardName: entry.cardName, quantity: entry.ownedQuantity, proxyQuantity: entry.proxyQuantity }], "Manual adjustment")} className="mt-1 min-h-11 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2 py-1" /></label></div>; })}</div>}</Section>
     </TabPanel>
