@@ -1,10 +1,12 @@
+import type { ReactNode } from "react";
 import { setFamily, type Card } from "@gatcg/shared";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import MultiSelectFilter from "../../components/filters/MultiSelectFilter";
 import SearchSelectFilter from "../../components/filters/SearchSelectFilter";
 import { emptyFilterState, type CardFilterState } from "../cards/filters";
 
-export default function CollectionCardFilters({ cards, filters, onChange }: {
+export default function CollectionCardFilters({ cards, filters, onChange, children }: {
+  children?: ReactNode;
   cards: Card[]; filters: CardFilterState; onChange: (filters: CardFilterState) => void;
 }) {
   const count = filters.classes.size + filters.types.size + filters.subtypes.size + filters.elements.size + filters.sets.size + (filters.printingSets?.size ?? 0);
@@ -19,7 +21,7 @@ export default function CollectionCardFilters({ cards, filters, onChange }: {
   return <div className="mt-3 [&_input]:min-h-12 [&_input]:text-base">
     <input aria-label="Search collection cards" placeholder="Search names or rules text…" value={filters.name} onChange={event => onChange({ ...filters, name: event.target.value })} className="w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3" />
     <details className="mt-2"><summary className="flex min-h-12 cursor-pointer list-none items-center gap-2">Card filters{count > 0 ? ` (${count})` : ""}<DisclosureChevron /></summary>
-      <div className="space-y-4 rounded-xl border border-ctp-surface1 p-3">
+      <div className="space-y-4 rounded-xl border border-ctp-surface1 p-3">{children}
         <SearchSelectFilter label="Subtypes" options={options("subtypes")} selected={filters.subtypes} onToggle={value => toggle("subtypes", value)} />
         <p className="text-xs text-ctp-subtext0">Choose Harmony, Melody, or another subtype. Multiple choices match either subtype.</p>
         {(["elements", "classes", "types"] as const).map(key => <MultiSelectFilter key={key} label={key.charAt(0).toUpperCase()+key.slice(1)} options={options(key)} selected={filters[key]} iconKind={key} onToggle={value => toggle(key,value)} />)}
