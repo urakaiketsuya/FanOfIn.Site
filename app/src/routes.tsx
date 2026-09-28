@@ -91,6 +91,7 @@ const PlayerProfile = lazy(() => import("./features/players/PlayerProfile"));
 const TeamsIndex = lazy(() => import("./features/teams/TeamsIndex"));
 const AchievementsIndex = lazy(() => import("./features/achievements/AchievementsIndex"));
 const AchievementDetail = lazy(() => import("./features/achievements/AchievementDetail"));
+const MyArchetypes = lazy(() => import("./features/archetypes/MyArchetypes"));
 const ArchetypesIndex = lazy(() => import("./features/archetypes/ArchetypesIndex"));
 const ArchetypeDetail = lazy(() => import("./features/archetypes/ArchetypeDetail"));
 const ArchetypeCompare = lazy(() => import("./features/archetypes/ArchetypeCompare"));
@@ -195,6 +196,7 @@ export default function AppRoutes() {
         <Route path="/achievements/:id" element={<AchievementDetail />} />
         <Route path="/archetypes" element={<ArchetypesIndex />} />
         <Route path="/archetypes/compare" element={<ArchetypeCompare />} />
+        <Route path="/archetypes/mine" element={<MyArchetypes />} />
         <Route path="/archetypes/:id" element={<ArchetypeDetail />} />
         <Route path="/battle-chart" element={<BattleChart />} />
         <Route path="/top-decks" element={<TopDecksRedirect />} />

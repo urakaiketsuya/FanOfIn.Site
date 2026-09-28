@@ -3342,3 +3342,7 @@ descriptive evidence, not proof of strategic or causal equivalence. Engine names
 strongest enriched recurring cards. Build labels use prevalence differences against their nearest
 same-champion sibling. Champion differentiators require 50% prevalence and a 25-point difference
 from the other champions. Sideboards never enter this analysis.
+
+### Archetype naming cards and local curation
+
+Concrete builds publish `namingCards` in generated label order, including any third-card disambiguator. Previews use this explicit list; older artifacts fall back to the first three defining cards. This is a presentation field, not a required package rule or a change to deck membership. Local archetype curation stores names, ordered cards, descriptions, package associations, source build IDs and source fingerprints in a versioned browser-local overlay. Curated status is a personal review decision, separate from sample confidence. Changed names, naming cards or membership flag a saved entry for review; missing builds remain referenced. Import adds missing local entries without replacing existing choices.

@@ -37,7 +37,7 @@ for (const engine of engines) {
   if (bannedCards.length) previous.historicalEngineArchetypes.push({ ...engine, bannedCards });
   else previous.engineArchetypes.push(engine);
 }
-const records = (data: ArchetypeTaxonomyData) => data.clusters.map(({ name: _name, ...record }) => record);
+const records = (data: ArchetypeTaxonomyData) => data.clusters.map(({ name: _name, namingCards: _namingCards, ...record }) => record);
 assert.deepEqual(records(previous), records(snapshot));
 assert.deepEqual(previous.aliases, snapshot.aliases);
 previous.generatedAt = new Date().toISOString();

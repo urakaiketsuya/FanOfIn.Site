@@ -122,7 +122,7 @@ export default function ArchetypesIndex() {
             name: c.name,
             championName: c.championName,
             otherChampions: (c.championBreakdown ?? []).filter((b) => b.championName !== c.championName),
-            definingCards: c.definingCards.map((card) => card.name),
+            definingCards: c.namingCards ?? c.definingCards.slice(0, 3).map((card) => card.name),
             playerCount: season.playerCount,
             deckCount: season.deckCount,
             eventCount: season.eventCount,
@@ -138,7 +138,7 @@ export default function ArchetypesIndex() {
         name: c.name,
         championName: c.championName,
         otherChampions: (c.championBreakdown ?? []).filter((b) => b.championName !== c.championName),
-        definingCards: c.definingCards.map((card) => card.name),
+        definingCards: c.namingCards ?? c.definingCards.slice(0, 3).map((card) => card.name),
         playerCount: c.playerCount,
         deckCount: c.deckCount,
         eventCount: c.eventCount,
@@ -196,6 +196,7 @@ export default function ArchetypesIndex() {
           </Link>
         }
       />
+      <Link to="/archetypes/mine" className="inline-flex min-h-12 items-center text-ctp-blue">My archetypes · curate locally</Link>
       <DecklistCoverageNotice />
       <StaleDataNotice generatedAt={[data?.generatedAt]} />
       {data?.coverage && <details className="mt-2 text-xs text-ctp-subtext0"><summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">Data coverage</summary><p className="mt-1">{(data.coverage.classificationRate * 100).toFixed(1)}% of public deck sightings are classified ({data.coverage.classifiedDeckCount.toLocaleString()} of {data.coverage.totalDeckCount.toLocaleString()}).</p></details>}

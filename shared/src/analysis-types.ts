@@ -585,6 +585,8 @@ export interface ArchetypeCluster {
   championName: string;
   /** Every Champion this cluster's decks were actually played under, sorted by playerCount descending. Length 1 for a single-Champion build; length >1 means the same card shell got netdecked under more than one Champion. */
   championBreakdown: { championName: string; deckCount: number; playerCount: number }[];
+  /** Ordered cards explicitly selected for the generated build label. */
+  namingCards?: string[];
   /** Uses Element + Champion when one Champion has at least 60% of sightings; otherwise uses an Element + defining-card shell name. */
   name: string;
   deckCount: number;

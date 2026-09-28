@@ -1,3 +1,4 @@
+import ArchetypePreview from "../archetypes/ArchetypePreview";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { Card, CardImpactEntry, CardInclusionEntry, PlayerTopCard, TopCardsBySection } from "@gatcg/shared";
@@ -32,7 +33,7 @@ type SpiritFilter = { kind: "all" } | { kind: "element"; element: string } | { k
 const JUMP_SECTIONS = [
   { id: "cards", label: "Most Used Cards" },
   { id: "new", label: "New Releases" },
-  { id: "archetypes", label: "Packages" },
+  { id: "archetypes", label: "Archetypes" },
 ];
 
 /**
@@ -456,32 +457,28 @@ export default function ChampionSynergy() {
             <Section
               id="archetypes"
               heading="compact"
-              title="Packages"
+              title="Archetypes"
               actions={<Link to="/archetypes" className="inline-flex min-h-12 items-center rounded text-xs text-ctp-blue hover:underline focus-visible:outline-2">All archetypes &rarr;</Link>}
             >
               {!taxonomyData ? (
-                <InlineState className="mt-2 text-sm">{taxonomyStatus.phase === "error" ? <><p>{taxonomyStatus.error}</p><button type="button" className="min-h-12 rounded px-3 text-ctp-blue focus-visible:outline-2" onClick={taxonomyStatus.retry}>Retry package analysis</button></> : "Loading package analysis…"}</InlineState>
+                <InlineState className="mt-2 text-sm">{taxonomyStatus.phase === "error" ? <><p>{taxonomyStatus.error}</p><button type="button" className="min-h-12 rounded px-3 text-ctp-blue focus-visible:outline-2" onClick={taxonomyStatus.retry}>Retry archetype analysis</button></> : "Loading archetype analysis…"}</InlineState>
               ) : engines.length === 0 ? (
-                <InlineState className="mt-2 text-sm">No named packages have cleared the sample-size threshold yet.</InlineState>
+                <InlineState className="mt-2 text-sm">No named builds have cleared the sample-size threshold yet.</InlineState>
               ) : (
                 <div className="mt-3 grid items-start gap-3 sm:grid-cols-2">
                   {(showAllPackages ? engines : engines.slice(0, 6)).map((engine) => {
-                    const definingCards = engine.definingCards.slice(0, 3);
+                    const namingCards = engine.namingCards ?? engine.definingCards.slice(0, 3).map((card) => card.name);
                     return (
                       <article key={engine.id} className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
-                        <div className="grid grid-cols-3 gap-2">
-                          {definingCards.map((entry) => {
-                            const card = catalogByName.get(entry.name);
-                            const content = <><CardArtTile card={card} name={entry.name} /><span className="mt-1 block text-xs">{entry.name}</span></>;
-                            return card ? <Link key={entry.name} to={`/cards/${card.slug}`} className="min-w-0 rounded focus-visible:outline-2">{content}</Link> : <div key={entry.name}>{content}</div>;
-                          })}
-                        </div>
+                        <ArchetypePreview names={namingCards} cardImages={catalogByName} />
+                        <Link className="inline-flex min-h-12 items-center text-sm text-ctp-blue" to={`/archetypes/mine?build=${engine.id}`}>Curate</Link>
                         <div className="mt-3 flex items-center gap-2">
                           <ArchetypeElementIcon name={engine.name} />
                           <Link to={`/archetypes/${engine.seedBuildId}`} className="inline-flex min-h-12 items-center rounded font-medium text-ctp-text hover:text-ctp-blue focus-visible:outline-2">{engine.name}</Link>
                         </div>
                         <p className="mt-1 text-xs text-ctp-subtext1">{engine.playerCount} players · {(engine.avgWinRate * 100).toFixed(0)}% win rate</p>
                         <p className="mt-1 text-xs text-ctp-subtext0">Concrete build · {engine.deckCount} decks · {engine.eventCount} events</p>
+                        <details className="group mt-2 text-xs text-ctp-subtext0"><summary className="flex min-h-12 cursor-pointer items-center gap-2 rounded focus-visible:outline-2"><DisclosureChevron className="group-open:rotate-180" />Build details</summary><p className="my-2">Common cards in this build; naming cards distinguish it from nearby builds.</p><ArchetypePreview names={engine.definingCards.slice(0, 6).map(card => card.name)} cardImages={catalogByName} /></details>
                         {engine.relationships.map((relationship) => (
                           <details key={relationship.id} className="group mt-2 text-xs text-ctp-subtext0">
                             <summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 rounded focus-visible:outline-2">
@@ -507,7 +504,7 @@ export default function ChampionSynergy() {
                   })}
                 </div>
               )}
-              {engines.length > 6 && <button type="button" onClick={() => setShowAllPackages((value) => !value)} aria-expanded={showAllPackages} className="mt-3 min-h-12 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{showAllPackages ? "Show fewer packages" : `Show all ${engines.length} packages`}</button>}
+              {engines.length > 6 && <button type="button" onClick={() => setShowAllPackages((value) => !value)} aria-expanded={showAllPackages} className="mt-3 min-h-12 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{showAllPackages ? "Show fewer archetypes" : `Show all ${engines.length} archetypes`}</button>}
             </Section>
           </div>
         </>

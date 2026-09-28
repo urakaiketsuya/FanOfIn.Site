@@ -1,26 +1,11 @@
 import { Link } from "react-router-dom";
 import type { ArchetypeCluster, Card, MaterialArchetype } from "@gatcg/shared";
-import CardImage from "../../components/CardImage";
+import ArchetypePreview from "./ArchetypePreview";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 import { championNameToSlug } from "../../lib/championSlug";
 import { formatUsd } from "../../lib/format";
 import type { DisplayRow } from "./ArchetypesIndex";
 
-function DefiningCardArt({ names, cardImages }: { names: string[]; cardImages: Map<string, Card> }) {
-  return (
-    <div className="grid grid-cols-3 gap-2" aria-label="Defining cards">
-      {Array.from({ length: 3 }, (_, index) => {
-        const name = names[index];
-        const card = name ? cardImages.get(name) : undefined;
-        return card?.editions[0]?.image ? (
-          <Link key={name} to={`/cards/${card.slug}`} className="min-w-0" aria-label={`View ${name}`}>
-            <CardImage image={card.editions[0].image} alt={name} className="aspect-[5/7] w-full rounded-md object-cover object-top" />
-          </Link>
-        ) : <div key={name ?? index} className="aspect-[5/7] rounded-md bg-ctp-surface0" />;
-      })}
-    </div>
-  );
-}
 
 function CompareButton({ selected, onClick, name }: { selected: boolean; onClick: () => void; name: string }) {
   return <button type="button" onClick={onClick} aria-label={`${selected ? "Remove" : "Add"} ${name} ${selected ? "from" : "to"} comparison`} aria-pressed={selected} className={`min-h-10 rounded-lg border px-3 py-2 text-xs font-medium ${selected ? "border-ctp-green text-ctp-green" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-blue"}`}>{selected ? "Selected" : "Compare"}</button>;
@@ -36,7 +21,7 @@ export function MaterialRouteCard({ route, childBuilds, cardImages, selected, on
   const primaryBuildId = route.buildIds[0];
   return (
     <article className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 shadow-sm shadow-black/20">
-      <DefiningCardArt names={route.definingCards.map((card) => card.name)} cardImages={cardImages} />
+      <ArchetypePreview names={route.definingCards.slice(0, 3).map((card) => card.name)} cardImages={cardImages} />
       <div className="mt-3 flex items-center gap-2 font-medium text-ctp-text">
         <ArchetypeElementIcon name={route.name} />
         {primaryBuildId ? <Link to={`/archetypes/${primaryBuildId}`} className="hover:text-ctp-blue">{route.name}</Link> : route.name}
@@ -60,12 +45,13 @@ export function MaterialRouteCard({ route, childBuilds, cardImages, selected, on
 export function BuildResultCard({ build, cardImages, selected, onToggleCompare }: { build: DisplayRow; cardImages: Map<string, Card>; selected: boolean; onToggleCompare: () => void }) {
   return (
     <article className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 shadow-sm shadow-black/20">
-      <DefiningCardArt names={build.definingCards} cardImages={cardImages} />
+      <ArchetypePreview names={build.definingCards} cardImages={cardImages} />
       <div className="mt-3 flex items-center gap-2 font-medium text-ctp-text">
         <ArchetypeElementIcon name={build.name} />
         <Link to={`/archetypes/${build.id}`} className="hover:text-ctp-blue">{build.name}</Link>
         {build.confidence === "emerging" && <span className="rounded-full bg-ctp-yellow/15 px-2 py-0.5 text-[10px] text-ctp-yellow">Emerging</span>}
       </div>
+      <Link className="inline-flex min-h-12 items-center text-sm text-ctp-blue" to={`/archetypes/mine?build=${build.id}`}>Curate</Link>
       <Link to={`/champions/${championNameToSlug(build.championName)}`} className="mt-1 block text-xs text-ctp-subtext1 hover:text-ctp-blue">{build.championName}</Link>
       <p className="mt-2 text-sm text-ctp-text">{build.playerCount.toLocaleString()} players <span className="text-ctp-subtext1">· {(build.avgWinRate * 100).toFixed(0)}% win rate</span></p>
       <div className="mt-3 flex gap-2 border-t border-ctp-surface1 pt-3">

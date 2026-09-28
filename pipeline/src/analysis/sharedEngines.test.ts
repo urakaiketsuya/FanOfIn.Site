@@ -30,7 +30,7 @@ test("labels and evidence are deterministic; concrete ids and membership stay un
   const a = analyzeEngines(builds, decks);
   const b = analyzeEngines(structuredClone(original).reverse(), [...decks].reverse());
   assert.deepEqual(a, b);
-  assert.deepEqual(builds.map(({ name: _name, ...rest }) => rest), original.map(({ name: _name, ...rest }) => rest));
+  assert.deepEqual(builds.map(({ name: _name, namingCards: _namingCards, ...rest }) => rest), original.map(({ name: _name, namingCards: _namingCards, ...rest }) => rest));
 });
 test("single-event recurrence is candidate evidence", () => {
   const { builds, decks } = fixture(["Engine A", "Engine B"]);
@@ -50,4 +50,10 @@ test("incompatible formats and access do not inflate enrichment", () => {
     for (const deck of decks) if (deck.championName === "Other") deck[field] = "incompatible";
     assert.ok(analyzeEngines(builds, decks).every((engine) => engine.status !== "shared"));
   }
+});
+
+test("label cards are explicit and follow label order", () => {
+  const { builds, decks } = fixture(["Package A", "Package B"]);
+  analyzeEngines(builds, decks);
+  for (const build of builds) { assert.ok(build.namingCards?.length); assert.ok(build.name.includes(build.namingCards!.join(" / "))); }
 });

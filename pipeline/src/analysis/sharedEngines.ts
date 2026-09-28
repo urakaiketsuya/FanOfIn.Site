@@ -44,6 +44,7 @@ export function analyzeEngines(builds: ArchetypeCluster[], decks: EngineDeck[]):
     const other = new Map((sibling ? cards.get(sibling.id)! : []).map((c) => [c.name, c.prevalence]));
     const distinguishing = own.filter((c) => c.prevalence >= .5).sort((a, b) => (b.prevalence - (other.get(b.name) ?? 0)) - (a.prevalence - (other.get(a.name) ?? 0)) || rank(a, b));
     labelCards.set(build.id, distinguishing);
+    build.namingCards = distinguishing.slice(0, 2).map((c) => c.name);
     build.name = `${build.championName} — ${distinguishing.slice(0, 2).map((c) => c.name).join(" / ") || "Recurring build"}`;
   }
   const duplicateNames = new Set(builds.filter((build) => builds.filter((other) => other.name === build.name).length > 1).map((build) => build.name));
@@ -51,6 +52,7 @@ export function analyzeEngines(builds: ArchetypeCluster[], decks: EngineDeck[]):
     const duplicates = builds.filter((build) => build.name === name).sort((a, b) => a.id.localeCompare(b.id));
     for (const build of duplicates) {
       const extra = labelCards.get(build.id)?.[2]?.name;
+      if (extra) build.namingCards!.push(extra);
       build.name += extra ? ` / ${extra}` : "";
     }
     for (const build of duplicates) {
