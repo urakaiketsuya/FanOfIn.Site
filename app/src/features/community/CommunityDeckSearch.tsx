@@ -1,5 +1,9 @@
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import type { CommunityDeckSearchEntry, CommunityDeckSource, DeckFormat, DeckLine } from "@gatcg/shared";
+import DeckCardPreview from "../../components/DeckCardPreview";
+import DisclosureChevron from "../../components/DisclosureChevron";
+import { useCardCatalog } from "../cards/useCardCatalog";
+import type { Card } from "@gatcg/shared";
 import Button from "../../components/ui/Button";
 import { InlineState } from "../../components/ui/ContentState";
 import { championKeyToDisplayName } from "../../lib/championSlug";
@@ -22,6 +26,8 @@ function displayChampion(value: string | null): string {
 
 export default function CommunityDeckSearch({ format }: { format: DeckFormat }) {
   const index = useCommunityDeckSearchIndex(format);
+  const catalog = useCardCatalog();
+  const cardsByName = useMemo(() => new Map(catalog.map((card) => [card.name, card])), [catalog]);
   const [query, setQuery] = useState("");
   const [champion, setChampion] = useState("");
   const [source, setSource] = useState<CommunityDeckSource | "">("");
@@ -40,19 +46,19 @@ export default function CommunityDeckSearch({ format }: { format: DeckFormat }) 
 
   return <div>
     <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-      <input value={query} onChange={(event) => { setQuery(event.target.value); resetPage(); }} placeholder="Search title, player, Champion, or card…" aria-label="Search community decklists" className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 sm:col-span-2" />
-      <select value={champion} onChange={(event) => { setChampion(event.target.value); resetPage(); }} aria-label="Community deck Champion" className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"><option value="">All Champions</option>{champions.map((name) => <option key={name} value={name}>{displayChampion(name)}</option>)}</select>
-      <select value={source} onChange={(event) => { setSource(event.target.value as CommunityDeckSource | ""); resetPage(); }} aria-label="Community deck source" className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"><option value="">All sources</option>{Object.entries(SOURCE_LABELS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select>
+      <input value={query} onChange={(event) => { setQuery(event.target.value); resetPage(); }} placeholder="Search title, player, Champion, or card…" aria-label="Search community decklists" className="min-h-12 min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 sm:col-span-2" />
+      <select value={champion} onChange={(event) => { setChampion(event.target.value); resetPage(); }} aria-label="Community deck Champion" className="min-h-12 min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"><option value="">All Champions</option>{champions.map((name) => <option key={name} value={name}>{displayChampion(name)}</option>)}</select>
+      <select value={source} onChange={(event) => { setSource(event.target.value as CommunityDeckSource | ""); resetPage(); }} aria-label="Community deck source" className="min-h-12 min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"><option value="">All sources</option>{Object.entries(SOURCE_LABELS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select>
     </div>
     {!index && <InlineState className="mt-4">Loading locally sourced decklists…</InlineState>}
     {index && <p className="mt-3 text-xs text-ctp-subtext0">{filtered.length.toLocaleString()} matching {filtered.length === 1 ? "deck" : "decks"} from the local archive</p>}
     {index && filtered.length === 0 && <InlineState className="mt-4">No locally sourced decklists match these filters.</InlineState>}
-    <div className="mt-3 grid gap-3 sm:grid-cols-2">{filtered.slice(0, visibleCount).map((deck) => <CommunityDeckRow key={`${deck.source}:${deck.id}`} deck={deck} />)}</div>
+    <div className="mt-3 grid items-start gap-3 sm:grid-cols-2">{filtered.slice(0, visibleCount).map((deck) => <CommunityDeckRow key={`${deck.source}:${deck.id}`} deck={deck} cardNames={index?.cardNames ?? []} cardsByName={cardsByName} />)}</div>
     {visibleCount < filtered.length && <Button variant="secondary" onClick={() => setVisibleCount((count) => count + PAGE_SIZE)} className="mt-4">Load more</Button>}
   </div>;
 }
 
-function CommunityDeckRow({ deck }: { deck: CommunityDeckSearchEntry }) {
+function CommunityDeckRow({ deck, cardNames, cardsByName }: { deck: CommunityDeckSearchEntry; cardNames: string[]; cardsByName: Map<string, Card> }) {
   const [expanded, setExpanded] = useState(false);
   const [detail, setDetail] = useState<{ materialDeck: DeckLine[]; mainDeck: DeckLine[]; sideDeck: DeckLine[] } | null>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "loaded" | "error">("idle");
@@ -67,11 +73,12 @@ function CommunityDeckRow({ deck }: { deck: CommunityDeckSearchEntry }) {
   return <article className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 text-sm">
     <div className="flex items-start justify-between gap-3"><div className="min-w-0"><a href={deck.url} target="_blank" rel="noreferrer" className="block truncate font-medium text-ctp-text hover:text-ctp-blue">{deck.title || "Untitled deck"} ↗</a><div className="mt-1 text-xs text-ctp-subtext1">{displayChampion(deck.champion)}{deck.author ? ` · ${deck.author}` : ""}</div></div><span className="shrink-0 rounded-full bg-ctp-surface0 px-2 py-1 text-[11px] text-ctp-subtext0">{SOURCE_LABELS[deck.source]}</span></div>
     <div className="mt-2 text-xs text-ctp-subtext0">{deck.mainCount ?? "?"} main · {deck.materialCount ?? "?"} material</div>
-    <Button variant="ghost" size="sm" onClick={() => setExpanded((value) => !value)} aria-expanded={expanded} className="mt-2 w-full text-ctp-blue">{expanded ? "Hide decklist" : "Preview decklist"}</Button>
-    {expanded && <div className="mt-2 border-t border-ctp-surface1 pt-3">{status === "loaded" && detail ? <div className="grid gap-3 text-xs text-ctp-subtext1 sm:grid-cols-2"><DeckSection title="Material" lines={detail.materialDeck} /><DeckSection title="Main deck" lines={detail.mainDeck} />{detail.sideDeck.length > 0 && <DeckSection title="Sideboard" lines={detail.sideDeck} />}</div> : status === "error" ? <InlineState tone="danger">The local decklist file is unavailable.</InlineState> : <InlineState>Loading decklist…</InlineState>}</div>}
+    <div className="mt-3"><p className="mb-2 text-xs text-ctp-subtext0">Featured cards · open the complete list for quantities</p><DeckCardPreview lines={deck.cardIndexes.slice(0, 4).map((index) => ({ name: cardNames[index] })).filter((line) => Boolean(line.name))} cardsByName={cardsByName} /></div>
+    <Button variant="ghost" size="sm" onClick={() => setExpanded((value) => !value)} aria-expanded={expanded} className="mt-2 min-h-12 w-full text-ctp-blue"><DisclosureChevron className={expanded ? "rotate-180" : ""} />{expanded ? "Hide decklist" : "Preview decklist"}</Button>
+    {expanded && <div className="mt-2 border-t border-ctp-surface1 pt-3">{status === "loaded" && detail ? <div className="grid gap-3 text-xs text-ctp-subtext1 "><DeckSection title="Material" cardsByName={cardsByName} lines={detail.materialDeck} /><DeckSection title="Main deck" cardsByName={cardsByName} lines={detail.mainDeck} />{detail.sideDeck.length > 0 && <DeckSection title="Sideboard" cardsByName={cardsByName} lines={detail.sideDeck} />}</div> : status === "error" ? <InlineState tone="danger">The local decklist file is unavailable.</InlineState> : <InlineState>Loading decklist…</InlineState>}</div>}
   </article>;
 }
 
-function DeckSection({ title, lines }: { title: string; lines: DeckLine[] }) {
-  return <div><p className="mb-1 font-semibold text-ctp-text">{title}</p>{lines.map((line) => <div key={line.name}>{line.quantity}× {line.name}</div>)}</div>;
+function DeckSection({ title, lines, cardsByName }: { title: string; lines: DeckLine[]; cardsByName: Map<string, Card> }) {
+  return <div><p className="mb-1 font-semibold text-ctp-text">{title}</p><DeckCardPreview lines={lines} cardsByName={cardsByName} /></div>;
 }

@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Card, OmnidexDecklist } from "@gatcg/shared";
-import CardHoverPreview from "../../components/CardHoverPreview";
-import ElementIcon from "../../components/ElementIcon";
+import DeckCardPreview from "../../components/DeckCardPreview";
+import DisclosureChevron from "../../components/DisclosureChevron";
 import ElementRail from "../../components/ElementRail";
 import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
@@ -11,7 +11,7 @@ import { buildDeckBuilderPath, deckBuilderParamsFromDecklist } from "../../lib/d
 import { encodeCustomDecks } from "../../lib/compareShareLink";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { buildDecklistText } from "../events/DecklistView";
-import { officialProductDecks, officialProductsSource, PRODUCT_LABELS, type OfficialProductCardLine, type OfficialProductDeck } from "./data";
+import { officialProductDecks, officialProductsSource, PRODUCT_LABELS, type OfficialProductDeck } from "./data";
 import DeckCollectionTools from "../collection/DeckCollectionTools";
 import Section from "../../components/ui/Section";
 
@@ -31,24 +31,6 @@ const SECTION_ORDER = ["material", "main", "sideboard", "mastery", "token", "pan
 function asDecklist(deck: OfficialProductDeck): OmnidexDecklist {
   const lines = (section: "main" | "material" | "sideboard") => deck.cards[section].map((card) => ({ card: card.name, quantity: card.quantity }));
   return { main: lines("main"), material: lines("material"), sideboard: lines("sideboard") };
-}
-
-function ProductCardLine({ line, cardsByName }: { line: OfficialProductCardLine; cardsByName: Map<string, Card> }) {
-  const card = cardsByName.get(line.name);
-  return (
-    <li className="flex min-w-0 items-center gap-1.5 py-0.5 text-sm">
-      <span className="w-6 shrink-0 text-right tabular-nums text-ctp-subtext0">{line.quantity}x</span>
-      {card?.element && <ElementIcon element={card.element} size={14} />}
-      {card ? (
-        <CardHoverPreview image={card.editions[0]?.image} alt={line.name}>
-          <Link to={`/cards/${card.slug}`} className="truncate text-ctp-text hover:text-ctp-blue">{line.name}</Link>
-        </CardHoverPreview>
-      ) : (
-        <span className="truncate text-ctp-text">{line.name}</span>
-      )}
-      {line.set && line.collectorNumber && <span className="ml-auto shrink-0 text-[10px] text-ctp-overlay0">{line.set} {line.collectorNumber}</span>}
-    </li>
-  );
 }
 
 function ProductDeckCard({
@@ -110,13 +92,14 @@ function ProductDeckCard({
           <span className="rounded-full border border-ctp-surface1 px-2 py-1 text-xs font-medium text-ctp-subtext1">{deck.productCode}</span>
         </div>
 
+        <div className="mt-4"><p className="mb-2 text-xs text-ctp-subtext0">Featured material cards · expand below for the complete product</p><DeckCardPreview lines={deck.cards.material.slice(0, 4)} cardsByName={cardsByName} /></div>
         <div className="mt-4 flex flex-wrap gap-2">
           <button
             type="button"
             onClick={onToggleCompare}
             disabled={compareDisabled}
             aria-pressed={compareSelected}
-            className={`rounded-md border px-2.5 py-1.5 text-xs ${
+            className={`inline-flex min-h-12 items-center rounded-md border px-2.5 py-1.5 text-xs ${
               compareSelected
                 ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue"
                 : "border-ctp-surface1 text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text disabled:cursor-not-allowed disabled:opacity-40"
@@ -124,26 +107,26 @@ function ProductDeckCard({
           >
             {compareSelected ? "Selected to compare ✓" : "Select to compare"}
           </button>
-          <button type="button" onClick={copyDecklist} className="rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">
+          <button type="button" onClick={copyDecklist} className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">
             {copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy decklist"}
           </button>
-          {builderPath && <Link to={builderPath} className="rounded-md border border-ctp-green px-2.5 py-1.5 text-xs text-ctp-green hover:bg-ctp-surface0">Tune in Deck Builder →</Link>}
-          {deck.sourceUrl && <a href={deck.sourceUrl} target="_blank" rel="noreferrer" className="rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Official source ↗</a>}
+          {builderPath && <Link to={builderPath} className="inline-flex min-h-12 items-center rounded-md border border-ctp-green px-2.5 py-1.5 text-xs text-ctp-green hover:bg-ctp-surface0">Tune in Deck Builder →</Link>}
+          {deck.sourceUrl && <a href={deck.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Official source ↗</a>}
         </div>
       </div>
 
       <details className="group border-t border-ctp-surface0">
-        <summary className="cursor-pointer list-none px-4 py-3 text-sm font-medium text-ctp-subtext1 hover:bg-ctp-surface0/40 hover:text-ctp-text">
-          <span className="inline-block w-5 text-ctp-overlay0 transition-transform group-open:rotate-90">›</span>
+        <summary className="flex min-h-12 items-center gap-2 cursor-pointer list-none px-4 py-3 text-sm font-medium text-ctp-subtext1 hover:bg-ctp-surface0/40 hover:text-ctp-text">
+          <DisclosureChevron className="transition-transform group-open:rotate-180" />
           View complete list
         </summary>
-        <div className="grid gap-5 border-t border-ctp-surface0 px-4 py-4 sm:grid-cols-2">
+        <div className="grid gap-5 border-t border-ctp-surface0 px-4 py-4">
           {SECTION_ORDER.map((section) => {
             const lines = deck.cards[section];
             if (lines.length === 0) return null;
             const count = lines.reduce((sum, line) => sum + line.quantity, 0);
             return <Section key={section} heading="dense" title={`${SECTION_LABELS[section]} (${count})`}>
-              <ul>{lines.map((line) => <ProductCardLine key={`${line.name}:${line.set}:${line.collectorNumber}`} line={line} cardsByName={cardsByName} />)}</ul>
+              <DeckCardPreview lines={lines} cardsByName={cardsByName} />
             </Section>;
           })}
         </div>
@@ -185,19 +168,19 @@ export default function OfficialProductsIndex() {
     <PageLayout data-component="OfficialProductsIndex" width="wide">
       <PageHeader title="Official Product Decks" description={<>Starter decks, Re:Collection lists, and Pantheon starters published by Grand Archive. Copy a list as printed or open it in the Guided Deck Builder to start tuning. Source data is attributed to <a href={officialProductsSource} target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">GrandArchive on Silvie.org</a>.</>} />
 
-      <div className="mb-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1" role="tablist" aria-label="Official deck format">
-        {(["starter", "recollection", "pantheon"] as const).map((value) => <button key={value} type="button" role="tab" aria-selected={section === value} onClick={() => { setSection(value); setProduct("all"); }} className={`rounded-md px-3 py-1.5 text-sm ${section === value ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>{value === "pantheon" ? "Pantheon" : value === "recollection" ? "Re:Collection" : "Starter"}</button>)}
+      <div className="mb-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1" role="group" aria-label="Official deck format">
+        {(["starter", "recollection", "pantheon"] as const).map((value) => <button key={value} type="button" aria-pressed={section === value} onClick={() => { setSection(value); setProduct("all"); }} className={`min-h-12 rounded-md px-3 py-1.5 text-sm ${section === value ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>{value === "pantheon" ? "Pantheon" : value === "recollection" ? "Re:Collection" : "Starter"}</button>)}
       </div>
 
-      <div className="mb-6 flex flex-wrap gap-3 rounded-xl border border-ctp-surface0 bg-ctp-mantle/50 p-3">
-        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search Champion or product…" aria-label="Search official decks" className="min-w-52 flex-1 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text placeholder:text-ctp-overlay0" />
-        <select value={product} onChange={(event) => setProduct(event.target.value)} aria-label="Product" className="rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text">
+      <div className="mb-6 grid gap-3 sm:grid-cols-2 rounded-xl border border-ctp-surface0 bg-ctp-mantle/50 p-3">
+        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search Champion or product…" aria-label="Search official decks" className="min-h-12 min-w-0 w-full sm:w-auto flex-1 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text placeholder:text-ctp-overlay0" />
+        <select value={product} onChange={(event) => setProduct(event.target.value)} aria-label="Product" className="min-h-12 min-w-0 max-w-full rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm text-ctp-text">
           <option value="all">All products ({officialProductDecks.filter((deck) => section === "pantheon" ? deck.productCode === "RDOPD" : section === "recollection" ? deck.productCode.startsWith("ReC-") : !deck.productCode.startsWith("ReC-") && deck.productCode !== "RDOPD").length})</option>
           {products.map((code) => <option key={code} value={code}>{PRODUCT_LABELS[code] ?? code}</option>)}
         </select>
       </div>
 
-      <div className={`mb-6 rounded-xl border p-3 shadow-sm backdrop-blur transition-colors ${compareIds.length > 0 ? "sticky top-16 z-30 border-ctp-blue/50 bg-ctp-base/95" : "border-ctp-surface0 bg-ctp-mantle/30"}`}>
+      <div className={`mb-6 rounded-xl border p-3 shadow-sm backdrop-blur transition-colors ${compareIds.length > 0 ? "border-ctp-blue/50 bg-ctp-base/95" : "border-ctp-surface0 bg-ctp-mantle/30"}`}>
         <div className="flex flex-wrap items-center gap-3">
           <div className="min-w-48 flex-1">
             <p className="text-sm font-semibold text-ctp-text">Compare {sectionLabel} decks</p>
@@ -209,11 +192,11 @@ export default function OfficialProductsIndex() {
             </p>
           </div>
           {comparedDecks.map((deck) => (
-            <button key={deck.id} type="button" onClick={() => toggleCompare(deck.id)} title={`Remove ${deck.name}`} className="rounded-full border border-ctp-blue/50 bg-ctp-base px-2.5 py-1 text-xs text-ctp-blue hover:border-ctp-red hover:text-ctp-red">
+            <button key={deck.id} type="button" onClick={() => toggleCompare(deck.id)} title={`Remove ${deck.name}`} className="min-h-12 rounded-full border border-ctp-blue/50 bg-ctp-base px-2.5 py-1 text-xs text-ctp-blue hover:border-ctp-red hover:text-ctp-red">
               {deck.name} ×
             </button>
           ))}
-          {comparePath && <Link to={comparePath} className="rounded-md bg-ctp-blue px-3 py-2 text-sm font-semibold text-ctp-base hover:brightness-110">Compare selected →</Link>}
+          {comparePath && <Link to={comparePath} className="inline-flex min-h-12 items-center rounded-md bg-ctp-blue px-3 py-2 text-sm font-semibold text-ctp-base hover:brightness-110">Compare selected →</Link>}
         </div>
       </div>
 
