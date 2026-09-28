@@ -33,8 +33,14 @@ export default function CardLocationsPage() {
   const [assignmentDeck, setAssignmentDeck] = useState<SavedDeck | null>(null);
   const [deckReview, setDeckReview] = useState(false);
   const editId = params.get("card");
+  const deckId = params.get("deck");
+  const focusedDeck = decks.find(deck=>deck.id===deckId);
+  const focusedRequirements = useMemo(()=>focusedDeck ? deckCardRequirements(focusedDeck.decklist) : null,[focusedDeck]);
+  function navigationParams(view: string, card?: string) {
+    return {view,...(deckId ? {deck:deckId} : {}),...(card ? {card} : {})};
+  }
   function edit(uuid: string, borrower?: string) {
-    setLoanBorrower(borrower); setParams({ view: tab, card: uuid }, {replace: true});
+    setLoanBorrower(borrower); setParams(navigationParams(tab, uuid), {replace: true});
   }
   async function load() {
     setReady(false); setError("");
@@ -60,6 +66,7 @@ export default function CardLocationsPage() {
     if (!item.name.toLocaleLowerCase().includes(query.toLocaleLowerCase())) return false;
     const state = cardLocationState(item.uuid, entries, records.get(item.uuid));
     if (picker !== null) return state.owned > 0;
+    if (focusedRequirements && !focusedRequirements.has(locationCardKey(item.name)) && !records.get(item.uuid)?.assignments?.some(row=>row.deckId===deckId)) return false;
     return filter === "all" || filter === "assigned" && state.assigned > 0 || filter === "unassigned" && state.unassigned > 0 || filter === "check" && (state.excess > 0 || records.get(item.uuid)?.mightOwn);
   });
   const selected = pool.find(item => item.uuid === editId) ?? (editId ? {uuid: editId, name: cards.find(card=>card.uuid===editId)?.name ?? editId, card: cards.find(card=>card.uuid===editId)} : undefined);
@@ -82,12 +89,13 @@ export default function CardLocationsPage() {
     {ready && !tracking.ready && !tracking.error && <p role="status" className="mt-4">Loading locations and loans…</p>}
     {ready && pendingQuantities && <p role="status" className="mt-3 text-sm text-ctp-yellow">You have unsaved collection quantities. Locations use your saved copies. <Link to="/collection" className="underline">Review quantities</Link></p>}
     {ready && tracking.ready && <>
-      <div className="mt-4 flex flex-wrap gap-2" aria-label="Location views">{[["decks","In decks"],["loans",`Lent out · ${lent}`]].map(([value,label])=><button key={value} type="button" aria-pressed={tab===value} onClick={()=>{setTab(value);setParams({view:value},{replace:true});}} className={`${controls} ${tab===value ? "border-ctp-blue text-ctp-blue" : ""}`}>{label}</button>)}</div>
-      {tab === "decks" ? <><button type="button" onClick={()=>setDeckReview(true)} className={`${controls} mt-3`}>Move a whole deck</button>{grid}</> : <LoanLedger records={tracking.records} cards={cards} onEdit={uuid=>edit(uuid)} onAdd={borrower=>{setPicker(borrower ?? "");setQuery("");setLimit(24);}}/>}
+      {deckId && tab === "decks" && <section className="mt-4 rounded-xl border border-ctp-surface1 p-3"><h2 className="font-semibold">{focusedDeck?.title ?? "Deck unavailable"}</h2><p className="mt-1 text-sm text-ctp-subtext1">{focusedDeck ? "Showing cards in this decklist and copies already assigned here." : "This deck may have been removed. Showing all your cards."}</p><div className="mt-2 flex flex-wrap gap-2">{focusedDeck && <><button type="button" className={controls} onClick={()=>setAssignmentDeck(focusedDeck)}>Assign deck cards here</button><Link className={`${controls} inline-flex items-center text-ctp-blue`} to={`/decks/${encodeURIComponent(focusedDeck.id)}`}>Open deck</Link></>}<button type="button" className={controls} onClick={()=>setParams({view:tab},{replace:true})}>Show all cards</button></div></section>}
+      <div className="mt-4 flex flex-wrap gap-2" aria-label="Location views">{[["decks","In decks"],["loans",`Lent out · ${lent}`]].map(([value,label])=><button key={value} type="button" aria-pressed={tab===value} onClick={()=>{setTab(value);setParams(navigationParams(value),{replace:true});}} className={`${controls} ${tab===value ? "border-ctp-blue text-ctp-blue" : ""}`}>{label}</button>)}</div>
+      {tab === "decks" ? <>{!focusedDeck && <button type="button" onClick={()=>setDeckReview(true)} className={`${controls} mt-3`}>Move a whole deck</button>}{grid}</> : <LoanLedger records={tracking.records} cards={cards} onEdit={uuid=>edit(uuid)} onAdd={borrower=>{setPicker(borrower ?? "");setQuery("");setLimit(24);}}/>}
       {picker !== null && <EditorDialog title={picker ? `Lend to ${picker}` : "Choose a card to lend"} doneLabel="Cancel" onDismiss={()=>setPicker(null)}>{grid}</EditorDialog>}
       {deckReview && <EditorDialog title="Choose a deck" doneLabel="Done" onDismiss={()=>setDeckReview(false)}><DeckLocationCoverage cards={cards} entries={entries} records={tracking.records} decks={decks} onAssign={deck=>{setDeckReview(false);setAssignmentDeck(deck);}}/></EditorDialog>}
       {assignmentDeck && <DeckAssignmentReview deck={assignmentDeck} decks={decks} cards={cards} entries={entries} records={tracking.records} onSave={tracking.save} onDismiss={()=>setAssignmentDeck(null)}/>}
-      {selected && <CardLocationSheet key={selected.uuid} cardUuid={selected.uuid} name={selected.name} card={selected.card} record={records.get(selected.uuid)} entries={entries} decks={decks} onSave={tracking.save} onDismiss={()=>{setParams({view:tab},{replace:true});setLoanBorrower(undefined);}} initialBorrower={loanBorrower} loansFirst={tab === "loans"}/>}
+      {selected && <CardLocationSheet key={selected.uuid} cardUuid={selected.uuid} name={selected.name} card={selected.card} record={records.get(selected.uuid)} entries={entries} decks={decks} onSave={tracking.save} onDismiss={()=>{setParams(navigationParams(tab),{replace:true});setLoanBorrower(undefined);}} initialBorrower={loanBorrower} loansFirst={tab === "loans"}/>}
     </>}
   </PageLayout>;
 }
