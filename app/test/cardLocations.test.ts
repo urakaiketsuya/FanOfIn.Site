@@ -25,3 +25,16 @@ test('requirements include sideboard and removing a decklist card releases only 
  assert.equal(deckCardRequirements({main:[{card:' Card ',quantity:2}],material:[],sideboard:[{card:'card',quantity:1}]}).get('card')?.quantity,3);
  assert.deepEqual(planCardTransfer('a',0,6,{...record,assignments:[{deckId:'a',quantity:4},{deckId:'b',quantity:2}]}).assignments,[{deckId:'b',quantity:2}]);
 });
+
+test('partial returns conserve loan copies and restore only the returned availability', async () => {
+  const {returnLoanCopies} = await import('@gatcg/shared');
+  const loans = [{id:'loan',borrower:'Sam',quantity:4,lentAt:'2026-09-01T00:00:00Z'}];
+  const result = returnLoanCopies(loans,'loan',1,'2026-09-02T00:00:00Z','returned');
+  assert.equal(result.reduce((sum,row)=>sum+row.quantity,0),4);
+  assert.equal(result.filter(row=>!row.returnedAt).reduce((sum,row)=>sum+row.quantity,0),3);
+  assert.equal(result.find(row=>row.returnedAt)?.quantity,1);
+  assert.equal(loans[0].quantity,4);
+  assert.throws(()=>returnLoanCopies(loans,'loan',5,'2026-09-02T00:00:00Z','returned'));
+  assert.throws(()=>returnLoanCopies(loans,'loan',1,'2026-08-02T00:00:00Z','returned'));
+  assert.equal(returnLoanCopies(loans,'loan',4,'2026-09-02T00:00:00Z','returned').length,1);
+});

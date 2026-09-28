@@ -18,12 +18,12 @@ export function CollectionValueDisplay({ value, updatedAt, loading, error, retry
     </summary>
     <div className="space-y-2 rounded-lg bg-ctp-mantle p-3 text-xs leading-relaxed text-ctp-subtext1">
       <p>TCGplayer market prices × physical copies owned. Includes cards in decks and lent out; excludes proxies and cards marked only as “might own”.</p>
-      <p>Exact printings use their matching price. Unspecified copies use the cheapest priced printing. Normal market price is used when available, otherwise foil; finish and condition aren’t tracked.</p>
+      <p>Exact printings use their matching price. Unspecified copies use the cheapest priced printing. Only nonfoil market prices are used. Missing nonfoil prices are excluded; finish and condition aren’t tracked.</p>
       {available && <p>{value.pricedCopies} of {value.ownedCopies} copies priced · {value.unspecifiedCopies} copies with unspecified printing. Prices updated {new Date(updatedAt!).toLocaleDateString()}.</p>}
       {error && <p role="status">{available ? "Showing cached prices. " : ""}{error} <button type="button" onClick={retry} disabled={loading} className="min-h-12 rounded-lg px-3 text-ctp-blue focus-visible:outline-2">{loading ? "Refreshing…" : "Retry prices"}</button></p>}
     </div>
   </details>
-    {available && value.missingCopies > 0 && <p className="text-xs text-ctp-subtext1">Partial estimate · {value.missingCopies} copies have no price.</p>}
+    {available && value.missingCopies > 0 && <p className="text-xs text-ctp-subtext1">Partial estimate · {value.missingCopies} copies have no nonfoil price.</p>}
     {error && available && <p className="text-xs text-ctp-subtext1">Using cached prices; refresh unavailable.</p>}
   </div>;
 }

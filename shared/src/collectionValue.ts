@@ -5,7 +5,7 @@ import { priceKey, type CardPriceEntry } from "./pricing.js";
 /** Market estimate only: finish/condition are not tracked in collection inventory. */
 export function computeCollectionValue(entries: CollectionEntry[], cards: Card[], prices: ReadonlyMap<string, CardPriceEntry>) {
   const valid = (value: number | null | undefined): value is number => typeof value === "number" && Number.isFinite(value) && value >= 0;
-  const market = (price: CardPriceEntry | undefined) => valid(price?.normal?.market) ? price.normal.market : valid(price?.foil?.market) ? price.foil.market : undefined;
+  const market = (price: CardPriceEntry | undefined) => valid(price?.normal?.market) ? price.normal.market : undefined;
   const normalize = (name: string) => name.trim().replace(/\s+/g, " ").toLocaleLowerCase("en-US");
   const cheapest = new Map<string, number>();
   for (const price of prices.values()) {

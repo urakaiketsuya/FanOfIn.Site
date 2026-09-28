@@ -1,4 +1,4 @@
-import { cardLocationState, setFamilyPrefix, type CollectionCardTracking, type Card, type CollectionEntry, type CollectionUpdateLine } from "@gatcg/shared";
+import { setFamilyPrefix, type Card, type CollectionEntry, type CollectionUpdateLine } from "@gatcg/shared";
 import { useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import CardArtTile from "../../components/CardArtTile";
@@ -9,15 +9,13 @@ import CollectionCardFilters from "./CollectionCardFilters";
 import { emptyFilterState, filterCards } from "../cards/filters";
 import { playsetProgress, playsetTarget } from "./collectionPlaysets";
 
-export default function CollectionBrowser({ cards, entries, busy = false, preview = false, onUpdate, renderTracking, renderStatus, records = [] }: {
-  records?: CollectionCardTracking[];
+export default function CollectionBrowser({ cards, entries, busy = false, preview = false, onUpdate, renderTracking, renderStatus }: {
   renderStatus?: (uuid: string) => ReactNode;
   renderTracking?: (uuid: string, name: string) => ReactNode;
   cards: Card[]; entries: CollectionEntry[]; busy?: boolean; preview?: boolean;
   onUpdate?: (lines: CollectionUpdateLine[], source: string) => Promise<void>;
 }) {
   const [filter, setFilter] = useState(() => entries.some(entry => entry.ownedQuantity > 0) ? "owned" : "all");
-  const [location, setLocation] = useState("all");
   const [editing, setEditing] = useState<string | null>(null);
   const [limit, setLimit] = useState(24);
   const [cardFilters, setCardFilters] = useState(emptyFilterState);
@@ -33,11 +31,6 @@ export default function CollectionBrowser({ cards, entries, busy = false, previe
   const ownedMatches = filteredPool.filter(card => (quantities.get(card.uuid) ?? 0) > 0).length;
   const matchingCards = filteredPool.filter(card => {
     const quantity = quantities.get(card.uuid) ?? 0;
-    if (location !== "all") {
-    const record = records.find(record => record.cardUuid === card.uuid);
-    const state = cardLocationState(card.uuid, entries, record);
-    if (location === "assigned" && !state.assigned || location === "lent" && !state.lent || location === "check" && !record?.mightOwn && !state.excess || location === "unassigned" && !state.unassigned) return false;
-    }
     if (filter === "playsets") return quantity >= playsetTarget(card);
     if (filter === "incomplete") return quantity < playsetTarget(card);
     return filter === "all" || (quantity > 0) === (filter === "owned");
@@ -49,13 +42,12 @@ export default function CollectionBrowser({ cards, entries, busy = false, previe
   if (!cards.length) return <p role="status" className="mt-4 text-sm text-ctp-subtext1">Loading cards…</p>;
   return <section className="mt-3 [&_button]:min-h-12 [&_button]:min-w-12 [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-ctp-blue">
     <CollectionPurchase catalog={cards} quantities={quantities} cards={matchingCards} preview={preview}>{shopping => <>
-    <CollectionCardFilters secondary={<>      {!preview && <select aria-label="Card location filter" value={location} onChange={event => {setLocation(event.target.value); setLimit(24); if (event.target.value !== "all") setFilter("all");}} className="min-h-12 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-sm"><option value="all">Any location</option><option value="assigned">In decks</option><option value="lent">Lent out</option><option value="check">Needs checking</option><option value="unassigned">Unassigned</option></select>}</>} cards={pool} filters={cardFilters} onChange={value => { setCardFilters(value); setLimit(24); }}>
+    <CollectionCardFilters  cards={pool} filters={cardFilters} onChange={value => { setCardFilters(value); setLimit(24); }}>
       <div className="grid gap-2">            <select aria-label="Sort cards" value={sort} onChange={event => setSort(event.target.value)} className="min-h-12 w-20 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-sm"><option value="name">A–Z</option><option value="name-desc">Z–A</option>{!preview && <option value="owned">Most owned</option>}</select></div>
       {!preview && <select aria-label="Ownership filter" value={filter} onChange={event => { setFilter(event.target.value); setLimit(24); }} className="min-h-12 w-24 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-sm"><option value="owned">Owned</option><option value="all">All cards</option><option value="missing">Missing</option><option value="playsets">Playsets complete</option><option value="incomplete">Needs copies</option></select>}
 
       {shopping.controls}
     </CollectionCardFilters>
-    {location !== "all" && <button type="button" onClick={() => setLocation("all")} className="my-2 rounded-full border border-ctp-surface1 px-3 text-xs">{({assigned: "In decks", lent: "Lent out", check: "Needs checking", unassigned: "Unassigned"} as Record<string,string>)[location]} ×</button>}
     {!preview && (cardFilters.sets.size > 0 || cardFilters.subtypes.size > 0 || cardFilters.name || cardFilters.printingSets?.size) && <div className="my-2 text-sm text-ctp-subtext1"><p>{ownedMatches} / {filteredPool.length} owned · {filteredPool.length - ownedMatches} missing · {playsets.complete} playsets</p><progress aria-label="Matching card completion" value={ownedMatches} max={filteredPool.length || 1} className="w-full accent-ctp-blue"/><div className="flex flex-wrap items-center justify-between gap-2"><span className="text-xs">Any physical printing counts</span><button type="button" onClick={() => setFilter("missing")} className="text-sm text-ctp-blue">Show missing</button></div></div>}
       {!preview && !entries.some(entry => entry.ownedQuantity > 0) && <p className="my-2 text-sm text-ctp-subtext1">Start with a card below. Add copies, then save your quantities together.</p>}
       {!matchingCards.length && <p role="status" className="my-6 text-sm">No cards match these filters.</p>}

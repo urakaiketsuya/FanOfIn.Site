@@ -33,3 +33,14 @@ export function planCardTransfer(deckId: string, required: number, owned: number
   if (target) assignments.push({deckId, quantity: target});
   return {assignments, transfers, missing: Math.max(0, required - owned), loanBlocked: Math.max(0, required - target) - Math.max(0, required - owned), reconcile: false};
 }
+
+/** Split a partial return into outstanding and returned records, conserving the loaned total. */
+export function returnLoanCopies(loans: NonNullable<CollectionCardTracking['loans']>, id: string, quantity: number, returnedAt: string, newId: string) {
+  const loan = loans.find(row => row.id === id);
+  if (!loan || loan.returnedAt || !Number.isInteger(quantity) || quantity < 1 || quantity > loan.quantity) throw new Error('Choose a return quantity within the outstanding loan.');
+  if (quantity < loan.quantity && loans.length >= 100) throw new Error('This card has reached the loan history limit. Return the full loan or keep the partial return unsaved.');
+  if (!Number.isFinite(Date.parse(returnedAt)) || Date.parse(returnedAt) < Date.parse(loan.lentAt)) throw new Error('Return date must be on or after the loan date.');
+  if (quantity === loan.quantity) return loans.map(row => row.id === id ? {...row, returnedAt} : row);
+  if (loans.some(row => row.id === newId)) throw new Error('Return record must have a unique ID.');
+  return [...loans.map(row => row.id === id ? {...row, quantity: row.quantity - quantity} : row), {...loan, id: newId, quantity, returnedAt}];
+}

@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { computeCollectionValue, type CollectionEntry, type CardPriceEntry, type Card } from "@gatcg/shared";
 const entry = (ownedQuantity: number, extra = {}) => ({ cardUuid: "a", cardName: "A", ownedQuantity, proxyQuantity: 5, updatedAt: "", ...extra }) as CollectionEntry;
 const price = (normal: number | null, foil: number | null = null, cardName = "A") => ({ cardName, normal: { market: normal }, foil: { market: foil } }) as CardPriceEntry;
-const prices = new Map([["SET-1", price(1.25)], ["RARE-1", price(null, 10)]]);
+const prices = new Map([["SET-1", price(1.25)], ["RARE-1", price(10, 30)]]);
 test("counts physical copies once across canonical and exact pools, ignoring proxies", () => {
   const entries = [entry(4), entry(2, { editionUuid: "rare", setPrefix: "RARE", collectorNumber: "1" })];
   assert.deepEqual(computeCollectionValue(entries, [], prices), { total: 25, ownedCopies: 6, pricedCopies: 6, missingCopies: 0, unspecifiedCopies: 4 });
@@ -27,4 +27,12 @@ test("resolves catalog edition keys, validates prices, supports zero and rounds 
 test("catalog joins recognize marketplace names with printing suffixes", () => {
   const cards = [{ uuid: "a", name: "A", editions: [{ uuid: "x", set: { prefix: "SET" }, collector_number: "1" }] }] as Card[];
   assert.equal(computeCollectionValue([entry(4)], cards, new Map([["SET-1", price(2, null, "A (001B)")]])).total, 8);
+});
+
+ test("never substitutes foil prices for unspecified or exact copies", () => {
+ const foilOnly = new Map([["SET-1", price(null, 100)]]);
+ assert.equal(computeCollectionValue([entry(4)], [], foilOnly).total, null);
+ assert.equal(computeCollectionValue([entry(2, {editionUuid: "x", setPrefix: "SET", collectorNumber: "1"})], [], foilOnly).missingCopies, 2);
+ const mixed = new Map([["SET-1", price(null, 0.1)], ["OTHER-1", price(2, 100)]]);
+ assert.equal(computeCollectionValue([entry(4)], [], mixed).total, 8);
 });

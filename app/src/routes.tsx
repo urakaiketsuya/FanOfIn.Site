@@ -135,6 +135,7 @@ const MyDeckDetail = lazy(() => import("./features/account/MyDeckDetail"));
 const PublicDeckDetail = lazy(() => import("./features/account/PublicDeckDetail"));
 const SharedDecksIndex = lazy(() => import("./features/account/SharedDecksIndex"));
 const PublicUserProfile = lazy(() => import("./features/account/PublicUserProfile"));
+const CardLocationsPage = lazy(() => import("./features/collection/CardLocationsPage"));
 const CollectionIndex = lazy(() => import("./features/collection/CollectionIndex"));
 const SettingsIndex = lazy(() => import("./features/settings/SettingsIndex"));
 
@@ -235,6 +236,7 @@ export default function AppRoutes() {
         <Route path="/timelines/combos" element={<CombosIndex />} />
         <Route path="/timelines/:id" element={<TimelineDetail />} />
         <Route path="/diao-review" element={<DiaoReviewIndex />} />
+        <Route path="/card-locations" element={<CardLocationsPage />} />
         <Route path="/collection" element={<CollectionIndex />} />
         <Route path="/account" element={<AccountIndex />} />
         <Route path="/account/verify-email" element={<VerifyEmailPage />} />
