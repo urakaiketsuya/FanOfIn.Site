@@ -6,7 +6,9 @@ import { useCardCatalog } from "../cards/useCardCatalog";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { computeNewReleaseCards } from "../deckbuilder/newReleaseCards";
 import TopCardsSections from "../../components/TopCardsSections";
-import CardImage from "../../components/CardImage";
+import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
+import CardArtTile from "../../components/CardArtTile";
+import DisclosureChevron from "../../components/DisclosureChevron";
 import { VisualCardTile, VisualCommunityGate, type VisualFieldVisibility } from "../../components/VisualCardTile";
 import { useDeckPriceByName } from "../pricing/useDeckPriceByName";
 import { usePriceTrendByName } from "../pricing/usePriceTrendByName";
@@ -51,6 +53,7 @@ export default function ChampionSynergy() {
 
   const archetypeData = useArchetypeData();
   const taxonomyData = useArchetypeTaxonomyData();
+  const taxonomyStatus = usePublishedDataStatus("analysis-archetype-taxonomy", "/data/analysis/archetype-taxonomy.json");
   const cardImpactData = useCardImpactData();
   const catalog = useCardCatalog();
 
@@ -239,21 +242,11 @@ export default function ChampionSynergy() {
     return computeNewReleaseCards(catalogByName.values(), representativeDeckCards, identityElements, includedNames);
   }, [catalogByName, representativeDeckCards, identityElements]);
 
-  // Champion-agnostic packages this Champion runs — grouped purely by shared main-deck cards, not
-  // by plurality Champion, so a package splashed by several Champions shows up once instead of
-  // being siloed (and duplicated-looking) under each one. Experimental: in place of a raw
-  // per-Champion build listing (`taxonomyData.clusters` filtered by championName) while this view
-  // is tried out; the underlying per-Champion `clusters`/`strategyArchetypes` are unchanged.
-  const engines = useMemo(() => {
-    // `engineArchetypes` can be briefly absent even once `taxonomyData` exists — a client with a
-    // cached `archetype-taxonomy.json` predating this field gets served that stale copy immediately
-    // (see usePublishedData's cache-then-refresh behavior) before the background refetch replaces
-    // it, same caveat `typeFilterOptions` above already documents for `mainByType`.
-    if (!taxonomyData?.engineArchetypes) return [];
-    return taxonomyData.engineArchetypes
-      .filter((e) => e.championBreakdown.some((c) => c.championName === championName))
-      .sort((a, b) => b.playerCount - a.playerCount);
-  }, [taxonomyData, championName]);
+  const engines = useMemo(() => (taxonomyData?.clusters ?? [])
+    .filter((build) => build.championBreakdown.some((entry) => entry.championName === championName))
+    .map((build) => ({ ...build, seedBuildId: build.id, relationships: (taxonomyData?.engineArchetypes ?? [])
+      .filter((engine) => engine.buildIds.includes(build.id) && engine.championBreakdown.length > 1) }))
+    .sort((a, b) => b.playerCount - a.playerCount || a.id.localeCompare(b.id)), [taxonomyData, championName]);
 
   // Real tournament win rate for a linked card, not simulator telemetry — Card Impact is published
   // per named build (cluster), so when a card shows up in more than one of this Champion's builds,
@@ -464,51 +457,57 @@ export default function ChampionSynergy() {
               id="archetypes"
               heading="compact"
               title="Packages"
-              actions={<Link to="/archetypes" className="text-xs text-ctp-blue hover:underline">All archetypes &rarr;</Link>}
+              actions={<Link to="/archetypes" className="inline-flex min-h-12 items-center rounded text-xs text-ctp-blue hover:underline focus-visible:outline-2">All archetypes &rarr;</Link>}
             >
-              {engines.length === 0 ? (
+              {!taxonomyData ? (
+                <InlineState className="mt-2 text-sm">{taxonomyStatus.phase === "error" ? <><p>{taxonomyStatus.error}</p><button type="button" className="min-h-12 rounded px-3 text-ctp-blue focus-visible:outline-2" onClick={taxonomyStatus.retry}>Retry package analysis</button></> : "Loading package analysis…"}</InlineState>
+              ) : engines.length === 0 ? (
                 <InlineState className="mt-2 text-sm">No named packages have cleared the sample-size threshold yet.</InlineState>
               ) : (
-                <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                <div className="mt-3 grid items-start gap-3 sm:grid-cols-2">
                   {(showAllPackages ? engines : engines.slice(0, 6)).map((engine) => {
-                    const others = engine.championBreakdown.filter((entry) => entry.championName !== championName);
                     const definingCards = engine.definingCards.slice(0, 3);
                     return (
                       <article key={engine.id} className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
                         <div className="grid grid-cols-3 gap-2">
-                          {Array.from({ length: 3 }, (_, index) => {
-                            const definingCard = definingCards[index];
-                            const card = definingCard ? catalogByName.get(definingCard.name) : undefined;
-                            return card?.editions[0]?.image ? (
-                              <Link key={definingCard.name} to={`/cards/${card.slug}`} aria-label={`View ${card.name}`} className="min-w-0">
-                                <CardImage image={card.editions[0].image} alt={card.name} className="aspect-[5/7] w-full rounded-md object-cover object-top" />
-                              </Link>
-                            ) : (
-                              <div key={definingCard?.name ?? index} className="aspect-[5/7] rounded-md bg-ctp-surface0" />
-                            );
+                          {definingCards.map((entry) => {
+                            const card = catalogByName.get(entry.name);
+                            const content = <><CardArtTile card={card} name={entry.name} /><span className="mt-1 block text-xs">{entry.name}</span></>;
+                            return card ? <Link key={entry.name} to={`/cards/${card.slug}`} className="min-w-0 rounded focus-visible:outline-2">{content}</Link> : <div key={entry.name}>{content}</div>;
                           })}
                         </div>
                         <div className="mt-3 flex items-center gap-2">
                           <ArchetypeElementIcon name={engine.name} />
-                          <Link to={`/archetypes/${engine.seedBuildId}`} className="font-medium text-ctp-text hover:text-ctp-blue">{engine.name}</Link>
+                          <Link to={`/archetypes/${engine.seedBuildId}`} className="inline-flex min-h-12 items-center rounded font-medium text-ctp-text hover:text-ctp-blue focus-visible:outline-2">{engine.name}</Link>
                         </div>
                         <p className="mt-1 text-xs text-ctp-subtext1">{engine.playerCount} players · {(engine.avgWinRate * 100).toFixed(0)}% win rate</p>
-                        {(engine.definingCards.length > 3 || others.length > 0) && (
-                          <details className="mt-2 text-xs text-ctp-subtext0">
-                            <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">Package details</summary>
-                            {engine.definingCards.length > 3 && <p className="mt-2">Also: {engine.definingCards.slice(3, 5).map((entry, index) => {
-                              const card = catalogByName.get(entry.name);
-                              return <span key={entry.name}>{index > 0 && ", "}{card ? <Link to={`/cards/${card.slug}`} className="text-ctp-blue hover:underline">{entry.name}</Link> : entry.name}</span>;
-                            })}</p>}
-                            {others.length > 0 && <p className="mt-1">Also played by {others.map((entry, index) => <span key={entry.championName}>{index > 0 && ", "}<Link to={`/champions/${championNameToSlug(entry.championName)}`} className="text-ctp-blue hover:underline">{entry.championName}</Link></span>)}</p>}
+                        <p className="mt-1 text-xs text-ctp-subtext0">Concrete build · {engine.deckCount} decks · {engine.eventCount} events</p>
+                        {engine.relationships.map((relationship) => (
+                          <details key={relationship.id} className="group mt-2 text-xs text-ctp-subtext0">
+                            <summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 rounded focus-visible:outline-2">
+                              <DisclosureChevron className="group-open:rotate-180" />
+                              {relationship.status === "shared" ? "Shared with other champions" : "Candidate overlap with other champions"}
+                            </summary>
+                            <p className="mt-2 font-medium">{relationship.name}</p>
+                            <p className="mt-1">{relationship.status === "shared" ? "Recurring multi-card package with independent player and event evidence." : "Evidence is insufficient to establish a shared archetype."}</p>
+                            {(relationship.championEvidence ?? relationship.championBreakdown).map((entry) => <p key={entry.championName} className="mt-2"><Link className="inline-flex min-h-12 items-center text-ctp-blue" to={`/champions/${championNameToSlug(entry.championName)}`}>{entry.championName}</Link>{"qualifying" in entry && entry.qualifying ? " (qualifying evidence)" : " (limited evidence)"}: {entry.deckCount} decks · {entry.playerCount} players · {"eventCount" in entry ? String(entry.eventCount) : "—"} events</p>)}
+                            {[{ label: "Common core", cards: relationship.commonCore ?? relationship.definingCards }, { label: `${championName}-specific cards`, cards: relationship.championEvidence?.find((entry) => entry.championName === championName)?.differentiatorCards ?? [] }].map((section) => <div key={section.label} className="mt-3">
+                              <p className="mb-2 font-medium">{section.label}</p>{section.label === "Common core" && <p className="mb-2">Includes cohort staples; only enriched recurring cards establish a shared package.</p>}
+                              <div className="grid grid-cols-3 gap-2">{section.cards.map((entry) => {
+                                const card = catalogByName.get(entry.name);
+                                const content = <><CardArtTile card={card} name={entry.name} /><span className="mt-1 block">{entry.name}</span></>;
+                                return card ? <Link key={entry.name} to={`/cards/${card.slug}`} className="min-w-0 rounded focus-visible:outline-2">{content}</Link> : <div key={entry.name}>{content}</div>;
+                              })}</div>
+                              {section.cards.length === 0 && <p>No recurring differentiators identified.</p>}
+                            </div>)}
                           </details>
-                        )}
+                        ))}
                       </article>
                     );
                   })}
                 </div>
               )}
-              {engines.length > 6 && <button type="button" onClick={() => setShowAllPackages((value) => !value)} aria-expanded={showAllPackages} className="mt-3 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{showAllPackages ? "Show fewer packages" : `Show all ${engines.length} packages`}</button>}
+              {engines.length > 6 && <button type="button" onClick={() => setShowAllPackages((value) => !value)} aria-expanded={showAllPackages} className="mt-3 min-h-12 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{showAllPackages ? "Show fewer packages" : `Show all ${engines.length} packages`}</button>}
             </Section>
           </div>
         </>

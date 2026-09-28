@@ -3318,3 +3318,27 @@ Account migration `0024_trade_allocations.sql` must be applied before deploying 
 Collection quantity drafts and the current request are stored together per account in browser local storage, with a tab-storage fallback when durable storage is unavailable. Legacy tab drafts are migrated on load. Saves send sequential batches of 100 inventory rows (canonical and printing-specific rows remain independent), with a 30-second request timeout and up to two retries for network errors, timeouts and server failures. Confirmed rows leave the queue immediately; unconfirmed rows retain the same request ID across retries and reloads. An uncertain batch must be resolved before editing or discarding its quantities. Definitive validation/conflict errors unlock the draft for correction. Browser storage failures are visible; users must keep the tab open when no persistent backup can be written.
 
 The account API accepts up to 500 rows per request and uses two bulk inventory reads rather than one query per row. Migration `0025_collection_update_receipts.sql` adds account-scoped request receipts. The receipt, inventory writes and history entry commit in one D1 batch. A receipt replay returns the original result without reapplying a change, even after later edits or undo; reusing its ID with different content is rejected. A database trigger verifies the inventory snapshot at write time and rejects stale concurrent updates atomically. Receipts are retained with the account and deleted through the account foreign-key cascade. Deploy the migration before the Worker; the health endpoint now requires schema 0025.
+
+### Shared-engine evidence and cohort-relative labels
+
+Shared-engine analysis is additive: concrete cluster assignment, ids, aliases, matchup and
+card-impact records are unchanged. `rebuild-shared-engines.ts` checks full deck-index coverage and preserves all concrete fields except labels
+in the published artifact before replacing only build labels and engine relationships.
+Cards are measured against decks with the same event format and observed material element
+access; the same material route is used when it supplies at least ten comparison decks outside
+the build. Observed access is a proxy, not a complete legality or class-access solver.
+Enrichment is positive within-build prevalence minus cohort prevalence. Relationship similarity
+uses weighted Jaccard of enrichment among cards present in at least 75% of the build, with a
+0.30 seed threshold and deterministic ordering. This weighting does not reassign concrete builds.
+Common cards remain in the full card pool and in the relationship's visible common core.
+
+A shared relationship requires at least two champions with three independent players and two
+events each, and at least two common strategy cards with 15 percentage points of enrichment in
+every member build. Each card must recur among three players and two events in each qualifying
+champion population. Common core requires 75% prevalence in every champion population; total
+population prevalence cannot hide a weak champion sample. Multi-champion groups below these
+thresholds are candidates; single-champion groups are champion-specific. These thresholds are
+descriptive evidence, not proof of strategic or causal equivalence. Engine names use the two
+strongest enriched recurring cards. Build labels use prevalence differences against their nearest
+same-champion sibling. Champion differentiators require 50% prevalence and a 25-point difference
+from the other champions. Sideboards never enter this analysis.

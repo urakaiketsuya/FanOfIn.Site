@@ -1,3 +1,4 @@
+import { analyzeEngines } from "./sharedEngines.js";
 import { ARCHETYPE_NEAR_DUPLICATE_THRESHOLD, shortHash, type ArchetypeCluster, type ArchetypeTaxonomyData, type DeckSighting } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
 import { resolveCard, type CardSignature } from "../cards/catalog.js";
@@ -94,6 +95,9 @@ export function applyArchetypeLineageAliases(current: ArchetypeTaxonomyData, pre
 interface CardDeck {
   deckId: string;
   player: number;
+  eventId: number;
+  format: string;
+  access: string;
   championName: string;
   cardCounts: Map<string, number>;
   mainCardCounts: Map<string, number>;
@@ -298,6 +302,9 @@ export function computeArchetypeTaxonomy(
       allDecks.push({
         deckId: `${bundle.id}:${entry.player}`,
         player: entry.player,
+        eventId: bundle.id,
+        format: String(bundle.event.format),
+        access: [...new Set(materialIdentityLines.flatMap(({ card }) => card?.elements ?? []).filter((element) => element !== "NORM"))].sort().join("|"),
         championName,
         cardCounts,
         mainCardCounts,
@@ -721,98 +728,8 @@ export function computeArchetypeTaxonomy(
   }
   strategyArchetypes.sort((a, b) => b.playerCount - a.playerCount || a.name.localeCompare(b.name));
 
-  // Champion-agnostic counterpart to strategyArchetypes above — same package-overlap grouping,
-  // just without requiring a common plurality Champion, so a genuinely shared engine (splashed
-  // under more than one Champion) shows up as one archetype instead of being invisible to every
-  // Champion-scoped view. Experimental: additive only, never touches clusters/strategyArchetypes.
-  //
-  // Uses `definingCards` (main+material strategy cards) rather than `mainDefiningCards` — unlike
-  // strategyArchetypes, which stays main-deck-only. `definingCards` already excludes Champion/Spirit
-  // identity cards (the same isArchetypeStrategyCard filter cardCounts uses), so a real material-zone
-  // engine piece (a Weapon/Relic, say) can establish overlap here without ever risking a match on
-  // pilot identity, which would defeat the point of a champion-agnostic grouping.
-  const championByDeckId = new Map(allDecks.map((d) => [d.deckId, d.championName]));
-  const engineGroups: { seed: ArchetypeCluster; builds: ArchetypeCluster[] }[] = [];
-  for (const build of [...clusterSummaries].sort((a, b) => b.playerCount - a.playerCount || a.id.localeCompare(b.id))) {
-    let best: (typeof engineGroups)[number] | null = null;
-    let bestScore = 0;
-    for (const group of engineGroups) {
-      const score = archetypePackageOverlap(build.definingCards, group.seed.definingCards);
-      if (score > bestScore) {
-        best = group;
-        bestScore = score;
-      }
-    }
-    if (best && bestScore >= 0.6) best.builds.push(build);
-    else engineGroups.push({ seed: build, builds: [build] });
-  }
-
-  const engineArchetypes: ArchetypeTaxonomyData["engineArchetypes"] = engineGroups.map((group) => {
-    const buildIds = group.builds.map((build) => build.id).sort();
-    const deckIds = Array.from(new Set(group.builds.flatMap((build) => build.deckIds)));
-    const totalDecks = group.builds.reduce((sum, build) => sum + build.deckCount, 0);
-    const cardWeights = new Map<string, number>();
-    for (const build of group.builds) {
-      for (const card of build.definingCards) {
-        cardWeights.set(card.name, (cardWeights.get(card.name) ?? 0) + card.prevalence * build.deckCount);
-      }
-    }
-    const definingCards = Array.from(cardWeights.entries())
-      .map(([name, weight]) => ({ name, prevalence: totalDecks > 0 ? weight / totalDecks : 0 }))
-      .filter((card) => card.prevalence >= 0.75)
-      .sort((a, b) => b.prevalence - a.prevalence || a.name.localeCompare(b.name))
-      .slice(0, 8);
-    const sightings = deckIds.map((deckId) => sightingByDeckId.get(deckId)).filter((sighting): sighting is DeckSighting => !!sighting);
-    const players = new Set(sightings.map((sighting) => sighting.player));
-    const events = new Set(sightings.map((sighting) => sighting.eventId));
-
-    const championAgg = new Map<string, { deckIds: Set<string>; players: Set<number> }>();
-    for (const deckId of deckIds) {
-      const champ = championByDeckId.get(deckId);
-      if (!champ) continue;
-      const sighting = sightingByDeckId.get(deckId);
-      const agg = championAgg.get(champ) ?? { deckIds: new Set<string>(), players: new Set<number>() };
-      agg.deckIds.add(deckId);
-      if (sighting) agg.players.add(sighting.player);
-      championAgg.set(champ, agg);
-    }
-    const championBreakdown = Array.from(championAgg.entries())
-      .map(([championName, agg]) => ({ championName, deckCount: agg.deckIds.size, playerCount: agg.players.size }))
-      .sort((a, b) => b.playerCount - a.playerCount || b.deckCount - a.deckCount || a.championName.localeCompare(b.championName));
-
-    const element = dominantElement(definingCards, ctx.cardIndex);
-    const topCard = definingCards[0]?.name ?? group.seed.definingCards[0]?.name ?? group.seed.name;
-    const name = element && element !== "Mixed" ? `${element} ${topCard} Shell` : `${topCard} Shell`;
-
-    const id = shortHash(`engine:${buildIds.join("|")}`);
-    return {
-      id,
-      name,
-      seedBuildId: group.seed.id,
-      buildIds,
-      championBreakdown,
-      definingCards,
-      deckCount: deckIds.length,
-      playerCount: players.size,
-      eventCount: events.size,
-      avgWinRate: sightings.length > 0 ? sightings.reduce((sum, sighting) => sum + sighting.winRate, 0) / sightings.length : 0,
-      confidence: players.size >= config.minArchetypePlayers && events.size >= 2 ? "established" as const : "emerging" as const,
-    };
-  });
-  const enginesByName = new Map<string, typeof engineArchetypes>();
-  for (const engine of engineArchetypes) {
-    const list = enginesByName.get(engine.name) ?? [];
-    list.push(engine);
-    enginesByName.set(engine.name, list);
-  }
-  for (const duplicates of enginesByName.values()) {
-    if (duplicates.length <= 1) continue;
-    duplicates.sort((a, b) => b.playerCount - a.playerCount || a.id.localeCompare(b.id));
-    for (let index = 1; index < duplicates.length; index++) {
-      duplicates[index].name += ` — ${duplicates[index].definingCards[0]?.name ?? `engine ${index + 1}`}`;
-    }
-  }
-  engineArchetypes.sort((a, b) => b.playerCount - a.playerCount || a.name.localeCompare(b.name));
+  // Cohort-relative relationships and sibling labels; concrete ids, membership and stats stay intact.
+  const engineArchetypes = analyzeEngines(clusterSummaries, allDecks);
 
   // Split out packages whose defining identity now depends on a banned card — these can't
   // legally be built today, so they're compiled into a separate historical dataset instead of

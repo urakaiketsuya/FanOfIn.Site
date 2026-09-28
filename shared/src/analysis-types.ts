@@ -666,14 +666,11 @@ export interface StrategyArchetype {
   confidence: "established" | "emerging";
 }
 
-/**
- * Champion-agnostic counterpart to `StrategyArchetype`: groups builds purely by shared main-deck
- * package (the same >=60% `mainDefiningCards` overlap rule), without requiring a common plurality
- * Champion. Experimental and additive — `clusters`/`strategyArchetypes` are computed exactly as
- * before and this never overwrites them. Currently only consumed by the Champion Synergy page's
- * Archetypes section, in place of a raw per-Champion build listing.
- */
+/** Additive, cohort-relative engine relationships between preserved concrete builds. */
 export interface EngineArchetype {
+  status?: "shared" | "candidate" | "champion-specific";
+  commonCore?: { name: string; prevalence: number; enrichment: number }[];
+  championEvidence?: { championName: string; deckCount: number; playerCount: number; eventCount: number; qualifying: boolean; differentiatorCards: { name: string; prevalence: number }[] }[];
   id: string;
   name: string;
   /** The largest member build's cluster id — a click-through target, since this layer has no detail page of its own yet. */
