@@ -49,3 +49,5 @@ export * from "./tradeAvailability.js";
 export * from "./deckDetailData.js";
 
 export { deckPreviewCards } from "./deckPreview";
+
+export * from "./archetypeRules.js";

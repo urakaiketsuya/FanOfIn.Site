@@ -1,0 +1,20 @@
+import { readFile, writeFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import assert from 'node:assert/strict';
+import { writeReferenceArchetypes } from '../src/analysis/writeReferenceArchetypes.js';
+const root = new URL('../../', import.meta.url);
+const read = async (p: string) => JSON.parse(await readFile(new URL(p, root), 'utf8'));
+const taxonomy = await read('data/analysis/archetype-taxonomy.json');
+const before = await readFile(new URL('data/analysis/archetype-taxonomy.json', root), 'utf8');
+const publish = process.argv.indexOf('--publish');
+if (publish >= 0 && !process.argv[publish + 1])
+    throw new Error('--publish requires an exported curator file');
+const result = await writeReferenceArchetypes(fileURLToPath(new URL('data', root)), await read('data/analysis/deck-card-index.json'), (await read('pipeline/.cache/cards.json')).cards, (await read('data/analysis/deck-sightings.json')).sightings, taxonomy.clusters, publish >= 0 ? process.argv[publish + 1] : undefined);
+assert.equal(await readFile(new URL('data/analysis/archetype-taxonomy.json', root), 'utf8'), before, 'Concrete taxonomy must remain byte-identical');
+const manifest = await read('data/manifest.json');
+manifest['analysis-reference-archetypes'] = result.generatedAt;
+manifest['analysis-curated-strategies'] = result.generatedAt;
+await writeFile(new URL('data/manifest.json', root), JSON.stringify(manifest));
+console.log(`${result.definitions.length} rules evaluated against ${result.population} unique decks; concrete taxonomy untouched.`);
+const crux = result.evidence.find(e => e.id === 'fractal-crux-lorraine')!;
+console.log({ decks: crux.deckIds.length, players: crux.players, events: crux.events, confidence: crux.confidence, lorraineBuild: crux.builds.find(b => b.id === '1f7gr44') });

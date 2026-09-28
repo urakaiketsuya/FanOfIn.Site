@@ -3346,3 +3346,55 @@ from the other champions. Sideboards never enter this analysis.
 ### Archetype naming cards and local curation
 
 Concrete builds publish `namingCards` in generated label order, including any third-card disambiguator. Previews use this explicit list; older artifacts fall back to the first three defining cards. This is a presentation field, not a required package rule or a change to deck membership. Local archetype curation stores names, ordered cards, descriptions, package associations, source build IDs and source fingerprints in a versioned browser-local overlay. Curated status is a personal review decision, separate from sample confidence. Changed names, naming cards or membership flag a saved entry for review; missing builds remain referenced. Import adds missing local entries without replacing existing choices.
+
+### Fractal-seeded strategy rules and local curation
+
+`data/reference/fractal-archetypes.json` is a versioned reference snapshot extracted from
+Fractal of Insight's `fractal/archetypes.py`, attributed to https://fractalofin.site/deck/.
+The importer records the Git revision, exact source SHA-256, and source line. It parses
+literal AST definitions without executing the upstream application. Subtype IDs include
+the parent to disambiguate repeated names. Reimport explicitly with
+`python3 pipeline/scripts/import-fractal-archetypes.py /path/to/fractal-of-insight-master`.
+No upstream deck statistics are copied.
+
+The shared evaluator preserves ANY-of `require_cards`, exclusion vetoes, OR-of-ALL
+`require_combos`, spirit element access (level-zero material cards), and positive minimum /
+negative maximum main-deck type quantities. Subtypes also require their parent. Main and
+material contribute card presence; sideboards never contribute. More than 12 material
+entries fails Fractal eligibility. Missing catalog evidence fails element/type constraints
+conservatively. Cycles and missing parents fail closed. Explicit `allCards` is our additive
+curation constraint. Empty ANY sets match nothing.
+
+`reference-archetypes.json` evaluates the original rules against our deduplicated deck IDs.
+Membership may overlap: category totals must not be added. Build overlap is the intersection
+of matching deck IDs and concrete build members; partial matches never inherit whole-build
+win rates. No cluster, ID, alias, membership, matchup, or card-impact record is rewritten.
+`recurring` means at least 3 distinct known players and 2 events; otherwise nonempty membership
+is `candidate`, and empty membership is `no-evidence`. This is sample recurrence, not strategy
+validation or combo verification. Player identity is the player ID across events. Missing
+sighting metadata is counted separately and never invented.
+
+Rule-card enrichment is presence among matched decks minus presence among nonmatching decks
+with compatible observed format and spirit-access cohorts. Multiple access cohorts are pooled;
+route-specific adjustment is not yet applied in this reference report. A missing comparison
+cohort produces zero enrichment, not evidence of uniqueness. The enriched recurring core requires per-card prevalence ≥75% and enrichment ≥15 percentage points; joint presence is reported only for at least two qualifying cards. Unclassified-build suggestions require at least 5 observed unclassified decks and at least half of the build membership to match no reference definition. The report includes champion and
+season counts, overlap Jaccard (`intersection / union`), closest rule failures, and concrete-build
+naming-card packages recurring jointly in at least 5 decks, 3 players and 2 events. Suggestions
+are observational hypotheses and require manual review; none is automatically accepted.
+
+My Archetypes → Curate strategy rules provides local accepted/rejected review decisions,
+editable rules, preview cards, descriptions, package links, drafts, undo, and validated backups.
+Live evaluation compares original and edited memberships using the same shared evaluator.
+Mechanics verification is a separate curator assertion requiring an evidence note. It does not
+follow from accepting an archetype. Import merges only missing IDs; existing choices win.
+A source hash change requests a new review. Browser-local choices never change public labels.
+
+Rebuild with `npm run archetypes:references -w pipeline`. Full analysis also rebuilds the
+reference and reviewed artifacts. Publish an explicitly reviewed exported file with
+`npm run archetypes:references -w pipeline -- --publish /absolute/path/my-strategy-rules.json`.
+Only accepted entries are published, and parents must also be accepted. Publication rejects
+cycles, stale source hashes, missing preview/matching cards, and unknown card names. The
+accepted definitions persist in `data/reference/curated-strategies.json` for future rebuilds.
+The `/archetypes/strategies` page shows only these reviewed definitions, with links to the
+unchanged concrete builds and intersection counts. An initial empty reviewed artifact is
+intentional: imported hypotheses have not been accepted on the user's behalf.

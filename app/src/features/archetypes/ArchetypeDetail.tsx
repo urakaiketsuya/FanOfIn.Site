@@ -27,6 +27,7 @@ import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
 import Button from "../../components/ui/Button";
 import Chip from "../../components/ui/Chip";
+import ReviewedStrategyRelationships from "./ReviewedStrategyRelationships";
 import ArchetypePreview from "./ArchetypePreview";
 import PageHeader from "../../components/ui/PageHeader";
 import { InlineState, EmptyState } from "../../components/ui/ContentState";
@@ -244,6 +245,7 @@ export default function ArchetypeDetail() {
           />
           <div className="max-w-lg"><ArchetypePreview names={cluster.namingCards ?? cluster.definingCards.slice(0, 3).map((card) => card.name)} cardImages={cardImages} /></div>
           <Link className="inline-flex min-h-12 items-center text-ctp-blue" to={`/archetypes/mine?build=${cluster.id}`}>Curate this build</Link>
+          <ReviewedStrategyRelationships buildId={cluster.id} />
           <StaleDataNotice generatedAt={[data?.generatedAt]} />
           <Tabs tabs={SURFACES} active={surface} onChange={(next) => setTab(next === "overview" ? "overview" : next === "decks" ? "playedBy" : moreTab)} label={`${cluster.name} details`} variant="pill" />
 

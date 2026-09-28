@@ -1,3 +1,4 @@
+import { writeReferenceArchetypes } from "./writeReferenceArchetypes.js";
 import { attachPackageApprovalEvidence } from "./packageApprovalAudit.js";
 import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
@@ -235,6 +236,8 @@ export async function buildAnalysis(allBundles: OmnidexEventBundle[]): Promise<v
     JSON.stringify({ generatedAt: new Date().toISOString(), cardNames: deckCardIndexNames, decks: deckCardIndex }),
     "utf-8",
   );
+
+  await writeReferenceArchetypes(path.dirname(DATA_DIR), { generatedAt: new Date().toISOString(), cardNames: deckCardIndexNames, decks: deckCardIndex }, catalog, deckSightings, archetypeTaxonomy.clusters);
 
   const cardImpact = computeCardImpact(archetypeTaxonomy.clusters, { cardNames: deckCardIndexNames, entries: deckCardIndex }, deckSightings);
   await writeFile(path.join(DATA_DIR, "card-impact.json"), JSON.stringify(cardImpact), "utf-8");

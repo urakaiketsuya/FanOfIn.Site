@@ -1,0 +1,27 @@
+import { evaluateDefinition, type ReferenceArchetypes, type RuleDeck, type StrategyEvidence, type ReferenceAnalysis, type DeckSighting, type ArchetypeCluster } from '@gatcg/shared';
+export function analyzeReferenceArchetypes(reference: ReferenceArchetypes, decks: RuleDeck[], sightings: DeckSighting[], builds: ArchetypeCluster[], generatedAt: string): ReferenceAnalysis {
+    const unique = [...new Map(decks.map(d => [d.deckId, d])).values()].sort((a, b) => a.deckId.localeCompare(b.deckId));
+    const cardSets = new Map(unique.map(d => [d.deckId, new Set(d.cards)]));
+    const metadata = new Map(sightings.map(s => [s.deckId, s]));
+    const matches = new Map(reference.definitions.map(def => [def.id, new Set(unique.filter(d => evaluateDefinition(def, reference.definitions, d).matches).map(d => d.deckId))]));
+    const counts = (ids: string[]) => ({ players: new Set(ids.map(id => metadata.get(id)?.player).filter(p => p !== undefined)).size, events: new Set(ids.map(id => metadata.get(id)?.eventId).filter(p => p !== undefined)).size });
+    const evidence: StrategyEvidence[] = reference.definitions.map(def => {
+        const ids = matches.get(def.id)!, matched = unique.filter(d => ids.has(d.deckId)), count = counts([...ids]);
+        const cohorts = new Set(matched.map(d => `${metadata.get(d.deckId)?.format ?? 'unknown'}|${[...d.elements].sort().join(',')}`));
+        const cohort = unique.filter(d => !ids.has(d.deckId) && cohorts.has(`${metadata.get(d.deckId)?.format ?? 'unknown'}|${[...d.elements].sort().join(',')}`));
+        const ruleCards = [...new Set([...def.rule.anyCards, ...def.rule.allCards, ...def.rule.comboGroups.flat()])].sort();
+        const core = ruleCards.map(name => { const prevalence = matched.filter(d => d.cards.includes(name)).length / (matched.length || 1), cohortPrevalence = cohort.filter(d => d.cards.includes(name)).length / (cohort.length || 1); return { name, prevalence, cohortPrevalence, enrichment: cohort.length ? prevalence - cohortPrevalence : 0 }; }).sort((a, b) => b.enrichment - a.enrichment || a.name.localeCompare(b.name));
+        const jointCoreCards = core.filter(c => c.prevalence >= 0.75 && c.enrichment >= 0.15).map(c => c.name);
+        const champions = [...new Set(matched.map(d => metadata.get(d.deckId)?.championName ?? 'Unknown'))].sort().map(name => { const members = matched.filter(d => (metadata.get(d.deckId)?.championName ?? 'Unknown') === name).map(d => d.deckId); return { name, decks: members.length, ...counts(members) }; });
+        const seasons = [...new Set(matched.map(d => metadata.get(d.deckId)?.seasonName ?? 'Unknown'))].sort().map(name => ({ name, decks: matched.filter(d => (metadata.get(d.deckId)?.seasonName ?? 'Unknown') === name).length }));
+        const suggestions = builds.filter(b => b.namingCards && b.namingCards.length >= 2 && b.deckIds.some(id => ids.has(id))).map(b => { const cards = [...new Set(b.namingCards!)].sort(), joint = matched.filter(d => cards.every(c => cardSets.get(d.deckId)!.has(c))).map(d => d.deckId); return { cards, decks: joint.length, ...counts(joint), prevalence: joint.length / (matched.length || 1) }; }).filter(s => s.players >= 3 && s.events >= 2 && s.decks >= 5).sort((a, b) => b.prevalence - a.prevalence || a.cards.join().localeCompare(b.cards.join())).filter((s, i, a) => a.findIndex(x => x.cards.join() === s.cards.join()) === i).slice(0, 6);
+        return { id: def.id, deckIds: [...ids].sort(), ...count, missingMetadata: matched.filter(d => !metadata.has(d.deckId)).length, confidence: !ids.size ? 'no-evidence' : count.players >= 3 && count.events >= 2 ? 'recurring' : 'candidate', champions, seasons, core, jointCoreCards, cohortDecks: cohort.length, jointCorePrevalence: jointCoreCards.length >= 2 ? matched.filter(d => jointCoreCards.every(c => d.cards.includes(c))).length / (matched.length || 1) : null,
+            builds: builds.map(b => ({ id: b.id, matched: new Set(b.deckIds.filter(id => ids.has(id))).size, total: new Set(b.deckIds).size })).filter(b => b.matched > 0).sort((a, b) => b.matched - a.matched || a.id.localeCompare(b.id)),
+            overlaps: reference.definitions.filter(d => d.id !== def.id).map(d => { const other = matches.get(d.id)!, both = [...ids].filter(id => other.has(id)).length; return { id: d.id, decks: both, jaccard: both / (ids.size + other.size - both || 1) }; }).filter(o => o.decks > 0).sort((a, b) => b.jaccard - a.jaccard || a.id.localeCompare(b.id)),
+            boundary: unique.filter(d => !ids.has(d.deckId) && def.rule.anyCards.some(c => d.cards.includes(c))).map(d => ({ deckId: d.deckId, failures: evaluateDefinition(def, reference.definitions, d).failures })).sort((a, b) => a.failures.length - b.failures.length || a.deckId.localeCompare(b.deckId)).slice(0, 8), suggestions };
+    });
+    const covered = new Set([...matches.values()].flatMap(ids => [...ids]));
+    const observed = new Set(unique.map(d => d.deckId));
+    const discoveries = builds.map(b => ({ buildId: b.id, name: b.name, cards: b.namingCards ?? [], unmatchedDecks: new Set(b.deckIds.filter(id => observed.has(id) && !covered.has(id))).size, total: new Set(b.deckIds).size })).filter(b => b.cards.length >= 2 && b.unmatchedDecks >= 5 && b.unmatchedDecks / b.total >= 0.5).sort((a, b) => b.unmatchedDecks - a.unmatchedDecks || a.buildId.localeCompare(b.buildId));
+    return { ...reference, generatedAt, population: unique.length, evidence, discoveries };
+}

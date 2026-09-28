@@ -196,6 +196,7 @@ export default function ArchetypesIndex() {
           </Link>
         }
       />
+      <Link to="/archetypes/strategies" className="mr-4 inline-flex min-h-12 items-center text-ctp-blue">Reviewed strategies</Link>
       <Link to="/archetypes/mine" className="inline-flex min-h-12 items-center text-ctp-blue">My archetypes · curate locally</Link>
       <DecklistCoverageNotice />
       <StaleDataNotice generatedAt={[data?.generatedAt]} />
