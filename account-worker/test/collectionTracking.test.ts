@@ -11,6 +11,8 @@ function fixture() {
   db.exec(readFileSync(new URL("../migrations/0022_collection_tracking.sql",import.meta.url),"utf8"));
   db.exec(readFileSync(new URL("../migrations/0023_card_locations.sql",import.meta.url),"utf8"));
   db.exec("CREATE TABLE collection_entries(user_id TEXT,card_uuid TEXT,owned_quantity INTEGER); CREATE TABLE collection_printing_entries(user_id TEXT,card_uuid TEXT,owned_quantity INTEGER); CREATE TABLE user_decks(id TEXT PRIMARY KEY,owner_user_id TEXT); INSERT INTO collection_entries VALUES('a','card',4); INSERT INTO user_decks VALUES('deck-a','a'),('deck-b','a'),('foreign','b');");
+  db.exec("ALTER TABLE collection_printing_entries ADD COLUMN edition_uuid TEXT;");
+  for (const file of ["0020_comments_and_binder.sql","0024_trade_allocations.sql"]) db.exec(readFileSync(new URL(`../migrations/${file}`,import.meta.url),"utf8"));
   const env = {ACCOUNT_DB:{prepare(sql: string) {
     let args: (string|number|null)[] = [];
     return {bind(...values: typeof args) {args=values;return this;}, async all(){return {results:db.prepare(sql).all(...args)};}, async run(){return {meta:db.prepare(sql).run(...args)};}};
@@ -53,7 +55,7 @@ test("invalid borrowers, quantities, duplicate loans and dates are rejected",asy
 
 test("assignments conserve pooled copies, include loans, and reject private foreign decks",async()=>{
  const {db,env,user,input}=fixture();
- db.exec("INSERT INTO collection_printing_entries VALUES('a','card',1)");
+ db.exec("INSERT INTO collection_printing_entries(user_id,card_uuid,owned_quantity) VALUES('a','card',1)");
  const first=await saveCollectionTracking(env,user,"card",{...input,assignments:[{deckId:'deck-a',quantity:3}]});
  assert.equal(first.assignments?.[0].quantity,3);
  await assert.rejects(saveCollectionTracking(env,user,"card",{...input,revision:1,assignments:[{deckId:'deck-a',quantity:4}]}),/exceed ownership/);

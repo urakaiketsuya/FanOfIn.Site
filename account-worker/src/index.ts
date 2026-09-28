@@ -473,15 +473,17 @@ export default {
       }
       return response(env, request, { error: "Route not found" }, 404);
     } catch (error) {
-      const known = error instanceof ApiError;
-      const status = known ? error.status : 500;
-      const code = known ? error.code : "internal_error";
+      const failure = (!(error instanceof ApiError) && error instanceof Error && /Accepted trades reserve|accepted trade reserves|Cards are assigned, lent|offered binder item changed|Reserved binder items cannot/.test(error.message))
+        ? new ApiError("Card availability changed: copies are assigned, lent, or reserved for a trade. Reload and review locations or offers before retrying.", 409, "trade_allocation_conflict") : error;
+      const known = failure instanceof ApiError;
+      const status = known ? failure.status : 500;
+      const code = known ? failure.code : "internal_error";
       if (status === 404 && url.pathname.startsWith("/v1/me/")) {
         const actor = await authenticatedUser(request, env);
         if (actor) await recordPrivateResourceMiss(env, actor.id, url.pathname, requestId).catch(() => undefined);
       }
-      logError(request, requestId, known && error.cause ? error.cause : error, status, code);
-      return response(env, request, { error: known ? error.publicMessage : "Unexpected account service error", requestId }, status, { "X-Request-ID": requestId });
+      logError(request, requestId, known && failure.cause ? failure.cause : failure, status, code);
+      return response(env, request, { error: known ? failure.publicMessage : "Unexpected account service error", requestId }, status, { "X-Request-ID": requestId });
     }
   },
 } satisfies ExportedHandler<Env>;

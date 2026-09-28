@@ -13,17 +13,19 @@ export function deckCardRequirements(decklist: OmnidexDecklist): Map<string, {na
 export function cardLocationState(cardUuid: string, entries: CollectionEntry[], record?: CollectionCardTracking) {
   const owned = entries.filter(entry => entry.cardUuid === cardUuid).reduce((sum, entry) => sum + entry.ownedQuantity, 0);
   const lent = record?.loans.filter(loan => !loan.returnedAt).reduce((sum, loan) => sum + loan.quantity, 0) ?? 0;
+  const reserved = record?.tradeReservedQuantity ?? 0;
   const assigned = record?.assignments?.reduce((sum, assignment) => sum + assignment.quantity, 0) ?? 0;
-  return {owned, lent, assigned, available: Math.max(0, owned - lent), unassigned: Math.max(0, owned - lent - assigned), excess: Math.max(0, lent + assigned - owned)};
+  return {owned, lent, assigned, reserved, available: Math.max(0, owned - lent - reserved), unassigned: Math.max(0, owned - lent - assigned - reserved), excess: Math.max(0, lent + assigned + reserved - owned)};
 }
 /** Plan an explicit transfer, consuming unassigned copies before copies in other decks. Never uses loans. */
 export function planCardTransfer(deckId: string, required: number, owned: number, record?: CollectionCardTracking) {
   const lent = record?.loans.filter(loan => !loan.returnedAt).reduce((sum, loan) => sum + loan.quantity, 0) ?? 0;
+  const reserved = record?.tradeReservedQuantity ?? 0;
   const current = record?.assignments ?? [];
   const total = current.reduce((sum, row) => sum + row.quantity, 0);
-  if (total + lent > owned) return {assignments: current, transfers: [] as CollectionDeckAssignment[], missing: Math.max(0, required - owned), loanBlocked: 0, reconcile: true};
-  const target = Math.min(required, Math.max(0, owned - lent));
-  let toMove = Math.max(0, target - (current.find(row => row.deckId === deckId)?.quantity ?? 0) - Math.max(0, owned - lent - total));
+  if (total + lent + reserved > owned) return {assignments: current, transfers: [] as CollectionDeckAssignment[], missing: Math.max(0, required - owned), loanBlocked: 0, reconcile: true};
+  const target = Math.min(required, Math.max(0, owned - lent - reserved));
+  let toMove = Math.max(0, target - (current.find(row => row.deckId === deckId)?.quantity ?? 0) - Math.max(0, owned - lent - reserved - total));
   const transfers: CollectionDeckAssignment[] = [];
   const assignments = current.filter(row => row.deckId !== deckId).map(row => {
     const quantity = Math.min(toMove, row.quantity); toMove -= quantity;

@@ -1,5 +1,7 @@
 import type { AuthUser, Env } from "./auth";
 import type { BinderItem, BinderItemKind, BinderSettings, PublicBinder, Trade, TradeLine, TradeMethod, TradeStatus } from "@gatcg/shared";
+import { effectiveBinderItems, tradeAvailability } from "@gatcg/shared";
+import { listCollectionTracking } from "./collectionTracking";
 import { ApiError, badRequest } from "./errors";
 
 const ACTIVE_RESERVATIONS: TradeStatus[] = ["accepted", "sender_sent", "recipient_sent", "both_sent"];
@@ -10,7 +12,7 @@ function settings(row?: Record<string, unknown> | null): BinderSettings {
 
 async function reservations(env: Env): Promise<Map<string, number>> {
   const rows = await env.ACCOUNT_DB.prepare(`SELECT r.lines_json FROM trades t JOIN trade_revisions r ON r.trade_id = t.id AND r.revision_number = t.current_revision
-    WHERE t.status IN ('accepted', 'sender_sent', 'recipient_sent', 'both_sent')`).all<{ lines_json: string }>();
+    WHERE t.status IN ('accepted', 'sender_sent', 'recipient_sent', 'both_sent', 'disputed')`).all<{ lines_json: string }>();
   const result = new Map<string, number>();
   for (const row of rows.results) for (const line of JSON.parse(row.lines_json) as TradeLine[]) result.set(line.binderItemId, (result.get(line.binderItemId) ?? 0) + line.quantity);
   return result;
@@ -20,9 +22,16 @@ function mapItem(row: Record<string, unknown>, reserved: number): BinderItem {
   return { id: String(row.id), kind: row.kind as BinderItemKind, cardUuid: String(row.card_uuid), cardName: String(row.card_name), editionUuid: row.edition_uuid ? String(row.edition_uuid) : null, setPrefix: row.set_prefix ? String(row.set_prefix) : null, collectorNumber: row.collector_number ? String(row.collector_number) : null, quantity: Number(row.quantity), reservedQuantity: reserved, condition: String(row.condition), language: String(row.language), acceptsAlternatives: Boolean(row.accepts_alternatives), updatedAt: String(row.updated_at) };
 }
 
-async function itemsForUser(env: Env, userId: string): Promise<BinderItem[]> {
+async function inventory(env: Env, userId: string) {
+  const rows = await env.ACCOUNT_DB.prepare(`SELECT card_uuid,card_name,owned_quantity,proxy_quantity,NULL edition_uuid FROM collection_entries WHERE user_id=? UNION ALL SELECT card_uuid,card_name,owned_quantity,proxy_quantity,edition_uuid FROM collection_printing_entries WHERE user_id=?`).bind(userId,userId).all<{card_uuid:string;card_name:string;owned_quantity:number;proxy_quantity:number;edition_uuid:string|null}>();
+  return rows.results.map(row=>({cardUuid:row.card_uuid,cardName:row.card_name,ownedQuantity:row.owned_quantity,proxyQuantity:row.proxy_quantity,editionUuid:row.edition_uuid ?? undefined,updatedAt:""}));
+}
+
+async function itemsForUser(env: Env, userId: string, effective = false): Promise<BinderItem[]> {
   const [rows, reserved] = await Promise.all([env.ACCOUNT_DB.prepare("SELECT * FROM binder_items WHERE user_id = ? ORDER BY kind, card_name COLLATE NOCASE").bind(userId).all<Record<string, unknown>>(), reservations(env)]);
-  return rows.results.map((row) => mapItem(row, reserved.get(String(row.id)) ?? 0));
+  const items = rows.results.map((row) => mapItem(row, reserved.get(String(row.id)) ?? 0));
+  if (!effective) return items;
+  return effectiveBinderItems(await inventory(env,userId),await listCollectionTracking(env,{id:userId} as AuthUser),items);
 }
 
 export async function myBinder(env: Env, user: AuthUser): Promise<{ settings: BinderSettings; items: BinderItem[] }> {
@@ -34,7 +43,7 @@ export async function publicBinder(env: Env, profileSlug: string): Promise<Publi
   const owner = await env.ACCOUNT_DB.prepare(`SELECT u.id, u.display_name, u.profile_slug, s.* FROM users u JOIN binder_settings s ON s.user_id = u.id
     WHERE u.profile_slug = ? AND u.profile_discoverable = 1 AND s.is_public = 1`).bind(profileSlug).first<Record<string, unknown>>();
   if (!owner) return null;
-  return { owner: { displayName: String(owner.display_name), profileSlug: String(owner.profile_slug) }, settings: settings(owner), items: await itemsForUser(env, String(owner.id)) };
+  return { owner: { displayName: String(owner.display_name), profileSlug: String(owner.profile_slug) }, settings: settings(owner), items: await itemsForUser(env, String(owner.id), true) };
 }
 
 export async function saveBinderSettings(env: Env, user: AuthUser, value: unknown): Promise<BinderSettings> {
@@ -67,6 +76,8 @@ async function assertOwned(env: Env, userId: string, item: ReturnType<typeof par
     ? await env.ACCOUNT_DB.prepare("SELECT COALESCE(SUM(quantity), 0) total FROM binder_items WHERE user_id=? AND kind='available' AND edition_uuid=? AND id != ?").bind(userId, item.editionUuid, excludeId ?? "").first<{ total: number }>()
     : await env.ACCOUNT_DB.prepare("SELECT COALESCE(SUM(quantity), 0) total FROM binder_items WHERE user_id=? AND kind='available' AND card_uuid=? AND edition_uuid IS NULL AND id != ?").bind(userId, item.cardUuid, excludeId ?? "").first<{ total: number }>();
   if ((owned?.owned_quantity ?? 0) < item.quantity + Number(published?.total ?? 0)) throw badRequest("Published availability cannot exceed your collection quantity");
+  const available = tradeAvailability(item.cardUuid, await inventory(env,userId), (await listCollectionTracking(env,{id:userId} as AuthUser)).find(row=>row.cardUuid===item.cardUuid), (await itemsForUser(env,userId)).filter(row=>row.id!==excludeId));
+  if (item.quantity > available.listable) throw badRequest("Release deck assignments or return loans before listing these copies; existing listings also use this availability.");
   if (excludeId) {
     const reserved = (await reservations(env)).get(excludeId) ?? 0;
     if (reserved > item.quantity) throw badRequest("Quantity cannot be lower than copies reserved by accepted trades");
@@ -95,9 +106,9 @@ export async function deleteBinderItem(env: Env, user: AuthUser, id: string): Pr
 }
 
 export async function binderMatches(env: Env, user: AuthUser): Promise<PublicBinder[]> {
-  const mine = await itemsForUser(env, user.id);
+  const mine = await itemsForUser(env, user.id, true);
   const wanted = new Set(mine.filter((item) => item.kind === "wanted").map((item) => item.cardUuid));
-  const available = new Set(mine.filter((item) => item.kind === "available").map((item) => item.cardUuid));
+  const available = new Set(mine.filter((item) => item.kind === "available" && item.quantity > item.reservedQuantity).map((item) => item.cardUuid));
   if (!wanted.size && !available.size) return [];
   const profiles = await env.ACCOUNT_DB.prepare(`SELECT u.profile_slug FROM users u JOIN binder_settings s ON s.user_id = u.id WHERE u.id != ? AND u.profile_discoverable = 1 AND s.is_public = 1`).bind(user.id).all<{ profile_slug: string }>();
   const result: PublicBinder[] = [];
@@ -116,10 +127,14 @@ function parseLines(value: unknown): Array<Pick<TradeLine, "binderItemId" | "qua
 
 async function snapshotLines(env: Env, senderId: string, recipientId: string, raw: unknown): Promise<TradeLine[]> {
   const requested = parseLines(raw), reserved = await reservations(env), lines: TradeLine[] = [];
+  const cached = new Map<string,BinderItem[]>();
   for (const request of requested) {
     const row = await env.ACCOUNT_DB.prepare("SELECT * FROM binder_items WHERE id = ? AND kind = 'available' AND user_id IN (?, ?)").bind(request.binderItemId, senderId, recipientId).first<Record<string, unknown>>();
     if (!row) throw badRequest("Offer cards must come from either public binder");
-    const free = Number(row.quantity) - (reserved.get(String(row.id)) ?? 0);
+    const ownerId=String(row.user_id);
+    if(!cached.has(ownerId)) cached.set(ownerId,await itemsForUser(env,ownerId,true));
+    const effective = cached.get(ownerId)!.find(item=>item.id===row.id);
+    const free = (effective?.quantity ?? 0) - (reserved.get(String(row.id)) ?? 0);
     if (request.quantity > free) throw badRequest(`${String(row.card_name)} no longer has enough available copies`);
     lines.push({ direction: String(row.user_id) === senderId ? "sender_gives" : "recipient_gives", binderItemId: String(row.id), cardUuid: String(row.card_uuid), cardName: String(row.card_name), editionUuid: row.edition_uuid ? String(row.edition_uuid) : null, setPrefix: row.set_prefix ? String(row.set_prefix) : null, collectorNumber: row.collector_number ? String(row.collector_number) : null, quantity: request.quantity });
   }
@@ -164,11 +179,12 @@ export async function counterTrade(env: Env, user: AuthUser, id: string, value: 
   const input = value as { lines?: unknown; message?: unknown } | null;
   const lines = await snapshotLines(env, String(trade.sender_user_id), String(trade.recipient_user_id), input?.lines);
   const revision = Number(trade.current_revision) + 1, now = new Date().toISOString();
-  await env.ACCOUNT_DB.batch([
-    env.ACCOUNT_DB.prepare("INSERT INTO trade_revisions (trade_id, revision_number, proposer_user_id, message, lines_json, created_at) VALUES (?, ?, ?, ?, ?, ?)").bind(id, revision, user.id, typeof input?.message === "string" ? input.message.trim().slice(0, 1_000) : "", JSON.stringify(lines), now),
-    env.ACCOUNT_DB.prepare("UPDATE trades SET status='countered', current_revision=?, updated_at=? WHERE id=?").bind(revision, now, id),
-    env.ACCOUNT_DB.prepare("INSERT INTO trade_events (id, trade_id, actor_user_id, event_type, created_at) VALUES (?, ?, ?, 'countered', ?)").bind(crypto.randomUUID(), id, user.id, now),
+  const changed = await env.ACCOUNT_DB.batch([
+    env.ACCOUNT_DB.prepare("INSERT INTO trade_revisions (trade_id, revision_number, proposer_user_id, message, lines_json, created_at) SELECT ?, ?, ?, ?, ?, ? WHERE EXISTS (SELECT 1 FROM trades WHERE id=? AND status=? AND current_revision=?)").bind(id, revision, user.id, typeof input?.message === "string" ? input.message.trim().slice(0, 1_000) : "", JSON.stringify(lines), now, id, trade.status, trade.current_revision),
+    env.ACCOUNT_DB.prepare("UPDATE trades SET status='countered', current_revision=?, updated_at=? WHERE id=? AND status=? AND current_revision=? AND changes()=1").bind(revision, now, id, trade.status, trade.current_revision),
+    env.ACCOUNT_DB.prepare("INSERT INTO trade_events (id, trade_id, actor_user_id, event_type, created_at) SELECT ?, ?, ?, 'countered', ? WHERE changes()=1").bind(crypto.randomUUID(), id, user.id, now),
   ]);
+  if (!changed[1].meta.changes) throw new ApiError("Trade changed; reload before retrying", 409, "trade_conflict");
 }
 
 export async function updateTradeStatus(env: Env, user: AuthUser, id: string, next: unknown): Promise<void> {
@@ -199,14 +215,17 @@ export async function updateTradeStatus(env: Env, user: AuthUser, id: string, ne
       const currentRevision = await env.ACCOUNT_DB.prepare("SELECT proposer_user_id FROM trade_revisions WHERE trade_id=? AND revision_number=?").bind(id, trade.current_revision).first<{ proposer_user_id: string }>();
       if (currentRevision?.proposer_user_id === user.id) throw badRequest("The other trader must accept this offer");
     }
-    await snapshotLines(env, String(trade.sender_user_id), String(trade.recipient_user_id), (JSON.parse(revision!.lines_json) as TradeLine[]).map((line) => ({ binderItemId: line.binderItemId, quantity: line.quantity })));
+    const original = JSON.parse(revision!.lines_json) as TradeLine[];
+    const fresh = await snapshotLines(env, String(trade.sender_user_id), String(trade.recipient_user_id), original.map(line => ({ binderItemId: line.binderItemId, quantity: line.quantity })));
+    if (fresh.some((line,index)=>line.cardUuid!==original[index].cardUuid || line.editionUuid!==original[index].editionUuid || line.direction!==original[index].direction)) throw badRequest("An offered printing changed. Create a new offer.");
   }
   const now = new Date().toISOString();
   if (status === "completed") { await applyCompletedTrade(env, trade, user.id, now); return; }
-  await env.ACCOUNT_DB.batch([
-    env.ACCOUNT_DB.prepare("UPDATE trades SET status=?, updated_at=? WHERE id=?").bind(status, now, id),
-    env.ACCOUNT_DB.prepare("INSERT INTO trade_events (id, trade_id, actor_user_id, event_type, created_at) VALUES (?, ?, ?, ?, ?)").bind(crypto.randomUUID(), id, user.id, status, now),
+  const changed = await env.ACCOUNT_DB.batch([
+    env.ACCOUNT_DB.prepare("UPDATE trades SET status=?, updated_at=? WHERE id=? AND status=? AND current_revision=?").bind(status, now, id, current, trade.current_revision),
+    env.ACCOUNT_DB.prepare("INSERT INTO trade_events (id, trade_id, actor_user_id, event_type, created_at) SELECT ?, ?, ?, ?, ? WHERE changes()=1").bind(crypto.randomUUID(), id, user.id, status, now),
   ]);
+  if (!changed[0].meta.changes) throw new ApiError("Trade changed; reload before retrying",409,"trade_conflict");
 }
 
 async function applyCompletedTrade(env: Env, trade: Record<string, unknown>, actorUserId: string, now: string): Promise<void> {

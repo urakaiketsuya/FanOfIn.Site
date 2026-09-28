@@ -123,6 +123,9 @@ export interface CollectionLoan {
 }
 export interface CollectionDeckAssignment { deckId: string; quantity: number; }
 export interface CollectionCardTracking {
+  /** Read-only trading state; not part of tracking updates. */
+  tradeReservedQuantity?: number;
+  tradeListedQuantity?: number;
   cardUuid: string;
   cardName: string;
   mightOwn: boolean;

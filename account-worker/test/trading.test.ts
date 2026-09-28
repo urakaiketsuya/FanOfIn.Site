@@ -2,13 +2,13 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { DatabaseSync } from "node:sqlite";
 import { readFileSync } from "node:fs";
-import { updateTradeStatus } from "../src/trading";
+import { counterTrade, updateTradeStatus } from "../src/trading";
 import type { Env, AuthUser } from "../src/auth";
 
 function fixture(printing = false, copies = 4, binderCount = 2) {
   const db = new DatabaseSync(":memory:");
-  db.exec("CREATE TABLE users(id TEXT PRIMARY KEY); CREATE TABLE user_decks(id TEXT PRIMARY KEY);");
-  for (const file of ["0008_collection.sql", "0019_collection_printings.sql", "0020_comments_and_binder.sql"]) {
+  db.exec("CREATE TABLE users(id TEXT PRIMARY KEY); CREATE TABLE user_decks(id TEXT PRIMARY KEY,owner_user_id TEXT);");
+  for (const file of ["0008_collection.sql", "0019_collection_printings.sql", "0020_comments_and_binder.sql", "0022_collection_tracking.sql", "0023_card_locations.sql", "0024_trade_allocations.sql"]) {
     db.exec(readFileSync(new URL(`../migrations/${file}`, import.meta.url), "utf8"));
   }
   let beforeBatch: (() => void) | undefined;
@@ -99,5 +99,47 @@ test("simultaneous receipts can exhaust binder and collection without a retry er
     assert.deepEqual(f.quantities(), [0, 2]);
     assert.equal(f.count("binder_items"), 0);
     assert.equal(f.count("collection_transactions"), 2);
+  } finally { f.db.close(); }
+});
+
+
+test("acceptance reserves copies against loans, assignments, and collection reductions", async()=>{
+ const f=fixture(false,4,1); f.db.exec("UPDATE trades SET status='sent'; INSERT INTO user_decks VALUES('deck','a');");
+ await updateTradeStatus(f.env,{id:'b'} as AuthUser,'t','accepted');
+ assert.throws(()=>f.db.exec(`INSERT INTO collection_card_tracking(user_id,card_uuid,card_name,might_own,loans_json,assignments_json,revision,updated_at) VALUES('a','card','Card',0,'[]','[{"deckId":"deck","quantity":4}]',1,'now')`),/reserve/);
+ assert.throws(()=>f.db.exec("UPDATE collection_entries SET owned_quantity=0 WHERE user_id='a'"),/reserve/);
+ assert.throws(()=>f.db.exec("UPDATE binder_items SET card_uuid='other'"),/Reserved/);
+ assert.throws(()=>f.db.exec("DELETE FROM binder_items"),/reserves/);
+});
+test("a loan created between availability read and acceptance prevents the reservation atomically",async()=>{
+ const f=fixture(false,4,1);f.db.exec("UPDATE trades SET status='sent'");
+ f.beforeBatch(()=>f.db.exec(`INSERT INTO collection_card_tracking(user_id,card_uuid,card_name,might_own,loans_json,assignments_json,revision,updated_at) VALUES('a','card','Card',0,'[{"id":"loan","borrower":"Sam","quantity":4,"lentAt":"2026-09-01"}]','[]',1,'now')`));
+ await assert.rejects(updateTradeStatus(f.env,{id:'b'} as AuthUser,'t','accepted'),/assigned, lent/);
+ assert.equal(f.db.prepare("SELECT status FROM trades WHERE id='t'").get()!.status,'sent');
+ assert.equal(f.db.prepare("SELECT COUNT(*) n FROM trade_card_reservations").get()!.n,0);
+});
+test("disputes retain reservations and cancelled trades release them",async()=>{
+ const f=fixture(false,4,1); f.db.exec("UPDATE trades SET status='sent'");
+ await updateTradeStatus(f.env,{id:'b'} as AuthUser,'t','accepted');
+ await updateTradeStatus(f.env,{id:'b'} as AuthUser,'t','disputed');
+ assert.equal(f.db.prepare("SELECT SUM(quantity) n FROM trade_card_reservations").get()!.n,1);
+ const g=fixture(false,4,1);g.db.exec("UPDATE trades SET status='sent'");
+ await updateTradeStatus(g.env,{id:'b'} as AuthUser,'t','accepted');
+ await updateTradeStatus(g.env,{id:'b'} as AuthUser,'t','cancelled');
+ assert.equal(g.db.prepare("SELECT COUNT(*) n FROM trade_card_reservations").get()!.n,0);
+});
+
+
+test("counteroffer cannot release a concurrently accepted reservation", async () => {
+  const f = fixture(false, 4, 1);
+  try {
+    f.db.exec("UPDATE trades SET status='sent' WHERE id='t'");
+    f.beforeBatch(() => f.db.exec("UPDATE trades SET status='accepted' WHERE id='t'"));
+    await assert.rejects(counterTrade(f.env, { id: "b" } as AuthUser, "t", {
+      lines: [{ direction: "sender_gives", binderItemId: "item0", quantity: 1 }],
+    }), /Trade changed/);
+    assert.equal(f.db.prepare("SELECT status FROM trades").get()!.status, "accepted");
+    assert.equal(f.count("trade_revisions"), 1);
+    assert.equal(f.count("trade_events"), 0);
   } finally { f.db.close(); }
 });

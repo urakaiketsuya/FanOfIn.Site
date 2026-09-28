@@ -43,3 +43,5 @@ export * from "./setFamilies.js";
 
 export * from "./cardLocations.js";
 export { computeCollectionValue } from "./collectionValue.js";
+
+export * from "./tradeAvailability.js";

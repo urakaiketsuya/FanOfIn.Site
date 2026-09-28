@@ -4,7 +4,14 @@ import { ApiError, badRequest } from "./errors";
 
 export async function listCollectionTracking(env: Env, user: AuthUser): Promise<CollectionCardTracking[]> {
   const rows = await env.ACCOUNT_DB.prepare("SELECT * FROM collection_card_tracking WHERE user_id = ? ORDER BY card_name COLLATE NOCASE").bind(user.id).all<Record<string, string | number>>();
-  return rows.results.map(row => ({cardUuid: String(row.card_uuid), cardName: String(row.card_name), mightOwn: Boolean(row.might_own), loans: JSON.parse(String(row.loans_json)), assignments: JSON.parse(String(row.assignments_json)), revision: Number(row.revision), updatedAt: String(row.updated_at)}));
+  const records: CollectionCardTracking[] = rows.results.map(row => ({cardUuid: String(row.card_uuid), cardName: String(row.card_name), mightOwn: Boolean(row.might_own), loans: JSON.parse(String(row.loans_json)), assignments: JSON.parse(String(row.assignments_json)), revision: Number(row.revision), updatedAt: String(row.updated_at)}));
+  const trading = await env.ACCOUNT_DB.prepare(`SELECT b.card_uuid,b.card_name,SUM(b.quantity) listed,COALESCE(SUM(r.quantity),0) reserved FROM binder_items b LEFT JOIN trade_card_reservations r ON r.binder_item_id=b.id WHERE b.user_id=? AND b.kind='available' GROUP BY b.card_uuid`).bind(user.id).all<{card_uuid:string;card_name:string;listed:number;reserved:number}>();
+  for (const item of trading.results) {
+    let record = records.find(row=>row.cardUuid===item.card_uuid);
+    if (!record) {record={cardUuid:item.card_uuid,cardName:item.card_name,mightOwn:false,loans:[],assignments:[],revision:0,updatedAt:""};records.push(record);}
+    record.tradeListedQuantity=item.listed; record.tradeReservedQuantity=item.reserved;
+  }
+  return records;
 }
 
 export async function saveCollectionTracking(env: Env, user: AuthUser, cardUuid: string, value: unknown): Promise<CollectionCardTracking> {

@@ -3302,3 +3302,12 @@ Estimated USD value sums each physical inventory row's owned quantity × market 
 ### Card locations and loan returns
 
 `/card-locations` manages physical allocation independently of collection quantities. Matching saved decklists do not reserve copies until the user saves a location. Loans remain owned but cannot also be allocated to a deck. Releasing assigned copies to lend them requires an explicit draft action followed by save. Partial returns split a loan into an outstanding row and a returned-history row, conserving the original copy total; only the returned portion becomes available again. Existing per-card revision checks and atomic tracking writes remain in use. No additional inventory or finish-tracking fields are introduced.
+
+
+### Collection and trading binder availability
+
+Collection ownership remains authoritative. Binder listings express intent and do not reserve copies; accepted, sent and disputed trades reserve physical copies from their accepted revision. Disputes retain reservations until resolved. Deck assignments, outstanding loans and trade reservations share pooled physical ownership; proxies never increase trade capacity. Available public listings are capped deterministically by free pooled copies and by their exact printing (or unspecified inventory) pool. Adding a listing subtracts existing listings as well as deck assignments and loans, avoiding double-listing the same capacity. Playset extras subtract the collection playset target and existing listings, then cap against listable copies.
+
+The collection review reads saved inventory, requires explicit quantities/printings and an explicit add action, and states whether the binder is public. It never publishes a private binder automatically. Partial saves retain completed rows so retries add only remaining rows. Wanted cards are independent of ownership and default to any printing.
+
+Account migration `0024_trade_allocations.sql` must be applied before deploying this integration. Database triggers check accepted reservations atomically against ownership, loans and deck assignments, protect reserved binder identity/quantity, and reject conflicting inventory reductions. Optimistic trade status/revision checks prevent stale counteroffers from releasing accepted reservations. Completion retains the existing transactional inventory transfer and idempotent receipt behavior.

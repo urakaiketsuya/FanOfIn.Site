@@ -2,6 +2,7 @@ import { useState, type ReactNode } from "react";
 import type { Card } from "@gatcg/shared";
 import CardArtTile from "../../components/CardArtTile";
 import { playsetTarget } from "./collectionPlaysets";
+import CollectionBinderReview from "./CollectionBinderReview";
 import EditorDialog from "../../components/deck-editor/EditorDialog";
 import { buildTcgplayerMassEntryUrl } from "../../lib/tcgplayerMassEntry";
 import { shoppingBatches, shoppingLines, type ShoppingChoice } from "./collectionShopping";
@@ -17,6 +18,7 @@ export interface CollectionPurchaseMode {
 export default function CollectionPurchase({ cards, catalog = cards, quantities = new Map(), preview, children }: {
   catalog?: Card[]; quantities?: ReadonlyMap<string, number>; cards: Card[]; preview?: boolean; children: (mode: CollectionPurchaseMode) => ReactNode;
 }) {
+  const [binderKind,setBinderKind]=useState<"available"|"wanted"|null>(null);
   const [active, setActive] = useState(false);
   const [review, setReview] = useState(false);
   const [choices, setChoices] = useState<Record<string, ShoppingChoice>>({});
@@ -34,12 +36,15 @@ export default function CollectionPurchase({ cards, catalog = cards, quantities 
     {!preview && <div className="contents">
       <button type="button" aria-pressed={active} onClick={() => setActive(!active)} className={control}>{active ? "Done selecting" : "Select"}</button>
       {active && <button type="button" disabled={!cards.length} onClick={() => setChoices(current => ({ ...current, ...Object.fromEntries(cards.map(card => [card.uuid, current[card.uuid] ?? { name: card.name, quantity: 1 }])) }))} className={control}>Select all {cards.length}</button>}
+      {active && <button type="button" onClick={()=>{setChoices(Object.fromEntries(cards.flatMap(card=>{const extra=Math.max(0,(quantities.get(card.uuid)??0)-playsetTarget(card));return extra?[[card.uuid,{name:card.name,quantity:extra}]]:[];})));}} className={control}>Select extra copies</button>}
+      {!!lines.length && <><button type="button" onClick={()=>setBinderKind("available")} className={control}>Add to binder</button><button type="button" onClick={()=>setBinderKind("wanted")} className={control}>Add to wants</button></>}
       {!!lines.length && <button type="button" onClick={() => setReview(true)} className={`${control} border-ctp-blue`}>Review purchase ({lines.length})</button>}
     </div>}
-    {active && <p role="status" className="mb-3 text-sm text-ctp-subtext1">Select cards below to buy.{hidden > 0 ? ` ${hidden} selected outside these filters.` : ""}</p>}
+    {active && <p role="status" className="mb-3 text-sm text-ctp-subtext1">Select cards below, then choose an action.{hidden > 0 ? ` ${hidden} selected outside these filters.` : ""}</p>}
   </>;
   return <>
     {children({ controls, active, choices, choose })}
+    {binderKind && <CollectionBinderReview kind={binderKind} choices={choices} cards={catalog} onDismiss={()=>setBinderKind(null)}/>}
     {review && <EditorDialog title="Review purchase" doneLabel="Back to cards" onDismiss={() => setReview(false)}>
       <p className="text-sm text-ctp-subtext1">Choose quantities, then open TCGplayer. Printing and condition are chosen there.</p>
       <div className="my-2 flex flex-wrap gap-2"><button type="button" className={control} onClick={() => setChoices(current => Object.fromEntries(Object.entries(current).map(([id, choice]) => [id, {...choice, quantity: 1}])))}>One of each</button><button type="button" className={control} onClick={() => setChoices(current => Object.fromEntries(Object.entries(current).flatMap(([id, choice]) => { const card = catalog.find(card => card.uuid === id); const quantity = card ? Math.max(0, playsetTarget(card) - (quantities.get(id) ?? 0)) : choice.quantity; return quantity ? [[id, {...choice, quantity}]] : []; })))}>Fill missing playset copies</button></div>
