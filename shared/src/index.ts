@@ -42,6 +42,6 @@ export * from "./constructionPackages.js";
 export * from "./setFamilies.js";
 
 export * from "./cardLocations.js";
-export { computeCollectionValue } from "./collectionValue.js";
+export { computeCollectionValue, TCGPLAYER_MARKETPLACE_NET_RATE } from "./collectionValue.js";
 
 export * from "./tradeAvailability.js";

@@ -2,7 +2,15 @@ import type { Card } from "./api-types.js";
 import type { CollectionEntry } from "./collection-types.js";
 import { priceKey, type CardPriceEntry } from "./pricing.js";
 
-/** Market estimate only: finish/condition are not tracked in collection inventory. */
+/**
+ * TCGplayer's standard Marketplace seller fees: 10.75% commission plus 2.5%
+ * transaction processing. The fixed $0.30 transaction fee is intentionally excluded:
+ * it applies once per checkout, while a collection cannot tell us how cards would be
+ * grouped into orders (or their shipping/tax amounts).
+ */
+export const TCGPLAYER_MARKETPLACE_NET_RATE = 1 - 0.1075 - 0.025;
+
+/** Market estimate adjusted to likely standard-Marketplace seller proceeds. Finish/condition are not tracked in collection inventory. */
 export function computeCollectionValue(entries: CollectionEntry[], cards: Card[], prices: ReadonlyMap<string, CardPriceEntry>) {
   const valid = (value: number | null | undefined): value is number => typeof value === "number" && Number.isFinite(value) && value >= 0;
   const market = (price: CardPriceEntry | undefined) => valid(price?.normal?.market) ? price.normal.market : undefined;
@@ -37,5 +45,8 @@ export function computeCollectionValue(entries: CollectionEntry[], cards: Card[]
     if (!entry.editionUuid) unspecifiedCopies += quantity;
     if (value !== undefined) { cents += Math.round(value * 100) * quantity; pricedCopies += quantity; }
   }
-  return { total: pricedCopies || !ownedCopies ? cents / 100 : null, ownedCopies, pricedCopies, missingCopies: ownedCopies - pricedCopies, unspecifiedCopies };
+  const marketTotal = pricedCopies || !ownedCopies ? cents / 100 : null;
+  const total = marketTotal === null ? null : Math.round(marketTotal * TCGPLAYER_MARKETPLACE_NET_RATE * 100) / 100;
+  const feeEstimate = marketTotal === null || total === null ? null : Math.round((marketTotal - total) * 100) / 100;
+  return { total, marketTotal, feeEstimate, ownedCopies, pricedCopies, missingCopies: ownedCopies - pricedCopies, unspecifiedCopies };
 }
