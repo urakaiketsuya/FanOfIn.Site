@@ -1,14 +1,16 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
+import EditorDialog from "../../components/deck-editor/EditorDialog";
 import { setFamily, type Card } from "@gatcg/shared";
-import DisclosureChevron from "../../components/DisclosureChevron";
+
 import MultiSelectFilter from "../../components/filters/MultiSelectFilter";
 import SearchSelectFilter from "../../components/filters/SearchSelectFilter";
 import { emptyFilterState, type CardFilterState } from "../cards/filters";
 
-export default function CollectionCardFilters({ cards, filters, onChange, children }: {
-  children?: ReactNode;
+export default function CollectionCardFilters({ cards, filters, onChange, children, secondary }: {
+  children?: ReactNode; secondary?: ReactNode;
   cards: Card[]; filters: CardFilterState; onChange: (filters: CardFilterState) => void;
 }) {
+  const [open, setOpen] = useState(false);
   const count = filters.classes.size + filters.types.size + filters.subtypes.size + filters.elements.size + filters.sets.size + (filters.printingSets?.size ?? 0);
   function toggle(key: "classes" | "types" | "subtypes" | "elements" | "sets" | "printingSets", value: string) {
     const values = new Set(filters[key]);
@@ -20,8 +22,10 @@ export default function CollectionCardFilters({ cards, filters, onChange, childr
   const printings = [...new Map(cards.flatMap(card => card.editions.map(ed => [ed.set.prefix, ed.set.name] as const)))].map(([value,text]) => ({value,text}));
   return <div className="mt-3 [&_input]:min-h-12 [&_input]:text-base">
     <input aria-label="Search collection cards" placeholder="Search names or rules text…" value={filters.name} onChange={event => onChange({ ...filters, name: event.target.value })} className="w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3" />
-    <details className="mt-2"><summary className="flex min-h-12 cursor-pointer list-none items-center gap-2">Card filters{count > 0 ? ` (${count})` : ""}<DisclosureChevron /></summary>
-      <div className="space-y-4 rounded-xl border border-ctp-surface1 p-3">{children}
+    <div className="flex flex-wrap items-center gap-2 py-2">{children}<button type="button" onClick={() => setOpen(true)} className="min-h-12 rounded-lg border border-ctp-surface1 px-3 text-sm">Filters{count > 0 ? ` (${count})` : ""}</button></div>
+    <div className="flex flex-wrap gap-2">{(["subtypes", "elements", "classes", "types", "sets", "printingSets"] as const).flatMap(key => [...(filters[key] ?? [])].map(value => <button key={`${key}:${value}`} type="button" aria-label={`Remove ${value} filter`} onClick={() => toggle(key, value)} className="min-h-12 rounded-full border border-ctp-surface1 px-3 text-xs">{value} ×</button>))}</div>
+    {open && <EditorDialog title="Filter collection" doneLabel="Show cards" onDismiss={() => setOpen(false)}>
+      <div className="space-y-4 rounded-xl border border-ctp-surface1 p-3">{secondary}
         <SearchSelectFilter label="Subtypes" options={options("subtypes")} selected={filters.subtypes} onToggle={value => toggle("subtypes", value)} />
         <p className="text-xs text-ctp-subtext0">Choose Harmony, Melody, or another subtype. Multiple choices match either subtype.</p>
         {(["elements", "classes", "types"] as const).map(key => <MultiSelectFilter key={key} label={key.charAt(0).toUpperCase()+key.slice(1)} options={options(key)} selected={filters[key]} iconKind={key} onToggle={value => toggle(key,value)} />)}
@@ -29,7 +33,7 @@ export default function CollectionCardFilters({ cards, filters, onChange, childr
         <SearchSelectFilter label="Printing edition (optional)" options={printings} selected={filters.printingSets ?? new Set()} onToggle={value => toggle("printingSets",value)} />
         <p className="text-xs text-ctp-subtext0">Edition filters show cards printed in that edition. Ownership still counts any physical printing; manage exact printings from a card’s copy controls.</p>
       </div>
-    </details>
+    </EditorDialog>}
     {(count > 0 || filters.name) && <button type="button" onClick={() => onChange(emptyFilterState())} className="text-sm text-ctp-blue">Clear card filters</button>}
   </div>;
 }
