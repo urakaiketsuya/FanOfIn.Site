@@ -1,6 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import EditorDialog from "../../components/deck-editor/EditorDialog";
+import CollectionChangesReview from "./CollectionChangesReview";
 import CollectionValueSummary from "./CollectionValueSummary";
+import { useCollectionSaveQueue } from "./useCollectionSaveQueue";
+import { sendCollectionBatch } from "./collectionSaveQueue";
 import { stageCollectionQuantities } from "./collectionQuantityDrafts";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import { useCardLocations } from "./useCardLocations";
@@ -67,6 +70,7 @@ export default function CollectionIndex() {
   useDocumentTitle("My Collection", "Track cards you own and see which decks you can build.");
   const navigate = useNavigate();
   const cards = useCardCatalog();
+  const [reviewChanges, setReviewChanges] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   const [view, setView] = useState<"sets" | "add" | "import" | "coverage" | "history">("sets");
   const [user, setUser] = useState<AccountUser | null | undefined>();
@@ -76,22 +80,15 @@ export default function CollectionIndex() {
   const [collectionReady, setCollectionReady] = useState(false);
   const [collectionError, setCollectionError] = useState<string | null>(null);
   const [savedEntries, setEntries] = useState<CollectionEntry[]>([]);
-  const [drafts, setDrafts] = useState<Record<string, CollectionUpdateLine>>({});
+  const saveQueue = useCollectionSaveQueue(user?.id);
+  const {drafts,setDrafts} = saveQueue;
+  const savingRef = useRef(false);
+  const [saveProgress,setSaveProgress] = useState("");
   const entries = useMemo(() => {
     const merged = new Map(savedEntries.map(entry => [`${entry.cardUuid}:${entry.editionUuid ?? "canonical"}`, entry]));
     for (const [key, line] of Object.entries(drafts)) merged.set(key, { ...line, ownedQuantity: line.quantity, proxyQuantity: line.proxyQuantity ?? 0, updatedAt: "" });
     return [...merged.values()];
   }, [savedEntries, drafts]);
-  const draftOwner = useRef<string | null>(null);
-  useEffect(() => {
-    if (!user) return;
-    if (draftOwner.current !== user.id) {
-      draftOwner.current = user.id;
-      try { setDrafts(JSON.parse(sessionStorage.getItem(`collection-quantities:${user.id}`) ?? "{}")); } catch { /* Keep in-memory edits if browser storage is unavailable. */ }
-      return;
-    }
-    try { sessionStorage.setItem(`collection-quantities:${user.id}`, JSON.stringify(drafts)); } catch { /* beforeunload still protects unsaved edits. */ }
-  }, [user, drafts]);
   const pendingCount = Object.keys(drafts).length;
   useEffect(() => {
     if (!pendingCount) return;
@@ -141,32 +138,40 @@ export default function CollectionIndex() {
   const printingEntry = entries.find((entry) => entry.editionUuid === printingEditionUuid);
 
   async function update(lines: CollectionUpdateLine[], _source: string, updateMode: CollectionUpdateMode = "set") {
+    if(saveQueue.pending) {setNotice("Retry the unconfirmed save before editing quantities.");return;}
     setDrafts(current => {
       return stageCollectionQuantities(current, savedEntries, lines, updateMode);
     });
     setNotice(null);
   }
   async function saveQuantities() {
+    if(savingRef.current) return;
+    savingRef.current=true;
     setBusy(true); setNotice(null);
-    const batch = drafts;
+    let saved=0;
     try {
-      const remaining = { ...batch };
-      const keys = Object.keys(batch);
-      for (let offset = 0; offset < keys.length; offset += 500) {
-        const chunk = keys.slice(offset, offset + 500);
-        await accountApi.updateCollection({ mode: "set", source: "Collection quantity edits", lines: chunk.map(key => batch[key]) });
+      for (;;) {
+        const batch=saveQueue.prepare();
+        if(!batch) break;
+        setSaveProgress(`Saving ${saved + 1}–${saved + Object.keys(batch.lines).length} of ${pendingCount} changes…`);
+        await sendCollectionBatch(()=>accountApi.updateCollection({requestId:batch.requestId, mode:"set",source:"Collection quantity edits",lines:Object.values(batch.lines)}));
         setEntries(current => {
           const merged = new Map(current.map(entry => [`${entry.cardUuid}:${entry.editionUuid ?? "canonical"}`, entry]));
-          for (const key of chunk) { const line = batch[key]; merged.set(key, { ...line, ownedQuantity: line.quantity, proxyQuantity: line.proxyQuantity ?? 0, updatedAt: new Date().toISOString() }); }
+          for (const [key,line] of Object.entries(batch.lines)) merged.set(key, {...line,ownedQuantity:line.quantity,proxyQuantity:line.proxyQuantity ?? 0,updatedAt:new Date().toISOString()});
           return [...merged.values()];
         });
-        for (const key of chunk) delete remaining[key];
-        setDrafts({ ...remaining });
+        saved+=Object.keys(batch.lines).length;
+        saveQueue.acknowledge(batch.requestId);
       }
       setNotice("Quantities saved.");
-      await refresh();
-    } catch (reason) { setNotice(reason instanceof Error ? reason.message : "Could not save quantities. Your edits are still available."); }
-    finally { setBusy(false); }
+      await refresh().catch(() => setNotice("Quantities saved. Reload to refresh collection details."));
+    } catch (reason) {
+      const status=typeof reason === "object" && reason !== null && "status" in reason ? Number(reason.status) : undefined;
+      const rejected=status === 400 || status === 409 || status === 413;
+      if(rejected) saveQueue.rejected();
+      setNotice(`${reason instanceof Error ? reason.message : "Connection interrupted."} Remaining changes are kept. ${rejected ? "Review the changes and try again." : "Retry saving to confirm the last batch and continue."}`);
+    }
+    finally {savingRef.current=false; setBusy(false);setSaveProgress("");}
   }
 
   if (user === undefined) return <PageLayout data-component="CollectionIndex" width="wide"><InlineState className="mt-10">Loading collection…</InlineState></PageLayout>;
@@ -179,12 +184,16 @@ export default function CollectionIndex() {
   return <PageLayout data-component="CollectionIndex" width="wide"><div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-3xl font-bold text-ctp-blue">My Collection</h1>{collectionReady && !collectionError && <p className="mt-2 text-sm text-ctp-subtext1">{uniqueOwnedCount} unique card{uniqueOwnedCount === 1 ? "" : "s"} · {entries.reduce((sum, entry) => sum + entry.ownedQuantity, 0)} physical copies</p>}</div><button type="button" onClick={() => setToolsOpen(true)} className="min-h-12 rounded-lg border border-ctp-surface1 px-3 text-sm">Tools</button></div>
     {toolsOpen && <EditorDialog title="Collection tools" doneLabel="Done" onDismiss={() => setToolsOpen(false)}>{collectionTools}</EditorDialog>}
     {collectionReady && !collectionError && <CollectionValueSummary entries={entries} cards={cards} pending={pendingCount > 0} />}
-    {pendingCount > 0 && <div role="status" className="sticky top-2 z-20 my-3 flex flex-wrap items-center gap-3 rounded-xl border border-ctp-blue bg-ctp-base p-3 shadow-lg"><span className="text-sm">{pendingCount} unsaved card changes</span><button type="button" disabled={busy} onClick={() => void saveQuantities()} className="min-h-12 rounded-lg bg-ctp-blue px-4 text-sm font-medium text-ctp-base">{busy ? "Saving…" : "Save quantities"}</button><button type="button" disabled={busy} onClick={() => setDrafts({})} className="min-h-12 rounded-lg border border-ctp-surface1 px-3 text-sm">Discard changes</button></div>}
+    {pendingCount > 0 && <div role="status" className="sticky top-2 z-20 my-3 flex flex-wrap items-center gap-3 rounded-xl border border-ctp-blue bg-ctp-base p-3 shadow-lg"><button type="button" disabled={busy} onClick={() => {setNotice(null); setReviewChanges(true);}} className="min-h-12 rounded-lg px-3 text-sm text-ctp-blue underline underline-offset-4">Preview {pendingCount} unsaved {pendingCount === 1 ? "change" : "changes"}</button><button type="button" disabled={busy} onClick={() => void saveQuantities()} className="min-h-12 rounded-lg bg-ctp-blue px-4 text-sm font-medium text-ctp-base">{busy ? "Saving…" : saveQueue.pending ? "Retry save" : "Save quantities"}</button><button type="button" disabled={busy || !!saveQueue.pending} onClick={() => setDrafts({})} className="min-h-12 rounded-lg border border-ctp-surface1 px-3 text-sm">Discard changes</button></div>}
+    {reviewChanges && <CollectionChangesReview drafts={drafts} savedEntries={savedEntries} cards={cards} busy={busy} locked={!!saveQueue.pending} notice={saveProgress || notice} onDismiss={() => setReviewChanges(false)} onSave={() => void saveQuantities()} onRevert={key => {setDrafts(current => {const next = {...current}; delete next[key]; return next;}); setNotice(null);}} />}
+    {saveProgress && <p role="status" className="my-2 text-sm">{saveProgress}</p>}
+    {saveQueue.warning && <p role="alert" className="my-2 text-sm text-ctp-yellow">{saveQueue.warning}</p>}
+    {saveQueue.pending && !busy && <p role="status" className="my-2 text-sm text-ctp-yellow">The last batch is unconfirmed. Retry save before editing or discarding these changes.</p>}
     {notice && <Panel tone="info" padding="sm" className="mt-4 text-sm text-ctp-subtext1">{notice}</Panel>}
     {tracking.error && <p role="alert" className="mt-2 text-sm text-ctp-red">{tracking.error}</p>}
     {view !== "sets" && <button type="button" onClick={() => setView("sets")} className="mt-3 min-h-12 rounded-lg border border-ctp-surface1 px-3 text-sm">Back to cards</button>}
     <div hidden={view !== "sets"}>
-      {collectionError ? <div role="alert" className="mt-4 text-sm text-ctp-yellow"><p>{collectionError}</p><button type="button" onClick={() => void refresh().catch(() => undefined)} className="min-h-12 text-ctp-blue">Retry</button></div> : !collectionReady ? <p role="status" className="mt-4">Loading collection progress…</p> : <CollectionBrowser renderTracking={uuid => <Link to={`/card-locations?card=${encodeURIComponent(uuid)}`} className="flex min-h-12 items-center text-sm text-ctp-blue">Locations & loans ↗</Link>} renderStatus={uuid => trackingById.has(uuid) ? <CardLocationSummary cardUuid={uuid} record={trackingById.get(uuid)} entries={savedEntries} decks={decks} disabled={!tracking.ready || pendingCount>0} onClick={()=>openLocations(uuid)}/> : null} cards={cards} entries={entries} busy={busy} onUpdate={update} />}
+      {collectionError ? <div role="alert" className="mt-4 text-sm text-ctp-yellow"><p>{collectionError}</p><button type="button" onClick={() => void refresh().catch(() => undefined)} className="min-h-12 text-ctp-blue">Retry</button></div> : !collectionReady ? <p role="status" className="mt-4">Loading collection progress…</p> : <CollectionBrowser renderTracking={uuid => <Link to={`/card-locations?card=${encodeURIComponent(uuid)}`} className="flex min-h-12 items-center text-sm text-ctp-blue">Locations & loans ↗</Link>} renderStatus={uuid => trackingById.has(uuid) ? <CardLocationSummary cardUuid={uuid} record={trackingById.get(uuid)} entries={savedEntries} decks={decks} disabled={!tracking.ready || pendingCount>0} onClick={()=>openLocations(uuid)}/> : null} cards={cards} entries={entries} busy={busy || !!saveQueue.pending} onUpdate={update} />}
     </div>
     <div hidden={view !== "add"}>
     <Panel className="mt-6"><h2 className="font-semibold">Add an exact printing</h2><p className="mt-1 text-xs text-ctp-subtext1">Choose a card and printing. These copies also count toward card-level deck coverage.</p><div className="mt-3 grid gap-3 sm:grid-cols-2"><select value={printingCardUuid} onChange={(event) => { setPrintingCardUuid(event.target.value); setPrintingEditionUuid(""); }} className="min-h-12 rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-sm"><option value="">Choose a card</option>{cards.map((card) => <option key={card.uuid} value={card.uuid}>{card.name}</option>)}</select><select value={printingEditionUuid} disabled={!printingCard} onChange={(event) => setPrintingEditionUuid(event.target.value)} className="min-h-12 rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-sm disabled:opacity-50"><option value="">Choose a printing</option>{printingCard?.editions.map((edition) => <option key={edition.uuid} value={edition.uuid}>{edition.set.prefix} #{edition.collector_number} · rarity {edition.rarity}</option>)}</select></div>{printingEdition && <div className="mt-3 flex items-center justify-between gap-3 rounded-lg border border-ctp-surface0 p-3 text-sm"><span><strong>{printingCard?.name}</strong><span className="ml-2 text-xs text-ctp-subtext0">{printingEdition.set.prefix} #{printingEdition.collector_number} · {printingEntry?.ownedQuantity ?? 0} owned</span></span><div className="flex gap-2"><button type="button" disabled={busy} aria-label="Remove one printing" onClick={() => void update([{ cardUuid: printingCard!.uuid, cardName: printingCard!.name, editionUuid: printingEdition.uuid, setPrefix: printingEdition.set.prefix, collectorNumber: printingEdition.collector_number, quantity: Math.max(0, (printingEntry?.ownedQuantity ?? 0) - 1), proxyQuantity: printingEntry?.proxyQuantity ?? 0 }], "Printing adjustment")} className="min-h-12 min-w-12 rounded-lg border border-ctp-surface1">−</button><button type="button" disabled={busy} aria-label="Add one printing" onClick={() => void update([{ cardUuid: printingCard!.uuid, cardName: printingCard!.name, editionUuid: printingEdition.uuid, setPrefix: printingEdition.set.prefix, collectorNumber: printingEdition.collector_number, quantity: (printingEntry?.ownedQuantity ?? 0) + 1, proxyQuantity: printingEntry?.proxyQuantity ?? 0 }], "Printing adjustment")} className="min-h-12 min-w-12 rounded-lg bg-ctp-blue font-semibold text-ctp-base">+</button></div></div>}</Panel>

@@ -55,27 +55,45 @@ export async function listCollection(env: Env, user: AuthUser): Promise<{ entrie
 
 export async function updateCollection(env: Env, user: AuthUser, value: unknown): Promise<{ transactionId: string; changed: number }> {
   if (!value || typeof value !== "object") throw badRequest("Invalid collection update");
-  const input = value as { mode?: unknown; source?: unknown; lines?: unknown };
+  const input = value as { mode?: unknown; source?: unknown; lines?: unknown; requestId?: unknown };
   const mode = input.mode as CollectionUpdateMode;
   if (mode !== "add" && mode !== "at-least" && mode !== "set") throw badRequest("Invalid collection update mode");
   const source = typeof input.source === "string" ? input.source.trim().replace(/\s+/g, " ") : "";
   if (!source || source.length > MAX_SOURCE_LENGTH) throw badRequest("A valid collection source is required");
   const lines = parseLines(input.lines);
+  const requestId = input.requestId === undefined ? crypto.randomUUID() : input.requestId;
+  if (typeof requestId !== "string" || !/^[a-zA-Z0-9_-]{16,100}$/.test(requestId)) throw badRequest("Invalid collection request ID");
+  const bytes = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(JSON.stringify({mode,source,lines})));
+  const hash = Array.from(new Uint8Array(bytes), byte => byte.toString(16).padStart(2,"0")).join("");
+  async function acknowledged() {
+    const row = await env.ACCOUNT_DB.prepare("SELECT request_hash, transaction_id, changed FROM collection_update_receipts WHERE user_id=? AND request_id=?").bind(user.id, requestId).first<{request_hash:string;transaction_id:string;changed:number}>();
+    if (!row) return null;
+    if (row.request_hash !== hash) throw new ApiError("This save ID was already used for different changes",409,"collection_request_conflict");
+    return {transactionId:row.transaction_id,changed:Number(row.changed)};
+  }
+  const previous = await acknowledged();
+  if (previous) return previous;
+  const [canonical, printings] = await Promise.all([
+    env.ACCOUNT_DB.prepare("SELECT card_uuid, owned_quantity, proxy_quantity FROM collection_entries WHERE user_id=? AND card_uuid IN (SELECT value FROM json_each(?))").bind(user.id,JSON.stringify(lines.filter(line=>!line.editionUuid).map(line=>line.cardUuid))).all<{card_uuid:string;owned_quantity:number;proxy_quantity:number}>(),
+    env.ACCOUNT_DB.prepare("SELECT edition_uuid, owned_quantity, proxy_quantity FROM collection_printing_entries WHERE user_id=? AND edition_uuid IN (SELECT value FROM json_each(?))").bind(user.id,JSON.stringify(lines.filter(line=>line.editionUuid).map(line=>line.editionUuid))).all<{edition_uuid:string;owned_quantity:number;proxy_quantity:number}>(),
+  ]);
+  const canonicalById = new Map(canonical.results.map(row=>[row.card_uuid,row]));
+  const printingById = new Map(printings.results.map(row=>[row.edition_uuid,row]));
   const changes: StoredChange[] = [];
+  const expected: StoredChange[] = [];
   for (const line of lines) {
-    const current = line.editionUuid
-      ? await env.ACCOUNT_DB.prepare("SELECT owned_quantity, proxy_quantity FROM collection_printing_entries WHERE user_id = ? AND edition_uuid = ?").bind(user.id, line.editionUuid).first<{ owned_quantity: number; proxy_quantity: number }>()
-      : await env.ACCOUNT_DB.prepare("SELECT owned_quantity, proxy_quantity FROM collection_entries WHERE user_id = ? AND card_uuid = ?").bind(user.id, line.cardUuid).first<{ owned_quantity: number; proxy_quantity: number }>();
+    const current = line.editionUuid ? printingById.get(line.editionUuid) : canonicalById.get(line.cardUuid);
     const beforeOwned = Number(current?.owned_quantity ?? 0);
     const beforeProxy = Number(current?.proxy_quantity ?? 0);
     const afterOwned = mode === "add" ? Math.min(MAX_QUANTITY, beforeOwned + line.quantity) : mode === "at-least" ? Math.max(beforeOwned, line.quantity) : line.quantity;
     const afterProxy = mode === "add" ? Math.min(MAX_QUANTITY, beforeProxy + (line.proxyQuantity ?? 0)) : mode === "at-least" ? Math.max(beforeProxy, line.proxyQuantity ?? 0) : (line.proxyQuantity ?? 0);
+    expected.push({...line,beforeOwned,beforeProxy,afterOwned,afterProxy});
     if (afterOwned !== beforeOwned || afterProxy !== beforeProxy || !current) changes.push({ cardUuid: line.cardUuid, cardName: line.cardName, editionUuid: line.editionUuid, setPrefix: line.setPrefix, collectorNumber: line.collectorNumber, beforeOwned, beforeProxy, afterOwned, afterProxy });
   }
-  if (changes.length === 0) return { transactionId: "", changed: 0 };
-  const transactionId = crypto.randomUUID();
+  const transactionId = changes.length ? crypto.randomUUID() : "";
   const now = new Date().toISOString();
-  await env.ACCOUNT_DB.batch([
+  try { await env.ACCOUNT_DB.batch([
+    env.ACCOUNT_DB.prepare("INSERT INTO collection_update_receipts (user_id,request_id,request_hash,transaction_id,changed,expected_json,created_at) VALUES (?,?,?,?,?,?,?)").bind(user.id,requestId,hash,transactionId,changes.length,JSON.stringify(expected),now),
     ...changes.map((change) => change.editionUuid
       ? change.afterOwned === 0 && change.afterProxy === 0
         ? env.ACCOUNT_DB.prepare("DELETE FROM collection_printing_entries WHERE user_id = ? AND edition_uuid = ?").bind(user.id, change.editionUuid)
@@ -91,9 +109,14 @@ export async function updateCollection(env: Env, user: AuthUser, value: unknown)
         ON CONFLICT(user_id, card_uuid) DO UPDATE SET card_name = excluded.card_name, owned_quantity = excluded.owned_quantity,
         proxy_quantity = excluded.proxy_quantity, updated_at = excluded.updated_at`)
         .bind(user.id, change.cardUuid, change.cardName, change.afterOwned, change.afterProxy, now)),
-    env.ACCOUNT_DB.prepare("INSERT INTO collection_transactions (id, user_id, source, changes_json, created_at) VALUES (?, ?, ?, ?, ?)")
-      .bind(transactionId, user.id, source, JSON.stringify(changes), now),
-  ]);
+    ...(changes.length ? [env.ACCOUNT_DB.prepare("INSERT INTO collection_transactions (id, user_id, source, changes_json, created_at) VALUES (?, ?, ?, ?, ?)")
+      .bind(transactionId, user.id, source, JSON.stringify(changes), now)] : []),
+  ]); } catch (error) {
+    const receipt = await acknowledged();
+    if (receipt) return receipt;
+    if (error instanceof Error && error.message.includes("Collection changed while saving")) throw new ApiError("Collection changed while saving. Retry to use the latest quantities.",409,"collection_snapshot_conflict");
+    throw error;
+  }
   return { transactionId, changed: changes.length };
 }
 

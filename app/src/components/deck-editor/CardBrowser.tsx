@@ -3,6 +3,7 @@ import { useId, useMemo, useState, type ReactNode } from "react";
 import type { Card } from "@gatcg/shared";
 import { automaticDeckSection, type DeckEdit, type EditableDeck } from "../../lib/deckEditing";
 import { deckDestinationEligibility } from "../../lib/deckSectionEligibility";
+import { rarityLabel, rarityOptions } from "../../features/cards/rarities";
 import DisclosureChevron from "../DisclosureChevron";
 import CardSearchResults from "./CardSearchResults";
 import { emptyCatalogFilters, filterCatalog, sortCatalogNames, type CatalogSort, type CatalogFilters } from "./catalogFilters";
@@ -31,7 +32,7 @@ export default function CardBrowser({ query, onQuery, destination, onDestination
     return sortCatalogNames(pool.filter(name => allowed.has(name) || (!catalog.has(name) && !Object.values(filters).some(Boolean) && name.toLowerCase().includes(query.toLowerCase()))), catalog, sort);
   }, [cards, query, filters, owned, identityElements, suggestedNames, names, catalog, sort]);
   const active = Object.entries(filters).filter(([, value]) => Boolean(value)) as [keyof CatalogFilters, string | boolean][];
-  const labels: Record<keyof CatalogFilters, string> = { element: "Element", type: "Type", subtype: "Subtype", costType: "Cost", maxCost: "Maximum cost", ownedOnly: "Owned only", availableElements: "Available elements" };
+  const labels: Record<keyof CatalogFilters, string> = { rarity: "Rarity", element: "Element", type: "Type", subtype: "Subtype", costType: "Cost", maxCost: "Maximum cost", ownedOnly: "Owned only", availableElements: "Available elements" };
   const sectionFor = (name: string) => destination === "automatic" ? automaticDeckSection(catalog.get(name)) : destination;
   const quantityFor = (name: string) => deck[sectionFor(name)].find(line => line.card === name)?.quantity ?? 0;
   function toggleSelection(name: string) {
@@ -63,6 +64,7 @@ export default function CardBrowser({ query, onQuery, destination, onDestination
     {filterOpen && <div id={`${id}-filters`} className="mt-2 rounded-lg border border-ctp-surface1 p-3">
       <div className="grid grid-cols-1 gap-3 pb-3 sm:grid-cols-2">
         {([['element','elements'],['type','types'],['subtype','subtypes']] as const).map(([key,values]) => <label key={key} className="text-sm">{labels[key]}<select value={filters[key]} onChange={e => setFilters(f => ({...f,[key]:e.target.value}))} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2"><option value="">All</option>{options(values).map(value => <option key={value} value={value}>{value}</option>)}</select></label>)}
+        <label className="text-sm">Rarity<select value={filters.rarity ?? ""} onChange={e => setFilters(f => ({...f, rarity:e.target.value}))} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2"><option value="">All rarities</option>{rarityOptions(cards).map(option => <option key={option.value} value={option.value}>{option.text}</option>)}</select></label>
         <label className="text-sm">Cost type<select value={filters.costType} onChange={e => setFilters(f=>({...f,costType:e.target.value}))} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2"><option value="">All</option><option value="memory">Memory</option><option value="reserve">Reserve</option></select></label>
         <label className="text-sm">Maximum cost<input type="number" min={0} value={filters.maxCost} onChange={e=>setFilters(f=>({...f,maxCost:e.target.value}))} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2" /></label>
         <label className="flex min-h-12 items-center gap-2 text-sm"><input type="checkbox" checked={filters.availableElements} disabled={!identityElements?.size} onChange={e=>setFilters(f=>({...f,availableElements:e.target.checked}))} />Available deck elements</label>
@@ -72,7 +74,7 @@ export default function CardBrowser({ query, onQuery, destination, onDestination
       </div>
       {!!active.length && <button type="button" onClick={()=>setFilters(emptyCatalogFilters())} className="min-h-12 text-sm text-ctp-blue">Clear filters</button>}
     </div>}
-    {!!active.length && <div className="mt-2 flex flex-wrap gap-2" aria-label="Active card filters">{active.map(([key,value]) => <button type="button" key={key} onClick={()=>setFilters(f=>({...f,[key]:typeof value === "boolean" ? false : ""}))} className="min-h-12 rounded-full border border-ctp-blue px-3 text-xs text-ctp-blue" aria-label={`Remove ${labels[key]} filter`}>{labels[key]}{typeof value === "string" ? `: ${value}` : ""} ×</button>)}</div>}
+    {!!active.length && <div className="mt-2 flex flex-wrap gap-2" aria-label="Active card filters">{active.map(([key,value]) => <button type="button" key={key} onClick={()=>setFilters(f=>({...f,[key]:typeof value === "boolean" ? false : ""}))} className="min-h-12 rounded-full border border-ctp-blue px-3 text-xs text-ctp-blue" aria-label={`Remove ${labels[key]} filter`}>{labels[key]}{typeof value === "string" ? `: ${key === "rarity" ? rarityLabel(value) : value}` : ""} ×</button>)}</div>}
     {suppressResults ? null : !names.length ? <p role={sync.phase === "error" ? "alert" : "status"} className="py-4 text-sm">{sync.phase === "error" ? "Card catalog could not load. Check your connection and reload to try again." : sync.phase === "done" ? "No cards are available in the catalog yet." : "Loading card catalog…"}</p> : <CardSearchResults key={JSON.stringify([query, filters, sort, suggestedNames !== undefined])} query={query} names={matches} catalog={catalog} chosen={new Map()} filtered renderStats={renderStats} evidence={evidence} owned={owned} quantityFor={quantityFor} selected={selected} onToggleSelection={toggleSelection} onAdd={toggleSelection} onSetQuantity={(name, quantity)=>onEdit(quantity === 0 ? {type:"remove",section:sectionFor(name),name} : {type:"quantity",section:sectionFor(name),name,quantity})} />}
     {addedNotice && <p role="status" className="mt-2 text-sm text-ctp-subtext1">{addedNotice}</p>}
     {!!selected.size && <div className="sticky bottom-0 z-10 mt-3 rounded-xl border border-ctp-blue bg-ctp-base p-3 shadow-lg">

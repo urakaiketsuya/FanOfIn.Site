@@ -1,4 +1,4 @@
-import { setFamilyPrefix, type Card, type CollectionEntry, type CollectionUpdateLine } from "@gatcg/shared";
+import { type Card, type CollectionEntry, type CollectionUpdateLine } from "@gatcg/shared";
 import { useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import CardArtTile from "../../components/CardArtTile";
@@ -6,7 +6,7 @@ import CollectionCardSheet from "./CollectionCardSheet";
 
 import CollectionPurchase from "./CollectionPurchase";
 import CollectionCardFilters from "./CollectionCardFilters";
-import { emptyFilterState, filterCards } from "../cards/filters";
+import { emptyFilterState, filterCards, matchesEdition } from "../cards/filters";
 import { playsetProgress, playsetTarget } from "./collectionPlaysets";
 
 export default function CollectionBrowser({ cards, entries, busy = false, preview = false, onUpdate, renderTracking, renderStatus }: {
@@ -36,7 +36,7 @@ export default function CollectionBrowser({ cards, entries, busy = false, previe
     return filter === "all" || (quantity > 0) === (filter === "owned");
   }).sort((a, b) => sort === "owned" ? (quantities.get(b.uuid) ?? 0) - (quantities.get(a.uuid) ?? 0) || a.name.localeCompare(b.name) : sort === "name-desc" ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name));
   function art(card: Card): Card {
-    const preferred = card.editions.find(edition => cardFilters.printingSets?.size ? cardFilters.printingSets.has(edition.set.prefix) : cardFilters.sets.has(setFamilyPrefix(edition.set.prefix)));
+    const preferred = card.editions.find(edition => matchesEdition(edition, cardFilters));
     return preferred ? { ...card, editions: [preferred, ...card.editions.filter(edition => edition !== preferred)] } : card;
   }
   if (!cards.length) return <p role="status" className="mt-4 text-sm text-ctp-subtext1">Loading cards…</p>;
@@ -48,7 +48,7 @@ export default function CollectionBrowser({ cards, entries, busy = false, previe
 
       {shopping.controls}
     </CollectionCardFilters>
-    {!preview && (cardFilters.sets.size > 0 || cardFilters.subtypes.size > 0 || cardFilters.name || cardFilters.printingSets?.size) && <div className="my-2 text-sm text-ctp-subtext1"><p>{ownedMatches} / {filteredPool.length} owned · {filteredPool.length - ownedMatches} missing · {playsets.complete} playsets</p><progress aria-label="Matching card completion" value={ownedMatches} max={filteredPool.length || 1} className="w-full accent-ctp-blue"/><div className="flex flex-wrap items-center justify-between gap-2"><span className="text-xs">Any physical printing counts</span><button type="button" onClick={() => setFilter("missing")} className="text-sm text-ctp-blue">Show missing</button></div></div>}
+    {!preview && Boolean(cardFilters.sets.size > 0 || cardFilters.subtypes.size > 0 || cardFilters.name || cardFilters.printingSets?.size || cardFilters.rarities?.size) && <div className="my-2 text-sm text-ctp-subtext1"><p>{ownedMatches} / {filteredPool.length} owned · {filteredPool.length - ownedMatches} missing · {playsets.complete} playsets</p><progress aria-label="Matching card completion" value={ownedMatches} max={filteredPool.length || 1} className="w-full accent-ctp-blue"/><div className="flex flex-wrap items-center justify-between gap-2"><span className="text-xs">Any physical printing counts</span><button type="button" onClick={() => setFilter("missing")} className="text-sm text-ctp-blue">Show missing</button></div></div>}
       {!preview && !entries.some(entry => entry.ownedQuantity > 0) && <p className="my-2 text-sm text-ctp-subtext1">Start with a card below. Add copies, then save your quantities together.</p>}
       {!matchingCards.length && <p role="status" className="my-6 text-sm">No cards match these filters.</p>}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{matchingCards.slice(0, limit).map(card => {

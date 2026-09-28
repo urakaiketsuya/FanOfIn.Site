@@ -1,6 +1,6 @@
 import type { Env } from "./auth";
 
-export const REQUIRED_SCHEMA_VERSION = "0023";
+export const REQUIRED_SCHEMA_VERSION = "0025";
 
 export interface ServiceHealth {
   success: boolean;
@@ -38,6 +38,9 @@ export async function serviceHealth(env: Env): Promise<ServiceHealth> {
     await env.ACCOUNT_DB.prepare("SELECT id, parent_id, status FROM deck_comments LIMIT 0").all();
     await env.ACCOUNT_DB.prepare("SELECT user_id, kind, card_uuid, edition_uuid, quantity FROM binder_items LIMIT 0").all();
     await env.ACCOUNT_DB.prepare("SELECT id, status, current_revision, sender_received, recipient_received FROM trades LIMIT 0").all();
+    await env.ACCOUNT_DB.prepare("SELECT user_id, card_uuid, edition_uuid, binder_item_id, quantity FROM trade_card_reservations LIMIT 0").all();
+    await env.ACCOUNT_DB.prepare("SELECT user_id, card_uuid FROM trade_capacity_conflicts LIMIT 0").all();
+    await env.ACCOUNT_DB.prepare("SELECT user_id, request_id, request_hash FROM collection_update_receipts LIMIT 0").all();
     return {
       success: true,
       service: "fanofin-accounts",

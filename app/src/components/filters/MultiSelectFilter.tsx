@@ -6,16 +6,17 @@ import FilterGroup from "./FilterGroup";
 
 type IconKind = "classes" | "types" | "elements";
 
-export default function MultiSelectFilter({ label, options, selected, onToggle, iconKind, hint }: {
+export default function MultiSelectFilter({ label, options, selected, onToggle, onClear, iconKind, hint }: {
   label: string;
   options: OptionValue[];
   selected: ReadonlySet<string>;
   onToggle: (value: string) => void;
+  onClear?: () => void;
   iconKind?: IconKind;
   hint?: string;
 }) {
   return (
-    <FilterGroup label={label} hint={hint} onClear={selected.size > 0 ? () => [...selected].forEach(onToggle) : undefined}>
+    <FilterGroup label={label} hint={hint} onClear={selected.size > 0 ? onClear ?? (() => [...selected].forEach(onToggle)) : undefined}>
       <div className="flex flex-wrap gap-1.5">
         {options.map((option) => {
           const active = selected.has(option.value);

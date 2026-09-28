@@ -18,6 +18,8 @@ export interface CardFilterState {
   speed: SpeedFilter;
   /** Optional exact printing-set restriction, independent of the family filter. */
   printingSets?: Set<string>;
+  /** Rarity codes matched on the same printing as set and artist restrictions. */
+  rarities?: Set<string>;
 }
 
 export function emptyFilterState(): CardFilterState {
@@ -30,22 +32,29 @@ export function emptyFilterState(): CardFilterState {
     elements: new Set(),
     sets: new Set(),
     speed: "any",
+    rarities: new Set(),
   };
+}
+
+export function matchesEdition(edition: Card["editions"][number], filters: CardFilterState): boolean {
+  const families = new Set([...filters.sets].map(setFamilyPrefix));
+  return (!families.size || families.has(setFamilyPrefix(edition.set.prefix)))
+    && (!filters.printingSets?.size || filters.printingSets.has(edition.set.prefix))
+    && (!filters.rarities?.size || filters.rarities.has(String(edition.rarity)))
+    && (!filters.artist.trim() || !!edition.illustrator?.toLowerCase().includes(filters.artist.trim().toLowerCase()));
 }
 
 export function filterCards(cards: Card[], filters: CardFilterState): Card[] {
   const name = filters.name.trim().toLowerCase();
-  const artist = filters.artist.trim().toLowerCase();
-  const families = new Set([...filters.sets].map(setFamilyPrefix));
+
   return cards.filter((card) => {
     if (name && !card.name.toLowerCase().includes(name) && !card.effect?.toLowerCase().includes(name)) return false;
-    if (artist && !card.editions.some((ed) => ed.illustrator?.toLowerCase().includes(artist))) return false;
+
     if (filters.classes.size && !card.classes.some((c) => filters.classes.has(c))) return false;
     if (filters.types.size && !card.types.some((t) => filters.types.has(t))) return false;
     if (filters.subtypes.size && !card.subtypes.some((s) => filters.subtypes.has(s))) return false;
     if (filters.elements.size && !card.elements.some((e) => filters.elements.has(e))) return false;
-    if (filters.sets.size && !card.editions.some((ed) => families.has(setFamilyPrefix(ed.set.prefix)))) return false;
-    if (filters.printingSets?.size && !card.editions.some(ed => filters.printingSets!.has(ed.set.prefix) && (!filters.sets.size || families.has(setFamilyPrefix(ed.set.prefix))))) return false;
+    if ((filters.sets.size || filters.printingSets?.size || filters.rarities?.size || filters.artist.trim()) && !card.editions.some(ed => matchesEdition(ed, filters))) return false;
     if (filters.speed === "fast" && card.speed !== true) return false;
     if (filters.speed === "normal" && card.speed !== false) return false;
     return true;

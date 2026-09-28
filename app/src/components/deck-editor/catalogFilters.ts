@@ -2,13 +2,13 @@ import type { Card } from "@gatcg/shared";
 import { emptyFilterState, filterCards } from "../../features/cards/filters";
 
 export interface CatalogFilters {
-  element: string; type: string; subtype: string; costType: string; maxCost: string;
+  rarity?: string; element: string; type: string; subtype: string; costType: string; maxCost: string;
   ownedOnly: boolean; availableElements: boolean;
 }
-export const emptyCatalogFilters = (): CatalogFilters => ({ element: "", type: "", subtype: "", costType: "", maxCost: "", ownedOnly: false, availableElements: false });
+export const emptyCatalogFilters = (): CatalogFilters => ({ rarity: "", element: "", type: "", subtype: "", costType: "", maxCost: "", ownedOnly: false, availableElements: false });
 
 export function filterCatalog(cards: Card[], query: string, filters: CatalogFilters, owned?: ReadonlyMap<string, number>, elements?: ReadonlySet<string>): Card[] {
-  return filterCards(cards, { ...emptyFilterState(), name: query,
+  return filterCards(cards, { ...emptyFilterState(), name: query, rarities: new Set(filters.rarity ? [filters.rarity] : []),
     elements: new Set(filters.element ? [filters.element] : []), types: new Set(filters.type ? [filters.type] : []), subtypes: new Set(filters.subtype ? [filters.subtype] : []),
   }).filter(card => {
     const memory = card.cost_memory != null || card.cost?.type === "memory";

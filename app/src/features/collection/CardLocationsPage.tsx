@@ -41,7 +41,7 @@ export default function CardLocationsPage() {
     try {
       const session = await accountApi.session(); setUser(session.user);
       if (!session.user) return;
-      try {setPendingQuantities(Object.keys(JSON.parse(sessionStorage.getItem(`collection-quantities:${session.user.id}`) ?? "{}")).length > 0);} catch {setPendingQuantities(false);}
+      try {setPendingQuantities(Object.keys(JSON.parse(sessionStorage.getItem(`collection-save:${session.user.id}`) ?? localStorage.getItem(`collection-save:${session.user.id}`) ?? "null")?.drafts ?? JSON.parse(sessionStorage.getItem(`collection-quantities:${session.user.id}`) ?? "{}")).length > 0);} catch {setPendingQuantities(false);}
       const [collection, saved] = await Promise.all([accountApi.collection(), accountApi.decks()]);
       setEntries(collection.entries); setDecks(saved.decks); setReady(true);
     } catch (reason) { setError(`Could not load card locations. ${reason instanceof Error ? reason.message : "Please try again."}`); }

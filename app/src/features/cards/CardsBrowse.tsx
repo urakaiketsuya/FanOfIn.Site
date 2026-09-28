@@ -9,12 +9,13 @@ import { useTabParam } from "../../lib/useTabParam";
 import Tabs from "../../components/ui/Tabs";
 import PageHeader from "../../components/ui/PageHeader";
 import { useCardCatalog } from "./useCardCatalog";
-import { emptyFilterState, filterCards, type CardFilterState } from "./filters";
+import { emptyFilterState, filterCards, matchesEdition, type CardFilterState } from "./filters";
 import FilterPanel from "../../components/filters/FilterPanel";
 import MultiSelectFilter from "../../components/filters/MultiSelectFilter";
 import SearchSelectFilter from "../../components/filters/SearchSelectFilter";
 import SegmentedFilter from "../../components/filters/SegmentedFilter";
 import { toggleSetValue } from "../../components/filters/filterUtils";
+import { rarityOptions } from "./rarities";
 import CardGrid from "./CardGrid";
 import LoadMore from "../../components/LoadMore";
 import { useFeaturedSets } from "../sets/useFeaturedSets";
@@ -39,6 +40,7 @@ export default function CardsBrowse() {
   const [tab, setTab] = useTabParam<TabMode>("tab", TABS, "browse");
   const [filters, setFilters] = useState<CardFilterState>(() => ({
     ...emptyFilterState(),
+    rarities: new Set(searchParams.getAll("rarity")),
     artist: searchParams.get("artist") ?? "",
     classes: new Set(searchParams.getAll("class")),
     types: new Set(searchParams.getAll("type")),
@@ -58,7 +60,7 @@ export default function CardsBrowse() {
   }, [filters]);
 
   const visible = filtered.slice(0, visibleCount);
-  const activeFilterCount = (filters.name.trim() ? 1 : 0) + (filters.artist.trim() ? 1 : 0) + filters.classes.size + filters.types.size + filters.subtypes.size + filters.elements.size + filters.sets.size + (filters.speed === "any" ? 0 : 1) + (filters.printingSets?.size ?? 0);
+  const activeFilterCount = (filters.name.trim() ? 1 : 0) + (filters.artist.trim() ? 1 : 0) + filters.classes.size + filters.types.size + filters.subtypes.size + filters.elements.size + filters.sets.size + (filters.speed === "any" ? 0 : 1) + (filters.printingSets?.size ?? 0) + (filters.rarities?.size ?? 0);
 
   const artistOptions = useMemo(() => {
     const set = new Set<string>();
@@ -89,9 +91,9 @@ export default function CardsBrowse() {
   // show that set's specific art (same behavior the old dedicated /sets/:prefix page had) instead
   // of always defaulting to a card's first-ever printing.
   const pickEdition = useMemo(() => {
-    if (filters.sets.size === 0 && !filters.printingSets?.size) return undefined;
-    return (card: (typeof cards)[number]) => card.editions.find((ed) => (!filters.sets.size || filters.sets.has(setFamilyPrefix(ed.set.prefix))) && (!filters.printingSets?.size || filters.printingSets.has(ed.set.prefix))) ?? card.editions[0];
-  }, [filters.sets, filters.printingSets]);
+    if (!filters.sets.size && !filters.printingSets?.size && !filters.rarities?.size && !filters.artist.trim()) return undefined;
+    return (card: (typeof cards)[number]) => card.editions.find(ed => matchesEdition(ed, filters)) ?? card.editions[0];
+  }, [filters]);
 
   function browseSet(prefix: string) {
     setFilters((f) => ({ ...f, sets: new Set([prefix]), printingSets: new Set() }));
@@ -233,6 +235,7 @@ export default function CardsBrowse() {
                 selected={filters.sets}
                 onToggle={(v) => setFilters((f) => ({ ...f, sets: toggleSetValue(f.sets, v) }))}
               />
+              <MultiSelectFilter label="Rarity" options={rarityOptions(cards)} selected={filters.rarities ?? new Set()} onToggle={value => setFilters(f => ({...f, rarities: toggleSetValue(f.rarities ?? new Set(), value)}))} />
               <SearchSelectFilter label="Printing edition (optional)" options={printingOptions} selected={filters.printingSets ?? new Set()} onToggle={value => setFilters(f => ({ ...f, printingSets: toggleSetValue(f.printingSets ?? new Set(), value) }))} />
               <SegmentedFilter label="Speed" options={[{ value: "any", label: "All" }, { value: "fast", label: "Fast" }, { value: "normal", label: "Normal" }]} value={filters.speed} onChange={(speed) => setFilters((f) => ({ ...f, speed }))} />
             </FilterPanel>
