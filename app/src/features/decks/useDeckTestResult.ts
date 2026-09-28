@@ -22,15 +22,15 @@ export interface UseDeckTestResultInputs {
  * pass in plain card data. `loading` is true until the taxonomy has loaded — everything else this
  * report reads is optional/absent-tolerant.
  */
-export function useDeckTestResult(inputs: UseDeckTestResultInputs): { result: DeckTestResult | null; loading: boolean } {
+export function useDeckTestResult(inputs: UseDeckTestResultInputs, enabled = true): { result: DeckTestResult | null; loading: boolean } {
   const { deckCardCounts, cardsByName, deckId, nearestDecks } = inputs;
 
-  const taxonomy = useArchetypeTaxonomyData();
-  const cardImpactData = useCardImpactData();
-  const matchupCardImpactData = useMatchupCardImpactData();
+  const taxonomy = useArchetypeTaxonomyData(enabled);
+  const cardImpactData = useCardImpactData(enabled);
+  const matchupCardImpactData = useMatchupCardImpactData(enabled);
 
   const deckCardNames = useMemo(() => [...deckCardCounts.keys()], [deckCardCounts]);
-  const { interactions: winConditions } = useDeckWinConditions(deckCardNames, cardsByName);
+  const { interactions: winConditions } = useDeckWinConditions(deckCardNames, cardsByName, enabled);
 
   const result = useMemo(() => {
     if (!taxonomy) return null;

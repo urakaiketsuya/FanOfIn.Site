@@ -105,19 +105,29 @@ export interface AllDecodedDecks {
  * single-Champion pool, which never needed more than that one Champion's decks — skip the decode
  * entirely rather than paying its cost on every page visit regardless of whether it's used.
  */
+const decodedCaches = new WeakMap<DeckCardIndexData, WeakMap<DeckPopularityIndexData, WeakMap<Card[], DecodedDeck[]>>>();
+
 export function useAllDecodedDecks(enabled = true): AllDecodedDecks {
   const rawCardIndexData = useDeckCardIndexData(enabled);
   const cardIndexData = enabled && rawCardIndexData?.cardNames ? rawCardIndexData : undefined;
   const rawPopularityIndexData = useDeckPopularityIndexData(enabled);
   const popularityIndexData = enabled ? rawPopularityIndexData : undefined;
-  const cardCatalog = useCardCatalog();
+  const cardCatalog = useCardCatalog(enabled);
   const settledCardCatalog = useDebouncedValue(cardCatalog, CATALOG_SETTLE_MS);
   const cardsByName = useMemo(() => new Map(settledCardCatalog.map((c) => [c.name, c])), [settledCardCatalog]);
 
-  const decks = useMemo(
-    () => (enabled ? decodeAllDecks(cardIndexData, popularityIndexData, cardsByName) : []),
-    [enabled, cardIndexData, popularityIndexData, cardsByName],
-  );
+  const decks = useMemo(() => {
+    if (!enabled || !cardIndexData || !popularityIndexData) return [];
+    let byPopularity = decodedCaches.get(cardIndexData);
+    if (!byPopularity) {byPopularity = new WeakMap(); decodedCaches.set(cardIndexData,byPopularity);}
+    let byCatalog = byPopularity.get(popularityIndexData);
+    if (!byCatalog) {byCatalog = new WeakMap(); byPopularity.set(popularityIndexData,byCatalog);}
+    const cached = byCatalog.get(settledCardCatalog);
+    if (cached) return cached;
+    const decoded = decodeAllDecks(cardIndexData,popularityIndexData,cardsByName);
+    byCatalog.set(settledCardCatalog,decoded);
+    return decoded;
+  }, [enabled,cardIndexData,popularityIndexData,settledCardCatalog,cardsByName]);
 
   return { decks, loading: enabled && (!cardIndexData || !popularityIndexData) };
 }

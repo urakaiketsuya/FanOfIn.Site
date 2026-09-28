@@ -1,4 +1,5 @@
-import { writeFile, open } from "node:fs/promises";
+import {buildDeckDetailPartitions, type DeckCardIndexData, type DeckPopularityIndexData} from "@gatcg/shared";
+import { writeFile, open, readFile, mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
@@ -6,6 +7,7 @@ const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../
 
 /** Every published dataset the app fetches via `usePublishedData` — key must match the `key` argument used at each call site (see app/src/features/.../data.ts), or the app won't recognize a change. */
 export const MANIFEST_ENTRIES: { key: string; file: string }[] = [
+  { key: "prices", file: "prices.json" },
   { key: "price-history", file: "priceHistory.json" },
   { key: "omnidex-index", file: "omnidex/index.json" },
   { key: "omnidex-players", file: "omnidex/players.json" },
@@ -84,10 +86,28 @@ async function readGeneratedAt(filePath: string): Promise<string | null> {
  * analysis-only, or both) — call at the very end of the pipeline, unconditionally.
  */
 export async function writeManifest(): Promise<void> {
+  // Publish bounded deck-page reads from the same generation as the full indexes.
+  let partitions: ReturnType<typeof buildDeckDetailPartitions> = new Map();
+  let champions: ReturnType<typeof buildDeckDetailPartitions> = new Map();
+  try {
+  const cardIndex = JSON.parse(await readFile(path.join(DATA_DIR,"analysis/deck-card-index.json"),"utf8")) as DeckCardIndexData;
+  const popularity = JSON.parse(await readFile(path.join(DATA_DIR,"analysis/deck-popularity-index.json"),"utf8")) as DeckPopularityIndexData;
+  partitions = buildDeckDetailPartitions(cardIndex,popularity);
+  champions = buildDeckDetailPartitions(cardIndex,popularity,"champion");
+  await mkdir(path.join(DATA_DIR,"analysis/champion-decks"),{recursive:true});
+  for(const [key,data] of champions) await writeFile(path.join(DATA_DIR,`analysis/champion-decks/${key}.json`),JSON.stringify(data),"utf8");
+  await mkdir(path.join(DATA_DIR,"analysis/deck-details"),{recursive:true});
+  for(const [key,data] of partitions) await writeFile(path.join(DATA_DIR,`analysis/deck-details/${key}.json`),JSON.stringify(data),"utf8");
+  } catch (reason) {
+    if ((reason as NodeJS.ErrnoException).code !== "ENOENT") throw reason;
+    // A source-specific publish may run before tournament indexes exist.
+  }
   const manifest: Record<string, string> = {};
   for (const { key, file } of MANIFEST_ENTRIES) {
     const generatedAt = await readGeneratedAt(path.join(DATA_DIR, file));
     if (generatedAt) manifest[key] = generatedAt;
   }
+  for(const [key,data] of champions) manifest[`champion-decks-${key}`]=data.generatedAt;
+  for(const [key,data] of partitions) manifest[`deck-detail-${key}`]=data.generatedAt;
   await writeFile(path.join(DATA_DIR, "manifest.json"), JSON.stringify(manifest), "utf-8");
 }

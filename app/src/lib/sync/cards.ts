@@ -1,3 +1,4 @@
+import type { Card } from "@gatcg/shared";
 import { gatcgApi } from "../api/client";
 import { db } from "../db";
 
@@ -12,11 +13,29 @@ const PAGE_SIZE = 50;
 /**
  * Bulk-syncs the full card catalog into IndexedDB on first run; on later runs
  * only fetches cards updated since the last sync's cursor. If a first sync is
- * interrupted, the next run just starts the bulk fetch over — bulkPut is
- * idempotent (keyed by uuid) so this is wasteful but not incorrect.
+ * starts with one published catalog request and an atomic cache write. An interruption
+ * leaves the previous cursor intact; the next run retries safely. The API is a fallback.
  */
 export async function syncCards(onProgress?: (progress: SyncProgress) => void): Promise<void> {
-  const meta = await db.syncMeta.get("cards");
+  let meta = await db.syncMeta.get("cards");
+  if (!meta?.cursor) {
+    onProgress?.({phase:"syncing",fetched:0,total:null});
+    try {
+      const response = await fetch("/data/card-catalog.json");
+      if (response.ok) {
+        const published = await response.json() as {generatedAt:string;cards:Card[]};
+        if (!published.cards?.length || published.cards.some(card=>!card.uuid || !card.last_update || !Array.isArray(card.editions))) throw new Error("Incomplete published catalog");
+        const cursor = published.cards.reduce((latest,card)=>card.last_update > latest ? card.last_update : latest, "");
+        await db.transaction("rw",db.cards,db.syncMeta,async()=>{
+          await db.cards.bulkPut(published.cards);
+          await db.syncMeta.put({key:"cards",lastSyncedAt:published.generatedAt,cursor});
+        });
+        meta = await db.syncMeta.get("cards");
+      }
+    } catch {
+      // A missing/offline bootstrap falls back to the existing paginated API sync.
+    }
+  }
   const since = meta?.cursor ?? undefined;
 
   let page = 1;

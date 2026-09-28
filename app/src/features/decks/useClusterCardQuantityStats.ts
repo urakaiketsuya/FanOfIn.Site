@@ -17,11 +17,11 @@ export function useClusterCardQuantityStats(
   clusterId: string | null,
   deckClusterIndex: Record<string, string> | undefined,
 ): Map<string, CardQuantityBucket[]> | undefined {
-  const rawCardIndexData = useDeckCardIndexData();
+  const rawCardIndexData = useDeckCardIndexData(Boolean(clusterId && deckClusterIndex));
   // Guards against a stale IndexedDB copy from before dictionary-encoding shipped — see the same
   // guard in useChampionCardImpact.ts/useCardCombination.ts for why.
   const cardIndexData = rawCardIndexData?.cardNames ? rawCardIndexData : undefined;
-  const popularityIndexData = useDeckPopularityIndexData();
+  const popularityIndexData = useDeckPopularityIndexData(Boolean(clusterId && deckClusterIndex));
 
   return useMemo(() => {
     if (!clusterId || !deckClusterIndex || !cardIndexData || !popularityIndexData) return undefined;

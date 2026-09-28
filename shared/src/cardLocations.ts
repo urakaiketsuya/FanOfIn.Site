@@ -11,7 +11,15 @@ export function deckCardRequirements(decklist: OmnidexDecklist): Map<string, {na
   return result;
 }
 export function cardLocationState(cardUuid: string, entries: CollectionEntry[], record?: CollectionCardTracking) {
-  const owned = entries.filter(entry => entry.cardUuid === cardUuid).reduce((sum, entry) => sum + entry.ownedQuantity, 0);
+  return locationStateFromOwned(entries.reduce((sum, entry) => sum + (entry.cardUuid === cardUuid ? entry.ownedQuantity : 0), 0), record);
+}
+export function collectionLocationIndex(entries: CollectionEntry[], records: CollectionCardTracking[]) {
+  const owned = new Map<string,number>();
+  for (const entry of entries) owned.set(entry.cardUuid,(owned.get(entry.cardUuid) ?? 0)+entry.ownedQuantity);
+  const byId = new Map(records.map(record=>[record.cardUuid,record]));
+  return new Map([...new Set([...owned.keys(),...byId.keys()])].map(uuid=>[uuid,locationStateFromOwned(owned.get(uuid) ?? 0,byId.get(uuid))]));
+}
+function locationStateFromOwned(owned: number, record?: CollectionCardTracking) {
   const lent = record?.loans.filter(loan => !loan.returnedAt).reduce((sum, loan) => sum + loan.quantity, 0) ?? 0;
   const reserved = record?.tradeReservedQuantity ?? 0;
   const assigned = record?.assignments?.reduce((sum, assignment) => sum + assignment.quantity, 0) ?? 0;

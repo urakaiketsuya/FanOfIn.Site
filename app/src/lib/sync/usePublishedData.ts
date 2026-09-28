@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useSyncExternalStore } from "react";
-import { useLiveQuery } from "dexie-react-hooks";
+import { createSharedLiveQuery } from "../sharedLiveQuery";
 import { db, type PublishedDataRow } from "../db";
 import { beginLoading, endLoading } from "../useGlobalLoading";
 
@@ -19,7 +19,7 @@ let manifestPromise: Promise<Record<string, string>> | null = null;
  * pipeline hasn't published a manifest yet), which just makes `refresh` behave as it did before
  * this existed — always fetch and compare after the fact.
  */
-function loadManifest(): Promise<Record<string, string>> {
+export function loadManifest(): Promise<Record<string, string>> {
   if (!manifestPromise) {
     manifestPromise = fetch("/data/manifest.json")
       .then((res) => (res.ok ? (res.json() as Promise<Record<string, string>>) : {}))
@@ -111,6 +111,16 @@ export function usePublishedDataStatus(key: string, url: string, enabled = true)
  * data/analysis/*.json). Each dataset carries its own `generatedAt`, so a refresh is a cheap
  * no-op once the cached copy matches what's currently published. Same pattern as usePriceLookup.
  */
+const datasetQueries = new Map<string, ReturnType<typeof createSharedLiveQuery<PublishedDataRow | undefined | typeof PENDING>>>();
+function datasetQuery(key: string) {
+  let query = datasetQueries.get(key);
+  if (!query) {
+    query = createSharedLiveQuery<PublishedDataRow | undefined | typeof PENDING>(() => db.published.get(key), PENDING);
+    datasetQueries.set(key, query);
+  }
+  return query;
+}
+
 export function usePublishedData<T extends Generated>(key: string, url: string, enabled = true): T | undefined {
   useEffect(() => {
     if (!enabled) return;
@@ -120,11 +130,8 @@ export function usePublishedData<T extends Generated>(key: string, url: string, 
   // `useLiveQuery`'s defaultResult distinguishes "still resolving the IndexedDB read" from
   // "resolved to nothing" (the dataset is genuinely absent) — the latter must not keep the nav
   // progress bar spinning forever.
-  const row = useLiveQuery(
-    async (): Promise<PublishedDataRow | undefined> => enabled ? await db.published.get(key) : undefined,
-    [key, enabled],
-    PENDING as never,
-  );
+  const useDataset = datasetQuery(key);
+  const row = useDataset(enabled);
   const loading = enabled && (row as unknown) === PENDING;
 
   useEffect(() => {
@@ -133,5 +140,5 @@ export function usePublishedData<T extends Generated>(key: string, url: string, 
     return endLoading;
   }, [loading]);
 
-  return !enabled || loading ? undefined : (row?.data as T | undefined);
+  return !enabled || loading ? undefined : (row !== PENDING ? row?.data as T | undefined : undefined);
 }

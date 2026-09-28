@@ -2,19 +2,22 @@ import type { CollectionCardTracking, CollectionLoan, CollectionDeckAssignment }
 import type { AuthUser, Env } from "./auth";
 import { ApiError, badRequest } from "./errors";
 
-export async function listCollectionTracking(env: Env, user: AuthUser): Promise<CollectionCardTracking[]> {
-  const rows = await env.ACCOUNT_DB.prepare("SELECT * FROM collection_card_tracking WHERE user_id = ? ORDER BY card_name COLLATE NOCASE").bind(user.id).all<Record<string, string | number>>();
+export async function listCollectionTracking(env: Env, user: AuthUser, cardUuid?: string | string[]): Promise<CollectionCardTracking[]> {
+  const ids = typeof cardUuid === "string" ? [cardUuid] : cardUuid;
+  const filter = ids?.length ? `AND card_uuid IN (SELECT value FROM json_each(?))` : "";
+  const rows = await env.ACCOUNT_DB.prepare(`SELECT * FROM collection_card_tracking WHERE user_id = ? ${filter} ORDER BY card_name COLLATE NOCASE`).bind(user.id,...(ids?.length ? [JSON.stringify(ids)] : [])).all<Record<string, string | number>>();
   const records: CollectionCardTracking[] = rows.results.map(row => ({cardUuid: String(row.card_uuid), cardName: String(row.card_name), mightOwn: Boolean(row.might_own), loans: JSON.parse(String(row.loans_json)), assignments: JSON.parse(String(row.assignments_json)), revision: Number(row.revision), updatedAt: String(row.updated_at)}));
-  const trading = await env.ACCOUNT_DB.prepare(`SELECT b.card_uuid,b.card_name,SUM(b.quantity) listed,COALESCE(SUM(r.quantity),0) reserved FROM binder_items b LEFT JOIN trade_card_reservations r ON r.binder_item_id=b.id WHERE b.user_id=? AND b.kind='available' GROUP BY b.card_uuid`).bind(user.id).all<{card_uuid:string;card_name:string;listed:number;reserved:number}>();
+  const trading = await env.ACCOUNT_DB.prepare(`SELECT b.card_uuid,b.card_name,SUM(b.quantity) listed,COALESCE(SUM(r.quantity),0) reserved FROM binder_items b LEFT JOIN (SELECT binder_item_id,SUM(quantity) quantity FROM trade_card_reservations WHERE user_id=? GROUP BY binder_item_id) r ON r.binder_item_id=b.id WHERE b.user_id=? AND b.kind='available' ${filter.replace('card_uuid','b.card_uuid')} GROUP BY b.card_uuid`).bind(user.id,user.id,...(ids?.length ? [JSON.stringify(ids)] : [])).all<{card_uuid:string;card_name:string;listed:number;reserved:number}>();
+  const byId = new Map(records.map(record => [record.cardUuid, record]));
   for (const item of trading.results) {
-    let record = records.find(row=>row.cardUuid===item.card_uuid);
+    let record = byId.get(item.card_uuid);
     if (!record) {record={cardUuid:item.card_uuid,cardName:item.card_name,mightOwn:false,loans:[],assignments:[],revision:0,updatedAt:""};records.push(record);}
     record.tradeListedQuantity=item.listed; record.tradeReservedQuantity=item.reserved;
   }
   return records;
 }
 
-export async function saveCollectionTracking(env: Env, user: AuthUser, cardUuid: string, value: unknown): Promise<CollectionCardTracking> {
+function prepareTracking(env: Env, user: AuthUser, cardUuid: string, value: unknown) {
   if (!cardUuid.trim() || cardUuid.length > 200 || !value || typeof value !== "object") throw badRequest("Invalid card tracking record");
   const input = value as Record<string, unknown>;
   const cardName = typeof input.cardName === "string" ? input.cardName.trim() : "";
@@ -56,7 +59,38 @@ export async function saveCollectionTracking(env: Env, user: AuthUser, cardUuid:
       .bind(user.id,cardUuid,cardName,Number(input.mightOwn),JSON.stringify(loans),assignmentJson,updatedAt,assignmentJson,lent,...stockArgs,assignmentJson,user.id)
     : env.ACCOUNT_DB.prepare(`UPDATE collection_card_tracking SET card_name=?,might_own=?,loans_json=?,assignments_json=COALESCE(?,assignments_json),revision=revision+1,updated_at=? WHERE user_id=? AND card_uuid=? AND revision=? AND (${capacity} OR (${assignmentCount} + ? <= ${sumAssigned('assignments_json')} + ${sumLoaned('loans_json')} AND ${assignmentCount} <= ${sumAssigned('assignments_json')})) AND ${validDecks}`)
       .bind(cardName,Number(input.mightOwn),JSON.stringify(loans),assignmentJson,updatedAt,user.id,cardUuid,revision,assignmentJson,lent,...stockArgs,assignmentJson,lent,assignmentJson,assignmentJson,user.id);
+  return {statement, cardName, loans, assignments, mightOwn: input.mightOwn, revision};
+}
+
+export async function saveCollectionTracking(env: Env, user: AuthUser, cardUuid: string, value: unknown): Promise<CollectionCardTracking> {
+  const {statement} = prepareTracking(env,user,cardUuid,value);
   const result = await statement.run();
-  if (!result.meta.changes) throw new ApiError("Locations changed in another tab, a deck is unavailable, or assigned and lent copies exceed ownership. Reload locations and reconcile quantities before retrying.", 409, "tracking_conflict");
-  return (await listCollectionTracking(env,user)).find(row => row.cardUuid === cardUuid)!;
+  if (!result.meta.changes) throw new ApiError("Locations changed in another tab, a deck is unavailable, or assigned and lent copies exceed ownership. Reload locations and reconcile quantities before retrying.",409,"tracking_conflict");
+  return (await listCollectionTracking(env,user,cardUuid))[0];
+}
+
+/** D1 batch is transactional: a failed assertion rolls back every preceding write.
+ * Exact revision+content matches permit replay after a response was interrupted.
+ */
+export async function saveCollectionTrackingBatch(env: Env, user: AuthUser, value: unknown): Promise<CollectionCardTracking[]> {
+  const cards = (value as {cards?: unknown})?.cards;
+  if (!Array.isArray(cards) || !cards.length || cards.length > 100) throw badRequest("Send 1–100 card locations at a time");
+  const seen = new Set<string>();
+  const statements: D1PreparedStatement[] = [];
+  for (const card of cards) {
+    if (!card || typeof card.cardUuid !== "string" || seen.has(card.cardUuid) || !Array.isArray(card.assignments)) throw badRequest("Each card needs a unique ID and assignments");
+    seen.add(card.cardUuid);
+    const prepared = prepareTracking(env,user,card.cardUuid,card);
+    statements.push(prepared.statement);
+    statements.push(env.ACCOUNT_DB.prepare(`SELECT CASE WHEN EXISTS (
+      SELECT 1 FROM collection_card_tracking WHERE user_id=? AND card_uuid=? AND revision=?
+      AND card_name=? AND might_own=? AND loans_json=? AND assignments_json=?
+    ) THEN 1 ELSE json('tracking_conflict') END`).bind(user.id,card.cardUuid,prepared.revision+1,prepared.cardName,Number(prepared.mightOwn),JSON.stringify(prepared.loans),JSON.stringify(prepared.assignments)));
+  }
+  try { await env.ACCOUNT_DB.batch(statements); }
+  catch (reason) {
+    if (/JSON|tracking_conflict|reserv/i.test(String(reason))) throw new ApiError("Locations changed or copies are unavailable. Reload locations before retrying.",409,"tracking_conflict");
+    throw reason;
+  }
+  return await listCollectionTracking(env,user,[...seen]);
 }

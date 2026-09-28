@@ -45,3 +45,5 @@ export * from "./cardLocations.js";
 export { computeCollectionValue, TCGPLAYER_MARKETPLACE_NET_RATE } from "./collectionValue.js";
 
 export * from "./tradeAvailability.js";
+
+export * from "./deckDetailData.js";

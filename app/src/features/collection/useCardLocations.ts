@@ -16,5 +16,10 @@ export function useCardLocations(enabled: boolean) {
     const {card} = await accountApi.saveCollectionTracking(cardUuid, input);
     setRecords(current => [...current.filter(item=>item.cardUuid !== cardUuid), card]);
   }
-  return {records, ready, error, refresh, save};
+  async function saveBatch(inputs: (CollectionCardTrackingUpdate & {cardUuid: string})[]) {
+    const {cards} = await accountApi.saveCollectionTrackingBatch(inputs);
+    const changed = new Set(cards.map(card=>card.cardUuid));
+    setRecords(current => [...current.filter(card=>!changed.has(card.cardUuid)), ...cards]);
+  }
+  return {records, ready, error, refresh, save, saveBatch};
 }

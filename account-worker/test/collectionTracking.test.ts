@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { DatabaseSync } from "node:sqlite";
 import { readFileSync } from "node:fs";
-import { listCollectionTracking, saveCollectionTracking } from "../src/collectionTracking";
+import { listCollectionTracking, saveCollectionTrackingBatch, saveCollectionTracking } from "../src/collectionTracking";
 import type { AuthUser, Env } from "../src/auth";
 
 function fixture() {
@@ -13,7 +13,9 @@ function fixture() {
   db.exec("CREATE TABLE collection_entries(user_id TEXT,card_uuid TEXT,owned_quantity INTEGER); CREATE TABLE collection_printing_entries(user_id TEXT,card_uuid TEXT,owned_quantity INTEGER); CREATE TABLE user_decks(id TEXT PRIMARY KEY,owner_user_id TEXT); INSERT INTO collection_entries VALUES('a','card',4); INSERT INTO user_decks VALUES('deck-a','a'),('deck-b','a'),('foreign','b');");
   db.exec("ALTER TABLE collection_printing_entries ADD COLUMN edition_uuid TEXT;");
   for (const file of ["0020_comments_and_binder.sql","0024_trade_allocations.sql"]) db.exec(readFileSync(new URL(`../migrations/${file}`,import.meta.url),"utf8"));
-  const env = {ACCOUNT_DB:{prepare(sql: string) {
+  const env = {ACCOUNT_DB:{async batch(statements: {run:()=>Promise<unknown>}[]) {
+    db.exec('BEGIN');try{const results=[];for(const statement of statements)results.push(await statement.run());db.exec('COMMIT');return results;}catch(reason){db.exec('ROLLBACK');throw reason;}
+  },prepare(sql: string) {
     let args: (string|number|null)[] = [];
     return {bind(...values: typeof args) {args=values;return this;}, async all(){return {results:db.prepare(sql).all(...args)};}, async run(){return {meta:db.prepare(sql).run(...args)};}};
   }}} as unknown as Env;
@@ -73,4 +75,27 @@ test("legacy excess can be reconciled without silently changing inventory or loa
  await assert.rejects(saveCollectionTracking(env,user,"card",{...input,revision:2,assignments:[{deckId:'deck-b',quantity:3}]}));
  const reduced=await saveCollectionTracking(env,user,"card",{...input,revision:2,assignments:[],loans:[]});
  assert.deepEqual(reduced.assignments,[]);
+});
+
+test("batch assignments are atomic and exact replays do not increase revisions",async()=>{
+ const {db,env,user,input}=fixture();
+ db.exec("INSERT INTO collection_entries VALUES('a','other',4)");
+ const cards=['card','other'].map(cardUuid=>({...input,cardUuid,loans:[],assignments:[{deckId:'deck-a',quantity:4}]}));
+ assert.equal((await saveCollectionTrackingBatch(env,user,{cards})).length,2);
+ await saveCollectionTrackingBatch(env,user,{cards});
+ assert.deepEqual((await listCollectionTracking(env,user)).map(row=>row.revision),[1,1]);
+ const changed=cards.map(card=>({...card,revision:1,assignments:[{deckId:'deck-b',quantity:4}]}));
+ await assert.rejects(saveCollectionTrackingBatch(env,user,{cards:[changed[0],{...changed[1],revision:0}]}),/Reload/);
+ assert.deepEqual((await listCollectionTracking(env,user)).map(row=>row.assignments),cards.map(row=>row.assignments));
+ await assert.rejects(saveCollectionTrackingBatch(env,user,{cards:[cards[0],cards[0]]}));
+ await assert.rejects(saveCollectionTrackingBatch(env,user,{cards:Array(101).fill(cards[0])}));
+});
+test("a full batch returns only its changed cards",async()=>{
+ const {db,env,user,input}=fixture();
+ const cards=Array.from({length:100},(_,index)=>({...input,cardUuid:`bulk-${index}`,loans:[],assignments:[]}));
+ await saveCollectionTracking(env,user,'card',input);
+ const changed=await saveCollectionTrackingBatch(env,user,{cards});
+ assert.equal(changed.length,100);
+ assert.ok(changed.every(card=>card.cardUuid.startsWith('bulk-')));
+ assert.equal((db.prepare('SELECT count(*) n FROM collection_card_tracking').get() as {n:number}).n,101);
 });

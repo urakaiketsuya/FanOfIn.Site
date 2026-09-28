@@ -34,6 +34,8 @@ function buildPresenceIndex(decks: DeckCardIndexEntry[]): Map<number, Set<number
  * every one of the ~57k decks (see useCardSynergy's original implementation, before this was
  * extracted from useCardCombination.ts where the same structure was already being built).
  */
+const indexes = new WeakMap<DeckCardIndexData, DeckCardPresenceIndex>();
+
 export function useDeckCardPresenceIndex(enabled = true): DeckCardPresenceIndex | undefined {
   const rawData = useDeckCardIndexData(enabled);
   // `cardNames` guards against a stale IndexedDB copy from before dictionary-encoding shipped —
@@ -42,18 +44,13 @@ export function useDeckCardPresenceIndex(enabled = true): DeckCardPresenceIndex 
   // same as "not loaded yet" avoids a crash in that window instead of assuming the new shape.
   const data = rawData?.cardNames ? rawData : undefined;
 
-  const nameToIndex = useMemo(() => {
-    if (!data) return null;
-    return new Map(data.cardNames.map((name, i) => [name, i]));
-  }, [data]);
-
-  const presenceIndex = useMemo(() => {
-    if (!data) return null;
-    return buildPresenceIndex(data.decks);
-  }, [data]);
-
   return useMemo(() => {
-    if (!data || !nameToIndex || !presenceIndex) return undefined;
-    return { data, nameToIndex, presenceIndex };
-  }, [data, nameToIndex, presenceIndex]);
+    if (!data) return undefined;
+    let index = indexes.get(data);
+    if (!index) {
+      index = {data, nameToIndex: new Map(data.cardNames.map((name,i)=>[name,i])), presenceIndex: buildPresenceIndex(data.decks)};
+      indexes.set(data,index);
+    }
+    return index;
+  }, [data]);
 }

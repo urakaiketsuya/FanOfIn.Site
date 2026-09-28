@@ -8,12 +8,33 @@ class AccountApiError extends Error {
   constructor(status: number, message: string) { super(message); this.status = status; }
 }
 
+const collectionReads = new Map<string, {promise: Promise<unknown>; expires: number}>();
+// Only bridge closely spaced consumers; never persist account data across sessions.
+if (typeof window !== "undefined") {
+  window.addEventListener("focus",()=>collectionReads.clear());
+  window.addEventListener("storage",()=>collectionReads.clear());
+}
+
 async function accountRequest<T>(path: string, init?: RequestInit): Promise<T> {
+  const cacheable = !init?.method && path === "/v1/me/collection";
+  if ((init?.method && init.method !== "GET") || path.startsWith("/v1/auth/")) collectionReads.clear();
+  const existing = cacheable ? collectionReads.get(path) : undefined;
+  if (existing && existing.expires > Date.now()) return existing.promise as Promise<T>;
+  const pending = performAccountRequest<T>(path, init);
+  if (cacheable) {
+    collectionReads.set(path,{promise:pending,expires:Date.now()+3_000});
+    void pending.catch(() => {if (collectionReads.get(path)?.promise === pending) collectionReads.delete(path);});
+  }
+  return pending;
+}
+
+async function performAccountRequest<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${ACCOUNT_API_URL}${path}`, {
     ...init,
     credentials: "include",
     headers: { "Content-Type": "application/json", ...init?.headers },
   });
+  if (init?.method && init.method !== "GET") collectionReads.clear();
   const body = await response.json() as T & { error?: string };
   if (!response.ok) throw new AccountApiError(response.status, body.error ?? `Account request failed (${response.status})`);
   return body;
@@ -72,6 +93,7 @@ export const accountApi = {
   discoverCombos: (query = "") => accountRequest<{ combos: PublicCombo[] }>(`/v1/discover/combos?q=${encodeURIComponent(query)}`),
   comboBookmarks: () => accountRequest<{ combos: BookmarkedCombo[] }>("/v1/me/combo-bookmarks"),
   bookmarkCombo: (slug: string, bookmarked: boolean) => accountRequest<{ bookmarked: boolean }>(`/v1/me/combos/${encodeURIComponent(slug)}/bookmark`, { method: "POST", body: JSON.stringify({ bookmarked }) }),
+  saveCollectionTrackingBatch: (cards: (CollectionCardTrackingUpdate & {cardUuid: string})[]) => accountRequest<{cards: CollectionCardTracking[]}>("/v1/me/collection/tracking", {method: "PATCH", body: JSON.stringify({cards}), signal: AbortSignal.timeout(30_000)}),
   collectionTracking: () => accountRequest<{cards: CollectionCardTracking[]}>("/v1/me/collection/tracking"),
   saveCollectionTracking: (cardUuid: string, input: CollectionCardTrackingUpdate) => accountRequest<{card: CollectionCardTracking}>(`/v1/me/collection/tracking/${encodeURIComponent(cardUuid)}`, {method: "PATCH", body: JSON.stringify(input)}),
   collection: () => accountRequest<{ entries: CollectionEntry[]; transactions: CollectionTransaction[] }>("/v1/me/collection"),

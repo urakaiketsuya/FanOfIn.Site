@@ -1,4 +1,4 @@
-import { listCollectionTracking, saveCollectionTracking } from "./collectionTracking";
+import { listCollectionTracking, saveCollectionTrackingBatch, saveCollectionTracking } from "./collectionTracking";
 import { authenticatedUser, bffAllowed, consumeDiscordOAuthState, consumeOAuthNonce, createDiscordOAuthState, createLocalUserSession, createOAuthNonce, createUserSession, destroyAllSessions, destroySession, discordAuthorizeUrl, exchangeDiscordCode, listAuthIdentities, normalizeDisplayName, originAllowed, recentlyAuthenticated, removeAuthIdentity, rotateCurrentSession, verifyGoogleCredential, type AuthProvider, type Env } from "./auth";
 import { createDeckVersion, deleteDeck, getDeck, getPublicDeck, listDecks, parseSaveInput, performImport, previewImport, publishDeck, restoreDeckVersion, saveDeck, updateDeckDecklist, updateDeckMetadata } from "./decks";
 import { ApiError, badRequest } from "./errors";
@@ -376,6 +376,10 @@ export default {
         return response(env, request, { success: true });
       }
       if (request.method === "GET" && url.pathname === "/v1/me/collection/tracking") return response(env, request, {cards: await listCollectionTracking(env, user)});
+      if (request.method === "PATCH" && url.pathname === "/v1/me/collection/tracking") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        return response(env, request, {cards: await saveCollectionTrackingBatch(env,user,await jsonBody(request))});
+      }
       const trackingMatch = url.pathname.match(/^\/v1\/me\/collection\/tracking\/([^/]+)$/);
       if (trackingMatch && request.method === "PATCH") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);

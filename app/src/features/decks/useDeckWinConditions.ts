@@ -8,8 +8,8 @@ export type { DeckInteraction };
 /** Thin `useMemo` wrapper around `computeDeckWinConditions` — see that function's doc comment for
  * what it detects and why. `loading` distinguishes "presence data hasn't loaded yet" (every
  * interaction is provisionally `"textOnly"`) from "confirmed no real deck backs this." */
-export function useDeckWinConditions(deckCardNames: string[], cardsByName: Map<string, Card>): { interactions: DeckInteraction[]; loading: boolean } {
-  const presence = useDeckCardPresenceIndex();
+export function useDeckWinConditions(deckCardNames: string[], cardsByName: Map<string, Card>, enabled = true): { interactions: DeckInteraction[]; loading: boolean } {
+  const presence = useDeckCardPresenceIndex(enabled);
   const interactions = useMemo(
     () => computeDeckWinConditions(deckCardNames, cardsByName, presence),
     [deckCardNames, cardsByName, presence],

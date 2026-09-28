@@ -1,7 +1,6 @@
+import {useChampionDeckData} from "./useChampionDeckData";
 import { useMemo } from "react";
 import { computeCardImpactEntries, decodeCardLines, isAvailableDeckRecommendation, type CardImpactEntry, type CardSectionRow, type DeckSections } from "@gatcg/shared";
-import { useDeckCardIndexData } from "../archetypes/data";
-import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { computeDeckIdentity } from "../../lib/deckIdentity";
 
@@ -37,17 +36,14 @@ export function useChampionCardImpact(
   direction: "best" | "worst" | "all" = "best",
   availableElements?: ReadonlySet<string>,
 ): ChampionCardImpactResult {
-  const rawCardIndexData = useDeckCardIndexData();
-  // Guards against a stale IndexedDB copy from before dictionary-encoding shipped — see the same
-  // guard in useCardCombination.ts/useDeckPopularity.ts for why.
+  const {cards:rawCardIndexData,popularity:popularityIndexData} = useChampionDeckData(championName);
   const cardIndexData = rawCardIndexData?.cardNames ? rawCardIndexData : undefined;
-  const popularityIndexData = useDeckPopularityIndexData();
   const cardCatalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
 
   const result = useMemo((): ChampionCardImpactResult => {
     if (!championName || !cardIndexData || !popularityIndexData)
-      return { cards: [], totalDecks: 0, loading: !cardIndexData || !popularityIndexData };
+      return { cards: [], totalDecks: 0, loading: Boolean(championName) && (!cardIndexData || !popularityIndexData) };
 
     // Filter by Champion first, via the cheap lean-index lookup, before touching the (20MB+)
     // deck-card-index dataset — same ordering useDeckPopularity.ts already uses for its own

@@ -1,7 +1,7 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import type { CardLegality, CardSearchResponse } from "@gatcg/shared";
+import type { Card, CardLegality, CardSearchResponse } from "@gatcg/shared";
 import { fetchJson, sleep } from "../lib/http.js";
 
 const BASE_URL = "https://api.gatcg.com";
@@ -47,9 +47,11 @@ interface CardCatalogCache {
 
 async function fetchFullCatalog(): Promise<CardSignature[]> {
   const cards: CardSignature[] = [];
+  const fullCards: Card[] = [];
   let page = 1;
   for (;;) {
     const res = await fetchJson<CardSearchResponse>(`${BASE_URL}/cards/search?page=${page}&page_size=50&sort=name&order=ASC`);
+    fullCards.push(...res.data);
     for (const card of res.data) {
       cards.push({
         name: card.name,
@@ -72,6 +74,10 @@ async function fetchFullCatalog(): Promise<CardSignature[]> {
     page++;
     await sleep(REQUEST_DELAY_MS);
   }
+  // Preserve the full API shape for the browser; analysis signatures omit art and UUIDs.
+  const target = path.join(path.dirname(fileURLToPath(import.meta.url)),"../../../data/card-catalog.json");
+  await mkdir(path.dirname(target),{recursive:true});
+  await writeFile(target,JSON.stringify({generatedAt:new Date().toISOString(),cards:fullCards}),"utf8");
   return cards;
 }
 

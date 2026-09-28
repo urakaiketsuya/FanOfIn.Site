@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { buildSpiritCanonicalNames, decodeCardLines, type Card } from "@gatcg/shared";
-import { useDeckCardIndexData } from "../archetypes/data";
-import { useDeckPopularityIndexData } from "../topdecks/data";
+import {useChampionDeckData} from "../decks/useChampionDeckData";
 import { useCardCatalog } from "../cards/useCardCatalog";
 
 export interface DeckBuilderRow {
@@ -61,10 +60,8 @@ export function findSpiritName(material: { name: string; quantity: number }[], c
  * don't accidentally bust this hook's own memoization with a new object reference every time.
  */
 export function useDeckBuilderPopulation(championName: string | null, minEventDate?: string, maxEventDate?: string): DeckBuilderPopulation {
-  const enabled = championName !== null;
-  const rawCardIndexData = useDeckCardIndexData(enabled);
+  const {cards:rawCardIndexData,popularity:popularityIndexData} = useChampionDeckData(championName);
   const cardIndexData = rawCardIndexData?.cardNames ? rawCardIndexData : undefined;
-  const popularityIndexData = useDeckPopularityIndexData(enabled);
   const cardCatalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
   const spiritCanonicalNames = useMemo(() => buildSpiritCanonicalNames(cardCatalog), [cardCatalog]);

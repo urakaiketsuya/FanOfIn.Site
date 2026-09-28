@@ -1,7 +1,7 @@
 import DisclosureChevron from "../../components/DisclosureChevron";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { decodeCardLines, type OmnidexDecklist } from "@gatcg/shared";
+import { decodeCardLines, deckDetailPartition, type DeckDetailData, type OmnidexDecklist } from "@gatcg/shared";
 import { useDeckPopularity, buildPopularDeck } from "../popular/useDeckPopularity";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 import { usePlayerNameById, useEventNameById } from "../tournaments/data";
@@ -33,7 +33,7 @@ import { DeckSightingHistory, SimilarDecksSection } from "./DeckDetailSections";
 import PlayerLink from "../players/PlayerLink";
 import { accountApi } from "../../lib/accountApi";
 import { trackEvent } from "../../lib/analytics";
-import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
+import { usePublishedData, usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import DeckComments from "../social/DeckComments";
 
 type DeckTab = "performance" | "related" | "discussion";
@@ -61,6 +61,7 @@ const TAB_KEYS = TABS.map((t) => t.key);
 export default function DeckDetail() {
   const { id: hash = "" } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [historyOpened, setHistoryOpened] = useState(false);
   const [copyBusy, setCopyBusy] = useState(false);
   const [tab, setTab] = useTabParam<DeckTab>("tab", TAB_KEYS, "performance");
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
@@ -68,21 +69,33 @@ export default function DeckDetail() {
   const [favoriteBusy, setFavoriteBusy] = useState(false);
   const [favoriteNotice, setFavoriteNotice] = useState<string | null>(null);
 
-  const popularityIndexData = useDeckPopularityIndexData();
+  const partition = deckDetailPartition(hash);
+  const partitionUrl = `/data/analysis/deck-details/${partition}.json`;
+  const detail = usePublishedData<DeckDetailData>(`deck-detail-${partition}`,partitionUrl);
+  const detailStatus = usePublishedDataStatus(`deck-detail-${partition}`,partitionUrl);
+  const fallback = detailStatus.phase === "error" && !detail;
+  const fullPopularity = useDeckPopularityIndexData(fallback || tab === "related");
+  const popularityIndexData = detail?.popularity ?? fullPopularity;
+  const historyStatuses = [
+    usePublishedDataStatus("analysis-card-impact","/data/analysis/card-impact.json",historyOpened),
+    usePublishedDataStatus("analysis-archetype-taxonomy","/data/analysis/archetype-taxonomy.json",historyOpened),
+    usePublishedDataStatus("analysis-matchup-card-impact","/data/analysis/matchup-card-impact.json",historyOpened),
+  ];
+  const historyError = historyStatuses.find(status=>status.phase === "error");
+  const similarityStatus = usePublishedDataStatus("analysis-similarity","/data/analysis/similarity.json",tab === "related");
   const popularityStatus = usePublishedDataStatus("analysis-deck-popularity-index", "/data/analysis/deck-popularity-index.json");
   const cardIndexStatus = usePublishedDataStatus("analysis-deck-card-index", "/data/analysis/deck-card-index.json");
   const eventNameById = useEventNameById();
   const playerName = usePlayerNameById();
 
-  // Fast path: `deckHash` is precomputed pipeline-side for every deck with at least one duplicate
-  // (see DeckPopularityEntry's own doc comment) — matching against the already-loaded lean index
-  // resolves most deck pages (anything popular enough to be linked to from elsewhere) directly,
-  // without decoding and grouping the full ~57k-deck universe just to find one deck by hash.
+  // A hash partition contains this build's sightings and original sideboards. Older
+  // deployments fall back to the full indexes only when the partition is unavailable.
   const matchingSightings = useMemo(
     () => (popularityIndexData ? popularityIndexData.entries.filter((e) => e.deckHash === hash) : null),
     [popularityIndexData, hash],
   );
-  const rawCardIndexData = useDeckCardIndexData();
+  const fullCardIndex = useDeckCardIndexData(fallback || tab === "related");
+  const rawCardIndexData = detail?.cards ?? fullCardIndex;
   const cardIndexData = rawCardIndexData?.cardNames ? rawCardIndexData : undefined;
   const catalog = useCardCatalog();
   const catalogByName = useMemo(() => new Map(catalog.map((c) => [c.name, c])), [catalog]);
@@ -102,14 +115,12 @@ export default function DeckDetail() {
     );
   }, [matchingSightings, cardIndexData, catalogByName]);
 
-  // Only decode + group the full universe when the fast path can't resolve this hash (a genuinely
-  // unique, one-player decklist has no precomputed deckHash) or the Similar Decks tab needs the
-  // broader universe to find other decks to compare against.
-  const needsFullUniverse = matchingSightings !== null && (matchingSightings.length === 0 || tab === "related");
+  // Only group the full universe for related builds or a legacy-data fallback.
+  const needsFullUniverse = tab === "related" || (fallback && matchingSightings !== null && matchingSightings.length === 0);
   const { decks, loading: fullUniverseLoading } = useDeckPopularity(null, 1, needsFullUniverse);
   const deck = fastDeck ?? decks.find((d) => shortHash(d.signature) === hash);
   const loading =
-    matchingSightings === null || (matchingSightings.length > 0 && !fastDeck) || (needsFullUniverse && fullUniverseLoading);
+    matchingSightings === null || (matchingSightings.length > 0 && !fastDeck) || (!fastDeck && needsFullUniverse && fullUniverseLoading);
   useDocumentTitle(
     deck?.championName ? `${deck.championName} deck` : null,
     deck && `A popular ${deck.championName ?? "Grand Archive TCG"} decklist, independently played by ${deck.playerCount} players.`,
@@ -172,7 +183,7 @@ export default function DeckDetail() {
   }, [hash]);
   const allNames = useMemo(() => [...(deck?.main ?? []), ...(deck?.material ?? []), ...(sideboardSelection?.lines ?? [])].map((l) => l.name), [deck, sideboardSelection]);
   const cardsByName = useCardsByNames(allNames);
-  const { interactions: winConditions } = useDeckWinConditions(allNames, cardsByName);
+  const { interactions: winConditions } = useDeckWinConditions(allNames, cardsByName, historyOpened);
   // "Similar Decks" is already its own tab on this page, so nearestDecks is left empty here — only
   // classification/performance (this page's one genuinely new section) are read from the result.
   const deckCardCounts = useMemo(() => {
@@ -180,14 +191,14 @@ export default function DeckDetail() {
     for (const line of [...(deck?.main ?? []), ...(deck?.material ?? [])]) counts.set(line.name, line.quantity);
     return counts;
   }, [deck]);
-  const { result: deckTestResult } = useDeckTestResult({ deckCardCounts, cardsByName, deckId: deck?.deckIds[0], nearestDecks: [] });
+  const { result: deckTestResult } = useDeckTestResult({ deckCardCounts, cardsByName, deckId: deck?.deckIds[0], nearestDecks: [] }, historyOpened);
 
   // Precise, cluster-scoped "What beats this build" (Phase 21) only covers the ~128 named-build
   // clusters — most decks reachable from here (especially one-offs, since All Decks stopped
   // gating deck pages behind Popular Decks' 2+-player bar) have no cluster match. `UserDeckStats`
   // below already covers the broader Champion-wide fallback via its own `useChampionCardImpact`
   // call, so this page only needs to add the matchup-scoped case on top, never both.
-  const cardImpactData = useCardImpactData();
+  const cardImpactData = useCardImpactData(historyOpened);
   const myClusterId = deck ? cardImpactData?.deckClusterIndex[deck.deckIds[0]] : undefined;
   const hasClusterMatch = !!myClusterId;
 
@@ -195,7 +206,7 @@ export default function DeckDetail() {
   // Impact tab shows, just pre-filtered to this one deck's cluster instead of offering a build
   // picker. Only decks with a named-cluster match have this data (see hasClusterMatch's own doc
   // comment) — a one-off decklist with no cluster has nothing to key this off of.
-  const matchupCardImpactData = useMatchupCardImpactData();
+  const matchupCardImpactData = useMatchupCardImpactData(historyOpened && hasClusterMatch);
   // No "all opponents" aggregate here (unlike ArchetypeDetail's own Card Impact tab): each
   // matchup's lifts are scoped to its own population and aren't comparable across opponents (see
   // ArchetypeHurtYouView.tsx's doc comment), and the same card can appear as a hurt-you signal in
@@ -260,7 +271,7 @@ export default function DeckDetail() {
     return bars;
   }, [instances]);
 
-  const similarityData = useSimilarityData();
+  const similarityData = useSimilarityData(tab === "related");
   const deckIdToSignature = useMemo(() => {
     const map = new Map<string, string>();
     for (const d of decks) {
@@ -319,12 +330,16 @@ export default function DeckDetail() {
   const hasHistoricalPerformance = Boolean(deckTestResult && deckTestResult.classification.status !== "unclassified" && deckTestResult.classification.cluster && deckTestResult.performance);
   const hasMatchupData = hasClusterMatch && clusterMatchups.length > 0;
   const deckStatsExtraTabs: DeckStatsTab[] = [];
-  if (hasHistoricalPerformance || winConditions.length > 0 || hasMatchupData) {
+  {
     deckStatsExtraTabs.push({
       key: "matchups",
       label: "Matchups & history",
+      onOpen: () => setHistoryOpened(true),
       content: (
         <>
+          {historyOpened && historyError && <div role="alert"><p>Some historical analysis could not load.</p><button type="button" className="min-h-12 px-3 text-ctp-blue" onClick={()=>historyStatuses.forEach(status=>status.retry())}>Retry analysis</button></div>}
+          {historyOpened && !historyError && historyStatuses.some(status=>status.phase === "loading") && <InlineState>Loading historical analysis…</InlineState>}
+          {historyOpened && !historyError && historyStatuses.every(status=>status.phase === "ready") && cardImpactData && !hasHistoricalPerformance && !hasMatchupData && winConditions.length === 0 && <InlineState>No historical analysis available for this build.</InlineState>}
           {hasHistoricalPerformance && deckTestResult?.classification.cluster && deckTestResult.performance && (
             <Section heading="compact" title="Historical performance" description="How this build's matched named archetype has performed across every recorded match.">
               <p className="mt-2 text-xs text-ctp-subtext0">
@@ -504,7 +519,7 @@ export default function DeckDetail() {
       </TabPanel>
 
       <TabPanel baseId="deck-detail" tab="related" active={tab}>
-        <div className="space-y-8"><DeckSightingHistory sightingsByMonth={sightingsByMonth} instances={instancesForList} playerName={playerName} /><SimilarDecksSection decks={similarDecks} /></div>
+        <div className="space-y-8"><DeckSightingHistory sightingsByMonth={sightingsByMonth} instances={instancesForList} playerName={playerName} />{similarityStatus.phase === "error" ? <div role="alert"><p>Similar decks could not load.</p><button type="button" className="min-h-12 px-3 text-ctp-blue" onClick={similarityStatus.retry}>Retry similar decks</button></div> : fullUniverseLoading || !similarityData ? <InlineState>Loading similar decks…</InlineState> : <SimilarDecksSection decks={similarDecks} />}</div>
       </TabPanel>
       <TabPanel baseId="deck-detail" tab="discussion" active={tab}><DeckComments target={{ kind: "tournament", id: hash }} /></TabPanel>
     </PageLayout>

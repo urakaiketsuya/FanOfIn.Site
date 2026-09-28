@@ -105,12 +105,12 @@ export function useDeckPopularity(
    * to this for the rare deck with no precomputed hash, or when its Similar Decks tab is open. */
   enabled = true,
 ): PopularityResult {
-  const rawCardIndexData = useDeckCardIndexData();
+  const rawCardIndexData = useDeckCardIndexData(enabled);
   // Guards against a stale IndexedDB copy from before dictionary-encoding shipped — see the same
   // guard in useCardCombination.ts for why.
   const cardIndexData = enabled && rawCardIndexData?.cardNames ? rawCardIndexData : undefined;
-  const sightingsData = useDeckPopularityIndexData();
-  const cardCatalog = useCardCatalog();
+  const sightingsData = useDeckPopularityIndexData(enabled);
+  const cardCatalog = useCardCatalog(enabled);
   const cardsByName = useMemo(() => new Map(cardCatalog.map((c) => [c.name, c])), [cardCatalog]);
 
   // Build the expensive all-decks aggregation once per published dataset. Champion and minimum-
