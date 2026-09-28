@@ -1,8 +1,7 @@
 import DisclosureChevron from "../DisclosureChevron";
 import { useMemo, useState, type ReactNode } from "react";
-import { Link } from "react-router-dom";
 import type { Card } from "@gatcg/shared";
-import CardArtTile from "../CardArtTile";
+import CardResult from "../CardResult";
 import QuantityControl from "./QuantityControl";
 
 export default function CardSearchResults({ query, names, catalog, chosen, onAdd, quantityFor, onSetQuantity, filtered = false, evidence, owned, selected, onToggleSelection, renderStats }: {
@@ -26,13 +25,12 @@ export default function CardSearchResults({ query, names, catalog, chosen, onAdd
       {matches.slice(0, limit).map(name => {
         const card = catalog.get(name);
         const quantity = quantityFor?.(name) ?? chosen.get(name) ?? 0;
-        return <article key={name} className={`min-w-0 overflow-hidden rounded-xl border bg-ctp-mantle p-2 ${selected?.has(name) ? "border-ctp-blue ring-2 ring-ctp-blue/30" : "border-ctp-surface1"}`}>
-          {onToggleSelection ? <button type="button" aria-pressed={selected?.has(name) ?? false} aria-label={`${selected?.has(name) ? "Deselect" : "Select"} ${name}`} onClick={()=>onToggleSelection(name)} className="block w-full rounded text-left focus-visible:outline-2 focus-visible:outline-ctp-blue"><CardArtTile card={card} name={name} /><span className="flex min-h-12 items-center break-words text-sm font-medium">{name}</span><span className="flex min-h-12 items-center justify-center rounded-lg border border-ctp-blue px-2 text-sm text-ctp-blue">{selected?.has(name) ? "✓ Selected" : "Select card"}</span></button> : card ? <Link to={`/cards/${card.slug}`} target="_blank" rel="noreferrer" className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue"><CardArtTile card={card} name={name} /><span className="flex min-h-12 items-center break-words text-sm font-medium">{name}<span className="sr-only"> — open card details in a new tab</span></span></Link> : <><CardArtTile card={undefined} name={name} /><p className="min-h-12 text-sm">{name}</p></>}
+        return <CardResult key={name} card={card} name={name} selected={selected?.has(name)} onSelect={onToggleSelection ? () => onToggleSelection(name) : undefined} newTab>
           {renderStats?.(name)}
           {owned && <p className="mb-2 text-xs text-ctp-subtext0">{owned.get(name) ?? 0} owned</p>}
           {evidence?.get(name) && <details className="mb-2 text-xs text-ctp-subtext1"><summary className="flex min-h-12 cursor-pointer list-none items-center gap-1">Why this card?<DisclosureChevron /></summary><p>{evidence.get(name)}</p></details>}
           {onToggleSelection ? (quantity > 0 && <p className="mt-2 text-xs text-ctp-subtext1">{quantity} in destination</p>) : quantity > 0 && onSetQuantity ? <QuantityControl stacked name={name} quantity={quantity} min={0} onChange={value => onSetQuantity(name, value)} /> : <button type="button" disabled={quantity > 0} onClick={() => onAdd(name, 1)} aria-label={`Add ${name}`} className="min-h-12 w-full rounded-lg border border-ctp-blue px-2 text-sm text-ctp-blue disabled:opacity-50">{quantity ? "In deck" : "+ Add card"}</button>}
-        </article>;
+        </CardResult>;
       })}
     </div>
     {matches.length > limit && <button type="button" onClick={() => setLimit(count => count + 24)} className="mt-2 min-h-12 rounded-lg px-3 text-sm text-ctp-blue">Show more cards</button>}

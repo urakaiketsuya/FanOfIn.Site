@@ -55,6 +55,8 @@ export interface SavedDeckDetail extends SavedDeck {
 export interface PublicDeck {
   /** Site-managed starter content; never inherited by user copies. */
   isSeed?: boolean;
+  /** Small sample from the published Main deck; never the full list. */
+  previewCards?: OmnidexDecklistCardLine[];
   publicSlug: string;
   title: string;
   description: string;

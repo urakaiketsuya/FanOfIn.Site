@@ -51,7 +51,7 @@ export default function App() {
 
   return <div data-component="App" className="min-h-screen bg-ctp-base text-ctp-text">
     <header className="sticky top-0 z-40 border-b border-ctp-surface0 bg-ctp-base/95 backdrop-blur">
-      <FeatureBanner />
+      {location.pathname !== "/deck-builder" && <FeatureBanner />}
       <div className="relative">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
           <Link to="/" className="flex min-h-11 shrink-0 items-center font-semibold tracking-tight text-ctp-blue">Fan of Insight</Link>

@@ -27,8 +27,8 @@ interface DecklistDisplayPrefs {
 const DEFAULTS: DecklistDisplayPrefs = {
   displayMode: null,
   showPrices: false,
-  tuningEvidence: true,
-  metaGaps: true,
+  tuningEvidence: false,
+  metaGaps: false,
   diaoScore: false,
   winRate: false,
   visualCardSize: "large",

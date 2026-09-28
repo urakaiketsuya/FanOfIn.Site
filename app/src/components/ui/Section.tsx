@@ -1,3 +1,4 @@
+import DisclosureChevron from "../DisclosureChevron";
 import type { ElementType, HTMLAttributes, ReactNode } from "react";
 
 type SectionHeading = "default" | "compact" | "dense";
@@ -66,9 +67,9 @@ export default function Section({
         className="group"
         onToggle={onOpen ? (e) => { if ((e.currentTarget as HTMLDetailsElement).open) onOpen(); } : undefined}
       >
-        <summary className="mb-3 flex flex-wrap cursor-pointer list-none items-start justify-between gap-3 [&::-webkit-details-marker]:hidden">
+        <summary className="mb-3 flex min-h-12 flex-wrap cursor-pointer list-none items-start justify-between gap-3 [&::-webkit-details-marker]:hidden">
           <div className="flex items-start gap-2">
-            <span aria-hidden="true" className="mt-1 shrink-0 text-ctp-subtext0 transition-transform group-open:rotate-90">&#9656;</span>
+            <DisclosureChevron className="mt-1 text-ctp-subtext0 transition-transform group-open:rotate-180" />
             {header}
           </div>
           {/* stopPropagation so interactive actions (links/buttons/selects) don't also toggle the details */}

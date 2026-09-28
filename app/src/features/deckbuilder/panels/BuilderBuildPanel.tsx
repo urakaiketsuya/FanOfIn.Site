@@ -34,12 +34,12 @@ export default function BuilderBuildPanel() {
           <CardBrowser renderStats={cardStats.renderStats} statsControls={cardStats.controls} sourceControl={<select aria-label="Card source" value={b.recommendationsEnabled ? "suggestions" : "all"} onChange={event=>b.setRecommendationsEnabled(event.target.value==="suggestions")} className="min-h-12 w-full min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-xs"><option value="all">All cards</option><option value="suggestions">Suggestions</option></select>} suppressResults={b.recommendationsEnabled && (!b.championName || !b.spiritFilter || b.gateLoading)} query={b.cardInput} onQuery={b.setCardInput} destination={b.addDestination} onDestination={b.setAddDestination} names={b.cardNames} catalog={b.catalogByName} deck={b.editor.deck} onEdit={b.editor.edit} owned={b.collectionLoaded ? b.collectionOwnedByName : undefined} collectionStatus={b.collectionError ?? "Loading collection…"} identityElements={b.identityElements} suggestedNames={b.recommendationsEnabled ? suggestedNames : undefined} evidence={b.recommendationsEnabled ? evidence : undefined} />
   </>;
   return <section aria-label="Deck building workspace" className="mt-3">
-    <div style={{top: headerHeight}} className="sticky z-10 -mx-1 flex flex-wrap items-center justify-between gap-2 border-b border-ctp-surface1 bg-ctp-base px-1 py-2">
+    {(!starting || hasCards) && <div style={{top: headerHeight}} className="sticky z-10 -mx-1 flex flex-wrap items-center justify-between gap-2 border-b border-ctp-surface1 bg-ctp-base px-1 py-2">
       <h2 className="text-base font-semibold">Your deck · {total} {total === 1 ? "card" : "cards"}</h2>
       {starting ? <button type="button" disabled={!hasCards} onClick={()=>setStarting(false)} className="min-h-12 rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base disabled:opacity-40">View deck ({total})</button> : <button type="button" onClick={()=>setBrowserOpen(true)} className="min-h-12 rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base">Add cards</button>}
-    </div>
+    </div>}
     {starting ? <section aria-label="Find your first cards" className="mt-3">
-      {!hasCards && <div className="mb-3 flex flex-wrap items-start gap-x-3"><DecklistPaste /><BuilderStartActions /></div>}
+      {!hasCards && <details className="mb-2"><summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 text-sm text-ctp-blue">Import or open a deck<DisclosureChevron /></summary><div className="flex flex-wrap items-start gap-x-3"><DecklistPaste /><BuilderStartActions /></div></details>}
       {cardBrowser}
     </section> : <section id="workbench-deck" aria-label="Edit deck" className="min-w-0">
       <div className="my-2 flex flex-wrap items-center justify-between gap-2">

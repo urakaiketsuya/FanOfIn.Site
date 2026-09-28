@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { BookmarkedDeck, PublicDeckSummary } from "@gatcg/shared";
+import { deckPreviewCards, type BookmarkedDeck, type PublicDeckSummary } from "@gatcg/shared";
 import { Link } from "react-router-dom";
 import CardArtTile from "../../components/CardArtTile";
 import DisclosureChevron from "../../components/DisclosureChevron";
@@ -10,7 +10,8 @@ import { useCardsByNames } from "../events/useCardsByNames";
 const actionClass = "inline-flex min-h-12 items-center justify-center rounded-lg px-3 text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue";
 
 export function PublicDeckCard({ deck, onRemoveFavorite }: { deck: PublicDeckSummary | BookmarkedDeck; onRemoveFavorite?: () => void }) {
-  const names = useMemo(() => deck.championName ? [deck.championName] : [], [deck.championName]);
+  const preview = useMemo(() => deck.previewCards ?? ("decklist" in deck ? deckPreviewCards(deck.decklist) : []), [deck]);
+  const names = useMemo(() => [...(deck.championName ? [deck.championName] : []), ...preview.map(line => line.card)], [deck.championName, preview]);
   const exactCards = useCardsByNames(names);
   const championCards = useChampionCardImages(names);
   const champion = deck.championName ? exactCards.get(deck.championName) ?? championCards.get(deck.championName) : undefined;
@@ -29,6 +30,11 @@ export function PublicDeckCard({ deck, onRemoveFavorite }: { deck: PublicDeckSum
           <p className="mt-2 text-xs text-ctp-subtext0">{deck.likeCount} {deck.likeCount === 1 ? "like" : "likes"}<span aria-hidden="true"> · </span>Version {deck.versionNumber}</p>
         </div>
       </div>
+      {preview.length > 0 && <section aria-label="Main deck preview"><p className="mb-2 text-xs text-ctp-subtext0">From the Main deck</p><div className="grid grid-cols-3 gap-2">{preview.map(line => {
+        const card = exactCards.get(line.card);
+        const content = <><CardArtTile card={card} name={line.card} /><span className="mt-1 block break-words text-xs leading-snug">{line.quantity}× {line.card}</span></>;
+        return card ? <Link key={line.card} to={`/cards/${card.slug}`} className="min-w-0 rounded focus-visible:outline-2 focus-visible:outline-ctp-blue">{content}</Link> : <div key={line.card} className="min-w-0">{content}</div>;
+      })}</div></section>}
       {deck.description && <p className="line-clamp-2 break-words text-sm leading-relaxed text-ctp-subtext1">{deck.description}</p>}
     </div>
     <div className="border-t border-ctp-surface1 p-3">

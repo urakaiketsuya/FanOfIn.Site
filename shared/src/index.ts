@@ -47,3 +47,5 @@ export { computeCollectionValue, TCGPLAYER_MARKETPLACE_NET_RATE } from "./collec
 export * from "./tradeAvailability.js";
 
 export * from "./deckDetailData.js";
+
+export { deckPreviewCards } from "./deckPreview";

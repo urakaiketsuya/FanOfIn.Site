@@ -1,9 +1,11 @@
 import { useSyncProgress } from "../../lib/sync/SyncProvider";
-import { useId, useMemo, useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import type { Card } from "@gatcg/shared";
 import { automaticDeckSection, type DeckEdit, type EditableDeck } from "../../lib/deckEditing";
 import { deckDestinationEligibility } from "../../lib/deckSectionEligibility";
 import { rarityLabel, rarityOptions } from "../../features/cards/rarities";
+import CardResultsToolbar from "../CardResultsToolbar";
+import DialogSheet from "../ui/DialogSheet";
 import DisclosureChevron from "../DisclosureChevron";
 import CardSearchResults from "./CardSearchResults";
 import { emptyCatalogFilters, filterCatalog, sortCatalogNames, type CatalogSort, type CatalogFilters } from "./catalogFilters";
@@ -16,7 +18,6 @@ export default function CardBrowser({ query, onQuery, destination, onDestination
   owned?: ReadonlyMap<string, number>; collectionStatus?: string; identityElements?: ReadonlySet<string>;
   sourceControl?: ReactNode; suppressResults?: boolean; suggestedNames?: string[]; evidence?: ReadonlyMap<string, string>;
 }) {
-  const id = useId();
   const sync = useSyncProgress();
   const [filterOpen, setFilterOpen] = useState(false);
   const [filters, setFilters] = useState(emptyCatalogFilters);
@@ -52,16 +53,16 @@ export default function CardBrowser({ query, onQuery, destination, onDestination
     onAdded?.();
   }
   return <>
-    <label htmlFor={id} className="sr-only">Search cards</label>
-    <input id={id} value={query} onChange={event => onQuery(event.target.value)} onKeyDown={event => { if (event.key === "Enter" && matches.includes(query)) toggleSelection(query); }} placeholder="Search names or rules text…" className="min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 text-base focus-visible:outline-2 focus-visible:outline-ctp-blue" />
-    <div className={`mt-2 grid items-center gap-2 ${sourceControl ? "grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]" : "grid-cols-[minmax(0,1fr)_auto]"}`}>
+    <CardResultsToolbar query={query} onQuery={onQuery} onSubmit={() => { if (matches.includes(query)) toggleSelection(query); }}>
+    <div className={`grid w-full items-center gap-2 ${sourceControl ? "grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]" : "grid-cols-[minmax(0,1fr)_auto]"}`}>
       {sourceControl}
       <label className="flex min-w-0 items-center gap-1 text-sm text-ctp-subtext1"><span className="sr-only">Add to</span><select aria-label="Add to" value={destination} onChange={event => onDestination(event.target.value as typeof destination)} className="min-h-12 w-full min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-xs"><option value="automatic">Deck</option><option value="sideboard">Sideboard</option><option value="maybeboard">Maybeboard</option></select></label>
-      <button type="button" aria-expanded={filterOpen} aria-controls={`${id}-filters`} onClick={()=>setFilterOpen(open=>!open)} className="flex min-h-12 items-center gap-1 rounded-lg border border-ctp-surface1 px-2 text-sm">Filters{active.length ? ` (${active.length})` : ""}<DisclosureChevron /></button>
+      <button type="button" aria-expanded={filterOpen} aria-haspopup="dialog" onClick={event=>{event.currentTarget.focus();setFilterOpen(open=>!open);}} className="flex min-h-12 items-center gap-1 rounded-lg border border-ctp-surface1 px-2 text-sm">Options{active.length ? ` (${active.length})` : ""}<DisclosureChevron /></button>
     </div>
+    </CardResultsToolbar>
+    {filterOpen && <DialogSheet title="Browse options" onDismiss={()=>setFilterOpen(false)} dismissLabel="Show cards">
     <label className="mt-2 flex items-center justify-between gap-2 text-sm">Sort<select aria-label="Sort cards" value={sort} onChange={event=>setSort(event.target.value as CatalogSort)} className="min-h-12 min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-2"><option value="name">Name A–Z</option><option value="name-desc">Name Z–A</option><option value="cost">Cost low to high</option><option value="cost-desc">Cost high to low</option><option value="element">Element</option></select></label>
     {statsControls}
-    {filterOpen && <div id={`${id}-filters`} className="mt-2 rounded-lg border border-ctp-surface1 p-3">
       <div className="grid grid-cols-1 gap-3 pb-3 sm:grid-cols-2">
         {([['element','elements'],['type','types'],['subtype','subtypes']] as const).map(([key,values]) => <label key={key} className="text-sm">{labels[key]}<select value={filters[key]} onChange={e => setFilters(f => ({...f,[key]:e.target.value}))} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2"><option value="">All</option>{options(values).map(value => <option key={value} value={value}>{value}</option>)}</select></label>)}
         <label className="text-sm">Rarity<select value={filters.rarity ?? ""} onChange={e => setFilters(f => ({...f, rarity:e.target.value}))} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2"><option value="">All rarities</option>{rarityOptions(cards).map(option => <option key={option.value} value={option.value}>{option.text}</option>)}</select></label>
@@ -73,7 +74,7 @@ export default function CardBrowser({ query, onQuery, destination, onDestination
         {!identityElements?.size && <p className="text-xs text-ctp-subtext0">Add Material cards to enable the element filter.</p>}
       </div>
       {!!active.length && <button type="button" onClick={()=>setFilters(emptyCatalogFilters())} className="min-h-12 text-sm text-ctp-blue">Clear filters</button>}
-    </div>}
+    </DialogSheet>}
     {!!active.length && <div className="mt-2 flex flex-wrap gap-2" aria-label="Active card filters">{active.map(([key,value]) => <button type="button" key={key} onClick={()=>setFilters(f=>({...f,[key]:typeof value === "boolean" ? false : ""}))} className="min-h-12 rounded-full border border-ctp-blue px-3 text-xs text-ctp-blue" aria-label={`Remove ${labels[key]} filter`}>{labels[key]}{typeof value === "string" ? `: ${key === "rarity" ? rarityLabel(value) : value}` : ""} ×</button>)}</div>}
     {suppressResults ? null : !names.length ? <p role={sync.phase === "error" ? "alert" : "status"} className="py-4 text-sm">{sync.phase === "error" ? "Card catalog could not load. Check your connection and reload to try again." : sync.phase === "done" ? "No cards are available in the catalog yet." : "Loading card catalog…"}</p> : <CardSearchResults key={JSON.stringify([query, filters, sort, suggestedNames !== undefined])} query={query} names={matches} catalog={catalog} chosen={new Map()} filtered renderStats={renderStats} evidence={evidence} owned={owned} quantityFor={quantityFor} selected={selected} onToggleSelection={toggleSelection} onAdd={toggleSelection} onSetQuantity={(name, quantity)=>onEdit(quantity === 0 ? {type:"remove",section:sectionFor(name),name} : {type:"quantity",section:sectionFor(name),name,quantity})} />}
     {addedNotice && <p role="status" className="mt-2 text-sm text-ctp-subtext1">{addedNotice}</p>}

@@ -1,7 +1,6 @@
 import { type Card, type CollectionEntry, type CollectionUpdateLine } from "@gatcg/shared";
 import { useMemo, useState, type ReactNode } from "react";
-import { Link } from "react-router-dom";
-import CardArtTile from "../../components/CardArtTile";
+import CardResult from "../../components/CardResult";
 import CollectionCardSheet from "./CollectionCardSheet";
 
 import CollectionPurchase from "./CollectionPurchase";
@@ -56,15 +55,13 @@ export default function CollectionBrowser({ cards, entries, busy = false, previe
         const complete = quantity >= playsetTarget(card);
         const canonical = entries.find(entry => entry.cardUuid === card.uuid && !entry.editionUuid);
         const update = (owned: number, proxies = canonical?.proxyQuantity ?? 0) => onUpdate?.([{ cardUuid: card.uuid, cardName: card.name, quantity: Math.max(0, owned), proxyQuantity: proxies }], "Collection adjustment");
-        const content = <><CardArtTile card={art(card)} name={card.name} /><span className="mt-1 flex min-h-12 items-center text-sm font-medium">{card.name}</span></>;
-        return <article key={card.uuid} className={`min-w-0 rounded-xl border bg-ctp-mantle p-2 ${shopping.active && shopping.choices[card.uuid] ? "border-ctp-blue ring-2 ring-ctp-blue/30" : "border-ctp-surface1"}`}>
-          {shopping.active ? <button type="button" aria-label={`${shopping.choices[card.uuid] ? "Deselect" : "Select"} ${card.name}`} aria-pressed={!!shopping.choices[card.uuid]} onClick={() => shopping.choose(card.uuid, card.name, shopping.choices[card.uuid] ? 0 : 1)} className="block w-full rounded text-left">{content}<span className="text-sm text-ctp-blue">{shopping.choices[card.uuid] ? "✓ Selected" : "Select card"}</span></button> : preview ? <Link to={`/cards/${card.slug}`} className="block rounded">{content}</Link> : <button type="button" aria-label={`Manage ${card.name}`} onClick={() => setEditing(card.uuid)} className="block w-full rounded text-left">{content}</button>}
+        return <CardResult key={card.uuid} card={art(card)} name={card.name} selected={shopping.active && !!shopping.choices[card.uuid]} onSelect={shopping.active ? () => shopping.choose(card.uuid, card.name, shopping.choices[card.uuid] ? 0 : 1) : undefined} onManage={!preview ? () => setEditing(card.uuid) : undefined}>
           {!preview && <p className="mt-1 text-xs text-ctp-subtext1">{quantity} / {playsetTarget(card)} owned{complete ? " · ✓ Playset" : ""}</p>}
           {!preview && renderStatus?.(card.uuid)}
           {!preview && !shopping.active && <>
             <div className="mt-2 flex items-center gap-2"><button type="button" disabled={busy || !quantity} aria-label={`Remove one ${card.name}`} onClick={() => { if (entries.some(entry => entry.cardUuid === card.uuid && entry.editionUuid && entry.ownedQuantity > 0)) setEditing(card.uuid); else void update((canonical?.ownedQuantity ?? 0) - 1); }} className="flex-1 rounded-lg border border-ctp-surface1 disabled:opacity-40">−</button><button type="button" disabled={busy} aria-label={`Add one ${card.name}`} onClick={() => void update((canonical?.ownedQuantity ?? 0) + 1)} className="flex-1 rounded-lg border border-ctp-surface1">+</button></div>
           </>}
-        </article>;
+        </CardResult>;
       })}</div>
       {matchingCards.length > limit && <button type="button" onClick={() => setLimit(current => current + 24)} className="mt-3 rounded-lg border border-ctp-surface1 px-3 text-sm">Show more cards</button>}
     </>}</CollectionPurchase>

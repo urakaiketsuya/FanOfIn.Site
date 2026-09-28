@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { cardLocationState, deckCardRequirements, locationCardKey, planCardTransfer, returnLoanCopies } from "@gatcg/shared";
-import { useState, type FormEvent } from "react";
+import { useId, useState, type FormEvent } from "react";
 import type { Card, CollectionCardTracking, CollectionCardTrackingUpdate, CollectionLoan, CollectionEntry, CollectionDeckAssignment, SavedDeck } from "@gatcg/shared";
 import EditorDialog from "../../components/deck-editor/EditorDialog";
 import CardArtTile from "../../components/CardArtTile";
@@ -12,6 +12,8 @@ function localDateInput(value: string) {
 }
 
 export default function CardLocationSheet({ cardUuid, name, card, record, entries, decks, onSave, onDismiss, initialBorrower, loansFirst = false }: {initialBorrower?: string; loansFirst?: boolean; entries: CollectionEntry[]; decks: SavedDeck[]; cardUuid: string; name: string; card?: Card; record?: CollectionCardTracking; onSave: (id: string, update: CollectionCardTrackingUpdate) => Promise<void>; onDismiss: () => void}) {
+  const formId = useId();
+  const [baseline] = useState(() => JSON.stringify([record?.mightOwn ?? false, record?.loans ?? [], record?.assignments ?? []]));
   const [mightOwn, setMightOwn] = useState(record?.mightOwn ?? false);
   const [loans, setLoans] = useState<CollectionLoan[]>(() => [...(record?.loans ?? []), ...(initialBorrower !== undefined && (record?.loans.length ?? 0) < 100 ? [{id: crypto.randomUUID(), borrower: initialBorrower, quantity: 1, lentAt: new Date().toISOString()}] : [])]);
   const [assignments, setAssignments] = useState<CollectionDeckAssignment[]>(record?.assignments ?? []);
@@ -37,9 +39,9 @@ export default function CardLocationSheet({ cardUuid, name, card, record, entrie
           {missingDecks.map(row=><div key={row.deckId} className="mt-2 text-sm"><p>Unavailable deck · {row.quantity} copies. Review before unassigning.</p><button type="button" onClick={()=>setAssignment(row.deckId,0)} className="min-h-12 text-ctp-blue">Unassign these copies</button></div>)}
           {transferNote && <p role="status" className="mt-2 text-sm">{transferNote}</p>}
         </section></details>;
-  return <EditorDialog title={loansFirst ? "Manage loans" : "Locations & loans"} doneLabel="Cancel" dismissible={!busy} onDismiss={()=>{if(!busy) onDismiss();}}>
-    <div className="mb-4 flex items-start gap-3"><div className="w-20 shrink-0"><CardArtTile card={card} name={name} /></div><div><h3 className="font-semibold">{name}</h3><p className="mt-2 text-sm text-ctp-subtext1">{location.owned} owned · {location.unassigned} unassigned · {location.lent} lent out · {location.reserved} reserved for trades</p>{card && <Link to={`/cards/${card.slug}`} className="inline-flex min-h-12 items-center text-sm text-ctp-blue">Card details ↗</Link>}</div></div>
-    <form onChange={()=>setError("")} onSubmit={event=>void save(event)} className="space-y-4">
+  return <EditorDialog title={loansFirst ? "Manage loans" : "Locations & loans"} doneLabel="Close" dirty={JSON.stringify([mightOwn, loans, assignments]) !== baseline} dismissible={!busy} footer={<>{error && <p role="alert" className="mb-2 text-sm text-ctp-red">{error}</p>}<button form={formId} type="submit" disabled={busy || location.excess > 0} className="min-h-12 w-full rounded-lg bg-ctp-blue px-4 font-semibold text-ctp-base disabled:opacity-40">{busy ? "Saving…" : "Save locations"}</button></>} onDismiss={()=>{if(!busy) onDismiss();}}>
+    <div className="mb-4 flex items-start gap-3"><div className="w-20 shrink-0"><CardArtTile card={card} name={name} /></div><div><h3 className="font-semibold">{name}</h3><p className="mt-2 text-sm text-ctp-subtext1">{location.owned} owned · {location.unassigned} unassigned · {location.lent} lent out · {location.reserved} reserved for trades</p>{card && <Link target="_blank" rel="noreferrer" to={`/cards/${card.slug}`} className="inline-flex min-h-12 items-center text-sm text-ctp-blue">Card details ↗</Link>}</div></div>
+    <form id={formId} onChange={()=>setError("")} onSubmit={event=>void save(event)} className="space-y-4">
       <fieldset disabled={busy} className="flex flex-col gap-4">
         {location.excess > 0 && <p role="alert" className="text-sm text-ctp-yellow">Needs reconciliation: {location.excess} more copies are assigned or lent than you own. Reduce assignments, return loans, or correct your collection quantity.</p>}
         {!loansFirst && deckSection}
@@ -61,8 +63,6 @@ export default function CardLocationSheet({ cardUuid, name, card, record, entrie
         {loansFirst && deckSection}
         <label className="flex min-h-12 items-center gap-3 rounded-lg border border-ctp-surface1 p-3"><input type="checkbox" checked={mightOwn} onChange={event=>setMightOwn(event.target.checked)} />I might own this—need to check</label>
       </fieldset>
-      {error && <p role="alert" className="text-sm text-ctp-red">{error}</p>}
-      <button type="submit" disabled={busy || location.excess > 0} className="min-h-12 w-full rounded-lg bg-ctp-blue px-4 font-semibold text-ctp-base disabled:opacity-40">{busy ? "Saving…" : "Save locations"}</button>
     </form>
   </EditorDialog>;
 }

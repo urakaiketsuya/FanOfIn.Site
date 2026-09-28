@@ -1,3 +1,4 @@
+import { deckPreviewCards, type OmnidexDecklist } from "@gatcg/shared";
 import type { DeckFormat, PublicDeckSummary, PublicProfile } from "@gatcg/shared";
 import type { Env } from "./auth";
 import { badRequest } from "./errors";
@@ -31,12 +32,13 @@ function summary(row: Record<string, string | number | null>): PublicDeckSummary
     owner: { displayName: String(row.display_name), profileSlug: String(row.profile_slug) },
     isSeed: Number(row.is_seed ?? 0) === 1,
     likeCount: Number(row.like_count ?? 0),
+    previewCards: row.decklist_json ? deckPreviewCards(JSON.parse(String(row.decklist_json)) as OmnidexDecklist) : [],
   };
 }
 
 const SELECT = `SELECT ud.is_seed, ud.public_slug, ud.published_title, ud.published_description, ud.published_primer_markdown,
   ud.published_tags_json, ud.published_at,
-  users.display_name, users.profile_slug, dv.version_number, cb.format, cb.champion_name,
+  users.display_name, users.profile_slug, dv.version_number, cb.format, cb.champion_name, cb.decklist_json,
   (SELECT COUNT(*) FROM deck_likes dl WHERE dl.deck_id = ud.id) AS like_count
   FROM user_decks ud
   JOIN users ON users.id = ud.owner_user_id
