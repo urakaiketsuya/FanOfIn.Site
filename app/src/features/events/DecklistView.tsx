@@ -1,3 +1,5 @@
+import { useToast } from "../../components/ui/toast/ToastContext";
+import DeckLegalityWarning from "../../components/deck-editor/DeckLegalityWarning";
 import { sortDeckCardsByElement } from "@gatcg/shared";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import { useMemo, useState, type ReactNode } from "react";
@@ -76,6 +78,7 @@ export default function DecklistView({
   collectionControl?: ReactNode;
   collectionPanel?: ReactNode;
 }) {
+  const { notify } = useToast();
   const displayPrefs = useDecklistDisplayPrefs();
   const priceByName = useDeckPriceByName(displayPrefs.showPrices);
   const priceTrendByName = usePriceTrendByName(displayPrefs.showPrices && displayPrefs.visualPriceTrend);
@@ -91,9 +94,9 @@ export default function DecklistView({
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(buildDecklistText(decklist, [...extraSections, ...trailingSections]));
-      setCopyState("copied");
+      setCopyState("copied"); notify({ message: "Decklist copied.", key: "copy" });
     } catch {
-      setCopyState("failed");
+      setCopyState("failed"); notify({ tone: "error", message: "Could not copy the decklist.", key: "copy", action: { label: "Retry copy", onClick: handleCopy } });
     }
     setTimeout(() => setCopyState("idle"), 1500);
   }
@@ -101,9 +104,9 @@ export default function DecklistView({
   async function handleCopyAndOpen(url: string) {
     try {
       await copyDecklistAndOpen(buildDecklistText(decklist, [...extraSections, ...trailingSections]), url);
-      setCopyState("copied");
+      setCopyState("copied"); notify({ message: "Decklist copied.", key: "copy" });
     } catch {
-      setCopyState("failed");
+      setCopyState("failed"); notify({ tone: "error", message: "Could not copy the decklist.", key: "copy", action: { label: "Retry copy", onClick: handleCopy } });
     }
     setTimeout(() => setCopyState("idle"), 1500);
   }
@@ -181,10 +184,12 @@ export default function DecklistView({
       cardsByName,
     );
     downloadJsonFile(`${slugifyFilename(championName ?? "decklist")}-tts.json`, save);
+    notify({ message: "Decklist download started." });
   }
 
   return (
     <div data-component="DecklistView">
+      <DeckLegalityWarning deck={decklist} catalog={cardsByName} format={format ?? "STANDARD"} historical />
       <div className="relative mb-3 flex flex-wrap items-center gap-1 border-b border-ctp-surface0 pb-2">
         <details className="group">
           <summary className="flex min-h-11 cursor-pointer list-none items-center rounded-md px-3 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">Display <DisclosureChevron className="ml-1" /></summary>

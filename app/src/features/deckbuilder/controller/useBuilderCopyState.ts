@@ -1,3 +1,4 @@
+import { useToast } from "../../../components/ui/toast/ToastContext";
 import { useEffect, useRef, useState } from "react";
 import type { Card, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import { buildTcgplayerMassEntryUrl } from "../../../lib/tcgplayerMassEntry";
@@ -31,6 +32,7 @@ export function useBuilderCopyState({
   build, buildLines, sideboardLines, decklist, keptDecklist, cardsByName, championName, spiritFilter,
   archetypeId, deckFormat, lockedCards, lockedSections, improveDeckId, maybeboard,
 }: UseBuilderCopyStateArgs) {
+  const { notify } = useToast();
   const massEntryUrl = buildTcgplayerMassEntryUrl([...buildLines, ...sideboardLines]);
   const clarentUrl = buildClarentPlaytestUrl(decklist);
   const [copyState, setCopyState] = useState<"idle" | "full-copied" | "kept-copied" | "full-failed" | "kept-failed">("idle");
@@ -55,8 +57,10 @@ export function useBuilderCopyState({
     try {
       await copyBuilderDecklist(keptOnly ? keptDecklist : decklist);
       setCopyState(keptOnly ? "kept-copied" : "full-copied");
+      notify({ message: "Decklist copied.", key: "copy" });
     } catch {
       setCopyState(keptOnly ? "kept-failed" : "full-failed");
+      notify({ tone: "error", message: "Could not copy the decklist.", key: "copy", action: { label: "Retry", onClick: () => handleCopy(keptOnly) } });
     }
     setTimeout(() => setCopyState("idle"), 1500);
   }
@@ -64,9 +68,9 @@ export function useBuilderCopyState({
   async function handleCopyAndOpen(url: string) {
     try {
       await copyBuilderDecklistAndOpen(decklist, url);
-      setCopyState("full-copied");
+      setCopyState("full-copied"); notify({ message: "Decklist copied.", key: "copy" });
     } catch {
-      setCopyState("full-failed");
+      setCopyState("full-failed"); notify({ tone: "error", message: "Could not copy and open the decklist. Please try again.", key: "copy" });
     }
     setTimeout(() => setCopyState("idle"), 1500);
   }
@@ -85,15 +89,16 @@ export function useBuilderCopyState({
         lockedCards,
         lockedSections,
       });
-      setShareCopyState("copied");
+      setShareCopyState("copied"); notify({ message: "Deck link copied.", key: "copy" });
     } catch {
-      setShareCopyState("failed");
+      setShareCopyState("failed"); notify({ tone: "error", message: "Could not copy the link.", key: "copy", action: { label: "Retry", onClick: handleCopyShareLink } });
     }
     setTimeout(() => setShareCopyState("idle"), 1500);
   }
 
   function handleExportTts() {
-    exportBuilderTts(decklist, cardsByName, championName);
+    try { exportBuilderTts(decklist, cardsByName, championName); notify({ message: "Decklist download started." }); }
+    catch { notify({ tone: "error", message: "Could not export the decklist. Please try again." }); }
   }
 
   const signature = JSON.stringify([deckToSave, deckFormat, saveTitle, saveNote, [...maybeboard]]);
@@ -116,10 +121,12 @@ export function useBuilderCopyState({
         maybeboard,
       });
       setSavedDeckId(result.id);
+      notify({ message: currentSignature.current === savingSignature ? "Deck saved to your account." : "Earlier deck changes saved. Your newer edits still need saving.", key: "save", action: { label: "View deck", to: `/decks/${result.id}` } });
       setSaveState(currentSignature.current === savingSignature ? "saved" : "idle");
       trackEvent("deck_builder_saved", { improving: Boolean(improveDeckId), kept_only: saveKeptOnly, format: deckFormat });
     } catch (reason) {
       setSaveState(reason instanceof AccountApiError && reason.status === 401 ? "sign-in" : "failed");
+      notify({ tone: "error", key: "save", message: reason instanceof AccountApiError && reason.status === 401 ? "Sign in to save this deck to your account." : "Could not save your deck. Your draft is still here." });
     }
   }
 

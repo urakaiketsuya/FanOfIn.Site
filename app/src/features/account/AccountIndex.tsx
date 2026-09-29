@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useActionNotice } from "../../components/ui/toast/useActionNotice";
+import { useToast } from "../../components/ui/toast/ToastContext";
+import { useEffect, useState, useRef } from "react";
 import type { AccountUser, AuthIdentity, AuthProvider } from "@gatcg/shared";
 import { Link, useSearchParams } from "react-router-dom";
 import { accountApi } from "../../lib/accountApi";
@@ -17,7 +19,9 @@ export default function AccountIndex() {
   const [user, setUser] = useState<AccountUser | null>();
   const [username, setUsername] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
+  const setNotice = useActionNotice();
+  const { notify, dismiss } = useToast();
+  const actionErrorToast = useRef("");
   const [busy, setBusy] = useState(false);
   const [identities, setIdentities] = useState<AuthIdentity[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -41,11 +45,12 @@ export default function AccountIndex() {
       setUser(session.user); setUsername(session.user?.displayName ?? "");
       if (session.user) setIdentities((await accountApi.authIdentities()).identities);
     }).catch((reason: Error) => { setError(reason.message); setUser(null); });
-  }, [searchParams, setSearchParams]);
+  }, [searchParams, setSearchParams, setNotice]);
 
   async function run(action: () => Promise<void>) {
+    dismiss(actionErrorToast.current);
     setBusy(true); setError(null); setNotice(null);
-    try { await action(); } catch (reason) { setError(reason instanceof Error ? reason.message : "Something went wrong"); }
+    try { await action(); } catch (reason) { setError(reason instanceof Error ? reason.message : "Something went wrong"); actionErrorToast.current = notify({ tone: "error", key: "account", message: reason instanceof Error ? reason.message : "Account changes could not be saved. Please try again." }); }
     finally { setBusy(false); }
   }
 
@@ -55,6 +60,7 @@ export default function AccountIndex() {
     const link = document.createElement("a");
     link.href = url; link.download = `fanofin-account-${new Date().toISOString().slice(0, 10)}.json`; link.click();
     URL.revokeObjectURL(url);
+    setNotice("Account download started.");
   }
 
   if (user === undefined) return <PageLayout data-component="AccountIndex"><InlineState className="mt-10">Loading your account…</InlineState></PageLayout>;
@@ -63,7 +69,7 @@ export default function AccountIndex() {
   return <PageLayout data-component="AccountIndex">
     <div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-2xl font-bold text-ctp-blue">Account</h1><p className="mt-1 text-sm text-ctp-subtext1">Profile, privacy, sessions, and your data.</p></div><Link to="/decks/edit" className="rounded-md border border-ctp-blue px-3 py-1.5 text-sm text-ctp-blue">My Decks</Link></div>
     {error && <Panel tone="danger" padding="sm" className="mt-4 text-sm text-ctp-red">{error}</Panel>}
-    {notice && <Panel tone="success" padding="sm" className="mt-4 text-sm text-ctp-green">{notice}</Panel>}
+
 
     <Panel className="mt-8">
       <h2 className="font-semibold text-ctp-text">Public profile</h2>

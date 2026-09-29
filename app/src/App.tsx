@@ -1,3 +1,5 @@
+import ConnectivityNotice from "./components/ui/toast/ConnectivityNotice";
+import ToastViewport from "./components/ui/toast/ToastViewport";
 import DisclosureChevron from "./components/DisclosureChevron";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -107,6 +109,8 @@ export default function App() {
           </section>;
         })}</div>
       </nav>}
+      <ConnectivityNotice />
+      <ToastViewport />
     </header>
     <main><AppRoutes /></main>
     <RandomFlavorFooter />

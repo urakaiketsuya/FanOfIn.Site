@@ -1,3 +1,4 @@
+import { useToast } from "../../components/ui/toast/ToastContext";
 import SavedDeckLocations from "./SavedDeckLocations";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Card, CollectionEntry, CollectionUpdateLine, CollectionUpdateMode, OmnidexDecklist } from "@gatcg/shared";
@@ -23,10 +24,12 @@ export default function DeckCollectionTools({ decklist, cardsByName, source, own
   const [includeSideboard, setIncludeSideboard] = useState(true);
   const [busy, setBusy] = useState(false);
   const [editing, setEditing] = useState(false);
-  const [notice, setNotice] = useState<string | null>(null);
+  const { notify, dismiss } = useToast();
+  const updateToast = useRef("");
+  const mutationBusy = useRef(false);
   const [error, setError] = useState<string | null>(null);
   const [signedOut, setSignedOut] = useState(false);
-  const [transactionId, setTransactionId] = useState<string | null>(null);
+
   const pending = useRef<{ signature: string; requestId: string } | null>(null);
   const active = useRef(true);
   const priceByName = useDeckPriceByName();
@@ -57,28 +60,32 @@ export default function DeckCollectionTools({ decklist, cardsByName, source, own
   const unresolved = Math.max(0, (status?.lines.length ?? 0) - required.length);
 
   async function retry() {
+    if (mutationBusy.current) return;
+    mutationBusy.current = true;
     setBusy(true); setError(null);
     try { await refresh(); } catch { setError("Collection could not be loaded. Please try again."); }
-    finally { setBusy(false); }
+    finally { mutationBusy.current = false; setBusy(false); }
   }
   async function update(mode: CollectionUpdateMode, lines: CollectionUpdateLine[]): Promise<boolean> {
-    if (busy || !lines.length) return false;
-    setBusy(true); setError(null); setNotice(null);
+    if (mutationBusy.current || !lines.length) return false;
+    mutationBusy.current = true;
+    dismiss(updateToast.current);
+    setBusy(true); setError(null);
     const signature = JSON.stringify({ mode, source, lines });
     if (pending.current?.signature !== signature) pending.current = { signature, requestId: crypto.randomUUID() };
     try {
       const result = await accountApi.updateCollection({ mode, source, lines, requestId: pending.current.requestId });
       pending.current = null;
-      setTransactionId(result.changed ? result.transactionId : null);
-      setNotice(result.changed ? "Ownership saved. Your deck coverage has been updated." : "Your collection already covers these quantities.");
+      updateToast.current = notify({ key: "collection", message: result.changed ? "Ownership saved. Your deck coverage has been updated." : "Your collection already covers these quantities.", action: result.changed ? { label: "Undo", onClick: () => undo(result.transactionId) } : undefined });
       try { await refresh(); }
       catch { setError("Ownership was saved, but the updated counts could not be loaded. Retry to refresh them."); }
       window.dispatchEvent(new Event("fanofin:collection-updated"));
       return true;
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Ownership could not be saved. Please try again.");
+      notify({ tone: "error", key: "collection", message: "Could not save ownership. Your changes have not been confirmed; please retry." });
       return false;
-    } finally { setBusy(false); }
+    } finally { mutationBusy.current = false; setBusy(false); }
   }
   async function ownAll() {
     if (!collection || unresolved || busy) return;
@@ -86,16 +93,17 @@ export default function DeckCollectionTools({ decklist, cardsByName, source, own
     if (!lines.length) return;
     await update("at-least", lines);
   }
-  async function undo() {
-    if (!transactionId || busy) return;
+  async function undo(transactionId: string) {
+    if (mutationBusy.current) throw new Error("Wait for the current collection update to finish.");
+    mutationBusy.current = true;
     setBusy(true); setError(null);
     try {
       await accountApi.undoCollectionTransaction(transactionId);
-      setTransactionId(null); setNotice("Ownership update undone.");
+      notify({ message: "Ownership update undone.", key: "collection" });
       try { await refresh(); } catch { setError("The update was undone, but counts could not refresh. Please retry."); }
       window.dispatchEvent(new Event("fanofin:collection-updated"));
-    } catch (reason) { setError(reason instanceof Error ? reason.message : "Could not undo this update."); }
-    finally { setBusy(false); }
+    } catch (reason) { setError(reason instanceof Error ? reason.message : "Could not undo this update."); throw reason; }
+    finally { mutationBusy.current = false; setBusy(false); }
   }
 
   if (signedOut) return <Panel as="aside" data-component="DeckCollectionTools"><h3 className="font-semibold">Your collection</h3><p className="mt-1 text-sm text-ctp-subtext1">Sign in to check and update the cards you own for this deck.</p><Link to="/decks/edit" className={linkClass}>Sign in</Link></Panel>;
@@ -110,7 +118,7 @@ export default function DeckCollectionTools({ decklist, cardsByName, source, own
     </div>
     {!status.complete && <p className="mt-2 text-xs text-ctp-subtext1">“I own all these cards” adds only the missing physical copies as unspecified printings. It keeps any higher quantities and recorded printings.</p>}
     {unresolved > 0 && <p role="status" className="mt-2 text-sm text-ctp-yellow">{unresolved} card{unresolved === 1 ? " is" : "s are"} still unavailable in the catalog. You can edit resolved cards; marking the whole deck owned is unavailable until all cards resolve.</p>}
-    {notice && <div role="status" className="mt-3 flex flex-wrap items-center gap-2 text-sm text-ctp-green">{notice}{transactionId && <Button disabled={busy} onClick={() => void undo()}>Undo</Button>}</div>}
+
     {error && <div className="mt-3"><p role="alert" className="text-sm text-ctp-red">{error}</p><Button className="mt-2" disabled={busy} onClick={() => void retry()}>Refresh ownership</Button></div>}
     {missingLines.length > 0 && <details className="group mt-3"><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 rounded text-sm focus-visible:outline-2 focus-visible:outline-ctp-blue">Missing cards{missingCost > 0 ? ` · about ${formatUsd(missingCost)}` : ""}<DisclosureChevron className="shrink-0 group-open:rotate-180" /></summary><ul className="mt-2 grid gap-2 text-sm sm:grid-cols-2">{missingLines.map(line => <li key={line.card}>{line.missing}× {line.card}</li>)}</ul><a href={buildTcgplayerMassEntryUrl(missingLines.map(line => ({ name: line.card, quantity: line.missing })))} target="_blank" rel="noreferrer" className={`${linkClass} mt-2`}>Shop missing cards ↗</a></details>}
     <details className="group mt-2"><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 rounded text-sm focus-visible:outline-2 focus-visible:outline-ctp-blue">More collection actions<DisclosureChevron className="group-open:rotate-180" /></summary><p className="my-2 text-xs text-ctp-subtext1">Add another full copy of this deck to your existing inventory{includeSideboard ? ", including sideboard" : ""}.</p><Button disabled={busy || !!unresolved || !required.length} onClick={() => void update("add", required)}>Add another copy of this deck</Button></details>

@@ -1,3 +1,4 @@
+import { useToast } from "../../components/ui/toast/ToastContext";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Card, OmnidexDecklist } from "@gatcg/shared";
@@ -47,6 +48,7 @@ function ProductDeckCard({
   compareDisabled: boolean;
   onToggleCompare: () => void;
 }) {
+  const { notify } = useToast();
   const [expanded, setExpanded] = useState(false);
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
   const [ownershipState, setOwnershipState] = useState<"idle" | "saving" | "saved" | "needs-cards" | "failed" | "signed-out">("idle");
@@ -80,9 +82,9 @@ function ProductDeckCard({
       .join("\n\n");
     try {
       await navigator.clipboard.writeText([buildDecklistText(decklist), extras].filter(Boolean).join("\n\n"));
-      setCopyState("copied");
+      setCopyState("copied"); notify({ message: "Printed decklist copied.", key: "copy" });
     } catch {
-      setCopyState("failed");
+      setCopyState("failed"); notify({ tone: "error", message: "Could not copy the printed decklist.", key: "copy", action: { label: "Retry", onClick: copyDecklist } });
     }
     window.setTimeout(() => setCopyState("idle"), 1500);
   }
@@ -128,6 +130,7 @@ function ProductDeckCard({
       await assignCopies(favorite.locationId, assignedHere);
       window.dispatchEvent(new Event("fanofin:collection-updated"));
       setMissingCollectionLines(missing);
+      notify({ message: `${deck.name} pinned to My Decks.${missing.length ? " Some cards are still missing." : " Existing copies assigned."}`, tone: missing.length ? "warning" : "success", key: "ownership" });
       if (missing.length) {
         const copies = missing.reduce((sum, line) => sum + line.quantity, 0);
         setOwnershipState("needs-cards");
@@ -137,6 +140,7 @@ function ProductDeckCard({
         setOwnershipNotice(`${deck.name} is pinned in My Decks and your existing copies are assigned to it.`);
       }
     } catch (reason) {
+      notify({ tone: "error", key: "ownership", message: reason instanceof Error ? reason.message : "Could not pin this deck. Please try again." });
       if (reason instanceof AccountApiError && reason.status === 401) { setOwnershipState("signed-out"); setOwnershipNotice("Sign in to add this deck and its cards to your library."); }
       else { setOwnershipState("failed"); setOwnershipNotice(reason instanceof Error ? reason.message : "Could not add this official deck."); }
     }
@@ -150,8 +154,10 @@ function ProductDeckCard({
       await assignCopies(`official-product:${deck.id}`, missingCollectionLines);
       window.dispatchEvent(new Event("fanofin:collection-updated"));
       setMissingCollectionLines([]); setOwnershipState("saved");
+      notify({ message: "Missing copies added and assigned.", key: "ownership" });
       setOwnershipNotice(`Added and assigned the remaining ${deck.name} copies. Your pinned list is ready.`);
     } catch (reason) {
+      notify({ tone: "error", key: "ownership", message: "Could not add the missing cards. Please try again." });
       setOwnershipState("failed");
       setOwnershipNotice(reason instanceof Error ? reason.message : "Could not add the missing cards.");
     }
@@ -210,6 +216,7 @@ function ProductDeckCard({
 }
 
 export default function OfficialProductsIndex() {
+  const { notify } = useToast();
   useDocumentTitle("Official Product Decks", "Browse and copy official Grand Archive starter deck and Re:Collection decklists, then tune them in the Guided Deck Builder.");
   const catalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(catalog.map((card) => [card.name, card])), [catalog]);
@@ -234,6 +241,9 @@ export default function OfficialProductsIndex() {
   const sectionLabel = section === "pantheon" ? "Pantheon" : section === "recollection" ? "Re:Collection" : "starter";
 
   function toggleCompare(id: string) {
+    const removing = compareIds.includes(id);
+    if (!removing && compareIds.length >= 4) return;
+    notify({ message: `${removing ? "Removed deck from comparison" : "Added deck to comparison"} · ${compareIds.length + (removing ? -1 : 1)} selected.`, key: "compare" });
     setCompareIds((current) => current.includes(id) ? current.filter((selected) => selected !== id) : current.length < 4 ? [...current, id] : current);
   }
 

@@ -1,3 +1,4 @@
+import { listDeckFolders, createDeckFolder, updateDeckFolder, deleteDeckFolder } from "./deck-folders";
 import { listCollectionTracking, saveCollectionTrackingBatch, saveCollectionTracking } from "./collectionTracking";
 import { authenticatedUser, bffAllowed, consumeDiscordOAuthState, consumeOAuthNonce, createDiscordOAuthState, createLocalUserSession, createOAuthNonce, createUserSession, destroyAllSessions, destroySession, discordAuthorizeUrl, exchangeDiscordCode, listAuthIdentities, normalizeDisplayName, originAllowed, recentlyAuthenticated, removeAuthIdentity, rotateCurrentSession, verifyGoogleCredential, type AuthProvider, type Env } from "./auth";
 import { createDeckVersion, deleteDeck, getDeck, getPublicDeck, listDecks, parseSaveInput, performImport, previewImport, publishDeck, restoreDeckVersion, saveDeck, updateDeckDecklist, updateDeckMetadata } from "./decks";
@@ -354,6 +355,19 @@ export default {
         return await deleteCombo(env, user, comboMatch[1]) ? response(env, request, { success: true }) : response(env, request, { error: "Combo not found" }, 404);
       }
 
+      if (request.method === "GET" && url.pathname === "/v1/me/deck-folders") return response(env, request, { folders: await listDeckFolders(env, user) });
+      if (request.method === "POST" && url.pathname === "/v1/me/deck-folders") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        return response(env, request, { folder: await createDeckFolder(env, user, await jsonBody(request)) }, 201);
+      }
+      const folderMatch = url.pathname.match(/^\/v1\/me\/deck-folders\/([a-f0-9-]{36})$/i);
+      if (folderMatch && (request.method === "PATCH" || request.method === "DELETE")) {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        const body = await jsonBody(request);
+        if (request.method === "PATCH") return response(env, request, { folder: await updateDeckFolder(env, user, folderMatch[1], body) });
+        await deleteDeckFolder(env, user, folderMatch[1], (body as { revision?: unknown })?.revision);
+        return response(env, request, { success: true });
+      }
       if (request.method === "GET" && url.pathname === "/v1/me/decks") return response(env, request, { decks: await listDecks(env, user) });
       if (request.method === "GET" && url.pathname === "/v1/me/analysis-profiles") return response(env, request, { profiles: await listAnalysisProfiles(env, user) });
       if (request.method === "PUT" && url.pathname === "/v1/me/analysis-profiles") {
@@ -407,7 +421,7 @@ export default {
         const decks = (await Promise.all(deckSummaries.map((deck) => getDeck(env, user, deck.id)))).filter((deck) => deck !== null);
         const collection = await listCollection(env, user);
         const comments = await env.ACCOUNT_DB.prepare("SELECT id, target_kind, target_id, parent_id, body, status, created_at, updated_at FROM deck_comments WHERE author_user_id=? ORDER BY created_at").bind(user.id).all();
-        return response(env, request, { exportedAt: new Date().toISOString(), user, profiles: profiles.results, decks, combos: await listCombos(env, user), collection: collection.entries, collectionTracking: await listCollectionTracking(env, user), matchLog: await listMatchLog(env, user), analysisProfiles: await listAnalysisProfiles(env, user), comments: comments.results, binder: await myBinder(env, user), trades: await listTrades(env, user) });
+        return response(env, request, { exportedAt: new Date().toISOString(), user, profiles: profiles.results, decks, deckFolders: await listDeckFolders(env, user), combos: await listCombos(env, user), collection: collection.entries, collectionTracking: await listCollectionTracking(env, user), matchLog: await listMatchLog(env, user), analysisProfiles: await listAnalysisProfiles(env, user), comments: comments.results, binder: await myBinder(env, user), trades: await listTrades(env, user) });
       }
       if (request.method === "PATCH" && url.pathname === "/v1/me") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);

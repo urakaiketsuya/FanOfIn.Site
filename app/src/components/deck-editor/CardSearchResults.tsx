@@ -1,3 +1,5 @@
+import CardLegalityBadge from "./CardLegalityBadge";
+import type { DeckFormat } from "@gatcg/shared";
 import DisclosureChevron from "../DisclosureChevron";
 import { useMemo, useState, type ReactNode } from "react";
 import type { Card } from "@gatcg/shared";
@@ -5,7 +7,8 @@ import CardResult from "../CardResult";
 import QuantityControl from "./QuantityControl";
 import { cardSearchText } from "../../features/cards/filters";
 
-export default function CardSearchResults({ query, names, catalog, chosen, onAdd, quantityFor, onSetQuantity, filtered = false, evidence, owned, selected, onToggleSelection, renderStats }: {
+export default function CardSearchResults({ format = "UNKNOWN", query, names, catalog, chosen, onAdd, quantityFor, onSetQuantity, filtered = false, evidence, owned, selected, onToggleSelection, renderStats }: {
+  format?: DeckFormat;
   renderStats?: (name: string) => ReactNode;
   selected?: ReadonlySet<string>; onToggleSelection?: (name: string) => void;
   quantityFor?: (name: string) => number;
@@ -28,6 +31,7 @@ export default function CardSearchResults({ query, names, catalog, chosen, onAdd
         const card = catalog.get(name);
         const quantity = quantityFor?.(name) ?? chosen.get(name) ?? 0;
         return <CardResult key={name} card={card} name={name} selected={selected?.has(name)} onSelect={onToggleSelection ? () => onToggleSelection(name) : undefined} newTab>
+          <CardLegalityBadge card={card} format={format} />
           {renderStats?.(name)}
           {owned && <p className="mb-2 text-xs text-ctp-subtext0">{owned.get(name) ?? 0} owned</p>}
           {evidence?.get(name) && <details className="mb-2 text-xs text-ctp-subtext1"><summary className="flex min-h-12 cursor-pointer list-none items-center gap-1">Why this card?<DisclosureChevron /></summary><p>{evidence.get(name)}</p></details>}

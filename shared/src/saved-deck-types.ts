@@ -215,3 +215,14 @@ export function savedDeckIdentityInput(decklist: OmnidexDecklist): string {
   }));
   return JSON.stringify({ main: identityLines(canonical.main), material: identityLines(canonical.material) });
 }
+
+/** Private, user-named collections of saved builds; a deck can belong to several folders. */
+export interface DeckFolder {
+  id: string;
+  name: string;
+  deckIds: string[];
+  revision: number;
+  createdAt: string;
+  updatedAt: string;
+}
+export interface DeckFolderInput { name: string; deckIds: string[] }

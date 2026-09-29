@@ -1,8 +1,12 @@
+import { newlyAddedBannedCards } from "@gatcg/shared";
+import { useDeckEditFeedback } from "../../components/deck-editor/useDeckEditFeedback";
+import { useActionNotice } from "../../components/ui/toast/useActionNotice";
+import { useToast } from "../../components/ui/toast/ToastContext";
 import { automaticDeckSection, editDeck, type DeckEdit, type EditableDeck } from "../../lib/deckEditing";
 import CardBrowser from "../../components/deck-editor/CardBrowser";
 import EditorDialog from "../../components/deck-editor/EditorDialog";
 import DisclosureChevron from "../../components/DisclosureChevron";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { OmnidexDecklist, OmnidexDecklistCardLine, SavedDeckDetail } from "@gatcg/shared";
 import { accountApi, AccountApiError } from "../../lib/accountApi";
@@ -59,7 +63,10 @@ export default function MyDeckDetail() {
   const [comboOptions, setComboOptions] = useState<string[]>([]);
   const [tagsText, setTagsText] = useState("");
   const [busy, setBusy] = useState(false);
-  const [notice, setNotice] = useState<string | null>(null);
+  const editFeedback = useDeckEditFeedback();
+  const setNotice = useActionNotice();
+  const { notify, dismiss } = useToast();
+  const actionErrorToast = useRef("");
   const [tab, setTab] = useTabParam<DeckTab>("tab", DECK_TAB_KEYS, "decklist");
   const [cardInput, setCardInput] = useState("");
   const [addDestination, setAddDestination] = useState<"automatic" | "sideboard" | "maybeboard">("automatic");
@@ -130,12 +137,14 @@ export default function MyDeckDetail() {
 
   function commitEdit(nextDeckText: string, nextMaybeboardText = maybeboardText) {
     if (nextDeckText === deckText && nextMaybeboardText === maybeboardText) return;
+    editFeedback.clear();
     setEditHistory((current) => ({ past: [...current.past.slice(-49), { deckText, maybeboardText }], future: [] }));
     setDeckText(nextDeckText);
     setMaybeboardText(nextMaybeboardText);
   }
 
   function undoEdit() {
+    editFeedback.clear();
     const previous = editHistory.past.at(-1);
     if (!previous) return;
     setEditHistory((current) => ({ past: current.past.slice(0, -1), future: [{ deckText, maybeboardText }, ...current.future].slice(0, 50) }));
@@ -143,6 +152,7 @@ export default function MyDeckDetail() {
   }
 
   function redoEdit() {
+    editFeedback.clear();
     const next = editHistory.future[0];
     if (!next) return;
     setEditHistory((current) => ({ past: [...current.past.slice(-49), { deckText, maybeboardText }], future: current.future.slice(1) }));
@@ -155,7 +165,10 @@ export default function MyDeckDetail() {
     if (next === current) return;
     commitEdit(buildDecklistText(next), next.maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n"));
     setEditing(true);
-    setNotice(action.type === "add-many" ? `Added ${action.additions.length} selected cards. Undo is available.` : `${action.type === "remove" ? "Removed" : action.type === "move" ? "Moved" : "Updated"} ${action.name}. Undo is available.`);
+    editFeedback.report(current, next, action, catalogByName, deck!.format, () => {
+      setDeckText(buildDecklistText(current)); setMaybeboardText(current.maybeboard.map(line => `${line.quantity}x ${line.card}`).join("\n"));
+      setEditHistory(history => ({ past: history.past.slice(0, -1), future: [{ deckText: buildDecklistText(next), maybeboardText: next.maybeboard.map(line => `${line.quantity}x ${line.card}`).join("\n") }] }));
+    });
   }
   function changeMaybeboardQuantity(name: string, quantity: number) { applySharedEdit({ type: "quantity", section: "maybeboard", name, quantity }); }
   function removeMaybeboardCard(name: string) { applySharedEdit({ type: "remove", section: "maybeboard", name }); }
@@ -187,6 +200,7 @@ export default function MyDeckDetail() {
     setEditHistory({ past: [], future: [] });
     setCardInput("");
     setAddDestination("automatic");
+    editFeedback.clear();
     setEditing(false);
     try { localStorage.removeItem(deckDraftKey(deck!.id)); } catch { /* Best effort. */ }
   }
@@ -201,6 +215,7 @@ export default function MyDeckDetail() {
       await refresh(); setChangeNote(""); setSaveDetailsOpen(false); setEditing(false);
       setEditHistory({ past: [], future: [] });
       try { localStorage.removeItem(deckDraftKey(deck!.id)); } catch { /* Best effort. */ }
+      editFeedback.clear();
       setNotice(saveAsNewVersion ? "Saved as a new version." : "Deck updated.");
     });
   }
@@ -217,7 +232,8 @@ export default function MyDeckDetail() {
     }, initial);
     if (next === initial) return;
     commitEdit(buildDecklistText(next), next.maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n"));
-    setNotice("Selection updated. Undo is available.");
+    const banned = newlyAddedBannedCards(initial, next, catalogByName, deck!.format);
+    notify({ message: banned.length ? `Selection updated. ${banned.length} banned card${banned.length === 1 ? "" : "s"} increased; review the deck warnings.` : "Selection updated. Undo is available in the editor.", tone: banned.length ? "warning" : "success", key: "bulk-edit" });
   }
   function adjustSelectedCards(cards: { section: DeckSectionKey; name: string }[], delta: number) {
     editSelected(cards, (selected, quantity) => ({ type: "quantity", ...selected, quantity: Math.max(1, quantity + delta) }));
@@ -279,8 +295,9 @@ export default function MyDeckDetail() {
   }
 
   async function run(action: () => Promise<void>) {
+    dismiss(actionErrorToast.current);
     setBusy(true); setError(null);
-    try { await action(); } catch (reason) { setError(reason instanceof Error ? reason.message : "Something went wrong"); }
+    try { await action(); } catch (reason) { setError(reason instanceof Error ? reason.message : "Something went wrong"); actionErrorToast.current = notify({ tone: "error", message: reason instanceof Error ? reason.message : "The action failed. Please try again.", key: "action-error" }); }
     finally { setBusy(false); }
   }
 
@@ -334,7 +351,7 @@ export default function MyDeckDetail() {
       <div className="mt-5 flex flex-wrap items-center gap-2">{!editing && <button type="button" onClick={startEditing} className="min-h-11 shrink-0 rounded-lg bg-ctp-blue px-4 py-2 text-sm font-medium text-ctp-base">Edit deck</button>}<Link to={goldfishPath} onClick={(event) => { if (!allowNavigation()) event.preventDefault(); else trackEvent("deck_workflow_opened", { action: "test" }); }} className="min-h-11 inline-flex items-center border border-ctp-surface1 rounded-lg px-3 py-2.5 text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Goldfish test</Link><details className="relative"><summary className="flex min-h-11 cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-4 py-2 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More</summary><div className="absolute left-0 top-full z-30 mt-2 grid min-w-52 gap-1 rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><Link to={`/deck-builder?improveDeck=${encodeURIComponent(deck.id)}`} onClick={(event) => { if (!allowNavigation()) event.preventDefault(); else trackEvent("deck_workflow_opened", { action: "tune" }); }} className="rounded-lg px-3 py-2.5 text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Tune in builder</Link><Link to={`/match-log?deck=${encodeURIComponent(deck.id)}`} onClick={(event) => { if (!allowNavigation()) event.preventDefault(); else trackEvent("deck_workflow_opened", { action: "record" }); }} className="rounded-lg px-3 py-2.5 text-sm text-ctp-blue hover:bg-ctp-mantle">Record a match</Link><Link to={comparePath} className="rounded-lg px-3 py-2.5 text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Compare decks</Link>{deck.publicSlug && deck.visibility !== "private" && <Link to={`/decks/${deck.publicSlug}`} className="rounded-lg px-3 py-2.5 text-sm text-ctp-subtext1 hover:bg-ctp-mantle">View shared deck</Link>}<div className="my-1 border-t border-ctp-surface1" /><button type="button" onClick={() => setRenamingTitle(true)} className="rounded-lg px-3 py-2.5 text-left text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Rename</button><button type="button" onClick={() => setTab("manage")} className="rounded-lg px-3 py-2.5 text-left text-sm text-ctp-subtext1 hover:bg-ctp-mantle">Details &amp; sharing</button></div></details></div>
     <div className="mt-6"><Tabs tabs={DECK_TABS} active={tab} onChange={setTab} label="Deck details" baseId="owned-deck" /></div>
     {error && <Panel tone="danger" padding="sm" className="mt-4 text-sm text-ctp-red">{error}</Panel>}
-    {notice && <Panel tone="success" padding="sm" className="mt-4 text-sm text-ctp-green">{notice}</Panel>}
+
     {tab === "manage" && <section id="owned-deck-panel-manage" role="tabpanel" aria-labelledby="owned-deck-tab-manage" tabIndex={0} className="mt-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4">
       <h2 className="font-semibold text-ctp-text">Details and sharing</h2>
       <form className="mt-3 space-y-2" onSubmit={(event) => { event.preventDefault(); void run(async () => { const tags = tagsText.split(",").map((tag) => tag.trim()).filter(Boolean); if (tags.length > 8) throw new Error("Use no more than 8 tags."); if (tags.some((tag) => tag.length < 2 || tag.length > 24)) throw new Error("Each tag must be 2–24 characters."); await accountApi.updateDeckMetadata(deck.id, { title, description, tags }); await refresh(); }); }}>
@@ -362,7 +379,7 @@ export default function MyDeckDetail() {
         <div className="mb-3 flex flex-wrap items-center gap-2 rounded-lg border border-ctp-surface1 bg-ctp-base p-2"><span className="mr-auto text-xs text-ctp-subtext1">{hasUnsavedChanges ? "Draft saved on this device" : "No unsaved changes"}</span><button type="button" disabled={editHistory.past.length === 0} onClick={undoEdit} className="min-h-11 rounded-md border border-ctp-surface1 px-3 text-xs disabled:opacity-40">Undo</button><button type="button" disabled={editHistory.future.length === 0} onClick={redoEdit} className="min-h-11 rounded-md border border-ctp-surface1 px-3 text-xs disabled:opacity-40">Redo</button></div>
         <div className="mb-4 rounded-lg border border-ctp-surface1 bg-ctp-base p-3"><p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Section balance</p><DeckSectionBalance compact sideboardPoints={editedSideboardPoints} counts={{ main: editedDecklist.main.reduce((sum, line) => sum + line.quantity, 0), material: editedDecklist.material.reduce((sum, line) => sum + line.quantity, 0), sideboard: editedDecklist.sideboard.reduce((sum, line) => sum + line.quantity, 0) }} /></div>
         <div className="flex justify-end"><button type="button" onClick={() => { setCardInput(""); setBrowserOpen(true); }} className="min-h-12 rounded-lg bg-ctp-blue px-4 text-sm font-medium text-ctp-base">Add cards</button></div>
-        {browserOpen && <EditorDialog count={EDIT_SECTIONS.reduce((sum, { key }) => sum + editedDecklist[key].reduce((n, line) => n + line.quantity, 0), 0)} onDismiss={() => setBrowserOpen(false)}><CardBrowser query={cardInput} onQuery={setCardInput} destination={addDestination} onDestination={setAddDestination} names={cardNames} catalog={catalogByName} deck={{ ...editedDecklist, maybeboard: maybeboardLines }} onEdit={applySharedEdit} /></EditorDialog>}
+        {browserOpen && <EditorDialog count={EDIT_SECTIONS.reduce((sum, { key }) => sum + editedDecklist[key].reduce((n, line) => n + line.quantity, 0), 0)} onDismiss={() => setBrowserOpen(false)}><CardBrowser format={deck.format} query={cardInput} onQuery={setCardInput} destination={addDestination} onDestination={setAddDestination} names={cardNames} catalog={catalogByName} deck={{ ...editedDecklist, maybeboard: maybeboardLines }} onEdit={applySharedEdit} /></EditorDialog>}
         {editingValidation.status === "Illegal" && <div role="status" className="mt-3 rounded-lg border border-ctp-yellow/40 p-3 text-sm text-ctp-yellow">{editingValidation.reasons.map((reason) => <p key={reason}>{reason}</p>)}</div>}
         <details className="mt-3 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3">
           <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">More editing tools</summary>
@@ -374,7 +391,7 @@ export default function MyDeckDetail() {
           <p className="mt-2 text-xs text-ctp-subtext0">{trimPreview.affected.length === 0 ? `No cards exceed ${trimMax}×.` : `${trimPreview.affected.length} card${trimPreview.affected.length === 1 ? "" : "s"} will lose ${trimPreview.copiesRemoved} total cop${trimPreview.copiesRemoved === 1 ? "y" : "ies"}: ${trimPreview.affected.slice(0, 4).map((line) => `${line.card} ${line.quantity}×→${trimMax}×`).join(" · ")}${trimPreview.affected.length > 4 ? ` · +${trimPreview.affected.length - 4} more` : ""}`}</p>
           <details className="mt-3 border-t border-ctp-surface1 pt-3"><summary className="cursor-pointer text-xs text-ctp-subtext1">Edit as text</summary><textarea rows={18} required value={deckText} onChange={(event) => commitEdit(event.target.value)} className="mt-3 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-4 font-mono text-sm text-ctp-text" /></details>
         </details>
-        <div className="mt-4"><EditableDecklistGrid decklist={editedDecklist} cardsByName={editedCardsByName} onChangeQuantity={changeEditedQuantity} onAdjustSelected={adjustSelectedCards} onSetSelected={setSelectedCardsQuantity} onMoveSelected={moveSelectedCards} onRemoveSelected={removeSelectedCards} onMove={moveEditedCard} onRemove={removeEditedCard} /></div>
+        <div className="mt-4"><EditableDecklistGrid format={deck.format} decklist={editedDecklist} cardsByName={editedCardsByName} onChangeQuantity={changeEditedQuantity} onAdjustSelected={adjustSelectedCards} onSetSelected={setSelectedCardsQuantity} onMoveSelected={moveSelectedCards} onRemoveSelected={removeSelectedCards} onMove={moveEditedCard} onRemove={removeEditedCard} /></div>
         <DeckSaveBar busy={busy} changedEntries={editedCardChangeCount + (maybeboardText !== savedMaybeboardText ? 1 : 0)} currentChampion={deck.championName} detectedChampion={editedChampionName} detailsOpen={saveDetailsOpen} saveAsNewVersion={saveAsNewVersion} changeNote={changeNote} onDetailsOpenChange={setSaveDetailsOpen} onSaveModeChange={setSaveAsNewVersion} onChangeNote={setChangeNote} onCancel={cancelEditing} onSave={saveEditedDeck} />
       </div> : undefined}
     </UserDecklistPanel>
@@ -382,7 +399,7 @@ export default function MyDeckDetail() {
       <details className="group mt-5 rounded-xl border border-dashed border-ctp-yellow/50 bg-ctp-yellow/5 p-3">
         <summary className="flex min-h-10 cursor-pointer list-none items-center justify-between gap-3 text-sm font-medium text-ctp-yellow [&::-webkit-details-marker]:hidden"><span>Maybeboard <span className="font-normal text-ctp-subtext0">({maybeboardLines.reduce((sum, line) => sum + line.quantity, 0)})</span></span><DisclosureChevron className="text-ctp-subtext0 transition-transform group-open:rotate-180" /></summary>
         <div className="mt-3 flex flex-wrap items-center justify-end gap-2">{editing && <span className="mr-auto text-xs text-ctp-subtext0">Maybeboard changes save with the deck.</span>}<button type="button" disabled={!maybeboardText.trim()} onClick={addMaybeboardToEditor} className="min-h-10 rounded-lg border border-ctp-blue px-3 text-xs text-ctp-blue disabled:opacity-50">Move all to editor</button>{!editing && <button type="button" disabled={busy} onClick={() => void saveMaybeboard()} className="min-h-10 rounded-lg bg-ctp-yellow px-3 text-xs font-medium text-ctp-base disabled:opacity-50">Save</button>}</div>
-        {maybeboardLines.length > 0 ? <div className="mt-3 grid grid-cols-1 gap-4 min-[360px]:grid-cols-2 min-[560px]:grid-cols-3 lg:grid-cols-4">{maybeboardLines.map((line) => <MaybeboardCardTile key={line.card} line={line} card={catalogByName.get(line.card)} onChangeQuantity={(quantity) => changeMaybeboardQuantity(line.card, quantity)} onMove={(destination, quantity) => moveMaybeboardCard(line, destination, quantity)} onRemove={() => removeMaybeboardCard(line.card)} />)}</div> : <InlineState className="mt-3">No cards in the maybeboard.</InlineState>}
+        {maybeboardLines.length > 0 ? <div className="mt-3 grid grid-cols-1 gap-4 min-[360px]:grid-cols-2 min-[560px]:grid-cols-3 lg:grid-cols-4">{maybeboardLines.map((line) => <MaybeboardCardTile format={deck.format} key={line.card} line={line} card={catalogByName.get(line.card)} onChangeQuantity={(quantity) => changeMaybeboardQuantity(line.card, quantity)} onMove={(destination, quantity) => moveMaybeboardCard(line, destination, quantity)} onRemove={() => removeMaybeboardCard(line.card)} />)}</div> : <InlineState className="mt-3">No cards in the maybeboard.</InlineState>}
         <details className="mt-3"><summary className="cursor-pointer text-xs text-ctp-subtext0">Edit maybeboard as text</summary><textarea rows={5} value={maybeboardText} onChange={(event) => editing ? commitEdit(deckText, event.target.value) : setMaybeboardText(event.target.value)} placeholder={"2x Card to test\n4x Another option"} aria-label="Maybeboard" className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-3 font-mono text-sm" /></details>
         <p className="mt-2 text-xs text-ctp-subtext0">Maybeboard cards do not affect the deck or its analysis.</p>
       </details>

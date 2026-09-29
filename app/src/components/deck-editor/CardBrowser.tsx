@@ -1,3 +1,4 @@
+import type { DeckFormat } from "@gatcg/shared";
 import { useSyncProgress } from "../../lib/sync/SyncProvider";
 import { useMemo, useState, type ReactNode } from "react";
 import type { Card } from "@gatcg/shared";
@@ -10,7 +11,8 @@ import DisclosureChevron from "../DisclosureChevron";
 import CardSearchResults from "./CardSearchResults";
 import { emptyCatalogFilters, filterCatalog, sortCatalogNames, type CatalogSort, type CatalogFilters } from "./catalogFilters";
 
-export default function CardBrowser({ query, onQuery, destination, onDestination, names, catalog, deck, onEdit, onAdded, owned, collectionStatus, identityElements, suggestedNames, evidence, suppressResults = false, sourceControl, renderStats, statsControls }: {
+export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destination, onDestination, names, catalog, deck, onEdit, onAdded, owned, collectionStatus, identityElements, suggestedNames, evidence, suppressResults = false, sourceControl, renderStats, statsControls }: {
+  format?: DeckFormat;
   renderStats?: (name: string) => ReactNode; statsControls?: ReactNode;
   query: string; onQuery: (query: string) => void;
   destination: "automatic" | "sideboard" | "maybeboard"; onDestination: (value: "automatic" | "sideboard" | "maybeboard") => void;
@@ -24,7 +26,6 @@ export default function CardBrowser({ query, onQuery, destination, onDestination
   const [sort, setSort] = useState<CatalogSort>("name");
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [selectionError, setSelectionError] = useState("");
-  const [addedNotice, setAddedNotice] = useState("");
   const cards = useMemo(() => [...catalog.values()], [catalog]);
   const options = (key: "elements" | "types" | "subtypes") => [...new Set(cards.flatMap(card => card[key]))].sort();
   const matches = useMemo(() => {
@@ -39,7 +40,6 @@ export default function CardBrowser({ query, onQuery, destination, onDestination
   function toggleSelection(name: string) {
     setSelected(current => { const next = new Set(current); if (next.has(name)) next.delete(name); else next.add(name); return next; });
     setSelectionError("");
-    setAddedNotice("");
   }
   function addSelected(quantity: number) {
     const additions = [...selected].map(name => ({name, section: sectionFor(name), quantity}));
@@ -47,7 +47,6 @@ export default function CardBrowser({ query, onQuery, destination, onDestination
     if (invalid.length) { setSelectionError(`Cannot add ${invalid.map(item=>item.name).join(", ")} to this destination. Choose another destination or deselect these cards.`); return; }
     if (!additions.length) return;
     onEdit({type:"add-many", additions});
-    setAddedNotice(`Added ${additions.length} ${additions.length === 1 ? "card" : "cards"}, ${quantity === 1 ? "one copy each" : `${quantity} copies each`}.`);
     setSelected(new Set());
     setSelectionError("");
     onAdded?.();
@@ -76,8 +75,7 @@ export default function CardBrowser({ query, onQuery, destination, onDestination
       {!!active.length && <button type="button" onClick={()=>setFilters(emptyCatalogFilters())} className="min-h-12 text-sm text-ctp-blue">Clear filters</button>}
     </DialogSheet>}
     {!!active.length && <div className="mt-2 flex flex-wrap gap-2" aria-label="Active card filters">{active.map(([key,value]) => <button type="button" key={key} onClick={()=>setFilters(f=>({...f,[key]:typeof value === "boolean" ? false : ""}))} className="min-h-12 rounded-full border border-ctp-blue px-3 text-xs text-ctp-blue" aria-label={`Remove ${labels[key]} filter`}>{labels[key]}{typeof value === "string" ? `: ${key === "rarity" ? rarityLabel(value) : value}` : ""} ×</button>)}</div>}
-    {suppressResults ? null : !names.length ? <p role={sync.phase === "error" ? "alert" : "status"} className="py-4 text-sm">{sync.phase === "error" ? "Card catalog could not load. Check your connection and reload to try again." : sync.phase === "done" ? "No cards are available in the catalog yet." : "Loading card catalog…"}</p> : <CardSearchResults key={JSON.stringify([query, filters, sort, suggestedNames !== undefined])} query={query} names={matches} catalog={catalog} chosen={new Map()} filtered renderStats={renderStats} evidence={evidence} owned={owned} quantityFor={quantityFor} selected={selected} onToggleSelection={toggleSelection} onAdd={toggleSelection} onSetQuantity={(name, quantity)=>onEdit(quantity === 0 ? {type:"remove",section:sectionFor(name),name} : {type:"quantity",section:sectionFor(name),name,quantity})} />}
-    {addedNotice && <p role="status" className="mt-2 text-sm text-ctp-subtext1">{addedNotice}</p>}
+    {suppressResults ? null : !names.length ? <p role={sync.phase === "error" ? "alert" : "status"} className="py-4 text-sm">{sync.phase === "error" ? "Card catalog could not load. Check your connection and reload to try again." : sync.phase === "done" ? "No cards are available in the catalog yet." : "Loading card catalog…"}</p> : <CardSearchResults format={format} key={JSON.stringify([query, filters, sort, suggestedNames !== undefined])} query={query} names={matches} catalog={catalog} chosen={new Map()} filtered renderStats={renderStats} evidence={evidence} owned={owned} quantityFor={quantityFor} selected={selected} onToggleSelection={toggleSelection} onAdd={toggleSelection} onSetQuantity={(name, quantity)=>onEdit(quantity === 0 ? {type:"remove",section:sectionFor(name),name} : {type:"quantity",section:sectionFor(name),name,quantity})} />}
     {!!selected.size && <div className="sticky bottom-0 z-10 mt-3 rounded-xl border border-ctp-blue bg-ctp-base p-3 shadow-lg">
       <details><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 text-sm">{selected.size} selected<DisclosureChevron /></summary><div className="max-h-40 overflow-y-auto">{[...selected].map(name=><button key={name} type="button" onClick={()=>toggleSelection(name)} aria-label={`Deselect ${name}`} className="flex min-h-12 w-full items-center justify-between gap-2 text-left text-sm">{name}<span aria-hidden="true">×</span></button>)}</div></details>
       {[...selected].some(name=>!matches.includes(name)) && <p className="mb-2 text-xs text-ctp-subtext1">{[...selected].filter(name=>!matches.includes(name)).length} selected outside these results.</p>}

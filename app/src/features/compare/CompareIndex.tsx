@@ -1,3 +1,4 @@
+import { useToast } from "../../components/ui/toast/ToastContext";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import DeckSearchByCards from "./DeckSearchByCards";
@@ -55,6 +56,7 @@ const TAB_LABELS: Record<SourceTab, string> = {
 const SOURCE_TAB_KEYS = Object.keys(TAB_LABELS) as SourceTab[];
 
 export default function CompareIndex() {
+  const { notify } = useToast();
   useDocumentTitle(
     "Compare",
     "Compare Grand Archive TCG decklists side by side to see exactly where they overlap and diverge, or compare individual cards' usage, win rate, and price.",
@@ -180,12 +182,14 @@ export default function CompareIndex() {
 
   function toggleDeck(deck: ComparedDeck) {
     const adding = !comparedKeys.has(deck.key);
+    notify({ message: `${adding ? "Added deck to comparison" : "Removed deck from comparison"} · ${decks.length + (adding ? 1 : -1)} selected.`, key: "compare" });
     trackEvent(adding ? "compare_deck_added" : "compare_deck_removed", { source: deck.source.kind, resulting_count: decks.length + (adding ? 1 : -1) });
     setDecks((prev) => (prev.some((d) => d.key === deck.key) ? prev.filter((d) => d.key !== deck.key) : [...prev, deck]));
     if (adding && decks.length >= 1) setShowAddDecks(false);
   }
 
   function addDeck(deck: ComparedDeck) {
+    notify({ message: `Added deck to comparison · ${decks.length + 1} selected.`, key: "compare" });
     trackEvent("compare_deck_added", { source: deck.source.kind, resulting_count: decks.length + 1 });
     setDecks((prev) => [...prev, deck]);
     if (decks.length >= 1) setShowAddDecks(false);

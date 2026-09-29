@@ -1,4 +1,4 @@
-import type { AccountSession, AccountUser, AnalysisProfileSyncRecord, AuthIdentity, AuthProvider, BinderItem, BinderSettings, BookmarkedCombo, BookmarkedDeck, CollectionCardTracking, CollectionCardTrackingUpdate, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, CommentReportReason, ComboDefinition, ComboVisibility, DeckCommentTarget, DeckCommentThread, DeckFormat, DeckImportPreview, DeckImportResult, DeckReportReason, DeckSocialState, DeckVisibility, MatchLogRecord, OfficialProductDeckFavorite, OmnidexDecklist, PublicBinder, PublicCombo, PublicDeck, PublicDeckSummary, PublicProfile, SavedCombo, SavedDeck, SavedDeckDetail, SharedCardWatch, SyncedAnalysisProfile, Trade, TradeLine, TradeStatus, TournamentDeckFavorite } from "@gatcg/shared";
+import type { DeckFolder, DeckFolderInput, AccountSession, AccountUser, AnalysisProfileSyncRecord, AuthIdentity, AuthProvider, BinderItem, BinderSettings, BookmarkedCombo, BookmarkedDeck, CollectionCardTracking, CollectionCardTrackingUpdate, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, CommentReportReason, ComboDefinition, ComboVisibility, DeckCommentTarget, DeckCommentThread, DeckFormat, DeckImportPreview, DeckImportResult, DeckReportReason, DeckSocialState, DeckVisibility, MatchLogRecord, OfficialProductDeckFavorite, OmnidexDecklist, PublicBinder, PublicCombo, PublicDeck, PublicDeckSummary, PublicProfile, SavedCombo, SavedDeck, SavedDeckDetail, SharedCardWatch, SyncedAnalysisProfile, Trade, TradeLine, TradeStatus, TournamentDeckFavorite } from "@gatcg/shared";
 
 const ACCOUNT_API_URL = (import.meta.env.VITE_ACCOUNT_API_URL as string | undefined)?.replace(/\/$/, "")
   ?? (import.meta.env.PROD ? "https://accounts.fanofin.site/api" : "http://localhost:8788");
@@ -41,6 +41,10 @@ async function performAccountRequest<T>(path: string, init?: RequestInit): Promi
 }
 
 export const accountApi = {
+  deckFolders: () => accountRequest<{ folders: DeckFolder[] }>("/v1/me/deck-folders"),
+  createDeckFolder: (id: string, input: DeckFolderInput) => accountRequest<{ folder: DeckFolder }>("/v1/me/deck-folders", { method: "POST", body: JSON.stringify({ id, ...input }) }),
+  updateDeckFolder: (id: string, revision: number, input: DeckFolderInput) => accountRequest<{ folder: DeckFolder }>(`/v1/me/deck-folders/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify({ revision, ...input }) }),
+  deleteDeckFolder: (id: string, revision: number) => accountRequest<{ success: true }>(`/v1/me/deck-folders/${encodeURIComponent(id)}`, { method: "DELETE", body: JSON.stringify({ revision }) }),
   session: () => accountRequest<AccountSession>("/v1/auth/session"),
   googleNonce: () => accountRequest<{ nonce: string }>("/v1/auth/google/nonce", { method: "POST" }),
   googleSignIn: (credential: string, nonce: string) => accountRequest<AccountSession>("/v1/auth/google", { method: "POST", body: JSON.stringify({ credential, nonce }) }),

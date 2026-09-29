@@ -1,3 +1,4 @@
+import ToastViewport from "./toast/ToastViewport";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import Button from "./Button";
 
@@ -47,6 +48,7 @@ export default function DialogSheet({ title, children, onDismiss, dismissLabel =
         <h2 id={titleId} className="text-lg font-semibold">{title}</h2>
         <Button disabled={!dismissible} onClick={dismiss}>{dismissLabel}</Button>
       </header>
+      <ToastViewport dialog />
       {confirmDiscard ? <div className="space-y-4 p-4" role="alert">
         <p>Discard your unsaved changes?</p>
         <div className="flex flex-wrap gap-2">

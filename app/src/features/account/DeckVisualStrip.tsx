@@ -4,7 +4,7 @@ import DeckCardPreview from "../../components/DeckCardPreview";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import { useCardsByNames } from "../events/useCardsByNames";
 
-export default function DeckVisualStrip({ decklist, championName }: { decklist?: OmnidexDecklist; championName: string | null }) {
+export default function DeckVisualStrip({ decklist, championName, newTab = false }: { newTab?: boolean; decklist?: OmnidexDecklist; championName: string | null }) {
   const lines = useMemo(() => [...(decklist?.material.slice(-2) ?? []), ...(decklist?.main.slice(0, 2) ?? [])]
     .filter((line, index, all) => all.findIndex((other) => other.card === line.card) === index)
     .map((line) => ({ name: line.card, quantity: line.quantity })), [decklist]);
@@ -16,6 +16,6 @@ export default function DeckVisualStrip({ decklist, championName }: { decklist?:
   const previewLines = lines.length ? lines : [{ name: championCard?.name ?? championName ?? "Unknown champion" }];
   return <div data-component="DeckVisualStrip" className="mt-4" aria-label="Featured deck cards">
     <p className="mb-2 text-xs text-ctp-subtext0">{lines.length ? "Featured cards" : "Champion · open deck for the complete list"}</p>
-    <DeckCardPreview lines={previewLines} cardsByName={previewCards} />
+    <DeckCardPreview newTab={newTab} lines={previewLines} cardsByName={previewCards} />
   </div>;
 }

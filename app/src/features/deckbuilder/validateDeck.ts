@@ -1,8 +1,10 @@
+import { deckCardIssues, type DeckCardIssue } from "@gatcg/shared";
 import type { Card, DeckFormat } from "@gatcg/shared";
 
 export type DeckValidationStatus = "Legal" | "Incomplete" | "Illegal";
 
 export interface DeckValidationResult {
+  cardIssues: DeckCardIssue[];
   status: DeckValidationStatus;
   reasons: string[];
   unsupportedRules: string[];
@@ -31,8 +33,11 @@ export function validateDeck(
   identityElements: Set<string>,
   format: DeckFormat = "STANDARD",
 ): DeckValidationResult {
-  const illegal: string[] = [];
-  const incomplete: string[] = [];
+  const convert = (lines: Line[]) => lines.map(line => ({ card: line.cardName, quantity: line.quantity }));
+  const cardIssues = deckCardIssues({ main: convert(sections.main), material: convert(sections.material), sideboard: convert(sections.sideboard) }, cardsByName, format);
+  const illegal: string[] = cardIssues.filter(issue => issue.code === "banned").map(issue => `${issue.card} is banned in ${format === "PANTHEON" ? "Pantheon" : "Standard"} (${issue.section}).`);
+  const unverified = new Set(cardIssues.filter(issue => issue.code === "unverified").map(issue => issue.card)).size;
+  const incomplete: string[] = format === "UNKNOWN" ? ["Choose a format to verify legality."] : unverified ? [`Legality unverified for ${unverified} card${unverified === 1 ? "" : "s"} without a catalog ${format} record.`] : [];
   const all = [...sections.main, ...sections.material, ...sections.sideboard];
   const effectiveIdentityElements = new Set(identityElements);
   for (const line of sections.material) {
@@ -53,8 +58,7 @@ export function validateDeck(
     const formatLimit = card.legality?.[format]?.limit;
     const copyLimit = formatLimit ?? (format === "PANTHEON" ? 1 : 4);
     const label = format === "PANTHEON" ? "Pantheon" : "Standard";
-    if (formatLimit === 0) illegal.push(`${name} is not legal in ${label}.`);
-    else if (quantity > copyLimit) illegal.push(`${name}: ${quantity} copies exceeds the ${copyLimit}-copy ${label} limit.`);
+    if (format !== "UNKNOWN" && formatLimit !== 0 && quantity > copyLimit) illegal.push(`${name}: ${quantity} copies exceeds the ${copyLimit}-copy ${label} limit.`);
     if (!card.types.includes("CHAMPION") && effectiveIdentityElements.size > 0 && card.elements.length > 0 &&
         !card.elements.some((element) => element === "NORM" || effectiveIdentityElements.has(element))) {
       illegal.push(`${name} is outside the Champion/Spirit element identity.`);
@@ -83,6 +87,7 @@ export function validateDeck(
   if (!materialCards.some((card) => card.types.includes("CHAMPION") && card.subtypes.includes("SPIRIT"))) incomplete.push("Add a Spirit to the Material deck to complete the deck.");
 
   return {
+    cardIssues,
     status: illegal.length > 0 ? "Illegal" : incomplete.length > 0 ? "Incomplete" : "Legal",
     reasons: illegal.length > 0 ? [...illegal, ...incomplete] : incomplete,
     unsupportedRules: [`Cards without a catalog ${format} record use a ${format === "PANTHEON" ? 1 : 4}-copy fallback limit`, "card-text deckbuilding exceptions", "event-specific registration and banlist timing", "gameplay/tournament readiness"],

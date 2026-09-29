@@ -1,3 +1,4 @@
+import { useToast } from "../../components/ui/toast/ToastContext";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -67,6 +68,7 @@ export default function DeckDetail() {
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
   const [favorited, setFavorited] = useState<boolean | null>(null);
   const [favoriteBusy, setFavoriteBusy] = useState(false);
+  const { notify } = useToast();
   const [favoriteNotice, setFavoriteNotice] = useState<string | null>(null);
 
   const partition = deckDetailPartition(hash);
@@ -492,12 +494,12 @@ export default function DeckDetail() {
             favorited: !favorited, title: `${deck.championName ?? "Unknown Champion"} tournament build`, championName: deck.championName,
             decklist, sourceEventId: favoriteSource?.eventId ?? null, sourceEventName: favoriteSource ? (eventNameById.get(favoriteSource.eventId) ?? `Event #${favoriteSource.eventId}`) : null,
             sourcePlayerId: favoriteSource?.player ?? null, sourcePlayerName: favoriteSource ? playerName(favoriteSource.player) : null,
-          }).then((result) => { setFavorited(result.favorited); setFavoriteNotice(result.favorited ? "Added to My Decks favorites." : "Removed from favorites."); }, (reason: Error) => setFavoriteNotice(reason.message)).finally(() => setFavoriteBusy(false));
+          }).then((result) => { setFavorited(result.favorited); notify({ message: result.favorited ? "Added to My Decks favorites." : "Removed from favorites.", key: "favorite" }); }, (reason: Error) => { setFavoriteNotice(reason.message); notify({ tone: "error", message: reason.message, key: "favorite" }); }).finally(() => setFavoriteBusy(false));
         }} className={`min-h-11 rounded-lg border px-4 text-sm font-semibold disabled:opacity-50 ${favorited ? "border-ctp-yellow bg-ctp-yellow/10 text-ctp-yellow" : "border-ctp-blue bg-ctp-blue text-ctp-base"}`}>{favorited === null ? "Loading…" : favorited ? "★ Favorited" : "Favorite deck"}</button> : signedIn === false ? <Link to="/account" className="inline-flex min-h-11 items-center rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base">Sign in to save</Link> : <span className="inline-flex min-h-11 items-center px-2 text-sm text-ctp-subtext0">Checking account…</span>}
         {signedIn === true && <button type="button" disabled={copyBusy} onClick={() => {
           setCopyBusy(true); setFavoriteNotice(null);
           void accountApi.saveDeck({ title: `${deck.championName ?? "Unknown Champion"} tournament build`, format: "STANDARD", championName: deck.championName, decklist, source: { provider: "manual", externalDeckId: `tournament-copy:${hash}`, label: "Tournament build" } })
-            .then(({ id }) => { trackEvent("deck_copy_saved", { source: "tournament" }); navigate(`/decks/${id}`); })
+            .then(({ id }) => { notify({ message: "Editable copy saved to your account." }); trackEvent("deck_copy_saved", { source: "tournament" }); navigate(`/decks/${id}`); })
             .catch((reason: unknown) => setFavoriteNotice(reason instanceof Error ? reason.message : "Could not save a copy. Please try again."))
             .finally(() => setCopyBusy(false));
         }} className="min-h-11 rounded-lg border border-ctp-blue px-4 text-sm font-semibold text-ctp-blue disabled:opacity-50">{copyBusy ? "Saving copy…" : "Save editable copy"}</button>}

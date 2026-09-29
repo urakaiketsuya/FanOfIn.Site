@@ -1,3 +1,5 @@
+import { useToast } from "../../../components/ui/toast/ToastContext";
+import { deckCardIssues, type DeckFormat } from "@gatcg/shared";
 import { selectionsToMaps } from "../model/builderTypes";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import type { Card } from "@gatcg/shared";
@@ -12,6 +14,7 @@ type AddDestination = "automatic" | "sideboard" | "maybeboard";
 
 interface BuilderLifecycleOptions {
   workflow: Workflow;
+  deckFormat: DeckFormat;
   builderIntent: BuilderIntent | null;
   improveDeckId: string | null;
   initialChampionName: string | null;
@@ -28,6 +31,7 @@ interface BuilderLifecycleOptions {
 
 /** Owns builder import, hydration, and reset transitions. */
 export function useBuilderLifecycle(options: BuilderLifecycleOptions) {
+  const { notify } = useToast();
   const {
     workflow, improveDeckId, catalogByName,
     setDismissedReviewCards, setSpiritElement, setCardInput,
@@ -70,6 +74,8 @@ export function useBuilderLifecycle(options: BuilderLifecycleOptions) {
         }
       }
     }
+    const banned = new Set(deckCardIssues(decklist, catalogByName, options.deckFormat).filter(issue => issue.code === "banned").map(issue => issue.card));
+    notify({ message: `Decklist imported.${banned.size ? ` Contains ${banned.size} banned card${banned.size === 1 ? "" : "s"}; review the deck warnings.` : ""}${skippedLines.length ? ` ${skippedLines.length} lines were skipped.` : ""}`, tone: banned.size || skippedLines.length ? "warning" : "success", duration: banned.size || skippedLines.length ? null : undefined, key: "import" });
     setChampionName(detectedChampion);
     setSpiritFilter(detectedSpirit);
     const selections = selectionsToMaps((["main", "material", "sideboard"] as const).flatMap((section) => decklist[section].map((line) => ({ name: line.card, quantity: line.quantity, section }))));

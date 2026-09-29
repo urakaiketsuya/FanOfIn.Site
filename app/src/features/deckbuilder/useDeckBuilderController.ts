@@ -106,7 +106,7 @@ export function useDeckBuilderController() {
     rejectedCards, pillarBias, archetypeId, championLevelCap, populationSource, collectionMode,
     maybeboard, spiritElement, recommendationsEnabled,
   });
-  const editor = useBuilderEditing(workflow, catalogByName);
+  const editor = useBuilderEditing(workflow, catalogByName, deckFormat);
   function addCard(name: string, quantity = 1, override?: "automatic" | "maybeboard") {
     if (!cardNameSet.has(name)) return;
     const destination = override ?? addDestination;
@@ -141,7 +141,7 @@ export function useDeckBuilderController() {
     pasteOpen, setPasteOpen, pasteText, setPasteText, pasteError, setPasteError,
     loadPastedDecklist, resetBuilder,
   } = useBuilderLifecycle({
-    workflow, builderIntent, improveDeckId,
+    deckFormat, workflow, builderIntent, improveDeckId,
     initialChampionName: urlSeed?.championName ?? sessionSeed?.championName ?? null,
     catalogByName, spiritCanonicalNames, setDismissedReviewCards, setSpiritElement,
     setCardInput, setAddDestination, setTab, startTransition, resetChangeTracking,

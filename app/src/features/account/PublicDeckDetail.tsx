@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useToast } from "../../components/ui/toast/ToastContext";
+import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import type { DeckSocialState, PublicDeck } from "@gatcg/shared";
 import { accountApi, AccountApiError } from "../../lib/accountApi";
@@ -24,6 +25,8 @@ export default function PublicDeckDetail() {
   const [error, setError] = useState<string | null>(null);
   const [social, setSocial] = useState<DeckSocialState | null>(null);
   const [busy, setBusy] = useState(false);
+  const { notify, dismiss } = useToast();
+  const actionErrorToast = useRef("");
   const [notice, setNotice] = useState<string | null>(null);
   const navigate = useNavigate();
   const [tab, setTab] = useTabParam<PublicDeckTab>("tab", PUBLIC_TABS.map(({ key }) => key), "performance");
@@ -43,8 +46,9 @@ export default function PublicDeckDetail() {
   }, [publicSlug]);
 
   const run = async (action: () => Promise<void>) => {
+    dismiss(actionErrorToast.current);
     setBusy(true); setNotice(null);
-    try { await action(); } catch (reason) { setNotice(reason instanceof Error ? reason.message : "Action failed"); }
+    try { await action(); } catch (reason) { setNotice(reason instanceof Error ? reason.message : "Action failed"); actionErrorToast.current = notify({ tone: "error", message: reason instanceof Error ? reason.message : "Action failed. Please try again.", key: "action" }); }
     finally { setBusy(false); }
   };
 
@@ -64,7 +68,7 @@ export default function PublicDeckDetail() {
     <DeckTags tags={deck.tags} />
     <div className="mt-5 flex flex-wrap items-center gap-2">
       <button type="button" disabled={busy || !social} onClick={() => void run(async () => { const result = await accountApi.copyDeck(publicSlug); navigate(`/decks/${encodeURIComponent(result.id)}`, { state: { notice: result.created ? "Copied to your decks." : "You already had this build; opened the existing deck." } }); })} className="min-h-11 rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base disabled:opacity-50">Copy deck</button>
-      <button type="button" disabled={busy || !social} aria-pressed={social?.bookmarked ?? false} onClick={() => void run(async () => { const result = await accountApi.bookmarkDeck(publicSlug, !social?.bookmarked); setSocial((current) => current ? { ...current, bookmarked: result.bookmarked, bookmarkedVersionNumber: result.versionNumber } : current); })} className={`min-h-11 rounded-lg border px-3 text-sm font-medium disabled:opacity-50 ${social?.bookmarked ? "border-ctp-yellow bg-ctp-yellow/10 text-ctp-yellow" : "border-ctp-surface1 text-ctp-subtext1 hover:border-ctp-yellow hover:text-ctp-yellow"}`}>{social?.bookmarked ? "★ Favorited" : "☆ Favorite"}</button>
+      <button type="button" disabled={busy || !social} aria-pressed={social?.bookmarked ?? false} onClick={() => void run(async () => { const result = await accountApi.bookmarkDeck(publicSlug, !social?.bookmarked); notify({ message: result.bookmarked ? "Deck added to favorites." : "Deck removed from favorites.", key: "favorite" }); setSocial((current) => current ? { ...current, bookmarked: result.bookmarked, bookmarkedVersionNumber: result.versionNumber } : current); })} className={`min-h-11 rounded-lg border px-3 text-sm font-medium disabled:opacity-50 ${social?.bookmarked ? "border-ctp-yellow bg-ctp-yellow/10 text-ctp-yellow" : "border-ctp-surface1 text-ctp-subtext1 hover:border-ctp-yellow hover:text-ctp-yellow"}`}>{social?.bookmarked ? "★ Favorited" : "☆ Favorite"}</button>
       <details className="relative"><summary className="flex min-h-11 cursor-pointer list-none items-center rounded-lg border border-ctp-surface1 px-4 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden">More</summary><div className="absolute right-0 top-full z-30 mt-2 grid min-w-56 gap-1 rounded-xl border border-ctp-surface1 bg-ctp-base p-2 shadow-xl"><Link to={`/goldfish?publicDeck=${encodeURIComponent(publicSlug)}`} className="rounded-lg px-3 py-2.5 text-sm hover:bg-ctp-mantle">Open in Goldfish</Link><Link to={`/deck-analysis?publicDeck=${encodeURIComponent(publicSlug)}`} className="rounded-lg px-3 py-2.5 text-sm hover:bg-ctp-mantle">Analyze deck</Link><Link to={`/deck-review?publicDeck=${encodeURIComponent(publicSlug)}`} className="rounded-lg px-3 py-2.5 text-sm hover:bg-ctp-mantle">Review suggestions</Link><Link to={`/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: `${deck.title} by ${deck.owner.displayName}`, decklist: deck.decklist, format: deck.format }]))}`} className="rounded-lg px-3 py-2.5 text-sm hover:bg-ctp-mantle">Compare deck</Link><button type="button" disabled={busy || !social} onClick={() => void run(async () => { const result = await accountApi.likeDeck(publicSlug, !social?.liked); setSocial((current) => current ? { ...current, liked: result.liked } : current); setDeck((current) => current ? { ...current, likeCount: result.likeCount } : current); })} className="rounded-lg px-3 py-2.5 text-left text-sm text-ctp-pink hover:bg-ctp-mantle disabled:opacity-50">{social?.liked ? "Unlike" : "Like"} · {deck.likeCount}</button><button type="button" disabled={busy || !social} onClick={() => { const reason = window.prompt("Report reason: spam, abuse, copyright, or other"); if (!reason || !["spam", "abuse", "copyright", "other"].includes(reason.toLowerCase())) { if (reason) setNotice("Use one of: spam, abuse, copyright, or other."); return; } const details = window.prompt("Optional details (up to 1,000 characters)") ?? ""; void run(async () => { await accountApi.reportDeck(publicSlug, reason.toLowerCase() as "spam" | "abuse" | "copyright" | "other", details); setNotice("Report received. Thank you."); }); }} className="rounded-lg px-3 py-2.5 text-left text-sm text-ctp-subtext1 hover:bg-ctp-mantle disabled:opacity-50">Report deck</button></div></details>
       {!social && <Link to="/account" className="text-sm text-ctp-blue hover:underline">Sign in for deck actions</Link>}
     </div>

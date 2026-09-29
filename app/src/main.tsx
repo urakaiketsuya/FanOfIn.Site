@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import AppErrorBoundary from "./components/AppErrorBoundary";
+import ToastProvider from "./components/ui/toast/ToastProvider";
 import App from "./App.tsx";
 import { SyncProvider } from "./lib/sync/SyncProvider.tsx";
 
@@ -15,7 +16,7 @@ createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <SyncProvider>
-          <App />
+          <ToastProvider><App /></ToastProvider>
         </SyncProvider>
       </BrowserRouter>
     </QueryClientProvider>

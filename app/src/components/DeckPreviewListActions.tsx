@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useToast } from "./ui/toast/ToastContext";
 import { Link } from "react-router-dom";
 import type { DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import { buildDecklistText } from "../features/events/DecklistView";
@@ -9,14 +9,14 @@ import { deckPreviewActionClass } from "./DeckPreviewCard";
 export default function DeckPreviewListActions({ decklist, title, format, compare = true }: {
   decklist: OmnidexDecklist; title: string; format?: DeckFormat; compare?: boolean;
 }) {
-  const [notice, setNotice] = useState("");
+  const { notify } = useToast();
   async function copy() {
-    try { await navigator.clipboard.writeText(buildDecklistText(decklist)); setNotice("Copied decklist."); }
-    catch { setNotice("Could not copy. Try again."); }
+    try { await navigator.clipboard.writeText(buildDecklistText(decklist)); notify({ message: "Decklist copied.", key: "copy" }); }
+    catch { notify({ tone: "error", message: "Could not copy the decklist.", key: "copy", action: { label: "Retry", onClick: copy } }); }
   }
   return <>
     <button type="button" onClick={() => void copy()} className={`${deckPreviewActionClass} text-ctp-blue`}>Copy</button>
     {compare && <Link to={`/compare?${new URLSearchParams({ custom: encodeCustomDecks([{ label: title, decklist, format }]), panel: "compare" })}`} className={`${deckPreviewActionClass} text-ctp-blue`}>Compare</Link>}
-    {notice && <span role="status" className="w-full text-xs text-ctp-subtext1">{notice}</span>}
+
   </>;
 }
