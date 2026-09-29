@@ -18,6 +18,7 @@ import { inferComboPurpose } from "../../lib/comboPurpose";
 import { forecastComboByTurn } from "../../lib/comboTurnForecast";
 import ComboLibrary from "./ComboLibrary";
 import ComboCostAssumptions from "./ComboCostAssumptions";
+import LinePlanner from "./LinePlanner";
 import GoalForecastChart, { type GoalForecastSeries } from "./GoalForecastChart";
 import CardSearchPicker from "../../components/CardSearchPicker";
 import CardImage from "../../components/CardImage";
@@ -234,6 +235,7 @@ export default function ComboLabIndex() {
       {tab === "analyze" && <div className="mt-4">
 <HypergeometricCalculator key={preset?.key ?? "custom"} mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} defaultMode="recipe" initialRecipe={preset?.requirements} onApplyRecipeSuggestion={applyDeckReplacement} onRecipeChange={setCurrentRecipe} />
 <ComboCostAssumptions requirements={currentRecipe} catalogByName={catalogByName} costs={comboEffectiveCosts} onChange={setComboEffectiveCosts} />
+<LinePlanner mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} effectiveCosts={comboEffectiveCosts} />
 </div>}
       {tab === "analyze" && levelAnalysis && goalId === "level" && <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.6fr)]">
 <GoalForecastChart title="Chance by turn" subtitle="The strongest supported route is shown for each Champion level." turns={[1, 2, 3, 4, 5, 6]} series={levelForecastSeries} />

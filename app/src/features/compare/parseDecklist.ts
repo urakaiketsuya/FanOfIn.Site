@@ -43,6 +43,7 @@ export function parseDecklist(text: string): ParsedDecklist {
           .toLowerCase()
           .replace(/^#\s*/, "")
           .replace(/[:：]$/, "")
+          .replace(/\s*\(\d+\)\s*$/, "")
           .replace(/\s*deck$/, "")
       ];
     if (headerKey) {
