@@ -12,7 +12,7 @@ function fixture() {
   db.exec(readFileSync(new URL("../migrations/0023_card_locations.sql",import.meta.url),"utf8"));
   db.exec("CREATE TABLE collection_entries(user_id TEXT,card_uuid TEXT,owned_quantity INTEGER); CREATE TABLE collection_printing_entries(user_id TEXT,card_uuid TEXT,owned_quantity INTEGER); CREATE TABLE user_decks(id TEXT PRIMARY KEY,owner_user_id TEXT); INSERT INTO collection_entries VALUES('a','card',4); INSERT INTO user_decks VALUES('deck-a','a'),('deck-b','a'),('foreign','b');");
   db.exec("ALTER TABLE collection_printing_entries ADD COLUMN edition_uuid TEXT;");
-  for (const file of ["0020_comments_and_binder.sql","0024_trade_allocations.sql"]) db.exec(readFileSync(new URL(`../migrations/${file}`,import.meta.url),"utf8"));
+  for (const file of ["0020_comments_and_binder.sql","0024_trade_allocations.sql","0026_official_product_deck_favorites.sql"]) db.exec(readFileSync(new URL(`../migrations/${file}`,import.meta.url),"utf8"));
   const env = {ACCOUNT_DB:{async batch(statements: {run:()=>Promise<unknown>}[]) {
     db.exec('BEGIN');try{const results=[];for(const statement of statements)results.push(await statement.run());db.exec('COMMIT');return results;}catch(reason){db.exec('ROLLBACK');throw reason;}
   },prepare(sql: string) {
