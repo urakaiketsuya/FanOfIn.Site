@@ -1,7 +1,7 @@
 import { saveCuration, exportCuration } from "../../lib/curationStorage";
 import { useDeferredValue, useMemo, useState, useTransition } from 'react';
 import { Link } from 'react-router-dom';
-import { evaluateDefinition, parseStrategyStore, ruleDecks, type CuratedStrategy, type ReferenceAnalysis, type StrategyStore, type ArchetypeRule } from '@gatcg/shared';
+import { parseStrategyStore, type CuratedStrategy, type ReferenceAnalysis, type StrategyStore, type ArchetypeRule } from '@gatcg/shared';
 import PageLayout from '../../components/layout/PageLayout';
 import PageHeader from '../../components/ui/PageHeader';
 import CardResult from '../../components/CardResult';
@@ -10,8 +10,9 @@ import DisclosureChevron from '../../components/DisclosureChevron';
 import { usePublishedData, usePublishedDataStatus } from '../../lib/sync/usePublishedData';
 import { useCardCatalog } from '../cards/useCardCatalog';
 import { useSavedPackages } from '../deckbuilder/savedPackages';
-import { useArchetypeTaxonomyData, useDeckCardIndexData } from './data';
+import { useArchetypeTaxonomyData } from './data';
 import ArchetypePreview from './ArchetypePreview';
+import { useStrategyEvaluation } from './useStrategyEvaluation';
 const control = 'min-h-12 rounded-lg border border-ctp-surface1 px-3 py-2 focus-visible:outline-2 focus-visible:outline-ctp-blue';
 const storageKey = 'fan-of-insight-strategy-rules-v1';
 const blank: StrategyStore = { version: 1, entries: [], drafts: [] };
@@ -40,8 +41,6 @@ export default function ReferenceStrategies({ published = false }: {
     const [cardTarget, setCardTarget] = useState<'anyCards' | 'allCards' | 'excludeCards' | 'preview'>('anyCards');
     const [fieldVersion, setFieldVersion] = useState(0);
     const [live, setLive] = useState(false), [typeError, setTypeError] = useState('');
-    const index = useDeckCardIndexData(live), indexStatus = usePublishedDataStatus('analysis-deck-card-index', '/data/analysis/deck-card-index.json', live);
-    const decks = useMemo(() => index && live && cards.length ? ruleDecks(index, cards) : null, [index, live, cards]);
     function persist(next: StrategyStore, recover = false) {
         try {
             saveCuration(localStorage, storageKey, next, parseStrategyStore, recover);
@@ -62,17 +61,8 @@ export default function ReferenceStrategies({ published = false }: {
     }
     const definitions = useMemo(() => data ? [...data.definitions.map(d => store.entries.find(e => e.definition.id === d.id)?.definition ?? d), ...store.entries.filter(e => !data.definitions.some(d => d.id === e.definition.id)).map(e => e.definition)] : [], [data, store.entries]);
     const evaluatedDefinition = useDeferredValue(edit?.definition);
-    const comparison = useMemo(() => {
-        if (!evaluatedDefinition || !decks || !data)
-            return null;
-        const defs = definitions.map(d => d.id === evaluatedDefinition.id ? evaluatedDefinition : d);
-        if (!defs.some(d => d.id === evaluatedDefinition.id))
-            defs.push(evaluatedDefinition);
-        const original = data.definitions.find(d => d.id === evaluatedDefinition.id);
-        const before = new Set(original ? decks.filter(d => evaluateDefinition(original, data.definitions, d).matches).map(d => d.deckId) : []);
-        const after = decks.filter(d => evaluateDefinition(evaluatedDefinition, defs, d).matches).map(d => d.deckId), membership = new Set(after);
-        return { before: before.size, after, added: after.filter(id => !before.has(id)), removed: [...before].filter(id => !membership.has(id)), boundary: decks.filter(d => !membership.has(d.deckId) && evaluatedDefinition.rule.anyCards.some(c => d.cards.includes(c))).slice(0, 6).map(d => ({ id: d.deckId, failures: evaluateDefinition(evaluatedDefinition, defs, d).failures })) };
-    }, [evaluatedDefinition, decks, data, definitions]);
+    const evaluation = useStrategyEvaluation(live && !!edit && !!data, cards, evaluatedDefinition && data ? { edited: evaluatedDefinition, definitions, originals: data.definitions } : null);
+    const comparison = evaluatedDefinition === edit?.definition ? evaluation.comparison : null;
     function save(reviewStatus: CuratedStrategy['definition']['reviewStatus'], draft = false) {
         if (!edit || !data || typeError)
             return;
@@ -145,8 +135,10 @@ export default function ReferenceStrategies({ published = false }: {
             }}/><span role={typeError ? "alert" : undefined} className="text-ctp-red">{typeError}</span><span className="text-xs">Positive minimum, negative maximum. Example: ALLY: 20.</span></label>
  <label className="my-3 block">Parent strategy<select className={`${control} w-full`} value={edit.definition.parentId ?? ''} onChange={e => setEdit({ ...edit, definition: { ...edit.definition, parentId: e.target.value || null } })}><option value="">None</option>{definitions.filter(d => d.id !== edit.definition.id).map(d => <option key={d.id} value={d.id}>{d.parentId ? `${d.name} (${definitions.find(p => p.id === d.parentId)?.name ?? d.parentId})` : d.name}</option>)}</select></label>
  <details><summary className="flex min-h-12 cursor-pointer items-center gap-2"><DisclosureChevron />Original definition</summary>{data?.definitions.find(d => d.id === edit.definition.id) ? <RuleDescription rule={data.definitions.find(d => d.id === edit.definition.id)!.rule}/> : <p>New local discovery.</p>}</details>
- <button className={`${control} my-3`} onClick={() => startTransition(() => setLive(true))}>Evaluate membership changes</button>{live && !decks && (indexStatus.phase === 'error' ? <p role="alert">{indexStatus.error}<button className={control} onClick={indexStatus.retry}>Retry</button></p> : <p role="status">Loading decklists and card catalog…</p>)}{(pending || evaluatedDefinition !== edit?.definition) && <p role="status">Recalculating…</p>}
- {comparison && <div aria-live="polite"><p>{comparison.before} original → {comparison.after.length} edited · +{comparison.added.length} / −{comparison.removed.length} decks</p><p className="my-2 break-words text-xs">Sample matches: {comparison.after.length ? comparison.after.slice(0, 8).map(id => <DeckReference key={id} id={id}/>) : 'None'}</p><p className="my-2 break-words text-xs">Added: {comparison.added.slice(0, 8).join(', ') || 'None'} · Removed: {comparison.removed.slice(0, 8).join(', ') || 'None'}</p>{comparison.boundary.map(b => <p key={b.id} className="my-2 break-words text-xs"><DeckReference id={b.id}/>: {b.failures.join('; ')}</p>)}</div>}
+ <button className={`${control} my-3`} onClick={() => startTransition(() => setLive(true))}>Evaluate membership changes</button>{live && evaluation.phase === 'error' && <p role="alert">{evaluation.error}<button className={control} onClick={evaluation.retry}>Retry evaluation</button></p>}{live && evaluation.phase === 'loading' && <p role="status">Loading decklists and card catalog…</p>}{(pending || live && evaluation.phase === 'calculating' || evaluatedDefinition !== edit?.definition) && <p role="status">Recalculating…</p>}
+ {evaluation.warning && <p role="status">{evaluation.warning}<button className={control} onClick={evaluation.retry}>Retry evaluation</button></p>}
+ {comparison && <div aria-live="polite"><p>{comparison.beforeCount} original → {comparison.afterCount} edited · +{comparison.addedCount} / −{comparison.removedCount} decks</p><p className="my-2 break-words text-xs">Sample matches: {comparison.sampleMatches.length ? comparison.sampleMatches.map(id => <DeckReference key={id} id={id}/>) : 'None'}</p><p className="my-2 break-words text-xs">Added: {comparison.sampleAdded.join(', ') || 'None'} · Removed: {comparison.sampleRemoved.join(', ') || 'None'}</p>{comparison.boundary.map(b => <p key={b.id} className="my-2 break-words text-xs"><DeckReference id={b.id}/>: {b.failures.join('; ')}</p>)}</div>}
+
  <details><summary className="flex min-h-12 cursor-pointer items-center gap-2"><DisclosureChevron />Linked packages and mechanics review</summary>{packages.store.packages.map(p => <label key={p.id} className="flex min-h-12 items-center gap-2"><input type="checkbox" checked={edit.packageIds.includes(p.id)} onChange={e => setEdit({ ...edit, packageIds: e.target.checked ? [...edit.packageIds, p.id] : edit.packageIds.filter(id => id !== p.id) })}/>{p.name}</label>)}<label className="my-3 block">Mechanics evidence / card text references<textarea className={`${control} w-full`} value={edit.mechanicsEvidence} onChange={e => setEdit({ ...edit, mechanicsEvidence: e.target.value })}/></label><label className="flex min-h-12 items-center gap-2"><input type="checkbox" checked={edit.mechanics === 'verified'} onChange={e => setEdit({ ...edit, mechanics: e.target.checked ? 'verified' : 'unverified' })}/>I verified the claimed interactions against card text</label></details>
  <div className="my-3 flex flex-wrap gap-2"><button className={control} onClick={() => save('rejected')}>Reject locally</button><button className={control} onClick={() => {
                 if (persist({ ...store, undo: store.entries, entries: store.entries.filter(e => e.definition.id !== edit.definition.id), drafts: store.drafts.filter(e => e.definition.id !== edit.definition.id) }))

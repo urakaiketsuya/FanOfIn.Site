@@ -176,3 +176,42 @@ export function parseStrategyStore(raw: string): StrategyStore {
         throw new Error('Invalid strategy backup; existing choices were preserved.');
     return v;
 }
+
+export interface StrategyComparison {
+    beforeCount: number;
+    afterCount: number;
+    addedCount: number;
+    removedCount: number;
+    sampleMatches: string[];
+    sampleAdded: string[];
+    sampleRemoved: string[];
+    boundary: { id: string; failures: string[] }[];
+}
+
+/** Exact counts with bounded display samples; no full membership arrays cross the worker boundary. */
+export function compareStrategyMembership(decks: readonly RuleDeck[], edited: ReferenceDefinition, definitions: ReferenceDefinition[], originals: ReferenceDefinition[]): StrategyComparison {
+    const current = definitions.filter(d => d.id !== edited.id).concat(edited);
+    const original = originals.find(d => d.id === edited.id);
+    const result: StrategyComparison = { beforeCount: 0, afterCount: 0, addedCount: 0, removedCount: 0, sampleMatches: [], sampleAdded: [], sampleRemoved: [], boundary: [] };
+    for (const deck of decks) {
+        const before = original ? evaluateDefinition(original, originals, deck).matches : false;
+        const after = evaluateDefinition(edited, current, deck);
+        if (before) result.beforeCount++;
+        if (after.matches) {
+            result.afterCount++;
+            if (result.sampleMatches.length < 8) result.sampleMatches.push(deck.deckId);
+        }
+        if (after.matches && !before) {
+            result.addedCount++;
+            if (result.sampleAdded.length < 8) result.sampleAdded.push(deck.deckId);
+        }
+        if (before && !after.matches) {
+            result.removedCount++;
+            if (result.sampleRemoved.length < 8) result.sampleRemoved.push(deck.deckId);
+        }
+        if (!after.matches && result.boundary.length < 6 && edited.rule.anyCards.some(card => deck.cards.includes(card))) {
+            result.boundary.push({ id: deck.deckId, failures: after.failures });
+        }
+    }
+    return result;
+}

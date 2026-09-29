@@ -47,7 +47,7 @@ Public concrete archetypes remain the stable URLs and statistical records. Fract
 - [x] Lorraine `1f7gr44` retains 667/667 Crux matches; no mechanics claim added.
 - [x] Production account health: success, schema ready, required version `0025` (Origin header required).
 - [x] Latest backup: [successful run, 2026-09-28](https://github.com/urakaiketsuya/FanOfIn.Site/actions/runs/36426817346).
-- [x] Automated gate passed: 297 app, 119 pipeline, 59 account, 11 ingestion and 6 public API tests (492 total); workspace typechecks, lint, artifact validation and production build.
+- [x] Automated gate passed: 303 app, 119 pipeline, 59 account, 11 ingestion and 6 public API tests (498 total); workspace typechecks, lint, artifact validation and production build.
 - [x] Production-preview checks at 360/390px and 1440px: named cards, Lorraine page, concrete detail and 667-deck membership, both curators, draft save/reload/reset, dirty dismissal, validation error, keyboard focus, expanded evidence, empty search and public reviewed-strategies empty state. Card detail and packages navigation also loaded successfully; browser error log was empty. No horizontal overflow on inspected pages.
 - [ ] Authenticated account journey with disposable data — explicitly deferred by user; no disposable account available.
 - [ ] Restore-drill and rollback rehearsal evidence.
@@ -56,9 +56,18 @@ Public concrete archetypes remain the stable URLs and statistical records. Fract
 
 ## Verification limits and follow-up priorities
 
-- Concurrent card-tag changes arrived after the initial successful gate and were included in the final rerun. A clean committed candidate is still required before deployment; the launch changes remain uncommitted.
+- Concurrent card-tag changes arrived after the initial successful gate and were included in the final rerun. A clean committed candidate is still required before deployment; the initial launch safeguards are committed as `c55c9c072`.
 - The dependency audit has zero high/critical findings and four moderate findings in the Cloudflare development-tool chain, rooted in Undici 7.29.0 ([advisory](https://github.com/advisories/GHSA-3wwx-pv8p-q78v)). Miniflare pins that version. A normal refresh and scoped override did not resolve it with this workspace lock; the ineffective override was removed. Track a compatible tooling update; do not run the suggested breaking forced downgrade automatically.
 - Storage quota, blocked reads and corrupt backups were simulated in unit tests for both curator formats. Validation-error and loading states were inspected in the browser. A fresh-origin local server returned HTTP 503 for the first reference request: the visible error and Retry control recovered to all 75 definitions. Complete offline behavior and real-device keyboard/slow-CPU behavior were not simulated.
-- Local rule evaluation still loads the approximately 20MB deck index and evaluates on the main thread. Lower-memory mobile profiling remains pending; it is opt-in, and co-occurrence evidence does not verify combos.
+- Full-data rule evaluation is opt-in. Its approximately 20MB download, JSON parsing, deck preparation and comparison now run in a dedicated worker. The worker is terminated when the editor closes; only exact counts and bounded samples return to the page. Lower-memory physical-device profiling remains pending; co-occurrence evidence does not verify combos.
 - Desktop layout was checked through rendered DOM and full-page capture; the in-app browser's visible screenshot is clipped to its panel, and stitched full-page screenshots can repeat sections. Mobile capture is available at `/tmp/launch-mobile-curator.png` for this session.
 - No production deployment, migration, rollback, restore drill or post-launch automation was performed by this task. The new workflows require a committed and pushed candidate before their hosted results can be verified.
+
+## Continued hardening after the initial commit
+
+- Baseline on this machine (Node, not a mobile performance score): preparing 58,536 rule decks took 1,338ms; two membership passes took 244ms with approximately 251MB process heap. This justified moving evaluation out of React rendering.
+- The background evaluator preserves the Lorraine example: 3,380 original matches → 1,277 after requiring Resolute Stand and Inert Sword; 2,103 removed, zero added. A comparison response is approximately 1KB rather than all matching deck IDs. A subsequent shared-helper benchmark took 217ms.
+- New client tests cover queued edits during loading, stale results/errors, worker disposal, initialization failure and retry. Saved-data fallback is retained when network refresh fails, with a visible freshness notice; blocked cache writes do not stop live evaluation. Shared comparison tests cover exact counts, parent constraints, unchanged inputs, and sample limits.
+- Official npm metadata checked: Wrangler 4.143.0 and Cloudflare Vitest plugin 1.3.1 depend on Miniflare 5.20260926.0-alpha, which still pins Undici 7.29.0. A direct override also did not resolve through this workspace lock; no ineffective override or speculative tooling upgrade was retained.
+- Production-preview worker checks passed: 360px comparison showed 3,380 → 1,277 with no horizontal overflow; the desktop sheet stayed 576px wide inside a 1440px viewport. Closing during loading returned focus to Review rules. A failed dataset request displayed Retry evaluation; retry recovered 3,380 unchanged matches. Repeating the failure used the saved snapshot and displayed the freshness notice. QA edits were discarded.
+- Follow-up release gate passed: 498 tests, all workspace typechecks, lint (same six existing warnings), artifact validation, dependency audit at the high threshold, and production build. Concrete taxonomy and published analysis records were not changed by the worker work.
