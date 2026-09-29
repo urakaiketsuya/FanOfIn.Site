@@ -135,3 +135,16 @@ export interface CollectionCardTracking {
   updatedAt: string;
 }
 export type CollectionCardTrackingUpdate = Pick<CollectionCardTracking, "cardName" | "mightOwn" | "loans" | "revision" | "assignments">;
+
+/** Fill a recipe's shortfall using unspecified copies, counting every physical printing first.
+ * Use with `at-least`: existing larger quantities, printing records and proxies are preserved. */
+export function collectionCompletionLines(required: CollectionUpdateLine[], entries: CollectionEntry[]): CollectionUpdateLine[] {
+  const totals = collectionTotalsByCard(entries);
+  return required.flatMap(line => {
+    const owned = totals.get(collectionKey(line.cardName))?.ownedQuantity ?? 0;
+    const shortfall = Math.max(0, line.quantity - owned);
+    if (!shortfall) return [];
+    const canonical = entries.find(entry => entry.cardUuid === line.cardUuid && !entry.editionUuid);
+    return [{ cardUuid: line.cardUuid, cardName: line.cardName, quantity: (canonical?.ownedQuantity ?? 0) + shortfall, proxyQuantity: canonical?.proxyQuantity ?? 0 }];
+  });
+}

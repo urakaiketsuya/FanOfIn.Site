@@ -1,202 +1,55 @@
+import DeckPreviewListActions from "../../components/DeckPreviewListActions";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Card, DeckSighting } from "@gatcg/shared";
 import { EVENT_CATEGORY_LABELS } from "@gatcg/shared";
 import PlayerLink from "../players/PlayerLink";
-import CardImage from "../../components/CardImage";
-import CardHoverPreview from "../../components/CardHoverPreview";
 import DecklistView from "../events/DecklistView";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useSightingDecklist } from "./useSightingDecklist";
 import { formatUsd } from "../../lib/format";
-import Button from "../../components/ui/Button";
 import { InlineState } from "../../components/ui/ContentState";
-import DeckCardPreview from "../decks/DeckCardPreview";
+import DeckPreviewCard, { deckPreviewActionClass } from "../../components/DeckPreviewCard";
+import DisclosureChevron from "../../components/DisclosureChevron";
 
-export default function DeckSightingRow({
-  sighting,
-  playerName,
-  championCard,
-  onAdd,
-  added,
-  browseCard = false,
-}: {
+export default function DeckSightingRow({ sighting, playerName, championCard, onAdd, added }: {
   sighting: DeckSighting;
   playerName: string;
   championCard: Card | undefined;
-  /** When provided, renders an extra "+ Compare"/"− Remove" toggle button (used by the deck comparison tool). */
   onAdd?: () => void;
   added?: boolean;
+  /** Retained for existing callers; every immutable result now uses the shared preview. */
   browseCard?: boolean;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [previewVisible, setPreviewVisible] = useState(false);
   const rowRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (!browseCard || !rowRef.current) return;
+    if (!rowRef.current) return;
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setPreviewVisible(true);
-        observer.disconnect();
-      }
+      if (entry.isIntersecting) { setPreviewVisible(true); observer.disconnect(); }
     }, { rootMargin: "200px" });
     observer.observe(rowRef.current);
     return () => observer.disconnect();
-  }, [browseCard]);
-  const { loading, decklist, error } = useSightingDecklist(sighting.eventId, sighting.player, expanded || (browseCard && previewVisible));
-  const allNames = decklist ? [...decklist.main, ...decklist.material, ...decklist.sideboard].map((l) => l.card) : [];
-  const cardsByName = useCardsByNames(allNames);
-
-  return (
-    <div ref={rowRef} data-component="DeckSightingRow" className={browseCard ? "min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 text-sm shadow-sm shadow-black/20" : "rounded-md border border-ctp-surface1 px-3 py-2 text-sm"}>
-      {browseCard && <DeckCardPreview names={decklist?.main.map((line) => line.card) ?? []} cardsByName={cardsByName} championCard={championCard} seed={sighting.deckId} loading={!error && (!decklist || (decklist.main.length > 0 && cardsByName.size === 0))} />}
-      <div className={browseCard ? "mt-3" : "flex items-start gap-3"}>
-        {!browseCard && (
-          <CardHoverPreview image={championCard?.editions[0]?.image} alt={sighting.championName ?? "Unknown champion"}>
-          {sighting.deckHash ? (
-            <Link to={`/decks/${sighting.deckHash}`} title="Open this deck's own page" className="block shrink-0">
-              {championCard?.editions[0] ? (
-                <CardImage
-                  image={championCard.editions[0].image}
-                  alt={sighting.championName ?? ""}
-                  className="h-14 w-10 shrink-0 rounded object-cover object-top"
-                />
-              ) : (
-                <div className="h-14 w-10 shrink-0 rounded bg-ctp-surface0" />
-              )}
-            </Link>
-          ) : (
-            <button
-              type="button"
-              onClick={() => setExpanded((v) => !v)}
-              title={expanded ? "Hide decklist" : "Show decklist"}
-              aria-expanded={expanded}
-              aria-controls={`decklist-${sighting.deckId}`}
-              aria-label={expanded ? "Hide decklist" : "Show decklist"}
-              className="block shrink-0"
-            >
-              {championCard?.editions[0] ? (
-                <CardImage
-                  image={championCard.editions[0].image}
-                  alt={sighting.championName ?? ""}
-                  className="h-14 w-10 shrink-0 rounded object-cover object-top"
-                />
-              ) : (
-                <div className="h-14 w-10 shrink-0 rounded bg-ctp-surface0" />
-              )}
-            </button>
-          )}
-          </CardHoverPreview>
-        )}
-
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-1.5">
-            {sighting.championName && sighting.deckHash ? (
-              <Link to={`/decks/${sighting.deckHash}`} className="font-medium text-ctp-text hover:text-ctp-blue">
-                {sighting.championName}
-              </Link>
-            ) : sighting.championName ? (
-              <button
-                type="button"
-                onClick={() => setExpanded((v) => !v)}
-                title={expanded ? "Hide decklist" : "Show decklist"}
-                aria-expanded={expanded}
-                aria-controls={`decklist-${sighting.deckId}`}
-                aria-label={`${expanded ? "Hide" : "Show"} decklist for ${sighting.championName}`}
-                className="font-medium text-ctp-text hover:text-ctp-blue"
-              >
-                {sighting.championName}
-              </button>
-            ) : (
-              <span className="text-ctp-subtext0">Unknown champion</span>
-            )}
-            {!browseCard && <PlayerLink id={sighting.player} username={playerName} className="text-ctp-subtext1 hover:text-ctp-blue" />}
-            {sighting.winner && (
-              <span className="rounded-full border border-ctp-yellow px-1.5 text-[10px] text-ctp-yellow">Winner</span>
-            )}
-            {sighting.topCut && !sighting.winner && (
-              <span className="rounded-full border border-ctp-blue px-1.5 text-[10px] text-ctp-blue">Top Cut</span>
-            )}
-            {!browseCard && sighting.placementPercentile !== null && (
-              <span className="rounded-full border border-ctp-green px-1.5 text-[10px] text-ctp-green">
-                Top {sighting.placementPercentile < 0.01 ? "<1" : Math.round(sighting.placementPercentile * 100)}%
-              </span>
-            )}
-            {!browseCard && sighting.duplicateCount > 0 && (
-              <span className="rounded-full border border-ctp-mauve px-1.5 text-[10px] text-ctp-mauve">
-                Netdecked ({sighting.duplicateCount} other{sighting.duplicateCount === 1 ? "" : "s"})
-              </span>
-            )}
-            {!browseCard && sighting.underplaced && (
-              <span
-                className="rounded-full border border-ctp-peach px-1.5 text-[10px] text-ctp-peach"
-                title="Strong match record, but still finished outside the top 30% of the field — likely tiebreakers, not a bad build."
-              >
-                Tough finish
-              </span>
-            )}
-          </div>
-          {browseCard && <div className="mt-1 truncate text-xs text-ctp-subtext1">by <PlayerLink id={sighting.player} username={playerName} className="hover:text-ctp-blue" /></div>}
-          {browseCard && (
-            <div className="mt-2 font-semibold text-ctp-text">
-              {sighting.placement ? `#${sighting.placement}` : "Unranked"}
-              <span className="font-normal text-ctp-subtext1"> · {sighting.wins}–{sighting.losses}–{sighting.ties}</span>
-            </div>
-          )}
-          <div className="mt-1 text-xs text-ctp-subtext0">
-            <Link to={`/events/${sighting.eventId}`} className="hover:text-ctp-blue hover:underline">
-              {sighting.eventName}
-            </Link>{" "}
-            · {new Date(sighting.eventDate).toLocaleDateString()}
-            {!browseCard && <> · {EVENT_CATEGORY_LABELS[sighting.eventCategory] ?? sighting.eventCategory}{sighting.seasonName && ` · ${sighting.seasonName}`}</>}
-          </div>
-        </div>
-      </div>
-
-      <div className={browseCard ? "mt-3 border-t border-ctp-surface1 pt-3" : "mt-2 flex flex-wrap items-center justify-between gap-2"}>
-        {!browseCard && <div className="text-xs text-ctp-subtext1">
-          {sighting.placement ? `#${sighting.placement}` : "—"} · {sighting.wins}-{sighting.losses}-{sighting.ties}
-          {!browseCard && sighting.price !== null && <span className="text-ctp-subtext0"> · {formatUsd(sighting.price)}</span>}
-        </div>}
-
-        <div className={browseCard ? "flex flex-wrap items-center gap-2" : "flex shrink-0 items-center gap-2"}>
-          {onAdd && (
-            <button
-              type="button"
-              onClick={onAdd}
-              className={`rounded-md border px-2 py-1.5 text-xs ${
-                added ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
-              }`}
-            >
-              {added ? "− Remove" : "+ Compare"}
-            </button>
-          )}
-
-          {sighting.deckHash ? (
-            <Link
-              to={`/decks/${sighting.deckHash}`}
-              className={browseCard ? "flex min-h-10 flex-1 items-center justify-center rounded-lg bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base hover:opacity-90" : "rounded-md border border-ctp-surface1 px-2 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-text"}
-            >
-              {browseCard ? "View deck →" : "Decklist →"}
-            </Link>
-          ) : (
-            <Button
-              variant={browseCard ? "primary" : "secondary"}
-              size="sm"
-              className={browseCard ? "min-h-10 flex-1 text-sm" : ""}
-              onClick={() => setExpanded((v) => !v)}
-              aria-expanded={expanded}
-              aria-controls={`decklist-${sighting.deckId}`}
-            >
-              {expanded ? "Hide decklist" : browseCard ? "Preview decklist" : "Decklist"}
-            </Button>
-          )}
-        </div>
-      </div>
-
-      {browseCard && (
-        <details className="mt-2 text-xs text-ctp-subtext0">
-          <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">Result details</summary>
+  }, []);
+  const { loading, decklist, error, format } = useSightingDecklist(sighting.eventId, sighting.player, expanded || previewVisible);
+  const cardsByName = useCardsByNames(decklist ? [...decklist.main, ...decklist.material, ...decklist.sideboard].map(line => line.card) : []);
+  return <div ref={rowRef} data-component="DeckSightingRow" className="min-w-0">
+    <DeckPreviewCard cardsByName={cardsByName} championCard={championCard} model={{
+      id: sighting.deckId, title: sighting.championName ? `${sighting.championName} · ${playerName}` : `${playerName}'s deck`,
+      decklist, format, championName: sighting.championName,
+      source: { kind: "event", label: "Tournament" },
+      metadata: <>
+        <PlayerLink id={sighting.player} username={playerName} className="inline-flex min-h-12 items-center rounded hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue" />
+        <p>{sighting.placement ? `#${sighting.placement}` : "Unranked"} · {sighting.wins}–{sighting.losses}–{sighting.ties}{sighting.winner ? " · Winner" : sighting.topCut ? " · Top Cut" : ""}</p>
+        <Link to={`/events/${sighting.eventId}`} className="inline-flex min-h-12 items-center rounded hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">{sighting.eventName}</Link>
+        <p>{new Date(sighting.eventDate).toLocaleDateString()}</p>
+      </>,
+      status: <>
+        {loading && <p role="status" className="text-xs text-ctp-subtext0">Loading deck preview…</p>}
+        {error && <InlineState tone="danger">{error}</InlineState>}
+        <details className="group text-xs text-ctp-subtext0">
+          <summary className={`${deckPreviewActionClass} cursor-pointer list-none [&::-webkit-details-marker]:hidden`}>Result details<DisclosureChevron className="group-open:rotate-180" /></summary>
           <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1">
             <span>{EVENT_CATEGORY_LABELS[sighting.eventCategory] ?? sighting.eventCategory}</span>
             {sighting.seasonName && <span>{sighting.seasonName}</span>}
@@ -206,15 +59,14 @@ export default function DeckSightingRow({
             {sighting.underplaced && <span>Tough finish</span>}
           </div>
         </details>
-      )}
-
-      {expanded && !sighting.deckHash && (
-        <div id={`decklist-${sighting.deckId}`} className="mt-2 border-t border-ctp-surface0 pt-2">
-          {loading && <InlineState className="text-sm">Loading…</InlineState>}
-          {error && <InlineState className="text-sm">{error}</InlineState>}
-          {decklist && <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={sighting.deckId} showThumbnails />}
-        </div>
-      )}
-    </div>
-  );
+      </>,
+      actions: <>
+        {decklist && <DeckPreviewListActions decklist={decklist} format={format} title={`${sighting.championName ?? "Deck"} · ${playerName}`} compare={!onAdd} />}
+        {onAdd && <button type="button" onClick={onAdd} aria-pressed={added ?? false} className={`${deckPreviewActionClass} border ${added ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1"}`}>{added ? "Remove from compare" : "Compare"}</button>}
+      </>,
+    }} view={sighting.deckHash ? { to: `/decks/${sighting.deckHash}` } : {
+      expanded, onToggle: () => setExpanded(value => !value),
+      content: decklist ? <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={sighting.deckId} showThumbnails /> : <InlineState>{error ?? "Loading decklist…"}</InlineState>,
+    }} />
+  </div>;
 }

@@ -39,6 +39,9 @@ test("starter seeds are idempotent, labeled, ranked after users, and safely reti
     for (const preview of page.decks[0].previewCards!) {
       assert.equal(preview.quantity, publicDeck.decklist.main.filter(line => line.card === preview.card).reduce((sum, line) => sum + line.quantity, 0));
     }
+    assert.deepEqual(page.decks[0].materialPreview, publicDeck.decklist.material.slice(0, 4));
+    assert.equal(page.decks[0].mainCount, publicDeck.decklist.main.reduce((sum, line) => sum + line.quantity, 0));
+    assert.equal(page.decks[0].sideboardCount, publicDeck.decklist.sideboard.reduce((sum, line) => sum + line.quantity, 0));
     assert.ok(!("decklist" in page.decks[0]), "discovery must keep full decklists out of summaries");
     assert.ok(!JSON.stringify(publicDeck).includes("sourceUrl"));
     assert.deepEqual(await discoverProfiles(env, new URLSearchParams({ q: "Fan of Insight" })), { profiles: [] });

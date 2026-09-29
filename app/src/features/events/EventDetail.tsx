@@ -267,7 +267,7 @@ export default function EventDetail() {
 
       {activeTab === "decklists" && !isApiErrorBody(bundle.decklists) && (
         <div className="mt-6">
-          <DecklistsSection eventId={eventId} decklists={bundle.decklists} players={players} />
+          <DecklistsSection format={event.format.toLowerCase() === "standard" ? "STANDARD" : event.format.toLowerCase() === "pantheon" ? "PANTHEON" : "UNKNOWN"} eventId={eventId} decklists={bundle.decklists} players={players} />
         </div>
       )}
 

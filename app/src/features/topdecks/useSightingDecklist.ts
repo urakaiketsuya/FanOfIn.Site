@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import type { OmnidexDecklist, OmnidexDecklistEntry } from "@gatcg/shared";
+import type { DeckFormat, OmnidexDecklist, OmnidexDecklistEntry } from "@gatcg/shared";
 
 interface SightingDecklistState {
   loading: boolean;
+  format?: DeckFormat;
   decklist: OmnidexDecklist | null;
   error: string | null;
 }
 
 interface PublishedEventBundle {
+  event?: { format: string };
   decklists: OmnidexDecklistEntry[] | { error: string };
 }
 
@@ -58,6 +60,7 @@ export function useSightingDecklist(eventId: number, playerId: number, enabled: 
         const entry = bundle.decklists.find((d) => d.player === playerId);
         setState({
           loading: false,
+          format: bundle.event?.format.toLowerCase() === "standard" ? "STANDARD" : bundle.event?.format.toLowerCase() === "pantheon" ? "PANTHEON" : "UNKNOWN",
           decklist: entry?.decklist ?? null,
           error: entry ? null : "Decklist not found for this player.",
         });

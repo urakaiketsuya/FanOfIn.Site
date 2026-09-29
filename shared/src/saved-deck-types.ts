@@ -73,7 +73,12 @@ export interface PublicDeck {
   likeCount: number;
 }
 
-export interface PublicDeckSummary extends Omit<PublicDeck, "decklist" | "visibility" | "updatedAt"> {}
+export interface PublicDeckSummary extends Omit<PublicDeck, "decklist" | "visibility" | "updatedAt"> {
+  /** Bounded material sample and totals from the published version. Optional for older servers. */
+  materialPreview?: OmnidexDecklistCardLine[];
+  mainCount?: number;
+  sideboardCount?: number;
+}
 
 export interface PublicProfile {
   displayName: string;

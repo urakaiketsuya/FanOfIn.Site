@@ -2,8 +2,7 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Card, OmnidexDecklist } from "@gatcg/shared";
 import DeckCardPreview from "../../components/DeckCardPreview";
-import DisclosureChevron from "../../components/DisclosureChevron";
-import ElementRail from "../../components/ElementRail";
+import DeckPreviewCard from "../../components/DeckPreviewCard";
 import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -48,6 +47,7 @@ function ProductDeckCard({
   compareDisabled: boolean;
   onToggleCompare: () => void;
 }) {
+  const [expanded, setExpanded] = useState(false);
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
   const [ownershipState, setOwnershipState] = useState<"idle" | "saving" | "saved" | "needs-cards" | "failed" | "signed-out">("idle");
   const [ownershipNotice, setOwnershipNotice] = useState("");
@@ -59,16 +59,8 @@ function ProductDeckCard({
     const path = buildDeckBuilderPath(params.championName, params.spiritFilter, params.lockedCards, params.lockedSections);
     return deck.productCode === "RDOPD" ? `${path}${path.includes("?") ? "&" : "?"}format=pantheon` : path;
   }, [deck, decklist, cardsByName]);
-  const total = deck.cards.main.reduce((sum, card) => sum + card.quantity, 0);
   const productLabel = PRODUCT_LABELS[deck.productCode] ?? deck.productCode;
   const releaseLabel = deck.releaseDate ? (deck.productCode === "DOAp" ? "Jan 2023" : new Intl.DateTimeFormat(undefined, { year: "numeric", month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(deck.releaseDate))) : null;
-  const elements = useMemo(() => Array.from(new Set(
-    deck.cards.material
-      .map((line) => cardsByName.get(line.name))
-      .filter((card): card is Card => card?.types.includes("CHAMPION") === true)
-      .flatMap((card) => card.elements)
-      .filter((element) => element !== "NORM"),
-  )), [deck, cardsByName]);
   const collectionLines = useMemo(() => {
     const lines = new Map<string, { cardUuid: string; cardName: string; quantity: number }>();
     for (const section of [decklist.main, decklist.material, decklist.sideboard]) for (const line of section) {
@@ -165,21 +157,21 @@ function ProductDeckCard({
     }
   }
 
-  return (
-    <article className="relative overflow-hidden rounded-xl border border-ctp-surface0 bg-ctp-mantle/70 shadow-sm">
-      <ElementRail elements={elements} />
-      <div className="p-4 pl-5">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-ctp-blue">{productLabel}{releaseLabel && <span className="ml-2 font-normal normal-case text-ctp-subtext0">· {deck.releaseDate! > new Date().toISOString().slice(0, 10) ? "Releases" : "Released"} {releaseLabel}</span>}</p>
-            <h2 className="mt-1 text-lg font-semibold text-ctp-text">{deck.name}</h2>
-            <p className="mt-1 text-xs text-ctp-subtext0">{deck.cards.material.length} material · {total} main{deck.cards.mastery.length ? ` · ${deck.cards.mastery.length} mastery` : ""}{deck.cards.token.length ? ` · ${deck.cards.token.length} token types` : ""}</p>
-          </div>
-          <span className="rounded-full border border-ctp-surface1 px-2 py-1 text-xs font-medium text-ctp-subtext1">{deck.productCode}</span>
-        </div>
-
-        <div className="mt-4"><p className="mb-2 text-xs text-ctp-subtext0">Featured material cards · expand below for the complete product</p><DeckCardPreview lines={deck.cards.material.slice(0, 4)} cardsByName={cardsByName} /></div>
-        <div className="mt-4 flex flex-wrap gap-2">
+  return <DeckPreviewCard cardsByName={cardsByName} model={{
+    id: deck.id, title: deck.name, decklist,
+    championName: findDeckChampionName(decklist.material, cardsByName) ?? deck.champions[0],
+    format: deck.productCode === "RDOPD" ? "PANTHEON" : "STANDARD",
+    source: { kind: "official", label: "Official product" },
+    metadata: productLabel,
+    actions: <>
+          {(ownershipState === "saved" || ownershipState === "needs-cards") && <Link to={`/card-locations?deck=${encodeURIComponent(`official-product:${deck.id}`)}`} className="inline-flex min-h-12 items-center rounded-md px-3 text-sm text-ctp-blue">Locate cards</Link>}
+          <button type="button" disabled={ownershipState === "saving" || ownershipState === "saved" || ownershipState === "needs-cards" || !collectionLines.length} onClick={() => void markOwned()} className="inline-flex min-h-12 items-center rounded-md border border-ctp-green px-2.5 py-1.5 text-xs font-semibold text-ctp-green disabled:opacity-50">
+            {ownershipState === "saving" ? "Setting up owned deck…" : ownershipState === "saved" ? "Owned deck set up ✓" : ownershipState === "needs-cards" ? "Pinned — cards needed" : "I own this deck"}
+          </button>
+          {ownershipState === "needs-cards" && <button type="button" onClick={() => void addMissingCopies()} className="inline-flex min-h-12 items-center rounded-md border border-ctp-green px-2.5 py-1.5 text-xs font-semibold text-ctp-green hover:bg-ctp-green/10">Add missing {missingCollectionLines.reduce((sum, line) => sum + line.quantity, 0)} copies</button>}
+          <button type="button" onClick={copyDecklist} className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">
+            {copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy decklist"}
+          </button>
           <button
             type="button"
             onClick={onToggleCompare}
@@ -193,39 +185,28 @@ function ProductDeckCard({
           >
             {compareSelected ? "Selected to compare ✓" : "Select to compare"}
           </button>
-          <button type="button" onClick={copyDecklist} className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">
-            {copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy decklist"}
-          </button>
-          <button type="button" disabled={ownershipState === "saving" || ownershipState === "saved" || ownershipState === "needs-cards" || !collectionLines.length} onClick={() => void markOwned()} className="inline-flex min-h-12 items-center rounded-md bg-ctp-green px-2.5 py-1.5 text-xs font-semibold text-ctp-base disabled:opacity-50">
-            {ownershipState === "saving" ? "Setting up owned deck…" : ownershipState === "saved" ? "Owned deck set up ✓" : ownershipState === "needs-cards" ? "Pinned — cards needed" : "I own this deck"}
-          </button>
-          {ownershipState === "needs-cards" && <button type="button" onClick={() => void addMissingCopies()} className="inline-flex min-h-12 items-center rounded-md border border-ctp-green px-2.5 py-1.5 text-xs font-semibold text-ctp-green hover:bg-ctp-green/10">Add missing {missingCollectionLines.reduce((sum, line) => sum + line.quantity, 0)} copies</button>}
-          {builderPath && <Link to={builderPath} className="inline-flex min-h-12 items-center rounded-md border border-ctp-green px-2.5 py-1.5 text-xs text-ctp-green hover:bg-ctp-surface0">Tune in Deck Builder →</Link>}
-          {deck.sourceUrl && <a href={deck.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Official source ↗</a>}
-        </div>
+    </>,
+    status: <>
         <p className="mt-2 text-xs text-ctp-subtext1">“I own this deck” pins the official list and assigns unassigned copies already in your collection. Missing copies are only added if you choose to add them.</p>
         {ownershipState === "signed-out" ? <Link to="/decks/edit" className="mt-2 inline-flex min-h-12 items-center text-xs text-ctp-blue underline">Sign in to add this deck →</Link> : ownershipNotice && <p role={ownershipState === "failed" ? "alert" : "status"} className={`mt-2 text-xs ${ownershipState === "failed" ? "text-ctp-red" : "text-ctp-green"}`}>{ownershipNotice}</p>}
-      </div>
-
-      <details className="group border-t border-ctp-surface0">
-        <summary className="flex min-h-12 items-center gap-2 cursor-pointer list-none px-4 py-3 text-sm font-medium text-ctp-subtext1 hover:bg-ctp-surface0/40 hover:text-ctp-text">
-          <DisclosureChevron className="transition-transform group-open:rotate-180" />
-          View complete list
-        </summary>
-        <div className="grid gap-5 border-t border-ctp-surface0 px-4 py-4">
+    </>,
+  }} view={{ expanded, onToggle: () => setExpanded(value => !value), content: <>
+        <p className="mb-4 text-xs text-ctp-subtext1">{productLabel} · {deck.productCode}{releaseLabel && ` · ${deck.releaseDate! > new Date().toISOString().slice(0, 10) ? "Releases" : "Released"} ${releaseLabel}`}</p>
+        <div className="mb-4 flex flex-wrap gap-2">          {builderPath && <Link to={builderPath} className="inline-flex min-h-12 items-center rounded-md border border-ctp-green px-2.5 py-1.5 text-xs text-ctp-green hover:bg-ctp-surface0">Tune in Deck Builder →</Link>}
+          {deck.sourceUrl && <a href={deck.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Official source ↗</a>}
+</div>
+        <div className="grid gap-5">
           {SECTION_ORDER.map((section) => {
             const lines = deck.cards[section];
             if (lines.length === 0) return null;
             const count = lines.reduce((sum, line) => sum + line.quantity, 0);
             return <Section key={section} heading="dense" title={`${SECTION_LABELS[section]} (${count})`}>
-              <DeckCardPreview lines={lines} cardsByName={cardsByName} />
+              <DeckCardPreview groupByElement={section === "main"} lines={lines} cardsByName={cardsByName} />
             </Section>;
           })}
         </div>
-      </details>
-      <div className="px-4 pb-4"><DeckCollectionTools decklist={decklist} cardsByName={cardsByName} source={`Official deck: ${deck.name}`} /></div>
-    </article>
-  );
+      <div className="mt-4"><DeckCollectionTools decklist={decklist} cardsByName={cardsByName} source={`Official deck: ${deck.name}`} /></div>
+    </> }} />;
 }
 
 export default function OfficialProductsIndex() {

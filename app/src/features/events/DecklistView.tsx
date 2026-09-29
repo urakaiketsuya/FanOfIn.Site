@@ -1,3 +1,4 @@
+import { sortDeckCardsByElement } from "@gatcg/shared";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import { useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
@@ -157,15 +158,15 @@ export default function DecklistView({
   const missingCardNames = useMemo(() => new Set(missingOwnershipLines.map((line) => line.card)), [missingOwnershipLines]);
   const missingMassEntryUrl = useMemo(() => buildTcgplayerMassEntryUrl(missingOwnershipLines.map((line) => ({ name: line.card, quantity: line.missing }))), [missingOwnershipLines]);
   const visibleSections = useMemo(() => {
-    const filter = (lines: OmnidexDecklistCardLine[]) => showMissingOnly && ownershipByName ? lines.filter((line) => missingCardNames.has(line.card)) : lines;
+    const filter = (lines: OmnidexDecklistCardLine[]) => showMissingOnly && missingCopies > 0 && ownershipByName ? lines.filter((line) => missingCardNames.has(line.card)) : lines;
     return {
       extra: extraSections.map((section) => ({ ...section, lines: filter(section.lines) })),
-      main: filter(decklist.main),
+      main: sortDeckCardsByElement(filter(decklist.main), displayCardsByName),
       material: filter(decklist.material),
       sideboard: filter(decklist.sideboard),
       trailing: displayTrailingSections.map((section) => ({ ...section, lines: filter(section.lines) })),
     };
-  }, [decklist, displayTrailingSections, extraSections, missingCardNames, showMissingOnly, ownershipByName]);
+  }, [decklist, displayCardsByName, displayTrailingSections, extraSections, missingCardNames, missingCopies, showMissingOnly, ownershipByName]);
 
   function handleExportTts() {
     const championName = findDeckChampionName(decklist.material, cardsByName);
@@ -222,7 +223,14 @@ export default function DecklistView({
       </div>
       {displayPrefs.showPrices && <div className="mb-3 text-sm text-ctp-subtext1"><span className="font-medium text-ctp-text">Estimated price: {formatUsd(deckPrice.total + sideboardPrice.total)}</span><span className="ml-2 text-xs">Main + Material {formatUsd(deckPrice.total)} · Sideboard {formatUsd(sideboardPrice.total)}</span>{missingCount > 0 && <span className="ml-2 text-xs">{missingCount} card{missingCount === 1 ? "" : "s"} without prices</span>}</div>}
       {collectionPanel && <div className="mb-3">{collectionPanel}</div>}
-      {ownershipByName && (missingCopies > 0 ? <div className="mb-4 rounded-xl border border-ctp-yellow/40 bg-ctp-yellow/10 p-3 text-sm"><p className="text-ctp-text"><strong className="text-ctp-yellow">{missingCopies} missing cop{missingCopies === 1 ? "y" : "ies"}</strong> across {missingOwnershipLines.length} card{missingOwnershipLines.length === 1 ? "" : "s"}</p><div className="mt-3 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap"><button type="button" aria-pressed={showMissingOnly} onClick={() => setShowMissingOnly((value) => !value)} className={`min-h-10 rounded-lg border px-3 text-xs font-medium ${showMissingOnly ? "border-ctp-yellow bg-ctp-yellow/15 text-ctp-yellow" : "border-ctp-surface1 text-ctp-subtext1"}`}>{showMissingOnly ? "Show full deck" : "Show missing only"}</button><a href={missingMassEntryUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-10 items-center justify-center rounded-lg border border-ctp-blue px-3 text-xs font-medium text-ctp-blue">Shop missing ↗</a><Link to="/collection" className="col-span-2 inline-flex min-h-10 items-center justify-center rounded-lg px-3 text-xs font-medium text-ctp-blue sm:min-h-0">Open collection</Link></div></div> : <div className="mb-4 rounded-xl border border-ctp-green/30 bg-ctp-green/10 px-3 py-2 text-sm text-ctp-green">Collection complete for this deck.</div>)}
+      {ownershipByName && (missingCopies > 0 ? <div className="mb-4 space-y-2 text-sm">
+        {!collectionPanel && <p className="text-ctp-text"><strong className="text-ctp-yellow">{missingCopies} missing cop{missingCopies === 1 ? "y" : "ies"}</strong> across {missingOwnershipLines.length} card{missingOwnershipLines.length === 1 ? "" : "s"}</p>}
+        <div className="flex flex-wrap gap-2">
+          <button type="button" aria-pressed={showMissingOnly} onClick={() => setShowMissingOnly(value => !value)} className={`min-h-12 rounded-lg border px-3 text-sm font-medium focus-visible:outline-2 focus-visible:outline-ctp-blue ${showMissingOnly ? "border-ctp-yellow bg-ctp-yellow/15 text-ctp-yellow" : "border-ctp-surface1 text-ctp-subtext1"}`}>{showMissingOnly ? "Show full deck" : "Show missing only"}</button>
+          <a href={missingMassEntryUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center justify-center rounded-lg border border-ctp-blue px-3 text-sm text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">Shop missing ↗</a>
+          {!collectionPanel && <Link to="/collection" className="inline-flex min-h-12 items-center justify-center rounded-lg px-3 text-sm text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">Open collection</Link>}
+        </div>
+      </div> : !collectionPanel && <div className="mb-4 rounded-xl border border-ctp-green/30 bg-ctp-green/10 px-3 py-2 text-sm text-ctp-green">Collection complete for this deck.</div>)}
       {ownershipByName && showMissingOnly && missingCopies > 0 && <p className="mb-3 text-xs text-ctp-subtext1">Showing only cards your collection does not fully cover. Section totals reflect this filtered view.</p>}
       {displayMode === "compact" && <div className="space-y-5">{[...visibleSections.extra, { title: "Main", lines: visibleSections.main }, { title: "Material", lines: visibleSections.material }, { title: "Sideboard", lines: visibleSections.sideboard }, ...visibleSections.trailing].map((section) => <CompactSection priceByName={displayPrefs.showPrices ? priceByName : undefined} key={section.title} title={section.title} lines={section.lines} cardsByName={displayCardsByName} ownershipByName={ownershipByName} />)}</div>}
       {displayMode === "visual" && (() => {

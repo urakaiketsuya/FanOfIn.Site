@@ -9,3 +9,19 @@ test("deck preview uses a bounded deterministic sample of Main, preserving copy 
   assert.equal(JSON.stringify(deck), before);
   assert.deepEqual(deckPreviewCards({...deck, main:[]}), []);
 });
+
+test("main-deck display groups elements and alphabetizes without changing the source list", async () => {
+  const { sortDeckCardsByElement } = await import("@gatcg/shared");
+  const catalog = new Map([
+    ["Zebra", { element: "NORM" }], ["alpha", { element: "NORM" }],
+    ["Tide", { element: "WATER" }], ["Burn", { element: "FIRE" }], ["Amber", { element: "FIRE" }],
+  ]);
+  const lines = [{ name: "Tide", quantity: 4 }, { name: "Zebra", quantity: 2 }, { name: "Unknown", quantity: 1 }, { name: "Burn", quantity: 3 }, { name: "alpha", quantity: 4 }, { name: "Amber", quantity: 2 }];
+  const before = JSON.stringify(lines);
+  const sorted = sortDeckCardsByElement(lines, catalog);
+  assert.deepEqual(sorted.map(line => line.name), ["alpha", "Zebra", "Amber", "Burn", "Tide", "Unknown"]);
+  assert.equal(JSON.stringify(lines), before);
+  assert.equal(sorted.reduce((total, line) => total + line.quantity, 0), 16);
+  assert.deepEqual(sortDeckCardsByElement(lines.map(({ name, quantity }) => ({ card: name, quantity })), catalog).map(line => line.card), sorted.map(line => line.name));
+  assert.deepEqual(sortDeckCardsByElement([{ name: "Z" }, { name: "A" }], new Map()), [{ name: "A" }, { name: "Z" }]);
+});

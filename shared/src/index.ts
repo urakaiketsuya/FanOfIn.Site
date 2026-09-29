@@ -48,7 +48,7 @@ export * from "./tradeAvailability.js";
 
 export * from "./deckDetailData.js";
 
-export { deckPreviewCards } from "./deckPreview";
+export { deckPreviewCards, sortDeckCardsByElement } from "./deckPreview";
 
 export * from "./archetypeRules.js";
 export * from "./card-tag-types.js";

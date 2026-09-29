@@ -1,6 +1,7 @@
+import DeckPreviewCard from "../../components/DeckPreviewCard";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import type { OmnidexDecklistEntry, OmnidexPlayer } from "@gatcg/shared";
+import type { DeckFormat, OmnidexDecklistEntry, OmnidexPlayer } from "@gatcg/shared";
 import { useCardsByNames } from "./useCardsByNames";
 import DecklistView from "./DecklistView";
 import { useSimilarityData } from "../archetypes/data";
@@ -18,10 +19,12 @@ function deckCardNames(deck: OmnidexDecklistEntry): string[] {
 
 export default function DecklistsSection({
   eventId,
+  format,
   decklists,
   players,
 }: {
   eventId: number;
+  format?: DeckFormat;
   decklists: OmnidexDecklistEntry[];
   players: OmnidexPlayer[];
 }) {
@@ -35,6 +38,7 @@ export default function DecklistsSection({
     [eventId, rankedDecklists, searchParams],
   );
   const [search, setSearch] = useState("");
+  const [visibleDeckCount, setVisibleDeckCount] = useState(24);
   const [championFilter, setChampionFilter] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [activeSearchIndex, setActiveSearchIndex] = useState(-1);
@@ -94,6 +98,7 @@ export default function DecklistsSection({
   }, [rankedDecklists, search, matchesFilters]);
 
   useEffect(() => setActiveSearchIndex(-1), [search]);
+  useEffect(() => setVisibleDeckCount(24), [search, championFilter, eventId]);
 
   if (decklists.length === 0) return null;
 
@@ -173,7 +178,29 @@ export default function DecklistsSection({
 
       <label className="mt-2 block max-w-sm text-xs text-ctp-subtext1">Champion<select aria-label="Filter decks by Champion" value={championFilter} onChange={(event) => { setChampionFilter(event.target.value); setSearchParams((current) => { const next = new URLSearchParams(current); next.set("browse", "all"); return next; }); }} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 text-sm text-ctp-text"><option value="">All Champions</option>{champions.map((champion) => <option key={champion} value={champion}>{champion}</option>)}</select></label>
 
-      {browsingAll && <div className="mt-3 rounded-xl border border-ctp-surface1 bg-ctp-base/40 p-2"><div className="flex items-center justify-between gap-2 px-2 pb-2"><p className="text-sm font-medium text-ctp-text">{browsedDecklists.length} deck{browsedDecklists.length === 1 ? "" : "s"}{search.trim() ? " match your search" : " to browse"}</p><button type="button" onClick={() => setSearchParams((current) => { const next = new URLSearchParams(current); next.delete("browse"); return next; })} className="min-h-12 rounded-lg px-3 text-xs text-ctp-blue">Show selected deck</button></div><div className="max-h-[28rem] space-y-1 overflow-y-auto overscroll-contain" role="list" aria-label="Event decklists">{browsedDecklists.map((deck) => { const matchedCards = search.trim() ? matchingCardNames(deck, search.trim().toLowerCase()) : []; return <button key={deck.player} type="button" role="listitem" onClick={() => selectPlayer(deck.player)} className="flex min-h-12 w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left hover:bg-ctp-surface0 focus-visible:outline-2 focus-visible:outline-ctp-blue"><span className="min-w-0"><span className="block truncate text-sm font-medium text-ctp-text">{playerName(deck.player)}</span>{matchedCards.length > 0 && <span className="block truncate text-xs text-ctp-mauve">Has {matchedCards.slice(0, 3).join(" · ")}</span>}</span><span className="shrink-0 text-xs text-ctp-blue">View deck</span></button>; })}{browsedDecklists.length === 0 && <p className="p-4 text-sm text-ctp-subtext0">No decks match this search.</p>}</div></div>}
+      {browsingAll && <div className="mt-3 rounded-xl border border-ctp-surface1 bg-ctp-base/40 p-2">
+        <div className="flex items-center justify-between gap-2 px-2 pb-2">
+          <p className="text-sm font-medium text-ctp-text">{browsedDecklists.length} deck{browsedDecklists.length === 1 ? "" : "s"}{search.trim() ? " match your search" : " to browse"}</p>
+          <button type="button" onClick={() => setSearchParams((current) => { const next = new URLSearchParams(current); next.delete("browse"); return next; })} className="min-h-12 rounded-lg px-3 text-xs text-ctp-blue">Show selected deck</button>
+        </div>
+        <div className="grid items-start gap-3 md:grid-cols-2" aria-label="Event decklists">
+          {browsedDecklists.slice(0, visibleDeckCount).map((deck) => {
+            const placement = players.find(player => player.id === deck.player)?.finalPlacement;
+            const matchedCards = search.trim() ? matchingCardNames(deck, search.trim().toLowerCase()) : [];
+            return <DeckPreviewCard key={deck.player} cardsByName={eventCardsByName} model={{
+              id: `${eventId}:${deck.player}`, title: `${playerName(deck.player)}'s deck`, decklist: deck.decklist, format,
+              championName: findDeckChampionName(deck.decklist.material, eventCardsByName),
+              source: { kind: "event", label: "Event deck" },
+              metadata: <>
+                <p>{placement ? `#${placement} · ` : ""}{playerName(deck.player)}</p>
+                {matchedCards.length > 0 && <p className="mt-1 text-ctp-mauve">Has {matchedCards.slice(0, 3).join(" · ")}</p>}
+              </>,
+            }} view={{ to: `?${eventDeckSearchParams(searchParams, deck.player).toString()}` }} />;
+          })}
+        </div>
+        {browsedDecklists.length > visibleDeckCount && <button type="button" onClick={() => setVisibleDeckCount(count => count + 24)} className="mt-3 min-h-12 rounded-lg px-3 text-sm text-ctp-blue">Load more decks</button>}
+        {browsedDecklists.length === 0 && <p className="p-4 text-sm text-ctp-subtext0">No decks match this search.</p>}
+      </div>}
 
       {selected && (
         <div className="mt-3">

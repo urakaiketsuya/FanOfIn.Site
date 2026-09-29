@@ -11,8 +11,8 @@ import { shortHash } from "../../lib/hash";
 import { championNameToSlug } from "../../lib/championSlug";
 import type { PopularDeck } from "./useDeckPopularity";
 import Section from "../../components/ui/Section";
-import Button from "../../components/ui/Button";
-import DeckCardPreview from "../decks/DeckCardPreview";
+import DeckPreviewCard, { deckPreviewActionClass } from "../../components/DeckPreviewCard";
+import DisclosureChevron from "../../components/DisclosureChevron";
 
 /**
  * The decklist + "played by" section, split out so its useDeckPopularityIndexData() call only
@@ -81,44 +81,24 @@ export default function PopularDeckRow({
   const allNames = useMemo(() => [...deck.main, ...deck.material].map((l) => l.name), [deck]);
   const cardsByName = useCardsByNames(allNames);
 
-  return (
-    <div data-component="PopularDeckRow" className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 text-sm shadow-sm shadow-black/20">
-      <DeckCardPreview names={deck.main.map((line) => line.name)} cardsByName={cardsByName} championCard={championCard} seed={deck.signature} loading={deck.main.length > 0 && cardsByName.size === 0} />
-      <div className="mt-3">
-        {deck.championName ? (
-          <Link to={`/champions/${championNameToSlug(deck.championName)}`} className="font-medium text-ctp-text hover:text-ctp-blue">
-            {deck.championName}
-          </Link>
-        ) : (
-          <span className="text-ctp-subtext0">Unknown champion</span>
-        )}
-        <div className="mt-1 text-xs text-ctp-subtext1">Unique build</div>
-        <div className="mt-2 font-semibold text-ctp-text">
-          {deck.playerCount} player{deck.playerCount === 1 ? "" : "s"}
-          {deck.bestPlacement !== null && <span className="font-normal text-ctp-subtext1"> · Best #{deck.bestPlacement}</span>}
-        </div>
-        {deck.lastPlayedDate && <div className="mt-1 text-xs text-ctp-subtext0">Last played {new Date(deck.lastPlayedDate).toLocaleDateString()}</div>}
+  return <DeckPreviewCard cardsByName={cardsByName} championCard={championCard} model={{
+    id: shortHash(deck.signature), title: `${deck.championName ?? "Unknown Champion"} · Unique build`, decklist,
+    championName: deck.championName, sideboardCount: null,
+    source: { kind: "event", label: "Tournament build" },
+    metadata: <>
+      <p>{deck.playerCount} player{deck.playerCount === 1 ? "" : "s"}{deck.bestPlacement !== null && ` · Best #${deck.bestPlacement}`}</p>
+      {deck.lastPlayedDate && <p>Last played {new Date(deck.lastPlayedDate).toLocaleDateString()}</p>}
+    </>,
+    actions: <Link to={`/decks/${shortHash(deck.signature)}`} className={`${deckPreviewActionClass} text-ctp-blue`}>Open deck page</Link>,
+    status: <details className="group text-xs text-ctp-subtext0">
+      <summary className={`${deckPreviewActionClass} cursor-pointer list-none [&::-webkit-details-marker]:hidden`}>Build details<DisclosureChevron className="group-open:rotate-180" /></summary>
+      <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1">
+        <span>{deck.sightingCount} appearance{deck.sightingCount === 1 ? "" : "s"}</span>
+        {deck.sightingCount > 1 && <span>{(deck.avgWinRate * 100).toFixed(0)}% win rate</span>}
+        {[...deck.elements, ...deck.classes].map(label => <span key={label} className="capitalize">{label.toLowerCase()}</span>)}
+        {deck.championName && <Link to={`/champions/${championNameToSlug(deck.championName)}`} className={`${deckPreviewActionClass} text-ctp-blue`}>{deck.championName}</Link>}
+        {deck.lastEventId && latestEventName && <Link to={`/events/${deck.lastEventId}`} className={`${deckPreviewActionClass} text-ctp-blue`}>Latest event: {latestEventName}</Link>}
       </div>
-      <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-ctp-surface1 pt-3">
-        <Link to={`/decks/${shortHash(deck.signature)}`} className="flex min-h-10 flex-1 items-center justify-center rounded-lg bg-ctp-blue px-3 py-2 text-sm font-medium text-ctp-base hover:opacity-90">
-          View deck →
-        </Link>
-      </div>
-
-      <Button variant="ghost" size="sm" onClick={() => setExpanded((v) => !v)} aria-expanded={expanded} className="mt-1 w-full text-ctp-subtext0">
-        {expanded ? "Hide decklist preview" : "Preview decklist"}
-      </Button>
-      <details className="mt-2 text-xs text-ctp-subtext0">
-        <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">Build details</summary>
-        <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1">
-          <span>{deck.sightingCount} appearance{deck.sightingCount === 1 ? "" : "s"}</span>
-          {deck.sightingCount > 1 && <span>{(deck.avgWinRate * 100).toFixed(0)}% win rate</span>}
-          {[...deck.elements, ...deck.classes].map((label) => <span key={label} className="capitalize">{label.toLowerCase()}</span>)}
-          {deck.lastEventId && latestEventName && <Link to={`/events/${deck.lastEventId}`} className="text-ctp-blue hover:underline">Latest event: {latestEventName}</Link>}
-        </div>
-      </details>
-
-      {expanded && <ExpandedDeckRow deck={deck} decklist={decklist} cardsByName={cardsByName} playerName={playerName} />}
-    </div>
-  );
+    </details>,
+  }} view={{ expanded, onToggle: () => setExpanded(value => !value), content: <ExpandedDeckRow deck={deck} decklist={decklist} cardsByName={cardsByName} playerName={playerName} /> }} />;
 }

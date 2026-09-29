@@ -24,6 +24,7 @@ export async function discoverProfiles(env: Env, params: URLSearchParams): Promi
 }
 
 function summary(row: Record<string, string | number | null>): PublicDeckSummary {
+  const decklist = row.decklist_json ? JSON.parse(String(row.decklist_json)) as OmnidexDecklist : null;
   return {
     publicSlug: String(row.public_slug), title: String(row.published_title), description: String(row.published_description),
     primerMarkdown: String(row.published_primer_markdown ?? ""), tags: JSON.parse(String(row.published_tags_json ?? "[]")) as string[],
@@ -32,7 +33,10 @@ function summary(row: Record<string, string | number | null>): PublicDeckSummary
     owner: { displayName: String(row.display_name), profileSlug: String(row.profile_slug) },
     isSeed: Number(row.is_seed ?? 0) === 1,
     likeCount: Number(row.like_count ?? 0),
-    previewCards: row.decklist_json ? deckPreviewCards(JSON.parse(String(row.decklist_json)) as OmnidexDecklist) : [],
+    previewCards: decklist ? deckPreviewCards(decklist) : [],
+    materialPreview: decklist?.material.slice(0, 4),
+    mainCount: decklist?.main.reduce((sum, line) => sum + line.quantity, 0),
+    sideboardCount: decklist?.sideboard.reduce((sum, line) => sum + line.quantity, 0),
   };
 }
 
