@@ -3,6 +3,7 @@ import { useMemo, useState, type ReactNode } from "react";
 import type { Card } from "@gatcg/shared";
 import CardResult from "../CardResult";
 import QuantityControl from "./QuantityControl";
+import { cardSearchText } from "../../features/cards/filters";
 
 export default function CardSearchResults({ query, names, catalog, chosen, onAdd, quantityFor, onSetQuantity, filtered = false, evidence, owned, selected, onToggleSelection, renderStats }: {
   renderStats?: (name: string) => ReactNode;
@@ -16,7 +17,8 @@ export default function CardSearchResults({ query, names, catalog, chosen, onAdd
   const [limit, setLimit] = useState(24);
   const matches = useMemo(() => filtered ? names : names.filter(name => {
     const needle = query.trim().toLocaleLowerCase();
-    return `${name} ${catalog.get(name)?.effect ?? ""}`.toLocaleLowerCase().includes(needle);
+    const card = catalog.get(name);
+    return card ? cardSearchText(card).includes(needle) : name.toLocaleLowerCase().includes(needle);
   }).sort((a,b) => a.localeCompare(b)), [names, query, catalog, filtered]);
   return <section aria-label="Card catalog" className="mt-3">
     <p role="status" className="mb-2 text-xs text-ctp-subtext0">{matches.length} matching {matches.length === 1 ? "card" : "cards"}</p>

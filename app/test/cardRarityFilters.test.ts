@@ -24,3 +24,17 @@ test('deck editor uses the same rarity matching',()=>{
  assert.equal(filterCatalog([card],'',{...emptyCatalogFilters(),rarity:'7'}).length,1);
  assert.equal(filterCatalog([card],'',{...emptyCatalogFilters(),rarity:'2'}).length,0);
 });
+test('search includes names and rules text on reverse faces', () => {
+ const doubleSided = {
+  ...card,
+  name: 'Front Face',
+  effect: 'Front rules text',
+  editions: [{
+   ...card.editions[0],
+   other_orientations: [{ name: 'Reverse Face', effect: 'Reverse rules text' }],
+  }],
+ } as Card;
+ assert.equal(filterCards([doubleSided], { ...emptyFilterState(), name: 'reverse face' }).length, 1);
+ assert.equal(filterCards([doubleSided], { ...emptyFilterState(), name: 'reverse rules' }).length, 1);
+ assert.equal(filterCatalog([doubleSided], 'reverse face', emptyCatalogFilters()).length, 1);
+});

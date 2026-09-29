@@ -44,11 +44,22 @@ export function matchesEdition(edition: Card["editions"][number], filters: CardF
     && (!filters.artist.trim() || !!edition.illustrator?.toLowerCase().includes(filters.artist.trim().toLowerCase()));
 }
 
+/** Text users can search for a card, including every API-linked reverse face. */
+export function cardSearchText(card: Card): string {
+  return [
+    card.name,
+    card.effect,
+    ...card.editions.flatMap((edition) =>
+      (edition.other_orientations ?? []).flatMap((face) => [face.name, face.effect]),
+    ),
+  ].filter((value): value is string => Boolean(value)).join(" ").toLocaleLowerCase();
+}
+
 export function filterCards(cards: Card[], filters: CardFilterState): Card[] {
   const name = filters.name.trim().toLowerCase();
 
   return cards.filter((card) => {
-    if (name && !card.name.toLowerCase().includes(name) && !card.effect?.toLowerCase().includes(name)) return false;
+    if (name && !cardSearchText(card).includes(name)) return false;
 
     if (filters.classes.size && !card.classes.some((c) => filters.classes.has(c))) return false;
     if (filters.types.size && !card.types.some((t) => filters.types.has(t))) return false;
