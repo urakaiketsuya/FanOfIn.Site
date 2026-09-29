@@ -1,6 +1,6 @@
 import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { AccountUser, BookmarkedDeck, DeckFormat, SavedDeck, TournamentDeckFavorite } from "@gatcg/shared";
+import type { AccountUser, BookmarkedDeck, DeckFormat, OfficialProductDeckFavorite, SavedDeck, TournamentDeckFavorite } from "@gatcg/shared";
 import { accountApi } from "../../lib/accountApi";
 import { trackEvent } from "../../lib/analytics";
 import { parseDecklist } from "../compare/parseDecklist";
@@ -30,6 +30,7 @@ export default function MyDecksIndex() {
   const [decks, setDecks] = useState<SavedDeck[]>([]);
   const [bookmarks, setBookmarks] = useState<BookmarkedDeck[]>([]);
   const [tournamentFavorites, setTournamentFavorites] = useState<TournamentDeckFavorite[]>([]);
+  const [officialFavorites, setOfficialFavorites] = useState<OfficialProductDeckFavorite[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -68,13 +69,14 @@ export default function MyDecksIndex() {
     const query = favoriteSearch.trim().toLowerCase();
     return tournamentFavorites.filter((deck) => !query || deck.title.toLowerCase().includes(query) || (deck.championName?.toLowerCase().includes(query) ?? false) || (deck.sourceEventName?.toLowerCase().includes(query) ?? false));
   }, [tournamentFavorites, favoriteSearch]);
-  const favoriteCount = bookmarks.length + tournamentFavorites.length;
+  const favoriteCount = bookmarks.length + tournamentFavorites.length + officialFavorites.length;
 
   const refreshDecks = useCallback(async () => {
-    const library = await loadDeckLibrary(accountApi);
+    const [library, official] = await Promise.all([loadDeckLibrary(accountApi), accountApi.officialProductFavorites()]);
     setDecks(library.decks);
     setBookmarks(library.bookmarks);
     setTournamentFavorites(library.tournamentFavorites);
+    setOfficialFavorites(official.decks);
     if (library.optionalLoadFailed) setError("Your decks loaded, but some favorites are temporarily unavailable.");
   }, []);
   useEffect(() => { void accountApi.session().then((session) => { setUser(session.user); if (session.user) void refreshDecks(); }).catch((reason: Error) => { setError(reason.message); setUser(null); }); }, [refreshDecks]);
@@ -83,6 +85,15 @@ export default function MyDecksIndex() {
     setBusy(true); setError(null); setNotice(null);
     try { await action(); } catch (reason) { setError(reason instanceof Error ? reason.message : "Something went wrong"); }
     finally { setBusy(false); }
+  }
+
+  async function unpinOfficialFavorite(deck: OfficialProductDeckFavorite) {
+    const tracking = await accountApi.collectionTracking();
+    const updates = tracking.cards.filter((record) => record.assignments?.some((assignment) => assignment.deckId === deck.locationId)).map((record) => ({ cardUuid: record.cardUuid, cardName: record.cardName, mightOwn: record.mightOwn, loans: record.loans, revision: record.revision, assignments: (record.assignments ?? []).filter((assignment) => assignment.deckId !== deck.locationId) }));
+    if (updates.length) await accountApi.saveCollectionTrackingBatch(updates);
+    await accountApi.favoriteOfficialProductDeck(deck.productDeckId, { favorited: false });
+    await refreshDecks();
+    setNotice(`${deck.title} unpinned and its card locations released.`);
   }
 
   if (user === undefined) return <PageLayout data-component="MyDecksIndex" width="wide"><InlineState className="mt-10">Loading your account…</InlineState></PageLayout>;
@@ -134,7 +145,7 @@ export default function MyDecksIndex() {
     </Section>
 </TabPanel>
     <TabPanel baseId="deck-library" tab="favorites" active={libraryView}>    <Section className="mt-4" title={`Favorites (${favoriteCount})`} description="Community publications and tournament builds you want to revisit. Favorites preserve the deck snapshot you selected.">
-      {favoriteCount === 0 ? <p className="mt-4 rounded-lg border border-dashed border-ctp-surface1 p-8 text-center text-sm text-ctp-subtext1">No favorites yet. Add one from a community or tournament deck page.</p> : <><input value={favoriteSearch} onChange={(event) => setFavoriteSearch(event.target.value)} placeholder="Search favorites, Champions, or events" aria-label="Search favorite decks" className="mt-4 min-h-11 w-full max-w-md rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 text-sm focus:border-ctp-yellow focus:outline-none" />{visibleBookmarks.length + visibleTournamentFavorites.length === 0 ? <p className="mt-4 rounded-lg border border-dashed border-ctp-surface1 p-6 text-center text-sm text-ctp-subtext1">No favorites match your search.</p> : <div className="mt-4 grid items-start gap-4 md:grid-cols-2">{visibleTournamentFavorites.map((deck) => <article key={`tournament-${deck.deckHash}`} className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><div className="flex items-start justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-wide text-ctp-yellow">Tournament build</p><h3 className="mt-1 font-semibold text-ctp-text">{deck.title}</h3>{deck.sourceEventName && <p className="mt-1 text-xs text-ctp-subtext0">{deck.sourcePlayerName ? `${deck.sourcePlayerName} · ` : ""}{deck.sourceEventName}</p>}</div><span aria-hidden="true" className="text-ctp-yellow">★</span></div><div className="mt-4 flex flex-wrap gap-2"><Link to={`/decks/${deck.deckHash}`} className="inline-flex min-h-11 items-center rounded-lg bg-ctp-blue px-3 text-sm font-semibold text-ctp-base">Open deck</Link><button type="button" onClick={() => void run(async () => { await accountApi.favoriteTournamentDeck(deck.deckHash, { favorited: false }); await refreshDecks(); setNotice(`${deck.title} removed from favorites.`); })} className="min-h-11 rounded-lg px-3 text-xs font-medium text-ctp-red hover:bg-ctp-red/10">Remove favorite</button></div></article>)}{visibleBookmarks.map((deck) => <PublicDeckCard key={deck.publicSlug} deck={deck} onRemoveFavorite={() => void run(async () => { await accountApi.bookmarkDeck(deck.publicSlug, false); await refreshDecks(); setNotice(`${deck.title} removed from favorites.`); })} />)}</div>}</>}
+      {favoriteCount === 0 ? <p className="mt-4 rounded-lg border border-dashed border-ctp-surface1 p-8 text-center text-sm text-ctp-subtext1">No favorites yet. Add one from a community, tournament, or official product deck page.</p> : <><input value={favoriteSearch} onChange={(event) => setFavoriteSearch(event.target.value)} placeholder="Search favorites, Champions, or events" aria-label="Search favorite decks" className="mt-4 min-h-11 w-full max-w-md rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 text-sm focus:border-ctp-yellow focus:outline-none" />{visibleBookmarks.length + visibleTournamentFavorites.length + officialFavorites.length === 0 ? <p className="mt-4 rounded-lg border border-dashed border-ctp-surface1 p-6 text-center text-sm text-ctp-subtext1">No favorites match your search.</p> : <div className="mt-4 grid items-start gap-4 md:grid-cols-2">{officialFavorites.map((deck) => <article key={deck.productDeckId} className="rounded-xl border border-ctp-green/40 bg-ctp-mantle p-4"><p className="text-xs font-semibold uppercase tracking-wide text-ctp-green">Official product · pinned</p><h3 className="mt-1 font-semibold text-ctp-text">{deck.title}</h3><div className="mt-4 flex flex-wrap gap-2"><Link to={`/card-locations?deck=${encodeURIComponent(deck.locationId)}`} className="inline-flex min-h-11 items-center rounded-lg bg-ctp-blue px-3 text-sm font-semibold text-ctp-base">Locate cards</Link><button type="button" onClick={() => void run(() => unpinOfficialFavorite(deck))} className="min-h-11 rounded-lg px-3 text-xs font-medium text-ctp-red hover:bg-ctp-red/10">Unpin</button></div></article>)}{visibleTournamentFavorites.map((deck) => <article key={`tournament-${deck.deckHash}`} className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><div className="flex items-start justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-wide text-ctp-yellow">Tournament build</p><h3 className="mt-1 font-semibold text-ctp-text">{deck.title}</h3>{deck.sourceEventName && <p className="mt-1 text-xs text-ctp-subtext0">{deck.sourcePlayerName ? `${deck.sourcePlayerName} · ` : ""}{deck.sourceEventName}</p>}</div><span aria-hidden="true" className="text-ctp-yellow">★</span></div><div className="mt-4 flex flex-wrap gap-2"><Link to={`/decks/${deck.deckHash}`} className="inline-flex min-h-11 items-center rounded-lg bg-ctp-blue px-3 text-sm font-semibold text-ctp-base">Open deck</Link><button type="button" onClick={() => void run(async () => { await accountApi.favoriteTournamentDeck(deck.deckHash, { favorited: false }); await refreshDecks(); setNotice(`${deck.title} removed from favorites.`); })} className="min-h-11 rounded-lg px-3 text-xs font-medium text-ctp-red hover:bg-ctp-red/10">Remove favorite</button></div></article>)}{visibleBookmarks.map((deck) => <PublicDeckCard key={deck.publicSlug} deck={deck} onRemoveFavorite={() => void run(async () => { await accountApi.bookmarkDeck(deck.publicSlug, false); await refreshDecks(); setNotice(`${deck.title} removed from favorites.`); })} />)}</div>}</>}
     </Section>
 </TabPanel>
   </PageLayout>;

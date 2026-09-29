@@ -104,6 +104,17 @@ export interface TournamentDeckFavorite {
   favoritedAt: string;
 }
 
+/** A frozen official-product list pinned to a user's library. Unlike SavedDeck, it is never editable. */
+export interface OfficialProductDeckFavorite {
+  productDeckId: string;
+  locationId: string;
+  title: string;
+  championName: string | null;
+  format: DeckFormat;
+  decklist: OmnidexDecklist;
+  favoritedAt: string;
+}
+
 export interface AccountUser {
   id: string;
   email: string;

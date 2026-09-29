@@ -10,6 +10,7 @@ import { listCollection, listSharedCardWatches, setSharedCardWatch, undoCollecti
 import { changePassword, handleResendWebhook, loginPassword, recordPrivateResourceMiss, registerPassword, removePasswordCredential, requestPasswordReset, resetPassword, verifyEmailToken, verifyTurnstile } from "./password-auth";
 import { createCombo, deleteCombo, discoverCombos, getPublicCombo, listComboBookmarks, listCombos, setComboBookmark, updateCombo } from "./combos";
 import { listTournamentFavorites, parseTournamentFavoriteInput, setTournamentFavorite, tournamentFavoriteState } from "./tournament-favorites";
+import { listOfficialProductFavorites, parseOfficialProductFavorite, setOfficialProductFavorite } from "./official-product-favorites";
 import { deleteMatchLogRecord, listMatchLog, upsertMatchLog } from "./match-log";
 import { getAnalysisProfile, listAnalysisProfiles, upsertAnalysisProfile } from "./analysis-profiles";
 import { createComment, deleteComment, editComment, getComments, parseCommentTarget, reportComment, setBlock, setThreadLocked } from "./comments";
@@ -311,6 +312,14 @@ export default {
       }
       if (request.method === "GET" && url.pathname === "/v1/me/bookmarks") return response(env, request, { decks: await listBookmarks(env, user) });
       if (request.method === "GET" && url.pathname === "/v1/me/tournament-favorites") return response(env, request, { decks: await listTournamentFavorites(env, user) });
+      if (request.method === "GET" && url.pathname === "/v1/me/official-product-favorites") return response(env, request, { decks: await listOfficialProductFavorites(env, user) });
+      const officialProductFavoriteMatch = url.pathname.match(/^\/v1\/me\/official-product-decks\/([A-Za-z0-9._-]{1,120})\/favorite$/);
+      if (officialProductFavoriteMatch && request.method === "POST") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        const body = await jsonBody(request) as Record<string, unknown>;
+        if (typeof body.favorited !== "boolean") throw badRequest("Favorited must be a boolean");
+        return response(env, request, await setOfficialProductFavorite(env, user, officialProductFavoriteMatch[1], body.favorited, body.favorited ? parseOfficialProductFavorite(body) : undefined));
+      }
       const tournamentFavoriteMatch = url.pathname.match(/^\/v1\/me\/tournament-decks\/([a-z0-9]{1,7})\/favorite$/);
       if (tournamentFavoriteMatch && request.method === "GET") return response(env, request, await tournamentFavoriteState(env, user, tournamentFavoriteMatch[1]));
       if (tournamentFavoriteMatch && request.method === "POST") {

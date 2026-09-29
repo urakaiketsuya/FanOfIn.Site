@@ -11,6 +11,8 @@ import { buildDeckBuilderPath, deckBuilderParamsFromDecklist } from "../../lib/d
 import { encodeCustomDecks } from "../../lib/compareShareLink";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { buildDecklistText } from "../events/DecklistView";
+import { findDeckChampionName } from "../../lib/ttsExport";
+import { accountApi, AccountApiError } from "../../lib/accountApi";
 import { officialProductDecks, officialProductsSource, PRODUCT_LABELS, type OfficialProductDeck } from "./data";
 import DeckCollectionTools from "../collection/DeckCollectionTools";
 import Section from "../../components/ui/Section";
@@ -47,6 +49,9 @@ function ProductDeckCard({
   onToggleCompare: () => void;
 }) {
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
+  const [ownershipState, setOwnershipState] = useState<"idle" | "saving" | "saved" | "needs-cards" | "failed" | "signed-out">("idle");
+  const [ownershipNotice, setOwnershipNotice] = useState("");
+  const [missingCollectionLines, setMissingCollectionLines] = useState<{ cardUuid: string; cardName: string; quantity: number }[]>([]);
   const decklist = useMemo(() => asDecklist(deck), [deck]);
   const builderPath = useMemo(() => {
     const params = deckBuilderParamsFromDecklist(decklist, cardsByName);
@@ -64,6 +69,17 @@ function ProductDeckCard({
       .flatMap((card) => card.elements)
       .filter((element) => element !== "NORM"),
   )), [deck, cardsByName]);
+  const collectionLines = useMemo(() => {
+    const lines = new Map<string, { cardUuid: string; cardName: string; quantity: number }>();
+    for (const section of [decklist.main, decklist.material, decklist.sideboard]) for (const line of section) {
+      const card = cardsByName.get(line.card);
+      if (!card) continue;
+      const current = lines.get(card.uuid);
+      if (current) current.quantity += line.quantity;
+      else lines.set(card.uuid, { cardUuid: card.uuid, cardName: card.name, quantity: line.quantity });
+    }
+    return [...lines.values()];
+  }, [decklist, cardsByName]);
 
   async function copyDecklist() {
     const extras = (["mastery", "token", "pantheon"] as const)
@@ -77,6 +93,76 @@ function ProductDeckCard({
       setCopyState("failed");
     }
     window.setTimeout(() => setCopyState("idle"), 1500);
+  }
+
+  async function assignCopies(locationId: string, lines: { cardUuid: string; cardName: string; quantity: number }[]) {
+    if (!lines.length) return;
+    const tracking = await accountApi.collectionTracking();
+    const records = new Map(tracking.cards.map((record) => [record.cardUuid, record]));
+    await accountApi.saveCollectionTrackingBatch(lines.map((line) => {
+      const record = records.get(line.cardUuid);
+      const assignments = [...(record?.assignments ?? [])];
+      const assignment = assignments.find((item) => item.deckId === locationId);
+      if (assignment) assignment.quantity += line.quantity;
+      else assignments.push({ deckId: locationId, quantity: line.quantity });
+      return { cardUuid: line.cardUuid, cardName: line.cardName, mightOwn: record?.mightOwn ?? false, loans: record?.loans ?? [], revision: record?.revision ?? 0, assignments };
+    }));
+  }
+
+  async function markOwned() {
+    if (!collectionLines.length) return;
+    setOwnershipState("saving"); setOwnershipNotice("");
+    try {
+      const [favorite, collection, tracking] = await Promise.all([
+        accountApi.favoriteOfficialProductDeck(deck.id, { favorited: true, title: deck.name, format: deck.productCode === "RDOPD" ? "PANTHEON" : "STANDARD", championName: findDeckChampionName(decklist.material, cardsByName) ?? deck.champions[0] ?? null, decklist }),
+        accountApi.collection(),
+        accountApi.collectionTracking(),
+      ]);
+      const ownedByCard = new Map<string, number>();
+      for (const entry of collection.entries) ownedByCard.set(entry.cardUuid, (ownedByCard.get(entry.cardUuid) ?? 0) + entry.ownedQuantity);
+      const records = new Map(tracking.cards.map((record) => [record.cardUuid, record]));
+      const assignedHere: { cardUuid: string; cardName: string; quantity: number }[] = [];
+      const missing: { cardUuid: string; cardName: string; quantity: number }[] = [];
+      for (const line of collectionLines) {
+        const record = records.get(line.cardUuid);
+        const alreadyHere = record?.assignments?.find((item) => item.deckId === favorite.locationId)?.quantity ?? 0;
+        const assignedElsewhere = (record?.assignments ?? []).filter((item) => item.deckId !== favorite.locationId).reduce((sum, item) => sum + item.quantity, 0);
+        const available = Math.max(0, (ownedByCard.get(line.cardUuid) ?? 0) - assignedElsewhere - alreadyHere);
+        const quantity = Math.min(line.quantity - alreadyHere, available);
+        if (quantity > 0) assignedHere.push({ ...line, quantity });
+        const shortfall = Math.max(0, line.quantity - alreadyHere - quantity);
+        if (shortfall > 0) missing.push({ ...line, quantity: shortfall });
+      }
+      await assignCopies(favorite.locationId, assignedHere);
+      window.dispatchEvent(new Event("fanofin:collection-updated"));
+      setMissingCollectionLines(missing);
+      if (missing.length) {
+        const copies = missing.reduce((sum, line) => sum + line.quantity, 0);
+        setOwnershipState("needs-cards");
+        setOwnershipNotice(`${deck.name} is pinned. ${assignedHere.reduce((sum, line) => sum + line.quantity, 0)} existing unassigned copies were located; ${copies} more ${copies === 1 ? "copy is" : "copies are"} needed.`);
+      } else {
+        setOwnershipState("saved");
+        setOwnershipNotice(`${deck.name} is pinned in My Decks and your existing copies are assigned to it.`);
+      }
+    } catch (reason) {
+      if (reason instanceof AccountApiError && reason.status === 401) { setOwnershipState("signed-out"); setOwnershipNotice("Sign in to add this deck and its cards to your library."); }
+      else { setOwnershipState("failed"); setOwnershipNotice(reason instanceof Error ? reason.message : "Could not add this official deck."); }
+    }
+  }
+
+  async function addMissingCopies() {
+    if (!missingCollectionLines.length) return;
+    setOwnershipState("saving"); setOwnershipNotice("");
+    try {
+      await accountApi.updateCollection({ mode: "add", source: `Official product: ${deck.name}`, requestId: crypto.randomUUID(), lines: missingCollectionLines });
+      await assignCopies(`official-product:${deck.id}`, missingCollectionLines);
+      window.dispatchEvent(new Event("fanofin:collection-updated"));
+      setMissingCollectionLines([]); setOwnershipState("saved");
+      setOwnershipNotice(`Added and assigned the remaining ${deck.name} copies. Your pinned list is ready.`);
+    } catch (reason) {
+      setOwnershipState("failed");
+      setOwnershipNotice(reason instanceof Error ? reason.message : "Could not add the missing cards.");
+    }
   }
 
   return (
@@ -110,9 +196,15 @@ function ProductDeckCard({
           <button type="button" onClick={copyDecklist} className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">
             {copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy decklist"}
           </button>
+          <button type="button" disabled={ownershipState === "saving" || ownershipState === "saved" || ownershipState === "needs-cards" || !collectionLines.length} onClick={() => void markOwned()} className="inline-flex min-h-12 items-center rounded-md bg-ctp-green px-2.5 py-1.5 text-xs font-semibold text-ctp-base disabled:opacity-50">
+            {ownershipState === "saving" ? "Setting up owned deck…" : ownershipState === "saved" ? "Owned deck set up ✓" : ownershipState === "needs-cards" ? "Pinned — cards needed" : "I own this deck"}
+          </button>
+          {ownershipState === "needs-cards" && <button type="button" onClick={() => void addMissingCopies()} className="inline-flex min-h-12 items-center rounded-md border border-ctp-green px-2.5 py-1.5 text-xs font-semibold text-ctp-green hover:bg-ctp-green/10">Add missing {missingCollectionLines.reduce((sum, line) => sum + line.quantity, 0)} copies</button>}
           {builderPath && <Link to={builderPath} className="inline-flex min-h-12 items-center rounded-md border border-ctp-green px-2.5 py-1.5 text-xs text-ctp-green hover:bg-ctp-surface0">Tune in Deck Builder →</Link>}
           {deck.sourceUrl && <a href={deck.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Official source ↗</a>}
         </div>
+        <p className="mt-2 text-xs text-ctp-subtext1">“I own this deck” pins the official list and assigns unassigned copies already in your collection. Missing copies are only added if you choose to add them.</p>
+        {ownershipState === "signed-out" ? <Link to="/decks/edit" className="mt-2 inline-flex min-h-12 items-center text-xs text-ctp-blue underline">Sign in to add this deck →</Link> : ownershipNotice && <p role={ownershipState === "failed" ? "alert" : "status"} className={`mt-2 text-xs ${ownershipState === "failed" ? "text-ctp-red" : "text-ctp-green"}`}>{ownershipNotice}</p>}
       </div>
 
       <details className="group border-t border-ctp-surface0">

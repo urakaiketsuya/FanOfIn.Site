@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { cardLocationState, collectionLocationIndex, deckCardRequirements, locationCardKey, type AccountUser, type CollectionEntry, type SavedDeck } from "@gatcg/shared";
+import { cardLocationState, collectionLocationIndex, deckCardRequirements, locationCardKey, type AccountUser, type CollectionEntry, type OfficialProductDeckFavorite, type SavedDeck } from "@gatcg/shared";
 import { accountApi } from "../../lib/accountApi";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useCardCatalog } from "../cards/useCardCatalog";
@@ -20,6 +20,7 @@ export default function CardLocationsPage() {
   const [user, setUser] = useState<AccountUser | null>();
   const [entries, setEntries] = useState<CollectionEntry[]>([]);
   const [decks, setDecks] = useState<SavedDeck[]>([]);
+  const [officialFavorites, setOfficialFavorites] = useState<OfficialProductDeckFavorite[]>([]);
   const [pendingQuantities, setPendingQuantities] = useState(false);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState("");
@@ -34,7 +35,8 @@ export default function CardLocationsPage() {
   const [deckReview, setDeckReview] = useState(false);
   const editId = params.get("card");
   const deckId = params.get("deck");
-  const focusedDeck = decks.find(deck=>deck.id===deckId);
+  const locationDecks = useMemo(() => [...decks, ...officialFavorites.map((deck) => ({ id: deck.locationId, identityHash: deck.productDeckId, title: deck.title, format: deck.format, championName: deck.championName, decklist: deck.decklist, sources: [], createdAt: deck.favoritedAt, updatedAt: deck.favoritedAt }))], [decks, officialFavorites]);
+  const focusedDeck = locationDecks.find(deck=>deck.id===deckId);
   const focusedRequirements = useMemo(()=>focusedDeck ? deckCardRequirements(focusedDeck.decklist) : null,[focusedDeck]);
   function navigationParams(view: string, card?: string) {
     return {view,...(deckId ? {deck:deckId} : {}),...(card ? {card} : {})};
@@ -48,13 +50,13 @@ export default function CardLocationsPage() {
       const session = await accountApi.session(); setUser(session.user);
       if (!session.user) return;
       try {setPendingQuantities(Object.keys(JSON.parse(sessionStorage.getItem(`collection-save:${session.user.id}`) ?? localStorage.getItem(`collection-save:${session.user.id}`) ?? "null")?.drafts ?? JSON.parse(sessionStorage.getItem(`collection-quantities:${session.user.id}`) ?? "{}")).length > 0);} catch {setPendingQuantities(false);}
-      const [collection, saved] = await Promise.all([accountApi.collection(), accountApi.decks()]);
-      setEntries(collection.entries); setDecks(saved.decks); setReady(true);
+      const [collection, saved, official] = await Promise.all([accountApi.collection(), accountApi.decks(), accountApi.officialProductFavorites()]);
+      setEntries(collection.entries); setDecks(saved.decks); setOfficialFavorites(official.decks); setReady(true);
     } catch (reason) { setError(`Could not load card locations. ${reason instanceof Error ? reason.message : "Please try again."}`); }
   }
   useEffect(() => { void load(); }, []);
   const records = useMemo(() => new Map(tracking.records.map(record => [record.cardUuid, record])), [tracking.records]);
-  const requirements = useMemo(() => decks.map(deck => ({deck, cards: deckCardRequirements(deck.decklist)})), [decks]);
+  const requirements = useMemo(() => locationDecks.map(deck => ({deck, cards: deckCardRequirements(deck.decklist)})), [locationDecks]);
   const cardsById = useMemo(()=>new Map(cards.map(card=>[card.uuid,card])),[cards]);
   const states = useMemo(()=>collectionLocationIndex(entries,tracking.records),[entries,tracking.records]);
   const decksByCard = useMemo(()=>{
@@ -96,13 +98,13 @@ export default function CardLocationsPage() {
     {ready && !tracking.ready && !tracking.error && <p role="status" className="mt-4">Loading locations and loans…</p>}
     {ready && pendingQuantities && <p role="status" className="mt-3 text-sm text-ctp-yellow">You have unsaved collection quantities. Locations use your saved copies. <Link to="/collection" className="underline">Review quantities</Link></p>}
     {ready && tracking.ready && <>
-      {deckId && tab === "decks" && <section className="mt-4 rounded-xl border border-ctp-surface1 p-3"><h2 className="font-semibold">{focusedDeck?.title ?? "Deck unavailable"}</h2><p className="mt-1 text-sm text-ctp-subtext1">{focusedDeck ? "Showing cards in this decklist and copies already assigned here." : "This deck may have been removed. Showing all your cards."}</p><div className="mt-2 flex flex-wrap gap-2">{focusedDeck && <><button type="button" className={controls} onClick={()=>setAssignmentDeck(focusedDeck)}>Assign deck cards here</button><Link className={`${controls} inline-flex items-center text-ctp-blue`} to={`/decks/${encodeURIComponent(focusedDeck.id)}`}>Open deck</Link></>}<button type="button" className={controls} onClick={()=>setParams({view:tab},{replace:true})}>Show all cards</button></div></section>}
+      {deckId && tab === "decks" && <section className="mt-4 rounded-xl border border-ctp-surface1 p-3"><h2 className="font-semibold">{focusedDeck?.title ?? "Deck unavailable"}</h2><p className="mt-1 text-sm text-ctp-subtext1">{focusedDeck ? "Showing cards in this decklist and copies already assigned here." : "This deck may have been removed. Showing all your cards."}</p><div className="mt-2 flex flex-wrap gap-2">{focusedDeck && <><button type="button" className={controls} onClick={()=>setAssignmentDeck(focusedDeck)}>Assign deck cards here</button>{!focusedDeck.id.startsWith("official-product:") && <Link className={`${controls} inline-flex items-center text-ctp-blue`} to={`/decks/${encodeURIComponent(focusedDeck.id)}`}>Open deck</Link>}</>}<button type="button" className={controls} onClick={()=>setParams({view:tab},{replace:true})}>Show all cards</button></div></section>}
       <div className="mt-4 flex flex-wrap gap-2" aria-label="Location views">{[["decks","In decks"],["loans",`Lent out · ${lent}`]].map(([value,label])=><button key={value} type="button" aria-pressed={tab===value} onClick={()=>{setTab(value);setParams(navigationParams(value),{replace:true});}} className={`${controls} ${tab===value ? "border-ctp-blue text-ctp-blue" : ""}`}>{label}</button>)}</div>
       {tab === "decks" ? <>{!focusedDeck && <button type="button" onClick={()=>setDeckReview(true)} className={`${controls} mt-3`}>Move a whole deck</button>}{grid}</> : <LoanLedger records={tracking.records} cards={cards} onEdit={uuid=>edit(uuid)} onAdd={borrower=>{setPicker(borrower ?? "");setQuery("");setLimit(24);}}/>}
       {picker !== null && <EditorDialog title={picker ? `Lend to ${picker}` : "Choose a card to lend"} doneLabel="Cancel" onDismiss={()=>setPicker(null)}>{grid}</EditorDialog>}
-      {deckReview && <EditorDialog title="Choose a deck" doneLabel="Done" onDismiss={()=>setDeckReview(false)}><DeckLocationCoverage cards={cards} entries={entries} records={tracking.records} decks={decks} onAssign={deck=>{setDeckReview(false);setAssignmentDeck(deck);}}/></EditorDialog>}
-      {assignmentDeck && <DeckAssignmentReview deck={assignmentDeck} decks={decks} cards={cards} entries={entries} records={tracking.records} onSave={tracking.saveBatch} onDismiss={()=>setAssignmentDeck(null)}/>}
-      {selected && <CardLocationSheet key={selected.uuid} cardUuid={selected.uuid} name={selected.name} card={selected.card} record={records.get(selected.uuid)} entries={entries} decks={decks} onSave={tracking.save} onDismiss={()=>{setParams(navigationParams(tab),{replace:true});setLoanBorrower(undefined);}} initialBorrower={loanBorrower} loansFirst={tab === "loans"}/>}
+      {deckReview && <EditorDialog title="Choose a deck" doneLabel="Done" onDismiss={()=>setDeckReview(false)}><DeckLocationCoverage cards={cards} entries={entries} records={tracking.records} decks={locationDecks} onAssign={deck=>{setDeckReview(false);setAssignmentDeck(deck);}}/></EditorDialog>}
+      {assignmentDeck && <DeckAssignmentReview deck={assignmentDeck} decks={locationDecks} cards={cards} entries={entries} records={tracking.records} onSave={tracking.saveBatch} onDismiss={()=>setAssignmentDeck(null)}/>}
+      {selected && <CardLocationSheet key={selected.uuid} cardUuid={selected.uuid} name={selected.name} card={selected.card} record={records.get(selected.uuid)} entries={entries} decks={locationDecks} onSave={tracking.save} onDismiss={()=>{setParams(navigationParams(tab),{replace:true});setLoanBorrower(undefined);}} initialBorrower={loanBorrower} loansFirst={tab === "loans"}/>}
     </>}
   </PageLayout>;
 }

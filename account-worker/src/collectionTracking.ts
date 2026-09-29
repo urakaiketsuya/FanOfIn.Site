@@ -51,14 +51,14 @@ function prepareTracking(env: Env, user: AuthUser, cardUuid: string, value: unkn
   const newAssignments = revision === 0 ? "COALESCE(?, '[]')" : "COALESCE(?, assignments_json)";
   const assignmentCount = sumAssigned(newAssignments);
   const lent = loans.filter(loan => !loan.returnedAt).reduce((sum, loan) => sum + loan.quantity, 0);
-  const validDecks = `NOT EXISTS (SELECT 1 FROM json_each(${newAssignments}) a WHERE NOT EXISTS (SELECT 1 FROM user_decks d WHERE d.id=json_extract(a.value,'$.deckId') AND d.owner_user_id=?))`;
+  const validDecks = `NOT EXISTS (SELECT 1 FROM json_each(${newAssignments}) a WHERE NOT EXISTS (SELECT 1 FROM user_decks d WHERE d.id=json_extract(a.value,'$.deckId') AND d.owner_user_id=?) AND NOT EXISTS (SELECT 1 FROM official_product_deck_favorites f WHERE ('official-product:' || f.product_deck_id)=json_extract(a.value,'$.deckId') AND f.user_id=?))`;
   const capacity = `${assignmentCount} + ? <= ${stock}`;
   const stockArgs = [user.id,cardUuid,user.id,cardUuid];
   const statement = revision === 0
     ? env.ACCOUNT_DB.prepare(`INSERT INTO collection_card_tracking (user_id,card_uuid,card_name,might_own,loans_json,assignments_json,revision,updated_at) SELECT ?,?,?,?,?,COALESCE(?,'[]'),1,? WHERE ${capacity} AND ${validDecks} ON CONFLICT(user_id,card_uuid) DO NOTHING`)
-      .bind(user.id,cardUuid,cardName,Number(input.mightOwn),JSON.stringify(loans),assignmentJson,updatedAt,assignmentJson,lent,...stockArgs,assignmentJson,user.id)
+      .bind(user.id,cardUuid,cardName,Number(input.mightOwn),JSON.stringify(loans),assignmentJson,updatedAt,assignmentJson,lent,...stockArgs,assignmentJson,user.id,user.id)
     : env.ACCOUNT_DB.prepare(`UPDATE collection_card_tracking SET card_name=?,might_own=?,loans_json=?,assignments_json=COALESCE(?,assignments_json),revision=revision+1,updated_at=? WHERE user_id=? AND card_uuid=? AND revision=? AND (${capacity} OR (${assignmentCount} + ? <= ${sumAssigned('assignments_json')} + ${sumLoaned('loans_json')} AND ${assignmentCount} <= ${sumAssigned('assignments_json')})) AND ${validDecks}`)
-      .bind(cardName,Number(input.mightOwn),JSON.stringify(loans),assignmentJson,updatedAt,user.id,cardUuid,revision,assignmentJson,lent,...stockArgs,assignmentJson,lent,assignmentJson,assignmentJson,user.id);
+      .bind(cardName,Number(input.mightOwn),JSON.stringify(loans),assignmentJson,updatedAt,user.id,cardUuid,revision,assignmentJson,lent,...stockArgs,assignmentJson,lent,assignmentJson,assignmentJson,user.id,user.id);
   return {statement, cardName, loans, assignments, mightOwn: input.mightOwn, revision};
 }
 
