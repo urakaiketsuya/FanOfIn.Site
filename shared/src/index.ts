@@ -54,3 +54,5 @@ export * from "./archetypeRules.js";
 export * from "./card-tag-types.js";
 
 export * from "./deckLegality.js";
+
+export * from "./cardTags.js";

@@ -32,6 +32,7 @@ import CardDecksPanel from "./CardDecksPanel";
 import CardSimilarEffectsPanel from "./CardSimilarEffectsPanel";
 import CardIntentPanel from "./CardIntentPanel";
 import CardHero from "./CardHero";
+import CardCommunityTags from "./CardCommunityTags";
 import { toTopDecksListEntry } from "../topdecks/topDecksListEntry";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 
@@ -333,6 +334,8 @@ export default function CardDetail() {
       </Link>
 
       <CardHero card={card} edition={edition} editionIndex={editionIndex} editionsExpanded={editionsExpanded} price={price} priceSeries={priceSeries} rarityLabel={rarityDisplay} onEditionChange={setEditionIndex} onEditionsExpandedChange={setEditionsExpanded} />
+
+      <CardCommunityTags key={card.uuid} cardUuid={card.uuid} editionUuid={edition?.uuid} />
 
       <div className="sticky top-0 z-20 -mx-2 mt-5 rounded-xl border border-ctp-surface1/70 bg-ctp-base/95 px-2 pt-1 shadow-md shadow-black/20 backdrop-blur">
         <Tabs tabs={SURFACES} active={surface} onChange={(next) => setTab(next === "overview" ? "info" : next === "decks" ? "decks" : moreTab)} label="Card data" variant="pill" />

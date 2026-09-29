@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import type { CardTagsData } from "@gatcg/shared";
-import { usePublishedData } from "../../lib/sync/usePublishedData";
+import { normalizeCardTags, type CardTagsData } from "@gatcg/shared";
+import { usePublishedData, usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 
 /** Decoded silvie.gg art tags — tag names per card uuid and per edition uuid. */
 export interface CardTagLookup {
@@ -14,8 +14,10 @@ export function buildCardTagLookup(data: CardTagsData): CardTagLookup {
   return { cards: decode(data.cards), editions: decode(data.editions) };
 }
 
-export function useCardTags(): { data: CardTagsData | undefined; lookup: CardTagLookup | undefined } {
-  const data = usePublishedData<CardTagsData>("community-card-tags", "/data/community/card-tags.json");
+export function useCardTags() {
+  const raw = usePublishedData<CardTagsData>("community-card-tags", "/data/community/card-tags.json");
+  const status = usePublishedDataStatus("community-card-tags", "/data/community/card-tags.json");
+  const data = useMemo(() => raw ? normalizeCardTags(raw) : undefined, [raw]);
   const lookup = useMemo(() => (data ? buildCardTagLookup(data) : undefined), [data]);
-  return { data, lookup };
+  return { data, lookup, status };
 }

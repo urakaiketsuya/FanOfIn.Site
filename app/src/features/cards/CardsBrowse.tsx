@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { setFamily, setFamilyPrefix, type OptionValue } from "@gatcg/shared";
+import { CARD_TAG_CATEGORIES, canonicalCardTag, cardTagCategory, setFamily, setFamilyPrefix, type OptionValue } from "@gatcg/shared";
 import { gatcgApi } from "../../lib/api/client";
 import { useSyncProgress } from "../../lib/sync/SyncProvider";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -49,7 +49,7 @@ export default function CardsBrowse() {
     subtypes: new Set(searchParams.getAll("subtype")),
     elements: new Set(searchParams.getAll("element")),
     sets: new Set(searchParams.getAll("set").map(setFamilyPrefix)),
-    tags: new Set(searchParams.getAll("tag")),
+    tags: new Set(searchParams.getAll("tag").map(canonicalCardTag)),
   }));
 
   const filtered = useMemo(
@@ -246,7 +246,10 @@ export default function CardsBrowse() {
               <MultiSelectFilter label="Rarity" options={rarityOptions(cards)} selected={filters.rarities ?? new Set()} onToggle={value => setFilters(f => ({...f, rarities: toggleSetValue(f.rarities ?? new Set(), value)}))} />
               <SearchSelectFilter label="Printing edition (optional)" options={printingOptions} selected={filters.printingSets ?? new Set()} onToggle={value => setFilters(f => ({ ...f, printingSets: toggleSetValue(f.printingSets ?? new Set(), value) }))} />
               {tagOptions.length > 0 && (
-                <SearchSelectFilter label="Art tag" options={tagOptions} selected={filters.tags ?? new Set()} onToggle={value => setFilters(f => ({ ...f, tags: toggleSetValue(f.tags ?? new Set(), value) }))} />
+                <div className="space-y-3">
+                  <p className="text-sm font-semibold">Community tags</p>
+                  {CARD_TAG_CATEGORIES.map(category => <SearchSelectFilter key={category} label={`${category} tags`} options={tagOptions.filter(tag => cardTagCategory(tag.value) === category)} selected={new Set([...filters.tags ?? []].filter(tag => cardTagCategory(tag) === category))} onToggle={value => setFilters(f => ({ ...f, tags: toggleSetValue(f.tags ?? new Set(), value) }))} />)}
+                </div>
               )}
               <SegmentedFilter label="Speed" options={[{ value: "any", label: "All" }, { value: "fast", label: "Fast" }, { value: "normal", label: "Normal" }]} value={filters.speed} onChange={(speed) => setFilters((f) => ({ ...f, speed }))} />
             </FilterPanel>
@@ -254,11 +257,13 @@ export default function CardsBrowse() {
 
           {!!filters.tags?.size && cardTags.data && (
             <p className="mt-3 text-xs text-ctp-subtext0">
-              Art tags are community-sourced from the{" "}
+              Tags are community-sourced from the{" "}
               <a href={cardTags.data.sourceUrl} target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">silvie.gg Art Tagger</a>
-              {" "}and are mostly unreviewed. A card matches when any of its printings carries a selected tag.
+              {" "}and are mostly unreviewed. Matches any selected tag across printings. Gameplay labels are discovery hints; missing tags do not mean an effect is absent.
             </p>
           )}
+
+          {!cardTags.data && <p role="status" className="mt-3 text-sm text-ctp-subtext0">{cardTags.status.phase === "error" ? <>Community tags unavailable. <button type="button" onClick={cardTags.status.retry} className="min-h-12 px-3 text-ctp-blue focus-visible:outline-2">Retry tags</button></> : "Loading community tags…"}</p>}
 
           {bannerProduct && (
             <Link
