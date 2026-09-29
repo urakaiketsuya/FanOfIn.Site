@@ -41,8 +41,9 @@ function EventTopDecks({ eventId, decklists, players }: { eventId: number; deckl
     <div className="flex items-baseline justify-between gap-3"><h2 id="top-event-decks" className="text-sm font-semibold text-ctp-text">Top decks</h2><Link to={`/events/${eventId}?tab=decklists&browse=all`} className="text-xs font-medium text-ctp-blue">Browse all {decklists.length}</Link></div>
     <div className="mt-2 flex snap-x gap-3 overflow-x-auto pb-2 sm:grid sm:grid-cols-3 sm:overflow-visible">
       {topDecks.map(({ player, deck }) => {
-        const championName = findDeckChampionName(deck.decklist.material, cardsByName)?.split(",")[0].trim() ?? null;
-        const champion = championName ? cardsByName.get(championName) : undefined;
+        const championCardName = findDeckChampionName(deck.decklist.material, cardsByName);
+        const championName = championCardName?.split(",")[0].trim() ?? null;
+        const champion = championCardName ? cardsByName.get(championCardName) : undefined;
         return <Link key={player.id} to={`/events/${eventId}?tab=decklists&player=${player.id}`} className="group grid min-w-36 shrink-0 snap-start grid-cols-[4.5rem_1fr] overflow-hidden rounded-xl border border-ctp-surface1 bg-ctp-mantle transition-colors hover:border-ctp-blue sm:min-w-0">
           <CardHoverPreview image={champion?.editions[0]?.image} alt={championName ?? player.username}>
             {champion?.editions[0] ? <CardImage image={champion.editions[0].image} alt={championName ?? ""} className="h-28 w-[4.5rem] object-cover object-top" /> : <div className="h-28 w-[4.5rem] bg-ctp-surface0" />}
