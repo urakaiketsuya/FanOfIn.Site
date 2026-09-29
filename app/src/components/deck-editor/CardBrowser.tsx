@@ -41,13 +41,13 @@ export default function CardBrowser({ query, onQuery, destination, onDestination
     setSelectionError("");
     setAddedNotice("");
   }
-  function addSelected() {
-    const additions = [...selected].map(name => ({name, section: sectionFor(name), quantity: 1}));
+  function addSelected(quantity: number) {
+    const additions = [...selected].map(name => ({name, section: sectionFor(name), quantity}));
     const invalid = additions.filter(item => !deckDestinationEligibility(catalog.get(item.name), item.section).allowed);
     if (invalid.length) { setSelectionError(`Cannot add ${invalid.map(item=>item.name).join(", ")} to this destination. Choose another destination or deselect these cards.`); return; }
     if (!additions.length) return;
     onEdit({type:"add-many", additions});
-    setAddedNotice(`Added ${additions.length} ${additions.length === 1 ? "card" : "cards"}, one copy each.`);
+    setAddedNotice(`Added ${additions.length} ${additions.length === 1 ? "card" : "cards"}, ${quantity === 1 ? "one copy each" : `${quantity} copies each`}.`);
     setSelected(new Set());
     setSelectionError("");
     onAdded?.();
@@ -79,10 +79,10 @@ export default function CardBrowser({ query, onQuery, destination, onDestination
     {suppressResults ? null : !names.length ? <p role={sync.phase === "error" ? "alert" : "status"} className="py-4 text-sm">{sync.phase === "error" ? "Card catalog could not load. Check your connection and reload to try again." : sync.phase === "done" ? "No cards are available in the catalog yet." : "Loading card catalog…"}</p> : <CardSearchResults key={JSON.stringify([query, filters, sort, suggestedNames !== undefined])} query={query} names={matches} catalog={catalog} chosen={new Map()} filtered renderStats={renderStats} evidence={evidence} owned={owned} quantityFor={quantityFor} selected={selected} onToggleSelection={toggleSelection} onAdd={toggleSelection} onSetQuantity={(name, quantity)=>onEdit(quantity === 0 ? {type:"remove",section:sectionFor(name),name} : {type:"quantity",section:sectionFor(name),name,quantity})} />}
     {addedNotice && <p role="status" className="mt-2 text-sm text-ctp-subtext1">{addedNotice}</p>}
     {!!selected.size && <div className="sticky bottom-0 z-10 mt-3 rounded-xl border border-ctp-blue bg-ctp-base p-3 shadow-lg">
-      <details><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 text-sm">{selected.size} selected · one copy each<DisclosureChevron /></summary><div className="max-h-40 overflow-y-auto">{[...selected].map(name=><button key={name} type="button" onClick={()=>toggleSelection(name)} aria-label={`Deselect ${name}`} className="flex min-h-12 w-full items-center justify-between gap-2 text-left text-sm">{name}<span aria-hidden="true">×</span></button>)}</div></details>
+      <details><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 text-sm">{selected.size} selected<DisclosureChevron /></summary><div className="max-h-40 overflow-y-auto">{[...selected].map(name=><button key={name} type="button" onClick={()=>toggleSelection(name)} aria-label={`Deselect ${name}`} className="flex min-h-12 w-full items-center justify-between gap-2 text-left text-sm">{name}<span aria-hidden="true">×</span></button>)}</div></details>
       {[...selected].some(name=>!matches.includes(name)) && <p className="mb-2 text-xs text-ctp-subtext1">{[...selected].filter(name=>!matches.includes(name)).length} selected outside these results.</p>}
       {selectionError && <p role="alert" className="mb-2 text-sm text-ctp-yellow">{selectionError}</p>}
-      <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={addSelected} className="min-h-12 flex-1 rounded-lg bg-ctp-blue px-3 text-sm font-semibold text-ctp-base">Add {selected.size} to {destination === "automatic" ? "deck" : destination}</button><button type="button" onClick={()=>{setSelected(new Set());setSelectionError("");}} className="min-h-12 rounded-lg px-3 text-sm">Clear</button></div>
+      <div className="grid grid-cols-2 gap-2"><button type="button" onClick={() => addSelected(1)} className="min-h-12 rounded-lg border border-ctp-blue px-3 text-sm font-semibold text-ctp-blue">Add 1 each</button><button type="button" onClick={() => addSelected(4)} className="min-h-12 rounded-lg bg-ctp-blue px-3 text-sm font-semibold text-ctp-base">Add playset</button><button type="button" onClick={()=>{setSelected(new Set());setSelectionError("");}} className="col-span-2 min-h-12 rounded-lg px-3 text-sm">Clear</button></div>
     </div>}
   </>;
 }

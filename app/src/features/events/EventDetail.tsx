@@ -27,7 +27,7 @@ import { findDeckChampionName } from "../../lib/ttsExport";
 type EventTab = "standings" | "pairings" | "decklists" | "teams" | "judges" | "statistics";
 const ALL_EVENT_TABS: EventTab[] = ["standings", "pairings", "decklists", "teams", "judges", "statistics"];
 
-function EventTopDecks({ decklists, players }: { decklists: OmnidexDecklistEntry[]; players: OmnidexPlayer[] }) {
+function EventTopDecks({ eventId, decklists, players }: { eventId: number; decklists: OmnidexDecklistEntry[]; players: OmnidexPlayer[] }) {
   const topDecks = useMemo(() => [...players]
     .sort((a, b) => (a.finalPlacement ?? Infinity) - (b.finalPlacement ?? Infinity))
     .map((player) => ({ player, deck: decklists.find((entry) => entry.player === player.id) }))
@@ -38,12 +38,12 @@ function EventTopDecks({ decklists, players }: { decklists: OmnidexDecklistEntry
 
   if (topDecks.length === 0) return null;
   return <section className="mt-5" aria-labelledby="top-event-decks">
-    <div className="flex items-baseline justify-between gap-3"><h2 id="top-event-decks" className="text-sm font-semibold text-ctp-text">Top decks</h2><Link to={`?tab=decklists`} className="text-xs font-medium text-ctp-blue">Browse all {decklists.length}</Link></div>
+    <div className="flex items-baseline justify-between gap-3"><h2 id="top-event-decks" className="text-sm font-semibold text-ctp-text">Top decks</h2><Link to={`/events/${eventId}?tab=decklists&browse=all`} className="text-xs font-medium text-ctp-blue">Browse all {decklists.length}</Link></div>
     <div className="mt-2 flex snap-x gap-3 overflow-x-auto pb-2 sm:grid sm:grid-cols-3 sm:overflow-visible">
       {topDecks.map(({ player, deck }) => {
         const championName = findDeckChampionName(deck.decklist.material, cardsByName)?.split(",")[0].trim() ?? null;
         const champion = championName ? cardsByName.get(championName) : undefined;
-        return <Link key={player.id} to={`?tab=decklists&player=${player.id}`} className="group grid min-w-36 shrink-0 snap-start grid-cols-[4.5rem_1fr] overflow-hidden rounded-xl border border-ctp-surface1 bg-ctp-mantle transition-colors hover:border-ctp-blue sm:min-w-0">
+        return <Link key={player.id} to={`/events/${eventId}?tab=decklists&player=${player.id}`} className="group grid min-w-36 shrink-0 snap-start grid-cols-[4.5rem_1fr] overflow-hidden rounded-xl border border-ctp-surface1 bg-ctp-mantle transition-colors hover:border-ctp-blue sm:min-w-0">
           <CardHoverPreview image={champion?.editions[0]?.image} alt={championName ?? player.username}>
             {champion?.editions[0] ? <CardImage image={champion.editions[0].image} alt={championName ?? ""} className="h-28 w-[4.5rem] object-cover object-top" /> : <div className="h-28 w-[4.5rem] bg-ctp-surface0" />}
           </CardHoverPreview>
@@ -180,7 +180,7 @@ export default function EventDetail() {
       </p>
       <div className="mt-4 flex flex-wrap gap-2 text-xs text-ctp-subtext1"><span className="rounded-full bg-ctp-surface0 px-3 py-1.5">{rankedPlayers.length} players</span>{decklistSubmissionRate && <span className="rounded-full bg-ctp-surface0 px-3 py-1.5">{decklistSubmissionRate.submitted}/{decklistSubmissionRate.total} decklists</span>}<span className="rounded-full bg-ctp-surface0 px-3 py-1.5 capitalize">{event.status}</span>{event.season && <span className="rounded-full bg-ctp-surface0 px-3 py-1.5">{event.season.name}</span>}</div>
 
-      {!isApiErrorBody(bundle.decklists) && <EventTopDecks decklists={bundle.decklists} players={players} />}
+      {!isApiErrorBody(bundle.decklists) && <EventTopDecks eventId={eventId} decklists={bundle.decklists} players={players} />}
 
       {!secondaryActive && primaryTabs.length > 1 && (
         <div className="mt-4">

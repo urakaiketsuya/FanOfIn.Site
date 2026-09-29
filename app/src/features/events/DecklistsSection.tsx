@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import type { OmnidexDecklistEntry, OmnidexPlayer } from "@gatcg/shared";
 import { useCardsByNames } from "./useCardsByNames";
@@ -9,7 +9,12 @@ import PlayerLink from "../players/PlayerLink";
 import Section from "../../components/ui/Section";
 import { canonicalSignature } from "../popular/useDeckPopularity";
 import { shortHash } from "../../lib/hash";
+import { findDeckChampionName } from "../../lib/ttsExport";
 import { eventDeckSearchParams, nextEventDeckSearchIndex, resolveEventDeckSelection } from "./eventDeckSelection";
+
+function deckCardNames(deck: OmnidexDecklistEntry): string[] {
+  return [...deck.decklist.main, ...deck.decklist.material, ...deck.decklist.sideboard].map((line) => line.card);
+}
 
 export default function DecklistsSection({
   eventId,
@@ -30,9 +35,11 @@ export default function DecklistsSection({
     [eventId, rankedDecklists, searchParams],
   );
   const [search, setSearch] = useState("");
+  const [championFilter, setChampionFilter] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [activeSearchIndex, setActiveSearchIndex] = useState(-1);
   const selected = selection?.deck;
+  const browsingAll = searchParams.get("browse") === "all";
 
   function selectPlayer(player: number) {
     setSearchParams((current) => eventDeckSearchParams(current, player));
@@ -44,11 +51,13 @@ export default function DecklistsSection({
   const allNames = useMemo(
     () =>
       selected
-        ? [...selected.decklist.main, ...selected.decklist.material, ...selected.decklist.sideboard].map((l) => l.card)
+        ? deckCardNames(selected)
         : [],
     [selected],
   );
   const cardsByName = useCardsByNames(allNames);
+  const eventMaterialNames = useMemo(() => Array.from(new Set(rankedDecklists.flatMap((deck) => deck.decklist.material.map((line) => line.card)))), [rankedDecklists]);
+  const eventCardsByName = useCardsByNames(eventMaterialNames);
 
   const similarityData = useSimilarityData();
   const fallbackPlayerName = usePlayerNameById();
@@ -68,12 +77,21 @@ export default function DecklistsSection({
     const localUsernameById = new Map(players.map((player) => [player.id, player.username]));
     return (id: number) => localUsernameById.get(id) ?? fallbackPlayerName(id);
   }, [players, fallbackPlayerName]);
+  const championByPlayer = useMemo(() => new Map(rankedDecklists.map((deck) => [deck.player, findDeckChampionName(deck.decklist.material, eventCardsByName)?.split(",")[0].trim() ?? "Unknown Champion"])), [rankedDecklists, eventCardsByName]);
+  const champions = useMemo(() => Array.from(new Set(championByPlayer.values())).sort(), [championByPlayer]);
+  const deckSearchMatches = useCallback((deck: OmnidexDecklistEntry, needle: string) => playerName(deck.player).toLowerCase().includes(needle) || deckCardNames(deck).some((name) => name.toLowerCase().includes(needle)), [playerName]);
+  const matchingCardNames = useCallback((deck: OmnidexDecklistEntry, needle: string) => deckCardNames(deck).filter((name) => name.toLowerCase().includes(needle)), []);
+  const matchesFilters = useCallback((deck: OmnidexDecklistEntry, needle: string) => (!needle || deckSearchMatches(deck, needle)) && (!championFilter || championByPlayer.get(deck.player) === championFilter), [championByPlayer, championFilter, deckSearchMatches]);
 
   const searchMatches = useMemo(() => {
     const needle = search.trim().toLowerCase();
     if (!needle) return [];
-    return rankedDecklists.filter((d) => playerName(d.player).toLowerCase().includes(needle)).slice(0, 8);
-  }, [rankedDecklists, search, playerName]);
+    return rankedDecklists.filter((deck) => matchesFilters(deck, needle)).slice(0, 8);
+  }, [rankedDecklists, search, matchesFilters]);
+  const browsedDecklists = useMemo(() => {
+    const needle = search.trim().toLowerCase();
+    return rankedDecklists.filter((deck) => matchesFilters(deck, needle));
+  }, [rankedDecklists, search, matchesFilters]);
 
   useEffect(() => setActiveSearchIndex(-1), [search]);
 
@@ -96,7 +114,7 @@ export default function DecklistsSection({
       <div className="relative mt-1 max-w-sm">
         <input
           type="text"
-          aria-label="Search players"
+          aria-label="Search decks by player or card"
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
@@ -118,7 +136,7 @@ export default function DecklistsSection({
           }}
           onFocus={() => setSearchOpen(true)}
           onBlur={() => setTimeout(() => setSearchOpen(false), 100)}
-          placeholder="Search players…"
+          placeholder="Search players or cards…"
           role="combobox"
           aria-expanded={searchOpen && search.trim() !== ""}
           aria-controls="event-deck-player-options"
@@ -142,15 +160,20 @@ export default function DecklistsSection({
                     d.player === selection?.player || index === activeSearchIndex ? "bg-ctp-surface0 text-ctp-blue" : "text-ctp-text"
                   }`}
                 >
-                  {playerName(d.player)}
+                  <span className="block">{playerName(d.player)}</span>
+                  {matchingCardNames(d, search.trim().toLowerCase()).length > 0 && <span className="block truncate text-xs text-ctp-subtext0">Has {matchingCardNames(d, search.trim().toLowerCase()).slice(0, 2).join(", ")}</span>}
                 </button>
               ))
             ) : (
-              <p className="px-3 py-1.5 text-sm text-ctp-subtext0">No players match &ldquo;{search.trim()}&rdquo;.</p>
+              <p className="px-3 py-1.5 text-sm text-ctp-subtext0">No decks match &ldquo;{search.trim()}&rdquo;.</p>
             )}
           </div>
         )}
       </div>
+
+      <label className="mt-2 block max-w-sm text-xs text-ctp-subtext1">Champion<select aria-label="Filter decks by Champion" value={championFilter} onChange={(event) => { setChampionFilter(event.target.value); setSearchParams((current) => { const next = new URLSearchParams(current); next.set("browse", "all"); return next; }); }} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 text-sm text-ctp-text"><option value="">All Champions</option>{champions.map((champion) => <option key={champion} value={champion}>{champion}</option>)}</select></label>
+
+      {browsingAll && <div className="mt-3 rounded-xl border border-ctp-surface1 bg-ctp-base/40 p-2"><div className="flex items-center justify-between gap-2 px-2 pb-2"><p className="text-sm font-medium text-ctp-text">{browsedDecklists.length} deck{browsedDecklists.length === 1 ? "" : "s"}{search.trim() ? " match your search" : " to browse"}</p><button type="button" onClick={() => setSearchParams((current) => { const next = new URLSearchParams(current); next.delete("browse"); return next; })} className="min-h-12 rounded-lg px-3 text-xs text-ctp-blue">Show selected deck</button></div><div className="max-h-[28rem] space-y-1 overflow-y-auto overscroll-contain" role="list" aria-label="Event decklists">{browsedDecklists.map((deck) => { const matchedCards = search.trim() ? matchingCardNames(deck, search.trim().toLowerCase()) : []; return <button key={deck.player} type="button" role="listitem" onClick={() => selectPlayer(deck.player)} className="flex min-h-12 w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left hover:bg-ctp-surface0 focus-visible:outline-2 focus-visible:outline-ctp-blue"><span className="min-w-0"><span className="block truncate text-sm font-medium text-ctp-text">{playerName(deck.player)}</span>{matchedCards.length > 0 && <span className="block truncate text-xs text-ctp-mauve">Has {matchedCards.slice(0, 3).join(" · ")}</span>}</span><span className="shrink-0 text-xs text-ctp-blue">View deck</span></button>; })}{browsedDecklists.length === 0 && <p className="p-4 text-sm text-ctp-subtext0">No decks match this search.</p>}</div></div>}
 
       {selected && (
         <div className="mt-3">

@@ -24,6 +24,7 @@ export function eventDeckSearchParams(current: URLSearchParams, player: number):
   const next = new URLSearchParams(current);
   next.set("tab", "decklists");
   next.set("player", String(player));
+  next.delete("browse");
   return next;
 }
 
