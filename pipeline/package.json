@@ -14,6 +14,7 @@
     "audit:diao:migration": "tsx src/analysis/diaoMigrationAudit.ts",
     "audit:packages": "tsx src/analysis/packageCandidateAudit.ts",
     "clean:similarity-cache": "rm -rf .cache/similarity-cache",
+    "tags:silvie": "GATCG_SILVIE_TAGS_ONLY=1 tsx src/index.ts",
     "api:publish": "tsx src/public-api/publish.ts",
     "audit:win-rate-packages": "node --import tsx src/analysis/winRatePackageAudit.ts",
     "archetypes:references": "node --import tsx scripts/rebuild-reference-archetypes.ts"

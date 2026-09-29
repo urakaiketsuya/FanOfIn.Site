@@ -1,4 +1,5 @@
 import { setFamilyPrefix, type Card } from "@gatcg/shared";
+import type { CardTagLookup } from "./cardTags";
 
 export type SpeedFilter = "any" | "fast" | "normal";
 
@@ -20,6 +21,8 @@ export interface CardFilterState {
   printingSets?: Set<string>;
   /** Rarity codes matched on the same printing as set and artist restrictions. */
   rarities?: Set<string>;
+  /** silvie.gg community art tags (any-of); only applied when `filterCards` gets a tag lookup. */
+  tags?: Set<string>;
 }
 
 export function emptyFilterState(): CardFilterState {
@@ -33,6 +36,7 @@ export function emptyFilterState(): CardFilterState {
     sets: new Set(),
     speed: "any",
     rarities: new Set(),
+    tags: new Set(),
   };
 }
 
@@ -55,7 +59,17 @@ export function cardSearchText(card: Card): string {
   ].filter((value): value is string => Boolean(value)).join(" ").toLocaleLowerCase();
 }
 
-export function filterCards(cards: Card[], filters: CardFilterState): Card[] {
+function hasAnyTag(tags: ReadonlySet<string> | undefined, selected: ReadonlySet<string>): boolean {
+  return !!tags && [...selected].some((tag) => tags.has(tag));
+}
+
+/** The printing whose art carries a selected tag, when tags are filtered — else undefined. */
+export function editionWithTag(card: Card, filters: CardFilterState, tagLookup: CardTagLookup | undefined): Card["editions"][number] | undefined {
+  if (!filters.tags?.size || !tagLookup) return undefined;
+  return card.editions.find((ed) => hasAnyTag(tagLookup.editions.get(ed.uuid), filters.tags!) && matchesEdition(ed, filters));
+}
+
+export function filterCards(cards: Card[], filters: CardFilterState, tagLookup?: CardTagLookup): Card[] {
   const name = filters.name.trim().toLowerCase();
 
   return cards.filter((card) => {
@@ -68,6 +82,7 @@ export function filterCards(cards: Card[], filters: CardFilterState): Card[] {
     if ((filters.sets.size || filters.printingSets?.size || filters.rarities?.size || filters.artist.trim()) && !card.editions.some(ed => matchesEdition(ed, filters))) return false;
     if (filters.speed === "fast" && card.speed !== true) return false;
     if (filters.speed === "normal" && card.speed !== false) return false;
+    if (filters.tags?.size && tagLookup && !hasAnyTag(tagLookup.cards.get(card.uuid), filters.tags)) return false;
     return true;
   });
 }

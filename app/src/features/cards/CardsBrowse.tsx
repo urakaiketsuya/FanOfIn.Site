@@ -9,7 +9,8 @@ import { useTabParam } from "../../lib/useTabParam";
 import Tabs from "../../components/ui/Tabs";
 import PageHeader from "../../components/ui/PageHeader";
 import { useCardCatalog } from "./useCardCatalog";
-import { emptyFilterState, filterCards, matchesEdition, type CardFilterState } from "./filters";
+import { editionWithTag, emptyFilterState, filterCards, matchesEdition, type CardFilterState } from "./filters";
+import { useCardTags } from "./cardTags";
 import FilterPanel from "../../components/filters/FilterPanel";
 import MultiSelectFilter from "../../components/filters/MultiSelectFilter";
 import SearchSelectFilter from "../../components/filters/SearchSelectFilter";
@@ -36,6 +37,7 @@ export default function CardsBrowse() {
   const syncProgress = useSyncProgress();
   const options = useQuery({ queryKey: ["option-definitions"], queryFn: gatcgApi.getOptionDefinitions });
   const featuredSets = useFeaturedSets();
+  const cardTags = useCardTags();
   const [searchParams] = useSearchParams();
   const [tab, setTab] = useTabParam<TabMode>("tab", TABS, "browse");
   const [filters, setFilters] = useState<CardFilterState>(() => ({
@@ -47,11 +49,12 @@ export default function CardsBrowse() {
     subtypes: new Set(searchParams.getAll("subtype")),
     elements: new Set(searchParams.getAll("element")),
     sets: new Set(searchParams.getAll("set").map(setFamilyPrefix)),
+    tags: new Set(searchParams.getAll("tag")),
   }));
 
   const filtered = useMemo(
-    () => filterCards(cards, filters).sort((a, b) => a.name.localeCompare(b.name)),
-    [cards, filters],
+    () => filterCards(cards, filters, cardTags.lookup).sort((a, b) => a.name.localeCompare(b.name)),
+    [cards, filters, cardTags.lookup],
   );
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
@@ -60,7 +63,7 @@ export default function CardsBrowse() {
   }, [filters]);
 
   const visible = filtered.slice(0, visibleCount);
-  const activeFilterCount = (filters.name.trim() ? 1 : 0) + (filters.artist.trim() ? 1 : 0) + filters.classes.size + filters.types.size + filters.subtypes.size + filters.elements.size + filters.sets.size + (filters.speed === "any" ? 0 : 1) + (filters.printingSets?.size ?? 0) + (filters.rarities?.size ?? 0);
+  const activeFilterCount = (filters.name.trim() ? 1 : 0) + (filters.artist.trim() ? 1 : 0) + filters.classes.size + filters.types.size + filters.subtypes.size + filters.elements.size + filters.sets.size + (filters.speed === "any" ? 0 : 1) + (filters.printingSets?.size ?? 0) + (filters.rarities?.size ?? 0) + (filters.tags?.size ?? 0);
 
   const artistOptions = useMemo(() => {
     const set = new Set<string>();
@@ -71,6 +74,11 @@ export default function CardsBrowse() {
     }
     return Array.from(set).sort();
   }, [cards]);
+
+  const tagOptions = useMemo<OptionValue[]>(
+    () => (cardTags.data?.tags ?? []).map((tag) => ({ value: tag.name, text: `${tag.name} (${tag.cardCount})` })),
+    [cardTags.data],
+  );
 
   const printingOptions = useMemo(() => [...new Map(cards.flatMap(card => card.editions.map(ed => [ed.set.prefix, ed.set.name] as const)))].map(([value, text]) => ({ value, text })), [cards]);
 
@@ -91,9 +99,9 @@ export default function CardsBrowse() {
   // show that set's specific art (same behavior the old dedicated /sets/:prefix page had) instead
   // of always defaulting to a card's first-ever printing.
   const pickEdition = useMemo(() => {
-    if (!filters.sets.size && !filters.printingSets?.size && !filters.rarities?.size && !filters.artist.trim()) return undefined;
-    return (card: (typeof cards)[number]) => card.editions.find(ed => matchesEdition(ed, filters)) ?? card.editions[0];
-  }, [filters]);
+    if (!filters.sets.size && !filters.printingSets?.size && !filters.rarities?.size && !filters.artist.trim() && !filters.tags?.size) return undefined;
+    return (card: (typeof cards)[number]) => editionWithTag(card, filters, cardTags.lookup) ?? card.editions.find(ed => matchesEdition(ed, filters)) ?? card.editions[0];
+  }, [filters, cardTags.lookup]);
 
   function browseSet(prefix: string) {
     setFilters((f) => ({ ...f, sets: new Set([prefix]), printingSets: new Set() }));
@@ -237,8 +245,19 @@ export default function CardsBrowse() {
               />
               <MultiSelectFilter label="Rarity" options={rarityOptions(cards)} selected={filters.rarities ?? new Set()} onToggle={value => setFilters(f => ({...f, rarities: toggleSetValue(f.rarities ?? new Set(), value)}))} />
               <SearchSelectFilter label="Printing edition (optional)" options={printingOptions} selected={filters.printingSets ?? new Set()} onToggle={value => setFilters(f => ({ ...f, printingSets: toggleSetValue(f.printingSets ?? new Set(), value) }))} />
+              {tagOptions.length > 0 && (
+                <SearchSelectFilter label="Art tag" options={tagOptions} selected={filters.tags ?? new Set()} onToggle={value => setFilters(f => ({ ...f, tags: toggleSetValue(f.tags ?? new Set(), value) }))} />
+              )}
               <SegmentedFilter label="Speed" options={[{ value: "any", label: "All" }, { value: "fast", label: "Fast" }, { value: "normal", label: "Normal" }]} value={filters.speed} onChange={(speed) => setFilters((f) => ({ ...f, speed }))} />
             </FilterPanel>
+          )}
+
+          {!!filters.tags?.size && cardTags.data && (
+            <p className="mt-3 text-xs text-ctp-subtext0">
+              Art tags are community-sourced from the{" "}
+              <a href={cardTags.data.sourceUrl} target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">silvie.gg Art Tagger</a>
+              {" "}and are mostly unreviewed. A card matches when any of its printings carries a selected tag.
+            </p>
           )}
 
           {bannerProduct && (

@@ -45,6 +45,7 @@ export const MANIFEST_ENTRIES: { key: string; file: string }[] = [
   { key: "shoutatyourdecks-format-summary", file: "shoutatyourdecks/analytics/format-summary.json" },
   { key: "shoutatyourdecks-index", file: "shoutatyourdecks/index.json" },
   { key: "shoutatyourdecks-pantheon-decks", file: "shoutatyourdecks/analytics/pantheon/decks.json" },
+  { key: "community-card-tags", file: "community/card-tags.json" },
   { key: "community-source-counts", file: "community/sources.json" },
   { key: "community-blended-deck-references", file: "community/deck-references.json" },
   { key: "community-decks-STANDARD", file: "community/decks.json" },

@@ -18,6 +18,7 @@ import { installGracefulShutdown as installTcgArchitectShutdown } from "./tcgarc
 import { runCommunityBlend } from "./community/blend.js";
 import { config } from "./config.js";
 import { exportSimulatorSummary } from "./simulator/export.js";
+import { publishCardTags } from "./silvie/tags.js";
 
 /**
  * ShoutAtYourDecks is deliberately NOT part of the default pipeline run below — it needs a real
@@ -96,6 +97,11 @@ async function main() {
     await writeManifest();
     return;
   }
+  if (process.env.GATCG_SILVIE_TAGS_ONLY === "1") {
+    await publishCardTags();
+    await writeManifest();
+    return;
+  }
   if (process.env.GATCG_SYD_MODE) {
     await runShoutAtYourDecksMode(process.env.GATCG_SYD_MODE);
     return;
@@ -168,6 +174,16 @@ async function main() {
       await exportSimulatorSummary();
     } catch (err) {
       console.error("simulator analytics export failed", err);
+      process.exitCode = 1;
+    }
+  }
+
+  // Two requests to silvie.gg's Art Tagger — cheap enough for every run; a failure keeps the last published file.
+  if (!config.analysisOnly) {
+    try {
+      await publishCardTags();
+    } catch (err) {
+      console.error("silvie card tags failed", err);
       process.exitCode = 1;
     }
   }

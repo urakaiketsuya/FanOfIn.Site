@@ -51,3 +51,4 @@ export * from "./deckDetailData.js";
 export { deckPreviewCards } from "./deckPreview";
 
 export * from "./archetypeRules.js";
+export * from "./card-tag-types.js";
