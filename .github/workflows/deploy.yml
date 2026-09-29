@@ -7,6 +7,14 @@ on:
     paths:
       - "app/**"
       - "shared/**"
+      - "pipeline/**"
+      - "worker/**"
+      - "account-worker/**"
+      - "account-bff/**"
+      - "api-worker/**"
+      - "scripts/**"
+      - "package.json"
+      - "package-lock.json"
       - "data/**"
       - ".github/workflows/deploy.yml"
   workflow_dispatch:
@@ -34,7 +42,8 @@ jobs:
 
       - run: npm ci
 
-      - run: npm run build --workspace=app
+      - name: Verify release candidate
+        run: npm run release:check
         env:
           VITE_GOOGLE_CLIENT_ID: 33283325780-takrrvtrs2qb8pshdkukog52le87b76k.apps.googleusercontent.com
           VITE_ACCOUNT_API_URL: https://accounts.fanofin.site/api
@@ -68,3 +77,22 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
+
+  smoke:
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+      - name: Verify deployed revision and services
+        env:
+          EXPECTED_REVISION: ${{ github.sha }}
+        run: |
+          for attempt in 1 2 3 4 5; do
+            node scripts/smoke-release.mjs && exit 0
+            sleep 30
+          done
+          exit 1

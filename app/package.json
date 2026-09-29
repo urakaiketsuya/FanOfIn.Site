@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "test": "tsx --test test/**/*.test.ts",
+    "test": "tsx --tsconfig tsconfig.app.json --test test/**/*.test.ts",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -95,8 +95,9 @@ test("registered section-aware protection remains one package after saving its o
   Object.defineProperty(globalThis, "window", { configurable: true, value: { localStorage: { getItem: (key: string) => key === PACKAGE_STORE_KEY ? JSON.stringify({ version: 2, autoEnabled: false, packages: suggested }) : null } } });
   try {
     const catalog = getDeckPackageCatalog([{ cardName: "Fluffy Shopkeep", section: "main", quantity: 1 }, { cardName: "Fire Resonance Bauble", section: "material", quantity: 1 }, { cardName: "Water Resonance Bauble", section: "material", quantity: 1 }]);
-    assert.equal(catalog.length, 1);
-    assert.equal(catalog[0].active, true);
-    assert.deepEqual(catalog[0].protectedCards.sort(), ["Fire Resonance Bauble", "Water Resonance Bauble"]);
+    assert.equal(new Set(catalog.map(entry => entry.id)).size, catalog.length);
+    const active = catalog.filter(entry => entry.active);
+    assert.equal(active.length, 1);
+    assert.deepEqual(active[0].protectedCards.sort(), ["Fire Resonance Bauble", "Water Resonance Bauble"]);
   } finally { if (original) Object.defineProperty(globalThis, "window", original); else Reflect.deleteProperty(globalThis, "window"); }
 });

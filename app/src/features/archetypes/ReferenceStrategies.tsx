@@ -1,3 +1,4 @@
+import { saveCuration, exportCuration } from "../../lib/curationStorage";
 import { useDeferredValue, useMemo, useState, useTransition } from 'react';
 import { Link } from 'react-router-dom';
 import { evaluateDefinition, parseStrategyStore, ruleDecks, type CuratedStrategy, type ReferenceAnalysis, type StrategyStore, type ArchetypeRule } from '@gatcg/shared';
@@ -43,10 +44,7 @@ export default function ReferenceStrategies({ published = false }: {
     const decks = useMemo(() => index && live && cards.length ? ruleDecks(index, cards) : null, [index, live, cards]);
     function persist(next: StrategyStore, recover = false) {
         try {
-            if (!recover && localStorage.getItem(storageKey))
-                parseStrategyStore(localStorage.getItem(storageKey)!);
-            parseStrategyStore(JSON.stringify(next));
-            localStorage.setItem(storageKey, JSON.stringify(next));
+            saveCuration(localStorage, storageKey, next, parseStrategyStore, recover);
             setStore(next);
             setError('');
             return true;
@@ -89,7 +87,7 @@ export default function ReferenceStrategies({ published = false }: {
             setLive(false);
         }
     }
-    function download() { const blob = new Blob([localStorage.getItem(storageKey) ?? JSON.stringify(store)], { type: 'application/json' }), url = URL.createObjectURL(blob), a = document.createElement('a'); a.href = url; a.download = 'my-strategy-rules.json'; a.click(); URL.revokeObjectURL(url); }
+    function download() { try { const blob = new Blob([exportCuration(localStorage, storageKey, store)], { type: 'application/json' }), url = URL.createObjectURL(blob), a = document.createElement('a'); a.href = url; a.download = 'my-strategy-rules.json'; a.click(); URL.revokeObjectURL(url); } catch { setError("Could not export: browser storage is unavailable. Your open edits have been kept."); } }
     const visible = (published ? data?.definitions ?? [] : definitions).filter(d => (filter === 'all' || d.reviewStatus === filter) && [d.name, ...d.rule.anyCards, ...d.rule.allCards].join(' ').toLowerCase().includes(query.toLowerCase()));
     return <PageLayout width="wide"><PageHeader title={published ? 'Reviewed strategies' : 'Strategy rule curator'} description={published ? 'Reviewed strategy definitions above concrete builds.' : 'Fractal definitions tested against our decklists. Local edits remain on this browser until explicitly published.'}/>
  <Link className={`${control} inline-flex items-center`} to={published ? '/archetypes' : '/archetypes/mine'}>{published ? 'Concrete archetypes' : 'My archetypes'}</Link>

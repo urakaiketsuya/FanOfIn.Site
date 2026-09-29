@@ -23,5 +23,5 @@ export function analyzeReferenceArchetypes(reference: ReferenceArchetypes, decks
     const covered = new Set([...matches.values()].flatMap(ids => [...ids]));
     const observed = new Set(unique.map(d => d.deckId));
     const discoveries = builds.map(b => ({ buildId: b.id, name: b.name, cards: b.namingCards ?? [], unmatchedDecks: new Set(b.deckIds.filter(id => observed.has(id) && !covered.has(id))).size, total: new Set(b.deckIds).size })).filter(b => b.cards.length >= 2 && b.unmatchedDecks >= 5 && b.unmatchedDecks / b.total >= 0.5).sort((a, b) => b.unmatchedDecks - a.unmatchedDecks || a.buildId.localeCompare(b.buildId));
-    return { ...reference, generatedAt, population: unique.length, evidence, discoveries };
+    return { generatedAt, ...reference, population: unique.length, evidence, discoveries };
 }

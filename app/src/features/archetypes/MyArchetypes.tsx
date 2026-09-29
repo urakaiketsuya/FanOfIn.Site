@@ -1,3 +1,4 @@
+import { saveCuration, exportCuration } from "../../lib/curationStorage";
 import { useMemo, useState, useTransition } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import PageLayout from "../../components/layout/PageLayout";
@@ -36,8 +37,7 @@ export default function MyArchetypes() {
   const dirty = JSON.stringify(draft) !== JSON.stringify(original);
   function persist(next: ArchetypeStore, recovery = false) {
     try {
-      if (!recovery && localStorage.getItem(key)) parseStore(localStorage.getItem(key)!);
-      parseStore(JSON.stringify(next)); localStorage.setItem(key, JSON.stringify(next)); setStore(next); setError(""); return true;
+      saveCuration(localStorage, key, next, parseStore, recovery); setStore(next); setError(""); return true;
     } catch (reason) { setError(reason instanceof Error ? reason.message : "Could not save. Check browser storage."); return false; }
   }
   function close() { setEdit(null); setParams({}); }
@@ -50,7 +50,7 @@ export default function MyArchetypes() {
   const covered = new Set(store.entries.flatMap(e => e.buildIds));
   const entries = [...store.entries, ...builds.filter(b => !covered.has(b.id)).map(fromBuild)];
   const visible = entries.filter(e => (filter === "all" || (filter === "review" ? e.status === "review" || needsReview(e, builds) : e.status === filter)) && [e.name, ...e.namingCards, ...e.buildIds.map(id => builds.find(b => b.id === id)?.championName ?? "")].join(" ").toLowerCase().includes(query.toLowerCase()));
-  function exportData() { const url = URL.createObjectURL(new Blob([localStorage.getItem(key) ?? JSON.stringify(store)], { type: "application/json" })); const a = document.createElement("a"); a.href = url; a.download = "my-archetypes.json"; a.click(); URL.revokeObjectURL(url); }
+  function exportData() { try { const url = URL.createObjectURL(new Blob([exportCuration(localStorage, key, store)], { type: "application/json" })); const a = document.createElement("a"); a.href = url; a.download = "my-archetypes.json"; a.click(); URL.revokeObjectURL(url); } catch { setError("Could not export: browser storage is unavailable. Your open edits have been kept."); } }
   return <PageLayout width="wide"><PageHeader title="My archetypes" description="Saved on this browser. Curating a build does not verify a package or combo." />
     <div className="flex flex-wrap gap-2"><Link className={`${control} inline-flex items-center`} to="/archetypes">All archetypes</Link><Link className={`${control} inline-flex items-center`} to="/archetypes/mine/reference">Curate strategy rules</Link></div>
     {error && <p role="alert" className="my-3 text-ctp-red">{error}</p>}

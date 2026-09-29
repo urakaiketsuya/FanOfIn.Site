@@ -40,6 +40,9 @@
     "api:typecheck": "npm run typecheck --workspace=@fanofin/public-api",
     "pipeline:api:publish": "npm run api:publish --workspace=@gatcg/pipeline --",
     "pipeline:packages:experimental": "node --import tsx pipeline/src/analysis/experimentalPackageAudit.ts",
-    "pipeline:packages:construction": "node --import tsx pipeline/src/analysis/constructionPackageAudit.ts"
+    "pipeline:packages:construction": "node --import tsx pipeline/src/analysis/constructionPackageAudit.ts",
+    "release:check": "node scripts/release-check.mjs",
+    "release:data": "node --import tsx scripts/check-release-data.ts",
+    "release:smoke": "node scripts/smoke-release.mjs"
   }
 }

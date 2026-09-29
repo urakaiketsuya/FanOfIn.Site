@@ -91,6 +91,10 @@ test('publication requires accepted parents and preserves public output on inval
         await writeFile(backup, JSON.stringify({ version: 1, entries: [entry(0), entry(1)], drafts: [] }));
         await writeReferenceArchetypes(dir, index, catalog, [], [], backup);
         const published = JSON.parse(await readFile(join(dir, 'analysis/curated-strategies.json'), 'utf8'));
+        for (const name of ['reference-archetypes', 'curated-strategies']) {
+            const raw = await readFile(join(dir, `analysis/${name}.json`), 'utf8');
+            assert.ok(raw.slice(0, 200).includes(JSON.parse(raw).generatedAt), 'Manifest prefix must contain generation');
+        }
         assert.equal(published.definitions.length, 2);
         assert.equal(published.evidence[0].deckIds.length, 1);
         const prior = await readFile(join(dir, 'analysis/curated-strategies.json'), 'utf8');
