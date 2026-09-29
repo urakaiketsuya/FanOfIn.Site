@@ -7,7 +7,10 @@ import { decodeCustomDecks } from "../../lib/compareShareLink";
 import { parseDecklist } from "../compare/parseDecklist";
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
-import CardImage from "../../components/CardImage";
+import CardArtTile from "../../components/CardArtTile";
+import DialogSheet from "../../components/ui/DialogSheet";
+import Button from "../../components/ui/Button";
+import DisclosureChevron from "../../components/DisclosureChevron";
 import CardHoverPreview from "../../components/CardHoverPreview";
 import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
@@ -51,20 +54,15 @@ function HandCard({ card, resolved, disabled, onPlay, onReserve }: { card: Goldf
     <div className="flex flex-col overflow-hidden rounded-lg border border-ctp-surface1 bg-ctp-mantle">
       <div className="p-2">
         <CardHoverPreview image={resolved?.editions[0]?.image} alt={card.name}>
-          {resolved?.editions[0] ? (
-            <CardImage image={resolved.editions[0].image} alt={card.name} className="aspect-[5/7] w-full rounded-md object-cover object-top" />
-          ) : (
-            <div className="aspect-[5/7] w-full rounded-md bg-ctp-surface0" />
-          )}
+          <CardArtTile card={resolved} name={card.name} />
         </CardHoverPreview>
-        <p className="mt-2 truncate text-sm font-medium text-ctp-text" title={card.name}>{card.name}</p>
-        {resolved?.effect && <details className="mt-1"><summary className="cursor-pointer text-xs text-ctp-blue">Read effect</summary><p className="mt-1 whitespace-pre-wrap text-xs leading-5 text-ctp-subtext1">{resolved.effect.replace(/\*\*/g, "")}</p></details>}
-        {resolved?.effect && <div className="mt-2 text-[10px] leading-4 text-ctp-subtext0">{assistedLabels.length > 0 && <p><span className="font-semibold text-ctp-green">Assisted:</span> {assistedLabels.join(" · ")}</p>}{support.hasUnsupportedText && <p><span className="font-semibold text-ctp-yellow">Player-resolved:</span> remaining costs, targets, conditions, timing, and effects.</p>}</div>}
+        <p className="mt-2 break-words text-sm font-medium text-ctp-text">{resolved ? <Link to={`/cards/${resolved.slug}`} target="_blank" rel="noreferrer" className="flex min-h-12 items-center underline">{card.name}<span className="sr-only"> (opens in a new tab)</span></Link> : card.name}</p>
       </div>
       <div className="grid gap-2 border-t border-ctp-surface1 px-3 py-2">
-        <button type="button" disabled={disabled} onClick={onPlay} className="min-h-11 w-full rounded-md border border-ctp-blue px-2.5 py-1 text-xs font-medium text-ctp-blue hover:bg-ctp-blue/10 disabled:cursor-not-allowed disabled:opacity-40">Play · Reserve {resolved?.cost_reserve === -1 ? "X" : Math.max(0, resolved?.cost_reserve ?? 0)}</button>
-        {onReserve && <button type="button" disabled={disabled} onClick={onReserve} className="min-h-11 w-full rounded-md border border-ctp-yellow/60 px-2.5 py-1 text-xs font-medium text-ctp-yellow hover:bg-ctp-yellow/10 disabled:opacity-40">Reserve to Memory</button>}
+        <button type="button" disabled={disabled} onClick={onPlay} className="min-h-12 w-full rounded-md border border-ctp-blue px-2.5 py-1 text-xs font-medium text-ctp-blue hover:bg-ctp-blue/10 disabled:cursor-not-allowed disabled:opacity-40">Play · Reserve {resolved?.cost_reserve === -1 ? "X" : Math.max(0, resolved?.cost_reserve ?? 0)}</button>
+        {onReserve && <button type="button" disabled={disabled} onClick={onReserve} className="min-h-12 w-full rounded-md border border-ctp-yellow/60 px-2.5 py-1 text-xs font-medium text-ctp-yellow hover:bg-ctp-yellow/10 disabled:opacity-40">Reserve to Memory</button>}
       </div>
+      {resolved?.effect && <details className="group px-3 pb-2"><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between text-xs text-ctp-blue">Read effect<DisclosureChevron className="group-open:rotate-180" /></summary><p className="whitespace-pre-wrap text-xs leading-5 text-ctp-subtext1">{resolved.effect.replace(/\*\*/g, "")}</p><div className="mt-2 text-xs leading-5 text-ctp-subtext0">{assistedLabels.length > 0 && <p><span className="font-semibold text-ctp-green">Assisted:</span> {assistedLabels.join(" · ")}</p>}{support.hasUnsupportedText && <p><span className="font-semibold text-ctp-yellow">Player-resolved:</span> remaining costs, targets, conditions, timing, and effects.</p>}</div></details>}
     </div>
   );
 }
@@ -92,7 +90,7 @@ export default function GoldfishIndex() {
   const [deckLabel, setDeckLabel] = useState(() => searchParams.get("custom") ? decodeCustomDecks(searchParams.get("custom")!)[0]?.label ?? "Imported deck" : "Imported deck");
   const [pasteText, setPasteText] = useState("");
   const [importMode, setImportMode] = useState<"library" | "paste">("library");
-  const [libraryState, setLibraryState] = useState<"idle" | "loading" | "ready" | "signed-out" | "error">("idle");
+  const [libraryState, setLibraryState] = useState<"loading" | "ready" | "signed-out" | "error">("loading");
   const [libraryDecks, setLibraryDecks] = useState<GoldfishDeckOption[]>([]);
   const [libraryQuery, setLibraryQuery] = useState("");
   const directImportAttempted = useRef(false);
@@ -106,7 +104,11 @@ export default function GoldfishIndex() {
   const [tokenName, setTokenName] = useState("");
   const [tokenCount, setTokenCount] = useState(1);
   const [savedSession, setSavedSession] = useState<GoldfishSession | null>(readSavedSession);
+  const toolContentRef = useRef<HTMLDivElement>(null);
+  const [tool, setTool] = useState<"menu" | "memory" | "material" | "tokens" | "glimpse" | "session" | "history" | null>(null);
   const [sessionNotice, setSessionNotice] = useState<string | null>(null);
+
+  useEffect(() => { if (tool) toolContentRef.current?.focus(); }, [tool]);
 
   function startNewHand(list: OmnidexDecklist, label?: string) {
     setDecklist(list);
@@ -119,9 +121,8 @@ export default function GoldfishIndex() {
   }
 
   useEffect(() => {
-    if (decklist || libraryState !== "idle" || importMode !== "library") return;
+    if (decklist || libraryState !== "loading" || importMode !== "library") return;
     let active = true;
-    setLibraryState("loading");
     void loadDeckLibrary(accountApi).then((library) => {
       if (!active) return;
       setLibraryDecks([
@@ -155,6 +156,7 @@ export default function GoldfishIndex() {
 
   function beginGlimpse(count: number, name = "Manual glimpse") {
     if (!state || state.library.length === 0) return;
+    setTool(null);
     setActiveGlimpse({ name, count: Math.min(Math.max(1, Math.floor(count)), state.library.length) });
     setKeptGlimpseIds(new Set());
   }
@@ -246,10 +248,10 @@ export default function GoldfishIndex() {
       <PageLayout data-component="GoldfishIndex">
         <PageHeader title="Goldfish Test" description="Choose one of your decks or paste a list to deal an opening hand and play through draws." />
         <Panel className="mt-4">
-          <div className="flex gap-2 overflow-x-auto" role="tablist" aria-label="Deck import source"><button type="button" role="tab" aria-selected={importMode === "library"} onClick={() => setImportMode("library")} className={`min-h-11 whitespace-nowrap rounded-lg px-4 text-sm font-medium ${importMode === "library" ? "bg-ctp-blue text-ctp-base" : "border border-ctp-surface1 text-ctp-subtext1"}`}>My Decks &amp; Favorites</button><button type="button" role="tab" aria-selected={importMode === "paste"} onClick={() => setImportMode("paste")} className={`min-h-11 whitespace-nowrap rounded-lg px-4 text-sm font-medium ${importMode === "paste" ? "bg-ctp-blue text-ctp-base" : "border border-ctp-surface1 text-ctp-subtext1"}`}>Paste decklist</button></div>
-          {importMode === "library" && <div className="mt-4">{libraryState === "loading" && <InlineState>Loading your deck library…</InlineState>}{libraryState === "signed-out" && <InlineState><Link to="/account" className="font-medium text-ctp-blue hover:underline">Sign in</Link> to choose from your decks and favorites, or use Paste decklist.</InlineState>}{libraryState === "error" && <InlineState tone="danger">Your deck library could not be loaded. <button type="button" onClick={() => setLibraryState("idle")} className="text-ctp-blue hover:underline">Try again</button></InlineState>}{libraryState === "ready" && <><input value={libraryQuery} onChange={(event) => setLibraryQuery(event.target.value)} placeholder="Search decks, owners, or events…" aria-label="Search deck library" className="min-h-11 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-sm sm:max-w-md" />{visibleLibraryDecks.length > 0 ? <div className="mt-3 grid gap-3 sm:grid-cols-2">{visibleLibraryDecks.map((deck) => <button key={deck.key} type="button" onClick={() => startNewHand(deck.decklist, deck.title)} className="min-h-20 rounded-xl border border-ctp-surface1 bg-ctp-base p-3 text-left transition-colors hover:border-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue"><span className="block font-semibold text-ctp-text">{deck.title}</span><span className="mt-1 block text-xs text-ctp-subtext0">{deck.subtitle} · {deck.format === "PANTHEON" ? "Pantheon" : "Standard"}</span><span className="mt-2 block text-xs text-ctp-blue">Deal opening hand →</span></button>)}</div> : <InlineState className="mt-3">No decks match this search.</InlineState>}</>}</div>}
-          {importMode === "paste" && <div className="mt-4"><textarea rows={12} value={pasteText} onChange={(event) => setPasteText(event.target.value)} placeholder={"Main\n4x Card Name\n\nMaterial\n1x Champion Name"} className="w-full rounded-lg border border-ctp-surface1 bg-ctp-base p-3 font-mono text-sm text-ctp-text" /><button type="button" disabled={!pasteText.trim()} onClick={() => { const parsed = parseDecklist(pasteText).decklist; if (parsed.main.length > 0) startNewHand(parsed, "Pasted deck"); else setSessionNotice("No Main Deck cards were recognized."); }} className="mt-3 min-h-11 rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base disabled:opacity-50">Deal opening hand</button></div>}
-          {savedSession && <div className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><p className="text-sm font-medium text-ctp-text">Resume saved test</p><p className="mt-1 text-xs text-ctp-subtext0">Turn {savedSession.state.turn} · {savedSession.state.hand.length} in hand · saved {new Date(savedSession.savedAt).toLocaleString()}</p><div className="mt-3 flex flex-wrap gap-2"><button type="button" onClick={() => resumeSession()} className="min-h-11 rounded-lg bg-ctp-green px-3 text-sm font-semibold text-ctp-base">Resume session</button><button type="button" onClick={forgetSession} className="min-h-11 rounded-lg border border-ctp-red/50 px-3 text-sm text-ctp-red">Forget</button></div></div>}
+          <div className="flex flex-wrap gap-2" role="tablist" aria-label="Deck import source"><button type="button" role="tab" aria-selected={importMode === "library"} onClick={() => setImportMode("library")} className={`min-h-12 whitespace-nowrap rounded-lg px-4 text-sm font-medium ${importMode === "library" ? "bg-ctp-blue text-ctp-base" : "border border-ctp-surface1 text-ctp-subtext1"}`}>My Decks &amp; Favorites</button><button type="button" role="tab" aria-selected={importMode === "paste"} onClick={() => setImportMode("paste")} className={`min-h-12 whitespace-nowrap rounded-lg px-4 text-sm font-medium ${importMode === "paste" ? "bg-ctp-blue text-ctp-base" : "border border-ctp-surface1 text-ctp-subtext1"}`}>Paste decklist</button></div>
+          {importMode === "library" && <div className="mt-4">{libraryState === "loading" && <InlineState>Loading your deck library…</InlineState>}{libraryState === "signed-out" && <InlineState><Link to="/account" className="font-medium text-ctp-blue hover:underline">Sign in</Link> to choose from your decks and favorites, or use Paste decklist.</InlineState>}{libraryState === "error" && <InlineState tone="danger">Your deck library could not be loaded. <button type="button" onClick={() => setLibraryState("loading")} className="min-h-12 min-w-12 px-3 text-ctp-blue hover:underline">Try again</button></InlineState>}{libraryState === "ready" && <><input value={libraryQuery} onChange={(event) => setLibraryQuery(event.target.value)} placeholder="Search decks, owners, or events…" aria-label="Search deck library" className="min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-sm sm:max-w-md" />{visibleLibraryDecks.length > 0 ? <div className="mt-3 grid gap-3 sm:grid-cols-2">{visibleLibraryDecks.map((deck) => <button key={deck.key} type="button" onClick={() => startNewHand(deck.decklist, deck.title)} className="min-h-20 rounded-xl border border-ctp-surface1 bg-ctp-base p-3 text-left transition-colors hover:border-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue"><span className="block font-semibold text-ctp-text">{deck.title}</span><span className="mt-1 block text-xs text-ctp-subtext0">{deck.subtitle} · {deck.format === "PANTHEON" ? "Pantheon" : "Standard"}</span><span className="mt-2 block text-xs text-ctp-blue">Deal opening hand →</span></button>)}</div> : <InlineState className="mt-3">No decks match this search.</InlineState>}</>}</div>}
+          {importMode === "paste" && <div className="mt-4"><textarea rows={12} value={pasteText} onChange={(event) => setPasteText(event.target.value)} placeholder={"Main\n4x Card Name\n\nMaterial\n1x Champion Name"} className="w-full rounded-lg border border-ctp-surface1 bg-ctp-base p-3 font-mono text-sm text-ctp-text" /><button type="button" disabled={!pasteText.trim()} onClick={() => { const parsed = parseDecklist(pasteText).decklist; if (parsed.main.length > 0) startNewHand(parsed, "Pasted deck"); else setSessionNotice("No Main Deck cards were recognized."); }} className="mt-3 min-h-12 rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base disabled:opacity-50">Deal opening hand</button></div>}
+          {savedSession && <div className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><p className="text-sm font-medium text-ctp-text">Resume saved test</p><p className="mt-1 text-xs text-ctp-subtext0">Turn {savedSession.state.turn} · {savedSession.state.hand.length} in hand · saved {new Date(savedSession.savedAt).toLocaleString()}</p><div className="mt-3 flex flex-wrap gap-2"><button type="button" onClick={() => resumeSession()} className="min-h-12 rounded-lg bg-ctp-green px-3 text-sm font-semibold text-ctp-base">Resume session</button><button type="button" onClick={forgetSession} className="min-h-12 rounded-lg border border-ctp-red/50 px-3 text-sm text-ctp-red">Forget</button></div></div>}
           {sessionNotice && <p role="status" className="mt-3 text-xs text-ctp-subtext1">{sessionNotice}</p>}
         </Panel>
       </PageLayout>
@@ -259,58 +261,42 @@ export default function GoldfishIndex() {
   if (!state) return <PageLayout data-component="GoldfishIndex"><InlineState className="mt-10">Loading catalog…</InlineState></PageLayout>;
 
   return (
-    <PageLayout data-component="GoldfishIndex">
+    <PageLayout data-component="GoldfishIndex" className="pb-40 [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-ctp-blue">
       <PageHeader
         title="Goldfish Test"
         description={deckLabel}
-        actions={
-          <div className="flex flex-wrap items-center gap-2">
-            <label className="text-xs text-ctp-subtext1">Hand size
-              <input type="number" min={1} max={12} value={handSize} onChange={(event) => setHandSize(Math.max(1, Math.min(12, Number(event.target.value) || 1)))} className="ml-1.5 w-14 rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1 text-xs text-ctp-text" />
-            </label>
-            <button type="button" onClick={() => startNewHand(decklist)} className="rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs font-medium text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">New hand</button>
-            <button type="button" onClick={() => { setDecklist(null); setState(null); setPendingConfirm(null); setPendingPayment(null); setActiveGlimpse(null); }} className="rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Change deck</button>
-          </div>
-        }
       />
-      <div className="mt-4 grid grid-cols-3 gap-2 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-center">
+      <div className="mt-4 grid grid-cols-3 gap-2 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
         {([['Library', state.library.length], ['Hand', state.hand.length], ['Memory', state.memory.length]] as const).map(([label, count]) => <div key={label} className="rounded-lg bg-ctp-base px-3 py-2"><div className="text-xl font-semibold tabular-nums text-ctp-text">{count}</div><div className="text-xs text-ctp-subtext0">{label}</div></div>)}
-        <div className="col-span-3 flex gap-2 sm:col-span-1 sm:block"><button type="button" disabled={state.library.length === 0 || activeGlimpse !== null} onClick={() => setState((current) => (current ? drawCards(current, 1) : current))} className="min-h-12 flex-1 rounded-md bg-ctp-blue px-4 py-2 text-sm font-medium text-ctp-base disabled:cursor-not-allowed disabled:opacity-40">Draw</button><button type="button" disabled={activeGlimpse !== null} onClick={() => setState((current) => current ? nextTurn(current) : current)} className="min-h-12 flex-1 rounded-md border border-ctp-surface1 px-3 py-2 text-xs font-medium text-ctp-subtext1 disabled:cursor-not-allowed disabled:opacity-40 sm:mt-2 sm:block">Next turn + draw</button></div>
       </div>
 
-      <Panel padding="sm" className="mt-3">
-        <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-wide text-ctp-yellow">Turn {state.turn} · {state.phase === "recollection" ? "Recollection Phase" : "Main Phase"}</p></div><div className="flex flex-wrap gap-2"><button type="button" disabled={state.phase === "recollection"} onClick={() => setState((current) => current ? beginRecollection(current) : current)} className="min-h-11 rounded-lg border border-ctp-yellow/60 px-3 text-xs font-medium text-ctp-yellow disabled:opacity-40">Begin Recollection</button><button type="button" disabled={state.phase !== "recollection" || state.memory.length === 0} onClick={() => setState((current) => current ? recollectMemory(current) : current)} className="min-h-11 rounded-lg bg-ctp-yellow px-3 text-xs font-semibold text-ctp-base disabled:opacity-40">Return Memory to hand</button><button type="button" disabled={state.memory.length === 0} onClick={() => setState((current) => current ? banishRandomFromMemory(current, 1) : current)} className="min-h-11 rounded-lg border border-ctp-red/60 px-3 text-xs font-medium text-ctp-red disabled:opacity-40">Randomly banish 1</button></div></div>
-        {state.memory.length > 0 && <p className="mt-3 text-xs text-ctp-subtext0">Memory: {state.memory.map((card) => card.name).join(" · ")}</p>}
-        {state.banished.length > 0 && <p className="mt-2 text-xs text-ctp-red">Banished: {state.banished.map((card) => card.name).join(" · ")}</p>}
-      </Panel>
-      {pendingPayment && <Panel tone="info" padding="sm" className="mt-4">
+      {pendingPayment && <DialogSheet title={`Pay for ${pendingPayment.card.name}`} onDismiss={() => setPendingPayment(null)} dirty={pendingPayment.selectedIds.size > 0} footer={<Button variant="primary" disabled={pendingPayment.selectedIds.size !== pendingPayment.reserveCost} onClick={confirmPayment}>Confirm payment ({pendingPayment.selectedIds.size}/{pendingPayment.reserveCost})</Button>}>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div><p className="text-sm font-semibold text-ctp-text">Pay for {pendingPayment.card.name}</p><p className="mt-1 text-xs leading-5 text-ctp-subtext1">Select exactly {pendingPayment.reserveCost} other card{pendingPayment.reserveCost === 1 ? "" : "s"} from Hand. Confirming moves those cards to Memory and the played card to the played zone.</p></div>
-          {pendingPayment.variable && <label className="text-xs text-ctp-subtext0">Reserve X<input type="number" min={0} max={Math.max(0, state.hand.length - 1)} value={pendingPayment.reserveCost} onChange={(event) => setPendingPayment((current) => current ? { ...current, reserveCost: Math.max(0, Math.min(state.hand.length - 1, Number(event.target.value) || 0)), selectedIds: new Set() } : current)} className="ml-2 min-h-11 w-16 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-sm text-ctp-text" /></label>}
+          {pendingPayment.variable && <label className="text-xs text-ctp-subtext0">Reserve X<input type="number" min={0} max={Math.max(0, state.hand.length - 1)} value={pendingPayment.reserveCost} onChange={(event) => setPendingPayment((current) => current ? { ...current, reserveCost: Math.max(0, Math.min(state.hand.length - 1, Number(event.target.value) || 0)), selectedIds: new Set() } : current)} className="ml-2 min-h-12 w-16 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-sm text-ctp-text" /></label>}
         </div>
-        <div className="mt-3 grid gap-2 sm:grid-cols-2">
+        <div className="mt-3 grid grid-cols-2 gap-3">
           {state.hand.filter((candidate) => candidate.id !== pendingPayment.card.id).map((candidate) => {
             const selected = pendingPayment.selectedIds.has(candidate.id);
             const selectionFull = !selected && pendingPayment.selectedIds.size >= pendingPayment.reserveCost;
-            return <button key={candidate.id} type="button" disabled={selectionFull} aria-pressed={selected} onClick={() => setPendingPayment((current) => { if (!current) return current; const selectedIds = new Set(current.selectedIds); if (selectedIds.has(candidate.id)) selectedIds.delete(candidate.id); else selectedIds.add(candidate.id); return { ...current, selectedIds }; })} className={`min-h-11 rounded-lg border px-3 py-2 text-left text-sm ${selected ? "border-ctp-yellow bg-ctp-yellow/10 text-ctp-yellow" : "border-ctp-surface1 text-ctp-subtext1"} disabled:cursor-not-allowed disabled:opacity-40`}><span className="font-medium">{candidate.name}</span>{selected && <span className="ml-2 text-[10px] uppercase tracking-wide">to Memory</span>}</button>;
+            return <button key={candidate.id} type="button" disabled={selectionFull} aria-pressed={selected} onClick={() => setPendingPayment((current) => { if (!current) return current; const selectedIds = new Set(current.selectedIds); if (selectedIds.has(candidate.id)) selectedIds.delete(candidate.id); else selectedIds.add(candidate.id); return { ...current, selectedIds }; })} className={`min-h-12 rounded-lg border px-3 py-2 text-left text-sm ${selected ? "border-ctp-yellow bg-ctp-yellow/10 text-ctp-yellow" : "border-ctp-surface1 text-ctp-subtext1"} disabled:cursor-not-allowed disabled:opacity-40`}><CardArtTile card={cardsByName.get(candidate.name)} name={candidate.name} /><span className="mt-2 block font-medium">{candidate.name}</span>{selected && <span className="ml-2 text-[10px] uppercase tracking-wide">to Memory</span>}</button>;
           })}
         </div>
         {state.hand.length - 1 < pendingPayment.reserveCost && <p role="alert" className="mt-3 text-xs text-ctp-red">Not enough other cards remain in Hand to pay this cost.</p>}
-        <div className="mt-3 flex flex-wrap gap-2"><button type="button" disabled={pendingPayment.selectedIds.size !== pendingPayment.reserveCost} onClick={confirmPayment} className="min-h-11 rounded-lg bg-ctp-blue px-4 text-sm font-semibold text-ctp-base disabled:cursor-not-allowed disabled:opacity-40">Confirm payment ({pendingPayment.selectedIds.size}/{pendingPayment.reserveCost})</button><button type="button" onClick={() => setPendingPayment(null)} className="min-h-11 rounded-lg border border-ctp-surface1 px-4 text-sm text-ctp-subtext1">Cancel</button></div>
-      </Panel>}
+      </DialogSheet>}
 
-      {pendingConfirm && (
-        <Panel tone="info" padding="sm" className="mt-4">
+      {pendingConfirm && !activeGlimpse && (
+        <DialogSheet title="Confirm draw effect" onDismiss={() => setPendingConfirm(null)}>
           <p className="text-sm text-ctp-text">
             Played <strong>{pendingConfirm.name}</strong> — its text mentions drawing {pendingConfirm.extraDraws} card{pendingConfirm.extraDraws > 1 ? "s" : ""}. Did that actually trigger? Confirm as many as really happened (a card's wording may be conditional, so this is never applied for you).
           </p>
           <div className="mt-2 flex items-center gap-2">
-            <button type="button" disabled={pendingConfirm.confirmed >= pendingConfirm.extraDraws || state.library.length === 0} onClick={confirmOneDraw} className="rounded-md border border-ctp-green/60 px-2.5 py-1 text-xs text-ctp-green hover:bg-ctp-green/10 disabled:cursor-not-allowed disabled:opacity-40">
+            <button type="button" disabled={pendingConfirm.confirmed >= pendingConfirm.extraDraws || state.library.length === 0} onClick={confirmOneDraw} className="min-h-12 min-w-12 rounded-md border border-ctp-green/60 px-2.5 py-1 text-xs text-ctp-green hover:bg-ctp-green/10 disabled:cursor-not-allowed disabled:opacity-40">
               +1 card ({pendingConfirm.confirmed}/{pendingConfirm.extraDraws})
             </button>
-            <button type="button" onClick={() => setPendingConfirm(null)} className="rounded-md border border-ctp-surface1 px-2.5 py-1 text-xs text-ctp-subtext1">Done</button>
+            <button type="button" onClick={() => setPendingConfirm(null)} className="min-h-12 min-w-12 rounded-md border border-ctp-surface1 px-2.5 py-1 text-xs text-ctp-subtext1">Done</button>
           </div>
-        </Panel>
+        </DialogSheet>
       )}
 
       <h2 className="mt-6 text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Turn {state.turn} · {state.phase === "main" ? "Main phase" : "Recollection"} · Hand</h2>
@@ -322,34 +308,60 @@ export default function GoldfishIndex() {
       </div>
 
 
-      {(state.materialDeck.length > 0 || state.materialized.length > 0) && <details className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><summary className="cursor-pointer text-sm font-semibold text-ctp-text">Material Deck ({state.materialDeck.length} remaining · {state.materialized.length} in play)</summary><div className="mt-3 grid gap-2 sm:grid-cols-2">{state.materialDeck.map((card) => <button key={card.id} type="button" disabled={state.phase !== "main"} onClick={() => setState((current) => current ? materializeCard(current, card.id) : current)} className="min-h-11 rounded-lg border border-ctp-mauve/50 px-3 text-left text-sm text-ctp-mauve hover:bg-ctp-mauve/10 disabled:cursor-not-allowed disabled:opacity-40">Materialize {card.name}</button>)}</div>{state.materialized.length > 0 && <p className="mt-3 text-xs text-ctp-subtext1">Materialized: {state.materialized.map((card) => card.name).join(" · ")}</p>}</details>}
+      {activeGlimpse && (
+        <DialogSheet title={`${activeGlimpse.name} · Glimpse ${activeGlimpse.count}`} onDismiss={() => { setActiveGlimpse(null); setKeptGlimpseIds(new Set()); }} dirty={keptGlimpseIds.size > 0} footer={<Button variant="primary" onClick={finishGlimpse}>Keep {keptGlimpseIds.size} · randomize rest</Button>}>
+          <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-wide text-ctp-mauve">{activeGlimpse.name} · Glimpse {activeGlimpse.count}</p><p className="mt-1 text-sm text-ctp-subtext1">Select cards to keep on top. Unselected cards will be randomized and moved to the bottom.</p></div></div>
+          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            {state.library.slice(0, activeGlimpse.count).map((card) => { const resolved = cardsByName.get(card.name); const kept = keptGlimpseIds.has(card.id); return <button key={card.id} type="button" aria-pressed={kept} onClick={() => setKeptGlimpseIds((current) => { const next = new Set(current); if (next.has(card.id)) next.delete(card.id); else next.add(card.id); return next; })} className={`overflow-hidden rounded-lg border p-2 text-left ${kept ? "border-ctp-green bg-ctp-green/10 ring-2 ring-ctp-green/30" : "border-ctp-surface1 bg-ctp-base"}`}><div className="relative"><CardArtTile card={resolved} name={card.name} /><span className={`absolute right-1.5 top-1.5 rounded px-2 py-1 text-xs font-semibold ${kept ? "bg-ctp-green text-ctp-base" : "bg-ctp-crust/90 text-ctp-subtext1"}`}>{kept ? "Keep" : "Bottom"}</span></div><span className="mt-2 block break-words text-xs font-medium text-ctp-text">{card.name}</span></button>; })}
+          </div>
+        </DialogSheet>
+      )}
 
-      <details className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><summary className="cursor-pointer text-sm font-semibold text-ctp-text">Tokens ({state.tokens.length})</summary><div className="mt-3 flex flex-wrap gap-2"><input value={tokenName} onChange={(event) => setTokenName(event.target.value)} placeholder="Token name" aria-label="Token name" className="min-h-11 min-w-0 flex-1 rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-sm"/><input type="number" min={1} max={20} value={tokenCount} onChange={(event) => setTokenCount(Math.max(1, Math.min(20, Number(event.target.value) || 1)))} aria-label="Token quantity" className="min-h-11 w-16 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-sm"/><button type="button" disabled={!tokenName.trim()} onClick={() => { setState((current) => current ? createTokens(current, tokenName, tokenCount) : current); setTokenName(""); }} className="min-h-11 rounded-lg border border-ctp-green/60 px-3 text-sm font-medium text-ctp-green disabled:opacity-40">Create</button></div>{state.tokens.length > 0 && <div className="mt-3 flex flex-wrap gap-2">{state.tokens.map((token) => <button key={token.id} type="button" title="Remove token" onClick={() => setState((current) => current ? removeToken(current, token.id) : current)} className="min-h-11 rounded-full border border-ctp-green/50 px-3 text-xs text-ctp-green">{token.name}{token.rested ? " · rested" : ""} ×</button>)}</div>}</details>
 
+      {tool && <DialogSheet title={tool === "menu" ? "Goldfish tools" : ({ memory: "Memory & recollection", material: "Material deck", tokens: "Tokens", glimpse: "Glimpse", session: "Session", history: "Played cards & replay" } as const)[tool]} onDismiss={() => setTool(null)} footer={tool !== "menu" ? <Button onClick={() => setTool("menu")}>All tools</Button> : undefined}>
+        <div ref={toolContentRef} tabIndex={-1} className="outline-none">
+        {tool === "menu" && <div className="grid gap-2">{([
+          ["memory", `Memory & recollection · ${state.memory.length} ${state.memory.length === 1 ? "card" : "cards"}`], ["material", `Material deck · ${state.materialDeck.length} remaining`], ["tokens", `Tokens · ${state.tokens.length}`], ["glimpse", "Glimpse / look at top cards"], ["session", "Session / new hand / change deck"], ["history", `Played cards & replay · ${state.played.length} played`],
+        ] as const).map(([key, label]) => <Button key={key} className="text-left" onClick={() => setTool(key)}>{label}</Button>)}</div>}
+        {tool === "memory" && <><Panel padding="sm" className="mt-3">
+        <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-wide text-ctp-yellow">Turn {state.turn} · {state.phase === "recollection" ? "Recollection Phase" : "Main Phase"}</p></div><div className="flex flex-wrap gap-2"><button type="button" disabled={state.phase === "recollection"} onClick={() => setState((current) => current ? beginRecollection(current) : current)} className="min-h-12 rounded-lg border border-ctp-yellow/60 px-3 text-xs font-medium text-ctp-yellow disabled:opacity-40">Begin Recollection</button><button type="button" disabled={state.phase !== "recollection" || state.memory.length === 0} onClick={() => setState((current) => current ? recollectMemory(current) : current)} className="min-h-12 rounded-lg bg-ctp-yellow px-3 text-xs font-semibold text-ctp-base disabled:opacity-40">Return Memory to hand</button><button type="button" disabled={state.memory.length === 0} onClick={() => setState((current) => current ? banishRandomFromMemory(current, 1) : current)} className="min-h-12 rounded-lg border border-ctp-red/60 px-3 text-xs font-medium text-ctp-red disabled:opacity-40">Randomly banish 1</button></div></div>
+        {state.memory.length > 0 && <p className="mt-3 text-xs text-ctp-subtext0">Memory: {state.memory.map((card) => card.name).join(" · ")}</p>}
+        {state.banished.length > 0 && <p className="mt-2 text-xs text-ctp-red">Banished: {state.banished.map((card) => card.name).join(" · ")}</p>}
+      </Panel>
+        </>}
+        {tool === "material" && <>{(state.materialDeck.length > 0 || state.materialized.length > 0) && <section className="space-y-3"><h3 className="text-sm font-semibold">Material Deck ({state.materialDeck.length} remaining · {state.materialized.length} in play)</h3><div className="mt-3 grid grid-cols-2 gap-3">{state.materialDeck.map((card) => <button key={card.id} type="button" disabled={state.phase !== "main"} onClick={() => setState((current) => current ? materializeCard(current, card.id) : current)} className="min-h-12 rounded-lg border border-ctp-mauve/50 p-3 text-left text-sm text-ctp-mauve hover:bg-ctp-mauve/10 disabled:cursor-not-allowed disabled:opacity-40"><CardArtTile card={cardsByName.get(card.name)} name={card.name} /><span className="mt-2 block">Materialize {card.name}</span></button>)}</div>{state.materialized.length > 0 && <p className="mt-3 text-xs text-ctp-subtext1">Materialized: {state.materialized.map((card) => card.name).join(" · ")}</p>}</section>}{state.materialDeck.length === 0 && state.materialized.length === 0 && <InlineState>No material cards in this deck.</InlineState>}</>}
+        {tool === "tokens" && <>
+      <section className="space-y-3"><h3 className="text-sm font-semibold">Tokens ({state.tokens.length})</h3><div className="mt-3 flex flex-wrap gap-2"><input value={tokenName} onChange={(event) => setTokenName(event.target.value)} placeholder="Token name" aria-label="Token name" className="min-h-12 min-w-0 flex-1 rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-sm"/><input type="number" min={1} max={20} value={tokenCount} onChange={(event) => setTokenCount(Math.max(1, Math.min(20, Number(event.target.value) || 1)))} aria-label="Token quantity" className="min-h-12 w-16 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-sm"/><button type="button" disabled={!tokenName.trim()} onClick={() => { setState((current) => current ? createTokens(current, tokenName, tokenCount) : current); setTokenName(""); }} className="min-h-12 rounded-lg border border-ctp-green/60 px-3 text-sm font-medium text-ctp-green disabled:opacity-40">Create</button></div>{state.tokens.length > 0 && <div className="mt-3 flex flex-wrap gap-2">{state.tokens.map((token) => <button key={token.id} type="button" title="Remove token" onClick={() => setState((current) => current ? removeToken(current, token.id) : current)} className="min-h-12 rounded-full border border-ctp-green/50 px-3 text-xs text-ctp-green">{token.name}{token.rested ? " · rested" : ""} ×</button>)}</div>}</section></>}
+        {tool === "glimpse" && <>
       <div className="mt-3 flex flex-wrap items-center gap-2">
         <label className="text-xs text-ctp-subtext1" htmlFor="goldfish-glimpse-size">Glimpse</label>
-        <input id="goldfish-glimpse-size" type="number" min={1} max={Math.max(1, state.library.length)} value={glimpseSize} onChange={(event) => setGlimpseSize(Math.max(1, Number(event.target.value) || 1))} className="w-14 rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1.5 text-xs text-ctp-text" />
-        <button type="button" disabled={state.library.length === 0 || activeGlimpse !== null} onClick={() => beginGlimpse(glimpseSize)} className="rounded-md border border-ctp-mauve/60 px-3 py-1.5 text-xs font-medium text-ctp-mauve hover:bg-ctp-mauve/10 disabled:opacity-40">Look at top cards</button>
+        <input id="goldfish-glimpse-size" type="number" min={1} max={Math.max(1, state.library.length)} value={glimpseSize} onChange={(event) => setGlimpseSize(Math.max(1, Number(event.target.value) || 1))} className="min-h-12 w-14 rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1.5 text-xs text-ctp-text" />
+        <button type="button" disabled={state.library.length === 0 || activeGlimpse !== null} onClick={() => beginGlimpse(glimpseSize)} className="min-h-12 min-w-12 rounded-md border border-ctp-mauve/60 px-3 py-1.5 text-xs font-medium text-ctp-mauve hover:bg-ctp-mauve/10 disabled:opacity-40">Look at top cards</button>
         <span className="text-xs text-ctp-subtext0">Use for variable or manually triggered Glimpse effects.</span>
       </div>
 
-      {activeGlimpse && (
-        <Panel className="mt-4 border-ctp-mauve/50">
-          <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-semibold uppercase tracking-wide text-ctp-mauve">{activeGlimpse.name} · Glimpse {activeGlimpse.count}</p><p className="mt-1 text-sm text-ctp-subtext1">Select cards to keep on top. Unselected cards will be randomized and moved to the bottom.</p></div><button type="button" onClick={finishGlimpse} className="rounded-md bg-ctp-mauve px-3 py-2 text-sm font-medium text-ctp-base">Keep {keptGlimpseIds.size} · randomize rest</button></div>
-          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {state.library.slice(0, activeGlimpse.count).map((card) => { const resolved = cardsByName.get(card.name); const kept = keptGlimpseIds.has(card.id); return <button key={card.id} type="button" aria-pressed={kept} onClick={() => setKeptGlimpseIds((current) => { const next = new Set(current); if (next.has(card.id)) next.delete(card.id); else next.add(card.id); return next; })} className={`overflow-hidden rounded-lg border p-2 text-left ${kept ? "border-ctp-green bg-ctp-green/10 ring-2 ring-ctp-green/30" : "border-ctp-surface1 bg-ctp-base"}`}><div className="relative">{resolved?.editions[0] ? <CardImage image={resolved.editions[0].image} alt={card.name} className="aspect-[5/7] w-full rounded-md object-cover object-top" /> : <div className="aspect-[5/7] rounded-md bg-ctp-surface0" />}<span className={`absolute right-1.5 top-1.5 rounded px-2 py-1 text-xs font-semibold ${kept ? "bg-ctp-green text-ctp-base" : "bg-ctp-crust/90 text-ctp-subtext1"}`}>{kept ? "Keep" : "Bottom"}</span></div><span className="mt-2 block truncate text-xs font-medium text-ctp-text">{card.name}</span></button>; })}
-          </div>
-        </Panel>
+{state.library.length === 0 && <InlineState>The library is empty.</InlineState>}</>}
+        {tool === "session" && <><div className="flex flex-wrap items-center gap-2">
+            <label className="text-xs text-ctp-subtext1">Hand size
+              <input type="number" min={1} max={12} value={handSize} onChange={(event) => setHandSize(Math.max(1, Math.min(12, Number(event.target.value) || 1)))} className="ml-1.5 min-h-12 w-14 rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1 text-xs text-ctp-text" />
+            </label>
+            <button type="button" onClick={() => startNewHand(decklist)} className="min-h-12 min-w-12 rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs font-medium text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">New hand</button>
+            <button type="button" onClick={() => { setTool(null); setDecklist(null); setState(null); setPendingConfirm(null); setPendingPayment(null); setActiveGlimpse(null); }} className="min-h-12 min-w-12 rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Change deck</button>
+          </div>      <section className="space-y-3"><h3 className="text-sm font-semibold"><span>Session · </span><span className="text-xs font-normal text-ctp-subtext0">{savedSession ? `Turn ${savedSession.state.turn}` : "Not saved"}</span></h3><p className="mt-2 text-xs leading-5 text-ctp-subtext1">Save every modeled zone, token, random seed, and replay-log entry on this device. Saving replaces the previous Goldfish session.</p><div className="mt-3 flex flex-wrap gap-2"><button type="button" onClick={saveSession} className="min-h-12 rounded-lg bg-ctp-green px-3 text-sm font-semibold text-ctp-base">Save current session</button>{savedSession && <><button type="button" onClick={() => resumeSession()} className="min-h-12 rounded-lg border border-ctp-blue/60 px-3 text-sm text-ctp-blue">Restore saved</button><button type="button" onClick={forgetSession} className="min-h-12 rounded-lg border border-ctp-red/50 px-3 text-sm text-ctp-red">Forget saved session</button></>}</div>{sessionNotice && <p role="status" className="mt-3 text-xs text-ctp-subtext1">{sessionNotice}</p>}</section>
+        </>}
+        {tool === "history" && <>{state.played.length > 0 && (
+        <section className="space-y-3">
+          <h3 className="text-sm font-semibold">Played this hand ({state.played.length})</h3>
+          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">{state.played.map((card, index) => { const resolved = cardsByName.get(card.name); return <div key={card.id} className="min-w-0"><div className="relative"><CardArtTile card={resolved} name={card.name} /><span className="absolute left-1 top-1 rounded bg-ctp-crust/90 px-1 text-[10px] text-ctp-text">{index + 1}</span></div><p className="mt-1 break-words text-sm text-ctp-subtext1" title={card.name}>{card.name}</p></div>; })}</div>
+        </section>
       )}
+      <section className="space-y-3"><h3 className="text-sm font-semibold"><span>Replay log · seed {state.seed} · </span><span>{state.history.length} actions</span></h3>{isReplayableHistory(state.history) && <div className="mt-3 rounded-lg border border-ctp-surface1 bg-ctp-base p-3"><p className="text-xs leading-5 text-ctp-subtext1">Rebuild this position from the original shuffled deck and every recorded action.</p><button type="button" onClick={replayFromStart} className="mt-2 min-h-12 w-full rounded-lg border border-ctp-blue/60 px-3 text-sm font-medium text-ctp-blue sm:w-auto">Replay from start</button></div>}<ol className="mt-3 space-y-1 text-xs text-ctp-subtext1">{state.history.map((action) => <li key={action.id}><span className="mr-2 text-ctp-subtext0">T{action.turn}</span>{action.label}</li>)}</ol></section></>}
+      </div></DialogSheet>}
+      <div role="region" aria-label="Turn controls" className="fixed inset-x-0 bottom-0 z-30 border-t border-ctp-surface1 bg-ctp-base p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-lg">
+        <div className="mx-auto max-w-3xl"><p role="status" className="mb-2 text-xs text-ctp-subtext1">Turn {state.turn} · {state.phase === "main" ? "Main phase" : "Recollection"} · {state.hand.length} in hand · {state.library.length} in library</p>
+        <div className="grid grid-cols-3 gap-2"><Button variant="primary" disabled={state.library.length === 0 || !!activeGlimpse || !!pendingPayment || !!pendingConfirm} onClick={() => setState(current => current ? drawCards(current, 1) : current)}>Draw</Button><Button disabled={!!activeGlimpse || !!pendingPayment || !!pendingConfirm} onClick={() => setState(current => current ? nextTurn(current) : current)}>Next turn + draw</Button><Button onClick={() => setTool("menu")}>Tools</Button></div></div>
+      </div>
 
-      <details className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-ctp-text [&::-webkit-details-marker]:hidden"><span>Session</span><span className="text-xs font-normal text-ctp-subtext0">{savedSession ? `Turn ${savedSession.state.turn}` : "Not saved"}</span></summary><p className="mt-2 text-xs leading-5 text-ctp-subtext1">Save every modeled zone, token, random seed, and replay-log entry on this device. Saving replaces the previous Goldfish session.</p><div className="mt-3 flex flex-wrap gap-2"><button type="button" onClick={saveSession} className="min-h-11 rounded-lg bg-ctp-green px-3 text-sm font-semibold text-ctp-base">Save current session</button>{savedSession && <><button type="button" onClick={() => resumeSession()} className="min-h-11 rounded-lg border border-ctp-blue/60 px-3 text-sm text-ctp-blue">Restore saved</button><button type="button" onClick={forgetSession} className="min-h-11 rounded-lg border border-ctp-red/50 px-3 text-sm text-ctp-red">Forget saved session</button></>}</div>{sessionNotice && <p role="status" className="mt-3 text-xs text-ctp-subtext1">{sessionNotice}</p>}</details>
-      {state.played.length > 0 && (
-        <details className="mt-6 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3">
-          <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Played this hand ({state.played.length})</summary>
-          <div className="mt-3 flex gap-2 overflow-x-auto pb-1">{state.played.map((card, index) => { const resolved = cardsByName.get(card.name); return <div key={card.id} className="w-20 shrink-0"><div className="relative">{resolved?.editions[0] ? <CardImage image={resolved.editions[0].image} alt={card.name} className="aspect-[5/7] w-full rounded object-cover object-top" /> : <div className="aspect-[5/7] rounded bg-ctp-surface0" />}<span className="absolute left-1 top-1 rounded bg-ctp-crust/90 px-1 text-[10px] text-ctp-text">{index + 1}</span></div><p className="mt-1 truncate text-[10px] text-ctp-subtext1" title={card.name}>{card.name}</p></div>; })}</div>
-        </details>
-      )}
-      <details className="mt-6 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3"><summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 text-xs font-semibold uppercase tracking-wide text-ctp-subtext0 [&::-webkit-details-marker]:hidden"><span>Replay log · seed {state.seed}</span><span>{state.history.length} actions</span></summary>{isReplayableHistory(state.history) && <div className="mt-3 rounded-lg border border-ctp-surface1 bg-ctp-base p-3"><p className="text-xs leading-5 text-ctp-subtext1">Rebuild this position from the original shuffled deck and every recorded action.</p><button type="button" onClick={replayFromStart} className="mt-2 min-h-11 w-full rounded-lg border border-ctp-blue/60 px-3 text-sm font-medium text-ctp-blue sm:w-auto">Replay from start</button></div>}<ol className="mt-3 space-y-1 text-xs text-ctp-subtext1">{state.history.map((action) => <li key={action.id}><span className="mr-2 text-ctp-subtext0">T{action.turn}</span>{action.label}</li>)}</ol></details>
     </PageLayout>
   );
 }

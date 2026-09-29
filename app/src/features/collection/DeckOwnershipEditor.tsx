@@ -13,6 +13,8 @@ export default function DeckOwnershipEditor({ required, entries, cardsByName, on
   const [baseline] = useState(entries);
   const [quantities, setQuantities] = useState<Record<string, string>>({});
   const [query, setQuery] = useState("");
+  const [ownership, setOwnership] = useState("all");
+  const [element, setElement] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const rows = useMemo(() => required.map(line => {
@@ -23,7 +25,15 @@ export default function DeckOwnershipEditor({ required, entries, cardsByName, on
   const value = (entry: CollectionEntry) => quantities[collectionEntryKey(entry)] ?? String(entry.ownedQuantity);
   const changed = rows.flatMap(row => row.entries.filter(entry => value(entry) !== String(entry.ownedQuantity)));
   const invalid = changed.some(entry => value(entry).trim() === "" || !Number.isInteger(Number(value(entry))) || Number(value(entry)) < 0 || Number(value(entry)) > 9999);
-  const visibleRows = rows.filter(row => row.required.cardName.toLowerCase().includes(query.trim().toLowerCase()));
+  const elements = [...new Set(rows.flatMap(row => cardsByName.get(row.required.cardName)?.elements ?? []))].sort();
+  const visibleRows = rows.filter(row => {
+    const total = row.entries.reduce((sum, entry) => sum + (Number(value(entry)) || 0), 0);
+    const matchesOwnership = ownership === "all" || (ownership === "missing" && total < row.required.quantity)
+      || (ownership === "complete" && total >= row.required.quantity)
+      || (ownership === "changed" && row.entries.some(entry => value(entry) !== String(entry.ownedQuantity)));
+    return matchesOwnership && row.required.cardName.toLowerCase().includes(query.trim().toLowerCase())
+      && (!element || cardsByName.get(row.required.cardName)?.elements.includes(element));
+  });
   function field(entry: CollectionEntry, label: string) {
     return <label key={collectionEntryKey(entry)} className="mt-2 block text-xs text-ctp-subtext1">{label}<input aria-label={`${label} for ${entry.cardName}`} type="number" min={0} max={9999} step={1} inputMode="numeric" disabled={busy} value={value(entry)} onChange={event => setQuantities(current => ({ ...current, [collectionEntryKey(entry)]: event.target.value }))} className="mt-1 min-h-12 w-full min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-base text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue" /></label>;
   }
@@ -44,6 +54,11 @@ export default function DeckOwnershipEditor({ required, entries, cardsByName, on
   </div>}>
     <p className="mb-3 text-sm text-ctp-subtext1">Edit the physical copies you own across your collection. Unspecified copies and recorded printings are added together. Proxies are kept separately.</p>
     <input type="search" aria-label="Find a deck card to update" placeholder="Find a card…" value={query} onChange={event => setQuery(event.target.value)} className="mb-4 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 text-sm focus-visible:outline-2 focus-visible:outline-ctp-blue" />
+    <div className="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <label className="text-sm">Ownership<select value={ownership} onChange={event => setOwnership(event.target.value)} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 focus-visible:outline-2 focus-visible:outline-ctp-blue"><option value="all">All cards</option><option value="missing">Missing copies</option><option value="complete">Own required copies</option><option value="changed">Unsaved changes</option></select></label>
+      <label className="text-sm">Element<select value={element} onChange={event => setElement(event.target.value)} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 focus-visible:outline-2 focus-visible:outline-ctp-blue"><option value="">All elements</option>{elements.map(value => <option key={value} value={value}>{value}</option>)}</select></label>
+    </div>
+    <div className="mb-3 flex items-center justify-between gap-2"><p role="status" className="text-xs text-ctp-subtext1">Showing {visibleRows.length} of {rows.length} cards · filters include your draft</p>{(query || ownership !== "all" || element) && <Button onClick={() => { setQuery(""); setOwnership("all"); setElement(""); }}>Clear filters</Button>}</div>
     <div className="grid grid-cols-2 items-start gap-3">{visibleRows.map(row => {
       const total = row.entries.reduce((sum, entry) => sum + (Number(value(entry)) || 0), 0);
       return <CardResult key={row.required.cardUuid} card={cardsByName.get(row.required.cardName)} name={row.required.cardName} newTab>
@@ -53,6 +68,6 @@ export default function DeckOwnershipEditor({ required, entries, cardsByName, on
         <Button className="mt-2 w-full" disabled={busy || total >= row.required.quantity || invalid} onClick={() => setQuantities(current => ({ ...current, [collectionEntryKey(row.entries[0])]: String(Number(value(row.entries[0])) + Math.max(0, row.required.quantity - total)) }))}>Own required copies</Button>
       </CardResult>;
     })}</div>
-    {visibleRows.length === 0 && <p className="p-4 text-sm text-ctp-subtext1">No deck cards match your search.</p>}
+    {visibleRows.length === 0 && <p className="p-4 text-sm text-ctp-subtext1">No deck cards match these filters. Your unsaved changes are kept when cards are hidden.</p>}
   </DialogSheet>;
 }

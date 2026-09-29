@@ -12,7 +12,15 @@ test("bans are format specific and include every active section, not maybeboard"
   assert.deepEqual(deckCardIssues(deck, catalog, "PANTHEON"), []);
   assert.equal(cardLegalityStatus(card, "UNKNOWN"), "unverified");
   assert.equal(cardLegalityStatus(undefined, "STANDARD"), "unverified");
-  assert.equal(cardLegalityStatus({ ...card, legality: null }, "STANDARD"), "unverified");
+  assert.equal(cardLegalityStatus({ ...card, legality: null }, "STANDARD"), "allowed");
+  assert.equal(cardLegalityStatus({ ...card, legality: null }, "PANTHEON"), "allowed");
+  assert.equal(cardLegalityStatus({ ...card, legality: null }, "UNKNOWN"), "unverified");
+  assert.equal(cardLegalityStatus({ ...card, legality: {} }, "STANDARD"), "unverified");
+});
+test("null legality records do not produce deck warnings", () => {
+  const unrestricted = { ...card, legality: null };
+  const deck = { main: [{ card: card.name, quantity: 4 }], material: [], sideboard: [] };
+  assert.deepEqual(deckCardIssues(deck, new Map([[card.name, unrestricted]]), "STANDARD"), []);
 });
 test("warnings fire for additions but not section moves, removals or unchanged loads", () => {
   const deck = { ...empty(), main: [{ card: card.name, quantity: 2 }] };

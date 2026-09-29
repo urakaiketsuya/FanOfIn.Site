@@ -6,7 +6,10 @@ export interface DeckCardIssue {
   code: "banned" | "unverified"; card: string; section: DeckLegalitySection; quantity: number; format: DeckFormat;
 }
 export function cardLegalityStatus(card: Card | undefined, format: DeckFormat): "banned" | "unverified" | "allowed" {
-  if (format === "UNKNOWN" || !card || card.legality?.[format] === undefined) return "unverified";
+  if (format === "UNKNOWN" || !card) return "unverified";
+  // A null catalog legality record means no format restrictions.
+  if (card.legality === null) return "allowed";
+  if (card.legality?.[format] === undefined) return "unverified";
   return card.legality[format].limit === 0 ? "banned" : "allowed";
 }
 /** Current catalog only. Maybeboard is intentionally excluded from active deck legality. */

@@ -10,6 +10,8 @@ import { formatUsd } from "../../lib/format";
 import { buildTcgplayerMassEntryUrl } from "../../lib/tcgplayerMassEntry";
 import Panel from "../../components/ui/Panel";
 import Button from "../../components/ui/Button";
+import DialogSheet from "../../components/ui/DialogSheet";
+import CardResult from "../../components/CardResult";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import DeckOwnershipEditor from "./DeckOwnershipEditor";
 import { deckCollectionLines } from "./collectionBatch";
@@ -24,6 +26,7 @@ export default function DeckCollectionTools({ decklist, cardsByName, source, own
   const [includeSideboard, setIncludeSideboard] = useState(true);
   const [busy, setBusy] = useState(false);
   const [editing, setEditing] = useState(false);
+  const [shopping, setShopping] = useState(false);
   const { notify, dismiss } = useToast();
   const updateToast = useRef("");
   const mutationBusy = useRef(false);
@@ -91,7 +94,7 @@ export default function DeckCollectionTools({ decklist, cardsByName, source, own
     if (!collection || unresolved || busy) return;
     const lines = collectionCompletionLines(required, collection);
     if (!lines.length) return;
-    await update("at-least", lines);
+    return update("at-least", lines);
   }
   async function undo(transactionId: string) {
     if (mutationBusy.current) throw new Error("Wait for the current collection update to finish.");
@@ -120,9 +123,23 @@ export default function DeckCollectionTools({ decklist, cardsByName, source, own
     {unresolved > 0 && <p role="status" className="mt-2 text-sm text-ctp-yellow">{unresolved} card{unresolved === 1 ? " is" : "s are"} still unavailable in the catalog. You can edit resolved cards; marking the whole deck owned is unavailable until all cards resolve.</p>}
 
     {error && <div className="mt-3"><p role="alert" className="text-sm text-ctp-red">{error}</p><Button className="mt-2" disabled={busy} onClick={() => void retry()}>Refresh ownership</Button></div>}
-    {missingLines.length > 0 && <details className="group mt-3"><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 rounded text-sm focus-visible:outline-2 focus-visible:outline-ctp-blue">Missing cards{missingCost > 0 ? ` · about ${formatUsd(missingCost)}` : ""}<DisclosureChevron className="shrink-0 group-open:rotate-180" /></summary><ul className="mt-2 grid gap-2 text-sm sm:grid-cols-2">{missingLines.map(line => <li key={line.card}>{line.missing}× {line.card}</li>)}</ul><a href={buildTcgplayerMassEntryUrl(missingLines.map(line => ({ name: line.card, quantity: line.missing })))} target="_blank" rel="noreferrer" className={`${linkClass} mt-2`}>Shop missing cards ↗</a></details>}
+    {missingLines.length > 0 && <details className="group mt-3"><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 rounded text-sm focus-visible:outline-2 focus-visible:outline-ctp-blue">Missing cards{missingCost > 0 ? ` · about ${formatUsd(missingCost)}` : ""}<DisclosureChevron className="shrink-0 group-open:rotate-180" /></summary><ul className="mt-2 grid gap-2 text-sm sm:grid-cols-2">{missingLines.map(line => <li key={line.card}>{line.missing}× {line.card}</li>)}</ul><Button className="mt-2" onClick={() => setShopping(true)}>Shop missing cards</Button></details>}
     <details className="group mt-2"><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 rounded text-sm focus-visible:outline-2 focus-visible:outline-ctp-blue">More collection actions<DisclosureChevron className="group-open:rotate-180" /></summary><p className="my-2 text-xs text-ctp-subtext1">Add another full copy of this deck to your existing inventory{includeSideboard ? ", including sideboard" : ""}.</p><Button disabled={busy || !!unresolved || !required.length} onClick={() => void update("add", required)}>Add another copy of this deck</Button></details>
     {ownerDeckId && <SavedDeckLocations decklist={decklist} deckId={ownerDeckId} cards={[...cardsByName.values()]} />}
     {editing && <DeckOwnershipEditor required={required} entries={collection} cardsByName={cardsByName} onSave={lines => update("set", lines)} onDismiss={() => setEditing(false)} />}
+    {shopping && <DialogSheet title="Shop missing cards" onDismiss={() => setShopping(false)} dismissible={!busy} footer={<div className="space-y-2">
+      {error && <p role="alert" className="text-sm text-ctp-red">{error}</p>}
+      {missingLines.length > 0 && <a href={buildTcgplayerMassEntryUrl(missingLines.map(line => ({ name: line.card, quantity: line.missing })))} target="_blank" rel="noreferrer" className={`${linkClass} w-full justify-center`}>Shop on TCGplayer ↗</a>}
+      <Button variant="primary" className="w-full" disabled={busy || !!unresolved || !missingLines.length} onClick={async () => { if (await ownAll()) setShopping(false); }}>{busy ? "Adding…" : "Add missing copies to collection"}</Button>
+    </div>}>
+      <p className="mb-3 text-sm text-ctp-subtext1">Shop for these cards, then add them to your collection when you have them. Opening the shop leaves your collection unchanged.</p>
+      {missingLines.length > 0 ? <>
+        <p className="mb-3 text-sm">{status.missingCopies} missing {status.missingCopies === 1 ? "copy" : "copies"} across {missingLines.length} {missingLines.length === 1 ? "card" : "cards"}{missingCost > 0 ? ` · about ${formatUsd(missingCost)}` : ""}.</p>
+        <div className="grid grid-cols-2 items-start gap-3">{missingLines.map(line => <CardResult key={line.card} card={cardsByName.get(line.card)} name={line.card} newTab><p className="text-sm">{line.missing}× missing</p></CardResult>)}</div>
+
+        <p className="mt-2 text-xs text-ctp-subtext1">Adding fills only the missing physical copies as unspecified printings. Existing printings, extra copies, and proxies are preserved. You can undo the update.</p>
+        {unresolved > 0 && <p role="status" className="mt-2 text-sm text-ctp-yellow">Some cards are unavailable in the catalog. Shopping is available; adding to your collection will be available when every card resolves.</p>}
+      </> : <p role="status">Your collection already covers this list.</p>}
+    </DialogSheet>}
   </Panel>;
 }
