@@ -141,7 +141,7 @@ export default function DeckReviewIndex() {
   const {
     catalogByName, liveCatalogByName, priceByName, popularityIndex: popularityIndexData,
     population: { rows, spiritsPresent, loading: populationLoading },
-    cardQuantityStats: cardQuantityStatsData, communityInclusion: communityCardInclusion, collection,
+    cardQuantityStats: cardQuantityStatsData, communityInclusion: communityCardInclusion, collection, collectionLoaded, collectionError,
   } = builderData;
 
   const championsPresent = useMemo(() => {
@@ -234,7 +234,7 @@ export default function DeckReviewIndex() {
   const sideboardTotal = useMemo(() => keptSideboard.reduce((sum, c) => sum + c.quantity, 0), [keptSideboard]);
   const totalPrice = useMemo(() => calculateLinePrice(keptLines, priceByName), [keptLines, priceByName]);
   const sideboardPrice = useMemo(() => calculateLinePrice(keptSideboardLines, priceByName), [keptSideboardLines, priceByName]);
-  const collectionStatus = useMemo(() => keptCount ? computeDeckCollectionStatus(keptDecklist, collection, true) : null, [keptCount, keptDecklist, collection]);
+  const collectionStatus = useMemo(() => keptCount && collectionLoaded ? computeDeckCollectionStatus(keptDecklist, collection, true) : null, [keptCount, keptDecklist, collection, collectionLoaded]);
   const validation = useMemo(
     () => validateDeck({ main: keptMain, material: keptMaterial, sideboard: keptSideboard }, catalogByName, identityElements, deckFormat),
     [keptMain, keptMaterial, keptSideboard, catalogByName, identityElements, deckFormat],
@@ -398,6 +398,7 @@ export default function DeckReviewIndex() {
               </span>
             </div>
             <details className="mt-2 text-sm"><summary className="min-h-11 cursor-pointer py-3 text-ctp-subtext1">Price and collection</summary><p>Estimated total: {formatUsd(totalPrice.sum + sideboardPrice.sum)}</p>
+            {!collectionLoaded && <p role="status" className="mt-3 text-sm text-ctp-subtext1">{collectionError ?? "Loading collection coverage…"}</p>}
             {collectionStatus && collectionStatus.missingCopies > 0 && <details className="mt-3 rounded-lg border border-ctp-yellow/35 bg-ctp-yellow/10 p-3 text-sm"><summary className="cursor-pointer font-medium text-ctp-yellow">{collectionStatus.missingCopies} missing cop{collectionStatus.missingCopies === 1 ? "y" : "ies"}</summary><ul className="mt-2 space-y-1 text-xs text-ctp-subtext1">{collectionStatus.lines.filter((line) => line.missing > 0).map((line) => <li key={line.card}>{line.missing}× {line.card}</li>)}</ul></details>}
             </details>
             <div>{keptCount === 0 ? (

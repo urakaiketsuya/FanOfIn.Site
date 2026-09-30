@@ -128,7 +128,7 @@ function ProductDeckCard({
         if (shortfall > 0) missing.push({ ...line, quantity: shortfall });
       }
       await assignCopies(favorite.locationId, assignedHere);
-      window.dispatchEvent(new Event("fanofin:collection-updated"));
+
       setMissingCollectionLines(missing);
       notify({ message: `${deck.name} pinned to My Decks.${missing.length ? " Some cards are still missing." : " Existing copies assigned."}`, tone: missing.length ? "warning" : "success", key: "ownership" });
       if (missing.length) {
@@ -152,7 +152,7 @@ function ProductDeckCard({
     try {
       await accountApi.updateCollection({ mode: "add", source: `Official product: ${deck.name}`, requestId: crypto.randomUUID(), lines: missingCollectionLines });
       await assignCopies(`official-product:${deck.id}`, missingCollectionLines);
-      window.dispatchEvent(new Event("fanofin:collection-updated"));
+
       setMissingCollectionLines([]); setOwnershipState("saved");
       notify({ message: "Missing copies added and assigned.", key: "ownership" });
       setOwnershipNotice(`Added and assigned the remaining ${deck.name} copies. Your pinned list is ready.`);

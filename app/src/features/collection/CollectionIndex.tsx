@@ -1,3 +1,4 @@
+import { subscribeCollectionChanges } from "../../lib/collectionEvents";
 import { Link, useNavigate } from "react-router-dom";
 import EditorDialog from "../../components/deck-editor/EditorDialog";
 import CollectionChangesReview from "./CollectionChangesReview";
@@ -22,7 +23,8 @@ import PageLayout from "../../components/layout/PageLayout";
 import Panel from "../../components/ui/Panel";
 import Section from "../../components/ui/Section";
 import { InlineState } from "../../components/ui/ContentState";
-import { buildTcgplayerMassEntryUrl } from "../../lib/tcgplayerMassEntry";
+import MissingCardsReview from "./MissingCardsReview";
+import { collectionCompletionLines } from "@gatcg/shared";
 
 function downloadCsv(entries: CollectionEntry[]) {
   const csv = collectionCsv(entries);
@@ -70,6 +72,8 @@ export default function CollectionIndex() {
   useDocumentTitle("My Collection", "Track cards you own and see which decks you can build.");
   const navigate = useNavigate();
   const cards = useCardCatalog();
+  const [shopping, setShopping] = useState(false);
+  const cardsByName = useMemo(() => new Map(cards.map(card => [card.name, card])), [cards]);
   const [reviewChanges, setReviewChanges] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   const [view, setView] = useState<"sets" | "add" | "import" | "coverage" | "history">("sets");
@@ -106,13 +110,20 @@ export default function CollectionIndex() {
   const [printingCardUuid, setPrintingCardUuid] = useState("");
   const [printingEditionUuid, setPrintingEditionUuid] = useState("");
 
+  const readRevision = useRef(0);
   async function refresh() {
+    const revision = ++readRevision.current;
     const [collectionResult, deckResult] = await Promise.allSettled([accountApi.collection(), accountApi.decks()]);
+    if (revision !== readRevision.current) return;
     if (collectionResult.status === "fulfilled") { setEntries(collectionResult.value.entries); setTransactions(collectionResult.value.transactions); setCollectionReady(true); setCollectionError(null); }
     if (deckResult.status === "fulfilled") setDecks(deckResult.value.decks);
     if (collectionResult.status === "rejected") { setCollectionError("Could not load your collection. Your progress is unavailable until it loads."); throw collectionResult.reason; }
   }
   useEffect(() => { void accountApi.session().then((result) => { setUser(result.user); if (result.user) void refresh().catch(() => undefined); }).catch(() => setUser(null)); }, []);
+  useEffect(() => {
+    if (!user) return;
+    return subscribeCollectionChanges(() => { void refresh().catch(() => undefined); });
+  }, [user]);
   const totalsByName = useMemo(() => collectionTotalsByCard(entries), [entries]);
   const uniqueOwnedCount = [...totalsByName.values()].filter(total => total.ownedQuantity > 0).length;
   const setOptions = useMemo(() => {
@@ -132,7 +143,11 @@ export default function CollectionIndex() {
   const setPreview = useMemo(() => summarizeAtLeastChanges(setLines, entries), [setLines, entries]);
   const crossDeckShortages = useMemo(() => crossDeckCollectionShortages(decks, entries, true), [decks, entries]);
   const crossDeckMissingCopies = crossDeckShortages.reduce((sum, entry) => sum + entry.missing, 0);
-  const missingCardsUrl = useMemo(() => buildTcgplayerMassEntryUrl(crossDeckShortages.map((entry) => ({ name: entry.card, quantity: entry.missing }))), [crossDeckShortages]);
+  const crossDeckRequired = crossDeckShortages.flatMap(line => {
+    const card = cardsByName.get(line.card);
+    return card ? [{ cardUuid: card.uuid, cardName: card.name, quantity: line.totalRequired }] : [];
+  });
+  const shoppingBlocked = !collectionReady || collectionError ? "Load your collection before adding missing copies." : saveQueue.pending ? "Retry the unconfirmed save before adding more quantities." : crossDeckRequired.length !== crossDeckShortages.length ? "Some cards are still unavailable in the catalog. You can shop now; wait for them to load before adding." : undefined;
   const printingCard = cards.find((card) => card.uuid === printingCardUuid);
   const printingEdition = printingCard?.editions.find((edition) => edition.uuid === printingEditionUuid);
   const printingEntry = entries.find((entry) => entry.editionUuid === printingEditionUuid);
@@ -182,6 +197,12 @@ export default function CollectionIndex() {
   ] as const).map(([destination, label]) => <button key={destination} type="button" onClick={() => {setView(destination); setToolsOpen(false);}} className="min-h-12 rounded-lg border border-ctp-surface1 px-3 text-left text-sm">{label}</button>)}</div>;
 
   return <PageLayout data-component="CollectionIndex" width="wide"><div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-3xl font-bold text-ctp-blue">My Collection</h1>{collectionReady && !collectionError && <p className="mt-2 text-sm text-ctp-subtext1">{uniqueOwnedCount} unique card{uniqueOwnedCount === 1 ? "" : "s"} · {entries.reduce((sum, entry) => sum + entry.ownedQuantity, 0)} physical copies</p>}</div><button type="button" onClick={() => setToolsOpen(true)} className="min-h-12 rounded-lg border border-ctp-surface1 px-3 text-sm">Tools</button></div>
+    {shopping && <MissingCardsReview lines={crossDeckShortages} cardsByName={cardsByName} draft busy={busy} blocked={shoppingBlocked} onDismiss={() => setShopping(false)} onAdd={() => {
+      if (busy || shoppingBlocked) return;
+      const lines = collectionCompletionLines(crossDeckRequired, entries);
+      setDrafts(current => stageCollectionQuantities(current, savedEntries, lines, "at-least"));
+      setShopping(false); setReviewChanges(true); setNotice(null);
+    }} />}
     {toolsOpen && <EditorDialog title="Collection tools" doneLabel="Done" onDismiss={() => setToolsOpen(false)}>{collectionTools}</EditorDialog>}
     {collectionReady && !collectionError && <CollectionValueSummary entries={entries} cards={cards} pending={pendingCount > 0} />}
     {pendingCount > 0 && <div role="status" className="sticky top-2 z-20 my-3 flex flex-wrap items-center gap-3 rounded-xl border border-ctp-blue bg-ctp-base p-3 shadow-lg"><button type="button" disabled={busy} onClick={() => {setNotice(null); setReviewChanges(true);}} className="min-h-12 rounded-lg px-3 text-sm text-ctp-blue underline underline-offset-4">Preview {pendingCount} unsaved {pendingCount === 1 ? "change" : "changes"}</button><button type="button" disabled={busy} onClick={() => void saveQuantities()} className="min-h-12 rounded-lg bg-ctp-blue px-4 text-sm font-medium text-ctp-base">{busy ? "Saving…" : saveQueue.pending ? "Retry save" : "Save quantities"}</button><button type="button" disabled={busy || !!saveQueue.pending} onClick={() => setDrafts({})} className="min-h-12 rounded-lg border border-ctp-surface1 px-3 text-sm">Discard changes</button></div>}
@@ -209,7 +230,7 @@ export default function CollectionIndex() {
     <div hidden={view !== "coverage"}>
     <Link to="/card-locations" className="mt-4 inline-flex min-h-12 items-center text-ctp-blue underline">Manage deck locations and loans →</Link>
     <details className="mt-4"><summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 text-sm">Build all decks simultaneously<DisclosureChevron/></summary>
-    <Panel className="mt-5"><div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"><div><h2 className="font-semibold">Build every saved deck</h2><p className="mt-1 max-w-2xl text-xs text-ctp-subtext1">Optional ownership check for keeping every deck assembled at once, including sideboards. It includes lent copies and does not mean you need to buy a playset per deck.</p></div>{crossDeckShortages.length > 0 && <div className="grid grid-cols-2 gap-2 sm:flex sm:shrink-0"><button type="button" onClick={() => downloadMissingList(crossDeckShortages)} className="min-h-12 rounded-lg border border-ctp-surface1 px-3 text-xs font-medium text-ctp-text">Download list</button><a href={missingCardsUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center justify-center rounded-lg border border-ctp-blue px-3 text-xs font-medium text-ctp-blue">Shop missing ↗</a></div>}</div>{decks.length === 0 ? <p className="mt-4 text-sm text-ctp-subtext1">Save a deck to calculate collection coverage.</p> : crossDeckShortages.length === 0 ? <p className="mt-4 rounded-lg bg-ctp-green/10 p-3 text-sm text-ctp-green">Your collection covers all {decks.length} saved deck{decks.length === 1 ? "" : "s"} at the same time.</p> : <details className="mt-4"><summary className="cursor-pointer rounded-lg bg-ctp-yellow/10 p-3 text-sm text-ctp-text"><strong className="text-ctp-yellow">{crossDeckMissingCopies} missing cop{crossDeckMissingCopies === 1 ? "y" : "ies"}</strong> across {crossDeckShortages.length} card{crossDeckShortages.length === 1 ? "" : "s"}</summary><ul className="mt-3 grid gap-2 md:grid-cols-2">{crossDeckShortages.map((card) => <li key={card.card} className="rounded-lg border border-ctp-yellow/25 bg-ctp-base/40 p-3 text-sm"><div className="flex items-start justify-between gap-3"><span className="font-medium text-ctp-text">{card.card}</span><span className="shrink-0 rounded-full bg-ctp-yellow/15 px-2 py-0.5 text-xs font-semibold text-ctp-yellow">Missing {card.missing}</span></div><p className="mt-1 text-xs text-ctp-subtext1">{card.owned} owned · {card.totalRequired} needed</p><p className="mt-2 text-xs text-ctp-subtext0">{card.decks.map((deck) => `${deck.quantity}× ${deck.title}`).join(" · ")}</p></li>)}</ul></details>}</Panel>
+    <Panel className="mt-5"><div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"><div><h2 className="font-semibold">Build every saved deck</h2><p className="mt-1 max-w-2xl text-xs text-ctp-subtext1">Optional ownership check for keeping every deck assembled at once, including sideboards. It includes lent copies and does not mean you need to buy a playset per deck.</p></div>{crossDeckShortages.length > 0 && <div className="grid grid-cols-2 gap-2 sm:flex sm:shrink-0"><button type="button" onClick={() => downloadMissingList(crossDeckShortages)} className="min-h-12 rounded-lg border border-ctp-surface1 px-3 text-xs font-medium text-ctp-text">Download list</button><button type="button" onClick={() => setShopping(true)} className="inline-flex min-h-12 items-center justify-center rounded-lg border border-ctp-blue px-3 text-xs font-medium text-ctp-blue">Shop missing</button></div>}</div>{decks.length === 0 ? <p className="mt-4 text-sm text-ctp-subtext1">Save a deck to calculate collection coverage.</p> : crossDeckShortages.length === 0 ? <p className="mt-4 rounded-lg bg-ctp-green/10 p-3 text-sm text-ctp-green">Your collection covers all {decks.length} saved deck{decks.length === 1 ? "" : "s"} at the same time.</p> : <details className="mt-4"><summary className="cursor-pointer rounded-lg bg-ctp-yellow/10 p-3 text-sm text-ctp-text"><strong className="text-ctp-yellow">{crossDeckMissingCopies} missing cop{crossDeckMissingCopies === 1 ? "y" : "ies"}</strong> across {crossDeckShortages.length} card{crossDeckShortages.length === 1 ? "" : "s"}</summary><ul className="mt-3 grid gap-2 md:grid-cols-2">{crossDeckShortages.map((card) => <li key={card.card} className="rounded-lg border border-ctp-yellow/25 bg-ctp-base/40 p-3 text-sm"><div className="flex items-start justify-between gap-3"><span className="font-medium text-ctp-text">{card.card}</span><span className="shrink-0 rounded-full bg-ctp-yellow/15 px-2 py-0.5 text-xs font-semibold text-ctp-yellow">Missing {card.missing}</span></div><p className="mt-1 text-xs text-ctp-subtext1">{card.owned} owned · {card.totalRequired} needed</p><p className="mt-2 text-xs text-ctp-subtext0">{card.decks.map((deck) => `${deck.quantity}× ${deck.title}`).join(" · ")}</p></li>)}</ul></details>}</Panel>
     </details>
     </div>
     <div hidden={view !== "history"}>

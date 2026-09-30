@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { buildSpiritCanonicalNames, type CollectionEntry, type DeckFormat } from "@gatcg/shared";
+import { useMemo } from "react";
+import { buildSpiritCanonicalNames, type DeckFormat } from "@gatcg/shared";
 import { useCommunityBlendedCardInclusion, useCommunityBlendedCoOccurrence, useCommunityCardInclusion, useCommunityCoOccurrence } from "../../community/data";
 import { useDeckPopularityIndexData } from "../../topdecks/data";
 import { useArchetypeTaxonomyData, useCardImpactData, useCardQuantityStatsData, useCompositionWinRateData, useMatchupCardImpactData } from "../../archetypes/data";
@@ -7,7 +7,7 @@ import { useCardCatalog } from "../../cards/useCardCatalog";
 import { useSimulatorSummaryData } from "../../simulator/data";
 import { useDeckPriceByName } from "../../pricing/useDeckPriceByName";
 import { useAllDecodedDecks } from "../../../lib/decodedDecks";
-import { accountApi } from "../../../lib/accountApi";
+import { useSavedCollection } from "../../collection/useSavedCollection";
 import { useDeckBuilderPopulation } from "../useDeckBuilderPopulation";
 
 export interface DeckBuilderDataNeeds {
@@ -38,21 +38,7 @@ export function useDeckBuilderData({ championName, format, includeDecodedDecks, 
   const catalogByName = useMemo(() => new Map(catalog.map((card) => [card.name, card])), [catalog]);
   const spiritCanonicalNames = useMemo(() => buildSpiritCanonicalNames(catalog), [catalog]);
 
-  const [collection, setCollection] = useState<CollectionEntry[]>([]);
-  const [collectionError, setCollectionError] = useState<string | null>(null);
-  const [collectionLoaded, setCollectionLoaded] = useState(false);
-  useEffect(() => {
-    const refresh = () => {
-      setCollectionLoaded(false);
-      setCollectionError(null);
-      void accountApi.collection()
-        .then((result) => { setCollection(result.entries); setCollectionLoaded(true); })
-        .catch(() => { setCollection([]); setCollectionLoaded(false); setCollectionError("Collection unavailable. Sign in or open your collection to try again."); });
-    };
-    refresh();
-    window.addEventListener("fanofin:collection-updated", refresh);
-    return () => window.removeEventListener("fanofin:collection-updated", refresh);
-  }, []);
+  const { collection, collectionLoaded, collectionError } = useSavedCollection();
   const collectionOwnedByName = useMemo(() => { const totals = new Map<string, number>(); for (const entry of collection) totals.set(entry.cardName, (totals.get(entry.cardName) ?? 0) + entry.ownedQuantity); return totals; }, [collection]);
 
   const population = useDeckBuilderPopulation(championName);

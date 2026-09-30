@@ -1762,7 +1762,7 @@ draws, Reserve costs, or changing game state.
 
 The planner is surfaced in Compare after a baseline and opposing deck are selected. In addition to
 functional-role access, it shows the preboard-to-postboard change in average printed Reserve cost,
-the number of Reserve 4+ cards, and (for a signed-in user with collection data) missing copies. A
+the number of Reserve 4+ cards, and (for a signed-in user with loaded collection data) missing physical Main Deck copies. Printing quantities pool by card; proxies are reported separately elsewhere and never reduce this shortfall. Main-only coverage measures the effect of the swap; it does not certify ownership of Material or the remaining Sideboard. A
 valid postboard Main Deck can be opened in Deck Builder without changing the saved source deck.
 
 The viewer selects any number of registered Main Deck copies to move out and Sideboard copies to

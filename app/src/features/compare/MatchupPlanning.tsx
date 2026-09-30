@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { Card, CollectionEntry, OmnidexDecklist } from "@gatcg/shared";
+import type { Card, OmnidexDecklist } from "@gatcg/shared";
 import Panel from "../../components/ui/Panel";
 import { InlineState } from "../../components/ui/ContentState";
 import { useCardCatalog } from "../cards/useCardCatalog";
@@ -8,7 +8,7 @@ import InteractionCoverageMatrix from "../deckbuilder/InteractionCoverageMatrix"
 import PostSideboardPlan from "../deckbuilder/PostSideboardPlan";
 import { saveActiveDeckWorkspace } from "../deckbuilder/persistence/deckWorkspace";
 import { shortDeckLabel, type ComparedDeck } from "./types";
-import { accountApi } from "../../lib/accountApi";
+import { useSavedCollection } from "../collection/useSavedCollection";
 
 interface Props { decks: ComparedDeck[]; decklists: Map<string, OmnidexDecklist | null>; baselineKey: string | null }
 
@@ -20,8 +20,8 @@ export default function MatchupPlanning({ decks, decklists, baselineKey }: Props
   const catalogByName = useMemo(() => new Map(catalog.map((card) => [card.name, card])), [catalog]);
   const opponents = decks.filter((deck) => deck.key !== baselineKey);
   const [opponentKey, setOpponentKey] = useState<string | null>(opponents[0]?.key ?? null);
-  const [collectionEntries, setCollectionEntries] = useState<CollectionEntry[] | null>(null);
-  useEffect(() => { let active = true; void accountApi.collection().then((result) => { if (active) setCollectionEntries(result.entries); }).catch(() => undefined); return () => { active = false; }; }, []);
+  const { collection, collectionLoaded } = useSavedCollection();
+  const collectionEntries = collectionLoaded ? collection : null;
   const effectiveOpponentKey = opponents.some((deck) => deck.key === opponentKey) ? opponentKey : (opponents[0]?.key ?? null);
   const baseline = decks.find((deck) => deck.key === baselineKey);
   const opponent = decks.find((deck) => deck.key === effectiveOpponentKey);

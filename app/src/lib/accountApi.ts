@@ -1,3 +1,4 @@
+import { publishCollectionChange } from "./collectionEvents";
 import type { DeckFolder, DeckFolderInput, AccountSession, AccountUser, AnalysisProfileSyncRecord, AuthIdentity, AuthProvider, BinderItem, BinderSettings, BookmarkedCombo, BookmarkedDeck, CollectionCardTracking, CollectionCardTrackingUpdate, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, CommentReportReason, ComboDefinition, ComboVisibility, DeckCommentTarget, DeckCommentThread, DeckFormat, DeckImportPreview, DeckImportResult, DeckReportReason, DeckSocialState, DeckVisibility, MatchLogRecord, OfficialProductDeckFavorite, OmnidexDecklist, PublicBinder, PublicCombo, PublicDeck, PublicDeckSummary, PublicProfile, SavedCombo, SavedDeck, SavedDeckDetail, SharedCardWatch, SyncedAnalysisProfile, Trade, TradeLine, TradeStatus, TournamentDeckFavorite } from "@gatcg/shared";
 
 const ACCOUNT_API_URL = (import.meta.env.VITE_ACCOUNT_API_URL as string | undefined)?.replace(/\/$/, "")
@@ -38,6 +39,12 @@ async function performAccountRequest<T>(path: string, init?: RequestInit): Promi
   const body = await response.json() as T & { error?: string };
   if (!response.ok) throw new AccountApiError(response.status, body.error ?? `Account request failed (${response.status})`);
   return body;
+}
+
+async function inventoryRequest<T>(path: string, init: RequestInit): Promise<T> {
+  const result = await accountRequest<T>(path, init);
+  publishCollectionChange();
+  return result;
 }
 
 export const accountApi = {
@@ -103,8 +110,8 @@ export const accountApi = {
   collectionTracking: () => accountRequest<{cards: CollectionCardTracking[]}>("/v1/me/collection/tracking"),
   saveCollectionTracking: (cardUuid: string, input: CollectionCardTrackingUpdate) => accountRequest<{card: CollectionCardTracking}>(`/v1/me/collection/tracking/${encodeURIComponent(cardUuid)}`, {method: "PATCH", body: JSON.stringify(input)}),
   collection: () => accountRequest<{ entries: CollectionEntry[]; transactions: CollectionTransaction[] }>("/v1/me/collection"),
-  updateCollection: (input: { mode: CollectionUpdateMode; source: string; lines: CollectionUpdateLine[]; requestId?: string }) => accountRequest<{ transactionId: string; changed: number }>("/v1/me/collection", { method: "POST", body: JSON.stringify(input), signal: AbortSignal.timeout(30_000) }),
-  undoCollectionTransaction: (id: string) => accountRequest<{ success: true }>(`/v1/me/collection/transactions/${encodeURIComponent(id)}/undo`, { method: "POST", body: "{}" }),
+  updateCollection: (input: { mode: CollectionUpdateMode; source: string; lines: CollectionUpdateLine[]; requestId?: string }) => inventoryRequest<{ transactionId: string; changed: number }>("/v1/me/collection", { method: "POST", body: JSON.stringify(input), signal: AbortSignal.timeout(30_000) }),
+  undoCollectionTransaction: (id: string) => inventoryRequest<{ success: true }>(`/v1/me/collection/transactions/${encodeURIComponent(id)}/undo`, { method: "POST", body: "{}" }),
   sharedCardWatches: () => accountRequest<{ cards: SharedCardWatch[] }>("/v1/me/collection/shared-cards"),
   setSharedCardWatch: (cardUuid: string, input: { cardName?: string; watched: boolean }) => accountRequest<{ success: true }>(`/v1/me/collection/shared-cards/${encodeURIComponent(cardUuid)}`, { method: "PATCH", body: JSON.stringify(input) }),
   deckComments: (target: DeckCommentTarget, sort: "oldest" | "newest" = "oldest") => accountRequest<DeckCommentThread>(`/v1/deck-comments/${target.kind}/${encodeURIComponent(target.id)}?sort=${sort}`),
@@ -124,7 +131,7 @@ export const accountApi = {
   trades: () => accountRequest<{ trades: Trade[] }>("/v1/me/trades"),
   createTrade: (recipientProfileSlug: string, lines: Pick<TradeLine, "binderItemId" | "quantity">[], message = "") => accountRequest<{ id: string }>("/v1/me/trades", { method: "POST", body: JSON.stringify({ recipientProfileSlug, lines, message }) }),
   counterTrade: (id: string, lines: Pick<TradeLine, "binderItemId" | "quantity">[], message = "") => accountRequest<{ success: true }>(`/v1/me/trades/${encodeURIComponent(id)}`, { method: "PUT", body: JSON.stringify({ lines, message }) }),
-  updateTradeStatus: (id: string, status: TradeStatus | "sent" | "received") => accountRequest<{ success: true }>(`/v1/me/trades/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify({ status }) }),
+  updateTradeStatus: (id: string, status: TradeStatus | "sent" | "received") => inventoryRequest<{ success: true }>(`/v1/me/trades/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify({ status }) }),
   createDeckVersion: (id: string, input: { decklist: OmnidexDecklist; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; changeNote?: string }) =>
     accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}/versions`, { method: "POST", body: JSON.stringify(input) }),
   /** Updates the deck's current decklist content in place — no new entry in version history, unlike `createDeckVersion`. */

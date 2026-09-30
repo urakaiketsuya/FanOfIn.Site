@@ -30,3 +30,19 @@ test("recipe completion honors sideboard scope and card copies shared across sec
   assert.equal(collectionCompletionLines(deckCollectionLines(deck, catalog, false), [entry(2)])[0].quantity, 3);
   assert.deepEqual(collectionCompletionLines([], []), []);
 });
+
+test("cross-deck completion stages only the remaining physical shortfall over existing drafts", async () => {
+  const { crossDeckCollectionShortages } = await import("../src/features/collection/collectionBatch");
+  const { stageCollectionQuantities } = await import("../src/features/collection/collectionQuantityDrafts");
+  const saved = [entry(1, undefined, 3), entry(2, "edition")];
+  const drafts = { "card:canonical": { cardUuid: "card", cardName: "Card", quantity: 2, proxyQuantity: 3 } };
+  const effective = [entry(2, undefined, 3), entry(2, "edition")];
+  const decks = [1, 2].map(id => ({ id: String(id), title: `Deck ${id}`, decklist: { main: [{ card: "Card", quantity: 3 }], material: [], sideboard: [{ card: "Card", quantity: 1 }] } })) as Parameters<typeof crossDeckCollectionShortages>[0];
+  const shortages = crossDeckCollectionShortages(decks, effective, true);
+  assert.equal(shortages[0].missing, 4);
+  const targets = shortages.map(line => ({ cardUuid: "card", cardName: line.card, quantity: line.totalRequired }));
+  const staged = stageCollectionQuantities(drafts, saved, collectionCompletionLines(targets, effective), "at-least");
+  assert.deepEqual(staged["card:canonical"], { cardUuid: "card", cardName: "Card", quantity: 6, proxyQuantity: 3 });
+  assert.equal(saved[1].ownedQuantity, 2);
+  assert.deepEqual(collectionCompletionLines(targets, [entry(6, undefined, 3), saved[1]]), []);
+});

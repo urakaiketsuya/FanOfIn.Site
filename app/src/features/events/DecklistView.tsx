@@ -232,7 +232,7 @@ export default function DecklistView({
         {!collectionPanel && <p className="text-ctp-text"><strong className="text-ctp-yellow">{missingCopies} missing cop{missingCopies === 1 ? "y" : "ies"}</strong> across {missingOwnershipLines.length} card{missingOwnershipLines.length === 1 ? "" : "s"}</p>}
         <div className="flex flex-wrap gap-2">
           <button type="button" aria-pressed={showMissingOnly} onClick={() => setShowMissingOnly(value => !value)} className={`min-h-12 rounded-lg border px-3 text-sm font-medium focus-visible:outline-2 focus-visible:outline-ctp-blue ${showMissingOnly ? "border-ctp-yellow bg-ctp-yellow/15 text-ctp-yellow" : "border-ctp-surface1 text-ctp-subtext1"}`}>{showMissingOnly ? "Show full deck" : "Show missing only"}</button>
-          <a href={missingMassEntryUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center justify-center rounded-lg border border-ctp-blue px-3 text-sm text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">Shop missing ↗</a>
+          {!collectionPanel && <a href={missingMassEntryUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center justify-center rounded-lg border border-ctp-blue px-3 text-sm text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">Shop on TCGplayer ↗</a>}
           {!collectionPanel && <Link to="/collection" className="inline-flex min-h-12 items-center justify-center rounded-lg px-3 text-sm text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">Open collection</Link>}
         </div>
       </div> : !collectionPanel && <div className="mb-4 rounded-xl border border-ctp-green/30 bg-ctp-green/10 px-3 py-2 text-sm text-ctp-green">Collection complete for this deck.</div>)}
