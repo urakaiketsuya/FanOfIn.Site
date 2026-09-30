@@ -484,7 +484,8 @@ export async function assetJson<T>(env: Env, path: string): Promise<T> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), ASSET_FETCH_TIMEOUT_MS);
   try {
-    const response = await fetch(new URL(path, env.ASSET_BASE_URL), { signal: controller.signal, redirect: "error" });
+    // Workers supports manual redirects; the non-2xx check below rejects redirects.
+    const response = await fetch(new URL(path, env.ASSET_BASE_URL), { signal: controller.signal, redirect: "manual" });
     if (!response.ok) throw new Error(`Published data is unavailable (${response.status})`);
     const declaredSize = Number(response.headers.get("Content-Length") ?? 0);
     if (declaredSize > MAX_ASSET_BYTES) throw new Error("Published data response is too large");

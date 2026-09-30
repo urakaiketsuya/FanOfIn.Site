@@ -1,23 +1,18 @@
+import { useQuery } from "@tanstack/react-query";
+import { accountApi } from "../../lib/accountApi";
+import { useCardCatalog } from "./useCardCatalog";
 import { useMemo } from "react";
-import { normalizeCardTags, type CardTagsData } from "@gatcg/shared";
+import { buildCardTagLookup, mergeTagOverrides, normalizeCardTags, type CardTagsData } from "@gatcg/shared";
 import { usePublishedData, usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 
-/** Decoded silvie.gg art tags — tag names per card uuid and per edition uuid. */
-export interface CardTagLookup {
-  cards: ReadonlyMap<string, ReadonlySet<string>>;
-  editions: ReadonlyMap<string, ReadonlySet<string>>;
-}
-
-export function buildCardTagLookup(data: CardTagsData): CardTagLookup {
-  const decode = (encoded: Record<string, number[]>) =>
-    new Map(Object.entries(encoded).map(([uuid, indices]) => [uuid, new Set(indices.map((i) => data.tags[i].name))]));
-  return { cards: decode(data.cards), editions: decode(data.editions) };
-}
+export type { CardTagLookup } from "@gatcg/shared";
 
 export function useCardTags() {
   const raw = usePublishedData<CardTagsData>("community-card-tags", "/data/community/card-tags.json");
   const status = usePublishedDataStatus("community-card-tags", "/data/community/card-tags.json");
-  const data = useMemo(() => raw ? normalizeCardTags(raw) : undefined, [raw]);
+  const catalog = useCardCatalog();
+  const local = useQuery({ queryKey: ["card-tag-overrides"], queryFn: accountApi.cardTagOverrides, staleTime: 60_000, retry: false });
+  const data = useMemo(() => raw ? local.data?.overrides.length ? mergeTagOverrides(raw, local.data.overrides, catalog) : normalizeCardTags(raw) : undefined, [raw, local.data, catalog]);
   const lookup = useMemo(() => (data ? buildCardTagLookup(data) : undefined), [data]);
-  return { data, lookup, status };
+  return { data, lookup, status, local };
 }

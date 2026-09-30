@@ -70,3 +70,24 @@ stale writes. Loans do not reserve inventory or change deck coverage/trade avail
 Apply `0023_card_locations.sql` before deploying the updated account worker. It adds private deck quantity assignments to the existing card tracking records; existing loans and uncertainty flags are retained. The health check now requires schema 0023.
 
 Location writes combine a revision check, account-owned deck validation, and pooled physical-capacity validation in one SQL statement. Proxies do not contribute capacity. Existing excess allocations (for example, after inventory was corrected) may be reduced and are displayed for reconciliation; inventory and loans are never silently rewritten. Assignments reference saved deck IDs but survive deck deletion as an unavailable location until the owner explicitly unassigns them. Account export includes assignments through collection tracking; no public deck response includes them.
+
+### Community card tags
+
+Apply migration `0028_card_tag_contributions.sql` before deploying this Worker. Publish
+`data/community/card-tag-targets.json` alongside the app; `npm run tags:silvie --workspace=pipeline` refreshes this compact validation catalog with
+the Silvie tag import. The full card catalog is intentionally not fetched by submissions.
+
+- `/v1/card-tags` returns approved local overrides only, without contributor identities.
+- Signed-in users submit up to 50 exact printing/card targets to
+  `/v1/me/card-tag-proposals`; GET lists only their own submissions.
+- Existing `users.community_role` values `moderator` and `staff` can GET that endpoint
+  with `review=1` and PATCH `/:id` with `{ "decision": "approved" }` or `rejected`.
+- `/cards/tagging` exposes bulk selection, correction requests, submission history, and
+  the role-gated review queue. Drafts stay in session storage in the current browser tab.
+- Gameplay tags apply card-wide; other tags apply to exact printings. Only published
+  tag names are accepted. Moderation is for assignments, not new tag creation.
+- Approval updates overrides atomically and retains the original request and decision.
+  A later approved correction supersedes the previous decision for the same target/tag.
+  Silvie imports are never rewritten, so local corrections survive future scrapes.
+- Deploy the migration, validation artifact, and Worker before the frontend. If the
+  account service is unavailable, galleries use imported data and show a retry notice.

@@ -11,8 +11,8 @@ test('art tags match any selected tag on any printing',()=>{
  assert.deepEqual(filterCards([tagged,plain],{...emptyFilterState(),tags:new Set(['fish','Diana'])},lookup).map(c=>c.name),['Tagged']);
  assert.equal(filterCards([tagged,plain],{...emptyFilterState(),tags:new Set(['fish'])},lookup).length,0);
 });
-test('tag filter is a no-op until tag data loads',()=>{
- assert.equal(filterCards([tagged,plain],{...emptyFilterState(),tags:new Set(['bird'])}).length,2);
+test('tag filter waits for data instead of showing unrelated cards',()=>{
+ assert.equal(filterCards([tagged,plain],{...emptyFilterState(),tags:new Set(['bird'])}).length,0);
 });
 test('picks the printing whose art carries the tag',()=>{
  assert.equal(editionWithTag(tagged,{...emptyFilterState(),tags:new Set(['bird'])},lookup)?.uuid,'a2');

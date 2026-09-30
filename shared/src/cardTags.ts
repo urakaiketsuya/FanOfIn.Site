@@ -63,3 +63,15 @@ export function normalizeCardTags(data: CardTagsData): CardTagsData {
   }
   return { ...data, cards, editions: remap(data.editions), tags: names.map((name, i) => ({ name, cardCount: counts.get(i) ?? 0, status: statuses.get(name)! })) };
 }
+
+/** Decoded silvie.gg art tags — tag names per card uuid and per edition uuid. */
+export interface CardTagLookup {
+  cards: ReadonlyMap<string, ReadonlySet<string>>;
+  editions: ReadonlyMap<string, ReadonlySet<string>>;
+}
+
+export function buildCardTagLookup(data: CardTagsData): CardTagLookup {
+  const decode = (encoded: Record<string, number[]>) =>
+    new Map(Object.entries(encoded).map(([uuid, indices]) => [uuid, new Set(indices.map((i) => data.tags[i].name))]));
+  return { cards: decode(data.cards), editions: decode(data.editions) };
+}

@@ -1,3 +1,4 @@
+import type { TagOverride, TagProposal, TagProposalInput, TagProposalList } from "@gatcg/shared";
 import { publishCollectionChange } from "./collectionEvents";
 import type { DeckFolder, DeckFolderInput, AccountSession, AccountUser, AnalysisProfileSyncRecord, AuthIdentity, AuthProvider, BinderItem, BinderSettings, BookmarkedCombo, BookmarkedDeck, CollectionCardTracking, CollectionCardTrackingUpdate, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, CommentReportReason, ComboDefinition, ComboVisibility, DeckCommentTarget, DeckCommentThread, DeckFormat, DeckImportPreview, DeckImportResult, DeckReportReason, DeckSocialState, DeckVisibility, MatchLogRecord, OfficialProductDeckFavorite, OmnidexDecklist, PublicBinder, PublicCombo, PublicDeck, PublicDeckSummary, PublicProfile, SavedCombo, SavedDeck, SavedDeckDetail, SharedCardWatch, SyncedAnalysisProfile, Trade, TradeLine, TradeStatus, TournamentDeckFavorite } from "@gatcg/shared";
 
@@ -48,6 +49,10 @@ async function inventoryRequest<T>(path: string, init: RequestInit): Promise<T> 
 }
 
 export const accountApi = {
+  cardTagOverrides: () => accountRequest<{ overrides: TagOverride[] }>("/v1/card-tags"),
+  tagProposals: (review = false, offset = 0) => accountRequest<TagProposalList>(`/v1/me/card-tag-proposals?review=${review ? 1 : 0}&offset=${offset}`),
+  submitTagProposal: (input: TagProposalInput) => accountRequest<{ proposal: TagProposal }>("/v1/me/card-tag-proposals", { method: "POST", body: JSON.stringify(input) }),
+  reviewTagProposal: (id: string, decision: "approved" | "rejected") => accountRequest<{ success: true }>(`/v1/me/card-tag-proposals/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify({ decision }) }),
   deckFolders: () => accountRequest<{ folders: DeckFolder[] }>("/v1/me/deck-folders"),
   createDeckFolder: (id: string, input: DeckFolderInput) => accountRequest<{ folder: DeckFolder }>("/v1/me/deck-folders", { method: "POST", body: JSON.stringify({ id, ...input }) }),
   updateDeckFolder: (id: string, revision: number, input: DeckFolderInput) => accountRequest<{ folder: DeckFolder }>(`/v1/me/deck-folders/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify({ revision, ...input }) }),

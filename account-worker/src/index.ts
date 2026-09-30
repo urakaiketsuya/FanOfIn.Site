@@ -1,3 +1,4 @@
+import { listTagOverrides, listTagProposals, submitTagProposal, reviewTagProposal } from "./card-tags";
 import { listDeckFolders, createDeckFolder, updateDeckFolder, deleteDeckFolder } from "./deck-folders";
 import { listCollectionTracking, saveCollectionTrackingBatch, saveCollectionTracking } from "./collectionTracking";
 import { authenticatedUser, bffAllowed, consumeDiscordOAuthState, consumeOAuthNonce, createDiscordOAuthState, createLocalUserSession, createOAuthNonce, createUserSession, destroyAllSessions, destroySession, discordAuthorizeUrl, exchangeDiscordCode, listAuthIdentities, normalizeDisplayName, originAllowed, recentlyAuthenticated, removeAuthIdentity, rotateCurrentSession, verifyGoogleCredential, type AuthProvider, type Env } from "./auth";
@@ -240,8 +241,26 @@ export default {
         return response(env, request, await getComments(env, parseCommentTarget(commentThreadMatch[1], commentThreadMatch[2]), viewer, url.searchParams.get("sort") ?? "oldest"));
       }
 
+      if (request.method === "GET" && url.pathname === "/v1/card-tags") return response(env, request, { overrides: await listTagOverrides(env) });
+
       const user = await authenticatedUser(request, env);
       if (!user) return response(env, request, { error: "Sign in is required" }, 401);
+
+      if (url.pathname === "/v1/me/card-tag-proposals" && request.method === "GET") {
+        const offset = Number(url.searchParams.get("offset") ?? 0);
+        if (!Number.isSafeInteger(offset) || offset < 0 || offset > 100000) throw badRequest("Invalid offset");
+        return response(env, request, await listTagProposals(env, user, url.searchParams.get("review") === "1", offset));
+      }
+      if (url.pathname === "/v1/me/card-tag-proposals" && request.method === "POST") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        return response(env, request, { proposal: await submitTagProposal(env, user, await jsonBody(request)) }, 201);
+      }
+      const tagReviewMatch = url.pathname.match(/^\/v1\/me\/card-tag-proposals\/([a-f0-9-]{36})$/);
+      if (tagReviewMatch && request.method === "PATCH") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        await reviewTagProposal(env, user, tagReviewMatch[1], await jsonBody(request));
+        return response(env, request, { success: true });
+      }
 
       if (commentThreadMatch && request.method === "POST") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);

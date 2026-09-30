@@ -76,6 +76,8 @@ function MyDeckDetailRedirect() {
 
 // Lazy-loaded so each route's JS is a separate chunk, fetched on demand — previously the whole
 // app (every page) shipped as one bundle regardless of which page a visitor actually opened.
+const TagGallery = lazy(() => import("./features/cards/TagGallery"));
+const CardTagging = lazy(() => import("./features/cards/CardTagging"));
 const CardsBrowse = lazy(() => import("./features/cards/CardsBrowse"));
 const CardDetail = lazy(() => import("./features/cards/CardDetail"));
 const CardStatsIndex = lazy(() => import("./features/cards/CardStatsIndex"));
@@ -179,6 +181,9 @@ export default function AppRoutes() {
         <Route path="/cards" element={<CardsBrowse />} />
         <Route path="/cards/stats" element={<CardStatsIndex />} />
         <Route path="/cards/packages" element={<PackagesIndex />} />
+        <Route path="/cards/tags" element={<TagGallery />} />
+        <Route path="/cards/tags/:tag" element={<TagGallery />} />
+        <Route path="/cards/tagging" element={<CardTagging />} />
         <Route path="/cards/:slug" element={<CardDetail />} />
         <Route path="/sets" element={<SetsRedirect />} />
         <Route path="/sets/:prefix" element={<SetDetailRedirect />} />

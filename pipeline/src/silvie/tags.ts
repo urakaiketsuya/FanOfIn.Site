@@ -82,6 +82,7 @@ export async function publishCardTags(): Promise<void> {
 
   const data = buildCardTags(rows, tagRows, catalog);
   await mkdir(path.dirname(OUTPUT_PATH), { recursive: true });
+  await writeJsonAtomic(path.join(DATA_DIR, "community/card-tag-targets.json"), { generatedAt: data.generatedAt, cards: catalog.map(card => ({ uuid: card.uuid, editions: card.editions.map(edition => ({ uuid: edition.uuid })) })) });
   await writeJsonAtomic(OUTPUT_PATH, data);
   console.log(`silvie tags: ${data.tags.length} tags across ${Object.keys(data.cards).length} cards / ${Object.keys(data.editions).length} printings`);
 }

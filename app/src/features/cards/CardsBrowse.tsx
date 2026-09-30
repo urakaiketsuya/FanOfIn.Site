@@ -119,6 +119,7 @@ export default function CardsBrowse() {
         title="Cards"
         actions={
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+            <Link to="/cards/tags" className="inline-flex min-h-12 items-center text-sm text-ctp-blue">Tag galleries</Link>
             <Link to="/cards/packages" className="text-sm text-ctp-blue hover:underline">
               Packages &rarr;
             </Link>
@@ -259,10 +260,11 @@ export default function CardsBrowse() {
             <p className="mt-3 text-xs text-ctp-subtext0">
               Tags are community-sourced from the{" "}
               <a href={cardTags.data.sourceUrl} target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">silvie.gg Art Tagger</a>
-              {" "}and are mostly unreviewed. Matches any selected tag across printings. Gameplay labels are discovery hints; missing tags do not mean an effect is absent.
+              {" "}with approved local contributions. Imported tags are mostly unreviewed. Matches any selected tag across printings. Gameplay labels are discovery hints; missing tags do not mean an effect is absent.
             </p>
           )}
 
+          {cardTags.local.isError && <p role="status" className="mt-3 text-sm">Local contributions unavailable; showing imported tags. <button className="min-h-12 px-3 text-ctp-blue" onClick={() => void cardTags.local.refetch()}>Retry contributions</button></p>}
           {!cardTags.data && <p role="status" className="mt-3 text-sm text-ctp-subtext0">{cardTags.status.phase === "error" ? <>Community tags unavailable. <button type="button" onClick={cardTags.status.retry} className="min-h-12 px-3 text-ctp-blue focus-visible:outline-2">Retry tags</button></> : "Loading community tags…"}</p>}
 
           {bannerProduct && (
@@ -278,11 +280,11 @@ export default function CardsBrowse() {
           )}
 
           {syncProgress.phase !== "done" && filtered.length === 0 && <InlineState className="mt-6">Loading…</InlineState>}
-          {syncProgress.phase === "done" && filtered.length === 0 && (
+          {syncProgress.phase === "done" && filtered.length === 0 && (!filters.tags?.size || !!cardTags.data) && (
             <InlineState className="mt-6">No cards match this filter.</InlineState>
           )}
 
-          <CardGrid cards={visible} pickEdition={pickEdition} />
+          {(!filters.tags?.size || !!cardTags.data) && <CardGrid cards={visible} pickEdition={pickEdition} />}
 
           <LoadMore remaining={filtered.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
         </>
