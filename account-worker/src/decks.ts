@@ -16,7 +16,7 @@ import {
   type ShoutAtYourDecksDeckSummary,
 } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
-import { validUserFacingName } from "./content-policy";
+import { assertAllowedText, validUserFacingName } from "./content-policy";
 import { ApiError, badRequest } from "./errors";
 
 interface SaveInput {
@@ -250,6 +250,8 @@ export async function updateDeckMetadata(env: Env, user: AuthUser, deckId: strin
   if (typeof input.title === "string" && !validUserFacingName(input.title)) throw badRequest("Deck name contains blocked language", "blocked_language");
   if (input.description != null && (typeof input.description !== "string" || input.description.length > 2_000)) throw badRequest("Description is too long");
   if (input.primerMarkdown != null && (typeof input.primerMarkdown !== "string" || input.primerMarkdown.length > MAX_PRIMER_LENGTH)) throw badRequest("Primer is too long");
+  assertAllowedText(input.description, "Description");
+  assertAllowedText(input.primerMarkdown, "Primer");
   const tags = input.tags === undefined ? null : normalizeDeckTags(input.tags);
   if (input.maybeboard !== undefined && !validMaybeboard(input.maybeboard)) throw badRequest("Invalid maybeboard");
   if (input.title === undefined && input.description === undefined && input.primerMarkdown === undefined && tags === null && input.maybeboard === undefined) throw badRequest("No deck metadata was provided");
@@ -287,6 +289,12 @@ export async function publishDeck(env: Env, user: AuthUser, deckId: string, valu
     .bind(deckId, user.id).first<{ public_slug: string | null; current_version_id: string | null; title: string; description: string; primer_markdown: string; tags_json: string }>();
   if (!deck) throw new ApiError("Deck not found", 404, "deck_not_found");
   if (!deck.current_version_id) throw badRequest("Deck has no version to publish");
+  if (visibility !== "private") {
+    assertAllowedText(deck.title, "Deck name");
+    assertAllowedText(deck.description, "Description");
+    assertAllowedText(deck.primer_markdown, "Primer");
+    normalizeDeckTags(JSON.parse(deck.tags_json));
+  }
   const slug = deck.public_slug ?? crypto.randomUUID().replace(/-/g, "");
   const now = new Date().toISOString();
   if (visibility === "private") {
@@ -364,6 +372,7 @@ export async function createDeckVersion(env: Env, user: AuthUser, deckId: string
   if (input.format !== "STANDARD" && input.format !== "PANTHEON" && input.format !== "UNKNOWN") throw badRequest("Invalid deck format");
   if (input.championName != null && (typeof input.championName !== "string" || input.championName.length > 200)) throw badRequest("Invalid champion name");
   if (input.changeNote != null && (typeof input.changeNote !== "string" || input.changeNote.length > 240)) throw badRequest("Change note is too long");
+  assertAllowedText(input.changeNote, "Change note");
   const owned = await env.ACCOUNT_DB.prepare("SELECT id, current_version_id, visibility FROM user_decks WHERE id = ? AND owner_user_id = ?")
     .bind(deckId, user.id).first<{ id: string; current_version_id: string; visibility: "private" | "unlisted" | "public" }>();
   if (!owned) throw new ApiError("Deck not found", 404, "deck_not_found");

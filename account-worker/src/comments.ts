@@ -1,3 +1,4 @@
+import { assertAllowedText } from "./content-policy";
 import type { CommentReportReason, DeckComment, DeckCommentTarget, DeckCommentThread } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
 import { ApiError, badRequest } from "./errors";
@@ -9,6 +10,7 @@ function cleanBody(value: unknown): string {
   if (typeof value !== "string") throw badRequest("Comment text is required");
   const body = value.trim().replace(/\r\n?/g, "\n");
   if (!body || body.length > MAX_BODY) throw badRequest(`Comments must be 1–${MAX_BODY.toLocaleString()} characters`);
+  assertAllowedText(body, "Comment");
   return body;
 }
 

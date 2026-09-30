@@ -58,3 +58,5 @@ export * from "./deckLegality.js";
 export * from "./cardTags.js";
 export * from "./tag-contribution-types.js";
 export * from "./tagContributions.js";
+
+export * from "./contentPolicy.js";

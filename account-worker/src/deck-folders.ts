@@ -1,3 +1,4 @@
+import { assertAllowedText } from "./content-policy";
 import type { DeckFolder, DeckFolderInput } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
 import { ApiError, badRequest } from "./errors";
@@ -10,6 +11,7 @@ export function parseFolderInput(value: unknown): DeckFolderInput {
   if (typeof name !== "string") throw badRequest("Enter a folder name");
   const normalized = name.normalize("NFKC").trim();
   if (!normalized || normalized.length > 60 || /[\u0000-\u001f\u007f]/.test(normalized)) throw badRequest("Folder names must contain 1–60 characters without control characters");
+  assertAllowedText(normalized, "Folder name");
   if (!Array.isArray(deckIds) || deckIds.length > 500 || deckIds.some(id => typeof id !== "string" || !id || id.length > 100)) throw badRequest("Choose up to 500 saved decks");
   return { name: normalized, deckIds: [...new Set(deckIds as string[])].sort() };
 }

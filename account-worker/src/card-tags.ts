@@ -1,3 +1,4 @@
+import { assertAllowedText } from "./content-policy";
 import { canonicalCardTag, cardTagCategory, type CardTagsData, type TagOverride, type TagProposal, type TagProposalInput, type TagProposalList } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
 import { ApiError, badRequest } from "./errors";
@@ -10,6 +11,8 @@ export function parseTagProposal(value: unknown): TagProposalInput {
   if (typeof input.tag !== "string" || !input.tag.trim() || input.tag.length > 100) throw badRequest("Choose an existing tag");
   if (input.action !== "add" && input.action !== "remove") throw badRequest("Invalid tag action");
   if (typeof input.reason !== "string" || input.reason.trim().length < 3 || input.reason.length > 1000) throw badRequest("Explain the suggestion in 3–1,000 characters");
+  assertAllowedText(input.tag, "Tag");
+  assertAllowedText(input.reason, "Tag explanation");
   if (!Array.isArray(input.targets) || !input.targets.length || input.targets.length > 50) throw badRequest("Select 1–50 cards or printings");
   const targets = input.targets.map((row: unknown) => {
     if (!row || typeof row !== "object") throw badRequest("Invalid target");
@@ -85,11 +88,11 @@ export async function reviewTagProposal(env: Env, user: AuthUser, id: string, va
   const row = await env.ACCOUNT_DB.prepare("SELECT * FROM card_tag_proposals WHERE id = ?").bind(id).first<Row>();
   if (!row) throw new ApiError("Submission not found", 404, "tag_proposal_missing");
   if (row.status !== "pending") throw new ApiError("This submission has already been reviewed. Refresh the queue.", 409, "tag_already_reviewed");
-  const input = parseTagProposal(JSON.parse(row.payload));
-  if (decision === "approved") await validatePublishedTargets(env, input);
+  const input = decision === "approved" ? parseTagProposal(JSON.parse(row.payload)) : null;
+  if (input) await validatePublishedTargets(env, input);
   const token = crypto.randomUUID();
   const statements = [env.ACCOUNT_DB.prepare("UPDATE card_tag_proposals SET status = ?, reviewed_at = ?, reviewer_id = ?, review_token = ? WHERE id = ? AND status = 'pending'").bind(decision, new Date().toISOString(), user.id, token, id)];
-  if (decision === "approved") for (const target of input.targets) statements.push(env.ACCOUNT_DB.prepare(`INSERT INTO card_tag_overrides(card_uuid, edition_uuid, tag, action, proposal_id)
+  if (input) for (const target of input.targets) statements.push(env.ACCOUNT_DB.prepare(`INSERT INTO card_tag_overrides(card_uuid, edition_uuid, tag, action, proposal_id)
     SELECT ?, ?, ?, ?, ? FROM card_tag_proposals WHERE id = ? AND review_token = ?
     ON CONFLICT(card_uuid, edition_uuid, tag) DO UPDATE SET action = excluded.action, proposal_id = excluded.proposal_id`)
     .bind(target.cardUuid, target.editionUuid ?? "", input.tag, input.action, id, id, token));
