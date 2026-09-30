@@ -1,5 +1,6 @@
 import type { BookmarkedCombo, ComboDefinition, ComboGoal, ComboVisibility, DeckFormat, PublicCombo, SavedCombo } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
+import { assertAllowedText, normalizeDisplayText } from "./content-policy";
 import { ApiError, badRequest } from "./errors";
 
 const SLUG = /^[a-f0-9]{32}$/;
@@ -54,7 +55,7 @@ async function hash(value: unknown): Promise<string> {
 function tags(value: unknown): string[] {
   if (value === undefined) return [];
   if (!Array.isArray(value) || value.length > 8) throw badRequest("Use no more than 8 tags");
-  return [...new Set(value.map((tag) => cleanText(tag, "Tag", 24, true)))];
+  return [...new Set(value.map((tag) => normalizeDisplayText(tag, "Tag", 24, true)))];
 }
 
 function saved(row: Record<string, unknown>): SavedCombo {
@@ -91,7 +92,7 @@ export async function createCombo(env: Env, user: AuthUser, input: unknown): Pro
   if (exampleDeckId && !await env.ACCOUNT_DB.prepare("SELECT 1 FROM user_decks WHERE id = ? AND owner_user_id = ?").bind(exampleDeckId, user.id).first()) throw badRequest("Example deck was not found");
   const publicSlug = visibility === "private" ? null : crypto.randomUUID().replaceAll("-", "");
   await env.ACCOUNT_DB.prepare(`INSERT INTO user_combos (id, owner_user_id, public_slug, name, description, tags_json, visibility, definition_json, definition_hash, format, champion_name, example_deck_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-    .bind(id, user.id, publicSlug, cleanText(body.name, "Combo name", 80, true), cleanText(body.description, "Description", 1000), JSON.stringify(tags(body.tags)), visibility, JSON.stringify(parsed), definitionHash, format, typeof body.championName === "string" ? cleanText(body.championName, "Champion", 120) || null : null, exampleDeckId, now, now).run();
+    .bind(id, user.id, publicSlug, normalizeDisplayText(body.name, "Combo name", 80, true), normalizeDisplayText(body.description, "Description", 1000), JSON.stringify(tags(body.tags)), visibility, JSON.stringify(parsed), definitionHash, format, typeof body.championName === "string" ? cleanText(body.championName, "Champion", 120) || null : null, exampleDeckId, now, now).run();
   return { combo: (await listCombos(env, user)).find((combo) => combo.id === id)!, created: true };
 }
 
@@ -102,11 +103,19 @@ export async function updateCombo(env: Env, user: AuthUser, id: string, input: u
   const nextDefinition = body.definition === undefined ? JSON.parse(String(current.definition_json)) as ComboDefinition : definition(body.definition);
   const visibility = body.visibility === undefined ? current.visibility as ComboVisibility : body.visibility as ComboVisibility;
   if (!VISIBILITIES.has(visibility)) throw badRequest("Invalid visibility");
+  // Check the resulting public text, including legacy fields omitted by this update.
+  // Making a combo private remains possible even if old text fails the policy.
+  if (visibility !== "private") {
+    assertAllowedText(body.name === undefined ? current.name : body.name, "Combo name");
+    assertAllowedText(body.description === undefined ? current.description : body.description, "Description");
+    const publicTags = body.tags === undefined ? JSON.parse(String(current.tags_json ?? "[]")) : body.tags;
+    if (Array.isArray(publicTags)) for (const tag of publicTags) assertAllowedText(tag, "Tag");
+  }
   let publicSlug = current.public_slug ? String(current.public_slug) : null;
   if (visibility !== "private" && !publicSlug) publicSlug = crypto.randomUUID().replaceAll("-", "");
   const now = new Date().toISOString();
   await env.ACCOUNT_DB.prepare(`UPDATE user_combos SET name=?, description=?, tags_json=?, visibility=?, public_slug=?, definition_json=?, definition_hash=?, updated_at=? WHERE id=? AND owner_user_id=?`)
-    .bind(body.name === undefined ? current.name : cleanText(body.name, "Combo name", 80, true), body.description === undefined ? current.description : cleanText(body.description, "Description", 1000), body.tags === undefined ? current.tags_json : JSON.stringify(tags(body.tags)), visibility, publicSlug, JSON.stringify(nextDefinition), await hash(nextDefinition), now, id, user.id).run();
+    .bind(body.name === undefined ? current.name : normalizeDisplayText(body.name, "Combo name", 80, true), body.description === undefined ? current.description : normalizeDisplayText(body.description, "Description", 1000), body.tags === undefined ? current.tags_json : JSON.stringify(tags(body.tags)), visibility, publicSlug, JSON.stringify(nextDefinition), await hash(nextDefinition), now, id, user.id).run();
   return saved((await env.ACCOUNT_DB.prepare("SELECT * FROM user_combos WHERE id = ?").bind(id).first<Record<string, unknown>>())!);
 }
 

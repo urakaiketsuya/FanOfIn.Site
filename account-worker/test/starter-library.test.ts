@@ -28,6 +28,14 @@ test("starter seeds are idempotent, labeled, ranked after users, and safely reti
         async run() { return statement.run(...args); },
       };
       return wrapper;
+    }, async batch(statements: { run(): Promise<unknown> }[]) {
+      db.exec("BEGIN");
+      try {
+        const results = [];
+        for (const statement of statements) results.push(await statement.run());
+        db.exec("COMMIT");
+        return results;
+      } catch (error) { db.exec("ROLLBACK"); throw error; }
     } } } as unknown as Env;
     const page = await discoverDecks(env, new URLSearchParams());
     assert.equal(page.decks.length, 24);

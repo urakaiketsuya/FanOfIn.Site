@@ -1,3 +1,6 @@
+import MaybeboardPanel from "./MaybeboardPanel";
+import { useDeckEditSession } from "./useDeckEditSession";
+import { useSavedDeckDraft } from "./useSavedDeckDraft";
 import { newlyAddedBannedCards } from "@gatcg/shared";
 import { useDeckEditFeedback } from "../../components/deck-editor/useDeckEditFeedback";
 import { useActionNotice } from "../../components/ui/toast/useActionNotice";
@@ -5,7 +8,6 @@ import { useToast } from "../../components/ui/toast/ToastContext";
 import { automaticDeckSection, editDeck, type DeckEdit, type EditableDeck } from "../../lib/deckEditing";
 import CardBrowser from "../../components/deck-editor/CardBrowser";
 import EditorDialog from "../../components/deck-editor/EditorDialog";
-import DisclosureChevron from "../../components/DisclosureChevron";
 import { useEffect, useMemo, useState, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { OmnidexDecklist, OmnidexDecklistCardLine, SavedDeckDetail } from "@gatcg/shared";
@@ -21,7 +23,7 @@ import UserDeckHeader from "./UserDeckHeader";
 import UserDecklistPanel from "./UserDecklistPanel";
 import PageLayout from "../../components/layout/PageLayout";
 import UserDeckStats from "./UserDeckStats";
-import PrimerMarkdown from "./PrimerMarkdown";
+import DeckPrimerEditor from "./DeckPrimerEditor";
 import Tabs from "../../components/ui/Tabs";
 import { useTabParam } from "../../lib/useTabParam";
 import Panel from "../../components/ui/Panel";
@@ -29,26 +31,21 @@ import { EmptyState, InlineState } from "../../components/ui/ContentState";
 import { encodeCustomDecks } from "../../lib/compareShareLink";
 import DeckSectionBalance from "./DeckSectionBalance";
 import { sideboardPointCost, validateDeck } from "../deckbuilder/validateDeck";
-import { EditableDecklistGrid, EDIT_SECTIONS, MaybeboardCardTile, type DeckCardDestination, type DeckSectionKey } from "./SavedDeckCardEditor";
+import { EditableDecklistGrid, EDIT_SECTIONS, type DeckCardDestination, type DeckSectionKey } from "../../components/deck-editor/EditableDecklistGrid";
 import DeckSaveBar from "./DeckSaveBar";
 import { DeckVersionHistory } from "./MyDeckDetailSections";
 import DeckMatchLogSummary from "./DeckMatchLogSummary";
 
 type DeckTab = "decklist" | "performance" | "primer" | "manage";
-type EditSnapshot = { deckText: string; maybeboardText: string };
-type EditHistory = { past: EditSnapshot[]; future: EditSnapshot[] };
 const DECK_TABS = [{ key: "decklist", label: "Cards" }, { key: "performance", label: "Performance" }, { key: "primer", label: "Primer" }, { key: "manage", label: "Manage" }] satisfies { key: DeckTab; label: string }[];
 const DECK_TAB_KEYS: DeckTab[] = DECK_TABS.map(({ key }) => key);
-const deckDraftKey = (deckId: string) => `fanofin:saved-deck-draft:${deckId}`;
 
 export default function MyDeckDetail() {
   const { id: deckId = "" } = useParams<{ id: string }>();
   const [deck, setDeck] = useState<SavedDeckDetail | null>();
   const [error, setError] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
-  const [deckText, setDeckText] = useState("");
-  const [maybeboardText, setMaybeboardText] = useState("");
-  const [editHistory, setEditHistory] = useState<EditHistory>({ past: [], future: [] });
+  const { deckText, maybeboardText, editHistory, setDeckText, setMaybeboardText, setEditHistory, commit, undo, redo } = useDeckEditSession();
   const [changeNote, setChangeNote] = useState("");
   const [saveAsNewVersion, setSaveAsNewVersion] = useState(false);
   const [saveDetailsOpen, setSaveDetailsOpen] = useState(false);
@@ -57,10 +54,6 @@ export default function MyDeckDetail() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [primerMarkdown, setPrimerMarkdown] = useState("");
-  const [comboBuilderOpen, setComboBuilderOpen] = useState(false);
-  const [comboTitle, setComboTitle] = useState("");
-  const [comboAnchor, setComboAnchor] = useState("");
-  const [comboOptions, setComboOptions] = useState<string[]>([]);
   const [tagsText, setTagsText] = useState("");
   const [busy, setBusy] = useState(false);
   const editFeedback = useDeckEditFeedback();
@@ -74,7 +67,6 @@ export default function MyDeckDetail() {
   const catalogByName = useMemo(() => new Map(cardCatalog.map((card) => [card.name, card])), [cardCatalog]);
   const cardNames = useMemo(() => Array.from(new Set(cardCatalog.map((card) => card.name))).sort(), [cardCatalog]);
   const [browserOpen, setBrowserOpen] = useState(false);
-  const primerComboCardNames = useMemo(() => deck ? Array.from(new Set([...deck.decklist.main, ...deck.decklist.material].map((line) => line.card))).sort() : [], [deck]);
   const editedDecklist = useMemo(() => parseDecklist(deckText).decklist, [deckText]);
   const maybeboardLines = useMemo(() => parseDecklist(`Main\n${maybeboardText}`).decklist.main, [maybeboardText]);
   const trimPreview = useMemo(() => {
@@ -93,19 +85,7 @@ export default function MyDeckDetail() {
   }, [deck, editedDecklist]);
   const savedMaybeboardText = useMemo(() => deck?.maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n") ?? "", [deck]);
   const hasUnsavedChanges = editedCardChangeCount > 0 || maybeboardText !== savedMaybeboardText;
-  useEffect(() => {
-    if (!editing || !hasUnsavedChanges) return;
-    const warnBeforeLeaving = (event: BeforeUnloadEvent) => { event.preventDefault(); };
-    window.addEventListener("beforeunload", warnBeforeLeaving);
-    return () => window.removeEventListener("beforeunload", warnBeforeLeaving);
-  }, [editing, hasUnsavedChanges]);
-  useEffect(() => {
-    if (!deck || !editing) return;
-    try {
-      if (hasUnsavedChanges) localStorage.setItem(deckDraftKey(deck.id), JSON.stringify({ deckText, maybeboardText, baseUpdatedAt: deck.updatedAt }));
-      else localStorage.removeItem(deckDraftKey(deck.id));
-    } catch { /* Draft persistence is best-effort when storage is unavailable. */ }
-  }, [deck, deckText, editing, hasUnsavedChanges, maybeboardText]);
+  const draft = useSavedDeckDraft(deck, editing, hasUnsavedChanges, { deckText, maybeboardText });
   const previousDecklist = useMemo(() => {
     if (!deck) return undefined;
     const current = deck.versions.find((version) => version.id === deck.currentVersionId);
@@ -124,7 +104,7 @@ export default function MyDeckDetail() {
       setDeck(null);
     });
     return () => { active = false; };
-  }, [deckId]);
+  }, [deckId, setDeckText, setMaybeboardText]);
 
   async function saveMaybeboard() {
     const maybeboard = maybeboardLines;
@@ -138,26 +118,10 @@ export default function MyDeckDetail() {
   function commitEdit(nextDeckText: string, nextMaybeboardText = maybeboardText) {
     if (nextDeckText === deckText && nextMaybeboardText === maybeboardText) return;
     editFeedback.clear();
-    setEditHistory((current) => ({ past: [...current.past.slice(-49), { deckText, maybeboardText }], future: [] }));
-    setDeckText(nextDeckText);
-    setMaybeboardText(nextMaybeboardText);
+    commit(nextDeckText, nextMaybeboardText);
   }
-
-  function undoEdit() {
-    editFeedback.clear();
-    const previous = editHistory.past.at(-1);
-    if (!previous) return;
-    setEditHistory((current) => ({ past: current.past.slice(0, -1), future: [{ deckText, maybeboardText }, ...current.future].slice(0, 50) }));
-    setDeckText(previous.deckText); setMaybeboardText(previous.maybeboardText);
-  }
-
-  function redoEdit() {
-    editFeedback.clear();
-    const next = editHistory.future[0];
-    if (!next) return;
-    setEditHistory((current) => ({ past: [...current.past.slice(-49), { deckText, maybeboardText }], future: current.future.slice(1) }));
-    setDeckText(next.deckText); setMaybeboardText(next.maybeboardText);
-  }
+  function undoEdit() { editFeedback.clear(); undo(); }
+  function redoEdit() { editFeedback.clear(); redo(); }
 
   function applySharedEdit(action: DeckEdit) {
     const current: EditableDeck = { ...(editing ? editedDecklist : deck!.decklist), maybeboard: maybeboardLines };
@@ -176,15 +140,7 @@ export default function MyDeckDetail() {
 
   function startEditing() {
     const savedDeckText = buildDecklistText(deck!.decklist);
-    let initial = { deckText: savedDeckText, maybeboardText: savedMaybeboardText };
-    try {
-      const raw = localStorage.getItem(deckDraftKey(deck!.id));
-      if (raw) {
-        const draft = JSON.parse(raw) as Partial<EditSnapshot> & { baseUpdatedAt?: string };
-        if (draft.baseUpdatedAt === deck!.updatedAt && typeof draft.deckText === "string" && typeof draft.maybeboardText === "string" && window.confirm("Resume your unsaved deck draft?")) initial = { deckText: draft.deckText, maybeboardText: draft.maybeboardText };
-        else if (draft.baseUpdatedAt !== deck!.updatedAt) localStorage.removeItem(deckDraftKey(deck!.id));
-      }
-    } catch { /* Ignore malformed or unavailable draft storage. */ }
+    const initial = draft.restore({ deckText: savedDeckText, maybeboardText: savedMaybeboardText });
     setDeckText(initial.deckText); setMaybeboardText(initial.maybeboardText);
     setEditHistory({ past: [], future: [] });
     setSaveAsNewVersion(false);
@@ -202,7 +158,7 @@ export default function MyDeckDetail() {
     setAddDestination("automatic");
     editFeedback.clear();
     setEditing(false);
-    try { localStorage.removeItem(deckDraftKey(deck!.id)); } catch { /* Best effort. */ }
+    draft.clear();
   }
 
   function saveEditedDeck() {
@@ -214,7 +170,7 @@ export default function MyDeckDetail() {
       trackEvent(saveAsNewVersion ? "deck_version_saved" : "deck_updated");
       await refresh(); setChangeNote(""); setSaveDetailsOpen(false); setEditing(false);
       setEditHistory({ past: [], future: [] });
-      try { localStorage.removeItem(deckDraftKey(deck!.id)); } catch { /* Best effort. */ }
+      draft.clear();
       editFeedback.clear();
       setNotice(saveAsNewVersion ? "Saved as a new version." : "Deck updated.");
     });
@@ -305,23 +261,6 @@ export default function MyDeckDetail() {
     return !editing || !hasUnsavedChanges || window.confirm("Leave this page? Your draft will be kept so you can resume it later.");
   }
 
-  function addPrimerHighlight(kind: "combo" | "package") {
-    const template = kind === "combo" ? ":::combo Combo name\n- Card A\n- Card B\n\nExplain how the interaction works.\n:::" : ":::package Package name\n- 3x Card A\n- 2x Card B\n\nExplain the package's role and when to use it.\n:::";
-    setPrimerMarkdown((current) => `${current}${current.trim() ? "\n\n" : ""}${template}`);
-  }
-
-  function insertConditionalCombo() {
-    const options = comboOptions.filter((name) => name !== comboAnchor);
-    if (!comboAnchor || options.length === 0) return;
-    const title = comboTitle.trim() || `${comboAnchor} combo`;
-    const block = `:::combo ${title}\n- ${comboAnchor}\n- one of: ${options.join(" | ")}\n\nExplain how the interaction works.\n:::`;
-    setPrimerMarkdown((current) => `${current}${current.trim() ? "\n\n" : ""}${block}`);
-    setComboBuilderOpen(false);
-    setComboTitle("");
-    setComboAnchor("");
-    setComboOptions([]);
-  }
-
   if (deck === undefined) return <PageLayout data-component="MyDeckDetail"><InlineState className="mt-10">Loading deck…</InlineState></PageLayout>;
   if (!deck) return <PageLayout data-component="MyDeckDetail"><EmptyState title="Deck unavailable" description={error} action={<Link to="/decks/edit" className="text-ctp-blue hover:underline">Back to My Decks</Link>} /></PageLayout>;
   const editingValidation = validateDeck({ main: editedDecklist.main.map((line) => ({ cardName: line.card, quantity: line.quantity })), material: editedDecklist.material.map((line) => ({ cardName: line.card, quantity: line.quantity })), sideboard: editedDecklist.sideboard.map((line) => ({ cardName: line.card, quantity: line.quantity })) }, catalogByName, new Set(["NORM"]), deck.format);
@@ -396,24 +335,9 @@ export default function MyDeckDetail() {
       </div> : undefined}
     </UserDecklistPanel>
       {/* Supplement the decklist; panel children replace it with the editor while editing. */}
-      <details className="group mt-5 rounded-xl border border-dashed border-ctp-yellow/50 bg-ctp-yellow/5 p-3">
-        <summary className="flex min-h-10 cursor-pointer list-none items-center justify-between gap-3 text-sm font-medium text-ctp-yellow [&::-webkit-details-marker]:hidden"><span>Maybeboard <span className="font-normal text-ctp-subtext0">({maybeboardLines.reduce((sum, line) => sum + line.quantity, 0)})</span></span><DisclosureChevron className="text-ctp-subtext0 transition-transform group-open:rotate-180" /></summary>
-        <div className="mt-3 flex flex-wrap items-center justify-end gap-2">{editing && <span className="mr-auto text-xs text-ctp-subtext0">Maybeboard changes save with the deck.</span>}<button type="button" disabled={!maybeboardText.trim()} onClick={addMaybeboardToEditor} className="min-h-10 rounded-lg border border-ctp-blue px-3 text-xs text-ctp-blue disabled:opacity-50">Move all to editor</button>{!editing && <button type="button" disabled={busy} onClick={() => void saveMaybeboard()} className="min-h-10 rounded-lg bg-ctp-yellow px-3 text-xs font-medium text-ctp-base disabled:opacity-50">Save</button>}</div>
-        {maybeboardLines.length > 0 ? <div className="mt-3 grid grid-cols-1 gap-4 min-[360px]:grid-cols-2 min-[560px]:grid-cols-3 lg:grid-cols-4">{maybeboardLines.map((line) => <MaybeboardCardTile format={deck.format} key={line.card} line={line} card={catalogByName.get(line.card)} onChangeQuantity={(quantity) => changeMaybeboardQuantity(line.card, quantity)} onMove={(destination, quantity) => moveMaybeboardCard(line, destination, quantity)} onRemove={() => removeMaybeboardCard(line.card)} />)}</div> : <InlineState className="mt-3">No cards in the maybeboard.</InlineState>}
-        <details className="mt-3"><summary className="cursor-pointer text-xs text-ctp-subtext0">Edit maybeboard as text</summary><textarea rows={5} value={maybeboardText} onChange={(event) => editing ? commitEdit(deckText, event.target.value) : setMaybeboardText(event.target.value)} placeholder={"2x Card to test\n4x Another option"} aria-label="Maybeboard" className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-3 font-mono text-sm" /></details>
-        <p className="mt-2 text-xs text-ctp-subtext0">Maybeboard cards do not affect the deck or its analysis.</p>
-      </details>
+      <MaybeboardPanel format={deck.format} editing={editing} busy={busy} maybeboardText={maybeboardText} maybeboardLines={maybeboardLines} cardsByName={catalogByName} onMoveAll={addMaybeboardToEditor} onSave={() => void saveMaybeboard()} onChangeQuantity={changeMaybeboardQuantity} onMove={moveMaybeboardCard} onRemove={removeMaybeboardCard} onTextChange={text => editing ? commitEdit(deckText, text) : setMaybeboardText(text)} />
     </>}
-    {tab === "primer" && <section id="owned-deck-panel-primer" role="tabpanel" aria-labelledby="owned-deck-tab-primer" tabIndex={0} className="mt-6 grid gap-5 lg:grid-cols-2">
-      <form className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4" onSubmit={(event) => { event.preventDefault(); void run(async () => { await accountApi.updateDeckMetadata(deck.id, { primerMarkdown }); await refresh(); }); }}>
-        <h2 className="font-semibold text-ctp-text">Edit primer</h2><p className="mt-1 text-xs text-ctp-subtext1">Markdown supports headings, lists, links, emphasis, quotes, code blocks, and highlighted deck concepts.</p>
-        <div className="mt-3 flex flex-wrap gap-2" aria-label="Insert primer highlight"><button type="button" onClick={() => setComboBuilderOpen((open) => !open)} className="rounded-md border border-ctp-mauve/60 bg-ctp-mauve/10 px-2.5 py-1.5 text-xs text-ctp-mauve">+ Combo</button><button type="button" onClick={() => addPrimerHighlight("package")} className="rounded-md border border-ctp-teal/60 bg-ctp-teal/10 px-2.5 py-1.5 text-xs text-ctp-teal">+ Card package</button></div>
-        {comboBuilderOpen && <div className="mt-3 rounded-lg border border-ctp-mauve/40 bg-ctp-mauve/5 p-3"><div className="grid gap-3 sm:grid-cols-2"><label className="text-xs text-ctp-subtext1">Combo name<input value={comboTitle} onChange={(event) => setComboTitle(event.target.value)} placeholder="Bloom setup" className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-2.5 py-2 text-sm text-ctp-text" /></label><label className="text-xs text-ctp-subtext1">Required card<select value={comboAnchor} onChange={(event) => { setComboAnchor(event.target.value); setComboOptions((current) => current.filter((name) => name !== event.target.value)); }} className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-2.5 py-2 text-sm text-ctp-text"><option value="">Choose a card…</option>{primerComboCardNames.map((name) => <option key={name} value={name}>{name}</option>)}</select></label></div><label className="mt-3 block text-xs text-ctp-subtext1">Pair with one or more of<select multiple size={Math.min(6, Math.max(3, primerComboCardNames.length))} value={comboOptions} onChange={(event) => setComboOptions(Array.from(event.target.selectedOptions, (option) => option.value))} className="mt-1 block w-full rounded-md border border-ctp-surface1 bg-ctp-base px-2.5 py-2 text-sm text-ctp-text">{primerComboCardNames.filter((name) => name !== comboAnchor).map((name) => <option key={name} value={name}>{name}</option>)}</select><span className="mt-1 block text-[10px] text-ctp-subtext0">Choose from Main and Material. Use Shift or Command/Ctrl to select several alternatives.</span></label><div className="mt-3 flex gap-2"><button type="button" disabled={!comboAnchor || comboOptions.length === 0} onClick={insertConditionalCombo} className="rounded-md bg-ctp-mauve px-3 py-1.5 text-xs font-medium text-ctp-base disabled:opacity-40">Insert combo</button><button type="button" onClick={() => addPrimerHighlight("combo")} className="rounded-md border border-ctp-surface1 px-3 py-1.5 text-xs text-ctp-subtext1">Insert simple template</button></div></div>}
-        <textarea rows={24} maxLength={50000} value={primerMarkdown} onChange={(event) => setPrimerMarkdown(event.target.value)} placeholder={"# Game plan\n\nExplain opening turns, key interactions, matchups, and substitutions."} className="mt-3 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-4 font-mono text-sm" />
-        <div className="mt-2 flex items-center justify-between gap-3"><span className="text-xs text-ctp-subtext0">{primerMarkdown.length.toLocaleString()} / 50,000</span><button disabled={busy || primerMarkdown === deck.primerMarkdown} type="submit" className="rounded-md bg-ctp-blue px-3 py-2 text-sm text-ctp-base disabled:opacity-50">Save primer</button></div>
-      </form>
-      <section className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><h2 className="font-semibold text-ctp-text">Preview</h2><div className="mt-4">{primerMarkdown.trim() ? <PrimerMarkdown markdown={primerMarkdown} decklist={deck.decklist} /> : <p className="text-sm text-ctp-subtext1">Your primer preview will appear here.</p>}</div></section>
-    </section>}
+    <div hidden={tab !== "primer"}><DeckPrimerEditor decklist={deck.decklist} primerMarkdown={primerMarkdown} setPrimerMarkdown={setPrimerMarkdown} savedMarkdown={deck.primerMarkdown} busy={busy} onSave={() => run(async () => { await accountApi.updateDeckMetadata(deck.id, { primerMarkdown }); await refresh(); })} /></div>
     {tab === "manage" && <DeckVersionHistory deck={deck} busy={busy} onRestore={(versionId) => void run(async () => { await accountApi.restoreDeckVersion(deck.id, versionId); await refresh(); })} />}
   </PageLayout>;
 }

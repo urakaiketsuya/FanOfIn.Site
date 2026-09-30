@@ -54,9 +54,34 @@ All new or revised user interfaces must be mobile-first, follow Material Design 
 - Use consistent Material-style hierarchy, spacing, surfaces, and action emphasis. Prefer an inline expansion for local details and a dialog or bottom sheet for a focused secondary task. Avoid nested disclosure and competing primary buttons.
 - Provide touch targets of at least 48×48 CSS pixels for mobile controls, readable labels, visible keyboard focus, accessible names, and appropriate expanded/selected states. Do not rely on hover, color, or icons alone to communicate actions or state.
 - Keep frequent actions reachable while scrolling, but ensure sticky controls and overlays do not cover content, focused fields, or actions when the on-screen keyboard is open. Avoid horizontal page scrolling.
-- Deck editing controls belong in `app/src/components/deck-editor/`; immutable section-aware mutations belong in `app/src/lib/deckEditing.ts`. Reuse them in Builder and My Decks. Keep account saves/versioning and recommendation orchestration in their feature controllers. Moves must conserve copies, support splitting across sections, and never silently truncate or reroute cards.
 - Recommendations are opt-in assistance. Keep suggestions distinct from the user's actual selections; add or replace content only through an explicit user action. Ask for missing recommendation context when recommendations are requested, rather than blocking manual work.
 - Before calling a UI change complete, verify the main flow at a narrow mobile viewport and a desktop viewport. Check empty, loading, error, and expanded states relevant to the change, plus touch target sizes, keyboard access, and overflow. Report any verification that could not be performed.
+
+## Architecture and refactoring
+
+### Persistence and validation
+
+- Treat writes that establish one logical resource as a single atomic operation. Failure must not leave partially initialized records. Account for retries and concurrent requests; a preflight existence check alone does not guarantee consistency.
+- For persistence changes, test rollback, retry behavior, and relevant uniqueness conflicts.
+- Validate user-authored display text through the shared content policy. Keep field-specific length, normalization, and required-value rules explicit. Cover create, update, and publication paths.
+- Keep trusted catalog text and abuse-report evidence distinct from user-authored display text when applying content policy.
+- Share input validation and canonicalization across equivalent mutation paths. Preserve intentional differences between creating a version and updating an existing version.
+- Keep general infrastructure, such as asset fetching, outside domain modules. Unrelated features should not import deck persistence merely to fetch an asset.
+
+### Component boundaries
+
+- Inspect existing shared components before introducing a new UI primitive. Use `Tabs`/`TabPanel` and `Button`, along with the dialog and card components specified above. Extend them narrowly when needed instead of duplicating their behavior.
+- Deck editing controls belong in `app/src/components/deck-editor/`; immutable section-aware mutations belong in `app/src/lib/deckEditing.ts`. Reuse them in Builder and My Decks. Keep account saves/versioning and recommendation orchestration in their feature controllers. Moves must conserve copies, support splitting across sections, and never silently truncate or reroute cards.
+- Extract components around a coherent user task or independently managed interaction, not an arbitrary line count. Prefer focused values and callbacks over passing an entire page controller.
+- Keep feature-specific components local until another feature needs them. Avoid shared components with many unrelated flags or optional action modes.
+- Shared presentation must preserve the distinction between accepting suggestions and editing selected cards.
+- When extracting stateful UI, preserve draft ownership, mounting behavior, URL state, focus restoration, and failed-save recovery.
+
+### Refactoring verification
+
+- Separate behavior fixes from structural refactors where practical. Keep changes small enough to review independently.
+- Before restructuring analysis algorithms, establish representative end-to-end fixtures. Preserve stable identifiers, membership, ordering, and calculated outputs unless a behavior change is explicitly requested.
+- Run checks appropriate to the changed boundary. Structural UI changes still require the mobile, desktop, and accessibility verification above.
 
 ## Gotchas
 
@@ -68,6 +93,7 @@ All new or revised user interfaces must be mobile-first, follow Material Design 
 
 ## Git
 
+- During an audit, report findings and proposed changes without editing files unless implementation is requested.
 - `git status --short` before staging. Stage only files changed for current task.
 - Don't touch: `app/index.html`, `app/src/features/compare/DeckSearchByCards.tsx`, `.claude/`, `app/public/{apple-touch-icon,favicon-16,favicon-32}.png`.
 - These are owned by concurrent sessions; unexpected modifications in unrelated paths are the real signal to stop.

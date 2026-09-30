@@ -2,7 +2,7 @@ import { assertAllowedText } from "./content-policy";
 import { canonicalCardTag, cardTagCategory, type CardTagsData, type TagOverride, type TagProposal, type TagProposalInput, type TagProposalList } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
 import { ApiError, badRequest } from "./errors";
-import { assetJson } from "./decks";
+import { assetJson } from "./assets";
 
 export function parseTagProposal(value: unknown): TagProposalInput {
   if (!value || typeof value !== "object") throw badRequest("Invalid tag proposal");

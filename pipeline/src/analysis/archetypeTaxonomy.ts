@@ -255,18 +255,7 @@ function dominantElement(definingCards: { name: string; prevalence: number }[], 
  * docs/CALCULATIONS.md for the full method and the real-data validation behind the threshold
  * choices.
  */
-export function computeArchetypeTaxonomy(
-  bundles: OmnidexEventBundle[],
-  ctx: AnalysisContext,
-  deckSightings: DeckSighting[],
-  priceByName: Map<string, number>,
-  options: { clusterThreshold?: number } = {},
-): ArchetypeTaxonomyData {
-  if (config.fastMode) return { generatedAt: new Date().toISOString(), clusters: [], materialArchetypes: [], strategyArchetypes: [], engineArchetypes: [], historicalEngineArchetypes: [], coverage: { classifiedDeckCount: 0, totalDeckCount: 0, classificationRate: 0 }, aliases: {}, cardClusterIndex: {} };
-  const clusterThreshold = options.clusterThreshold ?? CLUSTER_THRESHOLD;
-
-  const sightingByDeckId = new Map(deckSightings.map((s) => [s.deckId, s]));
-
+function collectTaxonomyDecks(bundles: OmnidexEventBundle[], ctx: AnalysisContext): CardDeck[] {
   const allDecks: CardDeck[] = [];
   for (const bundle of bundles) {
     if ("error" in bundle.decklists) continue;
@@ -317,6 +306,10 @@ export function computeArchetypeTaxonomy(
     }
   }
 
+  return allDecks;
+}
+
+function clusterTaxonomyDecks(allDecks: CardDeck[], clusterThreshold: number) {
   // Group into exact-signature "builds" by cards alone — same convention as
   // useDeckPopularity.ts's canonicalSignature, but global rather than scoped to one Champion, so
   // the exact same 40-card list played under two different Champions still lands in one group
@@ -408,6 +401,10 @@ export function computeArchetypeTaxonomy(
     }
   }
 
+  return { rawClusters, candidateClusters };
+}
+
+function summarizeTaxonomyClusters(allDecks: CardDeck[], rawClusters: Cluster[], candidateClusters: (cards: Map<string, number>) => Cluster[], sightingByDeckId: Map<string, DeckSighting>, ctx: AnalysisContext, priceByName: Map<string, number>) {
   // Global card prevalence (across ALL decks, not just multi-player groups) — the denominator for
   // "is this card actually discriminating, or just a staple" now that there's no single Champion
   // to compare a cluster against.
@@ -625,6 +622,10 @@ export function computeArchetypeTaxonomy(
     });
   }
 
+  return { clusterSummaries, mainPresenceByClusterId };
+}
+
+function nameTaxonomyClusters(clusterSummaries: ArchetypeCluster[], mainPresenceByClusterId: Map<string, Map<string, number>>): void {
   // Disambiguate same-named clusters (e.g. two element-tied clusters under the same plurality
   // Champion) by appending the runner-up's top defining card. Global now, not per-Champion — a
   // name collision can happen across two different-plurality-Champion clusters just as easily.
@@ -658,6 +659,10 @@ export function computeArchetypeTaxonomy(
     }
   }
 
+  return;
+}
+
+function groupTaxonomyStrategies(clusterSummaries: ArchetypeCluster[], sightingByDeckId: Map<string, DeckSighting>) {
   // Builds are deliberately more granular than archetypes. Group neighboring builds when their
   // main-deck defining packages substantially overlap under the same plurality Champion. Greedy
   // seed assignment avoids the transitive chaining problem that made single-linkage unsuitable
@@ -728,9 +733,10 @@ export function computeArchetypeTaxonomy(
   }
   strategyArchetypes.sort((a, b) => b.playerCount - a.playerCount || a.name.localeCompare(b.name));
 
-  // Cohort-relative relationships and sibling labels; concrete ids, membership and stats stay intact.
-  const engineArchetypes = analyzeEngines(clusterSummaries, allDecks);
+  return strategyArchetypes;
+}
 
+function splitHistoricalEngines(engineArchetypes: ArchetypeTaxonomyData["engineArchetypes"], ctx: AnalysisContext) {
   // Split out packages whose defining identity now depends on a banned card — these can't
   // legally be built today, so they're compiled into a separate historical dataset instead of
   // sitting in the live engineArchetypes list alongside currently-playable packages.
@@ -742,6 +748,10 @@ export function computeArchetypeTaxonomy(
     else currentEngineArchetypes.push(engine);
   }
 
+  return { currentEngineArchetypes, historicalEngineArchetypes };
+}
+
+function groupTaxonomyMaterialRoutes(allDecks: CardDeck[], clusterSummaries: ArchetypeCluster[], sightingByDeckId: Map<string, DeckSighting>, ctx: AnalysisContext) {
   // Material routes sit above Spirits and exact builds. The highest-level non-Spirit Champion
   // printing is the stable route anchor (for example, Lorraine, Crux Knight); main-deck package
   // similarity remains a child-level concern and therefore cannot split this parent population.
@@ -809,6 +819,38 @@ export function computeArchetypeTaxonomy(
     });
   }
   materialArchetypes.sort((a, b) => b.playerCount - a.playerCount || a.name.localeCompare(b.name));
+
+  return materialArchetypes;
+}
+
+export function computeArchetypeTaxonomy(
+  bundles: OmnidexEventBundle[],
+  ctx: AnalysisContext,
+  deckSightings: DeckSighting[],
+  priceByName: Map<string, number>,
+  options: { clusterThreshold?: number } = {},
+): ArchetypeTaxonomyData {
+  if (config.fastMode) return { generatedAt: new Date().toISOString(), clusters: [], materialArchetypes: [], strategyArchetypes: [], engineArchetypes: [], historicalEngineArchetypes: [], coverage: { classifiedDeckCount: 0, totalDeckCount: 0, classificationRate: 0 }, aliases: {}, cardClusterIndex: {} };
+  const clusterThreshold = options.clusterThreshold ?? CLUSTER_THRESHOLD;
+
+  const sightingByDeckId = new Map(deckSightings.map((s) => [s.deckId, s]));
+
+  const allDecks = collectTaxonomyDecks(bundles, ctx);
+
+  const { rawClusters, candidateClusters } = clusterTaxonomyDecks(allDecks, clusterThreshold);
+
+  const { clusterSummaries, mainPresenceByClusterId } = summarizeTaxonomyClusters(allDecks, rawClusters, candidateClusters, sightingByDeckId, ctx, priceByName);
+
+  nameTaxonomyClusters(clusterSummaries, mainPresenceByClusterId);
+
+  const strategyArchetypes = groupTaxonomyStrategies(clusterSummaries, sightingByDeckId);
+
+  // Cohort-relative relationships and sibling labels; concrete ids, membership and stats stay intact.
+  const engineArchetypes = analyzeEngines(clusterSummaries, allDecks);
+
+  const { currentEngineArchetypes, historicalEngineArchetypes } = splitHistoricalEngines(engineArchetypes, ctx);
+
+  const materialArchetypes = groupTaxonomyMaterialRoutes(allDecks, clusterSummaries, sightingByDeckId, ctx);
 
   const clusters = clusterSummaries;
 

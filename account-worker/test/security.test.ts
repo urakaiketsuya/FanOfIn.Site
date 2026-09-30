@@ -1,7 +1,10 @@
+import { assetJson } from "../src/assets";
+import { normalizeDeckTags, parseSaveInput } from "../src/deck-input";
+import { selectImportCandidates } from "../src/deck-imports";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { bffAllowed, clearGoogleKeyCacheForTest, consumeDiscordOAuthState, consumeOAuthNonce, createDiscordOAuthState, createOAuthNonce, discordAuthorizeUrl, exchangeDiscordCode, normalizeDisplayName, verifyGoogleCredential, type Env } from "../src/auth";
-import { assetJson, deleteDeck, getDeck, getPublicDeck, normalizeDeckTags, parseSaveInput, renameDeck, selectImportCandidates } from "../src/decks";
+import { deleteDeck, getDeck, getPublicDeck, renameDeck } from "../src/decks";
 import { getDeckSocialState, setDeckBookmark, setDeckLike } from "../src/deck-social";
 import { discoverDecks, discoverProfiles, getPublicProfile } from "../src/discovery";
 import { reportDeck } from "../src/moderation";

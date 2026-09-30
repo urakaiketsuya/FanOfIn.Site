@@ -1,7 +1,7 @@
-import DeckLegalityWarning from "../../components/deck-editor/DeckLegalityWarning";
+import DeckLegalityWarning from "./DeckLegalityWarning";
 import type { DeckFormat } from "@gatcg/shared";
-import DeckEditorCard from "../../components/deck-editor/DeckEditorCard";
-import DisclosureChevron from "../../components/DisclosureChevron";
+import DeckEditorCard from "./DeckEditorCard";
+import DisclosureChevron from "../DisclosureChevron";
 import type { Card, OmnidexDecklist, OmnidexDecklistCardLine } from "@gatcg/shared";
 import { useEffect, useState } from "react";
 import { deckDestinationEligibility } from "../../lib/deckSectionEligibility";

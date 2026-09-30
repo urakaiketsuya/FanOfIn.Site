@@ -1,0 +1,663 @@
+{
+  "clusters": [
+    {
+      "id": "qebjsb",
+      "championName": "Synthetic Champion",
+      "championBreakdown": [
+        {
+          "championName": "Synthetic Champion",
+          "deckCount": 12,
+          "playerCount": 6
+        }
+      ],
+      "name": "Synthetic Champion — A / B",
+      "deckCount": 12,
+      "playerCount": 6,
+      "eventCount": 2,
+      "confidence": "emerging",
+      "avgWinRate": 0.75,
+      "winRateInterval": {
+        "low": 0.6121562719049204,
+        "high": 0.8507936632620209,
+        "matches": 48
+      },
+      "quality": {
+        "meanSimilarity": 1,
+        "minSimilarity": 1,
+        "meanAssignmentMargin": 1
+      },
+      "definingCards": [
+        {
+          "name": "A",
+          "prevalence": 1
+        },
+        {
+          "name": "B",
+          "prevalence": 1
+        },
+        {
+          "name": "C",
+          "prevalence": 1
+        }
+      ],
+      "mainDefiningCards": [
+        {
+          "name": "A",
+          "prevalence": 1
+        },
+        {
+          "name": "B",
+          "prevalence": 1
+        },
+        {
+          "name": "C",
+          "prevalence": 1
+        }
+      ],
+      "materialDefiningCards": [
+        {
+          "name": "Anchor",
+          "prevalence": 1
+        }
+      ],
+      "mainDeckAverageCards": [
+        {
+          "name": "A",
+          "quantity": 4
+        },
+        {
+          "name": "B",
+          "quantity": 4
+        },
+        {
+          "name": "C",
+          "quantity": 4
+        }
+      ],
+      "materialDeckAverageCards": [
+        {
+          "name": "Anchor",
+          "quantity": 1
+        },
+        {
+          "name": "Spirit",
+          "quantity": 1
+        }
+      ],
+      "materialArchetypeId": "yqmnl7",
+      "strategyArchetypeId": "1yut33d",
+      "deckIds": [
+        "1:1",
+        "1:2",
+        "1:3",
+        "1:4",
+        "1:5",
+        "1:6",
+        "2:1",
+        "2:2",
+        "2:3",
+        "2:4",
+        "2:5",
+        "2:6"
+      ],
+      "seasons": [
+        {
+          "deckCount": 12,
+          "playerCount": 6,
+          "eventCount": 2,
+          "avgWinRate": 0.75
+        }
+      ],
+      "trend": null,
+      "metaShare": 0.5,
+      "topCutCount": 6,
+      "topCutRate": 0.5,
+      "avgPlacement": 3.5,
+      "avgPrice": 24,
+      "minPrice": 24,
+      "maxPrice": 24,
+      "namingCards": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "id": "1etylho",
+      "championName": "Synthetic Champion",
+      "championBreakdown": [
+        {
+          "championName": "Synthetic Champion",
+          "deckCount": 12,
+          "playerCount": 6
+        }
+      ],
+      "name": "Synthetic Champion — D / E",
+      "deckCount": 12,
+      "playerCount": 6,
+      "eventCount": 2,
+      "confidence": "emerging",
+      "avgWinRate": 0.75,
+      "winRateInterval": {
+        "low": 0.6121562719049204,
+        "high": 0.8507936632620209,
+        "matches": 48
+      },
+      "quality": {
+        "meanSimilarity": 1,
+        "minSimilarity": 1,
+        "meanAssignmentMargin": 1
+      },
+      "definingCards": [
+        {
+          "name": "D",
+          "prevalence": 1
+        },
+        {
+          "name": "E",
+          "prevalence": 1
+        },
+        {
+          "name": "F",
+          "prevalence": 1
+        }
+      ],
+      "mainDefiningCards": [
+        {
+          "name": "D",
+          "prevalence": 1
+        },
+        {
+          "name": "E",
+          "prevalence": 1
+        },
+        {
+          "name": "F",
+          "prevalence": 1
+        }
+      ],
+      "materialDefiningCards": [
+        {
+          "name": "Route",
+          "prevalence": 1
+        }
+      ],
+      "mainDeckAverageCards": [
+        {
+          "name": "D",
+          "quantity": 4
+        },
+        {
+          "name": "E",
+          "quantity": 4
+        },
+        {
+          "name": "F",
+          "quantity": 4
+        }
+      ],
+      "materialDeckAverageCards": [
+        {
+          "name": "Route",
+          "quantity": 1
+        },
+        {
+          "name": "Spirit",
+          "quantity": 1
+        }
+      ],
+      "materialArchetypeId": "1gawkej",
+      "strategyArchetypeId": "1kxl40m",
+      "deckIds": [
+        "1:7",
+        "1:8",
+        "1:9",
+        "1:10",
+        "1:11",
+        "1:12",
+        "2:7",
+        "2:8",
+        "2:9",
+        "2:10",
+        "2:11",
+        "2:12"
+      ],
+      "seasons": [
+        {
+          "deckCount": 12,
+          "playerCount": 6,
+          "eventCount": 2,
+          "avgWinRate": 0.75
+        }
+      ],
+      "trend": null,
+      "metaShare": 0.5,
+      "topCutCount": 0,
+      "topCutRate": 0,
+      "avgPlacement": 9.5,
+      "avgPrice": null,
+      "minPrice": null,
+      "maxPrice": null,
+      "namingCards": [
+        "D",
+        "E"
+      ]
+    }
+  ],
+  "materialArchetypes": [
+    {
+      "id": "1gawkej",
+      "name": "Route",
+      "championName": "Synthetic Champion",
+      "buildIds": [
+        "1etylho"
+      ],
+      "deckIds": [
+        "1:7",
+        "1:8",
+        "1:9",
+        "1:10",
+        "1:11",
+        "1:12",
+        "1:13",
+        "2:7",
+        "2:8",
+        "2:9",
+        "2:10",
+        "2:11",
+        "2:12",
+        "2:13"
+      ],
+      "spiritBreakdown": [
+        {
+          "name": "Spirit",
+          "deckCount": 14,
+          "playerCount": 7
+        }
+      ],
+      "definingCards": [
+        {
+          "name": "Route",
+          "prevalence": 1
+        }
+      ],
+      "deckCount": 14,
+      "playerCount": 7,
+      "eventCount": 2,
+      "avgWinRate": 0.75,
+      "confidence": "emerging"
+    },
+    {
+      "id": "yqmnl7",
+      "name": "Anchor",
+      "championName": "Synthetic Champion",
+      "buildIds": [
+        "qebjsb"
+      ],
+      "deckIds": [
+        "1:1",
+        "1:2",
+        "1:3",
+        "1:4",
+        "1:5",
+        "1:6",
+        "2:1",
+        "2:2",
+        "2:3",
+        "2:4",
+        "2:5",
+        "2:6"
+      ],
+      "spiritBreakdown": [
+        {
+          "name": "Spirit",
+          "deckCount": 12,
+          "playerCount": 6
+        }
+      ],
+      "definingCards": [
+        {
+          "name": "Anchor",
+          "prevalence": 1
+        }
+      ],
+      "deckCount": 12,
+      "playerCount": 6,
+      "eventCount": 2,
+      "avgWinRate": 0.75,
+      "confidence": "emerging"
+    }
+  ],
+  "strategyArchetypes": [
+    {
+      "id": "1kxl40m",
+      "name": "Wind Synthetic Champion",
+      "championName": "Synthetic Champion",
+      "buildIds": [
+        "1etylho"
+      ],
+      "definingCards": [
+        {
+          "name": "D",
+          "prevalence": 1
+        },
+        {
+          "name": "E",
+          "prevalence": 1
+        },
+        {
+          "name": "F",
+          "prevalence": 1
+        }
+      ],
+      "deckCount": 12,
+      "playerCount": 6,
+      "eventCount": 2,
+      "avgWinRate": 0.75,
+      "confidence": "emerging"
+    },
+    {
+      "id": "1yut33d",
+      "name": "Wind Synthetic Champion — A",
+      "championName": "Synthetic Champion",
+      "buildIds": [
+        "qebjsb"
+      ],
+      "definingCards": [
+        {
+          "name": "A",
+          "prevalence": 1
+        },
+        {
+          "name": "B",
+          "prevalence": 1
+        },
+        {
+          "name": "C",
+          "prevalence": 1
+        }
+      ],
+      "deckCount": 12,
+      "playerCount": 6,
+      "eventCount": 2,
+      "avgWinRate": 0.75,
+      "confidence": "emerging"
+    }
+  ],
+  "engineArchetypes": [
+    {
+      "id": "1fpx02k",
+      "name": "A / B package",
+      "seedBuildId": "qebjsb",
+      "buildIds": [
+        "qebjsb"
+      ],
+      "status": "champion-specific",
+      "commonCore": [
+        {
+          "name": "A",
+          "prevalence": 1,
+          "enrichment": 0.5384615384615385
+        },
+        {
+          "name": "B",
+          "prevalence": 1,
+          "enrichment": 0.5384615384615385
+        },
+        {
+          "name": "C",
+          "prevalence": 1,
+          "enrichment": 0.5384615384615385
+        },
+        {
+          "name": "Spirit",
+          "prevalence": 1,
+          "enrichment": 4.440892098500626e-16
+        }
+      ],
+      "championEvidence": [
+        {
+          "championName": "Synthetic Champion",
+          "deckCount": 12,
+          "playerCount": 6,
+          "eventCount": 2,
+          "qualifying": true,
+          "differentiatorCards": [
+            {
+              "name": "A",
+              "prevalence": 1,
+              "enrichment": 1
+            },
+            {
+              "name": "B",
+              "prevalence": 1,
+              "enrichment": 1
+            },
+            {
+              "name": "C",
+              "prevalence": 1,
+              "enrichment": 1
+            },
+            {
+              "name": "Spirit",
+              "prevalence": 1,
+              "enrichment": 1
+            }
+          ]
+        }
+      ],
+      "championBreakdown": [
+        {
+          "championName": "Synthetic Champion",
+          "deckCount": 12,
+          "playerCount": 6,
+          "eventCount": 2,
+          "qualifying": true,
+          "differentiatorCards": [
+            {
+              "name": "A",
+              "prevalence": 1,
+              "enrichment": 1
+            },
+            {
+              "name": "B",
+              "prevalence": 1,
+              "enrichment": 1
+            },
+            {
+              "name": "C",
+              "prevalence": 1,
+              "enrichment": 1
+            },
+            {
+              "name": "Spirit",
+              "prevalence": 1,
+              "enrichment": 1
+            }
+          ]
+        }
+      ],
+      "definingCards": [
+        {
+          "name": "A",
+          "prevalence": 1,
+          "enrichment": 0.5384615384615385
+        },
+        {
+          "name": "B",
+          "prevalence": 1,
+          "enrichment": 0.5384615384615385
+        },
+        {
+          "name": "C",
+          "prevalence": 1,
+          "enrichment": 0.5384615384615385
+        }
+      ],
+      "deckCount": 12,
+      "playerCount": 6,
+      "eventCount": 2,
+      "avgWinRate": 0.75,
+      "confidence": "emerging"
+    },
+    {
+      "id": "58ik3n",
+      "name": "D / E package",
+      "seedBuildId": "1etylho",
+      "buildIds": [
+        "1etylho"
+      ],
+      "status": "champion-specific",
+      "commonCore": [
+        {
+          "name": "D",
+          "prevalence": 1,
+          "enrichment": 0.5384615384615385
+        },
+        {
+          "name": "E",
+          "prevalence": 1,
+          "enrichment": 0.5384615384615385
+        },
+        {
+          "name": "F",
+          "prevalence": 1,
+          "enrichment": 0.5384615384615385
+        },
+        {
+          "name": "Spirit",
+          "prevalence": 1,
+          "enrichment": 4.440892098500626e-16
+        }
+      ],
+      "championEvidence": [
+        {
+          "championName": "Synthetic Champion",
+          "deckCount": 12,
+          "playerCount": 6,
+          "eventCount": 2,
+          "qualifying": true,
+          "differentiatorCards": [
+            {
+              "name": "D",
+              "prevalence": 1,
+              "enrichment": 1
+            },
+            {
+              "name": "E",
+              "prevalence": 1,
+              "enrichment": 1
+            },
+            {
+              "name": "F",
+              "prevalence": 1,
+              "enrichment": 1
+            },
+            {
+              "name": "Spirit",
+              "prevalence": 1,
+              "enrichment": 1
+            }
+          ]
+        }
+      ],
+      "championBreakdown": [
+        {
+          "championName": "Synthetic Champion",
+          "deckCount": 12,
+          "playerCount": 6,
+          "eventCount": 2,
+          "qualifying": true,
+          "differentiatorCards": [
+            {
+              "name": "D",
+              "prevalence": 1,
+              "enrichment": 1
+            },
+            {
+              "name": "E",
+              "prevalence": 1,
+              "enrichment": 1
+            },
+            {
+              "name": "F",
+              "prevalence": 1,
+              "enrichment": 1
+            },
+            {
+              "name": "Spirit",
+              "prevalence": 1,
+              "enrichment": 1
+            }
+          ]
+        }
+      ],
+      "definingCards": [
+        {
+          "name": "D",
+          "prevalence": 1,
+          "enrichment": 0.5384615384615385
+        },
+        {
+          "name": "E",
+          "prevalence": 1,
+          "enrichment": 0.5384615384615385
+        },
+        {
+          "name": "F",
+          "prevalence": 1,
+          "enrichment": 0.5384615384615385
+        }
+      ],
+      "deckCount": 12,
+      "playerCount": 6,
+      "eventCount": 2,
+      "avgWinRate": 0.75,
+      "confidence": "emerging"
+    }
+  ],
+  "historicalEngineArchetypes": [],
+  "coverage": {
+    "classifiedDeckCount": 24,
+    "totalDeckCount": 26,
+    "classificationRate": 0.9230769230769231
+  },
+  "aliases": {},
+  "cardClusterIndex": {
+    "A": [
+      {
+        "clusterId": "qebjsb",
+        "prevalence": 1
+      }
+    ],
+    "B": [
+      {
+        "clusterId": "qebjsb",
+        "prevalence": 1
+      }
+    ],
+    "C": [
+      {
+        "clusterId": "qebjsb",
+        "prevalence": 1
+      }
+    ],
+    "D": [
+      {
+        "clusterId": "1etylho",
+        "prevalence": 1
+      }
+    ],
+    "E": [
+      {
+        "clusterId": "1etylho",
+        "prevalence": 1
+      }
+    ],
+    "F": [
+      {
+        "clusterId": "1etylho",
+        "prevalence": 1
+      }
+    ]
+  }
+}

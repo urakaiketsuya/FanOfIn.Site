@@ -1,194 +1,20 @@
+export { saveDeck } from "./deck-persistence";
+import { canonicalMaybeboard, normalizeDeckTags, validMaybeboard, parseDeckContent, prepareDeckBuild } from "./deck-input";
 import {
-  canonicalizeSavedDecklist,
-  savedDeckIdentityInput,
   type DeckFormat,
-  type DeckImportCandidate,
-  type DeckImportPreview,
-  type DeckImportResult,
   type OmnidexDecklist,
   type OmnidexDecklistCardLine,
-  type OmnidexDecklistEntry,
   type PublicDeck,
   type SavedDeck,
   type SavedDeckDetail,
   type SavedDeckVersion,
-  type ShoutAtYourDecksDeck,
-  type ShoutAtYourDecksDeckSummary,
 } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
 import { assertAllowedText, validUserFacingName } from "./content-policy";
 import { ApiError, badRequest } from "./errors";
 
-interface SaveInput {
-  decklist: OmnidexDecklist;
-  maybeboard?: OmnidexDecklistCardLine[];
-  title: string;
-  format?: DeckFormat;
-  championName?: string | null;
-  source: {
-    provider: "manual" | "omnidex" | "shoutatyourdecks";
-    externalDeckId: string;
-    sourceUrl?: string | null;
-    label: string;
-    metadata?: Record<string, unknown>;
-  };
-}
-
-const MAX_DECKS_PER_USER = 250;
-const MAX_LINES_PER_DECK = 250;
-const MAX_SOURCES_PER_DECK = 50;
-const MAX_IMPORT_DECKS = 50;
 const MAX_VERSIONS_PER_DECK = 200;
-const MAX_IDENTIFIER_LENGTH = 240;
-const MAX_SOURCE_URL_LENGTH = 1_000;
-const MAX_METADATA_BYTES = 16_384;
 const MAX_PRIMER_LENGTH = 50_000;
-const MAX_TAGS = 8;
-const MAX_TAG_LENGTH = 24;
-const ASSET_FETCH_TIMEOUT_MS = 10_000;
-const MAX_ASSET_BYTES = 5 * 1024 * 1024;
-const SAFE_ARCHIVE_ID = /^[A-Za-z0-9:_-]{1,240}$/;
-
-export function normalizeDeckTags(value: unknown): string[] {
-  if (!Array.isArray(value) || value.length > MAX_TAGS) throw badRequest(`Decks can have up to ${MAX_TAGS} tags`);
-  const tags: string[] = [];
-  const seen = new Set<string>();
-  for (const raw of value) {
-    if (typeof raw !== "string") throw badRequest("Invalid deck tag");
-    const tag = raw.trim().replace(/\s+/g, " ");
-    if (tag.length < 2 || tag.length > MAX_TAG_LENGTH || /[\p{Cc}\p{Cf}]/u.test(tag)) throw badRequest(`Tags must be 2–${MAX_TAG_LENGTH} characters`);
-    if (!validUserFacingName(tag)) throw badRequest("Deck tag contains blocked language", "blocked_language");
-    const key = tag.toLocaleLowerCase("en-US");
-    if (!seen.has(key)) { seen.add(key); tags.push(tag); }
-  }
-  return tags;
-}
-
-async function identityHash(decklist: OmnidexDecklist): Promise<string> {
-  const bytes = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(savedDeckIdentityInput(decklist)));
-  return Array.from(new Uint8Array(bytes), (byte) => byte.toString(16).padStart(2, "0")).join("");
-}
-
-async function sha256(value: string): Promise<string> {
-  const bytes = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
-  return Array.from(new Uint8Array(bytes), (byte) => byte.toString(16).padStart(2, "0")).join("");
-}
-
-async function fullIdentityHash(decklist: OmnidexDecklist, format: DeckFormat, championName: string | null): Promise<string> {
-  const canonical = canonicalizeSavedDecklist(decklist);
-  return sha256(JSON.stringify({
-    format,
-    championName: championName?.trim().toLocaleLowerCase("en-US") ?? null,
-    decklist: canonical,
-  }));
-}
-
-async function ensureVersionedDeck(env: Env, user: AuthUser, deckId: string, input: SaveInput, coreHash: string, now: string): Promise<void> {
-  const existing = await env.ACCOUNT_DB.prepare("SELECT id FROM user_decks WHERE id = ? AND owner_user_id = ?")
-    .bind(deckId, user.id).first<{ id: string }>();
-  if (existing) return;
-  const canonical = canonicalizeSavedDecklist(input.decklist);
-  const format = input.format ?? "UNKNOWN";
-  const fullHash = await fullIdentityHash(canonical, format, input.championName ?? null);
-  const buildId = fullHash;
-  const versionId = crypto.randomUUID();
-  await env.ACCOUNT_DB.prepare(`INSERT INTO canonical_builds (id, core_identity_hash, full_identity_hash, format, champion_name, decklist_json, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT(full_identity_hash) DO NOTHING`)
-    .bind(buildId, coreHash, fullHash, format, input.championName ?? null, JSON.stringify(canonical), now).run();
-  const build = await env.ACCOUNT_DB.prepare("SELECT id FROM canonical_builds WHERE full_identity_hash = ?")
-    .bind(fullHash).first<{ id: string }>();
-  if (!build) throw new Error("Canonical build was not created");
-  const title = input.title.trim();
-  // New decks publish themselves immediately (visibility defaults to public) rather than
-  // starting private and requiring an explicit publish step — mirrors publishDeck's own
-  // public-path fields below so the first version is visible right away.
-  const publicSlug = crypto.randomUUID().replace(/-/g, "");
-  await env.ACCOUNT_DB.prepare(`INSERT INTO user_decks
-    (id, owner_user_id, title, description, visibility, public_slug, published_title, published_description, published_primer_markdown, published_tags_json, format, champion_name, created_at, updated_at)
-    VALUES (?, ?, ?, '', 'public', ?, ?, '', '', '[]', ?, ?, ?, ?)`)
-    .bind(deckId, user.id, title, publicSlug, title, format, input.championName ?? null, now, now).run();
-  await env.ACCOUNT_DB.prepare(`INSERT INTO deck_versions
-    (id, deck_id, version_number, canonical_build_id, change_note, change_summary_json, created_at)
-    VALUES (?, ?, 1, ?, 'Initial version', '{}', ?)`)
-    .bind(versionId, deckId, build.id, now).run();
-  await env.ACCOUNT_DB.prepare("UPDATE user_decks SET current_version_id = ?, published_version_id = ?, published_at = ? WHERE id = ? AND owner_user_id = ?")
-    .bind(versionId, versionId, now, deckId, user.id).run();
-}
-
-function validDecklist(value: unknown): value is OmnidexDecklist {
-  if (!value || typeof value !== "object") return false;
-  const deck = value as Record<string, unknown>;
-  const sections = ["main", "material", "sideboard"];
-  if (!sections.every((section) => Array.isArray(deck[section]))) return false;
-  if (sections.reduce((total, section) => total + (deck[section] as unknown[]).length, 0) > MAX_LINES_PER_DECK) return false;
-  return sections.every((section) => (deck[section] as unknown[]).every((line) => {
-    if (!line || typeof line !== "object") return false;
-    const item = line as Record<string, unknown>;
-    return typeof item.card === "string" && item.card.length <= 200 && Number.isInteger(item.quantity) && Number(item.quantity) > 0 && Number(item.quantity) <= 100;
-  }));
-}
-
-function validMaybeboard(value: unknown): value is OmnidexDecklistCardLine[] {
-  if (!Array.isArray(value) || value.length > MAX_LINES_PER_DECK) return false;
-  return value.every((line) => {
-    if (!line || typeof line !== "object") return false;
-    const item = line as Record<string, unknown>;
-    return typeof item.card === "string" && item.card.length <= 200 && Number.isInteger(item.quantity) && Number(item.quantity) > 0 && Number(item.quantity) <= 100;
-  });
-}
-
-function canonicalMaybeboard(lines: OmnidexDecklistCardLine[] | undefined): OmnidexDecklistCardLine[] {
-  return canonicalizeSavedDecklist({ main: lines ?? [], material: [], sideboard: [] }).main;
-}
-
-export function parseSaveInput(value: unknown): SaveInput {
-  if (!value || typeof value !== "object") throw badRequest("Invalid saved deck");
-  const input = value as Partial<SaveInput>;
-  if (!validDecklist(input.decklist) || typeof input.title !== "string" || !input.title.trim() || input.title.length > 160) throw badRequest("Invalid saved deck");
-  if (!validUserFacingName(input.title)) throw badRequest("Deck name contains blocked language", "blocked_language");
-  if (!input.source || input.source.provider !== "manual" || typeof input.source.externalDeckId !== "string" || !input.source.externalDeckId || input.source.externalDeckId.length > MAX_IDENTIFIER_LENGTH || typeof input.source.label !== "string" || !input.source.label || input.source.label.length > 240) throw badRequest("Invalid deck source");
-  if (input.championName != null && (typeof input.championName !== "string" || input.championName.length > 200)) throw badRequest("Invalid champion name");
-  if (input.maybeboard !== undefined && !validMaybeboard(input.maybeboard)) throw badRequest("Invalid maybeboard");
-  if (input.source.sourceUrl != null && (typeof input.source.sourceUrl !== "string" || input.source.sourceUrl.length > MAX_SOURCE_URL_LENGTH)) throw badRequest("Invalid source URL");
-  if (JSON.stringify(input.source.metadata ?? {}).length > MAX_METADATA_BYTES) throw badRequest("Deck source metadata is too large");
-  return input as SaveInput;
-}
-
-export async function saveDeck(env: Env, user: AuthUser, input: SaveInput): Promise<{ id: string; created: boolean }> {
-  if (!validUserFacingName(input.title)) throw badRequest("Deck name contains blocked language", "blocked_language");
-  const canonical = canonicalizeSavedDecklist(input.decklist);
-  if (canonical.main.length + canonical.material.length === 0) throw badRequest("A deck needs main or material cards");
-  const hash = await identityHash(canonical);
-  const now = new Date().toISOString();
-  const existing = await env.ACCOUNT_DB.prepare("SELECT id FROM saved_decks WHERE user_id = ? AND identity_hash = ?").bind(user.id, hash).first<{ id: string }>();
-  if (!existing) {
-    const count = await env.ACCOUNT_DB.prepare("SELECT COUNT(*) AS count FROM saved_decks WHERE user_id = ?").bind(user.id).first<{ count: number }>();
-    if ((count?.count ?? 0) >= MAX_DECKS_PER_USER) throw badRequest(`Saved deck limit of ${MAX_DECKS_PER_USER} reached`, "deck_limit_reached");
-  }
-  const deckId = existing?.id ?? crypto.randomUUID();
-  await env.ACCOUNT_DB.prepare(`INSERT INTO saved_decks (id, user_id, identity_hash, title, format, champion_name, decklist_json, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ON CONFLICT(user_id, identity_hash) DO UPDATE SET updated_at = excluded.updated_at`)
-    .bind(deckId, user.id, hash, input.title.trim(), input.format ?? "UNKNOWN", input.championName ?? null, JSON.stringify({ ...canonical, sideboard: [] }), now, now).run();
-  const existingSource = await env.ACCOUNT_DB.prepare("SELECT id FROM saved_deck_sources WHERE saved_deck_id = ? AND provider = ? AND external_deck_id = ?")
-    .bind(deckId, input.source.provider, input.source.externalDeckId).first<{ id: string }>();
-  if (!existingSource) {
-    const count = await env.ACCOUNT_DB.prepare("SELECT COUNT(*) AS count FROM saved_deck_sources WHERE saved_deck_id = ?").bind(deckId).first<{ count: number }>();
-    if ((count?.count ?? 0) >= MAX_SOURCES_PER_DECK) throw badRequest(`Deck source limit of ${MAX_SOURCES_PER_DECK} reached`, "deck_source_limit_reached");
-  }
-  await env.ACCOUNT_DB.prepare(`INSERT INTO saved_deck_sources (id, saved_deck_id, provider, external_deck_id, source_url, label, metadata_json, sideboard_json, imported_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ON CONFLICT(saved_deck_id, provider, external_deck_id) DO UPDATE SET source_url = excluded.source_url,
-      label = excluded.label, metadata_json = excluded.metadata_json, sideboard_json = excluded.sideboard_json, imported_at = excluded.imported_at`)
-    .bind(crypto.randomUUID(), deckId, input.source.provider, input.source.externalDeckId, input.source.sourceUrl ?? null,
-      input.source.label.slice(0, 240), JSON.stringify(input.source.metadata ?? {}), JSON.stringify(canonical.sideboard), now).run();
-  await ensureVersionedDeck(env, user, deckId, input, hash, now);
-  if (input.maybeboard !== undefined) {
-    await env.ACCOUNT_DB.prepare("UPDATE user_decks SET maybeboard_json = ?, updated_at = ? WHERE id = ? AND owner_user_id = ?")
-      .bind(JSON.stringify(canonicalMaybeboard(input.maybeboard)), now, deckId, user.id).run();
-  }
-  return { id: deckId, created: !existing };
-}
 
 export async function listDecks(env: Env, user: AuthUser): Promise<SavedDeck[]> {
   const decks = await env.ACCOUNT_DB.prepare("SELECT * FROM saved_decks WHERE user_id = ? ORDER BY updated_at DESC").bind(user.id).all<Record<string, string | null>>();
@@ -366,20 +192,13 @@ export async function getDeck(env: Env, user: AuthUser, deckId: string): Promise
 }
 
 export async function createDeckVersion(env: Env, user: AuthUser, deckId: string, value: unknown): Promise<{ id: string; versionNumber: number }> {
-  if (!value || typeof value !== "object") throw badRequest("Invalid deck version");
-  const input = value as { decklist?: unknown; format?: unknown; championName?: unknown; changeNote?: unknown };
-  if (!validDecklist(input.decklist)) throw badRequest("Invalid decklist");
-  if (input.format !== "STANDARD" && input.format !== "PANTHEON" && input.format !== "UNKNOWN") throw badRequest("Invalid deck format");
-  if (input.championName != null && (typeof input.championName !== "string" || input.championName.length > 200)) throw badRequest("Invalid champion name");
+  const input = parseDeckContent(value, "Invalid deck version");
   if (input.changeNote != null && (typeof input.changeNote !== "string" || input.changeNote.length > 240)) throw badRequest("Change note is too long");
   assertAllowedText(input.changeNote, "Change note");
   const owned = await env.ACCOUNT_DB.prepare("SELECT id, current_version_id, visibility FROM user_decks WHERE id = ? AND owner_user_id = ?")
     .bind(deckId, user.id).first<{ id: string; current_version_id: string; visibility: "private" | "unlisted" | "public" }>();
   if (!owned) throw new ApiError("Deck not found", 404, "deck_not_found");
-  const canonical = canonicalizeSavedDecklist(input.decklist);
-  if (canonical.main.length + canonical.material.length === 0) throw badRequest("A deck needs main or material cards");
-  const coreHash = await identityHash(canonical);
-  const fullHash = await fullIdentityHash(canonical, input.format, typeof input.championName === "string" ? input.championName : null);
+  const { canonical, coreHash, fullHash } = await prepareDeckBuild(input);
   const current = await env.ACCOUNT_DB.prepare(`SELECT cb.full_identity_hash FROM deck_versions dv
     JOIN canonical_builds cb ON cb.id = dv.canonical_build_id WHERE dv.id = ? AND dv.deck_id = ?`)
     .bind(owned.current_version_id, deckId).first<{ full_identity_hash: string }>();
@@ -430,11 +249,7 @@ export async function createDeckVersion(env: Env, user: AuthUser, deckId: string
  * keeps comparing against the last version the user explicitly chose to save, not this edit.
  */
 export async function updateDeckDecklist(env: Env, user: AuthUser, deckId: string, value: unknown): Promise<{ id: string; versionNumber: number }> {
-  if (!value || typeof value !== "object") throw badRequest("Invalid decklist update");
-  const input = value as { decklist?: unknown; format?: unknown; championName?: unknown };
-  if (!validDecklist(input.decklist)) throw badRequest("Invalid decklist");
-  if (input.format !== "STANDARD" && input.format !== "PANTHEON" && input.format !== "UNKNOWN") throw badRequest("Invalid deck format");
-  if (input.championName != null && (typeof input.championName !== "string" || input.championName.length > 200)) throw badRequest("Invalid champion name");
+  const input = parseDeckContent(value, "Invalid decklist update");
   const owned = await env.ACCOUNT_DB.prepare("SELECT id, current_version_id FROM user_decks WHERE id = ? AND owner_user_id = ?")
     .bind(deckId, user.id).first<{ id: string; current_version_id: string | null }>();
   if (!owned) throw new ApiError("Deck not found", 404, "deck_not_found");
@@ -442,11 +257,7 @@ export async function updateDeckDecklist(env: Env, user: AuthUser, deckId: strin
   const currentVersion = await env.ACCOUNT_DB.prepare("SELECT version_number FROM deck_versions WHERE id = ? AND deck_id = ?")
     .bind(owned.current_version_id, deckId).first<{ version_number: number }>();
   if (!currentVersion) throw new Error("Current version record is missing");
-  const canonical = canonicalizeSavedDecklist(input.decklist);
-  if (canonical.main.length + canonical.material.length === 0) throw badRequest("A deck needs main or material cards");
-  const coreHash = await identityHash(canonical);
-  const championName = typeof input.championName === "string" ? input.championName : null;
-  const fullHash = await fullIdentityHash(canonical, input.format, championName);
+  const { canonical, coreHash, fullHash, championName } = await prepareDeckBuild(input);
   const duplicateOwned = await env.ACCOUNT_DB.prepare("SELECT id FROM saved_decks WHERE user_id = ? AND identity_hash = ? AND id <> ?")
     .bind(user.id, coreHash, deckId).first<{ id: string }>();
   if (duplicateOwned) throw badRequest("This build already exists in your decks", "owned_duplicate_deck");
@@ -487,138 +298,4 @@ export async function deleteDeck(env: Env, user: AuthUser, deckId: string): Prom
     env.ACCOUNT_DB.prepare("DELETE FROM saved_decks WHERE id = ? AND user_id = ?").bind(deckId, user.id),
   ]);
   return true;
-}
-
-export async function assetJson<T>(env: Env, path: string): Promise<T> {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), ASSET_FETCH_TIMEOUT_MS);
-  try {
-    // Workers supports manual redirects; the non-2xx check below rejects redirects.
-    const response = await fetch(new URL(path, env.ASSET_BASE_URL), { signal: controller.signal, redirect: "manual" });
-    if (!response.ok) throw new Error(`Published data is unavailable (${response.status})`);
-    const declaredSize = Number(response.headers.get("Content-Length") ?? 0);
-    if (declaredSize > MAX_ASSET_BYTES) throw new Error("Published data response is too large");
-    if (!response.body) throw new Error("Published data response is empty");
-    const reader = response.body.getReader();
-    const chunks: Uint8Array[] = [];
-    let size = 0;
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      size += value.byteLength;
-      if (size > MAX_ASSET_BYTES) {
-        await reader.cancel();
-        throw new Error("Published data response is too large");
-      }
-      chunks.push(value);
-    }
-    const bytes = new Uint8Array(size);
-    let offset = 0;
-    for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.byteLength; }
-    return JSON.parse(new TextDecoder().decode(bytes)) as T;
-  } finally {
-    clearTimeout(timeout);
-  }
-}
-
-interface ImportEntry { deckId: string; eventId: number; eventDate: string; player: number; championName: string | null; placement: number | null; }
-interface ImportEvent { id: number; name: string; format: string; url: string; }
-
-export async function previewImport(env: Env, provider: string, rawIdentifier: string): Promise<DeckImportPreview> {
-  const identifier = rawIdentifier.trim();
-  if (!identifier) throw badRequest("Enter an import identifier");
-  if (identifier.length > MAX_IDENTIFIER_LENGTH) throw badRequest("Import identifier is too long");
-  if (provider === "omnidex") {
-    if (!/^\d+$/.test(identifier)) throw badRequest("Omnidex player ID must be numeric");
-    const playerId = Number(identifier);
-    const [players, popularity, events] = await Promise.all([
-      assetJson<{ players: { id: number; username: string }[] }>(env, "/data/omnidex/players.json"),
-      assetJson<{ entries: ImportEntry[] }>(env, "/data/analysis/deck-popularity-index.json"),
-      assetJson<{ events: ImportEvent[] }>(env, "/data/omnidex/index.json"),
-    ]);
-    const player = players.players.find((item) => item.id === playerId);
-    if (!player) throw badRequest("Omnidex player was not found in the published archive", "import_profile_not_found");
-    const eventsById = new Map(events.events.map((event) => [event.id, event]));
-    const candidates: DeckImportCandidate[] = popularity.entries.filter((item) => item.player === playerId).map((item): DeckImportCandidate => {
-      const event = eventsById.get(item.eventId);
-      return { provider: "omnidex", externalDeckId: item.deckId, title: `${item.championName ?? "Tournament deck"} — ${event?.name ?? `Event ${item.eventId}`}`,
-        championName: item.championName, format: event?.format.toUpperCase().includes("PANTHEON") ? "PANTHEON" : "STANDARD",
-        label: `${event?.name ?? `Event ${item.eventId}`} · ${item.eventDate}`, sourceUrl: event?.url ?? `/events/${item.eventId}`, available: true,
-        eventName: event?.name ?? `Event ${item.eventId}`, eventDate: item.eventDate, placement: item.placement };
-    }).sort((a, b) => (b.eventDate ?? "").localeCompare(a.eventDate ?? ""));
-    return { provider: "omnidex", identifier, displayName: player.username, candidates };
-  }
-  if (provider === "shoutatyourdecks") {
-    const index = await assetJson<{ decks: ShoutAtYourDecksDeckSummary[] }>(env, "/data/shoutatyourdecks/index.json");
-    const normalized = identifier.toLocaleLowerCase("en-US");
-    const matches = index.decks.filter((deck) => deck.author.trim().toLocaleLowerCase("en-US") === normalized);
-    return { provider: "shoutatyourdecks", identifier, displayName: matches[0]?.author ?? identifier, candidates: matches.map((deck) => ({
-      provider: "shoutatyourdecks", externalDeckId: deck.id, title: deck.title, championName: deck.champion,
-      format: deck.format ?? "UNKNOWN", label: deck.title, sourceUrl: deck.url, available: true,
-    })) };
-  }
-  throw badRequest("Unknown import provider");
-}
-
-export function selectImportCandidates(preview: DeckImportPreview, externalDeckIds: unknown): DeckImportCandidate[] {
-  if (!Array.isArray(externalDeckIds) || externalDeckIds.length === 0 || externalDeckIds.some((id) => typeof id !== "string")) throw badRequest("Select at least one deck to import");
-  const selectedIds = [...new Set(externalDeckIds as string[])];
-  if (selectedIds.length > MAX_IMPORT_DECKS) throw badRequest(`Import is limited to ${MAX_IMPORT_DECKS} decks at a time`, "import_limit_reached");
-  const candidatesById = new Map(preview.candidates.map((candidate) => [candidate.externalDeckId, candidate]));
-  const candidates = selectedIds.map((id) => candidatesById.get(id)).filter((candidate): candidate is DeckImportCandidate => Boolean(candidate));
-  if (candidates.length !== selectedIds.length) throw badRequest("One or more selected decks are not part of this profile", "invalid_import_selection");
-  return candidates;
-}
-
-export async function performImport(env: Env, user: AuthUser, provider: string, identifier: string, externalDeckIds: unknown): Promise<DeckImportResult> {
-  const preview = await previewImport(env, provider, identifier);
-  const candidates = selectImportCandidates(preview, externalDeckIds);
-  let created = 0;
-  let linked = 0;
-  let skipped = 0;
-  const failures: DeckImportResult["failures"] = [];
-  if (provider === "omnidex") {
-    const popularity = await assetJson<{ entries: ImportEntry[] }>(env, "/data/analysis/deck-popularity-index.json");
-    const sightingsById = new Map(popularity.entries.map((item) => [item.deckId, item]));
-    const bundles = new Map<number, { decklists: OmnidexDecklistEntry[] | { error: string } }>();
-    for (const candidate of candidates) {
-      if (!SAFE_ARCHIVE_ID.test(candidate.externalDeckId)) { skipped++; failures.push({ externalDeckId: candidate.externalDeckId, title: candidate.title, reason: "Invalid archive identifier" }); continue; }
-      const sighting = sightingsById.get(candidate.externalDeckId);
-      if (!sighting) { skipped++; failures.push({ externalDeckId: candidate.externalDeckId, title: candidate.title, reason: "Archive entry is unavailable" }); continue; }
-      let bundle = bundles.get(sighting.eventId);
-      if (!bundle) {
-        try { bundle = await assetJson<{ decklists: OmnidexDecklistEntry[] | { error: string } }>(env, `/data/omnidex/events/${sighting.eventId}.json`); bundles.set(sighting.eventId, bundle); }
-        catch { skipped++; failures.push({ externalDeckId: candidate.externalDeckId, title: candidate.title, reason: "Event archive is unavailable" }); continue; }
-      }
-      if (!Array.isArray(bundle.decklists)) { skipped++; failures.push({ externalDeckId: candidate.externalDeckId, title: candidate.title, reason: "Decklist was not published for this event" }); continue; }
-      const entry = bundle.decklists.find((item) => item.player === sighting.player);
-      if (!entry) { skipped++; failures.push({ externalDeckId: candidate.externalDeckId, title: candidate.title, reason: "Decklist is missing from the event archive" }); continue; }
-      try {
-        const result = await saveDeck(env, user, { decklist: entry.decklist, title: candidate.title, format: candidate.format,
-          championName: candidate.championName, source: { provider: "omnidex", externalDeckId: candidate.externalDeckId,
-            sourceUrl: candidate.sourceUrl, label: candidate.label, metadata: { eventId: sighting.eventId, eventDate: sighting.eventDate, placement: sighting.placement } } });
-        result.created ? created++ : linked++;
-      } catch (error) { skipped++; failures.push({ externalDeckId: candidate.externalDeckId, title: candidate.title, reason: error instanceof ApiError ? error.publicMessage : "Import failed" }); }
-    }
-  } else {
-    for (const candidate of candidates) {
-      if (!SAFE_ARCHIVE_ID.test(candidate.externalDeckId)) { skipped++; failures.push({ externalDeckId: candidate.externalDeckId, title: candidate.title, reason: "Invalid archive identifier" }); continue; }
-      try {
-        const deck = await assetJson<ShoutAtYourDecksDeck>(env, `/data/shoutatyourdecks/decks/${candidate.externalDeckId}.json`);
-        const decklist: OmnidexDecklist = { main: deck.mainDeck.map((line) => ({ card: line.name, quantity: line.quantity })),
-          material: [...(deck.pantheonDeck ?? []), ...deck.materialDeck].map((line) => ({ card: line.name, quantity: line.quantity })),
-          sideboard: deck.sideDeck.map((line) => ({ card: line.name, quantity: line.quantity })) };
-        const result = await saveDeck(env, user, { decklist, title: deck.title, format: deck.format ?? "UNKNOWN", championName: deck.champion,
-          source: { provider: "shoutatyourdecks", externalDeckId: deck.id, sourceUrl: deck.url, label: deck.title, metadata: { author: deck.author } } });
-        result.created ? created++ : linked++;
-      } catch (error) { skipped++; failures.push({ externalDeckId: candidate.externalDeckId, title: candidate.title, reason: error instanceof ApiError ? error.publicMessage : "Archived decklist is unavailable" }); }
-    }
-  }
-  const now = new Date().toISOString();
-  const normalized = identifier.trim().toLocaleLowerCase("en-US");
-  await env.ACCOUNT_DB.prepare(`INSERT INTO external_profiles (id, user_id, provider, external_identifier, normalized_identifier, display_name, last_imported_at, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    ON CONFLICT(user_id, provider, normalized_identifier) DO UPDATE SET display_name = excluded.display_name, last_imported_at = excluded.last_imported_at`)
-    .bind(crypto.randomUUID(), user.id, provider, identifier.trim(), normalized, preview.displayName, now, now).run();
-  return { requested: candidates.length, created, linked, skipped, failures };
 }
