@@ -47,7 +47,7 @@ export default function MyDecksIndex() {
   const [decks, setDecks] = useState<SavedDeck[]>([]);
   const [bookmarks, setBookmarks] = useState<BookmarkedDeck[]>([]);
   const [tournamentFavorites, setTournamentFavorites] = useState<TournamentDeckFavorite[]>([]);
-  const [officialFavorites, setOfficialFavorites] = useState<OfficialProductDeckFavorite[]>([]);
+  const [officialDecks, setOfficialDecks] = useState<OfficialProductDeckFavorite[]>([]);
   const [error, setError] = useState<string | null>(null);
   const setNotice = useActionNotice();
   const { notify, dismiss } = useToast();
@@ -57,9 +57,12 @@ export default function MyDecksIndex() {
   const [format, setFormat] = useState<DeckFormat>("STANDARD");
   const [deckText, setDeckText] = useState("");
   const [addMode, setAddMode] = useState<AddMode>(null);
-  const [libraryView, setLibraryView] = useState<"builds" | "favorites">("builds");
+  const [libraryView, setLibraryView] = useState<"builds" | "favorites" | "official">("builds");
   const [deckSearch, setDeckSearch] = useState("");
   const [favoriteSearch, setFavoriteSearch] = useState("");
+  const [officialSearch, setOfficialSearch] = useState("");
+  const [officialLoading, setOfficialLoading] = useState(true);
+  const [officialError, setOfficialError] = useState<string | null>(null);
   const [deckFormatFilter, setDeckFormatFilter] = useState<"ALL" | DeckFormat>("ALL");
   const [deckChampionFilter, setDeckChampionFilter] = useState("ALL");
   const [deckSort, setDeckSort] = useState<"updated" | "created" | "title">("updated");
@@ -88,14 +91,19 @@ export default function MyDecksIndex() {
     const query = favoriteSearch.trim().toLowerCase();
     return tournamentFavorites.filter((deck) => !query || deck.title.toLowerCase().includes(query) || (deck.championName?.toLowerCase().includes(query) ?? false) || (deck.sourceEventName?.toLowerCase().includes(query) ?? false));
   }, [tournamentFavorites, favoriteSearch]);
-  const favoriteCount = bookmarks.length + tournamentFavorites.length + officialFavorites.length;
+  const visibleOfficialDecks = useMemo(() => {
+    const query = officialSearch.trim().toLowerCase();
+    return officialDecks.filter(deck => !query || deck.title.toLowerCase().includes(query) || (deck.championName?.toLowerCase().includes(query) ?? false));
+  }, [officialDecks, officialSearch]);
+  const favoriteCount = bookmarks.length + tournamentFavorites.length;
 
   const refreshDecks = useCallback(async () => {
-    const [library, official] = await Promise.all([loadDeckLibrary(accountApi), accountApi.officialProductFavorites()]);
+    setOfficialLoading(true); setOfficialError(null);
+    const officialRequest = accountApi.officialProductFavorites().then(result => { setOfficialDecks(result.decks); }).catch(() => { setOfficialError("Official decks could not be loaded. Please try again."); }).finally(() => setOfficialLoading(false));
+    const [library] = await Promise.all([loadDeckLibrary(accountApi), officialRequest]);
     setDecks(library.decks);
     setBookmarks(library.bookmarks);
     setTournamentFavorites(library.tournamentFavorites);
-    setOfficialFavorites(official.decks);
     if (library.optionalLoadFailed) setError("Your decks loaded, but some favorites are temporarily unavailable.");
   }, []);
   useEffect(() => { void accountApi.session().then((session) => { setUser(session.user); if (session.user) void refreshDecks(); }).catch((reason: Error) => { setError(reason.message); setUser(null); }); }, [refreshDecks]);
@@ -107,20 +115,20 @@ export default function MyDecksIndex() {
     finally { setBusy(false); }
   }
 
-  async function unpinOfficialFavorite(deck: OfficialProductDeckFavorite) {
+  async function removeOfficialDeck(deck: OfficialProductDeckFavorite) {
     const tracking = await accountApi.collectionTracking();
     const updates = tracking.cards.filter((record) => record.assignments?.some((assignment) => assignment.deckId === deck.locationId)).map((record) => ({ cardUuid: record.cardUuid, cardName: record.cardName, mightOwn: record.mightOwn, loans: record.loans, revision: record.revision, assignments: (record.assignments ?? []).filter((assignment) => assignment.deckId !== deck.locationId) }));
     if (updates.length) await accountApi.saveCollectionTrackingBatch(updates);
     await accountApi.favoriteOfficialProductDeck(deck.productDeckId, { favorited: false });
     await refreshDecks();
-    setNotice(`${deck.title} unpinned and its card locations released.`);
+    setNotice(`${deck.title} removed from Official decks and its card locations released.`);
   }
 
   if (user === undefined) return <PageLayout data-component="MyDecksIndex" width="wide"><InlineState className="mt-10">Loading your account…</InlineState></PageLayout>;
   if (!user) return <PageLayout data-component="MyDecksIndex" width="standard"><Panel className="mt-8 text-center"><h1 className="text-2xl font-bold text-ctp-blue">Make My Decks your deck-building home</h1><p className="mx-auto mt-2 max-w-xl text-ctp-subtext1">Sign in to save builds, track versions, compare lists, and keep imported tournament and community decks together.</p><div className="mt-6 flex flex-wrap items-center justify-center gap-3"><GoogleSignInButton onCredential={(credential, nonce) => void run(async () => { const session = await accountApi.googleSignIn(credential, nonce); setUser(session.user); await refreshDecks(); })} /><DiscordSignInButton /><PasswordSignInPanel onSignedIn={(signedInUser) => { setUser(signedInUser); void refreshDecks(); }} />{import.meta.env.DEV && <Button variant="primary" onClick={() => void run(async () => { const session = await accountApi.devSignIn(); setUser(session.user); await refreshDecks(); })}>Use local test account</Button>}<Link to="/deck-builder" className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm font-medium text-ctp-subtext1 hover:border-ctp-blue hover:text-ctp-text">Try Guided Deck Builder</Link></div>{error && error !== "Failed to fetch" && <InlineState tone="danger" className="mt-4 text-sm">{error}</InlineState>}</Panel></PageLayout>;
 
   return <PageLayout data-component="MyDecksIndex" width="wide">
-    <div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-3xl font-bold text-ctp-blue">My Decks</h1><p className="mt-2 text-sm text-ctp-subtext1">Your editable builds and favorite community or tournament decks.</p><p className="mt-1 text-xs text-ctp-subtext0">{decks.length} editable build{decks.length === 1 ? "" : "s"} · {favoriteCount} favorite{favoriteCount === 1 ? "" : "s"}</p></div><Button variant="primary" aria-expanded={addMode !== null} onClick={() => setAddMode((current) => current ? null : "choose")}>{addMode ? "Close" : "Add deck"}</Button></div>
+    <div className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-3xl font-bold text-ctp-blue">My Decks</h1><p className="mt-2 text-sm text-ctp-subtext1">Your editable builds, official product decks, and favorite community or tournament decks.</p><p className="mt-1 text-xs text-ctp-subtext0">{decks.length} editable build{decks.length === 1 ? "" : "s"} · {favoriteCount} favorite{favoriteCount === 1 ? "" : "s"} · {officialDecks.length} official deck{officialDecks.length === 1 ? "" : "s"}</p></div><Button variant="primary" aria-expanded={addMode !== null} onClick={() => setAddMode((current) => current ? null : "choose")}>{addMode ? "Close" : "Add deck"}</Button></div>
     {error && <Panel tone="danger" padding="sm" className="mt-4 text-sm text-ctp-red">{error}</Panel>}
 
 
@@ -135,7 +143,7 @@ export default function MyDecksIndex() {
     {addMode === "paste" && <section><div><h2 className="text-xl font-semibold text-ctp-text">Add a pasted decklist</h2><p className="mt-1 text-xs text-ctp-subtext1">Paste a list formatted for Omnidex.</p></div><div className="mt-4 grid gap-3 md:grid-cols-[minmax(0,1fr)_10rem]"><input value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Deck name" aria-label="Deck name" className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm" /><select value={format} onChange={(event) => setFormat(event.target.value as DeckFormat)} aria-label="Deck format" className="rounded-md border border--surface1 bg-ctp-mantle px-2 py-2 text-sm"><option value="STANDARD">Standard</option><option value="PANTHEON">Pantheon</option><option value="UNKNOWN">Unknown</option></select></div><textarea rows={9} value={deckText} onChange={(event) => setDeckText(event.target.value)} placeholder={"Main\n4x Dungeon Guide\n\nMaterial\n1x Spirit of Water"} aria-label="Decklist" className="mt-3 w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-3 py-2 font-mono text-sm" />{deckText.trim() && <p className={`mt-2 text-sm ${pastedChampionName ? "text-ctp-green" : "text-ctp-yellow"}`}>{pastedChampionName ? `Champion detected: ${pastedChampionName}` : "No Champion detected in the Material section."}</p>}<DeckLegalityWarning deck={pastedDeck} catalog={pastedCardsByName} format={format} /><Button disabled={busy || !deckText.trim()} type="button" onClick={() => void run(async () => { const parsed = parseDecklist(deckText); if (parsed.decklist.main.length + parsed.decklist.material.length === 0) throw new Error("No main or material cards were recognized"); await accountApi.saveDeck({ title: title.trim() || "Untitled deck", format, championName: pastedChampionName, decklist: parsed.decklist, source: { provider: "manual", externalDeckId: crypto.randomUUID(), label: "Pasted decklist" } }); trackEvent("deck_created", { source: "paste" }); setTitle(""); setDeckText(""); setAddMode(null); await refreshDecks(); const banned = new Set(deckCardIssues(parsed.decklist, pastedCardsByName, format).filter(issue => issue.code === "banned").map(issue => issue.card)); notify({ message: `Deck added to your library.${banned.size ? ` Contains ${banned.size} banned card${banned.size === 1 ? "" : "s"}.` : ""}`, tone: banned.size ? "warning" : "success", duration: banned.size ? null : undefined, key: "import" }); })} className="mt-3" variant="primary">Save deck</Button></section>}
     </DialogSheet>}
 
-    <div className="mt-5"><Tabs tabs={[{ key: "builds", label: `Builds (${decks.length})` }, { key: "favorites", label: `Favorites (${favoriteCount})` }]} active={libraryView} onChange={setLibraryView} label="Deck library" baseId="deck-library" /></div>
+    <div className="mt-5"><Tabs tabs={[{ key: "builds", label: `Builds (${decks.length})` }, { key: "official", label: `Official (${officialDecks.length})` }, { key: "favorites", label: `Favorites (${favoriteCount})` }]} active={libraryView} onChange={setLibraryView} label="Deck library" baseId="deck-library" /></div>
     <TabPanel baseId="deck-library" tab="builds" active={libraryView}>    <Section className="mt-4" title="Your builds" description={`${decks.length} editable deck${decks.length === 1 ? "" : "s"} that you own and version.`}>
       <div className="mt-3 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
         <div className="flex flex-wrap items-end gap-2">
@@ -173,8 +181,17 @@ export default function MyDecksIndex() {
       </>}
     </Section>
 </TabPanel>
+    <TabPanel baseId="deck-library" tab="official" active={libraryView}>
+      <Section className="mt-4" title="Official decks" description="Official product lists you own, kept separate from your editable builds and favorites.">
+        <Link to="/official-decks" className="mt-3 inline-flex min-h-12 items-center rounded-md px-3 text-sm text-ctp-blue focus-visible:outline-2">Browse official products</Link>
+        {officialLoading ? <p role="status" className="mt-4 text-sm">Loading official decks…</p> : officialError ? <div className="mt-4"><p role="alert" className="text-sm text-ctp-red">{officialError}</p><Button onClick={() => void run(refreshDecks)}>Retry official decks</Button></div> : officialDecks.length === 0 ? <p className="mt-4 rounded-lg border border-dashed border-ctp-surface1 p-8 text-center text-sm text-ctp-subtext1">No official decks yet. Choose “I own this deck” on an official product to add it here.</p> : <>
+          <input value={officialSearch} onChange={event => setOfficialSearch(event.target.value)} placeholder="Search products or Champions" aria-label="Search official decks" className="mt-4 min-h-12 w-full max-w-md rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 text-sm focus:border-ctp-blue focus:outline-none" />
+          {visibleOfficialDecks.length === 0 ? <p className="mt-4 text-sm text-ctp-subtext1">No official decks match your search.</p> : <div className="mt-4 grid items-start gap-4 md:grid-cols-2">{visibleOfficialDecks.map(deck => <FavoriteDeckPreview key={deck.productDeckId} deck={deck} onRemove={() => void run(() => removeOfficialDeck(deck))} />)}</div>}
+        </>}
+      </Section>
+    </TabPanel>
     <TabPanel baseId="deck-library" tab="favorites" active={libraryView}>    <Section className="mt-4" title={`Favorites (${favoriteCount})`} description="Community publications and tournament builds you want to revisit. Favorites preserve the deck snapshot you selected.">
-      {favoriteCount === 0 ? <p className="mt-4 rounded-lg border border-dashed border-ctp-surface1 p-8 text-center text-sm text-ctp-subtext1">No favorites yet. Add one from a community, tournament, or official product deck page.</p> : <><input value={favoriteSearch} onChange={(event) => setFavoriteSearch(event.target.value)} placeholder="Search favorites, Champions, or events" aria-label="Search favorite decks" className="mt-4 min-h-11 w-full max-w-md rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 text-sm focus:border-ctp-yellow focus:outline-none" />{visibleBookmarks.length + visibleTournamentFavorites.length + officialFavorites.length === 0 ? <p className="mt-4 rounded-lg border border-dashed border-ctp-surface1 p-6 text-center text-sm text-ctp-subtext1">No favorites match your search.</p> : <div className="mt-4 grid items-start gap-4 md:grid-cols-2">{officialFavorites.map((deck) => <FavoriteDeckPreview key={deck.productDeckId} deck={deck} onRemove={() => void run(() => unpinOfficialFavorite(deck))} />)}{visibleTournamentFavorites.map((deck) => <FavoriteDeckPreview key={`tournament-${deck.deckHash}`} deck={deck} onRemove={() => void run(async () => { await accountApi.favoriteTournamentDeck(deck.deckHash, { favorited: false }); await refreshDecks(); setNotice(`${deck.title} removed from favorites.`); })} />)}{visibleBookmarks.map((deck) => <PublicDeckCard key={deck.publicSlug} deck={deck} onRemoveFavorite={() => void run(async () => { await accountApi.bookmarkDeck(deck.publicSlug, false); await refreshDecks(); setNotice(`${deck.title} removed from favorites.`); })} />)}</div>}</>}
+      {favoriteCount === 0 ? <p className="mt-4 rounded-lg border border-dashed border-ctp-surface1 p-8 text-center text-sm text-ctp-subtext1">No favorites yet. Add one from a community or tournament deck page.</p> : <><input value={favoriteSearch} onChange={(event) => setFavoriteSearch(event.target.value)} placeholder="Search favorites, Champions, or events" aria-label="Search favorite decks" className="mt-4 min-h-11 w-full max-w-md rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 text-sm focus:border-ctp-yellow focus:outline-none" />{visibleBookmarks.length + visibleTournamentFavorites.length === 0 ? <p className="mt-4 rounded-lg border border-dashed border-ctp-surface1 p-6 text-center text-sm text-ctp-subtext1">No favorites match your search.</p> : <div className="mt-4 grid items-start gap-4 md:grid-cols-2">{visibleTournamentFavorites.map((deck) => <FavoriteDeckPreview key={`tournament-${deck.deckHash}`} deck={deck} onRemove={() => void run(async () => { await accountApi.favoriteTournamentDeck(deck.deckHash, { favorited: false }); await refreshDecks(); setNotice(`${deck.title} removed from favorites.`); })} />)}{visibleBookmarks.map((deck) => <PublicDeckCard key={deck.publicSlug} deck={deck} onRemoveFavorite={() => void run(async () => { await accountApi.bookmarkDeck(deck.publicSlug, false); await refreshDecks(); setNotice(`${deck.title} removed from favorites.`); })} />)}</div>}</>}
     </Section>
 </TabPanel>
     {folderEditor && <DeckFolderEditor key={folderEditor.folder?.id ?? "new-folder"} {...folderEditor} decks={decks} controller={folders} onDismiss={() => setFolderEditor(null)} onSaved={folder => { setFolderEditor(null); setSelectedFolder(folder.id); }} />}

@@ -130,17 +130,17 @@ function ProductDeckCard({
       await assignCopies(favorite.locationId, assignedHere);
 
       setMissingCollectionLines(missing);
-      notify({ message: `${deck.name} pinned to My Decks.${missing.length ? " Some cards are still missing." : " Existing copies assigned."}`, tone: missing.length ? "warning" : "success", key: "ownership" });
+      notify({ message: `${deck.name} added to My Decks → Official.${missing.length ? " Some cards are still missing." : " Existing copies assigned."}`, tone: missing.length ? "warning" : "success", key: "ownership" });
       if (missing.length) {
         const copies = missing.reduce((sum, line) => sum + line.quantity, 0);
         setOwnershipState("needs-cards");
-        setOwnershipNotice(`${deck.name} is pinned. ${assignedHere.reduce((sum, line) => sum + line.quantity, 0)} existing unassigned copies were located; ${copies} more ${copies === 1 ? "copy is" : "copies are"} needed.`);
+        setOwnershipNotice(`${deck.name} is saved under My Decks → Official. ${assignedHere.reduce((sum, line) => sum + line.quantity, 0)} existing unassigned copies were located; ${copies} more ${copies === 1 ? "copy is" : "copies are"} needed.`);
       } else {
         setOwnershipState("saved");
-        setOwnershipNotice(`${deck.name} is pinned in My Decks and your existing copies are assigned to it.`);
+        setOwnershipNotice(`${deck.name} is saved under My Decks → Official and your existing copies are assigned to it.`);
       }
     } catch (reason) {
-      notify({ tone: "error", key: "ownership", message: reason instanceof Error ? reason.message : "Could not pin this deck. Please try again." });
+      notify({ tone: "error", key: "ownership", message: reason instanceof Error ? reason.message : "Could not add this official deck. Please try again." });
       if (reason instanceof AccountApiError && reason.status === 401) { setOwnershipState("signed-out"); setOwnershipNotice("Sign in to add this deck and its cards to your library."); }
       else { setOwnershipState("failed"); setOwnershipNotice(reason instanceof Error ? reason.message : "Could not add this official deck."); }
     }
@@ -155,7 +155,7 @@ function ProductDeckCard({
 
       setMissingCollectionLines([]); setOwnershipState("saved");
       notify({ message: "Missing copies added and assigned.", key: "ownership" });
-      setOwnershipNotice(`Added and assigned the remaining ${deck.name} copies. Your pinned list is ready.`);
+      setOwnershipNotice(`Added and assigned the remaining ${deck.name} copies. Your official list is ready.`);
     } catch (reason) {
       notify({ tone: "error", key: "ownership", message: "Could not add the missing cards. Please try again." });
       setOwnershipState("failed");
@@ -193,7 +193,7 @@ function ProductDeckCard({
           </button>
     </>,
     status: <>
-        <p className="mt-2 text-xs text-ctp-subtext1">“I own this deck” pins the official list and assigns unassigned copies already in your collection. Missing copies are only added if you choose to add them.</p>
+        <p className="mt-2 text-xs text-ctp-subtext1">“I own this deck” adds the list to My Decks → Official and assigns unassigned copies already in your collection. Missing copies are only added if you choose to add them.</p>
         {ownershipState === "signed-out" ? <Link to="/decks/edit" className="mt-2 inline-flex min-h-12 items-center text-xs text-ctp-blue underline">Sign in to add this deck →</Link> : ownershipNotice && <p role={ownershipState === "failed" ? "alert" : "status"} className={`mt-2 text-xs ${ownershipState === "failed" ? "text-ctp-red" : "text-ctp-green"}`}>{ownershipNotice}</p>}
     </>,
   }} view={{ expanded, onToggle: () => setExpanded(value => !value), content: <>
