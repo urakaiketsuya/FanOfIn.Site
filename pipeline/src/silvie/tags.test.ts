@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { buildCardTags } from "./tags.js";
+import { buildCardTags, refreshWithSavedTags } from "./tags.js";
 
 const CATALOG = [
   { uuid: "cardA", editions: [{ uuid: "edA1" }, { uuid: "edA2" }] },
@@ -29,5 +29,31 @@ describe("buildCardTags", () => {
     assert.deepEqual(data.editions, { edA1: [0, 1], edA2: [0], edB1: [0] });
     assert.deepEqual(data.cards, { cardA: [0, 1], cardB: [0, 2] });
     assert.equal(JSON.stringify(data).includes("user"), false);
+  });
+});
+
+
+describe("refreshWithSavedTags", () => {
+  const saved = buildCardTags(
+    [{ id: "cardA-edA1", editionId: "edA1", tagger_cardtag: [{ tagId: "bird" }] }],
+    [{ name: "bird", status: "approved" }], CATALOG, "2026-01-01T00:00:00.000Z",
+  );
+  const forbidden = async () => { throw new Error("403 Forbidden"); };
+
+  it("preserves a valid snapshot and reports its age when upstream denies access", async () => {
+    const warnings: string[] = [];
+    assert.equal(await refreshWithSavedTags(forbidden, async () => JSON.stringify(saved), message => warnings.push(message)), null);
+    assert.match(warnings[0], /2026-01-01.*403 Forbidden/);
+  });
+
+  it("returns fresh data without reading a fallback", async () => {
+    assert.equal(await refreshWithSavedTags(async () => saved, async () => { throw new Error("must not read"); }), saved);
+  });
+
+  it("fails when the snapshot is missing, malformed, empty, or has broken tag references", async () => {
+    await assert.rejects(refreshWithSavedTags(forbidden, async () => { throw new Error("ENOENT"); }), /ENOENT/);
+    for (const value of ["{", "null", JSON.stringify({ ...saved, tags: [] }), JSON.stringify({ ...saved, cards: { cardA: [99] } })]) {
+      await assert.rejects(refreshWithSavedTags(forbidden, async () => value));
+    }
   });
 });

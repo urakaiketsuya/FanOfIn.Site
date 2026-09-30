@@ -181,7 +181,7 @@ async function main() {
   // Two requests to silvie.gg's Art Tagger — cheap enough for every run; a failure keeps the last published file.
   if (!config.analysisOnly) {
     try {
-      await publishCardTags();
+      await publishCardTags({ allowSaved: true });
     } catch (err) {
       console.error("silvie card tags failed", err);
       process.exitCode = 1;

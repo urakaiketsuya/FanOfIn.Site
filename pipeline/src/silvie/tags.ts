@@ -71,18 +71,51 @@ export function buildCardTags(
   return { generatedAt, source: "silvie.gg", sourceUrl: SOURCE_URL, tags, editions: encode(byEdition), cards: encode(byCard) };
 }
 
+/** An optional upstream refresh may use an intact published snapshot, never an empty fallback. */
+export async function refreshWithSavedTags<T>(
+  refresh: () => Promise<T>,
+  readSaved: () => Promise<string>,
+  warn: (message: string) => void = console.warn,
+): Promise<T | null> {
+  try {
+    return await refresh();
+  } catch (error) {
+    const saved = JSON.parse(await readSaved()) as CardTagsData;
+    const validIndex = (value: unknown) => value !== null && typeof value === "object" && !Array.isArray(value)
+      && Object.keys(value).length > 0 && Object.values(value).every(indices => Array.isArray(indices)
+        && indices.length > 0 && indices.every(i => Number.isInteger(i) && i >= 0 && i < saved.tags.length));
+    if (saved.source !== "silvie.gg" || !Number.isFinite(Date.parse(saved.generatedAt))
+      || !Array.isArray(saved.tags) || !saved.tags.length
+      || !saved.tags.every(tag => tag && typeof tag.name === "string" && tag.name.trim()
+        && STATUSES.has(tag.status) && Number.isInteger(tag.cardCount) && tag.cardCount > 0)
+      || !validIndex(saved.cards) || !validIndex(saved.editions)) {
+      throw new Error("Silvie refresh failed and the saved card tags are invalid", { cause: error });
+    }
+    warn(`silvie tags: refresh unavailable; keeping published tags from ${saved.generatedAt}: ${String(error)}`);
+    return null;
+  }
+}
+
 /** Two requests total: the tag list, then every card row (an empty `query` returns the whole catalog). */
-export async function publishCardTags(): Promise<void> {
+export async function publishCardTags({ allowSaved = false }: { allowSaved?: boolean } = {}): Promise<void> {
   await loadCardCatalog(); // refreshes data/card-catalog.json when stale
   const { cards: catalog } = JSON.parse(await readFile(path.join(DATA_DIR, "card-catalog.json"), "utf-8")) as { cards: Card[] };
-  const tagRows = await fetchJson<SilvieTagRow[]>(`${BASE_URL}/tags/popular`);
-  await sleep(1000);
-  const rows = await fetchJson<SilvieCardRow[]>(`${BASE_URL}/cards?query=`);
-  if (!Array.isArray(rows) || rows.length < 1000) throw new Error(`silvie.gg returned ${Array.isArray(rows) ? rows.length : "no"} card rows — refusing to overwrite card-tags.json`);
-
-  const data = buildCardTags(rows, tagRows, catalog);
+  // Local contribution targets must advance even when the external tag service is unavailable.
   await mkdir(path.dirname(OUTPUT_PATH), { recursive: true });
-  await writeJsonAtomic(path.join(DATA_DIR, "community/card-tag-targets.json"), { generatedAt: data.generatedAt, cards: catalog.map(card => ({ uuid: card.uuid, editions: card.editions.map(edition => ({ uuid: edition.uuid })) })) });
+  await writeJsonAtomic(path.join(DATA_DIR, "community/card-tag-targets.json"), { generatedAt: new Date().toISOString(), cards: catalog.map(card => ({ uuid: card.uuid, editions: card.editions.map(edition => ({ uuid: edition.uuid })) })) });
+  const refresh = async () => {
+    const tagRows = await fetchJson<SilvieTagRow[]>(`${BASE_URL}/tags/popular`);
+    await sleep(1000);
+    const rows = await fetchJson<SilvieCardRow[]>(`${BASE_URL}/cards?query=`);
+    if (!Array.isArray(rows) || rows.length < 1000) throw new Error(`silvie.gg returned ${Array.isArray(rows) ? rows.length : "no"} card rows — refusing to overwrite card-tags.json`);
+    const data = buildCardTags(rows, tagRows, catalog);
+    if (!data.tags.length) throw new Error("silvie.gg returned no usable tags — refusing to overwrite card-tags.json");
+    return data;
+  };
+  const data = allowSaved
+    ? await refreshWithSavedTags(refresh, () => readFile(OUTPUT_PATH, "utf-8"))
+    : await refresh();
+  if (!data) return;
   await writeJsonAtomic(OUTPUT_PATH, data);
   console.log(`silvie tags: ${data.tags.length} tags across ${Object.keys(data.cards).length} cards / ${Object.keys(data.editions).length} printings`);
 }
