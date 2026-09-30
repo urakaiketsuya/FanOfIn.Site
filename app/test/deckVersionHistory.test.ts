@@ -5,10 +5,10 @@ import { renderToStaticMarkup } from "react-dom/server";
 import type { SavedDeckDetail } from "@gatcg/shared";
 import { DeckVersionHistory } from "../src/features/account/DeckVersionHistory";
 
-test("collapsed version history does not render or analyze historical decklists", () => {
+test("history shows version summaries without reading historical decklists", () => {
   const versions = Array.from({ length: 100 }, (_, index) => ({
     id: `version-${index}`,
-    get decklist() { throw new Error("Collapsed history must not read decklists"); },
+    get decklist() { throw new Error("History summaries must not read decklists"); },
   }));
   const deck = { currentVersionId: "version-99", versions } as unknown as SavedDeckDetail;
   const markup = renderToStaticMarkup(createElement(DeckVersionHistory, { deck, busy: false, onRestore: () => {} }));
