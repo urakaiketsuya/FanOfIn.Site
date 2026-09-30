@@ -161,12 +161,28 @@ export default function MyDeckDetail() {
     draft.clear();
   }
 
+  const pendingRestore = useRef<{ key: string; requestId: string } | null>(null);
+  const pendingSave = useRef<{ payload: string; requestId: string } | null>(null);
+
+  function restoreVersion(versionId: string) {
+    void run(async () => {
+      const key = `${deck!.id}:${deck!.revision}:${versionId}`;
+      if (pendingRestore.current?.key !== key) pendingRestore.current = { key, requestId: crypto.randomUUID() };
+      await accountApi.restoreDeckVersion(deck!.id, versionId, { expectedRevision: deck!.revision, requestId: pendingRestore.current.requestId });
+      await refresh();
+    });
+  }
+
   function saveEditedDeck() {
     void run(async () => {
       if (editedChampionName !== deck!.championName && !window.confirm(`Change Champion from ${deck!.championName ?? "none"} to ${editedChampionName ?? "none"}?`)) return;
-      if (saveAsNewVersion) await accountApi.createDeckVersion(deck!.id, { decklist: editedDecklist, format: deck!.format, championName: editedChampionName, changeNote });
-      else await accountApi.updateDeckDecklist(deck!.id, { decklist: editedDecklist, format: deck!.format, championName: editedChampionName });
-      await accountApi.updateDeckMetadata(deck!.id, { maybeboard: maybeboardLines });
+      const input = { decklist: editedDecklist, format: deck!.format, championName: editedChampionName,
+        maybeboard: maybeboardLines, expectedRevision: deck!.revision, ...(saveAsNewVersion ? { changeNote } : {}) };
+      const payload = JSON.stringify({ deckId: deck!.id, saveAsNewVersion, input });
+      if (pendingSave.current?.payload !== payload) pendingSave.current = { payload, requestId: crypto.randomUUID() };
+      const command = { ...input, requestId: pendingSave.current.requestId };
+      if (saveAsNewVersion) await accountApi.createDeckVersion(deck!.id, command);
+      else await accountApi.updateDeckDecklist(deck!.id, command);
       trackEvent(saveAsNewVersion ? "deck_version_saved" : "deck_updated");
       await refresh(); setChangeNote(""); setSaveDetailsOpen(false); setEditing(false);
       setEditHistory({ past: [], future: [] });
@@ -338,6 +354,6 @@ export default function MyDeckDetail() {
       <MaybeboardPanel format={deck.format} editing={editing} busy={busy} maybeboardText={maybeboardText} maybeboardLines={maybeboardLines} cardsByName={catalogByName} onMoveAll={addMaybeboardToEditor} onSave={() => void saveMaybeboard()} onChangeQuantity={changeMaybeboardQuantity} onMove={moveMaybeboardCard} onRemove={removeMaybeboardCard} onTextChange={text => editing ? commitEdit(deckText, text) : setMaybeboardText(text)} />
     </>}
     <div hidden={tab !== "primer"}><DeckPrimerEditor decklist={deck.decklist} primerMarkdown={primerMarkdown} setPrimerMarkdown={setPrimerMarkdown} savedMarkdown={deck.primerMarkdown} busy={busy} onSave={() => run(async () => { await accountApi.updateDeckMetadata(deck.id, { primerMarkdown }); await refresh(); })} /></div>
-    {tab === "manage" && <DeckVersionHistory deck={deck} busy={busy} onRestore={(versionId) => void run(async () => { await accountApi.restoreDeckVersion(deck.id, versionId); await refresh(); })} />}
+    {tab === "manage" && <DeckVersionHistory key={`${deck.id}:${deck.revision}`} deck={deck} busy={busy} onRestore={restoreVersion} />}
   </PageLayout>;
 }

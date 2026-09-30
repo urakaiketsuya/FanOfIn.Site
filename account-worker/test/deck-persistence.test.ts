@@ -1,29 +1,13 @@
 import { parseSaveInput } from "../src/deck-input";
 import assert from "node:assert/strict";
 import test from "node:test";
-import { DatabaseSync } from "node:sqlite";
-import { readFileSync, readdirSync } from "node:fs";
+import { databaseFixture } from "./helpers/database";
 import { saveDeck } from "../src/decks";
-import type { AuthUser, Env } from "../src/auth";
+import type { AuthUser } from "../src/auth";
 
 function fixture() {
-  const db = new DatabaseSync(":memory:");
-  const dir = new URL("../migrations/", import.meta.url);
-  for (const file of readdirSync(dir).filter(f => f.endsWith(".sql")).sort()) db.exec(readFileSync(new URL(file, dir), "utf8"));
+  const { db, env } = databaseFixture();
   db.exec("INSERT INTO users(id,google_subject,email,display_name,created_at,updated_at) VALUES('a','a','a@example.test','A','now','now')");
-  const prepare = (sql: string) => {
-    let args: unknown[] = [];
-    return {
-      bind(...values: unknown[]) { args = values; return this; },
-      async first() { return db.prepare(sql).get(...args as never[]) ?? null; },
-      run() { return { meta: db.prepare(sql).run(...args as never[]) }; },
-    };
-  };
-  const env = { ACCOUNT_DB: { prepare, async batch(statements: ReturnType<typeof prepare>[]) {
-    db.exec("BEGIN");
-    try { const results = statements.map(s => s.run()); db.exec("COMMIT"); return results; }
-    catch (error) { db.exec("ROLLBACK"); throw error; }
-  } } } as unknown as Env;
   const input = parseSaveInput({ title: "Test deck", format: "STANDARD", decklist: { main: [{ card: "Test card", quantity: 4 }], material: [], sideboard: [{ card: "Side card", quantity: 1 }] }, maybeboard: [{ card: "Maybe card", quantity: 2 }], source: { provider: "manual", externalDeckId: "test", label: "Manual" } });
   return { db, save: () => saveDeck(env, { id: "a" } as AuthUser, input) };
 }

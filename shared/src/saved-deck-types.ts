@@ -31,7 +31,7 @@ export type DeckVisibility = "private" | "unlisted" | "public";
 export interface SavedDeckVersion {
   id: string;
   versionNumber: number;
-  decklist: OmnidexDecklist;
+  decklist?: OmnidexDecklist;
   format: DeckFormat;
   championName: string | null;
   changeNote: string;
@@ -40,6 +40,7 @@ export interface SavedDeckVersion {
 }
 
 export interface SavedDeckDetail extends SavedDeck {
+  revision: number;
   /** Private working list attached to the deck itself, independent of version snapshots. */
   maybeboard: OmnidexDecklistCardLine[];
   description: string;
@@ -50,6 +51,8 @@ export interface SavedDeckDetail extends SavedDeck {
   currentVersionId: string;
   publishedVersionId: string | null;
   versions: SavedDeckVersion[];
+  nextVersionBefore: number | null;
+  versionCount: number;
 }
 
 export interface PublicDeck {

@@ -1,3 +1,4 @@
+import { getOwnedHistory, getOwnedVersion } from "./deck-queries";
 import { parseSaveInput } from "./deck-input";
 import { performImport, previewImport } from "./deck-imports";
 import { listTagOverrides, listTagProposals, submitTagProposal, reviewTagProposal } from "./card-tags";
@@ -474,7 +475,7 @@ export default {
       }
       const deckMatch = url.pathname.match(/^\/v1\/me\/decks\/([^/]+)$/);
       if (deckMatch && request.method === "GET") {
-        const deck = await getDeck(env, user, deckMatch[1]);
+        const deck = await getDeck(env, user, deckMatch[1], url.searchParams.get("history") === "summary");
         return deck ? response(env, request, { deck }) : response(env, request, { error: "Deck not found" }, 404);
       }
       if (deckMatch && request.method === "PATCH") {
@@ -488,6 +489,13 @@ export default {
         return await deleteDeck(env, user, deckMatch[1]) ? response(env, request, { success: true }) : response(env, request, { error: "Deck not found" }, 404);
       }
       const versionsMatch = url.pathname.match(/^\/v1\/me\/decks\/([^/]+)\/versions$/);
+      if (versionsMatch && request.method === "GET") {
+        const before = Number(url.searchParams.get("before") ?? 2147483647);
+        if (!Number.isSafeInteger(before) || before < 1) return response(env, request, { error: "Invalid history cursor" }, 400);
+        return response(env, request, await getOwnedHistory(env, user, versionsMatch[1], before));
+      }
+      const versionMatch = url.pathname.match(/^\/v1\/me\/decks\/([^/]+)\/versions\/([^/]+)$/);
+      if (versionMatch && request.method === "GET") return response(env, request, { version: await getOwnedVersion(env, user, versionMatch[1], versionMatch[2]) });
       if (versionsMatch && request.method === "POST") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
         return response(env, request, await createDeckVersion(env, user, versionsMatch[1], await jsonBody(request)), 201);
@@ -505,7 +513,7 @@ export default {
       const restoreMatch = url.pathname.match(/^\/v1\/me\/decks\/([^/]+)\/versions\/([^/]+)\/restore$/);
       if (restoreMatch && request.method === "POST") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
-        return response(env, request, await restoreDeckVersion(env, user, restoreMatch[1], restoreMatch[2]), 201);
+        return response(env, request, await restoreDeckVersion(env, user, restoreMatch[1], restoreMatch[2], request.body ? await jsonBody(request) : {}), 201);
       }
       if (request.method === "POST" && url.pathname === "/v1/me/imports/preview") {
         if (await rateLimited(env.IMPORT_RATE_LIMITER, user.id)) return tooManyRequests(env, request);

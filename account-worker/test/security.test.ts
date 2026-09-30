@@ -48,6 +48,7 @@ test("analysis profile sync accepts versioned named plans and normalizes deck id
 test("health verifies the latest required account schema without exposing data", async () => {
   const queries: string[] = [];
   const database = {
+    async batch(statements: { all(): Promise<unknown> }[]) { return Promise.all(statements.map(statement => statement.all())); },
     prepare(query: string) {
       queries.push(query);
       return { async all() { return { results: [] }; } };
@@ -221,6 +222,7 @@ test("the public save endpoint cannot forge imported sources", () => {
 test("deck mutations cannot cross user boundaries", async () => {
   const rows = new Map([["deck-a", { userId: "user-a", title: "Original" }]]);
   const database = {
+    async batch(statements: { run(): Promise<unknown> }[]) { return Promise.all(statements.map(statement => statement.run())); },
     prepare(query: string) {
       let values: unknown[] = [];
       return {
@@ -231,8 +233,8 @@ test("deck mutations cannot cross user boundaries", async () => {
         },
         async run() {
           const isRename = query.startsWith("UPDATE");
-          const deckId = String(values[isRename ? 2 : 0]);
-          const userId = String(values[isRename ? 3 : 1]);
+          const deckId = String(values[isRename ? values.length - 2 : 0]);
+          const userId = String(values[isRename ? values.length - 1 : 1]);
           const row = rows.get(deckId);
           if (!row || row.userId !== userId) return { meta: { changes: 0 } };
           if (isRename) row.title = String(values[0]); else rows.delete(deckId);
@@ -248,13 +250,13 @@ test("deck mutations cannot cross user boundaries", async () => {
   assert.equal(rows.get("deck-a")?.title, "Original");
 });
 
-test("private deck reads stop before loading child records for another user", async () => {
+test("every batched private deck read checks ownership", async () => {
   const queries: string[] = [];
-  const database = { prepare(query: string) { queries.push(query); return { bind() { return this; }, async first() { return null; } }; } } as unknown as D1Database;
+  const database = { async batch() { return [0, 1, 2].map(() => ({ results: [], meta: {} })); }, prepare(query: string) { queries.push(query); return { bind() { return this; } }; } } as unknown as D1Database;
   const otherUser = { id: "user-b", email: "b@example.com", displayName: "B", avatarUrl: null, profileSlug: "b".repeat(24), profileDiscoverable: true, deckChecklistDismissed: false, displayNameReviewed: true };
   assert.equal(await getDeck({ ACCOUNT_DB: database } as Env, otherUser, "alice-private-deck"), null);
-  assert.equal(queries.length, 1);
-  assert.match(queries[0], /ud\.id = \? AND ud\.owner_user_id = \?/);
+  assert.equal(queries.length, 3);
+  for (const query of queries) assert.match(query, /ud\.id = \? AND ud\.owner_user_id = \?/);
 });
 
 test("password credential removal is conditional on another sign-in method", async () => {
@@ -359,6 +361,7 @@ test("public profiles include only their public deck summaries", async () => {
 test("deck reports are bounded, reject self-reporting, and are idempotent", async () => {
   let reports = 0;
   const database = {
+    async batch(statements: { all(): Promise<unknown> }[]) { return Promise.all(statements.map(statement => statement.all())); },
     prepare(query: string) {
       let values: unknown[] = [];
       return {
@@ -389,6 +392,7 @@ test("deck likes are idempotent and bookmarks pin the published version", async 
   let liked = false;
   let bookmarkedVersion: string | null = null;
   const database = {
+    async batch(statements: { all(): Promise<unknown> }[]) { return Promise.all(statements.map(statement => statement.all())); },
     prepare(query: string) {
       let values: unknown[] = [];
       return {
@@ -432,6 +436,7 @@ test("archive fetches reject oversized streamed responses", async () => {
 test("OAuth nonces are random and can only be consumed once", async () => {
   const nonceHashes = new Set<string>();
   const database = {
+    async batch(statements: { all(): Promise<unknown> }[]) { return Promise.all(statements.map(statement => statement.all())); },
     prepare(query: string) {
       let values: unknown[] = [];
       return {
@@ -459,6 +464,7 @@ test("OAuth nonces are random and can only be consumed once", async () => {
 test("Discord OAuth states are single-use and retain link intent", async () => {
   const rows = new Map<string, { purpose: "sign-in" | "link"; user_id: string | null }>();
   const database = {
+    async batch(statements: { all(): Promise<unknown> }[]) { return Promise.all(statements.map(statement => statement.all())); },
     prepare(query: string) {
       let values: unknown[] = [];
       return {

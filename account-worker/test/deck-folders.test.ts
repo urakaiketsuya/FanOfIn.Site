@@ -1,27 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { DatabaseSync } from "node:sqlite";
-import { readFileSync, readdirSync } from "node:fs";
+import { databaseFixture } from "./helpers/database";
 import { createDeckFolder, updateDeckFolder, deleteDeckFolder, listDeckFolders, parseFolderInput } from "../src/deck-folders";
-import type { AuthUser, Env } from "../src/auth";
+import type { AuthUser } from "../src/auth";
 function fixture() {
-  const db = new DatabaseSync(":memory:");
-  const dir = new URL("../migrations/", import.meta.url);
-  for (const file of readdirSync(dir).filter(file => file.endsWith(".sql")).sort()) db.exec(readFileSync(new URL(file, dir), "utf8"));
+  const { db, env, beforeBatch } = databaseFixture();
   db.exec("INSERT INTO users(id,google_subject,email,display_name,created_at,updated_at) VALUES('a','a','a@example.test','A','now','now'),('b','b','b@example.test','B','now','now')");
   for (const [id, user] of [["one", "a"], ["two", "a"], ["private", "b"]]) db.prepare("INSERT INTO saved_decks(id,user_id,identity_hash,title,format,decklist_json,created_at,updated_at) VALUES(?,?,?,?,'STANDARD','{}','now','now')").run(id, user, id, id);
-  let beforeBatch: (() => void) | undefined;
-  const prepare = (sql: string) => { let args: unknown[] = []; return {
-    bind(...values: unknown[]) { args = values; return this; },
-    async first() { return db.prepare(sql).get(...args as never[]) ?? null; },
-    async all() { return { results: db.prepare(sql).all(...args as never[]) }; },
-    run() { return { meta: db.prepare(sql).run(...args as never[]) }; },
-  }; };
-  const env = { ACCOUNT_DB: { prepare, async batch(statements: ReturnType<typeof prepare>[]) {
-    const hook = beforeBatch; beforeBatch = undefined; hook?.();
-    db.exec("BEGIN"); try { const results = statements.map(statement => statement.run()); db.exec("COMMIT"); return results; } catch (error) { db.exec("ROLLBACK"); throw error; }
-  } } } as unknown as Env;
-  return { db, env, a: { id: "a" } as AuthUser, b: { id: "b" } as AuthUser, beforeBatch(hook: () => void) { beforeBatch = hook; } };
+  return { db, env, a: { id: "a" } as AuthUser, b: { id: "b" } as AuthUser, beforeBatch };
 }
 const id = "11111111-1111-4111-8111-111111111111";
 const other = "22222222-2222-4222-8222-222222222222";

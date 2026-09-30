@@ -1,3 +1,5 @@
+import { databaseBatch } from "./database";
+import { translateDeckWriteError } from "./deck-save";
 import { canonicalizeSavedDecklist } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
 import { canonicalMaybeboard, fullIdentityHash, identityHash, type SaveInput } from "./deck-input";
@@ -75,7 +77,7 @@ async function saveDeckAttempt(env: Env, user: AuthUser, input: SaveInput, retry
       .bind(JSON.stringify(canonicalMaybeboard(input.maybeboard)), now, deckId, user.id));
   }
   try {
-    await env.ACCOUNT_DB.batch(statements);
+    await databaseBatch(env.ACCOUNT_DB, "deck.create", statements);
   } catch (error) {
     // A concurrent first save can win the identity constraint after our read.
     // The failed batch rolls back; retry once using the winner's persisted ID.
@@ -84,7 +86,7 @@ async function saveDeckAttempt(env: Env, user: AuthUser, input: SaveInput, retry
         .bind(user.id, hash).first<{ id: string }>();
       if (winner && winner.id !== deckId) return saveDeckAttempt(env, user, input, false);
     }
-    throw error;
+    translateDeckWriteError(error);
   }
   return { id: deckId, created: !existing };
 }

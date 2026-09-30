@@ -22,11 +22,11 @@ function revisionOf(value: unknown): number {
 function validId(id: unknown): asserts id is string {
   if (typeof id !== "string" || !/^[a-f0-9-]{36}$/i.test(id)) throw badRequest("Invalid folder ID");
 }
-export async function listDeckFolders(env: Env, user: AuthUser): Promise<DeckFolder[]> {
+export async function listDeckFolders(env: Env, user: AuthUser, folderId?: string): Promise<DeckFolder[]> {
   const rows = await env.ACCOUNT_DB.prepare(`SELECT f.id, f.name, f.revision, f.created_at, f.updated_at, d.id AS deck_id
     FROM deck_folders f LEFT JOIN deck_folder_members m ON m.folder_id = f.id
     LEFT JOIN saved_decks d ON d.id = m.deck_id AND d.user_id = f.user_id
-    WHERE f.user_id = ? ORDER BY f.name_key, f.id, d.id`).bind(user.id)
+    WHERE f.user_id = ? ${folderId ? "AND f.id = ?" : ""} ORDER BY f.name_key, f.id, d.id`).bind(...(folderId ? [user.id, folderId] : [user.id]))
     .all<{ id: string; name: string; revision: number; created_at: string; updated_at: string; deck_id: string | null }>();
   const folders = new Map<string, DeckFolder>();
   for (const row of rows.results) {
@@ -54,7 +54,7 @@ function insertMembers(env: Env, user: AuthUser, id: string, token: string, ids:
 export async function createDeckFolder(env: Env, user: AuthUser, value: unknown): Promise<DeckFolder> {
   const input = parseFolderInput(value);
   const id = (value as { id?: unknown }).id; validId(id);
-  const existing = (await listDeckFolders(env, user)).find(folder => folder.id === id);
+  const existing = (await listDeckFolders(env, user, id))[0];
   // Client-generated IDs make a lost create response safe to retry.
   if (existing) {
     if (existing.name === input.name && JSON.stringify(existing.deckIds) === JSON.stringify(input.deckIds)) return existing;
@@ -72,12 +72,12 @@ export async function createDeckFolder(env: Env, user: AuthUser, value: unknown)
       insertMembers(env, user, id, token, input.deckIds),
     ]);
   } catch (error) { translateConflict(error); }
-  const folder = (await listDeckFolders(env, user)).find(item => item.id === id);
+  const folder = (await listDeckFolders(env, user, id))[0];
   if (!folder || !result) throw badRequest("Could not create the folder. Refresh your library; you can have up to 100 folders.");
   return folder;
 }
 export async function updateDeckFolder(env: Env, user: AuthUser, id: string, value: unknown): Promise<DeckFolder> {
-  const current = (await listDeckFolders(env, user)).find(folder => folder.id === id);
+  const current = (await listDeckFolders(env, user, id))[0];
   if (!current) throw missing();
   const input = parseFolderInput(value);
   const revision = revisionOf((value as { revision?: unknown }).revision);
@@ -99,7 +99,7 @@ export async function updateDeckFolder(env: Env, user: AuthUser, id: string, val
     ]);
   } catch (error) { translateConflict(error); }
   if (results?.[0].meta.changes !== 1) throw conflict();
-  const folder = (await listDeckFolders(env, user)).find(item => item.id === id);
+  const folder = (await listDeckFolders(env, user, id))[0];
   if (!folder) throw missing();
   return folder;
 }

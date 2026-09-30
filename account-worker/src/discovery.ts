@@ -1,3 +1,4 @@
+import { databaseAll } from "./database";
 import { deckPreviewCards, type OmnidexDecklist } from "@gatcg/shared";
 import type { DeckFormat, PublicDeckSummary, PublicProfile } from "@gatcg/shared";
 import type { Env } from "./auth";
@@ -60,9 +61,9 @@ export async function discoverDecks(env: Env, params: URLSearchParams): Promise<
   const bindings: unknown[] = [];
   if (query) { where.push("(ud.published_title LIKE ? ESCAPE '\\' OR ud.published_tags_json LIKE ? ESCAPE '\\' OR cb.champion_name LIKE ? ESCAPE '\\' OR users.display_name LIKE ? ESCAPE '\\')"); const escaped = `%${query.replace(/[\\%_]/g, "\\$&")}%`; bindings.push(escaped, escaped, escaped, escaped); }
   if (format) { where.push("cb.format = ?"); bindings.push(format); }
-  const rows = await env.ACCOUNT_DB.prepare(`${SELECT} WHERE ${where.join(" AND ")}
+  const rows = await databaseAll<Record<string, string | number | null>>("deck.discovery", env.ACCOUNT_DB.prepare(`${SELECT} WHERE ${where.join(" AND ")}
     ORDER BY ud.is_seed ASC, like_count DESC, ud.published_at DESC, ud.id ASC LIMIT ? OFFSET ?`)
-    .bind(...bindings, PAGE_SIZE + 1, (page - 1) * PAGE_SIZE).all<Record<string, string | number | null>>();
+    .bind(...bindings, PAGE_SIZE + 1, (page - 1) * PAGE_SIZE));
   return { decks: rows.results.slice(0, PAGE_SIZE).map(summary), nextPage: rows.results.length > PAGE_SIZE ? page + 1 : null };
 }
 

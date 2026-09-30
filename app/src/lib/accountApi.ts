@@ -1,3 +1,4 @@
+import type { SavedDeckVersion } from "@gatcg/shared";
 import type { TagOverride, TagProposal, TagProposalInput, TagProposalList } from "@gatcg/shared";
 import { publishCollectionChange } from "./collectionEvents";
 import type { DeckFolder, DeckFolderInput, AccountSession, AccountUser, AnalysisProfileSyncRecord, AuthIdentity, AuthProvider, BinderItem, BinderSettings, BookmarkedCombo, BookmarkedDeck, CollectionCardTracking, CollectionCardTrackingUpdate, CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, CommentReportReason, ComboDefinition, ComboVisibility, DeckCommentTarget, DeckCommentThread, DeckFormat, DeckImportPreview, DeckImportResult, DeckReportReason, DeckSocialState, DeckVisibility, MatchLogRecord, OfficialProductDeckFavorite, OmnidexDecklist, PublicBinder, PublicCombo, PublicDeck, PublicDeckSummary, PublicProfile, SavedCombo, SavedDeck, SavedDeckDetail, SharedCardWatch, SyncedAnalysisProfile, Trade, TradeLine, TradeStatus, TournamentDeckFavorite } from "@gatcg/shared";
@@ -87,7 +88,7 @@ export const accountApi = {
     return { saved };
   },
   deleteMatchLogRecord: (id: string) => accountRequest<{ success: true }>(`/v1/me/match-log/${encodeURIComponent(id)}`, { method: "DELETE" }),
-  deck: (id: string) => accountRequest<{ deck: SavedDeckDetail }>(`/v1/me/decks/${encodeURIComponent(id)}`),
+  deck: (id: string) => accountRequest<{ deck: SavedDeckDetail }>(`/v1/me/decks/${encodeURIComponent(id)}?history=summary`),
   publicDeck: (slug: string) => accountRequest<{ deck: PublicDeck }>(`/v1/decklists/${encodeURIComponent(slug)}`),
   discoverDecks: (params: URLSearchParams) => accountRequest<{ decks: PublicDeckSummary[]; nextPage: number | null }>(`/v1/discover/decklists?${params.toString()}`),
   discoverProfiles: (query: string) => accountRequest<{ profiles: { displayName: string; profileSlug: string }[] }>(`/v1/discover/profiles?q=${encodeURIComponent(query)}`),
@@ -137,12 +138,14 @@ export const accountApi = {
   createTrade: (recipientProfileSlug: string, lines: Pick<TradeLine, "binderItemId" | "quantity">[], message = "") => accountRequest<{ id: string }>("/v1/me/trades", { method: "POST", body: JSON.stringify({ recipientProfileSlug, lines, message }) }),
   counterTrade: (id: string, lines: Pick<TradeLine, "binderItemId" | "quantity">[], message = "") => accountRequest<{ success: true }>(`/v1/me/trades/${encodeURIComponent(id)}`, { method: "PUT", body: JSON.stringify({ lines, message }) }),
   updateTradeStatus: (id: string, status: TradeStatus | "sent" | "received") => inventoryRequest<{ success: true }>(`/v1/me/trades/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify({ status }) }),
-  createDeckVersion: (id: string, input: { decklist: OmnidexDecklist; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; changeNote?: string }) =>
+  deckVersion: (id: string, versionId: string) => accountRequest<{ version: SavedDeckVersion }>(`/v1/me/decks/${encodeURIComponent(id)}/versions/${encodeURIComponent(versionId)}`),
+  deckHistory: (id: string, before: number) => accountRequest<{ versions: SavedDeckVersion[]; nextBefore: number | null }>(`/v1/me/decks/${encodeURIComponent(id)}/versions?before=${before}`),
+  createDeckVersion: (id: string, input: { decklist: OmnidexDecklist; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; changeNote?: string; maybeboard?: { card: string; quantity: number }[]; expectedRevision?: number; requestId?: string }) =>
     accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}/versions`, { method: "POST", body: JSON.stringify(input) }),
   /** Updates the deck's current decklist content in place — no new entry in version history, unlike `createDeckVersion`. */
-  updateDeckDecklist: (id: string, input: { decklist: OmnidexDecklist; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null }) =>
+  updateDeckDecklist: (id: string, input: { decklist: OmnidexDecklist; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; maybeboard?: { card: string; quantity: number }[]; expectedRevision?: number; requestId?: string }) =>
     accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify(input) }),
-  restoreDeckVersion: (id: string, versionId: string) => accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}/versions/${encodeURIComponent(versionId)}/restore`, { method: "POST" }),
+  restoreDeckVersion: (id: string, versionId: string, options?: { requestId: string; expectedRevision: number }) => accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}/versions/${encodeURIComponent(versionId)}/restore`, { method: "POST", body: JSON.stringify(options ?? {}) }),
   saveDeck: (input: { title: string; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; decklist: OmnidexDecklist; maybeboard?: { card: string; quantity: number }[]; source: { provider: "manual"; externalDeckId: string; label: string } }) =>
     accountRequest<{ id: string; created: boolean }>("/v1/me/decks", { method: "POST", body: JSON.stringify(input) }),
   updateDeckMetadata: (id: string, input: { title?: string; description?: string; primerMarkdown?: string; tags?: string[]; maybeboard?: { card: string; quantity: number }[] }) => accountRequest<{ success: true }>(`/v1/me/decks/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify(input) }),
