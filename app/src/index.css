@@ -9,6 +9,7 @@
 @import "@catppuccin/tailwindcss/mocha.css";
 
 @theme {
+  --spacing-control: 3rem;
   --font-sans: "Merriweather Sans", ui-sans-serif, system-ui, sans-serif;
   --font-heading: "PT Sans", ui-sans-serif, system-ui, sans-serif;
   --color-forest-surface: #1b3a57;
@@ -69,4 +70,14 @@ tbody tr:hover { @apply bg-ctp-surface0/60; }
 
 .loading-bar-slide {
   animation: loading-bar-slide 1.2s ease-in-out infinite;
+}
+
+/* Keep interaction feedback usable without motion. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

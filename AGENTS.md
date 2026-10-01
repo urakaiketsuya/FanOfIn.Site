@@ -57,6 +57,8 @@ All new or revised user interfaces must be mobile-first, follow Material Design 
 - Recommendations are opt-in assistance. Keep suggestions distinct from the user's actual selections; add or replace content only through an explicit user action. Ask for missing recommendation context when recommendations are requested, rather than blocking manual work.
 - Before calling a UI change complete, verify the main flow at a narrow mobile viewport and a desktop viewport. Check empty, loading, error, and expanded states relevant to the change, plus touch target sizes, keyboard access, and overflow. Report any verification that could not be performed.
 
+- Follow [docs/UX_PATTERNS.md](docs/UX_PATTERNS.md) for interaction selection, shared defaults, collection status language, and cross-feature journey acceptance checks.
+
 ## Architecture and refactoring
 
 ### Persistence and validation

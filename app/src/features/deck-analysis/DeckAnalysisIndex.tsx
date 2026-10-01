@@ -1,3 +1,4 @@
+import { OWNERSHIP_COVERAGE_NOTE } from "../collection/CollectionStatus";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { computeDeckCollectionStatus, type Card, type OmnidexDecklist } from "@gatcg/shared";
@@ -168,7 +169,7 @@ export default function DeckAnalysisIndex() {
 
 function CollectionShortageSummary({ status }: { status: ReturnType<typeof computeDeckCollectionStatus> }) {
   const missing = status.lines.filter((line) => line.missing > 0);
-  if (missing.length === 0) return <section className="mt-4 rounded-xl border border-ctp-green/35 bg-ctp-green/10 p-3" aria-label="Collection coverage"><p className="text-sm font-semibold text-ctp-green">Collection covers this deck</p><p className="mt-1 text-xs text-ctp-subtext1">All Main, Material, and Sideboard copies are recorded as owned.</p></section>;
+  if (missing.length === 0) return <section className="mt-4 rounded-xl border border-ctp-green/35 bg-ctp-green/10 p-3" aria-label="Collection coverage"><p className="text-sm font-semibold text-ctp-green">Collection covers this deck</p><p className="mt-1 text-xs text-ctp-subtext1">All Main, Material, and Sideboard copies are recorded as owned.</p><p className="mt-2 text-xs text-ctp-subtext1">{OWNERSHIP_COVERAGE_NOTE}</p><Link to="/card-locations" className="inline-flex min-h-12 items-center text-sm text-ctp-blue underline">Check locations and loans</Link></section>;
   return <details className="mt-4 rounded-xl border border-ctp-yellow/35 bg-ctp-yellow/10 p-3">
     <summary className="min-h-11 cursor-pointer list-none py-2 text-sm font-semibold text-ctp-yellow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue">Missing {status.missingCopies} cop{status.missingCopies === 1 ? "y" : "ies"} from collection</summary>
     <p className="text-xs text-ctp-subtext1">Deck recipes identify gameplay cards, so every recorded printing is pooled for coverage.</p>

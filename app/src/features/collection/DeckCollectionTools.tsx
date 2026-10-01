@@ -1,3 +1,4 @@
+import { OWNERSHIP_COVERAGE_NOTE } from "./CollectionStatus";
 import { subscribeCollectionChanges } from "../../lib/collectionEvents";
 import { useToast } from "../../components/ui/toast/ToastContext";
 import SavedDeckLocations from "./SavedDeckLocations";
@@ -125,6 +126,7 @@ export default function DeckCollectionTools({ decklist, cardsByName, source, own
       {missingLines.length > 0 && <Button onClick={() => setShopping(true)}>Shop missing cards</Button>}
       <Button disabled={busy || !required.length} onClick={() => setEditing(true)}>Edit owned quantities</Button>
     </div>
+    <p className="mt-2 text-xs text-ctp-subtext1">{OWNERSHIP_COVERAGE_NOTE} <Link to="/card-locations" className={linkClass}>Check locations and loans</Link></p>
     {!status.complete && <p className="mt-2 text-xs text-ctp-subtext1">“I own all these cards” adds only the missing physical copies as unspecified printings. It keeps any higher quantities and recorded printings.</p>}
     {unresolved > 0 && <p role="status" className="mt-2 text-sm text-ctp-yellow">{unresolved} card{unresolved === 1 ? " is" : "s are"} still unavailable in the catalog. You can edit resolved cards; marking the whole deck owned is unavailable until all cards resolve.</p>}
 

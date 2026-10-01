@@ -52,7 +52,7 @@ export default function DialogSheet({ title, children, onDismiss, dismissLabel =
       {confirmDiscard ? <div className="space-y-4 p-4" role="alert">
         <p>Discard your unsaved changes?</p>
         <div className="flex flex-wrap gap-2">
-          <button ref={keepEditing} type="button" onClick={() => setConfirmDiscard(false)} className="min-h-12 rounded-lg bg-ctp-blue px-4 text-ctp-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">Keep editing</button>
+          <button ref={keepEditing} type="button" onClick={() => setConfirmDiscard(false)} className="min-h-control rounded-lg bg-ctp-blue px-4 text-ctp-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">Keep editing</button>
           <Button variant="danger" onClick={onDismiss}>Discard changes</Button>
         </div>
       </div> : null}

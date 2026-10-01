@@ -1,3 +1,4 @@
+import { CollectionCopyStatus, CollectionStatusHelp } from "./CollectionStatus";
 import { Link } from "react-router-dom";
 import { cardLocationState, deckCardRequirements, locationCardKey, planCardTransfer, returnLoanCopies } from "@gatcg/shared";
 import { useId, useState, type FormEvent } from "react";
@@ -40,14 +41,15 @@ export default function CardLocationSheet({ cardUuid, name, card, record, entrie
           {transferNote && <p role="status" className="mt-2 text-sm">{transferNote}</p>}
         </section></details>;
   return <EditorDialog title={loansFirst ? "Manage loans" : "Locations & loans"} doneLabel="Close" dirty={JSON.stringify([mightOwn, loans, assignments]) !== baseline} dismissible={!busy} footer={<>{error && <p role="alert" className="mb-2 text-sm text-ctp-red">{error}</p>}<button form={formId} type="submit" disabled={busy || location.excess > 0} className="min-h-12 w-full rounded-lg bg-ctp-blue px-4 font-semibold text-ctp-base disabled:opacity-40">{busy ? "Saving…" : "Save locations"}</button></>} onDismiss={()=>{if(!busy) onDismiss();}}>
-    <div className="mb-4 flex items-start gap-3"><div className="w-20 shrink-0"><CardArtTile card={card} name={name} /></div><div><h3 className="font-semibold">{name}</h3><p className="mt-2 text-sm text-ctp-subtext1">{location.owned} owned · {location.unassigned} unassigned · {location.lent} lent out · {location.reserved} reserved for trades</p>{card && <Link target="_blank" rel="noreferrer" to={`/cards/${card.slug}`} className="inline-flex min-h-12 items-center text-sm text-ctp-blue">Card details ↗</Link>}</div></div>
+    <div className="mb-4 mt-3 flex items-start gap-3"><div className="w-20 shrink-0"><CardArtTile card={card} name={name} /></div><div><h3 className="font-semibold">{name}</h3><CollectionCopyStatus state={location} />{card && <Link target="_blank" rel="noreferrer" to={`/cards/${card.slug}`} className="inline-flex min-h-12 items-center text-sm text-ctp-blue">Card details ↗</Link>}</div></div>
+    <CollectionStatusHelp />
     <form id={formId} onChange={()=>setError("")} onSubmit={event=>void save(event)} className="space-y-4">
       <fieldset disabled={busy} className="flex flex-col gap-4">
         {location.excess > 0 && <p role="alert" className="text-sm text-ctp-yellow">Needs reconciliation: {location.excess} more copies are assigned or lent than you own. Reduce assignments, return loans, or correct your collection quantity.</p>}
         {!loansFirst && deckSection}
 
 
-        <section aria-label="Loans"><h3 className="font-semibold">Lent out</h3><p className="mt-1 text-sm text-ctp-subtext1">Lent copies remain owned. They are unavailable to put in a deck until returned. If copies are in a deck, release them below before saving the loan.</p>
+        <section aria-label="Loans"><h3 className="font-semibold">Lent to players</h3><p className="mt-1 text-sm text-ctp-subtext1">Lent copies remain owned. They are unavailable to put in a deck until returned. If copies are in a deck, release them below before saving the loan.</p>
           {location.excess > 0 && location.assigned > 0 && location.lent + location.reserved <= location.owned && <button type="button" className="mt-2 min-h-12 rounded-lg border border-ctp-yellow px-3 text-sm" onClick={() => {let remaining = location.excess; const releases: string[] = []; setAssignments(assignments.map(row => {const remove = Math.min(remaining,row.quantity); remaining -= remove; if(remove) releases.push(`${remove} from ${decks.find(deck=>deck.id===row.deckId)?.title ?? "unavailable deck"}`); return {...row,quantity:row.quantity-remove};}).filter(row=>row.quantity>0)); setTransferNote(`Will release ${releases.join(", ")} for this loan. Save to confirm.`);}}>Release {location.excess} deck {location.excess === 1 ? "copy" : "copies"} for this loan</button>}
           {transferNote && loansFirst && <p role="status" className="mt-2 text-sm">{transferNote}</p>}
           {loans.filter(loan=>!loan.returnedAt).map((loan,index)=><div key={loan.id} className="mt-3 space-y-2 rounded-xl border border-ctp-surface1 p-3">
