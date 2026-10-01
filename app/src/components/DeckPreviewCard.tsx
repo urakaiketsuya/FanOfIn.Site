@@ -64,11 +64,11 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
   };
   return <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source.kind} data-deck-id={model.id} className="flex min-w-0 flex-col overflow-hidden">
     <div className="flex flex-1 flex-col gap-3 p-4">
-      <div className="grid grid-cols-[5rem_minmax(0,1fr)] items-start gap-3 sm:grid-cols-[6rem_minmax(0,1fr)]">
+      <div className="grid grid-cols-[6rem_minmax(0,1fr)] items-start gap-3 sm:grid-cols-[7rem_minmax(0,1fr)]">
         <div className="min-w-0">{leadCard ? <Link to={`/cards/${leadCard.slug}`} className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue">{art}</Link> : art}</div>
         <div className="min-w-0">
           <div className="flex flex-wrap gap-1 text-xs text-ctp-subtext1"><span className="rounded bg-ctp-surface0 px-2 py-1">{model.format === "STANDARD" ? "Standard" : model.format === "PANTHEON" ? "Pantheon" : "Format unknown"}</span><span className="rounded bg-ctp-blue/10 px-2 py-1 text-ctp-blue">{model.source.label}</span></div>
-          <h2 className="mt-2 break-words text-base font-semibold leading-snug text-ctp-text">{model.title}</h2>
+          <h2 className="mt-2 break-words text-xl font-bold leading-snug text-ctp-text">{model.title}</h2>
           {model.metadata && <div className="mt-2 break-words text-xs leading-relaxed text-ctp-subtext1">{model.metadata}</div>}
         </div>
       </div>
@@ -76,7 +76,7 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
       <p className="text-xs text-ctp-subtext1">{count("main") ?? "Unknown"} main · {count("sideboard") ?? "Unknown"} sideboard</p>
       {model.status}
     </div>
-    <footer className="border-t border-ctp-surface1 p-3">
+    <footer className="border-t border-ctp-surface1 bg-ctp-base/40 p-3">
       <div className="flex flex-wrap items-center gap-2 [&>a]:min-h-12 [&>button]:min-h-12 [&>a]:min-w-12 [&>button]:min-w-12 [&>a]:max-w-full [&>button]:max-w-full">
         {view.to !== undefined ? <Link to={view.to} aria-label={`View list: ${model.title}`} className={`${deckPreviewActionClass} bg-ctp-blue text-ctp-base`}>View list</Link> : <button type="button" onClick={view.onToggle} aria-expanded={view.expanded} aria-controls={contentId} className={`${deckPreviewActionClass} bg-ctp-blue text-ctp-base`}><DisclosureChevron className={view.expanded ? "rotate-180" : ""} />{view.expanded ? "Hide list" : "View list"}</button>}
         {model.actions}

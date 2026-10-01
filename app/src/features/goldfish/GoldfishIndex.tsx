@@ -1,3 +1,4 @@
+import GoldfishTurnControls from "./GoldfishTurnControls";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import type { Card, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
@@ -106,6 +107,7 @@ export default function GoldfishIndex() {
   const [savedSession, setSavedSession] = useState<GoldfishSession | null>(readSavedSession);
   const toolContentRef = useRef<HTMLDivElement>(null);
   const [tool, setTool] = useState<"menu" | "memory" | "material" | "tokens" | "glimpse" | "session" | "history" | null>(null);
+  const [controlsHeight, setControlsHeight] = useState(220);
   const [sessionNotice, setSessionNotice] = useState<string | null>(null);
 
   useEffect(() => { if (tool) toolContentRef.current?.focus(); }, [tool]);
@@ -261,7 +263,7 @@ export default function GoldfishIndex() {
   if (!state) return <PageLayout data-component="GoldfishIndex"><InlineState className="mt-10">Loading catalog…</InlineState></PageLayout>;
 
   return (
-    <PageLayout data-component="GoldfishIndex" className="pb-40 [&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-ctp-blue">
+    <PageLayout data-component="GoldfishIndex" style={{ paddingBottom: controlsHeight + 24 }} className="[&_button]:focus-visible:outline-2 [&_button]:focus-visible:outline-offset-2 [&_button]:focus-visible:outline-ctp-blue">
       <PageHeader
         title="Goldfish Test"
         description={deckLabel}
@@ -288,7 +290,7 @@ export default function GoldfishIndex() {
       {pendingConfirm && !activeGlimpse && (
         <DialogSheet title="Confirm draw effect" onDismiss={() => setPendingConfirm(null)}>
           <p className="text-sm text-ctp-text">
-            Played <strong>{pendingConfirm.name}</strong> – its text mentions drawing {pendingConfirm.extraDraws} card{pendingConfirm.extraDraws > 1 ? "s" : ""}. Did that actually trigger? Confirm as many as really happened (a card's wording may be conditional, so this is never applied for you).
+            Played <strong>{pendingConfirm.name}</strong>. Its text mentions drawing {pendingConfirm.extraDraws} card{pendingConfirm.extraDraws > 1 ? "s" : ""}. Did that actually trigger? Confirm as many as really happened (a card's wording may be conditional, so this is never applied for you).
           </p>
           <div className="mt-2 flex items-center gap-2">
             <button type="button" disabled={pendingConfirm.confirmed >= pendingConfirm.extraDraws || state.library.length === 0} onClick={confirmOneDraw} className="min-h-12 min-w-12 rounded-md border border-ctp-green/60 px-2.5 py-1 text-xs text-ctp-green hover:bg-ctp-green/10 disabled:cursor-not-allowed disabled:opacity-40">
@@ -304,7 +306,7 @@ export default function GoldfishIndex() {
         {state.hand.map((card) => (
           <HandCard key={card.id} card={card} resolved={cardsByName.get(card.name)} disabled={activeGlimpse !== null || pendingPayment !== null || state.phase !== "main"} onPlay={() => handlePlay(card)} onReserve={isReservable(cardsByName.get(card.name)) ? () => setState((current) => current ? reserveCard(current, card.id) : current) : undefined} />
         ))}
-        {state.hand.length === 0 && <InlineState>Hand is empty – draw a card to continue.</InlineState>}
+        {state.hand.length === 0 && <InlineState>Hand is empty. Draw a card to continue.</InlineState>}
       </div>
 
 
@@ -357,10 +359,10 @@ export default function GoldfishIndex() {
       )}
       <section className="space-y-3"><h3 className="text-sm font-semibold"><span>Replay log · seed {state.seed} · </span><span>{state.history.length} actions</span></h3>{isReplayableHistory(state.history) && <div className="mt-3 rounded-lg border border-ctp-surface1 bg-ctp-base p-3"><p className="text-xs leading-5 text-ctp-subtext1">Rebuild this position from the original shuffled deck and every recorded action.</p><button type="button" onClick={replayFromStart} className="mt-2 min-h-12 w-full rounded-lg border border-ctp-blue/60 px-3 text-sm font-medium text-ctp-blue sm:w-auto">Replay from start</button></div>}<ol className="mt-3 space-y-1 text-xs text-ctp-subtext1">{state.history.map((action) => <li key={action.id}><span className="mr-2 text-ctp-subtext0">T{action.turn}</span>{action.label}</li>)}</ol></section></>}
       </div></DialogSheet>}
-      <div role="region" aria-label="Turn controls" className="fixed inset-x-0 bottom-0 z-30 border-t border-ctp-surface1 bg-ctp-base p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-lg">
-        <div className="mx-auto max-w-3xl"><p role="status" className="mb-2 text-xs text-ctp-subtext1">Turn {state.turn} · {state.phase === "main" ? "Main phase" : "Recollection"} · {state.hand.length} in hand · {state.library.length} in library</p>
-        <div className="grid grid-cols-3 gap-2"><Button variant="primary" disabled={state.library.length === 0 || !!activeGlimpse || !!pendingPayment || !!pendingConfirm} onClick={() => setState(current => current ? drawCards(current, 1) : current)}>Draw</Button><Button disabled={!!activeGlimpse || !!pendingPayment || !!pendingConfirm} onClick={() => setState(current => current ? nextTurn(current) : current)}>Next turn + draw</Button><Button onClick={() => setTool("menu")}>Tools</Button></div></div>
-      </div>
+      <GoldfishTurnControls state={state} blocked={!!activeGlimpse || !!pendingPayment || !!pendingConfirm} onHeight={setControlsHeight}
+        onDraw={() => setState(current => current ? drawCards(current, 1) : current)}
+        onNextTurn={() => setState(current => current ? nextTurn(current) : current)}
+        onMemory={() => setTool("memory")} onMaterial={() => setTool("material")} onTools={() => setTool("menu")} />
 
     </PageLayout>
   );

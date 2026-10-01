@@ -1,3 +1,6 @@
+import DeckReadinessSummary from "./DeckReadinessSummary";
+import { useCardLocations } from "./useCardLocations";
+import { deckLocationSummary } from "@gatcg/shared";
 import { OWNERSHIP_COVERAGE_NOTE } from "./CollectionStatus";
 import { subscribeCollectionChanges } from "../../lib/collectionEvents";
 import { useToast } from "../../components/ui/toast/ToastContext";
@@ -30,8 +33,12 @@ export default function DeckCollectionTools({ decklist, cardsByName, source, own
   const { notify, dismiss } = useToast();
   const updateToast = useRef("");
   const mutationBusy = useRef(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [signedOut, setSignedOut] = useState(false);
+
+  const locations = useCardLocations(collection !== null && !signedOut);
+  const readiness = useMemo(() => deckLocationSummary(decklist, [...cardsByName.values()], collection ?? [], locations.records, includeSideboard, ownerDeckId), [decklist, cardsByName, collection, locations.records, includeSideboard, ownerDeckId]);
 
   const pending = useRef<{ signature: string; requestId: string } | null>(null);
   const active = useRef(true);
@@ -45,22 +52,23 @@ export default function DeckCollectionTools({ decklist, cardsByName, source, own
     const revision = ++readRevision.current;
     try {
       const result = await accountApi.collection();
-      if (revision === readRevision.current) acceptCollection(result.entries);
+      if (revision === readRevision.current) { acceptCollection(result.entries); setLoadError(null); }
     } catch (reason) {
       if (revision === readRevision.current) throw reason;
     }
   }, [acceptCollection]);
+  const invalidateRead = useCallback(() => { ++readRevision.current; }, []);
   useEffect(() => {
     active.current = true;
     const load = () => { void refresh().catch(reason => {
       if (!active.current) return;
       if (reason instanceof AccountApiError && reason.status === 401) setSignedOut(true);
-      else setError("Collection could not be loaded. Retry to see your latest ownership.");
+      else setLoadError("Collection could not be loaded. Retry to see your latest ownership.");
     }); };
     load();
     const unsubscribe = subscribeCollectionChanges(load);
-    return () => { active.current = false; unsubscribe(); };
-  }, [refresh]);
+    return () => { active.current = false; invalidateRead(); unsubscribe(); };
+  }, [refresh, invalidateRead]);
 
   const status = useMemo(() => collection ? computeDeckCollectionStatus(decklist, collection, includeSideboard) : null, [decklist, collection, includeSideboard]);
   const required = useMemo(() => deckCollectionLines(decklist, [...cardsByName.values()], includeSideboard), [decklist, cardsByName, includeSideboard]);
@@ -71,8 +79,8 @@ export default function DeckCollectionTools({ decklist, cardsByName, source, own
   async function retry() {
     if (mutationBusy.current) return;
     mutationBusy.current = true;
-    setBusy(true); setError(null);
-    try { await refresh(); } catch { setError("Collection could not be loaded. Please try again."); }
+    setBusy(true); setError(null); setLoadError(null);
+    try { await refresh(); } catch { setLoadError("Collection could not be loaded. Please try again."); }
     finally { mutationBusy.current = false; setBusy(false); }
   }
   async function update(mode: CollectionUpdateMode, lines: CollectionUpdateLine[]): Promise<boolean> {
@@ -92,7 +100,6 @@ export default function DeckCollectionTools({ decklist, cardsByName, source, own
       return true;
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Ownership could not be saved. Please try again.");
-      notify({ tone: "error", key: "collection", message: "Could not save ownership. Your changes have not been confirmed; please retry." });
       return false;
     } finally { mutationBusy.current = false; setBusy(false); }
   }
@@ -116,24 +123,26 @@ export default function DeckCollectionTools({ decklist, cardsByName, source, own
   }
 
   if (signedOut) return <Panel as="aside" data-component="DeckCollectionTools"><h3 className="font-semibold">Your collection</h3><p className="mt-1 text-sm text-ctp-subtext1">Sign in to check and update the cards you own for this deck.</p><Link to="/decks/edit" className={linkClass}>Sign in</Link></Panel>;
-  if (!collection || !status) return <Panel as="aside" data-component="DeckCollectionTools"><p role={error ? "alert" : "status"} className="text-sm text-ctp-subtext1">{error ?? "Loading collection…"}</p>{error && <Button className="mt-2" disabled={busy} onClick={() => void retry()}>Retry</Button>}</Panel>;
+  if (!collection || !status) return <Panel as="aside" data-component="DeckCollectionTools"><p role={loadError ? "alert" : "status"} className="text-sm text-ctp-subtext1">{loadError ?? "Loading collection…"}</p>{loadError && <Button className="mt-2" disabled={busy} onClick={() => void retry()}>Retry</Button>}</Panel>;
 
-  return <Panel data-component="DeckCollectionTools" as="aside" tone={status.complete ? "success" : "default"}>
+  return <Panel data-component="DeckCollectionTools" as="aside" tone={status.requiredCopies > 0 && status.complete && locations.ready && !locations.error && !loadError && !error && !readiness.unresolved && !readiness.reconcile && readiness.available === readiness.required ? "success" : "default"}>
     <div className="flex flex-wrap items-start justify-between gap-2"><div><h3 className="font-semibold">Your collection</h3><p className="mt-1 text-sm text-ctp-subtext1" aria-live="polite">{status.requiredCopies === 0 ? "No cards in this list." : status.complete ? "You own every required card." : `${status.ownedCopies} / ${status.requiredCopies} copies owned · ${status.missingCopies} missing`}{status.proxyCopies ? ` · ${status.proxyCopies} proxied` : ""}</p></div><Link to="/collection" className={linkClass}>Open collection</Link></div>
+    <DeckReadinessSummary summary={readiness} availabilityKnown={locations.ready && !locations.error && !loadError && !error} />
+    {locations.error ? <div className="mt-2"><p role="alert" className="text-sm text-ctp-yellow">Availability could not be refreshed. Your ownership quantities are separate.</p><Button onClick={() => void locations.refresh()}>Retry availability</Button></div> : !locations.ready && <p role="status" className="mt-2 text-xs text-ctp-subtext1">Checking locations and loans…</p>}
     {decklist.sideboard.length > 0 && <label className="mt-2 flex min-h-12 items-center gap-2 text-sm"><input type="checkbox" checked={includeSideboard} disabled={busy} onChange={event => { setIncludeSideboard(event.target.checked); onIncludeSideboardChange?.(event.target.checked); }} className="h-5 w-5" />Include sideboard</label>}
     <div className="mt-3 flex flex-wrap gap-2">
       {!status.complete && <Button variant="primary" disabled={busy || !!unresolved || !required.length} onClick={() => void ownAll()}>{busy ? "Saving…" : "I own all these cards"}</Button>}
       {missingLines.length > 0 && <Button onClick={() => setShopping(true)}>Shop missing cards</Button>}
       <Button disabled={busy || !required.length} onClick={() => setEditing(true)}>Edit owned quantities</Button>
     </div>
-    <p className="mt-2 text-xs text-ctp-subtext1">{OWNERSHIP_COVERAGE_NOTE} <Link to="/card-locations" className={linkClass}>Check locations and loans</Link></p>
+    <p className="mt-2 text-xs text-ctp-subtext1">{OWNERSHIP_COVERAGE_NOTE} <Link to={ownerDeckId ? `/card-locations?deck=${encodeURIComponent(ownerDeckId)}` : "/card-locations"} className={linkClass}>Check locations and loans</Link></p>
     {!status.complete && <p className="mt-2 text-xs text-ctp-subtext1">“I own all these cards” adds only the missing physical copies as unspecified printings. It keeps any higher quantities and recorded printings.</p>}
     {unresolved > 0 && <p role="status" className="mt-2 text-sm text-ctp-yellow">{unresolved} card{unresolved === 1 ? " is" : "s are"} still unavailable in the catalog. You can edit resolved cards; marking the whole deck owned is unavailable until all cards resolve.</p>}
 
-    {error && <div className="mt-3"><p role="alert" className="text-sm text-ctp-red">{error}</p><Button className="mt-2" disabled={busy} onClick={() => void retry()}>Refresh ownership</Button></div>}
+    {(error || loadError) && <div className="mt-3"><p role="alert" className="text-sm text-ctp-red">{error || loadError}</p><Button className="mt-2" disabled={busy} onClick={() => void retry()}>Refresh ownership</Button></div>}
     {missingLines.length > 0 && <details className="group mt-3"><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 rounded text-sm focus-visible:outline-2 focus-visible:outline-ctp-blue">Missing cards{missingCost > 0 ? ` · about ${formatUsd(missingCost)}` : ""}<DisclosureChevron className="shrink-0 group-open:rotate-180" /></summary><ul className="mt-2 grid gap-2 text-sm sm:grid-cols-2">{missingLines.map(line => <li key={line.card}>{line.missing}× {line.card}</li>)}</ul></details>}
     <details className="group mt-2"><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 rounded text-sm focus-visible:outline-2 focus-visible:outline-ctp-blue">More collection actions<DisclosureChevron className="group-open:rotate-180" /></summary><p className="my-2 text-xs text-ctp-subtext1">Add another full copy of this deck to your existing inventory{includeSideboard ? ", including sideboard" : ""}.</p><Button disabled={busy || !!unresolved || !required.length} onClick={() => void update("add", required)}>Add another copy of this deck</Button></details>
-    {ownerDeckId && <SavedDeckLocations decklist={decklist} deckId={ownerDeckId} cards={[...cardsByName.values()]} />}
+    {ownerDeckId && <SavedDeckLocations decklist={decklist} deckId={ownerDeckId} cards={[...cardsByName.values()]} locations={locations} />}
     {editing && <DeckOwnershipEditor required={required} entries={collection} cardsByName={cardsByName} onSave={lines => update("set", lines)} onDismiss={() => setEditing(false)} />}
     {shopping && <MissingCardsReview lines={missingLines} cardsByName={cardsByName} estimatedCost={missingCost} onDismiss={() => setShopping(false)} busy={busy} error={error}
       blocked={unresolved ? "Some cards are unavailable in the catalog. You can shop now; adding is available when every card resolves." : undefined}

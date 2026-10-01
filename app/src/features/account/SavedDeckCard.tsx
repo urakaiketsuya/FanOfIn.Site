@@ -1,3 +1,4 @@
+import DisclosureChevron from "../../components/DisclosureChevron";
 import Button from "../../components/ui/Button";
 import type { SavedDeck } from "@gatcg/shared";
 import { Link } from "react-router-dom";
@@ -10,15 +11,16 @@ export default function SavedDeckCard({ deck, onRename, onDelete, onFolders, fol
   const material = deck.decklist.material.reduce((sum, line) => sum + line.quantity, 0);
   const deckPath = `/decks/${encodeURIComponent(deck.id)}`;
   const comparePath = `/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: deck.title, decklist: deck.decklist, format: deck.format }]))}`;
-  return <Panel data-component="SavedDeckCard" as="article" className="group relative transition-colors hover:border-ctp-blue">
-    <Link to={deckPath} aria-label={`Open ${deck.title}`} className="absolute inset-0 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ctp-blue" />
-    <div className="pointer-events-none relative flex items-start justify-between gap-3">
-      <div className="min-w-0"><span className="font-semibold text-ctp-blue group-hover:underline">{deck.title}</span><p className="mt-1 text-xs text-ctp-subtext1">{deck.championName ?? "Unknown champion"} · {deck.format}</p></div>
-      <span className="shrink-0 rounded-full border border-ctp-surface1 px-2 py-0.5 text-[10px] text-ctp-subtext0">Editable</span>
-    </div>
-    <div className="relative"><DeckVisualStrip decklist={deck.decklist} championName={deck.championName} /></div>
-    <div className="pointer-events-none relative mt-4 grid grid-cols-2 gap-2 text-xs"><div className="rounded-md bg-ctp-base p-2"><p className="text-ctp-subtext0">Main deck</p><p className="mt-1 font-semibold text-ctp-text">{main} cards</p></div><div className="rounded-md bg-ctp-base p-2"><p className="text-ctp-subtext0">Material</p><p className="mt-1 font-semibold text-ctp-text">{material} cards</p></div></div>
-    {onFolders && <div className="relative mt-3"><Button disabled={!foldersReady} onClick={onFolders}>Folders{folderNames.length ? ` · ${folderNames.length}` : ""}</Button>{folderNames.length > 0 && <p className="mt-1 break-words text-xs text-ctp-subtext1">{folderNames.join(" · ")}</p>}</div>}
-    <div className="relative mt-3 flex items-center justify-between gap-3"><p className="pointer-events-none text-xs text-ctp-subtext0">{deck.sources.length} source{deck.sources.length === 1 ? "" : "s"} · Updated {new Date(deck.updatedAt).toLocaleDateString()}</p><details className="relative"><summary className="cursor-pointer list-none rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:text-ctp-text" aria-label={`More actions for ${deck.title}`}>More</summary><div className="absolute bottom-full right-0 z-20 mb-2 w-44 rounded-lg border border-ctp-surface1 bg-ctp-base p-1 shadow-xl"><Link to={`${deckPath}?tab=decklist`} className="block rounded px-3 py-2 text-sm hover:bg-ctp-surface0">Edit deck</Link><Link to={`/deck-analysis?deck=${encodeURIComponent(deck.id)}`} className="block rounded px-3 py-2 text-sm hover:bg-ctp-surface0">Analyze deck</Link><Link to={`/deck-review?deck=${encodeURIComponent(deck.id)}`} className="block rounded px-3 py-2 text-sm hover:bg-ctp-surface0">Review suggestions</Link><Link to={`/deck-builder?improveDeck=${encodeURIComponent(deck.id)}`} className="block rounded px-3 py-2 text-sm hover:bg-ctp-surface0">Tune in builder</Link><Link to={comparePath} className="block rounded px-3 py-2 text-sm hover:bg-ctp-surface0">Compare deck</Link><button type="button" onClick={onRename} className="block w-full rounded px-3 py-2 text-left text-sm hover:bg-ctp-surface0">Rename</button><button type="button" onClick={onDelete} className="block w-full rounded px-3 py-2 text-left text-sm text-ctp-red hover:bg-ctp-red/10">Delete deck</button></div></details></div>
+  return <Panel data-component="SavedDeckCard" as="article" className="min-w-0">
+    <DeckVisualStrip decklist={deck.decklist} championName={deck.championName} />
+    <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-ctp-subtext1"><span className="rounded-full bg-ctp-surface0 px-2 py-1">{deck.format === "STANDARD" ? "Standard" : deck.format === "PANTHEON" ? "Pantheon" : "Format unknown"}</span><span>Editable build</span></div>
+    <h2 className="mt-2 break-words text-xl font-bold leading-snug">{deck.title}</h2>
+    <p className="mt-2 text-sm text-ctp-subtext1">{main} main · {material} material · {deck.decklist.sideboard.reduce((sum, line) => sum + line.quantity, 0)} sideboard</p>
+    {folderNames.length > 0 && <p className="mt-2 break-words text-xs text-ctp-subtext1">Folders: {folderNames.join(" · ")}</p>}
+    <div className="mt-4 flex flex-wrap gap-2"><Link to={deckPath} className="inline-flex min-h-control items-center rounded-lg bg-ctp-blue px-3 text-sm font-medium text-ctp-base" aria-label={`Open ${deck.title}`}>Open deck</Link>{onFolders && <Button disabled={!foldersReady} onClick={onFolders}>Folders{folderNames.length ? ` · ${folderNames.length}` : ""}</Button>}</div>
+    <p className="mt-3 text-xs text-ctp-subtext0">{deck.sources.length} source{deck.sources.length === 1 ? "" : "s"} · Updated {new Date(deck.updatedAt).toLocaleDateString()}</p>
+    <details className="group mt-2 border-t border-ctp-surface1"><summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 text-sm" aria-label={`More actions for ${deck.title}`}>More actions<DisclosureChevron className="group-open:rotate-180" /></summary><div className="grid gap-1 [&>a]:flex [&>a]:min-h-control [&>a]:items-center [&>a]:rounded-lg [&>a]:px-3 [&>a]:text-sm [&>a]:text-ctp-blue">
+      <Link to={`${deckPath}?tab=decklist`}>Edit deck</Link><Link to={`/deck-analysis?deck=${encodeURIComponent(deck.id)}`}>Analyze deck</Link><Link to={`/deck-review?deck=${encodeURIComponent(deck.id)}`}>Review suggestions</Link><Link to={`/deck-builder?improveDeck=${encodeURIComponent(deck.id)}`}>Tune in builder</Link><Link to={comparePath}>Compare deck</Link><Button onClick={onRename}>Rename</Button><Button variant="danger" onClick={onDelete}>Delete deck</Button>
+    </div></details>
   </Panel>;
 }

@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 
 type ButtonVariant = "primary" | "secondary" | "danger" | "ghost";
 type ButtonSize = "sm" | "md";
@@ -12,6 +12,6 @@ const VARIANTS: Record<ButtonVariant, string> = {
   ghost: "border-transparent text-ctp-subtext1 hover:bg-ctp-mantle hover:text-ctp-text active:bg-ctp-surface0",
 };
 
-export default function Button({ variant = "secondary", size = "md", children, className = "", type = "button", ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: ButtonVariant; size?: ButtonSize; children: ReactNode }) {
+export default function Button({ variant = "secondary", size = "md", children, className = "", type = "button", ...props }: ComponentProps<"button"> & { variant?: ButtonVariant; size?: ButtonSize; children: ReactNode }) {
   return <button data-component="Button" type={type} className={`min-h-control min-w-control rounded-md border font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue disabled:cursor-not-allowed disabled:opacity-50 ${size === "sm" ? "px-2.5 py-1 text-xs" : "px-3 py-2 text-sm"} ${VARIANTS[variant]} ${className}`} {...props}>{children}</button>;
 }

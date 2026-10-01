@@ -4,14 +4,13 @@ import {Link} from 'react-router-dom';
 import {useState} from 'react';
 import {deckCardRequirements, type OmnidexDecklist, type Card,type CollectionEntry,type SavedDeck} from '@gatcg/shared';
 import {accountApi} from '../../lib/accountApi';
-import {useCardLocations} from './useCardLocations';
+import type {useCardLocations} from './useCardLocations';
 import DeckAssignmentReview from './DeckAssignmentReview';
 
 /** Account orchestration stays outside the reusable transfer review. */
-export default function SavedDeckLocations({deckId,cards,decklist}: {deckId:string;cards:Card[];decklist:OmnidexDecklist}) {
+export default function SavedDeckLocations({deckId,cards,decklist,locations}: {deckId:string;cards:Card[];decklist:OmnidexDecklist;locations:ReturnType<typeof useCardLocations>}) {
  const { notify } = useToast();
  const catalog=useCardCatalog();
- const locations=useCardLocations(true);
  const [data,setData]=useState<{entries:CollectionEntry[];decks:SavedDeck[]}|null>(null);
  const [busy,setBusy]=useState(false);const [error,setError]=useState('');
  async function open(){setBusy(true);setError('');try{if (!await locations.refresh()) throw new Error("Could not refresh card locations. Please try again.");const [collection,decks]=await Promise.all([accountApi.collection(),accountApi.decks()]);if(!decks.decks.some(deck=>deck.id===deckId))throw new Error('This saved deck is unavailable.');setData({entries:collection.entries,decks:decks.decks});}catch(reason){setError(reason instanceof Error ? reason.message : 'Could not load card locations.');}finally{setBusy(false);}}

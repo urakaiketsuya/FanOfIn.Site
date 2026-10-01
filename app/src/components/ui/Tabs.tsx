@@ -42,7 +42,7 @@ export default function Tabs<T extends string>({ tabs, active, onChange, label =
             onClick={(event) => { onChange(tab.key); event.currentTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" }); }}
             onKeyDown={(e) => handleKeyDown(e, index)}
             className={variant === "pill"
-              ? `mb-1 min-h-control shrink-0 rounded-full px-3.5 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ctp-blue ${selected ? "bg-ctp-blue/15 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text"}`
+              ? `mb-1 min-h-control shrink-0 rounded-full px-3.5 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ctp-blue ${selected ? "bg-ctp-blue/15 text-ctp-blue ring-1 ring-inset ring-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text"}`
               : `min-h-control shrink-0 focus-visible:outline-2 focus-visible:outline-ctp-blue border-b-2 px-3 py-2 text-sm font-medium transition-colors ${selected ? "border-ctp-blue text-ctp-blue" : "border-transparent text-ctp-subtext1 hover:border-ctp-surface2 hover:text-ctp-text"}`}
           >
             {tab.label}

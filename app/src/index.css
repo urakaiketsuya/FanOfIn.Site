@@ -81,3 +81,11 @@ tbody tr:hover { @apply bg-ctp-surface0/60; }
     scroll-behavior: auto !important;
   }
 }
+
+/* Emphasize identity and state without moving control targets. */
+.collection-progress { appearance: none; border: 0; border-radius: 999px; overflow: hidden; background: var(--catppuccin-color-surface0); }
+.collection-progress::-webkit-progress-bar { background: var(--catppuccin-color-surface0); }
+.collection-progress::-webkit-progress-value { background: var(--catppuccin-color-blue); border-radius: 999px; }
+.collection-progress::-moz-progress-bar { background: var(--catppuccin-color-blue); border-radius: 999px; }
+@keyframes state-arrive { from { opacity: 0.45; } to { opacity: 1; } }
+.state-arrive { animation: state-arrive 180ms ease-out; }

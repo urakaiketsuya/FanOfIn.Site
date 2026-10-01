@@ -54,3 +54,24 @@ export function returnLoanCopies(loans: NonNullable<CollectionCardTracking['loan
   if (loans.some(row => row.id === newId)) throw new Error('Return record must have a unique ID.');
   return [...loans.map(row => row.id === id ? {...row, quantity: row.quantity - quantity} : row), {...loan, id: newId, quantity, returnedAt}];
 }
+
+/** Inventory coverage for one deck, never a guarantee of simultaneous assembly or legality. */
+export function deckLocationSummary(decklist: OmnidexDecklist, cards: { name: string; uuid: string }[], entries: CollectionEntry[], records: CollectionCardTracking[], includeSideboard = true, deckId?: string) {
+  const byName = new Map(cards.map(card => [locationCardKey(card.name), card]));
+  const inventoryCards = new Map(entries.map(entry => [locationCardKey(entry.cardName), {uuid: entry.cardUuid}]));
+  const byId = new Map(records.map(record => [record.cardUuid, record]));
+  const states = collectionLocationIndex(entries, records);
+  const requirements = deckCardRequirements(includeSideboard ? decklist : {...decklist, sideboard: []});
+  const lines = [...requirements.values()].map(need => {
+    const card = byName.get(locationCardKey(need.name));
+    const uuid = card?.uuid ?? inventoryCards.get(locationCardKey(need.name))?.uuid;
+    const state = states.get(uuid ?? '') ?? locationStateFromOwned(0);
+    const here = byId.get(uuid ?? '')?.assignments?.find(row => row.deckId === deckId)?.quantity ?? 0;
+    const owned = Math.min(need.quantity, state.owned);
+    const available = Math.min(need.quantity, state.available);
+    return {...need, cardUuid: uuid, resolved: !!card, owned, available, missing: need.quantity - owned, blocked: owned - available,
+      move: Math.max(0, available - here - state.unassigned), reconcile: state.excess > 0};
+  });
+  const sum = (key: 'quantity' | 'owned' | 'available' | 'missing' | 'blocked' | 'move') => lines.reduce((total, line) => total + line[key], 0);
+  return {lines, required: sum('quantity'), owned: sum('owned'), available: sum('available'), missing: sum('missing'), blocked: sum('blocked'), move: sum('move'), unresolved: lines.filter(line => !line.resolved).length, reconcile: lines.some(line => line.reconcile)};
+}

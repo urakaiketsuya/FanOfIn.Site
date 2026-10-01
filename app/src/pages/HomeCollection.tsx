@@ -28,7 +28,7 @@ export default function HomeCollection() {
             <p className="text-sm leading-relaxed text-ctp-subtext1 sm:text-base">Connect your collection to your decks, from the cards in your binder to the last copies you need.</p>
             <ul className="mt-4 space-y-3 text-sm text-ctp-subtext1">
               <li><strong className="text-ctp-text">Record your cards.</strong> Update owned quantities, track exact printings, or import a quantity list.</li>
-              <li><strong className="text-ctp-text">Find the gaps.</strong> Check deck coverage, review missing cards, and add purchases to your collection.</li>
+              <li><strong className="text-ctp-text">Find the gaps.</strong> See what you own and what is available to use. Review missing cards and add purchases to your collection.</li>
               <li><strong className="text-ctp-text">Lent a card to another player? Use the same cards across decks?</strong> Track exactly where each copy is.</li>
             </ul>
             <Link to="/collection" className="mt-6 flex min-h-12 items-center justify-center rounded-xl bg-ctp-blue px-4 py-3 text-sm font-semibold text-ctp-crust hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">Open my collection</Link>

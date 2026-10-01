@@ -46,3 +46,15 @@ Exercise the flow at 360–390px and desktop, with keyboard and touch targets ch
 5. Open analysis or playtesting with the selected deck → verify title, format, and card quantities survive the transition. Keep the original saved list unchanged until explicitly saved.
 
 Use small representative fixtures for calculation and persistence boundaries. UI screenshots alone do not verify cross-feature data consistency.
+
+## Expressive emphasis
+
+Use larger deck titles and champion art to establish identity. Keep source badges subordinate to the title. `DeckVisualStrip` leads with the champion when known; immutable sources continue to use `DeckPreviewCard`. Editable builds retain their own controller and show their primary navigation action explicitly.
+
+Use independent progress bars for owned and available copies, both against the selected deck scope. Never combine these overlapping counts into a chart. Collection readiness uses shared `deckLocationSummary`; catalog gaps, failed refreshes, and reconciliation issues must not imply a deck is ready. Expand blockers into named cards with direct location links. Sideboard inclusion must change both counts together.
+
+Use the brief `state-arrive` opacity transition for transient feedback, not layout movement. Reduced motion overrides it. Persistent warnings stay visible and text labeled. Selected pill tabs include an outline as well as a tint.
+
+Import review uses the shared sheet, tabs, named card previews, draft protection, and a persistent confirmation action. Opening a card from an import review uses a new tab so the draft stays available. Library failures retain paste as an alternative; optional favorites failures do not hide owned builds.
+
+Goldfish keeps Draw, Next turn, Memory, and Material within reach. Its footer measures its height and reserves content and focus scrolling space. Tool sheets isolate focus and sit above the footer. The latest action is inline live feedback, not a toast for every draw.

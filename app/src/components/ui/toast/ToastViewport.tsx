@@ -32,11 +32,11 @@ function ToastMessage({ toast, dismiss, waiting }: { toast: Toast; dismiss: (id:
   async function act() {
     if (!toast.action || !("onClick" in toast.action) || busy) return;
     setBusy(true); setFailure("");
-    try { await toast.action.onClick(); dismiss(toast.id); }
+    try { await toast.action.onClick(); close(); }
     catch (error) { setFailure(error instanceof Error ? error.message : "Action failed. Please try again."); }
     finally { setBusy(false); }
   }
-  return <div ref={root} data-component="Toast" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onFocusCapture={() => setFocused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false); }} className={`flex min-w-0 flex-wrap items-center gap-x-2 rounded-xl border bg-ctp-mantle p-2 shadow-lg ${colors[toast.tone]}`}>
+  return <div ref={root} data-component="Toast" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onFocusCapture={() => setFocused(true)} onBlurCapture={event => { if (!event.currentTarget.contains(event.relatedTarget)) setFocused(false); }} className={`state-arrive flex min-w-0 flex-wrap items-center gap-x-2 rounded-xl border bg-ctp-mantle p-2 shadow-lg ${colors[toast.tone]}`}>
     <div className="min-w-0 flex-1 basis-48 px-1 text-sm"><span className="font-semibold">{labels[toast.tone]}: </span><span className="break-words text-ctp-text">{toast.message}</span>{waiting > 0 && <span className="block text-xs text-ctp-subtext1">{waiting} more notification{waiting === 1 ? "" : "s"}</span>}</div>
     {toast.action && ("to" in toast.action ? <Link to={toast.action.to} onClick={() => dismiss(toast.id)} className={control}>{toast.action.label}</Link> : <button type="button" disabled={busy} onClick={() => void act()} className={control}>{busy ? "Working…" : toast.action.label}</button>)}
     <button type="button" disabled={busy} aria-label="Dismiss notification" onClick={close} className={`${control} text-ctp-subtext1`}><span aria-hidden="true">×</span></button>
