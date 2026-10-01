@@ -1,11 +1,10 @@
 import type { ReactNode } from "react";
 import type { Card } from "@gatcg/shared";
 import CardImage from "./CardImage";
-import ElementIcon from "./ElementIcon";
 
 /**
  * The card-art box shared by every "visual" card grid on the site – full-bleed art, rounded
- * corners, a name fallback when no image is resolved, and an element badge (top-left) – plus
+ * corners and a name fallback when no image is resolved, plus
  * optional corner/tag overlays for callers that need them. Originally DecklistView's Visual
  * display mode (`VisualCardTile`); also used by TopCardsSections' grid layout and
  * ChampionSynergy's New Releases section, so "the same component" shows up everywhere a card
@@ -29,11 +28,6 @@ export default function CardArtTile({
         <CardImage image={card.editions[0].image} alt={name} className="h-full w-full object-cover" />
       ) : (
         <span className="flex h-full items-center p-1 text-center text-[9px] text-ctp-subtext0">{name}</span>
-      )}
-      {card && (
-        <span className="absolute left-1 top-1">
-          <ElementIcon element={card.element} size={14} />
-        </span>
       )}
       {cornerBadge !== undefined && (
         <span className="absolute right-1 top-1 rounded bg-ctp-base/90 px-1 text-[10px] text-ctp-text">{cornerBadge}</span>

@@ -11,7 +11,7 @@ const DECK_SIZE = 60;
 const CHECKPOINTS = [7, 10, 15] as const;
 const CARD_NAMES = ["Dungeon Guide"];
 
-/** The featured xenbr4 list includes four Dungeon Guides in its 60-card Main Deck.
+/** The featured xenbr4 list includes four Dungeon Guides in its Main Deck of 60 cards.
  * The three-copy scenario is hypothetical; both odds use the full calculator's draw math. */
 export default function HomeDeckInsight() {
   const [seen, setSeen] = useState<(typeof CHECKPOINTS)[number]>(10);
@@ -37,7 +37,7 @@ export default function HomeDeckInsight() {
               <Link to="/cards/dungeon-guide" className="shrink-0 rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue" aria-label="View Dungeon Guide card">
                 {dungeonGuideImage ? <CardImage image={dungeonGuideImage} alt="Dungeon Guide card" className="h-28 w-20 rounded-md border border-ctp-surface1 object-cover object-top sm:h-36 sm:w-26" /> : <span className="flex h-28 w-20 items-center justify-center rounded-md border border-ctp-surface1 bg-ctp-surface0 px-2 text-center text-xs text-ctp-subtext1 sm:h-36 sm:w-26">Dungeon Guide</span>}
               </Link>
-              <div><p className="text-sm font-semibold text-ctp-text">Estimated chance of seeing at least one Dungeon Guide</p><p className="mt-1 text-xs text-ctp-subtext0">60-card Main Deck · adjusted for card draw</p></div>
+              <div><p className="text-sm font-semibold text-ctp-text">Estimated chance of seeing at least one Dungeon Guide</p><p className="mt-1 text-xs text-ctp-subtext0">Main Deck of 60 cards · adjusted for card draw</p></div>
             </div>
             <div className="mt-6 grid grid-cols-3 gap-2 sm:flex" role="group" aria-label="Natural cards seen before extra draw">
               {CHECKPOINTS.map((count) => (
@@ -65,7 +65,7 @@ export default function HomeDeckInsight() {
           </div>
         </div>
 
-        <p className="mt-4 text-xs leading-relaxed text-ctp-subtext0">Draw-adjusted estimate using the list’s printed draw effects and Reserve-cost timing. Assumes conditional effects resolve once; excludes repeat activations, chained draws, and Glimpse selection. The starting Spirit’s seven cards are counted only once. Cutting a Guide assumes replacement with a non-draw card, keeping the deck at 60 cards.</p>
+        <p className="mt-4 text-xs leading-relaxed text-ctp-subtext0">Estimate adjusted for the list’s printed draw effects and Reserve cost timing. Assumes conditional effects resolve once; excludes repeat activations, chained draws, and Glimpse selection. The starting Spirit’s seven cards are counted only once. Cutting a Guide assumes replacement with a card that does not draw cards, keeping the deck at 60 cards.</p>
 
         <div className="mt-6 border-t border-ctp-surface0 pt-5 text-sm text-ctp-subtext1">Want to compare whole decks? <Link to="/compare?add=60363:570,60488:4261" className="font-semibold text-ctp-blue hover:underline">See two real builds side by side <span aria-hidden="true">→</span></Link></div>
       </div>
