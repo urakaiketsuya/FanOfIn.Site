@@ -116,7 +116,7 @@ export default function ArchetypeCompare() {
             <section className="mt-8">
               <h2 className="text-sm font-semibold tracking-wide text-ctp-blue uppercase">Spirit populations</h2>
               <p className="mt-1 text-xs text-ctp-subtext0">Unique players observed with each Spirit inside the material route.</p>
-              <ComparisonTable firstColumn="Spirit" names={items.map((item) => item.name)} rows={spiritRows.map((row) => ({ label: row.name, values: row.counts.map((count) => count ? `${count}p` : "—") }))} cardsByName={cardsByName} />
+              <ComparisonTable firstColumn="Spirit" names={items.map((item) => item.name)} rows={spiritRows.map((row) => ({ label: row.name, values: row.counts.map((count) => count ? `${count}p` : "–") }))} cardsByName={cardsByName} />
             </section>
           )}
 
@@ -145,7 +145,7 @@ export default function ArchetypeCompare() {
 
               {mainQuantityRows.length > 0 && <section className="mt-8">
                 <h2 className="text-sm font-semibold tracking-wide text-ctp-peach uppercase">Largest main-deck differences</h2>
-                <p className="mt-1 text-xs text-ctp-subtext0">Average copies per deck, ordered by the largest gap between selected builds—not merely whether a card appears.</p>
+                <p className="mt-1 text-xs text-ctp-subtext0">Average copies per deck, ordered by the largest gap between selected builds–not merely whether a card appears.</p>
                 <ComparisonTable firstColumn="Main-deck card" names={builds.map((item) => item.name)} rows={mainQuantityRows.map((row) => ({ label: row.name, values: row.quantities.map(formatQuantity), strengths: row.quantities.map((quantity) => quantity / Math.max(1, ...row.quantities)) }))} cardsByName={cardsByName} />
               </section>}
             </>
@@ -154,7 +154,7 @@ export default function ArchetypeCompare() {
           <section className="mt-8">
             <h2 className="text-sm font-semibold tracking-wide text-ctp-green uppercase">Defining-card overlap</h2>
             <p className="mt-1 text-xs text-ctp-subtext0">Presence within each selected {type === "route" ? "route" : "build"}. A dash means the card is not one of that population's defining cards.</p>
-            <ComparisonTable firstColumn="Card" names={items.map((item) => item.name)} rows={cardRows.map((row) => ({ label: row.name, values: row.prevalence.map((value) => value ? `${(value * 100).toFixed(0)}%` : "—"), strengths: row.prevalence }))} cardsByName={cardsByName} />
+            <ComparisonTable firstColumn="Card" names={items.map((item) => item.name)} rows={cardRows.map((row) => ({ label: row.name, values: row.prevalence.map((value) => value ? `${(value * 100).toFixed(0)}%` : "–"), strengths: row.prevalence }))} cardsByName={cardsByName} />
           </section>
         </>
       )}
@@ -163,7 +163,7 @@ export default function ArchetypeCompare() {
 }
 
 function formatQuantity(quantity: number) {
-  return quantity >= 0.05 ? quantity.toFixed(2) : "—";
+  return quantity >= 0.05 ? quantity.toFixed(2) : "–";
 }
 
 function ComparisonTable({ firstColumn, names, rows, cardsByName }: { firstColumn: string; names: string[]; rows: { label: string; values: string[]; strengths?: number[] }[]; cardsByName?: Map<string, Card> }) {

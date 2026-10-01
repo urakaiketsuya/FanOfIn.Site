@@ -89,13 +89,13 @@ export function MatchTimelineHeader({ match }: { match: BroadcastTimelineMatch }
   return (
     <div>
       <Panel tone="info" padding="md">
-        <p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Broadcast commentary — not tournament data</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-ctp-blue">Broadcast commentary – not tournament data</p>
         <BroadcastDataNotice className="mt-1 text-sm text-ctp-subtext1" />
       </Panel>
 
       <div className="mt-4">
         <h1 className="text-2xl font-bold text-ctp-blue">
-          {match.event} — {match.round}
+          {match.event} – {match.round}
         </h1>
         <p className="mt-1 text-sm text-ctp-subtext1">
           <span className="font-medium text-ctp-blue">{match.players[0].name}</span> ({match.players[0].deck}) vs.{" "}

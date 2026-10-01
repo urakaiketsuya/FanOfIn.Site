@@ -26,7 +26,7 @@ export function summarizeMatchLog(records: readonly MatchLogRecord[]): MatchLogS
   const wins = records.filter((record) => record.result === "win").length;
   const points = records.reduce((total, record) => total + (record.result === "win" ? 1 : record.result === "draw" ? 0.5 : 0), 0);
   const confidence = games === 0 ? "none" : games < 5 ? "early" : games < 15 ? "developing" : "useful";
-  const warning = games === 0 ? "Log games before interpreting results." : games < 5 ? "Very small sample — individual games dominate this result." : games < 15 ? "Developing sample — use patterns as prompts, not conclusions." : "Useful testing sample, but opponent selection and incomplete logging can still bias it.";
+  const warning = games === 0 ? "Log games before interpreting results." : games < 5 ? "Very small sample – individual games dominate this result." : games < 15 ? "Developing sample – use patterns as prompts, not conclusions." : "Useful testing sample, but opponent selection and incomplete logging can still bias it.";
   return { games, wins, matchPointRate: games ? points / games : null, confidence, warning };
 }
 

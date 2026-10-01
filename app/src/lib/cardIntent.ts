@@ -6,7 +6,7 @@ const SACRIFICE_TOKEN_RE = new RegExp(`\\bsacrifice\\s+${TOKEN_QUANTITY}\\s+([a-
 
 /**
  * Token names are discovered dynamically from free effect text with no canonical list to check
- * against (unlike subtypes, see `normalizeSubtype` below) — the same token can be mentioned
+ * against (unlike subtypes, see `normalizeSubtype` below) – the same token can be mentioned
  * singular in one card's "Summon" text and plural in another's "sacrifice" text, so this strips a
  * trailing "s" to unify them into one matching key. Naive (doesn't know real irregular plurals),
  * but there's no better signal available for a name with no catalog entry of its own.
@@ -17,12 +17,12 @@ function normalizeTokenName(raw: string): string {
 
 /**
  * Subtypes, unlike token names, already have a canonical spelling straight from the catalog's own
- * `card.subtypes` — no destructive "strip a trailing s" guess is needed or wanted here. Blindly
+ * `card.subtypes` – no destructive "strip a trailing s" guess is needed or wanted here. Blindly
  * stripping (this function's previous behavior, shared with `normalizeTokenName`) mangled any
  * subtype whose real singular form happens to end in "s" (e.g. a hypothetical "Glass" → "Glas"),
  * corrupting both the stored matching key and the `via` text shown to the user. Case-insensitive
  * matching against effect text still allows the plural form via the trigger regexes' own trailing
- * `s?` (see `validatedSubtypeRegexes`/`experimentalSubtypeRegexes`) — pluralization is handled once,
+ * `s?` (see `validatedSubtypeRegexes`/`experimentalSubtypeRegexes`) – pluralization is handled once,
  * at match time, not baked destructively into the stored value.
  */
 function normalizeSubtype(raw: string): string {
@@ -33,7 +33,7 @@ function escapeRegExp(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-/** Named token types this card's own effect summons (e.g. "Powercell", "Core Fractal") — the producer side of a shared token economy. Matched by name, not a curated list, so any future shared token economy is picked up automatically. */
+/** Named token types this card's own effect summons (e.g. "Powercell", "Core Fractal") – the producer side of a shared token economy. Matched by name, not a curated list, so any future shared token economy is picked up automatically. */
 export function extractProducedTokens(card: Card): Set<string> {
   const tokens = new Set<string>();
   const effect = card.effect ?? "";
@@ -41,7 +41,7 @@ export function extractProducedTokens(card: Card): Set<string> {
   return tokens;
 }
 
-/** Named token types this card's own effect sacrifices as a cost — the consumer side of a shared token economy. */
+/** Named token types this card's own effect sacrifices as a cost – the consumer side of a shared token economy. */
 export function extractConsumedTokens(card: Card): Set<string> {
   const tokens = new Set<string>();
   const effect = card.effect ?? "";
@@ -51,12 +51,12 @@ export function extractConsumedTokens(card: Card): Set<string> {
 
 /**
  * Card name -> its own normalized subtypes, for every TOKEN-type card in the catalog. Lets a card
- * that summons a named token be credited with that token's subtypes too — e.g. a card that
+ * that summons a named token be credited with that token's subtypes too – e.g. a card that
  * "**Summon** a Core Fractal token" grants the FRACTAL subtype just as surely as a card that IS a
  * Fractal itself, since the object it puts onto the field carries that subtype. Needed because a
  * card's own `subtypes` only describes its own face, not what it can place onto the battlefield.
  * Real bug this fixes: a card like Cryogenic Ritual never carries the FRACTAL subtype itself, but
- * its "Summon a Core Fractal token" effect does grant Fractal support — without this, it was
+ * its "Summon a Core Fractal token" effect does grant Fractal support – without this, it was
  * invisible to `extractProducedSubtypes` below and the Fractal economy under-counted its real
  * producers.
  */
@@ -71,7 +71,7 @@ export function tokenSubtypesByName(catalog: Card[]): Map<string, Set<string>> {
 
 /**
  * Every subtype `card` carries on its own face, plus every subtype granted by a token it summons
- * (via `tokenSubtypesByName`) — the full producer side of a subtype economy, extended past "this
+ * (via `tokenSubtypesByName`) – the full producer side of a subtype economy, extended past "this
  * card's own printed subtypes" to cover cards that only participate in a tribal economy by making
  * tokens of that tribe.
  */
@@ -88,14 +88,14 @@ export type IntentTier = "validated" | "experimental";
 
 /**
  * At most 2 filler words allowed between a trigger's quantifier ("a"/"an"/"3"/...) and the subtype
- * word itself — e.g. "sacrifice a Chessman Rook ally" has the subtype (Chessman) immediately after
+ * word itself – e.g. "sacrifice a Chessman Rook ally" has the subtype (Chessman) immediately after
  * the quantifier with 0 filler words; this just gives a little slack for phrasing variants without
  * opening up to matching across unrelated clauses.
  */
 const FILLER = "(?:[A-Za-z]+\\s+){0,2}";
 
 /**
- * The original three trigger verbs — checked against the real 2,494-card corpus before shipping
+ * The original three trigger verbs – checked against the real 2,494-card corpus before shipping
  * (see docs/CALCULATIONS.md's "Intent cards" section: "sacrifice/control a Chessman" alone on 10+
  * real cards). Matched with the trigger word and subtype anchored as one contiguous phrase (not
  * just "both words appear somewhere nearby"), which matters: a looser proximity check originally
@@ -103,10 +103,10 @@ const FILLER = "(?:[A-Za-z]+\\s+){0,2}";
  * meant "sacrifice a Spell [card]", just because both words fell within a fixed character window.
  */
 /**
- * How far past the subtype word "from <zone>" is allowed to trail for the banish trigger — up to 4
+ * How far past the subtype word "from <zone>" is allowed to trail for the banish trigger – up to 4
  * more words, comfortably covering real phrasing like "banish a Beast ally from your opponent's
  * discard pile" (gap of 1: "ally"). Originally unbounded (`[^.]*`, "anywhere later in the same
- * sentence"), which could cross into an unrelated clause sharing that sentence — e.g. "Banish a
+ * sentence"), which could cross into an unrelated clause sharing that sentence – e.g. "Banish a
  * Beast ally, then look at the top card from your deck" has no period between the banish and an
  * unrelated draw effect's own "from your deck", so the old pattern could credit the banish trigger
  * with a "from" clause that actually belongs to a different effect entirely.
@@ -115,7 +115,7 @@ const BANISH_FROM_GAP = "(?:\\s+\\S+){0,4}";
 
 /**
  * A trigger like "banish a Warrior champion card" restricts the target to champions of that
- * subtype — a narrower pool than "any Warrior [ally/token/card]" — which this subtype-only
+ * subtype – a narrower pool than "any Warrior [ally/token/card]" – which this subtype-only
  * matching system has no way to represent (it tracks subtypes, not the type+subtype combination).
  * Verified against the real corpus: only one card (Break the Line) has this "<subtype> champion
  * card" shape, and excluding it here is what it takes to stop a non-champion card sharing the same
@@ -132,10 +132,10 @@ function validatedSubtypeRegexes(s: string): RegExp[] {
 }
 
 /**
- * Broader trigger verbs — real GA TCG patterns worth checking for, but NOT yet run against the
+ * Broader trigger verbs – real GA TCG patterns worth checking for, but NOT yet run against the
  * full card corpus the way the validated set above was, so they carry a real false-positive risk
  * (see docs/CALCULATIONS.md's "Intent cards" section for why that corpus check matters: a generic-
- * enough trigger turns this from a designed-relationship signal into noise). Opt-in only — never
+ * enough trigger turns this from a designed-relationship signal into noise). Opt-in only – never
  * silently blended into the trusted default, see `intentCards`'s `tier` field.
  */
 function experimentalSubtypeRegexes(s: string): RegExp[] {
@@ -168,12 +168,12 @@ function revealsSubtypeChoice(effect: string, s: string): boolean {
 /**
  * Which of the given real subtype strings this card's own effect text sacrifices, requires
  * controlling, banishes from a zone, or (experimental tier) reveals/discards/returns from the
- * discard pile — e.g. "sacrifice a Chessman ally" or "control a Beast ally". Deliberately checked
- * against `subtypes` (Chessman, Automaton, Specter, Beast, Elysian, VelTech, ...) — real
- * tribal/flavor categories — never against the 5 broad `types` values (ALLY/ITEM/WEAPON/ACTION/...),
+ * discard pile – e.g. "sacrifice a Chessman ally" or "control a Beast ally". Deliberately checked
+ * against `subtypes` (Chessman, Automaton, Specter, Beast, Elysian, VelTech, ...) – real
+ * tribal/flavor categories – never against the 5 broad `types` values (ALLY/ITEM/WEAPON/ACTION/...),
  * which are exactly the generic sacrifice-cost words ("sacrifice an ally") that would turn this
  * into noise instead of a real designed relationship. Validated wins when both tiers would match
- * the same subtype (expected overlap, not a conflict) — the map's value is the *most trusted* tier
+ * the same subtype (expected overlap, not a conflict) – the map's value is the *most trusted* tier
  * that fired.
  */
 export function extractConsumedSubtypes(card: Card, knownSubtypes: ReadonlySet<string>): Map<string, IntentTier> {
@@ -191,7 +191,7 @@ export function extractConsumedSubtypes(card: Card, knownSubtypes: ReadonlySet<s
 }
 
 /**
- * Minimum length for a card name to count as a rules-text mention of another card — mirrors the
+ * Minimum length for a card name to count as a rules-text mention of another card – mirrors the
  * gate `namedRulesTextSeeds` uses pipeline-side for the equivalent package-candidate signal.
  * Verified against the real 2,495-card corpus: below 7 characters, short names start producing
  * coincidental substring hits rather than real designed references.
@@ -200,10 +200,10 @@ const NAME_MENTION_MIN_LENGTH = 7;
 
 /**
  * Does `text` literally contain `name` (case-insensitive)? An explicit proper-noun mention is as
- * unambiguous a designed relationship as text gets — verified against the real corpus this catches
+ * unambiguous a designed relationship as text gets – verified against the real corpus this catches
  * genuine cross-card references (e.g. "Incarnate Majesty" naming "The Majestic Spirit", "Scry the
  * Stars" naming "Scry the Skies") with no false positives once TOKEN-type mentions are excluded by
- * the caller (see `intentCards` — those duplicate the Summon/sacrifice token track instead of
+ * the caller (see `intentCards` – those duplicate the Summon/sacrifice token track instead of
  * adding new information).
  */
 function mentionsCardName(text: string, name: string): boolean {
@@ -213,7 +213,7 @@ function mentionsCardName(text: string, name: string): boolean {
 const EMPOWER_GRANT_RE = /\*\*Empower\b/;
 
 /**
- * "Deal ... LV ... damage" within one sentence — LV is Grand Archive's own reminder-text shorthand
+ * "Deal ... LV ... damage" within one sentence – LV is Grand Archive's own reminder-text shorthand
  * for "your champion's level" (e.g. "Deal **LV** damage to target unit", "Deal 1+**LV** damage").
  * Bounded gaps (not `[^.]*` unbounded), same reasoning as `BANISH_FROM_GAP` above: without a bound,
  * this could credit an unrelated damage clause elsewhere in the same sentence with an LV reference
@@ -222,14 +222,14 @@ const EMPOWER_GRANT_RE = /\*\*Empower\b/;
  */
 const DEAL_LV_DAMAGE_RE = /\bdeal(?:s|t)?\b[^.]{0,40}\bLV\b[^.]{0,20}\bdamage\b/i;
 
-/** Does this card grant the Empower keyword (any magnitude — N, X, or N+X)? The producer side of the Empower/level-scaled-Spell relationship below. */
+/** Does this card grant the Empower keyword (any magnitude – N, X, or N+X)? The producer side of the Empower/level-scaled-Spell relationship below. */
 export function extractsEmpowerGrant(card: Card): boolean {
   return EMPOWER_GRANT_RE.test(card.effect ?? "");
 }
 
 /**
  * Is this a Spell whose own damage scales off LV (your champion's level)? Empower's grant only
- * applies to "the next Spell card you activate this turn" — verified against the real corpus that
+ * applies to "the next Spell card you activate this turn" – verified against the real corpus that
  * a few non-Spell cards (two Potions, one Skill) also deal LV-scaled damage but are deliberately
  * excluded here, since Empower structurally can't apply to them.
  */
@@ -243,29 +243,29 @@ export interface IntentMatch {
   /** "validated" = one of the original sacrifice/control/banish-from (subtypes) or Summon/sacrifice
    * (tokens) triggers, checked against the real card corpus before shipping. "experimental" = a
    * broader reveal/discard/return-from-discard-pile trigger that hasn't had that same corpus check
-   * and carries a higher false-positive risk — shown separately, opt-in, never blended silently
+   * and carries a higher false-positive risk – shown separately, opt-in, never blended silently
    * into the trusted default. */
   tier: IntentTier;
 }
 
 export interface IntentCards {
-  /** Other cards whose consumed set overlaps something THIS card produces — cards this card feeds. */
+  /** Other cards whose consumed set overlaps something THIS card produces – cards this card feeds. */
   feeds: IntentMatch[];
-  /** Other cards whose produced set overlaps something THIS card consumes — cards that power this one. */
+  /** Other cards whose produced set overlaps something THIS card consumes – cards that power this one. */
   poweredBy: IntentMatch[];
 }
 
 /**
- * Cards designed to work together, from explicit text patterns — not near-identical siblings
+ * Cards designed to work together, from explicit text patterns – not near-identical siblings
  * (that's "Same Effect Shape") and not empirical co-play win-rate (that's the Synergy tab). Three
  * tracks: named token economies, tribal/subtype categories, and Empower/level-scaled-Spell-damage
  * (see `extractsEmpowerGrant`/`benefitsFromEmpower` above).
  * See docs/CALCULATIONS.md's "Intent cards" section for the real-corpus validation behind the
  * subtypes-not-types filtering choice, and for what distinguishes the "validated" and
- * "experimental" tiers each `IntentMatch` carries. Always computes both tiers (cheap — regex
+ * "experimental" tiers each `IntentMatch` carries. Always computes both tiers (cheap – regex
  * checks, no extra data) and leaves it to the caller (`useIntentCards`/`CardDetail.tsx`) to decide
  * whether to show experimental-tier matches; this function itself never drops or hides one.
- * Empty results are the normal case — most cards aren't part of a named token or tribal economy.
+ * Empty results are the normal case – most cards aren't part of a named token or tribal economy.
  */
 export function intentCards(card: Card, catalog: Card[]): IntentCards {
   const knownSubtypes = new Set<string>();
@@ -294,7 +294,7 @@ export function intentCards(card: Card, catalog: Card[]): IntentCards {
   const namedRefPoweredBy = new Set<string>();
 
   // Official API cross-references, when the upstream catalog has curated them (`card.references`/
-  // `referenced_by`) — the strongest possible signal, since it isn't inferred from text at all.
+  // `referenced_by`) – the strongest possible signal, since it isn't inferred from text at all.
   // Sparse today (most real named relationships aren't curated yet), so this is additive to, not a
   // replacement for, the rules-text scan below.
   for (const ref of card.references ?? []) {
@@ -332,7 +332,7 @@ export function intentCards(card: Card, catalog: Card[]): IntentCards {
     }
     // Extended past `other`'s own printed subtypes to cover a card whose only tie to this tribe is
     // summoning a token of it (e.g. Cryogenic Ritual "powers" a Fractal-sacrifice card by summoning
-    // a Core Fractal token, despite never carrying the FRACTAL subtype itself) — see
+    // a Core Fractal token, despite never carrying the FRACTAL subtype itself) – see
     // `extractProducedSubtypes`'s own doc comment.
     const otherProducedSubtypes = extractProducedSubtypes(other, tokenSubtypes);
     for (const [s, tier] of myConsumedSubtypes) {
@@ -340,7 +340,7 @@ export function intentCards(card: Card, catalog: Card[]): IntentCards {
     }
     if (myBenefitsFromEmpower && extractsEmpowerGrant(other)) poweredBy.push({ card: other, via: "Empower", tier: "validated" });
 
-    // Named card references in rules text (e.g. "if you control Lacunarity Guide") — the only one
+    // Named card references in rules text (e.g. "if you control Lacunarity Guide") – the only one
     // of these four tracks that can surface a relationship for a card with no deck history yet
     // (a just-released set), since it needs nothing but the card's own printed text. Token-type
     // mentions are skipped: they're already covered by the Summon/sacrifice token track above and

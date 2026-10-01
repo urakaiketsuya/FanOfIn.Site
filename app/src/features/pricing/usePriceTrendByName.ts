@@ -5,7 +5,7 @@ import { usePriceHistoryData } from "./usePriceHistory";
 export interface PriceTrendEntry {
   /** Fractional change (0.08 = +8%) between the earliest and latest point in the trailing window. */
   pctChange: number;
-  /** How many published snapshots the comparison spans — fewer than the full window near a card's first appearance. */
+  /** How many published snapshots the comparison spans – fewer than the full window near a card's first appearance. */
   points: number;
 }
 
@@ -15,7 +15,7 @@ const TREND_WINDOW_POINTS = 4;
 
 /**
  * Recent price trend per card name, using the same "cheapest available printing" edition choice
- * as useDeckPriceByName — so a card's trend badge lines up with whichever price is shown next to
+ * as useDeckPriceByName – so a card's trend badge lines up with whichever price is shown next to
  * it. Omits a card with fewer than 2 published snapshots for that edition.
  */
 export function usePriceTrendByName(enabled = true): Map<string, PriceTrendEntry> {

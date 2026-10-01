@@ -14,16 +14,16 @@ function bestIndex(values: (number | null)[]): number {
   const real = values.filter((v): v is number => v !== null);
   if (real.length < 2) return -1;
   const max = Math.max(...real);
-  if (real.filter((v) => v === max).length > 1) return -1; // tied — nothing to highlight
+  if (real.filter((v) => v === max).length > 1) return -1; // tied – nothing to highlight
   return values.indexOf(max);
 }
 
-/** Index of the lowest value in `values` — same tie/insufficient-data rules as `bestIndex`, for stats where less is better (price). */
+/** Index of the lowest value in `values` – same tie/insufficient-data rules as `bestIndex`, for stats where less is better (price). */
 function lowestIndex(values: (number | null)[]): number {
   const real = values.filter((v): v is number => v !== null);
   if (real.length < 2) return -1;
   const min = Math.min(...real);
-  if (real.filter((v) => v === min).length > 1) return -1; // tied — nothing to highlight
+  if (real.filter((v) => v === min).length > 1) return -1; // tied – nothing to highlight
   return values.indexOf(min);
 }
 
@@ -78,7 +78,7 @@ export default function ComparisonGrid({
                       <button
                         type="button"
                         onClick={() => handleExportTts(d)}
-                        title="Downloads a .json file — in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it"
+                        title="Downloads a .json file – in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it"
                         className="rounded border border-ctp-surface1 px-2 py-1 text-xs font-normal text-ctp-subtext1 hover:text-ctp-text"
                       >
                         TTS
@@ -106,7 +106,7 @@ export default function ComparisonGrid({
             </td>
             {deckStats.map((s, i) => (
               <td key={s.key} className={`py-1.5 pr-6 ${i === bestWinRateIndex ? "text-ctp-blue" : "text-ctp-subtext1"}`}>
-                {s.winRate !== null ? `${(s.winRate * 100).toFixed(0)}%` : "—"}
+                {s.winRate !== null ? `${(s.winRate * 100).toFixed(0)}%` : "–"}
               </td>
             ))}
           </tr>
@@ -117,7 +117,7 @@ export default function ComparisonGrid({
             </td>
             {deckStats.map((s, i) => (
               <td key={s.key} className={`py-1.5 pr-6 ${i === bestPriceIndex ? "text-ctp-blue" : "text-ctp-subtext1"}`}>
-                {s.price > 0 ? formatUsd(s.price) : "—"}
+                {s.price > 0 ? formatUsd(s.price) : "–"}
               </td>
             ))}
           </tr>
@@ -128,7 +128,7 @@ export default function ComparisonGrid({
             </td>
             {deckStats.map((s) => (
               <td key={s.key} className="py-1.5 pr-6 text-ctp-subtext1">
-                {s.championName ?? "—"}
+                {s.championName ?? "–"}
                 {(s.classes.length > 0 || s.elements.length > 0) && (
                   <div className="text-xs text-ctp-subtext0">
                     {[s.classes.join("/"), s.elements.join("/")].filter(Boolean).join(" · ")}
@@ -188,7 +188,7 @@ export default function ComparisonGrid({
                                 q === 0 ? "text-ctp-surface1" : isCore ? "text-ctp-green" : isUnique ? "text-ctp-yellow" : "text-ctp-text"
                               }`}
                             >
-                              {q === 0 ? "—" : `${q}x`}
+                              {q === 0 ? "–" : `${q}x`}
                             </td>
                           ))}
                         </tr>

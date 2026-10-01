@@ -18,8 +18,8 @@ export default function TimelineDetail() {
   const [tab, setTab] = useTabParam("tab", ALL_DETAIL_TABS, "timeline");
 
   useDocumentTitle(
-    match ? `${match.event} — ${match.round}` : "Match Timeline",
-    "Experimental — reconstructed from broadcast VOD commentary.",
+    match ? `${match.event} – ${match.round}` : "Match Timeline",
+    "Experimental – reconstructed from broadcast VOD commentary.",
   );
 
   const tabs: { key: DetailTab; label: string }[] = [{ key: "timeline", label: "Timeline" }];

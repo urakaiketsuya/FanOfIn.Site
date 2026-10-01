@@ -75,7 +75,7 @@ export default function ArchetypeHurtYouView({ taxonomy }: { taxonomy: Archetype
   return (
     <>
       <p className="mt-3 text-xs text-ctp-subtext0">
-        Opponent cards that correlate with beating a build, from real pairing outcomes — the same "Cards that hurt
+        Opponent cards that correlate with beating a build, from real pairing outcomes – the same "Cards that hurt
         you" numbers shown per-matchup on a build's own Card Impact tab, gathered here across every matchup at once.
         Each row is scoped to its own matchup's population, so lifts aren't comparable across different opponents.{" "}
         <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link>

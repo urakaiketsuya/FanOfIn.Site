@@ -28,7 +28,7 @@ export interface SeasonMeta {
 
 /**
  * Pivots two already-published, already-season-broken-out datasets (champion-trends.json,
- * archetype-taxonomy.json — both power existing per-Champion/per-build "By Season" views) into a
+ * archetype-taxonomy.json – both power existing per-Champion/per-build "By Season" views) into a
  * per-season view instead: "what was the meta in this season," not "how did this Champion trend
  * across seasons." Pure client-side query, no new pipeline data.
  */

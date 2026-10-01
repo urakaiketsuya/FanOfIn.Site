@@ -4,7 +4,7 @@ import CardHoverPreview from "../../components/CardHoverPreview";
 import CardImage from "../../components/CardImage";
 import ElementIcon from "../../components/ElementIcon";
 
-/** A card name as called by casters may not exactly match the card DB (ASR errors, shorthand) —
+/** A card name as called by casters may not exactly match the card DB (ASR errors, shorthand) –
  * anything that doesn't resolve via useCardsByMentions falls back to a plain text badge rather than
  * being dropped, so an unmatched name is still visible (just not linked/thumbnailed). */
 export default function CardMentions({ names, cardsByName }: { names: string[]; cardsByName: Map<string, Card> }) {

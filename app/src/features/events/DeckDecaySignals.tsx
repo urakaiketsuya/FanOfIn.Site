@@ -11,11 +11,11 @@ import Section from "../../components/ui/Section";
 
 /**
  * "Potential meta gaps" (the Guided Deck Builder's Stats tab decay report, `computeCardDecay`)
- * filtered down to just this decklist's own cards — this Champion's whole population trending
+ * filtered down to just this decklist's own cards – this Champion's whole population trending
  * away from a card this list still runs, with its own same-effect-shape "possibly replaced by"
  * pairing where one exists. The signal is population-wide (same for every deck of this Champion,
  * not specific to this one list), and decoding that population (`useDeckBuilderPopulation`) is a
- * real cost — the same class of client-side decode `useChampionCardImpact` pays, so running both
+ * real cost – the same class of client-side decode `useChampionCardImpact` pays, so running both
  * on one page roughly doubles it. Callers should render this only on a dedicated single-deck page
  * (currently `DeckDetail.tsx` and `UserDecklistPanel.tsx`), not on list-of-many-decklists rows.
  */
@@ -43,7 +43,7 @@ export default function DeckDecaySignals({ decklist, cardsByName }: { decklist: 
       <Section
         heading="dense"
         title="Potential meta gaps"
-        description={`Cards in this list whose adoption among other ${championName} decks fell over the last ${report!.recentDeckCount} decks vs. the ${report!.priorDeckCount} before that — a lead to investigate, not proof the card is underplayed.`}
+        description={`Cards in this list whose adoption among other ${championName} decks fell over the last ${report!.recentDeckCount} decks vs. the ${report!.priorDeckCount} before that – a lead to investigate, not proof the card is underplayed.`}
       >
       <ul className="mt-2 space-y-2">
         {signals.map((signal) => {
@@ -80,7 +80,7 @@ export default function DeckDecaySignals({ decklist, cardsByName }: { decklist: 
                   ) : (
                     <span className="text-ctp-text">{signal.replacement.cardName}</span>
                   )}{" "}
-                  (+{(signal.replacement.rise * 100).toFixed(0)}pp) — not proof of a swap.
+                  (+{(signal.replacement.rise * 100).toFixed(0)}pp) – not proof of a swap.
                 </p>
               )}
             </li>

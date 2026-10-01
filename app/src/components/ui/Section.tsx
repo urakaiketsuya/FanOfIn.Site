@@ -4,9 +4,9 @@ import type { ElementType, HTMLAttributes, ReactNode } from "react";
 type SectionHeading = "default" | "compact" | "dense";
 
 /** "compact" (text-sm title) and "dense" (text-xs title) are both real, independently-established
- * conventions in the app — not one right size and one mistake. "compact" matches page-level
+ * conventions in the app – not one right size and one mistake. "compact" matches page-level
  * subsections (e.g. Champions' "Named Spirits", Champion Detail's tab headers); "dense" matches
- * smaller nested widget headers (e.g. Guided Deck Builder panels) — dense headers are ~1.7x more
+ * smaller nested widget headers (e.g. Guided Deck Builder panels) – dense headers are ~1.7x more
  * common app-wide, so don't assume compact is the default "small heading" choice. */
 const TITLE_CLASS: Record<SectionHeading, string> = {
   default: "text-lg font-semibold text-ctp-text",
@@ -39,16 +39,16 @@ export default function Section({
   actions?: ReactNode;
   heading?: SectionHeading;
   /** Renders the header as a native `<details>/<summary>` disclosure so `children` can be
-   * collapsed. Header markup (title/description/actions) is unchanged — every existing
+   * collapsed. Header markup (title/description/actions) is unchanged – every existing
    * non-collapsible call site is unaffected. */
   collapsible?: boolean;
-  /** Only read on mount (native `<details open>` is uncontrolled) — irrelevant when `collapsible` is false. */
+  /** Only read on mount (native `<details open>` is uncontrolled) – irrelevant when `collapsible` is false. */
   defaultOpen?: boolean;
   /** Fires the first (and every) time this section is expanded. `collapsible` alone only hides
-   * `children` visually — React still renders/computes them while closed. Pair this with lazily
+   * `children` visually – React still renders/computes them while closed. Pair this with lazily
    * mounting expensive `children` (render `null` until `onOpen` has fired once) for a section
    * whose data nothing outside it depends on, so that data isn't computed until actually viewed.
-   * Only fires on a user-driven open — it does not fire for `defaultOpen`'s initial state, so a
+   * Only fires on a user-driven open – it does not fire for `defaultOpen`'s initial state, so a
    * lazy consumer should only combine this with `defaultOpen={false}` (initialize its own "has
    * this opened" state to match `defaultOpen` otherwise). */
   onOpen?: () => void;

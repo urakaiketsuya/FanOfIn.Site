@@ -4,7 +4,7 @@ type PanelTone = "default" | "info" | "success" | "warning" | "danger";
 type PanelPadding = "none" | "sm" | "md" | "lg";
 /** 0 = flat (unchanged default). 1-2 raise the panel: for the neutral "default" tone this steps one
  * rung up Catppuccin's own surface ladder (mantle -> surface0 -> surface1) rather than introducing a
- * separate gray, since Material's dark-theme guidance calls for tonal lightening over pure shadow —
+ * separate gray, since Material's dark-theme guidance calls for tonal lightening over pure shadow –
  * shadows barely read against a dark base on their own. Colored tones keep their own tint at every
  * level (shadow only) since they already read as distinct from the page via color. */
 type PanelElevation = 0 | 1 | 2;

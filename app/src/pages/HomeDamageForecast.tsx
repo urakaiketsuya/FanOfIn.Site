@@ -25,7 +25,7 @@ export default function HomeDamageForecast() {
       <div className="mx-auto max-w-5xl">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ctp-blue">Printed direct-damage access</p>
         <h3 id="home-damage-heading" className="mt-3 text-xl font-bold text-ctp-text sm:text-2xl">How much printed damage might you find?</h3>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ctp-subtext1 sm:text-base">This Water Diao Chan list has four Burst Asunders and 18 Fractal cards. The forecast measures access to their printed damage—not damage guaranteed to resolve.</p>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ctp-subtext1 sm:text-base">This Water Diao Chan list has four Burst Asunders and 18 Fractal cards. The forecast measures access to their printed damage–not damage guaranteed to resolve.</p>
 
         <div className="mt-6 grid gap-6 rounded-2xl bg-ctp-mantle p-5 sm:grid-cols-[120px_minmax(0,1fr)] sm:p-7 sm:gap-8">
           <Link to="/decks/8qjzzs?tab=performance" className="hidden h-fit w-fit rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue sm:block" aria-label="Open the Water Diao Chan deck analysis">

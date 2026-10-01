@@ -14,13 +14,13 @@ interface DecklistDisplayPrefs {
   diaoScore: boolean;
   winRate: boolean;
   visualCardSize: VisualCardSize;
-  /** Per-card fields under a card's image in Visual mode — same idea as the Guided Deck Builder's Customize panel, just for a plain finished decklist rather than a suggestion-model one. */
+  /** Per-card fields under a card's image in Visual mode – same idea as the Guided Deck Builder's Customize panel, just for a plain finished decklist rather than a suggestion-model one. */
   visualCost: boolean;
   visualPrice: boolean;
   visualPriceTrend: boolean;
   visualTags: boolean;
   visualSimulator: boolean;
-  /** The one Visual-mode field with a real fetch cost (~1MB community-inclusion dataset) — resolved Champion-scoped, same data DeckBuilderIndex.tsx already uses for its own Community usage badges. */
+  /** The one Visual-mode field with a real fetch cost (~1MB community-inclusion dataset) – resolved Champion-scoped, same data DeckBuilderIndex.tsx already uses for its own Community usage badges. */
   visualCommunity: boolean;
 }
 
@@ -81,12 +81,12 @@ function setPrefs(next: DecklistDisplayPrefs) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
   } catch {
-    /* private mode / quota exceeded — preference just won't persist */
+    /* private mode / quota exceeded – preference just won't persist */
   }
   listeners.forEach((listener) => listener(next));
 }
 
-/** Per-browser (not per-account) preferences for the optional sections on decklist pages —
+/** Per-browser (not per-account) preferences for the optional sections on decklist pages –
  * evidence panels (DeckTuningEvidence, DeckDecaySignals) plus the DIAO score and per-sighting win
  * rate sections in DecklistView. Layout and pricing are also managed from the decklist toolbar;
  * evidence preferences remain on `/settings`. Several are

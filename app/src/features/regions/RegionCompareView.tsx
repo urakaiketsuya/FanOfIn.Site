@@ -101,7 +101,7 @@ function joinChampions(
   return Array.from(byName.values()).sort((a, b) => Math.abs(b.shareA - b.shareB) - Math.abs(a.shareA - a.shareB));
 }
 
-/** Diffs two already region-vs-global-shrunk rate lists directly against each other — see the `allEntries` doc comment on RegionalCardComposition/RegionalKeywords for why this needs the uncapped list, not the over/under-vs-global lists the single-region view uses. */
+/** Diffs two already region-vs-global-shrunk rate lists directly against each other – see the `allEntries` doc comment on RegionalCardComposition/RegionalKeywords for why this needs the uncapped list, not the over/under-vs-global lists the single-region view uses. */
 function diffRates<T extends { regionRate: number; deckCountInRegion: number; avgWinRate: number; marketPrice?: number | null }>(
   entriesA: (T & { cardName?: string; keyword?: string })[],
   entriesB: (T & { cardName?: string; keyword?: string })[],
@@ -282,10 +282,10 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
                               {r.championName}
                             </Link>
                           </td>
-                          <td className="py-1.5 pr-6 text-ctp-subtext1">{r.deckCountA > 0 ? `${(r.shareA * 100).toFixed(1)}%` : "—"}</td>
-                          <td className="py-1.5 pr-6 text-ctp-subtext1">{r.deckCountA > 0 ? `${(r.winRateA * 100).toFixed(0)}%` : "—"}</td>
-                          <td className="py-1.5 pr-6 text-ctp-subtext1">{r.deckCountB > 0 ? `${(r.shareB * 100).toFixed(1)}%` : "—"}</td>
-                          <td className="py-1.5 text-ctp-subtext1">{r.deckCountB > 0 ? `${(r.winRateB * 100).toFixed(0)}%` : "—"}</td>
+                          <td className="py-1.5 pr-6 text-ctp-subtext1">{r.deckCountA > 0 ? `${(r.shareA * 100).toFixed(1)}%` : "–"}</td>
+                          <td className="py-1.5 pr-6 text-ctp-subtext1">{r.deckCountA > 0 ? `${(r.winRateA * 100).toFixed(0)}%` : "–"}</td>
+                          <td className="py-1.5 pr-6 text-ctp-subtext1">{r.deckCountB > 0 ? `${(r.shareB * 100).toFixed(1)}%` : "–"}</td>
+                          <td className="py-1.5 text-ctp-subtext1">{r.deckCountB > 0 ? `${(r.winRateB * 100).toFixed(0)}%` : "–"}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -322,10 +322,10 @@ export default function RegionCompareView({ options, regionByDeckId }: { options
                               {r.championName}
                             </Link>
                           </td>
-                          <td className="py-1.5 pr-6 text-ctp-subtext1">{r.deckCountA > 0 ? `${(r.shareA * 100).toFixed(1)}%` : "—"}</td>
-                          <td className="py-1.5 pr-6 text-ctp-subtext1">{r.deckCountA > 0 ? `${(r.winRateA * 100).toFixed(0)}%` : "—"}</td>
-                          <td className="py-1.5 pr-6 text-ctp-subtext1">{r.deckCountB > 0 ? `${(r.shareB * 100).toFixed(1)}%` : "—"}</td>
-                          <td className="py-1.5 text-ctp-subtext1">{r.deckCountB > 0 ? `${(r.winRateB * 100).toFixed(0)}%` : "—"}</td>
+                          <td className="py-1.5 pr-6 text-ctp-subtext1">{r.deckCountA > 0 ? `${(r.shareA * 100).toFixed(1)}%` : "–"}</td>
+                          <td className="py-1.5 pr-6 text-ctp-subtext1">{r.deckCountA > 0 ? `${(r.winRateA * 100).toFixed(0)}%` : "–"}</td>
+                          <td className="py-1.5 pr-6 text-ctp-subtext1">{r.deckCountB > 0 ? `${(r.shareB * 100).toFixed(1)}%` : "–"}</td>
+                          <td className="py-1.5 text-ctp-subtext1">{r.deckCountB > 0 ? `${(r.winRateB * 100).toFixed(0)}%` : "–"}</td>
                         </tr>
                       ))}
                     </tbody>

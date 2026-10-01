@@ -23,11 +23,11 @@ export function inferStartingHandSize(materialLines: { name: string }[], cardsBy
   return DEFAULT_STARTING_HAND_SIZE;
 }
 
-/** How far ahead this ever bothers projecting — well past any real game's relevant turn range. */
+/** How far ahead this ever bothers projecting – well past any real game's relevant turn range. */
 const MAX_TURN = 20;
 
 /**
- * A champion's own printed level, materializing normally, advances by exactly one per turn —
+ * A champion's own printed level, materializing normally, advances by exactly one per turn –
  * verified against the official comprehensive rules (rules.gatcg.com, "Leveling Up" and
  * "Materialize Phase" sections): leveling happens "as a result of materializing a champion card
  * during the materialize phase," only a Champion/Regalia can be materialized that way, and "the
@@ -41,11 +41,11 @@ export function naturalLevelByTurn(turn: number): number {
 
 /**
  * Earliest turn a champion could reach `requiredLevel`, given a set of turns on which a "level up
- * your champion" accelerant becomes usable (see `isSimpleLevelUpAccelerant`) — each one, fired as
+ * your champion" accelerant becomes usable (see `isSimpleLevelUpAccelerant`) – each one, fired as
  * early as possible, adds one level beyond the natural one-per-turn pace starting the turn it's
  * used. Assumes the deck actually has a champion print at every level up to `requiredLevel` to
  * materialize into (true for essentially every real deck, but not enforced here) and that every
- * listed accelerant is actually drawn — a real assumption, not a guarantee, same as this whole
+ * listed accelerant is actually drawn – a real assumption, not a guarantee, same as this whole
  * calculator.
  */
 export function earliestLevelTurn(requiredLevel: number, accelerantAvailableTurns: number[] = []): number {
@@ -59,8 +59,8 @@ export function earliestLevelTurn(requiredLevel: number, accelerantAvailableTurn
 
 /**
  * Heuristic ceiling on hand size by a given turn: starting hand plus one drawn card per turn
- * (Draw Phase draws exactly one card — rules.gatcg.com's Draw Phase page), ignoring anything
- * already spent that turn on other costs. A real upper bound, not a promise — the actual hand at
+ * (Draw Phase draws exactly one card – rules.gatcg.com's Draw Phase page), ignoring anything
+ * already spent that turn on other costs. A real upper bound, not a promise – the actual hand at
  * any specific moment in a real game is usually smaller once other plays are accounted for.
  */
 export function naturalCardsSeenByTurn(turn: number, startingHandSize: number, playOrder: PlayOrder = "first"): number {
@@ -73,12 +73,12 @@ function handSizeCeiling(turn: number, startingHandSize: number, playOrder: Play
 }
 
 /**
- * Earliest turn a Reserve cost of `reserveCost` could plausibly be paid — the first turn the hand
+ * Earliest turn a Reserve cost of `reserveCost` could plausibly be paid – the first turn the hand
  * -size ceiling above reaches it. Reserve costs are paid by moving that many cards from hand into
- * memory (rules.gatcg.com's "Costs and Memory" page) — a real, immediate resource question, unlike
+ * memory (rules.gatcg.com's "Costs and Memory" page) – a real, immediate resource question, unlike
  * a Memory cost (see this module's own doc comment on `isSimpleLevelUpAccelerant` for why that one
  * isn't modeled the same way). Ordinary Main Deck cards are never gated by a Memory cost of their
- * own in this game's card pool — every real playable card's own activation cost is Reserve (or
+ * own in this game's card pool – every real playable card's own activation cost is Reserve (or
  * free); `cost_memory` only ever appears on Champion/Regalia prints, always equal to that print's
  * own level, which is a Materialize Phase turn-based action rather than a paid activation cost.
  */
@@ -91,14 +91,14 @@ export function earliestReserveCostTurn(reserveCost: number | null, startingHand
 const LEVEL_UP_RE = /\blevel up your champion\b/i;
 /**
  * Excludes "level up your champion" cards whose own trigger needs something built up over
- * multiple turns or outside the player's own resources — counters accumulated over time (Radiant
+ * multiple turns or outside the player's own resources – counters accumulated over time (Radiant
  * Origin of Cleric/Mage/..., Discover the Divine's enlighten counters), cards already banished to
  * a graveyard (Fireblooded Oath), or a condition about the opponent's board/lineage (Heavenly
- * Guide, Eminence in Fury's "only if" trigger) — verified against every real "level up your
+ * Guide, Eminence in Fury's "only if" trigger) – verified against every real "level up your
  * champion" card in the corpus (`pipeline/.cache/cards.json`): this excludes exactly the ones with
  * a real multi-turn or external dependency, and keeps the genuinely self-contained ones (Dungeon
  * Guide, Flagrant Guide, Discover the... no: Discover the Divine is excluded via "counters").
- * Not modeled at all for the excluded set — they're surfaced but left for the viewer to reason
+ * Not modeled at all for the excluded set – they're surfaced but left for the viewer to reason
  * about by hand, rather than guessing a turn number for a condition this calculator can't verify.
  */
 const NOT_SIMPLE_RE = /\bcounters?\b|graveyard|\bonly if\b|opponent controls|lineage/i;
@@ -116,7 +116,7 @@ export interface TurnToPlayResult {
   /** Earliest turn the required champion level could plausibly be reached. Same as `costTurn`'s
    * turn 1 when no level is required. */
   levelTurn: number;
-  /** The later of the two — the earliest turn this card could reasonably be played at all. */
+  /** The later of the two – the earliest turn this card could reasonably be played at all. */
   earliestTurn: number;
 }
 

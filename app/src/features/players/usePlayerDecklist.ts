@@ -8,7 +8,7 @@ interface PlayerDecklistState {
   error: string | null;
 }
 
-/** Fetches a single player's decklist for one event, only once `enabled` (lazy — avoids fetching for every event on a profile page). */
+/** Fetches a single player's decklist for one event, only once `enabled` (lazy – avoids fetching for every event on a profile page). */
 export function usePlayerDecklist(eventId: number, playerId: number, enabled: boolean): PlayerDecklistState {
   const [state, setState] = useState<PlayerDecklistState>({ loading: false, decklist: null, error: null });
 

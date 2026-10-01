@@ -17,7 +17,7 @@ export interface CardDecaySignal {
   deckCount: number;
   adjustedWinRate: number;
   /** A same-effect-shape sibling (see cardSimilarity.ts's similarCards) whose own inclusion rate
-   * rose over the same two windows — a candidate for "this is probably what replaced it," not a
+   * rose over the same two windows – a candidate for "this is probably what replaced it," not a
    * claim (two cards' adoption can move together for unrelated reasons, e.g. a whole archetype
    * rotating out). Null when no sibling exists or none of them rose. */
   replacement: CardDecayReplacement | null;
@@ -100,7 +100,7 @@ export function computeCardDecay(rows: DeckBuilderRow[], spiritName: string | nu
   });
 
   // For each shown decay signal, look for a same-effect-shape sibling (cardSimilarity.ts) whose
-  // own inclusion rate rose over the same two windows — the best-rising sibling becomes the
+  // own inclusion rate rose over the same two windows – the best-rising sibling becomes the
   // "possibly replaced by" suggestion. Only run against the top 6 (not every candidate signal)
   // since similarCards scans the whole catalog per call.
   const RISE_THRESHOLD = 0.05;

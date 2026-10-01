@@ -40,7 +40,7 @@ export default function SettingsIndex() {
         <div className="grid gap-2 sm:grid-cols-2">
           <ToggleRow
             label="Win rate"
-            description="This specific decklist's own match record from the event it was played at, where available. Only shows on tournament decklists — there's no meaningful win rate for a decklist that's never been played in a tracked event."
+            description="This specific decklist's own match record from the event it was played at, where available. Only shows on tournament decklists – there's no meaningful win rate for a decklist that's never been played in a tracked event."
             checked={prefs.winRate}
             onChange={prefs.setWinRate}
           />
@@ -75,7 +75,7 @@ export default function SettingsIndex() {
           <ToggleRow label="Price" description="Cheapest current market price for this card." checked={prefs.visualPrice} onChange={prefs.setVisualPrice} />
           <ToggleRow label="Price trend" description="Recent change in that price, from the last ~30 days of published history." checked={prefs.visualPriceTrend} onChange={prefs.setVisualPriceTrend} />
           <ToggleRow label="Element/class tags" description="Small badges on the card art itself." checked={prefs.visualTags} onChange={prefs.setVisualTags} />
-          <ToggleRow label="Simulator games" description="Anonymous Clarent simulator telemetry, where enough games exist — experimental, see /methodology." checked={prefs.visualSimulator} onChange={prefs.setVisualSimulator} />
+          <ToggleRow label="Simulator games" description="Anonymous Clarent simulator telemetry, where enough games exist – experimental, see /methodology." checked={prefs.visualSimulator} onChange={prefs.setVisualSimulator} />
           <ToggleRow label="Community usage" description="Share of all tracked community decks (any Champion) that include this card. Fetches an extra dataset the first time it's turned on, so it's off by default." checked={prefs.visualCommunity} onChange={prefs.setVisualCommunity} />
         </div>
       </Section>
@@ -84,13 +84,13 @@ export default function SettingsIndex() {
         <div className="grid gap-2 sm:grid-cols-2">
           <ToggleRow
             label="Tuning suggestions"
-            description="Cards that might help, cards worth reviewing, and quantity advice — drawn from tournament data for this decklist's named-build cluster (or its Champion, as a fallback)."
+            description="Cards that might help, cards worth reviewing, and quantity advice – drawn from tournament data for this decklist's named-build cluster (or its Champion, as a fallback)."
             checked={prefs.tuningEvidence}
             onChange={prefs.setTuningEvidence}
           />
           <ToggleRow
             label="Meta gap trends"
-            description="Champion-wide adoption decay — cards in this list whose popularity is falling among other decks of the same Champion. Only appears on pages with a single dedicated decklist (deck pages, your own saved decks)."
+            description="Champion-wide adoption decay – cards in this list whose popularity is falling among other decks of the same Champion. Only appears on pages with a single dedicated decklist (deck pages, your own saved decks)."
             checked={prefs.metaGaps}
             onChange={prefs.setMetaGaps}
           />

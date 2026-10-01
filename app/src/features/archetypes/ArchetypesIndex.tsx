@@ -34,7 +34,7 @@ export interface DisplayRow {
   id: string;
   name: string;
   championName: string;
-  /** Other Champions besides `championName` this build was also played under, if any — e.g. [] for a single-Champion build. Guarded with `?? []` at read sites for a stale IndexedDB copy from before this field shipped. */
+  /** Other Champions besides `championName` this build was also played under, if any – e.g. [] for a single-Champion build. Guarded with `?? []` at read sites for a stale IndexedDB copy from before this field shipped. */
   otherChampions: { championName: string; deckCount: number; playerCount: number }[];
   definingCards: string[];
   playerCount: number;
@@ -71,10 +71,10 @@ export default function ArchetypesIndex() {
     });
   }
 
-  // Every Champion a build was ever played under, not just each cluster's plurality Champion —
+  // Every Champion a build was ever played under, not just each cluster's plurality Champion –
   // otherwise a Champion who only shows up as the minority side of a shared shell (e.g. Merlin in
   // a mostly-Lorraine cluster) would silently disappear from the filter. `?? []` guards a stale
-  // published copy from before this field shipped — same rollout-window issue as `seasons` below.
+  // published copy from before this field shipped – same rollout-window issue as `seasons` below.
   const championsPresent = useMemo(() => {
     if (!data) return [];
     const names = new Set<string>();
@@ -86,7 +86,7 @@ export default function ArchetypesIndex() {
     if (!data) return [];
     const bySeasonId = new Map<number, string>();
     for (const c of data.clusters) {
-      // `seasons` guards against a stale IndexedDB copy from before this field shipped — same
+      // `seasons` guards against a stale IndexedDB copy from before this field shipped – same
       // rollout-window issue as the deck-card-index dictionary encoding.
       for (const s of c.seasons ?? []) bySeasonId.set(s.seasonId, s.seasonName);
     }
@@ -96,7 +96,7 @@ export default function ArchetypesIndex() {
   const rows = useMemo((): DisplayRow[] => {
     if (!data) return [];
     // `?? []` + the `c.championName ===` fallback both guard a stale published copy from before
-    // `championBreakdown` shipped — filtering still works (against the older single-Champion
+    // `championBreakdown` shipped – filtering still works (against the older single-Champion
     // field) rather than throwing on `undefined.some(...)`.
     let filtered = championFilter
       ? data.clusters.filter((c) => c.championName === championFilter || (c.championBreakdown ?? []).some((b) => b.championName === championFilter))
@@ -111,7 +111,7 @@ export default function ArchetypesIndex() {
         (sum, cluster) => sum + (cluster.seasons?.find((season) => season.seasonId === seasonId)?.deckCount ?? 0),
         0,
       );
-      // A build not played at all in the selected season simply isn't shown — same convention as
+      // A build not played at all in the selected season simply isn't shown – same convention as
       // Top Decks' season filter. Stats shown are that season's, not all-time.
       displayRows = filtered
         .map((c) => {
@@ -162,7 +162,7 @@ export default function ArchetypesIndex() {
         case "topCutRate":
           return (b.topCutRate ?? 0) - (a.topCutRate ?? 0);
         case "avgPlacement":
-          // Lower placement is better — nulls (unknown) sort last regardless of direction.
+          // Lower placement is better – nulls (unknown) sort last regardless of direction.
           return (a.avgPlacement ?? Infinity) - (b.avgPlacement ?? Infinity);
         case "avgPrice":
           return (b.avgPrice ?? 0) - (a.avgPrice ?? 0);

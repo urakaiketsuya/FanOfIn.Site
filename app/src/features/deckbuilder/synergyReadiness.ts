@@ -21,7 +21,7 @@ export interface DependencyReadiness {
 }
 
 const BASIC_ELEMENTS = new Set(["NORM", "FIRE", "WATER", "WIND"]);
-// `(\d+|X)` — some real cards (e.g. Cauterizing Seraphim, "**Advanced Imbue X**") use a
+// `(\d+|X)` – some real cards (e.g. Cauterizing Seraphim, "**Advanced Imbue X**") use a
 // player-chosen X instead of a fixed digit; see `magnitudeOf` for how that's handled.
 const ADVANCED_IMBUE_RE = /\*\*Advanced Imbue (\d+|X)\*\*/i;
 const NAMED_IMBUE_RE = /\*\*([A-Za-z]+(?:\s*&\s*[A-Za-z]+)?) Imbue (\d+|X)\*\*/i;
@@ -31,7 +31,7 @@ const CHECKPOINTS = [
   { key: "mid", label: "Mid", seen: 15 }, { key: "late", label: "Late", seen: 20 },
 ] as const;
 const CURVE_MAX_SEEN = 25;
-/** X has no single fixed value — it's chosen by the player when the card is activated. 2 is the
+/** X has no single fixed value – it's chosen by the player when the card is activated. 2 is the
  * representative middle magnitude among this card's own fixed-number siblings (Advanced Imbue
  * 1/2/3 all exist as real cards), used purely to give the probability math something concrete to
  * show rather than dropping the card from the section entirely. */
@@ -41,7 +41,7 @@ function magnitudeOf(raw: string): { required: number; variable: boolean } {
 }
 function variableNote(base: string, variable: boolean, required: number): string {
   return variable
-    ? `X is chosen when you activate this card — shown here assuming X=${required} for illustration, not a fixed requirement. ${base}`
+    ? `X is chosen when you activate this card – shown here assuming X=${required} for illustration, not a fixed requirement. ${base}`
     : base;
 }
 
@@ -121,7 +121,7 @@ function candidates(catalog: Iterable<Card>, lines: SynergyLine[], identity: Rea
 }
 
 export function computeSynergyReadiness(lines: SynergyLine[], cards: Map<string, Card>, catalog: Iterable<Card> = cards.values(), identity: ReadonlySet<string> = new Set(), preferred: readonly string[] = []): SynergyReadiness[] {
-  // Materialized once — `catalog` is frequently a live, single-use Map iterator
+  // Materialized once – `catalog` is frequently a live, single-use Map iterator
   // (`cards.values()`), and `candidates()` below is called once per group in the `.map()` further
   // down. Passing the raw iterable to more than one of those calls silently exhausts it after the
   // first, leaving every later group's `recommendations` empty (a real bug, caught live: a
@@ -166,7 +166,7 @@ export function computeSynergyReadiness(lines: SynergyLine[], cards: Map<string,
 type Group = Omit<DependencyReadiness, "producerCopies" | "consumerCopies" | "deckSize" | "producerCurve" | "status" | "recommendations">;
 export function computeDependencyReadiness(lines: SynergyLine[], cards: Map<string, Card>, catalog: Iterable<Card> = cards.values(), identity: ReadonlySet<string> = new Set(), preferred: readonly string[] = []): DependencyReadiness[] {
   // Materialized once and reused for every `candidates()` call below (see the matching comment in
-  // computeSynergyReadiness) — `catalog` is frequently a live, single-use Map iterator, and this
+  // computeSynergyReadiness) – `catalog` is frequently a live, single-use Map iterator, and this
   // function already needed one full pass over it (for `knownSubtypes`) before any `candidates()`
   // call ever ran, which silently exhausted it before recommendations were ever computed.
   const allCards = Array.from(catalog);
@@ -179,12 +179,12 @@ export function computeDependencyReadiness(lines: SynergyLine[], cards: Map<stri
   for (const line of activeLines) {
     const card = cards.get(line.name); if (!card) continue;
     // A "Summon"/"sacrifice" capture whose name IS a real subtype (e.g. "sacrifice any amount of
-    // Fractals") is a tribal-category reference, not a distinct named token — skip it here so it's
+    // Fractals") is a tribal-category reference, not a distinct named token – skip it here so it's
     // handled once, correctly, by the Subtype track below. Without this, real cards like Burst
     // Asunder ("sacrifice any amount of Fractals") formed a phantom `token:fractal` group with real
     // consumers but zero producers (every producer actually summons "Core Fractal", a different
     // name), which read as "Fractal token economy: Missing support" even in decks running Fractal
-    // cards — the correct, fully-populated Subtype group existed but was masked by the exclusion
+    // cards – the correct, fully-populated Subtype group existed but was masked by the exclusion
     // this replaces (see the removed `consumedTokenNames` check below).
     for (const token of extractConsumedTokens(card)) {
       if (knownSubtypes.has(token)) continue;
@@ -202,7 +202,7 @@ export function computeDependencyReadiness(lines: SynergyLine[], cards: Map<stri
     const subtype = group.key.slice(8);
     // Extended past a card's own printed subtypes to cover a card whose only tie to this tribe is
     // summoning a token of it (e.g. Cryogenic Ritual never carries the FRACTAL subtype itself, but
-    // "Summon a Core Fractal token" puts a real Fractal object into play) — see
+    // "Summon a Core Fractal token" puts a real Fractal object into play) – see
     // `extractProducedSubtypes`'s own doc comment.
     for (const line of activeLines) {
       const card = cards.get(line.name);
@@ -215,7 +215,7 @@ export function computeDependencyReadiness(lines: SynergyLine[], cards: Map<stri
     const materialProducerCopies = group.producers.filter((line) => line.section === "material").reduce((sum, line) => sum + line.quantity, 0);
     const drawableProducerCopies = group.producers.filter((line) => line.section !== "material").reduce((sum, line) => sum + line.quantity, 0);
     const consumerCopies = group.consumers.reduce((sum, line) => sum + line.quantity, 0);
-    // Chance of having drawn at least 1 producer copy by a given number of cards seen — same
+    // Chance of having drawn at least 1 producer copy by a given number of cards seen – same
     // hypergeometric math Synergy readiness uses, just "need >=1" instead of an Imbue-style
     // required count, and framed as sequencing ("have I found a producer yet") rather than a
     // reveal-and-count check.

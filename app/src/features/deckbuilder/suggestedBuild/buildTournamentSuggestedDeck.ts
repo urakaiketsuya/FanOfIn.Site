@@ -31,14 +31,14 @@ import { annotateSuggestions, removalHarmsReadiness } from "./suggestionsAndRemo
 export { computeIdentityElements, findChampionCard, guoJiaFatestoneForIdentity, hasChampionBonus, IDENTITY_STAPLE_PREVALENCE, MIN_IDENTITY_STAPLE_POPULATION, isElementCompatible } from "./identityRules";
 /** How much a card's own `cardPillarScore` (roughly 0-4 for a strong signal) can nudge its position
  * in the ranked list, in the same units as `adjustedLift` (a win-rate delta, typically within
- * ±0.15) — small enough that pillar bias only breaks ties among comparably-performing real cards,
+ * ±0.15) – small enough that pillar bias only breaks ties among comparably-performing real cards,
  * never overrides a clearly better lift with a stylistically-matching but weaker one. */
 const PILLAR_BOOST_WEIGHT = 0.01;
 /** Same reasoning and units as `PILLAR_BOOST_WEIGHT`, for the "balanced" source's community-popularity
- * nudge — `percentOfDecks` is already a 0-1 fraction, so a card run in 100% of blended community decks
+ * nudge – `percentOfDecks` is already a 0-1 fraction, so a card run in 100% of blended community decks
  * gets at most a +0.03 boost, comparable in magnitude to a maxed-out pillar boost. This never touches
  * `adjustedLift` itself (still the real, honest win-rate number shown in the UI), only which
- * comparably-performing real card gets picked first for a limited slot — see docs/CALCULATIONS.md,
+ * comparably-performing real card gets picked first for a limited slot – see docs/CALCULATIONS.md,
  * "Balanced source", for why this doesn't fall into the "fabricating a performance signal" trap the
  * Community source's own doc explicitly warns about. */
 const COMMUNITY_BOOST_WEIGHT = 0.03;
@@ -49,33 +49,33 @@ const ARCHETYPE_BOOST_WEIGHT = 0.03;
 /** Collection preference is intentionally a tie-breaker: ownership can choose between similarly
  * supported cards, but cannot turn a weak or unsupported card into a performance recommendation. */
 const COLLECTION_BOOST_WEIGHT = 0.025;
-/** Same tie-breaking-only philosophy as `COMMUNITY_BOOST_WEIGHT`, but subtracted — for the
+/** Same tie-breaking-only philosophy as `COMMUNITY_BOOST_WEIGHT`, but subtracted – for the
  * "balanced" source's decay penalty. `decay` (from `computeCardDecay`'s already-filtered top
  * signals, `DeckBuilderIndex.tsx`) is a 0-1 inclusion-rate drop, floored at 0.08 by that function's
  * own reporting bar; at 0.08 the penalty here is a barely-there ~0.004, and even a rare extreme
- * ~0.5 decay caps out around 0.025 — comparable to a maxed-out community boost, never enough to
+ * ~0.5 decay caps out around 0.025 – comparable to a maxed-out community boost, never enough to
  * outweigh a real `adjustedLift` gap. A card the decay report flags as declining (despite still
- * winning — that's the report's own bar) gets nudged behind an equally-good, non-declining
+ * winning – that's the report's own bar) gets nudged behind an equally-good, non-declining
  * alternative; it is never excluded or scored below zero-lift cards. */
 const DECAY_PENALTY_WEIGHT = 0.05;
 
-/** Mirrors pipeline/src/config.ts's defaults — see useChampionCardImpact.ts for why these are plain literals here. */
+/** Mirrors pipeline/src/config.ts's defaults – see useChampionCardImpact.ts for why these are plain literals here. */
 const PRIOR_WEIGHT = 10;
 const MIN_SAMPLE_SIZE = 5;
-/** A with/without split needs at least this many rows total before it's worth ranking against — below this, fall back to the broader (lock-unconditioned) population instead of showing nothing. */
+/** A with/without split needs at least this many rows total before it's worth ranking against – below this, fall back to the broader (lock-unconditioned) population instead of showing nothing. */
 const MIN_RANKING_POPULATION = MIN_SAMPLE_SIZE * 2;
 /**
- * Same element does not mean similar deck — real-data-verified: Arisanna's "Spirit of Wind" and
+ * Same element does not mean similar deck – real-data-verified: Arisanna's "Spirit of Wind" and
  * "Fragmented Spirit of Wind" decks score only 0.19 weighted-Jaccard against each other (two nearly
  * unrelated sub-archetypes that happen to share a Champion and element), while Diao Chan's and
  * Merlin's same-element Spirit pairs score 0.72 and 0.65 respectively. Same bar as the Variants tab
- * and the pipeline's own archetype `CLUSTER_THRESHOLD` for "is this really the same build" — the
+ * and the pipeline's own archetype `CLUSTER_THRESHOLD` for "is this really the same build" – the
  * Spirit-element fallback below only uses a broader same-element population when it actually
  * resembles what real data on the exact combo already shows, not just because it shares an element.
  */
-/** How many ranked-but-unplaced cards to surface as "cards that might help" beyond the assembled build — matters most for a fully-locked build (e.g. from a paste), where every Material/Main/Sideboard slot is already spoken for and the ranked pool would otherwise never be shown at all. */
+/** How many ranked-but-unplaced cards to surface as "cards that might help" beyond the assembled build – matters most for a fully-locked build (e.g. from a paste), where every Material/Main/Sideboard slot is already spoken for and the ranked pool would otherwise never be shown at all. */
 const MAX_EXTRA_SUGGESTIONS = 16;
-/** A locked card's own lift needs to clear this far below zero (not just "any negative number") before it's worth flagging as a removal candidate — same shrinkage-noise-floor reasoning as the positive suggestion side. */
+/** A locked card's own lift needs to clear this far below zero (not just "any negative number") before it's worth flagging as a removal candidate – same shrinkage-noise-floor reasoning as the positive suggestion side. */
 const REMOVAL_LIFT_CEILING = -0.02;
 const MAX_REMOVAL_SUGGESTIONS = 5;
 /** Named Champion-bonus cards are promoted from flex picks only when they describe a genuinely
@@ -85,14 +85,14 @@ export interface SuggestedCard {
   cardName: string;
   quantity: number;
   locked: boolean;
-  /** Which section this card is placed in (for entries already in material/main/sideboard) — or, for an unplaced `suggestions` entry, which section it *would* go into if added. */
+  /** Which section this card is placed in (for entries already in material/main/sideboard) – or, for an unplaced `suggestions` entry, which section it *would* go into if added. */
   section: DeckSection;
-  /** null when there's no lift number to show — either it's the viewer's picked Spirit, or a structural identity card that does not need an isolated with/without result. */
+  /** null when there's no lift number to show – either it's the viewer's picked Spirit, or a structural identity card that does not need an isolated with/without result. */
   adjustedLift: number | null;
   sample: { with: number; without: number } | null;
-  /** Set only when a card-quantity win-rate comparison (see `quantityEvidence.source`) meaningfully beat the population's own modal quantity for this card — the quantity this slot *would* have gotten otherwise. Never applies to a locked card (its quantity is the viewer's own choice, including via manual edits). */
+  /** Set only when a card-quantity win-rate comparison (see `quantityEvidence.source`) meaningfully beat the population's own modal quantity for this card – the quantity this slot *would* have gotten otherwise. Never applies to a locked card (its quantity is the viewer's own choice, including via manual edits). */
   optimizedFrom: number | null;
-  /** "matching population" = no quantity override, just the modal count. "narrowed population" = overridden using a significance-tested comparison scoped to this build's own ranking population (Champion/Spirit/lock-conditioned, or a selected archetype's own decks) — a real quantity effect within *this* context, not confounded by which archetypes happen to run the card at which count. "global" = the same test, but only the flat meta-wide fallback cleared it. */
+  /** "matching population" = no quantity override, just the modal count. "narrowed population" = overridden using a significance-tested comparison scoped to this build's own ranking population (Champion/Spirit/lock-conditioned, or a selected archetype's own decks) – a real quantity effect within *this* context, not confounded by which archetypes happen to run the card at which count. "global" = the same test, but only the flat meta-wide fallback cleared it. */
   quantityEvidence: { source: "matching population" | "narrowed population" | "global"; sampleSize: number };
   /** "spirit" = the viewer's own Spirit pick. "staple" = a structural Champion print. "identity-staple" = a card explicitly tied to the selected Champion by its rules text and supported by observed prevalence, or a deterministic Champion+Spirit identity card. "ranked" = a normal lift-ranked suggestion. */
   reason: "spirit" | "staple" | "identity-staple" | "ranked";
@@ -110,11 +110,11 @@ export interface SuggestedCard {
 export interface SuggestedBuild {
   material: SuggestedCard[];
   main: SuggestedCard[];
-  /** Locked cards first, then ranked sideboard-role suggestions up to this population's own modal sideboard size (0 when most decks don't run one) — same ranking core as Material/Main, just against the `sideboard` presence data instead. */
+  /** Locked cards first, then ranked sideboard-role suggestions up to this population's own modal sideboard size (0 when most decks don't run one) – same ranking core as Material/Main, just against the `sideboard` presence data instead. */
   sideboard: SuggestedCard[];
-  /** Top ranked cards that didn't make it into Material/Main/Sideboard above — either because every slot in their section's target was already full, or (most visibly) because a fully-locked build (e.g. loaded from a paste) leaves no open slots at all. Unlocked, "Add" is the only action; adding one grows the build past its modal target on purpose. */
+  /** Top ranked cards that didn't make it into Material/Main/Sideboard above – either because every slot in their section's target was already full, or (most visibly) because a fully-locked build (e.g. loaded from a paste) leaves no open slots at all. Unlocked, "Add" is the only action; adding one grows the build past its modal target on purpose. */
   suggestions: SuggestedCard[];
-  /** Locked cards whose own with/without split (against the Spirit-only population, independent of any other lock) came out meaningfully negative — a candidate to cut, not just "no data either way." Always locked (they're already in material/main/sideboard); "Remove" is the only action. */
+  /** Locked cards whose own with/without split (against the Spirit-only population, independent of any other lock) came out meaningfully negative – a candidate to cut, not just "no data either way." Always locked (they're already in material/main/sideboard); "Remove" is the only action. */
   removalSuggestions: SuggestedCard[];
   /** Statistically eligible cuts withheld only because they belong to an active construction
    * package. The UI may reveal these on explicit request, but never mixes them into default cuts. */
@@ -124,19 +124,19 @@ export interface SuggestedBuild {
   protectedPackages: ActiveDeckPackage[];
   /** Every explicit construction-package rule, including inactive rules, for the Review audit UI. */
   packageCatalog: DeckPackageCatalogEntry[];
-  /** True when at least one card's quantity was overridden by the global quantity-vs-win-rate data — drives a one-line legend explaining the "*" marker, shown only when it'd actually apply to something on screen. */
+  /** True when at least one card's quantity was overridden by the global quantity-vs-win-rate data – drives a one-line legend explaining the "*" marker, shown only when it'd actually apply to something on screen. */
   hasQuantityOptimizations: boolean;
-  /** Size of the population actually used to rank suggestions for the remaining (unlocked) slots — not the same as the total matching-decks count once usedFallback is true. */
+  /** Size of the population actually used to rank suggestions for the remaining (unlocked) slots – not the same as the total matching-decks count once usedFallback is true. */
   rankingPopulationSize: number;
   /** True once enough cards are locked that the exact (Spirit + all locks) population got too thin to rank against, so remaining suggestions fell back to the Spirit-only population instead. */
   usedFallback: boolean;
-  /** True when the chosen Champion+Spirit combo has too little (or zero) real data, so ranking fell back to other Spirits of the same element with this Champion instead (e.g. Fragmented Spirit of Wind has only 3 Diao Chan decks, Spirit of Wind has 47) — see `spiritElementFallbackSpirits` for which ones. Gated on `SPIRIT_ELEMENT_FALLBACK_MIN_SIMILARITY` whenever there's enough exact data to check: same element doesn't always mean similar deck (real example: Arisanna's two same-element Spirit builds score just 0.19 similarity against each other), so this only fires when the broader population actually resembles what's already known about the exact combo. The Spirit slot itself still shows the viewer's actual pick either way; only the population everything else is ranked against is broadened. */
+  /** True when the chosen Champion+Spirit combo has too little (or zero) real data, so ranking fell back to other Spirits of the same element with this Champion instead (e.g. Fragmented Spirit of Wind has only 3 Diao Chan decks, Spirit of Wind has 47) – see `spiritElementFallbackSpirits` for which ones. Gated on `SPIRIT_ELEMENT_FALLBACK_MIN_SIMILARITY` whenever there's enough exact data to check: same element doesn't always mean similar deck (real example: Arisanna's two same-element Spirit builds score just 0.19 similarity against each other), so this only fires when the broader population actually resembles what's already known about the exact combo. The Spirit slot itself still shows the viewer's actual pick either way; only the population everything else is ranked against is broadened. */
   usedSpiritElementFallback: boolean;
-  /** The other Spirit(s) actually contributing decks to the element fallback above — empty unless `usedSpiritElementFallback` is true. */
+  /** The other Spirit(s) actually contributing decks to the element fallback above – empty unless `usedSpiritElementFallback` is true. */
   spiritElementFallbackSpirits: string[];
-  /** Real average win rate of decks matching the Spirit filter AND every card currently locked in — the actual population everything is being ranked against. Shifts as locks are added/removed, so it doubles as "does this pick move the needle." Null only when there's no population at all yet. */
+  /** Real average win rate of decks matching the Spirit filter AND every card currently locked in – the actual population everything is being ranked against. Shifts as locks are added/removed, so it doubles as "does this pick move the needle." Null only when there's no population at all yet. */
   conditionalWinRate: number | null;
-  /** Real average win rate of decks matching just the Spirit filter (no lock condition) — a stable reference point for measuring how far locks have moved conditionalWinRate. */
+  /** Real average win rate of decks matching just the Spirit filter (no lock condition) – a stable reference point for measuring how far locks have moved conditionalWinRate. */
   baselineWinRate: number | null;
   matchingDeckCount: number;
   unresolved: { main: number; material: number; sideboard: number };
@@ -148,14 +148,14 @@ export interface SuggestedBuild {
  * (reported live as material cards showing up under Main) by a plain plurality vote over the same
  * ranking population instead of defaulting straight to "main". `entry.role` itself comes from
  * `computeSingleCardImpact`'s stricter >=80%-share bar (shared with every other Card Impact surface
- * on the site, so not something to change here) — a card at, say, 65% material / 35% main still
+ * on the site, so not something to change here) – a card at, say, 65% material / 35% main still
  * clearly belongs in Material for build-assembly purposes, it just doesn't clear that bar, and
  * defaulting the whole "mixed" bucket to Main was a real, silent placement bug.
  */
-/** Average copies per deck (main+material combined, "deck identity" convention) across a row population — for scoring how similar two populations actually are via `weightedJaccard`, same centroid shape `useArchetypeVariants.ts`/`decodedDecks.ts` already use for real decks. */
+/** Average copies per deck (main+material combined, "deck identity" convention) across a row population – for scoring how similar two populations actually are via `weightedJaccard`, same centroid shape `useArchetypeVariants.ts`/`decodedDecks.ts` already use for real decks. */
 /**
  * Assembles a suggested build for a Champion (+ optional Spirit filter), honoring any cards the
- * viewer has locked in. Locked cards are always included as-is — they need no data to justify
+ * viewer has locked in. Locked cards are always included as-is – they need no data to justify
  * their presence, they're the viewer's own choice. Everything else is filled by ranking the
  * remaining population (decks that have the Spirit and every locked card) via the same
  * with/without/shrink core used by every other Card Impact surface (`computeCardImpactEntries`),
@@ -170,11 +170,11 @@ export function buildTournamentSuggestedDeck(
   loading: boolean,
   cardsByName: Map<string, Card>,
   quantityBucketsByName: Map<string, CardQuantityBucket[]>,
-  /** Section a lock is *known* to belong to (e.g. from a pasted decklist's own Main/Material/Sideboard headers) — trusted over the population-derived `sectionOf` guess below, which can misclassify a card the current population barely plays (see the Resonance Bauble bug: near-zero sample defaults to "main" regardless of the card's real section), and is the only way a card ever lands in the sideboard at all (there's no population-driven sideboard guess). Cards locked without a known section (manual "Add a card") still fall back to the main/material guess. */
+  /** Section a lock is *known* to belong to (e.g. from a pasted decklist's own Main/Material/Sideboard headers) – trusted over the population-derived `sectionOf` guess below, which can misclassify a card the current population barely plays (see the Resonance Bauble bug: near-zero sample defaults to "main" regardless of the card's real section), and is the only way a card ever lands in the sideboard at all (there's no population-driven sideboard guess). Cards locked without a known section (manual "Add a card") still fall back to the main/material guess. */
   lockedSections: Map<string, "main" | "material" | "sideboard"> = new Map(),
   /**
    * The Champion card to read granted elements from, resolved by the caller against the *stable*
-   * single-Champion population (`useDeckBuilderPopulation`'s own rows for the selected Champion) —
+   * single-Champion population (`useDeckBuilderPopulation`'s own rows for the selected Champion) –
    * not against whichever `rows` this call is ranking against. Needed once `rows` can come from a
    * cross-Champion suggestion pool (same Spirit/class/nearest deck/archetype cluster, any
    * Champion): `findChampionCard`'s own population-plurality guess would otherwise pick whichever
@@ -185,17 +185,17 @@ export function buildTournamentSuggestedDeck(
   championCardOverride?: Card,
   /** When set, ranked suggestions get a small boost (see `PILLAR_BOOST_WEIGHT`) toward cards that
    * score well on this rating pillar (`cardPillarScore`, the same signals `computeDeckRating`'s
-   * DIAO Score uses) — a nudge toward a chosen playstyle among cards that already cleared the
+   * DIAO Score uses) – a nudge toward a chosen playstyle among cards that already cleared the
    * real win-rate-lift bar, never a replacement for that bar. Omit for unbiased lift-only ranking,
    * unchanged from before this existed. */
   pillarBias?: RatingPillar | null,
   /** The "balanced" source's other half: the blended community population's card-inclusion map
-   * (cardName -> at least `percentOfDecks`), used exactly like `pillarBias` above — a small boost
+   * (cardName -> at least `percentOfDecks`), used exactly like `pillarBias` above – a small boost
    * (see `COMMUNITY_BOOST_WEIGHT`) toward cards the community plays often, among cards that already
    * cleared the real lift bar. Omit for tournament-only ranking, unchanged from before this existed. */
   communityInclusion?: Map<string, { percentOfDecks: number }>,
   /** The "balanced" source's third nudge: cardName -> `decay` from `computeCardDecay`'s top signals
-   * (`DeckBuilderIndex.tsx`) — cards whose inclusion rate is falling despite still winning. Applies
+   * (`DeckBuilderIndex.tsx`) – cards whose inclusion rate is falling despite still winning. Applies
    * `DECAY_PENALTY_WEIGHT` as a small negative nudge, same tie-breaking-only bar as `pillarBias`/
    * `communityInclusion` above. Omit for no decay penalty, unchanged from before this existed. */
   decayingCards?: Map<string, number>,
@@ -267,7 +267,7 @@ export function buildTournamentSuggestedDeck(
       };
 
     // The deck's actual castable elements are granted by its Champion and Spirit cards
-    // specifically, not inferred from which elements happen to be common across the main deck —
+    // specifically, not inferred from which elements happen to be common across the main deck –
     // that was the wrong signal (and the real bug): a well-represented or high-lift off-element
     // splash (Water, Umbra, whatever) would count toward "identity" under a frequency-based proxy
     // just as much as a genuinely granted element, since nothing distinguished "the deck can cast
@@ -280,17 +280,17 @@ export function buildTournamentSuggestedDeck(
     const identityElements = new Set([...championElements, ...(spiritCard?.elements ?? [])].filter((e) => e !== "NORM"));
 
     const lockedNames = new Set(lockedCards.keys());
-    // Only condition on locks with a real sample behind them — a card only 1-4 decks in this
+    // Only condition on locks with a real sample behind them – a card only 1-4 decks in this
     // population have ever played (e.g. "Ariel, Archangel of Natura", confirmed live: exactly 1
-    // Diao Chan deck) would otherwise let that single deck's own win rate dominate — or, at zero
+    // Diao Chan deck) would otherwise let that single deck's own win rate dominate – or, at zero
     // occurrences, require every row to contain it, which is trivially impossible and zeroes out
     // the conditional population entirely. Neither is "this combo performs badly," it's "we don't
-    // have enough data on this card here" — a different situation that shouldn't erase or distort
+    // have enough data on this card here" – a different situation that shouldn't erase or distort
     // the win rate contributed by every OTHER lock already in place. Same MIN_SAMPLE_SIZE bar
     // Card Impact uses everywhere else for "is this enough data to trust." Real bug, reported live
     // (first as the win rate vanishing, then as a single deck swinging it) and fixed both ways.
     // Card-quantity win-rate buckets scoped to this same ranking population, not the flat global
-    // dataset — sidesteps the archetype-selection confound a meta-wide (card, quantity) pool can't
+    // dataset – sidesteps the archetype-selection confound a meta-wide (card, quantity) pool can't
     // separate from a real quantity effect (see cardQuantityAdvice.ts's pickBetterQuantityScoped).
     // Falls back to the global buckets on its own whenever a given card's local cells are too thin.
     const localQuantitySamples: QuantitySample[] = rankingRows.map((r) => {
@@ -300,7 +300,7 @@ export function buildTournamentSuggestedDeck(
     });
     const localQuantityBuckets = computeLocalQuantityBuckets(localQuantitySamples);
 
-    // A locked card's OWN with/without split, independent of every other lock — `rankingRows` is
+    // A locked card's OWN with/without split, independent of every other lock – `rankingRows` is
     // the wrong population for this (once conditioned on this exact card, its own "without" bucket
     // is empty by construction), so this runs against `spiritRows` instead, same population
     // `baselineWinRate` already uses. Lets a locked card show a real lift number instead of a flat
@@ -330,7 +330,7 @@ export function buildTournamentSuggestedDeck(
         (collectionMode !== "owned-only" || (collectionOwnedByName?.get(e.cardName) ?? 0) > 0),
     );
     // Re-order (not re-score) by a small pillar-affinity, community-popularity, and/or decay
-    // nudge — each entry's own `adjustedLift` stays the real, honest win-rate number shown in the
+    // nudge – each entry's own `adjustedLift` stays the real, honest win-rate number shown in the
     // UI; only which comparably-good real card gets picked first for a limited slot shifts toward
     // the chosen playstyle, the blended community's own usage, or away from a card that's still
     // winning but visibly falling out of use.
@@ -358,11 +358,11 @@ export function buildTournamentSuggestedDeck(
     const placed = new Set<string>();
 
     // Which section a card typically lives in, from raw presence in the (lock-independent)
-    // Spirit-filtered population — NOT from `entryByName`, which deliberately excludes locked
+    // Spirit-filtered population – NOT from `entryByName`, which deliberately excludes locked
     // cards (so a card doesn't compete against itself in the ranking) and would otherwise always
     // return undefined for every locked card, silently defaulting every one of them to "main"
     // regardless of where it's actually played. Plain plurality (whichever section has more
-    // occurrences wins, material on a tie) — a >=80%-dominance bar used to gate this (mirroring
+    // occurrences wins, material on a tie) – a >=80%-dominance bar used to gate this (mirroring
     // `computeCardImpactEntries`'s role convention) and defaulted anything short of that to "main",
     // which silently misplaced material cards that were, say, 60-79% material into Main. That bar
     // makes sense for `role`'s own purpose (flagging genuine uncertainty on Card Impact tables
@@ -380,7 +380,7 @@ export function buildTournamentSuggestedDeck(
 
     // Locked cards go in first, at their own quantity, sectioned by wherever they're actually
     // played (falls back to "main" for a card never seen in this population). A known "sideboard"
-    // section always wins — there's no population-derived guess for it, only explicit knowledge
+    // section always wins – there's no population-derived guess for it, only explicit knowledge
     // from where the card was locked (e.g. a pasted decklist's own Sideboard section).
     for (const [name, qty] of lockedCards) {
       const card = cardsByName.get(name);
@@ -390,7 +390,7 @@ export function buildTournamentSuggestedDeck(
         placed.add(name);
         continue;
       }
-      // Champion and Regalia cards can never legally sit in the Main deck — verified against real
+      // Champion and Regalia cards can never legally sit in the Main deck – verified against real
       // data (0 Main appearances across 549k+ real Champion/Regalia occurrences). A cached/shared
       // `knownSection` of "main" that contradicts this is stale or simply wrong (e.g. from a bad
       // paste), not authoritative, so this overrides it instead of silently misplacing the card.
@@ -399,7 +399,7 @@ export function buildTournamentSuggestedDeck(
       // The Material Deck is capped at 1 copy of each card by rule, independent of the card's own
       // Standard/UNIQUE copy limit (verified against real data: 8,454 real decks run a Resonance
       // Bauble at exactly 1x in Material, vs. a handful of outlier qty>1 lines that are data-entry
-      // noise) — a locked card's stored quantity can predate knowing which section it'd land in
+      // noise) – a locked card's stored quantity can predate knowing which section it'd land in
       // (e.g. "Add a card" defaults non-UNIQUE cards to 4x before section is ever determined), so
       // this clamps rather than trusting it.
       const finalQty = isMaterialCard ? 1 : qty;
@@ -409,15 +409,15 @@ export function buildTournamentSuggestedDeck(
 
     // Champion-level anchors: one print per level actually present in the ranking population,
     // highest-lift pick at that level (a locked print at the same level, handled above, wins
-    // instead). Real decklists showed the levels/prints aren't fixed per Champion — some Champions
-    // have multiple same-level variants — so this is picked from data, not the raw card list.
+    // instead). Real decklists showed the levels/prints aren't fixed per Champion – some Champions
+    // have multiple same-level variants – so this is picked from data, not the raw card list.
     // Scoped to the *intended* Champion's own identity (via `championCard`, same "before the
     // comma" identity `findChampionName` uses) rather than "whichever Champion is most common in
-    // `rankingRows`" — that distinction only matters once `rows` can come from a cross-Champion
+    // `rankingRows`" – that distinction only matters once `rows` can come from a cross-Champion
     // pool (same Spirit/class/nearest deck/archetype cluster, any Champion): scanning unscoped
     // there would suggest a print of whichever *borrowed* Champion happens to show up, not the one
     // the viewer actually picked. If the intended Champion has no print at all in a borrowed
-    // population (the common case), no anchor gets placed here — correct: nothing to borrow.
+    // population (the common case), no anchor gets placed here – correct: nothing to borrow.
     const intendedChampionIdentity = championCard ? championIdentityName(championCard) : null;
     const lockedLevels = new Set(
       Array.from(lockedCards.keys())
@@ -448,7 +448,7 @@ export function buildTournamentSuggestedDeck(
       if (names.length === 0) continue;
       // Prefer the highest-lift print if any candidate at this level cleared the sample bar; a
       // near-universally-run print (most decks include all their Champion's level prints) usually
-      // won't, since its "without" bucket is too thin — same "excludes defining/staple cards"
+      // won't, since its "without" bucket is too thin – same "excludes defining/staple cards"
       // behavior documented for the general Card Impact feature. Unlike a flex-slot suggestion,
       // though, a Champion's level print is structurally close to mandatory, so fall back to
       // whichever print is simply most common at this level rather than omitting the level.
@@ -459,7 +459,7 @@ export function buildTournamentSuggestedDeck(
       placed.add(best);
     }
 
-    // The Spirit itself — the viewer's explicit pick, not ranked against alternatives.
+    // The Spirit itself – the viewer's explicit pick, not ranked against alternatives.
     if (spiritFilter && !placed.has(spiritFilter)) {
       material.push(toSuggested(spiritFilter, 1, false, undefined, "spirit", "material"));
       placed.add(spiritFilter);
@@ -542,7 +542,7 @@ export function buildTournamentSuggestedDeck(
       if (materialTotal >= materialTarget && mainTotal >= mainTarget && (sideboardTotal >= sideboardTarget || sideboardPoints >= SIDEBOARD_POINT_BUDGET)) break;
     }
 
-    // Everything ranked that still didn't make it in — most visibly non-empty for a fully-locked
+    // Everything ranked that still didn't make it in – most visibly non-empty for a fully-locked
     // build (every target already met by locks alone, so the loop above placed nothing new even
     // though `ranked` has real candidates). Shown as swap-in ideas, not auto-filled.
     const rawSuggestions = [

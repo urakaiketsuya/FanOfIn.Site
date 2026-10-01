@@ -1,4 +1,4 @@
-// Hand-authored, like ../official-products/data.ts's release-date table — there's no API for this,
+// Hand-authored, like ../official-products/data.ts's release-date table – there's no API for this,
 // and product releases are infrequent (~5-6/year). To add a new set: visit its
 // /article/<slug>-product-information page on gatcg.com, download the linked Media Kit, pick a
 // logo/box render/hero image, resize each to roughly the sizes already committed under
@@ -13,7 +13,7 @@ export interface ProductEntry {
   releaseDate: string;
   logo: string;
   boxArt: string;
-  /** Best available key art (print poster > world/background art > a character cutout) — omitted when a kit had nothing suitable. */
+  /** Best available key art (print poster > world/background art > a character cutout) – omitted when a kit had nothing suitable. */
   banner?: string;
 }
 
@@ -119,4 +119,4 @@ export const PRODUCTS: ProductEntry[] = [
   },
 ];
 
-export const PRODUCTS_ATTRIBUTION = "Official Grand Archive TCG assets, used with permission for community projects — © Weebs of the Shore LLC.";
+export const PRODUCTS_ATTRIBUTION = "Official Grand Archive TCG assets, used with permission for community projects – © Weebs of the Shore LLC.";

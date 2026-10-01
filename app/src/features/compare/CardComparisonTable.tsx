@@ -12,12 +12,12 @@ function bestIndex(values: (number | null)[], direction: "max" | "min" = "max"):
   const real = values.filter((v): v is number => v !== null);
   if (real.length < 2) return -1;
   const target = direction === "max" ? Math.max(...real) : Math.min(...real);
-  if (real.filter((v) => v === target).length > 1) return -1; // tied — nothing to highlight
+  if (real.filter((v) => v === target).length > 1) return -1; // tied – nothing to highlight
   return values.indexOf(target);
 }
 
 /**
- * Side-by-side stats for an arbitrary set of individual cards — usage, win rate, price, trend —
+ * Side-by-side stats for an arbitrary set of individual cards – usage, win rate, price, trend –
  * the per-card sibling of `ComparisonGrid`'s deck-vs-deck table, sourced from the same published
  * `cards.json` stats CardStatsIndex already uses. Reused on the Compare page's "Cards" mode and as
  * a compact quick-compare widget on card detail pages.
@@ -74,7 +74,7 @@ export default function CardComparisonTable({ names, onRemove }: { names: string
             <td className="sticky left-0 z-10 bg-ctp-base py-1.5 pr-6 text-xs font-semibold uppercase text-ctp-subtext0">Class</td>
             {rows.map((r) => (
               <td key={r.name} className="py-1.5 pr-6 text-ctp-subtext1">
-                {r.card && r.card.classes.length > 0 ? r.card.classes.join("/") : "—"}
+                {r.card && r.card.classes.length > 0 ? r.card.classes.join("/") : "–"}
               </td>
             ))}
           </tr>
@@ -88,7 +88,7 @@ export default function CardComparisonTable({ names, onRemove }: { names: string
                     {r.card.elements.length > 0 ? r.card.elements.join("/") : r.card.element}
                   </span>
                 ) : (
-                  "—"
+                  "–"
                 )}
               </td>
             ))}
@@ -103,7 +103,7 @@ export default function CardComparisonTable({ names, onRemove }: { names: string
                     {r.card.cost.value}
                   </span>
                 ) : (
-                  "—"
+                  "–"
                 )}
               </td>
             ))}
@@ -112,7 +112,7 @@ export default function CardComparisonTable({ names, onRemove }: { names: string
             <td className="sticky left-0 z-10 bg-ctp-base py-1.5 pr-6 text-xs font-semibold uppercase text-ctp-subtext0">Decks</td>
             {rows.map((r) => (
               <td key={r.name} className="py-1.5 pr-6 text-ctp-subtext1">
-                {r.stat ? r.stat.deckCount : "—"}
+                {r.stat ? r.stat.deckCount : "–"}
               </td>
             ))}
           </tr>
@@ -120,7 +120,7 @@ export default function CardComparisonTable({ names, onRemove }: { names: string
             <td className="sticky left-0 z-10 bg-ctp-base py-1.5 pr-6 text-xs font-semibold uppercase text-ctp-subtext0">Events</td>
             {rows.map((r) => (
               <td key={r.name} className="py-1.5 pr-6 text-ctp-subtext1">
-                {r.stat ? r.stat.eventCount : "—"}
+                {r.stat ? r.stat.eventCount : "–"}
               </td>
             ))}
           </tr>
@@ -128,7 +128,7 @@ export default function CardComparisonTable({ names, onRemove }: { names: string
             <td className="sticky left-0 z-10 bg-ctp-base py-1.5 pr-6 text-xs font-semibold uppercase text-ctp-subtext0">Win rate</td>
             {rows.map((r, i) => (
               <td key={r.name} className={`py-1.5 pr-6 font-semibold ${i === bestRawIndex ? "text-ctp-green" : "text-ctp-subtext1"}`}>
-                {r.stat ? `${(r.stat.avgWinRate * 100).toFixed(0)}%` : "—"}
+                {r.stat ? `${(r.stat.avgWinRate * 100).toFixed(0)}%` : "–"}
               </td>
             ))}
           </tr>
@@ -136,7 +136,7 @@ export default function CardComparisonTable({ names, onRemove }: { names: string
             <td className="sticky left-0 z-10 bg-ctp-base py-1.5 pr-6 pl-3 text-xs text-ctp-subtext0">Adjusted</td>
             {rows.map((r, i) => (
               <td key={r.name} className={`py-1.5 pr-6 text-xs ${i === bestAdjustedIndex ? "text-ctp-green" : "text-ctp-subtext1"}`}>
-                {r.stat ? `${(r.stat.adjustedWinRate * 100).toFixed(0)}%` : "—"}
+                {r.stat ? `${(r.stat.adjustedWinRate * 100).toFixed(0)}%` : "–"}
               </td>
             ))}
           </tr>
@@ -144,7 +144,7 @@ export default function CardComparisonTable({ names, onRemove }: { names: string
             <td className="sticky left-0 z-10 bg-ctp-base py-1.5 pr-6 text-xs font-semibold uppercase text-ctp-subtext0">Price</td>
             {rows.map((r, i) => (
               <td key={r.name} className={`py-1.5 pr-6 ${i === bestPriceIndex ? "text-ctp-green" : "text-ctp-subtext1"}`}>
-                {r.stat?.marketPrice != null ? formatUsd(r.stat.marketPrice) : "—"}
+                {r.stat?.marketPrice != null ? formatUsd(r.stat.marketPrice) : "–"}
               </td>
             ))}
           </tr>
@@ -154,7 +154,7 @@ export default function CardComparisonTable({ names, onRemove }: { names: string
               if (!r.stat) {
                 return (
                   <td key={r.name} className="py-1.5 pr-6 text-ctp-subtext1">
-                    —
+                    –
                   </td>
                 );
               }

@@ -68,7 +68,7 @@ export default function DecklistsSection({
   const similarDecks = selection ? similarityData?.decks.find((d) => d.deckId === selection.deckId) : undefined;
 
   // Same signature/hash scheme every other deck-page link uses (PopularDeckRow, DeckDetail's own
-  // "similar decks", Compare's paste-in decks) — computed client-side from this exact decklist
+  // "similar decks", Compare's paste-in decks) – computed client-side from this exact decklist
   // rather than looked up, so it resolves even before any async popularity data has loaded.
   const deckPageHash = useMemo(() => {
     if (!selected) return null;

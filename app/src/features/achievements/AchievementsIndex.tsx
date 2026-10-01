@@ -47,7 +47,7 @@ export default function AchievementsIndex() {
     <PageLayout data-component="AchievementsIndex">
       <PageHeader
         title="Achievements"
-        description="Every badge here is derived automatically from tournament results, ratings, and decklists already ingested — there's no manual submission or curation involved."
+        description="Every badge here is derived automatically from tournament results, ratings, and decklists already ingested – there's no manual submission or curation involved."
       />
 
       {!achievementsData && <InlineState className="mt-6">Loading…</InlineState>}

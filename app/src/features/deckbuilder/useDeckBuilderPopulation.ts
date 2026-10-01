@@ -17,7 +17,7 @@ export interface DeckBuilderRow {
 
 export interface DeckBuilderPopulation {
   rows: DeckBuilderRow[];
-  /** Every Spirit actually run with this Champion, for populating the Spirit picker — not the full card catalog's Spirit list, most of which this Champion never plays. Named-alter duplicates (see buildSpiritCanonicalNames) are already folded into their base name here, so this list has no fragmented near-duplicates. */
+  /** Every Spirit actually run with this Champion, for populating the Spirit picker – not the full card catalog's Spirit list, most of which this Champion never plays. Named-alter duplicates (see buildSpiritCanonicalNames) are already folded into their base name here, so this list has no fragmented near-duplicates. */
   spiritsPresent: string[];
   loading: boolean;
 }
@@ -35,7 +35,7 @@ export function canonicalizeSpiritCardMap(
   return result;
 }
 
-/** Same detection rule as pipeline/src/analysis/decklists.ts's findSpirit — CHAMPION type, SPIRIT subtype, lives in the Material Deck. */
+/** Same detection rule as pipeline/src/analysis/decklists.ts's findSpirit – CHAMPION type, SPIRIT subtype, lives in the Material Deck. */
 export function findSpiritName(material: { name: string; quantity: number }[], cardsByName: Map<string, Card>): string | null {
   for (const line of material) {
     const card = cardsByName.get(line.name);
@@ -46,16 +46,16 @@ export function findSpiritName(material: { name: string; quantity: number }[], c
 
 /**
  * One Champion's decks, decoded directly rather than through the shared `useAllDecodedDecks()`
- * universe — deliberately kept separate from that hook (which the cross-Champion pools/nearest-
+ * universe – deliberately kept separate from that hook (which the cross-Champion pools/nearest-
  * decks/archetype-Variants-tab use), since this is the path every single deck-builder visit runs
  * through by default, and `useAllDecodedDecks()`'s full ~57k-deck decode is expensive enough
- * (`deck-card-index.json` is 93MB+) that always paying it here — for what usually only needs one
- * Champion's few hundred decks — was itself the cause of a real memory-pressure bug (browsers,
+ * (`deck-card-index.json` is 93MB+) that always paying it here – for what usually only needs one
+ * Champion's few hundred decks – was itself the cause of a real memory-pressure bug (browsers,
  * Safari especially, silently killing and reloading the tab; see `usePublishedData.ts`'s own doc
  * comment on the same class of bug). Only decodes decks that actually match `championName`.
  *
  * `minEventDate`/`maxEventDate` (ISO strings, inclusive), when given, additionally restrict to
- * decks whose event falls in that range — the "recent season only" pool's filter, kept as plain
+ * decks whose event falls in that range – the "recent season only" pool's filter, kept as plain
  * primitives rather than a `{start, end}` object so callers that recompute the range each render
  * don't accidentally bust this hook's own memoization with a new object reference every time.
  */

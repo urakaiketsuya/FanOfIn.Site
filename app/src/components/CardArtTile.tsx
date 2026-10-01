@@ -4,8 +4,8 @@ import CardImage from "./CardImage";
 import ElementIcon from "./ElementIcon";
 
 /**
- * The card-art box shared by every "visual" card grid on the site — full-bleed art, rounded
- * corners, a name fallback when no image is resolved, and an element badge (top-left) — plus
+ * The card-art box shared by every "visual" card grid on the site – full-bleed art, rounded
+ * corners, a name fallback when no image is resolved, and an element badge (top-left) – plus
  * optional corner/tag overlays for callers that need them. Originally DecklistView's Visual
  * display mode (`VisualCardTile`); also used by TopCardsSections' grid layout and
  * ChampionSynergy's New Releases section, so "the same component" shows up everywhere a card

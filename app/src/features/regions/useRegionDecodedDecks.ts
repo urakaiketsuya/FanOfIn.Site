@@ -11,18 +11,18 @@ export interface RegionDeckLines {
 
 export interface RegionDecodedDecks {
   decks: RegionDeckLines[];
-  /** Total decks in the published index (unfiltered) — the denominator every global rate is computed against. */
+  /** Total decks in the published index (unfiltered) – the denominator every global rate is computed against. */
   globalDeckTotal: number;
   loading: boolean;
 }
 
 /**
  * Decodes one region's decks (main/material/sideboard) once, shared by
- * `useRegionalCardComposition` and `useRegionalKeywords` — both used to independently decode the
+ * `useRegionalCardComposition` and `useRegionalKeywords` – both used to independently decode the
  * same region's decks from scratch (doubled on every Regions page view, quadrupled on Compare
  * Regions, which mounts both hooks once per region). Callers pass the same result into both hooks
  * instead of each calling this internally, since a `useMemo` inside a shared custom hook still
- * runs once per call site, not once per distinct input — only lifting the decode to a single
+ * runs once per call site, not once per distinct input – only lifting the decode to a single
  * shared call actually dedupes it.
  */
 export function useRegionDecodedDecks(regionByDeckId: Map<string, string> | undefined, regionKey: string | null, enabled = true): RegionDecodedDecks {

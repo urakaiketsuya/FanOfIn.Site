@@ -15,7 +15,7 @@ export interface RegionalVenueRow {
   eventCount: number;
   lastEventDate: string;
   events: RegionalVenueEvent[];
-  /** Present only when Nominatim resolved this venue's address (see pipeline/src/omnidex/geocode.ts) — most venues have this, but a venue with no/unresolvable address won't. */
+  /** Present only when Nominatim resolved this venue's address (see pipeline/src/omnidex/geocode.ts) – most venues have this, but a venue with no/unresolvable address won't. */
   lat?: number;
   lng?: number;
 }
@@ -26,7 +26,7 @@ export interface RegionalVenuesResult {
 }
 
 /**
- * Venues (Omnidex host records) hosting events in the selected region — grouped by `hostId`, same
+ * Venues (Omnidex host records) hosting events in the selected region – grouped by `hostId`, same
  * "id, not name" join `EventDetail.tsx`'s own "More events at this venue" block already uses, since
  * some venues rename over time. Pure client-side pivot of the already-published Omnidex index,
  * joined against the pipeline's geocoded venues.json (Nominatim, see pipeline/src/omnidex/geocode.ts)

@@ -21,7 +21,7 @@ export interface ComparisonCardEntry {
   isUnique: boolean;
 }
 
-/** Cards sharing the exact same presence pattern across the compared decks — see `groupCardsByMatch`. */
+/** Cards sharing the exact same presence pattern across the compared decks – see `groupCardsByMatch`. */
 export interface ComparisonCardGroup {
   label: string;
   /** Indices into the compare set's `decks` array that this group's cards are present in. */
@@ -42,7 +42,7 @@ function buildGroupLabel(deckIndices: number[], decks: ComparedDeck[]): string {
 }
 
 /**
- * Clusters a section's cards by which exact subset of decks they're present in — "matching" cards
+ * Clusters a section's cards by which exact subset of decks they're present in – "matching" cards
  * (shared by every compared deck) first, then smaller partial matches, then each deck's own
  * unique cards last (grouped by deck, in compare-set order). With only 2 decks compared (the
  * common case) this collapses to just "In every deck" + one "Only in X" group per deck; the
@@ -76,7 +76,7 @@ export interface ComparisonDeckStats {
   classes: string[];
   elements: string[];
   rating: DeckRating | null;
-  /** The real recorded outcome for a "sighting" deck (an actual event participant) — null for a "custom" (pasted) deck, since there's no tournament result to report. */
+  /** The real recorded outcome for a "sighting" deck (an actual event participant) – null for a "custom" (pasted) deck, since there's no tournament result to report. */
   winRate: number | null;
   format: DeckFormat;
 }
@@ -90,8 +90,8 @@ function inferFormat(deck: ComparedDeck, list: OmnidexDecklist | null | undefine
 }
 
 /**
- * Single source of truth for the compare set's derived data — card-by-card presence/core/unique
- * flags and per-deck stats (price, identity, DIAO score) — shared by both the table (`ComparisonGrid`)
+ * Single source of truth for the compare set's derived data – card-by-card presence/core/unique
+ * flags and per-deck stats (price, identity, DIAO score) – shared by both the table (`ComparisonGrid`)
  * and stacked-card (`ComparisonCards`) views so they can't drift from each other.
  */
 export function useComparisonData(decks: ComparedDeck[], decklists: Map<string, OmnidexDecklist | null>) {

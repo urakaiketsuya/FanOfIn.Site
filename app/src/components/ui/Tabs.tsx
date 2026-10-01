@@ -6,7 +6,7 @@ export default function Tabs<T extends string>({ tabs, active, onChange, label =
   const tablistRef = useRef<HTMLDivElement>(null);
 
   // Roving-tabindex tabs per the WAI-ARIA pattern: only the active tab is in the tab order, and
-  // arrow/Home/End keys move focus *and* selection. `baseId` is optional — when a caller provides
+  // arrow/Home/End keys move focus *and* selection. `baseId` is optional – when a caller provides
   // it, each tab also gets an `id`/`aria-controls` that a sibling `role="tabpanel"` can target
   // (`${baseId}-panel-${key}`); existing callers keep working unchanged without it.
   function moveFocus(index: number) {

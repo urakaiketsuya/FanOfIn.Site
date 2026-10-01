@@ -20,7 +20,7 @@ export interface RegionalKeywordRow {
 export interface RegionalKeywords {
   overRepresented: RegionalKeywordRow[];
   underRepresented: RegionalKeywordRow[];
-  /** Every keyword clearing the sample-size bar — see the matching field on RegionalCardComposition for why. */
+  /** Every keyword clearing the sample-size bar – see the matching field on RegionalCardComposition for why. */
   allEntries: RegionalKeywordRow[];
   regionDeckCount: number;
   loading: boolean;
@@ -28,13 +28,13 @@ export interface RegionalKeywords {
 
 /**
  * Same region-vs-global rate/lift methodology as `useRegionalCardComposition.ts`, but keyed by
- * ability keyword (Ranged, Swift, Bulwark, ...) instead of exact card name — a coarser lens on
+ * ability keyword (Ranged, Swift, Bulwark, ...) instead of exact card name – a coarser lens on
  * "what kind of deck wins here." Reuses `computeKeywordComposition` (@gatcg/shared), the exact
  * same function the pipeline uses to tag each DeckSighting's keyword composition, so this stays
  * consistent with the site-wide Keyword Stats numbers without touching the 40MB+
  * deck-sightings.json. Takes the region's already-decoded decks from `useRegionDecodedDecks`
  * (shared with `useRegionalCardComposition`, which needs the same decode) instead of decoding its
- * own copy — only each card's effect text (from the local card catalog) is needed on top of that
+ * own copy – only each card's effect text (from the local card catalog) is needed on top of that
  * to re-derive keyword composition client-side.
  */
 export function useRegionalKeywords(regionDecks: RegionDecodedDecks, enabled = true): RegionalKeywords {

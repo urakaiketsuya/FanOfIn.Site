@@ -24,7 +24,7 @@ import DecklistWinRate from "./DecklistWinRate";
 import Button from "../../components/ui/Button";
 import { CompactDeckSection as CompactSection, DetailedDeckSection, VisualDeckSections } from "./DecklistSections";
 
-/** Plain-text export with "# Section" headers and "4 Card Name" lines — round-trips with the Compare tool's paste parser. */
+/** Plain-text export with "# Section" headers and "4 Card Name" lines – round-trips with the Compare tool's paste parser. */
 export function buildDecklistText(decklist: OmnidexDecklist, extraSections: { title: string; lines: OmnidexDecklistCardLine[] }[] = []): string {
   const sections: [string, OmnidexDecklistCardLine[]][] = [
     ...extraSections.map((section) => [section.title, section.lines] as [string, OmnidexDecklistCardLine[]]),
@@ -59,11 +59,11 @@ export default function DecklistView({
   decklist: OmnidexDecklist;
   cardsByName: Map<string, Card>;
   showThumbnails?: boolean;
-  /** `${eventId}:${player}` — when present, resolves this decklist's named-build cluster for `DeckTuningEvidence`'s "Cards that might help" box, and (with the "Win rate" display preference on) this specific sighting's own match record. Omit for a pasted/custom decklist with no real deckId — `DeckTuningEvidence` still falls back to Champion-scoped evidence unless `championFallback` is false, and the win-rate section simply doesn't render. */
+  /** `${eventId}:${player}` – when present, resolves this decklist's named-build cluster for `DeckTuningEvidence`'s "Cards that might help" box, and (with the "Win rate" display preference on) this specific sighting's own match record. Omit for a pasted/custom decklist with no real deckId – `DeckTuningEvidence` still falls back to Champion-scoped evidence unless `championFallback` is false, and the win-rate section simply doesn't render. */
   deckId?: string;
-  /** Suppresses `DeckTuningEvidence` entirely when "PANTHEON" — the tournament pipeline that evidence is built from doesn't track that format. Omit for tournament decklists, which are always Standard. */
+  /** Suppresses `DeckTuningEvidence` entirely when "PANTHEON" – the tournament pipeline that evidence is built from doesn't track that format. Omit for tournament decklists, which are always Standard. */
   format?: DeckFormat;
-  /** Set false on a page that already renders its own Champion-scoped "cards that might help" fallback (currently only `DeckDetail.tsx`) to avoid a redundant second copy. The "cards worth reviewing" box is unaffected — nothing else surfaces that signal today. */
+  /** Set false on a page that already renders its own Champion-scoped "cards that might help" fallback (currently only `DeckDetail.tsx`) to avoid a redundant second copy. The "cards worth reviewing" box is unaffected – nothing else surfaces that signal today. */
   championFallback?: boolean;
   extraSections?: { title: string; lines: OmnidexDecklistCardLine[] }[];
   trailingSections?: { title: string; lines: OmnidexDecklistCardLine[] }[];
@@ -83,7 +83,7 @@ export default function DecklistView({
   const priceByName = useDeckPriceByName(displayPrefs.showPrices);
   const priceTrendByName = usePriceTrendByName(displayPrefs.showPrices && displayPrefs.visualPriceTrend);
   const catalog = useCardCatalog();
-  // Visual mode's optional "sim games" field only — cardId isn't Champion-scoped like the Guided
+  // Visual mode's optional "sim games" field only – cardId isn't Champion-scoped like the Guided
   // Deck Builder's own evidence map, so this works for any decklist, not just a suggested build.
   const simulatorEvidenceByName = useSimulatorEvidenceByName();
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
@@ -220,7 +220,7 @@ export default function DecklistView({
               <a href={clarentUrl} target="_blank" rel="noreferrer" className="rounded px-3 py-2 text-sm text-ctp-green hover:bg-ctp-surface0">Playtest in Clarent →</a>
                   {deckBuilderDestinations.map((destination) => <button key={destination.id} type="button" onClick={() => void handleCopyAndOpen(destination.url)} title={`Copies this decklist, then opens ${destination.label} so you can paste it into a new deck`} className="rounded px-3 py-2 text-left text-sm text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Copy & open {destination.label} &rarr;</button>)}
                   <a href={massEntryUrl} target="_blank" rel="noreferrer" className="rounded px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">Buy on TCGplayer &rarr;</a>
-                  <button type="button" onClick={handleExportTts} title="Downloads a .json file — in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it" className="rounded px-3 py-2 text-left text-sm text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Export to TTS</button>
+                  <button type="button" onClick={handleExportTts} title="Downloads a .json file – in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it" className="rounded px-3 py-2 text-left text-sm text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Export to TTS</button>
 
             </div>
           </details>

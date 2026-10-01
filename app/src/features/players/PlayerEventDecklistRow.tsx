@@ -17,7 +17,7 @@ export default function PlayerEventDecklistRow({ event, playerId }: { event: Omn
 
   const allNames = decklist ? [...decklist.main, ...decklist.material, ...decklist.sideboard].map((l) => l.card) : [];
   const cardsByName = useCardsByNames(allNames);
-  // findDeckChampionName resolves the specific print (e.g. "Guo Jia, Heaven's Favored") — every
+  // findDeckChampionName resolves the specific print (e.g. "Guo Jia, Heaven's Favored") – every
   // dataset useTopDecksForChampion reads is keyed by the base Champion name instead, same
   // conversion used by Compare's ComparisonSuggestions.
   const printName = decklist ? findDeckChampionName(decklist.material, cardsByName) : null;

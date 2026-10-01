@@ -7,7 +7,7 @@ import { primaryAlternateFace } from "../../lib/cardFaces";
 
 interface CardGridProps {
   cards: Card[];
-  /** Which edition's art to show per card — defaults to the first. Set detail pages pass the edition from that set. */
+  /** Which edition's art to show per card – defaults to the first. Set detail pages pass the edition from that set. */
   pickEdition?: (card: Card) => CardEdition | undefined;
 }
 

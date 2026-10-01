@@ -4,7 +4,7 @@ import CardHoverPreview from "./CardHoverPreview";
 import ElementIcon from "./ElementIcon";
 import { primaryAlternateFace } from "../lib/cardFaces";
 
-/** Shared row layout for every Card Impact surface — general, matchup-scoped ("my cards" and "opponent cards"), and Champion+Element-scoped. */
+/** Shared row layout for every Card Impact surface – general, matchup-scoped ("my cards" and "opponent cards"), and Champion+Element-scoped. */
 export default function CardImpactTable({
   cards,
   cardImages,

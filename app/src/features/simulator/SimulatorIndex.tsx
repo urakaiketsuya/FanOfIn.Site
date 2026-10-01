@@ -7,7 +7,7 @@ import Section from "../../components/ui/Section";
 import { InlineState } from "../../components/ui/ContentState";
 
 function formatPercent(rate: number | null): string {
-  return rate === null ? "—" : `${(rate * 100).toFixed(0)}%`;
+  return rate === null ? "–" : `${(rate * 100).toFixed(0)}%`;
 }
 
 function formatAvg(value: number): string {
@@ -15,7 +15,7 @@ function formatAvg(value: number): string {
 }
 
 export default function SimulatorIndex() {
-  useDocumentTitle("Simulator Data", "Experimental — anonymous match telemetry from Clarent, the community Grand Archive simulator.");
+  useDocumentTitle("Simulator Data", "Experimental – anonymous match telemetry from Clarent, the community Grand Archive simulator.");
   const data = useSimulatorSummaryData();
 
   const champions = useMemo(() => [...(data?.champions ?? [])].sort((a, b) => b.games - a.games), [data]);
@@ -32,11 +32,11 @@ export default function SimulatorIndex() {
         <a href="https://clarent.net" target="_blank" rel="noreferrer" className="text-ctp-blue hover:underline">
           Clarent
         </a>
-        , the community's TCGEngine-based Grand Archive simulator — no player identity is collected.
+        , the community's TCGEngine-based Grand Archive simulator – no player identity is collected.
       </p>
 
       <div className="mt-4 rounded-lg border border-ctp-peach bg-ctp-peach/10 px-4 py-3 text-sm text-ctp-text">
-        <p className="font-semibold text-ctp-peach">Experimental — very early data</p>
+        <p className="font-semibold text-ctp-peach">Experimental – very early data</p>
         <p className="mt-1 text-ctp-subtext1">
           A separate population from tournament results, never blended into them.{" "}
           <Link to="/methodology#simulator-data" className="text-ctp-blue hover:underline">Learn more</Link>
@@ -63,10 +63,10 @@ export default function SimulatorIndex() {
               <div>
                 <span className="text-ctp-subtext1">Avg game length: </span>
                 <span className="font-medium text-ctp-text">
-                  {/* `typeof` guard, not `=== null` — a cached/stale published file from before
+                  {/* `typeof` guard, not `=== null` – a cached/stale published file from before
                       avgTurns existed leaves it `undefined`, not `null`; formatAvg(undefined)
                       would throw. See TopDecksList.tsx for the same pre-refresh-window pattern. */}
-                  {typeof data.avgTurns === "number" ? `${formatAvg(data.avgTurns)} turns` : "—"}
+                  {typeof data.avgTurns === "number" ? `${formatAvg(data.avgTurns)} turns` : "–"}
                 </span>
               </div>
             </div>
@@ -122,7 +122,7 @@ export default function SimulatorIndex() {
                     <span className="text-ctp-subtext0">vs</span>
                     <span className="text-ctp-text" title={m.champion2}>{m.champion2Name ?? m.champion2}</span>
                     <span className="text-ctp-subtext1">
-                      — {m.champion1Wins}-{m.champion2Wins} across {m.games} game{m.games === 1 ? "" : "s"}
+                      – {m.champion1Wins}-{m.champion2Wins} across {m.games} game{m.games === 1 ? "" : "s"}
                     </span>
                   </li>
                 ))}
@@ -135,7 +135,7 @@ export default function SimulatorIndex() {
             title="Card stats"
             description={
               <>
-                Only shown for a card once it's appeared in at least 5 separate games — below that, an "average" would
+                Only shown for a card once it's appeared in at least 5 separate games – below that, an "average" would
                 just be replaying one specific game's exact card usage, not actually aggregating anything. Card ID is
                 Clarent/TCGEngine's internal identifier, same caveat as Champions above.
               </>
@@ -223,7 +223,7 @@ export default function SimulatorIndex() {
           <Section
             heading="dense"
             title="Turn stats"
-            description="Same 5-game minimum, per turn number — averaged across every seat that reported stats for that turn."
+            description="Same 5-game minimum, per turn number – averaged across every seat that reported stats for that turn."
           >
             {turnStats.length === 0 ? (
               <InlineState className="mt-2 text-sm">

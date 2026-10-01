@@ -5,7 +5,7 @@ import CardComparisonTable from "./CardComparisonTable";
 import Button from "../../components/ui/Button";
 import { InlineState } from "../../components/ui/ContentState";
 
-/** Individual-card comparison — any number of cards (including just one, which still shows that card's own stats), unlike the deck-vs-deck mode which needs 2+ decklists to say anything about overlap. */
+/** Individual-card comparison – any number of cards (including just one, which still shows that card's own stats), unlike the deck-vs-deck mode which needs 2+ decklists to say anything about overlap. */
 export default function CardCompareIndex() {
   const cardCatalog = useCardCatalog();
   const cardNames = useMemo(() => Array.from(new Set(cardCatalog.map((c) => c.name))).sort(), [cardCatalog]);
@@ -19,7 +19,7 @@ export default function CardCompareIndex() {
   const hintTimerRef = useRef<number | null>(null);
 
   // Seeds from a `?cards=Name1,Name2` deep link (e.g. from a card detail page's quick-compare
-  // widget) once the catalog is loaded — mirrors CompareIndex's `?add=` seeding for decks.
+  // widget) once the catalog is loaded – mirrors CompareIndex's `?add=` seeding for decks.
   const seededRef = useRef(false);
   useEffect(() => {
     const raw = searchParams.get("cards");

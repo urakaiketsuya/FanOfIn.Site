@@ -1,5 +1,5 @@
 export function formatUsd(value: number | null): string {
-  return value === null ? "—" : `$${value.toFixed(2)}`;
+  return value === null ? "–" : `$${value.toFixed(2)}`;
 }
 
 export function titleCase(value: string): string {

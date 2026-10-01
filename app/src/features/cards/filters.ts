@@ -14,7 +14,7 @@ export interface CardFilterState {
   elements: Set<string>;
   /** Set-family prefixes; historical edition prefixes also resolve to their family. */
   sets: Set<string>;
-  /** `Card.speed` — true/false is a printed characteristic of Action/Reaction-type cards (Reactions
+  /** `Card.speed` – true/false is a printed characteristic of Action/Reaction-type cards (Reactions
    * are always fast); other types don't have one at all (null), so "normal" only ever matches
    * Action cards explicitly printed as normal-speed, not every non-fast card in the catalog. */
   speed: SpeedFilter;
@@ -64,7 +64,7 @@ function hasAnyTag(tags: ReadonlySet<string> | undefined, selected: ReadonlySet<
   return !!tags && [...selected].some((tag) => tags.has(canonicalCardTag(tag)));
 }
 
-/** The printing whose art carries a selected tag, when tags are filtered — else undefined. */
+/** The printing whose art carries a selected tag, when tags are filtered – else undefined. */
 export function editionWithTag(card: Card, filters: CardFilterState, tagLookup: CardTagLookup | undefined): Card["editions"][number] | undefined {
   if (!filters.tags?.size || !tagLookup) return undefined;
   return card.editions.find((ed) => hasAnyTag(tagLookup.editions.get(ed.uuid), filters.tags!) && matchesEdition(ed, filters));

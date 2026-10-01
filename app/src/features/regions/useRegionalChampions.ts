@@ -15,7 +15,7 @@ export interface RegionalChampions {
   loading: boolean;
 }
 
-/** Champion popularity for the selected region — covers every deck sighting, not just clustered ones (unlike the Archetypes breakdown), since it doesn't need a named build to group by. */
+/** Champion popularity for the selected region – covers every deck sighting, not just clustered ones (unlike the Archetypes breakdown), since it doesn't need a named build to group by. */
 export function useRegionalChampions(regionByDeckId: Map<string, string>, regionKey: string | null, enabled = true): RegionalChampions {
   const deckPopularity = useDeckPopularityIndexData(enabled);
 

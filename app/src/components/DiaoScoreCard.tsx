@@ -3,7 +3,7 @@ import type { DeckRating, RatingPillar } from "@gatcg/shared";
 
 const PILLARS: RatingPillar[] = ["durability", "interaction", "aggro", "opportunity"];
 
-/** The four-pillar DIAO score panel — shared by DeckDetail.tsx's own tab and DecklistView.tsx's
+/** The four-pillar DIAO score panel – shared by DeckDetail.tsx's own tab and DecklistView.tsx's
  * optional "DIAO score" section, so the two never drift into separate renderings of the same
  * `computeDeckRating` output. `children` is for DeckDetail.tsx's AggressionForecast, which only
  * that page has the extra data for. */

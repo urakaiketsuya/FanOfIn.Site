@@ -4,7 +4,7 @@ import BarChart from "./BarChart";
 import RankedCompositionChart from "./RankedCompositionChart";
 import { buildChartSegments } from "./DonutChart";
 
-/** Memory/Reserve cost curves + Type/Element/Subtype breakdowns — the chart block shared by the
+/** Memory/Reserve cost curves + Type/Element/Subtype breakdowns – the chart block shared by the
  * Guided Deck Builder's Stats tab and the account/public deck Analysis tab. Purely presentational;
  * callers already have `composition`/`memoryCurve`/`reserveCurve` computed via `computeDeckComposition`/
  * `computeMemoryCostCurve`/`computeReserveCostCurve` (`lib/deckIdentity.ts`). */

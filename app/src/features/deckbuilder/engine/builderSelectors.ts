@@ -35,10 +35,10 @@ export interface ReviewGroups {
 }
 
 /**
- * Every card the engine would place if nothing were treated as already-decided — the auto-filled
+ * Every card the engine would place if nothing were treated as already-decided – the auto-filled
  * Main/Material/Sideboard entries that aren't locked yet (`SuggestedCard.locked === false`), plus
  * the ordinary leftover-ranked `suggestions`. The full Guided Deck Builder never needs this (its
- * auto-fill already IS the deck, so only genuine leftovers go through Review) — this exists for a
+ * auto-fill already IS the deck, so only genuine leftovers go through Review) – this exists for a
  * suggestions-only surface where nothing is committed until the viewer explicitly accepts it, so an
  * unlocked auto-fill pick is exactly as much "just a suggestion" as an unplaced leftover one.
  */

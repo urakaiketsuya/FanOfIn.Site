@@ -1,6 +1,6 @@
 import type { ElementType, HTMLAttributes, ReactNode } from "react";
 
-/** Same elevation ladder as `Panel`'s "default" tone — see that file's comment for why tonal
+/** Same elevation ladder as `Panel`'s "default" tone – see that file's comment for why tonal
  * lightening (not just shadow) is used on this dark theme. */
 type SurfaceElevation = 0 | 1 | 2;
 

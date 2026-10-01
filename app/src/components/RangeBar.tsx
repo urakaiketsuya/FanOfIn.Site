@@ -11,10 +11,10 @@ export interface RangeBarStats {
 
 /**
  * Visualizes a spread of percentiles as a track spanning p10→p90 (the "typical" range) with
- * the p25–p75 band highlighted and a median tick — deliberately NOT a min→max linear bar.
+ * the p25–p75 band highlighted and a median tick – deliberately NOT a min→max linear bar.
  * Real price data here has extreme high-end outliers (a $15k+ deck against a ~$750 p90), so a
  * min→max scale would squeeze the entire typical range into a sliver at one end. Min/mean/max
- * are still shown as plain numbers below the bar — the outliers aren't hidden, just not
+ * are still shown as plain numbers below the bar – the outliers aren't hidden, just not
  * allowed to distort the one visual encoding everyone actually reads at a glance.
  */
 export default function RangeBar({ title, subtitle, stats, format }: { title: string; subtitle?: string; stats: RangeBarStats; format: (n: number) => string }) {

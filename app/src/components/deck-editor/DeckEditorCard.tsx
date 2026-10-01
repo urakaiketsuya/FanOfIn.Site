@@ -20,7 +20,7 @@ export default function DeckEditorCard({ line, card, section, onChangeQuantity, 
   const destinations = EDITOR_SECTIONS.filter(item => item.key !== section && deckDestinationEligibility(card, item.key).allowed);
   const [destination, setDestination] = useState<DeckEditSection>(destinations[0]?.key ?? "maybeboard");
   const [moveQuantity, setMoveQuantity] = useState(line.quantity);
-  const title = card ? <Link to={`/cards/${card.slug}`} target="_blank" rel="noreferrer" className="flex min-h-12 items-center break-words text-sm font-medium text-ctp-text underline decoration-ctp-surface1 underline-offset-4">{line.card}<span className="sr-only"> — card details in a new tab</span></Link> : <p className="flex min-h-12 items-center break-words text-sm font-medium">{line.card}</p>;
+  const title = card ? <Link to={`/cards/${card.slug}`} target="_blank" rel="noreferrer" className="flex min-h-12 items-center break-words text-sm font-medium text-ctp-text underline decoration-ctp-surface1 underline-offset-4">{line.card}<span className="sr-only"> – card details in a new tab</span></Link> : <p className="flex min-h-12 items-center break-words text-sm font-medium">{line.card}</p>;
   return <article className={`min-w-0 rounded-xl border bg-ctp-mantle p-2 ${selected ? "border-ctp-blue ring-2 ring-ctp-blue/30" : cardLegalityStatus(card, format) === "banned" ? "border-ctp-red/60" : "border-ctp-surface1"}`}>
     <div className={list ? "flex items-start gap-3" : ""}>
       <div className={list ? "w-14 shrink-0" : ""}><CardArtTile card={card} name={line.card} /></div>

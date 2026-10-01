@@ -72,7 +72,7 @@ export default function CardDetail() {
   useDocumentTitle(
     card?.name,
     card && `${[card.types.join("/"), card.classes.join("/"), card.elements.join("/")].filter(Boolean).join(" · ")}${
-      card.effect ? ` — ${card.effect.replace(/\s+/g, " ").slice(0, 140)}` : ""
+      card.effect ? ` – ${card.effect.replace(/\s+/g, " ").slice(0, 140)}` : ""
     }`,
   );
   const [editionIndex, setEditionIndex] = useState(0);
@@ -113,11 +113,11 @@ export default function CardDetail() {
   const cardQuantityStatsData = useCardQuantityStatsData(showOverview);
   const cardQuantityStat = cardQuantityStatsData?.cards.find((c) => c.name === card?.name);
   // Below this many decks, a quantity bucket is more likely a one-off brew or data quirk than a
-  // real signal — same MIN_SAMPLE_SIZE magnitude used everywhere else in this codebase.
+  // real signal – same MIN_SAMPLE_SIZE magnitude used everywhere else in this codebase.
   const quantityBuckets = cardQuantityStat?.quantities.filter((q) => q.deckCount >= 5) ?? [];
 
   const cardCatalog = useCardCatalog();
-  // Same slug-first, name-fallback resolution DecklistView.tsx's own Tokens section already uses —
+  // Same slug-first, name-fallback resolution DecklistView.tsx's own Tokens section already uses –
   // a CardReference only carries {kind, name, slug, direction}, no image, so References/Referenced
   // by need this to show a thumbnail/hover-preview instead of plain text links.
   const catalogBySlug = useMemo(() => new Map(cardCatalog.map((c) => [c.slug, c])), [cardCatalog]);
@@ -127,7 +127,7 @@ export default function CardDetail() {
   const compareCardNames = useMemo(() => Array.from(new Set(cardCatalog.map((c) => c.name))).sort(), [cardCatalog]);
   const [compareWith, setCompareWith] = useState<string[]>([]);
   const [compareInput, setCompareInput] = useState("");
-  // Reseeds to just this page's card whenever it changes (navigating to a different card) —
+  // Reseeds to just this page's card whenever it changes (navigating to a different card) –
   // otherwise a stale comparison from the previous card page would carry over.
   useEffect(() => {
     if (card) setCompareWith([card.name]);
@@ -208,7 +208,7 @@ export default function CardDetail() {
   // Real-deck corroboration for Intent Cards matches: package-candidate mining scores the exact
   // same kind of relationship against actual deck data, and (via `archetypeSources`) ties some of
   // it to specific concrete builds. Only pair-level candidates (memberCards.length === 1) apply
-  // here — a multi-card family candidate doesn't confirm any one pair by itself.
+  // here – a multi-card family candidate doesn't confirm any one pair by itself.
   const minedPackages = useMinedPackageCandidates(needsIntentTab);
   const packageEvidenceByPair = useMemo(() => {
     const map = new Map<string, PackageCandidateEvidence>();
@@ -272,7 +272,7 @@ export default function CardDetail() {
   }, [hipsterData, deckIdSet]);
 
   // Cluster-level ("Water Diao Chan", not just "Diao Chan") builds this card is a *defining*
-  // member of — a strict upgrade over the older per-Champion `playedByChampions` this replaced,
+  // member of – a strict upgrade over the older per-Champion `playedByChampions` this replaced,
   // via `cardClusterIndex` (pipeline/src/analysis/archetypeTaxonomy.ts). `?? []`/`?.` guard a
   // stale IndexedDB copy from before this field shipped, same convention as `c.seasons ?? []`
   // elsewhere in this codebase.

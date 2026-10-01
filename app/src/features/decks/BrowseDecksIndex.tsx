@@ -19,7 +19,7 @@ const VIEW_LABELS: Record<ViewMode, string> = {
 export default function BrowseDecksIndex() {
   useDocumentTitle(
     "Browse Decks",
-    "Browse Grand Archive TCG decklists — grouped into distinct builds or as individual tournament results — filterable by Champion, element, cards, season, and outcome.",
+    "Browse Grand Archive TCG decklists – grouped into distinct builds or as individual tournament results – filterable by Champion, element, cards, season, and outcome.",
   );
   const [searchParams] = useSearchParams();
   const [view, setView] = useTabParam<ViewMode>("view", VIEW_TABS, "sightings");

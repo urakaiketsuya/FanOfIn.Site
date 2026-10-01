@@ -54,7 +54,7 @@ function ProductCard({ product, hasPack }: { product: ProductEntry; hasPack: boo
 }
 
 export default function ProductsIndex() {
-  useDocumentTitle("Products", "Official Grand Archive TCG product releases — Standard sets, Expansions, and Capstone sets.");
+  useDocumentTitle("Products", "Official Grand Archive TCG product releases – Standard sets, Expansions, and Capstone sets.");
   const featuredSets = useFeaturedSets();
 
   const boosterPrefixes = useMemo(() => {

@@ -39,7 +39,7 @@ export default function BuilderCopyPanel({
   onExportTts: () => void;
   onCopyShareLink: () => void;
   shareCopyState: "idle" | "copied" | "failed";
-  /** Hides the "Copy full deck" option and "Save only kept cards" checkbox — for a caller (the suggestions-only Deck Review page) where every card is already kept by construction, so a "full vs. kept" distinction doesn't exist. */
+  /** Hides the "Copy full deck" option and "Save only kept cards" checkbox – for a caller (the suggestions-only Deck Review page) where every card is already kept by construction, so a "full vs. kept" distinction doesn't exist. */
   hideFullDeckOption?: boolean;
 }) {
   return (
@@ -120,7 +120,7 @@ export default function BuilderCopyPanel({
         <button
           type="button"
           onClick={onExportTts}
-          title="Downloads a .json file — in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it"
+          title="Downloads a .json file – in Tabletop Simulator, use Games ▸ Save & Load ▸ Load to open it"
           className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text"
         >
           Export to TTS

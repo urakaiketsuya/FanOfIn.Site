@@ -13,8 +13,8 @@ interface BuddyGroup {
 
 /**
  * Inverts the per-locked-card buddy lists (`{lockedName: BuddyCard[]}`) into one entry per
- * recommended card, so a card that pairs well with several of the viewer's locks is shown once —
- * not duplicated under each lock — and sorted with the strongest multi-lock signals first.
+ * recommended card, so a card that pairs well with several of the viewer's locks is shown once –
+ * not duplicated under each lock – and sorted with the strongest multi-lock signals first.
  */
 function groupBuddiesByCard(
   groups: { name: string; buddies: { cardName: string; coOccurrenceRate: number; count: number }[] }[],
@@ -272,7 +272,7 @@ export default function BuddyCardsList({
         title="Buddy cards"
         description={lockedNames.length === 0
           ? "Keep a card to see what's most often run alongside it."
-          : "No buddy suggestions right now — either everything commonly run alongside your choices is already in the build, or this Champion/Spirit population is too thin to say (a build with many user choices often narrows it down to just a few decks)."}
+          : "No buddy suggestions right now – either everything commonly run alongside your choices is already in the build, or this Champion/Spirit population is too thin to say (a build with many user choices often narrows it down to just a few decks)."}
       >
         {null}
       </Section>
@@ -311,11 +311,11 @@ export default function BuddyCardsList({
   );
 }
 
-/** Same composition/rating stats as a deck's own dedicated page (DeckDetail.tsx), recomputed live from whatever's currently assembled — updates as cards get locked, added, or removed. */
+/** Same composition/rating stats as a deck's own dedicated page (DeckDetail.tsx), recomputed live from whatever's currently assembled – updates as cards get locked, added, or removed. */
 /** "tournament" ranks by real Omnidex win-rate lift (useSuggestedBuild); "community" ranks by
- * the blended community population's popularity (useCommunitySuggestedBuild) — no win/loss data, so pillar
+ * the blended community population's popularity (useCommunitySuggestedBuild) – no win/loss data, so pillar
  * tuning and lift-specific UI are unavailable in this mode. "balanced" is still useSuggestedBuild's
- * real lift-ranked build — same adjustedLift/conditionalWinRate numbers as "tournament" — just with
+ * real lift-ranked build – same adjustedLift/conditionalWinRate numbers as "tournament" – just with
  * community popularity nudging the ranking order alongside any pillar bias, so it keeps full
  * lift-specific UI (pillar tuning, removal suggestions) unlike "community". The default source. See
  * docs/CALCULATIONS.md, "Community population" and "Balanced source". */

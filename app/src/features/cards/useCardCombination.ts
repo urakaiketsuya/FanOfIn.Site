@@ -60,7 +60,7 @@ function topN(counts: Map<number, RawCardCount>, limit: number): RawCardCount[] 
 
 /**
  * Given a set of chosen card names, finds every deck containing all of them (in any section) and
- * ranks the other cards played alongside — the multi-card generalization of "used with" browsing.
+ * ranks the other cards played alongside – the multi-card generalization of "used with" browsing.
  * All computed client-side against the published deck-card-index dataset, so arbitrary
  * combinations work without a server round-trip.
  */

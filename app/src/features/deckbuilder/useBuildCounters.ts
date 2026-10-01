@@ -3,7 +3,7 @@ import type { CardImpactData, ClusterMatchupImpact, MatchupCardImpactData } from
 import type { NearestDeck } from "./useNearestDecks";
 
 export interface BuildCounters {
-  /** The real deck `clusterMatchups` is proxied off of — null until `useNearestDecks` has a result that belongs to a named cluster. */
+  /** The real deck `clusterMatchups` is proxied off of – null until `useNearestDecks` has a result that belongs to a named cluster. */
   sourceDeck: NearestDeck | null;
   /** Sorted by games descending, same default-to-most-played convention as DeckDetail.tsx's own `clusterMatchups`. */
   clusterMatchups: ClusterMatchupImpact[];
@@ -13,15 +13,15 @@ export interface BuildCounters {
 }
 
 /**
- * "What beats this build" for a deck still under construction — it has no `deckId` of its own to
+ * "What beats this build" for a deck still under construction – it has no `deckId` of its own to
  * look up in `CardImpactData.deckClusterIndex`, so this proxies off the closest real deck among
  * `useNearestDecks`' own similarity ranking instead. Only ~128 named-build clusters exist against a
- * ~57k-deck universe, so the top nearest deck often isn't clustered — this scans past those
+ * ~57k-deck universe, so the top nearest deck often isn't clustered – this scans past those
  * near-misses for the first one that is, rather than giving up after `nearestDecks[0]`.
  *
  * Same `matchupCardImpactData` shape and "default to most-played, don't flatten across opponents"
  * reasoning as DeckDetail.tsx's `clusterMatchups`/`selectedMatchup` (see that file and
- * ArchetypeHurtYouView.tsx's doc comments) — this is that same pattern, just sourced from a
+ * ArchetypeHurtYouView.tsx's doc comments) – this is that same pattern, just sourced from a
  * proxy deck instead of the build's own `deckId`.
  */
 export function useBuildCounters(

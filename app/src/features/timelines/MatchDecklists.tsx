@@ -12,13 +12,13 @@ function normalize(s: string): string {
 }
 
 /** A caster's spoken name may carry a title, alias, or parenthetical the registered username doesn't
- * ("Jet, TM32", "Asa/Asuna") — trims to the first clause before matching against the roster. */
+ * ("Jet, TM32", "Asa/Asuna") – trims to the first clause before matching against the roster. */
 function baseName(name: string): string {
   return name.split(/[,/(]/)[0].trim();
 }
 
 /** Best-effort match of a caster-spoken name against the event roster. Only auto-selects when exactly
- * one player is a plausible match — ambiguous or absent matches fall back to the manual search picker
+ * one player is a plausible match – ambiguous or absent matches fall back to the manual search picker
  * below rather than risk attaching the wrong player's decklist. */
 function autoResolvePlayer(casterName: string, players: OmnidexPlayer[]): OmnidexPlayer | undefined {
   const n = normalize(casterName);
@@ -104,7 +104,7 @@ function PlayerDecklistSlot({
           </button>
         </p>
       ) : (
-        <p className="mt-1 text-xs text-ctp-subtext1">Not auto-matched — search the tournament roster below.</p>
+        <p className="mt-1 text-xs text-ctp-subtext1">Not auto-matched – search the tournament roster below.</p>
       )}
 
       {showSearch && (

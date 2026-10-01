@@ -4,12 +4,12 @@ import { legalMaxCopies, pickBetterQuantity } from "../../lib/cardQuantityAdvice
 export type TrimSection = "main" | "material" | "sideboard";
 
 /** A small ranking nudge (not a driver) toward cutting from a cost bucket the deck is already
- * stacked on, applied on top of Card Impact lift — mirrors the existing curve-aware nudges used
+ * stacked on, applied on top of Card Impact lift – mirrors the existing curve-aware nudges used
  * elsewhere in the Deck Builder's own scoring (see docs/CALCULATIONS.md). */
 const CURVE_PEAK_NUDGE = -0.02;
 
 /** Above this size a section is considered "over target" and worth surfacing trim suggestions
- * for, even though only Material/Sideboard are illegal past their own caps — a 60+ Main deck is a
+ * for, even though only Material/Sideboard are illegal past their own caps – a 60+ Main deck is a
  * consistency concern, not a legality one, so this tool treats 60 as Main's advisory target. */
 export const TRIM_TARGET_SIZE: Record<TrimSection, number> = { main: 60, material: 12, sideboard: 15 };
 
@@ -39,7 +39,7 @@ export interface TrimPlan {
 const MAX_CANDIDATES = 12;
 
 /** Names of the non-Champion cards sharing this section's most-populous cost bucket for one
- * currency (Memory or Reserve) — the "curve peak" `computeTrimPlan`'s nudge cuts from first. */
+ * currency (Memory or Reserve) – the "curve peak" `computeTrimPlan`'s nudge cuts from first. */
 export function computeCurvePeakCardNames(lines: { cardName: string; quantity: number }[], cardsByName: Map<string, Card>, costField: "cost_memory" | "cost_reserve"): Set<string> {
   const counts = new Map<number, number>();
   const bucketByName = new Map<string, number>();
@@ -58,7 +58,7 @@ export function computeCurvePeakCardNames(lines: { cardName: string; quantity: n
 /**
  * Ranks a deck section's cards for trimming toward `targetSize`, combining three already-computed
  * site signals rather than a new one: quantity-vs-optimal (`pickBetterQuantity`), Champion-scoped
- * Card Impact lift (`adjustedLift`), and — as a minor tiebreak nudge, not a driver — whether a card
+ * Card Impact lift (`adjustedLift`), and – as a minor tiebreak nudge, not a driver – whether a card
  * sits in the deck's own most-crowded cost bucket. Price is disclosed per candidate but never
  * ranks it: this stays a "what hurts the deck least" tool, not a budget-cutting one. Returns null
  * when the section isn't over `targetSize`.
@@ -85,7 +85,7 @@ export function computeTrimPlan(
   const remainingByName = new Map(lines.map((line) => [line.cardName, line.quantity]));
   const candidates: TrimCandidate[] = [];
 
-  // Tier 1: quantity surplus — a strictly evidence-backed trim (this exact card already performs
+  // Tier 1: quantity surplus – a strictly evidence-backed trim (this exact card already performs
   // better at a lower count), so these always lead regardless of lift.
   for (const line of lines) {
     const card = cardsByName.get(line.cardName);
@@ -130,7 +130,7 @@ export function computeTrimPlan(
       remainingQuantity: 0,
       reason: entry.lift === null ? "no-data" : "low-impact",
       detail: entry.lift === null
-        ? "Not enough tournament data on this card to rank its impact — review by hand."
+        ? "Not enough tournament data on this card to rank its impact – review by hand."
         : `${entry.lift >= 0 ? "+" : ""}${(entry.lift * 100).toFixed(1)}% win-rate lift vs. decks without it.`,
       adjustedLift: entry.lift,
       priceEach: entry.priceEach,

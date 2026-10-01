@@ -29,10 +29,10 @@ export const officialProductsSource = rawData.source;
 
 export const PRODUCT_LABELS: Record<string, string> = {
   DTRSD: "Distorted Reflections",
-  "ReC-IDY": "Re:Collection — Idyll Corsage",
-  "ReC-HVF": "Re:Collection — Heaven's Favored",
-  "ReC-SLM": "Re:Collection — Slime Sovereign",
-  "ReC-SHD": "Re:Collection — Shadowdancer",
+  "ReC-IDY": "Re:Collection – Idyll Corsage",
+  "ReC-HVF": "Re:Collection – Heaven's Favored",
+  "ReC-SLM": "Re:Collection – Slime Sovereign",
+  "ReC-SHD": "Re:Collection – Shadowdancer",
   AMBSD: "Mortal Ambition",
   ALCSD: "Alchemical Revolution",
   DOASD: "Dawn of Ashes",

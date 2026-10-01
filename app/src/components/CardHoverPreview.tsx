@@ -7,7 +7,7 @@ const CURSOR_OFFSET = 16;
 const VIEWPORT_MARGIN = 8;
 
 interface CardHoverPreviewProps {
-  /** Edition image path (e.g. card.editions[0].image) — omit to render children with no hover behavior. */
+  /** Edition image path (e.g. card.editions[0].image) – omit to render children with no hover behavior. */
   image: string | undefined;
   /** Alternate printed face from an edition's `other_orientations`. */
   backImage?: string;
@@ -44,7 +44,7 @@ export default function CardHoverPreview({ image, backImage, backAlt, artOnly = 
     setPos(clamp(e.clientX + CURSOR_OFFSET, e.clientY + CURSOR_OFFSET));
   }
 
-  // Keyboard/touch users have no cursor to follow — anchor the preview to the focused element's
+  // Keyboard/touch users have no cursor to follow – anchor the preview to the focused element's
   // right edge instead, so tabbing through a card name still shows the card.
   function handleFocus(e: FocusEvent) {
     const rect = e.currentTarget.getBoundingClientRect();

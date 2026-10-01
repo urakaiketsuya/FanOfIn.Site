@@ -192,7 +192,7 @@ export function useBuilderRecommendationModel(options: BuilderRecommendationMode
   );
   const spiritOptionLabel = (name: string): string => {
     const stats = spiritStats.get(name);
-    return stats ? `${name} — ${stats.decks} ${stats.decks === 1 ? "deck" : "decks"}` : name;
+    return stats ? `${name} – ${stats.decks} ${stats.decks === 1 ? "deck" : "decks"}` : name;
   };
   const championsPresent = useMemo(() => Array.from(new Set(cardCatalog
     .filter((card) => card.types.includes("CHAMPION") && !card.subtypes.includes("SPIRIT") && card.legality?.[deckFormat]?.limit !== 0)

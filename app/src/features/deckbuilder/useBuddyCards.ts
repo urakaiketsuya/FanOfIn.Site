@@ -9,15 +9,15 @@ export interface BuddyCard {
   cardName: string;
   /** Fraction of decks containing the locked card that also contain this buddy. */
   coOccurrenceRate: number;
-  /** Raw count behind coOccurrenceRate — decks containing both. */
+  /** Raw count behind coOccurrenceRate – decks containing both. */
   count: number;
 }
 
 /**
- * For each locked-in card, the other cards most often run alongside it — pure co-occurrence, not
+ * For each locked-in card, the other cards most often run alongside it – pure co-occurrence, not
  * win-rate-filtered like `useSuggestedBuild`'s main ranking. A card can be a strong "buddy" (played
  * together constantly, real deckbuilding synergy) without its combination ever clearing Card
- * Impact's with/without sample bar or showing a notable lift — this is a deliberately separate,
+ * Impact's with/without sample bar or showing a notable lift – this is a deliberately separate,
  * unfiltered lens ("what do people actually run with this") so a viewer can pull in a synergistic
  * pick the win-rate ranking would never surface on its own.
  */

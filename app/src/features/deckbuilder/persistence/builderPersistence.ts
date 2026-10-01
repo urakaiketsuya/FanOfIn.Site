@@ -12,7 +12,7 @@ import {
 
 export const BUILDER_SESSION_KEY = "deckbuilder-session-v2";
 const LEGACY_SESSION_KEY = "deckbuilder-session-v1";
-/** A separate session slot for the suggestions-only Deck Review page — same storage shape and
+/** A separate session slot for the suggestions-only Deck Review page – same storage shape and
  * functions as the full Guided Deck Builder, just a distinct key so the two tools' in-progress
  * state never overwrites each other. */
 export const DECK_REVIEW_SESSION_KEY = "deck-review-session-v1";

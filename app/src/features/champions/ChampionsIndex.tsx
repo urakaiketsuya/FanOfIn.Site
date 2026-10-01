@@ -20,7 +20,7 @@ import Section from "../../components/ui/Section";
 const TREND_LABEL: Record<ChampionTrendDirection, string> = {
   rising: "▲ Rising",
   falling: "▼ Falling",
-  stable: "— Stable",
+  stable: "– Stable",
   new: "★ New",
   absent: "Absent",
   "insufficient-data": "",
@@ -118,7 +118,7 @@ export default function ChampionsIndex() {
           className="mt-10"
           heading="compact"
           title="Named Spirits"
-          description={<>Named Spirit companions (e.g. "Kaze, Spirit of Wind" — distinct from the generic "Spirit of Wind"), tracked with the same stats as a Champion, across every deck that runs them regardless of which Champion is present.</>}
+          description={<>Named Spirit companions (e.g. "Kaze, Spirit of Wind" – distinct from the generic "Spirit of Wind"), tracked with the same stats as a Champion, across every deck that runs them regardless of which Champion is present.</>}
         >
           <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {data.namedSpirits.map((s: ArchetypeSummary) => {

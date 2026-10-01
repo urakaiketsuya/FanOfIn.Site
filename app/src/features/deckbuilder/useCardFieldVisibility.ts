@@ -8,7 +8,7 @@ export interface CardFieldVisibility {
   winRate: boolean;
   sample: boolean;
   community: boolean;
-  /** Grid view only (BuilderCardGrid) — CardRow/SuggestionRow's list layout has no rendering for these yet. */
+  /** Grid view only (BuilderCardGrid) – CardRow/SuggestionRow's list layout has no rendering for these yet. */
   priceTrend: boolean;
   quantityNote: boolean;
   hypeGap: boolean;
@@ -45,14 +45,14 @@ function saveVisibility(visibility: CardFieldVisibility): void {
   try {
     localStorage.setItem(CARD_FIELDS_STORAGE_KEY, JSON.stringify(visibility));
   } catch {
-    // Private-browsing/storage-full edge cases can throw here — losing the saved preference
+    // Private-browsing/storage-full edge cases can throw here – losing the saved preference
     // silently is strictly better than crashing the page over it.
   }
 }
 
 /**
  * Which per-card data fields show on CardRow/SuggestionRow/BuilderCardGrid across the whole
- * Guided Deck Builder — a durable cross-session display preference (`localStorage`, not scoped to
+ * Guided Deck Builder – a durable cross-session display preference (`localStorage`, not scoped to
  * a tab or a deck-builder session like `deckbuilder-session-v1`), since "always show me X" is a
  * standing preference, not in-progress deck state. Defaults to a minimal set (Cost) so
  * card rows stay scannable; the rest are opt-in via the Customize panel.

@@ -51,7 +51,7 @@ function transform(posX: number): TtsTransform {
 
 /**
  * Builds a Tabletop Simulator save file: one stack per non-empty input group (Main/Material/
- * Sideboard), laid out side by side. No spritesheet generation — TTS's CustomDeck format allows
+ * Sideboard), laid out side by side. No spritesheet generation – TTS's CustomDeck format allows
  * a 1x1 "sheet" per unique card, so each card just references its own hosted image URL directly.
  * There's no real card-back art in our data, so FaceURL is reused for BackURL (harmless since
  * BackIsHidden hides it in normal play). A lone-card group is emitted as a bare Card object
@@ -124,7 +124,7 @@ export function downloadJsonFile(filename: string, data: unknown) {
   URL.revokeObjectURL(url);
 }
 
-/** Deck's Champion for export naming — same "highest-level CHAMPION in the Material Deck" rule as the pipeline's `findChampionName`, kept separate since this only needs to pick a filename, not feed downstream stats. */
+/** Deck's Champion for export naming – same "highest-level CHAMPION in the Material Deck" rule as the pipeline's `findChampionName`, kept separate since this only needs to pick a filename, not feed downstream stats. */
 export function findDeckChampionName(materialLines: OmnidexDecklistCardLine[], cardsByName: Map<string, Card>): string | null {
   let best: { name: string; level: number } | null = null;
   for (const line of materialLines) {

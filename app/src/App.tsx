@@ -11,7 +11,7 @@ import { initAnalytics, trackPageview } from "./lib/analytics";
 
 interface NavLinkItem { to: string; label: string }
 interface NavGroup { kind: "group"; label: string; paths: string[]; links: NavLinkItem[] }
-/** A single-destination top-level pillar (no dropdown) — for a section important enough to earn its own nav slot without a menu of sub-pages underneath it. */
+/** A single-destination top-level pillar (no dropdown) – for a section important enough to earn its own nav slot without a menu of sub-pages underneath it. */
 interface NavFlatLink { kind: "link"; to: string; label: string }
 type NavEntry = NavGroup | NavFlatLink;
 

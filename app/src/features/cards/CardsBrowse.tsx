@@ -32,7 +32,7 @@ const TABS: readonly TabMode[] = ["browse", "sets"];
 const TAB_LABELS: Record<TabMode, string> = { browse: "Browse", sets: "By Set" };
 
 export default function CardsBrowse() {
-  useDocumentTitle("Cards", "Browse and search the full Grand Archive TCG card database — filter by class, element, type, and set.");
+  useDocumentTitle("Cards", "Browse and search the full Grand Archive TCG card database – filter by class, element, type, and set.");
   const cards = useCardCatalog();
   const syncProgress = useSyncProgress();
   const options = useQuery({ queryKey: ["option-definitions"], queryFn: gatcgApi.getOptionDefinitions });
@@ -95,7 +95,7 @@ export default function CardsBrowse() {
       .map(([prefix, s]) => ({ value: prefix, text: `${s.name} (${prefix})` }));
   }, [cards]);
 
-  // A card can have printings across multiple sets — when the Set filter narrows to exactly one,
+  // A card can have printings across multiple sets – when the Set filter narrows to exactly one,
   // show that set's specific art (same behavior the old dedicated /sets/:prefix page had) instead
   // of always defaulting to a card's first-ever printing.
   const pickEdition = useMemo(() => {
@@ -108,7 +108,7 @@ export default function CardsBrowse() {
     setTab("browse");
   }
 
-  // Only when the Set filter narrows to exactly one — a graceful no-op for any set outside the
+  // Only when the Set filter narrows to exactly one – a graceful no-op for any set outside the
   // hand-authored Products dataset (old/obscure prefixes), not a broken image.
   const bannerProduct = filters.sets.size === 1 ? PRODUCTS.find((p) => p.prefix === Array.from(filters.sets)[0] && p.banner) : undefined;
 

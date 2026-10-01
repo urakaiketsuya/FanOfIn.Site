@@ -83,10 +83,10 @@ export interface SharedCardUsage {
 
 /**
  * For each given card name, tallies how many total copies the user's saved decks need and which
- * decks need them, checked against one pooled collection — the case where a limited physical
+ * decks need them, checked against one pooled collection – the case where a limited physical
  * playset has to move between decks rather than living fully in each at once (e.g. two decks each
  * running 4x of a card the owner only has 4 copies of). Always returns one entry per requested
- * card, even one currently in 0 or 1 decks (`decks` just comes back short) — callers pick which
+ * card, even one currently in 0 or 1 decks (`decks` just comes back short) – callers pick which
  * cards to ask about (typically the user's own "watched" list), not this function.
  */
 export function watchedCardUsage(cardNames: string[], decks: SavedDeck[], entries: CollectionEntry[], includeSideboard = true): SharedCardUsage[] {

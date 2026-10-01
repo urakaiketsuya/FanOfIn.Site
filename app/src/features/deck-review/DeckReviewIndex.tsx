@@ -43,7 +43,7 @@ const EMPTY_BUILD_COUNTERS: BuildCounters = {
   selectedMatchup: undefined,
 };
 
-/** Same shape/functions as the full Guided Deck Builder's own session restore — just its own storage key, so the two tools' in-progress work never collide. */
+/** Same shape/functions as the full Guided Deck Builder's own session restore – just its own storage key, so the two tools' in-progress work never collide. */
 function loadSessionSeed() {
   const workspace = loadActiveDeckWorkspace(sessionStorage);
   if (workspace?.championName && (workspace.main.length > 0 || workspace.material.length > 0)) {
@@ -78,17 +78,17 @@ function loadSessionSeed() {
 
 /**
  * A deliberately smaller sibling to the Guided Deck Builder: nothing is ever auto-committed here.
- * Picking a Champion+Spirit (or pasting a decklist) never fills a single slot on its own — every
+ * Picking a Champion+Spirit (or pasting a decklist) never fills a single slot on its own – every
  * card, including the Champion print and Spirit themselves, shows up as an ordinary ranked
  * suggestion the viewer explicitly accepts. This works by *not* treating the engine's auto-filled
- * Main/Material/Sideboard as "the deck": only `lockedCards` (the viewer's own accepted picks) is —
+ * Main/Material/Sideboard as "the deck": only `lockedCards` (the viewer's own accepted picks) is –
  * see `derivePendingSuggestions`'s doc comment for how the same `SuggestedBuild` output that drives
  * the full builder's auto-fill gets reinterpreted here as one big suggestion feed instead.
  */
 export default function DeckReviewIndex() {
   useDocumentTitle(
     "Deck Review",
-    "Start from a Champion and Spirit, or your own decklist, then accept or reject one ranked suggestion at a time — nothing is ever added automatically.",
+    "Start from a Champion and Spirit, or your own decklist, then accept or reject one ranked suggestion at a time – nothing is ever added automatically.",
   );
 
   const sessionSeed = useMemo(() => loadSessionSeed(), []);
@@ -131,7 +131,7 @@ export default function DeckReviewIndex() {
   const [spiritElement, setSpiritElement] = useState<string | null>(null);
   const [dismissedReviewCards, setDismissedReviewCards] = useState<Set<string>>(new Set());
   const [showProtectedCuts, setShowProtectedCuts] = useState(false);
-  // Card art is the point of this page — default to the visual grid instead of the Guided Deck
+  // Card art is the point of this page – default to the visual grid instead of the Guided Deck
   // Builder's own list default, via a separate storage key so this doesn't touch that preference.
   const [viewMode, setViewMode] = useBuilderViewMode("deck-review-view-mode-v1", "grid");
   const [visibleFields] = useCardFieldVisibility();
@@ -168,7 +168,7 @@ export default function DeckReviewIndex() {
   );
   function spiritOptionLabel(name: string): string {
     const stats = spiritStats.get(name);
-    return stats ? `${name} — ${stats.decks} ${stats.decks === 1 ? "deck" : "decks"}` : name;
+    return stats ? `${name} – ${stats.decks} ${stats.decks === 1 ? "deck" : "decks"}` : name;
   }
 
   const championCard = useMemo(() => findChampionCard(rows, lockedCards, catalogByName), [rows, lockedCards, catalogByName]);
@@ -214,7 +214,7 @@ export default function DeckReviewIndex() {
   const reviewItemCount = reviewGroups.pairs.length + reviewGroups.unpairedRemovals.length + reviewGroups.unpairedSuggestions.length;
   const reviewComplete = reviewItemCount === 0;
 
-  // "Your deck so far" — deliberately the ONLY thing ever called "the deck" on this page. The
+  // "Your deck so far" – deliberately the ONLY thing ever called "the deck" on this page. The
   // engine's own `build.main`/`.material`/`.sideboard` also contain every unlocked auto-fill pick
   // (that's what feeds the suggestion grid above), so filtering to `.locked` here is what keeps
   // this page honest: nothing the viewer hasn't explicitly accepted ever shows up as "in the deck."
@@ -402,7 +402,7 @@ export default function DeckReviewIndex() {
             {collectionStatus && collectionStatus.missingCopies > 0 && <details className="mt-3 rounded-lg border border-ctp-yellow/35 bg-ctp-yellow/10 p-3 text-sm"><summary className="cursor-pointer font-medium text-ctp-yellow">{collectionStatus.missingCopies} missing cop{collectionStatus.missingCopies === 1 ? "y" : "ies"}</summary><ul className="mt-2 space-y-1 text-xs text-ctp-subtext1">{collectionStatus.lines.filter((line) => line.missing > 0).map((line) => <li key={line.card}>{line.missing}× {line.card}</li>)}</ul></details>}
             </details>
             <div>{keptCount === 0 ? (
-              <InlineState className="mt-2 text-sm">Nothing here yet — accept a suggestion below to start building.</InlineState>
+              <InlineState className="mt-2 text-sm">Nothing here yet – accept a suggestion below to start building.</InlineState>
             ) : (
               <div className="mt-2 space-y-4">
                 {keptMaterial.length > 0 && (

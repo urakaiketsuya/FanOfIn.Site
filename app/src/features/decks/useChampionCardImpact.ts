@@ -4,7 +4,7 @@ import { computeCardImpactEntries, decodeCardLines, isAvailableDeckRecommendatio
 import { useCardCatalog } from "../cards/useCardCatalog";
 import { computeDeckIdentity } from "../../lib/deckIdentity";
 
-/** Mirrors pipeline/src/config.ts's defaults — that config reads `process.env`, which doesn't exist client-side, so these are plain literals kept in sync by hand. */
+/** Mirrors pipeline/src/config.ts's defaults – that config reads `process.env`, which doesn't exist client-side, so these are plain literals kept in sync by hand. */
 const PRIOR_WEIGHT = 10;
 const MIN_SAMPLE_SIZE = 5;
 const MAX_RESULTS = 8;
@@ -17,11 +17,11 @@ export interface ChampionCardImpactResult {
 
 /**
  * Card Impact scoped to every deck of one Champion (optionally narrowed to decks sharing at least
- * one of `selectedElements`), computed client-side — the fallback recommendation for the ~99% of
+ * one of `selectedElements`), computed client-side – the fallback recommendation for the ~99% of
  * decks that aren't part of a named-build cluster (see cardImpact.ts's `deckClusterIndex`) and so
  * get nothing from the precise, pipeline-computed Card Impact. Unlike that cluster-scoped version,
  * this population is open-ended (the viewer picks which elements count via checkboxes), so it
- * can't be precomputed pipeline-side the way clusters are — same reasoning `useCardCombination`
+ * can't be precomputed pipeline-side the way clusters are – same reasoning `useCardCombination`
  * and `useDeckPopularity`'s champion filter already use for their own on-the-fly computations.
  */
 export function useChampionCardImpact(
@@ -29,9 +29,9 @@ export function useChampionCardImpact(
   selectedElements: string[],
   excludeCardNames: Set<string>,
   /** "best" (default) = highest adjustedLift first, same as every existing caller. "worst" = most
-   * negative adjustedLift first — cards that correlate with this Champion doing *worse*, for a
+   * negative adjustedLift first – cards that correlate with this Champion doing *worse*, for a
    * "what tends to hurt them" lens (e.g. Compare's "cards that hurt your opponent"). "all" = every
-   * scored card, unsliced and in descending-lift order — for a caller that needs to look up a
+   * scored card, unsliced and in descending-lift order – for a caller that needs to look up a
    * specific set of card names (e.g. deckTrimming.ts) rather than show a top-N list. */
   direction: "best" | "worst" | "all" = "best",
   availableElements?: ReadonlySet<string>,
@@ -46,7 +46,7 @@ export function useChampionCardImpact(
       return { cards: [], totalDecks: 0, loading: Boolean(championName) && (!cardIndexData || !popularityIndexData) };
 
     // Filter by Champion first, via the cheap lean-index lookup, before touching the (20MB+)
-    // deck-card-index dataset — same ordering useDeckPopularity.ts already uses for its own
+    // deck-card-index dataset – same ordering useDeckPopularity.ts already uses for its own
     // championFilter, so only this Champion's decks (not all 57k+) get decoded below.
     const winRateByDeckId = new Map<string, number>();
     for (const s of popularityIndexData.entries) {
@@ -78,12 +78,12 @@ export function useChampionCardImpact(
 
     if (rows.length === 0) return { cards: [], totalDecks: 0, loading: false };
 
-    // Shrink toward this population's own average win rate, not a flat 50% — same reasoning
+    // Shrink toward this population's own average win rate, not a flat 50% – same reasoning
     // cardImpact.ts documents for its cluster-scoped version.
     const baseline = rows.reduce((sum, r) => sum + r.outcome, 0) / rows.length;
     const entries = computeCardImpactEntries(rows, baseline, PRIOR_WEIGHT, MIN_SAMPLE_SIZE);
     const filtered = entries.filter((c) => !excludeCardNames.has(c.cardName) && (!availableElements || isAvailableDeckRecommendation(cardsByName.get(c.cardName), availableElements)));
-    // `entries` is already sorted best-first (adjustedLift descending) — the worst cards are the
+    // `entries` is already sorted best-first (adjustedLift descending) – the worst cards are the
     // tail end, in ascending order, so reverse to get most-negative-first.
     const cards = direction === "worst" ? filtered.slice(-MAX_RESULTS).reverse() : direction === "all" ? filtered : filtered.slice(0, MAX_RESULTS);
 

@@ -5,7 +5,7 @@ interface LoadMoreProps {
 }
 
 /**
- * Click-to-load-more button. Deliberately click-only, not scroll-triggered — an IntersectionObserver
+ * Click-to-load-more button. Deliberately click-only, not scroll-triggered – an IntersectionObserver
  * auto-load was tried and dropped: it could fire before the underlying data had actually settled
  * (e.g. right after a filter change swaps in a new dataset), which read as the page reloading
  * itself out of nowhere.

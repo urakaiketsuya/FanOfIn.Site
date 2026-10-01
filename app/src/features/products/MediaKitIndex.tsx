@@ -10,7 +10,7 @@ import { PRODUCTS, PRODUCTS_ATTRIBUTION, type ProductEntry } from "./data";
 
 const CUTOUT_NAMES = Object.keys(CHARACTER_CUTOUTS);
 
-/** The `<prefix>/logo.png` etc. asset-folder code — bare (no "1st"/"Alter" suffix), unlike
+/** The `<prefix>/logo.png` etc. asset-folder code – bare (no "1st"/"Alter" suffix), unlike
  * ProductEntry.prefix which carries the exact Cards-filter value (e.g. "DOA 1st"). */
 function assetCode(product: ProductEntry): string {
   return product.prefix.split(" ")[0];
@@ -41,8 +41,8 @@ function Lightbox({ thumb, onClose }: { thumb: Thumb; onClose: () => void }) {
 
 function ProductMediaSection({ product, cutouts, onSelect }: { product: ProductEntry; cutouts: Thumb[]; onSelect: (t: Thumb) => void }) {
   const thumbs: Thumb[] = [
-    { label: `${product.name} — Box art`, image: product.boxArt },
-    ...(product.banner ? [{ label: `${product.name} — Banner`, image: product.banner }] : []),
+    { label: `${product.name} – Box art`, image: product.boxArt },
+    ...(product.banner ? [{ label: `${product.name} – Banner`, image: product.banner }] : []),
     ...cutouts,
   ];
 
@@ -73,7 +73,7 @@ function ProductMediaSection({ product, cutouts, onSelect }: { product: ProductE
 }
 
 export default function MediaKitIndex() {
-  useDocumentTitle("Media Kit", "Browse every official Grand Archive TCG media-kit asset used on this site — logos, box art, key art, and character cutouts.");
+  useDocumentTitle("Media Kit", "Browse every official Grand Archive TCG media-kit asset used on this site – logos, box art, key art, and character cutouts.");
   const cutoutCards = useCardsByNames(CUTOUT_NAMES);
   const [selected, setSelected] = useState<Thumb | null>(null);
 

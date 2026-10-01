@@ -7,7 +7,7 @@ interface FeatureTip {
   cta: string;
 }
 
-// Hand-picked, not every page on the site — favors features a first-time visitor is unlikely to
+// Hand-picked, not every page on the site – favors features a first-time visitor is unlikely to
 // stumble onto from the nav alone (e.g. the Deck Builder's cut suggestions, the simulator/tournament
 // data split) over ones already obvious from top-level nav labels.
 const FEATURE_TIPS: FeatureTip[] = [

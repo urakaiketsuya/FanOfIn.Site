@@ -117,7 +117,7 @@ export default function CompareIndex() {
   }, [searchParams, setSearchParams]);
 
   // Seeds the compare set from a `?add=eventId:player,...` link (e.g. from an event's pairings
-  // or an achievement unlock) — once player/event data is available, then clears the param so it
+  // or an achievement unlock) – once player/event data is available, then clears the param so it
   // doesn't re-seed if the user removes a deck and the data refetches.
   const seededRef = useRef(false);
   useEffect(() => {
@@ -141,7 +141,7 @@ export default function CompareIndex() {
     }
     if (seeded.length > 0) setDecks((prev) => [...prev, ...seeded]);
 
-    // One combined update, not a separate setPanel() call — two sequential setSearchParams calls
+    // One combined update, not a separate setPanel() call – two sequential setSearchParams calls
     // in the same effect can race (the second's `prev` may not see the first's write yet), silently
     // dropping the panel switch.
     if (seeded.length > 0) setShowAddDecks(false);
@@ -152,7 +152,7 @@ export default function CompareIndex() {
     });
   }, [searchParams, playersData, index, setSearchParams]);
 
-  // Seeds pasted ("custom") decks from a `?custom=` link — independent of the ?add= effect above
+  // Seeds pasted ("custom") decks from a `?custom=` link – independent of the ?add= effect above
   // since decoding a custom deck's full card list needs no player/event lookup, unlike a sighting
   // deck's eventId:player reference.
   const seededCustomRef = useRef(false);
@@ -170,7 +170,7 @@ export default function CompareIndex() {
     }
 
     // Combined into one setSearchParams call for the same reason the ?add= effect above avoids a
-    // separate setPanel() call — see that comment.
+    // separate setPanel() call – see that comment.
     if (parsed.length > 0) setShowAddDecks(false);
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);

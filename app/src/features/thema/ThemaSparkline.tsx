@@ -4,7 +4,7 @@ interface ThemaSparklineProps {
   height?: number;
 }
 
-/** Minimal inline SVG line chart — no charting library needed for a single series. */
+/** Minimal inline SVG line chart – no charting library needed for a single series. */
 export default function ThemaSparkline({ values, width = 640, height = 160 }: ThemaSparklineProps) {
   if (values.length < 2) return null;
 

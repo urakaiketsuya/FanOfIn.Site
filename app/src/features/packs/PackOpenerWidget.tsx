@@ -48,7 +48,7 @@ function PackCardFace({ pc, index, revealed }: { pc: PackCard; index: number; re
 
 /**
  * The "open pack, staggered flip reveal" unit shared by the full /packs/:prefix page and the
- * homepage's compact demo — both just wrap this with their own header/chrome. Reads
+ * homepage's compact demo – both just wrap this with their own header/chrome. Reads
  * useCardCatalog() directly rather than taking cards as a prop since the catalog is already
  * synced app-wide (SyncProvider), so there's no extra fetch cost either caller needs to guard.
  */

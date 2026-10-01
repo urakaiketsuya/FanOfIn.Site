@@ -14,7 +14,7 @@ const SCOPE_LABELS: Record<Scope, string> = { differences: "Differences", shared
 const CARD_FIELDS: VisualFieldVisibility = { cost: false, price: false, priceTrend: false, tags: false, simulator: false, community: false };
 
 /** Every distinct card across the compared decks (any section, quantities summed), joined against
- * the site-wide Card Stats dataset — "is this card actually good across the whole meta," not just
+ * the site-wide Card Stats dataset – "is this card actually good across the whole meta," not just
  * "who has it," complementing the presence-only Table/Cards views. */
 export default function ComparisonCardStats({
   decks,
@@ -90,9 +90,9 @@ export default function ComparisonCardStats({
           {row.stat ? <div className="mt-1.5 grid grid-cols-3 gap-1 border-y border-ctp-surface0 py-1.5 text-center">
             <div><div className="font-semibold tabular-nums text-ctp-text">{(row.stat.adjustedWinRate * 100).toFixed(0)}%</div><div className="text-[10px] text-ctp-subtext0">Win rate</div></div>
             <div><div className="font-semibold tabular-nums text-ctp-text">{row.stat.deckCount}</div><div className="text-[10px] text-ctp-subtext0">Decks</div></div>
-            <div><div className="font-semibold tabular-nums text-ctp-text">{row.stat.marketPrice != null ? formatUsd(row.stat.marketPrice) : "—"}</div><div className="text-[10px] text-ctp-subtext0">Price</div></div>
+            <div><div className="font-semibold tabular-nums text-ctp-text">{row.stat.marketPrice != null ? formatUsd(row.stat.marketPrice) : "–"}</div><div className="text-[10px] text-ctp-subtext0">Price</div></div>
           </div> : <div className="mt-1.5 border-y border-ctp-surface0 py-2 text-center text-xs text-ctp-overlay1">Stats unavailable</div>}
-          <div className="mt-1.5 flex flex-wrap gap-1">{row.quantities.map((quantity, index) => <span key={decks[index].key} title={decks[index].label} className={`max-w-full truncate rounded bg-ctp-surface0 px-1.5 py-0.5 text-[10px] ${quantity > 0 ? "text-ctp-subtext1" : "text-ctp-overlay1"}`}>{shortDeckLabel(decks[index].label)} {quantity > 0 ? `${quantity}×` : "—"}</span>)}</div>
+          <div className="mt-1.5 flex flex-wrap gap-1">{row.quantities.map((quantity, index) => <span key={decks[index].key} title={decks[index].label} className={`max-w-full truncate rounded bg-ctp-surface0 px-1.5 py-0.5 text-[10px] ${quantity > 0 ? "text-ctp-subtext1" : "text-ctp-overlay1"}`}>{shortDeckLabel(decks[index].label)} {quantity > 0 ? `${quantity}×` : "–"}</span>)}</div>
         </div>} />;
       })}
     </div>}

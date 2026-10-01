@@ -28,7 +28,7 @@ const OUTCOME_LABELS: Record<Outcome, string> = {
   high: "High performers",
 };
 
-/** A deck with no known price is excluded whenever a max-price filter is active — can't call something "budget" without knowing what it costs. */
+/** A deck with no known price is excluded whenever a max-price filter is active – can't call something "budget" without knowing what it costs. */
 const MAX_PRICE_OPTIONS = [25, 50, 100, 250];
 
 export default function DeckSightingsView({

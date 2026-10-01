@@ -53,7 +53,7 @@ export default function BuilderReviewPanel({
   nearestDecks: NearestDeck[];
   nearestDeckCompareLink: (deck: NearestDeck) => string;
   onLoadNearestDeck: (deck: NearestDeck) => void;
-  /** Omitted when there's no Build tab to return to (e.g. the suggestions-only Deck Review page) — hides the "Back to build" link instead of wiring it to a no-op. */
+  /** Omitted when there's no Build tab to return to (e.g. the suggestions-only Deck Review page) – hides the "Back to build" link instead of wiring it to a no-op. */
   onBackToBuild?: () => void;
   onContinueToValidation: () => void;
   reviewComplete: boolean;

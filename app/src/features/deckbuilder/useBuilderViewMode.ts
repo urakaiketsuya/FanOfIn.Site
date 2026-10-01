@@ -17,12 +17,12 @@ function saveViewMode(mode: BuilderViewMode, storageKey: string): void {
   try {
     localStorage.setItem(storageKey, mode);
   } catch {
-    // Private-browsing/storage-full edge cases can throw here — losing the saved preference
+    // Private-browsing/storage-full edge cases can throw here – losing the saved preference
     // silently is strictly better than crashing the page over it.
   }
 }
 
-/** List vs. full-image grid for Material/Main/Sideboard on the Build tab — a durable per-browser
+/** List vs. full-image grid for Material/Main/Sideboard on the Build tab – a durable per-browser
  * preference. Defaults to the visual grid so cards are the primary way to scan a deck; a caller
  * with a different default surface (e.g. Deck Review, where the suggestion feed is the whole page
  * rather than one tab among several) can pass its own storage key and default without affecting

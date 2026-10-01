@@ -2,7 +2,7 @@ import type { Card, OmnidexDecklist } from "@gatcg/shared";
 
 export type LockedSection = "main" | "material" | "sideboard";
 
-/** Packs locked cards into one URL-safe query param for sharing — `section:qty:name` entries joined
+/** Packs locked cards into one URL-safe query param for sharing – `section:qty:name` entries joined
  * by `;`. Real card names haven't been seen using either separator, and a stray one just produces a
  * slightly malformed shared link rather than breaking anything, so no escaping beyond what
  * URLSearchParams already does for the param value as a whole. */
@@ -12,7 +12,7 @@ export function encodeLockedCards(lockedCards: Map<string, number>, lockedSectio
     .join(";");
 }
 
-/** Just the path + query (`/deck-builder?...`) — for an in-app `<Link>`, which needs a relative
+/** Just the path + query (`/deck-builder?...`) – for an in-app `<Link>`, which needs a relative
  * path, not an absolute URL. */
 export function buildDeckBuilderPath(
   championName: string,
@@ -40,7 +40,7 @@ export interface DeckBuilderParams {
   lockedSections: Map<string, LockedSection>;
 }
 
-/** Derives Champion/Spirit/locked-cards from an already-resolved decklist — same detection rules
+/** Derives Champion/Spirit/locked-cards from an already-resolved decklist – same detection rules
  * the Guided Deck Builder's paste-import uses (material CHAMPION-type card for Champion,
  * CHAMPION+SPIRIT for Spirit), just applied to a structured decklist instead of raw pasted text.
  * Null when no Champion card is found (the decklist can't seed a build). */

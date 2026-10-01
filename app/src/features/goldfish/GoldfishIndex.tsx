@@ -68,10 +68,10 @@ function HandCard({ card, resolved, disabled, onPlay, onReserve }: { card: Goldf
 }
 
 /**
- * A very simple goldfish view — deal an opening hand, draw, play cards out of hand, read their
+ * A very simple goldfish view – deal an opening hand, draw, play cards out of hand, read their
  * text. Deliberately not a rules engine: the only mechanic ever auto-suggested is "draw N cards"
  * (via `drawEffects.ts`'s own detector), and even that only as a stepper the viewer confirms
- * themselves — everything else (discard, reveal, combat, leveling) is resolved by eye. See
+ * themselves – everything else (discard, reveal, combat, leveling) is resolved by eye. See
  * docs/CALCULATIONS.md's "Goldfish simulator" entry for why this scope, not a broader one.
  */
 export default function GoldfishIndex() {
@@ -288,7 +288,7 @@ export default function GoldfishIndex() {
       {pendingConfirm && !activeGlimpse && (
         <DialogSheet title="Confirm draw effect" onDismiss={() => setPendingConfirm(null)}>
           <p className="text-sm text-ctp-text">
-            Played <strong>{pendingConfirm.name}</strong> — its text mentions drawing {pendingConfirm.extraDraws} card{pendingConfirm.extraDraws > 1 ? "s" : ""}. Did that actually trigger? Confirm as many as really happened (a card's wording may be conditional, so this is never applied for you).
+            Played <strong>{pendingConfirm.name}</strong> – its text mentions drawing {pendingConfirm.extraDraws} card{pendingConfirm.extraDraws > 1 ? "s" : ""}. Did that actually trigger? Confirm as many as really happened (a card's wording may be conditional, so this is never applied for you).
           </p>
           <div className="mt-2 flex items-center gap-2">
             <button type="button" disabled={pendingConfirm.confirmed >= pendingConfirm.extraDraws || state.library.length === 0} onClick={confirmOneDraw} className="min-h-12 min-w-12 rounded-md border border-ctp-green/60 px-2.5 py-1 text-xs text-ctp-green hover:bg-ctp-green/10 disabled:cursor-not-allowed disabled:opacity-40">
@@ -304,7 +304,7 @@ export default function GoldfishIndex() {
         {state.hand.map((card) => (
           <HandCard key={card.id} card={card} resolved={cardsByName.get(card.name)} disabled={activeGlimpse !== null || pendingPayment !== null || state.phase !== "main"} onPlay={() => handlePlay(card)} onReserve={isReservable(cardsByName.get(card.name)) ? () => setState((current) => current ? reserveCard(current, card.id) : current) : undefined} />
         ))}
-        {state.hand.length === 0 && <InlineState>Hand is empty — draw a card to continue.</InlineState>}
+        {state.hand.length === 0 && <InlineState>Hand is empty – draw a card to continue.</InlineState>}
       </div>
 
 

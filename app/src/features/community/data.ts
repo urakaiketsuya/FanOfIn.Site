@@ -16,12 +16,12 @@ import type {
 } from "@gatcg/shared";
 import { usePublishedData } from "../../lib/sync/usePublishedData";
 
-/** Standalone ShoutAtYourDecks-derived stats — deliberately separate from every Omnidex-derived hook elsewhere in this app (see docs/CALCULATIONS.md, "ShoutAtYourDecks analytics"). */
+/** Standalone ShoutAtYourDecks-derived stats – deliberately separate from every Omnidex-derived hook elsewhere in this app (see docs/CALCULATIONS.md, "ShoutAtYourDecks analytics"). */
 function formatPath(format: DeckFormat, file: string): string {
   return `/data/shoutatyourdecks/analytics/${format === "PANTHEON" ? "pantheon/" : ""}${file}.json`;
 }
 
-/** Blended ShoutAtYourDecks + Sleeved community population — see pipeline/src/community/blend.ts
+/** Blended ShoutAtYourDecks + Sleeved community population – see pipeline/src/community/blend.ts
  * and docs/CALCULATIONS.md, "Community population (blended)". Every site-facing community stat
  * (Community usage badges, Card Stats "Hype gap", Guided Deck Builder's Community population) reads
  * from here rather than `formatPath` above, which stays ShoutAtYourDecks-only. Pair with
@@ -93,10 +93,10 @@ export function usePantheonDeckIndex() {
 }
 
 /**
- * "Diao Chan" -> "diao-chan" — a *prefix*, not a full key, into `CardInclusionData.byChampion` /
+ * "Diao Chan" -> "diao-chan" – a *prefix*, not a full key, into `CardInclusionData.byChampion` /
  * `CommunityCoOccurrenceData.byChampion`. Those are keyed by ShoutAtYourDecks' own per-print
  * champion slug (e.g. "diao-chan-enchantress"), not this app's base Champion names ("Diao Chan",
- * from the tournament pipeline) — confirmed empirically that every real key today carries a print
+ * from the tournament pipeline) – confirmed empirically that every real key today carries a print
  * suffix, so a bare `byChampion[championToSlug(name)]` lookup never matches. Use
  * `championSlugsFor` below to resolve every matching print instead.
  */
@@ -104,13 +104,13 @@ export function championToSlug(name: string): string {
   return name.toLowerCase().replace(/\s+/g, "-");
 }
 
-/** Every real `byChampion` key belonging to this base Champion name — a Champion can have multiple prints in the community data (e.g. two different Diana prints), and this app's picker only knows the base name, so all matching prints must be combined rather than picking one arbitrarily. */
+/** Every real `byChampion` key belonging to this base Champion name – a Champion can have multiple prints in the community data (e.g. two different Diana prints), and this app's picker only knows the base name, so all matching prints must be combined rather than picking one arbitrarily. */
 export function championSlugsFor(byChampionKeys: string[], baseName: string): string[] {
   const base = championToSlug(baseName);
   return byChampionKeys.filter((key) => key === base || key.startsWith(`${base}-`));
 }
 
-/** Combines multiple champions' (i.e. multiple prints') card-inclusion buckets into one, deck-count-weighted so `percentOfDecks`/`avgCopiesWhenIncluded` stay correct across the merge rather than being an average-of-averages. `primarySection` isn't recomputable from this shape (the source section counts aren't kept per entry) — approximated as whichever contributing print had the most decks for that card. */
+/** Combines multiple champions' (i.e. multiple prints') card-inclusion buckets into one, deck-count-weighted so `percentOfDecks`/`avgCopiesWhenIncluded` stay correct across the merge rather than being an average-of-averages. `primarySection` isn't recomputable from this shape (the source section counts aren't kept per entry) – approximated as whichever contributing print had the most decks for that card. */
 export function mergeCardInclusionBuckets(buckets: { deckCount: number; cards: CardInclusionEntry[] }[]): { deckCount: number; cards: CardInclusionEntry[] } {
   const deckCount = buckets.reduce((sum, bucket) => sum + bucket.deckCount, 0);
   const merged = new Map<string, { deckCount: number; totalCopies: number; resolved: boolean; primarySection: CardInclusionEntry["primarySection"]; primarySectionWeight: number }>();
@@ -144,7 +144,7 @@ export function mergeCardInclusionBuckets(buckets: { deckCount: number; cards: C
   return { deckCount, cards };
 }
 
-/** Combines multiple prints' co-occurrence lists for one specific key card into one, summing raw counts (not averaging rates) and recomputing `coOccurrenceRate` against the caller-supplied combined deck count for that key card — same reasoning as `mergeCardInclusionBuckets`. */
+/** Combines multiple prints' co-occurrence lists for one specific key card into one, summing raw counts (not averaging rates) and recomputing `coOccurrenceRate` against the caller-supplied combined deck count for that key card – same reasoning as `mergeCardInclusionBuckets`. */
 export function mergeCoOccurrenceForCard(
   buckets: Record<string, CommunityCoOccurrenceEntry[]>[],
   cardName: string,

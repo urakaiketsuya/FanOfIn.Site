@@ -8,7 +8,7 @@ export interface CustomDeckShare {
 
 type Section = "main" | "material" | "sideboard";
 
-/** `encodeURIComponent` on every dynamic segment (label, card name) — unlike the Deck Builder's
+/** `encodeURIComponent` on every dynamic segment (label, card name) – unlike the Deck Builder's
  * locked-cards encoding, a pasted deck's label is free-text the user typed, not a card name, so it
  * can't lean on "real names never contain this delimiter." Escaping guarantees `|`/`~`/`:`/`;`
  * inside a label or name never gets misread as a delimiter. */
@@ -35,7 +35,7 @@ function decodeDecklistLines(encoded: string): OmnidexDecklist {
   return decklist;
 }
 
-/** Packs one or more pasted ("custom") decks into a single `?custom=` param — decks joined by `~`,
+/** Packs one or more pasted ("custom") decks into a single `?custom=` param – decks joined by `~`,
  * each as `encodedLabel|encodedLines`. Combine with `?add=` (sighting decks) in the same share link
  * to cover a compare set that mixes both sources. */
 export function encodeCustomDecks(decks: CustomDeckShare[]): string {

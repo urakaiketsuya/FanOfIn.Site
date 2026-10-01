@@ -12,9 +12,9 @@ import type { DeckTestResult } from "../../../lib/deckTestResult";
 import type { NearestDeck } from "../useNearestDecks";
 
 /**
- * The Guided Deck Builder's "Test" tab — classifies the build-in-progress against the archetype
+ * The Guided Deck Builder's "Test" tab – classifies the build-in-progress against the archetype
  * taxonomy and reports how that matched build has actually performed, its matchup spread (both
- * `myCards`/`opponentCards` — `myCards` and per-card `answers` are real pipeline output no other
+ * `myCards`/`opponentCards` – `myCards` and per-card `answers` are real pipeline output no other
  * surface renders today), how it wins (folded in here rather than a separate sub-tab, per the
  * "Test This Deck" plan), and the nearest real decks. Owns its own opponent-matchup selection
  * state (unlike `BuilderReviewPanel`'s Matchups sub-tab, which gets `buildCounters` from the
@@ -214,7 +214,7 @@ export default function BuilderTestPanel({
             collapsible
             defaultOpen={false}
             title="How this deck wins"
-            description="Card interactions detected from rules text and, where a real deck confirms them, cross-deck co-occurrence — not a win-rate claim."
+            description="Card interactions detected from rules text and, where a real deck confirms them, cross-deck co-occurrence – not a win-rate claim."
           >
             <DeckWinConditions interactions={winConditions} cardsByName={cardsByName} />
           </Section>

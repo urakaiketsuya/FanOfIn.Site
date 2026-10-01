@@ -12,7 +12,7 @@ import type { DeckInteraction } from "../features/decks/useDeckWinConditions";
  * Same threshold the pipeline uses to decide whether a build qualifies to join a cluster
  * (`CLUSTER_THRESHOLD` in `pipeline/src/analysis/archetypeTaxonomy.ts`), already duplicated
  * app-side once for the same reason (`VARIANT_SIMILARITY_THRESHOLD` in
- * `useArchetypeVariants.ts`) — reused here rather than inventing a second cutoff. See
+ * `useArchetypeVariants.ts`) – reused here rather than inventing a second cutoff. See
  * docs/CALCULATIONS.md's "Test This Deck" entry for the reasoning behind the borderline band.
  */
 export const DECK_TEST_MATCH_THRESHOLD = 0.45;
@@ -50,17 +50,17 @@ export interface DeckTestNearestDeck {
 
 export interface DeckTestResult {
   classification: DeckTestClassification;
-  /** Straight pass-through of the matched cluster's own published fields — no recompute. Null when unclassified. */
+  /** Straight pass-through of the matched cluster's own published fields – no recompute. Null when unclassified. */
   performance: DeckTestPerformance | null;
-  /** matchup-card-impact.json rows for the matched cluster, sorted by games descending — each already carries myCards/opponentCards/answers. */
+  /** matchup-card-impact.json rows for the matched cluster, sorted by games descending – each already carries myCards/opponentCards/answers. */
   matchups: ClusterMatchupImpact[];
   winConditions: DeckInteraction[];
   nearestDecks: DeckTestNearestDeck[];
-  /** Plain-language notes derived from the fields above — no new scoring machinery. */
+  /** Plain-language notes derived from the fields above – no new scoring machinery. */
   cautions: string[];
 }
 
-/** A cluster's own published centroid (average copies per sighting, main+material combined) — cheap to build client-side, no need to re-scan the deck universe. */
+/** A cluster's own published centroid (average copies per sighting, main+material combined) – cheap to build client-side, no need to re-scan the deck universe. */
 export function buildClusterCentroid(cluster: ArchetypeCluster): Map<string, number> {
   const centroid = new Map<string, number>();
   // Published taxonomy artifacts can briefly lag the current schema during a rolling Pages/data
@@ -73,7 +73,7 @@ export function buildClusterCentroid(cluster: ArchetypeCluster): Map<string, num
 
 /**
  * Scores an arbitrary deck (main+material card-copy multiset) against every published cluster's
- * centroid and returns the best match — nothing in the pipeline or app does this today for a
+ * centroid and returns the best match – nothing in the pipeline or app does this today for a
  * candidate deck that isn't already a member of some cluster (a Deck Builder build in progress,
  * or a real deck the pipeline left unclustered). ~116 clusters, one in-browser pass.
  */
@@ -101,37 +101,37 @@ function buildCautions(classification: DeckTestClassification, performance: Deck
     cautions.push("No published build resembles this decklist closely enough to report historical performance.");
   } else if (classification.status === "borderline") {
     cautions.push(
-      `Closest historical match is only ${Math.round(classification.similarity * 100)}% similar — treat performance below as a loose comparison, not this exact list's record.`,
+      `Closest historical match is only ${Math.round(classification.similarity * 100)}% similar – treat performance below as a loose comparison, not this exact list's record.`,
     );
   }
   if (performance?.confidence === "emerging") {
-    cautions.push("This build is an emerging signal, not yet an established archetype — small sample.");
+    cautions.push("This build is an emerging signal, not yet an established archetype – small sample.");
   }
   if (performance && performance.eventCount <= 1) {
     cautions.push("Every recorded sighting of this build comes from a single event.");
   }
   if (matchups.length > 0 && matchups.every((m) => m.myCards.length === 0 && m.opponentCards.length === 0)) {
-    cautions.push("No individual matchup has enough games yet for card-level findings — only overall matchup win rates are available.");
+    cautions.push("No individual matchup has enough games yet for card-level findings – only overall matchup win rates are available.");
   }
   return cautions;
 }
 
 export interface DeckTestResultInputs {
-  /** Main+material card-copy multiset — "deck identity" convention used everywhere else in this codebase. */
+  /** Main+material card-copy multiset – "deck identity" convention used everywhere else in this codebase. */
   deckCardCounts: Map<string, number>;
   taxonomy: ArchetypeTaxonomyData;
   matchupCardImpactData: MatchupCardImpactData | undefined;
-  /** From CardImpactData.deckClusterIndex — the pipeline's own authoritative deckId -> clusterId assignment. */
+  /** From CardImpactData.deckClusterIndex – the pipeline's own authoritative deckId -> clusterId assignment. */
   deckClusterIndex: Record<string, string> | undefined;
   /** Present for a real published deck; absent for a Deck Builder build in progress. */
   deckId?: string;
-  /** Caller-computed via useDeckWinConditions — a hook, so it can't be called from this pure function. */
+  /** Caller-computed via useDeckWinConditions – a hook, so it can't be called from this pure function. */
   winConditions: DeckInteraction[];
   nearestDecks: DeckTestNearestDeck[];
 }
 
 /**
- * Assembles one deck's "Test This Deck" report entirely from already-published datasets — no
+ * Assembles one deck's "Test This Deck" report entirely from already-published datasets – no
  * recomputation of anything `docs/CALCULATIONS.md` already documents. A real deck with a known
  * cluster membership (`deckClusterIndex`) is classified authoritatively; anything else (a build in
  * progress, or a deck the pipeline left unclustered) gets a best-guess classification instead. Deck-

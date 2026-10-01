@@ -10,7 +10,7 @@ import PageLayout from "../../components/layout/PageLayout";
 import { InlineState } from "../../components/ui/ContentState";
 
 function RankChange({ value }: { value: number }) {
-  if (value === 0) return <span className="text-ctp-subtext0">—</span>;
+  if (value === 0) return <span className="text-ctp-subtext0">–</span>;
   return value > 0 ? (
     <span className="text-ctp-green">&uarr;{value}</span>
   ) : (

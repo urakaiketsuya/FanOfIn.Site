@@ -7,17 +7,17 @@ interface Generated {
   generatedAt: string;
 }
 
-/** Sentinel for `useLiveQuery`'s `defaultResult` — the value it returns until the first IndexedDB read resolves. */
+/** Sentinel for `useLiveQuery`'s `defaultResult` – the value it returns until the first IndexedDB read resolves. */
 const PENDING = Symbol("published-data-pending");
 
 let manifestPromise: Promise<Record<string, string>> | null = null;
 
 /**
- * Fetched once per page load and cached at module scope — a tiny (~1KB) map of every published
+ * Fetched once per page load and cached at module scope – a tiny (~1KB) map of every published
  * dataset's key to its current `generatedAt`. Checked before deciding whether to fetch a real
  * dataset file, some of which are 90MB+. Falls back to `{}` on any failure (offline, or the
  * pipeline hasn't published a manifest yet), which just makes `refresh` behave as it did before
- * this existed — always fetch and compare after the fact.
+ * this existed – always fetch and compare after the fact.
  */
 export function loadManifest(): Promise<Record<string, string>> {
   if (!manifestPromise) {
@@ -46,7 +46,7 @@ async function doRefresh(key: string, url: string): Promise<void> {
   // The whole point of the manifest: if it confirms we already have the current generation
   // cached, skip fetching (and JSON-parsing) the real file entirely. Without this, every mount of
   // a hook using a large dataset re-downloaded and re-parsed the whole thing even when nothing had
-  // changed since the last visit — deck-card-index.json alone is 93MB.
+  // changed since the last visit – deck-card-index.json alone is 93MB.
   if (manifest[key] && existing?.generatedAt === manifest[key]) return;
 
   const res = await fetch(url);
@@ -60,8 +60,8 @@ async function doRefresh(key: string, url: string): Promise<void> {
 
 /**
  * Multiple hook call sites can mount in the same tick and all want the same key (e.g. `/decks`
- * mounts `useDeckPopularity` and `useCardCombination`, which both pull `deck-card-index.json` —
- * a 90MB+ dataset) — without this, each one raced its own independent fetch+JSON.parse of the
+ * mounts `useDeckPopularity` and `useCardCombination`, which both pull `deck-card-index.json` –
+ * a 90MB+ dataset) – without this, each one raced its own independent fetch+JSON.parse of the
  * same huge file before any had a chance to write the IndexedDB cache the others check. Harmless
  * waste on desktop; on mobile, several concurrent multi-hundred-MB in-memory parses is enough
  * memory pressure that Safari would silently kill and reload the tab, which is exactly what this
@@ -128,7 +128,7 @@ export function usePublishedData<T extends Generated>(key: string, url: string, 
   }, [key, url, enabled]);
 
   // `useLiveQuery`'s defaultResult distinguishes "still resolving the IndexedDB read" from
-  // "resolved to nothing" (the dataset is genuinely absent) — the latter must not keep the nav
+  // "resolved to nothing" (the dataset is genuinely absent) – the latter must not keep the nav
   // progress bar spinning forever.
   const useDataset = datasetQuery(key);
   const row = useDataset(enabled);

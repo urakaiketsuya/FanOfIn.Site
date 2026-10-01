@@ -5,7 +5,7 @@ export type ComparedDeckSource =
   | { kind: "custom"; decklist: OmnidexDecklist };
 
 export interface ComparedDeck {
-  /** Unique within the compare set — `${eventId}:${player}` for sightings, a generated id for custom decks. */
+  /** Unique within the compare set – `${eventId}:${player}` for sightings, a generated id for custom decks. */
   key: string;
   label: string;
   source: ComparedDeckSource;

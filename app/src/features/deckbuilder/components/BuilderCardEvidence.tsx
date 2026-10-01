@@ -89,7 +89,7 @@ export default function BuilderCardEvidence({ card, cardInfo, unitPrice, priceTr
         )}
         {visibleFields.quantityNote && card.optimizedFrom !== null && (
           <div className="text-ctp-subtext0">
-            Changed from {card.optimizedFrom}x — {card.quantityEvidence.source} evidence (n={card.quantityEvidence.sampleSize})
+            Changed from {card.optimizedFrom}x – {card.quantityEvidence.source} evidence (n={card.quantityEvidence.sampleSize})
           </div>
         )}
         {visibleFields.community && communityEntry && (
@@ -110,7 +110,7 @@ export default function BuilderCardEvidence({ card, cardInfo, unitPrice, priceTr
         {visibleFields.metaTrend && decaySignal && (
           <div className="text-ctp-yellow" title="Real tournament inclusion trend for this card among decks of this Champion, most-recent 90 days vs. the prior 90">
             {Math.round((decaySignal.recentRate - decaySignal.priorRate) * 100)}% adoption / 90d
-            {decaySignal.replacement && <span className="text-ctp-subtext0"> — possibly replaced by {decaySignal.replacement.cardName}</span>}
+            {decaySignal.replacement && <span className="text-ctp-subtext0"> – possibly replaced by {decaySignal.replacement.cardName}</span>}
           </div>
         )}
         {simulatorEvidence && (

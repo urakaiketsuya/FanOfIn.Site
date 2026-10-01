@@ -79,7 +79,7 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
   const eraBars = useMemo<BarChartBar[]>(() => {
     if (!deckEra) return [];
     // Alternate-printing variants of the same set (e.g. "PTM" / "PTM 1st", "AMB" / "AMB Alter")
-    // share a release date but publish as separate buckets — merge same-date buckets into one
+    // share a release date but publish as separate buckets – merge same-date buckets into one
     // point so the timeline reads as "when", not fragmented by print variant. See
     // docs/CALCULATIONS.md, "Deck era inference," for the known-wrinkle note this addresses.
     const byDate = new Map<string, { deckCount: number; sets: string[] }>();
@@ -158,7 +158,7 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
         {elementBars.length > 0 && (
           <HorizontalBarChart
             title="Element popularity"
-            subtitle="% of decks containing that element — not mutually exclusive, decks can and do run more than one"
+            subtitle="% of decks containing that element – not mutually exclusive, decks can and do run more than one"
             bars={elementBars}
           />
         )}

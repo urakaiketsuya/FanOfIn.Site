@@ -113,6 +113,6 @@ export default function ComparisonSuggestions({ decks, decklists, baselineKey }:
       {!loading && hasEvidence && <TuningChangeSet additions={additions} review={review} cardsByName={cardsByName} />}
     </>}
 
-    {selectedStats?.format !== "PANTHEON" && <p className="text-xs leading-5 text-ctp-overlay1">Tuning evidence describes other decks using the same Champion — it does not prove a change will improve this list. <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link></p>}
+    {selectedStats?.format !== "PANTHEON" && <p className="text-xs leading-5 text-ctp-overlay1">Tuning evidence describes other decks using the same Champion – it does not prove a change will improve this list. <Link to="/methodology#classification" className="text-ctp-blue hover:underline">Learn more</Link></p>}
   </div>;
 }

@@ -43,7 +43,7 @@ export default function TournamentBuildsView({
   const [sortMode, setSortMode] = useState<BuildSortMode>("mostRecent");
   const [secondarySortMode, setSecondarySortMode] = useState<BuildSortMode | null>(null);
   const [visibleCount, setVisibleCount] = useState(BUILDS_PAGE_SIZE);
-  // Every filter here re-runs a synchronous decode over the (20MB+) deck-card-index dataset —
+  // Every filter here re-runs a synchronous decode over the (20MB+) deck-card-index dataset –
   // wrapped in a transition so inputs stay responsive and the page can show a "recalculating"
   // state instead of appearing to hang.
   const [isPending, startTransition] = useTransition();
@@ -177,7 +177,7 @@ export default function TournamentBuildsView({
       {sorted.length > 0 && (
         <p className="mt-4 text-xs text-ctp-subtext0">
           Showing {visible.length.toLocaleString()} of {sorted.length.toLocaleString()} build{sorted.length === 1 ? "" : "s"}
-          {isPending && " — recalculating…"}
+          {isPending && " – recalculating…"}
         </p>
       )}
 

@@ -12,7 +12,7 @@ async function resolveOne(deck: ComparedDeck): Promise<OmnidexDecklist | null> {
 
   const { eventId, player } = deck.source;
 
-  // Prefer the static published bundle (matches useSightingDecklist) — falls back to the live
+  // Prefer the static published bundle (matches useSightingDecklist) – falls back to the live
   // API for events a player has that the pipeline hasn't deep-fetched (see usePlayerDecklist).
   try {
     const res = await fetch(`/data/omnidex/events/${eventId}.json`);

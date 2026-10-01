@@ -7,7 +7,7 @@ import BroadcastDataNotice from "../../components/BroadcastDataNotice";
 import { useBroadcastTimelines } from "./data";
 
 export default function TimelinesIndex() {
-  useDocumentTitle("Match Timelines", "Experimental — feature matches reconstructed from broadcast VOD commentary.");
+  useDocumentTitle("Match Timelines", "Experimental – feature matches reconstructed from broadcast VOD commentary.");
   const data = useBroadcastTimelines();
 
   return (
@@ -16,7 +16,7 @@ export default function TimelinesIndex() {
         <div>
           <h1 className="text-2xl font-bold text-ctp-blue">Match Timelines</h1>
           <p className="mt-1 text-sm text-ctp-subtext1">
-            Feature matches from broadcast VODs, reconstructed beat-by-beat from caster commentary — a small,
+            Feature matches from broadcast VODs, reconstructed beat-by-beat from caster commentary – a small,
             hand-curated set of matches, not a comprehensive dataset.
           </p>
         </div>
@@ -26,7 +26,7 @@ export default function TimelinesIndex() {
       </div>
 
       <div className="mt-4 rounded-lg border border-ctp-peach bg-ctp-peach/10 px-4 py-3 text-sm text-ctp-text">
-        <p className="font-semibold text-ctp-peach">Experimental — commentary-derived, not tournament data</p>
+        <p className="font-semibold text-ctp-peach">Experimental – commentary-derived, not tournament data</p>
         <BroadcastDataNotice className="mt-1 text-sm text-ctp-subtext1" />
       </div>
 
@@ -43,7 +43,7 @@ export default function TimelinesIndex() {
               <Panel elevation={1} padding="md" className="transition hover:bg-ctp-surface1">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <span className="font-medium text-ctp-text">
-                    {match.event} — {match.round}
+                    {match.event} – {match.round}
                   </span>
                   <span className="text-sm text-ctp-subtext1">{match.result}</span>
                 </div>

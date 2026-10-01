@@ -38,8 +38,8 @@ function loadEventBundle(eventId: number): Promise<PublishedEventBundle> {
 }
 
 /**
- * Every deck sighting comes from an event we've already deep-fetched and published, so — unlike
- * a player-profile's arbitrary event history — this can always read the static per-event bundle
+ * Every deck sighting comes from an event we've already deep-fetched and published, so – unlike
+ * a player-profile's arbitrary event history – this can always read the static per-event bundle
  * (data/omnidex/events/{id}.json) instead of hitting the live Omnidex API.
  */
 export function useSightingDecklist(eventId: number, playerId: number, enabled: boolean): SightingDecklistState {

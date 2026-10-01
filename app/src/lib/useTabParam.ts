@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 
 /**
- * Drop-in replacement for `useState` on a page's tab — backs the value with a `?tab=` query
+ * Drop-in replacement for `useState` on a page's tab – backs the value with a `?tab=` query
  * param (functional `setSearchParams` update, so it composes safely with any other query param
  * the same page reads/writes) instead of local state, so a link can open directly on a specific
  * tab and the current tab is shareable/bookmarkable. Uses `replace` navigation so clicking through

@@ -1,4 +1,4 @@
-// Google Analytics (GA4), loaded only in production builds when VITE_GA_MEASUREMENT_ID is set —
+// Google Analytics (GA4), loaded only in production builds when VITE_GA_MEASUREMENT_ID is set –
 // local dev never reports pageviews. Also skipped when the browser sends Do Not Track, in keeping
 // with this site's no-user-data-by-default posture (see CLAUDE.md) even though GA4 itself doesn't
 // read that signal on its own.

@@ -43,18 +43,18 @@ export function CardTile({
   unitPrice: number | undefined;
   priceTrend: PriceTrendEntry | undefined;
   communityEntry: CardInclusionEntry | undefined;
-  /** Community inclusion share minus this Champion's own tournament inclusion share — how much more (or less) this card is brewed than actually played. */
+  /** Community inclusion share minus this Champion's own tournament inclusion share – how much more (or less) this card is brewed than actually played. */
   hypeGap: number | null | undefined;
   decaySignal: CardDecaySignal | undefined;
   simulatorEvidence: SimulatorCardEvidence | undefined;
   visibleFields: CardFieldVisibility;
   communityMode: boolean;
   needsReview: boolean;
-  /** Placed-card footer (Keep/Remove) — mutually exclusive with `onAdd`/`onDismiss` below. */
+  /** Placed-card footer (Keep/Remove) – mutually exclusive with `onAdd`/`onDismiss` below. */
   onToggleLock?: () => void;
   onChangeQuantity?: (quantity: number) => void;
   onRemove?: () => void;
-  /** Not-yet-placed suggestion footer (Add/Dismiss) — set instead of `onToggleLock`/`onRemove` for a card that isn't in the build yet. */
+  /** Not-yet-placed suggestion footer (Add/Dismiss) – set instead of `onToggleLock`/`onRemove` for a card that isn't in the build yet. */
   onAdd?: () => void;
   onDismiss?: () => void;
   section?: BuilderSection;

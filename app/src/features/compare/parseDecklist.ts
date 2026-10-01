@@ -2,7 +2,7 @@ import type { OmnidexDecklist } from "@gatcg/shared";
 
 export interface ParsedDecklist {
   decklist: OmnidexDecklist;
-  /** Card names that didn't match any recognized section header or quantity-prefixed line — likely a stray blank/comment line, not necessarily an error. */
+  /** Card names that didn't match any recognized section header or quantity-prefixed line – likely a stray blank/comment line, not necessarily an error. */
   skippedLines: string[];
 }
 
@@ -21,7 +21,7 @@ const LINE_PATTERN = /^(\d+)\s*x?\s+(.+)$/i;
 /**
  * Parses a pasted decklist into the same `OmnidexDecklist` shape used everywhere else in the
  * app. Deliberately forgiving: unrecognized lines are skipped rather than rejecting the whole
- * paste, and card names aren't validated against the catalog here — that happens downstream
+ * paste, and card names aren't validated against the catalog here – that happens downstream
  * (unmatched names are still kept and just render without an image/link, same tolerance the
  * pipeline already has for `unmatchedCardNames`).
  */
@@ -34,7 +34,7 @@ export function parseDecklist(text: string): ParsedDecklist {
     const line = rawLine.trim();
     if (!line) continue;
 
-    // Strips a trailing "Deck" too ("Material Deck", "Main Deck") — a real export format
+    // Strips a trailing "Deck" too ("Material Deck", "Main Deck") – a real export format
     // (confirmed live: unrecognized headers silently left every line in the default "main"
     // section, so a pasted "# Material Deck" list showed its whole material section as main).
     const headerKey =

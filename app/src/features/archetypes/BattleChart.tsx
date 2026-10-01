@@ -91,7 +91,7 @@ export default function BattleChart() {
   function cell(row: string, col: string): { label: string; rate: number | null; games: number } {
     const key = row <= col ? `${row}__${col}` : `${col}__${row}`;
     const entry = lookup.get(key);
-    if (!entry) return { label: "—", rate: null, games: 0 };
+    if (!entry) return { label: "–", rate: null, games: 0 };
     const wins = row <= col ? entry.aWins : entry.bWins;
     const losses = row <= col ? entry.bWins : entry.aWins;
     return { label: `${wins}-${losses}-${entry.ties}`, rate: entry.games > 0 ? wins / entry.games : null, games: entry.games };
@@ -173,7 +173,7 @@ export default function BattleChart() {
                             title={isMirror ? `${row} mirror match` : rate === null ? `${row} vs ${col}: no qualifying games` : `${row} vs ${col}: ${label} over ${games.toLocaleString()} games`}
                           >
                             {isMirror || rate === null ? (
-                              "—"
+                              "–"
                             ) : (
                               <>
                                 <span className="block font-semibold tabular-nums">{(rate * 100).toFixed(0)}%</span>
@@ -228,7 +228,7 @@ export default function BattleChart() {
                           {opponentCard?.editions[0]?.image ? <CardImage image={opponentCard.editions[0].image} alt={matchup.opponent} className="h-24 w-16 shrink-0 rounded-md object-cover object-top" /> : <div className="h-24 w-16 shrink-0 rounded-md bg-ctp-surface0" />}
                           <div className="min-w-0 flex-1">
                             <button type="button" onClick={() => goToChampion(matchup.opponent)} className="font-medium text-ctp-text hover:text-ctp-blue">{matchup.opponent}</button>
-                            <div className={`mt-2 text-lg font-semibold ${winRateColor(matchup.winRate)}`}>{matchup.winRate !== null ? `${(matchup.winRate * 100).toFixed(0)}%` : "—"} <span className="text-xs font-normal text-ctp-subtext0">win rate</span></div>
+                            <div className={`mt-2 text-lg font-semibold ${winRateColor(matchup.winRate)}`}>{matchup.winRate !== null ? `${(matchup.winRate * 100).toFixed(0)}%` : "–"} <span className="text-xs font-normal text-ctp-subtext0">win rate</span></div>
                             <div className="mt-1 text-xs text-ctp-subtext1">{matchup.games.toLocaleString()} games</div>
                           </div>
                         </div>

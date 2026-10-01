@@ -4,7 +4,7 @@ import { formatCountry } from "../../lib/format";
 
 const HIGH_TIER = new Set(["worlds", "nationals", "ascent"]);
 
-/** One accent color per event tier, in the same tier order as EVENT_CATEGORY_ORDER — gives the list a scannable rhythm without needing to read the category badge text. */
+/** One accent color per event tier, in the same tier order as EVENT_CATEGORY_ORDER – gives the list a scannable rhythm without needing to read the category badge text. */
 const CATEGORY_BORDER: Record<string, string> = {
   worlds: "border-l-ctp-yellow",
   nationals: "border-l-ctp-red",

@@ -36,7 +36,7 @@ export interface OmnidexEventBundle {
   fetchedAt: string;
 }
 
-/** Generic cache for pipeline-published JSON (data/omnidex/*.json, data/analysis/*.json) — see usePublishedData. */
+/** Generic cache for pipeline-published JSON (data/omnidex/*.json, data/analysis/*.json) – see usePublishedData. */
 export interface PublishedDataRow {
   key: string;
   generatedAt: string;

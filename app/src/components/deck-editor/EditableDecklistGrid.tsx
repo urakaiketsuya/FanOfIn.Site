@@ -26,7 +26,7 @@ function DestinationOptions({ cards }: { cards: (Card | undefined)[] }) {
   return MOVE_DESTINATIONS.map((destination) => {
     const blocked = cards.map((card) => deckDestinationEligibility(card, destination.key)).filter((result) => !result.allowed);
     const reason = blocked[0]?.reason;
-    const suffix = reason ? cards.length > 1 ? ` — unavailable for ${blocked.length} selected` : ` — ${reason}` : "";
+    const suffix = reason ? cards.length > 1 ? ` – unavailable for ${blocked.length} selected` : ` – ${reason}` : "";
     return <option key={destination.key} value={destination.key} disabled={blocked.length > 0}>{destination.title}{suffix}</option>;
   });
 }

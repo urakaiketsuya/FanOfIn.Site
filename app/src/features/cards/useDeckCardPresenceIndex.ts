@@ -9,7 +9,7 @@ export interface DeckCardPresenceIndex {
   presenceIndex: Map<number, Set<number>>;
 }
 
-/** Every deck's card-name indices (any section), for fast "does this deck contain X" membership tests — works directly against the dictionary-encoded tuples, no need to decode names first. */
+/** Every deck's card-name indices (any section), for fast "does this deck contain X" membership tests – works directly against the dictionary-encoded tuples, no need to decode names first. */
 function buildPresenceIndex(decks: DeckCardIndexEntry[]): Map<number, Set<number>> {
   const index = new Map<number, Set<number>>();
   decks.forEach((deck, i) => {
@@ -38,7 +38,7 @@ const indexes = new WeakMap<DeckCardIndexData, DeckCardPresenceIndex>();
 
 export function useDeckCardPresenceIndex(enabled = true): DeckCardPresenceIndex | undefined {
   const rawData = useDeckCardIndexData(enabled);
-  // `cardNames` guards against a stale IndexedDB copy from before dictionary-encoding shipped —
+  // `cardNames` guards against a stale IndexedDB copy from before dictionary-encoding shipped –
   // during the rollout window, a returning visitor's cache briefly holds the old `{name,quantity}`
   // shape until usePublishedData's generatedAt check catches up and refetches. Treating it the
   // same as "not loaded yet" avoids a crash in that window instead of assuming the new shape.

@@ -40,7 +40,7 @@ export default function MatchupPlanning({ decks, decklists, baselineKey }: Props
   const championName = championFromMaterial(baselineList, catalogByName);
 
   function openPostboard(postboardMain: { name: string; quantity: number }[], postboardSideboard: { name: string; quantity: number }[]) {
-    saveActiveDeckWorkspace(sessionStorage, { source: "builder", title: `${shortDeckLabel(baseline!.label)} — ${matchup} postboard`, sourceLabel: "Compare matchup plan", deckIdentity: null, format: baseline!.format ?? "STANDARD", championName, spiritName: null, main: postboardMain, material, sideboard: postboardSideboard, maybeboard: [] });
+    saveActiveDeckWorkspace(sessionStorage, { source: "builder", title: `${shortDeckLabel(baseline!.label)} – ${matchup} postboard`, sourceLabel: "Compare matchup plan", deckIdentity: null, format: baseline!.format ?? "STANDARD", championName, spiritName: null, main: postboardMain, material, sideboard: postboardSideboard, maybeboard: [] });
     navigate("/deck-builder");
   }
 

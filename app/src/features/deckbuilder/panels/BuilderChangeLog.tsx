@@ -11,7 +11,7 @@ export default function BuilderChangeLog({ entries }: { entries: ChangeLogEntry[
           (observed matching-deck rate {entry.winRateDelta >= 0 ? "+" : ""}{(entry.winRateDelta * 100).toFixed(1)}%)
         </span>}
         {entry.added.length === 0 && entry.removed.length === 0
-          ? <span className="text-ctp-subtext0"> — no change to the rest of the suggestions</span>
+          ? <span className="text-ctp-subtext0"> – no change to the rest of the suggestions</span>
           : <>{entry.added.map((name) => <span key={`+${name}`} className="ml-1.5 text-ctp-green">+{name}</span>)}{entry.removed.map((name) => <span key={`-${name}`} className="ml-1.5 text-ctp-red">−{name}</span>)}</>}
       </li>)}
     </ul>

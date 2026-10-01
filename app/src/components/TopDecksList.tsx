@@ -4,7 +4,7 @@ import type { TopDecksListEntry } from "../features/topdecks/topDecksListEntry";
 export type { TopDecksListEntry } from "../features/topdecks/topDecksListEntry";
 
 /**
- * Only the fields this list actually renders — a `Pick` of `DeckSighting` would also work, but
+ * Only the fields this list actually renders – a `Pick` of `DeckSighting` would also work, but
  * every caller now sources these from the lean deck-popularity index (see
  * `useDeckPopularityIndexData`) joined with an event-name lookup, not the full 40MB+ dataset, so
  * the type stands on its own instead of implying a `DeckSighting` dependency that no longer exists.
@@ -17,7 +17,7 @@ function formatEventDate(value: string | undefined): string | null {
   return Number.isNaN(parsed.getTime()) ? null : parsed.toLocaleDateString();
 }
 
-/** `onToggleSelect`/`isSelected` are optional — pass both to show a checkbox per row (e.g. for building a Compare set); omit for the plain read-only list every other caller uses. */
+/** `onToggleSelect`/`isSelected` are optional – pass both to show a checkbox per row (e.g. for building a Compare set); omit for the plain read-only list every other caller uses. */
 export default function TopDecksList({
   decks,
   playerName,
@@ -49,7 +49,7 @@ export default function TopDecksList({
               {s.underplaced && (
                 <span
                   className="mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-ctp-peach/10 text-xs text-ctp-peach"
-                  title="Strong match record, but still finished outside the top 30% of the field — likely tiebreakers, not a bad build."
+                  title="Strong match record, but still finished outside the top 30% of the field – likely tiebreakers, not a bad build."
                   aria-label="Tough finish"
                 >
                   !
@@ -61,10 +61,10 @@ export default function TopDecksList({
           <div className="flex shrink-0 items-center gap-2 pl-2">
             {/* wins/losses/ties can briefly be absent from a cached deck-popularity-index.json
                 fetched before the next scheduled data-refresh run publishes them (see the field's
-                addition in DeckPopularityEntry) — falls back to placement-only rather than
+                addition in DeckPopularityEntry) – falls back to placement-only rather than
                 rendering "undefined-undefined-undefined" during that window. */}
             <span className="hidden text-right text-xs text-ctp-subtext0 sm:inline">{eventDate && <span>{eventDate} · </span>}{s.placement !== null ? `#${s.placement}` : "No placement"}{typeof s.wins === "number" && ` · ${s.wins}-${s.losses}-${s.ties}`}</span>
-            {s.deckHash ? <Link to={`/decks/${s.deckHash}`} className="inline-flex min-h-11 items-center rounded-lg bg-ctp-blue px-3 text-xs font-semibold text-ctp-base shadow-sm transition-colors hover:bg-ctp-sapphire focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue" aria-label={`Open ${playerName(s.player)}'s deck list`}>Open deck</Link> : <span className="text-xs text-ctp-subtext0">{s.placement !== null ? `#${s.placement}` : "—"}{typeof s.wins === "number" && ` · ${s.wins}-${s.losses}-${s.ties}`}</span>}
+            {s.deckHash ? <Link to={`/decks/${s.deckHash}`} className="inline-flex min-h-11 items-center rounded-lg bg-ctp-blue px-3 text-xs font-semibold text-ctp-base shadow-sm transition-colors hover:bg-ctp-sapphire focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue" aria-label={`Open ${playerName(s.player)}'s deck list`}>Open deck</Link> : <span className="text-xs text-ctp-subtext0">{s.placement !== null ? `#${s.placement}` : "–"}{typeof s.wins === "number" && ` · ${s.wins}-${s.losses}-${s.ties}`}</span>}
           </div>
         </div>;
       })}

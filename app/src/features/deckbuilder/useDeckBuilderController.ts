@@ -34,13 +34,13 @@ export function useDeckBuilderController() {
   const isImproving = Boolean(improveDeckId);
   const intentParam = searchParams.get("intent");
   const builderIntent: BuilderIntent | null = intentParam === "seed" || intentParam === "scratch" ? intentParam : null;
-  // Computed fresh each render (cheap — parsing a couple of query params), but only its value on
+  // Computed fresh each render (cheap – parsing a couple of query params), but only its value on
   // the very first render actually matters: every useState below that reads from it only consults
   // its initializer once, on mount, same as React already guarantees for lazy useState.
   const urlSeed = parseBuilderUrlSeed(searchParams);
-  // An explicit shared link always wins over a leftover session — someone opening a shared link
+  // An explicit shared link always wins over a leftover session – someone opening a shared link
   // wants *that* state, not whatever this tab happened to have saved from before. Only consulted
-  // once (mount), same as urlSeed itself — see loadSessionSeed's own doc comment for why a lazy
+  // once (mount), same as urlSeed itself – see loadSessionSeed's own doc comment for why a lazy
   // initializer, not an effect, is what avoids the reset-then-reseed race parseUrlSeed warns about.
   const sessionSeed = urlSeed ? null : loadBuilderSessionSeed(sessionStorage);
   const [deckFormat, setDeckFormat] = useState<DeckFormat>(() => searchParams.has("format") || urlSeed ? (searchParams.get("format")?.toUpperCase() === "PANTHEON" ? "PANTHEON" : "STANDARD") : sessionSeed?.format ?? "STANDARD");
@@ -147,7 +147,7 @@ export function useDeckBuilderController() {
     setCardInput, setAddDestination, setTab, startTransition, resetChangeTracking,
   });
   // The shared link's params (see handleCopyShareLink below) already did their job as the
-  // *initial* state above — this just clears them once mounted, so the URL doesn't look "stuck"
+  // *initial* state above – this just clears them once mounted, so the URL doesn't look "stuck"
   // to the original shared state once the viewer starts editing.
   useEffect(() => {
     if (!urlSeed) return;

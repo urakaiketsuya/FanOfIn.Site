@@ -228,7 +228,7 @@ export default function MyDeckDetail() {
   function moveEditedCard(from: DeckSectionKey, to: DeckCardDestination, name: string, quantity: number) { applySharedEdit({ type: "move", section: from, name, destination: to, quantity }); }
   function removeEditedCard(section: DeckSectionKey, name: string) { applySharedEdit({ type: "remove", section, name }); }
 
-  // Only ever lowers a count (min, never max) — a card whose own legal limit is already below
+  // Only ever lowers a count (min, never max) – a card whose own legal limit is already below
   // `max` (e.g. a UNIQUE 1-of) is left untouched, never bumped up to match.
   function trimToMaxCopies(max: number) {
     const decklist = parseDecklist(deckText).decklist;
@@ -326,11 +326,11 @@ export default function MyDeckDetail() {
         <label className="text-sm text-ctp-subtext1" htmlFor="deck-visibility">Who can view this deck?</label>
         <div className="mt-2 flex flex-wrap items-center gap-2">
           <select id="deck-visibility" value={deck.visibility} disabled={busy} onChange={(event) => void run(async () => { const visibility = event.target.value as SavedDeckDetail["visibility"]; await accountApi.publishDeck(deck.id, visibility); trackEvent("deck_published", { visibility }); await refresh(); })} className="rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm">
-            <option value="private">Private</option><option value="unlisted">Unlisted — link only</option><option value="public">Public</option>
+            <option value="private">Private</option><option value="unlisted">Unlisted – link only</option><option value="public">Public</option>
           </select>
           {deck.publicSlug && deck.visibility !== "private" && <><Link to={`/decks/${deck.publicSlug}`} className="rounded border border-ctp-blue px-3 py-1.5 text-sm text-ctp-blue">View published deck</Link><button type="button" onClick={() => void navigator.clipboard.writeText(`${window.location.origin}/decks/${deck.publicSlug}`).then(() => setNotice("Deck link copied."), () => setError("Could not copy the deck link. Please copy it from the address bar."))} className="rounded border border-ctp-surface1 px-3 py-1.5 text-sm">Copy link</button></>}
         </div>
-        <p className="mt-2 text-xs text-ctp-subtext0">New decks are public by default. Once a deck is Public or Unlisted, its link always reflects your latest saved edits — set it to Private to take it down.</p>
+        <p className="mt-2 text-xs text-ctp-subtext0">New decks are public by default. Once a deck is Public or Unlisted, its link always reflects your latest saved edits – set it to Private to take it down.</p>
       </div>
     </section>}
     {tab === "performance" && <section id="owned-deck-panel-performance" role="tabpanel" aria-labelledby="owned-deck-tab-performance" tabIndex={0}><UserDeckStats decklist={deck.decklist} championName={deck.championName} format={deck.format} title={deck.title} ownerDeckId={deck.id} previousDecklist={previousDecklist} /><DeckMatchLogSummary deckId={deck.id} /></section>}

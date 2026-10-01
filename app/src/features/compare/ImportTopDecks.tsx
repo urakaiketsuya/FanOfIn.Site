@@ -11,8 +11,8 @@ import { InlineState } from "../../components/ui/ContentState";
 const PAGE_SIZE = 20;
 type Mode = "placement" | "archetype";
 
-/** Browse top-performing decks by Champion — ranked by the same tier-weighted placement score Top
- * Decks' "best" sort uses, or narrowed to one named build's own members — and add them straight
+/** Browse top-performing decks by Champion – ranked by the same tier-weighted placement score Top
+ * Decks' "best" sort uses, or narrowed to one named build's own members – and add them straight
  * to the compare set via DeckSightingRow's existing onAdd/added toggle. */
 export default function ImportTopDecks({
   comparedKeys,
@@ -72,7 +72,7 @@ export default function ImportTopDecks({
   return (
     <div data-component="ImportTopDecks">
       <p className="text-sm text-ctp-subtext1">
-        Browse top-performing decks by Champion, ranked by placement — or narrow to one named build.
+        Browse top-performing decks by Champion, ranked by placement – or narrow to one named build.
       </p>
 
       <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">

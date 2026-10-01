@@ -20,7 +20,7 @@ export interface RegionalArchetypes {
 
 /**
  * Regional breakdown of the same named-build clusters `archetype-taxonomy.json` already
- * publishes — filters each cluster's `deckIds` down to the selected region instead of
+ * publishes – filters each cluster's `deckIds` down to the selected region instead of
  * re-clustering per region (which would let cluster identity/`id` drift from the global
  * taxonomy for what's really the same build). Scoped to clustered decks only, same as the
  * global Archetypes page.

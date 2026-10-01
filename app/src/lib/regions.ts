@@ -61,7 +61,7 @@ export const REGION_LABELS: Record<string, string> = {
   unknown: "Unknown",
 };
 
-/** Normalizes a raw `hostCountry` (an ISO-2 code, "", or "??") into a stable grouping key for the given mode — never returns "" so it's always safe to use as a select value. */
+/** Normalizes a raw `hostCountry` (an ISO-2 code, "", or "??") into a stable grouping key for the given mode – never returns "" so it's always safe to use as a select value. */
 export function regionKeyForCountry(hostCountry: string, mode: RegionGroupMode): string {
   const normalized = hostCountry && hostCountry !== "??" ? hostCountry.toUpperCase() : "unknown";
   if (mode === "country") return normalized;

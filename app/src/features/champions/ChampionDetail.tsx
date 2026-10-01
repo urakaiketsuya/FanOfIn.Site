@@ -51,18 +51,18 @@ const TAB_KEYS: ChampionTab[] = [...OVERVIEW_TABS, "decks", ...MORE_TABS.map((ta
 export default function ChampionDetail() {
   const { name = "" } = useParams<{ name: string }>();
   const championName = slugToChampionName(name);
-  useDocumentTitle(`${championName} — Stats`, `${championName} deck builds, win rates, and season trends in Grand Archive TCG.`);
+  useDocumentTitle(`${championName} – Stats`, `${championName} deck builds, win rates, and season trends in Grand Archive TCG.`);
 
   const [tab, setTab] = useTabParam("tab", TAB_KEYS, "season");
   const surface: ChampionSurface = OVERVIEW_TABS.includes(tab) ? "overview" : tab === "decks" ? "decks" : "more";
   const moreTab = MORE_TABS.some((item) => item.key === tab) ? tab as "bonus" | "regions" | "similar" : "bonus";
   const showOverview = surface === "overview";
 
-  // Gate every large per-tab dataset behind the tab that actually needs it — this page used to
+  // Gate every large per-tab dataset behind the tab that actually needs it – this page used to
   // eagerly fetch every dataset below (similarity.json alone is 28MB, the single biggest dataset
   // this page touches) on every visit regardless of which of the 7 tabs the visitor opened, same
   // class of bug just fixed on CardDetail.tsx/ArchetypeDetail.tsx. archetypeData/trendsData stay
-  // eager — the header and default "By Season" tab need them immediately.
+  // eager – the header and default "By Season" tab need them immediately.
   const archetypeData = useArchetypeData();
   const taxonomyData = useArchetypeTaxonomyData(showOverview);
   const trendsData = useChampionTrendsData();
@@ -75,7 +75,7 @@ export default function ChampionDetail() {
   const cardStatsByChampionData = useCardStatsByChampionData(showOverview);
 
   // Named Spirits (e.g. "Kaze, Spirit of Wind") are tracked as their own Champion-like entry in a
-  // separate list, not merged into `archetypes` — fall back to it so this page works for either.
+  // separate list, not merged into `archetypes` – fall back to it so this page works for either.
   const champion =
     archetypeData?.archetypes.find((a) => a.signature === championName) ??
     archetypeData?.namedSpirits?.find((s) => s.signature === championName);
@@ -89,7 +89,7 @@ export default function ChampionDetail() {
   const [spiritFilter, setSpiritFilter] = useState<SpiritFilter>({ kind: "all" });
   const [typeFilter, setTypeFilter] = useState<string | "all">("all");
   // Only reset when navigating from one Champion's page to a different one (same component
-  // instance reused by the router) — not on initial mount, which would otherwise clobber a
+  // instance reused by the router) – not on initial mount, which would otherwise clobber a
   // `?tab=` deep link.
   const prevChampionNameRef = useRef(championName);
   useEffect(() => {
@@ -101,7 +101,7 @@ export default function ChampionDetail() {
     }
   }, [championName, setTab]);
 
-  // Switching Spirit/Element resets the type filter — the previously-selected type may not exist
+  // Switching Spirit/Element resets the type filter – the previously-selected type may not exist
   // (or may mean something very different) in the newly-selected breakdown's card pool.
   useEffect(() => {
     setTypeFilter("all");
@@ -118,7 +118,7 @@ export default function ChampionDetail() {
     return champion.topCards;
   }, [champion, spiritFilter]);
 
-  /** Card win rate specifically among this Champion's own decks (`data/analysis/card-stats-by-champion.json`) — Champion-wide, not re-scoped per Spirit/Element filter above (that dataset doesn't slice that finely; still meaningful at the Champion level regardless of which breakdown's card list is currently shown). */
+  /** Card win rate specifically among this Champion's own decks (`data/analysis/card-stats-by-champion.json`) – Champion-wide, not re-scoped per Spirit/Element filter above (that dataset doesn't slice that finely; still meaningful at the Champion level regardless of which breakdown's card list is currently shown). */
   const winRateByName = useMemo(() => {
     const entry = cardStatsByChampionData?.champions.find((c) => c.championName === championName);
     return entry ? new Map(entry.cards.map((c) => [c.name, { adjustedWinRate: c.adjustedWinRate, deckCount: c.deckCount, baselineWinRate: entry.baselineWinRate }])) : undefined;
@@ -135,7 +135,7 @@ export default function ChampionDetail() {
     return champion.mainByType;
   }, [champion, spiritFilter]);
 
-  // Type chips, most-represented first (by total deckCount across that type's cards) — mirrors
+  // Type chips, most-represented first (by total deckCount across that type's cards) – mirrors
   // the deckCount-desc ordering already used for the Spirit dropdown/element buttons.
   const typeFilterOptions = useMemo(() => {
     if (!displayedMainByType) return [];
@@ -184,11 +184,11 @@ export default function ChampionDetail() {
 
   // Cross-links to real decks similar to any of this Champion's own instances, resolved against
   // the already-loaded lean popularity index (deckId -> deckHash/championName) rather than the
-  // full decoded-deck universe DeckDetail.tsx's own Similar Decks tab needs — cheap enough to
+  // full decoded-deck universe DeckDetail.tsx's own Similar Decks tab needs – cheap enough to
   // compute here since we only need a page link and a label, not the actual decklist. Verified
   // against real data before shipping: an early version excluded same-Champion matches to bias
   // toward cross-Champion shell crossover, but that turned out to filter out ~100% of real
-  // matches (Diao Chan: 0/596 checked matches were a different Champion) — the material/Champion
+  // matches (Diao Chan: 0/596 checked matches were a different Champion) – the material/Champion
   // section is itself part of the similarity signature, so a high-similarity match is almost
   // always the same Champion. Kept as a plain "similar decks" list instead.
   const similarDecks = useMemo(() => {
@@ -217,7 +217,7 @@ export default function ChampionDetail() {
       .slice(0, MAX_SIMILAR_DECKS_SHOWN);
   }, [similarityData, popularityIndexData, championName, eventNameById]);
 
-  // A compact "which composition sweet spot wins the most" summary, one row per card type — the
+  // A compact "which composition sweet spot wins the most" summary, one row per card type – the
   // best-win-rate share-of-deck bucket for each, distinct from /cards/stats' own per-type toggle
   // view (which shows every bucket for one type at a time, not a cross-type comparison).
   const compositionBestByType = useMemo(() => {
@@ -299,7 +299,7 @@ export default function ChampionDetail() {
               {champion.elementBreakdown.length > 0 && (
                 <>
                   <p className="mt-2 text-xs text-ctp-subtext0">
-                    {championName}'s Spirit pick can drastically change card choices — filter by Spirit element to
+                    {championName}'s Spirit pick can drastically change card choices – filter by Spirit element to
                     see it.
                   </p>
                   <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
@@ -459,7 +459,7 @@ export default function ChampionDetail() {
               className="mt-6"
               heading="compact"
               title="Deck composition guide"
-              description="Across all decks, the best-performing share-of-main-deck bucket for each card type — a cross-type summary, not scoped to this Champion."
+              description="Across all decks, the best-performing share-of-main-deck bucket for each card type – a cross-type summary, not scoped to this Champion."
               actions={<Link to="/cards/stats" className="text-xs text-ctp-blue hover:underline">Full breakdown by type &rarr;</Link>}
             >
               <div className="mt-2 overflow-x-auto">

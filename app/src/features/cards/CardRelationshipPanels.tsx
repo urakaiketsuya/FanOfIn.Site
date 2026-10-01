@@ -24,7 +24,7 @@ export function CardSynergyPanel({ cardName, cards, totalDecks, cardImages, load
 }
 
 export function CardComparePanel({ options, input, selected, onInputChange, onAdd, onRemove }: { options: string[]; input: string; selected: string[]; onInputChange: (value: string) => void; onAdd: (name: string) => void; onRemove: (name: string) => void }) {
-  return <Section className="mt-4" heading="compact" title="Compare with other cards" description="Add any card to see usage, win rate, and price side by side — a quick way to decide between two options without leaving this page.">
+  return <Section className="mt-4" heading="compact" title="Compare with other cards" description="Add any card to see usage, win rate, and price side by side – a quick way to decide between two options without leaving this page.">
     <CardSearchPicker className="mt-2 max-w-sm" options={options.filter((name) => !selected.includes(name))} value={input} onChange={onInputChange} onSelect={onAdd} placeholder="Search for a card to compare…" ariaLabel="Search for a card to compare" />
     {selected.length > 0 && <div className="mt-3"><CardComparisonTable names={selected} onRemove={onRemove} /></div>}
     {selected.length > 1 && <Link to={`/compare?type=cards&cards=${encodeURIComponent(selected.join(","))}`} className="mt-2 inline-block text-xs text-ctp-blue hover:underline">Open in full Compare tool &rarr;</Link>}

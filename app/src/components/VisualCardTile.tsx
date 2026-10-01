@@ -20,7 +20,7 @@ export interface VisualFieldVisibility {
 }
 
 /**
- * The toggleable stat rows (cost, price, price trend, simulator evidence, community inclusion) —
+ * The toggleable stat rows (cost, price, price trend, simulator evidence, community inclusion) –
  * split out so a card can get this same treatment somewhere it's only *named* (e.g. a linked/combo
  * card in ChampionSynergy's New Releases section) without pulling in a second full art tile.
  */
@@ -86,7 +86,7 @@ export function CardStatRows({
 
 /**
  * One card with full art plus an optional footer of toggleable fields (cost, price, price trend,
- * simulator evidence, community inclusion) — the "same component" wherever a card is named with
+ * simulator evidence, community inclusion) – the "same component" wherever a card is named with
  * its real stats, not just an image. Originally DecklistView's Visual display mode; also used by
  * TopCardsSections' grid layout and ChampionSynergy's New Releases grid.
  */
@@ -108,7 +108,7 @@ export function VisualCardTile({
   simulatorEvidence: SimulatorCardEvidence | undefined;
   communityEntry: CardInclusionEntry | undefined;
   fields: VisualFieldVisibility;
-  /** Set false when the tile is embedded in something already interactive (e.g. a level-select button) — nesting a `<Link>` inside a `<button>` is invalid HTML and would fight the parent's own click handler. */
+  /** Set false when the tile is embedded in something already interactive (e.g. a level-select button) – nesting a `<Link>` inside a `<button>` is invalid HTML and would fight the parent's own click handler. */
   linkToCard?: boolean;
   /** Page-specific rows rendered after the standard visual-decklist stats. */
   footer?: ReactNode;
@@ -145,13 +145,13 @@ export function VisualCardTile({
 
 /**
  * Fetches the blended community-inclusion dataset (~1MB) and resolves its format-wide `overall`
- * array to a per-card map, then hands it to `children` — only mounted when the viewer has the
+ * array to a per-card map, then hands it to `children` – only mounted when the viewer has the
  * Community field switched on, so a page that doesn't need it skips this fetch entirely.
  *
  * Deliberately format-wide, not Champion-scoped: `CardInclusionData.byChampion` is keyed by
  * ShoutAtYourDecks' own per-print champion slug (e.g. "diao-chan-enchantress"), which has no
  * reliable mapping back to this app's base Champion names (e.g. "Diao Chan", from the tournament
- * pipeline) — `DeckBuilderIndex.tsx`'s own `championToSlug(championName)` lookup into `byChampion`
+ * pipeline) – `DeckBuilderIndex.tsx`'s own `championToSlug(championName)` lookup into `byChampion`
  * has this same mismatch against current real data, confirmed empirically (every one of the 22
  * live `byChampion` keys carries a print-specific suffix a base name can't produce). Using
  * `overall` here sidesteps that rather than repeating it.

@@ -1,8 +1,8 @@
-// Hand-authored, same manual-refresh spirit as ./data.ts — each product's Media Kit "Character
+// Hand-authored, same manual-refresh spirit as ./data.ts – each product's Media Kit "Character
 // Cutouts" folder has transparent art for a handful of its featured prints, keyed by the exact
 // printed card name (not just the base Champion name, since "Diao Chan, Idyll Corsage" and
 // "Diao Chan, Enchantress" are different cards with different cutout art). Only entries that
-// matched a real card name exactly were kept — a few files (tokens like "Arcane Slime", or ones
+// matched a real card name exactly were kept – a few files (tokens like "Arcane Slime", or ones
 // whose art didn't correspond to any catalog card) were skipped rather than guessed at.
 export const CHARACTER_CUTOUTS: Record<string, string> = {
   "Arisanna, Herbalist Prodigy": "/media/products/ALC/cutouts/arisanna-herbalist-prodigy.png",

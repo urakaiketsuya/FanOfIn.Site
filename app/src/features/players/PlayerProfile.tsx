@@ -74,7 +74,7 @@ export default function PlayerProfile() {
     [player, index],
   );
 
-  // A player's champion for a given event only exists if that event had a public decklist —
+  // A player's champion for a given event only exists if that event had a public decklist –
   // sourced from the lean deck-popularity index (already keyed by player+event, same fields
   // deck-sightings would give us here) rather than lazily fetching every event's full decklist
   // bundle just to build a filter list, or pulling in deck-sightings' full ~43MB dataset for

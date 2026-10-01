@@ -77,11 +77,11 @@ function EvidenceRow({ entry, cardsByName, tone }: { entry: CardImpactEntry; car
  * Card-Impact tuning evidence for a decklist page, reusing the Guided Deck Builder / Compare's
  * evidence signal rather than duplicating it. Prefers the precise, pipeline-computed named-build
  * cluster (via `deckId`) when this decklist belongs to one; falls back to the Champion(+Element)
- * -scoped "might help" signal for the majority of decks that aren't part of a cluster — including
+ * -scoped "might help" signal for the majority of decks that aren't part of a cluster – including
  * every saved deck in My Decks, which has no tournament `deckId` at all and previously got no
  * evidence here. Set `championFallback={false}` on a page that already has its own bespoke
  * Champion-fallback UI (`DeckDetail.tsx`'s interactive element-picker + `CardImpactTable`, the
- * "never show both" design its own comment documents) to avoid a second, redundant copy — the new
+ * "never show both" design its own comment documents) to avoid a second, redundant copy – the new
  * "cards worth reviewing" box has no such precedent anywhere and always runs. Withheld entirely for
  * Pantheon decks: the tournament pipeline this evidence is built from doesn't track that format, so
  * applying it would be misleading rather than merely absent (mirrors Compare's

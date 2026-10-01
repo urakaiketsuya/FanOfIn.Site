@@ -12,7 +12,7 @@ const TONE_CLASSES: Record<NotificationTone, { wrap: string; title: string; acti
 };
 
 /** A dismissable-by-nature (condition-gated by the caller, not by user dismissal) callout for a
- * fresh, actionable fact the viewer might otherwise miss — e.g. "new cards available" or "N
+ * fresh, actionable fact the viewer might otherwise miss – e.g. "new cards available" or "N
  * recommendations ready." Deliberately inline in the page flow rather than a toast: it stays
  * visible until the underlying condition clears, instead of disappearing on a timer or being
  * missed if the viewer wasn't looking at a screen corner when it fired. */

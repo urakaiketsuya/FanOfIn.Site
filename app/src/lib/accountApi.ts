@@ -142,7 +142,7 @@ export const accountApi = {
   deckHistory: (id: string, before: number) => accountRequest<{ versions: SavedDeckVersion[]; nextBefore: number | null }>(`/v1/me/decks/${encodeURIComponent(id)}/versions?before=${before}`),
   createDeckVersion: (id: string, input: { decklist: OmnidexDecklist; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; changeNote?: string; maybeboard?: { card: string; quantity: number }[]; expectedRevision?: number; requestId?: string }) =>
     accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}/versions`, { method: "POST", body: JSON.stringify(input) }),
-  /** Updates the deck's current decklist content in place — no new entry in version history, unlike `createDeckVersion`. */
+  /** Updates the deck's current decklist content in place – no new entry in version history, unlike `createDeckVersion`. */
   updateDeckDecklist: (id: string, input: { decklist: OmnidexDecklist; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; maybeboard?: { card: string; quantity: number }[]; expectedRevision?: number; requestId?: string }) =>
     accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify(input) }),
   restoreDeckVersion: (id: string, versionId: string, options?: { requestId: string; expectedRevision: number }) => accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}/versions/${encodeURIComponent(versionId)}/restore`, { method: "POST", body: JSON.stringify(options ?? {}) }),

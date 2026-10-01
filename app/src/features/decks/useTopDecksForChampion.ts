@@ -17,13 +17,13 @@ export interface TopDecksForChampion {
   /** The single best-performing sighting for this Champion overall, by the same tier-weighted
    * placement score Top Decks' "best" sort uses. */
   bestOverall: TopDeckRef | null;
-  /** The best-performing sighting within this Champion's highest-avgWinRate named build — null
+  /** The best-performing sighting within this Champion's highest-avgWinRate named build – null
    * when the Champion has no clustered builds at all. */
   bestArchetype: TopArchetypeDeckRef | null;
 }
 
-/** Resolves "the top deck for this Champion" two ways — best overall placement, or best within
- * the Champion's strongest named build — for a one-click "compare with a top deck" link. Both
+/** Resolves "the top deck for this Champion" two ways – best overall placement, or best within
+ * the Champion's strongest named build – for a one-click "compare with a top deck" link. Both
  * exclude `excludeDeckId` so a deck is never suggested as its own comparison target. */
 export function useTopDecksForChampion(championName: string | null, excludeDeckId?: string): TopDecksForChampion {
   const popularityIndexData = useDeckPopularityIndexData();

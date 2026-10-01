@@ -69,14 +69,14 @@ console.log(data, meta.sources.cards, nextCursor);`} /></Detail>
         </Section>
         <Section id="endpoints" title="Explore the endpoints">
           <p>All routes accept GET and HEAD; OPTIONS supports CORS preflight. Data routes return JSON. Expand an endpoint for its response and fields.</p>
-          <Detail title="GET /v1/cards — List card statistics"><p>Ordered by slug. Optional <code>limit</code>: integer 1–100, default 50. Optional <code>cursor</code>: the preceding page’s nextCursor. Returns <code>{'{ data: CardStats[], meta: Metadata, nextCursor: string | null }'}</code>.</p><Fields fields={cardFields} /></Detail>
-          <Detail title="GET /v1/cards/{slug}/stats — Look up a card"><p>Use a slug from the cards list and URL-encode it. No query parameters. Returns <code>{'{ data: CardStats, meta: Metadata }'}</code>, using the card fields above. A missing card returns 404.</p><Code label="JavaScript · card lookup" code={`// Use a card from the quick-start response.
+          <Detail title="GET /v1/cards – List card statistics"><p>Ordered by slug. Optional <code>limit</code>: integer 1–100, default 50. Optional <code>cursor</code>: the preceding page’s nextCursor. Returns <code>{'{ data: CardStats[], meta: Metadata, nextCursor: string | null }'}</code>.</p><Fields fields={cardFields} /></Detail>
+          <Detail title="GET /v1/cards/{slug}/stats – Look up a card"><p>Use a slug from the cards list and URL-encode it. No query parameters. Returns <code>{'{ data: CardStats, meta: Metadata }'}</code>, using the card fields above. A missing card returns 404.</p><Code label="JavaScript · card lookup" code={`// Use a card from the quick-start response.
 const url = base + '/v1/cards/' + encodeURIComponent(data[0].slug) + '/stats';
 const result = await fetch(url);
 if (!result.ok) throw new Error('API returned ' + result.status);
 const card = await result.json();`} /></Detail>
-          <Detail title="GET /v1/archetypes — List champion rollups"><p>Ordered by signature. Accepts the same limit and cursor parameters as cards. Returns <code>{'{ data: Archetype[], meta: Metadata, nextCursor: string | null }'}</code>. These are not the site’s taxonomy clusters or named-Spirit rollups.</p><Fields fields={archetypeFields} /></Detail>
-          <Detail title="GET /v1/meta — Inspect the published snapshot"><p>No query parameters. Returns <code>{'{ data: Metadata }'}</code>. The same Metadata object appears under <code>meta</code> in card and archetype responses.</p><Fields fields={metaFields} /></Detail>
+          <Detail title="GET /v1/archetypes – List champion rollups"><p>Ordered by signature. Accepts the same limit and cursor parameters as cards. Returns <code>{'{ data: Archetype[], meta: Metadata, nextCursor: string | null }'}</code>. These are not the site’s taxonomy clusters or named-Spirit rollups.</p><Fields fields={archetypeFields} /></Detail>
+          <Detail title="GET /v1/meta – Inspect the published snapshot"><p>No query parameters. Returns <code>{'{ data: Metadata }'}</code>. The same Metadata object appears under <code>meta</code> in card and archetype responses.</p><Fields fields={metaFields} /></Detail>
           <Detail title="Service health & OpenAPI"><p><a className={linkStyle} href={`${BASE}/health`}>GET /health</a> returns <code>{'{ "service": "fanofin-public-api", "status": "ok" }'}</code>. It checks Worker liveness, not dataset availability; use /v1/meta to check published data.</p><p><a className={linkStyle} href={`${BASE}/openapi.json`}>GET /openapi.json</a> provides the machine-readable OpenAPI 3.0 specification.</p></Detail>
         </Section>
         <Section id="pagination" title="Read the next page">

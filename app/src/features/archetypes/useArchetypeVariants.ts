@@ -4,7 +4,7 @@ import { combinedCardCounts, weightedJaccard, type DecodedDeck } from "../../lib
 
 /**
  * Same threshold as the pipeline's own `CLUSTER_THRESHOLD` (`pipeline/src/analysis/archetypeTaxonomy.ts`)
- * — intentionally, since it's the bar already validated (real-data-verified against 55,840 decks
+ * – intentionally, since it's the bar already validated (real-data-verified against 55,840 decks
  * this session) for "is this really the same archetype, not just superficially similar." Not a new
  * concept, just applied to a deck this cluster's own exact-signature clustering never had a chance
  * to compare against a centroid at all (see docs/CALCULATIONS.md's Archetype taxonomy section and
@@ -12,7 +12,7 @@ import { combinedCardCounts, weightedJaccard, type DecodedDeck } from "../../lib
  */
 const VARIANT_SIMILARITY_THRESHOLD = 0.45;
 const MAX_VARIANTS = 30;
-/** A card the archetype typically runs (present in this share of its own member decks or more) that a variant lacks is worth flagging as "missing" — same bar as the pipeline's `DEFINING_MIN_IN_CLUSTER`, just applied to every card the cluster commonly runs, not only the curated `definingCards` subset (which additionally excludes universal staples — not the right exclusion for "what does this variant's list lack," where a missing staple is still worth surfacing). */
+/** A card the archetype typically runs (present in this share of its own member decks or more) that a variant lacks is worth flagging as "missing" – same bar as the pipeline's `DEFINING_MIN_IN_CLUSTER`, just applied to every card the cluster commonly runs, not only the curated `definingCards` subset (which additionally excludes universal staples – not the right exclusion for "what does this variant's list lack," where a missing staple is still worth surfacing). */
 const TYPICAL_PRESENCE_THRESHOLD = 0.8;
 /** A card present in fewer than this share of the archetype's own decks is uncommon enough to call out as a real tech choice specific to this variant, not just build-to-build noise (a 1-of card a couple of players happen to run). */
 const UNUSUAL_PRESENCE_THRESHOLD = 0.2;
@@ -33,14 +33,14 @@ export interface ArchetypeVariant {
 }
 
 /**
- * Real decks that are close to (but not exact copies of) a published archetype cluster — the
+ * Real decks that are close to (but not exact copies of) a published archetype cluster – the
  * ~88% of real decks `computeArchetypeTaxonomy` never gets a chance to fuzzy-match at all, because
  * it only clusters *between* decks that already share an exact duplicate from another player.
  * Real-data-verified: of the decks that never land in any cluster this way, ~78% score ≥0.45
- * weighted-Jaccard against a real published cluster's centroid — the same bar the pipeline itself
+ * weighted-Jaccard against a real published cluster's centroid – the same bar the pipeline itself
  * uses to decide two builds are "the same archetype."
  *
- * Deliberately **not** folded into the cluster's own `avgWinRate`/`definingCards`/`metaShare` —
+ * Deliberately **not** folded into the cluster's own `avgWinRate`/`definingCards`/`metaShare` –
  * those stay exactly as published, computed only from the tight exact-duplicate population. This
  * hook is purely additive: real, individually-inspectable decks, shown as variants rather than
  * blended into one softer number.
@@ -52,7 +52,7 @@ export function useArchetypeVariants(cluster: ArchetypeCluster | undefined, deck
     const clusterDeckIds = new Set(cluster.deckIds);
 
     // Centroid (avg copies per member deck) for weighted-Jaccard scoring, and presence rate
-    // (fraction of member decks running the card at all, any copy count) for the diff — two
+    // (fraction of member decks running the card at all, any copy count) for the diff – two
     // different questions ("how similar is this deck overall" vs. "does this deck run what the
     // archetype typically runs"), so two different tallies over the same member decks.
     const centroid = new Map<string, number>();
@@ -89,7 +89,7 @@ export function useArchetypeVariants(cluster: ArchetypeCluster | undefined, deck
       if (similarity < VARIANT_SIMILARITY_THRESHOLD) continue;
 
       // "Added" = genuinely uncommon for this archetype (present in this variant, rare or unseen
-      // among the archetype's own decks) — a real tech choice, not just any non-defining card.
+      // among the archetype's own decks) – a real tech choice, not just any non-defining card.
       // "Missing" = a card the archetype typically runs that this variant simply doesn't have.
       const addedCards = Array.from(combined.keys()).filter((name) => unusualCards.has(name) || !presenceCount.has(name));
       const missingCards = Array.from(typicalCards).filter((name) => !combined.has(name));

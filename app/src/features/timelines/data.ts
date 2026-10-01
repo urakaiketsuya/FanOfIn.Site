@@ -14,17 +14,17 @@ export function useBroadcastTimelineMatch(id: string | undefined): BroadcastTime
 }
 
 /** Collapses stray whitespace from hand-extracted transcript text (e.g. a double space from a
- * copy-paste) before it's used as a card-name lookup key — cheap and safe, unlike guessing at a
+ * copy-paste) before it's used as a card-name lookup key – cheap and safe, unlike guessing at a
  * caster's shortened/misheard name, which should instead be fixed at the source in the dataset. */
 export function normalizeCardMention(name: string): string {
   return name.trim().replace(/\s+/g, " ");
 }
 
 /** Same intent as useCardsByNames (events/useCardsByNames.ts) but whitespace- and case-insensitive
- * — broadcast transcripts are hand-extracted prose, not decklist text, so a mention is more likely
+ * – broadcast transcripts are hand-extracted prose, not decklist text, so a mention is more likely
  * to carry incidental whitespace noise than an exact decklist entry would. Left un-normalized
  * mentions (a caster's shorthand or an ASR mishearing that isn't just whitespace/case) still won't
- * resolve — fix those in the dataset itself rather than guessing here. */
+ * resolve – fix those in the dataset itself rather than guessing here. */
 export function useCardsByMentions(names: string[]): Map<string, Card> {
   const key = useMemo(() => [...new Set(names.map(normalizeCardMention))].sort().join("\0"), [names]);
 

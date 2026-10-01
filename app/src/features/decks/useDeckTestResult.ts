@@ -5,21 +5,21 @@ import { useArchetypeTaxonomyData, useCardImpactData, useMatchupCardImpactData }
 import { useDeckWinConditions } from "./useDeckWinConditions";
 
 export interface UseDeckTestResultInputs {
-  /** Main+material card-copy multiset — "deck identity" convention. */
+  /** Main+material card-copy multiset – "deck identity" convention. */
   deckCardCounts: Map<string, number>;
   cardsByName: Map<string, Card>;
   /** Present for a real published deck; absent for a Deck Builder build in progress. */
   deckId?: string;
-  /** Already-resolved by the caller (useNearestDecks for a build in progress, SimilarityData.topMatches for a real deck) — different sources, normalized to one shape here. */
+  /** Already-resolved by the caller (useNearestDecks for a build in progress, SimilarityData.topMatches for a real deck) – different sources, normalized to one shape here. */
   nearestDecks: DeckTestNearestDeck[];
 }
 
 /**
- * Thin wrapper around `computeDeckTestResult` — same "pure compute + thin hook" pattern as
+ * Thin wrapper around `computeDeckTestResult` – same "pure compute + thin hook" pattern as
  * `useDeckWinConditions`. Wires together the published datasets the report needs
  * (`useArchetypeTaxonomyData`, `useCardImpactData`, `useMatchupCardImpactData`) plus the already-
  * generic win-conditions trio, so callers (a real deck page or the Guided Deck Builder) only ever
- * pass in plain card data. `loading` is true until the taxonomy has loaded — everything else this
+ * pass in plain card data. `loading` is true until the taxonomy has loaded – everything else this
  * report reads is optional/absent-tolerant.
  */
 export function useDeckTestResult(inputs: UseDeckTestResultInputs, enabled = true): { result: DeckTestResult | null; loading: boolean } {

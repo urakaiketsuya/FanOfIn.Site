@@ -102,7 +102,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
   const [stagedCuts, setStagedCuts] = useState<Set<string>>(new Set());
   const [stagedAdditions, setStagedAdditions] = useState<Set<string>>(new Set());
   const noExclusions = useMemo(() => new Set<string>(), []);
-  // Tournament-only data — Pantheon decks share Champion names with Standard tournament decks but
+  // Tournament-only data – Pantheon decks share Champion names with Standard tournament decks but
   // are a genuinely different population (different construction rules, no tournament results of
   // their own), so never let Standard win-rate evidence leak into a Pantheon deck's trim suggestions.
   const impactResult = useChampionCardImpact(format === "PANTHEON" ? null : championName, identity.elements, noExclusions, "all");
@@ -151,7 +151,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
     return { unresolved, uniqueTotal: uniqueNames.length, uniqueResolved: uniqueNames.length - unresolved.length, totalCopies, resolvedCopies };
   }, [cardNames, cardsByName, namedSections]);
   // `cardsByName` resolves via its own independent Dexie query, separate from whatever loaded
-  // `decklist` itself — on a cold cache it can lag several seconds behind, during which composition
+  // `decklist` itself – on a cold cache it can lag several seconds behind, during which composition
   // computes against an effectively empty card map, rendering genuinely empty charts with no
   // indication anything was still loading. Same 90%-coverage gate used across every deck-viewing
   // page.
@@ -179,7 +179,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
     const result: Finding[] = [];
     if (coverage.unresolved.length > 0) result.push({ tone: "yellow", title: "Incomplete card data", detail: `${coverage.unresolved.length} card name${coverage.unresolved.length === 1 ? " is" : "s are"} unresolved, so computed scores and charts may be incomplete.` });
     if (validation.status !== "Legal") result.push({ tone: "red", title: `${validation.status} construction`, detail: validation.reasons[0] ?? "Review the construction rules before playing this list." });
-    if (trimPlans.main) result.push({ tone: "yellow", title: `Main deck is ${trimPlans.main.overBy} card${trimPlans.main.overBy === 1 ? "" : "s"} over target`, detail: `${trimPlans.main.currentSize} cards vs. a 60-card target — extra cards dilute consistency. See "Trim & packages" for ranked cut suggestions.` });
+    if (trimPlans.main) result.push({ tone: "yellow", title: `Main deck is ${trimPlans.main.overBy} card${trimPlans.main.overBy === 1 ? "" : "s"} over target`, detail: `${trimPlans.main.currentSize} cards vs. a 60-card target – extra cards dilute consistency. See "Trim & packages" for ranked cut suggestions.` });
     const weakSynergy = synergyReadiness.find((entry) => entry.status === "Unlikely" || entry.status === "Fragile");
     if (weakSynergy) result.push({ tone: "yellow", title: `${weakSynergy.label} is ${weakSynergy.status.toLowerCase()}`, detail: `${weakSynergy.enablerCopies} eligible copies give a ${(weakSynergy.probabilityByTen * 100).toFixed(0)}% theoretical chance by 10 cards seen.` });
     const weakPackage = dependencyReadiness.find((entry) => entry.status !== "Supported");
@@ -189,11 +189,11 @@ export default function UserDeckStats({ decklist, championName, format, title, o
   }, [coverage.unresolved.length, dependencyReadiness, synergyReadiness, validation, trimPlans.main]);
 
   // `cardsByName` (a per-name Dexie query) and `catalog` (the full-list Dexie query) are two
-  // independent async queries against the same synced IndexedDB — nothing guarantees they resolve
+  // independent async queries against the same synced IndexedDB – nothing guarantees they resolve
   // in lockstep. Gating on both being empty (an earlier version of this check) let `cardsByName`
   // sit stale-empty any time `catalog` alone happened to load first, flashing "0 resolved"/
   // "unresolved card names" findings and an "Incomplete" legality status on a cold cache. Gate on
-  // `cardsByName` alone instead — that's the one this whole component actually depends on.
+  // `cardsByName` alone instead – that's the one this whole component actually depends on.
   if (cardNames.length > 0 && cardsByName.size === 0) return <Panel data-component="UserDeckStats" className="mt-6"><InlineState className="text-sm">Resolving card data and calculating deck analytics…</InlineState></Panel>;
 
   const validationTone = validation.status === "Legal" ? "border-ctp-green/50 bg-ctp-green/10 text-ctp-green" : validation.status === "Illegal" ? "border-ctp-red/50 bg-ctp-red/10 text-ctp-red" : "border-ctp-yellow/50 bg-ctp-yellow/10 text-ctp-yellow";
@@ -205,7 +205,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
   ) : (
     <>
       <p className="text-sm text-ctp-subtext1">
-        Floating Memory: {floatingMemory.base}{floatingMemory.classBonus > 0 ? ` + ${floatingMemory.classBonus} class bonus` : ""} · Average Ally Power: {allyPower.allyCopies > 0 ? formatAllyPower(allyPower) : "—"} · Champion damage: {damage.championRange.min}–{damage.championRange.max} · Ally damage: {damage.allyRange.min}–{damage.allyRange.max}
+        Floating Memory: {floatingMemory.base}{floatingMemory.classBonus > 0 ? ` + ${floatingMemory.classBonus} class bonus` : ""} · Average Ally Power: {allyPower.allyCopies > 0 ? formatAllyPower(allyPower) : "–"} · Champion damage: {damage.championRange.min}–{damage.championRange.max} · Ally damage: {damage.allyRange.min}–{damage.allyRange.max}
       </p>
       <div className="mt-3">
         <InteractiveCompositionProfile composition={composition} memoryCurve={memoryCurve} reserveCurve={reserveCurve} lines={[...decklist.main, ...decklist.material]} cardsByName={cardsByName} />
@@ -220,11 +220,11 @@ export default function UserDeckStats({ decklist, championName, format, title, o
     </>
   );
 
-  // Same emptiness check AggressionForecast.tsx uses internally to return null — mirrored here so
+  // Same emptiness check AggressionForecast.tsx uses internally to return null – mirrored here so
   // a deck with no *printed* damage text (spells/abilities) shows an explicit, correctly-scoped
   // note instead of the forecast just silently not being there, which reads as broken rather than
   // as a true, checked answer. This is genuinely common: most decks in this game win through combat
-  // (allies attacking, a champion swinging with a weapon), not burn — computeAggressionForecast
+  // (allies attacking, a champion swinging with a weapon), not burn – computeAggressionForecast
   // only ever parsed "Deal N damage" text, so "nothing found" here does NOT mean "this deck can't
   // deal damage." Rather than just disclaiming that in text, fall back to the Breakthrough damage
   // estimate (against a calibrated "average deck" Intercept count, since there's no second decklist
@@ -291,7 +291,7 @@ export default function UserDeckStats({ decklist, championName, format, title, o
               return <button key={section} type="button" onClick={() => setSelectedTrimSection(section)} className={`rounded-md border px-3 py-1.5 text-sm capitalize transition-all duration-200 active:scale-[0.97] ${activeTrimSection === section ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue shadow-md shadow-ctp-blue/20" : "border-ctp-surface1 text-ctp-subtext1 hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/20"}`}>{section} ({plan.overBy} {plan.unit} over)</button>;
             })}
           </div>
-          <p className="mt-3 text-xs text-ctp-subtext1">{activeTrimPlan.currentSize}/{activeTrimPlan.targetSize} {activeTrimPlan.unit} — cut at least {activeTrimPlan.overBy} to reach target.</p>
+          <p className="mt-3 text-xs text-ctp-subtext1">{activeTrimPlan.currentSize}/{activeTrimPlan.targetSize} {activeTrimPlan.unit} – cut at least {activeTrimPlan.overBy} to reach target.</p>
           <ul className="mt-3 space-y-2">
             {activeTrimPlan.candidates.map((candidate) => <li key={candidate.cardName} className="rounded-md border border-ctp-surface1 p-2 text-sm">
               <div className="flex flex-wrap items-center justify-between gap-2">

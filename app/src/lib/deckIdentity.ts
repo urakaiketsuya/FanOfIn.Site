@@ -25,11 +25,11 @@ function topKeys(counts: Map<string, number>, limit: number, exclude: Set<string
 }
 
 /**
- * A decklist's class/element makeup, weighted by copies — same "top 2, NORM excluded for
+ * A decklist's class/element makeup, weighted by copies – same "top 2, NORM excluded for
  * elements" convention the pipeline uses for archetype signatures (pipeline/src/analysis/decklists.ts),
  * just computed client-side from whatever cards are already resolved. Takes `{name, quantity}`
  * lines (matches DeckCardIndexLine directly; OmnidexDecklistCardLine callers map `card` -> `name`)
- * so it works for any decklist shape — real sightings, popular-deck groups, and pasted/custom decks alike.
+ * so it works for any decklist shape – real sightings, popular-deck groups, and pasted/custom decks alike.
  */
 export function computeDeckIdentity(lines: NamedLine[], cardsByName: Map<string, Card>): DeckIdentity {
   const classCounts = new Map<string, number>();
@@ -57,7 +57,7 @@ export interface DeckComposition {
 /**
  * Full (not top-N) type/element/subtype tallies weighted by copies, for the deck composition
  * charts on a deck's dedicated page (unlike `computeDeckIdentity`, this keeps every value,
- * including NORM — a composition chart should be an honest complete breakdown, not a "what
+ * including NORM – a composition chart should be an honest complete breakdown, not a "what
  * archetype is this" signature).
  */
 export function computeDeckComposition(lines: NamedLine[], cardsByName: Map<string, Card>): DeckComposition {
@@ -77,9 +77,9 @@ export function computeDeckComposition(lines: NamedLine[], cardsByName: Map<stri
 }
 
 export interface FloatingMemoryStats {
-  /** Cards with an unconditional **Floating Memory** keyword — always counts. */
+  /** Cards with an unconditional **Floating Memory** keyword – always counts. */
   base: number;
-  /** Cards where Floating Memory is gated behind "[Class Bonus]" or a specific champion's name (e.g. "[Vanitas Bonus]") — counted only when the deck's own champion/class satisfies it. */
+  /** Cards where Floating Memory is gated behind "[Class Bonus]" or a specific champion's name (e.g. "[Vanitas Bonus]") – counted only when the deck's own champion/class satisfies it. */
   classBonus: number;
 }
 
@@ -87,9 +87,9 @@ export interface FloatingMemoryStats {
  * Floating Memory (rules.gatcg.com/game-mechanics/game-mechanics-playing-cards/playing-cards-costs-and-memory):
  * "While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of
  * that cost." Printed on cards as a bare `**Floating Memory**` keyword, sometimes gated behind a
- * bracketed condition — `[Class Bonus]` (card's class matches the champion's class) or a specific
+ * bracketed condition – `[Class Bonus]` (card's class matches the champion's class) or a specific
  * champion's name (`[Vanitas Bonus]`). A few instances are gated behind in-game state instead
- * (`[Level 2+]`, `[Sheen 6+]`) — those aren't derivable from a static decklist, so they're
+ * (`[Level 2+]`, `[Sheen 6+]`) – those aren't derivable from a static decklist, so they're
  * deliberately left uncounted rather than guessed at.
  */
 const FLOATING_MEMORY_RE = /(\[([^\]]+)\]\s*)?\*\*Floating Memory\*\*/g;
@@ -132,15 +132,15 @@ export interface AllyPowerStats {
   /**
    * Ceiling total/average power once board-state-scaled allies (e.g. Maiden of Primal Virtue's
    * "+1 [POWER] for each phantasia you control") are sized off this deck's own count of whatever
-   * they scale with — same optimistic-ceiling convention `aggressionForecast.ts`'s subtype-scaling
+   * they scale with – same optimistic-ceiling convention `aggressionForecast.ts`'s subtype-scaling
    * damage uses: a floor from the printed base stat (0 for most of these), a ceiling from "every
    * copy of the scaling type/subtype this list runs were simultaneously in play." Never how many
-   * will actually be alive on board at once — equal to `totalPower`/`averagePower` when the deck
+   * will actually be alive on board at once – equal to `totalPower`/`averagePower` when the deck
    * runs no such cards.
    */
   totalPowerMax: number;
   averagePowerMax: number;
-  /** Of `allyCopies`, how many have board-state-scaled power rather than a fixed printed number — so callers can flag `averagePower` as a floor, not the card's real battlefield stat. */
+  /** Of `allyCopies`, how many have board-state-scaled power rather than a fixed printed number – so callers can flag `averagePower` as a floor, not the card's real battlefield stat. */
   scalingPowerCopies: number;
   /** Power value (as a plain number, e.g. 3) -> ally copy count at that power. Bucketed by printed floor even for scaling allies, since their real power isn't a fixed number. */
   byPower: Map<number, number>;
@@ -149,7 +149,7 @@ export interface AllyPowerStats {
 /**
  * "Whenever X you control" board-state noun this deck's own cards (main + material) actually run,
  * gating `parseSubtypeScalingStat` the same way `aggressionForecast.ts`'s `knownSubtypes` gates its
- * own subtype-scaling damage detection — so a generic capitalized word can't misfire as a real
+ * own subtype-scaling damage detection – so a generic capitalized word can't misfire as a real
  * identity-scaling subject. Built from both `types` and `subtypes` since the scaling noun can be
  * either (e.g. "phantasia" is a card *type*, not a subtype).
  */
@@ -174,7 +174,7 @@ export interface SubtypeScalingStat {
 }
 
 /**
- * Nouns too broad to mean anything as an "identity" count — nearly every creature is an "ally",
+ * Nouns too broad to mean anything as an "identity" count – nearly every creature is an "ally",
  * and "token"/"card" don't correspond to a fixed number of printed copies in a decklist the way a
  * real type/subtype like "phantasia" or "Fractal" does. Excluded even though they'd otherwise pass
  * the `knownVocabulary` check (every deck's own cards are almost all type ALLY).
@@ -184,7 +184,7 @@ const EXCLUDED_SCALING_SUBJECTS = new Set(["ally", "allies", "champion", "champi
 /**
  * Matches the narrow, unambiguous "gets +N [POWER] (and +N [LIFE]) for each <single word> you
  * control" shape (e.g. Maiden of Primal Virtue). Deliberately requires the scaling noun to be one
- * bare word directly followed by "you control" — real cards with a qualifier in between (a named
+ * bare word directly followed by "you control" – real cards with a qualifier in between (a named
  * unique, a capped "up to N", a compound noun like "token object") don't match and are silently
  * excluded rather than misparsed, since none of those represent a plain per-copy count this
  * function's ceiling estimate could size correctly.
@@ -239,7 +239,7 @@ export function computeAllyPower(lines: NamedLine[], cardsByName: Map<string, Ca
   };
 }
 
-/** "1.5" for a deck with no board-state-scaled allies, "1.5–3.2" once `computeAllyPower` finds some — so a single flat number never quietly stands in for what's really a floor. */
+/** "1.5" for a deck with no board-state-scaled allies, "1.5–3.2" once `computeAllyPower` finds some – so a single flat number never quietly stands in for what's really a floor. */
 export function formatAllyPower(stats: AllyPowerStats): string {
   if (stats.scalingPowerCopies === 0) return stats.averagePower.toFixed(1);
   return `${stats.averagePower.toFixed(1)}–${stats.averagePowerMax.toFixed(1)}`;
@@ -255,17 +255,17 @@ interface DamageClause {
  * Matches "Deal N damage", "Deal X damage", "Deal N+X damage", or the same forms preceded by
  * "an additional"/"a further" (e.g. Burst Asunder's "deal an additional 2 damage to that unit"),
  * after stripping markdown bold, capturing the trailing target text up to the next sentence. The
- * additional-damage prefix is common on scaling/combo clauses layered onto a card's base damage —
+ * additional-damage prefix is common on scaling/combo clauses layered onto a card's base damage –
  * without it, that second clause silently fails to match at all rather than just misclassifying.
  * A single adjective word is allowed between the number and "damage" (e.g. Spark Alight's "Deal 2
- * unpreventable damage") — without this, the whole clause silently fails to match, not just its
+ * unpreventable damage") – without this, the whole clause silently fails to match, not just its
  * unpreventable-ness; the real card pool has been checked for how many distinct modifier words
  * actually appear (one, "unpreventable", as of this writing) so this stays generalized rather than
  * hardcoded to that word specifically.
  */
 const DEAL_DAMAGE_RE = /Deal (?:an additional |a further )?(\d+(?:\+X)?|X)(?: [a-zA-Z]+)? damage\s*([^.]*)/gi;
 
-/** "your champion"/"own champion" is the caster paying a cost against themselves, not reach damage at an opponent — must be stripped before scanning for "champion" so it can't masquerade as a Champion-target clause. */
+/** "your champion"/"own champion" is the caster paying a cost against themselves, not reach damage at an opponent – must be stripped before scanning for "champion" so it can't masquerade as a Champion-target clause. */
 const SELF_CHAMPION_RE = /\b(your|own) champion\b/g;
 
 function classifyTarget(rawTargetText: string): { target: DamageClause["target"]; isSelf: boolean } {
@@ -276,7 +276,7 @@ function classifyTarget(rawTargetText: string): { target: DamageClause["target"]
   // "target ally attacking your champion" resolves to Ally (the actual target) instead of Champion.
   const scanText = targetText.replace(SELF_CHAMPION_RE, "");
 
-  // "Unit" is Grand Archive's shared supertype for allies AND champions (rules.gatcg.com) — text that
+  // "Unit" is Grand Archive's shared supertype for allies AND champions (rules.gatcg.com) – text that
   // says "champion"/"ally" explicitly is unambiguous; bare "target unit" genuinely could resolve to
   // either at play time, so it gets its own bucket rather than guessing. Pick whichever noun appears
   // first in the text, since that's the one "target"/"deal damage to" is actually modifying.
@@ -311,7 +311,7 @@ function parseDamageClauses(rawEffect: string): DamageClause[] {
   return clauses;
 }
 
-/** "Choose one. ... —" modal framing (e.g. Vermilion Decree) — every bullet is one of several
+/** "Choose one. ... –" modal framing (e.g. Vermilion Decree) – every bullet is one of several
  * mutually-exclusive options, so a Champion-damage clause inside one is a possible mode, not a
  * guarantee the way a plain "Deal N damage to target champion" clause is. */
 const MODAL_RE = /\bChoose one\b/i;
@@ -320,7 +320,7 @@ const MODAL_RE = /\bChoose one\b/i;
  * Fixed printed damage a single copy can deal to an opposing champion. The two values differ when
  * a card has multiple fixed champion-damage clauses (usually level- or state-gated). Variable-X
  * clauses, damage to the controller's own champion, and Champion-damage clauses that are only one
- * mode of a "Choose one" modal card are intentionally excluded — none of those are guaranteed the
+ * mode of a "Choose one" modal card are intentionally excluded – none of those are guaranteed the
  * way this range's callers (the forecast's Min/guaranteed side) require. See
  * `ambiguousFixedChampionDamage` for the non-guaranteed counterpart.
  */
@@ -339,13 +339,13 @@ export interface DamageRange {
 }
 
 /**
- * Fixed printed damage a single copy could deal to an opposing champion, but isn't guaranteed to —
+ * Fixed printed damage a single copy could deal to an opposing champion, but isn't guaranteed to –
  * either because the clause targets the ambiguous "unit" bucket (legally includes champions, so
- * genuinely could go to face even though it might land on an ally instead — e.g. Blazing Throw's
+ * genuinely could go to face even though it might land on an ally instead – e.g. Blazing Throw's
  * "Deal 4 damage to target unit"), or because the clause sits inside a "Choose one" modal card
- * (e.g. Vermilion Decree's "Deal 3 damage to up to one target champion" bullet — a mode the
+ * (e.g. Vermilion Decree's "Deal 3 damage to up to one target champion" bullet – a mode the
  * controller might not pick). Returns the highest such value on the card, for sizing an optimistic
- * ceiling estimate — never a guarantee, so callers must never fold this into a Min/guaranteed
+ * ceiling estimate – never a guarantee, so callers must never fold this into a Min/guaranteed
  * number. Excludes anything `parseSubtypeScalingDamage` already accounts for via its own base
  * clause, since that combo shape gets a richer (fodder-scaled) estimate instead.
  */
@@ -359,7 +359,7 @@ export function ambiguousFixedChampionDamage(card: Pick<Card, "effect">): number
 }
 
 /**
- * Does this card deal champion-reach damage that no other export here can put a number on — a
+ * Does this card deal champion-reach damage that no other export here can put a number on – a
  * variable-X clause targeting Champion or Unit? (Fixed-value clauses always land in
  * `fixedChampionDamageRange`, `parseSubtypeScalingDamage`, or `ambiguousFixedChampionDamage`
  * instead, so they never reach this fallback.) This is what keeps a card like Chronicle's
@@ -372,7 +372,7 @@ export function hasUnquantifiedChampionDamage(card: Pick<Card, "effect">): boole
 }
 
 /** "At the beginning of your <phase>, Deal N damage to ..." with "Deal" appearing immediately after
- * the trigger's comma — an unconditional recurring trigger, as opposed to the many state-gated
+ * the trigger's comma – an unconditional recurring trigger, as opposed to the many state-gated
  * variants in the real card pool (e.g. Ashwick Cremator's "...if you have no cards in your
  * hand..."), which this deliberately excludes since a forecast can't evaluate an arbitrary
  * board-state condition: requiring "Deal" to directly follow the comma means any intervening
@@ -381,11 +381,11 @@ const RECURRING_DAMAGE_RE = /At the beginning of your [^,]*phase,\s*Deal (\d+) d
 
 /**
  * Fixed damage a Material Deck card deals to an opposing champion every one of the controller's
- * turns, unconditionally, once it's in play — e.g. Fabled Ruby Fatestone's "At the beginning of
+ * turns, unconditionally, once it's in play – e.g. Fabled Ruby Fatestone's "At the beginning of
  * your recollection phase, deal 1 damage to each champion." Material Deck cards are known and in
  * play from the start of the game rather than drawn at random (same convention
  * `drawEffects.ts`'s `materialDrawBonus` uses), so this is a flat per-turn number, not something
- * the "cards seen" hypergeometric model applies to — see `computeAggressionForecast`, which
+ * the "cards seen" hypergeometric model applies to – see `computeAggressionForecast`, which
  * surfaces it as a separate per-turn figure rather than folding it into the seen-based table.
  * Excludes damage to the controller's own champion only (reuses `classifyTarget`'s "your/own
  * champion" stripping), same as every other export here.
@@ -399,7 +399,7 @@ export function parseRecurringChampionDamage(card: Pick<Card, "effect">): number
   return target === "Champion" || target === "Unit" ? Number(match[1]) : null;
 }
 
-/** Does this card's damage clause say "each champion" — hitting the controller's own champion too,
+/** Does this card's damage clause say "each champion" – hitting the controller's own champion too,
  * not just the opponent's (e.g. Embercrypt Burn's "deal 2 damage to each champion")? Doesn't change
  * any guaranteed value: the opponent's champion still takes the full amount regardless of who else
  * it hits. This just flags the real cost to the card's own controller, so a forecast reader isn't
@@ -416,7 +416,7 @@ export interface SubtypeScalingDamage {
   baseDamage: number;
   /** Extra damage per copy of `subtype` sacrificed (e.g. Burst Asunder's "additional 2 damage" per Fractal). */
   perUnitDamage: number;
-  /** Normalized (lowercase, singular) subtype name sacrificed to fuel the bonus — matches `card.subtypes` case-insensitively once pluralization is stripped. */
+  /** Normalized (lowercase, singular) subtype name sacrificed to fuel the bonus – matches `card.subtypes` case-insensitively once pluralization is stripped. */
   subtype: string;
 }
 
@@ -424,11 +424,11 @@ const SACRIFICE_ANY_AMOUNT_RE = /sacrifice\s+any amount of\s+([A-Za-z]+)/i;
 
 /**
  * Detects the "Deal N damage to target unit. ...sacrifice any amount of <Subtype>s... deal an
- * additional M damage..." combo shape (e.g. Burst Asunder feeding off Fractal tokens) — damage that
+ * additional M damage..." combo shape (e.g. Burst Asunder feeding off Fractal tokens) – damage that
  * genuinely scales with deck composition, not just a fixed number. `fixedChampionDamageRange`
  * correctly excludes this from its *guaranteed* range (the "unit" target is ambiguous, and neither
  * clause is a flat number a champion is certain to take), but for a deck actually built around the
- * combo it is real, sizeable reach damage that a forecast reporting flat zero would misrepresent —
+ * combo it is real, sizeable reach damage that a forecast reporting flat zero would misrepresent –
  * see `computeAggressionForecast`, which uses this to size an optimistic (not guaranteed) estimate
  * from how much of the named subtype the deck actually runs.
  *
@@ -457,12 +457,12 @@ export function parseSubtypeScalingDamage(card: Pick<Card, "effect">, knownSubty
 }
 
 /**
- * Memory cost distribution across main+material, weighted by copies — the direct Grand Archive
+ * Memory cost distribution across main+material, weighted by copies – the direct Grand Archive
  * equivalent of a "mana curve" (what you'll actually draw and cast, not just what's on the list
  * once). Champions are excluded: they start in play from the lineage rather than being drawn and
  * cast like everything else, so their memory cost answers a different question (deck-building
  * budget, not "what will I actually be casting turn to turn"). Cards with an X memory cost
- * (cost_memory encoded as -1) are excluded too, same reasoning as the damage classifier — not a
+ * (cost_memory encoded as -1) are excluded too, same reasoning as the damage classifier – not a
  * fixed number to bucket. Costs above 6 are rare outliers (verified against the real catalog: only
  * a handful of non-champion cards exceed 3, topping out at 12) and are folded into a "6+" bucket so
  * the chart stays a fixed, readable width.
@@ -472,7 +472,7 @@ export function computeMemoryCostCurve(lines: NamedLine[], cardsByName: Map<stri
 }
 
 /**
- * Reserve cost distribution across main+material, weighted by copies — the other half of Grand
+ * Reserve cost distribution across main+material, weighted by copies – the other half of Grand
  * Archive's two resource costs (memory vs. reserve; a card only ever pays one). Same exclusions as
  * `computeMemoryCostCurve`: no champions (none actually carry a reserve cost in the current
  * catalog, but excluded for the same "not something you cast" reasoning) and no X-cost cards
@@ -484,7 +484,7 @@ export function computeReserveCostCurve(lines: NamedLine[], cardsByName: Map<str
 }
 
 /**
- * Rarity distribution across main+material, weighted by copies — rarity is per-edition, so this
+ * Rarity distribution across main+material, weighted by copies – rarity is per-edition, so this
  * uses each card's first edition (same "representative printing" convention as `CardImage`/
  * `DecklistView`, which already do this for images/pricing) rather than trying to track which
  * specific printing a player owns.
@@ -494,18 +494,18 @@ export function computeRarityBreakdown(lines: NamedLine[], cardsByName: Map<stri
 }
 
 export interface DamageComposition {
-  /** Weighted card count per target category — a card can land in more than one bucket if it has clauses hitting different target types. */
+  /** Weighted card count per target category – a card can land in more than one bucket if it has clauses hitting different target types. */
   targets: Map<string, number>;
-  /** Weighted card count per certainty level: "Fixed" (single plain number), "Conditional" (multiple damage clauses on one card — usually an escalating if/level-gated effect), "Variable" (scales with an X that depends on game state). */
+  /** Weighted card count per certainty level: "Fixed" (single plain number), "Conditional" (multiple damage clauses on one card – usually an escalating if/level-gated effect), "Variable" (scales with an X that depends on game state). */
   conditionality: Map<string, number>;
   /**
    * Guaranteed-to-best-case damage range, summed only from clauses that unambiguously target a
    * champion (excludes "target unit"/"target ally"/variable-X clauses entirely, rather than
-   * guess) — min is the lowest number on a card's champion-targeting clauses, max the highest
+   * guess) – min is the lowest number on a card's champion-targeting clauses, max the highest
    * (equal for cards with just one fixed clause), weighted by copies.
    */
   championRange: DamageRange;
-  /** Same as `championRange` but scoped to unambiguous "target ally"/"all allies" clauses — direct removal capacity, tracked separately since it's a different question from reach damage. */
+  /** Same as `championRange` but scoped to unambiguous "target ally"/"all allies" clauses – direct removal capacity, tracked separately since it's a different question from reach damage. */
   allyRange: DamageRange;
 }
 

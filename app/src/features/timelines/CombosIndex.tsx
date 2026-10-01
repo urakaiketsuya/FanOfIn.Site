@@ -29,7 +29,7 @@ function ComboCard({ entry, cardsByName }: { entry: ComboEntry; cardsByName: Map
     <Panel elevation={1} padding="md">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <Link to={`/timelines/${match.id}`} className="text-sm font-medium text-ctp-text hover:text-ctp-blue hover:underline">
-          {match.event} — {match.round}
+          {match.event} – {match.round}
         </Link>
         <span className="text-xs text-ctp-subtext0">Game {game.gameNumber}</span>
       </div>
@@ -84,12 +84,12 @@ export default function CombosIndex() {
       </Link>
       <h1 className="text-2xl font-bold text-ctp-blue">Notable Combos</h1>
       <p className="mt-1 text-sm text-ctp-subtext1">
-        Every beat casters called out as a combo line across the Match Timelines dataset — a discovery tool for
+        Every beat casters called out as a combo line across the Match Timelines dataset – a discovery tool for
         interesting card interactions actually played on stream, not a ranked or comprehensive combo list.
       </p>
 
       <div className="mt-4 rounded-lg border border-ctp-peach bg-ctp-peach/10 px-4 py-3 text-sm text-ctp-text">
-        <p className="font-semibold text-ctp-peach">Experimental — commentary-derived, not tournament data</p>
+        <p className="font-semibold text-ctp-peach">Experimental – commentary-derived, not tournament data</p>
         <BroadcastDataNotice className="mt-1 text-sm text-ctp-subtext1" />
       </div>
 

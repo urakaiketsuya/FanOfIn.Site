@@ -27,7 +27,7 @@ export function DeckBuilderMethodology() {
         </p>
         {build.hasQuantityOptimizations && (
           <p>
-            Starred quantities use copy-count evidence only when the gap is statistically significant, not just numerically different — checked first against this build&apos;s own population, then against the global copy-count dataset.{" "}
+            Starred quantities use copy-count evidence only when the gap is statistically significant, not just numerically different – checked first against this build&apos;s own population, then against the global copy-count dataset.{" "}
             <Link to="/methodology#small-samples" className="text-ctp-blue hover:underline">Learn more</Link>
           </p>
         )}

@@ -13,11 +13,11 @@ import { useComboRecipe, type ComboRecipeRequirement, type RecipePickerOption } 
 import { ProbabilityCheckpointPicker, ProbabilityCurve, ProbabilityHeadline } from "./ProbabilityForecast";
 import { RecipeGroupEditor } from "./RecipeGroupEditor";
 
-/** Same range Synergy readiness's curves use (`CURVE_MAX_SEEN` in synergyReadiness.ts) — keeps the
+/** Same range Synergy readiness's curves use (`CURVE_MAX_SEEN` in synergyReadiness.ts) – keeps the
  * two probability visualizations on this tab reading consistently. */
 const CURVE_MAX_SEEN = 25;
 
-/** Same "cards seen" vocabulary as Synergy readiness's `CHECKPOINTS` — reused here as quick-select
+/** Same "cards seen" vocabulary as Synergy readiness's `CHECKPOINTS` – reused here as quick-select
  * presets rather than inventing a second set of labels for the same idea. */
 function clampInt(value: number, min: number, max: number): number {
   if (!Number.isFinite(value)) return min;
@@ -30,13 +30,13 @@ export type { ComboRecipeRequirement } from "./useComboRecipe";
 
 /**
  * A general-purpose front end onto `probabilityAtLeast` (the same hypergeometric function Synergy
- * readiness/Package balance already use) — for an arbitrary question the viewer types in, not an
+ * readiness/Package balance already use) – for an arbitrary question the viewer types in, not an
  * auto-detected card-effect requirement. Deck size defaults to the real Main Deck total (floored at
- * 60, same convention `computeSynergyReadiness` uses — Material Deck isn't part of the shuffled draw
+ * 60, same convention `computeSynergyReadiness` uses – Material Deck isn't part of the shuffled draw
  * library, so it's excluded), and picking a card from the build autofills copies-in-deck from its
- * real quantity — but every field stays freely editable, so this also works with zero build loaded.
+ * real quantity – but every field stays freely editable, so this also works with zero build loaded.
  *
- * Deliberately no "Reliable/Playable/Fragile/Unlikely" status label the way Synergy readiness has —
+ * Deliberately no "Reliable/Playable/Fragile/Unlikely" status label the way Synergy readiness has –
  * that tiering was calibrated for synergy-specific thresholds and would misleadingly imply a
  * judgment about whatever arbitrary question the viewer is actually asking here.
  */
@@ -227,7 +227,7 @@ export default function HypergeometricCalculator({
               </option>
             ))}
           </select>
-          <span className="text-[10px] text-ctp-subtext0">Fills in deck size and copies below — still editable after.</span>
+          <span className="text-[10px] text-ctp-subtext0">Fills in deck size and copies below – still editable after.</span>
         </div>
       )}
 
@@ -331,7 +331,7 @@ export default function HypergeometricCalculator({
 
       {mode === "functional" && functionalCopies > 0 && <div className="mt-3 grid gap-2 sm:grid-cols-3"><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Opening hand</div><div className="font-semibold tabular-nums text-ctp-text">{(openingProbability * 100).toFixed(1)}%</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">50% consistency</div><div className="font-semibold tabular-nums text-ctp-text">{functionalFiftySeen ? `${functionalFiftySeen} seen` : "Not reached"}</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">80% consistency</div><div className="font-semibold tabular-nums text-ctp-text">{functionalEightySeen ? `${functionalEightySeen} seen` : "Not reached"}</div></div></div>}
 
-      {mode === "recipe" && recipeReady && <div className={`mt-3 grid gap-2 ${hasAvoidConditions ? "sm:grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-4"}`}><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Opening hand</div><div className="font-semibold tabular-nums text-ctp-text">{(openingProbability * 100).toFixed(1)}%</div></div>{hasAvoidConditions ? <div className="rounded-lg border border-ctp-red/30 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">At selected draw count</div><div className="font-semibold tabular-nums text-ctp-red">{(probability * 100).toFixed(1)}%</div></div> : <><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Average complete</div><div className="font-semibold tabular-nums text-ctp-text">{expectedRecipeSeen === null ? "—" : `${expectedRecipeSeen.toFixed(1)} seen · ~T${expectedRecipeTurn}`}</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">50% consistency</div><div className="font-semibold tabular-nums text-ctp-text">{fiftySeen ? `${fiftySeen} seen` : "Not reached"}</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">80% consistency</div><div className="font-semibold tabular-nums text-ctp-text">{eightySeen ? `${eightySeen} seen` : "Not reached"}</div></div></>}</div>}
+      {mode === "recipe" && recipeReady && <div className={`mt-3 grid gap-2 ${hasAvoidConditions ? "sm:grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-4"}`}><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Opening hand</div><div className="font-semibold tabular-nums text-ctp-text">{(openingProbability * 100).toFixed(1)}%</div></div>{hasAvoidConditions ? <div className="rounded-lg border border-ctp-red/30 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">At selected draw count</div><div className="font-semibold tabular-nums text-ctp-red">{(probability * 100).toFixed(1)}%</div></div> : <><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">Average complete</div><div className="font-semibold tabular-nums text-ctp-text">{expectedRecipeSeen === null ? "–" : `${expectedRecipeSeen.toFixed(1)} seen · ~T${expectedRecipeTurn}`}</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">50% consistency</div><div className="font-semibold tabular-nums text-ctp-text">{fiftySeen ? `${fiftySeen} seen` : "Not reached"}</div></div><div className="rounded-lg border border-ctp-surface1 p-2.5"><div className="text-[10px] uppercase tracking-wide text-ctp-subtext0">80% consistency</div><div className="font-semibold tabular-nums text-ctp-text">{eightySeen ? `${eightySeen} seen` : "Not reached"}</div></div></>}</div>}
       {recipeCopySuggestions.length > 0 && <div className="mt-3 rounded-xl border border-ctp-teal/30 bg-ctp-teal/5 p-3"><p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-teal">Copies that improve this recipe</p><div className="mt-2 grid gap-2 sm:grid-cols-2">{recipeCopySuggestions.slice(0, 4).map((suggestion) => { const isPending = pendingRecipeSuggestion === suggestion.cardName; return <div key={suggestion.cardName} className="rounded-lg border border-ctp-surface1 bg-ctp-base/40 px-3 py-2 text-xs"><div className="flex items-center justify-between gap-3"><span className="text-ctp-text">Add 1× {suggestion.cardName} <span className="text-ctp-subtext0">({suggestion.currentCopies} → {suggestion.currentCopies + 1})</span></span><span className="shrink-0 font-semibold tabular-nums text-ctp-teal">+{(suggestion.gain * 100).toFixed(1)}%</span></div>{onApplyRecipeSuggestion && (isPending ? <div className="mt-2"><label className="text-[10px] text-ctp-subtext0">Replace<select value={recipeCutCard} onChange={(event) => setRecipeCutCard(event.target.value)} className="mt-1 block min-h-9 w-full rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1.5 text-xs text-ctp-text"><option value="">Choose a Main Deck card…</option>{mainLines.filter((line) => line.name !== suggestion.cardName).map((line) => <option key={line.name} value={line.name}>{line.quantity}× {line.name}</option>)}</select></label><div className="mt-2 flex gap-2"><button type="button" disabled={!recipeCutCard} onClick={() => { onApplyRecipeSuggestion(suggestion.cardName, recipeCutCard); setPendingRecipeSuggestion(null); setRecipeCutCard(""); }} className="rounded-md bg-ctp-blue px-2.5 py-1.5 font-semibold text-ctp-base disabled:cursor-not-allowed disabled:opacity-50">Apply and recalculate</button><button type="button" onClick={() => { setPendingRecipeSuggestion(null); setRecipeCutCard(""); }} className="rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-ctp-subtext1">Cancel</button></div></div> : <button type="button" onClick={() => { setPendingRecipeSuggestion(suggestion.cardName); setRecipeCutCard(""); }} className="mt-2 rounded-md border border-ctp-blue/60 px-2.5 py-1.5 font-semibold text-ctp-blue hover:bg-ctp-blue/10">Review change</button>)}</div>; })}</div><p className="mt-2 text-[10px] text-ctp-subtext0">Assumes one unrelated Main Deck card is replaced, keeping deck size fixed. Only recipe cards currently below four copies are considered.</p></div>}
 
       {activeGlimpseSource && glimpseOdds && glimpseTargetCopies > 0 && (

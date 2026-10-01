@@ -31,7 +31,7 @@ export default function ImportByPlayer({
   const selectedPlayer = playersData?.players.find((p) => p.id === selectedPlayerId);
 
   // deckId -> {weightedScore, winRate} for this player's own sightings only, keyed the same way
-  // ComparedDeck.key already is (`${eventId}:${player}`) — lets the event list sort by "best
+  // ComparedDeck.key already is (`${eventId}:${player}`) – lets the event list sort by "best
   // performing deck" (the same tier-weighted placement score Top Decks' "best" sort uses) and show
   // a quick win-rate badge, without pulling in the much larger full deck-sightings dataset.
   const scoreByDeckId = useMemo(() => {

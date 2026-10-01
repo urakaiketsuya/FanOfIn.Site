@@ -5,7 +5,7 @@ import CardHoverPreview from "../../components/CardHoverPreview";
 import { splitDeckLabel, type ComparedDeck } from "./types";
 
 /**
- * Compact selected-deck tile for the tray above the comparison — a champion thumbnail plus
+ * Compact selected-deck tile for the tray above the comparison – a champion thumbnail plus
  * player/event on two lines, instead of a single long pill of `${player} @ ${event}` text that
  * wraps unpredictably once names get long. Sighting-deck labels are always built as
  * `${player} @ ${event}` (CompareIndex/DeckSearchByCards/ImportByPlayer/ImportTopDecks all

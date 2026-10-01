@@ -17,7 +17,7 @@ export interface ChampionRegionalBreakdown {
 }
 
 /**
- * The inverse pivot of useRegionalChampions.ts — instead of "which champions are popular in this
+ * The inverse pivot of useRegionalChampions.ts – instead of "which champions are popular in this
  * region," this is "which regions play this champion the most." Always country-level (not the
  * broader region grouping) since a per-champion breakdown is naturally finer-grained than the
  * top-level Regions page's own region/country toggle.

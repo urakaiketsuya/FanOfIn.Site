@@ -21,7 +21,7 @@ export interface ComparisonCardChange {
 export interface ComparisonDeckSummary {
   key: string;
   label: string;
-  /** True while this deck's own decklist (or the baseline's) hasn't resolved yet — render a loading state, not a diff. */
+  /** True while this deck's own decklist (or the baseline's) hasn't resolved yet – render a loading state, not a diff. */
   loading: boolean;
   /** True once resolved, if either this deck or the baseline turned out to have no decklist at all. */
   unavailable: boolean;
@@ -39,7 +39,7 @@ export interface ComparisonDeckSummary {
   spiritChanged: boolean;
 }
 
-/** A Spirit is just a material CHAMPION card with the SPIRIT subtype — same detection rule `deckBuilderParamsFromDecklist` and the Guided Deck Builder's paste-import use. */
+/** A Spirit is just a material CHAMPION card with the SPIRIT subtype – same detection rule `deckBuilderParamsFromDecklist` and the Guided Deck Builder's paste-import use. */
 function findSpiritName(decklist: OmnidexDecklist | null | undefined, cardsByName: Map<string, Card>): string | null {
   if (!decklist) return null;
   for (const line of decklist.material) {
@@ -50,7 +50,7 @@ function findSpiritName(decklist: OmnidexDecklist | null | undefined, cardsByNam
 }
 
 /**
- * Every other compared deck's card-level and stat-level delta against one chosen baseline deck —
+ * Every other compared deck's card-level and stat-level delta against one chosen baseline deck –
  * the data behind Compare's Summary view (see ComparisonSummary.tsx). Built on top of
  * `useComparisonData` (same price/rating/identity/section-grouping every other Compare view uses)
  * rather than recomputing any of that, so this can't drift from the Table/Cards views.
@@ -72,7 +72,7 @@ export function useComparisonSummary(
     const baselineList = decklists.get(baselineDeck.key);
     const baselineSpirit = findSpiritName(baselineList, cardsByName);
 
-    // name -> per-section copy counts, per deck position — built once from the shared section
+    // name -> per-section copy counts, per deck position – built once from the shared section
     // grouping so a card's placement can't disagree between this and the Table view. Keyed by
     // section (not just card name): a card can legally sit in more than one section at once (e.g.
     // Main and Sideboard both running their own copies of the same card), and collapsing that to a
@@ -153,7 +153,7 @@ export function useComparisonSummary(
         const tSections = targetPlacements.get(name);
         if (bSections && tSections) sharedCardCount++;
 
-        // Per-section deltas first — a card can sit in more than one section at once, so every
+        // Per-section deltas first – a card can sit in more than one section at once, so every
         // section needs its own before/after comparison rather than picking just one.
         const deltas = SECTION_KEYS.map((section) => ({
           section,
@@ -162,8 +162,8 @@ export function useComparisonSummary(
         })).filter((d) => d.baselineQty !== d.targetQty);
         if (deltas.length === 0) continue;
 
-        // Only call it a "move" for the clean two-section case — one section's copies zeroed out
-        // exactly as another section's appeared — so a card with independent changes across 2+
+        // Only call it a "move" for the clean two-section case – one section's copies zeroed out
+        // exactly as another section's appeared – so a card with independent changes across 2+
         // sections (or a partial shift alongside an unrelated quantity change) isn't mislabeled.
         if (deltas.length === 2) {
           const [d1, d2] = deltas;

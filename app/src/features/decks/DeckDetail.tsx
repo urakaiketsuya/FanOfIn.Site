@@ -48,7 +48,7 @@ const TAB_KEYS = TABS.map((t) => t.key);
 
 /**
  * Same shared `UserDeckHeader`/`UserDecklistPanel`/`UserDeckStats` family `MyDeckDetail.tsx`/
- * `PublicDeckDetail.tsx`/`PantheonDeckDetail.tsx` all use — composition, not parameterization,
+ * `PublicDeckDetail.tsx`/`PantheonDeckDetail.tsx` all use – composition, not parameterization,
  * per the pattern established across the account decklist pages: this page just supplies its own
  * genuinely tournament-only extras (matchup Card Impact, this build's historical performance, win
  * conditions, priciest cards, sighting history, similar decks) alongside the shared core rather
@@ -186,7 +186,7 @@ export default function DeckDetail() {
   const allNames = useMemo(() => [...(deck?.main ?? []), ...(deck?.material ?? []), ...(sideboardSelection?.lines ?? [])].map((l) => l.name), [deck, sideboardSelection]);
   const cardsByName = useCardsByNames(allNames);
   const { interactions: winConditions } = useDeckWinConditions(allNames, cardsByName, historyOpened);
-  // "Similar Decks" is already its own tab on this page, so nearestDecks is left empty here — only
+  // "Similar Decks" is already its own tab on this page, so nearestDecks is left empty here – only
   // classification/performance (this page's one genuinely new section) are read from the result.
   const deckCardCounts = useMemo(() => {
     const counts = new Map<string, number>();
@@ -196,7 +196,7 @@ export default function DeckDetail() {
   const { result: deckTestResult } = useDeckTestResult({ deckCardCounts, cardsByName, deckId: deck?.deckIds[0], nearestDecks: [] }, historyOpened);
 
   // Precise, cluster-scoped "What beats this build" (Phase 21) only covers the ~128 named-build
-  // clusters — most decks reachable from here (especially one-offs, since All Decks stopped
+  // clusters – most decks reachable from here (especially one-offs, since All Decks stopped
   // gating deck pages behind Popular Decks' 2+-player bar) have no cluster match. `UserDeckStats`
   // below already covers the broader Champion-wide fallback via its own `useChampionCardImpact`
   // call, so this page only needs to add the matchup-scoped case on top, never both.
@@ -204,10 +204,10 @@ export default function DeckDetail() {
   const myClusterId = deck ? cardImpactData?.deckClusterIndex[deck.deckIds[0]] : undefined;
   const hasClusterMatch = !!myClusterId;
 
-  // "What beats this build" — same matchup-scoped opponent-card data ArchetypeDetail's own Card
+  // "What beats this build" – same matchup-scoped opponent-card data ArchetypeDetail's own Card
   // Impact tab shows, just pre-filtered to this one deck's cluster instead of offering a build
   // picker. Only decks with a named-cluster match have this data (see hasClusterMatch's own doc
-  // comment) — a one-off decklist with no cluster has nothing to key this off of.
+  // comment) – a one-off decklist with no cluster has nothing to key this off of.
   const matchupCardImpactData = useMatchupCardImpactData(historyOpened && hasClusterMatch);
   // No "all opponents" aggregate here (unlike ArchetypeDetail's own Card Impact tab): each
   // matchup's lifts are scoped to its own population and aren't comparable across opponents (see
@@ -327,7 +327,7 @@ export default function DeckDetail() {
     );
   }
 
-  // Tournament-only sections `UserDeckStats` itself has no equivalent for — grouped into two of
+  // Tournament-only sections `UserDeckStats` itself has no equivalent for – grouped into two of
   // its tab-switcher's tabs (via `extraTabs`) instead of stacking as their own accordions below it.
   const hasHistoricalPerformance = Boolean(deckTestResult && deckTestResult.classification.status !== "unclassified" && deckTestResult.classification.cluster && deckTestResult.performance);
   const hasMatchupData = hasClusterMatch && clusterMatchups.length > 0;
@@ -395,7 +395,7 @@ export default function DeckDetail() {
           )}
 
           {winConditions.length > 0 && (
-            <Section heading="compact" className={hasHistoricalPerformance ? "mt-6" : undefined} title="How this deck wins" description="Card interactions detected from rules text and, where a real deck confirms them, cross-deck co-occurrence — not a win-rate claim, and not exclusive with the sections below.">
+            <Section heading="compact" className={hasHistoricalPerformance ? "mt-6" : undefined} title="How this deck wins" description="Card interactions detected from rules text and, where a real deck confirms them, cross-deck co-occurrence – not a win-rate claim, and not exclusive with the sections below.">
               <DeckWinConditions interactions={winConditions} cardsByName={cardsByName} />
             </Section>
           )}

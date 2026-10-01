@@ -7,9 +7,9 @@ import { sameCoreEffectCards } from "../../lib/cardSimilarity";
 export interface NewReleaseCombo {
   /** The already-in-the-build card this candidate connects to. */
   with: Card;
-  /** Token name / subtype / "Empower" / "named reference" — same `via` vocabulary as Intent Cards. */
+  /** Token name / subtype / "Empower" / "named reference" – same `via` vocabulary as Intent Cards. */
   via: string;
-  /** Absent for a "same effect" combo (untiered). "experimental" mirrors CardDetail.tsx's badge — a broader trigger, not yet checked against the full card corpus — surfaced here only as a fallback when a card has no validated/same-effect combo, so a Champion doesn't show nothing just because nothing strong enough exists yet. */
+  /** Absent for a "same effect" combo (untiered). "experimental" mirrors CardDetail.tsx's badge – a broader trigger, not yet checked against the full card corpus – surfaced here only as a fallback when a card has no validated/same-effect combo, so a Champion doesn't show nothing just because nothing strong enough exists yet. */
   tier?: IntentTier;
 }
 
@@ -25,16 +25,16 @@ const MAX_RESULTS = 8;
 
 /**
  * Surfaces cards from the most recently released real product (`products/data.ts`, which already
- * excludes promo-only prints) that have a real designed connection — shared token economy, a
+ * excludes promo-only prints) that have a real designed connection – shared token economy, a
  * tribal/subtype reference, Empower, a named card mention (`cardIntent.ts`'s "validated" tier
- * only), or the same core effect as (`cardSimilarity.ts`'s `sameCoreEffectCards`) — to a card
+ * only), or the same core effect as (`cardSimilarity.ts`'s `sameCoreEffectCards`) – to a card
  * already in this build, and fit the deck's element identity. A just-released set has no
  * tournament sightings yet, so this can't be ranked by evidence the way the rest of the Deck
  * Builder is (fabricating one was already tried and rejected once, see "Predicted Power" in
  * docs/CALCULATIONS.md); requiring an actual structural or textual connection is what keeps this
  * from being "any card in the right colors," which is too weak a signal to call a recommendation.
  * Deliberately scoped to connections with the build itself (not new-set cards combo-ing with each
- * other) — that wider check surfaced too much to be useful in practice.
+ * other) – that wider check surfaced too much to be useful in practice.
  *
  * Falls back to cardIntent.ts's "experimental" tier (a broader, not-yet-corpus-checked trigger,
  * same tier CardDetail.tsx already surfaces badged) only when a card has no validated/same-effect
@@ -56,7 +56,7 @@ export function computeNewReleaseCards(
     if (!isElementCompatible(card, identityElements)) continue;
     if (!card.editions.some((edition) => edition.set.prefix === latestProduct.prefix)) continue;
 
-    // Only check against deckCards (a few dozen cards), not the full catalog — intentCards() is
+    // Only check against deckCards (a few dozen cards), not the full catalog – intentCards() is
     // O(catalog passed in), and we only care about connections to what's actually in this build.
     const intent = intentCards(card, deckCards);
     const combos: NewReleaseCombo[] = [];
@@ -74,7 +74,7 @@ export function computeNewReleaseCards(
       seen.add(sibling.name);
       combos.push({ with: sibling, via: "same effect" });
     }
-    // Experimental-tier matches only count when nothing stronger connects this card at all —
+    // Experimental-tier matches only count when nothing stronger connects this card at all –
     // they're a fallback so a Champion doesn't show nothing, not a way to pad out real hits.
     if (combos.length === 0) combos.push(...experimentalCombos);
     if (combos.length === 0) continue;

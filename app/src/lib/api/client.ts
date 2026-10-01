@@ -34,7 +34,7 @@ class ApiError extends Error {
 
 type QueryValue = string | number | boolean | string[] | undefined;
 
-/** The API expects multi-value filters as repeated params (?class=A&class=B) — comma-joining and `class[]=` both silently no-op. */
+/** The API expects multi-value filters as repeated params (?class=A&class=B) – comma-joining and `class[]=` both silently no-op. */
 function buildUrl(path: string, params?: Record<string, QueryValue>): URL {
   const url = new URL(path, BASE_URL);
   if (params) {
@@ -65,7 +65,7 @@ function isApiErrorBody(body: unknown): body is OmnidexApiError {
 
 /**
  * Some Omnidex sub-resources respond with a 4xx and a `{ error }` body when not applicable to
- * a given event (e.g. 400 "Not a team event.", 404 "Event has no standings.") — that's a
+ * a given event (e.g. 400 "Not a team event.", 404 "Event has no standings.") – that's a
  * normal, expected response, not a failure.
  */
 async function requestMaybe<T>(path: string, params?: Record<string, QueryValue>): Promise<T | OmnidexApiError> {
@@ -147,8 +147,8 @@ export const gatcgApi = {
   imageUrl: (imagePath: string, rounded = false) => `${BASE_URL}${imagePath}${rounded ? "?rounded=true" : ""}`,
 
   /**
-   * Official element/cost/class/type badge icons — same `gatcg.com` root domain as this API, just
-   * a dedicated asset host (`cdn2.gatcg.com/i/{kind}/{key}.png`, lowercase key, spaces allowed —
+   * Official element/cost/class/type badge icons – same `gatcg.com` root domain as this API, just
+   * a dedicated asset host (`cdn2.gatcg.com/i/{kind}/{key}.png`, lowercase key, spaces allowed –
    * e.g. "greater boon"). Verified live: index.gatcg.com (a card-database site built on this same
    * API) pulls its badges from this exact CDN rather than hosting its own copies. Also verified
    * directly (HEAD requests) that `classes` and plain `types` (not just the type-regalia

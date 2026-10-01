@@ -14,7 +14,7 @@ export default function DecklistCoverageNotice() {
       {coverage.latestSeasonName && coverage.latestSeasonCoverageRate !== null && (
         <> ({(coverage.latestSeasonCoverageRate * 100).toFixed(0)}% in {coverage.latestSeasonName})</>
       )}{" "}
-      — most events don't publish one, so this reflects a sample of the field, not the full one.{" "}
+      – most events don't publish one, so this reflects a sample of the field, not the full one.{" "}
       <Link to="/methodology#coverage" className="text-ctp-blue hover:underline">Learn more</Link>
     </p>
   );

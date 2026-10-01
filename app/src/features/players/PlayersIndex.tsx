@@ -136,7 +136,7 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
         <p className="mt-4 text-xs text-ctp-subtext0">
           {rows.length} rated player{rows.length === 1 ? "" : "s"}
           {" · "}
-          <span className="text-ctp-yellow">*</span> provisional — fewer than {PROVISIONAL_MATCH_THRESHOLD} recorded matches ({" "}
+          <span className="text-ctp-yellow">*</span> provisional – fewer than {PROVISIONAL_MATCH_THRESHOLD} recorded matches ({" "}
           <Link to="/methodology#elo" className="text-ctp-blue hover:underline">learn more</Link>)
         </p>
       )}
@@ -167,7 +167,7 @@ function PlayerRankingView({ topChampionById }: { topChampionById: Map<number, s
                   <td className="py-1.5 pr-6 text-ctp-subtext1">
                     {Math.round(rating?.rating ?? 0)}
                     {rating && isProvisionalRating(rating.matches) && (
-                      <span className="ml-1 text-ctp-yellow" title={`Provisional — only ${rating.matches} recorded match${rating.matches === 1 ? "" : "es"}`}>
+                      <span className="ml-1 text-ctp-yellow" title={`Provisional – only ${rating.matches} recorded match${rating.matches === 1 ? "" : "es"}`}>
                         *
                       </span>
                     )}

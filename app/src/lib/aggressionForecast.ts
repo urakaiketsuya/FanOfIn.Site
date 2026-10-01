@@ -40,17 +40,17 @@ export interface AggressionForecast {
   deckSize: number;
   fixedDamageCopies: number;
   variableDamageCopies: number;
-  /** Copies whose damage scales with a subtype-sacrifice combo (e.g. Burst Asunder off Fractals) — folded into `expectedMax`/`high`/the "Max" chance columns as an optimistic estimate sized off this deck's own fodder count, never into the guaranteed `Min` side. */
+  /** Copies whose damage scales with a subtype-sacrifice combo (e.g. Burst Asunder off Fractals) – folded into `expectedMax`/`high`/the "Max" chance columns as an optimistic estimate sized off this deck's own fodder count, never into the guaranteed `Min` side. */
   scalingDamageCopies: number;
-  /** Copies with a fixed printed damage value that isn't guaranteed to reach the champion — either an ambiguous "target unit" clause (e.g. Blazing Throw) or one mode of a "Choose one" modal card (e.g. Vermilion Decree). Folded into the Max side only, same as `scalingDamageCopies`. */
+  /** Copies with a fixed printed damage value that isn't guaranteed to reach the champion – either an ambiguous "target unit" clause (e.g. Blazing Throw) or one mode of a "Choose one" modal card (e.g. Vermilion Decree). Folded into the Max side only, same as `scalingDamageCopies`. */
   ambiguousDamageCopies: number;
   /** Copies participating in the Diao Chan phantasia package: Full Bloom, Flowerbud generators,
    * and phantasias Scepter of Awakening can animate. Their conditional output is ceiling-only
    * except Full Bloom's own four-Flowerbud On Enter sequence. */
   awakeningBloomComboCopies: number;
-  /** Of `fixedDamageCopies`, how many also hit the deck's own champion (e.g. Embercrypt Burn's "each champion") — informational only, doesn't change any guaranteed value. */
+  /** Of `fixedDamageCopies`, how many also hit the deck's own champion (e.g. Embercrypt Burn's "each champion") – informational only, doesn't change any guaranteed value. */
   symmetricDamageCopies: number;
-  /** Fixed champion-reach damage from Material Deck cards with an unconditional per-turn trigger (e.g. Fabled Ruby Fatestone), summed across copies. Material Deck cards are known and in play from the start of the game, not drawn — so this is a flat per-turn figure, deliberately kept separate from `points`' "cards seen" checkpoints rather than folded into them. 0 if the deck runs no such cards. */
+  /** Fixed champion-reach damage from Material Deck cards with an unconditional per-turn trigger (e.g. Fabled Ruby Fatestone), summed across copies. Material Deck cards are known and in play from the start of the game, not drawn – so this is a flat per-turn figure, deliberately kept separate from `points`' "cards seen" checkpoints rather than folded into them. 0 if the deck runs no such cards. */
   recurringDamagePerTurn: number;
   /** Per-card coverage ledger used to expose likely parser gaps instead of silently omitting them. */
   audit: DamageAuditEntry[];
@@ -174,11 +174,11 @@ export function computeAggressionForecast(
   if (hasScepterOfAwakening && hasDiaoChan) markModeled("Scepter of Awakening", "animates the strongest non-Ally phantasia seen");
 
   // Real subtype vocabulary for this deck's own cards, gating `parseSubtypeScalingDamage` the same
-  // way `cardIntent.ts`'s subtype detection is gated — see that function's doc comment.
+  // way `cardIntent.ts`'s subtype detection is gated – see that function's doc comment.
   const knownSubtypes = new Set<string>();
   for (const card of cardsByName.values()) for (const s of card.subtypes) knownSubtypes.add(s.toLowerCase());
 
-  // How much of each subtype this specific deck actually runs — the fodder count a scaling combo's
+  // How much of each subtype this specific deck actually runs – the fodder count a scaling combo's
   // ceiling estimate is sized off, so a deck with 0 Fractals gets 0 bonus and one built around them
   // gets a realistic one.
   const subtypeCopyCounts = new Map<string, number>();
@@ -237,7 +237,7 @@ export function computeAggressionForecast(
     if (scaling) {
       scalingDamageCopies += line.quantity;
       // Base clause targets the ambiguous "unit" bucket (may hit an ally instead), so it's not
-      // guaranteed — 0 on the Min side, its printed value on the Max side, same as the rest of this
+      // guaranteed – 0 on the Min side, its printed value on the Max side, same as the rest of this
       // group's combinatorics. The fodder-scaled bonus on top is handled separately below.
       minGroups.push({ copies: line.quantity, damage: 0, unlockSeen });
       maxGroups.push({ copies: line.quantity, damage: scaling.baseDamage, unlockSeen });
@@ -249,8 +249,8 @@ export function computeAggressionForecast(
     const ambiguous = ambiguousFixedChampionDamage(card);
     if (ambiguous !== null) {
       ambiguousDamageCopies += line.quantity;
-      // Not guaranteed — could land on an ally instead of the champion, or (for a modal card) never
-      // get chosen at all — so 0 on the Min side, its printed value on the Max side.
+      // Not guaranteed – could land on an ally instead of the champion, or (for a modal card) never
+      // get chosen at all – so 0 on the Min side, its printed value on the Max side.
       minGroups.push({ copies: line.quantity, damage: 0, unlockSeen });
       maxGroups.push({ copies: line.quantity, damage: ambiguous, unlockSeen });
       markModeled(line.name, `${ambiguous} conditional or modal damage ceiling`);
@@ -284,11 +284,11 @@ export function computeAggressionForecast(
 
     // Expected extra damage from subtype-sacrifice combos (e.g. Burst Asunder off Fractals) at this
     // checkpoint: each source's own expected copies seen so far, times its per-unit bonus, times the
-    // expected copies of its fodder subtype seen so far — the same closed-form hypergeometric-mean
+    // expected copies of its fodder subtype seen so far – the same closed-form hypergeometric-mean
     // approximation `drawEffects.ts`'s `expectedExtraDraws` uses (`copies * seen / deckSize`), not an
     // exact joint distribution: it treats the source and its fodder as independently drawn, and
     // doesn't model turn sequencing or fodder shared across multiple combo sources competing for the
-    // same sacrifices. Ceiling-only — never added to `expectedMin`/`low`.
+    // same sacrifices. Ceiling-only – never added to `expectedMin`/`low`.
     const scalingBonus = scalingSources.reduce((sum, source) => {
       if (seen < source.unlockSeen) return sum;
       const sourceSeen = (source.copies * Math.min(seen, deckSize)) / deckSize;

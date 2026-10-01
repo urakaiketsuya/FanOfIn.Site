@@ -4,8 +4,8 @@ import { useRandomFlavorCard } from "../features/cards/useRandomFlavorCard";
 import { useCardsByNames } from "../features/events/useCardsByNames";
 import { CHARACTER_CUTOUTS } from "../features/products/characterArt";
 
-// Hand-picked, not every CHARACTER_CUTOUTS entry (which also has a few non-Champion pieces —
-// Slime tokens, a Drone ally — and some champion art that just doesn't read as well small).
+// Hand-picked, not every CHARACTER_CUTOUTS entry (which also has a few non-Champion pieces –
+// Slime tokens, a Drone ally – and some champion art that just doesn't read as well small).
 const FOOTER_CUTOUT_NAMES = [
   "Alice, Whim's Monarch",
   "Arisanna, Master Alchemist",
@@ -24,7 +24,7 @@ export default function RandomFlavorFooter() {
   const card = useRandomFlavorCard();
   const flavor = card?.flavor ? card.flavor.trim().replace(/^["""](.*)["""]$/, "$1") : null;
 
-  // Picked once per app-shell mount, then held stable — this component lives outside
+  // Picked once per app-shell mount, then held stable – this component lives outside
   // <AppRoutes/> and persists across in-app navigation, so it shouldn't re-roll on every render.
   const [cutoutName] = useState(pickRandomCutoutName);
   const cutoutCard = useCardsByNames([cutoutName]).get(cutoutName);
@@ -36,7 +36,7 @@ export default function RandomFlavorFooter() {
           <>
             <p className="text-sm italic text-ctp-subtext0">"{flavor}"</p>
             <Link to={`/cards/${card.slug}`} className="mt-1 inline-block text-xs text-ctp-subtext0 hover:text-ctp-blue">
-              — {card.name}
+              – {card.name}
             </Link>
           </>
         )}

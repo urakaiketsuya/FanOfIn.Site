@@ -11,11 +11,11 @@ import { InlineState } from "../../../components/ui/ContentState";
 type NamedLine = { name: string; quantity: number };
 
 /** Composition charts and Composition suggestions are the two Stats-tab sections nothing outside
- * the tab depends on — unlike Synergy readiness/Package balance/Meta gaps/New release cards, which
+ * the tab depends on – unlike Synergy readiness/Package balance/Meta gaps/New release cards, which
  * feed the Stats tab's badge count and (for decay) the recommendation engine in `DeckBuilderIndex.tsx`,
  * so those stay eagerly computed at the top of that file. These two instead take raw deck lines and
  * compute their own data, deferred via `Section`'s `onOpen` until the section is actually expanded
- * (both default closed) — mirrors the lazy-expand pattern already used for `PopularDeckRow.tsx`'s
+ * (both default closed) – mirrors the lazy-expand pattern already used for `PopularDeckRow.tsx`'s
  * `ExpandedDeckRow`. */
 
 export function CompositionChartsSection({ lines, cardsByName }: { lines: NamedLine[]; cardsByName: Map<string, Card> }) {
@@ -84,13 +84,13 @@ function CompositionSuggestionsBody({
     [mainLines, cardsByName, compositionWinRateData],
   );
   // Unlike the original always-eager version, this can't hide the whole section when there's
-  // nothing to show — visibility itself would require computing gaps eagerly, defeating the point.
+  // nothing to show – visibility itself would require computing gaps eagerly, defeating the point.
   if (compositionGaps.length === 0) return <InlineState className="mt-2 text-sm">No composition suggestions for this build.</InlineState>;
   return <ul className="mt-2 space-y-1.5 text-sm">
     {compositionGaps.map((g) => (
       <li key={g.type} className="text-ctp-subtext1">
         <span className="font-semibold text-ctp-text capitalize">{g.type.toLowerCase()}</span> is {g.currentBucket} of your main deck
-        ({(g.currentWinRate * 100).toFixed(0)}% win rate) — decks at {g.bestBucket} average{" "}
+        ({(g.currentWinRate * 100).toFixed(0)}% win rate) – decks at {g.bestBucket} average{" "}
         <span className="font-semibold text-ctp-green">{(g.bestWinRate * 100).toFixed(0)}%</span>.
       </li>
     ))}

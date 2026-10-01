@@ -60,7 +60,7 @@ type TopCardsSectionsProps = {
   initialVisible?: number;
 };
 
-/** Card usage split by deck section — main/material/sideboard are structurally different card pools, so lumping them together buries a defining material-deck piece among 40-card mainboard staples. */
+/** Card usage split by deck section – main/material/sideboard are structurally different card pools, so lumping them together buries a defining material-deck piece among 40-card mainboard staples. */
 export default function TopCardsSections(props: TopCardsSectionsProps) {
   return props.layout === "grid" ? <GridTopCardsSections {...props} /> : <ListTopCardsSections {...props} />;
 }
@@ -90,7 +90,7 @@ function ListTopCardsSections({ topCards, cardImages, mainOverride, winRateByNam
 }
 
 /**
- * Same visual treatment as a decklist's Visual display mode, including its stat footer — a top
+ * Same visual treatment as a decklist's Visual display mode, including its stat footer – a top
  * card here has no natural "quantity," so every card is passed through as a plain `{ card, quantity: 1 }`
  * line, which simply suppresses `VisualCardTile`'s quantity badge. Fetches price/trend/simulator/
  * community data itself (gated the same way DecklistView gates them) rather than in the "list"

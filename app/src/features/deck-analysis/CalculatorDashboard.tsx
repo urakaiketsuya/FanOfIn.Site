@@ -27,7 +27,7 @@ function readSettings(key: string): Settings {
     return result;
   } catch { return defaults; }
 }
-const percent = (value: number | null) => value === null ? '—' : `${(value * 100).toFixed(1)}%`;
+const percent = (value: number | null) => value === null ? '–' : `${(value * 100).toFixed(1)}%`;
 
 export default function CalculatorDashboard({ main, sideboard, material, catalog, opening, plan, storageKey, onEditPlan }: { main: CalculatorLine[]; sideboard: CalculatorLine[]; material: CalculatorLine[]; catalog: Map<string, Card>; opening: number; plan: AnalysisPlan | null; storageKey: string; onEditPlan: () => void }) {
   const key = `fanofin:calculator-dashboard:v1:${storageKey}`;
@@ -70,7 +70,7 @@ export default function CalculatorDashboard({ main, sideboard, material, catalog
   switch (settings.tool) {
     case 'Level timing': {
       const best = levelAnalysis?.routes.filter((route) => route.id !== 'fractal' && route.probability !== null).sort((a, b) => b.probability! - a.probability!)[0];
-      result = <><Result label={`Level ${settings.level} route access ${checkpoint}`} value={percent(best?.probability ?? null)} /><SmallResult label="Natural schedule" value={`Turn ${levelAnalysis?.naturalTurn ?? '—'}`} /></>;
+      result = <><Result label={`Level ${settings.level} route access ${checkpoint}`} value={percent(best?.probability ?? null)} /><SmallResult label="Natural schedule" value={`Turn ${levelAnalysis?.naturalTurn ?? '–'}`} /></>;
       controls = <>{numberInput('Target level', 'level', 2, 6)}{best?.bottleneck && <p className="text-xs text-ctp-yellow">{best.bottleneck}</p>}</>;
       break;
     }
@@ -116,7 +116,7 @@ export default function CalculatorDashboard({ main, sideboard, material, catalog
       controls = <>{pool('Cards to find', 'selected')}{numberInput('Cards removed from deck', 'known', 0, size)}{numberInput('Matching copies removed', 'knownHits', 0, copies)}{!knownValid && <p role="alert" className="text-sm text-ctp-yellow">Check remaining deck and matching copies.</p>}</>;
       break;
     default:
-      result = <><Result label={`${selected.length ? selected.join(" / ") + " · " : ""}Find ${settings.required}+ ${checkpoint}`} value={percent(oddsAt(seen))} /><div className="grid grid-cols-2 gap-3"><SmallResult label="Opening hand" value={percent(oddsAt(opening))} /><SmallResult label={`Reach ${settings.target}%`} value={!selected.length ? '—' : targetTurn ? `Turn ${targetTurn}` : 'Not reached by turn 8'} /></div></>;
+      result = <><Result label={`${selected.length ? selected.join(" / ") + " · " : ""}Find ${settings.required}+ ${checkpoint}`} value={percent(oddsAt(seen))} /><div className="grid grid-cols-2 gap-3"><SmallResult label="Opening hand" value={percent(oddsAt(opening))} /><SmallResult label={`Reach ${settings.target}%`} value={!selected.length ? '–' : targetTurn ? `Turn ${targetTurn}` : 'Not reached by turn 8'} /></div></>;
       controls = <>{pool('Cards to find · any matching copy', 'selected')}{numberInput('Copies to find', 'required', 1, 20)}{numberInput('Target chance (%)', 'target', 1, 100)}</>;
   }
   return <section className="mt-4" aria-label="Deck calculators">
@@ -134,7 +134,7 @@ export default function CalculatorDashboard({ main, sideboard, material, catalog
     </div>
   </section>;
 }
-function Result({ label, value }: { label: string; value: string }) { return <div><p className={value === "—" ? "text-xl font-semibold text-ctp-subtext1" : "text-4xl font-bold tabular-nums text-ctp-blue sm:text-5xl"}>{value === "—" ? "Choose cards" : value}</p><p className="mt-2 text-sm text-ctp-subtext1">{label}</p></div>; }
+function Result({ label, value }: { label: string; value: string }) { return <div><p className={value === "–" ? "text-xl font-semibold text-ctp-subtext1" : "text-4xl font-bold tabular-nums text-ctp-blue sm:text-5xl"}>{value === "–" ? "Choose cards" : value}</p><p className="mt-2 text-sm text-ctp-subtext1">{label}</p></div>; }
 function SmallResult({ label, value }: { label: string; value: string }) { return <div className="rounded-lg bg-ctp-base/50 p-3"><p className="text-lg font-semibold tabular-nums">{value}</p><p className="mt-1 text-xs text-ctp-subtext0">{label}</p></div>; }
 function CardPool({ label, lines, selected, onChange }: { label: string; lines: CalculatorLine[]; selected: string[]; onChange: (value: string[]) => void }) {
   const [query, setQuery] = useState('');

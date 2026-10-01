@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-/** A small toggle button for filter rows (Spirit/Element/type pickers) — active state gets the accent border, everything else is muted. */
+/** A small toggle button for filter rows (Spirit/Element/type pickers) – active state gets the accent border, everything else is muted. */
 export default function Chip({
   active,
   onClick,

@@ -6,11 +6,11 @@ import { useCardCatalog } from "../cards/useCardCatalog";
 export interface CardComparisonRow {
   name: string;
   card: Card | undefined;
-  /** Undefined when the card has too little play (or none at all) to appear in cards.json — same tolerance every other stats surface already has for a niche/new card. */
+  /** Undefined when the card has too little play (or none at all) to appear in cards.json – same tolerance every other stats surface already has for a niche/new card. */
   stat: CardStat | undefined;
 }
 
-/** Joins the local card catalog against the published usage/win-rate stats for an arbitrary, user-chosen list of card names — the individual-card sibling of `useComparisonData`'s deck-vs-deck join. */
+/** Joins the local card catalog against the published usage/win-rate stats for an arbitrary, user-chosen list of card names – the individual-card sibling of `useComparisonData`'s deck-vs-deck join. */
 export function useCardComparison(names: string[]): CardComparisonRow[] {
   const cardStatsData = useCardStatsData();
   const cardCatalog = useCardCatalog();

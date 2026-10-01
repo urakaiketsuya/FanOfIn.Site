@@ -37,13 +37,13 @@ const JUMP_SECTIONS = [
 ];
 
 /**
- * A single-page "pick a Champion, then narrow by Element/Spirit, see everything at once" view —
+ * A single-page "pick a Champion, then narrow by Element/Spirit, see everything at once" view –
  * the EDHRec-commander-page experience translated to Grand Archive. Deliberately separate from
  * `ChampionDetail.tsx` (which stays tabbed, one section at a time, per the earlier page-density
  * work) rather than another tab there: this page shows every section simultaneously, which is
  * exactly the layout a jump-nav earns its keep on.
  *
- * "Level" is informational only, not a data filter — deck-composition/win-rate stats aren't
+ * "Level" is informational only, not a data filter – deck-composition/win-rate stats aren't
  * tracked per Champion-print level anywhere in the pipeline (a deck can run any level copy of its
  * Champion), so picking a level only changes which exact print is linked/portrayed.
  */
@@ -78,7 +78,7 @@ export default function ChampionSynergy() {
     archetypeData?.namedSpirits?.find((s) => s.signature === championName);
 
   const cardStatsByChampionData = useCardStatsByChampionData();
-  /** Card win rate specifically among this Champion's own decks — Champion-wide, not re-scoped per Spirit/Element (that dataset doesn't slice that finely). */
+  /** Card win rate specifically among this Champion's own decks – Champion-wide, not re-scoped per Spirit/Element (that dataset doesn't slice that finely). */
   const winRateByName = useMemo(() => {
     const entry = cardStatsByChampionData?.champions.find((c) => c.championName === championName);
     return entry ? new Map(entry.cards.map((c) => [c.name, { adjustedWinRate: c.adjustedWinRate, deckCount: c.deckCount, baselineWinRate: entry.baselineWinRate }])) : undefined;
@@ -124,7 +124,7 @@ export default function ChampionSynergy() {
   }, [champion, spiritFilter]);
 
   // Replaces the old "All" filter chip: instead of an aggregate view, the default state shows
-  // cards played in common across this Champion's elemental variants — the actual "matches between
+  // cards played in common across this Champion's elemental variants – the actual "matches between
   // Wind/Fire/Water" the Most Used Cards section defaults to until a single element is picked.
   const sharedElementCards = useMemo((): TopCardsBySection | null => {
     if (!champion || champion.elementBreakdown.length < 2) return null;
@@ -182,13 +182,13 @@ export default function ChampionSynergy() {
     spiritFilter.kind === "element"
       ? `Most used ${titleCase(spiritFilter.element)} cards`
       : spiritFilter.kind === "spirit"
-        ? `Most used cards — ${spiritFilter.spiritName}`
+        ? `Most used cards – ${spiritFilter.spiritName}`
         : sharedElementCards
           ? "Cards played across every element"
           : "Most used cards";
 
   const typeFilterOptions = useMemo(() => {
-    // `mainByType` can be briefly absent even once `displayed` exists — a client with a cached
+    // `mainByType` can be briefly absent even once `displayed` exists – a client with a cached
     // `archetypes.json` predating this field gets served that stale copy immediately (see
     // usePublishedData's cache-then-refresh behavior) before the background refetch replaces it.
     if (!displayed?.mainByType) return [];
@@ -209,7 +209,7 @@ export default function ChampionSynergy() {
   }, [displayed]);
   const cardImages = useCardsByNames(allTopCardNames);
 
-  // Stand-in "deck" for the new-release synergy check — this page has no assembled decklist of its
+  // Stand-in "deck" for the new-release synergy check – this page has no assembled decklist of its
   // own, so the champion's own most-played Main+Material cards serve as the representative shell.
   const representativeDeckCards = useMemo(() => {
     if (!deckShellTopCards) return [];
@@ -217,13 +217,13 @@ export default function ChampionSynergy() {
     return names.map((n) => catalogByName.get(n)).filter((c): c is Card => c !== undefined);
   }, [deckShellTopCards, catalogByName]);
 
-  // Elements this Champion (or, on a named-Spirit page, the Spirit itself) can actually cast —
+  // Elements this Champion (or, on a named-Spirit page, the Spirit itself) can actually cast –
   // scoped to whichever bucket is currently displayed so a card only reachable via a *different*
   // Spirit/element than the one shown isn't recommended as a New Release connection. Reads straight
   // off the archetype data's own `elements`/`spiritElement` fields rather than a catalog card's
   // `.elements`: `championPrints` (and so `selectedPrint`) is always empty on a named-Spirit page
   // (its Champion-type card is SPIRIT-subtype, filtered out by that query), which previously left
-  // `identityElements` empty there — and an empty set makes `isElementCompatible` pass every card
+  // `identityElements` empty there – and an empty set makes `isElementCompatible` pass every card
   // through unfiltered, so e.g. an Exia card could get "recommended" for a Spirit with no Exia
   // access at all. `champion.elements` is already the same field the header above renders for both
   // Champions and named Spirits, so it's a real, populated value in both cases.
@@ -249,7 +249,7 @@ export default function ChampionSynergy() {
       .filter((engine) => engine.buildIds.includes(build.id) && engine.championBreakdown.length > 1) }))
     .sort((a, b) => b.playerCount - a.playerCount || a.id.localeCompare(b.id)), [taxonomyData, championName]);
 
-  // Real tournament win rate for a linked card, not simulator telemetry — Card Impact is published
+  // Real tournament win rate for a linked card, not simulator telemetry – Card Impact is published
   // per named build (cluster), so when a card shows up in more than one of this Champion's builds,
   // keep whichever entry has the larger sample (deckCountWith) rather than averaging across builds.
   const cardImpactByName = useMemo(() => {
@@ -487,7 +487,7 @@ export default function ChampionSynergy() {
                             </summary>
                             <p className="mt-2 font-medium">{relationship.name}</p>
                             <p className="mt-1">{relationship.status === "shared" ? "Recurring multi-card package with independent player and event evidence." : "Evidence is insufficient to establish a shared archetype."}</p>
-                            {(relationship.championEvidence ?? relationship.championBreakdown).map((entry) => <p key={entry.championName} className="mt-2"><Link className="inline-flex min-h-12 items-center text-ctp-blue" to={`/champions/${championNameToSlug(entry.championName)}`}>{entry.championName}</Link>{"qualifying" in entry && entry.qualifying ? " (qualifying evidence)" : " (limited evidence)"}: {entry.deckCount} decks · {entry.playerCount} players · {"eventCount" in entry ? String(entry.eventCount) : "—"} events</p>)}
+                            {(relationship.championEvidence ?? relationship.championBreakdown).map((entry) => <p key={entry.championName} className="mt-2"><Link className="inline-flex min-h-12 items-center text-ctp-blue" to={`/champions/${championNameToSlug(entry.championName)}`}>{entry.championName}</Link>{"qualifying" in entry && entry.qualifying ? " (qualifying evidence)" : " (limited evidence)"}: {entry.deckCount} decks · {entry.playerCount} players · {"eventCount" in entry ? String(entry.eventCount) : "–"} events</p>)}
                             {[{ label: "Common core", cards: relationship.commonCore ?? relationship.definingCards }, { label: `${championName}-specific cards`, cards: relationship.championEvidence?.find((entry) => entry.championName === championName)?.differentiatorCards ?? [] }].map((section) => <div key={section.label} className="mt-3">
                               <p className="mb-2 font-medium">{section.label}</p>{section.label === "Common core" && <p className="mb-2">Includes cohort staples; only enriched recurring cards establish a shared package.</p>}
                               <div className="grid grid-cols-3 gap-2">{section.cards.map((entry) => {

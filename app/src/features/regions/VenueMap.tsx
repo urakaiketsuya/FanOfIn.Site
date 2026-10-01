@@ -4,7 +4,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { RegionalVenueRow } from "./useRegionalVenues";
 
-/** Small filled dot, not Leaflet's default pin image — avoids the bundler-asset-path dance those need, and matches the site's flat/minimal style. */
+/** Small filled dot, not Leaflet's default pin image – avoids the bundler-asset-path dance those need, and matches the site's flat/minimal style. */
 const venueIcon = L.divIcon({
   className: "",
   html: '<span class="block h-3 w-3 rounded-full bg-ctp-blue ring-2 ring-ctp-crust"></span>',
@@ -14,7 +14,7 @@ const venueIcon = L.divIcon({
 
 /**
  * Plots geocoded venues (see pipeline/src/omnidex/geocode.ts) on a map, alongside the existing
- * sortable venue list. Renders nothing when no venue in the current region has coordinates — a
+ * sortable venue list. Renders nothing when no venue in the current region has coordinates – a
  * graceful no-op, same convention the Products/Champion-cutout integrations already use.
  */
 export default function VenueMap({ rows }: { rows: RegionalVenueRow[] }) {

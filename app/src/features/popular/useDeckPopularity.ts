@@ -18,13 +18,13 @@ export interface PopularDeck {
   eventCount: number;
   bestPlacement: number | null;
   avgWinRate: number;
-  /** Average of each instance's Phase-18 weightedScore (placement percentile x event tier) — how well this exact list tends to perform, not just how often it's played. */
+  /** Average of each instance's Phase-18 weightedScore (placement percentile x event tier) – how well this exact list tends to perform, not just how often it's played. */
   avgWeightedScore: number;
   lastPlayedDate: string;
   lastEventId: number | null;
 }
 
-/** Popular Decks' own default — "netdecked more than once" bar. Callers that want every distinct decklist (e.g. the deck-page hash lookup, or the all-decks search page) pass `minPlayers: 1` instead. */
+/** Popular Decks' own default – "netdecked more than once" bar. Callers that want every distinct decklist (e.g. the deck-page hash lookup, or the all-decks search page) pass `minPlayers: 1` instead. */
 const MIN_PLAYERS = 2;
 
 /** Same identity convention used everywhere else (cardStats, decklists, deckSightings): main+material define what a deck "is"; sideboard is situational and excluded from the grouping key. */
@@ -41,7 +41,7 @@ export function canonicalSignature(main: DeckCardIndexLine[], material: DeckCard
 
 /**
  * Assembles one `PopularDeck` from its already-decoded card lines and the popularity-index
- * sightings that share its signature — the same aggregation `useDeckPopularity`'s full-universe
+ * sightings that share its signature – the same aggregation `useDeckPopularity`'s full-universe
  * grouping loop does per group below, factored out so a caller that already knows which sightings
  * belong together (e.g. `DeckDetail`'s `deckHash` fast path, which resolves one specific deck
  * without decoding and grouping all ~57k) doesn't have to duplicate it.
@@ -88,12 +88,12 @@ interface PopularityResult {
 }
 
 /**
- * Groups every public decklist by its exact main+material card list — distinct from Champions
+ * Groups every public decklist by its exact main+material card list – distinct from Champions
  * (character-level) and Archetypes (class+element-level), this surfaces specific builds multiple
  * different players independently converged on (or netdecked). Computed client-side from the
  * already-published deck-card-index + deck-popularity-index datasets, same pattern as
  * useCardCombination. Uses the lean popularity index (not the full deck-sightings.json, 40MB+)
- * since this only needs championName/winRate/event-context, not every sighting's full detail —
+ * since this only needs championName/winRate/event-context, not every sighting's full detail –
  * a real mobile-crash cause when this and deck-card-index.json were both required in full just to
  * render Popular Decks / All Decks (see git history around the fix).
  */
@@ -101,12 +101,12 @@ export function useDeckPopularity(
   championFilter: string | null,
   minPlayers: number = MIN_PLAYERS,
   /** Skips the expensive decode-and-group-all-~57k-decks pass entirely when the caller doesn't
-   * need the full universe this render — e.g. `DeckDetail`'s `deckHash` fast path only falls back
+   * need the full universe this render – e.g. `DeckDetail`'s `deckHash` fast path only falls back
    * to this for the rare deck with no precomputed hash, or when its Similar Decks tab is open. */
   enabled = true,
 ): PopularityResult {
   const rawCardIndexData = useDeckCardIndexData(enabled);
-  // Guards against a stale IndexedDB copy from before dictionary-encoding shipped — see the same
+  // Guards against a stale IndexedDB copy from before dictionary-encoding shipped – see the same
   // guard in useCardCombination.ts for why.
   const cardIndexData = enabled && rawCardIndexData?.cardNames ? rawCardIndexData : undefined;
   const sightingsData = useDeckPopularityIndexData(enabled);

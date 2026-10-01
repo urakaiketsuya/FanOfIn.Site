@@ -2,10 +2,10 @@ import type { Card, CardEdition } from "@gatcg/shared";
 
 /**
  * Rarity IDs as returned by the Grand Archive API (`CardEdition.rarity`, confirmed live against
- * `GET /option/search`'s `rarity` option values) — there's no local label cache for these today
+ * `GET /option/search`'s `rarity` option values) – there's no local label cache for these today
  * (CardDetail.tsx/DeckDetail.tsx fetch the display names live each session), so this is a small
  * hardcoded copy covering just the rarities a standard booster can contain. 6 (Promotional Rare)
- * and 9 (Collector Promo Rare) are deliberately omitted — those are promo-only prints, never sold
+ * and 9 (Collector Promo Rare) are deliberately omitted – those are promo-only prints, never sold
  * in boosters, and are excluded from every pool this module builds.
  */
 export const RARITY_LABELS: Record<number, string> = {
@@ -44,7 +44,7 @@ const UNCOMMON_SLOTS = 3;
  * The remaining probability in the "rare-or-better" slot splits between Rare and Super Rare
  * weighted by how many distinct cards THIS set actually has at each of those two rarities (a
  * real print-pool proxy, since there's no official R/SR split to anchor to). This is a
- * best-effort approximation, not verified official data — say so wherever it's shown.
+ * best-effort approximation, not verified official data – say so wherever it's shown.
  */
 const UR_RATE = 1 / 24;
 const CSR_RATE = 1 / (30 * 24);
@@ -102,7 +102,7 @@ function draw(pools: SetPools, targetRarity: number): { card: Card; edition: Car
   return undefined;
 }
 
-/** Simulates opening one pack of `setPrefix` from the given card catalog — see the module doc comment for the (approximate, non-official) rarity model. Empty when the catalog has no cards for this set at all. */
+/** Simulates opening one pack of `setPrefix` from the given card catalog – see the module doc comment for the (approximate, non-official) rarity model. Empty when the catalog has no cards for this set at all. */
 export function simulatePackOpening(cards: Card[], setPrefix: string): PackCard[] {
   const pools = poolsForSet(cards, setPrefix);
   const result: PackCard[] = [];

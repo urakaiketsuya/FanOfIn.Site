@@ -14,13 +14,13 @@ export interface RegionOption {
 export interface RegionalDecksResult {
   loading: boolean;
   options: RegionOption[];
-  /** deckId -> the region/country key for the currently selected grouping mode — the join spine every other regional hook filters its own dataset against. */
+  /** deckId -> the region/country key for the currently selected grouping mode – the join spine every other regional hook filters its own dataset against. */
   regionByDeckId: Map<string, string>;
 }
 
 /**
  * Joins every deck sighting to its event's host country (or broader region, depending on `mode`)
- * — pure client-side pivot of already-published `omnidex/index.json` and
+ * – pure client-side pivot of already-published `omnidex/index.json` and
  * `analysis/deck-popularity-index.json`, no new pipeline dataset. Same "join two lean, already-
  * published datasets in a useMemo" pattern as `useSeasonMeta.ts`.
  */

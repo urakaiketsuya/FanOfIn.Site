@@ -145,7 +145,7 @@ export function parseGoldfishSession(raw: string | null): GoldfishSession | null
 }
 
 /**
- * Expands a decklist's `{card, quantity}` Main Deck lines into individually-drawable instances —
+ * Expands a decklist's `{card, quantity}` Main Deck lines into individually-drawable instances –
  * Material Deck cards are materialized, not drawn, so they're excluded here, same Main-vs-Material
  * "deck identity" distinction `lib/deckIdentity.ts` already establishes for every other feature in
  * this codebase.
@@ -225,10 +225,10 @@ export function resolveGlimpse(state: GoldfishState, count: number, keptIds: Rea
 }
 
 /**
- * Moves one hand card into the played pile. Never draws on its own — a matched draw effect
+ * Moves one hand card into the played pile. Never draws on its own – a matched draw effect
  * (`suggestedExtraDraws`) is a suggestion for the viewer to confirm with their own separate
  * `drawCards` calls (see `GoldfishIndex.tsx`'s "+1 card?" stepper), never applied automatically,
- * since conditional wording ("If you do," "you may") can't be verified from text alone — same
+ * since conditional wording ("If you do," "you may") can't be verified from text alone – same
  * reasoning `drawEffects.ts` already documents for its own probability-estimate context.
  */
 export function playCard(state: GoldfishState, instanceId: string, paymentIds: readonly string[] = [], reserveCost = paymentIds.length): GoldfishState {

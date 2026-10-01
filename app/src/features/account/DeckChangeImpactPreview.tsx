@@ -31,15 +31,15 @@ function expectedAtTen(decklist: OmnidexDecklist, cardsByName: Map<string, Card>
   const hasDamage = forecast.fixedDamageCopies > 0 || forecast.variableDamageCopies > 0 || forecast.scalingDamageCopies > 0
     || forecast.ambiguousDamageCopies > 0 || forecast.awakeningBloomComboCopies > 0 || forecast.recurringDamagePerTurn > 0
     || forecast.audit.some((entry) => entry.status === "review" || entry.status === "partial");
-  if (!hasDamage) return "—";
+  if (!hasDamage) return "–";
   const point = forecast.points.find((candidate) => candidate.seen === 10);
-  if (!point) return "—";
+  if (!point) return "–";
   return point.expectedMin === point.expectedMax ? point.expectedMin.toFixed(1) : `${point.expectedMin.toFixed(1)}–${point.expectedMax.toFixed(1)}`;
 }
 
 function curvePeak(decklist: OmnidexDecklist, cardsByName: Map<string, Card>): string {
   const bars = computeMemoryCostCurve([...named(decklist, "main"), ...named(decklist, "material")], cardsByName);
-  if (bars.length === 0) return "—";
+  if (bars.length === 0) return "–";
   const peak = bars.reduce((best, bar) => bar.value > best.value ? bar : best);
   return `${peak.label} (${peak.value})`;
 }

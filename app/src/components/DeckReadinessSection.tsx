@@ -5,7 +5,7 @@ import Panel from "./ui/Panel";
 type Ref = { key: string; label: string };
 export type ReadinessCrossLinks = Map<string, { synergy: Ref[]; dependency: Ref[] }>;
 
-/** Cross-references between the two independently-computed readiness engines, keyed by card name —
+/** Cross-references between the two independently-computed readiness engines, keyed by card name –
  * a pure UI lookup, not baked into `synergyReadiness.ts`, so Synergy readiness (Imbue) and Package
  * balance (Token/Subtype/Empower) stay decoupled and this is purely "which of my cards also show up
  * over there." Only meaningful for the "detailed" variant, where both lists render together. */
@@ -27,7 +27,7 @@ export function computeReadinessCrossLinks(synergyReadiness: SynergyReadiness[],
   return map;
 }
 
-/** Union of the other engine's groups touched by any card in `names` — group-level, not a badge per
+/** Union of the other engine's groups touched by any card in `names` – group-level, not a badge per
  * card mention, since payoff/enabler/producer/consumer lists already render as one joined string. */
 function otherEngineLinks(crossLinks: ReadinessCrossLinks, names: string[], side: "synergy" | "dependency"): Ref[] {
   const seen = new Map<string, string>();
@@ -138,7 +138,7 @@ export function SynergyReadinessEntries({
   })}</>;
 }
 
-/** Renders `DependencyReadiness[]` entries — the "Package balance" side. Same detailed/compact split
+/** Renders `DependencyReadiness[]` entries – the "Package balance" side. Same detailed/compact split
  * as `SynergyReadinessEntries`, mirroring its reasoning. */
 export function DependencyReadinessEntries({
   items,
@@ -164,8 +164,8 @@ export function DependencyReadinessEntries({
     ))}</>;
   }
 
-  // Subtype "producers" are every card in the deck carrying that subtype — can run into the
-  // dozens, unlike Token/Empower producers which are usually a small, specific handful — so this
+  // Subtype "producers" are every card in the deck carrying that subtype – can run into the
+  // dozens, unlike Token/Empower producers which are usually a small, specific handful – so this
   // caps the visible list rather than dumping every name.
   const PRODUCER_NAMES_SHOWN = 5;
 
@@ -193,7 +193,7 @@ export function DependencyReadinessEntries({
               )}
               <span>{lastPoint.seen} seen: {(lastPoint.probability * 100).toFixed(0)}%</span>
             </div>
-            <p className="mt-0.5 text-[10px] text-ctp-subtext0">Chance you've drawn at least one producer copy — sequencing, not the copy-count warning below.</p>
+            <p className="mt-0.5 text-[10px] text-ctp-subtext0">Chance you've drawn at least one producer copy – sequencing, not the copy-count warning below.</p>
           </div>
         )}
         <p className="mt-1.5 text-xs text-ctp-subtext1">

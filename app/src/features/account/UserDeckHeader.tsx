@@ -14,7 +14,7 @@ interface Props {
   versionNumber?: number;
   visibility?: DeckVisibility;
   prominent?: boolean;
-  /** Replaces the default "{championName} · {format}" line — for a caller with something more
+  /** Replaces the default "{championName} · {format}" line – for a caller with something more
    * specific to say there (e.g. DeckDetail.tsx's tournament player/event/placement/win-rate line),
    * rather than that caller hand-rolling a whole parallel header around this component. */
   statLine?: ReactNode;

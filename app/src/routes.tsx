@@ -5,7 +5,7 @@ import About from "./pages/About";
 import { beginLoading, endLoading } from "./lib/useGlobalLoading";
 
 // /top-decks and /popular-decks were merged into /decks (Browse Decks, "By Sighting"/"By Build"
-// tabs) — these redirect old links/bookmarks to the equivalent tab, preserving a ?champion= param.
+// tabs) – these redirect old links/bookmarks to the equivalent tab, preserving a ?champion= param.
 function TopDecksRedirect() {
   const [searchParams] = useSearchParams();
   const params = new URLSearchParams({ view: "sightings" });
@@ -42,7 +42,7 @@ function ChampionSynergyRedirect() {
   return <Navigate to={`/champions/${name}`} replace />;
 }
 
-// Every deck-viewing page now lives under /decks — a publicly shared deck used to be a completely
+// Every deck-viewing page now lives under /decks – a publicly shared deck used to be a completely
 // differently-named route (/decklists/:publicSlug, browsed from /shared-decks), inconsistent with
 // /decks/:hash (tournament) and /pantheon/decks/:id right next to it. Old links/bookmarks/anything
 // already shared via "Copy link" keep working through these redirects.
@@ -53,7 +53,7 @@ function PublicDeckDetailRedirect() {
 function SharedDecksRedirect() {
   return <Navigate to="/decks/shared" replace />;
 }
-// A shared deck's own detail page moved one level up again — /decks/shared/:publicSlug folded
+// A shared deck's own detail page moved one level up again – /decks/shared/:publicSlug folded
 // directly into /decks/:id, right alongside tournament deck hashes, so every individual deck page
 // (shared or tournament) shares one flat URL shape. Links/bookmarks from the brief window that path
 // was live keep working.
@@ -62,7 +62,7 @@ function SharedDeckDetailRedirect() {
   return <Navigate to={`/decks/${encodeURIComponent(publicSlug)}`} replace />;
 }
 
-// /my-decks moved under the same /decks namespace as every other deck page — the list at
+// /my-decks moved under the same /decks namespace as every other deck page – the list at
 // /decks/edit (mirroring /decks/shared as an index), and each saved deck's own edit page folded
 // straight into /decks/:id, right alongside tournament and shared decks (see
 // SAVED_DECK_ID_PATTERN above). Old links/bookmarks keep working through these redirects.
@@ -74,7 +74,7 @@ function MyDeckDetailRedirect() {
   return <Navigate to={`/decks/${encodeURIComponent(deckId)}`} replace />;
 }
 
-// Lazy-loaded so each route's JS is a separate chunk, fetched on demand — previously the whole
+// Lazy-loaded so each route's JS is a separate chunk, fetched on demand – previously the whole
 // app (every page) shipped as one bundle regardless of which page a visitor actually opened.
 const TagGallery = lazy(() => import("./features/cards/TagGallery"));
 const CardTagging = lazy(() => import("./features/cards/CardTagging"));
@@ -144,11 +144,11 @@ const CollectionIndex = lazy(() => import("./features/collection/CollectionIndex
 const SettingsIndex = lazy(() => import("./features/settings/SettingsIndex"));
 
 // /decks/:id serves tournament decks, publicly shared decks, and a signed-in user's own saved
-// decks from one flat namespace, dispatching to whichever one actually owns the id — no network
+// decks from one flat namespace, dispatching to whichever one actually owns the id – no network
 // probe needed, since the three id spaces never overlap in shape. Tournament hashes (`shortHash()`,
 // shared/src/hash.ts) are base-36 of a 32-bit int, at most 7 lowercase alphanumeric characters, and
 // never contain a dash. Shared-deck slugs (account-worker/src/decks.ts) are `crypto.randomUUID()`
-// with dashes stripped — always exactly 32 lowercase hex characters, also never a dash. A saved
+// with dashes stripped – always exactly 32 lowercase hex characters, also never a dash. A saved
 // deck's own id is that same `crypto.randomUUID()` with its dashes intact, so it's the only one of
 // the three that ever matches a dash-containing pattern. Ownership itself is still enforced
 // server-side (account-worker's getDeck scopes every lookup to the signed-in user), so a saved-deck

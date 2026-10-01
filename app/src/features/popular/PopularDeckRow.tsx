@@ -16,9 +16,9 @@ import DisclosureChevron from "../../components/DisclosureChevron";
 
 /**
  * The decklist + "played by" section, split out so its useDeckPopularityIndexData() call only
- * fires once a row is actually expanded — not for every one of the ~30 rows rendered on page
+ * fires once a row is actually expanded – not for every one of the ~30 rows rendered on page
  * load. That call used to sit directly in PopularDeckRow, unconditionally, and used to be the
- * full 40MB+ deck-sightings.json before the popularity-index migration below — either way, only
+ * full 40MB+ deck-sightings.json before the popularity-index migration below – either way, only
  * fetching it on expand avoids a real mobile-crash contributor (see git history around the fix).
  */
 function ExpandedDeckRow({

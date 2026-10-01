@@ -247,7 +247,7 @@ export default function TournamentsIndex() {
       {!index && <InlineState className="mt-6">Loading…</InlineState>}
       {index && events.length === 0 && (
         <InlineState className="mt-6">
-          No ingested events match this filter yet. Not every event gets deep-fetched — if you know its ID, try
+          No ingested events match this filter yet. Not every event gets deep-fetched – if you know its ID, try
           the lookup box above.
         </InlineState>
       )}

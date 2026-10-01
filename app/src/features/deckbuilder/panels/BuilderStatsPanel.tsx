@@ -43,7 +43,7 @@ export default function StatsPanel({
     <div data-component="BuilderStatsPanel" className="mt-6">
       {decayReport && decayReport.signals.length > 0 && (
         <div className="mt-4 rounded-lg border border-ctp-mauve/50 bg-ctp-mantle p-4">
-          {/* Kept as a hand-rolled <details> rather than Section — this header's mauve title
+          {/* Kept as a hand-rolled <details> rather than Section – this header's mauve title
             * color is a genuine one-off Section can't reproduce (its title color is fixed). */}
           <details className="group">
             <summary className="flex flex-wrap cursor-pointer list-none items-baseline justify-between gap-2 [&::-webkit-details-marker]:hidden">
@@ -136,7 +136,7 @@ export default function StatsPanel({
             collapsible
             defaultOpen={false}
             title={`New from ${newReleaseCards[0].setName}`}
-            description="Cards from the newest set with a designed connection — shared token economy, tribal reference, or named reference — to a card already in this build. Too new for tournament data, so this isn't ranked or scored, just worth a look."
+            description="Cards from the newest set with a designed connection – shared token economy, tribal reference, or named reference – to a card already in this build. Too new for tournament data, so this isn't ranked or scored, just worth a look."
             actions={<span className="text-[10px] text-ctp-subtext0">{newReleaseCards[0].releaseDate}</span>}
           >
           <div className="mt-3 space-y-2">

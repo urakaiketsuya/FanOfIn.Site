@@ -4,18 +4,18 @@ export interface HorizontalBarChartBar {
   key: string;
   label: string;
   value: number;
-  /** Pre-formatted value shown at the bar's tip (e.g. "63.3%", "1,171 decks") — kept separate from `value` since the raw number drives bar length but the label often needs units/rounding. */
+  /** Pre-formatted value shown at the bar's tip (e.g. "63.3%", "1,171 decks") – kept separate from `value` since the raw number drives bar length but the label often needs units/rounding. */
   valueLabel: string;
   href?: string;
 }
 
 /**
- * A ranked, single-measure magnitude comparison — every bar is the *same* hue (one
+ * A ranked, single-measure magnitude comparison – every bar is the *same* hue (one
  * series; the title already names it, so no legend), with opacity scaled to each
  * bar's own value for a lightweight sequential feel. This is the right shape for
  * "which of these N things is bigger," which a donut/pie stops handling well past
  * a handful of slices and a plain number column makes harder to scan than it needs
- * to be. Renders bars in the order given — sort by value first if that's the intent.
+ * to be. Renders bars in the order given – sort by value first if that's the intent.
  */
 export default function HorizontalBarChart({ title, subtitle, bars }: { title?: string; subtitle?: string; bars: HorizontalBarChartBar[] }) {
   const max = Math.max(0, ...bars.map((b) => b.value));

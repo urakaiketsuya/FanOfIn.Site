@@ -20,7 +20,7 @@ function stageLabel(type: string): string {
 }
 
 /**
- * Round count for a stage — Omnidex doesn't return this directly per stage, only the event-level
+ * Round count for a stage – Omnidex doesn't return this directly per stage, only the event-level
  * `swissRounds`/`singleEliminationCutSize`. A single-elimination bracket's round count is derived
  * from its cut size (8 -> quarters/semis/final = 3 rounds); anything else defaults to 1 rather
  * than guessing.
@@ -34,11 +34,11 @@ function roundsForStage(stage: OmnidexStage, swissRounds: number | null, singleE
 }
 
 /**
- * Events can run multiple stages (e.g. Swiss, then a single-elimination Top Cut) — verified live
+ * Events can run multiple stages (e.g. Swiss, then a single-elimination Top Cut) – verified live
  * against a real Worlds event: 32 players, `stages: [{id:1,type:"swiss"}, {id:2,type:"single-
  * elimination"}]`. Omnidex's pairings endpoint needs an explicit `stage` param to pick the right
  * one; without it, "Round 1" silently returned Top Cut's round 1 (4 matches) instead of Swiss
- * round 1 (16 matches) — the stage this component now defaults to.
+ * round 1 (16 matches) – the stage this component now defaults to.
  */
 export default function EventPairings({
   eventId,

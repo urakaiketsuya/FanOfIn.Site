@@ -61,7 +61,7 @@ export default function CardLocationSheet({ cardUuid, name, card, record, entrie
           {loans.some(loan=>loan.returnedAt) && <details className="mt-3"><summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 text-sm">Returned loans<DisclosureChevron /></summary>{loans.filter(loan=>loan.returnedAt).map(loan=><div key={loan.id} className="border-t border-ctp-surface1 py-2 text-sm"><p>{loan.quantity}× to {loan.borrower} · returned {new Date(loan.returnedAt!).toLocaleDateString()}</p><button type="button" onClick={()=>revise(loan.id,{returnedAt:undefined})} className="min-h-12 px-2 text-ctp-blue">Reopen loan</button></div>)}</details>}
         </section>
         {loansFirst && deckSection}
-        <label className="flex min-h-12 items-center gap-3 rounded-lg border border-ctp-surface1 p-3"><input type="checkbox" checked={mightOwn} onChange={event=>setMightOwn(event.target.checked)} />I might own this—need to check</label>
+        <label className="flex min-h-12 items-center gap-3 rounded-lg border border-ctp-surface1 p-3"><input type="checkbox" checked={mightOwn} onChange={event=>setMightOwn(event.target.checked)} />I might own this–need to check</label>
       </fieldset>
     </form>
   </EditorDialog>;

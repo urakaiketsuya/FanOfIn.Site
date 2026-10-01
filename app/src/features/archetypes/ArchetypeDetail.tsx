@@ -64,7 +64,7 @@ export default function ArchetypeDetail() {
   const moreTab = MORE_TABS.some((item) => item.key === tab) ? tab as "impact" | "variants" : "impact";
   const showOverview = surface === "overview";
 
-  // Gate every large per-tab dataset behind the tab that actually needs it — this page used to
+  // Gate every large per-tab dataset behind the tab that actually needs it – this page used to
   // eagerly fetch playedBy's popularity-index/omnidex-index/players data (~25.7MB) and impact's
   // card-impact/matchup-card-impact/quantity-stats data (matchup-card-impact.json alone is 24MB)
   // on every visit regardless of which tab (if any) the visitor opened, same class of bug just
@@ -78,7 +78,7 @@ export default function ArchetypeDetail() {
   const matchupCardImpactData = useMatchupCardImpactData(surface === "more" && moreTab === "impact");
   const cardQuantityStatsData = useCardQuantityStatsData(surface === "more" && moreTab === "impact");
   // Only reset when navigating from one build's page to a different one (same component instance
-  // reused by the router) — not on initial mount, which would otherwise clobber a `?tab=` deep link.
+  // reused by the router) – not on initial mount, which would otherwise clobber a `?tab=` deep link.
   const prevIdRef = useRef(id);
   useEffect(() => {
     if (prevIdRef.current !== id) {
@@ -106,7 +106,7 @@ export default function ArchetypeDetail() {
   const selectedMatchup = opponentClusterId === "all" ? null : clusterMatchups.find((m) => m.opponentClusterId === opponentClusterId) ?? null;
 
   // "myCards" is either the general (all-opponents) table or, with a matchup selected, that
-  // matchup's card breakdown — same shape, same role filter, same table component either way.
+  // matchup's card breakdown – same shape, same role filter, same table component either way.
   const activeCards = useMemo(() => selectedMatchup ? selectedMatchup.myCards : (impact?.cards ?? []), [selectedMatchup, impact]);
   const hasActiveData = selectedMatchup ? selectedMatchup.games > 0 : !!impact && impact.cards.length > 0;
   const impactCards = useMemo(() => {
@@ -128,7 +128,7 @@ export default function ArchetypeDetail() {
   useDocumentTitle(
     cluster?.name,
     cluster &&
-      `${cluster.name} — a ${cluster.championName} build defined by ${cluster.definingCards
+      `${cluster.name} – a ${cluster.championName} build defined by ${cluster.definingCards
         .slice(0, 3)
         .map((c) => c.name)
         .join(", ")}, played by ${cluster.playerCount} players in Grand Archive TCG tournaments.`,
@@ -142,7 +142,7 @@ export default function ArchetypeDetail() {
   }, [cluster]);
   const sample = useSightingDecklist(sampleEventId, samplePlayer, !!cluster && showOverview);
 
-  // Only decoded once the Variants tab is actually open — this is a genuinely expensive decode of
+  // Only decoded once the Variants tab is actually open – this is a genuinely expensive decode of
   // the full ~57k-deck universe (deck-card-index.json is 93MB+), so paying it on every archetype
   // page visit regardless of which tab is open was itself a real memory-pressure bug; see
   // useAllDecodedDecks's own doc comment.
@@ -188,7 +188,7 @@ export default function ArchetypeDetail() {
     [cluster],
   );
   // This build's own defining cards, restricted to ones with a real quantity-vs-win-rate signal
-  // (published only for cards run at 2+ distinct quantities across public decklists) — same
+  // (published only for cards run at 2+ distinct quantities across public decklists) – same
   // "Win rate by quantity" convention CardDetail.tsx already uses, just scoped to this build.
   const definingQuantityStats = useMemo(() => {
     if (!cardQuantityStatsData) return [];
@@ -457,7 +457,7 @@ export default function ArchetypeDetail() {
                                 </td>
                                 <td className="py-1.5 text-xs">
                                   {a.scope === "champion" ? (
-                                    <span className="text-ctp-yellow" title={`Based on the broader ${cluster.championName} matchup, not this specific build — this build's own matchup sample didn't have enough data.`}>
+                                    <span className="text-ctp-yellow" title={`Based on the broader ${cluster.championName} matchup, not this specific build – this build's own matchup sample didn't have enough data.`}>
                                       Champion-wide
                                     </span>
                                   ) : (
@@ -509,7 +509,7 @@ export default function ArchetypeDetail() {
               className="mt-6"
               heading="compact"
               title={`Variants (${variants.length})`}
-              description={<>Real decks close to this build (&ge;45% weighted overlap) but not identical to any other player's list, so they never joined this cluster's own stats. Shown separately — not blended into this build's win rate, defining cards, or meta share above.</>}
+              description={<>Real decks close to this build (&ge;45% weighted overlap) but not identical to any other player's list, so they never joined this cluster's own stats. Shown separately – not blended into this build's win rate, defining cards, or meta share above.</>}
             >
               {variants.length > 0 && (
                 <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
@@ -606,7 +606,7 @@ export default function ArchetypeDetail() {
                         {(v.addedCards.length > 0 || v.missingCards.length > 0) && (
                           <p className="mt-1 text-xs text-ctp-subtext0">
                             {v.addedCards.length > 0 && <>Added: {v.addedCards.join(", ")}</>}
-                            {v.addedCards.length > 0 && v.missingCards.length > 0 && " — "}
+                            {v.addedCards.length > 0 && v.missingCards.length > 0 && " – "}
                             {v.missingCards.length > 0 && <>Missing: {v.missingCards.join(", ")}</>}
                           </p>
                         )}

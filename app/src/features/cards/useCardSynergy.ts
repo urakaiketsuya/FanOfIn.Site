@@ -3,7 +3,7 @@ import { computeCardImpactEntries, decodeCardLines, type CardImpactEntry, type C
 import { useDeckCardPresenceIndex } from "./useDeckCardPresenceIndex";
 import { useDeckPopularityIndexData } from "../topdecks/data";
 
-/** Mirrors pipeline/src/config.ts's defaults — see useChampionCardImpact.ts for why these are plain literals here. */
+/** Mirrors pipeline/src/config.ts's defaults – see useChampionCardImpact.ts for why these are plain literals here. */
 const PRIOR_WEIGHT = 10;
 const MIN_SAMPLE_SIZE = 5;
 const MAX_RESULTS = 15;
@@ -46,7 +46,7 @@ export interface CardSynergyResult {
 /**
  * For every deck running this card, does *also* running a given other card correlate with a
  * higher win rate than running this card without it? Global, champion-agnostic version of the
- * same with/without/shrink core used everywhere else (`computeCardImpactEntries`) — the population
+ * same with/without/shrink core used everywhere else (`computeCardImpactEntries`) – the population
  * here is simply "every deck containing this card" rather than a Champion, Champion+Spirit, or
  * named-build cluster. The card itself never appears in its own results: every row in this
  * population already has it, so its own "without" bucket is always empty and fails the sample bar
@@ -63,7 +63,7 @@ export function useCardSynergy(cardName: string | null, enabled = true): CardSyn
     const { data: cardIndexData, nameToIndex, presenceIndex } = presence;
     const resultByDeckId = new Map(popularityIndexData.entries.map((s) => [s.deckId, s]));
 
-    // Candidate decks come straight from the presence index — no need to decode and string-match
+    // Candidate decks come straight from the presence index – no need to decode and string-match
     // every one of the ~57k published decks just to find the (typically far smaller) subset that
     // actually run this card. See useDeckCardPresenceIndex's doc comment.
     const cardNameIndex = nameToIndex.get(cardName);

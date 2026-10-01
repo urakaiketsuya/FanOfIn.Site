@@ -52,7 +52,7 @@ export function useBuilderCopyState({
   const saveCopyCount = saveKeptOnly ? keptCopyCount : fullCopyCount;
 
   /** "Kept only" copies just the viewer's own choices (`card.locked`), skipping every
-   * auto-suggested slot — for pasting a partial want-list rather than the full assembled deck. */
+   * auto-suggested slot – for pasting a partial want-list rather than the full assembled deck. */
   async function handleCopy(keptOnly: boolean) {
     try {
       await copyBuilderDecklist(keptOnly ? keptDecklist : decklist);
@@ -75,7 +75,7 @@ export function useBuilderCopyState({
     setTimeout(() => setCopyState("idle"), 1500);
   }
 
-  /** Shares the Champion/Spirit/archetype/locked-cards *input*, not a snapshot of the assembled output —
+  /** Shares the Champion/Spirit/archetype/locked-cards *input*, not a snapshot of the assembled output –
    * opening the link re-runs the same suggestion logic, so it stays a live recipe rather than a
    * stale copy that drifts from the site's own numbers as data regenerates. */
   async function handleCopyShareLink() {

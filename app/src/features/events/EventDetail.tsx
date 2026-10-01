@@ -48,7 +48,7 @@ function EventTopDecks({ eventId, decklists, players }: { eventId: number; deckl
           <CardHoverPreview image={champion?.editions[0]?.image} alt={championName ?? player.username}>
             {champion?.editions[0] ? <CardImage image={champion.editions[0].image} alt={championName ?? ""} className="h-28 w-[4.5rem] object-cover object-top" /> : <div className="h-28 w-[4.5rem] bg-ctp-surface0" />}
           </CardHoverPreview>
-          <div className="min-w-0 self-center p-3"><p className="text-lg font-bold text-ctp-blue">#{player.finalPlacement ?? "—"}</p><p className="truncate text-sm font-medium text-ctp-text group-hover:text-ctp-blue">{player.username}</p>{championName && <p className="mt-1 truncate text-xs text-ctp-subtext0">{championName}</p>}</div>
+          <div className="min-w-0 self-center p-3"><p className="text-lg font-bold text-ctp-blue">#{player.finalPlacement ?? "–"}</p><p className="truncate text-sm font-medium text-ctp-text group-hover:text-ctp-blue">{player.username}</p>{championName && <p className="mt-1 truncate text-xs text-ctp-subtext0">{championName}</p>}</div>
         </Link>;
       })}
     </div>
@@ -70,7 +70,7 @@ export default function EventDetail() {
   const vods = vodsData?.vods[id] ?? [];
   const omnidexIndex = useOmnidexIndex();
 
-  // Grouped by Omnidex's own venue id, not host name — some venues rename over time, so name
+  // Grouped by Omnidex's own venue id, not host name – some venues rename over time, so name
   // matching would both miss real matches and wrongly merge unrelated venues that happen to share
   // a generic name.
   const MAX_VENUE_EVENTS_SHOWN = 6;
@@ -109,7 +109,7 @@ export default function EventDetail() {
     return byId;
   }, [bundle]);
 
-  // `hasSubmittedDecklist` is only present on newer Omnidex responses — undefined means "unknown",
+  // `hasSubmittedDecklist` is only present on newer Omnidex responses – undefined means "unknown",
   // not "no", so this stays null (hidden) unless at least one standing actually carries the field.
   const decklistSubmissionRate = useMemo(() => {
     const known = Array.from(standingsById.values()).filter((s) => s.hasSubmittedDecklist !== undefined);
@@ -210,7 +210,7 @@ export default function EventDetail() {
             </p>
           )}
           <div className="mt-3 space-y-2 sm:hidden">
-            {rankedPlayers.map((player) => { const standing = standingsById.get(player.id); return <div key={player.id} className="flex items-center gap-3 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><span className="w-9 shrink-0 text-center text-lg font-bold text-ctp-blue">#{player.finalPlacement ?? "—"}</span><div className="min-w-0 flex-1"><PlayerLink id={player.id} username={player.username} className="block truncate font-medium text-ctp-text" /><p className="mt-0.5 text-xs text-ctp-subtext0">{standing ? `${standing.statsWins}-${standing.statsLosses}-${standing.statsTies}` : "Record unavailable"}{standing ? ` · ${standing.statsPercentGW}% games` : ""}</p></div>{!isApiErrorBody(bundle.decklists) && bundle.decklists.some((entry) => entry.player === player.id) && <Link to={`?tab=decklists&player=${player.id}`} className="shrink-0 text-xs font-medium text-ctp-blue">Deck</Link>}</div>; })}
+            {rankedPlayers.map((player) => { const standing = standingsById.get(player.id); return <div key={player.id} className="flex items-center gap-3 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><span className="w-9 shrink-0 text-center text-lg font-bold text-ctp-blue">#{player.finalPlacement ?? "–"}</span><div className="min-w-0 flex-1"><PlayerLink id={player.id} username={player.username} className="block truncate font-medium text-ctp-text" /><p className="mt-0.5 text-xs text-ctp-subtext0">{standing ? `${standing.statsWins}-${standing.statsLosses}-${standing.statsTies}` : "Record unavailable"}{standing ? ` · ${standing.statsPercentGW}% games` : ""}</p></div>{!isApiErrorBody(bundle.decklists) && bundle.decklists.some((entry) => entry.player === player.id) && <Link to={`?tab=decklists&player=${player.id}`} className="shrink-0 text-xs font-medium text-ctp-blue">Deck</Link>}</div>; })}
           </div>
           <div className="hidden overflow-x-auto sm:block">
             <table className="mt-2 w-max min-w-full text-sm">
@@ -220,7 +220,7 @@ export default function EventDetail() {
                   <th className="py-1 pr-6">Player</th>
                   <th className="py-1 pr-6">Record</th>
                   <th className="py-1 pr-6">GW%</th>
-                  <th className="py-1 pr-6" title="Opponents' match win % — strength of schedule">
+                  <th className="py-1 pr-6" title="Opponents' match win % – strength of schedule">
                     OMW%
                   </th>
                   <th className="py-1 pr-6">Byes</th>
@@ -232,17 +232,17 @@ export default function EventDetail() {
                   const s = standingsById.get(player.id);
                   return (
                     <tr key={player.id}>
-                      <td className="py-1 pr-6 text-ctp-subtext1">{player.finalPlacement ?? "—"}</td>
+                      <td className="py-1 pr-6 text-ctp-subtext1">{player.finalPlacement ?? "–"}</td>
                       <td className="py-1 pr-6 whitespace-nowrap text-ctp-text">
                         <PlayerLink id={player.id} username={player.username} />
                       </td>
                       <td className="py-1 pr-6 text-ctp-subtext1">
-                        {s ? `${s.statsWins}-${s.statsLosses}-${s.statsTies}` : "—"}
+                        {s ? `${s.statsWins}-${s.statsLosses}-${s.statsTies}` : "–"}
                       </td>
-                      <td className="py-1 pr-6 text-ctp-subtext1">{s ? `${s.statsPercentGW}%` : "—"}</td>
-                      <td className="py-1 pr-6 text-ctp-subtext1">{s ? `${s.statsPercentOMW}%` : "—"}</td>
-                      <td className="py-1 pr-6 text-ctp-subtext1">{s?.statsByes ?? "—"}</td>
-                      <td className="py-1 text-ctp-subtext1">{s?.tiebreaker ?? "—"}</td>
+                      <td className="py-1 pr-6 text-ctp-subtext1">{s ? `${s.statsPercentGW}%` : "–"}</td>
+                      <td className="py-1 pr-6 text-ctp-subtext1">{s ? `${s.statsPercentOMW}%` : "–"}</td>
+                      <td className="py-1 pr-6 text-ctp-subtext1">{s?.statsByes ?? "–"}</td>
+                      <td className="py-1 text-ctp-subtext1">{s?.tiebreaker ?? "–"}</td>
                     </tr>
                   );
                 })}

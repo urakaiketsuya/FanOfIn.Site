@@ -39,14 +39,14 @@ export function CardRow({
   cardsByName: Map<string, Card>;
   priceByName: Map<string, number>;
   showLockToggle?: boolean;
-  /** % of blended community decks (Shout At Your Decks + Sleeved, for this Champion) that include this card — a second, clearly-separate data point, never blended into adjustedLift. */
+  /** % of blended community decks (Shout At Your Decks + Sleeved, for this Champion) that include this card – a second, clearly-separate data point, never blended into adjustedLift. */
   communityInclusion?: Map<string, CardInclusionEntry>;
-  /** True when `card` came from useCommunitySuggestedBuild — an unlocked card here was placed by
+  /** True when `card` came from useCommunitySuggestedBuild – an unlocked card here was placed by
    * popularity, not chosen by the viewer, so the no-lift fallback badge shouldn't say "your choice". */
   communityMode?: boolean;
   /** Sample-gated Clarent telemetry for this card, only supplied in the experimental source. */
   simulatorEvidence?: SimulatorCardEvidence;
-  /** Which optional data fields (Cost/Price/Win rate/Sample size/Community usage) to render — the viewer's own Customize panel preference. */
+  /** Which optional data fields (Cost/Price/Win rate/Sample size/Community usage) to render – the viewer's own Customize panel preference. */
   visibleFields: CardFieldVisibility;
   /** Marks a placed card that has a data-backed cut recommendation in the Review tab. */
   needsReview?: boolean;
@@ -155,7 +155,7 @@ export function CardRow({
   );
 }
 
-/** Not-yet-placed ranked cards ("cards that might help") — same info as CardRow but a single "Add" action instead of Lock/Remove, since these aren't in the build at all yet. */
+/** Not-yet-placed ranked cards ("cards that might help") – same info as CardRow but a single "Add" action instead of Lock/Remove, since these aren't in the build at all yet. */
 export function DiaoMetricBadges({ card }: { card: SuggestedCard }) {
   const changes = Object.entries(card.diaoMetricChanges ?? {}) as [RatingPillar, number][];
   return changes
@@ -188,7 +188,7 @@ export function SuggestionRow({
   priceByName: Map<string, number>;
   communityInclusion?: Map<string, CardInclusionEntry>;
   simulatorEvidence?: SimulatorCardEvidence;
-  /** Which optional data fields (Price/Win rate/Sample size/Community usage) to render — the viewer's own Customize panel preference. */
+  /** Which optional data fields (Price/Win rate/Sample size/Community usage) to render – the viewer's own Customize panel preference. */
   visibleFields: CardFieldVisibility;
 }) {
   const cardInfo = cardsByName.get(card.cardName);

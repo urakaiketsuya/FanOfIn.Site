@@ -7,7 +7,7 @@ import type { ComparedDeck } from "./types";
 /**
  * Just enough to render a champion thumbnail per deck chip: resolves only each deck's material-
  * section card names (not the full decklist) to find its Champion card. Deliberately kept separate
- * from useComparisonData — the deck-tray chips render before a comparison view is even open (while
+ * from useComparisonData – the deck-tray chips render before a comparison view is even open (while
  * browsing Add Decks, or in Card comparison mode), so pulling in useComparisonData's deck-popularity
  * index (~11MB) and pricing data there just for a thumbnail would undo a chunk of the site's
  * deferred-loading work for a page that may never render a comparison at all.

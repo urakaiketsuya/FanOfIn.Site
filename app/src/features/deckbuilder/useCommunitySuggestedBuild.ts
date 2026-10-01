@@ -12,7 +12,7 @@ import {
 import { getDeckPackageCatalog } from "./packageGuardrails";
 
 /** Same fallback defaults `useSuggestedBuild`'s `modalTotal` uses when a population can't supply its
- * own modal section size — ShoutAtYourDecks analytics don't publish an average deck size at all, so
+ * own modal section size – ShoutAtYourDecks analytics don't publish an average deck size at all, so
  * these are the only targets available here. */
 const MATERIAL_TARGET = 12;
 const MAIN_TARGET = 48;
@@ -41,10 +41,10 @@ function toSuggested(cardName: string, quantity: number, locked: boolean, entry:
  * deck list (Shout At Your Decks + Sleeved, see pipeline/src/community/blend.ts) instead of real
  * tournament win-rate data (see docs/CALCULATIONS.md, "Community population (blended)"). Ranks by
  * `percentOfDecks` (popularity) instead of `adjustedLift` (performance), since neither community
- * source carries win/loss data at all — every `SuggestedCard` this returns has
+ * source carries win/loss data at all – every `SuggestedCard` this returns has
  * `adjustedLift`/`sample` permanently null, so the UI's existing "only show lift when present"
  * guards hide the Card-Impact-specific figures on their own. Deliberately doesn't touch
- * `useSuggestedBuild.ts` or its win-rate math — a separate, additive hook.
+ * `useSuggestedBuild.ts` or its win-rate math – a separate, additive hook.
  */
 export function buildCommunitySuggestedDeck(
   champData: { deckCount: number; cards: CardInclusionEntry[] } | undefined,
@@ -54,7 +54,7 @@ export function buildCommunitySuggestedDeck(
   cardsByName: Map<string, Card>,
   loading: boolean,
   /** The deck's actual castable elements (Champion + Spirit granted), same source useSuggestedBuild
-   * uses — ShoutAtYourDecks' card-inclusion data is only scoped per Champion, not per Spirit, so
+   * uses – ShoutAtYourDecks' card-inclusion data is only scoped per Champion, not per Spirit, so
    * without this an off-element card from a different real Spirit build for the same Champion (e.g.
    * a Fire-element pick showing up for a Water-Spirit build) would rank and suggest normally. */
   identityElements: Set<string>,
@@ -91,7 +91,7 @@ export function buildCommunitySuggestedDeck(
     const sideboard: SuggestedCard[] = [];
     const placed = new Set<string>();
 
-    // Locked cards go in first, at the viewer's own quantity — same precedence as
+    // Locked cards go in first, at the viewer's own quantity – same precedence as
     // useSuggestedBuild. An explicitly chosen section wins; otherwise use the card's community
     // primarySection (falling back to main for a card ShoutAtYourDecks has never seen at all).
     for (const [name, qty] of lockedCards) {
@@ -115,7 +115,7 @@ export function buildCommunitySuggestedDeck(
                   ? "material"
                   : "main";
       // Material Deck is capped at 1 copy of each card by rule (see useSuggestedBuild.ts's own
-      // note) — a locked card's stored quantity can predate knowing its section, so clamp rather
+      // note) – a locked card's stored quantity can predate knowing its section, so clamp rather
       // than trust it.
       const finalQty = section === "material" ? 1 : qty;
       (section === "material" ? material : section === "sideboard" ? sideboard : main).push(toSuggested(name, finalQty, true, entry, section));
@@ -185,7 +185,7 @@ export function buildCommunitySuggestedDeck(
       placed.add(entry.name);
     }
 
-    // Top ranked cards that didn't make the assembled build — mirrors useSuggestedBuild.suggestions.
+    // Top ranked cards that didn't make the assembled build – mirrors useSuggestedBuild.suggestions.
     const suggestions = [
       ...deferredIdentityStaples,
       ...champData.cards
@@ -205,7 +205,7 @@ export function buildCommunitySuggestedDeck(
       main,
       sideboard,
       suggestions,
-      // Meaningless without win/loss data — always empty here, so the existing
+      // Meaningless without win/loss data – always empty here, so the existing
       // `build.removalSuggestions.length > 0` render guard hides "Cards that might hurt" on its own.
       removalSuggestions: [],
       protectedRemovalSuggestions: [],

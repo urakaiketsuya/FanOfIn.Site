@@ -2,7 +2,7 @@ import type { Card } from "@gatcg/shared";
 
 const CHAMPION_BONUS_RE = /\[([^\]]+) Bonus\]/g;
 
-/** Names this card grants a bonus effect for, from every `[<Name> Bonus]` tag in its effect text —
+/** Names this card grants a bonus effect for, from every `[<Name> Bonus]` tag in its effect text –
  * a broader scan than deckIdentity.ts's Floating Memory parser, which only looks at the one tag
  * immediately preceding "**Floating Memory**"; a card can carry both that and a separate
  * champion-bonus effect elsewhere. Includes Class/Element bonus tags too (e.g. "[Class Bonus]"),

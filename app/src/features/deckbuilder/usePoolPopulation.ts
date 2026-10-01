@@ -3,16 +3,16 @@ import type { ArchetypeTaxonomyData, Card } from "@gatcg/shared";
 import { decodedDeckToRow, type DecodedDeck } from "../../lib/decodedDecks";
 import { canonicalizeSpiritCardMap, type DeckBuilderRow } from "./useDeckBuilderPopulation";
 
-/** The three cross-Champion pools that still feed the same `computeCardImpactEntries`-based ranking `useSuggestedBuild.ts` already does — "this Champion + Spirit"/"this Champion, any Spirit" stay handled by `useDeckBuilderPopulation` directly, and "nearest similar decks"/"global element stats" are different enough in shape (see `useNearestDecks.ts`/`useGlobalElementSuggestions.ts`) to need their own hooks. */
+/** The three cross-Champion pools that still feed the same `computeCardImpactEntries`-based ranking `useSuggestedBuild.ts` already does – "this Champion + Spirit"/"this Champion, any Spirit" stay handled by `useDeckBuilderPopulation` directly, and "nearest similar decks"/"global element stats" are different enough in shape (see `useNearestDecks.ts`/`useGlobalElementSuggestions.ts`) to need their own hooks. */
 export type CrossChampionPool = "spiritAnyChampion" | "closestCluster" | "sameClass";
 
 export interface PoolPopulationResult {
   rows: DeckBuilderRow[];
-  /** Human-readable description of what this population actually is and how big it is — always shown, since none of these pools should be silent about being a substitute for "this Champion + Spirit". */
+  /** Human-readable description of what this population actually is and how big it is – always shown, since none of these pools should be silent about being a substitute for "this Champion + Spirit". */
   label: string;
 }
 
-/** Top-2 classes by weighted copies across main+material — same "deck identity" convention as computeDeckIdentity (app/src/lib/deckIdentity.ts), just for classes instead of elements (classes have no NORM-equivalent colorless value to exclude). */
+/** Top-2 classes by weighted copies across main+material – same "deck identity" convention as computeDeckIdentity (app/src/lib/deckIdentity.ts), just for classes instead of elements (classes have no NORM-equivalent colorless value to exclude). */
 function deckClasses(deck: DecodedDeck, cardsByName: Map<string, Card>): Set<string> {
   const counts = new Map<string, number>();
   for (const [name, qty] of [...deck.main, ...deck.material]) {
@@ -31,12 +31,12 @@ function deckClasses(deck: DecodedDeck, cardsByName: Map<string, Card>): Set<str
 /**
  * Populations for the three "filter the shared decoded-deck universe by a predicate, any
  * Champion" pools. `championCard` is the *intended* Champion (resolved by the caller against the
- * stable single-Champion population, same as `useSuggestedBuild`'s `championCardOverride`) — used
+ * stable single-Champion population, same as `useSuggestedBuild`'s `championCardOverride`) – used
  * to know which elements/classes to match against, not to filter `decks` by Champion (the whole
  * point of these pools is to look past it).
  */
 export function usePoolPopulation(
-  /** `null` when none of these three pools is currently active — short-circuits to an empty, unlabeled result without doing any of the (potentially 57k-deck-scanning) work below. */
+  /** `null` when none of these three pools is currently active – short-circuits to an empty, unlabeled result without doing any of the (potentially 57k-deck-scanning) work below. */
   pool: CrossChampionPool | null,
   decks: DecodedDeck[],
   championName: string | null,
@@ -44,7 +44,7 @@ export function usePoolPopulation(
   championCard: Card | undefined,
   cardsByName: Map<string, Card>,
   archetypeTaxonomyData: ArchetypeTaxonomyData | undefined,
-  /** Named-alter Spirit prints (e.g. "Aithne, Spirit of Fire") -> base name ("Spirit of Fire"), same map `DeckBuilderIndex.tsx` already keeps `spiritFilter` itself canonicalized against — needed here too since `DecodedDeck.spiritName` is the raw per-deck name, not canonicalized. */
+  /** Named-alter Spirit prints (e.g. "Aithne, Spirit of Fire") -> base name ("Spirit of Fire"), same map `DeckBuilderIndex.tsx` already keeps `spiritFilter` itself canonicalized against – needed here too since `DecodedDeck.spiritName` is the raw per-deck name, not canonicalized. */
   spiritCanonicalNames: Map<string, string>,
 ): PoolPopulationResult {
   return useMemo((): PoolPopulationResult => {

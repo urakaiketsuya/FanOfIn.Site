@@ -4,7 +4,7 @@ import { useCardCatalog } from "./useCardCatalog";
 import { effectRelatedCards, type SimilarEffectCards } from "../../lib/cardSimilarity";
 
 /** Cards with a matching ability template (same types/subtypes, same effect text once numbers are
- * normalized away) — for comparing cost/stats side by side, not an "upgrade" verdict. */
+ * normalized away) – for comparing cost/stats side by side, not an "upgrade" verdict. */
 export function useSimilarCards(card: Card | null): SimilarEffectCards {
   const catalog = useCardCatalog();
   return useMemo(() => (card ? effectRelatedCards(card, catalog) : { exact: [], core: [], concept: [] }), [card, catalog]);

@@ -40,7 +40,7 @@ export default function AggressionForecast({ forecast, embedded = false, seen, o
   return (
     <div data-component="AggressionForecast" className={embedded ? "" : "mt-4 border-t border-ctp-surface1 pt-4"}>
       <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Printed direct-damage access</h3>
-      <p className="mt-1 text-xs text-ctp-subtext0">Damage printed on cards you are expected to have seen—not damage guaranteed to resolve.</p>
+      <p className="mt-1 text-xs text-ctp-subtext0">Damage printed on cards you are expected to have seen–not damage guaranteed to resolve.</p>
       <div className="mt-3 flex flex-wrap items-center gap-3">
         <ForecastCheckpointSelector checkpoints={checkpoints} selected={selected.seen} onSelect={setSelectedSeen} />
         <div className="inline-flex rounded-full border border-ctp-surface1 bg-ctp-mantle p-0.5" aria-label="Play order">

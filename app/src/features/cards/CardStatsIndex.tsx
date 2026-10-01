@@ -52,7 +52,7 @@ export default function CardStatsIndex() {
     () => new Map((communityCardInclusion?.overall ?? []).map((c) => [c.name, c])),
     [communityCardInclusion],
   );
-  // cards.json (already fetched on this page) publishes this directly — avoids fetching the
+  // cards.json (already fetched on this page) publishes this directly – avoids fetching the
   // ~10MB deck-popularity-index.json/deck-sightings.json just for their own .length.
   const totalTournamentDecks = cardStatsData?.decksConsidered ?? 0;
   const [sortMode, setSortMode] = useState<SortMode>("usage");
@@ -110,7 +110,7 @@ export default function CardStatsIndex() {
     const source = category ? (cardStatsData.byCategory[category] ?? []) : cardStatsData.cards;
     const query = search.trim().toLowerCase();
     const filtered = source.filter((c) => c.deckCount >= minDecks && (query === "" || (searchableTextByName.get(c.name) ?? c.name.toLowerCase()).includes(query)));
-    // "Hype gap" — community popularity minus tournament popularity, two different real
+    // "Hype gap" – community popularity minus tournament popularity, two different real
     // percentages of two different populations (brewers optimizing for fun/budget/theme vs
     // tournament players optimizing for winning), not a performance judgment. Community usage
     // is null (not 0) when the blended community dataset has no data for this card at all, so a

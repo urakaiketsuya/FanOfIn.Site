@@ -22,7 +22,7 @@ export interface DelugeForecast {
   points: DelugeForecastPoint[];
 }
 
-// Fixed, small enums the game itself defines — verified against every real Card.types/Card.elements
+// Fixed, small enums the game itself defines – verified against every real Card.types/Card.elements
 // value in the catalog (pipeline/.cache/cards.json), not guessed from memory.
 const CARD_TYPES = new Set([
   "ACTION", "ALLY", "ATTACK", "CHAMPION", "DOMAIN", "GREATER BOON", "ITEM", "LESSER BOON",
@@ -40,7 +40,7 @@ function choose(n: number, k: number): number {
   return result;
 }
 
-/** Chance of at least one success in `draws` cards revealed without replacement — the same
+/** Chance of at least one success in `draws` cards revealed without replacement – the same
  * hypergeometric math synergyReadiness.ts's Imbue forecast uses, just phrased for a single
  * one-shot reveal (Scavenge) instead of a swept "cards seen" checkpoint. */
 function chanceOfAtLeastOne(deckSize: number, successes: number, draws: number): number {
@@ -98,7 +98,7 @@ function matchesToken(card: Card, token: { kind: "type" | "subtype"; value: stri
 
 /** Every "Scavenge N for a [target]" this deck's Main deck runs, where N is a fixed printed number
  * (not a variable X) and the target reduces to a plain type/subtype/element match. Scavenge only
- * reveals from the Main deck — Material cards are always available, never shuffled in, so they
+ * reveals from the Main deck – Material cards are always available, never shuffled in, so they
  * never enter `deckSize` or the matching-card count (same Main-only convention synergyReadiness.ts
  * uses for Imbue). Cards whose Scavenge amount is variable or whose target can't be reduced this
  * way (a player-chosen name, an extra cost/element qualifier, a repeated reveal) are silently
@@ -139,7 +139,7 @@ const WORD_NUMBERS: Record<string, number> = {
   eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15, sixteen: 16, seventeen: 17,
   eighteen: 18, nineteen: 19, twenty: 20,
 };
-// Self-mill only ("your deck" / "your graveyard") — a card that mills a *target player's* deck
+// Self-mill only ("your deck" / "your graveyard") – a card that mills a *target player's* deck
 // (e.g. Current Groover) may hit an opponent instead, so it isn't reliable fuel for your own
 // graveyard and is left out. The amount is almost always spelled out as a word on real cards
 // ("Put the top three cards..."), not a digit; a variable amount (**LV**/**X**) has no matching
@@ -152,15 +152,15 @@ function parseMillAmount(card: Card): number | null {
 }
 
 /** Every "Deluge N" card this deck runs, with an *expected* count of the required element in the
- * graveyard at a few "cards seen" checkpoints — not a static "how many exist in the deck" ceiling.
+ * graveyard at a few "cards seen" checkpoints – not a static "how many exist in the deck" ceiling.
  * Two additive, disclosed-as-approximate sources feed it, both keyed off the same "expected copies
  * drawn by checkpoint" approximation aggressionForecast.ts's scaling-damage bonus already uses
  * (`copies * seen / deckSize`), not an exact joint distribution:
- *  1. Matching-element Action/Attack cards in Main — these resolve to the graveyard once played,
+ *  1. Matching-element Action/Attack cards in Main – these resolve to the graveyard once played,
  *     so a drawn copy is assumed played. Ally/Item/etc. copies aren't counted: they enter play and
  *     don't reliably die, so counting them would overstate how much is actually in the graveyard.
  *  2. Any card (Main or Material) with a parsed fixed "put the top N cards of your deck into your
- *     graveyard" trigger — a Main copy contributes once it's (expected to be) drawn; a Material
+ *     graveyard" trigger – a Main copy contributes once it's (expected to be) drawn; a Material
  *     copy is in play from turn one, so its full trigger counts unconditionally. Each trigger mills
  *     N cards off the top of Main, of which `matchingMainCopies / mainDeckSize` are expected to
  *     match the required element.

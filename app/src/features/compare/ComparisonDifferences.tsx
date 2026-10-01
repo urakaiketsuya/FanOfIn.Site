@@ -22,8 +22,8 @@ const COMPARISON_CARD_FIELDS: VisualFieldVisibility = {
 
 /**
  * Card-first comparison for every viewport. Each card uses the same visual tile as decklists, with
- * the compared quantities in a purpose-built footer. This keeps the important question — "what does
- * each deck run for this card?" — scannable without a wide matrix or a second data source.
+ * the compared quantities in a purpose-built footer. This keeps the important question – "what does
+ * each deck run for this card?" – scannable without a wide matrix or a second data source.
  */
 export default function ComparisonDifferences({
   decks,
@@ -128,7 +128,7 @@ export default function ComparisonDifferences({
                                                   ? "font-semibold text-ctp-blue"
                                                   : "text-ctp-text"
                                         }`}>
-                                          {q === 0 ? "—" : `${q}×`}
+                                          {q === 0 ? "–" : `${q}×`}
                                         </span>
                                       </div>
                                     ))}

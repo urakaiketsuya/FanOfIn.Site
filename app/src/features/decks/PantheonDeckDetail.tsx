@@ -27,11 +27,11 @@ function displayName(name: string | null): string {
 
 /**
  * Same shared `UserDeckHeader`/`UserDecklistPanel`/`UserDeckStats` family `MyDeckDetail.tsx`/
- * `PublicDeckDetail.tsx` already use — a read-only community deck is structurally the same "no
+ * `PublicDeckDetail.tsx` already use – a read-only community deck is structurally the same "no
  * owner, no `ownerDeckId`/`previousDecklist`" shape `PublicDeckDetail.tsx` already proves out, just
  * fed from a static Pantheon JSON file instead of the account backend. Boons (this record's own
  * `pantheonDeck` field, or legacy card-type-detected boons) are folded into `material` so they flow
- * through composition/analysis like any other Material card — an accepted simplification over the
+ * through composition/analysis like any other Material card – an accepted simplification over the
  * old page's separate "Boons" decklist section. Tokens need no special handling: `DecklistView`
  * (called internally by `UserDecklistPanel`) already auto-computes referenced tokens and appends
  * them as a trailing section on its own.
