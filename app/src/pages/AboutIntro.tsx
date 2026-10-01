@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import CardImage from "../components/CardImage";
 import HomeDeckInsight from "./HomeDeckInsight";
 import HomeDamageForecast from "./HomeDamageForecast";
+import HomeCollection from "./HomeCollection";
 
 const PATHS = [
   { number: "01", title: "Explore decks", body: "Find tournament lists and see the choices behind them.", action: "Browse tournament decks", to: "/decks" },
   { number: "02", title: "Build a deck", body: "Choose a champion and spirit, then get recommendations from real lists.", action: "Open deck builder", to: "/deck-builder" },
-  { number: "03", title: "Analyze my deck", body: "Check your list's consistency and find opportunities to improve it.", action: "Open deck analysis", to: "/deck-analysis" },
+  { number: "03", title: "Track my collection", body: "Track owned cards, find what your decks are missing, and keep tabs on locations and loans.", action: "Open my collection", to: "/collection" },
+  { number: "04", title: "Analyze my deck", body: "Check your list's consistency and find opportunities to improve it.", action: "Open deck analysis", to: "/deck-analysis" },
 ] as const;
 
 export default function AboutIntro({ user }: { user: AccountUser | null }) {
@@ -16,12 +18,12 @@ export default function AboutIntro({ user }: { user: AccountUser | null }) {
       <section className="border-b border-ctp-surface0 px-6 py-12 sm:px-8 sm:py-16">
         <div className="mx-auto grid max-w-5xl gap-10 md:grid-cols-[minmax(0,1fr)_320px] md:items-center md:gap-8 lg:gap-14">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ctp-subtext0">Grand Archive deck tools</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ctp-subtext0">Grand Archive deck & collection tools</p>
             <h1 className="mt-5 max-w-3xl text-4xl font-bold leading-tight tracking-tight text-ctp-text sm:text-5xl">
               Build better decks with <span className="text-ctp-blue">real tournament data.</span>
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-ctp-subtext1 sm:text-lg">
-              Discover proven lists, understand the card choices, and make your next build with more confidence.
+              Discover proven lists, track the cards you own, and see what you need for your next build.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Link to="/decks" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-ctp-blue px-7 py-3.5 text-sm font-semibold text-ctp-crust transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">Find a proven deck</Link>
@@ -59,7 +61,7 @@ export default function AboutIntro({ user }: { user: AccountUser | null }) {
             </div>
           )}
           <h2 id="home-paths-heading" className="text-2xl font-bold text-ctp-text sm:text-3xl">What would you like to do?</h2>
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {PATHS.map((path) => (
               <Link key={path.to} to={path.to} className="group flex min-h-48 flex-col rounded-2xl border border-ctp-surface1 bg-ctp-mantle p-5 transition-colors hover:border-ctp-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">
                 <span className="text-xs font-semibold tracking-widest text-ctp-blue">{path.number}</span>
@@ -71,6 +73,8 @@ export default function AboutIntro({ user }: { user: AccountUser | null }) {
           </div>
         </div>
       </section>
+
+      <HomeCollection />
 
       <div className="border-t border-ctp-surface0 px-6 pt-10 sm:px-8 sm:pt-12">
         <div className="mx-auto max-w-5xl">
