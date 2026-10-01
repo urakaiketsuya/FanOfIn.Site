@@ -85,7 +85,7 @@ export default function DeckCollectionTools({ decklist, cardsByName, source, own
     try {
       const result = await accountApi.updateCollection({ mode, source, lines, requestId: pending.current.requestId });
       pending.current = null;
-      updateToast.current = notify({ key: "collection", message: result.changed ? "Ownership saved. Your deck coverage has been updated." : "Your collection already covers these quantities.", action: result.changed ? { label: "Undo", onClick: () => undo(result.transactionId) } : undefined });
+      updateToast.current = notify({ key: "collection", message: result.changed ? "Ownership saved." : "Your collection already covers these quantities.", action: result.changed ? { label: "Undo", onClick: () => undo(result.transactionId) } : undefined });
       try { await refresh(); }
       catch { setError("Ownership was saved, but the updated counts could not be loaded. Retry to refresh them."); }
 

@@ -14,12 +14,13 @@ function localDateInput(value: string) {
 
 export default function CardLocationSheet({ cardUuid, name, card, record, entries, decks, onSave, onDismiss, initialBorrower, loansFirst = false }: {initialBorrower?: string; loansFirst?: boolean; entries: CollectionEntry[]; decks: SavedDeck[]; cardUuid: string; name: string; card?: Card; record?: CollectionCardTracking; onSave: (id: string, update: CollectionCardTrackingUpdate) => Promise<void>; onDismiss: () => void}) {
   const formId = useId();
+  const [draftRevision] = useState(record?.revision ?? 0);
   const [baseline] = useState(() => JSON.stringify([record?.mightOwn ?? false, record?.loans ?? [], record?.assignments ?? []]));
   const [mightOwn, setMightOwn] = useState(record?.mightOwn ?? false);
   const [loans, setLoans] = useState<CollectionLoan[]>(() => [...(record?.loans ?? []), ...(initialBorrower !== undefined && (record?.loans.length ?? 0) < 100 ? [{id: crypto.randomUUID(), borrower: initialBorrower, quantity: 1, lentAt: new Date().toISOString()}] : [])]);
   const [assignments, setAssignments] = useState<CollectionDeckAssignment[]>(record?.assignments ?? []);
   const [transferNote, setTransferNote] = useState("");
-  const draft = {tradeReservedQuantity:record?.tradeReservedQuantity,cardUuid,cardName:name,mightOwn,loans,assignments,revision:record?.revision ?? 0,updatedAt:""};
+  const draft = {tradeReservedQuantity:record?.tradeReservedQuantity,cardUuid,cardName:name,mightOwn,loans,assignments,revision:draftRevision,updatedAt:""};
   const location = cardLocationState(cardUuid, entries, draft);
   const candidates = decks.filter(deck => deckCardRequirements(deck.decklist).has(locationCardKey(name)) || assignments.some(row => row.deckId === deck.id));
   const missingDecks = assignments.filter(row => !decks.some(deck => deck.id === row.deckId));
@@ -30,7 +31,7 @@ export default function CardLocationSheet({ cardUuid, name, card, record, entrie
   const revise = (id: string, update: Partial<CollectionLoan>) => setLoans(current=>current.map(loan=>loan.id === id ? {...loan,...update} : loan));
   async function save(event: FormEvent) {
     event.preventDefault(); setBusy(true); setError("");
-    try { await onSave(cardUuid, {cardName:name, mightOwn, loans, assignments, revision:record?.revision ?? 0}); onDismiss(); }
+    try { await onSave(cardUuid, {cardName:name, mightOwn, loans, assignments, revision:draftRevision}); onDismiss(); }
     catch (reason) { setError(reason instanceof Error ? reason.message : "Could not save tracking. Your changes are still here."); }
     finally { setBusy(false); }
   }

@@ -2,6 +2,7 @@ import { CollectionCopyStatus, CollectionStatusHelp } from "./CollectionStatus";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { cardLocationState, collectionLocationIndex, deckCardRequirements, locationCardKey, type AccountUser, type CollectionEntry, type OfficialProductDeckFavorite, type SavedDeck } from "@gatcg/shared";
+import { subscribeCollectionChanges } from "../../lib/collectionEvents";
 import { accountApi } from "../../lib/accountApi";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useCardCatalog } from "../cards/useCardCatalog";
@@ -25,6 +26,7 @@ export default function CardLocationsPage() {
   const [pendingQuantities, setPendingQuantities] = useState(false);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState("");
+  const [ownershipError, setOwnershipError] = useState("");
   const tracking = useCardLocations(Boolean(user));
   const [tab, setTab] = useState(params.get("view") === "loans" ? "loans" : "decks");
   const [query, setQuery] = useState("");
@@ -46,7 +48,7 @@ export default function CardLocationsPage() {
     setLoanBorrower(borrower); setParams(navigationParams(tab, uuid), {replace: true});
   }
   async function load() {
-    setReady(false); setError("");
+    setReady(false); setError(""); setOwnershipError("");
     try {
       const session = await accountApi.session(); setUser(session.user);
       if (!session.user) return;
@@ -56,6 +58,20 @@ export default function CardLocationsPage() {
     } catch (reason) { setError(`Could not load card locations. ${reason instanceof Error ? reason.message : "Please try again."}`); }
   }
   useEffect(() => { void load(); }, []);
+  useEffect(() => {
+    if (!user) return;
+    let active = true;
+    let revision = 0;
+    const unsubscribe = subscribeCollectionChanges(() => {
+      const request = ++revision;
+      void accountApi.collection().then(result => {
+        if (active && request === revision) { setEntries(result.entries); setOwnershipError(""); }
+      }).catch(() => {
+        if (active && request === revision) setOwnershipError("Ownership could not refresh. Your last loaded quantities are shown. Retry to load current counts.");
+      });
+    });
+    return () => { active = false; unsubscribe(); };
+  }, [user]);
   const records = useMemo(() => new Map(tracking.records.map(record => [record.cardUuid, record])), [tracking.records]);
   const requirements = useMemo(() => locationDecks.map(deck => ({deck, cards: deckCardRequirements(deck.decklist)})), [locationDecks]);
   const cardsById = useMemo(()=>new Map(cards.map(card=>[card.uuid,card])),[cards]);
@@ -88,13 +104,14 @@ export default function CardLocationsPage() {
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{matches.slice(0,limit).map(item=>{
       const record = records.get(item.uuid); const state = states.get(item.uuid) ?? cardLocationState(item.uuid,[]);
       const matchingDecks = decksByCard.get(locationCardKey(item.name)) ?? [];
-      return <article key={item.uuid} className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-2"><button type="button" onClick={()=>{edit(item.uuid,picker ?? undefined);setPicker(null);}} aria-label={`${picker !== null ? "Lend" : "Locate"} ${item.name}`} className="w-full rounded text-left focus-visible:outline-2 focus-visible:outline-ctp-blue"><CardArtTile card={item.card} name={item.name}/><span className="flex min-h-12 items-center text-sm font-medium">{item.name}</span></button><CollectionCopyStatus state={state} />{Boolean(record?.tradeListedQuantity) && <Link to="/looking-for" className="flex min-h-12 items-center text-xs text-ctp-blue">{record?.tradeListedQuantity} listed for trade · {state.reserved} reserved</Link>}{picker === null && <><p className="mt-2 text-xs">{record?.assignments?.length ? record.assignments.map(row=>`${row.quantity} in ${decks.find(deck=>deck.id===row.deckId)?.title ?? "unavailable deck"}`).join(" · ") : "No current deck"}</p><p className="mt-1 text-xs text-ctp-subtext1">{matchingDecks.length} matching decklists</p>{state.excess > 0 && <p className="mt-1 text-xs text-ctp-yellow">Needs reconciliation</p>}<button type="button" onClick={()=>edit(item.uuid)} className={`${controls} mt-2 w-full`}>Choose location</button></>}</article>;
+      return <article key={item.uuid} className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-2"><button type="button" onClick={()=>{edit(item.uuid,picker ?? undefined);setPicker(null);}} aria-label={`${picker !== null ? "Lend" : "Locate"} ${item.name}`} className="w-full rounded text-left focus-visible:outline-2 focus-visible:outline-ctp-blue"><CardArtTile card={item.card} name={item.name}/><span className="flex min-h-12 items-center text-sm font-medium">{item.name}</span></button><CollectionCopyStatus state={state} />{Boolean(record?.tradeListedQuantity) && <Link to="/looking-for" className="flex min-h-12 items-center text-xs text-ctp-blue">{record?.tradeListedQuantity} listed for trade · {state.reserved} reserved</Link>}{picker === null && <><p className="mt-2 text-xs">{record?.assignments?.length ? record.assignments.map(row=>`${row.quantity} in ${locationDecks.find(deck=>deck.id===row.deckId)?.title ?? "unavailable deck"}`).join(" · ") : "No current deck"}</p><p className="mt-1 text-xs text-ctp-subtext1">{matchingDecks.length} matching decklists</p>{state.excess > 0 && <p className="mt-1 text-xs text-ctp-yellow">Needs reconciliation</p>}<button type="button" onClick={()=>edit(item.uuid)} className={`${controls} mt-2 w-full`}>Choose location</button></>}</article>;
     })}</div>{matches.length>limit && <button type="button" onClick={()=>setLimit(limit+24)} className={`${controls} mt-3`}>Show more cards</button>}</>;
   return <PageLayout width="wide" data-component="CardLocationsPage"><h1 className="text-2xl font-bold text-ctp-blue">Where are my cards?</h1><p className="mt-2 text-sm text-ctp-subtext1">Your copies can move between decks or be lent to other players. Track where each copy is and what is available to use.</p><CollectionStatusHelp />
     {error && <div role="alert" className="mt-4"><p>{error}</p><button type="button" onClick={()=>void load()} className={controls}>Retry</button></div>}
     {!error && user === undefined && <p role="status" className="mt-4">Loading account…</p>}
     {user === null && <Link to="/collection" className="mt-4 inline-flex min-h-12 items-center text-ctp-blue underline">Sign in to manage your cards</Link>}
     {user && !ready && !error && <p role="status" className="mt-4">Loading collection and decks…</p>}
+    {ownershipError && <p role="alert" className="mt-3 text-sm text-ctp-red">{ownershipError} <button type="button" className={controls} onClick={()=>void accountApi.collection().then(result=>{setEntries(result.entries);setOwnershipError("");}).catch(()=>setOwnershipError("Ownership could not refresh. Your last loaded quantities are shown."))}>Retry ownership</button></p>}
     {tracking.error && <div role="alert" className="mt-3"><p>{tracking.error}</p><button type="button" className={controls} onClick={()=>void tracking.refresh()}>Retry locations</button></div>}
     {ready && !tracking.ready && !tracking.error && <p role="status" className="mt-4">Loading locations and loans…</p>}
     {ready && pendingQuantities && <p role="status" className="mt-3 text-sm text-ctp-yellow">You have unsaved collection quantities. Locations use your saved copies. <Link to="/collection" className="underline">Review quantities</Link></p>}
