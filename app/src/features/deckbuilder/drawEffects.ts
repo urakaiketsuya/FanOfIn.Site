@@ -121,13 +121,14 @@ export function computeDrawEngineTiming(
   deckSize: number,
   seen: number,
   startingHandSize: number,
+  checkpoint?: { turn: number; order: "first" | "second" },
 ): DrawEngineTiming {
   const naturalSeen = Math.min(Math.max(0, seen), Math.max(0, deckSize));
-  const turn = Math.max(1, Math.ceil(naturalSeen - startingHandSize + 1));
+  const turn = checkpoint?.turn ?? Math.max(1, Math.ceil(naturalSeen - startingHandSize + 1));
   let affordableMainCopies = 0;
   let materialOnline = false;
   const timedSources = sources.map((source) => {
-    const firstAffordableTurn = earliestReserveCostTurn(source.reserveCost, startingHandSize);
+    const firstAffordableTurn = earliestReserveCostTurn(source.reserveCost, startingHandSize, checkpoint?.order);
     const affordable = firstAffordableTurn <= turn;
     const onlineByTurn = !affordable ? 0 : source.section === "material" ? 1 : probabilityAtLeast(deckSize, source.quantity, naturalSeen, 1);
     const expectedCopies = !affordable ? 0 : source.section === "material" ? source.quantity : (source.quantity * naturalSeen) / Math.max(1, deckSize);

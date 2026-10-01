@@ -23,8 +23,9 @@ import SideboardImpact from "../deckbuilder/SideboardImpact";
 import BuilderTestPanel from "../deckbuilder/panels/BuilderTestPanel";
 import { useDeckTestResult } from "../decks/useDeckTestResult";
 import { useRequestedDeckWorkspace } from "../deckbuilder/persistence/useRequestedDeckWorkspace";
-import { probabilityAtLeast } from "../deckbuilder/synergyReadiness";
-import { calculateConditionalPressure } from "../deckbuilder/conditionalPressureCalculation";
+import DisclosureChevron from "../../components/DisclosureChevron";
+import AnalysisResults from "./AnalysisResults";
+
 import GamePlanReadiness from "../deckbuilder/GamePlanReadiness";
 import FunctionalHandCalculator from "../deckbuilder/FunctionalHandCalculator";
 import LevelUpRunway from "../deckbuilder/LevelUpRunway";
@@ -41,6 +42,7 @@ type AnalysisTab = "summary" | "explore" | "matchups";
 
 export default function DeckAnalysisIndex() {
   useDocumentTitle("Deck Analysis", "Understand the consistency, timing, resource pressure, and sideboard shape of the active deck.");
+  const [calculatorCard, setCalculatorCard] = useState<string>();
   const setupRef = useRef<HTMLDetailsElement>(null);
   const [tab, setTab] = useState<AnalysisTab>("summary");
   const [workspace, setWorkspace] = useState<DeckWorkspace | null>(() => loadActiveDeckWorkspace(sessionStorage));
@@ -126,32 +128,18 @@ export default function DeckAnalysisIndex() {
 
   if (!workspace || mainTotal === 0) return <PageLayout><PageHeader title="Deck Analysis" description="Facts about how a deck behaves. Recommendations remain in Deck Review." /><Panel className="mt-6"><InlineState className="mb-4">Choose a deck to analyze. Importing here does not modify the saved original.</InlineState><DeckWorkspacePicker catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} /></Panel></PageLayout>;
 
-  const deckSize = Math.max(1, mainTotal);
-  const clumping = workspace.main
-    .filter((line) => line.quantity >= 2)
-    .map((line) => ({ ...line, probability: probabilityAtLeast(deckSize, line.quantity, Math.min(10, deckSize), 2) }))
-    .sort((a, b) => b.probability - a.probability)[0];
-  const conditional = calculateConditionalPressure(workspace.main, catalogByName, opening);
-
-
   return <PageLayout>
     <PageHeader title="Deck Analysis" />
     <DeckToolWorkspaceHeader activeTool="analysis" title={workspace.title} championName={workspace.championName} spiritName={workspace.spiritName} format={workspace.format} mainTotal={mainTotal} materialTotal={materialTotal} sideboardTotal={sideboardTotal} sourceLabel={workspace.sourceLabel} actions={<DeckWorkspacePicker compact catalogByName={catalogByName} source="analysis" onLoad={loadWorkspace} />} />
-    <details ref={setupRef} className="mt-3"><summary className="min-h-11 cursor-pointer py-3 text-sm font-medium text-ctp-blue">Deck and analysis setup</summary>
+    <details ref={setupRef} className="mt-3"><summary className="min-h-12 cursor-pointer py-3 text-sm font-medium text-ctp-blue">Deck and analysis setup</summary>
       <DeckArtworkPreview material={workspace.material} main={workspace.main} catalogByName={catalogByName} />
     {collectionStatus && <CollectionShortageSummary status={collectionStatus} />}
     {analysisProfile && <div className="mt-4"><PrepareAnalysis lines={workspace.main} catalogByName={catalogByName} profile={analysisProfile} onProfileChange={persistAnalysisProfile} onReviewed={markAnalysisReviewed} /><p className="mt-1 px-1 text-[10px] text-ctp-subtext0" aria-live="polite">{profileSync === "synced" ? "Analysis profile synced to your account." : profileSync === "syncing" ? "Syncing analysis profile…" : profileSync === "offline" ? "Saved on this device. Account sync will retry when this page is reopened." : "Analysis profile saved on this device."}</p></div>}
     </details>
-    <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Calculators" }, { key: "explore", label: "Advanced calculators" }, { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" /></div>
-    {tab === "summary" && <div className="mt-4">
-      <CalculatorDashboard key={profileStorageKey} storageKey={profileStorageKey} main={workspace.main} sideboard={workspace.sideboard} material={workspace.material} catalog={catalogByName} opening={opening} plan={analysisPlan} onEditPlan={() => { if (setupRef.current) { setupRef.current.open = true; const inner = setupRef.current.querySelector("details.group"); if (inner instanceof HTMLDetailsElement) inner.open = true; setupRef.current.scrollIntoView({ behavior: "smooth", block: "start" }); } }} />
-      <details className="mt-4"><summary className="min-h-11 cursor-pointer py-3 text-sm text-ctp-blue">Deck snapshot</summary><div className="grid gap-3 md:grid-cols-3">
-        <InsightCard title="Opening hand" value={`${opening} cards`} detail="Opening size" tone="text-ctp-blue" onExplore={() => setTab("explore")} />
-        {clumping && <InsightCard title="Duplicate draws" value={`${(clumping.probability * 100).toFixed(1)}%`} detail={`2+ ${clumping.name} in 10 cards`} tone="text-ctp-blue" onExplore={() => setTab("explore")} />}
-        {conditional.conditionalCopies > 0 && <InsightCard title="Conditional draws" value={`${(conditional.chanceTwo * 100).toFixed(1)}%`} detail={`2+ in opening ${opening}`} tone="text-ctp-blue" onExplore={() => setTab("explore")} />}
-      </div></details>
-    </div>}
+    <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Results" }, { key: "explore", label: "Advanced calculators" }, { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" /></div>
+    {tab === "summary" && <AnalysisResults key={profileStorageKey} main={workspace.main} material={workspace.material} catalog={catalogByName} profile={analysisProfile} onExplore={(card) => { setCalculatorCard(card); setTab("explore"); }} />}
     {tab === "explore" && <div className="mt-4 space-y-3">
+      <CalculatorDashboard initialCard={calculatorCard} key={`${profileStorageKey}:${calculatorCard ?? ""}`} storageKey={profileStorageKey} main={workspace.main} sideboard={workspace.sideboard} material={workspace.material} catalog={catalogByName} opening={opening} plan={analysisPlan} onEditPlan={() => { if (setupRef.current) { setupRef.current.open = true; const inner = setupRef.current.querySelector("details.group"); if (inner instanceof HTMLDetailsElement) inner.open = true; setupRef.current.scrollIntoView({ behavior: "smooth", block: "start" }); } }} />
       <AnalysisDisclosure title="Plan consistency" summary="Inspect readiness, timing, stage quality, and bounded affordability without classifying cards again."><GamePlanReadiness mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} sharedStageUsefulness={analysisPlan?.stageUsefulness} sharedEffectiveCosts={analysisProfile?.effectiveCosts} onSharedAssignmentsChange={updateAnalysisRoles} planName={analysisPlan?.name} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Opening hand" summary="Define what this deck wants early without treating every competing plan as a liability."><FunctionalHandCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} /></AnalysisDisclosure>
       <AnalysisDisclosure title="Level timing" summary="Forecast level timing, acceleration access, and post-level hand pressure."><LevelUpRunway mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
@@ -171,9 +159,9 @@ function CollectionShortageSummary({ status }: { status: ReturnType<typeof compu
   const missing = status.lines.filter((line) => line.missing > 0);
   if (missing.length === 0) return <section className="mt-4 rounded-xl border border-ctp-green/35 bg-ctp-green/10 p-3" aria-label="Collection coverage"><p className="text-sm font-semibold text-ctp-green">Collection covers this deck</p><p className="mt-1 text-xs text-ctp-subtext1">All Main, Material, and Sideboard copies are recorded as owned.</p><p className="mt-2 text-xs text-ctp-subtext1">{OWNERSHIP_COVERAGE_NOTE}</p><Link to="/card-locations" className="inline-flex min-h-12 items-center text-sm text-ctp-blue underline">Check locations and loans</Link></section>;
   return <details className="mt-4 rounded-xl border border-ctp-yellow/35 bg-ctp-yellow/10 p-3">
-    <summary className="min-h-11 cursor-pointer list-none py-2 text-sm font-semibold text-ctp-yellow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue">Missing {status.missingCopies} cop{status.missingCopies === 1 ? "y" : "ies"} from collection</summary>
+    <summary className="min-h-12 cursor-pointer list-none py-2 text-sm font-semibold text-ctp-yellow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue">Missing {status.missingCopies} cop{status.missingCopies === 1 ? "y" : "ies"} from collection</summary>
     <p className="text-xs text-ctp-subtext1">Deck recipes identify gameplay cards, so every recorded printing is pooled for coverage.</p>
-    <ul className="mt-2 space-y-1" aria-label="Missing cards only">{missing.map((line) => <li key={line.card} className="flex min-h-11 items-center justify-between gap-3 rounded-lg bg-ctp-base/40 px-3 text-sm"><span className="text-ctp-text">{line.card}</span><span className="shrink-0 font-semibold text-ctp-yellow">{line.missing} missing</span></li>)}</ul>
+    <ul className="mt-2 space-y-1" aria-label="Missing cards only">{missing.map((line) => <li key={line.card} className="flex min-h-12 items-center justify-between gap-3 rounded-lg bg-ctp-base/40 px-3 text-sm"><span className="text-ctp-text">{line.card}</span><span className="shrink-0 font-semibold text-ctp-yellow">{line.missing} missing</span></li>)}</ul>
   </details>;
 }
 
@@ -192,16 +180,9 @@ function DeckArtworkPreview({ material, main, catalogByName }: { material: { nam
   </section>;
 }
 
-function InsightCard({ title, value, detail, card, tone, onExplore }: { title: string; value: string; detail: string; card?: Card; tone: string; onExplore: () => void }) {
-  return <article className="flex min-h-28 gap-3 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 shadow-sm">
-    {card?.editions[0] && <Link to={`/cards/${card.slug}`} className="w-16 shrink-0 overflow-hidden rounded-md"><CardImage image={card.editions[0].image} alt={card.name} className="aspect-[5/7] h-full w-full object-cover" /></Link>}
-    <div className="flex min-w-0 flex-1 flex-col"><p className="text-[10px] font-semibold uppercase tracking-wide text-ctp-subtext0">{title}</p><p className={`mt-1 text-xl font-bold tabular-nums ${tone}`}>{value}</p><p className="mt-1 text-xs text-ctp-subtext0">{detail}</p><button type="button" onClick={onExplore} className="mt-auto self-start pt-2 text-xs font-medium text-ctp-blue hover:underline">Explore →</button></div>
-  </article>;
-}
-
 function AnalysisDisclosure({ title, summary, children }: { title: string; summary: string; children: React.ReactNode }) {
   return <details className="group rounded-xl border border-ctp-surface1 bg-ctp-mantle">
-    <summary className="cursor-pointer list-none p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ctp-blue"><span className="flex items-center justify-between gap-3"><span><span className="block text-sm font-semibold text-ctp-text">{title}</span></span><span aria-hidden="true" className="text-xl text-ctp-subtext0 transition-transform group-open:rotate-90">›</span></span></summary>
-    <div className="border-t border-ctp-surface1 px-3 pb-3">{children}<details className="mt-3"><summary className="min-h-11 cursor-pointer py-3 text-xs text-ctp-subtext0">Details</summary><p className="text-xs text-ctp-subtext0">{summary}</p></details></div>
+    <summary className="cursor-pointer list-none p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ctp-blue"><span className="flex items-center justify-between gap-3"><span><span className="block text-sm font-semibold text-ctp-text">{title}</span></span><DisclosureChevron className="group-open:rotate-180" /></span></summary>
+    <div className="border-t border-ctp-surface1 px-3 pb-3">{children}<details className="mt-3"><summary className="min-h-12 cursor-pointer py-3 text-xs text-ctp-subtext0">Details</summary><p className="text-xs text-ctp-subtext0">{summary}</p></details></div>
   </details>;
 }

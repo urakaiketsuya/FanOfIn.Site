@@ -3398,3 +3398,19 @@ accepted definitions persist in `data/reference/curated-strategies.json` for fut
 The `/archetypes/strategies` page shows only these reviewed definitions, with links to the
 unchanged concrete builds and intersection counts. An initial empty reviewed artifact is
 intentional: imported hypotheses have not been accepted on the user's behalf.
+
+## Automatic deck analysis report (`app/src/lib/deckAnalysisReport.ts`)
+
+The Results tab computes individual card access and duplicate access with the existing exact
+hypergeometric helper. Main lines are merged by name. Opening size uses the existing starting
+champion parser with a disclosed default; cards seen are capped at deck size. Fixed turn 3 and 5
+checkpoints show both play orders. Sideboard and Material are not part of the shuffled draw pool.
+Reviewed setup and payoff roles use the existing joint recipe probability, not independent products.
+
+Draw estimates remain separate from natural access. Starting level 0 Champion clauses are excluded
+from bonus sources because their draws establish the opening. The timing helper accepts an explicit
+turn and play order for this report, avoiding inference from capped cards seen. Expected bonus draws
+are rounded and added to the natural checkpoint, capped at deck size. This is a heuristic estimate,
+not an exact probability for a draw engine, statistical confidence interval, or successful play.
+Unsupported variable effects, searches, conditions, level gates, and prior spending are not simulated.
+Printed costs and detected lineage are descriptive; the report does not infer a strategic grade.

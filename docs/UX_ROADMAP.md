@@ -42,3 +42,15 @@ The first expressive implementation focuses on My Decks, saved deck details and 
 Verification: 14 focused tests passed, including appearance rollback, create/update retries, competing creates, stale edits, duplicate names, input validation and completion-state accuracy. App, shared and account-worker typechecks passed; lint retained its six existing Fast Refresh warnings. Real components were checked with a temporary mocked-write fixture at 360px, 390px and 1280px: card artwork and name fallbacks, long titles, expanded editor, empty library/search, save pending/failure, draft protection, saved preview, keyboard color choice, focus restoration, touch targets and horizontal overflow. Temporary fixtures were removed. Physical keyboard/screen-reader and deployed account verification remain outstanding.
 
 Deployment order: apply account-worker migration `0030_deck_folder_appearance.sql`, then deploy the account service and frontend. This follow-up is not deployed. Later expressive work can address Goldfish card/zone motion, analysis result hierarchy, and broader empty-state compositions.
+
+### Automatic analysis results
+
+Implemented a default Results report without required card selection: opening size, both play orders
+at fixed checkpoints, individual and duplicate access, printed costs, detected lineage, separate draw
+estimates, and reviewed plan access. Card previews link to details and prefill the advanced odds tool.
+The previous conditional and highest duplicate headline cards are removed. Scenario tools remain in
+Advanced calculators; Matchups retains its own evidence surface.
+
+Remaining deeper work: consolidate overlapping detailed scenario interfaces, validate broader engine
+mechanics before automatic strategic inference, and connect next draw scenarios to Goldfish state.
+These do not block the automatic report. No overall consistency grade is introduced.
