@@ -298,7 +298,7 @@ export default function MyDeckDetail() {
   return <PageLayout data-component="MyDeckDetail">
     <Link to="/decks/edit" onClick={(event) => { if (!allowNavigation()) event.preventDefault(); }} className="text-sm text-ctp-blue hover:underline">← My Decks</Link>
     <div className="mt-4">
-      <UserDeckHeader title={deck.title} championName={deck.championName} format={deck.format} visibility={deck.visibility} prominent />
+      <UserDeckHeader decklist={deck.decklist} title={deck.title} championName={deck.championName} format={deck.format} visibility={deck.visibility} prominent />
       {renamingTitle ? (
         <form className="mt-2 flex flex-wrap items-center gap-2" onSubmit={(event) => { event.preventDefault(); void saveTitle(); }}>
           <input autoFocus required maxLength={160} value={title} onChange={(event) => setTitle(event.target.value)} aria-label="Deck title" className="min-w-0 flex-1 max-w-sm rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-1 text-sm text-ctp-text" />

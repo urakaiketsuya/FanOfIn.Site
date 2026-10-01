@@ -220,12 +220,22 @@ export function savedDeckIdentityInput(decklist: OmnidexDecklist): string {
 }
 
 /** Private, user-named collections of saved builds; a deck can belong to several folders. */
+export const DECK_FOLDER_ACCENTS = ["blue", "lavender", "teal", "rosewater"] as const;
+export type DeckFolderAccent = typeof DECK_FOLDER_ACCENTS[number];
+
 export interface DeckFolder {
   id: string;
   name: string;
   deckIds: string[];
+  coverCardName?: string | null;
+  accent?: DeckFolderAccent;
   revision: number;
   createdAt: string;
   updatedAt: string;
 }
-export interface DeckFolderInput { name: string; deckIds: string[] }
+export interface DeckFolderInput {
+  name: string; deckIds: string[];
+  /** Omitted appearance fields preserve existing preferences when editing membership. */
+  coverCardName?: string | null;
+  accent?: DeckFolderAccent;
+}

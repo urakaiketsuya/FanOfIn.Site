@@ -89,3 +89,14 @@ tbody tr:hover { @apply bg-ctp-surface0/60; }
 .collection-progress::-moz-progress-bar { background: var(--catppuccin-color-blue); border-radius: 999px; }
 @keyframes state-arrive { from { opacity: 0.45; } to { opacity: 1; } }
 .state-arrive { animation: state-arrive 180ms ease-out; }
+
+/* Identity accents are decorative; status colors remain attached to explicit labels. */
+.identity-surface {
+  --identity-accent: var(--catppuccin-color-blue);
+  background: linear-gradient(125deg, color-mix(in srgb, var(--identity-accent) 14%, var(--catppuccin-color-mantle)), var(--catppuccin-color-mantle) 80%);
+  border-top: 3px solid color-mix(in srgb, var(--identity-accent) 65%, var(--catppuccin-color-surface1));
+}
+.identity-action { border-radius: 999px; transition: background-color 160ms ease-out, box-shadow 160ms ease-out; }
+.identity-action:active { box-shadow: inset 0 0 0 2px var(--catppuccin-color-text); }
+.collection-progress::-webkit-progress-value { transition: width 240ms ease-out; }
+.collection-progress::-moz-progress-bar { transition: width 240ms ease-out; }

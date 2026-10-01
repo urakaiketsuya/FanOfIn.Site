@@ -1,3 +1,6 @@
+import DisclosureChevron from "../../components/DisclosureChevron";
+import DeckFolderGallery from "./DeckFolderGallery";
+import DeckFolderPreview from "./DeckFolderPreview";
 import DialogSheet from "../../components/ui/DialogSheet";
 import { useDeckFolders } from "./useDeckFolders";
 import { decksInFolder } from "./deckFolders";
@@ -151,9 +154,11 @@ export default function MyDecksIndex() {
           <Button disabled={!folders.ready || folders.folders.length >= 100} onClick={() => setFolderEditor({})}>New folder</Button>
           {folders.folders.find(folder => folder.id === selectedFolder) && <Button onClick={() => setFolderEditor({ folder: folders.folders.find(folder => folder.id === selectedFolder) })}>Edit folder</Button>}
         </div>
+        {folders.folders.find(folder => folder.id === selectedFolder) && (() => { const folder = folders.folders.find(item => item.id === selectedFolder)!; return <div className="mt-3"><DeckFolderPreview name={folder.name} coverCardName={folder.coverCardName} accent={folder.accent} count={folder.deckIds.length} /></div>; })()}
         <p className="mt-2 text-xs text-ctp-subtext1">Private folders for your saved builds. A deck can belong to more than one.</p>
         {folders.error ? <div className="mt-2"><p role="alert" className="text-sm text-ctp-red">{folders.error}</p><Button onClick={() => void folders.refresh().catch(() => undefined)}>Retry folders</Button></div> : !folders.ready && <p role="status" className="mt-2 text-sm">Loading folders…</p>}
       </div>
+      {folders.ready && !selectedFolder && folders.folders.length > 0 && <details className="group mt-3"><summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 text-sm font-medium">Browse folder covers ({folders.folders.length})<DisclosureChevron className="group-open:rotate-180" /></summary><DeckFolderGallery folders={folders.folders} onOpen={setSelectedFolder} /></details>}
       {decks.length === 0 ? <p className="mt-4 rounded-lg border border-dashed border-ctp-surface1 p-8 text-center text-sm text-ctp-subtext1">Build, import, or paste a deck to start your library.</p> : <>
         <div className="mt-4 flex flex-wrap items-center gap-2">
           <input value={deckSearch} onChange={(event) => setDeckSearch(event.target.value)} placeholder="Search decks or Champions" aria-label="Search my decks" className="min-h-12 min-w-0 flex-1 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm focus:border-ctp-blue focus:outline-none" />

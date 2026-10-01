@@ -58,3 +58,5 @@ Use the brief `state-arrive` opacity transition for transient feedback, not layo
 Import review uses the shared sheet, tabs, named card previews, draft protection, and a persistent confirmation action. Opening a card from an import review uses a new tab so the draft stays available. Library failures retain paste as an alternative; optional favorites failures do not hide owned builds.
 
 Goldfish keeps Draw, Next turn, Memory, and Material within reach. Its footer measures its height and reserves content and focus scrolling space. Tool sheets isolate focus and sit above the footer. The latest action is inline live feedback, not a toast for every draw.
+
+Use `identity-surface` and the controlled accent palette for decorative deck and folder identity. Champion accents are stable across saved deck cards and headers; they do not encode game elements or readiness. Keep status colors and labels separate. Folder cover selection uses `CardResult` inside the existing editor, with a live `DeckFolderPreview`; preserve appearance when changing membership. Keep error and recovery controls in the persistent footer when an expanded picker can scroll them out of view.
