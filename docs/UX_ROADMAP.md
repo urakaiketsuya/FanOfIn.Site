@@ -285,3 +285,11 @@ The active shared deck editor now uses larger section headings and labeled copy 
 Verified at 360 × 800 and 1280 × 900 with a local Abnegation draft: compact and card art layouts, expanded statistics by keyboard, quantity changes, split move from Main to Sideboard with copy conservation, keyboard dismissal with focus restoration, and removal back to an empty draft. Measured mobile editing controls met 48px heights; the smaller checkbox uses its existing 48px label. No page overflow in measured mobile and desktop views. Ten deck editing and destination eligibility tests passed. Typecheck and lint passed with six existing warnings.
 
 Remaining: authenticated My Decks editing and failed-save recovery, missing catalog and long-name fixtures, text zoom and screen reader checks, and the broader Builder identity/recommendation pass. The Builder checklist stays open. Included in the Builder editing hierarchy commit.
+
+### Builder identity, October 2
+
+The workbench header now presents a compact material preview using shared card art, prioritizing champion cards and keeping readable names and detail links visible. The preview shows at most three distinct names and explicitly labels additional material cards. Empty drafts explain how to begin. Mobile deck naming occupies its own row above Save and More, and draft copy explains the difference between this tab and My Decks. Save uses the shared Button.
+
+Verified at 360 × 800 and 1280 × 900 with a pasted Lorraine draft: real material artwork, preview truncation, empty draft, loading save, failed save with deck and name retained, and keyboard expansion of More. Measured preview links and header controls met 48px targets, with no horizontal overflow. Typecheck and lint passed with six existing warnings.
+
+Remaining: successful authenticated saves, browser recovery failure, missing artwork/catalog fixtures, screen reader and physical mobile keyboard checks. Recommendations already remain opt in with explicit card additions; broader recommendation presentation and connected workflow verification remain open. The Builder checklist remains open.
