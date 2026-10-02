@@ -434,3 +434,11 @@ with six existing Fast Refresh warnings; 14 collection regression tests passed.
 Remaining: real authenticated writes and cross-tab refresh, signed-out sign-in round trip, invalid
 card handoff guidance, missing artwork fixtures, text zoom, reduced motion browser verification,
 screen reader and physical mobile keyboard checks. The broader core workflow item remains open.
+
+### Deck Review expressive swap proposals (2026-10-02)
+
+- Shared review swap presentation now uses CardArtTile, readable full names, prominent copy counts and explicit removal/set labels. Mobile stacks the proposal; desktop compares cards side by side.
+- Accept and keep actions use shared 48px Buttons. Evidence uses the shared disclosure indicator, with source limitations visible. Unequal copy counts are flagged without claiming a predicted improvement or changing ranking/mutations.
+- Verified isolated component at 360px and 1280px: missing catalog/long names, expanded evidence, keyboard disclosure, action callbacks, touch targets and no horizontal overflow. App typecheck and lint passed (six existing warnings); five builder engine/mutation tests passed.
+- Not verified: real data artwork, full review controller acceptance/save journey, loading/error/empty integration states, screen reader, zoom and physical device. No new asynchronous state or persistence was introduced.
+- Next: carry this hierarchy through unpaired additions/cuts and automatic Analysis result summaries. Existing calculation outputs and advanced drafts remain unchanged.

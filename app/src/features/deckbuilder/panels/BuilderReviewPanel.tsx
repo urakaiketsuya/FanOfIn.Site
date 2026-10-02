@@ -1,8 +1,6 @@
-import { Link } from "react-router-dom";
+import ReviewSwapCard from "../components/ReviewSwapCard";
+import Button from "../../../components/ui/Button";
 import type { Card, CardImpactEntry, CardInclusionEntry } from "@gatcg/shared";
-import CardHoverPreview from "../../../components/CardHoverPreview";
-import CardImage from "../../../components/CardImage";
-import ElementIcon from "../../../components/ElementIcon";
 import Tabs from "../../../components/ui/Tabs";
 import { CardRow, SuggestionRow } from "../components/BuilderCardRows";
 import { BuilderSuggestionGrid } from "../components/BuilderCardGrid";
@@ -71,14 +69,14 @@ export default function BuilderReviewPanel({
     <div data-component="BuilderReviewPanel" role="tabpanel" id="deck-builder-panel-review" aria-labelledby="deck-builder-tab-review" className="mt-4">
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-ctp-surface0 p-3 shadow-sm sm:p-4">
         <div>
-          <h2 className="font-semibold text-ctp-text">{reviewComplete ? "No changes needed" : `${reviewItemCount} change${reviewItemCount === 1 ? "" : "s"} to review`}</h2>
-          <p className="mt-0.5 text-xs text-ctp-subtext0">{reviewComplete ? "Your current list has no supported recommendations." : "Start with the highest-impact suggestions below."}</p>
+          <h2 className="font-semibold text-ctp-text">{reviewComplete ? "Review complete" : `${reviewItemCount} change${reviewItemCount === 1 ? "" : "s"} to review`}</h2>
+          <p className="mt-0.5 text-xs text-ctp-subtext0">{reviewComplete ? "Your current list has no supported recommendations." : "Review the cards below. Only changes you accept enter your working list."}</p>
         </div>
-        <button type="button" onClick={onContinueToValidation} className="min-h-10 rounded-md bg-ctp-blue px-4 py-2 text-sm font-medium text-ctp-base">{reviewComplete ? "Finish deck" : "Validate deck"}</button>
+        <Button onClick={onContinueToValidation}>{reviewComplete ? "Finish deck" : "Validate deck"}</Button>
         {dismissedReviewCards.size > 0 && (
-          <button type="button" onClick={onRestoreDismissed} className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text">
+          <Button size="sm" onClick={onRestoreDismissed}>
             Restore dismissed
-          </button>
+          </Button>
         )}
       </div>
 
@@ -99,47 +97,14 @@ export default function BuilderReviewPanel({
         <>
           {reviewGroups.pairs.length > 0 && (
             <section className="mt-4">
-              <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-red">Fix first</h3>
+              <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-red">Suggested swaps</h3>
               <ul className="mt-2 space-y-2">
-                {reviewGroups.pairs.map(({ removal, addition }) => {
-                  const removalInfo = cardsByName.get(removal.cardName);
-                  const additionInfo = cardsByName.get(addition.cardName);
-                  return (
-                    <li key={`${removal.cardName}:${addition.cardName}`} className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-start gap-2 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 shadow-sm sm:gap-4">
-                      <div className="min-w-0">
-                        {removalInfo?.editions[0] ? <CardImage image={removalInfo.editions[0].image} alt="" className="aspect-[5/7] h-auto w-full rounded-md object-cover" /> : <div className="aspect-[5/7] w-full rounded-md bg-ctp-surface0" />}
-                        <span className="text-[10px] font-semibold uppercase tracking-wide text-ctp-red">Review</span>
-                        <div className="flex items-center gap-1 truncate">
-                          {removalInfo && <ElementIcon element={removalInfo.element} size={14} />}
-                          <CardHoverPreview image={removalInfo?.editions[0]?.image} alt={removal.cardName}>
-                            {removalInfo ? <Link to={`/cards/${removalInfo.slug}`} className="truncate text-sm text-ctp-text hover:text-ctp-blue">{removal.cardName}</Link> : <span className="truncate text-sm text-ctp-text">{removal.cardName}</span>}
-                          </CardHoverPreview>
-                        </div>
-                      </div>
-                      <span className="self-center text-xl text-ctp-subtext0" aria-hidden="true">→</span>
-                      <div className="min-w-0">
-                        {additionInfo?.editions[0] ? <CardImage image={additionInfo.editions[0].image} alt="" className="aspect-[5/7] h-auto w-full rounded-md object-cover" /> : <div className="aspect-[5/7] w-full rounded-md bg-ctp-surface0" />}
-                        <span className="text-[10px] font-semibold uppercase tracking-wide text-ctp-green">Suggested addition</span>
-                        <div className="flex items-center gap-1 truncate">
-                          {additionInfo && <ElementIcon element={additionInfo.element} size={14} />}
-                          <CardHoverPreview image={additionInfo?.editions[0]?.image} alt={addition.cardName}>
-                            {additionInfo ? <Link to={`/cards/${additionInfo.slug}`} className="truncate text-sm text-ctp-text hover:text-ctp-blue">{addition.cardName}</Link> : <span className="truncate text-sm text-ctp-text">{addition.cardName}</span>}
-                          </CardHoverPreview>
-                        </div>
-                        <span className="text-xs text-ctp-subtext0">{addition.quantity}x {addition.section}</span>
-                        {addition.readinessReasons?.map((reason) => <span key={reason} className="ml-1 inline-block rounded-full border border-ctp-teal/50 bg-ctp-teal/10 px-1.5 text-[10px] font-medium text-ctp-teal">{reason}</span>)}
-                      </div>
-                      <div className="col-span-3 flex gap-2">
-                        <button type="button" onClick={() => onApplySwap(removal, addition)} className="min-h-10 rounded-md bg-ctp-blue px-3 py-2 text-xs font-medium text-ctp-base">Apply swap</button>
-                        <button type="button" onClick={() => onDismissReview(removal.cardName, addition.cardName)} className="rounded-md border border-ctp-surface1 px-2 py-1 text-xs text-ctp-subtext1 hover:text-ctp-text">Dismiss</button>
-                      </div>
-                      <details className="col-span-3 text-xs text-ctp-subtext0">
-                        <summary className="cursor-pointer hover:text-ctp-text">Why this swap?</summary>
-                        <p className="mt-1">{removal.adjustedLift === null ? "The current card has limited performance evidence" : `${(removal.adjustedLift * 100).toFixed(1)}% observed lift`} · {addition.adjustedLift === null ? "ranked replacement candidate" : `${addition.adjustedLift >= 0 ? "+" : ""}${(addition.adjustedLift * 100).toFixed(1)}% observed lift`}{removal.contextualReplacement ? ` · ${removal.contextualReplacement.peerDecks} similar decks` : ""}</p>
-                      </details>
-                    </li>
-                  );
-                })}
+                {reviewGroups.pairs.map(({ removal, addition }) => (
+                  <ReviewSwapCard key={`${removal.cardName}:${addition.cardName}`}
+                    removal={removal} addition={addition} cardsByName={cardsByName}
+                    onApply={() => onApplySwap(removal, addition)}
+                    onDismiss={() => onDismissReview(removal.cardName, addition.cardName)} />
+                ))}
               </ul>
             </section>
           )}
