@@ -1,6 +1,43 @@
 # Deck and collection experience roadmap
 
-Updated October 1, 2026. This records the implementation baseline and verification scope. Existing working features are retained rather than reimplemented.
+Updated October 2, 2026. This records the implementation baseline and verification scope. Existing working features are retained rather than reimplemented.
+
+## Active expressive design queue
+
+Work through these six areas in order. This queue prioritizes the existing page checklist below;
+it does not replace its unfinished acceptance checks. Inspect the current implementation first,
+retain completed improvements, and implement each area in reviewable slices. Commit each verified
+slice and report the next item. Push only when requested. All six areas are authorized for implementation.
+
+1. [ ] **Deck discovery.** Start here. Give tournament, community, and official product browsing
+   a cohesive visual hierarchy through the shared DeckPreviewCard. Lead with champion and material
+   art, readable identity and source context, one clear list action, and useful empty or failed
+   result recovery. Keep event evidence and product details distinct and progressively disclosed.
+2. [ ] **Core workflows.** Refine My Decks folder navigation, draft and save feedback, collection
+   quantity editing, and card detail ownership handoffs. Use selected cover art and contextual
+   progress to communicate identity and state. Preserve drafts, visible failures, retry and Undo.
+3. [ ] **Analysis and Deck Review.** Extend the result hierarchy into advanced models and review
+   suggestions. Present the answer and relevant cards before optional inputs or evidence; retain
+   calculators where automatic results would be misleading. Keep proposed changes distinct from
+   selected cards and require explicit acceptance. Preserve formulas unless separately validated.
+4. [ ] **Goldfish.** Strengthen active turn and zone hierarchy, readable card state and restrained
+   action feedback. Keep common controls reachable on mobile, preserve session state, and ensure
+   reduced motion and keyboard users receive equivalent feedback. Build on existing zone artwork.
+5. [ ] **Related discovery and competition pages.** Apply the same expressive language to champion,
+   package, archetype, comparison, event and player surfaces. Show cards and the main takeaway before
+   evidence. Distinguish package pools from exact variants and keep comparison labels explicit.
+6. [ ] **Supporting pages and shared shell.** Finish navigation, supporting pages, and shared
+   loading, error and empty states. Provide clear next actions, consistent emphasis and accessible
+   focus and status feedback. Audit shared changes across the earlier five areas for regressions.
+
+For every slice, verify 360–390px and desktop layouts, relevant empty/loading/error/expanded states,
+48px controls, keyboard access, focus restoration, overflow and reduced motion. Record evidence
+and unresolved checks here. Track text zoom, screen reader, physical mobile keyboard and real
+authenticated journeys explicitly; do not mark an area complete based on visual styling alone.
+External verification blockers should remain visible while independent work proceeds in queue order.
+
+Queue status: recorded October 2. The next implementation slice is deck discovery. Earlier
+implementation notes below remain the source of truth for completed work and verification limits.
 
 | Phase | Existing baseline | Changes in this implementation |
 | --- | --- | --- |
