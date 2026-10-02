@@ -449,3 +449,11 @@ screen reader and physical mobile keyboard checks. The broader core workflow ite
 - Champion cut proposals explain the existing higher-level removal cascade. Unlocked exclusions are labeled separately from selected-card removal.
 - Verified isolated missing-catalog/long-name proposals at 360px and 1280px, keyboard disclosure, add/remove/keep callbacks, 48px controls and no horizontal overflow. Full account/save integration, actual artwork, loading/error/empty integration states, screen reader and device checks remain unverified.
 - Next: automatic Analysis result summaries with named cards and answer-first hierarchy.
+
+### Automatic Analysis card summaries (2026-10-02)
+
+- Opening access now leads each card with expressive result typography and identity surfaces. Turn checkpoints and advanced card exploration sit behind a labeled disclosure; duplicate odds and model limitations remain visible.
+- Alphabetical order and visible/total counts clarify the initial four-card preview. Champion progression uses named shared card artwork. Card detail links open separately to preserve the analysis workspace.
+- Verified isolated missing-catalog fixture at 360px and 1280px: keyboard expansion, 48px disclosures, show all cards and no horizontal overflow. Typecheck and lint passed with six existing warnings.
+- Actual artwork, empty main deck, loading/error integration, advanced handoff, screen reader and device checks remain unverified. Calculation functions and draft ownership are unchanged.
+- Next: saved plan results with visible setup/payoff cards and clearer automatic draw summaries; then continue the Goldfish queue area.
