@@ -54,3 +54,24 @@ Advanced calculators; Matchups retains its own evidence surface.
 Remaining deeper work: consolidate overlapping detailed scenario interfaces, validate broader engine
 mechanics before automatic strategic inference, and connect next draw scenarios to Goldfish state.
 These do not block the automatic report. No overall consistency grade is introduced.
+
+### Analysis workspace consolidation
+
+Advanced analysis now uses one question selector organized into Draws, Game plan, Timing, and
+Changes. Related detailed models sit alongside their matching quick estimate instead of repeating
+as a second stack of calculators. Resource and sideboard models have their own questions. The
+separate Analysis play sequence panel is consolidated into the persistent quick tool, including
+its delayed comparison, per-turn pressure, Floating Memory disclosure, and Combo Lab link.
+
+Selected cards lead the result surface using shared artwork tiles. Pool selection uses CardResult,
+search, selection labels, and progressive card browsing. Prominent results use the expressive
+surface style without assigning a strategic grade. Methodology is specific to the current question.
+Quick selections retain the existing storage key. Detailed models mount on first use and retain
+local drafts when changing topics, Results tabs, or following a card from the report. Detailed
+scenario settings remain distinct from quick estimates and are labeled accordingly.
+
+Verification: 34 calculation regressions passed. Local component fixtures checked narrow mobile
+and desktop layout, keyboard topic navigation, empty search and sideboard, retained selected cards,
+detailed recipe draft retention, report handoff, and expanded sequence resources. Card image delivery
+was unavailable in the local fixture; readable fallbacks were verified. Device keyboard and screen
+reader checks remain part of release verification.

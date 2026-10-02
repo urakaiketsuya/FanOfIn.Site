@@ -100,3 +100,10 @@ tbody tr:hover { @apply bg-ctp-surface0/60; }
 .identity-action:active { box-shadow: inset 0 0 0 2px var(--catppuccin-color-text); }
 .collection-progress::-webkit-progress-value { transition: width 240ms ease-out; }
 .collection-progress::-moz-progress-bar { transition: width 240ms ease-out; }
+
+/* Existing detailed calculators share the advanced workspace's mobile targets. */
+.analysis-model :is(button, select, summary, input:not([type="checkbox"]):not([type="radio"])),
+.analysis-model label:has(> input:is([type="checkbox"], [type="radio"])) {
+  min-height: var(--spacing-control);
+}
+.analysis-model :is(input, select) { max-width: 100%; }

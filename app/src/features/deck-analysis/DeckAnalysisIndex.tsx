@@ -5,7 +5,7 @@ import { computeDeckCollectionStatus, type Card, type OmnidexDecklist } from "@g
 import PageLayout from "../../components/layout/PageLayout";
 import PageHeader from "../../components/ui/PageHeader";
 import Panel from "../../components/ui/Panel";
-import Tabs from "../../components/ui/Tabs";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import CardImage from "../../components/CardImage";
 import { InlineState } from "../../components/ui/ContentState";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -16,14 +16,12 @@ import DeckWorkspacePicker from "../deckbuilder/components/DeckWorkspacePicker";
 import DeckToolWorkspaceHeader from "../deckbuilder/components/DeckToolWorkspaceHeader";
 import HypergeometricCalculator from "../deckbuilder/HypergeometricCalculator";
 import ResourceCurveReliability from "../deckbuilder/ResourceCurveReliability";
-import ReserveSequencePressure from "../deckbuilder/ReserveSequencePressure";
 import CopyClumpingRisk from "../deckbuilder/CopyClumpingRisk";
 import ConditionalHandPressure from "../deckbuilder/ConditionalHandPressure";
 import SideboardImpact from "../deckbuilder/SideboardImpact";
 import BuilderTestPanel from "../deckbuilder/panels/BuilderTestPanel";
 import { useDeckTestResult } from "../decks/useDeckTestResult";
 import { useRequestedDeckWorkspace } from "../deckbuilder/persistence/useRequestedDeckWorkspace";
-import DisclosureChevron from "../../components/DisclosureChevron";
 import AnalysisResults from "./AnalysisResults";
 
 import GamePlanReadiness from "../deckbuilder/GamePlanReadiness";
@@ -42,7 +40,7 @@ type AnalysisTab = "summary" | "explore" | "matchups";
 
 export default function DeckAnalysisIndex() {
   useDocumentTitle("Deck Analysis", "Understand the consistency, timing, resource pressure, and sideboard shape of the active deck.");
-  const [calculatorCard, setCalculatorCard] = useState<string>();
+  const [calculatorCard, setCalculatorCard] = useState<{ name: string; nonce: number }>();
   const setupRef = useRef<HTMLDetailsElement>(null);
   const [tab, setTab] = useState<AnalysisTab>("summary");
   const [workspace, setWorkspace] = useState<DeckWorkspace | null>(() => loadActiveDeckWorkspace(sessionStorage));
@@ -100,6 +98,7 @@ export default function DeckAnalysisIndex() {
   function loadWorkspace(next: Omit<DeckWorkspace, "version" | "updatedAt">) {
     saveActiveDeckWorkspace(sessionStorage, next);
     setWorkspace(loadActiveDeckWorkspace(sessionStorage));
+    setCalculatorCard(undefined);
     setTab("summary");
   }
 
@@ -137,21 +136,21 @@ export default function DeckAnalysisIndex() {
     {analysisProfile && <div className="mt-4"><PrepareAnalysis lines={workspace.main} catalogByName={catalogByName} profile={analysisProfile} onProfileChange={persistAnalysisProfile} onReviewed={markAnalysisReviewed} /><p className="mt-1 px-1 text-[10px] text-ctp-subtext0" aria-live="polite">{profileSync === "synced" ? "Analysis profile synced to your account." : profileSync === "syncing" ? "Syncing analysis profile…" : profileSync === "offline" ? "Saved on this device. Account sync will retry when this page is reopened." : "Analysis profile saved on this device."}</p></div>}
     </details>
     <div className="mt-4"><Tabs tabs={[{ key: "summary", label: "Results" }, { key: "explore", label: "Advanced calculators" }, { key: "matchups", label: "Matchups" }]} active={tab} onChange={setTab} label="Deck analysis sections" baseId="deck-analysis" /></div>
-    {tab === "summary" && <AnalysisResults key={profileStorageKey} main={workspace.main} material={workspace.material} catalog={catalogByName} profile={analysisProfile} onExplore={(card) => { setCalculatorCard(card); setTab("explore"); }} />}
-    {tab === "explore" && <div className="mt-4 space-y-3">
-      <CalculatorDashboard initialCard={calculatorCard} key={`${profileStorageKey}:${calculatorCard ?? ""}`} storageKey={profileStorageKey} main={workspace.main} sideboard={workspace.sideboard} material={workspace.material} catalog={catalogByName} opening={opening} plan={analysisPlan} onEditPlan={() => { if (setupRef.current) { setupRef.current.open = true; const inner = setupRef.current.querySelector("details.group"); if (inner instanceof HTMLDetailsElement) inner.open = true; setupRef.current.scrollIntoView({ behavior: "smooth", block: "start" }); } }} />
-      <AnalysisDisclosure title="Plan consistency" summary="Inspect readiness, timing, stage quality, and bounded affordability without classifying cards again."><GamePlanReadiness mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} sharedStageUsefulness={analysisPlan?.stageUsefulness} sharedEffectiveCosts={analysisProfile?.effectiveCosts} onSharedAssignmentsChange={updateAnalysisRoles} planName={analysisPlan?.name} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Opening hand" summary="Define what this deck wants early without treating every competing plan as a liability."><FunctionalHandCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Level timing" summary="Forecast level timing, acceleration access, and post-level hand pressure."><LevelUpRunway mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Pressure access" summary="Measure access to the selected plan's saved pressure packages."><ThreatCadence mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} sharedPackages={analysisPlan?.pressure} onSharedPackagesChange={(pressure) => analysisProfile && persistAnalysisProfile({ ...analysisProfile, plans: analysisProfile.plans.map((plan) => plan.id === analysisProfile.activePlanId ? { ...plan, pressure } : plan), reviewedAt: null })} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Recovery access" summary="Test the active plan's saved protection and recovery roles around a declared disruption turn."><ResilienceRebuild mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisPlan?.resilience} onSharedAssignmentsChange={(resilience) => analysisProfile && persistAnalysisProfile({ ...analysisProfile, plans: analysisProfile.plans.map((plan) => plan.id === analysisProfile.activePlanId ? { ...plan, resilience } : plan), reviewedAt: null })} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Find cards and combos" summary="Find a card, functional role, or complete combo."><HypergeometricCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Unwanted draws" summary="Inspect duplicate draws and conditional cards."><CopyClumpingRisk mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /><ConditionalHandPressure mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Resource timing" summary="See when Reserve costs become reliably available."><ResourceCurveReliability mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedEffectiveCosts={analysisProfile?.effectiveCosts} onSharedEffectiveCostsChange={(effectiveCosts) => analysisProfile && persistAnalysisProfile({ ...analysisProfile, effectiveCosts, reviewedAt: null })} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Play sequence" summary="Quickly test whether up to four named plays can be drawn and paid for; use Combo Lab for flexible or branching lines."><ReserveSequencePressure mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></AnalysisDisclosure>
-      <AnalysisDisclosure title="Sideboard comparison" summary={workspace.sideboard.length > 0 ? "Preview substitutions without changing the deck." : "No Sideboard cards in this deck."}>{workspace.sideboard.length > 0 ? <SideboardImpact mainLines={workspace.main} sideboardLines={workspace.sideboard} catalogByName={catalogByName} /> : <InlineState>Add cards to the Sideboard in Deck Builder to analyze substitutions.</InlineState>}</AnalysisDisclosure>
-    </div>}
-    {tab === "matchups" && <BuilderTestPanel deckTestResult={deckTestResult} loading={deckTestLoading} cardsByName={catalogByName} nearestDecks={[]} nearestDeckCompareLink={() => "#"} onLoadNearestDeck={() => undefined} />}
+    <TabPanel baseId="deck-analysis" tab="summary" active={tab}><AnalysisResults key={profileStorageKey} main={workspace.main} material={workspace.material} catalog={catalogByName} profile={analysisProfile} onExplore={(card) => { if (card) setCalculatorCard({ name: card, nonce: Date.now() }); setTab("explore"); requestAnimationFrame(() => document.getElementById("deck-analysis-tab-explore")?.focus()); }} /></TabPanel>
+    <TabPanel baseId="deck-analysis" tab="explore" active={tab} keepMounted>
+      <CalculatorDashboard initialCard={calculatorCard} key={profileStorageKey} storageKey={profileStorageKey} main={workspace.main} sideboard={workspace.sideboard} material={workspace.material} catalog={catalogByName} opening={opening} plan={analysisPlan} onEditPlan={() => { if (setupRef.current) { setupRef.current.open = true; const inner = setupRef.current.querySelector("details.group"); if (inner instanceof HTMLDetailsElement) inner.open = true; setupRef.current.scrollIntoView({ behavior: "smooth", block: "start" }); } }} detailedModels={{
+        "Plan consistency": <><GamePlanReadiness mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} sharedStageUsefulness={analysisPlan?.stageUsefulness} sharedEffectiveCosts={analysisProfile?.effectiveCosts} onSharedAssignmentsChange={updateAnalysisRoles} planName={analysisPlan?.name} /></>,
+        "Opening hand": <><FunctionalHandCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} /></>,
+        "Level timing": <><LevelUpRunway mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></>,
+        "Pressure access": <><ThreatCadence mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} sharedPackages={analysisPlan?.pressure} onSharedPackagesChange={(pressure) => analysisProfile && persistAnalysisProfile({ ...analysisProfile, plans: analysisProfile.plans.map((plan) => plan.id === analysisProfile.activePlanId ? { ...plan, pressure } : plan), reviewedAt: null })} /></>,
+        "Recovery access": <><ResilienceRebuild mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisPlan?.resilience} onSharedAssignmentsChange={(resilience) => analysisProfile && persistAnalysisProfile({ ...analysisProfile, plans: analysisProfile.plans.map((plan) => plan.id === analysisProfile.activePlanId ? { ...plan, resilience } : plan), reviewedAt: null })} /></>,
+        "Find cards": <><HypergeometricCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></>,
+        "Unwanted draws": <><CopyClumpingRisk mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /><ConditionalHandPressure mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></>,
+        "Resource timing": <><ResourceCurveReliability mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedEffectiveCosts={analysisProfile?.effectiveCosts} onSharedEffectiveCostsChange={(effectiveCosts) => analysisProfile && persistAnalysisProfile({ ...analysisProfile, effectiveCosts, reviewedAt: null })} /></>,
+        "Sideboard comparison": <>{workspace.sideboard.length > 0 ? <SideboardImpact mainLines={workspace.main} sideboardLines={workspace.sideboard} catalogByName={catalogByName} /> : <InlineState>Add cards to the Sideboard in Deck Builder to analyze substitutions.</InlineState>}</>,
+      }} />
+    </TabPanel>
+    <TabPanel baseId="deck-analysis" tab="matchups" active={tab}><BuilderTestPanel deckTestResult={deckTestResult} loading={deckTestLoading} cardsByName={catalogByName} nearestDecks={[]} nearestDeckCompareLink={() => "#"} onLoadNearestDeck={() => undefined} /></TabPanel>
   </PageLayout>;
 }
 
@@ -178,11 +177,4 @@ function DeckArtworkPreview({ material, main, catalogByName }: { material: { nam
       })}
     </div>
   </section>;
-}
-
-function AnalysisDisclosure({ title, summary, children }: { title: string; summary: string; children: React.ReactNode }) {
-  return <details className="group rounded-xl border border-ctp-surface1 bg-ctp-mantle">
-    <summary className="cursor-pointer list-none p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ctp-blue"><span className="flex items-center justify-between gap-3"><span><span className="block text-sm font-semibold text-ctp-text">{title}</span></span><DisclosureChevron className="group-open:rotate-180" /></span></summary>
-    <div className="border-t border-ctp-surface1 px-3 pb-3">{children}<details className="mt-3"><summary className="min-h-12 cursor-pointer py-3 text-xs text-ctp-subtext0">Details</summary><p className="text-xs text-ctp-subtext0">{summary}</p></details></div>
-  </details>;
 }

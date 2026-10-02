@@ -60,3 +60,10 @@ Import review uses the shared sheet, tabs, named card previews, draft protection
 Goldfish keeps Draw, Next turn, Memory, and Material within reach. Its footer measures its height and reserves content and focus scrolling space. Tool sheets isolate focus and sit above the footer. The latest action is inline live feedback, not a toast for every draw.
 
 Use `identity-surface` and the controlled accent palette for decorative deck and folder identity. Champion accents are stable across saved deck cards and headers; they do not encode game elements or readiness. Keep status colors and labels separate. Folder cover selection uses `CardResult` inside the existing editor, with a live `DeckFolderPreview`; preserve appearance when changing membership. Keep error and recovery controls in the persistent footer when an expanded picker can scroll them out of view.
+
+Advanced Analysis groups questions by task and gives each a single entry. Related detailed models
+are peer tabs under the same question, with separate-input scope stated explicitly. Keep visited
+models mounted while the deck workspace remains open so switching views cannot discard drafts.
+Card handoffs update the requested scenario without remounting the whole workspace. Lead calculated
+results with named card artwork, keep model limitations visible, and disclose supporting calculations
+on demand. Large result panels should not become sticky overlays on narrow screens.
