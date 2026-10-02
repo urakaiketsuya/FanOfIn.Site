@@ -5,6 +5,7 @@ import CardArtTile from "./CardArtTile";
 import DeckCardPreview from "./DeckCardPreview";
 import DisclosureChevron from "./DisclosureChevron";
 import Panel from "./ui/Panel";
+import Button from "./ui/Button";
 import { useCardsByNames } from "../features/events/useCardsByNames";
 import { useChampionCardImages } from "../features/players/useChampionCardImages";
 import { findDeckChampionName } from "../lib/ttsExport";
@@ -62,23 +63,23 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
     if (supplied !== undefined) return supplied;
     return model.decklist?.[section].reduce((sum, line) => sum + line.quantity, 0);
   };
-  return <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source.kind} data-deck-id={model.id} className="flex min-w-0 flex-col overflow-hidden">
+  return <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source.kind} data-deck-id={model.id} className="identity-surface flex min-w-0 flex-col overflow-hidden">
     <div className="flex flex-1 flex-col gap-3 p-4">
       <div className="grid grid-cols-[6rem_minmax(0,1fr)] items-start gap-3 sm:grid-cols-[7rem_minmax(0,1fr)]">
         <div className="min-w-0">{leadCard ? <Link to={`/cards/${leadCard.slug}`} className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue">{art}</Link> : art}</div>
         <div className="min-w-0">
-          <div className="flex flex-wrap gap-1 text-xs text-ctp-subtext1"><span className="rounded bg-ctp-surface0 px-2 py-1">{model.format === "STANDARD" ? "Standard" : model.format === "PANTHEON" ? "Pantheon" : "Format unknown"}</span><span className="rounded bg-ctp-blue/10 px-2 py-1 text-ctp-blue">{model.source.label}</span></div>
-          <h2 className="mt-2 break-words text-xl font-bold leading-snug text-ctp-text">{model.title}</h2>
+          <h2 className="break-words text-xl font-bold leading-snug text-ctp-text sm:text-2xl">{model.title}</h2>
+          <div className="mt-2 flex flex-wrap gap-1 text-xs text-ctp-subtext1"><span className="rounded bg-ctp-surface0 px-2 py-1">{model.format === "STANDARD" ? "Standard" : model.format === "PANTHEON" ? "Pantheon" : "Format unknown"}</span><span className="rounded bg-ctp-blue/10 px-2 py-1 text-ctp-blue">{model.source.label}</span></div>
           {model.metadata && <div className="mt-2 break-words text-xs leading-relaxed text-ctp-subtext1">{model.metadata}</div>}
         </div>
       </div>
       {preview && preview.lines.length > 0 && <section aria-label={preview.label}><p className="mb-2 text-xs text-ctp-subtext0">{preview.label}</p><DeckCardPreview compact groupByElement={preview.section === "main"} lines={preview.lines.slice(0, 3)} cardsByName={cards} /></section>}
-      <p className="text-xs text-ctp-subtext1">{count("main") ?? "Unknown"} main · {count("sideboard") ?? "Unknown"} sideboard</p>
+      <dl className="flex flex-wrap gap-x-6 gap-y-2 border-t border-ctp-surface1/60 pt-3">{(["main", "sideboard"] as const).map(section => <div key={section} className="flex flex-col-reverse gap-0.5"><dt className="text-xs text-ctp-subtext1">{section === "main" ? "Main deck" : "Sideboard"}</dt><dd className="text-lg font-semibold tabular-nums text-ctp-text">{count(section) ?? "Unknown"}</dd></div>)}</dl>
       {model.status}
     </div>
     <footer className="border-t border-ctp-surface1 bg-ctp-base/40 p-3">
       <div className="flex flex-wrap items-center gap-2 [&>a]:min-h-12 [&>button]:min-h-12 [&>a]:min-w-12 [&>button]:min-w-12 [&>a]:max-w-full [&>button]:max-w-full">
-        {view.to !== undefined ? <Link to={view.to} aria-label={`View list: ${model.title}`} className={`${deckPreviewActionClass} bg-ctp-blue text-ctp-base`}>View list</Link> : <button type="button" onClick={view.onToggle} aria-expanded={view.expanded} aria-controls={contentId} className={`${deckPreviewActionClass} bg-ctp-blue text-ctp-base`}><DisclosureChevron className={view.expanded ? "rotate-180" : ""} />{view.expanded ? "Hide list" : "View list"}</button>}
+        {view.to !== undefined ? <Link to={view.to} aria-label={`View list: ${model.title}`} className={`${deckPreviewActionClass} bg-ctp-blue text-ctp-base`}>View list</Link> : <Button variant="primary" onClick={view.onToggle} aria-label={`${view.expanded ? "Hide" : "View"} list: ${model.title}`} aria-expanded={view.expanded} aria-controls={contentId} className={`${deckPreviewActionClass} bg-ctp-blue text-ctp-base`}><DisclosureChevron className={view.expanded ? "rotate-180" : ""} />{view.expanded ? "Hide list" : "View list"}</Button>}
         {model.actions}
       </div>
     </footer>

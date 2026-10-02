@@ -36,7 +36,9 @@ and unresolved checks here. Track text zoom, screen reader, physical mobile keyb
 authenticated journeys explicitly; do not mark an area complete based on visual styling alone.
 External verification blockers should remain visible while independent work proceeds in queue order.
 
-Queue status: recorded October 2. The next implementation slice is deck discovery. Earlier
+Queue status: deck discovery presentation and empty search recovery implemented October 2, with
+verification gaps recorded below. Next is core workflows, starting with My Decks folder navigation
+and draft/save feedback. Discovery remains open for source failure recovery and acceptance checks. Earlier
 implementation notes below remain the source of truth for completed work and verification limits.
 
 | Phase | Existing baseline | Changes in this implementation |
@@ -355,3 +357,24 @@ collection event tests passed. Lint retained six existing Fast Refresh warnings.
 Successful authenticated collection recovery and saves, populated ownership ordering, empty saved
 inventory, recommendation evidence failures, physical mobile keyboard and screen reader checks
 remain open. The local account service was unavailable. Save behavior was inspected but unchanged.
+
+### Deck discovery identity and recovery, October 2
+
+Shared immutable previews now use the existing identity surface, place the deck title before source
+badges, and give main and sideboard counts explicit labeled emphasis. Unknown counts remain unknown.
+Inline list actions use the shared Button and include the deck title in their accessible name.
+Official, community and tournament build empty results offer a direct filter reset. Tournament
+sorting uses 48px controls and the shared disclosure indicator. Product comparison guidance avoids
+dashes. Source specific metadata, full lists and mutation behavior remain unchanged.
+
+Verified real official, community and tournament build data at 360 × 800 and 1280 × 900: expanded
+lists, keyboard expansion, empty search recovery, tournament reset from an unmatched champion,
+and expanded sorting. Community detail loading and subsequent resolved sideboard count were observed.
+Measured preview actions and tournament sorting controls were 48px tall; measured expanded views
+had no horizontal page overflow. Typecheck and lint passed with six existing Fast Refresh warnings.
+No formulas or persistence changed, and no new motion was introduced.
+
+Remaining: source failure/retry fixtures, empty archive distinction, missing art fixtures, text zoom,
+reduced motion browser verification, screen reader and physical mobile keyboard checks, plus
+authenticated action handoffs. Tournament result filters and broader shared preview consumers need
+their own regression pass. The discovery area remains open; this completes its first queued slice.

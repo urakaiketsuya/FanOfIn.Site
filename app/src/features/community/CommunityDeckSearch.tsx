@@ -6,7 +6,7 @@ import DeckPreviewCard, { deckPreviewActionClass } from "../../components/DeckPr
 import { useCardCatalog } from "../cards/useCardCatalog";
 import type { Card } from "@gatcg/shared";
 import Button from "../../components/ui/Button";
-import { InlineState } from "../../components/ui/ContentState";
+import { EmptyState, InlineState } from "../../components/ui/ContentState";
 import { championKeyToDisplayName } from "../../lib/championSlug";
 import { useCommunityDeckSearchIndex } from "./data";
 
@@ -53,7 +53,7 @@ export default function CommunityDeckSearch({ format }: { format: DeckFormat }) 
     </div>
     {!index && <InlineState className="mt-4">Loading locally sourced decklists…</InlineState>}
     {index && <p className="mt-3 text-xs text-ctp-subtext0">{filtered.length.toLocaleString()} matching {filtered.length === 1 ? "deck" : "decks"} from the local archive</p>}
-    {index && filtered.length === 0 && <InlineState className="mt-4">No locally sourced decklists match these filters.</InlineState>}
+    {index && filtered.length === 0 && <EmptyState className="mt-4" title="No matching community decks" description="Try another card or champion, or clear your filters to browse this format." action={<Button onClick={() => { setQuery(""); setChampion(""); setSource(""); resetPage(); }}>Clear filters</Button>} />}
     <div className="mt-3 grid items-start gap-3 sm:grid-cols-2">{filtered.slice(0, visibleCount).map((deck) => <CommunityDeckRow key={`${deck.source}:${deck.id}`} deck={deck} format={format} cardNames={index?.cardNames ?? []} cardsByName={cardsByName} />)}</div>
     {visibleCount < filtered.length && <Button variant="secondary" onClick={() => setVisibleCount((count) => count + PAGE_SIZE)} className="mt-4">Load more</Button>}
   </div>;

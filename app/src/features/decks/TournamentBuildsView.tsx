@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { useSearchParams } from "react-router-dom";
+import Button from "../../components/ui/Button";
+import DisclosureChevron from "../../components/DisclosureChevron";
 import LoadMore from "../../components/LoadMore";
-import { InlineState } from "../../components/ui/ContentState";
+import { EmptyState } from "../../components/ui/ContentState";
 import FilterPanel from "../../components/filters/FilterPanel";
 import MultiSelectFilter from "../../components/filters/MultiSelectFilter";
 import SegmentedFilter from "../../components/filters/SegmentedFilter";
@@ -134,7 +136,7 @@ export default function TournamentBuildsView({
           value={championName ?? ""}
           aria-label="Champion"
           onChange={(e) => setChampionName(e.target.value || null)}
-          className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text sm:flex-1"
+          className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text sm:flex-1"
         >
           <option value="">All champions</option>
           {championsPresent.map((name) => (
@@ -147,7 +149,7 @@ export default function TournamentBuildsView({
           value={sortMode}
           aria-label="Sort builds"
           onChange={(e) => setSortMode(e.target.value as BuildSortMode)}
-          className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text sm:flex-1"
+          className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text sm:flex-1"
         >
           {(Object.keys(BUILD_SORT_LABELS) as BuildSortMode[]).filter((mode) => mode !== "relevance" || deckContentFilterCount(contentFilters) > 0).map((mode) => (
             <option key={mode} value={mode}>{mode === "mostRecent" ? "Newest" : BUILD_SORT_LABELS[mode]}</option>
@@ -155,11 +157,11 @@ export default function TournamentBuildsView({
         </select>
       </div>
 
-      <details className="mt-2 text-xs text-ctp-subtext0">
-        <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">More sorting options</summary>
+      <details className="group mt-2 text-xs text-ctp-subtext0">
+        <summary className="flex min-h-control w-fit cursor-pointer list-none items-center gap-2 rounded px-2 hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden"><DisclosureChevron className="group-open:rotate-180" />More sorting options</summary>
         <label className="mt-2 flex items-center gap-2">
           <span>Then sort by</span>
-          <select value={secondarySortMode ?? ""} onChange={(e) => setSecondarySortMode((e.target.value || null) as BuildSortMode | null)} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text">
+          <select value={secondarySortMode ?? ""} onChange={(e) => setSecondarySortMode((e.target.value || null) as BuildSortMode | null)} className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text">
             <option value="">None</option>
             {(Object.keys(BUILD_SORT_LABELS) as BuildSortMode[]).filter((mode) => mode !== sortMode && (mode !== "relevance" || deckContentFilterCount(contentFilters) > 0)).map((mode) => <option key={mode} value={mode}>{mode === "mostRecent" ? "Newest" : BUILD_SORT_LABELS[mode]}</option>)}
           </select>
@@ -173,11 +175,11 @@ export default function TournamentBuildsView({
       </FilterPanel>
 
       {loading && <DeckResultsSkeleton />}
-      {!loading && sorted.length === 0 && <InlineState className="mt-6">No decks match these filters.</InlineState>}
+      {!loading && sorted.length === 0 && <EmptyState className="mt-6" title="No matching tournament builds" description="Include all champions and players to explore more lists." action={<Button onClick={() => startTransition(() => { setChampionName(null); setMinPlayers("any"); setElementFilter([]); setContentFilters(() => emptyDeckContentFilters()); })}>Clear filters</Button>} />}
       {sorted.length > 0 && (
         <p className="mt-4 text-xs text-ctp-subtext0">
           Showing {visible.length.toLocaleString()} of {sorted.length.toLocaleString()} build{sorted.length === 1 ? "" : "s"}
-          {isPending && " – recalculating…"}
+          {isPending && " · Recalculating…"}
         </p>
       )}
 

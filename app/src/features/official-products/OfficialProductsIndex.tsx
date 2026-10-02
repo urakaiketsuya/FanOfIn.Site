@@ -15,6 +15,8 @@ import { findDeckChampionName } from "../../lib/ttsExport";
 import { accountApi, AccountApiError } from "../../lib/accountApi";
 import { officialProductDecks, officialProductsSource, PRODUCT_LABELS, type OfficialProductDeck } from "./data";
 import DeckCollectionTools from "../collection/DeckCollectionTools";
+import Button from "../../components/ui/Button";
+import { EmptyState } from "../../components/ui/ContentState";
 import Section from "../../components/ui/Section";
 
 const SECTION_LABELS: Record<keyof OfficialProductDeck["cards"], string> = {
@@ -172,7 +174,7 @@ function ProductDeckCard({
     actions: <>
           {(ownershipState === "saved" || ownershipState === "needs-cards") && <Link to={`/card-locations?deck=${encodeURIComponent(`official-product:${deck.id}`)}`} className="inline-flex min-h-12 items-center rounded-md px-3 text-sm text-ctp-blue">Locate cards</Link>}
           <button type="button" disabled={ownershipState === "saving" || ownershipState === "saved" || ownershipState === "needs-cards" || !collectionLines.length} onClick={() => void markOwned()} className="inline-flex min-h-12 items-center rounded-md border border-ctp-green px-2.5 py-1.5 text-xs font-semibold text-ctp-green disabled:opacity-50">
-            {ownershipState === "saving" ? "Setting up owned deck…" : ownershipState === "saved" ? "Owned deck set up ✓" : ownershipState === "needs-cards" ? "Pinned – cards needed" : "I own this deck"}
+            {ownershipState === "saving" ? "Setting up owned deck…" : ownershipState === "saved" ? "Owned deck set up ✓" : ownershipState === "needs-cards" ? "Saved, cards needed" : "I own this deck"}
           </button>
           {ownershipState === "needs-cards" && <button type="button" onClick={() => void addMissingCopies()} className="inline-flex min-h-12 items-center rounded-md border border-ctp-green px-2.5 py-1.5 text-xs font-semibold text-ctp-green hover:bg-ctp-green/10">Add missing {missingCollectionLines.reduce((sum, line) => sum + line.quantity, 0)} copies</button>}
           <button type="button" onClick={copyDecklist} className="inline-flex min-h-12 items-center rounded-md border border-ctp-surface1 px-2.5 py-1.5 text-xs text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">
@@ -269,9 +271,9 @@ export default function OfficialProductsIndex() {
             <p className="text-sm font-semibold text-ctp-text">Compare {sectionLabel} decks</p>
             <p className="mt-0.5 text-xs text-ctp-subtext0">
               {compareIds.length === 0 && `Select two to four ${sectionLabel.toLowerCase()} decks below.`}
-              {compareIds.length === 1 && "One selected – choose one more."}
-              {compareIds.length >= 2 && compareIds.length < 4 && `Ready to compare ${compareIds.length} decks – add up to ${4 - compareIds.length} more.`}
-              {compareIds.length === 4 && "Four selected – ready to compare."}
+              {compareIds.length === 1 && "One selected. Choose one more."}
+              {compareIds.length >= 2 && compareIds.length < 4 && `Ready to compare ${compareIds.length} decks. Add up to ${4 - compareIds.length} more.`}
+              {compareIds.length === 4 && "Four selected. Ready to compare."}
             </p>
           </div>
           {comparedDecks.map((deck) => (
@@ -285,7 +287,7 @@ export default function OfficialProductsIndex() {
 
       <p className="mb-3 text-xs text-ctp-subtext0">Showing {visible.length} official deck{visible.length === 1 ? "" : "s"}</p>
       <div className="grid items-start gap-4 lg:grid-cols-2">{visible.map((deck) => <ProductDeckCard key={deck.id} deck={deck} cardsByName={cardsByName} compareSelected={compareIds.includes(deck.id)} compareDisabled={compareIds.length === 4 && !compareIds.includes(deck.id)} onToggleCompare={() => toggleCompare(deck.id)} />)}</div>
-      {visible.length === 0 && <p className="rounded-xl border border-ctp-surface0 p-8 text-center text-sm text-ctp-subtext1">No official products match those filters.</p>}
+      {visible.length === 0 && <EmptyState title="No matching official decks" description={`Clear your search and product filter to browse ${sectionLabel.toLowerCase()} decks.`} action={<Button onClick={() => { setQuery(""); setProduct("all"); }}>Clear filters</Button>} />}
     </PageLayout>
   );
 }
