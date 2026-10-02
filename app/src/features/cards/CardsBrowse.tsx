@@ -7,6 +7,7 @@ import { useSyncProgress } from "../../lib/sync/SyncProvider";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import Tabs from "../../components/ui/Tabs";
+import Button from "../../components/ui/Button";
 import PageHeader from "../../components/ui/PageHeader";
 import { useCardCatalog } from "./useCardCatalog";
 import { editionWithTag, emptyFilterState, filterCards, matchesEdition, type CardFilterState } from "./filters";
@@ -32,7 +33,7 @@ const TABS: readonly TabMode[] = ["browse", "sets"];
 const TAB_LABELS: Record<TabMode, string> = { browse: "Browse", sets: "By Set" };
 
 export default function CardsBrowse() {
-  useDocumentTitle("Cards", "Browse and search the full Grand Archive TCG card database – filter by class, element, type, and set.");
+  useDocumentTitle("Cards", "Browse and search the full Grand Archive TCG card database. Filter by class, element, type, and set.");
   const cards = useCardCatalog();
   const syncProgress = useSyncProgress();
   const options = useQuery({ queryKey: ["option-definitions"], queryFn: gatcgApi.getOptionDefinitions });
@@ -120,23 +121,18 @@ export default function CardsBrowse() {
         actions={
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
             <Link to="/cards/tags" className="inline-flex min-h-12 items-center text-sm text-ctp-blue">Tag galleries</Link>
-            <Link to="/cards/packages" className="text-sm text-ctp-blue hover:underline">
+            <Link to="/cards/packages" className="inline-flex min-h-12 items-center text-sm text-ctp-blue hover:underline">
               Packages &rarr;
             </Link>
-            <Link to="/cards/stats" className="text-sm text-ctp-blue hover:underline">
+            <Link to="/cards/stats" className="inline-flex min-h-12 items-center text-sm text-ctp-blue hover:underline">
               Card stats &rarr;
             </Link>
-            {tab === "browse" && (
-              <p className="text-sm text-ctp-subtext0">
-                {filtered.length} of {cards.length} synced cards
-              </p>
-            )}
           </div>
         }
       />
 
       <div className="mt-4">
-        <Tabs tabs={TABS.map((mode) => ({ key: mode, label: TAB_LABELS[mode] }))} active={tab} onChange={setTab} label="Cards view" />
+        <Tabs variant="pill" tabs={TABS.map((mode) => ({ key: mode, label: TAB_LABELS[mode] }))} active={tab} onChange={setTab} label="Cards view" />
       </div>
 
       {tab === "sets" ? (
@@ -158,7 +154,7 @@ export default function CardsBrowse() {
                 }).map((set) => {
                   const isBooster = isBoosterSet(set, group);
                   return (
-                    <div key={set.id} className="flex items-center overflow-hidden rounded-md border border-ctp-surface1">
+                    <div key={set.id} className="flex max-w-full flex-wrap items-center rounded-xl border border-ctp-surface1 bg-ctp-mantle">
                       <button
                         type="button"
                         onClick={() => browseSet(setFamilyPrefix(set.prefix))}
@@ -279,12 +275,15 @@ export default function CardsBrowse() {
             </Link>
           )}
 
+          {cards.length > 0 && <div className="mt-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-ctp-surface1 bg-ctp-mantle px-4 py-2"><p role="status" className="text-sm"><strong className="text-lg tabular-nums">{filtered.length}</strong> matching {filtered.length === 1 ? "card" : "cards"}{activeFilterCount > 0 && <span className="text-ctp-subtext1"> · {activeFilterCount} active {activeFilterCount === 1 ? "filter" : "filters"}</span>}</p>{activeFilterCount > 0 && <Button variant="ghost" onClick={() => setFilters(emptyFilterState())}>Clear filters</Button>}</div>}
+          {options.isError && <p role="status" className="mt-3 text-sm text-ctp-subtext1">Advanced filters could not load. You can still search by card name. <Button variant="ghost" onClick={() => void options.refetch()}>Retry filters</Button></p>}
+
           {syncProgress.phase !== "done" && filtered.length === 0 && <InlineState className="mt-6">Loading…</InlineState>}
           {syncProgress.phase === "done" && filtered.length === 0 && (!filters.tags?.size || !!cardTags.data) && (
-            <InlineState className="mt-6">No cards match this filter.</InlineState>
+            <div className="mt-6 rounded-xl border border-ctp-surface1 p-5"><h2 className="text-lg font-semibold">No matching cards</h2><p className="mt-2 text-sm text-ctp-subtext1">Try a different name or clear your filters to browse the catalog.</p><Button className="mt-3" onClick={() => setFilters(emptyFilterState())}>Browse all cards</Button></div>
           )}
 
-          {(!filters.tags?.size || !!cardTags.data) && <CardGrid cards={visible} pickEdition={pickEdition} />}
+          {visible.length > 0 && (!filters.tags?.size || !!cardTags.data) && <CardGrid cards={visible} pickEdition={pickEdition} />}
 
           <LoadMore remaining={filtered.length - visibleCount} onLoadMore={() => setVisibleCount((v) => v + PAGE_SIZE)} />
         </>

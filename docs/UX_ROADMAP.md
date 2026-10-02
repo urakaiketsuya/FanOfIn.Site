@@ -245,3 +245,27 @@ Remaining before checking off these two rows: live signed-in save/transfer/retur
 real card art in the revised sheet, physical mobile keyboard, screen reader and text zoom
 checks, and broader local quantity feedback. This is the first roadmap slice, not completion
 of every page. Included in the collection expressive design commit.
+
+### Card browsing expressive design implementation, October 1
+
+First card browser/detail pass:
+* CardGrid now uses shared CardArtTile presentation, framed surfaces and wrapping card names.
+  Card links and flip controls have 48px targets. Removed the hover scale movement.
+* Browse uses pill selection, a single result summary with filter count and reset, and one
+  actionable empty result message. Advanced filter loading failures expose retry.
+* Set navigation wraps on narrow screens. Related browsing links have 48px targets.
+* CardHero uses the identity surface and shows the selected printing's set, collector number
+  and rarity without expansion. Edition names wrap in a larger two-column gallery.
+  Price disclosure uses DisclosureChevron and its external action has a 48px target.
+
+Verification: app typecheck and lint passed (six existing Fast Refresh warnings).
+Real catalog browser checks covered 360px and 1280px layouts, empty search/reset, loaded artwork,
+long card names, By Set layout and keyboard tab switching. Card detail checks covered Abnegation
+and Dungeon Guide, the eight-edition expanded gallery, selection of Mortal Ambition, and keyboard
+collapse. Inspected mobile grid actions met 48px height; inspected mobile browser, set view and
+expanded detail had no page overflow. Local contribution failure remained visible.
+
+Remaining: filter and scroll restoration after leaving the browser, full tab/panel association,
+reverse-face and missing-art fixtures, advanced-filter retry simulation, text zoom, physical
+mobile keyboard and screen reader checks. Ownership handoffs on detail remain a separate pass.
+These rows remain open. Included in the card browsing expressive design commit.
