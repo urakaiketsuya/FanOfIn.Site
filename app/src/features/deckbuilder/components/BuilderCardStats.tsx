@@ -37,7 +37,7 @@ export function useBuilderCardStats() {
     <label className="flex flex-wrap items-center gap-2">Tournament scope<select aria-label="Card statistics scope" value={championScope ? "champion" : "all"} onChange={event=>setScope(event.target.value as "champion" | "all")} className="min-h-12 max-w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2"><option value="all">All Champions</option>{b.championName && <option value="champion">{b.championName} · all Spirits</option>}</select></label>
     <p className="text-xs text-ctp-subtext1">Historical tournament decks, Main and Material only. These statistics are not filtered by this deck’s format, Spirit, or archetype. Popularity shows deck appearances, or their share when a matching population total is available; adjusted win rate accounts for sample size. It is an observed result, not the card’s effect on winning.</p>
   </div></details>;
-  function renderStats(name: string) {
+  function renderStats(name: string, collapsed = false) {
     if (!visible) return null;
     const stat = stats.get(name);
     const card = b.catalogByName.get(name);
@@ -46,14 +46,15 @@ export function useBuilderCardStats() {
     const community = communityStats.get(name) ?? b.communityInclusionByName?.get(name);
     const simulator = b.simulatorResult.evidenceByName.get(name);
     const decay = b.decaySignalByName?.get(name);
-    return <div className="my-2 space-y-1 text-xs text-ctp-subtext1" aria-label={`Statistics for ${name}`}>
+    const Evidence = collapsed ? "div" : "details";
+    const content = <div className="my-2 space-y-1 text-xs text-ctp-subtext1" aria-label={`Statistics for ${name}`}>
       <p className="text-[11px] text-ctp-subtext0">{scopeLabel}</p>
       {stat ? <>
         <div className="flex flex-wrap justify-between gap-x-2"><span>Popularity</span><span className="tabular-nums">{population ? `${(stat.deckCount / population * 100).toFixed(1)}%` : `${stat.deckCount.toLocaleString()} decks`}</span></div>
         <div className="flex flex-wrap justify-between gap-x-2"><span>Adj. win rate</span><span className="tabular-nums">{(stat.adjustedWinRate * 100).toFixed(1)}%</span></div>
         {population && <p className="text-ctp-subtext0">Seen in {stat.deckCount.toLocaleString()} decks</p>}
       </> : <p>{(championScope ? !champions : !global) ? "Statistics unavailable or loading." : "No tournament sample in this scope."}</p>}
-      <details onToggle={event=>{if(event.currentTarget.open) setMoreRequested(true);}}><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-1">More stats<DisclosureChevron /></summary><div className="space-y-2 pb-2">
+      <Evidence onToggle={()=>setMoreRequested(true)}>{!collapsed && <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-1">More stats<DisclosureChevron /></summary>}<div className="space-y-2 pb-2">
         {card?.cost && card.cost.type !== "none" && card.cost.value !== null && <p>Cost: {card.cost.value} {card.cost.type}</p>}
         <p>Market / copy: {price != null ? formatUsd(price) : "Unavailable"}</p>
         {trend && <p>Price trend ({trend.points} snapshots): {trend.pctChange >= 0 ? "+" : ""}{(trend.pctChange * 100).toFixed(0)}%</p>}
@@ -62,8 +63,9 @@ export function useBuilderCardStats() {
         {community && <p>{b.championName} community: {(community.percentOfDecks * 100).toFixed(1)}% of decks</p>}
         {decay && <p>Adoption change: {((decay.recentRate-decay.priorRate)*100).toFixed(1)} percentage points / 90 days</p>}
         {simulator && <p>Simulator (all Champions): {simulator.games} games{simulator.winRate == null ? "" : ` · ${(simulator.winRate*100).toFixed(1)}% wins`}</p>}
-      </div></details>
+      </div></Evidence>
     </div>;
+    return collapsed ? <details className="group/card-stats" onToggle={event=>{if(event.currentTarget.open) setMoreRequested(true);}}><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 text-sm text-ctp-subtext1 focus-visible:outline-2 focus-visible:outline-ctp-blue">Card statistics<DisclosureChevron className="group-open/card-stats:rotate-180" /></summary>{content}</details> : content;
   }
   return { controls, renderStats };
 }

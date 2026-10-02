@@ -50,7 +50,7 @@ export default function BuilderBuildPanel() {
       <details className="mt-2 rounded-lg border border-ctp-surface1 px-3"><summary className={`flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 text-sm ${b.validation.status==="Illegal" ? "text-ctp-yellow" : "text-ctp-subtext1"}`}>{b.validation.status==="Legal" ? "Construction checks pass" : b.validation.status==="Illegal" ? "Construction issues" : "Draft · construction incomplete"}<DisclosureChevron /></summary><div className="pb-3 text-xs text-ctp-subtext1">{b.validation.reasons.map(reason=><p className="mb-2" key={reason}>{reason}</p>)}<p>Incomplete decks can be saved. These checks do not cover every card-text exception.</p></div></details>
       {!hasCards && <p className="py-8 text-sm text-ctp-subtext1">Your deck is empty. Use Add cards to get started.</p>}
       {cardStats.controls}
-      <DeckEditor format={b.deckFormat} renderStats={cardStats.renderStats} deck={b.editor.deck} catalog={b.catalogByName} onEdit={b.editor.edit} viewMode={b.viewMode} />
+      <DeckEditor format={b.deckFormat} renderStats={name => cardStats.renderStats(name, true)} deck={b.editor.deck} catalog={b.catalogByName} onEdit={b.editor.edit} viewMode={b.viewMode} />
     </section>}
 
     {browserOpen && <EditorDialog count={total} onDismiss={()=>setBrowserOpen(false)}>{cardBrowser}</EditorDialog>}

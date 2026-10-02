@@ -1,3 +1,4 @@
+import Button from "../ui/Button";
 import CardLegalityBadge from "./CardLegalityBadge";
 import { cardLegalityStatus, type DeckFormat } from "@gatcg/shared";
 import { useState, type ReactNode } from "react";
@@ -20,17 +21,19 @@ export default function DeckEditorCard({ line, card, section, onChangeQuantity, 
   const destinations = EDITOR_SECTIONS.filter(item => item.key !== section && deckDestinationEligibility(card, item.key).allowed);
   const [destination, setDestination] = useState<DeckEditSection>(destinations[0]?.key ?? "maybeboard");
   const [moveQuantity, setMoveQuantity] = useState(line.quantity);
-  const title = card ? <Link to={`/cards/${card.slug}`} target="_blank" rel="noreferrer" className="flex min-h-12 items-center break-words text-sm font-medium text-ctp-text underline decoration-ctp-surface1 underline-offset-4">{line.card}<span className="sr-only"> – card details in a new tab</span></Link> : <p className="flex min-h-12 items-center break-words text-sm font-medium">{line.card}</p>;
+  const title = card ? <Link to={`/cards/${card.slug}`} target="_blank" rel="noreferrer" className="flex min-h-12 items-center break-words text-sm font-medium text-ctp-text underline decoration-ctp-surface1 underline-offset-4 focus-visible:outline-2 focus-visible:outline-ctp-blue">{line.card}<span className="sr-only"> (card details in a new tab)</span></Link> : <p className="flex min-h-12 items-center break-words text-sm font-medium">{line.card}</p>;
   return <article className={`min-w-0 rounded-xl border bg-ctp-mantle p-2 ${selected ? "border-ctp-blue ring-2 ring-ctp-blue/30" : cardLegalityStatus(card, format) === "banned" ? "border-ctp-red/60" : "border-ctp-surface1"}`}>
     <div className={list ? "flex items-start gap-3" : ""}>
-      <div className={list ? "w-14 shrink-0" : ""}><CardArtTile card={card} name={line.card} /></div>
-      <div className="min-w-0 flex-1">{title}<CardLegalityBadge card={card} format={format} />{stats}<QuantityControl stacked={!list} name={`${line.card} in ${section}`} quantity={line.quantity} min={0} onChange={quantity => quantity === 0 ? onRemove() : onChangeQuantity(quantity)} />
-        <div className="mt-1 flex flex-wrap gap-1">
-          <button type="button" disabled={!destinations.length} onClick={() => { setMoveQuantity(line.quantity); setDestination(destinations[0]?.key ?? "maybeboard"); setOpen(true); }} aria-label={`Move ${line.card} from ${section}`} className="min-h-12 rounded-lg px-3 text-sm text-ctp-blue">Move</button>
-          <button type="button" onClick={onRemove} aria-label={`Remove ${line.card} from ${section}`} className="min-h-12 rounded-lg px-3 text-sm text-ctp-subtext1">Remove</button>
-        </div>
-      </div>
+      <div className={list ? "w-20 shrink-0" : ""}><CardArtTile card={card} name={line.card} /></div>
+      <div className="min-w-0 flex-1">{title}<CardLegalityBadge card={card} format={format} /></div>
     </div>
+    <div className={list ? "mt-2 max-w-sm" : "mt-2"}><QuantityControl stacked={!list} name={`${line.card} in ${section}`} quantity={line.quantity} min={0} onChange={quantity => quantity === 0 ? onRemove() : onChangeQuantity(quantity)} />
+        <div className="mt-1 flex flex-wrap gap-1">
+          <Button variant="secondary" disabled={!destinations.length} onClick={() => { setMoveQuantity(line.quantity); setDestination(destinations[0]?.key ?? "maybeboard"); setOpen(true); }} aria-label={`Move ${line.card} from ${section}`}>Move</Button>
+          <Button variant="ghost" onClick={onRemove} aria-label={`Remove ${line.card} from ${section}`}>Remove</Button>
+        </div>
+    </div>
+    {stats && <div className="mt-2 border-t border-ctp-surface1 pt-2">{stats}</div>}
     {onSelect && <label className="flex min-h-12 items-center gap-2 px-2 text-xs"><input type="checkbox" checked={selected ?? false} onChange={onSelect} />Select {line.card}</label>}
     {open && <EditorDialog title={`Move ${line.card}`} doneLabel="Cancel" onDismiss={() => setOpen(false)}>
       <p className="mb-3 text-sm">{line.quantity} {line.quantity === 1 ? "copy" : "copies"} in {EDITOR_SECTIONS.find(item=>item.key===section)?.title}.</p>

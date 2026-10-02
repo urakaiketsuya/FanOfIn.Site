@@ -277,3 +277,11 @@ Memory, banished cards, and materialized cards now show wrapping card artwork wi
 Verified with a pasted test deck and real catalog art at 360 × 800 and 1280 × 900: empty Memory, reserve payment into Memory, random banishment, and materialization. Mobile zone controls and links met the 48px target, with no horizontal page overflow in the measured Memory view. Escape restored focus to the Memory button. Typecheck and lint passed with six existing warnings. The unavailable account library retained its visible error and paste alternative.
 
 Remaining: full Builder expressive pass, physical keyboard and screen reader checks, text zoom, missing catalog fixtures, and broader session recovery verification. These page checklist rows remain open. No simulation rules or persistence were changed.
+
+### Builder editing hierarchy, October 1
+
+The active shared deck editor now uses larger section headings and labeled copy counts. Compact cards show larger artwork, with quantity and move actions before optional evidence. Move and Remove use shared buttons with keyboard focus styling. Builder card statistics open in one disclosure, including the existing detailed evidence without a nested disclosure; catalog browsing retains its existing statistics presentation. Quantity controls stay within a readable width on desktop.
+
+Verified at 360 × 800 and 1280 × 900 with a local Abnegation draft: compact and card art layouts, expanded statistics by keyboard, quantity changes, split move from Main to Sideboard with copy conservation, keyboard dismissal with focus restoration, and removal back to an empty draft. Measured mobile editing controls met 48px heights; the smaller checkbox uses its existing 48px label. No page overflow in measured mobile and desktop views. Ten deck editing and destination eligibility tests passed. Typecheck and lint passed with six existing warnings.
+
+Remaining: authenticated My Decks editing and failed-save recovery, missing catalog and long-name fixtures, text zoom and screen reader checks, and the broader Builder identity/recommendation pass. The Builder checklist stays open. Included in the Builder editing hierarchy commit.
