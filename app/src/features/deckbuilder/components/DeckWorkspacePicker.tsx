@@ -1,3 +1,4 @@
+import DisclosureChevron from "../../../components/DisclosureChevron";
 import Button from "../../../components/ui/Button";
 import DialogSheet from "../../../components/ui/DialogSheet";
 import Tabs, { TabPanel } from "../../../components/ui/Tabs";
@@ -110,7 +111,7 @@ export default function DeckWorkspacePicker({ catalogByName, source, onLoad, com
     </div> : <>
       <div className="mt-3"><Tabs baseId={baseId} tabs={[{key: "paste", label: "Paste decklist"}, {key: "library", label: "My Decks"}]} active={mode} onChange={setMode} label="Deck source" /></div>
       <TabPanel baseId={baseId} tab="paste" active={mode} className="mt-3">
-        <label className="block text-sm">Format<select value={format} onChange={event => setFormat(event.target.value as DeckFormat)} className="ml-2 min-h-control"><option value="STANDARD">Standard</option><option value="PANTHEON">Pantheon</option></select></label>
+        <label className="flex flex-wrap items-center gap-2 text-sm">Format<span className="relative inline-flex"><select value={format} onChange={event => setFormat(event.target.value as DeckFormat)} className="min-h-control appearance-none" style={{ paddingInlineEnd: "2.75rem" }}><option value="STANDARD">Standard</option><option value="PANTHEON">Pantheon</option></select><DisclosureChevron className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" /></span></label>
         <textarea value={text} onChange={event => setText(event.target.value)} rows={compact ? 6 : 9} placeholder={"Main\n4x Dungeon Guide\n\nMaterial\n1x Spirit of Water"} aria-label="Decklist" className="mt-2 w-full rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2 font-mono text-sm" />
         <Button variant="primary" disabled={!text.trim()} onClick={preparePaste} className="mt-2">Check decklist</Button>
       </TabPanel>
