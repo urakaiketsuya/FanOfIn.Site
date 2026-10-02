@@ -293,3 +293,11 @@ The workbench header now presents a compact material preview using shared card a
 Verified at 360 × 800 and 1280 × 900 with a pasted Lorraine draft: real material artwork, preview truncation, empty draft, loading save, failed save with deck and name retained, and keyboard expansion of More. Measured preview links and header controls met 48px targets, with no horizontal overflow. Typecheck and lint passed with six existing warnings.
 
 Remaining: successful authenticated saves, browser recovery failure, missing artwork/catalog fixtures, screen reader and physical mobile keyboard checks. Recommendations already remain opt in with explicit card additions; broader recommendation presentation and connected workflow verification remain open. The Builder checklist remains open.
+
+### Builder suggestion presentation, October 2
+
+Optional suggestions now have an identity surface with the selected champion and Spirit, evidence source, collection preference, and explicit selection/add instructions. Suggested card statistics start collapsed so names and artwork remain prominent. The browser preserves recommendation order by default, including owned-card priority supplied by the controller, while retaining manual sorting. All-card browsing still defaults to alphabetical order.
+
+Verified with a real catalog Lorraine draft at 360 × 800 and 1280 × 900: missing identity guidance, loading, ranked results, alphabetical sort and restoration, empty search, keyboard expansion of statistics and settings, and explicit addition. Selecting a card left the deck at seven copies; Add 1 each changed it to eight. No measured page overflow; suggestion settings controls met 48px targets. Typecheck and lint passed with six existing warnings; seven recommendation ordering and eligibility tests passed.
+
+Remaining: authenticated ownership priority and collection error handling, broader recommendation source/error fixtures, screen reader and physical mobile keyboard checks. Collection was unavailable in the local session. No ranking formulas or persistence changed. The Builder checklist remains open.

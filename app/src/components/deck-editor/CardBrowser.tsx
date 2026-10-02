@@ -23,7 +23,7 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
   const sync = useSyncProgress();
   const [filterOpen, setFilterOpen] = useState(false);
   const [filters, setFilters] = useState(emptyCatalogFilters);
-  const [sort, setSort] = useState<CatalogSort>("name");
+  const [sort, setSort] = useState<CatalogSort>("recommended");
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [selectionError, setSelectionError] = useState("");
   const cards = useMemo(() => [...catalog.values()], [catalog]);
@@ -31,7 +31,7 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
   const matches = useMemo(() => {
     const allowed = new Set(filterCatalog(cards, query, filters, owned, identityElements).map(card => card.name));
     const pool = [...new Set(suggestedNames ?? names)];
-    return sortCatalogNames(pool.filter(name => allowed.has(name) || (!catalog.has(name) && !Object.values(filters).some(Boolean) && name.toLowerCase().includes(query.toLowerCase()))), catalog, sort);
+    return sortCatalogNames(pool.filter(name => allowed.has(name) || (!catalog.has(name) && !Object.values(filters).some(Boolean) && name.toLowerCase().includes(query.toLowerCase()))), catalog, sort === "recommended" && suggestedNames === undefined ? "name" : sort);
   }, [cards, query, filters, owned, identityElements, suggestedNames, names, catalog, sort]);
   const active = Object.entries(filters).filter(([, value]) => Boolean(value)) as [keyof CatalogFilters, string | boolean][];
   const labels: Record<keyof CatalogFilters, string> = { rarity: "Rarity", element: "Element", type: "Type", subtype: "Subtype", costType: "Cost", maxCost: "Maximum cost", ownedOnly: "Owned only", availableElements: "Available elements" };
@@ -60,7 +60,7 @@ export default function CardBrowser({ format = "UNKNOWN", query, onQuery, destin
     </div>
     </CardResultsToolbar>
     {filterOpen && <DialogSheet title="Browse options" onDismiss={()=>setFilterOpen(false)} dismissLabel="Show cards">
-    <label className="mt-2 flex items-center justify-between gap-2 text-sm">Sort<select aria-label="Sort cards" value={sort} onChange={event=>setSort(event.target.value as CatalogSort)} className="min-h-12 min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-2"><option value="name">Name A–Z</option><option value="name-desc">Name Z–A</option><option value="cost">Cost low to high</option><option value="cost-desc">Cost high to low</option><option value="element">Element</option></select></label>
+    <label className="mt-2 flex items-center justify-between gap-2 text-sm">Sort<select aria-label="Sort cards" value={sort === "recommended" && suggestedNames === undefined ? "name" : sort} onChange={event=>setSort(event.target.value as CatalogSort)} className="min-h-12 min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-2">{suggestedNames !== undefined && <option value="recommended">Recommendation order</option>}<option value="name">Name A–Z</option><option value="name-desc">Name Z–A</option><option value="cost">Cost low to high</option><option value="cost-desc">Cost high to low</option><option value="element">Element</option></select></label>
     {statsControls}
       <div className="grid grid-cols-1 gap-3 pb-3 sm:grid-cols-2">
         {([['element','elements'],['type','types'],['subtype','subtypes']] as const).map(([key,values]) => <label key={key} className="text-sm">{labels[key]}<select value={filters[key]} onChange={e => setFilters(f => ({...f,[key]:e.target.value}))} className="mt-1 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-2"><option value="">All</option>{options(values).map(value => <option key={value} value={value}>{value}</option>)}</select></label>)}

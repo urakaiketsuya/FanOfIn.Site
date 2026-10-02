@@ -22,8 +22,9 @@ export function filterCatalog(cards: Card[], query: string, filters: CatalogFilt
   });
 }
 
-export type CatalogSort = "name" | "name-desc" | "cost" | "cost-desc" | "element";
+export type CatalogSort = "recommended" | "name" | "name-desc" | "cost" | "cost-desc" | "element";
 export function sortCatalogNames(names: string[], catalog: ReadonlyMap<string, Card>, sort: CatalogSort): string[] {
+  if (sort === "recommended") return [...names];
   const cost = (name: string) => { const card = catalog.get(name); return card?.cost_memory ?? card?.cost_reserve ?? null; };
   return [...names].sort((a, b) => {
     if (sort === "name-desc") return b.localeCompare(a);
