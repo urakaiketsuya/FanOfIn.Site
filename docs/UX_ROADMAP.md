@@ -473,3 +473,21 @@ The fixed controls now emphasize turn and phase, with a separate latest action s
 Verified at 360 × 800 and 1280 × 900 with real Abnegation art: keyboard draw, exhausted library, Recollection guidance, disabled play controls, Memory sheet dismissal and focus restoration. A long unknown card fixture verified name fallback, wrapped action feedback, and empty hand/library guidance. No horizontal overflow in measured views; mobile footer buttons were 48–58px high and measured footer clearance updated as feedback wrapped. Loading and account library failure were observed with the paste alternative available. Typecheck, lint (six existing warnings), and all 14 simulator tests passed.
 
 Remaining: physical device keyboard, text zoom, screen reader announcements, and broader saved session recovery verification. Next in the expressive queue: related discovery and competition surfaces. The Goldfish page checklist remains open for these broader checks.
+
+### Event preview identity, October 2
+
+Event previews now emphasize full event names on the shared identity surface, with readable dates,
+host/location and season context. Attendance has a larger numeric hierarchy with a text label.
+Category badges retain their labels and tier accents. Event and deck list navigation now have
+48px targets and explicit keyboard focus. Existing destinations, coverage flags, filters and ordering
+are unchanged.
+
+Verified real event results at 360 × 800 and 1280 × 900: long names wrap, events with and without
+submitted lists retain their respective actions, keyboard focus is visible, all measured preview
+links are at least 48px high, and there is no horizontal page overflow. Loading was observed;
+empty search and clearing it back to 50 displayed results worked. Typecheck and lint passed with
+six existing Fast Refresh warnings. No new asynchronous state, calculations or persistence.
+
+Remaining: source failure/retry, screen reader, text zoom and physical device verification.
+Next: event detail identity and results hierarchy, carrying this emphasis into standings and deck
+navigation. The related discovery and competition queue area remains open.
