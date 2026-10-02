@@ -7,8 +7,10 @@ import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import { championNameToSlug } from "../../lib/championSlug";
-import Tabs from "../../components/ui/Tabs";
-import Chip from "../../components/ui/Chip";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
+import CardArtTile from "../../components/CardArtTile";
+import { useChampionCardImages } from "../players/useChampionCardImages";
+import type { Card } from "@gatcg/shared";
 import Panel from "../../components/ui/Panel";
 import { PRODUCTS } from "../products/data";
 import PageLayout from "../../components/layout/PageLayout";
@@ -28,55 +30,57 @@ const SURFACES: { key: SeasonSurface; label: string }[] = [
   { key: "meta", label: "Meta" },
 ];
 
+function ChampionArtwork({ card, name }: { card: Card | undefined; name: string }) {
+  const content = <><CardArtTile card={card} name={card?.name ?? name} /><span className="mt-1 block break-words text-xs leading-4 text-ctp-subtext1">{card?.name ?? name}</span></>;
+  return <div className="w-20 shrink-0 sm:w-24">{card ? <Link to={`/cards/${card.slug}`} aria-label={card.name} className="block rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">{content}</Link> : content}</div>;
+}
+
 function ChampionCards({ rows }: { rows: SeasonChampionRow[] }) {
+  const images = useChampionCardImages(rows.map((row) => row.championName));
   return (
-    <div className="grid gap-2 sm:grid-cols-2">
+    <div className="grid gap-4 sm:grid-cols-2">
       {rows.map((row, index) => (
-        <Link
-          key={row.championName}
-          to={`/champions/${championNameToSlug(row.championName)}/stats?tab=season`}
-          className="group flex min-w-0 items-center gap-3 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 hover:border-ctp-blue"
-        >
-          <span className="w-6 shrink-0 text-center text-sm font-medium text-ctp-subtext0">{index + 1}</span>
-          <div className="min-w-0 flex-1">
-            <div className="truncate font-medium text-ctp-text group-hover:text-ctp-blue">{row.championName}</div>
-            <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-ctp-surface0">
-              <div className="h-full rounded-full bg-ctp-blue" style={{ width: `${Math.max(2, row.shareOfSeason * 100)}%` }} />
+        <Panel key={row.championName} as="article" className="identity-surface min-w-0">
+          <div className="flex items-start gap-3">
+            <ChampionArtwork card={images.get(row.championName)} name={row.championName} />
+            <div className="min-w-0 flex-1">
+              <p className="text-xs text-ctp-subtext0">#{index + 1} by recorded decks</p>
+              <h2 className="mt-1 break-words text-xl font-bold text-ctp-text">{row.championName}</h2>
+              <p className="mt-3 text-3xl font-bold tabular-nums text-ctp-text">{(row.shareOfSeason * 100).toFixed(1)}%</p>
+              <p className="text-sm text-ctp-subtext1">Weighted season share</p>
             </div>
           </div>
-          <div className="shrink-0 text-right">
-            <div className="text-sm font-medium text-ctp-text">{(row.shareOfSeason * 100).toFixed(1)}%</div>
-            <div className="text-xs text-ctp-subtext0">{row.deckCount} decks · {(row.avgWinRate * 100).toFixed(0)}% WR</div>
-          </div>
-        </Link>
+          <dl className="mt-4 grid grid-cols-2 gap-3 border-t border-ctp-surface1 pt-3 text-sm">
+            <div><dt className="text-ctp-subtext0">Recorded decks</dt><dd className="text-lg font-semibold tabular-nums">{row.deckCount.toLocaleString()}</dd></div>
+            <div><dt className="text-ctp-subtext0">Average win rate</dt><dd className="text-lg font-semibold tabular-nums">{(row.avgWinRate * 100).toFixed(0)}%</dd></div>
+          </dl>
+          <Link to={`/champions/${championNameToSlug(row.championName)}/stats?tab=season`} className="mt-2 inline-flex min-h-control items-center rounded-lg text-sm font-medium text-ctp-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">Explore {row.championName} <span aria-hidden="true" className="ml-2">→</span></Link>
+        </Panel>
       ))}
     </div>
   );
 }
 
 function BuildCards({ rows }: { rows: SeasonArchetypeRow[] }) {
-  const maxDecks = rows[0]?.deckCount ?? 1;
+  const images = useChampionCardImages(rows.map((row) => row.championName));
   return (
-    <div className="grid gap-2 sm:grid-cols-2">
+    <div className="grid gap-4 sm:grid-cols-2">
       {rows.map((row, index) => (
-        <Link
-          key={row.clusterId}
-          to={`/archetypes/${row.clusterId}`}
-          className="group flex min-w-0 items-center gap-3 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 hover:border-ctp-blue"
-        >
-          <span className="w-6 shrink-0 text-center text-sm font-medium text-ctp-subtext0">{index + 1}</span>
-          <div className="min-w-0 flex-1">
-            <div className="truncate font-medium text-ctp-text group-hover:text-ctp-blue">{row.name}</div>
-            <div className="truncate text-xs text-ctp-subtext0">{row.championName}</div>
-            <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-ctp-surface0">
-              <div className="h-full rounded-full bg-ctp-mauve" style={{ width: `${Math.max(2, (row.deckCount / maxDecks) * 100)}%` }} />
+        <Panel key={row.clusterId} as="article" className="identity-surface min-w-0">
+          <div className="flex items-start gap-3">
+            <ChampionArtwork card={images.get(row.championName)} name={row.championName} />
+            <div className="min-w-0 flex-1">
+              <p className="text-xs text-ctp-subtext0">#{index + 1} by recorded decks</p>
+              <h2 className="mt-1 break-words text-xl font-bold text-ctp-text">{row.name}</h2>
+              <p className="mt-1 break-words text-sm text-ctp-subtext1">{row.championName}</p>
             </div>
           </div>
-          <div className="shrink-0 text-right">
-            <div className="text-sm font-medium text-ctp-text">{row.deckCount} decks</div>
-            <div className="text-xs text-ctp-subtext0">{(row.avgWinRate * 100).toFixed(0)}% WR</div>
-          </div>
-        </Link>
+          <dl className="mt-4 grid grid-cols-2 gap-3 border-t border-ctp-surface1 pt-3 text-sm">
+            <div><dt className="text-ctp-subtext0">Recorded decks</dt><dd className="text-3xl font-bold tabular-nums">{row.deckCount.toLocaleString()}</dd></div>
+            <div><dt className="text-ctp-subtext0">Average win rate</dt><dd className="text-lg font-semibold tabular-nums">{(row.avgWinRate * 100).toFixed(0)}%</dd></div>
+          </dl>
+          <Link to={`/archetypes/${row.clusterId}`} className="mt-2 inline-flex min-h-control items-center rounded-lg text-sm font-medium text-ctp-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">Explore build <span aria-hidden="true" className="ml-2">→</span></Link>
+        </Panel>
       ))}
     </div>
   );
@@ -186,16 +190,15 @@ export default function SeasonDetail() {
 
           {surface === "meta" && (
             <div role="tabpanel" id="season-surface-panel-meta" aria-labelledby="season-surface-tab-meta" className="mt-4">
-              <div className="mb-4 flex gap-2">
-                <Chip active={metaTab === "champions"} onClick={() => setTab("champions")}>Champions</Chip>
-                <Chip active={metaTab === "builds"} onClick={() => setTab("builds")}>Builds</Chip>
-              </div>
-
-              {seasonMeta.loading && <Panel><InlineState>Loading meta…</InlineState></Panel>}
-              {!seasonMeta.loading && metaTab === "champions" && seasonMeta.champions.length === 0 && <EmptyState title="No Champion data yet" />}
-              {!seasonMeta.loading && metaTab === "builds" && seasonMeta.archetypes.length === 0 && <EmptyState title="No build data yet" />}
-              {metaTab === "champions" && seasonMeta.champions.length > 0 && <ChampionCards rows={seasonMeta.champions} />}
-              {metaTab === "builds" && seasonMeta.archetypes.length > 0 && <BuildCards rows={seasonMeta.archetypes} />}
+              <Tabs tabs={[{ key: "champions", label: "Champions" }, { key: "builds", label: "Builds" }]} active={metaTab} onChange={setTab} baseId="season-meta" label="Season meta" variant="pill" />
+              <p className="my-4 text-sm leading-6 text-ctp-subtext1">{metaTab === "champions" ? "Champions ordered by recorded decks. Weighted season share measures each champion’s share of the season’s combined performance score." : "Up to 20 of the most recorded builds this season. Artwork represents the champion, not an exact decklist."} Average win rate summarizes recorded deck results.</p>
+              <TabPanel baseId="season-meta" tab={metaTab} active={metaTab}>
+                {seasonMeta.loading && <Panel><InlineState>Loading meta…</InlineState></Panel>}
+                {!seasonMeta.loading && metaTab === "champions" && seasonMeta.champions.length === 0 && <EmptyState title="No Champion data yet" />}
+                {!seasonMeta.loading && metaTab === "builds" && seasonMeta.archetypes.length === 0 && <EmptyState title="No build data yet" />}
+                {metaTab === "champions" && seasonMeta.champions.length > 0 && <ChampionCards rows={seasonMeta.champions} />}
+                {metaTab === "builds" && seasonMeta.archetypes.length > 0 && <BuildCards rows={seasonMeta.archetypes} />}
+              </TabPanel>
             </div>
           )}
         </>

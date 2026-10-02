@@ -543,3 +543,22 @@ observed. App typecheck and lint passed with six existing Fast Refresh warnings.
 Remaining verification: empty season/index fixtures, source failure/retry, text zoom, screen reader
 and physical device checks. The existing index hook does not expose a separate failure state.
 Next: season meta champion and build summaries, adding card identity and clearer metric labels.
+
+### Season meta identity and metric clarity, October 2
+
+Champion and build summaries now use named, linked CardArtTile artwork, wrapping titles,
+prominent statistics and explicit exploration links. Weighted season share is labeled and explained
+using the published performance score definition. Recorded deck ordering and calculations remain
+unchanged. Build artwork is explicitly representative, not an exact list. Champions and Builds
+use shared tabs with selected states, arrow key navigation and 48px controls.
+
+Verified real data at 360 × 800 and 1280 × 900: single and two column layouts, long build titles,
+card artwork, no horizontal overflow, keyboard tab switching and build navigation, and 48px
+exploration links. Initial loading was observed. Typecheck and lint passed with six existing
+Fast Refresh warnings. Empty/error fixtures, missing catalog art, text zoom, screen reader and
+physical device checks remain unverified. Existing meta hooks do not expose failure/retry.
+Next: season meta failure recovery and independent loading for champion and build sources,
+then the remaining supporting pages and shared shell expressive design queue.
+
+Deployment: pushed through 6b5d0da9; GitHub Pages run 37070055258 succeeded and production
+release smoke checks confirmed that revision, assets, analysis manifest and account health.
