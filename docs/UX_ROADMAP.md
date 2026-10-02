@@ -465,3 +465,11 @@ screen reader and physical mobile keyboard checks. The broader core workflow ite
 - Verified isolated fixtures at 360px and 1280px: missing art/catalog fallbacks, long card names, plan pools, modeled totals, empty deck/no plan/no draw guidance, keyboard disclosure, advanced callback, 48px controls and no horizontal overflow. Typecheck and lint passed with six existing warnings.
 - Actual artwork, full workspace navigation, loading/error integration, screen reader, zoom and physical device checks remain unverified. No asynchronous state or persistence was added.
 - Next: Goldfish expressive design, emphasizing the active turn, visible game zones and reachable frequent actions.
+
+### Goldfish turn and hand emphasis, October 2
+
+The fixed controls now emphasize turn and phase, with a separate latest action surface using the existing reduced motion aware transition. The hand has an identity surface, visible copy count and phase guidance. Empty library guidance no longer suggests drawing; an empty hand and library point to Memory and a new hand in Tools. Session rules, card order and persistence are unchanged.
+
+Verified at 360 × 800 and 1280 × 900 with real Abnegation art: keyboard draw, exhausted library, Recollection guidance, disabled play controls, Memory sheet dismissal and focus restoration. A long unknown card fixture verified name fallback, wrapped action feedback, and empty hand/library guidance. No horizontal overflow in measured views; mobile footer buttons were 48–58px high and measured footer clearance updated as feedback wrapped. Loading and account library failure were observed with the paste alternative available. Typecheck, lint (six existing warnings), and all 14 simulator tests passed.
+
+Remaining: physical device keyboard, text zoom, screen reader announcements, and broader saved session recovery verification. Next in the expressive queue: related discovery and competition surfaces. The Goldfish page checklist remains open for these broader checks.

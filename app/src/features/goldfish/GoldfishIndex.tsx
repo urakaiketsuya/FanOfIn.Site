@@ -302,12 +302,12 @@ export default function GoldfishIndex() {
         </DialogSheet>
       )}
 
-      <div className="mt-6 flex flex-wrap items-end justify-between gap-2"><h2 className="text-2xl font-semibold text-ctp-text">Your hand</h2><p className="rounded-full border border-ctp-surface1 bg-ctp-mantle px-3 py-2 text-sm text-ctp-subtext1">Turn {state.turn} · {state.phase === "main" ? "Main phase" : "Recollection"}</p></div>
+      <div className="identity-surface mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-ctp-surface1 p-4"><div><h2 className="text-2xl font-semibold text-ctp-text">Your hand</h2><p className="mt-1 text-sm text-ctp-subtext1">{state.phase === "main" ? (state.library.length > 0 ? "Choose a card to play or draw to keep testing." : "Library is empty. Keep testing with the cards in your zones.") : "Recollection is active. Open Memory to manage your cards."}</p></div><p className="text-sm text-ctp-subtext0"><span className="text-3xl font-semibold tabular-nums text-ctp-text">{state.hand.length}</span> {state.hand.length === 1 ? "card" : "cards"}</p></div>
       <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
         {state.hand.map((card) => (
           <HandCard key={card.id} card={card} resolved={cardsByName.get(card.name)} disabled={activeGlimpse !== null || pendingPayment !== null || state.phase !== "main"} onPlay={() => handlePlay(card)} onReserve={isReservable(cardsByName.get(card.name)) ? () => setState((current) => current ? reserveCard(current, card.id) : current) : undefined} />
         ))}
-        {state.hand.length === 0 && <InlineState>Hand is empty. Draw a card to continue.</InlineState>}
+        {state.hand.length === 0 && <InlineState className="col-span-full">{state.library.length > 0 ? "Hand is empty. Draw a card to continue." : "Hand and library are empty. Open Memory to check your cards, or start a new hand in Tools."}</InlineState>}
       </div>
 
 
