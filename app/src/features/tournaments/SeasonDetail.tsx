@@ -10,7 +10,6 @@ import { championNameToSlug } from "../../lib/championSlug";
 import Tabs from "../../components/ui/Tabs";
 import Chip from "../../components/ui/Chip";
 import Panel from "../../components/ui/Panel";
-import PageHeader from "../../components/ui/PageHeader";
 import { PRODUCTS } from "../products/data";
 import PageLayout from "../../components/layout/PageLayout";
 import { EmptyState, InlineState } from "../../components/ui/ContentState";
@@ -118,7 +117,7 @@ export default function SeasonDetail() {
         <EmptyState
           title="Season not found"
           description={`Season "${slug}" is not in the ingested data.`}
-          action={<Link to="/seasons" className="text-ctp-blue hover:underline">&larr; All seasons</Link>}
+          action={<Link to="/seasons" className="inline-flex min-h-control items-center rounded-lg text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">&larr; All seasons</Link>}
         />
       </PageLayout>
     );
@@ -130,27 +129,31 @@ export default function SeasonDetail() {
 
       {season && (
         <>
-          <PageHeader
-            title={season.name}
-            eyebrow={<Link to="/seasons" className="hover:underline">&larr; Seasons</Link>}
-            description={`${new Date(season.dateStart).toLocaleDateString()} – ${new Date(season.dateEnd).toLocaleDateString()}`}
-            actions={(
-              <div className="rounded-xl bg-ctp-surface0 px-4 py-2 text-center">
-                <div className="text-lg font-semibold text-ctp-text">{events.length}</div>
-                <div className="text-xs text-ctp-subtext0">events</div>
+          <header className="identity-surface mb-5 rounded-xl border border-ctp-surface1 p-4 sm:p-6">
+            <Link to="/seasons" className="inline-flex min-h-control items-center rounded-lg text-sm font-medium text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">&larr; All seasons</Link>
+            <div className="mt-2 flex flex-wrap items-end justify-between gap-5">
+              <div className="min-w-0 flex-1 basis-60">
+                <p className="text-sm font-medium text-ctp-subtext0">Tournament season</p>
+                <h1 className="mt-1 break-words text-3xl font-bold tracking-tight text-ctp-text sm:text-4xl">{season.name}</h1>
+                <p className="mt-3 text-sm leading-6 text-ctp-subtext1">{new Date(season.dateStart).toLocaleDateString()} to {new Date(season.dateEnd).toLocaleDateString()}</p>
               </div>
-            )}
-          />
+              <div>
+                <div className="text-4xl font-bold tabular-nums text-ctp-text">{events.length}</div>
+                <div className="mt-1 text-sm text-ctp-subtext0">{events.length === 1 ? "recorded event" : "recorded events"}</div>
+              </div>
+            </div>
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-ctp-subtext1">Browse results and decklists, or explore the champions and builds in this season’s meta.</p>
+          </header>
 
           {seasonProduct && (
             <Link
               to="/products"
-              className="group relative mb-5 block h-40 overflow-hidden rounded-xl border border-ctp-surface1 bg-ctp-crust sm:h-48"
+              className="group relative mb-5 block h-40 overflow-hidden rounded-xl border border-ctp-surface1 bg-ctp-crust focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ctp-blue sm:h-48"
             >
-              <img src={seasonProduct.banner} alt="" className="absolute inset-0 h-full w-full object-cover opacity-75 transition-transform duration-300 group-hover:scale-[1.02]" />
+              <img src={seasonProduct.banner} alt="" className="absolute inset-0 h-full w-full object-cover opacity-75 motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:scale-[1.02]" />
               <div className="absolute inset-0 bg-gradient-to-t from-ctp-crust via-ctp-crust/20 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-4">
-                <div className="text-xs text-ctp-subtext1">Season set</div>
+                <div className="text-xs text-ctp-subtext1">{productSlug(seasonProduct.name) === slug ? "Season set" : "Latest set released by season end"}</div>
                 <div className="font-semibold text-ctp-text group-hover:text-ctp-blue">{seasonProduct.name}</div>
               </div>
             </Link>
@@ -171,6 +174,7 @@ export default function SeasonDetail() {
                 <EmptyState title="No events yet" description="No ingested events are available for this season." />
               ) : (
                 <>
+                  <h2 className="mb-3 text-xl font-semibold text-ctp-text">Season events</h2>
                   <div className="space-y-2">
                     {events.slice(0, visibleCount).map((event) => <EventRow key={event.id} event={event} />)}
                   </div>

@@ -526,3 +526,20 @@ Typecheck and lint passed with six existing Fast Refresh warnings.
 Remaining verification: simulated catalog failure/retry, long player name fixture, text zoom,
 screen reader and physical device checks. No new expanded state or persistence was introduced.
 Next: season discovery and season detail hierarchy within the competition queue.
+
+### Season discovery and detail hierarchy, October 2
+
+Season discovery now uses responsive identity surfaces with full season names, prominent event
+counts and an explicit Explore season cue. Detail headers carry the same identity, readable dates,
+recorded event counts and guidance into results or meta. Return links have 48px targets and visible
+focus. Product banners respect reduced motion and distinguish exact season sets from fallback sets.
+Ordering, event selection, statistics and existing tab URLs are unchanged.
+
+Verified real data at 360 × 800 and 1280 × 900: single column and two column discovery layouts,
+detail headers, keyboard link navigation and visible focus, tab keyboard access, 48px return links,
+148px mobile season targets and no horizontal overflow. Loading and missing season recovery were
+observed. App typecheck and lint passed with six existing Fast Refresh warnings.
+
+Remaining verification: empty season/index fixtures, source failure/retry, text zoom, screen reader
+and physical device checks. The existing index hook does not expose a separate failure state.
+Next: season meta champion and build summaries, adding card identity and clearer metric labels.
