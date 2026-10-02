@@ -508,3 +508,21 @@ Typecheck and lint passed with six existing Fast Refresh warnings. Ranking and s
 Remaining: empty event fixture, source failure/retry, text zoom, screen reader and physical device checks.
 Next: top event deck previews, replacing truncated identities and the mobile horizontal strip with
 shared card previews and wrapping layouts. The competition area remains open.
+
+### Shared top event deck previews, October 2
+
+Top event decks now use DeckPreviewCard with champion art, visible full card names, featured
+material cards, player identity, placement, format, main and sideboard counts, and a distinct
+View list action. A single column on mobile replaces the horizontal strip; desktop shows three
+columns. Card links open card details independently of list navigation. Event formats are
+normalized from lowercase source values. Ranking, selection and list destinations are unchanged.
+
+Verified at 360 × 800 and 1280 × 900 with real event data: resolved champion artwork, wrapping
+names, Standard labels, keyboard focus and Enter navigation to the selected player list, minimum
+48px card/list links on mobile, and no horizontal page overflow. Loading and name fallbacks were
+observed before catalog resolution. An event without available lists omitted previews.
+Typecheck and lint passed with six existing Fast Refresh warnings.
+
+Remaining verification: simulated catalog failure/retry, long player name fixture, text zoom,
+screen reader and physical device checks. No new expanded state or persistence was introduced.
+Next: season discovery and season detail hierarchy within the competition queue.

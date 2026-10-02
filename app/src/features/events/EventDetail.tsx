@@ -1,7 +1,7 @@
 import DisclosureChevron from "../../components/DisclosureChevron";
 import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
-import { EVENT_CATEGORY_LABELS, type OmnidexDecklistEntry, type OmnidexPlayer, type OmnidexStanding } from "@gatcg/shared";
+import { EVENT_CATEGORY_LABELS, type DeckFormat, type OmnidexDecklistEntry, type OmnidexPlayer, type OmnidexStanding } from "@gatcg/shared";
 import { isApiErrorBody } from "../../lib/api/client";
 import { useEventBundle } from "./useEventBundle";
 import { useVodsData } from "./data";
@@ -20,15 +20,13 @@ import { formatCountry } from "../../lib/format";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
 import { EmptyState, InlineState } from "../../components/ui/ContentState";
-import CardImage from "../../components/CardImage";
-import CardHoverPreview from "../../components/CardHoverPreview";
+import DeckPreviewCard from "../../components/DeckPreviewCard";
 import { useCardsByNames } from "./useCardsByNames";
-import { findDeckChampionName } from "../../lib/ttsExport";
 
 type EventTab = "standings" | "pairings" | "decklists" | "teams" | "judges" | "statistics";
 const ALL_EVENT_TABS: EventTab[] = ["standings", "pairings", "decklists", "teams", "judges", "statistics"];
 
-function EventTopDecks({ eventId, decklists, players }: { eventId: number; decklists: OmnidexDecklistEntry[]; players: OmnidexPlayer[] }) {
+function EventTopDecks({ eventId, format, decklists, players }: { eventId: number; format?: DeckFormat; decklists: OmnidexDecklistEntry[]; players: OmnidexPlayer[] }) {
   const topDecks = useMemo(() => [...players]
     .sort((a, b) => (a.finalPlacement ?? Infinity) - (b.finalPlacement ?? Infinity))
     .map((player) => ({ player, deck: decklists.find((entry) => entry.player === player.id) }))
@@ -39,19 +37,24 @@ function EventTopDecks({ eventId, decklists, players }: { eventId: number; deckl
 
   if (topDecks.length === 0) return null;
   return <section className="mt-5" aria-labelledby="top-event-decks">
-    <div className="flex items-baseline justify-between gap-3"><h2 id="top-event-decks" className="text-sm font-semibold text-ctp-text">Top decks</h2><Link to={`/events/${eventId}?tab=decklists&browse=all`} className="text-xs font-medium text-ctp-blue">Browse all {decklists.length}</Link></div>
-    <div className="mt-2 flex snap-x gap-3 overflow-x-auto pb-2 sm:grid sm:grid-cols-3 sm:overflow-visible">
-      {topDecks.map(({ player, deck }) => {
-        const championCardName = findDeckChampionName(deck.decklist.material, cardsByName);
-        const championName = championCardName?.split(",")[0].trim() ?? null;
-        const champion = championCardName ? cardsByName.get(championCardName) : undefined;
-        return <Link key={player.id} to={`/events/${eventId}?tab=decklists&player=${player.id}`} className="group grid min-w-36 shrink-0 snap-start grid-cols-[4.5rem_1fr] overflow-hidden rounded-xl border border-ctp-surface1 bg-ctp-mantle transition-colors hover:border-ctp-blue sm:min-w-0">
-          <CardHoverPreview image={champion?.editions[0]?.image} alt={championName ?? player.username}>
-            {champion?.editions[0] ? <CardImage image={champion.editions[0].image} alt={championName ?? ""} className="h-28 w-[4.5rem] object-cover object-top" /> : <div className="h-28 w-[4.5rem] bg-ctp-surface0" />}
-          </CardHoverPreview>
-          <div className="min-w-0 self-center p-3"><p className="text-lg font-bold text-ctp-blue">#{player.finalPlacement ?? "–"}</p><p className="truncate text-sm font-medium text-ctp-text group-hover:text-ctp-blue">{player.username}</p>{championName && <p className="mt-1 truncate text-xs text-ctp-subtext0">{championName}</p>}</div>
-        </Link>;
-      })}
+    <div className="flex flex-wrap items-center justify-between gap-3">
+      <h2 id="top-event-decks" className="text-xl font-semibold text-ctp-text">Top decks</h2>
+      <Link to={`/events/${eventId}?tab=decklists&browse=all`} className="inline-flex min-h-control items-center rounded-lg px-3 text-sm font-medium text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2 focus-visible:outline-ctp-blue">Browse all {decklists.length}</Link>
+    </div>
+    <div className="mt-3 grid grid-cols-1 gap-4 lg:grid-cols-3">
+      {topDecks.map(({ player, deck }) => <DeckPreviewCard
+        key={player.id}
+        cardsByName={cardsByName}
+        model={{
+          id: `${eventId}:${player.id}`,
+          title: player.username,
+          decklist: deck.decklist,
+          format,
+          source: { kind: "event", label: "Event deck" },
+          metadata: <p className="text-sm font-semibold text-ctp-text">{player.finalPlacement == null ? "Placement unavailable" : `Placement #${player.finalPlacement}`}</p>,
+        }}
+        view={{ to: `/events/${eventId}?tab=decklists&player=${player.id}` }}
+      />)}
     </div>
   </section>;
 }
@@ -185,7 +188,7 @@ export default function EventDetail() {
         </dl>
       </header>
 
-      {!isApiErrorBody(bundle.decklists) && <EventTopDecks eventId={eventId} decklists={bundle.decklists} players={players} />}
+      {!isApiErrorBody(bundle.decklists) && <EventTopDecks eventId={eventId} format={event.format.toUpperCase() === "STANDARD" ? "STANDARD" : event.format.toUpperCase() === "PANTHEON" ? "PANTHEON" : undefined} decklists={bundle.decklists} players={players} />}
 
       {!secondaryActive && primaryTabs.length > 1 && (
         <div className="mt-4">
