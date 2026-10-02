@@ -457,3 +457,11 @@ screen reader and physical mobile keyboard checks. The broader core workflow ite
 - Verified isolated missing-catalog fixture at 360px and 1280px: keyboard expansion, 48px disclosures, show all cards and no horizontal overflow. Typecheck and lint passed with six existing warnings.
 - Actual artwork, empty main deck, loading/error integration, advanced handoff, screen reader and device checks remain unverified. Calculation functions and draft ownership are unchanged.
 - Next: saved plan results with visible setup/payoff cards and clearer automatic draw summaries; then continue the Goldfish queue area.
+
+### Saved plan identity and automatic draw totals (2026-10-02)
+
+- Saved plan results lead with named setup and payoff card pools and copy counts, then emphasize opening access. Copy distinguishes one card from each pool from an exact required recipe. Existing review gating and calculation outputs are unchanged.
+- Natural and modeled cumulative cards seen appear together at each fixed checkpoint. Assumptions remain visible; source evidence stays in the existing disclosure with visible keyboard focus.
+- Verified isolated fixtures at 360px and 1280px: missing art/catalog fallbacks, long card names, plan pools, modeled totals, empty deck/no plan/no draw guidance, keyboard disclosure, advanced callback, 48px controls and no horizontal overflow. Typecheck and lint passed with six existing warnings.
+- Actual artwork, full workspace navigation, loading/error integration, screen reader, zoom and physical device checks remain unverified. No asynchronous state or persistence was added.
+- Next: Goldfish expressive design, emphasizing the active turn, visible game zones and reachable frequent actions.
