@@ -15,10 +15,15 @@ function render(value: DeckPreviewModel) {
   ));
 }
 
+function counts(html: string) {
+  return [...html.matchAll(/<dt[^>]*>([^<]+)<\/dt><dd[^>]*>([^<]+)<\/dd>/g)]
+    .map(([, label, value]) => [label, value]);
+}
+
 test("immutable previews count copies, retain sideboards and name cards missing from the catalog", () => {
   const before = JSON.stringify(model);
   const html = render(model);
-  assert.match(html, /6 main · 3 sideboard/);
+  assert.deepEqual(counts(html), [["Main deck", "6"], ["Sideboard", "3"]]);
   assert.match(html, /Missing catalog champion/);
   assert.match(html, /View list: Saved tournament snapshot/);
   assert.match(html, /href="\/decks\/snapshot"/);
@@ -27,10 +32,9 @@ test("immutable previews count copies, retain sideboards and name cards missing 
 
 test("a summary sample never becomes a full deck or an invented zero sideboard", () => {
   const html = render({ ...model, decklist: null, mainCount: 60, preview: { label: "Featured cards", lines: [{ name: "Sample card", quantity: 4 }] } });
-  assert.match(html, /60 main · Unknown sideboard/);
+  assert.deepEqual(counts(html), [["Main deck", "60"], ["Sideboard", "Unknown"]]);
   assert.match(html, /Sample card/);
-  assert.doesNotMatch(html, /4 main|0 sideboard/);
-  assert.match(render({ ...model, sideboardCount: null }), /6 main · Unknown sideboard/);
+  assert.deepEqual(counts(render({ ...model, sideboardCount: null })), [["Main deck", "6"], ["Sideboard", "Unknown"]]);
 });
 
 test("expanded source errors remain visible and associated with the list disclosure", () => {
