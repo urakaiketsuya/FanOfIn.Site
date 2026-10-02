@@ -1,5 +1,6 @@
 import { type Card, type CollectionEntry, type CollectionUpdateLine } from "@gatcg/shared";
 import { useMemo, useState, type ReactNode } from "react";
+import Button from "../../components/ui/Button";
 import CardResult from "../../components/CardResult";
 import CollectionCardSheet from "./CollectionCardSheet";
 
@@ -49,7 +50,7 @@ export default function CollectionBrowser({ cards, entries, busy = false, previe
     </CollectionCardFilters>
     {!preview && Boolean(cardFilters.sets.size > 0 || cardFilters.subtypes.size > 0 || cardFilters.name || cardFilters.printingSets?.size || cardFilters.rarities?.size) && <div className="my-2 text-sm text-ctp-subtext1"><p>{ownedMatches} / {filteredPool.length} owned · {filteredPool.length - ownedMatches} missing · {playsets.complete} playsets</p><progress aria-label="Matching card completion" value={ownedMatches} max={filteredPool.length || 1} className="w-full accent-ctp-blue"/><div className="flex flex-wrap items-center justify-between gap-2"><span className="text-xs">Any physical printing counts</span><button type="button" onClick={() => setFilter("missing")} className="text-sm text-ctp-blue">Show missing</button></div></div>}
       {!preview && !entries.some(entry => entry.ownedQuantity > 0) && <p className="my-2 text-sm text-ctp-subtext1">Start with a card below. Add copies, then save your quantities together.</p>}
-      {!matchingCards.length && <p role="status" className="my-6 text-sm">No cards match these filters.</p>}
+      {!matchingCards.length && <div className="my-6 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4"><p role="status" className="font-semibold">No cards match these filters.</p><p className="mt-1 text-sm text-ctp-subtext1">Try another card name or browse the full catalog.</p><Button className="mt-3" onClick={() => { setCardFilters(emptyFilterState()); setFilter("all"); setLimit(24); }}>Clear filters</Button></div>}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{matchingCards.slice(0, limit).map(card => {
         const quantity = quantities.get(card.uuid) ?? 0;
         const complete = quantity >= playsetTarget(card);

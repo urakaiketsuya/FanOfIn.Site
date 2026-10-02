@@ -42,7 +42,7 @@ export default function CardLocationSheet({ cardUuid, name, card, record, entrie
           {transferNote && <p role="status" className="mt-2 text-sm">{transferNote}</p>}
         </section></details>;
   return <EditorDialog title={loansFirst ? "Manage loans" : "Locations & loans"} doneLabel="Close" dirty={JSON.stringify([mightOwn, loans, assignments]) !== baseline} dismissible={!busy} footer={<>{error && <p role="alert" className="mb-2 text-sm text-ctp-red">{error}</p>}<button form={formId} type="submit" disabled={busy || location.excess > 0} className="min-h-12 w-full rounded-lg bg-ctp-blue px-4 font-semibold text-ctp-base disabled:opacity-40">{busy ? "Saving…" : "Save locations"}</button></>} onDismiss={()=>{if(!busy) onDismiss();}}>
-    <div className="mb-4 mt-3 flex items-start gap-3"><div className="w-20 shrink-0"><CardArtTile card={card} name={name} /></div><div><h3 className="font-semibold">{name}</h3><CollectionCopyStatus state={location} />{card && <Link target="_blank" rel="noreferrer" to={`/cards/${card.slug}`} className="inline-flex min-h-12 items-center text-sm text-ctp-blue">Card details ↗</Link>}</div></div>
+    <div className="identity-surface mb-4 mt-3 grid grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] items-start gap-4 rounded-xl border border-ctp-surface1 p-3"><div className="min-w-0"><CardArtTile card={card} name={name} /></div><div className="min-w-0"><h3 className="break-words text-lg font-semibold">{name}</h3><CollectionCopyStatus state={location} />{card && <Link target="_blank" rel="noreferrer" to={`/cards/${card.slug}`} className="inline-flex min-h-12 items-center text-sm text-ctp-blue">Card details ↗</Link>}</div></div>
     <CollectionStatusHelp />
     <form id={formId} onChange={()=>setError("")} onSubmit={event=>void save(event)} className="space-y-4">
       <fieldset disabled={busy} className="flex flex-col gap-4">
@@ -64,7 +64,7 @@ export default function CardLocationSheet({ cardUuid, name, card, record, entrie
           {loans.some(loan=>loan.returnedAt) && <details className="mt-3"><summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 text-sm">Returned loans<DisclosureChevron /></summary>{loans.filter(loan=>loan.returnedAt).map(loan=><div key={loan.id} className="border-t border-ctp-surface1 py-2 text-sm"><p>{loan.quantity}× to {loan.borrower} · returned {new Date(loan.returnedAt!).toLocaleDateString()}</p><button type="button" onClick={()=>revise(loan.id,{returnedAt:undefined})} className="min-h-12 px-2 text-ctp-blue">Reopen loan</button></div>)}</details>}
         </section>
         {loansFirst && deckSection}
-        <label className="flex min-h-12 items-center gap-3 rounded-lg border border-ctp-surface1 p-3"><input type="checkbox" checked={mightOwn} onChange={event=>setMightOwn(event.target.checked)} />I might own this–need to check</label>
+        <label className="flex min-h-12 items-center gap-3 rounded-lg border border-ctp-surface1 p-3"><input type="checkbox" checked={mightOwn} onChange={event=>setMightOwn(event.target.checked)} />I might own this. I need to check.</label>
       </fieldset>
     </form>
   </EditorDialog>;

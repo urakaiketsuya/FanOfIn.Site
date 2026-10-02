@@ -1,5 +1,5 @@
 import { CollectionCopyStatus, CollectionStatusHelp } from "./CollectionStatus";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { cardLocationState, collectionLocationIndex, deckCardRequirements, locationCardKey, type AccountUser, type CollectionEntry, type OfficialProductDeckFavorite, type SavedDeck } from "@gatcg/shared";
 import { subscribeCollectionChanges } from "../../lib/collectionEvents";
@@ -14,10 +14,13 @@ import CardLocationSheet from "./CardLocationSheet";
 import DeckLocationCoverage from "./DeckLocationCoverage";
 import DeckAssignmentReview from "./DeckAssignmentReview";
 import LoanLedger from "./LoanLedger";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
+import Button from "../../components/ui/Button";
 
 export default function CardLocationsPage() {
   useDocumentTitle("Where are my cards?", "Find cards in your decks and track loans to friends.");
   const cards = useCardCatalog();
+  const tabsId = useId();
   const [params, setParams] = useSearchParams();
   const [user, setUser] = useState<AccountUser | null>();
   const [entries, setEntries] = useState<CollectionEntry[]>([]);
@@ -100,13 +103,13 @@ export default function CardLocationsPage() {
   const controls = "min-h-12 rounded-lg border border-ctp-surface1 px-3 text-sm focus-visible:outline-2 focus-visible:outline-ctp-blue";
   const grid = <><input aria-label="Find a card location" value={query} onChange={event=>{setQuery(event.target.value);setLimit(24);}} placeholder="Find a card…" className="my-3 min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-base"/>
     {picker === null && <select aria-label="Location status" value={filter} onChange={event=>{setFilter(event.target.value);setLimit(24);}} className={`${controls} mb-3 bg-ctp-base`}><option value="all">All matching cards</option><option value="assigned">In decks</option><option value="unassigned">Unassigned copies</option><option value="check">Needs checking</option></select>}
-    {!matches.length && <p role="status" className="py-4 text-sm">{query ? "No matching cards." : "Add cards to your collection or save a deck to get started."} <Link to="/collection" className="text-ctp-blue underline">Open collection</Link></p>}
+    {!matches.length && <div className="my-4 rounded-xl border border-ctp-surface1 p-4"><p role="status" className="font-semibold">{query || filter !== "all" ? "No cards match this search." : "Your card locations start here."}</p><p className="mt-1 text-sm text-ctp-subtext1">{query || filter !== "all" ? "Try a different name or clear your filters." : "Add owned copies to your collection, then record a deck location or loan."}</p>{query || filter !== "all" ? <Button className="mt-3" onClick={()=>{setQuery("");setFilter("all");setLimit(24);}}>Clear filters</Button> : <Link to="/collection" className="mt-3 inline-flex min-h-12 items-center text-ctp-blue underline">Open collection</Link>}</div>}
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{matches.slice(0,limit).map(item=>{
       const record = records.get(item.uuid); const state = states.get(item.uuid) ?? cardLocationState(item.uuid,[]);
       const matchingDecks = decksByCard.get(locationCardKey(item.name)) ?? [];
       return <article key={item.uuid} className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-2"><button type="button" onClick={()=>{edit(item.uuid,picker ?? undefined);setPicker(null);}} aria-label={`${picker !== null ? "Lend" : "Locate"} ${item.name}`} className="w-full rounded text-left focus-visible:outline-2 focus-visible:outline-ctp-blue"><CardArtTile card={item.card} name={item.name}/><span className="flex min-h-12 items-center text-sm font-medium">{item.name}</span></button><CollectionCopyStatus state={state} />{Boolean(record?.tradeListedQuantity) && <Link to="/looking-for" className="flex min-h-12 items-center text-xs text-ctp-blue">{record?.tradeListedQuantity} listed for trade · {state.reserved} reserved</Link>}{picker === null && <><p className="mt-2 text-xs">{record?.assignments?.length ? record.assignments.map(row=>`${row.quantity} in ${locationDecks.find(deck=>deck.id===row.deckId)?.title ?? "unavailable deck"}`).join(" · ") : "No current deck"}</p><p className="mt-1 text-xs text-ctp-subtext1">{matchingDecks.length} matching decklists</p>{state.excess > 0 && <p className="mt-1 text-xs text-ctp-yellow">Needs reconciliation</p>}<button type="button" onClick={()=>edit(item.uuid)} className={`${controls} mt-2 w-full`}>Choose location</button></>}</article>;
     })}</div>{matches.length>limit && <button type="button" onClick={()=>setLimit(limit+24)} className={`${controls} mt-3`}>Show more cards</button>}</>;
-  return <PageLayout width="wide" data-component="CardLocationsPage"><h1 className="text-2xl font-bold text-ctp-blue">Where are my cards?</h1><p className="mt-2 text-sm text-ctp-subtext1">Your copies can move between decks or be lent to other players. Track where each copy is and what is available to use.</p><CollectionStatusHelp />
+  return <PageLayout width="wide" data-component="CardLocationsPage"><header className="identity-surface rounded-2xl border border-ctp-surface1 p-4 sm:p-6"><p className="text-sm text-ctp-subtext1">From your collection to the table</p><h1 className="mt-1 text-3xl font-bold text-ctp-text sm:text-4xl">Where are my cards?</h1><p className="mt-3 max-w-2xl text-sm text-ctp-subtext1">Find copies in your decks, record a loan, or check what is available to use. Unassigned copies still need a physical location check.</p><Link to="/collection" className="mt-3 inline-flex min-h-12 items-center text-sm text-ctp-blue underline">Edit owned quantities</Link></header><CollectionStatusHelp />
     {error && <div role="alert" className="mt-4"><p>{error}</p><button type="button" onClick={()=>void load()} className={controls}>Retry</button></div>}
     {!error && user === undefined && <p role="status" className="mt-4">Loading account…</p>}
     {user === null && <Link to="/collection" className="mt-4 inline-flex min-h-12 items-center text-ctp-blue underline">Sign in to manage your cards</Link>}
@@ -117,8 +120,9 @@ export default function CardLocationsPage() {
     {ready && pendingQuantities && <p role="status" className="mt-3 text-sm text-ctp-yellow">You have unsaved collection quantities. Locations use your saved copies. <Link to="/collection" className="underline">Review quantities</Link></p>}
     {ready && tracking.ready && <>
       {deckId && tab === "decks" && <section className="mt-4 rounded-xl border border-ctp-surface1 p-3"><h2 className="font-semibold">{focusedDeck?.title ?? "Deck unavailable"}</h2><p className="mt-1 text-sm text-ctp-subtext1">{focusedDeck ? "Showing cards in this decklist and copies already assigned here." : "This deck may have been removed. Showing all your cards."}</p><div className="mt-2 flex flex-wrap gap-2">{focusedDeck && <><button type="button" className={controls} onClick={()=>setAssignmentDeck(focusedDeck)}>Assign deck cards here</button>{!focusedDeck.id.startsWith("official-product:") && <Link className={`${controls} inline-flex items-center text-ctp-blue`} to={`/decks/${encodeURIComponent(focusedDeck.id)}`}>Open deck</Link>}</>}<button type="button" className={controls} onClick={()=>setParams({view:tab},{replace:true})}>Show all cards</button></div></section>}
-      <div className="mt-4 flex flex-wrap gap-2" aria-label="Location views">{[["decks","In decks"],["loans",`Lent to players · ${lent}`]].map(([value,label])=><button key={value} type="button" aria-pressed={tab===value} onClick={()=>{setTab(value);setParams(navigationParams(value),{replace:true});}} className={`${controls} ${tab===value ? "border-ctp-blue text-ctp-blue" : ""}`}>{label}</button>)}</div>
-      {tab === "decks" ? <>{!focusedDeck && <button type="button" onClick={()=>setDeckReview(true)} className={`${controls} mt-3`}>Move a whole deck</button>}{grid}</> : <LoanLedger records={tracking.records} cards={cards} onEdit={uuid=>edit(uuid)} onAdd={borrower=>{setPicker(borrower ?? "");setQuery("");setLimit(24);}}/>}
+      <div className="mt-4"><Tabs baseId={tabsId} variant="pill" label="Location views" tabs={[{key:"decks",label:"Cards & decks"},{key:"loans",label:`Lent to players · ${lent}`}]} active={tab} onChange={value=>{setTab(value);setParams(navigationParams(value),{replace:true});}} /></div>
+      <TabPanel baseId={tabsId} tab="decks" active={tab}>{!focusedDeck && <Button className="mt-3" onClick={()=>setDeckReview(true)}>Move a whole deck</Button>}{grid}</TabPanel>
+      <TabPanel baseId={tabsId} tab="loans" active={tab} keepMounted><LoanLedger records={tracking.records} cards={cards} onEdit={uuid=>edit(uuid)} onAdd={borrower=>{setPicker(borrower ?? "");setQuery("");setLimit(24);}}/></TabPanel>
       {picker !== null && <EditorDialog title={picker ? `Lend to ${picker}` : "Choose a card to lend"} doneLabel="Cancel" onDismiss={()=>setPicker(null)}>{grid}</EditorDialog>}
       {deckReview && <EditorDialog title="Choose a deck" doneLabel="Done" onDismiss={()=>setDeckReview(false)}><DeckLocationCoverage cards={cards} entries={entries} records={tracking.records} decks={locationDecks} onAssign={deck=>{setDeckReview(false);setAssignmentDeck(deck);}}/></EditorDialog>}
       {assignmentDeck && <DeckAssignmentReview deck={assignmentDeck} decks={locationDecks} cards={cards} entries={entries} records={tracking.records} onSave={tracking.saveBatch} onDismiss={()=>setAssignmentDeck(null)}/>}
