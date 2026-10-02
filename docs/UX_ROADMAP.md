@@ -38,7 +38,9 @@ External verification blockers should remain visible while independent work proc
 
 Queue status: deck discovery presentation and empty search recovery implemented October 2, with
 verification gaps recorded below. The first core workflow slice now covers My Decks folder navigation
-and pasted draft/save feedback. Next are collection quantity editing and card detail ownership handoffs.
+and pasted draft/save feedback. Collection quantity editing and card detail ownership handoffs now
+have their first pass too. Next is Analysis and Deck Review, beginning with review suggestion identity
+and explicit acceptance. Core workflow acceptance gaps remain recorded below.
 Discovery remains open for source failure recovery and acceptance checks. Earlier
 implementation notes below remain the source of truth for completed work and verification limits.
 
@@ -405,3 +407,30 @@ Remaining: real authenticated writes, folder loading/failure and pagination fixt
 text zoom, reduced motion browser checks and physical mobile keyboard behavior. Draft retention here
 is limited to this mounted page; it is not durable storage across reloads or navigation. Existing saved
 deck editing recovery remains separate. The core workflow queue item stays open.
+
+### Card ownership and collection quantity handoff, October 2
+
+Card details now show saved physical ownership and separate proxy counts across printings, using
+shared collection aggregation. Loading and failed reads never show zero ownership. The panel offers
+retry, an edit link scoped to the card, and its locations and loans link. Ownership remains distinct
+from availability, with the shared explanation visible.
+
+The collection accepts the card UUID handoff, selects all ownership states, filters to the card name
+and opens its quantity sheet once that card resolves. The sheet has larger artwork, a labeled draft
+quantity, and a persistent Review quantities action into the existing batch review/save flow.
+Review remains available when an unconfirmed save locks editing. Card details and location links
+from the sheet open separately so the collection draft stays mounted. Existing quantity staging,
+request identifiers, retry behavior and persistence are unchanged.
+
+Verified real components with isolated account data at 360 × 800 and 1280 × 900: two unspecified
+copies plus one printing showed three owned and one separate proxy; completing the playset staged
+one unspecified copy and preserved the printing/proxy quantities. The targeted editor, review,
+save rejection, retained draft and subsequent successful retry worked. Loading, unavailable counts,
+retry and recovery were observed. Sheet fields, disclosure and footer actions measured 48px; measured
+mobile and desktop views had no horizontal overflow. Real card detail also showed the unavailable
+account recovery controls at 360px. Temporary fixture files were removed. Typecheck and lint passed
+with six existing Fast Refresh warnings; 14 collection regression tests passed.
+
+Remaining: real authenticated writes and cross-tab refresh, signed-out sign-in round trip, invalid
+card handoff guidance, missing artwork fixtures, text zoom, reduced motion browser verification,
+screen reader and physical mobile keyboard checks. The broader core workflow item remains open.

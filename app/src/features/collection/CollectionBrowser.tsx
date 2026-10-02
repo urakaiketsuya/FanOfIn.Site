@@ -1,5 +1,5 @@
 import { type Card, type CollectionEntry, type CollectionUpdateLine } from "@gatcg/shared";
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import Button from "../../components/ui/Button";
 import CardResult from "../../components/CardResult";
 import CollectionCardSheet from "./CollectionCardSheet";
@@ -9,7 +9,8 @@ import CollectionCardFilters from "./CollectionCardFilters";
 import { emptyFilterState, filterCards, matchesEdition } from "../cards/filters";
 import { playsetProgress, playsetTarget } from "./collectionPlaysets";
 
-export default function CollectionBrowser({ cards, entries, busy = false, preview = false, onUpdate, renderTracking, renderStatus }: {
+export default function CollectionBrowser({ cards, entries, busy = false, preview = false, onUpdate, renderTracking, renderStatus, focusCardUuid, onReviewDraft }: {
+  focusCardUuid?: string | null; onReviewDraft?: () => void;
   renderStatus?: (uuid: string) => ReactNode;
   renderTracking?: (uuid: string, name: string) => ReactNode;
   cards: Card[]; entries: CollectionEntry[]; busy?: boolean; preview?: boolean;
@@ -19,6 +20,12 @@ export default function CollectionBrowser({ cards, entries, busy = false, previe
   const [editing, setEditing] = useState<string | null>(null);
   const [limit, setLimit] = useState(24);
   const [cardFilters, setCardFilters] = useState(emptyFilterState);
+  const focusedCardName = cards.find(card => card.uuid === focusCardUuid)?.name;
+  useEffect(() => {
+    if (!focusCardUuid || !focusedCardName) return;
+    setFilter("all"); setCardFilters({ ...emptyFilterState(), name: focusedCardName });
+    setEditing(focusCardUuid); setLimit(24);
+  }, [focusCardUuid, focusedCardName]);
   const [sort, setSort] = useState("name");
   const quantities = useMemo(() => {
     const result = new Map<string, number>();
@@ -66,6 +73,6 @@ export default function CollectionBrowser({ cards, entries, busy = false, previe
       })}</div>
       {matchingCards.length > limit && <button type="button" onClick={() => setLimit(current => current + 24)} className="mt-3 rounded-lg border border-ctp-surface1 px-3 text-sm">Show more cards</button>}
     </>}</CollectionPurchase>
-    {editing && cards.find(card => card.uuid === editing) && <CollectionCardSheet card={cards.find(card => card.uuid === editing)!} entries={entries} busy={busy} onUpdate={onUpdate} renderTracking={renderTracking} onDismiss={() => setEditing(null)}/>}
+    {editing && cards.find(card => card.uuid === editing) && <CollectionCardSheet card={cards.find(card => card.uuid === editing)!} entries={entries} busy={busy} onUpdate={onUpdate} renderTracking={renderTracking} onReviewDraft={onReviewDraft ? () => { setEditing(null); onReviewDraft(); } : undefined} onDismiss={() => setEditing(null)}/>}
   </section>;
 }

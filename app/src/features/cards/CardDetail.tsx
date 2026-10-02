@@ -31,6 +31,7 @@ import CardInfoPanel from "./CardInfoPanel";
 import CardDecksPanel from "./CardDecksPanel";
 import CardSimilarEffectsPanel from "./CardSimilarEffectsPanel";
 import CardIntentPanel from "./CardIntentPanel";
+import CardCollectionSummary from "../collection/CardCollectionSummary";
 import CardHero from "./CardHero";
 import CardCommunityTags from "./CardCommunityTags";
 import { toTopDecksListEntry } from "../topdecks/topDecksListEntry";
@@ -334,6 +335,8 @@ export default function CardDetail() {
       </Link>
 
       <CardHero card={card} edition={edition} editionIndex={editionIndex} editionsExpanded={editionsExpanded} price={price} priceSeries={priceSeries} rarityLabel={rarityDisplay} onEditionChange={setEditionIndex} onEditionsExpandedChange={setEditionsExpanded} />
+
+      <CardCollectionSummary key={card.uuid} card={card} />
 
       <CardCommunityTags key={card.uuid} cardUuid={card.uuid} editionUuid={edition?.uuid} />
 
