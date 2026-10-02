@@ -9,7 +9,7 @@ on:
 permissions:
   contents: write
 
-# Share the weekly data job's group so two generated-data commits never race each other.
+# Serialize with the daily data job; the publisher also retries other concurrent pushes.
 concurrency:
   group: data-refresh
   cancel-in-progress: false
@@ -20,28 +20,16 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: 24
           cache: npm
 
-      - run: npm ci
-
-      - name: Fetch and validate simulator analytics
-        run: npm run pipeline:simulator
+      - name: Refresh and publish simulator analytics
+        run: bash scripts/refresh-simulator-analytics.sh
         env:
           # The repository variable can override this for staging or a future custom domain.
           GATCG_SIMULATOR_API_URL: ${{ vars.GATCG_SIMULATOR_API_URL || 'https://fanofin-match-ingestion-production.fanofin-match-ingestion-worker.workers.dev' }}
-
-      - name: Commit updated analytics snapshot
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/simulator/summary.json data/manifest.json
-          if git diff --cached --quiet; then
-            echo "No simulator analytics changes this run"
-          else
-            git commit -m "chore: daily simulator analytics refresh $(date -u +%Y-%m-%d)"
-            git push
-          fi
