@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import { useArchetypeTaxonomyData, useChampionTrendsData } from "../archetypes/data";
 
 const MAX_ARCHETYPES = 20;
@@ -23,7 +24,8 @@ export interface SeasonArchetypeRow {
 export interface SeasonMeta {
   champions: SeasonChampionRow[];
   archetypes: SeasonArchetypeRow[];
-  loading: boolean;
+  championStatus: ReturnType<typeof usePublishedDataStatus> & { hasData: boolean };
+  buildStatus: ReturnType<typeof usePublishedDataStatus> & { hasData: boolean };
 }
 
 /**
@@ -35,6 +37,8 @@ export interface SeasonMeta {
 export function useSeasonMeta(seasonId: number | null): SeasonMeta {
   const trendsData = useChampionTrendsData();
   const taxonomyData = useArchetypeTaxonomyData();
+  const championStatus = usePublishedDataStatus("analysis-champion-trends", "/data/analysis/champion-trends.json");
+  const buildStatus = usePublishedDataStatus("analysis-archetype-taxonomy", "/data/analysis/archetype-taxonomy.json");
 
   const champions = useMemo(() => {
     if (seasonId === null || !trendsData) return [];
@@ -71,5 +75,10 @@ export function useSeasonMeta(seasonId: number | null): SeasonMeta {
     return rows.sort((a, b) => b.deckCount - a.deckCount).slice(0, MAX_ARCHETYPES);
   }, [taxonomyData, seasonId]);
 
-  return { champions, archetypes, loading: !trendsData || !taxonomyData };
+  return {
+    champions,
+    archetypes,
+    championStatus: { ...championStatus, hasData: !!trendsData },
+    buildStatus: { ...buildStatus, hasData: !!taxonomyData },
+  };
 }

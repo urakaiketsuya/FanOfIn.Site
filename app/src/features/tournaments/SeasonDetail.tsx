@@ -11,6 +11,7 @@ import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import CardArtTile from "../../components/CardArtTile";
 import { useChampionCardImages } from "../players/useChampionCardImages";
 import type { Card } from "@gatcg/shared";
+import Button from "../../components/ui/Button";
 import Panel from "../../components/ui/Panel";
 import { PRODUCTS } from "../products/data";
 import PageLayout from "../../components/layout/PageLayout";
@@ -96,6 +97,8 @@ export default function SeasonDetail() {
 
   const season = index?.seasons.find((item) => item.slug === slug);
   const seasonMeta = useSeasonMeta(season?.id ?? null);
+  const metaStatus = metaTab === "champions" ? seasonMeta.championStatus : seasonMeta.buildStatus;
+  const metaLabel = metaTab === "champions" ? "champion" : "build";
   useDocumentTitle(season?.name, season && `Grand Archive TCG tournament history for the ${season.name} card-legality season.`);
   const events = useMemo(() => {
     if (!index) return [];
@@ -193,9 +196,19 @@ export default function SeasonDetail() {
               <Tabs tabs={[{ key: "champions", label: "Champions" }, { key: "builds", label: "Builds" }]} active={metaTab} onChange={setTab} baseId="season-meta" label="Season meta" variant="pill" />
               <p className="my-4 text-sm leading-6 text-ctp-subtext1">{metaTab === "champions" ? "Champions ordered by recorded decks. Weighted season share measures each champion’s share of the season’s combined performance score." : "Up to 20 of the most recorded builds this season. Artwork represents the champion, not an exact decklist."} Average win rate summarizes recorded deck results.</p>
               <TabPanel baseId="season-meta" tab={metaTab} active={metaTab}>
-                {seasonMeta.loading && <Panel><InlineState>Loading meta…</InlineState></Panel>}
-                {!seasonMeta.loading && metaTab === "champions" && seasonMeta.champions.length === 0 && <EmptyState title="No Champion data yet" />}
-                {!seasonMeta.loading && metaTab === "builds" && seasonMeta.archetypes.length === 0 && <EmptyState title="No build data yet" />}
+                {metaStatus.phase === "error" && (
+                  <Panel className="mb-4 border-ctp-red/30">
+                    <div role="alert">
+                      <h2 className="text-lg font-semibold">{metaStatus.hasData ? `Season ${metaLabel} data could not refresh` : `Season ${metaLabel} data is unavailable`}</h2>
+                      <p className="mt-2 text-sm text-ctp-subtext1">{metaStatus.hasData ? "Showing saved data. Try again to check for the latest results." : "Try again to load these results. You can still explore the other tab or season events."}</p>
+                    </div>
+                    <Button className="mt-3" onClick={metaStatus.retry}>Retry {metaLabel} data</Button>
+                  </Panel>
+                )}
+                {!metaStatus.hasData && metaStatus.phase !== "error" && <Panel><InlineState>Loading {metaLabel} data…</InlineState></Panel>}
+                {metaStatus.hasData && metaStatus.phase === "loading" && <InlineState>Refreshing {metaLabel} data. Saved results remain available.</InlineState>}
+                {metaStatus.hasData && metaTab === "champions" && seasonMeta.champions.length === 0 && <EmptyState title="No champion results for this season" description="The loaded dataset has no recorded champion results for this season." />}
+                {metaStatus.hasData && metaTab === "builds" && seasonMeta.archetypes.length === 0 && <EmptyState title="No build results for this season" description="The loaded dataset has no recorded build results for this season." />}
                 {metaTab === "champions" && seasonMeta.champions.length > 0 && <ChampionCards rows={seasonMeta.champions} />}
                 {metaTab === "builds" && seasonMeta.archetypes.length > 0 && <BuildCards rows={seasonMeta.archetypes} />}
               </TabPanel>

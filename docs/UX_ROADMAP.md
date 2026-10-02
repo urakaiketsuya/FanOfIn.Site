@@ -562,3 +562,19 @@ then the remaining supporting pages and shared shell expressive design queue.
 
 Deployment: pushed through 6b5d0da9; GitHub Pages run 37070055258 succeeded and production
 release smoke checks confirmed that revision, assets, analysis manifest and account health.
+
+### Season meta loading and recovery, October 2
+
+Champion and build tabs now track their own published dataset status. A failed or slow build
+source no longer blocks champion results. Each failed source has a named retry action and a
+visible explanation; cached results stay available when refresh fails. Empty results are only
+shown after that source has loaded, with season scope stated explicitly.
+
+Verified with a temporary local server fixture at 360 × 800 and 1280 × 900: build HTTP 503
+without cached data, champion results while builds fail, keyboard retry through loading to real
+build results, cached refresh failure retaining all 20 build previews, and a successful empty
+build response. Mobile retry measured 48px high; both viewports had no horizontal overflow.
+Keyboard tab switching and empty panel focus were checked. App typecheck and lint passed with
+six existing Fast Refresh warnings. No expanded state was added. Champion-specific failure
+fixtures, text zoom, screen reader and physical device checks remain unverified.
+Next: season index failure recovery, then supporting pages and the shared shell expressive queue.
