@@ -442,3 +442,10 @@ screen reader and physical mobile keyboard checks. The broader core workflow ite
 - Verified isolated component at 360px and 1280px: missing catalog/long names, expanded evidence, keyboard disclosure, action callbacks, touch targets and no horizontal overflow. App typecheck and lint passed (six existing warnings); five builder engine/mutation tests passed.
 - Not verified: real data artwork, full review controller acceptance/save journey, loading/error/empty integration states, screen reader, zoom and physical device. No new asynchronous state or persistence was introduced.
 - Next: carry this hierarchy through unpaired additions/cuts and automatic Analysis result summaries. Existing calculation outputs and advanced drafts remain unchanged.
+
+### Individual review proposals (2026-10-02)
+
+- Unpaired additions and cuts now use a local proposal component with shared CardResult identity, prominent quantities, explicit accept/keep actions and expandable source evidence. List/grid preference and field visibility are retained; ranking and controller mutations are unchanged.
+- Champion cut proposals explain the existing higher-level removal cascade. Unlocked exclusions are labeled separately from selected-card removal.
+- Verified isolated missing-catalog/long-name proposals at 360px and 1280px, keyboard disclosure, add/remove/keep callbacks, 48px controls and no horizontal overflow. Full account/save integration, actual artwork, loading/error/empty integration states, screen reader and device checks remain unverified.
+- Next: automatic Analysis result summaries with named cards and answer-first hierarchy.

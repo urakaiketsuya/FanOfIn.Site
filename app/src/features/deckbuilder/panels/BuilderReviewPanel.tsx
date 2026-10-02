@@ -2,8 +2,7 @@ import ReviewSwapCard from "../components/ReviewSwapCard";
 import Button from "../../../components/ui/Button";
 import type { Card, CardImpactEntry, CardInclusionEntry } from "@gatcg/shared";
 import Tabs from "../../../components/ui/Tabs";
-import { CardRow, SuggestionRow } from "../components/BuilderCardRows";
-import { BuilderSuggestionGrid } from "../components/BuilderCardGrid";
+import ReviewCardProposal from "../components/ReviewCardProposal";
 import BuilderReviewOverview from "../components/BuilderReviewOverview";
 import { BuilderMatchups, BuilderSimilarDecks } from "../components/BuilderReviewEvidenceTabs";
 import type { ReviewGroups } from "../engine/builderSelectors";
@@ -121,7 +120,7 @@ export default function BuilderReviewPanel({
                         type="button"
                         onClick={() => onViewModeChange(mode)}
                         aria-pressed={viewMode === mode}
-                        className={`rounded-md border px-2 py-1 text-xs capitalize ${
+                        className={`min-h-control min-w-control rounded-md border px-2 py-1 text-xs capitalize focus-visible:outline-2 focus-visible:outline-ctp-blue ${
                           viewMode === mode ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1 hover:text-ctp-text"
                         }`}
                       >
@@ -130,34 +129,14 @@ export default function BuilderReviewPanel({
                     ))}
                   </div>
                 </div>
-                {viewMode === "grid" ? (
-                  <BuilderSuggestionGrid
-                    cards={reviewGroups.unpairedSuggestions}
-                    cardsByName={cardsByName}
-                    priceByName={priceByName}
-                    communityInclusion={communityInclusionByName}
-                    simulatorEvidenceByName={simulatorMode ? simulatorEvidenceByName : undefined}
-                    visibleFields={visibleFields}
-                    onAdd={onAddSuggestion}
-                    onDismiss={(cardName) => onDismissReview(cardName)}
-                  />
-                ) : (
-                  <ul className="mt-2 space-y-1.5">
-                    {reviewGroups.unpairedSuggestions.map((card) => (
-                      <SuggestionRow
-                        key={card.cardName}
-                        card={card}
-                        cardsByName={cardsByName}
-                        priceByName={priceByName}
-                        communityInclusion={communityInclusionByName}
-                        simulatorEvidence={simulatorMode ? simulatorEvidenceByName.get(card.cardName) : undefined}
-                        visibleFields={visibleFields}
-                        onAdd={() => onAddSuggestion(card)}
-                        onDismiss={() => onDismissReview(card.cardName)}
-                      />
-                    ))}
-                  </ul>
-                )}
+                <ul className={`mt-3 grid gap-3 ${viewMode === "grid" ? "sm:grid-cols-2 lg:grid-cols-3" : ""}`}>
+                  {reviewGroups.unpairedSuggestions.map((card) => <ReviewCardProposal key={card.cardName}
+                    card={card} cardInfo={cardsByName.get(card.cardName)} intent="add"
+                    unitPrice={priceByName.get(card.cardName)} communityEntry={communityInclusionByName?.get(card.cardName)}
+                    simulatorEvidence={simulatorMode ? simulatorEvidenceByName.get(card.cardName) : undefined}
+                    visibleFields={visibleFields} onAccept={() => onAddSuggestion(card)}
+                    onDismiss={() => onDismissReview(card.cardName)} />)}
+                </ul>
               </section>
             )}
             {reviewGroups.unpairedRemovals.length > 0 && (
@@ -165,19 +144,11 @@ export default function BuilderReviewPanel({
                 <h3 className="text-xs font-semibold uppercase tracking-wide text-ctp-subtext0">Cards to review</h3>
                 <ul className="mt-2 space-y-1.5">
                   {reviewGroups.unpairedRemovals.map((card) => (
-                    <CardRow
-                      key={card.cardName}
-                      card={card}
-                      cardsByName={cardsByName}
-                      priceByName={priceByName}
-                      communityInclusion={communityInclusionByName}
+                    <ReviewCardProposal key={card.cardName} card={card} cardInfo={cardsByName.get(card.cardName)} intent="remove"
+                      unitPrice={priceByName.get(card.cardName)} communityEntry={communityInclusionByName?.get(card.cardName)}
                       simulatorEvidence={simulatorMode ? simulatorEvidenceByName.get(card.cardName) : undefined}
-                      visibleFields={visibleFields}
-                      showLockToggle={false}
-                      onToggleLock={() => {}}
-                      onRemove={() => onRemoveCard(card.cardName, card.locked)}
-                      onDismiss={() => onDismissReview(card.cardName)}
-                    />
+                      visibleFields={visibleFields} onAccept={() => onRemoveCard(card.cardName, card.locked)}
+                      onDismiss={() => onDismissReview(card.cardName)} />
                   ))}
                 </ul>
               </section>
