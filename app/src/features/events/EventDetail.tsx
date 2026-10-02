@@ -14,6 +14,7 @@ import RawObject from "./RawObject";
 import PlayerLink from "../players/PlayerLink";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
+import Button from "../../components/ui/Button";
 import Tabs from "../../components/ui/Tabs";
 import { formatCountry } from "../../lib/format";
 import PageLayout from "../../components/layout/PageLayout";
@@ -158,28 +159,31 @@ export default function EventDetail() {
 
   return (
     <PageLayout data-component="EventDetail" width="standard">
-      <Link to="/tournaments" className="text-sm text-ctp-blue hover:underline">
+      <Link to="/tournaments" className="inline-flex min-h-control items-center rounded-md text-sm text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">
         &larr; Back to Tournaments
       </Link>
 
-      <h1 className="mt-2 text-2xl font-bold text-ctp-blue">{event.name}</h1>
-      <p className="mt-1 text-sm text-ctp-subtext1">
-        <span title={event.host.address || undefined}>{event.host.name}</span>
-        {formatCountry(event.host.addressCountryCode) && (
-          <>
-            {" ("}
-            <Link
-              to={`/regions?group=country&region=${event.host.addressCountryCode}`}
-              className="hover:text-ctp-blue hover:underline"
-            >
-              {formatCountry(event.host.addressCountryCode)}
-            </Link>
-            {")"}
-          </>
-        )}{" "}
-        · {new Date(event.date).toLocaleDateString()} · {event.format} · {EVENT_CATEGORY_LABELS[event.category] ?? event.category}
-      </p>
-      <div className="mt-4 flex flex-wrap gap-2 text-xs text-ctp-subtext1"><span className="rounded-full bg-ctp-surface0 px-3 py-1.5">{rankedPlayers.length} players</span>{decklistSubmissionRate && <span className="rounded-full bg-ctp-surface0 px-3 py-1.5">{decklistSubmissionRate.submitted}/{decklistSubmissionRate.total} decklists</span>}<span className="rounded-full bg-ctp-surface0 px-3 py-1.5 capitalize">{event.status}</span>{event.season && <span className="rounded-full bg-ctp-surface0 px-3 py-1.5">{event.season.name}</span>}</div>
+      <header className="identity-surface mt-2 rounded-xl p-4 sm:p-6">
+        <div className="flex flex-wrap gap-2 text-xs font-medium text-ctp-subtext1">
+          <span className="rounded-full border border-ctp-surface2 px-3 py-1">{EVENT_CATEGORY_LABELS[event.category] ?? event.category}</span>
+          <span className="rounded-full border border-ctp-surface2 px-3 py-1">{event.format}</span>
+          <span className="rounded-full border border-ctp-surface2 px-3 py-1 capitalize">{event.status}</span>
+        </div>
+        <h1 className="mt-3 break-words text-3xl font-bold leading-tight text-ctp-text sm:text-4xl">{event.name}</h1>
+        <div className="mt-3 text-sm text-ctp-subtext1">
+          <time dateTime={event.date}>{new Date(event.date).toLocaleDateString()}</time>
+          <p className="mt-1 break-words" title={event.host.address || undefined}>{event.host.name}</p>
+          {formatCountry(event.host.addressCountryCode) && <Link
+            to={`/regions?group=country&region=${event.host.addressCountryCode}`}
+            className="inline-flex min-h-control items-center rounded-md text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue"
+          >{formatCountry(event.host.addressCountryCode)}</Link>}
+          {event.season && <p className="mt-1">{event.season.name}</p>}
+        </div>
+        <dl className="mt-4 flex flex-wrap gap-x-8 gap-y-3 border-t border-ctp-surface1 pt-4">
+          <div><dt className="text-xs text-ctp-subtext0">Players</dt><dd className="mt-1 text-3xl font-semibold tabular-nums text-ctp-text">{rankedPlayers.length}</dd></div>
+          {!isApiErrorBody(bundle.decklists) && <div><dt className="text-xs text-ctp-subtext0">Available deck lists</dt><dd className="mt-1 text-3xl font-semibold tabular-nums text-ctp-text">{bundle.decklists.length}</dd></div>}
+        </dl>
+      </header>
 
       {!isApiErrorBody(bundle.decklists) && <EventTopDecks eventId={eventId} decklists={bundle.decklists} players={players} />}
 
@@ -189,15 +193,15 @@ export default function EventDetail() {
         </div>
       )}
 
-      {secondaryActive && <button type="button" onClick={() => setTab(primaryTabs[0].key)} className="mt-5 text-sm font-medium text-ctp-blue">← Back to event results</button>}
+      {secondaryActive && <Button onClick={() => setTab(primaryTabs[0].key)} className="mt-5">← Back to event results</Button>}
 
       {(event.description || vods.length > 0 || venueEvents.length > 0 || secondaryTabs.length > 0) && <details className="group mt-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2">
-        <summary className="flex min-h-9 cursor-pointer list-none items-center justify-between gap-3 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden"><span>More event data</span><DisclosureChevron className="transition-transform group-open:rotate-180" /></summary>
+        <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden"><span>More event data</span><DisclosureChevron className="transition-transform group-open:rotate-180" /></summary>
         <div className="border-t border-ctp-surface1 pb-2 pt-3">
           {event.description && <p className="text-sm text-ctp-subtext0">{event.description}</p>}
-          {vods.length > 0 && <div className="mt-3 flex flex-wrap gap-2">{vods.map((vod, i) => <a key={i} href={vod.url} target="_blank" rel="noreferrer" className="rounded-md border border-ctp-blue px-2.5 py-1.5 text-xs text-ctp-blue">▶ {vod.label}</a>)}</div>}
-          {secondaryTabs.length > 0 && <div className="mt-3 flex flex-wrap gap-2">{secondaryTabs.map((item) => <button key={item.key} type="button" onClick={() => setTab(item.key)} className={`rounded-md border px-2.5 py-1.5 text-xs ${activeTab === item.key ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1"}`}>{item.label}</button>)}</div>}
-          {venueEvents.length > 0 && <div className="mt-4"><p className="text-xs font-medium text-ctp-subtext1">More at {event.host.name}</p><div className="mt-2 flex flex-wrap gap-2 text-xs">{venueEvents.slice(0, MAX_VENUE_EVENTS_SHOWN).map((venueEvent) => <Link key={venueEvent.id} to={`/events/${venueEvent.id}`} className="rounded-md border border-ctp-surface1 px-2 py-1 text-ctp-subtext1 hover:border-ctp-blue">{venueEvent.name} · {new Date(venueEvent.date).toLocaleDateString()}</Link>)}</div></div>}
+          {vods.length > 0 && <div className="mt-3 flex flex-wrap gap-2">{vods.map((vod, i) => <a key={i} href={vod.url} target="_blank" rel="noreferrer" className="inline-flex min-h-control items-center rounded-md border border-ctp-blue px-3 py-2 text-sm text-ctp-blue">▶ {vod.label}</a>)}</div>}
+          {secondaryTabs.length > 0 && <div className="mt-3 flex flex-wrap gap-2">{secondaryTabs.map((item) => <Button key={item.key} onClick={() => setTab(item.key)} aria-pressed={activeTab === item.key} className={activeTab === item.key ? "border-ctp-blue text-ctp-blue" : ""}>{item.label}</Button>)}</div>}
+          {venueEvents.length > 0 && <div className="mt-4"><p className="text-xs font-medium text-ctp-subtext1">More at {event.host.name}</p><div className="mt-2 flex flex-wrap gap-2 text-xs">{venueEvents.slice(0, MAX_VENUE_EVENTS_SHOWN).map((venueEvent) => <Link key={venueEvent.id} to={`/events/${venueEvent.id}`} className="inline-flex min-h-control items-center rounded-md border border-ctp-surface1 px-3 py-2 text-ctp-subtext1 hover:border-ctp-blue">{venueEvent.name} · {new Date(venueEvent.date).toLocaleDateString()}</Link>)}</div></div>}
         </div>
       </details>}
 
@@ -210,7 +214,7 @@ export default function EventDetail() {
             </p>
           )}
           <div className="mt-3 space-y-2 sm:hidden">
-            {rankedPlayers.map((player) => { const standing = standingsById.get(player.id); return <div key={player.id} className="flex items-center gap-3 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><span className="w-9 shrink-0 text-center text-lg font-bold text-ctp-blue">#{player.finalPlacement ?? "–"}</span><div className="min-w-0 flex-1"><PlayerLink id={player.id} username={player.username} className="block truncate font-medium text-ctp-text" /><p className="mt-0.5 text-xs text-ctp-subtext0">{standing ? `${standing.statsWins}-${standing.statsLosses}-${standing.statsTies}` : "Record unavailable"}{standing ? ` · ${standing.statsPercentGW}% games` : ""}</p></div>{!isApiErrorBody(bundle.decklists) && bundle.decklists.some((entry) => entry.player === player.id) && <Link to={`?tab=decklists&player=${player.id}`} className="shrink-0 text-xs font-medium text-ctp-blue">Deck</Link>}</div>; })}
+            {rankedPlayers.map((player) => { const standing = standingsById.get(player.id); return <div key={player.id} className="flex items-center gap-3 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3"><span className="w-9 shrink-0 text-center text-lg font-bold text-ctp-blue">#{player.finalPlacement ?? "–"}</span><div className="min-w-0 flex-1"><PlayerLink id={player.id} username={player.username} className="flex min-h-control items-center break-words font-medium text-ctp-text" /><p className="mt-0.5 text-xs text-ctp-subtext0">{standing ? `${standing.statsWins}-${standing.statsLosses}-${standing.statsTies}` : "Record unavailable"}{standing ? ` · ${standing.statsPercentGW}% games` : ""}</p></div>{!isApiErrorBody(bundle.decklists) && bundle.decklists.some((entry) => entry.player === player.id) && <Link to={`?tab=decklists&player=${player.id}`} className="inline-flex min-h-control min-w-control shrink-0 items-center justify-center rounded-md px-2 text-sm font-medium text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">Deck</Link>}</div>; })}
           </div>
           <div className="hidden overflow-x-auto sm:block">
             <table className="mt-2 w-max min-w-full text-sm">
@@ -225,6 +229,7 @@ export default function EventDetail() {
                   </th>
                   <th className="py-1 pr-6">Byes</th>
                   <th className="py-1">Tiebreaker</th>
+                  <th className="py-1 pl-4">Deck list</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
@@ -234,7 +239,7 @@ export default function EventDetail() {
                     <tr key={player.id}>
                       <td className="py-1 pr-6 text-ctp-subtext1">{player.finalPlacement ?? "–"}</td>
                       <td className="py-1 pr-6 whitespace-nowrap text-ctp-text">
-                        <PlayerLink id={player.id} username={player.username} />
+                        <PlayerLink id={player.id} username={player.username} className="inline-flex min-h-control items-center" />
                       </td>
                       <td className="py-1 pr-6 text-ctp-subtext1">
                         {s ? `${s.statsWins}-${s.statsLosses}-${s.statsTies}` : "–"}
@@ -243,6 +248,9 @@ export default function EventDetail() {
                       <td className="py-1 pr-6 text-ctp-subtext1">{s ? `${s.statsPercentOMW}%` : "–"}</td>
                       <td className="py-1 pr-6 text-ctp-subtext1">{s?.statsByes ?? "–"}</td>
                       <td className="py-1 text-ctp-subtext1">{s?.tiebreaker ?? "–"}</td>
+                      <td className="py-1 pl-4">{!isApiErrorBody(bundle.decklists) && bundle.decklists.some((entry) => entry.player === player.id)
+                        ? <Link to={`?tab=decklists&player=${player.id}`} className="inline-flex min-h-control items-center rounded-md px-2 text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">View deck</Link>
+                        : <span className="text-xs text-ctp-subtext0">Unavailable</span>}</td>
                     </tr>
                   );
                 })}

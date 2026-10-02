@@ -491,3 +491,20 @@ six existing Fast Refresh warnings. No new asynchronous state, calculations or p
 Remaining: source failure/retry, screen reader, text zoom and physical device verification.
 Next: event detail identity and results hierarchy, carrying this emphasis into standings and deck
 navigation. The related discovery and competition queue area remains open.
+
+### Event detail identity and standings navigation, October 2
+
+Event headers now use the shared identity surface with a larger wrapping title, labeled category,
+format and status, readable venue/date/season context, and prominent player and available list counts.
+Available lists remain distinct from the submission rate shown with standings. Desktop standings now
+link directly to each available player deck, matching mobile. Player links, mobile deck links, optional
+event navigation and the details disclosure have 48px targets. Secondary navigation uses shared Button.
+
+Verified real events with and without available lists at 360 × 800 and 1280 × 900, including loading,
+keyboard disclosure expansion, visible header link focus, wrapped venue text, selected player deck
+navigation and no horizontal page overflow. All measured standings deck links were 48px high.
+Typecheck and lint passed with six existing Fast Refresh warnings. Ranking and statistics are unchanged.
+
+Remaining: empty event fixture, source failure/retry, text zoom, screen reader and physical device checks.
+Next: top event deck previews, replacing truncated identities and the mobile horizontal strip with
+shared card previews and wrapping layouts. The competition area remains open.
