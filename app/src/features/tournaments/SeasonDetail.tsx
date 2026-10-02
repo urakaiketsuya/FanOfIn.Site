@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useOmnidexIndex } from "./data";
+import { useOmnidexIndex, useOmnidexIndexStatus } from "./data";
 import { useSeasonMeta, type SeasonArchetypeRow, type SeasonChampionRow } from "./useSeasonMeta";
+import SeasonIndexStatus from "./SeasonIndexStatus";
 import EventRow from "./EventRow";
 import LoadMore from "../../components/LoadMore";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -90,6 +91,7 @@ function BuildCards({ rows }: { rows: SeasonArchetypeRow[] }) {
 export default function SeasonDetail() {
   const { slug = "" } = useParams<{ slug: string }>();
   const index = useOmnidexIndex();
+  const indexStatus = useOmnidexIndexStatus();
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [tab, setTab] = useTabParam<SeasonTab>("tab", TAB_KEYS, "events");
   const surface: SeasonSurface = tab === "events" ? "events" : "meta";
@@ -121,9 +123,10 @@ export default function SeasonDetail() {
   if (index && !season) {
     return (
       <PageLayout data-component="SeasonDetail">
+        <SeasonIndexStatus status={indexStatus} hasData={!!index} />
         <EmptyState
           title="Season not found"
-          description={`Season "${slug}" is not in the ingested data.`}
+          description={`Season "${slug}" is not in the saved season data.`}
           action={<Link to="/seasons" className="inline-flex min-h-control items-center rounded-lg text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">&larr; All seasons</Link>}
         />
       </PageLayout>
@@ -132,7 +135,7 @@ export default function SeasonDetail() {
 
   return (
     <PageLayout data-component="SeasonDetail">
-      {!index && <InlineState>Loading…</InlineState>}
+      <SeasonIndexStatus status={indexStatus} hasData={!!index} />
 
       {season && (
         <>

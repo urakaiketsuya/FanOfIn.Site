@@ -578,3 +578,19 @@ Keyboard tab switching and empty panel focus were checked. App typecheck and lin
 six existing Fast Refresh warnings. No expanded state was added. Champion-specific failure
 fixtures, text zoom, screen reader and physical device checks remain unverified.
 Next: season index failure recovery, then supporting pages and the shared shell expressive queue.
+
+### Season index recovery, October 2
+
+Season discovery and detail now share visible source status and a 48px retry action. Saved
+seasons and events remain usable during refresh failures. Missing season views also retain
+refresh feedback and retry, and explicitly scope absence to saved data.
+
+Verified at 360 × 800 and 1280 × 900 using temporary HTTP 503 and empty index fixtures:
+cached season cards remain visible on failure, keyboard retry announces refreshing, an empty
+saved index produces the missing season view with recovery, and retry restores the real season.
+The mobile retry target is 48px high and both checked layouts have no horizontal overflow.
+App typecheck and lint passed with six existing Fast Refresh warnings. No expanded state was
+added. Initial failure without seeded data, empty discovery rendering, screen reader, text zoom
+and physical device checks remain unverified.
+Next: supporting pages and shared shell expressive design, starting with navigation accessibility
+and the mobile menu target (currently 44px).

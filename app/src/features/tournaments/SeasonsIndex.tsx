@@ -1,19 +1,22 @@
 import { Link } from "react-router-dom";
-import { useOmnidexIndex } from "./data";
+import { useOmnidexIndex, useOmnidexIndexStatus } from "./data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
-import { EmptyState, InlineState } from "../../components/ui/ContentState";
+import { EmptyState } from "../../components/ui/ContentState";
+
+import SeasonIndexStatus from "./SeasonIndexStatus";
 
 export default function SeasonsIndex() {
   useDocumentTitle("Seasons", "Grand Archive TCG card-legality seasons and their tournament history.");
   const index = useOmnidexIndex();
+  const status = useOmnidexIndexStatus();
 
   return (
     <PageLayout data-component="SeasonsIndex">
       <PageHeader title="Seasons" description="Explore tournament history by season, then discover the champions and builds players brought." />
 
-      {!index && <InlineState className="mt-6">Loading…</InlineState>}
+      <SeasonIndexStatus status={status} hasData={!!index} />
       {index && index.seasons.length === 0 && <EmptyState className="mt-6" title="No seasons found yet" />}
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">

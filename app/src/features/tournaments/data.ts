@@ -1,9 +1,13 @@
 import { useCallback, useMemo } from "react";
 import type { OmnidexIndexData, OmnidexJudgesData, OmnidexPlayersData, OmnidexTeamsData, OmnidexVenueGeocodeData } from "@gatcg/shared";
-import { usePublishedData } from "../../lib/sync/usePublishedData";
+import { usePublishedData, usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 
 export function useOmnidexIndex(enabled = true): OmnidexIndexData | undefined {
   return usePublishedData<OmnidexIndexData>("omnidex-index", "/data/omnidex/index.json", enabled);
+}
+
+export function useOmnidexIndexStatus() {
+  return usePublishedDataStatus("omnidex-index", "/data/omnidex/index.json");
 }
 
 /**
