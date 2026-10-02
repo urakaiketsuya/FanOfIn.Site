@@ -37,8 +37,9 @@ authenticated journeys explicitly; do not mark an area complete based on visual 
 External verification blockers should remain visible while independent work proceeds in queue order.
 
 Queue status: deck discovery presentation and empty search recovery implemented October 2, with
-verification gaps recorded below. Next is core workflows, starting with My Decks folder navigation
-and draft/save feedback. Discovery remains open for source failure recovery and acceptance checks. Earlier
+verification gaps recorded below. The first core workflow slice now covers My Decks folder navigation
+and pasted draft/save feedback. Next are collection quantity editing and card detail ownership handoffs.
+Discovery remains open for source failure recovery and acceptance checks. Earlier
 implementation notes below remain the source of truth for completed work and verification limits.
 
 | Phase | Existing baseline | Changes in this implementation |
@@ -378,3 +379,29 @@ Remaining: source failure/retry fixtures, empty archive distinction, missing art
 reduced motion browser verification, screen reader and physical mobile keyboard checks, plus
 authenticated action handoffs. Tournament result filters and broader shared preview consumers need
 their own regression pass. The discovery area remains open; this completes its first queued slice.
+
+### My Decks folders and pasted drafts, October 2
+
+Folder covers can be searched by folder or cover card name, with direct empty search recovery.
+Opening a folder moves focus to the persistent folder selector. All builds provides a direct return.
+Folder selection and deck search take a full row on mobile. Empty folders and filtered out builds
+have distinct guidance; clearing a search restores focus. Library tabs use the shared pill emphasis.
+
+Pasted decks show an identity preview with named card art and links that open separately. Save and
+failure feedback now live in the sheet's persistent footer. Pending saves disable editable fields.
+Closing retains the parent owned draft on this page, and Resume pasted deck reopens it. Other ways
+to add keeps import available without clearing that draft. Old action error toasts are dismissed
+when reopening or switching add methods. Existing save requests and persistence are unchanged.
+
+Verified real components with a temporary isolated account fixture at 360 × 800 and 1280 × 900:
+long folder names, cover art, plain cover, folder search/reset, empty folder, selected folder return,
+deck search recovery, and keyboard focus after folder navigation and search reset. Pasted deck
+loading, simulated save failure, retry success, close/resume, and switching add methods retained
+the draft. The mobile save footer stayed within the viewport with a 48px action. Measured views
+had no horizontal overflow. The temporary fixture was removed. Typecheck and lint passed with
+six existing Fast Refresh warnings; four folder and edit session regression tests passed.
+
+Remaining: real authenticated writes, folder loading/failure and pagination fixtures, screen reader,
+text zoom, reduced motion browser checks and physical mobile keyboard behavior. Draft retention here
+is limited to this mounted page; it is not durable storage across reloads or navigation. Existing saved
+deck editing recovery remains separate. The core workflow queue item stays open.
