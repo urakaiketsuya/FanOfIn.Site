@@ -301,3 +301,20 @@ Optional suggestions now have an identity surface with the selected champion and
 Verified with a real catalog Lorraine draft at 360 × 800 and 1280 × 900: missing identity guidance, loading, ranked results, alphabetical sort and restoration, empty search, keyboard expansion of statistics and settings, and explicit addition. Selecting a card left the deck at seven copies; Add 1 each changed it to eight. No measured page overflow; suggestion settings controls met 48px targets. Typecheck and lint passed with six existing warnings; seven recommendation ordering and eligibility tests passed.
 
 Remaining: authenticated ownership priority and collection error handling, broader recommendation source/error fixtures, screen reader and physical mobile keyboard checks. Collection was unavailable in the local session. No ranking formulas or persistence changed. The Builder checklist remains open.
+
+### Builder collection recovery, October 2
+
+Ownership dependent suggestions now wait for a successfully loaded collection instead of treating
+unavailable inventory as empty or claiming owned priority without data. A visible status within the
+suggestion context offers Retry collection and an explicit Show all cards fallback. Retry retains
+the ownership preference; fallback focuses the card source control. The shared collection hook
+supports retry while retaining its stale response protection and collection change subscription.
+
+Verified real collection failure, retry loading, both ownership modes, expanded settings, keyboard
+retry and fallback focus at 360 × 800 and 1280 × 900. Measured recovery buttons were 48px tall and
+neither viewport overflowed. App typecheck passed; seven persistence, recommendation order and
+collection event tests passed. Lint retained six existing Fast Refresh warnings.
+
+Successful authenticated collection recovery and saves, populated ownership ordering, empty saved
+inventory, recommendation evidence failures, physical mobile keyboard and screen reader checks
+remain open. The local account service was unavailable. Save behavior was inspected but unchanged.

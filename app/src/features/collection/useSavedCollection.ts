@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { CollectionEntry } from "@gatcg/shared";
 import { accountApi } from "../../lib/accountApi";
 import { subscribeCollectionChanges } from "../../lib/collectionEvents";
@@ -8,6 +8,8 @@ export function useSavedCollection() {
   const [collection, setCollection] = useState<CollectionEntry[]>([]);
   const [collectionLoaded, setCollectionLoaded] = useState(false);
   const [collectionError, setCollectionError] = useState<string | null>(null);
+  const [refreshVersion, setRefreshVersion] = useState(0);
+  const retryCollection = useCallback(() => setRefreshVersion(version => version + 1), []);
   useEffect(() => {
     let active = true;
     let revision = 0;
@@ -25,6 +27,6 @@ export function useSavedCollection() {
     refresh();
     const unsubscribe = subscribeCollectionChanges(refresh);
     return () => { active = false; unsubscribe(); };
-  }, []);
-  return { collection, collectionLoaded, collectionError };
+  }, [refreshVersion]);
+  return { collection, collectionLoaded, collectionError, retryCollection };
 }

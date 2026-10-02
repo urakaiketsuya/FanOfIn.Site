@@ -62,7 +62,7 @@ export function useBuilderRecommendationModel(options: BuilderRecommendationMode
     catalogByName,
     spiritCanonicalNames,
     collectionOwnedByName,
-    collectionLoaded, collectionError,
+    collectionLoaded, collectionError, retryCollection,
     population: { rows, spiritsPresent, loading: populationLoading },
     archetypeTaxonomy: archetypeTaxonomyData,
     communityInclusion: communityCardInclusion,
@@ -134,7 +134,7 @@ export function useBuilderRecommendationModel(options: BuilderRecommendationMode
     [lockedCards, lockedSections, spiritFilter, catalogByName]);
   const simulatorResult = useSimulatorSuggestedBuild(build, simulatorSummary, cardCatalog);
   const effectivePopulationSource: PopulationSource = deckFormat === "PANTHEON" ? "community" : populationSource;
-  const cardCategoryRecommendations = useMemo(() => recommendationsEnabled && championName && spiritFilter ? buildCardCategoryRecommendations({
+  const cardCategoryRecommendations = useMemo(() => recommendationsEnabled && championName && spiritFilter && (collectionMode === "all" || collectionLoaded) ? buildCardCategoryRecommendations({
     catalog: cardCatalog,
     rows: recommendationRows.filter((row) => row.spiritName === spiritFilter),
     communityRateByName: communityInclusionByName && new Map(Array.from(communityInclusionByName, ([name, entry]) => [name, entry.percentOfDecks])),
@@ -144,7 +144,7 @@ export function useBuilderRecommendationModel(options: BuilderRecommendationMode
   }).filter((item) => !rejectedCards.has(item.card.name) && (collectionMode !== "owned-only" || (collectionOwnedByName.get(item.card.name) ?? 0) > 0))
     .map((item) => collectionMode === "owned-only" ? { ...item, recommendedQuantity: Math.min(item.recommendedQuantity, collectionOwnedByName.get(item.card.name) ?? 0) } : item)
     .sort((a, b) => collectionMode === "prioritize" ? Number((collectionOwnedByName.get(b.card.name) ?? 0) > 0) - Number((collectionOwnedByName.get(a.card.name) ?? 0) > 0) || b.score - a.score : b.score - a.score)
-    : [], [rejectedCards, collectionMode, collectionOwnedByName, recommendationsEnabled, championName, spiritFilter, cardCatalog, recommendationRows, communityInclusionByName, identityElements, deckFormat, effectivePopulationSource]);
+    : [], [collectionLoaded, rejectedCards, collectionMode, collectionOwnedByName, recommendationsEnabled, championName, spiritFilter, cardCatalog, recommendationRows, communityInclusionByName, identityElements, deckFormat, effectivePopulationSource]);
   const reviewSuggestions = useMemo(
     () => build.suggestions.filter((card) => !dismissedReviewCards.has(card.cardName)),
     [build.suggestions, dismissedReviewCards],
@@ -210,7 +210,7 @@ export function useBuilderRecommendationModel(options: BuilderRecommendationMode
   ));
 
   return {
-    collectionOwnedByName, collectionLoaded, collectionError,
+    collectionOwnedByName, collectionLoaded, collectionError, retryCollection,
     popularityIndexData, liveCatalogByName, cardCatalog, catalogByName, spiritCanonicalNames,
     simulatorSummary, priceByName, priceTrendByName, seedLockedCards, communityInclusionByName,
     hypeGapByName, decaySignalByName, build, reviewItemCount, reviewRemovalNames, gateLoading,

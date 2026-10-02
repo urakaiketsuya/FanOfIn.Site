@@ -38,7 +38,7 @@ export function useDeckBuilderData({ championName, format, includeDecodedDecks, 
   const catalogByName = useMemo(() => new Map(catalog.map((card) => [card.name, card])), [catalog]);
   const spiritCanonicalNames = useMemo(() => buildSpiritCanonicalNames(catalog), [catalog]);
 
-  const { collection, collectionLoaded, collectionError } = useSavedCollection();
+  const { collection, collectionLoaded, collectionError, retryCollection } = useSavedCollection();
   const collectionOwnedByName = useMemo(() => { const totals = new Map<string, number>(); for (const entry of collection) totals.set(entry.cardName, (totals.get(entry.cardName) ?? 0) + entry.ownedQuantity); return totals; }, [collection]);
 
   const population = useDeckBuilderPopulation(championName);
@@ -67,6 +67,7 @@ export function useDeckBuilderData({ championName, format, includeDecodedDecks, 
     collection,
     collectionLoaded,
     collectionError,
+    retryCollection,
     collectionOwnedByName,
     population,
     cardQuantityStats,

@@ -1,5 +1,5 @@
 import { useBuilderCardStats } from "../components/BuilderCardStats";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import CardBrowser from "../../../components/deck-editor/CardBrowser";
 import EditorDialog from "../../../components/deck-editor/EditorDialog";
 import DeckEditor from "../../../components/deck-editor/DeckEditor";
@@ -7,6 +7,7 @@ import DisclosureChevron from "../../../components/DisclosureChevron";
 import { EDITOR_SECTIONS } from "../../../lib/deckEditing";
 import { BuilderStartActions, DecklistPaste } from "../components/DeckBuilderSetup";
 import { useDeckBuilder } from "../useDeckBuilder";
+import Button from "../../../components/ui/Button";
 import ToolsPanel from "./BuilderToolsPanel";
 
 export default function BuilderBuildPanel() {
@@ -27,16 +28,26 @@ export default function BuilderBuildPanel() {
   const total = EDITOR_SECTIONS.reduce((sum,{key})=>sum+b.editor.deck[key].reduce((n,line)=>n+line.quantity,0),0);
   const evidence = useMemo(()=>new Map(b.cardCategoryRecommendations.map(item=>[item.card.name, `${item.recommendedQuantity} copies suggested. ${item.tournamentDecks > 0 ? `${Math.round(item.tournamentRate*100)}% of matching tournament decks` : `${Math.round(item.communityRate*100)}% community adoption`}.`])),[b.cardCategoryRecommendations]);
   const suggestedNames = useMemo(()=>[...new Set(b.cardCategoryRecommendations.map(item=>item.card.name))],[b.cardCategoryRecommendations]);
+  const sourceSelect = useRef<HTMLSelectElement>(null);
+  const collectionPending = b.collectionMode !== "all" && !b.collectionLoaded;
   const cardBrowser = <>          {b.recommendationsEnabled && <section aria-label="Suggestion context" className="identity-surface mb-3 rounded-2xl border border-ctp-surface1 p-3">
             <p className="text-xs font-medium uppercase tracking-wide text-ctp-subtext0">Optional suggestions</p>
             <h2 className="mt-1 text-xl font-semibold">Find your next card</h2>
             <p className="mt-2 text-sm text-ctp-subtext1">Select cards to review, then choose Add 1 each or Add playset. Browsing suggestions does not change your deck.</p>
             {b.championName && b.spiritFilter && <p className="mt-2 break-words text-sm font-medium">{b.championName} · {b.spiritFilter}</p>}
-            <p className="mt-2 text-xs text-ctp-subtext1">{b.effectivePopulationSource === "tournament" ? "Tournament evidence" : b.effectivePopulationSource === "community" || b.effectivePopulationSource === "simulator" ? "Community evidence" : "Tournament and community evidence"}{b.collectionMode === "owned-only" ? " · Owned cards only" : b.collectionMode === "prioritize" ? " · Owned cards prioritized in recommendation order" : ""}</p>
+            <p className="mt-2 text-xs text-ctp-subtext1">{b.effectivePopulationSource === "tournament" ? "Tournament evidence" : b.effectivePopulationSource === "community" || b.effectivePopulationSource === "simulator" ? "Community evidence" : "Tournament and community evidence"}{!b.collectionLoaded ? "" : b.collectionMode === "owned-only" ? " · Owned cards only" : b.collectionMode === "prioritize" ? " · Owned cards prioritized in recommendation order" : ""}</p>
+            {collectionPending && <div className="mt-3 rounded-xl border border-ctp-surface1 bg-ctp-base p-3">
+              <p role={b.collectionError ? "alert" : "status"} className="text-sm">{b.collectionError ?? "Loading your collection before applying your ownership preference…"}</p>
+              <p className="mt-2 text-xs text-ctp-subtext1">Ownership suggestions will appear when your collection is available. Your deck is unchanged.</p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <Button disabled={!b.collectionError} onClick={b.retryCollection}>{b.collectionError ? "Retry collection" : "Loading collection…"}</Button>
+                <Button onClick={() => { b.setCollectionMode("all"); sourceSelect.current?.focus(); }}>Show all cards</Button>
+              </div>
+            </div>}
             <details className="mb-3"><summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 text-sm">Suggestion settings<DisclosureChevron /></summary><ToolsPanel archetypeId={b.archetypeId} archetypeOptions={b.archetypeOptions} onArchetypeChange={b.changeArchetype} deckFormat={b.deckFormat} populationSource={b.effectivePopulationSource} onChangePopulationSource={b.changePopulationSource} collectionMode={b.collectionMode} onCollectionModeChange={b.setCollectionMode} /></details>
             {(!b.championName || !b.spiritFilter) ? <p className="mb-3 text-sm text-ctp-subtext1">Add {!b.championName && !b.spiritFilter ? "Champion and Spirit cards" : !b.championName ? "a Champion card" : "a Spirit card"} to Material to focus suggestions. Use All cards to find them.</p> : b.gateLoading ? <p role="status" className="mb-3 text-sm">Loading suggestions…</p> : <p className="mb-3 text-xs text-ctp-subtext1">Suggestions use your deck’s available elements. Nothing is added until you choose it.</p>}
           </section>}
-          <CardBrowser format={b.deckFormat} renderStats={name => cardStats.renderStats(name, b.recommendationsEnabled)} statsControls={cardStats.controls} sourceControl={<select aria-label="Card source" value={b.recommendationsEnabled ? "suggestions" : "all"} onChange={event=>b.setRecommendationsEnabled(event.target.value==="suggestions")} className="min-h-12 w-full min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-xs"><option value="all">All cards</option><option value="suggestions">Suggestions</option></select>} suppressResults={b.recommendationsEnabled && (!b.championName || !b.spiritFilter || b.gateLoading)} query={b.cardInput} onQuery={b.setCardInput} destination={b.addDestination} onDestination={b.setAddDestination} names={b.cardNames} catalog={b.catalogByName} deck={b.editor.deck} onEdit={b.editor.edit} owned={b.collectionLoaded ? b.collectionOwnedByName : undefined} collectionStatus={b.collectionError ?? "Loading collection…"} identityElements={b.identityElements} suggestedNames={b.recommendationsEnabled ? suggestedNames : undefined} evidence={b.recommendationsEnabled ? evidence : undefined} />
+          <CardBrowser format={b.deckFormat} renderStats={name => cardStats.renderStats(name, b.recommendationsEnabled)} statsControls={cardStats.controls} sourceControl={<select ref={sourceSelect} aria-label="Card source" value={b.recommendationsEnabled ? "suggestions" : "all"} onChange={event=>b.setRecommendationsEnabled(event.target.value==="suggestions")} className="min-h-12 w-full min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-base px-2 text-xs"><option value="all">All cards</option><option value="suggestions">Suggestions</option></select>} suppressResults={b.recommendationsEnabled && (!b.championName || !b.spiritFilter || b.gateLoading || collectionPending)} query={b.cardInput} onQuery={b.setCardInput} destination={b.addDestination} onDestination={b.setAddDestination} names={b.cardNames} catalog={b.catalogByName} deck={b.editor.deck} onEdit={b.editor.edit} owned={b.collectionLoaded ? b.collectionOwnedByName : undefined} collectionStatus={b.collectionError ?? "Loading collection…"} identityElements={b.identityElements} suggestedNames={b.recommendationsEnabled ? suggestedNames : undefined} evidence={b.recommendationsEnabled ? evidence : undefined} />
   </>;
   return <section aria-label="Deck building workspace" className="mt-3">
     {(!starting || hasCards) && <div style={{top: headerHeight}} className="sticky z-10 -mx-1 flex flex-wrap items-center justify-between gap-2 border-b border-ctp-surface1 bg-ctp-base px-1 py-2">

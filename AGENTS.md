@@ -95,6 +95,8 @@ All new or revised user interfaces must be mobile-first, follow Material Design 
 
 ## Git
 
+- After completing implementation and relevant verification, commit the task's changes without waiting for a separate commit request. Report any verification limitations. Push only when requested.
+- In the final response, report the commit and tell the user the next recommended work item, including any blockers.
 - During an audit, report findings and proposed changes without editing files unless implementation is requested.
 - `git status --short` before staging. Stage only files changed for current task.
 - Don't touch: `app/index.html`, `app/src/features/compare/DeckSearchByCards.tsx`, `.claude/`, `app/public/{apple-touch-icon,favicon-16,favicon-32}.png`.

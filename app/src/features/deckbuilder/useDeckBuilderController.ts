@@ -94,7 +94,7 @@ export function useDeckBuilderController() {
   }
 
   const {
-    collectionOwnedByName, collectionLoaded, collectionError,
+    collectionOwnedByName, collectionLoaded, collectionError, retryCollection,
     popularityIndexData, liveCatalogByName, cardCatalog, catalogByName, spiritCanonicalNames,
     simulatorSummary, priceByName, priceTrendByName, seedLockedCards, communityInclusionByName,
     hypeGapByName, decaySignalByName, build, reviewItemCount, reviewRemovalNames, gateLoading,
@@ -176,7 +176,7 @@ export function useDeckBuilderController() {
 
   return {
     sessionRecoveryAvailable,
-    collectionOwnedByName, collectionLoaded, collectionError, identityElements,
+    collectionOwnedByName, collectionLoaded, collectionError, retryCollection, identityElements,
     editor,
     recommendationsEnabled,
     setRecommendationsEnabled,
