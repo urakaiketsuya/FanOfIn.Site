@@ -16,8 +16,7 @@ import DeckWorkspacePicker from "../deckbuilder/components/DeckWorkspacePicker";
 import DeckToolWorkspaceHeader from "../deckbuilder/components/DeckToolWorkspaceHeader";
 import HypergeometricCalculator from "../deckbuilder/HypergeometricCalculator";
 import ResourceCurveReliability from "../deckbuilder/ResourceCurveReliability";
-import CopyClumpingRisk from "../deckbuilder/CopyClumpingRisk";
-import ConditionalHandPressure from "../deckbuilder/ConditionalHandPressure";
+import DrawPatternReview from "./DrawPatternReview";
 import SideboardImpact from "../deckbuilder/SideboardImpact";
 import BuilderTestPanel from "../deckbuilder/panels/BuilderTestPanel";
 import { useDeckTestResult } from "../decks/useDeckTestResult";
@@ -145,7 +144,7 @@ export default function DeckAnalysisIndex() {
         "Pressure access": <><ThreatCadence mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisRoles} sharedPackages={analysisPlan?.pressure} onSharedPackagesChange={(pressure) => analysisProfile && persistAnalysisProfile({ ...analysisProfile, plans: analysisProfile.plans.map((plan) => plan.id === analysisProfile.activePlanId ? { ...plan, pressure } : plan), reviewedAt: null })} /></>,
         "Recovery access": <><ResilienceRebuild mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedAssignments={analysisPlan?.resilience} onSharedAssignmentsChange={(resilience) => analysisProfile && persistAnalysisProfile({ ...analysisProfile, plans: analysisProfile.plans.map((plan) => plan.id === analysisProfile.activePlanId ? { ...plan, resilience } : plan), reviewedAt: null })} /></>,
         "Find cards": <><HypergeometricCalculator mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></>,
-        "Unwanted draws": <><CopyClumpingRisk mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /><ConditionalHandPressure mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} /></>,
+        "Unwanted draws": <DrawPatternReview mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} />,
         "Resource timing": <><ResourceCurveReliability mainLines={workspace.main} materialLines={workspace.material} catalogByName={catalogByName} sharedEffectiveCosts={analysisProfile?.effectiveCosts} onSharedEffectiveCostsChange={(effectiveCosts) => analysisProfile && persistAnalysisProfile({ ...analysisProfile, effectiveCosts, reviewedAt: null })} /></>,
         "Sideboard comparison": <>{workspace.sideboard.length > 0 ? <SideboardImpact mainLines={workspace.main} sideboardLines={workspace.sideboard} catalogByName={catalogByName} /> : <InlineState>Add cards to the Sideboard in Deck Builder to analyze substitutions.</InlineState>}</>,
       }} />

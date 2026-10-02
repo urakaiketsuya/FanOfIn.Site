@@ -75,3 +75,18 @@ and desktop layout, keyboard topic navigation, empty search and sideboard, retai
 detailed recipe draft retention, report handoff, and expanded sequence resources. Card image delivery
 was unavailable in the local fixture; readable fallbacks were verified. Device keyboard and screen
 reader checks remain part of release verification.
+
+### Draw pattern review follow-up
+
+The Analysis unwanted-draw detail view now separates repeated copies and printed conditions into
+peer tabs with retained checkpoint state. Both use shared card art, readable names, neutral enlarged
+probabilities, and consistent disclosures. Printed conditions no longer receive an unsupported
+Low/Moderate/High pressure verdict. Missing catalog records and empty results are explicit.
+Duplicate results retain their exact table and CSV export with visible clipboard failure recovery.
+Calculation formulas are unchanged.
+
+Verification: app typecheck and lint passed (six existing Fast Refresh warnings); nine Analysis
+regression tests passed. Temporary component fixtures checked 360px and 1280px layout, 48px targets,
+keyboard tabs, retained checkpoint selection, expanded exact values, empty results and missing
+catalog notices. No page overflow was observed. Real card image delivery, clipboard failure UI,
+physical mobile keyboard and screen-reader behavior were not verified. Fixtures were removed.

@@ -1989,9 +1989,10 @@ marked. The classifier is deliberately narrow and inspectable in
 
 For the inferred opening hand or first 10 cards seen, all marked copies form one success pool. The
 tool reports exact hypergeometric probabilities of drawing at least one, two, or three marked cards.
-The display calls the 2+ result Low below 25%, Moderate from 25% through 49.9%, and High at 50% or
-above. These labels flag hands worth reviewing; they do not model whether the relevant conditions
-are already online, mulligans, or the severity of any individual card being inactive.
+The display presents neutral probabilities and the detected cards with their condition markers.
+It does not assign a pressure rating: conditions may already be enabled. Missing catalog records
+are identified explicitly and excluded from the detected pool. Mulligans and the severity of a
+condition being inactive are not modeled.
 
 ### Sideboard substitution impact (`features/deckbuilder/SideboardImpact.tsx`)
 
