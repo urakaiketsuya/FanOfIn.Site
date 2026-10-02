@@ -269,3 +269,11 @@ Remaining: filter and scroll restoration after leaving the browser, full tab/pan
 reverse-face and missing-art fixtures, advanced-filter retry simulation, text zoom, physical
 mobile keyboard and screen reader checks. Ownership handoffs on detail remain a separate pass.
 These rows remain open. Included in the card browsing expressive design commit.
+
+### Goldfish zone presentation, October 1
+
+Memory, banished cards, and materialized cards now show wrapping card artwork with visible names and links to card details. Each physical copy remains visible in session order. Empty Memory and Materialized zones explain their state. The hand heading, turn label, and zone counts have stronger visual hierarchy using existing theme surfaces.
+
+Verified with a pasted test deck and real catalog art at 360 × 800 and 1280 × 900: empty Memory, reserve payment into Memory, random banishment, and materialization. Mobile zone controls and links met the 48px target, with no horizontal page overflow in the measured Memory view. Escape restored focus to the Memory button. Typecheck and lint passed with six existing warnings. The unavailable account library retained its visible error and paste alternative.
+
+Remaining: full Builder expressive pass, physical keyboard and screen reader checks, text zoom, missing catalog fixtures, and broader session recovery verification. These page checklist rows remain open. No simulation rules or persistence were changed.
