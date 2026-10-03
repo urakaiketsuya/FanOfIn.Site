@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "status": "trial-passed",
+  "published": false,
+  "draftSha256": "f42250af601c790e6e4a371c898c1ec3aaafd2acbef107cba81641bc791ce2f5",
+  "baseFileSha256": "0541fb3bb595f323ea4db3110b411fc50ad1746793c55f67882695cf42e84201",
+  "inputHashes": {
+    "data/analysis/deck-card-index.json": "a959ccfa01b1b20f6c4f9ce59a1bfc3b56f4ab75d36220c93e288306af6efda0",
+    "data/analysis/deck-sightings.json": "d9645ee0dadb48f2f296b7f956d30a85a73796f031084885d51283a6534a1859",
+    "data/analysis/archetype-taxonomy.json": "e0084b279e3c79f778143bf065d280ab0f1218104238a2e42f61ede18d102b30",
+    "pipeline/.cache/cards.json": "5374445554a13f5a7d8934322041776ad75f19891cac92cf79aa1259a5008102"
+  },
+  "scope": "Actual publisher run in temporary files with trial-only acceptance. Drafts remain unreviewed; live data unchanged. Mechanics remain unverified.",
+  "checks": [
+    "Source hash matches reconciled curator base",
+    "Parent dependency accepted within trial",
+    "Preview and matching card names pass publisher validation",
+    "All five memberships equal prior review evidence",
+    "Live reference, analyses, taxonomy, and manifest remain byte-identical"
+  ],
+  "strategies": [
+    {
+      "id": "fractal-herb-burn",
+      "name": "Herb Burn",
+      "decks": 136,
+      "players": 74,
+      "events": 95,
+      "confidence": "recurring"
+    },
+    {
+      "id": "fractal-arcane-mage",
+      "name": "Arcane Mage",
+      "decks": 1269,
+      "players": 484,
+      "events": 730,
+      "confidence": "recurring"
+    },
+    {
+      "id": "fractal-arcane-warrior",
+      "name": "Arcane Warrior",
+      "decks": 26,
+      "players": 20,
+      "events": 16,
+      "confidence": "recurring"
+    },
+    {
+      "id": "fractal-crux-lorraine--psycho",
+      "name": "Psycho",
+      "decks": 34,
+      "players": 29,
+      "events": 18,
+      "confidence": "recurring"
+    },
+    {
+      "id": "fractal-crux-lorraine",
+      "name": "Crux Lorraine",
+      "decks": 3385,
+      "players": 1092,
+      "events": 1079,
+      "confidence": "recurring"
+    }
+  ]
+}

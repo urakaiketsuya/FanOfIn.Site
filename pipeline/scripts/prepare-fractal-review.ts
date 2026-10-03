@@ -25,11 +25,16 @@ const review: {
     version: number; reviewDate: string; scope: string; catalogSha256: string; sourceSha256: string;
     candidates: { candidateId: string; kind: string; summary: string; requirements: string[]; cautions: string[]; supportingCards: string[] }[];
     strategies: Record<string, { coreCards: string[]; description: string; decision: string }>;
+    publicationBase: { file: string; sha256: string; sourceSha256: string; decision: string };
 } = read('data/reference/review/mechanics-review.json');
 // Human-authored findings must be rechecked if their source evidence changes.
 assert.equal(review.version, 1);
 assert.equal(review.catalogSha256, hash('pipeline/.cache/cards.json'), 'Catalog changed: refresh mechanics review before rebuilding.');
 assert.equal(review.sourceSha256, source.source.sha256, 'Source changed: refresh mechanics review before rebuilding.');
+assert.equal(review.publicationBase.file, 'data/reference/fractal-archetypes.json');
+assert.equal(review.publicationBase.sha256, hash(review.publicationBase.file), 'Live reference changed: repeat source reconciliation before rebuilding.');
+const live: ReferenceArchetypes = read(review.publicationBase.file);
+assert.equal(review.publicationBase.sourceSha256, live.source.sha256);
 const cardEvidence = (name: string) => {
     const card = catalog.find((c: { name: string }) => c.name === name);
     assert(card, `Missing mechanics evidence card: ${name}`);
@@ -64,12 +69,23 @@ const store: StrategyStore = { version: 1, entries: [], drafts: selected.map(def
     const finding = review.strategies[definition.name];
     assert(finding, `Missing strategy review: ${definition.name}`);
     for (const card of finding.coreCards) assert(known.has(card), `Unknown core card: ${card}`);
-    return { definition, coreCards: finding.coreCards, description: finding.description, packageIds: [], sourceHash: source.source.sha256,
-        mechanics: 'unverified', mechanicsEvidence: `${review.scope} ${finding.decision} See mechanics-review.json for candidate conditions and evidence.` };
+    return { definition, coreCards: finding.coreCards, description: finding.description, packageIds: [], sourceHash: live.source.sha256,
+        mechanics: 'unverified', mechanicsEvidence: `${review.scope} ${finding.decision} Adopted from Fractal revision ${source.source.revision}, source SHA256 ${source.source.sha256}; reconciled against curator base ${live.source.sha256}. See mechanics-review.json for candidate conditions and evidence.` };
 }) };
 parseStrategyStore(JSON.stringify(store));
 assert(store.drafts.every(d => d.definition.reviewStatus === 'unreviewed'));
 write('strategy-drafts', store);
+write('source-reconciliation', {
+    version: 1, upstream: source.source, publicationBase: review.publicationBase,
+    reviewSha256: hash('data/reference/review/mechanics-review.json'),
+    decision: 'Selected definitions become curated overlays; the live reference and concrete taxonomy remain unchanged. Preview cards do not change membership rules.',
+    definitions: selected.map(d => {
+        const existing = live.definitions.find(x => x.id === d.id);
+        return { id: d.id, name: d.name, action: existing ? 'retain-parent' : 'add-curated-definition',
+            existingRuleIdentical: existing ? JSON.stringify(existing.rule) === JSON.stringify(d.rule) : null,
+            parentId: d.parentId, previewCards: review.strategies[d.name].coreCards };
+    }),
+});
 write('combo-candidates', { version: 1, source: source.source, mechanicsReview: { file: 'mechanics-review.json', sha256: hash('data/reference/review/mechanics-review.json'), catalogSha256: review.catalogSha256 }, packages: reviewedPackages });
-write('assessment', { version: 1, source: source.source, population: decks.length, mechanicsReview: { file: 'mechanics-review.json', sha256: hash('data/reference/review/mechanics-review.json'), scope: review.scope, reviewedCandidates: reviewedPackages.length }, inputHashes: Object.fromEntries(['data/analysis/deck-card-index.json', 'data/analysis/deck-sightings.json', 'data/analysis/archetype-taxonomy.json', 'pipeline/.cache/cards.json'].map(p => [p, hash(p)])), corrections, instructions: ['Import strategy-drafts.json through the reference strategy curator to resume drafts. No entries are accepted.', 'The source hash intentionally differs from the live reference snapshot. Review and reconcile the source before publication.', 'Combo candidates are review records, not saved packages or runnable Combo Lab recipes. Candidate IDs are not linked as packageIds until real packages exist.', 'Use source rules plus listed exact-name corrections when reproducing qualified evidence.', 'Keep broad Exia and Overlord definitions pending boundary review; no live reference or taxonomy replacement is included.'], strategies: selected.map(d => ({ id: d.id, name: d.name, coreReview: review.strategies[d.name], packageCandidateIds: packages.filter(p => p.sourceDefinitionId === d.id).map(p => p.id), ...evidence(decks.filter(deck => evaluateDefinition(d, reference.definitions, deck).matches).map(deck => deck.deckId)) })) });
+write('assessment', { version: 1, source: source.source, population: decks.length, mechanicsReview: { file: 'mechanics-review.json', sha256: hash('data/reference/review/mechanics-review.json'), scope: review.scope, reviewedCandidates: reviewedPackages.length }, inputHashes: Object.fromEntries(['data/analysis/deck-card-index.json', 'data/analysis/deck-sightings.json', 'data/analysis/archetype-taxonomy.json', 'pipeline/.cache/cards.json'].map(p => [p, hash(p)])), corrections, instructions: ['Import strategy-drafts.json through the reference strategy curator to resume drafts. No entries are accepted.', 'Drafts use the reconciled live curator base; upstream provenance is retained in source-reconciliation.json and each draft. Preview cards are not additional membership requirements.', 'Combo candidates are review records, not saved packages or runnable Combo Lab recipes. Candidate IDs are not linked as packageIds until real packages exist.', 'Use source rules plus listed exact-name corrections when reproducing qualified evidence.', 'Keep broad Exia and Overlord definitions pending boundary review; no live reference or taxonomy replacement is included.'], strategies: selected.map(d => ({ id: d.id, name: d.name, coreReview: review.strategies[d.name], packageCandidateIds: packages.filter(p => p.sourceDefinitionId === d.id).map(p => p.id), ...evidence(decks.filter(deck => evaluateDefinition(d, reference.definitions, deck).matches).map(deck => deck.deckId)) })) });
 console.log(`Prepared ${store.drafts.length} strategy drafts (including parent dependency), ${packages.length} combo candidates; ${decks.length} decks.`);

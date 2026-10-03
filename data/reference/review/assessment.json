@@ -10,7 +10,7 @@
   "population": 58603,
   "mechanicsReview": {
     "file": "mechanics-review.json",
-    "sha256": "54417cbe2c87c70e5dd032637972113f24cec1921e8416a4cec110dfc8a4a73d",
+    "sha256": "ac9cc91e0cc8a5a95b809daf4c36f77313b598375e7abe77a803ca33eff78d03",
     "scope": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification.",
     "reviewedCandidates": 15
   },
@@ -28,7 +28,7 @@
   },
   "instructions": [
     "Import strategy-drafts.json through the reference strategy curator to resume drafts. No entries are accepted.",
-    "The source hash intentionally differs from the live reference snapshot. Review and reconcile the source before publication.",
+    "Drafts use the reconciled live curator base; upstream provenance is retained in source-reconciliation.json and each draft. Preview cards are not additional membership requirements.",
     "Combo candidates are review records, not saved packages or runnable Combo Lab recipes. Candidate IDs are not linked as packageIds until real packages exist.",
     "Use source rules plus listed exact-name corrections when reproducing qualified evidence.",
     "Keep broad Exia and Overlord definitions pending boundary review; no live reference or taxonomy replacement is included."
@@ -38,9 +38,14 @@
       "id": "fractal-herb-burn",
       "name": "Herb Burn",
       "coreReview": {
-        "coreCards": [],
-        "description": "Two alternative packages: Tender + Rebuke, or Floral Arrangement + Combustible Potion. Preserve both branches; no single shared required core is justified.",
-        "decision": "Keep alternative cores; do not flatten both pairs into one required set."
+        "coreCards": [
+          "Cinderbloom Tender",
+          "Searing Rebuke",
+          "Floral Arrangement",
+          "Combustible Potion"
+        ],
+        "description": "Preview shows two alternative packages: Tender + Rebuke, or Floral Arrangement + Combustible Potion. Matching requires either complete pair plus the Fire gate and exclusions; it does not require all four cards.",
+        "decision": "Show both alternative pairs as preview cards; preserve the OR-of-ALL matching rule."
       },
       "packageCandidateIds": [
         "fractal-herb-burn-combo-1",
@@ -216,9 +221,16 @@
       "id": "fractal-arcane-mage",
       "name": "Arcane Mage",
       "coreReview": {
-        "coreCards": [],
-        "description": "Broad classifier with alternative signature cards and explicit exclusions. No single mandatory core follows from its ANY rule.",
-        "decision": "Choose representative display cards separately from required membership; retain alternatives pending curator support."
+        "coreCards": [
+          "Rai, Storm Seer",
+          "Arcane Blast",
+          "Advent of the Stormcaller",
+          "Erratic Bolt",
+          "Voltaic Sphere",
+          "Spellshield: Arcane"
+        ],
+        "description": "Preview shows alternative signature cards, not a jointly required core. Matching requires at least one listed signature card and respects the source exclusions.",
+        "decision": "Use source signature cards as display previews only. Keep the ANY rule and exclusions unchanged."
       },
       "packageCandidateIds": [],
       "decks": 1269,
@@ -1560,9 +1572,15 @@
       "id": "fractal-arcane-warrior",
       "name": "Arcane Warrior",
       "coreReview": {
-        "coreCards": [],
-        "description": "Broad classifier with alternative signature cards and explicit exclusions. The source does not require all listed Warrior cards together.",
-        "decision": "Keep as a draft until a representative core and concrete build support are established."
+        "coreCards": [
+          "Staves X Ultra",
+          "Piccarda, Night Rider",
+          "Conductive Strike",
+          "Rumble Coordinator",
+          "Capacitance X Psycho"
+        ],
+        "description": "Preview shows alternative signature cards, not a jointly required core. Matching requires at least one listed signature card and respects the source exclusions.",
+        "decision": "Use source signature cards as display previews only. Keep the ANY rule and exclusions unchanged."
       },
       "packageCandidateIds": [],
       "decks": 26,
@@ -1666,9 +1684,14 @@
       "id": "fractal-crux-lorraine",
       "name": "Crux Lorraine",
       "coreReview": {
-        "coreCards": [],
-        "description": "Parent classifier for Psycho with four alternative signature cards and Merlin exclusions. No universal required card follows from the source rule.",
-        "decision": "Retain parent gate; do not invent an all-card core to satisfy publication validation."
+        "coreCards": [
+          "Ghosts of Pendragon",
+          "Spirit Blade: Ascension",
+          "Spirit Blade: Dispersion",
+          "Spirit Blade: Ensoul"
+        ],
+        "description": "Preview shows alternative signature cards, not a jointly required core. Matching requires at least one listed signature card and respects the source exclusions. This parent gate remains required for Psycho.",
+        "decision": "Use source signature cards as display previews only. Keep the ANY rule and exclusions unchanged."
       },
       "packageCandidateIds": [],
       "decks": 3385,

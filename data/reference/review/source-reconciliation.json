@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "upstream": {
+    "name": "Fractal of Insight",
+    "url": "https://fractalofin.site/deck/",
+    "file": "fractal/archetypes.py",
+    "revision": "d0c65d63e0f5d6be0a2317f6f6da4dcada3af080",
+    "sha256": "39e5c59fe0e7d891ab10097c17d874ffc29a04ab78a06dbda03871231eecf128"
+  },
+  "publicationBase": {
+    "file": "data/reference/fractal-archetypes.json",
+    "sha256": "0541fb3bb595f323ea4db3110b411fc50ad1746793c55f67882695cf42e84201",
+    "sourceSha256": "cb2e6c1637522a318168382c6e3ec053ade916ab411fabb02550f6431f8826c7",
+    "decision": "Use the unchanged live reference as the curator base. Adopt selected upstream definitions as custom curated rules, preserving upstream provenance. Do not replace broad live classifiers."
+  },
+  "reviewSha256": "ac9cc91e0cc8a5a95b809daf4c36f77313b598375e7abe77a803ca33eff78d03",
+  "decision": "Selected definitions become curated overlays; the live reference and concrete taxonomy remain unchanged. Preview cards do not change membership rules.",
+  "definitions": [
+    {
+      "id": "fractal-herb-burn",
+      "name": "Herb Burn",
+      "action": "add-curated-definition",
+      "existingRuleIdentical": null,
+      "parentId": null,
+      "previewCards": [
+        "Cinderbloom Tender",
+        "Searing Rebuke",
+        "Floral Arrangement",
+        "Combustible Potion"
+      ]
+    },
+    {
+      "id": "fractal-arcane-mage",
+      "name": "Arcane Mage",
+      "action": "add-curated-definition",
+      "existingRuleIdentical": null,
+      "parentId": null,
+      "previewCards": [
+        "Rai, Storm Seer",
+        "Arcane Blast",
+        "Advent of the Stormcaller",
+        "Erratic Bolt",
+        "Voltaic Sphere",
+        "Spellshield: Arcane"
+      ]
+    },
+    {
+      "id": "fractal-arcane-warrior",
+      "name": "Arcane Warrior",
+      "action": "add-curated-definition",
+      "existingRuleIdentical": null,
+      "parentId": null,
+      "previewCards": [
+        "Staves X Ultra",
+        "Piccarda, Night Rider",
+        "Conductive Strike",
+        "Rumble Coordinator",
+        "Capacitance X Psycho"
+      ]
+    },
+    {
+      "id": "fractal-crux-lorraine--psycho",
+      "name": "Psycho",
+      "action": "add-curated-definition",
+      "existingRuleIdentical": null,
+      "parentId": "fractal-crux-lorraine",
+      "previewCards": [
+        "Capacitance X Psycho",
+        "Numinous Monk"
+      ]
+    },
+    {
+      "id": "fractal-crux-lorraine",
+      "name": "Crux Lorraine",
+      "action": "retain-parent",
+      "existingRuleIdentical": true,
+      "parentId": null,
+      "previewCards": [
+        "Ghosts of Pendragon",
+        "Spirit Blade: Ascension",
+        "Spirit Blade: Dispersion",
+        "Spirit Blade: Ensoul"
+      ]
+    }
+  ]
+}
