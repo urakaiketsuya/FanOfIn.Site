@@ -7,7 +7,7 @@ import Panel from "../../components/ui/Panel";
 import { useSyncProgress } from "../../lib/sync/SyncProvider";
 import type { ComboRecipeRequirement } from "../deckbuilder/HypergeometricCalculator";
 
-import { floralPotionPreset } from "./reviewedAvailabilityPresets";
+import { floralPotionPreset, floralPotionSetup } from "./reviewedAvailabilityPresets";
 
 export default function ReviewedAvailabilityPreset({ catalogByName, main, requirements, onLoad, onUndo }: {
   catalogByName: Map<string, Card>;
@@ -34,7 +34,22 @@ export default function ReviewedAvailabilityPreset({ catalogByName, main, requir
       <div className="min-w-0">
         <h2 className="font-semibold text-ctp-text">Reviewed example: brew a Combustible Potion</h2>
         <p className="mt-2 text-sm">Find at least one of each pictured card in your Main Deck draws. These are the two required pieces, not alternative choices.</p>
-        <p className="mt-2 text-sm text-ctp-subtext1">The odds measure card access only. Playing the sequence also needs Fire access, three reserve for Floral Arrangement before modifiers, both summoned Herbs kept for Brew, and a legal unit target. Payment and successful resolution are not included in the odds.</p>
+        <p className="mt-2 text-sm text-ctp-subtext1">The odds measure card access only. Board state, payment, and successful resolution are not checked or included in the odds.</p>
+        <section aria-label="Required setup" className="mt-3 rounded-lg border border-ctp-surface1 p-3">
+          <h3 className="font-medium">Required setup</h3>
+          <p className="mt-1 text-sm text-ctp-subtext1">Use this guide to check your game state. Loading the preset does not confirm these conditions.</p>
+          <div className="mt-3 space-y-3">
+            {floralPotionSetup.map((stage) => <div key={stage.phase}>
+              <h4 className="text-sm font-semibold">{stage.phase}</h4>
+              <dl className="mt-1 space-y-2 text-sm">
+                {stage.requirements.map((requirement) => <div key={requirement.label}>
+                  <dt className="font-medium">{requirement.label}</dt>
+                  <dd className="text-ctp-subtext1">{requirement.detail}</dd>
+                </div>)}
+              </dl>
+            </div>)}
+          </div>
+        </section>
         <details className="mt-2">
           <summary className="flex min-h-control cursor-pointer items-center gap-2 font-medium"><DisclosureChevron />Sequence and sources</summary>
           <ol className="list-decimal space-y-2 pl-5 text-sm">
