@@ -8,6 +8,12 @@
     "sha256": "39e5c59fe0e7d891ab10097c17d874ffc29a04ab78a06dbda03871231eecf128"
   },
   "population": 58603,
+  "mechanicsReview": {
+    "file": "mechanics-review.json",
+    "sha256": "54417cbe2c87c70e5dd032637972113f24cec1921e8416a4cec110dfc8a4a73d",
+    "scope": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification.",
+    "reviewedCandidates": 15
+  },
   "inputHashes": {
     "data/analysis/deck-card-index.json": "a959ccfa01b1b20f6c4f9ce59a1bfc3b56f4ab75d36220c93e288306af6efda0",
     "data/analysis/deck-sightings.json": "d9645ee0dadb48f2f296b7f956d30a85a73796f031084885d51283a6534a1859",
@@ -31,6 +37,11 @@
     {
       "id": "fractal-herb-burn",
       "name": "Herb Burn",
+      "coreReview": {
+        "coreCards": [],
+        "description": "Two alternative packages: Tender + Rebuke, or Floral Arrangement + Combustible Potion. Preserve both branches; no single shared required core is justified.",
+        "decision": "Keep alternative cores; do not flatten both pairs into one required set."
+      },
       "packageCandidateIds": [
         "fractal-herb-burn-combo-1",
         "fractal-herb-burn-combo-2"
@@ -204,6 +215,11 @@
     {
       "id": "fractal-arcane-mage",
       "name": "Arcane Mage",
+      "coreReview": {
+        "coreCards": [],
+        "description": "Broad classifier with alternative signature cards and explicit exclusions. No single mandatory core follows from its ANY rule.",
+        "decision": "Choose representative display cards separately from required membership; retain alternatives pending curator support."
+      },
       "packageCandidateIds": [],
       "decks": 1269,
       "deckIds": [
@@ -1543,6 +1559,11 @@
     {
       "id": "fractal-arcane-warrior",
       "name": "Arcane Warrior",
+      "coreReview": {
+        "coreCards": [],
+        "description": "Broad classifier with alternative signature cards and explicit exclusions. The source does not require all listed Warrior cards together.",
+        "decision": "Keep as a draft until a representative core and concrete build support are established."
+      },
       "packageCandidateIds": [],
       "decks": 26,
       "deckIds": [
@@ -1578,6 +1599,14 @@
     {
       "id": "fractal-crux-lorraine--psycho",
       "name": "Psycho",
+      "coreReview": {
+        "coreCards": [
+          "Capacitance X Psycho",
+          "Numinous Monk"
+        ],
+        "description": "Required Psycho + Monk pair with the Crux Lorraine parent gate preserved. The damage boost requires Psycho awake and another regalia paying the granted rest cost.",
+        "decision": "Use the source-required pair as core; retain conditional mechanics and parent dependency."
+      },
       "packageCandidateIds": [
         "fractal-crux-lorraine--psycho-combo-1"
       ],
@@ -1636,6 +1665,11 @@
     {
       "id": "fractal-crux-lorraine",
       "name": "Crux Lorraine",
+      "coreReview": {
+        "coreCards": [],
+        "description": "Parent classifier for Psycho with four alternative signature cards and Merlin exclusions. No universal required card follows from the source rule.",
+        "decision": "Retain parent gate; do not invent an all-card core to satisfy publication validation."
+      },
       "packageCandidateIds": [],
       "decks": 3385,
       "deckIds": [

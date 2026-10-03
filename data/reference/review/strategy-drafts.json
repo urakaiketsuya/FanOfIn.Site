@@ -35,11 +35,11 @@
         "reviewStatus": "unreviewed"
       },
       "coreCards": [],
-      "description": "Initial review batch. Card co-occurrence is classification evidence; select a reviewed core before acceptance. Herb Burn retains two alternative combo groups.",
+      "description": "Two alternative packages: Tender + Rebuke, or Floral Arrangement + Combustible Potion. Preserve both branches; no single shared required core is justified.",
       "packageIds": [],
       "sourceHash": "39e5c59fe0e7d891ab10097c17d874ffc29a04ab78a06dbda03871231eecf128",
       "mechanics": "unverified",
-      "mechanicsEvidence": ""
+      "mechanicsEvidence": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification. Keep alternative cores; do not flatten both pairs into one required set. See mechanics-review.json for candidate conditions and evidence."
     },
     {
       "definition": {
@@ -71,11 +71,11 @@
         "reviewStatus": "unreviewed"
       },
       "coreCards": [],
-      "description": "Initial review batch. Card co-occurrence is classification evidence; select a reviewed core before acceptance. Herb Burn retains two alternative combo groups.",
+      "description": "Broad classifier with alternative signature cards and explicit exclusions. No single mandatory core follows from its ANY rule.",
       "packageIds": [],
       "sourceHash": "39e5c59fe0e7d891ab10097c17d874ffc29a04ab78a06dbda03871231eecf128",
       "mechanics": "unverified",
-      "mechanicsEvidence": ""
+      "mechanicsEvidence": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification. Choose representative display cards separately from required membership; retain alternatives pending curator support. See mechanics-review.json for candidate conditions and evidence."
     },
     {
       "definition": {
@@ -104,11 +104,11 @@
         "reviewStatus": "unreviewed"
       },
       "coreCards": [],
-      "description": "Initial review batch. Card co-occurrence is classification evidence; select a reviewed core before acceptance. Herb Burn retains two alternative combo groups.",
+      "description": "Broad classifier with alternative signature cards and explicit exclusions. The source does not require all listed Warrior cards together.",
       "packageIds": [],
       "sourceHash": "39e5c59fe0e7d891ab10097c17d874ffc29a04ab78a06dbda03871231eecf128",
       "mechanics": "unverified",
-      "mechanicsEvidence": ""
+      "mechanicsEvidence": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification. Keep as a draft until a representative core and concrete build support are established. See mechanics-review.json for candidate conditions and evidence."
     },
     {
       "definition": {
@@ -133,12 +133,15 @@
         "sourceLine": 748,
         "reviewStatus": "unreviewed"
       },
-      "coreCards": [],
-      "description": "Initial review batch. Card co-occurrence is classification evidence; select a reviewed core before acceptance. Herb Burn retains two alternative combo groups.",
+      "coreCards": [
+        "Capacitance X Psycho",
+        "Numinous Monk"
+      ],
+      "description": "Required Psycho + Monk pair with the Crux Lorraine parent gate preserved. The damage boost requires Psycho awake and another regalia paying the granted rest cost.",
       "packageIds": [],
       "sourceHash": "39e5c59fe0e7d891ab10097c17d874ffc29a04ab78a06dbda03871231eecf128",
       "mechanics": "unverified",
-      "mechanicsEvidence": ""
+      "mechanicsEvidence": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification. Use the source-required pair as core; retain conditional mechanics and parent dependency. See mechanics-review.json for candidate conditions and evidence."
     },
     {
       "definition": {
@@ -165,11 +168,11 @@
         "reviewStatus": "unreviewed"
       },
       "coreCards": [],
-      "description": "Parent dependency for Psycho; review before accepting the subtype.",
+      "description": "Parent classifier for Psycho with four alternative signature cards and Merlin exclusions. No universal required card follows from the source rule.",
       "packageIds": [],
       "sourceHash": "39e5c59fe0e7d891ab10097c17d874ffc29a04ab78a06dbda03871231eecf128",
       "mechanics": "unverified",
-      "mechanicsEvidence": ""
+      "mechanicsEvidence": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification. Retain parent gate; do not invent an all-card core to satisfy publication validation. See mechanics-review.json for candidate conditions and evidence."
     }
   ]
 }

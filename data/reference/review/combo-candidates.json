@@ -7,6 +7,11 @@
     "revision": "d0c65d63e0f5d6be0a2317f6f6da4dcada3af080",
     "sha256": "39e5c59fe0e7d891ab10097c17d874ffc29a04ab78a06dbda03871231eecf128"
   },
+  "mechanicsReview": {
+    "file": "mechanics-review.json",
+    "sha256": "54417cbe2c87c70e5dd032637972113f24cec1921e8416a4cec110dfc8a4a73d",
+    "catalogSha256": "5374445554a13f5a7d8934322041776ad75f19891cac92cf79aa1259a5008102"
+  },
   "packages": [
     {
       "id": "fractal-herb-burn-combo-1",
@@ -273,7 +278,66 @@
         "Verify costs, timing, targets, zones, champion/class bonuses and required board state against catalog text.",
         "Identify missing enabling cards and whether this is an interaction, package, or executable combo.",
         "Before a Combo Lab recipe, distinguish material access from opening-hand draw requirements."
-      ]
+      ],
+      "textReview": {
+        "candidateId": "fractal-herb-burn-combo-1",
+        "kind": "conditional-interaction",
+        "summary": "With Cleric class bonuses active, gathering triggers Tender damage to both champions; Rebuke can prevent damage to your champion and trigger its damage to an opposing champion.",
+        "requirements": [
+          "A Cleric champion, Tender on the field, a separate gather source, and Rebuke prevention active before damage."
+        ],
+        "cautions": [
+          "The two listed cards do not provide gather. Do not infer a repeatable loop or fixed total damage."
+        ],
+        "supportingCards": [],
+        "reviewDate": "2026-10-03",
+        "scope": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification.",
+        "cardEvidence": [
+          {
+            "name": "Cinderbloom Tender",
+            "types": [
+              "ALLY"
+            ],
+            "subtypes": [
+              "CLERIC",
+              "AUTOMATON"
+            ],
+            "classes": [
+              "CLERIC"
+            ],
+            "elements": [
+              "FIRE"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 2,
+            "effect": "[Class Bonus] Whenever you **gather**, deal 1 damage to each champion. *(Apply this effect only if your champion’s class matches this card’s class.)*",
+            "legality": null
+          },
+          {
+            "name": "Searing Rebuke",
+            "types": [
+              "ACTION"
+            ],
+            "subtypes": [
+              "CLERIC",
+              "SPELL",
+              "REACTION"
+            ],
+            "classes": [
+              "CLERIC"
+            ],
+            "elements": [
+              "FIRE"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 2,
+            "effect": "Prevent the next 3 damage that would be dealt to your champion this turn.\n\n[Class Bonus] Whenever damage is prevented this way, deal 3 damage to target champion you don't control.",
+            "legality": null
+          }
+        ]
+      }
     },
     {
       "id": "fractal-herb-burn-combo-2",
@@ -519,7 +583,116 @@
         "Verify costs, timing, targets, zones, champion/class bonuses and required board state against catalog text.",
         "Identify missing enabling cards and whether this is an interaction, package, or executable combo.",
         "Before a Combo Lab recipe, distinguish material access from opening-hand draw requirements."
-      ]
+      ],
+      "textReview": {
+        "candidateId": "fractal-herb-burn-combo-2",
+        "kind": "direct-interaction",
+        "summary": "Floral Arrangement summons two Herb tokens that can pay the Brew cost of Combustible Potion. Brewing enables its draw-two/discard-one effect; sacrificing the Potion deals 2 damage to a target unit.",
+        "requirements": [
+          "Resolve Floral Arrangement and retain both tokens until brewing the Potion."
+        ],
+        "cautions": [
+          "Sacrificing tokens to Brew does not also activate their printed sacrifice abilities. Summoning these tokens is not itself a printed gather instruction."
+        ],
+        "supportingCards": [
+          "Silvershine",
+          "Fraysia"
+        ],
+        "reviewDate": "2026-10-03",
+        "scope": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification.",
+        "cardEvidence": [
+          {
+            "name": "Floral Arrangement",
+            "types": [
+              "ACTION"
+            ],
+            "subtypes": [
+              "CLERIC",
+              "SKILL"
+            ],
+            "classes": [
+              "CLERIC"
+            ],
+            "elements": [
+              "NORM"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 3,
+            "effect": "**Summon** a Silvershine and a Fraysia token.\n\n**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*",
+            "legality": null
+          },
+          {
+            "name": "Combustible Potion",
+            "types": [
+              "ITEM"
+            ],
+            "subtypes": [
+              "CLERIC",
+              "POTION"
+            ],
+            "classes": [
+              "CLERIC"
+            ],
+            "elements": [
+              "FIRE"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 4,
+            "effect": "**Brew —** Two Herbs *(You may sacrifice the listed objects rather than pay this card’s reserve cost.)*\n\n**On Enter:** If CARDNAME was **brewed**, draw two cards and discard a card.\n\n**Sacrifice CARDNAME: **Deal 2 damage to target unit.",
+            "legality": null
+          },
+          {
+            "name": "Silvershine",
+            "types": [
+              "TOKEN",
+              "ITEM"
+            ],
+            "subtypes": [
+              "CLERIC",
+              "HERB",
+              "CATALYST",
+              "FLOWER"
+            ],
+            "classes": [
+              "CLERIC"
+            ],
+            "elements": [
+              "NORM"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 1,
+            "effect": "**Sacrifice CARDNAME:** **Recover 1**.",
+            "legality": null
+          },
+          {
+            "name": "Fraysia",
+            "types": [
+              "TOKEN",
+              "ITEM"
+            ],
+            "subtypes": [
+              "CLERIC",
+              "HERB",
+              "ADJUVANT",
+              "FLOWER"
+            ],
+            "classes": [
+              "CLERIC"
+            ],
+            "elements": [
+              "NORM"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 1,
+            "effect": "**Sacrifice CARDNAME:** **Recover 1**.",
+            "legality": null
+          }
+        ]
+      }
     },
     {
       "id": "fractal-ravishing-mill-combo-1",
@@ -3089,7 +3262,65 @@
         "Verify costs, timing, targets, zones, champion/class bonuses and required board state against catalog text.",
         "Identify missing enabling cards and whether this is an interaction, package, or executable combo.",
         "Before a Combo Lab recipe, distinguish material access from opening-hand draw requirements."
-      ]
+      ],
+      "textReview": {
+        "candidateId": "fractal-ravishing-mill-combo-1",
+        "kind": "conditional-interaction",
+        "summary": "Finale requires banishing two floating-memory cards from the graveyard, which supports Whiplash Allure lash counters. Both cards have champion-hit milling effects.",
+        "requirements": [
+          "Two floating-memory cards already in the graveyard, activation resources, Nico bonus, and a successful champion hit."
+        ],
+        "cautions": [
+          "Milling depends on a hit and the relevant counters; co-occurrence cannot establish an automatic win."
+        ],
+        "supportingCards": [],
+        "reviewDate": "2026-10-03",
+        "scope": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification.",
+        "cardEvidence": [
+          {
+            "name": "Ravishing Finale",
+            "types": [
+              "ATTACK"
+            ],
+            "subtypes": [
+              "GUARDIAN",
+              "LASH"
+            ],
+            "classes": [
+              "GUARDIAN"
+            ],
+            "elements": [
+              "WATER"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 3,
+            "effect": "As an additional cost to activate this card, banish two cards with **floating memory** from your graveyard.\n\n[Nico Bonus] **On Champion Hit:** For each damage counter on the hit champion, their controller puts the top two cards from their deck into their graveyard.",
+            "legality": null
+          },
+          {
+            "name": "Nico, Whiplash Allure",
+            "types": [
+              "CHAMPION"
+            ],
+            "subtypes": [
+              "GUARDIAN",
+              "HUMAN"
+            ],
+            "classes": [
+              "GUARDIAN"
+            ],
+            "elements": [
+              "WATER"
+            ],
+            "level": 2,
+            "cost_memory": 2,
+            "cost_reserve": null,
+            "effect": "Whenever a card with **floating memory** is banished from your graveyard, put a **lash** counter on Nico.\n\n**On Champion Hit:** You may have that opponent put the top **X** cards of their deck into their graveyard, where **X** is the amount of **lash** counters on Nico.",
+            "legality": null
+          }
+        ]
+      }
     },
     {
       "id": "fractal-ravishing-mill-combo-2",
@@ -4126,7 +4357,65 @@
         "Verify costs, timing, targets, zones, champion/class bonuses and required board state against catalog text.",
         "Identify missing enabling cards and whether this is an interaction, package, or executable combo.",
         "Before a Combo Lab recipe, distinguish material access from opening-hand draw requirements."
-      ]
+      ],
+      "textReview": {
+        "candidateId": "fractal-ravishing-mill-combo-2",
+        "kind": "champion-package",
+        "summary": "Rapture's Embrace supplies the Nico identity for Finale; its conditional entry effect can put one card into the graveyard.",
+        "requirements": [
+          "Another water card in lineage for the entry effect; two floating-memory cards in the graveyard for Finale, activation resources, and a champion hit."
+        ],
+        "cautions": [
+          "The entry effect does not guarantee floating memory and supplies only one card. This pair lacks Whiplash Allure's printed lash-counter engine."
+        ],
+        "supportingCards": [],
+        "reviewDate": "2026-10-03",
+        "scope": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification.",
+        "cardEvidence": [
+          {
+            "name": "Ravishing Finale",
+            "types": [
+              "ATTACK"
+            ],
+            "subtypes": [
+              "GUARDIAN",
+              "LASH"
+            ],
+            "classes": [
+              "GUARDIAN"
+            ],
+            "elements": [
+              "WATER"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 3,
+            "effect": "As an additional cost to activate this card, banish two cards with **floating memory** from your graveyard.\n\n[Nico Bonus] **On Champion Hit:** For each damage counter on the hit champion, their controller puts the top two cards from their deck into their graveyard.",
+            "legality": null
+          },
+          {
+            "name": "Nico, Rapture's Embrace",
+            "types": [
+              "CHAMPION"
+            ],
+            "subtypes": [
+              "GUARDIAN",
+              "HUMAN"
+            ],
+            "classes": [
+              "GUARDIAN"
+            ],
+            "elements": [
+              "WATER"
+            ],
+            "level": 1,
+            "cost_memory": 1,
+            "cost_reserve": null,
+            "effect": "CARDNAME can only level up into another \"Nico\" champion.\n\n**On Enter**: If there's another water element card in CARDNAME's lineage, look at the top two cards of your deck. Put one of those cards into your graveyard and the other on the bottom of your deck.",
+            "legality": null
+          }
+        ]
+      }
     },
     {
       "id": "fractal-crux-lorraine--psycho-combo-1",
@@ -4249,7 +4538,70 @@
         "Verify costs, timing, targets, zones, champion/class bonuses and required board state against catalog text.",
         "Identify missing enabling cards and whether this is an interaction, package, or executable combo.",
         "Before a Combo Lab recipe, distinguish material access from opening-hand draw requirements."
-      ]
+      ],
+      "textReview": {
+        "candidateId": "fractal-crux-lorraine--psycho-combo-1",
+        "kind": "conditional-interaction",
+        "summary": "Monk grants regalia a rest ability dealing 1 damage as a Spell. Awake Psycho increases exactly 1 non-combat damage from your sources by 1; its Lorraine bonus makes your non-combat damage unpreventable.",
+        "requirements": [
+          "Monk on the field, Psycho awake when damage is dealt, and another awake regalia for the granted rest ability. Lorraine is needed for unpreventable damage."
+        ],
+        "cautions": [
+          "Resting Psycho itself to pay for the granted ability disables its awake-dependent boost unless it is awake again when damage is dealt.",
+          "Its Lorraine-specific material-deck activation needs six arcane cards in banishment and enters rested. Material presence alone does not establish an available awake weapon."
+        ],
+        "supportingCards": [],
+        "reviewDate": "2026-10-03",
+        "scope": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification.",
+        "cardEvidence": [
+          {
+            "name": "Capacitance X Psycho",
+            "types": [
+              "REGALIA",
+              "WEAPON"
+            ],
+            "subtypes": [
+              "WARRIOR",
+              "VELTECH",
+              "SWORD"
+            ],
+            "classes": [
+              "WARRIOR"
+            ],
+            "elements": [
+              "ARCANE"
+            ],
+            "level": null,
+            "cost_memory": 1,
+            "cost_reserve": null,
+            "effect": "[Lorraine Bonus] As long as there are six or more arcane element cards in your banishment, you may activate this card from your material deck. If you do, it enters the field rested.\n\n[Lorraine Bonus] Non-combat damage dealt by sources you control is unpreventable.\n\nAs long as CARDNAME is awake, if a source you control would deal exactly 1 non-combat damage, it deals that much damage plus 1 instead.",
+            "legality": null
+          },
+          {
+            "name": "Numinous Monk",
+            "types": [
+              "ALLY"
+            ],
+            "subtypes": [
+              "CLERIC",
+              "WARRIOR",
+              "HUMAN"
+            ],
+            "classes": [
+              "CLERIC",
+              "WARRIOR"
+            ],
+            "elements": [
+              "CRUX"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 3,
+            "effect": "Regalia you control have \"[REST]**:** As a Spell, deal 1 damage to target unit.\"",
+            "legality": null
+          }
+        ]
+      }
     },
     {
       "id": "fractal-crux-hybrid-combo-1",
@@ -5336,7 +5688,65 @@
         "Verify costs, timing, targets, zones, champion/class bonuses and required board state against catalog text.",
         "Identify missing enabling cards and whether this is an interaction, package, or executable combo.",
         "Before a Combo Lab recipe, distinguish material access from opening-hand draw requirements."
-      ]
+      ],
+      "textReview": {
+        "candidateId": "fractal-crux-hybrid-combo-1",
+        "kind": "classification-package",
+        "summary": "Two level-2 champions mark a hybrid champion package. Their printed text does not establish a direct two-card sequence.",
+        "requirements": [
+          "A separately established legal champion/lineage route."
+        ],
+        "cautions": [
+          "Lorraine, Blademaster requires Lorraine lineage. Do not assume two level-2 champions can simply level into one another or have simultaneous active abilities."
+        ],
+        "supportingCards": [],
+        "reviewDate": "2026-10-03",
+        "scope": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification.",
+        "cardEvidence": [
+          {
+            "name": "Lorraine, Blademaster",
+            "types": [
+              "CHAMPION"
+            ],
+            "subtypes": [
+              "WARRIOR",
+              "HUMAN"
+            ],
+            "classes": [
+              "WARRIOR"
+            ],
+            "elements": [
+              "NORM"
+            ],
+            "level": 2,
+            "cost_memory": 2,
+            "cost_reserve": null,
+            "effect": "**Lorraine Lineage** *(Lorraine, Blademaster must be leveled from a previous level \"Lorraine\" champion.)*\n\n**On Enter:** Until end of turn, CARDNAME's attacks get +2 [POWER] and gain \"**On Kill:** Draw a card.\"",
+            "legality": null
+          },
+          {
+            "name": "Merlin, Memory Thief",
+            "types": [
+              "CHAMPION"
+            ],
+            "subtypes": [
+              "MAGE",
+              "HUMAN"
+            ],
+            "classes": [
+              "MAGE"
+            ],
+            "elements": [
+              "NORM"
+            ],
+            "level": 2,
+            "cost_memory": 2,
+            "cost_reserve": null,
+            "effect": "[REST]**:** Choose a card from a graveyard and banish it. If that card has **floating memory**, put a **level** counter on CARDNAME. *(Champions get +1 level for each **level** counter on them.)*",
+            "legality": null
+          }
+        ]
+      }
     },
     {
       "id": "fractal-oblation-combo-1",
@@ -8070,7 +8480,93 @@
         "Verify costs, timing, targets, zones, champion/class bonuses and required board state against catalog text.",
         "Identify missing enabling cards and whether this is an interaction, package, or executable combo.",
         "Before a Combo Lab recipe, distinguish material access from opening-hand draw requirements."
-      ]
+      ],
+      "textReview": {
+        "candidateId": "fractal-oblation-combo-1",
+        "kind": "omen-payload",
+        "summary": "Advent of the Stormcaller has printed reserve cost 15 and can be a high-cost omen for Baleful Oblation, whose damage uses the lowest reserve cost among your omens.",
+        "requirements": [
+          "An omen-enabling effect; the payload must actually be an omen, and every omen must meet the intended damage floor."
+        ],
+        "cautions": [
+          "The pair alone does not create an omen. A cheaper omen lowers the damage; drawing the payload is not equivalent to casting it.",
+          "Local catalog marks Baleful Oblation STANDARD limit 0; retain historical evidence and recheck format legality before recommendation."
+        ],
+        "supportingCards": [
+          "Ciel, Loyal Valet"
+        ],
+        "reviewDate": "2026-10-03",
+        "scope": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification.",
+        "cardEvidence": [
+          {
+            "name": "Baleful Oblation",
+            "types": [
+              "ACTION"
+            ],
+            "subtypes": [
+              "GUARDIAN",
+              "SPELL"
+            ],
+            "classes": [
+              "GUARDIAN"
+            ],
+            "elements": [
+              "UMBRA"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 5,
+            "effect": "[Ciel Bonus] This card costs 2 less to activate.\n\nDeal **X** damage to all units except for your champion, where **X** is the lowest reserve cost among your **omens**.",
+            "legality": {
+              "STANDARD": {
+                "limit": 0
+              }
+            }
+          },
+          {
+            "name": "Advent of the Stormcaller",
+            "types": [
+              "ACTION"
+            ],
+            "subtypes": [
+              "MAGE",
+              "SPELL"
+            ],
+            "classes": [
+              "MAGE"
+            ],
+            "elements": [
+              "ARCANE"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 15,
+            "effect": "[Class Bonus] **Efficiency**\n\nReveal the top **LV** cards of your deck. You may banish any amount of arcane element cards from among them. For each card banished this way, choose a unit and deal 2 damage to it. Put the rest of the revealed cards on the top or on the bottom of your deck in any order.",
+            "legality": null
+          },
+          {
+            "name": "Ciel, Loyal Valet",
+            "types": [
+              "CHAMPION"
+            ],
+            "subtypes": [
+              "GUARDIAN",
+              "HUMAN"
+            ],
+            "classes": [
+              "GUARDIAN"
+            ],
+            "elements": [
+              "NORM"
+            ],
+            "level": 1,
+            "cost_memory": 1,
+            "cost_reserve": null,
+            "effect": "**On Enter**: You gain the Servile Possessions mastery.\n\n**Inherited Effect** — At the beginning of your end phase, you may banish a card from your graveyard or hand and put an **omen** counter on it.",
+            "legality": null
+          }
+        ]
+      }
     },
     {
       "id": "fractal-oblation-combo-2",
@@ -9634,7 +10130,96 @@
         "Verify costs, timing, targets, zones, champion/class bonuses and required board state against catalog text.",
         "Identify missing enabling cards and whether this is an interaction, package, or executable combo.",
         "Before a Combo Lab recipe, distinguish material access from opening-hand draw requirements."
-      ]
+      ],
+      "textReview": {
+        "candidateId": "fractal-oblation-combo-2",
+        "kind": "omen-payload",
+        "summary": "Golden Checkmate has printed reserve cost 15 and can be a high-cost omen for Baleful Oblation, whose damage uses the lowest reserve cost among your omens.",
+        "requirements": [
+          "An omen-enabling effect; the payload must actually be an omen, and every omen must meet the intended damage floor."
+        ],
+        "cautions": [
+          "The pair alone does not create an omen. A cheaper omen lowers the damage; drawing the payload is not equivalent to casting it.",
+          "Local catalog marks Baleful Oblation STANDARD limit 0; retain historical evidence and recheck format legality before recommendation."
+        ],
+        "supportingCards": [
+          "Ciel, Loyal Valet"
+        ],
+        "reviewDate": "2026-10-03",
+        "scope": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification.",
+        "cardEvidence": [
+          {
+            "name": "Baleful Oblation",
+            "types": [
+              "ACTION"
+            ],
+            "subtypes": [
+              "GUARDIAN",
+              "SPELL"
+            ],
+            "classes": [
+              "GUARDIAN"
+            ],
+            "elements": [
+              "UMBRA"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 5,
+            "effect": "[Ciel Bonus] This card costs 2 less to activate.\n\nDeal **X** damage to all units except for your champion, where **X** is the lowest reserve cost among your **omens**.",
+            "legality": {
+              "STANDARD": {
+                "limit": 0
+              }
+            }
+          },
+          {
+            "name": "Golden Checkmate",
+            "types": [
+              "ATTACK"
+            ],
+            "subtypes": [
+              "CLERIC",
+              "ULTIMATE",
+              "CHESSMAN",
+              "COMMAND"
+            ],
+            "classes": [
+              "CLERIC"
+            ],
+            "elements": [
+              "EXALTED",
+              "NORM"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 15,
+            "effect": "**Command Chessman**\n\n[Alice Bonus] As long as you control a Pawn unit, this card costs 2 less to activate. The same is true for Rook, Knight, Bishop, Queen, and King units.\n\n[Alice Bonus] **On Hit:** At the beginning of your next recollection phase, you win the game.",
+            "legality": null
+          },
+          {
+            "name": "Ciel, Loyal Valet",
+            "types": [
+              "CHAMPION"
+            ],
+            "subtypes": [
+              "GUARDIAN",
+              "HUMAN"
+            ],
+            "classes": [
+              "GUARDIAN"
+            ],
+            "elements": [
+              "NORM"
+            ],
+            "level": 1,
+            "cost_memory": 1,
+            "cost_reserve": null,
+            "effect": "**On Enter**: You gain the Servile Possessions mastery.\n\n**Inherited Effect** — At the beginning of your end phase, you may banish a card from your graveyard or hand and put an **omen** counter on it.",
+            "legality": null
+          }
+        ]
+      }
     },
     {
       "id": "fractal-oblation-combo-3",
@@ -10708,7 +11293,93 @@
         "Verify costs, timing, targets, zones, champion/class bonuses and required board state against catalog text.",
         "Identify missing enabling cards and whether this is an interaction, package, or executable combo.",
         "Before a Combo Lab recipe, distinguish material access from opening-hand draw requirements."
-      ]
+      ],
+      "textReview": {
+        "candidateId": "fractal-oblation-combo-3",
+        "kind": "omen-payload",
+        "summary": "Ionized Asceticism has printed reserve cost 15 and can be a high-cost omen for Baleful Oblation, whose damage uses the lowest reserve cost among your omens.",
+        "requirements": [
+          "An omen-enabling effect; the payload must actually be an omen, and every omen must meet the intended damage floor."
+        ],
+        "cautions": [
+          "The pair alone does not create an omen. A cheaper omen lowers the damage; drawing the payload is not equivalent to casting it.",
+          "Local catalog marks Baleful Oblation STANDARD limit 0; retain historical evidence and recheck format legality before recommendation."
+        ],
+        "supportingCards": [
+          "Ciel, Loyal Valet"
+        ],
+        "reviewDate": "2026-10-03",
+        "scope": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification.",
+        "cardEvidence": [
+          {
+            "name": "Baleful Oblation",
+            "types": [
+              "ACTION"
+            ],
+            "subtypes": [
+              "GUARDIAN",
+              "SPELL"
+            ],
+            "classes": [
+              "GUARDIAN"
+            ],
+            "elements": [
+              "UMBRA"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 5,
+            "effect": "[Ciel Bonus] This card costs 2 less to activate.\n\nDeal **X** damage to all units except for your champion, where **X** is the lowest reserve cost among your **omens**.",
+            "legality": {
+              "STANDARD": {
+                "limit": 0
+              }
+            }
+          },
+          {
+            "name": "Ionized Asceticism",
+            "types": [
+              "ACTION"
+            ],
+            "subtypes": [
+              "MAGE",
+              "SPELL"
+            ],
+            "classes": [
+              "MAGE"
+            ],
+            "elements": [
+              "ARCANE"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 15,
+            "effect": "[Rai Bonus] **Efficiency** \n\nBanish all cards from your hand and memory, then draw seven cards. Until the beginning of your next turn, your champion gets -10 level.",
+            "legality": null
+          },
+          {
+            "name": "Ciel, Loyal Valet",
+            "types": [
+              "CHAMPION"
+            ],
+            "subtypes": [
+              "GUARDIAN",
+              "HUMAN"
+            ],
+            "classes": [
+              "GUARDIAN"
+            ],
+            "elements": [
+              "NORM"
+            ],
+            "level": 1,
+            "cost_memory": 1,
+            "cost_reserve": null,
+            "effect": "**On Enter**: You gain the Servile Possessions mastery.\n\n**Inherited Effect** — At the beginning of your end phase, you may banish a card from your graveyard or hand and put an **omen** counter on it.",
+            "legality": null
+          }
+        ]
+      }
     },
     {
       "id": "fractal-umbra-guardian--control-combo-1",
@@ -10997,7 +11668,95 @@
         "Verify costs, timing, targets, zones, champion/class bonuses and required board state against catalog text.",
         "Identify missing enabling cards and whether this is an interaction, package, or executable combo.",
         "Before a Combo Lab recipe, distinguish material access from opening-hand draw requirements."
-      ]
+      ],
+      "textReview": {
+        "candidateId": "fractal-umbra-guardian--control-combo-1",
+        "kind": "conditional-interaction",
+        "summary": "Profane Bindings is a non-Skill action with reserve cost 2, within Grim Pastiche's printed copy criteria when it is an omen.",
+        "requirements": [
+          "Profane Bindings established as an omen, access to Grim Pastiche, and a card activation to negate."
+        ],
+        "cautions": [
+          "The two cards do not create an omen. Copied-card lineage and inherited-effect handling require rules review before an executable recipe.",
+          "Local catalog marks Grim Pastiche STANDARD limit 0."
+        ],
+        "supportingCards": [
+          "Ciel, Loyal Valet"
+        ],
+        "reviewDate": "2026-10-03",
+        "scope": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification.",
+        "cardEvidence": [
+          {
+            "name": "Grim Pastiche",
+            "types": [
+              "ACTION"
+            ],
+            "subtypes": [
+              "GUARDIAN",
+              "SKILL"
+            ],
+            "classes": [
+              "GUARDIAN"
+            ],
+            "elements": [
+              "UMBRA"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 2,
+            "effect": "Copy target non-Skill action **omen** you have with reserve cost 5 or less. If you do, you may activate that copy without paying its reserve cost. *(If you don't activate it, the copy ceases to exist.)*",
+            "legality": {
+              "STANDARD": {
+                "limit": 0
+              }
+            }
+          },
+          {
+            "name": "Profane Bindings",
+            "types": [
+              "ACTION"
+            ],
+            "subtypes": [
+              "CLERIC",
+              "CURSE",
+              "SPELL",
+              "REACTION"
+            ],
+            "classes": [
+              "CLERIC"
+            ],
+            "elements": [
+              "UMBRA"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 2,
+            "effect": "**Negate** target card activation. Banish the card that had its activation **negated** this way. Put Profane Bindings on the bottom of your champion's lineage.\n\n**Inherited Effect** — This object gets -5[LIFE]. *(Champions have this ability as long as this card is part of its lineage.)* ",
+            "legality": null
+          },
+          {
+            "name": "Ciel, Loyal Valet",
+            "types": [
+              "CHAMPION"
+            ],
+            "subtypes": [
+              "GUARDIAN",
+              "HUMAN"
+            ],
+            "classes": [
+              "GUARDIAN"
+            ],
+            "elements": [
+              "NORM"
+            ],
+            "level": 1,
+            "cost_memory": 1,
+            "cost_reserve": null,
+            "effect": "**On Enter**: You gain the Servile Possessions mastery.\n\n**Inherited Effect** — At the beginning of your end phase, you may banish a card from your graveyard or hand and put an **omen** counter on it.",
+            "legality": null
+          }
+        ]
+      }
     },
     {
       "id": "fractal-wakeup-combo-combo-1",
@@ -12977,7 +13736,73 @@
         "Verify costs, timing, targets, zones, champion/class bonuses and required board state against catalog text.",
         "Identify missing enabling cards and whether this is an interaction, package, or executable combo.",
         "Before a Combo Lab recipe, distinguish material access from opening-hand draw requirements."
-      ]
+      ],
+      "textReview": {
+        "candidateId": "fractal-wakeup-combo-combo-1",
+        "kind": "material-access-package",
+        "summary": "Mad Hatter's entry ability can materialize Ranger Strides, a Ranger regalia; Strides draws a card on entry and can grant ranged 4 to a Ranger unit.",
+        "requirements": [
+          "A card available to banish at random from material and Ranger Strides still in material afterward; a distant Ranger for the ranged benefit."
+        ],
+        "cautions": [
+          "Random banishment can remove the intended target. This pair contains no wake-up effect.",
+          "Local catalog marks Ranger Strides STANDARD limit 0."
+        ],
+        "supportingCards": [],
+        "reviewDate": "2026-10-03",
+        "scope": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification.",
+        "cardEvidence": [
+          {
+            "name": "Mad Hatter, Morose Heritor",
+            "types": [
+              "UNIQUE",
+              "ALLY"
+            ],
+            "subtypes": [
+              "RANGER",
+              "HUMAN"
+            ],
+            "classes": [
+              "RANGER"
+            ],
+            "elements": [
+              "NORM"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 3,
+            "effect": "**Ranged 3** *(As long as this unit is **distant**, its attacks get +3[POWER].)*\n\n**On Enter**: You may banish a card at random from your material deck. If you do, materialize a Ranger regalia card from your material deck.",
+            "legality": null
+          },
+          {
+            "name": "Ranger Strides",
+            "types": [
+              "REGALIA",
+              "ITEM"
+            ],
+            "subtypes": [
+              "RANGER",
+              "DISTORTION",
+              "ACCESSORY"
+            ],
+            "classes": [
+              "RANGER"
+            ],
+            "elements": [
+              "ASTRA"
+            ],
+            "level": null,
+            "cost_memory": 1,
+            "cost_reserve": null,
+            "effect": "**On Enter**: Draw a card.\n\n**Banish Ranger Strides:** Target Ranger unit gains **ranged 4** until end of turn. *(As long as that unit is **distant**, its attacks get +4[POWER].)*",
+            "legality": {
+              "STANDARD": {
+                "limit": 0
+              }
+            }
+          }
+        ]
+      }
     },
     {
       "id": "fractal-wakeup-combo-combo-2",
@@ -13889,7 +14714,65 @@
         "Verify costs, timing, targets, zones, champion/class bonuses and required board state against catalog text.",
         "Identify missing enabling cards and whether this is an interaction, package, or executable combo.",
         "Before a Combo Lab recipe, distinguish material access from opening-hand draw requirements."
-      ]
+      ],
+      "textReview": {
+        "candidateId": "fractal-wakeup-combo-combo-2",
+        "kind": "conditional-interaction",
+        "summary": "Invective Instruction buffs an ally until end of turn; Second Wind can wake that ally so the temporary buff can support another attack.",
+        "requirements": [
+          "An ally able to attack, remaining resources for Second Wind, and a legal further attack in the same turn."
+        ],
+        "cautions": [
+          "The two cards do not supply an ally. Tamer draw and Warrior power bonuses have separate class conditions; neither is automatic."
+        ],
+        "supportingCards": [],
+        "reviewDate": "2026-10-03",
+        "scope": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification.",
+        "cardEvidence": [
+          {
+            "name": "Invective Instruction",
+            "types": [
+              "ACTION"
+            ],
+            "subtypes": [
+              "TAMER",
+              "SKILL"
+            ],
+            "classes": [
+              "TAMER"
+            ],
+            "elements": [
+              "NORM"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 2,
+            "effect": "Target ally gets +3 [POWER] until end of turn. \n\n[Class Bonus] If you control a non-Human ally, draw a card into your memory. *(Apply this effect only if your champion’s class matches this card’s class.)*",
+            "legality": null
+          },
+          {
+            "name": "Second Wind",
+            "types": [
+              "ACTION"
+            ],
+            "subtypes": [
+              "WARRIOR",
+              "SPELL"
+            ],
+            "classes": [
+              "WARRIOR"
+            ],
+            "elements": [
+              "WIND"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 3,
+            "effect": "Wake up target ally. **Class Bonus:** That ally gets +1 [POWER] until end of turn. *(Apply the additional effect only if your champion's class matches this card's class.)*",
+            "legality": null
+          }
+        ]
+      }
     },
     {
       "id": "fractal-wakeup-combo-combo-3",
@@ -15605,7 +16488,72 @@
         "Verify costs, timing, targets, zones, champion/class bonuses and required board state against catalog text.",
         "Identify missing enabling cards and whether this is an interaction, package, or executable combo.",
         "Before a Combo Lab recipe, distinguish material access from opening-hand draw requirements."
-      ]
+      ],
+      "textReview": {
+        "candidateId": "fractal-wakeup-combo-combo-3",
+        "kind": "conditional-interaction",
+        "summary": "Strides grants ranged 4 until end of turn to a Ranger unit; Second Wind can wake a Ranger ally to reuse that turn-long bonus.",
+        "requirements": [
+          "An eligible Ranger ally, distant state for ranged, Strides on the field to banish, and a legal further attack."
+        ],
+        "cautions": [
+          "Second Wind targets allies, so a Ranger champion is not an eligible shared target. The pair does not make the ally distant.",
+          "Local catalog marks Ranger Strides STANDARD limit 0."
+        ],
+        "supportingCards": [],
+        "reviewDate": "2026-10-03",
+        "scope": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification.",
+        "cardEvidence": [
+          {
+            "name": "Ranger Strides",
+            "types": [
+              "REGALIA",
+              "ITEM"
+            ],
+            "subtypes": [
+              "RANGER",
+              "DISTORTION",
+              "ACCESSORY"
+            ],
+            "classes": [
+              "RANGER"
+            ],
+            "elements": [
+              "ASTRA"
+            ],
+            "level": null,
+            "cost_memory": 1,
+            "cost_reserve": null,
+            "effect": "**On Enter**: Draw a card.\n\n**Banish Ranger Strides:** Target Ranger unit gains **ranged 4** until end of turn. *(As long as that unit is **distant**, its attacks get +4[POWER].)*",
+            "legality": {
+              "STANDARD": {
+                "limit": 0
+              }
+            }
+          },
+          {
+            "name": "Second Wind",
+            "types": [
+              "ACTION"
+            ],
+            "subtypes": [
+              "WARRIOR",
+              "SPELL"
+            ],
+            "classes": [
+              "WARRIOR"
+            ],
+            "elements": [
+              "WIND"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 3,
+            "effect": "Wake up target ally. **Class Bonus:** That ally gets +1 [POWER] until end of turn. *(Apply the additional effect only if your champion's class matches this card's class.)*",
+            "legality": null
+          }
+        ]
+      }
     },
     {
       "id": "fractal-wakeup-combo-combo-4",
@@ -15650,7 +16598,65 @@
         "Verify costs, timing, targets, zones, champion/class bonuses and required board state against catalog text.",
         "Identify missing enabling cards and whether this is an interaction, package, or executable combo.",
         "Before a Combo Lab recipe, distinguish material access from opening-hand draw requirements."
-      ]
+      ],
+      "textReview": {
+        "candidateId": "fractal-wakeup-combo-combo-4",
+        "kind": "conditional-interaction",
+        "summary": "An awake Concoction can place two buff counters on an ally and draw a card; Draught can wake that ally for another attack.",
+        "requirements": [
+          "An ally, Concoction already awake, and both Potions available. Pay reserve costs or provide the separately listed Brew ingredients."
+        ],
+        "cautions": [
+          "Concoction enters rested with Hindered. Draught targets an ally and cannot wake the Potion. This is not an immediate two-card loop."
+        ],
+        "supportingCards": [],
+        "reviewDate": "2026-10-03",
+        "scope": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification.",
+        "cardEvidence": [
+          {
+            "name": "Invigorating Concoction",
+            "types": [
+              "ITEM"
+            ],
+            "subtypes": [
+              "CLERIC",
+              "POTION"
+            ],
+            "classes": [
+              "CLERIC"
+            ],
+            "elements": [
+              "WIND"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 7,
+            "effect": "**Brew** — One Flower, One Herb *(You may sacrifice the listed objects rather than pay this card's reserve cost.)*\n\n**Hindered** *(This object enters the field rested.)*\n\n[REST], **Sacrifice Invigorating Concoction**: Put two **buff** counters on up to one target ally. Draw a card.",
+            "legality": null
+          },
+          {
+            "name": "Draught of Stamina",
+            "types": [
+              "ITEM"
+            ],
+            "subtypes": [
+              "CLERIC",
+              "POTION"
+            ],
+            "classes": [
+              "CLERIC"
+            ],
+            "elements": [
+              "WIND"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 4,
+            "effect": "**Brew** — One Springleaf, Two Herbs *(You may sacrifice the listed objects rather than pay this card's reserve cost.)* \n\n**Sacrifice CARDNAME:** Wake up target ally you control.",
+            "legality": null
+          }
+        ]
+      }
     },
     {
       "id": "fractal-horse-and-taxes-combo-1",
@@ -16590,7 +17596,95 @@
         "Verify costs, timing, targets, zones, champion/class bonuses and required board state against catalog text.",
         "Identify missing enabling cards and whether this is an interaction, package, or executable combo.",
         "Before a Combo Lab recipe, distinguish material access from opening-hand draw requirements."
-      ]
+      ],
+      "textReview": {
+        "candidateId": "fractal-horse-and-taxes-combo-1",
+        "kind": "level-enabling-package",
+        "summary": "Dungeon Guide can level a champion, helping satisfy the two horses' Pride 3 requirement when the resulting champion is at least level 3.",
+        "requirements": [
+          "Two cards in memory to banish, a compatible champion in material, and a resulting level sufficient for Pride."
+        ],
+        "cautions": [
+          "Dungeon Guide is a normal-element, non-unique Human and does not itself meet either horse's unique-Human alternate condition.",
+          "The package does not itself establish access to both horse elements or a taxing effect."
+        ],
+        "supportingCards": [],
+        "reviewDate": "2026-10-03",
+        "scope": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification.",
+        "cardEvidence": [
+          {
+            "name": "Dilu, Auspicious Charger",
+            "types": [
+              "UNIQUE",
+              "ALLY"
+            ],
+            "subtypes": [
+              "TAMER",
+              "RANGER",
+              "BEAST",
+              "HORSE"
+            ],
+            "classes": [
+              "TAMER",
+              "RANGER"
+            ],
+            "elements": [
+              "WIND"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 2,
+            "effect": "**Pride 3** *(This ally won't obey you unless your champion is level 3 or higher. You can't attack with, intercept with, or activate abilities of allies that don't obey you.)*\n\nAs long as you control a wind element unique Human ally, Dilu loses **pride** and has **vigor**.",
+            "legality": null
+          },
+          {
+            "name": "Red Hare, Unrivaled Stallion",
+            "types": [
+              "UNIQUE",
+              "ALLY"
+            ],
+            "subtypes": [
+              "TAMER",
+              "WARRIOR",
+              "BEAST",
+              "HORSE"
+            ],
+            "classes": [
+              "TAMER",
+              "WARRIOR"
+            ],
+            "elements": [
+              "FIRE"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 2,
+            "effect": "**Pride 3** *(This ally won't obey you unless your champion is level 3 or higher. You can't attack with, intercept with, or activate abilities of allies that don't obey you.)*\n\nAs long as you control a fire or tera element unique Human ally, CARDNAME loses **pride**, and has \"**On Attack**: You may discard a card. If you do, draw a card.\"",
+            "legality": null
+          },
+          {
+            "name": "Dungeon Guide",
+            "types": [
+              "ALLY"
+            ],
+            "subtypes": [
+              "MAGE",
+              "HUMAN"
+            ],
+            "classes": [
+              "MAGE"
+            ],
+            "elements": [
+              "NORM"
+            ],
+            "level": null,
+            "cost_memory": null,
+            "cost_reserve": 3,
+            "effect": "**On Enter:** You may banish two cards at random from your memory. If you do, level up your champion. *(Your champion levels up into a compatible champion card from your material deck, ignoring materialization costs.)*",
+            "legality": null
+          }
+        ]
+      }
     }
   ]
 }
