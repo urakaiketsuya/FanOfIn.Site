@@ -19,7 +19,6 @@ import { forecastComboByTurn } from "../../lib/comboTurnForecast";
 import ComboLibrary from "./ComboLibrary";
 import ComboCostAssumptions from "./ComboCostAssumptions";
 import ReviewedAvailabilityPreset from "./ReviewedAvailabilityPreset";
-import { floralPotionPreset } from "./reviewedAvailabilityPresets";
 import LinePlanner from "./LinePlanner";
 import GoalForecastChart, { type GoalForecastSeries } from "./GoalForecastChart";
 import CardSearchPicker from "../../components/CardSearchPicker";
@@ -218,9 +217,9 @@ export default function ComboLabIndex() {
     <PageHeader title="Combo Lab" description="Choose the pieces. See the odds." actions={<div className="flex w-full flex-wrap gap-2 sm:w-auto">
 <button type="button" aria-expanded={libraryOpen} onClick={() => setLibraryOpen((open) => !open)} className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm text-ctp-subtext1 hover:border-ctp-blue">{libraryOpen ? "Close library" : "Combo library"}</button><Link to="/cards/packages" className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm text-ctp-subtext1 hover:border-ctp-blue">Packages</Link>{workspace && <DeckWorkspacePicker compact catalogByName={catalogByName} source="combo" onLoad={loadWorkspace} />}</div>} />
     <div className={libraryOpen ? "" : "hidden"}><ComboLibrary localCombos={savedCombos} format={workspace?.format} championName={workspace?.championName} onMigrated={finishLocalMigration} onLoad={(combo) => { openLibraryCombo(combo); setLibraryOpen(false); }} /></div>
-    <ReviewedAvailabilityPreset catalogByName={catalogByName} main={workspace?.main ?? []} requirements={currentRecipe} onLoad={() => {
+    <ReviewedAvailabilityPreset catalogByName={catalogByName} main={workspace?.main ?? []} requirements={currentRecipe} onLoad={(recipe) => {
       setPreviousRecipe({ name: comboName, requirements: structuredClone(currentRecipe), damage: comboDamage, costs: { ...comboEffectiveCosts } });
-      openLibraryCombo(structuredClone(floralPotionPreset));
+      openLibraryCombo(structuredClone(recipe));
       setComboEffectiveCosts({});
     }} onUndo={previousRecipe ? () => {
       openLibraryCombo(previousRecipe);
