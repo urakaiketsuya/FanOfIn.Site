@@ -83,10 +83,18 @@ export interface PublicDeckSummary extends Omit<PublicDeck, "decklist" | "visibi
   sideboardCount?: number;
 }
 
+export interface ProfileShowcase {
+  cardIds: string[];
+  deckSlugs: string[];
+  revision: number;
+}
+
 export interface PublicProfile {
   displayName: string;
   profileSlug: string;
   decks: PublicDeckSummary[];
+  favoriteCardIds?: string[];
+  featuredDecks?: PublicDeckSummary[];
 }
 
 export interface DeckSocialState {

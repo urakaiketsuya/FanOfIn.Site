@@ -14,6 +14,8 @@ import { readCachedBundle, type OmnidexEventBundle } from "./cache.js";
 import { loadCardCatalog } from "../cards/catalog.js";
 import { buildEventDeckSignatures } from "../analysis/decklists.js";
 
+import { eventIdentity } from "./eventIdentity.js";
+
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../../data/omnidex");
 
 /**
@@ -41,8 +43,9 @@ export async function buildOmnidexIndex(allBundles: OmnidexEventBundle[]): Promi
     const { event, players, judges } = bundle;
 
     const publicDecklists = "error" in bundle.decklists ? [] : bundle.decklists;
+    const signatures = buildEventDeckSignatures(publicDecklists, cardIndex);
     const championNames = publicDecklists.length
-      ? [...new Set(Array.from(buildEventDeckSignatures(publicDecklists, cardIndex).values(), (signature) => signature.championName).filter((name): name is string => Boolean(name)))].sort()
+      ? [...new Set(Array.from(signatures.values(), (signature) => signature.championName).filter((name): name is string => Boolean(name)))].sort()
       : [];
     events.push({
       id: event.id,
@@ -68,6 +71,7 @@ export async function buildOmnidexIndex(allBundles: OmnidexEventBundle[]): Promi
       participantNames: [...new Set(players.map((player) => player.username).filter(Boolean))].sort(),
       championNames,
       publicDecklistCount: publicDecklists.length,
+      topPlayerIdentity: eventIdentity(players, signatures),
     });
 
     if (event.season && !seasonsById.has(event.season.id)) {

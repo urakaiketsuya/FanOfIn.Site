@@ -1,3 +1,4 @@
+import ProfileShowcaseEditor from "./ProfileShowcaseEditor";
 import { useActionNotice } from "../../components/ui/toast/useActionNotice";
 import { useToast } from "../../components/ui/toast/ToastContext";
 import { useEffect, useState, useRef } from "react";
@@ -17,6 +18,7 @@ import { InlineState } from "../../components/ui/ContentState";
 export default function AccountIndex() {
   useDocumentTitle("Account", "Manage your Fan of Insight account and public profile.");
   const [user, setUser] = useState<AccountUser | null>();
+  const [showShowcase, setShowShowcase] = useState(false);
   const [username, setUsername] = useState("");
   const [error, setError] = useState<string | null>(null);
   const setNotice = useActionNotice();
@@ -72,7 +74,9 @@ export default function AccountIndex() {
 
 
     <Panel className="mt-8">
+      {showShowcase && <ProfileShowcaseEditor user={user} onDismiss={() => setShowShowcase(false)} />}
       <h2 className="font-semibold text-ctp-text">Public profile</h2>
+      <Button className="mt-3" onClick={() => setShowShowcase(true)}>Choose favorite cards and featured decks</Button>
       <p className="mt-1 text-xs text-ctp-subtext1">Choose the name shown with your decks. It can be 2–32 characters.</p>
       <form className="mt-3 flex max-w-md gap-2" onSubmit={(event) => { event.preventDefault(); void run(async () => { const result = await accountApi.updateUsername(username); setUser(result.user); setUsername(result.user.displayName); setNotice("Display name updated."); }); }}>
         <label htmlFor="account-username" className="sr-only">Display name</label>

@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import { EVENT_CATEGORY_LABELS, type OmnidexEventSummary } from "@gatcg/shared";
 import { formatCountry } from "../../lib/format";
 
+import CardArtTile from "../../components/CardArtTile";
+import { useChampionCardImages, useNamelessChampionCard } from "../players/useChampionCardImages";
+
 const HIGH_TIER = new Set(["worlds", "nationals", "ascent"]);
 
 /** One accent color per event tier, in the same tier order as EVENT_CATEGORY_ORDER – gives the list a scannable rhythm without needing to read the category badge text. */
@@ -29,6 +32,11 @@ function CategoryBadge({ category }: { category: string }) {
 }
 
 export default function EventRow({ event }: { event: OmnidexEventSummary }) {
+  const identity = event.topPlayerIdentity;
+  const champions = useChampionCardImages(identity ? [identity.championName] : []);
+  const nameless = useNamelessChampionCard();
+  const name = identity?.championName ?? "Nameless Champion";
+  const card = identity ? champions.get(name) : nameless;
   return (
     <article
       data-component="EventRow"
@@ -36,7 +44,13 @@ export default function EventRow({ event }: { event: OmnidexEventSummary }) {
         CATEGORY_BORDER[event.category] ?? "border-l-ctp-surface1"
       }`}
     >
-      <div className="identity-surface rounded-lg p-3">
+      <div className="identity-surface grid gap-4 rounded-lg p-3 sm:grid-cols-[12rem_minmax(0,1fr)]">
+        <div className="min-w-0">
+          <Link to={`/events/${event.id}`} aria-label={`Open ${event.name}`} className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue"><CardArtTile card={card} name={name} artworkOnly /></Link>
+          <p className="mt-2 font-medium">{name}</p>
+          <p className="text-xs text-ctp-subtext1">{identity ? `${identity.playerName} · Place ${identity.placement}` : "Champion identity unavailable"}</p>
+        </div>
+        <div className="min-w-0">
         <CategoryBadge category={event.category} />
         <h3 className="mt-2 break-words text-lg font-semibold leading-snug text-ctp-text">
           <Link to={`/events/${event.id}`} className="inline-flex min-h-control items-center rounded-md hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">{event.name}</Link>
@@ -51,6 +65,7 @@ export default function EventRow({ event }: { event: OmnidexEventSummary }) {
             <div className="text-2xl font-semibold tabular-nums text-ctp-text">{event.playerCount.toLocaleString()}</div>
             <div className="text-xs text-ctp-subtext0">{event.playerCount === 1 ? "player" : "players"}</div>
           </div>
+        </div>
         </div>
       </div>
       <div className="mt-3 flex flex-wrap gap-2 border-t border-ctp-surface0 pt-2">

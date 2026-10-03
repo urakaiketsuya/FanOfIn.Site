@@ -1,3 +1,4 @@
+import { getShowcase } from "./profile-showcase";
 import { databaseAll } from "./database";
 import { deckPreviewCards, type OmnidexDecklist } from "@gatcg/shared";
 import type { DeckFormat, PublicDeckSummary, PublicProfile } from "@gatcg/shared";
@@ -18,8 +19,10 @@ export async function discoverProfiles(env: Env, params: URLSearchParams): Promi
   const rows = await env.ACCOUNT_DB.prepare(`SELECT users.display_name, users.profile_slug
     FROM users
     WHERE users.is_system = 0 AND users.profile_discoverable = 1 AND users.display_name LIKE ? ESCAPE '\\'
-      AND EXISTS (SELECT 1 FROM user_decks ud WHERE ud.owner_user_id = users.id AND ud.visibility = 'public'
+      AND (EXISTS (SELECT 1 FROM user_decks ud WHERE ud.owner_user_id = users.id AND ud.visibility = 'public'
         AND ud.published_version_id IS NOT NULL AND ud.moderation_status = 'active')
+        OR EXISTS (SELECT 1 FROM profile_showcases ps WHERE ps.user_id = users.id
+          AND (json_array_length(ps.payload, '$.cardIds') > 0 OR json_array_length(ps.payload, '$.deckSlugs') > 0)))
     ORDER BY users.display_name ASC LIMIT 20`).bind(escaped).all<{ display_name: string; profile_slug: string }>();
   return { profiles: rows.results.map((row) => ({ displayName: row.display_name, profileSlug: row.profile_slug })) };
 }
@@ -69,10 +72,13 @@ export async function discoverDecks(env: Env, params: URLSearchParams): Promise<
 
 export async function getPublicProfile(env: Env, slug: string): Promise<PublicProfile | null> {
   if (!PROFILE_SLUG.test(slug)) return null;
-  const user = await env.ACCOUNT_DB.prepare("SELECT display_name, profile_slug FROM users WHERE profile_slug = ? AND profile_discoverable = 1 AND is_system = 0")
-    .bind(slug).first<{ display_name: string; profile_slug: string }>();
+  const user = await env.ACCOUNT_DB.prepare("SELECT id, display_name, profile_slug FROM users WHERE profile_slug = ? AND profile_discoverable = 1 AND is_system = 0")
+    .bind(slug).first<{ id: string; display_name: string; profile_slug: string }>();
   if (!user) return null;
   const rows = await env.ACCOUNT_DB.prepare(`${SELECT} WHERE users.profile_slug = ? AND ud.visibility = 'public' AND ud.moderation_status = 'active'
     AND ud.published_version_id IS NOT NULL ORDER BY ud.published_at DESC LIMIT 100`).bind(slug).all<Record<string, string | number | null>>();
-  return { displayName: user.display_name, profileSlug: user.profile_slug, decks: rows.results.map(summary) };
+  const showcase = await getShowcase(env, user.id);
+  const featured = showcase.deckSlugs.length ? await env.ACCOUNT_DB.prepare(`${SELECT} WHERE ud.public_slug IN (SELECT value FROM json_each(?)) AND ud.visibility = 'public' AND ud.moderation_status = 'active' AND users.profile_discoverable = 1`).bind(JSON.stringify(showcase.deckSlugs)).all<Record<string, string | number | null>>() : { results: [] };
+  const bySlug = new Map(featured.results.map(row => [String(row.public_slug), summary(row)]));
+  return { displayName: user.display_name, profileSlug: user.profile_slug, decks: rows.results.map(summary), favoriteCardIds: showcase.cardIds, featuredDecks: showcase.deckSlugs.flatMap(slug => bySlug.has(slug) ? [bySlug.get(slug)!] : []) };
 }

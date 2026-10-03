@@ -1,3 +1,4 @@
+import { getShowcase, saveShowcase } from "./profile-showcase";
 import { getOwnedHistory, getOwnedVersion } from "./deck-queries";
 import { parseSaveInput } from "./deck-input";
 import { performImport, previewImport } from "./deck-imports";
@@ -248,6 +249,11 @@ export default {
 
       const user = await authenticatedUser(request, env);
       if (!user) return response(env, request, { error: "Sign in is required" }, 401);
+      if (url.pathname === "/v1/me/showcase" && request.method === "GET") return response(env, request, { showcase: await getShowcase(env, user.id) });
+      if (url.pathname === "/v1/me/showcase" && request.method === "PUT") {
+        if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        return response(env, request, { showcase: await saveShowcase(env, user, await jsonBody(request)) });
+      }
 
       if (url.pathname === "/v1/me/card-tag-proposals" && request.method === "GET") {
         const offset = Number(url.searchParams.get("offset") ?? 0);
@@ -443,7 +449,7 @@ export default {
         const decks = (await Promise.all(deckSummaries.map((deck) => getDeck(env, user, deck.id)))).filter((deck) => deck !== null);
         const collection = await listCollection(env, user);
         const comments = await env.ACCOUNT_DB.prepare("SELECT id, target_kind, target_id, parent_id, body, status, created_at, updated_at FROM deck_comments WHERE author_user_id=? ORDER BY created_at").bind(user.id).all();
-        return response(env, request, { exportedAt: new Date().toISOString(), user, profiles: profiles.results, decks, deckFolders: await listDeckFolders(env, user), combos: await listCombos(env, user), collection: collection.entries, collectionTracking: await listCollectionTracking(env, user), matchLog: await listMatchLog(env, user), analysisProfiles: await listAnalysisProfiles(env, user), comments: comments.results, binder: await myBinder(env, user), trades: await listTrades(env, user) });
+        return response(env, request, { exportedAt: new Date().toISOString(), showcase: await getShowcase(env, user.id), user, profiles: profiles.results, decks, deckFolders: await listDeckFolders(env, user), combos: await listCombos(env, user), collection: collection.entries, collectionTracking: await listCollectionTracking(env, user), matchLog: await listMatchLog(env, user), analysisProfiles: await listAnalysisProfiles(env, user), comments: comments.results, binder: await myBinder(env, user), trades: await listTrades(env, user) });
       }
       if (request.method === "PATCH" && url.pathname === "/v1/me") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);

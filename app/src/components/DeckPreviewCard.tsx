@@ -29,8 +29,8 @@ export interface DeckPreviewModel {
   status?: ReactNode;
 }
 
-type ListAction = { to: string; expanded?: never; onToggle?: never; content?: never } | {
-  to?: never; expanded: boolean; onToggle: () => void; content: ReactNode;
+type ListAction = { to: string; newTab?: boolean; expanded?: never; onToggle?: never; content?: never } | {
+  to?: never; newTab?: never; expanded: boolean; onToggle: () => void; content: ReactNode;
 };
 
 /** Immutable preview only: adapters own fetching, mutations, navigation and expanded content. */
@@ -66,7 +66,7 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
   };
   if (presentation === "cover" && view.to !== undefined) return (
     <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source.kind} data-deck-id={model.id} className="identity-surface flex h-full min-w-0 flex-col overflow-hidden rounded-3xl">
-      <Link to={view.to} aria-label={`Open deck: ${model.title}`} className="group flex h-full flex-col focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-ctp-blue">
+      <Link target={view.newTab ? "_blank" : undefined} rel={view.newTab ? "noreferrer" : undefined} to={view.to} aria-label={`Open deck: ${model.title}`} className="group flex h-full flex-col focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-ctp-blue">
         <div className="relative grid shrink-0 grid-cols-[minmax(0,1fr)] overflow-hidden">
           <div className="col-start-1 row-start-1 self-start"><CardArtTile card={leadCard} name={label} artworkOnly /></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent" />
@@ -99,7 +99,7 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
     </div>
     <footer className="border-t border-ctp-surface1 bg-ctp-base/40 p-3">
       <div className="flex flex-wrap items-center gap-2 [&>a]:min-h-12 [&>button]:min-h-12 [&>a]:min-w-12 [&>button]:min-w-12 [&>a]:max-w-full [&>button]:max-w-full">
-        {view.to !== undefined ? <Link to={view.to} aria-label={`View list: ${model.title}`} className={`${deckPreviewActionClass} bg-ctp-blue text-ctp-base`}>View list</Link> : <Button variant="primary" onClick={view.onToggle} aria-label={`${view.expanded ? "Hide" : "View"} list: ${model.title}`} aria-expanded={view.expanded} aria-controls={contentId} className={`${deckPreviewActionClass} bg-ctp-blue text-ctp-base`}><DisclosureChevron className={view.expanded ? "rotate-180" : ""} />{view.expanded ? "Hide list" : "View list"}</Button>}
+        {view.to !== undefined ? <Link target={view.newTab ? "_blank" : undefined} rel={view.newTab ? "noreferrer" : undefined} to={view.to} aria-label={`View list: ${model.title}`} className={`${deckPreviewActionClass} bg-ctp-blue text-ctp-base`}>View list</Link> : <Button variant="primary" onClick={view.onToggle} aria-label={`${view.expanded ? "Hide" : "View"} list: ${model.title}`} aria-expanded={view.expanded} aria-controls={contentId} className={`${deckPreviewActionClass} bg-ctp-blue text-ctp-base`}><DisclosureChevron className={view.expanded ? "rotate-180" : ""} />{view.expanded ? "Hide list" : "View list"}</Button>}
         {model.actions}
       </div>
     </footer>

@@ -1,3 +1,4 @@
+import type { ProfileShowcase } from "@gatcg/shared";
 import type { SavedDeckVersion } from "@gatcg/shared";
 import type { TagOverride, TagProposal, TagProposalInput, TagProposalList } from "@gatcg/shared";
 import { publishCollectionChange } from "./collectionEvents";
@@ -92,6 +93,8 @@ export const accountApi = {
   publicDeck: (slug: string) => accountRequest<{ deck: PublicDeck }>(`/v1/decklists/${encodeURIComponent(slug)}`),
   discoverDecks: (params: URLSearchParams) => accountRequest<{ decks: PublicDeckSummary[]; nextPage: number | null }>(`/v1/discover/decklists?${params.toString()}`),
   discoverProfiles: (query: string) => accountRequest<{ profiles: { displayName: string; profileSlug: string }[] }>(`/v1/discover/profiles?q=${encodeURIComponent(query)}`),
+  showcase: () => accountRequest<{ showcase: ProfileShowcase }>("/v1/me/showcase"),
+  saveShowcase: (showcase: ProfileShowcase) => accountRequest<{ showcase: ProfileShowcase }>("/v1/me/showcase", { method: "PUT", body: JSON.stringify(showcase) }),
   publicProfile: (slug: string) => accountRequest<{ profile: PublicProfile }>(`/v1/profiles/${encodeURIComponent(slug)}`),
   deckSocial: (slug: string) => accountRequest<DeckSocialState>(`/v1/me/decklists/${encodeURIComponent(slug)}/social`),
   likeDeck: (slug: string, liked: boolean) => accountRequest<{ liked: boolean; likeCount: number }>(`/v1/me/decklists/${encodeURIComponent(slug)}/like`, { method: "POST", body: JSON.stringify({ liked }) }),

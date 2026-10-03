@@ -32,6 +32,8 @@ export interface OmnidexEventSummary {
   championNames?: string[];
   /** Number of event players whose public decklist was present in the bundle. */
   publicDecklistCount?: number;
+  /** Champion of the uniquely highest placed player with a known final placement. */
+  topPlayerIdentity?: { championName: string; playerName: string; placement: number } | null;
 }
 
 /** Human-readable labels for Omnidex's event `category` values, in tier order (highest first). */
