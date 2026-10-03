@@ -15,7 +15,6 @@ import { useChampionCardImages } from "../players/useChampionCardImages";
 import PopularDeckRow from "../popular/PopularDeckRow";
 import { useDeckPopularity } from "../popular/useDeckPopularity";
 import { useDeckPopularityIndexData } from "../topdecks/data";
-import { useEventNameById, usePlayerNameById } from "../tournaments/data";
 import DeckResultsSkeleton from "./DeckResultsSkeleton";
 import DeckContentFilterControls from "./DeckContentFilterControls";
 import { deckContentFilterCount, deckContentFilterLabels, deckContentRelevance, deckMatchesContentFilters, emptyDeckContentFilters, type DeckContentFilterState } from "./deckContentFilters";
@@ -58,8 +57,6 @@ export default function TournamentBuildsView({
   const popularityIndexData = useDeckPopularityIndexData();
   const popularityStatus = usePublishedDataStatus("analysis-deck-popularity-index", "/data/analysis/deck-popularity-index.json");
   const cardIndexStatus = usePublishedDataStatus("analysis-deck-card-index", "/data/analysis/deck-card-index.json");
-  const playerName = usePlayerNameById();
-  const eventNameById = useEventNameById();
   const cardCatalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(cardCatalog.map((card) => [card.name, card])), [cardCatalog]);
 
@@ -196,9 +193,7 @@ export default function TournamentBuildsView({
           <PopularDeckRow
             key={deck.signature}
             deck={deck}
-            playerName={playerName}
             championCard={deck.championName ? championImages.get(deck.championName) : undefined}
-            latestEventName={deck.lastEventId ? eventNameById.get(deck.lastEventId) : undefined}
           />
         ))}
       </div>
