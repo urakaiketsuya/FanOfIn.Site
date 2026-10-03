@@ -785,3 +785,11 @@ Verified Lorraine at 360px and 1280px, keyboard filter and list expansion, filte
 - Verified Lorraine at 360px and 1280px: loading, card artwork and visible titles, keyboard disclosure and show-all controls, 48px summaries, and no horizontal overflow. App typecheck and lint passed (six existing Fast Refresh warnings).
 - Limits: forced empty/error/retry fixtures, screen-reader output, text zoom, and cross-champion relationship content were not exercised this pass.
 - Champion expressive design is approximately 75% complete. Next: finish remaining statistics surfaces and verify empty/error/retry and accessibility states across champion pages.
+
+### Champion statistics identity · 2026-10-03
+
+Replaced the statistics page's horizontal character cutout strip with a wrapping gallery using shared CardArtTile, visible printed names, known card links, and catalog name fallbacks. Moved lifetime win rate, deck count, and event count into an All recorded results disclosure with explicit scope and readable labels. Calculations and card selection are unchanged.
+
+Verified Lorraine at 360px and 1280px, loaded card art and names, keyboard expansion, 48px summary height, visible link focus, and no horizontal page overflow. Initial loading was observed. App typecheck and lint passed with six existing Fast Refresh warnings. Forced error/empty/catalog fallback fixtures, screen readers, and text zoom remain unverified.
+
+Champion expressive design is approximately 78% complete. Next: remaining More statistics surfaces and tab/panel accessibility, followed by broader data-state coverage. No implementation blockers.

@@ -3,6 +3,7 @@ import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import Button from "../../components/ui/Button";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import ChampionDecks from "./ChampionDecks";
+import CardArtTile from "../../components/CardArtTile";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { slugToChampionName } from "../../lib/championSlug";
@@ -253,26 +254,35 @@ export default function ChampionDetail() {
             title={champion.signature}
             eyebrow={<Link to="/champions" className="hover:underline">&larr; All champions</Link>}
             description={<span className="flex flex-wrap gap-2"><span>{champion.classes.join(" / ")}</span><span aria-hidden="true">·</span><span>{champion.elements.join(" / ")}</span></span>}
-            actions={<div className="grid grid-cols-3 gap-2 text-center"><div className="rounded-lg bg-ctp-mantle px-3 py-2"><strong className="block text-base text-ctp-text">{(champion.avgWinRate * 100).toFixed(0)}%</strong><span className="text-[10px] uppercase text-ctp-subtext0">Win rate</span></div><div className="rounded-lg bg-ctp-mantle px-3 py-2"><strong className="block text-base text-ctp-text">{champion.deckCount.toLocaleString()}</strong><span className="text-[10px] uppercase text-ctp-subtext0">Decks</span></div><div className="rounded-lg bg-ctp-mantle px-3 py-2"><strong className="block text-base text-ctp-text">{champion.eventCount.toLocaleString()}</strong><span className="text-[10px] uppercase text-ctp-subtext0">Events</span></div></div>}
           />
 
           {cutouts.length > 0 && (
-            <div className="mb-6 flex gap-2 overflow-x-auto rounded-xl border border-ctp-surface0 bg-gradient-to-b from-ctp-mantle to-ctp-crust p-3">
-              {cutouts.map((c) => {
-                const slug = cutoutCards.get(c.cardName)?.slug;
-                const img = <img src={c.image} alt={c.cardName} className="h-40 w-auto object-contain shadow-[0_14px_18px_-8px_rgba(0,0,0,0.5)] transition-transform hover:scale-105" />;
-                return slug ? (
-                  <Link key={c.cardName} to={`/cards/${slug}`} title={c.cardName} className="shrink-0">
-                    {img}
-                  </Link>
-                ) : (
-                  <div key={c.cardName} title={c.cardName} className="shrink-0">
-                    {img}
-                  </div>
-                );
-              })}
-            </div>
+            <section aria-label={`${championName} card portraits`} className="identity-surface mb-4 rounded-3xl border border-ctp-surface1 p-4">
+              <div className="grid grid-cols-2 items-start gap-4 sm:grid-cols-4 lg:grid-cols-6">
+                {cutouts.map((c) => {
+                  const card = cutoutCards.get(c.cardName);
+                  const content = <><CardArtTile card={card} name={c.cardName} /><span className="mt-2 block text-sm font-medium text-ctp-text">{c.cardName}</span></>;
+                  return card?.slug ? (
+                    <Link key={c.cardName} to={`/cards/${card.slug}`} className="min-w-0 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ctp-blue hover:text-ctp-blue">
+                      {content}
+                    </Link>
+                  ) : <div key={c.cardName} className="min-w-0">{content}</div>;
+                })}
+              </div>
+            </section>
           )}
+
+          <details className="group mb-6 rounded-2xl border border-ctp-surface1 bg-ctp-mantle px-4">
+            <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 text-sm font-medium text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue">
+              All recorded results<DisclosureChevron className="group-open:rotate-180" />
+            </summary>
+            <p className="mb-3 text-sm text-ctp-subtext1">Totals across recorded events, separate from the season statistics below.</p>
+            <dl className="grid grid-cols-1 gap-3 pb-4 sm:grid-cols-3">
+              <div><dt className="text-sm text-ctp-subtext0">Average win rate</dt><dd className="text-2xl font-semibold text-ctp-text">{(champion.avgWinRate * 100).toFixed(0)}%</dd></div>
+              <div><dt className="text-sm text-ctp-subtext0">Decks</dt><dd className="text-2xl font-semibold text-ctp-text">{champion.deckCount.toLocaleString()}</dd></div>
+              <div><dt className="text-sm text-ctp-subtext0">Events</dt><dd className="text-2xl font-semibold text-ctp-text">{champion.eventCount.toLocaleString()}</dd></div>
+            </dl>
+          </details>
 
           <Tabs tabs={SURFACES} active={surface} onChange={(next) => setTab(next === "overview" ? "season" : next === "decks" ? "decks" : moreTab)} label={`${champion.signature} details`} variant="pill" />
 
