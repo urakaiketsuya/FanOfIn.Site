@@ -624,3 +624,18 @@ filtered empty results, 48px sort controls and no mobile overflow at 360 × 800;
 layout at 1280 × 900; mobile picker options, keyboard controls and price labels. Sorting makes
 no deck edits. Simulated price refresh failure/retry, screen reader and physical device checks
 remain unverified. Next: shared navigation and supporting page expressive design.
+
+### Shared navigation accessibility, October 3
+
+Navigation links and disclosure controls now use the shared 48px target size. Mobile groups
+use DisclosureChevron, and the expanded navigation scrolls within the dynamic viewport,
+accounting for the announcement banner. Escape closes navigation and restores trigger focus.
+A keyboard skip link moves focus directly to page content.
+
+Verified at 360 × 800 and 1280 × 900: expanded mobile Tools group, all mobile group/link
+heights at 48px, viewport containment, no horizontal overflow, mobile and desktop Escape
+focus restoration, visible desktop keyboard focus, and skip link focus on main content.
+App typecheck and lint passed with six existing Fast Refresh warnings. No data loading,
+error or empty states were introduced. Physical keyboard viewport changes, text zoom and
+screen reader checks remain unverified.
+Next: supporting-page hierarchy and expressive styling, starting with methodology and changelog.
