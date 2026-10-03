@@ -206,7 +206,7 @@ The following are additional tasks or explicit verification of remaining surface
 | Review | New card discovery `/card-discovery` | Lead with suggested cards and a concise reason; make relevance and evidence inspectable; preserve opt-in selection and distinguish new suggestions from current cards. |
 | Review | Card packages `/cards/packages` | Make package identity recognizable through cards; label full pools, required cores and tested variants distinctly; keep package application explicit. |
 | Review | Top cards `/cards/stats` | Emphasize card identity beside the primary metric; keep denominator, period and sample size visible; disclose secondary statistics progressively. |
-| Review | Champions `/champions` | Use champion artwork as navigation identity; align ranking metrics and scope; support compact mobile browsing without hiding names. |
+| Partial | Champions `/champions` | Use champion artwork as navigation identity; align ranking metrics and scope; support compact mobile browsing without hiding names. |
 | Review | Champion synergy `/champions/:name` | Carry champion identity into card and package groups; separate observed relationships from recommendations and show evidence strength. |
 | Review | Champion stats `/champions/:name/stats` | Establish a clear statistical overview with date/format context; prioritize meaningful trends and disclose detailed breakdowns. |
 | Review | Trading binder `/looking-for` | Make wanted and offered cards unmistakable; show availability and reservation state; clarify the next action without equating ownership with availability. |
@@ -726,3 +726,21 @@ restored chart, and cached chart retention during a later failure. Verified 360 
 Other source-specific failures, empty-data fixtures, Pantheon, text zoom, screen readers and
 physical devices remain unverified. Next: optional catalog/metadata recovery and community
 card identity refinements, followed by champion/package/archetype page passes.
+
+### Champion directory hierarchy, October 3
+
+Champion and named spirit navigation now uses a single column on narrow screens, wrapping
+names, larger identity text and artwork beside the summary. Desktop uses three columns in
+a wider page. The season map is optional through a keyboard accessible 48px disclosure;
+insufficient samples explain why the chart is unavailable. Statistics and trends use shared
+independent source status and retry. Existing statistics, ordering and thresholds are unchanged.
+
+Verified at 360 × 800 and 1280 × 900: populated directory, keyboard disclosure, visible focus,
+48px summary, card link targets and no horizontal page overflow. The current data exercised
+the insufficient chart sample state. App typecheck and lint passed with six existing warnings.
+Champion-specific network failure/retry, empty directory, populated chart, text zoom,
+screen reader and physical device checks remain unverified.
+
+Next: champion synergy and statistics hierarchy, followed by packages and archetypes.
+Champion experience estimate: approximately 25% complete, based on one directory pass out of
+three champion surfaces, with acceptance checks still open. This is not an overall site estimate.

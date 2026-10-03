@@ -13,7 +13,7 @@ export default function ChampionMetaMap({ champions, trends }: { champions: Arch
     const latest = trendByName.get(champion.signature)?.seasons.at(-1);
     return latest && latest.deckCount >= 200 ? [{ champion, latest }] : [];
   });
-  if (points.length < 2) return null;
+  if (points.length < 2) return <p className="mt-3 text-sm text-ctp-subtext1">The metagame map needs at least two champions with 200 recorded decks each in their latest season. Champion summaries remain available below.</p>;
 
   const shares = points.map((point) => point.latest.shareOfSeason * 100);
   const rates = points.map((point) => point.latest.avgWinRate * 100);

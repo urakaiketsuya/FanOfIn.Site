@@ -13,7 +13,8 @@ import ElementIcon from "../../components/ElementIcon";
 import ClassIcon from "../../components/ClassIcon";
 import CardArtTile from "../../components/CardArtTile";
 import PageLayout from "../../components/layout/PageLayout";
-import { InlineState } from "../../components/ui/ContentState";
+import PublishedSourceStatus from "../../components/PublishedSourceStatus";
+import DisclosureChevron from "../../components/DisclosureChevron";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import Section from "../../components/ui/Section";
 
@@ -56,18 +57,27 @@ export default function ChampionsIndex() {
   const latestSeasonName = trendsData?.seasonOrder[trendsData.seasonOrder.length - 1];
 
   return (
-    <PageLayout data-component="ChampionsIndex">
-      <PageHeader title="Champions" />
+    <PageLayout width="wide" data-component="ChampionsIndex">
+      <PageHeader title="Find your champion" eyebrow="Champions" description="Explore a champion’s cards, decks and tournament results. Statistics summarize recorded decks; they are not predictions for your next match." />
 
-      {dataStatus.phase === "error" ? <div role="alert" className="mt-6 rounded-lg border border-ctp-red/30 p-4 text-sm">
-        <p>{data ? "Showing cached champion statistics. The latest update could not be loaded." : "Champion statistics could not be loaded."}</p>
-        <button type="button" onClick={dataStatus.retry} className="mt-2 min-h-11 text-ctp-blue underline">Try again</button>
-      </div> : !data && <InlineState className="mt-6">Loading champion statistics…</InlineState>}
-      {trendStatus.phase === "error" && <div role="alert" className="mt-3 text-sm text-ctp-subtext1">{trendsData ? "Showing cached season trends." : "Season trends are unavailable."} <button type="button" onClick={trendStatus.retry} className="min-h-11 text-ctp-blue underline">Retry trends</button></div>}
+      <PublishedSourceStatus label="Champion statistics" status={dataStatus} hasData={!!data} />
+      <PublishedSourceStatus label="Season trends" status={trendStatus} hasData={!!trendsData} />
 
-      {archetypes && trendsData && <ChampionMetaMap champions={archetypes} trends={trendsData.champions} />}
+      {archetypes && trendsData && <details className="group rounded-xl border border-ctp-surface1 bg-ctp-mantle">
+        <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 rounded-xl px-4 py-3 font-medium focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden">
+          Explore the season metagame
+          <DisclosureChevron className="group-open:rotate-180" />
+        </summary>
+        <div className="px-3 pb-3">
+          {latestSeasonName && <p className="text-sm text-ctp-subtext1">Season: {latestSeasonName}</p>}
+          <ChampionMetaMap champions={archetypes} trends={trendsData.champions} />
+        </div>
+      </details>}
 
-      <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      {archetypes?.length === 0 && <p className="mt-6 rounded-xl border border-ctp-surface1 p-4 text-ctp-subtext1">No champion statistics have been published yet. Champions will appear when tournament decks are available.</p>}
+      {archetypes && archetypes.length > 0 && <p className="mt-6 text-sm text-ctp-subtext1">{archetypes.length} champions · Deck and event counts cover the published tournament sample. Trends compare {latestSeasonName ?? "the latest season"} with the prior season.</p>}
+
+      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {archetypes?.map((c) => {
           const card = championImages.get(c.signature);
           const trend = trendsData?.champions.find((t) => t.championName === c.signature);
@@ -75,37 +85,39 @@ export default function ChampionsIndex() {
             <CardHoverPreview key={c.signature} image={card?.editions[0]?.image} alt={c.signature}>
               <Link
                 to={`/champions/${championNameToSlug(c.signature)}`}
-                className="group block rounded-lg border border-ctp-surface1 bg-ctp-mantle p-2 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-ctp-surface2 hover:shadow-md hover:shadow-black/20"
+                className="group grid h-full grid-cols-[6rem_minmax(0,1fr)] items-start gap-4 rounded-2xl border border-ctp-surface1 bg-ctp-mantle p-4 transition-colors hover:border-ctp-blue/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue"
               >
                 <CardArtTile card={card} name={c.signature} />
-                <p className="mt-2 truncate text-sm font-semibold text-ctp-text group-hover:text-ctp-blue">{c.signature}</p>
-                <p className="mt-0.5 flex items-center gap-1 text-xs text-ctp-subtext0">
-                  {c.classes.map((cls) => (
-                    <ClassIcon key={cls} cardClass={cls} size={11} />
-                  ))}
-                  {c.elements.map((element) => (
-                    <ElementIcon key={element} element={element} size={11} />
-                  ))}
-                  <span className="truncate">{c.classes.join("/")} · {c.elements.join("/")}</span>
-                </p>
-                <div className="mt-1.5 flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-xs text-ctp-subtext1">
-                  <span>{c.deckCount.toLocaleString()} decks</span>
-                  <span className="font-medium text-ctp-text">{(c.avgWinRate * 100).toFixed(0)}% avg. win rate</span>
-                </div>
-                <div className="mt-0.5 flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-xs">
-                  <span className="text-ctp-subtext0">{c.eventCount.toLocaleString()} events</span>
-                  <span
-                    className={trend ? TREND_CLASS[trend.trend] : "text-ctp-subtext0"}
-                    title={latestSeasonName ? `Change in share of ${latestSeasonName} vs. the prior season` : undefined}
-                  >
-                    {trend ? TREND_LABEL[trend.trend] : ""}
-                    {trend?.trendDeltaPct !== null && trend?.trendDeltaPct !== undefined && (
-                      <span className="ml-1 text-ctp-subtext0">
-                        ({trend.trendDeltaPct > 0 ? "+" : ""}
-                        {trend.trendDeltaPct.toFixed(1)}pp)
-                      </span>
-                    )}
-                  </span>
+                <div className="min-w-0">
+                  <p className="break-words text-lg font-semibold leading-snug text-ctp-text group-hover:text-ctp-blue">{c.signature}</p>
+                  <p className="mt-0.5 flex flex-wrap items-center gap-1 text-xs text-ctp-subtext0">
+                    {c.classes.map((cls) => (
+                      <ClassIcon key={cls} cardClass={cls} size={11} />
+                    ))}
+                    {c.elements.map((element) => (
+                      <ElementIcon key={element} element={element} size={11} />
+                    ))}
+                    <span className="break-words">{c.classes.join("/")} · {c.elements.join("/")}</span>
+                  </p>
+                  <div className="mt-1.5 flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-xs text-ctp-subtext1">
+                    <span>{c.deckCount.toLocaleString()} decks</span>
+                    <span className="font-medium text-ctp-text">{(c.avgWinRate * 100).toFixed(0)}% avg. win rate</span>
+                  </div>
+                  <div className="mt-0.5 flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-xs">
+                    <span className="text-ctp-subtext0">{c.eventCount.toLocaleString()} events</span>
+                    <span
+                      className={trend ? TREND_CLASS[trend.trend] : "text-ctp-subtext0"}
+                      title={latestSeasonName ? `Change in share of ${latestSeasonName} vs. the prior season` : undefined}
+                    >
+                      {trend ? TREND_LABEL[trend.trend] : ""}
+                      {trend?.trendDeltaPct !== null && trend?.trendDeltaPct !== undefined && (
+                        <span className="ml-1 text-ctp-subtext0">
+                          ({trend.trendDeltaPct > 0 ? "+" : ""}
+                          {trend.trendDeltaPct.toFixed(1)}pp)
+                        </span>
+                      )}
+                    </span>
+                  </div>
                 </div>
               </Link>
             </CardHoverPreview>
@@ -118,30 +130,32 @@ export default function ChampionsIndex() {
           className="mt-10"
           heading="compact"
           title="Named Spirits"
-          description={<>Named Spirit companions (e.g. "Kaze, Spirit of Wind" – distinct from the generic "Spirit of Wind"), tracked with the same stats as a Champion, across every deck that runs them regardless of which Champion is present.</>}
+          description={<>Named companions such as Kaze, Spirit of Wind are tracked across every deck that includes them, regardless of champion. Generic spirits are excluded.</>}
         >
-          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {data.namedSpirits.map((s: ArchetypeSummary) => {
               const card = namedSpiritImages.get(s.signature);
               return (
                 <CardHoverPreview key={s.signature} image={card?.editions[0]?.image} alt={s.signature}>
                   <Link
                     to={`/champions/${championNameToSlug(s.signature)}`}
-                    className="group block rounded-lg border border-ctp-surface1 bg-ctp-mantle p-2 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-ctp-surface2 hover:shadow-md hover:shadow-black/20"
+                    className="group grid h-full grid-cols-[6rem_minmax(0,1fr)] items-start gap-4 rounded-2xl border border-ctp-surface1 bg-ctp-mantle p-4 transition-colors hover:border-ctp-blue/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue"
                   >
                     <CardArtTile card={card} name={s.signature} />
-                    <p className="mt-2 truncate text-sm font-semibold text-ctp-text group-hover:text-ctp-blue">{s.signature}</p>
-                    <p className="mt-0.5 flex items-center gap-1 text-xs text-ctp-subtext0">
-                      {s.elements.map((element) => (
-                        <ElementIcon key={element} element={element} size={11} />
-                      ))}
-                      <span className="truncate">{s.elements.join("/")}</span>
-                    </p>
-                    <div className="mt-1.5 flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-xs text-ctp-subtext1">
-                      <span>{s.deckCount.toLocaleString()} decks</span>
-                      <span className="font-medium text-ctp-text">{(s.avgWinRate * 100).toFixed(0)}% avg. win rate</span>
+                    <div className="min-w-0">
+                      <p className="break-words text-lg font-semibold leading-snug text-ctp-text group-hover:text-ctp-blue">{s.signature}</p>
+                      <p className="mt-0.5 flex flex-wrap items-center gap-1 text-xs text-ctp-subtext0">
+                        {s.elements.map((element) => (
+                          <ElementIcon key={element} element={element} size={11} />
+                        ))}
+                        <span className="break-words">{s.elements.join("/")}</span>
+                      </p>
+                      <div className="mt-1.5 flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-xs text-ctp-subtext1">
+                        <span>{s.deckCount.toLocaleString()} decks</span>
+                        <span className="font-medium text-ctp-text">{(s.avgWinRate * 100).toFixed(0)}% avg. win rate</span>
+                      </div>
+                      <div className="mt-0.5 text-xs text-ctp-subtext0">{s.eventCount.toLocaleString()} events</div>
                     </div>
-                    <div className="mt-0.5 text-xs text-ctp-subtext0">{s.eventCount.toLocaleString()} events</div>
                   </Link>
                 </CardHoverPreview>
               );
