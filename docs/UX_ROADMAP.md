@@ -609,3 +609,18 @@ hash navigation to a full deck page, and tournament search keyboard list expansi
 checked layouts had no horizontal overflow. No new loading/error state was introduced;
 network failure, screen reader and physical device checks were not repeated.
 Next: shared navigation and supporting pages, including the mobile menu target.
+
+### Card price sorting, October 2
+
+Card browsing and the shared deck editor picker now offer ascending and descending price
+sorting using the existing card-level deck price estimates. Unknown quotes stay last in both
+directions and ties sort alphabetically. Price-sorted cards show their estimates; printing
+filters retain their artwork behavior and do not change the estimate. Loading and refresh
+failure feedback include a retry action. Existing recommendation order is preserved.
+
+Six sorting/catalog regression tests passed. App typecheck and lint passed with six existing
+Fast Refresh warnings. Verified real ascending and descending results, initial price loading,
+filtered empty results, 48px sort controls and no mobile overflow at 360 × 800; desktop browse
+layout at 1280 × 900; mobile picker options, keyboard controls and price labels. Sorting makes
+no deck edits. Simulated price refresh failure/retry, screen reader and physical device checks
+remain unverified. Next: shared navigation and supporting page expressive design.

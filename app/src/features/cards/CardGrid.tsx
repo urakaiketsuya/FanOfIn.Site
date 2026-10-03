@@ -1,3 +1,4 @@
+import { formatUsd } from "../../lib/format";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Card, CardEdition } from "@gatcg/shared";
@@ -7,11 +8,12 @@ import { primaryAlternateFace } from "../../lib/cardFaces";
 
 interface CardGridProps {
   cards: Card[];
+  prices?: ReadonlyMap<string, number>;
   /** Which edition's art to show per card – defaults to the first. Set detail pages pass the edition from that set. */
   pickEdition?: (card: Card) => CardEdition | undefined;
 }
 
-export default function CardGrid({ cards, pickEdition }: CardGridProps) {
+export default function CardGrid({ cards, pickEdition, prices }: CardGridProps) {
   if (cards.length === 0) {
     return <InlineState data-component="CardGrid" className="mt-8">No cards match these filters.</InlineState>;
   }
@@ -20,13 +22,13 @@ export default function CardGrid({ cards, pickEdition }: CardGridProps) {
     <div data-component="CardGrid" className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
       {cards.map((card) => {
         const edition = pickEdition ? pickEdition(card) : card.editions[0];
-        return <CardGridItem key={card.uuid} card={card} edition={edition} />;
+        return <CardGridItem key={card.uuid} card={card} edition={edition} prices={prices} />;
       })}
     </div>
   );
 }
 
-function CardGridItem({ card, edition }: { card: Card; edition: CardEdition | undefined }) {
+function CardGridItem({ card, edition, prices }: { card: Card; edition: CardEdition | undefined; prices?: ReadonlyMap<string, number> }) {
   const [showBack, setShowBack] = useState(false);
   const reverseFace = primaryAlternateFace(card, edition);
   useEffect(() => setShowBack(false), [edition?.uuid]);
@@ -52,6 +54,7 @@ function CardGridItem({ card, edition }: { card: Card; edition: CardEdition | un
         )}
       </div>
       <Link to={`/cards/${card.slug}`} className="mt-1 flex min-h-12 items-center break-words rounded px-1 text-sm font-medium text-ctp-text hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">{faceName}</Link>
+      {prices && <p className="px-1 text-sm text-ctp-subtext1">{prices.has(card.name) ? `From ${formatUsd(prices.get(card.name)!)}` : "Price unavailable"}</p>}
     </article>
   );
 }

@@ -1,3 +1,4 @@
+import { compareCardPrices } from "../../lib/cardPriceSort";
 import type { Card } from "@gatcg/shared";
 import { emptyFilterState, filterCards } from "../../features/cards/filters";
 
@@ -22,11 +23,12 @@ export function filterCatalog(cards: Card[], query: string, filters: CatalogFilt
   });
 }
 
-export type CatalogSort = "recommended" | "name" | "name-desc" | "cost" | "cost-desc" | "element";
-export function sortCatalogNames(names: string[], catalog: ReadonlyMap<string, Card>, sort: CatalogSort): string[] {
+export type CatalogSort = "recommended" | "name" | "name-desc" | "cost" | "cost-desc" | "element" | "price" | "price-desc";
+export function sortCatalogNames(names: string[], catalog: ReadonlyMap<string, Card>, sort: CatalogSort, prices: ReadonlyMap<string, number> = new Map()): string[] {
   if (sort === "recommended") return [...names];
   const cost = (name: string) => { const card = catalog.get(name); return card?.cost_memory ?? card?.cost_reserve ?? null; };
   return [...names].sort((a, b) => {
+    if (sort === "price" || sort === "price-desc") return compareCardPrices(a, b, prices, sort === "price-desc");
     if (sort === "name-desc") return b.localeCompare(a);
     if (sort === "element") return (catalog.get(a)?.elements.join(",") ?? "").localeCompare(catalog.get(b)?.elements.join(",") ?? "") || a.localeCompare(b);
     if (sort === "cost" || sort === "cost-desc") {
