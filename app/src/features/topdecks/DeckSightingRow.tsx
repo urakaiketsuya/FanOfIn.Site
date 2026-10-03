@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import type { Card, DeckSighting } from "@gatcg/shared";
 import { EVENT_CATEGORY_LABELS } from "@gatcg/shared";
 import PlayerLink from "../players/PlayerLink";
-import DecklistView from "../events/DecklistView";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useSightingDecklist } from "./useSightingDecklist";
 import { formatUsd } from "../../lib/format";
@@ -21,7 +20,6 @@ export default function DeckSightingRow({ sighting, playerName, championCard, on
   /** Retained for existing callers; every immutable result now uses the shared preview. */
   browseCard?: boolean;
 }) {
-  const [expanded, setExpanded] = useState(false);
   const [previewVisible, setPreviewVisible] = useState(false);
   const rowRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -32,7 +30,7 @@ export default function DeckSightingRow({ sighting, playerName, championCard, on
     observer.observe(rowRef.current);
     return () => observer.disconnect();
   }, []);
-  const { loading, decklist, error, format } = useSightingDecklist(sighting.eventId, sighting.player, expanded || previewVisible);
+  const { loading, decklist, error, format } = useSightingDecklist(sighting.eventId, sighting.player, previewVisible);
   const cardsByName = useCardsByNames(decklist ? [...decklist.main, ...decklist.material, ...decklist.sideboard].map(line => line.card) : []);
   return <div ref={rowRef} data-component="DeckSightingRow" className="min-w-0">
     <DeckPreviewCard cardsByName={cardsByName} championCard={championCard} model={{
@@ -64,9 +62,6 @@ export default function DeckSightingRow({ sighting, playerName, championCard, on
         {decklist && <DeckPreviewListActions decklist={decklist} format={format} title={`${sighting.championName ?? "Deck"} · ${playerName}`} compare={!onAdd} />}
         {onAdd && <button type="button" onClick={onAdd} aria-pressed={added ?? false} className={`${deckPreviewActionClass} border ${added ? "border-ctp-blue text-ctp-blue" : "border-ctp-surface1 text-ctp-subtext1"}`}>{added ? "Remove from compare" : "Compare"}</button>}
       </>,
-    }} view={sighting.deckHash ? { to: `/decks/${sighting.deckHash}` } : {
-      expanded, onToggle: () => setExpanded(value => !value),
-      content: decklist ? <DecklistView decklist={decklist} cardsByName={cardsByName} deckId={sighting.deckId} showThumbnails /> : <InlineState>{error ?? "Loading decklist…"}</InlineState>,
-    }} />
+    }} view={{ to: sighting.deckHash ? `/decks/${sighting.deckHash}` : `/events/${sighting.eventId}?tab=decklists&player=${sighting.player}` }} />
   </div>;
 }
