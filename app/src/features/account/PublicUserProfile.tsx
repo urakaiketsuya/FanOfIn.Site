@@ -44,9 +44,9 @@ export default function PublicUserProfile() {
       <h2 className="text-xl font-semibold">Favorite cards</h2>
       <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">{profile.favoriteCardIds.map((id, index) => <CardResult key={id} card={cards?.[index]} name={cards?.[index]?.name ?? "Card unavailable"} />)}</div>
     </section>}
-    {!!profile.featuredDecks?.length && <section className="mt-8">
+    {(!!profile.featuredDecks?.length || !!profile.featuredTournamentDecks?.length) && <section className="mt-8">
       <h2 className="text-xl font-semibold">Featured decks</h2>
-      <div className="mt-3 grid items-start gap-4 md:grid-cols-2 lg:grid-cols-3">{profile.featuredDecks.map(deck => <DeckPreviewCard key={deck.publicSlug} presentation="cover" model={{ id: deck.publicSlug, title: deck.title, decklist: null, championName: deck.championName, format: deck.format, materialPreview: deck.materialPreview, source: { kind: "community", label: `By ${deck.owner.displayName}` } }} view={{ to: `/decks/${deck.publicSlug}` }} />)}</div>
+      <div className="mt-3 grid items-start gap-4 md:grid-cols-2 lg:grid-cols-3">{profile.featuredDecks?.map(deck => <DeckPreviewCard key={deck.publicSlug} presentation="cover" model={{ id: deck.publicSlug, title: deck.title, decklist: null, championName: deck.championName, format: deck.format, materialPreview: deck.materialPreview, source: { kind: "community", label: `By ${deck.owner.displayName}` } }} view={{ to: `/decks/${deck.publicSlug}` }} />)}{profile.featuredTournamentDecks?.map(deck => <DeckPreviewCard key={deck.deckHash} presentation="cover" model={{ id: deck.deckHash, title: `${deck.championName ?? "Tournament"} deck`, decklist: null, championName: deck.championName, materialPreview: deck.materialPreview, source: { kind: "event", label: "Tournament" } }} view={{ to: `/decks/${deck.deckHash}` }} />)}</div>
     </section>}
     <h2 className="mt-8 text-xl font-semibold">Published decks</h2>
     {profile.decks.length === 0 ? <EmptyState className="mt-8" title="This user has no public decks" /> : <div className="mt-6 grid items-start gap-4 md:grid-cols-2">{profile.decks.map(deck => <PublicDeckCard key={deck.publicSlug} deck={deck} />)}</div>}

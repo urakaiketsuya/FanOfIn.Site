@@ -865,3 +865,13 @@ Extended Account and the public profile with an explicit showcase: up to six cat
 Verification: app, pipeline and account service typechecks; lint with existing warnings; focused placement, profile persistence/security tests. UI fixture at 360px and 1280px verified known/fallback event identity, card search, selection by keyboard, failed save with retained draft, successful retry, reopening saved choices, focus restoration, 48px editor controls, and no page overflow. Fixture is not a signed-in production round trip. Physical mobile keyboard, screen reader and deployed migration verification remain.
 
 Follow-ups for the broader profile initiative: tournament favorite adapter, optional bio and preferred formats, and explicit showcase reorder controls. These are additional scope beyond the initial community showcase. No push or deployment performed.
+
+### 2026-10-03: Tournament favorites on profiles
+
+Profile showcases now support tournament favorites alongside community decks, with a combined limit of three. Only tournament hashes are saved. Public champion names and material previews resolve from published deck partitions, never private favorite snapshot text. Missing builds are omitted from public results; unavailable source data rejects saves without changing the existing showcase. Existing atomic revisions and identical retry recovery apply to both sources. No migration is needed. Deploy the account service before the frontend.
+
+The editor preserves selections when filtering, shows independent tournament loading/failure feedback, and links previews to deck pages in a new tab. Community selections appear before tournament selections, with selection order preserved within each source. Explicit reorder controls remain a follow-up.
+
+Verification: app/shared/account service typechecks and app lint (six existing warnings); account tests cover mixed-source limits, malformed/duplicate hashes, public resolution, missing sources, failed asset requests, unchanged persistence on failure, retry behavior, and profile discovery. A local fixture using real UI components passed 360px and 1280px checks for keyboard selection, search, retained failed-save draft, successful retry, saved selection reopening, public deck navigation, focus restoration, 48px buttons, and no horizontal overflow. Fixture uses mocked account responses; signed-in production saving, physical mobile keyboard, and screen-reader output remain unverified.
+
+Tournament profile favorites: 100% of implementation scope, not yet deployed. Next recommended work: explicit showcase reordering. Bio and preferred formats remain optional additional scope.

@@ -83,9 +83,16 @@ export interface PublicDeckSummary extends Omit<PublicDeck, "decklist" | "visibi
   sideboardCount?: number;
 }
 
+export interface ProfileTournamentDeck {
+  deckHash: string;
+  championName: string | null;
+  materialPreview: OmnidexDecklistCardLine[];
+}
+
 export interface ProfileShowcase {
   cardIds: string[];
   deckSlugs: string[];
+  tournamentHashes?: string[];
   revision: number;
 }
 
@@ -95,6 +102,7 @@ export interface PublicProfile {
   decks: PublicDeckSummary[];
   favoriteCardIds?: string[];
   featuredDecks?: PublicDeckSummary[];
+  featuredTournamentDecks?: ProfileTournamentDeck[];
 }
 
 export interface DeckSocialState {

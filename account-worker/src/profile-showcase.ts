@@ -1,3 +1,4 @@
+import { resolveProfileTournamentDecks } from "./profile-tournament-decks";
 import type { ProfileShowcase } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
 import { ApiError, badRequest } from "./errors";
@@ -12,7 +13,10 @@ export function parseShowcase(value: unknown): ProfileShowcase {
     return list as string[];
   }
   if (!Number.isSafeInteger(input.revision) || Number(input.revision) < 0) throw badRequest("Invalid profile revision");
-  return { cardIds: ids("cardIds", 6, /^[a-zA-Z0-9-]{1,80}$/), deckSlugs: ids("deckSlugs", 3, /^[a-f0-9]{32}$/), revision: Number(input.revision) };
+  const tournamentHashes = input.tournamentHashes === undefined ? [] : ids("tournamentHashes", 3, /^[a-z0-9]{1,7}$/);
+  const deckSlugs = ids("deckSlugs", 3, /^[a-f0-9]{32}$/);
+  if (deckSlugs.length + tournamentHashes.length > 3) throw badRequest("Choose up to three featured decks");
+  return { ...(tournamentHashes.length ? { tournamentHashes } : {}), cardIds: ids("cardIds", 6, /^[a-zA-Z0-9-]{1,80}$/), deckSlugs, revision: Number(input.revision) };
 }
 export async function getShowcase(env: Env, userId: string): Promise<ProfileShowcase> {
   const row = await env.ACCOUNT_DB.prepare("SELECT payload, revision FROM profile_showcases WHERE user_id = ?").bind(userId).first<{ payload: string; revision: number }>();
@@ -25,7 +29,10 @@ export async function saveShowcase(env: Env, user: AuthUser, value: unknown): Pr
     const ids = new Set(catalog.cards.map(card => card.uuid));
     if (input.cardIds.some(id => !ids.has(id))) throw badRequest("Choose cards from the published catalog");
   }
-  const payload = JSON.stringify({ cardIds: input.cardIds, deckSlugs: input.deckSlugs });
+  const hashes = input.tournamentHashes ?? [];
+  if (hashes.length && (await resolveProfileTournamentDecks(env, hashes)).length !== hashes.length) throw badRequest("Choose tournament decks available in the published data");
+  const payloadOf = (value: ProfileShowcase) => JSON.stringify({ cardIds: value.cardIds, deckSlugs: value.deckSlugs, ...(value.tournamentHashes?.length ? { tournamentHashes: value.tournamentHashes } : {}) });
+  const payload = payloadOf(input);
   // Public visibility is checked inside the write, including when a deck is unpublished concurrently.
   const result = await env.ACCOUNT_DB.prepare(`INSERT INTO profile_showcases (user_id, payload, revision)
     SELECT ?, ?, 1 WHERE (? = 0 OR EXISTS (SELECT 1 FROM profile_showcases WHERE user_id = ?))
@@ -39,7 +46,7 @@ export async function saveShowcase(env: Env, user: AuthUser, value: unknown): Pr
   if (!result) {
     const current = await getShowcase(env, user.id);
     // A lost successful response can be retried without duplicating the write.
-    if (JSON.stringify({ cardIds: current.cardIds, deckSlugs: current.deckSlugs }) === payload && current.revision > input.revision) return current;
+    if (payloadOf(current) === payload && current.revision > input.revision) return current;
     throw new ApiError("The profile changed elsewhere or a deck is no longer public. Reload the saved showcase before retrying.", 409, "profile_showcase_conflict");
   }
   return { ...input, revision: result.revision };

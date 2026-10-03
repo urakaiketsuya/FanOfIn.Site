@@ -1,3 +1,4 @@
+import { resolveProfileTournamentDecks } from "./profile-tournament-decks";
 import { getShowcase } from "./profile-showcase";
 import { databaseAll } from "./database";
 import { deckPreviewCards, type OmnidexDecklist } from "@gatcg/shared";
@@ -22,7 +23,7 @@ export async function discoverProfiles(env: Env, params: URLSearchParams): Promi
       AND (EXISTS (SELECT 1 FROM user_decks ud WHERE ud.owner_user_id = users.id AND ud.visibility = 'public'
         AND ud.published_version_id IS NOT NULL AND ud.moderation_status = 'active')
         OR EXISTS (SELECT 1 FROM profile_showcases ps WHERE ps.user_id = users.id
-          AND (json_array_length(ps.payload, '$.cardIds') > 0 OR json_array_length(ps.payload, '$.deckSlugs') > 0)))
+          AND (json_array_length(ps.payload, '$.cardIds') > 0 OR json_array_length(ps.payload, '$.deckSlugs') > 0 OR json_array_length(ps.payload, '$.tournamentHashes') > 0)))
     ORDER BY users.display_name ASC LIMIT 20`).bind(escaped).all<{ display_name: string; profile_slug: string }>();
   return { profiles: rows.results.map((row) => ({ displayName: row.display_name, profileSlug: row.profile_slug })) };
 }
@@ -80,5 +81,5 @@ export async function getPublicProfile(env: Env, slug: string): Promise<PublicPr
   const showcase = await getShowcase(env, user.id);
   const featured = showcase.deckSlugs.length ? await env.ACCOUNT_DB.prepare(`${SELECT} WHERE ud.public_slug IN (SELECT value FROM json_each(?)) AND ud.visibility = 'public' AND ud.moderation_status = 'active' AND users.profile_discoverable = 1`).bind(JSON.stringify(showcase.deckSlugs)).all<Record<string, string | number | null>>() : { results: [] };
   const bySlug = new Map(featured.results.map(row => [String(row.public_slug), summary(row)]));
-  return { displayName: user.display_name, profileSlug: user.profile_slug, decks: rows.results.map(summary), favoriteCardIds: showcase.cardIds, featuredDecks: showcase.deckSlugs.flatMap(slug => bySlug.has(slug) ? [bySlug.get(slug)!] : []) };
+  return { displayName: user.display_name, profileSlug: user.profile_slug, decks: rows.results.map(summary), favoriteCardIds: showcase.cardIds, featuredTournamentDecks: await resolveProfileTournamentDecks(env, showcase.tournamentHashes ?? []), featuredDecks: showcase.deckSlugs.flatMap(slug => bySlug.has(slug) ? [bySlug.get(slug)!] : []) };
 }
