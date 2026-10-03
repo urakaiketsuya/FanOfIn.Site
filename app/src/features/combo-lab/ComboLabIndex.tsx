@@ -18,6 +18,8 @@ import { inferComboPurpose } from "../../lib/comboPurpose";
 import { forecastComboByTurn } from "../../lib/comboTurnForecast";
 import ComboLibrary from "./ComboLibrary";
 import ComboCostAssumptions from "./ComboCostAssumptions";
+import ReviewedAvailabilityPreset from "./ReviewedAvailabilityPreset";
+import { floralPotionPreset } from "./reviewedAvailabilityPresets";
 import LinePlanner from "./LinePlanner";
 import GoalForecastChart, { type GoalForecastSeries } from "./GoalForecastChart";
 import CardSearchPicker from "../../components/CardSearchPicker";
@@ -69,6 +71,7 @@ export default function ComboLabIndex() {
   const [comboEffectiveCosts, setComboEffectiveCosts] = useState<Record<string, number>>({});
   const [comboName, setComboName] = useState("Combo 1");
   const [comboDamage, setComboDamage] = useState(0);
+  const [previousRecipe, setPreviousRecipe] = useState<{ name: string; requirements: ComboRecipeRequirement[]; damage: number; costs: Record<string, number> } | null>(null);
   const [lethalThreshold, setLethalThreshold] = useState(20);
   const [forecastOrder, setForecastOrder] = useState<"first" | "second">("first");
   const [editingDeck, setEditingDeck] = useState(false);
@@ -215,6 +218,15 @@ export default function ComboLabIndex() {
     <PageHeader title="Combo Lab" description="Choose the pieces. See the odds." actions={<div className="flex w-full flex-wrap gap-2 sm:w-auto">
 <button type="button" aria-expanded={libraryOpen} onClick={() => setLibraryOpen((open) => !open)} className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm text-ctp-subtext1 hover:border-ctp-blue">{libraryOpen ? "Close library" : "Combo library"}</button><Link to="/cards/packages" className="rounded-md border border-ctp-surface1 px-3 py-2 text-sm text-ctp-subtext1 hover:border-ctp-blue">Packages</Link>{workspace && <DeckWorkspacePicker compact catalogByName={catalogByName} source="combo" onLoad={loadWorkspace} />}</div>} />
     <div className={libraryOpen ? "" : "hidden"}><ComboLibrary localCombos={savedCombos} format={workspace?.format} championName={workspace?.championName} onMigrated={finishLocalMigration} onLoad={(combo) => { openLibraryCombo(combo); setLibraryOpen(false); }} /></div>
+    <ReviewedAvailabilityPreset catalogByName={catalogByName} main={workspace?.main ?? []} requirements={currentRecipe} onLoad={() => {
+      setPreviousRecipe({ name: comboName, requirements: structuredClone(currentRecipe), damage: comboDamage, costs: { ...comboEffectiveCosts } });
+      openLibraryCombo(structuredClone(floralPotionPreset));
+      setComboEffectiveCosts({});
+    }} onUndo={previousRecipe ? () => {
+      openLibraryCombo(previousRecipe);
+      setComboEffectiveCosts(previousRecipe.costs);
+      setPreviousRecipe(null);
+    } : undefined} />
     {!workspace || workspace.main.length === 0 ? <Panel>
 <InlineState className="mb-4">Load a deck before constructing a combo recipe. The calculator evaluates cards in its shuffled Main Deck.</InlineState>
 <DeckWorkspacePicker catalogByName={catalogByName} source="combo" onLoad={loadWorkspace} />
