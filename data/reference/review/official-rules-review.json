@@ -1,0 +1,859 @@
+{
+  "version": 1,
+  "reviewDate": "2026-10-03",
+  "scope": "Official card API comparison and conditional rules analysis. Conclusions are analyst inferences from cited sources, not individual judge rulings. No public recipes or live strategy mechanics statuses changed.",
+  "inputHashes": {
+    "data/reference/review/combo-candidates.json": "2bbda1fda23b0555bd8bac1345b0a59aa965c3f90b9150c3ad852917563c9dae",
+    "data/reference/review/mechanics-review.json": "ac9cc91e0cc8a5a95b809daf4c36f77313b598375e7abe77a803ca33eff78d03"
+  },
+  "catalogSha256": "5374445554a13f5a7d8934322041776ad75f19891cac92cf79aa1259a5008102",
+  "officialCardCheck": {
+    "checkedOn": "2026-10-03",
+    "fields": [
+      "name",
+      "classes",
+      "types",
+      "subtypes",
+      "elements",
+      "level",
+      "cost_memory",
+      "cost_reserve",
+      "power",
+      "speed",
+      "effect",
+      "legality"
+    ],
+    "cards": [
+      {
+        "name": "Cinderbloom Tender",
+        "url": "https://api.gatcg.com/cards/cinderbloom-tender",
+        "indexUrl": "https://index.gatcg.com/card/cinderbloom-tender",
+        "sha256": "73996f721f65df4cdab6f29e52508f103226b72b2d1307f4991d46c39713591f",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Searing Rebuke",
+        "url": "https://api.gatcg.com/cards/searing-rebuke",
+        "indexUrl": "https://index.gatcg.com/card/searing-rebuke",
+        "sha256": "69d75423520db6841486ae51c0df20b5653d3b4da4f6992b8dfd5819898de322",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Floral Arrangement",
+        "url": "https://api.gatcg.com/cards/floral-arrangement",
+        "indexUrl": "https://index.gatcg.com/card/floral-arrangement",
+        "sha256": "811bf8014be11ab5234c6487bc7e877372213157669aebaea20461a180964b86",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Combustible Potion",
+        "url": "https://api.gatcg.com/cards/combustible-potion",
+        "indexUrl": "https://index.gatcg.com/card/combustible-potion",
+        "sha256": "3420bf0effc8e2ae2585eed9a59b0be1d9837e0b0b9725c4ab0027fc07907376",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Ravishing Finale",
+        "url": "https://api.gatcg.com/cards/ravishing-finale",
+        "indexUrl": "https://index.gatcg.com/card/ravishing-finale",
+        "sha256": "1371b57ecbae046b4574d010fa57606ad781b19544378b9a633550a5422f9394",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Nico, Whiplash Allure",
+        "url": "https://api.gatcg.com/cards/nico-whiplash-allure",
+        "indexUrl": "https://index.gatcg.com/card/nico-whiplash-allure",
+        "sha256": "6f37dd1f78442d5339705e0e76dc64418a002c9ffd14706f1a40c280f138d119",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Nico, Rapture's Embrace",
+        "url": "https://api.gatcg.com/cards/nico-raptures-embrace",
+        "indexUrl": "https://index.gatcg.com/card/nico-raptures-embrace",
+        "sha256": "a0ac4110d6d092760622d7eadd0549521df33b65b3f1150b590191365fc73ffe",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Capacitance X Psycho",
+        "url": "https://api.gatcg.com/cards/capacitance-x-psycho",
+        "indexUrl": "https://index.gatcg.com/card/capacitance-x-psycho",
+        "sha256": "e3a51b4441ffeee17d577394f97cba225db7548fcd1dd81faba3e3de2c36232d",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Numinous Monk",
+        "url": "https://api.gatcg.com/cards/numinous-monk",
+        "indexUrl": "https://index.gatcg.com/card/numinous-monk",
+        "sha256": "e7dca978916b5c5cdffa3316dd2c473cdb2854b1cb14aa63b00b75db70ae6607",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Lorraine, Blademaster",
+        "url": "https://api.gatcg.com/cards/lorraine-blademaster",
+        "indexUrl": "https://index.gatcg.com/card/lorraine-blademaster",
+        "sha256": "e226018137745f81700e15caad1b71125104d6988d6bb93311f97d20b2849187",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Merlin, Memory Thief",
+        "url": "https://api.gatcg.com/cards/merlin-memory-thief",
+        "indexUrl": "https://index.gatcg.com/card/merlin-memory-thief",
+        "sha256": "6d85338ec096d490331d1bf4c286d51fa2d3d838a85630b39a5598d05e79c119",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Baleful Oblation",
+        "url": "https://api.gatcg.com/cards/baleful-oblation",
+        "indexUrl": "https://index.gatcg.com/card/baleful-oblation",
+        "sha256": "2b1914fbc2fba0b048b71129a5c9971cead1d198831fe81f2c8f948ec425a44f",
+        "differences": [],
+        "legality": {
+          "STANDARD": {
+            "limit": 0
+          }
+        }
+      },
+      {
+        "name": "Advent of the Stormcaller",
+        "url": "https://api.gatcg.com/cards/advent-of-the-stormcaller",
+        "indexUrl": "https://index.gatcg.com/card/advent-of-the-stormcaller",
+        "sha256": "1bac9d5645beab1df08e61c61d1e7c34f4084790065a3b01e2a17e3b4a5001cd",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Golden Checkmate",
+        "url": "https://api.gatcg.com/cards/golden-checkmate",
+        "indexUrl": "https://index.gatcg.com/card/golden-checkmate",
+        "sha256": "3632f7150d53c504ebfc54bc3ea1f8bb0c12d825389dde8a76c1fb96bd2ad176",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Ionized Asceticism",
+        "url": "https://api.gatcg.com/cards/ionized-asceticism",
+        "indexUrl": "https://index.gatcg.com/card/ionized-asceticism",
+        "sha256": "8a6f362f434dace9ab9cae79b989570b5d77164bae34b0fe301c2e4d63d87b07",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Grim Pastiche",
+        "url": "https://api.gatcg.com/cards/grim-pastiche",
+        "indexUrl": "https://index.gatcg.com/card/grim-pastiche",
+        "sha256": "c00e306b6ace1b508e4e63b54c931d4dc9488058097d43af230267ab999d6e1a",
+        "differences": [],
+        "legality": {
+          "STANDARD": {
+            "limit": 0
+          }
+        }
+      },
+      {
+        "name": "Profane Bindings",
+        "url": "https://api.gatcg.com/cards/profane-bindings",
+        "indexUrl": "https://index.gatcg.com/card/profane-bindings",
+        "sha256": "46267d2159ea34d33d670ec279e58ba2bead05fccd557c31bbc16538329fccf2",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Mad Hatter, Morose Heritor",
+        "url": "https://api.gatcg.com/cards/mad-hatter-morose-heritor",
+        "indexUrl": "https://index.gatcg.com/card/mad-hatter-morose-heritor",
+        "sha256": "838adb2b6e0ab30ebf05da224c1127eaced0115af2496f7ffeadf2b99bd76ee3",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Ranger Strides",
+        "url": "https://api.gatcg.com/cards/ranger-strides",
+        "indexUrl": "https://index.gatcg.com/card/ranger-strides",
+        "sha256": "8a1e8e46c04f4030e9e13b748006d728cfff1c4fa9d62427c467b5d17c91869b",
+        "differences": [],
+        "legality": {
+          "STANDARD": {
+            "limit": 0
+          }
+        }
+      },
+      {
+        "name": "Invective Instruction",
+        "url": "https://api.gatcg.com/cards/invective-instruction",
+        "indexUrl": "https://index.gatcg.com/card/invective-instruction",
+        "sha256": "e88bb6dd917cc7ad0273da8f58a76511a2a99cb256d8ec59bea3858ab945f186",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Second Wind",
+        "url": "https://api.gatcg.com/cards/second-wind",
+        "indexUrl": "https://index.gatcg.com/card/second-wind",
+        "sha256": "ff5efb6b1509976e69e699c4f2f9f1bc152185a1b5da714cc77bb12badc585af",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Invigorating Concoction",
+        "url": "https://api.gatcg.com/cards/invigorating-concoction",
+        "indexUrl": "https://index.gatcg.com/card/invigorating-concoction",
+        "sha256": "df30eb885671a3a8636b02ce8c3c02175614a10ad990c4815ee228a0fdd89b41",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Draught of Stamina",
+        "url": "https://api.gatcg.com/cards/draught-of-stamina",
+        "indexUrl": "https://index.gatcg.com/card/draught-of-stamina",
+        "sha256": "8f2a974e02f0487fd46131bf6cdca5fef3ac9eee1b0f2268e4a6fa7aed524de0",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Dilu, Auspicious Charger",
+        "url": "https://api.gatcg.com/cards/dilu-auspicious-charger",
+        "indexUrl": "https://index.gatcg.com/card/dilu-auspicious-charger",
+        "sha256": "5c5ea73a6fa302dfce38a8bbc7504068e8c2c007af60c65b2ac04d2fc5dd2ed5",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Red Hare, Unrivaled Stallion",
+        "url": "https://api.gatcg.com/cards/red-hare-unrivaled-stallion",
+        "indexUrl": "https://index.gatcg.com/card/red-hare-unrivaled-stallion",
+        "sha256": "93d200ca57007cbe25a54ddf872f1ff5146e72878acee4dc76155a346d954749",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Dungeon Guide",
+        "url": "https://api.gatcg.com/cards/dungeon-guide",
+        "indexUrl": "https://index.gatcg.com/card/dungeon-guide",
+        "sha256": "c92223e298aaf955c7117684541f510026fb5c054aaccbbd54dcc2f40d4e62ac",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Silvershine",
+        "url": "https://api.gatcg.com/cards/silvershine",
+        "indexUrl": "https://index.gatcg.com/card/silvershine",
+        "sha256": "57e93f35570c45cdfadf0d185bd406ec497f69277fe244877504381bd3866886",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Fraysia",
+        "url": "https://api.gatcg.com/cards/fraysia",
+        "indexUrl": "https://index.gatcg.com/card/fraysia",
+        "sha256": "0e639f410e5676f22aeccc345c754f7860ee3c41424967e1b3cbfd21e6640ca5",
+        "differences": [],
+        "legality": null
+      },
+      {
+        "name": "Ciel, Loyal Valet",
+        "url": "https://api.gatcg.com/cards/ciel-loyal-valet",
+        "indexUrl": "https://index.gatcg.com/card/ciel-loyal-valet",
+        "sha256": "078d70e5a71e3ea3e3b0e9a3f334f64aaed74812cf75bf01837bb988aa88ca14",
+        "differences": [],
+        "legality": null
+      }
+    ]
+  },
+  "sources": {
+    "keywords": "https://rules.gatcg.com/glossary/keywords-and-abilities.md",
+    "terms": "https://rules.gatcg.com/glossary/game-terms.md",
+    "abilities": "https://rules.gatcg.com/game-mechanics/game-mechanics-abilities/abilities-activated-abilities",
+    "continuous": "https://rules.gatcg.com/game-mechanics/game-mechanics-types-of-effects/types-of-effects-continuous-effects",
+    "combat": "https://rules.gatcg.com/game-mechanics/game-mechanics-turn-order/turn-order-combat-phase/combat-phase-attacking-and-the-combat-phase",
+    "champion": "https://rules.gatcg.com/general-rules/general-rules-card-types/card-types-champion",
+    "materialization": "https://rules.gatcg.com/game-mechanics/game-mechanics-playing-cards/playing-cards-card-materialization",
+    "copy": "https://rules.gatcg.com/game-mechanics/game-mechanics-copy",
+    "mastery": "https://rules.gatcg.com/game-mechanics/game-mechanics-mastery",
+    "bans": "https://www.gatcg.com/article/ban-and-restricted-september-14th-2026"
+  },
+  "summary": {
+    "conditionalInteractions": 6,
+    "classificationOrSetupPackages": 3,
+    "historicalStandardPackages": 6,
+    "unresolvedTimingCandidates": 1,
+    "executableRecipesPublished": 0
+  },
+  "globalAssumptions": [
+    "All described actions use legal timing, targets, enabled elements, and sufficient resources.",
+    "Sequence outcomes assume effects resolve and required objects survive; opponents can interact.",
+    "Standard legality was checked on 2026-10-03. Recheck before publishing recommendations; no Pantheon eligibility inferred.",
+    "Cards drawn or present in main + material do not establish field, graveyard, omen, lineage, awake, or distant state."
+  ],
+  "integration": {
+    "firstCandidateId": "fractal-herb-burn-combo-2",
+    "firstStep": "Add a clearly labeled card-availability preset for Floral Arrangement + Combustible Potion with explicit setup and cost assumptions.",
+    "blocked": "Existing ComboDefinition stores card requirements and scalar damage, but has no validated zone/state/sequence model. Do not encode conditional interactions as guaranteed executable combos."
+  },
+  "candidates": [
+    {
+      "candidateId": "fractal-herb-burn-combo-1",
+      "name": "Herb Burn: Cinderbloom Tender + Searing Rebuke",
+      "requiredCards": [
+        "Cinderbloom Tender",
+        "Searing Rebuke"
+      ],
+      "disposition": "conditional-interaction",
+      "mechanicsAssessment": "supported-with-stated-conditions",
+      "standard": {
+        "checkedOn": "2026-10-03",
+        "status": "required-cards-not-banned",
+        "blockedCards": [],
+        "scope": "Required cards only; not certification of a complete deck or of historical event legality."
+      },
+      "setup": "Cleric bonus active; Fire available; Tender on the field; an independent gather effect available; resources for Rebuke and that effect.",
+      "sequence": [
+        "Resolve Searing Rebuke before Tender damage resolves.",
+        "Gather using the separate effect.",
+        "Resolve Tender and the resulting Rebuke trigger with a legal opposing champion target."
+      ],
+      "conclusion": "Tender and prevention-triggered Rebuke form a conditional burn interaction. The pair supplies no gather source.",
+      "nextAction": "Select and verify a concrete gather source and its costs before making a standalone recipe.",
+      "ruleSources": [
+        "https://rules.gatcg.com/glossary/keywords-and-abilities.md",
+        "https://rules.gatcg.com/glossary/game-terms.md",
+        "https://rules.gatcg.com/game-mechanics/game-mechanics-abilities/abilities-activated-abilities"
+      ],
+      "cardSources": [
+        "https://api.gatcg.com/cards/cinderbloom-tender",
+        "https://api.gatcg.com/cards/searing-rebuke"
+      ],
+      "publication": {
+        "executableRecipe": false,
+        "reason": "Review outline only; does not validate costs, zones, board state, interaction, or complete deck legality in Combo Lab."
+      }
+    },
+    {
+      "candidateId": "fractal-herb-burn-combo-2",
+      "name": "Herb Burn: Floral Arrangement + Combustible Potion",
+      "requiredCards": [
+        "Floral Arrangement",
+        "Combustible Potion"
+      ],
+      "disposition": "conditional-interaction",
+      "mechanicsAssessment": "supported-with-stated-conditions",
+      "standard": {
+        "checkedOn": "2026-10-03",
+        "status": "required-cards-not-banned",
+        "blockedCards": [],
+        "scope": "Required cards only; not certification of a complete deck or of historical event legality."
+      },
+      "setup": "Fire available; Floral Arrangement and Combustible Potion in hand; three reserve for Arrangement before modifiers; legal unit target.",
+      "sequence": [
+        "Pay for and resolve Floral Arrangement.",
+        "Sacrifice its two Herb tokens to Brew Combustible Potion.",
+        "Resolve the brewed entry trigger, then sacrifice the Potion targeting a legal unit."
+      ],
+      "conclusion": "Draw two, discard one, and a 2-damage effect before interaction or modifiers. Ingredient sacrifice abilities do not also resolve.",
+      "nextAction": "Best first card-availability preset: distinguish its two hand cards from three reserve resources, element access, and target legality.",
+      "ruleSources": [
+        "https://rules.gatcg.com/glossary/keywords-and-abilities.md",
+        "https://rules.gatcg.com/game-mechanics/game-mechanics-abilities/abilities-activated-abilities",
+        "https://rules.gatcg.com/glossary/game-terms.md"
+      ],
+      "cardSources": [
+        "https://api.gatcg.com/cards/floral-arrangement",
+        "https://api.gatcg.com/cards/combustible-potion",
+        "https://api.gatcg.com/cards/silvershine",
+        "https://api.gatcg.com/cards/fraysia"
+      ],
+      "publication": {
+        "executableRecipe": false,
+        "reason": "Review outline only; does not validate costs, zones, board state, interaction, or complete deck legality in Combo Lab."
+      }
+    },
+    {
+      "candidateId": "fractal-ravishing-mill-combo-1",
+      "name": "Ravishing Mill: Ravishing Finale + Nico, Whiplash Allure",
+      "requiredCards": [
+        "Ravishing Finale",
+        "Nico, Whiplash Allure"
+      ],
+      "disposition": "conditional-interaction",
+      "mechanicsAssessment": "supported-with-stated-conditions",
+      "standard": {
+        "checkedOn": "2026-10-03",
+        "status": "required-cards-not-banned",
+        "blockedCards": [],
+        "scope": "Required cards only; not certification of a complete deck or of historical event legality."
+      },
+      "setup": "Awake Whiplash Allure champion; Water available; Finale in hand; two floating-memory cards in graveyard; three reserve before modifiers.",
+      "sequence": [
+        "Activate Finale and pay its additional banishment cost.",
+        "Resolve resulting lash triggers and the attack in legal stack order.",
+        "If the opposing champion is hit, resolve eligible milling triggers."
+      ],
+      "conclusion": "The additional cost adds two lash counters. Milling still depends on a champion hit and the relevant counter totals.",
+      "nextAction": "Model graveyard pieces, awake champion, and hit dependence separately; do not advertise guaranteed mill or lethal.",
+      "ruleSources": [
+        "https://rules.gatcg.com/glossary/keywords-and-abilities.md",
+        "https://rules.gatcg.com/game-mechanics/game-mechanics-turn-order/turn-order-combat-phase/combat-phase-attacking-and-the-combat-phase",
+        "https://rules.gatcg.com/game-mechanics/game-mechanics-abilities/abilities-activated-abilities"
+      ],
+      "cardSources": [
+        "https://api.gatcg.com/cards/ravishing-finale",
+        "https://api.gatcg.com/cards/nico-whiplash-allure"
+      ],
+      "publication": {
+        "executableRecipe": false,
+        "reason": "Review outline only; does not validate costs, zones, board state, interaction, or complete deck legality in Combo Lab."
+      }
+    },
+    {
+      "candidateId": "fractal-ravishing-mill-combo-2",
+      "name": "Ravishing Mill: Ravishing Finale + Nico, Rapture's Embrace",
+      "requiredCards": [
+        "Ravishing Finale",
+        "Nico, Rapture's Embrace"
+      ],
+      "disposition": "classification-or-setup",
+      "mechanicsAssessment": "supported-with-stated-conditions",
+      "standard": {
+        "checkedOn": "2026-10-03",
+        "status": "required-cards-not-banned",
+        "blockedCards": [],
+        "scope": "Required cards only; not certification of a complete deck or of historical event legality."
+      },
+      "setup": "Rapture’s Embrace is the active Nico champion; another Water card in lineage for its entry bonus.",
+      "sequence": [],
+      "conclusion": "Nico identity enables Finale, but the entry effect supplies at most one graveyard card and does not guarantee floating memory.",
+      "nextAction": "Retain as a champion package; do not treat either Nico version as an interchangeable copy of the other engine.",
+      "ruleSources": [
+        "https://rules.gatcg.com/general-rules/general-rules-card-types/card-types-champion",
+        "https://rules.gatcg.com/glossary/keywords-and-abilities.md"
+      ],
+      "cardSources": [
+        "https://api.gatcg.com/cards/ravishing-finale",
+        "https://api.gatcg.com/cards/nico-raptures-embrace"
+      ],
+      "publication": {
+        "executableRecipe": false,
+        "reason": "Review outline only; does not validate costs, zones, board state, interaction, or complete deck legality in Combo Lab."
+      }
+    },
+    {
+      "candidateId": "fractal-crux-lorraine--psycho-combo-1",
+      "name": "Psycho: Capacitance X Psycho + Numinous Monk",
+      "requiredCards": [
+        "Capacitance X Psycho",
+        "Numinous Monk"
+      ],
+      "disposition": "conditional-interaction",
+      "mechanicsAssessment": "supported-with-stated-conditions",
+      "standard": {
+        "checkedOn": "2026-10-03",
+        "status": "required-cards-not-banned",
+        "blockedCards": [],
+        "scope": "Required cards only; not certification of a complete deck or of historical event legality."
+      },
+      "setup": "Numinous Monk and awake Psycho on field; another awake regalia; legal damage target. Establish Crux/Arcane access or the explicit Psycho permission separately.",
+      "sequence": [
+        "Activate the granted ability on the other regalia, paying its rest cost.",
+        "Keep Psycho awake through resolution.",
+        "Resolve the damage effect; the Lorraine bonus additionally applies only when enabled."
+      ],
+      "conclusion": "The 1-damage effect becomes 2 while Psycho’s condition holds. Resting Psycho itself turns off its boost before resolution unless another effect wakes it.",
+      "nextAction": "Represent field pieces and awake states, not a two-card hand requirement.",
+      "ruleSources": [
+        "https://rules.gatcg.com/game-mechanics/game-mechanics-abilities/abilities-activated-abilities",
+        "https://rules.gatcg.com/game-mechanics/game-mechanics-types-of-effects/types-of-effects-continuous-effects"
+      ],
+      "cardSources": [
+        "https://api.gatcg.com/cards/capacitance-x-psycho",
+        "https://api.gatcg.com/cards/numinous-monk"
+      ],
+      "publication": {
+        "executableRecipe": false,
+        "reason": "Review outline only; does not validate costs, zones, board state, interaction, or complete deck legality in Combo Lab."
+      }
+    },
+    {
+      "candidateId": "fractal-crux-hybrid-combo-1",
+      "name": "Crux Hybrid: Lorraine, Blademaster + Merlin, Memory Thief",
+      "requiredCards": [
+        "Lorraine, Blademaster",
+        "Merlin, Memory Thief"
+      ],
+      "disposition": "classification-or-setup",
+      "mechanicsAssessment": "supported-with-stated-conditions",
+      "standard": {
+        "checkedOn": "2026-10-03",
+        "status": "required-cards-not-banned",
+        "blockedCards": [],
+        "scope": "Required cards only; not certification of a complete deck or of historical event legality."
+      },
+      "setup": "Both listed champions are level 2; Lorraine has a lineage restriction.",
+      "sequence": [],
+      "conclusion": "Ordinary leveling cannot go directly from either level-2 champion into the other. Material co-occurrence describes alternative routes.",
+      "nextAction": "Keep as a hybrid classification package unless a separate legal delevel/relevel route is specified.",
+      "ruleSources": [
+        "https://rules.gatcg.com/general-rules/general-rules-card-types/card-types-champion",
+        "https://rules.gatcg.com/glossary/keywords-and-abilities.md"
+      ],
+      "cardSources": [
+        "https://api.gatcg.com/cards/lorraine-blademaster",
+        "https://api.gatcg.com/cards/merlin-memory-thief"
+      ],
+      "publication": {
+        "executableRecipe": false,
+        "reason": "Review outline only; does not validate costs, zones, board state, interaction, or complete deck legality in Combo Lab."
+      }
+    },
+    {
+      "candidateId": "fractal-oblation-combo-1",
+      "name": "Oblation: Baleful Oblation + Advent of the Stormcaller",
+      "requiredCards": [
+        "Baleful Oblation",
+        "Advent of the Stormcaller"
+      ],
+      "disposition": "historical-standard",
+      "mechanicsAssessment": "supported-with-stated-conditions",
+      "standard": {
+        "checkedOn": "2026-10-03",
+        "status": "contains-banned-card",
+        "blockedCards": [
+          "Baleful Oblation"
+        ],
+        "scope": "Required cards only; not certification of a complete deck or of historical event legality."
+      },
+      "setup": "Advent of the Stormcaller established as an omen; no lower-cost omen; Umbra available; Oblation and its activation resources.",
+      "sequence": [
+        "Establish the payload in banishment with an omen counter using a separate effect.",
+        "Activate and resolve Baleful Oblation in a format or historical environment that permits it."
+      ],
+      "conclusion": "With a 15-cost lowest omen, the effect deals 15 to every unit except your champion, before modifiers; your allies are also affected.",
+      "nextAction": "Baleful Oblation is seasonally banned in Standard. Preserve evidence; exclude from current Standard recipe recommendations.",
+      "ruleSources": [
+        "https://rules.gatcg.com/game-mechanics/game-mechanics-mastery",
+        "https://www.gatcg.com/article/ban-and-restricted-september-14th-2026"
+      ],
+      "cardSources": [
+        "https://api.gatcg.com/cards/baleful-oblation",
+        "https://api.gatcg.com/cards/advent-of-the-stormcaller",
+        "https://api.gatcg.com/cards/ciel-loyal-valet"
+      ],
+      "publication": {
+        "executableRecipe": false,
+        "reason": "Review outline only; does not validate costs, zones, board state, interaction, or complete deck legality in Combo Lab."
+      }
+    },
+    {
+      "candidateId": "fractal-oblation-combo-2",
+      "name": "Oblation: Baleful Oblation + Golden Checkmate",
+      "requiredCards": [
+        "Baleful Oblation",
+        "Golden Checkmate"
+      ],
+      "disposition": "historical-standard",
+      "mechanicsAssessment": "supported-with-stated-conditions",
+      "standard": {
+        "checkedOn": "2026-10-03",
+        "status": "contains-banned-card",
+        "blockedCards": [
+          "Baleful Oblation"
+        ],
+        "scope": "Required cards only; not certification of a complete deck or of historical event legality."
+      },
+      "setup": "Golden Checkmate established as an omen; no lower-cost omen; Umbra available; Oblation and its activation resources.",
+      "sequence": [
+        "Establish the payload in banishment with an omen counter using a separate effect.",
+        "Activate and resolve Baleful Oblation in a format or historical environment that permits it."
+      ],
+      "conclusion": "With a 15-cost lowest omen, the effect deals 15 to every unit except your champion, before modifiers; your allies are also affected.",
+      "nextAction": "Baleful Oblation is seasonally banned in Standard. Preserve evidence; exclude from current Standard recipe recommendations.",
+      "ruleSources": [
+        "https://rules.gatcg.com/game-mechanics/game-mechanics-mastery",
+        "https://www.gatcg.com/article/ban-and-restricted-september-14th-2026"
+      ],
+      "cardSources": [
+        "https://api.gatcg.com/cards/baleful-oblation",
+        "https://api.gatcg.com/cards/golden-checkmate",
+        "https://api.gatcg.com/cards/ciel-loyal-valet"
+      ],
+      "publication": {
+        "executableRecipe": false,
+        "reason": "Review outline only; does not validate costs, zones, board state, interaction, or complete deck legality in Combo Lab."
+      }
+    },
+    {
+      "candidateId": "fractal-oblation-combo-3",
+      "name": "Oblation: Baleful Oblation + Ionized Asceticism",
+      "requiredCards": [
+        "Baleful Oblation",
+        "Ionized Asceticism"
+      ],
+      "disposition": "historical-standard",
+      "mechanicsAssessment": "supported-with-stated-conditions",
+      "standard": {
+        "checkedOn": "2026-10-03",
+        "status": "contains-banned-card",
+        "blockedCards": [
+          "Baleful Oblation"
+        ],
+        "scope": "Required cards only; not certification of a complete deck or of historical event legality."
+      },
+      "setup": "Ionized Asceticism established as an omen; no lower-cost omen; Umbra available; Oblation and its activation resources.",
+      "sequence": [
+        "Establish the payload in banishment with an omen counter using a separate effect.",
+        "Activate and resolve Baleful Oblation in a format or historical environment that permits it."
+      ],
+      "conclusion": "With a 15-cost lowest omen, the effect deals 15 to every unit except your champion, before modifiers; your allies are also affected.",
+      "nextAction": "Baleful Oblation is seasonally banned in Standard. Preserve evidence; exclude from current Standard recipe recommendations.",
+      "ruleSources": [
+        "https://rules.gatcg.com/game-mechanics/game-mechanics-mastery",
+        "https://www.gatcg.com/article/ban-and-restricted-september-14th-2026"
+      ],
+      "cardSources": [
+        "https://api.gatcg.com/cards/baleful-oblation",
+        "https://api.gatcg.com/cards/ionized-asceticism",
+        "https://api.gatcg.com/cards/ciel-loyal-valet"
+      ],
+      "publication": {
+        "executableRecipe": false,
+        "reason": "Review outline only; does not validate costs, zones, board state, interaction, or complete deck legality in Combo Lab."
+      }
+    },
+    {
+      "candidateId": "fractal-umbra-guardian--control-combo-1",
+      "name": "Control: Grim Pastiche + Profane Bindings",
+      "requiredCards": [
+        "Grim Pastiche",
+        "Profane Bindings"
+      ],
+      "disposition": "historical-standard",
+      "mechanicsAssessment": "partially-supported-unresolved-timing",
+      "standard": {
+        "checkedOn": "2026-10-03",
+        "status": "contains-banned-card",
+        "blockedCards": [
+          "Grim Pastiche"
+        ],
+        "scope": "Required cards only; not certification of a complete deck or of historical event legality."
+      },
+      "setup": "Profane Bindings is an omen; Umbra available; Grim Pastiche in hand and payable; a legal card activation to negate.",
+      "sequence": [
+        "Resolve Grim Pastiche targeting the eligible omen.",
+        "Activate the created card copy with a legal target under Pastiche’s permission."
+      ],
+      "conclusion": "The copy is a new card activation, not a duplicate of an existing activation. Copy rules limit its persistence; the physical omen is not moved into lineage.",
+      "nextAction": "Grim Pastiche is banned in Standard. Do not promise a lasting -5 life penalty or certify the exact transient lineage/state-check timing without a dedicated ruling review.",
+      "ruleSources": [
+        "https://rules.gatcg.com/game-mechanics/game-mechanics-copy",
+        "https://rules.gatcg.com/general-rules/general-rules-card-types/card-types-champion",
+        "https://rules.gatcg.com/game-mechanics/game-mechanics-mastery",
+        "https://www.gatcg.com/article/ban-and-restricted-september-14th-2026"
+      ],
+      "cardSources": [
+        "https://api.gatcg.com/cards/grim-pastiche",
+        "https://api.gatcg.com/cards/profane-bindings",
+        "https://api.gatcg.com/cards/ciel-loyal-valet"
+      ],
+      "publication": {
+        "executableRecipe": false,
+        "reason": "Review outline only; does not validate costs, zones, board state, interaction, or complete deck legality in Combo Lab."
+      }
+    },
+    {
+      "candidateId": "fractal-wakeup-combo-combo-1",
+      "name": "Wakeup Combo: Mad Hatter, Morose Heritor + Ranger Strides",
+      "requiredCards": [
+        "Mad Hatter, Morose Heritor",
+        "Ranger Strides"
+      ],
+      "disposition": "historical-standard",
+      "mechanicsAssessment": "supported-with-stated-conditions",
+      "standard": {
+        "checkedOn": "2026-10-03",
+        "status": "contains-banned-card",
+        "blockedCards": [
+          "Ranger Strides"
+        ],
+        "scope": "Required cards only; not certification of a complete deck or of historical event legality."
+      },
+      "setup": "Hatter enters; material deck contains a card to banish and Strides survives the random choice; Astra enabled and materialization costs payable.",
+      "sequence": [
+        "Resolve Hatter’s optional random banishment.",
+        "If Strides remains legal and available, materialize it and resolve its entry draw."
+      ],
+      "conclusion": "Hatter grants materialization permission, not a cost waiver or element exemption. This pair contains no wake-up effect.",
+      "nextAction": "Ranger Strides is banned in Standard. Keep only as historical material-access evidence.",
+      "ruleSources": [
+        "https://rules.gatcg.com/game-mechanics/game-mechanics-playing-cards/playing-cards-card-materialization",
+        "https://www.gatcg.com/article/ban-and-restricted-september-14th-2026"
+      ],
+      "cardSources": [
+        "https://api.gatcg.com/cards/mad-hatter-morose-heritor",
+        "https://api.gatcg.com/cards/ranger-strides"
+      ],
+      "publication": {
+        "executableRecipe": false,
+        "reason": "Review outline only; does not validate costs, zones, board state, interaction, or complete deck legality in Combo Lab."
+      }
+    },
+    {
+      "candidateId": "fractal-wakeup-combo-combo-2",
+      "name": "Wakeup Combo: Invective Instruction + Second Wind",
+      "requiredCards": [
+        "Invective Instruction",
+        "Second Wind"
+      ],
+      "disposition": "conditional-interaction",
+      "mechanicsAssessment": "supported-with-stated-conditions",
+      "standard": {
+        "checkedOn": "2026-10-03",
+        "status": "required-cards-not-banned",
+        "blockedCards": [],
+        "scope": "Required cards only; not certification of a complete deck or of historical event legality."
+      },
+      "setup": "Wind available; an awake ally able to attack; both actions in hand; five reserve before modifiers; legal attack targets.",
+      "sequence": [
+        "Resolve Invective Instruction on the ally.",
+        "Attack and finish combat with that ally surviving.",
+        "Resolve Second Wind on the same ally, then make another legal attack."
+      ],
+      "conclusion": "The turn-long power increase remains for the second attack. Class-dependent extra benefits require their own conditions.",
+      "nextAction": "Choose a concrete ally and board setup; do not turn power into guaranteed champion damage.",
+      "ruleSources": [
+        "https://rules.gatcg.com/game-mechanics/game-mechanics-turn-order/turn-order-combat-phase/combat-phase-attacking-and-the-combat-phase",
+        "https://rules.gatcg.com/game-mechanics/game-mechanics-types-of-effects/types-of-effects-continuous-effects",
+        "https://rules.gatcg.com/glossary/keywords-and-abilities.md"
+      ],
+      "cardSources": [
+        "https://api.gatcg.com/cards/invective-instruction",
+        "https://api.gatcg.com/cards/second-wind"
+      ],
+      "publication": {
+        "executableRecipe": false,
+        "reason": "Review outline only; does not validate costs, zones, board state, interaction, or complete deck legality in Combo Lab."
+      }
+    },
+    {
+      "candidateId": "fractal-wakeup-combo-combo-3",
+      "name": "Wakeup Combo: Ranger Strides + Second Wind",
+      "requiredCards": [
+        "Ranger Strides",
+        "Second Wind"
+      ],
+      "disposition": "historical-standard",
+      "mechanicsAssessment": "supported-with-stated-conditions",
+      "standard": {
+        "checkedOn": "2026-10-03",
+        "status": "contains-banned-card",
+        "blockedCards": [
+          "Ranger Strides"
+        ],
+        "scope": "Required cards only; not certification of a complete deck or of historical event legality."
+      },
+      "setup": "Strides on field; a distant Ranger ally able to attack; Wind and Second Wind resources available.",
+      "sequence": [
+        "Banish Strides to grant the ally ranged 4.",
+        "Finish an attack, resolve Second Wind on the surviving ally, then attack again while the conditions persist."
+      ],
+      "conclusion": "Second Wind cannot target a champion; neither listed card establishes distant.",
+      "nextAction": "Ranger Strides is banned in Standard. A historical sequence needs separate distant support.",
+      "ruleSources": [
+        "https://rules.gatcg.com/game-mechanics/game-mechanics-turn-order/turn-order-combat-phase/combat-phase-attacking-and-the-combat-phase",
+        "https://rules.gatcg.com/glossary/game-terms.md",
+        "https://rules.gatcg.com/glossary/keywords-and-abilities.md",
+        "https://www.gatcg.com/article/ban-and-restricted-september-14th-2026"
+      ],
+      "cardSources": [
+        "https://api.gatcg.com/cards/ranger-strides",
+        "https://api.gatcg.com/cards/second-wind"
+      ],
+      "publication": {
+        "executableRecipe": false,
+        "reason": "Review outline only; does not validate costs, zones, board state, interaction, or complete deck legality in Combo Lab."
+      }
+    },
+    {
+      "candidateId": "fractal-wakeup-combo-combo-4",
+      "name": "Wakeup Combo: Invigorating Concoction + Draught of Stamina",
+      "requiredCards": [
+        "Invigorating Concoction",
+        "Draught of Stamina"
+      ],
+      "disposition": "conditional-interaction",
+      "mechanicsAssessment": "supported-with-stated-conditions",
+      "standard": {
+        "checkedOn": "2026-10-03",
+        "status": "required-cards-not-banned",
+        "blockedCards": [],
+        "scope": "Required cards only; not certification of a complete deck or of historical event legality."
+      },
+      "setup": "Awake Invigorating Concoction and Draught on field; awake ally able to attack; legal targets. Potion deployment was paid or brewed separately.",
+      "sequence": [
+        "Activate Concoction on the ally, paying rest and sacrifice; resolve its effect.",
+        "Attack and finish combat with that ally surviving.",
+        "Sacrifice Draught to wake that ally, then make another legal attack."
+      ],
+      "conclusion": "The two buff counters survive the wake-up. Newly played Concoction enters rested and cannot immediately pay its rest cost.",
+      "nextAction": "Track prior-turn setup or a separately verified wake effect; do not label an immediate loop.",
+      "ruleSources": [
+        "https://rules.gatcg.com/game-mechanics/game-mechanics-abilities/abilities-activated-abilities",
+        "https://rules.gatcg.com/glossary/keywords-and-abilities.md",
+        "https://rules.gatcg.com/game-mechanics/game-mechanics-turn-order/turn-order-combat-phase/combat-phase-attacking-and-the-combat-phase"
+      ],
+      "cardSources": [
+        "https://api.gatcg.com/cards/invigorating-concoction",
+        "https://api.gatcg.com/cards/draught-of-stamina"
+      ],
+      "publication": {
+        "executableRecipe": false,
+        "reason": "Review outline only; does not validate costs, zones, board state, interaction, or complete deck legality in Combo Lab."
+      }
+    },
+    {
+      "candidateId": "fractal-horse-and-taxes-combo-1",
+      "name": "Horse and Taxes: Dilu, Auspicious Charger + Red Hare, Unrivaled Stallion + Dungeon Guide",
+      "requiredCards": [
+        "Dilu, Auspicious Charger",
+        "Red Hare, Unrivaled Stallion",
+        "Dungeon Guide"
+      ],
+      "disposition": "classification-or-setup",
+      "mechanicsAssessment": "supported-with-stated-conditions",
+      "standard": {
+        "checkedOn": "2026-10-03",
+        "status": "required-cards-not-banned",
+        "blockedCards": [],
+        "scope": "Required cards only; not certification of a complete deck or of historical event legality."
+      },
+      "setup": "Guide entry with two memory cards; compatible next champion in material; both horse elements accessible.",
+      "sequence": [
+        "Resolve Guide’s optional memory payment and legal level-up.",
+        "Check the resulting champion level against each horse’s obedience requirement."
+      ],
+      "conclusion": "Guide can enable the level threshold. It does not itself satisfy either unique-Human alternative, grant both elements, or supply a tax effect.",
+      "nextAction": "Keep as level-enabling package; select an actual champion route before a deck-specific recipe.",
+      "ruleSources": [
+        "https://rules.gatcg.com/general-rules/general-rules-card-types/card-types-champion",
+        "https://rules.gatcg.com/glossary/keywords-and-abilities.md"
+      ],
+      "cardSources": [
+        "https://api.gatcg.com/cards/dilu-auspicious-charger",
+        "https://api.gatcg.com/cards/red-hare-unrivaled-stallion",
+        "https://api.gatcg.com/cards/dungeon-guide"
+      ],
+      "publication": {
+        "executableRecipe": false,
+        "reason": "Review outline only; does not validate costs, zones, board state, interaction, or complete deck legality in Combo Lab."
+      }
+    }
+  ]
+}
