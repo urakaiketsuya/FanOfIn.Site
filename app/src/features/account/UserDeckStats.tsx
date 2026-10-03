@@ -1,4 +1,4 @@
-import DisclosureChevron from "../../components/DisclosureChevron";
+import DeckStatsTabs from "./DeckStatsTabs";
 import { useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import type { DeckFormat, OmnidexDecklist } from "@gatcg/shared";
@@ -43,17 +43,6 @@ function deckQuantities(decklist: OmnidexDecklist): Map<string, number> {
   const quantities = new Map<string, number>();
   for (const line of [...decklist.main, ...decklist.material, ...decklist.sideboard]) quantities.set(line.card, (quantities.get(line.card) ?? 0) + line.quantity);
   return quantities;
-}
-
-/** Specialist analysis stays available without making a dense tool the default deck view. */
-function DeckStatsTabs({ tabs }: { tabs: DeckStatsTab[] }) {
-  return <div data-component="DeckStatsTabs" className="space-y-3">
-    <div><h2 className="font-semibold text-ctp-text">Explore analysis</h2><p className="mt-1 text-xs text-ctp-subtext0">Open a specialist view when you need its supporting detail.</p></div>
-    {tabs.map((tab) => <details key={tab.key} onToggle={event=>{if(event.currentTarget.open) tab.onOpen?.();}} className="group rounded-xl border border-ctp-surface1 bg-ctp-mantle">
-      <summary className="cursor-pointer list-none p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ctp-blue"><span className="flex items-center justify-between gap-3"><span className="text-sm font-semibold text-ctp-text">{tab.label}</span><DisclosureChevron className="text-ctp-subtext0 transition-transform group-open:rotate-180" /></span></summary>
-      <div className="border-t border-ctp-surface1 p-3 sm:p-4">{tab.content}</div>
-    </details>)}
-  </div>;
 }
 
 export default function UserDeckStats({ decklist, championName, format, title, ownerDeckId, previousDecklist, extraTabs = [] }: { decklist: OmnidexDecklist; championName: string | null; format: DeckFormat; title: string; ownerDeckId?: string; previousDecklist?: OmnidexDecklist; extraTabs?: DeckStatsTab[] }) {
