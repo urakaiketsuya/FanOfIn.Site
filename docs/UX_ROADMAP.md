@@ -1,6 +1,6 @@
 # Deck and collection experience roadmap
 
-Updated October 2, 2026. This records the implementation baseline and verification scope. Existing working features are retained rather than reimplemented.
+Updated October 3, 2026. This records the implementation baseline and verification scope. Existing working features are retained rather than reimplemented.
 
 ## Active expressive design queue
 
@@ -36,13 +36,25 @@ and unresolved checks here. Track text zoom, screen reader, physical mobile keyb
 authenticated journeys explicitly; do not mark an area complete based on visual styling alone.
 External verification blockers should remain visible while independent work proceeds in queue order.
 
-Queue status: deck discovery presentation and empty search recovery implemented October 2, with
-verification gaps recorded below. The first core workflow slice now covers My Decks folder navigation
-and pasted draft/save feedback. Collection quantity editing and card detail ownership handoffs now
-have their first pass too. Next is Analysis and Deck Review, beginning with review suggestion identity
-and explicit acceptance. Core workflow acceptance gaps remain recorded below.
-Discovery remains open for source failure recovery and acceptance checks. Earlier
-implementation notes below remain the source of truth for completed work and verification limits.
+Queue status, reconciled October 3: all six areas have received implementation slices. None
+is fully accepted. Completed presentation must be retained; remaining work is source recovery,
+integration and accessibility verification, plus page families without a recorded dedicated pass.
+
+| Area | Recorded implementation | Remaining work |
+| --- | --- | --- |
+| Deck discovery | Shared previews, identity, empty search recovery and restored deck navigation | Source failure recovery and source-specific detail journeys |
+| Core workflows | Collection/location hierarchy, ownership handoff, quantity editor, folders, drafts and Builder | Authenticated writes, conflicts, cross-tab updates, sign-in return and invalid handoff guidance |
+| Analysis and Deck Review | Automatic summaries, consolidated workspace, plan/draw results and explicit proposals | Full acceptance/save journey, advanced model coverage and integration states |
+| Goldfish | Zone art, turn/hand hierarchy, reachable controls and action feedback | Saved session recovery and device/accessibility acceptance |
+| Related discovery and competition | Event previews/details, top decks, seasons and independent source recovery | Dedicated champion, package, archetype, player, team, region and achievement passes |
+| Supporting pages and shell | Navigation, methodology and changelog | Remaining supporting pages, recovery states and shared-consumer regression checks |
+
+The page tables below now distinguish **Partial** (a dedicated implementation slice is recorded)
+from **Review** (no dedicated slice is recorded in this queue; inspect existing code before proposing
+changes). Neither means accepted. Shared improvements may already benefit Review pages.
+Cross-cutting acceptance remains open for text zoom, screen readers, physical mobile keyboards,
+real authenticated journeys and deployed release verification. Later dated evidence supersedes
+earlier “Next” and deployment notes.
 
 | Phase | Existing baseline | Changes in this implementation |
 | --- | --- | --- |
@@ -162,95 +174,95 @@ Existing baseline: saved deck identity, folder covers and accents, shared immuta
 collection coverage, automatic Analysis results, question navigation and draw pattern review.
 The following are additional tasks or explicit verification of remaining surfaces.
 
-| Done | Page / route | Expressive design and interaction checklist |
+| Status | Page / route | Expressive design and interaction checklist |
 | --- | --- | --- |
-| [ ] | Homepage `/` | Give collection tracking equal visual importance to deck tools; show concrete examples of loans and shared copies; establish a clear hierarchy among collection, building and analysis entry points. Retain the draw adjusted example. |
-| [ ] | My Collection `/collection` | Lead with a useful collection overview and recognizable cards; give quantity edits clear local feedback; distinguish owned, available and missing states with labels; give first import and empty search distinct next actions. |
-| [ ] | Card locations `/card-locations` | Make the selected card the visual anchor; group binder, deck, loan and trade locations clearly; emphasize the next useful action and show transfer/return outcomes without obscuring quantities. |
-| [ ] | My Decks `/decks/edit` | Refine folder gallery rhythm, selected folder state and empty folders; verify existing covers/accents across long names, missing art and official product tabs; keep creation and import easy to find. |
-| [ ] | Saved deck `/decks/:id` (owned UUID) | Carry deck identity through editing, collection and tool handoffs; distinguish saved, draft and failed-save states; improve section counts and local edit feedback without hiding legality warnings. |
-| [ ] | Deck Builder `/deck-builder` | Keep champion and current deck visible before recommendations; clarify selected cards versus suggestions; add restrained add/move/remove feedback and an obvious next action; preserve drafts and copy conservation. |
-| [ ] | Analysis `/deck-analysis` | Extend card-led result hierarchy to custom hand, plan, level, pressure, recovery, resource and sideboard models; evaluate redundant setup; preserve assumptions near results and evidence on demand. No unsupported quality grade. |
-| [ ] | Deck Review `/deck-review` | Organize findings by actionable question; lead each proposed change with affected cards and rationale; distinguish advice from accepted edits and retain an explicit accept action. |
-| [ ] | Goldfish `/goldfish` | Make active turn, hand and zones visually distinct; add brief draw/play/move feedback with a reduced motion alternative; keep frequent controls reachable and preserve actual game state during tool use. |
-| [ ] | Card browser `/cards` including By Set | Strengthen art and selected-filter hierarchy; make browsing, selection and empty search states recognizable; preserve search and position when returning from details. |
-| [ ] | Card detail `/cards/:slug` | Verify prominent mobile art and simplify image inspection; organize printing choice, legality, ownership and statistics around the card; keep data gaps visible. |
-| [ ] | Compare `/compare` | Give each deck equal identity and stable comparison order; emphasize shared cards and differences using named card groups; use labels alongside color and preserve meaningful mobile comparisons. |
+| Review | Homepage `/` | Give collection tracking equal visual importance to deck tools; show concrete examples of loans and shared copies; establish a clear hierarchy among collection, building and analysis entry points. Retain the draw adjusted example. |
+| Partial | My Collection `/collection` | Lead with a useful collection overview and recognizable cards; give quantity edits clear local feedback; distinguish owned, available and missing states with labels; give first import and empty search distinct next actions. |
+| Partial | Card locations `/card-locations` | Make the selected card the visual anchor; group binder, deck, loan and trade locations clearly; emphasize the next useful action and show transfer/return outcomes without obscuring quantities. |
+| Partial | My Decks `/decks/edit` | Refine folder gallery rhythm, selected folder state and empty folders; verify existing covers/accents across long names, missing art and official product tabs; keep creation and import easy to find. |
+| Partial | Saved deck `/decks/:id` (owned UUID) | Carry deck identity through editing, collection and tool handoffs; distinguish saved, draft and failed-save states; improve section counts and local edit feedback without hiding legality warnings. |
+| Partial | Deck Builder `/deck-builder` | Keep champion and current deck visible before recommendations; clarify selected cards versus suggestions; add restrained add/move/remove feedback and an obvious next action; preserve drafts and copy conservation. |
+| Partial | Analysis `/deck-analysis` | Extend card-led result hierarchy to custom hand, plan, level, pressure, recovery, resource and sideboard models; evaluate redundant setup; preserve assumptions near results and evidence on demand. No unsupported quality grade. |
+| Partial | Deck Review `/deck-review` | Organize findings by actionable question; lead each proposed change with affected cards and rationale; distinguish advice from accepted edits and retain an explicit accept action. |
+| Partial | Goldfish `/goldfish` | Make active turn, hand and zones visually distinct; add brief draw/play/move feedback with a reduced motion alternative; keep frequent controls reachable and preserve actual game state during tool use. |
+| Partial | Card browser `/cards` including By Set | Strengthen art and selected-filter hierarchy; make browsing, selection and empty search states recognizable; preserve search and position when returning from details. |
+| Partial | Card detail `/cards/:slug` | Verify prominent mobile art and simplify image inspection; organize printing choice, legality, ownership and statistics around the card; keep data gaps visible. |
+| Review | Compare `/compare` | Give each deck equal identity and stable comparison order; emphasize shared cards and differences using named card groups; use labels alongside color and preserve meaningful mobile comparisons. |
 
 ### Wave 2: Discovery and deck sources
 
-| Done | Page / route | Expressive design and interaction checklist |
+| Status | Page / route | Expressive design and interaction checklist |
 | --- | --- | --- |
-| [ ] | Tournament decks `/decks` | Refine shared preview spacing across sightings and builds; make source, date and filter scope clear; give empty filters a direct recovery action. |
-| [ ] | Tournament deck `/decks/:id` (hash) | Anchor with champion and source; emphasize event context and deck identity before dense evidence; keep collection, compare and analysis handoffs consistent. |
-| [ ] | Shared decks `/decks/shared` | Use shared previews with clear author context; balance browsing density and art; distinguish no published decks from no matching results. |
-| [ ] | Public deck `/decks/:id` (public slug) | Preserve author and version identity alongside art; distinguish public viewing from personal copies; make copy and collection actions discoverable. |
-| [ ] | Community overview `/community-decks` | Show source and format with card-led entries; separate coverage summaries from individual deck previews; retain evidence limitations. |
-| [ ] | Community search `/community-decks/search` | Keep query context visible with compact results; emphasize relevant card matches; make pagination, loading and no matches consistent with other searches. |
-| [ ] | Pantheon community `/pantheon` | Carry the community patterns into the format-specific page with a visible format label and appropriate source context. |
-| [ ] | Pantheon decks `/pantheon/decks` | Apply shared preview hierarchy and readable format context; check filter and empty states. |
-| [ ] | Pantheon deck `/pantheon/decks/:id` | Match immutable deck detail hierarchy while retaining format-specific evidence and valid actions. |
-| [ ] | Official decks `/official-decks` | Refine product identity within shared previews; keep product codes, release detail and full printed lists in details; save to the dedicated My Decks product tab. |
-| [ ] | New card discovery `/card-discovery` | Lead with suggested cards and a concise reason; make relevance and evidence inspectable; preserve opt-in selection and distinguish new suggestions from current cards. |
-| [ ] | Card packages `/cards/packages` | Make package identity recognizable through cards; label full pools, required cores and tested variants distinctly; keep package application explicit. |
-| [ ] | Top cards `/cards/stats` | Emphasize card identity beside the primary metric; keep denominator, period and sample size visible; disclose secondary statistics progressively. |
-| [ ] | Champions `/champions` | Use champion artwork as navigation identity; align ranking metrics and scope; support compact mobile browsing without hiding names. |
-| [ ] | Champion synergy `/champions/:name` | Carry champion identity into card and package groups; separate observed relationships from recommendations and show evidence strength. |
-| [ ] | Champion stats `/champions/:name/stats` | Establish a clear statistical overview with date/format context; prioritize meaningful trends and disclose detailed breakdowns. |
-| [ ] | Trading binder `/looking-for` | Make wanted and offered cards unmistakable; show availability and reservation state; clarify the next action without equating ownership with availability. |
+| Partial | Tournament decks `/decks` | Refine shared preview spacing across sightings and builds; make source, date and filter scope clear; give empty filters a direct recovery action. |
+| Review | Tournament deck `/decks/:id` (hash) | Anchor with champion and source; emphasize event context and deck identity before dense evidence; keep collection, compare and analysis handoffs consistent. |
+| Partial | Shared decks `/decks/shared` | Use shared previews with clear author context; balance browsing density and art; distinguish no published decks from no matching results. |
+| Review | Public deck `/decks/:id` (public slug) | Preserve author and version identity alongside art; distinguish public viewing from personal copies; make copy and collection actions discoverable. |
+| Review | Community overview `/community-decks` | Show source and format with card-led entries; separate coverage summaries from individual deck previews; retain evidence limitations. |
+| Review | Community search `/community-decks/search` | Keep query context visible with compact results; emphasize relevant card matches; make pagination, loading and no matches consistent with other searches. |
+| Review | Pantheon community `/pantheon` | Carry the community patterns into the format-specific page with a visible format label and appropriate source context. |
+| Review | Pantheon decks `/pantheon/decks` | Apply shared preview hierarchy and readable format context; check filter and empty states. |
+| Review | Pantheon deck `/pantheon/decks/:id` | Match immutable deck detail hierarchy while retaining format-specific evidence and valid actions. |
+| Partial | Official decks `/official-decks` | Refine product identity within shared previews; keep product codes, release detail and full printed lists in details; save to the dedicated My Decks product tab. |
+| Review | New card discovery `/card-discovery` | Lead with suggested cards and a concise reason; make relevance and evidence inspectable; preserve opt-in selection and distinguish new suggestions from current cards. |
+| Review | Card packages `/cards/packages` | Make package identity recognizable through cards; label full pools, required cores and tested variants distinctly; keep package application explicit. |
+| Review | Top cards `/cards/stats` | Emphasize card identity beside the primary metric; keep denominator, period and sample size visible; disclose secondary statistics progressively. |
+| Review | Champions `/champions` | Use champion artwork as navigation identity; align ranking metrics and scope; support compact mobile browsing without hiding names. |
+| Review | Champion synergy `/champions/:name` | Carry champion identity into card and package groups; separate observed relationships from recommendations and show evidence strength. |
+| Review | Champion stats `/champions/:name/stats` | Establish a clear statistical overview with date/format context; prioritize meaningful trends and disclose detailed breakdowns. |
+| Review | Trading binder `/looking-for` | Make wanted and offered cards unmistakable; show availability and reservation state; clarify the next action without equating ownership with availability. |
 
 ### Wave 3: Playtesting, plans and competition
 
-| Done | Page / route | Expressive design and interaction checklist |
+| Status | Page / route | Expressive design and interaction checklist |
 | --- | --- | --- |
-| [ ] | Combo Lab `/combo-lab` | Present participating cards and ordered actions as the focal point; distinguish configured assumptions from validated outcomes; keep editing and testing states clear. |
-| [ ] | Public combo `/combos/:publicSlug` | Lead with cards, purpose and sequence; preserve author context and limitations; make copying into a workspace explicit. |
-| [ ] | Match log `/match-log` | Make recording a result the primary task; retain deck/opponent identity; distinguish pending entry, confirmed save and aggregate results. |
-| [ ] | Simulator `/simulator` | Differentiate setup, running, completion and failure; present results with sample size and model limits; make cancellation and retained inputs clear. |
-| [ ] | Match timelines `/timelines` | Use clear match identity and preview landmarks; show source and available coverage before opening a timeline. |
-| [ ] | Timeline detail `/timelines/:id` | Strengthen turn and action hierarchy, active selection and linked cards; preserve reading position during evidence inspection. |
-| [ ] | Timeline combos `/timelines/combos` | Lead with involved cards and observed sequence; distinguish examples from generalized claims and link the source timeline. |
-| [ ] | Diao review `/diao-review` | Clarify the review question, selected cards and supporting evidence; keep uncertainty and manual review decisions explicit. |
-| [ ] | Archetypes `/archetypes` | Use representative cards to identify groups; emphasize membership and coverage; make filter scope and naming clear. |
-| [ ] | Archetype detail `/archetypes/:id` | Lead with representative cards and identity; distinguish core from variable slots; disclose membership and statistical evidence. |
-| [ ] | Archetype comparison `/archetypes/compare` | Align compared identities and metric definitions; keep small samples visible and differences readable on mobile. |
-| [ ] | My archetypes `/archetypes/mine` | Give saved groups recognizable covers and clear draft/save states; preserve membership editing and recovery. |
-| [ ] | Reference strategies `/archetypes/mine/reference` | Show the strategy's cards and purpose before configuration; distinguish user choices from reference evidence. |
-| [ ] | Published strategies `/archetypes/strategies` | Use readable strategy previews with provenance; distinguish viewing from copying or editing. |
-| [ ] | Battle chart `/battle-chart` | Strengthen selection and comparison focus; keep cells readable and keyboard reachable; pair color with values and sample size. |
-| [ ] | Events `/events` | Improve date, location and event identity hierarchy; separate upcoming or historical context where supported by data; make filters and no matches clear. |
-| [ ] | Event detail `/events/:id` | Lead with event identity and meaningful results; bring player/deck previews into standings; keep source and incomplete coverage visible. |
-| [ ] | Seasons `/seasons` | Give each season a clear period and visual summary; distinguish active filters and available coverage. |
-| [ ] | Season detail `/seasons/:slug` | Prioritize season context and major results; progressively disclose dense standings and trends. |
-| [ ] | Players and judges `/players` | Make role, identity and search state legible; use consistent result cards without inventing portraits or status. |
-| [ ] | Player profile `/players/:id` | Prioritize identity, achievements and recent decks; keep rankings tied to their source and period. |
-| [ ] | Teams `/teams` | Emphasize team identity and membership grouping; improve mobile comparison and missing-data states. |
-| [ ] | Regions `/regions` | Pair geographic context with clear coverage and sample sizes; provide readable alternatives to map-only interaction. |
-| [ ] | Achievements `/achievements` | Use consistent badge hierarchy and meaningful categories; make earned or eligibility states explicit only where supported. |
-| [ ] | Achievement detail `/achievements/:id` | Emphasize the achievement identity and criteria; keep recipient/evidence details accessible without celebratory noise. |
+| Review | Combo Lab `/combo-lab` | Present participating cards and ordered actions as the focal point; distinguish configured assumptions from validated outcomes; keep editing and testing states clear. |
+| Review | Public combo `/combos/:publicSlug` | Lead with cards, purpose and sequence; preserve author context and limitations; make copying into a workspace explicit. |
+| Review | Match log `/match-log` | Make recording a result the primary task; retain deck/opponent identity; distinguish pending entry, confirmed save and aggregate results. |
+| Review | Simulator `/simulator` | Differentiate setup, running, completion and failure; present results with sample size and model limits; make cancellation and retained inputs clear. |
+| Review | Match timelines `/timelines` | Use clear match identity and preview landmarks; show source and available coverage before opening a timeline. |
+| Review | Timeline detail `/timelines/:id` | Strengthen turn and action hierarchy, active selection and linked cards; preserve reading position during evidence inspection. |
+| Review | Timeline combos `/timelines/combos` | Lead with involved cards and observed sequence; distinguish examples from generalized claims and link the source timeline. |
+| Review | Diao review `/diao-review` | Clarify the review question, selected cards and supporting evidence; keep uncertainty and manual review decisions explicit. |
+| Review | Archetypes `/archetypes` | Use representative cards to identify groups; emphasize membership and coverage; make filter scope and naming clear. |
+| Review | Archetype detail `/archetypes/:id` | Lead with representative cards and identity; distinguish core from variable slots; disclose membership and statistical evidence. |
+| Review | Archetype comparison `/archetypes/compare` | Align compared identities and metric definitions; keep small samples visible and differences readable on mobile. |
+| Review | My archetypes `/archetypes/mine` | Give saved groups recognizable covers and clear draft/save states; preserve membership editing and recovery. |
+| Review | Reference strategies `/archetypes/mine/reference` | Show the strategy's cards and purpose before configuration; distinguish user choices from reference evidence. |
+| Review | Published strategies `/archetypes/strategies` | Use readable strategy previews with provenance; distinguish viewing from copying or editing. |
+| Review | Battle chart `/battle-chart` | Strengthen selection and comparison focus; keep cells readable and keyboard reachable; pair color with values and sample size. |
+| Partial | Events `/events` | Improve date, location and event identity hierarchy; separate upcoming or historical context where supported by data; make filters and no matches clear. |
+| Partial | Event detail `/events/:id` | Lead with event identity and meaningful results; bring player/deck previews into standings; keep source and incomplete coverage visible. |
+| Partial | Seasons `/seasons` | Give each season a clear period and visual summary; distinguish active filters and available coverage. |
+| Partial | Season detail `/seasons/:slug` | Prioritize season context and major results; progressively disclose dense standings and trends. |
+| Review | Players and judges `/players` | Make role, identity and search state legible; use consistent result cards without inventing portraits or status. |
+| Review | Player profile `/players/:id` | Prioritize identity, achievements and recent decks; keep rankings tied to their source and period. |
+| Review | Teams `/teams` | Emphasize team identity and membership grouping; improve mobile comparison and missing-data states. |
+| Review | Regions `/regions` | Pair geographic context with clear coverage and sample sizes; provide readable alternatives to map-only interaction. |
+| Review | Achievements `/achievements` | Use consistent badge hierarchy and meaningful categories; make earned or eligibility states explicit only where supported. |
+| Review | Achievement detail `/achievements/:id` | Emphasize the achievement identity and criteria; keep recipient/evidence details accessible without celebratory noise. |
 
 ### Wave 4: Supporting pages and shared shell
 
-| Done | Page / route | Expressive design and interaction checklist |
+| Status | Page / route | Expressive design and interaction checklist |
 | --- | --- | --- |
-| [ ] | Thema leaderboard `/thema` | Pair printing/card identity with ranking context; use restrained emphasis and clear period/source labels. |
-| [ ] | Thema history `/thema/:editionUuid` | Lead with the exact printing; give the trend a readable hierarchy and expose missing history or coverage gaps. |
-| [ ] | Tags `/cards/tags`, `/cards/tags/:tag` | Give categories distinct readable identity; lead tagged results with cards and preserve navigation context. |
-| [ ] | Card tagging `/cards/tagging` | Keep the card prominent beside the tagging task; clearly distinguish selected, suggested, saved and failed states. |
-| [ ] | Pack opener `/packs/:prefix` | Use restrained reveal sequencing with immediate/reduced-motion access; show complete results and distinguish simulated contents from owned cards. |
-| [ ] | Products `/products` | Strengthen product artwork and release hierarchy; make available detail and destination actions clear. |
-| [ ] | Media kit `/media-kit` | Provide recognizable asset previews, readable usage information and clear download actions. |
-| [ ] | Public user `/users/:profileSlug` | Highlight user-authored identity and published decks while preserving content policy and privacy boundaries. |
-| [ ] | Account `/account` | Keep sign-in and account management calm and task focused; emphasize field errors and confirmed outcomes over decoration. |
-| [ ] | Verify email `/account/verify-email` | Give pending, successful, expired and failed verification distinct messages and one relevant next action. |
-| [ ] | Reset password `/account/reset-password` | Make form progress and validation clear; retain accessible errors and explicit completion. |
-| [ ] | Settings `/settings` | Group preferences by purpose; use clear selected states and save feedback; avoid decorative hierarchy competing with controls. |
-| [ ] | Changelog `/changelog` | Improve release/date rhythm and scannable feature summaries; use visuals only when they explain a change. |
-| [ ] | API docs `/docs/api` | Improve reading hierarchy, code readability and navigation; keep technical reference content easy to scan and copy. |
-| [ ] | Methodology `/methodology` | Organize around questions and calculation scope; distinguish examples, assumptions and limitations clearly. |
-| [ ] | Not found `*` | Offer a concise explanation and useful recovery links with restrained visual identity. |
-| [ ] | Shared navigation and route loading | Align active location, menu/disclosure affordances and 48px targets; check header/toast stacking, loading stability and mobile reachability. |
-| [ ] | Shared dialogs, notifications and errors | Apply consistent shape, hierarchy and brief feedback; preserve focus, retry, Undo and dirty-draft protection; keep persistent problems inline. |
+| Review | Thema leaderboard `/thema` | Pair printing/card identity with ranking context; use restrained emphasis and clear period/source labels. |
+| Review | Thema history `/thema/:editionUuid` | Lead with the exact printing; give the trend a readable hierarchy and expose missing history or coverage gaps. |
+| Review | Tags `/cards/tags`, `/cards/tags/:tag` | Give categories distinct readable identity; lead tagged results with cards and preserve navigation context. |
+| Review | Card tagging `/cards/tagging` | Keep the card prominent beside the tagging task; clearly distinguish selected, suggested, saved and failed states. |
+| Review | Pack opener `/packs/:prefix` | Use restrained reveal sequencing with immediate/reduced-motion access; show complete results and distinguish simulated contents from owned cards. |
+| Review | Products `/products` | Strengthen product artwork and release hierarchy; make available detail and destination actions clear. |
+| Review | Media kit `/media-kit` | Provide recognizable asset previews, readable usage information and clear download actions. |
+| Review | Public user `/users/:profileSlug` | Highlight user-authored identity and published decks while preserving content policy and privacy boundaries. |
+| Review | Account `/account` | Keep sign-in and account management calm and task focused; emphasize field errors and confirmed outcomes over decoration. |
+| Review | Verify email `/account/verify-email` | Give pending, successful, expired and failed verification distinct messages and one relevant next action. |
+| Review | Reset password `/account/reset-password` | Make form progress and validation clear; retain accessible errors and explicit completion. |
+| Review | Settings `/settings` | Group preferences by purpose; use clear selected states and save feedback; avoid decorative hierarchy competing with controls. |
+| Partial | Changelog `/changelog` | Improve release/date rhythm and scannable feature summaries; use visuals only when they explain a change. |
+| Review | API docs `/docs/api` | Improve reading hierarchy, code readability and navigation; keep technical reference content easy to scan and copy. |
+| Partial | Methodology `/methodology` | Organize around questions and calculation scope; distinguish examples, assumptions and limitations clearly. |
+| Review | Not found `*` | Offer a concise explanation and useful recovery links with restrained visual identity. |
+| Partial | Shared navigation and route loading | Align active location, menu/disclosure affordances and 48px targets; check header/toast stacking, loading stability and mobile reachability. |
+| Review | Shared dialogs, notifications and errors | Apply consistent shape, hierarchy and brief feedback; preserve focus, retry, Undo and dirty-draft protection; keep persistent problems inline. |
 
 ### Execution order and completion record
 
@@ -655,3 +667,24 @@ Initial route loading was observed. Simulated network failure/retry, an empty pu
 archive, text zoom and screen reader checks remain unverified.
 Next: supporting-page recovery states and accessibility verification, then reconcile the
 remaining expressive design checklist against the completed page passes.
+
+### Recovery verification and checklist reconciliation, October 3
+
+Replaced ambiguous page checkboxes with Partial and Review status, based on the dated
+implementation record, and replaced the stale queue summary with remaining work by area.
+Partial means a recorded implementation slice, not full acceptance; Review pages require
+inspection before changes. Earlier release and next-step notes are historical.
+
+Changelog Clear search now restores focus to its search field when the empty-result action
+disappears. Verified keyboard focus at 360 × 800 and 1280 × 900. Using a temporary local
+HTTP fixture on a separate origin, verified uncached changelog HTTP 503, keyboard retry and
+loading announcement, recovered real archive, cached refresh failure retaining 20 entries,
+and an empty published archive. Empty archive desktop rendering and mobile overflow passed.
+Price sorting showed uncached failure with a 48px retry at 360px, keyboard retry/loading,
+real ascending quotes, and cached quotes retained after another failure at 1280px.
+Measured views had no horizontal page overflow. Temporary fixture was removed.
+
+App typecheck and lint passed with six existing Fast Refresh warnings. The editor picker
+failure path was not separately exercised; screen readers, text zoom, physical devices and
+authenticated journeys remain open. Next: deck discovery source failure recovery, starting
+with tournament, community and official browsing, then dedicated related-discovery page passes.

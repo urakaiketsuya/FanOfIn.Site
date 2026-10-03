@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useSiteChangelogData } from "./data";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import PageHeader from "../../components/ui/PageHeader";
@@ -17,6 +17,7 @@ export default function ChangelogIndex() {
   useDocumentTitle("Changelog", "What's changed on Fan of Insight, pulled straight from the site's own commit history.");
   const data = useSiteChangelogData();
   const status = usePublishedDataStatus("changelog", "/data/changelog.json");
+  const searchRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(20);
 
@@ -52,14 +53,14 @@ export default function ChangelogIndex() {
       {data && <>
       <Panel tone="info" padding="lg" className="mt-8 rounded-2xl!">
         <label htmlFor="changelog-search" className="block text-xl font-bold text-ctp-text">Find a change</label>
-        <input id="changelog-search" type="search" value={query} onChange={(event) => { setQuery(event.target.value); setVisibleCount(20); }} placeholder="Search changes or commit hash" className="mt-3 min-h-control w-full rounded-lg border border-ctp-overlay0 bg-ctp-base px-4 py-2 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/30" />
+        <input ref={searchRef} id="changelog-search" type="search" value={query} onChange={(event) => { setQuery(event.target.value); setVisibleCount(20); }} placeholder="Search changes or commit hash" className="mt-3 min-h-control w-full rounded-lg border border-ctp-overlay0 bg-ctp-base px-4 py-2 text-sm text-ctp-text placeholder:text-ctp-subtext0 focus:border-ctp-blue focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/30" />
         <div className="mt-3 flex flex-wrap justify-between gap-2 text-xs text-ctp-subtext1">
           <span role="status">{matching.length} {matching.length === 1 ? "change" : "changes"}{query.trim() ? " found" : " in the archive"}</span>
           <span>Published snapshot: {new Date(data.generatedAt).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" })}</span>
         </div>
       </Panel>
 
-      {matching.length === 0 && <Panel className="mt-8"><h2 className="text-lg font-semibold">{query.trim() ? "No matching changes" : "No changes published yet"}</h2><p className="mt-2 text-sm text-ctp-subtext1">{query.trim() ? "Try another word or return to the full archive." : "Site updates will appear here when the archive is published."}</p>{query.trim() && <Button className="mt-3" onClick={() => { setQuery(""); setVisibleCount(20); }}>Clear search</Button>}</Panel>}
+      {matching.length === 0 && <Panel className="mt-8"><h2 className="text-lg font-semibold">{query.trim() ? "No matching changes" : "No changes published yet"}</h2><p className="mt-2 text-sm text-ctp-subtext1">{query.trim() ? "Try another word or return to the full archive." : "Site updates will appear here when the archive is published."}</p>{query.trim() && <Button className="mt-3" onClick={() => { setQuery(""); setVisibleCount(20); searchRef.current?.focus(); }}>Clear search</Button>}</Panel>}
 
       <div className="mt-8 space-y-9">
         {groups.map(([day, entries]) => (
