@@ -847,3 +847,11 @@ Regional events and tournament decks now expose independent loading and failure/
 Wrap-up checks passed at 360px and 1280px: regional and composition keyboard disclosure, minimum 48px summary targets, responsive composition columns, and no horizontal overflow. App typecheck and lint passed with six existing Fast Refresh warnings. Earlier checks cover the other champion views. Forced source failure/retry and empty fixtures, text zoom, and screen reader output remain unverified; this is implementation completion, not exhaustive accessibility or resilience certification.
 
 Champion expressive design: 100% of the agreed implementation scope. Next recommended work: push the accumulated champion commits and verify deployment when requested. No implementation blockers; the verification limitations above remain follow-up QA items.
+
+### Champion cover accessibility follow-up · 2026-10-03
+
+Shared artwork covers now let the title determine the cover height. Long titles and enlarged text remain inside the surface instead of being clipped by an absolute overlay. The artwork crop, whole-card navigation, and visible printed name are retained.
+
+Verified a long-title fixture with 200% root text size at 360px and 1280px: title bounds remain inside the cover and the page has no horizontal overflow. Real Lorraine Similar decks also passed both viewport checks and keyboard expansion/collapse from three to ten results. Controlled source-status fixtures confirmed unavailable versus cached failure copy and keyboard retry transitions to loading; these exercise presentation, not network recovery. App typecheck, lint, and the three existing deck preview tests passed. Lint retains six existing Fast Refresh warnings.
+
+Champion expressive design remains 100% implemented for the agreed scope. Next: push accumulated commits and verify deployment when requested. Actual network failure/retry, screen-reader output, and browser-native text zoom remain unverified; root font enlargement was used for this layout check.

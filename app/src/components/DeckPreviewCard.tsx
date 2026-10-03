@@ -67,10 +67,10 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
   if (presentation === "cover" && view.to !== undefined) return (
     <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source.kind} data-deck-id={model.id} className="identity-surface flex h-full min-w-0 flex-col overflow-hidden rounded-3xl">
       <Link to={view.to} aria-label={`Open deck: ${model.title}`} className="group flex h-full flex-col focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-ctp-blue">
-        <div className="relative overflow-hidden">
-          <CardArtTile card={leadCard} name={label} artworkOnly />
+        <div className="relative grid shrink-0 grid-cols-[minmax(0,1fr)] overflow-hidden">
+          <div className="col-start-1 row-start-1 self-start"><CardArtTile card={leadCard} name={label} artworkOnly /></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 p-4 text-white">
+          <div className="relative col-start-1 row-start-1 min-w-0 self-end p-4 pt-12 text-white">
             <p className="mb-1 text-xs text-white/85">{model.source.label}{model.format && ` · ${model.format === "STANDARD" ? "Standard" : "Pantheon"}`}</p>
             <h2 className="break-words text-2xl font-bold leading-tight">{model.title}</h2>
           </div>
