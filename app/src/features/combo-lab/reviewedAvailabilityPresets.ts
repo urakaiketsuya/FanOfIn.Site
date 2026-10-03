@@ -75,6 +75,37 @@ export const reviewedAvailabilityExamples = [
     ruleLabel: "Combat rules",
     ruleUrl: "https://rules.gatcg.com/game-mechanics/game-mechanics-turn-order/turn-order-combat-phase/combat-phase-attacking-and-the-combat-phase",
   },
+  {
+    id: "concoction-stamina",
+    label: "Invigorating Concoction + Draught of Stamina",
+    title: "attack again with a counter-buffed ally",
+    preset: {
+      name: "Invigorating Concoction + Draught of Stamina · card availability",
+      requirements: ["Invigorating Concoction", "Draught of Stamina"].map((name): ComboRecipeRequirement => ({ kind: "cards", cards: [name], value: "", required: 1 })),
+      damage: 0,
+    },
+    // Evidence: official-rules-review.json, fractal-wakeup-combo-combo-4.
+    setup: [
+      { phase: "Before starting", requirements: [
+        { label: "Potions already on your field", detail: "Have an awake Invigorating Concoction and a Draught of Stamina on your field. The draw odds cover finding the two cards, not deploying them or having them ready." },
+        { label: "Concoction must be awake", detail: "Hindered makes Invigorating Concoction enter rested. Prepare it on an earlier turn or use a separately verified wake effect before paying its rest cost. Draught wakes an ally, so it cannot wake the Potion." },
+        { label: "Ally on your field", detail: "Choose an awake ally you control that can legally attack. This ally and its legal attack targets are additional setup outside the pictured pair and its draw odds." },
+        { label: "Element access and deployment", detail: "Both Potions need Wind access. Pay their deployment separately: seven reserve for Concoction and four for Draught before modifiers, or their respective Brew costs. Concoction needs one Flower and one Herb; Draught needs one Springleaf and two Herbs. Sacrificed objects cannot pay twice." },
+      ] },
+      { phase: "Between attacks", requirements: [
+        { label: "Surviving ally", detail: "Finish the first combat with the buffed ally surviving. Another legal attack must still be possible after Draught wakes it." },
+      ] },
+    ],
+    slugs: ["invigorating-concoction", "draught-of-stamina"],
+    sequence: [
+      "Rest and sacrifice the awake Concoction, targeting your ally. Resolve its effect to put two buff counters on that ally and draw a card.",
+      "Attack with the buffed ally and finish combat with it surviving.",
+      "Sacrifice Draught of Stamina to wake the same ally, then make another legal attack. Its two buff counters remain.",
+    ],
+    note: "This needs prepared board state; it is not an immediate loop. Opponents can respond, block, or remove the ally. Counters and a second attack do not guarantee champion damage. The effect’s extra draw is not modeled by this availability preset.",
+    ruleLabel: "Activated ability rules",
+    ruleUrl: "https://rules.gatcg.com/game-mechanics/game-mechanics-abilities/abilities-activated-abilities",
+  },
 ];
 
 export type ReviewedAvailabilityRecipe = typeof floralPotionPreset;
