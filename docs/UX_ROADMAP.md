@@ -809,3 +809,13 @@ Connected Overview, Decks, and More to named shared TabPanels. Replaced the More
 Verified at 360px and 1280px: selected panels, direct Regions URL, Home and arrow navigation, 48px tab targets, and no horizontal page overflow. App typecheck and lint passed with existing Fast Refresh warnings. Initial loading was observed. Error, empty, screen reader, and text zoom fixtures were not exercised in this focused navigation change.
 
 Champion expressive design is approximately 80% complete: identity, deck previews, overview simplification, and tab accessibility are implemented. Next: simplify the remaining More views and verify their loading, failure, and empty states. Estimate remains scope based rather than a measured issue count.
+
+### Champion regional summaries and composition evidence · 2026-10-03
+
+Regional popularity now leads with three expressive summary cards ordered by recorded deck count. A keyboard accessible disclosure reveals the remaining regions. Copy explains the minimum sample and unknown country group. Existing ordering, counts, and calculations are unchanged.
+
+Composition evidence is optional, explicitly scoped across all champions, and presented in wrapping definition lists instead of a horizontally scrolling table. Its labels distinguish adjusted win rate from regional average win rate and clarify that the evidence is not a deck recipe.
+
+Verified Lorraine at 360px and 1280px: regional and composition disclosures open with Enter, summaries meet 48px targets, composition uses one mobile column and three desktop columns, and neither view causes page overflow. Initial loading was observed. Typecheck and lint passed with six existing Fast Refresh warnings. Forced empty/error fixtures, text zoom, and screen readers remain unverified; a later browser attempt to recapture expanded regions timed out after the earlier successful keyboard check.
+
+Champion expressive design is approximately 84% complete, based on completed identity, overview, navigation, and regional hierarchy work. Next: simplify Similar decks and improve Bonus cards and More data loading/failure states, then finish broader accessibility verification. No implementation blockers; estimate remains scope based.

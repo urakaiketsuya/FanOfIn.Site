@@ -422,21 +422,41 @@ export default function ChampionDetail() {
               className="mt-6"
               heading="compact"
               title="Regional popularity"
-              actions={<Link to="/regions?tab=champions" className="text-xs text-ctp-blue hover:underline">Full Regions page &rarr;</Link>}
+              description={`Where ${championName} appears most often in recorded decks. Groups need at least three decks to appear. Unknown means no country was recorded.`}
+              actions={<Link to="/regions?tab=champions" className="inline-flex min-h-control items-center rounded-md px-3 text-sm text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">Explore regions &rarr;</Link>}
             >
               {regionalBreakdown.loading && <InlineState className="mt-4">Loading…</InlineState>}
               {!regionalBreakdown.loading && regionalBreakdown.rows.length === 0 && (
                 <InlineState className="mt-4 text-sm">Not enough regional data for {championName} yet.</InlineState>
               )}
               {regionalBreakdown.rows.length > 0 && (
-                <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
-                  {regionalBreakdown.rows.map((r) => (
-                    <Link key={r.code} to={`/regions?group=country&region=${r.code}&tab=champions`} className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 transition-colors hover:border-ctp-blue">
-                      <strong className="text-sm text-ctp-text">{r.label}</strong>
-                      <span className="mt-2 flex justify-between text-xs text-ctp-subtext0"><span>{r.deckCount} decks</span><span>{(r.avgWinRate * 100).toFixed(0)}% win rate</span></span>
-                    </Link>
-                  ))}
-                </div>
+                <>
+                  <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                    {regionalBreakdown.rows.slice(0, 3).map((r) => (
+                      <Link key={r.code} to={`/regions?group=country&region=${r.code}&tab=champions`} className="identity-surface min-w-0 rounded-2xl border border-ctp-surface1 p-4 transition-colors hover:border-ctp-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">
+                        <strong className="block break-words text-lg text-ctp-text">{r.label}</strong>
+                        <span className="mt-3 block text-3xl font-semibold tabular-nums text-ctp-text">{r.deckCount.toLocaleString()} <span className="text-sm font-normal text-ctp-subtext0">decks</span></span>
+                        <span className="mt-1 block text-sm text-ctp-subtext0">{(r.avgWinRate * 100).toFixed(0)}% average win rate</span>
+                      </Link>
+                    ))}
+                  </div>
+                  {regionalBreakdown.rows.length > 3 && (
+                    <details className="group mt-4 rounded-xl border border-ctp-surface1" key={championName}>
+                      <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 rounded-xl px-4 py-3 text-sm font-medium text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden">
+                        {regionalBreakdown.rows.length - 3} more regions
+                        <DisclosureChevron className="shrink-0 group-open:rotate-180" />
+                      </summary>
+                      <div className="grid grid-cols-1 gap-2 px-4 pb-4 sm:grid-cols-2 lg:grid-cols-3">
+                        {regionalBreakdown.rows.slice(3).map((r) => (
+                          <Link key={r.code} to={`/regions?group=country&region=${r.code}&tab=champions`} className="min-h-control rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 hover:border-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">
+                            <strong className="block break-words text-sm text-ctp-text">{r.label}</strong>
+                            <span className="mt-2 flex flex-wrap justify-between gap-2 text-sm text-ctp-subtext0"><span>{r.deckCount.toLocaleString()} decks</span><span>{(r.avgWinRate * 100).toFixed(0)}% average win rate</span></span>
+                          </Link>
+                        ))}
+                      </div>
+                    </details>
+                  )}
+                </>
               )}
             </Section>
           )}
@@ -447,36 +467,28 @@ export default function ChampionDetail() {
           {surface === "more" && moreTab === "similar" && <SimilarDecksSection championName={championName} decks={similarDecks} />}
 
           {surface === "more" && moreTab === "similar" && compositionBestByType.length > 0 && (
-            <Section
-              className="mt-6"
-              heading="compact"
-              title="Deck composition guide"
-              description="Across all decks, the best-performing share-of-main-deck bucket for each card type – a cross-type summary, not scoped to this Champion."
-              actions={<Link to="/cards/stats" className="text-xs text-ctp-blue hover:underline">Full breakdown by type &rarr;</Link>}
-            >
-              <div className="mt-2 overflow-x-auto">
-                <table className="w-max min-w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase">
-                      <th className="py-1 pr-6">Type</th>
-                      <th className="py-1 pr-6">Best share of main deck</th>
-                      <th className="py-1 pr-6">Win rate</th>
-                      <th className="py-1">Decks</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">
-                    {compositionBestByType.map((r) => (
-                      <tr key={r.type}>
-                        <td className="py-1.5 pr-6 whitespace-nowrap text-ctp-text">{r.type}</td>
-                        <td className="py-1.5 pr-6 text-ctp-subtext1">{r.bucket}</td>
-                        <td className="py-1.5 pr-6 font-semibold text-ctp-text">{(r.adjustedWinRate * 100).toFixed(0)}%</td>
-                        <td className="py-1.5 text-ctp-subtext1">{r.deckCount}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+            <details className="group mt-6 rounded-2xl border border-ctp-surface1">
+              <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 rounded-2xl px-4 py-3 font-medium text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden">
+                <span>Deck composition evidence<span className="mt-1 block text-sm font-normal text-ctp-subtext0">Across all champions</span></span>
+                <DisclosureChevron className="shrink-0 group-open:rotate-180" />
+              </summary>
+              <div className="px-4 pb-4">
+                <p className="mb-4 text-sm text-ctp-subtext0">The share of the main deck with the highest adjusted win rate for each card type across all recorded decks. These results are not specific to {championName} and are not a recommended deck recipe.</p>
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {compositionBestByType.map((r) => (
+                    <div key={r.type} className="rounded-xl bg-ctp-mantle p-4">
+                      <h3 className="font-semibold text-ctp-text">{r.type}</h3>
+                      <dl className="mt-3 space-y-2 text-sm">
+                        <div className="flex flex-wrap justify-between gap-2"><dt className="text-ctp-subtext0">Share of main deck</dt><dd className="font-medium text-ctp-text">{r.bucket}</dd></div>
+                        <div className="flex flex-wrap justify-between gap-2"><dt className="text-ctp-subtext0">Adjusted win rate</dt><dd className="text-ctp-text">{(r.adjustedWinRate * 100).toFixed(0)}%</dd></div>
+                        <div className="flex flex-wrap justify-between gap-2"><dt className="text-ctp-subtext0">Recorded decks</dt><dd className="text-ctp-text">{r.deckCount.toLocaleString()}</dd></div>
+                      </dl>
+                    </div>
+                  ))}
+                </div>
+                <Link to="/cards/stats" className="mt-3 inline-flex min-h-control items-center rounded-md px-3 text-sm text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">Full breakdown by type &rarr;</Link>
               </div>
-            </Section>
+            </details>
           )}
           </TabPanel>
           </TabPanel>
