@@ -770,3 +770,9 @@ Champion expressive design is approximately 60% complete: directory, deck discov
 - Champion and season source loading/error/retry states are visible. Fixed the existing builds grid's mobile overflow and allowed build names to wrap.
 - Verified Lorraine at 360px and 1280px, keyboard disclosure activation, 48px summaries, loading, expanded history/chart, and no page overflow. Typecheck and lint pass (six existing Fast Refresh warnings). Forced empty/error/zero appearance fixtures, screen readers, and text zoom remain unverified.
 - Champion expressive design is approximately 65% complete: directory, deck discovery, card gallery, and season summary hierarchy are delivered. Remaining work includes statistics card/build density, new release and archetype sections, and broader state/accessibility verification. This is a scope estimate, not a measured completion rate.
+
+### Champion card and build density · 2026-10-03
+
+Full champion statistics now start with four cards per section and three build families, with the remaining results available through expansion. Card filters use a keyboard accessible disclosure, shared 48px buttons, and explicit selected states. Active scope stays visible when collapsed, and the page explains that card win rates remain champion wide. Build summaries distinguish families from individual decklists; empty element icon boxes were removed.
+
+Verified Lorraine at 360px and 1280px, keyboard filter and list expansion, filtering and resetting, visible card names and art, a 48px disclosure, and no page overflow. App typecheck and lint passed (six existing Fast Refresh warnings). Loading was observed; forced error/empty fixtures, screen readers, and text zoom remain unverified. Champion expressive design is approximately 70% complete based on delivered surfaces. Next: simplify new release and archetype sections on the main champion page, then finish broader state and accessibility verification.

@@ -1,5 +1,7 @@
 import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
+import Button from "../../components/ui/Button";
+import DisclosureChevron from "../../components/DisclosureChevron";
 import ChampionDecks from "./ChampionDecks";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -17,7 +19,6 @@ import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import PageHeader from "../../components/ui/PageHeader";
 import Tabs from "../../components/ui/Tabs";
-import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 import { cutoutsForChampion } from "../products/characterArt";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
@@ -84,6 +85,7 @@ export default function ChampionDetail() {
   }, [trend]);
 
   const [spiritFilter, setSpiritFilter] = useState<SpiritFilter>({ kind: "all" });
+  const [showAllBuilds, setShowAllBuilds] = useState(false);
   const [typeFilter, setTypeFilter] = useState<string | "all">("all");
   // Only reset when navigating from one Champion's page to a different one (same component
   // instance reused by the router) – not on initial mount, which would otherwise clobber a
@@ -92,6 +94,7 @@ export default function ChampionDetail() {
   useEffect(() => {
     if (prevChampionNameRef.current !== championName) {
       setSpiritFilter({ kind: "all" });
+      setShowAllBuilds(false);
       setTypeFilter("all");
       setTab("season");
       prevChampionNameRef.current = championName;
@@ -280,20 +283,27 @@ export default function ChampionDetail() {
 
           {showOverview && champion.topCards.main.length > 0 && (
             <Section className="mt-6" heading="compact" title="Most used cards">
+              <p className="mt-2 text-sm text-ctp-subtext1">Explore the cards players bring with {championName}.</p>
+              <p className="mt-2 text-sm text-ctp-subtext0">
+                Showing {spiritFilter.kind === "all" ? "all elements and Spirits" : spiritFilter.kind === "element" ? titleCase(spiritFilter.element) : spiritFilter.spiritName}.
+                {typeFilter !== "all" && ` Main cards: ${titleCase(typeFilter)}.`} Card win rates cover all {championName} decks, regardless of these filters.
+              </p>
+              <details className="group mt-3 rounded-xl border border-ctp-surface1 px-3">
+                <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 text-sm text-ctp-blue focus-visible:outline-2">Filter cards<DisclosureChevron className="group-open:rotate-180" /></summary>
+                <div className="pb-3 [&_button[aria-pressed=true]]:border-ctp-blue [&_button[aria-pressed=true]]:bg-ctp-blue/10 [&_button[aria-pressed=true]]:text-ctp-blue">
               {champion.elementBreakdown.length > 0 && (
                 <>
                   <p className="mt-2 text-xs text-ctp-subtext0">
-                    {championName}'s Spirit pick can drastically change card choices – filter by Spirit element to
-                    see it.
+                    {championName}'s Spirit pick can drastically change card choices. Filter by Spirit element to explore them.
                   </p>
                   <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
-                    <Chip active={spiritFilter.kind === "all"} onClick={() => setSpiritFilter({ kind: "all" })}>
+                    <Button aria-pressed={spiritFilter.kind === "all"} onClick={() => setSpiritFilter({ kind: "all" })}>
                       All ({champion.deckCount})
-                    </Chip>
+                    </Button>
                     {champion.elementBreakdown.map((e) => (
-                      <Chip
+                      <Button
                         key={e.element}
-                        active={
+                        aria-pressed={
                           (spiritFilter.kind === "element" && spiritFilter.element === e.element) ||
                           (spiritFilter.kind === "spirit" &&
                             champion.spirits.find((s) => s.spiritName === spiritFilter.spiritName)?.spiritElement === e.element)
@@ -301,7 +311,7 @@ export default function ChampionDetail() {
                         onClick={() => setSpiritFilter({ kind: "element", element: e.element })}
                       >
                         {titleCase(e.element)} ({e.deckCount})
-                      </Chip>
+                      </Button>
                     ))}
                   </div>
 
@@ -309,14 +319,14 @@ export default function ChampionDetail() {
                     <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs">
                       <span className="text-ctp-subtext0">Spirit:</span>
                       {spiritsForSelectedElement.map((s) => (
-                        <Chip
+                        <Button
                           key={s.spiritName}
                           size="sm"
-                          active={spiritFilter.kind === "spirit" && spiritFilter.spiritName === s.spiritName}
+                          aria-pressed={spiritFilter.kind === "spirit" && spiritFilter.spiritName === s.spiritName}
                           onClick={() => setSpiritFilter({ kind: "spirit", spiritName: s.spiritName })}
                         >
                           {s.spiritName} ({s.deckCount})
-                        </Chip>
+                        </Button>
                       ))}
                     </div>
                   )}
@@ -326,20 +336,22 @@ export default function ChampionDetail() {
               {typeFilterOptions.length > 0 && (
                 <div className="mt-3 flex flex-wrap items-center gap-1.5 text-xs">
                   <span className="text-ctp-subtext0">Main card type:</span>
-                  <Chip size="sm" active={typeFilter === "all"} onClick={() => setTypeFilter("all")}>
+                  <Button size="sm" aria-pressed={typeFilter === "all"} onClick={() => setTypeFilter("all")}>
                     All
-                  </Chip>
+                  </Button>
                   {typeFilterOptions.map(({ type }) => (
-                    <Chip key={type} size="sm" active={typeFilter === type} onClick={() => setTypeFilter(type)}>
+                    <Button key={type} size="sm" aria-pressed={typeFilter === type} onClick={() => setTypeFilter(type)}>
                       {titleCase(type)}
-                    </Chip>
+                    </Button>
                   ))}
                 </div>
               )}
 
+                </div>
+              </details>
               {displayedTopCards && (
                 <div className="mt-3">
-                  <TopCardsSections topCards={displayedTopCards} cardImages={cardImages} mainOverride={displayedMainCards} winRateByName={winRateByName} layout="grid" />
+                  <TopCardsSections topCards={displayedTopCards} cardImages={cardImages} mainOverride={displayedMainCards} winRateByName={winRateByName} layout="grid" initialVisible={4} />
                 </div>
               )}
             </Section>
@@ -349,17 +361,18 @@ export default function ChampionDetail() {
             <Section
               className="mt-6"
               heading="compact"
-              title="Builds"
-              actions={<Link to="/archetypes" className="text-xs text-ctp-blue hover:underline">All archetypes &rarr;</Link>}
+              title="Popular builds"
+              description="Build families ranked by player count. Each family can contain several different decklists."
+              actions={<Link to="/archetypes" className="inline-flex min-h-control items-center text-sm text-ctp-blue hover:underline">All archetypes &rarr;</Link>}
             >
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
-                {builds.map((b) => (
+                {(showAllBuilds ? builds : builds.slice(0, 3)).map((b) => (
                   <Link key={b.id} to={`/archetypes/${b.id}`} className="flex min-h-20 items-center gap-3 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 transition-colors hover:border-ctp-blue">
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-ctp-base"><ArchetypeElementIcon name={b.name} /></span>
                     <span className="min-w-0"><strong className="block break-words text-sm text-ctp-text">{b.name}</strong><span className="mt-1 block text-xs text-ctp-subtext0">{b.playerCount} players · {(b.avgWinRate * 100).toFixed(0)}% win rate</span></span>
                   </Link>
                 ))}
               </div>
+              {builds.length > 3 && <Button className="mt-3" aria-expanded={showAllBuilds} onClick={() => setShowAllBuilds((value) => !value)}>{showAllBuilds ? "Show fewer builds" : `Show all ${builds.length} builds`}</Button>}
             </Section>
           )}
 
