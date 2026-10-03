@@ -793,3 +793,11 @@ Replaced the statistics page's horizontal character cutout strip with a wrapping
 Verified Lorraine at 360px and 1280px, loaded card art and names, keyboard expansion, 48px summary height, visible link focus, and no horizontal page overflow. Initial loading was observed. App typecheck and lint passed with six existing Fast Refresh warnings. Forced error/empty/catalog fallback fixtures, screen readers, and text zoom remain unverified.
 
 Champion expressive design is approximately 78% complete. Next: remaining More statistics surfaces and tab/panel accessibility, followed by broader data-state coverage. No implementation blockers.
+
+### Champion artwork deck covers · 2026-10-03
+
+Restored wide, zoomed champion illustrations in shared DeckPreviewCard covers through an optional CardArtTile artwork crop. Covers keep visible card names, title contrast, source and metadata, with one whole-card deck navigation link and visible Open deck label. Detailed previews retain full printed card art.
+
+Verified tournament results at 360px and unique builds at 1280px, no horizontal overflow, large touch targets, no nested controls, and Enter navigation to a build page. Typecheck and lint pass (six existing Fast Refresh warnings). Image failure/catalog fallback fixtures, text zoom and screen reader testing remain unverified.
+
+This focused cover refresh is complete (100% implementation and main-flow checks). Next: review the artwork treatment with the user, then resume champion statistics tab accessibility and remaining views; the broader champion expressive design initiative remains approximately 78% complete.

@@ -66,15 +66,21 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
   };
   if (presentation === "cover" && view.to !== undefined) return (
     <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source.kind} data-deck-id={model.id} className="identity-surface flex h-full min-w-0 flex-col overflow-hidden rounded-3xl">
-      <div className="flex justify-center bg-gradient-to-br from-ctp-blue/10 via-ctp-mantle to-ctp-mauve/10 p-5">
-        <div className="w-36 min-w-0 sm:w-40">{leadCard ? <Link to={`/cards/${leadCard.slug}`} className="block rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ctp-blue">{art}</Link> : art}</div>
-      </div>
-      <div className="flex flex-1 flex-col gap-2 p-4">
-        <p className="text-xs text-ctp-subtext0">{model.source.label}{model.format && ` · ${model.format === "STANDARD" ? "Standard" : "Pantheon"}`}</p>
-        <h2 className="break-words text-2xl font-bold leading-tight text-ctp-text"><Link to={view.to} className="inline-flex min-h-12 items-center rounded focus-visible:outline-2 focus-visible:outline-ctp-blue">{model.title}</Link></h2>
-        {model.metadata && <div className="break-words text-sm leading-relaxed text-ctp-subtext1">{model.metadata}</div>}
-        <Link to={view.to} aria-label={`Open deck: ${model.title}`} className={`${deckPreviewActionClass} mt-auto w-full bg-ctp-blue/10 text-ctp-blue hover:bg-ctp-blue/20`}>Open deck</Link>
-      </div>
+      <Link to={view.to} aria-label={`Open deck: ${model.title}`} className="group flex h-full flex-col focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-ctp-blue">
+        <div className="relative overflow-hidden">
+          <CardArtTile card={leadCard} name={label} artworkOnly />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 p-4 text-white">
+            <p className="mb-1 text-xs text-white/85">{model.source.label}{model.format && ` · ${model.format === "STANDARD" ? "Standard" : "Pantheon"}`}</p>
+            <h2 className="break-words text-2xl font-bold leading-tight">{model.title}</h2>
+          </div>
+        </div>
+        <div className="flex flex-1 flex-col gap-2 p-4">
+          <p className="break-words text-xs text-ctp-subtext0">{label}</p>
+          {model.metadata && <div className="break-words text-sm leading-relaxed text-ctp-subtext1">{model.metadata}</div>}
+          <span className="mt-auto flex min-h-12 items-center font-medium text-ctp-blue group-hover:underline">Open deck <span aria-hidden="true" className="ml-2">→</span></span>
+        </div>
+      </Link>
     </Panel>
   );
   return <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source.kind} data-deck-id={model.id} className="identity-surface flex min-w-0 flex-col overflow-hidden">

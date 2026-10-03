@@ -16,16 +16,19 @@ export default function CardArtTile({
   name,
   cornerBadge,
   tags,
+  artworkOnly = false,
 }: {
   card: Card | undefined;
   name: string;
   cornerBadge?: ReactNode;
   tags?: string[];
+  /** Wide deck covers crop the illustration above the printed rules. */
+  artworkOnly?: boolean;
 }) {
   return (
-    <div data-component="CardArtTile" className="relative aspect-[5/7] overflow-hidden rounded bg-ctp-surface0">
+    <div data-component="CardArtTile" className={`relative overflow-hidden rounded bg-ctp-surface0 ${artworkOnly ? "aspect-[16/10]" : "aspect-[5/7]"}`}>
       {card?.editions[0] ? (
-        <CardImage image={card.editions[0].image} alt={name} className="h-full w-full object-cover" />
+        <CardImage image={card.editions[0].image} alt={name} className={artworkOnly ? "absolute left-[-6%] top-[-30%] w-[112%] max-w-none" : "h-full w-full object-cover"} />
       ) : (
         <span className="flex h-full items-center p-1 text-center text-[9px] text-ctp-subtext0">{name}</span>
       )}
