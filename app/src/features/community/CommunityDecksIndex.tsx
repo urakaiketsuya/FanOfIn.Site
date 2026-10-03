@@ -6,6 +6,8 @@ import { championKeyToDisplayName, championNameToSlug } from "../../lib/champion
 import PageHeader from "../../components/ui/PageHeader";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
+import PublishedSourceStatus from "../../components/PublishedSourceStatus";
+import DisclosureChevron from "../../components/DisclosureChevron";
 import { InlineState } from "../../components/ui/ContentState";
 import { useCardsByNames } from "../events/useCardsByNames";
 import CardImage from "../../components/CardImage";
@@ -13,6 +15,7 @@ import HorizontalBarChart, { type HorizontalBarChartBar } from "../../components
 import RangeBar from "../../components/RangeBar";
 import BarChart, { type BarChartBar } from "../../components/BarChart";
 import {
+  useCommunityTrendStatus,
   useCommunityCardInclusion,
   useCommunityPopularity,
   useCommunityPriceDistribution,
@@ -39,6 +42,18 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
   const priceDistribution = useCommunityPriceDistribution(format);
   const archetypes = useCommunityArchetypes(format);
   const deckEra = useCommunityDeckEra(format);
+  const cardsStatus = useCommunityTrendStatus("card-inclusion", format);
+  const popularityStatus = useCommunityTrendStatus("popularity", format);
+  const priceStatus = useCommunityTrendStatus("price-distribution", format);
+  const buildsStatus = useCommunityTrendStatus("archetypes", format);
+  const eraStatus = useCommunityTrendStatus("deck-era", format);
+  const sources = [
+    { label: "Community card usage", status: cardsStatus, data: cardInclusion },
+    { label: "Community popularity", status: popularityStatus, data: popularity },
+    { label: "Community prices", status: priceStatus, data: priceDistribution },
+    { label: "Community builds", status: buildsStatus, data: archetypes },
+    { label: "Community deck eras", status: eraStatus, data: deckEra },
+  ];
 
   const [championFilter, setChampionFilter] = useState<string>("");
   const [showAllTopCards, setShowAllTopCards] = useState(false);
@@ -101,7 +116,7 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
       }));
   }, [deckEra]);
 
-  const loading = !cardInclusion && !popularity && !priceDistribution && !archetypes;
+
 
   return (
     <PageLayout data-component="CommunityDecksIndex" width="wide">
@@ -111,8 +126,8 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
       />
 
       <div className="mt-4 inline-flex rounded-lg border border-ctp-surface1 bg-ctp-mantle p-1 text-sm">
-        <Link to="/community-decks" className={`rounded-md px-3 py-1.5 ${!isPantheon ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>Standard</Link>
-        <Link to="/pantheon" className={`rounded-md px-3 py-1.5 ${isPantheon ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>Pantheon</Link>
+        <Link to="/community-decks" className={`inline-flex min-h-control items-center rounded-md px-3 py-1.5 ${!isPantheon ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>Standard</Link>
+        <Link to="/pantheon" className={`inline-flex min-h-control items-center rounded-md px-3 py-1.5 ${isPantheon ? "bg-ctp-blue text-ctp-base" : "text-ctp-subtext1 hover:text-ctp-text"}`}>Pantheon</Link>
       </div>
 
       {popularity && (
@@ -121,7 +136,12 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
         </p>
       )}
 
-      {loading && <InlineState className="mt-6">Loading…</InlineState>}
+      <div aria-label="Community data sources">
+        {sources.map(({ label, status, data }) => <PublishedSourceStatus key={label} label={label} status={status} hasData={Boolean(data)} />)}
+      </div>
+      {cardInclusion && cardsForFilter?.length === 0 && <InlineState className="mt-4">No card usage is published for this selection.</InlineState>}
+      {archetypes && archetypes.clusters.length === 0 && <InlineState className="mt-4">No recurring builds are published for this format.</InlineState>}
+      {deckEra && eraBars.length === 0 && <InlineState className="mt-4">No deck era data is published for this format.</InlineState>}
 
       {cardInclusion && (
         <Section className="mt-6" heading="compact" title="Most played cards" actions={
@@ -145,8 +165,10 @@ export default function CommunityDecksIndex({ format = "STANDARD" }: { format?: 
         </Section>
       )}
 
-      <details className="mt-6 text-sm text-ctp-subtext1">
-        <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">Popularity and price trends</summary>
+      <details className="group mt-6 text-sm text-ctp-subtext1">
+        <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 rounded font-semibold focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden">Popularity and price trends<DisclosureChevron className="group-open:rotate-180" /></summary>
+      {popularity && championBars.length === 0 && elementBars.length === 0 && <InlineState>No popularity data is published for this format.</InlineState>}
+      {priceDistribution && !price && <InlineState>No price distribution is available for this selection.</InlineState>}
       <div className="mt-3 grid gap-4 sm:grid-cols-2">
         {championBars.length > 0 && (
           <HorizontalBarChart

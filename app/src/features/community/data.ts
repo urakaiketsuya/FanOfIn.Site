@@ -162,3 +162,11 @@ export function mergeCoOccurrenceForCard(
 export function useCommunityDeckSearchStatus(format: DeckFormat = "STANDARD") {
   return usePublishedDataStatus(`community-decks-${format}`, blendedPath(format, "decks"));
 }
+
+/** Status for each source used by the community trends page. */
+export function useCommunityTrendStatus(
+  source: "card-inclusion" | "popularity" | "price-distribution" | "archetypes" | "deck-era",
+  format: DeckFormat,
+) {
+  return usePublishedDataStatus(`shoutatyourdecks-${source}-${format}`, formatPath(format, source));
+}

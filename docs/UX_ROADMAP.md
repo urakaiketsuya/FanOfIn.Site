@@ -710,3 +710,19 @@ Remaining: Pantheon-specific fixtures, active card-filter index failure, empty p
 indexes, cached build failure, optional metadata/catalog failures, community trend source
 recovery, screen reader, text zoom and physical device checks. Next: optional source recovery
 and community trends, then dedicated champion/package/archetype page passes.
+
+### Community trend source recovery, October 3
+
+Card usage, popularity, price distribution, recurring builds and deck eras now expose
+independent published-source status and retry. Cached sections stay available during errors;
+failures remain visible outside optional disclosures. Empty datasets have explicit guidance.
+Format links and the popularity disclosure have 48px targets; the disclosure uses the shared
+chevron and visible keyboard focus. Existing statistics and source definitions are unchanged.
+
+App typecheck and lint passed with six existing Fast Refresh warnings. A temporary HTTP 503
+fixture verified popularity failure alongside available cards/builds, keyboard retry/loading,
+restored chart, and cached chart retention during a later failure. Verified 360 × 800 and
+1280 × 900 layouts without page overflow, a 48px retry, and keyboard expansion. Fixture removed.
+Other source-specific failures, empty-data fixtures, Pantheon, text zoom, screen readers and
+physical devices remain unverified. Next: optional catalog/metadata recovery and community
+card identity refinements, followed by champion/package/archetype page passes.
