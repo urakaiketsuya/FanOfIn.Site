@@ -837,3 +837,13 @@ Catalog sync status now distinguishes loading and failed refreshes from a comple
 Verified Lorraine at 360px and 1280px: four initial cards, keyboard expansion to six and collapse, 48px button, four desktop columns, and no horizontal overflow. Initial page loading was observed. Typecheck and lint passed with six existing Fast Refresh warnings. Forced catalog loading/failure/retry and empty fixtures, text zoom, and screen reader output remain unverified.
 
 Champion expressive design is approximately 90% complete, based on completed view simplification and remaining data-state and accessibility verification. Next: regional and composition source states, followed by broader failure/retry and accessibility checks. Estimate remains scope based; no implementation blockers.
+
+### Champion expressive design wrap-up · 2026-10-03
+
+The planned champion design implementation is complete: card identity, actual Recent/Unique/Top deck previews, compact overview summaries, accessible peer tabs, and progressively disclosed Bonus cards, Regions, Similar decks, and composition evidence.
+
+Regional events and tournament decks now expose independent loading and failure/retry feedback. Cached regional results remain available. Composition evidence remains discoverable even when its source is unavailable or empty, with visible source status outside the disclosure and an explicit completed empty state inside. Dataset gating, ranking, membership, and calculations are preserved.
+
+Wrap-up checks passed at 360px and 1280px: regional and composition keyboard disclosure, minimum 48px summary targets, responsive composition columns, and no horizontal overflow. App typecheck and lint passed with six existing Fast Refresh warnings. Earlier checks cover the other champion views. Forced source failure/retry and empty fixtures, text zoom, and screen reader output remain unverified; this is implementation completion, not exhaustive accessibility or resilience certification.
+
+Champion expressive design: 100% of the agreed implementation scope. Next recommended work: push the accumulated champion commits and verify deployment when requested. No implementation blockers; the verification limitations above remain follow-up QA items.

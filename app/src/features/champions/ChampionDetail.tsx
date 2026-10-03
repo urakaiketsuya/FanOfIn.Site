@@ -10,7 +10,7 @@ import { slugToChampionName } from "../../lib/championSlug";
 import { titleCase } from "../../lib/format";
 import { useArchetypeData, useArchetypeTaxonomyData, useCardStatsByChampionData, useChampionTrendsData, useCompositionWinRateData, useSimilarityData } from "../archetypes/data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
-import { useEventNameById } from "../tournaments/data";
+import { useEventNameById, useOmnidexIndex, useOmnidexIndexStatus } from "../tournaments/data";
 import { useCardsByNames } from "../events/useCardsByNames";
 import TopCardsSections from "../../components/TopCardsSections";
 import { useChampionBonusCards } from "./useChampionBonusCards";
@@ -65,11 +65,14 @@ export default function ChampionDetail() {
   const trendsData = useChampionTrendsData();
   const archetypeStatus = usePublishedDataStatus("analysis-archetypes", "/data/analysis/archetypes.json");
   const trendStatus = usePublishedDataStatus("analysis-champion-trends", "/data/analysis/champion-trends.json");
-  const popularityIndexData = useDeckPopularityIndexData(tab === "similar");
+  const popularityIndexData = useDeckPopularityIndexData(tab === "similar" || tab === "regions");
   const eventNameById = useEventNameById(tab === "similar");
   const similarityData = useSimilarityData(tab === "similar");
   const similarityStatus = usePublishedDataStatus("analysis-similarity", "/data/analysis/similarity.json");
   const popularityStatus = usePublishedDataStatus("analysis-deck-popularity-index", "/data/analysis/deck-popularity-index.json");
+  const regionIndex = useOmnidexIndex(tab === "regions");
+  const regionIndexStatus = useOmnidexIndexStatus();
+  const compositionStatus = usePublishedDataStatus("analysis-composition-win-rates", "/data/analysis/composition-win-rates.json");
   const compositionData = useCompositionWinRateData(tab === "similar");
   const cardStatsByChampionData = useCardStatsByChampionData(showOverview);
 
@@ -415,7 +418,8 @@ export default function ChampionDetail() {
               description={`Where ${championName} appears most often in recorded decks. Groups need at least three decks to appear. Unknown means no country was recorded.`}
               actions={<Link to="/regions?tab=champions" className="inline-flex min-h-control items-center rounded-md px-3 text-sm text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">Explore regions &rarr;</Link>}
             >
-              {regionalBreakdown.loading && <InlineState className="mt-4">Loading…</InlineState>}
+              <PublishedSourceStatus label="Regional events" status={regionIndexStatus} hasData={!!regionIndex} />
+              <PublishedSourceStatus label="Tournament decks" status={popularityStatus} hasData={!!popularityIndexData} />
               {!regionalBreakdown.loading && regionalBreakdown.rows.length === 0 && (
                 <InlineState className="mt-4 text-sm">Not enough regional data for {championName} yet.</InlineState>
               )}
@@ -460,29 +464,33 @@ export default function ChampionDetail() {
             {similarityData && popularityIndexData && <SimilarDecksSection key={championName} championName={championName} decks={similarDecks} />}
           </>}
 
-          {surface === "more" && moreTab === "similar" && compositionBestByType.length > 0 && (
-            <details className="group mt-6 rounded-2xl border border-ctp-surface1">
-              <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 rounded-2xl px-4 py-3 font-medium text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden">
-                <span>Deck composition evidence<span className="mt-1 block text-sm font-normal text-ctp-subtext0">Across all champions</span></span>
-                <DisclosureChevron className="shrink-0 group-open:rotate-180" />
-              </summary>
-              <div className="px-4 pb-4">
-                <p className="mb-4 text-sm text-ctp-subtext0">The share of the main deck with the highest adjusted win rate for each card type across all recorded decks. These results are not specific to {championName} and are not a recommended deck recipe.</p>
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {compositionBestByType.map((r) => (
-                    <div key={r.type} className="rounded-xl bg-ctp-mantle p-4">
-                      <h3 className="font-semibold text-ctp-text">{r.type}</h3>
-                      <dl className="mt-3 space-y-2 text-sm">
-                        <div className="flex flex-wrap justify-between gap-2"><dt className="text-ctp-subtext0">Share of main deck</dt><dd className="font-medium text-ctp-text">{r.bucket}</dd></div>
-                        <div className="flex flex-wrap justify-between gap-2"><dt className="text-ctp-subtext0">Adjusted win rate</dt><dd className="text-ctp-text">{(r.adjustedWinRate * 100).toFixed(0)}%</dd></div>
-                        <div className="flex flex-wrap justify-between gap-2"><dt className="text-ctp-subtext0">Recorded decks</dt><dd className="text-ctp-text">{r.deckCount.toLocaleString()}</dd></div>
-                      </dl>
-                    </div>
-                  ))}
+          {surface === "more" && moreTab === "similar" && (
+            <div>
+              <PublishedSourceStatus label="Composition evidence" status={compositionStatus} hasData={!!compositionData} />
+              <details className="group mt-6 rounded-2xl border border-ctp-surface1" key={championName}>
+                <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 rounded-2xl px-4 py-3 font-medium text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden">
+                  <span>Deck composition evidence<span className="mt-1 block text-sm font-normal text-ctp-subtext0">Across all champions</span></span>
+                  <DisclosureChevron className="shrink-0 group-open:rotate-180" />
+                </summary>
+                <div className="px-4 pb-4">
+                  <p className="mb-4 text-sm text-ctp-subtext0">The share of the main deck with the highest adjusted win rate for each card type across all recorded decks. These results are not specific to {championName} and are not a recommended deck recipe.</p>
+                  {compositionData && compositionBestByType.length === 0 && <InlineState>No composition evidence is available yet.</InlineState>}
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {compositionBestByType.map((r) => (
+                      <div key={r.type} className="rounded-xl bg-ctp-mantle p-4">
+                        <h3 className="font-semibold text-ctp-text">{r.type}</h3>
+                        <dl className="mt-3 space-y-2 text-sm">
+                          <div className="flex flex-wrap justify-between gap-2"><dt className="text-ctp-subtext0">Share of main deck</dt><dd className="font-medium text-ctp-text">{r.bucket}</dd></div>
+                          <div className="flex flex-wrap justify-between gap-2"><dt className="text-ctp-subtext0">Adjusted win rate</dt><dd className="text-ctp-text">{(r.adjustedWinRate * 100).toFixed(0)}%</dd></div>
+                          <div className="flex flex-wrap justify-between gap-2"><dt className="text-ctp-subtext0">Recorded decks</dt><dd className="text-ctp-text">{r.deckCount.toLocaleString()}</dd></div>
+                        </dl>
+                      </div>
+                    ))}
+                  </div>
+                  <Link to="/cards/stats" className="mt-3 inline-flex min-h-control items-center rounded-md px-3 text-sm text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">Full breakdown by type &rarr;</Link>
                 </div>
-                <Link to="/cards/stats" className="mt-3 inline-flex min-h-control items-center rounded-md px-3 text-sm text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">Full breakdown by type &rarr;</Link>
-              </div>
-            </details>
+              </details>
+            </div>
           )}
           </TabPanel>
           </TabPanel>
