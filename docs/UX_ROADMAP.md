@@ -752,3 +752,13 @@ Added actual tournament deck previews before card statistics on the main champio
 Verified at 360px and 1280px: single column and three column grids, no page overflow, 48px tabs and deck actions, keyboard arrow selection, novelty loading and loaded states, all three views, and opening a real deck page. App typecheck and lint passed (six existing Fast Refresh warnings). Forced source failures, empty champion deck fixtures, screen reader, text zoom, and the stats route integration were not browser verified.
 
 Champion expressive design is approximately 40% complete: directory and deck discovery are delivered, while the remaining synergy hierarchy, statistics presentation, and broader accessibility/source state verification remain. Next: simplify the champion card and season statistics hierarchy without obscuring actual deck discovery.
+
+### Champion card gallery and season snapshot · 2026-10-03
+
+Implemented the approved Card gallery first direction. Actual Recent, Unique, and Top decks remain first. Four main deck cards now show full artwork, readable names, card links, and recorded deck counts before optional configuration. Browse cards and filters retains print selection, element/spirit/type filters, and the detailed main/material/sideboard galleries. Filters remain mounted while collapsed; their scope is explicit in new release connections. The shared detailed grid now uses two mobile columns, visible card names, and 48px expansion controls. The champion header uses the existing identity surface.
+
+The new season snapshot uses published chronological season order, including a latest season with zero appearances. It labels weighted result share accurately, shows recorded decks, and expands into wrapping season comparisons with a link to full statistics. It has independent loading, empty, and retry feedback; the main champion source now also exposes loading and retry status. No formulas or rankings changed.
+
+Verified at 360 × 800 and 1280 × 900: populated galleries, actual artwork, no page overflow, keyboard expansion and focus, 48px summaries/filter controls, element and type filtering, retained selections through collapse/reopen, season comparison, and card navigation to Dungeon Guide. App typecheck and lint passed with six existing Fast Refresh warnings. Forced source failure/retry and empty fixtures, text zoom, screen readers, and physical devices remain unverified.
+
+Champion expressive design is approximately 60% complete: directory, deck discovery, main card hierarchy, and a season summary are delivered. Next: simplify the full champion statistics page and review new release/archetype density, then close the remaining source-state and accessibility checks. This is a scope estimate, not an overall site percentage.

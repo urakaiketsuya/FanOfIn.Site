@@ -1,4 +1,7 @@
 import ChampionDecks from "./ChampionDecks";
+import ChampionSeasonSnapshot from "./ChampionSeasonSnapshot";
+import PublishedSourceStatus from "../../components/PublishedSourceStatus";
+import Button from "../../components/ui/Button";
 import ArchetypePreview from "../archetypes/ArchetypePreview";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -21,7 +24,6 @@ import { titleCase } from "../../lib/format";
 import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 import ElementIcon from "../../components/ElementIcon";
 import ClassIcon from "../../components/ClassIcon";
-import Chip from "../../components/ui/Chip";
 import PageLayout from "../../components/layout/PageLayout";
 import PageHeader from "../../components/ui/PageHeader";
 import Section from "../../components/ui/Section";
@@ -33,7 +35,8 @@ type SpiritFilter = { kind: "all" } | { kind: "element"; element: string } | { k
 
 const JUMP_SECTIONS = [
   { id: "decks", label: "Decks" },
-  { id: "cards", label: "Most Used Cards" },
+  { id: "cards", label: "Cards" },
+  { id: "season", label: "Season" },
   { id: "new", label: "New Releases" },
   { id: "archetypes", label: "Archetypes" },
 ];
@@ -55,6 +58,7 @@ export default function ChampionSynergy() {
   useDocumentTitle(championName, `Card synergies, most-used cards, and archetypes for ${championName} in Grand Archive TCG.`);
 
   const archetypeData = useArchetypeData();
+  const archetypeStatus = usePublishedDataStatus("analysis-archetypes", "/data/analysis/archetypes.json");
   const taxonomyData = useArchetypeTaxonomyData();
   const taxonomyStatus = usePublishedDataStatus("analysis-archetype-taxonomy", "/data/analysis/archetype-taxonomy.json");
   const cardImpactData = useCardImpactData();
@@ -184,9 +188,9 @@ export default function ChampionSynergy() {
     spiritFilter.kind === "element"
       ? `Most used ${titleCase(spiritFilter.element)} cards`
       : spiritFilter.kind === "spirit"
-        ? `Most used cards – ${spiritFilter.spiritName}`
+        ? `Most used cards for ${spiritFilter.spiritName}`
         : sharedElementCards
-          ? "Cards played across every element"
+          ? "Cards shared by multiple elements"
           : "Most used cards";
 
   const typeFilterOptions = useMemo(() => {
@@ -283,13 +287,15 @@ export default function ChampionSynergy() {
 
   return (
     <PageLayout width="wide" data-component="ChampionSynergy">
+      <PublishedSourceStatus label="Champion statistics" status={archetypeStatus} hasData={!!archetypeData} />
       {champion && (() => {
         const champ = champion;
         const body = (communityInclusionByName: Map<string, CardInclusionEntry> | undefined) => (
         <>
+          <div className="identity-surface rounded-3xl rounded-br-lg p-5 sm:p-6">
           <PageHeader
             title={champ.signature}
-            eyebrow={<Link to="/champions">&larr; All Champions</Link>}
+            eyebrow={<Link to="/champions" className="inline-flex min-h-control items-center rounded focus-visible:outline-2">&larr; All Champions</Link>}
             description={
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
                 <span className="flex flex-wrap items-center gap-1.5">
@@ -312,85 +318,9 @@ export default function ChampionSynergy() {
                 </span>
               </div>
             }
-            actions={<Link to={`/champions/${championNameToSlug(championName)}/stats`} className="text-xs text-ctp-blue hover:underline">Full stats &amp; season history &rarr;</Link>}
+            actions={<Link to={`/champions/${championNameToSlug(championName)}/stats`} className="inline-flex min-h-control items-center rounded text-sm text-ctp-blue hover:underline focus-visible:outline-2">Full stats &amp; season history &rarr;</Link>}
           />
-
-          {championPrints.length > 1 && (
-            <details className="mb-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3">
-              <summary className="cursor-pointer text-sm text-ctp-subtext1 hover:text-ctp-blue">Champion print · Lv{selectedPrint?.level ?? "?"}</summary>
-              <div className="mt-3 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
-                {championPrints.map((c) => {
-                  const selected = selectedPrint?.name === c.name;
-                  return (
-                    <button
-                      key={c.name}
-                      type="button"
-                      onClick={() => setLevel(c.level ?? null)}
-                      aria-pressed={selected}
-                      className={`relative rounded-lg border p-1.5 text-left transition-all duration-200 ease-out active:scale-[0.97] ${
-                        selected
-                          ? "border-ctp-blue bg-ctp-blue/10 shadow-md shadow-ctp-blue/20"
-                          : "border-ctp-surface1 bg-ctp-mantle hover:-translate-y-0.5 hover:border-ctp-surface2 hover:shadow-md hover:shadow-black/20"
-                      }`}
-                    >
-                      {selected && (
-                        <span className="absolute right-1 top-1 z-10 flex h-4 w-4 items-center justify-center rounded-full bg-ctp-blue text-ctp-base">
-                          <svg viewBox="0 0 16 16" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                            <path d="M3 8.5l3 3 7-7" />
-                          </svg>
-                        </span>
-                      )}
-                      <VisualCardTile
-                        line={{ card: c.name, quantity: 1 }}
-                        card={c}
-                        unitPrice={priceByName.get(c.name)}
-                        priceTrend={priceTrendByName.get(c.name)}
-                        simulatorEvidence={simulatorEvidenceByName.get(c.name)}
-                        communityEntry={communityInclusionByName?.get(c.name)}
-                        fields={visualFields}
-                        linkToCard={false}
-                      />
-                      <div className={`mt-1 truncate text-center text-[10px] ${selected ? "font-semibold text-ctp-blue" : "text-ctp-subtext1"}`}>
-                        Lv{c.level ?? "?"} · {c.name.split(",")[1]?.trim()}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-              <div className="mt-2 text-xs text-ctp-subtext0">Changes the linked print, not the deck statistics.</div>
-            </details>
-          )}
-
-          {champ.elementBreakdown.length > 1 && (
-            <div className="mb-1.5 flex flex-wrap items-center gap-2 text-sm">
-              <span className="text-ctp-subtext0">Element:</span>
-              {champ.elementBreakdown.map((e) => {
-                const active =
-                  (spiritFilter.kind === "element" && spiritFilter.element === e.element) ||
-                  (spiritFilter.kind === "spirit" && champ.spirits.find((s) => s.spiritName === spiritFilter.spiritName)?.spiritElement === e.element);
-                return (
-                  <Chip
-                    key={e.element}
-                    active={active}
-                    onClick={() => setSpiritFilter(active ? { kind: "all" } : { kind: "element", element: e.element })}
-                  >
-                    {titleCase(e.element)} ({e.deckCount})
-                  </Chip>
-                );
-              })}
-            </div>
-          )}
-
-          {spiritsForElement.length > 1 && (
-            <div className="mb-4 flex flex-wrap items-center gap-1.5 text-xs">
-              <span className="text-ctp-subtext0">Spirit:</span>
-              {spiritsForElement.map((s) => (
-                <Chip key={s.spiritName} size="sm" active={spiritFilter.kind === "spirit" && spiritFilter.spiritName === s.spiritName} onClick={() => setSpiritFilter({ kind: "spirit", spiritName: s.spiritName })}>
-                  {s.spiritName} ({s.deckCount})
-                </Chip>
-              ))}
-            </div>
-          )}
+          </div>
 
           <nav className="mb-6 flex flex-wrap gap-x-4 gap-y-1 border-y border-ctp-surface1 py-2 text-xs">
             {JUMP_SECTIONS.map((s) => (
@@ -402,32 +332,111 @@ export default function ChampionSynergy() {
 
           <div className="space-y-8">
             <ChampionDecks key={championName} championName={championName} />
-            <Section id="cards" heading="compact" title={cardsSectionTitle}>
-              {typeFilterOptions.length > 0 && (
-                <details className="text-xs text-ctp-subtext0">
-                  <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">Filter by card type{typeFilter !== "all" ? ` · ${titleCase(typeFilter)}` : ""}</summary>
-                  <div className="mt-2 flex flex-wrap items-center gap-1.5">
-                    <Chip size="sm" active={typeFilter === "all"} onClick={() => setTypeFilter("all")}>
-                      All
-                    </Chip>
-                    {typeFilterOptions.map(({ type }) => (
-                      <Chip key={type} size="sm" active={typeFilter === type} onClick={() => setTypeFilter(type)}>
-                        {titleCase(type)}
-                      </Chip>
+            <Section id="cards" className="scroll-mt-48" title="Cards you'll see most" description="Frequently played main deck cards across this champion's recorded decks. Full lists and filters are available below.">
+              <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
+                {champ.topCards.main.slice(0, 4).map((entry) => {
+                  const card = cardImages.get(entry.name) ?? catalogByName.get(entry.name);
+                  const slug = card?.slug ?? entry.slug;
+                  const content = <><CardArtTile card={card} name={entry.name} /><span className="mt-2 block text-sm font-medium text-ctp-text">{entry.name}</span><span className="mt-1 block text-sm text-ctp-subtext1">{entry.deckCount.toLocaleString()} decks</span></>;
+                  return slug ? <Link key={entry.name} to={`/cards/${slug}`} className="min-w-0 rounded-xl bg-ctp-mantle p-3 hover:bg-ctp-surface0 focus-visible:outline-2 focus-visible:outline-ctp-blue">{content}</Link> : <div key={entry.name} className="min-w-0 rounded-xl bg-ctp-mantle p-3">{content}</div>;
+                })}
+              </div>
+              {champ.topCards.main.length === 0 && <InlineState>No main deck card statistics are available yet.</InlineState>}
+              <details className="group/cards mt-4 border-t border-ctp-surface1">
+                <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 rounded text-sm text-ctp-blue focus-visible:outline-2">Browse cards and filters<DisclosureChevron className="group-open/cards:rotate-180" /></summary>
+                <p className="mb-4 text-sm text-ctp-subtext1">Element and spirit filters apply to these detailed lists and new release connections. The preview above, decks, and season results cover the whole champion.</p>
+                {championPrints.length > 1 && (
+                  <div className="mb-4 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3">
+                    <h3 className="text-sm text-ctp-subtext1">Champion print · Lv{selectedPrint?.level ?? "?"}</h3>
+                    <div className="mt-3 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
+                      {championPrints.map((c) => {
+                        const selected = selectedPrint?.name === c.name;
+                        return (
+                          <button
+                            key={c.name}
+                            type="button"
+                            onClick={() => setLevel(c.level ?? null)}
+                            aria-pressed={selected}
+                            className={`relative min-h-control rounded-lg border p-1.5 text-left transition-all duration-200 ease-out active:scale-[0.97] ${
+                              selected
+                                ? "border-ctp-blue bg-ctp-blue/10 shadow-md shadow-ctp-blue/20"
+                                : "border-ctp-surface1 bg-ctp-mantle hover:-translate-y-0.5 hover:border-ctp-surface2 hover:shadow-md hover:shadow-black/20"
+                            }`}
+                          >
+                            {selected && (
+                              <span className="absolute right-1 top-1 z-10 flex h-4 w-4 items-center justify-center rounded-full bg-ctp-blue text-ctp-base">
+                                <svg viewBox="0 0 16 16" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                  <path d="M3 8.5l3 3 7-7" />
+                                </svg>
+                              </span>
+                            )}
+                            <VisualCardTile
+                              line={{ card: c.name, quantity: 1 }}
+                              card={c}
+                              unitPrice={priceByName.get(c.name)}
+                              priceTrend={priceTrendByName.get(c.name)}
+                              simulatorEvidence={simulatorEvidenceByName.get(c.name)}
+                              communityEntry={communityInclusionByName?.get(c.name)}
+                              fields={visualFields}
+                              linkToCard={false}
+                            />
+                            <div className={`mt-1 text-center text-xs ${selected ? "font-semibold text-ctp-blue" : "text-ctp-subtext1"}`}>
+                              Lv{c.level ?? "?"} · {c.name.split(",")[1]?.trim()}
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <div className="mt-2 text-xs text-ctp-subtext0">Changes the linked print, not the deck statistics.</div>
+                  </div>
+                )}
+
+                {champ.elementBreakdown.length > 1 && (
+                  <div className="mb-1.5 flex flex-wrap items-center gap-2 text-sm">
+                    <span className="text-ctp-subtext0">Element:</span>
+                    {champ.elementBreakdown.map((e) => {
+                      const active =
+                        (spiritFilter.kind === "element" && spiritFilter.element === e.element) ||
+                        (spiritFilter.kind === "spirit" && champ.spirits.find((s) => s.spiritName === spiritFilter.spiritName)?.spiritElement === e.element);
+                      return (
+                        <Button
+                          key={e.element}
+                          aria-pressed={active} className={active ? "border-ctp-blue bg-ctp-blue/10 text-ctp-blue" : ""}
+                          onClick={() => setSpiritFilter(active ? { kind: "all" } : { kind: "element", element: e.element })}
+                        >
+                          {titleCase(e.element)} ({e.deckCount})
+                        </Button>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {spiritsForElement.length > 1 && (
+                  <div className="mb-4 flex flex-wrap items-center gap-1.5 text-xs">
+                    <span className="text-ctp-subtext0">Spirit:</span>
+                    {spiritsForElement.map((s) => (
+                      <Button key={s.spiritName} size="sm" aria-pressed={spiritFilter.kind === "spirit" && spiritFilter.spiritName === s.spiritName} variant={spiritFilter.kind === "spirit" && spiritFilter.spiritName === s.spiritName ? "primary" : "secondary"} onClick={() => setSpiritFilter({ kind: "spirit", spiritName: s.spiritName })}>
+                        {s.spiritName} ({s.deckCount})
+                      </Button>
                     ))}
                   </div>
-                </details>
-              )}
-              {displayed && (
-                <div className="mt-3">
-                  <TopCardsSections topCards={displayed.topCards} cardImages={cardImages} mainOverride={displayedMainCards} layout="grid" winRateByName={winRateByName} initialVisible={6} />
-                </div>
-              )}
+                )}
+
+
+                <h3 className="my-3 text-lg font-semibold text-ctp-text">{cardsSectionTitle}</h3>
+                {typeFilterOptions.length > 0 && <div className="my-3 flex flex-wrap items-center gap-2" aria-label="Card type">
+                  <Button size="sm" aria-pressed={typeFilter === "all"} variant={typeFilter === "all" ? "primary" : "secondary"} onClick={() => setTypeFilter("all")}>All card types</Button>
+                  {typeFilterOptions.map(({ type }) => <Button key={type} size="sm" aria-pressed={typeFilter === type} variant={typeFilter === type ? "primary" : "secondary"} onClick={() => setTypeFilter(type)}>{titleCase(type)}</Button>)}
+                </div>}
+                {displayed && <TopCardsSections topCards={displayed.topCards} cardImages={cardImages} mainOverride={displayedMainCards} layout="grid" winRateByName={winRateByName} initialVisible={4} />}
+              </details>
             </Section>
+            <ChampionSeasonSnapshot key={`season-${championName}`} championName={championName} />
 
             <Section
               id="new"
               heading="compact"
+              description={spiritFilter.kind === "element" ? `Connections for ${titleCase(spiritFilter.element)} decks. Change the scope in Browse cards and filters.` : spiritFilter.kind === "spirit" ? `Connections for ${spiritFilter.spiritName} decks. Change the scope in Browse cards and filters.` : "Connections across this champion’s recorded decks."}
               title={newReleaseCards.length > 0 ? `New from ${newReleaseCards[0].setName}` : "New releases"}
             >
               {newReleaseCards.length === 0 ? (
@@ -454,7 +463,7 @@ export default function ChampionSynergy() {
                   ))}
                 </div>
               )}
-              {newReleaseCards.length > 4 && <button type="button" onClick={() => setShowAllReleases((value) => !value)} aria-expanded={showAllReleases} className="mt-3 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{showAllReleases ? "Show fewer new cards" : `Show all ${newReleaseCards.length} new cards`}</button>}
+              {newReleaseCards.length > 4 && <button type="button" onClick={() => setShowAllReleases((value) => !value)} aria-expanded={showAllReleases} className="mt-3 min-h-control rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2">{showAllReleases ? "Show fewer new cards" : `Show all ${newReleaseCards.length} new cards`}</button>}
             </Section>
 
             <Section

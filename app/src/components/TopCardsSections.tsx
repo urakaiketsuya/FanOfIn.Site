@@ -123,7 +123,7 @@ function GridTopCardsSections({ topCards, cardImages, mainOverride, winRateByNam
           cards.length > 0 ? (
             <div key={label}>
               <h3 className="text-xs font-semibold text-ctp-subtext0 uppercase tracking-wide">{label}</h3>
-              <div className="mt-2 grid grid-cols-3 gap-2 sm:grid-cols-4">
+              <div className="mt-2 grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {(initialVisible && !expandedSections.has(label) ? cards.slice(0, initialVisible) : cards).map((c) => (
                   <div key={c.name}>
                     <VisualCardTile
@@ -135,7 +135,8 @@ function GridTopCardsSections({ topCards, cardImages, mainOverride, winRateByNam
                       communityEntry={communityInclusionByName?.get(c.name)}
                       fields={fields}
                     />
-                    <div className="mt-1 flex items-center justify-between text-[10px] text-ctp-subtext1">
+                    <p className="mt-2 text-sm font-medium text-ctp-text">{c.name}</p>
+                    <div className="mt-1 flex flex-wrap items-center justify-between gap-x-2 text-xs text-ctp-subtext1">
                       <span>Popularity</span>
                       <span className="text-ctp-text">{c.deckCount} decks</span>
                     </div>
@@ -149,7 +150,7 @@ function GridTopCardsSections({ topCards, cardImages, mainOverride, winRateByNam
                   if (next.has(label)) next.delete(label);
                   else next.add(label);
                   return next;
-                })} aria-expanded={expandedSections.has(label)} className="mt-3 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">
+                })} aria-expanded={expandedSections.has(label)} className="mt-3 min-h-control min-w-control rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2">
                   {expandedSections.has(label) ? `Show fewer ${label.toLowerCase()} cards` : `Show all ${cards.length} ${label.toLowerCase()} cards`}
                 </button>
               )}
