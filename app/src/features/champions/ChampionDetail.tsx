@@ -1,3 +1,5 @@
+import PublishedSourceStatus from "../../components/PublishedSourceStatus";
+import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import ChampionDecks from "./ChampionDecks";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -61,6 +63,8 @@ export default function ChampionDetail() {
   const archetypeData = useArchetypeData();
   const taxonomyData = useArchetypeTaxonomyData(showOverview);
   const trendsData = useChampionTrendsData();
+  const archetypeStatus = usePublishedDataStatus("analysis-archetypes", "/data/analysis/archetypes.json");
+  const trendStatus = usePublishedDataStatus("analysis-champion-trends", "/data/analysis/champion-trends.json");
   const popularityIndexData = useDeckPopularityIndexData(tab === "similar");
   const eventNameById = useEventNameById(tab === "similar");
   const similarityData = useSimilarityData(tab === "similar");
@@ -239,6 +243,7 @@ export default function ChampionDetail() {
 
   return (
     <PageLayout width="wide" data-component="ChampionDetail">
+      <PublishedSourceStatus label="Champion statistics" status={archetypeStatus} hasData={!!archetypeData} />
       {champion && (
         <>
           <PageHeader
@@ -268,7 +273,10 @@ export default function ChampionDetail() {
 
           <Tabs tabs={SURFACES} active={surface} onChange={(next) => setTab(next === "overview" ? "season" : next === "decks" ? "decks" : moreTab)} label={`${champion.signature} details`} variant="pill" />
 
-          {showOverview && <ChampionSeasonSection seasons={seasonHistory} trend={trend} />}
+          {showOverview && <>
+            <PublishedSourceStatus label="Season statistics" status={trendStatus} hasData={!!trendsData} />
+            {trendsData && <ChampionSeasonSection seasons={seasonHistory} trend={trend} />}
+          </>}
 
           {showOverview && champion.topCards.main.length > 0 && (
             <Section className="mt-6" heading="compact" title="Most used cards">
@@ -344,11 +352,11 @@ export default function ChampionDetail() {
               title="Builds"
               actions={<Link to="/archetypes" className="text-xs text-ctp-blue hover:underline">All archetypes &rarr;</Link>}
             >
-              <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
                 {builds.map((b) => (
                   <Link key={b.id} to={`/archetypes/${b.id}`} className="flex min-h-20 items-center gap-3 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 transition-colors hover:border-ctp-blue">
                     <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-ctp-base"><ArchetypeElementIcon name={b.name} /></span>
-                    <span className="min-w-0"><strong className="block truncate text-sm text-ctp-text">{b.name}</strong><span className="mt-1 block text-xs text-ctp-subtext0">{b.playerCount} players · {(b.avgWinRate * 100).toFixed(0)}% win rate</span></span>
+                    <span className="min-w-0"><strong className="block break-words text-sm text-ctp-text">{b.name}</strong><span className="mt-1 block text-xs text-ctp-subtext0">{b.playerCount} players · {(b.avgWinRate * 100).toFixed(0)}% win rate</span></span>
                   </Link>
                 ))}
               </div>
@@ -390,7 +398,7 @@ export default function ChampionDetail() {
                 <InlineState className="mt-4 text-sm">Not enough regional data for {championName} yet.</InlineState>
               )}
               {regionalBreakdown.rows.length > 0 && (
-                <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
                   {regionalBreakdown.rows.map((r) => (
                     <Link key={r.code} to={`/regions?group=country&region=${r.code}&tab=champions`} className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 transition-colors hover:border-ctp-blue">
                       <strong className="text-sm text-ctp-text">{r.label}</strong>

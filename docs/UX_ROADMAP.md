@@ -762,3 +762,11 @@ The new season snapshot uses published chronological season order, including a l
 Verified at 360 × 800 and 1280 × 900: populated galleries, actual artwork, no page overflow, keyboard expansion and focus, 48px summaries/filter controls, element and type filtering, retained selections through collapse/reopen, season comparison, and card navigation to Dungeon Guide. App typecheck and lint passed with six existing Fast Refresh warnings. Forced source failure/retry and empty fixtures, text zoom, screen readers, and physical devices remain unverified.
 
 Champion expressive design is approximately 60% complete: directory, deck discovery, main card hierarchy, and a season summary are delivered. Next: simplify the full champion statistics page and review new release/archetype density, then close the remaining source-state and accessibility checks. This is a scope estimate, not an overall site percentage.
+
+### Champion season statistics · 2026-10-03
+
+- Full statistics now lead with the latest season's weighted result share, recorded decks, and text trend. Calculations and source ordering are unchanged.
+- Season evidence expands into wrapping metric rows, newest first. The existing chart is a separate optional disclosure. Tournament wins are explicitly labeled.
+- Champion and season source loading/error/retry states are visible. Fixed the existing builds grid's mobile overflow and allowed build names to wrap.
+- Verified Lorraine at 360px and 1280px, keyboard disclosure activation, 48px summaries, loading, expanded history/chart, and no page overflow. Typecheck and lint pass (six existing Fast Refresh warnings). Forced empty/error/zero appearance fixtures, screen readers, and text zoom remain unverified.
+- Champion expressive design is approximately 65% complete: directory, deck discovery, card gallery, and season summary hierarchy are delivered. Remaining work includes statistics card/build density, new release and archetype sections, and broader state/accessibility verification. This is a scope estimate, not a measured completion rate.

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import type { ChampionSeasonPerformance, ChampionTrend } from "@gatcg/shared";
 import ChampionSeasonChart from "./ChampionSeasonChart";
+import DisclosureChevron from "../../components/DisclosureChevron";
 import Section from "../../components/ui/Section";
 import { InlineState } from "../../components/ui/ContentState";
 
@@ -12,17 +13,32 @@ export interface SimilarDeckSummary {
 }
 
 export function ChampionSeasonSection({ seasons, trend }: { seasons: ChampionSeasonPerformance[]; trend: ChampionTrend | undefined }) {
-  if (seasons.length === 0) return null;
-  const trendTone = trend?.trend === "rising" ? "text-ctp-green" : trend?.trend === "falling" ? "text-ctp-red" : trend?.trend === "new" ? "text-ctp-blue" : "text-ctp-subtext0";
+  const latest = seasons.at(-1);
+  if (!latest) return <InlineState className="mt-6">No season statistics are available for this champion yet.</InlineState>;
+  const trendLabels = { rising: "Rising", falling: "Falling", stable: "Stable", new: "New this season", absent: "Absent this season", "insufficient-data": "Not enough data to compare seasons" };
   return (
-    <Section className="mt-6" heading="compact" title="By season" description="Share of season = this Champion's weighted placement score as a fraction of every Champion's combined score that season – comparable across seasons regardless of how many events were played." actions={trend && trend.trend !== "insufficient-data" && <span className={`text-xs ${trendTone}`}>{trend.trend === "rising" && "▲ Rising"}{trend.trend === "falling" && "▼ Falling"}{trend.trend === "stable" && "– Stable"}{trend.trend === "new" && "★ New this season"}{trend.trend === "absent" && "Absent last season"}{trend.trendDeltaPct !== null && <span className="ml-1 text-ctp-subtext0">({trend.trendDeltaPct > 0 ? "+" : ""}{trend.trendDeltaPct.toFixed(1)}pp share)</span>}</span>}>
-      <ChampionSeasonChart seasons={seasons} />
-      <div className="overflow-x-auto">
-        <table className="w-max min-w-full text-sm">
-          <thead><tr className="border-b border-ctp-surface1 text-left text-xs text-ctp-subtext0 uppercase"><th className="py-1 pr-6">Season</th><th className="py-1 pr-6">Decks</th><th className="py-1 pr-6">Wins</th><th className="py-1 pr-6">Top cut</th><th className="py-1 pr-6">Win rate</th><th className="py-1 pr-6">Share</th></tr></thead>
-          <tbody className="divide-y divide-ctp-surface0 [&>tr:nth-child(even)]:bg-ctp-mantle">{seasons.map((season) => <tr key={season.seasonId}><td className="py-1 pr-6 text-ctp-text">{season.seasonName}</td><td className="py-1 pr-6 text-ctp-subtext1">{season.deckCount}</td><td className="py-1 pr-6 text-ctp-subtext1">{season.winCount}</td><td className="py-1 pr-6 text-ctp-subtext1">{season.topCutCount}</td><td className="py-1 pr-6 text-ctp-subtext1">{season.deckCount > 0 ? `${(season.avgWinRate * 100).toFixed(0)}%` : "–"}</td><td className="py-1 pr-6 text-ctp-subtext1">{(season.shareOfSeason * 100).toFixed(1)}%</td></tr>)}</tbody>
-        </table>
-      </div>
+    <Section className="identity-surface mt-6 rounded-3xl border border-ctp-surface1 p-5 sm:p-6" heading="compact" title="Latest season" description={latest.seasonName}>
+      <dl className="mt-5 grid grid-cols-2 gap-5">
+        <div><dt className="text-sm text-ctp-subtext1">Weighted result share</dt><dd className="mt-1 text-4xl font-semibold tabular-nums text-ctp-text">{(latest.shareOfSeason * 100).toFixed(1)}%</dd></div>
+        <div><dt className="text-sm text-ctp-subtext1">Recorded decks</dt><dd className="mt-1 text-4xl font-semibold tabular-nums text-ctp-text">{latest.deckCount.toLocaleString()}</dd></div>
+      </dl>
+      <p className="mt-4 text-sm text-ctp-subtext1">Share of all champions' weighted placement scores this season, not the percentage of decks played.</p>
+      {latest.deckCount === 0 && <p className="mt-3 text-sm text-ctp-subtext1">No recorded decks for this champion this season.</p>}
+      {trend && <p className="mt-3 text-sm font-medium text-ctp-text">{trendLabels[trend.trend]}{trend.trendDeltaPct !== null && trend.trend !== "insufficient-data" && <span className="font-normal text-ctp-subtext1"> · {trend.trendDeltaPct > 0 ? "+" : ""}{trend.trendDeltaPct.toFixed(1)} percentage points of share compared with the previous season</span>}</p>}
+      <details className="group mt-5 border-t border-ctp-surface1">
+        <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 rounded text-sm text-ctp-blue focus-visible:outline-2">Season results and history<DisclosureChevron className="group-open:rotate-180" /></summary>
+        <ul className="divide-y divide-ctp-surface1">{seasons.toReversed().map((season) => <li key={season.seasonId} className="py-4">
+          <h3 className="font-semibold text-ctp-text">{season.seasonName}</h3>
+          <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-3 text-sm sm:grid-cols-5">
+            {[['Recorded decks', season.deckCount.toLocaleString()], ['Tournament wins', season.winCount.toLocaleString()], ['Top cut', season.topCutCount.toLocaleString()], ['Win rate', season.deckCount > 0 ? `${(season.avgWinRate * 100).toFixed(0)}%` : 'No recorded decks'], ['Weighted share', `${(season.shareOfSeason * 100).toFixed(1)}%`]].map(([label, value]) => <div key={label}><dt className="text-ctp-subtext0">{label}</dt><dd className="mt-1 font-medium tabular-nums text-ctp-text">{value}</dd></div>)}
+          </dl>
+        </li>)}</ul>
+      </details>
+      {seasons.length > 1 && <details className="group border-t border-ctp-surface1">
+        <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 rounded text-sm text-ctp-blue focus-visible:outline-2">View season chart<DisclosureChevron className="group-open:rotate-180" /></summary>
+        <p className="mb-3 text-sm text-ctp-subtext0">The chart scrolls on smaller screens. All values are also available in Season results and history.</p>
+        <div className="min-w-0 overflow-hidden"><ChampionSeasonChart seasons={seasons} /></div>
+      </details>}
     </Section>
   );
 }
