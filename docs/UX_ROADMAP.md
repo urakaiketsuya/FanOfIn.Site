@@ -819,3 +819,11 @@ Composition evidence is optional, explicitly scoped across all champions, and pr
 Verified Lorraine at 360px and 1280px: regional and composition disclosures open with Enter, summaries meet 48px targets, composition uses one mobile column and three desktop columns, and neither view causes page overflow. Initial loading was observed. Typecheck and lint passed with six existing Fast Refresh warnings. Forced empty/error fixtures, text zoom, and screen readers remain unverified; a later browser attempt to recapture expanded regions timed out after the earlier successful keyboard check.
 
 Champion expressive design is approximately 84% complete, based on completed identity, overview, navigation, and regional hierarchy work. Next: simplify Similar decks and improve Bonus cards and More data loading/failure states, then finish broader accessibility verification. No implementation blockers; estimate remains scope based.
+
+### Champion similar deck previews · 2026-10-03
+
+Similar decks now leads with three shared artwork covers and an optional expansion to the existing ten results. Each cover opens the actual deck page. Event labels and similarity remain visible; copy distinguishes card overlap from tournament strength. Existing ranking, membership, and scores are unchanged. Independent published-source status and retry controls prevent unloaded or failed similarity/index data from appearing as an empty result.
+
+Verified Lorraine at 360px and 1280px, three desktop columns, keyboard expansion to ten and collapse to three, 48px expansion control, and no horizontal overflow. Initial page loading was observed. Typecheck and lint passed with six existing Fast Refresh warnings. Forced source failure/retry, empty fixtures, text zoom, and screen readers remain unverified.
+
+Champion expressive design is approximately 87% complete, based on remaining Bonus cards and other More source states plus broader accessibility verification. Next: finish those data states and verify failure/retry behavior. No implementation blockers; estimate remains scope based.

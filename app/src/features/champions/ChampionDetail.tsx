@@ -69,6 +69,8 @@ export default function ChampionDetail() {
   const popularityIndexData = useDeckPopularityIndexData(tab === "similar");
   const eventNameById = useEventNameById(tab === "similar");
   const similarityData = useSimilarityData(tab === "similar");
+  const similarityStatus = usePublishedDataStatus("analysis-similarity", "/data/analysis/similarity.json");
+  const popularityStatus = usePublishedDataStatus("analysis-deck-popularity-index", "/data/analysis/deck-popularity-index.json");
   const compositionData = useCompositionWinRateData(tab === "similar");
   const cardStatsByChampionData = useCardStatsByChampionData(showOverview);
 
@@ -173,7 +175,7 @@ export default function ChampionDetail() {
   // toward cross-Champion shell crossover, but that turned out to filter out ~100% of real
   // matches (Diao Chan: 0/596 checked matches were a different Champion) – the material/Champion
   // section is itself part of the similarity signature, so a high-similarity match is almost
-  // always the same Champion. Kept as a plain "similar decks" list instead.
+  // always the same Champion. Preserve same-Champion matches.
   const similarDecks = useMemo(() => {
     if (!similarityData || !popularityIndexData) return [];
     const entryByDeckId = new Map(popularityIndexData.entries.map((e) => [e.deckId, e]));
@@ -464,7 +466,11 @@ export default function ChampionDetail() {
           </TabPanel>
 
           <TabPanel baseId="champion-more" tab="similar" active={moreTab}>
-          {surface === "more" && moreTab === "similar" && <SimilarDecksSection championName={championName} decks={similarDecks} />}
+          {surface === "more" && moreTab === "similar" && <>
+            <PublishedSourceStatus label="Deck similarity" status={similarityStatus} hasData={!!similarityData} />
+            <PublishedSourceStatus label="Tournament decks" status={popularityStatus} hasData={!!popularityIndexData} />
+            {similarityData && popularityIndexData && <SimilarDecksSection key={championName} championName={championName} decks={similarDecks} />}
+          </>}
 
           {surface === "more" && moreTab === "similar" && compositionBestByType.length > 0 && (
             <details className="group mt-6 rounded-2xl border border-ctp-surface1">

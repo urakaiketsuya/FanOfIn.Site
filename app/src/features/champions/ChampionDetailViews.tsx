@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import DeckPreviewCard from "../../components/DeckPreviewCard";
+import Button from "../../components/ui/Button";
 import type { ChampionSeasonPerformance, ChampionTrend } from "@gatcg/shared";
 import ChampionSeasonChart from "./ChampionSeasonChart";
 import DisclosureChevron from "../../components/DisclosureChevron";
@@ -44,9 +46,21 @@ export function ChampionSeasonSection({ seasons, trend }: { seasons: ChampionSea
 }
 
 export function SimilarDecksSection({ championName, decks }: { championName: string; decks: SimilarDeckSummary[] }) {
+  const [showAll, setShowAll] = useState(false);
+  const visibleDecks = showAll ? decks : decks.slice(0, 3);
   return (
-    <Section className="mt-6" heading="compact" title="Similar Decks" description={<>Real decks with a similar card shell to a {championName} build.</>}>
-      {decks.length === 0 ? <InlineState className="mt-4 text-sm">No similar decks found yet.</InlineState> : <ul className="mt-2 space-y-1">{decks.map((deck) => <li key={deck.hash} className="flex flex-wrap items-center gap-1.5 text-sm"><Link to={`/decks/${deck.hash}`} className="text-ctp-text hover:text-ctp-blue">{deck.championName ?? "Unknown Champion"} &middot; {deck.eventName}</Link><span className="text-xs text-ctp-subtext0">({(deck.score * 100).toFixed(0)}% similar)</span></li>)}</ul>}
+    <Section className="mt-6" heading="compact" title="Similar decks" description={`Explore recorded builds that share cards with a ${championName} deck. Similarity describes card overlap, not tournament strength.`}>
+      {decks.length === 0 ? <InlineState className="mt-4 text-sm">No similar decks found yet.</InlineState> : <>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{visibleDecks.map((deck) => <DeckPreviewCard key={deck.hash} presentation="cover" model={{
+          id: deck.hash,
+          title: `${deck.championName ?? "Unknown champion"} build`,
+          championName: deck.championName,
+          decklist: null,
+          source: { kind: "event", label: "Tournament" },
+          metadata: <><p>{deck.eventName}</p><p className="font-medium text-ctp-text">{(deck.score * 100).toFixed(0)}% similarity to a {championName} build</p></>,
+        }} view={{ to: `/decks/${deck.hash}` }} />)}</div>
+        {decks.length > 3 && <Button className="mt-4" aria-expanded={showAll} onClick={() => setShowAll(!showAll)}>{showAll ? "Show fewer decks" : `Show all ${decks.length} similar decks`}</Button>}
+      </>}
     </Section>
   );
 }
