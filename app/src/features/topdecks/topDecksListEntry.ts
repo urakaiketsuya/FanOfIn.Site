@@ -19,6 +19,8 @@ export interface TopDecksListEntry {
 export function toTopDecksListEntry(entry: DeckPopularityEntry, eventNameById: ReadonlyMap<number, string>): TopDecksListEntry {
   return {
     deckId: entry.deckId,
+    deckHash: entry.deckHash,
+    eventDate: entry.eventDate,
     player: entry.player,
     eventId: entry.eventId,
     eventName: eventNameById.get(entry.eventId) ?? `Event #${entry.eventId}`,

@@ -64,7 +64,7 @@ export default function TopDecksList({
                 addition in DeckPopularityEntry) – falls back to placement-only rather than
                 rendering "undefined-undefined-undefined" during that window. */}
             <span className="hidden text-right text-xs text-ctp-subtext0 sm:inline">{eventDate && <span>{eventDate} · </span>}{s.placement !== null ? `#${s.placement}` : "No placement"}{typeof s.wins === "number" && ` · ${s.wins}-${s.losses}-${s.ties}`}</span>
-            {s.deckHash ? <Link to={`/decks/${s.deckHash}`} className="inline-flex min-h-11 items-center rounded-lg bg-ctp-blue px-3 text-xs font-semibold text-ctp-base shadow-sm transition-colors hover:bg-ctp-sapphire focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue" aria-label={`Open ${playerName(s.player)}'s deck list`}>Open deck</Link> : <span className="text-xs text-ctp-subtext0">{s.placement !== null ? `#${s.placement}` : "–"}{typeof s.wins === "number" && ` · ${s.wins}-${s.losses}-${s.ties}`}</span>}
+            <Link to={s.deckHash ? `/decks/${s.deckHash}` : `/events/${s.eventId}?tab=decklists&player=${s.player}`} className="inline-flex min-h-control items-center rounded-lg bg-ctp-blue px-3 text-xs font-semibold text-ctp-base shadow-sm transition-colors hover:bg-ctp-sapphire focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue" aria-label={`Open ${playerName(s.player)}'s deck list`}>Open deck</Link>
           </div>
         </div>;
       })}

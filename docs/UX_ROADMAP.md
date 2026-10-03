@@ -594,3 +594,18 @@ added. Initial failure without seeded data, empty discovery rendering, screen re
 and physical device checks remain unverified.
 Next: supporting pages and shared shell expressive design, starting with navigation accessibility
 and the mobile menu target (currently 44px).
+
+### Deck result navigation regression, October 2
+
+Restored deck hashes and event dates in the shared popularity result adapter. Top deck rows
+always expose Open deck: known hashes open the deck page, while missing hashes open the exact
+player's event decklist. Targets are now 48px high. This covers champion, card, archetype and
+build history consumers without changing their ranking or selection.
+
+Seven regression and event selection tests passed, along with app typecheck and lint (six
+existing Fast Refresh warnings). Verified mobile champion results at 360 × 800, keyboard
+navigation to the correct player's full event list, desktop card results at 1280 × 900,
+hash navigation to a full deck page, and tournament search keyboard list expansion. Both
+checked layouts had no horizontal overflow. No new loading/error state was introduced;
+network failure, screen reader and physical device checks were not repeated.
+Next: shared navigation and supporting pages, including the mobile menu target.
