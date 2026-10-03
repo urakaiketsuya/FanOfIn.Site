@@ -744,3 +744,11 @@ screen reader and physical device checks remain unverified.
 Next: champion synergy and statistics hierarchy, followed by packages and archetypes.
 Champion experience estimate: approximately 25% complete, based on one directory pass out of
 three champion surfaces, with acceptance checks still open. This is not an overall site estimate.
+
+### Champion deck discovery · 2026-10-03
+
+Added actual tournament deck previews before card statistics on the main champion page, with Recent, Unique, and Top tabs. The stats page uses the same component. Each view shows three champion cover cards with player, event, date, placement, and a direct deck page link; Browse all opens champion scoped discovery. Only records with published deck hashes qualify. Recent uses event date, Unique uses existing champion novelty scores and deduplicates main/material hashes, and Top retains published weighted placement scores. The deck section explicitly covers all spirits/elements independently of card filters. Archetypes remain available separately.
+
+Verified at 360px and 1280px: single column and three column grids, no page overflow, 48px tabs and deck actions, keyboard arrow selection, novelty loading and loaded states, all three views, and opening a real deck page. App typecheck and lint passed (six existing Fast Refresh warnings). Forced source failures, empty champion deck fixtures, screen reader, text zoom, and the stats route integration were not browser verified.
+
+Champion expressive design is approximately 40% complete: directory and deck discovery are delivered, while the remaining synergy hierarchy, statistics presentation, and broader accessibility/source state verification remain. Next: simplify the champion card and season statistics hierarchy without obscuring actual deck discovery.

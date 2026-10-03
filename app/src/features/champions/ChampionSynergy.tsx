@@ -1,3 +1,4 @@
+import ChampionDecks from "./ChampionDecks";
 import ArchetypePreview from "../archetypes/ArchetypePreview";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -31,6 +32,7 @@ import { NewReleaseComboFooter } from "./ChampionSynergyCards";
 type SpiritFilter = { kind: "all" } | { kind: "element"; element: string } | { kind: "spirit"; spiritName: string };
 
 const JUMP_SECTIONS = [
+  { id: "decks", label: "Decks" },
   { id: "cards", label: "Most Used Cards" },
   { id: "new", label: "New Releases" },
   { id: "archetypes", label: "Archetypes" },
@@ -269,7 +271,7 @@ export default function ChampionSynergy() {
 
   if (archetypeData && !champion) {
     return (
-      <PageLayout data-component="ChampionSynergy">
+      <PageLayout width="wide" data-component="ChampionSynergy">
         <EmptyState
           title="Champion not found"
           description={<>Champion "{championName}" hasn't cleared the sample-size threshold (or doesn't exist).</>}
@@ -280,7 +282,7 @@ export default function ChampionSynergy() {
   }
 
   return (
-    <PageLayout data-component="ChampionSynergy">
+    <PageLayout width="wide" data-component="ChampionSynergy">
       {champion && (() => {
         const champ = champion;
         const body = (communityInclusionByName: Map<string, CardInclusionEntry> | undefined) => (
@@ -392,13 +394,14 @@ export default function ChampionSynergy() {
 
           <nav className="mb-6 flex flex-wrap gap-x-4 gap-y-1 border-y border-ctp-surface1 py-2 text-xs">
             {JUMP_SECTIONS.map((s) => (
-              <a key={s.id} href={`#${s.id}`} className="text-ctp-blue hover:underline">
+              <a key={s.id} href={`#${s.id}`} className="inline-flex min-h-control items-center rounded px-2 text-ctp-blue hover:underline focus-visible:outline-2">
                 {s.label}
               </a>
             ))}
           </nav>
 
           <div className="space-y-8">
+            <ChampionDecks key={championName} championName={championName} />
             <Section id="cards" heading="compact" title={cardsSectionTitle}>
               {typeFilterOptions.length > 0 && (
                 <details className="text-xs text-ctp-subtext0">

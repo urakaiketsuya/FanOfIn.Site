@@ -1,16 +1,13 @@
+import ChampionDecks from "./ChampionDecks";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { slugToChampionName } from "../../lib/championSlug";
 import { titleCase } from "../../lib/format";
 import { useArchetypeData, useArchetypeTaxonomyData, useCardStatsByChampionData, useChampionTrendsData, useCompositionWinRateData, useSimilarityData } from "../archetypes/data";
 import { useDeckPopularityIndexData } from "../topdecks/data";
-import { useHipsterData } from "../players/data";
-import { usePlayerNameById, useEventNameById } from "../tournaments/data";
+import { useEventNameById } from "../tournaments/data";
 import { useCardsByNames } from "../events/useCardsByNames";
 import TopCardsSections from "../../components/TopCardsSections";
-import TopDecksList from "../../components/TopDecksList";
-import { toTopDecksListEntry } from "../topdecks/topDecksListEntry";
-import UniqueDeckRow from "./UniqueDeckRow";
 import CardGrid from "../cards/CardGrid";
 import { useChampionBonusCards } from "./useChampionBonusCards";
 import { useChampionRegionalBreakdown } from "../regions/useChampionRegionalBreakdown";
@@ -26,8 +23,6 @@ import Chip from "../../components/ui/Chip";
 import { EmptyState, InlineState } from "../../components/ui/ContentState";
 import { ChampionSeasonSection, SimilarDecksSection } from "./ChampionDetailViews";
 
-const MAX_TOP_DECKS_SHOWN = 5;
-const MAX_UNIQUE_DECKS_SHOWN = 3;
 
 type SpiritFilter = { kind: "all" } | { kind: "element"; element: string } | { kind: "spirit"; spiritName: string };
 type ChampionTab = "season" | "cards" | "builds" | "decks" | "bonus" | "regions" | "similar";
@@ -66,10 +61,8 @@ export default function ChampionDetail() {
   const archetypeData = useArchetypeData();
   const taxonomyData = useArchetypeTaxonomyData(showOverview);
   const trendsData = useChampionTrendsData();
-  const popularityIndexData = useDeckPopularityIndexData(tab === "decks" || tab === "similar");
-  const eventNameById = useEventNameById(tab === "decks" || tab === "similar");
-  const hipsterData = useHipsterData(tab === "decks");
-  const playerName = usePlayerNameById(tab === "decks");
+  const popularityIndexData = useDeckPopularityIndexData(tab === "similar");
+  const eventNameById = useEventNameById(tab === "similar");
   const similarityData = useSimilarityData(tab === "similar");
   const compositionData = useCompositionWinRateData(tab === "similar");
   const cardStatsByChampionData = useCardStatsByChampionData(showOverview);
@@ -160,27 +153,10 @@ export default function ChampionDetail() {
       .sort((a, b) => b.playerCount - a.playerCount);
   }, [taxonomyData, championName]);
 
-  const topDecks = useMemo(() => {
-    if (!popularityIndexData) return [];
-    return popularityIndexData.entries
-      .filter((e) => e.championName === championName)
-      .sort((a, b) => b.weightedScore - a.weightedScore)
-      .slice(0, MAX_TOP_DECKS_SHOWN)
-      .map((entry) => toTopDecksListEntry(entry, eventNameById));
-  }, [popularityIndexData, championName, eventNameById]);
-
   const cutouts = useMemo(() => cutoutsForChampion(championName), [championName]);
   const cutoutCards = useCardsByNames(useMemo(() => cutouts.map((c) => c.cardName), [cutouts]));
   const bonusCards = useChampionBonusCards(champion ? championName : null);
   const regionalBreakdown = useChampionRegionalBreakdown(champion ? championName : null, moreTab === "regions" && surface === "more");
-
-  const uniqueDecks = useMemo(() => {
-    if (!hipsterData) return [];
-    return hipsterData.deckScores
-      .filter((d) => d.championName === championName)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, MAX_UNIQUE_DECKS_SHOWN);
-  }, [hipsterData, championName]);
 
   // Cross-links to real decks similar to any of this Champion's own instances, resolved against
   // the already-loaded lean popularity index (deckId -> deckHash/championName) rather than the
@@ -251,7 +227,7 @@ export default function ChampionDetail() {
 
   if (archetypeData && !champion) {
     return (
-      <PageLayout data-component="ChampionDetail">
+      <PageLayout width="wide" data-component="ChampionDetail">
         <EmptyState
           title="Champion not found"
           description={<>Champion "{championName}" hasn't cleared the sample-size threshold (or doesn't exist).</>}
@@ -262,7 +238,7 @@ export default function ChampionDetail() {
   }
 
   return (
-    <PageLayout data-component="ChampionDetail">
+    <PageLayout width="wide" data-component="ChampionDetail">
       {champion && (
         <>
           <PageHeader
@@ -379,33 +355,7 @@ export default function ChampionDetail() {
             </Section>
           )}
 
-          {tab === "decks" && topDecks.length > 0 && (
-            <Section
-              className="mt-6"
-              heading="compact"
-              title="Top decks"
-              actions={<Link to={`/decks?view=sightings&champion=${encodeURIComponent(championName)}`} className="text-xs text-ctp-blue hover:underline">View all &rarr;</Link>}
-            >
-              <div className="mt-2">
-                <TopDecksList decks={topDecks} playerName={playerName} />
-              </div>
-            </Section>
-          )}
-
-          {tab === "decks" && uniqueDecks.length > 0 && (
-            <Section
-              className="mt-6"
-              heading="compact"
-              title="Most unique decks"
-              description={<>Builds with the most uncommon card choices relative to other {championName} decks at the time they were played.</>}
-            >
-              <div className="mt-2 space-y-2">
-                {uniqueDecks.map((d) => (
-                  <UniqueDeckRow key={`${d.eventId}:${d.player}`} score={d} playerName={playerName(d.player)} />
-                ))}
-              </div>
-            </Section>
-          )}
+          {tab === "decks" && <ChampionDecks key={championName} championName={championName} />}
 
           {surface === "more" && (
             <div className="mt-5 flex flex-wrap gap-2" aria-label="More champion data">
