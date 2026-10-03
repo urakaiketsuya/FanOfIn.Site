@@ -19,11 +19,10 @@ import { useChampionRegionalBreakdown } from "../regions/useChampionRegionalBrea
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
 import { useTabParam } from "../../lib/useTabParam";
 import PageHeader from "../../components/ui/PageHeader";
-import Tabs from "../../components/ui/Tabs";
+import Tabs, { TabPanel } from "../../components/ui/Tabs";
 import { cutoutsForChampion } from "../products/characterArt";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
-import Chip from "../../components/ui/Chip";
 import { EmptyState, InlineState } from "../../components/ui/ContentState";
 import { ChampionSeasonSection, SimilarDecksSection } from "./ChampionDetailViews";
 
@@ -284,8 +283,9 @@ export default function ChampionDetail() {
             </dl>
           </details>
 
-          <Tabs tabs={SURFACES} active={surface} onChange={(next) => setTab(next === "overview" ? "season" : next === "decks" ? "decks" : moreTab)} label={`${champion.signature} details`} variant="pill" />
+          <Tabs baseId="champion-statistics" tabs={SURFACES} active={surface} onChange={(next) => setTab(next === "overview" ? "season" : next === "decks" ? "decks" : moreTab)} label={`${champion.signature} details`} variant="pill" />
 
+          <TabPanel baseId="champion-statistics" tab="overview" active={surface}>
           {showOverview && <>
             <PublishedSourceStatus label="Season statistics" status={trendStatus} hasData={!!trendsData} />
             {trendsData && <ChampionSeasonSection seasons={seasonHistory} trend={trend} />}
@@ -386,14 +386,19 @@ export default function ChampionDetail() {
             </Section>
           )}
 
-          {tab === "decks" && <ChampionDecks key={championName} championName={championName} />}
+          </TabPanel>
 
-          {surface === "more" && (
-            <div className="mt-5 flex flex-wrap gap-2" aria-label="More champion data">
-              {MORE_TABS.map((item) => <Chip key={item.key} active={moreTab === item.key} onClick={() => setTab(item.key)}>{item.label}</Chip>)}
-            </div>
-          )}
+          <TabPanel baseId="champion-statistics" tab="decks" active={surface}>
+            {tab === "decks" && <ChampionDecks key={championName} championName={championName} />}
+          </TabPanel>
 
+          <TabPanel baseId="champion-statistics" tab="more" active={surface}>
+
+          <div className="mt-5">
+            <Tabs baseId="champion-more" tabs={MORE_TABS} active={moreTab} onChange={setTab} label="More champion data" />
+          </div>
+
+          <TabPanel baseId="champion-more" tab="bonus" active={moreTab}>
           {surface === "more" && moreTab === "bonus" && (
             <Section
               className="mt-6"
@@ -409,6 +414,9 @@ export default function ChampionDetail() {
             </Section>
           )}
 
+          </TabPanel>
+
+          <TabPanel baseId="champion-more" tab="regions" active={moreTab}>
           {surface === "more" && moreTab === "regions" && (
             <Section
               className="mt-6"
@@ -433,6 +441,9 @@ export default function ChampionDetail() {
             </Section>
           )}
 
+          </TabPanel>
+
+          <TabPanel baseId="champion-more" tab="similar" active={moreTab}>
           {surface === "more" && moreTab === "similar" && <SimilarDecksSection championName={championName} decks={similarDecks} />}
 
           {surface === "more" && moreTab === "similar" && compositionBestByType.length > 0 && (
@@ -467,6 +478,8 @@ export default function ChampionDetail() {
               </div>
             </Section>
           )}
+          </TabPanel>
+          </TabPanel>
         </>
       )}
     </PageLayout>

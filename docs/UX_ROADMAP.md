@@ -801,3 +801,11 @@ Restored wide, zoomed champion illustrations in shared DeckPreviewCard covers th
 Verified tournament results at 360px and unique builds at 1280px, no horizontal overflow, large touch targets, no nested controls, and Enter navigation to a build page. Typecheck and lint pass (six existing Fast Refresh warnings). Image failure/catalog fallback fixtures, text zoom and screen reader testing remain unverified.
 
 This focused cover refresh is complete (100% implementation and main-flow checks). Next: review the artwork treatment with the user, then resume champion statistics tab accessibility and remaining views; the broader champion expressive design initiative remains approximately 78% complete.
+
+### Champion statistics tab accessibility · 2026-10-03
+
+Connected Overview, Decks, and More to named shared TabPanels. Replaced the More view chips with shared keyboard tabs and associated panels for Bonus cards, Regions, and Similar decks. Existing query parameters, conditional mounting, filters, and dataset gating are preserved.
+
+Verified at 360px and 1280px: selected panels, direct Regions URL, Home and arrow navigation, 48px tab targets, and no horizontal page overflow. App typecheck and lint passed with existing Fast Refresh warnings. Initial loading was observed. Error, empty, screen reader, and text zoom fixtures were not exercised in this focused navigation change.
+
+Champion expressive design is approximately 80% complete: identity, deck previews, overview simplification, and tab accessibility are implemented. Next: simplify the remaining More views and verify their loading, failure, and empty states. Estimate remains scope based rather than a measured issue count.
