@@ -827,3 +827,13 @@ Similar decks now leads with three shared artwork covers and an optional expansi
 Verified Lorraine at 360px and 1280px, three desktop columns, keyboard expansion to ten and collapse to three, 48px expansion control, and no horizontal overflow. Initial page loading was observed. Typecheck and lint passed with six existing Fast Refresh warnings. Forced source failure/retry, empty fixtures, text zoom, and screen readers remain unverified.
 
 Champion expressive design is approximately 87% complete, based on remaining Bonus cards and other More source states plus broader accessibility verification. Next: finish those data states and verify failure/retry behavior. No implementation blockers; estimate remains scope based.
+
+### Champion bonus card previews · 2026-10-03
+
+Bonus cards now leads with four named card previews in an identity surface, with a count and an optional expansion to the full alphabetical list. Shared CardGrid preserves card links, art fallbacks, and alternate face controls. Expansion resets between champions. Card selection is unchanged.
+
+Catalog sync status now distinguishes loading and failed refreshes from a completed empty result. Saved matching cards remain visible during sync or failure. A clearly labeled reload action retries the catalog through the existing sync lifecycle.
+
+Verified Lorraine at 360px and 1280px: four initial cards, keyboard expansion to six and collapse, 48px button, four desktop columns, and no horizontal overflow. Initial page loading was observed. Typecheck and lint passed with six existing Fast Refresh warnings. Forced catalog loading/failure/retry and empty fixtures, text zoom, and screen reader output remain unverified.
+
+Champion expressive design is approximately 90% complete, based on completed view simplification and remaining data-state and accessibility verification. Next: regional and composition source states, followed by broader failure/retry and accessibility checks. Estimate remains scope based; no implementation blockers.

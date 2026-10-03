@@ -13,7 +13,6 @@ import { useDeckPopularityIndexData } from "../topdecks/data";
 import { useEventNameById } from "../tournaments/data";
 import { useCardsByNames } from "../events/useCardsByNames";
 import TopCardsSections from "../../components/TopCardsSections";
-import CardGrid from "../cards/CardGrid";
 import { useChampionBonusCards } from "./useChampionBonusCards";
 import { useChampionRegionalBreakdown } from "../regions/useChampionRegionalBreakdown";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
@@ -24,7 +23,7 @@ import { cutoutsForChampion } from "../products/characterArt";
 import PageLayout from "../../components/layout/PageLayout";
 import Section from "../../components/ui/Section";
 import { EmptyState, InlineState } from "../../components/ui/ContentState";
-import { ChampionSeasonSection, SimilarDecksSection } from "./ChampionDetailViews";
+import { ChampionBonusSection, ChampionSeasonSection, SimilarDecksSection } from "./ChampionDetailViews";
 
 
 type SpiritFilter = { kind: "all" } | { kind: "element"; element: string } | { kind: "spirit"; spiritName: string };
@@ -164,7 +163,7 @@ export default function ChampionDetail() {
 
   const cutouts = useMemo(() => cutoutsForChampion(championName), [championName]);
   const cutoutCards = useCardsByNames(useMemo(() => cutouts.map((c) => c.cardName), [cutouts]));
-  const bonusCards = useChampionBonusCards(champion ? championName : null);
+  const bonus = useChampionBonusCards(champion ? championName : null);
   const regionalBreakdown = useChampionRegionalBreakdown(champion ? championName : null, moreTab === "regions" && surface === "more");
 
   // Cross-links to real decks similar to any of this Champion's own instances, resolved against
@@ -402,18 +401,7 @@ export default function ChampionDetail() {
 
           <TabPanel baseId="champion-more" tab="bonus" active={moreTab}>
           {surface === "more" && moreTab === "bonus" && (
-            <Section
-              className="mt-6"
-              heading="compact"
-              title="Bonus cards"
-              description={<>Cards with an effect that specifically triggers or improves when your Champion is {championName}.</>}
-            >
-              {bonusCards.length === 0 ? (
-                <InlineState className="mt-4 text-sm">No published cards have a bonus tied to {championName} yet.</InlineState>
-              ) : (
-                <CardGrid cards={bonusCards} />
-              )}
-            </Section>
+            <ChampionBonusSection key={championName} championName={championName} {...bonus} />
           )}
 
           </TabPanel>

@@ -1,7 +1,9 @@
 import { useState } from "react";
 import DeckPreviewCard from "../../components/DeckPreviewCard";
 import Button from "../../components/ui/Button";
-import type { ChampionSeasonPerformance, ChampionTrend } from "@gatcg/shared";
+import CardGrid from "../cards/CardGrid";
+import type { SyncProgress } from "../../lib/sync/cards";
+import type { Card, ChampionSeasonPerformance, ChampionTrend } from "@gatcg/shared";
 import ChampionSeasonChart from "./ChampionSeasonChart";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import Section from "../../components/ui/Section";
@@ -63,4 +65,24 @@ export function SimilarDecksSection({ championName, decks }: { championName: str
       </>}
     </Section>
   );
+}
+
+export function ChampionBonusSection({ championName, cards, phase, hasCatalog }: {
+  championName: string;
+  cards: Card[];
+  phase: SyncProgress["phase"];
+  hasCatalog: boolean;
+}) {
+  const [showAll, setShowAll] = useState(false);
+  return <Section className="identity-surface mt-6 rounded-3xl border border-ctp-surface1 p-5 sm:p-6" heading="compact" title="Bonus cards" description={`Explore cards with a printed ${championName} Bonus effect. Cards are listed alphabetically.`}>
+    {phase === "error" ? <div className="mt-4">
+      <p role="alert" className="text-sm text-ctp-red">The card catalog could not refresh. {hasCatalog ? "Saved cards remain available, but results may be incomplete." : "Bonus cards are unavailable until the catalog loads."}</p>
+      <Button className="mt-3" onClick={() => window.location.reload()}>Reload to retry catalog</Button>
+    </div> : (phase !== "done" || !hasCatalog) && <p role="status" className="mt-4 text-sm text-ctp-subtext1">{hasCatalog ? "Refreshing the card catalog. Showing saved cards." : "Loading the card catalog…"}</p>}
+    {cards.length > 0 ? <>
+      <p className="mt-4 text-sm text-ctp-subtext1">{showAll ? cards.length : Math.min(4, cards.length)} of {cards.length} bonus cards in your local catalog</p>
+      <CardGrid cards={showAll ? cards : cards.slice(0, 4)} />
+      {cards.length > 4 && <Button className="mt-4" aria-expanded={showAll} onClick={() => setShowAll(!showAll)}>{showAll ? "Show fewer bonus cards" : `Show all ${cards.length} bonus cards`}</Button>}
+    </> : phase === "done" && hasCatalog && <InlineState className="mt-4 text-sm">No published cards have a bonus tied to {championName} yet.</InlineState>}
+  </Section>;
 }
