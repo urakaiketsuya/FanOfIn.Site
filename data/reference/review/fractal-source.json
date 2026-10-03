@@ -1,0 +1,1756 @@
+{
+  "definitions": [
+    {
+      "id": "fractal-rile",
+      "name": "Rile",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Rile the Abyss"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 341,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-water-allies",
+      "name": "Water Allies",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Gildas, Chronicler of Aesa",
+          "Lurking Assailant",
+          "Esteemed Knight",
+          "Trained Sharpshooter",
+          "Corhazi Trapper",
+          "Halocline Scout",
+          "Sword Saint of Eventide",
+          "Lunete, Frostbinder Priest",
+          "Jueying, Shadowmare",
+          "Imperial Panzer",
+          "Aquifer Seneschal",
+          "Vigil Rempart",
+          "Sablier Guard"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Spirit Blade: Ensoul",
+          "Dawn of Ashes",
+          "Fabled Sapphire Fatestone",
+          "Sacrifice Play"
+        ],
+        "comboGroups": [],
+        "element": "Water",
+        "typeCounts": {
+          "ALLY": 20
+        }
+      },
+      "sourceLine": 348,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-water-allies--water-unique-allies",
+      "name": "Water Unique Allies",
+      "parentId": "fractal-water-allies",
+      "rule": {
+        "anyCards": [
+          "Jueying, Shadowmare"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {
+          "UNIQUE": 12
+        }
+      },
+      "sourceLine": 378,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-wind-allies",
+      "name": "Wind Allies",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Gildas, Chronicler of Aesa",
+          "Inspiring Call",
+          "Woodland Squirrels",
+          "Lurking Assailant",
+          "Esteemed Knight",
+          "Trained Sharpshooter",
+          "Vigilant Sentry",
+          "Shimmercloak Assassin",
+          "Haze Droid",
+          "Dilu, Auspicious Charger",
+          "Oath of the Sakura",
+          "Liu Bei, Oathkeeper",
+          "Imperial Panzer",
+          "Unrelenting Warden",
+          "Chrysalis, Hazy Caterpillar",
+          "Banner Knight",
+          "Windrider Vanguard",
+          "Axis Gale Scholar",
+          "Sun Ce, Weaponsmaster",
+          "Charged Mannequin"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Spirit Blade: Ascension",
+          "Dungeon Guide",
+          "Shadowstrike",
+          "Storm Slime",
+          "Wildgrowth Feline",
+          "Dawn of Ashes",
+          "Seiryuu's Command",
+          "Atmos Armor Type-Ares"
+        ],
+        "comboGroups": [],
+        "element": "Wind",
+        "typeCounts": {
+          "ALLY": 22
+        }
+      },
+      "sourceLine": 389,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-wind-allies--unique-wind-allies",
+      "name": "Unique Wind Allies",
+      "parentId": "fractal-wind-allies",
+      "rule": {
+        "anyCards": [
+          "Mortal Ambition",
+          "Dilu, Auspicious Charger"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 430,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-wind-allies--robo-wind-allies",
+      "name": "Robo Wind Allies",
+      "parentId": "fractal-wind-allies",
+      "rule": {
+        "anyCards": [
+          "Manufacture Cell"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 438,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-wind-allies--balance-wind-allies",
+      "name": "Balance Wind Allies",
+      "parentId": "fractal-wind-allies",
+      "rule": {
+        "anyCards": [
+          "Gildas, Chronicler of Aesa"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Dilu, Auspicious Charger"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 445,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-fire-aggro",
+      "name": "Fire Aggro",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Arthur, Young Heir",
+          "Rococo, Explosive Maven",
+          "Hone by Fire",
+          "Fang of Dragon's Breath",
+          "Flamewing Fowl",
+          "Heated Vengeance",
+          "Rending Flames",
+          "Blazing Bowman",
+          "Cinder Geyser",
+          "Peppered Chef",
+          "Vermilion Decree",
+          "Molten Echo"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Relentless Outburst",
+          "Ghosts of Pendragon",
+          "Dungeon Guide",
+          "Ashen Riffle",
+          "Straight Flare",
+          "Firebloom Flourish",
+          "Fabled Ruby Fatestone",
+          "Aetheric Calibration",
+          "Cinderbloom Tender",
+          "Combustible Potion",
+          "Erupting Rhapsody",
+          "Volcanic Crescendo"
+        ],
+        "comboGroups": [],
+        "element": "Fire",
+        "typeCounts": {}
+      },
+      "sourceLine": 456,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-herb-burn",
+      "name": "Herb Burn",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Cinderbloom Tender",
+          "Combustible Potion"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Dungeon Guide",
+          "Volcanic Crescendo",
+          "Firebloom Flourish"
+        ],
+        "comboGroups": [
+          [
+            "Cinderbloom Tender",
+            "Searing Rebuke"
+          ],
+          [
+            "Floral Arrangement",
+            "Combustible Potion"
+          ]
+        ],
+        "element": "Fire",
+        "typeCounts": {}
+      },
+      "sourceLine": 491,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-astra-cleric",
+      "name": "Astra Cleric",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Cosmic Bolt",
+          "Cometfall",
+          "Astra Sight",
+          "Spellshield: Astra",
+          "Astral Seal",
+          "Prima Materia",
+          "Astromech Attendant",
+          "Supernova Divination"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Diana, Moonpiercer"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 516,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-umbra-ranger",
+      "name": "Umbra Ranger",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Carter, Synthetic Reaper",
+          "Mindbreak Bullet",
+          "Umbral Tithe",
+          "False Step",
+          "Gloamspire Wraith",
+          "Demon's Aim",
+          "Nightmare Coil"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Ciel, Mirage's Grave",
+          "Alice, Phantom Monarch",
+          "Tristan, Shadowdancer"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 534,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-umbra-ranger--cursebreaker",
+      "name": "Cursebreaker",
+      "parentId": "fractal-umbra-ranger",
+      "rule": {
+        "anyCards": [
+          "Diana, Cursebreaker"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 552,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-umbra-ranger--duskstalker",
+      "name": "Duskstalker",
+      "parentId": "fractal-umbra-ranger",
+      "rule": {
+        "anyCards": [
+          "Diana, Duskstalker"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 558,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-luxem-assassin",
+      "name": "Luxem Assassin",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Lightweaver's Assault",
+          "Luxera's Map",
+          "Insignia of the Corhazi",
+          "Thousand Refractions",
+          "Gleaming Cut"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Guo Jia, Heaven's Favored"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 565,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-luxem-assassin--serene",
+      "name": "Serene",
+      "parentId": "fractal-luxem-assassin",
+      "rule": {
+        "anyCards": [
+          "Spirit of Serene Fire",
+          "Spirit of Serene Water",
+          "Spirit of Serene Wind"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 579,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-luxem-assassin--non-serene",
+      "name": "Non-Serene",
+      "parentId": "fractal-luxem-assassin",
+      "rule": {
+        "anyCards": [
+          "Lightweaver's Assault",
+          "Luxera's Map",
+          "Insignia of the Corhazi",
+          "Thousand Refractions",
+          "Gleaming Cut"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Spirit of Serene Fire",
+          "Spirit of Serene Water",
+          "Spirit of Serene Wind"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 588,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-erupting",
+      "name": "Erupting",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Erupting Rhapsody",
+          "Volcanic Crescendo"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 605,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-erupting--rhapsody",
+      "name": "Rhapsody",
+      "parentId": "fractal-erupting",
+      "rule": {
+        "anyCards": [
+          "Erupting Rhapsody"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 612,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-erupting--crescendo",
+      "name": "Crescendo",
+      "parentId": "fractal-erupting",
+      "rule": {
+        "anyCards": [
+          "Volcanic Crescendo"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 617,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-ravishing-mill",
+      "name": "Ravishing Mill",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Ravishing Finale"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [
+          [
+            "Ravishing Finale",
+            "Nico, Whiplash Allure"
+          ],
+          [
+            "Ravishing Finale",
+            "Nico, Rapture's Embrace"
+          ]
+        ],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 623,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-penguin-mill",
+      "name": "Penguin Mill",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Fractal of Polar Depths"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Ravishing Finale",
+          "Guo Jia, Blessed Scion",
+          "Zhang Jiao, Way of Peace",
+          "Dynastic Whirlpool"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 642,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-arcane-mage",
+      "name": "Arcane Mage",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Rai, Storm Seer",
+          "Arcane Blast",
+          "Advent of the Stormcaller",
+          "Erratic Bolt",
+          "Voltaic Sphere",
+          "Spellshield: Arcane"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Baleful Oblation",
+          "Guo Jia, Heaven's Favored",
+          "Ciel, Mirage's Grave",
+          "Lorraine, Blademaster",
+          "Lorraine, Honed Operative"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 657,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-arcane-warrior",
+      "name": "Arcane Warrior",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Staves X Ultra",
+          "Piccarda, Night Rider",
+          "Conductive Strike",
+          "Rumble Coordinator",
+          "Capacitance X Psycho"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Rai, Archmage",
+          "Lorraine, Spirit Ruler",
+          "Sabela, Gossamer Penance"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 677,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-slimes",
+      "name": "Slimes",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Storm Slime",
+          "Ethereal Slime"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Merlin, Kingslayer"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 694,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-slice-dice",
+      "name": "Slice & Dice",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Slice and Dice"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Shadowstrike",
+          "Corhazi Trapper",
+          "Lightweaver's Assault"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {
+          "ACTION": 29
+        }
+      },
+      "sourceLine": 705,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-crux-lorraine",
+      "name": "Crux Lorraine",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Ghosts of Pendragon",
+          "Spirit Blade: Ascension",
+          "Spirit Blade: Dispersion",
+          "Spirit Blade: Ensoul"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Merlin, Kingslayer",
+          "Merlin, Brilliant Vestige"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 720,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-crux-lorraine--ensoul",
+      "name": "Ensoul",
+      "parentId": "fractal-crux-lorraine",
+      "rule": {
+        "anyCards": [
+          "Spirit Blade: Ensoul"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 734,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-crux-lorraine--spirit-ruler",
+      "name": "Spirit Ruler",
+      "parentId": "fractal-crux-lorraine",
+      "rule": {
+        "anyCards": [
+          "Lorraine, Spirit Ruler"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 738,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-crux-lorraine--crux-knight",
+      "name": "Crux Knight",
+      "parentId": "fractal-crux-lorraine",
+      "rule": {
+        "anyCards": [
+          "Lorraine, Crux Knight"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 743,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-crux-lorraine--psycho",
+      "name": "Psycho",
+      "parentId": "fractal-crux-lorraine",
+      "rule": {
+        "anyCards": [
+          "Capacitance X Psycho"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [
+          [
+            "Capacitance X Psycho",
+            "Numinous Monk"
+          ]
+        ],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 748,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-crux-mage",
+      "name": "Crux Mage",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Merlin, Kingslayer",
+          "Incarnate Majesty"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Lorraine, Crux Knight",
+          "Lorraine, Spirit Ruler",
+          "Merlin, Brilliant Vestige"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 759,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-crux-mage--prismatic-fire-crux",
+      "name": "Prismatic Fire Crux",
+      "parentId": "fractal-crux-mage",
+      "rule": {
+        "anyCards": [
+          "Favorable Winds",
+          "Scatter Essence",
+          "Repelling Palmblast",
+          "Potion Infusion: Seal",
+          "Freezing Steel",
+          "Chilling Touch",
+          "Fracturize",
+          "Rising Tides",
+          "Refracting Missile",
+          "Primordial Ritual",
+          "Lost in Thought"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": "Fire",
+        "typeCounts": {}
+      },
+      "sourceLine": 772,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-crux-lorraine--prismatic-fire-crux",
+      "name": "Prismatic Fire Crux",
+      "parentId": "fractal-crux-lorraine",
+      "rule": {
+        "anyCards": [
+          "Favorable Winds",
+          "Scatter Essence",
+          "Repelling Palmblast",
+          "Potion Infusion: Seal",
+          "Freezing Steel",
+          "Chilling Touch",
+          "Fracturize",
+          "Rising Tides",
+          "Refracting Missile",
+          "Primordial Ritual",
+          "Lost in Thought"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": "Fire",
+        "typeCounts": {}
+      },
+      "sourceLine": 790,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-crux-hybrid",
+      "name": "Crux Hybrid",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Merlin, Kingslayer",
+          "Lorraine, Spirit Ruler",
+          "Lorraine, Crux Knight"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [
+          [
+            "Lorraine, Blademaster",
+            "Merlin, Memory Thief"
+          ]
+        ],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 797,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-crux-hybrid--prismatic-fire-crux",
+      "name": "Prismatic Fire Crux",
+      "parentId": "fractal-crux-hybrid",
+      "rule": {
+        "anyCards": [
+          "Favorable Winds",
+          "Scatter Essence",
+          "Repelling Palmblast",
+          "Potion Infusion: Seal",
+          "Freezing Steel",
+          "Chilling Touch",
+          "Fracturize",
+          "Rising Tides",
+          "Refracting Missile",
+          "Primordial Ritual",
+          "Lost in Thought"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": "Fire",
+        "typeCounts": {}
+      },
+      "sourceLine": 812,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-crux-assassin",
+      "name": "Crux Assassin",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Spirit Blade: Terminus",
+          "Luminous Quartz",
+          "Soultrace Tesselation"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Lorraine, Crux Knight",
+          "Lorraine, Spirit Ruler",
+          "Merlin, Kingslayer"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 819,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-shadowstrike",
+      "name": "Shadowstrike",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Shadowstrike"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 834,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-shadowstrike--inspiring",
+      "name": "Inspiring",
+      "parentId": "fractal-shadowstrike",
+      "rule": {
+        "anyCards": [
+          "Inspiring Call"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 840,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-shadowstrike--outlook",
+      "name": "Outlook",
+      "parentId": "fractal-shadowstrike",
+      "rule": {
+        "anyCards": [
+          "Corhazi Outlook"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 846,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-neos",
+      "name": "Neos",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Atmos Armor Type-Ares",
+          "Cordelia, Aurous Kaiser",
+          "Summon Sentinels",
+          "Assemble the Ancients",
+          "Blade of Creation",
+          "Smash with Obelisk",
+          "Amorphous Strike"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Beguiling Coup"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 853,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-beast",
+      "name": "Beast",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Geldus, Terror of Dorumegia",
+          "Capricious Lynx",
+          "Tempest Silverback"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Fireball",
+          "Spirit Blade: Ascension",
+          "Storm Slime",
+          "Ethereal Slime",
+          "Jinzhuo, Bands of Virtue"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 879,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-tera-tamer",
+      "name": "Tera Tamer",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Artificer's Opus",
+          "Kraal, Stonescale Tyrant",
+          "Vertus, Gaia's Roar",
+          "Arima, Gaia's Wings"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Kongming, Fel Eidolon",
+          "Diao Chan, Idyll Corsage",
+          "Ciel, Mirage's Grave",
+          "Alice, Phantom Monarch",
+          "Lamentation's Toll"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 895,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-overlord",
+      "name": "Overlord",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Overlord Mk III"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Mary Ann, Maladroit Maid",
+          "Awaken Ombre",
+          "Spectral Haunting"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {
+          "ALLY": -21
+        }
+      },
+      "sourceLine": 913,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-exia-warrior",
+      "name": "Exia Warrior",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Enrage",
+          "Relentless Outburst",
+          "Exia Sight",
+          "Mend Flesh",
+          "Proof of Life"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Dante, Hemomancer",
+          "Dynastic Whirlpool"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 928,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-exia-mage",
+      "name": "Exia Mage",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Hemoflux Drain",
+          "Rhesus Eradication",
+          "Blood Surge",
+          "Unruled Bereavement",
+          "Thanatotic Hemosynth"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Jin, Zealous Maverick"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 944,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-tera-mage",
+      "name": "Tera Mage",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Leeching Bolt",
+          "Yudi, Gossamer Jade",
+          "Ruinous Pillars of Qidao",
+          "Semiternal Sage",
+          "Spellshield: Tera",
+          "Conduit of Seasons",
+          "Sempiternal Sage",
+          "Bagua of Vital Demise",
+          "Xukong, Shifted Fates"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Silvie, With the Pack",
+          "Diao Chan, Dreaming Wish"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 968,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-razorgale",
+      "name": "Razorgale",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Razorgale Calling"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 988,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-razorgale--rainbow-potions",
+      "name": "Rainbow Potions",
+      "parentId": "fractal-razorgale",
+      "rule": {
+        "anyCards": [
+          "Combustible Potion",
+          "Soothing Potion"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": "Wind",
+        "typeCounts": {}
+      },
+      "sourceLine": 994,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-razorgale--raccoon",
+      "name": "Raccoon",
+      "parentId": "fractal-razorgale",
+      "rule": {
+        "anyCards": [
+          "Bandit, Gaze Leader"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1003,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-cats",
+      "name": "Cats",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Wildgrowth Feline",
+          "Tempus Stalker"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1010,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-fractal",
+      "name": "Fractal",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Burst Asunder"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Strategem of Myriad Ice",
+          "Firebloom Flourish",
+          "Dynastic Whirlpool"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {
+          "PHANTASIA": 15
+        }
+      },
+      "sourceLine": 1018,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-luxem-tamer",
+      "name": "Luxem Tamer",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Felicitous Flock",
+          "Fatestone of Heaven",
+          "Glorious Presence"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Zander, Blinding Steel",
+          "Zander, Corhazi's Chosen",
+          "Tonoris, Genesis Aegis",
+          "Seiryuu's Command"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1033,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-seiryuu",
+      "name": "Seiryuu",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Fabled Azurite Fatestone"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Rai, Archmage"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1051,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-genbu",
+      "name": "Genbu",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Fabled Sapphire Fatestone"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1060,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-byakko",
+      "name": "Byakko",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Fabled Emerald Fatestone"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1066,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-suzaku",
+      "name": "Suzaku",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Fabled Ruby Fatestone"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1072,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-suzaku--fatestone-midrange",
+      "name": "Fatestone Midrange",
+      "parentId": "fractal-suzaku",
+      "rule": {
+        "anyCards": [
+          "Lavaplume Fatestone"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Peppered Chef",
+          "Rococo, Explosive Maven"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {
+          "ITEM": 10
+        }
+      },
+      "sourceLine": 1078,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-tera-cleric",
+      "name": "Tera Cleric",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Scepter of Awakening",
+          "Blossoming Denial",
+          "Season's End",
+          "Bloom: Winter's Chill",
+          "Maiden of Primal Virtue"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Kongming, Ascetic Vice",
+          "Kongming, Erudite Strategist",
+          "Silvie, with the Pack"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1093,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-firebloom-burn",
+      "name": "Firebloom Burn",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Firebloom Flourish"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Scepter of Awakening",
+          "Blossoming Denial",
+          "Season's End",
+          "Bloom: Winter's Chill",
+          "Maiden of Primal Virtue",
+          "Dungeon Guide"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1110,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-dawn-of-ashes",
+      "name": "Dawn of Ashes",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Dawn of Ashes"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1121,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-suited",
+      "name": "Suited",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Ashen Riffle",
+          "Noire, Ace of Spades",
+          "Rouge, Ace of Hearts",
+          "Bleu, Ace of Diamonds",
+          "Verita, Queen of Hearts",
+          "Edelstein, Queen of Diamonds",
+          "Senaris, Six of Diamonds",
+          "Raised Slash"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1128,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-oblation",
+      "name": "Oblation",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Baleful Oblation"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [
+          [
+            "Baleful Oblation",
+            "Advent of the Stormcaller"
+          ],
+          [
+            "Baleful Oblation",
+            "Golden Checkmate"
+          ],
+          [
+            "Baleful Oblation",
+            "Ionized Asceticism"
+          ]
+        ],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1142,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-umbra-guardian",
+      "name": "Umbra Guardian",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Beguiling Coup",
+          "Carter, Synthetic Reaper",
+          "Extorting Blackjack",
+          "Soutirer Vortex",
+          "Ombreux Chevalier",
+          "Baleful Oblation",
+          "Spirelle, Schwartz Queen",
+          "Grim Pastiche",
+          "Pouvoir Absolu",
+          "Nocturne's Oblivion",
+          "Sinistre Stab",
+          "Abnegation"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Diana, Duskstalker",
+          "Diana, Cursebreaker",
+          "Alice, Phantom Monarch",
+          "Tristan, Shadowdancer",
+          "Tristan, Shadowreaver",
+          "Advent of the Stormcaller",
+          "Golden Checkmate",
+          "Ionized Asceticism"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1163,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-umbra-guardian--coup",
+      "name": "Coup",
+      "parentId": "fractal-umbra-guardian",
+      "rule": {
+        "anyCards": [
+          "Beguiling Coup"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1192,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-umbra-guardian--control",
+      "name": "Control",
+      "parentId": "fractal-umbra-guardian",
+      "rule": {
+        "anyCards": [
+          "Regal Inquisition"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Beguiling Coup"
+        ],
+        "comboGroups": [
+          [
+            "Grim Pastiche",
+            "Profane Bindings"
+          ]
+        ],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1198,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-astra-ranger",
+      "name": "Astra Ranger",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Constellation's Blessing",
+          "Guided Starlight",
+          "Meteoric Volley",
+          "Sidereal Spellshot",
+          "Poised Occlusion"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1215,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-water-aetherwing",
+      "name": "Water Aetherwing",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Aquamirage Whisper"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Constellation's Blessing",
+          "Guided Starlight",
+          "Meteoric Volley",
+          "Sidereal Spellshot",
+          "Poised Occlusion"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {
+          "ACTION": 30
+        }
+      },
+      "sourceLine": 1227,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-water-aetherwing--carpsong",
+      "name": "Carpsong",
+      "parentId": "fractal-water-aetherwing",
+      "rule": {
+        "anyCards": [
+          "Carpsong Coda"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1238,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-water-aetherwing--non-carpsong",
+      "name": "Non-Carpsong",
+      "parentId": "fractal-water-aetherwing",
+      "rule": {
+        "anyCards": [
+          "Aquamirage Whisper"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Carpsong Coda"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1245,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-fire-aetherwing",
+      "name": "Fire Aetherwing",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Trivariate Dream",
+          "Seeker's Aetherwing",
+          "Salamander's Breath",
+          "Ignition Draw"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Constellation's Blessing",
+          "Guided Starlight",
+          "Meteoric Volley",
+          "Sidereal Spellshot",
+          "Poised Occlusion"
+        ],
+        "comboGroups": [],
+        "element": "Fire",
+        "typeCounts": {
+          "ACTION": 30
+        }
+      },
+      "sourceLine": 1256,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-wakeup-combo",
+      "name": "Wakeup Combo",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Second Wind",
+          "Rallied Advance",
+          "Draught of Stamina"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Seiryuu's Command",
+          "Incarnate Majesty"
+        ],
+        "comboGroups": [
+          [
+            "Mad Hatter, Morose Heritor",
+            "Ranger Strides"
+          ],
+          [
+            "Invective Instruction",
+            "Second Wind"
+          ],
+          [
+            "Ranger Strides",
+            "Second Wind"
+          ],
+          [
+            "Invigorating Concoction",
+            "Draught of Stamina"
+          ]
+        ],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1272,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-horse-and-taxes",
+      "name": "Horse and Taxes",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Vanitas, Dominus Rex"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [
+          [
+            "Dilu, Auspicious Charger",
+            "Red Hare, Unrivaled Stallion",
+            "Dungeon Guide"
+          ]
+        ],
+        "element": "Fire",
+        "typeCounts": {}
+      },
+      "sourceLine": 1310,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-triskit",
+      "name": "Triskit",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Triskit, Guidance Angel"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1323,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-chess",
+      "name": "Chess",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Field of Ranks and Files",
+          "Dropped Band",
+          "Summon Pawn",
+          "March On",
+          "Sacrifice Play"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1330,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-umbra-alice",
+      "name": "Umbra Alice",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Maledictum Vitae",
+          "Bandersnatch, Fruminous Foe",
+          "Remnant of Will",
+          "Overflow the Barrow",
+          "Lost Promises",
+          "Harrow the Saved"
+        ],
+        "allCards": [],
+        "excludeCards": [
+          "Ciel, Mirage's Grave",
+          "Diana, Cursebreaker",
+          "Diana, Duskstalker",
+          "Tristan, Shadowreaver",
+          "Tristan, Shadowdancer"
+        ],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1341,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-whirlpool-mill",
+      "name": "Whirlpool Mill",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Dynastic Whirlpool"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1361,
+      "reviewStatus": "unreviewed"
+    },
+    {
+      "id": "fractal-luxem-mordred",
+      "name": "Luxem Mordred",
+      "parentId": null,
+      "rule": {
+        "anyCards": [
+          "Luminescent Slash"
+        ],
+        "allCards": [],
+        "excludeCards": [],
+        "comboGroups": [],
+        "element": null,
+        "typeCounts": {}
+      },
+      "sourceLine": 1369,
+      "reviewStatus": "unreviewed"
+    }
+  ],
+  "source": {
+    "name": "Fractal of Insight",
+    "url": "https://fractalofin.site/deck/",
+    "file": "fractal/archetypes.py",
+    "revision": "d0c65d63e0f5d6be0a2317f6f6da4dcada3af080",
+    "sha256": "39e5c59fe0e7d891ab10097c17d874ffc29a04ab78a06dbda03871231eecf128"
+  }
+}

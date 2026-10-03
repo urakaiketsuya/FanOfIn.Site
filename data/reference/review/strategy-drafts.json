@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "entries": [],
+  "drafts": [
+    {
+      "definition": {
+        "id": "fractal-herb-burn",
+        "name": "Herb Burn",
+        "parentId": null,
+        "rule": {
+          "anyCards": [
+            "Cinderbloom Tender",
+            "Combustible Potion"
+          ],
+          "allCards": [],
+          "excludeCards": [
+            "Dungeon Guide",
+            "Volcanic Crescendo",
+            "Firebloom Flourish"
+          ],
+          "comboGroups": [
+            [
+              "Cinderbloom Tender",
+              "Searing Rebuke"
+            ],
+            [
+              "Floral Arrangement",
+              "Combustible Potion"
+            ]
+          ],
+          "element": "Fire",
+          "typeCounts": {}
+        },
+        "sourceLine": 491,
+        "reviewStatus": "unreviewed"
+      },
+      "coreCards": [],
+      "description": "Initial review batch. Card co-occurrence is classification evidence; select a reviewed core before acceptance. Herb Burn retains two alternative combo groups.",
+      "packageIds": [],
+      "sourceHash": "39e5c59fe0e7d891ab10097c17d874ffc29a04ab78a06dbda03871231eecf128",
+      "mechanics": "unverified",
+      "mechanicsEvidence": ""
+    },
+    {
+      "definition": {
+        "id": "fractal-arcane-mage",
+        "name": "Arcane Mage",
+        "parentId": null,
+        "rule": {
+          "anyCards": [
+            "Rai, Storm Seer",
+            "Arcane Blast",
+            "Advent of the Stormcaller",
+            "Erratic Bolt",
+            "Voltaic Sphere",
+            "Spellshield: Arcane"
+          ],
+          "allCards": [],
+          "excludeCards": [
+            "Baleful Oblation",
+            "Guo Jia, Heaven's Favored",
+            "Ciel, Mirage's Grave",
+            "Lorraine, Blademaster",
+            "Lorraine, Honed Operative"
+          ],
+          "comboGroups": [],
+          "element": null,
+          "typeCounts": {}
+        },
+        "sourceLine": 657,
+        "reviewStatus": "unreviewed"
+      },
+      "coreCards": [],
+      "description": "Initial review batch. Card co-occurrence is classification evidence; select a reviewed core before acceptance. Herb Burn retains two alternative combo groups.",
+      "packageIds": [],
+      "sourceHash": "39e5c59fe0e7d891ab10097c17d874ffc29a04ab78a06dbda03871231eecf128",
+      "mechanics": "unverified",
+      "mechanicsEvidence": ""
+    },
+    {
+      "definition": {
+        "id": "fractal-arcane-warrior",
+        "name": "Arcane Warrior",
+        "parentId": null,
+        "rule": {
+          "anyCards": [
+            "Staves X Ultra",
+            "Piccarda, Night Rider",
+            "Conductive Strike",
+            "Rumble Coordinator",
+            "Capacitance X Psycho"
+          ],
+          "allCards": [],
+          "excludeCards": [
+            "Rai, Archmage",
+            "Lorraine, Spirit Ruler",
+            "Sabela, Gossamer Penance"
+          ],
+          "comboGroups": [],
+          "element": null,
+          "typeCounts": {}
+        },
+        "sourceLine": 677,
+        "reviewStatus": "unreviewed"
+      },
+      "coreCards": [],
+      "description": "Initial review batch. Card co-occurrence is classification evidence; select a reviewed core before acceptance. Herb Burn retains two alternative combo groups.",
+      "packageIds": [],
+      "sourceHash": "39e5c59fe0e7d891ab10097c17d874ffc29a04ab78a06dbda03871231eecf128",
+      "mechanics": "unverified",
+      "mechanicsEvidence": ""
+    },
+    {
+      "definition": {
+        "id": "fractal-crux-lorraine--psycho",
+        "name": "Psycho",
+        "parentId": "fractal-crux-lorraine",
+        "rule": {
+          "anyCards": [
+            "Capacitance X Psycho"
+          ],
+          "allCards": [],
+          "excludeCards": [],
+          "comboGroups": [
+            [
+              "Capacitance X Psycho",
+              "Numinous Monk"
+            ]
+          ],
+          "element": null,
+          "typeCounts": {}
+        },
+        "sourceLine": 748,
+        "reviewStatus": "unreviewed"
+      },
+      "coreCards": [],
+      "description": "Initial review batch. Card co-occurrence is classification evidence; select a reviewed core before acceptance. Herb Burn retains two alternative combo groups.",
+      "packageIds": [],
+      "sourceHash": "39e5c59fe0e7d891ab10097c17d874ffc29a04ab78a06dbda03871231eecf128",
+      "mechanics": "unverified",
+      "mechanicsEvidence": ""
+    },
+    {
+      "definition": {
+        "id": "fractal-crux-lorraine",
+        "name": "Crux Lorraine",
+        "parentId": null,
+        "rule": {
+          "anyCards": [
+            "Ghosts of Pendragon",
+            "Spirit Blade: Ascension",
+            "Spirit Blade: Dispersion",
+            "Spirit Blade: Ensoul"
+          ],
+          "allCards": [],
+          "excludeCards": [
+            "Merlin, Kingslayer",
+            "Merlin, Brilliant Vestige"
+          ],
+          "comboGroups": [],
+          "element": null,
+          "typeCounts": {}
+        },
+        "sourceLine": 720,
+        "reviewStatus": "unreviewed"
+      },
+      "coreCards": [],
+      "description": "Parent dependency for Psycho; review before accepting the subtype.",
+      "packageIds": [],
+      "sourceHash": "39e5c59fe0e7d891ab10097c17d874ffc29a04ab78a06dbda03871231eecf128",
+      "mechanics": "unverified",
+      "mechanicsEvidence": ""
+    }
+  ]
+}
