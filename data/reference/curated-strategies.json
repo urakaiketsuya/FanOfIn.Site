@@ -1,0 +1,201 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "definition": {
+        "id": "fractal-herb-burn",
+        "name": "Herb Burn",
+        "parentId": null,
+        "rule": {
+          "anyCards": [
+            "Cinderbloom Tender",
+            "Combustible Potion"
+          ],
+          "allCards": [],
+          "excludeCards": [
+            "Dungeon Guide",
+            "Volcanic Crescendo",
+            "Firebloom Flourish"
+          ],
+          "comboGroups": [
+            [
+              "Cinderbloom Tender",
+              "Searing Rebuke"
+            ],
+            [
+              "Floral Arrangement",
+              "Combustible Potion"
+            ]
+          ],
+          "element": "Fire",
+          "typeCounts": {}
+        },
+        "sourceLine": 491,
+        "reviewStatus": "accepted"
+      },
+      "coreCards": [
+        "Cinderbloom Tender",
+        "Searing Rebuke",
+        "Floral Arrangement",
+        "Combustible Potion"
+      ],
+      "description": "Preview shows two alternative packages: Tender + Rebuke, or Floral Arrangement + Combustible Potion. Matching requires either complete pair plus the Fire gate and exclusions; it does not require all four cards.",
+      "packageIds": [],
+      "sourceHash": "cb2e6c1637522a318168382c6e3ec053ade916ab411fabb02550f6431f8826c7",
+      "mechanics": "unverified",
+      "mechanicsEvidence": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification. Show both alternative pairs as preview cards; preserve the OR-of-ALL matching rule. Adopted from Fractal revision d0c65d63e0f5d6be0a2317f6f6da4dcada3af080, source SHA256 39e5c59fe0e7d891ab10097c17d874ffc29a04ab78a06dbda03871231eecf128; reconciled against curator base cb2e6c1637522a318168382c6e3ec053ade916ab411fabb02550f6431f8826c7. See mechanics-review.json for candidate conditions and evidence."
+    },
+    {
+      "definition": {
+        "id": "fractal-arcane-mage",
+        "name": "Arcane Mage",
+        "parentId": null,
+        "rule": {
+          "anyCards": [
+            "Rai, Storm Seer",
+            "Arcane Blast",
+            "Advent of the Stormcaller",
+            "Erratic Bolt",
+            "Voltaic Sphere",
+            "Spellshield: Arcane"
+          ],
+          "allCards": [],
+          "excludeCards": [
+            "Baleful Oblation",
+            "Guo Jia, Heaven's Favored",
+            "Ciel, Mirage's Grave",
+            "Lorraine, Blademaster",
+            "Lorraine, Honed Operative"
+          ],
+          "comboGroups": [],
+          "element": null,
+          "typeCounts": {}
+        },
+        "sourceLine": 657,
+        "reviewStatus": "accepted"
+      },
+      "coreCards": [
+        "Rai, Storm Seer",
+        "Arcane Blast",
+        "Advent of the Stormcaller",
+        "Erratic Bolt",
+        "Voltaic Sphere",
+        "Spellshield: Arcane"
+      ],
+      "description": "Preview shows alternative signature cards, not a jointly required core. Matching requires at least one listed signature card and respects the source exclusions.",
+      "packageIds": [],
+      "sourceHash": "cb2e6c1637522a318168382c6e3ec053ade916ab411fabb02550f6431f8826c7",
+      "mechanics": "unverified",
+      "mechanicsEvidence": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification. Use source signature cards as display previews only. Keep the ANY rule and exclusions unchanged. Adopted from Fractal revision d0c65d63e0f5d6be0a2317f6f6da4dcada3af080, source SHA256 39e5c59fe0e7d891ab10097c17d874ffc29a04ab78a06dbda03871231eecf128; reconciled against curator base cb2e6c1637522a318168382c6e3ec053ade916ab411fabb02550f6431f8826c7. See mechanics-review.json for candidate conditions and evidence."
+    },
+    {
+      "definition": {
+        "id": "fractal-arcane-warrior",
+        "name": "Arcane Warrior",
+        "parentId": null,
+        "rule": {
+          "anyCards": [
+            "Staves X Ultra",
+            "Piccarda, Night Rider",
+            "Conductive Strike",
+            "Rumble Coordinator",
+            "Capacitance X Psycho"
+          ],
+          "allCards": [],
+          "excludeCards": [
+            "Rai, Archmage",
+            "Lorraine, Spirit Ruler",
+            "Sabela, Gossamer Penance"
+          ],
+          "comboGroups": [],
+          "element": null,
+          "typeCounts": {}
+        },
+        "sourceLine": 677,
+        "reviewStatus": "accepted"
+      },
+      "coreCards": [
+        "Staves X Ultra",
+        "Piccarda, Night Rider",
+        "Conductive Strike",
+        "Rumble Coordinator",
+        "Capacitance X Psycho"
+      ],
+      "description": "Preview shows alternative signature cards, not a jointly required core. Matching requires at least one listed signature card and respects the source exclusions.",
+      "packageIds": [],
+      "sourceHash": "cb2e6c1637522a318168382c6e3ec053ade916ab411fabb02550f6431f8826c7",
+      "mechanics": "unverified",
+      "mechanicsEvidence": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification. Use source signature cards as display previews only. Keep the ANY rule and exclusions unchanged. Adopted from Fractal revision d0c65d63e0f5d6be0a2317f6f6da4dcada3af080, source SHA256 39e5c59fe0e7d891ab10097c17d874ffc29a04ab78a06dbda03871231eecf128; reconciled against curator base cb2e6c1637522a318168382c6e3ec053ade916ab411fabb02550f6431f8826c7. See mechanics-review.json for candidate conditions and evidence."
+    },
+    {
+      "definition": {
+        "id": "fractal-crux-lorraine--psycho",
+        "name": "Psycho",
+        "parentId": "fractal-crux-lorraine",
+        "rule": {
+          "anyCards": [
+            "Capacitance X Psycho"
+          ],
+          "allCards": [],
+          "excludeCards": [],
+          "comboGroups": [
+            [
+              "Capacitance X Psycho",
+              "Numinous Monk"
+            ]
+          ],
+          "element": null,
+          "typeCounts": {}
+        },
+        "sourceLine": 748,
+        "reviewStatus": "accepted"
+      },
+      "coreCards": [
+        "Capacitance X Psycho",
+        "Numinous Monk"
+      ],
+      "description": "Required Psycho + Monk pair with the Crux Lorraine parent gate preserved. The damage boost requires Psycho awake and another regalia paying the granted rest cost.",
+      "packageIds": [],
+      "sourceHash": "cb2e6c1637522a318168382c6e3ec053ade916ab411fabb02550f6431f8826c7",
+      "mechanics": "unverified",
+      "mechanicsEvidence": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification. Use the source-required pair as core; retain conditional mechanics and parent dependency. Adopted from Fractal revision d0c65d63e0f5d6be0a2317f6f6da4dcada3af080, source SHA256 39e5c59fe0e7d891ab10097c17d874ffc29a04ab78a06dbda03871231eecf128; reconciled against curator base cb2e6c1637522a318168382c6e3ec053ade916ab411fabb02550f6431f8826c7. See mechanics-review.json for candidate conditions and evidence."
+    },
+    {
+      "definition": {
+        "id": "fractal-crux-lorraine",
+        "name": "Crux Lorraine",
+        "parentId": null,
+        "rule": {
+          "anyCards": [
+            "Ghosts of Pendragon",
+            "Spirit Blade: Ascension",
+            "Spirit Blade: Dispersion",
+            "Spirit Blade: Ensoul"
+          ],
+          "allCards": [],
+          "excludeCards": [
+            "Merlin, Kingslayer",
+            "Merlin, Brilliant Vestige"
+          ],
+          "comboGroups": [],
+          "element": null,
+          "typeCounts": {}
+        },
+        "sourceLine": 720,
+        "reviewStatus": "accepted"
+      },
+      "coreCards": [
+        "Ghosts of Pendragon",
+        "Spirit Blade: Ascension",
+        "Spirit Blade: Dispersion",
+        "Spirit Blade: Ensoul"
+      ],
+      "description": "Preview shows alternative signature cards, not a jointly required core. Matching requires at least one listed signature card and respects the source exclusions. This parent gate remains required for Psycho.",
+      "packageIds": [],
+      "sourceHash": "cb2e6c1637522a318168382c6e3ec053ade916ab411fabb02550f6431f8826c7",
+      "mechanics": "unverified",
+      "mechanicsEvidence": "Local catalog text assessment only; no comprehensive-rules, current-legality, or executable-sequence certification. Use source signature cards as display previews only. Keep the ANY rule and exclusions unchanged. Adopted from Fractal revision d0c65d63e0f5d6be0a2317f6f6da4dcada3af080, source SHA256 39e5c59fe0e7d891ab10097c17d874ffc29a04ab78a06dbda03871231eecf128; reconciled against curator base cb2e6c1637522a318168382c6e3ec053ade916ab411fabb02550f6431f8826c7. See mechanics-review.json for candidate conditions and evidence."
+    }
+  ],
+  "drafts": []
+}
