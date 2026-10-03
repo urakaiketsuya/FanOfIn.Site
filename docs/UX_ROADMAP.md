@@ -776,3 +776,12 @@ Champion expressive design is approximately 60% complete: directory, deck discov
 Full champion statistics now start with four cards per section and three build families, with the remaining results available through expansion. Card filters use a keyboard accessible disclosure, shared 48px buttons, and explicit selected states. Active scope stays visible when collapsed, and the page explains that card win rates remain champion wide. Build summaries distinguish families from individual decklists; empty element icon boxes were removed.
 
 Verified Lorraine at 360px and 1280px, keyboard filter and list expansion, filtering and resetting, visible card names and art, a 48px disclosure, and no page overflow. App typecheck and lint passed (six existing Fast Refresh warnings). Loading was observed; forced error/empty fixtures, screen readers, and text zoom remain unverified. Champion expressive design is approximately 70% complete based on delivered surfaces. Next: simplify new release and archetype sections on the main champion page, then finish broader state and accessibility verification.
+
+### Champion release and build previews · 2026-10-03
+
+- New releases lead with four named card artworks. Connection counts open supporting links and statistics with 48px keyboard-accessible disclosures; long names and connection labels wrap.
+- Build families show two initial previews with expressive surfaces and visible naming cards. One disclosure per family contains common cards, sample sizes, cross-champion evidence, and curation. Families are explicitly distinguished from exact lists and required cores.
+- Shared buttons reveal the remaining releases and families. Champion changes reset both expansions. Jump links leave headings below the sticky navigation.
+- Verified Lorraine at 360px and 1280px: loading, card artwork and visible titles, keyboard disclosure and show-all controls, 48px summaries, and no horizontal overflow. App typecheck and lint passed (six existing Fast Refresh warnings).
+- Limits: forced empty/error/retry fixtures, screen-reader output, text zoom, and cross-champion relationship content were not exercised this pass.
+- Champion expressive design is approximately 75% complete. Next: finish remaining statistics surfaces and verify empty/error/retry and accessibility states across champion pages.

@@ -21,7 +21,6 @@ import { useSimulatorEvidenceByName } from "../simulator/useSimulatorEvidenceByN
 import { useDecklistDisplayPrefs } from "../../lib/decklistDisplayPrefs";
 import { championNameToSlug, slugToChampionName } from "../../lib/championSlug";
 import { titleCase } from "../../lib/format";
-import ArchetypeElementIcon from "../../components/ArchetypeElementIcon";
 import ElementIcon from "../../components/ElementIcon";
 import ClassIcon from "../../components/ClassIcon";
 import PageLayout from "../../components/layout/PageLayout";
@@ -38,7 +37,7 @@ const JUMP_SECTIONS = [
   { id: "cards", label: "Cards" },
   { id: "season", label: "Season" },
   { id: "new", label: "New Releases" },
-  { id: "archetypes", label: "Archetypes" },
+  { id: "archetypes", label: "Build families" },
 ];
 
 /**
@@ -110,6 +109,8 @@ export default function ChampionSynergy() {
   useEffect(() => {
     if (prevChampionNameRef.current !== championName) {
       setLevel(null);
+      setShowAllReleases(false);
+      setShowAllPackages(false);
       setSpiritFilter({ kind: "all" });
       setTypeFilter("all");
       prevChampionNameRef.current = championName;
@@ -435,41 +436,36 @@ export default function ChampionSynergy() {
 
             <Section
               id="new"
-              heading="compact"
+              className="scroll-mt-48"
               description={spiritFilter.kind === "element" ? `Connections for ${titleCase(spiritFilter.element)} decks. Change the scope in Browse cards and filters.` : spiritFilter.kind === "spirit" ? `Connections for ${spiritFilter.spiritName} decks. Change the scope in Browse cards and filters.` : "Connections across this champion’s recorded decks."}
               title={newReleaseCards.length > 0 ? `New from ${newReleaseCards[0].setName}` : "New releases"}
             >
               {newReleaseCards.length === 0 ? (
                 <InlineState className="mt-2 text-sm">No new-set cards connect to {champ.signature}'s most-played cards yet.</InlineState>
               ) : (
-                <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                <div className="mt-3 grid grid-cols-2 items-start gap-4 sm:grid-cols-4">
                   {(showAllReleases ? newReleaseCards : newReleaseCards.slice(0, 4)).map(({ card, combos }) => (
-                    <VisualCardTile
-                      key={card.name}
-                      line={{ card: card.name, quantity: 1 }}
-                      card={card}
-                      unitPrice={priceByName.get(card.name)}
-                      priceTrend={priceTrendByName.get(card.name)}
-                      simulatorEvidence={simulatorEvidenceByName.get(card.name)}
-                      communityEntry={communityInclusionByName?.get(card.name)}
-                      fields={visualFields}
-                      footer={
-                        <NewReleaseComboFooter
-                          combos={combos}
-                          stats={{ priceByName, priceTrendByName, simulatorEvidenceByName, communityInclusionByName, cardImpactByName, fields: visualFields }}
-                        />
-                      }
-                    />
+                    <article key={card.name} className="min-w-0 rounded-xl bg-ctp-mantle p-3">
+                      <Link to={`/cards/${card.slug}`} className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue">
+                        <CardArtTile card={card} name={card.name} />
+                        <span className="mt-2 block text-sm font-medium text-ctp-text">{card.name}</span>
+                      </Link>
+                      <NewReleaseComboFooter
+                        combos={combos}
+                        stats={{ priceByName, priceTrendByName, simulatorEvidenceByName, communityInclusionByName, cardImpactByName, fields: visualFields }}
+                      />
+                    </article>
                   ))}
                 </div>
               )}
-              {newReleaseCards.length > 4 && <button type="button" onClick={() => setShowAllReleases((value) => !value)} aria-expanded={showAllReleases} className="mt-3 min-h-control rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2">{showAllReleases ? "Show fewer new cards" : `Show all ${newReleaseCards.length} new cards`}</button>}
+              {newReleaseCards.length > 4 && <Button type="button" onClick={() => setShowAllReleases((value) => !value)} aria-expanded={showAllReleases} className="mt-3 min-h-control rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2">{showAllReleases ? "Show fewer new cards" : `Show all ${newReleaseCards.length} new cards`}</Button>}
             </Section>
 
             <Section
               id="archetypes"
-              heading="compact"
-              title="Archetypes"
+              className="scroll-mt-48"
+              title="Build families"
+              description="Explore the cards that distinguish each family. A family can contain several different decklists."
               actions={<Link to="/archetypes" className="inline-flex min-h-12 items-center rounded text-xs text-ctp-blue hover:underline focus-visible:outline-2">All archetypes &rarr;</Link>}
             >
               {!taxonomyData ? (
@@ -478,25 +474,21 @@ export default function ChampionSynergy() {
                 <InlineState className="mt-2 text-sm">No named builds have cleared the sample-size threshold yet.</InlineState>
               ) : (
                 <div className="mt-3 grid items-start gap-3 sm:grid-cols-2">
-                  {(showAllPackages ? engines : engines.slice(0, 6)).map((engine) => {
+                  {(showAllPackages ? engines : engines.slice(0, 2)).map((engine) => {
                     const namingCards = engine.namingCards ?? engine.definingCards.slice(0, 3).map((card) => card.name);
                     return (
-                      <article key={engine.id} className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3">
+                      <article key={engine.id} className="identity-surface min-w-0 rounded-3xl rounded-br-lg p-4 sm:p-5">
                         <ArchetypePreview names={namingCards} cardImages={catalogByName} />
-                        <Link className="inline-flex min-h-12 items-center text-sm text-ctp-blue" to={`/archetypes/mine?build=${engine.id}`}>Curate</Link>
                         <div className="mt-3 flex items-center gap-2">
-                          <ArchetypeElementIcon name={engine.name} />
-                          <Link to={`/archetypes/${engine.seedBuildId}`} className="inline-flex min-h-12 items-center rounded font-medium text-ctp-text hover:text-ctp-blue focus-visible:outline-2">{engine.name}</Link>
+                          <Link to={`/archetypes/${engine.seedBuildId}`} className="inline-flex min-h-12 items-center rounded text-lg font-semibold text-ctp-text hover:text-ctp-blue focus-visible:outline-2">{engine.name}</Link>
                         </div>
                         <p className="mt-1 text-xs text-ctp-subtext1">{engine.playerCount} players · {(engine.avgWinRate * 100).toFixed(0)}% win rate</p>
-                        <p className="mt-1 text-xs text-ctp-subtext0">Concrete build · {engine.deckCount} decks · {engine.eventCount} events</p>
-                        <details className="group mt-2 text-xs text-ctp-subtext0"><summary className="flex min-h-12 cursor-pointer items-center gap-2 rounded focus-visible:outline-2"><DisclosureChevron className="group-open:rotate-180" />Build details</summary><p className="my-2">Common cards in this build; naming cards distinguish it from nearby builds.</p><ArchetypePreview names={engine.definingCards.slice(0, 6).map(card => card.name)} cardImages={catalogByName} /></details>
+                        <details className="group/build mt-2 border-t border-ctp-surface1 text-sm text-ctp-subtext1"><summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 rounded text-ctp-blue focus-visible:outline-2">Cards and evidence<DisclosureChevron className="group-open/build:rotate-180" /></summary><p className="my-2">{engine.deckCount} decks · {engine.eventCount} events. Common cards across this family, not an exact decklist or required core.</p><ArchetypePreview names={engine.definingCards.slice(0, 6).map(card => card.name)} cardImages={catalogByName} />
                         {engine.relationships.map((relationship) => (
-                          <details key={relationship.id} className="group mt-2 text-xs text-ctp-subtext0">
-                            <summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 rounded focus-visible:outline-2">
-                              <DisclosureChevron className="group-open:rotate-180" />
+                          <div key={relationship.id} className="mt-4 border-t border-ctp-surface1 pt-3 text-sm text-ctp-subtext1">
+                            <h4 className="font-medium text-ctp-text">
                               {relationship.status === "shared" ? "Shared with other champions" : "Candidate overlap with other champions"}
-                            </summary>
+                            </h4>
                             <p className="mt-2 font-medium">{relationship.name}</p>
                             <p className="mt-1">{relationship.status === "shared" ? "Recurring multi-card package with independent player and event evidence." : "Evidence is insufficient to establish a shared archetype."}</p>
                             {(relationship.championEvidence ?? relationship.championBreakdown).map((entry) => <p key={entry.championName} className="mt-2"><Link className="inline-flex min-h-12 items-center text-ctp-blue" to={`/champions/${championNameToSlug(entry.championName)}`}>{entry.championName}</Link>{"qualifying" in entry && entry.qualifying ? " (qualifying evidence)" : " (limited evidence)"}: {entry.deckCount} decks · {entry.playerCount} players · {"eventCount" in entry ? String(entry.eventCount) : "–"} events</p>)}
@@ -509,14 +501,16 @@ export default function ChampionSynergy() {
                               })}</div>
                               {section.cards.length === 0 && <p>No recurring differentiators identified.</p>}
                             </div>)}
-                          </details>
+                          </div>
                         ))}
+                        <Link className="inline-flex min-h-control items-center rounded text-ctp-blue focus-visible:outline-2" to={`/archetypes/mine?build=${engine.id}`}>Curate this family</Link>
+                        </details>
                       </article>
                     );
                   })}
                 </div>
               )}
-              {engines.length > 6 && <button type="button" onClick={() => setShowAllPackages((value) => !value)} aria-expanded={showAllPackages} className="mt-3 min-h-12 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{showAllPackages ? "Show fewer archetypes" : `Show all ${engines.length} archetypes`}</button>}
+              {engines.length > 2 && <Button type="button" onClick={() => setShowAllPackages((value) => !value)} aria-expanded={showAllPackages} className="mt-3 min-h-12 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{showAllPackages ? "Show fewer families" : `Show all ${engines.length} families`}</Button>}
             </Section>
           </div>
         </>
