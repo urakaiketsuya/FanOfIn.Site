@@ -50,7 +50,7 @@ export default function FeatureBanner() {
       <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-2 gap-y-0.5 px-4 py-1.5 text-center text-xs text-ctp-subtext1 sm:text-sm">
         <span aria-hidden="true">💡</span>
         <span>{tip.message}</span>
-        <Link to={tip.to} className="shrink-0 font-medium text-ctp-mauve hover:underline">
+        <Link to={tip.to} className="inline-flex min-h-control min-w-0 max-w-full items-center justify-center font-medium text-ctp-mauve hover:underline">
           {tip.cta} &rarr;
         </Link>
       </div>

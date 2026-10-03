@@ -8,7 +8,7 @@ export default function PageHeader({ title, description, eyebrow, actions }: { t
         <div className="max-w-2xl">
           <h1 className="text-3xl font-bold tracking-tight text-ctp-text">{title}</h1>
         </div>
-        {actions && <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div>}
+        {actions && <div className="flex min-w-0 max-w-full flex-wrap items-center gap-2">{actions}</div>}
       </div>
       {description && <div className="mt-2 max-w-2xl text-sm leading-6 text-ctp-subtext1">{description}</div>}
     </header>
