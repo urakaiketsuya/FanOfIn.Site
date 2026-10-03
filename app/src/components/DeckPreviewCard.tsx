@@ -34,8 +34,9 @@ type ListAction = { to: string; expanded?: never; onToggle?: never; content?: ne
 };
 
 /** Immutable preview only: adapters own fetching, mutations, navigation and expanded content. */
-export default function DeckPreviewCard({ model, cardsByName, championCard, view }: {
+export default function DeckPreviewCard({ model, cardsByName, championCard, view, presentation = "detail" }: {
   model: DeckPreviewModel;
+  presentation?: "detail" | "cover";
   cardsByName?: Map<string, Card>;
   championCard?: Card;
   view: ListAction;
@@ -63,6 +64,19 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
     if (supplied !== undefined) return supplied;
     return model.decklist?.[section].reduce((sum, line) => sum + line.quantity, 0);
   };
+  if (presentation === "cover" && view.to !== undefined) return (
+    <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source.kind} data-deck-id={model.id} className="identity-surface flex h-full min-w-0 flex-col overflow-hidden rounded-3xl">
+      <div className="flex justify-center bg-gradient-to-br from-ctp-blue/10 via-ctp-mantle to-ctp-mauve/10 p-5">
+        <div className="w-36 min-w-0 sm:w-40">{leadCard ? <Link to={`/cards/${leadCard.slug}`} className="block rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ctp-blue">{art}</Link> : art}</div>
+      </div>
+      <div className="flex flex-1 flex-col gap-2 p-4">
+        <p className="text-xs text-ctp-subtext0">{model.source.label}{model.format && ` · ${model.format === "STANDARD" ? "Standard" : "Pantheon"}`}</p>
+        <h2 className="break-words text-2xl font-bold leading-tight text-ctp-text"><Link to={view.to} className="inline-flex min-h-12 items-center rounded focus-visible:outline-2 focus-visible:outline-ctp-blue">{model.title}</Link></h2>
+        {model.metadata && <div className="break-words text-sm leading-relaxed text-ctp-subtext1">{model.metadata}</div>}
+        <Link to={view.to} aria-label={`Open deck: ${model.title}`} className={`${deckPreviewActionClass} mt-auto w-full bg-ctp-blue/10 text-ctp-blue hover:bg-ctp-blue/20`}>Open deck</Link>
+      </div>
+    </Panel>
+  );
   return <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source.kind} data-deck-id={model.id} className="identity-surface flex min-w-0 flex-col overflow-hidden">
     <div className="flex flex-1 flex-col gap-3 p-4">
       <div className="grid grid-cols-[6rem_minmax(0,1fr)] items-start gap-3 sm:grid-cols-[7rem_minmax(0,1fr)]">

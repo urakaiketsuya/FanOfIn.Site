@@ -11,7 +11,7 @@ import { InlineState } from "../../components/ui/ContentState";
 import DeckPreviewCard, { deckPreviewActionClass } from "../../components/DeckPreviewCard";
 import DisclosureChevron from "../../components/DisclosureChevron";
 
-export default function DeckSightingRow({ sighting, playerName, championCard, onAdd, added }: {
+export default function DeckSightingRow({ sighting, playerName, championCard, onAdd, added, browseCard = false }: {
   sighting: DeckSighting;
   playerName: string;
   championCard: Card | undefined;
@@ -33,11 +33,13 @@ export default function DeckSightingRow({ sighting, playerName, championCard, on
   const { loading, decklist, error, format } = useSightingDecklist(sighting.eventId, sighting.player, previewVisible);
   const cardsByName = useCardsByNames(decklist ? [...decklist.main, ...decklist.material, ...decklist.sideboard].map(line => line.card) : []);
   return <div ref={rowRef} data-component="DeckSightingRow" className="min-w-0">
-    <DeckPreviewCard cardsByName={cardsByName} championCard={championCard} model={{
-      id: sighting.deckId, title: sighting.championName ? `${sighting.championName} · ${playerName}` : `${playerName}'s deck`,
+    {browseCard && loading && <p role="status" className="text-xs text-ctp-subtext0">Loading deck preview…</p>}
+    {browseCard && error && <InlineState tone="danger">{error}</InlineState>}
+    <DeckPreviewCard presentation={browseCard ? "cover" : "detail"} cardsByName={cardsByName} championCard={championCard} model={{
+      id: sighting.deckId, title: browseCard ? (sighting.championName ?? `${playerName}'s deck`) : sighting.championName ? `${sighting.championName} · ${playerName}` : `${playerName}'s deck`,
       decklist, format, championName: sighting.championName,
       source: { kind: "event", label: "Tournament" },
-      metadata: <>
+      metadata: browseCard ? <p>{playerName} · {sighting.placement ? `#${sighting.placement}` : "Unranked"}<span className="mt-1 block text-xs text-ctp-subtext0">{sighting.eventName}</span></p> : <>
         <PlayerLink id={sighting.player} username={playerName} className="inline-flex min-h-12 items-center rounded hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue" />
         <p>{sighting.placement ? `#${sighting.placement}` : "Unranked"} · {sighting.wins}–{sighting.losses}–{sighting.ties}{sighting.winner ? " · Winner" : sighting.topCut ? " · Top Cut" : ""}</p>
         <Link to={`/events/${sighting.eventId}`} className="inline-flex min-h-12 items-center rounded hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue">{sighting.eventName}</Link>

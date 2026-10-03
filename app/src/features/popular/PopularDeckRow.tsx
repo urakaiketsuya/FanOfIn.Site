@@ -30,13 +30,12 @@ export default function PopularDeckRow({
   const allNames = useMemo(() => [...deck.main, ...deck.material].map((l) => l.name), [deck]);
   const cardsByName = useCardsByNames(allNames);
 
-  return <DeckPreviewCard cardsByName={cardsByName} championCard={championCard} model={{
-    id: shortHash(deck.signature), title: `${deck.championName ?? "Unknown Champion"} · Unique build`, decklist,
+  return <DeckPreviewCard presentation="cover" cardsByName={cardsByName} championCard={championCard} model={{
+    id: shortHash(deck.signature), title: `${deck.championName ?? "Unknown Champion"}`, decklist,
     championName: deck.championName, sideboardCount: null,
     source: { kind: "event", label: "Tournament build" },
     metadata: <>
       <p>{deck.playerCount} player{deck.playerCount === 1 ? "" : "s"}{deck.bestPlacement !== null && ` · Best #${deck.bestPlacement}`}</p>
-      {deck.lastPlayedDate && <p>Last played {new Date(deck.lastPlayedDate).toLocaleDateString()}</p>}
     </>,
     status: <details className="group text-xs text-ctp-subtext0">
       <summary className={`${deckPreviewActionClass} cursor-pointer list-none [&::-webkit-details-marker]:hidden`}>Build details<DisclosureChevron className="group-open:rotate-180" /></summary>

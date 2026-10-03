@@ -305,7 +305,7 @@ export default function DeckSightingsView({
         </p>
       )}
 
-      <div className={`mt-2 grid gap-3 lg:grid-cols-2 lg:items-start ${contentFiltersLoading ? "hidden" : ""}`}>
+      <div className={`mt-2 grid gap-3 sm:grid-cols-2 xl:grid-cols-3 ${contentFiltersLoading ? "hidden" : ""}`}>
         {visible.map((sighting) => (
           <DeckSightingRow
             key={sighting.deckId}

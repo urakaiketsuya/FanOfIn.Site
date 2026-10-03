@@ -191,7 +191,7 @@ export default function TournamentBuildsView({
         </p>
       )}
 
-      <div className={`mt-2 grid gap-3 transition-opacity lg:grid-cols-2 lg:items-start ${isPending ? "opacity-50" : ""}`}>
+      <div className={`mt-2 grid gap-3 transition-opacity sm:grid-cols-2 xl:grid-cols-3 ${isPending ? "opacity-50" : ""}`}>
         {visible.map((deck) => (
           <PopularDeckRow
             key={deck.signature}
