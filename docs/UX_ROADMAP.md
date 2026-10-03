@@ -639,3 +639,19 @@ App typecheck and lint passed with six existing Fast Refresh warnings. No data l
 error or empty states were introduced. Physical keyboard viewport changes, text zoom and
 screen reader checks remain unverified.
 Next: supporting-page hierarchy and expressive styling, starting with methodology and changelog.
+
+### Supporting page hierarchy, October 3
+
+Methodology leads with a prominent source, sample and claim overview. Section headings have
+consistent accent markers, tool links and topic navigation have 48px targets, and native
+disclosures use shared chevrons with visible keyboard focus. Changelog uses matching date
+markers, grouped archive surfaces, shared buttons, live result counts, and an actionable
+empty search. Published data failures expose retry and preserve a cached archive.
+
+App typecheck and lint passed with six existing Fast Refresh warnings. Verified 360 × 800
+and 1280 × 900 layouts, no horizontal overflow, 48px search/commit links/disclosures/topic
+navigation, keyboard expansion, empty search and clearing, and pagination from 20 to 40.
+Initial route loading was observed. Simulated network failure/retry, an empty published
+archive, text zoom and screen reader checks remain unverified.
+Next: supporting-page recovery states and accessibility verification, then reconcile the
+remaining expressive design checklist against the completed page passes.

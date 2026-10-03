@@ -1,6 +1,8 @@
 import { useEffect, type ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import PageLayout from "../components/layout/PageLayout";
+import DisclosureChevron from "../components/DisclosureChevron";
+import Panel from "../components/ui/Panel";
 import PageHeader from "../components/ui/PageHeader";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 import { useDecklistCoverage } from "../features/tournaments/useDecklistCoverage";
@@ -15,12 +17,12 @@ const TOPICS = [
 ] as const;
 
 function TopicLinks() {
-  return <ul className="space-y-1">{TOPICS.map(({ id, label }) => <li key={id}><a href={`#${id}`} className="block rounded-lg px-3 py-2 text-sm text-ctp-subtext1 hover:bg-forest-surface/40 hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">{label}</a></li>)}</ul>;
+  return <ul className="space-y-1">{TOPICS.map(({ id, label }) => <li key={id}><a href={`#${id}`} className="flex min-h-control items-center rounded-lg px-3 py-2 text-sm text-ctp-subtext1 hover:bg-forest-surface/40 hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">{label}</a></li>)}</ul>;
 }
 
 function Topic({ id, title, children }: { id: string; title: string; children: ReactNode }) {
   return <section id={id} aria-labelledby={`${id}-heading`} className="scroll-mt-28 border-b border-ctp-surface0 pb-9 last:border-0">
-    <h2 id={`${id}-heading`} className="text-xl font-semibold text-ctp-text">{title}</h2>
+    <h2 id={`${id}-heading`} className="border-l-4 border-ctp-blue pl-3 text-2xl font-bold tracking-tight text-ctp-text">{title}</h2>
     <div className="mt-3 space-y-3 text-sm leading-6 text-ctp-subtext1">{children}</div>
   </section>;
 }
@@ -34,7 +36,7 @@ function Evidence({ source, limit }: { source: string; limit: string }) {
 
 function ToolExplanation({ to, name, does, evidence, limit }: { to: string; name: string; does: string; evidence: string; limit: string }) {
   return <article className="rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4 sm:p-5">
-    <h3 className="font-semibold text-ctp-text"><Link to={to} className="text-ctp-blue hover:underline">{name} →</Link></h3>
+    <h3 className="font-semibold text-ctp-text"><Link to={to} className="inline-flex min-h-control items-center text-lg text-ctp-blue hover:underline focus-visible:outline-2 focus-visible:outline-ctp-blue">{name} →</Link></h3>
     <p className="mt-1">{does}</p>
     <dl className="mt-3 grid gap-3 border-t border-ctp-surface0 pt-3 text-xs leading-5 sm:grid-cols-2">
       <div><dt className="font-semibold text-ctp-text">Uses</dt><dd className="text-ctp-subtext1">{evidence}</dd></div>
@@ -44,8 +46,8 @@ function ToolExplanation({ to, name, does, evidence, limit }: { to: string; name
 }
 
 function Detail({ title, children }: { title: string; children: ReactNode }) {
-  return <details className="mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle/50 p-4 text-sm leading-6 text-ctp-subtext1">
-    <summary className="cursor-pointer font-semibold text-ctp-text">{title}</summary>
+  return <details className="group mt-4 rounded-xl border border-ctp-surface1 bg-ctp-mantle/50 p-4 text-sm leading-6 text-ctp-subtext1">
+    <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 rounded font-semibold text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden">{title}<DisclosureChevron className="group-open:rotate-180" /></summary>
     <div className="mt-3 space-y-3">{children}</div>
   </details>;
 }
@@ -66,16 +68,16 @@ export default function Methodology() {
 
   return <PageLayout data-component="Methodology" width="wide" className="py-10">
     <PageHeader eyebrow="About the data" title="How the numbers work" description="Start with the part of the site you are using. Each section explains what it offers, where its evidence comes from, and what you should not infer from it." />
-    <div className="mb-8 rounded-2xl border border-forest-surface bg-forest-surface/30 p-5 sm:p-6">
-      <p className="text-sm font-semibold text-ctp-text">Before you use a number</p>
+    <Panel tone="info" padding="lg" className="mb-8 rounded-2xl!">
+      <h2 className="text-2xl font-bold tracking-tight text-ctp-text">Before you use a number</h2>
       <ul className="mt-3 grid gap-3 text-sm leading-6 text-ctp-subtext1 sm:grid-cols-3 sm:gap-5">
-        <li><strong className="text-ctp-blue">Check the source.</strong> Tournament results, simulator games, card catalog facts, and your own saved data answer different questions.</li>
-        <li><strong className="text-ctp-blue">Check the sample.</strong> A percentage from a few decks or games is less stable than one from many independent players and events.</li>
-        <li><strong className="text-ctp-blue">Check the claim.</strong> An observed association, a probability forecast, and a suggested edit are not promises of an outcome.</li>
+        <li><strong className="mb-2 block text-lg text-ctp-blue">Check the source.</strong> Tournament results, simulator games, card catalog facts, and your own saved data answer different questions.</li>
+        <li><strong className="mb-2 block text-lg text-ctp-blue">Check the sample.</strong> A percentage from a few decks or games is less stable than one from many independent players and events.</li>
+        <li><strong className="mb-2 block text-lg text-ctp-blue">Check the claim.</strong> An observed association, a probability forecast, and a suggested edit are not promises of an outcome.</li>
       </ul>
-    </div>
-    <details className="mb-8 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4 lg:hidden">
-      <summary className="cursor-pointer text-sm font-semibold text-ctp-text">Jump to a section</summary>
+    </Panel>
+    <details className="group mb-8 rounded-xl border border-ctp-surface1 bg-ctp-mantle p-4 lg:hidden">
+      <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-3 rounded text-sm font-semibold text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden">Jump to a section<DisclosureChevron className="group-open:rotate-180" /></summary>
       <nav aria-label="Methodology sections" className="mt-3 border-t border-ctp-surface0 pt-2"><TopicLinks /></nav>
     </details>
     <div className="grid gap-10 lg:grid-cols-[200px_minmax(0,1fr)]">
@@ -96,7 +98,7 @@ export default function Methodology() {
         </Topic>
         <Topic id="decks" title="Decks">
           <p><Link to="/decks" className="text-ctp-blue hover:underline">Tournament Decks</Link> explores submitted lists and recurring builds. <Link to="/pantheon/decks" className="text-ctp-blue hover:underline">Pantheon Decks</Link> are a separate deck source, while <Link to="/decks/shared" className="text-ctp-blue hover:underline">Shared Decks</Link> are published by site users.</p>
-          <Evidence source="Tournament build statistics use events with submitted decklists. Build clusters compare main and material cards; sideboards do not define build identity." limit="Decklist-enabled events are a subset of tracked events, and a cluster is an algorithmic grouping–not a manually verified archetype or proof that every list plays alike." />
+          <Evidence source="Tournament build statistics use events with submitted decklists. Build clusters compare main and material cards; sideboards do not define build identity." limit="Decklist-enabled events are a subset of tracked events, and a cluster is an algorithmic grouping, not a manually verified archetype or proof that every list plays alike." />
           <Anchor id="coverage" />
           <Detail title="How much of the event data includes decklists?"><p>{coverage.loading ? "Loading current coverage from the published event index…" : `${(coverage.coverageRate * 100).toFixed(1)}% of ${coverage.totalEvents.toLocaleString()} tracked events are marked as allowing decklists${coverage.latestSeasonCoverageRate === null ? "." : `; ${coverage.latestSeasonName ?? "the latest listed season"} is ${(coverage.latestSeasonCoverageRate * 100).toFixed(1)}%.`}`} This is event-level availability, not the share of players who submitted a list. Card- and build-specific statistics use the lists actually available.</p></Detail>
           <Anchor id="classification" /><Anchor id="confidence-tiers" />
