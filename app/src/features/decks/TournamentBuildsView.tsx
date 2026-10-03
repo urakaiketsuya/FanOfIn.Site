@@ -1,3 +1,6 @@
+import { useDeckCardIndexData } from "../archetypes/data";
+import PublishedSourceStatus from "../../components/PublishedSourceStatus";
+import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { useSearchParams } from "react-router-dom";
 import Button from "../../components/ui/Button";
@@ -51,7 +54,10 @@ export default function TournamentBuildsView({
   const [isPending, startTransition] = useTransition();
 
   const { decks: allDecks, loading } = useDeckPopularity(championName, 1);
+  const cardIndexData = useDeckCardIndexData();
   const popularityIndexData = useDeckPopularityIndexData();
+  const popularityStatus = usePublishedDataStatus("analysis-deck-popularity-index", "/data/analysis/deck-popularity-index.json");
+  const cardIndexStatus = usePublishedDataStatus("analysis-deck-card-index", "/data/analysis/deck-card-index.json");
   const playerName = usePlayerNameById();
   const eventNameById = useEventNameById();
   const cardCatalog = useCardCatalog();
@@ -174,7 +180,9 @@ export default function TournamentBuildsView({
         <DeckContentFilterControls filters={contentFilters} setFilters={setContentFilters} />
       </FilterPanel>
 
-      {loading && <DeckResultsSkeleton />}
+      <PublishedSourceStatus label="Tournament build results" status={popularityStatus} hasData={Boolean(popularityIndexData)} />
+      <PublishedSourceStatus label="Tournament build lists" status={cardIndexStatus} hasData={Boolean(cardIndexData)} />
+      {loading && popularityStatus.phase !== "error" && cardIndexStatus.phase !== "error" && <DeckResultsSkeleton />}
       {!loading && sorted.length === 0 && <EmptyState className="mt-6" title="No matching tournament builds" description="Include all champions and players to explore more lists." action={<Button onClick={() => startTransition(() => { setChampionName(null); setMinPlayers("any"); setElementFilter([]); setContentFilters(() => emptyDeckContentFilters()); })}>Clear filters</Button>} />}
       {sorted.length > 0 && (
         <p className="mt-4 text-xs text-ctp-subtext0">

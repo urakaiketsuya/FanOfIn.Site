@@ -688,3 +688,25 @@ App typecheck and lint passed with six existing Fast Refresh warnings. The edito
 failure path was not separately exercised; screen readers, text zoom, physical devices and
 authenticated journeys remain open. Next: deck discovery source failure recovery, starting
 with tournament, community and official browsing, then dedicated related-discovery page passes.
+
+### Deck discovery source recovery, October 3
+
+Tournament results and unique builds now expose named source failures and retries instead
+of leaving loading skeletons indefinitely. Build results and card lists retry independently;
+active card-content filters also expose their index status. Community search exposes the
+selected format's archive status. Shared PublishedSourceStatus preserves cached content and
+explains availability without clearing filters. Official product lists are bundled JSON and
+have no separate remote list fetch; catalog/account recovery remains a distinct follow-up.
+
+App typecheck and lint passed with six existing Fast Refresh warnings. Temporary HTTP 503
+fixtures verified uncached Standard community failure, keyboard retry/loading with query
+retention, empty search recovery, 30 restored community previews and cached failure retaining
+those previews. Tournament checks covered uncached result/build failures, independent build
+retries restoring 30 previews, 50 recovered tournament results, and cached result failure
+retaining 50 previews. Checked 360 × 800 and 1280 × 900 layouts had no page overflow; measured
+retry controls were 48px. Temporary fixtures were removed.
+
+Remaining: Pantheon-specific fixtures, active card-filter index failure, empty published
+indexes, cached build failure, optional metadata/catalog failures, community trend source
+recovery, screen reader, text zoom and physical device checks. Next: optional source recovery
+and community trends, then dedicated champion/package/archetype page passes.

@@ -14,7 +14,7 @@ import type {
   DeckFormat,
   ShoutAtYourDecksDeckSummary,
 } from "@gatcg/shared";
-import { usePublishedData } from "../../lib/sync/usePublishedData";
+import { usePublishedData, usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 
 /** Standalone ShoutAtYourDecks-derived stats – deliberately separate from every Omnidex-derived hook elsewhere in this app (see docs/CALCULATIONS.md, "ShoutAtYourDecks analytics"). */
 function formatPath(format: DeckFormat, file: string): string {
@@ -157,4 +157,8 @@ export function mergeCoOccurrenceForCard(
   return Array.from(counts.entries())
     .map(([buddyName, count]): CommunityCoOccurrenceEntry => ({ cardName: buddyName, count, coOccurrenceRate: keyCardDeckCount > 0 ? count / keyCardDeckCount : 0 }))
     .sort((a, b) => b.count - a.count);
+}
+
+export function useCommunityDeckSearchStatus(format: DeckFormat = "STANDARD") {
+  return usePublishedDataStatus(`community-decks-${format}`, blendedPath(format, "decks"));
 }

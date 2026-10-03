@@ -8,7 +8,8 @@ import type { Card } from "@gatcg/shared";
 import Button from "../../components/ui/Button";
 import { EmptyState, InlineState } from "../../components/ui/ContentState";
 import { championKeyToDisplayName } from "../../lib/championSlug";
-import { useCommunityDeckSearchIndex } from "./data";
+import PublishedSourceStatus from "../../components/PublishedSourceStatus";
+import { useCommunityDeckSearchIndex, useCommunityDeckSearchStatus } from "./data";
 
 const PAGE_SIZE = 30;
 const SOURCE_LABELS: Record<CommunityDeckSource, string> = {
@@ -27,6 +28,7 @@ function displayChampion(value: string | null): string {
 
 export default function CommunityDeckSearch({ format }: { format: DeckFormat }) {
   const index = useCommunityDeckSearchIndex(format);
+  const sourceStatus = useCommunityDeckSearchStatus(format);
   const catalog = useCardCatalog();
   const cardsByName = useMemo(() => new Map(catalog.map((card) => [card.name, card])), [catalog]);
   const [query, setQuery] = useState("");
@@ -51,7 +53,7 @@ export default function CommunityDeckSearch({ format }: { format: DeckFormat }) 
       <select value={champion} onChange={(event) => { setChampion(event.target.value); resetPage(); }} aria-label="Community deck Champion" className="min-h-12 min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"><option value="">All Champions</option>{champions.map((name) => <option key={name} value={name}>{displayChampion(name)}</option>)}</select>
       <select value={source} onChange={(event) => { setSource(event.target.value as CommunityDeckSource | ""); resetPage(); }} aria-label="Community deck source" className="min-h-12 min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"><option value="">All sources</option>{Object.entries(SOURCE_LABELS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select>
     </div>
-    {!index && <InlineState className="mt-4">Loading locally sourced decklists…</InlineState>}
+    <PublishedSourceStatus label={`${format === "PANTHEON" ? "Pantheon" : "Standard"} community decks`} status={sourceStatus} hasData={Boolean(index)} />
     {index && <p className="mt-3 text-xs text-ctp-subtext0">{filtered.length.toLocaleString()} matching {filtered.length === 1 ? "deck" : "decks"} from the local archive</p>}
     {index && filtered.length === 0 && <EmptyState className="mt-4" title="No matching community decks" description="Try another card or champion, or clear your filters to browse this format." action={<Button onClick={() => { setQuery(""); setChampion(""); setSource(""); resetPage(); }}>Clear filters</Button>} />}
     <div className="mt-3 grid items-start gap-3 sm:grid-cols-2">{filtered.slice(0, visibleCount).map((deck) => <CommunityDeckRow key={`${deck.source}:${deck.id}`} deck={deck} format={format} cardNames={index?.cardNames ?? []} cardsByName={cardsByName} />)}</div>

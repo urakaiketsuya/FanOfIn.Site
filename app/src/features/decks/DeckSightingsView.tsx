@@ -1,3 +1,5 @@
+import PublishedSourceStatus from "../../components/PublishedSourceStatus";
+import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import { useEffect, useMemo, useState } from "react";
 import { decodeCardLines, EVENT_CATEGORY_LABELS, EVENT_CATEGORY_ORDER } from "@gatcg/shared";
 import LoadMore from "../../components/LoadMore";
@@ -43,6 +45,8 @@ export default function DeckSightingsView({
   setContentFilters: (update: (previous: DeckContentFilterState) => DeckContentFilterState) => void;
 }) {
   const sightingsData = useDeckSightingsData();
+  const sightingsStatus = usePublishedDataStatus("analysis-deck-sightings", "/data/analysis/deck-sightings.json");
+  const cardIndexStatus = usePublishedDataStatus("analysis-deck-card-index", "/data/analysis/deck-card-index.json", deckContentFilterCount(contentFilters) > 0);
   const playerName = usePlayerNameById();
   const archetypeData = useArchetypeData();
   const cardIndexData = useDeckCardIndexData(deckContentFilterCount(contentFilters) > 0);
@@ -291,7 +295,9 @@ export default function DeckSightingsView({
         <DeckContentFilterControls filters={contentFilters} setFilters={setContentFilters} />
       </FilterPanel>
 
-      {(!sightingsData || contentFiltersLoading) && <DeckResultsSkeleton />}
+      <PublishedSourceStatus label="Tournament results" status={sightingsStatus} hasData={Boolean(sightingsData)} />
+      {deckContentFilterCount(contentFilters) > 0 && <PublishedSourceStatus label="Deck card filters" status={cardIndexStatus} hasData={Boolean(cardIndexData)} />}
+      {((!sightingsData && sightingsStatus.phase !== "error") || (contentFiltersLoading && cardIndexStatus.phase !== "error")) && <DeckResultsSkeleton />}
       {sightingsData && !contentFiltersLoading && filtered.length === 0 && <InlineState className="mt-6">No decks match this filter yet.</InlineState>}
       {sightingsData && !contentFiltersLoading && filtered.length > 0 && (
         <p className="mt-4 text-xs text-ctp-subtext0">
