@@ -1,3 +1,4 @@
+import DisclosureChevron from "../../components/DisclosureChevron";
 import PublishedSourceStatus from "../../components/PublishedSourceStatus";
 import { usePublishedDataStatus } from "../../lib/sync/usePublishedData";
 import { useEffect, useMemo, useState } from "react";
@@ -209,13 +210,13 @@ export default function DeckSightingsView({
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search player, event, or champion…"
           aria-label="Search tournament results"
-          className="col-span-2 min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 sm:min-w-64 sm:flex-1"
+          className="col-span-2 min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-3 py-2.5 text-sm text-ctp-text placeholder:text-ctp-subtext0 sm:min-w-64 sm:flex-1"
         />
         <select
           value={championName ?? ""}
           aria-label="Champion"
           onChange={(e) => setChampionName(e.target.value || null)}
-          className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"
+          className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"
         >
           <option value="">All champions</option>
           {championsPresent.map((name) => <option key={name} value={name}>{name}</option>)}
@@ -224,7 +225,7 @@ export default function DeckSightingsView({
           value={sortMode}
           aria-label="Sort tournament results"
           onChange={(e) => setSortMode(e.target.value as SightingSortMode)}
-          className="min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"
+          className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2.5 text-sm text-ctp-text"
         >
           <option value="date">Newest</option>
           <option value="best">Best results</option>
@@ -235,11 +236,11 @@ export default function DeckSightingsView({
         </select>
       </div>
 
-      <details className="mt-2 text-xs text-ctp-subtext0">
-        <summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">More sorting options</summary>
+      <details className="group mt-2 text-xs text-ctp-subtext0">
+        <summary className="flex min-h-control w-fit cursor-pointer list-none items-center gap-2 rounded px-2 hover:text-ctp-blue focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden"><DisclosureChevron className="group-open:rotate-180" />More sorting options</summary>
         <label className="mt-2 flex items-center gap-2">
           <span>Then sort by</span>
-          <select value={secondarySortMode ?? ""} onChange={(e) => setSecondarySortMode((e.target.value || null) as SightingSortMode | null)} className="rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text">
+          <select value={secondarySortMode ?? ""} onChange={(e) => setSecondarySortMode((e.target.value || null) as SightingSortMode | null)} className="min-h-control min-w-0 rounded-lg border border-ctp-surface1 bg-ctp-mantle px-2 py-2 text-xs text-ctp-text">
             <option value="">None</option>
             {sortMode !== "date" && <option value="date">Newest</option>}
             {sortMode !== "best" && <option value="best">Best results</option>}
@@ -258,7 +259,7 @@ export default function DeckSightingsView({
           value={seasonId ?? ""}
           aria-label="Season"
           onChange={(e) => setSeasonId(e.target.value ? Number(e.target.value) : null)}
-          className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+          className="min-h-control min-w-0 rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
         >
           <option value="">All seasons</option>
           {seasonsPresent.map(([id, name]) => (
@@ -279,7 +280,7 @@ export default function DeckSightingsView({
             value={keyword ?? ""}
             aria-label="Keyword"
             onChange={(e) => setKeyword(e.target.value || null)}
-            className="rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
+            className="min-h-control min-w-0 rounded-md border border-ctp-surface1 bg-ctp-mantle px-2 py-1 text-xs text-ctp-text"
           >
             <option value="">Any keyword</option>
             {keywordsPresent.map((k) => (
