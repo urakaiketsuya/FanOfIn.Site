@@ -32,3 +32,13 @@ test("turn forecasts evaluate an avoid condition in the same timed block", () =>
   const restricted = forecastComboByTurn(main, [], cards, [{ kind: "cards", cards: ["A"], value: "", required: 1, avoid: { kind: "cards", cards: ["C"], value: "", maximum: 0 } }, { kind: "cards", cards: ["B"], value: "", required: 1 }], "first", 3);
   assert.ok((restricted[2].probability ?? 0) < (ordinary[2].probability ?? 0));
 });
+
+
+test("single Main Deck requirements forecast access without counting Material copies", () => {
+  const cards = new Map<string, Card>([["A", card("A")]]);
+  const recipe = [{ kind: "cards" as const, cards: ["A"], value: "", required: 1 }];
+  const points = forecastComboByTurn([{ name: "A", quantity: 1 }], [{ name: "A", quantity: 1 }], cards, recipe, "first", 3);
+  for (const point of points) assert.ok(Math.abs(point.probability! - point.cardsSeen / 60) < 1e-10);
+  assert.equal(forecastComboByTurn([], [{ name: "A", quantity: 1 }], cards, recipe, "first", 1)[0].probability, null);
+  assert.equal(forecastComboByTurn([{ name: "A", quantity: 1 }], [], cards, [], "first", 1)[0].probability, null);
+});

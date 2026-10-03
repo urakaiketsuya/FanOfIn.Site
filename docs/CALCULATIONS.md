@@ -1874,7 +1874,9 @@ from `computeDrawEngineTiming`; and a detected level-zero Fragmented Spirit cont
 depth as additional inspected cards. Its printed six-card draw is excluded from the draw-engine list
 to prevent double counting because those six cards already define its inferred opening hand.
 Recipe odds continue to use the timed multivariate recipe calculation, including optional Avoid
-bounds, and are withheld for overlapping or incomplete requirement pools. A saved combo may carry a user-entered damage result; it is marked lethal only
+bounds, and are withheld for overlapping or incomplete requirement pools. Recipes may contain one
+Main Deck requirement when the other combo pieces are setup or Material Deck cards; those pieces
+are excluded from draw odds and their readiness is not inferred. Empty recipes remain invalid. A saved combo may carry a user-entered damage result; it is marked lethal only
 when that value reaches the user's selected threshold. The tool does not infer combo damage from
 unstructured rules text.
 

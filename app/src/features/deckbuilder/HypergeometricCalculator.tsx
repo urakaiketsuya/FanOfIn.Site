@@ -100,7 +100,7 @@ export default function HypergeometricCalculator({
     maximum: group.avoid.maximum,
     byTurn: group.byTurn ?? null,
   }] : [])], [wantedProbabilityGroups, recipeGroups, avoidMatches]);
-  const recipeReady = wantedProbabilityGroups.length >= 2 && overlappingRecipeCards.length === 0 && wantedProbabilityGroups.every((group) => group.copies >= group.required);
+  const recipeReady = wantedProbabilityGroups.length >= 1 && overlappingRecipeCards.length === 0 && wantedProbabilityGroups.every((group) => group.copies >= group.required);
   const recipeLabel = recipeGroups.map((group) => {
     const wanted = group.kind === "cards" ? (group.cards.length > 1 ? `cards (${group.cards.join(" / ")})` : group.cards[0] || "choose cards") : group.value.split(":").at(-1) || `choose ${group.kind}`;
     if (!group.avoid) return wanted;

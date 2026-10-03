@@ -20,14 +20,16 @@ export default function ReviewedAvailabilityPreset({ catalogByName, main, requir
   const { phase } = useSyncProgress();
   const [chosenExampleId, setExampleId] = useState<string | null>(null);
   const example = reviewedAvailabilityExamples.find((item) => item.id === chosenExampleId)
-    ?? reviewedAvailabilityExamples.find((item) => item.preset.requirements.every((piece) => requirements.some((r) => r.cards.includes(piece.cards[0]))))
+    ?? reviewedAvailabilityExamples.find((item) => item.preset && requirements.length === item.preset.requirements.length && item.preset.requirements.every((piece) => requirements.some((r) => r.cards.includes(piece.cards[0]))))
     ?? reviewedAvailabilityExamples[0];
-  const names = example.preset.requirements.map((r) => r.cards[0]);
+  const names = example.names;
+  const preset = example.preset;
+  const drawNames = preset?.requirements.map((r) => r.cards[0]) ?? [];
   const catalogReady = names.every((name) => catalogByName.has(name));
   const catalogFailed = phase === "error" || phase === "done";
-  const selected = requirements.length === 2 && names.every((name) => requirements.some((r) => r.kind === "cards" && r.cards.length === 1 && r.cards[0] === name && r.required === 1 && !r.avoid && r.byTurn == null));
-  const missing = names.filter((name) => !main.some((line) => line.name === name && line.quantity > 0));
-  return <Panel className="mb-4" data-component="ReviewedAvailabilityPreset">
+  const selected = preset != null && requirements.length === drawNames.length && drawNames.every((name) => requirements.some((r) => r.kind === "cards" && r.cards.length === 1 && r.cards[0] === name && r.required === 1 && !r.avoid && r.byTurn == null));
+  const missing = drawNames.filter((name) => !main.some((line) => line.name === name && line.quantity > 0));
+  return <Panel className="mb-4 [overflow-wrap:anywhere]" data-component="ReviewedAvailabilityPreset">
     <label className="mb-4 block text-sm font-medium">
       Reviewed combo
       <select value={example.id} onChange={(event) => setExampleId(event.target.value)} className="mt-1 block min-h-control w-full min-w-0 rounded border border-ctp-surface1 bg-ctp-base px-3 text-ctp-text focus-visible:outline-2 focus-visible:outline-ctp-blue">
@@ -35,7 +37,7 @@ export default function ReviewedAvailabilityPreset({ catalogByName, main, requir
       </select>
     </label>
     <div className="grid gap-4 sm:grid-cols-[minmax(0,18rem)_minmax(0,1fr)]">
-      <div className="grid max-w-72 grid-cols-2 gap-3">
+      <div className="grid max-w-72 content-start grid-cols-1 gap-3 sm:grid-cols-2">
         {names.map((name) => {
           const card = catalogByName.get(name);
           const content = <><CardArtTile card={card} name={name} /><span className="mt-1 block text-sm font-medium">{name}</span></>;
@@ -44,11 +46,12 @@ export default function ReviewedAvailabilityPreset({ catalogByName, main, requir
       </div>
       <div className="min-w-0">
         <h2 className="font-semibold text-ctp-text">Reviewed example: {example.title}</h2>
-        <p className="mt-2 text-sm">Find at least one of each pictured card in your Main Deck draws. These are the two required pieces, not alternative choices.</p>
-        <p className="mt-2 text-sm text-ctp-subtext1">The odds measure card access only. Board state, payment, and successful resolution are not checked or included in the odds.</p>
+        <p className="mt-2 text-sm font-medium">{example.status}</p>
+        {preset ? <p className="mt-2 text-sm">Main Deck draw requirements: {drawNames.join(" + ")}. Find at least one of each listed card. {names.length > drawNames.length && "Other pictured cards belong to the required setup and are excluded from draw odds."}</p> : <p className="mt-2 text-sm">Review guide only. This package does not replace your recipe or supply draw odds.</p>}
+        {preset ? <p className="mt-2 text-sm text-ctp-subtext1">The odds measure card access only. Board state, payment, and successful resolution are not checked or included in the odds.</p> : <p className="mt-2 text-sm text-ctp-subtext1">{example.note}</p>}
         <section aria-label="Required setup" className="mt-3 rounded-lg border border-ctp-surface1 p-3">
           <h3 className="font-medium">Required setup</h3>
-          <p className="mt-1 text-sm text-ctp-subtext1">Use this guide to check your game state. Loading the preset does not confirm these conditions.</p>
+          <p className="mt-1 text-sm text-ctp-subtext1">Use this guide to check your game state. These conditions are not validated automatically.</p>
           <div className="mt-3 space-y-3">
             {example.setup.map((stage) => <div key={stage.phase}>
               <h4 className="text-sm font-semibold">{stage.phase}</h4>
@@ -63,21 +66,21 @@ export default function ReviewedAvailabilityPreset({ catalogByName, main, requir
         </section>
         <details className="mt-2">
           <summary className="flex min-h-control cursor-pointer items-center gap-2 font-medium"><DisclosureChevron />Sequence and sources</summary>
-          <ol className="list-decimal space-y-2 pl-5 text-sm">
+          {example.sequence.length > 0 && <ol className="list-decimal space-y-2 pl-5 text-sm">
             {example.sequence.map((step) => <li key={step}>{step}</li>)}
-          </ol>
+          </ol>}
           <p className="mt-2 text-sm text-ctp-subtext1">{example.note} Affordability controls below remain separate assumptions.</p>
-          <p className="mt-2 text-xs text-ctp-subtext1">Reviewed October 3, 2026 against official card text and rules. Full deck legality is not checked by this preset.</p>
+          <p className="mt-2 text-xs text-ctp-subtext1">Reviewed October 3, 2026 against official card text and rules. Legality status is dated to that review; full deck legality is not checked.</p>
           <div className="flex flex-wrap gap-x-4 text-sm">{names.map((name, index) => <a key={name} className="inline-flex min-h-control items-center text-ctp-blue underline" href={`https://index.gatcg.com/card/${example.slugs[index]}`}>{name} rules</a>)}<a className="inline-flex min-h-control items-center text-ctp-blue underline" href={example.ruleUrl}>{example.ruleLabel}</a></div>
         </details>
-        {!main.length ? <p className="mt-2 text-sm">Load a deck below to test this preset.</p> : missing.length > 0 ? <p className="mt-2 text-sm">Missing from Main Deck: {missing.join(", ")}. Loading the preset does not add cards.</p> : null}
+        {preset && (!main.length ? <p className="mt-2 text-sm">Load a deck below to test this preset.</p> : missing.length > 0 ? <p className="mt-2 text-sm">Missing from Main Deck: {missing.join(", ")}. Loading the preset does not add cards.</p> : null)}
         {!catalogReady && <p className="mt-2 text-sm" role={catalogFailed ? "alert" : "status"}>{catalogFailed ? "Card details are unavailable. Reload to retry; your recipe has not changed." : "Loading card details… Names are shown while artwork and rules load."}</p>}
         <div className="mt-3 flex flex-wrap gap-2">
-          <Button disabled={!main.length || !catalogReady || selected} onClick={() => onLoad(example.preset)}>{selected ? "Card-availability preset selected" : "Use card-availability preset"}</Button>
+          {preset && <Button disabled={!main.length || !catalogReady || selected} onClick={() => onLoad(preset)}>{selected ? "Card-availability preset selected" : "Use card-availability preset"}</Button>}
           {!catalogReady && catalogFailed && <Button onClick={() => window.location.reload()}>Reload card details</Button>}
           {onUndo && <Button onClick={onUndo}>Restore previous recipe</Button>}
         </div>
-        {main.length > 0 && !selected && <p className="mt-2 text-xs text-ctp-subtext1">Replaces the selected recipe pieces. Your deck stays the same.</p>}
+        {preset && main.length > 0 && !selected && <p className="mt-2 text-xs text-ctp-subtext1">Replaces the selected recipe pieces. Your deck stays the same.</p>}
       </div>
     </div>
   </Panel>;

@@ -64,7 +64,7 @@ export default function LinePlanner({
     setPlan((current) => ({ ...current, requiredMaterial: current.requiredMaterial.includes(name) ? current.requiredMaterial.filter((entry) => entry !== name) : [...current.requiredMaterial, name] }));
   }
 
-  return <Panel className="mt-4" data-component="LinePlanner">
+  return <Panel className="mt-4 [overflow-wrap:anywhere]" data-component="LinePlanner">
     <div className="flex flex-wrap items-start justify-between gap-3">
       <div>
         <h2 className="text-base font-semibold text-ctp-text">Line planner</h2>
@@ -82,11 +82,11 @@ export default function LinePlanner({
     </div>
 
     <div className="mt-4 grid gap-4 lg:grid-cols-2">
-      <section className="rounded-xl border border-ctp-surface1 bg-ctp-base/35 p-3">
+      <section className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-base/35 p-3">
         <h3 className="text-sm font-semibold text-ctp-text">Ordered plays</h3>
         <p className="mt-1 text-xs text-ctp-subtext0">Repeat a card when an effect lets you play it again; this is intentional for replay lines.</p>
         <label className="mt-3 block text-xs text-ctp-subtext0">Add a play
-          <select defaultValue="" onChange={(event) => { addStep(event.target.value); event.target.value = ""; }} className="mt-1 block min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-sm text-ctp-text">
+          <select defaultValue="" onChange={(event) => { addStep(event.target.value); event.target.value = ""; }} className="mt-1 block min-h-12 min-w-0 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-sm text-ctp-text">
             <option value="">Choose a main or material card…</option>
             {[...mainNames, ...materialNames.filter((name) => !mainNames.includes(name))].map((name) => <option key={name} value={name}>{name} · R{effectiveCosts[name] ?? catalogByName.get(name)?.cost_reserve ?? 0}</option>)}
           </select>
@@ -95,10 +95,10 @@ export default function LinePlanner({
         <p className="mt-3 text-xs text-ctp-subtext1">Planned listed cost: <b className="text-ctp-text">{plannedReserve} Reserve</b>. Confirm timing, reductions, and shared resource use in Goldfish.</p>
       </section>
 
-      <section className="rounded-xl border border-ctp-surface1 bg-ctp-base/35 p-3">
+      <section className="min-w-0 rounded-xl border border-ctp-surface1 bg-ctp-base/35 p-3">
         <h3 className="text-sm font-semibold text-ctp-text">Required material</h3>
         <p className="mt-1 text-xs text-ctp-subtext0">Mark material cards that must be materialized or remain available for the line.</p>
-        <div className="mt-3 grid gap-1.5">{materialNames.map((name) => <label key={name} className="flex min-h-12 items-center gap-3 rounded-lg px-2 text-sm text-ctp-text hover:bg-ctp-mantle"><input type="checkbox" checked={plan.requiredMaterial.includes(name)} onChange={() => toggleMaterial(name)} className="size-4 accent-ctp-mauve" /><span>{name}</span></label>)}</div>
+        <div className="mt-3 grid gap-1.5">{materialNames.map((name) => <label key={name} className="flex min-h-12 min-w-0 items-center gap-3 rounded-lg px-2 text-sm text-ctp-text hover:bg-ctp-mantle"><input type="checkbox" checked={plan.requiredMaterial.includes(name)} onChange={() => toggleMaterial(name)} className="size-4 shrink-0 accent-ctp-mauve" /><span className="min-w-0">{name}</span></label>)}</div>
       </section>
     </div>
 
@@ -112,5 +112,5 @@ export default function LinePlanner({
 }
 
 function NumberField({ label, value, min, max, onChange }: { label: string; value: number; min: number; max: number; onChange: (value: number) => void }) {
-  return <label className="text-xs text-ctp-subtext0">{label}<input type="number" min={min} max={max} value={value} onChange={(event) => onChange(Number(event.target.value))} className="mt-1 block min-h-12 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-sm text-ctp-text" /></label>;
+  return <label className="text-xs text-ctp-subtext0">{label}<input type="number" min={min} max={max} value={value} onChange={(event) => onChange(Number(event.target.value))} className="mt-1 block min-h-12 min-w-0 w-full rounded-lg border border-ctp-surface1 bg-ctp-base px-3 text-sm text-ctp-text" /></label>;
 }

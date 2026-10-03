@@ -34,7 +34,7 @@ export function forecastComboByTurn(main: Line[], material: Line[], cards: Reado
   const overlaps = [...membership.values()].some((count) => count > 1);
   const wantedGroups = requirements.map((requirement, index) => ({ required: requirement.required, copies: matches[index].reduce((sum, line) => sum + line.quantity, 0), byTurn: requirement.byTurn }));
   const groups = [...wantedGroups, ...requirements.flatMap((requirement, index) => requirement.avoid ? [{ required: 0, maximum: requirement.avoid.maximum, copies: avoidMatches[index].reduce((sum, line) => sum + line.quantity, 0), byTurn: requirement.byTurn }] : [])];
-  const ready = requirements.length >= 2 && !overlaps && wantedGroups.every((group) => group.copies >= group.required);
+  const ready = requirements.length >= 1 && !overlaps && wantedGroups.every((group) => group.copies >= group.required);
 
   const accessByTurn = Array.from({ length: maxTurn }, (_, index) => {
     const turn = index + 1;
