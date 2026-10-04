@@ -10,7 +10,6 @@ import { championNameToSlug } from "../../lib/championSlug";
 import ChampionMetaMap from "./ChampionMetaMap";
 import PageHeader from "../../components/ui/PageHeader";
 import ElementIcon from "../../components/ElementIcon";
-import ClassIcon from "../../components/ClassIcon";
 import CardArtTile from "../../components/CardArtTile";
 import PageLayout from "../../components/layout/PageLayout";
 import PublishedSourceStatus from "../../components/PublishedSourceStatus";
@@ -82,45 +81,26 @@ export default function ChampionsIndex() {
           const card = championImages.get(c.signature);
           const trend = trendsData?.champions.find((t) => t.championName === c.signature);
           return (
-            <CardHoverPreview key={c.signature} image={card?.editions[0]?.image} alt={c.signature}>
-              <Link
-                to={`/champions/${championNameToSlug(c.signature)}`}
-                className="group grid h-full grid-cols-[6rem_minmax(0,1fr)] items-start gap-4 rounded-2xl border border-ctp-surface1 bg-ctp-mantle p-4 transition-colors hover:border-ctp-blue/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue"
-              >
-                <CardArtTile card={card} name={c.signature} />
+            <article key={c.signature} className="min-w-0" data-component="ChampionGalleryCard">
+              <Link to={`/champions/${championNameToSlug(c.signature)}`} className="group grid min-h-56 grid-cols-[7rem_minmax(0,1fr)] items-center gap-5 rounded-2xl p-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">
+                <div className="rounded-2xl bg-ctp-mantle p-2"><CardArtTile card={card} name={c.signature} /></div>
                 <div className="min-w-0">
-                  <p className="break-words text-lg font-semibold leading-snug text-ctp-text group-hover:text-ctp-blue">{c.signature}</p>
-                  <p className="mt-0.5 flex flex-wrap items-center gap-1 text-xs text-ctp-subtext0">
-                    {c.classes.map((cls) => (
-                      <ClassIcon key={cls} cardClass={cls} size={11} />
-                    ))}
-                    {c.elements.map((element) => (
-                      <ElementIcon key={element} element={element} size={11} />
-                    ))}
-                    <span className="break-words">{c.classes.join("/")} · {c.elements.join("/")}</span>
-                  </p>
-                  <div className="mt-1.5 flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-xs text-ctp-subtext1">
-                    <span>{c.deckCount.toLocaleString()} decks</span>
-                    <span className="font-medium text-ctp-text">{(c.avgWinRate * 100).toFixed(0)}% avg. win rate</span>
-                  </div>
-                  <div className="mt-0.5 flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-xs">
-                    <span className="text-ctp-subtext0">{c.eventCount.toLocaleString()} events</span>
-                    <span
-                      className={trend ? TREND_CLASS[trend.trend] : "text-ctp-subtext0"}
-                      title={latestSeasonName ? `Change in share of ${latestSeasonName} vs. the prior season` : undefined}
-                    >
-                      {trend ? TREND_LABEL[trend.trend] : ""}
-                      {trend?.trendDeltaPct !== null && trend?.trendDeltaPct !== undefined && (
-                        <span className="ml-1 text-ctp-subtext0">
-                          ({trend.trendDeltaPct > 0 ? "+" : ""}
-                          {trend.trendDeltaPct.toFixed(1)}pp)
-                        </span>
-                      )}
-                    </span>
-                  </div>
+                  <h2 className="break-words text-2xl font-semibold leading-tight text-ctp-text group-hover:text-ctp-blue">{c.signature}</h2>
+                  {card && <p className="mt-2 break-words text-sm text-ctp-subtext1">{card.name}</p>}
+                  <p className="mt-2 text-sm text-ctp-subtext0">{c.classes.join(" / ")} · {c.elements.join(" / ")}</p>
+                  <span className="mt-3 inline-flex min-h-control items-center text-sm font-medium text-ctp-blue">Explore decks <span className="ml-2" aria-hidden="true">→</span></span>
                 </div>
               </Link>
-            </CardHoverPreview>
+              <details className="group mx-3 border-t border-ctp-surface1/60">
+                <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 text-sm text-ctp-subtext1 focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden" aria-label={`Tournament performance for ${c.signature}`}>Tournament performance<DisclosureChevron className="group-open:rotate-180" /></summary>
+                <dl className="grid grid-cols-2 gap-3 pb-4 text-sm">
+                  <div><dt className="text-ctp-subtext0">Recorded decks</dt><dd className="font-medium tabular-nums">{c.deckCount.toLocaleString()}</dd></div>
+                  <div><dt className="text-ctp-subtext0">Average win rate</dt><dd className="font-medium tabular-nums">{(c.avgWinRate * 100).toFixed(0)}%</dd></div>
+                  <div><dt className="text-ctp-subtext0">Events</dt><dd className="tabular-nums">{c.eventCount.toLocaleString()}</dd></div>
+                  {trend && <div><dt className="text-ctp-subtext0">{latestSeasonName ?? "Latest season"} share trend</dt><dd className={TREND_CLASS[trend.trend]}>{TREND_LABEL[trend.trend] || "Not enough data"}{trend.trendDeltaPct !== null && trend.trendDeltaPct !== undefined && <span className="ml-1 tabular-nums">({trend.trendDeltaPct > 0 ? "+" : ""}{trend.trendDeltaPct.toFixed(1)}pp)</span>}</dd></div>}
+                </dl>
+              </details>
+            </article>
           );
         })}
       </div>

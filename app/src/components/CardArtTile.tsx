@@ -30,7 +30,7 @@ export default function CardArtTile({
       {card?.editions[0] ? (
         <CardImage image={card.editions[0].image} alt={name} className={artworkOnly ? "absolute left-[-6%] top-[-30%] w-[112%] max-w-none" : "h-full w-full object-cover"} />
       ) : (
-        <span className="flex h-full items-center p-1 text-center text-[9px] text-ctp-subtext0">{name}</span>
+        <span className={`flex h-full items-center justify-center text-center text-ctp-subtext0 ${artworkOnly ? "p-6 text-sm" : "p-1 text-[9px]"}`}>{name}</span>
       )}
       {cornerBadge !== undefined && (
         <span className="absolute right-1 top-1 rounded bg-ctp-base/90 px-1 text-[10px] text-ctp-text">{cornerBadge}</span>

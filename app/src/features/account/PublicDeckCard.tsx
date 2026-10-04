@@ -8,7 +8,7 @@ export function PublicDeckCard({ deck, onRemoveFavorite }: { deck: PublicDeckSum
   const decklist = "decklist" in deck ? deck.decklist : null;
   const materialPreview = "materialPreview" in deck ? deck.materialPreview : undefined;
   const preview = materialPreview?.length ? materialPreview : deck.previewCards ?? (decklist ? deckPreviewCards(decklist) : []);
-  return <DeckPreviewCard model={{
+  return <DeckPreviewCard presentation={onRemoveFavorite ? "library" : "detail"} model={{
     id: deck.publicSlug, title: deck.title, decklist, championName: deck.championName, format: deck.format,
     source: { kind: "community", label: deck.isSeed ? "Starter Library" : "Community" },
     materialPreview,
@@ -23,13 +23,13 @@ export function PublicDeckCard({ deck, onRemoveFavorite }: { deck: PublicDeckSum
     actions: <>
       {onRemoveFavorite && <button type="button" onClick={onRemoveFavorite} className={`${actionClass} text-ctp-red hover:bg-ctp-red/10`}>Remove favorite</button>}
       {decklist && <DeckPreviewListActions decklist={decklist} title={deck.title} format={deck.format} />}
-      <details className="group min-w-0">
+      {onRemoveFavorite ? <><Link to={`/deck-analysis?publicDeck=${encodeURIComponent(deck.publicSlug)}`} className={`${actionClass} text-ctp-blue`}>Analyze deck</Link><Link to={`/deck-review?publicDeck=${encodeURIComponent(deck.publicSlug)}`} className={`${actionClass} text-ctp-blue`}>Review suggestions</Link></> : <details className="group min-w-0">
         <summary className={`${actionClass} cursor-pointer list-none text-ctp-subtext1 hover:bg-ctp-surface0 [&::-webkit-details-marker]:hidden`}>Deck tools<DisclosureChevron className="group-open:rotate-180" /></summary>
         <div className="mt-2 flex flex-wrap gap-1">
           <Link to={`/deck-analysis?publicDeck=${encodeURIComponent(deck.publicSlug)}`} className={`${actionClass} text-ctp-blue hover:bg-ctp-surface0`}>Analyze deck</Link>
           <Link to={`/deck-review?publicDeck=${encodeURIComponent(deck.publicSlug)}`} className={`${actionClass} text-ctp-blue hover:bg-ctp-surface0`}>Review suggestions</Link>
         </div>
-      </details>
+      </details>}
     </>,
   }} view={{ to: `/decks/${deck.publicSlug}` }} />;
 }
