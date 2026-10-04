@@ -655,6 +655,9 @@ export interface MaterialArchetype {
 
 /** A strategy family above one or more concrete build clusters. */
 export interface StrategyArchetype {
+  /** Reviewed card identity; distinct from statistically common cards. */
+  identityCards?: string[];
+  diaoPackageEvidence?: import("./diaoArchetype.js").DiaoPackageEvidence;
   id: string;
   name: string;
   championName: string;

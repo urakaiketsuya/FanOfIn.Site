@@ -3528,3 +3528,31 @@ named pools of two through eight cards also receive individual-anchor comparison
 Large catalog target pools are not expanded into single-anchor comparisons.
 Counts describe the current snapshot and may differ from frozen historical reviews.
 Registered class/mastery access is not an execution or active-game-state check.
+
+### Diao Chan card-core pilot
+
+The existing strategy and build memberships remain authoritative; the pilot does not recluster
+or move deck appearances. `applyDiaoArchetypeEvidence` checks every member's positive main +
+material quantities (never sideboard), deduplicating deck IDs. It records joint occurrence of
+Firebloom Flourish + Fractal of Sparks + Glowering Conflagration separately from the
+Flourish + Sparks + Searing Rebuke combo package. Cinder Geyser is supporting damage.
+Average copies include zeroes across all checked decklists. Missing decklists are disclosed.
+
+A Diao Chan strategy receives the reviewed name **Diao Chan — Phantasia Burn** and the three
+identity cards when >=90% of its decklists contain the full core, all member decklists are
+available, and the family has >=5 players and >=2 events. These are conservative pilot naming
+thresholds, not per-deck legality requirements or proof that a combo was executed.
+
+The champion page presents existing strategy families with their preserved build links.
+Variant previews use full main-deck average quantities: at least one copy on average in the
+variant and at least one more average copy than a sibling, excluding the displayed core.
+This avoids treating omissions from truncated defining-card lists as zero prevalence.
+
+Initial published-data audit: 13 Diao builds shown within five strategy families; no deck
+membership, ids, aliases, win rates or coverage changed. Phantasia Burn contains seven variants,
+889 appearances, 333 players and 498 events: 885 appearances contain the complete core and all
+889 contain the combo package. The separate 88-appearance fire family contains the core in
+only three appearances and the combo in 75, so it is not merged. All 3,476 appearances across
+the five families were available. Reproduce the metadata refresh with
+`node --import tsx pipeline/scripts/refresh-diao-archetype.ts`; normal taxonomy generation
+applies the same shared rule. Rollout to other champions requires a separate card-core review.

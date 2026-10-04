@@ -66,3 +66,5 @@ export * from "./draftThemes.js";
 export * from "./fractalDeckLink.js";
 
 export * from "./cardPrintings.js";
+
+export * from "./diaoArchetype.js";
