@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { detectDraftThemes, summarizeDraftThemes, summarizeThemeRecurrence, type DraftTheme } from '../../../shared/src/draftThemes.js';
 import type { DeckCardIndexData } from '../../../shared/src/analysis-types.js';
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
-const catalog = read('../../.cache/cards.json').cards;
+const catalog = read('../../../data/card-catalog.json').cards;
 const index: DeckCardIndexData = read('../../../data/analysis/deck-card-index.json');
 const counts = [5, 3, 17, 1, 13, 139, 8, 489, 215, 57, 77, 1, 78, 162, 155];
 test('reviewed population and all draft memberships remain reproducible', () => {
