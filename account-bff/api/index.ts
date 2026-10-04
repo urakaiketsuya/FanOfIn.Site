@@ -31,7 +31,7 @@ class InvalidRequestBodyError extends Error {}
 function applyCors(response: ServerResponse): void {
   response.setHeader("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
   response.setHeader("Access-Control-Allow-Credentials", "true");
-  response.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
+  response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
   response.setHeader("Access-Control-Allow-Headers", "Content-Type");
   response.setHeader("Vary", "Origin");
   response.setHeader("Content-Security-Policy", "default-src 'none'; frame-ancestors 'none'");
