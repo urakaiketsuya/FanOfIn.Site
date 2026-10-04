@@ -1,5 +1,498 @@
 {
-  "version": 1,
+  "version": 2,
+  "comparison": {
+    "proposed": {
+      "id": "draft-elysian-dante",
+      "name": "Elysian Dante",
+      "kind": "theme",
+      "status": "draft",
+      "paths": [
+        [
+          {
+            "section": "material",
+            "minimum": 1,
+            "names": [
+              "Dante, Hematic Overdrive"
+            ]
+          },
+          {
+            "section": "main",
+            "minimum": 3,
+            "type": "ALLY",
+            "subtypes": [
+              "ELYSIAN"
+            ]
+          }
+        ],
+        [
+          {
+            "section": "material",
+            "minimum": 1,
+            "names": [
+              "Dante, Hematic Overdrive"
+            ]
+          },
+          {
+            "section": "identity",
+            "minimum": 1,
+            "names": [
+              "Epicurean Institute",
+              "Gencode Womb"
+            ]
+          },
+          {
+            "section": "identity",
+            "minimum": 1,
+            "names": [
+              "Venous Core",
+              "Rhesus Eradication",
+              "Lesser Boon of Elysian Blood"
+            ]
+          }
+        ],
+        [
+          {
+            "section": "material",
+            "minimum": 1,
+            "names": [
+              "Dante, Hematic Overdrive"
+            ]
+          },
+          {
+            "section": "main",
+            "minimum": 2,
+            "type": "ALLY",
+            "subtypes": [
+              "ELYSIAN"
+            ]
+          },
+          {
+            "section": "identity",
+            "minimum": 1,
+            "names": [
+              "Epicurean Institute",
+              "Gencode Womb"
+            ]
+          }
+        ]
+      ],
+      "matches": [
+        {
+          "deckId": "61285:21866",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Lucia, Reclaimed Blight",
+                "Thanatotic Hemosynth"
+              ]
+            },
+            {
+              "path": 1,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Epicurean Institute",
+                "Gencode Womb",
+                "Venous Core"
+              ]
+            },
+            {
+              "path": 2,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Epicurean Institute",
+                "Gencode Womb",
+                "Lucia, Reclaimed Blight",
+                "Thanatotic Hemosynth"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "61722:12639",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Lucia, Reclaimed Blight",
+                "Thanatotic Hemosynth"
+              ]
+            },
+            {
+              "path": 2,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Gencode Womb",
+                "Lucia, Reclaimed Blight",
+                "Thanatotic Hemosynth"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "61722:19534",
+          "paths": [
+            {
+              "path": 1,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Gencode Womb",
+                "Rhesus Eradication"
+              ]
+            },
+            {
+              "path": 2,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Gencode Womb",
+                "Thanatotic Hemosynth"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "61723:568",
+          "paths": [
+            {
+              "path": 2,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Embryonic Hemosynth",
+                "Epicurean Institute",
+                "Gencode Womb"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "62266:25352",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Embryonic Hemosynth",
+                "Thanatotic Hemosynth"
+              ]
+            },
+            {
+              "path": 1,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Epicurean Institute",
+                "Gencode Womb",
+                "Rhesus Eradication",
+                "Venous Core"
+              ]
+            },
+            {
+              "path": 2,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Embryonic Hemosynth",
+                "Epicurean Institute",
+                "Gencode Womb",
+                "Thanatotic Hemosynth"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "62266:31561",
+          "paths": [
+            {
+              "path": 1,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Epicurean Institute",
+                "Gencode Womb",
+                "Venous Core"
+              ]
+            },
+            {
+              "path": 2,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Epicurean Institute",
+                "Gencode Womb",
+                "Lucia, Reclaimed Blight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "62484:31561",
+          "paths": [
+            {
+              "path": 1,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Epicurean Institute",
+                "Gencode Womb",
+                "Venous Core"
+              ]
+            },
+            {
+              "path": 2,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Epicurean Institute",
+                "Gencode Womb",
+                "Lucia, Reclaimed Blight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "62616:1063",
+          "paths": [
+            {
+              "path": 1,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Epicurean Institute",
+                "Gencode Womb",
+                "Rhesus Eradication"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "63732:21154",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Embryonic Hemosynth",
+                "Lucia, Reclaimed Blight",
+                "Thanatotic Hemosynth"
+              ]
+            },
+            {
+              "path": 2,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Embryonic Hemosynth",
+                "Epicurean Institute",
+                "Gencode Womb",
+                "Lucia, Reclaimed Blight",
+                "Thanatotic Hemosynth"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "63763:21154",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Embryonic Hemosynth",
+                "Lucia, Reclaimed Blight"
+              ]
+            },
+            {
+              "path": 2,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Embryonic Hemosynth",
+                "Epicurean Institute",
+                "Gencode Womb",
+                "Lucia, Reclaimed Blight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "63897:13804",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Embryonic Hemosynth",
+                "Lucia, Reclaimed Blight",
+                "Thanatotic Hemosynth"
+              ]
+            },
+            {
+              "path": 1,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Gencode Womb",
+                "Venous Core"
+              ]
+            },
+            {
+              "path": 2,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Embryonic Hemosynth",
+                "Gencode Womb",
+                "Lucia, Reclaimed Blight",
+                "Thanatotic Hemosynth"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64495:19017",
+          "paths": [
+            {
+              "path": 1,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Gencode Womb",
+                "Rhesus Eradication"
+              ]
+            },
+            {
+              "path": 2,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Embryonic Hemosynth",
+                "Gencode Womb"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64530:24268",
+          "paths": [
+            {
+              "path": 2,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Embryonic Hemosynth",
+                "Epicurean Institute",
+                "Gencode Womb"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64596:28588",
+          "paths": [
+            {
+              "path": 1,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Gencode Womb",
+                "Rhesus Eradication",
+                "Venous Core"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64888:12639",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Embryonic Hemosynth",
+                "Lucia, Reclaimed Blight",
+                "Thanatotic Hemosynth"
+              ]
+            },
+            {
+              "path": 2,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Embryonic Hemosynth",
+                "Gencode Womb",
+                "Lucia, Reclaimed Blight",
+                "Thanatotic Hemosynth"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64888:13238",
+          "paths": [
+            {
+              "path": 2,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Embryonic Hemosynth",
+                "Epicurean Institute"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64922:21154",
+          "paths": [
+            {
+              "path": 2,
+              "cards": [
+                "Dante, Hematic Overdrive",
+                "Elysian Aspirant",
+                "Embryonic Hemosynth",
+                "Epicurean Institute",
+                "Gencode Womb"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "retainedDeckIds": [
+      "61285:21866",
+      "61722:12639",
+      "61722:19534",
+      "62266:25352",
+      "62266:31561",
+      "62484:31561",
+      "62616:1063",
+      "63732:21154",
+      "63763:21154",
+      "63897:13804",
+      "64495:19017",
+      "64596:28588",
+      "64888:12639"
+    ],
+    "addedDeckIds": [
+      "61723:568",
+      "64530:24268",
+      "64888:13238",
+      "64922:21154"
+    ],
+    "removedDeckIds": [],
+    "recurrence": {
+      "events": 14,
+      "players": 13,
+      "returningPlayers": 3,
+      "largestEventDecks": 2,
+      "unknownDecks": 0
+    }
+  },
   "status": "draft",
   "candidate": {
     "id": "draft-elysian-dante",

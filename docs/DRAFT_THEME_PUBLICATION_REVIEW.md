@@ -137,3 +137,30 @@ Elysian Dante theme or retain a narrower archetype. Preserve the Material Dante
 gate, Main-only ally counting, distinct-name requirements, and sideboard exclusion.
 Production rule extension should follow that decision rather than freezing an
 under-reviewed definition into the publication format.
+
+### Broader-rule comparison
+
+The comparison now retains both baseline paths and adds a third: Material
+Hematic Overdrive, at least two distinct Main Elysian allies, and Institute or
+Womb in Main/Material. The full eligible population produces 17 matches: all 13
+baseline matches plus exactly the four missed lists above. No baseline match is
+removed, and `64701:14399` remains excluded. This is coverage of 17 of the 18
+recorded Hematic Overdrive submissions, not a precision estimate or win-rate claim.
+
+**Curation decision: treat the broader candidate as an Elysian Dante theme.**
+The additional path captures the documented support family without requiring a
+named payoff. It does not establish a standalone strategy or an executable combo.
+The comparison-only proposal is stored separately from the default detector;
+existing draft-page counts and production classification remain unchanged.
+
+The version-2 review artifact records the proposed definition, all qualifying
+witnesses, retained/added/removed IDs, and recurrence. Tests cover both generator
+alternatives, missing requirements, repeated copies, Sideboard, wrong champion
+and ally sections, and absent/non-ally catalog entries. An end-to-end fixture
+locks the exact four additions against the current historical inputs.
+
+Next implement section-aware, distinct-name and catalog-subtype requirements in
+the curated publication path, with backward compatibility for existing rules.
+Then apply this reviewed theme definition and regenerate its visible evidence.
+Other draft families still require their own publication decisions; this result
+must not automatically promote all 15 candidates.

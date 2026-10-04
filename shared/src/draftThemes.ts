@@ -90,15 +90,25 @@ export const draftThemes: DraftTheme[] = [
     draft('memorite-payoff', 'Memorite payoff package', 'engine', [names('main', 1, ...generators), names('identity', 1, 'Crystallized Anthem', 'Facet Together', 'Shardforged Blade')]),
 ];
 
-export function detectDraftThemes(index: DeckCardIndexData, catalog: readonly ThemeCard[]) {
+/** Comparison-only proposal; default detection retains the reviewed baseline. */
+export const elysianDanteThemeProposal: DraftTheme = {
+    ...draftThemes.find(theme => theme.id === 'draft-elysian-dante')!,
+    kind: 'theme',
+    paths: [
+        ...draftThemes.find(theme => theme.id === 'draft-elysian-dante')!.paths,
+        [dante, allies('ELYSIAN', 2), names('identity', 1, 'Epicurean Institute', 'Gencode Womb')],
+    ],
+};
+
+export function detectDraftThemes(index: DeckCardIndexData, catalog: readonly ThemeCard[], definitions: readonly DraftTheme[] = draftThemes) {
     const cards = new Map(catalog.map(c => [c.name, c]));
     // Catch misspelled curated anchors instead of silently generating empty evidence.
-    for (const definition of draftThemes)
+    for (const definition of definitions)
         for (const path of definition.paths)
             for (const condition of path)
                 for (const name of condition.names ?? [])
                     if (!cards.has(name)) throw new Error(`Missing draft-theme anchor: ${name}`);
-    const evidence = draftThemes.map(definition => ({ ...definition, matches: [] as { deckId: string; paths: { path: number; cards: string[] }[] }[] }));
+    const evidence = definitions.map(definition => ({ ...definition, matches: [] as { deckId: string; paths: { path: number; cards: string[] }[] }[] }));
     const decks = [...new Map(index.decks.map(d => [d.deckId, d])).values()].sort((a, b) => a.deckId.localeCompare(b.deckId));
     let eligibleDecks = 0;
     for (const deck of decks) {

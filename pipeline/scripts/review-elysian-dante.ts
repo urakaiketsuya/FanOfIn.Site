@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { decodeCardLines, type DeckCardIndexData } from '../../shared/src/analysis-types.js';
-import { detectDraftThemes } from '../../shared/src/draftThemes.js';
+import { detectDraftThemes, elysianDanteThemeProposal, summarizeThemeRecurrence } from '../../shared/src/draftThemes.js';
 
 // Recompute membership from source inputs so this review cannot silently use a stale draft snapshot.
 const root = new URL('../../', import.meta.url);
@@ -17,6 +17,16 @@ const catalog = JSON.parse(raw.catalog).cards;
 const reference = JSON.parse(raw.reference);
 const taxonomy = JSON.parse(raw.taxonomy);
 const candidate = detectDraftThemes(index, catalog).evidence.find(e => e.id === 'draft-elysian-dante')!;
+const proposed = detectDraftThemes(index, catalog, [elysianDanteThemeProposal]).evidence[0];
+const baselineIds = new Set(candidate.matches.map(match => match.deckId));
+const proposedIds = new Set(proposed.matches.map(match => match.deckId));
+const comparison = {
+    proposed,
+    retainedDeckIds: [...baselineIds].filter(id => proposedIds.has(id)),
+    addedDeckIds: [...proposedIds].filter(id => !baselineIds.has(id)),
+    removedDeckIds: [...baselineIds].filter(id => !proposedIds.has(id)),
+    recurrence: summarizeThemeRecurrence(proposedIds),
+};
 const decks = new Map(index.decks.map(deck => [deck.deckId, deck]));
 const matched = new Set(candidate.matches.map(match => match.deckId));
 const overlap = (entries: { id: string; name: string; deckIds: string[] }[]) => entries.flatMap(entry => {
@@ -41,7 +51,7 @@ const relevantNames = new Set(candidate.matches.flatMap(match => match.paths.fla
 for (const path of candidate.paths) for (const requirement of path) for (const name of requirement.names ?? []) relevantNames.add(name);
 relevantNames.add('Elysian Test Subject');
 const output = {
-    version: 1, status: 'draft', candidate,
+    version: 2, comparison, status: 'draft', candidate,
     sources: Object.fromEntries(Object.entries(raw).map(([key, value]) => [key, { path: inputs[key as keyof typeof inputs], sha256: createHash('sha256').update(value).digest('hex') }])),
     distinctLists: new Set(lists.map(list => list.signature)).size,
     pathGroups,
@@ -53,4 +63,4 @@ const output = {
     lists,
 };
 await writeFile(new URL('data/reference/elysian-dante-review.json', root), JSON.stringify(output, null, 2) + '\n');
-console.log(JSON.stringify({ distinctLists: output.distinctLists, pathGroups, referenceOverlaps: output.referenceOverlaps, materialOverlaps: output.materialOverlaps, clusterOverlaps: output.clusterOverlaps }, null, 2));
+console.log(JSON.stringify({ comparison, distinctLists: output.distinctLists, pathGroups, referenceOverlaps: output.referenceOverlaps, materialOverlaps: output.materialOverlaps, clusterOverlaps: output.clusterOverlaps }, null, 2));

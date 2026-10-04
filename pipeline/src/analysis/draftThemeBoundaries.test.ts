@@ -78,3 +78,37 @@ test('Dante preserves both evidence paths when both qualify', () => {
     assert.equal(result.length, 1);
     assert.deepEqual(result[0].paths.map(p => p.path), [0, 1]);
 });
+
+test('broader Dante proposal requires two distinct Main allies and a generator', async () => {
+    const { elysianDanteThemeProposal } = await import('../../../shared/src/draftThemes.js');
+    const allies = ['Elysian Aspirant', 'Embryonic Hemosynth'];
+    const champion = ['Dante, Hematic Overdrive'];
+    const detect = (index: DeckCardIndexData, cards = catalog) => detectDraftThemes(index, cards, [elysianDanteThemeProposal]).evidence[0].matches;
+    for (const generator of ['Epicurean Institute', 'Gencode Womb']) {
+        const main = [...allies, generator];
+        assert.deepEqual(detect(fixture(main, champion))[0].paths.map(p => p.path), [2]);
+        assert.equal(detectDraftThemes(fixture(main, champion), catalog).evidence.find(e => e.id === 'draft-elysian-dante')!.matches.length, 0);
+        for (const name of main) {
+            const reduced = main.filter(n => n !== name);
+            assert.equal(detect(fixture(reduced, champion, [name], 4)).length, 0, `sideboard and copies cannot replace ${name}`);
+        }
+        assert.equal(detect(fixture(main)).length, 0);
+        assert.equal(detect(fixture([...main, ...champion])).length, 0);
+        assert.equal(detect(fixture([allies[0], generator], [...champion, allies[1]])).length, 0);
+        assert.equal(detect(fixture(main, champion), catalog.filter(c => c.name !== allies[0])).length, 0);
+        assert.equal(detect(fixture(main, champion), catalog.map(c => c.name === allies[0] ? { ...c, types: ['ACTION'] } : c)).length, 0);
+    }
+});
+
+test('broader Dante proposal adds exactly the four reviewed historical lists', async () => {
+    const { elysianDanteThemeProposal } = await import('../../../shared/src/draftThemes.js');
+    const baseline = detectDraftThemes(source, catalog).evidence.find(e => e.id === 'draft-elysian-dante')!;
+    const proposed = detectDraftThemes(source, catalog, [elysianDanteThemeProposal]).evidence[0];
+    const before = new Set(baseline.matches.map(m => m.deckId));
+    const after = new Set(proposed.matches.map(m => m.deckId));
+    assert.equal(before.size, 13);
+    assert.equal(after.size, 17);
+    assert.deepEqual([...before].filter(id => !after.has(id)), []);
+    assert.deepEqual([...after].filter(id => !before.has(id)), ['61723:568', '64530:24268', '64888:13238', '64922:21154']);
+    assert.equal(after.has('64701:14399'), false);
+});

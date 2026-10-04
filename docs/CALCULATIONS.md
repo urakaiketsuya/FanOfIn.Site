@@ -3477,3 +3477,11 @@ metric. Direct-only, generator/support-only, and both-path groups partition matc
 deck IDs. Reference, Material, and cluster overlaps are unique deck-ID intersections
 against their input snapshots; missing cluster membership is not a novelty claim.
 The artifact is draft evidence only and does not change production classification.
+
+The version-2 Elysian review also evaluates a comparison-only theme proposal:
+retain both baseline paths and add Material Hematic Overdrive + two distinct Main
+Elysian allies + Institute or Womb in identity. Detection accepts an explicit
+set of definitions for comparisons; omitted definitions preserve the default
+15-label snapshot. Retained/added/removed IDs are set intersections/differences
+against the baseline. Recurrence uses the same unique-ID helper described above.
+This comparison does not alter the default draft detector or production rules.
