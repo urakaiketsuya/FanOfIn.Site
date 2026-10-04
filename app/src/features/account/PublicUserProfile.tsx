@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import type { PublicProfile } from "@gatcg/shared";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { db } from "../../lib/db";
 import CardResult from "../../components/CardResult";
 import DeckPreviewCard from "../../components/DeckPreviewCard";
@@ -14,11 +14,23 @@ import { EmptyState, InlineState } from "../../components/ui/ContentState";
 
 export default function PublicUserProfile() {
   const { profileSlug = "" } = useParams<{ profileSlug: string }>();
+  const navigate = useNavigate();
+  const [viewerProfileSlug, setViewerProfileSlug] = useState<string>();
   const [profile, setProfile] = useState<PublicProfile | null>();
   const [error, setError] = useState<string | null>(null);
   const [attempt, setAttempt] = useState(0);
   const cards = useLiveQuery(() => db.cards.bulkGet(profile?.favoriteCardIds ?? []), [profile?.favoriteCardIds?.join("|")]);
   useDocumentTitle(profile?.displayName ?? "Community profile", profile ? `${profile.displayName}'s favorite cards and public Grand Archive decklists.` : undefined);
+  useEffect(() => {
+    let active = true;
+    void accountApi.session().then(({ user }) => {
+      if (active) setViewerProfileSlug(user?.profileSlug);
+    }).catch(() => {
+      // Public profiles remain readable when the optional session check fails.
+      if (active) setViewerProfileSlug(undefined);
+    });
+    return () => { active = false; };
+  }, [profileSlug]);
   useEffect(() => {
     let active = true;
     setProfile(undefined); setError(null);
@@ -37,6 +49,7 @@ export default function PublicUserProfile() {
       <h1 className="break-words text-3xl font-bold">{profile.displayName}</h1>
       <div className="mt-3 flex flex-wrap items-center gap-3">
         <p className="text-ctp-subtext1">{profile.decks.length} public deck{profile.decks.length === 1 ? "" : "s"}</p>
+        {viewerProfileSlug === profile.profileSlug && <Button variant="primary" onClick={() => navigate("/account")}>Edit profile</Button>}
         <Link to={`/looking-for?binder=${encodeURIComponent(profile.profileSlug)}`} className="inline-flex min-h-control items-center rounded-lg border border-ctp-surface1 px-3 text-sm font-medium text-ctp-blue hover:border-ctp-blue">View trading binder</Link>
       </div>
     </header>
