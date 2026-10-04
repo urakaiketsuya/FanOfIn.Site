@@ -1,4 +1,4 @@
-import { elysianDanteThemeProposal, type ThemeDefinition } from './draftThemes.js';
+import { draftThemes, elysianDanteThemeProposal, type ThemeDefinition } from './draftThemes.js';
 
 export interface ReviewedTheme extends ThemeDefinition {
     kind: 'theme';
@@ -13,5 +13,12 @@ export const reviewedThemes: readonly ReviewedTheme[] = [{
     kind: 'theme',
     status: 'reviewed',
     paths: structuredClone(elysianDanteThemeProposal.paths),
+    reviewDocument: 'docs/DRAFT_THEME_PUBLICATION_REVIEW.md',
+}, {
+    id: 'resonator-music',
+    name: 'Resonator music',
+    kind: 'theme',
+    status: 'reviewed',
+    paths: structuredClone(draftThemes.find(theme => theme.id === 'draft-resonator')!.paths),
     reviewDocument: 'docs/DRAFT_THEME_PUBLICATION_REVIEW.md',
 }];

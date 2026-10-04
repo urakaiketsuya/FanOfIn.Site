@@ -201,3 +201,47 @@ Keyboard arrow switching and Enter expansion worked; empty search, preserved
 search across tabs, reviewed rules, and matching deck links were checked. Loading
 and fetch failure/retry remain implemented independently per tab but were not
 simulated in this pass; text zoom was not tested.
+
+## Resonator music publication decision
+
+**Decision: publish as an overlapping reviewed theme, retaining the draft baseline.**
+The rule requires three distinct Main-deck Resonator allies and two distinct
+Main-deck cards with Harmony or Melody subtype. Either music subtype suffices;
+it does not require one of each. Copies, Material cards, and Sideboard cards
+cannot substitute for those distinct Main-deck names. No champion gate is added.
+
+Reproduce the review with `node --import tsx pipeline/scripts/review-resonator.ts`.
+`data/reference/resonator-review.json` records source hashes, exact lists,
+section/quantity signatures, catalog mechanics, witnesses, and two relaxed-rule
+comparisons. The five matches are `61549:4571`, `61722:25782`, `62146:25312`,
+`62616:19726`, and `64329:9180`: five events, five player IDs, and five distinct
+Main/Material lists. This small historical sample does not establish independent
+strategies, current legality, or competitive strength.
+
+The catalog supports a common music interaction. Music Aficionado discounts
+itself after a Harmony or Melody activation; Musical Curator searches for either
+subtype; ZENA can use either subtype in the graveyard to pay reserve cost.
+Fanclub Leader buffs Resonator allies after music activations, Performance
+Enthusiast gains its conditional buff counter, and Tribute Singer enables a
+conditional discounted music activation. These are different supporting roles,
+not a verified sequence or a single win condition.
+
+The first two lists use three Resonator names, while the other lists use five or
+six. Music ranges from two to eight distinct names. Music classification follows
+catalog subtypes rather than an Action-only filter: Brackish Lutist is included
+when present. Reducing the ally minimum to two while retaining two music names,
+or reducing music to one while retaining three allies, adds no historical decks.
+This supports retaining the existing conservative boundary, but does not prove
+complete coverage of every possible Resonator build. Lists below both minima
+were not part of these one-condition comparisons.
+
+All three draft Resonator-support matches are contained in the five music
+matches. Keep that package draft pending its own role review; its overlap does
+not justify another archetype or automatic package publication.
+
+The reviewed artifact now contains Elysian Dante (17 decks) and Resonator music
+(5 decks). Existing draft definitions, archetype counts, and combo counts remain
+unchanged. The existing Themes view consumes the regenerated reviewed artifact.
+Regression checks lock exact historical membership and reject missing names,
+extra copies, duplicate lines, and Material/Sideboard substitutions. No UI code
+changed in this publication; browser layout and failure states were not retested.

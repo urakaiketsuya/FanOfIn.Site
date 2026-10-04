@@ -465,6 +465,131 @@
           ]
         }
       ]
+    },
+    {
+      "id": "resonator-music",
+      "name": "Resonator music",
+      "kind": "theme",
+      "status": "reviewed",
+      "paths": [
+        [
+          {
+            "section": "main",
+            "minimum": 3,
+            "type": "ALLY",
+            "subtypes": [
+              "RESONATOR"
+            ]
+          },
+          {
+            "section": "main",
+            "minimum": 2,
+            "subtypes": [
+              "HARMONY",
+              "MELODY"
+            ]
+          }
+        ]
+      ],
+      "reviewDocument": "docs/DRAFT_THEME_PUBLICATION_REVIEW.md",
+      "matches": [
+        {
+          "deckId": "61549:4571",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Blissful Calling",
+                "Music Aficionado",
+                "Musical Curator",
+                "Rondo of the Wind",
+                "Wuthering Sforzando",
+                "ZENA, Echo Weaver"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "61722:25782",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Breath's Coloratura",
+                "Music Aficionado",
+                "Musical Curator",
+                "Steady Verse",
+                "ZENA, Echo Weaver"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "62146:25312",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Belted Tune",
+                "Brackish Lutist",
+                "Breath's Coloratura",
+                "Fanclub Leader",
+                "Music Aficionado",
+                "Musical Curator",
+                "Performance Enthusiast",
+                "Rondo of the Wind",
+                "Steady Verse",
+                "Tribute Singer",
+                "Wuthering Sforzando",
+                "ZENA, Echo Weaver"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "62616:19726",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Attune with the Winds",
+                "Breath's Coloratura",
+                "Fanclub Leader",
+                "Music Aficionado",
+                "Musical Curator",
+                "Performance Enthusiast",
+                "Rondo of the Wind",
+                "Sinfonia of Hope",
+                "Song of Nurturing",
+                "Song of Return",
+                "Steady Verse",
+                "Tribute Singer",
+                "Wuthering Sforzando",
+                "ZENA, Echo Weaver"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64329:9180",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Attune with the Winds",
+                "Breath's Coloratura",
+                "Fanclub Leader",
+                "Musical Curator",
+                "Performance Enthusiast",
+                "Sinfonia of Hope",
+                "Steady Verse",
+                "Tribute Singer",
+                "ZENA, Echo Weaver"
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "status": "reviewed",
@@ -498,11 +623,31 @@
         }
       ],
       "overlaps": []
+    },
+    {
+      "id": "resonator-music",
+      "decks": 5,
+      "recurrence": {
+        "events": 5,
+        "players": 5,
+        "returningPlayers": 0,
+        "largestEventDecks": 1,
+        "unknownDecks": 0
+      },
+      "exclusiveDecks": 5,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 5,
+          "exclusiveDecks": 5
+        }
+      ],
+      "overlaps": []
     }
   ],
   "sources": {
     "indexSha256": "9508ed248f0c4735f5396937eb662c067c1dfbe86f57f5371cf5fb3f4fa9daad",
     "catalogSha256": "5374445554a13f5a7d8934322041776ad75f19891cac92cf79aa1259a5008102",
-    "definitionsSha256": "42aff96e25ca7de148f5b96af2bf3d3307d69f5ece427c97c52da69781ddfa78"
+    "definitionsSha256": "7af55897a5ce05b2f888cb27338c7e379779138dae0538605f55277a8ea62581"
   }
 }

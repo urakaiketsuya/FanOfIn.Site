@@ -1,0 +1,1821 @@
+{
+  "version": 1,
+  "status": "review",
+  "sources": {
+    "indexSha256": "9508ed248f0c4735f5396937eb662c067c1dfbe86f57f5371cf5fb3f4fa9daad",
+    "catalogSha256": "5374445554a13f5a7d8934322041776ad75f19891cac92cf79aa1259a5008102"
+  },
+  "candidate": {
+    "id": "draft-resonator",
+    "name": "Resonator music",
+    "kind": "theme",
+    "status": "draft",
+    "paths": [
+      [
+        {
+          "section": "main",
+          "minimum": 3,
+          "type": "ALLY",
+          "subtypes": [
+            "RESONATOR"
+          ]
+        },
+        {
+          "section": "main",
+          "minimum": 2,
+          "subtypes": [
+            "HARMONY",
+            "MELODY"
+          ]
+        }
+      ]
+    ],
+    "matches": [
+      {
+        "deckId": "61549:4571",
+        "paths": [
+          {
+            "path": 0,
+            "cards": [
+              "Blissful Calling",
+              "Music Aficionado",
+              "Musical Curator",
+              "Rondo of the Wind",
+              "Wuthering Sforzando",
+              "ZENA, Echo Weaver"
+            ]
+          }
+        ]
+      },
+      {
+        "deckId": "61722:25782",
+        "paths": [
+          {
+            "path": 0,
+            "cards": [
+              "Breath's Coloratura",
+              "Music Aficionado",
+              "Musical Curator",
+              "Steady Verse",
+              "ZENA, Echo Weaver"
+            ]
+          }
+        ]
+      },
+      {
+        "deckId": "62146:25312",
+        "paths": [
+          {
+            "path": 0,
+            "cards": [
+              "Belted Tune",
+              "Brackish Lutist",
+              "Breath's Coloratura",
+              "Fanclub Leader",
+              "Music Aficionado",
+              "Musical Curator",
+              "Performance Enthusiast",
+              "Rondo of the Wind",
+              "Steady Verse",
+              "Tribute Singer",
+              "Wuthering Sforzando",
+              "ZENA, Echo Weaver"
+            ]
+          }
+        ]
+      },
+      {
+        "deckId": "62616:19726",
+        "paths": [
+          {
+            "path": 0,
+            "cards": [
+              "Attune with the Winds",
+              "Breath's Coloratura",
+              "Fanclub Leader",
+              "Music Aficionado",
+              "Musical Curator",
+              "Performance Enthusiast",
+              "Rondo of the Wind",
+              "Sinfonia of Hope",
+              "Song of Nurturing",
+              "Song of Return",
+              "Steady Verse",
+              "Tribute Singer",
+              "Wuthering Sforzando",
+              "ZENA, Echo Weaver"
+            ]
+          }
+        ]
+      },
+      {
+        "deckId": "64329:9180",
+        "paths": [
+          {
+            "path": 0,
+            "cards": [
+              "Attune with the Winds",
+              "Breath's Coloratura",
+              "Fanclub Leader",
+              "Musical Curator",
+              "Performance Enthusiast",
+              "Sinfonia of Hope",
+              "Steady Verse",
+              "Tribute Singer",
+              "ZENA, Echo Weaver"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "recurrence": {
+    "events": 5,
+    "players": 5,
+    "returningPlayers": 0,
+    "largestEventDecks": 1,
+    "unknownDecks": 0
+  },
+  "distinctMatchingLists": 5,
+  "comparisons": [
+    {
+      "definition": {
+        "id": "comparison-2-allies-2-music",
+        "name": "Resonator music",
+        "kind": "theme",
+        "status": "draft",
+        "paths": [
+          [
+            {
+              "section": "main",
+              "minimum": 2,
+              "type": "ALLY",
+              "subtypes": [
+                "RESONATOR"
+              ]
+            },
+            {
+              "section": "main",
+              "minimum": 2,
+              "subtypes": [
+                "HARMONY",
+                "MELODY"
+              ]
+            }
+          ]
+        ]
+      },
+      "matches": [
+        {
+          "deckId": "61549:4571",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Blissful Calling",
+                "Music Aficionado",
+                "Musical Curator",
+                "Rondo of the Wind",
+                "Wuthering Sforzando",
+                "ZENA, Echo Weaver"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "61722:25782",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Breath's Coloratura",
+                "Music Aficionado",
+                "Musical Curator",
+                "Steady Verse",
+                "ZENA, Echo Weaver"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "62146:25312",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Belted Tune",
+                "Brackish Lutist",
+                "Breath's Coloratura",
+                "Fanclub Leader",
+                "Music Aficionado",
+                "Musical Curator",
+                "Performance Enthusiast",
+                "Rondo of the Wind",
+                "Steady Verse",
+                "Tribute Singer",
+                "Wuthering Sforzando",
+                "ZENA, Echo Weaver"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "62616:19726",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Attune with the Winds",
+                "Breath's Coloratura",
+                "Fanclub Leader",
+                "Music Aficionado",
+                "Musical Curator",
+                "Performance Enthusiast",
+                "Rondo of the Wind",
+                "Sinfonia of Hope",
+                "Song of Nurturing",
+                "Song of Return",
+                "Steady Verse",
+                "Tribute Singer",
+                "Wuthering Sforzando",
+                "ZENA, Echo Weaver"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64329:9180",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Attune with the Winds",
+                "Breath's Coloratura",
+                "Fanclub Leader",
+                "Musical Curator",
+                "Performance Enthusiast",
+                "Sinfonia of Hope",
+                "Steady Verse",
+                "Tribute Singer",
+                "ZENA, Echo Weaver"
+              ]
+            }
+          ]
+        }
+      ],
+      "addedDeckIds": [],
+      "baselineOverlap": 5
+    },
+    {
+      "definition": {
+        "id": "comparison-3-allies-1-music",
+        "name": "Resonator music",
+        "kind": "theme",
+        "status": "draft",
+        "paths": [
+          [
+            {
+              "section": "main",
+              "minimum": 3,
+              "type": "ALLY",
+              "subtypes": [
+                "RESONATOR"
+              ]
+            },
+            {
+              "section": "main",
+              "minimum": 1,
+              "subtypes": [
+                "HARMONY",
+                "MELODY"
+              ]
+            }
+          ]
+        ]
+      },
+      "matches": [
+        {
+          "deckId": "61549:4571",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Blissful Calling",
+                "Music Aficionado",
+                "Musical Curator",
+                "Rondo of the Wind",
+                "Wuthering Sforzando",
+                "ZENA, Echo Weaver"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "61722:25782",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Breath's Coloratura",
+                "Music Aficionado",
+                "Musical Curator",
+                "Steady Verse",
+                "ZENA, Echo Weaver"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "62146:25312",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Belted Tune",
+                "Brackish Lutist",
+                "Breath's Coloratura",
+                "Fanclub Leader",
+                "Music Aficionado",
+                "Musical Curator",
+                "Performance Enthusiast",
+                "Rondo of the Wind",
+                "Steady Verse",
+                "Tribute Singer",
+                "Wuthering Sforzando",
+                "ZENA, Echo Weaver"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "62616:19726",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Attune with the Winds",
+                "Breath's Coloratura",
+                "Fanclub Leader",
+                "Music Aficionado",
+                "Musical Curator",
+                "Performance Enthusiast",
+                "Rondo of the Wind",
+                "Sinfonia of Hope",
+                "Song of Nurturing",
+                "Song of Return",
+                "Steady Verse",
+                "Tribute Singer",
+                "Wuthering Sforzando",
+                "ZENA, Echo Weaver"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64329:9180",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Attune with the Winds",
+                "Breath's Coloratura",
+                "Fanclub Leader",
+                "Musical Curator",
+                "Performance Enthusiast",
+                "Sinfonia of Hope",
+                "Steady Verse",
+                "Tribute Singer",
+                "ZENA, Echo Weaver"
+              ]
+            }
+          ]
+        }
+      ],
+      "addedDeckIds": [],
+      "baselineOverlap": 5
+    },
+    {
+      "definition": {
+        "id": "draft-resonator-support",
+        "name": "Resonator support",
+        "kind": "engine",
+        "status": "draft",
+        "paths": [
+          [
+            {
+              "section": "main",
+              "minimum": 3,
+              "type": "ALLY",
+              "subtypes": [
+                "RESONATOR"
+              ]
+            },
+            {
+              "section": "identity",
+              "minimum": 1,
+              "names": [
+                "Fanclub Leader",
+                "Forese, Fervid Cantor",
+                "ResonanTech Module"
+              ]
+            }
+          ]
+        ]
+      },
+      "matches": [
+        {
+          "deckId": "62146:25312",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Fanclub Leader",
+                "Forese, Fervid Cantor",
+                "Music Aficionado",
+                "Musical Curator",
+                "Performance Enthusiast",
+                "ResonanTech Module",
+                "Tribute Singer",
+                "ZENA, Echo Weaver"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "62616:19726",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Fanclub Leader",
+                "Forese, Fervid Cantor",
+                "Music Aficionado",
+                "Musical Curator",
+                "Performance Enthusiast",
+                "ResonanTech Module",
+                "Tribute Singer",
+                "ZENA, Echo Weaver"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64329:9180",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Fanclub Leader",
+                "Forese, Fervid Cantor",
+                "Musical Curator",
+                "Performance Enthusiast",
+                "ResonanTech Module",
+                "Tribute Singer",
+                "ZENA, Echo Weaver"
+              ]
+            }
+          ]
+        }
+      ],
+      "addedDeckIds": [],
+      "baselineOverlap": 3
+    }
+  ],
+  "catalogEvidence": [
+    {
+      "name": "Attune with the Winds",
+      "slug": "attune-with-the-winds",
+      "classes": [
+        "TAMER"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "TAMER",
+        "SKILL",
+        "HARMONY"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": null,
+      "speed": false,
+      "effect": "Put a **buff** counter on each ally you control. *(Allies get +1 power and +1 life for each **buff** counter on them.)*\n\n[Class Bonus] ***Harmonize*** — If you've activated a Melody card this turn, draw a card.",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "DOA Alter",
+          "collectorNumber": "200",
+          "releaseDate": "2023-04-28T00:00:00"
+        },
+        {
+          "setPrefix": "DOA 1st",
+          "collectorNumber": "200",
+          "releaseDate": "2023-01-01T00:00:00"
+        },
+        {
+          "setPrefix": "RDOPD",
+          "collectorNumber": "164",
+          "releaseDate": "2026-04-03T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Belted Tune",
+      "slug": "belted-tune",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SKILL",
+        "MELODY"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "speed": false,
+      "effect": "Put a **buff** counter on target ally. *(Allies get +1[POWER] and +1[LIFE] for each **buff** counter on them.)*",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRD",
+          "collectorNumber": "033",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Blissful Calling",
+      "slug": "blissful-calling",
+      "classes": [
+        "TAMER"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "TAMER",
+        "SKILL",
+        "MELODY"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 1,
+      "power": null,
+      "speed": false,
+      "effect": "Look at the top five cards of your deck. You may reveal an Animal or Beast card from among them and put it into your hand. Put the rest on the bottom of your deck in any order.",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "DOA Alter",
+          "collectorNumber": "073",
+          "releaseDate": "2023-04-28T00:00:00"
+        },
+        {
+          "setPrefix": "DOA 1st",
+          "collectorNumber": "073",
+          "releaseDate": "2023-01-01T00:00:00"
+        },
+        {
+          "setPrefix": "DOASD",
+          "collectorNumber": "040",
+          "releaseDate": "2023-04-28T00:00:00"
+        },
+        {
+          "setPrefix": "SP3",
+          "collectorNumber": "005",
+          "releaseDate": "2025-06-27T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Brackish Lutist",
+      "slug": "brackish-lutist",
+      "classes": [
+        "TAMER"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "TAMER",
+        "HUMAN",
+        "MELODY"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": 1,
+      "speed": null,
+      "effect": "If a card with **floating memory** would be put into a player's graveyard, that player banishes it instead.",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "HVN",
+          "collectorNumber": "034",
+          "releaseDate": "2025-03-07T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Breath's Coloratura",
+      "slug": "breaths-coloratura",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SPELL",
+        "MELODY"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": null,
+      "speed": false,
+      "effect": "[Class Bonus] **Fast Activation** *(You may activate this card at fast speed.)*\n\nPut a **buff** counter on each Human ally you control. Until end of turn, Human allies that enter the field under your control enter with an additional **buff** counter on them.",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRD",
+          "collectorNumber": "181",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Fanclub Leader",
+      "slug": "fanclub-leader",
+      "classes": [
+        "WARRIOR"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "RESONATOR",
+        "HUMAN"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": 1,
+      "speed": null,
+      "effect": "Whenever you activate a Harmony or Melody card, Resonator allies you control get +1[POWER] until end of turn.",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRD",
+          "collectorNumber": "190",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Music Aficionado",
+      "slug": "music-aficionado",
+      "classes": [
+        "WARRIOR"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "RESONATOR",
+        "HUMAN"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 4,
+      "power": 2,
+      "speed": null,
+      "effect": "As long as you've activated a Harmony or Melody card this turn, this card costs 3 less to activate.",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRD",
+          "collectorNumber": "194",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Musical Curator",
+      "slug": "musical-curator",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "RESONATOR",
+        "HUMAN"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": 1,
+      "speed": null,
+      "effect": "**On Enter:** Choose Harmony or Melody. **Scavenge 12 **for a card of that subtype. *(To **scavenge** an amount, reveal cards from the top of your deck until you reveal that many cards or until you reveal the specified card. Put the specified card into your hand and the rest on the bottom of your deck in a random order.)*",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRD",
+          "collectorNumber": "077",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Performance Enthusiast",
+      "slug": "performance-enthusiast",
+      "classes": [
+        "WARRIOR"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "WARRIOR",
+        "RESONATOR",
+        "HUMAN"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": 1,
+      "speed": null,
+      "effect": "Whenever you activate a Harmony or Melody card, if there are no **buff** counters on CARDNAME, put a **buff** counter on CARDNAME. *(Allies get +1[POWER] and +1[LIFE] for each **buff** counter on them.)*",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRD",
+          "collectorNumber": "081",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Rondo of the Wind",
+      "slug": "rondo-of-the-wind",
+      "classes": [
+        "CLERIC",
+        "TAMER"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "TAMER",
+        "SKILL",
+        "MELODY"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 4,
+      "power": null,
+      "speed": true,
+      "effect": "[Class Bonus] This card costs 1 less to activate. \n\n**Scavenge 6** for an ally card. *(To **scavenge** an amount, reveal cards from the top of your deck until you reveal that many cards or until you reveal the specified card. Put the specified card into your hand and the rest on the bottom of your deck in a random order.)*",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRD",
+          "collectorNumber": "198",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Sinfonia of Hope",
+      "slug": "sinfonia-of-hope",
+      "classes": [
+        "CLERIC",
+        "TAMER"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "TAMER",
+        "SKILL",
+        "MELODY"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "speed": true,
+      "effect": "Target ally gets +2[LIFE] until end of turn.\n\n[Class Bonus] The next Harmony card you activate this turn costs 2 less to activate. *(Apply this effect only if your champion's class matches this card's class.)*",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRD",
+          "collectorNumber": "199",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Song of Nurturing",
+      "slug": "song-of-nurturing",
+      "classes": [
+        "TAMER"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "TAMER",
+        "SKILL",
+        "MELODY"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "speed": true,
+      "effect": "Allies you control get +2 [LIFE] until end of turn. **Class Bonus:** Those allies also get +1 [POWER] until end of turn. *(Apply the additional effect only if your champion's class matches this card's class.)*",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "DOA Alter",
+          "collectorNumber": "110",
+          "releaseDate": "2023-04-28T00:00:00"
+        },
+        {
+          "setPrefix": "DOA 1st",
+          "collectorNumber": "110",
+          "releaseDate": "2023-01-01T00:00:00"
+        },
+        {
+          "setPrefix": "DOASD",
+          "collectorNumber": "058",
+          "releaseDate": "2023-04-28T00:00:00"
+        },
+        {
+          "setPrefix": "ReC-SLM",
+          "collectorNumber": "018",
+          "releaseDate": "2024-05-17T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Song of Return",
+      "slug": "song-of-return",
+      "classes": [
+        "TAMER"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "TAMER",
+        "SKILL",
+        "MELODY"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": null,
+      "speed": true,
+      "effect": "[Class Bonus] This card costs 1 less to activate. *(Apply this effect only if your champion's class matches this card's class.)*\n\nReturn up to two target allies you control to their owner's hands.",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "DOA Alter",
+          "collectorNumber": "223",
+          "releaseDate": "2023-04-28T00:00:00"
+        },
+        {
+          "setPrefix": "DOA 1st",
+          "collectorNumber": "223",
+          "releaseDate": "2023-01-01T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Steady Verse",
+      "slug": "steady-verse",
+      "classes": [
+        "CLERIC",
+        "TAMER"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "TAMER",
+        "SKILL",
+        "MELODY"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "speed": false,
+      "effect": "[Class Bonus] The next Harmony action card you activate this turn costs 1 less to activate. \n\nDraw a card into your memory.",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRD",
+          "collectorNumber": "091",
+          "releaseDate": "2026-08-21T00:00:00"
+        },
+        {
+          "setPrefix": "FTC",
+          "collectorNumber": "048",
+          "releaseDate": "2023-08-25T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Tribute Singer",
+      "slug": "tribute-singer",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "RESONATOR",
+        "HUMAN"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": 1,
+      "speed": null,
+      "effect": "[Level 1+] **On Enter:** Reveal the top five cards of your deck. You may activate a non-advanced element Harmony or Melody card from among the revealed cards or your memory. That card costs (3) less to activate this way. Put the rest of the revealed cards on the bottom of your deck in any order.",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRD",
+          "collectorNumber": "201",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Wuthering Sforzando",
+      "slug": "wuthering-sforzando",
+      "classes": [
+        "CLERIC",
+        "TAMER"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "TAMER",
+        "SKILL",
+        "HARMONY"
+      ],
+      "elements": [
+        "WIND"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 7,
+      "power": null,
+      "speed": false,
+      "effect": "[Class Bonus] As long as you've activated a Melody card this turn, this card costs 3 less to activate.\n\nTarget ally's next attack this turn gets +6[POWER].",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRD",
+          "collectorNumber": "206",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "ZENA, Echo Weaver",
+      "slug": "zena-echo-weaver",
+      "classes": [
+        "CLERIC",
+        "WARRIOR"
+      ],
+      "types": [
+        "UNIQUE",
+        "ALLY"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "WARRIOR",
+        "RESONATOR",
+        "HUMAN"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 4,
+      "power": 2,
+      "speed": null,
+      "effect": "While paying for this card's reserve cost, you may banish up to two Harmony and/or Melody cards from your graveyard. Each card banished this way pays for 2 of that cost.\n\n[Level 1+] **Vigor** *(This ally wakes up at the beginning of your end phase.)*",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRD",
+          "collectorNumber": "103",
+          "releaseDate": "2026-08-21T00:00:00"
+        },
+        {
+          "setPrefix": "PRD 1st",
+          "collectorNumber": "103",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    }
+  ],
+  "lists": [
+    {
+      "deckId": "61549:4571",
+      "baseline": true,
+      "signature": "50a2d48676683d24bba2e1540b3a16f3c4375845d1660839bef22c71a71b82f5",
+      "resonators": [
+        "Music Aficionado",
+        "Musical Curator",
+        "ZENA, Echo Weaver"
+      ],
+      "music": [
+        "Blissful Calling",
+        "Rondo of the Wind",
+        "Wuthering Sforzando"
+      ],
+      "main": [
+        {
+          "name": "Aesan Protector",
+          "quantity": 3
+        },
+        {
+          "name": "Annul Spell",
+          "quantity": 1
+        },
+        {
+          "name": "Bandit, Gaze Leader",
+          "quantity": 4
+        },
+        {
+          "name": "Blissful Calling",
+          "quantity": 4
+        },
+        {
+          "name": "Coronation Ceremony",
+          "quantity": 1
+        },
+        {
+          "name": "Escape the Wreckage",
+          "quantity": 3
+        },
+        {
+          "name": "Fluffy Shopkeep",
+          "quantity": 4
+        },
+        {
+          "name": "Forest Cake",
+          "quantity": 3
+        },
+        {
+          "name": "Longtail Grovesward",
+          "quantity": 4
+        },
+        {
+          "name": "Music Aficionado",
+          "quantity": 3
+        },
+        {
+          "name": "Musical Curator",
+          "quantity": 4
+        },
+        {
+          "name": "Mystic Purifier",
+          "quantity": 4
+        },
+        {
+          "name": "Protector Raccoon",
+          "quantity": 3
+        },
+        {
+          "name": "Reclaim",
+          "quantity": 3
+        },
+        {
+          "name": "Rondo of the Wind",
+          "quantity": 4
+        },
+        {
+          "name": "Stifling Trap",
+          "quantity": 2
+        },
+        {
+          "name": "StrideTech W",
+          "quantity": 2
+        },
+        {
+          "name": "Verdigris Decree",
+          "quantity": 2
+        },
+        {
+          "name": "Wuthering Sforzando",
+          "quantity": 4
+        },
+        {
+          "name": "ZENA, Echo Weaver",
+          "quantity": 2
+        }
+      ],
+      "material": [
+        {
+          "name": "Clockwork Musicbox",
+          "quantity": 1
+        },
+        {
+          "name": "Enfeebling Orb",
+          "quantity": 1
+        },
+        {
+          "name": "Fire Resonance Bauble",
+          "quantity": 1
+        },
+        {
+          "name": "Purifying Thurible",
+          "quantity": 1
+        },
+        {
+          "name": "Quicksilver Grail",
+          "quantity": 1
+        },
+        {
+          "name": "Safeguard Amulet",
+          "quantity": 1
+        },
+        {
+          "name": "Silvie, Wilds Whisperer",
+          "quantity": 1
+        },
+        {
+          "name": "Smoke Bombs",
+          "quantity": 1
+        },
+        {
+          "name": "Spirit of Wind",
+          "quantity": 1
+        },
+        {
+          "name": "Viridian Protective Trinket",
+          "quantity": 1
+        },
+        {
+          "name": "Water Resonance Bauble",
+          "quantity": 1
+        },
+        {
+          "name": "Wind Resonance Bauble",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "deckId": "61722:25782",
+      "baseline": true,
+      "signature": "3fabc394a44d44c92a056f86e38ddefcea4792d45d225164ae23a05c2e356078",
+      "resonators": [
+        "Music Aficionado",
+        "Musical Curator",
+        "ZENA, Echo Weaver"
+      ],
+      "music": [
+        "Breath's Coloratura",
+        "Steady Verse"
+      ],
+      "main": [
+        {
+          "name": "Breath's Coloratura",
+          "quantity": 4
+        },
+        {
+          "name": "Chamber of Reflections",
+          "quantity": 4
+        },
+        {
+          "name": "Classical Opening",
+          "quantity": 4
+        },
+        {
+          "name": "Edge of Tomorrow",
+          "quantity": 2
+        },
+        {
+          "name": "Field of Ranks and Files",
+          "quantity": 2
+        },
+        {
+          "name": "Golden Bishop",
+          "quantity": 3
+        },
+        {
+          "name": "Golden Gambit",
+          "quantity": 3
+        },
+        {
+          "name": "Golden Pawn",
+          "quantity": 3
+        },
+        {
+          "name": "March On",
+          "quantity": 4
+        },
+        {
+          "name": "Music Aficionado",
+          "quantity": 4
+        },
+        {
+          "name": "Musical Curator",
+          "quantity": 4
+        },
+        {
+          "name": "Reclaim",
+          "quantity": 3
+        },
+        {
+          "name": "Rowland, Schwartz Knight",
+          "quantity": 3
+        },
+        {
+          "name": "Royal Line Defense",
+          "quantity": 3
+        },
+        {
+          "name": "Scout the Land",
+          "quantity": 4
+        },
+        {
+          "name": "Steady Verse",
+          "quantity": 4
+        },
+        {
+          "name": "Summon Pawn",
+          "quantity": 4
+        },
+        {
+          "name": "ZENA, Echo Weaver",
+          "quantity": 3
+        }
+      ],
+      "material": [
+        {
+          "name": "Alice, Golden Queen",
+          "quantity": 1
+        },
+        {
+          "name": "Alice, Whim's Monarch",
+          "quantity": 1
+        },
+        {
+          "name": "Backup Charger",
+          "quantity": 1
+        },
+        {
+          "name": "Dropped Band",
+          "quantity": 1
+        },
+        {
+          "name": "Fire Resonance Bauble",
+          "quantity": 1
+        },
+        {
+          "name": "Nullifying Mirror",
+          "quantity": 1
+        },
+        {
+          "name": "Purifying Thurible",
+          "quantity": 1
+        },
+        {
+          "name": "Smoke Bombs",
+          "quantity": 1
+        },
+        {
+          "name": "Spirit of Wind",
+          "quantity": 1
+        },
+        {
+          "name": "Tariff Ring",
+          "quantity": 1
+        },
+        {
+          "name": "The Looking Glass",
+          "quantity": 1
+        },
+        {
+          "name": "Water Resonance Bauble",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "deckId": "62146:25312",
+      "baseline": true,
+      "signature": "97986971f9469be28c86cf10bab1a2b15b40ec35f32e3197c686e0a861c7878c",
+      "resonators": [
+        "Fanclub Leader",
+        "Music Aficionado",
+        "Musical Curator",
+        "Performance Enthusiast",
+        "Tribute Singer",
+        "ZENA, Echo Weaver"
+      ],
+      "music": [
+        "Belted Tune",
+        "Brackish Lutist",
+        "Breath's Coloratura",
+        "Rondo of the Wind",
+        "Steady Verse",
+        "Wuthering Sforzando"
+      ],
+      "main": [
+        {
+          "name": "Aesan Protector",
+          "quantity": 4
+        },
+        {
+          "name": "Belted Tune",
+          "quantity": 3
+        },
+        {
+          "name": "Brackish Lutist",
+          "quantity": 4
+        },
+        {
+          "name": "Breath's Coloratura",
+          "quantity": 4
+        },
+        {
+          "name": "Fairy Whispers",
+          "quantity": 4
+        },
+        {
+          "name": "Fanclub Leader",
+          "quantity": 4
+        },
+        {
+          "name": "Forese, Fervid Cantor",
+          "quantity": 4
+        },
+        {
+          "name": "Music Aficionado",
+          "quantity": 3
+        },
+        {
+          "name": "Musical Curator",
+          "quantity": 4
+        },
+        {
+          "name": "Performance Enthusiast",
+          "quantity": 2
+        },
+        {
+          "name": "Rondo of the Wind",
+          "quantity": 4
+        },
+        {
+          "name": "Steady Verse",
+          "quantity": 4
+        },
+        {
+          "name": "Tribute Singer",
+          "quantity": 4
+        },
+        {
+          "name": "Turbo Charge",
+          "quantity": 1
+        },
+        {
+          "name": "Veiling Breeze",
+          "quantity": 4
+        },
+        {
+          "name": "Verdigris Decree",
+          "quantity": 2
+        },
+        {
+          "name": "Wuthering Sforzando",
+          "quantity": 2
+        },
+        {
+          "name": "ZENA, Echo Weaver",
+          "quantity": 3
+        }
+      ],
+      "material": [
+        {
+          "name": "Backup Charger",
+          "quantity": 1
+        },
+        {
+          "name": "Censer of Restful Peace",
+          "quantity": 1
+        },
+        {
+          "name": "Grand Crusader's Ring",
+          "quantity": 1
+        },
+        {
+          "name": "Nullifying Lantern",
+          "quantity": 1
+        },
+        {
+          "name": "Purifying Thurible",
+          "quantity": 1
+        },
+        {
+          "name": "ResonanTech Module",
+          "quantity": 1
+        },
+        {
+          "name": "Safeguard Amulet",
+          "quantity": 1
+        },
+        {
+          "name": "Spirit of Wind",
+          "quantity": 1
+        },
+        {
+          "name": "Tariff Ring",
+          "quantity": 1
+        },
+        {
+          "name": "Vanitas, Obliviate Schemer",
+          "quantity": 1
+        },
+        {
+          "name": "Viridian Protective Trinket",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "deckId": "62616:19726",
+      "baseline": true,
+      "signature": "c271f6daddb198f26a5c9a6e7550881a8fcc915007cf9a47a104ea9fd6d5af15",
+      "resonators": [
+        "Fanclub Leader",
+        "Music Aficionado",
+        "Musical Curator",
+        "Performance Enthusiast",
+        "Tribute Singer",
+        "ZENA, Echo Weaver"
+      ],
+      "music": [
+        "Attune with the Winds",
+        "Breath's Coloratura",
+        "Rondo of the Wind",
+        "Sinfonia of Hope",
+        "Song of Nurturing",
+        "Song of Return",
+        "Steady Verse",
+        "Wuthering Sforzando"
+      ],
+      "main": [
+        {
+          "name": "Attune with the Winds",
+          "quantity": 3
+        },
+        {
+          "name": "Breath's Coloratura",
+          "quantity": 4
+        },
+        {
+          "name": "Displace",
+          "quantity": 4
+        },
+        {
+          "name": "Fanclub Leader",
+          "quantity": 4
+        },
+        {
+          "name": "Forese, Fervid Cantor",
+          "quantity": 4
+        },
+        {
+          "name": "Music Aficionado",
+          "quantity": 4
+        },
+        {
+          "name": "Musical Curator",
+          "quantity": 4
+        },
+        {
+          "name": "Performance Enthusiast",
+          "quantity": 2
+        },
+        {
+          "name": "Reclaim",
+          "quantity": 4
+        },
+        {
+          "name": "Rondo of the Wind",
+          "quantity": 4
+        },
+        {
+          "name": "Sinfonia of Hope",
+          "quantity": 3
+        },
+        {
+          "name": "Song of Nurturing",
+          "quantity": 2
+        },
+        {
+          "name": "Song of Return",
+          "quantity": 2
+        },
+        {
+          "name": "Steady Verse",
+          "quantity": 3
+        },
+        {
+          "name": "Tribute Singer",
+          "quantity": 4
+        },
+        {
+          "name": "Veiling Breeze",
+          "quantity": 4
+        },
+        {
+          "name": "Wuthering Sforzando",
+          "quantity": 3
+        },
+        {
+          "name": "ZENA, Echo Weaver",
+          "quantity": 2
+        }
+      ],
+      "material": [
+        {
+          "name": "Backup Charger",
+          "quantity": 1
+        },
+        {
+          "name": "Clockwork Musicbox",
+          "quantity": 1
+        },
+        {
+          "name": "Fabled Emerald Fatestone",
+          "quantity": 1
+        },
+        {
+          "name": "Fire Resonance Bauble",
+          "quantity": 1
+        },
+        {
+          "name": "Grand Crusader's Ring",
+          "quantity": 1
+        },
+        {
+          "name": "Guo Jia, Chosen Disciple",
+          "quantity": 1
+        },
+        {
+          "name": "ResonanTech Module",
+          "quantity": 1
+        },
+        {
+          "name": "Safeguard Amulet",
+          "quantity": 1
+        },
+        {
+          "name": "Spirit of Wind",
+          "quantity": 1
+        },
+        {
+          "name": "Tariff Ring",
+          "quantity": 1
+        },
+        {
+          "name": "Water Resonance Bauble",
+          "quantity": 1
+        },
+        {
+          "name": "Wind Resonance Bauble",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "deckId": "64329:9180",
+      "baseline": true,
+      "signature": "156e9c5059c1d2c33460d14038b304f334b78a5893a4faf6de74a0a6c25c4355",
+      "resonators": [
+        "Fanclub Leader",
+        "Musical Curator",
+        "Performance Enthusiast",
+        "Tribute Singer",
+        "ZENA, Echo Weaver"
+      ],
+      "music": [
+        "Attune with the Winds",
+        "Breath's Coloratura",
+        "Sinfonia of Hope",
+        "Steady Verse"
+      ],
+      "main": [
+        {
+          "name": "Attune with the Winds",
+          "quantity": 4
+        },
+        {
+          "name": "Bladed Riftseer",
+          "quantity": 3
+        },
+        {
+          "name": "Breath's Coloratura",
+          "quantity": 4
+        },
+        {
+          "name": "Dream Fairy",
+          "quantity": 2
+        },
+        {
+          "name": "Expeditious Opening",
+          "quantity": 3
+        },
+        {
+          "name": "Fanclub Leader",
+          "quantity": 4
+        },
+        {
+          "name": "Forese, Fervid Cantor",
+          "quantity": 4
+        },
+        {
+          "name": "Inspiring Call",
+          "quantity": 3
+        },
+        {
+          "name": "Musical Curator",
+          "quantity": 4
+        },
+        {
+          "name": "Performance Enthusiast",
+          "quantity": 3
+        },
+        {
+          "name": "Phalanx Captain",
+          "quantity": 2
+        },
+        {
+          "name": "Rallied Advance",
+          "quantity": 2
+        },
+        {
+          "name": "Reclaim",
+          "quantity": 3
+        },
+        {
+          "name": "Sinfonia of Hope",
+          "quantity": 3
+        },
+        {
+          "name": "Steady Verse",
+          "quantity": 4
+        },
+        {
+          "name": "Stifling Gyre",
+          "quantity": 2
+        },
+        {
+          "name": "Tribute Singer",
+          "quantity": 3
+        },
+        {
+          "name": "Veiling Breeze",
+          "quantity": 3
+        },
+        {
+          "name": "Verdigris Decree",
+          "quantity": 1
+        },
+        {
+          "name": "ZENA, Echo Weaver",
+          "quantity": 3
+        }
+      ],
+      "material": [
+        {
+          "name": "Backup Charger",
+          "quantity": 1
+        },
+        {
+          "name": "Censer of Restful Peace",
+          "quantity": 1
+        },
+        {
+          "name": "Grand Crusader's Ring",
+          "quantity": 1
+        },
+        {
+          "name": "Huaji of Heaven's Rise",
+          "quantity": 1
+        },
+        {
+          "name": "Lorraine, Wandering Warrior",
+          "quantity": 1
+        },
+        {
+          "name": "Nullifying Mirror",
+          "quantity": 1
+        },
+        {
+          "name": "Ornamental Greatsword",
+          "quantity": 1
+        },
+        {
+          "name": "Purifying Thurible",
+          "quantity": 1
+        },
+        {
+          "name": "ResonanTech Module",
+          "quantity": 1
+        },
+        {
+          "name": "Safeguard Amulet",
+          "quantity": 1
+        },
+        {
+          "name": "Spirit of Wind",
+          "quantity": 1
+        },
+        {
+          "name": "Tariff Ring",
+          "quantity": 1
+        }
+      ]
+    }
+  ]
+}
