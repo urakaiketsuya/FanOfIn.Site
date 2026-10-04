@@ -8,7 +8,13 @@ export const GUO_JIA_COMMAND_CORE = ["Byakko's Command", "Seiryuu's Command", 'H
 export const GUO_JIA_MANIFESTATION_PACKAGE = ['Auspicious Manifestation', 'Beseech the Winds'];
 export const GUO_JIA_COMMAND_NAME = 'Wind Guo Jia — Shenju Commands';
 
+export const RAI_ARCANE_CORE = ['Arcane Blast', 'Arcane Sight', 'Spellshield: Arcane'];
+export const RAI_WIND_PACKAGE = ['Arcane Elemental', 'Disorienting Winds', 'Three Visits'];
+export const RAI_FIRE_PACKAGE = ['Creative Shock', 'Fireball'];
+export const RAI_ARCANE_NAME = 'Arcane Rai — Arcane Blast';
+
 export const REVIEWED_ARCHETYPE_CORES = [
+  { champion: 'Rai', name: RAI_ARCANE_NAME, core: RAI_ARCANE_CORE },
   { champion: 'Guo Jia', name: GUO_JIA_COMMAND_NAME, core: GUO_JIA_COMMAND_CORE },
   { champion: 'Silvie', name: SILVIE_SLIME_NAME, core: SILVIE_SLIME_CORE },
   { champion: 'Lorraine', name: 'Fire Lorraine — Fire Sword', core: ['Blazing Throw', 'Rending Flames', 'Hone by Fire'] },
@@ -25,6 +31,8 @@ export interface ReviewedArchetypeEvidence {
   /** Supporting package, independent of the required identifying core. */
   waterPackageDeckCount?: number;
   manifestationPackageDeckCount?: number;
+  windPackageDeckCount?: number;
+  firePackageByBuild?: Record<string, { count: number; total: number }>;
 }
 
 /** Naming only: callers supply positive main + material quantities, excluding sideboard. */
@@ -51,6 +59,13 @@ export function applyReviewedArchetypeEvidence(strategies: StrategyArchetype[], 
     }
     if (identity.name === GUO_JIA_COMMAND_NAME) {
       strategy.reviewedArchetypeEvidence.manifestationPackageDeckCount = ids.filter(id => GUO_JIA_MANIFESTATION_PACKAGE.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length;
+    }
+    if (identity.name === RAI_ARCANE_NAME) {
+      strategy.reviewedArchetypeEvidence.windPackageDeckCount = ids.filter(id => RAI_WIND_PACKAGE.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length;
+      strategy.reviewedArchetypeEvidence.firePackageByBuild = Object.fromEntries(strategy.buildIds.map(buildId => {
+        const deckIds = [...new Set(builds.get(buildId)!.deckIds)];
+        return [buildId, { count: deckIds.filter(id => RAI_FIRE_PACKAGE.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length, total: deckIds.length }];
+      }));
     }
     strategy.name = identity.name;
     strategy.identityCards = [...identity.core];

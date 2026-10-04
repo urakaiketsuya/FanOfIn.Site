@@ -3640,3 +3640,21 @@ combat effects, not a self-contained three-card combo. Auspicious Manifestation
 can return a Shenju transformed, while Beseech the Winds materializes a card.
 Silvie and Guo Jia reuse the same reviewed-family presentation with separate cores
 and supporting-package evidence. Refresh through `refresh-reviewed-archetypes.ts`.
+
+
+### Rai shared Arcane Blast identity
+
+Arcane Blast + Arcane Sight + Spellshield: Arcane identify **Arcane Rai — Arcane
+Blast** under the same reviewed 90% rule, complete main/material coverage and
+recurrence safeguards. The two retained families contain nine builds, with joint
+core occurrence 575/575 and 356/357. All IDs, membership, statistics and confidence
+remain unchanged. This core identifies a level-scaling strategy, not a standalone combo.
+
+Arcane Elemental + Disorienting Winds + Three Visits form optional Wind support,
+recorded as `windPackageDeckCount` (0/575 and 340/357). The page displays the Wind /
+Arcane Elemental variant at >=90% family occurrence. Creative Shock + Fireball
+occur in only 497/575 of the larger family, so they cannot label the whole family.
+`firePackageByBuild` records deduplicated joint counts and totals per build; only
+builds with >=90% occurrence display Fire support (five of the six larger-family
+builds). Support never becomes a required identity core. Removing either package
+preserves the identity when the core still qualifies. Sideboards are excluded.

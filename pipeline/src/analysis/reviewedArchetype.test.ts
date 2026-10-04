@@ -9,7 +9,7 @@ test('published families retain all memberships and stats, and refresh is idempo
   const copy = structuredClone(taxonomy);
   applyReviewedArchetypeEvidence(copy.strategyArchetypes, copy.clusters, cards);
   assert.deepEqual(copy, taxonomy);
-  for (const identity of REVIEWED_ARCHETYPE_CORES) assert.equal(copy.strategyArchetypes.filter(s => s.name === identity.name).length, ['Silvie', 'Guo Jia'].includes(identity.champion) ? 3 : 1);
+  for (const identity of REVIEWED_ARCHETYPE_CORES) assert.equal(copy.strategyArchetypes.filter(s => s.name === identity.name).length, ['Silvie', 'Guo Jia'].includes(identity.champion) ? 3 : identity.champion === 'Rai' ? 2 : 1);
 });
 test('missing data, ambiguous cores and insufficient recurrence restore generated label', () => {
   for (const mode of ['missing', 'ambiguous', 'players', 'events', 'build', 'zero']) {
@@ -71,4 +71,25 @@ test('Slime identity spans three preserved families while Water package remains 
     assert.equal(family.reviewedArchetypeEvidence!.manifestationPackageDeckCount, 0);
   }
   for (const id of ['1kd37dt', 'w5bdy7']) assert.deepEqual(families.find(s => s.id === id), taxonomy.strategyArchetypes.find(s => s.id === id));
+});
+
+test('Rai retains nine builds with optional Wind and build-specific Fire support', () => {
+  const families = structuredClone(taxonomy.strategyArchetypes.filter(s => s.championName === 'Rai'));
+  assert.equal(families.flatMap(s => s.buildIds).length, 9);
+  assert.deepEqual(families.map(s => s.reviewedArchetypeEvidence!.coreDeckCount), [575, 356]);
+  assert.deepEqual(families.map(s => s.reviewedArchetypeEvidence!.windPackageDeckCount), [0, 340]);
+  const fire = Object.values(families[0].reviewedArchetypeEvidence!.firePackageByBuild!);
+  assert.equal(fire.reduce((n, b) => n + b.count, 0), 497);
+  assert.equal(fire.filter(b => b.count / b.total >= .9).length, 5);
+  const changed = new Map([...cards].map(([id, counts]) => {
+    const copy = new Map(counts);
+    for (const name of ['Arcane Elemental', 'Disorienting Winds', 'Three Visits', 'Creative Shock', 'Fireball']) copy.delete(name);
+    return [id, copy] as const;
+  }));
+  applyReviewedArchetypeEvidence(families, taxonomy.clusters, changed);
+  for (const family of families) {
+    assert.equal(family.name, 'Arcane Rai — Arcane Blast');
+    assert.equal(family.reviewedArchetypeEvidence!.windPackageDeckCount, 0);
+    assert.ok(Object.values(family.reviewedArchetypeEvidence!.firePackageByBuild!).every(b => b.count === 0));
+  }
 });
