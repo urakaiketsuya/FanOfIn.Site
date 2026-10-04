@@ -1,0 +1,10 @@
+import { readFile, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { detectDraftThemes } from '../../shared/src/draftThemes.js';
+const root = new URL('../../', import.meta.url);
+const indexRaw = await readFile(new URL('data/analysis/deck-card-index.json', root), 'utf8');
+const catalogRaw = await readFile(new URL('pipeline/.cache/cards.json', root), 'utf8');
+const result = detectDraftThemes(JSON.parse(indexRaw), JSON.parse(catalogRaw).cards);
+const sha256 = (s: string) => createHash('sha256').update(s).digest('hex');
+await writeFile(new URL('data/reference/draft-theme-evidence.json', root), JSON.stringify({ ...result, sources: { indexSha256: sha256(indexRaw), catalogSha256: sha256(catalogRaw) } }, null, 2) + '\n');
+console.table(result.evidence.map(e => ({ name: e.name, decks: e.matches.length })));

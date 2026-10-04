@@ -3417,3 +3417,41 @@ are rounded and added to the natural checkpoint, capped at deck size. This is a 
 not an exact probability for a draw engine, statistical confidence interval, or successful play.
 Unsupported variable effects, searches, conditions, level gates, and prior spending are not simulated.
 Printed costs and detected lineage are descriptive; the report does not infer a strategic grade.
+
+## Draft tribal themes and token engines
+
+`shared/src/draftThemes.ts` defines 15 overlapping draft labels across the eight
+reviewed families: Resonator, DisCorp, Elysian Dante, Angel, Specter, Fairy, Wolf,
+and Memorite. These are independent candidates, not accepted archetypes or
+mutually exclusive groups. Existing reference rules and taxonomy are unchanged.
+
+Rebuild review evidence with
+`node --import tsx pipeline/scripts/rebuild-draft-themes.ts`. The output is
+`data/reference/draft-theme-evidence.json`, deliberately outside the published
+analysis manifest. It includes source hashes, all matched deck IDs, qualifying
+cards, and the zero-based alternative rule paths. No current UI consumes it.
+
+Rules count distinct positive-quantity names, not copies. Subtype ally thresholds
+apply only to Main; champion gates apply to Material. Named support may use
+Main + Material when its rule specifies identity. Sideboard never contributes.
+Deck IDs are deduplicated (last entry wins) and sorted. More than 12 positive
+Material entries excludes a deck, matching reference-analysis eligibility;
+this is not a full legality check. Unknown cards cannot satisfy catalog subtype
+conditions; missing curated anchors abort generation.
+
+The default tribal threshold is three distinct Main allies. Resonator music also
+requires two distinct Harmony/Melody cards; its support label separately requires
+Fanclub Leader, Forese, or ResonanTech Module. DisCorp and Angel support labels
+require their named anchors. Specter support is a broad candidate, not proof of
+one common recursion engine. Mordred Fairy requires a Material Mordred champion,
+Gildas, and two distinct Fairy allies. Wolf tokens require both Direwolf Alpha
+and Dire Requiem in Main. Memorite generation requires Material Vassal and two
+of eight reviewed Main generators; payoff detection requires one generator and
+Anthem, Facet Together, or Shardforged Blade. Elysian Dante accepts either three
+Elysian allies or a named generator plus payoff, always with Material Hematic
+Overdrive. Exact anchor lists and alternative paths are stored with the evidence.
+
+Thresholds are provisional historical screening rules, with no date or format
+filter. Presence does not prove that class/level bonuses activate or establish
+competitive strength. Labels overlap and counts must not be added. Production
+promotion still requires boundary review and an explicit curated decision.
