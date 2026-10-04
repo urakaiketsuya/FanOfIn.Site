@@ -7,7 +7,7 @@ import { themeRefinements } from '../../../shared/src/themeRefinements.js';
 import type { DeckCardIndexData } from '@gatcg/shared';
 
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
-const catalog = read('../../../pipeline/.cache/cards.json').cards;
+const catalog = read('../../../data/card-catalog.json').cards;
 const tournament = read('../../../data/reference/held-tournament-refresh.json');
 const community = read('../../../data/reference/held-community-theme-review.json');
 const definitions = themeRefinements.filter(t => ['wolf-refinement', 'discorp-tower', 'discorp-officer'].includes(t.id));
