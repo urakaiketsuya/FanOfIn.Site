@@ -121,6 +121,7 @@ export default function ReferenceStrategies({ published = false }: {
         else
             changeRule({ ...edit.definition.rule, [cardTarget]: [...new Set([...edit.definition.rule[cardTarget], c.name])] }); setFieldVersion(v => v + 1); setCardQuery(''); }}/>)}</div></details>
  <p className="text-sm">Card rules use exact names, main + material only. Type counts use main deck quantities. Sideboards are excluded.</p>
+ {edit.definition.rule.paths && <section className="my-3 rounded border border-ctp-surface1 p-3" aria-label="Imported section requirements"><p className="mb-2 text-sm">Imported section requirements are read-only here and preserved when saving.</p><RequirementPaths rule={edit.definition.rule}/></section>}
  {(['anyCards', 'allCards', 'excludeCards'] as const).map((field, i) => <label key={field} className="my-3 block">{['Any of these cards (required)', 'All of these cards', 'Exclude these cards'][i]}<textarea className={`${control} w-full`} key={`${field}-${fieldVersion}`} defaultValue={edit.definition.rule[field].join('\n')} onBlur={e => changeRule({ ...edit.definition.rule, [field]: lines(e.target.value) })}/><span className="text-xs">One exact card name per line; applied when leaving the field.</span></label>)}
  <label className="my-3 block">Alternative all-of groups<textarea className={`${control} w-full`} defaultValue={edit.definition.rule.comboGroups.map(g => g.join(' | ')).join('\n')} onBlur={e => changeRule({ ...edit.definition.rule, comboGroups: lines(e.target.value).map(l => l.split('|').map(c => c.trim()).filter(Boolean)) })}/><span className="text-xs">One group per line; separate required cards with |. At least one whole group must match.</span></label>
  <label className="my-3 block">Spirit element<select className={`${control} w-full`} value={edit.definition.rule.element ?? ''} onChange={e => changeRule({ ...edit.definition.rule, element: e.target.value || null })}><option value="">Any</option>{['Fire', 'Water', 'Wind', 'Norm'].map(e => <option key={e}>{e}</option>)}</select></label>
@@ -149,7 +150,15 @@ export default function ReferenceStrategies({ published = false }: {
 }
 function RuleDescription({ rule }: {
     rule: ArchetypeRule;
-}) { return <div className="space-y-2 break-words text-sm"><p>Any of: {rule.anyCards.join(', ') || 'None – cannot match'}</p>{rule.allCards.length > 0 && <p>All of: {rule.allCards.join(', ')}</p>}{rule.comboGroups.length > 0 && <p>At least one complete group: {rule.comboGroups.map(g => g.join(' + ')).join(' OR ')}</p>}{rule.excludeCards.length > 0 && <p>Excludes: {rule.excludeCards.join(', ')}</p>}{rule.element && <p>Spirit access: {rule.element}</p>}{Object.entries(rule.typeCounts).map(([t, n]) => <p key={t}>{t}: {n < 0 ? 'maximum' : 'minimum'} {Math.abs(n)}</p>)}</div>; }
+}) { return <div className="space-y-2 break-words text-sm"><RequirementPaths rule={rule}/><p>Any of: {rule.anyCards.join(', ') || 'None – cannot match'}</p>{rule.allCards.length > 0 && <p>All of: {rule.allCards.join(', ')}</p>}{rule.comboGroups.length > 0 && <p>At least one complete group: {rule.comboGroups.map(g => g.join(' + ')).join(' OR ')}</p>}{rule.excludeCards.length > 0 && <p>Excludes: {rule.excludeCards.join(', ')}</p>}{rule.element && <p>Spirit access: {rule.element}</p>}{Object.entries(rule.typeCounts).map(([t, n]) => <p key={t}>{t}: {n < 0 ? 'maximum' : 'minimum'} {Math.abs(n)}</p>)}</div>; }
 function DeckReference({ id }: {
     id: string;
 }) { const [event, player] = id.split(":"); return <Link className="mr-2 inline-flex min-h-12 items-center text-ctp-blue" to={`/events/${event}?tab=decklists&player=${player}`}>{id}</Link>; }
+
+function RequirementPaths({ rule }: { rule: ArchetypeRule }) {
+    if (!rule.paths) return null;
+    return <div className="space-y-3 break-words text-sm">
+        <p>Also satisfy at least one complete path below. Every condition in that path must match. Counts use distinct card names, not copies; Sideboard is excluded.</p>
+        {rule.paths.map((path, i) => <div key={i}><p className="font-medium">Path {i + 1}</p><ul className="list-disc space-y-2 pl-5">{path.map((r, j) => <li key={j}>At least {r.minimum} distinct card name{r.minimum === 1 ? '' : 's'} in {r.section === 'identity' ? 'Main + Material' : r.section === 'main' ? 'Main' : 'Material'}, matching all of: {[r.names && `name is one of ${r.names.join(' / ')}`, r.type && `type ${r.type}`, r.subtypes && `subtype ${r.subtypes.join(' or ')}`, r.prefix && `name starts with “${r.prefix}”`].filter(Boolean).join('; ')}.</li>)}</ul></div>)}
+    </div>;
+}

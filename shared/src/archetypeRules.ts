@@ -1,4 +1,4 @@
-import { matchRequirementPaths, type Requirement, type RequirementCard, type Section } from './cardRequirements.js';
+import { validRequirementPaths, matchRequirementPaths, type Requirement, type RequirementCard, type Section } from './cardRequirements.js';
 import { decodeCardLines, type DeckCardIndexData } from './analysis-types.js';
 export interface ArchetypeRule {
     /** Additional OR paths of AND requirements; legacy anyCards remains mandatory. */
@@ -105,7 +105,7 @@ export function validArchetypeRule(v: unknown): v is ArchetypeRule {
     if (!v || typeof v !== 'object')
         return false;
     const r = v as ArchetypeRule, strings = (x: unknown): x is string[] => Array.isArray(x) && x.every(c => typeof c === 'string' && c.trim().length > 0);
-    return r.paths === undefined && strings(r.anyCards) && strings(r.allCards) && strings(r.excludeCards) && Array.isArray(r.comboGroups) && r.comboGroups.every(g => strings(g) && g.length > 0) && (r.element === null || typeof r.element === 'string') && !!r.typeCounts && typeof r.typeCounts === 'object' && !Array.isArray(r.typeCounts) && Object.values(r.typeCounts).every(n => Number.isSafeInteger(n));
+    return (r.paths === undefined || validRequirementPaths(r.paths)) && strings(r.anyCards) && strings(r.allCards) && strings(r.excludeCards) && Array.isArray(r.comboGroups) && r.comboGroups.every(g => strings(g) && g.length > 0) && (r.element === null || typeof r.element === 'string') && !!r.typeCounts && typeof r.typeCounts === 'object' && !Array.isArray(r.typeCounts) && Object.values(r.typeCounts).every(n => Number.isSafeInteger(n));
 }
 export interface StrategyEvidence {
     id: string;

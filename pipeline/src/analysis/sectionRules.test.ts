@@ -2,7 +2,7 @@ import { matchRequirementPaths, validRequirementPaths } from '../../../shared/sr
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { evaluateArchetypeRule, ruleDecks, validArchetypeRule } from '../../../shared/src/archetypeRules.js';
+import { evaluateArchetypeRule, ruleDecks, parseStrategyStore, validArchetypeRule } from '../../../shared/src/archetypeRules.js';
 import { detectDraftThemes, elysianDanteThemeProposal } from '../../../shared/src/draftThemes.js';
 
 test('curated matcher preserves all 17 reviewed Dante memberships and fails closed without section evidence', () => {
@@ -19,8 +19,7 @@ test('curated matcher preserves all 17 reviewed Dante memberships and fails clos
     assert.equal(evaluateArchetypeRule({ ...rule, paths: [] }, matched[0]).matches, false);
     assert.equal(evaluateArchetypeRule({ ...rule, paths: [[]] }, matched[0]).matches, false);
     assert.equal(evaluateArchetypeRule({ ...rule, anyCards: [] }, matched[0]).matches, false);
-    // Import remains unavailable until the review interface can display these conditions.
-    assert.equal(validArchetypeRule(rule), false);
+    assert.equal(validArchetypeRule(rule), true);
     assert.equal(validArchetypeRule({ ...rule, paths: undefined }), true);
 });
 
@@ -60,4 +59,17 @@ test('requirement validation rejects malformed filters without broadening member
     assert.deepEqual(matchRequirementPaths([[valid]] as never, sections, cards), [{ path: 0, cards: ['Ally'] }]);
     // A valid alternative must not hide a malformed condition elsewhere in the rule.
     assert.equal(validRequirementPaths([[valid], [{ ...valid, minimum: 0 }]]), false);
+});
+
+test('strategy backups preserve paths across entries, drafts and undo and reject invalid alternatives', () => {
+    const entry = { definition: { id: 'dante', name: 'Elysian Dante', parentId: null, reviewStatus: 'unreviewed', sourceLine: 0, rule: { anyCards: ['Dante, Hematic Overdrive'], allCards: [], excludeCards: [], comboGroups: [], element: null, typeCounts: {}, paths: elysianDanteThemeProposal.paths } }, coreCards: [], packageIds: [], description: '', sourceHash: '', mechanics: 'unverified', mechanicsEvidence: '' };
+    const store = { version: 1, entries: [entry], drafts: [entry], undo: [entry] };
+    const raw = JSON.stringify(store);
+    assert.deepEqual(parseStrategyStore(raw), store);
+    for (const field of ['entries', 'drafts', 'undo'] as const) {
+        const invalid = JSON.parse(raw);
+        invalid[field][0].definition.rule.paths.push([{ section: 'sideboard', minimum: 1, type: 'ALLY' }]);
+        assert.throws(() => parseStrategyStore(JSON.stringify(invalid)), /existing choices were preserved/);
+        assert.equal(JSON.stringify(store), raw);
+    }
 });

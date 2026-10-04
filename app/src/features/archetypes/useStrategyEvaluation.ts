@@ -7,7 +7,7 @@ export function useStrategyEvaluation(enabled: boolean, catalog: EvaluationCatal
     const [attempt, setAttempt] = useState(0);
     const [state, setState] = useState<EvaluationState>({ key: '', phase: 'loading', comparison: null, error: null });
     // Only the fields used by ruleDecks cross the worker boundary; no image/edition catalog payload.
-    const compactCatalog = useMemo(() => catalog.map(({ name, types, elements, level }) => ({ name, types, elements, level })), [catalog]);
+    const compactCatalog = useMemo(() => catalog.map(({ name, types, subtypes, elements, level }) => ({ name, types, subtypes, elements, level })), [catalog]);
     // Labels and review status do not change membership or need a new comparison.
     const key = input ? JSON.stringify({ ...input, edited: { ...input.edited, name: '', sourceLine: 0, reviewStatus: 'unreviewed' } }) : '';
     useEffect(() => {

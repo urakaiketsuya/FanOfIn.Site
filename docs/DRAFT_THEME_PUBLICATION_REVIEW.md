@@ -172,3 +172,10 @@ Implemented a shared section-aware matcher for draft detection and curated evalu
 Publication remains pending: add validated import/export support and visible rule descriptions before accepting section-aware definitions, then publish the reviewed theme with regenerated evidence. The import boundary rejects the new internal field until that interface work is complete.
 
 The shared matcher now validates complete requirement paths before evaluation. Invalid sections, non-positive or non-integer minima, empty filters, missing selectors, and unknown condition fields fail closed for the entire rule. Regression coverage preserves the reviewed 17-deck membership. Import remains gated until the review interface displays these conditions.
+
+
+### Curator import and requirement display
+
+Validated section-aware paths now round-trip through strategy backups, including drafts and undo. Malformed paths reject the complete backup. The curator displays every alternative path and its required conditions in both evidence and the editor, with distinct-name counts and section scope explicit. Imported paths are read-only in the editor and preserved by other edits. Browser evaluation now retains catalog subtypes across the worker boundary.
+
+Verification: four focused matcher/import tests pass, including all 17 reviewed Dante matches. App typecheck passes; lint reports six existing warnings. A local test import displayed all three paths at 390px and 1280px without page overflow; keyboard disclosure and 48px review buttons checked. Browser evaluation returned 17 matches and rejected 64701:14399. Temporary import was undone. Empty search verified; failure/retry and storage-write failure states were not simulated in the browser. Publication of the reviewed theme and regenerated evidence remains pending.
