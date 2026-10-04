@@ -1,3 +1,4 @@
+import { withDeckPrintings, extractDeckPrintings } from "@gatcg/shared";
 import { useDeckEditFeedback } from "../../../components/deck-editor/useDeckEditFeedback";
 import type { DeckFormat } from "@gatcg/shared";
 import { useEffect, useRef, useState } from "react";
@@ -10,15 +11,20 @@ export function useBuilderEditing(workflow: ReturnType<typeof useBuilderWorkflow
   const { report, clear } = useDeckEditFeedback();
   useEffect(() => { clear(); }, [format, clear]);
   const { lockedCards, lockedSections, maybeboard } = workflow.state;
-  const deck: EditableDeck = { main: [], material: [], sideboard: [], maybeboard: Array.from(maybeboard, ([card, quantity]) => ({ card, quantity })) };
+  let deck: EditableDeck = { main: [], material: [], sideboard: [], maybeboard: Array.from(maybeboard, ([card, quantity]) => ({ card, quantity })) };
   for (const [key, quantity] of lockedCards) {
     const name = selectionCardName(key);
     const section = lockedSections.get(key) ?? automaticDeckSection(catalog.get(name));
     deck[section].push({ card: name, quantity });
   }
+  deck = withDeckPrintings(deck, workflow.state.printings ?? {});
   const [past, setPast] = useState<EditableDeck[]>([]);
   const [future, setFuture] = useState<EditableDeck[]>([]);
   const signature = JSON.stringify(deck);
+  const activePrintings = JSON.stringify(extractDeckPrintings(deck));
+  const storedPrintings = JSON.stringify(workflow.state.printings ?? {});
+  const setPrintings = workflow.setPrintings;
+  useEffect(() => { if (activePrintings !== storedPrintings) setPrintings(JSON.parse(activePrintings)); }, [activePrintings, storedPrintings, setPrintings]);
   const expected = useRef(signature);
   useEffect(() => {
     if (signature === expected.current) return;
@@ -26,6 +32,7 @@ export function useBuilderEditing(workflow: ReturnType<typeof useBuilderWorkflow
     setPast([]); setFuture([]); clear();
   }, [signature, clear]);
   function apply(next: EditableDeck) {
+    workflow.setPrintings(extractDeckPrintings(next));
     expected.current = JSON.stringify(next);
     const maps = selectionsToMaps((["main", "material", "sideboard"] as const).flatMap((section) => next[section].map((line) => ({ name: line.card, quantity: line.quantity, section }))));
     workflow.setLockedCards(maps.cards);

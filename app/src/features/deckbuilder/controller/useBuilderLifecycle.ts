@@ -1,3 +1,4 @@
+import { extractDeckPrintings } from "@gatcg/shared";
 import { useToast } from "../../../components/ui/toast/ToastContext";
 import { deckCardIssues, type DeckFormat } from "@gatcg/shared";
 import { selectionsToMaps } from "../model/builderTypes";
@@ -38,7 +39,7 @@ export function useBuilderLifecycle(options: BuilderLifecycleOptions) {
     setAddDestination, setTab, startTransition, resetChangeTracking,
   } = options;
   const {
-    setChampionName, setSpiritFilter, setLockedCards, setMaybeboard, setLockedSections,
+    setPrintings, setChampionName, setSpiritFilter, setLockedCards, setMaybeboard, setLockedSections,
     setRejectedCards, setPillarBias, setArchetypeId, setPopulationSource, setChangeLog,
   } = workflow;
   const [pasteOpen, setPasteOpen] = useState(false);
@@ -48,9 +49,10 @@ export function useBuilderLifecycle(options: BuilderLifecycleOptions) {
   useEffect(() => {
     if (!improveDeckId) return;
     void accountApi.deck(improveDeckId).then(({ deck }) => {
+      setPrintings(extractDeckPrintings({ ...deck.decklist, maybeboard: deck.maybeboard }));
       setMaybeboard(new Map(deck.maybeboard.map((line) => [line.card, line.quantity])));
     }).catch(() => undefined);
-  }, [improveDeckId, setMaybeboard]);
+  }, [improveDeckId, setMaybeboard, setPrintings]);
 
   function loadPastedDecklist() {
     const { decklist, skippedLines } = parseDecklist(pasteText);
@@ -79,6 +81,7 @@ export function useBuilderLifecycle(options: BuilderLifecycleOptions) {
     setChampionName(detectedChampion);
     setSpiritFilter(detectedSpirit);
     const selections = selectionsToMaps((["main", "material", "sideboard"] as const).flatMap((section) => decklist[section].map((line) => ({ name: line.card, quantity: line.quantity, section }))));
+    setPrintings(extractDeckPrintings(decklist));
     setLockedCards(selections.cards);
     setLockedSections(selections.sections);
     setMaybeboard(new Map());
@@ -96,6 +99,7 @@ export function useBuilderLifecycle(options: BuilderLifecycleOptions) {
     clearBuilderSession(sessionStorage);
     resetChangeTracking();
     startTransition(() => {
+      setPrintings({});
       setChampionName(null);
       setSpiritFilter(null);
       setSpiritElement(null);

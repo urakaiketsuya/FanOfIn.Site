@@ -1,3 +1,4 @@
+import { withDeckPrintings, type DeckPrintings } from "@gatcg/shared";
 import { useMemo } from "react";
 import type { Card, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
 import { buildToDecklist } from "../engine/builderSelectors";
@@ -9,6 +10,7 @@ import { useBuilderCopyState } from "./useBuilderCopyState";
 import { useBuilderWorkspacePersistence } from "./useBuilderWorkspacePersistence";
 
 interface UseBuilderPresentationModelArgs {
+  printings?: DeckPrintings;
   build: SuggestedBuild;
   catalogByName: Map<string, Card>;
   cardsByName: Map<string, Card>;
@@ -33,7 +35,7 @@ interface UseBuilderPresentationModelArgs {
  * current result into the totals, validation, exports, and persisted workspace consumed by UI.
  */
 export function useBuilderPresentationModel({
-  build, catalogByName, cardsByName, identityElements, deckFormat, championName, spiritFilter,
+  printings, build, catalogByName, cardsByName, identityElements, deckFormat, championName, spiritFilter,
   archetypeId, lockedCards, lockedSections, maybeboard, improveDeckId, reviewItemCount, cardInput,
   cardNameSet, addDestination,
 }: UseBuilderPresentationModelArgs) {
@@ -74,6 +76,7 @@ export function useBuilderPresentationModel({
   );
 
   useBuilderWorkspacePersistence({
+    printings,
     championName,
     spiritName: spiritFilter,
     format: deckFormat,
@@ -90,8 +93,8 @@ export function useBuilderPresentationModel({
       .filter((card): card is Card => card !== undefined);
     return computeNewReleaseCards(catalogByName.values(), deckCards, identityElements, includedNames);
   }, [buildLines, catalogByName, identityElements]);
-  const decklist: OmnidexDecklist = useMemo(() => buildToDecklist(build), [build]);
-  const keptDecklist: OmnidexDecklist = useMemo(() => buildToDecklist(build, true), [build]);
+  const decklist: OmnidexDecklist = useMemo(() => withDeckPrintings(buildToDecklist(build), printings ?? {}), [build, printings]);
+  const keptDecklist: OmnidexDecklist = useMemo(() => withDeckPrintings(buildToDecklist(build, true), printings ?? {}), [build, printings]);
   const validation = useMemo(
     () => validateDeck(
       { main: build.main, material: build.material, sideboard: build.sideboard },
@@ -107,6 +110,7 @@ export function useBuilderPresentationModel({
   const reviewComplete = buildComplete && reviewItemCount === 0;
   const validationComplete = validation.status === "Legal";
   const copyPanel = useBuilderCopyState({
+    printings,
     build, buildLines, sideboardLines, decklist, keptDecklist, cardsByName, championName, spiritFilter,
     archetypeId, deckFormat, lockedCards, lockedSections, improveDeckId, maybeboard,
   });

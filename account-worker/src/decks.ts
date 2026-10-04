@@ -1,3 +1,5 @@
+import { withDeckPrintings, extractDeckPrintings } from "@gatcg/shared";
+import { validateDeckPrintings } from "./printing-catalog";
 import { versionFromRow, sourceFromRow, decodeStoredJson, type DeckHeaderRow, type SourceRow, type VersionRow } from "./deck-queries";
 import { databaseBatch } from "./database";
 import { saveDeckContent } from "./deck-save";
@@ -19,7 +21,7 @@ const MAX_PRIMER_LENGTH = 50_000;
 
 export async function listDecks(env: Env, user: AuthUser): Promise<SavedDeck[]> {
   const [decks, sources] = await databaseBatch<Record<string, string | null>>(env.ACCOUNT_DB, "deck.library", [
-    env.ACCOUNT_DB.prepare(`SELECT sd.*, cb.decklist_json AS current_decklist_json FROM saved_decks sd
+    env.ACCOUNT_DB.prepare(`SELECT sd.*, dv.printings_json, cb.decklist_json AS current_decklist_json FROM saved_decks sd
       LEFT JOIN user_decks ud ON ud.id = sd.id AND ud.owner_user_id = sd.user_id
       LEFT JOIN deck_versions dv ON dv.id = ud.current_version_id AND dv.deck_id = ud.id
       LEFT JOIN canonical_builds cb ON cb.id = dv.canonical_build_id
@@ -40,7 +42,7 @@ export async function listDecks(env: Env, user: AuthUser): Promise<SavedDeck[]> 
     const newestSideboard = sources[0]?.sideboard_json ? JSON.parse(sources[0].sideboard_json) : [];
     output.push({
       id: row.id!, identityHash: row.identity_hash!, title: row.title!, format: row.format as DeckFormat,
-      championName: row.champion_name, decklist: row.current_decklist_json ? JSON.parse(row.current_decklist_json) as OmnidexDecklist : { ...base, sideboard: newestSideboard }, createdAt: row.created_at!, updatedAt: row.updated_at!,
+      championName: row.champion_name, decklist: row.current_decklist_json ? withDeckPrintings(JSON.parse(row.current_decklist_json) as OmnidexDecklist, JSON.parse(row.printings_json ?? "{}")) : { ...base, sideboard: newestSideboard }, createdAt: row.created_at!, updatedAt: row.updated_at!,
       sources: sources.map((source) => ({ id: source.id!, provider: source.provider as "manual" | "omnidex" | "shoutatyourdecks",
         externalDeckId: source.external_deck_id!, sourceUrl: source.source_url, label: source.label!, metadata: JSON.parse(source.metadata_json!),
         sideboard: JSON.parse(source.sideboard_json!), importedAt: source.imported_at! })),
@@ -64,6 +66,7 @@ export async function updateDeckMetadata(env: Env, user: AuthUser, deckId: strin
   assertAllowedText(input.primerMarkdown, "Primer");
   const tags = input.tags === undefined ? null : normalizeDeckTags(input.tags);
   if (input.maybeboard !== undefined && !validMaybeboard(input.maybeboard)) throw badRequest("Invalid maybeboard");
+  if (input.maybeboard !== undefined) await validateDeckPrintings(env, extractDeckPrintings({ main: input.maybeboard as OmnidexDecklistCardLine[], material: [], sideboard: [] }));
   if (input.title === undefined && input.description === undefined && input.primerMarkdown === undefined && tags === null && input.maybeboard === undefined) throw badRequest("No deck metadata was provided");
   const now = new Date().toISOString();
   const title = typeof input.title === "string" ? input.title.trim() : null;
@@ -122,7 +125,7 @@ export async function getPublicDeck(env: Env, publicSlug: string): Promise<Publi
   if (!/^[a-f0-9]{32}$/.test(publicSlug)) return null;
   const row = await env.ACCOUNT_DB.prepare(`SELECT ud.is_seed, ud.public_slug, ud.published_title, ud.published_description, ud.published_primer_markdown,
     ud.published_tags_json, ud.visibility, ud.published_at,
-    ud.updated_at, users.display_name, users.profile_slug, dv.version_number, cb.format, cb.champion_name, cb.decklist_json,
+    ud.updated_at, users.display_name, users.profile_slug, dv.version_number, dv.printings_json, cb.format, cb.champion_name, cb.decklist_json,
     (SELECT COUNT(*) FROM deck_likes dl WHERE dl.deck_id = ud.id) AS like_count
     FROM user_decks ud
     JOIN users ON users.id = ud.owner_user_id
@@ -135,7 +138,7 @@ export async function getPublicDeck(env: Env, publicSlug: string): Promise<Publi
     publicSlug: row.public_slug!, title: row.published_title!, description: row.published_description!,
     primerMarkdown: row.published_primer_markdown ?? "", tags: JSON.parse(row.published_tags_json ?? "[]") as string[],
     visibility: row.visibility as "public" | "unlisted", format: row.format as DeckFormat,
-    championName: row.champion_name, decklist: JSON.parse(row.decklist_json!) as OmnidexDecklist,
+    championName: row.champion_name, decklist: withDeckPrintings(JSON.parse(row.decklist_json!) as OmnidexDecklist, JSON.parse(row.printings_json ?? "{}")),
     versionNumber: Number(row.version_number), publishedAt: row.published_at!, updatedAt: row.updated_at!,
     owner: { displayName: row.display_name!, profileSlug: row.profile_slug! },
     isSeed: Number(row.is_seed ?? 0) === 1,
@@ -182,15 +185,15 @@ export async function updateDeckDecklist(env: Env, user: AuthUser, deckId: strin
 }
 
 export async function restoreDeckVersion(env: Env, user: AuthUser, deckId: string, versionId: string, options: unknown = {}): Promise<{ id: string; versionNumber: number }> {
-  const source = await env.ACCOUNT_DB.prepare(`SELECT cb.decklist_json, cb.format, cb.champion_name
+  const source = await env.ACCOUNT_DB.prepare(`SELECT dv.printings_json, cb.decklist_json, cb.format, cb.champion_name
     FROM deck_versions dv JOIN canonical_builds cb ON cb.id = dv.canonical_build_id
     JOIN user_decks ud ON ud.id = dv.deck_id
     WHERE dv.id = ? AND dv.deck_id = ? AND ud.owner_user_id = ?`)
-    .bind(versionId, deckId, user.id).first<{ decklist_json: string; format: DeckFormat; champion_name: string | null }>();
+    .bind(versionId, deckId, user.id).first<{ printings_json: string; decklist_json: string; format: DeckFormat; champion_name: string | null }>();
   if (!source) throw new ApiError("Deck version not found", 404, "deck_version_not_found");
   if (!options || typeof options !== "object") throw badRequest("Invalid restore request");
   const { requestId, expectedRevision } = options as { requestId?: unknown; expectedRevision?: unknown };
-  return createDeckVersion(env, user, deckId, { requestId, expectedRevision, decklist: JSON.parse(source.decklist_json), format: source.format,
+  return createDeckVersion(env, user, deckId, { requestId, expectedRevision, decklist: withDeckPrintings(JSON.parse(source.decklist_json), JSON.parse(source.printings_json ?? "{}")), format: source.format,
     championName: source.champion_name, changeNote: "Restored an earlier version" });
 }
 

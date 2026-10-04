@@ -1,3 +1,5 @@
+import { assetJson } from "./assets";
+import type { PrintingCatalog } from "./printing-catalog";
 import type { CollectionEntry, CollectionTransaction, CollectionUpdateLine, CollectionUpdateMode, SharedCardWatch } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
 import { ApiError, badRequest } from "./errors";
@@ -28,13 +30,15 @@ function parseLines(value: unknown): CollectionUpdateLine[] {
     const cardUuid = typeof line.cardUuid === "string" ? line.cardUuid.trim() : "";
     const cardName = typeof line.cardName === "string" ? line.cardName.trim().replace(/\s+/g, " ") : "";
     const editionUuid = typeof line.editionUuid === "string" ? line.editionUuid.trim() : undefined;
+    if (line.editionUuid !== undefined && (typeof line.editionUuid !== "string" || !/^[a-zA-Z0-9_-]{1,200}$/.test(editionUuid ?? ""))) throw badRequest("Invalid printing ID");
     const key = `${cardUuid}:${editionUuid ?? "canonical"}`;
     if (!cardUuid || cardUuid.length > 200 || !cardName || cardName.length > 200 || (editionUuid?.length ?? 0) > 200 || seen.has(key)) throw badRequest("Invalid or duplicate collection card");
     if (!Number.isInteger(line.quantity) || line.quantity! < 0 || line.quantity! > MAX_QUANTITY) throw badRequest("Invalid collection quantity");
     const proxyQuantity = line.proxyQuantity ?? 0;
     if (!Number.isInteger(proxyQuantity) || proxyQuantity < 0 || proxyQuantity > MAX_QUANTITY) throw badRequest("Invalid proxy quantity");
+    for (const value of [line.expectedOwnedQuantity, line.expectedProxyQuantity]) if (value !== undefined && (!Number.isSafeInteger(value) || value < 0 || value > MAX_QUANTITY)) throw badRequest("Invalid collection snapshot");
     seen.add(key);
-    return { cardUuid, cardName, editionUuid, setPrefix: typeof line.setPrefix === "string" ? line.setPrefix.trim().slice(0, 40) : undefined, collectorNumber: typeof line.collectorNumber === "string" ? line.collectorNumber.trim().slice(0, 80) : undefined, quantity: line.quantity!, proxyQuantity };
+    return { expectedOwnedQuantity: line.expectedOwnedQuantity, expectedProxyQuantity: line.expectedProxyQuantity, cardUuid, cardName, editionUuid, setPrefix: typeof line.setPrefix === "string" ? line.setPrefix.trim().slice(0, 40) : undefined, collectorNumber: typeof line.collectorNumber === "string" ? line.collectorNumber.trim().slice(0, 80) : undefined, quantity: line.quantity!, proxyQuantity };
   });
 }
 
@@ -73,6 +77,14 @@ export async function updateCollection(env: Env, user: AuthUser, value: unknown)
   }
   const previous = await acknowledged();
   if (previous) return previous;
+  if (lines.some(line => line.editionUuid && (line.quantity > 0 || (line.proxyQuantity ?? 0) > 0))) {
+    const catalog = await assetJson<PrintingCatalog>(env, "/data/card-printings.json");
+    for (const line of lines) if (line.editionUuid && (line.quantity > 0 || (line.proxyQuantity ?? 0) > 0)) {
+      const printing = catalog[line.editionUuid];
+      if (!printing || printing[0] !== line.cardUuid) throw badRequest("A selected printing does not belong to this card.");
+      line.cardName = printing[1]; line.setPrefix = printing[2]; line.collectorNumber = printing[3];
+    }
+  }
   const [canonical, printings] = await Promise.all([
     env.ACCOUNT_DB.prepare("SELECT card_uuid, owned_quantity, proxy_quantity FROM collection_entries WHERE user_id=? AND card_uuid IN (SELECT value FROM json_each(?))").bind(user.id,JSON.stringify(lines.filter(line=>!line.editionUuid).map(line=>line.cardUuid))).all<{card_uuid:string;owned_quantity:number;proxy_quantity:number}>(),
     env.ACCOUNT_DB.prepare("SELECT edition_uuid, owned_quantity, proxy_quantity FROM collection_printing_entries WHERE user_id=? AND edition_uuid IN (SELECT value FROM json_each(?))").bind(user.id,JSON.stringify(lines.filter(line=>line.editionUuid).map(line=>line.editionUuid))).all<{edition_uuid:string;owned_quantity:number;proxy_quantity:number}>(),
@@ -85,6 +97,7 @@ export async function updateCollection(env: Env, user: AuthUser, value: unknown)
     const current = line.editionUuid ? printingById.get(line.editionUuid) : canonicalById.get(line.cardUuid);
     const beforeOwned = Number(current?.owned_quantity ?? 0);
     const beforeProxy = Number(current?.proxy_quantity ?? 0);
+    if ((line.expectedOwnedQuantity !== undefined && line.expectedOwnedQuantity !== beforeOwned) || (line.expectedProxyQuantity !== undefined && line.expectedProxyQuantity !== beforeProxy)) throw new ApiError("This collection changed since your draft began. Reload and review the quantities before saving.", 409, "collection_draft_conflict");
     const afterOwned = mode === "add" ? Math.min(MAX_QUANTITY, beforeOwned + line.quantity) : mode === "at-least" ? Math.max(beforeOwned, line.quantity) : line.quantity;
     const afterProxy = mode === "add" ? Math.min(MAX_QUANTITY, beforeProxy + (line.proxyQuantity ?? 0)) : mode === "at-least" ? Math.max(beforeProxy, line.proxyQuantity ?? 0) : (line.proxyQuantity ?? 0);
     expected.push({...line,beforeOwned,beforeProxy,afterOwned,afterProxy});
@@ -94,7 +107,7 @@ export async function updateCollection(env: Env, user: AuthUser, value: unknown)
   const now = new Date().toISOString();
   try { await env.ACCOUNT_DB.batch([
     env.ACCOUNT_DB.prepare("INSERT INTO collection_update_receipts (user_id,request_id,request_hash,transaction_id,changed,expected_json,created_at) VALUES (?,?,?,?,?,?,?)").bind(user.id,requestId,hash,transactionId,changes.length,JSON.stringify(expected),now),
-    ...changes.map((change) => change.editionUuid
+    ...[...changes].sort((a, b) => (b.afterOwned - b.beforeOwned) - (a.afterOwned - a.beforeOwned)).map((change) => change.editionUuid
       ? change.afterOwned === 0 && change.afterProxy === 0
         ? env.ACCOUNT_DB.prepare("DELETE FROM collection_printing_entries WHERE user_id = ? AND edition_uuid = ?").bind(user.id, change.editionUuid)
         : env.ACCOUNT_DB.prepare(`INSERT INTO collection_printing_entries

@@ -1,3 +1,4 @@
+import { withDeckPrintings } from "@gatcg/shared";
 import type { BookmarkedDeck, DeckSocialState, OmnidexDecklist } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
 import { ApiError } from "./errors";
@@ -10,7 +11,7 @@ async function publishedDeck(env: Env, slug: string) {
   if (!/^[a-f0-9]{32}$/.test(slug)) return null;
   return env.ACCOUNT_DB.prepare(`SELECT ud.id, ud.published_title AS title, ud.published_description AS description,
     ud.published_primer_markdown AS primer_markdown, ud.published_tags_json AS tags_json, ud.visibility, ud.public_slug, ud.published_at,
-    ud.updated_at, ud.published_version_id, users.display_name, users.profile_slug, dv.version_number, cb.format, cb.champion_name,
+    ud.updated_at, ud.published_version_id, users.display_name, users.profile_slug, dv.version_number, dv.printings_json, cb.format, cb.champion_name,
     cb.decklist_json, (SELECT COUNT(*) FROM deck_likes dl WHERE dl.deck_id = ud.id) AS like_count
     FROM user_decks ud JOIN users ON users.id = ud.owner_user_id
     JOIN deck_versions dv ON dv.id = ud.published_version_id AND dv.deck_id = ud.id
@@ -66,7 +67,7 @@ export async function copyPublishedDeck(env: Env, user: AuthUser, slug: string):
     title: `Copy of ${deck.title}`,
     format: deck.format as "STANDARD" | "PANTHEON" | "UNKNOWN",
     championName: deck.champion_name as string | null,
-    decklist: JSON.parse(String(deck.decklist_json)) as OmnidexDecklist,
+    decklist: withDeckPrintings(JSON.parse(String(deck.decklist_json)) as OmnidexDecklist, JSON.parse(String(deck.printings_json ?? "{}"))),
     source: { provider: "manual", externalDeckId: `copy:${deck.id}:${deck.published_version_id}`, label: `Copied from ${deck.title}` },
   });
   if (result.created) await env.ACCOUNT_DB.prepare("UPDATE user_decks SET copied_from_deck_id = ?, copied_from_version_id = ? WHERE id = ? AND owner_user_id = ?")
@@ -77,7 +78,7 @@ export async function copyPublishedDeck(env: Env, user: AuthUser, slug: string):
 export async function listBookmarks(env: Env, user: AuthUser): Promise<BookmarkedDeck[]> {
   const rows = await env.ACCOUNT_DB.prepare(`SELECT ud.is_seed, ud.public_slug, ud.published_title AS title, ud.published_description AS description,
     ud.published_primer_markdown AS primer_markdown, ud.published_tags_json AS tags_json, ud.visibility, ud.published_at, ud.updated_at,
-    users.display_name, users.profile_slug, dv.version_number, cb.format, cb.champion_name, cb.decklist_json, db.created_at AS bookmarked_at,
+    users.display_name, users.profile_slug, dv.version_number, dv.printings_json, cb.format, cb.champion_name, cb.decklist_json, db.created_at AS bookmarked_at,
     (SELECT COUNT(*) FROM deck_likes dl WHERE dl.deck_id = ud.id) AS like_count
     FROM deck_bookmarks db JOIN user_decks ud ON ud.id = db.deck_id JOIN users ON users.id = ud.owner_user_id
     JOIN deck_versions dv ON dv.id = db.version_id AND dv.deck_id = ud.id JOIN canonical_builds cb ON cb.id = dv.canonical_build_id
@@ -85,7 +86,7 @@ export async function listBookmarks(env: Env, user: AuthUser): Promise<Bookmarke
   return rows.results.map((row) => ({ publicSlug: String(row.public_slug), title: String(row.title), description: String(row.description),
     primerMarkdown: String(row.primer_markdown ?? ""), tags: JSON.parse(String(row.tags_json ?? "[]")) as string[],
     visibility: row.visibility as "public" | "unlisted", format: row.format as "STANDARD" | "PANTHEON" | "UNKNOWN",
-    championName: row.champion_name as string | null, decklist: JSON.parse(String(row.decklist_json)) as OmnidexDecklist,
+    championName: row.champion_name as string | null, decklist: withDeckPrintings(JSON.parse(String(row.decklist_json)) as OmnidexDecklist, JSON.parse(String(row.printings_json ?? "{}"))),
     versionNumber: Number(row.version_number), publishedAt: String(row.published_at), updatedAt: String(row.updated_at),
     owner: { displayName: String(row.display_name), profileSlug: String(row.profile_slug) }, isSeed: Number(row.is_seed ?? 0) === 1,
     likeCount: Number(row.like_count), bookmarkedAt: String(row.bookmarked_at) }));

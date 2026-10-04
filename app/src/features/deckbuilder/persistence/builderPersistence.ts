@@ -1,3 +1,4 @@
+import type { DeckPrintings } from "@gatcg/shared";
 import type { DeckFormat } from "@gatcg/shared";
 import type { RatingPillar } from "../../../lib/deckIdentity";
 import {
@@ -62,6 +63,7 @@ export function parseBuilderShareParams(params: URLSearchParams): Partial<Builde
   const championName = params.get("champion");
   if (!championName && !params.has("locked") && !params.has("spirit")) return null;
   return {
+    printings: readPrintingParams(params.get("printings")),
     championName,
     spiritName: params.get("spirit"),
     archetypeId: params.get("archetype"),
@@ -70,8 +72,9 @@ export function parseBuilderShareParams(params: URLSearchParams): Partial<Builde
   };
 }
 
-export function createBuilderShareParams(selection: Pick<BuilderSelection, "championName" | "spiritName" | "archetypeId" | "format" | "lockedCards">): URLSearchParams {
+export function createBuilderShareParams(selection: Pick<BuilderSelection, "championName" | "spiritName" | "archetypeId" | "format" | "lockedCards" | "printings">): URLSearchParams {
   const params = new URLSearchParams();
+  if (selection.printings && Object.keys(selection.printings).length) params.set("printings", JSON.stringify(selection.printings));
   if (selection.championName) params.set("champion", selection.championName);
   if (selection.format === "PANTHEON") params.set("format", "pantheon");
   if (selection.spiritName) params.set("spirit", selection.spiritName);
@@ -145,4 +148,8 @@ export function legacyMapsToSelections(cards: ReadonlyMap<string, number>, secti
 
 function isPopulationSource(value: unknown): value is PopulationSource {
   return value === "balanced" || value === "tournament" || value === "community" || value === "simulator";
+}
+
+function readPrintingParams(raw: string | null): DeckPrintings | undefined {
+  try { const value = JSON.parse(raw ?? "null"); return value && typeof value === "object" && !Array.isArray(value) ? value : undefined; } catch { return undefined; }
 }

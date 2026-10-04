@@ -1,3 +1,4 @@
+import { withDeckPrintings } from "@gatcg/shared";
 import type { DeckFormat, OmnidexDecklist, SavedDeckVersion, SavedDeckSource, DeckVisibility } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
 import { ApiError } from "./errors";
@@ -19,7 +20,7 @@ export function sourceFromRow(row: SourceRow): SavedDeckSource {
     sideboard: decodeStoredJson(row.sideboard_json, "source sideboard"), importedAt: row.imported_at };
 }
 export interface VersionRow {
-  id: string; version_number: number; decklist_json: string | null; format: DeckFormat;
+  printings_json?: string; id: string; version_number: number; decklist_json: string | null; format: DeckFormat;
   champion_name: string | null; change_note: string; change_summary_json: string; created_at: string;
 }
 export function decodeStoredJson<T>(value: string, field: string): T {
@@ -28,7 +29,7 @@ export function decodeStoredJson<T>(value: string, field: string): T {
 }
 export function versionFromRow(row: VersionRow): SavedDeckVersion {
   return { id: row.id, versionNumber: row.version_number,
-    ...(row.decklist_json === null ? {} : { decklist: decodeStoredJson<OmnidexDecklist>(row.decklist_json, "decklist") }),
+    ...(row.decklist_json === null ? {} : { decklist: withDeckPrintings(decodeStoredJson<OmnidexDecklist>(row.decklist_json, "decklist"), JSON.parse(row.printings_json ?? "{}")) }),
     format: row.format, championName: row.champion_name, changeNote: row.change_note,
     changeSummary: decodeStoredJson<Record<string, unknown>>(row.change_summary_json, "version summary"), createdAt: row.created_at };
 }

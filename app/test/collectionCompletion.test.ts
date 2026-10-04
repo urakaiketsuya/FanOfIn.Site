@@ -42,7 +42,7 @@ test("cross-deck completion stages only the remaining physical shortfall over ex
   assert.equal(shortages[0].missing, 4);
   const targets = shortages.map(line => ({ cardUuid: "card", cardName: line.card, quantity: line.totalRequired }));
   const staged = stageCollectionQuantities(drafts, saved, collectionCompletionLines(targets, effective), "at-least");
-  assert.deepEqual(staged["card:canonical"], { cardUuid: "card", cardName: "Card", quantity: 6, proxyQuantity: 3 });
+  assert.deepEqual(staged["card:canonical"], { cardUuid: "card", cardName: "Card", quantity: 6, proxyQuantity: 3, expectedOwnedQuantity: 1, expectedProxyQuantity: 3 });
   assert.equal(saved[1].ownedQuantity, 2);
   assert.deepEqual(collectionCompletionLines(targets, [entry(6, undefined, 3), saved[1]]), []);
 });

@@ -19,6 +19,7 @@ export async function copyBuilderShareLink(input: {
   spiritName: string | null;
   archetypeId: string | null;
   format: DeckFormat;
+  printings?: import("@gatcg/shared").DeckPrintings;
   lockedCards: ReadonlyMap<string, number>;
   lockedSections: ReadonlyMap<string, LockedSection>;
 }): Promise<void> {
@@ -27,6 +28,7 @@ export async function copyBuilderShareLink(input: {
     spiritName: input.spiritName,
     archetypeId: input.archetypeId,
     format: input.format,
+    printings: input.printings,
     lockedCards: legacyMapsToSelections(input.lockedCards, input.lockedSections),
   });
   await navigator.clipboard.writeText(`${input.origin}/deck-builder?${params.toString()}`);

@@ -78,6 +78,7 @@ async function fetchFullCatalog(): Promise<CardSignature[]> {
   const target = path.join(path.dirname(fileURLToPath(import.meta.url)),"../../../data/card-catalog.json");
   await mkdir(path.dirname(target),{recursive:true});
   await writeFile(target,JSON.stringify({generatedAt:new Date().toISOString(),cards:fullCards}),"utf8");
+  await writeFile(path.join(path.dirname(target), "card-printings.json"), JSON.stringify(Object.fromEntries(fullCards.flatMap(card => card.editions.map(edition => [edition.uuid, [card.uuid, card.name, edition.set.prefix, edition.collector_number]])))), "utf8");
   return cards;
 }
 

@@ -5,6 +5,7 @@ import { loadBuilderSession, parseBuilderShareParams } from "./builderPersistenc
 import { loadActiveDeckWorkspace } from "./deckWorkspace";
 
 export interface BuilderSeed {
+  printings?: import("@gatcg/shared").DeckPrintings;
   championName: string | null;
   spiritFilter: string | null;
   lockedCards: Map<string, number>;
@@ -30,6 +31,7 @@ export function parseBuilderUrlSeed(searchParams: URLSearchParams): BuilderSeed 
   if (!selection) return null;
   const { cards: lockedCards, sections: lockedSections } = selectionsToMaps(selection.lockedCards ?? []);
   return {
+    printings: selection.printings,
     championName: selection.championName ?? null,
     spiritFilter: selection.spiritName ?? null,
     archetypeId: selection.archetypeId ?? null,
@@ -49,6 +51,7 @@ export function loadBuilderSessionSeed(storage: Storage): BuilderSessionSeed | n
       ...workspace.sideboard.map((line) => ({ ...line, section: "sideboard" as const })),
     ]);
     return {
+      printings: workspace.printings,
       format: workspace.format,
       championName: workspace.championName,
       spiritFilter: workspace.spiritName,
@@ -70,6 +73,7 @@ export function loadBuilderSessionSeed(storage: Storage): BuilderSessionSeed | n
   const locked = selectionsToMaps(session.selection.lockedCards);
   const maybeboard = selectionsToMaps(session.selection.maybeboard);
   return {
+    printings: session.selection.printings,
     format: session.selection.format,
     championName: session.selection.championName,
     spiritFilter: session.selection.spiritName,

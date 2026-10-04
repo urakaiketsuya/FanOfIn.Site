@@ -7,7 +7,8 @@ interface DeckLine {
   quantity: number;
 }
 
-export function useBuilderWorkspacePersistence({ championName, spiritName, format, main, material, sideboard, maybeboard }: {
+export function useBuilderWorkspacePersistence({ printings, championName, spiritName, format, main, material, sideboard, maybeboard }: {
+  printings?: import("@gatcg/shared").DeckPrintings;
   championName: string | null;
   spiritName: string | null;
   format: DeckFormat;
@@ -18,6 +19,7 @@ export function useBuilderWorkspacePersistence({ championName, spiritName, forma
 }) {
   useEffect(() => {
     saveActiveDeckWorkspace(sessionStorage, {
+      printings,
       source: "builder",
       title: championName ? `${championName} deck` : "Untitled deck",
       sourceLabel: "Deck Workbench",
@@ -29,5 +31,5 @@ export function useBuilderWorkspacePersistence({ championName, spiritName, forma
       sideboard,
       maybeboard: Array.from(maybeboard, ([name, quantity]) => ({ name, quantity })),
     });
-  }, [championName, format, main, material, maybeboard, sideboard, spiritName]);
+  }, [printings, championName, format, main, material, maybeboard, sideboard, spiritName]);
 }

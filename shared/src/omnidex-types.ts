@@ -145,6 +145,8 @@ export interface OmnidexApiError {
 }
 
 export interface OmnidexDecklistCardLine {
+  /** Optional presentation choices; excluded from gameplay identity and analytics. */
+  printings?: import("./cardPrintings.js").CardPrintingAllocation[];
   card: string;
   quantity: number;
 }

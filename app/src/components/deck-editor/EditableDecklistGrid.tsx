@@ -1,3 +1,4 @@
+import type { CardPrintingAllocation } from "@gatcg/shared";
 import DeckLegalityWarning from "./DeckLegalityWarning";
 import type { DeckFormat } from "@gatcg/shared";
 import DeckEditorCard from "./DeckEditorCard";
@@ -31,13 +32,13 @@ function DestinationOptions({ cards }: { cards: (Card | undefined)[] }) {
   });
 }
 
-export function MaybeboardCardTile({ format, line, card, onChangeQuantity, onMove, onRemove }: { format: DeckFormat; line: OmnidexDecklistCardLine; card: Card | undefined; onChangeQuantity: (quantity: number) => void; onMove: (destination: DeckCardDestination, quantity: number) => void; onRemove: () => void }) {
-  return <DeckEditorCard format={format} line={line} card={card} section="maybeboard" onChangeQuantity={onChangeQuantity} onMove={onMove} onRemove={onRemove} />;
+export function MaybeboardCardTile({ format, line, card, onPrintings, onChangeQuantity, onMove, onRemove }: { format: DeckFormat; line: OmnidexDecklistCardLine; card: Card | undefined; onPrintings: (value: CardPrintingAllocation[]) => void; onChangeQuantity: (quantity: number, printings?: CardPrintingAllocation[]) => void; onMove: (destination: DeckCardDestination, quantity: number, printings?: CardPrintingAllocation[]) => void; onRemove: () => void }) {
+  return <DeckEditorCard format={format} line={line} card={card} section="maybeboard" onPrintings={onPrintings} onChangeQuantity={onChangeQuantity} onMove={onMove} onRemove={onRemove} />;
 }
 
 type SelectedCard = { section: DeckSectionKey; name: string };
 
-export function EditableDecklistGrid({ format, decklist, cardsByName, onChangeQuantity, onAdjustSelected, onSetSelected, onMoveSelected, onRemoveSelected, onMove, onRemove }: { format: DeckFormat; decklist: OmnidexDecklist; cardsByName: Map<string, Card>; onChangeQuantity: (section: DeckSectionKey, name: string, quantity: number) => void; onAdjustSelected: (cards: SelectedCard[], delta: number) => void; onSetSelected: (cards: SelectedCard[], quantity: number) => void; onMoveSelected: (cards: SelectedCard[], destination: DeckCardDestination) => void; onRemoveSelected: (cards: SelectedCard[]) => void; onMove: (from: DeckSectionKey, to: DeckCardDestination, name: string, quantity: number) => void; onRemove: (section: DeckSectionKey, name: string) => void }) {
+export function EditableDecklistGrid({ format, decklist, cardsByName, onPrintings, onChangeQuantity, onAdjustSelected, onSetSelected, onMoveSelected, onRemoveSelected, onMove, onRemove }: { format: DeckFormat; decklist: OmnidexDecklist; cardsByName: Map<string, Card>; onPrintings: (section: DeckSectionKey, name: string, printings: CardPrintingAllocation[]) => void; onChangeQuantity: (section: DeckSectionKey, name: string, quantity: number, printings?: CardPrintingAllocation[]) => void; onAdjustSelected: (cards: SelectedCard[], delta: number) => void; onSetSelected: (cards: SelectedCard[], quantity: number) => void; onMoveSelected: (cards: SelectedCard[], destination: DeckCardDestination) => void; onRemoveSelected: (cards: SelectedCard[]) => void; onMove: (from: DeckSectionKey, to: DeckCardDestination, name: string, quantity: number, printings?: CardPrintingAllocation[]) => void; onRemove: (section: DeckSectionKey, name: string) => void }) {
   const [bulkMode, setBulkMode] = useState(false);
   const [selected, setSelected] = useState<Set<string>>(() => new Set());
   const sections = EDIT_SECTIONS.map((section) => ({ ...section, lines: decklist[section.key] })).filter((section) => section.lines.length > 0);
@@ -68,7 +69,7 @@ export function EditableDecklistGrid({ format, decklist, cardsByName, onChangeQu
     </div></details>
     {sections.map((section) => <details key={section.key} open className="group rounded-xl border border-ctp-surface1 bg-ctp-mantle p-3 sm:p-4">
     <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-ctp-text focus:outline-none focus-visible:ring-2 focus-visible:ring-ctp-blue/40 [&::-webkit-details-marker]:hidden"><span>{section.title} Deck</span><span className="flex items-center gap-2"><span className="rounded-full bg-ctp-surface0 px-2 py-0.5 text-xs font-normal text-ctp-subtext1">{section.lines.reduce((total, line) => total + line.quantity, 0)} cards</span><DisclosureChevron className="text-ctp-subtext0 group-open:rotate-180" /></span></summary>
-    <div className="mt-3 grid grid-cols-1 gap-4 min-[360px]:grid-cols-2 min-[560px]:grid-cols-3 lg:grid-cols-4">{section.lines.map((line) => { const selectionKey = keyFor(section.key, line.card); return <DeckEditorCard format={format} key={line.card} line={line} card={cardsByName.get(line.card)} section={section.key} selected={selected.has(selectionKey)} onSelect={bulkMode ? () => setSelected((current) => { const next = new Set(current); if (next.has(selectionKey)) next.delete(selectionKey); else next.add(selectionKey); return next; }) : undefined} onChangeQuantity={(quantity) => onChangeQuantity(section.key, line.card, quantity)} onMove={(destination, quantity) => onMove(section.key, destination, line.card, quantity)} onRemove={() => onRemove(section.key, line.card)} />; })}</div>
+    <div className="mt-3 grid grid-cols-1 gap-4 min-[360px]:grid-cols-2 min-[560px]:grid-cols-3 lg:grid-cols-4">{section.lines.map((line) => { const selectionKey = keyFor(section.key, line.card); return <DeckEditorCard format={format} key={line.card} line={line} card={cardsByName.get(line.card)} section={section.key} selected={selected.has(selectionKey)} onSelect={bulkMode ? () => setSelected((current) => { const next = new Set(current); if (next.has(selectionKey)) next.delete(selectionKey); else next.add(selectionKey); return next; }) : undefined} onPrintings={printings => onPrintings(section.key, line.card, printings)} onChangeQuantity={(quantity, printings) => onChangeQuantity(section.key, line.card, quantity, printings)} onMove={(destination, quantity, printings) => onMove(section.key, destination, line.card, quantity, printings)} onRemove={() => onRemove(section.key, line.card)} />; })}</div>
   </details>)}</div>;
 }
 

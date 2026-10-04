@@ -15,6 +15,9 @@ export interface CollectionEntry {
 export type CollectionUpdateMode = "add" | "at-least" | "set";
 
 export interface CollectionUpdateLine {
+  /** Snapshot held by a quantity draft; checked before an atomic save. */
+  expectedOwnedQuantity?: number;
+  expectedProxyQuantity?: number;
   cardUuid: string;
   cardName: string;
   editionUuid?: string;

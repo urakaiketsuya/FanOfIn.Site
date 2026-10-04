@@ -6,7 +6,16 @@ export interface CollectionSaveQueue { drafts: CollectionDrafts; pending: Collec
 export const emptyCollectionQueue = (): CollectionSaveQueue => ({drafts:{},pending:null});
 export function prepareCollectionBatch(queue: CollectionSaveQueue, requestId: string): CollectionSaveQueue {
   if (queue.pending) return queue;
-  const lines = Object.fromEntries(Object.entries(queue.drafts).slice(0,COLLECTION_BATCH_SIZE));
+  // A card's unspecified and printing pools are one atomic inventory adjustment.
+  const groups = new Map<string, [string, CollectionUpdateLine][]>();
+  for (const entry of Object.entries(queue.drafts)) { const group = groups.get(entry[1].cardUuid) ?? []; group.push(entry); groups.set(entry[1].cardUuid, group); }
+  const selected: [string, CollectionUpdateLine][] = [];
+  for (const group of groups.values()) {
+    if (group.length > 500) throw new Error("Too many printings for one card. Review its quantities before saving.");
+    if (selected.length && selected.length + group.length > COLLECTION_BATCH_SIZE) break;
+    selected.push(...group);
+  }
+  const lines = Object.fromEntries(selected);
   return Object.keys(lines).length ? {...queue,pending:{requestId,lines}} : queue;
 }
 export function acknowledgeCollectionBatch(queue: CollectionSaveQueue, requestId: string): CollectionSaveQueue {

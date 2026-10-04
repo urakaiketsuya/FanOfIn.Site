@@ -1,8 +1,10 @@
+import type { DeckPrintings } from "@gatcg/shared";
 import { useMemo, useReducer, type Dispatch, type SetStateAction } from "react";
 import type { RatingPillar } from "../../../lib/deckIdentity";
 import type { ChangeLogEntry, CollectionMode, LockedSection, PopulationSource } from "../model/builderTypes";
 
 export interface BuilderWorkflowState {
+  printings?: DeckPrintings;
   championName: string | null;
   spiritFilter: string | null;
   lockedCards: Map<string, number>;
@@ -17,7 +19,7 @@ export interface BuilderWorkflowState {
   changeLog: ChangeLogEntry[];
 }
 
-type WorkflowAction = { [K in keyof BuilderWorkflowState]: { type: "set"; field: K; value: SetStateAction<BuilderWorkflowState[K]> } }[keyof BuilderWorkflowState];
+type WorkflowAction = { [K in keyof BuilderWorkflowState]-?: { type: "set"; field: K; value: SetStateAction<BuilderWorkflowState[K]> } }[keyof BuilderWorkflowState];
 
 function reducer(state: BuilderWorkflowState, action: WorkflowAction): BuilderWorkflowState {
   const current = state[action.field];
@@ -33,6 +35,7 @@ export function useBuilderWorkflowState(initial: BuilderWorkflowState) {
     (value) => dispatch({ type: "set", field, value } as WorkflowAction)
   );
   const actions = useMemo(() => ({
+    setPrintings: setter("printings"),
     setChampionName: setter("championName"),
     setSpiritFilter: setter("spiritFilter"),
     setLockedCards: setter("lockedCards"),

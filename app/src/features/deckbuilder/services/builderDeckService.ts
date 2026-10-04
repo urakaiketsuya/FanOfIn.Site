@@ -1,7 +1,8 @@
-import type { DeckFormat, OmnidexDecklist } from "@gatcg/shared";
+import { withDeckPrintings, type DeckPrintings, type DeckFormat, type OmnidexDecklist } from "@gatcg/shared";
 import { accountApi } from "../../../lib/accountApi";
 
 export interface SaveBuilderDeckRequest {
+  printings?: DeckPrintings;
   improveDeckId: string | null;
   title: string;
   changeNote: string;
@@ -13,15 +14,16 @@ export interface SaveBuilderDeckRequest {
 
 /** Account persistence adapter for builder output. UI operation state remains with the caller. */
 export async function saveBuilderDeck(request: SaveBuilderDeckRequest): Promise<{ id: string }> {
-  const maybeboard = Array.from(request.maybeboard, ([card, quantity]) => ({ card, quantity }));
+  const maybeboard = withDeckPrintings({ main: [], material: [], sideboard: [], maybeboard: Array.from(request.maybeboard, ([card, quantity]) => ({ card, quantity })) }, request.printings ?? {}).maybeboard;
   if (request.improveDeckId) {
     await accountApi.createDeckVersion(request.improveDeckId, {
       format: request.format,
       championName: request.championName,
       decklist: request.decklist,
+      maybeboard,
       changeNote: request.changeNote.trim() || "Edited in Deck Workbench",
     });
-    await accountApi.updateDeckMetadata(request.improveDeckId, { maybeboard, ...(request.title.trim() ? { title: request.title.trim() } : {}) });
+    if (request.title.trim()) await accountApi.updateDeckMetadata(request.improveDeckId, { title: request.title.trim() });
     return { id: request.improveDeckId };
   }
   return accountApi.saveDeck({

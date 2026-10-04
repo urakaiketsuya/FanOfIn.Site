@@ -1,4 +1,4 @@
-import type { Card, OmnidexDecklist } from "@gatcg/shared";
+import { extractDeckPrintings, type DeckPrintings, type Card, type OmnidexDecklist } from "@gatcg/shared";
 
 export type LockedSection = "main" | "material" | "sideboard";
 
@@ -8,7 +8,7 @@ export type LockedSection = "main" | "material" | "sideboard";
  * URLSearchParams already does for the param value as a whole. */
 export function encodeLockedCards(lockedCards: Map<string, number>, lockedSections: Map<string, LockedSection>): string {
   return Array.from(lockedCards.entries())
-    .map(([name, qty]) => `${lockedSections.get(name) ?? "main"}:${qty}:${name}`)
+    .map(([name, qty]) => `${lockedSections.get(name) ?? "main"}:${qty}:${name.includes("\0") ? name.slice(name.indexOf("\0") + 1) : name}`)
     .join(";");
 }
 
@@ -19,21 +19,23 @@ export function buildDeckBuilderPath(
   spiritFilter: string | null,
   lockedCards: Map<string, number>,
   lockedSections: Map<string, LockedSection>,
-  options?: { mode?: "improve"; sourceDeckId?: string },
+  options?: { mode?: "improve"; sourceDeckId?: string; printings?: DeckPrintings },
 ): string {
   const params = new URLSearchParams();
   params.set("champion", championName);
+  if (options?.printings && Object.keys(options.printings).length) params.set("printings", JSON.stringify(options.printings));
   if (spiritFilter) params.set("spirit", spiritFilter);
   const locked = encodeLockedCards(lockedCards, lockedSections);
   if (locked) params.set("locked", locked);
   if (options?.mode === "improve") {
-    params.set("tab", "review");
+    params.set("tab", "build");
     if (options.sourceDeckId) params.set("improveDeck", options.sourceDeckId);
   }
   return `/deck-builder?${params.toString()}`;
 }
 
 export interface DeckBuilderParams {
+  printings?: DeckPrintings;
   championName: string;
   spiritFilter: string | null;
   lockedCards: Map<string, number>;
@@ -60,11 +62,12 @@ export function deckBuilderParamsFromDecklist(decklist: OmnidexDecklist, cardsBy
         }
         if (!championName) championName = card.name.split(",")[0].trim();
       }
-      lockedCards.set(line.card, (lockedCards.get(line.card) ?? 0) + line.quantity);
-      lockedSections.set(line.card, section);
+      const key = lockedCards.has(line.card) && lockedSections.get(line.card) !== section ? `${section}\0${line.card}` : line.card;
+      lockedCards.set(key, (lockedCards.get(key) ?? 0) + line.quantity);
+      lockedSections.set(key, section);
     }
   }
 
   if (!championName) return null;
-  return { championName, spiritFilter, lockedCards, lockedSections };
+  return { printings: extractDeckPrintings(decklist), championName, spiritFilter, lockedCards, lockedSections };
 }

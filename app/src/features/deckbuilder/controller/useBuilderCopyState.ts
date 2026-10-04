@@ -1,6 +1,6 @@
 import { useToast } from "../../../components/ui/toast/ToastContext";
 import { useEffect, useRef, useState } from "react";
-import type { Card, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
+import { extractDeckPrintings, type DeckPrintings, type Card, type DeckFormat, type OmnidexDecklist } from "@gatcg/shared";
 import { buildTcgplayerMassEntryUrl } from "../../../lib/tcgplayerMassEntry";
 import { buildClarentPlaytestUrl } from "../../../lib/clarentPlaytest";
 import { AccountApiError } from "../../../lib/accountApi";
@@ -11,6 +11,7 @@ import type { SuggestedBuild } from "../useSuggestedBuild";
 import type { LockedSection } from "../model/builderTypes";
 
 interface UseBuilderCopyStateArgs {
+  printings?: DeckPrintings;
   build: SuggestedBuild;
   buildLines: { name: string; quantity: number }[];
   sideboardLines: { name: string; quantity: number }[];
@@ -30,7 +31,7 @@ interface UseBuilderCopyStateArgs {
 /** Save/versioning and export state shared by the workbench header and export sheet. */
 export function useBuilderCopyState({
   build, buildLines, sideboardLines, decklist, keptDecklist, cardsByName, championName, spiritFilter,
-  archetypeId, deckFormat, lockedCards, lockedSections, improveDeckId, maybeboard,
+  printings, archetypeId, deckFormat, lockedCards, lockedSections, improveDeckId, maybeboard,
 }: UseBuilderCopyStateArgs) {
   const { notify } = useToast();
   const massEntryUrl = buildTcgplayerMassEntryUrl([...buildLines, ...sideboardLines]);
@@ -81,6 +82,7 @@ export function useBuilderCopyState({
   async function handleCopyShareLink() {
     try {
       await copyBuilderShareLink({
+        printings: extractDeckPrintings(keptDecklist),
         origin: window.location.origin,
         championName,
         spiritName: spiritFilter,
@@ -101,7 +103,7 @@ export function useBuilderCopyState({
     catch { notify({ tone: "error", message: "Could not export the decklist. Please try again." }); }
   }
 
-  const signature = JSON.stringify([deckToSave, deckFormat, saveTitle, saveNote, [...maybeboard]]);
+  const signature = JSON.stringify([printings, deckToSave, deckFormat, saveTitle, saveNote, [...maybeboard]]);
   const currentSignature = useRef(signature);
   currentSignature.current = signature;
   useEffect(() => { setSaveState(state => state === "saving" ? state : "idle"); }, [signature]);
@@ -117,6 +119,7 @@ export function useBuilderCopyState({
         changeNote: saveNote,
         format: deckFormat,
         championName,
+        printings,
         decklist: deckToSave,
         maybeboard,
       });

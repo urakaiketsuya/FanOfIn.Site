@@ -67,3 +67,22 @@ models mounted while the deck workspace remains open so switching views cannot d
 Card handoffs update the requested scenario without remounting the whole workspace. Lead calculated
 results with named card artwork, keep model limitations visible, and disclose supporting calculations
 on demand. Large result panels should not become sticky overlays on narrow screens.
+
+## Card printings
+
+Use the shared `PrintingChoices` inside the existing sheet, with explicit edition artwork,
+readable set/collector labels and a persistent Apply action. Phones use artwork-and-details
+rows; desktop uses a wrapping grid. Selecting an edition never implies foil/nonfoil finish.
+Keep unspecified copies valid, including legacy inventory and imported lists.
+
+Collection **Add copies** changes ownership. **Identify existing copies** redistributes the
+existing total across printing pools and preserves proxies. Keep all pools for a card in one
+atomic save batch and revert that card's pending pools together. Draft saves carry expected
+quantities; conflicts retain the draft for review instead of overwriting newer inventory.
+
+Deck printings are optional, section-aware allocations saved with each owner's version, outside
+canonical gameplay identity. Selected artwork and mixed-printing summaries appear in deck views.
+Quantity reductions and partial moves must explicitly resolve affected printed copies. Ownership
+counts shown by the picker are recorded inventory, not exact-printing availability or reservations.
+Printing choices survive undo, drafts, version history, public copies, bookmarks and supported
+share/text round-trips. Standard external exports disclose that they omit printing choices.

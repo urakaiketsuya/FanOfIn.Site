@@ -26,7 +26,7 @@ export default function CollectionChangesReview({ drafts, savedEntries, cards, b
             <dl className="mt-3 space-y-1 text-sm"><div><dt className="inline">Owned: </dt><dd className="inline font-semibold">{before} → {after}</dd>{before !== after && <span className="ml-2 text-xs">({after > before ? "+" : ""}{after - before})</span>}</div>
               {(beforeProxy !== afterProxy || beforeProxy > 0) && <div><dt className="inline">Proxies: </dt><dd className="inline font-semibold">{beforeProxy} → {afterProxy}</dd></div>}
             </dl>
-            <button type="button" disabled={busy || locked} onClick={() => onRevert(key)} aria-label={`Revert change to ${line.cardName}${line.editionUuid ? ` ${edition?.set.prefix ?? line.setPrefix ?? "printing"}` : " unspecified printing"}`} className="mt-2 min-h-12 rounded-lg px-3 text-sm text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2 focus-visible:outline-ctp-blue disabled:opacity-40">Revert this change</button>
+            <button type="button" disabled={busy || locked} onClick={() => onRevert(key)} aria-label={`Revert all quantity changes for ${line.cardName}`} className="mt-2 min-h-12 rounded-lg px-3 text-sm text-ctp-blue hover:bg-ctp-surface0 focus-visible:outline-2 focus-visible:outline-ctp-blue disabled:opacity-40">Revert this card’s changes</button>
           </div>
         </article>;
       })}</div>

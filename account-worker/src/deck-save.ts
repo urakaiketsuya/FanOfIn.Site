@@ -1,3 +1,5 @@
+import { extractDeckPrintings } from "@gatcg/shared";
+import { validateDeckPrintings } from "./printing-catalog";
 import { databaseBatch } from "./database";
 import type { AuthUser, Env } from "./auth";
 import { canonicalMaybeboard, parseDeckContent, prepareDeckBuild, validMaybeboard } from "./deck-input";
@@ -5,7 +7,7 @@ import { assertAllowedText } from "./content-policy";
 import { ApiError, badRequest } from "./errors";
 
 export interface DeckSaveResult { id: string; versionNumber: number; revision: number }
-interface DeckState { revision: number; current_version_id: string; version_number: number; full_identity_hash: string }
+interface DeckState { revision: number; current_version_id: string; version_number: number; full_identity_hash: string; printings_json: string }
 const conflict = () => new ApiError("This deck changed elsewhere. Your edits are still available; reload the saved deck before trying again.", 409, "deck_conflict");
 
 export function translateDeckWriteError(error: unknown): never {
@@ -28,10 +30,11 @@ export async function saveDeckContent(env: Env, user: AuthUser, deckId: string, 
   if (input.changeNote != null && (typeof input.changeNote !== "string" || input.changeNote.length > 240)) throw badRequest("Change note is too long");
   assertAllowedText(input.changeNote, "Change note");
   const { canonical, coreHash, fullHash, championName } = await prepareDeckBuild(input);
+  const printings = JSON.stringify(extractDeckPrintings(input.decklist));
   const maybeboard = options.maybeboard === undefined ? null : JSON.stringify(canonicalMaybeboard(options.maybeboard));
   const changeNote = typeof input.changeNote === "string" ? input.changeNote.trim() : "";
   const requestId = options.requestId ?? crypto.randomUUID();
-  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(JSON.stringify({ deckId, mode, fullHash, maybeboard, changeNote, revision: options.expectedRevision })));
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(JSON.stringify({ deckId, mode, fullHash, maybeboard, changeNote, revision: options.expectedRevision, ...(printings !== "{}" ? { printings } : {}) })));
   const hash = Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, "0")).join("");
   async function receipt(): Promise<DeckSaveResult | null> {
     const row = await env.ACCOUNT_DB.prepare("SELECT request_hash, result_json FROM deck_save_receipts WHERE user_id = ? AND request_id = ?")
@@ -42,14 +45,15 @@ export async function saveDeckContent(env: Env, user: AuthUser, deckId: string, 
   }
   const replay = await receipt();
   if (replay) return replay;
-  const owned = await env.ACCOUNT_DB.prepare(`SELECT ud.revision, ud.current_version_id, dv.version_number, cb.full_identity_hash
+  await validateDeckPrintings(env, extractDeckPrintings({ ...input.decklist, maybeboard: options.maybeboard as import("@gatcg/shared").OmnidexDecklistCardLine[] | undefined }));
+  const owned = await env.ACCOUNT_DB.prepare(`SELECT ud.revision, ud.current_version_id, dv.version_number, dv.printings_json, cb.full_identity_hash
     FROM user_decks ud JOIN deck_versions dv ON dv.id = ud.current_version_id AND dv.deck_id = ud.id
     JOIN canonical_builds cb ON cb.id = dv.canonical_build_id WHERE ud.id = ? AND ud.owner_user_id = ?`)
     .bind(deckId, user.id).first<DeckState>();
   if (!owned) throw new ApiError("Deck not found", 404, "deck_not_found");
   const expected = options.expectedRevision ?? owned.revision; // Legacy clients still get transaction-time protection.
   if (expected !== owned.revision) { const winner = await receipt(); if (winner) return winner; throw conflict(); }
-  if (mode === "version" && owned.full_identity_hash === fullHash) {
+  if (mode === "version" && owned.full_identity_hash === fullHash && (owned.printings_json ?? "{}") === printings) {
     const winner = await receipt(); if (winner) return winner;
     throw badRequest("This decklist is already the current version", "duplicate_version");
   }
@@ -64,11 +68,11 @@ export async function saveDeckContent(env: Env, user: AuthUser, deckId: string, 
         VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT(full_identity_hash) DO NOTHING`)
         .bind(fullHash, coreHash, fullHash, input.format, championName, JSON.stringify(canonical), now),
       mode === "version"
-        ? env.ACCOUNT_DB.prepare(`INSERT INTO deck_versions(id, deck_id, version_number, canonical_build_id, change_note, change_summary_json, created_at)
-          VALUES (?, ?, ?, (SELECT id FROM canonical_builds WHERE full_identity_hash = ?), ?, '{}', ?)`)
-          .bind(result.id, deckId, result.versionNumber, fullHash, changeNote, now)
-        : env.ACCOUNT_DB.prepare("UPDATE deck_versions SET canonical_build_id = (SELECT id FROM canonical_builds WHERE full_identity_hash = ?) WHERE id = ? AND deck_id = ?")
-          .bind(fullHash, result.id, deckId),
+        ? env.ACCOUNT_DB.prepare(`INSERT INTO deck_versions(id, deck_id, version_number, canonical_build_id, change_note, change_summary_json, created_at, printings_json)
+          VALUES (?, ?, ?, (SELECT id FROM canonical_builds WHERE full_identity_hash = ?), ?, '{}', ?, ?)`)
+          .bind(result.id, deckId, result.versionNumber, fullHash, changeNote, now, printings)
+        : env.ACCOUNT_DB.prepare("UPDATE deck_versions SET canonical_build_id = (SELECT id FROM canonical_builds WHERE full_identity_hash = ?), printings_json = ? WHERE id = ? AND deck_id = ?")
+          .bind(fullHash, printings, result.id, deckId),
       env.ACCOUNT_DB.prepare(`UPDATE user_decks SET current_version_id = ?, format = ?, champion_name = ?, maybeboard_json = COALESCE(?, maybeboard_json),
         published_version_id = CASE WHEN visibility <> 'private' THEN ? ELSE published_version_id END,
         published_at = CASE WHEN visibility <> 'private' THEN ? ELSE published_at END, updated_at = ? WHERE id = ? AND owner_user_id = ?`)

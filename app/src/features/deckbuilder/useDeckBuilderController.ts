@@ -53,6 +53,7 @@ export function useDeckBuilderController() {
     initialSections.set(initialSpirit, "material");
   }
   const workflow = useBuilderWorkflowState({
+    printings: urlSeed?.printings ?? sessionSeed?.printings ?? {},
     championName: urlSeed?.championName ?? sessionSeed?.championName ?? null,
     spiritFilter: urlSeed?.spiritFilter ?? sessionSeed?.spiritFilter ?? null,
     lockedCards: initialCards,
@@ -168,6 +169,7 @@ export function useDeckBuilderController() {
   }, []);
 
   const presentation = useBuilderPresentationModel({
+    printings: workflow.state.printings,
     build, catalogByName, cardsByName, identityElements, deckFormat, championName, spiritFilter,
     archetypeId, lockedCards, lockedSections, maybeboard, improveDeckId, reviewItemCount, cardInput,
     cardNameSet, addDestination,

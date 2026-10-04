@@ -1,4 +1,4 @@
-import { canonicalizeSavedDecklist, savedDeckIdentityInput, type DeckFormat, type OmnidexDecklist, type OmnidexDecklistCardLine } from "@gatcg/shared";
+import { validPrintingAllocations, extractDeckPrintings, withDeckPrintings, canonicalizeSavedDecklist, savedDeckIdentityInput, type DeckFormat, type OmnidexDecklist, type OmnidexDecklistCardLine } from "@gatcg/shared";
 import { validUserFacingName } from "./content-policy";
 import { badRequest } from "./errors";
 
@@ -67,7 +67,7 @@ export function validDecklist(value: unknown): value is OmnidexDecklist {
   return sections.every((section) => (deck[section] as unknown[]).every((line) => {
     if (!line || typeof line !== "object") return false;
     const item = line as Record<string, unknown>;
-    return typeof item.card === "string" && item.card.length <= 200 && Number.isInteger(item.quantity) && Number(item.quantity) > 0 && Number(item.quantity) <= 100;
+    return typeof item.card === "string" && item.card.length <= 200 && Number.isInteger(item.quantity) && Number(item.quantity) > 0 && Number(item.quantity) <= 100 && (item.printings === undefined || validPrintingAllocations(item.printings, Number(item.quantity)));
   }));
 }
 
@@ -76,12 +76,13 @@ export function validMaybeboard(value: unknown): value is OmnidexDecklistCardLin
   return value.every((line) => {
     if (!line || typeof line !== "object") return false;
     const item = line as Record<string, unknown>;
-    return typeof item.card === "string" && item.card.length <= 200 && Number.isInteger(item.quantity) && Number(item.quantity) > 0 && Number(item.quantity) <= 100;
+    return typeof item.card === "string" && item.card.length <= 200 && Number.isInteger(item.quantity) && Number(item.quantity) > 0 && Number(item.quantity) <= 100 && (item.printings === undefined || validPrintingAllocations(item.printings, Number(item.quantity)));
   });
 }
 
 export function canonicalMaybeboard(lines: OmnidexDecklistCardLine[] | undefined): OmnidexDecklistCardLine[] {
-  return canonicalizeSavedDecklist({ main: lines ?? [], material: [], sideboard: [] }).main;
+  const deck = { main: lines ?? [], material: [], sideboard: [] };
+  return withDeckPrintings(canonicalizeSavedDecklist(deck), extractDeckPrintings(deck)).main;
 }
 
 export function parseSaveInput(value: unknown): SaveInput {

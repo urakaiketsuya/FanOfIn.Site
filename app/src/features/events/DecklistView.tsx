@@ -1,6 +1,6 @@
 import { useToast } from "../../components/ui/toast/ToastContext";
 import DeckLegalityWarning from "../../components/deck-editor/DeckLegalityWarning";
-import { sortDeckCardsByElement } from "@gatcg/shared";
+import { printingCardLine, sortDeckCardsByElement } from "@gatcg/shared";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import { useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
@@ -25,7 +25,7 @@ import Button from "../../components/ui/Button";
 import { CompactDeckSection as CompactSection, DetailedDeckSection, VisualDeckSections } from "./DecklistSections";
 
 /** Plain-text export with "# Section" headers and "4 Card Name" lines – round-trips with the Compare tool's paste parser. */
-export function buildDecklistText(decklist: OmnidexDecklist, extraSections: { title: string; lines: OmnidexDecklistCardLine[] }[] = []): string {
+export function buildDecklistText(decklist: OmnidexDecklist, extraSections: { title: string; lines: OmnidexDecklistCardLine[] }[] = [], includePrintings = false): string {
   const sections: [string, OmnidexDecklistCardLine[]][] = [
     ...extraSections.map((section) => [section.title, section.lines] as [string, OmnidexDecklistCardLine[]]),
     ["Main", decklist.main],
@@ -34,9 +34,11 @@ export function buildDecklistText(decklist: OmnidexDecklist, extraSections: { ti
   ];
   return sections
     .filter(([, lines]) => lines.length > 0)
-    .map(([title, lines]) => `# ${title}\n${lines.map((l) => `${l.quantity} ${l.card}`).join("\n")}`)
+    .map(([title, lines]) => `# ${title}\n${lines.map((l) => includePrintings ? printingCardLine(l) : `${l.quantity} ${l.card}`).join("\n")}`)
     .join("\n\n");
 }
+
+export const buildEditableDeckText = (deck: OmnidexDecklist) => buildDecklistText(deck, [], true);
 
 
 export default function DecklistView({
@@ -91,12 +93,12 @@ export default function DecklistView({
   const setDisplayMode = displayPrefs.setDisplayMode;
   const [showMissingOnly, setShowMissingOnly] = useState(false);
 
-  async function handleCopy() {
+  async function handleCopy(includePrintings = false) {
     try {
-      await navigator.clipboard.writeText(buildDecklistText(decklist, [...extraSections, ...trailingSections]));
+      await navigator.clipboard.writeText(buildDecklistText(decklist, [...extraSections, ...trailingSections], includePrintings));
       setCopyState("copied"); notify({ message: "Decklist copied.", key: "copy" });
     } catch {
-      setCopyState("failed"); notify({ tone: "error", message: "Could not copy the decklist.", key: "copy", action: { label: "Retry copy", onClick: handleCopy } });
+      setCopyState("failed"); notify({ tone: "error", message: "Could not copy the decklist.", key: "copy", action: { label: "Retry copy", onClick: () => handleCopy() } });
     }
     setTimeout(() => setCopyState("idle"), 1500);
   }
@@ -106,7 +108,7 @@ export default function DecklistView({
       await copyDecklistAndOpen(buildDecklistText(decklist, [...extraSections, ...trailingSections]), url);
       setCopyState("copied"); notify({ message: "Decklist copied.", key: "copy" });
     } catch {
-      setCopyState("failed"); notify({ tone: "error", message: "Could not copy the decklist.", key: "copy", action: { label: "Retry copy", onClick: handleCopy } });
+      setCopyState("failed"); notify({ tone: "error", message: "Could not copy the decklist.", key: "copy", action: { label: "Retry copy", onClick: () => handleCopy() } });
     }
     setTimeout(() => setCopyState("idle"), 1500);
   }
@@ -212,11 +214,12 @@ export default function DecklistView({
         <button type="button" aria-pressed={displayPrefs.showPrices} onClick={() => displayPrefs.setShowPrices(!displayPrefs.showPrices)} className={`min-h-11 rounded-md px-3 text-xs ${displayPrefs.showPrices ? "bg-ctp-blue/10 text-ctp-blue" : "text-ctp-subtext1 hover:bg-ctp-surface0"}`}>Price</button>
         {collectionControl}
         {allLines.length > 0 && <>
-          <Button variant="secondary" size="sm" onClick={handleCopy} className={`ml-auto min-h-11 ${copyState === "failed" ? "border-ctp-red text-ctp-red" : ""}`}>{copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy"}</Button>
+          <Button variant="secondary" size="sm" onClick={() => void handleCopy()} className={`ml-auto min-h-11 ${copyState === "failed" ? "border-ctp-red text-ctp-red" : ""}`}>{copyState === "copied" ? "Copied!" : copyState === "failed" ? "Couldn't copy" : "Copy"}</Button>
           <details>
             <summary className="flex min-h-11 cursor-pointer list-none items-center rounded-md px-3 text-xs text-ctp-subtext1 hover:bg-ctp-surface0">More</summary>
             <div className="absolute right-0 top-full z-30 mt-1 grid max-h-[60dvh] w-64 max-w-full gap-1 overflow-y-auto rounded-lg border border-ctp-surface1 bg-ctp-base p-2 shadow-xl">
               {toolbarActions}
+              {[...decklist.main, ...decklist.material, ...decklist.sideboard].some(line => line.printings?.length) && <><Button onClick={() => void handleCopy(true)}>Copy with printings (Fan of Insight)</Button><p className="px-3 text-xs text-ctp-subtext1">Standard copy and external exports omit printing choices. Copy with printings preserves them when pasted here.</p></>}
               <a href={clarentUrl} target="_blank" rel="noreferrer" className="rounded px-3 py-2 text-sm text-ctp-green hover:bg-ctp-surface0">Playtest in Clarent →</a>
                   {deckBuilderDestinations.map((destination) => <button key={destination.id} type="button" onClick={() => void handleCopyAndOpen(destination.url)} title={`Copies this decklist, then opens ${destination.label} so you can paste it into a new deck`} className="rounded px-3 py-2 text-left text-sm text-ctp-subtext1 hover:bg-ctp-surface0 hover:text-ctp-text">Copy & open {destination.label} &rarr;</button>)}
                   <a href={massEntryUrl} target="_blank" rel="noreferrer" className="rounded px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">Buy on TCGplayer &rarr;</a>

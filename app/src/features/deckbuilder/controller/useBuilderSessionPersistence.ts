@@ -8,6 +8,7 @@ export function useBuilderSessionPersistence(format: DeckFormat, state: BuilderW
   useEffect(() => {
     const saved = saveBuilderSession(sessionStorage, {
       selection: {
+        printings: state.printings,
         format,
         championName: state.championName,
         spiritName: state.spiritFilter,

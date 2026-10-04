@@ -1,4 +1,4 @@
-import type { Card, DeckFormat, OmnidexDecklist } from "@gatcg/shared";
+import { extractDeckPrintings, type Card, type DeckFormat, type OmnidexDecklist } from "@gatcg/shared";
 import type { DeckWorkspace } from "./deckWorkspace";
 
 type WorkspaceSource = Extract<DeckWorkspace["source"], "analysis" | "review" | "combo">;
@@ -33,6 +33,7 @@ export function decklistToWorkspace(
   if (!championName && highestLevelChampion) championName = highestLevelChampion.name.split(",")[0].trim();
   const lines = (section: keyof OmnidexDecklist) => decklist[section].map(({ card, quantity }) => ({ name: canonicalName(card), quantity }));
   return {
+    printings: extractDeckPrintings(decklist),
     source,
     title,
     sourceLabel,

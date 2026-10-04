@@ -1,4 +1,4 @@
-import type { OmnidexDecklist } from "@gatcg/shared";
+import { validPrintingAllocations, type OmnidexDecklist } from "@gatcg/shared";
 
 export interface ParsedDecklist {
   decklist: OmnidexDecklist;
@@ -58,7 +58,11 @@ export function parseDecklist(text: string): ParsedDecklist {
     }
 
     const [, quantityStr, name] = match;
-    decklist[section].push({ card: name.trim(), quantity: Number(quantityStr) });
+    const annotated = name.match(/^(.*?) \[printings:([^\]]+)\]$/);
+    const printings = annotated?.[2].split(",").map(value => { const [editionUuid, count] = value.split("="); return { editionUuid, quantity: Number(count) }; });
+    // Keep invalid annotations visible to validation; never silently discard a choice.
+    if (annotated && !validPrintingAllocations(printings, Number(quantityStr))) skippedLines.push(line);
+    decklist[section].push({ card: annotated ? annotated[1].trim() : name.trim(), quantity: Number(quantityStr), ...(printings ? { printings } : {}) });
   }
 
   return { decklist, skippedLines };

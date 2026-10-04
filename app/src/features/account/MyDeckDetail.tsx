@@ -1,9 +1,10 @@
+import type { CardPrintingAllocation } from "@gatcg/shared";
 import EditorModeSwitch from "../../components/deck-editor/EditorModeSwitch";
 import DisclosureChevron from "../../components/DisclosureChevron";
 import MaybeboardPanel from "./MaybeboardPanel";
 import { useDeckEditSession } from "./useDeckEditSession";
 import { useSavedDeckDraft } from "./useSavedDeckDraft";
-import { newlyAddedBannedCards } from "@gatcg/shared";
+import { printingCardLine, extractDeckPrintings, newlyAddedBannedCards } from "@gatcg/shared";
 import { useDeckEditFeedback } from "../../components/deck-editor/useDeckEditFeedback";
 import { useActionNotice } from "../../components/ui/toast/useActionNotice";
 import { useToast } from "../../components/ui/toast/ToastContext";
@@ -16,7 +17,7 @@ import type { OmnidexDecklist, OmnidexDecklistCardLine, SavedDeckDetail } from "
 import { accountApi, AccountApiError } from "../../lib/accountApi";
 import { trackEvent } from "../../lib/analytics";
 import { useDocumentTitle } from "../../lib/useDocumentTitle";
-import { buildDecklistText } from "../events/DecklistView";
+import { buildEditableDeckText as buildDecklistText } from "../events/DecklistView";
 import { parseDecklist } from "../compare/parseDecklist";
 import { useCardsByNames } from "../events/useCardsByNames";
 import { useCardCatalog } from "../cards/useCardCatalog";
@@ -85,13 +86,13 @@ export default function MyDeckDetail() {
   const editedChampionName = useMemo(() => findDeckChampionName(editedDecklist.material, editedCardsByName)?.split(",")[0].trim() ?? null, [editedDecklist.material, editedCardsByName]);
   const editedCardChangeCount = useMemo(() => {
     if (!deck) return 0;
-    const quantities = (decklist: OmnidexDecklist) => new Map(EDIT_SECTIONS.flatMap(({ key }) => decklist[key].map((line) => [`${key}:${line.card}`, line.quantity] as const)));
+    const quantities = (decklist: OmnidexDecklist) => new Map(EDIT_SECTIONS.flatMap(({ key }) => decklist[key].map((line) => [`${key}:${line.card}`, JSON.stringify([line.quantity, line.printings ?? []])] as const)));
     const before = quantities(deck.decklist);
     const after = quantities(editedDecklist);
     return new Set([...before.keys(), ...after.keys()]).size === 0 ? 0 : [...new Set([...before.keys(), ...after.keys()])].filter((key) => before.get(key) !== after.get(key)).length;
   }, [deck, editedDecklist]);
-  const savedMaybeboardText = useMemo(() => deck?.maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n") ?? "", [deck]);
-  const hasUnsavedChanges = editedCardChangeCount > 0 || maybeboardText !== savedMaybeboardText;
+  const savedMaybeboardText = useMemo(() => deck?.maybeboard.map((line) => printingCardLine(line)).join("\n") ?? "", [deck]);
+  const hasUnsavedChanges = JSON.stringify(extractDeckPrintings(editedDecklist)) !== JSON.stringify(extractDeckPrintings(deck?.decklist ?? { main: [], material: [], sideboard: [] })) || editedCardChangeCount > 0 || maybeboardText !== savedMaybeboardText;
   const draft = useSavedDeckDraft(deck, editing, hasUnsavedChanges, { deckText, maybeboardText });
   const previousDecklist = useMemo(() => {
     if (!deck) return undefined;
@@ -105,7 +106,7 @@ export default function MyDeckDetail() {
     let active = true;
     setLoadingDeck(true);
     void accountApi.deck(deckId).then(({ deck: result }) => {
-      if (active) { setError(null); setDeck(result); setTitle(result.title); setDescription(result.description); setPrimerMarkdown(result.primerMarkdown); setTagsText(result.tags.join(", ")); setDeckText(buildDecklistText(result.decklist)); setMaybeboardText(result.maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n")); }
+      if (active) { setError(null); setDeck(result); setTitle(result.title); setDescription(result.description); setPrimerMarkdown(result.primerMarkdown); setTagsText(result.tags.join(", ")); setDeckText(buildDecklistText(result.decklist)); setMaybeboardText(result.maybeboard.map((line) => printingCardLine(line)).join("\n")); }
     }).catch((reason: unknown) => {
       if (!active) return;
       setError(reason instanceof AccountApiError && reason.status === 401 ? "Sign in to view this deck." : reason instanceof TypeError ? "We could not connect to your deck. Try loading it again." : reason instanceof Error ? reason.message : "Deck could not be loaded");
@@ -134,18 +135,18 @@ export default function MyDeckDetail() {
   function applySharedEdit(action: DeckEdit) {
     const current: EditableDeck = { ...(editing ? editedDecklist : deck!.decklist), maybeboard: maybeboardLines };
     const next = editDeck(current, action, catalogByName);
-    if (next === current) return;
+    if (next === current) { if (action.type === "quantity" || action.type === "move") setNotice("Review the card’s printings before reducing or moving these copies."); return; }
     if (next.maybeboard.reduce((n, line) => n + line.quantity, 0) > current.maybeboard.reduce((n, line) => n + line.quantity, 0)) setMaybeboardOpen(true);
-    commitEdit(buildDecklistText(next), next.maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n"));
+    commitEdit(buildDecklistText(next), next.maybeboard.map((line) => printingCardLine(line)).join("\n"));
     setEditing(true);
     editFeedback.report(current, next, action, catalogByName, deck!.format, () => {
-      setDeckText(buildDecklistText(current)); setMaybeboardText(current.maybeboard.map(line => `${line.quantity}x ${line.card}`).join("\n"));
-      setEditHistory(history => ({ past: history.past.slice(0, -1), future: [{ deckText: buildDecklistText(next), maybeboardText: next.maybeboard.map(line => `${line.quantity}x ${line.card}`).join("\n") }] }));
+      setDeckText(buildDecklistText(current)); setMaybeboardText(current.maybeboard.map(line => printingCardLine(line)).join("\n"));
+      setEditHistory(history => ({ past: history.past.slice(0, -1), future: [{ deckText: buildDecklistText(next), maybeboardText: next.maybeboard.map(line => printingCardLine(line)).join("\n") }] }));
     });
   }
-  function changeMaybeboardQuantity(name: string, quantity: number) { applySharedEdit({ type: "quantity", section: "maybeboard", name, quantity }); }
+  function changeMaybeboardQuantity(name: string, quantity: number, printings?: CardPrintingAllocation[]) { applySharedEdit({ type: "quantity", section: "maybeboard", name, quantity, printings }); }
   function removeMaybeboardCard(name: string) { applySharedEdit({ type: "remove", section: "maybeboard", name }); }
-  function moveMaybeboardCard(line: OmnidexDecklistCardLine, destination: DeckCardDestination, quantity: number) { applySharedEdit({ type: "move", section: "maybeboard", name: line.card, destination, quantity }); }
+  function moveMaybeboardCard(line: OmnidexDecklistCardLine, destination: DeckCardDestination, quantity: number, printings?: CardPrintingAllocation[]) { applySharedEdit({ type: "move", section: "maybeboard", name: line.card, destination, quantity, printings }); }
 
   function startEditing() {
     const savedDeckText = buildDecklistText(deck!.decklist);
@@ -203,16 +204,22 @@ export default function MyDeckDetail() {
 
   // Grid tiles edit the same `deckText` the raw textarea and "Add card" bar above it read/write,
   // so all three stay in sync automatically.
-  function changeEditedQuantity(section: DeckSectionKey, name: string, quantity: number) { applySharedEdit({ type: "quantity", section, name, quantity }); }
+  function changeEditedQuantity(section: DeckSectionKey, name: string, quantity: number, printings?: CardPrintingAllocation[]) { applySharedEdit({ type: "quantity", section, name, quantity, printings }); }
 
   function editSelected(cards: { section: DeckSectionKey; name: string }[], makeAction: (selected: { section: DeckSectionKey; name: string }, quantity: number) => DeckEdit) {
     const initial: EditableDeck = { ...editedDecklist, maybeboard: maybeboardLines };
+    let printingConflict = false;
     const next = cards.reduce((current, selected) => {
       const quantity = current[selected.section].find((line) => line.card === selected.name)?.quantity;
-      return quantity === undefined ? current : editDeck(current, makeAction(selected, quantity), catalogByName);
+      if (quantity === undefined) return current;
+      const action = makeAction(selected, quantity);
+      const result = editDeck(current, action, catalogByName);
+      if (result === current && action.type === "quantity" && action.quantity < quantity) printingConflict = true;
+      return result;
     }, initial);
+    if (printingConflict) { setNotice("Choose which printings to keep on each card before reducing selected quantities. No bulk changes applied."); return; }
     if (next === initial) return;
-    commitEdit(buildDecklistText(next), next.maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n"));
+    commitEdit(buildDecklistText(next), next.maybeboard.map((line) => printingCardLine(line)).join("\n"));
     const banned = newlyAddedBannedCards(initial, next, catalogByName, deck!.format);
     notify({ message: banned.length ? `Selection updated. ${banned.length} banned card${banned.length === 1 ? "" : "s"} increased; review the deck warnings.` : "Selection updated. Undo is available in the editor.", tone: banned.length ? "warning" : "success", key: "bulk-edit" });
   }
@@ -229,13 +236,14 @@ export default function MyDeckDetail() {
     editSelected(cards, (selected) => ({ type: "remove", ...selected }));
   }
 
-  function moveEditedCard(from: DeckSectionKey, to: DeckCardDestination, name: string, quantity: number) { applySharedEdit({ type: "move", section: from, name, destination: to, quantity }); }
+  function moveEditedCard(from: DeckSectionKey, to: DeckCardDestination, name: string, quantity: number, printings?: CardPrintingAllocation[]) { applySharedEdit({ type: "move", section: from, name, destination: to, quantity, printings }); }
   function removeEditedCard(section: DeckSectionKey, name: string) { applySharedEdit({ type: "remove", section, name }); }
 
   // Only ever lowers a count (min, never max) – a card whose own legal limit is already below
   // `max` (e.g. a UNIQUE 1-of) is left untouched, never bumped up to match.
   function trimToMaxCopies(max: number) {
     const decklist = parseDecklist(deckText).decklist;
+    if ([...decklist.main, ...decklist.material, ...decklist.sideboard].some(line => (line.printings ?? []).reduce((sum, p) => sum + p.quantity, 0) > max)) { setNotice("Choose which printings to keep on each card before trimming."); return; }
     for (const section of EDIT_SECTIONS) for (const line of decklist[section.key]) line.quantity = Math.min(line.quantity, max);
     commitEdit(buildDecklistText(decklist));
     setNotice(`Trimmed every card to at most ${max}x.`);
@@ -259,7 +267,7 @@ export default function MyDeckDetail() {
     if (maybeboardLines.length === 0) return;
     const initial: EditableDeck = { ...(editing ? editedDecklist : deck!.decklist), maybeboard: maybeboardLines };
     const next = maybeboardLines.reduce((current, line) => editDeck(current, { type: "move", section: "maybeboard", name: line.card, destination: automaticDeckSection(catalogByName.get(line.card)), quantity: line.quantity }, catalogByName), initial);
-    commitEdit(buildDecklistText(next), next.maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n"));
+    commitEdit(buildDecklistText(next), next.maybeboard.map((line) => printingCardLine(line)).join("\n"));
     setEditing(true);
     setNotice("Maybeboard cards moved to the deck editor. Save deck changes to apply them.");
   }
@@ -271,7 +279,7 @@ export default function MyDeckDetail() {
     setDescription(result.deck.description);
     setPrimerMarkdown(result.deck.primerMarkdown);
     setTagsText(result.deck.tags.join(", "));
-    setMaybeboardText(result.deck.maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n"));
+    setMaybeboardText(result.deck.maybeboard.map((line) => printingCardLine(line)).join("\n"));
     setDeckText(buildDecklistText(result.deck.decklist));
   }
 
@@ -347,7 +355,7 @@ export default function MyDeckDetail() {
         {browserOpen && <EditorDialog count={EDIT_SECTIONS.reduce((sum, { key }) => sum + editedDecklist[key].reduce((n, line) => n + line.quantity, 0), 0)} onDismiss={() => setBrowserOpen(false)}><CardBrowser format={deck.format} query={cardInput} onQuery={setCardInput} destination={addDestination} onDestination={setAddDestination} names={cardNames} catalog={catalogByName} deck={{ ...editedDecklist, maybeboard: maybeboardLines }} onEdit={applySharedEdit} /></EditorDialog>}
         {editingValidation.status === "Illegal" && <div role="status" className="mt-3 rounded-lg border border-ctp-yellow/40 p-3 text-sm text-ctp-yellow">{editingValidation.reasons.map((reason) => <p key={reason}>{reason}</p>)}</div>}
 
-        <div className="mt-4">{editorMode === "text" ? <label className="block text-sm">Deck list text<textarea aria-label="Deck list text" rows={18} value={deckText} onChange={event => commitEdit(event.target.value)} className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-4 font-mono text-sm" /></label> : <EditableDecklistGrid format={deck.format} decklist={editedDecklist} cardsByName={editedCardsByName} onChangeQuantity={changeEditedQuantity} onAdjustSelected={adjustSelectedCards} onSetSelected={setSelectedCardsQuantity} onMoveSelected={moveSelectedCards} onRemoveSelected={removeSelectedCards} onMove={moveEditedCard} onRemove={removeEditedCard} />}</div>
+        <div className="mt-4">{editorMode === "text" ? <label className="block text-sm">Deck list text<textarea aria-label="Deck list text" rows={18} value={deckText} onChange={event => commitEdit(event.target.value)} className="mt-2 w-full rounded-md border border-ctp-surface1 bg-ctp-base p-4 font-mono text-sm" /></label> : <EditableDecklistGrid onPrintings={(section, name, printings) => applySharedEdit({ type: "printings", section, name, printings })} format={deck.format} decklist={editedDecklist} cardsByName={editedCardsByName} onChangeQuantity={changeEditedQuantity} onAdjustSelected={adjustSelectedCards} onSetSelected={setSelectedCardsQuantity} onMoveSelected={moveSelectedCards} onRemoveSelected={removeSelectedCards} onMove={moveEditedCard} onRemove={removeEditedCard} />}</div>
         <details className="group mt-3 rounded-lg border border-ctp-surface1 bg-ctp-mantle p-3">
           <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between text-sm font-medium text-ctp-subtext1 [&::-webkit-details-marker]:hidden">Bulk tools<DisclosureChevron className="group-open:rotate-180" /></summary>
           <div className="flex flex-wrap items-center gap-2">
@@ -362,7 +370,7 @@ export default function MyDeckDetail() {
       </div> : undefined}
     </UserDecklistPanel>
       {/* Supplement the decklist; panel children replace it with the editor while editing. */}
-      <MaybeboardPanel open={maybeboardOpen} onOpenChange={setMaybeboardOpen} format={deck.format} editing={editing} busy={busy} maybeboardText={maybeboardText} maybeboardLines={maybeboardLines} cardsByName={catalogByName} onMoveAll={addMaybeboardToEditor} onSave={() => void saveMaybeboard()} onChangeQuantity={changeMaybeboardQuantity} onMove={moveMaybeboardCard} onRemove={removeMaybeboardCard} onTextChange={text => editing ? commitEdit(deckText, text) : setMaybeboardText(text)} />
+      <MaybeboardPanel onPrintings={(name, printings) => applySharedEdit({ type: "printings", section: "maybeboard", name, printings })} open={maybeboardOpen} onOpenChange={setMaybeboardOpen} format={deck.format} editing={editing} busy={busy} maybeboardText={maybeboardText} maybeboardLines={maybeboardLines} cardsByName={catalogByName} onMoveAll={addMaybeboardToEditor} onSave={() => void saveMaybeboard()} onChangeQuantity={changeMaybeboardQuantity} onMove={moveMaybeboardCard} onRemove={removeMaybeboardCard} onTextChange={text => editing ? commitEdit(deckText, text) : setMaybeboardText(text)} />
     </section>}
     <div hidden={tab !== "primer"}><DeckPrimerEditor decklist={deck.decklist} primerMarkdown={primerMarkdown} setPrimerMarkdown={setPrimerMarkdown} savedMarkdown={deck.primerMarkdown} busy={busy} onSave={() => run(async () => { await accountApi.updateDeckMetadata(deck.id, { primerMarkdown }); await refresh(); })} /></div>
     {tab === "history" && <section id="owned-deck-panel-history" role="tabpanel" aria-labelledby="owned-deck-tab-history" tabIndex={0}><DeckVersionHistory key={`${deck.id}:${deck.revision}`} deck={deck} busy={busy} onRestore={restoreVersion} /></section>}

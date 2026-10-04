@@ -1,6 +1,7 @@
+import { validateDeckPrintings } from "./printing-catalog";
 import { databaseBatch } from "./database";
 import { translateDeckWriteError } from "./deck-save";
-import { canonicalizeSavedDecklist } from "@gatcg/shared";
+import { extractDeckPrintings, canonicalizeSavedDecklist } from "@gatcg/shared";
 import type { AuthUser, Env } from "./auth";
 import { canonicalMaybeboard, fullIdentityHash, identityHash, type SaveInput } from "./deck-input";
 import { validUserFacingName } from "./content-policy";
@@ -31,15 +32,16 @@ async function initialDeckStatements(env: Env, user: AuthUser, deckId: string, i
     VALUES (?, ?, ?, '', 'public', ?, ?, '', '', '[]', ?, ?, ?, ?)`)
     .bind(deckId, user.id, title, publicSlug, title, format, input.championName ?? null, now, now));
   statements.push(env.ACCOUNT_DB.prepare(`INSERT INTO deck_versions
-    (id, deck_id, version_number, canonical_build_id, change_note, change_summary_json, created_at)
-    VALUES (?, ?, 1, (SELECT id FROM canonical_builds WHERE full_identity_hash = ?), 'Initial version', '{}', ?)`)
-    .bind(versionId, deckId, fullHash, now));
+    (id, deck_id, version_number, canonical_build_id, change_note, change_summary_json, created_at, printings_json)
+    VALUES (?, ?, 1, (SELECT id FROM canonical_builds WHERE full_identity_hash = ?), 'Initial version', '{}', ?, ?)`)
+    .bind(versionId, deckId, fullHash, now, JSON.stringify(extractDeckPrintings(input.decklist))));
   statements.push(env.ACCOUNT_DB.prepare("UPDATE user_decks SET current_version_id = ?, published_version_id = ?, published_at = ? WHERE id = ? AND owner_user_id = ?")
     .bind(versionId, versionId, now, deckId, user.id));
   return statements;
 }
 
 export async function saveDeck(env: Env, user: AuthUser, input: SaveInput): Promise<{ id: string; created: boolean }> {
+  await validateDeckPrintings(env, extractDeckPrintings({ ...input.decklist, maybeboard: input.maybeboard }));
   return saveDeckAttempt(env, user, input, true);
 }
 

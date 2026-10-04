@@ -1,3 +1,6 @@
+import { useToast } from "../../../components/ui/toast/ToastContext";
+import { buildEditableDeckText } from "../../events/DecklistView";
+import Button from "../../../components/ui/Button";
 import DisclosureChevron from "../../../components/DisclosureChevron";
 import { Link } from "react-router-dom";
 import type { Card, OmnidexDecklist } from "@gatcg/shared";
@@ -42,6 +45,7 @@ export default function BuilderCopyPanel({
   /** Hides the "Copy full deck" option and "Save only kept cards" checkbox – for a caller (the suggestions-only Deck Review page) where every card is already kept by construction, so a "full vs. kept" distinction doesn't exist. */
   hideFullDeckOption?: boolean;
 }) {
+  const { notify } = useToast();
   return (
     <div data-component="BuilderCopyPanel" role="region" aria-label="Save and export deck" className="mt-4">
       <div className="mb-4 rounded-lg border border-ctp-blue/40 bg-ctp-blue/5 p-4">
@@ -84,6 +88,7 @@ export default function BuilderCopyPanel({
       <details className="mt-4 rounded-lg border border-ctp-surface1 p-3"><summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 text-sm">{validationComplete ? "Construction checks pass" : `Construction: ${validation.status.toLowerCase()}`}<DisclosureChevron /></summary><p className="mt-2 text-xs text-ctp-subtext1">You can save an incomplete draft.</p>{validation.reasons.map(reason=><p key={reason} className="mt-2 text-xs text-ctp-subtext1">{reason}</p>)}</details>
       <details className="mt-4 rounded-xl border border-ctp-surface1 p-3">
         <summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 text-sm font-medium text-ctp-subtext1">More export & collection options<DisclosureChevron /></summary>
+        {[...decklist.main, ...decklist.material, ...decklist.sideboard].some(line => line.printings?.length) && <div className="space-y-2"><p className="text-xs text-ctp-subtext1">Standard copy and external exports omit printing choices. Your saved deck and share link retain them.</p><Button onClick={() => { void navigator.clipboard.writeText(buildEditableDeckText(decklist)).then(() => notify({ message: "Copied with printings. Paste into Fan of Insight to restore them." })).catch(() => notify({ tone: "error", message: "Could not copy. Try again." })); }}>Copy with printings (Fan of Insight)</Button></div>}
         <DeckCollectionTools decklist={decklist} cardsByName={catalogByName} source={`${championName ?? "Untitled"} deck builder`} />
         <div className="mt-2 flex flex-wrap gap-2">
         {deckBuilderDestinations.map((destination) => (

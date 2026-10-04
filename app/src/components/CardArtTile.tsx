@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { Card } from "@gatcg/shared";
+import { cardWithPrinting, type Card } from "@gatcg/shared";
 import CardImage from "./CardImage";
 
 /**
@@ -17,7 +17,9 @@ export default function CardArtTile({
   cornerBadge,
   tags,
   artworkOnly = false,
+  editionUuid,
 }: {
+  editionUuid?: string;
   card: Card | undefined;
   name: string;
   cornerBadge?: ReactNode;
@@ -25,6 +27,7 @@ export default function CardArtTile({
   /** Wide deck covers crop the illustration above the printed rules. */
   artworkOnly?: boolean;
 }) {
+  card = cardWithPrinting(card, editionUuid);
   return (
     <div data-component="CardArtTile" className={`relative overflow-hidden rounded bg-ctp-surface0 ${artworkOnly ? "aspect-[16/10]" : "aspect-[5/7]"}`}>
       {card?.editions[0] ? (

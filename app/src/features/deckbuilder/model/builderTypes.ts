@@ -29,6 +29,7 @@ export interface ArchetypeTuningOption {
 
 /** Serializable input contract for recommendation engines, URLs, storage, and future API calls. */
 export interface BuilderSelection {
+  printings?: import("@gatcg/shared").DeckPrintings;
   format: DeckFormat;
   championName: string | null;
   spiritName: string | null;
