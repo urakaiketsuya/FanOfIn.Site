@@ -82,18 +82,18 @@ export default function ChampionsIndex() {
           const trend = trendsData?.champions.find((t) => t.championName === c.signature);
           return (
             <article key={c.signature} className="min-w-0" data-component="ChampionGalleryCard">
-              <Link to={`/champions/${championNameToSlug(c.signature)}`} className="group grid min-h-56 grid-cols-[7rem_minmax(0,1fr)] items-center gap-5 rounded-2xl p-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">
-                <div className="rounded-2xl bg-ctp-mantle p-2"><CardArtTile card={card} name={c.signature} /></div>
-                <div className="min-w-0">
+              <Link to={`/champions/${championNameToSlug(c.signature)}`} className="group flex min-h-56 flex-wrap items-center gap-5 rounded-2xl p-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">
+                <div className="w-28 max-w-full shrink-0 rounded-2xl bg-ctp-mantle p-2"><CardArtTile card={card} name={c.signature} /></div>
+                <div className="min-w-0 flex-[1_1_8rem]">
                   <h2 className="break-words text-2xl font-semibold leading-tight text-ctp-text group-hover:text-ctp-blue">{c.signature}</h2>
                   {card && <p className="mt-2 break-words text-sm text-ctp-subtext1">{card.name}</p>}
-                  <p className="mt-2 text-sm text-ctp-subtext0">{c.classes.join(" / ")} · {c.elements.join(" / ")}</p>
+                  <p className="mt-2 break-words text-sm text-ctp-subtext0">{c.classes.join(" / ")} · {c.elements.join(" / ")}</p>
                   <span className="mt-3 inline-flex min-h-control items-center text-sm font-medium text-ctp-blue">Explore decks <span className="ml-2" aria-hidden="true">→</span></span>
                 </div>
               </Link>
               <details className="group mx-3 border-t border-ctp-surface1/60">
                 <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 text-sm text-ctp-subtext1 focus-visible:outline-2 focus-visible:outline-ctp-blue [&::-webkit-details-marker]:hidden" aria-label={`Tournament performance for ${c.signature}`}>Tournament performance<DisclosureChevron className="group-open:rotate-180" /></summary>
-                <dl className="grid grid-cols-2 gap-3 pb-4 text-sm">
+                <dl className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,8rem),1fr))] gap-3 pb-4 text-sm [&>div]:min-w-0 [&>div]:break-words">
                   <div><dt className="text-ctp-subtext0">Recorded decks</dt><dd className="font-medium tabular-nums">{c.deckCount.toLocaleString()}</dd></div>
                   <div><dt className="text-ctp-subtext0">Average win rate</dt><dd className="font-medium tabular-nums">{(c.avgWinRate * 100).toFixed(0)}%</dd></div>
                   <div><dt className="text-ctp-subtext0">Events</dt><dd className="tabular-nums">{c.eventCount.toLocaleString()}</dd></div>
@@ -119,10 +119,10 @@ export default function ChampionsIndex() {
                 <CardHoverPreview key={s.signature} image={card?.editions[0]?.image} alt={s.signature}>
                   <Link
                     to={`/champions/${championNameToSlug(s.signature)}`}
-                    className="group grid h-full grid-cols-[6rem_minmax(0,1fr)] items-start gap-4 rounded-2xl border border-ctp-surface1 bg-ctp-mantle p-4 transition-colors hover:border-ctp-blue/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue"
+                    className="group flex h-full flex-wrap items-start gap-4 rounded-2xl border border-ctp-surface1 bg-ctp-mantle p-4 transition-colors hover:border-ctp-blue/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue"
                   >
-                    <CardArtTile card={card} name={s.signature} />
-                    <div className="min-w-0">
+                    <div className="w-24 max-w-full shrink-0"><CardArtTile card={card} name={s.signature} /></div>
+                    <div className="min-w-0 flex-[1_1_8rem]">
                       <p className="break-words text-lg font-semibold leading-snug text-ctp-text group-hover:text-ctp-blue">{s.signature}</p>
                       <p className="mt-0.5 flex flex-wrap items-center gap-1 text-xs text-ctp-subtext0">
                         {s.elements.map((element) => (
