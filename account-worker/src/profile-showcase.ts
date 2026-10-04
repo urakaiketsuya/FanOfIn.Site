@@ -16,7 +16,10 @@ export function parseShowcase(value: unknown): ProfileShowcase {
   const tournamentHashes = input.tournamentHashes === undefined ? [] : ids("tournamentHashes", 3, /^[a-z0-9]{1,7}$/);
   const deckSlugs = ids("deckSlugs", 3, /^[a-f0-9]{32}$/);
   if (deckSlugs.length + tournamentHashes.length > 3) throw badRequest("Choose up to three featured decks");
-  return { ...(tournamentHashes.length ? { tournamentHashes } : {}), cardIds: ids("cardIds", 6, /^[a-zA-Z0-9-]{1,80}$/), deckSlugs, revision: Number(input.revision) };
+  const selected = [...deckSlugs, ...tournamentHashes];
+  const deckOrder = input.deckOrder === undefined ? undefined : ids("deckOrder", 3, /^[a-z0-9]{1,32}$/);
+  if (deckOrder && (deckOrder.length !== selected.length || deckOrder.some(id => !selected.includes(id)))) throw badRequest("Deck order must contain every selected deck exactly once");
+  return { ...(deckOrder ? { deckOrder } : {}), ...(tournamentHashes.length ? { tournamentHashes } : {}), cardIds: ids("cardIds", 6, /^[a-zA-Z0-9-]{1,80}$/), deckSlugs, revision: Number(input.revision) };
 }
 export async function getShowcase(env: Env, userId: string): Promise<ProfileShowcase> {
   const row = await env.ACCOUNT_DB.prepare("SELECT payload, revision FROM profile_showcases WHERE user_id = ?").bind(userId).first<{ payload: string; revision: number }>();
@@ -31,7 +34,7 @@ export async function saveShowcase(env: Env, user: AuthUser, value: unknown): Pr
   }
   const hashes = input.tournamentHashes ?? [];
   if (hashes.length && (await resolveProfileTournamentDecks(env, hashes)).length !== hashes.length) throw badRequest("Choose tournament decks available in the published data");
-  const payloadOf = (value: ProfileShowcase) => JSON.stringify({ cardIds: value.cardIds, deckSlugs: value.deckSlugs, ...(value.tournamentHashes?.length ? { tournamentHashes: value.tournamentHashes } : {}) });
+  const payloadOf = (value: ProfileShowcase) => JSON.stringify({ ...(value.deckOrder ? { deckOrder: value.deckOrder } : {}), cardIds: value.cardIds, deckSlugs: value.deckSlugs, ...(value.tournamentHashes?.length ? { tournamentHashes: value.tournamentHashes } : {}) });
   const payload = payloadOf(input);
   // Public visibility is checked inside the write, including when a deck is unpublished concurrently.
   const result = await env.ACCOUNT_DB.prepare(`INSERT INTO profile_showcases (user_id, payload, revision)

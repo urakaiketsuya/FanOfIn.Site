@@ -14,6 +14,12 @@ test("showcase validation bounds selections and rejects duplicates", () => {
   assert.throws(() => parseShowcase({ cardIds: [], deckSlugs: [], tournamentHashes: ["abc", "abc"], revision: 0 }));
   assert.throws(() => parseShowcase({ cardIds: [], deckSlugs: ["a".repeat(32)], tournamentHashes: ["a", "b", "c"], revision: 0 }));
 });
+test("showcase order supports mixed sources and rejects missing, extra or duplicate selections", () => {
+  const slug = "a".repeat(32);
+  const input = { cardIds: ["second", "first"], deckSlugs: [slug], tournamentHashes: ["abc"], deckOrder: ["abc", slug], revision: 0 };
+  assert.deepEqual(parseShowcase(input), input);
+  for (const deckOrder of [[slug], [slug, slug], [slug, "def"], ["abc", slug, "def"]]) assert.throws(() => parseShowcase({ ...input, deckOrder }));
+});
 test("showcases save atomically, survive failed writes, retry safely and respect public visibility", async () => {
   const db = new DatabaseSync(":memory:");
   const originalFetch = globalThis.fetch;
@@ -47,18 +53,32 @@ test("showcases save atomically, survive failed writes, retry safely and respect
     await assert.rejects(saveShowcase(env, user, { ...saved, cardIds: [] }), /no longer public/);
     assert.deepEqual(await getShowcase(env, user.id), saved);
     globalThis.fetch = async () => Response.json({ cards: { cardNames: ["Trusted champion"], decks: [{ deckId: "1:2", material: [[0, 1]] }] }, popularity: { entries: [{ deckHash: "abc", deckId: "1:2", championName: "Trusted champion" }] } });
-    const tournamentInput = { cardIds: [], deckSlugs: [], tournamentHashes: ["abc"], revision: saved.revision };
+    db.prepare("UPDATE user_decks SET visibility = 'public' WHERE public_slug = ?").run(slug);
+    const tournamentInput = { cardIds: [], deckSlugs: [slug], tournamentHashes: ["abc"], deckOrder: ["abc", slug], revision: saved.revision };
     const tournamentSaved = await saveShowcase(env, user, tournamentInput);
     assert.deepEqual(await saveShowcase(env, user, tournamentInput), tournamentSaved);
+    assert.deepEqual((await getPublicProfile(env, "a".repeat(24)))!.featuredDeckOrder, ["abc", slug]);
+    await assert.rejects(saveShowcase(env, user, { ...tournamentInput, deckOrder: [slug, "abc"] }), /changed elsewhere/);
+    db.exec("CREATE TRIGGER fail_reorder BEFORE UPDATE ON profile_showcases BEGIN SELECT RAISE(ABORT, 'injected_failure'); END");
+    await assert.rejects(saveShowcase(env, user, { ...tournamentSaved, deckOrder: [slug, "abc"] }), /injected_failure/);
+    assert.deepEqual(await getShowcase(env, user.id), tournamentSaved);
+    db.exec("DROP TRIGGER fail_reorder");
     assert.equal((await discoverProfiles(env, new URLSearchParams("q=Showcase"))).profiles.length, 1);
     assert.deepEqual((await getPublicProfile(env, "a".repeat(24)))!.featuredTournamentDecks, [{ deckHash: "abc", championName: "Trusted champion", materialPreview: [{ card: "Trusted champion", quantity: 1 }] }]);
-    await assert.rejects(saveShowcase(env, user, { ...tournamentSaved, tournamentHashes: ["missing"] }), /published data/);
+    await assert.rejects(saveShowcase(env, user, { ...tournamentSaved, tournamentHashes: ["missing"], deckOrder: [slug, "missing"] }), /published data/);
     assert.deepEqual(await getShowcase(env, user.id), tournamentSaved);
     globalThis.fetch = async () => { throw new Error("offline"); };
-    await assert.rejects(saveShowcase(env, user, { ...tournamentSaved, tournamentHashes: ["def"] }), /offline/);
+    await assert.rejects(saveShowcase(env, user, { ...tournamentSaved, tournamentHashes: ["def"], deckOrder: [slug, "def"] }), /offline/);
     assert.deepEqual(await getShowcase(env, user.id), tournamentSaved);
     globalThis.fetch = async () => Response.json({ cards: { cardNames: [], decks: [] }, popularity: { entries: [] } });
     assert.deepEqual((await getPublicProfile(env, "a".repeat(24)))!.featuredTournamentDecks, []);
+    globalThis.fetch = async () => Response.json({ cards: { cardNames: ["Trusted champion"], decks: [{ deckId: "1:2", material: [[0, 1]] }] }, popularity: { entries: [{ deckHash: "abc", deckId: "1:2", championName: "Trusted champion" }] } });
+    const reorderInput = { ...tournamentSaved, deckOrder: [slug, "abc"] };
+    const reordered = await saveShowcase(env, user, reorderInput);
+    assert.equal(reordered.revision, tournamentSaved.revision + 1);
+    assert.deepEqual(await getShowcase(env, user.id), reordered);
+    assert.deepEqual(await saveShowcase(env, user, reorderInput), reordered);
+    assert.deepEqual((await getPublicProfile(env, "a".repeat(24)))!.featuredDeckOrder, [slug, "abc"]);
     db.exec("UPDATE users SET profile_discoverable = 0 WHERE id = 'showcase'");
     assert.equal(await getPublicProfile(env, "a".repeat(24)), null);
   } finally { globalThis.fetch = originalFetch; db.close(); }

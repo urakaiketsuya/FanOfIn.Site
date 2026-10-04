@@ -81,5 +81,5 @@ export async function getPublicProfile(env: Env, slug: string): Promise<PublicPr
   const showcase = await getShowcase(env, user.id);
   const featured = showcase.deckSlugs.length ? await env.ACCOUNT_DB.prepare(`${SELECT} WHERE ud.public_slug IN (SELECT value FROM json_each(?)) AND ud.visibility = 'public' AND ud.moderation_status = 'active' AND users.profile_discoverable = 1`).bind(JSON.stringify(showcase.deckSlugs)).all<Record<string, string | number | null>>() : { results: [] };
   const bySlug = new Map(featured.results.map(row => [String(row.public_slug), summary(row)]));
-  return { displayName: user.display_name, profileSlug: user.profile_slug, decks: rows.results.map(summary), favoriteCardIds: showcase.cardIds, featuredTournamentDecks: await resolveProfileTournamentDecks(env, showcase.tournamentHashes ?? []), featuredDecks: showcase.deckSlugs.flatMap(slug => bySlug.has(slug) ? [bySlug.get(slug)!] : []) };
+  return { ...(showcase.deckOrder ? { featuredDeckOrder: showcase.deckOrder } : {}), displayName: user.display_name, profileSlug: user.profile_slug, decks: rows.results.map(summary), favoriteCardIds: showcase.cardIds, featuredTournamentDecks: await resolveProfileTournamentDecks(env, showcase.tournamentHashes ?? []), featuredDecks: showcase.deckSlugs.flatMap(slug => bySlug.has(slug) ? [bySlug.get(slug)!] : []) };
 }

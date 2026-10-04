@@ -93,6 +93,7 @@ export interface ProfileShowcase {
   cardIds: string[];
   deckSlugs: string[];
   tournamentHashes?: string[];
+  deckOrder?: string[];
   revision: number;
 }
 
@@ -103,6 +104,7 @@ export interface PublicProfile {
   favoriteCardIds?: string[];
   featuredDecks?: PublicDeckSummary[];
   featuredTournamentDecks?: ProfileTournamentDeck[];
+  featuredDeckOrder?: string[];
 }
 
 export interface DeckSocialState {
