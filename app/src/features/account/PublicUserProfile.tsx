@@ -48,10 +48,10 @@ export default function PublicUserProfile() {
     <Link to="/decks/shared" className="inline-flex min-h-control items-center text-sm text-ctp-blue hover:underline">← Shared decks</Link>
     <h1 className="sr-only">{profile.displayName}’s profile</h1>
     <div className="mt-4"><ProfileHeader displayName={profile.displayName} element={profile.element} portraitCardId={profile.portraitCardId}>
-      <div className="mt-3 flex flex-wrap items-center gap-3">
-        <p className="text-ctp-subtext1">{profile.decks.length} public deck{profile.decks.length === 1 ? "" : "s"}</p>
-        {viewerProfileSlug === profile.profileSlug && <Button variant="primary" onClick={() => navigate("/account")}>Edit profile</Button>}
-        <Link to={`/looking-for?binder=${encodeURIComponent(profile.profileSlug)}`} className="inline-flex min-h-control items-center rounded-lg border border-ctp-surface1 px-3 text-sm font-medium text-ctp-blue hover:border-ctp-blue">View trading binder</Link>
+      <p className="mt-2 text-ctp-subtext1">{profile.decks.length} public deck{profile.decks.length === 1 ? "" : "s"}</p>
+      <div className="mt-5 flex flex-wrap items-center gap-3">
+        <Link to={`/looking-for?binder=${encodeURIComponent(profile.profileSlug)}`} className="inline-flex min-h-control items-center rounded-full bg-ctp-blue px-5 py-2 text-sm font-medium text-ctp-base hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ctp-blue">View trading binder</Link>
+        {viewerProfileSlug === profile.profileSlug && <Button variant="ghost" onClick={() => navigate("/account")}>Edit profile</Button>}
       </div>
     </ProfileHeader></div>
     {!!profile.favoriteCardIds?.length && <section className="mt-8">
