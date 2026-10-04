@@ -1,37 +1,50 @@
 import { Link } from 'react-router-dom';
-import { RAI_ARCANE_CORE, RAI_ARCANE_NAME, RAI_WIND_PACKAGE, RAI_FIRE_PACKAGE, GUO_JIA_COMMAND_CORE, GUO_JIA_COMMAND_NAME, GUO_JIA_MANIFESTATION_PACKAGE, SILVIE_SLIME_CORE, SILVIE_SLIME_NAME, SILVIE_WATER_PACKAGE, type ArchetypeTaxonomyData, type Card } from '@gatcg/shared';
+import { ZANDER_IDENTITIES, RAI_ARCANE_CORE, RAI_ARCANE_NAME, RAI_WIND_PACKAGE, RAI_FIRE_PACKAGE, GUO_JIA_COMMAND_CORE, GUO_JIA_COMMAND_NAME, GUO_JIA_MANIFESTATION_PACKAGE, SILVIE_SLIME_CORE, SILVIE_SLIME_NAME, SILVIE_WATER_PACKAGE, type ArchetypeTaxonomyData, type Card } from '@gatcg/shared';
 import ArchetypePreview from '../archetypes/ArchetypePreview';
 import DisclosureChevron from '../../components/DisclosureChevron';
 
 /** Shared presentation identity, with original family statistics and build membership retained. */
-export default function ReviewedChampionFamilies({ championName, taxonomy, catalog }: { championName: 'Silvie' | 'Guo Jia' | 'Rai'; taxonomy: ArchetypeTaxonomyData; catalog: Map<string, Card> }) {
+type Props = { championName: 'Silvie' | 'Guo Jia' | 'Rai' | 'Zander'; taxonomy: ArchetypeTaxonomyData; catalog: Map<string, Card> };
+export default function ReviewedChampionFamilies(props: Props) {
+  if (props.championName !== 'Zander') return <IdentityFamilies {...props} />;
+  const reviewedNames = ZANDER_IDENTITIES.map(identity => identity.name);
+  const hasOther = props.taxonomy.strategyArchetypes.some(family => family.championName === 'Zander' && !reviewedNames.includes(family.name));
+  const hasReviewed = props.taxonomy.strategyArchetypes.some(family => family.championName === 'Zander' && reviewedNames.includes(family.name));
+  const groups = [...ZANDER_IDENTITIES, ...(hasOther || !hasReviewed ? [undefined] : [])];
+  return <>{groups.map(identity => <IdentityFamilies key={identity?.name ?? 'other'} {...props} identity={identity} taxonomy={{ ...props.taxonomy, strategyArchetypes: props.taxonomy.strategyArchetypes.filter(family => identity ? family.name === identity.name : !reviewedNames.includes(family.name)) }} />)}</>;
+}
+
+function IdentityFamilies({ championName, taxonomy, catalog, identity }: Props & { identity?: typeof ZANDER_IDENTITIES[number] }) {
   const rai = championName === 'Rai';
   const guo = championName === 'Guo Jia';
-  const identityName = rai ? RAI_ARCANE_NAME : guo ? GUO_JIA_COMMAND_NAME : SILVIE_SLIME_NAME;
-  const core = rai ? RAI_ARCANE_CORE : guo ? GUO_JIA_COMMAND_CORE : SILVIE_SLIME_CORE;
+  const identityName = identity?.name ?? (rai ? RAI_ARCANE_NAME : guo ? GUO_JIA_COMMAND_NAME : SILVIE_SLIME_NAME);
+  const core = identity?.core ?? (rai ? RAI_ARCANE_CORE : guo ? GUO_JIA_COMMAND_CORE : SILVIE_SLIME_CORE);
   const support = rai ? RAI_WIND_PACKAGE : guo ? GUO_JIA_MANIFESTATION_PACKAGE : SILVIE_WATER_PACKAGE;
-  const coreLabel = rai ? 'Arcane Blast' : guo ? 'Shenju Command' : 'Slime';
+  const coreLabel = identity?.label ?? (rai ? 'Arcane Blast' : guo ? 'Shenju Command' : 'Slime');
   const variantLabel = rai ? 'Wind / Arcane Elemental variant' : guo ? 'Auspicious Manifestation variant' : 'Water package variant';
   const families = taxonomy.strategyArchetypes.filter(family => family.championName === championName);
   const buildsById = new Map(taxonomy.clusters.map(build => [build.id, build]));
   const reviewed = families.filter(family => family.name === identityName && family.reviewedArchetypeEvidence);
   const other = families.filter(family => !reviewed.includes(family));
+  if (!families.length && championName === 'Zander' && identity) return null;
   if (!families.length) return <p className="mt-3 text-sm text-ctp-subtext1">No archetype families have cleared the sample-size threshold yet.</p>;
   const renderFamily = (family: typeof families[number], shared: boolean) => {
     const builds = family.buildIds.flatMap(id => { const build = buildsById.get(id); return build ? [build] : []; });
     const evidence = family.reviewedArchetypeEvidence;
-    const hasSupport = shared && evidence && ((rai ? evidence.windPackageDeckCount : guo ? evidence.manifestationPackageDeckCount : evidence.waterPackageDeckCount) ?? 0) / evidence.evaluatedDeckCount >= .9;
+    const packages = identity?.packages.map(pkg => ({ ...pkg, count: evidence?.packageDeckCounts?.[pkg.key] ?? 0 })) ?? [{ cards: support, label: variantLabel, count: (rai ? evidence?.windPackageDeckCount : guo ? evidence?.manifestationPackageDeckCount : evidence?.waterPackageDeckCount) ?? 0 }];
+    const qualifying = shared && evidence ? packages.filter(pkg => pkg.count / evidence.evaluatedDeckCount >= .9) : [];
+    const hasSupport = qualifying.length > 0;
     return <article key={family.id} className="min-w-0 rounded-xl bg-ctp-mantle p-4">
       {!shared && <ArchetypePreview names={family.definingCards.slice(0, 3).map(card => card.name)} cardImages={catalog} />}
-      {hasSupport && <ArchetypePreview names={support} cardImages={catalog} />}
-      <h4 className="mt-2 font-semibold">{shared ? hasSupport ? variantLabel : `${builds.length} ${coreLabel} build variants` : family.name}</h4>
+      {qualifying.map(pkg => <ArchetypePreview key={pkg.label} names={pkg.cards} cardImages={catalog} />)}
+      <h4 className="mt-2 font-semibold">{shared ? hasSupport ? qualifying.map(pkg => pkg.label).join(" · ") : `${builds.length} ${coreLabel} build variants` : family.name}</h4>
       <p className="mt-2 text-sm text-ctp-subtext1">{family.confidence === 'emerging' ? 'Emerging · ' : ''}{family.deckCount} deck appearances · {family.playerCount} players · {family.eventCount} events · {(family.avgWinRate * 100).toFixed(0)}% win rate</p>
-      {hasSupport && <p className="mt-2 text-sm text-ctp-subtext1">{support.join(' and ')} distinguish this variant. They are supporting cards, not required for the {coreLabel} identity.</p>}
+      {hasSupport && <p className="mt-2 text-sm text-ctp-subtext1">These supporting cards distinguish this variant and are optional for the {coreLabel} identity.</p>}
       <details className="group/evidence mt-3 border-t border-ctp-surface1 text-sm">
         <summary className="flex min-h-control cursor-pointer list-none items-center justify-between gap-2 rounded text-ctp-blue focus-visible:outline-2">Cards and evidence<DisclosureChevron className="group-open/evidence:rotate-180" /></summary>
         {shared && evidence ? <>
           <p className="my-2">{evidence.coreDeckCount} of {evidence.evaluatedDeckCount} checked decklists contain all three {coreLabel} core cards.</p>
-          <p className="my-2">{support.join(' and ')} appear together in {(rai ? evidence.windPackageDeckCount : guo ? evidence.manifestationPackageDeckCount : evidence.waterPackageDeckCount) ?? 0} of {evidence.evaluatedDeckCount} decklists.</p>
+          {packages.map(pkg => <p key={pkg.label} className="my-2">{pkg.cards.join(', ')} appear together in {pkg.count} of {evidence.evaluatedDeckCount} decklists.</p>)}
           <p className="my-2 text-ctp-subtext1">Main and material only; sideboards excluded. The shared name requires the complete core in at least 90% of this group, complete decklist coverage, five players and two events. Card presence does not prove a combo was played.</p>
         </> : <><ArchetypePreview names={family.definingCards.slice(0, 6).map(card => card.name)} cardImages={catalog} /><p className="my-2">Common cards across this family, not an exact decklist or required core.</p></>}
       </details>

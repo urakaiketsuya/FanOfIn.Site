@@ -3658,3 +3658,22 @@ occur in only 497/575 of the larger family, so they cannot label the whole famil
 builds with >=90% occurrence display Fire support (five of the six larger-family
 builds). Support never becomes a required identity core. Removing either package
 preserves the identity when the core still qualifies. Sideboards are excluded.
+
+### Reviewed Zander identities
+
+Seven original families share three presentation identities across 21 preserved builds:
+Luxem Reveal (Lightweaver's Assault, Gleaming Cut, Luxem Sight), Fire Explosive Burn
+(Planted Explosive, Rococo, Explosive Maven, Blazing Throw), and Water Control
+(Corhazi Trapper, Fracturize, Frostsworn Paladin). Each complete core must occur in
+at least 90% of a family's distinct indexed main/material decklists, with complete
+coverage, at least five players and two events. IDs, membership, statistics and
+confidence remain unchanged; other Wind and Four of Hearts families remain separate.
+
+Optional packages use the same unrounded 90% joint-presence threshold within each
+original family: Incapacitate + Exploit Vulnerability (192/200); Red Hare, Unrivaled
+Stallion + Xiao Qiao, Cinderkeeper (313/339); Gildas, Chronicler of Aesa + Halocline
+Scout + Song of Frost (50/51); Lunete, Frostbinder Priest + Nia, Mistveiled Scout +
+Sadi, Blood Harvester (13/13). Vermilion Decree is not required: adding it to the
+Red Hare package yields 305/339, below 90%. Packages never determine core eligibility.
+Emerging status remains visible for the smaller Water groups. Counts describe card
+presence, not proof of a combo played. Source: shared reviewed-archetype rules.

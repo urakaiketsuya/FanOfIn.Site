@@ -13,7 +13,21 @@ export const RAI_WIND_PACKAGE = ['Arcane Elemental', 'Disorienting Winds', 'Thre
 export const RAI_FIRE_PACKAGE = ['Creative Shock', 'Fireball'];
 export const RAI_ARCANE_NAME = 'Arcane Rai — Arcane Blast';
 
+export const ZANDER_IDENTITIES = [
+  { champion: 'Zander', name: 'Luxem Zander — Reveal', core: ["Lightweaver's Assault", 'Gleaming Cut', 'Luxem Sight'], label: 'Reveal', packages: [
+    { key: 'vulnerability', label: 'Incapacitate / Exploit Vulnerability variant', cards: ['Incapacitate', 'Exploit Vulnerability'] },
+  ] },
+  { champion: 'Zander', name: 'Fire Zander — Explosive Burn', core: ['Planted Explosive', 'Rococo, Explosive Maven', 'Blazing Throw'], label: 'Explosive Burn', packages: [
+    { key: 'redHare', label: 'Red Hare / Xiao Qiao variant', cards: ['Red Hare, Unrivaled Stallion', 'Xiao Qiao, Cinderkeeper'] },
+  ] },
+  { champion: 'Zander', name: 'Water Zander — Control', core: ['Corhazi Trapper', 'Fracturize', 'Frostsworn Paladin'], label: 'Water Control', packages: [
+    { key: 'gildas', label: 'Gildas / Halocline Scout variant', cards: ['Gildas, Chronicler of Aesa', 'Halocline Scout', 'Song of Frost'] },
+    { key: 'lunete', label: 'Lunete / Nia / Sadi variant', cards: ['Lunete, Frostbinder Priest', 'Nia, Mistveiled Scout', 'Sadi, Blood Harvester'] },
+  ] },
+];
+
 export const REVIEWED_ARCHETYPE_CORES = [
+  ...ZANDER_IDENTITIES,
   { champion: 'Rai', name: RAI_ARCANE_NAME, core: RAI_ARCANE_CORE },
   { champion: 'Guo Jia', name: GUO_JIA_COMMAND_NAME, core: GUO_JIA_COMMAND_CORE },
   { champion: 'Silvie', name: SILVIE_SLIME_NAME, core: SILVIE_SLIME_CORE },
@@ -24,6 +38,7 @@ export const REVIEWED_ARCHETYPE_CORES = [
 ];
 
 export interface ReviewedArchetypeEvidence {
+  packageDeckCounts?: Record<string, number>;
   originalName: string;
   evaluatedDeckCount: number;
   missingDeckCount: number;
@@ -67,6 +82,8 @@ export function applyReviewedArchetypeEvidence(strategies: StrategyArchetype[], 
         return [buildId, { count: deckIds.filter(id => RAI_FIRE_PACKAGE.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length, total: deckIds.length }];
       }));
     }
+    const zander = ZANDER_IDENTITIES.find(candidate => candidate.name === identity.name);
+    if (zander) strategy.reviewedArchetypeEvidence.packageDeckCounts = Object.fromEntries(zander.packages.map(pkg => [pkg.key, ids.filter(id => pkg.cards.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length]));
     strategy.name = identity.name;
     strategy.identityCards = [...identity.core];
   }

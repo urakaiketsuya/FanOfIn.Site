@@ -9,7 +9,7 @@ test('published families retain all memberships and stats, and refresh is idempo
   const copy = structuredClone(taxonomy);
   applyReviewedArchetypeEvidence(copy.strategyArchetypes, copy.clusters, cards);
   assert.deepEqual(copy, taxonomy);
-  for (const identity of REVIEWED_ARCHETYPE_CORES) assert.equal(copy.strategyArchetypes.filter(s => s.name === identity.name).length, ['Silvie', 'Guo Jia'].includes(identity.champion) ? 3 : identity.champion === 'Rai' ? 2 : 1);
+  for (const identity of REVIEWED_ARCHETYPE_CORES) assert.equal(copy.strategyArchetypes.filter(s => s.name === identity.name).length, ['Silvie', 'Guo Jia'].includes(identity.champion) ? 3 : identity.champion === 'Zander' ? (identity.name.includes('Water') ? 3 : 2) : identity.champion === 'Rai' ? 2 : 1);
 });
 test('missing data, ambiguous cores and insufficient recurrence restore generated label', () => {
   for (const mode of ['missing', 'ambiguous', 'players', 'events', 'build', 'zero']) {
@@ -91,5 +91,33 @@ test('Rai retains nine builds with optional Wind and build-specific Fire support
     assert.equal(family.name, 'Arcane Rai — Arcane Blast');
     assert.equal(family.reviewedArchetypeEvidence!.windPackageDeckCount, 0);
     assert.ok(Object.values(family.reviewedArchetypeEvidence!.firePackageByBuild!).every(b => b.count === 0));
+  }
+});
+
+ test('Zander retains three identities across 21 builds with optional packages and other families unchanged', () => {
+  const families = structuredClone(taxonomy.strategyArchetypes.filter(s => s.championName === 'Zander'));
+  const reviewed = families.filter(s => s.reviewedArchetypeEvidence);
+  assert.equal(reviewed.length, 7);
+  assert.equal(reviewed.flatMap(s => s.buildIds).length, 21);
+  const expected: Record<string, [number, Record<string, number>]> = {
+    '6ifose': [1797, { vulnerability: 927 }], yiifay: [200, { vulnerability: 192 }],
+    yscd1r: [447, { redHare: 161 }], p9z2kg: [313, { redHare: 313 }],
+    '9wv386': [104, { gildas: 11, lunete: 37 }], vx12rn: [51, { gildas: 50, lunete: 11 }], '1xh5iad': [13, { gildas: 1, lunete: 13 }],
+  };
+  for (const family of reviewed) {
+    assert.deepEqual([family.reviewedArchetypeEvidence!.coreDeckCount, family.reviewedArchetypeEvidence!.packageDeckCounts], expected[family.id]);
+  }
+  const changed = new Map([...cards].map(([id, counts]) => {
+    const copy = new Map(counts);
+    for (const name of ['Incapacitate', 'Exploit Vulnerability', 'Red Hare, Unrivaled Stallion', 'Xiao Qiao, Cinderkeeper', 'Gildas, Chronicler of Aesa', 'Halocline Scout', 'Song of Frost', 'Lunete, Frostbinder Priest', 'Nia, Mistveiled Scout', 'Sadi, Blood Harvester']) copy.delete(name);
+    return [id, copy] as const;
+  }));
+  applyReviewedArchetypeEvidence(families, taxonomy.clusters, changed);
+  for (const family of families) {
+    if (expected[family.id]) {
+      assert.equal(family.name, taxonomy.strategyArchetypes.find(s => s.id === family.id)!.name);
+      assert.equal(family.reviewedArchetypeEvidence!.coreDeckCount, expected[family.id][0]);
+      assert.ok(Object.values(family.reviewedArchetypeEvidence!.packageDeckCounts!).every(count => count === 0));
+    } else assert.deepEqual(family, taxonomy.strategyArchetypes.find(s => s.id === family.id));
   }
 });
