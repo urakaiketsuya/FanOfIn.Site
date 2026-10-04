@@ -101,4 +101,5 @@ All new or revised user interfaces must be mobile-first, follow Material Design 
 - During an audit, report findings and proposed changes without editing files unless implementation is requested.
 - `git status --short` before staging. Stage only files changed for current task.
 - Don't touch: `app/index.html`, `app/src/features/compare/DeckSearchByCards.tsx`, `.claude/`, `app/public/{apple-touch-icon,favicon-16,favicon-32}.png`.
-- These are owned by concurrent sessions; unexpected modifications in unrelated paths are the real signal to stop.
+- Concurrent changes in files outside the current task are not a reason to stop or ask for confirmation. Leave those changes untouched and unstaged, and continue the task.
+- Stop and coordinate only when unexpected concurrent changes overlap files the current task needs to edit. Do not overwrite or revert another session's work.
