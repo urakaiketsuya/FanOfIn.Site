@@ -1,4 +1,4 @@
-import { applyDiaoArchetypeEvidence } from "@gatcg/shared";
+import { applyDiaoArchetypeEvidence, applyReviewedArchetypeEvidence } from "@gatcg/shared";
 import { analyzeEngines } from "./sharedEngines.js";
 import { ARCHETYPE_NEAR_DUPLICATE_THRESHOLD, shortHash, type ArchetypeCluster, type ArchetypeTaxonomyData, type DeckSighting } from "@gatcg/shared";
 import type { OmnidexEventBundle } from "../omnidex/cache.js";
@@ -846,6 +846,7 @@ export function computeArchetypeTaxonomy(
 
   const strategyArchetypes = groupTaxonomyStrategies(clusterSummaries, sightingByDeckId);
   applyDiaoArchetypeEvidence(strategyArchetypes, clusterSummaries, new Map(allDecks.map(deck => [deck.deckId, deck.cardCounts])));
+  applyReviewedArchetypeEvidence(strategyArchetypes, clusterSummaries, new Map(allDecks.map(deck => [deck.deckId, deck.cardCounts])));
 
   // Cohort-relative relationships and sibling labels; concrete ids, membership and stats stay intact.
   const engineArchetypes = analyzeEngines(clusterSummaries, allDecks);

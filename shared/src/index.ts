@@ -68,3 +68,5 @@ export * from "./fractalDeckLink.js";
 export * from "./cardPrintings.js";
 
 export * from "./diaoArchetype.js";
+
+export * from "./reviewedArchetype.js";

@@ -657,6 +657,7 @@ export interface MaterialArchetype {
 export interface StrategyArchetype {
   /** Reviewed card identity; distinct from statistically common cards. */
   identityCards?: string[];
+  reviewedArchetypeEvidence?: import("./reviewedArchetype.js").ReviewedArchetypeEvidence;
   diaoPackageEvidence?: import("./diaoArchetype.js").DiaoPackageEvidence;
   id: string;
   name: string;

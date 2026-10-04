@@ -3577,3 +3577,25 @@ The UI shows core cards first, supporting cards separately, and the independent 
 combo only where fire-package evidence exists. Support cards do not affect naming. Each displayed
 card has observed prevalence and average copies including zeroes, using main + material only.
 Card mechanics were checked against the local catalog. No build memberships or calculated results change.
+
+### Reviewed Lorraine and Arisanna names
+
+`applyReviewedArchetypeEvidence` labels families using joint positive main + material
+occurrence, excluding sideboards and deduplicating deck IDs. Exactly one reviewed core must
+occur in >=90% of appearances, with complete deck/build coverage, >=5 players and >=2 events.
+It preserves IDs, memberships, confidence and statistics; failed reevaluation restores the
+original generated label and removes reviewed metadata. This is family naming, not per-deck
+assignment or proof of combo execution.
+
+| Reviewed name | Required core | Joint appearances |
+| --- | --- | --- |
+| Fire Lorraine — Fire Sword | Blazing Throw, Rending Flames, Hone by Fire | 918 / 948 |
+| Fire Lorraine — Embersong–Rhapsody | Embersong, Erupting Rhapsody, Fiery Momentum | 103 / 103 |
+| Fire Arisanna — Potion Burn | Combustible Potion, Distilled Water, Cinder Geyser | 53 / 53 |
+| Fire Arisanna — Cinderbloom Burn | Cinderbloom Tender, Ignite Fate, Kindling Flare | 26 / 26 |
+
+Embersong is a Melody enabling Rhapsody's Harmonize. Rhapsody banishes fire cards from the
+graveyard, while Fiery Momentum benefits from retaining them: sequencing matters, and the
+three-card identity is not presented as an automatic combo. Catalog mechanics were reviewed
+against `pipeline/.cache/cards.json`. Refresh committed metadata with
+`node --import tsx pipeline/scripts/refresh-reviewed-archetypes.ts`; normal analysis uses the same rule.
