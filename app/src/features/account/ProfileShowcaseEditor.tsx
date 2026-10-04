@@ -1,3 +1,5 @@
+import ProfileHeader from "./ProfileHeader";
+import ProfileAppearanceEditor from "./ProfileAppearanceEditor";
 import { Link } from "react-router-dom";
 import DeckPreviewCard from "../../components/DeckPreviewCard";
 import { useEffect, useState } from "react";
@@ -66,15 +68,18 @@ export default function ProfileShowcaseEditor({ user, onDismiss }: { user: Accou
   async function save() {
     if (!draft) return;
     setBusy(true); setError(undefined);
-    try { const result = await accountApi.saveShowcase(draft); setSaved(result.showcase); setDraft(result.showcase); notify({ tone: "success", message: "Profile showcase saved." }); }
+    try { const result = await accountApi.saveShowcase(draft); setSaved(result.showcase); setDraft(result.showcase); notify({ tone: "success", message: "Profile saved." }); }
     catch (reason) { setError(reason instanceof Error ? reason.message : "Your showcase could not be saved. Your selections are kept."); }
     finally { setBusy(false); }
   }
   const matchingTournamentDecks = tournamentDecks.filter(deck => `${deck.championName ?? ""} ${deck.title}`.toLowerCase().includes(deckQuery.trim().toLowerCase())).slice(0, 20);
   const matches = (catalog ?? []).filter(card => card.name.toLowerCase().includes(query.trim().toLowerCase())).slice(0, 12);
-  return <DialogSheet title="Your profile showcase" onDismiss={onDismiss} dirty={dirty} dismissible={!busy} footer={<><p className="mb-2 text-xs text-ctp-subtext1">{draft?.cardIds.length ?? 0}/6 cards · {(draft?.deckSlugs.length ?? 0) + (draft?.tournamentHashes?.length ?? 0)}/3 decks{dirty ? " · Unsaved changes" : ""}</p>{error && <InlineState tone="danger" className="mb-2">{error}</InlineState>}<div className="flex flex-wrap gap-2"><Button variant="primary" disabled={!draft || !dirty || busy} onClick={() => void save()}>{busy ? "Saving…" : "Save showcase"}</Button>{(error || tournamentError) && <Button disabled={busy} onClick={() => { if (dirty && !confirmReload) { setConfirmReload(true); return; } setConfirmReload(false); setAttempt(value => value + 1); }}>{confirmReload ? "Discard draft and reload" : "Reload saved showcase"}</Button>}</div></>}>
+  return <DialogSheet title="Edit profile" onDismiss={onDismiss} dirty={dirty} dismissible={!busy} footer={<><p className="mb-2 text-xs text-ctp-subtext1">{draft?.cardIds.length ?? 0}/6 cards · {(draft?.deckSlugs.length ?? 0) + (draft?.tournamentHashes?.length ?? 0)}/3 decks{dirty ? " · Unsaved changes" : ""}</p>{error && <InlineState tone="danger" className="mb-2">{error}</InlineState>}<div className="flex flex-wrap gap-2"><Button variant="primary" disabled={!draft || !dirty || busy} onClick={() => void save()}>{busy ? "Saving…" : "Save profile"}</Button>{(error || tournamentError) && <Button disabled={busy} onClick={() => { if (dirty && !confirmReload) { setConfirmReload(true); return; } setConfirmReload(false); setAttempt(value => value + 1); }}>{confirmReload ? "Discard draft and reload" : "Reload saved showcase"}</Button>}</div></>}>
     {!draft ? <InlineState>Loading showcase…</InlineState> : <fieldset disabled={busy}>
-      <p className="text-sm text-ctp-subtext1">Choose what visitors see. Your other favorites remain private. Use Earlier and Later to set the order visitors see.</p>
+      <p className="mb-2 text-sm font-semibold">Profile preview</p>
+      <ProfileHeader displayName={user.displayName} element={draft.element} portraitCardId={draft.portraitCardId} />
+      <ProfileAppearanceEditor draft={draft} catalog={catalog} onChange={setDraft} />
+      <p className="mt-4 text-sm text-ctp-subtext1">Choose what visitors see. Your other favorites remain private. Use Earlier and Later to set the order visitors see.</p>
       {!user.profileDiscoverable && <InlineState className="mt-3">Your profile is hidden. Enable profile discovery in Account to share your showcase.</InlineState>}
       <p role="status" className="sr-only">{announcement}</p>
       <h3 className="mt-5 text-lg font-semibold">Favorite cards</h3>

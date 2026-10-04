@@ -89,7 +89,15 @@ export interface ProfileTournamentDeck {
   materialPreview: OmnidexDecklistCardLine[];
 }
 
-export interface ProfileShowcase {
+export const PROFILE_ELEMENTS = ["NORM", "FIRE", "WATER", "WIND", "ARCANE", "ASTRA", "CRUX", "EXALTED", "EXIA", "LUXEM", "NEOS", "TERA", "UMBRA"] as const;
+export type ProfileElement = typeof PROFILE_ELEMENTS[number];
+
+export interface ProfileAppearance {
+  element?: ProfileElement;
+  portraitCardId?: string;
+}
+
+export interface ProfileShowcase extends ProfileAppearance {
   cardIds: string[];
   deckSlugs: string[];
   tournamentHashes?: string[];
@@ -97,7 +105,7 @@ export interface ProfileShowcase {
   revision: number;
 }
 
-export interface PublicProfile {
+export interface PublicProfile extends ProfileAppearance {
   displayName: string;
   profileSlug: string;
   decks: PublicDeckSummary[];

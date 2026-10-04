@@ -1,3 +1,4 @@
+import ProfileHeader from "./ProfileHeader";
 import { useEffect, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import type { PublicProfile } from "@gatcg/shared";
@@ -45,14 +46,14 @@ export default function PublicUserProfile() {
   if (!profile) return <PageLayout data-component="PublicUserProfile" width="wide"><EmptyState title="Profile unavailable" description={error} action={<Button onClick={() => setAttempt(value => value + 1)}>Retry profile</Button>} /></PageLayout>;
   return <PageLayout data-component="PublicUserProfile" width="wide">
     <Link to="/decks/shared" className="inline-flex min-h-control items-center text-sm text-ctp-blue hover:underline">← Shared decks</Link>
-    <header className="identity-surface mt-4 rounded-3xl p-5">
-      <h1 className="break-words text-3xl font-bold">{profile.displayName}</h1>
+    <h1 className="sr-only">{profile.displayName}’s profile</h1>
+    <div className="mt-4"><ProfileHeader displayName={profile.displayName} element={profile.element} portraitCardId={profile.portraitCardId}>
       <div className="mt-3 flex flex-wrap items-center gap-3">
         <p className="text-ctp-subtext1">{profile.decks.length} public deck{profile.decks.length === 1 ? "" : "s"}</p>
         {viewerProfileSlug === profile.profileSlug && <Button variant="primary" onClick={() => navigate("/account")}>Edit profile</Button>}
         <Link to={`/looking-for?binder=${encodeURIComponent(profile.profileSlug)}`} className="inline-flex min-h-control items-center rounded-lg border border-ctp-surface1 px-3 text-sm font-medium text-ctp-blue hover:border-ctp-blue">View trading binder</Link>
       </div>
-    </header>
+    </ProfileHeader></div>
     {!!profile.favoriteCardIds?.length && <section className="mt-8">
       <h2 className="text-xl font-semibold">Favorite cards</h2>
       <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">{profile.favoriteCardIds.map((id, index) => <CardResult key={id} card={cards?.[index]} name={cards?.[index]?.name ?? "Card unavailable"} />)}</div>

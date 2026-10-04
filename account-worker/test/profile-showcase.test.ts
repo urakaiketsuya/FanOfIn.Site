@@ -36,9 +36,13 @@ test("showcases save atomically, survive failed writes, retry safely and respect
     } } } as unknown as Env;
     globalThis.fetch = async () => Response.json({ cards: [{ uuid: "known" }] });
     const slug = String(db.prepare("SELECT public_slug FROM user_decks LIMIT 1").get()!.public_slug);
-    const input = { cardIds: ["known"], deckSlugs: [slug], revision: 0 };
+    const input = { cardIds: ["known"], deckSlugs: [slug], element: "WATER" as const, portraitCardId: "known", revision: 0 };
     const saved = await saveShowcase(env, user, input);
     assert.equal(saved.revision, 1);
+    assert.equal((await getPublicProfile(env, "a".repeat(24)))!.element, "WATER");
+    assert.equal((await getPublicProfile(env, "a".repeat(24)))!.portraitCardId, "known");
+    await assert.rejects(saveShowcase(env, user, { ...saved, portraitCardId: "unknown" }), /published catalog/);
+    await assert.rejects(saveShowcase(env, user, { ...input, element: "FIRE" }), /changed elsewhere/);
     assert.equal((await discoverProfiles(env, new URLSearchParams("q=Showcase"))).profiles.length, 1);
     assert.deepEqual(await saveShowcase(env, user, input), saved);
     await assert.rejects(saveShowcase(env, user, { ...input, cardIds: [] }), /changed elsewhere/);
@@ -56,6 +60,8 @@ test("showcases save atomically, survive failed writes, retry safely and respect
     db.prepare("UPDATE user_decks SET visibility = 'public' WHERE public_slug = ?").run(slug);
     const tournamentInput = { cardIds: [], deckSlugs: [slug], tournamentHashes: ["abc"], deckOrder: ["abc", slug], revision: saved.revision };
     const tournamentSaved = await saveShowcase(env, user, tournamentInput);
+    assert.equal((await getShowcase(env, user.id)).element, undefined);
+    assert.equal((await getPublicProfile(env, "a".repeat(24)))!.portraitCardId, undefined);
     assert.deepEqual(await saveShowcase(env, user, tournamentInput), tournamentSaved);
     assert.deepEqual((await getPublicProfile(env, "a".repeat(24)))!.featuredDeckOrder, ["abc", slug]);
     await assert.rejects(saveShowcase(env, user, { ...tournamentInput, deckOrder: [slug, "abc"] }), /changed elsewhere/);
@@ -82,4 +88,11 @@ test("showcases save atomically, survive failed writes, retry safely and respect
     db.exec("UPDATE users SET profile_discoverable = 0 WHERE id = 'showcase'");
     assert.equal(await getPublicProfile(env, "a".repeat(24)), null);
   } finally { globalThis.fetch = originalFetch; db.close(); }
+});
+
+test("appearance rejects unsupported elements and malformed portraits", () => {
+  const base = { cardIds: [], deckSlugs: [], revision: 0 };
+  for (const element of ["blue", "fire", null, 5, {}]) assert.throws(() => parseShowcase({ ...base, element }));
+  for (const portraitCardId of ["", "../card", null, 5]) assert.throws(() => parseShowcase({ ...base, portraitCardId }));
+  assert.deepEqual(parseShowcase(base), base);
 });
