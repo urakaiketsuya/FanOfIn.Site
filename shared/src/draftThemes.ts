@@ -18,6 +18,31 @@ export interface DraftTheme {
     /** Alternative paths; each path requires every condition. */
     paths: Requirement[][];
 }
+export interface DraftThemeMatch { deckId: string; paths: { path: number; cards: string[] }[] }
+
+/** Review counts describe membership only, never strategic validity or strength. */
+export function summarizeDraftThemes(evidence: readonly (DraftTheme & { matches: DraftThemeMatch[] })[]) {
+    const memberships = evidence.map(entry => new Set(entry.matches.map(match => match.deckId)));
+    return evidence.map((entry, i) => {
+        const members = memberships[i];
+        const overlaps = evidence.flatMap((other, j) => {
+            if (i === j) return [];
+            const sharedDecks = [...members].filter(id => memberships[j].has(id)).length;
+            return sharedDecks ? [{ id: other.id, decks: sharedDecks, jaccard: sharedDecks / (members.size + memberships[j].size - sharedDecks) }] : [];
+        }).sort((a, b) => b.decks - a.decks || a.id.localeCompare(b.id));
+        return {
+            id: entry.id,
+            decks: members.size,
+            exclusiveDecks: [...members].filter(id => !memberships.some((set, j) => j !== i && set.has(id))).length,
+            paths: entry.paths.map((_, path) => ({
+                path,
+                decks: new Set(entry.matches.filter(m => m.paths.some(p => p.path === path)).map(m => m.deckId)).size,
+                exclusiveDecks: new Set(entry.matches.filter(m => m.paths.some(p => p.path === path) && m.paths.every(p => p.path === path)).map(m => m.deckId)).size,
+            })),
+            overlaps,
+        };
+    });
+}
 const names = (section: Section, minimum: number, ...cards: string[]): Requirement => ({ section, minimum, names: cards });
 const allies = (subtype: string, minimum = 3): Requirement => ({ section: 'main', minimum, type: 'ALLY', subtypes: [subtype] });
 const music: Requirement = { section: 'main', minimum: 2, subtypes: ['HARMONY', 'MELODY'] };

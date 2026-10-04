@@ -20476,6 +20476,332 @@
       ]
     }
   ],
+  "review": [
+    {
+      "id": "draft-resonator",
+      "decks": 5,
+      "exclusiveDecks": 2,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 5,
+          "exclusiveDecks": 5
+        }
+      ],
+      "overlaps": [
+        {
+          "id": "draft-resonator-support",
+          "decks": 3,
+          "jaccard": 0.6
+        }
+      ]
+    },
+    {
+      "id": "draft-resonator-support",
+      "decks": 3,
+      "exclusiveDecks": 0,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 3,
+          "exclusiveDecks": 3
+        }
+      ],
+      "overlaps": [
+        {
+          "id": "draft-resonator",
+          "decks": 3,
+          "jaccard": 0.6
+        }
+      ]
+    },
+    {
+      "id": "draft-discorp",
+      "decks": 17,
+      "exclusiveDecks": 16,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 17,
+          "exclusiveDecks": 17
+        }
+      ],
+      "overlaps": [
+        {
+          "id": "draft-discorp-support",
+          "decks": 1,
+          "jaccard": 0.058823529411764705
+        }
+      ]
+    },
+    {
+      "id": "draft-discorp-support",
+      "decks": 1,
+      "exclusiveDecks": 0,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 1,
+          "exclusiveDecks": 1
+        }
+      ],
+      "overlaps": [
+        {
+          "id": "draft-discorp",
+          "decks": 1,
+          "jaccard": 0.058823529411764705
+        }
+      ]
+    },
+    {
+      "id": "draft-elysian-dante",
+      "decks": 13,
+      "exclusiveDecks": 13,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 7,
+          "exclusiveDecks": 4
+        },
+        {
+          "path": 1,
+          "decks": 9,
+          "exclusiveDecks": 6
+        }
+      ],
+      "overlaps": []
+    },
+    {
+      "id": "draft-angel",
+      "decks": 139,
+      "exclusiveDecks": 125,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 139,
+          "exclusiveDecks": 139
+        }
+      ],
+      "overlaps": [
+        {
+          "id": "draft-angel-descent",
+          "decks": 8,
+          "jaccard": 0.05755395683453238
+        },
+        {
+          "id": "draft-specter",
+          "decks": 5,
+          "jaccard": 0.008025682182985553
+        },
+        {
+          "id": "draft-specter-support",
+          "decks": 4,
+          "jaccard": 0.011428571428571429
+        },
+        {
+          "id": "draft-memorite",
+          "decks": 1,
+          "jaccard": 0.0033333333333333335
+        },
+        {
+          "id": "draft-memorite-payoff",
+          "decks": 1,
+          "jaccard": 0.0034129692832764505
+        }
+      ]
+    },
+    {
+      "id": "draft-angel-descent",
+      "decks": 8,
+      "exclusiveDecks": 0,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 8,
+          "exclusiveDecks": 8
+        }
+      ],
+      "overlaps": [
+        {
+          "id": "draft-angel",
+          "decks": 8,
+          "jaccard": 0.05755395683453238
+        }
+      ]
+    },
+    {
+      "id": "draft-specter",
+      "decks": 489,
+      "exclusiveDecks": 273,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 489,
+          "exclusiveDecks": 489
+        }
+      ],
+      "overlaps": [
+        {
+          "id": "draft-specter-support",
+          "decks": 215,
+          "jaccard": 0.4396728016359918
+        },
+        {
+          "id": "draft-angel",
+          "decks": 5,
+          "jaccard": 0.008025682182985553
+        }
+      ]
+    },
+    {
+      "id": "draft-specter-support",
+      "decks": 215,
+      "exclusiveDecks": 0,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 215,
+          "exclusiveDecks": 215
+        }
+      ],
+      "overlaps": [
+        {
+          "id": "draft-specter",
+          "decks": 215,
+          "jaccard": 0.4396728016359918
+        },
+        {
+          "id": "draft-angel",
+          "decks": 4,
+          "jaccard": 0.011428571428571429
+        }
+      ]
+    },
+    {
+      "id": "draft-fairy",
+      "decks": 57,
+      "exclusiveDecks": 1,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 57,
+          "exclusiveDecks": 57
+        }
+      ],
+      "overlaps": [
+        {
+          "id": "draft-mordred-fairy",
+          "decks": 56,
+          "jaccard": 0.717948717948718
+        }
+      ]
+    },
+    {
+      "id": "draft-mordred-fairy",
+      "decks": 77,
+      "exclusiveDecks": 21,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 77,
+          "exclusiveDecks": 77
+        }
+      ],
+      "overlaps": [
+        {
+          "id": "draft-fairy",
+          "decks": 56,
+          "jaccard": 0.717948717948718
+        }
+      ]
+    },
+    {
+      "id": "draft-wolf",
+      "decks": 1,
+      "exclusiveDecks": 0,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 1,
+          "exclusiveDecks": 1
+        }
+      ],
+      "overlaps": [
+        {
+          "id": "draft-wolf-tokens",
+          "decks": 1,
+          "jaccard": 0.01282051282051282
+        }
+      ]
+    },
+    {
+      "id": "draft-wolf-tokens",
+      "decks": 78,
+      "exclusiveDecks": 77,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 78,
+          "exclusiveDecks": 78
+        }
+      ],
+      "overlaps": [
+        {
+          "id": "draft-wolf",
+          "decks": 1,
+          "jaccard": 0.01282051282051282
+        }
+      ]
+    },
+    {
+      "id": "draft-memorite",
+      "decks": 162,
+      "exclusiveDecks": 54,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 162,
+          "exclusiveDecks": 162
+        }
+      ],
+      "overlaps": [
+        {
+          "id": "draft-memorite-payoff",
+          "decks": 108,
+          "jaccard": 0.5167464114832536
+        },
+        {
+          "id": "draft-angel",
+          "decks": 1,
+          "jaccard": 0.0033333333333333335
+        }
+      ]
+    },
+    {
+      "id": "draft-memorite-payoff",
+      "decks": 155,
+      "exclusiveDecks": 47,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 155,
+          "exclusiveDecks": 155
+        }
+      ],
+      "overlaps": [
+        {
+          "id": "draft-memorite",
+          "decks": 108,
+          "jaccard": 0.5167464114832536
+        },
+        {
+          "id": "draft-angel",
+          "decks": 1,
+          "jaccard": 0.0034129692832764505
+        }
+      ]
+    }
+  ],
   "sources": {
     "indexSha256": "9508ed248f0c4735f5396937eb662c067c1dfbe86f57f5371cf5fb3f4fa9daad",
     "catalogSha256": "5374445554a13f5a7d8934322041776ad75f19891cac92cf79aa1259a5008102"

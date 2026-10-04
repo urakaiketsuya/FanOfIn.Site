@@ -3431,6 +3431,15 @@ Rebuild review evidence with
 analysis manifest. It includes source hashes, all matched deck IDs, qualifying
 cards, and the zero-based alternative rule paths. No current UI consumes it.
 
+The `review` summary counts unique deck IDs per label and per alternative path.
+Label `exclusiveDecks` means no other draft label matches that deck; path
+`exclusiveDecks` means no other path within that label matches it. These are
+different scopes. Pairwise overlaps count the intersection, with Jaccard equal
+to intersection divided by union. Zero intersections are omitted; overlaps sort
+by descending shared decks, then label ID. Path counts can overlap and must not
+be summed. These summaries measure membership, not recurrence across players,
+mechanical validity, or competitive strength.
+
 Rules count distinct positive-quantity names, not copies. Subtype ally thresholds
 apply only to Main; champion gates apply to Material. Named support may use
 Main + Material when its rule specifies identity. Sideboard never contributes.

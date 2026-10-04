@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { detectDraftThemes } from '../../../shared/src/draftThemes.js';
+import { detectDraftThemes, summarizeDraftThemes, type DraftTheme } from '../../../shared/src/draftThemes.js';
 import type { DeckCardIndexData } from '../../../shared/src/analysis-types.js';
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
 const catalog = read('../../.cache/cards.json').cards;
@@ -14,8 +14,25 @@ test('reviewed population and all draft memberships remain reproducible', () => 
     assert.deepEqual(result.evidence.map(e => e.matches.length), counts);
     const saved = read('../../../data/reference/draft-theme-evidence.json');
     assert.deepEqual(result.evidence, saved.evidence);
+    assert.deepEqual(summarizeDraftThemes(result.evidence), saved.review);
     const dante = result.evidence.find(e => e.id === 'draft-elysian-dante')!;
     assert.equal(dante.matches.filter(m => m.paths.every(p => p.path === 1)).length, 6);
+});
+test('review summaries distinguish label overlap from alternative path overlap', () => {
+    const definition: DraftTheme = { id: 'a', name: 'A', kind: 'theme', status: 'draft', paths: [[], []] };
+    const match = (deckId: string, ...paths: number[]) => ({ deckId, paths: paths.map(path => ({ path, cards: [] })) });
+    const result = summarizeDraftThemes([
+        { ...definition, matches: [match('1', 0), match('1', 0), match('2', 0, 1), match('3', 1)] },
+        { ...definition, id: 'b', matches: [match('2', 0), match('4', 0)] },
+        { ...definition, id: 'empty', matches: [] },
+    ]);
+    assert.deepEqual(result[0], { id: 'a', decks: 3, exclusiveDecks: 2,
+        paths: [{ path: 0, decks: 2, exclusiveDecks: 1 }, { path: 1, decks: 2, exclusiveDecks: 1 }],
+        overlaps: [{ id: 'b', decks: 1, jaccard: 0.25 }] });
+    assert.equal(result[1].exclusiveDecks, 1);
+    assert.deepEqual(result[1].overlaps, [{ id: 'a', decks: 1, jaccard: 0.25 }]);
+    assert.equal(result[2].decks, 0);
+    assert.deepEqual(result[2].overlaps, []);
 });
 test('sideboard, zero copies, duplicate names, and wrong sections cannot create token packages', () => {
     const base = index.decks[0];
