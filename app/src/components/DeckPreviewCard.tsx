@@ -15,6 +15,8 @@ export const deckPreviewActionClass = "inline-flex min-h-12 min-w-12 items-cente
 export interface DeckPreviewModel {
   id: string;
   title: string;
+  /** Optional identity label above the title in cover presentation. */
+  archetypeLabel?: string;
   /** Null until a source's full list is loaded. Samples must never masquerade as full lists. */
   decklist: OmnidexDecklist | null;
   championName?: string | null;
@@ -95,7 +97,7 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
           <div className="col-start-1 row-start-1 self-start"><CardArtTile card={leadCard} name={label} artworkOnly /></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent" />
           <div className="relative col-start-1 row-start-1 min-w-0 self-end p-4 pt-12 text-white">
-            <p className="mb-1 text-xs text-white/85">{model.source.label}{model.format && ` · ${model.format === "STANDARD" ? "Standard" : "Pantheon"}`}</p>
+            <p className="mb-1 break-words text-xs text-white/85">{model.archetypeLabel ?? <>{model.source.label}{model.format && ` · ${model.format === "STANDARD" ? "Standard" : "Pantheon"}`}</>}</p>
             <h2 className="break-words text-2xl font-bold leading-tight">{model.title}</h2>
           </div>
         </div>

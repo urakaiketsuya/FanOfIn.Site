@@ -1,3 +1,4 @@
+import { useDeckArchetypeLabel } from "../decks/useDeckArchetypeLabel";
 import { useMemo } from "react";
 import type { Card, OmnidexDecklist } from "@gatcg/shared";
 import { useCardsByNames } from "../events/useCardsByNames";
@@ -13,6 +14,7 @@ export default function PopularDeckRow({
   championCard: Card | undefined;
 }) {
 
+  const archetypeLabel = useDeckArchetypeLabel(deck.deckIds);
   const decklist: OmnidexDecklist = useMemo(
     () => ({
       main: deck.main.map((l) => ({ card: l.name, quantity: l.quantity })),
@@ -26,6 +28,7 @@ export default function PopularDeckRow({
 
   return <DeckPreviewCard presentation="cover" cardsByName={cardsByName} championCard={championCard} model={{
     id: shortHash(deck.signature), title: `${deck.championName ?? "Unknown Champion"}`, decklist,
+    archetypeLabel,
     championName: deck.championName, sideboardCount: null,
     source: { kind: "event", label: "Tournament build" },
     metadata: <>

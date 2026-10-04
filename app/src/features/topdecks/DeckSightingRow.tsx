@@ -1,3 +1,4 @@
+import { useDeckArchetypeLabel } from "../decks/useDeckArchetypeLabel";
 import DeckPreviewListActions from "../../components/DeckPreviewListActions";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
@@ -20,6 +21,7 @@ export default function DeckSightingRow({ sighting, playerName, championCard, on
   /** Retained for existing callers; every immutable result now uses the shared preview. */
   browseCard?: boolean;
 }) {
+  const archetypeLabel = useDeckArchetypeLabel([sighting.deckId], browseCard);
   const [previewVisible, setPreviewVisible] = useState(false);
   const rowRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -37,6 +39,7 @@ export default function DeckSightingRow({ sighting, playerName, championCard, on
     {browseCard && error && <InlineState tone="danger">{error}</InlineState>}
     <DeckPreviewCard presentation={browseCard ? "cover" : "detail"} cardsByName={cardsByName} championCard={championCard} model={{
       id: sighting.deckId, title: browseCard ? (sighting.championName ?? `${playerName}'s deck`) : sighting.championName ? `${sighting.championName} · ${playerName}` : `${playerName}'s deck`,
+      archetypeLabel: browseCard ? archetypeLabel : undefined,
       decklist, format, championName: sighting.championName,
       source: { kind: "event", label: "Tournament" },
       metadata: browseCard ? <p>{playerName} · {sighting.placement ? `#${sighting.placement}` : "Unranked"}<span className="mt-1 block text-xs text-ctp-subtext0">{sighting.eventName}</span></p> : <>
