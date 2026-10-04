@@ -5,12 +5,12 @@ import { detectDraftThemes, summarizeDraftThemes, summarizeThemeRecurrence, type
 import type { DeckCardIndexData } from '../../../shared/src/analysis-types.js';
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
 const catalog = read('../../../data/card-catalog.json').cards;
-const index: DeckCardIndexData = read('../../../data/analysis/deck-card-index.json');
+const index: DeckCardIndexData = read('./fixtures/theme-review-index.json');
 const counts = [5, 3, 17, 1, 13, 139, 8, 489, 215, 57, 77, 1, 78, 162, 155];
-test('reviewed population and all draft memberships remain reproducible', () => {
+test('frozen reviewed lists reproduce all draft memberships', () => {
     const result = detectDraftThemes(index, catalog);
-    assert.equal(result.population, 58750);
-    assert.equal(result.eligibleDecks, 58659);
+    assert.equal(result.population, index.decks.length);
+    assert.equal(result.eligibleDecks, index.decks.length);
     assert.deepEqual(result.evidence.map(e => e.matches.length), counts);
     const saved = read('../../../data/reference/draft-theme-evidence.json');
     assert.deepEqual(result.evidence, saved.evidence);

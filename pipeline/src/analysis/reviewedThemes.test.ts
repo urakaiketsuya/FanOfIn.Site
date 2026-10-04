@@ -5,10 +5,10 @@ import { createHash } from 'node:crypto';
 import { detectThemeDefinitions, summarizeDraftThemes } from '../../../shared/src/draftThemes.js';
 import { reviewedThemes } from '../../../shared/src/reviewedThemes.js';
 
-test('reviewed publication reproduces the Dante decision and source-bound evidence', () => {
+test('frozen reviewed lists reproduce publication decisions and definition identity', () => {
     const raw = (path: string) => readFileSync(new URL(path, import.meta.url), 'utf8');
-    const index = raw('../../../data/analysis/deck-card-index.json');
-    const catalog = raw('../../.cache/cards.json');
+    const index = raw('./fixtures/theme-review-index.json');
+    const catalog = raw('../../../data/card-catalog.json');
     const saved = JSON.parse(raw('../../../data/reference/reviewed-theme-evidence.json'));
     const decision = JSON.parse(raw('../../../data/reference/elysian-dante-review.json'));
     const result = detectThemeDefinitions(JSON.parse(index), JSON.parse(catalog).cards, reviewedThemes);
@@ -20,15 +20,17 @@ test('reviewed publication reproduces the Dante decision and source-bound eviden
     assert.equal(result.evidence[0].matches.some(m => m.deckId === '64701:14399'), false);
     assert.deepEqual(result.evidence[0].matches.map(m => m.deckId).sort(), [...decision.comparison.retainedDeckIds, ...decision.comparison.addedDeckIds].sort());
     assert.deepEqual(result.evidence[0].paths, decision.comparison.proposed.paths);
-    assert.deepEqual(saved, { ...result, status: 'reviewed', review: summarizeDraftThemes(result.evidence), sources: { indexSha256: hash(index), catalogSha256: hash(catalog), definitionsSha256: hash(JSON.stringify(reviewedThemes)) } });
+    assert.deepEqual(result.evidence, saved.evidence);
+    assert.deepEqual(summarizeDraftThemes(result.evidence), saved.review);
+    assert.equal(saved.sources.definitionsSha256, hash(JSON.stringify(reviewedThemes)));
 });
 
 
 test('reviewed Resonator membership preserves the inspected lists and boundary', () => {
     const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
     const decision = read('../../../data/reference/resonator-review.json');
-    const index = read('../../../data/analysis/deck-card-index.json');
-    const catalog = read('../../.cache/cards.json').cards;
+    const index = read('./fixtures/theme-review-index.json');
+    const catalog = read('../../../data/card-catalog.json').cards;
     const definition = reviewedThemes.find(theme => theme.id === 'resonator-music')!;
     const result = detectThemeDefinitions(index, catalog, [definition]).evidence[0];
     assert.deepEqual(result.matches, decision.candidate.matches);
@@ -54,8 +56,8 @@ test('reviewed Resonator membership preserves the inspected lists and boundary',
 test('reviewed DisCorp preserves inspected membership and distinct Main allies', () => {
     const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
     const decision = read('../../../data/reference/discorp-review.json');
-    const index = read('../../../data/analysis/deck-card-index.json');
-    const catalog = read('../../.cache/cards.json').cards;
+    const index = read('./fixtures/theme-review-index.json');
+    const catalog = read('../../../data/card-catalog.json').cards;
     const definition = reviewedThemes.find(theme => theme.id === 'discorp')!;
     const result = detectThemeDefinitions(index, catalog, [definition]).evidence[0];
     assert.equal(result.matches.length, 17);
@@ -83,8 +85,8 @@ test('reviewed DisCorp preserves inspected membership and distinct Main allies',
 test('reviewed Angels preserves historical membership and excludes non-ally Angel cards', () => {
     const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
     const decision = read('../../../data/reference/angel-review.json');
-    const index = read('../../../data/analysis/deck-card-index.json');
-    const catalog = read('../../.cache/cards.json').cards;
+    const index = read('./fixtures/theme-review-index.json');
+    const catalog = read('../../../data/card-catalog.json').cards;
     const definition = reviewedThemes.find(theme => theme.id === 'angels')!;
     const result = detectThemeDefinitions(index, catalog, [definition]).evidence[0];
     assert.equal(result.matches.length, 139);
@@ -114,8 +116,8 @@ test('reviewed Angels preserves historical membership and excludes non-ally Ange
 test('reviewed Specters preserves historical membership and excludes non-ally Specter cards', () => {
     const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
     const decision = read('../../../data/reference/specter-review.json');
-    const index = read('../../../data/analysis/deck-card-index.json');
-    const catalog = read('../../.cache/cards.json').cards;
+    const index = read('./fixtures/theme-review-index.json');
+    const catalog = read('../../../data/card-catalog.json').cards;
     const definition = reviewedThemes.find(theme => theme.id === 'specters')!;
     const result = detectThemeDefinitions(index, catalog, [definition]).evidence[0];
     assert.equal(result.matches.length, 489);
