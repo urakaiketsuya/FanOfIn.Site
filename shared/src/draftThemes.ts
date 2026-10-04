@@ -2,14 +2,14 @@ import { matchRequirementPaths, type Section, type Requirement } from './cardReq
 import { decodeCardLines, type DeckCardIndexData } from './analysis-types.js';
 
 export interface ThemeCard { name: string; types: string[]; subtypes: string[] }
-export interface DraftTheme {
+export interface ThemeDefinition {
     id: string;
     name: string;
     kind: 'theme' | 'engine' | 'archetype';
-    status: 'draft';
     /** Alternative paths; each path requires every condition. */
     paths: Requirement[][];
 }
+export interface DraftTheme extends ThemeDefinition { status: 'draft' }
 export interface DraftThemeMatch { deckId: string; paths: { path: number; cards: string[] }[] }
 
 /** Historical identity coverage; repeated players can still submit the same list. */
@@ -33,7 +33,7 @@ export function summarizeThemeRecurrence(deckIds: Iterable<string>) {
 }
 
 /** Review counts describe membership only, never strategic validity or strength. */
-export function summarizeDraftThemes(evidence: readonly (DraftTheme & { matches: DraftThemeMatch[] })[]) {
+export function summarizeDraftThemes(evidence: readonly (ThemeDefinition & { matches: DraftThemeMatch[] })[]) {
     const memberships = evidence.map(entry => new Set(entry.matches.map(match => match.deckId)));
     return evidence.map((entry, i) => {
         const members = memberships[i];
@@ -92,7 +92,7 @@ export const elysianDanteThemeProposal: DraftTheme = {
     ],
 };
 
-export function detectDraftThemes(index: DeckCardIndexData, catalog: readonly ThemeCard[], definitions: readonly DraftTheme[] = draftThemes) {
+export function detectThemeDefinitions<T extends ThemeDefinition>(index: DeckCardIndexData, catalog: readonly ThemeCard[], definitions: readonly T[]) {
     const cards = new Map(catalog.map(c => [c.name, c]));
     // Catch misspelled curated anchors instead of silently generating empty evidence.
     for (const definition of definitions)
@@ -115,5 +115,10 @@ export function detectDraftThemes(index: DeckCardIndexData, catalog: readonly Th
             if (paths.length) entry.matches.push({ deckId: deck.deckId, paths });
         }
     }
-    return { version: 1 as const, status: 'draft' as const, population: decks.length, eligibleDecks, evidence };
+    return { version: 1 as const, population: decks.length, eligibleDecks, evidence };
+}
+
+/** Preserve the draft evidence contract for existing review consumers. */
+export function detectDraftThemes(index: DeckCardIndexData, catalog: readonly ThemeCard[], definitions: readonly DraftTheme[] = draftThemes) {
+    return { ...detectThemeDefinitions(index, catalog, definitions), status: 'draft' as const };
 }
