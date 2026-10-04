@@ -3493,3 +3493,19 @@ The shared archetype evaluator now supports optional additional `paths`: alterna
 Draft themes and curated evaluation share the same requirement matcher. Decoded rule decks carry section membership and relevant catalog metadata; older manually constructed rule decks fail closed when a section-aware rule needs that evidence. Historical regression coverage confirms the broader Dante definition selects the same 17 decks through either evaluator.
 
 This is an internal foundation only. Strategy backup/import validation deliberately rejects rules containing paths until the curator interface displays and validates those conditions. No published definitions or memberships change in this step.
+
+### Remaining theme publication decisions (2026-10-04)
+
+The ten-candidate review and sensitivity calculations are in
+`docs/DRAFT_THEME_PUBLICATION_REVIEW.md` and reproduced by
+`pipeline/scripts/review-remaining-themes.ts`. Five additional reviewed membership
+rules preserve their draft boundaries: Fairies (three distinct Main Fairy allies),
+Mordred Fairy (Material Mordred champion + two Main Fairy allies + Main Gildas),
+Direwolf tokens (Main Alpha + Requiem), Memorite generation (Material Vassal + two
+Main generators), and Angel Descent (three Main Angel allies + identity Descent).
+All quantities must be positive; Sideboard is excluded. These are membership
+labels, not game-state execution checks. The eight Memorite generators form an
+alternative pool. Reviewed definitions remain separate from strategy and combo
+classification. Three heterogeneous support/payoff candidates remain deferred;
+Wolves and DisCorp support remain on hold. List uniqueness hashes sorted positive
+Main/Material lines; submission/event/player counts remain separate metrics.

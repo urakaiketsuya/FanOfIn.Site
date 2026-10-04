@@ -9572,6 +9572,5488 @@
           ]
         }
       ]
+    },
+    {
+      "id": "fairies",
+      "name": "Fairies",
+      "kind": "theme",
+      "status": "reviewed",
+      "paths": [
+        [
+          {
+            "section": "main",
+            "minimum": 3,
+            "type": "ALLY",
+            "subtypes": [
+              "FAIRY"
+            ]
+          }
+        ]
+      ],
+      "reviewDocument": "docs/DRAFT_THEME_PUBLICATION_REVIEW.md",
+      "matches": [
+        {
+          "deckId": "48694:21586",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "48695:10515",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "48695:23048",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "49580:23515",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "49580:27765",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50099:21712",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50527:27529",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51353:4624",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51353:4741",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51377:24963",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51551:26825",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51848:28717",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51854:25978",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51969:25884",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52304:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52306:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52307:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52480:28731",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52896:15055",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53314:19436",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53594:22724",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53701:25295",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53786:14913",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54294:25952",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54460:27050",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54644:24825",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54644:29197",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54698:17283",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54698:23964",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54698:28918",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54698:29196",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54906:24037",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55096:12352",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55108:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55109:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55110:22243",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55110:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55111:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55685:1379",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55830:25352",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56204:29935",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56568:26608",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57228:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57229:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57230:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57231:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57231:30662",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57404:28682",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57404:29935",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57902:24467",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "58745:30098",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "59135:16594",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "59334:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "61722:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "61723:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64585:16233",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "8036:810",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dream Fairy",
+                "Snow Fairy",
+                "Spark Fairy"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mordred-fairy",
+      "name": "Mordred Fairy package",
+      "kind": "theme",
+      "status": "reviewed",
+      "paths": [
+        [
+          {
+            "section": "material",
+            "minimum": 1,
+            "type": "CHAMPION",
+            "prefix": "Mordred,"
+          },
+          {
+            "section": "main",
+            "minimum": 2,
+            "type": "ALLY",
+            "subtypes": [
+              "FAIRY"
+            ]
+          },
+          {
+            "section": "main",
+            "minimum": 1,
+            "names": [
+              "Gildas, Faesworn Monarch"
+            ]
+          }
+        ]
+      ],
+      "reviewDocument": "docs/DRAFT_THEME_PUBLICATION_REVIEW.md",
+      "matches": [
+        {
+          "deckId": "48694:17512",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "48694:21586",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "48695:10515",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "48695:17512",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "48695:23048",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "49580:23515",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "49580:27765",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50099:21712",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50232:28142",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50234:28142",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50527:27529",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50528:16819",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50528:4008",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50893:17720",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51319:9665",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51353:4624",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51353:4741",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51377:24963",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51551:26825",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51657:28145",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51848:28717",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51854:25978",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51969:25884",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52051:23022",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52304:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52306:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52307:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52480:28731",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52896:15055",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53314:19436",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53582:12203",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53594:22724",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53701:25295",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53786:14913",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53786:15776",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54261:28142",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54294:25952",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54460:27050",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54644:24825",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54644:29197",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54698:17283",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54698:23964",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54698:28918",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54698:29196",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54906:24037",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55027:496",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55096:12352",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55108:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55109:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55110:22243",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55110:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55111:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55685:1379",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55830:25352",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56204:29935",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56568:26608",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57228:237",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Spark Fairy"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57228:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57229:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57230:237",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Spark Fairy"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57230:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57231:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57231:30662",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57383:23390",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57404:28682",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57404:29859",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Flawless Blade",
+                "Snow Fairy"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57404:29935",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57751:237",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Trickster of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57902:24467",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57902:29141",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "58745:30098",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "59135:16594",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "59334:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "61722:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "61723:27575",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Trickster of the Fae Realm",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "62146:28544",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64585:16233",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Gildas, Faesworn Monarch",
+                "Mordred, Aurelian Regent",
+                "Mordred, Burnished Avenger",
+                "Mordred, Fated Luminary",
+                "Mordred, Flawless Blade",
+                "Snow Fairy",
+                "Warrior of the Fae Realm"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "direwolf-tokens",
+      "name": "Direwolf token package",
+      "kind": "theme",
+      "status": "reviewed",
+      "paths": [
+        [
+          {
+            "section": "main",
+            "minimum": 2,
+            "names": [
+              "Direwolf Alpha",
+              "Dire Requiem"
+            ]
+          }
+        ]
+      ],
+      "reviewDocument": "docs/DRAFT_THEME_PUBLICATION_REVIEW.md",
+      "matches": [
+        {
+          "deckId": "21122:12112",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21122:1430",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21122:4087",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21122:4090",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21122:6538",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21122:717",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21122:9219",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21318:1028",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21318:13147",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21318:13868",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21318:15191",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21318:3555",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21318:4182",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21318:9669",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21320:13147",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21320:13868",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21320:15191",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21320:8572",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21320:9669",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21372:15391",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21372:3134",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21372:3555",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21372:3589",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21372:4182",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21372:5071",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21372:8778",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21687:14041",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21687:16231",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21687:8327",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21760:4198",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21813:6630",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21905:999",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "21990:5071",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "22094:5071",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "22393:12075",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "22428:15978",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "22447:14502",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "22467:12203",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "22475:10677",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "22485:15045",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "22707:14381",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "22765:14381",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "22864:6630",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "23031:9903",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "23078:194",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "23185:2713",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "23347:3298",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "23650:5071",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "23718:13800",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "23830:11983",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "23830:17050",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "23856:5889",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "24171:11707",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "24171:15166",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "24256:334",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "25011:17206",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "25113:14881",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "25372:10677",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "25975:696",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "29938:4220",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "31421:15045",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "31452:11514",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "31593:17119",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "31930:1892",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "32093:8028",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "32160:10529",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "32238:6807",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "33095:22923",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "33870:17001",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "34754:18945",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "35161:6523",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "37954:4220",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "40615:615",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42437:25352",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43075:12602",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43075:17001",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43157:24656",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51636:18922",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Dire Requiem",
+                "Direwolf Alpha"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "memorite-generation",
+      "name": "Memorite generation",
+      "kind": "theme",
+      "status": "reviewed",
+      "paths": [
+        [
+          {
+            "section": "material",
+            "minimum": 1,
+            "names": [
+              "Merlin, Memorite Vassal"
+            ]
+          },
+          {
+            "section": "main",
+            "minimum": 2,
+            "names": [
+              "Crystalline Reality",
+              "Crystalvein Awakening",
+              "Glassgale Flock",
+              "Obelith Escort",
+              "Protect Her At All Costs",
+              "Shardwing Searchlight",
+              "Silvergale Monstrosity's Call",
+              "Silvergale Obelith's Call"
+            ]
+          }
+        ]
+      ],
+      "reviewDocument": "docs/DRAFT_THEME_PUBLICATION_REVIEW.md",
+      "matches": [
+        {
+          "deckId": "40605:24117",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "40606:24117",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "40952:20551",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "40952:22245",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "40952:231",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "40952:5904",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Glassgale Flock",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41001:21300",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41001:2909",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Glassgale Flock",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41093:18572",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41279:22023",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41478:3572",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41482:2546",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41495:8830",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41497:6427",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Glassgale Flock",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41497:7273",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41522:18527",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41584:22301",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41588:18366",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41613:24174",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41641:6470",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41719:11597",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41722:20504",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41723:24202",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41723:24866",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41753:12527",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41753:551",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41754:23048",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41755:23048",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Merlin, Memorite Vassal",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41872:23011",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41872:457",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41873:3053",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41875:20504",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41875:24235",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41875:24889",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "41910:6466",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42040:15808",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42040:24704",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42075:19895",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42250:23048",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42359:14420",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Glassgale Flock",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42359:23419",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42377:12740",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42377:24206",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42427:24572",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42437:7219",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42472:25052",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42503:14132",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42647:4776",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42672:23117",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42709:270",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42777:17851",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42777:18572",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42851:12645",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42904:15278",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42929:3794",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "42961:22344",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43076:10403",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43111:24979",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43111:25404",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43241:457",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43403:14769",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43485:23421",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43539:19985",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43587:23011",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43636:12848",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43636:19780",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43794:24406",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43802:16737",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43854:1005",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Glassgale Flock",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43854:23134",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43863:6348",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43919:23868",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43986:23585",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43986:24668",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "43986:4563",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "44044:1135",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Glassgale Flock",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "44044:25202",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "44150:2546",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "44212:1262",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "44369:21264",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "44602:23421",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "44667:13292",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "44714:22154",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "45168:23048",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "45169:23048",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "45346:270",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "45785:24026",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "45800:4557",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "45826:24889",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "45826:8443",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "45893:24406",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "46658:13973",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "46788:1005",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "46798:16922",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "47222:13741",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "47390:3013",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "47541:25986",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "47592:1005",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "47598:19780",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "47667:14420",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Glassgale Flock",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "47769:4259",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "48097:25884",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "48108:23868",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "48270:6481",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "48305:19780",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "48541:6240",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "48556:10269",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "48556:22449",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "48697:21851",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50290:24721",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50519:17630",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50528:2910",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50623:28280",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50623:7219",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50684:24064",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50946:26305",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Merlin, Memorite Vassal",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51086:24264",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51301:3572",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51353:18619",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Silvergale Obelith's Call"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51547:24721",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51549:24721",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51549:24809",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51554:18619",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Silvergale Obelith's Call"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51560:11487",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51692:13973",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51753:26943",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51835:19152",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight",
+                "Silvergale Monstrosity's Call",
+                "Silvergale Obelith's Call"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51918:14165",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51981:7219",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52180:18348",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52303:568",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52777:24406",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53256:22568",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53256:27322",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53392:24721",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53395:24602",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53594:22792",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53786:24037",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Glassgale Flock",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53845:28280",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53947:24889",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Silvergale Monstrosity's Call"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54075:24721",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54305:13054",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54358:26552",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54698:18348",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "54997:6348",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55112:2237",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Silvergale Monstrosity's Call",
+                "Silvergale Obelith's Call"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55272:1005",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55307:22405",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55777:24721",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55777:24809",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55852:24181",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55881:19780",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Glassgale Flock",
+                "Merlin, Memorite Vassal"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55895:24037",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Silvergale Monstrosity's Call",
+                "Silvergale Obelith's Call"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56265:24889",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Silvergale Obelith's Call"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "56416:13950",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Silvergale Monstrosity's Call"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57404:25616",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57591:22154",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Glassgale Flock",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight",
+                "Silvergale Monstrosity's Call",
+                "Silvergale Obelith's Call"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57679:30068",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "57754:26000",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "58423:23852",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalline Reality",
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Obelith Escort",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight",
+                "Silvergale Monstrosity's Call",
+                "Silvergale Obelith's Call"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "58745:26056",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "59730:307",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Crystalvein Awakening",
+                "Merlin, Memorite Vassal",
+                "Protect Her At All Costs",
+                "Shardwing Searchlight"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "angel-descent",
+      "name": "Angel Descent",
+      "kind": "theme",
+      "status": "reviewed",
+      "paths": [
+        [
+          {
+            "section": "main",
+            "minimum": 3,
+            "type": "ALLY",
+            "subtypes": [
+              "ANGEL"
+            ]
+          },
+          {
+            "section": "identity",
+            "minimum": 1,
+            "names": [
+              "Seraphic Legion's Descent"
+            ]
+          }
+        ]
+      ],
+      "reviewDocument": "docs/DRAFT_THEME_PUBLICATION_REVIEW.md",
+      "matches": [
+        {
+          "deckId": "50499:149",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Seraphic Legion's Descent",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "50602:237",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Angelic Vanguard",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra",
+                "Seraphic Legion's Descent"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51814:911",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Azrael, Archangel of Materia",
+                "Benediction Angel",
+                "Cauterizing Seraphim",
+                "Nuriel, Seraphic Paladin",
+                "Seraphic Legion's Descent"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "51998:11267",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Angelic Vanguard",
+                "Benediction Angel",
+                "Seraphic Legion's Descent",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52018:24679",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Angelic Vanguard",
+                "Benediction Angel",
+                "Fount Seraphim",
+                "Haniel, Archangel of Spectra",
+                "Nuriel, Seraphic Paladin",
+                "Reverent Seraphim",
+                "Seraphic Legion's Descent"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "52587:2055",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Seraphic Legion's Descent",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "53273:1638",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Cauterizing Seraphim",
+                "Raziel, Archangel of Libra",
+                "Seraphic Legion's Descent"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "55852:21729",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Angel Attendant",
+                "Benediction Angel",
+                "Seraphic Legion's Descent",
+                "Tempestuous Seraphim"
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "status": "reviewed",
@@ -9656,7 +15138,7 @@
         "largestEventDecks": 6,
         "unknownDecks": 0
       },
-      "exclusiveDecks": 134,
+      "exclusiveDecks": 125,
       "paths": [
         {
           "path": 0,
@@ -9666,9 +15148,19 @@
       ],
       "overlaps": [
         {
+          "id": "angel-descent",
+          "decks": 8,
+          "jaccard": 0.05755395683453238
+        },
+        {
           "id": "specters",
           "decks": 5,
           "jaccard": 0.008025682182985553
+        },
+        {
+          "id": "memorite-generation",
+          "decks": 1,
+          "jaccard": 0.0033333333333333335
         }
       ]
     },
@@ -9697,11 +15189,135 @@
           "jaccard": 0.008025682182985553
         }
       ]
+    },
+    {
+      "id": "fairies",
+      "decks": 57,
+      "recurrence": {
+        "events": 47,
+        "players": 43,
+        "returningPlayers": 2,
+        "largestEventDecks": 4,
+        "unknownDecks": 0
+      },
+      "exclusiveDecks": 1,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 57,
+          "exclusiveDecks": 57
+        }
+      ],
+      "overlaps": [
+        {
+          "id": "mordred-fairy",
+          "decks": 56,
+          "jaccard": 0.717948717948718
+        }
+      ]
+    },
+    {
+      "id": "mordred-fairy",
+      "decks": 77,
+      "recurrence": {
+        "events": 59,
+        "players": 58,
+        "returningPlayers": 5,
+        "largestEventDecks": 4,
+        "unknownDecks": 0
+      },
+      "exclusiveDecks": 21,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 77,
+          "exclusiveDecks": 77
+        }
+      ],
+      "overlaps": [
+        {
+          "id": "fairies",
+          "decks": 56,
+          "jaccard": 0.717948717948718
+        }
+      ]
+    },
+    {
+      "id": "direwolf-tokens",
+      "decks": 78,
+      "recurrence": {
+        "events": 51,
+        "players": 63,
+        "returningPlayers": 13,
+        "largestEventDecks": 7,
+        "unknownDecks": 0
+      },
+      "exclusiveDecks": 78,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 78,
+          "exclusiveDecks": 78
+        }
+      ],
+      "overlaps": []
+    },
+    {
+      "id": "memorite-generation",
+      "decks": 162,
+      "recurrence": {
+        "events": 136,
+        "players": 121,
+        "returningPlayers": 26,
+        "largestEventDecks": 4,
+        "unknownDecks": 0
+      },
+      "exclusiveDecks": 161,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 162,
+          "exclusiveDecks": 162
+        }
+      ],
+      "overlaps": [
+        {
+          "id": "angels",
+          "decks": 1,
+          "jaccard": 0.0033333333333333335
+        }
+      ]
+    },
+    {
+      "id": "angel-descent",
+      "decks": 8,
+      "recurrence": {
+        "events": 8,
+        "players": 8,
+        "returningPlayers": 0,
+        "largestEventDecks": 1,
+        "unknownDecks": 0
+      },
+      "exclusiveDecks": 0,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 8,
+          "exclusiveDecks": 8
+        }
+      ],
+      "overlaps": [
+        {
+          "id": "angels",
+          "decks": 8,
+          "jaccard": 0.05755395683453238
+        }
+      ]
     }
   ],
   "sources": {
     "indexSha256": "9508ed248f0c4735f5396937eb662c067c1dfbe86f57f5371cf5fb3f4fa9daad",
     "catalogSha256": "5374445554a13f5a7d8934322041776ad75f19891cac92cf79aa1259a5008102",
-    "definitionsSha256": "bc8d2e64c1b4e6ed87919c50c63e2df39eb7fed74efcb2ad3757d90fd5f1ae7c"
+    "definitionsSha256": "ceaab1ced0b1182a994a68ee6d7f88b2c4620a0d9cab4b8ce1eea3f2228b6668"
   }
 }

@@ -13,7 +13,7 @@ test('reviewed publication reproduces the Dante decision and source-bound eviden
     const decision = JSON.parse(raw('../../../data/reference/elysian-dante-review.json'));
     const result = detectThemeDefinitions(JSON.parse(index), JSON.parse(catalog).cards, reviewedThemes);
     const hash = (s: string) => createHash('sha256').update(s).digest('hex');
-    assert.equal(result.evidence.length, 5);
+    assert.equal(result.evidence.length, 10);
     assert.equal(result.evidence[0].kind, 'theme');
     assert.equal(result.evidence[0].status, 'reviewed');
     assert.equal(result.evidence[0].matches.length, 17);

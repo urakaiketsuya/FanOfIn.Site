@@ -324,3 +324,80 @@ Cached mechanics support overlapping graveyard and ephemeral interactions. Limin
 Phantasmagoria is a **MASTERY** card in the catalog and appears in none of the reviewed Main/Material identities. The identity-only detector does not establish Mastery availability; this absence must not be interpreted as evidence that players lack access to it. A later support review should separate combat payoffs, graveyard enablers, and champion/Mastery-dependent packages before promotion. Distort Reality and Ticket to the Afterlife are non-ally Specter cards and cannot count toward the tribal ally threshold.
 
 Publication adds the fifth reviewed theme and preserves the original drafts. Regression checks cover exact historical membership, saved-artifact parity, threshold comparisons, distinct-name counting, zero quantities, section boundaries, and non-ally exclusions. No UI code changed; browser checks were not repeated for this data publication.
+
+## Remaining ten candidates — completed review, 2026-10-04
+
+This decision supersedes earlier pending-review notes for these ten candidates. Five publish as **reviewed membership themes**; three require narrower definitions before publication; two remain on hold for evidence. Reviewed membership does not assert an executable combo, competitive strength, or current legality. Original drafts remain available for comparison. No accepted strategy or combo-guide definitions change.
+
+| Candidate | Submissions | Distinct list signatures | Events / players | Decision |
+|---|---:|---:|---:|---|
+| Fairies | 57 | 42 | 47 / 43 | Publish |
+| Mordred Fairy package | 77 | 61 | 59 / 58 | Publish |
+| Direwolf token package | 78 | 75 | 51 / 63 | Publish |
+| Memorite generation | 162 | 154 | 136 / 121 | Publish |
+| Angel Descent | 8 | 8 | 8 / 8 | Publish |
+| Resonator support | 3 | 3 | 3 / 3 | Defer separate publication; refine music requirement |
+| Specter support | 215 | 200 | 161 / 156 | Defer umbrella; separate support roles |
+| Memorite payoff package | 155 | 151 | 131 / 113 | Defer umbrella; separate sacrifice and sheen payoffs |
+| Wolves | 1 | 1 | 1 / 1 | Hold for more evidence |
+| DisCorp support | 1 | 1 | 1 / 1 | Hold for more evidence and narrower roles |
+
+### Evidence and reproducibility
+
+Run `node --import tsx pipeline/scripts/review-remaining-themes.ts`. The source-hashed `data/reference/remaining-theme-review.json` records all ten definitions and exact membership witnesses, recurrence and pairwise overlap, distinct positive Main/Material list signatures, individual-anchor and removed-condition comparisons, threshold sensitivity, relevant cached card records, and overlap with the imported Luxem Mordred rule. Lists can be recovered by deck ID from the hashed index; they are not duplicated into this artifact. Duplicate deck IDs use the shared detector's last-record policy. Sideboard and nonpositive quantities are excluded. Counts overlap; signatures identify identical registered Main/Material contents, not independently developed strategies. Comparison thresholds are sensitivity checks, not fitted or proven optimal thresholds. All ten have zero unknown event/player identities.
+
+### Fairies: publish
+
+Require three distinct positive Main cards with ALLY type and FAIRY subtype, without a champion gate. Two allies selects 107 submissions (50 additional); four selects 35. Preserve the three-name tribal boundary used for the other reviewed tribes. Cached Fairies share stealth but have different entry effects: Dream Fairy returns an opposing ally to memory, Snow Fairy rests and suppresses an ally's wake-up, Spark Fairy supplies delayed damage, and Warrior of the Fae Realm stores a Sword attack for a later turn. Gildas has a Mordred-specific prevention ability; that restriction does not apply to the broad Fairy subtype.
+
+The broad label overlaps the Mordred package in 56 submissions. One Fairy submission falls outside it, while 21 Mordred package submissions have only two qualifying Fairy names. Neither definition subsumes the other.
+
+### Mordred Fairy package: publish
+
+Require a Material CHAMPION whose name starts with `Mordred,`, two distinct Main Fairy allies, and Main Gildas, Faesworn Monarch. Gildas itself counts as one of the two Fairies. Its Mordred Bonus ability pays two and rests to prevent the next four damage to a target unit; controlling another Fairy reduces the resource payment by two. Gildas also has stealth and vigor. Membership establishes the pieces, not simultaneous field presence, ability timing, or successful prevention.
+
+Removing the champion gate adds four submissions. Reducing the Fairy minimum to one adds two; raising it to three retains 56 of 77. Removing the Gildas anchor adds none in this snapshot, but keep the anchor because it explains the package and prevents future false positives. The imported **Luxem Mordred** rule matches 92 submissions using Luminescent Slash in identity, and overlaps this package in 68. Thus nine package submissions lack that imported label, and 24 imported-label submissions lack this package. Preserve both independently; this is a comparison with the imported rule, not a claim that the rule completely describes Luxem Mordred strategy.
+
+### Direwolf token package: publish
+
+Require both Direwolf Alpha and Dire Requiem as distinct positive Main names. Requiem summons a Direwolf and can summon another by banishing a fire card from the graveyard under Class Bonus. Alpha has Pride 2, can also summon a Direwolf under Class Bonus by banishing a fire graveyard card, and gives other Wolf objects +1 power under Class Bonus at level two or higher. The Direwolf token sacrifices itself at the beginning of the end phase. The package label does not imply these conditional effects are always enabled or that tokens persist.
+
+Alpha alone selects 93 submissions; Requiem alone selects 557; either selects 572. Both selects 78, so retain both anchors. Generated tokens do not need to appear in the registered deck. Only one of the 78 also satisfies the three-name Wolves tribe; broad tribal counting is unsuitable as the token-package gate.
+
+### Memorite generation: publish
+
+Preserve Material Merlin, Memorite Vassal plus two distinct positive Main generators from the existing eight-card pool. Each generator's cached text summons a Memorite object; some optional or extra effects depend on Prepare, Imbue, Merlin Bonus, or sheen. Vassal grants Fractured Memories on entry and can pay two to summon a Memorite Blade. Material membership establishes access to the champion card, not that its entry has happened.
+
+Dropping Vassal adds one submission. Retain the champion requirement to identify the reviewed Merlin package, without claiming Memorite generation is impossible elsewhere. One generator selects 312 submissions, two selects 162, and three selects 54. Vassal alone selects 592. Two generators distinguish repeated generation options from incidental inclusion. Protect Her At All Costs appears in 159 baseline submissions and Shardwing Searchlight in 138; these counts overlap. The full generator pool is alternatives, not eight mandatory cards.
+
+### Angel Descent: publish
+
+Preserve three distinct Main Angel allies plus Seraphic Legion's Descent in positive Main/Material identity. Descent is a PHANTASIA, not an ally. Its entry searches the deck for Angel allies and banishes them along with any selected Angel allies in hand, memory, and/or graveyard. It draws into memory for cards banished from hand and memory this way. At level three or higher its paid rest ability permits activation, until end of turn, of a target card banished by it. The text does not require that the card was banished that same turn.
+
+Eight submissions satisfy the package; two allies selects 11 and four selects five. Descent without the ally threshold also selects 11. Preserve three for a substantial Angel pool, while recognizing that two allies can still interact with Descent. This is an access-and-pool label; it does not verify level, resources, specific banished targets, or activation legality at a given game state.
+
+### Resonator support: defer separate publication
+
+All three matches include each of Fanclub Leader, Forese, Fervid Cantor, and ResonanTech Module. Changing the ally threshold to two or four leaves the same three. This snapshot cannot distinguish which support anchor defines the package. Fanclub buffs Resonators when music is activated; Forese can rest on music activation to scavenge a qualifying Resonator onto the field; Module discounts the next Harmony or Melody and glimpses. The draft requires none of that music, so its OR-of-support rule can admit unsupported future lists. Existing Resonator music remains the published label. Follow-up: evaluate a music-required support subset and individual roles with additional lists; do not infer that three observed lists validate the broad OR rule.
+
+### Specter support: defer umbrella publication
+
+The 215 submissions contain 200 list signatures. Individually requiring the draft support anchors yields 112 Templar, 28 Lawsur, 105 Ticket, 11 Distort Reality, and zero Phantasmagoria matches, with overlap. Lowering the tribe minimum to two selects 244; raising it to four selects 152. Removing the tribe requirement selects 255.
+
+These anchors describe different mechanisms: conditional reanimation (Templar), combat support (Lawsur), graveyard-cost reduction (Ticket), and Alice-dependent setup/deployment (Distort Reality). Phantasmagoria is a Mastery, and identity absence does not determine access. Do not publish one engine from this union. Follow-up: separate reanimation, combat, and graveyard-activation packages, then test their class/champion requirements and target pools. The existing Specters membership theme remains published.
+
+### Memorite payoff package: defer umbrella publication
+
+Of 155 submissions, 149 contain Shardforged Blade, nine Facet Together, and eight Crystallized Anthem, with overlap. Only 108 satisfy the stricter generation package; 47 do not. Removing the generator requirement selects 170, while generator presence without any payoff selects 429.
+
+Blade can sacrifice a Memorite to pay one memory cost and has an additional Merlin Bonus against sheen-marked allies. Facet Together is opponent-turn-only, sacrifices Memorites to increase a controlled weapon's power, and adds sheen to Fractured Memories. Anthem prevents damage, adds sheen when prevention occurs, and later scales Memorite power with that Mastery's sheen. The current draft checks neither a weapon for Facet nor Mastery access for the sheen payoffs. Follow-up: review generator-plus-Blade separately, require a weapon pool for Facet, and establish Mastery access for Anthem. Do not treat a generator plus any payoff as one validated engine.
+
+### Wolves and DisCorp support: hold
+
+Wolves has one submission (`22485:15045`), versus six at two allies and zero at four. Cached Wolves include beasts and DisCorp Automatons with different mechanics; subtype alone does not establish a shared engine. Keep the candidate unpublished until additional distinct lists support a broad tribe. The reviewed Direwolf package already covers the recurring token interaction.
+
+DisCorp support has one submission (`64888:17615`), which uses Tower of Dis. Acheron Express Officer has zero matches under the draft rule. Two DisCorp allies would select three submissions; four still selects one. Tower buffs DisCorp Automaton allies; Officer's Class Bonus grants another DisCorp ally Ranged 3 on entry. These are distinct support roles with too little evidence for the OR rule. Retain broad DisCorp as reviewed; reconsider support after more qualifying lists and role-specific checks.
+
+### Completion and verification scope
+
+All 15 original candidates now have a publication disposition: ten reviewed definitions, three deferred for refinement, and two held for additional evidence. The ten-candidate review batch is complete; the deferred follow-ups are explicit future work, not published engines. Historical evidence is source-bound and does not establish current-format legality. Regression tests cover source hashes, exact historical memberships, publication parity, and missing/duplicate/zero/Sideboard/wrong-section boundaries for every new definition. No UI code changes in this batch; mobile and desktop browser checks were not repeated for this data publication.

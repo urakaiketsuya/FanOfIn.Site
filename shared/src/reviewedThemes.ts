@@ -42,4 +42,14 @@ export const reviewedThemes: readonly ReviewedTheme[] = [{
     status: 'reviewed',
     paths: structuredClone(draftThemes.find(theme => theme.id === 'draft-specter')!.paths),
     reviewDocument: 'docs/DRAFT_THEME_PUBLICATION_REVIEW.md',
-}];
+}, ...[
+    ['fairies', 'Fairies', 'fairy'],
+    ['mordred-fairy', 'Mordred Fairy package', 'mordred-fairy'],
+    ['direwolf-tokens', 'Direwolf token package', 'wolf-tokens'],
+    ['memorite-generation', 'Memorite generation', 'memorite'],
+    ['angel-descent', 'Angel Descent', 'angel-descent'],
+].map(([id, name, draftId]): ReviewedTheme => ({
+    id, name, kind: 'theme', status: 'reviewed',
+    paths: structuredClone(draftThemes.find(theme => theme.id === `draft-${draftId}`)!.paths),
+    reviewDocument: 'docs/DRAFT_THEME_PUBLICATION_REVIEW.md',
+}))];
