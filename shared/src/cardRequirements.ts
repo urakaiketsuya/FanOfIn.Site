@@ -10,11 +10,32 @@ export interface Requirement {
 }
 
 export interface RequirementCard { name: string; types: string[]; subtypes?: string[] }
+
+/** Reject malformed or unknown filters rather than silently broadening a rule. */
+export function validRequirementPaths(value: unknown): value is Requirement[][] {
+    const text = (v: unknown): v is string => typeof v === 'string' && v.trim().length > 0;
+    const texts = (v: unknown) => Array.isArray(v) && v.length > 0 && v.every(text);
+    return Array.isArray(value) && value.length > 0 && value.every(path =>
+        Array.isArray(path) && path.length > 0 && path.every(value => {
+            if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+            const r = value as Record<string, unknown>;
+            return Object.keys(r).every(key => ['section', 'minimum', 'names', 'type', 'subtypes', 'prefix'].includes(key)) &&
+                ['main', 'material', 'identity'].includes(r.section as string) &&
+                Number.isSafeInteger(r.minimum) && (r.minimum as number) > 0 &&
+                (r.names === undefined || texts(r.names)) &&
+                (r.type === undefined || text(r.type)) &&
+                (r.subtypes === undefined || texts(r.subtypes)) &&
+                (r.prefix === undefined || text(r.prefix)) &&
+                [r.names, r.type, r.subtypes, r.prefix].some(filter => filter !== undefined);
+        }));
+}
+
 export function matchRequirementPaths(
     paths: readonly Requirement[][],
     sections: Record<Section, ReadonlySet<string>>,
     cards: ReadonlyMap<string, RequirementCard>,
 ) {
+    if (!validRequirementPaths(paths)) return [];
     return paths.flatMap((path, i) => {
         if (!path.length) return [];
         const witnesses = path.map(condition => [...sections[condition.section]].filter(name => {

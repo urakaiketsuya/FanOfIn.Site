@@ -170,3 +170,5 @@ must not automatically promote all 15 candidates.
 Implemented a shared section-aware matcher for draft detection and curated evaluation, with exact historical parity for all 17 broader Dante matches. Boundary tests cover misplaced champions, repeated copies and duplicate lines, zero quantities, Sideboard substitution, missing section evidence, and empty paths. Existing reference rules retain their semantics.
 
 Publication remains pending: add validated import/export support and visible rule descriptions before accepting section-aware definitions, then publish the reviewed theme with regenerated evidence. The import boundary rejects the new internal field until that interface work is complete.
+
+The shared matcher now validates complete requirement paths before evaluation. Invalid sections, non-positive or non-integer minima, empty filters, missing selectors, and unknown condition fields fail closed for the entire rule. Regression coverage preserves the reviewed 17-deck membership. Import remains gated until the review interface displays these conditions.

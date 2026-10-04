@@ -1,3 +1,4 @@
+import { matchRequirementPaths, validRequirementPaths } from '../../../shared/src/cardRequirements.js';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -32,4 +33,31 @@ test('section requirements count names instead of copies and ignore sideboards',
     assert.equal(match([[1, 1], [2, 1]], [[0, 1]]), true);
     assert.equal(match([[0, 1], [1, 1], [2, 1]], []), false);
     assert.equal(match([[1, 1], [2, 0]], [[0, 1]]), false);
+});
+
+
+test('requirement validation rejects malformed filters without broadening membership', () => {
+    const valid = { section: 'main', minimum: 1, type: 'ALLY' };
+    const invalid = [null, {}, [], [[]], [[null]], [[[]]],
+        ...[
+            { section: 'sideboard' }, { minimum: 0 }, { minimum: -1 },
+            { minimum: 1.5 }, { minimum: Infinity }, { minimum: '1' },
+            { names: [] }, { names: [''] }, { names: [1] },
+            { subtypes: [] }, { subtypes: ['  '] }, { prefix: '' },
+            { type: ' ' }, { subtype: 'ELYSIAN' },
+        ].map(patch => [[{ ...valid, ...patch }]]),
+        [[{ section: 'main', minimum: 1 }]],
+    ];
+    const sections = { main: new Set(['Ally']), material: new Set<string>(), identity: new Set(['Ally']) };
+    const cards = new Map([['Ally', { name: 'Ally', types: ['ALLY'] }]]);
+    for (const value of invalid) {
+        assert.equal(validRequirementPaths(value), false, JSON.stringify(value));
+        assert.deepEqual(matchRequirementPaths(value as never, sections, cards), []);
+    }
+    for (const filter of [{ names: ['Ally'] }, { type: 'ALLY' }, { subtypes: ['ELYSIAN'] }, { prefix: 'Al' }]) {
+        assert.equal(validRequirementPaths([[{ section: 'identity', minimum: 1, ...filter }]]), true);
+    }
+    assert.deepEqual(matchRequirementPaths([[valid]] as never, sections, cards), [{ path: 0, cards: ['Ally'] }]);
+    // A valid alternative must not hide a malformed condition elsewhere in the rule.
+    assert.equal(validRequirementPaths([[valid], [{ ...valid, minimum: 0 }]]), false);
 });
