@@ -1,3 +1,4 @@
+import DeckLinkImport from "./DeckLinkImport";
 import { useEffect, useMemo, useState } from "react";
 import type { DeckFormat, DeckImportCandidate, DeckImportPreview, DeckImportResult, SavedDeck } from "@gatcg/shared";
 import { accountApi } from "../../lib/accountApi";
@@ -8,7 +9,7 @@ import Panel from "../../components/ui/Panel";
 import Button from "../../components/ui/Button";
 import { InlineState } from "../../components/ui/ContentState";
 
-type Provider = "omnidex" | "shoutatyourdecks";
+type Provider = "omnidex" | "shoutatyourdecks" | "link";
 const MAX_BATCH = 50;
 
 function defaultSelection(candidates: DeckImportCandidate[], imported: Set<string>): Set<string> {
@@ -64,9 +65,15 @@ export default function ImportDecksPanel({ decks, busy, run, onImported, onClose
   function toggle(id: string) { setSelected((current) => { const next = new Set(current); if (next.has(id)) next.delete(id); else if (next.size < MAX_BATCH) next.add(id); return next; }); }
   function selectVisible() { setSelected((current) => { const next = new Set(current); for (const candidate of selectableVisible) { if (next.size >= MAX_BATCH) break; next.add(candidate.externalDeckId); } return next; }); }
 
+  if (provider === "link") return <section className="mt-6 rounded-xl border border-ctp-blue/40 bg-ctp-mantle p-4 sm:p-5">
+    <h2 className="font-semibold">Import a deck link</h2>
+    <DeckLinkImport run={run} url={identifier} setUrl={setIdentifier} onImported={onImported} onClose={onClose} />
+    <Button disabled={busy || !!identifier.trim()} className="mt-4" onClick={() => { setProvider("omnidex"); setIdentifier(""); resetPreview(); }}>Import a player profile instead</Button>{identifier.trim() && <p className="mt-1 text-xs text-ctp-subtext1">Clear the link to switch import methods.</p>}
+  </section>;
+
   return <section data-component="ImportDecksPanel" className="mt-6 rounded-xl border border-ctp-blue/40 bg-ctp-mantle p-4 sm:p-5">
     <div className="flex items-start justify-between gap-3"><div><h2 className="font-semibold text-ctp-text">Import public decks</h2><p className="mt-1 text-xs text-ctp-subtext1">Preview a public profile, then choose only the decks you want. This does not verify ownership.</p></div></div>
-    <div className="mt-4 grid gap-2 sm:grid-cols-[auto_minmax(12rem,1fr)_auto]"><select value={provider} onChange={(event) => { setProvider(event.target.value as Provider); resetPreview(); }} className="rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-2 text-sm"><option value="omnidex">Omnidex ID</option><option value="shoutatyourdecks">Shout At Your Decks</option></select><input value={identifier} inputMode={provider === "omnidex" ? "numeric" : "text"} onChange={(event) => { setIdentifier(event.target.value); resetPreview(); }} placeholder={provider === "omnidex" ? "Player ID" : "Username"} className="min-w-0 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm" /><button disabled={busy || !identifier.trim()} type="button" onClick={() => void run(async () => { const next = await accountApi.previewImport(provider, identifier); setPreview(next); setSelected(defaultSelection(next.candidates, imported)); })} className="rounded-md border border-ctp-blue px-3 py-2 text-sm text-ctp-blue disabled:opacity-50">Preview</button></div>
+    <div className="mt-4 grid gap-2 sm:grid-cols-[auto_minmax(12rem,1fr)_auto]"><select aria-label="Import source" value={provider} onChange={(event) => { setProvider(event.target.value as Provider); setIdentifier(""); resetPreview(); }} className="rounded-md border border-ctp-surface1 bg-ctp-base px-2 py-2 text-sm"><option value="link">Deck link (Fractal)</option><option value="omnidex">Omnidex ID</option><option value="shoutatyourdecks">Shout At Your Decks</option></select><input value={identifier} inputMode={provider === "omnidex" ? "numeric" : "text"} onChange={(event) => { setIdentifier(event.target.value); resetPreview(); }} placeholder={provider === "omnidex" ? "Player ID" : "Username"} className="min-w-0 rounded-md border border-ctp-surface1 bg-ctp-base px-3 py-2 text-sm" /><button disabled={busy || !identifier.trim()} type="button" onClick={() => void run(async () => { const next = await accountApi.previewImport(provider, identifier); setPreview(next); setSelected(defaultSelection(next.candidates, imported)); })} className="rounded-md border border-ctp-blue px-3 py-2 text-sm text-ctp-blue disabled:opacity-50">Preview</button></div>
     {preview && <div className="mt-5">
       <div className="flex flex-wrap items-end justify-between gap-3"><div><p className="font-medium text-ctp-text">{preview.displayName}</p><p className="text-sm text-ctp-subtext1">{preview.candidates.length} archived appearance{preview.candidates.length === 1 ? "" : "s"} · {importedCandidateCount} already imported</p></div><p className="text-xs text-ctp-subtext0">Up to {MAX_BATCH} per batch</p></div>
       <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4"><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search event or deck" aria-label="Search decks to import" className="rounded border border-ctp-surface1 bg-ctp-base px-2 py-2 text-sm" /><select value={champion} onChange={(event) => setChampion(event.target.value)} aria-label="Filter by champion" className="rounded border border-ctp-surface1 bg-ctp-base px-2 py-2 text-sm"><option value="all">All champions</option>{champions.map((value) => <option key={value}>{value}</option>)}</select><select value={format} onChange={(event) => setFormat(event.target.value as DeckFormat | "all")} aria-label="Filter by format" className="rounded border border-ctp-surface1 bg-ctp-base px-2 py-2 text-sm"><option value="all">All formats</option><option value="STANDARD">Standard</option><option value="PANTHEON">Pantheon</option><option value="UNKNOWN">Unknown</option></select><select value={year} onChange={(event) => setYear(event.target.value)} aria-label="Filter by year" className="rounded border border-ctp-surface1 bg-ctp-base px-2 py-2 text-sm"><option value="all">All years</option>{years.map((value) => <option key={value}>{value}</option>)}</select></div>

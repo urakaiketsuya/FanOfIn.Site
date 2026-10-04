@@ -34,8 +34,9 @@ type ListAction = { to: string; newTab?: boolean; expanded?: never; onToggle?: n
 };
 
 /** Immutable preview only: adapters own fetching, mutations, navigation and expanded content. */
-export default function DeckPreviewCard({ model, cardsByName, championCard, view, presentation = "detail" }: {
+export default function DeckPreviewCard({ model, cardsByName, championCard, view, cardLinksNewTab = false, presentation = "detail" }: {
   model: DeckPreviewModel;
+  cardLinksNewTab?: boolean;
   presentation?: "detail" | "cover";
   cardsByName?: Map<string, Card>;
   championCard?: Card;
@@ -86,14 +87,14 @@ export default function DeckPreviewCard({ model, cardsByName, championCard, view
   return <Panel as="article" padding="none" data-component="DeckPreviewCard" data-source={model.source.kind} data-deck-id={model.id} className="identity-surface flex min-w-0 flex-col overflow-hidden">
     <div className="flex flex-1 flex-col gap-3 p-4">
       <div className="grid grid-cols-[6rem_minmax(0,1fr)] items-start gap-3 sm:grid-cols-[7rem_minmax(0,1fr)]">
-        <div className="min-w-0">{leadCard ? <Link to={`/cards/${leadCard.slug}`} className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue">{art}</Link> : art}</div>
+        <div className="min-w-0">{leadCard ? <Link target={cardLinksNewTab ? "_blank" : undefined} rel={cardLinksNewTab ? "noreferrer" : undefined} to={`/cards/${leadCard.slug}`} className="block rounded focus-visible:outline-2 focus-visible:outline-ctp-blue">{art}</Link> : art}</div>
         <div className="min-w-0">
           <h2 className="break-words text-xl font-bold leading-snug text-ctp-text sm:text-2xl">{model.title}</h2>
           <div className="mt-2 flex flex-wrap gap-1 text-xs text-ctp-subtext1"><span className="rounded bg-ctp-surface0 px-2 py-1">{model.format === "STANDARD" ? "Standard" : model.format === "PANTHEON" ? "Pantheon" : "Format unknown"}</span><span className="rounded bg-ctp-blue/10 px-2 py-1 text-ctp-blue">{model.source.label}</span></div>
           {model.metadata && <div className="mt-2 break-words text-xs leading-relaxed text-ctp-subtext1">{model.metadata}</div>}
         </div>
       </div>
-      {preview && preview.lines.length > 0 && <section aria-label={preview.label}><p className="mb-2 text-xs text-ctp-subtext0">{preview.label}</p><DeckCardPreview compact groupByElement={preview.section === "main"} lines={preview.lines.slice(0, 3)} cardsByName={cards} /></section>}
+      {preview && preview.lines.length > 0 && <section aria-label={preview.label}><p className="mb-2 text-xs text-ctp-subtext0">{preview.label}</p><DeckCardPreview newTab={cardLinksNewTab} compact groupByElement={preview.section === "main"} lines={preview.lines.slice(0, 3)} cardsByName={cards} /></section>}
       <dl className="flex flex-wrap gap-x-6 gap-y-2 border-t border-ctp-surface1/60 pt-3">{(["main", "sideboard"] as const).map(section => <div key={section} className="flex flex-col-reverse gap-0.5"><dt className="text-xs text-ctp-subtext1">{section === "main" ? "Main deck" : "Sideboard"}</dt><dd className="text-lg font-semibold tabular-nums text-ctp-text">{count(section) ?? "Unknown"}</dd></div>)}</dl>
       {model.status}
     </div>

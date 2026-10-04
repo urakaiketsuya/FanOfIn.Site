@@ -1,3 +1,4 @@
+import { previewDeckLink } from "./deck-links";
 import { getShowcase, saveShowcase } from "./profile-showcase";
 import { getOwnedHistory, getOwnedVersion } from "./deck-queries";
 import { parseSaveInput } from "./deck-input";
@@ -520,6 +521,11 @@ export default {
       if (restoreMatch && request.method === "POST") {
         if (await rateLimited(env.WRITE_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
         return response(env, request, await restoreDeckVersion(env, user, restoreMatch[1], restoreMatch[2], request.body ? await jsonBody(request) : {}), 201);
+      }
+      if (request.method === "POST" && url.pathname === "/v1/me/imports/link") {
+        if (await rateLimited(env.IMPORT_RATE_LIMITER, user.id)) return tooManyRequests(env, request);
+        const body = await jsonBody(request) as { url?: unknown; origin?: unknown };
+        return response(env, request, await previewDeckLink(env, body.url, body.origin));
       }
       if (request.method === "POST" && url.pathname === "/v1/me/imports/preview") {
         if (await rateLimited(env.IMPORT_RATE_LIMITER, user.id)) return tooManyRequests(env, request);

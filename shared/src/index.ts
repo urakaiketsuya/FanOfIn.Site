@@ -62,3 +62,5 @@ export * from "./tagContributions.js";
 export * from "./contentPolicy.js";
 
 export * from "./draftThemes.js";
+
+export * from "./fractalDeckLink.js";

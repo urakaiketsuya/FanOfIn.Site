@@ -1,3 +1,4 @@
+import type { DeckLinkPreview } from "@gatcg/shared";
 import type { ProfileShowcase } from "@gatcg/shared";
 import type { SavedDeckVersion } from "@gatcg/shared";
 import type { TagOverride, TagProposal, TagProposalInput, TagProposalList } from "@gatcg/shared";
@@ -149,12 +150,13 @@ export const accountApi = {
   updateDeckDecklist: (id: string, input: { decklist: OmnidexDecklist; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; maybeboard?: { card: string; quantity: number }[]; expectedRevision?: number; requestId?: string }) =>
     accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify(input) }),
   restoreDeckVersion: (id: string, versionId: string, options?: { requestId: string; expectedRevision: number }) => accountRequest<{ id: string; versionNumber: number }>(`/v1/me/decks/${encodeURIComponent(id)}/versions/${encodeURIComponent(versionId)}/restore`, { method: "POST", body: JSON.stringify(options ?? {}) }),
-  saveDeck: (input: { title: string; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; decklist: OmnidexDecklist; maybeboard?: { card: string; quantity: number }[]; source: { provider: "manual"; externalDeckId: string; label: string } }) =>
+  saveDeck: (input: { title: string; format: "STANDARD" | "PANTHEON" | "UNKNOWN"; championName?: string | null; decklist: OmnidexDecklist; maybeboard?: { card: string; quantity: number }[]; source: { provider: "manual"; externalDeckId: string; label: string; sourceUrl?: string; metadata?: Record<string, unknown> } }) =>
     accountRequest<{ id: string; created: boolean }>("/v1/me/decks", { method: "POST", body: JSON.stringify(input) }),
   updateDeckMetadata: (id: string, input: { title?: string; description?: string; primerMarkdown?: string; tags?: string[]; maybeboard?: { card: string; quantity: number }[] }) => accountRequest<{ success: true }>(`/v1/me/decks/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify(input) }),
   renameDeck: (id: string, title: string) => accountRequest<{ success: true }>(`/v1/me/decks/${encodeURIComponent(id)}`, { method: "PATCH", body: JSON.stringify({ title }) }),
   publishDeck: (id: string, visibility: DeckVisibility) => accountRequest<{ publicSlug: string | null; visibility: DeckVisibility }>(`/v1/me/decks/${encodeURIComponent(id)}/publish`, { method: "POST", body: JSON.stringify({ visibility }) }),
   deleteDeck: (id: string) => accountRequest<{ success: true }>(`/v1/me/decks/${encodeURIComponent(id)}`, { method: "DELETE" }),
+  previewDeckLink: (url: string, origin: "fractal" | "omnidex" = "fractal") => accountRequest<DeckLinkPreview>("/v1/me/imports/link", { method: "POST", body: JSON.stringify({ url, origin }) }),
   previewImport: (provider: "omnidex" | "shoutatyourdecks", identifier: string) => accountRequest<DeckImportPreview>("/v1/me/imports/preview", { method: "POST", body: JSON.stringify({ provider, identifier }) }),
   importDecks: (provider: "omnidex" | "shoutatyourdecks", identifier: string, externalDeckIds: string[]) => accountRequest<DeckImportResult>("/v1/me/imports", { method: "POST", body: JSON.stringify({ provider, identifier, externalDeckIds }) }),
 };
