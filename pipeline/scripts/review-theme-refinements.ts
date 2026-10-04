@@ -6,9 +6,9 @@ import { detectThemeDefinitions, summarizeDraftThemes, type ThemeDefinition, typ
 
 const root = new URL('../../', import.meta.url);
 const indexRaw = await readFile(new URL('data/analysis/deck-card-index.json', root), 'utf8');
-const catalogRaw = await readFile(new URL('pipeline/.cache/cards.json', root), 'utf8');
+const catalogRaw = await readFile(new URL('data/card-catalog.json', root), 'utf8');
 const index: DeckCardIndexData = JSON.parse(indexRaw);
-const catalog: (ThemeCard & { effect: string })[] = JSON.parse(catalogRaw).cards;
+const catalog: (ThemeCard & Record<string, unknown>)[] = JSON.parse(catalogRaw).cards;
 const candidates = themeRefinements;
 const owners = new Map<string, string>();
 const comparisons: ThemeDefinition[] = candidates.flatMap(candidate => candidate.paths[0].flatMap((condition, i) => {
@@ -49,7 +49,9 @@ const output = { version: 1, sources: { indexSha256: hash(indexRaw), catalogSha2
                 retainedDeckIds: e.matches.filter(m => members.has(m.deckId)).map(m => m.deckId),
                 addedDeckIds: e.matches.filter(m => !members.has(m.deckId)).map(m => m.deckId),
             })) };
-    }), review: summarizeDraftThemes(baseline), catalogEvidence: catalog.filter(c => relevant.has(c.name)) };
+    }), review: summarizeDraftThemes(baseline), catalogEvidence: catalog.filter(c => relevant.has(c.name)).map(c =>
+        Object.fromEntries(['name', 'slug', 'classes', 'types', 'subtypes', 'elements', 'level',
+            'cost_memory', 'cost_reserve', 'power', 'speed', 'effect', 'legality'].map(key => [key, c[key]]))) };
 const target = new URL('data/reference/theme-refinement-review.json', root);
 const temporary = new URL(`${target.href}.${randomUUID()}.tmp`);
 try { await writeFile(temporary, JSON.stringify(output, null, 2) + '\n'); await rename(temporary, target); }

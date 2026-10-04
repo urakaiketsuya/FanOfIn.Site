@@ -7,7 +7,7 @@ import { detectThemeDefinitions, summarizeDraftThemes } from '../../../shared/sr
 
 const read = (p: string) => readFileSync(new URL(p, import.meta.url), 'utf8');
 const indexRaw = read('../../../data/analysis/deck-card-index.json');
-const catalogRaw = read('../../.cache/cards.json');
+const catalogRaw = read('../../../data/card-catalog.json');
 const catalog = JSON.parse(catalogRaw).cards;
 const index = JSON.parse(indexRaw);
 

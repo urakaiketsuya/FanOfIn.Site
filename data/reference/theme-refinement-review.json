@@ -2,7 +2,7 @@
   "version": 1,
   "sources": {
     "indexSha256": "cc4ce74ec16bc446e54eaf87c4aacbb3aa8a3f59de973ffb761273e0bbf18e37",
-    "catalogSha256": "5374445554a13f5a7d8934322041776ad75f19891cac92cf79aa1259a5008102",
+    "catalogSha256": "03d4dbabc6c74ca0ce197b9ef653db064d97a851cd07621ccc05a897a614ce9c",
     "definitionsSha256": "8e8a6f8199d8cbe02c3238fc56773aaa69ea6d1e5b733cb89aced08ca87cd3b7"
   },
   "population": 59061,
@@ -22458,14 +22458,7 @@
       "power": 1,
       "speed": null,
       "effect": "**Ranged 3** (As long as this unit is distant, its attacks get +3[POWER].)\n\n[Class Bonus] **On Enter:** If you control another DisCorp ally, CARDNAME becomes **distant**. *(Units stay **distant** until the end of their controller’s turn.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "138",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Alice, Distorted Queen",
@@ -22490,19 +22483,7 @@
       "power": null,
       "speed": null,
       "effect": "**On Enter:** You gain the Phantasmagoria mastery. Then put two **haunt** counters on it.\n\n**Lineage Release **— **Recover 2+X**, where **X** is the amount of cards in Alice's lineage.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM",
-          "collectorNumber": "002",
-          "releaseDate": "2025-12-05T00:00:00"
-        },
-        {
-          "setPrefix": "PTM 1st",
-          "collectorNumber": "002",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Alice, Phantom Monarch",
@@ -22526,24 +22507,7 @@
       "power": null,
       "speed": null,
       "effect": "**Alice Lineage**\n\n**Inherited Effect —** Whenever you play an advanced element card while there are no Curse cards in Alice's lineage, deal 7 unpreventable damage to Alice.\n",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM",
-          "collectorNumber": "004",
-          "releaseDate": "2025-12-05T00:00:00"
-        },
-        {
-          "setPrefix": "PTM 1st",
-          "collectorNumber": "004",
-          "releaseDate": "2025-12-05T00:00:00"
-        },
-        {
-          "setPrefix": "PTM 1st",
-          "collectorNumber": "004",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Alice, Trifle's Royalty",
@@ -22570,24 +22534,7 @@
       "power": null,
       "speed": null,
       "effect": "This card costs 1 less to materialize for each Chessman ally you control.\n\n**Alice Lineage**\n\nAt the beginning of your recollection phase, **summon** a Pawn Piece token. Then if you control three or more Chessman allies, draw a card into your memory.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "RDO",
-          "collectorNumber": "011",
-          "releaseDate": "2026-04-03T00:00:00"
-        },
-        {
-          "setPrefix": "RDO 1st",
-          "collectorNumber": "011",
-          "releaseDate": "2026-04-03T00:00:00"
-        },
-        {
-          "setPrefix": "RDO 1st",
-          "collectorNumber": "011",
-          "releaseDate": "2026-04-03T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Alice, Whim's Monarch",
@@ -22613,19 +22560,7 @@
       "power": null,
       "speed": null,
       "effect": "**Alice Lineage**\n\n**On Enter:** **Glimpse 3,** then reveal the top card of your deck. If that card is a Chessman card, put it into your hand.\n\n[REST]: If you don't control a Pawn ally, **summon** a Pawn Piece Token.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM",
-          "collectorNumber": "003",
-          "releaseDate": "2025-12-05T00:00:00"
-        },
-        {
-          "setPrefix": "PTM 1st",
-          "collectorNumber": "003",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Arisanna, Astral Zenith",
@@ -22649,34 +22584,7 @@
       "power": null,
       "speed": null,
       "effect": "**Arisanna Lineage**\n\nOnce per turn, you may pay (0) rather than pay a card's **starcalling** costs.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "ALC",
-          "collectorNumber": "006",
-          "releaseDate": "2024-01-26T00:00:00"
-        },
-        {
-          "setPrefix": "ALCSD",
-          "collectorNumber": "006",
-          "releaseDate": "2024-01-26T00:00:00"
-        },
-        {
-          "setPrefix": "RDOPD",
-          "collectorNumber": "006",
-          "releaseDate": "2026-04-03T00:00:00"
-        },
-        {
-          "setPrefix": "RDOPD",
-          "collectorNumber": "006",
-          "releaseDate": "2026-04-03T00:00:00"
-        },
-        {
-          "setPrefix": "ALCSD",
-          "collectorNumber": "006",
-          "releaseDate": "2024-01-26T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Arisanna, Herbalist Prodigy",
@@ -22700,29 +22608,7 @@
       "power": null,
       "speed": null,
       "effect": "**On Enter:** **Gather** twice. *(To **gather**, **summon** a Blightroot, Manaroot, Silvershine, Fraysia, Razorvine, or Springleaf token, chosen at random.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "ALC",
-          "collectorNumber": "004",
-          "releaseDate": "2024-01-26T00:00:00"
-        },
-        {
-          "setPrefix": "ALCSD",
-          "collectorNumber": "004",
-          "releaseDate": "2024-01-26T00:00:00"
-        },
-        {
-          "setPrefix": "RDOPD",
-          "collectorNumber": "004",
-          "releaseDate": "2026-04-03T00:00:00"
-        },
-        {
-          "setPrefix": "ALC 1st",
-          "collectorNumber": "004",
-          "releaseDate": "2024-01-26T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Arisanna, Master Alchemist",
@@ -22746,34 +22632,7 @@
       "power": null,
       "speed": null,
       "effect": "**Arisanna Lineage** *(Arisanna, Master Alchemist must be leveled from a previous level \"Arisanna\" champion.)*\n\n**On Enter:** **Gather** twice.\n\n**Inherited Effect —** At the beginning of your end phase, you may sacrifice two Herbs with the same name. If you do, draw a card.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "ALC",
-          "collectorNumber": "005",
-          "releaseDate": "2024-01-26T00:00:00"
-        },
-        {
-          "setPrefix": "ALCSD",
-          "collectorNumber": "005",
-          "releaseDate": "2024-01-26T00:00:00"
-        },
-        {
-          "setPrefix": "RDOPD",
-          "collectorNumber": "005",
-          "releaseDate": "2026-04-03T00:00:00"
-        },
-        {
-          "setPrefix": "ALC 1st",
-          "collectorNumber": "005A",
-          "releaseDate": "2024-01-26T00:00:00"
-        },
-        {
-          "setPrefix": "ALC 1st",
-          "collectorNumber": "005B",
-          "releaseDate": "2024-01-26T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Assassin's Ripper",
@@ -22798,24 +22657,7 @@
       "power": 1,
       "speed": null,
       "effect": "[Class Bonus] [REST]**, Remove a preparation counter from your champion:** CARDNAME gets +2 [POWER] until end of turn.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DOA Alter",
-          "collectorNumber": "020",
-          "releaseDate": "2023-04-28T00:00:00"
-        },
-        {
-          "setPrefix": "DOA 1st",
-          "collectorNumber": "020",
-          "releaseDate": "2023-01-01T00:00:00"
-        },
-        {
-          "setPrefix": "FTCA",
-          "collectorNumber": "001",
-          "releaseDate": "2023-08-25T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Attune with the Winds",
@@ -22840,24 +22682,7 @@
       "power": null,
       "speed": false,
       "effect": "Put a **buff** counter on each ally you control. *(Allies get +1 power and +1 life for each **buff** counter on them.)*\n\n[Class Bonus] ***Harmonize*** — If you've activated a Melody card this turn, draw a card.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DOA Alter",
-          "collectorNumber": "200",
-          "releaseDate": "2023-04-28T00:00:00"
-        },
-        {
-          "setPrefix": "DOA 1st",
-          "collectorNumber": "200",
-          "releaseDate": "2023-01-01T00:00:00"
-        },
-        {
-          "setPrefix": "RDOPD",
-          "collectorNumber": "164",
-          "releaseDate": "2026-04-03T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Bandersnatch, Frumious Foe",
@@ -22884,19 +22709,7 @@
       "power": 2,
       "speed": null,
       "effect": "[Class Bonus] **Taunt**\n\nWhenever CARDNAME is dealt damage, **recover 3**.\n\n(2), **Sacrifice another ally: ** CARDNAME gets +2 [POWER] and gains **cleave** until end of turn.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM",
-          "collectorNumber": "180",
-          "releaseDate": "2025-12-05T00:00:00"
-        },
-        {
-          "setPrefix": "PTM 1st",
-          "collectorNumber": "180",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Belted Tune",
@@ -22921,14 +22734,7 @@
       "power": null,
       "speed": false,
       "effect": "Put a **buff** counter on target ally. *(Allies get +1[POWER] and +1[LIFE] for each **buff** counter on them.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "033",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Biding Endroid",
@@ -22953,14 +22759,7 @@
       "power": 1,
       "speed": null,
       "effect": "As long as each player has four or less cards in their material deck, CARDNAME gets +3[POWER] and +3[LIFE].",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "034",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Bill, Chimney Sweep",
@@ -22987,19 +22786,7 @@
       "power": 4,
       "speed": null,
       "effect": "**On Enter:** If CARDNAME is not **ephemeral**, sacrifice a Specter ally.\n\n[Alice Bonus] **Ephemerate — **(5), Discard a card. *(You may activate this card from your graveyard by paying this cost. Ally cards played this way become **ephemeral** as they enter the field.)*\n",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM",
-          "collectorNumber": "078",
-          "releaseDate": "2025-12-05T00:00:00"
-        },
-        {
-          "setPrefix": "PTM 1st",
-          "collectorNumber": "078",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Black Ice Spellweaver",
@@ -23023,14 +22810,7 @@
       "power": 0,
       "speed": null,
       "effect": "**Stealth** *(This unit can’t be targeted by attacks unless permitted by **true sight**.) *\n\n**Sacrifice CARDNAME:** Target unit's attacks get -3[POWER] until end of turn.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "RDO",
-          "collectorNumber": "208",
-          "releaseDate": "2026-04-03T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Blazing Direwolf",
@@ -23055,19 +22835,7 @@
       "power": 4,
       "speed": null,
       "effect": "**Pride 5** *(This ally won't obey you unless your champion is level 5 or higher.)*\n\n[Class Bonus] **On Attack:** Deal 2 damage to target unit. *(Apply this effect only if your champion's class matches this card's class.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DOA Alter",
-          "collectorNumber": "119",
-          "releaseDate": "2023-04-28T00:00:00"
-        },
-        {
-          "setPrefix": "DOA 1st",
-          "collectorNumber": "119",
-          "releaseDate": "2023-01-01T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Brackish Lutist",
@@ -23092,14 +22860,7 @@
       "power": 1,
       "speed": null,
       "effect": "If a card with **floating memory** would be put into a player's graveyard, that player banishes it instead.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "HVN",
-          "collectorNumber": "034",
-          "releaseDate": "2025-03-07T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Breath's Coloratura",
@@ -23124,14 +22885,7 @@
       "power": null,
       "speed": false,
       "effect": "[Class Bonus] **Fast Activation** *(You may activate this card at fast speed.)*\n\nPut a **buff** counter on each Human ally you control. Until end of turn, Human allies that enter the field under your control enter with an additional **buff** counter on them.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "181",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Bulwark Sword",
@@ -23156,29 +22910,7 @@
       "power": 2,
       "speed": null,
       "effect": "[Class Bonus] CARDNAME gets +1 [POWER]. *(Apply this effect only if your champion's class matches this card's class.)*\n\nAs an additional cost to use this weapon for an attack, pay (2).",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "ALCSD",
-          "collectorNumber": "014",
-          "releaseDate": "2024-01-26T00:00:00"
-        },
-        {
-          "setPrefix": "DTRSD",
-          "collectorNumber": "010",
-          "releaseDate": "2025-07-25T00:00:00"
-        },
-        {
-          "setPrefix": "P24",
-          "collectorNumber": "002",
-          "releaseDate": "2024-01-24T00:00:00"
-        },
-        {
-          "setPrefix": "P25",
-          "collectorNumber": "097",
-          "releaseDate": "2025-02-06T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Cellforger Droid",
@@ -23203,14 +22935,7 @@
       "power": 0,
       "speed": null,
       "effect": "**On Enter:** **Summon** a Powercell token rested.\n\n(4)**, [REST]:** **Summon** a Powercell token rested.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "184",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Cellwarden Droid",
@@ -23235,14 +22960,7 @@
       "power": 1,
       "speed": null,
       "effect": "[Class Bonus] (5), [REST]: **Summon** a Powercell token rested. This ability costs (1) less to activate for each water element card in your graveyard.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "150",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Crossroads Specter",
@@ -23266,14 +22984,7 @@
       "power": 3,
       "speed": null,
       "effect": "**On Champion Hit**: The hit opponent banishes a card from their material deck.\n\n**On Death:** If there are seven or more regalia cards among all banishments, return Crossroads Specter to the field with a **buff** counter on it. It becomes **ephemeral**. ",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DTR",
-          "collectorNumber": "207",
-          "releaseDate": "2025-07-25T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Crystalline Reality",
@@ -23297,19 +23008,7 @@
       "power": null,
       "speed": false,
       "effect": "[Merlin Bonus] **Prepare 1**\n\nChoose one. If CARDNAME was **prepared**, choose two instead—\n• **Summon** a Memorite Blade token.\n• Your champion gains **true sight** until end of turn.\n• Draw a card into your memory.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "ReC-BRV",
-          "collectorNumber": "015",
-          "releaseDate": "2025-12-05T00:00:00"
-        },
-        {
-          "setPrefix": "P25",
-          "collectorNumber": "153",
-          "releaseDate": "2025-02-06T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Crystallized Anthem",
@@ -23334,14 +23033,7 @@
       "power": null,
       "speed": true,
       "effect": "Prevent the next 2 damage that would be dealt to each unit you control this turn. When damage is prevented this way, put two **sheen** counters on your Fractured Memories.\n\nAt the beginning of your next recollection phase, Memorite objects you control get +1[POWER] for every six **sheen** counters on your Fractured Memories until end of turn.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM",
-          "collectorNumber": "140",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Crystalvein Awakening",
@@ -23365,14 +23057,7 @@
       "power": null,
       "speed": false,
       "effect": "[Merlin Bonus] **Imbue 2** *(You may reserve all cards revealed as you activate this card. If at least two of them are wind element, this card becomes **imbued**.)*\n\n**Summon** a Memorite Obelith token with a **sheen** counter on it. If CARDNAME is **imbued**, put an additional **sheen** counter on that token.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM",
-          "collectorNumber": "141",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Current Groover",
@@ -23397,14 +23082,7 @@
       "power": 1,
       "speed": null,
       "effect": "***Deluge 3 —*** As long as you have three or more water element cards in your graveyard, CARDNAME gets +1[POWER].\n\nWhenever you activate a Harmony or Melody card, target player puts the top three cards of their deck into their graveyard.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "152",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Delivery Droid",
@@ -23429,14 +23107,7 @@
       "power": 1,
       "speed": null,
       "effect": "**On Death:** **Summon** a Powercell token.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "049",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Diao Chan, Dreaming Wish",
@@ -23460,24 +23131,7 @@
       "power": null,
       "speed": null,
       "effect": "**Diao Chan Lineage**\n\n**Inherited Effect** — At the beginning of your end phase, if the amount of **glimmer** counters on CARDNAME is less than the amount of phantasias you control, put an amount of **glimmer** counters on CARDNAME equal to the difference.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "HVN",
-          "collectorNumber": "005",
-          "releaseDate": "2025-03-07T00:00:00"
-        },
-        {
-          "setPrefix": "ReC-IDY",
-          "collectorNumber": "003",
-          "releaseDate": "2025-03-07T00:00:00"
-        },
-        {
-          "setPrefix": "HVN 1st",
-          "collectorNumber": "005",
-          "releaseDate": "2025-03-07T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Diao Chan, Enchantress",
@@ -23501,24 +23155,7 @@
       "power": null,
       "speed": null,
       "effect": "**On Enter**: Put two **glimmer** counters on CARDNAME.\n\n**Inherited Effect** — [REST]: Activate a Reaction Spell card from your memory. Pay its reserve cost only by removing that many **glimmer** counters from CARDNAME. Activate this ability only during an opponent's turn.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "HVN",
-          "collectorNumber": "004",
-          "releaseDate": "2025-03-07T00:00:00"
-        },
-        {
-          "setPrefix": "ReC-IDY",
-          "collectorNumber": "002",
-          "releaseDate": "2025-03-07T00:00:00"
-        },
-        {
-          "setPrefix": "HVN 1st",
-          "collectorNumber": "004",
-          "releaseDate": "2025-03-07T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Direwolf Alpha",
@@ -23543,14 +23180,7 @@
       "power": 2,
       "speed": null,
       "effect": "**Pride 2**\n\n[Class Bonus] **On Enter**: You may banish a fire element card from your graveyard. If you do, **summon** a Direwolf token.\n\n[Class Bonus] [Level 2+] Other Wolf objects you control get +1 [POWER].",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "HVN",
-          "collectorNumber": "084",
-          "releaseDate": "2025-03-07T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Distort Reality",
@@ -23576,19 +23206,7 @@
       "power": null,
       "speed": false,
       "effect": "[Alice Bonus] Put all cards from your deck into your graveyard. Then put any amount of Specter cards from your graveyard with total reserve cost 30 or less onto the field. They each become **ephemeral**.\n\n[Alice Bonus] **Ephemerate —** (15)",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "RDO 1st",
-          "collectorNumber": "398",
-          "releaseDate": "2026-04-03T00:00:00"
-        },
-        {
-          "setPrefix": "RDO 1st",
-          "collectorNumber": "398",
-          "releaseDate": "2026-04-03T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Drifting Abysshell",
@@ -23614,14 +23232,7 @@
       "power": 2,
       "speed": null,
       "effect": "**[Alice Bonus]** **On Enter:** Put a **haunt** counter on your Phantasmagoria.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM",
-          "collectorNumber": "111",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Emberwrath Witch",
@@ -23645,14 +23256,7 @@
       "power": 2,
       "speed": null,
       "effect": "At the beginning of your end phase, sacrifice CARDNAME.\n\n**Ephemerate —** (2) *(You may activate this card from your graveyard by paying this cost. Ally cards played this way become **ephemeral** as they enter the field.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "RDO",
-          "collectorNumber": "182",
-          "releaseDate": "2026-04-03T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Evercurrent Raider",
@@ -23676,14 +23280,7 @@
       "power": 1,
       "speed": null,
       "effect": "**Floating Memory**\n\n**Ephemerate** — (2) *(You may activate this card from your graveyard by paying this cost. Ally cards played this way become **ephemeral** as they enter the field.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DTR",
-          "collectorNumber": "147",
-          "releaseDate": "2025-07-25T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Excalibur, Reflected Edge",
@@ -23710,14 +23307,7 @@
       "power": 1,
       "speed": null,
       "effect": "**True Sight**, **Spellshroud**\n\n[Merlin Bonus] Excalibur gets +1[POWER].\n\n**On Destroy**: Summon a token copy of a non-Distortion regalia you control with memory cost 0. It becomes a Distortion in addition to its other types.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DTR 1st",
-          "collectorNumber": "057",
-          "releaseDate": "2025-07-25T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Facet Together",
@@ -23743,14 +23333,7 @@
       "power": null,
       "speed": true,
       "effect": "Activate this card only during an opponent's turn.\n\nSacrifice any amount of Memorite objects. Target weapon you control gets +**X** [POWER] until the end of your next turn, where **X** is the amount of objects sacrificed this way. Then put **X** **sheen** counters on your Fractured Memories.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM",
-          "collectorNumber": "143",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Fanclub Leader",
@@ -23775,14 +23358,7 @@
       "power": 1,
       "speed": null,
       "effect": "Whenever you activate a Harmony or Melody card, Resonator allies you control get +1[POWER] until end of turn.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "190",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Flamebound Draug",
@@ -23806,14 +23382,7 @@
       "power": 3,
       "speed": null,
       "effect": "**On Enter**: Flamebound Draug becomes **ephemeral**. *(If an **ephemeral** object would leave the field, banish it instead.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DTR",
-          "collectorNumber": "117",
-          "releaseDate": "2025-07-25T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Forese, Fervid Cantor",
@@ -23838,19 +23407,7 @@
       "power": 0,
       "speed": null,
       "effect": "Whenever you activate a Harmony or Melody card, you may rest CARDNAME. If you do, **scavenge 5** for a non-advanced element Resonator ally card with reserve cost 3 or less. Put the **scavenged **card onto the field rather than into your hand.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "059",
-          "releaseDate": "2026-08-21T00:00:00"
-        },
-        {
-          "setPrefix": "PRD 1st",
-          "collectorNumber": "059",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Fractured Memories",
@@ -23872,19 +23429,7 @@
       "power": null,
       "speed": null,
       "effect": "[Merlin Bonus] Your champion has \"**On Ally Kill:** Put **X** **sheen** counters onto your Fractured Memories, where **X** is the amount of **sheen** counters that were on the killed ally.\"\n\n[Merlin Bonus]Your champion has \"**On Champion Hit:** You may move all **sheen** counters on the hit champion to your Fractured Memories. When three or more counters are moved this way, deal 3 damage to that champion.\"",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "ReC-BRV",
-          "collectorNumber": "018",
-          "releaseDate": "2025-12-05T00:00:00"
-        },
-        {
-          "setPrefix": "P25",
-          "collectorNumber": "156",
-          "releaseDate": "2025-02-06T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Ghastly Slime",
@@ -23910,14 +23455,7 @@
       "power": 2,
       "speed": null,
       "effect": "As long as CARDNAME is **ephemeral**, it gets +2 [POWER]. \n\n[Class Bonus] **Ephemerate —** (2) *(You may activate this card from your graveyard by paying this cost. Ally cards played this way become **ephemeral** as they enter the field.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM",
-          "collectorNumber": "183",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Glassgale Flock",
@@ -23941,14 +23479,7 @@
       "power": null,
       "speed": null,
       "effect": "**On Enter: ****Summon** a Memorite Shardwing token.\n\n[Merlin Bonus] [Sheen 6+] (2), [REST]: If you don't control an ally named Memorite Shardwing, **summon** a Memorite Shardwing  token.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM",
-          "collectorNumber": "146",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Gray Lupindroid",
@@ -23974,14 +23505,7 @@
       "power": 2,
       "speed": null,
       "effect": "**True Sight** *(This ally can attack units with **stealth**.)*\n\n[Class Bonus] **On Enter: **You may sacrifice a Powercell. If you do, put a **buff** counter on CARDNAME and draw a card into your memory.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "064",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Gray Wolf",
@@ -24006,34 +23530,7 @@
       "power": 2,
       "speed": null,
       "effect": "**Pride 2** *(This ally won't obey you unless your champion is level 2 or higher.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DOA Alter",
-          "collectorNumber": "089",
-          "releaseDate": "2023-04-28T00:00:00"
-        },
-        {
-          "setPrefix": "DOA 1st",
-          "collectorNumber": "089",
-          "releaseDate": "2023-01-01T00:00:00"
-        },
-        {
-          "setPrefix": "DOAp",
-          "collectorNumber": "043",
-          "releaseDate": "2023-01-01T00:00:00"
-        },
-        {
-          "setPrefix": "DOASD",
-          "collectorNumber": "046",
-          "releaseDate": "2023-04-28T00:00:00"
-        },
-        {
-          "setPrefix": "SP1",
-          "collectorNumber": "024",
-          "releaseDate": "2023-05-01T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Haunting Apparition",
@@ -24057,14 +23554,7 @@
       "power": 2,
       "speed": null,
       "effect": "As long as CARDNAME is **ephemeral**, it has **stealth**.\n\n**Ephemerate —** (5) *(You may activate this card from your graveyard by paying this cost. Ally cards played this way become **ephemeral** as they enter the field.)*\n",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "RDO",
-          "collectorNumber": "089",
-          "releaseDate": "2026-04-03T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Haze Droid",
@@ -24089,14 +23579,7 @@
       "power": 2,
       "speed": null,
       "effect": "**Stealth** *(This unit can’t be targeted by attacks unless permitted by **true sight**.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "193",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Hydrocask Droid",
@@ -24121,14 +23604,7 @@
       "power": 1,
       "speed": null,
       "effect": "**On Enter:** If you have one or more cards with **floating memory** in your graveyard, CARDNAME gets +2[POWER] until end of turn.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "157",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Incinerated Templar",
@@ -24154,14 +23630,7 @@
       "power": 2,
       "speed": null,
       "effect": "[Class Bonus] **On Enter**: Put target Specter ally card with reserve cost 3 or less from your graveyard onto the field. It becomes **ephemeral**. Sacrifice it at the beginning of your next end phase.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DTR",
-          "collectorNumber": "124",
-          "releaseDate": "2025-07-25T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Incinerator Felindroid",
@@ -24189,14 +23658,7 @@
       "power": 2,
       "speed": null,
       "effect": "[Class Bonus] **On Enter:** You may banish two fire element cards from your graveyard. When you do, as a Spell, deal 3 damage to target ally. *(Apply this effect only if your champion's class matches this card's class.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "121",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Inert Sword",
@@ -24222,14 +23684,7 @@
       "power": 2,
       "speed": null,
       "effect": "As an additional cost to materialize this weapon, pay (2).\n\n[Class Bonus] Inert Sword gets +1[POWER]. *(Apply this effect only if your champion's class matches this card's class.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DTR",
-          "collectorNumber": "033",
-          "releaseDate": "2025-07-25T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Jabberwocky, Calamity's Call",
@@ -24256,14 +23711,7 @@
       "power": 4,
       "speed": null,
       "effect": "(2)**, Banish a Specter ally card from your graveyard:** **Recover 2** and CARDNAME gets +2 [POWER] until end of turn.\n\nAs long as a player doesn't control an object named Vorpal Sword, prevent all damage that would be dealt to CARDNAME.\n",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM 1st",
-          "collectorNumber": "185",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Jin, Fate Defiant",
@@ -24287,24 +23735,7 @@
       "power": null,
       "speed": null,
       "effect": "**Inherited Effect** — Whenever CARDNAME attacks with a Polearm weapon and/or Polearm attack card, target Horse or Human ally you control gets +1 [POWER] until end of turn. *(Your champion has this ability as long as this card is part of its lineage.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "AMB",
-          "collectorNumber": "004",
-          "releaseDate": "2024-10-11T00:00:00"
-        },
-        {
-          "setPrefix": "AMBSD",
-          "collectorNumber": "003",
-          "releaseDate": "2024-10-11T00:00:00"
-        },
-        {
-          "setPrefix": "AMB 1st",
-          "collectorNumber": "004",
-          "releaseDate": "2024-10-11T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Jin, Undying Resolve",
@@ -24328,24 +23759,7 @@
       "power": null,
       "speed": null,
       "effect": "**Jin Lineage** \n\nAs long as it's not your end phase, Jin has **immortality**. *(A unit with **immortality** can't die.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "AMB",
-          "collectorNumber": "006",
-          "releaseDate": "2024-10-11T00:00:00"
-        },
-        {
-          "setPrefix": "AMBSD",
-          "collectorNumber": "005",
-          "releaseDate": "2024-10-11T00:00:00"
-        },
-        {
-          "setPrefix": "AMBSD",
-          "collectorNumber": "005",
-          "releaseDate": "2024-10-11T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Jin, Zealous Maverick",
@@ -24369,24 +23783,7 @@
       "power": null,
       "speed": null,
       "effect": "**Jin Lineage** *(Jin, Zealous Maverick must be leveled from a previous level \"Jin\" champion.)* \n\n**On Enter:** CARDNAME's next attack this turn gets +1 [POWER] and has \"**On Attack:** Wake up CARDNAME.\"",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "AMB",
-          "collectorNumber": "005",
-          "releaseDate": "2024-10-11T00:00:00"
-        },
-        {
-          "setPrefix": "AMBSD",
-          "collectorNumber": "004",
-          "releaseDate": "2024-10-11T00:00:00"
-        },
-        {
-          "setPrefix": "AMB 1st",
-          "collectorNumber": "005",
-          "releaseDate": "2024-10-11T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Jubjub Bird, Mimsy Ghast",
@@ -24413,19 +23810,7 @@
       "power": 3,
       "speed": null,
       "effect": "**Stealth**\n\n**On Enter:** You may have another target ally you control become a copy of Jubjub Bird except its name is Drib Bujbuj.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM",
-          "collectorNumber": "174",
-          "releaseDate": "2025-12-05T00:00:00"
-        },
-        {
-          "setPrefix": "PTM 1st",
-          "collectorNumber": "174",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Lawsur, the Carpenter",
@@ -24452,19 +23837,7 @@
       "power": 1,
       "speed": null,
       "effect": "**On Enter**: Lawsur gets +**X**[POWER] until end of turn, where **X** is the amount of other Specter allies you control.\n\nSpecter allies you control have **stealth** as long as they're awake.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DTR",
-          "collectorNumber": "070",
-          "releaseDate": "2025-07-25T00:00:00"
-        },
-        {
-          "setPrefix": "DTR 1st",
-          "collectorNumber": "070",
-          "releaseDate": "2025-07-25T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Liminal Guide",
@@ -24488,19 +23861,7 @@
       "power": 1,
       "speed": null,
       "effect": "Whenever your champion levels up, return this card from your graveyard to the field. If you do, it becomes **ephemeral** and draw a card. *(If an **ephemeral** object would leave the field, banish it instead.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DTR",
-          "collectorNumber": "071",
-          "releaseDate": "2025-07-25T00:00:00"
-        },
-        {
-          "setPrefix": "SP4",
-          "collectorNumber": "017",
-          "releaseDate": "1970-01-01T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Lingering Banshee",
@@ -24524,14 +23885,7 @@
       "power": 2,
       "speed": null,
       "effect": "**Ephemerate** — (6). As long as you control one or more **ephemeral** objects, this card costs (3) less to activate this way. *(You may activate this card from your graveyard by paying this cost. Ally cards played this way become **ephemeral** as they enter the field.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DTR",
-          "collectorNumber": "072",
-          "releaseDate": "2025-07-25T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Lorraine, Blademaster",
@@ -24555,54 +23909,7 @@
       "power": null,
       "speed": null,
       "effect": "**Lorraine Lineage** *(Lorraine, Blademaster must be leveled from a previous level \"Lorraine\" champion.)*\n\n**On Enter:** Until end of turn, CARDNAME's attacks get +2 [POWER] and gain \"**On Kill:** Draw a card.\"",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DOA Alter",
-          "collectorNumber": "005",
-          "releaseDate": "2023-04-28T00:00:00"
-        },
-        {
-          "setPrefix": "DOA 1st",
-          "collectorNumber": "005",
-          "releaseDate": "2023-01-01T00:00:00"
-        },
-        {
-          "setPrefix": "DOAp",
-          "collectorNumber": "004",
-          "releaseDate": "2023-01-01T00:00:00"
-        },
-        {
-          "setPrefix": "DOASD",
-          "collectorNumber": "005",
-          "releaseDate": "2023-04-28T00:00:00"
-        },
-        {
-          "setPrefix": "DEMO22",
-          "collectorNumber": "003",
-          "releaseDate": "2022-05-28T00:00:00"
-        },
-        {
-          "setPrefix": "DEMO23",
-          "collectorNumber": "004",
-          "releaseDate": "2023-08-01T00:00:00"
-        },
-        {
-          "setPrefix": "RDOPD",
-          "collectorNumber": "008",
-          "releaseDate": "2026-04-03T00:00:00"
-        },
-        {
-          "setPrefix": "KSP",
-          "collectorNumber": "001",
-          "releaseDate": "2023-01-01T00:00:00"
-        },
-        {
-          "setPrefix": "DOA 1st",
-          "collectorNumber": "005",
-          "releaseDate": "2023-01-01T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Lorraine, Crux Knight",
@@ -24626,29 +23933,7 @@
       "power": null,
       "speed": null,
       "effect": "**Lorraine Lineage** *(Lorraine, Crux Knight must be leveled from a previous level \"Lorraine\" champion.)*\n\nLorraine's attacks get +1 [POWER] for each regalia weapon card in your banishment. ",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DOAp",
-          "collectorNumber": "005",
-          "releaseDate": "2023-01-01T00:00:00"
-        },
-        {
-          "setPrefix": "DOASD",
-          "collectorNumber": "006",
-          "releaseDate": "2023-04-28T00:00:00"
-        },
-        {
-          "setPrefix": "KSP",
-          "collectorNumber": "002",
-          "releaseDate": "2023-01-01T00:00:00"
-        },
-        {
-          "setPrefix": "DOASD",
-          "collectorNumber": "006",
-          "releaseDate": "2023-04-28T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Lorraine, Spirit Ruler",
@@ -24672,34 +23957,7 @@
       "power": null,
       "speed": null,
       "effect": "**Lorraine Lineage** *(Lorraine, Spirit Ruler must be leveled from a previous level \"Lorraine\" champion.)*\n\n**On Enter:** Choose a Sword regalia card with memory cost 1 or less from your banishment and put it onto the field. It enters the field with three additional **durability** counters on it.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DOA Alter",
-          "collectorNumber": "006",
-          "releaseDate": "2023-04-28T00:00:00"
-        },
-        {
-          "setPrefix": "DOA 1st",
-          "collectorNumber": "006",
-          "releaseDate": "2023-01-01T00:00:00"
-        },
-        {
-          "setPrefix": "RDOPD",
-          "collectorNumber": "009",
-          "releaseDate": "2026-04-03T00:00:00"
-        },
-        {
-          "setPrefix": "RDOPD",
-          "collectorNumber": "009",
-          "releaseDate": "2026-04-03T00:00:00"
-        },
-        {
-          "setPrefix": "DOA 1st",
-          "collectorNumber": "006",
-          "releaseDate": "2023-01-01T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Lorraine, Wandering Warrior",
@@ -24723,64 +23981,7 @@
       "power": null,
       "speed": null,
       "effect": "**On Enter:** Materialize a weapon card with memory cost 0 from your material deck.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "008",
-          "releaseDate": "2026-08-21T00:00:00"
-        },
-        {
-          "setPrefix": "PRDSD",
-          "collectorNumber": "006",
-          "releaseDate": "2026-08-21T00:00:00"
-        },
-        {
-          "setPrefix": "DOA Alter",
-          "collectorNumber": "004",
-          "releaseDate": "2023-04-28T00:00:00"
-        },
-        {
-          "setPrefix": "DOA 1st",
-          "collectorNumber": "004",
-          "releaseDate": "2023-01-01T00:00:00"
-        },
-        {
-          "setPrefix": "DOAp",
-          "collectorNumber": "003",
-          "releaseDate": "2023-01-01T00:00:00"
-        },
-        {
-          "setPrefix": "DOASD",
-          "collectorNumber": "004",
-          "releaseDate": "2023-04-28T00:00:00"
-        },
-        {
-          "setPrefix": "DEMO22",
-          "collectorNumber": "002",
-          "releaseDate": "2022-05-28T00:00:00"
-        },
-        {
-          "setPrefix": "DEMO23",
-          "collectorNumber": "003",
-          "releaseDate": "2023-08-01T00:00:00"
-        },
-        {
-          "setPrefix": "RDOPD",
-          "collectorNumber": "007",
-          "releaseDate": "2026-04-03T00:00:00"
-        },
-        {
-          "setPrefix": "PRD 1st",
-          "collectorNumber": "008",
-          "releaseDate": "2026-08-21T00:00:00"
-        },
-        {
-          "setPrefix": "DOA 1st",
-          "collectorNumber": "004",
-          "releaseDate": "2023-01-01T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Luminous Quartz",
@@ -24805,24 +24006,7 @@
       "power": 2,
       "speed": null,
       "effect": "As long as CARDNAME is rested, it can't be used for an attack.\n\n[Sheen 12+]  [REST], **Remove a preparation counter from your champion:** As a Spell, deal 1+**X** damage to target unit, where **X** is the amount of **sheen** counters on it. Activate this ability only at slow speed.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "ReC-BRV",
-          "collectorNumber": "012",
-          "releaseDate": "2025-12-05T00:00:00"
-        },
-        {
-          "setPrefix": "P25",
-          "collectorNumber": "158",
-          "releaseDate": "2025-02-06T00:00:00"
-        },
-        {
-          "setPrefix": "P26",
-          "collectorNumber": "032",
-          "releaseDate": "1970-01-01T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Mercenary's Blade",
@@ -24847,19 +24031,7 @@
       "power": 1,
       "speed": null,
       "effect": "[Class Bonus] You may remove a **preparation** counter from your champion to activate this card from your material deck. *(Apply this effect only if your champion’s class matches this card’s class.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "MRC",
-          "collectorNumber": "011",
-          "releaseDate": "2024-05-17T00:00:00"
-        },
-        {
-          "setPrefix": "RDOA",
-          "collectorNumber": "011",
-          "releaseDate": "2026-04-03T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Merlin, Kingslayer",
@@ -24885,29 +24057,7 @@
       "power": null,
       "speed": null,
       "effect": "**Merlin Lineage**\n\nAt the beginning of your recollection phase, put a **level** counter on CARDNAME. Then, if there's an even amount of **level** counters on CARDNAME, draw a card and CARDNAME's attacks get +2 [POWER] until end of turn.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "FTC",
-          "collectorNumber": "004",
-          "releaseDate": "2023-08-25T00:00:00"
-        },
-        {
-          "setPrefix": "RDO",
-          "collectorNumber": "012",
-          "releaseDate": "2026-04-03T00:00:00"
-        },
-        {
-          "setPrefix": "FTC",
-          "collectorNumber": "004B",
-          "releaseDate": "2023-08-25T00:00:00"
-        },
-        {
-          "setPrefix": "FTC",
-          "collectorNumber": "004A",
-          "releaseDate": "2023-08-25T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Merlin, Memorite Vassal",
@@ -24931,24 +24081,7 @@
       "power": null,
       "speed": null,
       "effect": "**On Enter:** You gain the Fractured Memories mastery. Then you may pay (2). If you do, **summon** a Memorite Blade token.\n\n[Merlin Bonus] **Inherited Effect —** Whenever an opponent recollects three or more cards, for every three cards recollected, they put a **sheen** counter on a unit they control.\n\n",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM",
-          "collectorNumber": "005",
-          "releaseDate": "2025-12-05T00:00:00"
-        },
-        {
-          "setPrefix": "ReC-BRV",
-          "collectorNumber": "002",
-          "releaseDate": "2025-12-05T00:00:00"
-        },
-        {
-          "setPrefix": "PTM 1st",
-          "collectorNumber": "005",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Misty Whispertail",
@@ -24974,14 +24107,7 @@
       "power": 1,
       "speed": null,
       "effect": "**Sacrifice CARDNAME:** If CARDNAME was not **ephemeral**, draw a card into your memory. Otherwise, **recover 3**.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM",
-          "collectorNumber": "120",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Mourning Veilbound",
@@ -25005,14 +24131,7 @@
       "power": 0,
       "speed": null,
       "effect": "**Stealth** *(This unit can’t be targeted by attacks unless permitted by **true sight**.)*\n\n**Sacrifice CARDNAME**: Up to one target Specter ally gains **spellshroud** until end of turn. *(Objects with **spellshroud** can’t be targeted by Spells.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM",
-          "collectorNumber": "051",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Music Aficionado",
@@ -25037,14 +24156,7 @@
       "power": 2,
       "speed": null,
       "effect": "As long as you've activated a Harmony or Melody card this turn, this card costs 3 less to activate.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "194",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Musical Curator",
@@ -25069,14 +24181,7 @@
       "power": 1,
       "speed": null,
       "effect": "**On Enter:** Choose Harmony or Melody. **Scavenge 12 **for a card of that subtype. *(To **scavenge** an amount, reveal cards from the top of your deck until you reveal that many cards or until you reveal the specified card. Put the specified card into your hand and the rest on the bottom of your deck in a random order.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "077",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Nether Dodobird",
@@ -25102,14 +24207,7 @@
       "power": 1,
       "speed": null,
       "effect": "**Sacrifice CARDNAME:** If CARDNAME was not **ephemeral**, draw a card into your memory. Otherwise, deal 2 damage to each champion you don't control. ",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM",
-          "collectorNumber": "092",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Night Barker",
@@ -25135,14 +24233,7 @@
       "power": 1,
       "speed": null,
       "effect": "**On Death: **Return CARDNAME from your graveyard to the field. It becomes **ephemeral**. *(If an **ephemeral** object would leave the field, banish it instead.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM",
-          "collectorNumber": "052",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Obelith Escort",
@@ -25166,19 +24257,7 @@
       "power": null,
       "speed": false,
       "effect": "**Prepare 2**\n\n**Summon** a Memorite Obelith token with a **sheen** counter on it. If CARDNAME was **prepared**, **summon** an additional Memorite Obelith token with a **sheen** counter on it.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "ReC-BRV",
-          "collectorNumber": "024",
-          "releaseDate": "2025-12-05T00:00:00"
-        },
-        {
-          "setPrefix": "P25",
-          "collectorNumber": "160",
-          "releaseDate": "2025-02-06T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Overcharged Droid",
@@ -25204,14 +24283,7 @@
       "power": 2,
       "speed": null,
       "effect": "As long as you control two or more Powercell items, CARDNAME gets +1[POWER] and +1[LIFE].",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "080",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Palvor Sword",
@@ -25237,14 +24309,7 @@
       "power": 2,
       "speed": null,
       "effect": "[Level 1+]**On Enter:** Banish all cards in target player's graveyard face down until CARDNAME leaves the field.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM 1st",
-          "collectorNumber": "024",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Performance Enthusiast",
@@ -25269,14 +24334,7 @@
       "power": 1,
       "speed": null,
       "effect": "Whenever you activate a Harmony or Melody card, if there are no **buff** counters on CARDNAME, put a **buff** counter on CARDNAME. *(Allies get +1[POWER] and +1[LIFE] for each **buff** counter on them.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "081",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Phantasmagoria",
@@ -25298,14 +24356,7 @@
       "power": null,
       "speed": null,
       "effect": "Non-Specter cards in your graveyard lose all abilities.\n\n[Alice Bonus] Whenever a Specter ally you control dies, put a **haunt** counter on CARDNAME. \n\n[Alice Bonus] At the beginning of your end phase, you may put all cards from your graveyard on the bottom of your deck in any order. If you do, put the top **X** cards from your deck into your graveyard, where **X** is the amount of **haunt** counters on CARDNAME.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM",
-          "collectorNumber": "057",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Production Crawldroid",
@@ -25330,14 +24381,7 @@
       "power": 3,
       "speed": null,
       "effect": "**On Enter:** **Summon** two Powercell tokens.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "240",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Protect Her At All Costs",
@@ -25361,19 +24405,7 @@
       "power": null,
       "speed": true,
       "effect": "[Merlin Bonus] This card costs 2 less to activate.\n\n**Summon** a Memorite Obelith token with two **sheen** counters on it. You may change the target of an attack to that token.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "ReC-BRV",
-          "collectorNumber": "026",
-          "releaseDate": "2025-12-05T00:00:00"
-        },
-        {
-          "setPrefix": "P25",
-          "collectorNumber": "165",
-          "releaseDate": "2025-02-06T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "ResonanTech Module",
@@ -25400,14 +24432,7 @@
       "power": null,
       "speed": null,
       "effect": "As long as you control two or more Resonator allies, this card costs 1 less to materialize.\n\n[REST]**: Glimpse 1**. The next Harmony or Melody card you activate this turn costs 1 less to activate.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "014",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Rondo of the Wind",
@@ -25434,14 +24459,7 @@
       "power": null,
       "speed": true,
       "effect": "[Class Bonus] This card costs 1 less to activate. \n\n**Scavenge 6** for an ally card. *(To **scavenge** an amount, reveal cards from the top of your deck until you reveal that many cards or until you reveal the specified card. Put the specified card into your hand and the rest on the bottom of your deck in a random order.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "198",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Rosewinged Hollow",
@@ -25465,14 +24483,7 @@
       "power": 2,
       "speed": null,
       "effect": "[Alice Bonus] [Element Bonus] (2), **Banish this card from your graveyard:** Put a **haunt** counter on your Phantasmagoria. Then if there are six or more **haunt** counters on it, choose a Specter ally you control and it gets +2[POWER] until end of turn. *(Activate this ability only if your champion’s element matches this card’s element.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM",
-          "collectorNumber": "095",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Shackled Theurgist",
@@ -25496,14 +24507,7 @@
       "power": 0,
       "speed": null,
       "effect": "**Taunt**\n\nAs long as Shackled Theurgist is **ephemeral**, it gets +4[POWER].\n\n**On Death**: Target opponent may sacrifice an ally. If they don't, return Shackled Theurgist to the field. It gets +2[LIFE] until end of turn and becomes **ephemeral**. ",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DTR",
-          "collectorNumber": "219",
-          "releaseDate": "2025-07-25T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Shardforged Blade",
@@ -25528,19 +24532,7 @@
       "power": 1,
       "speed": null,
       "effect": "You may sacrifice a Memorite object while paying for this card's memory cost to pay for 1 of that cost.\n\n[Merlin Bonus] CARDNAME gets +2 [POWER] as long the attacker is attacking an ally with one or more **sheen** counters on it.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "ReC-BRV",
-          "collectorNumber": "010",
-          "releaseDate": "2025-12-05T00:00:00"
-        },
-        {
-          "setPrefix": "P25",
-          "collectorNumber": "170",
-          "releaseDate": "2025-02-06T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Shardwing Searchlight",
@@ -25564,19 +24556,7 @@
       "power": null,
       "speed": false,
       "effect": "**Summon** a Memorite Shardwing token.\n\n[Sheen 4+] **Summon** a Memorite Shardwing token.\n\nUntil end of turn, Memorite objects you control gain \"**On Hit:** Put a **sheen** counter on the hit object.\"",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "ReC-BRV",
-          "collectorNumber": "028",
-          "releaseDate": "2025-12-05T00:00:00"
-        },
-        {
-          "setPrefix": "P25",
-          "collectorNumber": "170",
-          "releaseDate": "2025-02-06T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Shieldroid",
@@ -25601,14 +24581,7 @@
       "power": 0,
       "speed": null,
       "effect": "**Taunt** *(While awake, this ally must be targeted before other objects you control during your opponents’ attack declarations if able.)*\n\n**Floating Memory** *(While paying for a memory cost, you may banish this card from your graveyard to pay for 1 of that cost.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRDSD",
-          "collectorNumber": "032",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Silvergale Monstrosity's Call",
@@ -25633,14 +24606,7 @@
       "power": null,
       "speed": false,
       "effect": "**Prepare 2**\n\n**Summon** a Memorite Obelith token. If CARDNAME was **prepared**, move any amount of **sheen** counters from your Fractured Memories onto any amount of allies named Memorite Obelith you control.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "RDO",
-          "collectorNumber": "281",
-          "releaseDate": "2026-04-03T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Silvergale Obelith's Call",
@@ -25664,14 +24630,7 @@
       "power": null,
       "speed": true,
       "effect": "**Summon** a Memorite Obelith token with a **sheen** counter on it.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "RDO",
-          "collectorNumber": "282",
-          "releaseDate": "2026-04-03T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Sinfonia of Hope",
@@ -25698,14 +24657,7 @@
       "power": null,
       "speed": true,
       "effect": "Target ally gets +2[LIFE] until end of turn.\n\n[Class Bonus] The next Harmony card you activate this turn costs 2 less to activate. *(Apply this effect only if your champion's class matches this card's class.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "199",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Sinon, Babelia's Companion",
@@ -25731,19 +24683,7 @@
       "power": 0,
       "speed": null,
       "effect": "**[REST], Sacrifice a Powercell:** **Cascade**— \n• 1— Draw a card.\n• 2— Put a **buff** counter on each Automaton ally you control.\n• 3— Wake up CARDNAME. Their base power becomes 4.\n*(This ability changes each **cascade**.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "087",
-          "releaseDate": "2026-08-21T00:00:00"
-        },
-        {
-          "setPrefix": "PRD 1st",
-          "collectorNumber": "087",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Song of Nurturing",
@@ -25768,29 +24708,7 @@
       "power": null,
       "speed": true,
       "effect": "Allies you control get +2 [LIFE] until end of turn. **Class Bonus:** Those allies also get +1 [POWER] until end of turn. *(Apply the additional effect only if your champion's class matches this card's class.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DOA Alter",
-          "collectorNumber": "110",
-          "releaseDate": "2023-04-28T00:00:00"
-        },
-        {
-          "setPrefix": "DOA 1st",
-          "collectorNumber": "110",
-          "releaseDate": "2023-01-01T00:00:00"
-        },
-        {
-          "setPrefix": "DOASD",
-          "collectorNumber": "058",
-          "releaseDate": "2023-04-28T00:00:00"
-        },
-        {
-          "setPrefix": "ReC-SLM",
-          "collectorNumber": "018",
-          "releaseDate": "2024-05-17T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Song of Return",
@@ -25815,19 +24733,7 @@
       "power": null,
       "speed": true,
       "effect": "[Class Bonus] This card costs 1 less to activate. *(Apply this effect only if your champion's class matches this card's class.)*\n\nReturn up to two target allies you control to their owner's hands.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DOA Alter",
-          "collectorNumber": "223",
-          "releaseDate": "2023-04-28T00:00:00"
-        },
-        {
-          "setPrefix": "DOA 1st",
-          "collectorNumber": "223",
-          "releaseDate": "2023-01-01T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Steady Verse",
@@ -25854,19 +24760,7 @@
       "power": null,
       "speed": false,
       "effect": "[Class Bonus] The next Harmony action card you activate this turn costs 1 less to activate. \n\nDraw a card into your memory.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "091",
-          "releaseDate": "2026-08-21T00:00:00"
-        },
-        {
-          "setPrefix": "FTC",
-          "collectorNumber": "048",
-          "releaseDate": "2023-08-25T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Sturdy Droid",
@@ -25891,14 +24785,7 @@
       "power": 2,
       "speed": null,
       "effect": "[Class Bonus] **Vigor** *(At the beginning of your end phase, wake this ally up. Apply this effect only if your champion’s class matches this card’s class.)*\n",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "092",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Sunken Battle Priest",
@@ -25924,14 +24811,7 @@
       "power": 1,
       "speed": null,
       "effect": "[Class Bonus] Other **ephemeral** allies you control get +1[POWER].\n\n**Ephemerate** — (3), Banish a card with **floating memory** from your graveyard. *(You may activate this card from your graveyard by paying this cost. Ally cards played this way become **ephemeral** as they enter the field.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DTR",
-          "collectorNumber": "165",
-          "releaseDate": "2025-07-25T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Ticket to the Afterlife",
@@ -25957,14 +24837,7 @@
       "power": null,
       "speed": null,
       "effect": "Activated abilities of Specter cards in your graveyard cost (1) less to activate.\n\nSpecter cards you activate from your graveyard cost (1) less to activate.\n\n[Alice Bonus](2), [REST], **Banish a Specter card from your graveyard:** **Recover 2**.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM 1st",
-          "collectorNumber": "027",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Tower of Dis",
@@ -25991,14 +24864,7 @@
       "power": null,
       "speed": null,
       "effect": "*(Siegeable — This domain can be attacked. It takes damage in the form of removing **durability** counters.)*\n\nDisCorp Automaton allies you control get +1[POWER] and +1[LIFE].",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "093",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Trained Birdroid",
@@ -26024,14 +24890,7 @@
       "power": 2,
       "speed": null,
       "effect": "Automaton allies you control have **true sight**. *(They can attack units with **stealth**.)*\n\n[Class Bonus] Whenever you activate an ability of a Powercell item that targets another ally you control, CARDNAME gets +1[POWER] until end of turn.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "094",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Treacle, Drowned Mouse",
@@ -26058,19 +24917,7 @@
       "power": 1,
       "speed": null,
       "effect": "As long as CARDNAME is **ephemeral**, it has **stealth**.\n\n[Alice Bonus] At the beginning of your recollection phase, **recover X**, where **X **is the amount of Specter allies you control.\n\n[Alice Bonus] **Ephemerate — **(2), Discard a card. *(You may activate this card from your graveyard by paying this cost. Ally cards played this way become **ephemeral** as they enter the field.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM",
-          "collectorNumber": "127",
-          "releaseDate": "2025-12-05T00:00:00"
-        },
-        {
-          "setPrefix": "PTM 1st",
-          "collectorNumber": "127",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Tribute Singer",
@@ -26095,14 +24942,7 @@
       "power": 1,
       "speed": null,
       "effect": "[Level 1+] **On Enter:** Reveal the top five cards of your deck. You may activate a non-advanced element Harmony or Melody card from among the revealed cards or your memory. That card costs (3) less to activate this way. Put the rest of the revealed cards on the bottom of your deck in any order.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "201",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Unbroken Droid",
@@ -26127,14 +24967,7 @@
       "power": 1,
       "speed": null,
       "effect": "**On Enter:** Destroy up to one target item or weapon with memory cost 0 or reserve cost 3 or less.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "095",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Unyielding Wraithguard",
@@ -26158,14 +24991,7 @@
       "power": 0,
       "speed": null,
       "effect": "**Taunt** *(While awake, this ally must be targeted before other objects you control during your opponents' attack declarations if able.)* \n\n**On Death**: Return Unyielding Wraithguard from your graveyard to the field. It becomes **ephemeral**. *(If an **ephemeral** object would leave the field, banish it instead.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DTR",
-          "collectorNumber": "104",
-          "releaseDate": "2025-07-25T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Vanitas, Convergent Ruin",
@@ -26189,19 +25015,7 @@
       "power": 1,
       "speed": null,
       "effect": "**Vanitas Lineage**\n\nWhenever you activate a Spell card, CARDNAME' next attack without a weapon this turn gets +1 [POWER].\n\n**On Champion Hit:** If 7 or more damage was dealt, cards that opponent materializes cost 1 more to materialize until the beginning of your next turn. ",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "ALC",
-          "collectorNumber": "019",
-          "releaseDate": "2024-01-26T00:00:00"
-        },
-        {
-          "setPrefix": "ALC Alter",
-          "collectorNumber": "019",
-          "releaseDate": "2025-01-10T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Vanitas, Dominus Rex",
@@ -26225,19 +25039,7 @@
       "power": null,
       "speed": null,
       "effect": "**Vanitas Lineage**\n\nYou may activate this card from your material deck. It costs 1 less to activate for every 3 damage your champion has dealt to other champions this turn.\n\n**On Champion Hit**: Cards that opponent materializes cost 1 more to materialize until the beginning of your next turn. ",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "ALC Alter",
-          "collectorNumber": "234",
-          "releaseDate": "2025-01-10T00:00:00"
-        },
-        {
-          "setPrefix": "ALC Alter",
-          "collectorNumber": "234",
-          "releaseDate": "2025-01-10T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Vanitas, Obliviate Schemer",
@@ -26261,19 +25063,7 @@
       "power": null,
       "speed": null,
       "effect": "CARDNAME can only level up into another \"Vanitas\" champion.\n\n**On Enter:** If there's another wind element card in CARDNAME' lineage, **glimpse 4**.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "ALC",
-          "collectorNumber": "018",
-          "releaseDate": "2024-01-26T00:00:00"
-        },
-        {
-          "setPrefix": "ALC Alter",
-          "collectorNumber": "018",
-          "releaseDate": "2025-01-10T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Veiled Oracle",
@@ -26297,14 +25087,7 @@
       "power": 1,
       "speed": null,
       "effect": "**On Enter**: Veiled Oracle becomes **ephemeral**. **Glimpse 3**. *(If an **ephemeral** object would leave the field, banish it instead. To **glimpse**, look at that many cards from the top of your deck. Put those cards back on the top or on the bottom of your deck in any order.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DTR",
-          "collectorNumber": "105",
-          "releaseDate": "2025-07-25T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Vengeful Paramour",
@@ -26328,14 +25111,7 @@
       "power": 2,
       "speed": null,
       "effect": "**On Enter**: As a Spell, if Vengeful Paramour is **ephemeral**, deal 2 damage to target champion. \n\n**Ephemerate** — (4) *(You may activate this card from your graveyard by paying this cost. Ally cards played this way become **ephemeral** as they enter the field.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "DTR",
-          "collectorNumber": "140",
-          "releaseDate": "2025-07-25T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Virgil, Altered Future",
@@ -26361,14 +25137,7 @@
       "power": 2,
       "speed": null,
       "effect": "**Fast Activation**\n\n[Level 1+]CARDNAME gets +1[POWER] and +1[LIFE] for each of up to two Powercell items you control.\n\nProgram cards you activate cost 1 less to activate if their activation targets Virgil.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD 1st",
-          "collectorNumber": "100",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Vorpal Sword",
@@ -26393,14 +25162,7 @@
       "power": 3,
       "speed": null,
       "effect": "Specter allies can't retaliate.\n\n[Merlin Bonus] [REST]**, Banish a card from your material deck:** CARDNAME gains **spellshroud** until end of turn.\n\n[Merlin Bonus] **On Ally Hit:** You may remove a **preparation** counter from your champion. If you do, wake up the attacker. Trigger this ability only once per turn.",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PTM 1st",
-          "collectorNumber": "025",
-          "releaseDate": "2025-12-05T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "Wuthering Sforzando",
@@ -26427,14 +25189,7 @@
       "power": null,
       "speed": false,
       "effect": "[Class Bonus] As long as you've activated a Melody card this turn, this card costs 3 less to activate.\n\nTarget ally's next attack this turn gets +6[POWER].",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "206",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     },
     {
       "name": "ZENA, Echo Weaver",
@@ -26462,19 +25217,7 @@
       "power": 2,
       "speed": null,
       "effect": "While paying for this card's reserve cost, you may banish up to two Harmony and/or Melody cards from your graveyard. Each card banished this way pays for 2 of that cost.\n\n[Level 1+] **Vigor** *(This ally wakes up at the beginning of your end phase.)*",
-      "legality": null,
-      "editions": [
-        {
-          "setPrefix": "PRD",
-          "collectorNumber": "103",
-          "releaseDate": "2026-08-21T00:00:00"
-        },
-        {
-          "setPrefix": "PRD 1st",
-          "collectorNumber": "103",
-          "releaseDate": "2026-08-21T00:00:00"
-        }
-      ]
+      "legality": null
     }
   ]
 }
