@@ -1,3 +1,4 @@
+import SilvieArchetypeFamilies from "./SilvieArchetypeFamilies";
 import DiaoArchetypeFamilies from "./DiaoArchetypeFamilies";
 import ChampionDecks from "./ChampionDecks";
 import ChampionSeasonSnapshot from "./ChampionSeasonSnapshot";
@@ -465,7 +466,7 @@ export default function ChampionSynergy() {
             <Section
               id="archetypes"
               className="scroll-mt-48"
-              title={championName === "Diao Chan" ? "Archetypes and build variants" : "Build families"}
+              title={["Diao Chan", "Silvie"].includes(championName) ? "Archetypes and build variants" : "Build families"}
               description="Explore the cards that distinguish each family. A family can contain several different decklists."
               actions={<Link to="/archetypes" className="inline-flex min-h-12 items-center rounded text-xs text-ctp-blue hover:underline focus-visible:outline-2">All archetypes &rarr;</Link>}
             >
@@ -473,6 +474,8 @@ export default function ChampionSynergy() {
                 <InlineState className="mt-2 text-sm">{taxonomyStatus.phase === "error" ? <><span className="block">{taxonomyStatus.error}</span><button type="button" className="min-h-12 rounded px-3 text-ctp-blue focus-visible:outline-2" onClick={taxonomyStatus.retry}>Retry archetype analysis</button></> : "Loading archetype analysis…"}</InlineState>
               ) : championName === "Diao Chan" ? (
                 <DiaoArchetypeFamilies taxonomy={taxonomyData} catalog={catalogByName} />
+              ) : championName === "Silvie" ? (
+                <SilvieArchetypeFamilies taxonomy={taxonomyData} catalog={catalogByName} />
               ) : engines.length === 0 ? (
                 <InlineState className="mt-2 text-sm">No named builds have cleared the sample-size threshold yet.</InlineState>
               ) : (
@@ -513,7 +516,7 @@ export default function ChampionSynergy() {
                   })}
                 </div>
               )}
-              {championName !== "Diao Chan" && engines.length > 2 && <Button type="button" onClick={() => setShowAllPackages((value) => !value)} aria-expanded={showAllPackages} className="mt-3 min-h-12 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{showAllPackages ? "Show fewer families" : `Show all ${engines.length} families`}</Button>}
+              {!["Diao Chan", "Silvie"].includes(championName) && engines.length > 2 && <Button type="button" onClick={() => setShowAllPackages((value) => !value)} aria-expanded={showAllPackages} className="mt-3 min-h-12 rounded-lg border border-ctp-surface1 px-3 py-2 text-sm text-ctp-blue hover:bg-ctp-surface0">{showAllPackages ? "Show fewer families" : `Show all ${engines.length} families`}</Button>}
             </Section>
           </div>
         </>

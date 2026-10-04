@@ -1,6 +1,11 @@
 import type { ArchetypeCluster, StrategyArchetype } from './analysis-types.js';
 
+export const SILVIE_SLIME_CORE = ['Storm Slime', 'Limitless Slime', 'Ethereal Slime'];
+export const SILVIE_WATER_PACKAGE = ['Fracturize', 'Primordial Ritual'];
+export const SILVIE_SLIME_NAME = 'Tera Silvie — Slimes';
+
 export const REVIEWED_ARCHETYPE_CORES = [
+  { champion: 'Silvie', name: SILVIE_SLIME_NAME, core: SILVIE_SLIME_CORE },
   { champion: 'Lorraine', name: 'Fire Lorraine — Fire Sword', core: ['Blazing Throw', 'Rending Flames', 'Hone by Fire'] },
   { champion: 'Lorraine', name: 'Fire Lorraine — Embersong–Rhapsody', core: ['Embersong', 'Erupting Rhapsody', 'Fiery Momentum'] },
   { champion: 'Arisanna', name: 'Fire Arisanna — Potion Burn', core: ['Combustible Potion', 'Distilled Water', 'Cinder Geyser'] },
@@ -12,6 +17,8 @@ export interface ReviewedArchetypeEvidence {
   evaluatedDeckCount: number;
   missingDeckCount: number;
   coreDeckCount?: number;
+  /** Supporting package, independent of the required identifying core. */
+  waterPackageDeckCount?: number;
 }
 
 /** Naming only: callers supply positive main + material quantities, excluding sideboard. */
@@ -33,6 +40,9 @@ export function applyReviewedArchetypeEvidence(strategies: StrategyArchetype[], 
     if (matches.length !== 1 || evaluatedDeckCount !== ids.length || strategy.buildIds.some(id => !builds.has(id)) || strategy.playerCount < 5 || strategy.eventCount < 2) continue;
     const { identity, count } = matches[0];
     strategy.reviewedArchetypeEvidence = { originalName: strategy.name, evaluatedDeckCount, missingDeckCount: 0, coreDeckCount: count };
+    if (identity.name === SILVIE_SLIME_NAME) {
+      strategy.reviewedArchetypeEvidence.waterPackageDeckCount = ids.filter(id => SILVIE_WATER_PACKAGE.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length;
+    }
     strategy.name = identity.name;
     strategy.identityCards = [...identity.core];
   }

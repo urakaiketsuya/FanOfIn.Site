@@ -3599,3 +3599,20 @@ graveyard, while Fiery Momentum benefits from retaining them: sequencing matters
 three-card identity is not presented as an automatic combo. Catalog mechanics were reviewed
 against `pipeline/.cache/cards.json`. Refresh committed metadata with
 `node --import tsx pipeline/scripts/refresh-reviewed-archetypes.ts`; normal analysis uses the same rule.
+
+### Silvie shared Slime identity
+
+The reviewed naming rule also recognizes Storm Slime + Limitless Slime + Ethereal Slime
+as **Tera Silvie — Slimes**, using the same joint 90%, complete coverage, five-player and
+two-event requirements. Three existing families qualify: 3,112/3,149, 91/91 and 45/45
+appearances. This is a shared display identity, not a merge: all ten build IDs, family IDs,
+memberships, statistics and confidence remain unchanged. The champion page groups their
+presentation but retains separate family statistics; players/events may overlap across groups.
+Other Silvie families remain available.
+
+Fracturize + Primordial Ritual is recorded separately as a supporting Water package, present
+in 42/45 appearances of the small Water family and zero appearances in the other two.
+The page calls it a Water package variant when joint occurrence reaches 90%. This pair is
+not part of the required Slime core. Creative Shock + Cremation Ritual does not establish
+a separate identity: it appears in 90/91 of the small fire family but also 978/3,149 in the
+large family. Shared Slime names flow through existing deck labels and build detail pages.
