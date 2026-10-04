@@ -29,7 +29,8 @@ function dateLabel(value?: string): string {
   return Number.isNaN(date.getTime()) ? value : date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
 }
 
-export default function ImportDecksPanel({ decks, busy, run, onImported, onClose, onDirtyChange }: {
+export default function ImportDecksPanel({ decks, busy, run, onImported, onClose, onDirtyChange, footerTarget }: {
+  footerTarget?: HTMLElement | null;
   decks: SavedDeck[];
   busy: boolean;
   run: (action: () => Promise<void>) => Promise<void>;
@@ -67,7 +68,7 @@ export default function ImportDecksPanel({ decks, busy, run, onImported, onClose
 
   if (provider === "link") return <section className="mt-6 rounded-xl border border-ctp-blue/40 bg-ctp-mantle p-4 sm:p-5">
     <h2 className="font-semibold">Import a deck link</h2>
-    <DeckLinkImport run={run} url={identifier} setUrl={setIdentifier} onImported={onImported} onClose={onClose} />
+    <DeckLinkImport footerTarget={footerTarget} run={run} url={identifier} setUrl={setIdentifier} onImported={onImported} onClose={onClose} />
     <Button disabled={busy || !!identifier.trim()} className="mt-4" onClick={() => { setProvider("omnidex"); setIdentifier(""); resetPreview(); }}>Import a player profile instead</Button>{identifier.trim() && <p className="mt-1 text-xs text-ctp-subtext1">Clear the link to switch import methods.</p>}
   </section>;
 
