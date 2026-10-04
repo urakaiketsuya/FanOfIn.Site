@@ -72,3 +72,29 @@ historical-fixture rerun; shared and pipeline typechecks passed. Tests cover sou
 reproduction, publication decisions, catalog target pools, Main/Material boundaries,
 Sideboard exclusion, zero quantities, distinct music, class access, weapon access,
 and mastery access. No UI code changed; browser checks were not repeated.
+
+## Live frontier follow-up — 2026-10-04
+
+Checked all 39 event IDs from 65347 through the live frontier at 65385 against
+the public Omnidex API. The published event index, generated at
+2026-10-04T12:14:45.412Z, already reaches 65346; the older local crawl metadata
+was therefore not used as the published-data cutoff.
+
+The check found 13 completed events without public decklists, 18 RSVP events,
+four started events, two completable events, and two canceled events. The three
+events marked for public decklists (65359, 65374, and 65379) are still in RSVP.
+No completed event in this range offers public decklists, so there is no new
+membership evidence to add. Wolves remains at one observed list, Tower at two,
+and Officer at zero in the reviewed snapshot; all three holds remain unchanged.
+
+`data/reference/theme-frontier-check.json` records the check time, published
+index hash, range, event statuses, and source links. Its 39 unique consecutive
+IDs and status totals were verified against the fetched responses. This is a
+bounded frontier check, not a complete data refresh: earlier pending events and
+community deck sources were not rechecked. No detector or UI behavior changed.
+
+The defined archetype/theme review initiative remains 100% complete. The next
+evidence-gathering step is to refresh earlier pending tournaments and community
+deck sources through their existing ingestion workflows, then reassess only
+packages with additional independent lists. The amount of useful new evidence
+is unknown; this check does not establish that none exists elsewhere.

@@ -1,0 +1,334 @@
+{
+  "version": 1,
+  "checkedAt": "2026-10-04T17:15:03.538Z",
+  "source": "https://api.gatcg.com/omnidex/events/{id}",
+  "publishedIndexGeneratedAt": "2026-10-04T12:14:45.412Z",
+  "publishedIndexSha256": "17ee92b66e595b40d64e9aba145728db411256f96a02430acdfe954445a48399",
+  "scope": {
+    "startId": 65347,
+    "endId": 65385,
+    "description": "New event IDs beyond the published event index; earlier pending events and community sources were not refreshed."
+  },
+  "counts": {
+    "started": 4,
+    "rsvp": 18,
+    "complete": 13,
+    "completable": 2,
+    "canceled": 2
+  },
+  "completedWithPublicDecklists": 0,
+  "events": [
+    {
+      "id": 65347,
+      "status": "started",
+      "date": "2026-10-04T07:30:00.000Z",
+      "publicDecklists": false,
+      "players": 4,
+      "url": "https://omni.gatcg.com/events/65347"
+    },
+    {
+      "id": 65348,
+      "status": "rsvp",
+      "date": "2026-10-05T07:00:00.000Z",
+      "publicDecklists": false,
+      "players": 0,
+      "url": "https://omni.gatcg.com/events/65348"
+    },
+    {
+      "id": 65349,
+      "status": "complete",
+      "date": "2026-10-04T06:45:00.000Z",
+      "publicDecklists": false,
+      "players": 4,
+      "url": "https://omni.gatcg.com/events/65349"
+    },
+    {
+      "id": 65350,
+      "status": "completable",
+      "date": "2026-10-04T07:10:00.000Z",
+      "publicDecklists": false,
+      "players": 4,
+      "url": "https://omni.gatcg.com/events/65350"
+    },
+    {
+      "id": 65351,
+      "status": "complete",
+      "date": "2026-10-04T07:00:00.000Z",
+      "publicDecklists": false,
+      "players": 4,
+      "url": "https://omni.gatcg.com/events/65351"
+    },
+    {
+      "id": 65352,
+      "status": "complete",
+      "date": "2026-10-04T07:08:00.000Z",
+      "publicDecklists": false,
+      "players": 4,
+      "url": "https://omni.gatcg.com/events/65352"
+    },
+    {
+      "id": 65353,
+      "status": "complete",
+      "date": "2026-10-04T07:15:00.000Z",
+      "publicDecklists": false,
+      "players": 6,
+      "url": "https://omni.gatcg.com/events/65353"
+    },
+    {
+      "id": 65354,
+      "status": "complete",
+      "date": "2026-10-04T08:00:00.000Z",
+      "publicDecklists": false,
+      "players": 5,
+      "url": "https://omni.gatcg.com/events/65354"
+    },
+    {
+      "id": 65355,
+      "status": "completable",
+      "date": "2026-10-04T08:15:00.000Z",
+      "publicDecklists": false,
+      "players": 4,
+      "url": "https://omni.gatcg.com/events/65355"
+    },
+    {
+      "id": 65356,
+      "status": "complete",
+      "date": "2026-10-04T08:35:00.000Z",
+      "publicDecklists": false,
+      "players": 8,
+      "url": "https://omni.gatcg.com/events/65356"
+    },
+    {
+      "id": 65357,
+      "status": "rsvp",
+      "date": "2026-10-10T05:30:00.000Z",
+      "publicDecklists": false,
+      "players": 0,
+      "url": "https://omni.gatcg.com/events/65357"
+    },
+    {
+      "id": 65358,
+      "status": "started",
+      "date": "2026-10-04T09:00:00.000Z",
+      "publicDecklists": false,
+      "players": 4,
+      "url": "https://omni.gatcg.com/events/65358"
+    },
+    {
+      "id": 65359,
+      "status": "rsvp",
+      "date": "2026-10-25T05:00:00.000Z",
+      "publicDecklists": true,
+      "players": 0,
+      "url": "https://omni.gatcg.com/events/65359"
+    },
+    {
+      "id": 65360,
+      "status": "rsvp",
+      "date": "2026-10-10T22:00:00.000Z",
+      "publicDecklists": false,
+      "players": 0,
+      "url": "https://omni.gatcg.com/events/65360"
+    },
+    {
+      "id": 65361,
+      "status": "complete",
+      "date": "2026-10-04T10:00:00.000Z",
+      "publicDecklists": false,
+      "players": 5,
+      "url": "https://omni.gatcg.com/events/65361"
+    },
+    {
+      "id": 65362,
+      "status": "complete",
+      "date": "2026-10-04T11:00:00.000Z",
+      "publicDecklists": false,
+      "players": 4,
+      "url": "https://omni.gatcg.com/events/65362"
+    },
+    {
+      "id": 65363,
+      "status": "complete",
+      "date": "2026-10-04T11:40:00.000Z",
+      "publicDecklists": false,
+      "players": 4,
+      "url": "https://omni.gatcg.com/events/65363"
+    },
+    {
+      "id": 65364,
+      "status": "complete",
+      "date": "2026-10-04T12:15:00.000Z",
+      "publicDecklists": false,
+      "players": 8,
+      "url": "https://omni.gatcg.com/events/65364"
+    },
+    {
+      "id": 65365,
+      "status": "complete",
+      "date": "2026-10-04T12:45:00.000Z",
+      "publicDecklists": false,
+      "players": 6,
+      "url": "https://omni.gatcg.com/events/65365"
+    },
+    {
+      "id": 65366,
+      "status": "complete",
+      "date": "2026-10-04T13:30:00.000Z",
+      "publicDecklists": false,
+      "players": 5,
+      "url": "https://omni.gatcg.com/events/65366"
+    },
+    {
+      "id": 65367,
+      "status": "complete",
+      "date": "2026-10-04T13:50:00.000Z",
+      "publicDecklists": false,
+      "players": 5,
+      "url": "https://omni.gatcg.com/events/65367"
+    },
+    {
+      "id": 65368,
+      "status": "started",
+      "date": "2026-10-04T16:00:00.000Z",
+      "publicDecklists": false,
+      "players": 5,
+      "url": "https://omni.gatcg.com/events/65368"
+    },
+    {
+      "id": 65369,
+      "status": "rsvp",
+      "date": "2026-10-06T12:00:00.000Z",
+      "publicDecklists": false,
+      "players": 0,
+      "url": "https://omni.gatcg.com/events/65369"
+    },
+    {
+      "id": 65370,
+      "status": "started",
+      "date": "2026-10-04T16:00:00.000Z",
+      "publicDecklists": false,
+      "players": 4,
+      "url": "https://omni.gatcg.com/events/65370"
+    },
+    {
+      "id": 65371,
+      "status": "rsvp",
+      "date": "2026-10-13T12:00:00.000Z",
+      "publicDecklists": false,
+      "players": 0,
+      "url": "https://omni.gatcg.com/events/65371"
+    },
+    {
+      "id": 65372,
+      "status": "canceled",
+      "date": "2026-10-11T17:00:00.000Z",
+      "publicDecklists": false,
+      "players": 0,
+      "url": "https://omni.gatcg.com/events/65372"
+    },
+    {
+      "id": 65373,
+      "status": "rsvp",
+      "date": "2026-10-04T21:00:00.000Z",
+      "publicDecklists": false,
+      "players": 0,
+      "url": "https://omni.gatcg.com/events/65373"
+    },
+    {
+      "id": 65374,
+      "status": "rsvp",
+      "date": "2026-10-04T17:00:00.000Z",
+      "publicDecklists": true,
+      "players": 2,
+      "url": "https://omni.gatcg.com/events/65374"
+    },
+    {
+      "id": 65375,
+      "status": "rsvp",
+      "date": "2026-10-11T21:00:00.000Z",
+      "publicDecklists": false,
+      "players": 0,
+      "url": "https://omni.gatcg.com/events/65375"
+    },
+    {
+      "id": 65376,
+      "status": "rsvp",
+      "date": "2026-10-18T21:00:00.000Z",
+      "publicDecklists": false,
+      "players": 0,
+      "url": "https://omni.gatcg.com/events/65376"
+    },
+    {
+      "id": 65377,
+      "status": "canceled",
+      "date": "2026-10-25T21:00:00.000Z",
+      "publicDecklists": false,
+      "players": 0,
+      "url": "https://omni.gatcg.com/events/65377"
+    },
+    {
+      "id": 65378,
+      "status": "rsvp",
+      "date": "2026-10-04T18:30:00.000Z",
+      "publicDecklists": false,
+      "players": 0,
+      "url": "https://omni.gatcg.com/events/65378"
+    },
+    {
+      "id": 65379,
+      "status": "rsvp",
+      "date": "2026-10-25T17:00:00.000Z",
+      "publicDecklists": true,
+      "players": 0,
+      "url": "https://omni.gatcg.com/events/65379"
+    },
+    {
+      "id": 65380,
+      "status": "rsvp",
+      "date": "2026-11-01T22:00:00.000Z",
+      "publicDecklists": false,
+      "players": 0,
+      "url": "https://omni.gatcg.com/events/65380"
+    },
+    {
+      "id": 65381,
+      "status": "rsvp",
+      "date": "2026-10-05T11:30:00.000Z",
+      "publicDecklists": false,
+      "players": 0,
+      "url": "https://omni.gatcg.com/events/65381"
+    },
+    {
+      "id": 65382,
+      "status": "rsvp",
+      "date": "2026-10-12T11:30:00.000Z",
+      "publicDecklists": false,
+      "players": 0,
+      "url": "https://omni.gatcg.com/events/65382"
+    },
+    {
+      "id": 65383,
+      "status": "rsvp",
+      "date": "2026-10-19T11:30:00.000Z",
+      "publicDecklists": false,
+      "players": 0,
+      "url": "https://omni.gatcg.com/events/65383"
+    },
+    {
+      "id": 65384,
+      "status": "rsvp",
+      "date": "2026-10-26T11:30:00.000Z",
+      "publicDecklists": false,
+      "players": 0,
+      "url": "https://omni.gatcg.com/events/65384"
+    },
+    {
+      "id": 65385,
+      "status": "rsvp",
+      "date": "2026-10-04T17:30:00.000Z",
+      "publicDecklists": false,
+      "players": 0,
+      "url": "https://omni.gatcg.com/events/65385"
+    }
+  ]
+}
