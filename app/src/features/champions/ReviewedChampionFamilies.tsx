@@ -1,16 +1,17 @@
 import { Link } from 'react-router-dom';
-import { ZANDER_IDENTITIES, RAI_ARCANE_CORE, RAI_ARCANE_NAME, RAI_WIND_PACKAGE, RAI_FIRE_PACKAGE, GUO_JIA_COMMAND_CORE, GUO_JIA_COMMAND_NAME, GUO_JIA_MANIFESTATION_PACKAGE, SILVIE_SLIME_CORE, SILVIE_SLIME_NAME, SILVIE_WATER_PACKAGE, type ArchetypeTaxonomyData, type Card } from '@gatcg/shared';
+import { TRISTAN_IDENTITIES, ZANDER_IDENTITIES, RAI_ARCANE_CORE, RAI_ARCANE_NAME, RAI_WIND_PACKAGE, RAI_FIRE_PACKAGE, GUO_JIA_COMMAND_CORE, GUO_JIA_COMMAND_NAME, GUO_JIA_MANIFESTATION_PACKAGE, SILVIE_SLIME_CORE, SILVIE_SLIME_NAME, SILVIE_WATER_PACKAGE, type ArchetypeTaxonomyData, type Card } from '@gatcg/shared';
 import ArchetypePreview from '../archetypes/ArchetypePreview';
 import DisclosureChevron from '../../components/DisclosureChevron';
 
 /** Shared presentation identity, with original family statistics and build membership retained. */
-type Props = { championName: 'Silvie' | 'Guo Jia' | 'Rai' | 'Zander'; taxonomy: ArchetypeTaxonomyData; catalog: Map<string, Card> };
+type Props = { championName: 'Silvie' | 'Guo Jia' | 'Rai' | 'Zander' | 'Tristan'; taxonomy: ArchetypeTaxonomyData; catalog: Map<string, Card> };
 export default function ReviewedChampionFamilies(props: Props) {
-  if (props.championName !== 'Zander') return <IdentityFamilies {...props} />;
-  const reviewedNames = ZANDER_IDENTITIES.map(identity => identity.name);
-  const hasOther = props.taxonomy.strategyArchetypes.some(family => family.championName === 'Zander' && !reviewedNames.includes(family.name));
-  const hasReviewed = props.taxonomy.strategyArchetypes.some(family => family.championName === 'Zander' && reviewedNames.includes(family.name));
-  const groups = [...ZANDER_IDENTITIES, ...(hasOther || !hasReviewed ? [undefined] : [])];
+  if (props.championName !== 'Zander' && props.championName !== 'Tristan') return <IdentityFamilies {...props} />;
+  const identities = props.championName === 'Tristan' ? TRISTAN_IDENTITIES : ZANDER_IDENTITIES;
+  const reviewedNames = identities.map(identity => identity.name);
+  const hasOther = props.taxonomy.strategyArchetypes.some(family => family.championName === props.championName && !reviewedNames.includes(family.name));
+  const hasReviewed = props.taxonomy.strategyArchetypes.some(family => family.championName === props.championName && reviewedNames.includes(family.name));
+  const groups = [...identities, ...(hasOther || !hasReviewed ? [undefined] : [])];
   return <>{groups.map(identity => <IdentityFamilies key={identity?.name ?? 'other'} {...props} identity={identity} taxonomy={{ ...props.taxonomy, strategyArchetypes: props.taxonomy.strategyArchetypes.filter(family => identity ? family.name === identity.name : !reviewedNames.includes(family.name)) }} />)}</>;
 }
 
@@ -26,7 +27,7 @@ function IdentityFamilies({ championName, taxonomy, catalog, identity }: Props &
   const buildsById = new Map(taxonomy.clusters.map(build => [build.id, build]));
   const reviewed = families.filter(family => family.name === identityName && family.reviewedArchetypeEvidence);
   const other = families.filter(family => !reviewed.includes(family));
-  if (!families.length && championName === 'Zander' && identity) return null;
+  if (!families.length && identity) return null;
   if (!families.length) return <p className="mt-3 text-sm text-ctp-subtext1">No archetype families have cleared the sample-size threshold yet.</p>;
   const renderFamily = (family: typeof families[number], shared: boolean) => {
     const builds = family.buildIds.flatMap(id => { const build = buildsById.get(id); return build ? [build] : []; });

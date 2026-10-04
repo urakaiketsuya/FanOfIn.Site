@@ -9,7 +9,7 @@ test('published families retain all memberships and stats, and refresh is idempo
   const copy = structuredClone(taxonomy);
   applyReviewedArchetypeEvidence(copy.strategyArchetypes, copy.clusters, cards);
   assert.deepEqual(copy, taxonomy);
-  for (const identity of REVIEWED_ARCHETYPE_CORES) assert.equal(copy.strategyArchetypes.filter(s => s.name === identity.name).length, ['Silvie', 'Guo Jia'].includes(identity.champion) ? 3 : identity.champion === 'Zander' ? (identity.name.includes('Water') ? 3 : 2) : identity.champion === 'Rai' ? 2 : 1);
+  for (const identity of REVIEWED_ARCHETYPE_CORES) assert.equal(copy.strategyArchetypes.filter(s => s.name === identity.name).length, ['Silvie', 'Guo Jia'].includes(identity.champion) ? 3 : identity.champion === 'Zander' ? (identity.name.includes('Water') ? 3 : 2) : identity.champion === 'Rai' ? 2 : identity.champion === 'Tristan' && identity.name.startsWith('Wind') ? 2 : 1);
 });
 test('missing data, ambiguous cores and insufficient recurrence restore generated label', () => {
   for (const mode of ['missing', 'ambiguous', 'players', 'events', 'build', 'zero']) {
@@ -119,5 +119,27 @@ test('Rai retains nine builds with optional Wind and build-specific Fire support
       assert.equal(family.reviewedArchetypeEvidence!.coreDeckCount, expected[family.id][0]);
       assert.ok(Object.values(family.reviewedArchetypeEvidence!.packageDeckCounts!).every(count => count === 0));
     } else assert.deepEqual(family, taxonomy.strategyArchetypes.find(s => s.id === family.id));
+  }
+});
+
+ test('Tristan cores preserve optional support and all other family data', () => {
+  const families = structuredClone(taxonomy.strategyArchetypes.filter(s => s.championName === 'Tristan'));
+  const expected: Record<string, number> = { ux2yxk: 3834, '1vu1559': 52, '1rb0t9a': 169, '1van2rl': 210, '4mnxjk': 22, '15ytls8': 50, '1s3agra': 41 };
+  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 7);
+  const changed = new Map([...cards].map(([id, counts]) => {
+    const copy = new Map(counts);
+    for (const name of ['Slice and Dice', 'Oath of the Sakura', 'Dilu, Auspicious Charger', 'Verita, Queen of Hearts', 'Three of Hearts', 'Straight Flare']) copy.delete(name);
+    return [id, copy] as const;
+  }));
+  applyReviewedArchetypeEvidence(families, taxonomy.clusters, changed);
+  for (const family of families) {
+    const published = taxonomy.strategyArchetypes.find(s => s.id === family.id)!;
+    if (!expected[family.id]) { assert.deepEqual(family, published); continue; }
+    assert.equal(family.name, published.name);
+    assert.equal(family.reviewedArchetypeEvidence!.coreDeckCount, expected[family.id]);
+    assert.ok(Object.values(family.reviewedArchetypeEvidence!.packageDeckCounts!).every(count => count === 0));
+    const { reviewedArchetypeEvidence: _a, ...actual } = family;
+    const { reviewedArchetypeEvidence: _b, ...original } = published;
+    assert.deepEqual(actual, original);
   }
 });

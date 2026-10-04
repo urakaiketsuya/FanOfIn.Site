@@ -26,8 +26,23 @@ export const ZANDER_IDENTITIES = [
   ] },
 ];
 
+export const TRISTAN_IDENTITIES = [
+  { champion: 'Tristan', name: 'Wind Tristan — Preparation', label: 'Preparation', core: ['Surveil the Winds', 'Incapacitate', 'Shadowstrike'], packages: [
+    { key: 'slice', label: 'Slice and Dice variant', cards: ['Slice and Dice'] },
+  ] },
+  { champion: 'Tristan', name: 'Wind Tristan — Liu Bei Ranged', label: 'Liu Bei Ranged', core: ['Liu Bei, Oathkeeper', 'Skirting Step', 'Perse, Relentless Raptor'], packages: [
+    { key: 'oath', label: 'Oath / Dilu variant', cards: ['Oath of the Sakura', 'Dilu, Auspicious Charger'] },
+  ] },
+  { champion: 'Tristan', name: 'Fire Tristan — Suited', label: 'Suited', core: ['Rouge, Ace of Hearts', 'Two of Hearts', 'Four of Hearts'], packages: [
+    { key: 'verita', label: 'Verita / Straight Flare variant', cards: ['Verita, Queen of Hearts', 'Three of Hearts', 'Straight Flare'] },
+  ] },
+  { champion: 'Tristan', name: 'Water Tristan — Control', label: 'Water Control', core: ['Fracturize', 'Frostsworn Paladin', 'Frostbind'], packages: [] },
+  { champion: 'Tristan', name: 'Fire Tristan — Explosive Burn', label: 'Explosive Burn', core: ['Planted Explosive', 'Rococo, Explosive Maven', 'Blazing Throw'], packages: [] },
+];
+
 export const REVIEWED_ARCHETYPE_CORES = [
   ...ZANDER_IDENTITIES,
+  ...TRISTAN_IDENTITIES,
   { champion: 'Rai', name: RAI_ARCANE_NAME, core: RAI_ARCANE_CORE },
   { champion: 'Guo Jia', name: GUO_JIA_COMMAND_NAME, core: GUO_JIA_COMMAND_CORE },
   { champion: 'Silvie', name: SILVIE_SLIME_NAME, core: SILVIE_SLIME_CORE },
@@ -82,8 +97,8 @@ export function applyReviewedArchetypeEvidence(strategies: StrategyArchetype[], 
         return [buildId, { count: deckIds.filter(id => RAI_FIRE_PACKAGE.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length, total: deckIds.length }];
       }));
     }
-    const zander = ZANDER_IDENTITIES.find(candidate => candidate.name === identity.name);
-    if (zander) strategy.reviewedArchetypeEvidence.packageDeckCounts = Object.fromEntries(zander.packages.map(pkg => [pkg.key, ids.filter(id => pkg.cards.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length]));
+    const configured = [...ZANDER_IDENTITIES, ...TRISTAN_IDENTITIES].find(candidate => candidate.name === identity.name);
+    if (configured) strategy.reviewedArchetypeEvidence.packageDeckCounts = Object.fromEntries(configured.packages.map(pkg => [pkg.key, ids.filter(id => pkg.cards.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length]));
     strategy.name = identity.name;
     strategy.identityCards = [...identity.core];
   }

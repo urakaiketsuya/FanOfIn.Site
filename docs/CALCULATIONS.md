@@ -3677,3 +3677,28 @@ Sadi, Blood Harvester (13/13). Vermilion Decree is not required: adding it to th
 Red Hare package yields 305/339, below 90%. Packages never determine core eligibility.
 Emerging status remains visible for the smaller Water groups. Counts describe card
 presence, not proof of a combo played. Source: shared reviewed-archetype rules.
+
+
+### Reviewed Tristan identities
+
+The existing reviewed-family rule now covers seven Tristan families under five identities.
+All thresholds and original build membership/statistics remain unchanged.
+
+| Identity | Required core | Joint appearances by family |
+| --- | --- | --- |
+| Preparation | Surveil the Winds, Incapacitate, Shadowstrike | 3834/3872; 52/57 |
+| Liu Bei Ranged | Liu Bei, Oathkeeper; Skirting Step; Perse, Relentless Raptor | 210/213; 22/23 |
+| Suited | Rouge, Ace of Hearts; Two of Hearts; Four of Hearts | 169/169 |
+| Water Control | Fracturize, Frostsworn Paladin, Frostbind | 50/51 |
+| Explosive Burn | Planted Explosive; Rococo, Explosive Maven; Blazing Throw | 41/41 |
+
+Slice and Dice, the Oath of the Sakura + Dilu pair, and the Verita + Three of Hearts +
+Straight Flare triple are optional supporting packages, counted independently of the core.
+They do not compete as alternative identities. The UI shows exact package counts and promotes
+supporting cards only at 90% presence within the original family. Presence is not a played-combo claim.
+Catalog text confirms preparation counters/Prepare, distant/Ranged, and Suited/Cardistry mechanics.
+Incapacitate is interaction within the Preparation core, not a preparation payoff itself.
+
+The Clumsy Apprentice family remains unchanged pending review of its Ignis Deus/champion path;
+the Aesan Protector family remains unchanged because its common ally trio alone does not establish
+an independently named strategy. All nine families remain visible with their original builds.
