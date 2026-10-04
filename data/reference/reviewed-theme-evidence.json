@@ -590,6 +590,263 @@
           ]
         }
       ]
+    },
+    {
+      "id": "discorp",
+      "name": "DisCorp",
+      "kind": "theme",
+      "status": "reviewed",
+      "paths": [
+        [
+          {
+            "section": "main",
+            "minimum": 3,
+            "type": "ALLY",
+            "subtypes": [
+              "DISCORP"
+            ]
+          }
+        ]
+      ],
+      "reviewDocument": "docs/DRAFT_THEME_PUBLICATION_REVIEW.md",
+      "matches": [
+        {
+          "deckId": "61285:8740",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Cellforger Droid",
+                "Overcharged Droid",
+                "Sinon, Babelia's Companion",
+                "Virgil, Altered Future"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "61285:9244",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Cellforger Droid",
+                "Overcharged Droid",
+                "Sinon, Babelia's Companion",
+                "Virgil, Altered Future"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "61722:10386",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Cellforger Droid",
+                "Haze Droid",
+                "Sinon, Babelia's Companion",
+                "Virgil, Altered Future"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "61722:855",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Cellforger Droid",
+                "Haze Droid",
+                "Virgil, Altered Future"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "61723:855",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Cellforger Droid",
+                "Haze Droid",
+                "Unbroken Droid",
+                "Virgil, Altered Future"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "62616:1253",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Cellforger Droid",
+                "Haze Droid",
+                "Virgil, Altered Future"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "62616:21495",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Cellforger Droid",
+                "Delivery Droid",
+                "Haze Droid",
+                "Overcharged Droid",
+                "Trained Birdroid",
+                "Unbroken Droid",
+                "Virgil, Altered Future"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "62616:21761",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Cellforger Droid",
+                "Haze Droid",
+                "Virgil, Altered Future"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "62616:740",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Cellforger Droid",
+                "Haze Droid",
+                "Virgil, Altered Future"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64201:7405",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Cellforger Droid",
+                "Haze Droid",
+                "Overcharged Droid",
+                "Sinon, Babelia's Companion"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64533:4463",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Haze Droid",
+                "Overcharged Droid",
+                "Virgil, Altered Future"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64622:8944",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Cellforger Droid",
+                "Haze Droid",
+                "Overcharged Droid",
+                "Virgil, Altered Future"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64718:29916",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Cellforger Droid",
+                "Haze Droid",
+                "Virgil, Altered Future"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64718:4548",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Cellforger Droid",
+                "Overcharged Droid",
+                "Shieldroid",
+                "Virgil, Altered Future"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64760:30621",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Haze Droid",
+                "Overcharged Droid",
+                "Trained Birdroid",
+                "Virgil, Altered Future"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64888:17615",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Cellforger Droid",
+                "Haze Droid",
+                "Sinon, Babelia's Companion",
+                "Unbroken Droid",
+                "Virgil, Altered Future"
+              ]
+            }
+          ]
+        },
+        {
+          "deckId": "64888:737",
+          "paths": [
+            {
+              "path": 0,
+              "cards": [
+                "Cellforger Droid",
+                "Haze Droid",
+                "Sinon, Babelia's Companion",
+                "Sordelle, Unmoored Exception"
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "status": "reviewed",
@@ -643,11 +900,31 @@
         }
       ],
       "overlaps": []
+    },
+    {
+      "id": "discorp",
+      "decks": 17,
+      "recurrence": {
+        "events": 10,
+        "players": 16,
+        "returningPlayers": 1,
+        "largestEventDecks": 4,
+        "unknownDecks": 0
+      },
+      "exclusiveDecks": 17,
+      "paths": [
+        {
+          "path": 0,
+          "decks": 17,
+          "exclusiveDecks": 17
+        }
+      ],
+      "overlaps": []
     }
   ],
   "sources": {
     "indexSha256": "9508ed248f0c4735f5396937eb662c067c1dfbe86f57f5371cf5fb3f4fa9daad",
     "catalogSha256": "5374445554a13f5a7d8934322041776ad75f19891cac92cf79aa1259a5008102",
-    "definitionsSha256": "7af55897a5ce05b2f888cb27338c7e379779138dae0538605f55277a8ea62581"
+    "definitionsSha256": "23ec0d165153d394a3d64bee26087c133db43995288d721d06e97773441537ae"
   }
 }

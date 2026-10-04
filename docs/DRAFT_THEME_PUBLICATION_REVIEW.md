@@ -245,3 +245,44 @@ unchanged. The existing Themes view consumes the regenerated reviewed artifact.
 Regression checks lock exact historical membership and reject missing names,
 extra copies, duplicate lines, and Material/Sideboard substitutions. No UI code
 changed in this publication; browser layout and failure states were not retested.
+
+
+## DisCorp publication decision
+
+**Decision: publish DisCorp as an overlapping reviewed theme.** Retain the
+baseline of three distinct Main-deck DisCorp allies, without a champion gate.
+Material, Sideboard, duplicate lines, and extra copies cannot satisfy missing
+names. DisCorp Domains and Items do not count as allies. This is tribal membership,
+not a new strategy, a verified combo sequence, or a claim of competitive strength.
+
+Reproduce with `node --import tsx pipeline/scripts/review-discorp.ts`.
+`data/reference/discorp-review.json` preserves source hashes, exact positive
+Main/Material lists, section/quantity signatures, witnesses, catalog evidence,
+and comparisons at two and four distinct allies. The baseline contains 17
+matching decks with 17 distinct lists, across 10 events and 16 player IDs.
+One player returns; the largest event contributes four matches.
+
+The cached mechanics support overlapping Powercell and Automaton interactions:
+Cellforger Droid creates Powercells, Overcharged Droid benefits from controlling
+them, Sinon sacrifices them for its cascade ability, and Virgil gains conditional
+stats from them. Haze Droid contributes stealth without a direct tribal payoff.
+Tower of Dis specifically buffs DisCorp Automaton allies, not every DisCorp ally.
+These roles justify a broad tribe label without implying that every match uses
+one engine or that every card is itself a tribal payoff.
+
+Two allies would add ten lists: six Haze Droid/Virgil pairs, two Shieldroid/Virgil
+pairs, Acheron Express Officer/Virgil, and Acheron Express Officer/Overcharged Droid.
+Retain three as a conservative coverage boundary; those pairs do not alone
+establish a dedicated tribal plan. Four allies would retain 11 and omit six
+baseline lists. Neither comparison establishes an optimal threshold or exhaustive
+coverage; lists below two allies were not inspected by this review.
+
+Only `64888:17615` meets the existing support-package rule, through Tower of Dis.
+Keep DisCorp support draft. Cell Reactor appears in two other baseline lists and
+supports Automatons rather than DisCorp specifically; it is recorded for review,
+not silently added to the package rule. Future Powercell package review should
+separately assess generators and consumers instead of equating tribe and engine.
+
+The reviewed artifact now contains Elysian Dante (17), Resonator music (5), and
+DisCorp (17). Draft definitions and archetype/combo counts remain unchanged.
+No UI code changed; browser layout and loading/error states were not retested.
