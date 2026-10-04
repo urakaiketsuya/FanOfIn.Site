@@ -185,3 +185,19 @@ Verification: four focused matcher/import tests pass, including all 17 reviewed 
 Elysian Dante now has an explicit reviewed-theme definition (`elysian-dante`) and a separate `data/reference/reviewed-theme-evidence.json` artifact. Its three paths reproduce exactly the 13 retained and four added decks from the review, with no removed decks. The artifact records source and definition hashes, witnesses, recurrence, and path counts. Regenerate it with `node --import tsx pipeline/scripts/rebuild-reviewed-themes.ts`; replacement is atomic and repeat runs are deterministic.
 
 The shared detector now supports reviewed definitions while preserving the complete draft evidence contract. All 15 draft definitions and their historical evidence remain unchanged. Reviewed themes do not enter strategy, archetype, or combo counts. This is the data publication step only: the app still displays the baseline draft review. Next connect the separate reviewed artifact to a clearly labeled theme view, then verify mobile, desktop, and failure states.
+
+
+### Reviewed theme display
+
+The Themes page now defaults to Reviewed themes, displaying Elysian Dante and its
+17 matching decks. Draft candidates remain in a separate tab with all 15 baseline
+definitions, including the earlier 13-deck Dante rule. Each tab retains its search
+and mounted review state. Overlap language explicitly limits comparisons to that
+snapshot; reviewed theme membership does not change archetype or combo counts.
+
+Verification: app typecheck passed; browser checks at 390px and 1280px found no
+horizontal overflow. The new tabs, search, and disclosures measure 48px high.
+Keyboard arrow switching and Enter expansion worked; empty search, preserved
+search across tabs, reviewed rules, and matching deck links were checked. Loading
+and fetch failure/retry remain implemented independently per tab but were not
+simulated in this pass; text zoom was not tested.

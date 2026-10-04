@@ -198,7 +198,7 @@ export default function ArchetypesIndex() {
       />
       <Link to="/archetypes/strategies" className="mr-4 inline-flex min-h-12 items-center text-ctp-blue">Reviewed strategies</Link>
       <Link to="/archetypes/mine" className="inline-flex min-h-12 items-center text-ctp-blue">My archetypes · curate locally</Link>
-      <Link to="/archetypes/mine/themes" className="ml-4 inline-flex min-h-12 items-center text-ctp-blue">Draft themes · review evidence</Link>
+      <Link to="/archetypes/mine/themes" className="ml-4 inline-flex min-h-12 items-center text-ctp-blue">Themes · reviewed and draft</Link>
       <DecklistCoverageNotice />
       <StaleDataNotice generatedAt={[data?.generatedAt]} />
       {data?.coverage && <details className="mt-2 text-xs text-ctp-subtext0"><summary className="w-fit cursor-pointer py-1 hover:text-ctp-blue">Data coverage</summary><p className="mt-1">{(data.coverage.classificationRate * 100).toFixed(1)}% of public deck sightings are classified ({data.coverage.classifiedDeckCount.toLocaleString()} of {data.coverage.totalDeckCount.toLocaleString()}).</p></details>}
