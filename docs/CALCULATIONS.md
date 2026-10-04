@@ -3468,3 +3468,12 @@ Thresholds are provisional historical screening rules, with no date or format
 filter. Presence does not prove that class/level bonuses activate or establish
 competitive strength. Labels overlap and counts must not be added. Production
 promotion still requires boundary review and an explicit curated decision.
+
+The Elysian curation artifact is rebuilt with
+`node --import tsx pipeline/scripts/review-elysian-dante.ts`. Exact-list diversity
+uses SHA-256 of sorted positive Main and Material card lines, preserving quantities
+and section boundaries and excluding Sideboard. It is not a strategic diversity
+metric. Direct-only, generator/support-only, and both-path groups partition matched
+deck IDs. Reference, Material, and cluster overlaps are unique deck-ID intersections
+against their input snapshots; missing cluster membership is not a novelty claim.
+The artifact is draft evidence only and does not change production classification.

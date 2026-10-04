@@ -1,0 +1,2700 @@
+{
+  "version": 1,
+  "status": "draft",
+  "candidate": {
+    "id": "draft-elysian-dante",
+    "name": "Elysian Dante",
+    "kind": "archetype",
+    "status": "draft",
+    "paths": [
+      [
+        {
+          "section": "material",
+          "minimum": 1,
+          "names": [
+            "Dante, Hematic Overdrive"
+          ]
+        },
+        {
+          "section": "main",
+          "minimum": 3,
+          "type": "ALLY",
+          "subtypes": [
+            "ELYSIAN"
+          ]
+        }
+      ],
+      [
+        {
+          "section": "material",
+          "minimum": 1,
+          "names": [
+            "Dante, Hematic Overdrive"
+          ]
+        },
+        {
+          "section": "identity",
+          "minimum": 1,
+          "names": [
+            "Epicurean Institute",
+            "Gencode Womb"
+          ]
+        },
+        {
+          "section": "identity",
+          "minimum": 1,
+          "names": [
+            "Venous Core",
+            "Rhesus Eradication",
+            "Lesser Boon of Elysian Blood"
+          ]
+        }
+      ]
+    ],
+    "matches": [
+      {
+        "deckId": "61285:21866",
+        "paths": [
+          {
+            "path": 0,
+            "cards": [
+              "Dante, Hematic Overdrive",
+              "Elysian Aspirant",
+              "Lucia, Reclaimed Blight",
+              "Thanatotic Hemosynth"
+            ]
+          },
+          {
+            "path": 1,
+            "cards": [
+              "Dante, Hematic Overdrive",
+              "Epicurean Institute",
+              "Gencode Womb",
+              "Venous Core"
+            ]
+          }
+        ]
+      },
+      {
+        "deckId": "61722:12639",
+        "paths": [
+          {
+            "path": 0,
+            "cards": [
+              "Dante, Hematic Overdrive",
+              "Elysian Aspirant",
+              "Lucia, Reclaimed Blight",
+              "Thanatotic Hemosynth"
+            ]
+          }
+        ]
+      },
+      {
+        "deckId": "61722:19534",
+        "paths": [
+          {
+            "path": 1,
+            "cards": [
+              "Dante, Hematic Overdrive",
+              "Gencode Womb",
+              "Rhesus Eradication"
+            ]
+          }
+        ]
+      },
+      {
+        "deckId": "62266:25352",
+        "paths": [
+          {
+            "path": 0,
+            "cards": [
+              "Dante, Hematic Overdrive",
+              "Elysian Aspirant",
+              "Embryonic Hemosynth",
+              "Thanatotic Hemosynth"
+            ]
+          },
+          {
+            "path": 1,
+            "cards": [
+              "Dante, Hematic Overdrive",
+              "Epicurean Institute",
+              "Gencode Womb",
+              "Rhesus Eradication",
+              "Venous Core"
+            ]
+          }
+        ]
+      },
+      {
+        "deckId": "62266:31561",
+        "paths": [
+          {
+            "path": 1,
+            "cards": [
+              "Dante, Hematic Overdrive",
+              "Epicurean Institute",
+              "Gencode Womb",
+              "Venous Core"
+            ]
+          }
+        ]
+      },
+      {
+        "deckId": "62484:31561",
+        "paths": [
+          {
+            "path": 1,
+            "cards": [
+              "Dante, Hematic Overdrive",
+              "Epicurean Institute",
+              "Gencode Womb",
+              "Venous Core"
+            ]
+          }
+        ]
+      },
+      {
+        "deckId": "62616:1063",
+        "paths": [
+          {
+            "path": 1,
+            "cards": [
+              "Dante, Hematic Overdrive",
+              "Epicurean Institute",
+              "Gencode Womb",
+              "Rhesus Eradication"
+            ]
+          }
+        ]
+      },
+      {
+        "deckId": "63732:21154",
+        "paths": [
+          {
+            "path": 0,
+            "cards": [
+              "Dante, Hematic Overdrive",
+              "Elysian Aspirant",
+              "Embryonic Hemosynth",
+              "Lucia, Reclaimed Blight",
+              "Thanatotic Hemosynth"
+            ]
+          }
+        ]
+      },
+      {
+        "deckId": "63763:21154",
+        "paths": [
+          {
+            "path": 0,
+            "cards": [
+              "Dante, Hematic Overdrive",
+              "Elysian Aspirant",
+              "Embryonic Hemosynth",
+              "Lucia, Reclaimed Blight"
+            ]
+          }
+        ]
+      },
+      {
+        "deckId": "63897:13804",
+        "paths": [
+          {
+            "path": 0,
+            "cards": [
+              "Dante, Hematic Overdrive",
+              "Elysian Aspirant",
+              "Embryonic Hemosynth",
+              "Lucia, Reclaimed Blight",
+              "Thanatotic Hemosynth"
+            ]
+          },
+          {
+            "path": 1,
+            "cards": [
+              "Dante, Hematic Overdrive",
+              "Gencode Womb",
+              "Venous Core"
+            ]
+          }
+        ]
+      },
+      {
+        "deckId": "64495:19017",
+        "paths": [
+          {
+            "path": 1,
+            "cards": [
+              "Dante, Hematic Overdrive",
+              "Gencode Womb",
+              "Rhesus Eradication"
+            ]
+          }
+        ]
+      },
+      {
+        "deckId": "64596:28588",
+        "paths": [
+          {
+            "path": 1,
+            "cards": [
+              "Dante, Hematic Overdrive",
+              "Gencode Womb",
+              "Rhesus Eradication",
+              "Venous Core"
+            ]
+          }
+        ]
+      },
+      {
+        "deckId": "64888:12639",
+        "paths": [
+          {
+            "path": 0,
+            "cards": [
+              "Dante, Hematic Overdrive",
+              "Elysian Aspirant",
+              "Embryonic Hemosynth",
+              "Lucia, Reclaimed Blight",
+              "Thanatotic Hemosynth"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "sources": {
+    "index": {
+      "path": "data/analysis/deck-card-index.json",
+      "sha256": "9508ed248f0c4735f5396937eb662c067c1dfbe86f57f5371cf5fb3f4fa9daad"
+    },
+    "catalog": {
+      "path": "pipeline/.cache/cards.json",
+      "sha256": "5374445554a13f5a7d8934322041776ad75f19891cac92cf79aa1259a5008102"
+    },
+    "reference": {
+      "path": "data/analysis/reference-archetypes.json",
+      "sha256": "77c70005b7e1e5f6e37428bf1c7d63ce108fb0a6c67075f2ca2d9bfa20d81b15"
+    },
+    "taxonomy": {
+      "path": "data/analysis/archetype-taxonomy.json",
+      "sha256": "cdde6cd61d106e2719686e0379eb0bd6ffbe7d4b88a92c940e3925ef3a57931b"
+    }
+  },
+  "distinctLists": 13,
+  "pathGroups": [
+    {
+      "id": "direct-only",
+      "deckIds": [
+        "61722:12639",
+        "63732:21154",
+        "63763:21154",
+        "64888:12639"
+      ],
+      "distinctLists": 4
+    },
+    {
+      "id": "token-only",
+      "deckIds": [
+        "61722:19534",
+        "62266:31561",
+        "62484:31561",
+        "62616:1063",
+        "64495:19017",
+        "64596:28588"
+      ],
+      "distinctLists": 6
+    },
+    {
+      "id": "both",
+      "deckIds": [
+        "61285:21866",
+        "62266:25352",
+        "63897:13804"
+      ],
+      "distinctLists": 3
+    }
+  ],
+  "referenceOverlaps": [
+    {
+      "id": "fractal-exia",
+      "name": "Exia",
+      "deckIds": [
+        "62266:31561",
+        "62484:31561"
+      ]
+    }
+  ],
+  "materialOverlaps": [
+    {
+      "id": "544pen",
+      "name": "Dante, Hematic Overdrive",
+      "deckIds": [
+        "61285:21866",
+        "61722:12639",
+        "61722:19534",
+        "62266:25352",
+        "62266:31561",
+        "62484:31561",
+        "62616:1063",
+        "63732:21154",
+        "63763:21154",
+        "63897:13804",
+        "64495:19017",
+        "64596:28588",
+        "64888:12639"
+      ]
+    }
+  ],
+  "unmatchedMaterialDeckIds": [
+    "61723:568",
+    "64530:24268",
+    "64701:14399",
+    "64888:13238",
+    "64922:21154"
+  ],
+  "clusterOverlaps": [],
+  "catalogEvidence": [
+    {
+      "name": "Dante, Hematic Overdrive",
+      "slug": "dante-hematic-overdrive",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "CHAMPION"
+      ],
+      "subtypes": [
+        "MAGE",
+        "HUMAN"
+      ],
+      "elements": [
+        "EXIA"
+      ],
+      "level": 4,
+      "cost_memory": 4,
+      "cost_reserve": null,
+      "power": null,
+      "speed": null,
+      "effect": "**Dante Lineage**\n\n**On Enter:** You gain the Divine Comedy mastery. For the rest of the game, Dante has \"At the beginning of your end phase, sacrifice an Elysian object or banish an Elysian card from your hand or memory. If you do neither, destroy Dante.\"\n\nAt the beginning of each player's end phase, if Dante was dealt damage this turn, **recover 7**.",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRD 1st",
+          "collectorNumber": "007",
+          "releaseDate": "2026-08-21T00:00:00"
+        },
+        {
+          "setPrefix": "PRD 1st",
+          "collectorNumber": "007",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Elysian Aspirant",
+      "slug": "elysian-aspirant",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "MAGE",
+        "ELYSIAN",
+        "HUMAN"
+      ],
+      "elements": [
+        "EXIA"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 0,
+      "power": 0,
+      "speed": null,
+      "effect": "**Elysian Aura**\n\nIf an Aenean Spell source you control would deal damage to one or more units, it deals that much damage plus 1 to those units instead.\n\n**On Death:** You may have CARDNAME deal 2 unpreventable damage to your champion. If you do, draw a card.",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRD",
+          "collectorNumber": "225",
+          "releaseDate": "2026-08-21T00:00:00"
+        },
+        {
+          "setPrefix": "PRDSD",
+          "collectorNumber": "057",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Elysian Test Subject",
+      "slug": "elysian-test-subject",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "TOKEN",
+        "ALLY"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "ELYSIAN",
+        "HUMAN"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 0,
+      "power": 0,
+      "speed": null,
+      "effect": "**Elysian Aura** *(As long as you control an object with **Elysian Aura**, Aenean Spell cards you own activate and resolve as if your champion got +2 level. Does not stack.)*\n\n**Stealth** *(This unit can’t be targeted by attacks unless permitted by **true sight.**)*",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRD",
+          "collectorNumber": "054",
+          "releaseDate": "2026-08-21T00:00:00"
+        },
+        {
+          "setPrefix": "PRDSD",
+          "collectorNumber": "025",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Embryonic Hemosynth",
+      "slug": "embryonic-hemosynth",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "MAGE",
+        "ELYSIAN",
+        "HUMAN"
+      ],
+      "elements": [
+        "EXIA"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 0,
+      "power": 0,
+      "speed": null,
+      "effect": "**Elysian Aura**, **Spellshroud**, **Taunt**\n\n[Class Bonus] **Bulwark** *(This ally enters the field with a **bulwark** counter on it. If combat damage would be dealt to an ally with any **bulwark** counters on it, remove one and prevent that damage instead.)*",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRD",
+          "collectorNumber": "226",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Epicurean Institute",
+      "slug": "epicurean-institute",
+      "classes": [
+        "CLERIC"
+      ],
+      "types": [
+        "DOMAIN"
+      ],
+      "subtypes": [
+        "CLERIC",
+        "SIEGEABLE",
+        "LABORATORY"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 1,
+      "power": null,
+      "speed": null,
+      "effect": "*(Siegeable — This domain can be attacked. It takes damage in the form of removing **durability** counters.)*\n\nAt the beginning of your recollection phase, sacrifice CARDNAME and draw a card.\n\n**On Destroy:** **Summon** an Elysian Test Subject token.",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRD",
+          "collectorNumber": "056",
+          "releaseDate": "2026-08-21T00:00:00"
+        },
+        {
+          "setPrefix": "PRDSD",
+          "collectorNumber": "027",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Gencode Womb",
+      "slug": "gencode-womb",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "REGALIA",
+        "ITEM"
+      ],
+      "subtypes": [
+        "MAGE",
+        "ARTIFACT"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": 0,
+      "cost_reserve": null,
+      "power": null,
+      "speed": null,
+      "effect": "[Dante Bonus] (3)**, Banish CARDNAME:** If you don't control an Elysian object, **summon** an Elysian Test Subject token. Otherwise, draw a card into your memory. *(Activate this ability only if your champion is Dante.)*",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRDSD",
+          "collectorNumber": "011",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Lesser Boon of Elysian Blood",
+      "slug": "lesser-boon-of-elysian-blood",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "LESSER BOON"
+      ],
+      "subtypes": [
+        "MAGE",
+        "SPELL"
+      ],
+      "elements": [
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 3,
+      "power": null,
+      "speed": false,
+      "effect": "**Class Locked**\n\nElysian objects you control have \"**[REST]: Empower 1.**\"\n\n**(2):** Put target Elysian card from your graveyard on top of your deck. This ability costs (1) more to activate for each time you've activated it this game.",
+      "legality": {
+        "STANDARD": {
+          "limit": 0
+        }
+      },
+      "editions": [
+        {
+          "setPrefix": "PRDP",
+          "collectorNumber": "005",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Lucia, Reclaimed Blight",
+      "slug": "lucia-reclaimed-blight",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "UNIQUE",
+        "ALLY"
+      ],
+      "subtypes": [
+        "MAGE",
+        "ELYSIAN",
+        "HUMAN"
+      ],
+      "elements": [
+        "EXALTED",
+        "NORM"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": 0,
+      "speed": null,
+      "effect": "**Elysian Aura**, **Stealth**\n\n[Dante Bonus] Your champion's activated abilities cost (2) less to activate.\n\n[Class Bonus] **On Enter:** Look at the top six cards of your deck. You may reveal a Spell card from among them and put it into your memory. Put the rest on the bottom of your deck in any order.\n\n",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRD",
+          "collectorNumber": "073",
+          "releaseDate": "2026-08-21T00:00:00"
+        },
+        {
+          "setPrefix": "PRD 1st",
+          "collectorNumber": "073",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Rhesus Eradication",
+      "slug": "rhesus-eradication",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "ACTION"
+      ],
+      "subtypes": [
+        "MAGE",
+        "ELYSIAN",
+        "SPELL"
+      ],
+      "elements": [
+        "EXIA"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 2,
+      "power": null,
+      "speed": true,
+      "effect": "Deal **LV**+**X** damage to target unit, where **X** is two times the amount of Elysian objects you control.",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRD",
+          "collectorNumber": "232",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Thanatotic Hemosynth",
+      "slug": "thanatotic-hemosynth",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "ALLY"
+      ],
+      "subtypes": [
+        "MAGE",
+        "ELYSIAN",
+        "HUMAN"
+      ],
+      "elements": [
+        "EXIA"
+      ],
+      "level": null,
+      "cost_memory": null,
+      "cost_reserve": 1,
+      "power": 0,
+      "speed": null,
+      "effect": "**Elysian Aura**\n\n[Damage 10+] **On Enter: **Target Aenean Spell card in your graveyard gains \"**Ephemerate — (X)**\", where **X** is that card’s reserve cost. *(You may activate cards with **ephemerate** from your graveyard by paying that cost. Action cards played this way become **ephemeral** on the effects stack.)*",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRD",
+          "collectorNumber": "234",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    },
+    {
+      "name": "Venous Core",
+      "slug": "venous-core",
+      "classes": [
+        "MAGE"
+      ],
+      "types": [
+        "REGALIA",
+        "ITEM"
+      ],
+      "subtypes": [
+        "MAGE",
+        "ELYSIAN",
+        "ACCESSORY"
+      ],
+      "elements": [
+        "EXIA"
+      ],
+      "level": null,
+      "cost_memory": 1,
+      "cost_reserve": null,
+      "power": null,
+      "speed": null,
+      "effect": "As an additional cost to materialize this card, sacrifice an Elysian ally.\n\n**Elysian Aura**\n\nYour champion gets +5[LIFE].\n\n[Dante Bonus] [Damage 25+] Aenean Spell card activations you control can't be **negated**.",
+      "legality": null,
+      "editions": [
+        {
+          "setPrefix": "PRDSD",
+          "collectorNumber": "020",
+          "releaseDate": "2026-08-21T00:00:00"
+        }
+      ]
+    }
+  ],
+  "lists": [
+    {
+      "deckId": "61285:21866",
+      "paths": [
+        {
+          "path": 0,
+          "cards": [
+            "Dante, Hematic Overdrive",
+            "Elysian Aspirant",
+            "Lucia, Reclaimed Blight",
+            "Thanatotic Hemosynth"
+          ]
+        },
+        {
+          "path": 1,
+          "cards": [
+            "Dante, Hematic Overdrive",
+            "Epicurean Institute",
+            "Gencode Womb",
+            "Venous Core"
+          ]
+        }
+      ],
+      "signature": "8be76c1d50ce6b57a9fd19ed204008c6eb462bd0eda9396dbbc069ac629819e3",
+      "main": [
+        {
+          "name": "Aenean Cryosalvo",
+          "quantity": 2
+        },
+        {
+          "name": "Aenean Crystallization",
+          "quantity": 2
+        },
+        {
+          "name": "Aenean Frostlance",
+          "quantity": 4
+        },
+        {
+          "name": "Aenean Frozen Shunt",
+          "quantity": 2
+        },
+        {
+          "name": "Aenean Swelling Tides",
+          "quantity": 4
+        },
+        {
+          "name": "Aenean Ward",
+          "quantity": 4
+        },
+        {
+          "name": "Bifurcating Fractal",
+          "quantity": 2
+        },
+        {
+          "name": "Blood Surge",
+          "quantity": 2
+        },
+        {
+          "name": "Cerulean Decree",
+          "quantity": 3
+        },
+        {
+          "name": "Cryogenic Ritual",
+          "quantity": 3
+        },
+        {
+          "name": "Elysian Aspirant",
+          "quantity": 3
+        },
+        {
+          "name": "Eminence in Fury",
+          "quantity": 3
+        },
+        {
+          "name": "Engulf",
+          "quantity": 3
+        },
+        {
+          "name": "Epicurean Institute",
+          "quantity": 4
+        },
+        {
+          "name": "Fracturize",
+          "quantity": 2
+        },
+        {
+          "name": "Hemoflux Drain",
+          "quantity": 4
+        },
+        {
+          "name": "Lucia, Reclaimed Blight",
+          "quantity": 2
+        },
+        {
+          "name": "Snow White, Weiss Queen",
+          "quantity": 1
+        },
+        {
+          "name": "Spellshield: Exia",
+          "quantity": 3
+        },
+        {
+          "name": "Thanatotic Hemosynth",
+          "quantity": 3
+        },
+        {
+          "name": "Total Whiteout",
+          "quantity": 4
+        }
+      ],
+      "material": [
+        {
+          "name": "Berserker Plate",
+          "quantity": 1
+        },
+        {
+          "name": "Crimson Vein",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Aenean Initiate",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hematic Overdrive",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hemomancer",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Prodigal Swain",
+          "quantity": 1
+        },
+        {
+          "name": "Extinguishing Synchron",
+          "quantity": 1
+        },
+        {
+          "name": "Gencode Womb",
+          "quantity": 1
+        },
+        {
+          "name": "Spirit of Water",
+          "quantity": 1
+        },
+        {
+          "name": "Tariff Ring",
+          "quantity": 1
+        },
+        {
+          "name": "Tome of Sorcery",
+          "quantity": 1
+        },
+        {
+          "name": "Venous Core",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "deckId": "61722:12639",
+      "paths": [
+        {
+          "path": 0,
+          "cards": [
+            "Dante, Hematic Overdrive",
+            "Elysian Aspirant",
+            "Lucia, Reclaimed Blight",
+            "Thanatotic Hemosynth"
+          ]
+        }
+      ],
+      "signature": "6bef552f159e7c76b4b63d8c98ea4cbaaa76d2a060964ab4bcb6f739e856a692",
+      "main": [
+        {
+          "name": "Aenean Reclaim",
+          "quantity": 4
+        },
+        {
+          "name": "Aesan Protector",
+          "quantity": 3
+        },
+        {
+          "name": "Blightheart Adept",
+          "quantity": 3
+        },
+        {
+          "name": "Dungeon Guide",
+          "quantity": 4
+        },
+        {
+          "name": "Elysian Aspirant",
+          "quantity": 3
+        },
+        {
+          "name": "Fairy Whispers",
+          "quantity": 4
+        },
+        {
+          "name": "Hemoflux Drain",
+          "quantity": 2
+        },
+        {
+          "name": "Innervate Agility",
+          "quantity": 2
+        },
+        {
+          "name": "Lucia, Reclaimed Blight",
+          "quantity": 3
+        },
+        {
+          "name": "Reclaim",
+          "quantity": 3
+        },
+        {
+          "name": "Scout the Land",
+          "quantity": 4
+        },
+        {
+          "name": "Stifling Gyre",
+          "quantity": 2
+        },
+        {
+          "name": "StrideTech W",
+          "quantity": 4
+        },
+        {
+          "name": "Thanatotic Hemosynth",
+          "quantity": 2
+        },
+        {
+          "name": "Three Visits",
+          "quantity": 4
+        },
+        {
+          "name": "Turbo Charge",
+          "quantity": 2
+        },
+        {
+          "name": "Vascular Collapse",
+          "quantity": 2
+        },
+        {
+          "name": "Veiling Breeze",
+          "quantity": 4
+        },
+        {
+          "name": "Windmill Engineer",
+          "quantity": 4
+        },
+        {
+          "name": "Zephyr",
+          "quantity": 2
+        }
+      ],
+      "material": [
+        {
+          "name": "Backup Charger",
+          "quantity": 1
+        },
+        {
+          "name": "Berserker Plate",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Aenean Initiate",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hematic Overdrive",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hemomancer",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Prodigal Swain",
+          "quantity": 1
+        },
+        {
+          "name": "Gencode Womb",
+          "quantity": 1
+        },
+        {
+          "name": "Lost Providence",
+          "quantity": 1
+        },
+        {
+          "name": "Purifying Thurible",
+          "quantity": 1
+        },
+        {
+          "name": "Safeguard Amulet",
+          "quantity": 1
+        },
+        {
+          "name": "Spirit of Wind",
+          "quantity": 1
+        },
+        {
+          "name": "Tariff Ring",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "deckId": "61722:19534",
+      "paths": [
+        {
+          "path": 1,
+          "cards": [
+            "Dante, Hematic Overdrive",
+            "Gencode Womb",
+            "Rhesus Eradication"
+          ]
+        }
+      ],
+      "signature": "c151f31a3d63a320840746ef064c91bb45f467542354fad9f4e2d2632de70640",
+      "main": [
+        {
+          "name": "Aella, Zephyr's Hand",
+          "quantity": 2
+        },
+        {
+          "name": "Aenean Cyclic Winds",
+          "quantity": 1
+        },
+        {
+          "name": "Aenean Cyclone",
+          "quantity": 1
+        },
+        {
+          "name": "Aenean Reclaim",
+          "quantity": 4
+        },
+        {
+          "name": "Aenean Tailwind Boost",
+          "quantity": 2
+        },
+        {
+          "name": "Aesan Protector",
+          "quantity": 3
+        },
+        {
+          "name": "Blightheart Adept",
+          "quantity": 4
+        },
+        {
+          "name": "Calming Breeze",
+          "quantity": 2
+        },
+        {
+          "name": "Destined Encounter",
+          "quantity": 4
+        },
+        {
+          "name": "Displace",
+          "quantity": 3
+        },
+        {
+          "name": "Dream Fairy",
+          "quantity": 3
+        },
+        {
+          "name": "Dungeon Guide",
+          "quantity": 4
+        },
+        {
+          "name": "Elysian Aspirant",
+          "quantity": 2
+        },
+        {
+          "name": "Fairy Whispers",
+          "quantity": 4
+        },
+        {
+          "name": "Judas, Claret Intercessor",
+          "quantity": 2
+        },
+        {
+          "name": "Reclaim",
+          "quantity": 4
+        },
+        {
+          "name": "Rhesus Eradication",
+          "quantity": 3
+        },
+        {
+          "name": "Scout the Land",
+          "quantity": 2
+        },
+        {
+          "name": "Thanatotic Hemosynth",
+          "quantity": 2
+        },
+        {
+          "name": "Turbo Charge",
+          "quantity": 1
+        },
+        {
+          "name": "Veiling Breeze",
+          "quantity": 3
+        },
+        {
+          "name": "Windmill Engineer",
+          "quantity": 4
+        }
+      ],
+      "material": [
+        {
+          "name": "Backup Charger",
+          "quantity": 1
+        },
+        {
+          "name": "Berserker Plate",
+          "quantity": 1
+        },
+        {
+          "name": "Crimson Vein",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Aenean Initiate",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hematic Overdrive",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hemomancer",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Prodigal Swain",
+          "quantity": 1
+        },
+        {
+          "name": "Gencode Womb",
+          "quantity": 1
+        },
+        {
+          "name": "Lost Providence",
+          "quantity": 1
+        },
+        {
+          "name": "Purifying Thurible",
+          "quantity": 1
+        },
+        {
+          "name": "Safeguard Amulet",
+          "quantity": 1
+        },
+        {
+          "name": "Spirit of Wind",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "deckId": "62266:25352",
+      "paths": [
+        {
+          "path": 0,
+          "cards": [
+            "Dante, Hematic Overdrive",
+            "Elysian Aspirant",
+            "Embryonic Hemosynth",
+            "Thanatotic Hemosynth"
+          ]
+        },
+        {
+          "path": 1,
+          "cards": [
+            "Dante, Hematic Overdrive",
+            "Epicurean Institute",
+            "Gencode Womb",
+            "Rhesus Eradication",
+            "Venous Core"
+          ]
+        }
+      ],
+      "signature": "dedfa76f788602274e81469d97f70423696b51d2b8f42e4c4123b890ed2d67f7",
+      "main": [
+        {
+          "name": "Aenean Swelling Tides",
+          "quantity": 4
+        },
+        {
+          "name": "Bifurcating Fractal",
+          "quantity": 4
+        },
+        {
+          "name": "Blood Surge",
+          "quantity": 2
+        },
+        {
+          "name": "Cryogenic Ritual",
+          "quantity": 4
+        },
+        {
+          "name": "Elysian Aspirant",
+          "quantity": 4
+        },
+        {
+          "name": "Embryonic Hemosynth",
+          "quantity": 4
+        },
+        {
+          "name": "Eminence in Fury",
+          "quantity": 1
+        },
+        {
+          "name": "Epicurean Institute",
+          "quantity": 4
+        },
+        {
+          "name": "Heighten Spellcraft",
+          "quantity": 4
+        },
+        {
+          "name": "Hemoflux Drain",
+          "quantity": 4
+        },
+        {
+          "name": "Hydrating Fractal",
+          "quantity": 4
+        },
+        {
+          "name": "Lacunarity Guide",
+          "quantity": 3
+        },
+        {
+          "name": "Memory Invocation",
+          "quantity": 4
+        },
+        {
+          "name": "Rhesus Eradication",
+          "quantity": 4
+        },
+        {
+          "name": "Shademist Priestess",
+          "quantity": 4
+        },
+        {
+          "name": "Thanatotic Hemosynth",
+          "quantity": 4
+        },
+        {
+          "name": "Throne-Keeper Bullfrog",
+          "quantity": 2
+        },
+        {
+          "name": "Umbilical Ritual",
+          "quantity": 3
+        },
+        {
+          "name": "Vascular Collapse",
+          "quantity": 2
+        }
+      ],
+      "material": [
+        {
+          "name": "Crimson Vein",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Aenean Initiate",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hematic Overdrive",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hemomancer",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Prodigal Swain",
+          "quantity": 1
+        },
+        {
+          "name": "Fragmented Spirit of Water",
+          "quantity": 1
+        },
+        {
+          "name": "Gencode Womb",
+          "quantity": 1
+        },
+        {
+          "name": "Grand Crusader's Ring",
+          "quantity": 1
+        },
+        {
+          "name": "Life Essence Amulet",
+          "quantity": 1
+        },
+        {
+          "name": "Shard of Empowerment",
+          "quantity": 1
+        },
+        {
+          "name": "Tariff Ring",
+          "quantity": 1
+        },
+        {
+          "name": "Venous Core",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "deckId": "62266:31561",
+      "paths": [
+        {
+          "path": 1,
+          "cards": [
+            "Dante, Hematic Overdrive",
+            "Epicurean Institute",
+            "Gencode Womb",
+            "Venous Core"
+          ]
+        }
+      ],
+      "signature": "d6e46a0781beed3a337270cfa9259af09518b4a14ef9ebcd4ea6803410d2478f",
+      "main": [
+        {
+          "name": "Aenean Frostlance",
+          "quantity": 4
+        },
+        {
+          "name": "Aenean Ward",
+          "quantity": 4
+        },
+        {
+          "name": "Blood Surge",
+          "quantity": 2
+        },
+        {
+          "name": "Cryogenic Ritual",
+          "quantity": 4
+        },
+        {
+          "name": "Elysian Aspirant",
+          "quantity": 2
+        },
+        {
+          "name": "Eminence in Fury",
+          "quantity": 2
+        },
+        {
+          "name": "Epicurean Institute",
+          "quantity": 4
+        },
+        {
+          "name": "Exia Sight",
+          "quantity": 3
+        },
+        {
+          "name": "Heighten Spellcraft",
+          "quantity": 4
+        },
+        {
+          "name": "Hemoflux Drain",
+          "quantity": 2
+        },
+        {
+          "name": "Judas, Claret Intercessor",
+          "quantity": 2
+        },
+        {
+          "name": "Keen Tidebinder",
+          "quantity": 4
+        },
+        {
+          "name": "Lucia, Reclaimed Blight",
+          "quantity": 2
+        },
+        {
+          "name": "Magus Initiate",
+          "quantity": 4
+        },
+        {
+          "name": "Nascent Blast",
+          "quantity": 4
+        },
+        {
+          "name": "Shademist Priestess",
+          "quantity": 3
+        },
+        {
+          "name": "Shieldroid",
+          "quantity": 4
+        },
+        {
+          "name": "Spellshield: Exia",
+          "quantity": 2
+        },
+        {
+          "name": "Transfusive Aura",
+          "quantity": 2
+        },
+        {
+          "name": "Unruled Bereavement",
+          "quantity": 2
+        }
+      ],
+      "material": [
+        {
+          "name": "Bauble of Abundance",
+          "quantity": 1
+        },
+        {
+          "name": "Crimson Vein",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Aenean Initiate",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hematic Overdrive",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hemomancer",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Prodigal Swain",
+          "quantity": 1
+        },
+        {
+          "name": "Gencode Womb",
+          "quantity": 1
+        },
+        {
+          "name": "Shard of Empowerment",
+          "quantity": 1
+        },
+        {
+          "name": "Spirit of Water",
+          "quantity": 1
+        },
+        {
+          "name": "Tariff Ring",
+          "quantity": 1
+        },
+        {
+          "name": "Tome of Abyssal Heaven",
+          "quantity": 1
+        },
+        {
+          "name": "Venous Core",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "deckId": "62484:31561",
+      "paths": [
+        {
+          "path": 1,
+          "cards": [
+            "Dante, Hematic Overdrive",
+            "Epicurean Institute",
+            "Gencode Womb",
+            "Venous Core"
+          ]
+        }
+      ],
+      "signature": "c945e7302e56d37ac5f6e715e69d4aa9182c086a8f09775120ebf8bf74938fad",
+      "main": [
+        {
+          "name": "Aenean Frostlance",
+          "quantity": 4
+        },
+        {
+          "name": "Aenean Ward",
+          "quantity": 4
+        },
+        {
+          "name": "Blood Surge",
+          "quantity": 2
+        },
+        {
+          "name": "Cryogenic Ritual",
+          "quantity": 4
+        },
+        {
+          "name": "Elysian Aspirant",
+          "quantity": 2
+        },
+        {
+          "name": "Eminence in Fury",
+          "quantity": 2
+        },
+        {
+          "name": "Epicurean Institute",
+          "quantity": 4
+        },
+        {
+          "name": "Exia Sight",
+          "quantity": 3
+        },
+        {
+          "name": "Heighten Spellcraft",
+          "quantity": 4
+        },
+        {
+          "name": "Hemoflux Drain",
+          "quantity": 2
+        },
+        {
+          "name": "Judas, Claret Intercessor",
+          "quantity": 2
+        },
+        {
+          "name": "Keen Tidebinder",
+          "quantity": 4
+        },
+        {
+          "name": "Lucia, Reclaimed Blight",
+          "quantity": 2
+        },
+        {
+          "name": "Magus Initiate",
+          "quantity": 4
+        },
+        {
+          "name": "Nascent Blast",
+          "quantity": 4
+        },
+        {
+          "name": "Shademist Priestess",
+          "quantity": 3
+        },
+        {
+          "name": "Shieldroid",
+          "quantity": 4
+        },
+        {
+          "name": "Spellshield: Exia",
+          "quantity": 2
+        },
+        {
+          "name": "Transfusive Aura",
+          "quantity": 2
+        },
+        {
+          "name": "Unruled Bereavement",
+          "quantity": 2
+        }
+      ],
+      "material": [
+        {
+          "name": "Crimson Vein",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Aenean Initiate",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hematic Overdrive",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hemomancer",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Prodigal Swain",
+          "quantity": 1
+        },
+        {
+          "name": "Gencode Womb",
+          "quantity": 1
+        },
+        {
+          "name": "Seed of Empowerment",
+          "quantity": 1
+        },
+        {
+          "name": "Shard of Empowerment",
+          "quantity": 1
+        },
+        {
+          "name": "Spirit of Water",
+          "quantity": 1
+        },
+        {
+          "name": "Tome of Abyssal Heaven",
+          "quantity": 1
+        },
+        {
+          "name": "Tome of Sorcery",
+          "quantity": 1
+        },
+        {
+          "name": "Venous Core",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "deckId": "62616:1063",
+      "paths": [
+        {
+          "path": 1,
+          "cards": [
+            "Dante, Hematic Overdrive",
+            "Epicurean Institute",
+            "Gencode Womb",
+            "Rhesus Eradication"
+          ]
+        }
+      ],
+      "signature": "1ce188ddf755d09d55a756d20c15ae6e6f0a9bce3a2fc97f4a631c7722c39179",
+      "main": [
+        {
+          "name": "Aenean Flux Generator",
+          "quantity": 3
+        },
+        {
+          "name": "Aenean Reclaim",
+          "quantity": 3
+        },
+        {
+          "name": "Aenean Swelling Gusts",
+          "quantity": 4
+        },
+        {
+          "name": "Aesan Protector",
+          "quantity": 3
+        },
+        {
+          "name": "Benediction Angel",
+          "quantity": 2
+        },
+        {
+          "name": "Dungeon Guide",
+          "quantity": 4
+        },
+        {
+          "name": "Epicurean Institute",
+          "quantity": 2
+        },
+        {
+          "name": "Fairy Whispers",
+          "quantity": 4
+        },
+        {
+          "name": "Ischemic Soldier",
+          "quantity": 4
+        },
+        {
+          "name": "Judas, Claret Intercessor",
+          "quantity": 2
+        },
+        {
+          "name": "Reclaim",
+          "quantity": 4
+        },
+        {
+          "name": "Rhesus Eradication",
+          "quantity": 4
+        },
+        {
+          "name": "Scout the Land",
+          "quantity": 3
+        },
+        {
+          "name": "Seething Intercession",
+          "quantity": 4
+        },
+        {
+          "name": "Stifling Gyre",
+          "quantity": 2
+        },
+        {
+          "name": "Thanatotic Hemosynth",
+          "quantity": 4
+        },
+        {
+          "name": "Turbo Charge",
+          "quantity": 1
+        },
+        {
+          "name": "Veiling Breeze",
+          "quantity": 3
+        },
+        {
+          "name": "Windmill Engineer",
+          "quantity": 4
+        }
+      ],
+      "material": [
+        {
+          "name": "Backup Charger",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Aenean Initiate",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hematic Overdrive",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hemomancer",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Prodigal Swain",
+          "quantity": 1
+        },
+        {
+          "name": "Gencode Womb",
+          "quantity": 1
+        },
+        {
+          "name": "Lost Providence",
+          "quantity": 1
+        },
+        {
+          "name": "Nullifying Mirror",
+          "quantity": 1
+        },
+        {
+          "name": "Purifying Thurible",
+          "quantity": 1
+        },
+        {
+          "name": "Spirit of Wind",
+          "quantity": 1
+        },
+        {
+          "name": "Tariff Ring",
+          "quantity": 1
+        },
+        {
+          "name": "Tome of Sorcery",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "deckId": "63732:21154",
+      "paths": [
+        {
+          "path": 0,
+          "cards": [
+            "Dante, Hematic Overdrive",
+            "Elysian Aspirant",
+            "Embryonic Hemosynth",
+            "Lucia, Reclaimed Blight",
+            "Thanatotic Hemosynth"
+          ]
+        }
+      ],
+      "signature": "c64039852230bb81af54a8751b189455dd07236fc26e5ba1a9696c6feb7fa61f",
+      "main": [
+        {
+          "name": "Aenean Frozen Shunt",
+          "quantity": 2
+        },
+        {
+          "name": "Aenean Swelling Tides",
+          "quantity": 4
+        },
+        {
+          "name": "Aenean Ward",
+          "quantity": 2
+        },
+        {
+          "name": "Benediction Angel",
+          "quantity": 2
+        },
+        {
+          "name": "Blood Surge",
+          "quantity": 1
+        },
+        {
+          "name": "Cardiac Vessel",
+          "quantity": 1
+        },
+        {
+          "name": "Cryogenic Ritual",
+          "quantity": 4
+        },
+        {
+          "name": "Dungeon Guide",
+          "quantity": 4
+        },
+        {
+          "name": "Elysian Aspirant",
+          "quantity": 4
+        },
+        {
+          "name": "Embryonic Hemosynth",
+          "quantity": 2
+        },
+        {
+          "name": "Eminence in Fury",
+          "quantity": 3
+        },
+        {
+          "name": "Engulf",
+          "quantity": 3
+        },
+        {
+          "name": "Epicurean Institute",
+          "quantity": 3
+        },
+        {
+          "name": "Fracturize",
+          "quantity": 4
+        },
+        {
+          "name": "Hemoflux Drain",
+          "quantity": 2
+        },
+        {
+          "name": "Lucia, Reclaimed Blight",
+          "quantity": 3
+        },
+        {
+          "name": "Memory Invocation",
+          "quantity": 1
+        },
+        {
+          "name": "Pearled Prayer",
+          "quantity": 3
+        },
+        {
+          "name": "Seething Intercession",
+          "quantity": 4
+        },
+        {
+          "name": "Spalling Cleanse",
+          "quantity": 3
+        },
+        {
+          "name": "Thanatotic Hemosynth",
+          "quantity": 2
+        },
+        {
+          "name": "Undeniable Truth",
+          "quantity": 2
+        },
+        {
+          "name": "Vascular Collapse",
+          "quantity": 1
+        }
+      ],
+      "material": [
+        {
+          "name": "Backup Charger",
+          "quantity": 1
+        },
+        {
+          "name": "Chalice of Blood",
+          "quantity": 1
+        },
+        {
+          "name": "Crimson Vein",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Aenean Initiate",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hematic Overdrive",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hemomancer",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Prodigal Swain",
+          "quantity": 1
+        },
+        {
+          "name": "Gencode Womb",
+          "quantity": 1
+        },
+        {
+          "name": "Lost Providence",
+          "quantity": 1
+        },
+        {
+          "name": "Safeguard Amulet",
+          "quantity": 1
+        },
+        {
+          "name": "Spirit of Water",
+          "quantity": 1
+        },
+        {
+          "name": "Tariff Ring",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "deckId": "63763:21154",
+      "paths": [
+        {
+          "path": 0,
+          "cards": [
+            "Dante, Hematic Overdrive",
+            "Elysian Aspirant",
+            "Embryonic Hemosynth",
+            "Lucia, Reclaimed Blight"
+          ]
+        }
+      ],
+      "signature": "dbdc58ca2228f578adde589510146e40d8f7b886c2ec1b37b6b49ad81ff1f85f",
+      "main": [
+        {
+          "name": "Aenean Ward",
+          "quantity": 2
+        },
+        {
+          "name": "Angelic Channeling",
+          "quantity": 2
+        },
+        {
+          "name": "Cardiac Vessel",
+          "quantity": 1
+        },
+        {
+          "name": "Creative Shock",
+          "quantity": 4
+        },
+        {
+          "name": "Creative Tinder",
+          "quantity": 4
+        },
+        {
+          "name": "Cremation Ritual",
+          "quantity": 3
+        },
+        {
+          "name": "Dungeon Guide",
+          "quantity": 4
+        },
+        {
+          "name": "Elysian Aspirant",
+          "quantity": 4
+        },
+        {
+          "name": "Embryonic Hemosynth",
+          "quantity": 2
+        },
+        {
+          "name": "Eminence in Fury",
+          "quantity": 4
+        },
+        {
+          "name": "Epicurean Institute",
+          "quantity": 4
+        },
+        {
+          "name": "Liminal Guide",
+          "quantity": 4
+        },
+        {
+          "name": "Lucia, Reclaimed Blight",
+          "quantity": 3
+        },
+        {
+          "name": "Seething Intercession",
+          "quantity": 4
+        },
+        {
+          "name": "Shieldroid",
+          "quantity": 3
+        },
+        {
+          "name": "Spellshield: Exia",
+          "quantity": 2
+        },
+        {
+          "name": "Stalwart Shieldmate",
+          "quantity": 3
+        },
+        {
+          "name": "Turbo Charge",
+          "quantity": 2
+        },
+        {
+          "name": "Undeniable Truth",
+          "quantity": 2
+        },
+        {
+          "name": "Varuckan Acolyte",
+          "quantity": 1
+        },
+        {
+          "name": "Vascular Collapse",
+          "quantity": 2
+        }
+      ],
+      "material": [
+        {
+          "name": "Backup Charger",
+          "quantity": 1
+        },
+        {
+          "name": "Chalice of Blood",
+          "quantity": 1
+        },
+        {
+          "name": "Crimson Vein",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Aenean Initiate",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hematic Overdrive",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hemomancer",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Prodigal Swain",
+          "quantity": 1
+        },
+        {
+          "name": "Gencode Womb",
+          "quantity": 1
+        },
+        {
+          "name": "Lost Providence",
+          "quantity": 1
+        },
+        {
+          "name": "Safeguard Amulet",
+          "quantity": 1
+        },
+        {
+          "name": "Spirit of Fire",
+          "quantity": 1
+        },
+        {
+          "name": "Tariff Ring",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "deckId": "63897:13804",
+      "paths": [
+        {
+          "path": 0,
+          "cards": [
+            "Dante, Hematic Overdrive",
+            "Elysian Aspirant",
+            "Embryonic Hemosynth",
+            "Lucia, Reclaimed Blight",
+            "Thanatotic Hemosynth"
+          ]
+        },
+        {
+          "path": 1,
+          "cards": [
+            "Dante, Hematic Overdrive",
+            "Gencode Womb",
+            "Venous Core"
+          ]
+        }
+      ],
+      "signature": "43260d8eaa78a53dda2c360efbb1303d8047d51ab35174177ff4eac55b354cc8",
+      "main": [
+        {
+          "name": "Aenean Scorching Comet",
+          "quantity": 1
+        },
+        {
+          "name": "Aenean Spark Alight",
+          "quantity": 1
+        },
+        {
+          "name": "Aenean Ward",
+          "quantity": 4
+        },
+        {
+          "name": "Angelic Channeling",
+          "quantity": 4
+        },
+        {
+          "name": "Creative Shock",
+          "quantity": 4
+        },
+        {
+          "name": "Creative Tinder",
+          "quantity": 4
+        },
+        {
+          "name": "Cremation Ritual",
+          "quantity": 3
+        },
+        {
+          "name": "Devil's Lifeline",
+          "quantity": 2
+        },
+        {
+          "name": "Dungeon Guide",
+          "quantity": 4
+        },
+        {
+          "name": "Elysian Aspirant",
+          "quantity": 4
+        },
+        {
+          "name": "Embryonic Hemosynth",
+          "quantity": 4
+        },
+        {
+          "name": "Eminence in Fury",
+          "quantity": 4
+        },
+        {
+          "name": "Liminal Guide",
+          "quantity": 4
+        },
+        {
+          "name": "Lucia, Reclaimed Blight",
+          "quantity": 3
+        },
+        {
+          "name": "Regal Inquisition",
+          "quantity": 1
+        },
+        {
+          "name": "Resolute Stand",
+          "quantity": 1
+        },
+        {
+          "name": "Shieldroid",
+          "quantity": 4
+        },
+        {
+          "name": "Spellshield: Exia",
+          "quantity": 1
+        },
+        {
+          "name": "Thanatotic Hemosynth",
+          "quantity": 2
+        },
+        {
+          "name": "Topsy Decree",
+          "quantity": 1
+        },
+        {
+          "name": "Undeniable Truth",
+          "quantity": 3
+        },
+        {
+          "name": "Vascular Collapse",
+          "quantity": 1
+        }
+      ],
+      "material": [
+        {
+          "name": "Backup Charger",
+          "quantity": 1
+        },
+        {
+          "name": "Berserker Plate",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Aenean Initiate",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hematic Overdrive",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hemomancer",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Prodigal Swain",
+          "quantity": 1
+        },
+        {
+          "name": "Ducal Seal",
+          "quantity": 1
+        },
+        {
+          "name": "Gencode Womb",
+          "quantity": 1
+        },
+        {
+          "name": "Lost Providence",
+          "quantity": 1
+        },
+        {
+          "name": "Safeguard Amulet",
+          "quantity": 1
+        },
+        {
+          "name": "Spirit of Fire",
+          "quantity": 1
+        },
+        {
+          "name": "Venous Core",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "deckId": "64495:19017",
+      "paths": [
+        {
+          "path": 1,
+          "cards": [
+            "Dante, Hematic Overdrive",
+            "Gencode Womb",
+            "Rhesus Eradication"
+          ]
+        }
+      ],
+      "signature": "c3689315b86ce2e76e665271665d678764f93badcc96120d648a493efdd55543",
+      "main": [
+        {
+          "name": "Aenean Reclaim",
+          "quantity": 3
+        },
+        {
+          "name": "Aenean Ward",
+          "quantity": 2
+        },
+        {
+          "name": "Aesan Protector",
+          "quantity": 3
+        },
+        {
+          "name": "Benediction Angel",
+          "quantity": 3
+        },
+        {
+          "name": "Calming Breeze",
+          "quantity": 3
+        },
+        {
+          "name": "Destined Encounter",
+          "quantity": 3
+        },
+        {
+          "name": "Displace",
+          "quantity": 3
+        },
+        {
+          "name": "Dream Fairy",
+          "quantity": 2
+        },
+        {
+          "name": "Dungeon Guide",
+          "quantity": 4
+        },
+        {
+          "name": "Elysian Aspirant",
+          "quantity": 4
+        },
+        {
+          "name": "Embryonic Hemosynth",
+          "quantity": 4
+        },
+        {
+          "name": "Fairy Whispers",
+          "quantity": 4
+        },
+        {
+          "name": "Reclaim",
+          "quantity": 3
+        },
+        {
+          "name": "Regal Inquisition",
+          "quantity": 2
+        },
+        {
+          "name": "Rhesus Eradication",
+          "quantity": 3
+        },
+        {
+          "name": "Spellshield: Exia",
+          "quantity": 2
+        },
+        {
+          "name": "Three Visits",
+          "quantity": 3
+        },
+        {
+          "name": "Vascular Collapse",
+          "quantity": 3
+        },
+        {
+          "name": "Veiling Breeze",
+          "quantity": 3
+        },
+        {
+          "name": "Windmill Engineer",
+          "quantity": 4
+        }
+      ],
+      "material": [
+        {
+          "name": "Backup Charger",
+          "quantity": 1
+        },
+        {
+          "name": "Berserker Plate",
+          "quantity": 1
+        },
+        {
+          "name": "Crimson Vein",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Aenean Initiate",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hematic Overdrive",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hemomancer",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Prodigal Swain",
+          "quantity": 1
+        },
+        {
+          "name": "Gencode Womb",
+          "quantity": 1
+        },
+        {
+          "name": "Lost Providence",
+          "quantity": 1
+        },
+        {
+          "name": "Safeguard Amulet",
+          "quantity": 1
+        },
+        {
+          "name": "Spirit of Wind",
+          "quantity": 1
+        },
+        {
+          "name": "Tariff Ring",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "deckId": "64596:28588",
+      "paths": [
+        {
+          "path": 1,
+          "cards": [
+            "Dante, Hematic Overdrive",
+            "Gencode Womb",
+            "Rhesus Eradication",
+            "Venous Core"
+          ]
+        }
+      ],
+      "signature": "4aed722a1be79c0023e7d8c584ad29f17eff6d87c720b5afefc8fbae8617c4c8",
+      "main": [
+        {
+          "name": "Aenean Frozen Shunt",
+          "quantity": 3
+        },
+        {
+          "name": "Aenean Swelling Tides",
+          "quantity": 4
+        },
+        {
+          "name": "Aenean Ward",
+          "quantity": 2
+        },
+        {
+          "name": "Angelic Channeling",
+          "quantity": 4
+        },
+        {
+          "name": "Bifurcating Fractal",
+          "quantity": 4
+        },
+        {
+          "name": "Blanche, Sheltering Saint",
+          "quantity": 2
+        },
+        {
+          "name": "Dungeon Guide",
+          "quantity": 4
+        },
+        {
+          "name": "Embryonic Hemosynth",
+          "quantity": 4
+        },
+        {
+          "name": "Engulf",
+          "quantity": 4
+        },
+        {
+          "name": "Extricating Touch",
+          "quantity": 4
+        },
+        {
+          "name": "Fracturize",
+          "quantity": 4
+        },
+        {
+          "name": "Hemoflux Drain",
+          "quantity": 4
+        },
+        {
+          "name": "Memory Invocation",
+          "quantity": 4
+        },
+        {
+          "name": "Rhesus Eradication",
+          "quantity": 4
+        },
+        {
+          "name": "Seething Intercession",
+          "quantity": 4
+        },
+        {
+          "name": "Throne-Keeper Bullfrog",
+          "quantity": 4
+        },
+        {
+          "name": "Turbo Charge",
+          "quantity": 1
+        }
+      ],
+      "material": [
+        {
+          "name": "Backup Charger",
+          "quantity": 1
+        },
+        {
+          "name": "Berserker Plate",
+          "quantity": 1
+        },
+        {
+          "name": "Crimson Vein",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Aenean Initiate",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hematic Overdrive",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hemomancer",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Prodigal Swain",
+          "quantity": 1
+        },
+        {
+          "name": "Gencode Womb",
+          "quantity": 1
+        },
+        {
+          "name": "Lost Providence",
+          "quantity": 1
+        },
+        {
+          "name": "Safeguard Amulet",
+          "quantity": 1
+        },
+        {
+          "name": "Spirit of Water",
+          "quantity": 1
+        },
+        {
+          "name": "Venous Core",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "deckId": "64888:12639",
+      "paths": [
+        {
+          "path": 0,
+          "cards": [
+            "Dante, Hematic Overdrive",
+            "Elysian Aspirant",
+            "Embryonic Hemosynth",
+            "Lucia, Reclaimed Blight",
+            "Thanatotic Hemosynth"
+          ]
+        }
+      ],
+      "signature": "2208e7a3210ef75b899f9839b3612d3423c36078380d132edfe5e06fa464c02a",
+      "main": [
+        {
+          "name": "Aenean Reclaim",
+          "quantity": 4
+        },
+        {
+          "name": "Blood Surge",
+          "quantity": 2
+        },
+        {
+          "name": "Calming Breeze",
+          "quantity": 3
+        },
+        {
+          "name": "Destined Encounter",
+          "quantity": 4
+        },
+        {
+          "name": "Dungeon Guide",
+          "quantity": 4
+        },
+        {
+          "name": "Elysian Aspirant",
+          "quantity": 4
+        },
+        {
+          "name": "Embryonic Hemosynth",
+          "quantity": 4
+        },
+        {
+          "name": "Ensnaring Fumes",
+          "quantity": 1
+        },
+        {
+          "name": "Fairy Whispers",
+          "quantity": 4
+        },
+        {
+          "name": "Lucia, Reclaimed Blight",
+          "quantity": 3
+        },
+        {
+          "name": "Ravaging Tempest",
+          "quantity": 2
+        },
+        {
+          "name": "Regal Inquisition",
+          "quantity": 2
+        },
+        {
+          "name": "Scout the Land",
+          "quantity": 4
+        },
+        {
+          "name": "Spellshield: Exia",
+          "quantity": 2
+        },
+        {
+          "name": "Stifling Gyre",
+          "quantity": 3
+        },
+        {
+          "name": "Thanatotic Hemosynth",
+          "quantity": 2
+        },
+        {
+          "name": "Three Visits",
+          "quantity": 4
+        },
+        {
+          "name": "Turbo Charge",
+          "quantity": 2
+        },
+        {
+          "name": "Vascular Collapse",
+          "quantity": 2
+        },
+        {
+          "name": "Veiling Breeze",
+          "quantity": 4
+        }
+      ],
+      "material": [
+        {
+          "name": "Backup Charger",
+          "quantity": 1
+        },
+        {
+          "name": "Berserker Plate",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Aenean Initiate",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hematic Overdrive",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Hemomancer",
+          "quantity": 1
+        },
+        {
+          "name": "Dante, Prodigal Swain",
+          "quantity": 1
+        },
+        {
+          "name": "Fragmented Spirit of Wind",
+          "quantity": 1
+        },
+        {
+          "name": "Gencode Womb",
+          "quantity": 1
+        },
+        {
+          "name": "Lost Providence",
+          "quantity": 1
+        },
+        {
+          "name": "Purifying Thurible",
+          "quantity": 1
+        },
+        {
+          "name": "Safeguard Amulet",
+          "quantity": 1
+        },
+        {
+          "name": "Tariff Ring",
+          "quantity": 1
+        }
+      ]
+    }
+  ]
+}
