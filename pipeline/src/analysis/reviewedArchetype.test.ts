@@ -9,7 +9,7 @@ test('published families retain all memberships and stats, and refresh is idempo
   const copy = structuredClone(taxonomy);
   applyReviewedArchetypeEvidence(copy.strategyArchetypes, copy.clusters, cards);
   assert.deepEqual(copy, taxonomy);
-  for (const identity of REVIEWED_ARCHETYPE_CORES) assert.equal(copy.strategyArchetypes.filter(s => s.name === identity.name).length, identity.champion === 'Silvie' ? 3 : 1);
+  for (const identity of REVIEWED_ARCHETYPE_CORES) assert.equal(copy.strategyArchetypes.filter(s => s.name === identity.name).length, ['Silvie', 'Guo Jia'].includes(identity.champion) ? 3 : 1);
 });
 test('missing data, ambiguous cores and insufficient recurrence restore generated label', () => {
   for (const mode of ['missing', 'ambiguous', 'players', 'events', 'build', 'zero']) {
@@ -51,4 +51,24 @@ test('Slime identity spans three preserved families while Water package remains 
   assert.equal(water.name, 'Tera Silvie — Slimes');
   assert.equal(water.reviewedArchetypeEvidence!.waterPackageDeckCount, 0);
   assert.equal(water.reviewedArchetypeEvidence!.coreDeckCount, 45);
+});
+
+ test('Guo Jia shares seven command builds, keeps other families separate, and does not require the support package', () => {
+  const families = structuredClone(taxonomy.strategyArchetypes.filter(s => s.championName === 'Guo Jia'));
+  const reviewed = families.filter(s => s.reviewedArchetypeEvidence);
+  assert.equal(reviewed.length, 3);
+  assert.equal(reviewed.flatMap(s => s.buildIds).length, 7);
+  assert.deepEqual(reviewed.map(s => s.reviewedArchetypeEvidence!.coreDeckCount), [1700, 829, 122]);
+  assert.deepEqual(reviewed.map(s => s.reviewedArchetypeEvidence!.manifestationPackageDeckCount), [36, 322, 119]);
+  const changed = new Map([...cards].map(([id, counts]) => {
+    const copy = new Map(counts); copy.delete('Auspicious Manifestation'); copy.delete('Beseech the Winds');
+    return [id, copy] as const;
+  }));
+  applyReviewedArchetypeEvidence(families, taxonomy.clusters, changed);
+  assert.equal(families.filter(s => s.reviewedArchetypeEvidence).length, 3);
+  for (const family of families.filter(s => s.reviewedArchetypeEvidence)) {
+    assert.equal(family.name, 'Wind Guo Jia — Shenju Commands');
+    assert.equal(family.reviewedArchetypeEvidence!.manifestationPackageDeckCount, 0);
+  }
+  for (const id of ['1kd37dt', 'w5bdy7']) assert.deepEqual(families.find(s => s.id === id), taxonomy.strategyArchetypes.find(s => s.id === id));
 });

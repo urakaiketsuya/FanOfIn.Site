@@ -3616,3 +3616,27 @@ The page calls it a Water package variant when joint occurrence reaches 90%. Thi
 not part of the required Slime core. Creative Shock + Cremation Ritual does not establish
 a separate identity: it appears in 90/91 of the small fire family but also 978/3,149 in the
 large family. Shared Slime names flow through existing deck labels and build detail pages.
+
+
+### Guo Jia shared Shenju Command identity
+
+Byakko's Command + Seiryuu's Command + Harness Lightning identify **Wind Guo Jia —
+Shenju Commands** under the reviewed naming rule (joint >=90%, complete deck/build
+coverage, >=5 players, >=2 events; positive main/material quantities only).
+The three qualifying families retain their IDs, seven builds, membership, statistics,
+and confidence: core occurrence is 1700/1736, 829/838, and 122/124 respectively.
+The Avatar of Byakko and Aesan Protector families do not qualify and remain separate.
+
+Auspicious Manifestation + Beseech the Winds are an optional supporting package,
+recorded independently as `manifestationPackageDeckCount` (36, 322, and 119).
+The champion page labels a supporting variant only at joint >=90% occurrence.
+Removing the supporting pair does not remove the shared identity. Players and events
+may overlap across the retained groups; the page does not sum their statistics.
+
+The local catalog confirms Byakko's Command buffs a Beast and wakes a Shenju;
+Seiryuu's Command doubles the target Beast's on-attack triggers for the turn;
+Harness Lightning provides Empower 4 or +4 ally power. These describe related
+combat effects, not a self-contained three-card combo. Auspicious Manifestation
+can return a Shenju transformed, while Beseech the Winds materializes a card.
+Silvie and Guo Jia reuse the same reviewed-family presentation with separate cores
+and supporting-package evidence. Refresh through `refresh-reviewed-archetypes.ts`.

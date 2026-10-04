@@ -4,7 +4,12 @@ export const SILVIE_SLIME_CORE = ['Storm Slime', 'Limitless Slime', 'Ethereal Sl
 export const SILVIE_WATER_PACKAGE = ['Fracturize', 'Primordial Ritual'];
 export const SILVIE_SLIME_NAME = 'Tera Silvie — Slimes';
 
+export const GUO_JIA_COMMAND_CORE = ["Byakko's Command", "Seiryuu's Command", 'Harness Lightning'];
+export const GUO_JIA_MANIFESTATION_PACKAGE = ['Auspicious Manifestation', 'Beseech the Winds'];
+export const GUO_JIA_COMMAND_NAME = 'Wind Guo Jia — Shenju Commands';
+
 export const REVIEWED_ARCHETYPE_CORES = [
+  { champion: 'Guo Jia', name: GUO_JIA_COMMAND_NAME, core: GUO_JIA_COMMAND_CORE },
   { champion: 'Silvie', name: SILVIE_SLIME_NAME, core: SILVIE_SLIME_CORE },
   { champion: 'Lorraine', name: 'Fire Lorraine — Fire Sword', core: ['Blazing Throw', 'Rending Flames', 'Hone by Fire'] },
   { champion: 'Lorraine', name: 'Fire Lorraine — Embersong–Rhapsody', core: ['Embersong', 'Erupting Rhapsody', 'Fiery Momentum'] },
@@ -19,6 +24,7 @@ export interface ReviewedArchetypeEvidence {
   coreDeckCount?: number;
   /** Supporting package, independent of the required identifying core. */
   waterPackageDeckCount?: number;
+  manifestationPackageDeckCount?: number;
 }
 
 /** Naming only: callers supply positive main + material quantities, excluding sideboard. */
@@ -42,6 +48,9 @@ export function applyReviewedArchetypeEvidence(strategies: StrategyArchetype[], 
     strategy.reviewedArchetypeEvidence = { originalName: strategy.name, evaluatedDeckCount, missingDeckCount: 0, coreDeckCount: count };
     if (identity.name === SILVIE_SLIME_NAME) {
       strategy.reviewedArchetypeEvidence.waterPackageDeckCount = ids.filter(id => SILVIE_WATER_PACKAGE.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length;
+    }
+    if (identity.name === GUO_JIA_COMMAND_NAME) {
+      strategy.reviewedArchetypeEvidence.manifestationPackageDeckCount = ids.filter(id => GUO_JIA_MANIFESTATION_PACKAGE.every(name => (cardsByDeck.get(id)?.get(name) ?? 0) > 0)).length;
     }
     strategy.name = identity.name;
     strategy.identityCards = [...identity.core];
