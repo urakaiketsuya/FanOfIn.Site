@@ -29,6 +29,7 @@ import DeckPrimerEditor from "./DeckPrimerEditor";
 import Tabs from "../../components/ui/Tabs";
 import { useTabParam } from "../../lib/useTabParam";
 import Panel from "../../components/ui/Panel";
+import Button from "../../components/ui/Button";
 import { EmptyState, InlineState } from "../../components/ui/ContentState";
 import { encodeCustomDecks } from "../../lib/compareShareLink";
 import DeckSectionBalance from "./DeckSectionBalance";
@@ -46,6 +47,8 @@ export default function MyDeckDetail() {
   const { id: deckId = "" } = useParams<{ id: string }>();
   const [deck, setDeck] = useState<SavedDeckDetail | null>();
   const [error, setError] = useState<string | null>(null);
+  const [loadAttempt, setLoadAttempt] = useState(0);
+  const [loadingDeck, setLoadingDeck] = useState(true);
   const [editing, setEditing] = useState(false);
   const [editorMode, setEditorMode] = useState<"cards" | "text">("cards");
   const [maybeboardOpen, setMaybeboardOpen] = useState(false);
@@ -100,15 +103,16 @@ export default function MyDeckDetail() {
 
   useEffect(() => {
     let active = true;
+    setLoadingDeck(true);
     void accountApi.deck(deckId).then(({ deck: result }) => {
-      if (active) { setDeck(result); setTitle(result.title); setDescription(result.description); setPrimerMarkdown(result.primerMarkdown); setTagsText(result.tags.join(", ")); setDeckText(buildDecklistText(result.decklist)); setMaybeboardText(result.maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n")); }
+      if (active) { setError(null); setDeck(result); setTitle(result.title); setDescription(result.description); setPrimerMarkdown(result.primerMarkdown); setTagsText(result.tags.join(", ")); setDeckText(buildDecklistText(result.decklist)); setMaybeboardText(result.maybeboard.map((line) => `${line.quantity}x ${line.card}`).join("\n")); }
     }).catch((reason: unknown) => {
       if (!active) return;
-      setError(reason instanceof AccountApiError && reason.status === 401 ? "Sign in to view this deck." : reason instanceof Error ? reason.message : "Deck could not be loaded");
+      setError(reason instanceof AccountApiError && reason.status === 401 ? "Sign in to view this deck." : reason instanceof TypeError ? "We could not connect to your deck. Try loading it again." : reason instanceof Error ? reason.message : "Deck could not be loaded");
       setDeck(null);
-    });
+    }).finally(() => { if (active) setLoadingDeck(false); });
     return () => { active = false; };
-  }, [deckId, setDeckText, setMaybeboardText]);
+  }, [deckId, loadAttempt, setDeckText, setMaybeboardText]);
 
   async function saveMaybeboard() {
     const maybeboard = maybeboardLines;
@@ -283,7 +287,7 @@ export default function MyDeckDetail() {
   }
 
   if (deck === undefined) return <PageLayout data-component="MyDeckDetail"><InlineState className="mt-10">Loading deck…</InlineState></PageLayout>;
-  if (!deck) return <PageLayout data-component="MyDeckDetail"><EmptyState title="Deck unavailable" description={error} action={<Link to="/decks/edit" className="text-ctp-blue hover:underline">Back to My Decks</Link>} /></PageLayout>;
+  if (!deck) return <PageLayout data-component="MyDeckDetail"><EmptyState title="Deck unavailable" description={error} action={<div className="flex flex-wrap items-center justify-center gap-3"><Button variant="primary" disabled={loadingDeck} onClick={() => setLoadAttempt((attempt) => attempt + 1)}>{loadingDeck ? "Retrying…" : "Retry loading deck"}</Button><Link to="/decks/edit" className="inline-flex min-h-control items-center text-ctp-blue hover:underline">Back to My Decks</Link></div>} /></PageLayout>;
   const editingValidation = validateDeck({ main: editedDecklist.main.map((line) => ({ cardName: line.card, quantity: line.quantity })), material: editedDecklist.material.map((line) => ({ cardName: line.card, quantity: line.quantity })), sideboard: editedDecklist.sideboard.map((line) => ({ cardName: line.card, quantity: line.quantity })) }, catalogByName, new Set(["NORM"]), deck.format);
   const comparePath = `/compare?custom=${encodeURIComponent(encodeCustomDecks([{ label: deck.title, decklist: deck.decklist, format: deck.format }]))}`;
   const goldfishPath = `/goldfish?deck=${encodeURIComponent(deck.id)}&custom=${encodeURIComponent(encodeCustomDecks([{ label: deck.title, decklist: deck.decklist, format: deck.format }]))}`;
